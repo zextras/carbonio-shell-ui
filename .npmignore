@@ -1,0 +1,14 @@
+/.idea/
+/.vscode/
+/docs/
+/pkg/
+/src/
+/test/
+/.eslintrc.js
+/.nvmrc
+/babel.config.js
+/postcss.config.js
+/shell.iml
+/tsconfig.json
+/zapp.conf.js
+/zapp.webpack.js

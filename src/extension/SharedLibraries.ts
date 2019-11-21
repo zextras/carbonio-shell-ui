@@ -63,7 +63,7 @@ interface ISharedFiberChannelService {
 
 interface ISharedZxNetwork {
   sendSOAPRequest<REQ, RESP extends ISoapResponseContent>(command: string, data: REQ, urn?: string | JsnsUrn): Promise<RESP>;
-  registerNotificationParser(tagName: string, parser: INotificationParser<any, any>): void;
+  registerNotificationParser(tagName: string, parser: INotificationParser<any>): void;
 }
 
 interface ISharedZxSync {

@@ -135,7 +135,7 @@ export class SyncService implements ISyncService {
 		if (resp.deleted) {
 			map(
 				resp.deleted[0].ids.split(','),
-				(id) => this._fcSink('notification:item-deleted', id)
+				(id) => this._fcSink<string>('notification:item-deleted', id)
 			);
 		}
 		promises = promises.concat(
@@ -201,7 +201,7 @@ export class SyncService implements ISyncService {
 				)
 			);
 			await Promise.all(promises);
-			this._fcSink('sync:completed:folder', folderId);
+			this._fcSink<string>('sync:completed:folder', folderId);
 		}
 		this.isSyncing.next(false);
 	}

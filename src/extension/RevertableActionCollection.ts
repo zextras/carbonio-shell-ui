@@ -50,7 +50,7 @@ export default class RevertableActionCollection {
     );
   }
 
-  public registerNotificationParser(tagName: string, parser: INotificationParser<any, any>): void {
+  public registerNotificationParser(tagName: string, parser: INotificationParser<any>): void {
     this._registeredNotificationParsers.push(
       this._networkService.registerNotificationParser(tagName, parser)
     );

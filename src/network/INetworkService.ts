@@ -21,7 +21,7 @@ export interface INetworkService {
 
 	closeNotificationChannel(): void;
 
-	registerNotificationParser(tagName: string, parser: INotificationParser<any, any>): string;
+	registerNotificationParser(tagName: string, parser: INotificationParser<any>): string;
 
 	unregisterNotificationParserById(id: string): void;
 }
@@ -34,6 +34,6 @@ export interface ISoapSessionData {
 	notifySeq?: number;
 }
 
-export interface INotificationParser<MOD extends {}, EV_DATA extends {}> {
-	(type: 'created' | 'modified', mod: MOD): IFCPartialEvent<EV_DATA> | void;
+export interface INotificationParser<MOD extends {}> {
+	(type: 'created' | 'modified', mod: MOD): Promise<void>;
 }

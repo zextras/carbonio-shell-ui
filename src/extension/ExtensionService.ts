@@ -123,10 +123,10 @@ export default class ExtensionService {
 			try {
 				this._fcSink<{ package: string; version: string }>('app:loaded', { package: pkg.package, version: pkg.version } );
 			} catch (err) {
-				this._fcSink<{ package: string; error: Error }>('app:load-error', { package: pkg.package, error: err } );
+				this._fcSink<{ package: string; version: string; error: Error }>('app:load-error', { package: pkg.package, version: pkg.version, error: err } );
 			}
 		} catch (err) {
-			this._fcSink<{ package: string; error: Error }>('app:load-error', { package: pkg.package, error: err } );
+			this._fcSink<{ package: string; version: string; error: Error }>('app:load-error', { package: pkg.package, version: pkg.version, error: err } );
 		}
 	};
 
@@ -184,7 +184,7 @@ export default class ExtensionService {
 					},
 					'@zextras/zapp-shell/idb': this._idbSrvc.createIdbService(appPkg.package),
 					'@zextras/zapp-shell/network': {
-						registerNotificationParser: (tagName: string, parser: INotificationParser<any, any>): void => revertables.registerNotificationParser(tagName, parser),
+						registerNotificationParser: (tagName: string, parser: INotificationParser<any>): void => revertables.registerNotificationParser(tagName, parser),
 						sendSOAPRequest: <REQ, RESP extends ISoapResponseContent>(command: string, data: REQ, urn?: 'urn:zimbraAccount' | 'urn:zimbraMail' | string): Promise<RESP> => this._networkSrvc.sendSOAPRequest<REQ, RESP>(command, data, urn)
 					},
 					'@zextras/zapp-shell/router': {

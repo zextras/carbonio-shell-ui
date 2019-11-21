@@ -11,6 +11,6 @@
 
 import { ISyncFolderParser, ISyncItemParser } from '../../sync/ISyncService';
 
-export declare function registerSyncItemParser(tagName: string, parser: ISyncItemParser<unknown>): void;
-export declare function registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<unknown>): void;
+export declare function registerSyncItemParser(tagName: string, parser: ISyncItemParser<any>): void;
+export declare function registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<any>): void;
 export declare function syncFolderById(folderId: string): Promise<void>;

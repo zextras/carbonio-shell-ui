@@ -122,14 +122,14 @@ export interface INoOpRequest {
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface INoOpResponse extends ISoapResponseContent {}
 
-export type IBatchRequest<REQ_NAME extends string, T extends {} | unknown> = {
+export type IBatchRequest<REQ_NAME extends string, T extends {}> = {
 	[key in REQ_NAME]: Array<T>;
 } & {
 	// _jsns: 'urn:zimbra';
 	onerror?: 'continue';
 };
 
-export type IBatchResponse<RESP_NAME extends string, T extends {} | unknown> = {
+export type IBatchResponse<RESP_NAME extends string, T extends {}> = {
 	[key in RESP_NAME]: Array<T>;
 } & {
 	_jsns: 'urn:zimbra';
@@ -163,7 +163,7 @@ export type ISoapSyncDeletedMap = {
 };
 export type ISoapSyncDeletedArray = Array<{ ids: string }>;
 
-export type ISoapSyncResponse<T extends {} | unknown, DEL extends ISoapSyncDeletedMap | ISoapSyncDeletedArray | void> = {
+export type ISoapSyncResponse<T extends {}, DEL extends ISoapSyncDeletedMap | ISoapSyncDeletedArray | void> = {
 	md: number;
 	token: number;
 	s: number;
@@ -175,7 +175,7 @@ export type ISoapSyncResponse<T extends {} | unknown, DEL extends ISoapSyncDelet
 
 export type IFolderView = 'contact';
 
-export type ISoapSyncFolderObj<T extends {} | unknown> = {
+export type ISoapSyncFolderObj<T extends {}> = {
 	absFolderPath: string;
 	acl: {};
 	activesyncdisabled: boolean;

@@ -1,5 +1,6 @@
 /.idea/
 /.vscode/
+/artifact-deployer/
 /docs/
 /pkg/
 /src/
@@ -12,3 +13,4 @@
 /tsconfig.json
 /zapp.conf.js
 /zapp.webpack.js
+/Jenkinsfile

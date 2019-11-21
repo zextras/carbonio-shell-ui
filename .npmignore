@@ -1,5 +1,6 @@
 /.idea/
 /.vscode/
+/artifact-deployer/
 /docs/
 /pkg/
 /src/

@@ -50,19 +50,19 @@ export default class RevertableActionCollection {
     );
   }
 
-  public registerNotificationParser(tagName: string, parser: INotificationParser<unknown, unknown>): void {
+  public registerNotificationParser(tagName: string, parser: INotificationParser<any, any>): void {
     this._registeredNotificationParsers.push(
       this._networkService.registerNotificationParser(tagName, parser)
     );
   }
 
-  public registerSyncItemParser(tagName: string, parser: ISyncItemParser<unknown>): void {
+  public registerSyncItemParser(tagName: string, parser: ISyncItemParser<any>): void {
     this._registeredSyncParsers.push(
       this._syncService.registerSyncItemParser(tagName, parser)
     );
   }
 
-  public registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<unknown>): void {
+  public registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<any>): void {
     this._registeredSyncParsers.push(
       this._syncService.registerSyncFolderParser(tagName, parser)
     );

@@ -15,4 +15,4 @@ import { INotificationParser } from '../../network/INetworkService';
 import { ISoapResponseContent, JsnsUrn } from '../../network/ISoap';
 
 export declare function sendSOAPRequest<REQ, RESP extends ISoapResponseContent>(command: string, data: REQ, urn?: string | JsnsUrn): Promise<RESP>;
-export declare function registerNotificationParser(tagName: string, parser: INotificationParser<unknown, unknown>): void;
+export declare function registerNotificationParser(tagName: string, parser: INotificationParser<any, any>): void;

@@ -184,7 +184,7 @@ export default class ExtensionService {
 					},
 					'@zextras/zapp-shell/idb': this._idbSrvc.createIdbService(appPkg.package),
 					'@zextras/zapp-shell/network': {
-						registerNotificationParser: (tagName: string, parser: INotificationParser<unknown, unknown>): void => revertables.registerNotificationParser(tagName, parser),
+						registerNotificationParser: (tagName: string, parser: INotificationParser<any, any>): void => revertables.registerNotificationParser(tagName, parser),
 						sendSOAPRequest: <REQ, RESP extends ISoapResponseContent>(command: string, data: REQ, urn?: 'urn:zimbraAccount' | 'urn:zimbraMail' | string): Promise<RESP> => this._networkSrvc.sendSOAPRequest<REQ, RESP>(command, data, urn)
 					},
 					'@zextras/zapp-shell/router': {
@@ -196,8 +196,8 @@ export default class ExtensionService {
 						sessionSrvc: this._sessionSrvc
 					},
 					'@zextras/zapp-shell/sync': {
-						registerSyncItemParser: (tagName: string, parser: ISyncItemParser<unknown>): void => revertables.registerSyncItemParser(tagName, parser),
-						registerSyncFolderParser: (tagName: string, parser: ISyncFolderParser<unknown>): void => revertables.registerSyncFolderParser(tagName, parser),
+						registerSyncItemParser: (tagName: string, parser: ISyncItemParser<any>): void => revertables.registerSyncItemParser(tagName, parser),
+						registerSyncFolderParser: (tagName: string, parser: ISyncFolderParser<any>): void => revertables.registerSyncFolderParser(tagName, parser),
 						syncFolderById: (folderId: string): void => this._syncSrvc.syncFolderById(folderId)
 					}
 				};

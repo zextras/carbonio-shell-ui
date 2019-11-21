@@ -18,10 +18,10 @@ const FiberChannelContextProvider: FC<{}> = ({ children }) => {
 	return (
 		<FiberChannelContext.Provider
 			value={{
-				internalFC: undefined,
-				internalFCSink: undefined,
-				getFiberChannelForExtension: undefined,
-				getFiberChannelSinkForExtension: undefined,
+				internalFC: undefined!,
+				internalFCSink: undefined!,
+				getFiberChannelForExtension: undefined!,
+				getFiberChannelSinkForExtension: undefined!,
 			}}
 		>
 			{children}

@@ -20,7 +20,7 @@ export default class IdbService implements IIdbInternalService {
 
 	private static _SHELL_IDB_NAME = 'com_zextras_zapp_shell';
 
-	public createIdbService(pkgName: string): IIdbExtensionService {
+	public createIdbService(pkgName: string): IIdbExtensionService<any> {
 		return new IdbExtensionService(pkgName);
 	}
 

@@ -22,14 +22,14 @@ import {
 	ISoapSyncRequest,
 	ISoapSyncResponse
 } from '../network/ISoap';
-import { ISyncData } from '../idb/IShellIdbSchema';
+import { IStoredSessionData, ISyncData } from '../idb/IShellIdbSchema';
 import { IFiberChannelService } from '../fc/IFiberChannelService';
 import { IFCSink } from '../fc/IFiberChannel';
 import { IOfflineService } from '../offline/IOfflineService';
 import { IIdbInternalService } from '../idb/IIdbInternalService';
 
-type ParserItemContainer = { id: string; parser: ISyncItemParser<unknown> };
-type ParserFolderContainer = { id: string; parser: ISyncFolderParser<unknown> };
+type ParserItemContainer = { id: string; parser: ISyncItemParser<any> };
+type ParserFolderContainer = { id: string; parser: ISyncFolderParser<any> };
 
 export class SyncService implements ISyncService {
 	public isSyncing = new BehaviorSubject<boolean>(false);
@@ -52,7 +52,7 @@ export class SyncService implements ISyncService {
 		// Wait for session and all apps loaded to load the Sync Data
 		zip(
 			_sessionSrvc.session
-				.pipe(filter((session) => typeof session !== 'undefined'))
+				.pipe<IStoredSessionData|undefined>(filter((session) => typeof session !== 'undefined'))
 				.pipe(first()),
 			_fcSrvc.getInternalFC()
 				.pipe(filter(({ event }) => event === 'app:all-loaded'))
@@ -71,7 +71,7 @@ export class SyncService implements ISyncService {
 			});
 		// Detect when the client return online, with the latest sync data
 		offlineSrvc.online
-			.pipe(filter((o) => o))
+			.pipe<boolean>(filter((o) => o))
 			.pipe(withLatestFrom(this._syncData))
 			.subscribe(([online, syncData]) => {
 				this._syncAllFolders(syncData)
@@ -116,7 +116,7 @@ export class SyncService implements ISyncService {
 		}
 		this.isSyncing.next(true);
 		// Delta sync for each synced folders
-		const resp = await this._networkSrvc.sendSOAPRequest<ISoapSyncRequest, ISoapSyncResponse<unknown, ISoapSyncDeletedArray>>(
+		const resp = await this._networkSrvc.sendSOAPRequest<ISoapSyncRequest, ISoapSyncResponse<{}, ISoapSyncDeletedArray>>(
 			'Sync',
 			{
 				token: syncData.token
@@ -162,7 +162,10 @@ export class SyncService implements ISyncService {
 		this.isSyncing.next(true);
 		if (!find(syncData.folders, (i) => i === folderId)) {
 			// First sync for the requested folder, if needed
-			const batchResponse = await this._networkSrvc.sendSOAPRequest<IBatchRequest<'SyncRequest', ISoapSyncRequest>, IBatchResponse<'SyncResponse', ISoapSyncResponse<unknown, void>>>(
+			const batchResponse = await this._networkSrvc.sendSOAPRequest<
+				IBatchRequest<'SyncRequest', ISoapSyncRequest>,
+				IBatchResponse<'SyncResponse', ISoapSyncResponse<Array<{[k: string]: any}>, void>>
+				>(
 				'Batch',
 				{
 					onerror: 'continue',
@@ -207,7 +210,7 @@ export class SyncService implements ISyncService {
 		this._folderRequested.next(folderId);
 	}
 
-	public registerSyncItemParser(tagName: string, parser: ISyncItemParser<unknown>): string {
+	public registerSyncItemParser(tagName: string, parser: ISyncItemParser<any>): string {
 		const parserId = `${++this._parserId}`;
 		if (!this._syncItemParsers[tagName]) {
 			this._syncItemParsers[tagName] = [];
@@ -216,7 +219,7 @@ export class SyncService implements ISyncService {
 		return parserId;
 	}
 
-	public registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<unknown>): string {
+	public registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<any>): string {
 		const parserId = `${++this._parserId}`;
 		if (!this._syncFolderParsers[tagName]) {
 			this._syncFolderParsers[tagName] = [];

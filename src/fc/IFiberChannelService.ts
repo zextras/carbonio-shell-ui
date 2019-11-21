@@ -13,11 +13,11 @@ import { Observable } from 'rxjs';
 import { IFCEvent, IFCSink } from './IFiberChannel';
 
 export interface IFiberChannelService {
-	getFiberChannelForExtension(name: string): Observable<IFCEvent<unknown>>;
+	getFiberChannelForExtension(name: string): Observable<IFCEvent<any>>;
 
 	getFiberChannelSinkForExtension(name: string, version: string): IFCSink;
 
-	getInternalFC(): Observable<IFCEvent<unknown>>;
+	getInternalFC(): Observable<IFCEvent<any>>;
 
 	getInternalFCSink(): IFCSink;
 }

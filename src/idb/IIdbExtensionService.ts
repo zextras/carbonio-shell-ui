@@ -10,7 +10,8 @@
  */
 
 import { IIdbService } from './IIdbService';
+import { DBSchema } from 'idb';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface IIdbExtensionService extends IIdbService<unknown> {
+export interface IIdbExtensionService<T extends DBSchema> extends IIdbService<T> {
 }

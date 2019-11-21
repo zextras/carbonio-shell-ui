@@ -29,7 +29,7 @@ import { INetworkService, INotificationParser, ISoapSessionData } from './INetwo
 import { sortBy, reduce, map, forOwn, filter } from 'lodash';
 import { IFCSink } from '../fc/IFiberChannel';
 
-type ParserContainer = {id: string; parser: INotificationParser<unknown, unknown>};
+type ParserContainer = {id: string; parser: INotificationParser<any, any>};
 
 export default class NetworkService implements INetworkService {
 
@@ -56,7 +56,7 @@ export default class NetworkService implements INetworkService {
 		this._notifySeq = -1;
 	}
 
-	public registerNotificationParser(tagName: string, parser: INotificationParser<unknown, unknown>): string {
+	public registerNotificationParser(tagName: string, parser: INotificationParser<any, any>): string {
 		const parserId = `${++this._parserId}`;
 		if (!this._modParsers[tagName]) {
 			this._modParsers[tagName] = [];
@@ -172,7 +172,7 @@ export default class NetworkService implements INetworkService {
 					map(this._modParsers[tag], (p) => {
 						map(mods, (m) => {
 							const ev = p.parser('created', m);
-							if (ev) this._fcSink(ev);
+							if (ev) this._fcSink<any>(ev);
 						});
 					});
 				}
@@ -184,7 +184,7 @@ export default class NetworkService implements INetworkService {
 					map(this._modParsers[tag], (p) => {
 						map(mods, (m) => {
 							const ev = p.parser('modified', m);
-							if (ev) this._fcSink(ev);
+							if (ev) this._fcSink<any>(ev);
 						});
 					});
 				}
@@ -193,7 +193,7 @@ export default class NetworkService implements INetworkService {
 		if (deleted) {
 			map(
 				deleted.id.split(','),
-				(id) => this._fcSink('notification:item-deleted', id)
+				(id) => this._fcSink<string>('notification:item-deleted', id)
 			);
 		}
 	}

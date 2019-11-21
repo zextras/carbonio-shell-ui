@@ -11,9 +11,9 @@
 
 import { DBSchema, IDBPDatabase, IDBPTransaction } from 'idb';
 
-export interface IIdbService<T extends DBSchema | unknown> {
+export interface IIdbService<T extends DBSchema> {
 	setUpgradeFcn(schemaVersion: number, fcn: IUpgradeFcn<T>): void;
 	openDb(): Promise<IDBPDatabase<T>>;
 }
 
-export type IUpgradeFcn<T extends DBSchema | unknown> = (database: IDBPDatabase<T>, oldVersion: number, newVersion: (number | null), transaction: IDBPTransaction<T>) => void;
+export type IUpgradeFcn<T extends DBSchema> = (database: IDBPDatabase<T>, oldVersion: number, newVersion: (number | null), transaction: IDBPTransaction<T>) => void;

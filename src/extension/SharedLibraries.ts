@@ -39,7 +39,7 @@ export interface ISharedLibrariesAppsMap {
   'rxjs/operators': {};
   '@zextras/zapp-shell/context': ISharedZxContexts;
   '@zextras/zapp-shell/fc': ISharedFiberChannelService;
-  '@zextras/zapp-shell/idb': IIdbExtensionService;
+  '@zextras/zapp-shell/idb': IIdbExtensionService<any>;
   '@zextras/zapp-shell/network': ISharedZxNetwork;
   '@zextras/zapp-shell/router': ISharedZxRoute;
   '@zextras/zapp-shell/service': ISharesZxServices;
@@ -57,18 +57,18 @@ interface ISharedZxContexts {
 }
 
 interface ISharedFiberChannelService {
-  fc: Observable<IFCEvent<unknown>>;
+  fc: Observable<IFCEvent<any>>;
   fcSink: IFCSink;
 }
 
 interface ISharedZxNetwork {
   sendSOAPRequest<REQ, RESP extends ISoapResponseContent>(command: string, data: REQ, urn?: string | JsnsUrn): Promise<RESP>;
-  registerNotificationParser(tagName: string, parser: INotificationParser<unknown, unknown>): void;
+  registerNotificationParser(tagName: string, parser: INotificationParser<any, any>): void;
 }
 
 interface ISharedZxSync {
-  registerSyncItemParser(tagName: string, parser: ISyncItemParser<unknown>): void;
-  registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<unknown>): void;
+  registerSyncItemParser(tagName: string, parser: ISyncItemParser<any>): void;
+  registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<any>): void;
   syncFolderById(folderId: string): void;
 }
 

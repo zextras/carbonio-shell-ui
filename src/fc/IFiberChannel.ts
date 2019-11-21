@@ -9,16 +9,16 @@
  * *** END LICENSE BLOCK *****
  */
 
-export interface IFCPartialEvent<T extends {} | string | unknown> {
+export interface IFCPartialEvent<T extends {} | string> {
   to?: string;
   event: string;
   data: T;
   internalOnly?: boolean;
 }
 
-export interface IFCEvent<T extends {} | string | unknown> extends IFCPartialEvent<T> {
+export interface IFCEvent<T extends {} | string> extends IFCPartialEvent<T> {
   from: string;
   version: string;
 }
 
-export type IFCSink = <T extends {} | string | unknown>(event: string | IFCPartialEvent<T>, data?: T) => void;
+export type IFCSink = <T extends {} | string>(event: string | IFCPartialEvent<T>, data?: T) => void;

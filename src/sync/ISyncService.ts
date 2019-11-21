@@ -15,15 +15,15 @@ export interface ISyncService {
 	isSyncing: BehaviorSubject<boolean>;
 
 	syncFolderById(folderId: string): void;
-	registerSyncItemParser(tagName: string, parser: ISyncItemParser<unknown>): string;
-	registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<unknown>): string;
+	registerSyncItemParser(tagName: string, parser: ISyncItemParser<any>): string;
+	registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<any>): string;
 	unregisterSyncParserById(id: string): void;
 }
 
-export interface ISyncItemParser<T extends Array<{}> | unknown> {
-	(mod: T | undefined): Promise<void>;
+export interface ISyncItemParser<T extends {}> {
+	(mod: Array<T>): Promise<void>;
 }
 
-export interface ISyncFolderParser<T extends {} | unknown> {
-	(mod: T | undefined): Promise<void>;
+export interface ISyncFolderParser<T extends {}> {
+	(mod: Array<T>): Promise<void>;
 }

@@ -18,7 +18,7 @@ import { Observable } from 'rxjs';
 import { IFCEvent } from './IFiberChannel';
 
 const context: Context<IFiberChannelContext> = createContext<IFiberChannelContext>({
-  internalFC: new Observable<IFCEvent<unknown>>(),
+  internalFC: new Observable<IFCEvent<any>>(),
   internalFCSink: (ev) => undefined,
   getFiberChannelForExtension: (name) => { throw new Error('FiberChannelContext not initialized'); },
   getFiberChannelSinkForExtension: (name, version) => { throw new Error('FiberChannelContext not initialized'); }

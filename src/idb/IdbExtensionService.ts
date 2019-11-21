@@ -13,16 +13,16 @@ import { IIdbExtensionService } from './IIdbExtensionService';
 import { IUpgradeFcn } from './IIdbService';
 import { IDBPDatabase, openDB } from 'idb';
 
-export class IdbExtensionService implements IIdbExtensionService {
+export class IdbExtensionService implements IIdbExtensionService<any> {
 
-	private _upgradeFcn?: IUpgradeFcn<unknown>;
+	private _upgradeFcn?: IUpgradeFcn<any>;
 	private _schemaVersion?: number;
 
 	constructor(
 		private _pkName: string
 	) {}
 
-	public openDb = (): Promise<IDBPDatabase<unknown>> => {
+	public openDb = (): Promise<IDBPDatabase<any>> => {
 		return new Promise((resolve, reject) => {
 			if (!this._upgradeFcn || !this._schemaVersion) {
 				reject(new Error(`DB Schema not initialized for ${this._pkName}`));
@@ -40,7 +40,7 @@ export class IdbExtensionService implements IIdbExtensionService {
 		});
 	};
 
-	public setUpgradeFcn = (schemaVersion: number, fcn: IUpgradeFcn<unknown>): void => {
+	public setUpgradeFcn = (schemaVersion: number, fcn: IUpgradeFcn<any>): void => {
 		this._upgradeFcn = fcn;
 		this._schemaVersion = schemaVersion;
 	}

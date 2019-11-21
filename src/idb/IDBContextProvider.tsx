@@ -25,7 +25,7 @@ const IdbContextProvider: FC<IIdbContextProviderProps> = ({ idbService, children
 	return (
 		<IdbContext.Provider
 			value={{
-				createIdbService: (n): IIdbExtensionService => idbService.createIdbService(n),
+				createIdbService: (n): IIdbExtensionService<any> => idbService.createIdbService(n),
 				openDb: (): Promise<IDBPDatabase<IShellIdbSchema>> => idbService.openDb()
 			}}
 		>

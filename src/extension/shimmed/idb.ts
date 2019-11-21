@@ -12,5 +12,5 @@
 import { DBSchema, IDBPDatabase } from 'idb';
 import { IUpgradeFcn } from '../../idb/IIdbService';
 
-export declare function setUpgradeFcn<T extends DBSchema | unknown>(schemaVersion: number, fcn: IUpgradeFcn<T>): void;
-export declare function openDb<T extends DBSchema | unknown>(): Promise<IDBPDatabase<T>>;
+export declare function setUpgradeFcn<T extends DBSchema>(schemaVersion: number, fcn: IUpgradeFcn<T>): void;
+export declare function openDb<T extends DBSchema>(): Promise<IDBPDatabase<T>>;

@@ -25,5 +25,5 @@ export interface ISyncItemParser<T extends {}> {
 }
 
 export interface ISyncFolderParser<T extends {}> {
-	(mod: Array<T>): Promise<void>;
+	(folderId: string, mod: Array<T>): Promise<void>;
 }

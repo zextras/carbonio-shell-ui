@@ -173,7 +173,7 @@ export type ISoapSyncResponse<T extends {}, DEL extends ISoapSyncDeletedMap | IS
 	[k: string]: Array<T>;
 };
 
-export type IFolderView = 'contact';
+export type IFolderView = 'search folder'|'tag'|'conversation'|'message'|'contact'|'document'|'appointment'|'virtual conversation'|'remote folder'|'wiki'|'task'|'chat';
 
 export type ISoapSyncFolderObj<T extends {}> = {
 	absFolderPath: string;
@@ -204,3 +204,66 @@ export type ISoapSyncFolderObj<T extends {}> = {
 } & {
 	[k: string]: T;
 };
+
+export type ISoapFolderModifiedNotificationObj = {
+	absFolderPath: string;
+	deletable: boolean;
+	id: string;
+	/** Present if the name is changed */ name?: string;
+	/** Present if the parent is changed */ l?: string;
+	/** Present if the parent is changed */ luuid?: string;
+	uuid: string;
+};
+
+export type ISoapFolderCreatedNotificationObj = ISoapFolderModifiedNotificationObj & {
+	// absFolderPath: string;
+	activesyncdisabled: boolean;
+	// deletable: boolean;
+	i4ms: number;
+	i4next: number;
+	// id: string;
+	l: string;
+	luuid: string;
+	ms: number;
+	n: number;
+	name: string;
+	rev: number;
+	s: number;
+	uuid: string;
+	view: IFolderView;
+	webOfflineSyncDays: string;
+};
+
+export type ISoapFolderObj = {
+	absFolderPath: string;
+	activesyncdisabled: boolean;
+	deletable: boolean;
+	folder?: Array<ISoapFolderObj>;
+	i4ms: number;
+	i4next: number;
+	id: string;
+	/** Parent ID */ l: string;
+	luuid: string;
+	ms: number;
+	/** Count of non-folder items */ n: number;
+	name: string;
+	rev: number;
+	/** Size */ s: number;
+	/** Count of unread messages */ u?: number;
+	uuid: string;
+	view: IFolderView;
+	webOfflineSyncDays: number;
+}
+
+export interface IGetFolderReq {
+	depth?: number;
+	view?: IFolderView;
+	folder: {
+		l?: string;
+		path?: string;
+	};
+}
+
+export interface IGetFolderRes extends ISoapResponseContent {
+	folder: Array<ISoapFolderObj>;
+}

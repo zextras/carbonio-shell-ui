@@ -10,6 +10,7 @@
  */
 
 import { DBSchema } from 'idb';
+import { IFolderSchm } from '../sync/IFolderSchm';
 
 export interface IShellIdbSchema extends DBSchema {
 	sessions: {
@@ -51,4 +52,26 @@ export interface IStoredAccountData {
 	id: string;
 	u: string;
 	p: string;
+}
+
+export interface IIDBFolderSchm extends DBSchema {
+	folders: {
+		key: string;
+		value: IFolderSchm;
+		indexes: {
+			id: string;
+			parent: string;
+		};
+	};
+}
+
+export interface IIDBFolderSchmV1 extends IIDBFolderSchm {
+	folders: {
+		key: string;
+		value: IFolderSchm;
+		indexes: {
+			id: string;
+			parent: string;
+		};
+	};
 }

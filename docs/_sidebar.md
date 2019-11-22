@@ -3,6 +3,7 @@
   * [Design Principles](/dev/design_principles)
   * [Documentation](/dev/documentation)
   * [Extensions](/dev/extensions)
+  * [Notes](/dev/notes)
   * Network
     * [SOAP](/dev/network/soap)
   * [Notifications](/dev/notifications/notifications)

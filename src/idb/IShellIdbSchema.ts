@@ -11,6 +11,7 @@
 
 import { DBSchema } from 'idb';
 import { IFolderSchm } from '../sync/IFolderSchm';
+import { ISyncOperationSchm } from '../sync/ISyncService';
 
 export interface IShellIdbSchema extends DBSchema {
 	sessions: {
@@ -27,6 +28,7 @@ export interface IShellIdbSchema extends DBSchema {
 			sessionId: string;
 		};
 	};
+	'sync-operations': ISyncOperationSchm;
 	auth: {
 		key: string;
 		value: IStoredAccountData;

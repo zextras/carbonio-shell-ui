@@ -15,7 +15,7 @@ import { ComponentClass, Context, FunctionComponent, ReactElement } from 'react'
 import { Observable } from 'rxjs';
 
 import { INotificationParser } from '../network/INetworkService';
-import { ISoapResponseContent, JsnsUrn } from '../network/ISoap';
+import { ISoapFolderObj, ISoapResponseContent, JsnsUrn } from '../network/ISoap';
 import { IIdbExtensionService } from '../idb/IIdbExtensionService';
 import { IOfflineContext } from '../offline/IOfflineContext';
 import { IScreenSizeContext } from '../screenSize/IScreenSizeContext';
@@ -24,6 +24,9 @@ import { IFCEvent, IFCSink } from '../fc/IFiberChannel';
 import { ISyncItemParser, ISyncFolderParser } from '../sync/ISyncService';
 import { ISessionService } from '../session/ISessionService';
 import { ISyncContext } from '../sync/ISyncContext';
+import { IFolderSchm } from '../sync/IFolderSchm';
+import { IIDBFolderSchm } from '../idb/IShellIdbSchema';
+import { IDBPDatabase } from 'idb';
 
 export type RegisterRouteFn = <T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T) => void;
 export type AddMainMenuItemFn = (icon: ReactElement, label: string, to: string) => void;
@@ -44,6 +47,7 @@ export interface ISharedLibrariesAppsMap {
   '@zextras/zapp-shell/router': ISharedZxRoute;
   '@zextras/zapp-shell/service': ISharesZxServices;
   '@zextras/zapp-shell/sync': ISharedZxSync;
+  '@zextras/zapp-shell/utils': ISharedShellUtils;
 }
 
 export interface ISharedLibrariesThemesMap {
@@ -80,4 +84,9 @@ interface ISharedZxRoute {
 interface ISharesZxServices {
   offlineSrvc: IOfflineService;
   sessionSrvc: ISessionService;
+}
+
+interface ISharedShellUtils {
+  normalizeFolder<T extends IFolderSchm>(version: number, f: ISoapFolderObj): Array<T>;
+  createFolderIdb<T extends IIDBFolderSchm>(version: number, db: IDBPDatabase<T>): void;
 }

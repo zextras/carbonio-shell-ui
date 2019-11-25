@@ -201,7 +201,7 @@ export default class NetworkService implements INetworkService {
 		if (deleted) {
 			map(
 				deleted.id.split(','),
-				(id) => this._fcSink<string>('notification:item-deleted', id)
+				(id) => this._fcSink<string>('notification:item:deleted', id)
 			);
 		}
 	}

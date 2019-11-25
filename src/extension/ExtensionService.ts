@@ -39,6 +39,7 @@ import * as React from 'react';
 import * as RxJS from 'rxjs';
 import * as RxJSOperators from 'rxjs/operators';
 import * as Clsx from 'clsx';
+import * as shellUtils from '../utils/ShellUtils';
 
 interface IChildWindow extends Window {
 	__ZAPP_SHARED_LIBRARIES__: ISharedLibrariesAppsMap;
@@ -199,7 +200,8 @@ export default class ExtensionService {
 						registerSyncItemParser: (tagName: string, parser: ISyncItemParser<any>): void => revertables.registerSyncItemParser(tagName, parser),
 						registerSyncFolderParser: (tagName: string, parser: ISyncFolderParser<any>): void => revertables.registerSyncFolderParser(tagName, parser),
 						syncFolderById: (folderId: string): void => this._syncSrvc.syncFolderById(folderId)
-					}
+					},
+					'@zextras/zapp-shell/utils': shellUtils
 				};
 				(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve;
 				(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (extModule: ZAppModuleFunction): void => {

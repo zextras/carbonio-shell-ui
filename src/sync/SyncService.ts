@@ -193,7 +193,7 @@ export class SyncService implements ISyncService {
 							await Promise.all(
 								map(
 									v,
-									(p) => p.parser(response.folder[0][k])
+									(p) => p.parser(folderId, response.folder[0][k])
 								)
 							);
 						}
@@ -235,7 +235,7 @@ export class SyncService implements ISyncService {
 		);
 		forOwn(
 			this._syncFolderParsers,
-			(v, k) => this._syncFolderParsers[k] = loFilter(v, (o: ParserItemContainer) => o.id !== id)
+			(v, k) => this._syncFolderParsers[k] = loFilter(v, (o: ParserFolderContainer) => o.id !== id)
 		);
 	}
 }

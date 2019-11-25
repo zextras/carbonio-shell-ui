@@ -7,7 +7,7 @@ The whole Zextras ecosystem is composed by many packages, each one has a specifi
 * `@zextras/zapp-notifications`
 * `@zextras/zapp-analytics`
 * `@zextras/zapp-error-reporter`
-* `@zextras/zapp-mail`
+* `@zextras/zapp-mails`
 * `@zextras/zapp-user-settings`
 * `@zextras/zapp-contacts`
 * `@zextras/zapp-calendar`

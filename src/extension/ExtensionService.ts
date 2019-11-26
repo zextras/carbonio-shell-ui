@@ -11,7 +11,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { map, forIn, filter } from 'lodash';
+import { map, forIn, filter, filter as loFilter } from 'lodash';
 import { ComponentClass, FunctionComponent, ReactElement } from 'react';
 
 import { IGetInfoRequest, IGetInfoResponse, ISoapResponseContent } from '../network/ISoap';
@@ -25,7 +25,7 @@ import { IIdbInternalService } from '../idb/IIdbInternalService';
 import { IOfflineService } from '../offline/IOfflineService';
 import { IFiberChannelService } from '../fc/IFiberChannelService';
 import { ISessionService } from '../session/ISessionService';
-import { ISyncItemParser, ISyncFolderParser, ISyncService } from '../sync/ISyncService';
+import { ISyncItemParser, ISyncFolderParser, ISyncService, ISyncOperation, ISyncOpRequest } from '../sync/ISyncService';
 
 import OfflineCtxt from '../offline/OfflineContext';
 import ScreenSizeCtxt from '../screenSize/ScreenSizeContext';
@@ -40,6 +40,7 @@ import * as RxJS from 'rxjs';
 import * as RxJSOperators from 'rxjs/operators';
 import * as Clsx from 'clsx';
 import * as shellUtils from '../utils/ShellUtils';
+import { BehaviorSubject } from 'rxjs';
 
 interface IChildWindow extends Window {
 	__ZAPP_SHARED_LIBRARIES__: ISharedLibrariesAppsMap;
@@ -165,6 +166,27 @@ export default class ExtensionService {
 					this._networkSrvc,
 					this._syncSrvc
 				);
+				const syncOperations: BehaviorSubject<Array<ISyncOperation<unknown, ISyncOpRequest<unknown>>>> = new BehaviorSubject(
+					map(
+						loFilter(
+							this._syncSrvc.syncOperations.getValue(),
+							(op) => op.app.package === appPkg.package
+						),
+						(op) => op.operation
+					)
+				);
+				this._syncSrvc.syncOperations
+					.subscribe((ops) => {
+						syncOperations.next(
+							map(
+								loFilter(
+									ops,
+									(op) => op.app.package === appPkg.package
+								),
+								(op) => op.operation
+							)
+						);
+					});
 				(iframe.contentWindow as IChildWindow).__ZAPP_SHARED_LIBRARIES__ = {
 					'clsx': Clsx,
 					'react': React,
@@ -199,7 +221,8 @@ export default class ExtensionService {
 					'@zextras/zapp-shell/sync': {
 						registerSyncItemParser: (tagName: string, parser: ISyncItemParser<any>): void => revertables.registerSyncItemParser(tagName, parser),
 						registerSyncFolderParser: (tagName: string, parser: ISyncFolderParser<any>): void => revertables.registerSyncFolderParser(tagName, parser),
-						syncFolderById: (folderId: string): void => this._syncSrvc.syncFolderById(folderId)
+						syncFolderById: (folderId: string): void => this._syncSrvc.syncFolderById(folderId),
+						syncOperations
 					},
 					'@zextras/zapp-shell/utils': shellUtils
 				};

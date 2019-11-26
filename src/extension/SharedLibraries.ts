@@ -12,7 +12,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { ComponentClass, Context, FunctionComponent, ReactElement } from 'react';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { INotificationParser } from '../network/INetworkService';
 import { ISoapFolderObj, ISoapResponseContent, JsnsUrn } from '../network/ISoap';
@@ -21,7 +21,7 @@ import { IOfflineContext } from '../offline/IOfflineContext';
 import { IScreenSizeContext } from '../screenSize/IScreenSizeContext';
 import { IOfflineService } from '../offline/IOfflineService';
 import { IFCEvent, IFCSink } from '../fc/IFiberChannel';
-import { ISyncItemParser, ISyncFolderParser } from '../sync/ISyncService';
+import { ISyncItemParser, ISyncFolderParser, ISyncOperation, ISyncOpRequest } from '../sync/ISyncService';
 import { ISessionService } from '../session/ISessionService';
 import { ISyncContext } from '../sync/ISyncContext';
 import { IFolderSchm } from '../sync/IFolderSchm';
@@ -74,6 +74,7 @@ interface ISharedZxSync {
   registerSyncItemParser(tagName: string, parser: ISyncItemParser<any>): void;
   registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<any>): void;
   syncFolderById(folderId: string): void;
+  syncOperations: BehaviorSubject<Array<ISyncOperation<any, ISyncOpRequest<any>>>>;
 }
 
 interface ISharedZxRoute {

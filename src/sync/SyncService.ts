@@ -10,9 +10,16 @@
  */
 
 import { find, forOwn, filter as loFilter, map } from 'lodash';
-import { BehaviorSubject, Subject, zip } from 'rxjs';
-import { buffer, distinct, filter, first, withLatestFrom } from 'rxjs/operators';
-import { ISyncItemParser, ISyncFolderParser, ISyncService } from './ISyncService';
+import { BehaviorSubject, Subject, zip, combineLatest } from 'rxjs';
+import { buffer, filter, first, withLatestFrom } from 'rxjs/operators';
+import {
+	ISyncItemParser,
+	ISyncFolderParser,
+	ISyncService,
+	ISyncOperation,
+	ISyncOpErrorEv,
+	ISyncOpCompletedEv, ISyncOpSoapRequest, ISyncOpRequest, ISyncOpQueue
+} from './ISyncService';
 import { INetworkService } from '../network/INetworkService';
 import { ISessionService } from '../session/ISessionService';
 import {
@@ -24,7 +31,7 @@ import {
 } from '../network/ISoap';
 import { IStoredSessionData, ISyncData } from '../idb/IShellIdbSchema';
 import { IFiberChannelService } from '../fc/IFiberChannelService';
-import { IFCSink } from '../fc/IFiberChannel';
+import { IFCEvent, IFCSink } from '../fc/IFiberChannel';
 import { IOfflineService } from '../offline/IOfflineService';
 import { IIdbInternalService } from '../idb/IIdbInternalService';
 
@@ -32,6 +39,9 @@ type ParserItemContainer = { id: string; parser: ISyncItemParser<any> };
 type ParserFolderContainer = { id: string; parser: ISyncFolderParser<any> };
 
 export class SyncService implements ISyncService {
+	public syncOperations = new BehaviorSubject<ISyncOpQueue>([]);
+
+	private _isSyncing = new Subject<boolean>();
 	public isSyncing = new BehaviorSubject<boolean>(false);
 
 	private _syncData: Subject<ISyncData> = new Subject<ISyncData>();
@@ -49,6 +59,14 @@ export class SyncService implements ISyncService {
 		offlineSrvc: IOfflineService
 	) {
 		this._fcSink = _fcSrvc.getInternalFCSink();
+
+		combineLatest([
+			this._isSyncing,
+			this.syncOperations
+		]).subscribe(([syncing, ops]) => this.isSyncing.next(syncing || ops.length > 0));
+
+		this._updateOperationQueue().then(() => undefined);
+
 		// Wait for session and all apps loaded to load the Sync Data
 		zip(
 			_sessionSrvc.session
@@ -66,8 +84,8 @@ export class SyncService implements ISyncService {
 		this._syncData
 			.pipe(first())
 			.subscribe((syncData) => {
-					this._syncAllFolders(syncData)
-						.then(() => undefined);
+				this._syncAllFolders(syncData)
+					.then(() => undefined);
 			});
 		// Detect when the client return online, with the latest sync data
 		offlineSrvc.online
@@ -92,7 +110,41 @@ export class SyncService implements ISyncService {
 		this._folderRequested
 			.pipe(withLatestFrom(this._syncData))
 			.subscribe(([folderId, syncData]) => {
-				this._syncFolderById(folderId, syncData).then(() => undefined)
+				this._syncFolderById(folderId, syncData)
+					.then(() => undefined)
+			});
+
+		// Consume the sync operations as the apps are loaded
+		_fcSrvc.getInternalFC()
+			.pipe(filter(({ event }) => event === 'app:all-loaded'))
+			.subscribe(() => {
+				console.log('All loaded, consume');
+				this._consumeSyncOperations()
+					.then(() => undefined);
+			});
+
+		// Consume the sync operations when the client goes online
+		offlineSrvc.online
+			.pipe<boolean>(filter((o) => o))
+			.subscribe(() => {
+				console.log('online, consume');
+				this._consumeSyncOperations()
+					.then(() => undefined);
+			});
+
+		// Handle the sync operation once arrive
+		_fcSrvc.getInternalFC()
+			.pipe<IFCEvent<ISyncOperation<unknown, ISyncOpRequest<unknown>>>>(filter(({ event }) => event === 'sync:operation:push'))
+			.subscribe((ev) => {
+				this._handleIncomingSyncOperation(ev)
+					.then(() => undefined);
+			});
+
+		_fcSrvc.getInternalFC()
+			.pipe<IFCEvent<string>>(filter(({ event }) => event === 'sync:operation:cancel'))
+			.subscribe((ev) => {
+				this._handleCancelSyncOperation(ev)
+					.then(() => undefined);
 			});
 	}
 
@@ -114,7 +166,7 @@ export class SyncService implements ISyncService {
 			this._fcSink('sync:completed');
 			return;
 		}
-		this.isSyncing.next(true);
+		this._isSyncing.next(true);
 		// Delta sync for each synced folders
 		const resp = await this._networkSrvc.sendSOAPRequest<ISoapSyncRequest, ISoapSyncResponse<{}, ISoapSyncDeletedArray>>(
 			'Sync',
@@ -154,12 +206,12 @@ export class SyncService implements ISyncService {
 			)
 		);
 		await Promise.all(promises);
-		this.isSyncing.next(false);
+		this._isSyncing.next(false);
 		this._fcSink('sync:completed');
 	}
 
 	private async _syncFolderById(folderId: string, syncData: ISyncData): Promise<void> {
-		this.isSyncing.next(true);
+		this._isSyncing.next(true);
 		if (!find(syncData.folders, (i) => i === folderId)) {
 			// First sync for the requested folder, if needed
 			const batchResponse = await this._networkSrvc.sendSOAPRequest<
@@ -203,7 +255,7 @@ export class SyncService implements ISyncService {
 			await Promise.all(promises);
 			this._fcSink<string>('sync:completed:folder', folderId);
 		}
-		this.isSyncing.next(false);
+		this._isSyncing.next(false);
 	}
 
 	public syncFolderById(folderId: string): void {
@@ -237,5 +289,99 @@ export class SyncService implements ISyncService {
 			this._syncFolderParsers,
 			(v, k) => this._syncFolderParsers[k] = loFilter(v, (o: ParserFolderContainer) => o.id !== id)
 		);
+	}
+
+	private async _handleIncomingSyncOperation(ev: IFCEvent<ISyncOperation<unknown, ISyncOpRequest<unknown>>>): Promise<void> {
+		const db = await this._idbSrvc.openDb();
+		await db.put<'sync-operations'>('sync-operations', {
+			app: {
+				package: ev.from,
+				version: ev.version
+			},
+			operation: ev.data,
+		});
+		await this._updateOperationQueue();
+		await this._consumeSyncOperations();
+	}
+
+	private async _handleCancelSyncOperation(ev: IFCEvent<string>): Promise<void> {
+		const db = await this._idbSrvc.openDb();
+		await db.delete<'sync-operations'>('sync-operations', ev.data);
+		await this._updateOperationQueue();
+	}
+
+	private async _consumeSyncOperations(): Promise<void> {
+		const db = await this._idbSrvc.openDb();
+		const operationsKeys = await db.getAllKeys('sync-operations');
+		await Promise.all(
+			map(
+				operationsKeys,
+				(opKey) => this._tryToConsumeOperation(opKey)
+			)
+		);
+		await this._updateOperationQueue();
+	}
+
+	private async _tryToConsumeOperation(opKey: string): Promise<void> {
+		const db = await this._idbSrvc.openDb();
+		const op = await db.get<'sync-operations'>('sync-operations', opKey);
+		if (op) {
+			switch (op.operation.opType) {
+				case 'soap': {
+					try {
+						const result = await this._executeSoapOperation(op.operation);
+						await db.delete<'sync-operations'>('sync-operations', opKey);
+						this._fcSink<ISyncOpCompletedEv<unknown>>({
+							event: 'sync:operation:completed',
+							to: op.app.package,
+							data: {
+								operation: op.operation,
+								result: result
+							}
+						});
+					} catch (e) {
+						this._fcSink<ISyncOpErrorEv>({
+							event: 'sync:operation:error',
+							to: op.app.package,
+							data: {
+								operation: op.operation,
+								error: e,
+							}
+						});
+					}
+					break;
+				}
+				default:
+					throw new Error(`Operation type '${op.operation.opType}' cannot be handled.`);
+			}
+		}
+	}
+
+	private async _executeSoapOperation(op: ISyncOperation<unknown, ISyncOpRequest<unknown>>): Promise<any> {
+		const soapReq = op.request as ISyncOpSoapRequest<unknown>;
+		return this._networkSrvc.sendSOAPRequest(
+			soapReq.command,
+			soapReq.data,
+			soapReq.urn
+		);
+	}
+
+	private async _updateOperationQueue(): Promise<void> {
+		const db = await this._idbSrvc.openDb();
+		let cursor = await db.transaction('sync-operations').store.openCursor();
+		const consumedOps: ISyncOpQueue = [];
+		while (cursor) {
+			consumedOps.push({
+				app: {
+					...cursor.value.app
+				},
+				operation: {
+					...cursor.value.operation,
+					id: cursor.key as unknown as number
+				}
+			});
+			cursor = await cursor.continue();
+		}
+		this.syncOperations.next(consumedOps);
 	}
 }

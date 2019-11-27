@@ -9,8 +9,14 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { ISyncFolderParser, ISyncItemParser } from '../../sync/ISyncService';
+import {
+	ISyncFolderParser,
+	ISyncItemParser,
+	ISyncOpQueue
+} from '../../sync/ISyncService';
+import { BehaviorSubject } from 'rxjs';
 
 export declare function registerSyncItemParser(tagName: string, parser: ISyncItemParser<any>): void;
 export declare function registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<any>): void;
 export declare function syncFolderById(folderId: string): void;
+export declare const syncOperations: BehaviorSubject<ISyncOpQueue>;

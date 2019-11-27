@@ -27,6 +27,11 @@ function createDb(database: IDBPDatabase<IShellIdbSchema>): void {
 		keyPath: 'sessionId'
 	});
 	syncStore.createIndex('sessionId', 'sessionId');
+	const syncOperationsStore = database.createObjectStore<'sync-operations'>('sync-operations', {
+		keyPath: 'id',
+		autoIncrement: true
+	});
+	syncOperationsStore.createIndex('app', 'app.package');
 }
 
 export function upgradeFn(database: IDBPDatabase<IShellIdbSchema>, oldVersion: number, newVersion: number | null, transaction: IDBPTransaction<IShellIdbSchema>): void {
@@ -39,5 +44,4 @@ export function upgradeFn(database: IDBPDatabase<IShellIdbSchema>, oldVersion: n
 			}
 		}
 	}
-
 }

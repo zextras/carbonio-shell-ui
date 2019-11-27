@@ -38,9 +38,9 @@ export default class RevertableActionCollection {
     forEach(this._registeredSyncParsers, (id) => this._syncService.unregisterSyncParserById(id));
   }
 
-  public registerRoute<T>(path: string, component: ComponentClass<T> | FunctionComponent<T>, defProps: T): void {
+  public registerRoute<T>(path: string, component: ComponentClass<T> | FunctionComponent<T>, defProps: T, pkgName: string): void {
     this._registeredRoutes.push(
-      this._routerService.registerRoute<T>(path, component, defProps)
+      this._routerService.registerRoute<T>(path, component, defProps, pkgName)
     );
   }
 

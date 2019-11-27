@@ -27,6 +27,8 @@ import { ISyncContext } from '../sync/ISyncContext';
 import { IFolderSchm } from '../sync/IFolderSchm';
 import { IIDBFolderSchm } from '../idb/IShellIdbSchema';
 import { IDBPDatabase } from 'idb';
+import { II18nContext } from '../i18n/II18nContext';
+import I18nService from '../i18n/I18nService';
 
 export type RegisterRouteFn = <T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T) => void;
 export type AddMainMenuItemFn = (icon: ReactElement, label: string, to: string) => void;
@@ -58,6 +60,7 @@ interface ISharedZxContexts {
   OfflineCtxt: Context<IOfflineContext>;
   ScreenSizeCtxt: Context<IScreenSizeContext>;
   SyncCtxt: Context<ISyncContext>;
+  I18nCtxt: Context<II18nContext>;
 }
 
 interface ISharedFiberChannelService {
@@ -90,4 +93,5 @@ interface ISharesZxServices {
 interface ISharedShellUtils {
   normalizeFolder<T extends IFolderSchm>(version: number, f: ISoapFolderObj): Array<T>;
   createFolderIdb<T extends IIDBFolderSchm>(version: number, db: IDBPDatabase<T>): void;
+  registerLanguage(bundle: any, lang: string): void;
 }

@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useContext, FC } from 'react';
+import React, { Suspense, useContext, FC } from 'react';
 import { render } from 'react-dom';
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import { AppBar, CssBaseline, Divider, Drawer, IconButton, Toolbar, Typography } from '@material-ui/core';
@@ -44,6 +44,9 @@ import IdbService from './idb/IdbService';
 import { SyncService } from './sync/SyncService';
 import SyncContextProvider from './sync/SyncContextProvider';
 import SyncStatusIcon from './sync/ui/SyncStatusIcon';
+import I18nService from './i18n/I18nService';
+import I18nContextProvider from './i18n/I18nContextProvider';
+import I18nContext from './i18n/I18nContext';
 
 const drawerWidth = 240;
 
@@ -113,13 +116,18 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const Shell: FC<{}> = hot(() => {
+interface IShellProps {
+  i18nService: I18nService;
+}
+
+const Shell: FC<IShellProps> = hot(({i18nService}) => {
 
   const [open, setOpen] = React.useState(false);
 
   const classes = useStyles();
   const theme = useTheme();
   const sessionCtx = useContext(SessionContext);
+  const { t } = useContext(I18nContext);
 
   if (!sessionCtx.isLoggedIn) {
     return (
@@ -139,6 +147,7 @@ const Shell: FC<{}> = hot(() => {
     <div className={classes.root}>
       <CssBaseline/>
       <Router
+        i18nSrvc={i18nService}
         contentClass={classes.content}
         toolbarClass={classes.toolbar}
       >
@@ -164,10 +173,10 @@ const Shell: FC<{}> = hot(() => {
               variant="h6"
               className={classes.title}
             >
-              Zextras
+              {t('zextras', 'Zextras')}
             </Typography>
             <SyncStatusIcon />
-            <UserMenu />
+              <UserMenu />
           </Toolbar>
         </AppBar>
         <Drawer
@@ -205,6 +214,7 @@ export function loadShell(container: HTMLElement): void {
   const screenSizeSrvc = new ScreenSizeService();
   const routerSrvc = new RouterService();
   const offlineSrvc = new OfflineService();
+  const i18nSrvc = new I18nService();
   const syncSrvc = new SyncService(
     networkSrvc,
     sessionSrvc,
@@ -219,7 +229,8 @@ export function loadShell(container: HTMLElement): void {
     idbSrvc,
     offlineSrvc,
     sessionSrvc,
-    syncSrvc
+    syncSrvc,
+    i18nSrvc
   );
   const themeSrvc = new ThemeService(networkSrvc, sessionSrvc);
   render(
@@ -231,7 +242,9 @@ export function loadShell(container: HTMLElement): void {
                 <ScreenSizeContextProvider screenSizeService={screenSizeSrvc}>
                   <SyncContextProvider syncService={syncSrvc}>
                     <ThemeContextProvider themeService={themeSrvc}>
-                      <Shell/>
+                      <I18nContextProvider i18nService={i18nSrvc} namespace={'com_zextras_zapp_shell'}>
+                        <Shell i18nService={i18nSrvc}/>
+                      </I18nContextProvider>
                     </ThemeContextProvider>
                   </SyncContextProvider>
                 </ScreenSizeContextProvider>

@@ -16,3 +16,4 @@ import { IIDBFolderSchm } from '../../idb/IShellIdbSchema';
 
 export declare function normalizeFolder<T extends IFolderSchm>(version: number, f: ISoapFolderObj): Array<T>;
 export declare function createFolderIdb<T extends IIDBFolderSchm>(version: number, db: IDBPDatabase<T>): void;
+export declare function registerLanguage(bundle: any, lang: string): void;

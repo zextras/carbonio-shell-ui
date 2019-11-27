@@ -10,6 +10,8 @@
  */
 
 import { DBSchema } from 'idb';
+import { IFolderSchm } from '../sync/IFolderSchm';
+import { ISyncOperationSchm } from '../sync/ISyncService';
 
 export interface IShellIdbSchema extends DBSchema {
 	sessions: {
@@ -26,6 +28,7 @@ export interface IShellIdbSchema extends DBSchema {
 			sessionId: string;
 		};
 	};
+	'sync-operations': ISyncOperationSchm;
 	auth: {
 		key: string;
 		value: IStoredAccountData;
@@ -51,4 +54,26 @@ export interface IStoredAccountData {
 	id: string;
 	u: string;
 	p: string;
+}
+
+export interface IIDBFolderSchm extends DBSchema {
+	folders: {
+		key: string;
+		value: IFolderSchm;
+		indexes: {
+			id: string;
+			parent: string;
+		};
+	};
+}
+
+export interface IIDBFolderSchmV1 extends IIDBFolderSchm {
+	folders: {
+		key: string;
+		value: IFolderSchm;
+		indexes: {
+			id: string;
+			parent: string;
+		};
+	};
 }

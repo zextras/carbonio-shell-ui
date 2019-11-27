@@ -1,6 +1,6 @@
 
 def nodeCmd(String cmd) {
-	sh '. load_nvm && nvm use && ' + cmd
+	sh '. load_nvm && nvm install && nvm use && ' + cmd
 }
 
 def getCommitParentsCount() {

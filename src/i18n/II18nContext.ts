@@ -9,8 +9,8 @@
  * *** END LICENSE BLOCK *****
  */
 
-declare const PACKAGE_VERSION: string;
+import { TFunction } from "i18next";
 
-declare module '*.properties';
-declare module '*.less';
-declare module '*.json';
+export interface II18nContext {
+	t: TFunction;
+}

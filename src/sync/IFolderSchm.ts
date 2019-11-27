@@ -9,8 +9,13 @@
  * *** END LICENSE BLOCK *****
  */
 
-declare const PACKAGE_VERSION: string;
+export interface IFolderSchm {}
 
-declare module '*.properties';
-declare module '*.less';
-declare module '*.json';
+export interface IFolderSchmV1 extends IFolderSchm {
+	id: string;
+	parent: string;
+	name: string;
+	unreadCount: number;
+	itemsCount: number;
+	size: number;
+}

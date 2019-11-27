@@ -12,9 +12,12 @@ import { Context } from 'react';
 import { IOfflineContext } from '../../offline/IOfflineContext';
 import { IScreenSizeContext } from '../../screenSize/IScreenSizeContext';
 import { ISyncContext } from '../../sync/ISyncContext';
+import { II18nContext } from '../../i18n/II18nContext';
 
 export declare const OfflineCtxt: Context<IOfflineContext>;
 
 export declare const ScreenSizeCtxt: Context<IScreenSizeContext>;
 
 export declare const SyncCtxt: Context<ISyncContext>;
+
+export declare const I18nCtxt: Context<II18nContext>;

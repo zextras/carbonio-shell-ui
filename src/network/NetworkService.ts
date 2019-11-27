@@ -26,10 +26,10 @@ import {
 	JsnsUrn
 } from './ISoap';
 import { INetworkService, INotificationParser, ISoapSessionData } from './INetworkService';
-import { sortBy, reduce, map, forOwn, filter } from 'lodash';
+import { sortBy, reduce, map, forOwn, filter, flattenDeep, compact } from 'lodash';
 import { IFCSink } from '../fc/IFiberChannel';
 
-type ParserContainer = {id: string; parser: INotificationParser<any, any>};
+type ParserContainer = { id: string; parser: INotificationParser<any> };
 
 export default class NetworkService implements INetworkService {
 
@@ -56,7 +56,7 @@ export default class NetworkService implements INetworkService {
 		this._notifySeq = -1;
 	}
 
-	public registerNotificationParser(tagName: string, parser: INotificationParser<any, any>): string {
+	public registerNotificationParser(tagName: string, parser: INotificationParser<any>): string {
 		const parserId = `${++this._parserId}`;
 		if (!this._modParsers[tagName]) {
 			this._modParsers[tagName] = [];
@@ -167,33 +167,41 @@ export default class NetworkService implements INetworkService {
 
 	private _handleNotification({ created, deleted, modified }: ISoapNotification): void {
 		if (created) {
-			map(created, (mods, tag) => {
-				if (this._modParsers[tag]) {
-					map(this._modParsers[tag], (p) => {
-						map(mods, (m) => {
-							const ev = p.parser('created', m);
-							if (ev) this._fcSink<any>(ev);
-						});
-					});
-				}
-			});
+			Promise.all(
+				compact(
+					flattenDeep(
+						map(created, (mods, tag) => {
+							if (this._modParsers[tag]) {
+								return map(
+									this._modParsers[tag],
+									(p) => map(mods, (m) => p.parser('created', m))
+								);
+							}
+						})
+					)
+				)
+			).then(() => undefined);
 		}
 		if (modified) {
-			map(modified, (mods, tag) => {
-				if (this._modParsers[tag]) {
-					map(this._modParsers[tag], (p) => {
-						map(mods, (m) => {
-							const ev = p.parser('modified', m);
-							if (ev) this._fcSink<any>(ev);
-						});
-					});
-				}
-			});
+			Promise.all(
+				compact(
+					flattenDeep(
+						map(modified, (mods, tag) => {
+							if (this._modParsers[tag]) {
+								return map(
+									this._modParsers[tag],
+									(p) => map(mods, (m) => p.parser('modified', m))
+								);
+							}
+						})
+					)
+				)
+			).then(() => undefined);
 		}
 		if (deleted) {
 			map(
 				deleted.id.split(','),
-				(id) => this._fcSink<string>('notification:item-deleted', id)
+				(id) => this._fcSink<string>('notification:item:deleted', id)
 			);
 		}
 	}

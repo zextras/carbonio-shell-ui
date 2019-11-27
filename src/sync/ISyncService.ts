@@ -13,6 +13,13 @@ import { BehaviorSubject } from 'rxjs';
 
 export interface ISyncService {
 	isSyncing: BehaviorSubject<boolean>;
+	syncOperations: BehaviorSubject<Array<{
+		app: {
+			package: string;
+			version: string;
+		};
+		operation: ISyncOperation<unknown, ISyncOpRequest<unknown>>;
+	}>>;
 
 	syncFolderById(folderId: string): void;
 	registerSyncItemParser(tagName: string, parser: ISyncItemParser<any>): string;
@@ -25,5 +32,55 @@ export interface ISyncItemParser<T extends {}> {
 }
 
 export interface ISyncFolderParser<T extends {}> {
-	(mod: Array<T>): Promise<void>;
+	(folderId: string, mod: Array<T>): Promise<void>;
 }
+
+export interface ISyncOperation<T, REQ extends ISyncOpRequest<any>> {
+	/** Auto increment, assinged by the system */ id?: number;
+	opType: 'soap';
+	opData: T;
+	request: REQ;
+	description: string;
+}
+
+export interface ISyncOperationSchm {
+	key: string;
+	value: {
+		id?: string;
+		app: {
+			package: string;
+			version: string;
+		};
+		operation: ISyncOperation<unknown, ISyncOpRequest<unknown>>;
+	};
+	indexes: {
+		app: string;
+	};
+}
+
+export interface ISyncOpRequest<T> {
+	data: T;
+}
+
+export interface ISyncOpSoapRequest<T> extends ISyncOpRequest<T> {
+	command: string;
+	urn: string;
+}
+
+export interface ISyncOpCompletedEv<T> {
+	operation: ISyncOperation<unknown, ISyncOpRequest<unknown>>;
+	result: T;
+}
+
+export interface ISyncOpErrorEv {
+	operation: ISyncOperation<unknown, ISyncOpRequest<unknown>>;
+	error: Error;
+}
+
+export type ISyncOpQueue = Array<{
+	app: {
+		package: string;
+		version: string;
+	};
+	operation: ISyncOperation<unknown, ISyncOpRequest<unknown>>;
+}>;

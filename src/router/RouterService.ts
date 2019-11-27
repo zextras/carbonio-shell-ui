@@ -22,13 +22,14 @@ export default class RouterService implements IRouterService {
 
   private _id = 0;
 
-  public registerRoute<T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T): string {
+  public registerRoute<T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T, pkgName: string): string {
     const id = `${++this._id}`;
     this.routes.next({
       [path]: {
         id: `${id}`,
         component,
-        defProps
+        defProps,
+        pkgName
       },
       ...this.routes.getValue()
     });

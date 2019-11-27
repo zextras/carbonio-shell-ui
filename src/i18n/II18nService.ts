@@ -9,8 +9,10 @@
  * *** END LICENSE BLOCK *****
  */
 
-declare const PACKAGE_VERSION: string;
+import { i18n as Ii18n } from 'i18next';
+import { II18nContext } from './II18nContext';
 
-declare module '*.properties';
-declare module '*.less';
-declare module '*.json';
+export interface II18nService {
+	registerLanguage: (bundle: any, lang: string, pkgName: string) => void;
+	createI18nContext: (namespace: string) => II18nContext;
+}

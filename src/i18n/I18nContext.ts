@@ -9,8 +9,12 @@
  * *** END LICENSE BLOCK *****
  */
 
-declare const PACKAGE_VERSION: string;
+import { createContext, Context } from 'react';
 
-declare module '*.properties';
-declare module '*.less';
-declare module '*.json';
+import { II18nContext } from './II18nContext';
+import { TFunction } from 'i18next';
+
+const context: Context<II18nContext> = createContext<II18nContext>({
+	t: undefined as unknown as TFunction
+});
+export default context;

@@ -24,6 +24,7 @@ import {
 	createStyles,
 	FormControl, InputLabel, Input, Button
 } from '@material-ui/core';
+import I18nContext from '../i18n/I18nContext';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -42,6 +43,8 @@ const useStyles = makeStyles((theme: Theme) =>
 const LoginPage: FC<{}> = () => {
 
 	const [btnDisabled, setBtnDisabled] = useState(false);
+
+	const { t } = useContext(I18nContext);
 
 	const sessionCtx = useContext(SessionContext);
 
@@ -74,7 +77,7 @@ const LoginPage: FC<{}> = () => {
 				>
 					<Paper className={classes.root}>
 						<Typography variant="h5" component="h3">
-							Zextras
+							{t('zextras', 'Zextras')}
 						</Typography>
 						<Grid
 							container
@@ -87,7 +90,7 @@ const LoginPage: FC<{}> = () => {
 							>
 								<InputLabel
 									htmlFor="username">
-									Username
+									{t('username', 'Username')}
 								</InputLabel>
 								<Input
 									id="username"
@@ -99,7 +102,7 @@ const LoginPage: FC<{}> = () => {
 								<InputLabel
 									htmlFor="password"
 								>
-									Password
+									{t('password', 'Password')}
 								</InputLabel>
 								<Input
 									id="password"
@@ -114,7 +117,7 @@ const LoginPage: FC<{}> = () => {
 								onClick={doLogin}
 								disabled={btnDisabled}
 							>
-								Login
+								{t('login', 'Login')}
 							</Button>
 						</Grid>
 					</Paper>

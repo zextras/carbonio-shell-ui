@@ -30,6 +30,7 @@ import { ISyncItemParser, ISyncFolderParser, ISyncService } from '../sync/ISyncS
 import OfflineCtxt from '../offline/OfflineContext';
 import ScreenSizeCtxt from '../screenSize/ScreenSizeContext';
 import SyncCtxt from '../sync/SyncContext';
+import I18nCtxt from '../i18n/I18nContext';
 
 import * as MaterialUI from '@material-ui/core';
 import * as MaterialUIIcons from '@material-ui/icons';
@@ -40,6 +41,7 @@ import * as RxJS from 'rxjs';
 import * as RxJSOperators from 'rxjs/operators';
 import * as Clsx from 'clsx';
 import * as shellUtils from '../utils/ShellUtils';
+import I18nService from '../i18n/I18nService';
 
 interface IChildWindow extends Window {
 	__ZAPP_SHARED_LIBRARIES__: ISharedLibrariesAppsMap;
@@ -62,7 +64,8 @@ export default class ExtensionService {
 		private _idbSrvc: IIdbInternalService,
 		private _offlineSrvc: IOfflineService,
 		private _sessionSrvc: ISessionService,
-		private _syncSrvc: ISyncService
+		private _syncSrvc: ISyncService,
+		private _i18nSrvc: I18nService
 	) {
 		this._fcSink = this._fcSrvc.getInternalFCSink();
 		_sessionSrvc.session.subscribe((session) => {
@@ -177,7 +180,8 @@ export default class ExtensionService {
 					'@zextras/zapp-shell/context': {
 						OfflineCtxt: OfflineCtxt,
 						ScreenSizeCtxt: ScreenSizeCtxt,
-						SyncCtxt: SyncCtxt
+						SyncCtxt: SyncCtxt,
+						I18nCtxt: I18nCtxt
 					},
 					'@zextras/zapp-shell/fc': {
 						fc: this._fcSrvc.getFiberChannelForExtension(appPkg.package),
@@ -190,7 +194,7 @@ export default class ExtensionService {
 					},
 					'@zextras/zapp-shell/router': {
 						addMainMenuItem: (icon: ReactElement, label: string, to: string): void => revertables.addMainMenuItem(icon, label, to),
-						registerRoute: <T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T): void => revertables.registerRoute<T>(path, component, defProps)
+						registerRoute: <T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T): void => revertables.registerRoute<T>(path, component, defProps, appPkg.package)
 					},
 					'@zextras/zapp-shell/service': {
 						offlineSrvc: this._offlineSrvc,
@@ -201,7 +205,10 @@ export default class ExtensionService {
 						registerSyncFolderParser: (tagName: string, parser: ISyncFolderParser<any>): void => revertables.registerSyncFolderParser(tagName, parser),
 						syncFolderById: (folderId: string): void => this._syncSrvc.syncFolderById(folderId)
 					},
-					'@zextras/zapp-shell/utils': shellUtils
+					'@zextras/zapp-shell/utils': {
+						...shellUtils,
+						registerLanguage: (bundle: any, lang: string): void => this._i18nSrvc.registerLanguage(bundle, lang, appPkg.package)
+					}
 				};
 				(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve;
 				(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (extModule: ZAppModuleFunction): void => {

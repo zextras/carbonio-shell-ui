@@ -25,6 +25,7 @@ export interface ISingleRouteDetails<T> {
   id: string;
   component: ComponentClass<T>|FunctionComponent<T>;
   defProps: T;
+  pkgName: string;
 }
 
 export interface IRouteData {
@@ -38,5 +39,5 @@ export interface IMainMenuItemData {
   to: string;
 }
 
-export type RegisterRouteFn = <T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T) => string;
+export type RegisterRouteFn = <T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T, pkgName: string) => string;
 export type AddMainMenuItemFn = (icon: ReactElement, label: string, to: string) => string;

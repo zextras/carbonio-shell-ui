@@ -33,6 +33,7 @@ import SyncCtxt from '../sync/SyncContext';
 import I18nCtxt from '../i18n/I18nContext';
 
 import * as MaterialUI from '@material-ui/core';
+import * as MaterialUIStyles from '@material-ui/core/styles';
 import * as MaterialUIIcons from '@material-ui/icons';
 import * as IDB from 'idb';
 import * as Lodash from 'lodash';
@@ -194,6 +195,7 @@ export default class ExtensionService {
 					'clsx': Clsx,
 					'react': React,
 					'@material-ui/core': MaterialUI,
+					'@material-ui/core/styles': MaterialUIStyles,
 					'@material-ui/icons': MaterialUIIcons,
 					'idb': IDB,
 					'lodash': Lodash,
@@ -216,7 +218,8 @@ export default class ExtensionService {
 					},
 					'@zextras/zapp-shell/router': {
 						addMainMenuItem: (icon: ReactElement, label: string, to: string): void => revertables.addMainMenuItem(icon, label, to),
-						registerRoute: <T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T): void => revertables.registerRoute<T>(path, component, defProps, appPkg.package)
+						registerRoute: <T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T): void => revertables.registerRoute<T>(path, component, defProps, appPkg.package),
+						addCreateMenuItem: (icon: ReactElement, label: string, to: string): void => revertables.addCreateMenuItem(icon, label, to, appPkg.package)
 					},
 					'@zextras/zapp-shell/service': {
 						offlineSrvc: this._offlineSrvc,

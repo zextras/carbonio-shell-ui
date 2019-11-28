@@ -15,10 +15,14 @@ import { BehaviorSubject } from 'rxjs';
 export interface IRouterService {
   routes: BehaviorSubject<IRouteData>;
   mainMenuItems: BehaviorSubject<Array<IMainMenuItemData>>;
+  createMenuItems: BehaviorSubject<Array<ICreateMenuItemData>>;
+  currentRoute: BehaviorSubject<string>;
   registerRoute: RegisterRouteFn;
   addMainMenuItem: AddMainMenuItemFn;
+  addCreateMenuItem: AddCreateMenuItemFn;
   unregisterRouteById(id: string): void;
   unregisterMainMenuItemById(id: string): void;
+  unregisterCreateMenuItemById(id: string): void;
 }
 
 export interface ISingleRouteDetails<T> {
@@ -39,5 +43,14 @@ export interface IMainMenuItemData {
   to: string;
 }
 
+export interface ICreateMenuItemData {
+  id: string;
+  icon: ReactElement;
+  label: string;
+  app: string;
+  to: string;
+}
+
 export type RegisterRouteFn = <T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T, pkgName: string) => string;
 export type AddMainMenuItemFn = (icon: ReactElement, label: string, to: string) => string;
+export type AddCreateMenuItemFn = (icon: ReactElement, label: string, to: string, app: string) => string;

@@ -10,7 +10,7 @@
  */
 
 import React, { FC, ReactElement, useContext, useEffect, useRef, useState } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, useRouteMatch } from 'react-router-dom';
 import { Subscription } from 'rxjs';
 import { forOwn } from 'lodash';
 
@@ -24,6 +24,18 @@ interface IRouterProps {
 	contentClass: string;
 	toolbarClass: string;
 }
+
+const _RouteDetector: FC<{ pkg: string }> = ({ pkg }) => {
+	const routerCtx = useContext(RouterContext);
+	const match = useRouteMatch();
+	useEffect(
+		() => {
+			if (match.isExact) routerCtx.currentRoute.next(pkg);
+		},
+		[match, routerCtx]
+	);
+	return null;
+};
 
 const Router: FC<IRouterProps> = ({ contentClass, toolbarClass, i18nSrvc, children }) => {
 	const [routeData, setRouteData] = useState<IRouteData>({});
@@ -49,10 +61,15 @@ const Router: FC<IRouterProps> = ({ contentClass, toolbarClass, i18nSrvc, childr
 				<Route
 					key={`${k}-route`}
 					path={k}
-					component={() =>
-						<I18nContextProvider i18nService={i18nSrvc} namespace={routeData[k].pkgName}>
-							<v.component key={k} {...v.defProps}/>
-						</I18nContextProvider>
+					component={
+						() => {
+							return (
+								<I18nContextProvider i18nService={i18nSrvc} namespace={routeData[k].pkgName}>
+									<_RouteDetector pkg={routeData[k].pkgName} />
+									<v.component key={k} {...v.defProps}/>
+								</I18nContextProvider>
+							);
+						}
 					}
 				/>
 			)

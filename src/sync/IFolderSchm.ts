@@ -14,6 +14,7 @@ export interface IFolderSchm {}
 export interface IFolderSchmV1 extends IFolderSchm {
 	id: string;
 	parent: string;
+	path: string;
 	name: string;
 	unreadCount: number;
 	itemsCount: number;

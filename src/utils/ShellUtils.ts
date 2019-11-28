@@ -19,13 +19,14 @@ export function normalizeFolder<T extends IFolderSchm>(version: number, f: ISoap
 	if (version === 1) {
 		const parent: IFolderSchmV1 = {
 			id: f.id,
+			path: f.absFolderPath,
 			name: f.name,
 			parent: f.l,
 			itemsCount: f.n,
 			unreadCount: f.u || 0,
 			size: f.s
 		};
-		let folders = [];
+		const folders = [];
 		if (f.folder) {
 			folders.push(
 				map(
@@ -41,7 +42,8 @@ export function normalizeFolder<T extends IFolderSchm>(version: number, f: ISoap
 
 export function createFolderIdb<T extends IIDBFolderSchm>(version: number, db: IDBPDatabase<T>): void {
 	if (version === 1) {
-		const foldersStore = (db as unknown as IDBPDatabase<IIDBFolderSchm>).createObjectStore('folders', { keyPath: 'id' });
+		const foldersStore = (db as unknown as IDBPDatabase<IFolderSchmV1>).createObjectStore('folders', { keyPath: 'id' });
 		foldersStore.createIndex('parent', 'parent', { unique: false });
+		foldersStore.createIndex('path', 'path', { unique: true });
 	}
 }

@@ -163,6 +163,8 @@ export class SyncService implements ISyncService {
 
 	private async _syncAllFolders(syncData: ISyncData): Promise<void> {
 		if (!syncData.token || syncData.folders.length < 1) {
+			// Always sync the root folder to get the sync token
+			await this._syncRoot(syncData);
 			this._fcSink('sync:completed');
 			return;
 		}
@@ -208,6 +210,36 @@ export class SyncService implements ISyncService {
 		await Promise.all(promises);
 		this._isSyncing.next(false);
 		this._fcSink('sync:completed');
+	}
+
+	private async _syncRoot(syncData: ISyncData): Promise<void> {
+		this._isSyncing.next(true);
+		// First sync for the requested folder, if needed
+		const batchResponse = await this._networkSrvc.sendSOAPRequest<
+			IBatchRequest<'SyncRequest', ISoapSyncRequest>,
+			IBatchResponse<'SyncResponse', ISoapSyncResponse<Array<{[k: string]: any}>, void>>
+			>(
+			'Batch',
+			{
+				onerror: 'continue',
+				SyncRequest: [{
+					_jsns: 'urn:zimbraMail',
+					l: '1',
+					calCutOff: Date.now(),
+					msgCutOff: Date.now()
+				}]
+			}
+		);
+		const [response] = batchResponse.SyncResponse;
+		const newSyncData: ISyncData = {
+			...syncData,
+			token: response.token,
+			folders: [...syncData.folders, '1']
+		};
+		const db = await this._idbSrvc.openDb();
+		await db.put<'sync'>('sync', newSyncData);
+		this._syncData.next(newSyncData);
+		this._isSyncing.next(false);
 	}
 
 	private async _syncFolderById(folderId: string, syncData: ISyncData): Promise<void> {

@@ -10,7 +10,7 @@
  */
 
 import { DBSchema } from 'idb';
-import { IFolderSchm } from '../sync/IFolderSchm';
+import { IFolderSchm, IFolderSchmV1 } from '../sync/IFolderSchm';
 import { ISyncOperationSchm } from '../sync/ISyncService';
 
 export interface IShellIdbSchema extends DBSchema {
@@ -70,10 +70,11 @@ export interface IIDBFolderSchm extends DBSchema {
 export interface IIDBFolderSchmV1 extends IIDBFolderSchm {
 	folders: {
 		key: string;
-		value: IFolderSchm;
+		value: IFolderSchmV1;
 		indexes: {
 			id: string;
 			parent: string;
+			path: string;
 		};
 	};
 }

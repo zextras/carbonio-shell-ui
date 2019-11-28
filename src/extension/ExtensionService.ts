@@ -33,6 +33,7 @@ import SyncCtxt from '../sync/SyncContext';
 import I18nCtxt from '../i18n/I18nContext';
 
 import * as MaterialUI from '@material-ui/core';
+import * as MaterialUIStyles from '@material-ui/core/styles';
 import * as MaterialUIIcons from '@material-ui/icons';
 import * as IDB from 'idb';
 import * as Lodash from 'lodash';
@@ -194,6 +195,7 @@ export default class ExtensionService {
 					'clsx': Clsx,
 					'react': React,
 					'@material-ui/core': MaterialUI,
+					'@material-ui/core/styles': MaterialUIStyles,
 					'@material-ui/icons': MaterialUIIcons,
 					'idb': IDB,
 					'lodash': Lodash,

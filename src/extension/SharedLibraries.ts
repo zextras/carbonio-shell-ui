@@ -38,6 +38,7 @@ export interface ISharedLibrariesAppsMap {
   'clsx': {};
   'react': {};
   '@material-ui/core': {};
+  '@material-ui/core/styles': {};
   '@material-ui/icons': {};
   'idb': {};
   'lodash': {};

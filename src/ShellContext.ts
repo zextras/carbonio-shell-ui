@@ -23,6 +23,7 @@ export class ShellContext {
 		const { loadShell } = await import(/*  webpackChunkName: "Shell" */ './Shell');
 		const container = document.createElement('div');
 		container.id = 'app';
+		container.style = 'height: 100%'
 		document.body.appendChild(container);
 		loadShell(container);
 		document.body.removeChild(this._splash);

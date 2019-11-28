@@ -22,6 +22,7 @@ export default class RevertableActionCollection {
   
   private _registeredRoutes: string[] = [];
   private _registeredMainMenuItems: string[] = [];
+  private _registeredCreateMenuItems: string[] = [];
   private _registeredNotificationParsers: string[] = [];
   private _registeredSyncParsers: string[] = [];
 
@@ -36,6 +37,7 @@ export default class RevertableActionCollection {
     forEach(this._registeredMainMenuItems, (id) => this._routerService.unregisterMainMenuItemById(id));
     forEach(this._registeredNotificationParsers, (id) => this._networkService.unregisterNotificationParserById(id));
     forEach(this._registeredSyncParsers, (id) => this._syncService.unregisterSyncParserById(id));
+    forEach(this._registeredCreateMenuItems, (id) => this._routerService.unregisterCreateMenuItemById(id));
   }
 
   public registerRoute<T>(path: string, component: ComponentClass<T> | FunctionComponent<T>, defProps: T, pkgName: string): void {
@@ -65,6 +67,12 @@ export default class RevertableActionCollection {
   public registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<any>): void {
     this._registeredSyncParsers.push(
       this._syncService.registerSyncFolderParser(tagName, parser)
+    );
+  }
+
+  public addCreateMenuItem(icon: ReactElement, label: string, to: string, app: string) {
+    this._registeredCreateMenuItems.push(
+      this._routerService.addCreateMenuItem(icon, label, to, app)
     );
   }
 }

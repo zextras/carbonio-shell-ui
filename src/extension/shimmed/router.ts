@@ -9,7 +9,8 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { AddMainMenuItemFn, RegisterRouteFn } from '../SharedLibraries';
+import { AddCreateMenuItemFn, AddMainMenuItemFn, RegisterRouteFn } from '../SharedLibraries';
 
 export declare const registerRoute: RegisterRouteFn;
 export declare const addMainMenuItem: AddMainMenuItemFn;
+export declare const addCreateMenuItem: AddCreateMenuItemFn;

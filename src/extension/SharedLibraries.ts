@@ -32,6 +32,7 @@ import I18nService from '../i18n/I18nService';
 
 export type RegisterRouteFn = <T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T) => void;
 export type AddMainMenuItemFn = (icon: ReactElement, label: string, to: string) => void;
+export type AddCreateMenuItemFn = (icon: ReactElement, label: string, to: string) => void;
 
 export interface ISharedLibrariesAppsMap {
   'clsx': {};
@@ -83,6 +84,7 @@ interface ISharedZxSync {
 interface ISharedZxRoute {
   registerRoute: RegisterRouteFn;
   addMainMenuItem: AddMainMenuItemFn;
+  addCreateMenuItem: AddCreateMenuItemFn;
 }
 
 interface ISharesZxServices {

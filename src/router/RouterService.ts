@@ -13,12 +13,20 @@ import { BehaviorSubject } from 'rxjs';
 import { ComponentClass, FunctionComponent, ReactElement } from 'react';
 import { filter, omitBy } from 'lodash';
 
-import {IMainMenuItemData, IRouteData, IRouterService, ISingleRouteDetails} from './IRouterService';
+import {
+  ICreateMenuItemData,
+  IMainMenuItemData,
+  IRouteData,
+  IRouterService,
+  ISingleRouteDetails
+} from './IRouterService';
 
 export default class RouterService implements IRouterService {
 
   public routes: BehaviorSubject<IRouteData> = new BehaviorSubject<IRouteData>({});
   public mainMenuItems: BehaviorSubject<Array<IMainMenuItemData>> = new BehaviorSubject<Array<IMainMenuItemData>>([]);
+  public createMenuItems: BehaviorSubject<Array<ICreateMenuItemData>> = new BehaviorSubject<Array<ICreateMenuItemData>>([]);
+  public currentRoute: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   private _id = 0;
 
@@ -52,6 +60,23 @@ export default class RouterService implements IRouterService {
     return id;
   }
 
+  public addCreateMenuItem(icon: ReactElement, label: string, to: string, app: string): string {
+    const id = `${++this._id}`;
+    this.createMenuItems.next(
+      [
+        ...this.createMenuItems.getValue(),
+        {
+          id,
+          to,
+          label,
+          icon,
+          app
+        }
+      ]
+    );
+    return id;
+  }
+
   public unregisterRouteById(id: string): void {
     this.routes.next(
       omitBy(this.routes.getValue(), (o: ISingleRouteDetails<any>, k: string) => o.id === id)
@@ -61,6 +86,12 @@ export default class RouterService implements IRouterService {
   public unregisterMainMenuItemById(id: string): void {
     this.mainMenuItems.next(
       filter(this.mainMenuItems.getValue(), (o: IMainMenuItemData) => o.id !== id)
+    );
+  }
+
+  public unregisterCreateMenuItemById(id: string): void {
+    this.createMenuItems.next(
+      filter(this.createMenuItems.getValue(), (o: ICreateMenuItemData) => o.id !== id)
     );
   }
 

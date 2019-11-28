@@ -47,6 +47,7 @@ import SyncStatusIcon from './sync/ui/SyncStatusIcon';
 import I18nService from './i18n/I18nService';
 import I18nContextProvider from './i18n/I18nContextProvider';
 import I18nContext from './i18n/I18nContext';
+import { CreateButton } from './ui/CreateButton';
 
 const drawerWidth = 240;
 
@@ -175,8 +176,9 @@ const Shell: FC<IShellProps> = hot(({i18nService}) => {
             >
               {t('zextras', 'Zextras')}
             </Typography>
+            <CreateButton />
             <SyncStatusIcon />
-              <UserMenu />
+            <UserMenu />
           </Toolbar>
         </AppBar>
         <Drawer

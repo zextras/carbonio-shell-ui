@@ -216,7 +216,8 @@ export default class ExtensionService {
 					},
 					'@zextras/zapp-shell/router': {
 						addMainMenuItem: (icon: ReactElement, label: string, to: string): void => revertables.addMainMenuItem(icon, label, to),
-						registerRoute: <T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T): void => revertables.registerRoute<T>(path, component, defProps, appPkg.package)
+						registerRoute: <T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T): void => revertables.registerRoute<T>(path, component, defProps, appPkg.package),
+						addCreateMenuItem: (icon: ReactElement, label: string, to: string): void => revertables.addCreateMenuItem(icon, label, to, appPkg.package)
 					},
 					'@zextras/zapp-shell/service': {
 						offlineSrvc: this._offlineSrvc,

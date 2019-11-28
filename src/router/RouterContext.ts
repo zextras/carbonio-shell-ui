@@ -13,10 +13,12 @@ import { createContext, Context } from 'react';
 
 import { IRouterContext } from './IRouterContext';
 import { BehaviorSubject } from 'rxjs';
-import { IMainMenuItemData, IRouteData } from './IRouterService';
+import { ICreateMenuItemData, IMainMenuItemData, IRouteData } from './IRouterService';
 
 const context: Context<IRouterContext> = createContext<IRouterContext>({
 	mainMenuItems: new BehaviorSubject<IMainMenuItemData[]>([]),
-	routes: new BehaviorSubject<IRouteData>({})
+	routes: new BehaviorSubject<IRouteData>({}),
+	createMenuItems: new BehaviorSubject<Array<ICreateMenuItemData>>([]),
+	currentRoute: new BehaviorSubject<string>('')
 });
 export default context;

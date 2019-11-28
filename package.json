@@ -1,6 +1,6 @@
 {
   "name": "@zextras/zapp-shell",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "A web application framework",
   "scripts": {
     "prepublishOnly": "rm -rf lib && npx zapp package && npm run build:types && npx tsc src/extension/shimmed/*.ts --outDir lib/",
@@ -30,7 +30,7 @@
     "@types/react-router-dom": "5.1.0",
     "@typescript-eslint/eslint-plugin": "2.5.0",
     "@typescript-eslint/parser": "2.5.0",
-    "@zextras/zapp-cli": "0.0.9",
+    "@zextras/zapp-cli": "0.0.10",
     "autoprefixer": "9.6.1",
     "babel-loader": "8.0.6",
     "copy-webpack-plugin": "5.0.4",

@@ -21,11 +21,11 @@ const useStyles = makeStyles((theme: Theme) =>
 		button: {
 			margin: theme.spacing(1),
 			'&$disabled': {
-				color: theme.palette.text.primary
+				color: theme.palette.primary.contrastText
 			}
 		},
 		disabled: {
-			color: theme.palette.text.primary
+			color: theme.palette.primary.contrastText
 		},
 		icon: {
 			position: 'absolute',

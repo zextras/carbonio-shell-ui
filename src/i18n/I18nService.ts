@@ -15,7 +15,7 @@ import { forEach } from 'lodash';
 import { II18nContext } from './II18nContext';
 import { II18nService } from './II18nService';
 
-export default class I18nService implements II18nService{
+export default class I18nService implements II18nService {
 
 	private i18n: Ii18n;
 
@@ -29,7 +29,7 @@ export default class I18nService implements II18nService{
 
 	public createI18nContext(namespace: string): II18nContext {
 		return {
-			t: this.i18n.getFixedT(null, [namespace, 'com_zextras_zapp_shell', 'src']),
+			t: this.i18n.getFixedT(null, [ namespace, 'com_zextras_zapp_shell', 'src' ])
 		};
 	}
 }

@@ -10,10 +10,10 @@
  */
 
 export interface IScreenSizes {
-  mobile: boolean;
-  tablet: boolean;
-  desktopS: boolean;
-  desktop: boolean;
-  desktopXL: boolean;
-  desktopMAX: boolean;
+	mobile: boolean;
+	tablet: boolean;
+	desktopS: boolean;
+	desktop: boolean;
+	desktopXL: boolean;
+	desktopMAX: boolean;
 }

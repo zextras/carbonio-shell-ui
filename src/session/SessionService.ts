@@ -20,20 +20,19 @@ import { ISessionService } from './ISessionService';
 
 export default class SessionService implements ISessionService {
 
-	public session: BehaviorSubject<IStoredSessionData|undefined>;
+	public session: BehaviorSubject<IStoredSessionData | undefined>;
 	private _currentSession?: string;
 
 	constructor(
 		private _networkSrvc: INetworkService,
 		private _idbSrvc: IIdbInternalService
 	) {
-		this.session = new BehaviorSubject<IStoredSessionData|undefined>(undefined);
+		this.session = new BehaviorSubject<IStoredSessionData | undefined>(undefined);
 		this.session.subscribe((s) => {
 			if (s && !this._currentSession) {
 				this._currentSession = s.id;
 				this._networkSrvc.openNotificationChannel();
-			}
-			else if (!s && this._currentSession) {
+			} else if (!s && this._currentSession) {
 				this._networkSrvc.closeNotificationChannel();
 				delete this._currentSession;
 			}
@@ -85,7 +84,7 @@ export default class SessionService implements ISessionService {
 			authToken: ''
 		});
 		if (storeLoginData) {
-			const tx = db.transaction(['sessions', 'auth'], 'readwrite');
+			const tx = db.transaction([ 'sessions', 'auth' ], 'readwrite');
 			{
 				const store = tx.objectStore('sessions');
 				await store.put(sessionData);
@@ -102,7 +101,7 @@ export default class SessionService implements ISessionService {
 
 	async doLogout(): Promise<void> {
 		const db = await this._idbSrvc.openDb();
-		const tx = db.transaction(['sessions', 'auth'], 'readwrite');
+		const tx = db.transaction([ 'sessions', 'auth' ], 'readwrite');
 		{
 			const store = tx.objectStore('sessions');
 			await store.clear();
@@ -127,7 +126,7 @@ export default class SessionService implements ISessionService {
 		}
 	}
 
-	async _validateSession(sessionData: IStoredSessionData): Promise<IStoredSessionData|undefined> {
+	async _validateSession(sessionData: IStoredSessionData): Promise<IStoredSessionData | undefined> {
 		try {
 			await this._networkSrvc.sendSOAPRequest<IValidateSessionRequest, IValidateSessionResponse>(
 				'Auth',
@@ -154,19 +153,21 @@ export default class SessionService implements ISessionService {
 		}
 	}
 
-	async _tryToLoginWithSavedCredentials(id: string): Promise<IStoredSessionData|undefined> {
+	async _tryToLoginWithSavedCredentials(id: string): Promise<IStoredSessionData | undefined> {
 		console.debug('Login RETRY');
 		const db = await this._idbSrvc.openDb();
 		const tx = db.transaction('auth', 'readwrite');
 		const val: IStoredAccountData | undefined = await tx.store.get(id);
 		await tx.done;
 
-		if (!val) { return; }
+		if (!val) {
+			return;
+		}
 		try {
 			return this.doLogin(val.u, val.p, true);
 		} catch (err) {
 			console.debug('Login RETRY error', err);
-			const tx = db.transaction(['sessions', 'auth'], 'readwrite');
+			const tx = db.transaction([ 'sessions', 'auth' ], 'readwrite');
 			{
 				const store = tx.objectStore('sessions');
 				await store.clear();

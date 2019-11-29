@@ -12,7 +12,7 @@
 import React, { FC } from 'react';
 
 import IdbContext from './IdbContext';
-import IdbService from './IdbService'
+import IdbService from './IdbService';
 import { IIdbExtensionService } from './IIdbExtensionService';
 import { IDBPDatabase } from 'idb';
 import { IShellIdbSchema } from './IShellIdbSchema';
@@ -24,12 +24,12 @@ interface IIdbContextProviderProps {
 const IdbContextProvider: FC<IIdbContextProviderProps> = ({ idbService, children }) => {
 	return (
 		<IdbContext.Provider
-			value={{
+			value={ {
 				createIdbService: (n): IIdbExtensionService<any> => idbService.createIdbService(n),
 				openDb: (): Promise<IDBPDatabase<IShellIdbSchema>> => idbService.openDb()
-			}}
+			} }
 		>
-			{children}
+			{ children }
 		</IdbContext.Provider>
 	);
 };

@@ -12,9 +12,9 @@
 import { IStoredSessionData } from '../idb/IShellIdbSchema';
 
 export interface ISessionContext {
-  isLoggedIn: boolean;
-  doLogin: DoLoginFn;
-  doLogout: () => Promise<void>;
+	isLoggedIn: boolean;
+	doLogin: DoLoginFn;
+	doLogout: () => Promise<void>;
 }
 
 export type DoLoginFn = (username: string, password: string) => Promise<IStoredSessionData>;

@@ -20,7 +20,7 @@ interface ISyncContextProviderProps {
 }
 
 const SyncContextProvider: FC<ISyncContextProviderProps> = ({ syncService, children }) => {
-	const [isSyncing, setIsSyncing] = useState(false);
+	const [ isSyncing, setIsSyncing ] = useState(false);
 	const isSyncingSubRef = useRef<Subscription>();
 
 	useEffect(() => {
@@ -31,13 +31,13 @@ const SyncContextProvider: FC<ISyncContextProviderProps> = ({ syncService, child
 				isSyncingSubRef.current.unsubscribe();
 				isSyncingSubRef.current = undefined;
 			}
-		}
-	}, [syncService.isSyncing]);
+		};
+	}, [ syncService.isSyncing ]);
 
 	return (
-		<SyncContext.Provider value={{
+		<SyncContext.Provider value={ {
 			isSyncing: isSyncing
-		}}>
+		} }>
 			{ children }
 		</SyncContext.Provider>
 	);

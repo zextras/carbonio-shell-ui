@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { TFunction } from "i18next";
+import { TFunction } from 'i18next';
 
 export interface II18nContext {
 	t: TFunction;

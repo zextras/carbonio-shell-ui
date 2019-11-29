@@ -20,12 +20,13 @@ export class IdbExtensionService implements IIdbExtensionService<any> {
 
 	constructor(
 		private _pkName: string
-	) {}
+	) {
+	}
 
 	public openDb = (): Promise<IDBPDatabase<any>> => {
 		return new Promise((resolve, reject) => {
 			if (!this._upgradeFcn || !this._schemaVersion) {
-				reject(new Error(`DB Schema not initialized for ${this._pkName}`));
+				reject(new Error(`DB Schema not initialized for ${ this._pkName }`));
 				return;
 			}
 			openDB<unknown>(
@@ -43,6 +44,6 @@ export class IdbExtensionService implements IIdbExtensionService<any> {
 	public setUpgradeFcn = (schemaVersion: number, fcn: IUpgradeFcn<any>): void => {
 		this._upgradeFcn = fcn;
 		this._schemaVersion = schemaVersion;
-	}
+	};
 
 }

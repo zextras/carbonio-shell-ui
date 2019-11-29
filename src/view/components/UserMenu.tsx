@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, {FC, useState, MouseEvent, useContext} from 'react';
+import React, { FC, useState, MouseEvent, useContext } from 'react';
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
 
 import { AccountCircle } from '@material-ui/icons';
@@ -18,48 +18,49 @@ import I18nContext from '../../i18n/I18nContext';
 
 const UserMenu: FC<{}> = () => {
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+	const [ anchorEl, setAnchorEl ] = useState<null | HTMLElement>(null);
 
-  const sessionCtx = useContext(SessionContext);
+	const sessionCtx = useContext(SessionContext);
 
-  const { t } = useContext(I18nContext);
+	const { t } = useContext(I18nContext);
 
-  function openMenu(event: MouseEvent<HTMLButtonElement>): void {
-    setAnchorEl(event.currentTarget);
-  }
+	function openMenu(event: MouseEvent<HTMLButtonElement>): void {
+		setAnchorEl(event.currentTarget);
+	}
 
-  function closeMenu(): void {
-    setAnchorEl(null);
-  }
+	function closeMenu(): void {
+		setAnchorEl(null);
+	}
 
-  function doLogout(): void {
-    sessionCtx.doLogout().then(() => undefined);
-    setAnchorEl(null)
-  }
-  return (
-    <>
-      <IconButton
-        edge="start"
-        color="inherit"
-        aria-label="menu"
-        aria-controls="simple-menu"
-        aria-haspopup="true"
-        onClick={openMenu}
-      >
-        <AccountCircle />
-      </IconButton>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={closeMenu}
-      >
-        <MenuItem onClick={doLogout}>
-          {t('logout', 'Logout')}
-        </MenuItem>
-      </Menu>
-    </>
-  );
+	function doLogout(): void {
+		sessionCtx.doLogout().then(() => undefined);
+		setAnchorEl(null);
+	}
+
+	return (
+		<>
+			<IconButton
+				edge="start"
+				color="inherit"
+				aria-label="menu"
+				aria-controls="simple-menu"
+				aria-haspopup="true"
+				onClick={ openMenu }
+			>
+				<AccountCircle/>
+			</IconButton>
+			<Menu
+				id="simple-menu"
+				anchorEl={ anchorEl }
+				keepMounted
+				open={ Boolean(anchorEl) }
+				onClose={ closeMenu }
+			>
+				<MenuItem onClick={ doLogout }>
+					{ t('logout', 'Logout') }
+				</MenuItem>
+			</Menu>
+		</>
+	);
 };
 export default UserMenu;

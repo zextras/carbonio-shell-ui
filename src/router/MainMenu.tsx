@@ -19,89 +19,89 @@ import { IMainMenuItemData, IMainSubMenuItemData } from './IRouterService';
 import { II18nService } from '../i18n/II18nService';
 
 interface IListItemLinkProps {
-  icon?: ReactElement;
-  primary: string;
-  to: string;
-  childrenObs?: Observable<Array<IMainSubMenuItemData>>;
+	icon?: ReactElement;
+	primary: string;
+	to: string;
+	childrenObs?: Observable<Array<IMainSubMenuItemData>>;
 }
 
 const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to, childrenObs }) => {
-  const [subVoices, setSubVoices] = useState<Array<IMainSubMenuItemData>>([]);
-  const renderLink = React.useMemo(
-    () =>
-      React.forwardRef<HTMLAnchorElement, Omit<RouterLinkProps, 'innerRef' | 'to'>>(
-        (itemProps, ref) => (
-          // With react-router-dom@^6.0.0 use `ref` instead of `innerRef`
-          // See https://github.com/ReactTraining/react-router/issues/6056
-          <RouterLink to={to} {...itemProps} innerRef={ref} />
-        ),
-      ),
-    [to],
-  );
+	const [ subVoices, setSubVoices ] = useState<Array<IMainSubMenuItemData>>([]);
+	const renderLink = React.useMemo(
+		() =>
+			React.forwardRef<HTMLAnchorElement, Omit<RouterLinkProps, 'innerRef' | 'to'>>(
+				(itemProps, ref) => (
+					// With react-router-dom@^6.0.0 use `ref` instead of `innerRef`
+					// See https://github.com/ReactTraining/react-router/issues/6056
+					<RouterLink to={ to } { ...itemProps } innerRef={ ref }/>
+				)
+			),
+		[ to ]
+	);
 
-  useEffect(
-    () => {
-      const childSubs: Array<Subscription> = [];
-      if (childrenObs) {
-        childSubs.push(
-          childrenObs.subscribe((e) => setSubVoices(e))
-        );
-      }
-      return () => {
-        forEach(
-          childSubs,
-          (s) => s.unsubscribe()
-        )
-      }
-    },
-    [childrenObs]
-  );
+	useEffect(
+		() => {
+			const childSubs: Array<Subscription> = [];
+			if (childrenObs) {
+				childSubs.push(
+					childrenObs.subscribe((e) => setSubVoices(e))
+				);
+			}
+			return () => {
+				forEach(
+					childSubs,
+					(s) => s.unsubscribe()
+				);
+			};
+		},
+		[ childrenObs ]
+	);
 
-  console.log('Children', subVoices);
+	console.log('Children', subVoices);
 
-  return (
-    <li>
-      <ListItem button component={renderLink}>
-        {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
-        <ListItemText primary={primary} />
-      </ListItem>
-    </li>
-  );
+	return (
+		<li>
+			<ListItem button component={ renderLink }>
+				{ icon ? <ListItemIcon>{ icon }</ListItemIcon> : null }
+				<ListItemText primary={ primary }/>
+			</ListItem>
+		</li>
+	);
 };
 
 const MainMenu: FC<{}> = () => {
-  const [mainMenuItems, setMainMenuItems] = useState<Array<IMainMenuItemData>>([]);
-  const routerCtx = useContext(RouterContext);
-  const mainMenuItemsSubRef = useRef<Subscription>();
+	const [ mainMenuItems, setMainMenuItems ] = useState<Array<IMainMenuItemData>>([]);
+	const routerCtx = useContext(RouterContext);
+	const mainMenuItemsSubRef = useRef<Subscription>();
 
-  useEffect(() => {
-    mainMenuItemsSubRef.current = routerCtx.mainMenuItems.subscribe(setMainMenuItems);
+	useEffect(() => {
+		mainMenuItemsSubRef.current = routerCtx.mainMenuItems.subscribe(setMainMenuItems);
 
-    return (): void => {
-      if (mainMenuItemsSubRef.current) {
-        mainMenuItemsSubRef.current.unsubscribe();
-        mainMenuItemsSubRef.current = undefined;
-      }
-    };
-  }, [routerCtx.mainMenuItems]);
+		return (): void => {
+			if (mainMenuItemsSubRef.current) {
+				mainMenuItemsSubRef.current.unsubscribe();
+				mainMenuItemsSubRef.current = undefined;
+			}
+		};
+	}, [ routerCtx.mainMenuItems ]);
 
-  const menuItems = map(
-    mainMenuItems,
-    (v) => (
-      <ListItemLink
-        key={v.to}
-        to={v.to}
-        primary={v.label}
-        icon={v.icon}
-        childrenObs={v.children}
-      />
-    )
-  );
+	const menuItems = map(
+		mainMenuItems,
+		(v) => (
+			<ListItemLink
+				key={ v.to }
+				to={ v.to }
+				primary={ v.label }
+				icon={ v.icon }
+				childrenObs={ v.children }
+			/>
+		)
+	);
 
-  return (
-    <List>
-      { menuItems }
-    </List>
-  );
+	return (
+		<List>
+			{ menuItems }
+		</List>
+	);
 };
 export default MainMenu;

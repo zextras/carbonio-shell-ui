@@ -10,5 +10,5 @@
  */
 
 export interface IOfflineContext {
-  isOnline: boolean;
+	isOnline: boolean;
 }

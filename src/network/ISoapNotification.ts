@@ -14,14 +14,14 @@
 export interface ISoapNotification {
 	seq: number;
 	deleted?: IDeletedNotification;
-		// /* List of ids, comma separated */ id: string;
+	// /* List of ids, comma separated */ id: string;
 	created?: INotification<string, any>;
-		// folder: Array<IFolderCreatedNotification>;
-		// m?: Array<IMessageCreatedNotification>;
+	// folder: Array<IFolderCreatedNotification>;
+	// m?: Array<IMessageCreatedNotification>;
 	modified?: INotification<string, any>;
-		// /* Conversations */ c?: Array<IConvModifiedNotification>;
-		// folder?: Array<IFolderModifiedNotification>;
-		// /* Messages */ m?: Array<IMessageModifiedNotification>;
+	// /* Conversations */ c?: Array<IConvModifiedNotification>;
+	// folder?: Array<IFolderModifiedNotification>;
+	// /* Messages */ m?: Array<IMessageModifiedNotification>;
 }
 
 export type IDeletedNotification = {
@@ -93,17 +93,20 @@ export type INotification<TAG extends string, T> = {
 // }
 
 export interface IEmailAddresses {
-	/* user@domain part of the mail address */ a?: string;
-	/* Display name */ d?: string;
-	/* Comment/ Name */ p?: string;
-	/* Type */ t?:
-		/* from */ 'f'
+	/* user@domain part of the mail address */
+	a?: string;
+	/* Display name */
+	d?: string;
+	/* Comment/ Name */
+	p?: string;
+	/* Type */
+	t?:
+	/* from */ 'f'
 		| /* to */ 't'
 		| /* cc */ 'c'
 		| /* bcc */ 'b'
 		| /* reply-to */ 'r'
 		| /* sender */ 's'
 		| /* read-receipt notifications */ 'n'
-		| /* resent-from */ 'rf'
-	;
+		| /* resent-from */ 'rf';
 }

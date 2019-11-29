@@ -35,15 +35,18 @@ export default class FiberChannelService implements IFiberChannelService {
 	public getFiberChannelSinkForExtension(name: string, version: string): IFCSink {
 		const subject = new Subject<IFCPartialEvent<any>>();
 		subject.subscribe((ev) => this._fiberChannel.next({ ...ev, from: name, version: version }));
-		subject.pipe(filter(ev => ev.internalOnly === false)).subscribe((ev) => this._broadcastChannel.postMessage({ ...ev, from: name, version: version }));
+		subject.pipe(filter(ev => ev.internalOnly === false)).subscribe((ev) => this._broadcastChannel.postMessage({
+			...ev,
+			from: name,
+			version: version
+		}));
 		return (ev: string | IFCPartialEvent<any>, data: any = {}): void => {
 			if (typeof ev === 'string') {
 				subject.next({ event: ev, data });
-			}
-			else {
+			} else {
 				subject.next(ev);
 			}
-		}
+		};
 	}
 
 	public getInternalFC(): Observable<IFCEvent<any>> {
@@ -56,6 +59,6 @@ export default class FiberChannelService implements IFiberChannelService {
 
 	private _handleBcMessage = (ev: MessageEvent): void => {
 		this._fiberChannel.next(ev.data);
-	}
+	};
 
 }

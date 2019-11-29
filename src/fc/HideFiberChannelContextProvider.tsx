@@ -17,14 +17,14 @@ const FiberChannelContextProvider: FC<{}> = ({ children }) => {
 
 	return (
 		<FiberChannelContext.Provider
-			value={{
+			value={ {
 				internalFC: undefined!,
 				internalFCSink: undefined!,
 				getFiberChannelForExtension: undefined!,
-				getFiberChannelSinkForExtension: undefined!,
-			}}
+				getFiberChannelSinkForExtension: undefined!
+			} }
 		>
-			{children}
+			{ children }
 		</FiberChannelContext.Provider>
 	);
 };

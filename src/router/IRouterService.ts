@@ -10,7 +10,7 @@
  */
 
 import { ComponentClass, FunctionComponent, ReactElement } from 'react';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 export interface IRouterService {
   routes: BehaviorSubject<IRouteData>;
@@ -41,6 +41,15 @@ export interface IMainMenuItemData {
   icon: ReactElement;
   label: string;
   to: string;
+  children?: Observable<Array<IMainSubMenuItemData>>;
+}
+
+export interface IMainSubMenuItemData {
+  id: string;
+  icon: ReactElement;
+  label: string;
+  to: string;
+  children?: Array<IMainSubMenuItemData>;
 }
 
 export interface ICreateMenuItemData {
@@ -52,5 +61,5 @@ export interface ICreateMenuItemData {
 }
 
 export type RegisterRouteFn = <T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T, pkgName: string) => string;
-export type AddMainMenuItemFn = (icon: ReactElement, label: string, to: string) => string;
+export type AddMainMenuItemFn = (icon: ReactElement, label: string, to: string, children?: Observable<Array<IMainSubMenuItemData>>) => string;
 export type AddCreateMenuItemFn = (icon: ReactElement, label: string, to: string, app: string) => string;

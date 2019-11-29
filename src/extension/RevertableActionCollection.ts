@@ -14,9 +14,10 @@
 import { forEach } from 'lodash';
 import { ComponentClass, FunctionComponent, ReactElement } from 'react';
 
-import { IRouterService } from '../router/IRouterService';
+import { IMainSubMenuItemData, IRouterService } from '../router/IRouterService';
 import { INetworkService, INotificationParser } from '../network/INetworkService';
 import { ISyncItemParser, ISyncFolderParser, ISyncService } from '../sync/ISyncService';
+import { Observable } from 'rxjs';
 
 export default class RevertableActionCollection {
   
@@ -46,9 +47,9 @@ export default class RevertableActionCollection {
     );
   }
 
-  public addMainMenuItem(icon: ReactElement, label: string, to: string): void {
+  public addMainMenuItem(icon: ReactElement, label: string, to: string, children?: Observable<Array<IMainSubMenuItemData>>): void {
     this._registeredMainMenuItems.push(
-      this._routerService.addMainMenuItem(icon, label, to)
+      this._routerService.addMainMenuItem(icon, label, to, children)
     );
   }
 

@@ -29,9 +29,10 @@ import { IIDBFolderSchm } from '../idb/IShellIdbSchema';
 import { IDBPDatabase } from 'idb';
 import { II18nContext } from '../i18n/II18nContext';
 import I18nService from '../i18n/I18nService';
+import { IMainSubMenuItemData } from '../router/IRouterService';
 
 export type RegisterRouteFn = <T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T) => void;
-export type AddMainMenuItemFn = (icon: ReactElement, label: string, to: string) => void;
+export type AddMainMenuItemFn = (icon: ReactElement, label: string, to: string, child: Observable<Array<IMainSubMenuItemData>>) => void;
 export type AddCreateMenuItemFn = (icon: ReactElement, label: string, to: string) => void;
 
 export interface ISharedLibrariesAppsMap {
@@ -44,6 +45,8 @@ export interface ISharedLibrariesAppsMap {
   'lodash': {};
   'rxjs': {};
   'rxjs/operators': {};
+  'react-router': {};
+  'react-router-dom': {};
   '@zextras/zapp-shell/context': ISharedZxContexts;
   '@zextras/zapp-shell/fc': ISharedFiberChannelService;
   '@zextras/zapp-shell/idb': IIdbExtensionService<any>;

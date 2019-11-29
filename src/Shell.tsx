@@ -177,7 +177,7 @@ const Shell: FC<IShellProps> = hot(({i18nService}) => {
             >
               {t('zextras', 'Zextras')}
             </Typography>
-            <CreateButton />
+            <CreateButton i18nSrvc={i18nService} />
             <SyncStatusIcon />
             <UserMenu />
           </Toolbar>

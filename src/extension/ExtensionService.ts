@@ -16,7 +16,7 @@ import { ComponentClass, FunctionComponent, ReactElement } from 'react';
 
 import { IGetInfoRequest, IGetInfoResponse, ISoapResponseContent } from '../network/ISoap';
 import { IFCSink } from '../fc/IFiberChannel';
-import { IRouterService } from '../router/IRouterService';
+import { IMainSubMenuItemData, IRouterService } from '../router/IRouterService';
 import { ISharedLibrariesAppsMap } from './SharedLibraries';
 import RevertableActionCollection from './RevertableActionCollection';
 import { INetworkService, INotificationParser } from '../network/INetworkService';
@@ -26,6 +26,8 @@ import { IOfflineService } from '../offline/IOfflineService';
 import { IFiberChannelService } from '../fc/IFiberChannelService';
 import { ISessionService } from '../session/ISessionService';
 import { ISyncItemParser, ISyncFolderParser, ISyncService, ISyncOperation, ISyncOpRequest } from '../sync/ISyncService';
+import I18nService from '../i18n/I18nService';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import OfflineCtxt from '../offline/OfflineContext';
 import ScreenSizeCtxt from '../screenSize/ScreenSizeContext';
@@ -41,9 +43,9 @@ import * as React from 'react';
 import * as RxJS from 'rxjs';
 import * as RxJSOperators from 'rxjs/operators';
 import * as Clsx from 'clsx';
+import * as ReactRouter from 'react-router';
+import * as ReactRouterDom from 'react-router-dom';
 import * as shellUtils from '../utils/ShellUtils';
-import I18nService from '../i18n/I18nService';
-import { BehaviorSubject } from 'rxjs';
 
 interface IChildWindow extends Window {
 	__ZAPP_SHARED_LIBRARIES__: ISharedLibrariesAppsMap;
@@ -201,6 +203,8 @@ export default class ExtensionService {
 					'lodash': Lodash,
 					'rxjs': RxJS,
 					'rxjs/operators': RxJSOperators,
+					'react-router': ReactRouter,
+					'react-router-dom': ReactRouterDom,
 					'@zextras/zapp-shell/context': {
 						OfflineCtxt: OfflineCtxt,
 						ScreenSizeCtxt: ScreenSizeCtxt,
@@ -217,7 +221,7 @@ export default class ExtensionService {
 						sendSOAPRequest: <REQ, RESP extends ISoapResponseContent>(command: string, data: REQ, urn?: 'urn:zimbraAccount' | 'urn:zimbraMail' | string): Promise<RESP> => this._networkSrvc.sendSOAPRequest<REQ, RESP>(command, data, urn)
 					},
 					'@zextras/zapp-shell/router': {
-						addMainMenuItem: (icon: ReactElement, label: string, to: string): void => revertables.addMainMenuItem(icon, label, to),
+						addMainMenuItem: (icon: ReactElement, label: string, to: string, children?: Observable<Array<IMainSubMenuItemData>>): void => revertables.addMainMenuItem(icon, label, to, children),
 						registerRoute: <T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T): void => revertables.registerRoute<T>(path, component, defProps, appPkg.package),
 						addCreateMenuItem: (icon: ReactElement, label: string, to: string): void => revertables.addCreateMenuItem(icon, label, to, appPkg.package)
 					},

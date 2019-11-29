@@ -9,13 +9,13 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ComponentClass, FunctionComponent, ReactElement } from 'react';
 import { filter, omitBy } from 'lodash';
 
 import {
   ICreateMenuItemData,
-  IMainMenuItemData,
+  IMainMenuItemData, IMainSubMenuItemData,
   IRouteData,
   IRouterService,
   ISingleRouteDetails
@@ -44,7 +44,7 @@ export default class RouterService implements IRouterService {
     return id;
   }
 
-  public addMainMenuItem(icon: ReactElement, label: string, to: string): string {
+  public addMainMenuItem(icon: ReactElement, label: string, to: string, children?: Observable<Array<IMainSubMenuItemData>>): string {
     const id = `${++this._id}`;
     this.mainMenuItems.next(
       [
@@ -53,7 +53,8 @@ export default class RouterService implements IRouterService {
           id: `${id}`,
           icon,
           label,
-          to
+          to,
+          children
         }
       ]
     );

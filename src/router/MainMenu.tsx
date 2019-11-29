@@ -12,18 +12,21 @@
 import React, { FC, ReactElement, useContext, useEffect, useRef, useState } from 'react';
 import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import {Subscription} from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import RouterContext from './RouterContext';
-import { map } from 'lodash';
-import { IMainMenuItemData } from './IRouterService';
+import { map, forEach } from 'lodash';
+import { IMainMenuItemData, IMainSubMenuItemData } from './IRouterService';
+import { II18nService } from '../i18n/II18nService';
 
 interface IListItemLinkProps {
   icon?: ReactElement;
   primary: string;
   to: string;
+  childrenObs?: Observable<Array<IMainSubMenuItemData>>;
 }
 
-const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to }) => {
+const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to, childrenObs }) => {
+  const [subVoices, setSubVoices] = useState<Array<IMainSubMenuItemData>>([]);
   const renderLink = React.useMemo(
     () =>
       React.forwardRef<HTMLAnchorElement, Omit<RouterLinkProps, 'innerRef' | 'to'>>(
@@ -35,6 +38,26 @@ const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to }) => {
       ),
     [to],
   );
+
+  useEffect(
+    () => {
+      const childSubs: Array<Subscription> = [];
+      if (childrenObs) {
+        childSubs.push(
+          childrenObs.subscribe((e) => setSubVoices(e))
+        );
+      }
+      return () => {
+        forEach(
+          childSubs,
+          (s) => s.unsubscribe()
+        )
+      }
+    },
+    [childrenObs]
+  );
+
+  console.log('Children', subVoices);
 
   return (
     <li>
@@ -64,7 +87,15 @@ const MainMenu: FC<{}> = () => {
 
   const menuItems = map(
     mainMenuItems,
-    (v) => (<ListItemLink key={v.to} to={v.to} primary={v.label} icon={v.icon} />)
+    (v) => (
+      <ListItemLink
+        key={v.to}
+        to={v.to}
+        primary={v.label}
+        icon={v.icon}
+        childrenObs={v.children}
+      />
+    )
   );
 
   return (

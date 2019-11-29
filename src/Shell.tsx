@@ -12,7 +12,7 @@
 import React, { Suspense, useContext, FC } from 'react';
 import { render } from 'react-dom';
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
-import { AppBar, CssBaseline, Divider, Drawer, IconButton, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, CssBaseline, Divider, Drawer, IconButton, Toolbar, Typography, Hidden } from '@material-ui/core';
 import { ChevronLeft, ChevronRight, Menu } from '@material-ui/icons';
 import clsx from 'clsx';
 import { hot } from 'react-hot-loader/root';
@@ -21,6 +21,7 @@ import { hot } from 'react-hot-loader/root';
 import style from './Shell.less';
 
 import LoginPage from './view/LoginPage';
+import Sidebar from './ui/Sidebar';
 
 import SessionService from './session/SessionService';
 import RouterService from './router/RouterService';
@@ -35,7 +36,7 @@ import Router from './router/Router';
 import OfflineContextProvider from './offline/OfflineContextProvider';
 import ScreenSizeContextProvider from './screenSize/ScreenSizeContextProvider';
 import FiberChannelContextProvider from './fc/FiberChannelContextProvider';
-import UserMenu from './view/components/UserMenu';
+import UserMenu from './ui/UserMenu';
 import MainMenu from './router/MainMenu';
 import ThemeContextProvider from "./theme/ThemeContextProvider";
 import ThemeService from "./theme/ThemeService";
@@ -204,6 +205,20 @@ const Shell: FC<IShellProps> = hot(({i18nService}) => {
           <Divider/>
           <MainMenu/>
         </Drawer>
+        <Hidden mdDown>
+          <div>
+            <div className={classes.toolbar}/>
+            <Sidebar
+              folders={[
+                {
+                  name: 'ciao',
+                  icon: <Menu/>,
+                  subfolders: []
+                }
+              ]}
+            />
+          </div>
+        </Hidden>
       </Router>
     </div>
   );

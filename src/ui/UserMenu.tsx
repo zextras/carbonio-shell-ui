@@ -13,8 +13,8 @@ import React, {FC, useState, MouseEvent, useContext} from 'react';
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
 
 import { AccountCircle } from '@material-ui/icons';
-import SessionContext from '../../session/SessionContext';
-import I18nContext from '../../i18n/I18nContext';
+import SessionContext from '../session/SessionContext';
+import I18nContext from '../i18n/I18nContext';
 
 const UserMenu: FC<{}> = () => {
 
@@ -36,6 +36,7 @@ const UserMenu: FC<{}> = () => {
     sessionCtx.doLogout().then(() => undefined);
     setAnchorEl(null)
   }
+
   return (
     <>
       <IconButton

@@ -17,6 +17,7 @@ import RouterContext from './RouterContext';
 import { map, forEach } from 'lodash';
 import { IMainMenuItemData, IMainSubMenuItemData } from './IRouterService';
 import { II18nService } from '../i18n/II18nService';
+import { ErrorOutline } from '@material-ui/icons';
 
 interface IListItemLinkProps {
   icon?: ReactElement;
@@ -57,12 +58,12 @@ const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to, childrenObs }
     [childrenObs]
   );
 
-  console.log('Children', subVoices);
-
   return (
     <li>
       <ListItem button component={renderLink}>
-        {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+          <ListItemIcon>
+            {icon ? icon : <ErrorOutline/>}
+          </ListItemIcon>
         <ListItemText primary={primary} />
       </ListItem>
     </li>

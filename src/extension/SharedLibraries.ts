@@ -47,6 +47,7 @@ export interface ISharedLibrariesAppsMap {
   'rxjs/operators': {};
   'react-router': {};
   'react-router-dom': {};
+  'moment': {};
   '@zextras/zapp-shell/context': ISharedZxContexts;
   '@zextras/zapp-shell/fc': ISharedFiberChannelService;
   '@zextras/zapp-shell/idb': IIdbExtensionService<any>;

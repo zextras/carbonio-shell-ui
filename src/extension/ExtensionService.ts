@@ -46,6 +46,7 @@ import * as Clsx from 'clsx';
 import * as ReactRouter from 'react-router';
 import * as ReactRouterDom from 'react-router-dom';
 import * as shellUtils from '../utils/ShellUtils';
+import * as Moment from 'moment';
 
 interface IChildWindow extends Window {
 	__ZAPP_SHARED_LIBRARIES__: ISharedLibrariesAppsMap;
@@ -205,6 +206,7 @@ export default class ExtensionService {
 					'rxjs/operators': RxJSOperators,
 					'react-router': ReactRouter,
 					'react-router-dom': ReactRouterDom,
+					'moment': Moment,
 					'@zextras/zapp-shell/context': {
 						OfflineCtxt: OfflineCtxt,
 						ScreenSizeCtxt: ScreenSizeCtxt,

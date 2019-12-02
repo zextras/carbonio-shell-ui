@@ -38,6 +38,8 @@ export type AddCreateMenuItemFn = (icon: ReactElement, label: string, to: string
 export interface ISharedLibrariesAppsMap {
 	'clsx': {};
 	'react': {};
+	'react-dom': {};
+	'react-virtualized': {};
 	'@material-ui/core': {};
 	'@material-ui/core/styles': {};
 	'@material-ui/icons': {};

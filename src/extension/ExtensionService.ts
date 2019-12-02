@@ -40,6 +40,8 @@ import * as MaterialUIIcons from '@material-ui/icons';
 import * as IDB from 'idb';
 import * as Lodash from 'lodash';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import * as ReactVirtualized from 'react-virtualized';
 import * as RxJS from 'rxjs';
 import * as RxJSOperators from 'rxjs/operators';
 import * as Clsx from 'clsx';
@@ -110,7 +112,7 @@ export default class ExtensionService {
 						version: z.zimlet[0].version,
 						resourceUrl: `/zx/zimlet/${ z.zimlet[0].name }`,
 						entryPoint: z.zimlet[0]['zapp-main']!,
-						styleEntryPoint: z.zimlet[0]['zapp-style']!
+						styleEntryPoint: z.zimlet[0]['zapp-style']
 					})
 				)
 			);
@@ -124,7 +126,7 @@ export default class ExtensionService {
 	private _loadExtension: (pkg: IAppPgkDescription) => Promise<void> = async (pkg) => {
 		try {
 			this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
-			this._loadStyle(pkg);
+			if (pkg.styleEntryPoint) this._loadStyle(pkg);
 			const extModule = await this._loadExtensionModule(pkg);
 			extModule.call(undefined);
 			try {
@@ -206,6 +208,8 @@ export default class ExtensionService {
 				(iframe.contentWindow as IChildWindow).__ZAPP_SHARED_LIBRARIES__ = {
 					'clsx': Clsx,
 					'react': React,
+					'react-dom': ReactDOM,
+					'react-virtualized': ReactVirtualized,
 					'@material-ui/core': MaterialUI,
 					'@material-ui/core/styles': MaterialUIStyles,
 					'@material-ui/icons': MaterialUIIcons,

@@ -54,7 +54,6 @@ export default class ThemeService {
 		});
 	}
 
-
 	public async loadTheme(): Promise<void> {
 		const getInfoResp = await this._networkSrvc.sendSOAPRequest<IGetInfoRequest, IGetInfoResponse>(
 			'GetInfo',
@@ -73,9 +72,8 @@ export default class ThemeService {
 					name: z.zimlet[0].label,
 					description: z.zimlet[0].description,
 					version: z.zimlet[0].version,
-					resourceUrl: `/zx/zimlet/${ z.zimlet[0].name }`,
-					entryPoint: z.zimlet[0]['zapp-theme']!,
-					styleEntryPoint: ''
+					resourceUrl: `/zx/zimlet/${z.zimlet[0].name}`,
+					entryPoint: z.zimlet[0]['zapp-theme']!
 				})
 			)
 		);
@@ -88,7 +86,7 @@ export default class ThemeService {
 
 	public async unloadTheme(): Promise<void> {
 		return new Promise((resolve) => {
-			forIn(this._iframes, function (value, key) {
+			forIn(this._iframes, function(value, key) {
 				document.body.removeChild(value);
 			});
 			this._iframes = {};

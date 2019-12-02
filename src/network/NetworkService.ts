@@ -35,14 +35,15 @@ export default class NetworkService implements INetworkService {
 
 	private _soapSessionData: ISoapSessionData = {};
 	private _notifySeq = -1;
-	private _modParsers: {[tag: string]: Array<ParserContainer>} = {};
+	private _modParsers: { [tag: string]: Array<ParserContainer> } = {};
 	private _parserId = 0;
 	private _latestNoop = Date.now();
 	private _noopFails = 0;
 
 	constructor(
-		private _fcSink: IFCSink,
-	) {}
+		private _fcSink: IFCSink
+	) {
+	}
 
 	public openNotificationChannel(): void {
 		setTimeout(
@@ -57,7 +58,7 @@ export default class NetworkService implements INetworkService {
 	}
 
 	public registerNotificationParser(tagName: string, parser: INotificationParser<any>): string {
-		const parserId = `${++this._parserId}`;
+		const parserId = `${ ++this._parserId }`;
 		if (!this._modParsers[tagName]) {
 			this._modParsers[tagName] = [];
 		}
@@ -145,7 +146,7 @@ export default class NetworkService implements INetworkService {
 					setTimeout(
 						this._sendNoop,
 						1
-					)
+					);
 				}
 			)
 			.catch(
@@ -154,7 +155,7 @@ export default class NetworkService implements INetworkService {
 					setTimeout(
 						this._sendNoop,
 						1
-					)
+					);
 				}
 			);
 	};
@@ -162,7 +163,7 @@ export default class NetworkService implements INetworkService {
 	private _handleNotifications(notifications?: Array<ISoapNotification>): void {
 		if (!notifications) return;
 		this._notifySeq = reduce(notifications, (max, { seq }) => (max < seq) ? seq : max, this._notifySeq);
-		map(sortBy(notifications, ['seq']), (n) => this._handleNotification(n))
+		map(sortBy(notifications, [ 'seq' ]), (n) => this._handleNotification(n));
 	}
 
 	private _handleNotification({ created, deleted, modified }: ISoapNotification): void {

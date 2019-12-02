@@ -20,11 +20,11 @@ interface ISessionContextProviderProps {
 	sessionService: ISessionService;
 }
 
-const SessionContextProvider: FC<ISessionContextProviderProps> = ({ sessionService , children }) => {
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+const SessionContextProvider: FC<ISessionContextProviderProps> = ({ sessionService, children }) => {
+	const [ isLoggedIn, setIsLoggedIn ] = useState(false);
 	const isLoggedInSubRef = useRef<Subscription>();
 
-	function handleSessionDataChange(sessionData: IStoredSessionData|undefined): void {
+	function handleSessionDataChange(sessionData: IStoredSessionData | undefined): void {
 		if (sessionData)
 			setIsLoggedIn(true);
 		else
@@ -39,18 +39,18 @@ const SessionContextProvider: FC<ISessionContextProviderProps> = ({ sessionServi
 				isLoggedInSubRef.current.unsubscribe();
 				isLoggedInSubRef.current = undefined;
 			}
-		}
-	}, [sessionService.session]);
+		};
+	}, [ sessionService.session ]);
 
 	return (
 		<SessionContext.Provider
-			value={{
+			value={ {
 				isLoggedIn: isLoggedIn,
 				doLogin: (u: string, p: string) => sessionService.doLogin(u, p, true),
 				doLogout: () => sessionService.doLogout()
-			}}
+			} }
 		>
-			{children}
+			{ children }
 		</SessionContext.Provider>
 	);
 };

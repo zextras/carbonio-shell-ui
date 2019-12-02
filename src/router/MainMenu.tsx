@@ -37,10 +37,10 @@ const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to, childrenObs }
 				(itemProps, ref) => (
 					// With react-router-dom@^6.0.0 use `ref` instead of `innerRef`
 					// See https://github.com/ReactTraining/react-router/issues/6056
-					<RouterLink to={to} {...itemProps} innerRef={ref} />
-				),
+					<RouterLink to={to} {...itemProps} innerRef={ref}/>
+				)
 			),
-		[to],
+		[ to ]
 	);
 
 	useEffect(
@@ -58,7 +58,7 @@ const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to, childrenObs }
 				)
 			}
 		},
-		[childrenObs]
+		[ childrenObs ]
 	);
 
 	return (
@@ -105,7 +105,7 @@ const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to, childrenObs }
 };
 
 const MainMenu: FC<{}> = () => {
-	const [mainMenuItems, setMainMenuItems] = useState<Array<IMainMenuItemData>>([]);
+	const [ mainMenuItems, setMainMenuItems ] = useState<Array<IMainMenuItemData>>([]);
 	const routerCtx = useContext(RouterContext);
 	const mainMenuItemsSubRef = useRef<Subscription>();
 
@@ -118,7 +118,7 @@ const MainMenu: FC<{}> = () => {
 				mainMenuItemsSubRef.current = undefined;
 			}
 		};
-	}, [routerCtx.mainMenuItems]);
+	}, [ routerCtx.mainMenuItems ]);
 
 	const menuItems = map(
 		mainMenuItems,
@@ -135,7 +135,7 @@ const MainMenu: FC<{}> = () => {
 
 	return (
 		<List>
-			{ menuItems }
+			{menuItems}
 		</List>
 	);
 };

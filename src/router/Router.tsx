@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
 import { forOwn } from 'lodash';
 
 import RouterContext from './RouterContext';
-import { IRouteData } from "./IRouterService";
+import { IRouteData } from './IRouterService';
 import I18nContextProvider from '../i18n/I18nContextProvider';
 import { II18nService } from '../i18n/II18nService';
 
@@ -32,13 +32,13 @@ const _RouteDetector: FC<{ pkg: string }> = ({ pkg }) => {
 		() => {
 			if (match.isExact) routerCtx.currentRoute.next(pkg);
 		},
-		[match, routerCtx]
+		[ match, routerCtx ]
 	);
 	return null;
 };
 
 const Router: FC<IRouterProps> = ({ contentClass, toolbarClass, i18nSrvc, children }) => {
-	const [routeData, setRouteData] = useState<IRouteData>({});
+	const [ routeData, setRouteData ] = useState<IRouteData>({});
 	const routerCtx = useContext(RouterContext);
 	const routeDataSubRef = useRef<Subscription>();
 
@@ -51,7 +51,7 @@ const Router: FC<IRouterProps> = ({ contentClass, toolbarClass, i18nSrvc, childr
 				routeDataSubRef.current = undefined;
 			}
 		};
-	}, [routerCtx.routes]);
+	}, [ routerCtx.routes ]);
 
 	const routes: Array<ReactElement> = [];
 	forOwn(
@@ -59,28 +59,28 @@ const Router: FC<IRouterProps> = ({ contentClass, toolbarClass, i18nSrvc, childr
 		(v, k) => {
 			routes.push(
 				<Route
-					key={`${k}-route`}
-					path={k}
+					key={ `${ k }-route` }
+					path={ k }
 					component={
 						() => {
 							return (
-								<I18nContextProvider i18nService={i18nSrvc} namespace={routeData[k].pkgName}>
-									<_RouteDetector pkg={routeData[k].pkgName} />
-									<v.component key={k} {...v.defProps}/>
+								<I18nContextProvider i18nService={ i18nSrvc } namespace={ routeData[k].pkgName }>
+									<_RouteDetector pkg={ routeData[k].pkgName }/>
+									<v.component key={ k } { ...v.defProps }/>
 								</I18nContextProvider>
 							);
 						}
 					}
 				/>
-			)
+			);
 		}
 	);
 
 	return (
 		<BrowserRouter>
 			{ children }
-			<main className={contentClass}>
-				<div className={toolbarClass} />
+			<main className={ contentClass }>
+				<div className={ toolbarClass }/>
 				{ routes }
 			</main>
 		</BrowserRouter>

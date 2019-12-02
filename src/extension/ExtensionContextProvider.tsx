@@ -22,9 +22,9 @@ const ExtensionContextProvider: FC<IExtensionContextProvider> = ({ extensionServ
 
 	return (
 		<ExtensionContext.Provider
-			value={{}}
+			value={ {} }
 		>
-			{children}
+			{ children }
 		</ExtensionContext.Provider>
 	);
 };

@@ -31,16 +31,16 @@ function getURN(command: string): JsnsUrn {
 
 export function wrapRequest<T>(command: string, data: T, sessionData: ISoapSessionData, notifySeq: number, urn?: string | JsnsUrn): ISoapRequest<T> {
 	const req: ISoapRequest<T> = {
-		_jsns: "urn:zimbraSoap",
+		_jsns: 'urn:zimbraSoap',
 		Header: {
-			_jsns: "urn:zimbra",
+			_jsns: 'urn:zimbra',
 			context: {
 				session: {},
 				notify: {},
 				userAgent: {
 					name: 'Iris',
 					version: PACKAGE_VERSION
-				},
+				}
 			}
 		},
 		Body: {

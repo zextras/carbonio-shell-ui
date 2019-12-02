@@ -16,28 +16,28 @@ import { createMuiTheme } from '@material-ui/core';
 import ThemeService from './ThemeService';
 
 interface IThemeContextProviderProps {
-  themeService: ThemeService;
+	themeService: ThemeService;
 }
 
-const ThemeContextProvider: FC<IThemeContextProviderProps> = ({ themeService , children }) => {
-  const [theme, setTheme] = useState(createMuiTheme({}));
-  const themeSubRef = useRef<Subscription>();
+const ThemeContextProvider: FC<IThemeContextProviderProps> = ({ themeService, children }) => {
+	const [ theme, setTheme ] = useState(createMuiTheme({}));
+	const themeSubRef = useRef<Subscription>();
 
-  useEffect(() => {
-    themeSubRef.current = themeService.theme.subscribe((theme) => setTheme(theme));
+	useEffect(() => {
+		themeSubRef.current = themeService.theme.subscribe((theme) => setTheme(theme));
 
-    return (): void => {
-      if (themeSubRef.current) {
-        themeSubRef.current.unsubscribe();
-        themeSubRef.current = undefined;
-      }
-    }
-  }, [themeService.theme]);
+		return (): void => {
+			if (themeSubRef.current) {
+				themeSubRef.current.unsubscribe();
+				themeSubRef.current = undefined;
+			}
+		};
+	}, [ themeService.theme ]);
 
-  return (
-    <ThemeProvider theme={theme}>
-      {children}
-    </ThemeProvider>
-  );
+	return (
+		<ThemeProvider theme={ theme }>
+			{ children }
+		</ThemeProvider>
+	);
 };
 export default ThemeContextProvider;

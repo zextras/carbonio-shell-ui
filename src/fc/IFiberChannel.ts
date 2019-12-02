@@ -10,15 +10,15 @@
  */
 
 export interface IFCPartialEvent<T extends {} | string> {
-  to?: string;
-  event: string;
-  data: T;
-  internalOnly?: boolean;
+	to?: string;
+	event: string;
+	data: T;
+	internalOnly?: boolean;
 }
 
 export interface IFCEvent<T extends {} | string> extends IFCPartialEvent<T> {
-  from: string;
-  version: string;
+	from: string;
+	version: string;
 }
 
 export type IFCSink = <T extends {} | string>(event: string | IFCPartialEvent<T>, data?: T) => void;

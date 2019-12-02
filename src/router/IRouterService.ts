@@ -13,54 +13,57 @@ import { ComponentClass, FunctionComponent, ReactElement } from 'react';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 export interface IRouterService {
-  routes: BehaviorSubject<IRouteData>;
-  mainMenuItems: BehaviorSubject<Array<IMainMenuItemData>>;
-  createMenuItems: BehaviorSubject<Array<ICreateMenuItemData>>;
-  currentRoute: BehaviorSubject<string>;
-  registerRoute: RegisterRouteFn;
-  addMainMenuItem: AddMainMenuItemFn;
-  addCreateMenuItem: AddCreateMenuItemFn;
-  unregisterRouteById(id: string): void;
-  unregisterMainMenuItemById(id: string): void;
-  unregisterCreateMenuItemById(id: string): void;
+	routes: BehaviorSubject<IRouteData>;
+	mainMenuItems: BehaviorSubject<Array<IMainMenuItemData>>;
+	createMenuItems: BehaviorSubject<Array<ICreateMenuItemData>>;
+	currentRoute: BehaviorSubject<string>;
+	registerRoute: RegisterRouteFn;
+	addMainMenuItem: AddMainMenuItemFn;
+	addCreateMenuItem: AddCreateMenuItemFn;
+
+	unregisterRouteById(id: string): void;
+
+	unregisterMainMenuItemById(id: string): void;
+
+	unregisterCreateMenuItemById(id: string): void;
 }
 
 export interface ISingleRouteDetails<T> {
-  id: string;
-  component: ComponentClass<T>|FunctionComponent<T>;
-  defProps: T;
-  pkgName: string;
+	id: string;
+	component: ComponentClass<T> | FunctionComponent<T>;
+	defProps: T;
+	pkgName: string;
 }
 
 export interface IRouteData {
-  [path: string]: ISingleRouteDetails<any>;
+	[path: string]: ISingleRouteDetails<any>;
 }
 
 export interface IMainMenuItemData {
-  id: string;
-  icon: ReactElement;
-  label: string;
-  to: string;
-  children?: Observable<Array<IMainSubMenuItemData>>;
-  app: string;
+	id: string;
+	icon: ReactElement;
+	label: string;
+	to: string;
+	children?: Observable<Array<IMainSubMenuItemData>>;
+	app: string;
 }
 
 export interface IMainSubMenuItemData {
-  id: string;
-  icon: ReactElement;
-  label: string;
-  to: string;
-  children?: Array<IMainSubMenuItemData>;
+	id: string;
+	icon: ReactElement;
+	label: string;
+	to: string;
+	children?: Array<IMainSubMenuItemData>;
 }
 
 export interface ICreateMenuItemData {
-  id: string;
-  icon: ReactElement;
-  label: string;
-  app: string;
-  to: string;
+	id: string;
+	icon: ReactElement;
+	label: string;
+	app: string;
+	to: string;
 }
 
-export type RegisterRouteFn = <T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T, pkgName: string) => string;
+export type RegisterRouteFn = <T>(path: string, component: ComponentClass<T> | FunctionComponent<T>, defProps: T, pkgName: string) => string;
 export type AddMainMenuItemFn = (icon: ReactElement, label: string, to: string, pkgName: string, children?: Observable<Array<IMainSubMenuItemData>>) => string;
 export type AddCreateMenuItemFn = (icon: ReactElement, label: string, to: string, app: string) => string;

@@ -29,11 +29,11 @@ import { useHistory } from 'react-router-dom';
 import I18nContextProvider from '../i18n/I18nContextProvider';
 import { II18nService } from '../i18n/II18nService';
 
-export const CreateButton: FC<{ i18nSrvc: II18nService}> = ({ i18nSrvc }) => {
+export const CreateButton: FC<{ i18nSrvc: II18nService }> = ({ i18nSrvc }) => {
 	const routerCtxt = useContext(RouterContext);
-	const [open, setOpen] = useState(false);
-	const [createItems, setCreateItems] = useState<Array<ICreateMenuItemData>>([]);
-	const [currentApp, setCurrentApp] = useState<string>('');
+	const [ open, setOpen ] = useState(false);
+	const [ createItems, setCreateItems ] = useState<Array<ICreateMenuItemData>>([]);
+	const [ currentApp, setCurrentApp ] = useState<string>('');
 	const anchorRef = useRef<HTMLDivElement>(null);
 	const history = useHistory();
 
@@ -45,7 +45,7 @@ export const CreateButton: FC<{ i18nSrvc: II18nService}> = ({ i18nSrvc }) => {
 			miSub.unsubscribe();
 			caSub.unsubscribe();
 		};
-	},[routerCtxt]);
+	}, [ routerCtxt ]);
 
 	const currentAppCreateItem = find(
 		createItems,
@@ -59,7 +59,7 @@ export const CreateButton: FC<{ i18nSrvc: II18nService}> = ({ i18nSrvc }) => {
 
 	const handleMenuItemClick = (
 		event: React.MouseEvent<HTMLLIElement, MouseEvent>,
-		ci: ICreateMenuItemData,
+		ci: ICreateMenuItemData
 	) => {
 		setOpen(false);
 		history.push(ci.to);
@@ -78,27 +78,27 @@ export const CreateButton: FC<{ i18nSrvc: II18nService}> = ({ i18nSrvc }) => {
 
 	return (
 		<Grid container direction="column" alignItems="center">
-			<Grid item xs={12}>
-				<ButtonGroup variant="contained" color="primary" ref={anchorRef} aria-label="split button">
+			<Grid item xs={ 12 }>
+				<ButtonGroup variant="contained" color="primary" ref={ anchorRef } aria-label="split button">
 					{ (currentAppCreateItem) ?
-						<I18nContextProvider i18nService={i18nSrvc} namespace={currentAppCreateItem.app}>
-							<Button onClick={handleClick}>{currentAppCreateItem.label}</Button>
+						<I18nContextProvider i18nService={ i18nSrvc } namespace={ currentAppCreateItem.app }>
+							<Button onClick={ handleClick }>{ currentAppCreateItem.label }</Button>
 						</I18nContextProvider>
 						:
-						<Button disabled={true}>New</Button>
+						<Button disabled={ true }>New</Button>
 					}
 					{ (createItems.length > 1 || !currentAppCreateItem) ?
 						(
 							<Button
 								color="primary"
 								size="small"
-								aria-controls={open ? 'split-button-menu' : undefined}
-								aria-expanded={open ? 'true' : undefined}
+								aria-controls={ open ? 'split-button-menu' : undefined }
+								aria-expanded={ open ? 'true' : undefined }
 								aria-label="select an action"
 								aria-haspopup="menu"
-								onClick={handleToggle}
+								onClick={ handleToggle }
 							>
-								<ArrowDropDownIcon />
+								<ArrowDropDownIcon/>
 							</Button>
 						)
 						:
@@ -110,7 +110,7 @@ export const CreateButton: FC<{ i18nSrvc: II18nService}> = ({ i18nSrvc }) => {
 						<Grow
 							{ ...TransitionProps }
 							style={ {
-								transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
+								transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'
 							} }
 						>
 							<Paper>
@@ -127,7 +127,7 @@ export const CreateButton: FC<{ i18nSrvc: II18nService}> = ({ i18nSrvc }) => {
 														key={ ci.app }
 														onClick={ event => handleMenuItemClick(event, ci) }
 													>
-														<I18nContextProvider i18nService={i18nSrvc} namespace={ci.app}>
+														<I18nContextProvider i18nService={ i18nSrvc } namespace={ ci.app }>
 															{ ci.label }
 														</I18nContextProvider>
 													</MenuItem>

@@ -15,7 +15,9 @@ import { Context, createContext } from 'react';
 import { IIdbContext } from './IIdbContext';
 
 const context: Context<IIdbContext> = createContext<IIdbContext>({
-	createIdbService: (pkgName) => { throw new Error('IdbContext not initialized'); },
-	openDb: () =>  new Promise((resolve, reject) => reject(new Error('IdbContext not initialized'))),
+	createIdbService: (pkgName) => {
+		throw new Error('IdbContext not initialized');
+	},
+	openDb: () => new Promise((resolve, reject) => reject(new Error('IdbContext not initialized')))
 });
 export default context;

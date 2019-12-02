@@ -27,8 +27,9 @@ export interface IValidateSessionResponse extends IAuthResponse {
 }
 
 export interface IEndSessionRequest {
-	logoff: '1'|'0';
+	logoff: '1' | '0';
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface IEndSessionResponse extends ISoapResponseContent {}
+export interface IEndSessionResponse extends ISoapResponseContent {
+}

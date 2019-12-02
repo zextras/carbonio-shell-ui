@@ -29,8 +29,8 @@ const SplashPage: FC<{}> = () => {
 				</Typography>
 				<Typography variant="body2" component="p">
 					well meaning and kindly.
-					<br />
-					{'"a benevolent smile"'}
+					<br/>
+					{ '"a benevolent smile"' }
 				</Typography>
 			</CardContent>
 			<CardActions>

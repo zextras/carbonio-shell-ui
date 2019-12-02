@@ -38,7 +38,7 @@ export function upgradeFn(database: IDBPDatabase<IShellIdbSchema>, oldVersion: n
 	if (oldVersion < 1) {
 		createDb(database);
 	} else {
-		switch(oldVersion) {
+		switch (oldVersion) {
 			case 1: {
 				// Upgrade from version 1
 			}

@@ -16,14 +16,14 @@ import { ISessionContext } from './ISessionContext';
 import { IStoredSessionData } from '../idb/IShellIdbSchema';
 
 function immediateReject<T>(): Promise<T> {
-  return new Promise(
-    (resolve, reject) => reject(new Error('SessionContext not initialized'))
-  );
+	return new Promise(
+		(resolve, reject) => reject(new Error('SessionContext not initialized'))
+	);
 }
 
 const context: Context<ISessionContext> = createContext<ISessionContext>({
-  isLoggedIn: false,
-  doLogin: (u, p) => immediateReject<IStoredSessionData>(),
-  doLogout: () => immediateReject<void>()
+	isLoggedIn: false,
+	doLogin: (u, p) => immediateReject<IStoredSessionData>(),
+	doLogout: () => immediateReject<void>()
 });
 export default context;

@@ -47,8 +47,8 @@ export class SyncService implements ISyncService {
 	private _syncData: Subject<ISyncData> = new Subject<ISyncData>();
 	private _folderRequested: Subject<string> = new Subject<string>();
 	private _fcSink: IFCSink;
-	private _syncItemParsers: {[tag: string]: Array<ParserItemContainer>} = {};
-	private _syncFolderParsers: {[tag: string]: Array<ParserFolderContainer>} = {};
+	private _syncItemParsers: { [tag: string]: Array<ParserItemContainer> } = {};
+	private _syncFolderParsers: { [tag: string]: Array<ParserFolderContainer> } = {};
 	private _parserId = 0;
 
 	constructor(
@@ -63,19 +63,19 @@ export class SyncService implements ISyncService {
 		combineLatest([
 			this._isSyncing,
 			this.syncOperations
-		]).subscribe(([syncing, ops]) => this.isSyncing.next(syncing || ops.length > 0));
+		]).subscribe(([ syncing, ops ]) => this.isSyncing.next(syncing || ops.length > 0));
 
 		this._updateOperationQueue().then(() => undefined);
 
 		// Wait for session and all apps loaded to load the Sync Data
 		zip(
 			_sessionSrvc.session
-				.pipe<IStoredSessionData|undefined>(filter((session) => typeof session !== 'undefined'))
+				.pipe<IStoredSessionData | undefined>(filter((session) => typeof session !== 'undefined'))
 				.pipe(first()),
 			_fcSrvc.getInternalFC()
 				.pipe(filter(({ event }) => event === 'app:all-loaded'))
 		)
-			.subscribe(([session, appsLoaded]) => {
+			.subscribe(([ session, appsLoaded ]) => {
 				this._loadSyncData(session!.id)
 					.then(() => undefined);
 			});
@@ -91,7 +91,7 @@ export class SyncService implements ISyncService {
 		offlineSrvc.online
 			.pipe<boolean>(filter((o) => o))
 			.pipe(withLatestFrom(this._syncData))
-			.subscribe(([online, syncData]) => {
+			.subscribe(([ online, syncData ]) => {
 				this._syncAllFolders(syncData)
 					.then(() => undefined);
 			});
@@ -100,7 +100,7 @@ export class SyncService implements ISyncService {
 			.pipe(buffer(this._syncData))
 			.pipe(withLatestFrom(this._syncData))
 			.pipe(first())
-			.subscribe(([bufferedIds, syncData]) => {
+			.subscribe(([ bufferedIds, syncData ]) => {
 				Promise.all(
 					map(bufferedIds, (folderId) => this._syncFolderById(folderId, syncData))
 				)
@@ -109,9 +109,9 @@ export class SyncService implements ISyncService {
 		// If the sync data is loaded, request the folder sync
 		this._folderRequested
 			.pipe(withLatestFrom(this._syncData))
-			.subscribe(([folderId, syncData]) => {
+			.subscribe(([ folderId, syncData ]) => {
 				this._syncFolderById(folderId, syncData)
-					.then(() => undefined)
+					.then(() => undefined);
 			});
 
 		// Consume the sync operations as the apps are loaded
@@ -156,7 +156,7 @@ export class SyncService implements ISyncService {
 		} else {
 			this._syncData.next({
 				sessionId: sessionId,
-				folders: [],
+				folders: []
 			});
 		}
 	}
@@ -215,26 +215,24 @@ export class SyncService implements ISyncService {
 	private async _syncRoot(syncData: ISyncData): Promise<void> {
 		this._isSyncing.next(true);
 		// First sync for the requested folder, if needed
-		const batchResponse = await this._networkSrvc.sendSOAPRequest<
-			IBatchRequest<'SyncRequest', ISoapSyncRequest>,
-			IBatchResponse<'SyncResponse', ISoapSyncResponse<Array<{[k: string]: any}>, void>>
-			>(
+		const batchResponse = await this._networkSrvc.sendSOAPRequest<IBatchRequest<'SyncRequest', ISoapSyncRequest>,
+			IBatchResponse<'SyncResponse', ISoapSyncResponse<Array<{ [k: string]: any }>, void>>>(
 			'Batch',
 			{
 				onerror: 'continue',
-				SyncRequest: [{
+				SyncRequest: [ {
 					_jsns: 'urn:zimbraMail',
 					l: '1',
 					calCutOff: Date.now(),
 					msgCutOff: Date.now()
-				}]
+				} ]
 			}
 		);
-		const [response] = batchResponse.SyncResponse;
+		const [ response ] = batchResponse.SyncResponse;
 		const newSyncData: ISyncData = {
 			...syncData,
 			token: response.token,
-			folders: [...syncData.folders, '1']
+			folders: [ ...syncData.folders, '1' ]
 		};
 		const db = await this._idbSrvc.openDb();
 		await db.put<'sync'>('sync', newSyncData);
@@ -246,24 +244,22 @@ export class SyncService implements ISyncService {
 		this._isSyncing.next(true);
 		if (!find(syncData.folders, (i) => i === folderId)) {
 			// First sync for the requested folder, if needed
-			const batchResponse = await this._networkSrvc.sendSOAPRequest<
-				IBatchRequest<'SyncRequest', ISoapSyncRequest>,
-				IBatchResponse<'SyncResponse', ISoapSyncResponse<Array<{[k: string]: any}>, void>>
-				>(
+			const batchResponse = await this._networkSrvc.sendSOAPRequest<IBatchRequest<'SyncRequest', ISoapSyncRequest>,
+				IBatchResponse<'SyncResponse', ISoapSyncResponse<Array<{ [k: string]: any }>, void>>>(
 				'Batch',
 				{
 					onerror: 'continue',
-					SyncRequest: [{
+					SyncRequest: [ {
 						_jsns: 'urn:zimbraMail',
 						l: folderId
-					}]
+					} ]
 				}
 			);
-			const [response] = batchResponse.SyncResponse;
+			const [ response ] = batchResponse.SyncResponse;
 			const newSyncData: ISyncData = {
 				...syncData,
 				token: response.token,
-				folders: [...syncData.folders, folderId]
+				folders: [ ...syncData.folders, folderId ]
 			};
 			const db = await this._idbSrvc.openDb();
 			await db.put<'sync'>('sync', newSyncData);
@@ -295,7 +291,7 @@ export class SyncService implements ISyncService {
 	}
 
 	public registerSyncItemParser(tagName: string, parser: ISyncItemParser<any>): string {
-		const parserId = `${++this._parserId}`;
+		const parserId = `${ ++this._parserId }`;
 		if (!this._syncItemParsers[tagName]) {
 			this._syncItemParsers[tagName] = [];
 		}
@@ -304,7 +300,7 @@ export class SyncService implements ISyncService {
 	}
 
 	public registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<any>): string {
-		const parserId = `${++this._parserId}`;
+		const parserId = `${ ++this._parserId }`;
 		if (!this._syncFolderParsers[tagName]) {
 			this._syncFolderParsers[tagName] = [];
 		}
@@ -330,7 +326,7 @@ export class SyncService implements ISyncService {
 				package: ev.from,
 				version: ev.version
 			},
-			operation: ev.data,
+			operation: ev.data
 		});
 		await this._updateOperationQueue();
 		await this._consumeSyncOperations();
@@ -377,14 +373,14 @@ export class SyncService implements ISyncService {
 							to: op.app.package,
 							data: {
 								operation: op.operation,
-								error: e,
+								error: e
 							}
 						});
 					}
 					break;
 				}
 				default:
-					throw new Error(`Operation type '${op.operation.opType}' cannot be handled.`);
+					throw new Error(`Operation type '${ op.operation.opType }' cannot be handled.`);
 			}
 		}
 	}

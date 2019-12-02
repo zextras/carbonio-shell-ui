@@ -35,9 +35,9 @@ export interface ISoapRequestContext {
 }
 
 export interface ISoapRequest<T> {
-	_jsns: "urn:zimbraSoap";
+	_jsns: 'urn:zimbraSoap';
 	Header: {
-		_jsns: "urn:zimbra";
+		_jsns: 'urn:zimbra';
 		context: ISoapRequestContext;
 	};
 	Body: {
@@ -63,11 +63,12 @@ export interface ISoapResponse<T extends ISoapResponseContent> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ISoapResponseContent {}
+export interface ISoapResponseContent {
+}
 
 export interface IAuthRequest {
 	account: {
-		by: 'name'|'id';
+		by: 'name' | 'id';
 		_content: string;
 	};
 	password?: {
@@ -100,14 +101,14 @@ export interface IGetInfoResponse extends ISoapResponseContent {
 				label: string;
 				description: string;
 				version: string;
-				/* Property related to Zextras */ zapp?: "true";
+				/* Property related to Zextras */ zapp?: 'true';
 				/* Property related to Zextras */ 'zapp-main'?: string;
 				/* Property related to Zextras */ 'zapp-style'?: string;
 				/* Property related to Zextras */ 'zapp-theme'?: string;
 			}>;
 			zimletContext: Array<{
 				baseUrl: string;
-				presence: "enabled";
+				presence: 'enabled';
 				priority: number;
 			}>;
 		}>;
@@ -120,7 +121,8 @@ export interface INoOpRequest {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface INoOpResponse extends ISoapResponseContent {}
+export interface INoOpResponse extends ISoapResponseContent {
+}
 
 export type IBatchRequest<REQ_NAME extends string, T extends {}> = {
 	[key in REQ_NAME]: Array<T>;
@@ -135,11 +137,11 @@ export type IBatchResponse<RESP_NAME extends string, T extends {}> = {
 	_jsns: 'urn:zimbra';
 };
 
-export interface ISoapSyncRequest{
+export interface ISoapSyncRequest {
 	// _jsns: 'urn:zimbraMail';
 	token?: number;
 	/** folder root id */ l?: string;
-	typed?: 1|0;
+	typed?: 1 | 0;
 	/** milliseconds */ calCutOff?: number;
 	/** seconds */ msgCutOff?: number;
 	deleteLimit?: number;
@@ -173,7 +175,19 @@ export type ISoapSyncResponse<T extends {}, DEL extends ISoapSyncDeletedMap | IS
 	[k: string]: Array<T>;
 };
 
-export type IFolderView = 'search folder'|'tag'|'conversation'|'message'|'contact'|'document'|'appointment'|'virtual conversation'|'remote folder'|'wiki'|'task'|'chat';
+export type IFolderView =
+	'search folder'
+	| 'tag'
+	| 'conversation'
+	| 'message'
+	| 'contact'
+	| 'document'
+	| 'appointment'
+	| 'virtual conversation'
+	| 'remote folder'
+	| 'wiki'
+	| 'task'
+	| 'chat';
 
 export type ISoapSyncFolderObj<T extends {}> = {
 	absFolderPath: string;

@@ -22,8 +22,11 @@ export interface ISyncService {
 	}>>;
 
 	syncFolderById(folderId: string): void;
+
 	registerSyncItemParser(tagName: string, parser: ISyncItemParser<any>): string;
+
 	registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<any>): string;
+
 	unregisterSyncParserById(id: string): void;
 }
 

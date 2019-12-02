@@ -20,7 +20,7 @@ interface IOfflineContextProviderProps {
 }
 
 const OfflineContextProvider: FC<IOfflineContextProviderProps> = ({ offlineService, children }) => {
-	const [isOnline, setIsOnline] = useState(false);
+	const [ isOnline, setIsOnline ] = useState(false);
 	const isOnlineSubRef = useRef<Subscription>();
 
 	useEffect(() => {
@@ -32,15 +32,15 @@ const OfflineContextProvider: FC<IOfflineContextProviderProps> = ({ offlineServi
 				isOnlineSubRef.current = undefined;
 			}
 		};
-	}, [offlineService.online]);
+	}, [ offlineService.online ]);
 
 	return (
 		<OfflineContext.Provider
-			value={{
+			value={ {
 				isOnline: isOnline
-			}}
+			} }
 		>
-			{children}
+			{ children }
 		</OfflineContext.Provider>
 	);
 };

@@ -35,5 +35,5 @@ export default class ScreenSizeService {
 
 	private _updateScreenSizes = (): void => {
 		this.sizes.next(ScreenSizeService.CalculateScreenSizes());
-	}
+	};
 }

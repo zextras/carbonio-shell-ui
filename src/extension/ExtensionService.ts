@@ -16,7 +16,7 @@ import { ComponentClass, FunctionComponent, ReactElement } from 'react';
 
 import { IGetInfoRequest, IGetInfoResponse, ISoapResponseContent } from '../network/ISoap';
 import { IFCSink } from '../fc/IFiberChannel';
-import { IRouterService } from '../router/IRouterService';
+import { IMainSubMenuItemData, IRouterService } from '../router/IRouterService';
 import { ISharedLibrariesAppsMap } from './SharedLibraries';
 import RevertableActionCollection from './RevertableActionCollection';
 import { INetworkService, INotificationParser } from '../network/INetworkService';
@@ -26,6 +26,8 @@ import { IOfflineService } from '../offline/IOfflineService';
 import { IFiberChannelService } from '../fc/IFiberChannelService';
 import { ISessionService } from '../session/ISessionService';
 import { ISyncItemParser, ISyncFolderParser, ISyncService, ISyncOperation, ISyncOpRequest } from '../sync/ISyncService';
+import I18nService from '../i18n/I18nService';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import OfflineCtxt from '../offline/OfflineContext';
 import ScreenSizeCtxt from '../screenSize/ScreenSizeContext';
@@ -38,12 +40,15 @@ import * as MaterialUIIcons from '@material-ui/icons';
 import * as IDB from 'idb';
 import * as Lodash from 'lodash';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import * as ReactVirtualized from 'react-virtualized';
 import * as RxJS from 'rxjs';
 import * as RxJSOperators from 'rxjs/operators';
 import * as Clsx from 'clsx';
+import * as ReactRouter from 'react-router';
+import * as ReactRouterDom from 'react-router-dom';
 import * as shellUtils from '../utils/ShellUtils';
-import I18nService from '../i18n/I18nService';
-import { BehaviorSubject } from 'rxjs';
+import * as Moment from 'moment';
 
 interface IChildWindow extends Window {
 	__ZAPP_SHARED_LIBRARIES__: ISharedLibrariesAppsMap;
@@ -53,9 +58,9 @@ interface IChildWindow extends Window {
 
 export default class ExtensionService {
 
-	private _iframes: {[pkgName: string]: HTMLIFrameElement} = {};
-	private _styles: {[pkgName: string]: HTMLLinkElement} = {};
-	private _revertableActions: {[pkgName: string]: RevertableActionCollection} = {};
+	private _iframes: { [pkgName: string]: HTMLIFrameElement } = {};
+	private _styles: { [pkgName: string]: HTMLLinkElement } = {};
+	private _revertableActions: { [pkgName: string]: RevertableActionCollection } = {};
 	private _fcSink: IFCSink;
 	private _sessionId?: string;
 
@@ -75,13 +80,11 @@ export default class ExtensionService {
 				if (!this._sessionId) {
 					this._sessionId = session.id;
 					this.loadUserExtensions().then(() => undefined);
-				}
-				else if (this._sessionId !== session.id) {
+				} else if (this._sessionId !== session.id) {
 					this._sessionId = session.id;
 					this.unloadUserExtensions().then(() => this.loadUserExtensions().then(() => undefined));
 				}
-			}
-			else {
+			} else {
 				delete this._sessionId;
 				this.unloadUserExtensions().then(() => undefined);
 			}
@@ -100,7 +103,7 @@ export default class ExtensionService {
 				map(
 					filter(
 						getInfoResp.zimlets.zimlet,
-						(z) => z.zimlet[0]['zapp'] === "true" && typeof z.zimlet[0]['zapp-main'] !== 'undefined'
+						(z) => z.zimlet[0]['zapp'] === 'true' && typeof z.zimlet[0]['zapp-main'] !== 'undefined'
 					),
 					async (z) => this._loadExtension({
 						package: z.zimlet[0].name,
@@ -109,7 +112,7 @@ export default class ExtensionService {
 						version: z.zimlet[0].version,
 						resourceUrl: `/zx/zimlet/${ z.zimlet[0].name }`,
 						entryPoint: z.zimlet[0]['zapp-main']!,
-						styleEntryPoint: z.zimlet[0]['zapp-style']!
+						styleEntryPoint: z.zimlet[0]['zapp-style']
 					})
 				)
 			);
@@ -120,28 +123,39 @@ export default class ExtensionService {
 		}
 	}
 
-	private _loadExtension: (pkg: IAppPgkDescription) => Promise<void> = async (pkg) =>  {
+	private _loadExtension: (pkg: IAppPgkDescription) => Promise<void> = async (pkg) => {
 		try {
 			this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
-			this._loadStyle(pkg);
+			if (pkg.styleEntryPoint) this._loadStyle(pkg);
 			const extModule = await this._loadExtensionModule(pkg);
 			extModule.call(undefined);
 			try {
-				this._fcSink<{ package: string; version: string }>('app:loaded', { package: pkg.package, version: pkg.version } );
+				this._fcSink<{ package: string; version: string }>('app:loaded', {
+					package: pkg.package,
+					version: pkg.version
+				});
 			} catch (err) {
-				this._fcSink<{ package: string; version: string; error: Error }>('app:load-error', { package: pkg.package, version: pkg.version, error: err } );
+				this._fcSink<{ package: string; version: string; error: Error }>('app:load-error', {
+					package: pkg.package,
+					version: pkg.version,
+					error: err
+				});
 			}
 		} catch (err) {
-			this._fcSink<{ package: string; version: string; error: Error }>('app:load-error', { package: pkg.package, version: pkg.version, error: err } );
+			this._fcSink<{ package: string; version: string; error: Error }>('app:load-error', {
+				package: pkg.package,
+				version: pkg.version,
+				error: err
+			});
 		}
 	};
 
 	public async unloadUserExtensions(): Promise<void> {
 		return new Promise((resolve) => {
 			forIn(this._revertableActions, (revertableActions, key) => {
-				this._fcSink<{ package: string }>('app:preunload', { package: key } );
+				this._fcSink<{ package: string }>('app:preunload', { package: key });
 				revertableActions.revert();
-				this._fcSink<{ package: string }>('app:unloaded', { package: key } );
+				this._fcSink<{ package: string }>('app:unloaded', { package: key });
 			});
 			this._revertableActions = {};
 			forIn(this._styles, (value, key) => {
@@ -158,7 +172,7 @@ export default class ExtensionService {
 
 	private _loadExtensionModule(appPkg: IAppPgkDescription): Promise<ZAppModuleFunction> {
 		return new Promise((resolve, reject) => {
-			const path = `${appPkg.resourceUrl}/${appPkg.entryPoint}`;
+			const path = `${ appPkg.resourceUrl }/${ appPkg.entryPoint }`;
 			const iframe: HTMLIFrameElement = document.createElement('iframe');
 			iframe.style.display = 'none';
 			// iframe.setAttribute('src', path);
@@ -194,6 +208,8 @@ export default class ExtensionService {
 				(iframe.contentWindow as IChildWindow).__ZAPP_SHARED_LIBRARIES__ = {
 					'clsx': Clsx,
 					'react': React,
+					'react-dom': ReactDOM,
+					'react-virtualized': ReactVirtualized,
 					'@material-ui/core': MaterialUI,
 					'@material-ui/core/styles': MaterialUIStyles,
 					'@material-ui/icons': MaterialUIIcons,
@@ -201,6 +217,9 @@ export default class ExtensionService {
 					'lodash': Lodash,
 					'rxjs': RxJS,
 					'rxjs/operators': RxJSOperators,
+					'react-router': ReactRouter,
+					'react-router-dom': ReactRouterDom,
+					'moment': Moment,
 					'@zextras/zapp-shell/context': {
 						OfflineCtxt: OfflineCtxt,
 						ScreenSizeCtxt: ScreenSizeCtxt,
@@ -217,8 +236,8 @@ export default class ExtensionService {
 						sendSOAPRequest: <REQ, RESP extends ISoapResponseContent>(command: string, data: REQ, urn?: 'urn:zimbraAccount' | 'urn:zimbraMail' | string): Promise<RESP> => this._networkSrvc.sendSOAPRequest<REQ, RESP>(command, data, urn)
 					},
 					'@zextras/zapp-shell/router': {
-						addMainMenuItem: (icon: ReactElement, label: string, to: string): void => revertables.addMainMenuItem(icon, label, to),
-						registerRoute: <T>(path: string, component: ComponentClass<T>|FunctionComponent<T>, defProps: T): void => revertables.registerRoute<T>(path, component, defProps, appPkg.package),
+						addMainMenuItem: (icon: ReactElement, label: string, to: string, children?: Observable<Array<IMainSubMenuItemData>>): void => revertables.addMainMenuItem(icon, label, to, appPkg.package, children),
+						registerRoute: <T>(path: string, component: ComponentClass<T> | FunctionComponent<T>, defProps: T): void => revertables.registerRoute<T>(path, component, defProps, appPkg.package),
 						addCreateMenuItem: (icon: ReactElement, label: string, to: string): void => revertables.addCreateMenuItem(icon, label, to, appPkg.package)
 					},
 					'@zextras/zapp-shell/service': {
@@ -238,24 +257,23 @@ export default class ExtensionService {
 				};
 				(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve;
 				(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (extModule: ZAppModuleFunction): void => {
-					console.log(`HMR ${path}`, extModule);
+					console.log(`HMR ${ path }`, extModule);
 					revertables.revert();
 					extModule.call(undefined);
 				};
-				script.type  = 'text/javascript';
+				script.type = 'text/javascript';
 				script.setAttribute('src', path);
 				script.addEventListener('error', reject);
 				iframe.contentDocument.body.appendChild(script);
 				this._iframes[appPkg.package] = iframe;
-			}
-			else
+			} else
 				reject(new Error('Cannot create extension loader'));
 		});
 	}
 
 	private _loadStyle(appPkg: IAppPgkDescription): void {
 		const link: HTMLLinkElement = document.createElement('link');
-		link.setAttribute('href', `${appPkg.resourceUrl}/${appPkg.styleEntryPoint}`);
+		link.setAttribute('href', `${ appPkg.resourceUrl }/${ appPkg.styleEntryPoint }`);
 		link.setAttribute('rel', 'stylesheet');
 		link.setAttribute('type', 'text/css');
 		this._styles[appPkg.package] = link;

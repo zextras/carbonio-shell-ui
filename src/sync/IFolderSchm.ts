@@ -9,7 +9,8 @@
  * *** END LICENSE BLOCK *****
  */
 
-export interface IFolderSchm {}
+export interface IFolderSchm {
+}
 
 export interface IFolderSchmV1 extends IFolderSchm {
 	id: string;

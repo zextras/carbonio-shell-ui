@@ -36,8 +36,7 @@ export function normalizeFolder<T extends IFolderSchm>(version: number, f: ISoap
 			);
 		}
 		return flattenDeep<any>([ parent, folders ]);
-	}
-	else return [];
+	} else return [];
 }
 
 export function createFolderIdb<T extends IIDBFolderSchm>(version: number, db: IDBPDatabase<T>): void {

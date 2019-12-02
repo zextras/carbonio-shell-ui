@@ -41,14 +41,14 @@ const RouterContextProvider: FC<IRouterContextProviderProps> = ({ routerService,
 
 	return (
 		<RouterContext.Provider
-			value={{
+			value={ {
 				routes: routerService.routes,
 				mainMenuItems: routerService.mainMenuItems,
 				createMenuItems: routerService.createMenuItems,
 				currentRoute: routerService.currentRoute
-			}}
+			} }
 		>
-			{children}
+			{ children }
 		</RouterContext.Provider>
 	);
 };

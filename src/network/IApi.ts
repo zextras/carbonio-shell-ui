@@ -16,5 +16,5 @@ export interface IAppPgkDescription {
 	version: string;
 	resourceUrl: string;
 	entryPoint: string;
-	styleEntryPoint: string;
+	styleEntryPoint?: string;
 }

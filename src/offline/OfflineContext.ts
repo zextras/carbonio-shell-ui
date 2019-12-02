@@ -14,6 +14,6 @@ import { createContext, Context } from 'react';
 import { IOfflineContext } from './IOfflineContext';
 
 const context: Context<IOfflineContext> = createContext<IOfflineContext>({
-  isOnline: false
+	isOnline: false
 });
 export default context;

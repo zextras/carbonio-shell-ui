@@ -22,14 +22,14 @@ const FiberChannelContextProvider: FC<IFCContextProviderProps> = ({ fiberChannel
 
 	return (
 		<FiberChannelContext.Provider
-			value={{
+			value={ {
 				internalFC: fiberChannelService.getInternalFC(),
 				internalFCSink: fiberChannelService.getInternalFCSink(),
 				getFiberChannelForExtension: (name: string) => fiberChannelService.getFiberChannelForExtension(name),
-				getFiberChannelSinkForExtension: (name: string, version: string) => fiberChannelService.getFiberChannelSinkForExtension(name, version),
-			}}
+				getFiberChannelSinkForExtension: (name: string, version: string) => fiberChannelService.getFiberChannelSinkForExtension(name, version)
+			} }
 		>
-			{children}
+			{ children }
 		</FiberChannelContext.Provider>
 	);
 };

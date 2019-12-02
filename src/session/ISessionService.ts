@@ -13,7 +13,9 @@ import { BehaviorSubject } from 'rxjs';
 import { IStoredSessionData } from '../idb/IShellIdbSchema';
 
 export interface ISessionService {
-	session: BehaviorSubject<IStoredSessionData|undefined>;
+	session: BehaviorSubject<IStoredSessionData | undefined>;
+
 	doLogin(username: string, password: string, storeLoginData: boolean): Promise<IStoredSessionData>;
+
 	doLogout(): Promise<void>;
 }

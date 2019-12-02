@@ -13,6 +13,7 @@ import { DBSchema, IDBPDatabase, IDBPTransaction } from 'idb';
 
 export interface IIdbService<T extends DBSchema> {
 	setUpgradeFcn(schemaVersion: number, fcn: IUpgradeFcn<T>): void;
+
 	openDb(): Promise<IDBPDatabase<T>>;
 }
 

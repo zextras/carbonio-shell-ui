@@ -23,6 +23,6 @@ export default class OfflineService implements IOfflineService {
 
 	private _updateOnlineStatus = (): void => {
 		this.online.next(navigator.onLine);
-	}
+	};
 
 }

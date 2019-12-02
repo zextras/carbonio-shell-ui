@@ -38,6 +38,7 @@ export default class IdbService implements IIdbInternalService {
 	 * @deprecated
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars
-	public setUpgradeFcn(schemaVersion: number, fcn: (database: IDBPDatabase<IShellIdbSchema>, oldVersion: number, newVersion: (number | null), transaction: IDBPTransaction<IShellIdbSchema>) => void): void {}
+	public setUpgradeFcn(schemaVersion: number, fcn: (database: IDBPDatabase<IShellIdbSchema>, oldVersion: number, newVersion: (number | null), transaction: IDBPTransaction<IShellIdbSchema>) => void): void {
+	}
 
 }

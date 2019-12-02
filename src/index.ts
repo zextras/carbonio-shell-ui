@@ -29,7 +29,7 @@ window.addEventListener('load', () => {
 	document.body.appendChild(splash);
 
 	import(/* webpackChunkName: "ShellContext" */ './ShellContext').then(
-		({ShellContext}) => {
+		({ ShellContext }) => {
 			const context = new ShellContext(splash);
 			context.renderShell().then(() => undefined);
 		}

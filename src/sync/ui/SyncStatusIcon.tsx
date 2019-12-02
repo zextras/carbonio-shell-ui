@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		iconEnabled: {
 			position: 'absolute',
 			left: 0,
-			top: 0,
+			top: 0
 		}
 	})
 );
@@ -45,35 +45,35 @@ const SyncStatusIcon: FC<{}> = () => {
 	const syncContext = useContext(SyncContext);
 	const offlineContext = useContext(OfflineContext);
 
-		return (
-			<IconButton
-				classes={{
-					root: classes.button,
-					disabled: classes.disabled
-				}}
-				disabled
-			>
-				<Box>
-					<Fade
-						in={!offlineContext.isOnline}
-						timeout={1500}
-					>
-						<CloudOff className={classes.iconEnabled} />
-					</Fade>
-					<Fade
-						in={offlineContext.isOnline}
-						timeout={1500}
-					>
-						<CloudQueue className={classes.icon} />
-					</Fade>
-					<Fade
-						in={syncContext.isSyncing}
-						timeout={1500}
-					>
-						<Sync  className={classes.icon} />
-					</Fade>
-				</Box>
-			</IconButton>
-		);
+	return (
+		<IconButton
+			classes={ {
+				root: classes.button,
+				disabled: classes.disabled
+			} }
+			disabled
+		>
+			<Box>
+				<Fade
+					in={ !offlineContext.isOnline }
+					timeout={ 1500 }
+				>
+					<CloudOff className={ classes.iconEnabled }/>
+				</Fade>
+				<Fade
+					in={ offlineContext.isOnline }
+					timeout={ 1500 }
+				>
+					<CloudQueue className={ classes.icon }/>
+				</Fade>
+				<Fade
+					in={ syncContext.isSyncing }
+					timeout={ 1500 }
+				>
+					<Sync className={ classes.icon }/>
+				</Fade>
+			</Box>
+		</IconButton>
+	);
 };
 export default SyncStatusIcon;

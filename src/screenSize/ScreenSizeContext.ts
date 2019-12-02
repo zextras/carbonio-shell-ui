@@ -14,8 +14,8 @@ import { createContext, Context } from 'react';
 import { IScreenSizeContext } from './IScreenSizeContext';
 
 const context: Context<IScreenSizeContext> = createContext<IScreenSizeContext>({
-  desktopS: false,
-  mobile: true,
-  tablet: false
+	desktopS: false,
+	mobile: true,
+	tablet: false
 });
 export default context;

@@ -20,7 +20,7 @@ interface IScreenSizesContextProviderProps {
 }
 
 const ScreenSizesContextProvider: FC<IScreenSizesContextProviderProps> = ({ screenSizeService, children }) => {
-	const [sizes, setScreenSizes] = useState(ScreenSizeService.CalculateScreenSizes());
+	const [ sizes, setScreenSizes ] = useState(ScreenSizeService.CalculateScreenSizes());
 	const sizesSubRef = useRef<Subscription>();
 
 	useEffect(() => {
@@ -32,13 +32,13 @@ const ScreenSizesContextProvider: FC<IScreenSizesContextProviderProps> = ({ scre
 				sizesSubRef.current = undefined;
 			}
 		};
-	}, [screenSizeService.sizes]);
+	}, [ screenSizeService.sizes ]);
 
 	return (
 		<ScreenSizeContext.Provider
-			value={sizes}
+			value={ sizes }
 		>
-			{children}
+			{ children }
 		</ScreenSizeContext.Provider>
 	);
 };

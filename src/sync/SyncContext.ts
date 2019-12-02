@@ -12,6 +12,6 @@ import { Context, createContext } from 'react';
 import { ISyncContext } from './ISyncContext';
 
 const context: Context<ISyncContext> = createContext<ISyncContext>({
-	isSyncing: false,
+	isSyncing: false
 });
 export default context;

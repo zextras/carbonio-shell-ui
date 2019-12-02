@@ -37,12 +37,12 @@ const useStyles = makeStyles((theme: Theme) =>
 		button: {
 			margin: theme.spacing(1)
 		}
-	}),
+	})
 );
 
 const LoginPage: FC<{}> = () => {
 
-	const [btnDisabled, setBtnDisabled] = useState(false);
+	const [ btnDisabled, setBtnDisabled ] = useState(false);
 
 	const { t } = useContext(I18nContext);
 
@@ -66,18 +66,18 @@ const LoginPage: FC<{}> = () => {
 
 	return (
 		<>
-			<CssBaseline />
+			<CssBaseline/>
 			<Container maxWidth="sm">
 				<Grid
 					container
 					alignContent="center"
 					justify="center"
 					direction="column"
-					style={{ height: '100vh' }}
+					style={ { height: '100vh' } }
 				>
-					<Paper className={classes.root}>
+					<Paper className={ classes.root }>
 						<Typography variant="h5" component="h3">
-							{t('zextras', 'Zextras')}
+							{ t('zextras', 'Zextras') }
 						</Typography>
 						<Grid
 							container
@@ -86,38 +86,38 @@ const LoginPage: FC<{}> = () => {
 							alignItems="center"
 						>
 							<FormControl
-								className={classes.formControl}
+								className={ classes.formControl }
 							>
 								<InputLabel
 									htmlFor="username">
-									{t('username', 'Username')}
+									{ t('username', 'Username') }
 								</InputLabel>
 								<Input
 									id="username"
-									inputRef={usernameRef}
+									inputRef={ usernameRef }
 								/>
 							</FormControl>
 							<FormControl
-								className={classes.formControl}>
+								className={ classes.formControl }>
 								<InputLabel
 									htmlFor="password"
 								>
-									{t('password', 'Password')}
+									{ t('password', 'Password') }
 								</InputLabel>
 								<Input
 									id="password"
-									inputRef={passwordRef}
+									inputRef={ passwordRef }
 									type="password"
 								/>
 							</FormControl>
 							<Button
 								variant="contained"
 								color="primary"
-								className={classes.button}
-								onClick={doLogin}
-								disabled={btnDisabled}
+								className={ classes.button }
+								onClick={ doLogin }
+								disabled={ btnDisabled }
 							>
-								{t('login', 'Login')}
+								{ t('login', 'Login') }
 							</Button>
 						</Grid>
 					</Paper>

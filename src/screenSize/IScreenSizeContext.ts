@@ -10,7 +10,7 @@
  */
 
 export interface IScreenSizeContext {
-  mobile: boolean;
-  tablet: boolean;
-  desktopS: boolean;
+	mobile: boolean;
+	tablet: boolean;
+	desktopS: boolean;
 }

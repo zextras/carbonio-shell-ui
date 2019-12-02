@@ -19,8 +19,8 @@ import translations_en from './com_zextras_zapp_shell_en.properties';
 import translations_it from './com_zextras_zapp_shell_it.properties';
 
 i18n
-	// detect user language
-	// learn more: https://github.com/i18next/i18next-browser-languageDetector
+// detect user language
+// learn more: https://github.com/i18next/i18next-browser-languageDetector
 	.use(LanguageDetector)
 	// pass the i18n instance to react-i18next.
 	.use(initReactI18next)
@@ -35,7 +35,7 @@ i18n
 				com_zextras_zapp_shell: translations_it
 			}
 		},
-		ns: ['com_zextras_zapp_shell'],
+		ns: [ 'com_zextras_zapp_shell' ],
 		defaultNS: 'com_zextras_zapp_shell',
 		fallbackLng: 'en',
 		debug: true,

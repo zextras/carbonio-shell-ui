@@ -24,7 +24,7 @@ const I18nContextProvider: FC<II18nContextProvider> = ({ i18nService, namespace,
 		<I18nContext.Provider value={
 			i18nService.createI18nContext(namespace)
 		}>
-			{children}
+			{ children }
 		</I18nContext.Provider>
 	);
 };

@@ -48,9 +48,9 @@ export default class RevertableActionCollection {
 		);
 	}
 
-	public addMainMenuItem(icon: ReactElement, label: string, to: string, children?: Observable<Array<IMainSubMenuItemData>>): void {
+	public addMainMenuItem(icon: ReactElement, label: string, to: string, pkgName: string, children?: Observable<Array<IMainSubMenuItemData>>): void {
 		this._registeredMainMenuItems.push(
-			this._routerService.addMainMenuItem(icon, label, to, children)
+			this._routerService.addMainMenuItem(icon, label, to, pkgName, children)
 		);
 	}
 

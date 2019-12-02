@@ -11,7 +11,6 @@
 
 import i18n from './i18n';
 import { i18n as Ii18n } from 'i18next';
-import { forEach } from 'lodash';
 import { II18nContext } from './II18nContext';
 import { II18nService } from './II18nService';
 

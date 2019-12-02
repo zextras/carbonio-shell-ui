@@ -40,12 +40,15 @@ import * as MaterialUIIcons from '@material-ui/icons';
 import * as IDB from 'idb';
 import * as Lodash from 'lodash';
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import * as ReactVirtualized from 'react-virtualized';
 import * as RxJS from 'rxjs';
 import * as RxJSOperators from 'rxjs/operators';
 import * as Clsx from 'clsx';
 import * as ReactRouter from 'react-router';
 import * as ReactRouterDom from 'react-router-dom';
 import * as shellUtils from '../utils/ShellUtils';
+import * as Moment from 'moment';
 
 interface IChildWindow extends Window {
 	__ZAPP_SHARED_LIBRARIES__: ISharedLibrariesAppsMap;
@@ -109,7 +112,7 @@ export default class ExtensionService {
 						version: z.zimlet[0].version,
 						resourceUrl: `/zx/zimlet/${ z.zimlet[0].name }`,
 						entryPoint: z.zimlet[0]['zapp-main']!,
-						styleEntryPoint: z.zimlet[0]['zapp-style']!
+						styleEntryPoint: z.zimlet[0]['zapp-style']
 					})
 				)
 			);
@@ -123,7 +126,7 @@ export default class ExtensionService {
 	private _loadExtension: (pkg: IAppPgkDescription) => Promise<void> = async (pkg) => {
 		try {
 			this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
-			this._loadStyle(pkg);
+			if (pkg.styleEntryPoint) this._loadStyle(pkg);
 			const extModule = await this._loadExtensionModule(pkg);
 			extModule.call(undefined);
 			try {
@@ -205,6 +208,8 @@ export default class ExtensionService {
 				(iframe.contentWindow as IChildWindow).__ZAPP_SHARED_LIBRARIES__ = {
 					'clsx': Clsx,
 					'react': React,
+					'react-dom': ReactDOM,
+					'react-virtualized': ReactVirtualized,
 					'@material-ui/core': MaterialUI,
 					'@material-ui/core/styles': MaterialUIStyles,
 					'@material-ui/icons': MaterialUIIcons,
@@ -214,6 +219,7 @@ export default class ExtensionService {
 					'rxjs/operators': RxJSOperators,
 					'react-router': ReactRouter,
 					'react-router-dom': ReactRouterDom,
+					'moment': Moment,
 					'@zextras/zapp-shell/context': {
 						OfflineCtxt: OfflineCtxt,
 						ScreenSizeCtxt: ScreenSizeCtxt,
@@ -230,7 +236,7 @@ export default class ExtensionService {
 						sendSOAPRequest: <REQ, RESP extends ISoapResponseContent>(command: string, data: REQ, urn?: 'urn:zimbraAccount' | 'urn:zimbraMail' | string): Promise<RESP> => this._networkSrvc.sendSOAPRequest<REQ, RESP>(command, data, urn)
 					},
 					'@zextras/zapp-shell/router': {
-						addMainMenuItem: (icon: ReactElement, label: string, to: string, children?: Observable<Array<IMainSubMenuItemData>>): void => revertables.addMainMenuItem(icon, label, to, children),
+						addMainMenuItem: (icon: ReactElement, label: string, to: string, children?: Observable<Array<IMainSubMenuItemData>>): void => revertables.addMainMenuItem(icon, label, to, appPkg.package, children),
 						registerRoute: <T>(path: string, component: ComponentClass<T> | FunctionComponent<T>, defProps: T): void => revertables.registerRoute<T>(path, component, defProps, appPkg.package),
 						addCreateMenuItem: (icon: ReactElement, label: string, to: string): void => revertables.addCreateMenuItem(icon, label, to, appPkg.package)
 					},

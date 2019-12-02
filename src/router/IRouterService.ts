@@ -45,6 +45,7 @@ export interface IMainMenuItemData {
 	label: string;
 	to: string;
 	children?: Observable<Array<IMainSubMenuItemData>>;
+	app: string;
 }
 
 export interface IMainSubMenuItemData {
@@ -64,5 +65,5 @@ export interface ICreateMenuItemData {
 }
 
 export type RegisterRouteFn = <T>(path: string, component: ComponentClass<T> | FunctionComponent<T>, defProps: T, pkgName: string) => string;
-export type AddMainMenuItemFn = (icon: ReactElement, label: string, to: string, children?: Observable<Array<IMainSubMenuItemData>>) => string;
+export type AddMainMenuItemFn = (icon: ReactElement, label: string, to: string, pkgName: string, children?: Observable<Array<IMainSubMenuItemData>>) => string;
 export type AddCreateMenuItemFn = (icon: ReactElement, label: string, to: string, app: string) => string;

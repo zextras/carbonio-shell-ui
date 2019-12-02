@@ -13,8 +13,8 @@ import React, { FC, useState, MouseEvent, useContext } from 'react';
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
 
 import { AccountCircle } from '@material-ui/icons';
-import SessionContext from '../../session/SessionContext';
-import I18nContext from '../../i18n/I18nContext';
+import SessionContext from '../session/SessionContext';
+import I18nContext from '../i18n/I18nContext';
 
 const UserMenu: FC<{}> = () => {
 
@@ -45,18 +45,18 @@ const UserMenu: FC<{}> = () => {
 				aria-label="menu"
 				aria-controls="simple-menu"
 				aria-haspopup="true"
-				onClick={ openMenu }
+				onClick={openMenu}
 			>
 				<AccountCircle/>
 			</IconButton>
 			<Menu
 				id="simple-menu"
-				anchorEl={ anchorEl }
+				anchorEl={anchorEl}
 				keepMounted
-				open={ Boolean(anchorEl) }
-				onClose={ closeMenu }
+				open={Boolean(anchorEl)}
+				onClose={closeMenu}
 			>
-				<MenuItem onClick={ doLogout }>
+				<MenuItem onClick={doLogout}>
 					{ t('logout', 'Logout') }
 				</MenuItem>
 			</Menu>

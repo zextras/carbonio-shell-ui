@@ -38,6 +38,8 @@ export type AddCreateMenuItemFn = (icon: ReactElement, label: string, to: string
 export interface ISharedLibrariesAppsMap {
 	'clsx': {};
 	'react': {};
+	'react-dom': {};
+	'react-virtualized': {};
 	'@material-ui/core': {};
 	'@material-ui/core/styles': {};
 	'@material-ui/icons': {};
@@ -47,6 +49,7 @@ export interface ISharedLibrariesAppsMap {
 	'rxjs/operators': {};
 	'react-router': {};
 	'react-router-dom': {};
+	'moment': {};
 	'@zextras/zapp-shell/context': ISharedZxContexts;
 	'@zextras/zapp-shell/fc': ISharedFiberChannelService;
 	'@zextras/zapp-shell/idb': IIdbExtensionService<any>;

@@ -31,10 +31,10 @@ export default class RouterService implements IRouterService {
 	private _id = 0;
 
 	public registerRoute<T>(path: string, component: ComponentClass<T> | FunctionComponent<T>, defProps: T, pkgName: string): string {
-		const id = `${ ++this._id }`;
+		const id = `${++this._id}`;
 		this.routes.next({
 			[path]: {
-				id: `${ id }`,
+				id: `${id}`,
 				component,
 				defProps,
 				pkgName
@@ -44,17 +44,18 @@ export default class RouterService implements IRouterService {
 		return id;
 	}
 
-	public addMainMenuItem(icon: ReactElement, label: string, to: string, children?: Observable<Array<IMainSubMenuItemData>>): string {
-		const id = `${ ++this._id }`;
+	public addMainMenuItem(icon: ReactElement, label: string, to: string, app: string, children?: Observable<Array<IMainSubMenuItemData>>): string {
+		const id = `${++this._id}`;
 		this.mainMenuItems.next(
 			[
 				...this.mainMenuItems.getValue(),
 				{
-					id: `${ id }`,
+					id: `${id}`,
 					icon,
 					label,
 					to,
-					children
+					children,
+					app
 				}
 			]
 		);
@@ -62,7 +63,7 @@ export default class RouterService implements IRouterService {
 	}
 
 	public addCreateMenuItem(icon: ReactElement, label: string, to: string, app: string): string {
-		const id = `${ ++this._id }`;
+		const id = `${++this._id}`;
 		this.createMenuItems.next(
 			[
 				...this.createMenuItems.getValue(),

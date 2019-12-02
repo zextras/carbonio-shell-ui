@@ -12,7 +12,7 @@
 import React, { Suspense, useContext, FC } from 'react';
 import { render } from 'react-dom';
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
-import { AppBar, CssBaseline, Divider, Drawer, IconButton, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, CssBaseline, Divider, Drawer, IconButton, Toolbar, Typography, Hidden } from '@material-ui/core';
 import { ChevronLeft, ChevronRight, Menu } from '@material-ui/icons';
 import clsx from 'clsx';
 import { hot } from 'react-hot-loader/root';
@@ -21,6 +21,7 @@ import { hot } from 'react-hot-loader/root';
 import style from './Shell.less';
 
 import LoginPage from './view/LoginPage';
+import Sidebar from './ui/Sidebar';
 
 import SessionService from './session/SessionService';
 import RouterService from './router/RouterService';
@@ -35,7 +36,7 @@ import Router from './router/Router';
 import OfflineContextProvider from './offline/OfflineContextProvider';
 import ScreenSizeContextProvider from './screenSize/ScreenSizeContextProvider';
 import FiberChannelContextProvider from './fc/FiberChannelContextProvider';
-import UserMenu from './view/components/UserMenu';
+import UserMenu from './ui/UserMenu';
 import MainMenu from './router/MainMenu';
 import ThemeContextProvider from './theme/ThemeContextProvider';
 import ThemeService from './theme/ThemeService';
@@ -146,64 +147,70 @@ const Shell: FC<IShellProps> = hot(({ i18nService }) => {
 	};
 
 	return (
-		<div className={ classes.root }>
+		<div className={classes.root}>
 			<CssBaseline/>
 			<Router
-				i18nSrvc={ i18nService }
-				contentClass={ classes.content }
-				toolbarClass={ classes.toolbar }
+				i18nSrvc={i18nService}
+				contentClass={classes.content}
+				toolbarClass={classes.toolbar}
 			>
 				<AppBar
 					position="fixed"
-					className={ clsx(classes.appBar, {
-						[classes.appBarShift]: open
-					}) }
+					className={clsx(classes.appBar, {
+						[classes.appBarShift]: open,
+					})}
 				>
 					<Toolbar>
 						<IconButton
 							color="inherit"
 							aria-label="open drawer"
-							onClick={ handleDrawerOpen }
+							onClick={handleDrawerOpen}
 							edge="start"
-							className={ clsx(classes.menuButton, {
-								[classes.hide]: open
-							}) }
+							className={clsx(classes.menuButton, {
+								[classes.hide]: open,
+							})}
 						>
 							<Menu/>
 						</IconButton>
 						<Typography
 							variant="h6"
-							className={ classes.title }
+							className={classes.title}
 						>
-							{ t('zextras', 'Zextras') }
+							{t('zextras', 'Zextras')}
 						</Typography>
-						<CreateButton i18nSrvc={ i18nService }/>
-						<SyncStatusIcon/>
-						<UserMenu/>
+						<CreateButton i18nSrvc={i18nService} />
+						<SyncStatusIcon />
+						<UserMenu />
 					</Toolbar>
 				</AppBar>
 				<Drawer
 					variant="permanent"
-					className={ clsx(classes.drawer, {
+					className={clsx(classes.drawer, {
 						[classes.drawerOpen]: open,
-						[classes.drawerClose]: !open
-					}) }
-					classes={ {
+						[classes.drawerClose]: !open,
+					})}
+					classes={{
 						paper: clsx({
 							[classes.drawerOpen]: open,
-							[classes.drawerClose]: !open
-						})
-					} }
-					open={ open }
+							[classes.drawerClose]: !open,
+						}),
+					}}
+					open={open}
 				>
-					<div className={ classes.toolbar }>
-						<IconButton onClick={ handleDrawerClose }>
-							{ theme.direction === 'rtl' ? <ChevronRight/> : <ChevronLeft/> }
+					<div className={classes.toolbar}>
+						<IconButton onClick={handleDrawerClose}>
+							{theme.direction === 'rtl' ? <ChevronRight/> : <ChevronLeft/>}
 						</IconButton>
 					</div>
 					<Divider/>
 					<MainMenu/>
 				</Drawer>
+				<Hidden mdDown>
+					<div>
+						<div className={classes.toolbar}/>
+						<Sidebar/>
+					</div>
+				</Hidden>
 			</Router>
 		</div>
 	);

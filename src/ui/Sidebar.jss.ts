@@ -3,7 +3,7 @@ import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		fullHeight: {
-			height: 'calc(100% - 56px)'
+			height: 'calc(100% - 56px)',
 		},
 		'@media (min-width:0px) and (orientation: landscape)': {
 			fullHeight: {
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
 			}),
 			'& *': {
 				display: 'none'
-			}
+			},
 		},
 		listWrapper: {
 			margin: 0,
@@ -47,7 +47,16 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		barOpener: {
 			height: '100%',
-			display: 'flex'
+			display: 'flex',
+			alignContent: 'center',
+			justifyContent: 'center',
+			transition: theme.transitions.create('width', {
+				easing: theme.transitions.easing.sharp,
+				duration: theme.transitions.duration.leavingScreen,
+			}),
+			'&:hover': {
+				width: 32,
+			}
 		},
 		barOpenerNotch: {
 			height: 24,

@@ -31,6 +31,7 @@ import RouterContext from '../router/RouterContext';
 import SidebarItem, { ISidebarItemProps } from './SidebarItem';
 import I18nContext from '../i18n/I18nContext';
 import useStyles from './Sidebar.jss'
+import { useObservable } from '../utils/useObservable';
 
 export interface ISidebarProps {
 	folders: Array<ISidebarItem>;
@@ -40,15 +41,6 @@ interface ISidebarItem {
 	name: string;
 	icon: JSX.Element;
 	subfolders: Array<ISidebarItem>;
-}
-
-function useObservable<T>(observable: BehaviorSubject<T>): T {
-	const [value, setValue] = useState<T>(observable.value);
-	useEffect(() => {
-		const sub = observable.subscribe(setValue);
-		return (): void => sub.unsubscribe();
-	}, [observable]);
-	return value;
 }
 
 const Sidebar: FC<ISidebarProps> = () => {
@@ -117,7 +109,12 @@ const Sidebar: FC<ISidebarProps> = () => {
 					>
 					{map(
 						children,
-						(folder: ISidebarItemProps, index: number): ReactElement => (<SidebarItem { ...folder } key={index} level={1}/>)
+						(folder: ISidebarItemProps, index: number): ReactElement => (
+							<SidebarItem
+								{ ...folder }
+								key={`secondary-${folder.label}-${index}`}
+								level={1}/>
+							)
 					)}
 					</List>
 					<div

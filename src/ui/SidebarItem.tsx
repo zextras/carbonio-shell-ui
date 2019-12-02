@@ -29,16 +29,16 @@ const SidebarItem: FC<ISidebarItemProps> = ({label, icon, children, level, to}: 
 		})
 	)();
 	const renderLink = React.useMemo(
-    () =>
-      React.forwardRef<HTMLAnchorElement, Omit<RouterLinkProps, 'innerRef' | 'to'>>(
-        (itemProps, ref) => (
-          // With react-router-dom@^6.0.0 use `ref` instead of `innerRef`
-          // See https://github.com/ReactTraining/react-router/issues/6056
-          <RouterLink to={to} {...itemProps} innerRef={ref} />
-        ),
-      ),
-    [to],
-  );
+		() =>
+			React.forwardRef<HTMLAnchorElement, Omit<RouterLinkProps, 'innerRef' | 'to'>>(
+				(itemProps, ref) => (
+					// With react-router-dom@^6.0.0 use `ref` instead of `innerRef`
+					// See https://github.com/ReactTraining/react-router/issues/6056
+					<RouterLink to={to} {...itemProps} innerRef={ref} />
+				),
+			),
+		[to],
+	);
 	return(
 		<>
 			<ListItem

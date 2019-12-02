@@ -33,17 +33,13 @@ import I18nContext from '../i18n/I18nContext';
 import useStyles from './Sidebar.jss'
 import { useObservable } from '../utils/useObservable';
 
-export interface ISidebarProps {
-	folders: Array<ISidebarItem>;
-}
-
 interface ISidebarItem {
 	name: string;
 	icon: JSX.Element;
 	subfolders: Array<ISidebarItem>;
 }
 
-const Sidebar: FC<ISidebarProps> = () => {
+const Sidebar: FC<{}> = () => {
 
 	const { t } = useContext(I18nContext);
 	const { currentRoute, mainMenuItems } = useContext(RouterContext);

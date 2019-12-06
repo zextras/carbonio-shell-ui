@@ -22,15 +22,15 @@ const useStyles = makeStyles((theme: Theme) =>
 		listOpen: {
 			width: 360,
 			transition: theme.transitions.create('width', {
-				easing: theme.transitions.easing.sharp,
-				duration: theme.transitions.duration.enteringScreen,
+				easing: theme.transitions.easing.easeInOut,
+				duration: theme.transitions.duration.complex,
 			}),
 		},
 		listClose: {
 			width: 0,
 			transition: theme.transitions.create('width', {
-				easing: theme.transitions.easing.sharp,
-				duration: theme.transitions.duration.leavingScreen,
+				easing: theme.transitions.easing.easeInOut,
+				duration: theme.transitions.duration.complex,
 			}),
 			'& *': {
 				display: 'none'
@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		listWrapper: {
 			margin: 0,
 			padding: 0,
+			paddingLeft: theme.spacing(7),
 			display: 'flex',
 			flexDirection: 'row',
 			alignItems: 'center',
@@ -46,22 +47,24 @@ const useStyles = makeStyles((theme: Theme) =>
 			backgroundColor: theme.palette.background.default
 		},
 		barOpener: {
+			width: theme.spacing(2),
 			height: '100%',
 			display: 'flex',
 			alignContent: 'center',
 			justifyContent: 'center',
-			transition: theme.transitions.create('width', {
-				easing: theme.transitions.easing.sharp,
-				duration: theme.transitions.duration.leavingScreen,
-			}),
+			transition: 'width 300ms',
 			'&:hover': {
-				width: 32,
+				width: theme.spacing(4),
+				'& div': {
+					backgroundColor: theme.palette.grey[600]
+				}
 			}
 		},
 		barOpenerNotch: {
-			height: 24,
-			width: 8,
-			backgroundColor: theme.palette.text.secondary,
+			height: theme.spacing(3),
+			width: theme.spacing(1),
+			backgroundColor: theme.palette.grey[400],
+			transition: 'background-color 300ms',
 			margin: 'auto 4px auto 4px',
 			borderRadius: 2
 		}

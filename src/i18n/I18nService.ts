@@ -23,12 +23,12 @@ export default class I18nService implements II18nService {
 	}
 
 	public registerLanguage(bundle: any, lang: string, pkgName: string): void {
-		this.i18n.addResourceBundle(lang, pkgName, bundle, true, true);
+		this.i18n.addResourceBundle(lang, pkgName, bundle, true, false);
 	}
 
 	public createI18nContext(namespace: string): II18nContext {
 		return {
-			t: this.i18n.getFixedT(null, [ namespace, 'com_zextras_zapp_shell', 'src' ])
+			t: this.i18n.getFixedT(null, [ namespace, 'com_zextras_zapp_shell' ])
 		};
 	}
 }

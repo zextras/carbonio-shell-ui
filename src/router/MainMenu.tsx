@@ -11,7 +11,16 @@
 
 import React, { FC, ReactElement, useContext, useEffect, useRef, useState } from 'react';
 import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
-import { List, ListItem, ListItemIcon, ListItemText, Collapse, Hidden } from '@material-ui/core';
+import {List,
+	ListItem,
+	ListItemIcon,
+	ListItemText,
+	Collapse,
+	Hidden,
+	makeStyles,
+	createStyles,
+	Theme
+} from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import { Observable, Subscription } from 'rxjs';
 import RouterContext from './RouterContext';
@@ -26,9 +35,18 @@ interface IListItemLinkProps {
 	primary: string;
 	to: string;
 	childrenObs?: Observable<Array<IMainSubMenuItemData>>;
+	drawerOpen: boolean;
 }
+const useStyles = makeStyles((theme: Theme) =>
+	createStyles({
+		barIcon: {
+			minWidth: theme.spacing(3),
+		}
+	})
+)
 
-const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to, childrenObs }) => {
+const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to, childrenObs, drawerOpen }) => {
+	const classes = useStyles();
 	const [subFolders, setSubFolders] = useState<Array<IMainSubMenuItemData>>([]);
 	const [open, setOpen] = useState(false);
 	const renderLink = React.useMemo(
@@ -63,23 +81,32 @@ const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to, childrenObs }
 
 	return (
 		<>
-			<ListItem
-				button
-				component={renderLink}
-				onClick={(): void => setOpen(!open)}
-			>
-				<ListItemIcon>
-					{icon ? icon : <ErrorOutline/>}
+			<Hidden smDown>
+				<ListItem
+					button
+					component={renderLink}
+					onClick={(): void => setOpen(!open)}
+				>
+					<ListItemIcon className={classes.barIcon}>
+						{icon ? icon : <ErrorOutline/>}
 					</ListItemIcon>
-				<ListItemText primary={primary} />
-				<Hidden mdUp>
-				{subFolders && subFolders.length > 0 && (
-					open ? <ExpandLess /> : <ExpandMore />
-				)}
-				</Hidden>
+			</ListItem>
+			</Hidden>
+			<Hidden mdUp>
+				<ListItem
+					button
+					component={renderLink}
+					onClick={(): void => setOpen(drawerOpen && !open)}
+				>
+					<ListItemIcon className={classes.barIcon}>
+						{icon ? icon : <ErrorOutline/>}
+					</ListItemIcon>
+					{ drawerOpen && (<ListItemText primary={primary} />)}
+					{ drawerOpen && subFolders && subFolders.length > 0 && (
+						open ? <ExpandLess /> : <ExpandMore />
+					)}
 			</ListItem>
 			{subFolders && subFolders.length > 0 &&
-			<Hidden mdUp>
 				<Collapse in={open} timeout="auto" unmountOnExit>
 					<List component="div" disablePadding>
 						{map(
@@ -98,13 +125,13 @@ const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to, childrenObs }
 						}
 					</List>
 				</Collapse>
-				</Hidden>
 			}
+			</Hidden>
 		</>
 	);
 };
 
-const MainMenu: FC<{}> = () => {
+const MainMenu: FC<{ drawerOpen: boolean }> = ({ drawerOpen }) => {
 	const [ mainMenuItems, setMainMenuItems ] = useState<Array<IMainMenuItemData>>([]);
 	const routerCtx = useContext(RouterContext);
 	const mainMenuItemsSubRef = useRef<Subscription>();
@@ -129,6 +156,7 @@ const MainMenu: FC<{}> = () => {
 				primary={v.label}
 				icon={v.icon}
 				childrenObs={v.children}
+				drawerOpen={drawerOpen}
 			/>
 		)
 	);

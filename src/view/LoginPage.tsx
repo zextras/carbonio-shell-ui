@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useContext, useState, useEffect } from 'react';
 
 import style from './LoginPage.less';
 import SessionContext from '../session/SessionContext';
@@ -55,14 +55,28 @@ const LoginPage: FC<{}> = () => {
 
 	const doLogin = (): void => {
 		if (!usernameRef.current || !passwordRef.current) return;
+		const username = usernameRef.current.value;
+		const password = passwordRef.current.value;
 		setBtnDisabled(true);
 		sessionCtx.doLogin(
-			usernameRef.current.value,
-			passwordRef.current.value
-		).then(
-			() => undefined
-		);
+			username,
+			password
+		).finally(() => setBtnDisabled(false));
 	};
+
+	const onPress = (event: KeyboardEvent): void => {
+		if ('Enter' === event.key) {
+			doLogin();
+		}
+	};
+
+	useEffect(() => {
+		const cb = (e: KeyboardEvent) => onPress(e);
+		window.addEventListener('keypress', cb);
+		return () => {
+			window.removeEventListener('keypress', cb);
+		}
+	}, [onPress]);
 
 	return (
 		<>

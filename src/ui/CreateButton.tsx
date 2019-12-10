@@ -54,7 +54,7 @@ export const CreateButton: FC<{ i18nSrvc: II18nService }> = ({ i18nSrvc }) => {
 
 	const handleClick = () => {
 		if (currentAppCreateItem)
-			history.push(currentAppCreateItem.to);
+			history.push(currentAppCreateItem.to, { fromPathname: history.location.pathname });
 	};
 
 	const handleMenuItemClick = (
@@ -62,7 +62,7 @@ export const CreateButton: FC<{ i18nSrvc: II18nService }> = ({ i18nSrvc }) => {
 		ci: ICreateMenuItemData
 	) => {
 		setOpen(false);
-		history.push(ci.to);
+		history.push(ci.to, { fromPathname: history.location.pathname });
 	};
 
 	const handleToggle = () => {

@@ -31,7 +31,15 @@ import RouterContext from '../router/RouterContext';
 import SidebarItem, { ISidebarItemProps } from './SidebarItem';
 import I18nContext from '../i18n/I18nContext';
 import useStyles from './Sidebar.jss'
-import { useObservable } from '../utils/useObservable';
+
+function useObservable<T>(observable: BehaviorSubject<T>): T {
+	const [value, setValue] = useState<T>(observable.value);
+	useEffect(() => {
+		const sub = observable.subscribe(setValue);
+		return (): void => sub.unsubscribe();
+	}, [observable]);
+	return value;
+}
 
 interface ISidebarItem {
 	name: string;
@@ -40,7 +48,6 @@ interface ISidebarItem {
 }
 
 const Sidebar: FC<{}> = () => {
-
 	const { t } = useContext(I18nContext);
 	const { currentRoute, mainMenuItems } = useContext(RouterContext);
 	const currentApp: string = useObservable<string>(currentRoute);

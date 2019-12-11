@@ -12,7 +12,7 @@
 import React, { Suspense, useContext, FC } from 'react';
 import { render } from 'react-dom';
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
-import { AppBar, CssBaseline, Divider, Drawer, IconButton, Toolbar, Typography, Hidden } from '@material-ui/core';
+import { AppBar, CssBaseline, Divider, SwipeableDrawer, Drawer, IconButton, Toolbar, Typography, Hidden } from '@material-ui/core';
 import { ChevronLeft, ChevronRight, Menu } from '@material-ui/icons';
 import clsx from 'clsx';
 import { hot } from 'react-hot-loader/root';
@@ -50,7 +50,7 @@ import I18nContextProvider from './i18n/I18nContextProvider';
 import I18nContext from './i18n/I18nContext';
 import { CreateButton } from './ui/CreateButton';
 
-const drawerWidth = 240;
+const drawerWidth = '75vw';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -100,10 +100,7 @@ const useStyles = makeStyles((theme: Theme) =>
 				duration: theme.transitions.duration.leavingScreen
 			}),
 			overflowX: 'hidden',
-			width: theme.spacing(7) + 1,
-			[theme.breakpoints.up('sm')]: {
-				width: theme.spacing(9) + 1
-			}
+			width: theme.spacing(7)
 		},
 		toolbar: {
 			display: 'flex',
@@ -146,6 +143,20 @@ const Shell: FC<IShellProps> = hot(({ i18nService }) => {
 		setOpen(false);
 	};
 
+	const toggleDrawer = (open: boolean) => (
+		event: React.KeyboardEvent | React.MouseEvent,
+	): void => {
+		if (
+			event &&
+			event.type === 'keydown' &&
+			((event as React.KeyboardEvent).key === 'Tab' ||
+				(event as React.KeyboardEvent).key === 'Shift')
+		) {
+			return;
+		}
+		setOpen(open);
+	};
+
 	return (
 		<div className={classes.root}>
 			<CssBaseline/>
@@ -161,17 +172,19 @@ const Shell: FC<IShellProps> = hot(({ i18nService }) => {
 					})}
 				>
 					<Toolbar>
-						<IconButton
-							color="inherit"
-							aria-label="open drawer"
-							onClick={handleDrawerOpen}
-							edge="start"
-							className={clsx(classes.menuButton, {
-								[classes.hide]: open,
-							})}
-						>
-							<Menu/>
-						</IconButton>
+						<Hidden mdUp>
+							<IconButton
+								color="inherit"
+								aria-label="open drawer"
+								onClick={handleDrawerOpen}
+								edge="start"
+								className={clsx(classes.menuButton, {
+									[classes.hide]: open,
+								})}
+							>
+								<Menu/>
+							</IconButton>
+						</Hidden>
 						<Typography
 							variant="h6"
 							className={classes.title}
@@ -183,31 +196,43 @@ const Shell: FC<IShellProps> = hot(({ i18nService }) => {
 						<UserMenu />
 					</Toolbar>
 				</AppBar>
-				<Drawer
-					variant="permanent"
-					className={clsx(classes.drawer, {
-						[classes.drawerOpen]: open,
-						[classes.drawerClose]: !open,
-					})}
-					classes={{
-						paper: clsx({
+				<Hidden mdUp>
+					<SwipeableDrawer
+						onOpen={toggleDrawer(true)}
+						onClose={toggleDrawer(false)}
+						variant="temporary"
+						className={clsx(classes.drawer, {
 							[classes.drawerOpen]: open,
 							[classes.drawerClose]: !open,
-						}),
-					}}
-					open={open}
-				>
-					<div className={classes.toolbar}>
-						<IconButton onClick={handleDrawerClose}>
-							{theme.direction === 'rtl' ? <ChevronRight/> : <ChevronLeft/>}
-						</IconButton>
-					</div>
-					<Divider/>
-					<MainMenu/>
-				</Drawer>
-				<Hidden mdDown>
+						})}
+						classes={{
+							paper: clsx({
+								[classes.drawerOpen]: open,
+								[classes.drawerClose]: !open,
+							}),
+						}}
+						open={open}
+					>
+						<div className={classes.toolbar}>
+							<IconButton onClick={handleDrawerClose}>
+								{theme.direction === 'rtl' ? <ChevronRight/> : <ChevronLeft/>}
+							</IconButton>
+						</div>
+						<Divider/>
+						<MainMenu drawerOpen={open}/>
+					</SwipeableDrawer>
+				</Hidden>
+				<Hidden smDown>
 					<div>
-						<div className={classes.toolbar}/>
+						<div className={clsx([classes.toolbar])}/>
+						<Drawer
+							variant="permanent"
+							className={clsx([classes.drawer, classes.drawerClose])}
+							open={false}
+						>
+							<div className={classes.toolbar}/>
+							<MainMenu drawerOpen={open}/>
+						</Drawer>
 						<Sidebar/>
 					</div>
 				</Hidden>

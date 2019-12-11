@@ -49,6 +49,8 @@ export interface ISharedLibrariesAppsMap {
 	'rxjs/operators': {};
 	'react-router': {};
 	'react-router-dom': {};
+	'styled-components': {};
+	'prop-types': {};
 	'moment': {};
 	'@zextras/zapp-shell/context': ISharedZxContexts;
 	'@zextras/zapp-shell/fc': ISharedFiberChannelService;
@@ -58,6 +60,7 @@ export interface ISharedLibrariesAppsMap {
 	'@zextras/zapp-shell/service': ISharesZxServices;
 	'@zextras/zapp-shell/sync': ISharedZxSync;
 	'@zextras/zapp-shell/utils': ISharedShellUtils;
+	'@zextras/zapp-ui': {};
 }
 
 export interface ISharedLibrariesThemesMap {

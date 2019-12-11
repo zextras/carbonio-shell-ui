@@ -63,7 +63,6 @@ const Sidebar: FC<{}> = () => {
 			};
 		}, [currentApp, menuItems]
 	);
-	console.log(children);
 	const classes = useStyles();
 	const [open, setOpen] = useState(true);
 	const [hidden, setHidden] = useState(true);

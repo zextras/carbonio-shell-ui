@@ -49,6 +49,11 @@ import * as ReactRouter from 'react-router';
 import * as ReactRouterDom from 'react-router-dom';
 import * as shellUtils from '../utils/ShellUtils';
 import * as Moment from 'moment';
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+import * as ZappUI from '@zextras/zapp-ui';
+import * as StyledComponents from 'styled-components';
+import * as PropTypes from 'prop-types';
 
 interface IChildWindow extends Window {
 	__ZAPP_SHARED_LIBRARIES__: ISharedLibrariesAppsMap;
@@ -219,6 +224,8 @@ export default class ExtensionService {
 					'rxjs/operators': RxJSOperators,
 					'react-router': ReactRouter,
 					'react-router-dom': ReactRouterDom,
+					'styled-components': StyledComponents,
+					'prop-types': PropTypes,
 					'moment': Moment,
 					'@zextras/zapp-shell/context': {
 						OfflineCtxt: OfflineCtxt,
@@ -253,7 +260,8 @@ export default class ExtensionService {
 					'@zextras/zapp-shell/utils': {
 						...shellUtils,
 						registerLanguage: (bundle: any, lang: string): void => this._i18nSrvc.registerLanguage(bundle, lang, appPkg.package)
-					}
+					},
+					'@zextras/zapp-ui': ZappUI
 				};
 				(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve;
 				(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (extModule: ZAppModuleFunction): void => {

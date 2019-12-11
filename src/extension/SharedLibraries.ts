@@ -58,6 +58,7 @@ export interface ISharedLibrariesAppsMap {
 	'@zextras/zapp-shell/service': ISharesZxServices;
 	'@zextras/zapp-shell/sync': ISharedZxSync;
 	'@zextras/zapp-shell/utils': ISharedShellUtils;
+	'@zextras/zapp-ui': {};
 }
 
 export interface ISharedLibrariesThemesMap {

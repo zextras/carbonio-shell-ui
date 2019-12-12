@@ -9,12 +9,12 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC } from 'react';
+import React from 'react';
 
 import style from './SplashPage.less';
 import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core';
 
-const SplashPage: FC<{}> = () => {
+const SplashPage = () => {
 	return (
 		<Card>
 			<CardContent>

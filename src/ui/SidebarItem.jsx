@@ -1,5 +1,5 @@
-import React, { FC, useState, ReactElement } from 'react';
-import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { map } from "lodash";
 import {
 	Collapse,
@@ -12,16 +12,11 @@ import {
 	ExpandLess,
 	ExpandMore
 } from '@material-ui/icons';
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import { IMainSubMenuItemData } from '../router/IRouterService';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 
-export interface ISidebarItemProps extends IMainSubMenuItemData {
-	level: number;
-}
-
-const SidebarItem: FC<ISidebarItemProps> = ({label, icon, children, level, to}: ISidebarItemProps) => {
+const SidebarItem = ({label, icon, children, level, to}) => {
 	const [open, setOpen] = useState(false);
-	const classes = makeStyles((theme: Theme) =>
+	const classes = makeStyles((theme) =>
 		createStyles({
 			nested: {
 				paddingLeft: level * theme.spacing(4),
@@ -30,7 +25,7 @@ const SidebarItem: FC<ISidebarItemProps> = ({label, icon, children, level, to}: 
 	)();
 	const renderLink = React.useMemo(
 		() =>
-			React.forwardRef<HTMLAnchorElement, Omit<RouterLinkProps, 'innerRef' | 'to'>>(
+			React.forwardRef(
 				(itemProps, ref) => (
 					// With react-router-dom@^6.0.0 use `ref` instead of `innerRef`
 					// See https://github.com/ReactTraining/react-router/issues/6056
@@ -44,7 +39,7 @@ const SidebarItem: FC<ISidebarItemProps> = ({label, icon, children, level, to}: 
 			<ListItem
 				button
 				component={renderLink}
-				onClick={(): void => setOpen(!open)}
+				onClick={() => setOpen(!open)}
 				className={classes.nested}
 			>
 				<ListItemIcon>
@@ -60,7 +55,7 @@ const SidebarItem: FC<ISidebarItemProps> = ({label, icon, children, level, to}: 
 					<List component="div" disablePadding>
 						{map(
 							children,
-							(folder: ISidebarItemProps, index: number): ReactElement =>
+							(folder, index) =>
 								<SidebarItem
 									id={folder.id}
 									label={folder.label}
@@ -79,4 +74,4 @@ const SidebarItem: FC<ISidebarItemProps> = ({label, icon, children, level, to}: 
 	);
 };
 
-export default SidebarItem
+export default SidebarItem;

@@ -9,24 +9,18 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { Subscription } from 'rxjs';
-
+import React, { useEffect, useRef, useState } from 'react';
 import ScreenSizeContext from './ScreenSizeContext';
 import ScreenSizeService from './ScreenSizeService';
 
-interface IScreenSizesContextProviderProps {
-	screenSizeService: ScreenSizeService;
-}
-
-const ScreenSizesContextProvider: FC<IScreenSizesContextProviderProps> = ({ screenSizeService, children }) => {
+const ScreenSizesContextProvider = ({ screenSizeService, children }) => {
 	const [ sizes, setScreenSizes ] = useState(ScreenSizeService.CalculateScreenSizes());
-	const sizesSubRef = useRef<Subscription>();
+	const sizesSubRef = useRef();
 
 	useEffect(() => {
 		sizesSubRef.current = screenSizeService.sizes.subscribe(setScreenSizes);
 
-		return (): void => {
+		return () => {
 			if (sizesSubRef.current) {
 				sizesSubRef.current.unsubscribe();
 				sizesSubRef.current = undefined;

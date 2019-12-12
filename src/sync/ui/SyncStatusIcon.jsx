@@ -9,14 +9,13 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC, useContext } from 'react';
+import React, { useContext } from 'react';
 import { CloudQueue, CloudOff, Sync } from '@material-ui/icons';
-
 import SyncContext from '../SyncContext';
 import OfflineContext from '../../offline/OfflineContext';
-import { Box, createStyles, Fade, IconButton, makeStyles, Theme } from '@material-ui/core';
+import { Box, createStyles, Fade, IconButton, makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme) =>
 	createStyles({
 		button: {
 			margin: theme.spacing(1),
@@ -40,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-const SyncStatusIcon: FC<{}> = () => {
+const SyncStatusIcon = () => {
 	const classes = useStyles();
 	const syncContext = useContext(SyncContext);
 	const offlineContext = useContext(OfflineContext);

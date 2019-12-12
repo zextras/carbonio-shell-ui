@@ -9,16 +9,10 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC } from 'react';
-
+import React from 'react';
 import RouterContext from './RouterContext';
-import RouterService from './RouterService';
 
-interface IRouterContextProviderProps {
-	routerService: RouterService;
-}
-
-const RouterContextProvider: FC<IRouterContextProviderProps> = ({ routerService, children }) => {
+const RouterContextProvider = ({ routerService, children }) => {
 	// const [isLoggedIn, setIsLoggedIn] = useState(false);
 	//
 	// let sessionDataSub;

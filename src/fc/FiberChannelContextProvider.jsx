@@ -9,24 +9,17 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC } from 'react';
-
+import React from 'react';
 import FiberChannelContext from './FiberChannelContext';
-import FiberChannelService from './FiberChannelService';
 
-interface IFCContextProviderProps {
-	fiberChannelService: FiberChannelService;
-}
-
-const FiberChannelContextProvider: FC<IFCContextProviderProps> = ({ fiberChannelService, children }) => {
-
+const FiberChannelContextProvider = ({ fiberChannelService, children }) => {
 	return (
 		<FiberChannelContext.Provider
 			value={ {
 				internalFC: fiberChannelService.getInternalFC(),
 				internalFCSink: fiberChannelService.getInternalFCSink(),
-				getFiberChannelForExtension: (name: string) => fiberChannelService.getFiberChannelForExtension(name),
-				getFiberChannelSinkForExtension: (name: string, version: string) => fiberChannelService.getFiberChannelSinkForExtension(name, version)
+				getFiberChannelForExtension: (name) => fiberChannelService.getFiberChannelForExtension(name),
+				getFiberChannelSinkForExtension: (name, version) => fiberChannelService.getFiberChannelSinkForExtension(name, version)
 			} }
 		>
 			{ children }

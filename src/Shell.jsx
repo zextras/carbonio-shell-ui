@@ -11,7 +11,7 @@
 
 import React, { Suspense, useContext, FC } from 'react';
 import { render } from 'react-dom';
-import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
+import { createStyles, makeStyles, useTheme } from '@material-ui/core/styles';
 import { AppBar, CssBaseline, Divider, SwipeableDrawer, Drawer, IconButton, Toolbar, Typography, Hidden } from '@material-ui/core';
 import { ChevronLeft, ChevronRight, Menu } from '@material-ui/icons';
 import clsx from 'clsx';
@@ -46,6 +46,7 @@ import I18nService from './i18n/I18nService';
 import I18nContextProvider from './i18n/I18nContextProvider';
 import I18nContext from './i18n/I18nContext';
 import { CreateButton } from './ui/CreateButton';
+import { ThemeProvider, extendTheme } from '@zextras/zapp-ui';
 
 const drawerWidth = '75vw';
 
@@ -265,9 +266,11 @@ export function loadShell(container) {
 							<ScreenSizeContextProvider screenSizeService={ screenSizeSrvc }>
 								<SyncContextProvider syncService={ syncSrvc }>
 									<ThemeContextProvider themeService={ themeSrvc }>
-										<I18nContextProvider i18nService={ i18nSrvc } namespace={ 'com_zextras_zapp_shell' }>
-											<Shell i18nService={ i18nSrvc }/>
-										</I18nContextProvider>
+										<ThemeProvider theme={ extendTheme({}) }>
+											<I18nContextProvider i18nService={ i18nSrvc } namespace={ 'com_zextras_zapp_shell' }>
+												<Shell i18nService={ i18nSrvc }/>
+											</I18nContextProvider>
+										</ThemeProvider>
 									</ThemeContextProvider>
 								</SyncContextProvider>
 							</ScreenSizeContextProvider>

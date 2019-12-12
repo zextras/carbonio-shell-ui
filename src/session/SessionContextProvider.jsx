@@ -9,22 +9,14 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useState, useEffect, FC, useRef } from 'react';
-import { Subscription } from 'rxjs';
-
+import React, { useState, useEffect, useRef } from 'react';
 import SessionContext from './SessionContext';
-import { IStoredSessionData } from '../idb/IShellIdbSchema';
-import { ISessionService } from './ISessionService';
 
-interface ISessionContextProviderProps {
-	sessionService: ISessionService;
-}
-
-const SessionContextProvider: FC<ISessionContextProviderProps> = ({ sessionService, children }) => {
+const SessionContextProvider = ({ sessionService, children }) => {
 	const [ isLoggedIn, setIsLoggedIn ] = useState(false);
-	const isLoggedInSubRef = useRef<Subscription>();
+	const isLoggedInSubRef = useRef();
 
-	function handleSessionDataChange(sessionData: IStoredSessionData | undefined): void {
+	function handleSessionDataChange(sessionData) {
 		if (sessionData)
 			setIsLoggedIn(true);
 		else
@@ -46,7 +38,7 @@ const SessionContextProvider: FC<ISessionContextProviderProps> = ({ sessionServi
 		<SessionContext.Provider
 			value={ {
 				isLoggedIn: isLoggedIn,
-				doLogin: (u: string, p: string) => sessionService.doLogin(u, p, true),
+				doLogin: (u, p) => sessionService.doLogin(u, p, true),
 				doLogout: () => sessionService.doLogout()
 			} }
 		>

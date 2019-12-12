@@ -9,24 +9,17 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC, useEffect, useState, useRef } from 'react';
-import { Subscription } from 'rxjs';
-
-import { ISyncService } from './ISyncService';
+import React, { useEffect, useState, useRef } from 'react';
 import SyncContext from './SyncContext';
 
-interface ISyncContextProviderProps {
-	syncService: ISyncService;
-}
-
-const SyncContextProvider: FC<ISyncContextProviderProps> = ({ syncService, children }) => {
+const SyncContextProvider = ({ syncService, children }) => {
 	const [ isSyncing, setIsSyncing ] = useState(false);
-	const isSyncingSubRef = useRef<Subscription>();
+	const isSyncingSubRef = useRef();
 
 	useEffect(() => {
 		isSyncingSubRef.current = syncService.isSyncing.subscribe(setIsSyncing);
 
-		return (): void => {
+		return () => {
 			if (isSyncingSubRef.current) {
 				isSyncingSubRef.current.unsubscribe();
 				isSyncingSubRef.current = undefined;

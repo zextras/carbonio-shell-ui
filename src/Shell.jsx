@@ -16,13 +16,10 @@ import { AppBar, CssBaseline, Divider, SwipeableDrawer, Drawer, IconButton, Tool
 import { ChevronLeft, ChevronRight, Menu } from '@material-ui/icons';
 import clsx from 'clsx';
 import { hot } from 'react-hot-loader/root';
-
 // import 'typeface-roboto';
 import style from './Shell.less';
-
 import LoginPage from './view/LoginPage';
 import Sidebar from './ui/Sidebar';
-
 import SessionService from './session/SessionService';
 import RouterService from './router/RouterService';
 import OfflineService from './offline/OfflineService';
@@ -52,7 +49,7 @@ import { CreateButton } from './ui/CreateButton';
 
 const drawerWidth = '75vw';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme) =>
 	createStyles({
 		root: {
 			display: 'flex',
@@ -116,14 +113,8 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-interface IShellProps {
-	i18nService: I18nService;
-}
-
-const Shell: FC<IShellProps> = hot(({ i18nService }) => {
-
+const Shell = hot(({ i18nService }) => {
 	const [ open, setOpen ] = React.useState(false);
-
 	const classes = useStyles();
 	const theme = useTheme();
 	const sessionCtx = useContext(SessionContext);
@@ -135,22 +126,19 @@ const Shell: FC<IShellProps> = hot(({ i18nService }) => {
 		);
 	}
 
-	const handleDrawerOpen = (): void => {
+	const handleDrawerOpen = () => {
 		setOpen(true);
 	};
 
-	const handleDrawerClose = (): void => {
+	const handleDrawerClose = () => {
 		setOpen(false);
 	};
 
-	const toggleDrawer = (open: boolean) => (
-		event: React.KeyboardEvent | React.MouseEvent,
-	): void => {
+	const toggleDrawer = (open) => (event) => {
 		if (
 			event &&
 			event.type === 'keydown' &&
-			((event as React.KeyboardEvent).key === 'Tab' ||
-				(event as React.KeyboardEvent).key === 'Shift')
+			(event.key === 'Tab' || event.key === 'Shift')
 		) {
 			return;
 		}
@@ -241,7 +229,7 @@ const Shell: FC<IShellProps> = hot(({ i18nService }) => {
 	);
 });
 
-export function loadShell(container: HTMLElement): void {
+export function loadShell(container) {
 	const fiberChannelSrvc = new FiberChannelService();
 	const idbSrvc = new IdbService();
 	const networkSrvc = new NetworkService(fiberChannelSrvc.getInternalFCSink());

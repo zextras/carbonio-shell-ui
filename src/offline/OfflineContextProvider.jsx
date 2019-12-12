@@ -9,24 +9,17 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { Subscription } from 'rxjs';
-
+import React, { useEffect, useRef, useState } from 'react';
 import OfflineContext from './OfflineContext';
-import OfflineService from './OfflineService';
 
-interface IOfflineContextProviderProps {
-	offlineService: OfflineService;
-}
-
-const OfflineContextProvider: FC<IOfflineContextProviderProps> = ({ offlineService, children }) => {
+const OfflineContextProvider = ({ offlineService, children }) => {
 	const [ isOnline, setIsOnline ] = useState(false);
-	const isOnlineSubRef = useRef<Subscription>();
+	const isOnlineSubRef = useRef();
 
 	useEffect(() => {
 		isOnlineSubRef.current = offlineService.online.subscribe(setIsOnline);
 
-		return (): void => {
+		return () => {
 			if (isOnlineSubRef.current) {
 				isOnlineSubRef.current.unsubscribe();
 				isOnlineSubRef.current = undefined;

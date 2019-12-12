@@ -9,17 +9,10 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC } from 'react';
-
+import React from 'react';
 import ExtensionContext from './ExtensionContext';
-import ExtensionService from './ExtensionService';
 
-interface IExtensionContextProvider {
-	extensionService: ExtensionService;
-}
-
-const ExtensionContextProvider: FC<IExtensionContextProvider> = ({ extensionService, children }) => {
-
+const ExtensionContextProvider = ({ extensionService, children }) => {
 	return (
 		<ExtensionContext.Provider
 			value={ {} }

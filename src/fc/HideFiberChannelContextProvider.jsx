@@ -10,18 +10,16 @@
  */
 
 import React, { FC } from 'react';
-
 import FiberChannelContext from './FiberChannelContext';
 
-const FiberChannelContextProvider: FC<{}> = ({ children }) => {
-
+const FiberChannelContextProvider = ({ children }) => {
 	return (
 		<FiberChannelContext.Provider
 			value={ {
-				internalFC: undefined!,
-				internalFCSink: undefined!,
-				getFiberChannelForExtension: undefined!,
-				getFiberChannelSinkForExtension: undefined!
+				internalFC: undefined,
+				internalFCSink: undefined,
+				getFiberChannelForExtension: undefined,
+				getFiberChannelSinkForExtension: undefined
 			} }
 		>
 			{ children }

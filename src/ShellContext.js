@@ -13,9 +13,9 @@
 
 export class ShellContext {
 
-	private _splash: HTMLElement;
+	_splash;
 
-	constructor(splash: HTMLElement) {
+	constructor(splash) {
 		this._splash = splash;
 	}
 

@@ -9,8 +9,8 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC, ReactElement, useContext, useEffect, useRef, useState } from 'react';
-import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import {List,
 	ListItem,
 	ListItemIcon,
@@ -18,40 +18,29 @@ import {List,
 	Collapse,
 	Hidden,
 	makeStyles,
-	createStyles,
-	Theme
+	createStyles
 } from '@material-ui/core';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
-import { Observable, Subscription } from 'rxjs';
 import RouterContext from './RouterContext';
 import { map, forEach } from 'lodash';
-import { IMainMenuItemData, IMainSubMenuItemData } from './IRouterService';
-import { II18nService } from '../i18n/II18nService';
 import { ErrorOutline } from '@material-ui/icons';
-import SidebarItem, { ISidebarItemProps } from '../ui/SidebarItem';
+import SidebarItem from '../ui/SidebarItem';
 
-interface IListItemLinkProps {
-	icon?: ReactElement;
-	primary: string;
-	to: string;
-	childrenObs?: Observable<Array<IMainSubMenuItemData>>;
-	drawerOpen: boolean;
-}
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme) =>
 	createStyles({
 		barIcon: {
 			minWidth: theme.spacing(3),
 		}
 	})
-)
+);
 
-const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to, childrenObs, drawerOpen }) => {
+const ListItemLink = ({ icon, primary, to, childrenObs, drawerOpen }) => {
 	const classes = useStyles();
-	const [subFolders, setSubFolders] = useState<Array<IMainSubMenuItemData>>([]);
+	const [subFolders, setSubFolders] = useState([]);
 	const [open, setOpen] = useState(false);
 	const renderLink = React.useMemo(
 		() =>
-			React.forwardRef<HTMLAnchorElement, Omit<RouterLinkProps, 'innerRef' | 'to'>>(
+			React.forwardRef(
 				(itemProps, ref) => (
 					// With react-router-dom@^6.0.0 use `ref` instead of `innerRef`
 					// See https://github.com/ReactTraining/react-router/issues/6056
@@ -63,7 +52,7 @@ const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to, childrenObs, 
 
 	useEffect(
 		() => {
-			const childSubs: Array<Subscription> = [];
+			const childSubs = [];
 			if (childrenObs) {
 				childSubs.push(
 					childrenObs.subscribe((e) => setSubFolders(e))
@@ -85,7 +74,7 @@ const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to, childrenObs, 
 				<ListItem
 					button
 					component={renderLink}
-					onClick={(): void => setOpen(!open)}
+					onClick={() => setOpen(!open)}
 				>
 					<ListItemIcon className={classes.barIcon}>
 						{icon ? icon : <ErrorOutline/>}
@@ -96,7 +85,7 @@ const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to, childrenObs, 
 				<ListItem
 					button
 					component={renderLink}
-					onClick={(): void => setOpen(drawerOpen && !open)}
+					onClick={() => setOpen(drawerOpen && !open)}
 				>
 					<ListItemIcon className={classes.barIcon}>
 						{icon ? icon : <ErrorOutline/>}
@@ -111,7 +100,7 @@ const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to, childrenObs, 
 					<List component="div" disablePadding>
 						{map(
 							subFolders,
-							(folder: ISidebarItemProps, index: number): ReactElement =>
+							(folder, index) =>
 								<SidebarItem
 									id={folder.id}
 									label={folder.label}
@@ -131,15 +120,15 @@ const ListItemLink: FC<IListItemLinkProps> = ({ icon, primary, to, childrenObs, 
 	);
 };
 
-const MainMenu: FC<{ drawerOpen: boolean }> = ({ drawerOpen }) => {
-	const [ mainMenuItems, setMainMenuItems ] = useState<Array<IMainMenuItemData>>([]);
+const MainMenu = ({ drawerOpen }) => {
+	const [ mainMenuItems, setMainMenuItems ] = useState([]);
 	const routerCtx = useContext(RouterContext);
-	const mainMenuItemsSubRef = useRef<Subscription>();
+	const mainMenuItemsSubRef = useRef();
 
 	useEffect(() => {
 		mainMenuItemsSubRef.current = routerCtx.mainMenuItems.subscribe(setMainMenuItems);
 
-		return (): void => {
+		return () => {
 			if (mainMenuItemsSubRef.current) {
 				mainMenuItemsSubRef.current.unsubscribe();
 				mainMenuItemsSubRef.current = undefined;

@@ -9,24 +9,18 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { Subscription } from 'rxjs';
+import React, { useEffect, useRef, useState } from 'react';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from '@material-ui/core';
-import ThemeService from './ThemeService';
 
-interface IThemeContextProviderProps {
-	themeService: ThemeService;
-}
-
-const ThemeContextProvider: FC<IThemeContextProviderProps> = ({ themeService, children }) => {
+const ThemeContextProvider = ({ themeService, children }) => {
 	const [ theme, setTheme ] = useState(createMuiTheme({}));
-	const themeSubRef = useRef<Subscription>();
+	const themeSubRef = useRef();
 
 	useEffect(() => {
 		themeSubRef.current = themeService.theme.subscribe((theme) => setTheme(theme));
 
-		return (): void => {
+		return () => {
 			if (themeSubRef.current) {
 				themeSubRef.current.unsubscribe();
 				themeSubRef.current = undefined;

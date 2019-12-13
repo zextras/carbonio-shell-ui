@@ -233,7 +233,10 @@ const Shell = hot(({ i18nService }) => {
 export function loadShell(container) {
 	const fiberChannelSrvc = new FiberChannelService();
 	const idbSrvc = new IdbService();
-	const networkSrvc = new NetworkService(fiberChannelSrvc.getInternalFCSink());
+	const networkSrvc = new NetworkService(
+		fiberChannelSrvc.getInternalFCSink(),
+		idbSrvc
+	);
 	const sessionSrvc = new SessionService(networkSrvc, idbSrvc);
 	const screenSizeSrvc = new ScreenSizeService();
 	const routerSrvc = new RouterService();

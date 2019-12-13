@@ -13,8 +13,7 @@ import { IIdbExtensionService } from './IIdbExtensionService';
 import { IDBPDatabase } from 'idb';
 import { IShellIdbSchema } from './IShellIdbSchema';
 
-export interface IIdbContext {
+export type IIdbContext = {
 	createIdbService(pkgName: string): IIdbExtensionService<any>;
-
 	openDb(): Promise<IDBPDatabase<IShellIdbSchema>>;
-}
+};

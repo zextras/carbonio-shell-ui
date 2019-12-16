@@ -52,12 +52,12 @@ export const CreateButton = ({ i18nSrvc }) => {
 
 	const handleClick = () => {
 		if (currentAppCreateItem)
-			history.push(currentAppCreateItem.to);
+			history.push(currentAppCreateItem.to, { fromPathname: history.location.pathname });
 	};
 
 	const handleMenuItemClick = (event, ci) => {
 		setOpen(false);
-		history.push(ci.to);
+		history.push(ci.to, { fromPathname: history.location.pathname });
 	};
 
 	const handleToggle = () => {

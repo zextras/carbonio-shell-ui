@@ -9,20 +9,15 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { Suspense, useContext, FC } from 'react';
+import React, { useContext } from 'react';
 import { render } from 'react-dom';
-import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
+import { createStyles, makeStyles, useTheme } from '@material-ui/core/styles';
 import { AppBar, CssBaseline, Divider, SwipeableDrawer, Drawer, IconButton, Toolbar, Typography, Hidden } from '@material-ui/core';
 import { ChevronLeft, ChevronRight, Menu } from '@material-ui/icons';
 import clsx from 'clsx';
 import { hot } from 'react-hot-loader/root';
-
-// import 'typeface-roboto';
-import style from './Shell.less';
-
 import LoginPage from './view/LoginPage';
 import Sidebar from './ui/Sidebar';
-
 import SessionService from './session/SessionService';
 import RouterService from './router/RouterService';
 import OfflineService from './offline/OfflineService';
@@ -49,10 +44,11 @@ import I18nService from './i18n/I18nService';
 import I18nContextProvider from './i18n/I18nContextProvider';
 import I18nContext from './i18n/I18nContext';
 import { CreateButton } from './ui/CreateButton';
+import { ThemeProvider, extendTheme } from '@zextras/zapp-ui';
 
 const drawerWidth = '75vw';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme) =>
 	createStyles({
 		root: {
 			display: 'flex',
@@ -116,14 +112,8 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-interface IShellProps {
-	i18nService: I18nService;
-}
-
-const Shell: FC<IShellProps> = hot(({ i18nService }) => {
-
+const Shell = hot(({ i18nService }) => {
 	const [ open, setOpen ] = React.useState(false);
-
 	const classes = useStyles();
 	const theme = useTheme();
 	const sessionCtx = useContext(SessionContext);
@@ -135,22 +125,19 @@ const Shell: FC<IShellProps> = hot(({ i18nService }) => {
 		);
 	}
 
-	const handleDrawerOpen = (): void => {
+	const handleDrawerOpen = () => {
 		setOpen(true);
 	};
 
-	const handleDrawerClose = (): void => {
+	const handleDrawerClose = () => {
 		setOpen(false);
 	};
 
-	const toggleDrawer = (open: boolean) => (
-		event: React.KeyboardEvent | React.MouseEvent,
-	): void => {
+	const toggleDrawer = (open) => (event) => {
 		if (
 			event &&
 			event.type === 'keydown' &&
-			((event as React.KeyboardEvent).key === 'Tab' ||
-				(event as React.KeyboardEvent).key === 'Shift')
+			(event.key === 'Tab' || event.key === 'Shift')
 		) {
 			return;
 		}
@@ -241,10 +228,13 @@ const Shell: FC<IShellProps> = hot(({ i18nService }) => {
 	);
 });
 
-export function loadShell(container: HTMLElement): void {
+export function loadShell(container) {
 	const fiberChannelSrvc = new FiberChannelService();
 	const idbSrvc = new IdbService();
-	const networkSrvc = new NetworkService(fiberChannelSrvc.getInternalFCSink());
+	const networkSrvc = new NetworkService(
+		fiberChannelSrvc.getInternalFCSink(),
+		idbSrvc
+	);
 	const sessionSrvc = new SessionService(networkSrvc, idbSrvc);
 	const screenSizeSrvc = new ScreenSizeService();
 	const routerSrvc = new RouterService();
@@ -277,9 +267,11 @@ export function loadShell(container: HTMLElement): void {
 							<ScreenSizeContextProvider screenSizeService={ screenSizeSrvc }>
 								<SyncContextProvider syncService={ syncSrvc }>
 									<ThemeContextProvider themeService={ themeSrvc }>
-										<I18nContextProvider i18nService={ i18nSrvc } namespace={ 'com_zextras_zapp_shell' }>
-											<Shell i18nService={ i18nSrvc }/>
-										</I18nContextProvider>
+										<ThemeProvider theme={ extendTheme({}) }>
+											<I18nContextProvider i18nService={ i18nSrvc } namespace={ 'com_zextras_zapp_shell' }>
+												<Shell i18nService={ i18nSrvc }/>
+											</I18nContextProvider>
+										</ThemeProvider>
 									</ThemeContextProvider>
 								</SyncContextProvider>
 							</ScreenSizeContextProvider>

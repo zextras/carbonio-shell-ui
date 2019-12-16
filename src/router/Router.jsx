@@ -9,23 +9,13 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC, ReactElement, useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { BrowserRouter, Route, useRouteMatch } from 'react-router-dom';
-import { Subscription } from 'rxjs';
 import { forOwn } from 'lodash';
-
 import RouterContext from './RouterContext';
-import { IRouteData } from './IRouterService';
 import I18nContextProvider from '../i18n/I18nContextProvider';
-import { II18nService } from '../i18n/II18nService';
 
-interface IRouterProps {
-	i18nSrvc: II18nService;
-	contentClass: string;
-	toolbarClass: string;
-}
-
-const _RouteDetector: FC<{ pkg: string }> = ({ pkg }) => {
+const _RouteDetector = ({ pkg }) => {
 	const routerCtx = useContext(RouterContext);
 	const match = useRouteMatch();
 	useEffect(
@@ -37,15 +27,15 @@ const _RouteDetector: FC<{ pkg: string }> = ({ pkg }) => {
 	return null;
 };
 
-const Router: FC<IRouterProps> = ({ contentClass, toolbarClass, i18nSrvc, children }) => {
-	const [ routeData, setRouteData ] = useState<IRouteData>({});
+const Router = ({ contentClass, toolbarClass, i18nSrvc, children }) => {
+	const [ routeData, setRouteData ] = useState({});
 	const routerCtx = useContext(RouterContext);
-	const routeDataSubRef = useRef<Subscription>();
+	const routeDataSubRef = useRef();
 
 	useEffect(() => {
 		routeDataSubRef.current = routerCtx.routes.subscribe(setRouteData);
 
-		return (): void => {
+		return () => {
 			if (routeDataSubRef.current) {
 				routeDataSubRef.current.unsubscribe();
 				routeDataSubRef.current = undefined;
@@ -53,7 +43,7 @@ const Router: FC<IRouterProps> = ({ contentClass, toolbarClass, i18nSrvc, childr
 		};
 	}, [ routerCtx.routes ]);
 
-	const routes: Array<ReactElement> = [];
+	const routes = [];
 	forOwn(
 		routeData,
 		(v, k) => {

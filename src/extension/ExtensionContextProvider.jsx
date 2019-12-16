@@ -9,6 +9,16 @@
  * *** END LICENSE BLOCK *****
  */
 
-.splash {
+import React from 'react';
+import ExtensionContext from './ExtensionContext';
 
-}
+const ExtensionContextProvider = ({ extensionService, children }) => {
+	return (
+		<ExtensionContext.Provider
+			value={ {} }
+		>
+			{ children }
+		</ExtensionContext.Provider>
+	);
+};
+export default ExtensionContextProvider;

@@ -34,6 +34,7 @@ import ScreenSizeCtxt from '../screenSize/ScreenSizeContext';
 import SyncCtxt from '../sync/SyncContext';
 import I18nCtxt from '../i18n/I18nContext';
 
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 import * as MaterialUI from '@material-ui/core';
 import * as MaterialUIStyles from '@material-ui/core/styles';
 import * as MaterialUIIcons from '@material-ui/icons';
@@ -41,20 +42,29 @@ import * as IDB from 'idb';
 import * as Lodash from 'lodash';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+// @ts-ignore
 import * as ReactVirtualized from 'react-virtualized';
 import * as RxJS from 'rxjs';
 import * as RxJSOperators from 'rxjs/operators';
 import * as Clsx from 'clsx';
+// @ts-ignore
 import * as ReactRouter from 'react-router';
+// @ts-ignore
 import * as ReactRouterDom from 'react-router-dom';
 import * as shellUtils from '../utils/ShellUtils';
 import * as Moment from 'moment';
+// @ts-ignore
+import * as ZappUI from '@zextras/zapp-ui';
+// @ts-ignore
+import * as StyledComponents from 'styled-components';
+import * as PropTypes from 'prop-types';
+/* eslint-enable @typescript-eslint/ban-ts-ignore */
 
-interface IChildWindow extends Window {
+type IChildWindow = Window & {
 	__ZAPP_SHARED_LIBRARIES__: ISharedLibrariesAppsMap;
 	__ZAPP_EXPORT__: (value?: ZAppModuleFunction | PromiseLike<ZAppModuleFunction> | undefined) => void;
 	__ZAPP_HMR_EXPORT__: (mod: ZAppModuleFunction) => void;
-}
+};
 
 export default class ExtensionService {
 
@@ -219,6 +229,8 @@ export default class ExtensionService {
 					'rxjs/operators': RxJSOperators,
 					'react-router': ReactRouter,
 					'react-router-dom': ReactRouterDom,
+					'styled-components': StyledComponents,
+					'prop-types': PropTypes,
 					'moment': Moment,
 					'@zextras/zapp-shell/context': {
 						OfflineCtxt: OfflineCtxt,
@@ -253,7 +265,8 @@ export default class ExtensionService {
 					'@zextras/zapp-shell/utils': {
 						...shellUtils,
 						registerLanguage: (bundle: any, lang: string): void => this._i18nSrvc.registerLanguage(bundle, lang, appPkg.package)
-					}
+					},
+					'@zextras/zapp-ui': ZappUI
 				};
 				(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve;
 				(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (extModule: ZAppModuleFunction): void => {

@@ -6,8 +6,14 @@ const _ = require('lodash');
 
 module.exports = function (wpConf, zappConfig, options) {
 	wpConf.entry = {
-		index: path.resolve(process.cwd(), 'src', 'index.ts')
+		index: path.resolve(process.cwd(), 'src', 'index.js')
 	};
+	wpConf.module.rules.push(
+		{
+			test: /\.worker\.js$/,
+			use: { loader: 'worker-loader' }
+		}
+	);
 	wpConf.plugins.push(
 		new WorkboxPlugin.InjectManifest({
 			importWorkboxFrom: 'local',

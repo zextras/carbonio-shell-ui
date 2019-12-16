@@ -9,30 +9,29 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC, useState, MouseEvent, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
-
 import { AccountCircle } from '@material-ui/icons';
 import SessionContext from '../session/SessionContext';
 import I18nContext from '../i18n/I18nContext';
 
-const UserMenu: FC<{}> = () => {
+const UserMenu = () => {
 
-	const [ anchorEl, setAnchorEl ] = useState<null | HTMLElement>(null);
+	const [ anchorEl, setAnchorEl ] = useState(null);
 
 	const sessionCtx = useContext(SessionContext);
 
 	const { t } = useContext(I18nContext);
 
-	function openMenu(event: MouseEvent<HTMLButtonElement>): void {
+	function openMenu(event) {
 		setAnchorEl(event.currentTarget);
 	}
 
-	function closeMenu(): void {
+	function closeMenu() {
 		setAnchorEl(null);
 	}
 
-	function doLogout(): void {
+	function doLogout() {
 		sessionCtx.doLogout().then(() => undefined);
 		setAnchorEl(null);
 	}

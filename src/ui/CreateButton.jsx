@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC, useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import RouterContext from '../router/RouterContext';
 import {
 	Button,
@@ -23,18 +23,16 @@ import {
 	Popper
 } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { ICreateMenuItemData } from '../router/IRouterService';
 import { map, filter, find } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import I18nContextProvider from '../i18n/I18nContextProvider';
-import { II18nService } from '../i18n/II18nService';
 
-export const CreateButton: FC<{ i18nSrvc: II18nService }> = ({ i18nSrvc }) => {
+export const CreateButton = ({ i18nSrvc }) => {
 	const routerCtxt = useContext(RouterContext);
 	const [ open, setOpen ] = useState(false);
-	const [ createItems, setCreateItems ] = useState<Array<ICreateMenuItemData>>([]);
-	const [ currentApp, setCurrentApp ] = useState<string>('');
-	const anchorRef = useRef<HTMLDivElement>(null);
+	const [ createItems, setCreateItems ] = useState([]);
+	const [ currentApp, setCurrentApp ] = useState('');
+	const anchorRef = useRef(null);
 	const history = useHistory();
 
 	useEffect(() => {
@@ -57,10 +55,7 @@ export const CreateButton: FC<{ i18nSrvc: II18nService }> = ({ i18nSrvc }) => {
 			history.push(currentAppCreateItem.to, { fromPathname: history.location.pathname });
 	};
 
-	const handleMenuItemClick = (
-		event: React.MouseEvent<HTMLLIElement, MouseEvent>,
-		ci: ICreateMenuItemData
-	) => {
+	const handleMenuItemClick = (event, ci) => {
 		setOpen(false);
 		history.push(ci.to, { fromPathname: history.location.pathname });
 	};
@@ -69,8 +64,8 @@ export const CreateButton: FC<{ i18nSrvc: II18nService }> = ({ i18nSrvc }) => {
 		setOpen(prevOpen => !prevOpen);
 	};
 
-	const handleClose = (event: React.MouseEvent<Document, MouseEvent>) => {
-		if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
+	const handleClose = (event) => {
+		if (anchorRef.current && anchorRef.current.contains(event.target)) {
 			return;
 		}
 		setOpen(false);

@@ -9,9 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC, useContext, useState, useEffect } from 'react';
-
-import style from './LoginPage.less';
+import React, { useContext, useState } from 'react';
 import SessionContext from '../session/SessionContext';
 import {
 	Container,
@@ -20,13 +18,12 @@ import {
 	Paper,
 	Grid,
 	makeStyles,
-	Theme,
 	createStyles,
 	FormControl, InputLabel, Input, Button
 } from '@material-ui/core';
 import I18nContext from '../i18n/I18nContext';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme) =>
 	createStyles({
 		root: {
 			padding: theme.spacing(3, 2)
@@ -40,20 +37,15 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
-const LoginPage: FC<{}> = () => {
-
+const LoginPage = () => {
 	const [ btnDisabled, setBtnDisabled ] = useState(false);
-
 	const { t } = useContext(I18nContext);
-
 	const sessionCtx = useContext(SessionContext);
-
-	const usernameRef = React.createRef<HTMLInputElement>();
-	const passwordRef = React.createRef<HTMLInputElement>();
-
+	const usernameRef = React.createRef();
+	const passwordRef = React.createRef();
 	const classes = useStyles();
 
-	const doLogin = (): void => {
+	const doLogin = () => {
 		if (!usernameRef.current || !passwordRef.current) return;
 		const username = usernameRef.current.value;
 		const password = passwordRef.current.value;

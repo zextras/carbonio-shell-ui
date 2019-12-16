@@ -13,7 +13,7 @@ import { ISoapNotification } from './ISoapNotification';
 
 export type JsnsUrn = 'urn:zimbra' | 'urn:zimbraAccount' | 'urn:zimbraMail';
 
-export interface ISoapRequestContext {
+export type ISoapRequestContext = {
 	change?: {
 		token: number;
 	};
@@ -32,10 +32,10 @@ export interface ISoapRequestContext {
 		name: string;
 		version: string;
 	};
-}
+};
 
-export interface ISoapRequest<T> {
-	_jsns: 'urn:zimbraSoap';
+export type ISoapRequest<T> = {
+	// _jsns: 'urn:zimbraSoap';
 	Header: {
 		_jsns: 'urn:zimbra';
 		context: ISoapRequestContext;
@@ -45,9 +45,9 @@ export interface ISoapRequest<T> {
 			_jsns: JsnsUrn;
 		};
 	};
-}
+};
 
-export interface ISoapResponse<T extends ISoapResponseContent> {
+export type ISoapResponse<T extends ISoapResponseContent> = {
 	Header: {
 		context: {
 			notify?: Array<ISoapNotification>;
@@ -60,13 +60,12 @@ export interface ISoapResponse<T extends ISoapResponseContent> {
 	Body: {
 		[name: string]: T;
 	};
-}
+};
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ISoapResponseContent {
-}
+export type ISoapResponseContent = {};
 
-export interface IAuthRequest {
+export type IAuthRequest = {
 	account: {
 		by: 'name' | 'id';
 		_content: string;
@@ -74,24 +73,50 @@ export interface IAuthRequest {
 	password?: {
 		_content: string;
 	};
-	prefs?: Array<IAuthRequestPref>;
-}
+	prefs?: Array<
+		IAuthRequestPref<'zimbraPrefMailPollingInterval'> // 31536000 means 'disabled'
+	>;
+	// attrs?: Array<>;
+};
 
-interface IAuthRequestPref {
+type IAuthRequestPref<T> = {
 	pref: {
-		name: 'zimbraPrefMailPollingInterval';
+		name: T;
 	};
-}
+};
 
-export interface IAuthResponse extends ISoapResponseContent {
+type IAuthRequestAttr<T> = {
+	attr: {
+		name: T;
+	};
+};
+
+type ZimbraSkinName = 'bare'|'beach'|'bones'|'carbon'|'harmony'
+	|'hotrod'|'lake'|'lavender'|'lemongrass'|'oasis'|'pebble'
+	|'sand'|'serenity'|'sky'|'smoke'|'steel'|'tree'|'twilight'|'waves';
+
+export type IAuthResponse = ISoapResponseContent & {
 	authToken: Array<{ _content: string }>;
-}
+	lifetime: number;
+	session: {
+		id: string;
+		_content: string;
+	};
+	prefs?: {
+		_attrs: {
+			zimbraPrefMailPollingInterval?: string;
+		};
+	};
+	skin: Array<{
+		_content: ZimbraSkinName;
+	}>;
+};
 
-export interface IGetInfoRequest {
+export type IGetInfoRequest = {
 	sections?: string;
 }
 
-export interface IGetInfoResponse extends ISoapResponseContent {
+export type IGetInfoResponse = ISoapResponseContent & {
 	name: string;
 	id: string;
 	zimlets: {
@@ -113,16 +138,17 @@ export interface IGetInfoResponse extends ISoapResponseContent {
 			}>;
 		}>;
 	};
-}
+};
 
-export interface INoOpRequest {
+export type INoOpRequest = {
 	limitToOneBlocked?: 1;
 	wait?: /* Enable for instant notifications */ 1;
-}
+};
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface INoOpResponse extends ISoapResponseContent {
-}
+export type INoOpResponse = ISoapResponseContent & {
+	waitDisallowed?: boolean;
+};
 
 export type IBatchRequest<REQ_NAME extends string, T extends {}> = {
 	[key in REQ_NAME]: Array<T>;
@@ -137,7 +163,7 @@ export type IBatchResponse<RESP_NAME extends string, T extends {}> = {
 	_jsns: 'urn:zimbra';
 };
 
-export interface ISoapSyncRequest {
+export type ISoapSyncRequest = {
 	// _jsns: 'urn:zimbraMail';
 	token?: number;
 	/** folder root id */ l?: string;
@@ -146,7 +172,7 @@ export interface ISoapSyncRequest {
 	/** seconds */ msgCutOff?: number;
 	deleteLimit?: number;
 	changeLimit?: number;
-}
+};
 
 export type ISoapSyncDeletedMap = {
 	folder?: { ids: string };
@@ -269,15 +295,15 @@ export type ISoapFolderObj = {
 	webOfflineSyncDays: number;
 }
 
-export interface IGetFolderReq {
+export type IGetFolderReq = {
 	depth?: number;
 	view?: IFolderView;
 	folder: {
 		l?: string;
 		path?: string;
 	};
-}
+};
 
-export interface IGetFolderRes extends ISoapResponseContent {
+export type IGetFolderRes = ISoapResponseContent & {
 	folder: Array<ISoapFolderObj>;
-}
+};

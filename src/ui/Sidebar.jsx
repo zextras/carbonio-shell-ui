@@ -52,7 +52,7 @@ const Sidebar = () => {
 	);
 	const classes = useStyles();
 	const [open, setOpen] = useState(true);
-	const [hidden, setHidden] = useState(true);
+	const [hidden, setHidden] = useState(false);
 	const handleClick = () => {
 		setOpen(!open);
 	};

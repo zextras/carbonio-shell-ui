@@ -11,6 +11,6 @@
 
 import { TFunction } from 'i18next';
 
-export interface II18nContext {
+export type II18nContext = {
 	t: TFunction;
-}
+};

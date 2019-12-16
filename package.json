@@ -1,6 +1,6 @@
 {
   "name": "@zextras/zapp-shell",
-  "version": "0.0.27",
+  "version": "0.0.29",
   "description": "A web application framework",
   "scripts": {
     "prepublishOnly": "rm -rf lib && npx zapp package && npm run build:types && npx tsc src/extension/shimmed/*.ts --outDir lib/",
@@ -27,7 +27,7 @@
     "@types/lodash": "4.14.144",
     "@typescript-eslint/eslint-plugin": "2.5.0",
     "@typescript-eslint/parser": "2.5.0",
-    "@zextras/zapp-cli": "0.0.15",
+    "@zextras/zapp-cli": "0.0.16",
     "autoprefixer": "9.6.1",
     "babel-loader": "8.0.6",
     "copy-webpack-plugin": "5.0.4",
@@ -52,7 +52,8 @@
     "webpack": "4.41.0",
     "webpack-cli": "3.3.9",
     "webpack-dev-server": "3.8.1",
-    "workbox-webpack-plugin": "4.3.1"
+    "workbox-webpack-plugin": "4.3.1",
+    "worker-loader": "2.0.0"
   },
   "dependencies": {
     "@hot-loader/react-dom": "16.10.2",

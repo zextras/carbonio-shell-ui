@@ -21,7 +21,7 @@ import { IGetInfoRequest, IGetInfoResponse } from '../network/ISoap';
 import { IAppPgkDescription } from '../network/IApi';
 import { ISessionService } from '../session/ISessionService';
 
-interface IChildWindow extends Window {
+type IChildWindow = Window & {
 	__ZAPP_SHARED_LIBRARIES__: ISharedLibrariesThemesMap;
 	__ZAPP_EXPORT__: (value?: ZThemeModuleFunction | PromiseLike<ZThemeModuleFunction> | undefined) => void;
 	__ZAPP_HMR_EXPORT__: (mod: ZThemeModuleFunction) => void;

@@ -35,7 +35,7 @@ export type RegisterRouteFn = <T>(path: string, component: ComponentClass<T> | F
 export type AddMainMenuItemFn = (icon: ReactElement, label: string, to: string, child: Observable<Array<IMainSubMenuItemData>>) => void;
 export type AddCreateMenuItemFn = (icon: ReactElement, label: string, to: string) => void;
 
-export interface ISharedLibrariesAppsMap {
+export type ISharedLibrariesAppsMap = {
 	'clsx': {};
 	'react': {};
 	'react-dom': {};
@@ -61,55 +61,49 @@ export interface ISharedLibrariesAppsMap {
 	'@zextras/zapp-shell/sync': ISharedZxSync;
 	'@zextras/zapp-shell/utils': ISharedShellUtils;
 	'@zextras/zapp-ui': {};
-}
+};
 
-export interface ISharedLibrariesThemesMap {
+export type ISharedLibrariesThemesMap = {
 	'@material-ui/core': {};
-}
+};
 
-interface ISharedZxContexts {
+type ISharedZxContexts = {
 	OfflineCtxt: Context<IOfflineContext>;
 	ScreenSizeCtxt: Context<IScreenSizeContext>;
 	SyncCtxt: Context<ISyncContext>;
 	I18nCtxt: Context<II18nContext>;
-}
+};
 
-interface ISharedFiberChannelService {
+type ISharedFiberChannelService = {
 	fc: Observable<IFCEvent<any>>;
 	fcSink: IFCSink;
-}
+};
 
-interface ISharedZxNetwork {
+type ISharedZxNetwork = {
 	sendSOAPRequest<REQ, RESP extends ISoapResponseContent>(command: string, data: REQ, urn?: string | JsnsUrn): Promise<RESP>;
-
 	registerNotificationParser(tagName: string, parser: INotificationParser<any>): void;
-}
+};
 
-interface ISharedZxSync {
+type ISharedZxSync = {
 	registerSyncItemParser(tagName: string, parser: ISyncItemParser<any>): void;
-
 	registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<any>): void;
-
 	syncFolderById(folderId: string): void;
-
 	syncOperations: BehaviorSubject<Array<ISyncOperation<any, ISyncOpRequest<any>>>>;
-}
+};
 
-interface ISharedZxRoute {
+type ISharedZxRoute = {
 	registerRoute: RegisterRouteFn;
 	addMainMenuItem: AddMainMenuItemFn;
 	addCreateMenuItem: AddCreateMenuItemFn;
-}
+};
 
-interface ISharesZxServices {
+type ISharesZxServices = {
 	offlineSrvc: IOfflineService;
 	sessionSrvc: ISessionService;
-}
+};
 
-interface ISharedShellUtils {
+type ISharedShellUtils = {
 	normalizeFolder<T extends IFolderSchm>(version: number, f: ISoapFolderObj): Array<T>;
-
 	createFolderIdb<T extends IIDBFolderSchm>(version: number, db: IDBPDatabase<T>): void;
-
 	registerLanguage(bundle: any, lang: string): void;
-}
+};

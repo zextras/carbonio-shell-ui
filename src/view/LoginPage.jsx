@@ -9,9 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC, useContext, useState } from 'react';
-
-import style from './LoginPage.less';
+import React, { useContext, useState } from 'react';
 import SessionContext from '../session/SessionContext';
 import {
 	Container,
@@ -20,7 +18,6 @@ import {
 	Paper,
 	Grid,
 	makeStyles,
-	Theme,
 	createStyles,
 	FormControl, InputLabel, Input, Button
 } from '@material-ui/core';
@@ -50,14 +47,28 @@ const LoginPage = () => {
 
 	const doLogin = () => {
 		if (!usernameRef.current || !passwordRef.current) return;
+		const username = usernameRef.current.value;
+		const password = passwordRef.current.value;
 		setBtnDisabled(true);
 		sessionCtx.doLogin(
-			usernameRef.current.value,
-			passwordRef.current.value
-		).then(
-			() => undefined
-		);
+			username,
+			password
+		).finally(() => setBtnDisabled(false));
 	};
+
+	const onPress = (event: KeyboardEvent): void => {
+		if ('Enter' === event.key) {
+			doLogin();
+		}
+	};
+
+	useEffect(() => {
+		const cb = (e: KeyboardEvent) => onPress(e);
+		window.addEventListener('keypress', cb);
+		return () => {
+			window.removeEventListener('keypress', cb);
+		}
+	}, [onPress]);
 
 	return (
 		<>

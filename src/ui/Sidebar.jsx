@@ -25,7 +25,15 @@ import RouterContext from '../router/RouterContext';
 import SidebarItem from './SidebarItem';
 import I18nContext from '../i18n/I18nContext';
 import useStyles from './Sidebar.jss';
-import { useObservable } from '../utils/useObservable';
+
+function useObservable(observable) {
+	const [value, setValue] = useState(observable.value);
+	useEffect(() => {
+		const sub = observable.subscribe(setValue);
+			return () => sub.unsubscribe();
+		}, [observable]);
+	return value;
+}
 
 const Sidebar = () => {
 	const { t } = useContext(I18nContext);
@@ -52,7 +60,7 @@ const Sidebar = () => {
 	);
 	const classes = useStyles();
 	const [open, setOpen] = useState(true);
-	const [hidden, setHidden] = useState(true);
+	const [hidden, setHidden] = useState(false);
 	const handleClick = () => {
 		setOpen(!open);
 	};

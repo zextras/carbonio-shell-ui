@@ -9,6 +9,6 @@
  * *** END LICENSE BLOCK *****
  */
 
-export interface ISyncContext {
+export type ISyncContext = {
 	isSyncing: boolean;
-}
+};

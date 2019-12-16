@@ -16,17 +16,13 @@ import { IFCPartialEvent } from '../fc/IFiberChannel';
 
 export interface INetworkService {
 	sendSOAPRequest<REQ, RESP extends ISoapResponseContent>(command: string, data: REQ, urn?: JsnsUrn | string): Promise<RESP>;
-
 	openNotificationChannel(): void;
-
 	closeNotificationChannel(): void;
-
 	registerNotificationParser(tagName: string, parser: INotificationParser<any>): string;
-
 	unregisterNotificationParserById(id: string): void;
 }
 
-export interface ISoapSessionData {
+export type ISoapSessionData = {
 	id?: string;
 	username?: string;
 	authToken?: string;
@@ -34,6 +30,6 @@ export interface ISoapSessionData {
 	notifySeq?: number;
 }
 
-export interface INotificationParser<MOD extends {}> {
+export type INotificationParser<MOD extends {}> = {
 	(type: 'created' | 'modified', mod: MOD): Promise<void>;
 }

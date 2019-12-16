@@ -60,11 +60,11 @@ import * as StyledComponents from 'styled-components';
 import * as PropTypes from 'prop-types';
 /* eslint-enable @typescript-eslint/ban-ts-ignore */
 
-interface IChildWindow extends Window {
+type IChildWindow = Window & {
 	__ZAPP_SHARED_LIBRARIES__: ISharedLibrariesAppsMap;
 	__ZAPP_EXPORT__: (value?: ZAppModuleFunction | PromiseLike<ZAppModuleFunction> | undefined) => void;
 	__ZAPP_HMR_EXPORT__: (mod: ZAppModuleFunction) => void;
-}
+};
 
 export default class ExtensionService {
 

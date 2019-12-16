@@ -27,7 +27,7 @@
     "@types/lodash": "4.14.144",
     "@typescript-eslint/eslint-plugin": "2.5.0",
     "@typescript-eslint/parser": "2.5.0",
-    "@zextras/zapp-cli": "0.0.15",
+    "@zextras/zapp-cli": "0.0.16",
     "autoprefixer": "9.6.1",
     "babel-loader": "8.0.6",
     "copy-webpack-plugin": "5.0.4",

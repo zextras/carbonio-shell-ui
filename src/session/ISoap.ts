@@ -11,7 +11,7 @@
 
 import { IAuthRequest, IAuthResponse, ISoapResponseContent } from '../network/ISoap';
 
-export interface IValidateSessionRequest extends IAuthRequest {
+export type IValidateSessionRequest = IAuthRequest & {
 	account: {
 		by: 'id';
 		_content: string;
@@ -20,16 +20,14 @@ export interface IValidateSessionRequest extends IAuthRequest {
 		verifyAccount: '1';
 		_content: string;
 	};
-}
+};
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface IValidateSessionResponse extends IAuthResponse {
-}
+export type IValidateSessionResponse = IAuthResponse & {};
 
-export interface IEndSessionRequest {
+export type IEndSessionRequest = {
 	logoff: '1' | '0';
-}
+};
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface IEndSessionResponse extends ISoapResponseContent {
-}
+export type IEndSessionResponse = ISoapResponseContent & {};

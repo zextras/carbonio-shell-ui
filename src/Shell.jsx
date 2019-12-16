@@ -9,10 +9,10 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { Suspense, useContext, FC } from 'react';
+import React, { useContext } from 'react';
 import { render } from 'react-dom';
-import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
-import { AppBar, CssBaseline, Divider, SwipeableDrawer, Drawer, IconButton, Toolbar, Typography, Hidden, TextField, Grid } from '@material-ui/core';
+import { createStyles, makeStyles, useTheme } from '@material-ui/core/styles';
+import { AppBar, CssBaseline, Divider, SwipeableDrawer, Drawer, IconButton, Toolbar, Hidden, Grid } from '@material-ui/core';
 import { ChevronLeft, ChevronRight, Menu, Search, ArrowDropDown } from '@material-ui/icons';
 import clsx from 'clsx';
 import { hot } from 'react-hot-loader/root';
@@ -46,6 +46,7 @@ import I18nService from './i18n/I18nService';
 import I18nContextProvider from './i18n/I18nContextProvider';
 import I18nContext from './i18n/I18nContext';
 import { CreateButton } from './ui/CreateButton';
+import { ThemeProvider, extendTheme } from '@zextras/zapp-ui';
 
 const drawerWidth = '75vw';
 
@@ -271,7 +272,10 @@ const Shell = hot(({ i18nService }) => {
 export function loadShell(container) {
 	const fiberChannelSrvc = new FiberChannelService();
 	const idbSrvc = new IdbService();
-	const networkSrvc = new NetworkService(fiberChannelSrvc.getInternalFCSink());
+	const networkSrvc = new NetworkService(
+		fiberChannelSrvc.getInternalFCSink(),
+		idbSrvc
+	);
 	const sessionSrvc = new SessionService(networkSrvc, idbSrvc);
 	const screenSizeSrvc = new ScreenSizeService();
 	const routerSrvc = new RouterService();
@@ -304,9 +308,11 @@ export function loadShell(container) {
 							<ScreenSizeContextProvider screenSizeService={ screenSizeSrvc }>
 								<SyncContextProvider syncService={ syncSrvc }>
 									<ThemeContextProvider themeService={ themeSrvc }>
-										<I18nContextProvider i18nService={ i18nSrvc } namespace={ 'com_zextras_zapp_shell' }>
-											<Shell i18nService={ i18nSrvc }/>
-										</I18nContextProvider>
+										<ThemeProvider theme={ extendTheme({}) }>
+											<I18nContextProvider i18nService={ i18nSrvc } namespace={ 'com_zextras_zapp_shell' }>
+												<Shell i18nService={ i18nSrvc }/>
+											</I18nContextProvider>
+										</ThemeProvider>
 									</ThemeContextProvider>
 								</SyncContextProvider>
 							</ScreenSizeContextProvider>

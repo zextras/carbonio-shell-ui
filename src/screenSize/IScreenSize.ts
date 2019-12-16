@@ -9,11 +9,11 @@
  * *** END LICENSE BLOCK *****
  */
 
-export interface IScreenSizes {
+export type IScreenSizes = {
 	mobile: boolean;
 	tablet: boolean;
 	desktopS: boolean;
 	desktop: boolean;
 	desktopXL: boolean;
 	desktopMAX: boolean;
-}
+};

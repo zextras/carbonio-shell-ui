@@ -19,42 +19,41 @@ import {
 import {
 	IAuthResponse,
 	IGetInfoResponse,
-	INoOpRequest,
-	INoOpResponse,
 	ISoapResponse,
 	ISoapResponseContent,
 	JsnsUrn
 } from './ISoap';
-import { INetworkService, INotificationParser, ISoapSessionData } from './INetworkService';
-import { sortBy, reduce, map, forOwn, filter, flattenDeep, compact } from 'lodash';
+import { INetworkService, INotificationParser } from './INetworkService';
+import { sortBy, map, forOwn, filter, flattenDeep, compact } from 'lodash';
 import { IFCSink } from '../fc/IFiberChannel';
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+import NoopWorker from './Noop.worker.js';
+import { IIdbInternalService } from '../idb/IIdbInternalService';
+import { IStoredSoapSessionData } from '../idb/IShellIdbSchema';
 
 type ParserContainer = { id: string; parser: INotificationParser<any> };
 
 export default class NetworkService implements INetworkService {
 
-	private _soapSessionData: ISoapSessionData = {};
-	private _notifySeq = -1;
 	private _modParsers: { [tag: string]: Array<ParserContainer> } = {};
 	private _parserId = 0;
-	private _latestNoop = Date.now();
-	private _noopFails = 0;
+	private _noopWorker = new NoopWorker();
+	private _soapSessionId = '';
 
 	constructor(
-		private _fcSink: IFCSink
+		private _fcSink: IFCSink,
+		private _idbSrvc: IIdbInternalService
 	) {
+		this._noopWorker.addEventListener('message', this._onNoopWorkerMessage)
 	}
 
 	public openNotificationChannel(): void {
-		setTimeout(
-			this._sendNoop,
-			1
-		);
+		this._noopWorker.postMessage({ action: 'start' });
 	}
 
 	public closeNotificationChannel(): void {
-		// TODO: Implement me!
-		this._notifySeq = -1;
+		this._noopWorker.postMessage({ action: 'stop' });
 	}
 
 	public registerNotificationParser(tagName: string, parser: INotificationParser<any>): string {
@@ -74,12 +73,22 @@ export default class NetworkService implements INetworkService {
 	}
 
 	public async sendSOAPRequest<REQ, RESP extends ISoapResponseContent>(command: string, data: REQ, urn?: string | JsnsUrn): Promise<RESP> {
+		let sessionData: IStoredSoapSessionData = {
+			id: '',
+			notifySeq: -1,
+			authToken: ''
+		};
+		const db = await this._idbSrvc.openDb();
+		const idbSessionData = await db.get<'soapSessions'>('soapSessions', this._soapSessionId);
+		if (idbSessionData) {
+			sessionData = idbSessionData;
+		}
 		const response = await fetch(
 			`/service/soap/${ command }Request`,
 			{
 				method: 'POST',
 				body: JSON.stringify(
-					wrapRequest(command, data, this._soapSessionData, this._notifySeq, urn)
+					wrapRequest(command, data, sessionData, urn)
 				)
 			}
 		);
@@ -93,76 +102,63 @@ export default class NetworkService implements INetworkService {
 			const resp: ISoapResponse<RESP> = await response.json();
 			if (command === 'EndSession') {
 				// The end session request has no response, so the unwrapping will fail.
-				delete this._soapSessionData.id;
-				delete this._soapSessionData.authToken;
-				delete this._soapSessionData.username;
-				delete this._soapSessionData.sessionId;
-				delete this._soapSessionData.notifySeq;
+				await db.clear('soapSessions');
+				this._soapSessionId = '';
+				this.closeNotificationChannel();
+				this._noopWorker.postMessage({ action: 'set-session-id', sessionId: '' });
 				return {} as unknown as RESP;
 			}
 			const [ data, notifications ] = unwrapResponse<RESP>(command, resp);
 			/* Intercept Auth-related data */
 			if (command === 'Auth') {
-				this._soapSessionData.authToken = (data as unknown as IAuthResponse).authToken[0]._content;
-				this._soapSessionData.sessionId = typeof resp.Header.context.session.id === 'string' ?
-					parseInt(resp.Header.context.session.id, 10)
-					:
-					resp.Header.context.session.id;
+				this._soapSessionId = `${resp.Header.context.session.id}`;
+				await db.clear('soapSessions');
+				await db.put<'soapSessions'>('soapSessions', {
+					id: this._soapSessionId,
+					notifySeq: -1,
+					authToken: (data as unknown as IAuthResponse).authToken[0]._content,
+					zimbraPrefMailPollingInterval: parseInt(
+						// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+						(data as unknown as IAuthResponse).prefs!._attrs['zimbraPrefMailPollingInterval'] || '500',
+						10
+					)
+				});
+				this._noopWorker.postMessage({ action: 'set-session-id', sessionId: this._soapSessionId });
 			}
 			if (command === 'GetInfo') {
-				this._soapSessionData.username = (data as unknown as IGetInfoResponse).name;
-				this._soapSessionData.id = (data as unknown as IGetInfoResponse).id;
+				const storedAccountData = await db.get<'soapSessions'>('soapSessions', this._soapSessionId);
+				if (storedAccountData) {
+					await db.put<'soapSessions'>('soapSessions', {
+						...storedAccountData,
+						username: (data as unknown as IGetInfoResponse).name,
+						accountId: (data as unknown as IGetInfoResponse).id
+					});
+				}
 			}
 
 			/* Then handle the notifications and return the response */
-			this._handleNotifications(notifications);
+			if (notifications) {
+				this._handleNotifications(notifications);
+			}
 			return data;
 		}
 	}
 
-	private _sendNoop: () => void = () => {
-		if (this._noopFails >= 5) {
-			return;
+	private _onNoopWorkerMessage: (e: MessageEvent) => void = (e) => {
+		switch (e.data.action) {
+			case 'started':
+				console.log('Noop Worker Started');
+				break;
+			case 'stopped':
+				console.log('Noop Worker Stopped');
+				break;
+			case 'notifications':
+				console.log('notifications', e.data.notifications);
+				break;
 		}
-		if (Date.now() - this._latestNoop < 500) {
-			this._noopFails++;
-			setTimeout(
-				this._sendNoop,
-				500
-			);
-			return;
-		}
-		this._latestNoop = Date.now();
-		this.sendSOAPRequest<INoOpRequest, INoOpResponse>(
-			'NoOp',
-			{
-				limitToOneBlocked: 1,
-				wait: 1 // Enable for instant notifications
-			}
-		)
-			.then(
-				() => {
-					this._noopFails = 0;
-					setTimeout(
-						this._sendNoop,
-						1
-					);
-				}
-			)
-			.catch(
-				() => {
-					if (Date.now() - this._latestNoop < 100) this._noopFails++;
-					setTimeout(
-						this._sendNoop,
-						1
-					);
-				}
-			);
 	};
 
-	private _handleNotifications(notifications?: Array<ISoapNotification>): void {
-		if (!notifications) return;
-		this._notifySeq = reduce(notifications, (max, { seq }) => (max < seq) ? seq : max, this._notifySeq);
+	private _handleNotifications(notifications: Array<ISoapNotification>): void {
 		map(sortBy(notifications, [ 'seq' ]), (n) => this._handleNotification(n));
 	}
 

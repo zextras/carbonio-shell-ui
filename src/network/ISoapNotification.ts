@@ -11,7 +11,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export interface ISoapNotification {
+export type ISoapNotification = {
 	seq: number;
 	deleted?: IDeletedNotification;
 	// /* List of ids, comma separated */ id: string;
@@ -22,7 +22,7 @@ export interface ISoapNotification {
 	// /* Conversations */ c?: Array<IConvModifiedNotification>;
 	// folder?: Array<IFolderModifiedNotification>;
 	// /* Messages */ m?: Array<IMessageModifiedNotification>;
-}
+};
 
 export type IDeletedNotification = {
 	id: string;
@@ -31,7 +31,7 @@ export type IDeletedNotification = {
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export type INotification<TAG extends string, T> = {
 	[tag in TAG]: Array<T>;
-}
+};
 
 // const p: INotification<'asd', {}> = {
 // 	asd: [{}],
@@ -92,7 +92,7 @@ export type INotification<TAG extends string, T> = {
 // 	id: string;
 // }
 
-export interface IEmailAddresses {
+export type IEmailAddresses = {
 	/* user@domain part of the mail address */
 	a?: string;
 	/* Display name */
@@ -109,4 +109,4 @@ export interface IEmailAddresses {
 		| /* sender */ 's'
 		| /* read-receipt notifications */ 'n'
 		| /* resent-from */ 'rf';
-}
+};

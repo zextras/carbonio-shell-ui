@@ -12,8 +12,8 @@
 import React, { useContext } from 'react';
 import { render } from 'react-dom';
 import { createStyles, makeStyles, useTheme } from '@material-ui/core/styles';
-import { AppBar, CssBaseline, Divider, SwipeableDrawer, Drawer, IconButton, Toolbar, Typography, Hidden } from '@material-ui/core';
-import { ChevronLeft, ChevronRight, Menu } from '@material-ui/icons';
+import { AppBar, CssBaseline, Divider, SwipeableDrawer, Drawer, IconButton, Toolbar, Hidden, Grid } from '@material-ui/core';
+import { ChevronLeft, ChevronRight, Menu, Search, ArrowDropDown } from '@material-ui/icons';
 import clsx from 'clsx';
 import { hot } from 'react-hot-loader/root';
 import LoginPage from './view/LoginPage';
@@ -102,12 +102,45 @@ const useStyles = makeStyles((theme) =>
 			display: 'flex',
 			alignItems: 'center',
 			justifyContent: 'flex-end',
-			padding: theme.spacing(0, 1),
+			padding: 0,
 			...theme.mixins.toolbar
 		},
 		content: {
 			flexGrow: 1,
-			height: '100%'
+			height: '100vh'
+		},
+		logo: {
+			height: 36
+		},
+		creationAndSearchContainer: {
+			marginLeft: 192
+		},
+		creationAndSearchGrid: {
+			display: 'flex',
+			flexDirection: 'row',
+			alignItems: 'center',
+			justifyContent: 'flex-start'
+		},
+		searchInput: {
+			backgroundColor: '#fff',
+			height: 36,
+			width: '100%',
+			display: 'flex',
+			flexDirection: 'row',
+			alignItems: 'center',
+			justifyContent: 'space-between',
+			padding: theme.spacing(1),
+			color: theme.palette.text.disabled,
+			'& input': {
+				width: '100%',
+				border: 'hidden'
+			}
+		},
+		appBarIconsContainer: {
+			display: 'flex',
+			flexDirection: 'row',
+			alignItems: 'center',
+			justifyContent: 'flex-end'
 		}
 	})
 );
@@ -172,15 +205,21 @@ const Shell = hot(({ i18nService }) => {
 								<Menu/>
 							</IconButton>
 						</Hidden>
-						<Typography
-							variant="h6"
-							className={classes.title}
-						>
-							{t('zextras', 'Zextras')}
-						</Typography>
-						<CreateButton i18nSrvc={i18nService} />
-						<SyncStatusIcon />
-						<UserMenu />
+						<img className={classes.logo} src="/asset/logo-zextras.svg" alt="Zextras Logo" />
+						<Grid container className={classes.creationAndSearchContainer}>
+							<Grid item xs={8} md={6} className={classes.creationAndSearchGrid}>
+								<CreateButton i18nSrvc={i18nService} />
+								<div className={classes.searchInput}>
+									<Search/>
+									<input type="text"/>
+									<ArrowDropDown />
+								</div>
+							</Grid>
+							<Grid item xs={4} md={6} className={classes.appBarIconsContainer}>
+								<SyncStatusIcon />
+								<UserMenu />
+							</Grid>
+						</Grid>
 					</Toolbar>
 				</AppBar>
 				<Hidden mdUp>

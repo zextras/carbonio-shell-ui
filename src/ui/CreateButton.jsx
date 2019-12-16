@@ -15,17 +15,33 @@ import {
 	Button,
 	ButtonGroup,
 	ClickAwayListener,
-	Grid,
 	Grow,
 	MenuItem,
 	MenuList,
 	Paper,
-	Popper
+	Popper,
+	makeStyles,
+	createStyles
 } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { map, filter, find } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import I18nContextProvider from '../i18n/I18nContextProvider';
+
+const useStyles = makeStyles((theme) =>
+	createStyles({
+		buttons: {
+			width: 160,
+			height: 36
+		},
+		selectorButton: {
+			width: 32
+		},
+		button: {
+			width: '100%'
+		}
+	})
+);
 
 export const CreateButton = ({ i18nSrvc }) => {
 	const routerCtxt = useContext(RouterContext);
@@ -34,6 +50,7 @@ export const CreateButton = ({ i18nSrvc }) => {
 	const [ currentApp, setCurrentApp ] = useState('');
 	const anchorRef = useRef(null);
 	const history = useHistory();
+	const classes = useStyles();
 
 	useEffect(() => {
 		const miSub = routerCtxt.createMenuItems.subscribe((itms) => setCreateItems(itms));
@@ -72,70 +89,67 @@ export const CreateButton = ({ i18nSrvc }) => {
 	};
 
 	return (
-		<Grid container direction="column" alignItems="center">
-			<Grid item xs={ 12 }>
-				<ButtonGroup variant="contained" color="primary" ref={ anchorRef } aria-label="split button">
-					{ (currentAppCreateItem) ?
-						<I18nContextProvider i18nService={ i18nSrvc } namespace={ currentAppCreateItem.app }>
-							<Button onClick={ handleClick }>{ currentAppCreateItem.label }</Button>
-						</I18nContextProvider>
-						:
-						<Button disabled={ true }>New</Button>
-					}
-					{ (createItems.length > 1 || !currentAppCreateItem) ?
-						(
-							<Button
-								color="primary"
-								size="small"
-								aria-controls={ open ? 'split-button-menu' : undefined }
-								aria-expanded={ open ? 'true' : undefined }
-								aria-label="select an action"
-								aria-haspopup="menu"
-								onClick={ handleToggle }
-							>
-								<ArrowDropDownIcon/>
-							</Button>
-						)
-						:
-						null
-					}
-				</ButtonGroup>
-				<Popper open={ open } anchorEl={ anchorRef.current } role={ undefined } transition disablePortal>
-					{ ({ TransitionProps, placement }) => (
-						<Grow
-							{ ...TransitionProps }
-							style={ {
-								transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'
-							} }
+		<>
+			<ButtonGroup className={classes.buttons} variant="contained" color="secondary" ref={ anchorRef } aria-label="split button">
+				{ (currentAppCreateItem) ?
+					<Button className={classes.button} color="secondary" onClick={ handleClick }>{ currentAppCreateItem.label }</Button>
+					:
+					<Button className={classes.button} color="secondary" disabled={ true }>Create</Button>
+				}
+				{ (createItems.length > 1 || !currentAppCreateItem) ?
+					(
+						<Button
+							className={classes.selectorButton}
+							color="secondary"
+							size="small"
+							aria-controls={ open ? 'split-button-menu' : undefined }
+							aria-expanded={ open ? 'true' : undefined }
+							aria-label="select an action"
+							aria-haspopup="menu"
+							onClick={ handleToggle }
 						>
-							<Paper>
-								<ClickAwayListener onClickAway={ handleClose }>
-									<MenuList id="split-button-menu">
-										{
-											map(
-												filter(
-													createItems,
-													(ci) => ci.app !== currentApp
-												),
-												(ci) => (
-													<MenuItem
-														key={ ci.app }
-														onClick={ event => handleMenuItemClick(event, ci) }
-													>
-														<I18nContextProvider i18nService={ i18nSrvc } namespace={ ci.app }>
-															{ ci.label }
-														</I18nContextProvider>
-													</MenuItem>
-												)
+							<ArrowDropDownIcon/>
+						</Button>
+					)
+					:
+					null
+				}
+			</ButtonGroup>
+			<Popper open={ open } anchorEl={ anchorRef.current } role={ undefined } transition disablePortal>
+				{ ({ TransitionProps, placement }) => (
+					<Grow
+						{ ...TransitionProps }
+						style={ {
+							transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom'
+						} }
+					>
+						<Paper>
+							<ClickAwayListener onClickAway={ handleClose }>
+								<MenuList id="split-button-menu">
+									{
+										map(
+											filter(
+												createItems,
+												(ci) => ci.app !== currentApp
+											),
+											(ci) => (
+												<MenuItem
+													key={ ci.app }
+													onClick={ event => handleMenuItemClick(event, ci) }
+												>
+													<I18nContextProvider i18nService={ i18nSrvc } namespace={ ci.app }>
+														{ ci.label }
+													</I18nContextProvider>
+												</MenuItem>
 											)
-										}
-									</MenuList>
-								</ClickAwayListener>
-							</Paper>
-						</Grow>
-					) }
-				</Popper>
-			</Grid>
-		</Grid>
+										)
+									}
+								</MenuList>
+							</ClickAwayListener>
+						</Paper>
+					</Grow>
+				) }
+			</Popper>
+		</>
 	);
 };

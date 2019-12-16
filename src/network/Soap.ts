@@ -10,8 +10,8 @@
  */
 
 import { ISoapNotification } from './ISoapNotification';
-import { ISoapSessionData } from './INetworkService';
 import { ISoapRequest, ISoapResponse, ISoapResponseContent, JsnsUrn } from './ISoap';
+import { IStoredSoapSessionData } from '../idb/IShellIdbSchema';
 
 function getURN(command: string): JsnsUrn {
 	switch (command) {
@@ -29,9 +29,9 @@ function getURN(command: string): JsnsUrn {
 	}
 }
 
-export function wrapRequest<T>(command: string, data: T, sessionData: ISoapSessionData, notifySeq: number, urn?: string | JsnsUrn): ISoapRequest<T> {
+export function wrapRequest<T>(command: string, data: T, sessionData: IStoredSoapSessionData, urn?: string | JsnsUrn): ISoapRequest<T> {
 	const req: ISoapRequest<T> = {
-		_jsns: 'urn:zimbraSoap',
+		// _jsns: 'urn:zimbraSoap',
 		Header: {
 			_jsns: 'urn:zimbra',
 			context: {
@@ -50,13 +50,13 @@ export function wrapRequest<T>(command: string, data: T, sessionData: ISoapSessi
 			}
 		}
 	};
-	if (notifySeq > -1) {
-		req.Header.context.notify.seq = notifySeq;
+	if (sessionData.notifySeq > -1) {
+		req.Header.context.notify.seq = sessionData.notifySeq;
 	}
-	if (sessionData.sessionId) {
+	if (sessionData.id) {
 		req.Header.context.session = {
-			id: sessionData.sessionId,
-			_content: sessionData.sessionId
+			id: parseInt(sessionData.id, 10),
+			_content: parseInt(sessionData.id, 10)
 		};
 	}
 	if (sessionData.username) {

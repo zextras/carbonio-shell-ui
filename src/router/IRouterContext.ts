@@ -13,9 +13,9 @@ import { BehaviorSubject } from 'rxjs';
 
 import { ICreateMenuItemData, IMainMenuItemData, IRouteData } from './IRouterService';
 
-export interface IRouterContext {
+export type IRouterContext = {
 	routes: BehaviorSubject<IRouteData>;
 	mainMenuItems: BehaviorSubject<Array<IMainMenuItemData>>;
 	createMenuItems: BehaviorSubject<Array<ICreateMenuItemData>>;
 	currentRoute: BehaviorSubject<string>;
-}
+};

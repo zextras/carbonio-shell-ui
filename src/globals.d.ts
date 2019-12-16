@@ -12,5 +12,5 @@
 declare const PACKAGE_VERSION: string;
 
 declare module '*.properties';
-declare module '*.less';
+declare module '*.css';
 declare module '*.json';

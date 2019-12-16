@@ -60,8 +60,7 @@ export default class SessionService implements ISessionService {
 					_content: password
 				},
 				prefs: [
-					{ pref: { name: 'zimbraPrefMailPollingInterval' } }
-					// { pref: { name: 'zimbraFeatureInstantNotify' } },
+					{ pref: { name: 'zimbraPrefMailPollingInterval' } },
 				]
 			}
 		);
@@ -138,7 +137,10 @@ export default class SessionService implements ISessionService {
 					authToken: {
 						verifyAccount: '1',
 						_content: sessionData.authToken
-					}
+					},
+					prefs: [
+						{ pref: { name: 'zimbraPrefMailPollingInterval' } },
+					]
 				}
 			);
 			console.debug('Session validation PASS');

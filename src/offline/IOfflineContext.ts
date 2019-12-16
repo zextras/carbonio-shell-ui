@@ -9,6 +9,6 @@
  * *** END LICENSE BLOCK *****
  */
 
-export interface IOfflineContext {
+export type IOfflineContext = {
 	isOnline: boolean;
-}
+};

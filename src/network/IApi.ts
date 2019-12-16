@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-export interface IAppPgkDescription {
+export type IAppPgkDescription = {
 	package: string;
 	name: string;
 	description: string;
@@ -17,4 +17,4 @@ export interface IAppPgkDescription {
 	resourceUrl: string;
 	entryPoint: string;
 	styleEntryPoint?: string;
-}
+};

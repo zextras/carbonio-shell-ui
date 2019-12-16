@@ -9,10 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 
-export interface IFolderSchm {
-}
+export type IFolderSchm = {};
 
-export interface IFolderSchmV1 extends IFolderSchm {
+export type IFolderSchmV1 = IFolderSchm & {
 	id: string;
 	parent: string;
 	path: string;
@@ -20,4 +19,4 @@ export interface IFolderSchmV1 extends IFolderSchm {
 	unreadCount: number;
 	itemsCount: number;
 	size: number;
-}
+};

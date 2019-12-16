@@ -9,15 +9,13 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { Suspense, useContext, FC } from 'react';
+import React, { useContext } from 'react';
 import { render } from 'react-dom';
-import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
-import { AppBar, CssBaseline, Divider, SwipeableDrawer, Drawer, IconButton, Toolbar, Typography, Hidden } from '@material-ui/core';
-import { ChevronLeft, ChevronRight, Menu } from '@material-ui/icons';
+import { createStyles, makeStyles, useTheme } from '@material-ui/core/styles';
+import { AppBar, CssBaseline, Divider, SwipeableDrawer, Drawer, IconButton, Toolbar, Hidden, Grid } from '@material-ui/core';
+import { ChevronLeft, ChevronRight, Menu, Search, ArrowDropDown } from '@material-ui/icons';
 import clsx from 'clsx';
 import { hot } from 'react-hot-loader/root';
-// import 'typeface-roboto';
-import style from './Shell.less';
 import LoginPage from './view/LoginPage';
 import Sidebar from './ui/Sidebar';
 import SessionService from './session/SessionService';
@@ -46,6 +44,7 @@ import I18nService from './i18n/I18nService';
 import I18nContextProvider from './i18n/I18nContextProvider';
 import I18nContext from './i18n/I18nContext';
 import { CreateButton } from './ui/CreateButton';
+import { ThemeProvider, extendTheme } from '@zextras/zapp-ui';
 
 const drawerWidth = '75vw';
 
@@ -103,12 +102,45 @@ const useStyles = makeStyles((theme) =>
 			display: 'flex',
 			alignItems: 'center',
 			justifyContent: 'flex-end',
-			padding: theme.spacing(0, 1),
+			padding: 0,
 			...theme.mixins.toolbar
 		},
 		content: {
 			flexGrow: 1,
-			height: '100%'
+			height: '100vh'
+		},
+		logo: {
+			height: 36
+		},
+		creationAndSearchContainer: {
+			marginLeft: 192
+		},
+		creationAndSearchGrid: {
+			display: 'flex',
+			flexDirection: 'row',
+			alignItems: 'center',
+			justifyContent: 'flex-start'
+		},
+		searchInput: {
+			backgroundColor: '#fff',
+			height: 36,
+			width: '100%',
+			display: 'flex',
+			flexDirection: 'row',
+			alignItems: 'center',
+			justifyContent: 'space-between',
+			padding: theme.spacing(1),
+			color: theme.palette.text.disabled,
+			'& input': {
+				width: '100%',
+				border: 'hidden'
+			}
+		},
+		appBarIconsContainer: {
+			display: 'flex',
+			flexDirection: 'row',
+			alignItems: 'center',
+			justifyContent: 'flex-end'
 		}
 	})
 );
@@ -173,15 +205,21 @@ const Shell = hot(({ i18nService }) => {
 								<Menu/>
 							</IconButton>
 						</Hidden>
-						<Typography
-							variant="h6"
-							className={classes.title}
-						>
-							{t('zextras', 'Zextras')}
-						</Typography>
-						<CreateButton i18nSrvc={i18nService} />
-						<SyncStatusIcon />
-						<UserMenu />
+						<img className={classes.logo} src="/asset/logo-zextras.svg" alt="Zextras Logo" />
+						<Grid container className={classes.creationAndSearchContainer}>
+							<Grid item xs={8} md={6} className={classes.creationAndSearchGrid}>
+								<CreateButton i18nSrvc={i18nService} />
+								<div className={classes.searchInput}>
+									<Search/>
+									<input type="text"/>
+									<ArrowDropDown />
+								</div>
+							</Grid>
+							<Grid item xs={4} md={6} className={classes.appBarIconsContainer}>
+								<SyncStatusIcon />
+								<UserMenu />
+							</Grid>
+						</Grid>
 					</Toolbar>
 				</AppBar>
 				<Hidden mdUp>
@@ -232,7 +270,10 @@ const Shell = hot(({ i18nService }) => {
 export function loadShell(container) {
 	const fiberChannelSrvc = new FiberChannelService();
 	const idbSrvc = new IdbService();
-	const networkSrvc = new NetworkService(fiberChannelSrvc.getInternalFCSink());
+	const networkSrvc = new NetworkService(
+		fiberChannelSrvc.getInternalFCSink(),
+		idbSrvc
+	);
 	const sessionSrvc = new SessionService(networkSrvc, idbSrvc);
 	const screenSizeSrvc = new ScreenSizeService();
 	const routerSrvc = new RouterService();
@@ -265,9 +306,11 @@ export function loadShell(container) {
 							<ScreenSizeContextProvider screenSizeService={ screenSizeSrvc }>
 								<SyncContextProvider syncService={ syncSrvc }>
 									<ThemeContextProvider themeService={ themeSrvc }>
-										<I18nContextProvider i18nService={ i18nSrvc } namespace={ 'com_zextras_zapp_shell' }>
-											<Shell i18nService={ i18nSrvc }/>
-										</I18nContextProvider>
+										<ThemeProvider theme={ extendTheme({}) }>
+											<I18nContextProvider i18nService={ i18nSrvc } namespace={ 'com_zextras_zapp_shell' }>
+												<Shell i18nService={ i18nSrvc }/>
+											</I18nContextProvider>
+										</ThemeProvider>
 									</ThemeContextProvider>
 								</SyncContextProvider>
 							</ScreenSizeContextProvider>

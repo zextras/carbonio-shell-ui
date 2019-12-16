@@ -13,7 +13,15 @@ import { DBSchema } from 'idb';
 import { IFolderSchm, IFolderSchmV1 } from '../sync/IFolderSchm';
 import { ISyncOperationSchm } from '../sync/ISyncService';
 
-export interface IShellIdbSchema extends DBSchema {
+export type IShellIdbSchema = DBSchema & {
+	soapSessions: {
+		key: string;
+		value: IStoredSoapSessionData;
+		indexes: {
+			id: string;
+			accountId: string;
+		};
+	};
 	sessions: {
 		key: string;
 		value: IStoredSessionData;
@@ -36,27 +44,27 @@ export interface IShellIdbSchema extends DBSchema {
 			id: string;
 		};
 	};
-}
+};
 
-export interface ISyncData {
+export type ISyncData = {
 	sessionId: string;
 	token?: number;
 	folders: Array<string>;
-}
+};
 
-export interface IStoredSessionData {
+export type IStoredSessionData = {
 	id: string;
 	authToken: string;
 	username: string;
-}
+};
 
-export interface IStoredAccountData {
+export type IStoredAccountData = {
 	id: string;
 	u: string;
 	p: string;
-}
+};
 
-export interface IIDBFolderSchm extends DBSchema {
+export type IIDBFolderSchm = DBSchema & {
 	folders: {
 		key: string;
 		value: IFolderSchm;
@@ -65,9 +73,9 @@ export interface IIDBFolderSchm extends DBSchema {
 			parent: string;
 		};
 	};
-}
+};
 
-export interface IIDBFolderSchmV1 extends IIDBFolderSchm {
+export type IIDBFolderSchmV1 = IIDBFolderSchm & {
 	folders: {
 		key: string;
 		value: IFolderSchmV1;
@@ -77,4 +85,13 @@ export interface IIDBFolderSchmV1 extends IIDBFolderSchm {
 			path: string;
 		};
 	};
-}
+};
+
+export type IStoredSoapSessionData = {
+	id: string;
+	authToken: string;
+	notifySeq: number;
+	username?: string;
+	accountId?: string;
+	zimbraPrefMailPollingInterval?: number;
+};

@@ -8,7 +8,7 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-
+/* eslint-env serviceworker */
 console.log('Hello from service-worker.js');
 
 /*

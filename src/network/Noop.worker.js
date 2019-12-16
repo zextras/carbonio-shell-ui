@@ -136,26 +136,29 @@ function _sendNoop() {
 		);
 }
 
-onmessage = function(e) {
-	switch (e.data.action) {
-		case 'start':
-			if (!started) {
-				started = true;
-				_sendNoop();
-				postMessage({ action: 'started' });
-			}
-			break;
-		case 'stop':
-			if (started) {
-				started = false;
-				if (_timeoutId) {
-					clearTimeout(_timeoutId);
-					postMessage({ action: 'stopped' });
+self.addEventListener(
+	'message',
+	(e) => {
+		switch (e.data.action) {
+			case 'start':
+				if (!started) {
+					started = true;
+					_sendNoop();
+					postMessage({ action: 'started' });
 				}
-			}
-			break;
-		case 'set-session-id':
-			_sessionId = e.data.sessionId;
-			break;
+				break;
+			case 'stop':
+				if (started) {
+					started = false;
+					if (_timeoutId) {
+						clearTimeout(_timeoutId);
+						postMessage({ action: 'stopped' });
+					}
+				}
+				break;
+			case 'set-session-id':
+				_sessionId = e.data.sessionId;
+				break;
+		}
 	}
-};
+);

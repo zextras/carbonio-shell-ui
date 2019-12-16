@@ -9,15 +9,13 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { Suspense, useContext, FC } from 'react';
+import React, { useContext } from 'react';
 import { render } from 'react-dom';
 import { createStyles, makeStyles, useTheme } from '@material-ui/core/styles';
 import { AppBar, CssBaseline, Divider, SwipeableDrawer, Drawer, IconButton, Toolbar, Typography, Hidden } from '@material-ui/core';
 import { ChevronLeft, ChevronRight, Menu } from '@material-ui/icons';
 import clsx from 'clsx';
 import { hot } from 'react-hot-loader/root';
-// import 'typeface-roboto';
-import style from './Shell.less';
 import LoginPage from './view/LoginPage';
 import Sidebar from './ui/Sidebar';
 import SessionService from './session/SessionService';

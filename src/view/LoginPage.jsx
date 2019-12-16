@@ -9,9 +9,8 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
-import style from './LoginPage.less';
 import SessionContext from '../session/SessionContext';
 import {
 	Container,
@@ -20,7 +19,6 @@ import {
 	Paper,
 	Grid,
 	makeStyles,
-	Theme,
 	createStyles,
 	FormControl, InputLabel, Input, Button
 } from '@material-ui/core';

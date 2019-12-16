@@ -10,8 +10,8 @@
  */
 
 // import SplashPage from './view/SplashPage';
-
-import style from './index.less';
+import 'typeface-roboto';
+import style from './index.css';
 
 if ('serviceWorker' in navigator) {
 	window.addEventListener('load', () => {

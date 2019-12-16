@@ -16,8 +16,6 @@ import { AppBar, CssBaseline, Divider, SwipeableDrawer, Drawer, IconButton, Tool
 import { ChevronLeft, ChevronRight, Menu, Search, ArrowDropDown } from '@material-ui/icons';
 import clsx from 'clsx';
 import { hot } from 'react-hot-loader/root';
-// import 'typeface-roboto';
-import style from './Shell.less';
 import LoginPage from './view/LoginPage';
 import Sidebar from './ui/Sidebar';
 import SessionService from './session/SessionService';

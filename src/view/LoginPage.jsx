@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import SessionContext from '../session/SessionContext';
 import {
 	Container,
@@ -53,20 +53,22 @@ const LoginPage = () => {
 		sessionCtx.doLogin(
 			username,
 			password
-		).finally(() => setBtnDisabled(false));
+		).catch(() => setBtnDisabled(false));
 	};
 
-	const onPress = (event: KeyboardEvent): void => {
-		if ('Enter' === event.key) {
-			doLogin();
-		}
-	};
+	const onPress = useCallback(
+		(event) => {
+			if ('Enter' === event.key) {
+				doLogin();
+			}
+		},
+		[doLogin]
+	);
 
 	useEffect(() => {
-		const cb = (e: KeyboardEvent) => onPress(e);
-		window.addEventListener('keypress', cb);
+		window.addEventListener('keypress', onPress);
 		return () => {
-			window.removeEventListener('keypress', cb);
+			window.removeEventListener('keypress', onPress);
 		}
 	}, [onPress]);
 

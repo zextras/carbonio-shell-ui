@@ -12,7 +12,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { ISoapResponseContent, JsnsUrn } from './ISoap';
-import { IFCPartialEvent } from '../fc/IFiberChannel';
 
 export interface INetworkService {
 	sendSOAPRequest<REQ, RESP extends ISoapResponseContent>(command: string, data: REQ, urn?: JsnsUrn | string): Promise<RESP>;

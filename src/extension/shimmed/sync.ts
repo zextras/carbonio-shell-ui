@@ -12,7 +12,8 @@
 import {
 	ISyncFolderParser,
 	ISyncItemParser,
-	ISyncOpQueue
+	ISyncOperation,
+	ISyncOpRequest
 } from '../../sync/ISyncService';
 import { BehaviorSubject } from 'rxjs';
 
@@ -22,4 +23,4 @@ export declare function registerSyncFolderParser(tagName: string, parser: ISyncF
 
 export declare function syncFolderById(folderId: string): void;
 
-export declare const syncOperations: BehaviorSubject<ISyncOpQueue>;
+export declare const syncOperations: BehaviorSubject<Array<ISyncOperation<unknown, ISyncOpRequest<unknown>>>>;

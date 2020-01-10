@@ -1,0 +1,14 @@
+{
+  "docs": {
+    "Api": ["api"],
+    "Apps": ["apps"],
+    "Data": ["data"],
+    "Design": [
+      "design/design_principles",
+      "design/design"
+    ],
+    "Main": ["main"],
+    "Notifications": ["notifications"],
+    "Notes": ["notes"]
+  }
+}

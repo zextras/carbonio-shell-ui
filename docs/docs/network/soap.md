@@ -1,5 +1,8 @@
-SOAP
-====
+---
+title: SOAP
+author: Michele Olivo
+---
+
 To keep the compatibility with a Zimbra server, requests can be made using the [Zimbra SOAP API][1].
 
 For more information please refer to the origina [Zimbra SOAP API documentation][2].

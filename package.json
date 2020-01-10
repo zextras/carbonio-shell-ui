@@ -5,7 +5,6 @@
   "scripts": {
     "prepublishOnly": "rm -rf lib && npx zapp package && npm run build:types && npx tsc src/extension/shimmed/*.ts --outDir lib/",
     "postpublish": "rm -rf lib",
-    "watch:docs": "docsify serve ./docs",
     "type-check": "npx tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
     "build:types": "npx tsc --emitDeclarationOnly"
@@ -32,7 +31,6 @@
     "babel-loader": "8.0.6",
     "copy-webpack-plugin": "5.0.4",
     "css-loader": "3.2.0",
-    "docsify-cli": "4.3.0",
     "eslint": "6.6.0",
     "eslint-plugin-react": "7.16.0",
     "eslint-plugin-react-hooks": "2.2.0",

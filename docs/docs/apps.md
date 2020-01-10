@@ -1,7 +1,10 @@
-# Extensions
+---
+title: APPs
+author: Michele Olivo
+---
 
-Extension for [@zextras/zapp-shell][1] will be created using the [@zextras/zapp-sdk][2] tool.
-For more information on how to create a Zextras extension please refer to the [@zextras/zapp-sdk][2] documentation.
+Apps for [@zextras/zapp-shell][1] will be created using the [@zextras/zapp-sdk][2] tool.
+For more information on how to create a Zextras Apps please refer to the [@zextras/zapp-sdk][2] documentation.
 
 ## `@zextras/route`
 Functions related to the route.

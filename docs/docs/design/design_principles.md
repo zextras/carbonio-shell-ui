@@ -1,4 +1,7 @@
-# Design Principles
+---
+title: Design Principles
+author: Michele Olivo
+---
 
 Zextras use a [micro frontends][1] approach to build a framework, agnostic on which application will be created on it.
 

@@ -5,7 +5,8 @@
     "Data": ["data"],
     "Design": [
       "design/design_principles",
-      "design/design"
+      "design/login",
+      "design/shell"
     ],
     "Main": ["main"],
     "Notifications": ["notifications"],

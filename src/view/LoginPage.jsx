@@ -10,51 +10,43 @@
  */
 
 import React, { useContext, useState, useEffect, useCallback } from 'react';
+import { Container, Input, PasswordInput, ThemeContext, Logo, Button, Padding, Text } from '@zextras/zapp-ui';
+import styled, { createGlobalStyle } from 'styled-components';
 import SessionContext from '../session/SessionContext';
-import {
-	Container,
-	CssBaseline,
-	Typography,
-	Paper,
-	Grid,
-	makeStyles,
-	createStyles,
-	FormControl, InputLabel, Input, Button
-} from '@material-ui/core';
 import I18nContext from '../i18n/I18nContext';
 
-const useStyles = makeStyles((theme) =>
-	createStyles({
-		root: {
-			padding: theme.spacing(3, 2)
-		},
-		formControl: {
-			margin: theme.spacing(1)
-		},
-		button: {
-			margin: theme.spacing(1)
-		}
-	})
-);
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+  }
+`;
+
+const BG = styled.div`
+	background-image: url(${props => props.theme.loginBackground});
+	background-size: cover;
+	height: 100%;
+	width: 100%;
+`;
 
 const LoginPage = () => {
+	const theme = useContext(ThemeContext);
 	const [ btnDisabled, setBtnDisabled ] = useState(false);
 	const { t } = useContext(I18nContext);
 	const sessionCtx = useContext(SessionContext);
 	const usernameRef = React.createRef();
 	const passwordRef = React.createRef();
-	const classes = useStyles();
 
-	const doLogin = () => {
-		if (!usernameRef.current || !passwordRef.current) return;
-		const username = usernameRef.current.value;
-		const password = passwordRef.current.value;
-		setBtnDisabled(true);
-		sessionCtx.doLogin(
-			username,
-			password
-		).catch(() => setBtnDisabled(false));
-	};
+	const doLogin = useCallback(
+		() => {
+			if (!usernameRef.current || !passwordRef.current) return;
+			const username = usernameRef.current.value;
+			const password = passwordRef.current.value;
+			setBtnDisabled(true);
+			sessionCtx.doLogin(
+				username,
+				password
+			).catch(() => setBtnDisabled(false));
+		}, [usernameRef, passwordRef, setBtnDisabled, sessionCtx]);
 
 	const onPress = useCallback(
 		(event) => {
@@ -73,65 +65,58 @@ const LoginPage = () => {
 	}, [onPress]);
 
 	return (
-		<>
-			<CssBaseline/>
-			<Container maxWidth="sm">
-				<Grid
-					container
-					alignContent="center"
-					justify="center"
-					direction="column"
-					style={ { height: '100vh' } }
+		<BG>
+			<GlobalStyle/>
+			<Container
+				height="fill"
+				width="50%"
+				style={{
+					backgroundColor: 'rgba(255, 255, 255, 0.5)'
+				}}
+			>
+				<Container
+					width="50%"
+					height="fill"
+					orientation="vertical"
+					mainAlignment="space-around"
 				>
-					<Paper className={ classes.root }>
-						<Typography variant="h5" component="h3">
-							{ t('zextras', 'Zextras') }
-						</Typography>
-						<Grid
-							container
-							direction="column"
-							justify="center"
-							alignItems="center"
-						>
-							<FormControl
-								className={ classes.formControl }
-							>
-								<InputLabel
-									htmlFor="username">
-									{ t('username', 'Username') }
-								</InputLabel>
-								<Input
-									id="username"
-									inputRef={ usernameRef }
-								/>
-							</FormControl>
-							<FormControl
-								className={ classes.formControl }>
-								<InputLabel
-									htmlFor="password"
-								>
-									{ t('password', 'Password') }
-								</InputLabel>
-								<Input
-									id="password"
-									inputRef={ passwordRef }
-									type="password"
-								/>
-							</FormControl>
+						<Logo size="large"/>
+					<Container
+						width="fill"
+						height="fit"
+						orientation="vertical"
+						mainAlignment="center"
+					>
+						<Padding all='medium'>
+							<Input
+								label="Username"
+								inputRef={usernameRef}
+							/>
+						</Padding>
+						<Padding all='medium'>
+							<PasswordInput
+								label="Password"
+								inputRef={passwordRef}
+							/>
+						</Padding>
+						<Padding all="medium">
 							<Button
-								variant="contained"
-								color="primary"
-								className={ classes.button }
-								onClick={ doLogin }
-								disabled={ btnDisabled }
-							>
-								{ t('login', 'Login') }
-							</Button>
-						</Grid>
-					</Paper>
-				</Grid>
+								label="LOGIN"
+								backgroundColor="primary"
+								size="fill"
+								labelColor="light"
+								onClick={doLogin}
+							/>
+						</Padding>
+					</Container>
+					<Container height="fit">
+						<Text color="secondary" size="small">
+							{t('login.copyright', { year: new Date().getFullYear() })}
+						</Text>
+					</Container>
+				</Container>
 			</Container>
-		</>
+		</BG>
 	);
 };
 export default LoginPage;

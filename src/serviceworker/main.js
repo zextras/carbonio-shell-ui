@@ -11,6 +11,47 @@
 /* eslint-env serviceworker */
 console.log('Hello from service-worker.js');
 
+self.addEventListener('install', function(event) {
+    console.log('Installing service-worker.js');
+});
+
+self.addEventListener('message', function(event) {
+    console.log('Message for service-worker.js');
+});
+
+self.addEventListener('sync', function(event) {
+  console.log('Sync for service-worker.js');
+  fetch(
+    '/service/soap/SyncRequest',
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        Body: {
+          _jsns: 'urn:zimbraMail',
+          SyncRequest: {
+            typed: true
+          }
+        }
+      })
+    }
+  )
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(response) {
+      const resp = response.Body.SyncResponse;
+      console.log(resp);
+      // md
+      // token
+      // s
+      // folder
+      // TODO: Handle the sync data of the folders
+    })
+    .catch(function(err) {
+      console.error(err);
+    });
+});
+
 /*
 self.addEventListener('fetch', function (event) {
     console.debug('SW', event);

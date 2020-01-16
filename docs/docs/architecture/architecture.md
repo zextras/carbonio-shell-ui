@@ -1,6 +1,5 @@
 ---
-title: Design Principles
-author: Michele Olivo
+title: Technical Design
 ---
 
 Zextras use a [micro frontends][1] approach to build a framework, agnostic on which application will be created on it.

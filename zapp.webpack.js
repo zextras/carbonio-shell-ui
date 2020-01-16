@@ -16,7 +16,7 @@ module.exports = function (wpConf, zappConfig, options) {
 	);
 	wpConf.plugins.push(
 		new WorkboxPlugin.InjectManifest({
-			importWorkboxFrom: 'local',
+			// importWorkboxFrom: 'local',
 			swSrc: path.resolve(process.cwd(), 'src', 'serviceworker', 'main.js'),
 			swDest: 'service-worker.js'
 		})
@@ -33,6 +33,7 @@ module.exports = function (wpConf, zappConfig, options) {
 	);
 	wpConf.devServer.port = 9002;
 	wpConf.devServer.sockPort = 9002;
+	wpConf.devServer.https = false;
 	/*
 	wpConf.devServer.proxy['/zx/zimlet/com_zextras_theme_default/'] = {
 		target: 'http://localhost:9001',

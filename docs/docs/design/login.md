@@ -1,6 +1,5 @@
 ---
 title: Design of the Login
-author: Michele Olivo
 ---
 
 The shell is a container for apps and utilities. The shell will adapt itself, depends by the screen sizes.

@@ -1,6 +1,5 @@
 ---
 title: Design of the Shell
-author: Michele Olivo
 ---
 
 ## Components Involved

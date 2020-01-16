@@ -1,15 +1,20 @@
 {
   "docs": {
-    "Api": ["api"],
-    "Apps": ["apps"],
-    "Data": ["data"],
+    "Architecture": [
+      "architecture/architecture",
+      "architecture/synchronization",
+      "architecture/api",
+      "architecture/data",
+      "architecture/apps",
+      "architecture/soap",
+      "architecture/notifications",
+      "architecture/service_worker"
+    ],
     "Design": [
-      "design/design_principles",
       "design/login",
       "design/shell"
     ],
     "Main": ["main"],
-    "Notifications": ["notifications"],
     "Notes": ["notes"]
   }
 }

@@ -1,6 +1,5 @@
 ---
 title: APPs
-author: Michele Olivo
 ---
 
 Apps for [@zextras/zapp-shell][1] will be created using the [@zextras/zapp-sdk][2] tool.

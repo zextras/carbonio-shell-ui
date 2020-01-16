@@ -1,6 +1,5 @@
 ---
 title: Data
-author: Michele Olivo
 ---
 
 ## Folder

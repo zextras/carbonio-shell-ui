@@ -28,7 +28,7 @@ import { sortBy, map, forOwn, filter, flattenDeep, compact } from 'lodash';
 import { IFCSink } from '../fc/IFiberChannel';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import NoopWorker from './Noop.worker.js';
+// import NoopWorker from './Noop.worker.js';
 import { IIdbInternalService } from '../idb/IIdbInternalService';
 import { IStoredSoapSessionData } from '../idb/IShellIdbSchema';
 
@@ -38,22 +38,22 @@ export default class NetworkService implements INetworkService {
 
 	private _modParsers: { [tag: string]: Array<ParserContainer> } = {};
 	private _parserId = 0;
-	private _noopWorker = new NoopWorker();
+	// private _noopWorker = new NoopWorker();
 	private _soapSessionId = '';
 
 	constructor(
 		private _fcSink: IFCSink,
 		private _idbSrvc: IIdbInternalService
 	) {
-		this._noopWorker.addEventListener('message', this._onNoopWorkerMessage)
+		// this._noopWorker.addEventListener('message', this._onNoopWorkerMessage)
 	}
 
 	public openNotificationChannel(): void {
-		this._noopWorker.postMessage({ action: 'start' });
+		// this._noopWorker.postMessage({ action: 'start' });
 	}
 
 	public closeNotificationChannel(): void {
-		this._noopWorker.postMessage({ action: 'stop' });
+		// this._noopWorker.postMessage({ action: 'stop' });
 	}
 
 	public registerNotificationParser(tagName: string, parser: INotificationParser<any>): string {
@@ -105,7 +105,7 @@ export default class NetworkService implements INetworkService {
 				await db.clear('soapSessions');
 				this._soapSessionId = '';
 				this.closeNotificationChannel();
-				this._noopWorker.postMessage({ action: 'set-session-id', sessionId: '' });
+				// this._noopWorker.postMessage({ action: 'set-session-id', sessionId: '' });
 				return {} as unknown as RESP;
 			}
 			const [ data, notifications ] = unwrapResponse<RESP>(command, resp);
@@ -123,7 +123,7 @@ export default class NetworkService implements INetworkService {
 						10
 					)
 				});
-				this._noopWorker.postMessage({ action: 'set-session-id', sessionId: this._soapSessionId });
+				// this._noopWorker.postMessage({ action: 'set-session-id', sessionId: this._soapSessionId });
 			}
 			if (command === 'GetInfo') {
 				const storedAccountData = await db.get<'soapSessions'>('soapSessions', this._soapSessionId);

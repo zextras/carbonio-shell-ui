@@ -59,7 +59,7 @@ export class SyncService implements ISyncService {
 		offlineSrvc: IOfflineService
 	) {
 		this._fcSink = _fcSrvc.getInternalFCSink();
-
+		/*
 		combineLatest([
 			this._isSyncing,
 			this.syncOperations
@@ -146,6 +146,7 @@ export class SyncService implements ISyncService {
 				this._handleCancelSyncOperation(ev)
 					.then(() => undefined);
 			});
+		*/
 	}
 
 	private async _loadSyncData(sessionId: string): Promise<void> {

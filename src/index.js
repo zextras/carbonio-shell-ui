@@ -13,16 +13,6 @@
 import 'typeface-roboto';
 import style from './index.css';
 
-if ('serviceWorker' in navigator) {
-	window.addEventListener('load', () => {
-		navigator.serviceWorker.register('service-worker.js').then(registration => {
-			console.debug('SW registered: ', registration);
-		}).catch(registrationError => {
-			console.debug('SW registration failed: ', registrationError);
-		});
-	});
-}
-
 window.addEventListener('load', () => {
 	const splash = document.createElement('div');
 	splash.className = style.splash;

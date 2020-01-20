@@ -9,7 +9,13 @@
  * *** END LICENSE BLOCK *****
  */
 /* eslint-env serviceworker */
-console.log('Hello from service-worker.js');
+
+import { precacheAndRoute } from 'workbox-precaching/precacheAndRoute';
+import { schemaVersion } from '../idb/IShellIdb';
+
+precacheAndRoute(self.__WB_MANIFEST);
+
+console.log(`Hello from service-worker.js installing schema: v${schemaVersion}`);
 
 self.addEventListener('install', function(event) {
     console.log('Installing service-worker.js');

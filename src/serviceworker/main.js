@@ -10,84 +10,135 @@
  */
 /* eslint-env serviceworker */
 
-import { precacheAndRoute } from 'workbox-precaching/precacheAndRoute';
+// import { precacheAndRoute } from 'workbox-precaching/precacheAndRoute';
+// precacheAndRoute(self.__WB_MANIFEST);
+
 import IdbService from '../idb/IdbService';
 
-precacheAndRoute(self.__WB_MANIFEST);
+const _sharedBC = new BroadcastChannel('com_zextras_zapp_shell_sw');
+_sharedBC.addEventListener('message', function onMessageOnBC(e) {
+  console.log('Received', e.data);
+});
 
 const idbService = new IdbService();
 
-console.log(`Hello from service-worker.js`);
+console.log(`Hello from shell-sw.js`);
 
-function _performSync(token?: number): Promise<void> {
-  return new Promise((resolve, reject) => {
-    fetch(
-      '/service/soap/SyncRequest',
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          Body: {
-            _jsns: 'urn:zimbraMail',
-            SyncRequest: {
-              typed: true
-            }
-          }
-        })
-      }
-    )
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(response) {
-        const resp = response.Body.SyncResponse;
-        console.log(resp);
-        // md
-        // token
-        // s
-        // folder
-        // TODO: Handle the sync data of the folders
-        resolve();
-      })
-      .catch(function(err) {
-        console.error(err);
-        reject(err);
-      });
+async function _storeSOAPSyncToken(accountId, syncResponse) {
+  const syncResp = syncResponse.Body.SyncResponse;
+  const db = await idbService.openDb();
+  await db.put(
+    'sync',
+    {
+      accountId: accountId,
+      token: typeof syncResp.token === 'string' ? parseInt(syncResp.token, 10) : syncResp.token,
+      modifyDate: syncResp.md
+    }
+  );
+}
+
+function _propagateSOAPNotifications(response) {
+  const data = { ...response.Body.SyncResponse };
+  delete data.token;
+  _sharedBC.postMessage({
+    action: 'SOAP:notification:handle',
+    data
   });
 }
 
-function _syncAll() {
-  idbService.openDb()
-    .then((db) => {
-      db.getAll('sync', null, 1).then((syncDatas) => {
-        console.log('Sync data: ', syncDatas);
-        if (syncDatas.length < 1) {
-          // Is the first sync
-          _performSync();
+function _executeSOAPSync(syncData) {
+  return new Promise((resolve, reject) => {
+    const syncReq = {
+      Body: {
+        SyncRequest: {
+          _jsns: 'urn:zimbraMail',
+          typed: true
         }
-        else if (syncDatas.length === 1) {
-          // There is something to sync
-          _performSync(syncDatas[0].token);
+      }
+    };
+    if (syncData) {
+      syncReq.token = syncData.token;
+      fetch(
+        '/service/soap/SyncRequest',
+        {
+          method: 'POST',
+          body: JSON.stringify(syncReq)
         }
-        else {
-          // Data must be nuked! Perhaps, it should not happen as the query is limited.
+      )
+        .then(response => response.json())
+        .then((syncResponse) => Promise.all([
+          _storeSOAPSyncToken(syncData.accountId, syncResponse),
+          _propagateSOAPNotifications(syncResponse)
+        ]))
+        .then(() => resolve())
+        .catch((err) => reject(err));
+    }
+    else {
+      const getInfoReq = {
+        Body: {
+          GetInfoRequest: {
+            _jsns: 'urn:zimbraAccount',
+          }
         }
-      });
-    });
+      };
+      Promise.all([
+        fetch(
+          '/service/soap/GetInfoRequest',
+          {
+            method: 'POST',
+            body: JSON.stringify(getInfoReq)
+          }
+        )
+          .then(response => response.json()),
+        fetch(
+          '/service/soap/SyncRequest',
+          {
+            method: 'POST',
+            body: JSON.stringify(syncReq)
+          }
+        )
+          .then(response => response.json())
+      ])
+        .then(([getInfoResponse, syncResponse]) => Promise.all([
+          _storeSOAPSyncToken(getInfoResponse.Body.GetInfoResponse.id, syncResponse),
+          _propagateSOAPNotifications(syncResponse)
+        ]))
+        .then(() => resolve())
+        .catch((err) => reject(err));
+    }
+
+  });
+}
+
+async function _doSOAPSync() {
+  const db = await idbService.openDb();
+  const syncDatas = await db.getAll('sync', null, 1);
+  if (syncDatas.length < 1) {
+    // Is the first sync
+    return _executeSOAPSync();
+  }
+  else if (syncDatas.length === 1) {
+    // There is something to sync
+    return _executeSOAPSync(syncDatas[0]);
+  }
+  else {
+    // Data must be nuked! Perhaps, it should not happen as the query is limited.
+    return db.clear('sync');
+  }
 }
 
 self.addEventListener('install', function(event) {
-    console.log('Installing service-worker.js');
+    console.log('Installing shell-sw.js');
 });
 
 self.addEventListener('message', function(event) {
     if (!event || !event.data || !event.data.command) return;
     console.log(`Service worker command: ${event.data.command}`);
     switch(event.data.command) {
-      case 'sync': {
-        _syncAll();
-      }
+      case 'soap_sync':
+        _doSOAPSync();
+        break;
     }
-    return;
 });
 
 // Send a message to all connected clients.

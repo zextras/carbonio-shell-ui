@@ -10,36 +10,51 @@
  */
 
 import { IFiberChannelService } from '../fc/IFiberChannelService';
+import { IServiceWorkerService } from './IServiceWorkerService';
 
-export class ServiceWorkerService {
+export class ServiceWorkerService implements IServiceWorkerService {
 
 	private _fiberChannelSrvc: IFiberChannelService;
 	private _registration?: ServiceWorkerRegistration;
 
 	constructor(fiberChannelSrvc: IFiberChannelService) {
 		this._fiberChannelSrvc = fiberChannelSrvc;
-		this._registerServiceWorker();
+		this.registerServiceWorker(
+			'shell-sw.js',
+			'/'
+		).then((registration: ServiceWorkerRegistration) => {
+			this._registration = registration;
+			navigator.serviceWorker.addEventListener('message', function handler(event) {
+				console.log('Event from ServiceWorker', event.data);
+			});
+		})
+			.catch((registrationError: Error) => {
+				this._registration = undefined;
+			});
+
 		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 		// @ts-ignore
-		window['gna'] = this;
+		window['swSrvc'] = this;
 	}
 
-	private _registerServiceWorker() {
-		if ('serviceWorker' in navigator) {
-			navigator.serviceWorker
-				.register('service-worker.js')
-				.then((registration: ServiceWorkerRegistration) => {
-					console.debug('SW registered: ', registration);
-					this._registration = registration;
-					navigator.serviceWorker.addEventListener('message', function handler(event) {
-						console.log('Event from ServiceWorker', event.data);
+	public registerServiceWorker(path: string, appScope: string): Promise<ServiceWorkerRegistration> {
+		return new Promise((resolve, reject) => {
+			if ('serviceWorker' in navigator) {
+				navigator.serviceWorker
+					.register(path, { scope: appScope })
+					.then((registration: ServiceWorkerRegistration) => {
+						console.debug('SW registered: ', registration);
+						resolve(registration);
+					})
+					.catch((registrationError: Error) => {
+						console.debug('SW registration failed: ', registrationError);
+						reject(registrationError);
 					});
-				})
-				.catch((registrationError: Error) => {
-					console.debug('SW registration failed: ', registrationError);
-					this._registration = undefined;
-				});
-		}
+			} else {
+				console.debug('SW registration failed: ', new Error('ServiceWorker not supported'));
+				reject(new Error('ServiceWorker not supported'));
+			}
+		});
 	}
 
 	public sendMessage(command: string, data: any): Promise<void> {

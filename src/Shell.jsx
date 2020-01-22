@@ -298,7 +298,8 @@ export function loadShell(container) {
 		offlineSrvc,
 		sessionSrvc,
 		syncSrvc,
-		i18nSrvc
+		i18nSrvc,
+		serviceWorkerService
 	);
 	const themeSrvc = new ThemeService(networkSrvc, sessionSrvc);
 	render(

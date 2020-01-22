@@ -18,7 +18,7 @@ module.exports = function (wpConf, zappConfig, options) {
 		new WorkboxPlugin.InjectManifest({
 			// importWorkboxFrom: 'local',
 			swSrc: path.resolve(process.cwd(), 'src', 'serviceworker', 'main.js'),
-			swDest: 'service-worker.js'
+			swDest: 'shell-sw.js'
 		})
 	);
 	wpConf.plugins.push(

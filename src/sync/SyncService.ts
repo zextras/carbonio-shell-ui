@@ -149,6 +149,7 @@ export class SyncService implements ISyncService {
 		*/
 	}
 
+	/*
 	private async _loadSyncData(sessionId: string): Promise<void> {
 		const db = await this._idbSrvc.openDb();
 		const syncData = await db.get<'sync'>('sync', sessionId);
@@ -286,6 +287,7 @@ export class SyncService implements ISyncService {
 		}
 		this._isSyncing.next(false);
 	}
+	*/
 
 	public syncFolderById(folderId: string): void {
 		this._folderRequested.next(folderId);

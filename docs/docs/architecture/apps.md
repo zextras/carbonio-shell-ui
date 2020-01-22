@@ -5,7 +5,24 @@ title: APPs
 Apps for [@zextras/zapp-shell][1] will be created using the [@zextras/zapp-sdk][2] tool.
 For more information on how to create a Zextras Apps please refer to the [@zextras/zapp-sdk][2] documentation.
 
-## `@zextras/route`
+## Service Worker
+Apps can register a [service worker][4] to handle notifications or perform background operations.
+
+### Events - IN
+Events sent from the Shell's [service worker][4] are defined in:
+
+#### Notification
+Each notification event received from the shell is sent
+```json
+{
+}
+```
+
+### Events - OUT
+
+## Shared context
+**// TODO: Updated this section!**
+### `@zextras/route`
 Functions related to the route.
 
 - `registerRoute(path, componentClass, defaultProps)`: Register a component class for a router with some default props.
@@ -14,7 +31,7 @@ Functions related to the route.
 - `addMainMenuItem(icon, label, path)`: Register a main menu item with an icon (as React Element), a label and the route
     where the user will be redirected clicking on the item.
 
-## `@zextras/network`
+### `@zextras/network`
 Functions related to the network.
 
 - `registerNotificationParser()`: Register a [notification parser](dev/notifications/notifications_parsers).
@@ -34,3 +51,4 @@ Shimmed dependencies mapped and exposed as `__ZAPP_SHARED_LIBRARIES__` constant 
 [1]: https://bitbucket.org/zextras/iris-shell
 [2]: https://bitbucket.org/zextras/iris-cli
 [3]: https://github.com/mui-org/material-ui
+[4]: https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API

@@ -58,6 +58,8 @@ import * as ZappUI from '@zextras/zapp-ui';
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
 import * as PropTypes from 'prop-types';
+import { IServiceWorkerService } from '../serviceworker/IServiceWorkerService';
+import { PromiseCollector } from './PromiseCollector';
 /* eslint-enable @typescript-eslint/ban-ts-ignore */
 
 type IChildWindow = Window & {
@@ -82,7 +84,8 @@ export default class ExtensionService {
 		private _offlineSrvc: IOfflineService,
 		private _sessionSrvc: ISessionService,
 		private _syncSrvc: ISyncService,
-		private _i18nSrvc: I18nService
+		private _i18nSrvc: I18nService,
+		private _serviceWorkerSrvc: IServiceWorkerService
 	) {
 		this._fcSink = this._fcSrvc.getInternalFCSink();
 		_sessionSrvc.session.subscribe((session) => {
@@ -108,6 +111,7 @@ export default class ExtensionService {
 				sections: 'zimlets'
 			}
 		);
+		const promiseCollector = new PromiseCollector();
 		try {
 			await Promise.all(
 				map(
@@ -123,9 +127,12 @@ export default class ExtensionService {
 						resourceUrl: `/zx/zimlet/${ z.zimlet[0].name }`,
 						entryPoint: z.zimlet[0]['zapp-main']!,
 						styleEntryPoint: z.zimlet[0]['zapp-style']
-					})
+					},
+						promiseCollector
+					)
 				)
 			);
+			await promiseCollector.waitAll();
 		} catch (e) {
 			// lol
 		} finally {
@@ -133,11 +140,14 @@ export default class ExtensionService {
 		}
 	}
 
-	private _loadExtension: (pkg: IAppPgkDescription) => Promise<void> = async (pkg) => {
+	private _loadExtension: (
+		pkg: IAppPgkDescription,
+		pc: PromiseCollector
+	) => Promise<void> = async (pkg, pc) => {
 		try {
 			this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
 			if (pkg.styleEntryPoint) this._loadStyle(pkg);
-			const extModule = await this._loadExtensionModule(pkg);
+			const extModule = await this._loadExtensionModule(pkg, pc);
 			extModule.call(undefined);
 			try {
 				this._fcSink<{ package: string; version: string }>('app:loaded', {
@@ -180,7 +190,10 @@ export default class ExtensionService {
 		});
 	}
 
-	private _loadExtensionModule(appPkg: IAppPgkDescription): Promise<ZAppModuleFunction> {
+	private _loadExtensionModule(
+		appPkg: IAppPgkDescription,
+		pc: PromiseCollector
+	): Promise<ZAppModuleFunction> {
 		return new Promise((resolve, reject) => {
 			const path = `${ appPkg.resourceUrl }/${ appPkg.entryPoint }`;
 			const iframe: HTMLIFrameElement = document.createElement('iframe');
@@ -254,7 +267,14 @@ export default class ExtensionService {
 					},
 					'@zextras/zapp-shell/service': {
 						offlineSrvc: this._offlineSrvc,
-						sessionSrvc: this._sessionSrvc
+						sessionSrvc: this._sessionSrvc,
+						serviceWorkerSrvc: {
+							registerAppServiceWorker: (path: string): Promise<ServiceWorkerRegistration> => {
+								return pc.addPromise<ServiceWorkerRegistration>(
+									this._serviceWorkerSrvc.registerServiceWorker(`${appPkg.resourceUrl}/${path}`, `${appPkg.resourceUrl}/`)
+								);
+							}
+						}
 					},
 					'@zextras/zapp-shell/sync': {
 						registerSyncItemParser: (tagName: string, parser: ISyncItemParser<any>): void => revertables.registerSyncItemParser(tagName, parser),

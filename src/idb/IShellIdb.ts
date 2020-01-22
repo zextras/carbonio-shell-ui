@@ -28,9 +28,8 @@ function createDb(database: IDBPDatabase<IShellIdbSchema>): void {
 	});
 	authStore.createIndex('id', 'id');
 	const syncStore = database.createObjectStore<'sync'>('sync', {
-		keyPath: 'sessionId'
+		keyPath: 'accountId'
 	});
-	syncStore.createIndex('sessionId', 'sessionId');
 	const syncOperationsStore = database.createObjectStore<'sync-operations'>('sync-operations', {
 		keyPath: 'id',
 		autoIncrement: true

@@ -32,9 +32,6 @@ export type IShellIdbSchema = DBSchema & {
 	sync: {
 		key: string;
 		value: ISyncData;
-		indexes: {
-			sessionId: string;
-		};
 	};
 	'sync-operations': ISyncOperationSchm;
 	auth: {
@@ -47,9 +44,9 @@ export type IShellIdbSchema = DBSchema & {
 };
 
 export type ISyncData = {
-	sessionId: string;
-	token?: number;
-	folders: Array<string>;
+	accountId: string;
+	token: number;
+	modifyDate: number;
 };
 
 export type IStoredSessionData = {

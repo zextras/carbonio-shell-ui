@@ -30,6 +30,7 @@ import { IDBPDatabase } from 'idb';
 import { II18nContext } from '../i18n/II18nContext';
 import I18nService from '../i18n/I18nService';
 import { IMainSubMenuItemData } from '../router/IRouterService';
+import { IServiceWorkerService } from '../serviceworker/IServiceWorkerService';
 
 export type RegisterRouteFn = <T>(path: string, component: ComponentClass<T> | FunctionComponent<T>, defProps: T) => void;
 export type AddMainMenuItemFn = (icon: ReactElement, label: string, to: string, child: Observable<Array<IMainSubMenuItemData>>) => void;
@@ -97,9 +98,14 @@ type ISharedZxRoute = {
 	addCreateMenuItem: AddCreateMenuItemFn;
 };
 
+type IAppServiceWorkerService = {
+	registerAppServiceWorker: (path: string) => Promise<ServiceWorkerRegistration>;
+};
+
 type ISharesZxServices = {
 	offlineSrvc: IOfflineService;
 	sessionSrvc: ISessionService;
+	serviceWorkerSrvc: IAppServiceWorkerService;
 };
 
 type ISharedShellUtils = {

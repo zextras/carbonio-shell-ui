@@ -11,8 +11,8 @@
 const siteConfig = {
   title: 'Zextras Shell', // Title for your website.
   tagline: '',
-  url: 'localhost', // Your website URL
-  baseUrl: '/', // Base URL for your project */
+  url: 'https://doc.dev.zextras.com', // Your website URL
+  baseUrl: '/iris/zapp-shell/' + (process.env.BRANCH_NAME + '/' || ''), // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
   //   baseUrl: '/test-site/',

@@ -10,16 +10,10 @@
  */
 
 import React, { useContext, useState, useEffect, useCallback } from 'react';
-import { Container, Input, PasswordInput, ThemeContext, Logo, Button, Padding, Text } from '@zextras/zapp-ui';
+import { Container, Input, PasswordInput, useScreenMode, Logo, Button, Padding, Text } from '@zextras/zapp-ui';
 import styled, { createGlobalStyle } from 'styled-components';
 import SessionContext from '../session/SessionContext';
 import I18nContext from '../i18n/I18nContext';
-
-const GlobalStyle = createGlobalStyle`
-  body {
-    margin: 0;
-  }
-`;
 
 const BG = styled.div`
 	background-image: url(${props => props.theme.loginBackground});
@@ -29,7 +23,7 @@ const BG = styled.div`
 `;
 
 const LoginPage = () => {
-	const theme = useContext(ThemeContext);
+	const screenMode = useScreenMode();
 	const [ btnDisabled, setBtnDisabled ] = useState(false);
 	const { t } = useContext(I18nContext);
 	const sessionCtx = useContext(SessionContext);
@@ -66,54 +60,55 @@ const LoginPage = () => {
 
 	return (
 		<BG>
-			<GlobalStyle/>
 			<Container
 				height="fill"
-				width="50%"
+				mainAlignment="space-between"
+				width={screenMode === 'desktop' ? '50%' : '100%'}
 				style={{
 					backgroundColor: 'rgba(255, 255, 255, 0.5)'
 				}}
 			>
 				<Container
 					width="50%"
-					height="fill"
+					height="70%"
 					orientation="vertical"
 					mainAlignment="space-around"
 				>
-						<Logo size="large"/>
+					<Logo size="large"/>
 					<Container
 						width="fill"
 						height="fit"
 						orientation="vertical"
 						mainAlignment="center"
+						padding={{ all: 'medium' }}
 					>
-						<Padding all='medium'>
+						<Container padding={{ vertical: 'medium' }}>
 							<Input
 								label="Username"
 								inputRef={usernameRef}
 							/>
-						</Padding>
-						<Padding all='medium'>
+						</Container>
+						<Container padding={{ vertical: 'medium' }}>
 							<PasswordInput
 								label="Password"
 								inputRef={passwordRef}
 							/>
-						</Padding>
-						<Padding all="medium">
+						</Container>
+						<Container padding={{ vertical: 'medium' }}>
 							<Button
 								label="LOGIN"
-								backgroundColor="primary"
+								backgroundColor="bg_1"
 								size="fill"
-								labelColor="light"
+								labelColor="txt_3"
 								onClick={doLogin}
 							/>
-						</Padding>
+						</Container>
 					</Container>
-					<Container height="fit">
-						<Text color="secondary" size="small">
-							{t('login.copyright', { year: new Date().getFullYear() })}
-						</Text>
-					</Container>
+				</Container>
+				<Container height="fit" padding={{ all: 'large' }}>
+					<Text color="txt_1" size="small">
+						{t('login.copyright', { year: new Date().getFullYear() })}
+					</Text>
 				</Container>
 			</Container>
 		</BG>

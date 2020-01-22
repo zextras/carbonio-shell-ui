@@ -15,8 +15,8 @@ n | Component | Notes | View
 3 | Input | The username | 🖥️ 📱
 4 | PasswordInput | The password | 🖥️ 📱
 5 | Button || 🖥️ 📱
-6 | Typography | FontSizeS, darkColor | 🖥️ 📱
-7 | Logo | bigLogo | 🖥️ 📱
+6 | Text | size: `small`, color: `dark` | 🖥️ 📱
+7 | Logo | size: `large` | 🖥️ 📱
 
 ## Wireframes
 

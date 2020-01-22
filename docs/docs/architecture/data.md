@@ -2,6 +2,13 @@
 title: Data
 ---
 
+## Sync
+| Field | Type | 🔑 | Notes |
+|-------|------|---|-------|
+| accountId | string | 🔑 ||
+| token | number |||
+| modifyDate | number |||
+
 ## Folder
 
 | Field | Type |   | Notes |

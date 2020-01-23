@@ -105,7 +105,7 @@ const Shell = hot(({ i18nService }) => {
 		}
 	];
 
-	// Creation Button Stuff
+	// Creation Button
 	const registeredCreateActions = useObservable(routerCtx.createMenuItems);
 	const [createActions, setCreateActions] = useState([]);
 	useEffect(() => {
@@ -120,7 +120,7 @@ const Shell = hot(({ i18nService }) => {
 		setCreateActions(newCreateActions);
 	}, [registeredCreateActions, history]);
 
-	// Sidebar Stuff
+	// Sidebar
 	const mainMenuItems = useObservable(routerCtx.mainMenuItems);
 	const [navTree, setNavTree] = useState([]);
 	useEffect(() => {
@@ -137,7 +137,7 @@ const Shell = hot(({ i18nService }) => {
 		setNavTree(newNavTree);
 	}, [ history, mainMenuItems]	);
 
-	// Router Stuff
+	// Router
 	useEffect(() => {
 		routeDataSubRef.current = routerCtx.routes.subscribe(setRouteData);
 		return () => {
@@ -194,7 +194,17 @@ const Shell = hot(({ i18nService }) => {
 				userBarIsOpen={userOpen}
 				createItems={createActions}
 			/>
-			<Container orientation="horizontal" width="fill" height="fill" mainAlignment="space-between" style={{position: 'relative'}}>
+			<Container
+				orientation="horizontal"
+				width="fill"
+				height="fill"
+				mainAlignment="space-between"
+				style={
+					{
+						position: 'relative',
+					}
+				}
+			>
 				<NavigationPanel
 					navigationBarIsOpen={navOpen}
 					menuTree={menuTree}
@@ -203,7 +213,15 @@ const Shell = hot(({ i18nService }) => {
 					quota={50}
 					selectedApp={currentApp}
 				/>
-					<Container hight="fill" width="fill">
+					<Container
+						height="calc(100vh - 48px)"
+						width="fill"
+						style={
+							{
+								overflowY: 'scroll'
+							}
+						}
+					>
 						{ routes }
 					</Container>
 				<MenuPanel menuIsOpen={userOpen} tree={menuTree}/>

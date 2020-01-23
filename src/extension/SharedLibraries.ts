@@ -14,21 +14,19 @@
 import { ComponentClass, Context, FunctionComponent, ReactElement } from 'react';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { INotificationParser } from '../network/INetworkService';
 import { ISoapFolderObj, ISoapResponseContent, JsnsUrn } from '../network/ISoap';
 import { IIdbExtensionService } from '../idb/IIdbExtensionService';
 import { IOfflineContext } from '../offline/IOfflineContext';
 import { IScreenSizeContext } from '../screenSize/IScreenSizeContext';
 import { IOfflineService } from '../offline/IOfflineService';
 import { IFCEvent, IFCSink } from '../fc/IFiberChannel';
-import { ISyncItemParser, ISyncFolderParser, ISyncOperation, ISyncOpRequest } from '../sync/ISyncService';
+import { ISyncOperation, ISyncOpRequest } from '../sync/ISyncService';
 import { ISessionService } from '../session/ISessionService';
 import { ISyncContext } from '../sync/ISyncContext';
 import { IFolderSchm } from '../sync/IFolderSchm';
 import { IIDBFolderSchm } from '../idb/IShellIdbSchema';
 import { IDBPDatabase } from 'idb';
 import { II18nContext } from '../i18n/II18nContext';
-import I18nService from '../i18n/I18nService';
 import { IMainSubMenuItemData } from '../router/IRouterService';
 
 export type RegisterRouteFn = <T>(path: string, component: ComponentClass<T> | FunctionComponent<T>, defProps: T) => void;
@@ -81,13 +79,9 @@ type ISharedFiberChannelService = {
 
 type ISharedZxNetwork = {
 	sendSOAPRequest<REQ, RESP extends ISoapResponseContent>(command: string, data: REQ, urn?: string | JsnsUrn): Promise<RESP>;
-	registerNotificationParser(tagName: string, parser: INotificationParser<any>): void;
 };
 
 type ISharedZxSync = {
-	registerSyncItemParser(tagName: string, parser: ISyncItemParser<any>): void;
-	registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<any>): void;
-	syncFolderById(folderId: string): void;
 	syncOperations: BehaviorSubject<Array<ISyncOperation<any, ISyncOpRequest<any>>>>;
 };
 
@@ -97,9 +91,14 @@ type ISharedZxRoute = {
 	addCreateMenuItem: AddCreateMenuItemFn;
 };
 
+type IAppServiceWorkerService = {
+	registerAppServiceWorker: (path: string) => Promise<ServiceWorkerRegistration>;
+};
+
 type ISharesZxServices = {
 	offlineSrvc: IOfflineService;
 	sessionSrvc: ISessionService;
+	serviceWorkerSrvc: IAppServiceWorkerService;
 };
 
 type ISharedShellUtils = {

@@ -1,12 +1,11 @@
 ---
 title: API
-author: Michele Olivo
 ---
 
-## FiberChannel events
-### General
+## FiberChannel Events
+
 📫 | Int | Event Name | Data | Notes
-:-:|:---:|------------|------|-------
+:-:|:---:|:----------:|------|------
 📤 || `notification:item:deleted` | `id`: string ||
 📤 || `app:all-loaded` |||
 📤 || `app:preload` | `package`: string ||
@@ -22,11 +21,3 @@ author: Michele Olivo
 📤 || `sync:operation:error` | `operation`: Operation <br> `error`: Error ||
 
 Folders are managed by Zimbra as container for Items, we want to change this behavior because any “App“  can handle its folders. The shell will provide only types and utilities shared across the apps but no handling is performed by the shell itself.
-
-### Sync Operations
-Type | Command | opData | Notes
----|---|---|---
-
-### Other
-Event Name | Data | Notes
----|---|---

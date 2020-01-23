@@ -15,10 +15,6 @@ import { IShellIdbSchema } from './IShellIdbSchema';
 export const schemaVersion = 1;
 
 function createDb(database: IDBPDatabase<IShellIdbSchema>): void {
-	const soapSessionsStore = database.createObjectStore<'soapSessions'>('soapSessions', {
-		keyPath: 'id'
-	});
-	soapSessionsStore.createIndex('accountId', 'accountId');
 	const sessionsStore = database.createObjectStore<'sessions'>('sessions', {
 		keyPath: 'id'
 	});
@@ -28,9 +24,8 @@ function createDb(database: IDBPDatabase<IShellIdbSchema>): void {
 	});
 	authStore.createIndex('id', 'id');
 	const syncStore = database.createObjectStore<'sync'>('sync', {
-		keyPath: 'sessionId'
+		keyPath: 'accountId'
 	});
-	syncStore.createIndex('sessionId', 'sessionId');
 	const syncOperationsStore = database.createObjectStore<'sync-operations'>('sync-operations', {
 		keyPath: 'id',
 		autoIncrement: true

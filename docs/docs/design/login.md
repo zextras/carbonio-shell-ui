@@ -1,6 +1,5 @@
 ---
 title: Design of the Login
-author: Michele Olivo
 ---
 
 The shell is a container for apps and utilities. The shell will adapt itself, depends by the screen sizes.
@@ -8,15 +7,16 @@ The shell is a container for apps and utilities. The shell will adapt itself, de
 ## Components Involved
 
 Some components may require a version specific for each screen size, that items are marked with the ⚠️ icon.
-n | Component | Notes | View
-:-:|---|---|---
-1 | Image || 🖥️ 📱
-2 | Column | A Container. with transparency on the background.<br>**Large**: The column has a fixed width (50%).<br>**Small**: The column fill the screen. | 🖥️ 📱 ⚠️
-3 | Input | The username | 🖥️ 📱
-4 | PasswordInput | The password | 🖥️ 📱
-5 | Button || 🖥️ 📱
-6 | Typography | FontSizeS, darkColor | 🖥️ 📱
-7 | Logo | bigLogo | 🖥️ 📱
+
+| n | Component | Notes | View |
+|---|-----------|-------|------|
+| 1 | Image || 🖥️ 📱 |
+| 2 | Column | A Container. with transparency on the background.<br>**Large**: The column has a fixed width (50%).<br>**Small**: The column fill the screen. | 🖥️ 📱 ⚠️ |
+| 3 | Input | The username | 🖥️ 📱 |
+| 4 | PasswordInput | The password | 🖥️ 📱 |
+| 5 | Button || 🖥️ 📱 |
+| 6 | Typography | FontSizeS, darkColor | 🖥️ 📱 |
+| 7 | Logo | bigLogo | 🖥️ 📱 |
 
 ## Wireframes
 

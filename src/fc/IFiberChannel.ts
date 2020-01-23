@@ -13,7 +13,6 @@ export type IFCPartialEvent<T extends {} | string> = {
 	to?: string;
 	event: string;
 	data: T;
-	internalOnly?: boolean;
 };
 
 export type IFCEvent<T extends {} | string> = IFCPartialEvent<T> & {

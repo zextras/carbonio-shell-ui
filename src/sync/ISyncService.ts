@@ -20,14 +20,6 @@ export interface ISyncService {
 		};
 		operation: ISyncOperation<unknown, ISyncOpRequest<unknown>>;
 	}>>;
-
-	syncFolderById(folderId: string): void;
-
-	registerSyncItemParser(tagName: string, parser: ISyncItemParser<any>): string;
-
-	registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<any>): string;
-
-	unregisterSyncParserById(id: string): void;
 }
 
 export interface ISyncItemParser<T extends {}> {

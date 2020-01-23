@@ -45,6 +45,7 @@ import I18nContextProvider from './i18n/I18nContextProvider';
 import I18nContext from './i18n/I18nContext';
 import { CreateButton } from './ui/CreateButton';
 import { ThemeProvider, extendTheme } from '@zextras/zapp-ui';
+import { ServiceWorkerService } from './serviceworker/ServiceWorkerService';
 
 const drawerWidth = '75vw';
 
@@ -269,6 +270,9 @@ const Shell = hot(({ i18nService }) => {
 
 export function loadShell(container) {
 	const fiberChannelSrvc = new FiberChannelService();
+	const serviceWorkerService = new ServiceWorkerService(
+		fiberChannelSrvc,
+	);
 	const idbSrvc = new IdbService();
 	const networkSrvc = new NetworkService(
 		fiberChannelSrvc.getInternalFCSink(),
@@ -280,11 +284,9 @@ export function loadShell(container) {
 	const offlineSrvc = new OfflineService();
 	const i18nSrvc = new I18nService();
 	const syncSrvc = new SyncService(
-		networkSrvc,
-		sessionSrvc,
 		fiberChannelSrvc,
 		idbSrvc,
-		offlineSrvc
+		serviceWorkerService
 	);
 	const extensionSrvc = new ExtensionService(
 		fiberChannelSrvc,
@@ -294,7 +296,8 @@ export function loadShell(container) {
 		offlineSrvc,
 		sessionSrvc,
 		syncSrvc,
-		i18nSrvc
+		i18nSrvc,
+		serviceWorkerService
 	);
 	const themeSrvc = new ThemeService(networkSrvc, sessionSrvc);
 	render(

@@ -2,6 +2,8 @@
 title: Data
 ---
 
+This page describes the data structures stored into the Browser's [IndexedDB][1] and used across the Shell.
+
 ## Sync
 | Field | Type | 🔑 | Notes |
 |-------|------|---|-------|
@@ -43,3 +45,5 @@ title: Data
 | id | `autoincrement` |||
 | app | `package`: string | 🔖 on `package` ||
 | operation | Operation |||
+
+[1]: https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API

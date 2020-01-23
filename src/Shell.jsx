@@ -284,11 +284,9 @@ export function loadShell(container) {
 	const offlineSrvc = new OfflineService();
 	const i18nSrvc = new I18nService();
 	const syncSrvc = new SyncService(
-		networkSrvc,
-		sessionSrvc,
 		fiberChannelSrvc,
 		idbSrvc,
-		offlineSrvc
+		serviceWorkerService
 	);
 	const extensionSrvc = new ExtensionService(
 		fiberChannelSrvc,

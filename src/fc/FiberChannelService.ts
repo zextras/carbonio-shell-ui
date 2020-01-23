@@ -19,11 +19,6 @@ import { IFiberChannelService } from './IFiberChannelService';
 export default class FiberChannelService implements IFiberChannelService {
 
 	private _fiberChannel: Subject<IFCEvent<any>> = new Subject<IFCEvent<any>>();
-	private _broadcastChannel: BroadcastChannel = new BroadcastChannel('com_zextras_zapp_shell');
-
-	constructor() {
-		this._broadcastChannel.addEventListener('message', this._handleBcMessage);
-	}
 
 	public getFiberChannelForExtension(name: string): Observable<IFCEvent<any>> {
 		return this._fiberChannel
@@ -35,11 +30,6 @@ export default class FiberChannelService implements IFiberChannelService {
 	public getFiberChannelSinkForExtension(name: string, version: string): IFCSink {
 		const subject = new Subject<IFCPartialEvent<any>>();
 		subject.subscribe((ev) => this._fiberChannel.next({ ...ev, from: name, version: version }));
-		subject.pipe(filter(ev => ev.internalOnly === false)).subscribe((ev) => this._broadcastChannel.postMessage({
-			...ev,
-			from: name,
-			version: version
-		}));
 		return (ev: string | IFCPartialEvent<any>, data: any = {}): void => {
 			if (typeof ev === 'string') {
 				subject.next({ event: ev, data });
@@ -56,9 +46,5 @@ export default class FiberChannelService implements IFiberChannelService {
 	public getInternalFCSink(): IFCSink {
 		return this.getFiberChannelSinkForExtension('com_zextras_zapp_shell', version);
 	}
-
-	private _handleBcMessage = (ev: MessageEvent): void => {
-		this._fiberChannel.next(ev.data);
-	};
 
 }

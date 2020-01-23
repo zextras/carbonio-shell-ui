@@ -9,16 +9,41 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { IFiberChannelService } from '../fc/IFiberChannelService';
 import { IServiceWorkerService } from './IServiceWorkerService';
+import { ISyncOpCompletedEv, ISyncOpErrorEv } from '../sync/ISyncService';
+import { IFiberChannelService } from '../fc/IFiberChannelService';
 
 export class ServiceWorkerService implements IServiceWorkerService {
 
-	private _fiberChannelSrvc: IFiberChannelService;
 	private _registration?: ServiceWorkerRegistration;
 
-	constructor(fiberChannelSrvc: IFiberChannelService) {
-		this._fiberChannelSrvc = fiberChannelSrvc;
+	constructor(
+		private _fcSrvc: IFiberChannelService,
+	) {
+		const sink = _fcSrvc.getInternalFCSink();
+
+		const _sharedBC = new BroadcastChannel('com_zextras_zapp_shell_sw');
+		_sharedBC.addEventListener('message', (e) => {
+			if (!e.data || !e.data.action) return;
+			const opData = e.data.data;
+			switch(e.data.action) {
+				case 'sync:operation:completed':
+					sink<ISyncOpCompletedEv<unknown>>({
+							event: 'sync:operation:completed',
+							to: opData.to,
+							data: opData.data
+						});
+					break;
+				case 'sync:operation:error':
+					sink<ISyncOpErrorEv>({
+							event: 'sync:operation:error',
+							to: opData.to,
+							data: opData.data
+					});
+					break;
+			}
+		});
+
 		this.registerServiceWorker(
 			'shell-sw.js',
 			'/'
@@ -31,10 +56,6 @@ export class ServiceWorkerService implements IServiceWorkerService {
 			.catch((registrationError: Error) => {
 				this._registration = undefined;
 			});
-
-		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-		// @ts-ignore
-		window['swSrvc'] = this;
 	}
 
 	public registerServiceWorker(path: string, appScope: string): Promise<ServiceWorkerRegistration> {

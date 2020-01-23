@@ -14,14 +14,6 @@ import { IFolderSchm, IFolderSchmV1 } from '../sync/IFolderSchm';
 import { ISyncOperationSchm } from '../sync/ISyncService';
 
 export type IShellIdbSchema = DBSchema & {
-	soapSessions: {
-		key: string;
-		value: IStoredSoapSessionData;
-		indexes: {
-			id: string;
-			accountId: string;
-		};
-	};
 	sessions: {
 		key: string;
 		value: IStoredSessionData;
@@ -82,13 +74,4 @@ export type IIDBFolderSchmV1 = IIDBFolderSchm & {
 			path: string;
 		};
 	};
-};
-
-export type IStoredSoapSessionData = {
-	id: string;
-	authToken: string;
-	notifySeq: number;
-	username?: string;
-	accountId?: string;
-	zimbraPrefMailPollingInterval?: number;
 };

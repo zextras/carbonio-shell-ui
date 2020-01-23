@@ -10,8 +10,6 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-//import { ThemeProvider } from '@material-ui/styles';
-//import { createMuiTheme } from '@material-ui/core';
 import { ThemeProvider, extendTheme } from '@zextras/zapp-ui'
 
 const ThemeContextProvider = ({ themeService, children }) => {

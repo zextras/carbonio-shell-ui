@@ -11,8 +11,8 @@
 const siteConfig = {
   title: 'Zextras Shell', // Title for your website.
   tagline: '',
-  url: 'localhost', // Your website URL
-  baseUrl: '/', // Base URL for your project */
+  url: 'https://doc.dev.zextras.com', // Your website URL
+  baseUrl: '/iris/zapp-shell/' + (process.env.BRANCH_NAME + '/' || ''), // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
   //   baseUrl: '/test-site/',
@@ -27,8 +27,6 @@ const siteConfig = {
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     {doc: 'main', label: 'Docs'},
-    {doc: 'api', label: 'API'},
-    {doc: 'data', label: 'Data'},
     {page: 'help', label: 'Help'}
   ],
 
@@ -58,7 +56,7 @@ const siteConfig = {
   */
 
   // This copyright info is used in /core/Footer.js and blog RSS/Atom feeds.
-  copyright: `Copyright © ${new Date().getFullYear()} Zextras`,
+  copyright: `Copyright © 2019-${new Date().getFullYear()} Zextras`,
 
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks.

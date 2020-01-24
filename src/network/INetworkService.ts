@@ -15,10 +15,6 @@ import { ISoapResponseContent, JsnsUrn } from './ISoap';
 
 export interface INetworkService {
 	sendSOAPRequest<REQ, RESP extends ISoapResponseContent>(command: string, data: REQ, urn?: JsnsUrn | string): Promise<RESP>;
-	openNotificationChannel(): void;
-	closeNotificationChannel(): void;
-	registerNotificationParser(tagName: string, parser: INotificationParser<any>): string;
-	unregisterNotificationParserById(id: string): void;
 }
 
 export type ISoapSessionData = {
@@ -27,8 +23,4 @@ export type ISoapSessionData = {
 	authToken?: string;
 	sessionId?: number;
 	notifySeq?: number;
-}
-
-export type INotificationParser<MOD extends {}> = {
-	(type: 'created' | 'modified', mod: MOD): Promise<void>;
 }

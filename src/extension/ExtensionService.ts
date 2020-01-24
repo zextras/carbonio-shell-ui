@@ -19,13 +19,12 @@ import { IFCSink } from '../fc/IFiberChannel';
 import { IMainSubMenuItemData, IRouterService } from '../router/IRouterService';
 import { ISharedLibrariesAppsMap } from './SharedLibraries';
 import RevertableActionCollection from './RevertableActionCollection';
-import { INetworkService, INotificationParser } from '../network/INetworkService';
+import { INetworkService } from '../network/INetworkService';
 import { IAppPgkDescription } from '../network/IApi';
 import { IIdbInternalService } from '../idb/IIdbInternalService';
 import { IOfflineService } from '../offline/IOfflineService';
 import { IFiberChannelService } from '../fc/IFiberChannelService';
 import { ISessionService } from '../session/ISessionService';
-import { ISyncItemParser, ISyncFolderParser, ISyncService, ISyncOperation, ISyncOpRequest } from '../sync/ISyncService';
 import I18nService from '../i18n/I18nService';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -55,6 +54,9 @@ import * as ZappUI from '@zextras/zapp-ui';
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
 import * as PropTypes from 'prop-types';
+import { IServiceWorkerService } from '../serviceworker/IServiceWorkerService';
+import { PromiseCollector } from './PromiseCollector';
+import { ISyncOperation, ISyncOpRequest, ISyncService } from '../sync/ISyncService';
 /* eslint-enable @typescript-eslint/ban-ts-ignore */
 
 type IChildWindow = Window & {
@@ -79,7 +81,8 @@ export default class ExtensionService {
 		private _offlineSrvc: IOfflineService,
 		private _sessionSrvc: ISessionService,
 		private _syncSrvc: ISyncService,
-		private _i18nSrvc: I18nService
+		private _i18nSrvc: I18nService,
+		private _serviceWorkerSrvc: IServiceWorkerService
 	) {
 		this._fcSink = this._fcSrvc.getInternalFCSink();
 		_sessionSrvc.session.subscribe((session) => {
@@ -105,6 +108,7 @@ export default class ExtensionService {
 				sections: 'zimlets'
 			}
 		);
+		const promiseCollector = new PromiseCollector();
 		try {
 			await Promise.all(
 				map(
@@ -120,9 +124,12 @@ export default class ExtensionService {
 						resourceUrl: `/zx/zimlet/${ z.zimlet[0].name }`,
 						entryPoint: z.zimlet[0]['zapp-main']!,
 						styleEntryPoint: z.zimlet[0]['zapp-style']
-					})
+					},
+						promiseCollector
+					)
 				)
 			);
+			await promiseCollector.waitAll();
 		} catch (e) {
 			// lol
 		} finally {
@@ -130,11 +137,14 @@ export default class ExtensionService {
 		}
 	}
 
-	private _loadExtension: (pkg: IAppPgkDescription) => Promise<void> = async (pkg) => {
+	private _loadExtension: (
+		pkg: IAppPgkDescription,
+		pc: PromiseCollector
+	) => Promise<void> = async (pkg, pc) => {
 		try {
 			this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
 			if (pkg.styleEntryPoint) this._loadStyle(pkg);
-			const extModule = await this._loadExtensionModule(pkg);
+			const extModule = await this._loadExtensionModule(pkg, pc);
 			extModule.call(undefined);
 			try {
 				this._fcSink<{ package: string; version: string }>('app:loaded', {
@@ -177,7 +187,10 @@ export default class ExtensionService {
 		});
 	}
 
-	private _loadExtensionModule(appPkg: IAppPgkDescription): Promise<ZAppModuleFunction> {
+	private _loadExtensionModule(
+		appPkg: IAppPgkDescription,
+		pc: PromiseCollector
+	): Promise<ZAppModuleFunction> {
 		return new Promise((resolve, reject) => {
 			const path = `${ appPkg.resourceUrl }/${ appPkg.entryPoint }`;
 			const iframe: HTMLIFrameElement = document.createElement('iframe');
@@ -188,8 +201,7 @@ export default class ExtensionService {
 				const script: HTMLScriptElement = iframe.contentDocument.createElement('script');
 				const revertables = this._revertableActions[appPkg.package] = new RevertableActionCollection(
 					this._routerSrvc,
-					this._networkSrvc,
-					this._syncSrvc
+					this._networkSrvc
 				);
 				const syncOperations: BehaviorSubject<Array<ISyncOperation<unknown, ISyncOpRequest<unknown>>>> = new BehaviorSubject(
 					map(
@@ -238,7 +250,6 @@ export default class ExtensionService {
 					},
 					'@zextras/zapp-shell/idb': this._idbSrvc.createIdbService(appPkg.package),
 					'@zextras/zapp-shell/network': {
-						registerNotificationParser: (tagName: string, parser: INotificationParser<any>): void => revertables.registerNotificationParser(tagName, parser),
 						sendSOAPRequest: <REQ, RESP extends ISoapResponseContent>(command: string, data: REQ, urn?: 'urn:zimbraAccount' | 'urn:zimbraMail' | string): Promise<RESP> => this._networkSrvc.sendSOAPRequest<REQ, RESP>(command, data, urn)
 					},
 					'@zextras/zapp-shell/router': {
@@ -248,12 +259,16 @@ export default class ExtensionService {
 					},
 					'@zextras/zapp-shell/service': {
 						offlineSrvc: this._offlineSrvc,
-						sessionSrvc: this._sessionSrvc
+						sessionSrvc: this._sessionSrvc,
+						serviceWorkerSrvc: {
+							registerAppServiceWorker: (path: string): Promise<ServiceWorkerRegistration> => {
+								return pc.addPromise<ServiceWorkerRegistration>(
+									this._serviceWorkerSrvc.registerServiceWorker(`${appPkg.resourceUrl}/${path}`, `${appPkg.resourceUrl}/`)
+								);
+							}
+						}
 					},
 					'@zextras/zapp-shell/sync': {
-						registerSyncItemParser: (tagName: string, parser: ISyncItemParser<any>): void => revertables.registerSyncItemParser(tagName, parser),
-						registerSyncFolderParser: (tagName: string, parser: ISyncFolderParser<any>): void => revertables.registerSyncFolderParser(tagName, parser),
-						syncFolderById: (folderId: string): void => this._syncSrvc.syncFolderById(folderId),
 						syncOperations
 					},
 					'@zextras/zapp-shell/utils': {

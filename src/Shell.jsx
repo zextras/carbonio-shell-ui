@@ -41,7 +41,7 @@ import I18nService from './i18n/I18nService';
 import I18nContextProvider from './i18n/I18nContextProvider';
 import I18nContext from './i18n/I18nContext';
 import RouterContext from './router/RouterContext';
-
+import { ServiceWorkerService } from './serviceworker/ServiceWorkerService';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -232,6 +232,9 @@ const Shell = hot(({ i18nService }) => {
 
 export function loadShell(container) {
 	const fiberChannelSrvc = new FiberChannelService();
+	const serviceWorkerService = new ServiceWorkerService(
+		fiberChannelSrvc,
+	);
 	const idbSrvc = new IdbService();
 	const networkSrvc = new NetworkService(
 		fiberChannelSrvc.getInternalFCSink(),
@@ -243,11 +246,9 @@ export function loadShell(container) {
 	const offlineSrvc = new OfflineService();
 	const i18nSrvc = new I18nService();
 	const syncSrvc = new SyncService(
-		networkSrvc,
-		sessionSrvc,
 		fiberChannelSrvc,
 		idbSrvc,
-		offlineSrvc
+		serviceWorkerService
 	);
 	const extensionSrvc = new ExtensionService(
 		fiberChannelSrvc,
@@ -257,7 +258,8 @@ export function loadShell(container) {
 		offlineSrvc,
 		sessionSrvc,
 		syncSrvc,
-		i18nSrvc
+		i18nSrvc,
+		serviceWorkerService
 	);
 	const themeSrvc = new ThemeService(networkSrvc, sessionSrvc);
 	render(

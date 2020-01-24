@@ -25,8 +25,6 @@ Functions related to the network.
 Shimmed dependencies mapped and exposed as `__ZAPP_SHARED_LIBRARIES__` constant inside the window.
 - `clsx` (1.0.4) from the package [clsx](https://github.com/lukeed/clsx)
 - `react` (16.9.0) from the package [react](https://github.com/facebook/react)
-- `@material-ui/core` (4.5.2) from the package [@material-ui/core][3]
-- `@material-ui/icons` (4.5.1) from the package [@material-ui/icons][3]
 - `idb` (4.0.5) from the package [idb](https://github.com/jakearchibald/idb)
 - `lodash` (4.17.15) from the package [lodash](https://github.com/lodash/lodash)
 - `rxjs` (6.5.3) from the package [rxjs](https://github.com/reactivex/rxjs)
@@ -34,4 +32,3 @@ Shimmed dependencies mapped and exposed as `__ZAPP_SHARED_LIBRARIES__` constant 
 
 [1]: https://bitbucket.org/zextras/iris-shell
 [2]: https://bitbucket.org/zextras/iris-cli
-[3]: https://github.com/mui-org/material-ui

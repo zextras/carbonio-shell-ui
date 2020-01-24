@@ -15,7 +15,6 @@ import { ThemeProvider, extendTheme } from '@zextras/zapp-ui'
 const ThemeContextProvider = ({ themeService, children }) => {
 	const [ theme, setTheme ] = useState( extendTheme({}));
 	const themeSubRef = useRef();
-
 	useEffect(() => {
 		themeSubRef.current = themeService.theme.subscribe((theme) => setTheme(theme));
 

@@ -229,7 +229,7 @@ pipeline {
 
 //============================================ Deploy ==================================================================
 
-		stage('Release') {
+		stage('Publish on NPM (Release)') {
 			when {
 				beforeAgent true
 				allOf {
@@ -244,6 +244,27 @@ pipeline {
 							executeNpmLogin()
 							cmd sh: "nvm use && npm install"
 							cmd sh: "nvm use && NODE_ENV='production' npm publish"
+						}
+					}
+				}
+			}
+		}
+
+		stage('Publish on NPM (Beta)') {
+			when {
+				beforeAgent true
+				allOf {
+					expression { BRANCH_NAME ==~ /(beta)/ }
+					environment name: 'COMMIT_PARENTS_COUNT', value: '1'
+				}
+			}
+			parallel {
+				stage('Publish on NPM') {
+					steps {
+						script {
+							executeNpmLogin()
+							cmd sh: "nvm use && npm install"
+							cmd sh: "nvm use && NODE_ENV='production' npm publish --tag beta"
 						}
 					}
 				}

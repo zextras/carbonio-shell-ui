@@ -1,6 +1,6 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2019 ZeXtras
+ * Copyright (C) 2011-2020 ZeXtras
  *
  * The contents of this file are subject to the ZeXtras EULA;
  * you may not use this file except in compliance with the EULA.
@@ -9,11 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React from 'react';
-
-const SplashPage = () => {
-	return (
-		<div>	Splash Page </div>
-	);
-};
-export default SplashPage;
+export interface IServiceWorkerService {
+	registerServiceWorker(path: string, appScope: string): Promise<ServiceWorkerRegistration>;
+	sendMessage(command: string, data: any): Promise<void>;
+}

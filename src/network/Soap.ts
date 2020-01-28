@@ -11,7 +11,6 @@
 
 import { ISoapNotification } from './ISoapNotification';
 import { ISoapRequest, ISoapResponse, ISoapResponseContent, JsnsUrn } from './ISoap';
-import { IStoredSoapSessionData } from '../idb/IShellIdbSchema';
 
 function getURN(command: string): JsnsUrn {
 	switch (command) {
@@ -29,7 +28,7 @@ function getURN(command: string): JsnsUrn {
 	}
 }
 
-export function wrapRequest<T>(command: string, data: T, sessionData: IStoredSoapSessionData, urn?: string | JsnsUrn): ISoapRequest<T> {
+export function wrapRequest<T>(command: string, data: T, urn?: string | JsnsUrn): [string, ISoapRequest<T>] {
 	const req: ISoapRequest<T> = {
 		// _jsns: 'urn:zimbraSoap',
 		Header: {
@@ -50,22 +49,7 @@ export function wrapRequest<T>(command: string, data: T, sessionData: IStoredSoa
 			}
 		}
 	};
-	if (sessionData.notifySeq > -1) {
-		req.Header.context.notify.seq = sessionData.notifySeq;
-	}
-	if (sessionData.id) {
-		req.Header.context.session = {
-			id: parseInt(sessionData.id, 10),
-			_content: parseInt(sessionData.id, 10)
-		};
-	}
-	if (sessionData.username) {
-		req.Header.context.account = {
-			by: 'name',
-			_content: sessionData.username
-		};
-	}
-	return req;
+	return [`/service/soap/${command}Request`, req];
 }
 
 export function unwrapResponse<T extends ISoapResponseContent>(command: string, response: ISoapResponse<T>): [ T, Array<ISoapNotification> | undefined ] {

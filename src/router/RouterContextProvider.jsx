@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import RouterContext from './RouterContext';
 
 const RouterContextProvider = ({ routerService, children }) => {

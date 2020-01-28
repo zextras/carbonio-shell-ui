@@ -10,13 +10,11 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core';
+import { ThemeProvider, extendTheme } from '@zextras/zapp-ui'
 
 const ThemeContextProvider = ({ themeService, children }) => {
-	const [ theme, setTheme ] = useState(createMuiTheme({}));
+	const [ theme, setTheme ] = useState( extendTheme({}));
 	const themeSubRef = useRef();
-
 	useEffect(() => {
 		themeSubRef.current = themeService.theme.subscribe((theme) => setTheme(theme));
 
@@ -28,8 +26,9 @@ const ThemeContextProvider = ({ themeService, children }) => {
 		};
 	}, [ themeService.theme ]);
 
+
 	return (
-		<ThemeProvider theme={ theme }>
+		<ThemeProvider theme={theme}>
 			{ children }
 		</ThemeProvider>
 	);

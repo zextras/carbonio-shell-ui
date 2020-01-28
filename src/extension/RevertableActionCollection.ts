@@ -15,8 +15,7 @@ import { forEach } from 'lodash';
 import { ComponentClass, FunctionComponent, ReactElement } from 'react';
 
 import { IMainSubMenuItemData, IRouterService } from '../router/IRouterService';
-import { INetworkService, INotificationParser } from '../network/INetworkService';
-import { ISyncItemParser, ISyncFolderParser, ISyncService } from '../sync/ISyncService';
+import { INetworkService } from '../network/INetworkService';
 import { Observable } from 'rxjs';
 
 export default class RevertableActionCollection {
@@ -24,21 +23,15 @@ export default class RevertableActionCollection {
 	private _registeredRoutes: string[] = [];
 	private _registeredMainMenuItems: string[] = [];
 	private _registeredCreateMenuItems: string[] = [];
-	private _registeredNotificationParsers: string[] = [];
-	private _registeredSyncParsers: string[] = [];
 
 	constructor(
 		private _routerService: IRouterService,
 		private _networkService: INetworkService,
-		private _syncService: ISyncService
-	) {
-	}
+	) {}
 
 	public revert(): void {
 		forEach(this._registeredRoutes, (id) => this._routerService.unregisterRouteById(id));
 		forEach(this._registeredMainMenuItems, (id) => this._routerService.unregisterMainMenuItemById(id));
-		forEach(this._registeredNotificationParsers, (id) => this._networkService.unregisterNotificationParserById(id));
-		forEach(this._registeredSyncParsers, (id) => this._syncService.unregisterSyncParserById(id));
 		forEach(this._registeredCreateMenuItems, (id) => this._routerService.unregisterCreateMenuItemById(id));
 	}
 
@@ -51,24 +44,6 @@ export default class RevertableActionCollection {
 	public addMainMenuItem(icon: ReactElement, label: string, to: string, pkgName: string, children?: Observable<Array<IMainSubMenuItemData>>): void {
 		this._registeredMainMenuItems.push(
 			this._routerService.addMainMenuItem(icon, label, to, pkgName, children)
-		);
-	}
-
-	public registerNotificationParser(tagName: string, parser: INotificationParser<any>): void {
-		this._registeredNotificationParsers.push(
-			this._networkService.registerNotificationParser(tagName, parser)
-		);
-	}
-
-	public registerSyncItemParser(tagName: string, parser: ISyncItemParser<any>): void {
-		this._registeredSyncParsers.push(
-			this._syncService.registerSyncItemParser(tagName, parser)
-		);
-	}
-
-	public registerSyncFolderParser(tagName: string, parser: ISyncFolderParser<any>): void {
-		this._registeredSyncParsers.push(
-			this._syncService.registerSyncFolderParser(tagName, parser)
 		);
 	}
 

@@ -31,9 +31,9 @@ export default class SessionService implements ISessionService {
 		this.session.subscribe((s) => {
 			if (s && !this._currentSession) {
 				this._currentSession = s.id;
-				this._networkSrvc.openNotificationChannel();
+				// this._networkSrvc.openNotificationChannel();
 			} else if (!s && this._currentSession) {
-				this._networkSrvc.closeNotificationChannel();
+				// this._networkSrvc.closeNotificationChannel();
 				delete this._currentSession;
 			}
 		});
@@ -100,13 +100,21 @@ export default class SessionService implements ISessionService {
 
 	async doLogout(): Promise<void> {
 		const db = await this._idbSrvc.openDb();
-		const tx = db.transaction([ 'sessions', 'auth' ], 'readwrite');
+		const tx = db.transaction([ 'sessions', 'auth', 'sync', 'sync-operations' ], 'readwrite');
 		{
 			const store = tx.objectStore('sessions');
 			await store.clear();
 		}
 		{
 			const store = tx.objectStore('auth');
+			await store.clear();
+		}
+		{
+			const store = tx.objectStore('sync');
+			await store.clear();
+		}
+		{
+			const store = tx.objectStore('sync-operations');
 			await store.clear();
 		}
 		await tx.done;

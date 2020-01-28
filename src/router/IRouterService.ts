@@ -44,7 +44,7 @@ export interface IMainMenuItemData {
 	icon: ReactElement;
 	label: string;
 	to: string;
-	children?: Observable<Array<IMainSubMenuItemData>>;
+	children?: Array<IMainSubMenuItemData>;
 	app: string;
 }
 

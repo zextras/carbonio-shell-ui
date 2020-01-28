@@ -38,9 +38,6 @@ export type ISharedLibrariesAppsMap = {
 	'react': {};
 	'react-dom': {};
 	'react-virtualized': {};
-	'@material-ui/core': {};
-	'@material-ui/core/styles': {};
-	'@material-ui/icons': {};
 	'idb': {};
 	'lodash': {};
 	'rxjs': {};
@@ -62,7 +59,6 @@ export type ISharedLibrariesAppsMap = {
 };
 
 export type ISharedLibrariesThemesMap = {
-	'@material-ui/core': {};
 };
 
 type ISharedZxContexts = {

@@ -12,14 +12,14 @@
 import { Subject } from 'rxjs';
 import { map, filter } from 'lodash';
 
-import { createMuiTheme, makeStyles, Theme, createStyles } from '@material-ui/core';
-
+import { extendTheme } from '@zextras/zapp-ui';
 import { ISharedLibrariesThemesMap } from '../extension/SharedLibraries';
 import { forIn } from 'lodash';
 import { INetworkService } from '../network/INetworkService';
 import { IGetInfoRequest, IGetInfoResponse } from '../network/ISoap';
 import { IAppPgkDescription } from '../network/IApi';
 import { ISessionService } from '../session/ISessionService';
+import { Theme } from './ITheme';
 
 type IChildWindow = Window & {
 	__ZAPP_SHARED_LIBRARIES__: ISharedLibrariesThemesMap;
@@ -79,19 +79,19 @@ export default class ThemeService {
 		);
 		if (themeModifiers.length > 0) {
 			this.theme.next(
-				themeModifiers[0](createMuiTheme({}))
+				extendTheme(themeModifiers[0](extendTheme({})))
 			);
 		}
 	}
 
 	public async unloadTheme(): Promise<void> {
 		return new Promise((resolve) => {
-			forIn(this._iframes, function(value, key) {
+			forIn(this._iframes, function(value) {
 				document.body.removeChild(value);
 			});
 			this._iframes = {};
 			this.theme.next(
-				createMuiTheme({})
+				extendTheme({})
 			);
 			resolve();
 		});
@@ -106,14 +106,12 @@ export default class ThemeService {
 			document.body.appendChild(iframe);
 			if (iframe.contentWindow && iframe.contentDocument) {
 				const script: HTMLScriptElement = iframe.contentDocument.createElement('script');
-				(iframe.contentWindow as IChildWindow).__ZAPP_SHARED_LIBRARIES__ = {
-					'@material-ui/core': { makeStyles, createStyles, createMuiTheme }
-				};
+				(iframe.contentWindow as IChildWindow).__ZAPP_SHARED_LIBRARIES__ = {};
 				(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve;
 				(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (mod: ZThemeModuleFunction): void => {
 					console.log(`HMR ${ path }`, mod);
 					this.theme.next(
-						mod(createMuiTheme({}))
+						mod(extendTheme({}))
 					);
 				};
 				script.type = 'text/javascript';

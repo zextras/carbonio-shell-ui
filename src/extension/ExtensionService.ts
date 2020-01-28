@@ -34,9 +34,6 @@ import SyncCtxt from '../sync/SyncContext';
 import I18nCtxt from '../i18n/I18nContext';
 
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
-import * as MaterialUI from '@material-ui/core';
-import * as MaterialUIStyles from '@material-ui/core/styles';
-import * as MaterialUIIcons from '@material-ui/icons';
 import * as IDB from 'idb';
 import * as Lodash from 'lodash';
 import * as React from 'react';
@@ -232,9 +229,6 @@ export default class ExtensionService {
 					'react': React,
 					'react-dom': ReactDOM,
 					'react-virtualized': ReactVirtualized,
-					'@material-ui/core': MaterialUI,
-					'@material-ui/core/styles': MaterialUIStyles,
-					'@material-ui/icons': MaterialUIIcons,
 					'idb': IDB,
 					'lodash': Lodash,
 					'rxjs': RxJS,

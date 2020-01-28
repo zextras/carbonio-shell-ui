@@ -19,6 +19,7 @@ import { INetworkService } from '../network/INetworkService';
 import { IGetInfoRequest, IGetInfoResponse } from '../network/ISoap';
 import { IAppPgkDescription } from '../network/IApi';
 import { ISessionService } from '../session/ISessionService';
+import { Theme } from './ITheme';
 
 type IChildWindow = Window & {
 	__ZAPP_SHARED_LIBRARIES__: ISharedLibrariesThemesMap;
@@ -85,7 +86,7 @@ export default class ThemeService {
 
 	public async unloadTheme(): Promise<void> {
 		return new Promise((resolve) => {
-			forIn(this._iframes, function(value, key) {
+			forIn(this._iframes, function(value) {
 				document.body.removeChild(value);
 			});
 			this._iframes = {};
@@ -110,7 +111,7 @@ export default class ThemeService {
 				(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (mod: ZThemeModuleFunction): void => {
 					console.log(`HMR ${ path }`, mod);
 					this.theme.next(
-						mod(createMuiTheme({}))
+						mod(extendTheme({}))
 					);
 				};
 				script.type = 'text/javascript';

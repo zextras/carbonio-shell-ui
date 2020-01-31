@@ -111,7 +111,7 @@ export default class ThemeService {
 				(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (mod: ZThemeModuleFunction): void => {
 					console.log(`HMR ${ path }`, mod);
 					this.theme.next(
-						mod(extendTheme({}))
+						extendTheme(mod(extendTheme({})))
 					);
 				};
 				script.type = 'text/javascript';

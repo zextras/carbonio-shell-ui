@@ -18,6 +18,7 @@ import { flattenDeep, map } from 'lodash';
 export function normalizeFolder<T extends IFolderSchm>(version: number, f: ISoapFolderObj): Array<T> {
 	if (version === 1) {
 		const parent: IFolderSchmV1 = {
+			_revision: f.rev,
 			id: f.id,
 			path: f.absFolderPath,
 			name: f.name,

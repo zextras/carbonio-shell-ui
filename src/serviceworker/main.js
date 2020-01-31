@@ -17,9 +17,9 @@ import IdbService from '../idb/IdbService';
 import { map } from 'lodash';
 
 const _sharedBC = new BroadcastChannel('com_zextras_zapp_shell_sw');
-_sharedBC.addEventListener('message', function onMessageOnBC(e) {
-  console.log('Received', e.data);
-});
+// _sharedBC.addEventListener('message', function onMessageOnBC(e) {
+//   console.log('Received', e.data);
+// });
 
 const _idbSrvc = new IdbService();
 
@@ -56,7 +56,7 @@ function _executeSOAPSync(syncData) {
       }
     };
     if (syncData) {
-      syncReq.token = syncData.token;
+      syncReq.Body.SyncRequest.token = syncData.token;
       fetch(
         '/service/soap/SyncRequest',
         {

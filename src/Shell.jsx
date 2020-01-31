@@ -77,7 +77,7 @@ const buildTree = (folders, history) => {
 			newFolders.push({
 				label: folder.label,
 				click: () => history.push(folder.to),
-				icon: folder.icon ? folder.icon : undefined,
+				icon: folder.icon,
 				subfolders: buildTree(folder.children, history)
 			});
 		});

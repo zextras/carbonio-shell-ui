@@ -10,8 +10,10 @@
  */
 
 import { IServiceWorkerService } from './IServiceWorkerService';
-import { ISyncOpCompletedEv, ISyncOpErrorEv } from '../sync/ISyncService';
+import { ISyncOpErrorEv } from '../sync/ISyncService';
 import { IFiberChannelService } from '../fc/IFiberChannelService';
+import { filter } from 'rxjs/operators';
+import { interval } from 'rxjs';
 
 export class ServiceWorkerService implements IServiceWorkerService {
 
@@ -22,24 +24,34 @@ export class ServiceWorkerService implements IServiceWorkerService {
 	) {
 		const sink = _fcSrvc.getInternalFCSink();
 
+		_fcSrvc.getInternalFC()
+			.pipe(
+				filter((e) => e.event === 'app:all-loaded')
+			)
+			.subscribe(
+				(e) => {
+					// Sync after the start
+					this.sendMessage('soap_sync').then();
+					// Perform a sync every 30s
+					interval(30000).subscribe((_) => this.sendMessage('soap_sync').then());
+				}
+			);
+
 		const _sharedBC = new BroadcastChannel('com_zextras_zapp_shell_sw');
 		_sharedBC.addEventListener('message', (e) => {
 			if (!e.data || !e.data.action) return;
 			const opData = e.data.data;
 			switch(e.data.action) {
 				case 'sync:operation:completed':
-					sink<ISyncOpCompletedEv<unknown>>({
-							event: 'sync:operation:completed',
-							to: opData.to,
-							data: opData.data
-						});
-					break;
 				case 'sync:operation:error':
 					sink<ISyncOpErrorEv>({
-							event: 'sync:operation:error',
+							event: e.data.action,
 							to: opData.to,
 							data: opData.data
 					});
+					break;
+				case 'app:fiberchannel':
+					sink<ISyncOpErrorEv>(e.data.data);
 					break;
 			}
 		});
@@ -78,7 +90,7 @@ export class ServiceWorkerService implements IServiceWorkerService {
 		});
 	}
 
-	public sendMessage(command: string, data: any): Promise<void> {
+	public sendMessage(command: string, data: any = {}): Promise<void> {
 		return new Promise((resolve, reject) => {
 			if (!('serviceWorker' in navigator) || !this._registration || !this._registration.active) {
 				reject(new Error('ServiceWorker not found'));

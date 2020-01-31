@@ -12,6 +12,7 @@
 export type IFolderSchm = {};
 
 export type IFolderSchmV1 = IFolderSchm & {
+	_revision: number;
 	id: string;
 	parent: string;
 	path: string;

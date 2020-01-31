@@ -15,6 +15,7 @@ This page describes the data structures stored into the Browser's [IndexedDB][1]
 
 | Field | Type |   | Notes |
 |-------|------|---|-------|
+| _revision | string |||
 | id | string |||
 | parent | string |||
 | name | string |||

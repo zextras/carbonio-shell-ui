@@ -77,7 +77,7 @@ const buildTree = (folders, history) => {
 			newFolders.push({
 				label: folder.label,
 				click: () => history.push(folder.to),
-				icon: folder.icon ? 'Activity' : '',
+				icon: folder.icon,
 				subfolders: buildTree(folder.children, history)
 			});
 		});
@@ -113,7 +113,7 @@ const Shell = hot(({ i18nService }) => {
 		forEach(registeredCreateActions, action => {
 			newCreateActions.push({
 				label: action.label,
-				icon: 'Activity',
+				icon: action.icon,
 				click: () => history.push(action.to)
 			});
 		});
@@ -129,7 +129,7 @@ const Shell = hot(({ i18nService }) => {
 			newNavTree.push({
 				app: item.app,
 				label: item.label,
-				icon: 'Activity',
+				icon: item.icon,
 				click: () => history.push(item.to),
 				folders: buildTree(item.children, history)
 			});

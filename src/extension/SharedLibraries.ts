@@ -30,8 +30,8 @@ import { II18nContext } from '../i18n/II18nContext';
 import { IMainSubMenuItemData } from '../router/IRouterService';
 
 export type RegisterRouteFn = <T>(path: string, component: ComponentClass<T> | FunctionComponent<T>, defProps: T) => void;
-export type AddMainMenuItemFn = (icon: ReactElement, label: string, to: string, child: Observable<Array<IMainSubMenuItemData>>) => void;
-export type AddCreateMenuItemFn = (icon: ReactElement, label: string, to: string) => void;
+export type AddMainMenuItemFn = (icon: string, label: string, to: string, child: Observable<Array<IMainSubMenuItemData>>) => void;
+export type AddCreateMenuItemFn = (icon: string, label: string, to: string) => void;
 
 export type ISharedLibrariesAppsMap = {
 	'clsx': {};

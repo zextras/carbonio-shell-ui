@@ -44,7 +44,7 @@ export default class RouterService implements IRouterService {
 		return id;
 	}
 
-	public addMainMenuItem(icon: ReactElement, label: string, to: string, app: string, children?: Observable<Array<IMainSubMenuItemData>>): string {
+	public addMainMenuItem(icon: string, label: string, to: string, app: string, children?: Observable<Array<IMainSubMenuItemData>>): string {
 		const id = `${++this._id}`;
 		if (children) {
 			this._menuSubs[id] = children.subscribe(folders => {
@@ -80,7 +80,7 @@ export default class RouterService implements IRouterService {
 		return id;
 	}
 
-	public addCreateMenuItem(icon: ReactElement, label: string, to: string, app: string): string {
+	public addCreateMenuItem(icon: string, label: string, to: string, app: string): string {
 		const id = `${++this._id}`;
 		this.createMenuItems.next(
 			[

@@ -50,7 +50,7 @@ export interface IMainMenuItemData {
 
 export interface IMainSubMenuItemData {
 	id: string;
-	icon: string;
+	icon?: string;
 	label: string;
 	to: string;
 	children?: Array<IMainSubMenuItemData>;

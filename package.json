@@ -3,11 +3,14 @@
   "version": "0.0.42",
   "description": "A web application framework",
   "scripts": {
-    "prepublishOnly": "rm -rf lib && webpack -c webpack.config.js && npm run build:types && npx tsc src/extension/shimmed/*.ts --outDir lib/",
+    "prepublishOnly": "npm run build:clean && npm run build && npm run build:types",
     "postpublish": "rm -rf lib",
     "type-check": "npx tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
-    "build:types": "npx tsc --emitDeclarationOnly"
+    "build:clean": "rm -rf lib && rm -rf build && rm -rf pkg",
+    "build": "webpack -c webpack.config.js",
+    "build:types": "tsc --emitDeclarationOnly && tsc src/extension/shimmed/*.ts --outDir lib/",
+    "build:zimlet": "npm run build:clean && npm run build && mkdir -p pkg && cd build && zip -r ../pkg/com_zextras_zapp_shell.zip ."
   },
   "keywords": [
     "zapp",

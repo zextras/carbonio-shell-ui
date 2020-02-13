@@ -218,7 +218,7 @@ const Shell = hot(({ i18nService }) => {
 						width="fill"
 						style={
 							{
-								overflowY: 'scroll'
+								overflowY: 'auto'
 							}
 						}
 					>

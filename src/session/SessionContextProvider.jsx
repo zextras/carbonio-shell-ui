@@ -26,7 +26,7 @@ const SessionContextProvider = ({ sessionService, children }) => {
 	useEffect(() => {
 		isLoggedInSubRef.current = sessionService.session.subscribe(handleSessionDataChange);
 
-		return (): void => {
+		return () => {
 			if (isLoggedInSubRef.current) {
 				isLoggedInSubRef.current.unsubscribe();
 				isLoggedInSubRef.current = undefined;

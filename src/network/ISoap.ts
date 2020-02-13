@@ -130,6 +130,7 @@ export type IGetInfoResponse = ISoapResponseContent & {
 				/* Property related to Zextras */ 'zapp-main'?: string;
 				/* Property related to Zextras */ 'zapp-style'?: string;
 				/* Property related to Zextras */ 'zapp-theme'?: string;
+				/* Property related to Zextras */ 'zapp-serviceworker-extension'?: string;
 			}>;
 			zimletContext: Array<{
 				baseUrl: string;

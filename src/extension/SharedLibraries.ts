@@ -34,10 +34,9 @@ export type AddMainMenuItemFn = (icon: string, label: string, to: string, child:
 export type AddCreateMenuItemFn = (icon: string, label: string, to: string) => void;
 
 export type ISharedLibrariesAppsMap = {
-	'clsx': {};
 	'react': {};
 	'react-dom': {};
-	'react-virtualized': {};
+	'react-virtuoso': {};
 	'idb': {};
 	'lodash': {};
 	'rxjs': {};
@@ -87,14 +86,9 @@ type ISharedZxRoute = {
 	addCreateMenuItem: AddCreateMenuItemFn;
 };
 
-type IAppServiceWorkerService = {
-	registerAppServiceWorker: (path: string) => Promise<ServiceWorkerRegistration>;
-};
-
 type ISharesZxServices = {
 	offlineSrvc: IOfflineService;
 	sessionSrvc: ISessionService;
-	serviceWorkerSrvc: IAppServiceWorkerService;
 };
 
 type ISharedShellUtils = {

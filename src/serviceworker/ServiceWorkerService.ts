@@ -30,6 +30,7 @@ export class ServiceWorkerService implements IServiceWorkerService {
 			)
 			.subscribe(
 				(e) => {
+					this.sendMessage('load_extensions', e.data).then();
 					// Sync after the start
 					this.sendMessage('soap_sync').then();
 					// Perform a sync every 30s
@@ -37,8 +38,8 @@ export class ServiceWorkerService implements IServiceWorkerService {
 				}
 			);
 
-		const _sharedBC = new BroadcastChannel('com_zextras_zapp_shell_sw');
-		_sharedBC.addEventListener('message', (e) => {
+		const sharedBC = new BroadcastChannel('com_zextras_zapp_shell_sw');
+		sharedBC.addEventListener('message', (e) => {
 			if (!e.data || !e.data.action) return;
 			const opData = e.data.data;
 			switch(e.data.action) {
@@ -56,7 +57,7 @@ export class ServiceWorkerService implements IServiceWorkerService {
 			}
 		});
 
-		this.registerServiceWorker(
+		this._registerServiceWorker(
 			'shell-sw.js',
 			'/'
 		).then((registration: ServiceWorkerRegistration) => {
@@ -70,7 +71,7 @@ export class ServiceWorkerService implements IServiceWorkerService {
 			});
 	}
 
-	public registerServiceWorker(path: string, appScope: string): Promise<ServiceWorkerRegistration> {
+	private _registerServiceWorker(path: string, appScope: string): Promise<ServiceWorkerRegistration> {
 		return new Promise((resolve, reject) => {
 			if ('serviceWorker' in navigator) {
 				navigator.serviceWorker
@@ -109,7 +110,7 @@ export class ServiceWorkerService implements IServiceWorkerService {
 			// The service worker can then use the transferred port to reply via postMessage(), which
 			// will in turn trigger the onmessage handler on messageChannel.port1.
 			// See https://html.spec.whatwg.org/multipage/workers.html#dom-worker-postmessage
-			this._registration.active.postMessage({ command, data }, [messageChannel.port2]);
+			this._registration.active.postMessage({ command, data }, [ messageChannel.port2 ]);
 		});
 	}
 

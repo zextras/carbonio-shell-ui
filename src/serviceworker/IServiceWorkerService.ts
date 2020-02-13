@@ -10,6 +10,5 @@
  */
 
 export interface IServiceWorkerService {
-	registerServiceWorker(path: string, appScope: string): Promise<ServiceWorkerRegistration>;
 	sendMessage(command: string, data: any): Promise<void>;
 }

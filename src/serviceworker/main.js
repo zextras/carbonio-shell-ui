@@ -11,11 +11,12 @@
 /* eslint-env serviceworker */
 /* eslint-disable @typescript-eslint/camelcase */
 
-import IdbService from '../idb/IdbService';
 import * as Lodash from 'lodash';
-import FiberChannelService from '../fc/FiberChannelService';
 import * as RxJS from 'rxjs';
 import * as RxJSOperators from 'rxjs/operators';
+
+import IdbService from '../idb/IdbService';
+import FiberChannelService from '../fc/FiberChannelService';
 
 const loFilter = Lodash.filter;
 const filter = RxJSOperators.filter;

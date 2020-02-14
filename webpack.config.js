@@ -85,7 +85,8 @@ module.exports = [{
 	plugins: [
 		new DefinePlugin({
 			PACKAGE_VERSION: JSON.stringify(pkg.version),
-			PACKAGE_NAME: JSON.stringify(pkg.pkgName)
+			PACKAGE_NAME: JSON.stringify(pkg.pkgName),
+			FC_EVENT_SOURCE: JSON.stringify('app')
 		}),
 		new MiniCssExtractPlugin({
 			filename: 'style.[chunkhash:8].css',
@@ -132,12 +133,12 @@ module.exports = [{
 	},
 	target: 'webworker',
 	resolve: {
-		extensions: ['*', '.js', '.jsx', '.ts', '.tsx']
+		extensions: ['*', '.js', '.ts']
 	},
 	module: {
 			rules: [
 				{
-					test: /\.[jt]sx?$/,
+					test: /\.[jt]s$/,
 					exclude: /node_modules/,
 					loader: require.resolve('babel-loader'),
 					options: babelRCServiceworker
@@ -147,7 +148,8 @@ module.exports = [{
 	plugins: [
 		new DefinePlugin({
 			PACKAGE_VERSION: JSON.stringify(pkg.version),
-			PACKAGE_NAME: JSON.stringify(pkg.pkgName)
+			PACKAGE_NAME: JSON.stringify(pkg.pkgName),
+			FC_EVENT_SOURCE: JSON.stringify('serviceworker')
 		})
 	]
 }];

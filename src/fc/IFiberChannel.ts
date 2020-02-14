@@ -18,6 +18,7 @@ export type IFCPartialEvent<T extends {} | string> = {
 export type IFCEvent<T extends {} | string> = IFCPartialEvent<T> & {
 	from: string;
 	version: string;
+	_source?: 'serviceworker' | 'app';
 };
 
 export type IFCSink = <T extends {} | string>(event: string | IFCPartialEvent<T>, data?: T) => void;

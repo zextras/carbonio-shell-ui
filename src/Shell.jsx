@@ -247,7 +247,6 @@ export function loadShell(container) {
 	const syncSrvc = new SyncService(
 		fiberChannelSrvc,
 		idbSrvc,
-		serviceWorkerService
 	);
 	const extensionSrvc = new ExtensionService(
 		fiberChannelSrvc,
@@ -270,7 +269,7 @@ export function loadShell(container) {
 							<ScreenSizeContextProvider screenSizeService={ screenSizeSrvc }>
 								<SyncContextProvider syncService={ syncSrvc }>
 									<ThemeContextProvider themeService={ themeSrvc }>
-										<I18nContextProvider i18nService={ i18nSrvc } namespace={ 'com_zextras_zapp_shell' }>
+										<I18nContextProvider i18nService={ i18nSrvc } namespace={PACKAGE_NAME}>
 											<BrowserRouter>
 												<Shell i18nService={ i18nSrvc }/>
 											</BrowserRouter>

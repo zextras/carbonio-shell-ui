@@ -9,14 +9,49 @@
  * *** END LICENSE BLOCK *****
  */
 /* eslint-env serviceworker */
+/* eslint-disable @typescript-eslint/camelcase */
 
-const _ = self.__ZAPP_SHARED_LIBRARIES__['lodash'];
+const { forEach } = self.__ZAPP_SHARED_LIBRARIES__['lodash'];
 
-self._loadExtensions = function(appsList) {
-	console.log('appsList', appsList);
-	return 'Loading extensions...';
+self.__ZAPP_SHARED_LIBRARIES_SHIMS__ = {};
+self._ZAPP_SERVICEWORKER_EXTENSIONS_ = {};
+
+function _generateAppShimFC(pkgName, version) {
+	return {
+		fc: self._zapp_fcSrvc.getFiberChannelForExtension(pkgName),
+		fcSink: self._zapp_fcSrvc.getFiberChannelSinkForExtension(pkgName, version)
+	};
+}
+
+function _generateAppShimIdb(pkgName, version) {
+	return self._zapp_idbSrvc.createIdbService(pkgName);
+}
+
+function _generateAppShims(appPkg) {
+	self.__ZAPP_SHARED_LIBRARIES_SHIMS__[appPkg['package']] = {
+		'@zextras/zapp-shell/fc': _generateAppShimFC(appPkg['package'], appPkg.version),
+		'@zextras/zapp-shell/idb': _generateAppShimIdb(appPkg['package'], appPkg.version)
+	};
+}
+
+self._zapp_loadExtensions = function(appsList) {
+	const extensionsUrls = [];
+	forEach(
+		appsList,
+		(appPkg) => {
+			extensionsUrls.push(`${ appPkg.resourceUrl }/${ appPkg.serviceworkerExtension }`);
+			_generateAppShims(appPkg);
+		}
+	);
+	importScripts(extensionsUrls);
+	forEach(
+		appsList,
+		(appPkg) => {
+			console.log('Serviceworker extension loaded', appPkg['package']);
+		}
+	);
 };
 
-self._unloadExtensions = function() {
+self._zapp_unloadExtensions = function() {
 	return 'Unloading extensions...';
 };

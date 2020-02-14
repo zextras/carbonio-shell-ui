@@ -9,13 +9,11 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { IServiceWorkerService } from './IServiceWorkerService';
-import { ISyncOpErrorEv } from '../sync/ISyncService';
 import { IFiberChannelService } from '../fc/IFiberChannelService';
 import { filter } from 'rxjs/operators';
 import { interval } from 'rxjs';
 
-export class ServiceWorkerService implements IServiceWorkerService {
+export class ServiceWorkerService {
 
 	private _registration?: ServiceWorkerRegistration;
 
@@ -30,32 +28,12 @@ export class ServiceWorkerService implements IServiceWorkerService {
 			)
 			.subscribe(
 				(e) => {
-					this.sendMessage('load_extensions', e.data).then();
 					// Sync after the start
-					this.sendMessage('soap_sync').then();
+					sink({ event: 'sync:do-soap-sync', to: PACKAGE_NAME, data: {} });
 					// Perform a sync every 30s
-					interval(30000).subscribe((_) => this.sendMessage('soap_sync').then());
+					interval(30000).subscribe((_) => sink({ event: 'sync:do-soap-sync', to: PACKAGE_NAME, data: {} }));
 				}
 			);
-
-		const sharedBC = new BroadcastChannel('com_zextras_zapp_shell_sw');
-		sharedBC.addEventListener('message', (e) => {
-			if (!e.data || !e.data.action) return;
-			const opData = e.data.data;
-			switch(e.data.action) {
-				case 'sync:operation:completed':
-				case 'sync:operation:error':
-					sink<ISyncOpErrorEv>({
-							event: e.data.action,
-							to: opData.to,
-							data: opData.data
-					});
-					break;
-				case 'app:fiberchannel':
-					sink<ISyncOpErrorEv>(e.data.data);
-					break;
-			}
-		});
 
 		this._registerServiceWorker(
 			'shell-sw.js',
@@ -91,7 +69,7 @@ export class ServiceWorkerService implements IServiceWorkerService {
 		});
 	}
 
-	public sendMessage(command: string, data: any = {}): Promise<void> {
+	private _sendMessage(command: string, data: any = {}): Promise<void> {
 		return new Promise((resolve, reject) => {
 			if (!('serviceWorker' in navigator) || !this._registration || !this._registration.active) {
 				reject(new Error('ServiceWorker not found'));

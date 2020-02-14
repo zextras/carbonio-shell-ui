@@ -9,12 +9,21 @@
  * *** END LICENSE BLOCK *****
  */
 /* eslint-env serviceworker */
+/* eslint-disable @typescript-eslint/camelcase */
 
 import IdbService from '../idb/IdbService';
-import _ from 'lodash';
+import * as Lodash from 'lodash';
+import FiberChannelService from '../fc/FiberChannelService';
+import * as RxJS from 'rxjs';
+import * as RxJSOperators from 'rxjs/operators';
+
+const loFilter = Lodash.filter;
+const filter = RxJSOperators.filter;
 
 self.__ZAPP_SHARED_LIBRARIES__ = {
-	'lodash': _
+	'lodash': Lodash,
+	'rxjs': RxJS,
+	'rxjs/operators': RxJSOperators,
 };
 
 importScripts(
@@ -22,35 +31,26 @@ importScripts(
 	'shell-sw-sync.js'
 );
 
-self._idbSrvc = new IdbService();
+self._zapp_idbSrvc = new IdbService();
+self._zapp_fcSrvc = new FiberChannelService();
 
-self._sharedBC = new BroadcastChannel(`${PACKAGE_NAME}_sw`);
-// _sharedBC.addEventListener('message', function onMessageOnBC(e) {
-//   console.log('Received', e.data);
-// });
+self._zapp_fcSrvc.getInternalFC()
+	.pipe(filter(({ event }) => event === 'sync:do-soap-sync' ))
+	.subscribe((e) => self._zapp_doSOAPSync());
+
+self._zapp_fcSrvc.getInternalFC()
+	.pipe(filter(({ event }) => event === 'sync:consume-operation-queue' ))
+	.subscribe((e) => self._zapp_doExecuteSyncOperations());
+
+self._zapp_fcSrvc.getInternalFC()
+	.pipe(filter(({ event }) => event === 'app:all-loaded' ))
+	.subscribe((e) => self._zapp_loadExtensions(loFilter(e.data, (e) => !!e.serviceworkerExtension )));
 
 self.addEventListener('install', function(event) {
 	console.log(`Installing Service Worker for ${PACKAGE_NAME}`);
 });
 
-self.addEventListener('message', function(event) {
-	if (!event || !event.data || !event.data.command) return;
-	console.log(`Service worker command: ${event.data.command}`);
-	switch(event.data.command) {
-		case 'load_extensions':
-			self._loadExtensions(event.data.data);
-			break;
-		case 'unload_extensions':
-			self._unloadExtensions();
-			break;
-		case 'soap_sync':
-			self._doSOAPSync();
-			break;
-		case 'execute_sync_operations':
-			self._doExecuteSyncOperations();
-			break;
-	}
-});
+// self.addEventListener('message', function(event) {});
 
 // Send a message to all connected clients.
 // self.clients.matchAll().then(all => all.map(client => client.postMessage(data)));

@@ -53,7 +53,6 @@ import * as ZappUI from '@zextras/zapp-ui';
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
 import * as PropTypes from 'prop-types';
-import { IServiceWorkerService } from '../serviceworker/IServiceWorkerService';
 import { PromiseCollector } from './PromiseCollector';
 import { ISyncOperation, ISyncOpRequest, ISyncService } from '../sync/ISyncService';
 /* eslint-enable @typescript-eslint/ban-ts-ignore */
@@ -80,8 +79,7 @@ export default class ExtensionService {
 		private _offlineSrvc: IOfflineService,
 		private _sessionSrvc: ISessionService,
 		private _syncSrvc: ISyncService,
-		private _i18nSrvc: I18nService,
-		private _serviceWorkerSrvc: IServiceWorkerService
+		private _i18nSrvc: I18nService
 	) {
 		this._fcSink = this._fcSrvc.getInternalFCSink();
 		_sessionSrvc.session.subscribe((session) => {

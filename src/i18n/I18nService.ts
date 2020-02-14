@@ -28,7 +28,7 @@ export default class I18nService implements II18nService {
 
 	public createI18nContext(namespace: string): II18nContext {
 		return {
-			t: this.i18n.getFixedT(null, [ namespace, 'com_zextras_zapp_shell' ])
+			t: this.i18n.getFixedT(null, [ namespace, PACKAGE_NAME ])
 		};
 	}
 }

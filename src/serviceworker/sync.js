@@ -9,8 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 /* eslint-env serviceworker */
+/* eslint-disable @typescript-eslint/camelcase */
 
-const { map } = self.__ZAPP_SHARED_LIBRARIES__['lodash'];
+const { map, omit } = self.__ZAPP_SHARED_LIBRARIES__['lodash'];
 
 function _executeSoapOperation(op) {
 	return new Promise((resolve, reject) => {
@@ -37,7 +38,7 @@ function _executeSoapOperation(op) {
 
 function _tryToConsumeOperation(opKey) {
 	return new Promise(((resolve, reject) => {
-		self._idbSrvc.openDb()
+		self._zapp_idbSrvc.openDb()
 			.then((db) => db.get('sync-operations', opKey))
 			.then((op) => {
 				if (op) {
@@ -45,31 +46,23 @@ function _tryToConsumeOperation(opKey) {
 						case 'soap': {
 							_executeSoapOperation(op.operation)
 								.then((result) => {
-									return self._idbSrvc.openDb()
+									return self._zapp_idbSrvc.openDb()
 										.then((db) => db.delete('sync-operations', opKey))
-										.then(() => self._sharedBC.postMessage({
-											action: 'sync:operation:completed',
-											data: {
-												to: op.app.package,
-												data: {
-													operation: op.operation,
-													result: result
-												}
-											}
-										}));
+										.then(() => self._zapp_fcSrvc.getFiberChannelForExtension(op.app.package)(
+											'sync:operation:completed',
+											{
+												operation: op.operation,
+												result: result
+											}));
 								})
 								.then(() => resolve())
 								.catch((e) => {
-									self._sharedBC.postMessage({
-										action: 'sync:operation:error',
-										data: {
-											to: op.app.package,
-											data: {
-												operation: op.operation,
-												error: e
-											}
-										}
-									});
+									self._zapp_fcSrvc.getFiberChannelForExtension(op.app.package)(
+										'sync:operation:error',
+										{
+											operation: op.operation,
+											error: e
+										});
 									reject(e);
 								});
 							break;
@@ -85,8 +78,8 @@ function _tryToConsumeOperation(opKey) {
 	}));
 }
 
-function _doExecuteSyncOperations() {
-	return self._idbSrvc.openDb()
+self._zapp_doExecuteSyncOperations = function() {
+	return self._zapp_idbSrvc.openDb()
 		.then((db) => db.getAllKeys('sync-operations'))
 		.then((operationsKeys) => Promise.all(
 			map(
@@ -94,11 +87,11 @@ function _doExecuteSyncOperations() {
 				(opKey) => _tryToConsumeOperation(opKey)
 			)
 		));
-}
+};
 
 function _storeSOAPSyncToken(accountId, syncResponse) {
 	const syncResp = syncResponse.Body.SyncResponse;
-	return self._idbSrvc.openDb()
+	return self._zapp_idbSrvc.openDb()
 		.then((db) => db.put(
 			'sync',
 			{
@@ -111,11 +104,10 @@ function _storeSOAPSyncToken(accountId, syncResponse) {
 
 function _propagateSOAPNotifications(response) {
 	const data = { ...response.Body.SyncResponse };
-	delete data.token;
-	self._sharedBC.postMessage({
-		action: 'SOAP:notification:handle',
-		data
-	});
+	self._zapp_fcSrvc.getInternalFCSink(
+		'SOAP:notification:handle',
+		omit(data, ['token'])
+	);
 }
 
 function _executeSOAPSync(syncData) {
@@ -182,8 +174,8 @@ function _executeSOAPSync(syncData) {
 	});
 }
 
-function _doSOAPSync() {
-	return self._idbSrvc.openDb()
+self._zapp_doSOAPSync = function() {
+	return self._zapp_idbSrvc.openDb()
 		.then((db) => db.getAll('sync', null, 1))
 		.then((syncDatas) => {
 			if (syncDatas.length < 1) {
@@ -197,14 +189,11 @@ function _doSOAPSync() {
 			else {
 				// Data must be nuked! Perhaps, it should not happen as the query is limited.
 				return new Promise((resolve, reject) => {
-					self._idbSrvc.openDb()
+					self._zapp_idbSrvc.openDb()
 						.then((db) => db.clear('sync'))
 						.then((r) => resolve())
 						.catch((e) => reject(e))
 				});
 			}
 		});
-}
-
-self._doSOAPSync = _doSOAPSync;
-self._doExecuteSyncOperations = _doExecuteSyncOperations;
+};

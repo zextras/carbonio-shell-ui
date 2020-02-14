@@ -18,15 +18,13 @@ import { upgradeFn, schemaVersion } from './IShellIdb';
 
 export default class IdbService implements IIdbInternalService {
 
-	private static _SHELL_IDB_NAME = 'com_zextras_zapp_shell';
-
 	public createIdbService(pkgName: string): IIdbExtensionService<any> {
 		return new IdbExtensionService(pkgName);
 	}
 
 	public openDb(): Promise<IDBPDatabase<IShellIdbSchema>> {
 		return openDB<IShellIdbSchema>(
-			IdbService._SHELL_IDB_NAME,
+			PACKAGE_NAME,
 			schemaVersion,
 			{
 				upgrade: upgradeFn

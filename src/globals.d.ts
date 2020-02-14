@@ -10,6 +10,8 @@
  */
 
 declare const PACKAGE_VERSION: string;
+declare const PACKAGE_NAME: string;
+declare const FC_EVENT_SOURCE: 'serviceworker' | 'app';
 
 declare module '*.properties';
 declare module '*.css';

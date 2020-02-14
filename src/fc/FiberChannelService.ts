@@ -20,6 +20,21 @@ export default class FiberChannelService implements IFiberChannelService {
 
 	private _fiberChannel: Subject<IFCEvent<any>> = new Subject<IFCEvent<any>>();
 
+	constructor() {
+		const sharedBC = new BroadcastChannel(`${PACKAGE_NAME}_sw`);
+		sharedBC.addEventListener('message', (e) => {
+			if (typeof e.data._source === 'undefined' || e.data._source !== FC_EVENT_SOURCE) {
+				this._fiberChannel.next(e.data);
+			}
+		});
+		this._fiberChannel.pipe(
+			filter((e) => (typeof e._source === 'undefined'))
+		)
+			.subscribe(
+			(e) => sharedBC.postMessage({ ...e, _source: FC_EVENT_SOURCE })
+			);
+	}
+
 	public getFiberChannelForExtension(name: string): Observable<IFCEvent<any>> {
 		return this._fiberChannel
 			.pipe(
@@ -40,11 +55,11 @@ export default class FiberChannelService implements IFiberChannelService {
 	}
 
 	public getInternalFC(): Observable<IFCEvent<any>> {
-		return this.getFiberChannelForExtension('com_zextras_zapp_shell');
+		return this.getFiberChannelForExtension(PACKAGE_NAME);
 	}
 
 	public getInternalFCSink(): IFCSink {
-		return this.getFiberChannelSinkForExtension('com_zextras_zapp_shell', version);
+		return this.getFiberChannelSinkForExtension(PACKAGE_NAME, version);
 	}
 
 }

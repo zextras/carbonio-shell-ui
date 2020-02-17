@@ -14,7 +14,7 @@
 // precacheAndRoute(self.__WB_MANIFEST);
 
 import IdbService from '../idb/IdbService';
-import { map } from 'lodash';
+import { forEach, reduce, find, pick, flatMap } from 'lodash';
 
 const _sharedBC = new BroadcastChannel('com_zextras_zapp_shell_sw');
 // _sharedBC.addEventListener('message', function onMessageOnBC(e) {
@@ -126,77 +126,115 @@ async function _doSOAPSync() {
   }
 }
 
-function _executeSoapOperation(op) {
-  return new Promise((resolve, reject) => {
-    const soapReq = op.request;
-    fetch(
-      `/service/soap/${soapReq.command}Request`,
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          Body: {
-            [`${soapReq.command}Request`]: {
-              ...soapReq.data,
-              _jsns: soapReq.urn
+function _handleBatchResponses(responses, operations, db) {
+  const [res, ...rest] = responses;
+  const op = find(operations, op => `${op.id}` === res.requestId);
+  db.delete('sync-operations', op.id)
+    .then(() => {
+        _sharedBC.postMessage({
+          action: 'sync:operation:completed',
+          data: {
+            to: op.app.package,
+            data: {
+              operation: op.operation,
+              result: {
+                Body: {
+                  [`${op.operation.request.command}Response`]: res
+                }
+              }
             }
           }
-        })
+        });
+        if (rest.length > 0) {
+          _handleBatchResponses(rest, operations, db);
+        }
       }
-    )
-      .then(response => response.json())
-      .then(response => resolve(response))
-      .catch(err => reject(err))
-  });
+    );
 }
 
-async function _tryToConsumeOperation(opKey) {
-  const db = await _idbSrvc.openDb();
-  const op = await db.get('sync-operations', opKey);
-  if (op) {
-    switch (op.operation.opType) {
-      case 'soap': {
-        try {
-          const result = await _executeSoapOperation(op.operation);
-          await db.delete('sync-operations', opKey);
-          _sharedBC.postMessage({
-            action: 'sync:operation:completed',
-            data: {
-              to: op.app.package,
-              data: {
-                operation: op.operation,
-                result: result
-              }
-            }
-          });
-        } catch (e) {
-          _sharedBC.postMessage({
-            action: 'sync:operation:error',
-            data: {
-              to: op.app.package,
-              data: {
-                operation: op.operation,
-                error: e
-              }
-            }
-          });
+function _handleBatchErrors(faults, operations) {
+  forEach(
+    faults,
+    fault => {
+      const op = find(operations, op => `${op.id}` === fault.requestId);
+      _sharedBC.postMessage({
+        action: 'sync:operation:error',
+        data: {
+          to: op.app.package,
+          data: {
+            operation: op.operation,
+            error: fault
+          }
         }
-        break;
-      }
-      default:
-        throw new Error(`Operation type '${ op.operation.opType }' cannot be handled.`);
+      });
     }
-  }
+  )
 }
 
 async function _doExecuteSyncOperations() {
   const db = await _idbSrvc.openDb();
-  const operationsKeys = await db.getAllKeys('sync-operations');
-  await Promise.all(
-    map(
-      operationsKeys,
-      (opKey) => _tryToConsumeOperation(opKey)
-    )
+  const operations = await db.getAll('sync-operations');
+  const opTypes = [];
+  const requests = reduce(
+    operations,
+    (reqs, op) => {
+      switch (op.operation.opType) {
+        case 'soap': {
+          if (reqs[`${op.operation.request.command}Request`]) {
+            reqs[`${op.operation.request.command}Request`].push(
+              {
+                ...op.operation.request.data,
+                _jsns: op.operation.request.urn,
+                requestId: op.id
+              }
+            );
+          }
+          else {
+            opTypes.push(`${op.operation.request.command}Response`);
+            reqs[`${op.operation.request.command}Request`] = [
+              {
+                ...op.operation.request.data,
+                _jsns: op.operation.request.urn,
+                requestId: op.id
+              }
+            ]
+          }
+          return reqs;
+        }
+        default:
+          throw new Error(`Operation type '${op.operation.opType}' cannot be handled.`);
+      }
+    },
+    {}
   );
+  const batch = {
+    Body: {
+      BatchRequest: {
+        _jsns: 'urn:zimbra',
+        onerror: 'continue',
+        ...requests
+      }
+    }
+  };
+  return fetch(
+    '/service/soap/BatchRequest',
+    {
+      method: 'POST',
+      body: JSON.stringify(batch)
+    }
+  )
+    .then((r) => r.json())
+    .then((responses) => {
+      _handleBatchResponses(
+        flatMap(pick(responses.Body.BatchResponse, opTypes)),
+        operations,
+        db
+      );
+      if (responses.Body.BatchResponse.Fault) {
+        _handleBatchErrors(responses.Body.BatchResponse.Fault, operations, db);
+      }
+    })
+    .catch(err => new Error(err))
 }
 
 self.addEventListener('install', function(event) {

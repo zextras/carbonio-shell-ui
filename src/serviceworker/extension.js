@@ -35,6 +35,7 @@ function _generateAppShims(appPkg) {
 }
 
 self._zapp_loadExtensions = function(appsList) {
+	console.log('AppList', appsList);
 	const extensionsUrls = [];
 	forEach(
 		appsList,

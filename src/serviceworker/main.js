@@ -45,7 +45,11 @@ self._zapp_fcSrvc.getInternalFC()
 
 self._zapp_fcSrvc.getInternalFC()
 	.pipe(filter(({ event }) => event === 'app:all-loaded' ))
-	.subscribe((e) => self._zapp_loadExtensions(loFilter(e.data, (e) => !!e.serviceworkerExtension )));
+	.subscribe(
+		(e) => self._zapp_loadExtensions(
+			loFilter(e.data, (e) => typeof e.serviceworkerExtension !== 'undefined')
+		)
+	);
 
 self.addEventListener('install', function(event) {
 	console.log(`Installing Service Worker for ${PACKAGE_NAME}`);

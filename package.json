@@ -33,6 +33,7 @@
     "@zextras/zapp-cli": "0.0.28",
     "autoprefixer": "9.7.4",
     "babel-loader": "8.0.6",
+    "babel-plugin-styled-components": "^1.10.6",
     "css-loader": "3.4.2",
     "eslint": "6.6.0",
     "eslint-plugin-react": "7.16.0",

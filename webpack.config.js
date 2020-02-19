@@ -104,11 +104,7 @@ module.exports = [{
 		new HtmlWebpackPlugin({
 				inject: false,
 				template: path.resolve(
-					process.cwd(), 
-					'node_modules', 
-					'@zextras', 
-					'zapp-cli', 
-					'templates', 
+					process.cwd(),
 					'zimlet_def.template.xml'
 				),
 				filename: `${pkg.pkgName}.xml`,

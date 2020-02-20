@@ -11,44 +11,46 @@
 /* eslint-env serviceworker */
 /* eslint-disable @typescript-eslint/camelcase */
 
-const { map, omit } = self.__ZAPP_SHARED_LIBRARIES__['lodash'];
+import { omit, map } from 'lodash';
+import { IIdbInternalService } from '../idb/IIdbInternalService';
+import { IFiberChannelService } from '../fc/IFiberChannelService';
+import { ISyncOperation, ISyncOpRequest, ISyncOpSoapRequest } from '../sync/ISyncService';
 
-function _executeSoapOperation(op) {
-	return new Promise((resolve, reject) => {
-		const soapReq = op.request;
-		fetch(
-			`/service/soap/${soapReq.command}Request`,
+function _executeSoapOperation(op: ISyncOperation<any, ISyncOpSoapRequest<any>>): Promise<void> {
+	return fetch(
+			`/service/soap/${op.request.command}Request`,
 			{
 				method: 'POST',
 				body: JSON.stringify({
 					Body: {
-						[`${soapReq.command}Request`]: {
-							...soapReq.data,
-							_jsns: soapReq.urn
+						[`${op.request.command}Request`]: {
+							...op.request.data,
+							_jsns: op.request.urn
 						}
 					}
 				})
 			}
 		)
-			.then(response => response.json())
-			.then(response => resolve(response))
-			.catch(err => reject(err))
-	});
+			.then(response => response.json());
 }
 
-function _tryToConsumeOperation(opKey) {
+function _tryToConsumeOperation(
+	opKey: string,
+	idbSrvc: IIdbInternalService,
+	ifcSrvc: IFiberChannelService
+): Promise<void> {
 	return new Promise(((resolve, reject) => {
-		self._zapp_idbSrvc.openDb()
-			.then((db) => db.get('sync-operations', opKey))
+		idbSrvc.openDb()
+			.then((db) => db.get<'sync-operations'>('sync-operations', opKey))
 			.then((op) => {
 				if (op) {
 					switch (op.operation.opType) {
 						case 'soap': {
-							_executeSoapOperation(op.operation)
+							_executeSoapOperation(op.operation as ISyncOperation<any, ISyncOpSoapRequest<any>>)
 								.then((result) => {
-									return self._zapp_idbSrvc.openDb()
+									return idbSrvc.openDb()
 										.then((db) => db.delete('sync-operations', opKey))
-										.then(() => self._zapp_fcSrvc.getFiberChannelForExtension(op.app.package)(
+										.then(() => ifcSrvc.getFiberChannelSinkForExtension(op.app.package, op.app.version)(
 											'sync:operation:completed',
 											{
 												operation: op.operation,
@@ -57,7 +59,7 @@ function _tryToConsumeOperation(opKey) {
 								})
 								.then(() => resolve())
 								.catch((e) => {
-									self._zapp_fcSrvc.getFiberChannelForExtension(op.app.package)(
+									ifcSrvc.getFiberChannelSinkForExtension(op.app.package, op.app.version)(
 										'sync:operation:error',
 										{
 											operation: op.operation,
@@ -78,20 +80,27 @@ function _tryToConsumeOperation(opKey) {
 	}));
 }
 
-self._zapp_doExecuteSyncOperations = function() {
-	return self._zapp_idbSrvc.openDb()
+export function doExecuteSyncOperations(
+	idbSrvc: IIdbInternalService,
+	fcSrvc: IFiberChannelService,
+) {
+	return idbSrvc.openDb()
 		.then((db) => db.getAllKeys('sync-operations'))
 		.then((operationsKeys) => Promise.all(
 			map(
 				operationsKeys,
-				(opKey) => _tryToConsumeOperation(opKey)
+				(opKey) => _tryToConsumeOperation(opKey, idbSrvc, fcSrvc)
 			)
 		));
-};
+}
 
-function _storeSOAPSyncToken(accountId, syncResponse) {
+function _storeSOAPSyncToken(
+	accountId: string,
+	syncResponse: any,
+	idbSrvc: IIdbInternalService
+) {
 	const syncResp = syncResponse.Body.SyncResponse;
-	return self._zapp_idbSrvc.openDb()
+	return idbSrvc.openDb()
 		.then((db) => db.put(
 			'sync',
 			{
@@ -102,15 +111,19 @@ function _storeSOAPSyncToken(accountId, syncResponse) {
 		));
 }
 
-function _propagateSOAPNotifications(response) {
+function _propagateSOAPNotifications(response: any, fcSrvc: IFiberChannelService) {
 	const data = { ...response.Body.SyncResponse };
-	self._zapp_fcSrvc.getInternalFCSink(
+	fcSrvc.getInternalFCSink()(
 		'SOAP:notification:handle',
 		omit(data, ['token'])
 	);
 }
 
-function _executeSOAPSync(syncData) {
+function _executeSOAPSync(
+	syncData: any | undefined,
+	fcSrvc: IFiberChannelService,
+	idbSrvc: IIdbInternalService
+): Promise<void> {
 	return new Promise((resolve, reject) => {
 		const syncReq = {
 			Body: {
@@ -131,8 +144,12 @@ function _executeSOAPSync(syncData) {
 			)
 				.then(response => response.json())
 				.then((syncResponse) => Promise.all([
-					_storeSOAPSyncToken(syncData.accountId, syncResponse),
-					_propagateSOAPNotifications(syncResponse)
+					_storeSOAPSyncToken(
+						syncData.accountId,
+						syncResponse,
+						idbSrvc
+					),
+					_propagateSOAPNotifications(syncResponse, fcSrvc)
 				]))
 				.then(() => resolve())
 				.catch((err) => reject(err));
@@ -164,8 +181,12 @@ function _executeSOAPSync(syncData) {
 					.then(response => response.json())
 			])
 				.then(([getInfoResponse, syncResponse]) => Promise.all([
-					_storeSOAPSyncToken(getInfoResponse.Body.GetInfoResponse.id, syncResponse),
-					_propagateSOAPNotifications(syncResponse)
+					_storeSOAPSyncToken(
+						getInfoResponse.Body.GetInfoResponse.id,
+						syncResponse,
+						idbSrvc
+					),
+					_propagateSOAPNotifications(syncResponse, fcSrvc)
 				]))
 				.then(() => resolve())
 				.catch((err) => reject(err));
@@ -174,26 +195,33 @@ function _executeSOAPSync(syncData) {
 	});
 }
 
-self._zapp_doSOAPSync = function() {
-	return self._zapp_idbSrvc.openDb()
-		.then((db) => db.getAll('sync', null, 1))
+export function doSOAPSync(
+	idbSrvc: IIdbInternalService,
+	fcSrvc: IFiberChannelService
+): Promise<void> {
+	return idbSrvc.openDb()
+		.then((db) => db.getAll('sync', undefined, 1))
 		.then((syncDatas) => {
 			if (syncDatas.length < 1) {
 				// Is the first sync
-				return _executeSOAPSync();
+				return _executeSOAPSync(
+					undefined,
+					fcSrvc,
+					idbSrvc
+				);
 			}
 			else if (syncDatas.length === 1) {
 				// There is something to sync
-				return _executeSOAPSync(syncDatas[0]);
+				return _executeSOAPSync(
+					syncDatas[0],
+					fcSrvc,
+					idbSrvc
+				);
 			}
 			else {
 				// Data must be nuked! Perhaps, it should not happen as the query is limited.
-				return new Promise((resolve, reject) => {
-					self._zapp_idbSrvc.openDb()
-						.then((db) => db.clear('sync'))
-						.then((r) => resolve())
-						.catch((e) => reject(e))
-				});
+				return idbSrvc.openDb()
+						.then((db) => db.clear('sync'));
 			}
 		});
-};
+}

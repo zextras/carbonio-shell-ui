@@ -239,7 +239,11 @@ export function loadShell(container) {
 		fiberChannelSrvc.getInternalFCSink(),
 		idbSrvc
 	);
-	const sessionSrvc = new SessionService(networkSrvc, idbSrvc);
+	const sessionSrvc = new SessionService(
+		networkSrvc,
+		idbSrvc,
+		fiberChannelSrvc
+	);
 	const screenSizeSrvc = new ScreenSizeService();
 	const routerSrvc = new RouterService();
 	const offlineSrvc = new OfflineService();

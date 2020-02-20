@@ -21,8 +21,9 @@ export class ServiceWorkerService {
 		private _fcSrvc: IFiberChannelService,
 	) {
 		const sink = _fcSrvc.getInternalFCSink();
+		const fc = _fcSrvc.getInternalFC();
 
-		_fcSrvc.getInternalFC()
+		fc
 			.pipe(
 				filter((e) => e.event === 'app:all-loaded')
 			)
@@ -35,18 +36,28 @@ export class ServiceWorkerService {
 				}
 			);
 
-		this._registerServiceWorker(
-			'shell-sw.js',
-			'/'
-		).then((registration: ServiceWorkerRegistration) => {
-			this._registration = registration;
-			navigator.serviceWorker.addEventListener('message', function handler(event) {
-				console.log('Event from ServiceWorker', event.data);
-			});
-		})
-			.catch((registrationError: Error) => {
-				this._registration = undefined;
-			});
+		fc
+			.pipe(
+				filter((e) => e.event === 'session:login:logged-in')
+			)
+			.subscribe(
+				(e) => {
+					this._registerServiceWorker(
+						'shell-sw.js',
+						'/'
+					).then((registration: ServiceWorkerRegistration) => {
+						this._registration = registration;
+						navigator.serviceWorker.addEventListener('message', function handler(event) {
+							console.log('Event from ServiceWorker', event.data);
+						});
+					})
+						.catch((registrationError: Error) => {
+							this._registration = undefined;
+						});
+				}
+			);
+
+		fc.subscribe();
 	}
 
 	private _registerServiceWorker(path: string, appScope: string): Promise<ServiceWorkerRegistration> {

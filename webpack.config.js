@@ -117,9 +117,7 @@ module.exports = [{
 }, {
 	mode: 'development',
 	entry: {
-		'shell-sw': path.resolve(process.cwd(), 'src', 'serviceworker', 'main.js'),
-		'shell-sw-extension': path.resolve(process.cwd(), 'src', 'serviceworker', 'extension.js'),
-		'shell-sw-sync': path.resolve(process.cwd(), 'src', 'serviceworker', 'sync.js')
+		'shell-sw': path.resolve(process.cwd(), 'src', 'serviceworker', 'main.ts'),
 	},
 	devtool: 'inline-source-map',
 	output: {

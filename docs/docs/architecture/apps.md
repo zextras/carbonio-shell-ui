@@ -2,15 +2,15 @@
 title: APPs
 ---
 
-Apps for [Zextras' Shell][1] will be created using the [@zextras/zapp-sdk][2] tool.
-For more information on how to create a Zextras Apps please refer to the [@zextras/zapp-sdk][2] documentation.
+Apps for [Zextras' Shell][1] will be created using the [@zextras/zapp-cli][2] tool.
+For more information on how to create a Zextras Apps please refer to the [@zextras/zapp-cli][2] documentation.
 
 Apps can communicate with the [Zextras' Shell][1] using the [FiberChannel][7], a shared event channel.
 
 ## Service Worker
 Apps can register a [service worker][4] to handle notifications and/or perform background operations.
 
-The service worker of an App can communicate with the [Shell's service worker][3] using a [broadcast channel][6].
+The service workers of Apps are imported in the main service worker during its install event.
 
 For a complete reference please refer to the dedicated [Service Worker page][3].
 

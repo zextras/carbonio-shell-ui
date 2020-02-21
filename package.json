@@ -10,7 +10,8 @@
     "build:clean": "rm -rf lib && rm -rf build && rm -rf pkg",
     "build": "webpack -c webpack.config.js",
     "build:types": "tsc --emitDeclarationOnly && tsc src/extension/shimmed/*.ts --outDir lib/",
-    "build:zimlet": "npm run build:clean && npm run build && mkdir -p pkg && cd build && zip -r ../pkg/com_zextras_zapp_shell.zip ."
+    "build:zimlet": "npm run build:clean && npm run build && mkdir -p pkg && cd build && zip -r ../pkg/com_zextras_zapp_shell.zip .",
+    "watch:docs": "cd docs/website/ && npm start || npm install && npm start"
   },
   "keywords": [
     "zapp",

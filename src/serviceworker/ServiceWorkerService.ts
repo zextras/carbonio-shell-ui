@@ -70,6 +70,7 @@ export class ServiceWorkerService {
 							this._fcSrvc.getInsecureFCSink(false)(event.data);
 						});
 						sink('shell:serviceworker:registered');
+						if (this._registration.active) sink('shell:serviceworker:activate');
 						resolve(registration);
 					})
 					.catch((registrationError: Error) => {

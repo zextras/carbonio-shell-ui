@@ -85,8 +85,7 @@ module.exports = [{
 	plugins: [
 		new DefinePlugin({
 			PACKAGE_VERSION: JSON.stringify(pkg.version),
-			PACKAGE_NAME: JSON.stringify(pkg.pkgName),
-			FC_EVENT_SOURCE: JSON.stringify('app')
+			PACKAGE_NAME: JSON.stringify(pkg.pkgName)
 		}),
 		new MiniCssExtractPlugin({
 			filename: 'style.[chunkhash:8].css',
@@ -142,8 +141,7 @@ module.exports = [{
 	plugins: [
 		new DefinePlugin({
 			PACKAGE_VERSION: JSON.stringify(pkg.version),
-			PACKAGE_NAME: JSON.stringify(pkg.pkgName),
-			FC_EVENT_SOURCE: JSON.stringify('serviceworker')
+			PACKAGE_NAME: JSON.stringify(pkg.pkgName)
 		})
 	]
 }];

@@ -22,8 +22,16 @@ import { loadExtensions } from './extensions';
 import { filter } from 'rxjs/operators';
 import { doExecuteSyncOperations, doSOAPSync } from './sync';
 
-self.addEventListener('install', function(event: ExtendableEvent) {
-	console.log(`Installing Service Worker for ${PACKAGE_NAME}`);
+const fcSrvc = new FiberChannelService();
+
+self.addEventListener('message', (event: ExtendableMessageEvent) => {
+	// TODO: Evaluate to handle the possibility to return a promise if the event must return something
+	//      This in order to perfom an `event.waitUntil(...)`
+	fcSrvc.getInsecureFCSink(true)(event.data);
+});
+
+self.addEventListener('install', (event: ExtendableMessageEvent) => {
+	console.log(`Installing Service Worker extension for ${PACKAGE_NAME}`);
 
 	self.__ZAPP_SHARED_LIBRARIES__ = {
 		'lodash': Lodash,
@@ -33,8 +41,15 @@ self.addEventListener('install', function(event: ExtendableEvent) {
 	self.__ZAPP_SHARED_LIBRARIES_SHIMS__ = {};
 
 	const networkSrvc = new ShellNetworkService();
-	const fcSrvc = new FiberChannelService();
 	const idbSrvc = new IdbService();
+
+	fcSrvc.getInsecureFC()
+		.subscribe((e) => {
+			if (e._fromShell === true) return;
+			clients.matchAll().then(clients => {
+				clients.forEach(client => client.postMessage(e));
+			});
+		});
 
 	const fc = fcSrvc.getInternalFC();
 
@@ -56,14 +71,6 @@ self.addEventListener('install', function(event: ExtendableEvent) {
 		)
 	);
 });
-
-// self.addEventListener('message', function(event) {
-// 	switch() {
-// 		case '':
-// 			event.waitUntil();
-// 			break;
-// 	}
-// });
 
 // Send a message to all connected clients.
 // self.clients.matchAll().then(all => all.map(client => client.postMessage(data)));

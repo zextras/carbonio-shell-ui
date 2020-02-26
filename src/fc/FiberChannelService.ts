@@ -14,25 +14,22 @@ import { filter } from 'rxjs/operators';
 
 import { version } from '../../package.json';
 import { IFCEvent, IFCPartialEvent, IFCSink } from './IFiberChannel';
-import { IFiberChannelService } from './IFiberChannelService';
+import { IInternalFiberChannelService } from './IFiberChannelService';
 
-export default class FiberChannelService implements IFiberChannelService {
+export default class FiberChannelService implements IInternalFiberChannelService {
 
 	private _fiberChannel: Subject<IFCEvent<any>> = new Subject<IFCEvent<any>>();
 
-	constructor() {
-		const sharedBC = new BroadcastChannel(`${PACKAGE_NAME}_sw`);
-		sharedBC.addEventListener('message', (e) => {
-			if (typeof e.data._source === 'undefined' || e.data._source !== FC_EVENT_SOURCE) {
-				this._fiberChannel.next(e.data);
-			}
-		});
-		this._fiberChannel.pipe(
-			filter((e) => (typeof e._source === 'undefined'))
-		)
-			.subscribe(
-			(e) => sharedBC.postMessage({ ...e, _source: FC_EVENT_SOURCE })
-			);
+	public getInsecureFC(): Observable<IFCEvent<any> & { _fromShell?: boolean }> {
+		return this._fiberChannel;
+	}
+
+	public getInsecureFCSink(fromShell: boolean): IFCSink {
+		return (ev, _?) => {
+			const tagged: IFCEvent<any> & { _fromShell?: boolean } = { ...ev as IFCEvent<any> };
+			if (fromShell) tagged._fromShell = true;
+			this._fiberChannel.next(tagged);
+		}
 	}
 
 	public getFiberChannelForExtension(name: string): Observable<IFCEvent<any>> {

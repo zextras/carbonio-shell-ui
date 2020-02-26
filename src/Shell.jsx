@@ -16,7 +16,6 @@ import { BrowserRouter, Route, useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import { Header, Container, NavigationPanel, MenuPanel } from '@zextras/zapp-ui';
 import { render } from 'react-dom';
-import { hot } from 'react-hot-loader/root';
 
 import LoginPage from './view/LoginPage';
 import SessionService from './session/SessionService';
@@ -85,13 +84,13 @@ const buildTree = (folders, history) => {
 	} else return [];
 };
 
-const Shell = hot(({ i18nService }) => {
-	const [ userOpen, setUserOpen ] = useState(false);
-	const [ navOpen, setNavOpen ] = useState(true);
+const Shell = ({ i18nService }) => {
+	const [userOpen, setUserOpen] = useState(false);
+	const [navOpen, setNavOpen] = useState(true);
 	const sessionCtx = useContext(SessionContext);
 	const { t } = useContext(I18nContext);
 	const history = useHistory();
-	const [ routeData, setRouteData ] = useState({});
+	const [routeData, setRouteData] = useState({});
 	const routeDataSubRef = useRef();
 
 	const routerCtx = useContext(RouterContext);
@@ -135,7 +134,7 @@ const Shell = hot(({ i18nService }) => {
 			});
 		});
 		setNavTree(newNavTree);
-	}, [ history, mainMenuItems]	);
+	}, [history, mainMenuItems]);
 
 	// Router
 	useEffect(() => {
@@ -146,21 +145,21 @@ const Shell = hot(({ i18nService }) => {
 				routeDataSubRef.current = undefined;
 			}
 		};
-	}, [ routerCtx.routes ]);
+	}, [routerCtx.routes]);
 	const routes = [];
 	forOwn(
 		routeData,
 		(v, k) => {
 			routes.push(
 				<Route
-					key={ `${ k }-route` }
-					path={ k }
+					key={`${k}-route`}
+					path={k}
 					component={
 						() => {
 							return (
-								<I18nContextProvider i18nService={ i18nService } namespace={ routeData[k].pkgName }>
-									<_RouteDetector pkg={ routeData[k].pkgName }/>
-									<v.component key={ k } { ...v.defProps }/>
+								<I18nContextProvider i18nService={i18nService} namespace={routeData[k].pkgName}>
+									<_RouteDetector pkg={routeData[k].pkgName}/>
+									<v.component key={k} {...v.defProps}/>
 								</I18nContextProvider>
 							);
 						}
@@ -216,19 +215,17 @@ const Shell = hot(({ i18nService }) => {
 					<Container
 						height="calc(100vh - 48px)"
 						width="fill"
-						style={
-							{
+						style={{
 								overflowY: 'auto'
-							}
-						}
+						}}
 					>
-						{ routes }
+						{routes}
 					</Container>
 				<MenuPanel menuIsOpen={userOpen} tree={menuTree}/>
 			</Container>
 		</Container>
 	);
-});
+};
 
 export function loadShell(container) {
 	const fiberChannelSrvc = new FiberChannelService();
@@ -240,7 +237,11 @@ export function loadShell(container) {
 		fiberChannelSrvc.getInternalFCSink(),
 		idbSrvc
 	);
-	const sessionSrvc = new SessionService(networkSrvc, idbSrvc);
+	const sessionSrvc = new SessionService(
+		networkSrvc,
+		idbSrvc,
+		fiberChannelSrvc
+	);
 	const screenSizeSrvc = new ScreenSizeService();
 	const routerSrvc = new RouterService();
 	const offlineSrvc = new OfflineService();
@@ -248,7 +249,6 @@ export function loadShell(container) {
 	const syncSrvc = new SyncService(
 		fiberChannelSrvc,
 		idbSrvc,
-		serviceWorkerService
 	);
 	const extensionSrvc = new ExtensionService(
 		fiberChannelSrvc,
@@ -271,7 +271,7 @@ export function loadShell(container) {
 							<ScreenSizeContextProvider screenSizeService={ screenSizeSrvc }>
 								<SyncContextProvider syncService={ syncSrvc }>
 									<ThemeContextProvider themeService={ themeSrvc }>
-										<I18nContextProvider i18nService={ i18nSrvc } namespace={ 'com_zextras_zapp_shell' }>
+										<I18nContextProvider i18nService={ i18nSrvc } namespace={PACKAGE_NAME}>
 											<BrowserRouter>
 												<Shell i18nService={ i18nSrvc }/>
 											</BrowserRouter>

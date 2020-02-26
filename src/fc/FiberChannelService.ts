@@ -14,11 +14,23 @@ import { filter } from 'rxjs/operators';
 
 import { version } from '../../package.json';
 import { IFCEvent, IFCPartialEvent, IFCSink } from './IFiberChannel';
-import { IFiberChannelService } from './IFiberChannelService';
+import { IInternalFiberChannelService } from './IFiberChannelService';
 
-export default class FiberChannelService implements IFiberChannelService {
+export default class FiberChannelService implements IInternalFiberChannelService {
 
 	private _fiberChannel: Subject<IFCEvent<any>> = new Subject<IFCEvent<any>>();
+
+	public getInsecureFC(): Observable<IFCEvent<any> & { _fromShell?: boolean }> {
+		return this._fiberChannel;
+	}
+
+	public getInsecureFCSink(fromShell: boolean): IFCSink {
+		return (ev, _?) => {
+			const tagged: IFCEvent<any> & { _fromShell?: boolean } = { ...ev as IFCEvent<any> };
+			if (fromShell) tagged._fromShell = true;
+			this._fiberChannel.next(tagged);
+		}
+	}
 
 	public getFiberChannelForExtension(name: string): Observable<IFCEvent<any>> {
 		return this._fiberChannel
@@ -40,11 +52,11 @@ export default class FiberChannelService implements IFiberChannelService {
 	}
 
 	public getInternalFC(): Observable<IFCEvent<any>> {
-		return this.getFiberChannelForExtension('com_zextras_zapp_shell');
+		return this.getFiberChannelForExtension(PACKAGE_NAME);
 	}
 
 	public getInternalFCSink(): IFCSink {
-		return this.getFiberChannelSinkForExtension('com_zextras_zapp_shell', version);
+		return this.getFiberChannelSinkForExtension(PACKAGE_NAME, version);
 	}
 
 }

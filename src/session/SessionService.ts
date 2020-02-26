@@ -17,6 +17,7 @@ import { IEndSessionRequest, IEndSessionResponse, IValidateSessionRequest, IVali
 import { IIdbInternalService } from '../idb/IIdbInternalService';
 import { IStoredAccountData, IStoredSessionData } from '../idb/IShellIdbSchema';
 import { ISessionService } from './ISessionService';
+import { IFiberChannelService } from '../fc/IFiberChannelService';
 
 export default class SessionService implements ISessionService {
 
@@ -25,7 +26,8 @@ export default class SessionService implements ISessionService {
 
 	constructor(
 		private _networkSrvc: INetworkService,
-		private _idbSrvc: IIdbInternalService
+		private _idbSrvc: IIdbInternalService,
+		private _ifcSrvc: IFiberChannelService
 	) {
 		this.session = new BehaviorSubject<IStoredSessionData | undefined>(undefined);
 		this.session.subscribe((s) => {
@@ -94,7 +96,7 @@ export default class SessionService implements ISessionService {
 			}
 			await tx.done;
 		}
-		console.debug('Login PASS');
+		this._ifcSrvc.getInternalFCSink()('session:login:logged-in');
 		return sessionData;
 	}
 
@@ -130,6 +132,7 @@ export default class SessionService implements ISessionService {
 		} finally {
 			delete this._currentSession;
 			this.session.next(undefined);
+			this._ifcSrvc.getInternalFCSink()('session:login:logged-out');
 		}
 	}
 
@@ -151,14 +154,13 @@ export default class SessionService implements ISessionService {
 					]
 				}
 			);
-			console.debug('Session validation PASS');
 			this.session.next({
 				...sessionData,
 				authToken: ''
 			});
+			this._ifcSrvc.getInternalFCSink()('session:login:logged-in');
 			return sessionData;
 		} catch (err) {
-			console.debug('Session validation FAIL', err);
 			return this._tryToLoginWithSavedCredentials(sessionData.id);
 		}
 	}
@@ -187,6 +189,7 @@ export default class SessionService implements ISessionService {
 				await store.clear();
 			}
 			await tx.done;
+			this._ifcSrvc.getInternalFCSink()('session:login:logged-out');
 		}
 	}
 

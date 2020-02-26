@@ -1,6 +1,6 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2019 ZeXtras
+ * Copyright (C) 2011-2020 ZeXtras
  *
  * The contents of this file are subject to the ZeXtras EULA;
  * you may not use this file except in compliance with the EULA.
@@ -9,9 +9,13 @@
  * *** END LICENSE BLOCK *****
  */
 
-declare const PACKAGE_VERSION: string;
-declare const PACKAGE_NAME: string;
-
-declare module '*.properties';
-declare module '*.css';
-declare module '*.json';
+export type AppPackageDescription = {
+	package: string;
+	name: string;
+	description: string;
+	version: string;
+	resourceUrl: string;
+	entryPoint: string;
+	styleEntryPoint?: string;
+	serviceworkerExtension?: string;
+};

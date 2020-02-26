@@ -12,7 +12,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { map, forIn, filter, filter as loFilter } from 'lodash';
-import { ComponentClass, FunctionComponent, ReactElement } from 'react';
+import { ComponentClass, FunctionComponent } from 'react';
 
 import { IGetInfoRequest, IGetInfoResponse, ISoapResponseContent } from '../network/ISoap';
 import { IFCSink } from '../fc/IFiberChannel';
@@ -38,11 +38,8 @@ import * as IDB from 'idb';
 import * as Lodash from 'lodash';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-// @ts-ignore
-import * as ReactVirtualized from 'react-virtualized';
 import * as RxJS from 'rxjs';
 import * as RxJSOperators from 'rxjs/operators';
-import * as Clsx from 'clsx';
 // @ts-ignore
 import * as ReactRouter from 'react-router';
 // @ts-ignore
@@ -54,7 +51,6 @@ import * as ZappUI from '@zextras/zapp-ui';
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
 import * as PropTypes from 'prop-types';
-import { IServiceWorkerService } from '../serviceworker/IServiceWorkerService';
 import { PromiseCollector } from './PromiseCollector';
 import { ISyncOperation, ISyncOpRequest, ISyncService } from '../sync/ISyncService';
 /* eslint-enable @typescript-eslint/ban-ts-ignore */
@@ -81,8 +77,7 @@ export default class ExtensionService {
 		private _offlineSrvc: IOfflineService,
 		private _sessionSrvc: ISessionService,
 		private _syncSrvc: ISyncService,
-		private _i18nSrvc: I18nService,
-		private _serviceWorkerSrvc: IServiceWorkerService
+		private _i18nSrvc: I18nService
 	) {
 		this._fcSink = this._fcSrvc.getInternalFCSink();
 		_sessionSrvc.session.subscribe((session) => {
@@ -108,32 +103,39 @@ export default class ExtensionService {
 				sections: 'zimlets'
 			}
 		);
+		const appsList = map(
+			filter(
+				getInfoResp.zimlets.zimlet,
+				(z) => z.zimlet[0]['zapp'] === 'true' && typeof z.zimlet[0]['zapp-main'] !== 'undefined'
+			),
+			(z) => ({
+				package: z.zimlet[0].name,
+				name: z.zimlet[0].label,
+				description: z.zimlet[0].description,
+				version: z.zimlet[0].version,
+				resourceUrl: `/zx/zimlet/${ z.zimlet[0].name }`,
+				entryPoint: z.zimlet[0]['zapp-main']!,
+				styleEntryPoint: z.zimlet[0]['zapp-style'],
+				serviceworkerExtension: z.zimlet[0]['zapp-serviceworker-extension']
+			})
+		);
+		
 		const promiseCollector = new PromiseCollector();
 		try {
 			await Promise.all(
 				map(
-					filter(
-						getInfoResp.zimlets.zimlet,
-						(z) => z.zimlet[0]['zapp'] === 'true' && typeof z.zimlet[0]['zapp-main'] !== 'undefined'
-					),
-					async (z) => this._loadExtension({
-						package: z.zimlet[0].name,
-						name: z.zimlet[0].label,
-						description: z.zimlet[0].description,
-						version: z.zimlet[0].version,
-						resourceUrl: `/zx/zimlet/${ z.zimlet[0].name }`,
-						entryPoint: z.zimlet[0]['zapp-main']!,
-						styleEntryPoint: z.zimlet[0]['zapp-style']
-					},
-						promiseCollector
-					)
+					appsList,
+					async (z) => this._loadExtension(z,	promiseCollector)
 				)
 			);
 			await promiseCollector.waitAll();
 		} catch (e) {
 			// lol
 		} finally {
-			this._fcSink('app:all-loaded');
+			this._fcSink(
+				'app:all-loaded', 
+				appsList
+			);
 		}
 	}
 
@@ -225,10 +227,8 @@ export default class ExtensionService {
 						);
 					});
 				(iframe.contentWindow as IChildWindow).__ZAPP_SHARED_LIBRARIES__ = {
-					'clsx': Clsx,
 					'react': React,
 					'react-dom': ReactDOM,
-					'react-virtualized': ReactVirtualized,
 					'idb': IDB,
 					'lodash': Lodash,
 					'rxjs': RxJS,
@@ -259,14 +259,7 @@ export default class ExtensionService {
 					},
 					'@zextras/zapp-shell/service': {
 						offlineSrvc: this._offlineSrvc,
-						sessionSrvc: this._sessionSrvc,
-						serviceWorkerSrvc: {
-							registerAppServiceWorker: (path: string): Promise<ServiceWorkerRegistration> => {
-								return pc.addPromise<ServiceWorkerRegistration>(
-									this._serviceWorkerSrvc.registerServiceWorker(`${appPkg.resourceUrl}/${path}`, `${appPkg.resourceUrl}/`)
-								);
-							}
-						}
+						sessionSrvc: this._sessionSrvc
 					},
 					'@zextras/zapp-shell/sync': {
 						syncOperations

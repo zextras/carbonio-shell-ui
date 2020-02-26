@@ -130,6 +130,7 @@ export type IGetInfoResponse = ISoapResponseContent & {
 				/* Property related to Zextras */ 'zapp-main'?: string;
 				/* Property related to Zextras */ 'zapp-style'?: string;
 				/* Property related to Zextras */ 'zapp-theme'?: string;
+				/* Property related to Zextras */ 'zapp-serviceworker-extension'?: string;
 			}>;
 			zimletContext: Array<{
 				baseUrl: string;
@@ -174,31 +175,30 @@ export type ISoapSyncRequest = {
 	changeLimit?: number;
 };
 
-export type ISoapSyncDeletedMap = {
-	folder?: { ids: string };
-	search?: { ids: string };
-	link?: { ids: string };
-	tag?: { ids: string };
-	c?: { ids: string };
-	chat?: { ids: string };
-	m?: { ids: string };
-	cn?: { ids: string };
-	appt?: { ids: string };
-	task?: { ids: string };
-	notes?: { ids: string };
-	w?: { ids: string };
-	doc?: { ids: string };
-};
+export type ISoapSyncDeletedMap = Array<{
+	ids: string;
+	folder?: ISoapSyncDeletedArray;
+	search?: ISoapSyncDeletedArray;
+	link?: ISoapSyncDeletedArray;
+	tag?: ISoapSyncDeletedArray;
+	c?: ISoapSyncDeletedArray;
+	chat?: ISoapSyncDeletedArray;
+	m?: ISoapSyncDeletedArray;
+	cn?: ISoapSyncDeletedArray;
+	appt?: ISoapSyncDeletedArray;
+	task?: ISoapSyncDeletedArray;
+	notes?: ISoapSyncDeletedArray;
+	w?: ISoapSyncDeletedArray;
+	doc?: ISoapSyncDeletedArray;
+}>;
 export type ISoapSyncDeletedArray = Array<{ ids: string }>;
 
-export type ISoapSyncResponse<T extends {}, DEL extends ISoapSyncDeletedMap | ISoapSyncDeletedArray | void> = {
+export type ISoapSyncResponse<DEL extends ISoapSyncDeletedMap | ISoapSyncDeletedArray | void, FOLDER extends ISoapSyncFolderObj> = {
 	md: number;
 	token: number;
 	s: number;
 	deleted?: DEL;
-	folder: Array<ISoapSyncFolderObj<T>>;
-} & {
-	[k: string]: Array<T>;
+	folder: Array<FOLDER>;
 };
 
 export type IFolderView =
@@ -215,7 +215,7 @@ export type IFolderView =
 	| 'task'
 	| 'chat';
 
-export type ISoapSyncFolderObj<T extends {}> = {
+export type ISoapSyncFolderObj = {
 	absFolderPath: string;
 	acl: {};
 	activesyncdisabled: boolean;
@@ -241,8 +241,6 @@ export type ISoapSyncFolderObj<T extends {}> = {
 	uuid: string;
 	view: IFolderView;
 	webOfflineSyncDays: number;
-} & {
-	[k: string]: T;
 };
 
 export type ISoapFolderModifiedNotificationObj = {

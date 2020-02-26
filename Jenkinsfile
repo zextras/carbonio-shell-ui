@@ -176,7 +176,7 @@ pipeline {
 					steps {
 						executeNpmLogin()
 						cmd sh: "nvm use && npm install"
-						cmd sh: "nvm use && NODE_ENV='production' npx zapp package"
+						cmd sh: "nvm use && NODE_ENV='production' npm run build:zimlet"
 						stash includes: 'pkg/com_zextras_zapp_shell.zip', name: 'zimlet_package_unsigned'
 					}
 				}

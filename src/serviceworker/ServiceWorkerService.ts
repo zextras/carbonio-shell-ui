@@ -9,88 +9,85 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { IServiceWorkerService } from './IServiceWorkerService';
-import { ISyncOpErrorEv } from '../sync/ISyncService';
-import { IFiberChannelService } from '../fc/IFiberChannelService';
-import { filter } from 'rxjs/operators';
+import { IInternalFiberChannelService } from '../fc/IFiberChannelService';
+import { filter, take } from 'rxjs/operators';
 import { interval } from 'rxjs';
+import { IFCEvent } from '../fc/IFiberChannel';
 
-export class ServiceWorkerService implements IServiceWorkerService {
+export class ServiceWorkerService {
 
 	private _registration?: ServiceWorkerRegistration;
 
 	constructor(
-		private _fcSrvc: IFiberChannelService,
+		private _fcSrvc: IInternalFiberChannelService,
 	) {
-		const sink = _fcSrvc.getInternalFCSink();
+		const fc = _fcSrvc.getInternalFC();
 
-		_fcSrvc.getInternalFC()
+		fc
 			.pipe(
-				filter((e) => e.event === 'app:all-loaded')
+				filter((e) => e.event === 'shell:serviceworker:activate')
+			)
+			.pipe(
+				take(1)
 			)
 			.subscribe(
 				(e) => {
 					// Sync after the start
-					this.sendMessage('soap_sync').then();
+					this._sendEvent({ event: 'sync:do-soap-sync', from: PACKAGE_NAME, version: PACKAGE_VERSION, to: PACKAGE_NAME, data: {} }).then();
 					// Perform a sync every 30s
-					interval(30000).subscribe((_) => this.sendMessage('soap_sync').then());
+					interval(30000)
+						.subscribe(
+						(_) => this._sendEvent({ event: 'sync:do-soap-sync', from: PACKAGE_NAME, version: PACKAGE_VERSION, to: PACKAGE_NAME, data: {} }).then()
+						);
 				}
 			);
 
-		const _sharedBC = new BroadcastChannel('com_zextras_zapp_shell_sw');
-		_sharedBC.addEventListener('message', (e) => {
-			if (!e.data || !e.data.action) return;
-			const opData = e.data.data;
-			switch(e.data.action) {
-				case 'sync:operation:completed':
-				case 'sync:operation:error':
-					sink<ISyncOpErrorEv>({
-							event: e.data.action,
-							to: opData.to,
-							data: opData.data
-					});
-					break;
-				case 'app:fiberchannel':
-					sink<ISyncOpErrorEv>(e.data.data);
-					break;
-			}
-		});
-
-		this.registerServiceWorker(
-			'shell-sw.js',
-			'/'
-		).then((registration: ServiceWorkerRegistration) => {
-			this._registration = registration;
-			navigator.serviceWorker.addEventListener('message', function handler(event) {
-				console.log('Event from ServiceWorker', event.data);
-			});
-		})
-			.catch((registrationError: Error) => {
-				this._registration = undefined;
-			});
+		fc
+			.pipe(
+				filter((e) => e.event === 'session:login:logged-in')
+			)
+			.subscribe(
+				(e) => {
+					this._registerServiceWorker(
+						'shell-sw.js',
+						'/'
+					).then();
+				}
+			);
 	}
 
-	public registerServiceWorker(path: string, appScope: string): Promise<ServiceWorkerRegistration> {
+	private _registerServiceWorker(path: string, appScope: string): Promise<ServiceWorkerRegistration> {
 		return new Promise((resolve, reject) => {
+			const sink = this._fcSrvc.getInternalFCSink();
+
 			if ('serviceWorker' in navigator) {
 				navigator.serviceWorker
 					.register(path, { scope: appScope })
 					.then((registration: ServiceWorkerRegistration) => {
-						console.debug('SW registered: ', registration);
+						this._registration = registration;
+						navigator.serviceWorker.addEventListener('message', (event) => {
+							// console.log('Event from ServiceWorker', event);
+							this._fcSrvc.getInsecureFCSink(false)(event.data);
+						});
+						sink('shell:serviceworker:registered');
+						if (this._registration.active) sink('shell:serviceworker:activate');
 						resolve(registration);
 					})
 					.catch((registrationError: Error) => {
-						console.debug('SW registration failed: ', registrationError);
+						this._registration = undefined;
+						console.error('SW registration failed: ', registrationError);
+						sink('shell:serviceworker:registration-failed', { error: registrationError });
 						reject(registrationError);
 					});
 			} else {
-				console.debug('SW registration failed: ', new Error('ServiceWorker not supported'));
+				console.error('SW registration failed: ', new Error('ServiceWorker not supported'));
+				sink('shell:serviceworker:registration-failed', { error: new Error('ServiceWorker not supported') });
 				reject(new Error('ServiceWorker not supported'));
 			}
 		});
 	}
 
-	public sendMessage(command: string, data: any = {}): Promise<void> {
+	private _sendEvent(event: IFCEvent<any>): Promise<void> {
 		return new Promise((resolve, reject) => {
 			if (!('serviceWorker' in navigator) || !this._registration || !this._registration.active) {
 				reject(new Error('ServiceWorker not found'));
@@ -109,7 +106,7 @@ export class ServiceWorkerService implements IServiceWorkerService {
 			// The service worker can then use the transferred port to reply via postMessage(), which
 			// will in turn trigger the onmessage handler on messageChannel.port1.
 			// See https://html.spec.whatwg.org/multipage/workers.html#dom-worker-postmessage
-			this._registration.active.postMessage({ command, data }, [messageChannel.port2]);
+			this._registration.active.postMessage(event, [ messageChannel.port2 ]);
 		});
 	}
 

@@ -9,7 +9,5 @@
  * *** END LICENSE BLOCK *****
  */
 
-export interface IServiceWorkerService {
-	registerServiceWorker(path: string, appScope: string): Promise<ServiceWorkerRegistration>;
-	sendMessage(command: string, data: any): Promise<void>;
-}
+declare const PACKAGE_VERSION: string;
+declare const PACKAGE_NAME: string;

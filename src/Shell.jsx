@@ -212,17 +212,15 @@ const Shell = ({ i18nService }) => {
 					quota={50}
 					selectedApp={currentApp}
 				/>
-				<Container
-					height="calc(100vh - 48px)"
-					width="fill"
-					style={
-						{
-							overflowY: 'scroll'
-						}
-					}
-				>
-					{routes}
-				</Container>
+					<Container
+						height="calc(100vh - 48px)"
+						width="fill"
+						style={{
+								overflowY: 'auto'
+						}}
+					>
+						{routes}
+					</Container>
 				<MenuPanel menuIsOpen={userOpen} tree={menuTree}/>
 			</Container>
 		</Container>

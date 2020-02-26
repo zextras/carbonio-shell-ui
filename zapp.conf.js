@@ -5,5 +5,5 @@ module.exports = {
     pkgLabel: 'Shell',
     pkgDescription: pkg.description,
     version: pkg.version,
-    projectType: 'Shell'
+    projectType: 'shell'
 };

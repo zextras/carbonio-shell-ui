@@ -29,14 +29,14 @@ i18n
 	.init({
 		resources: {
 			en: {
-				com_zextras_zapp_shell: translations_en
+				[`${PACKAGE_NAME}`]: translations_en
 			},
 			it: {
-				com_zextras_zapp_shell: translations_it
+				[`${PACKAGE_NAME}`]: translations_it
 			}
 		},
-		ns: [ 'com_zextras_zapp_shell' ],
-		defaultNS: 'com_zextras_zapp_shell',
+		ns: [ PACKAGE_NAME ],
+		defaultNS: PACKAGE_NAME,
 		fallbackLng: 'en',
 		debug: true,
 		interpolation: {

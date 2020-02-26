@@ -20,7 +20,6 @@ import { IFiberChannelService } from '../fc/IFiberChannelService';
 import { IFCEvent, IFCSink } from '../fc/IFiberChannel';
 import { IIdbInternalService } from '../idb/IIdbInternalService';
 import { filter } from 'rxjs/operators';
-import { IServiceWorkerService } from '../serviceworker/IServiceWorkerService';
 
 export class SyncService implements ISyncService {
 	public syncOperations = new BehaviorSubject<ISyncOpQueue>([]);
@@ -33,7 +32,6 @@ export class SyncService implements ISyncService {
 	constructor(
 		private _fcSrvc: IFiberChannelService,
 		private _idbSrvc: IIdbInternalService,
-		private _serviceWorkerSrvc: IServiceWorkerService,
 	) {
 		this._fcSink = _fcSrvc.getInternalFCSink();
 		// Handle the sync operation once arrive
@@ -69,10 +67,7 @@ export class SyncService implements ISyncService {
 			operation: ev.data
 		});
 		await this._updateOperationQueue();
-		await this._serviceWorkerSrvc.sendMessage(
-			'execute_sync_operations',
-			{}
-		);
+		this._fcSrvc.getInternalFCSink()('sync:consume-operation-queue');
 	}
 
 	private async _handleCancelSyncOperation(ev: IFCEvent<string>): Promise<void> {

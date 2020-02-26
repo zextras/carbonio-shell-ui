@@ -9,8 +9,6 @@
  * *** END LICENSE BLOCK *****
  */
 
-// import fetch from 'whatwg-fetch';
-
 export class ShellContext {
 
 	_splash;
@@ -19,7 +17,7 @@ export class ShellContext {
 		this._splash = splash;
 	}
 
-	async renderShell(): Promise<void> {
+	async renderShell() {
 		const { loadShell } = await import(/*  webpackChunkName: "Shell" */ './Shell');
 		const container = document.createElement('div');
 		container.id = 'app';

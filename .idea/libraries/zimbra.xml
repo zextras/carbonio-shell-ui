@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="file://$PROJECT_DIR$/java/zimbra" />
     </CLASSES>
+    <JAVADOC />
     <SOURCES>
       <root url="file://$PROJECT_DIR$/java/zimbra" />
     </SOURCES>

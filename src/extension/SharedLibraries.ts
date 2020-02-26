@@ -36,7 +36,6 @@ export type AddCreateMenuItemFn = (icon: string, label: string, to: string) => v
 export type ISharedLibrariesAppsMap = {
 	'react': {};
 	'react-dom': {};
-	'react-virtuoso': {};
 	'idb': {};
 	'lodash': {};
 	'rxjs': {};

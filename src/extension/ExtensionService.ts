@@ -38,8 +38,6 @@ import * as IDB from 'idb';
 import * as Lodash from 'lodash';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-// @ts-ignore
-import * as ReactVirtuoso from 'react-virtuoso';
 import * as RxJS from 'rxjs';
 import * as RxJSOperators from 'rxjs/operators';
 // @ts-ignore
@@ -231,7 +229,6 @@ export default class ExtensionService {
 				(iframe.contentWindow as IChildWindow).__ZAPP_SHARED_LIBRARIES__ = {
 					'react': React,
 					'react-dom': ReactDOM,
-					'react-virtuoso': ReactVirtuoso,
 					'idb': IDB,
 					'lodash': Lodash,
 					'rxjs': RxJS,

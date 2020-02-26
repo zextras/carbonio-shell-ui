@@ -25,7 +25,7 @@ export class ServiceWorkerService {
 
 		fc
 			.pipe(
-				filter((e) => e.event === 'shell:serviceworker:load-complete')
+				filter((e) => e.event === 'shell:serviceworker:activate')
 			)
 			.pipe(
 				take(1)
@@ -69,18 +69,18 @@ export class ServiceWorkerService {
 							// console.log('Event from ServiceWorker', event);
 							this._fcSrvc.getInsecureFCSink(false)(event.data);
 						});
-						sink('shell:serviceworker:load-complete');
+						sink('shell:serviceworker:registered');
 						resolve(registration);
 					})
 					.catch((registrationError: Error) => {
 						this._registration = undefined;
 						console.error('SW registration failed: ', registrationError);
-						sink('shell:serviceworker:load-error', { error: registrationError });
+						sink('shell:serviceworker:registration-failed', { error: registrationError });
 						reject(registrationError);
 					});
 			} else {
 				console.error('SW registration failed: ', new Error('ServiceWorker not supported'));
-				sink('shell:serviceworker:load-error', { error: new Error('ServiceWorker not supported') });
+				sink('shell:serviceworker:registration-failed', { error: new Error('ServiceWorker not supported') });
 				reject(new Error('ServiceWorker not supported'));
 			}
 		});

@@ -30,6 +30,10 @@ self.addEventListener('message', (event: ExtendableMessageEvent) => {
 	fcSrvc.getInsecureFCSink(true)(event.data);
 });
 
+self.addEventListener('activate', (event) => {
+	fcSrvc.getInternalFCSink()('shell:serviceworker:activate');
+});
+
 self.addEventListener('install', (event: ExtendableMessageEvent) => {
 	console.log(`Installing Service Worker extension for ${PACKAGE_NAME}`);
 

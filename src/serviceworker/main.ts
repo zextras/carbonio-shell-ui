@@ -30,7 +30,8 @@ self.addEventListener('message', (event: ExtendableMessageEvent) => {
 	fcSrvc.getInsecureFCSink(true)(event.data);
 });
 
-self.addEventListener('activate', (event) => {
+self.addEventListener('activate', (event: ExtendableMessageEvent) => {
+	event.waitUntil(clients.claim());
 	fcSrvc.getInternalFCSink()('shell:serviceworker:activate');
 });
 

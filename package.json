@@ -48,7 +48,7 @@
     "webpack-cli": "3.3.9"
   },
   "dependencies": {
-    "@zextras/zapp-ui": "0.0.10",
+    "@zextras/zapp-ui": "0.0.11",
     "i18next": "19.0.1",
     "i18next-browser-languagedetector": "4.0.1",
     "idb": "4.0.5",

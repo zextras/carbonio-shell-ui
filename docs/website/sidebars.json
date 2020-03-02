@@ -4,10 +4,14 @@
       "architecture/api",
       "architecture/apps",
       "architecture/architecture",
+      "architecture/context_actions",
       "architecture/data",
       "architecture/operation_queue",
       "architecture/service_worker",
       "architecture/soap"
+    ],
+    "Utility": [
+      "utility/hooks"
     ],
     "Design": [
       "design/login",

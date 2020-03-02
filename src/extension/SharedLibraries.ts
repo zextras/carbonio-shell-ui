@@ -11,7 +11,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { ComponentClass, Context, FunctionComponent, ReactElement } from 'react';
+import { ComponentClass, Context, FunctionComponent } from 'react';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ISoapFolderObj, ISoapResponseContent, JsnsUrn } from '../network/ISoap';
@@ -28,6 +28,7 @@ import { IIDBFolderSchm } from '../idb/IShellIdbSchema';
 import { IDBPDatabase } from 'idb';
 import { II18nContext } from '../i18n/II18nContext';
 import { IMainSubMenuItemData } from '../router/IRouterService';
+import { AppItemAction, WrappedItemAction } from '../itemActions/IItemActionContext';
 
 export type RegisterRouteFn = <T>(path: string, component: ComponentClass<T> | FunctionComponent<T>, defProps: T) => void;
 export type AddMainMenuItemFn = (icon: string, label: string, to: string, child: Observable<Array<IMainSubMenuItemData>>) => void;
@@ -45,53 +46,63 @@ export type ISharedLibrariesAppsMap = {
 	'styled-components': {};
 	'prop-types': {};
 	'moment': {};
-	'@zextras/zapp-shell/context': ISharedZxContexts;
-	'@zextras/zapp-shell/fc': ISharedFiberChannelService;
+	'@zextras/zapp-shell/itemActions': SharedItemActions;
+	'@zextras/zapp-shell/context': SharedZxContexts;
+	'@zextras/zapp-shell/fc': SharedFiberChannelService;
+	'@zextras/zapp-shell/hooks': SharedHooks;
 	'@zextras/zapp-shell/idb': IIdbExtensionService<any>;
-	'@zextras/zapp-shell/network': ISharedZxNetwork;
-	'@zextras/zapp-shell/router': ISharedZxRoute;
-	'@zextras/zapp-shell/service': ISharesZxServices;
-	'@zextras/zapp-shell/sync': ISharedZxSync;
-	'@zextras/zapp-shell/utils': ISharedShellUtils;
+	'@zextras/zapp-shell/network': SharedZxNetwork;
+	'@zextras/zapp-shell/router': SharedZxRoute;
+	'@zextras/zapp-shell/service': SharesZxServices;
+	'@zextras/zapp-shell/sync': SharedZxSync;
+	'@zextras/zapp-shell/utils': SharedShellUtils;
 	'@zextras/zapp-ui': {};
 };
 
-export type ISharedLibrariesThemesMap = {
+export type SharedLibrariesThemesMap = {
 };
 
-type ISharedZxContexts = {
+type SharedZxContexts = {
 	OfflineCtxt: Context<IOfflineContext>;
 	ScreenSizeCtxt: Context<IScreenSizeContext>;
 	SyncCtxt: Context<ISyncContext>;
 	I18nCtxt: Context<II18nContext>;
 };
 
-type ISharedFiberChannelService = {
+type SharedFiberChannelService = {
 	fc: Observable<IFCEvent<any>>;
 	fcSink: IFCSink;
 };
 
-type ISharedZxNetwork = {
+type SharedZxNetwork = {
 	sendSOAPRequest<REQ, RESP extends ISoapResponseContent>(command: string, data: REQ, urn?: string | JsnsUrn): Promise<RESP>;
 };
 
-type ISharedZxSync = {
+type SharedZxSync = {
 	syncOperations: BehaviorSubject<Array<ISyncOperation<any, ISyncOpRequest<any>>>>;
 };
 
-type ISharedZxRoute = {
+type SharedZxRoute = {
 	registerRoute: RegisterRouteFn;
 	addMainMenuItem: AddMainMenuItemFn;
 	addCreateMenuItem: AddCreateMenuItemFn;
 };
 
-type ISharesZxServices = {
+type SharesZxServices = {
 	offlineSrvc: IOfflineService;
 	sessionSrvc: ISessionService;
 };
 
-type ISharedShellUtils = {
+type SharedShellUtils = {
 	normalizeFolder<T extends IFolderSchm>(version: number, f: ISoapFolderObj): Array<T>;
 	createFolderIdb<T extends IIDBFolderSchm>(version: number, db: IDBPDatabase<T>): void;
 	registerLanguage(bundle: any, lang: string): void;
+};
+
+type SharedItemActions = {
+	registerItemAction(action: AppItemAction): void;
+};
+
+type SharedHooks = {
+	useItemActionContext(context: string, item: any): WrappedItemAction[];
 };

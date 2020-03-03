@@ -41,6 +41,8 @@ import I18nContextProvider from './i18n/I18nContextProvider';
 import I18nContext from './i18n/I18nContext';
 import RouterContext from './router/RouterContext';
 import { ServiceWorkerService } from './serviceworker/ServiceWorkerService';
+import { ItemActionService } from './itemActions/ItemActionService';
+import { ItemActionContextProvider } from './itemActions/ItemActionContext';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -250,6 +252,7 @@ export function loadShell(container) {
 		fiberChannelSrvc,
 		idbSrvc,
 	);
+	const itemActionSrvc = new ItemActionService();
 	const extensionSrvc = new ExtensionService(
 		fiberChannelSrvc,
 		routerSrvc,
@@ -259,7 +262,7 @@ export function loadShell(container) {
 		sessionSrvc,
 		syncSrvc,
 		i18nSrvc,
-		serviceWorkerService
+		itemActionSrvc
 	);
 	const themeSrvc = new ThemeService(networkSrvc, sessionSrvc);
 	render(
@@ -272,9 +275,11 @@ export function loadShell(container) {
 								<SyncContextProvider syncService={ syncSrvc }>
 									<ThemeContextProvider themeService={ themeSrvc }>
 										<I18nContextProvider i18nService={ i18nSrvc } namespace={PACKAGE_NAME}>
-											<BrowserRouter>
-												<Shell i18nService={ i18nSrvc }/>
-											</BrowserRouter>
+											<ItemActionContextProvider itemActionSrvc={itemActionSrvc}>
+												<BrowserRouter>
+													<Shell i18nService={ i18nSrvc }/>
+												</BrowserRouter>
+											</ItemActionContextProvider>
 										</I18nContextProvider>
 									</ThemeContextProvider>
 								</SyncContextProvider>

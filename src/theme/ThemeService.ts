@@ -13,7 +13,7 @@ import { Subject } from 'rxjs';
 import { map, filter } from 'lodash';
 
 import { extendTheme } from '@zextras/zapp-ui';
-import { ISharedLibrariesThemesMap } from '../extension/SharedLibraries';
+import { SharedLibrariesThemesMap } from '../extension/SharedLibraries';
 import { forIn } from 'lodash';
 import { INetworkService } from '../network/INetworkService';
 import { IGetInfoRequest, IGetInfoResponse } from '../network/ISoap';
@@ -22,7 +22,7 @@ import { ISessionService } from '../session/ISessionService';
 import { Theme } from './ITheme';
 
 type IChildWindow = Window & {
-	__ZAPP_SHARED_LIBRARIES__: ISharedLibrariesThemesMap;
+	__ZAPP_SHARED_LIBRARIES__: SharedLibrariesThemesMap;
 	__ZAPP_EXPORT__: (value?: ZThemeModuleFunction | PromiseLike<ZThemeModuleFunction> | undefined) => void;
 	__ZAPP_HMR_EXPORT__: (mod: ZThemeModuleFunction) => void;
 }

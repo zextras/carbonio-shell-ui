@@ -53,6 +53,8 @@ import * as StyledComponents from 'styled-components';
 import * as PropTypes from 'prop-types';
 import { PromiseCollector } from './PromiseCollector';
 import { ISyncOperation, ISyncOpRequest, ISyncService } from '../sync/ISyncService';
+import { IItemActionService } from '../itemActions/IItemAction';
+import useItemActionContext from '../hooks/useItemActionContext';
 /* eslint-enable @typescript-eslint/ban-ts-ignore */
 
 type IChildWindow = Window & {
@@ -77,7 +79,8 @@ export default class ExtensionService {
 		private _offlineSrvc: IOfflineService,
 		private _sessionSrvc: ISessionService,
 		private _syncSrvc: ISyncService,
-		private _i18nSrvc: I18nService
+		private _i18nSrvc: I18nService,
+		private _itemActionSrvc: IItemActionService,
 	) {
 		this._fcSink = this._fcSrvc.getInternalFCSink();
 		_sessionSrvc.session.subscribe((session) => {
@@ -119,7 +122,7 @@ export default class ExtensionService {
 				serviceworkerExtension: z.zimlet[0]['zapp-serviceworker-extension']
 			})
 		);
-		
+
 		const promiseCollector = new PromiseCollector();
 		try {
 			await Promise.all(
@@ -133,7 +136,7 @@ export default class ExtensionService {
 			// lol
 		} finally {
 			this._fcSink(
-				'app:all-loaded', 
+				'app:all-loaded',
 				appsList
 			);
 		}
@@ -203,7 +206,7 @@ export default class ExtensionService {
 				const script: HTMLScriptElement = iframe.contentDocument.createElement('script');
 				const revertables = this._revertableActions[appPkg.package] = new RevertableActionCollection(
 					this._routerSrvc,
-					this._networkSrvc
+					this._itemActionSrvc
 				);
 				const syncOperations: BehaviorSubject<Array<ISyncOperation<unknown, ISyncOpRequest<unknown>>>> = new BehaviorSubject(
 					map(
@@ -238,6 +241,12 @@ export default class ExtensionService {
 					'styled-components': StyledComponents,
 					'prop-types': PropTypes,
 					'moment': Moment,
+					'@zextras/zapp-shell/itemActions': {
+						registerItemAction: (ctxt, action) => revertables.registerItemAction(appPkg.package, appPkg.version, ctxt, action)
+					},
+					'@zextras/zapp-shell/hooks': {
+						useItemActionContext
+					},
 					'@zextras/zapp-shell/context': {
 						OfflineCtxt: OfflineCtxt,
 						ScreenSizeCtxt: ScreenSizeCtxt,

@@ -9,7 +9,25 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { ReactElement } from 'react';
+
+import { Context, createContext, ReactElement } from 'react';
+import { BehaviorSubject } from 'rxjs';
+
+export type ItemActionMap = {[ctxt: string]: Array<ItemAction>};
+
+export interface IItemActionContext {
+	actions: ItemActionMap;
+}
+
+export interface IItemActionService {
+	actions: BehaviorSubject<ItemActionMap>;
+	addAction: (pkg: string, version: string, ctxt: string, appAction: AppItemAction) => void;
+	removeAction: (pkg: string, version: string, ctxt: string, name: string) => void;
+}
+
+export type ItemActionContextProviderProps = {
+	itemActionSrvc: IItemActionService;
+}
 
 export type AppItemAction = {
 	/** The name of the action, must be unique inside an App */ name: string;
@@ -29,11 +47,4 @@ export type WrappedItemAction = {
 	icon: ReactElement;
 	label: string;
 	onActivate: () => void;
-	onCheck: () => Promise<boolean>;
-};
-
-export type ItemActionContext = {
-	actions: {[ctxt: string]: ItemAction[]};
-	addAction(ctxt: string, a: ItemAction): void;
-	removeAction(ctxt: string, name: string): void;
 };

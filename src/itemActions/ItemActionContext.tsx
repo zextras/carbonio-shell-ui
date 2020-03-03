@@ -9,11 +9,26 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { createContext } from 'react';
-import { ItemAction, ItemActionContext } from './IItemActionContext';
+import React, { useState, createContext, Context, ReactElement, PropsWithChildren, useEffect } from 'react';
+import { IItemActionContext, ItemActionContextProviderProps } from './IItemAction';
 
-export default createContext<ItemActionContext>({
-	actions: {},
-	addAction(ctxt: string, a: ItemAction): void {},
-	removeAction(ctxt: string, name: string): void {}
+export const ItemActionContext: Context<IItemActionContext>  = createContext<IItemActionContext>({
+	actions: {}
 });
+export const ItemActionContextProvider: (props: PropsWithChildren<ItemActionContextProviderProps>) => ReactElement = ({ itemActionSrvc, children }) => {
+	const [ actions, setActions ] = useState({});
+
+	useEffect(
+		() => {
+			const sub = itemActionSrvc.actions.subscribe(setActions);
+			return () => sub.unsubscribe();
+		},
+		[itemActionSrvc]
+	);
+
+	return (
+		<ItemActionContext.Provider value={{ actions }}>
+			{children}
+		</ItemActionContext.Provider>
+	);
+};

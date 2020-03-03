@@ -9,6 +9,6 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { WrappedItemAction } from '../../itemActions/IItemActionContext';
+import { WrappedItemAction } from '../../itemActions/IItemAction';
 
-export function useItemActionContext(context: string, item: any): WrappedItemAction[];
+export function useItemActionContext(context: string, item: any): { actions: Array<WrappedItemAction>; loading: boolean };

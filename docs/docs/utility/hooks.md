@@ -7,7 +7,7 @@ For convenience there are some [hooks][1] exposed by the shell which can be used
 ## useItemActionContext
 #### Signature
 ```typescript
-declare function useItemActionContext(context: string, item: any): WrappedItemAction[];
+declare function useItemActionContext(context: string, item: any): { actions: Array<WrappedItemAction>; loading: boolean };
 ```
 #### Usage
 This hook will return the actions for a specified item (or group of items) in a specific context.

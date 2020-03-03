@@ -15,41 +15,52 @@ import { forEach } from 'lodash';
 import { ComponentClass, FunctionComponent, ReactElement } from 'react';
 
 import { IMainSubMenuItemData, IRouterService } from '../router/IRouterService';
-import { INetworkService } from '../network/INetworkService';
 import { Observable } from 'rxjs';
+import { AppItemAction, IItemActionService } from '../itemActions/IItemAction';
 
 export default class RevertableActionCollection {
 
 	private _registeredRoutes: string[] = [];
 	private _registeredMainMenuItems: string[] = [];
 	private _registeredCreateMenuItems: string[] = [];
+	private _registeredItemActions: { name: string, ctxt: string, pkg: string, version: string }[] = [];
 
 	constructor(
-		private _routerService: IRouterService,
-		private _networkService: INetworkService,
+		private _routerSrvc: IRouterService,
+		private _itemActionSrvc: IItemActionService
 	) {}
 
 	public revert(): void {
-		forEach(this._registeredRoutes, (id) => this._routerService.unregisterRouteById(id));
-		forEach(this._registeredMainMenuItems, (id) => this._routerService.unregisterMainMenuItemById(id));
-		forEach(this._registeredCreateMenuItems, (id) => this._routerService.unregisterCreateMenuItemById(id));
+		forEach(this._registeredRoutes, (id) => this._routerSrvc.unregisterRouteById(id));
+		this._registeredRoutes = [];
+		forEach(this._registeredMainMenuItems, (id) => this._routerSrvc.unregisterMainMenuItemById(id));
+		this._registeredMainMenuItems = [];
+		forEach(this._registeredCreateMenuItems, (id) => this._routerSrvc.unregisterCreateMenuItemById(id));
+		this._registeredCreateMenuItems = [];
+		forEach(this._registeredItemActions, ({ name, ctxt, pkg, version }) => this._itemActionSrvc.removeAction(pkg, version, ctxt, name));
+		this._registeredItemActions = [];
 	}
 
 	public registerRoute<T>(path: string, component: ComponentClass<T> | FunctionComponent<T>, defProps: T, pkgName: string): void {
 		this._registeredRoutes.push(
-			this._routerService.registerRoute<T>(path, component, defProps, pkgName)
+			this._routerSrvc.registerRoute<T>(path, component, defProps, pkgName)
 		);
 	}
 
 	public addMainMenuItem(icon: string, label: string, to: string, pkgName: string, children?: Observable<Array<IMainSubMenuItemData>>): void {
 		this._registeredMainMenuItems.push(
-			this._routerService.addMainMenuItem(icon, label, to, pkgName, children)
+			this._routerSrvc.addMainMenuItem(icon, label, to, pkgName, children)
 		);
 	}
 
-	public addCreateMenuItem(icon: string, label: string, to: string, app: string) {
+	public addCreateMenuItem(icon: string, label: string, to: string, app: string): void {
 		this._registeredCreateMenuItems.push(
-			this._routerService.addCreateMenuItem(icon, label, to, app)
+			this._routerSrvc.addCreateMenuItem(icon, label, to, app)
 		);
+	}
+
+	public registerItemAction(pkg: string, version: string, ctxt: string, action: AppItemAction): void {
+		this._itemActionSrvc.addAction(pkg, version, ctxt, action);
+		this._registeredItemActions.push({ name: action.name, ctxt, pkg, version });
 	}
 }

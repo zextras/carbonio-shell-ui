@@ -28,7 +28,7 @@ import { IIDBFolderSchm } from '../idb/IShellIdbSchema';
 import { IDBPDatabase } from 'idb';
 import { II18nContext } from '../i18n/II18nContext';
 import { IMainSubMenuItemData } from '../router/IRouterService';
-import { AppItemAction, WrappedItemAction } from '../itemActions/IItemActionContext';
+import { AppItemAction, WrappedItemAction } from '../itemActions/IItemAction';
 
 export type RegisterRouteFn = <T>(path: string, component: ComponentClass<T> | FunctionComponent<T>, defProps: T) => void;
 export type AddMainMenuItemFn = (icon: string, label: string, to: string, child: Observable<Array<IMainSubMenuItemData>>) => void;
@@ -100,9 +100,9 @@ type SharedShellUtils = {
 };
 
 type SharedItemActions = {
-	registerItemAction(action: AppItemAction): void;
+	registerItemAction(ctxt: string, action: AppItemAction): void;
 };
 
 type SharedHooks = {
-	useItemActionContext(context: string, item: any): WrappedItemAction[];
+	useItemActionContext(context: string, item: any): { actions: WrappedItemAction[]; loading: boolean };
 };

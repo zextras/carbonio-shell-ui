@@ -45,7 +45,7 @@ function useItemActionContext(ctxt: string, obj: any): { actions: Array<WrappedI
 				.finally(() => !cancel && setLoading(false));
 			return () => { cancel = true; };
 		},
-		[actions]
+		[actions, obj]
 	);
 
 	return {

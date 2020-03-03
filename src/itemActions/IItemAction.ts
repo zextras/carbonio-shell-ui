@@ -10,7 +10,6 @@
  */
 
 
-import { Context, createContext, ReactElement } from 'react';
 import { BehaviorSubject } from 'rxjs';
 
 export type ItemActionMap = {[ctxt: string]: Array<ItemAction>};
@@ -22,7 +21,7 @@ export interface IItemActionContext {
 export interface IItemActionService {
 	actions: BehaviorSubject<ItemActionMap>;
 	addAction: (pkg: string, version: string, ctxt: string, appAction: AppItemAction) => void;
-	removeAction: (pkg: string, version: string, ctxt: string, name: string) => void;
+	removeAction: (pkg: string, version: string, ctxt: string, id: string) => void;
 }
 
 export type ItemActionContextProviderProps = {
@@ -30,8 +29,8 @@ export type ItemActionContextProviderProps = {
 }
 
 export type AppItemAction = {
-	/** The name of the action, must be unique inside an App */ name: string;
-	/** The icon of the action */ icon: ReactElement;
+	/** The name of the action, must be unique inside an App */ id: string;
+	/** The icon of the action */ icon: string;
 	/** The icon of the action */ label: string;
 	/** The callback invoked on an item */ onActivate: (item: any) => void;
 	/** @optional Function to check if the action can be applied to the item(s) */ onCheck?: (item: any) => Promise<boolean>;
@@ -44,7 +43,8 @@ export type ItemAction = AppItemAction & {
 };
 
 export type WrappedItemAction = {
-	icon: ReactElement;
+	icon: string;
 	label: string;
+	id: string;
 	onActivate: () => void;
 };

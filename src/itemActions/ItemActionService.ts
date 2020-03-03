@@ -23,7 +23,7 @@ export class ItemActionService implements IItemActionService {
 
 	public actions = new BehaviorSubject<ItemActionMap>(this._actions);
 
-	public addAction(pkg: string, version: string, ctxt: string, appAction: AppItemAction) {
+	public addAction(pkg: string, version: string, ctxt: string, appAction: AppItemAction): void {
 		if (!this._actions[ctxt]) this._actions[ctxt] = [];
 		this._actions[ctxt].push({
 			...appAction,
@@ -32,21 +32,21 @@ export class ItemActionService implements IItemActionService {
 			version
 		});
 		this.actions.next(this._actions);
-	};
+	}
 
-	public removeAction(pkg: string, version: string, ctxt: string, name: string) {
+	public removeAction(pkg: string, version: string, ctxt: string, id: string): void {
 		if (this._actions[ctxt]) {
 			this.actions.next({
 				...this._actions,
 				[ctxt]: filter(
 					this._actions[ctxt],
 					(action) => !(
-						action.name === name
+						action.id === id
 						&& action.package === pkg
 						&& action.version === version
 					)
 				)
 			})
 		}
-	};
+	}
 }

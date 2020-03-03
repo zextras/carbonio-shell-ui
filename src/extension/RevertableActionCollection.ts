@@ -23,7 +23,7 @@ export default class RevertableActionCollection {
 	private _registeredRoutes: string[] = [];
 	private _registeredMainMenuItems: string[] = [];
 	private _registeredCreateMenuItems: string[] = [];
-	private _registeredItemActions: { name: string, ctxt: string, pkg: string, version: string }[] = [];
+	private _registeredItemActions: { id: string; ctxt: string; pkg: string; version: string }[] = [];
 
 	constructor(
 		private _routerSrvc: IRouterService,
@@ -37,7 +37,7 @@ export default class RevertableActionCollection {
 		this._registeredMainMenuItems = [];
 		forEach(this._registeredCreateMenuItems, (id) => this._routerSrvc.unregisterCreateMenuItemById(id));
 		this._registeredCreateMenuItems = [];
-		forEach(this._registeredItemActions, ({ name, ctxt, pkg, version }) => this._itemActionSrvc.removeAction(pkg, version, ctxt, name));
+		forEach(this._registeredItemActions, ({ id, ctxt, pkg, version }) => this._itemActionSrvc.removeAction(pkg, version, ctxt, id));
 		this._registeredItemActions = [];
 	}
 
@@ -61,6 +61,6 @@ export default class RevertableActionCollection {
 
 	public registerItemAction(pkg: string, version: string, ctxt: string, action: AppItemAction): void {
 		this._itemActionSrvc.addAction(pkg, version, ctxt, action);
-		this._registeredItemActions.push({ name: action.name, ctxt, pkg, version });
+		this._registeredItemActions.push({ id: action.id, ctxt, pkg, version });
 	}
 }

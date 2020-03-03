@@ -31,6 +31,7 @@ function useItemActionContext(ctxt: string, obj: any): { actions: Array<WrappedI
 							if (pass && !cancel) {
 								updatedActions.push(
 									{
+										id: action.id,
 										icon: action.icon,
 										label: action.label,
 										onActivate: () => action.onActivate(obj)

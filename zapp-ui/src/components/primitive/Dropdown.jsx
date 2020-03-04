@@ -6,6 +6,7 @@ import Container from "./Container";
 import Text from "./Text";
 import Padding from "./Padding";
 import Collapse from "../utilities/Collapse";
+import {map} from 'lodash';
 
 const DropdownContainer = styled.div`position: relative;`;
 
@@ -38,7 +39,19 @@ const Dropdown = ({ items, open, top, bottom, left, right, closeFunction }) => {
 						background="bg_9"
 						padding={{ vertical: "small" }}
 					>
-						{items.map((item, index) => (<DropdownItem icon={item.icon} label={item.label} click={item.click} key={index}/>))}
+						{
+							map(
+								items,
+								(item) => (
+									<DropdownItem
+										key={item.id}
+										icon={item.icon}
+										label={item.label}
+										click={item.click}
+									/>
+								)
+							)
+						}
 					</Container>
 				</Collapse>
 			</DropdownContent>
@@ -48,7 +61,14 @@ const Dropdown = ({ items, open, top, bottom, left, right, closeFunction }) => {
 
 Dropdown.propTypes = {
 	/** map of items to display */
-	items: PropTypes.arrayOf(PropTypes.shape({ icon: PropTypes.string, label: PropTypes.string.isRequired, click: PropTypes.func })),
+	items: PropTypes.arrayOf(
+		PropTypes.shape({
+			id: PropTypes.string.isRequired,
+			label: PropTypes.string.isRequired,
+			icon: PropTypes.string,
+			click: PropTypes.func
+		})
+	),
 	/** Dropdown control prop */
 	open: PropTypes.bool,
 	/** Dropdown positioning (CSS top property) */

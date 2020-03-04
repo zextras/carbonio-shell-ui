@@ -14,33 +14,39 @@ const [ allSelected, setAllSelected ] = useState(false);
 
 const crumbs = [
    {
+       id: 'itm-1',
        label: 'Hello',
        click: () => console.log('Hello')
    },
    {
+       id: 'itm-2',
        label: 'Goodbye',
        click: () => console.log('Goodbye')
    },
    {
+       id: 'itm-3',
        label: 'Ok',
        click: () => console.log('Ok')
    }
 ];
 const actions = [
     {
+        id: 'itm-1',
         icon: 'Activity',
         label: 'Action',
-        click: console.log
+        onActivate: console.log,
     },
     {
+        id: 'itm-2',
         icon: 'Globe',
         label: 'Action',
-        click: console.log
+        onActivate: console.log,
     },
     {
+        id: 'itm-3',
         icon: 'Plus',
         label: 'Action',
-        click: console.log
+        onActivate: console.log,
     },
 ];
 <>

@@ -1,8 +1,7 @@
-import React, {useState, useRef, useEffect, useLayoutEffect} from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import Container from './Container';
-import {map, drop, head, last, slice} from 'lodash';
+import {map} from 'lodash';
 import Text from "./Text";
 import Padding from "./Padding";
 import Dropdown from "./Dropdown";
@@ -59,7 +58,7 @@ const Breadcrumbs = ({ crumbs }) => {
 };
 
 Breadcrumbs.propTypes = {
-	crumbs: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string.isRequired, click: PropTypes.func }))
+	crumbs: Dropdown.propTypes.items
 };
 
 Breadcrumbs.defaultProps = {};

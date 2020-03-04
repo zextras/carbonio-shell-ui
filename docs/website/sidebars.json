@@ -9,11 +9,7 @@
       "architecture/service_worker",
       "architecture/soap"
     ],
-    "Design": [
-      "design/login",
-      "design/shell"
-    ],
     "Main": ["main"],
-    "Notes": ["notes"]
+    "Notes": ["notes", "subtrees"]
   }
 }

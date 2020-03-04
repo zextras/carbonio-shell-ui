@@ -10,7 +10,7 @@ In this page You will found the commands useful to manage them.
 ### Pull
 ```bash
 git fetch @zextras/zapp-ui
-git subtree pull --prefix zapp-ui/ @zextras/zapp-ui --squash
+git subtree pull --prefix zapp-ui/ @zextras/zapp-ui release --squash
 ```
 ### Push
 ```bash
@@ -23,5 +23,5 @@ git remote add -f @zextras/zapp-ui git@bitbucket.org:zextras/zapp-ui.git
 ```
 #### Add
 ```bash
-git subtree add --prefix zapp-ui/ @zextras/zapp-ui master --squash
+git subtree add --prefix zapp-ui/ @zextras/zapp-ui release --squash
 ```

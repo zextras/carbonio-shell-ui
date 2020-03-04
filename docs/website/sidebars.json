@@ -10,14 +10,7 @@
       "architecture/service_worker",
       "architecture/soap"
     ],
-    "Utility": [
-      "utility/hooks"
-    ],
-    "Design": [
-      "design/login",
-      "design/shell"
-    ],
     "Main": ["main"],
-    "Notes": ["notes"]
+    "Notes": ["notes", "subtrees"]
   }
 }

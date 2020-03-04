@@ -21,7 +21,10 @@ module.exports = [{
 	},
 	target: 'web',
 	resolve: {
-		extensions: ['*', '.js', '.jsx', '.ts', '.tsx']
+		extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
+		alias: {
+			'@zextras/zapp-ui': path.resolve(process.cwd(), 'zapp-ui', 'src', 'index'),
+		}
 	},
 	module: {
 		rules: [

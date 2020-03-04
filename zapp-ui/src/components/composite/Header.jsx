@@ -61,7 +61,7 @@ const Header = ({
 };
 
 Header.propTypes = {
-	createItems: PropTypes.arrayOf(PropTypes.shape({ icon: PropTypes.string, label: PropTypes.string.isRequired })),
+	createItems: DropdownButton.propTypes.items,
 	quota: PropTypes.number.isRequired,
 	onMenuClick: PropTypes.func.isRequired,
 	onUserClick: PropTypes.func.isRequired,

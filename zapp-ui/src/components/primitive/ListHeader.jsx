@@ -9,6 +9,7 @@ import styled from "styled-components";
 import useSplitVisibility from '../../hooks/useSplitVisibility'
 import {IconDropdownButton} from "./DropdownButton";
 import Text from "./Text";
+import {WrappedItemActionShape} from "../../types";
 
 const ListHeader = ({
   breadCrumbs,
@@ -63,13 +64,30 @@ const ActionGroup = ({
     <CheckDiv ref={containerRef} >
       <Container orientation="horizontal" width="fit">
         {
-          map(visibleActions, (action, index) => (
-            <IconButton key={index} icon={action.icon} click={action.click}/>
+          map(visibleActions, (action) => (
+            <IconButton
+              key={action.id}
+              icon={action.icon}
+              onClick={action.onActivate}
+            />
           ))
         }
         {
           hiddenActions.length > 0 &&
-          <IconDropdownButton icon="MoreVertical" items={hiddenActions}/>
+          <IconDropdownButton
+            icon="MoreVertical"
+            items={
+              map(
+                hiddenActions,
+                (action) => ({
+                  id: action.id,
+                  icon: action.icon,
+                  label: action.label,
+                  click: action.onActivate
+                })
+              )
+            }
+          />
         }
       </Container>
     </CheckDiv>
@@ -77,17 +95,14 @@ const ActionGroup = ({
 };
 
 ListHeader.propTypes = {
+  breadCrumbs: Breadcrumbs.propTypes.crumbs,
   onBackClick: PropTypes.func,
   selecting: PropTypes.bool,
   allSelected: PropTypes.bool,
   onSelectAll: PropTypes.func,
   onDeselectAll: PropTypes.func,
   actionStack: PropTypes.arrayOf(
-    PropTypes.shape({
-      icon: PropTypes.string.isRequired,
-      label: PropTypes.string,
-      click: PropTypes.func.isRequired
-    })
+    WrappedItemActionShape
   )
 };
 

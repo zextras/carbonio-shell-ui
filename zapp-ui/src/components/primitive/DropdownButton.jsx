@@ -5,7 +5,6 @@ import Dropdown from './Dropdown';
 import Container from "./Container";
 import IconButton from "./IconButton";
 
-
 export const DropdownButton = ({ items, label, icon, top, bottom, left, right }) => {
 	const [open, setOpen] = useState(false);
 
@@ -46,7 +45,7 @@ export const IconDropdownButton = ({ items, icon, top, bottom, left, right }) =>
 
 DropdownButton.propTypes = {
 	/** map of items to display */
-	items: PropTypes.arrayOf(PropTypes.shape({ icon: PropTypes.string, label: PropTypes.string.isRequired, click: PropTypes.func})),
+	items: Dropdown.propTypes.items,
 	/** Button text */
 	label: PropTypes.string.isRequired,
 	/** optional icon to display beside the label */
@@ -63,7 +62,7 @@ DropdownButton.propTypes = {
 
 IconDropdownButton.propTypes = {
 	/** map of items to display */
-	items: PropTypes.arrayOf(PropTypes.shape({ icon: PropTypes.string, label: PropTypes.string.isRequired, click: PropTypes.func})),
+	items: Dropdown.propTypes.items,
 	icon: PropTypes.string,
 	/** Dropdown positioning (CSS top property) */
 	top: PropTypes.string,

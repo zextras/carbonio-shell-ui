@@ -32,7 +32,7 @@ Badge.propTypes = {
 	/** Badge type */
 	type: PropTypes.oneOf(['read', 'unread']),
 	/** Badge text */
-	value: PropTypes.oneOfType(PropTypes.string, PropTypes.number).isRequired
+	value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired
 };
 
 Badge.defaultProps = {

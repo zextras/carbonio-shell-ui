@@ -9,12 +9,12 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState, useMemo } from 'react';
 import { createGlobalStyle } from 'styled-components';
 import { forOwn, forEach } from 'lodash';
 import { BrowserRouter, Route, useRouteMatch } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import { Header, Container, NavigationPanel, MenuPanel } from '@zextras/zapp-ui';
+import { Header, Container, NavigationPanel, MenuPanel, Catcher } from '@zextras/zapp-ui';
 import { render } from 'react-dom';
 
 import LoginPage from './view/LoginPage';
@@ -43,6 +43,9 @@ import RouterContext from './router/RouterContext';
 import { ServiceWorkerService } from './serviceworker/ServiceWorkerService';
 import { ItemActionService } from './itemActions/ItemActionService';
 import { ItemActionContextProvider } from './itemActions/ItemActionContext';
+import useObservable from './hooks/useObservable';
+import ShellNavigationPanel from './view/ShellNavigationPanel';
+import ShellHeader from './view/ShellHeader';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -50,20 +53,12 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-function useObservable(observable) {
-	const [value, setValue] = useState(observable.value);
-	useEffect(() => {
-		const sub = observable.subscribe(setValue);
-		return () => sub.unsubscribe();
-	}, [observable]);
-	return value;
-}
-
 const _RouteDetector = ({ pkg }) => {
 	const routerCtx = useContext(RouterContext);
 	const match = useRouteMatch();
 	useEffect(
 		() => {
+			console.log('------PKG',pkg);
 			if (match.isExact) routerCtx.currentRoute.next(pkg);
 		},
 		[ pkg, match, routerCtx ]
@@ -71,32 +66,15 @@ const _RouteDetector = ({ pkg }) => {
 	return null;
 };
 
-const buildTree = (folders, history) => {
-	if (folders && folders.length > 0) {
-		const newFolders = [];
-		forEach(folders, folder => {
-			newFolders.push({
-				label: folder.label,
-				click: () => history.push(folder.to),
-				icon: folder.icon,
-				subfolders: buildTree(folder.children, history)
-			});
-		});
-		return newFolders;
-	} else return [];
-};
-
 const Shell = ({ i18nService }) => {
 	const [userOpen, setUserOpen] = useState(false);
 	const [navOpen, setNavOpen] = useState(true);
 	const sessionCtx = useContext(SessionContext);
 	const { t } = useContext(I18nContext);
-	const history = useHistory();
 	const [routeData, setRouteData] = useState({});
 	const routeDataSubRef = useRef();
 
 	const routerCtx = useContext(RouterContext);
-	const currentApp = useObservable(routerCtx.currentRoute);
 	const menuTree = [
 		{
 			label: t('login.logout', 'Logout'),
@@ -105,38 +83,6 @@ const Shell = ({ i18nService }) => {
 			click: sessionCtx.doLogout
 		}
 	];
-
-	// Creation Button
-	const registeredCreateActions = useObservable(routerCtx.createMenuItems);
-	const [createActions, setCreateActions] = useState([]);
-	useEffect(() => {
-		const newCreateActions = [];
-		forEach(registeredCreateActions, action => {
-			newCreateActions.push({
-				label: action.label,
-				icon: action.icon,
-				click: () => history.push(action.to)
-			});
-		});
-		setCreateActions(newCreateActions);
-	}, [registeredCreateActions, history]);
-
-	// Sidebar
-	const mainMenuItems = useObservable(routerCtx.mainMenuItems);
-	const [navTree, setNavTree] = useState([]);
-	useEffect(() => {
-		const newNavTree = [];
-		forEach(mainMenuItems, item => {
-			newNavTree.push({
-				app: item.app,
-				label: item.label,
-				icon: item.icon,
-				click: () => history.push(item.to),
-				folders: buildTree(item.children, history)
-			});
-		});
-		setNavTree(newNavTree);
-	}, [history, mainMenuItems]);
 
 	// Router
 	useEffect(() => {
@@ -148,28 +94,36 @@ const Shell = ({ i18nService }) => {
 			}
 		};
 	}, [routerCtx.routes]);
-	const routes = [];
-	forOwn(
-		routeData,
-		(v, k) => {
-			routes.push(
-				<Route
-					key={`${k}-route`}
-					path={k}
-					component={
-						() => {
-							return (
-								<I18nContextProvider i18nService={i18nService} namespace={routeData[k].pkgName}>
-									<_RouteDetector pkg={routeData[k].pkgName}/>
-									<v.component key={k} {...v.defProps}/>
-								</I18nContextProvider>
-							);
-						}
-					}
-				/>
+
+	const routes = useMemo(
+		() => {
+			const temp = [];
+			forOwn(
+				routeData,
+				(v, k) => {
+					temp.push(
+						<Route
+							key={`${k}-route`}
+							path={k}
+							component={
+								() => (
+										<I18nContextProvider key={`${k}-i18n`} i18nService={i18nService} namespace={routeData[k].pkgName}>
+											<_RouteDetector pkg={routeData[k].pkgName}/>
+											<Catcher>
+												<v.component key={k} {...v.defProps}/>
+											</Catcher>
+										</I18nContextProvider>
+									)
+							}
+						/>
+					);
+				}
 			);
-		}
+			return temp;
+		},
+		[routeData]
 	);
+
 	// -----
 
 	if (!sessionCtx.isLoggedIn) {
@@ -187,13 +141,11 @@ const Shell = ({ i18nService }) => {
 			orientation="vertical"
 		>
 			<GlobalStyle/>
-			<Header
+			<ShellHeader
 				navigationBarIsOpen={navOpen}
 				onMenuClick={() => setNavOpen(!navOpen)}
 				onUserClick={() => setUserOpen(!userOpen)}
-				quota={50}
 				userBarIsOpen={userOpen}
-				createItems={createActions}
 			/>
 			<Container
 				orientation="horizontal"
@@ -206,23 +158,21 @@ const Shell = ({ i18nService }) => {
 					}
 				}
 			>
-				<NavigationPanel
+				<ShellNavigationPanel
 					navigationBarIsOpen={navOpen}
 					menuTree={menuTree}
 					onCollapserClick={() => setNavOpen(!navOpen)}
-					tree={navTree}
 					quota={50}
-					selectedApp={currentApp}
 				/>
-					<Container
-						height="calc(100vh - 48px)"
-						width="fill"
-						style={{
-								overflowY: 'auto'
-						}}
-					>
-						{routes}
-					</Container>
+				<Container
+					height="calc(100vh - 48px)"
+					width="fill"
+					style={{
+							overflowY: 'auto'
+					}}
+				>
+					{routes}
+				</Container>
 				<MenuPanel menuIsOpen={userOpen} tree={menuTree}/>
 			</Container>
 		</Container>
@@ -271,8 +221,8 @@ export function loadShell(container) {
 				<SessionContextProvider sessionService={ sessionSrvc }>
 					<RouterContextProvider routerService={ routerSrvc }>
 						<OfflineContextProvider offlineService={ offlineSrvc }>
-							<ScreenSizeContextProvider screenSizeService={ screenSizeSrvc }>
-								<SyncContextProvider syncService={ syncSrvc }>
+							{/*<ScreenSizeContextProvider screenSizeService={ screenSizeSrvc }>*/}
+								{/*<SyncContextProvider syncService={ syncSrvc }>*/}
 									<ThemeContextProvider themeService={ themeSrvc }>
 										<I18nContextProvider i18nService={ i18nSrvc } namespace={PACKAGE_NAME}>
 											<ItemActionContextProvider itemActionSrvc={itemActionSrvc}>
@@ -282,8 +232,8 @@ export function loadShell(container) {
 											</ItemActionContextProvider>
 										</I18nContextProvider>
 									</ThemeContextProvider>
-								</SyncContextProvider>
-							</ScreenSizeContextProvider>
+							{/*</SyncContextProvider>*/}
+						{/*</ScreenSizeContextProvider>*/}
 						</OfflineContextProvider>
 					</RouterContextProvider>
 				</SessionContextProvider>

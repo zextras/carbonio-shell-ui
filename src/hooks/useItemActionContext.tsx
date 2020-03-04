@@ -34,7 +34,10 @@ function useItemActionContext(ctxt: string, obj: any): { actions: Array<WrappedI
 										id: action.id,
 										icon: action.icon,
 										label: action.label,
-										onActivate: () => action.onActivate(obj)
+										onActivate: () => {
+											console.log(obj);
+											action.onActivate(obj);
+										}
 									}
 								);
 								setItemActions(updatedActions);

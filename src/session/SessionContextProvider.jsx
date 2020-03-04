@@ -9,19 +9,24 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import SessionContext from './SessionContext';
+
+
 
 const SessionContextProvider = ({ sessionService, children }) => {
 	const [ isLoggedIn, setIsLoggedIn ] = useState(false);
 	const isLoggedInSubRef = useRef();
 
-	function handleSessionDataChange(sessionData) {
+	const doLogin = useMemo(() => (u, p) => sessionService.doLogin(u, p, true), [sessionService]);
+	const doLogout = useMemo(() => () => sessionService.doLogout(), [sessionService]);
+
+	const handleSessionDataChange = useMemo(() => (sessionData) => {
 		if (sessionData)
 			setIsLoggedIn(true);
 		else
 			setIsLoggedIn(false);
-	}
+	}, [setIsLoggedIn]);
 
 	useEffect(() => {
 		isLoggedInSubRef.current = sessionService.session.subscribe(handleSessionDataChange);
@@ -32,15 +37,15 @@ const SessionContextProvider = ({ sessionService, children }) => {
 				isLoggedInSubRef.current = undefined;
 			}
 		};
-	}, [ sessionService.session ]);
+	}, [sessionService.session, handleSessionDataChange]);
 
 	return (
 		<SessionContext.Provider
-			value={ {
-				isLoggedIn: isLoggedIn,
-				doLogin: (u, p) => sessionService.doLogin(u, p, true),
-				doLogout: () => sessionService.doLogout()
-			} }
+			value={{
+				isLoggedIn,
+				doLogin,
+				doLogout
+			}}
 		>
 			{ children }
 		</SessionContext.Provider>

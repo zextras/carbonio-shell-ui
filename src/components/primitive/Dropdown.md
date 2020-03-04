@@ -7,10 +7,12 @@ import { useState } from 'react';
 
 const items = [
     {
+        id: 'itm-1',
         icon: 'Activity',
         label: 'Some Item'
     },
     {
+        id: 'itm-2',
         icon: 'Plus',
         label: 'Some  Other Item'
     }

@@ -214,7 +214,7 @@ const PasswordInput = ({
 	);
 };
 
-PasswordInput.propTypes = Input.PropTypes;
+PasswordInput.propTypes = Input.propTypes;
 
 PasswordInput.defaultProps = Input.defaultProps;
 

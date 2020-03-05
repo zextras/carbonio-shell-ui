@@ -31,7 +31,7 @@ function Select({ background, items, label, onChange, defaultSelection }) {
     >
       <TabContainer
         tabIndex="0"
-        
+
         orientation="horizontal"
         width="fill"
         height="48px"
@@ -58,7 +58,8 @@ function Select({ background, items, label, onChange, defaultSelection }) {
       <Dropdown
         items={
           items.map(
-            item => ({
+            (item, index) => ({
+              id: `${index}-${item.label}`,
               label: item.label,
               icon: (selected && item.value === selected.value) ? 'CheckmarkSquare' : 'Square',
               click: () => {

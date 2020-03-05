@@ -19,6 +19,7 @@ export { default as IconButton } from './components/primitive/IconButton';
 export { Input, PasswordInput } from './components/primitive/Input';
 export { default as List } from './components/primitive/List';
 export { default as ListHeader } from './components/primitive/ListHeader';
+export { default as LoadMore } from './components/primitive/LoadMore';
 export { default as Logo } from './components/primitive/Logo';
 export { default as Padding } from './components/primitive/Padding';
 export { default as Quota } from './components/primitive/Quota';

@@ -35,12 +35,12 @@ const RouterContextProvider = ({ routerService, children }) => {
 
 	return (
 		<RouterContext.Provider
-			value={ {
+			value={{
 				routes: routerService.routes,
 				mainMenuItems: routerService.mainMenuItems,
 				createMenuItems: routerService.createMenuItems,
 				currentRoute: routerService.currentRoute
-			} }
+			}}
 		>
 			{ children }
 		</RouterContext.Provider>

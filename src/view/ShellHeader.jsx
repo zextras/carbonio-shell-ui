@@ -28,8 +28,9 @@ export default function ShellHeader({
 	const [createActions, setCreateActions] = useState([]);
 	useEffect(() => {
 		const newCreateActions = [];
-		forEach(registeredCreateActions, action => {
+		forEach(registeredCreateActions, (action, index) => {
 			newCreateActions.push({
+				id: `${index}-${action.label}`,
 				label: action.label,
 				icon: action.icon,
 				click: () => history.push(action.to)

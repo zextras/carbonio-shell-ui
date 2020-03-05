@@ -94,7 +94,7 @@ const Input = ({
 		>
 			<Label
 				htmlFor={id}
-				active={active || (comboRef.current && comboRef.current.value !== '') || !(comboRef.current || !value)}
+				active={active || (comboRef.current && (comboRef.current.value !== '' || !!value)) || !(comboRef.current || !value)}
 				style={{userSelect: 'none'}}
 			>
 				{label}
@@ -102,7 +102,7 @@ const Input = ({
 			<InputEl
 				background={backgroundColor}
 				color={textColor}
-			  ref={comboRef}
+				ref={comboRef}
 				type="text"
 				onFocus={onInputFocus}
 				onBlur={onInputBlur}

@@ -41,6 +41,19 @@ export class ServiceWorkerService {
 						);
 				}
 			);
+		
+		fc
+			.pipe(
+				filter((e) => e.event === 'shell:serviceworker:activate')
+			)
+			.pipe(
+				take(1)
+			)
+			.subscribe(
+				(e) => {
+					fc.subscribe((ev) => this._sendEvent(ev));
+				}
+			);
 
 		fc
 			.pipe(

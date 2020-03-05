@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../mails/.idea/mail.iml" filepath="$PROJECT_DIR$/../mails/.idea/mail.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/shell.iml" filepath="$PROJECT_DIR$/.idea/shell.iml" />
     </modules>
   </component>

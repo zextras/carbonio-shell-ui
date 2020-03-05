@@ -51,7 +51,7 @@ const useSplitVisibility = (items) => {
 			setVisibleItems(drop(visibleItems));
 			setLastHiddenWidth(containerRef.current.scrollWidth)
 		}
-	}, [width]);
+	}, [width, items]);
 
 	return [ visibleItems, hiddenItems, containerRef];
 };

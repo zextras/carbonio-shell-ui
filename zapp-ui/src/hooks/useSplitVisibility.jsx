@@ -18,6 +18,13 @@ const useSplitVisibility = (items) => {
 
 	const [width, setWidth] = useState(window.innerWidth);
 	const [lastHiddenWidth, setLastHiddenWidth] = useState(0);
+
+	useEffect(()=> {
+		setVisibleItems(items);
+		setHiddenItems([]);
+		setLastHiddenWidth(0);
+	}, [items]);
+
 	useEffect(() => {
 		function handleResize() {
 			setWidth(window.innerWidth);
@@ -44,7 +51,8 @@ const useSplitVisibility = (items) => {
 			setVisibleItems(drop(visibleItems));
 			setLastHiddenWidth(containerRef.current.scrollWidth)
 		}
-	}, [width]);
+	}, [width, items]);
+
 	return [ visibleItems, hiddenItems, containerRef];
 };
 

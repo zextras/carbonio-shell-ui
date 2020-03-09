@@ -24,12 +24,12 @@ export const DropdownButton = ({ items, label, icon, top, bottom, left, right })
 	);
 };
 
-export const IconDropdownButton = ({ items, icon, top, bottom, left, right }) => {
+export const IconDropdownButton = ({ items, icon, iconColor, top, bottom, left, right }) => {
 	const [open, setOpen] = useState(false);
 
 	return (
 		<Container orientation="vertical" width="fit" height="fit">
-			<IconButton icon={ icon ? icon : "Plus" } onClick={() => setOpen(!open)}/>
+			<IconButton iconColor={iconColor} icon={ icon ? icon : "Plus" } onClick={() => setOpen(!open)}/>
 			<Dropdown
 				items={items}
 				open={open}
@@ -63,6 +63,7 @@ DropdownButton.propTypes = {
 IconDropdownButton.propTypes = {
 	/** map of items to display */
 	items: Dropdown.propTypes.items,
+	iconColor: IconButton.propTypes.iconColor,
 	icon: PropTypes.string,
 	/** Dropdown positioning (CSS top property) */
 	top: PropTypes.string,

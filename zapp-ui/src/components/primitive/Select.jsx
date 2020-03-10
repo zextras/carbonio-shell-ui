@@ -20,7 +20,8 @@ position: relative;
 :focus {
   outline: none;
 }
-`
+`;
+
 function Select({ background, items, label, onChange, defaultSelection }) {
   const [ selected, setSelected ] = useState(defaultSelection);
   const [ open, setOpen ] = useState(false);
@@ -31,7 +32,6 @@ function Select({ background, items, label, onChange, defaultSelection }) {
     >
       <TabContainer
         tabIndex="0"
-
         orientation="horizontal"
         width="fill"
         height="48px"

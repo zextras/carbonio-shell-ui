@@ -48,7 +48,7 @@ const HoverContainer = styled(Container)`
 	}
 `;
 
-const EmailListItem = ({ email, selected, selecting, onSelect, onDeselect, folder, selectable }) => {
+function EmailListItem({ email, selected, selecting, onSelect, onDeselect, folder, selectable }) {
 	const mainContact = useMemo(() => {
 		return find(email.contacts, ['type', (folder === 'Sent' || folder === 'Drafts')? 't' : 'f'])
 	}, email.contacts);
@@ -176,7 +176,7 @@ const EmailListItem = ({ email, selected, selecting, onSelect, onDeselect, folde
 			<Divider/>
 		</HoverContainer>
 	);
-};
+}
 
 EmailListItem.propTypes = {
 	folder: PropTypes.string,

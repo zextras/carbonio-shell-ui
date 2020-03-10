@@ -12,12 +12,12 @@ const IconWrapper = styled.div`
 	}
 `;
 
-const Checkbox = ({
+function Checkbox({
 	defaultChecked,
 	label,
 	onClick,
 	onChange
-}) => {
+}) {
 	const [checked, setChecked] = useState(defaultChecked);
 	return (
 		<Container
@@ -43,7 +43,7 @@ const Checkbox = ({
 		{label && <Padding left="small"><Text size="medium" weight="regular" overflow="break-word" style={{userSelect: 'none'}}>{label}</Text></Padding>}
 		</Container>
 	);
-};
+}
 
 Checkbox.propTypes = {
 	/** status of the Checkbox */

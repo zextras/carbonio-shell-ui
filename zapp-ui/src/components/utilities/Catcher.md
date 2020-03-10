@@ -1,4 +1,3 @@
-
 This is a component that acts as Error Boundary limiting the propagation of errors to its children.
 
 The onError function can be used to perform operations such as logging.

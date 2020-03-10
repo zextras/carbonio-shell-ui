@@ -9,10 +9,10 @@
  * *** END LICENSE BLOCK *****
  */
 
-import {useEffect, useRef, useState} from "react";
-import {drop, head, last, slice} from "lodash";
+import { useEffect, useRef, useState } from "react";
+import { drop, head, last, slice } from "lodash";
 
-const useSplitVisibility = (items) => {
+export function useSplitVisibility(items) {
 	const [visibleItems, setVisibleItems] = useState(items);
 	const [hiddenItems, setHiddenItems] = useState([]);
 
@@ -54,6 +54,4 @@ const useSplitVisibility = (items) => {
 	}, [width, items]);
 
 	return [ visibleItems, hiddenItems, containerRef];
-};
-
-export default useSplitVisibility;
+}

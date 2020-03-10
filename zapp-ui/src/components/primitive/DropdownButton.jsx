@@ -5,7 +5,7 @@ import Dropdown from './Dropdown';
 import Container from "./Container";
 import IconButton from "./IconButton";
 
-export const DropdownButton = ({ items, label, icon, top, bottom, left, right }) => {
+export function DropdownButton({ items, label, icon, top, bottom, left, right }) {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -22,9 +22,9 @@ export const DropdownButton = ({ items, label, icon, top, bottom, left, right })
 			/>
 		</Container>
 	);
-};
+}
 
-export const IconDropdownButton = ({ items, icon, top, bottom, left, right }) => {
+export function IconDropdownButton({ items, icon, top, bottom, left, right }) {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -41,11 +41,11 @@ export const IconDropdownButton = ({ items, icon, top, bottom, left, right }) =>
 			/>
 		</Container>
 	);
-};
+}
 
 DropdownButton.propTypes = {
 	/** map of items to display */
-	items: Dropdown.propTypes.items,
+	items: PropTypes.arrayOf(PropTypes.shape({ icon: PropTypes.string, label: PropTypes.string.isRequired, click: PropTypes.func})),
 	/** Button text */
 	label: PropTypes.string.isRequired,
 	/** optional icon to display beside the label */
@@ -62,7 +62,7 @@ DropdownButton.propTypes = {
 
 IconDropdownButton.propTypes = {
 	/** map of items to display */
-	items: Dropdown.propTypes.items,
+	items: PropTypes.arrayOf(PropTypes.shape({ icon: PropTypes.string, label: PropTypes.string.isRequired, click: PropTypes.func})),
 	icon: PropTypes.string,
 	/** Dropdown positioning (CSS top property) */
 	top: PropTypes.string,

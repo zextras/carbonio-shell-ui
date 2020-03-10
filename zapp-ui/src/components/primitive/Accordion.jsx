@@ -7,7 +7,7 @@ import Icon from "./Icon";
 import Collapse from "../utilities/Collapse";
 import Padding from "./Padding";
 
-const Accordion = ({ label, items, icon, divider, level, click }) => {
+function Accordion({ label, items, icon, divider, level, click }) {
 	const [open, setOpen] = useState(false);
 	return (
 		<Container
@@ -77,7 +77,7 @@ const Accordion = ({ label, items, icon, divider, level, click }) => {
 			{ divider && <Divider color="bd_1"/>}
 		</Container>
 	);
-};
+}
 
 Accordion.propTypes = {
 	/** The label of the accordion */

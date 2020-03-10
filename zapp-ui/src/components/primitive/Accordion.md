@@ -1,4 +1,3 @@
-
 Accordions allow the user to browse nested menus and folder structures.
 
 Every item in an Accordion must have a label, while icons and click callbacks are optional.

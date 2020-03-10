@@ -27,7 +27,7 @@ const _SPECIAL_CHARS_REGEX = /[&/\\#,+()$~%.'":*?!<>{}@^_`=]/g;
 const _WHITESPACE_REGEX = /[ ]/g;
 const _WHITESPACE_REGEX_2 = / /;
 
-const calcCapitals = (label) => {
+function calcCapitals(label) {
 	const noSpecString = label.replace(_SPECIAL_CHARS_REGEX, '');
 	if (noSpecString.replace(_WHITESPACE_REGEX, '').length !== 0) {
 		label = noSpecString;
@@ -52,17 +52,17 @@ const calcCapitals = (label) => {
 		return words[0][0] + words[words.length -1][0];
 	}
 	return label[0] + label[label.length -1];
-};
+}
 
-const calcColor = (label) => {
+function calcColor(label) {
 	let sum = 0;
 	for (let i = 0; i < label.length; i++) {
 		sum += label.charCodeAt(i);
 	}
 	return `avatar_${(sum % 50) +1}`;
-};
+}
 
-const Avatar = ({size, label, colorLabel, picture}) => {
+function Avatar({size, label, colorLabel, picture}) {
 	const color = calcColor(colorLabel || label);
 	const capitals = calcCapitals(label.toUpperCase());
 	return (
@@ -80,7 +80,7 @@ const Avatar = ({size, label, colorLabel, picture}) => {
 			}
 		</AvatarContainer>
 	);
-};
+}
 
 Avatar.propTypes = {
 	/** size of the Avatar circle */

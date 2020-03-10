@@ -6,7 +6,6 @@ import Container from "./Container";
 import Text from "./Text";
 import Padding from "./Padding";
 import Collapse from "../utilities/Collapse";
-import {map} from 'lodash';
 
 const DropdownContainer = styled.div`position: relative;`;
 
@@ -19,7 +18,7 @@ const DropdownContent = styled.div`
 	z-index: 4;
 `;
 
-const Dropdown = ({ items, open, top, bottom, left, right, closeFunction }) => {
+function Dropdown({ items, open, top, bottom, left, right, closeFunction }) {
 	useEffect(
 		() => {
 			if (closeFunction && open) {
@@ -39,36 +38,17 @@ const Dropdown = ({ items, open, top, bottom, left, right, closeFunction }) => {
 						background="bg_9"
 						padding={{ vertical: "small" }}
 					>
-						{
-							map(
-								items,
-								(item) => (
-									<DropdownItem
-										key={item.id}
-										icon={item.icon}
-										label={item.label}
-										click={item.click}
-									/>
-								)
-							)
-						}
+						{items.map((item, index) => (<DropdownItem icon={item.icon} label={item.label} click={item.click} key={index}/>))}
 					</Container>
 				</Collapse>
 			</DropdownContent>
 		</DropdownContainer>
 	);
-};
+}
 
 Dropdown.propTypes = {
 	/** map of items to display */
-	items: PropTypes.arrayOf(
-		PropTypes.shape({
-			id: PropTypes.string.isRequired,
-			label: PropTypes.string.isRequired,
-			icon: PropTypes.string,
-			click: PropTypes.func
-		})
-	),
+	items: PropTypes.arrayOf(PropTypes.shape({ icon: PropTypes.string, label: PropTypes.string.isRequired, click: PropTypes.func })),
 	/** Dropdown control prop */
 	open: PropTypes.bool,
 	/** Dropdown positioning (CSS top property) */
@@ -89,7 +69,7 @@ const ContainerEl = styled(Container)`
 	}
 `;
 
-const DropdownItem = ({ icon, label, click }) => {
+function DropdownItem({ icon, label, click }) {
 	return (
 		<ContainerEl
 			orientation="horizontal"
@@ -110,6 +90,6 @@ const DropdownItem = ({ icon, label, click }) => {
 			</Text>
 		</ContainerEl>
 	);
-};
+}
 
 export default Dropdown;

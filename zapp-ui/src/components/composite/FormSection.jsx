@@ -6,7 +6,7 @@ import Text from "../primitive/Text";
 
 const levelContext = createContext(0);
 
-const FormSection = ({ background, label, children }) => {
+function FormSection({ background, label, children }) {
 	const level = useContext(levelContext);
 	return (
 			<Container
@@ -32,7 +32,7 @@ const FormSection = ({ background, label, children }) => {
 				</levelContext.Provider>
 			</Container>
 	);
-};
+}
 
 FormSection.propTypes = {
 	label: PropTypes.string,

@@ -1,4 +1,3 @@
-
 The container is a layout element that is used to create compositions.
 
 ### Orientation

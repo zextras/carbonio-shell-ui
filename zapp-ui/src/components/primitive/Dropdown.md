@@ -1,4 +1,3 @@
-
 Dropdowns are toggleable, contextual overlays for displaying lists of links and more. They’re toggled by clicking.
 
 ```jsx

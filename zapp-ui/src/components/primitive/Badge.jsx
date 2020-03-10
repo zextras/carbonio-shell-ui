@@ -15,7 +15,7 @@ const Comp = styled.span`
 	text-align: center;
 `;
 
-const Badge = ({ type, value, ...rest }) => {
+function Badge({ type, value, ...rest }) {
 
 	let badgeText = value;
 	if (typeof value === "number")
@@ -26,7 +26,7 @@ const Badge = ({ type, value, ...rest }) => {
 			{ badgeText }
 		</Comp>
 	);
-};
+}
 
 Badge.propTypes = {
 	/** Badge type */

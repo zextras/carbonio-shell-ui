@@ -17,7 +17,7 @@ const Comp = styled.button`
 		padding: ${props => props.theme.sizes.padding['small']};
 `;
 
-const DownloadFileButton = ({ icon, fileName, ...rest }) => {
+function DownloadFileButton({ icon, fileName, ...rest }) {
 	return (
 		<Comp { ...rest }>
 			<Container orientation="horizontal">
@@ -42,7 +42,7 @@ const DownloadFileButton = ({ icon, fileName, ...rest }) => {
 			</Container>
 		</Comp>
 	);
-};
+}
 
 DownloadFileButton.propTypes = {
 	fileName: PropTypes.string.isRequired,

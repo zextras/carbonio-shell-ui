@@ -11,10 +11,9 @@
 
 import React, { useContext, useEffect, useRef, useState, useMemo } from 'react';
 import { createGlobalStyle } from 'styled-components';
-import { forOwn, forEach } from 'lodash';
+import { forOwn } from 'lodash';
 import { BrowserRouter, Route, useRouteMatch } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
-import { Header, Container, NavigationPanel, MenuPanel, Catcher } from '@zextras/zapp-ui';
+import { Container, MenuPanel, Catcher } from '@zextras/zapp-ui';
 import { render } from 'react-dom';
 
 import LoginPage from './view/LoginPage';
@@ -28,14 +27,12 @@ import SessionContext from './session/SessionContext';
 import SessionContextProvider from './session/SessionContextProvider';
 import RouterContextProvider from './router/RouterContextProvider';
 import OfflineContextProvider from './offline/OfflineContextProvider';
-import ScreenSizeContextProvider from './screenSize/ScreenSizeContextProvider';
 import FiberChannelContextProvider from './fc/FiberChannelContextProvider';
 import ThemeContextProvider from './theme/ThemeContextProvider';
 import ThemeService from './theme/ThemeService';
 import NetworkService from './network/NetworkService';
 import IdbService from './idb/IdbService';
 import { SyncService } from './sync/SyncService';
-import SyncContextProvider from './sync/SyncContextProvider';
 import I18nService from './i18n/I18nService';
 import I18nContextProvider from './i18n/I18nContextProvider';
 import I18nContext from './i18n/I18nContext';
@@ -43,7 +40,6 @@ import RouterContext from './router/RouterContext';
 import { ServiceWorkerService } from './serviceworker/ServiceWorkerService';
 import { ItemActionService } from './itemActions/ItemActionService';
 import { ItemActionContextProvider } from './itemActions/ItemActionContext';
-import useObservable from './hooks/useObservable';
 import ShellNavigationPanel from './view/ShellNavigationPanel';
 import ShellHeader from './view/ShellHeader';
 
@@ -53,7 +49,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const _RouteDetector = ({ pkg }) => {
+function _RouteDetector({ pkg }) {
 	const routerCtx = useContext(RouterContext);
 	const match = useRouteMatch();
 	useEffect(
@@ -64,9 +60,9 @@ const _RouteDetector = ({ pkg }) => {
 		[ pkg, match, routerCtx ]
 	);
 	return null;
-};
+}
 
-const Shell = ({ i18nService }) => {
+function Shell({ i18nService }) {
 	const [userOpen, setUserOpen] = useState(false);
 	const [navOpen, setNavOpen] = useState(true);
 	const sessionCtx = useContext(SessionContext);
@@ -177,7 +173,7 @@ const Shell = ({ i18nService }) => {
 			</Container>
 		</Container>
 	);
-};
+}
 
 export function loadShell(container) {
 	const fiberChannelSrvc = new FiberChannelService();

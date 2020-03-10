@@ -9,14 +9,14 @@ import { DropdownButton, IconDropdownButton } from "../primitive/DropdownButton"
 import Quota from "../primitive/Quota";
 import Responsive from "../utilities/Responsive";
 
-const Header = ({
-									createItems,
-									quota,
-									onMenuClick,
-									onUserClick,
-									navigationBarIsOpen,
-									userBarIsOpen
-}) => {
+function Header({
+	createItems,
+	quota,
+	onMenuClick,
+	onUserClick,
+	navigationBarIsOpen,
+	userBarIsOpen
+}) {
 	const screenMode = useScreenMode();
 	return (
 		<Container
@@ -58,10 +58,10 @@ const Header = ({
 			</Responsive>
 		</Container>
 	);
-};
+}
 
 Header.propTypes = {
-	createItems: DropdownButton.propTypes.items,
+	createItems: PropTypes.arrayOf(PropTypes.shape({ icon: PropTypes.string, label: PropTypes.string.isRequired })),
 	quota: PropTypes.number.isRequired,
 	onMenuClick: PropTypes.func.isRequired,
 	onUserClick: PropTypes.func.isRequired,

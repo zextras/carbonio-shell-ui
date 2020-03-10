@@ -14,7 +14,7 @@ import { ItemActionContext } from '../itemActions/ItemActionContext';
 import { map } from 'lodash';
 import { ItemAction, WrappedItemAction } from '../itemActions/IItemAction';
 
-function reducer(state: Array<WrappedItemAction>,	action: { type: string; itemAction?: WrappedItemAction}): Array<WrappedItemAction> {
+function reducer(state: Array<WrappedItemAction>, action: { type: string; itemAction?: WrappedItemAction}): Array<WrappedItemAction> {
 	switch (action.type) {
 		case 'reset': return [];
 		case 'add': {

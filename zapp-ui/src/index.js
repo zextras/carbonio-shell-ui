@@ -26,6 +26,7 @@ export { default as Quota } from './components/primitive/Quota';
 export { default as Select } from './components/primitive/Select';
 export { default as SearchInput } from './components/primitive/Quota';
 export { default as Text } from './components/primitive/Text';
+export { default as RichTextEditor } from './components/primitive/RichTextEditor';
 
 export { default as Collapse, Collapser } from './components/utilities/Collapse';
 export { default as Catcher } from './components/utilities/Catcher';

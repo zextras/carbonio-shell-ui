@@ -36,6 +36,9 @@ module.exports = [{
 			},
 			{
 				test: /\.(css)$/,
+				exclude: [
+					/node_modules\/tinymce/,
+				],
 				use: [
 					{
 						loader: MiniCssExtractPlugin.loader,

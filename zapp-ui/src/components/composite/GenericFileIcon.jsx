@@ -16,7 +16,7 @@ const Comp = styled.div`
 		align-items: center;
 `;
 
-const GenericFileIcon = ({ fileName, color, ...rest }) => {
+function GenericFileIcon({ fileName, color, ...rest }) {
 	const ext = fileName.split('.').pop();
 	return (
 		<Comp color={color} {...rest}>
@@ -25,7 +25,7 @@ const GenericFileIcon = ({ fileName, color, ...rest }) => {
 			</Text>
 		</Comp>
 	);
-};
+}
 
 GenericFileIcon.propTypes = {
 	fileName: PropTypes.string,

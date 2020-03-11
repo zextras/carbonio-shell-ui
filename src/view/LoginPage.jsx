@@ -10,8 +10,8 @@
  */
 
 import React, { useContext, useState, useEffect, useCallback } from 'react';
-import { Container, Input, PasswordInput, useScreenMode, Logo, Button, Padding, Text } from '@zextras/zapp-ui';
-import styled, { createGlobalStyle } from 'styled-components';
+import { Container, Input, PasswordInput, useScreenMode, Logo, Button, Text } from '@zextras/zapp-ui';
+import styled from 'styled-components';
 import SessionContext from '../session/SessionContext';
 import I18nContext from '../i18n/I18nContext';
 
@@ -22,7 +22,7 @@ const BG = styled.div`
 	width: 100%;
 `;
 
-const LoginPage = () => {
+function LoginPage() {
 	const screenMode = useScreenMode();
 	const [ btnDisabled, setBtnDisabled ] = useState(false);
 	const { t } = useContext(I18nContext);
@@ -113,5 +113,5 @@ const LoginPage = () => {
 			</Container>
 		</BG>
 	);
-};
+}
 export default LoginPage;

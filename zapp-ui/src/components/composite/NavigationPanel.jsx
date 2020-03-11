@@ -8,14 +8,14 @@ import Accordion from "../primitive/Accordion";
 import Quota from "../primitive/Quota";
 import Padding from "../primitive/Padding";
 
-const NavigationPanel = ({
-													 navigationBarIsOpen,
-													 tree,
-													 menuTree,
-													 selectedApp,
-													 onCollapserClick,
-													 quota
-}) => {
+function NavigationPanel({
+	navigationBarIsOpen,
+	tree,
+	menuTree,
+	selectedApp,
+	onCollapserClick,
+	quota
+}) {
 	let subTree = [];
 	tree.forEach((app) => {
 		if (app.app === selectedApp) {
@@ -85,7 +85,7 @@ const NavigationPanel = ({
 			</Responsive>
 		</Container>
 	);
-};
+}
 
 NavigationPanel.propTypes = {
 	selectedApp: PropTypes.string,
@@ -119,10 +119,10 @@ NavigationPanel.propTypes = {
 	quota: PropTypes.number
 };
 
-const PrimaryBarElement = ({ icon, click }) => {
+function PrimaryBarElement({ icon, click }) {
 	return (
 		<IconButton icon={icon} onClick={click} size="large"/>
 	);
-};
+}
 
 export default NavigationPanel;

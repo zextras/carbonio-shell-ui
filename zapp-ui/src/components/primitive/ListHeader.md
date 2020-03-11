@@ -34,19 +34,19 @@ const actions = [
         id: 'itm-1',
         icon: 'Activity',
         label: 'Action',
-        onActivate: console.log,
+        click: console.log,
     },
     {
         id: 'itm-2',
         icon: 'Globe',
         label: 'Action',
-        onActivate: console.log,
+        click: console.log,
     },
     {
         id: 'itm-3',
         icon: 'Plus',
         label: 'Action',
-        onActivate: console.log,
+        click: console.log,
     },
 ];
 <>

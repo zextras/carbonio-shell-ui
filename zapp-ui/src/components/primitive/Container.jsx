@@ -68,13 +68,13 @@ const ContainerEl = styled.div`
 }}
 `;
 
-const Container = ({ children, ...rest }) => {
+function Container({ children, ...rest }) {
 	return (
 		<ContainerEl {...rest}>
 			{ children }
 		</ContainerEl>
 	);
-};
+}
 
 Container.propTypes = {
 	/** whether the Container is a row or a column */

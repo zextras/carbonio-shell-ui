@@ -1,19 +1,18 @@
 import React from 'react';
+import { map } from 'lodash';
 import PropTypes from 'prop-types';
-import Container from "./Container";
-import Breadcrumbs from "./Breadcrumbs";
-import IconButton from "./IconButton";
-import Responsive from "../utilities/Responsive";
-import { map } from "lodash";
-import styled from "styled-components";
-import useSplitVisibility from '../../hooks/useSplitVisibility'
-import {IconDropdownButton} from "./DropdownButton";
-import Text from "./Text";
-import {WrappedItemActionShape} from "../../types";
-import Badge from './Badge';
+
+import Container from './Container';
+import Breadcrumbs from './Breadcrumbs';
+import IconButton from './IconButton';
+import Responsive from '../utilities/Responsive';
+import styled from 'styled-components';
+import { useSplitVisibility } from '../../hooks/useSplitVisibility'
+import { IconDropdownButton } from './DropdownButton';
+import Text from './Text';
 import Padding from './Padding';
 
-const ListHeader = ({
+function ListHeader({
   breadCrumbs,
   onBackClick,
   selecting,
@@ -22,7 +21,7 @@ const ListHeader = ({
   onDeselectAll,
   actionStack,
   itemsCount
-}) => {
+}) {
   return (
     <Container orientation="horizontal" mainAlignment="space-between" width="fill" height="fit" padding={{ horizontal: 'extrasmall' }}>
       <Responsive mode="mobile">
@@ -57,7 +56,7 @@ const ListHeader = ({
       }
     </Container>
   );
-};
+}
 
 
 const CheckDiv = styled.div`
@@ -68,9 +67,9 @@ const CheckDiv = styled.div`
   overflow-x: hidden;
 `;
 
-const ActionGroup = ({
+function ActionGroup({
   actionStack,
-}) => {
+}) {
   const [visibleActions, hiddenActions, containerRef] = useSplitVisibility(actionStack);
 
   return (
@@ -107,7 +106,7 @@ const ActionGroup = ({
       </Container>
     </CheckDiv>
   )
-};
+}
 
 ListHeader.propTypes = {
   breadCrumbs: Breadcrumbs.propTypes.crumbs,
@@ -117,7 +116,11 @@ ListHeader.propTypes = {
   onSelectAll: PropTypes.func,
   onDeselectAll: PropTypes.func,
   actionStack: PropTypes.arrayOf(
-    WrappedItemActionShape
+    PropTypes.shape({
+      icon: PropTypes.string.isRequired,
+      label: PropTypes.string,
+      click: PropTypes.func.isRequired
+    })
   ),
   itemsCount: PropTypes.number
 };

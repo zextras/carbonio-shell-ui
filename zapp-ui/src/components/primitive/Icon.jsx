@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ThemeContext from '../../theme/ThemeContext';
 import defaultTheme from '../../theme/Theme';
 
-const Icon = ({ icon, size, color, ...rest }) => {
+function Icon({ icon, size, color, ...rest }) {
 	const theme = useContext(ThemeContext);
 	const IconComp = theme.icons[icon];
 	return (
@@ -14,7 +14,7 @@ const Icon = ({ icon, size, color, ...rest }) => {
 			{...rest}
 		/>
 	);
-};
+}
 
 Icon.propTypes = {
 	/** Icon size */

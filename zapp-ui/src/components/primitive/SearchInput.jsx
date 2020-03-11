@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Container from "./Container";
-import Icon from "./Icon";
-import IconButton from "./IconButton";
+import Container from './Container';
+import Icon from './Icon';
+import { useCombinedRefs } from '../../hooks/useCombinedRefs';
 
 const InputEl = styled.input`
 	border: none;
@@ -24,37 +24,23 @@ const Label = styled.label`
 	display: ${props => props.active ? 'none' : 'block'};
 `;
 
-function useCombinedRefs(...refs) {
-	const targetRef = useRef();
-	useEffect(() => {
-		refs.forEach(ref => {
-			if (!ref) return;
-
-			if (typeof ref === 'function') {
-				ref(targetRef.current);
-			} else {
-				ref.current = targetRef.current;
-			}
-		})
-	}, [refs]);
-	return targetRef;
-}
-
-const SearchInput = ({
+function SearchInput({
 	inputRef,
 	onChange
-}) => {
+}) {
 
 	const [active, setActive] = useState(false);
 	const innerRef = useRef();
 	const comboRef = !!inputRef ? useCombinedRefs(inputRef, innerRef) : innerRef;
 
-	const onInputFocus = () => {
+	const onInputFocus = useCallback(() => {
 		setActive(true);
 		comboRef.current.focus()
-	};
+	}, [setActive, comboRef]);
 
-	const onInputBlur = () => setActive(false);
+	const onInputBlur = useCallback(
+		() => setActive(false),
+	[setActive]);
 	return (
 		<Container
 			orientation="horizontal"
@@ -85,7 +71,7 @@ const SearchInput = ({
 			</Container>
 		</Container>
 	);
-};
+}
 
 SearchInput.propTypes = {
 	onChange: PropTypes.func,

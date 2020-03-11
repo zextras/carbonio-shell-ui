@@ -5,7 +5,7 @@ import Container from './Container';
 import Icon from './Icon';
 import defaultTheme from '../../theme/Theme'
 
-const getSizing = (size) => {
+function getSizing(size) {
 	switch (size) {
 		case 'small':
 			return { iconSize: 'medium', paddingSize: 'extrasmall'};
@@ -14,7 +14,7 @@ const getSizing = (size) => {
 		case 'large':
 			return { iconSize: 'large', paddingSize: 'medium'};
 	}
-};
+}
 
 const ContainerEl = styled(Container)`
 	&:focus{
@@ -22,13 +22,13 @@ const ContainerEl = styled(Container)`
 	}
 `;
 
-const IconButton = ({
+function IconButton({
 	iconColor,
 	backgroundColor,
 	size,
 	icon,
 	...rest
-}) => {
+}) {
 	const { iconSize, paddingSize } = getSizing(size);
 	return (
 		<ContainerEl
@@ -47,7 +47,7 @@ const IconButton = ({
 			<Icon icon={icon} size={iconSize} color={iconColor} />
 		</ContainerEl>
 	);
-};
+}
 
 IconButton.propTypes = {
 	/** Color of the icon */

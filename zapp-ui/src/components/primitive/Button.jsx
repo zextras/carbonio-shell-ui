@@ -12,7 +12,7 @@ const ContainerEl = styled(Container)`
 	}
 `;
 
-const Button = ({
+function Button({
 	children,
 	labelColor,
 	backgroundColor,
@@ -20,7 +20,7 @@ const Button = ({
 	size,
 	icon,
 	...rest
-}) => {
+}) {
 	return (
 		<ContainerEl
 			orientation="horizontal"
@@ -44,7 +44,7 @@ const Button = ({
 				</Container> }
 		</ContainerEl>
 	);
-};
+}
 
 Button.propTypes = {
 	/** Color of the Button label */

@@ -1,4 +1,3 @@
-
 This is a component that simplifies the control of components that should appear or disappear. 
 
 ```jsx

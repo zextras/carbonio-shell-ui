@@ -1,4 +1,3 @@
-
 Checkboxes can be used to turn an option on or off.
 
 It can also be used with a label description.

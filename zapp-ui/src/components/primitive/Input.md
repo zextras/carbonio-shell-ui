@@ -1,4 +1,4 @@
-The input component works like a starndard html input, and can be either [controlled](https://reactjs.org/docs/forms.html#controlled-components) or [uncontrolled](https://reactjs.org/docs/uncontrolled-components.html).
+The input component works like a standard html input, and can be either [controlled](https://reactjs.org/docs/forms.html#controlled-components) or [uncontrolled](https://reactjs.org/docs/uncontrolled-components.html).
 ```jsx
 import { useState } from 'react';
 import { Container, Padding, Text, PasswordInput } from '@zextras/zapp-ui';

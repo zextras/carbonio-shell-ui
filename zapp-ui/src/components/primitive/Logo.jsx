@@ -8,14 +8,14 @@ const LogoEl = styled.div`
     width: 100%;
 `;
 
-const Logo = ({ size }) => {
+function Logo({ size }) {
 	const theme = useContext(ThemeContext);
 	const LogoEl = theme.logo.svg;
 
 	return (
 		<LogoEl height={theme.logo.size[size]} />
 	);
-};
+}
 
 Logo.propTypes = {
 	size: PropTypes.oneOf(Object.keys(defaultTheme.logo.size)),

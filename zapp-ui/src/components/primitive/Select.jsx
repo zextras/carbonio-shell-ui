@@ -9,18 +9,19 @@ import Padding from "./Padding";
 import Icon from "./Icon";
 
 const Label = styled.div`
-position: absolute;
-top: 6px;
-left: 8px;
+  position: absolute;
+  top: 6px;
+  left: 8px;
 `;
 
 const TabContainer = styled(Container)`
-cursor: pointer;
-position: relative;
-:focus {
-  outline: none;
-}
-`
+  cursor: pointer;
+  position: relative;
+  :focus {
+    outline: none;
+  }
+`;
+
 function Select({ background, items, label, onChange, defaultSelection }) {
   const [ selected, setSelected ] = useState(defaultSelection);
   const [ open, setOpen ] = useState(false);
@@ -31,7 +32,6 @@ function Select({ background, items, label, onChange, defaultSelection }) {
     >
       <TabContainer
         tabIndex="0"
-
         orientation="horizontal"
         width="fill"
         height="48px"

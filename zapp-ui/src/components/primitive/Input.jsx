@@ -1,9 +1,10 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Container from "./Container";
 import Icon from "./Icon";
 import defaultTheme from "../../theme/Theme";
+import { useCombinedRefs } from "../../hooks/useCombinedRefs";
 
 const InputEl = styled.input`
 	border: none;
@@ -37,23 +38,7 @@ const InputUnderline = styled.div`
 	background: ${props => props.theme.colors.border[props.color]};
 `;
 
-function useCombinedRefs(...refs) {
-	const targetRef = useRef();
-	useEffect(() => {
-		refs.forEach(ref => {
-			if (!ref) return;
-
-			if (typeof ref === 'function') {
-				ref(targetRef.current);
-			} else {
-				ref.current = targetRef.current;
-			}
-		})
-	}, [refs]);
-	return targetRef;
-}
-
-const Input = ({
+function Input({
 	borderColor,
 	backgroundColor,
 	textColor,
@@ -61,7 +46,7 @@ const Input = ({
 	inputRef,
 	value,
 	onChange
-}) => {
+}) {
 
 	const [active, setActive] = useState(false);
 	const innerRef = useRef();
@@ -94,7 +79,7 @@ const Input = ({
 		>
 			<Label
 				htmlFor={id}
-				active={active || (comboRef.current && (comboRef.current.value !== '' || !!value)) || !(comboRef.current || !value)}
+				active={active || (comboRef.current && comboRef.current.value !== '') || !(comboRef.current || !value)}
 				style={{userSelect: 'none'}}
 			>
 				{label}
@@ -114,7 +99,7 @@ const Input = ({
 			<InputUnderline color={active ? 'bd_2' : borderColor} />
 		</Container>
 	);
-};
+}
 
 Input.propTypes = {
 	/** Input's background color */
@@ -141,7 +126,7 @@ Input.defaultProps = {
 
 Input._newId = 0;
 
-const PasswordInput = ({
+function PasswordInput({
 	borderColor,
 	backgroundColor,
 	textColor,
@@ -149,7 +134,7 @@ const PasswordInput = ({
 	inputRef,
 	value,
 	onChange
-}) => {
+}) {
 
 	const [active, setActive] = useState(false);
 	const [show, setShow] = useState(false);
@@ -212,13 +197,12 @@ const PasswordInput = ({
 			</Label>
 		</Container>
 	);
-};
+}
 
-PasswordInput.propTypes = Input.propTypes;
+PasswordInput.propTypes = Input.PropTypes;
 
 PasswordInput.defaultProps = Input.defaultProps;
 
 PasswordInput._newId = 0;
-
 
 export { Input, PasswordInput };

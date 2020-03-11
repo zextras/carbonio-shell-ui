@@ -7,11 +7,12 @@
     "postpublish": "rm -rf lib",
     "type-check": "npx tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
-    "build:clean": "rm -rf lib && rm -rf build && rm -rf pkg",
+    "build:clean": "rm -rf lib && rm -rf build && rm -rf pkg && rm -rf zapp-ui/node_modules && rm -rf zapp-ui/dist",
     "build": "webpack -c webpack.config.js",
     "build:types": "tsc --emitDeclarationOnly && tsc src/extension/shimmed/*.ts --outDir lib/",
     "build:zimlet": "npm run build:clean && npm run build && mkdir -p pkg && cd build && zip -r ../pkg/com_zextras_zapp_shell.zip .",
-    "watch:docs": "cd docs/website/ && npm start || npm install && npm start"
+    "watch:docs": "cd docs/website/ && npm start || npm install && npm start",
+    "deploy": "npm run prepublishOnly && rm -rf $PKG_PATH/node_modules/@zextras/zapp-shell/build/ && cp -r build/ $PKG_PATH/node_modules/@zextras/zapp-shell/ && rm -rf $PKG_PATH/node_modules/@zextras/zapp-shell/lib/ && cp -r lib/ $PKG_PATH/node_modules/@zextras/zapp-shell/ && rm -rf lib/"
   },
   "keywords": [
     "zapp",
@@ -39,7 +40,7 @@
     "eslint": "6.6.0",
     "eslint-plugin-react": "7.16.0",
     "eslint-plugin-react-hooks": "2.2.0",
-    "file-loader": "5.0.2",
+    "file-loader": "5.1.0",
     "html-webpack-plugin": "3.2.0",
     "mini-css-extract-plugin": "0.9.0",
     "postcss-loader": "3.0.0",
@@ -48,6 +49,8 @@
     "webpack-cli": "3.3.9"
   },
   "dependencies": {
+    "@tinymce/tinymce-react": "3.5.0",
+    "core-js": "3.6.4",
     "i18next": "19.0.1",
     "i18next-browser-languagedetector": "4.0.1",
     "idb": "4.0.5",
@@ -62,6 +65,7 @@
     "rxjs": "6.5.3",
     "styled-components": "4.4.1",
     "systemjs": "6.1.4",
+    "tinymce": "5.2.0",
     "typeface-roboto": "0.0.75"
   }
 }

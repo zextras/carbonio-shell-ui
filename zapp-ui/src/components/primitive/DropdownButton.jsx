@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from './Button';
 import Dropdown from './Dropdown';
-import Container from "./Container";
-import IconButton from "./IconButton";
+import Container from './Container';
+import IconButton from './IconButton';
 
-export const DropdownButton = ({ items, label, icon, top, bottom, left, right }) => {
+export function DropdownButton({ items, label, icon, top, bottom, left, right }) {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -22,9 +22,9 @@ export const DropdownButton = ({ items, label, icon, top, bottom, left, right })
 			/>
 		</Container>
 	);
-};
+}
 
-export const IconDropdownButton = ({ items, icon, iconColor, top, bottom, left, right }) => {
+export function IconDropdownButton({ items, icon, iconColor, top, bottom, left, right }) {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -41,7 +41,7 @@ export const IconDropdownButton = ({ items, icon, iconColor, top, bottom, left, 
 			/>
 		</Container>
 	);
-};
+}
 
 DropdownButton.propTypes = {
 	/** map of items to display */

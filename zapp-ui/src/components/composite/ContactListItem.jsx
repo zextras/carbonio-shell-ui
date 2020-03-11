@@ -31,7 +31,7 @@ const HoverArea = styled.div`
 	}
 `;
 
-const ContactListItem = ({ contact, selected, onSelect, onDeselect, actions }) => {
+function ContactListItem({ contact, selected, onSelect, onDeselect, actions }) {
 	const [ itemHover, setItemHover ] = useState(false);
 	return (
 		<Container
@@ -112,7 +112,7 @@ const ContactListItem = ({ contact, selected, onSelect, onDeselect, actions }) =
 			<Divider/>
 		</Container>
 	);
-};
+}
 
 ContactListItem.propTypes = {
 	contact: PropTypes.shape(

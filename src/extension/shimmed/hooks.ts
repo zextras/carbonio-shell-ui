@@ -11,4 +11,4 @@
 
 import { WrappedItemAction } from '../../itemActions/IItemAction';
 
-export function useItemActionContext(context: string, item: any): { actions: Array<WrappedItemAction>; loading: boolean };
+export declare function useItemActionContext(context: string, item: any): { actions: Array<WrappedItemAction>; loading: boolean };

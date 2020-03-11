@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 import IconButton from "./IconButton";
 import defaultTheme from "../../theme/Theme";
 const FileInput = styled.input`
-display: none;
+	display: none;
 `;
 
-const FileLoader = ({
+export default function FileLoader({
 	onChange,
 	icon,
 	iconColor,
@@ -16,7 +16,7 @@ const FileLoader = ({
 	accept,
 	backgroundColor,
 	size
-}) => {
+}) {
 	const inputRef = useRef();
 
 	return (
@@ -59,5 +59,3 @@ FileLoader.propTypes = {
 FileLoader.defaultProps = {
 	icon: 'Attach'
 };
-
-export default FileLoader;

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Container from './Container';
 import { map } from 'lodash';
-import Text from "./Text";
-import Padding from "./Padding";
-import Dropdown from "./Dropdown";
-import { useSplitVisibility } from "../../hooks/useSplitVisibility";
+import Container from './Container';
+import Text from './Text';
+import Padding from './Padding';
+import Dropdown from './Dropdown';
+import { useSplitVisibility } from '../../hooks/useSplitVisibility';
 
 const CheckDiv = styled.div`
 	width: 100%
@@ -59,7 +59,7 @@ function Breadcrumbs({ crumbs }) {
 }
 
 Breadcrumbs.propTypes = {
-	crumbs: PropTypes.arrayOf(PropTypes.shape({ label: PropTypes.string.isRequired, click: PropTypes.func }))
+	crumbs: Dropdown.propTypes.items
 };
 
 Breadcrumbs.defaultProps = {};

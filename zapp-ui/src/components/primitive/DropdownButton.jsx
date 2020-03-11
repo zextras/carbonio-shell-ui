@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from './Button';
 import Dropdown from './Dropdown';
@@ -45,7 +45,7 @@ export function IconDropdownButton({ items, icon, iconColor, top, bottom, left, 
 
 DropdownButton.propTypes = {
 	/** map of items to display */
-	items: PropTypes.arrayOf(PropTypes.shape({ icon: PropTypes.string, label: PropTypes.string.isRequired, click: PropTypes.func})),
+	items: Dropdown.propTypes.items,
 	/** Button text */
 	label: PropTypes.string.isRequired,
 	/** optional icon to display beside the label */

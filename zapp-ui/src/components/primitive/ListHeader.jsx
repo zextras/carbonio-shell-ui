@@ -119,7 +119,8 @@ ListHeader.propTypes = {
     PropTypes.shape({
       icon: PropTypes.string.isRequired,
       label: PropTypes.string,
-      click: PropTypes.func.isRequired
+      onActivate: PropTypes.func.isRequired,
+      id: PropTypes.string
     })
   ),
   itemsCount: PropTypes.number

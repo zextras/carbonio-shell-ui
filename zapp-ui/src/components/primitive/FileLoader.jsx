@@ -32,7 +32,12 @@ export default function FileLoader({
 				iconColor={iconColor}
 				size={size}
 				backgroundColor={backgroundColor}
-				onClick={() => inputRef.current && inputRef.current.click()}
+				onClick={() => {
+					if (inputRef.current) {
+						inputRef.current.value = null;
+						inputRef.current.click();
+					}
+				}}
 			/>
 		</>
 	)

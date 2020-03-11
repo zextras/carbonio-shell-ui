@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Button from './Button';
 import Dropdown from './Dropdown';
-import Container from "./Container";
-import IconButton from "./IconButton";
+import Container from './Container';
+import IconButton from './IconButton';
 
 export function DropdownButton({ items, label, icon, top, bottom, left, right }) {
 	const [open, setOpen] = useState(false);
@@ -24,12 +24,12 @@ export function DropdownButton({ items, label, icon, top, bottom, left, right })
 	);
 }
 
-export function IconDropdownButton({ items, icon, top, bottom, left, right }) {
+export function IconDropdownButton({ items, icon, iconColor, top, bottom, left, right }) {
 	const [open, setOpen] = useState(false);
 
 	return (
 		<Container orientation="vertical" width="fit" height="fit">
-			<IconButton icon={ icon ? icon : "Plus" } onClick={() => setOpen(!open)}/>
+			<IconButton iconColor={iconColor} icon={ icon ? icon : "Plus" } onClick={() => setOpen(!open)}/>
 			<Dropdown
 				items={items}
 				open={open}
@@ -62,7 +62,8 @@ DropdownButton.propTypes = {
 
 IconDropdownButton.propTypes = {
 	/** map of items to display */
-	items: PropTypes.arrayOf(PropTypes.shape({ icon: PropTypes.string, label: PropTypes.string.isRequired, click: PropTypes.func})),
+	items: Dropdown.propTypes.items,
+	iconColor: IconButton.propTypes.iconColor,
 	icon: PropTypes.string,
 	/** Dropdown positioning (CSS top property) */
 	top: PropTypes.string,

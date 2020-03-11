@@ -1,14 +1,16 @@
 import React from 'react';
+import { map } from 'lodash';
 import PropTypes from 'prop-types';
-import Container from "./Container";
-import Breadcrumbs from "./Breadcrumbs";
-import IconButton from "./IconButton";
-import Responsive from "../utilities/Responsive";
-import { map } from "lodash";
-import styled from "styled-components";
+
+import Container from './Container';
+import Breadcrumbs from './Breadcrumbs';
+import IconButton from './IconButton';
+import Responsive from '../utilities/Responsive';
+import styled from 'styled-components';
 import { useSplitVisibility } from '../../hooks/useSplitVisibility'
-import { IconDropdownButton } from "./DropdownButton";
-import Text from "./Text";
+import { IconDropdownButton } from './DropdownButton';
+import Text from './Text';
+import Padding from './Padding';
 
 function ListHeader({
   breadCrumbs,
@@ -17,30 +19,41 @@ function ListHeader({
   allSelected,
   onSelectAll,
   onDeselectAll,
-  actionStack
+  actionStack,
+  itemsCount
 }) {
   return (
     <Container orientation="horizontal" mainAlignment="space-between" width="fill" height="fit" padding={{ horizontal: 'extrasmall' }}>
       <Responsive mode="mobile">
         <IconButton icon="ArrowBack" onClick={onBackClick}/>
       </Responsive>
-      <Container width="fill" orientation="horizontal" mainAlignment="space-between">
-        <Container width="70%" mainAlignment="flex-start" orientation="horizontal">
-          { selecting
-          ? <>
-              <IconButton icon={allSelected ? 'CheckmarkSquare' : 'Square' } onClick={allSelected ? onDeselectAll : onSelectAll }/>
-              <Text>{allSelected ? 'Deselect all' : 'Select all'}</Text>
-            </>
-          : <Breadcrumbs crumbs={breadCrumbs} />
-          }
+      { selecting
+        ? <Container width="fill" orientation="horizontal" mainAlignment="space-between">
+          <Container width="70%" mainAlignment="flex-start" orientation="horizontal">
+            <IconButton
+              iconColor="txt_2"
+              icon={allSelected ? 'CheckmarkSquare2' : 'Square' }
+              onClick={allSelected ? onDeselectAll : onSelectAll }
+            />
+            <Text color="txt_2">{allSelected ? 'Deselect all' : 'Select all'}</Text>
+          </Container>
+          <Container width="30%">
+            {
+              actionStack.length > 0
+              && <ActionGroup actionStack={actionStack} />
+            }
+          </Container>
         </Container>
-        <Container width="30%">
-          {
-            actionStack.length > 0
-            && <ActionGroup actionStack={actionStack} />
-          }
-        </Container>
-      </Container>
+        :
+        <>
+          <Breadcrumbs crumbs={breadCrumbs} />
+          <Padding right="small">
+            <Text>
+              {itemsCount > 100 ? '100+' : itemsCount}
+            </Text>
+          </Padding>
+        </>
+      }
     </Container>
   );
 }
@@ -65,6 +78,7 @@ function ActionGroup({
         {
           map(visibleActions, (action) => (
             <IconButton
+              iconColor='txt_2'
               key={action.id}
               icon={action.icon}
               onClick={action.onActivate}
@@ -74,6 +88,7 @@ function ActionGroup({
         {
           hiddenActions.length > 0 &&
           <IconDropdownButton
+            iconColor='txt_2'
             icon="MoreVertical"
             items={
               map(
@@ -106,7 +121,8 @@ ListHeader.propTypes = {
       label: PropTypes.string,
       click: PropTypes.func.isRequired
     })
-  )
+  ),
+  itemsCount: PropTypes.number
 };
 
 export default ListHeader;

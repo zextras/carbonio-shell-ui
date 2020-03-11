@@ -9,50 +9,63 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useReducer, useState } from 'react';
 import { ItemActionContext } from '../itemActions/ItemActionContext';
 import { map } from 'lodash';
-import { WrappedItemAction } from '../itemActions/IItemAction';
+import { ItemAction, WrappedItemAction } from '../itemActions/IItemAction';
+
+function reducer(state: Array<WrappedItemAction>, action: { type: string; itemAction?: WrappedItemAction}): Array<WrappedItemAction> {
+	switch (action.type) {
+		case 'reset': return [];
+		case 'add': {
+			const newState = [ ...state ];
+			if (action.itemAction) {
+				newState.push(action.itemAction);
+			}
+			return newState;
+		}
+		default: return state;
+	}
+}
 
 function useItemActionContext(ctxt: string, obj: any): { actions: Array<WrappedItemAction>; loading: boolean } {
 	const { actions } = useContext(ItemActionContext);
-	const [ itemActions, setItemActions ] = useState<Array<WrappedItemAction>>([]);
-	const [ loading, setLoading ] = useState<boolean>(false);
+	const [loading, setLoading] = useState(false);
+	const [enabledActions, dispatch] = useReducer(reducer, []);
+	const wrappedAdd = useCallback((newAction: ItemAction) => dispatch(
+		{
+			type: 'add',
+			itemAction: {
+				id: newAction.id,
+				icon: newAction.icon,
+				label: newAction.label,
+				onActivate: () => newAction.onActivate(obj)
+			}
+		}
+	), [obj]);
 	useEffect(
 		() => {
+		dispatch({type:'reset'});
 			let cancel = false;
-			const updatedActions: Array<WrappedItemAction> = [];
 			setLoading(true);
 			Promise.all(
 				map(
 					actions[ctxt] || [],
 					(action) => action.onCheck(obj)
 						.then((pass: boolean) => {
+							console.log(action.label, pass);
 							if (pass && !cancel) {
-								updatedActions.push(
-									{
-										id: action.id,
-										icon: action.icon,
-										label: action.label,
-										onActivate: () => {
-											console.log(obj);
-											action.onActivate(obj);
-										}
-									}
-								);
-								setItemActions(updatedActions);
+								wrappedAdd(action);
 							}
 						})
 				)
-			)
-				.finally(() => !cancel && setLoading(false));
+			).finally(() => !cancel && setLoading(false));
 			return () => { cancel = true; };
 		},
-		[actions, obj]
+		[actions, obj, ctxt]
 	);
-
 	return {
-		actions: itemActions,
+		actions: enabledActions,
 		loading
 	}
 }

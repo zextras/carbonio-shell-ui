@@ -14,6 +14,7 @@ export { default as Container } from './components/primitive/Container';
 export { default as Divider } from './components/primitive/Divider';
 export { default as Dropdown } from './components/primitive/Dropdown';
 export { DropdownButton, IconDropdownButton } from './components/primitive/DropdownButton';
+export { default as FileLoader } from './components/primitive/FileLoader';
 export { default as Icon } from './components/primitive/Icon';
 export { default as IconButton } from './components/primitive/IconButton';
 export { Input, PasswordInput } from './components/primitive/Input';

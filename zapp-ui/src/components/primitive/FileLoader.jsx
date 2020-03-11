@@ -3,7 +3,6 @@ import React, { useRef } from 'react';
 import styled from "styled-components";
 import PropTypes from 'prop-types';
 import IconButton from "./IconButton";
-import defaultTheme from "../../theme/Theme";
 const FileInput = styled.input`
 	display: none;
 `;

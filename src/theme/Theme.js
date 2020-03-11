@@ -72,6 +72,7 @@ const Theme = {
 			bd_2: '#2b73d2',
 			bd_3: '#ffffff',
 			bd_4: '#ff5f58',
+			bd_5: '#e6e6e6',
 		},
 		highlight: {
 			hl_1: '#d5e3f6' //highlight elements

@@ -1,6 +1,6 @@
 ### Counter Badge
 
-```js
+```jsx
 import { Text, ContactListItem } from '@zextras/zapp-ui';
 
 <>
@@ -12,7 +12,7 @@ import { Text, ContactListItem } from '@zextras/zapp-ui';
 
 ### Label Badge
 
-```js
+```jsx
 import { Text, ContactListItem } from '@zextras/zapp-ui';
 
 <>

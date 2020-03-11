@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Container from "./Container";
-import Icon from "./Icon";
-import Text from "./Text";
-import Padding from "./Padding";
-import defaultTheme from "../../theme/Theme";
+import Container from './Container';
+import Icon from './Icon';
+import Text from './Text';
+import Padding from './Padding';
+import defaultTheme from '../../theme/Theme';
 
 const IconWrapper = styled.div`
-	border-radius: ${(props) => props.borderRadius === "regular" ? props.theme.borderRadius : '50%'};
+	border-radius: ${(props) => props.borderRadius === 'regular' ? props.theme.borderRadius : '50%'};
 	background-color: ${(props) => props.isActive ? props.theme.colors.background.bg_1 : 'transparent'};
 	transition: 0.2s ease-out;
 	
@@ -40,8 +40,8 @@ function IconCheckbox({
 }) {
 	const [checked, setChecked] = useState(defaultChecked);
 
-	const padding = {"small": "extrasmall", "regular": "small", "large": "medium"};
-	const iconSize = size === "small" ? "medium" : "large";
+	const padding = {'small': 'extrasmall', 'regular': 'small', 'large': 'medium'};
+	const iconSize = size === 'small' ? 'medium' : 'large';
 
 	return (
 		<Container

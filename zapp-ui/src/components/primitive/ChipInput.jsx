@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef, useReducer, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useReducer } from 'react';
 import { map, filter, slice } from 'lodash';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Chip from "./Chip";
-import Text from "./Text";
+import Chip from './Chip';
+import Text from './Text';
 
 
 const Placeholder = styled(Text)`

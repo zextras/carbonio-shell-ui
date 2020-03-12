@@ -1,4 +1,4 @@
-@Library("zextras-library@0.4.1") _
+@Library("zextras-library@0.5.0") _
 
 def getCommitParentsCount() {
 	return sh(script: '''
@@ -177,6 +177,7 @@ pipeline {
 						executeNpmLogin()
 						cmd sh: "nvm use && npm install"
 						cmd sh: "nvm use && NODE_ENV='production' npm run build:zimlet"
+						stash includes: 'build/', name:'build_dir'
 						stash includes: 'pkg/com_zextras_zapp_shell.zip', name: 'zimlet_package_unsigned'
 					}
 				}
@@ -285,6 +286,26 @@ pipeline {
 					doc.rm file: "iris/zapp-shell/${BRANCH_NAME}"
 					doc.mkdir folder: "iris/zapp-shell/${BRANCH_NAME}"
 					doc.upload file: "docs/website/build/com_zextras_zapp_shell/**", destination: "iris/zapp-shell/${BRANCH_NAME}"
+				}
+			}
+		}
+
+		stage('Deploy Beta') {
+			when {
+				beforeAgent true
+				allOf {
+					expression { BRANCH_NAME ==~ /(beta)/ }
+					environment name: 'COMMIT_PARENTS_COUNT', value: '1'
+				}
+			}
+			parallel {
+				stage('Deploy on demo server') {
+					steps {
+						script {
+							unstash 'build_dir'
+							iris.upload file: 'build/', destination: 'com_zextras_zapp_shell/'
+						}
+					}
 				}
 			}
 		}

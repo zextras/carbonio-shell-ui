@@ -11,9 +11,9 @@
 
 import React from 'react';
 
-const SplashPage = () => {
+function SplashPage() {
 	return (
 		<div>	Splash Page </div>
 	);
-};
+}
 export default SplashPage;

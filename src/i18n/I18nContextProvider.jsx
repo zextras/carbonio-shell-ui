@@ -9,14 +9,15 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import I18nContext from './I18nContext';
 
 const I18nContextProvider = ({ i18nService, namespace, children }) => {
+	const context = useMemo(() => i18nService.createI18nContext(namespace), [namespace, i18nService]);
 	return (
 		<I18nContext.Provider
 			value={
-				i18nService.createI18nContext(namespace)
+				context
 			}
 		>
 			{ children }

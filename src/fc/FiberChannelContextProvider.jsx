@@ -9,18 +9,24 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import FiberChannelContext from './FiberChannelContext';
 
 const FiberChannelContextProvider = ({ fiberChannelService, children }) => {
+
+	const internalFC = useMemo(() => fiberChannelService.getInternalFC(), [fiberChannelService]);
+	const internalFCSink = useMemo(() => fiberChannelService.getInternalFCSink(), [fiberChannelService]);
+	const getFiberChannelForExtension = useMemo(() => (name) => fiberChannelService.getFiberChannelForExtension(name), [fiberChannelService]);
+	const getFiberChannelSinkForExtension = useMemo(() => (name, version) => fiberChannelService.getFiberChannelSinkForExtension(name, version), [fiberChannelService]);
+
 	return (
 		<FiberChannelContext.Provider
-			value={ {
-				internalFC: fiberChannelService.getInternalFC(),
-				internalFCSink: fiberChannelService.getInternalFCSink(),
-				getFiberChannelForExtension: (name) => fiberChannelService.getFiberChannelForExtension(name),
-				getFiberChannelSinkForExtension: (name, version) => fiberChannelService.getFiberChannelSinkForExtension(name, version)
-			} }
+			value={{
+				internalFC,
+				internalFCSink,
+				getFiberChannelForExtension,
+				getFiberChannelSinkForExtension
+			}}
 		>
 			{ children }
 		</FiberChannelContext.Provider>

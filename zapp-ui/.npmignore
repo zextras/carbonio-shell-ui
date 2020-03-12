@@ -1,0 +1,8 @@
+/docs/
+/lib/
+/src/
+/.nvmrc
+/babel.config.js
+/styleguide.config.js
+/webpack.config.js
+/Jenkinsfile

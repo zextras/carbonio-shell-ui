@@ -302,8 +302,9 @@ pipeline {
 				stage('Deploy on demo server') {
 					steps {
 						script {
-							unstash 'build_dir'
-							iris.upload file: 'build/', destination: 'com_zextras_zapp_shell/'
+							unstash 'zimlet_package'
+							sh 'unzip pkg/com_zextras_zapp_shell.zip -d deploy'
+							iris.upload file: 'deploy/', destination: 'com_zextras_zapp_shell/'
 						}
 					}
 				}

@@ -10,11 +10,11 @@ const Placeholder = styled(Text)`
 	position: absolute;
 	top: 50%;
 	left: 0;
+	transform: translateY(-50%);
+	transition: transform 150ms ease-out, font-size 150ms ease-out, top 150ms ease-out;
 	font-size: ${props => props.theme.sizes.font.medium};
 	color: ${props => props.theme.colors.text.txt_4};
-	transform: translateY(-50%);
 	user-select: none;
-	transition: transform 150ms ease-out, font-size 150ms ease-out, top 150ms ease-out;
 `;
 const ChipInputContainer = styled.div`
 	width: 100%;
@@ -28,9 +28,13 @@ const ChipInputContainer = styled.div`
 	&.active {
 		${Placeholder} {
 			top: 3px;
-			font-size: ${props => props.theme.sizes.font.small};
-			color: ${props => props.theme.colors.text.txt_2};
 			transform: translateY(0);
+			font-size: ${props => props.theme.sizes.font.small};
+		}
+	}
+	&.hasFocus {
+		${Placeholder} {
+			color: ${props => props.theme.colors.text.txt_2};
 		}
 	}
 `;
@@ -81,7 +85,10 @@ function reducer(state, action) {
 function ChipInput({ placeholder, value, onChange, ...rest }) {
 	const [contacts, dispatch] = useReducer(reducer, value);
 	const [active, setActive] = useState(false);
+	const [hasFocus, setHasFocus] = useState(false);
 	const contentEditableInput = useRef(null);
+
+	const classes = [active ? 'active' : '', hasFocus ? 'hasFocus' : ''];
 
 	function saveCurrentValue() {
 		const inputValue = contentEditableInput.current.textContent;
@@ -107,10 +114,12 @@ function ChipInput({ placeholder, value, onChange, ...rest }) {
 	}
 	function onFocus() {
 		checkIfSetActive();
+		setHasFocus(true);
 	}
 	function onBlur() {
 		checkIfSetActive();
 		saveCurrentValue();
+		setHasFocus(false);
 	}
 	function onChipClose(index) {
 		dispatch({ type: 'pop', index });
@@ -136,7 +145,7 @@ function ChipInput({ placeholder, value, onChange, ...rest }) {
 	}, []);
 
 	return (
-		<ChipInputContainer className={active ? 'active' : ''} { ...rest } tabindex={0} onClick={() => contentEditableInput.current.focus()}>
+		<ChipInputContainer { ...rest } className={classes.join(' ')} tabindex={0} onClick={() => contentEditableInput.current.focus()}>
 			<ChipInputWrapper>
 				<Placeholder>{ placeholder }</Placeholder>
 				{ map(contacts, (contact, index) => (
@@ -149,15 +158,15 @@ function ChipInput({ placeholder, value, onChange, ...rest }) {
 			</ChipInputWrapper>
 		</ChipInputContainer>
 	);
-};
+}
 
 ChipInput.propTypes = {
 	/** Input's Placeholder */
 	placeholder: PropTypes.string,
 	/** Input's value */
 	value: PropTypes.arrayOf(PropTypes.shape({
-			value: PropTypes.string.isRequired,
-			picture: PropTypes.string
+		value: PropTypes.string.isRequired,
+		picture: PropTypes.string
 	})),
 	/** Callback to call when Input's value changes */
 	onChange: PropTypes.func

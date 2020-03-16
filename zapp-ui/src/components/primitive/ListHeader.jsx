@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { map } from 'lodash';
 import PropTypes from 'prop-types';
 
@@ -11,6 +11,7 @@ import { useSplitVisibility } from '../../hooks/useSplitVisibility'
 import { IconDropdownButton } from './DropdownButton';
 import Text from './Text';
 import Padding from './Padding';
+import ThemeContext from '../../theme/ThemeContext';
 
 function ListHeader({
   breadCrumbs,
@@ -22,6 +23,8 @@ function ListHeader({
   actionStack,
   itemsCount
 }) {
+  const theme = useContext(ThemeContext);
+  const actionsWidth = `calc((${theme.sizes.icon['large']} + (${theme.sizes.padding['small']} * 2 )) * ${actionStack.length > 4 ? 4 : actionStack.length})`;
   return (
     <Container orientation="horizontal" mainAlignment="space-between" width="fill" height="fit" padding={{ horizontal: 'extrasmall' }}>
       <Responsive mode="mobile">
@@ -29,7 +32,7 @@ function ListHeader({
       </Responsive>
       { selecting
         ? <Container width="fill" orientation="horizontal" mainAlignment="space-between">
-          <Container width="70%" mainAlignment="flex-start" orientation="horizontal">
+          <Container width={`calc(100% - ${actionsWidth})`} mainAlignment="flex-start" orientation="horizontal">
             <IconButton
               iconColor="txt_2"
               icon={allSelected ? 'CheckmarkSquare2' : 'Square' }
@@ -37,7 +40,7 @@ function ListHeader({
             />
             <Text color="txt_2">{allSelected ? 'Deselect all' : 'Select all'}</Text>
           </Container>
-          <Container width="30%">
+          <Container width={actionsWidth}>
             {
               actionStack.length > 0
               && <ActionGroup actionStack={actionStack} />

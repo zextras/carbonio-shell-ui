@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { map } from 'lodash';
@@ -7,6 +7,46 @@ import Container from './Container';
 import Text from './Text';
 import Padding from './Padding';
 import Collapse from '../utilities/Collapse';
+
+const ContainerEl = styled(Container)`
+	&:focus{
+		outline: 1px solid #eee;
+	}
+`;
+
+function DropdownItem({ icon, label, click }) {
+	const onClick = useCallback((ev) => {
+		ev.stopPropagation();
+		click();
+	}, [click]);
+	return (
+		<ContainerEl
+			orientation="horizontal"
+			mainAlignment="flex-start"
+			padding={{ vertical: 'small', horizontal: 'large' }}
+			style={ { cursor: click ? 'pointer' :  'default'}}
+			onClick={onClick}
+			tabIndex={0}
+		>
+			{
+				icon &&
+				<Padding right="small">
+					<Icon icon={icon} size="medium" color="txt_1" />
+				</Padding>
+			}
+			<Text size="medium" weight="regular" color="txt_1">
+				{label}
+			</Text>
+		</ContainerEl>
+	);
+}
+
+DropdownItem.propTypes = {
+	/** The id of the menu item, must be unique for a group of items */ id: PropTypes.string.isRequired,
+	/** The label of the menu item */ label: PropTypes.string.isRequired,
+	/** The icon of the menu item */ icon: PropTypes.string,
+	/** The callback invoked when the item is clicked */ click: PropTypes.func.isRequired
+};
 
 const DropdownContainer = styled.div`position: relative;`;
 
@@ -62,12 +102,7 @@ function Dropdown({ items, open, top, bottom, left, right, closeFunction }) {
 Dropdown.propTypes = {
 	/** map of items to display */
 	items: PropTypes.arrayOf(
-		PropTypes.shape({
-			id: PropTypes.string.isRequired,
-			label: PropTypes.string.isRequired,
-			icon: PropTypes.string,
-			click: PropTypes.func
-		})
+		PropTypes.shape(DropdownItem.propTypes)
 	),
 	/** Dropdown control prop */
 	open: PropTypes.bool,
@@ -82,34 +117,5 @@ Dropdown.propTypes = {
 	/** Function that triggers the closing of the dropdown */
 	closeFunction: PropTypes.func
 };
-
-const ContainerEl = styled(Container)`
-	&:focus{
-		outline: 1px solid #eee;
-	}
-`;
-
-function DropdownItem({ icon, label, click }) {
-	return (
-		<ContainerEl
-			orientation="horizontal"
-			mainAlignment="flex-start"
-			padding={{ vertical: 'small', horizontal: 'large' }}
-			style={ { cursor: click ? 'pointer' :  'default'}}
-			onClick={click}
-			tabIndex={0}
-		>
-			{
-				icon &&
-				<Padding right="small">
-					<Icon icon={icon} size="medium" color="txt_1" />
-				</Padding>
-			}
-			<Text size="medium" weight="regular" color="txt_1">
-				{label}
-			</Text>
-		</ContainerEl>
-	);
-}
 
 export default Dropdown;

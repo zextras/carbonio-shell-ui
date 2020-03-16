@@ -13,6 +13,12 @@
 import 'typeface-roboto';
 import style from './index.css';
 
+require.context(
+	'file-loader?name=assets/[path][name].[ext]&context=assets/!../assets/',
+	true,
+	/.*/
+);
+
 window.addEventListener('load', () => {
 	const splash = document.createElement('div');
 	splash.className = style.splash;

@@ -23,7 +23,7 @@ const Theme = {
 	icons: {
 		...IconData
 	},
-	loginBackground: '/asset/login-bg.jpg',
+	loginBackground: '/login-bg.jpg',
 	logo: {
 		svg: IconData.Logo,
 		size: {small: '16px', large: '24px'}

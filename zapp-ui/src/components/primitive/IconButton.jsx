@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from "styled-components";
+import styled from 'styled-components';
 import Container from './Container';
 import Icon from './Icon';
-import defaultTheme from '../../theme/Theme'
+import defaultTheme from '../../theme/Theme';
 
 function getSizing(size) {
 	switch (size) {

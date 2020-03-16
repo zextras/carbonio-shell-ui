@@ -66,6 +66,7 @@ module.exports = [{
 			},
 			{
 				test: /\.(png|jpg|gif|woff2?|svg|eot|ttf|ogg|mp3)$/,
+				exclude: /assets/,
 				use: [
 					{
 						loader: require.resolve('file-loader'),

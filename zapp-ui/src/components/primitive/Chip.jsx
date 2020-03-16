@@ -78,7 +78,7 @@ function Chip({ label, hasAvatar, picture, closable, onClose, ...rest }) {
 			)}
 		</ChipComp>
 	);
-};
+}
 
 Chip.propTypes = {
 	/** Chip content text */

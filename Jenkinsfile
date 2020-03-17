@@ -63,7 +63,7 @@ def calculateNextVersion() {
 pipeline {
 	agent {
 		node {
-			label 'nodejs-agent-v1'
+			label 'nodejs-agent-v2'
 		}
 	}
 	options {
@@ -82,6 +82,11 @@ pipeline {
 //============================================ Release Automation ======================================================
 
 		stage('Bump Version') {
+			agent {
+				node {
+					label 'nodejs-agent-v2'
+				}
+			}
 			when {
 				beforeAgent true
 				allOf {
@@ -145,6 +150,11 @@ pipeline {
 			}
 			parallel {
 				stage('Type Checking') {
+					agent {
+						node {
+							label 'nodejs-agent-v2'
+						}
+					}
 					steps {
 						executeNpmLogin()
 						cmd sh: "nvm use && npm install"
@@ -159,6 +169,11 @@ pipeline {
 		stage('Build') {
 			parallel {
 				stage('Build package') {
+					agent {
+						node {
+							label 'nodejs-agent-v2'
+						}
+					}
 					when {
 						beforeAgent true
 						not {
@@ -166,11 +181,6 @@ pipeline {
 								expression { BRANCH_NAME ==~ /(release|beta)/ }
 								environment name: 'COMMIT_PARENTS_COUNT', value: '2'
 							}
-						}
-					}
-					agent {
-						node {
-							label 'nodejs-agent-v1'
 						}
 					}
 					steps {
@@ -181,16 +191,16 @@ pipeline {
 					}
 				}
 				stage('Build documentation') {
+					agent {
+						node {
+							label 'nodejs-agent-v2'
+						}
+					}
 					when {
 						beforeAgent true
 						allOf {
 							expression { BRANCH_NAME ==~ /(release|beta)/ }
 							environment name: 'COMMIT_PARENTS_COUNT', value: '1'
-						}
-					}
-					agent {
-						node {
-							label 'nodejs-agent-v2'
 						}
 					}
 					steps {
@@ -205,6 +215,11 @@ pipeline {
 		}
 
 		stage('Sign Zimlet Package') {
+			agent {
+				node {
+					label 'nodejs-agent-v2'
+				}
+			}
 			when {
 				beforeAgent true
 				not {
@@ -232,6 +247,11 @@ pipeline {
 		stage('Deploy') {
 			parallel {
 				stage('Deploy documentation') {
+					agent {
+						node {
+							label 'nodejs-agent-v2'
+						}
+					}
 					when {
 						beforeAgent true
 						allOf {
@@ -249,6 +269,11 @@ pipeline {
 					}
 				}
 				stage('Publish on NPM (Release)') {
+					agent {
+						node {
+							label 'nodejs-agent-v2'
+						}
+					}
 					when {
 						beforeAgent true
 						allOf {
@@ -265,6 +290,11 @@ pipeline {
 					}
 				}
 				stage('Publish on NPM (Beta)') {
+					agent {
+						node {
+							label 'nodejs-agent-v2'
+						}
+					}
 					when {
 						beforeAgent true
 						allOf {
@@ -281,6 +311,11 @@ pipeline {
 					}
 				}
 				stage('Deploy Beta on demo server') {
+					agent {
+						node {
+							label 'nodejs-agent-v2'
+						}
+					}
 					when {
 						beforeAgent true
 						allOf {

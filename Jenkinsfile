@@ -204,41 +204,58 @@ pipeline {
 			}
 		}
 
-			stage('Sign Zimlet Package') {
-				when {
-					beforeAgent true
-					not {
-						allOf {
-							expression { BRANCH_NAME ==~ /(release|beta)/ }
-							environment name: 'COMMIT_PARENTS_COUNT', value: '2'
-						}
-					}
-				}
-				steps {
-					dir('artifact-deployer') {
-						git branch: 'master',
-								credentialsId: 'tarsier_bot-ssh-key',
-								url: 'git@bitbucket.org:zextras/artifact-deployer.git'
-						unstash "zimlet_package_unsigned"
-						sh './sign-zextras-zip pkg/com_zextras_zapp_shell.zip'
-						stash includes: 'pkg/com_zextras_zapp_shell.zip', name: 'zimlet_package'
-						archiveArtifacts artifacts: 'pkg/com_zextras_zapp_shell.zip', fingerprint: true
+		stage('Sign Zimlet Package') {
+			when {
+				beforeAgent true
+				not {
+					allOf {
+						expression { BRANCH_NAME ==~ /(release|beta)/ }
+						environment name: 'COMMIT_PARENTS_COUNT', value: '2'
 					}
 				}
 			}
+			steps {
+				dir('artifact-deployer') {
+					git branch: 'master',
+							credentialsId: 'tarsier_bot-ssh-key',
+							url: 'git@bitbucket.org:zextras/artifact-deployer.git'
+					unstash "zimlet_package_unsigned"
+					sh './sign-zextras-zip pkg/com_zextras_zapp_shell.zip'
+					stash includes: 'pkg/com_zextras_zapp_shell.zip', name: 'zimlet_package'
+					archiveArtifacts artifacts: 'pkg/com_zextras_zapp_shell.zip', fingerprint: true
+				}
+			}
+		}
 
 //============================================ Deploy ==================================================================
 
-		stage('Publish on NPM (Release)') {
-			when {
-				beforeAgent true
-				allOf {
-					expression { BRANCH_NAME ==~ /(release)/ }
-					environment name: 'COMMIT_PARENTS_COUNT', value: '1'
-				}
-			}
+		stage('Deploy') {
 			parallel {
-				stage('Publish on NPM') {
+				stage('Deploy documentation') {
+					when {
+						beforeAgent true
+						allOf {
+							expression { BRANCH_NAME ==~ /(release|beta)/ }
+							environment name: 'COMMIT_PARENTS_COUNT', value: '1'
+						}
+					}
+					steps {
+						script {
+							unstash 'doc'
+							doc.rm file: "iris/zapp-shell/${BRANCH_NAME}"
+							doc.mkdir folder: "iris/zapp-shell/${BRANCH_NAME}"
+							doc.upload file: "docs/website/build/com_zextras_zapp_shell/**", destination: "iris/zapp-shell/${BRANCH_NAME}"
+						}
+					}
+				}
+				stage('Publish on NPM (Release)') {
+					when {
+						beforeAgent true
+						allOf {
+							expression { BRANCH_NAME ==~ /(release)/ }
+							environment name: 'COMMIT_PARENTS_COUNT', value: '1'
+						}
+					}
 					steps {
 						script {
 							executeNpmLogin()
@@ -247,19 +264,14 @@ pipeline {
 						}
 					}
 				}
-			}
-		}
-
-		stage('Publish on NPM (Beta)') {
-			when {
-				beforeAgent true
-				allOf {
-					expression { BRANCH_NAME ==~ /(beta)/ }
-					environment name: 'COMMIT_PARENTS_COUNT', value: '1'
-				}
-			}
-			parallel {
-				stage('Publish on NPM') {
+				stage('Publish on NPM (Beta)') {
+					when {
+						beforeAgent true
+						allOf {
+							expression { BRANCH_NAME ==~ /(beta)/ }
+							environment name: 'COMMIT_PARENTS_COUNT', value: '1'
+						}
+					}
 					steps {
 						script {
 							executeNpmLogin()
@@ -268,48 +280,26 @@ pipeline {
 						}
 					}
 				}
-			}
-		}
-
-		stage('Deploy documentation') {
-			when {
-				beforeAgent true
-				allOf {
-					expression { BRANCH_NAME ==~ /(release|beta)/ }
-					environment name: 'COMMIT_PARENTS_COUNT', value: '1'
-				}
-			}
-			steps {
-				script {
-					unstash 'doc'
-					doc.rm file: "iris/zapp-shell/${BRANCH_NAME}"
-					doc.mkdir folder: "iris/zapp-shell/${BRANCH_NAME}"
-					doc.upload file: "docs/website/build/com_zextras_zapp_shell/**", destination: "iris/zapp-shell/${BRANCH_NAME}"
-				}
-			}
-		}
-
-		stage('Deploy Beta') {
-			when {
-				beforeAgent true
-				allOf {
-					expression { BRANCH_NAME ==~ /(beta)/ }
-					environment name: 'COMMIT_PARENTS_COUNT', value: '1'
-				}
-			}
-			parallel {
-				stage('Deploy on demo server') {
+				stage('Deploy Beta on demo server') {
+					when {
+						beforeAgent true
+						allOf {
+							expression { BRANCH_NAME ==~ /(beta)/ }
+							environment name: 'COMMIT_PARENTS_COUNT', value: '1'
+						}
+					}
 					steps {
 						script {
 							unstash 'zimlet_package'
 							sh 'unzip pkg/com_zextras_zapp_shell.zip -d deploy'
-							iris.upload file: 'deploy/', destination: 'com_zextras_zapp_shell/'
+							iris.rm file: "com_zextras_zapp_shell"
+							iris.mkdir folder: "com_zextras_zapp_shell"
+							iris.upload file: 'deploy/*', destination: 'com_zextras_zapp_shell/'
 						}
 					}
 				}
 			}
 		}
-	
 	}
 	post {
 		always {

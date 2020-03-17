@@ -17,6 +17,7 @@ export { default as Divider } from './components/primitive/Divider';
 export { default as Dropdown } from './components/primitive/Dropdown';
 export { DropdownButton, IconDropdownButton } from './components/primitive/DropdownButton';
 export { default as EmailComposerInput } from './components/primitive/EmailComposerInput';
+export { default as PopperDropdown } from './components/primitive/PopperDropdown';
 export { default as FileLoader } from './components/primitive/FileLoader';
 export { default as Icon } from './components/primitive/Icon';
 export { default as IconButton } from './components/primitive/IconButton';

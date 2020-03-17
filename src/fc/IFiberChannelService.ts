@@ -21,5 +21,5 @@ export interface IFiberChannelService {
 
 export interface IInternalFiberChannelService extends IFiberChannelService {
 	getInsecureFC(): Observable<IFCEvent<any> & { _fromShell?: boolean }>;
-	getInsecureFCSink(fromShell: boolean): IFCSink;
+	getInsecureFCSink(fromSW: boolean, fromShell: boolean): IFCSink;
 }

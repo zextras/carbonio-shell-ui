@@ -27,7 +27,7 @@ const fcSrvc = new FiberChannelService();
 self.addEventListener('message', (event: ExtendableMessageEvent) => {
 	// TODO: Evaluate to handle the possibility to return a promise if the event must return something
 	//      This in order to perfom an `event.waitUntil(...)`
-	fcSrvc.getInsecureFCSink(true)(event.data);
+	fcSrvc.getInsecureFCSink(false, true)(event.data);
 });
 
 self.addEventListener('activate', (event: ExtendableMessageEvent) => {

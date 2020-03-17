@@ -20,13 +20,14 @@ export default class FiberChannelService implements IInternalFiberChannelService
 
 	private _fiberChannel: Subject<IFCEvent<any>> = new Subject<IFCEvent<any>>();
 
-	public getInsecureFC(): Observable<IFCEvent<any> & { _fromShell?: boolean }> {
+	public getInsecureFC(): Observable<IFCEvent<any> & { _fromSw?: boolean; _fromShell?: boolean }> {
 		return this._fiberChannel;
 	}
 
-	public getInsecureFCSink(fromShell: boolean): IFCSink {
+	public getInsecureFCSink(fromSw: boolean, fromShell: boolean): IFCSink {
 		return (ev, _?) => {
-			const tagged: IFCEvent<any> & { _fromShell?: boolean } = { ...ev as IFCEvent<any> };
+			const tagged: IFCEvent<any> & { _fromSw?: boolean; _fromShell?: boolean } = { ...ev as IFCEvent<any> };
+			if (fromSw) tagged._fromSw = true;
 			if (fromShell) tagged._fromShell = true;
 			this._fiberChannel.next(tagged);
 		}

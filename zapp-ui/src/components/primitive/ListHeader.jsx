@@ -25,6 +25,7 @@ function ListHeader({
 }) {
   const theme = useContext(ThemeContext);
   const actionsWidth = `calc((${theme.sizes.icon['large']} + (${theme.sizes.padding['small']} * 2 )) * ${actionStack.length > 4 ? 4 : actionStack.length})`;
+
   return (
     <Container orientation="horizontal" mainAlignment="space-between" width="fill" height="fit" padding={{ horizontal: 'extrasmall' }}>
       <Responsive mode="mobile">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Container from './Container';
@@ -36,12 +36,17 @@ function IconCheckbox({
 	icon,
 	size,
 	margin,
+	value,
 	onChange
 }) {
 	const [checked, setChecked] = useState(defaultChecked);
 
 	const padding = {'small': 'extrasmall', 'regular': 'small', 'large': 'medium'};
 	const iconSize = size === 'small' ? 'medium' : 'large';
+
+	useEffect(() => {
+		setChecked(value);
+	}, [value]);
 
 	return (
 		<Container
@@ -51,9 +56,14 @@ function IconCheckbox({
 			padding={{horizontal: margin}}
 			style={{cursor: 'pointer'}}
 			onClick={() => {
-				setChecked(!checked);
-				if (onChange) {
+				if (typeof value !== 'undefined') {
 					onChange(!checked);
+				}
+				else {
+					setChecked(!checked);
+					if (onChange) {
+						onChange(!checked);
+					}
 				}
 			}}
 			crossAlignment="center"
@@ -81,8 +91,14 @@ IconCheckbox.propTypes = {
 	size: PropTypes.oneOf(['small', 'regular', 'large']),
 	/** IconCheckbox margin */
 	margin: PropTypes.oneOf(Object.keys(defaultTheme.sizes.padding)),
+	/** IconCheckbox value */
+	value: PropTypes.bool,
 	/** change callback */
-	onChange: PropTypes.func
+	onChange: function(props, propName) {
+		if (typeof props['value'] !== 'undefined' && typeof props[propName] !== 'function') {
+			return new Error('Please provide a onChange function!');
+		}
+	}
 };
 
 IconCheckbox.defaultProps = {

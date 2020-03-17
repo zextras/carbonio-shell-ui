@@ -8,43 +8,44 @@ The Icon and status of the component depend on the checked status, whose initial
 ### Controlled
 
 ```jsx
-import {useState} from 'react';
-import {Container} from '@zextras/zapp-ui';
+import { useState } from 'react';
+import { Button, Container } from '@zextras/zapp-ui';
 
 const [checked1, setChecked1] = useState(false);
-const [checked2, setChecked2] = useState(false);
+const [checked2, setChecked2] = useState(true);
 
 <>
+    <Button style={{marginBottom: '20px'}} onClick={() => {setChecked1(!checked1);setChecked2(!checked2);}} label="Invert state" />
     <Container orientation="horizontal" mainAlignment="flex-start" width="fill">
-        <IconCheckbox defaultChecked={checked1} onClick={() => setChecked1(!checked1)} icon="Text" size="small" />
-        <IconCheckbox defaultChecked={checked2} onClick={() => setChecked2(!checked2)} icon="ArrowUpward" size="small" />
-        <IconCheckbox defaultChecked={checked2} onClick={() => setChecked2(!checked2)} icon="CheckmarkSquare" size="small" />
-        <IconCheckbox defaultChecked={checked2} onClick={() => setChecked2(!checked2)} icon="Edit2Outline" size="small" />
-        <IconCheckbox defaultChecked={checked2} onClick={() => setChecked2(!checked2)} icon="AttachOutline" size="small" />
+        <IconCheckbox value={checked1} onChange={(c) => setChecked1(!checked1)} icon="Text" size="small" />
+        <IconCheckbox value={checked2} onChange={(c) => setChecked2(!checked2)} icon="ArrowUpward" size="small" />
+        <IconCheckbox value={checked2} onChange={(c) => setChecked2(!checked2)} icon="CheckmarkSquare" size="small" />
+        <IconCheckbox value={checked2} onChange={(c) => setChecked2(!checked2)} icon="Edit2Outline" size="small" />
+        <IconCheckbox value={checked2} onChange={() => setChecked2(!checked2)} icon="AttachOutline" size="small" />
     </Container>
 
     <Container orientation="horizontal" mainAlignment="flex-start" width="fill" style={{marginTop: '25px'}}>
-        <IconCheckbox defaultChecked={checked1} onClick={() => setChecked1(!checked1)} icon="Text" />
-        <IconCheckbox defaultChecked={checked2} onClick={() => setChecked2(!checked2)} icon="ArrowUpward" />
-        <IconCheckbox defaultChecked={checked2} onClick={() => setChecked2(!checked2)} icon="CheckmarkSquare" />
-        <IconCheckbox defaultChecked={checked2} onClick={() => setChecked2(!checked2)} icon="Edit2Outline" />
-        <IconCheckbox defaultChecked={checked2} onClick={() => setChecked2(!checked2)} icon="AttachOutline" />
+        <IconCheckbox value={checked1} onChange={() => setChecked1(!checked1)} icon="Text" />
+        <IconCheckbox value={checked2} onChange={() => setChecked2(!checked2)} icon="ArrowUpward" />
+        <IconCheckbox value={checked2} onChange={() => setChecked2(!checked2)} icon="CheckmarkSquare" />
+        <IconCheckbox value={checked2} onChange={() => setChecked2(!checked2)} icon="Edit2Outline" />
+        <IconCheckbox value={checked2} onChange={() => setChecked2(!checked2)} icon="AttachOutline" />
     </Container>
 
     <Container orientation="horizontal" mainAlignment="flex-start" width="fill" style={{marginTop: '25px'}}>
-        <IconCheckbox defaultChecked={checked1} onClick={() => setChecked1(!checked1)} icon="Text" size="large" />
-        <IconCheckbox defaultChecked={checked2} onClick={() => setChecked2(!checked2)} icon="ArrowUpward" size="large" />
-        <IconCheckbox defaultChecked={checked2} onClick={() => setChecked2(!checked2)} icon="CheckmarkSquare" size="large" />
-        <IconCheckbox defaultChecked={checked2} onClick={() => setChecked2(!checked2)} icon="Edit2Outline" size="large" />
-        <IconCheckbox defaultChecked={checked2} onClick={() => setChecked2(!checked2)} icon="AttachOutline" size="large" />
+        <IconCheckbox value={checked1} onChange={() => setChecked1(!checked1)} icon="Text" size="large" />
+        <IconCheckbox value={checked2} onChange={() => setChecked2(!checked2)} icon="ArrowUpward" size="large" />
+        <IconCheckbox value={checked2} onChange={() => setChecked2(!checked2)} icon="CheckmarkSquare" size="large" />
+        <IconCheckbox value={checked2} onChange={() => setChecked2(!checked2)} icon="Edit2Outline" size="large" />
+        <IconCheckbox value={checked2} onChange={() => setChecked2(!checked2)} icon="AttachOutline" size="large" />
     </Container>
 
     <Container orientation="horizontal" mainAlignment="flex-start" width="fill" style={{marginTop: '25px'}}>
-        <IconCheckbox defaultChecked={checked1} onClick={() => setChecked1(!checked1)} icon="Text" size="large" margin="small" />
-        <IconCheckbox defaultChecked={checked2} onClick={() => setChecked2(!checked2)} icon="ArrowUpward" size="large" margin="small" />
-        <IconCheckbox defaultChecked={checked2} onClick={() => setChecked2(!checked2)} icon="CheckmarkSquare" size="large" margin="small" />
-        <IconCheckbox defaultChecked={checked2} onClick={() => setChecked2(!checked2)} icon="Edit2Outline" size="large" margin="small" />
-        <IconCheckbox defaultChecked={checked2} onClick={() => setChecked2(!checked2)} icon="AttachOutline" size="large" margin="small" />
+        <IconCheckbox value={checked1} onChange={() => setChecked1(!checked1)} icon="Text" size="large" margin="small" />
+        <IconCheckbox value={checked2} onChange={() => setChecked2(!checked2)} icon="ArrowUpward" size="large" margin="small" />
+        <IconCheckbox value={checked2} onChange={() => setChecked2(!checked2)} icon="CheckmarkSquare" size="large" margin="small" />
+        <IconCheckbox value={checked2} onChange={() => setChecked2(!checked2)} icon="Edit2Outline" size="large" margin="small" />
+        <IconCheckbox value={checked2} onChange={() => setChecked2(!checked2)} icon="AttachOutline" size="large" margin="small" />
     </Container>
 </>
 ```

@@ -18,13 +18,13 @@ const QuotaFill = styled.div`
 	border-radius: ${props => props.theme.borderRadius};
 `;
 
-const Quota = ({ fill }) => {
+function Quota({ fill }) {
 	return (
 		<QuotaBar>
 			<QuotaFill fill={fill}/>
 		</QuotaBar>
 	);
-};
+}
 
 Quota.propTypes = {
 	/** quota percentage */

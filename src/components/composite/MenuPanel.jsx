@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Container from "../primitive/Container";
-import Collapse, { Collapser } from "../utilities/Collapse";
+import Collapse from "../utilities/Collapse";
 import Responsive from "../utilities/Responsive";
 import Accordion from "../primitive/Accordion";
 
-const MenuPanel = ({
-										 menuIsOpen,
-										 tree,
-}) => {
+function MenuPanel({
+	menuIsOpen,
+	tree,
+}) {
 	return (
 		<Container
 			orientation="horizontal"
@@ -32,7 +32,7 @@ const MenuPanel = ({
 			</Responsive>
 		</Container>
 	);
-};
+}
 
 MenuPanel.propTypes = {
 	menuIsOpen: PropTypes.bool.isRequired,

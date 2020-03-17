@@ -20,13 +20,13 @@ const Comp = styled.p`
 		ms-word-break: break-all;`}
 `;
 
-const Text = ({ children, ...rest }) => {
+function Text({ children, ...rest }) {
 	return (
 		<Comp { ...rest }>
 			{ children }
 		</Comp>
 	);
-};
+}
 
 Text.propTypes = {
 	/** Text color */

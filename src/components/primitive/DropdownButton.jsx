@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Button from './Button';
 import Dropdown from './Dropdown';
-import Container from "./Container";
-import IconButton from "./IconButton";
+import Container from './Container';
+import IconButton from './IconButton';
 
-export const DropdownButton = ({ items, label, icon, top, bottom, left, right }) => {
+export function DropdownButton({ items, label, icon, top, bottom, left, right }) {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -22,14 +22,14 @@ export const DropdownButton = ({ items, label, icon, top, bottom, left, right })
 			/>
 		</Container>
 	);
-};
+}
 
-export const IconDropdownButton = ({ items, icon, top, bottom, left, right }) => {
+export function IconDropdownButton({ items, icon, iconColor, top, bottom, left, right }) {
 	const [open, setOpen] = useState(false);
 
 	return (
 		<Container orientation="vertical" width="fit" height="fit">
-			<IconButton icon={ icon ? icon : "Plus" } onClick={() => setOpen(!open)}/>
+			<IconButton iconColor={iconColor} icon={ icon ? icon : "Plus" } onClick={() => setOpen(!open)}/>
 			<Dropdown
 				items={items}
 				open={open}
@@ -41,7 +41,7 @@ export const IconDropdownButton = ({ items, icon, top, bottom, left, right }) =>
 			/>
 		</Container>
 	);
-};
+}
 
 DropdownButton.propTypes = {
 	/** map of items to display */
@@ -63,6 +63,7 @@ DropdownButton.propTypes = {
 IconDropdownButton.propTypes = {
 	/** map of items to display */
 	items: Dropdown.propTypes.items,
+	iconColor: IconButton.propTypes.iconColor,
 	icon: PropTypes.string,
 	/** Dropdown positioning (CSS top property) */
 	top: PropTypes.string,

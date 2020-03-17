@@ -9,10 +9,10 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useLayoutEffect, useState, useContext } from 'react';
-import {ThemeContext} from "../index";
+import { useLayoutEffect, useState, useContext } from 'react';
+import { ThemeContext } from "../index";
 
-export const useScreenMode = () => {
+export function useScreenMode() {
 	const theme = useContext(ThemeContext);
 	const check = (width, height) => ((width < theme.breakpoints.width) || ((width / height) < theme.breakpoints.aspectRatio)) ? 'mobile' : 'desktop';
 	const [ screenMode, setScreenMode ] = useState(check(window.innerWidth, window.innerHeight));
@@ -24,5 +24,4 @@ export const useScreenMode = () => {
 		return () => window.removeEventListener('resize', handleResize);
 	}, [setScreenMode]);
 	return screenMode;
-};
-
+}

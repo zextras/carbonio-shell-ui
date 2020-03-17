@@ -1,17 +1,18 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import { map } from 'lodash';
 import Container from './Container';
-import {map} from 'lodash';
-import Text from "./Text";
-import Padding from "./Padding";
-import Dropdown from "./Dropdown";
-import useSplitVisibility from "../../hooks/useSplitVisibility";
+import Text from './Text';
+import Padding from './Padding';
+import Dropdown from './Dropdown';
+import { useSplitVisibility } from '../../hooks/useSplitVisibility';
 
 const CheckDiv = styled.div`
 	width: 100%
 `;
 
-const Breadcrumbs = ({ crumbs }) => {
+function Breadcrumbs({ crumbs }) {
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [visibleCrumbs, hiddenCrumbs, containerRef] = useSplitVisibility(crumbs);
 
@@ -55,7 +56,7 @@ const Breadcrumbs = ({ crumbs }) => {
 			</Container>
 		</CheckDiv>
 	);
-};
+}
 
 Breadcrumbs.propTypes = {
 	crumbs: Dropdown.propTypes.items

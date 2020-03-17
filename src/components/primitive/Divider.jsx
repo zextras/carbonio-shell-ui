@@ -9,11 +9,11 @@ const DividerEl = styled.div`
 		width: 100%;
 `;
 
-const Divider = ({ ...rest }) => {
+function Divider({ ...rest }) {
 	return (
 		<DividerEl {...rest}></DividerEl>
 	);
-};
+}
 
 Divider.propTypes = {
 	color: PropTypes.oneOf(Object.keys(defaultTheme.colors.border)),

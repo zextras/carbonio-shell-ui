@@ -15,19 +15,19 @@ const CollapseEl = styled.div`
 	visibility: ${(props) => props.open ? "visible" : "hidden"}
 `;
 //transition: ${props => props.orientation === 'horizontal' ? 'max-width' : 'max-height'} 150ms linear;
-const Collapse = ({
+function Collapse({
 	children,
 	open,
 	orientation,
 	crossSize,
 	...rest
-}) => {
+}) {
 	return (
 		<CollapseEl crossSize={crossSize} open={open} orientation={orientation} {...rest}>
 			{ children }
 		</CollapseEl>
 	)
-};
+}
 
 Collapse.propTypes = {
 	/** Orientation of the collapsing action */
@@ -53,7 +53,7 @@ const CollapserNotch = styled.div`
 `;
 
 
-export const Collapser = ({clickCallback}) => {
+export function Collapser({clickCallback}) {
 	return (
 		<Container
 			style={{ cursor: 'pointer' }}
@@ -65,7 +65,7 @@ export const Collapser = ({clickCallback}) => {
 			<CollapserNotch/>
 		</Container>
 	)
-};
+}
 
 Collapser.propTypes = {
 	clickCallback: PropTypes.func.isRequired

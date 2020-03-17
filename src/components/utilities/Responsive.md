@@ -1,4 +1,3 @@
-
 This utility components displays its childrens only when the specified screenMode is active.
 
 The screenMode is determined by the useScreenMode hook.

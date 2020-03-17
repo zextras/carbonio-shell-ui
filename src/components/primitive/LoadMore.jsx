@@ -5,8 +5,7 @@ import Text from "./Text";
 import Icon from "./Icon";
 import Padding from "./Padding";
 
-
-const LoadMore = ({ label }) => {
+function LoadMore({ label }) {
 	return (
 		<Container
 			orientation="horizontal"
@@ -17,7 +16,7 @@ const LoadMore = ({ label }) => {
 			{label && <Padding left="small"><Text style={{userSelect: 'none'}}>{label}</Text></Padding>}
 		</Container>
 	);
-};
+}
 
 LoadMore.propTypes = {
 	label: PropTypes.string,

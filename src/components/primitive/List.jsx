@@ -1,16 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import Container from './Container';
-import Text from "./Text";
 import { Virtuoso } from "react-virtuoso";
 
-const List = ({
-               Factory,
-               itemHeight,
-               amount,
-               ...rest
-              }) => {
+function List({
+  Factory,
+  itemHeight,
+  amount,
+  ...rest
+}) {
   const [scrolling, setScrolling] = useState(false);
   const virtuosoFactory = useMemo(() => (index) => (
     <Factory
@@ -37,7 +35,7 @@ const List = ({
           />
       </Container>
   );
-};
+}
 
 List.propTypes = {
   /** the amount of list items */

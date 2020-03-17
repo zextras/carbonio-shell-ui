@@ -38,13 +38,13 @@ const Comp = styled.div`
 }}
 `;
 
-const Padding = ({ children, ...rest }) => {
+function Padding({ children, ...rest }) {
     return (
         <Comp {...rest}>
             { children }
         </Comp>
     );
-};
+}
 
 Padding.propTypes = {
     all: PropTypes.oneOf(Object.keys(defaultTheme.sizes.padding)),

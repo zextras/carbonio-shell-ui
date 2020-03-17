@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Avatar from "./Avatar";
-import Text from "./Text";
-import Icon from "./Icon";
+import Avatar from './Avatar';
+import Text from './Text';
+import Icon from './Icon';
 
 const ChipComp = styled.div`
 	display: inline-flex;

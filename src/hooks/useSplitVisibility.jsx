@@ -9,15 +9,22 @@
  * *** END LICENSE BLOCK *****
  */
 
-import {useEffect, useRef, useState} from "react";
-import {drop, head, last, slice} from "lodash";
+import { useEffect, useRef, useState } from "react";
+import { drop, head, last, slice } from "lodash";
 
-const useSplitVisibility = (items) => {
+export function useSplitVisibility(items) {
 	const [visibleItems, setVisibleItems] = useState(items);
 	const [hiddenItems, setHiddenItems] = useState([]);
 
 	const [width, setWidth] = useState(window.innerWidth);
 	const [lastHiddenWidth, setLastHiddenWidth] = useState(0);
+
+	useEffect(()=> {
+		setVisibleItems(items);
+		setHiddenItems([]);
+		setLastHiddenWidth(0);
+	}, [items]);
+
 	useEffect(() => {
 		function handleResize() {
 			setWidth(window.innerWidth);
@@ -44,8 +51,7 @@ const useSplitVisibility = (items) => {
 			setVisibleItems(drop(visibleItems));
 			setLastHiddenWidth(containerRef.current.scrollWidth)
 		}
-	}, [width]);
-	return [ visibleItems, hiddenItems, containerRef];
-};
+	}, [width, items]);
 
-export default useSplitVisibility;
+	return [ visibleItems, hiddenItems, containerRef];
+}

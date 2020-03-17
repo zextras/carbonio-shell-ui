@@ -1,12 +1,12 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Icon from "./Icon";
-import Container from "./Container";
-import Text from "./Text";
-import Padding from "./Padding";
-import Collapse from "../utilities/Collapse";
-import {map} from 'lodash';
+import { map } from 'lodash';
+import Icon from './Icon';
+import Container from './Container';
+import Text from './Text';
+import Padding from './Padding';
+import Collapse from '../utilities/Collapse';
 
 const DropdownContainer = styled.div`position: relative;`;
 
@@ -19,14 +19,14 @@ const DropdownContent = styled.div`
 	z-index: 4;
 `;
 
-const Dropdown = ({ items, open, top, bottom, left, right, closeFunction }) => {
+function Dropdown({ items, open, top, bottom, left, right, closeFunction }) {
 	useEffect(
 		() => {
 			if (closeFunction && open) {
 				window.addEventListener('click', closeFunction, { once: true });
 			}
 		},
-		[open]
+		[open, closeFunction]
 	);
 	return (
 		<DropdownContainer>
@@ -57,7 +57,7 @@ const Dropdown = ({ items, open, top, bottom, left, right, closeFunction }) => {
 			</DropdownContent>
 		</DropdownContainer>
 	);
-};
+}
 
 Dropdown.propTypes = {
 	/** map of items to display */
@@ -89,7 +89,7 @@ const ContainerEl = styled(Container)`
 	}
 `;
 
-const DropdownItem = ({ icon, label, click }) => {
+function DropdownItem({ icon, label, click }) {
 	return (
 		<ContainerEl
 			orientation="horizontal"
@@ -110,6 +110,6 @@ const DropdownItem = ({ icon, label, click }) => {
 			</Text>
 		</ContainerEl>
 	);
-};
+}
 
 export default Dropdown;

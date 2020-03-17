@@ -50,7 +50,7 @@ const HoverContainer = styled(Container)`
 	}
 `;
 
-const ConversationListItem = ({ conversation, emails, selected, selecting, onSelect, onDeselect }) => {
+function ConversationListItem({ conversation, emails, selected, selecting, onSelect, onDeselect }) {
 	const [open, setOpen] = useState(false);
 	const mainContact = useMemo(() => {
 		return find(conversation.contacts, ['type', (conversation.folder === 'Sent' || conversation.folder === 'Drafts')? 't' : 'f'])
@@ -185,7 +185,7 @@ const ConversationListItem = ({ conversation, emails, selected, selecting, onSel
 			</Collapse>
 		</Container>
 	);
-};
+}
 
 ConversationListItem.propTypes = {
 	conversation: PropTypes.shape(

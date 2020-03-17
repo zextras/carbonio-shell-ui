@@ -292,8 +292,8 @@ pipeline {
 						script {
 							unstash 'zimlet_package'
 							sh 'unzip pkg/com_zextras_zapp_shell.zip -d deploy'
-							iris.rm file: "com_zextras_zapp_shell"
-							iris.mkdir folder: "com_zextras_zapp_shell"
+							iris.rm file: "com_zextras_zapp_shell/*"
+							// iris.mkdir folder: "com_zextras_zapp_shell"
 							iris.upload file: 'deploy/*', destination: 'com_zextras_zapp_shell/'
 						}
 					}

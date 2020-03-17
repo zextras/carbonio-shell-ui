@@ -30,15 +30,15 @@ const IconWrapper = styled.div`
 `;
 
 function IconCheckbox({
-												defaultChecked,
-												label,
-												borderRadius,
-												icon,
-												size,
-												margin,
-												value,
-												onChange
-											}) {
+	defaultChecked,
+	label,
+	borderRadius,
+	icon,
+	size,
+	margin,
+	value,
+	onChange
+}) {
 	const [checked, setChecked] = useState(defaultChecked);
 
 	const padding = {'small': 'extrasmall', 'regular': 'small', 'large': 'medium'};

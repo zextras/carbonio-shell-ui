@@ -11,15 +11,14 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { map, forIn, filter, filter as loFilter } from 'lodash';
+import { map, forIn, filter as loFilter } from 'lodash';
 import { ComponentClass, FunctionComponent } from 'react';
 
-import { IGetInfoRequest, IGetInfoResponse, ISoapResponseContent } from '../network/ISoap';
+import { ISoapResponseContent } from '../network/ISoap';
 import { IFCSink } from '../fc/IFiberChannel';
 import { IMainSubMenuItemData, IRouterService } from '../router/IRouterService';
 import { ISharedLibrariesAppsMap } from './SharedLibraries';
 import RevertableActionCollection from './RevertableActionCollection';
-import { INetworkService } from '../network/INetworkService';
 import { IAppPgkDescription } from '../network/IApi';
 import { IIdbInternalService } from '../idb/IIdbInternalService';
 import { IOfflineService } from '../offline/IOfflineService';
@@ -55,6 +54,7 @@ import { PromiseCollector } from './PromiseCollector';
 import { ISyncOperation, ISyncOpRequest, ISyncService } from '../sync/ISyncService';
 import { IItemActionService } from '../itemActions/IItemAction';
 import useItemActionContext from '../hooks/useItemActionContext';
+import { IShellNetworkService } from '../network/IShellNetworkService';
 /* eslint-enable @typescript-eslint/ban-ts-ignore */
 
 type IChildWindow = Window & {
@@ -74,7 +74,7 @@ export default class ExtensionService {
 	constructor(
 		private _fcSrvc: IFiberChannelService,
 		private _routerSrvc: IRouterService,
-		private _networkSrvc: INetworkService,
+		private _networkSrvc: IShellNetworkService,
 		private _idbSrvc: IIdbInternalService,
 		private _offlineSrvc: IOfflineService,
 		private _sessionSrvc: ISessionService,
@@ -99,80 +99,42 @@ export default class ExtensionService {
 		});
 	}
 
-	public async loadUserExtensions(): Promise<void> {
-		const getInfoResp = await this._networkSrvc.sendSOAPRequest<IGetInfoRequest, IGetInfoResponse>(
-			'GetInfo',
-			{
-				sections: 'zimlets'
-			}
-		);
-		const appsList = map(
-			filter(
-				getInfoResp.zimlets.zimlet,
-				(z) => z.zimlet[0]['zapp'] === 'true' && typeof z.zimlet[0]['zapp-main'] !== 'undefined'
-			),
-			(z) => ({
-				package: z.zimlet[0].name,
-				name: z.zimlet[0].label,
-				description: z.zimlet[0].description,
-				version: z.zimlet[0].version,
-				resourceUrl: `/zx/zimlet/${ z.zimlet[0].name }`,
-				entryPoint: z.zimlet[0]['zapp-main']!,
-				styleEntryPoint: z.zimlet[0]['zapp-style'],
-				serviceworkerExtension: z.zimlet[0]['zapp-serviceworker-extension']
-			})
-		);
-
-		const promiseCollector = new PromiseCollector();
-		try {
-			await Promise.all(
-				map(
-					appsList,
-					async (z) => this._loadExtension(z,	promiseCollector)
-				)
-			);
-			await promiseCollector.waitAll();
-		} catch (e) {
-			// lol
-		} finally {
-			this._fcSink(
-				'app:all-loaded',
-				appsList
-			);
-		}
+	public loadUserExtensions(): Promise<void> {
+		return this._networkSrvc.getApps()
+			.then((appsList) => {
+				const promiseCollector = new PromiseCollector();
+				return Promise.all(
+						map(
+							appsList,
+							(z) => this._loadExtension(z,	promiseCollector)
+						)
+					)
+					.then(() => promiseCollector.waitAll())
+					.then();
+			});
 	}
 
-	private _loadExtension: (
-		pkg: IAppPgkDescription,
-		pc: PromiseCollector
-	) => Promise<void> = async (pkg, pc) => {
-		try {
+	private _loadExtension(pkg: IAppPgkDescription, pc: PromiseCollector): Promise<void> {
 			this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
 			if (pkg.styleEntryPoint) this._loadStyle(pkg);
-			const extModule = await this._loadExtensionModule(pkg, pc);
-			extModule.call(undefined);
-			try {
-				this._fcSink<{ package: string; version: string }>('app:loaded', {
-					package: pkg.package,
-					version: pkg.version
+			return this._loadExtensionModule(pkg, pc)
+				.then((extModule) => extModule.call(undefined))
+				.then(() => {
+					this._fcSink<{ package: string; version: string }>('app:loaded', {
+						package: pkg.package,
+						version: pkg.version
+					});
+				})
+				.catch((err) => {
+					this._fcSink<{ package: string; version: string; error: Error }>('app:load-error', {
+						package: pkg.package,
+						version: pkg.version,
+						error: err
+					});
 				});
-			} catch (err) {
-				this._fcSink<{ package: string; version: string; error: Error }>('app:load-error', {
-					package: pkg.package,
-					version: pkg.version,
-					error: err
-				});
-			}
-		} catch (err) {
-			this._fcSink<{ package: string; version: string; error: Error }>('app:load-error', {
-				package: pkg.package,
-				version: pkg.version,
-				error: err
-			});
-		}
-	};
+	}
 
-	public async unloadUserExtensions(): Promise<void> {
+	public unloadUserExtensions(): Promise<void> {
 		return new Promise((resolve) => {
 			forIn(this._revertableActions, (revertableActions, key) => {
 				this._fcSink<{ package: string }>('app:preunload', { package: key });
@@ -258,9 +220,6 @@ export default class ExtensionService {
 						fcSink: this._fcSrvc.getFiberChannelSinkForExtension(appPkg.package, appPkg.version)
 					},
 					'@zextras/zapp-shell/idb': this._idbSrvc.createIdbService(appPkg.package),
-					'@zextras/zapp-shell/network': {
-						sendSOAPRequest: <REQ, RESP extends ISoapResponseContent>(command: string, data: REQ, urn?: 'urn:zimbraAccount' | 'urn:zimbraMail' | string): Promise<RESP> => this._networkSrvc.sendSOAPRequest<REQ, RESP>(command, data, urn)
-					},
 					'@zextras/zapp-shell/router': {
 						addMainMenuItem: (icon: string, label: string, to: string, children?: Observable<Array<IMainSubMenuItemData>>): void => revertables.addMainMenuItem(icon, label, to, appPkg.package, children),
 						registerRoute: <T>(path: string, component: ComponentClass<T> | FunctionComponent<T>, defProps: T): void => revertables.registerRoute<T>(path, component, defProps, appPkg.package),

@@ -77,7 +77,8 @@ self.addEventListener('install', (event: ExtendableMessageEvent) => {
 			(appList) => loadExtensions(
 				Lodash.filter(appList, (a) => typeof a.serviceworkerExtension !== 'undefined'),
 				fcSrvc,
-				idbSrvc
+				idbSrvc,
+				sessionSrvc
 			).then(() => sessionSrvc.init())
 		)
 	);

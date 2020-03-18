@@ -66,7 +66,7 @@ export default class ThemeService {
 			});
 	}
 
-	public async unloadTheme(): Promise<void> {
+	public unloadTheme(): Promise<void> {
 		return new Promise((resolve) => {
 			forIn(this._iframes, function(value) {
 				document.body.removeChild(value);

@@ -99,59 +99,42 @@ export default class ExtensionService {
 		});
 	}
 
-	public async loadUserExtensions(): Promise<void> {
-		const appsList = await this._networkSrvc.getApps();
-
-		const promiseCollector = new PromiseCollector();
-		try {
-			await Promise.all(
-				map(
-					appsList,
-					async (z) => this._loadExtension(z,	promiseCollector)
-				)
-			);
-			await promiseCollector.waitAll();
-		} catch (e) {
-			// lol
-		} finally {
-			this._fcSink(
-				'app:all-loaded',
-				appsList
-			);
-		}
+	public loadUserExtensions(): Promise<void> {
+		return this._networkSrvc.getApps()
+			.then((appsList) => {
+				const promiseCollector = new PromiseCollector();
+				return Promise.all(
+						map(
+							appsList,
+							(z) => this._loadExtension(z,	promiseCollector)
+						)
+					)
+					.then(() => promiseCollector.waitAll())
+					.then();
+			});
 	}
 
-	private _loadExtension: (
-		pkg: IAppPgkDescription,
-		pc: PromiseCollector
-	) => Promise<void> = async (pkg, pc) => {
-		try {
+	private _loadExtension(pkg: IAppPgkDescription, pc: PromiseCollector): Promise<void> {
 			this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
 			if (pkg.styleEntryPoint) this._loadStyle(pkg);
-			const extModule = await this._loadExtensionModule(pkg, pc);
-			extModule.call(undefined);
-			try {
-				this._fcSink<{ package: string; version: string }>('app:loaded', {
-					package: pkg.package,
-					version: pkg.version
+			return this._loadExtensionModule(pkg, pc)
+				.then((extModule) => extModule.call(undefined))
+				.then(() => {
+					this._fcSink<{ package: string; version: string }>('app:loaded', {
+						package: pkg.package,
+						version: pkg.version
+					});
+				})
+				.catch((err) => {
+					this._fcSink<{ package: string; version: string; error: Error }>('app:load-error', {
+						package: pkg.package,
+						version: pkg.version,
+						error: err
+					});
 				});
-			} catch (err) {
-				this._fcSink<{ package: string; version: string; error: Error }>('app:load-error', {
-					package: pkg.package,
-					version: pkg.version,
-					error: err
-				});
-			}
-		} catch (err) {
-			this._fcSink<{ package: string; version: string; error: Error }>('app:load-error', {
-				package: pkg.package,
-				version: pkg.version,
-				error: err
-			});
-		}
-	};
+	}
 
-	public async unloadUserExtensions(): Promise<void> {
+	public unloadUserExtensions(): Promise<void> {
 		return new Promise((resolve) => {
 			forIn(this._revertableActions, (revertableActions, key) => {
 				this._fcSink<{ package: string }>('app:preunload', { package: key });

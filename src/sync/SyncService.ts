@@ -20,6 +20,8 @@ import { IFiberChannelService } from '../fc/IFiberChannelService';
 import { IFCEvent, IFCSink } from '../fc/IFiberChannel';
 import { IIdbInternalService } from '../idb/IIdbInternalService';
 import { filter } from 'rxjs/operators';
+import { IDBPCursorWithValue } from 'idb/build/esm/entry';
+import { IShellIdbSchema } from '../idb/IShellIdbSchema';
 
 export class SyncService implements ISyncService {
 	public syncOperations = new BehaviorSubject<ISyncOpQueue>([]);
@@ -57,41 +59,53 @@ export class SyncService implements ISyncService {
 			});
 	}
 
-	private async _handleIncomingSyncOperation(ev: IFCEvent<ISyncOperation<unknown, ISyncOpRequest<unknown>>>): Promise<void> {
-		const db = await this._idbSrvc.openDb();
-		await db.put<'sync-operations'>('sync-operations', {
-			app: {
-				package: ev.from,
-				version: ev.version
-			},
-			operation: ev.data
-		});
-		await this._updateOperationQueue();
-		this._fcSrvc.getInternalFCSink()('sync:consume-operation-queue');
-	}
-
-	private async _handleCancelSyncOperation(ev: IFCEvent<string>): Promise<void> {
-		const db = await this._idbSrvc.openDb();
-		await db.delete<'sync-operations'>('sync-operations', ev.data);
-		await this._updateOperationQueue();
-	}
-
-	private async _updateOperationQueue(): Promise<void> {
-		const db = await this._idbSrvc.openDb();
-		let cursor = await db.transaction('sync-operations').store.openCursor();
-		const consumedOps: ISyncOpQueue = [];
-		while (cursor) {
-			consumedOps.push({
-				app: {
-					...cursor.value.app
-				},
-				operation: {
-					...cursor.value.operation,
-					id: cursor.key as unknown as number
-				}
+	private _handleIncomingSyncOperation(ev: IFCEvent<ISyncOperation<unknown, ISyncOpRequest<unknown>>>): Promise<void> {
+		return this._idbSrvc.openDb()
+			.then((db) =>
+				db.put<'sync-operations'>('sync-operations', {
+					app: {
+						package: ev.from,
+						version: ev.version
+					},
+					operation: ev.data
+				})
+			)
+			.then(() => this._updateOperationQueue())
+			.then(() => {
+				this._fcSrvc.getInternalFCSink()('sync:consume-operation-queue');
 			});
-			cursor = await cursor.continue();
+	}
+
+	private _handleCancelSyncOperation(ev: IFCEvent<string>): Promise<void> {
+		return this._idbSrvc.openDb()
+			.then((db) => db.delete<'sync-operations'>('sync-operations', ev.data))
+			.then(() => this._updateOperationQueue());
+	}
+
+	private _updateOperationQueue(): Promise<void> {
+		return this._idbSrvc.openDb()
+			.then((db) => db.transaction('sync-operations').store.openCursor())
+			.then((cursor) => this._getAllOperations(cursor))
+			.then((operations) => this.syncOperations.next(operations));
+	}
+
+	private _getAllOperations(cursor: IDBPCursorWithValue<IShellIdbSchema, ['sync-operations'], 'sync-operations'>|null): Promise<ISyncOpQueue> {
+		if (!cursor) {
+			return Promise.resolve([]);
 		}
-		this.syncOperations.next(consumedOps);
+		return cursor.continue()
+			.then((c) => this._getAllOperations(c))
+			.then((ops: ISyncOpQueue) => [
+				{
+					app: {
+						...cursor.value.app
+					},
+					operation: {
+						...cursor.value.operation,
+						id: cursor.key as unknown as number
+					}
+				},
+				...ops
+			]);
 	}
 }

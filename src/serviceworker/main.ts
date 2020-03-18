@@ -18,6 +18,7 @@ import * as RxJSOperators from 'rxjs/operators';
 import IdbService from '../idb/IdbService';
 import FiberChannelService from '../fc/FiberChannelService';
 import ShellNetworkService from '../network/ShellNetworkService';
+import SessionService from '../session/SessionService';
 import { loadExtensions } from './extensions';
 import { filter } from 'rxjs/operators';
 import { doExecuteSyncOperations, doSOAPSync } from './sync';
@@ -47,6 +48,11 @@ self.addEventListener('install', (event: ExtendableMessageEvent) => {
 
 	const networkSrvc = new ShellNetworkService();
 	const idbSrvc = new IdbService();
+	const sessionSrvc = new SessionService(
+		networkSrvc,
+		idbSrvc,
+		fcSrvc
+	);
 
 	fcSrvc.getInsecureFC()
 		.subscribe((e) => {
@@ -72,7 +78,7 @@ self.addEventListener('install', (event: ExtendableMessageEvent) => {
 				Lodash.filter(appList, (a) => typeof a.serviceworkerExtension !== 'undefined'),
 				fcSrvc,
 				idbSrvc
-			)
+			).then(() => sessionSrvc.init())
 		)
 	);
 });

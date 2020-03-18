@@ -11,13 +11,11 @@
 
 import { BehaviorSubject } from 'rxjs';
 
-import { INetworkService } from '../network/INetworkService';
-import { IAuthRequest, IAuthResponse, IGetInfoRequest, IGetInfoResponse } from '../network/ISoap';
-import { IEndSessionRequest, IEndSessionResponse, IValidateSessionRequest, IValidateSessionResponse } from './ISoap';
 import { IIdbInternalService } from '../idb/IIdbInternalService';
-import { IStoredAccountData, IStoredSessionData } from '../idb/IShellIdbSchema';
+import { IStoredSessionData } from '../idb/IShellIdbSchema';
 import { ISessionService } from './ISessionService';
 import { IFiberChannelService } from '../fc/IFiberChannelService';
+import { IShellNetworkService } from '../network/IShellNetworkService';
 
 export default class SessionService implements ISessionService {
 
@@ -25,7 +23,7 @@ export default class SessionService implements ISessionService {
 	private _currentSession?: string;
 
 	constructor(
-		private _networkSrvc: INetworkService,
+		private _networkSrvc: IShellNetworkService,
 		private _idbSrvc: IIdbInternalService,
 		private _ifcSrvc: IFiberChannelService
 	) {
@@ -41,156 +39,103 @@ export default class SessionService implements ISessionService {
 		});
 	}
 
-	async init(): Promise<void> {
-		const db = await this._idbSrvc.openDb();
-		const storedSessions: Array<IStoredSessionData> = await db.getAllFromIndex('sessions', 'id');
-		if (storedSessions.length >= 1) {
-			await this._validateSession(storedSessions[0]);
-		}
-	}
-
-	async doLogin(username: string, password: string, storeLoginData: boolean): Promise<IStoredSessionData> {
-		const db = await this._idbSrvc.openDb();
-		const authResp = await this._networkSrvc.sendSOAPRequest<IAuthRequest, IAuthResponse>(
-			'Auth',
-			{
-				account: {
-					by: 'name',
-					_content: username
-				},
-				password: {
-					_content: password
-				},
-				prefs: [
-					{ pref: { name: 'zimbraPrefMailPollingInterval' } },
-				]
-			}
-		);
-		const getInfoResp = await this._networkSrvc.sendSOAPRequest<IGetInfoRequest, IGetInfoResponse>(
-			'GetInfo',
-			{}
-		);
-		const sessionData: IStoredSessionData = {
-			id: getInfoResp.id,
-			authToken: authResp.authToken[0]._content,
-			username: getInfoResp.name
-		};
-		const accountData: IStoredAccountData = {
-			id: getInfoResp.id,
-			u: username,
-			p: password
-		};
-		this.session.next({
-			...sessionData,
-			authToken: ''
-		});
-		if (storeLoginData) {
-			const tx = db.transaction([ 'sessions', 'auth' ], 'readwrite');
-			{
-				const store = tx.objectStore('sessions');
-				await store.put(sessionData);
-			}
-			{
-				const store = tx.objectStore('auth');
-				await store.put(accountData);
-			}
-			await tx.done;
-		}
-		this._ifcSrvc.getInternalFCSink()('session:login:logged-in');
-		return sessionData;
-	}
-
-	async doLogout(): Promise<void> {
-		const db = await this._idbSrvc.openDb();
-		const tx = db.transaction([ 'sessions', 'auth', 'sync', 'sync-operations' ], 'readwrite');
-		{
-			const store = tx.objectStore('sessions');
-			await store.clear();
-		}
-		{
-			const store = tx.objectStore('auth');
-			await store.clear();
-		}
-		{
-			const store = tx.objectStore('sync');
-			await store.clear();
-		}
-		{
-			const store = tx.objectStore('sync-operations');
-			await store.clear();
-		}
-		await tx.done;
-		try {
-			await this._networkSrvc.sendSOAPRequest<IEndSessionRequest, IEndSessionResponse>(
-				'EndSession',
-				{
-					logoff: '1'
+	public init(): Promise<void> {
+		return this._idbSrvc.openDb()
+			.then((db) => db.getAllFromIndex('sessions', 'id'))
+			.then((storedSessions) => {
+				if (storedSessions.length >= 1) {
+					return this._validateSession(storedSessions[0]).then();
 				}
-			);
-		} catch (err) {
-			console.debug('Unable to perform logout', err);
-		} finally {
-			delete this._currentSession;
-			this.session.next(undefined);
-			this._ifcSrvc.getInternalFCSink()('session:login:logged-out');
-		}
-	}
-
-	async _validateSession(sessionData: IStoredSessionData): Promise<IStoredSessionData | undefined> {
-		try {
-			await this._networkSrvc.sendSOAPRequest<IValidateSessionRequest, IValidateSessionResponse>(
-				'Auth',
-				{
-					account: {
-						by: 'id',
-						_content: sessionData.id
-					},
-					authToken: {
-						verifyAccount: '1',
-						_content: sessionData.authToken
-					},
-					prefs: [
-						{ pref: { name: 'zimbraPrefMailPollingInterval' } },
-					]
-				}
-			);
-			this.session.next({
-				...sessionData,
-				authToken: ''
 			});
-			this._ifcSrvc.getInternalFCSink()('session:login:logged-in');
-			return sessionData;
-		} catch (err) {
-			return this._tryToLoginWithSavedCredentials(sessionData.id);
-		}
 	}
 
-	async _tryToLoginWithSavedCredentials(id: string): Promise<IStoredSessionData | undefined> {
-		console.debug('Login RETRY');
-		const db = await this._idbSrvc.openDb();
-		const tx = db.transaction('auth', 'readwrite');
-		const val: IStoredAccountData | undefined = await tx.store.get(id);
-		await tx.done;
+	public doLogin(username: string, password: string, storeLoginData: boolean): Promise<IStoredSessionData> {
+		return this._idbSrvc.openDb()
+			.then((db) => {
+				return this._networkSrvc.doLogin(username, password)
+					.then(([sessionData, accountData]) => {
+						this.session.next({
+							...sessionData,
+							authToken: ''
+						});
+						this._ifcSrvc.getInternalFCSink()('session:login:logged-in');
+						if (storeLoginData) {
+							const tx = db.transaction([ 'sessions', 'auth' ], 'readwrite');
+							const s1 = tx.objectStore('sessions');
+							return s1.put(sessionData)
+								.then(() => {
+									const s2 = tx.objectStore('auth');
+									return s2.put(accountData)
+								})
+								.then(() => tx.done)
+								.then(() => sessionData);
+						}
+						return sessionData;
+					});
+			});
+	}
 
-		if (!val) {
-			return;
-		}
-		try {
-			return this.doLogin(val.u, val.p, true);
-		} catch (err) {
-			console.debug('Login RETRY error', err);
-			const tx = db.transaction([ 'sessions', 'auth' ], 'readwrite');
-			{
-				const store = tx.objectStore('sessions');
-				await store.clear();
-			}
-			{
-				const store = tx.objectStore('auth');
-				await store.clear();
-			}
-			await tx.done;
-			this._ifcSrvc.getInternalFCSink()('session:login:logged-out');
-		}
+	public doLogout(): Promise<void> {
+		return this._idbSrvc.openDb()
+			.then((db) => {
+				const tx = db.transaction([ 'sessions', 'auth', 'sync', 'sync-operations' ], 'readwrite');
+					const store = tx.objectStore('sessions');
+					return store.clear()
+						.then(() => {
+							const store = tx.objectStore('auth');
+							return store.clear();
+						})
+						.then(() => {
+							const store = tx.objectStore('sync');
+							return store.clear();
+						})
+						.then(() => {
+							const store = tx.objectStore('sync-operations');
+							return store.clear();
+						})
+						.then(() => tx.done);
+				})
+			.then(() => {
+				return this._networkSrvc.doLogout()
+					.catch((e) => console.error('Unable to perform logout', e))
+					.finally(() => {
+						delete this._currentSession;
+						this.session.next(undefined);
+						this._ifcSrvc.getInternalFCSink()('session:login:logged-out');
+					})
+			});
+	}
+
+	private _validateSession(sessionData: IStoredSessionData): Promise<IStoredSessionData> {
+		return this._networkSrvc.validateSession(sessionData)
+			.then(() => {
+				this.session.next({
+					...sessionData,
+					authToken: ''
+				});
+				this._ifcSrvc.getInternalFCSink()('session:login:logged-in');
+				return sessionData;
+			})
+			.catch(() => this._tryToLoginWithSavedCredentials(sessionData.id));
+	}
+
+	private _tryToLoginWithSavedCredentials(id: string): Promise<IStoredSessionData> {
+		return this._idbSrvc.openDb()
+			.then((db) => {
+				const tx = db.transaction('auth', 'readwrite');
+				return tx.store.get(id)
+					.then((sessionData) => {
+						if (!sessionData) throw new Error(`Auth data not found with id: ${id}`);
+						return tx.done.then(() => sessionData);
+					});
+			})
+			.then((sessionData) => {
+				return this.doLogin(sessionData.u, sessionData.p, true)
+					.catch((e) => {
+						return this.doLogout()
+							.then(() => { throw new Error(`Login error`); })
+					})
+			});
 	}
 
 }

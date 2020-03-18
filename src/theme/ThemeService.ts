@@ -10,16 +10,14 @@
  */
 
 import { Subject } from 'rxjs';
-import { map, filter } from 'lodash';
 
 import { extendTheme } from '@zextras/zapp-ui';
 import { SharedLibrariesThemesMap } from '../extension/SharedLibraries';
 import { forIn } from 'lodash';
-import { INetworkService } from '../network/INetworkService';
-import { IGetInfoRequest, IGetInfoResponse } from '../network/ISoap';
 import { IAppPgkDescription } from '../network/IApi';
 import { ISessionService } from '../session/ISessionService';
 import { Theme } from './ITheme';
+import { IShellNetworkService } from '../network/IShellNetworkService';
 
 type IChildWindow = Window & {
 	__ZAPP_SHARED_LIBRARIES__: SharedLibrariesThemesMap;
@@ -35,7 +33,7 @@ export default class ThemeService {
 	private _sessionId?: string;
 
 	constructor(
-		private _networkSrvc: INetworkService,
+		private _networkSrvc: IShellNetworkService,
 		private _sessionSrvc: ISessionService
 	) {
 		_sessionSrvc.session.subscribe((session) => {
@@ -54,34 +52,18 @@ export default class ThemeService {
 		});
 	}
 
-	public async loadTheme(): Promise<void> {
-		const getInfoResp = await this._networkSrvc.sendSOAPRequest<IGetInfoRequest, IGetInfoResponse>(
-			'GetInfo',
-			{
-				sections: 'zimlets'
-			}
-		);
-		const themeModifiers = await Promise.all(
-			map(
-				filter(
-					getInfoResp.zimlets.zimlet,
-					(z) => z.zimlet[0]['zapp'] === 'true' && typeof z.zimlet[0]['zapp-theme'] !== 'undefined'
-				),
-				(z) => this._loadThemeModule({
-					package: z.zimlet[0].name,
-					name: z.zimlet[0].label,
-					description: z.zimlet[0].description,
-					version: z.zimlet[0].version,
-					resourceUrl: `/zx/zimlet/${z.zimlet[0].name}`,
-					entryPoint: z.zimlet[0]['zapp-theme']!
-				})
-			)
-		);
-		if (themeModifiers.length > 0) {
-			this.theme.next(
-				extendTheme(themeModifiers[0](extendTheme({})))
-			);
-		}
+	public loadTheme(): Promise<void> {
+		return this._networkSrvc.getThemes()
+			.then((themeModifiers) => {
+				if (themeModifiers.length > 0) {
+					return this._loadThemeModule(themeModifiers[0])
+						.then((modifier) => {
+							this.theme.next(
+								extendTheme(modifier(extendTheme({})))
+							);
+						});
+				}
+			});
 	}
 
 	public async unloadTheme(): Promise<void> {

@@ -15,6 +15,7 @@ import { forEach } from 'lodash';
 import { IFiberChannelService } from '../fc/IFiberChannelService';
 import { IIdbInternalService } from '../idb/IIdbInternalService';
 import { AppPackageDescription } from '../extension/IExtensionService';
+import { ISessionService } from '../session/ISessionService';
 
 function _generateAppShimFC(pkgName: string, version: string, fcSrvc: IFiberChannelService) {
 	return {
@@ -30,18 +31,21 @@ function _generateAppShimIdb(pkgName: string, version: string, idbSrvc: IIdbInte
 function _generateAppShims(
 	appPkg: AppPackageDescription,
 	fcSrvc: IFiberChannelService,
-	idbSrvc: IIdbInternalService
+	idbSrvc: IIdbInternalService,
+	sessionSrvc: ISessionService
 ) {
 	self.__ZAPP_SHARED_LIBRARIES_SHIMS__[appPkg['package']] = {
 		'@zextras/zapp-shell/fc': _generateAppShimFC(appPkg['package'], appPkg.version, fcSrvc),
-		'@zextras/zapp-shell/idb': _generateAppShimIdb(appPkg['package'], appPkg.version, idbSrvc)
+		'@zextras/zapp-shell/idb': _generateAppShimIdb(appPkg['package'], appPkg.version, idbSrvc),
+		'@zextras/zapp-shell/service': { sessionSrvc }
 	};
 }
 
 export function loadExtensions(
 	appsList: AppPackageDescription[],
 	fcSrvc: IFiberChannelService,
-	idbSrvc: IIdbInternalService
+	idbSrvc: IIdbInternalService,
+	sessionSrvc: ISessionService
 ) {
 	return new Promise((resolve, reject) => {
 		const extensionsUrls: string[] = [];
@@ -49,7 +53,7 @@ export function loadExtensions(
 			appsList,
 			(appPkg) => {
 				extensionsUrls.push(`${ appPkg.resourceUrl }/${ appPkg.serviceworkerExtension }`);
-				_generateAppShims(appPkg, fcSrvc, idbSrvc);
+				_generateAppShims(appPkg, fcSrvc, idbSrvc, sessionSrvc);
 			}
 		);
 		importScripts(...extensionsUrls);

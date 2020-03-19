@@ -110,6 +110,10 @@ export default class ExtensionService {
 						)
 					)
 					.then(() => promiseCollector.waitAll())
+					.then(() => this._fcSink(
+						'app:all-loaded',
+						appsList
+					))
 					.then();
 			});
 	}

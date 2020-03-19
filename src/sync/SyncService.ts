@@ -22,6 +22,7 @@ import { IIdbInternalService } from '../idb/IIdbInternalService';
 import { filter } from 'rxjs/operators';
 import { IDBPCursorWithValue } from 'idb/build/esm/entry';
 import { IShellIdbSchema } from '../idb/IShellIdbSchema';
+import { cloneDeep } from 'lodash';
 
 export class SyncService implements ISyncService {
 	public syncOperations = new BehaviorSubject<ISyncOpQueue>([]);
@@ -93,16 +94,16 @@ export class SyncService implements ISyncService {
 		if (!cursor) {
 			return Promise.resolve([]);
 		}
+		const { app, operation } = cloneDeep(cursor.value);
+		const key = cursor.key as unknown as number;
 		return cursor.continue()
 			.then((c) => this._getAllOperations(c))
 			.then((ops: ISyncOpQueue) => [
 				{
-					app: {
-						...cursor.value.app
-					},
+					app: { ...app },
 					operation: {
-						...cursor.value.operation,
-						id: cursor.key as unknown as number
+						...operation,
+						id: key
 					}
 				},
 				...ops

@@ -85,6 +85,7 @@ function Dropdown({ items, open, top, bottom, left, right, closeFunction }) {
 								(item) => (
 									<DropdownItem
 										key={item.id}
+										id={item.id}
 										icon={item.icon}
 										label={item.label}
 										click={item.click}

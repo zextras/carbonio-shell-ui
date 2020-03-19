@@ -91,7 +91,8 @@ export function doExecuteSyncOperations(
 				operationsKeys,
 				(opKey) => _tryToConsumeOperation(opKey, idbSrvc, fcSrvc)
 			)
-		));
+		))
+		.then(() => doSOAPSync(idbSrvc, fcSrvc));
 }
 
 function _storeSOAPSyncToken(

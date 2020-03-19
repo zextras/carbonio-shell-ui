@@ -44,7 +44,7 @@ function ListHeader({
           <Container width={actionsWidth}>
             {
               actionStack.length > 0
-              && <ActionGroup actionStack={actionStack} />
+              && <ActionGroup actionStack={actionStack} deselectAll={onDeselectAll} />
             }
           </Container>
         </Container>
@@ -73,6 +73,7 @@ const CheckDiv = styled.div`
 
 function ActionGroup({
   actionStack,
+  deselectAll
 }) {
   const [visibleActions, hiddenActions, containerRef] = useSplitVisibility(actionStack);
 
@@ -85,7 +86,10 @@ function ActionGroup({
               iconColor='txt_2'
               key={action.id}
               icon={action.icon}
-              onClick={action.onActivate}
+              onClick={() => {
+                action.onActivate();
+                deselectAll();
+              }}
             />
           ))
         }
@@ -101,7 +105,10 @@ function ActionGroup({
                   id: action.id,
                   icon: action.icon,
                   label: action.label,
-                  click: action.onActivate
+                  click: () => {
+                    action.onActivate();
+                    deselectAll();
+                  }
                 })
               )
             }

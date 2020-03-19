@@ -30,7 +30,6 @@ import OfflineContextProvider from './offline/OfflineContextProvider';
 import FiberChannelContextProvider from './fc/FiberChannelContextProvider';
 import ThemeContextProvider from './theme/ThemeContextProvider';
 import ThemeService from './theme/ThemeService';
-import NetworkService from './network/NetworkService';
 import IdbService from './idb/IdbService';
 import { SyncService } from './sync/SyncService';
 import I18nService from './i18n/I18nService';
@@ -42,6 +41,7 @@ import { ItemActionService } from './itemActions/ItemActionService';
 import { ItemActionContextProvider } from './itemActions/ItemActionContext';
 import ShellNavigationPanel from './view/ShellNavigationPanel';
 import ShellHeader from './view/ShellHeader';
+import ShellNetworkService from './network/ShellNetworkService';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -181,12 +181,9 @@ export function loadShell(container) {
 		fiberChannelSrvc,
 	);
 	const idbSrvc = new IdbService();
-	const networkSrvc = new NetworkService(
-		fiberChannelSrvc.getInternalFCSink(),
-		idbSrvc
-	);
+	const networkService = new ShellNetworkService();
 	const sessionSrvc = new SessionService(
-		networkSrvc,
+		networkService,
 		idbSrvc,
 		fiberChannelSrvc
 	);
@@ -202,7 +199,7 @@ export function loadShell(container) {
 	const extensionSrvc = new ExtensionService(
 		fiberChannelSrvc,
 		routerSrvc,
-		networkSrvc,
+		networkService,
 		idbSrvc,
 		offlineSrvc,
 		sessionSrvc,
@@ -210,7 +207,7 @@ export function loadShell(container) {
 		i18nSrvc,
 		itemActionSrvc
 	);
-	const themeSrvc = new ThemeService(networkSrvc, sessionSrvc);
+	const themeSrvc = new ThemeService(networkService, sessionSrvc);
 	render(
 		(
 			<FiberChannelContextProvider fiberChannelService={ fiberChannelSrvc }>

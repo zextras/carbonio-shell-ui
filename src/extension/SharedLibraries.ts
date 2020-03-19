@@ -51,7 +51,6 @@ export type ISharedLibrariesAppsMap = {
 	'@zextras/zapp-shell/fc': SharedFiberChannelService;
 	'@zextras/zapp-shell/hooks': SharedHooks;
 	'@zextras/zapp-shell/idb': IIdbExtensionService<any>;
-	'@zextras/zapp-shell/network': SharedZxNetwork;
 	'@zextras/zapp-shell/router': SharedZxRoute;
 	'@zextras/zapp-shell/service': SharesZxServices;
 	'@zextras/zapp-shell/sync': SharedZxSync;

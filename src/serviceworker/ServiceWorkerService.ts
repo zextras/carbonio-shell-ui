@@ -79,8 +79,8 @@ export class ServiceWorkerService {
 					.then((registration: ServiceWorkerRegistration) => {
 						this._registration = registration;
 						navigator.serviceWorker.addEventListener('message', (event) => {
-							// console.log('Event from ServiceWorker', event);
-							this._fcSrvc.getInsecureFCSink(false)(event.data);
+							// console.log('Event FROM ServiceWorker', event);
+							this._fcSrvc.getInsecureFCSink(true, false)(event.data);
 						});
 						sink('shell:serviceworker:registered');
 						if (this._registration.active) sink('shell:serviceworker:activate');
@@ -100,8 +100,10 @@ export class ServiceWorkerService {
 		});
 	}
 
-	private _sendEvent(event: IFCEvent<any>): Promise<void> {
+	private _sendEvent(event: IFCEvent<any> & { _fromSw?: boolean; _fromShell?: boolean }): Promise<void> {
+		if (event._fromSw) return Promise.resolve();
 		return new Promise((resolve, reject) => {
+			// console.log('Event TO ServiceWorker', event);
 			if (!('serviceWorker' in navigator) || !this._registration || !this._registration.active) {
 				reject(new Error('ServiceWorker not found'));
 				return;

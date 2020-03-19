@@ -18,6 +18,7 @@ import * as RxJSOperators from 'rxjs/operators';
 import IdbService from '../idb/IdbService';
 import FiberChannelService from '../fc/FiberChannelService';
 import ShellNetworkService from '../network/ShellNetworkService';
+import SessionService from '../session/SessionService';
 import { loadExtensions } from './extensions';
 import { filter } from 'rxjs/operators';
 import { doExecuteSyncOperations, doSOAPSync } from './sync';
@@ -27,7 +28,7 @@ const fcSrvc = new FiberChannelService();
 self.addEventListener('message', (event: ExtendableMessageEvent) => {
 	// TODO: Evaluate to handle the possibility to return a promise if the event must return something
 	//      This in order to perfom an `event.waitUntil(...)`
-	fcSrvc.getInsecureFCSink(true)(event.data);
+	fcSrvc.getInsecureFCSink(false, true)(event.data);
 });
 
 self.addEventListener('activate', (event: ExtendableMessageEvent) => {
@@ -47,6 +48,11 @@ self.addEventListener('install', (event: ExtendableMessageEvent) => {
 
 	const networkSrvc = new ShellNetworkService();
 	const idbSrvc = new IdbService();
+	const sessionSrvc = new SessionService(
+		networkSrvc,
+		idbSrvc,
+		fcSrvc
+	);
 
 	fcSrvc.getInsecureFC()
 		.subscribe((e) => {
@@ -71,8 +77,9 @@ self.addEventListener('install', (event: ExtendableMessageEvent) => {
 			(appList) => loadExtensions(
 				Lodash.filter(appList, (a) => typeof a.serviceworkerExtension !== 'undefined'),
 				fcSrvc,
-				idbSrvc
-			)
+				idbSrvc,
+				sessionSrvc
+			).then(() => sessionSrvc.init())
 		)
 	);
 });

@@ -53,7 +53,6 @@ function useItemActionContext(ctxt: string, obj: any): { actions: Array<WrappedI
 					actions[ctxt] || [],
 					(action) => action.onCheck(obj)
 						.then((pass: boolean) => {
-							console.log(action.label, pass);
 							if (pass && !cancel) {
 								wrappedAdd(action);
 							}

@@ -1,6 +1,6 @@
 {
   "name": "@zextras/zapp-shell",
-  "version": "0.0.54",
+  "version": "0.0.55",
   "description": "A web application framework",
   "scripts": {
     "prepublishOnly": "npm run build:clean && npm run build && npm run build:types",

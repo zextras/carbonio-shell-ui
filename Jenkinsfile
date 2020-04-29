@@ -161,6 +161,24 @@ pipeline {
 						cmd sh: "nvm use && npm run type-check"
 					}
 				}
+				stage('Unit Tests') {
+					agent {
+						node {
+							label 'nodejs-agent-v2'
+						}
+					}
+					steps {
+						executeNpmLogin()
+						cmd sh: "nvm use && npm install"
+						cmd sh: "nvm use && npm run test"
+					}
+					post {
+						always {
+							junit 'junit.xml'
+							// publishCoverage adapters: [coberturaAdapter('coverage/cobertura-coverage.xml')], calculateDiffForChangeRequests: true, failNoReports: true
+						}
+					}
+				}
 			}
 		}
 

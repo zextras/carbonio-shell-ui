@@ -10,7 +10,7 @@ const babelRCServiceworker = require('./babel.config.serviceworker.js');
 module.exports = [{
 	mode: 'development',
 	entry: {
-		index: path.resolve(process.cwd(), 'src', 'index.js')
+		index: path.resolve(process.cwd(), 'src', 'index.ts')
 	},
 	devtool: 'source-map',
 	output: {
@@ -49,9 +49,6 @@ module.exports = [{
 					{
 						loader: require.resolve('css-loader'),
 						options: {
-							modules: {
-								localIdentName: '[name]__[local]___[hash:base64:5]'
-							},
 							importLoaders: 1,
 							sourceMap: true
 						}
@@ -100,12 +97,12 @@ module.exports = [{
 			ignoreOrder: false
 		}),
 		new HtmlWebpackPlugin({
-			title: 'Zextras Shell',
 			inject: true,
-			meta: {
-				viewport: 'minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no',
-				'x-ua-compatible': { 'http-equiv': 'x-ua-compatible', content: 'ie=edge' }
-			}
+			template: path.resolve(
+				process.cwd(),
+				'src',
+				'index.html'
+			)
 		}),
 		new HtmlWebpackPlugin({
 				inject: false,
@@ -120,7 +117,7 @@ module.exports = [{
 				PACKAGE_DESCRIPTION: pkg.pkgDescription
 			})
 	]
-}, {
+}, /* {
 	mode: 'development',
 	entry: {
 		'shell-sw': path.resolve(process.cwd(), 'src', 'serviceworker', 'main.ts'),
@@ -151,4 +148,4 @@ module.exports = [{
 			PACKAGE_NAME: JSON.stringify(pkg.pkgName)
 		})
 	]
-}];
+} */];

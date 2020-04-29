@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Shell Router Route to Logout with Account 1`] = `"LazyLogoutView"`;
+
+exports[`Shell Router Route to Shell with Account 1`] = `"LazyShellView"`;
+
+exports[`Shell Router Route to Shell with no Account 1`] = `"LazyLoginView"`;

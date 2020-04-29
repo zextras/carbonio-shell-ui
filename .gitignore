@@ -3,3 +3,5 @@
 /pkg/
 /lib/
 /deploy/
+/junit.xml
+/coverage/

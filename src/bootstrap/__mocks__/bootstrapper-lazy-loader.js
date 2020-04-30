@@ -9,8 +9,6 @@
  * *** END LICENSE BLOCK *****
  */
 
-module.exports = {
-	LazyLoginView: () => 'LazyLoginView',
-	LazyLogoutView: () => 'LazyLogoutView',
-	LazyShellView: () => 'LazyShellView',
-};
+export const LazyLoginView = () => 'LazyLoginView';
+export const LazyLogoutView = () => 'LazyLogoutView';
+export const LazyShellView = () => 'LazyShellView';

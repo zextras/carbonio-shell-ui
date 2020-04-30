@@ -9,6 +9,6 @@
  * *** END LICENSE BLOCK *****
  */
 
-module.exports = {
-	Database: () => {}
-};
+export const Database = jest.fn().mockImplementation(() => {
+	return {};
+});

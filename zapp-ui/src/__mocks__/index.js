@@ -9,4 +9,4 @@
  * *** END LICENSE BLOCK *****
  */
 
-module.exports = {};
+export default {};

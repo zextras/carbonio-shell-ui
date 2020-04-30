@@ -11,9 +11,7 @@
 import React from 'react';
 
 jest.mock('@zextras/zapp-ui');
-jest.mock('../../../src/db/database', () => ({
-	Database: () => {}
-}));
+jest.mock('../../../src/db/database');
 
 import { collectAllTo } from '../../../src/shell/shell-secondary-bar';
 

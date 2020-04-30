@@ -18,7 +18,7 @@ export function useIsMobile() {
 }
 
 export default function ShellContextProvider({ children }) {
-	const [ isMobile, setIsMobile ] = useState(window.innerHeight > window.innerWidth);
+	const [ isMobile, setIsMobile ] = useState(typeof window !== 'undefined' ? window.innerHeight > window.innerWidth : false);
 	const [ panels, setPanels ] = useState([]);
 	const [ currentPanel, setCurrentPanel ] = useState(0);
 

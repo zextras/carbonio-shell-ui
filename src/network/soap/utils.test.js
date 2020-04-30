@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { zimletToAppPkgDescription, zimletToThemePkgDescription } from '../../src/network/soap/utils';
+import { zimletToAppPkgDescription, zimletToThemePkgDescription } from './utils';
 
 describe('Network SOAP Utils', () => {
 	test('Zimlet to App', () => {

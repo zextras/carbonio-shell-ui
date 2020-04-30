@@ -13,7 +13,7 @@ import React from 'react';
 import { act, Simulate } from 'react-dom/test-utils';
 import { Router } from 'react-router-dom';
 import renderer from 'react-test-renderer';
-import { useAddPanel } from '../../../src/shell/hooks';
+import { useAddPanel } from './hooks';
 import { createMemoryHistory } from 'history';
 
 jest.mock('@zextras/zapp-ui');

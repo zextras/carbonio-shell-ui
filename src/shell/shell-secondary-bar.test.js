@@ -11,9 +11,9 @@
 import React from 'react';
 
 jest.mock('@zextras/zapp-ui');
-jest.mock('../../../src/db/database');
+jest.mock('../db/database');
 
-import { collectAllTo } from '../../../src/shell/shell-secondary-bar';
+import { collectAllTo } from './shell-secondary-bar';
 
 describe('Shell Link', () => {
 	test('Collect all to', () => {

@@ -14,11 +14,11 @@ import { MemoryRouter } from 'react-router-dom';
 import { BehaviorSubject } from 'rxjs';
 
 jest.mock('@zextras/zapp-ui');
-jest.mock('../../../src/db/database');
+jest.mock('../db/database');
 
-import AppLink from '../../../src/app/app-link';
-import AppContextProvider from '../../../src/app/app-context-provider';
-import AppLoaderContext from '../../../src/app/app-loader-context';
+import AppLink from '../app/app-link';
+import AppContextProvider from './app-context-provider';
+import AppLoaderContext from './app-loader-context';
 
 const mockedPkg = {
 	package: 'com_zextras_zapp_test'

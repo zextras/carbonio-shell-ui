@@ -12,9 +12,9 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 
-jest.mock('../../../src/bootstrap/bootstrapper-lazy-loader');
+jest.mock('./bootstrapper-lazy-loader');
 
-import BootstrapperRouterContent from '../../../src/bootstrap/bootstrapper-router-content';
+import BootstrapperRouterContent from './bootstrapper-router-content';
 
 describe('Shell Router', () => {
 

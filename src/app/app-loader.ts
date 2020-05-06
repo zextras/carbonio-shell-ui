@@ -25,7 +25,6 @@ import * as ZappUI from "@zextras/zapp-ui";
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
-import { PromiseCollector } from './promise-collector';
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
 import { AccountAppsData, AppPkgDescription } from '../db/account';
 import * as hooks from '../shell/hooks';
@@ -122,7 +121,6 @@ const _iframes: { [pkgName: string]: HTMLIFrameElement } = {};
 
 function loadAppModule(
 	appPkg: AppPkgDescription,
-	pc: PromiseCollector,
 	{
 		mainMenuItems,
 		routes,
@@ -204,14 +202,12 @@ function loadAppModule(
 
 function loadApp(pkg: AppPkgDescription): Promise<LoadedAppRuntime|undefined> {
 	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
-	const pc = new PromiseCollector();
 	const mainMenuItems = new BehaviorSubject<MainMenuItemData[]>([]);
 	const routes = new BehaviorSubject<AppRouteDescription[]>([]);
 	const createOptions = new BehaviorSubject<AppCreateOption[]>([]);
 	const appContext = new BehaviorSubject<any>({});
 	return loadAppModule(
 		pkg,
-		pc,
 		{
 			mainMenuItems,
 			routes,
@@ -233,7 +229,6 @@ function loadApp(pkg: AppPkgDescription): Promise<LoadedAppRuntime|undefined> {
 		// 		error: err
 		// 	});
 		// })
-		.then(() => pc.waitAll())
 		.then(() => true)
 		.catch((e) => false)
 		.then((loaded) => (loaded ? {

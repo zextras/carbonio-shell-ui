@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "@popperjs/core": "2.0.6",
+    "@testing-library/react-hooks": "3.2.1",
     "@tinymce/tinymce-react": "3.5.0",
     "core-js": "3.6.4",
     "dexie": "2.0.4",

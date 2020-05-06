@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Database } from './database';
 
 export function useObserveDb(query: () => Promise<any>, db: Database): any {

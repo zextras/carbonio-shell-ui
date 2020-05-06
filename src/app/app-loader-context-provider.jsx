@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import AppLoaderContext from './app-loader-context';
 import { useUserAccounts } from '../bootstrap/bootstrapper-context-provider';
 import { loadApps } from './app-loader';

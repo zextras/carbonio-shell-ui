@@ -10,7 +10,7 @@
  */
 
 import React, { useCallback } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useShellDb, useShellNetworkService } from '../bootstrap/bootstrapper-context-provider';
 
 export default function LogoutView() {

@@ -16,7 +16,7 @@ jest.mock('./bootstrapper-lazy-loader');
 
 import BootstrapperRouterContent from './bootstrapper-router-content';
 
-describe('Shell Router', () => {
+describe('Boostrapper Router Content', () => {
 
 	test('Route to Shell with no Account', () => {
 		const router = renderer.create(

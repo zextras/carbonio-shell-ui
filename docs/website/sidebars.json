@@ -7,6 +7,7 @@
     ],
     "Architecture": [
       "architecture/foundations",
+      "architecture/fiberchannel",
       "architecture/components/index",
       "architecture/components/bootstrapper",
       "architecture/components/app_loader",

@@ -15,34 +15,45 @@ import { BehaviorSubject } from 'rxjs';
 
 jest.mock('@zextras/zapp-ui');
 jest.mock('../db/database');
+jest.mock('../fiberchannel/fiber-channel');
 
 import AppLink from '../app/app-link';
 import AppContextProvider from './app-context-provider';
+import BootsrapperContext from '../bootstrap/bootstrapper-context';
 import AppLoaderContext from './app-loader-context';
+import FiberChannelFactory from '../fiberchannel/fiber-channel';
 
 const mockedPkg = {
 	package: 'com_zextras_zapp_test'
 };
 
 const MockedAppContextProvider = ({ children }) => (
-	<AppLoaderContext.Provider
+	<BootsrapperContext.Provider
 		value={{
-			appsCache: {
-				'com_zextras_zapp_test': {
-					pkg: {},
-					mainMenuItems: new BehaviorSubject([]),
-					routes: new BehaviorSubject([]),
-					createOptions: new BehaviorSubject([]),
-					appContext: new BehaviorSubject({}),
-				}
-			},
-			appsLoaded: true
+			fiberChannelFactory: new FiberChannelFactory(),
+			accountLoaded: true,
+			accounts: []
 		}}
 	>
-		<AppContextProvider pkg={mockedPkg}>
-			{ children }
-		</AppContextProvider>
-	</AppLoaderContext.Provider>
+		<AppLoaderContext.Provider
+			value={{
+				appsCache: {
+					'com_zextras_zapp_test': {
+						pkg: {},
+						mainMenuItems: new BehaviorSubject([]),
+						routes: new BehaviorSubject([]),
+						createOptions: new BehaviorSubject([]),
+						appContext: new BehaviorSubject({}),
+					}
+				},
+				appsLoaded: true
+			}}
+		>
+			<AppContextProvider pkg={mockedPkg}>
+				{ children }
+			</AppContextProvider>
+		</AppLoaderContext.Provider>
+	</BootsrapperContext.Provider>
 );
 
 describe('App Link', () => {

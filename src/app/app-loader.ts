@@ -33,6 +33,7 @@ import * as hooks from '../shell/hooks';
 // @ts-ignore
 import AppLink from './app-link';
 import { wrapAppDbConstructor } from './app-db';
+import { FC, FCSink, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 
 type AppModuleFunction = () => void;
 
@@ -60,6 +61,8 @@ type SharedLibrariesAppsMap = {
 		setRoutes: (routes: AppRouteDescription[]) => void;
 		setCreateOptions: (options: AppCreateOption[]) => void;
 		setAppContext: (obj: any) => void;
+		fiberChannel: FC;
+		fiberChannelSink: FCSink;
 		hooks: any;
 	};
 	'@zextras/zapp-ui': {};
@@ -126,7 +129,8 @@ function loadAppModule(
 		routes,
 		createOptions,
 		appContext
-	}: AppInjections
+	}: AppInjections,
+	fiberChannelFactory: IFiberChannelFactory,
 ): Promise<AppModuleFunction> {
 	return new Promise((resolve, reject) => {
 		const path = `${ appPkg.resourceUrl }/${ appPkg.entryPoint }`;
@@ -180,6 +184,8 @@ function loadAppModule(
 					setRoutes: (r) => routes.next(r),
 					setCreateOptions: (options) => createOptions.next(options),
 					setAppContext: (obj: any) => appContext.next(obj),
+					fiberChannel: fiberChannelFactory.getAppFiberChannel(appPkg),
+					fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(appPkg),
 					hooks,
 				},
 				'@zextras/zapp-ui': ZappUI
@@ -200,7 +206,10 @@ function loadAppModule(
 	});
 }
 
-function loadApp(pkg: AppPkgDescription): Promise<LoadedAppRuntime|undefined> {
+function loadApp(
+	pkg: AppPkgDescription,
+	fiberChannelFactory: IFiberChannelFactory
+): Promise<LoadedAppRuntime|undefined> {
 	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
 	const mainMenuItems = new BehaviorSubject<MainMenuItemData[]>([]);
 	const routes = new BehaviorSubject<AppRouteDescription[]>([]);
@@ -213,7 +222,8 @@ function loadApp(pkg: AppPkgDescription): Promise<LoadedAppRuntime|undefined> {
 			routes,
 			createOptions,
 			appContext
-		}
+		},
+		fiberChannelFactory
 	)
 		.then((appModule) => appModule.call(undefined))
 		// .then(() => {
@@ -240,11 +250,14 @@ function loadApp(pkg: AppPkgDescription): Promise<LoadedAppRuntime|undefined> {
 		} : undefined));
 }
 
-export function loadApps(apps: AccountAppsData): Promise<LoadedAppsCache> {
+export function loadApps(
+	apps: AccountAppsData,
+	fiberChannelFactory: IFiberChannelFactory
+): Promise<LoadedAppsCache> {
 	return Promise.all(
 		map(
 			orderBy(apps, 'priority'),
-			(pkg) => loadApp(pkg)
+			(pkg) => loadApp(pkg, fiberChannelFactory)
 		)
 	)
 		// .then(() => this._fcSink(

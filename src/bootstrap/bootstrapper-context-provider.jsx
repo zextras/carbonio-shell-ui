@@ -23,23 +23,30 @@ export function useShellDb() {
 	return shellDb;
 }
 
+export function useFiberChannelFactory() {
+	const { fiberChannelFactory } = useContext(BootstrapperContext);
+	return fiberChannelFactory;
+}
+
 export function useUserAccounts() {
 	const { accounts, accountLoaded } = useContext(BootstrapperContext);
 	return { accounts, accountLoaded };
 }
 
-export default function BootstrapperContextProvider({ children, shellNetworkService, shellDb }) {
+export default function BootstrapperContextProvider({ children, shellNetworkService, shellDb, fiberChannelFactory }) {
 	const query = useMemo(() => () => shellDb.accounts.limit(1).toArray(), [shellDb]);
 	const [accounts, accountLoaded] = useObserveDb(query, shellDb);
 
 	const value = useMemo(() => ({
 		shellNetworkService,
 		shellDb,
+		fiberChannelFactory,
 		accounts,
 		accountLoaded
 	}), [
 		shellNetworkService,
 		shellDb,
+		fiberChannelFactory,
 		accounts,
 		accountLoaded
 	]);

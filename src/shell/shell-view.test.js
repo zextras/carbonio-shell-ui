@@ -22,11 +22,32 @@ jest.mock('./panels/panels-router-container');
 jest.mock('./panels/app-panel-window');
 
 import ShellView from './shell-view';
+import BootsrapperContext from '../bootstrap/bootstrapper-context';
+import FiberChannelFactory from '../fiberchannel/fiber-channel';
+
+const MockedContextProvider = ({ children }) => (
+	<BootsrapperContext.Provider
+		value={{
+			fiberChannelFactory: new FiberChannelFactory(),
+			accountLoaded: true,
+			accounts: []
+		}}
+	>
+		{ children }
+	</BootsrapperContext.Provider>
+);
 
 describe('Shell View', () => {
+	beforeAll(() => {
+		global.PACKAGE_NAME = 'com_zextras_zapp_shell';
+		global.PACKAGE_VERSION = '0.0.0';
+	})
+
 	test('Basic structure', () => {
 		const shell = renderer.create(
-			<ShellView />
+			<MockedContextProvider>
+				<ShellView />
+			</MockedContextProvider>
 		);
 		expect(shell.toJSON()).toMatchSnapshot();
 	});

@@ -9,12 +9,11 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { createContext } from 'react';
-
-export default createContext({
-	// shellNetworkService,
-	// shellDb,
-	// fiberChannelFactory,
-	accountLoaded: false,
-	accounts: []
+export default jest.fn().mockImplementation(() => {
+	return {
+		getAppFiberChannelSink: jest.fn(),
+		getAppFiberChannel: jest.fn(),
+		getInternalFiberChannelSink: jest.fn(),
+		getInternalFiberChannel: jest.fn(),
+	};
 });

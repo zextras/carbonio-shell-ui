@@ -11,13 +11,25 @@
 
 import React, { useMemo, useState, useLayoutEffect, useContext, useCallback } from 'react';
 import ShellContext from './shell-context';
+import { useFiberChannelFactory } from '../bootstrap/bootstrapper-context-provider';
+import AppContext from '../app/app-context';
 
 export function useIsMobile() {
 	const { isMobile } = useContext(ShellContext);
 	return isMobile;
 }
 
+/**
+ * use the fiberchannel in a Shell context.
+ * @returns {{fiberChannelSink, fiberChannel}}
+ */
+export function useFiberChannel() {
+	const { fiberChannelSink, fiberChannel } = useContext(ShellContext);
+	return { fiberChannelSink, fiberChannel };
+}
+
 export default function ShellContextProvider({ children }) {
+	const fiberChannelFactory = useFiberChannelFactory();
 	const [ isMobile, setIsMobile ] = useState(typeof window !== 'undefined' ? window.innerHeight > window.innerWidth : false);
 	const [ panels, setPanels ] = useState([]);
 	const [ currentPanel, setCurrentPanel ] = useState(0);
@@ -62,7 +74,9 @@ export default function ShellContextProvider({ children }) {
 		removePanel,
 		updatePanel,
 		currentPanel,
-		setCurrentPanel
+		setCurrentPanel,
+		fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink({ name: PACKAGE_NAME, version: PACKAGE_VERSION }),
+		fiberChannel: fiberChannelFactory.getAppFiberChannel({ name: PACKAGE_NAME, version: PACKAGE_VERSION }),
 	}), [
 		isMobile,
 		panels,
@@ -70,7 +84,8 @@ export default function ShellContextProvider({ children }) {
 		removePanel,
 		updatePanel,
 		currentPanel,
-		setCurrentPanel
+		setCurrentPanel,
+		fiberChannelFactory
 	]);
 
 	return (

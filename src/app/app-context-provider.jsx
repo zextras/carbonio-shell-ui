@@ -12,6 +12,7 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import AppContext from './app-context';
 import { useAppsCache } from './app-loader-context-provider';
+import { useFiberChannelFactory } from '../bootstrap/bootstrapper-context-provider';
 
 export function useAppPkg() {
 	const { pkg } = useContext(AppContext);
@@ -22,8 +23,14 @@ export function useAppContext() {
 	return useContext(AppContext);
 }
 
+export function useFiberChannel() {
+	const { fiberChannelSink, fiberChannel } = useContext(AppContext);
+	return { fiberChannelSink, fiberChannel };
+}
+
 export default function AppContextProvider({ pkg, children }) {
 	const [appsCache, appsLoaded] = useAppsCache();
+	const fiberChannelFactory = useFiberChannelFactory();
 	const [appCtxt, setAppCtxt] = useState({});
 
 	useEffect(() => {
@@ -33,8 +40,10 @@ export default function AppContextProvider({ pkg, children }) {
 
 	const value = useMemo(() => ({
 		pkg,
+		fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(pkg),
+		fiberChannel: fiberChannelFactory.getAppFiberChannel(pkg),
 		...appCtxt
-	}), [pkg, appCtxt]);
+	}), [pkg, appCtxt, fiberChannelFactory]);
 
 	return (
 		<AppContext.Provider

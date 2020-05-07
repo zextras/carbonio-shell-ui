@@ -11,11 +11,13 @@
 
 import React, { lazy, Suspense } from 'react';
 import { render } from 'react-dom';
-import ShellDb from '../db/shell-db';
-import ShellNetworkService from '../network/shell-network-service';
 import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-context-provider';
 import LoadingView from './loading-view';
+// TODO: Can be loaded asynchronously
+import ShellDb from '../db/shell-db';
+import ShellNetworkService from '../network/shell-network-service';
+import FiberChannelFactory from '../fiberchannel/fiber-channel';
 
 const Bootstrap = lazy(() => {
 	const shellDb = new ShellDb();
@@ -25,11 +27,13 @@ const Bootstrap = lazy(() => {
 			const shellNetworkService = new ShellNetworkService(
 				shellDb
 			);
+			const fiberChannelFactory = new FiberChannelFactory();
 			return {
 				'default': () => (
 					<BootstrapperContextProvider
 						shellDb={db}
 						shellNetworkService={shellNetworkService}
+						fiberChannelFactory={fiberChannelFactory}
 					>
 						<BootstrapperRouter />
 					</BootstrapperContextProvider>)

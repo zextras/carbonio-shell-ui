@@ -11,7 +11,7 @@
 
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import AppLoaderContext from './app-loader-context';
-import { useUserAccounts } from '../bootstrap/bootstrapper-context-provider';
+import { useFiberChannelFactory, useUserAccounts } from '../bootstrap/bootstrapper-context-provider';
 import { loadApps } from './app-loader';
 
 export function useAppsCache() {
@@ -21,6 +21,7 @@ export function useAppsCache() {
 
 export default function AppLoaderContextProvider({ children }) {
 	const { accounts, accountLoaded } = useUserAccounts();
+	const fiberChannelFactory = useFiberChannelFactory();
 	const [[appsCache, appsLoaded], setAppsCache] = useState([{}, false]);
 
 	useEffect(() => {
@@ -28,7 +29,10 @@ export default function AppLoaderContextProvider({ children }) {
 		console.log('Accounts changed, un/loading apps!');
 		let canSet = true;
 		setAppsCache([{}, false]);
-		loadApps(accounts[0].apps)
+		loadApps(
+			accounts[0].apps,
+			fiberChannelFactory
+		)
 			.then((cache) => {
 				if (!canSet) return;
 				setAppsCache([cache, true]);
@@ -36,7 +40,7 @@ export default function AppLoaderContextProvider({ children }) {
 		return () => {
 			canSet = false;
 		}
-	}, [accounts, accountLoaded, setAppsCache]);
+	}, [accounts, accountLoaded, fiberChannelFactory, setAppsCache]);
 
 	const value = useMemo(() => ({
 		appsCache,

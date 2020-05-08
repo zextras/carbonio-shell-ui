@@ -5,9 +5,9 @@ const DefinePlugin = require('webpack').DefinePlugin;
 const pkg = require('./zapp.conf.js');
 
 const babelRCApp = require('./babel.config.app.js');
-const babelRCServiceworker = require('./babel.config.serviceworker.js');
+// const babelRCServiceworker = require('./babel.config.serviceworker.js');
 
-module.exports = [{
+module.exports = {
 	mode: 'development',
 	entry: {
 		index: path.resolve(process.cwd(), 'src', 'index.ts')
@@ -75,7 +75,7 @@ module.exports = [{
 				test: /\.properties$/,
 				use: [{
 					loader: path.resolve(
-						process.cwd(), 
+						process.cwd(),
 						'node_modules', 
 						'@zextras', 
 						'zapp-cli', 
@@ -116,8 +116,12 @@ module.exports = [{
 				PACKAGE_LABEL: pkg.pkgLabel,
 				PACKAGE_DESCRIPTION: pkg.pkgDescription
 			})
-	]
-}, /* {
+	],
+	devServer: {
+		historyApiFallback: true
+	}
+};
+/* {
 	mode: 'development',
 	entry: {
 		'shell-sw': path.resolve(process.cwd(), 'src', 'serviceworker', 'main.ts'),
@@ -148,4 +152,4 @@ module.exports = [{
 			PACKAGE_NAME: JSON.stringify(pkg.pkgName)
 		})
 	]
-} */];
+} */

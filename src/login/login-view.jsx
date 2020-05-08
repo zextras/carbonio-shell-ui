@@ -24,9 +24,9 @@ export default function LoginView() {
 		<div>
 			<form onSubmit={doLogin}>
 				<label htmlFor="username">Username</label>
-				<input ref={usernameRef} id="username" />
+				<input ref={usernameRef} id="username" name="username" />
 				<label htmlFor="password">Password</label>
-				<input ref={passwordRef} id="password" />
+				<input ref={passwordRef} id="password" name="password" type="password" />
 				<button type="submit">
 					Login
 				</button>

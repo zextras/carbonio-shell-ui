@@ -18,7 +18,8 @@ export default function LogoutView() {
 	const db = useShellDb();
 	const network = useShellNetworkService();
 
-	const doLogout = useCallback(() => {
+	const doLogout = useCallback((ev) => {
+		ev.preventDefault();
 		db.accounts.clear()
 			.then(() => {
 				history.push({
@@ -28,9 +29,9 @@ export default function LogoutView() {
 	}, [db, network, history]);
 
 	return (
-		<div>
+		<form onSubmit={doLogout}>
 			You are going to be logged-out.
-			<button onClick={doLogout}>Log me out</button>
-		</div>
+			<button type="submit">Log me out</button>
+		</form>
 	);
 }

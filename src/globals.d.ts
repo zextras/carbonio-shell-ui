@@ -9,5 +9,37 @@
  * *** END LICENSE BLOCK *****
  */
 
+type MockedResponse = {
+	request: {
+		input: RequestInfo;
+		init?: RequestInit;
+	};
+	response: any;
+};
+
 declare const PACKAGE_VERSION: string;
 declare const PACKAGE_NAME: string;
+declare const FLAVOR: 'APP'|'E2E'|'NPM';
+
+type e2eNamespace = {
+	setLoginData(): Promise<void>;
+	addMockedResponse(response: MockedResponse): void;
+	throwErrorIfRequestNotMocked(val: boolean): void;
+	installOnWindow(wnd: Window): void;
+};
+
+type devtoolsNamespace = {
+	app_package?: {
+		package: string;
+		name: string;
+		label: string;
+		version: string;
+		description: string;
+	};
+};
+
+/**
+ * Installed only on 'e2e' and 'npm' package.
+ */
+declare const e2e: e2eNamespace;
+declare const devtools: devtoolsNamespace;

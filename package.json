@@ -4,7 +4,7 @@
   "description": "A web application framework",
   "scripts": {
     "start": "webpack-dev-server",
-    "start:e2e": "webpack-dev-server --config webpack.e2e.config.js",
+    "start:e2e": "ZX_SHELL_FLAVOR=E2E webpack-dev-server --config webpack.e2e.config.js",
     "webdriver:start": "webdriver-manager update && webdriver-manager start",
     "test:e2e": "cd e2e && protractor protractor.conf.js",
     "test": "jest",
@@ -17,7 +17,7 @@
     "build:types": "tsc --emitDeclarationOnly && tsc src/extension/shimmed/*.ts --outDir lib/",
     "build:zimlet": "npm run build:clean && npm run build && mkdir -p pkg && cd build && zip -r ../pkg/com_zextras_zapp_shell.zip .",
     "watch:docs": "cd docs/website/ && npm start || npm install && npm start",
-    "deploy": "npm run prepublishOnly && rm -rf $PKG_PATH/node_modules/@zextras/zapp-shell/build/ && cp -r build/ $PKG_PATH/node_modules/@zextras/zapp-shell/"
+    "deploy": "ZX_SHELL_FLAVOR=NPM npm run prepublishOnly && rm -rf $PKG_PATH/node_modules/@zextras/zapp-shell/build/ && cp -r build/ $PKG_PATH/node_modules/@zextras/zapp-shell/"
   },
   "keywords": [
     "zapp",

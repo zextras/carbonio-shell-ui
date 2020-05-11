@@ -26,7 +26,7 @@ To execute e2e tests these components are involved:
 - A dev server to provide the runtime to test
 - A selenium server
 - The Protractor test suite
-- A server to provide API responses
+- A server to provide API responses (if [network calls are not mocked][5])
 
 To run the tests these components concurrently with these commands:
 ```shell script
@@ -35,7 +35,10 @@ npm run webdriver:start
 npm run test:e2e
 ```
 
+### Mock network calls
+
 [1]: https://jestjs.io/
 [2]: https://babeljs.io/
 [3]: https://en.reactjs.org/docs/test-renderer.html
 [4]: https://www.protractortest.org/
+[5]: #mock-network-calls

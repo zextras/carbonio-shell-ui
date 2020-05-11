@@ -7,10 +7,27 @@ const pkg = require('./zapp.conf.js');
 const babelRCApp = require('./babel.config.app.js');
 // const babelRCServiceworker = require('./babel.config.serviceworker.js');
 
+/**
+ * The flavor of the build
+ * @type {'npm' | 'e2e' | 'app'}
+ */
+const flavor = process.env.ZX_SHELL_FLAVOR || 'APP';
+
+let indexFile;
+switch (flavor.toUpperCase()) {
+	case 'NPM':
+	case 'E2E':
+		indexFile = path.resolve(process.cwd(), 'src', 'index-npm.ts');
+		break;
+	case 'APP':
+	default:
+		indexFile = path.resolve(process.cwd(), 'src', 'index.ts');
+}
+
 module.exports = {
 	mode: 'development',
 	entry: {
-		index: path.resolve(process.cwd(), 'src', 'index.ts')
+		index: indexFile
 	},
 	devtool: 'source-map',
 	output: {
@@ -89,7 +106,8 @@ module.exports = {
 	plugins: [
 		new DefinePlugin({
 			PACKAGE_VERSION: JSON.stringify(pkg.version),
-			PACKAGE_NAME: JSON.stringify(pkg.pkgName)
+			PACKAGE_NAME: JSON.stringify(pkg.pkgName),
+			FLAVOR: JSON.stringify(flavor.toUpperCase())
 		}),
 		new MiniCssExtractPlugin({
 			filename: 'style.[chunkhash:8].css',

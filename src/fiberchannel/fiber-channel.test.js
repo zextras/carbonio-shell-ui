@@ -28,7 +28,25 @@ describe('Fiber Channel', () => {
 		expect(checker).toBeCalledWith(ev);
 	});
 
-	test('Internal fiber channel and App Sink, event as object', () => {
+	test('Internal fiber channel and sink, Promised event', async () => {
+		const fcf = new FiberChannelFactory();
+		const sink = fcf.getInternalFiberChannelSink();
+		const fc = fcf.getInternalFiberChannel();
+		const checker = jest.fn();
+		checker.mockImplementation(({ sendResponse }) => sendResponse('return-value'));
+		fc.subscribe(checker);
+		const returned = await sink({
+			asPromise: true,
+			from: 'com_example_package',
+			version: '0.0.0',
+			event: 'event',
+			data: {}
+		});
+		expect(checker).toHaveBeenCalled();
+		expect(returned).toBe('return-value');
+	});
+
+	test('Internal fiber channel and App Sink', () => {
 		const fcf = new FiberChannelFactory();
 		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
@@ -45,26 +63,12 @@ describe('Fiber Channel', () => {
 		});
 	});
 
-	test('Internal fiber channel and App Sink, event as string', () => {
-		const fcf = new FiberChannelFactory();
-		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
-		const checker = jest.fn();
-		fcf.getInternalFiberChannel().subscribe(checker);
-		sink('event');
-		expect(checker).toBeCalledWith({
-			from: 'com_example_package',
-			version: '0.0.0',
-			event: 'event',
-			data: {}
-		});
-	});
-
 	test('App fiber channel and App Sink', () => {
 		const fcf = new FiberChannelFactory();
 		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
 		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
-		sink('event');
+		sink({ event: 'event' });
 		expect(checker).toBeCalledWith({
 			from: 'com_example_package',
 			version: '0.0.0',
@@ -95,6 +99,18 @@ describe('Fiber Channel', () => {
 		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
 		sink({ to: 'com_example_another_package', event: 'event' });
 		expect(checker).not.toBeCalled();
+	});
+
+	test('App fiber channel and App Sink, Promised event', async () => {
+		const fcf = new FiberChannelFactory();
+		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
+		const fc = fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' });
+		const checker = jest.fn();
+		checker.mockImplementation(({ sendResponse }) => sendResponse('return-value'));
+		fc.subscribe(checker);
+		const returned = await sink({ event: 'input-event', asPromise: true });
+		expect(checker).toHaveBeenCalled();
+		expect(returned).toBe('return-value');
 	});
 
 });

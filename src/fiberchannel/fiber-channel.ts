@@ -14,7 +14,7 @@ import { filter } from 'rxjs/operators';
 import {
 	FC,
 	FCEvent,
-	FCPartialEvent,
+	FCPartialEvent, FCPromisedEvent,
 	FCSink,
 	IFCSink,
 	IFiberChannelFactory
@@ -23,17 +23,23 @@ import { AppPkgDescription } from '../db/account';
 
 export default class FiberChannelFactory implements IFiberChannelFactory {
 
-	private _channel = new Subject<FCEvent<any>>();
+	private _channel = new Subject<FCEvent<any> | FCPromisedEvent<any, any>>();
 
 	public getAppFiberChannelSink({ name, version }: AppPkgDescription): FCSink {
-		const subject = new Subject<FCPartialEvent<any>>();
-		subject.subscribe((ev) => this._channel.next({ ...ev, from: name, version: version }));
-		return (ev: string | FCPartialEvent<any>, data?: any): void => {
-			if (typeof ev === 'string') {
-				subject.next({ event: ev, data: data || {} });
-			} else {
-				subject.next({ ...ev, data: ev.data || data || {} });
+		const subject = new Subject<FCPartialEvent<any> | FCPartialEvent<any> & { sendResponse: (data: any) => void }>();
+		subject.subscribe((ev) => {
+			this._channel.next({ ...ev, from: name, version: version });
+		});
+		return (ev: FCPartialEvent<any>): void | Promise<any> => {
+			if (ev.asPromise) {
+				return new Promise((resolve) => {
+					subject.next({
+						...ev,
+						sendResponse: resolve
+					});
+				});
 			}
+			subject.next({ ...ev, data: ev.data || {} });
 		};
 	}
 
@@ -44,9 +50,21 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 	}
 
 	public getInternalFiberChannelSink(): IFCSink {
-		const subject = new Subject<FCEvent<any>>();
-		subject.subscribe((ev) => this._channel.next({ ...ev }));
-		return (ev: FCEvent<any>): void => subject.next(ev);
+		const subject = new Subject<FCEvent<any> | FCEvent<any> & { sendResponse: (data: any) => void }>();
+		subject.subscribe((ev) => {
+			this._channel.next(ev);
+		});
+		return (ev: FCEvent<any>): void | Promise<any> => {
+			if (ev.asPromise) {
+				return new Promise((resolve) => {
+					subject.next({
+						...ev,
+						sendResponse: resolve
+					});
+				});
+			}
+			subject.next(ev);
+		};
 	}
 
 	public getInternalFiberChannel(): FC {

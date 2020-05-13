@@ -247,7 +247,12 @@ function loadApp(
 		.then(() => true)
 		.catch((e) => {
 			const sink = fiberChannelFactory.getAppFiberChannelSink(pkg);
-			sink('report-exception', { exception: e });
+			sink({
+				event: 'report-exception',
+				data: {
+					exception: e
+				}
+			});
 			return false;
 		})
 		.then((loaded) => (loaded ? {

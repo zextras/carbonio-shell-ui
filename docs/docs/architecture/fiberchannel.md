@@ -13,6 +13,7 @@ The fiberchannel is provided into the App Context and as import.
 The Sink can accept a `FCPartialEvent` object which defines the event that will be emitted on the fiberchannel.
 ```typescript
 type FCPartialEvent<T extends {} | string> = {
+	asPromise?: true;
 	to?: string;
 	event: string;
 	data: T;
@@ -20,15 +21,23 @@ type FCPartialEvent<T extends {} | string> = {
 ```
 If the `to` parameter is set the event will be delivered only to that package name.
 
+If the `asPromise` parameter is set to `true` the sink will return a [Promise][5] to wait for the return value.
+
 ### Output event
-The fiberchannel stream will emit a `FCEvent` object to each subscription.
+The fiberchannel stream will emit a `FCEvent` or `FCPromisedEvent` objects to each subscription.
 
 The `FCEvent` is a `FCPartialEvent` with attached the information of the emitting App.
+
+The `FCPromisedEvent` is a `FCEvent` enhanced with the callback to return the result triggered by the event call.
 
 ```typescript
 type FCEvent<T extends {} | string> = FCPartialEvent<T> & {
 	from: string;
 	version: string;
+};
+
+type FCPromisedEvent<T extends {} | string, R extends {} | string> = FCEvent<T> & {
+	sendResponse: (data: R) => void;
 };
 ```
 
@@ -36,21 +45,36 @@ type FCEvent<T extends {} | string> = FCPartialEvent<T> & {
 The sink is a function to emit events on the stream. The sink itself will attach the data of the emitting package.
 
 ```typescript
-type FCSink = <T extends {} | string>(event: string | FCPartialEvent<T>, data?: T) => void;
-```
-
-The simple usage of the sink is with two parameters:
-```typescript
-import { fiberChannelSink } from '@zextras/zapp-shell';
-
-fiberChannelSink('event-name', { param1: 42 });
+type FCSink = <T extends {} | string, R extends {} | string>(event: FCPartialEvent<T> | FCPartialPromisedEvent<T>) => void | Promise<R>;
 ```
 
 The sink can be used to emit a complete event object:
 ```typescript
 import { fiberChannelSink } from '@zextras/zapp-shell';
 
-fiberChannelSink({ to: 'com_example_destination_package', event: 'event-name', data: { param1: 42 } });
+fiberChannelSink({
+	to: 'com_example_destination_package', 
+	event: 'event-name', 
+	data: { 
+		param1: 42 
+	} 
+});
+```
+
+The sink can return a [Promise][5] to wait for the return value:
+```typescript
+import { fiberChannelSink } from '@zextras/zapp-shell';
+
+fiberChannelSink({
+	asPromise: true, // <- Note this flag on the event object
+	to: 'com_example_destination_package', 
+	event: 'event-name', 
+	data: { 
+		param1: 42 
+	} 
+}).then(
+  (response) => console.log(response)
+);
 ```
 
 ## Stream
@@ -73,3 +97,4 @@ const { fiberChannelSink, fiberChannel } = hooks.useFiberChannel();
 [2]: https://rxjs-dev.firebaseapp.com/guide/observable
 [3]: #sink
 [4]: #event
+[5]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise

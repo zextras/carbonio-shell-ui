@@ -196,6 +196,11 @@ function loadAppModule(
 				// revertables.revert();
 				extModule.call(undefined);
 			};
+			switch (FLAVOR) {
+				case 'NPM':
+				case 'E2E':
+					e2e.installOnWindow(iframe.contentWindow);
+			}
 			script.type = 'text/javascript';
 			script.setAttribute('src', path);
 			script.addEventListener('error', reject);

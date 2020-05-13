@@ -3,6 +3,10 @@
   "version": "0.0.55",
   "description": "A web application framework",
   "scripts": {
+    "start": "webpack-dev-server",
+    "start:e2e": "ZX_SHELL_FLAVOR=E2E webpack-dev-server --config webpack.e2e.config.js",
+    "webdriver:start": "webdriver-manager update && webdriver-manager start",
+    "test:e2e": "cd e2e && protractor protractor.conf.js",
     "test": "jest",
     "prepublishOnly": "npm run build:clean && npm run build",
     "postpublish": "rm -rf lib",
@@ -13,7 +17,7 @@
     "build:types": "tsc --emitDeclarationOnly && tsc src/extension/shimmed/*.ts --outDir lib/",
     "build:zimlet": "npm run build:clean && npm run build && mkdir -p pkg && cd build && zip -r ../pkg/com_zextras_zapp_shell.zip .",
     "watch:docs": "cd docs/website/ && npm start || npm install && npm start",
-    "deploy": "npm run prepublishOnly && rm -rf $PKG_PATH/node_modules/@zextras/zapp-shell/build/ && cp -r build/ $PKG_PATH/node_modules/@zextras/zapp-shell/"
+    "deploy": "ZX_SHELL_FLAVOR=NPM npm run prepublishOnly && rm -rf $PKG_PATH/node_modules/@zextras/zapp-shell/build/ && cp -r build/ $PKG_PATH/node_modules/@zextras/zapp-shell/"
   },
   "keywords": [
     "zapp",
@@ -48,14 +52,18 @@
     "eslint-plugin-react-hooks": "2.2.0",
     "file-loader": "5.1.0",
     "html-webpack-plugin": "3.2.0",
+    "jasmine-reporters": "2.3.2",
     "jest": "25.1.0",
     "jest-junit": "10.0.0",
     "mini-css-extract-plugin": "0.9.0",
     "postcss-loader": "3.0.0",
+    "protractor": "5.4.4",
+    "protractor-react-selector": "2.2.0",
     "react-test-renderer": "16.13.1",
     "typescript": "3.6.4",
     "webpack": "4.41.0",
-    "webpack-cli": "3.3.9"
+    "webpack-cli": "3.3.9",
+    "webpack-merge": "4.2.2"
   },
   "dependencies": {
     "@popperjs/core": "2.0.6",

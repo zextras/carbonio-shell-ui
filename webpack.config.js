@@ -5,12 +5,29 @@ const DefinePlugin = require('webpack').DefinePlugin;
 const pkg = require('./zapp.conf.js');
 
 const babelRCApp = require('./babel.config.app.js');
-const babelRCServiceworker = require('./babel.config.serviceworker.js');
+// const babelRCServiceworker = require('./babel.config.serviceworker.js');
 
-module.exports = [{
+/**
+ * The flavor of the build
+ * @type {'npm' | 'e2e' | 'app'}
+ */
+const flavor = process.env.ZX_SHELL_FLAVOR || 'APP';
+
+let indexFile;
+switch (flavor.toUpperCase()) {
+	case 'NPM':
+	case 'E2E':
+		indexFile = path.resolve(process.cwd(), 'src', 'index-npm.ts');
+		break;
+	case 'APP':
+	default:
+		indexFile = path.resolve(process.cwd(), 'src', 'index.ts');
+}
+
+module.exports = {
 	mode: 'development',
 	entry: {
-		index: path.resolve(process.cwd(), 'src', 'index.ts')
+		index: indexFile
 	},
 	devtool: 'source-map',
 	output: {
@@ -75,7 +92,7 @@ module.exports = [{
 				test: /\.properties$/,
 				use: [{
 					loader: path.resolve(
-						process.cwd(), 
+						process.cwd(),
 						'node_modules', 
 						'@zextras', 
 						'zapp-cli', 
@@ -89,7 +106,8 @@ module.exports = [{
 	plugins: [
 		new DefinePlugin({
 			PACKAGE_VERSION: JSON.stringify(pkg.version),
-			PACKAGE_NAME: JSON.stringify(pkg.pkgName)
+			PACKAGE_NAME: JSON.stringify(pkg.pkgName),
+			FLAVOR: JSON.stringify(flavor.toUpperCase())
 		}),
 		new MiniCssExtractPlugin({
 			filename: 'style.[chunkhash:8].css',
@@ -116,8 +134,12 @@ module.exports = [{
 				PACKAGE_LABEL: pkg.pkgLabel,
 				PACKAGE_DESCRIPTION: pkg.pkgDescription
 			})
-	]
-}, /* {
+	],
+	devServer: {
+		historyApiFallback: true
+	}
+};
+/* {
 	mode: 'development',
 	entry: {
 		'shell-sw': path.resolve(process.cwd(), 'src', 'serviceworker', 'main.ts'),
@@ -148,4 +170,4 @@ module.exports = [{
 			PACKAGE_NAME: JSON.stringify(pkg.pkgName)
 		})
 	]
-} */];
+} */

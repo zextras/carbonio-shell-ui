@@ -13,6 +13,7 @@ import React, { useContext, useEffect, useMemo, useState } from 'react';
 import AppContext from './app-context';
 import { useAppsCache } from './app-loader-context-provider';
 import { useFiberChannelFactory } from '../bootstrap/bootstrapper-context-provider';
+import AppErrorCatcher from './app-error-catcher';
 
 export function useAppPkg() {
 	const { pkg } = useContext(AppContext);
@@ -49,7 +50,9 @@ export default function AppContextProvider({ pkg, children }) {
 		<AppContext.Provider
 			value={value}
 		>
-			{ children }
+			<AppErrorCatcher>
+				{ children }
+			</AppErrorCatcher>
 		</AppContext.Provider>
 	);
 }

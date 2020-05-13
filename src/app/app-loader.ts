@@ -192,8 +192,8 @@ function loadAppModule(
 			};
 			(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve;
 			(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (extModule: AppModuleFunction): void => {
+				// Errors are not collected here because the HMR works only on develpment mode.
 				console.log(`HMR ${ path }`, extModule);
-				// revertables.revert();
 				extModule.call(undefined);
 			};
 			switch (FLAVOR) {
@@ -245,7 +245,11 @@ function loadApp(
 		// 	});
 		// })
 		.then(() => true)
-		.catch((e) => false)
+		.catch((e) => {
+			const sink = fiberChannelFactory.getAppFiberChannelSink(pkg);
+			sink('report-exception', { exception: e });
+			return false;
+		})
 		.then((loaded) => (loaded ? {
 			pkg,
 			mainMenuItems,

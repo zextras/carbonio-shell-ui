@@ -23,7 +23,7 @@ describe('Fiber Channel', () => {
 			event: 'event',
 			data: {}
 		}
-		fcf.getInternalFiberChannel().subscribe(checker);
+		fcf.getInternalFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
 		sink(ev);
 		expect(checker).toBeCalledWith(ev);
 	});
@@ -31,9 +31,9 @@ describe('Fiber Channel', () => {
 	test('Internal fiber channel and sink, Promised event', async () => {
 		const fcf = new FiberChannelFactory();
 		const sink = fcf.getInternalFiberChannelSink();
-		const fc = fcf.getInternalFiberChannel();
+		const fc = fcf.getInternalFiberChannel({ name: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
-		checker.mockImplementation(({ sendResponse }) => sendResponse('return-value'));
+		checker.mockImplementationOnce(({ sendResponse }) => sendResponse('return-value'));
 		fc.subscribe(checker);
 		const returned = await sink({
 			asPromise: true,
@@ -50,7 +50,7 @@ describe('Fiber Channel', () => {
 		const fcf = new FiberChannelFactory();
 		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
-		fcf.getInternalFiberChannel().subscribe(checker);
+		fcf.getInternalFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
 		sink({
 			event: 'event',
 			data: {}
@@ -106,7 +106,7 @@ describe('Fiber Channel', () => {
 		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
 		const fc = fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
-		checker.mockImplementation(({ sendResponse }) => sendResponse('return-value'));
+		checker.mockImplementationOnce(({ sendResponse }) => sendResponse('return-value'));
 		fc.subscribe(checker);
 		const returned = await sink({ event: 'input-event', asPromise: true });
 		expect(checker).toHaveBeenCalled();

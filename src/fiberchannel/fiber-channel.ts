@@ -11,6 +11,7 @@
 
 import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { omit } from 'lodash';
 import {
 	FC,
 	FCEvent,
@@ -21,21 +22,29 @@ import {
 } from './fiber-channel-types';
 import { AppPkgDescription } from '../db/account';
 
+type WithPromiseId = { _promiseIdRequest?: string; _promiseIdResponse?: string };
+
 export default class FiberChannelFactory implements IFiberChannelFactory {
 
-	private _channel = new Subject<FCEvent<any> | FCPromisedEvent<any, any>>();
+	private _channel = new Subject<FCEvent<any> & WithPromiseId | FCPromisedEvent<any, any> & WithPromiseId>();
+	private _id = 0;
 
 	public getAppFiberChannelSink({ name, version }: AppPkgDescription): FCSink {
-		const subject = new Subject<FCPartialEvent<any> | FCPartialEvent<any> & { sendResponse: (data: any) => void }>();
+		const subject = new Subject<FCPartialEvent<any> | FCPartialEvent<any> & WithPromiseId >();
 		subject.subscribe((ev) => {
 			this._channel.next({ ...ev, from: name, version: version });
 		});
 		return (ev: FCPartialEvent<any>): void | Promise<any> => {
 			if (ev.asPromise) {
 				return new Promise((resolve) => {
+					const id = `${++this._id}`;
+					this._channel.pipe(
+						filter((ev) => ev._promiseIdResponse ? ev._promiseIdResponse === id : false)
+					)
+						.subscribe(({ data }) => resolve(data));
 					subject.next({
 						...ev,
-						sendResponse: resolve
+						_promiseIdRequest: id,
 					});
 				});
 			}
@@ -43,32 +52,85 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 		};
 	}
 
-	public getAppFiberChannel({ name }: AppPkgDescription): FC {
-		return this._channel.pipe(
+	public getAppFiberChannel({ name, version }: AppPkgDescription): FC {
+		const subject = new Subject<FCEvent<any> | FCPromisedEvent<any, any>>();
+		this._channel.pipe(
 			filter(({ to }) => !to || to === name)
-		);
+		).subscribe((ev) => {
+			if (ev.asPromise) {
+				subject.next({
+					...omit(
+						ev,
+						['_promiseIdResponse',  '_promiseIdRequest']
+					),
+					sendResponse: (data: any) => {
+						this._channel.next({
+							to: ev.from,
+							from: name,
+							version: version,
+							event: `${ev.event}-response`,
+							_promiseIdResponse: ev._promiseIdRequest,
+							data
+						});
+					}
+				});
+			}
+			else {
+				subject.next(ev);
+			}
+		});
+		return subject.asObservable();
 	}
 
 	public getInternalFiberChannelSink(): IFCSink {
-		const subject = new Subject<FCEvent<any> | FCEvent<any> & { sendResponse: (data: any) => void }>();
+		const subject = new Subject<FCEvent<any> | FCEvent<any> & WithPromiseId >();
 		subject.subscribe((ev) => {
-			this._channel.next(ev);
+			this._channel.next({ ...ev });
 		});
 		return (ev: FCEvent<any>): void | Promise<any> => {
 			if (ev.asPromise) {
 				return new Promise((resolve) => {
+					const id = `${++this._id}`;
+					this._channel.pipe(
+						filter((ev) => ev._promiseIdResponse ? ev._promiseIdResponse === id : false)
+					)
+						.subscribe(({ data }) => resolve(data));
 					subject.next({
 						...ev,
-						sendResponse: resolve
+						_promiseIdRequest: id,
 					});
 				});
 			}
-			subject.next(ev);
+			subject.next({ ...ev });
 		};
 	}
 
-	public getInternalFiberChannel(): FC {
-		return this._channel.asObservable();
+	public getInternalFiberChannel({ name, version }: AppPkgDescription): FC {
+		const subject = new Subject<FCEvent<any> | FCPromisedEvent<any, any>>();
+		this._channel.subscribe((ev) => {
+			if (ev.asPromise) {
+				subject.next({
+					...omit(
+						ev,
+						['_promiseIdResponse',  '_promiseIdRequest']
+					),
+					sendResponse: (data: any) => {
+						this._channel.next({
+							to: ev.from,
+							from: name,
+							version: version,
+							event: `${ev.event}-response`,
+							_promiseIdResponse: ev._promiseIdRequest,
+							data
+						});
+					}
+				});
+			}
+			else {
+				subject.next(ev);
+			}
+		});
+		return subject.asObservable();
 	}
 
 }

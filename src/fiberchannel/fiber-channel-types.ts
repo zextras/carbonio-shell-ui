@@ -33,12 +33,12 @@ export type FCPromisedEvent<T extends {} | string, R extends {} | string> = FCEv
 };
 
 export type FCSink = <T extends {} | string, R extends {} | string>(event: FCPartialEvent<T> | FCPartialPromisedEvent<T>) => void | Promise<R>;
-export type IFCSink = <T extends {} | string>(event: FCEvent<T>) => void;
+export type IFCSink = <T extends {} | string, R extends {} | string>(event: FCEvent<T>) => void | Promise<R>;
 export type FC = Observable<FCEvent<any> | FCPromisedEvent<any, any>>;
 
 export interface IFiberChannelFactory {
 	getAppFiberChannelSink(appPackageDescription: AppPkgDescription): FCSink;
 	getAppFiberChannel(appPackageDescription: AppPkgDescription): FC;
 	getInternalFiberChannelSink(): IFCSink;
-	getInternalFiberChannel(): FC;
+	getInternalFiberChannel(appPackageDescription: AppPkgDescription): FC;
 }

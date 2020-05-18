@@ -30,25 +30,16 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 	private _id = 0;
 
 	public getAppFiberChannelSink({ name, version }: AppPkgDescription): FCSink {
-		const subject = new Subject<FCPartialEvent<any> | FCPartialEvent<any> & WithPromiseId >();
+		const subject = new Subject<FCPartialEvent<any> | FCPartialEvent<any> & WithPromiseId>();
 		subject.subscribe((ev) => {
 			this._channel.next({ ...ev, from: name, version: version });
 		});
 		return (ev: FCPartialEvent<any>): void | Promise<any> => {
 			if (ev.asPromise) {
-				return new Promise((resolve) => {
-					const id = `${++this._id}`;
-					this._channel.pipe(
-						filter((ev) => ev._promiseIdResponse ? ev._promiseIdResponse === id : false)
-					)
-						.subscribe(({ data }) => resolve(data));
-					subject.next({
-						...ev,
-						_promiseIdRequest: id,
-					});
-				});
+				return this._getPromiseForRequest<FCPartialEvent<any> | FCPartialEvent<any> & WithPromiseId>(subject, ev);
 			}
-			subject.next({ ...ev, data: ev.data || {} });
+			else
+				subject.next({ ...ev, data: ev.data || {} });
 		};
 	}
 
@@ -83,25 +74,16 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 	}
 
 	public getInternalFiberChannelSink(): IFCSink {
-		const subject = new Subject<FCEvent<any> | FCEvent<any> & WithPromiseId >();
+		const subject = new Subject<FCEvent<any> | FCEvent<any> & WithPromiseId>();
 		subject.subscribe((ev) => {
 			this._channel.next({ ...ev });
 		});
 		return (ev: FCEvent<any>): void | Promise<any> => {
 			if (ev.asPromise) {
-				return new Promise((resolve) => {
-					const id = `${++this._id}`;
-					this._channel.pipe(
-						filter((ev) => ev._promiseIdResponse ? ev._promiseIdResponse === id : false)
-					)
-						.subscribe(({ data }) => resolve(data));
-					subject.next({
-						...ev,
-						_promiseIdRequest: id,
-					});
-				});
+				return this._getPromiseForRequest<FCEvent<any> | FCEvent<any> & WithPromiseId>(subject, ev);
 			}
-			subject.next({ ...ev });
+			else
+				subject.next({ ...ev, data: ev.data || {} });
 		};
 	}
 
@@ -131,6 +113,20 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 			}
 		});
 		return subject.asObservable();
+	}
+
+	private _getPromiseForRequest<T>(subject: Subject<T>, ev: T): Promise<any> {
+		return new Promise((resolve) => {
+			const id = `${++this._id}`;
+			this._channel.pipe(
+				filter((ev) => ev._promiseIdResponse ? ev._promiseIdResponse === id : false)
+			)
+				.subscribe(({ data }) => resolve(data));
+			subject.next({
+				...ev,
+				_promiseIdRequest: id,
+			});
+		});
 	}
 
 }

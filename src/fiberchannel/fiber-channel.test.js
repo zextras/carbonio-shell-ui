@@ -11,10 +11,29 @@
 
 import FiberChannelFactory from './fiber-channel';
 
+function setAllAppsLoaded(fcf) {
+	fcf.getShellFiberChannelSink()({
+		to: {
+			version: PACKAGE_VERSION,
+			app: PACKAGE_NAME
+		},
+		event: 'all-apps-loaded',
+		data: {
+			'com_example_package': {
+				pkg: {
+					package: 'com_example_package',
+					version: '0.0.0'
+				}
+			}
+		}
+	});
+}
+
 describe('Fiber Channel', () => {
 
 	test('Internal fiber channel and sink', () => {
 		const fcf = new FiberChannelFactory();
+		setAllAppsLoaded(fcf);
 		const sink = fcf.getInternalFiberChannelSink();
 		const checker = jest.fn();
 		const ev = {
@@ -30,6 +49,7 @@ describe('Fiber Channel', () => {
 
 	test('Internal fiber channel and sink, Promised event', async () => {
 		const fcf = new FiberChannelFactory();
+		setAllAppsLoaded(fcf);
 		const sink = fcf.getInternalFiberChannelSink();
 		const fc = fcf.getInternalFiberChannel({ name: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
@@ -48,6 +68,7 @@ describe('Fiber Channel', () => {
 
 	test('Internal fiber channel and App Sink', () => {
 		const fcf = new FiberChannelFactory();
+		setAllAppsLoaded(fcf);
 		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
 		fcf.getInternalFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
@@ -65,6 +86,7 @@ describe('Fiber Channel', () => {
 
 	test('App fiber channel and App Sink', () => {
 		const fcf = new FiberChannelFactory();
+		setAllAppsLoaded(fcf);
 		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
 		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
@@ -79,13 +101,17 @@ describe('Fiber Channel', () => {
 
 	test('App fiber channel and App Sink, event for App', () => {
 		const fcf = new FiberChannelFactory();
+		setAllAppsLoaded(fcf);
 		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
 		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
-		sink({ to: 'com_example_package', event: 'event' });
+		sink({ to: { app: 'com_example_package', version: '0.0.0' }, event: 'event' });
 		expect(checker).toBeCalledWith({
 			from: 'com_example_package',
-			to: 'com_example_package',
+			to: {
+				app: 'com_example_package',
+				version: '0.0.0'
+			},
 			version: '0.0.0',
 			event: 'event',
 			data: {}
@@ -94,15 +120,17 @@ describe('Fiber Channel', () => {
 
 	test('App fiber channel and App Sink, event for another App', () => {
 		const fcf = new FiberChannelFactory();
+		setAllAppsLoaded(fcf);
 		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
 		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
-		sink({ to: 'com_example_another_package', event: 'event' });
+		sink({ to: { app: 'com_example_another_package', version: '0.0.0' }, event: 'event' });
 		expect(checker).not.toBeCalled();
 	});
 
 	test('App fiber channel and App Sink, Promised event', async () => {
 		const fcf = new FiberChannelFactory();
+		setAllAppsLoaded(fcf);
 		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
 		const fc = fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
@@ -111,6 +139,71 @@ describe('Fiber Channel', () => {
 		const returned = await sink({ event: 'input-event', asPromise: true });
 		expect(checker).toHaveBeenCalled();
 		expect(returned).toBe('return-value');
+	});
+
+	test('Cache an event until apps are loaded',  () => {
+		const fcf = new FiberChannelFactory();
+		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
+		const checker = jest.fn();
+		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
+		sink({ event: 'event' });
+		expect(checker).not.toHaveBeenCalled();
+		setAllAppsLoaded(fcf);
+		expect(checker).toBeCalledWith({
+			from: 'com_example_package',
+			version: '0.0.0',
+			event: 'event',
+			data: {}
+		});
+	});
+
+	test('Throw error on missing API Version', () => {
+		const fcf = new FiberChannelFactory();
+		setAllAppsLoaded(fcf);
+		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
+		const checker = jest.fn();
+		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
+		try {
+			sink({ to: { app: 'com_example_package' }, event: 'event' });
+		} catch (err) {
+			expect(err.message).toBe('API Version not specified.');
+		} finally {
+			expect(checker).not.toHaveBeenCalled();
+		}
+	});
+
+	test('Throw error on unsupported API Version', () => {
+		const fcf = new FiberChannelFactory();
+		setAllAppsLoaded(fcf);
+		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
+		const checker = jest.fn();
+		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
+		try {
+			sink({ to: { app: 'com_example_package', version: '1.0.0' }, event: 'event' });
+		} catch (err) {
+			expect(err.message).toBe('API Version cannot be satisfied.');
+		} finally {
+			expect(checker).not.toHaveBeenCalled();
+		}
+	});
+
+	test('Reject on error on unsupported API Version',  async () => {
+		const fcf = new FiberChannelFactory();
+		setAllAppsLoaded(fcf);
+		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
+		const checker = jest.fn();
+		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
+		try {
+			const returned = await sink({
+				to: { app: 'com_example_package', version: '1.0.0' },
+				asPromise: true,
+				event: 'event'
+			});
+		} catch (err) {
+			expect(err.message).toBe('API Version cannot be satisfied.');
+		} finally {
+			expect(checker).not.toHaveBeenCalled();
+		}
 	});
 
 });

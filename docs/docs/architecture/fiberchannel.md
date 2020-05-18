@@ -14,12 +14,12 @@ The Sink can accept a `FCPartialEvent` object which defines the event that will 
 ```typescript
 type FCPartialEvent<T extends {} | string> = {
 	asPromise?: true;
-	to?: string;
+	to?: { app: string; version: string; };
 	event: string;
 	data: T;
 };
 ```
-If the `to` parameter is set the event will be delivered only to that package name.
+If the `to` parameter is set the event will be delivered only to that package.
 
 If the `asPromise` parameter is set to `true` the sink will return a [Promise][5] to wait for the return value.
 
@@ -41,6 +41,14 @@ type FCPromisedEvent<T extends {} | string, R extends {} | string> = FCEvent<T> 
 };
 ```
 
+## API Versioning
+When an App needs to call another App API using the fiberchannel setting the `to` field of the event a version check
+is triggered to prevent an App to call a newer version of an installed App.
+
+> An App must handle API calls from all previous version.
+
+The check is performed using the [semver][6] library.
+
 ## Sink
 The sink is a function to emit events on the stream. The sink itself will attach the data of the emitting package.
 
@@ -53,11 +61,14 @@ The sink can be used to emit a complete event object:
 import { fiberChannelSink } from '@zextras/zapp-shell';
 
 fiberChannelSink({
-	to: 'com_example_destination_package', 
-	event: 'event-name', 
-	data: { 
-		param1: 42 
-	} 
+	to: {
+		app: 'com_example_destination_package',
+        version: '1.0.0'
+	},
+	event: 'event-name',
+	data: {
+		param1: 42
+	}
 });
 ```
 
@@ -67,11 +78,14 @@ import { fiberChannelSink } from '@zextras/zapp-shell';
 
 fiberChannelSink({
 	asPromise: true, // <- Note this flag on the event object
-	to: 'com_example_destination_package', 
-	event: 'event-name', 
-	data: { 
-		param1: 42 
-	} 
+	to: {
+		app: 'com_example_destination_package',
+        version: '1.0.0'
+	},
+	event: 'event-name',
+	data: {
+		param1: 42
+	}
 }).then(
   (response) => console.log(response)
 );
@@ -98,3 +112,4 @@ const { fiberChannelSink, fiberChannel } = hooks.useFiberChannel();
 [3]: #sink
 [4]: #event
 [5]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[6]: https://www.npmjs.com/package/semver

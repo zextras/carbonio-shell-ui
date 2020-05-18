@@ -14,7 +14,10 @@ import { AppPkgDescription } from '../db/account';
 
 export type FCPartialEvent<T extends {} | string> = {
 	asPromise?: true;
-	to?: string;
+	to?: {
+		version: string;
+		app: string;
+	};
 	event: string;
 	data: T;
 };
@@ -41,4 +44,6 @@ export interface IFiberChannelFactory {
 	getAppFiberChannel(appPackageDescription: AppPkgDescription): FC;
 	getInternalFiberChannelSink(): IFCSink;
 	getInternalFiberChannel(appPackageDescription: AppPkgDescription): FC;
+	getShellFiberChannelSink(): FCSink;
+	getShellFiberChannel(): FC;
 }

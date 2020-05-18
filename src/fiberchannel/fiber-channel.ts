@@ -9,44 +9,58 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { omit } from 'lodash';
+import { lt } from 'semver';
 import {
 	FC,
 	FCEvent,
-	FCPartialEvent, FCPromisedEvent,
+	FCPartialEvent,
+	FCPromisedEvent,
 	FCSink,
 	IFCSink,
 	IFiberChannelFactory
 } from './fiber-channel-types';
 import { AppPkgDescription } from '../db/account';
+import { LoadedAppsCache } from '../app/app-loader';
 
 type WithPromiseId = { _promiseIdRequest?: string; _promiseIdResponse?: string };
 
 export default class FiberChannelFactory implements IFiberChannelFactory {
 
 	private _channel = new Subject<FCEvent<any> & WithPromiseId | FCPromisedEvent<any, any> & WithPromiseId>();
+	private _channelCache = new ReplaySubject<FCEvent<any> & WithPromiseId | FCPromisedEvent<any, any> & WithPromiseId>();
 	private _id = 0;
+	private _appsLoaded = false;
+	private _appsCache: LoadedAppsCache = {};
+
+	constructor() {
+		this.getShellFiberChannel()
+			.pipe(filter(({ to }) => to ? to.app === PACKAGE_NAME : false))
+			.pipe(filter(({ event }) => event === 'all-apps-loaded'))
+			.subscribe(({ data }) => this._onAllAppsLoaded(data));
+	}
 
 	public getAppFiberChannelSink({ name, version }: AppPkgDescription): FCSink {
-		const subject = new Subject<FCPartialEvent<any> | FCPartialEvent<any> & WithPromiseId>();
-		subject.subscribe((ev) => {
-			this._channel.next({ ...ev, from: name, version: version });
-		});
+		const subject = new Subject<FCEvent<any> | FCEvent<any> & WithPromiseId>();
+		subject.subscribe((ev) => this._cacheOrEmitEvent(ev));
 		return (ev: FCPartialEvent<any>): void | Promise<any> => {
+			const event = { ...ev, from: name, version: version, data: ev.data || {} };
 			if (ev.asPromise) {
-				return this._getPromiseForRequest<FCPartialEvent<any> | FCPartialEvent<any> & WithPromiseId>(subject, ev);
+				return this._getPromiseForRequest(subject, event);
 			}
-			else
-				subject.next({ ...ev, data: ev.data || {} });
+			else {
+				this._checkDestinationVersion(event);
+				subject.next(event);
+			}
 		};
 	}
 
 	public getAppFiberChannel({ name, version }: AppPkgDescription): FC {
 		const subject = new Subject<FCEvent<any> | FCPromisedEvent<any, any>>();
 		this._channel.pipe(
-			filter(({ to }) => !to || to === name)
+			filter(({ to }) => !to || to.app === name)
 		).subscribe((ev) => {
 			if (ev.asPromise) {
 				subject.next({
@@ -56,7 +70,10 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 					),
 					sendResponse: (data: any) => {
 						this._channel.next({
-							to: ev.from,
+							to: {
+								app: ev.from,
+								version: ev.version
+							},
 							from: name,
 							version: version,
 							event: `${ev.event}-response`,
@@ -75,15 +92,15 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 
 	public getInternalFiberChannelSink(): IFCSink {
 		const subject = new Subject<FCEvent<any> | FCEvent<any> & WithPromiseId>();
-		subject.subscribe((ev) => {
-			this._channel.next({ ...ev });
-		});
+		subject.subscribe((ev) => this._cacheOrEmitEvent(ev));
 		return (ev: FCEvent<any>): void | Promise<any> => {
 			if (ev.asPromise) {
-				return this._getPromiseForRequest<FCEvent<any> | FCEvent<any> & WithPromiseId>(subject, ev);
+				return this._getPromiseForRequest(subject, ev);
 			}
-			else
-				subject.next({ ...ev, data: ev.data || {} });
+			else {
+				this._checkDestinationVersion(ev);
+				subject.next(ev);
+			}
 		};
 	}
 
@@ -98,7 +115,10 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 					),
 					sendResponse: (data: any) => {
 						this._channel.next({
-							to: ev.from,
+							to: {
+								app: ev.from,
+								version: ev.version
+							},
 							from: name,
 							version: version,
 							event: `${ev.event}-response`,
@@ -115,9 +135,15 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 		return subject.asObservable();
 	}
 
-	private _getPromiseForRequest<T>(subject: Subject<T>, ev: T): Promise<any> {
-		return new Promise((resolve) => {
+	private _getPromiseForRequest(subject: Subject<FCEvent<any> | FCEvent<any> & WithPromiseId>, ev: FCEvent<any> | FCEvent<any> & WithPromiseId): Promise<any> {
+		return new Promise((resolve, reject) => {
 			const id = `${++this._id}`;
+			try {
+				this._checkDestinationVersion(ev);
+			} catch (err) {
+				reject(err);
+				return;
+			}
 			this._channel.pipe(
 				filter((ev) => ev._promiseIdResponse ? ev._promiseIdResponse === id : false)
 			)
@@ -129,4 +155,52 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 		});
 	}
 
+	public getShellFiberChannelSink(): FCSink {
+		return this.getAppFiberChannelSink({
+			priority: 0,
+			package: '',
+			name: PACKAGE_NAME,
+			description: '',
+			version: PACKAGE_VERSION,
+			resourceUrl: '',
+			entryPoint : ''
+		});
+	}
+
+	public getShellFiberChannel(): FC {
+		return this.getAppFiberChannel({
+			priority: 0,
+			package: '',
+			name: PACKAGE_NAME,
+			description: '',
+			version: PACKAGE_VERSION,
+			resourceUrl: '',
+			entryPoint : ''
+		});
+	}
+
+	public _onAllAppsLoaded(cache: LoadedAppsCache): void {
+		this._appsLoaded = true;
+		this._appsCache = cache;
+		this._channelCache.subscribe((ev) => this._channel.next(ev));
+		this._channelCache.complete();
+	}
+
+	private _cacheOrEmitEvent(ev: FCEvent<any> | FCPromisedEvent<any, any>): void {
+		if (this._appsLoaded || (ev.to && ev.to.app === PACKAGE_NAME)) {
+				this._channel.next(ev);
+		}
+		else {
+			this._channelCache.next(ev);
+		}
+	}
+
+	private _checkDestinationVersion(ev: FCEvent<any> | FCPromisedEvent<any, any>): void {
+		if (ev.to && !ev.to.version) {
+			throw new Error('API Version not specified.');
+		}
+		if(ev.to && this._appsCache[ev.to.app] && lt(this._appsCache[ev.to.app].pkg.version, ev.to.version)) {
+			throw new Error('API Version cannot be satisfied.');
+		}
+	}
 }

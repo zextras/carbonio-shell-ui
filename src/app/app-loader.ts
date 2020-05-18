@@ -108,7 +108,7 @@ type LoadedAppRuntime = AppInjections & {
 	pkg: AppPkgDescription;
 };
 
-type LoadedAppsCache = {
+export type LoadedAppsCache = {
 	[pkgName: string]: LoadedAppRuntime;
 };
 
@@ -274,10 +274,18 @@ export function loadApps(
 			(pkg) => loadApp(pkg, fiberChannelFactory)
 		)
 	)
-		// .then(() => this._fcSink(
-		// 	'app:all-loaded',
-		// 	apps
-		// ))
 		.then((loaded) => compact(loaded))
-		.then((loaded) => keyBy(loaded, 'pkg.package'));
+		.then((loaded) => keyBy(loaded, 'pkg.package'))
+		.then((loaded) => {
+			const sink = fiberChannelFactory.getShellFiberChannelSink();
+			sink({
+				to: {
+					version: PACKAGE_VERSION,
+					app: PACKAGE_NAME
+				},
+				event: 'all-apps-loaded',
+				data: loaded
+			});
+			return loaded;
+		});
 }

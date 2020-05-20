@@ -11,7 +11,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { reduce } from 'lodash';
-import { useAppsCache } from '../app/app-loader-context-provider';
+import { useAppsCache } from '../app/app-loader-context';
 import AppMainMenuItems from '../app/app-main-menu-items';
 
 export default function MainMenu() {

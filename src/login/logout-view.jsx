@@ -11,7 +11,7 @@
 
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useShellDb, useShellNetworkService } from '../bootstrap/bootstrapper-context-provider';
+import { useShellDb, useShellNetworkService } from '../bootstrap/bootstrapper-context';
 
 export default function LogoutView() {
 	const history = useHistory();

@@ -12,7 +12,7 @@
 import React from 'react';
 import { useBehaviorSubject } from '../shell/hooks';
 import { reduce } from 'lodash';
-import { useIsMobile } from '../shell/shell-context-provider';
+import { useIsMobile } from '../shell/shell-context';
 import AppMainMenuItemChild from './app-main-menu-item-child';
 import AppContextProvider from './app-context-provider';
 import AppLink from './app-link';

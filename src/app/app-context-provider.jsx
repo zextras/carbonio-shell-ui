@@ -9,25 +9,11 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import AppContext from './app-context';
-import { useAppsCache } from './app-loader-context-provider';
-import { useFiberChannelFactory } from '../bootstrap/bootstrapper-context-provider';
+import { useAppsCache } from './app-loader-context';
+import { useFiberChannelFactory } from '../bootstrap/bootstrapper-context';
 import AppErrorCatcher from './app-error-catcher';
-
-export function useAppPkg() {
-	const { pkg } = useContext(AppContext);
-	return pkg;
-}
-
-export function useAppContext() {
-	return useContext(AppContext);
-}
-
-export function useFiberChannel() {
-	const { fiberChannelSink, fiberChannel } = useContext(AppContext);
-	return { fiberChannelSink, fiberChannel };
-}
 
 export default function AppContextProvider({ pkg, children }) {
 	const [appsCache, appsLoaded] = useAppsCache();

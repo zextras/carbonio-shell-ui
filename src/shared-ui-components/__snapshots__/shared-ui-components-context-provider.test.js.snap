@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Shared UI Components Context Provider Merge all App Scopes 1`] = `"Tester scopes: scope-1 scope-2 scope-3"`;

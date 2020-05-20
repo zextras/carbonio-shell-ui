@@ -9,15 +9,10 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import AppLoaderContext from './app-loader-context';
-import { useFiberChannelFactory, useUserAccounts } from '../bootstrap/bootstrapper-context-provider';
+import { useFiberChannelFactory, useUserAccounts } from '../bootstrap/bootstrapper-context';
 import { loadApps } from './app-loader';
-
-export function useAppsCache() {
-	const { appsCache, appsLoaded } = useContext(AppLoaderContext);
-	return [appsCache, appsLoaded];
-}
 
 export default function AppLoaderContextProvider({ children }) {
 	const { accounts, accountLoaded } = useUserAccounts();
@@ -45,7 +40,10 @@ export default function AppLoaderContextProvider({ children }) {
 	const value = useMemo(() => ({
 		appsCache,
 		appsLoaded
-	}), [appsCache, appsLoaded]);
+	}), [
+		appsCache,
+		appsLoaded
+	]);
 
 	return (
 		<AppLoaderContext.Provider

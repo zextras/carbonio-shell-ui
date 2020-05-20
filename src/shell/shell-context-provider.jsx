@@ -9,24 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useMemo, useState, useLayoutEffect, useContext, useCallback } from 'react';
+import React, { useMemo, useState, useLayoutEffect, useCallback } from 'react';
 import ShellContext from './shell-context';
-import { useFiberChannelFactory } from '../bootstrap/bootstrapper-context-provider';
-import AppContext from '../app/app-context';
-
-export function useIsMobile() {
-	const { isMobile } = useContext(ShellContext);
-	return isMobile;
-}
-
-/**
- * use the fiberchannel in a Shell context.
- * @returns {{fiberChannelSink, fiberChannel}}
- */
-export function useFiberChannel() {
-	const { fiberChannelSink, fiberChannel } = useContext(ShellContext);
-	return { fiberChannelSink, fiberChannel };
-}
+import { useFiberChannelFactory } from '../bootstrap/bootstrapper-context';
 
 export default function ShellContextProvider({ children }) {
 	const fiberChannelFactory = useFiberChannelFactory();

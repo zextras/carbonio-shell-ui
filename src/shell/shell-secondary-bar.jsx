@@ -13,8 +13,8 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { reduce } from 'lodash';
 import { Route, Switch } from 'react-router-dom';
-import { useIsMobile } from './shell-context-provider';
-import { useAppsCache } from '../app/app-loader-context-provider';
+import { useIsMobile } from './shell-context';
+import { useAppsCache } from '../app/app-loader-context';
 import { useBehaviorSubject } from './hooks';
 import AppMainMenuItemChild from '../app/app-main-menu-item-child';
 

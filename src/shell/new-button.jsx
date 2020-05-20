@@ -10,7 +10,7 @@
  */
 import React, { useEffect, useState } from 'react';
 import { reduce } from 'lodash';
-import { useAppsCache } from '../app/app-loader-context-provider';
+import { useAppsCache } from '../app/app-loader-context';
 import { useAddPanelCallback, useBehaviorSubject } from './hooks';
 import AppContextProvider from '../app/app-context-provider';
 

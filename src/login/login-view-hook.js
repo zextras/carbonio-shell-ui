@@ -10,7 +10,7 @@
  */
 
 import { useHistory, useLocation } from 'react-router-dom';
-import { useShellDb, useShellNetworkService } from '../bootstrap/bootstrapper-context-provider';
+import { useShellDb, useShellNetworkService } from '../bootstrap/bootstrapper-context';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export default function useLoginView() {

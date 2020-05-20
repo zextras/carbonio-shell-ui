@@ -9,89 +9,100 @@
  * *** END LICENSE BLOCK *****
  */
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { act, create } from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
 import { BehaviorSubject } from 'rxjs';
 
 jest.mock('@zextras/zapp-ui');
 jest.mock('../db/database');
 jest.mock('../fiberchannel/fiber-channel');
+jest.mock('../bootstrap/bootstrapper-context-provider');
+jest.mock('./app-loader-context-provider');
 
 import AppLink from '../app/app-link';
 import AppContextProvider from './app-context-provider';
-import BootsrapperContext from '../bootstrap/bootstrapper-context';
 import AppLoaderContext from './app-loader-context';
-import FiberChannelFactory from '../fiberchannel/fiber-channel';
-
-const mockedPkg = {
-	package: 'com_zextras_zapp_test'
-};
-
-const MockedAppContextProvider = ({ children }) => (
-	<BootsrapperContext.Provider
-		value={{
-			fiberChannelFactory: new FiberChannelFactory(),
-			accountLoaded: true,
-			accounts: []
-		}}
-	>
-		<AppLoaderContext.Provider
-			value={{
-				appsCache: {
-					'com_zextras_zapp_test': {
-						pkg: {},
-						mainMenuItems: new BehaviorSubject([]),
-						routes: new BehaviorSubject([]),
-						createOptions: new BehaviorSubject([]),
-						appContext: new BehaviorSubject({}),
-					}
-				},
-				appsLoaded: true
-			}}
-		>
-			<AppContextProvider pkg={mockedPkg}>
-				{ children }
-			</AppContextProvider>
-		</AppLoaderContext.Provider>
-	</BootsrapperContext.Provider>
-);
+import BootstrapperContextProvider from '../bootstrap/bootstrapper-context-provider';
+import AppLoaderContextProvider from './app-loader-context-provider';
 
 describe('App Link', () => {
 
+	beforeEach(() => {
+		AppLoaderContextProvider.mockImplementationOnce(({ children }) => {
+			return <AppLoaderContext.Provider
+				value={{
+					appsCache: {
+						'com_example_package': {
+							pkg: {},
+							mainMenuItems: new BehaviorSubject([]),
+							routes: new BehaviorSubject([]),
+							createOptions: new BehaviorSubject([]),
+							appContext: new BehaviorSubject({}),
+						}
+					},
+					appsLoaded: true
+				}}
+			>
+				{ children }
+			</AppLoaderContext.Provider>
+		});
+	});
+
 	test('Link without parameters', () => {
-		const root = renderer.create(
-			<MemoryRouter>
-				<MockedAppContextProvider>
-					<AppLink to="/destination">Link</AppLink>
-				</MockedAppContextProvider>
-			</MemoryRouter>
-		).root;
-		const el = root.findByType('a');
-		expect(el.props.href).toBe('/com_zextras_zapp_test/destination');
+		let component;
+		act(() => {
+			component = create(
+				<MemoryRouter>
+					<BootstrapperContextProvider>
+						<AppLoaderContextProvider>
+							<AppContextProvider pkg={{ package: 'com_example_package' }}>
+								<AppLink to="/destination">Link</AppLink>
+							</AppContextProvider>
+						</AppLoaderContextProvider>
+					</BootstrapperContextProvider>
+				</MemoryRouter>
+			);
+		});
+		const el = component.root.findByType('a');
+		expect(el.props.href).toBe('/com_example_package/destination');
 	});
 
 	test('Link with parameters', () => {
-		const root = renderer.create(
-			<MemoryRouter>
-				<MockedAppContextProvider>
-					<AppLink to="/destination?param=true">Link</AppLink>
-				</MockedAppContextProvider>
-			</MemoryRouter>
-		).root;
-		const el = root.findByType('a');
-		expect(el.props.href).toBe('/com_zextras_zapp_test/destination?param=true');
+		let component;
+		act(() => {
+			component = create(
+				<MemoryRouter>
+					<BootstrapperContextProvider>
+						<AppLoaderContextProvider>
+							<AppContextProvider pkg={{ package: 'com_example_package' }}>
+								<AppLink to="/destination?param=true">Link</AppLink>
+							</AppContextProvider>
+						</AppLoaderContextProvider>
+					</BootstrapperContextProvider>
+				</MemoryRouter>
+			);
+		});
+		const el = component.root.findByType('a');
+		expect(el.props.href).toBe('/com_example_package/destination?param=true');
 	});
 
 	test('Link without parameters, to as object', () => {
-		const root = renderer.create(
-			<MemoryRouter>
-				<MockedAppContextProvider>
-					<AppLink to={{pathname: '/destination'}}>Link</AppLink>
-				</MockedAppContextProvider>
-			</MemoryRouter>
-		).root;
-		const el = root.findByType('a');
-		expect(el.props.href).toBe('/com_zextras_zapp_test/destination');
+		let component;
+		act(() => {
+			component = create(
+				<MemoryRouter>
+					<BootstrapperContextProvider>
+						<AppLoaderContextProvider>
+							<AppContextProvider pkg={{ package: 'com_example_package' }}>
+								<AppLink to={{ pathname: '/destination' }}>Link</AppLink>
+							</AppContextProvider>
+						</AppLoaderContextProvider>
+					</BootstrapperContextProvider>
+				</MemoryRouter>
+			);
+		});
+		const el = component.root.findByType('a');
+		expect(el.props.href).toBe('/com_example_package/destination');
 	});
 
 });

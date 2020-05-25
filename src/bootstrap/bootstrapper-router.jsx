@@ -11,7 +11,7 @@
 
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { useUserAccounts } from './bootstrapper-context-provider';
+import { useUserAccounts } from './bootstrapper-context';
 import LoadingView from './loading-view';
 import BootstrapperRouterContent from './bootstrapper-router-content';
 

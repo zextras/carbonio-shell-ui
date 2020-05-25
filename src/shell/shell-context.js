@@ -9,9 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
-export default createContext({
+const ShellContext = createContext({
 	isMobile: true,
 	panels: [],
 	currentPanel: 0,
@@ -20,3 +20,19 @@ export default createContext({
 	updatePanel: (idx, url) => undefined,
 	setCurrentPanel: (idx) => undefined
 });
+
+export function useIsMobile() {
+	const { isMobile } = useContext(ShellContext);
+	return isMobile;
+}
+
+/**
+ * use the fiberchannel in a Shell context.
+ * @returns {{fiberChannelSink, fiberChannel}}
+ */
+export function useFiberChannel() {
+	const { fiberChannelSink, fiberChannel } = useContext(ShellContext);
+	return { fiberChannelSink, fiberChannel };
+}
+
+export default ShellContext;

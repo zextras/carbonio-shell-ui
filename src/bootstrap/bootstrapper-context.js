@@ -9,12 +9,34 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
-export default createContext({
+const BootstrapperContext = createContext({
 	// shellNetworkService,
 	// shellDb,
 	// fiberChannelFactory,
 	accountLoaded: false,
 	accounts: []
 });
+
+export function useShellNetworkService() {
+	const { shellNetworkService } = useContext(BootstrapperContext);
+	return shellNetworkService;
+}
+
+export function useShellDb() {
+	const { shellDb } = useContext(BootstrapperContext);
+	return shellDb;
+}
+
+export function useFiberChannelFactory() {
+	const { fiberChannelFactory } = useContext(BootstrapperContext);
+	return fiberChannelFactory;
+}
+
+export function useUserAccounts() {
+	const { accounts, accountLoaded } = useContext(BootstrapperContext);
+	return { accounts, accountLoaded };
+}
+
+export default BootstrapperContext;

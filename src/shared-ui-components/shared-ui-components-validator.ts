@@ -9,16 +9,11 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { createContext, useContext } from 'react';
+import { ComponentClass } from 'react';
 
-const AppLoaderContext = createContext({
-	appsCache: {},
-	appsLoaded: false
-});
-
-export function useAppsCache() {
-	const { appsCache, appsLoaded } = useContext(AppLoaderContext);
-	return [appsCache, appsLoaded];
+export default function validateSharedUiComponent(c: ComponentClass): boolean {
+	if (!c.propTypes) {
+		throw new Error('Shared UI Components MUST declare \'propTypes\'.');
+	}
+	return true;
 }
-
-export default AppLoaderContext;

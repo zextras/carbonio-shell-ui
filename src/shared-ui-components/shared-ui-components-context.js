@@ -11,14 +11,11 @@
 
 import { createContext, useContext } from 'react';
 
-const AppLoaderContext = createContext({
-	appsCache: {},
-	appsLoaded: false
-});
+const SharedUiComponentsContext = createContext();
 
-export function useAppsCache() {
-	const { appsCache, appsLoaded } = useContext(AppLoaderContext);
-	return [appsCache, appsLoaded];
+export function useSharedUiComponentsScope(scopeName) {
+	const { scopes } = useContext(SharedUiComponentsContext);
+	return scopes[scopeName] || [];
 }
 
-export default AppLoaderContext;
+export default SharedUiComponentsContext;

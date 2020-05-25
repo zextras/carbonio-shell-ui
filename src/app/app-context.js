@@ -9,8 +9,24 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
-export default createContext({
+const AppContext = createContext({
 	pkg: undefined,
 });
+
+export function useAppPkg() {
+	const { pkg } = useContext(AppContext);
+	return pkg;
+}
+
+export function useAppContext() {
+	return useContext(AppContext);
+}
+
+export function useFiberChannel() {
+	const { fiberChannelSink, fiberChannel } = useContext(AppContext);
+	return { fiberChannelSink, fiberChannel };
+}
+
+export default AppContext;

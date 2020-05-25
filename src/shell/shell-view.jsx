@@ -18,6 +18,8 @@ import ShellContextProvider from './shell-context-provider';
 import ShellSecondaryBar from './shell-secondary-bar';
 import ShellHeader from './shell-header';
 import AppPanelWindow from './panels/app-panel-window';
+import SharedUiComponentsContextProvider
+	from '../shared-ui-components/shared-ui-components-context-provider';
 
 const ShellContainer = styled.div`
 	display: flex;
@@ -30,13 +32,15 @@ export default function ShellView() {
 	return (
 		<ShellContextProvider>
 			<AppLoaderContextProvider>
-				<ShellHeader />
-				<ShellContainer>
-					<MainMenu />
-					<ShellSecondaryBar />
-					<PanelsRouterContainer />
-				</ShellContainer>
-				<AppPanelWindow />
+				<SharedUiComponentsContextProvider>
+					<ShellHeader />
+					<ShellContainer>
+						<MainMenu />
+						<ShellSecondaryBar />
+						<PanelsRouterContainer />
+					</ShellContainer>
+					<AppPanelWindow />
+				</SharedUiComponentsContextProvider>
 			</AppLoaderContextProvider>
 		</ShellContextProvider>
 	);

@@ -13,7 +13,7 @@ import React, { useEffect, useState } from 'react';
 import { Switch } from 'react-router-dom';
 import AppPanelRoutes from '../../app/app-panel-routes';
 import styled from 'styled-components';
-import { useAppsCache } from '../../app/app-loader-context-provider';
+import { useAppsCache } from '../../app/app-loader-context';
 import { reduce } from 'lodash';
 
 const _PanelsRouterContainer = styled.div`

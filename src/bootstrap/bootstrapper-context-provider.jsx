@@ -9,29 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import BootstrapperContext from './bootstrapper-context';
 import { useObserveDb } from '../db/useObserveDb';
-
-export function useShellNetworkService() {
-	const { shellNetworkService } = useContext(BootstrapperContext);
-	return shellNetworkService;
-}
-
-export function useShellDb() {
-	const { shellDb } = useContext(BootstrapperContext);
-	return shellDb;
-}
-
-export function useFiberChannelFactory() {
-	const { fiberChannelFactory } = useContext(BootstrapperContext);
-	return fiberChannelFactory;
-}
-
-export function useUserAccounts() {
-	const { accounts, accountLoaded } = useContext(BootstrapperContext);
-	return { accounts, accountLoaded };
-}
 
 export default function BootstrapperContextProvider({ children, shellNetworkService, shellDb, fiberChannelFactory }) {
 	const query = useMemo(() => () => shellDb.accounts.limit(1).toArray(), [shellDb]);

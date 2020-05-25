@@ -10,7 +10,7 @@
  */
 
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { act, create } from 'react-test-renderer';
 
 jest.mock('@zextras/zapp-ui');
 jest.mock('../db/database');
@@ -20,22 +20,10 @@ jest.mock('./main-menu');
 jest.mock('./shell-secondary-bar');
 jest.mock('./panels/panels-router-container');
 jest.mock('./panels/app-panel-window');
+jest.mock('../bootstrap/bootstrapper-context-provider');
 
 import ShellView from './shell-view';
-import BootsrapperContext from '../bootstrap/bootstrapper-context';
-import FiberChannelFactory from '../fiberchannel/fiber-channel';
-
-const MockedContextProvider = ({ children }) => (
-	<BootsrapperContext.Provider
-		value={{
-			fiberChannelFactory: new FiberChannelFactory(),
-			accountLoaded: true,
-			accounts: []
-		}}
-	>
-		{ children }
-	</BootsrapperContext.Provider>
-);
+import BootstrapperContextProvider from '../bootstrap/bootstrapper-context-provider';
 
 describe('Shell View', () => {
 	beforeAll(() => {
@@ -44,11 +32,14 @@ describe('Shell View', () => {
 	})
 
 	test('Basic structure', () => {
-		const shell = renderer.create(
-			<MockedContextProvider>
-				<ShellView />
-			</MockedContextProvider>
-		);
-		expect(shell.toJSON()).toMatchSnapshot();
+		let component;
+		act(() => {
+			component = create(
+				<BootstrapperContextProvider>
+					<ShellView/>
+				</BootstrapperContextProvider>
+			);
+		});
+		expect(component.toJSON()).toMatchSnapshot();
 	});
 });

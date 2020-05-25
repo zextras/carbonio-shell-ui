@@ -11,7 +11,7 @@
 
 import { default as Lodash, map, orderBy, compact, keyBy } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { LazyExoticComponent } from 'react';
+import { ComponentClass, LazyExoticComponent } from 'react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as RxJS from 'rxjs';
@@ -28,12 +28,16 @@ import * as StyledComponents from 'styled-components';
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
 import { AccountAppsData, AppPkgDescription } from '../db/account';
 import * as hooks from '../shell/hooks';
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+import SharedUiComponentsFactory from '../shared-ui-components/shared-ui-components-factory'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import AppLink from './app-link';
 import { wrapAppDbConstructor } from './app-db';
 import { FC, FCSink, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
+import validateSharedUiComponent from '../shared-ui-components/shared-ui-components-validator';
 
 type AppModuleFunction = () => void;
 
@@ -61,9 +65,11 @@ type SharedLibrariesAppsMap = {
 		setRoutes: (routes: AppRouteDescription[]) => void;
 		setCreateOptions: (options: AppCreateOption[]) => void;
 		setAppContext: (obj: any) => void;
+		addSharedUiComponent: (scope: string, componentClass: ComponentClass) => void;
 		fiberChannel: FC;
 		fiberChannelSink: FCSink;
 		hooks: any;
+		ui: any;
 	};
 	'@zextras/zapp-ui': {};
 };
@@ -104,11 +110,18 @@ type AppCreateOption = {
 	label: string;
 };
 
+type SharedUiComponentsDescriptor = {
+	[scope: string]: {
+		pkg: AppPkgDescription;
+		componentClass: ComponentClass;
+	}[];
+};
+
 type LoadedAppRuntime = AppInjections & {
 	pkg: AppPkgDescription;
 };
 
-type LoadedAppsCache = {
+export type LoadedAppsCache = {
 	[pkgName: string]: LoadedAppRuntime;
 };
 
@@ -117,6 +130,7 @@ type AppInjections = {
 	routes: BehaviorSubject<AppRouteDescription[]>;
 	createOptions: BehaviorSubject<AppCreateOption[]>;
 	appContext: BehaviorSubject<any>;
+	sharedUiComponents: BehaviorSubject<SharedUiComponentsDescriptor>;
 };
 
 const _iframes: { [pkgName: string]: HTMLIFrameElement } = {};
@@ -128,6 +142,7 @@ function loadAppModule(
 		mainMenuItems,
 		routes,
 		createOptions,
+		sharedUiComponents,
 		appContext
 	}: AppInjections,
 	fiberChannelFactory: IFiberChannelFactory,
@@ -184,9 +199,26 @@ function loadAppModule(
 					setRoutes: (r) => routes.next(r),
 					setCreateOptions: (options) => createOptions.next(options),
 					setAppContext: (obj: any) => appContext.next(obj),
+					addSharedUiComponent: (scope: string, componentClass: ComponentClass) => {
+						validateSharedUiComponent(componentClass);
+						const scopes: SharedUiComponentsDescriptor = sharedUiComponents.getValue();
+						sharedUiComponents.next({
+							...scopes,
+							[scope]: [
+								...(scopes[scope] ? scopes[scope] : []),
+								{
+									pkg: appPkg,
+									componentClass
+								}
+							]
+						});
+					},
 					fiberChannel: fiberChannelFactory.getAppFiberChannel(appPkg),
 					fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(appPkg),
 					hooks,
+					ui: {
+						SharedUiComponentsFactory
+					}
 				},
 				'@zextras/zapp-ui': ZappUI
 			};
@@ -194,6 +226,7 @@ function loadAppModule(
 			(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (extModule: AppModuleFunction): void => {
 				// Errors are not collected here because the HMR works only on develpment mode.
 				console.log(`HMR ${ path }`, extModule);
+				sharedUiComponents.next({});
 				extModule.call(undefined);
 			};
 			switch (FLAVOR) {
@@ -220,12 +253,14 @@ function loadApp(
 	const routes = new BehaviorSubject<AppRouteDescription[]>([]);
 	const createOptions = new BehaviorSubject<AppCreateOption[]>([]);
 	const appContext = new BehaviorSubject<any>({});
+	const sharedUiComponents = new BehaviorSubject<SharedUiComponentsDescriptor>({});
 	return loadAppModule(
 		pkg,
 		{
 			mainMenuItems,
 			routes,
 			createOptions,
+			sharedUiComponents,
 			appContext
 		},
 		fiberChannelFactory
@@ -247,7 +282,12 @@ function loadApp(
 		.then(() => true)
 		.catch((e) => {
 			const sink = fiberChannelFactory.getAppFiberChannelSink(pkg);
-			sink('report-exception', { exception: e });
+			sink({
+				event: 'report-exception',
+				data: {
+					exception: e
+				}
+			});
 			return false;
 		})
 		.then((loaded) => (loaded ? {
@@ -255,6 +295,7 @@ function loadApp(
 			mainMenuItems,
 			routes,
 			createOptions,
+			sharedUiComponents,
 			appContext
 		} : undefined));
 }
@@ -269,10 +310,18 @@ export function loadApps(
 			(pkg) => loadApp(pkg, fiberChannelFactory)
 		)
 	)
-		// .then(() => this._fcSink(
-		// 	'app:all-loaded',
-		// 	apps
-		// ))
 		.then((loaded) => compact(loaded))
-		.then((loaded) => keyBy(loaded, 'pkg.package'));
+		.then((loaded) => keyBy(loaded, 'pkg.package'))
+		.then((loaded) => {
+			const sink = fiberChannelFactory.getShellFiberChannelSink();
+			sink({
+				to: {
+					version: PACKAGE_VERSION,
+					app: PACKAGE_NAME
+				},
+				event: 'all-apps-loaded',
+				data: loaded
+			});
+			return loaded;
+		});
 }

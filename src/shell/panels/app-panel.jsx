@@ -13,7 +13,7 @@ import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import styled from 'styled-components';
 import { reduce } from 'lodash';
-import { useAppsCache } from '../../app/app-loader-context-provider';
+import { useAppsCache } from '../../app/app-loader-context';
 import AppPanelRoutes from '../../app/app-panel-routes';
 import ShellContext from '../shell-context';
 

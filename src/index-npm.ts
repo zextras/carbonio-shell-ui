@@ -15,6 +15,12 @@ require.context(
 	/.*/
 );
 
+require.context(
+	'file-loader?name=shelli18n/[path][name].[ext]&context=translations/!../translations/',
+	true,
+	/.*/
+);
+
 import './index.css';
 
 window.addEventListener('load', () => {
@@ -22,18 +28,27 @@ window.addEventListener('load', () => {
 		import(/* webpackChunkName: "e2e-utils" */ './e2e/e2e-utils'),
 		import(/* webpackChunkName: "bootstrapper" */ './bootstrap/bootstrapper')
 	]).then(([
-		{ default: injectE2EUtils, waitForAppPackage },
+		{ default: injectE2EUtils, waitDevTools, setDevTools },
 		{ boot }
 	]) => {
 		injectE2EUtils()
 			.then(() => {
 				switch (FLAVOR) {
 					case 'NPM':
-						// return waitForAppPackage()
-						// 	.then(() => e2e.setLoginData());
-						return e2e.setLoginData();
+						fetch('/_cli')
+							.then((data) => data.json())
+							.then((data) => setDevTools(data));
+
+						return waitDevTools()
+							.then((setup: devtoolsNamespace) => {
+								if (!setup.server) {
+									return e2e.setLoginData();
+								}
+							});
 				}
 			})
 			.then(boot);
 	});
+
+
 });

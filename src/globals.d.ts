@@ -29,6 +29,7 @@ type e2eNamespace = {
 };
 
 type devtoolsNamespace = {
+	server?: string;
 	app_package?: {
 		package: string;
 		name: string;

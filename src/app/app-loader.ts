@@ -19,6 +19,7 @@ import * as RxJSOperators from 'rxjs/operators';
 import * as ReactRouterDom from 'react-router-dom';
 import * as PropTypes from 'prop-types';
 import * as Moment from 'moment';
+import * as ReactI18n from 'react-i18next';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import * as ZappUI from "@zextras/zapp-ui";
@@ -51,6 +52,7 @@ type SharedLibrariesAppsMap = {
 	'dexie': {};
 	'react': {};
 	'react-dom': {};
+	'react-i18next': {};
 	'lodash': {};
 	'rxjs': {};
 	'rxjs/operators': {};
@@ -184,6 +186,7 @@ function loadAppModule(
 				'dexie': wrapAppDbConstructor(appPkg),
 				'react': React,
 				'react-dom': ReactDOM,
+				'react-i18next': ReactI18n,
 				'lodash': Lodash,
 				'rxjs': RxJS,
 				'rxjs/operators': RxJSOperators,

@@ -18,6 +18,8 @@ import LoadingView from './loading-view';
 import ShellDb from '../db/shell-db';
 import ShellNetworkService from '../network/shell-network-service';
 import FiberChannelFactory from '../fiberchannel/fiber-channel';
+import I18nProvider from '../i18n/i18n-provider';
+import I18nFactory from '../i18n/i18n-factory';
 
 const Bootstrap = lazy(() => {
 	const shellDb = new ShellDb();
@@ -28,14 +30,19 @@ const Bootstrap = lazy(() => {
 				shellDb
 			);
 			const fiberChannelFactory = new FiberChannelFactory();
+			const i18nFactory = new I18nFactory(fiberChannelFactory);
+
 			return {
 				'default': () => (
 					<BootstrapperContextProvider
 						shellDb={db}
 						shellNetworkService={shellNetworkService}
 						fiberChannelFactory={fiberChannelFactory}
+						i18nFactory={i18nFactory}
 					>
-						<BootstrapperRouter />
+						<I18nProvider i18n={i18nFactory.getShellI18n()}>
+							<BootstrapperRouter />
+						</I18nProvider>
 					</BootstrapperContextProvider>)
 			};
 		});

@@ -158,7 +158,7 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 	public getShellFiberChannelSink(): FCSink {
 		return this.getAppFiberChannelSink({
 			priority: 0,
-			package: '',
+			package: PACKAGE_NAME,
 			name: PACKAGE_NAME,
 			description: '',
 			version: PACKAGE_VERSION,
@@ -170,7 +170,7 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 	public getShellFiberChannel(): FC {
 		return this.getAppFiberChannel({
 			priority: 0,
-			package: '',
+			package: PACKAGE_NAME,
 			name: PACKAGE_NAME,
 			description: '',
 			version: PACKAGE_VERSION,

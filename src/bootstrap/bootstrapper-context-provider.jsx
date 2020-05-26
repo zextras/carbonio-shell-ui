@@ -13,7 +13,13 @@ import React, { useMemo } from 'react';
 import BootstrapperContext from './bootstrapper-context';
 import { useObserveDb } from '../db/useObserveDb';
 
-export default function BootstrapperContextProvider({ children, shellNetworkService, shellDb, fiberChannelFactory }) {
+export default function BootstrapperContextProvider({
+	children,
+	shellNetworkService,
+	shellDb,
+	fiberChannelFactory,
+	i18nFactory
+}) {
 	const query = useMemo(() => () => shellDb.accounts.limit(1).toArray(), [shellDb]);
 	const [accounts, accountLoaded] = useObserveDb(query, shellDb);
 
@@ -21,12 +27,14 @@ export default function BootstrapperContextProvider({ children, shellNetworkServ
 		shellNetworkService,
 		shellDb,
 		fiberChannelFactory,
+		i18nFactory,
 		accounts,
 		accountLoaded
 	}), [
 		shellNetworkService,
 		shellDb,
 		fiberChannelFactory,
+		i18nFactory,
 		accounts,
 		accountLoaded
 	]);

@@ -135,8 +135,17 @@ module.exports = {
 				PACKAGE_DESCRIPTION: pkg.pkgDescription
 			})
 	],
+	externals: {
+		'@zextras/zapp-cli': '__ZAPP_CLI__'
+	},
 	devServer: {
-		historyApiFallback: true
+		historyApiFallback: true,
+		proxy: {
+			'/zx/zimlet/com_zextras_zapp_shell': {
+				target: 'http://localhost:8080',
+				pathRewrite: {'^/zx/zimlet/com_zextras_zapp_shell' : ''}
+			}
+		}
 	}
 };
 /* {

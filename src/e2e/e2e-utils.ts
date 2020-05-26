@@ -25,7 +25,6 @@ function installOnWindow(wnd: Window): void {
 	// Inject the instruments for the e2e tests
 	installMockableFetch(wnd);
 	// Expose the instruments
-	(wnd as unknown as e2eInstrumentedWindow)['devtools'] = {};
 	(wnd as unknown as e2eInstrumentedWindow)['e2e'] = {
 		setLoginData,
 		addMockedResponse,
@@ -42,22 +41,26 @@ export default function() {
 		});
 }
 
-export function waitForAppPackage(): Promise<void> {
+export function waitDevTools(): Promise<devtoolsNamespace> {
 	return new Promise((resolve, reject) => {
 		const startTime = Date.now();
 		let intervalId: number;
 		function checkAndReturn() {
-			if ((Date.now()) - (startTime + 30000) > 0 || (typeof devtools !== 'undefined' && typeof devtools.app_package !== 'undefined')) {
+			if ((Date.now()) - (startTime + 30000) > 0 || (typeof devtools !== 'undefined')) {
 				clearInterval(intervalId);
-				if (typeof devtools.app_package !== 'undefined') {
-					resolve();
+				if (typeof devtools !== 'undefined') {
+					resolve(devtools);
 				}
 				else {
-					reject(new Error('Development App package was not set in 30s.'));
+					reject(new Error('CLI parameters not set in in 30s.'));
 				}
 			}
 		}
 
 		intervalId = setInterval(() => checkAndReturn(), 100) as unknown as number;
 	});
+}
+
+export function setDevTools(devtools: devtoolsNamespace): void {
+	(window as e2eInstrumentedWindow).devtools = devtools;
 }

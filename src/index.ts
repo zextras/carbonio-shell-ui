@@ -15,6 +15,12 @@ require.context(
 	/.*/
 );
 
+require.context(
+	'file-loader?name=i18n/[path][name].[ext]&context=translations/!../translations/',
+	true,
+	/.*/
+);
+
 import './index.css';
 
 window.addEventListener('load', () => {

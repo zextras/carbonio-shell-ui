@@ -15,52 +15,35 @@ import {
 	install as installMockableFetch,
 	throwErrorIfRequestNotMocked
 } from './mockable-fetch';
+import { E2EContext } from './e2e-types';
 
-interface e2eInstrumentedWindow extends Window {
+let ctxtCache: E2EContext;
+
+interface IE2eInstrumentedWindow extends Window {
 	e2e: e2eNamespace;
-	devtools: devtoolsNamespace;
+	cliSettings: cliSettingsNamespace;
 }
 
-function installOnWindow(wnd: Window): void {
+function installOnWindow(wnd: Window, ctxt: E2EContext): void {
+	if (!ctxtCache && ctxt) ctxtCache = ctxt;
 	// Inject the instruments for the e2e tests
 	installMockableFetch(wnd);
 	// Expose the instruments
-	(wnd as unknown as e2eInstrumentedWindow)['e2e'] = {
-		setLoginData,
+	(wnd as unknown as IE2eInstrumentedWindow)['e2e'] = {
+		setLoginData: () => setLoginData(ctxt),
 		addMockedResponse,
 		throwErrorIfRequestNotMocked,
-		installOnWindow
+		installOnWindow: (w: Window, ctxt?: E2EContext) => installOnWindow(w, ctxt || ctxtCache),
 	};
 	console.warn('e2e Utils installed.');
 }
 
-export default function() {
+export default function(ctxt: E2EContext) {
 	return Promise.resolve()
-		.then(() => {
-			installOnWindow(window)
-		});
+		.then(() => installOnWindow(window, ctxt));
 }
 
-export function waitDevTools(): Promise<devtoolsNamespace> {
-	return new Promise((resolve, reject) => {
-		const startTime = Date.now();
-		let intervalId: number;
-		function checkAndReturn() {
-			if ((Date.now()) - (startTime + 30000) > 0 || (typeof devtools !== 'undefined')) {
-				clearInterval(intervalId);
-				if (typeof devtools !== 'undefined') {
-					resolve(devtools);
-				}
-				else {
-					reject(new Error('CLI parameters not set in in 30s.'));
-				}
-			}
-		}
-
-		intervalId = setInterval(() => checkAndReturn(), 100) as unknown as number;
-	});
-}
-
-export function setDevTools(devtools: devtoolsNamespace): void {
-	(window as e2eInstrumentedWindow).devtools = devtools;
+export function setCliSettings(cliSettings: cliSettingsNamespace): cliSettingsNamespace {
+	(window as unknown as IE2eInstrumentedWindow).cliSettings = cliSettings;
+	return cliSettings;
 }

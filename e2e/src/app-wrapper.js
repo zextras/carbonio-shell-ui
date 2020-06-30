@@ -8,5 +8,19 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
+/* eslint-disable */
+import app from './app';
 
-export function boot(): void;
+require.context(
+	'file-loader?name=i18n/[name].[ext]&context=.!./translations/',
+	true,
+	/.*/
+);
+
+window.__ZAPP_EXPORT__(app);
+
+if (module.hot) {
+	module.hot.accept('./app.jsx', () => {
+		window.__ZAPP_HMR_EXPORT__(app);
+	});
+}

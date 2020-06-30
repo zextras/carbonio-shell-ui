@@ -17,22 +17,22 @@ let indexFile;
 switch (flavor.toUpperCase()) {
 	case 'NPM':
 	case 'E2E':
-		indexFile = path.resolve(process.cwd(), 'src', 'index-npm.ts');
+		indexFile = path.resolve(process.cwd(), 'src', 'index-npm.tsx');
 		break;
 	case 'APP':
 	default:
-		indexFile = path.resolve(process.cwd(), 'src', 'index.ts');
+		indexFile = path.resolve(process.cwd(), 'src', 'index.tsx');
 }
 
 module.exports = {
-	mode: 'development',
+	mode: flavor.toUpperCase() !== 'APP' ? 'development' : 'production',
 	entry: {
 		index: indexFile
 	},
 	devtool: 'source-map',
 	output: {
 		path: path.resolve(process.cwd(), 'build'),
-		filename: '[name].[hash:8].js',
+		filename: flavor.toUpperCase() !== 'APP' ? '[name].js' : '[name].[hash:8].js',
 		chunkFilename: '[name].[chunkhash:8].chunk.js',
 		publicPath: '/'
 	},
@@ -120,7 +120,8 @@ module.exports = {
 				process.cwd(),
 				'src',
 				'index.html'
-			)
+			),
+			chunks: ['index']
 		}),
 		new HtmlWebpackPlugin({
 				inject: false,
@@ -134,49 +135,5 @@ module.exports = {
 				PACKAGE_LABEL: pkg.pkgLabel,
 				PACKAGE_DESCRIPTION: pkg.pkgDescription
 			})
-	],
-	externals: {
-		'@zextras/zapp-cli': '__ZAPP_CLI__'
-	},
-	devServer: {
-		historyApiFallback: true,
-		proxy: {
-			'/zx/zimlet/com_zextras_zapp_shell': {
-				target: 'http://localhost:8080',
-				pathRewrite: {'^/zx/zimlet/com_zextras_zapp_shell' : ''}
-			}
-		}
-	}
-};
-/* {
-	mode: 'development',
-	entry: {
-		'shell-sw': path.resolve(process.cwd(), 'src', 'serviceworker', 'main.ts'),
-	},
-	devtool: 'inline-source-map',
-	output: {
-		path: path.resolve(process.cwd(), 'build'),
-		filename: '[name].js',
-		publicPath: '/'
-	},
-	target: 'webworker',
-	resolve: {
-		extensions: ['*', '.js', '.ts']
-	},
-	module: {
-			rules: [
-				{
-					test: /\.[jt]s$/,
-					exclude: /node_modules/,
-					loader: require.resolve('babel-loader'),
-					options: babelRCServiceworker
-				}
-			]
-	},
-	plugins: [
-		new DefinePlugin({
-			PACKAGE_VERSION: JSON.stringify(pkg.version),
-			PACKAGE_NAME: JSON.stringify(pkg.pkgName)
-		})
 	]
-} */
+};

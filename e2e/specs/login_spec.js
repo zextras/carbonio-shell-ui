@@ -14,14 +14,17 @@ const performLoginAndRouteTo = require('./utils').performLoginAndRouteTo;
 const until = protractor.ExpectedConditions;
 
 describe('Login and Logout', function() {
+
 	it('User performs a login', async function() {
-		await browser.get('http://localhost:8080/');
-		await browser.wait(until.presenceOf(element(by.react('ShellView')), 5000, 'Element taking too long to appear in the DOM'));
+		await browser.get('http://localhost:8080/login');
+		await browser.waitForReact(100000, '#app');
+		await browser.wait(until.presenceOf(element(by.react('shell-header*')), 5000, 'Element taking too long to appear in the DOM'));
 		expect(element(by.react('ShellView')).isPresent()).toBeTruthy();
 	});
 
 	it('User performs a logout and is redirected to \'/login\'', async function() {
 		await browser.get('http://localhost:8080/logout');
+		await browser.waitForReact(10000, '#app');
 		await browser.wait(until.presenceOf(element(by.css('button[type = "submit"]')), 5000, 'Element taking too long to appear in the DOM'));
 		await element(by.css('button[type = "submit"]')).submit();
 		await browser.wait(function() {

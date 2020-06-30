@@ -8,6 +8,12 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
+import './index.css';
+
+import React, { Suspense } from 'react';
+import { render } from 'react-dom';
+import LoadingView from './bootstrap/loading-view';
+import LazyBootstrapper from './bootstrap/lazy-bootstrapper';
 
 require.context(
 	'file-loader?name=assets/[path][name].[ext]&context=assets/!../assets/',
@@ -16,14 +22,16 @@ require.context(
 );
 
 require.context(
-	'file-loader?name=i18n/[path][name].[ext]&context=translations/!../translations/',
+	'file-loader?name=i18n/[name].[ext]&context=.!../translations/',
 	true,
 	/.*/
 );
 
-import './index.css';
-
-window.addEventListener('load', () => {
-	import(/* webpackChunkName: "bootstrapper" */ './bootstrap/bootstrapper')
-		.then(({ boot }) => boot());
-});
+render(
+	(
+		<Suspense fallback={<LoadingView />}>
+			<LazyBootstrapper />
+		</Suspense>
+	),
+	document.getElementById('app')
+);

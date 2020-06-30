@@ -39,6 +39,8 @@ import AppLink from './app-link';
 import { wrapAppDbConstructor } from './app-db';
 import { FC, FCSink, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import validateSharedUiComponent from '../shared-ui-components/shared-ui-components-validator';
+import ShellDb from '../db/shell-db';
+import ShellNetworkService from '../network/shell-network-service';
 
 type AppModuleFunction = () => void;
 

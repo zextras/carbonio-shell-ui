@@ -9,11 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { lazy, Suspense } from 'react';
-import { render } from 'react-dom';
+import React, { lazy } from 'react';
 import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-context-provider';
-import LoadingView from './loading-view';
 // TODO: Can be loaded asynchronously
 import ShellDb from '../db/shell-db';
 import ShellNetworkService from '../network/shell-network-service';
@@ -21,7 +19,7 @@ import FiberChannelFactory from '../fiberchannel/fiber-channel';
 import I18nProvider from '../i18n/i18n-provider';
 import I18nFactory from '../i18n/i18n-factory';
 
-const Bootstrap = lazy(() => {
+export default function bootstrapper(onBeforeBoot) {
 	const shellDb = new ShellDb();
 
 	return shellDb.open()
@@ -31,7 +29,29 @@ const Bootstrap = lazy(() => {
 			);
 			const fiberChannelFactory = new FiberChannelFactory();
 			const i18nFactory = new I18nFactory(fiberChannelFactory);
-
+			return {
+				db,
+				shellNetworkService,
+				fiberChannelFactory,
+				i18nFactory
+			};
+		})
+		.then((container) => {
+			if (onBeforeBoot) {
+				return onBeforeBoot(container)
+					.then(() => container)
+					.catch(() => container);
+			}
+			else {
+				return container;
+			}
+		})
+		.then(({
+			db,
+			shellNetworkService,
+			fiberChannelFactory,
+			i18nFactory
+		}) => {
 			return {
 				'default': () => (
 					<BootstrapperContextProvider
@@ -46,15 +66,4 @@ const Bootstrap = lazy(() => {
 					</BootstrapperContextProvider>)
 			};
 		});
-});
-
-export function boot() {
-	render(
-		(
-			<Suspense fallback={<LoadingView />}>
-				<Bootstrap />
-			</Suspense>
-		),
-		document.getElementById('app')
-	);
 }

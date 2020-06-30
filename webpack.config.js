@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DefinePlugin = require('webpack').DefinePlugin;
 const pkg = require('./zapp.conf.js');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const babelRCApp = require('./babel.config.app.js');
 // const babelRCServiceworker = require('./babel.config.serviceworker.js');
@@ -14,14 +15,20 @@ const babelRCApp = require('./babel.config.app.js');
 const flavor = process.env.ZX_SHELL_FLAVOR || 'APP';
 
 let indexFile;
+const pathsToCopy = [
+	{ from: 'assets', to: 'assets' },
+	{ from: 'node_modules/tinymce/skins', to: 'tinymce/skins/' },
+];
 switch (flavor.toUpperCase()) {
 	case 'NPM':
 	case 'E2E':
 		indexFile = path.resolve(process.cwd(), 'src', 'index-npm.tsx');
+		pathsToCopy.push({ from: 'translations', to: 'shelli18n' });
 		break;
 	case 'APP':
 	default:
 		indexFile = path.resolve(process.cwd(), 'src', 'index.tsx');
+		pathsToCopy.push({ from: 'translations', to: 'i18n' });
 }
 
 module.exports = {
@@ -104,6 +111,9 @@ module.exports = {
 		]
 	},
 	plugins: [
+		new CopyPlugin({
+			patterns: pathsToCopy,
+		}),
 		new DefinePlugin({
 			PACKAGE_VERSION: JSON.stringify(pkg.version),
 			PACKAGE_NAME: JSON.stringify(pkg.pkgName),

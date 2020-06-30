@@ -16,18 +16,6 @@ import LoadingView from './bootstrap/loading-view';
 import LazyBootstrapper from './bootstrap/lazy-bootstrapper';
 import loadDevelopmentEnv from './e2e/e2e-utils-injector';
 
-require.context(
-	'file-loader?name=assets/[path][name].[ext]&context=assets/!../assets/',
-	true,
-	/.*/
-);
-
-require.context(
-	'file-loader?name=i18n/[name].[ext]&context=.!../translations/',
-	true,
-	/.*/
-);
-
 render(
 	(
 		<Suspense fallback={<LoadingView />}>

@@ -35,7 +35,7 @@ function installOnWindow(wnd: Window, ctxt: E2EContext): void {
 		throwErrorIfRequestNotMocked,
 		installOnWindow: (w: Window, ctxt?: E2EContext) => installOnWindow(w, ctxt || ctxtCache),
 	};
-	console.warn('e2e Utils installed.');
+	console.debug('e2e Utils installed.');
 }
 
 export default function(ctxt: E2EContext) {

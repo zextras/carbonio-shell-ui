@@ -11,12 +11,6 @@
 /* eslint-disable */
 import app from './app';
 
-require.context(
-	'file-loader?name=i18n/[name].[ext]&context=.!./translations/',
-	true,
-	/.*/
-);
-
 window.__ZAPP_EXPORT__(app);
 
 if (module.hot) {

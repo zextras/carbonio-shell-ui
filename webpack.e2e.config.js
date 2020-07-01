@@ -1,6 +1,7 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const common = require('./webpack.config.js');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = merge(common, {
 	entry: {
@@ -20,6 +21,13 @@ module.exports = merge(common, {
 		'@zextras/zapp-shell': '__ZAPP_SHARED_LIBRARIES__[\'@zextras/zapp-shell\']',
 		// '@zextras/zapp-ui': '__ZAPP_SHARED_LIBRARIES__[\'@zextras/zapp-ui\']'
 	},
+	plugins: [
+		new CopyPlugin({
+			patterns: [
+				{ from: 'e2e/src/translations', to: 'i18n' },
+			],
+		})
+	],
 	devServer: {
 		historyApiFallback: true,
 		before: function (app, server) {

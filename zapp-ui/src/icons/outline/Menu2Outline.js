@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 function SvgMenu2Outline(props) {
   return (

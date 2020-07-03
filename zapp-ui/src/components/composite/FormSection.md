@@ -6,7 +6,7 @@ Form sections can be nested and preserve a proportional indentation.
 ```jsx
 import { FormRow } from './FormSection';
 import { Input } from '@zextras/zapp-ui';
-<FormSection label="Form Section" background="bg_9">
+<FormSection label="Form Section" background="gray5">
     <FormRow><Input label="aaa"/></FormRow>
     <FormRow><Input label="bbb"/></FormRow>
     <FormRow><Input label="ccc"/></FormRow>

@@ -20,6 +20,7 @@ import ShellHeader from './shell-header';
 import AppPanelWindow from './panels/app-panel-window';
 import SharedUiComponentsContextProvider
 	from '../shared-ui-components/shared-ui-components-context-provider';
+import { Button, extendTheme, ThemeProvider } from '@zextras/zapp-ui';
 
 const ShellContainer = styled.div`
 	display: flex;
@@ -30,18 +31,21 @@ const ShellContainer = styled.div`
 
 export default function ShellView() {
 	return (
-		<ShellContextProvider>
-			<AppLoaderContextProvider>
-				<SharedUiComponentsContextProvider>
-					<ShellHeader />
-					<ShellContainer>
-						<MainMenu />
-						<ShellSecondaryBar />
-						<PanelsRouterContainer />
-					</ShellContainer>
-					<AppPanelWindow />
-				</SharedUiComponentsContextProvider>
-			</AppLoaderContextProvider>
-		</ShellContextProvider>
+		<ThemeProvider theme={extendTheme({ palette: {light: {}, dark: {}}})}>
+			<ShellContextProvider>
+				<AppLoaderContextProvider>
+					<SharedUiComponentsContextProvider>
+						<Button label="Test Button" />
+						<ShellHeader />
+						<ShellContainer>
+							<MainMenu />
+							<ShellSecondaryBar />
+							<PanelsRouterContainer />
+						</ShellContainer>
+						<AppPanelWindow />
+					</SharedUiComponentsContextProvider>
+				</AppLoaderContextProvider>
+			</ShellContextProvider>
+		</ThemeProvider>
 	);
 }

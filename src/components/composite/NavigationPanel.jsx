@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Container from "../primitive/Container";
+import Container from "../layout/Container";
 import Collapse, { Collapser } from "../utilities/Collapse";
-import IconButton from "../primitive/IconButton";
+import IconButton from "../inputs/IconButton";
 import Responsive from "../utilities/Responsive";
-import Accordion from "../primitive/Accordion";
-import Quota from "../primitive/Quota";
-import Padding from "../primitive/Padding";
+import Accordion from "../navigation/Accordion";
+import Quota from "../feedback/Quota";
+import Padding from "../layout/Padding";
 
 function NavigationPanel({
 	navigationBarIsOpen,
@@ -25,7 +25,7 @@ function NavigationPanel({
 	return (
 		<Container
 			orientation="horizontal"
-			background="bg_9"
+			background="gray5"
 			width="fit"
 			height="fill"
 			mainAlignment="flex-start"
@@ -33,11 +33,15 @@ function NavigationPanel({
 		>
 			<Responsive mode="desktop">
 				<Container
-					width={64}
+					width={48}
 					height="fill"
-					background="bg_7"
+					background="gray6"
 					orientation="vertical"
 					mainAlignment="flex-start"
+					style={{
+						maxHeight: 'calc(100vh - 48px)',
+						overflowY: 'auto'
+					}}
 				>
 					{ tree.map((app, index) => (<PrimaryBarElement key={index} icon={app.icon} click={app.click}/>))}
 				</Container>
@@ -46,7 +50,16 @@ function NavigationPanel({
 					open={navigationBarIsOpen}
 					maxSize="256px"
 				>
-					<Container width={256} height="fill" orientation="vertical" mainAlignment="flex-start">
+					<Container
+						width={256}
+						height="fill"
+						orientation="vertical"
+						mainAlignment="flex-start"
+						style={{
+							maxHeight: 'calc(100vh - 48px)',
+							overflowY: 'auto'
+						}}
+					>
 						{ subTree.map((folder, index) => (<Accordion click={folder.click} key={index} label={folder.label} items={folder.subfolders ? folder.subfolders : []} level={0}/>))}
 					</Container>
 				</Collapse>
@@ -56,7 +69,7 @@ function NavigationPanel({
 				<Container
 					height="fill"
 					width="fit"
-					background="bg_9"
+					background="gray5"
 					style={{
 						position: 'absolute',
 						left: 0,
@@ -69,11 +82,30 @@ function NavigationPanel({
 						open={navigationBarIsOpen}
 						crossSize="100%"
 					>
-						<Container width={256+64+12} height="fill" orientation="vertical" mainAlignment="space-between">
-							<Container width="fill" height="fill" orientation="vertical" mainAlignment="flex-start">
+						<Container
+							width={256+48+12}
+							height="fill"
+							orientation="vertical"
+							mainAlignment="space-between"
+							style={{
+								maxHeight: 'calc(100vh - 48px)',
+								overflowY: 'auto'
+							}}
+						>
+							<Container
+								width="fill"
+								height="fit"
+								orientation="vertical"
+								mainAlignment="space-between"
+							>
 								{tree.map((app, index) => <Accordion level={0} key={index} icon={app.icon} label={app.label} click={app.click} items={app.folders} divider/>)}
 							</Container>
-							<Container width="fill" height="fit" orientation="vertical" mainAlignment="flex-end">
+							<Container
+								width="fill"
+								height="fit"
+								orientation="vertical"
+								mainAlignment="flex-end"
+							>
 								{menuTree.map((app, index) => <Accordion level={0} key={index} icon={app.icon} click={app.click} label={app.label} items={app.folders} divider/>)}
 								<Padding vertical="medium">
 									<Quota fill={quota}/>

@@ -12,16 +12,19 @@
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useShellDb, useShellNetworkService } from '../bootstrap/bootstrapper-context';
+import { useTranslation } from '../i18n/hooks';
 
 export default function LogoutView() {
 	const history = useHistory();
 	const db = useShellDb();
 	const network = useShellNetworkService();
+	const { t } = useTranslation();
 
 	const doLogout = useCallback((ev) => {
 		ev.preventDefault();
 		db.accounts.clear()
-			.then(() => {
+			.then(() => network.doLogout())
+			.then( () => {
 				history.push({
 					pathname: '/'
 				});
@@ -30,8 +33,8 @@ export default function LogoutView() {
 
 	return (
 		<form onSubmit={doLogout}>
-			You are going to be logged-out.
-			<button type="submit">Log me out</button>
+			{ t('You are going to be logged-out') }
+			<button type="submit">{ t('Log me out') }</button>
 		</form>
 	);
 }

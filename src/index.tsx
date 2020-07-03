@@ -8,16 +8,18 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-
-require.context(
-	'file-loader?name=assets/[path][name].[ext]&context=assets/!../assets/',
-	true,
-	/.*/
-);
-
 import './index.css';
 
-window.addEventListener('load', () => {
-	import(/* webpackChunkName: "bootstrapper" */ './bootstrap/bootstrapper')
-		.then(({ boot }) => boot());
-});
+import React, { Suspense } from 'react';
+import { render } from 'react-dom';
+import LoadingView from './bootstrap/loading-view';
+import LazyBootstrapper from './bootstrap/lazy-bootstrapper';
+
+render(
+	(
+		<Suspense fallback={<LoadingView />}>
+			<LazyBootstrapper />
+		</Suspense>
+	),
+	document.getElementById('app')
+);

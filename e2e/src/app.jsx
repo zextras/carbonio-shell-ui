@@ -9,4 +9,13 @@
  * *** END LICENSE BLOCK *****
  */
 
-export function boot(): void;
+import {
+	setMainMenuItems,
+	setRoutes,
+	setCreateOptions,
+	setAppContext
+} from '@zextras/zapp-shell';
+
+export default function app() {
+	console.log('Hello world!');
+}

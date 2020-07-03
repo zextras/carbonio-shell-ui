@@ -14,46 +14,48 @@ import ShellDb from '../db/shell-db';
 import Account, { AppPkgDescription } from '../db/account';
 import { ZimletPkgDescription } from '../network/soap/types';
 import { zimletToAppPkgDescription } from '../network/soap/utils';
+import { E2EContext } from './e2e-types';
 
 const ACCOUNT_ID = '00000000-0000-4000-8000-000000000000';
 const ACCOUNT_NAME = 'user@example.com';
 
-export default function(): Promise<void> {
+export default function(ctxt: E2EContext): Promise<void> {
 	return new Promise((resolve, reject) => {
 		const zimlet: ZimletPkgDescription[] = [];
 		switch (FLAVOR) {
 			// case 'E2E':
-			// 	if (devtools.app_package) {
+			// 	if (cliSettings.app_package) {
 			// 		zimlet.push({
 			// 			zimletContext: [{
-			// 				baseUrl: `/service/zimlet/${devtools.app_package.package}/`,
+			// 				baseUrl: `/service/zimlet/${cliSettings.app_package.package}/`,
 			// 				priority: 1,
 			// 				presence: 'enabled'
 			// 			}],
 			// 			zimlet: [{
 			// 				zapp: 'true',
-			// 				description: `${devtools.app_package.description}`,
-			// 				label: `${devtools.app_package.label}`,
-			// 				name: `${devtools.app_package.name}`,
-			// 				version: `${devtools.app_package.version}`,
+			// 				description: `${cliSettings.app_package.description}`,
+			// 				label: `${cliSettings.app_package.label}`,
+			// 				name: `${cliSettings.app_package.name}`,
+			// 				version: `${cliSettings.app_package.version}`,
 			// 				'zapp-main': 'app.bundle.js',
 			// 			}]
 			// 		});
 			// 	}
 			// 	break;
+			case 'E2E':
 			case 'NPM':
 				zimlet.push({
 					zimletContext: [{
-						baseUrl: `/service/zimlet/com_zextras_zapp_watch`,
+						baseUrl: `/service/zimlet/${cliSettings.app_package!.package}/`,
 						priority: 1,
 						presence: 'enabled'
 					}],
 					zimlet: [{
 						zapp: 'true',
-						description: 'Your next awesome App',
-						label: 'Awesome App',
-						name: 'com_zextras_zapp_watch',
-						version: '0.0.0',
+						description: `${cliSettings.app_package!.description}`,
+						label: `${cliSettings.app_package!.label}`,
+						name: `${cliSettings.app_package!.name}`,
+						version: `${cliSettings.app_package!.version}`,
 						'zapp-main': 'app.bundle.js',
 					}]
 				});
@@ -101,10 +103,8 @@ export default function(): Promise<void> {
 			}
 		});
 		// Injecting the user ass logged in
-		const shellDb = new ShellDb();
-		shellDb.open()
-			.then((db) => shellDb.accounts.clear())
-			.then(() => shellDb.accounts.add(
+		ctxt.db.accounts.clear()
+			.then(() => ctxt.db.accounts.add(
 					new Account(
 						ACCOUNT_ID,
 						ACCOUNT_ID,
@@ -125,7 +125,6 @@ export default function(): Promise<void> {
 					)
 				))
 			.then(() => {
-				shellDb.close();
 				resolve();
 			});
 	});

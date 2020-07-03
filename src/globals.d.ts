@@ -25,10 +25,11 @@ type e2eNamespace = {
 	setLoginData(): Promise<void>;
 	addMockedResponse(response: MockedResponse): void;
 	throwErrorIfRequestNotMocked(val: boolean): void;
-	installOnWindow(wnd: Window): void;
+	installOnWindow(wnd: Window, ctxt?: any /* E2EContext */): void;
 };
 
-type devtoolsNamespace = {
+type cliSettingsNamespace = {
+	server?: string;
 	app_package?: {
 		package: string;
 		name: string;
@@ -42,4 +43,4 @@ type devtoolsNamespace = {
  * Installed only on 'e2e' and 'npm' package.
  */
 declare const e2e: e2eNamespace;
-declare const devtools: devtoolsNamespace;
+declare const cliSettings: cliSettingsNamespace;

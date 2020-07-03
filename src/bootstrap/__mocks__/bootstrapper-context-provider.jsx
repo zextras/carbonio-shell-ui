@@ -12,12 +12,16 @@
 import React from 'react';
 import BootstrapperContext from '../bootstrapper-context';
 import FiberChannelFactory from '../../fiberchannel/fiber-channel';
+import I18nFactory from '../../i18n/i18n-factory';
+
+jest.mock('../../i18n/i18n-factory');
 
 const BootstrapperContextProvider = jest.fn().mockImplementation(({ children }) => {
 	return (
 		<BootstrapperContext.Provider
 			value={{
 				fiberChannelFactory: new FiberChannelFactory(),
+				i18nFactory: new I18nFactory(),
 				accountLoaded: false,
 				accounts: []
 			}}

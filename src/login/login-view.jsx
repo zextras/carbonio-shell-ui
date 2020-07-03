@@ -11,6 +11,7 @@
 
 import React from 'react';
 import useLoginView from './login-view-hook';
+import { useTranslation } from '../i18n/hooks';
 
 export default function LoginView() {
 	const {
@@ -19,19 +20,20 @@ export default function LoginView() {
 		passwordRef,
 		returnToPage
 	} = useLoginView();
+	const { t } = useTranslation();
 
 	return (
 		<div>
 			<form onSubmit={doLogin}>
-				<label htmlFor="username">Username</label>
+				<label htmlFor="username">{ t('Username') }</label>
 				<input ref={usernameRef} id="username" name="username" />
-				<label htmlFor="password">Password</label>
+				<label htmlFor="password">{ t('Password') }</label>
 				<input ref={passwordRef} id="password" name="password" type="password" />
 				<button type="submit">
-					Login
+					{ t('Login') }
 				</button>
 				<button onClick={returnToPage}>
-					Cancel
+					{ t('Cancel') }
 				</button>
 			</form>
 		</div>

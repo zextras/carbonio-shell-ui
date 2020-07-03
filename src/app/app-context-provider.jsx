@@ -12,12 +12,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import AppContext from './app-context';
 import { useAppsCache } from './app-loader-context';
-import { useFiberChannelFactory } from '../bootstrap/bootstrapper-context';
+import { useFiberChannelFactory, useI18nFactory } from '../bootstrap/bootstrapper-context';
 import AppErrorCatcher from './app-error-catcher';
+import I18nProvider from '../i18n/i18n-provider';
 
 export default function AppContextProvider({ pkg, children }) {
 	const [appsCache, appsLoaded] = useAppsCache();
 	const fiberChannelFactory = useFiberChannelFactory();
+	const i18nFactory = useI18nFactory();
 	const [appCtxt, setAppCtxt] = useState({});
 
 	useEffect(() => {
@@ -32,13 +34,17 @@ export default function AppContextProvider({ pkg, children }) {
 		...appCtxt
 	}), [pkg, appCtxt, fiberChannelFactory]);
 
+	const i18n = useMemo(() => i18nFactory.getAppI18n(pkg), [i18nFactory, pkg]);
+
 	return (
 		<AppContext.Provider
 			value={value}
 		>
-			<AppErrorCatcher>
-				{ children }
-			</AppErrorCatcher>
+			<I18nProvider i18n={i18n}>
+				<AppErrorCatcher>
+					{ children }
+				</AppErrorCatcher>
+			</I18nProvider>
 		</AppContext.Provider>
 	);
 }

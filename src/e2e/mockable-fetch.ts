@@ -19,6 +19,7 @@ type MockedFetch = (input: RequestInfo, init?: RequestInit) => Promise<Response>
 
 const MOCKS: MockedResponse[] = [];
 let _throwErrorIfRequestNotMocked = false;
+let originalFetch;
 
 function mockedFetch(input: RequestInfo, init?: RequestInit): Promise<Response> {
 	// TODO: Mock the fetch request here
@@ -36,7 +37,7 @@ function mockedFetch(input: RequestInfo, init?: RequestInit): Promise<Response> 
 		return Promise.reject(new Error(`Request '${input}' not mocked.`));
 	}
 	else if (!mock) {
-		return fetch(input, init);
+		return originalFetch(input, init);
 	}
 	else {
 		return Promise.resolve(
@@ -46,6 +47,7 @@ function mockedFetch(input: RequestInfo, init?: RequestInit): Promise<Response> 
 }
 
 export function install(wnd: Window): void {
+	originalFetch = wnd['fetch'];
 	(wnd as unknown as MockableFetchWindow)['fetch'] = mockedFetch;
 }
 

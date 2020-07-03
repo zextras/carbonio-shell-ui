@@ -12,17 +12,16 @@
 exports.config = {
 	framework: 'jasmine',
 	seleniumAddress: 'http://localhost:4444/wd/hub',
-	specs: ['specs/*_spec.js'],
+	specs: ['e2e/specs/*_spec.js'],
 	plugins: [
 		{ package: 'protractor-react-selector' }
 	],
 	onPrepare: async function() {
-		const until = protractor.ExpectedConditions;
 		const jasmineReporters = require('jasmine-reporters');
 		const junitReporter = new jasmineReporters.JUnitXmlReporter({
 
 			// setup the output path for the junit reports
-			savePath: 'output/',
+			savePath: 'e2e/output/',
 
 			// conslidate all true:
 			//   output/junitresults.xml
@@ -36,17 +35,17 @@ exports.config = {
 		jasmine.getEnv().addReporter(junitReporter);
 
 		await browser.waitForAngularEnabled(false);
-		// Performs the login
-		await browser.get('http://localhost:8080/login');
-		// Wait for LoginView to be rendered
-		await browser.wait(until.presenceOf(element(by.name('username')), 5000, 'Element taking too long to appear in the DOM'));
-		await browser.wait(until.presenceOf(element(by.name('password')), 5000, 'Element taking too long to appear in the DOM'));
-		await browser.wait(until.presenceOf(element(by.css('button[type = "submit"]')), 5000, 'Element taking too long to appear in the DOM'));
-		// Perform the login
-		await element(by.name('username')).sendKeys('admin');
-		await element(by.name('password')).sendKeys('assext');
-		await element(by.css('button[type = "submit"]')).submit();
+		// // Performs the login
+		// await browser.get('http://localhost:8080/login');
+		// // Wait for LoginView to be rendered
+		// await browser.wait(until.presenceOf(element(by.name('username')), 5000, 'Element taking too long to appear in the DOM'));
+		// await browser.wait(until.presenceOf(element(by.name('password')), 5000, 'Element taking too long to appear in the DOM'));
+		// await browser.wait(until.presenceOf(element(by.css('button[type = "submit"]')), 5000, 'Element taking too long to appear in the DOM'));
+		// // Perform the login
+		// await element(by.name('username')).sendKeys('admin');
+		// await element(by.name('password')).sendKeys('assext');
+		// await element(by.css('button[type = "submit"]')).submit();
 		// Wait for the Shell view to be rendered
-		await browser.wait(until.presenceOf(element(by.react('ShellView')), 5000, 'Element taking too long to appear in the DOM'));
+		// await browser.wait(until.presenceOf(element(by.react('ShellView')), 5000, 'Element taking too long to appear in the DOM'));
 	}
 }

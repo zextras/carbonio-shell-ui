@@ -15,6 +15,7 @@ const BootstrapperContext = createContext({
 	// shellNetworkService,
 	// shellDb,
 	// fiberChannelFactory,
+	// i18nFactory,
 	accountLoaded: false,
 	accounts: []
 });
@@ -37,6 +38,11 @@ export function useFiberChannelFactory() {
 export function useUserAccounts() {
 	const { accounts, accountLoaded } = useContext(BootstrapperContext);
 	return { accounts, accountLoaded };
+}
+
+export function useI18nFactory() {
+	const { i18nFactory } = useContext(BootstrapperContext);
+	return i18nFactory;
 }
 
 export default BootstrapperContext;

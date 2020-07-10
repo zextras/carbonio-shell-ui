@@ -10,12 +10,20 @@
  */
 
 import Dexie from 'dexie';
-import 'dexie-observable';
-import 'dexie-syncable';
+import observable from 'dexie-observable';
+import syncable from 'dexie-syncable';
 import { ISyncProtocol } from 'dexie-syncable/api';
 import { Subject } from 'rxjs';
 
 export abstract class Database extends Dexie {
+
+	constructor(dbname: string) {
+		super(dbname,{ addons: [observable, syncable] });
+	}
+
+	public createUUID(): string {
+		return Dexie.Observable.createUUID();
+	}
 
 	public registerSyncProtocol(name: string, protocol: ISyncProtocol): void {
 		Dexie.Syncable.registerSyncProtocol(name, protocol);

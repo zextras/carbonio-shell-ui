@@ -9,8 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { Row } from '@zextras/zapp-ui';
 import PanelsRouterContainer from './panels/panels-router-container';
 import AppLoaderContextProvider from '../app/app-loader-context-provider';
 import MainMenu from './main-menu';
@@ -21,13 +22,9 @@ import AppPanelWindow from './panels/app-panel-window';
 import SharedUiComponentsContextProvider
 	from '../shared-ui-components/shared-ui-components-context-provider';
 import { Button, extendTheme, ThemeProvider } from '@zextras/zapp-ui';
-
-const ShellContainer = styled.div`
-	display: flex;
-	flex-direction: row;
-	flex-grow: 1;
-	// overflow: hidden;
-`;
+import { useAppsCache } from '../app/app-loader-context';
+import { reduce } from 'lodash';
+import { useBehaviorSubject } from './hooks';
 
 export default function ShellView() {
 	return (
@@ -35,17 +32,34 @@ export default function ShellView() {
 			<ShellContextProvider>
 				<AppLoaderContextProvider>
 					<SharedUiComponentsContextProvider>
-						<Button label="Test Button" />
-						<ShellHeader />
-						<ShellContainer>
-							<MainMenu />
-							<ShellSecondaryBar />
-							<PanelsRouterContainer />
-						</ShellContainer>
-						<AppPanelWindow />
+						<Shell />
 					</SharedUiComponentsContextProvider>
 				</AppLoaderContextProvider>
 			</ShellContextProvider>
 		</ThemeProvider>
+	);
+}
+
+function Shell() {
+	const [userOpen, setUserOpen] = useState(false);
+	const [navOpen, setNavOpen] = useState(true);
+
+	return (
+		<>
+			<ShellHeader
+				userBarIsOpen={userOpen}
+				navigationBarIsOpen={navOpen}
+				onMenuClick={() => setNavOpen(!navOpen)}
+				onUserClick={() => setUserOpen(!userOpen)}
+			/>
+			<Row crossAlignment="unset" flexGrow="1">
+				<MainMenu
+					navigationBarIsOpen={navOpen}
+					onCollapserClick={() => setNavOpen(!navOpen)}
+				/>
+				<PanelsRouterContainer />
+			</Row>
+			<AppPanelWindow />
+		</>
 	);
 }

@@ -11,16 +11,16 @@
 
 import React, { useEffect, useState } from 'react';
 import { Switch } from 'react-router-dom';
-import AppPanelRoutes from '../../app/app-panel-routes';
 import styled from 'styled-components';
-import { useAppsCache } from '../../app/app-loader-context';
 import { reduce } from 'lodash';
+import { Container } from '@zextras/zapp-ui';
+import { useAppsCache } from '../../app/app-loader-context';
+import AppPanelRoutes from '../../app/app-panel-routes';
 
-const _PanelsRouterContainer = styled.div`
-	background-color: #149c6f;
+const _PanelsRouterContainer = styled(Container)`
 	flex-grow: 1;
-	display: flex;
-	flex-direction: column;
+	flex-basis: 0;
+	min-width: 1px;
 `;
 
 export default function PanelsRouterContainer() {

@@ -27,9 +27,10 @@ import ShellContext from './shell-context';
 
 export default function ShellHeader({
 	userBarIsOpen,
-	navigationBarIsOpen,
-	onMenuClick,
-	onUserClick
+	mobileNavIsOpen,
+	onMobileMenuClick,
+	onUserClick,
+	quota
 }) {
 	const { t } = useTranslation();
 	const screenMode = useScreenMode();
@@ -81,7 +82,7 @@ export default function ShellHeader({
 		>
 			<Container orientation="horizontal" width="fit" mainAlignment="flex-start">
 				<Responsive mode="mobile">
-					<IconButton icon={navigationBarIsOpen ? 'Close' : 'Menu'} onClick={onMenuClick} />
+					<Padding right="small"><IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} /></Padding>
 				</Responsive>
 				<Logo size="small" />
 			</Container>
@@ -97,7 +98,7 @@ export default function ShellHeader({
 					</Container>
 					<Container orientation="horizontal" width="50%" mainAlignment="flex-end" padding={{ right: 'extrasmall'}}>
 						<Padding right="small">
-							<Quota fill={50}/>
+							<Quota fill={quota}/>
 						</Padding>
 						<IconButton icon="BellOutline" iconColor="text" />
 						<IconButton icon={ userBarIsOpen ? 'Close' : 'PersonOutline' } iconColor="text" onClick={onUserClick}/>

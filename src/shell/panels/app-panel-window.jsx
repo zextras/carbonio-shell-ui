@@ -18,14 +18,14 @@ import AppPanel from './app-panel';
 
 const BoardContainer = styled(Container)`
 	position: fixed;
-	bottom: 0;
 	left: 75px;
+	bottom: 0;
 	width: 700px;
 	height: 60vh;
-	min-height: 400px;	
+	min-height: 400px;
 	box-shadow: 0 2px 5px 0 rgba(125,125,125,0.5);
 `;
-const Header = styled(Row)``;
+const BoardHeader = styled(Row)``;
 const PanelsContainer = styled(Row)`
 	min-height: 0;
 `;
@@ -56,7 +56,7 @@ export default function AppPanelWindow() {
 			background="gray6"
 			crossAlignment="unset"
 		>
-			<Header background="gray5">
+			<BoardHeader background="gray5">
 				<Padding all="extrasmall"><BackButton icon="ChevronLeftOutline" /></Padding>
 				<TabsContainer height="100%" mainAlignment="flex-start" takeAvailableSpace={true}>
 					{ tabs }
@@ -65,7 +65,7 @@ export default function AppPanelWindow() {
 					<Padding right="extrasmall"><IconButton icon="ExpandOutline" /></Padding>
 					<IconButton icon="CloseOutline" />
 				</Actions>
-			</Header>
+			</BoardHeader>
 			<Divider style={{ height: '2px' }}/>
 			<PanelsContainer takeAvailableSpace={true}>
 				{ panels }

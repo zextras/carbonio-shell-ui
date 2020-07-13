@@ -9,12 +9,23 @@
  * *** END LICENSE BLOCK *****
  */
 import React, { useCallback, useContext } from 'react';
+import styled from 'styled-components';
+import { IconButton, Text, Row } from '@zextras/zapp-ui';
 import ShellContext from '../shell-context';
+
+const TabContainer = styled(Row)`
+	cursor: pointer;
+	height: 100%;
+	width: 27%;
+	margin: 0 8px 0 0;
+	user-select: none;
+`;
 
 export default function AppPanelTab({ idx }) {
 	const {
 		panels,
 		removePanel,
+		currentPanel,
 		setCurrentPanel
 	} = useContext(ShellContext);
 
@@ -31,8 +42,11 @@ export default function AppPanelTab({ idx }) {
 	}, [removePanel, idx]);
 
 	return (
-		<div onClick={onClick} style={{ cursor: 'pointer' }}>
-			App tab {idx} <span onClick={onRemove} style={{ cursor: 'pointer' }}>X</span> ({panels[idx]})
-		</div>
+		<TabContainer active={currentPanel === idx}>
+			<Row height="100%" onClick={onClick} takeAvailableSpace={true}>
+				<Text size="large" weight={currentPanel === idx ? 'bold' : 'regular'} color={currentPanel === idx ? 'text' : 'secondary'}>Tab Title</Text>
+			</Row>
+			<IconButton iconColor="secondary" icon="Close" onClick={onRemove} size="small" />
+		</TabContainer>
 	);
 }

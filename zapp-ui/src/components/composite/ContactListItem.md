@@ -41,7 +41,7 @@ const actions = [
         {
             firstName: 'bg',
             lastName: 'url',
-            image: 'primitive.jpg',
+            image: 'example.jpg',
             email: 'cssmasher@gmail.com',
             jobTitle: 'Mascot',
             department: 'zapp-ui design system'

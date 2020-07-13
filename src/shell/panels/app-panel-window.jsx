@@ -11,18 +11,27 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { reduce } from 'lodash';
+import { Container, Divider, IconButton, Row, Padding } from '@zextras/zapp-ui';
 import ShellContext from '../shell-context';
 import AppPanelTab from './app-panel-tab';
 import AppPanel from './app-panel';
 
-const _container = styled.div`
+const BoardContainer = styled(Container)`
 	position: fixed;
 	bottom: 0;
-	left: 0;
-	width: 60vw;
+	left: 75px;
+	width: 700px;
 	height: 60vh;
+	min-height: 400px;	
+	box-shadow: 0 2px 5px 0 rgba(125,125,125,0.5);
 `;
-const _tabs = styled.div``;
+const Header = styled(Row)``;
+const PanelsContainer = styled(Row)`
+	min-height: 0;
+`;
+const BackButton = styled(IconButton)``;
+const TabsContainer = styled(Row)``;
+const Actions = styled(Row)``;
 
 export default function AppPanelWindow() {
 	const { panels: shellPanels } = useContext(ShellContext);
@@ -41,14 +50,26 @@ export default function AppPanelWindow() {
 		[[], []]
 	);
 
-	if (tabs.length > 0)
-		return (
-			<_container>
-				<_tabs>
-					{tabs}
-				</_tabs>
-				{panels}
-			</_container>
-		);
-	return null;
+	if (!tabs.length) return null;
+	return (
+		<BoardContainer
+			background="gray6"
+			crossAlignment="unset"
+		>
+			<Header background="gray5">
+				<Padding all="extrasmall"><BackButton icon="ChevronLeftOutline" /></Padding>
+				<TabsContainer height="100%" mainAlignment="flex-start" takeAvailableSpace={true}>
+					{ tabs }
+				</TabsContainer>
+				<Actions padding={{ all: 'extrasmall' }}>
+					<Padding right="extrasmall"><IconButton icon="ExpandOutline" /></Padding>
+					<IconButton icon="CloseOutline" />
+				</Actions>
+			</Header>
+			<Divider style={{ height: '2px' }}/>
+			<PanelsContainer takeAvailableSpace={true}>
+				{ panels }
+			</PanelsContainer>
+		</BoardContainer>
+	);
 }

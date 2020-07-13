@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Container from "../primitive/Container";
+import Container from "../layout/Container";
 import Collapse, { Collapser } from "../utilities/Collapse";
-import IconButton from "../primitive/IconButton";
+import IconButton from "../inputs/IconButton";
 import Responsive from "../utilities/Responsive";
-import Accordion from "../primitive/Accordion";
-import Quota from "../primitive/Quota";
-import Padding from "../primitive/Padding";
+import Accordion from "../navigation/Accordion";
+import Quota from "../feedback/Quota";
+import Padding from "../layout/Padding";
 
 function NavigationPanel({
 	navigationBarIsOpen,
@@ -25,7 +25,7 @@ function NavigationPanel({
 	return (
 		<Container
 			orientation="horizontal"
-			background="bg_9"
+			background="gray5"
 			width="fit"
 			height="fill"
 			mainAlignment="flex-start"
@@ -35,7 +35,7 @@ function NavigationPanel({
 				<Container
 					width={48}
 					height="fill"
-					background="bg_7"
+					background="gray6"
 					orientation="vertical"
 					mainAlignment="flex-start"
 					style={{
@@ -69,7 +69,7 @@ function NavigationPanel({
 				<Container
 					height="fill"
 					width="fit"
-					background="bg_9"
+					background="gray5"
 					style={{
 						position: 'absolute',
 						left: 0,

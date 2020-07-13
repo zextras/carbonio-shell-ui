@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 function SvgScissors(props) {
   return (

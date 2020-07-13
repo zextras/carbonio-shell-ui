@@ -15,7 +15,7 @@ const GoodComponent = ({ good }) => {
     }
     return (
         <>
-            <Text size="large" color="txt_6">I'm a good component!</Text>
+            <Text size="large" color="success">I'm a good component!</Text>
         </>
     );
 };
@@ -23,11 +23,11 @@ const GoodComponent = ({ good }) => {
 <Catcher>
     <Container width="50%">
         <Button
-            icon="CubeOutline"
+            icon="CodeDownload"
             label="Download virus"
             onClick={() => turnEvil(true)}
-            backgroundColor="bg_5"
-            labelColor="txt_5"
+            backgroundColor="gray2"
+            labelColor="error"
         />
         <Padding all="small">
             <Catcher>

@@ -1,15 +1,16 @@
 import React, { createContext, useContext } from 'react';
 import PropTypes from 'prop-types';
-import Container from '../primitive/Container';
+import Container from '../layout/Container';
 import defaultTheme from "../../theme/Theme";
-import Text from "../primitive/Text";
+import Text from "../basic/Text";
 
 const levelContext = createContext(0);
 
-function FormSection({ background, label, children }) {
+const FormSection = React.forwardRef(function({ background, label, children }, ref) {
 	const level = useContext(levelContext);
 	return (
 			<Container
+				ref={ref}
 				background={background}
 				orientation="vertical"
 				width="fill"
@@ -32,11 +33,11 @@ function FormSection({ background, label, children }) {
 				</levelContext.Provider>
 			</Container>
 	);
-}
+});
 
 FormSection.propTypes = {
 	label: PropTypes.string,
-	background: PropTypes.oneOf(Object.keys(defaultTheme.colors.background)),
+	background: PropTypes.oneOf(Object.keys(defaultTheme.palette.light)),
 };
 
 export default FormSection;

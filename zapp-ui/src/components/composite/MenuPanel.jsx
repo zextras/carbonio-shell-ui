@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Container from "../primitive/Container";
+import Container from "../layout/Container";
 import Collapse from "../utilities/Collapse";
 import Responsive from "../utilities/Responsive";
-import Accordion from "../primitive/Accordion";
+import Accordion from "../navigation/Accordion";
 
 function MenuPanel({
 	menuIsOpen,
@@ -12,7 +12,7 @@ function MenuPanel({
 	return (
 		<Container
 			orientation="horizontal"
-			background="bg_9"
+			background="gray5"
 			width="fit"
 			height="fill"
 			mainAlignment="flex-start"

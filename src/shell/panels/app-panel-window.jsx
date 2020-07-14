@@ -9,21 +9,42 @@
  * *** END LICENSE BLOCK *****
  */
 import React, { useContext } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { reduce } from 'lodash';
 import { Container, Divider, IconButton, Row, Padding } from '@zextras/zapp-ui';
 import ShellContext from '../shell-context';
 import AppPanelTab from './app-panel-tab';
 import AppPanel from './app-panel';
 
-const BoardContainer = styled(Container)`
+const BoardContainer = styled.div`
 	position: fixed;
-	left: 75px;
+	top: 48px;
+	bottom: 0;
+	left: 48px;
+	right: 0;
+	background-color: rgba(0,0,0,0);
+	pointer-events: none;
+	${({ largeView }) => largeView && css`
+		background-color: rgba(0,0,0,0.5);
+		pointer-events: auto;
+	`}
+	${({ minimized }) => minimized && css`
+		display: none;
+	`}
+`;
+const Board = styled(Container)`
+	position: absolute;
+	left: 24px;
 	bottom: 0;
 	width: 700px;
 	height: 60vh;
 	min-height: 400px;
 	box-shadow: 0 2px 5px 0 rgba(125,125,125,0.5);
+	pointer-events: auto;
+	${({ largeView }) => largeView && css`
+		height: calc(100% - 24px);
+		width: calc(100% - 24px * 2);
+	`}
 `;
 const BoardHeader = styled(Row)``;
 const PanelsContainer = styled(Row)`
@@ -34,7 +55,15 @@ const TabsContainer = styled(Row)``;
 const Actions = styled(Row)``;
 
 export default function AppPanelWindow() {
-	const { panels: shellPanels } = useContext(ShellContext);
+	const {
+		panels: shellPanels,
+		largeView,
+		toggleLargeView,
+		minimized,
+		toggleMinimized,
+		removeAllPanel
+	} = useContext(ShellContext);
+
 	const [tabs, panels] = reduce(
 		shellPanels,
 		(r, v, k) => {
@@ -53,23 +82,29 @@ export default function AppPanelWindow() {
 	if (!tabs.length) return null;
 	return (
 		<BoardContainer
-			background="gray6"
-			crossAlignment="unset"
+			largeView={largeView}
+			minimized={minimized}
 		>
-			<BoardHeader background="gray5">
-				<Padding all="extrasmall"><BackButton icon="ChevronLeftOutline" /></Padding>
-				<TabsContainer height="100%" mainAlignment="flex-start" takeAvailableSpace={true}>
-					{ tabs }
-				</TabsContainer>
-				<Actions padding={{ all: 'extrasmall' }}>
-					<Padding right="extrasmall"><IconButton icon="ExpandOutline" /></Padding>
-					<IconButton icon="CloseOutline" />
-				</Actions>
-			</BoardHeader>
-			<Divider style={{ height: '2px' }}/>
-			<PanelsContainer takeAvailableSpace={true}>
-				{ panels }
-			</PanelsContainer>
+			<Board
+				background="gray6"
+				crossAlignment="unset"
+				largeView={largeView}
+			>
+				<BoardHeader background="gray5">
+					<Padding all="extrasmall"><BackButton icon="ChevronLeftOutline" onClick={toggleMinimized} /></Padding>
+					<TabsContainer height="100%" mainAlignment="flex-start" takeAvailableSpace={true}>
+						{ tabs }
+					</TabsContainer>
+					<Actions padding={{ all: 'extrasmall' }}>
+						<Padding right="extrasmall"><IconButton icon={ largeView ? 'CollapseOutline' : 'ExpandOutline' } onClick={toggleLargeView} /></Padding>
+						<IconButton icon="CloseOutline" onClick={removeAllPanel} />
+					</Actions>
+				</BoardHeader>
+				<Divider style={{ height: '2px' }}/>
+				<PanelsContainer takeAvailableSpace={true}>
+					{ panels }
+				</PanelsContainer>
+			</Board>
 		</BoardContainer>
 	);
 }

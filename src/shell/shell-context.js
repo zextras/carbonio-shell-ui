@@ -15,10 +15,15 @@ const ShellContext = createContext({
 	isMobile: true,
 	panels: [],
 	currentPanel: 0,
+	largeView: false,
+	minimized: false,
 	addPanel: (panel) => undefined,
 	removePanel: (idx) => undefined,
+	removeAllPanel: () => undefined,
 	updatePanel: (idx, url) => undefined,
-	setCurrentPanel: (idx) => undefined
+	setCurrentPanel: (idx) => undefined,
+	toggleLargeView: () => undefined,
+	toggleMinimized: () => undefined
 });
 
 export function useIsMobile() {

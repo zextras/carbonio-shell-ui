@@ -9,10 +9,11 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { Container, IconButton } from '@zextras/zapp-ui';
+import { Container, IconButton, Row } from '@zextras/zapp-ui';
 import { map } from 'lodash';
-import React from 'react';
+import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
+import ShellContext from './shell-context';
 
 const AppIcon = styled(IconButton)`
 	${(props) => props.active && css`
@@ -24,6 +25,12 @@ export default function ShellPrimaryBar({
 	mainMenuItems,
 	activeApp
 }) {
+	const {
+		panels: shellPanels,
+		minimized,
+		toggleMinimized
+	} = useContext(ShellContext);
+
 	return (
 		<Container
 			width={48}
@@ -31,21 +38,37 @@ export default function ShellPrimaryBar({
 			background="gray6"
 			orientation="vertical"
 			mainAlignment="flex-start"
-			style={{
-				maxHeight: 'calc(100vh - 48px)',
-				overflowY: 'auto'
-			}}
 		>
-			{ map(mainMenuItems, (app, key) =>
-				<AppIcon
-					key={key}
-					iconColor={activeApp === app.id ? 'primary' : 'text'}
-					active={activeApp === app.id}
-					icon={app.icon}
-					onClick={app.click}
-					size="large"
-				/>
-			)}
+			<Row
+				mainAlignment="flex-start"
+				orientation="vertical"
+				takeAvailableSpace={true}
+				wrap="nowrap"
+				style={{ minHeight: '1px', overflowY: 'overlay' }}
+			>
+				{ map(mainMenuItems, (app, key) =>
+					<AppIcon
+						key={key}
+						iconColor={activeApp === app.id ? 'primary' : 'text'}
+						active={activeApp === app.id}
+						icon={app.icon}
+						onClick={app.click}
+						size="large"
+					/>
+				)}
+			</Row>
+			{
+				shellPanels.length > 0 && (
+					<Row>
+						<IconButton
+							iconColor="primary"
+							icon={minimized ? 'BoardOpen' : 'BoardCollapse'}
+							onClick={toggleMinimized}
+							size="large"
+						/>
+					</Row>
+				)
+			}
 		</Container>
 	);
 }

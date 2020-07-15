@@ -36,6 +36,7 @@ export default function ShellContextProvider({ children }) {
 
 	const removePanel = useCallback((idx) => {
 		if (currentPanel > 0 && currentPanel >= idx) setCurrentPanel(currentPanel - 1);
+		if (panels.length === 1) setLargeView(false);
 		const updatedPanels = [...panels];
 		updatedPanels.splice(idx, 1);
 		setPanels(updatedPanels);

@@ -21,6 +21,8 @@ const _PanelsRouterContainer = styled(Container)`
 	flex-grow: 1;
 	flex-basis: 0;
 	min-width: 1px;
+	max-height: calc(100vh - 48px);
+	overflow-y: auto;
 `;
 
 export default function PanelsRouterContainer() {

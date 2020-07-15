@@ -29,7 +29,13 @@ export default function ShellMenuPanel({
 			height="fill"
 			mainAlignment="flex-start"
 			crossAlignment="flex-start"
-			style={{ position: 'absolute', right: 0, top: 0, zIndex: 3 }}
+			style={{
+				position: 'absolute',
+				top: 0,
+				right: 0,
+				zIndex: 3,
+				boxShadow: '0 2px 5px 0 rgba(125,125,125,0.5)'
+			}}
 		>
 			<Responsive mode="desktop">
 				<Collapse

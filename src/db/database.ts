@@ -10,21 +10,36 @@
  */
 
 import Dexie from 'dexie';
-import 'dexie-observable';
-import 'dexie-syncable';
+import observable from 'dexie-observable';
+import syncable from 'dexie-syncable';
 import { ISyncProtocol } from 'dexie-syncable/api';
 import { Subject } from 'rxjs';
 
 export abstract class Database extends Dexie {
 
+	constructor(dbname: string, options?: any) {
+		super(
+			dbname,
+			{
+				...(options || {}),
+				addons: [observable, syncable, ...((options && options.addons) ? options.addons : [])]
+			}
+		);
+	}
+
+	public createUUID(): string {
+		return observable.createUUID();
+	}
+
 	public registerSyncProtocol(name: string, protocol: ISyncProtocol): void {
-		Dexie.Syncable.registerSyncProtocol(name, protocol);
+		syncable.registerSyncProtocol(name, protocol);
 	}
 
 	public observe(comparator: () => Promise<any>): Subject<any> {
 		// TODO: Optimize the observable!
 		const subject = new Subject();
 		comparator().then((r) => subject.next(r));
+		// @ts-ignore
 		this.on('changes', (changes: any) => {
 			comparator().then((r) => subject.next(r));
 		});

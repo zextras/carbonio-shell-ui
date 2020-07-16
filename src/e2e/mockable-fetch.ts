@@ -19,7 +19,7 @@ type MockedFetch = (input: RequestInfo, init?: RequestInit) => Promise<Response>
 
 const MOCKS: MockedResponse[] = [];
 let _throwErrorIfRequestNotMocked = false;
-let originalFetch;
+let originalFetch: (input: RequestInfo, init?: RequestInit) => Promise<Response>;
 
 function mockedFetch(input: RequestInfo, init?: RequestInit): Promise<Response> {
 	// TODO: Mock the fetch request here

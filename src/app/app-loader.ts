@@ -51,7 +51,6 @@ type IChildWindow = Window & {
 };
 
 type SharedLibrariesAppsMap = {
-	'dexie': {};
 	'react': {};
 	'react-dom': {};
 	'react-i18next': {};
@@ -65,6 +64,9 @@ type SharedLibrariesAppsMap = {
 	'@zextras/zapp-shell': {
 		// These signatures are in the documentation
 		// If changed update also the documentation.
+		db: {
+			Database: any;
+		};
 		setMainMenuItems: (items: MainMenuItemData[]) => void;
 		setRoutes: (routes: AppRouteDescription[]) => void;
 		setCreateOptions: (options: AppCreateOption[]) => void;
@@ -185,7 +187,6 @@ function loadAppModule(
 			// 		);
 			// 	});
 			(iframe.contentWindow as IChildWindow).__ZAPP_SHARED_LIBRARIES__ = {
-				'dexie': wrapAppDbConstructor(appPkg),
 				'react': React,
 				'react-dom': ReactDOM,
 				'react-i18next': ReactI18n,
@@ -200,6 +201,9 @@ function loadAppModule(
 				'prop-types': PropTypes,
 				'moment': Moment,
 				'@zextras/zapp-shell': {
+					db: {
+						Database: wrapAppDbConstructor(appPkg)
+					},
 					setMainMenuItems: (items) => mainMenuItems.next(items),
 					setRoutes: (r) => routes.next(r),
 					setCreateOptions: (options) => createOptions.next(options),

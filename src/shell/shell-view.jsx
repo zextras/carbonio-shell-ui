@@ -9,22 +9,20 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { Row } from '@zextras/zapp-ui';
+import React, { useCallback, useState } from 'react';
+import { Row, extendTheme, ThemeProvider, Responsive } from '@zextras/zapp-ui';
+import { useHistory } from 'react-router-dom';
 import PanelsRouterContainer from './panels/panels-router-container';
 import AppLoaderContextProvider from '../app/app-loader-context-provider';
-import MainMenu from './main-menu';
 import ShellContextProvider from './shell-context-provider';
-import ShellSecondaryBar from './shell-secondary-bar';
-import ShellHeader from './shell-header';
-import AppPanelWindow from './panels/app-panel-window';
 import SharedUiComponentsContextProvider
 	from '../shared-ui-components/shared-ui-components-context-provider';
-import { Button, extendTheme, ThemeProvider } from '@zextras/zapp-ui';
-import { useAppsCache } from '../app/app-loader-context';
-import { reduce } from 'lodash';
-import { useBehaviorSubject } from './hooks';
+import { useShellDb, useShellNetworkService } from '../bootstrap/bootstrapper-context';
+import { useTranslation } from '../i18n/hooks';
+import ShellHeader from './shell-header';
+import ShellNavigationBar from './shell-navigation-bar';
+import ShellMenuPanel from './shell-menu-panel';
+import AppPanelWindow from './panels/app-panel-window';
 
 export default function ShellView() {
 	return (
@@ -40,26 +38,56 @@ export default function ShellView() {
 	);
 }
 
-function Shell() {
+export function Shell() {
+	const db = useShellDb();
+	const history = useHistory();
+	const network = useShellNetworkService();
+
 	const [userOpen, setUserOpen] = useState(false);
 	const [navOpen, setNavOpen] = useState(true);
+	const [mobileNavOpen, setMobileNavOpen] = useState(false);
+	const { t } = useTranslation();
+
+	const doLogout = useCallback((ev) => {
+		ev.preventDefault();
+		db.accounts.clear()
+			.then(() => network.doLogout())
+			.then( () => history.push({ pathname: '/' }));
+	}, [db, network, history]);
+
+	const quota = 30;
+	const userMenuTree = [
+		{
+			label: t('Logout'),
+			icon: 'LogOut',
+			folders: [],
+			click: doLogout
+		}
+	];
 
 	return (
 		<>
 			<ShellHeader
 				userBarIsOpen={userOpen}
-				navigationBarIsOpen={navOpen}
-				onMenuClick={() => setNavOpen(!navOpen)}
+				mobileNavIsOpen={mobileNavOpen}
+				onMobileMenuClick={() => setMobileNavOpen(!mobileNavOpen)}
 				onUserClick={() => setUserOpen(!userOpen)}
+				quota={quota}
 			/>
-			<Row crossAlignment="unset" flexGrow="1">
-				<MainMenu
+			<Row crossAlignment="unset" flexGrow="1" style={{position: 'relative'}}>
+				<ShellNavigationBar
 					navigationBarIsOpen={navOpen}
+					mobileNavIsOpen={mobileNavOpen}
 					onCollapserClick={() => setNavOpen(!navOpen)}
+					userMenuTree={userMenuTree}
+					quota={quota}
 				/>
 				<PanelsRouterContainer />
+				<ShellMenuPanel menuIsOpen={userOpen} tree={userMenuTree} />
 			</Row>
-			<AppPanelWindow />
+			<Responsive mode="desktop">
+				<AppPanelWindow />
+			</Responsive>
 		</>
 	);
 }

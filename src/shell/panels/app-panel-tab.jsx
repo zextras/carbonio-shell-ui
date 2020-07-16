@@ -16,7 +16,7 @@ import ShellContext from '../shell-context';
 const TabContainer = styled(Row)`
 	cursor: pointer;
 	height: 100%;
-	width: 27%;
+	width: 152px;
 	margin: 0 8px 0 0;
 	user-select: none;
 `;

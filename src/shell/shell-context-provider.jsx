@@ -18,6 +18,8 @@ export default function ShellContextProvider({ children }) {
 	const [ isMobile, setIsMobile ] = useState(typeof window !== 'undefined' ? window.innerHeight > window.innerWidth : false);
 	const [ panels, setPanels ] = useState([]);
 	const [ currentPanel, setCurrentPanel ] = useState(0);
+	const [ largeView, setLargeView ] = useState(false);
+	const [ minimized, setMinimized ] = useState(false);
 
 	const handleResize = useCallback(({ target }) => {
 			if (isMobile !== (target.innerHeight > target.innerWidth)) setIsMobile(target.innerHeight > target.innerWidth);
@@ -29,20 +31,30 @@ export default function ShellContextProvider({ children }) {
 		const newPanels = [...panels, panel];
 		setPanels(newPanels);
 		setCurrentPanel(newPanels.length - 1);
-	}, [panels, setPanels, setCurrentPanel]);
+		setMinimized(false);
+	}, [panels, setPanels, setCurrentPanel, setMinimized]);
 
 	const removePanel = useCallback((idx) => {
 		if (currentPanel > 0 && currentPanel >= idx) setCurrentPanel(currentPanel - 1);
+		if (panels.length === 1) setLargeView(false);
 		const updatedPanels = [...panels];
 		updatedPanels.splice(idx, 1);
 		setPanels(updatedPanels);
 	}, [panels, setPanels, currentPanel, setCurrentPanel]);
+
+	const removeAllPanel = useCallback(() => {
+		setPanels([]);
+		setLargeView(false);
+	}, [setPanels, setLargeView]);
 
 	const updatePanel = useCallback((idx, url) => {
 		const updatedPanels = [...panels];
 		updatedPanels.splice(idx, 1, url);
 		setPanels(updatedPanels);
 	}, [panels, setPanels]);
+
+	const toggleLargeView = useCallback(() => setLargeView((largeView) => !largeView), [setLargeView]);
+	const toggleMinimized = useCallback(() => setMinimized((minimized) => !minimized), [setMinimized]);
 
 	useLayoutEffect(() => {
 		if (typeof window === 'undefined') return;
@@ -57,20 +69,30 @@ export default function ShellContextProvider({ children }) {
 		panels,
 		addPanel,
 		removePanel,
+		removeAllPanel,
 		updatePanel,
 		currentPanel,
 		setCurrentPanel,
 		fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink({ name: PACKAGE_NAME, version: PACKAGE_VERSION }),
 		fiberChannel: fiberChannelFactory.getAppFiberChannel({ name: PACKAGE_NAME, version: PACKAGE_VERSION }),
+		largeView,
+		toggleLargeView,
+		minimized,
+		toggleMinimized
 	}), [
 		isMobile,
 		panels,
 		addPanel,
 		removePanel,
+		removeAllPanel,
 		updatePanel,
 		currentPanel,
 		setCurrentPanel,
-		fiberChannelFactory
+		fiberChannelFactory,
+		largeView,
+		toggleLargeView,
+		minimized,
+		toggleMinimized
 	]);
 
 	return (

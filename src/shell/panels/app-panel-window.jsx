@@ -44,6 +44,7 @@ const Board = styled(Container)`
 	${({ largeView }) => largeView && css`
 		height: calc(100% - 24px);
 		width: calc(100% - 24px * 2);
+		min-height: auto;
 	`}
 `;
 const BoardHeader = styled(Row)``;

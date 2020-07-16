@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Container from "../primitive/Container";
-import Text from "../primitive/Text";
+import Container from "../layout/Container";
+import Text from "../basic/Text";
 
 class Catcher extends React.Component {
 	constructor(props) {
@@ -34,7 +34,7 @@ class Catcher extends React.Component {
 			// You can render any custom fallback UI
 			return (
 				<Container>
-					<Text size="large" color="txt_5">{this.state.error.message}</Text>
+					<Text size="large" color="error">{this.state.error.message}</Text>
 				</Container>
 				);
 		}

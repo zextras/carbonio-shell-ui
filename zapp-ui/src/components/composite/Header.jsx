@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Container from "../primitive/Container";
+import Container from "../layout/Container";
 import { useScreenMode } from "../../hooks/useScreenMode";
-import Logo from "../primitive/Logo";
-import IconButton from "../primitive/IconButton";
-import Padding from "../primitive/Padding";
-import { DropdownButton, IconDropdownButton } from "../primitive/DropdownButton";
-import Quota from "../primitive/Quota";
+import Logo from "../basic/Logo";
+import IconButton from "../inputs/IconButton";
+import Padding from "../layout/Padding";
+import Quota from "../feedback/Quota";
+import Dropdown from "../display/Dropdown";
+import Button from "../basic/Button";
 import Responsive from "../utilities/Responsive";
 
 function Header({
@@ -21,7 +22,7 @@ function Header({
 	return (
 		<Container
 			orientation="horizontal"
-			background="bg_8"
+			background="header"
 			width="fill"
 			height="fit"
 			mainAlignment="space-between"
@@ -37,7 +38,9 @@ function Header({
 				<Container orientation="horizontal" width="calc(100vw - 332px)">
 					<Container orientation="horizontal" mainAlignment="flex-start" width="50%">
 						<Container orientation="horizontal" width="fit" padding={{ right: 'small' }}>
-							<DropdownButton label="CREATE" items={createItems} left="-52px"/>
+							<Dropdown items={createItems}>
+								<Button label="CREATE" icon="ArrowDown" />
+							</Dropdown>
 						</Container>
 						{/*	<SearchInput/> */}
 					</Container>
@@ -45,15 +48,17 @@ function Header({
 						<Padding right="small">
 							<Quota fill={quota}/>
 						</Padding>
-						<IconButton icon="BellOutline" iconColor="txt_1" />
-						<IconButton icon={ userBarIsOpen ? 'Close' : 'PersonOutline' } iconColor="txt_1" onClick={onUserClick}/>
+						<IconButton icon="BellOutline" iconColor="text" />
+						<IconButton icon={ userBarIsOpen ? 'Close' : 'PersonOutline' } iconColor="text" onClick={onUserClick}/>
 					</Container>
 				</Container>
 			</Responsive>
 			<Responsive mode="mobile">
 				<Container orientation="horizontal" mainAlignment="flex-end" padding={{ right: 'extrasmall' }}>
 					{/* <IconButton icon="Search" /> */}
-					<IconDropdownButton label="CREATE" items={createItems} right="-20px" />
+					<Dropdown items={createItems} placement="bottom-start">
+						<IconButton icon="Plus" />
+					</Dropdown>
 				</Container>
 			</Responsive>
 		</Container>
@@ -61,7 +66,7 @@ function Header({
 }
 
 Header.propTypes = {
-	createItems: DropdownButton.propTypes.items,
+	createItems: Dropdown.propTypes.items,
 	quota: PropTypes.number.isRequired,
 	onMenuClick: PropTypes.func.isRequired,
 	onUserClick: PropTypes.func.isRequired,

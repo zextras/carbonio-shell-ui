@@ -19,6 +19,9 @@ import ShellContext from '../shell-context';
 
 const _container = styled.div`
 	display: ${(props) => props.show ? 'block' : 'none'};
+	height: 100%;
+	width: 100%;
+	overflow-y: auto;
 `;
 
 export default function AppPanel({ idx }) {

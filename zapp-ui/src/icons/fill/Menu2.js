@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 function SvgMenu2(props) {
   return (

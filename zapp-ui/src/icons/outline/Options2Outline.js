@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 function SvgOptions2Outline(props) {
   return (

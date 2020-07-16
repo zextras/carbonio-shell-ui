@@ -17,22 +17,29 @@ import { Subject } from 'rxjs';
 
 export abstract class Database extends Dexie {
 
-	constructor(dbname: string) {
-		super(dbname,{ addons: [observable, syncable] });
+	constructor(dbname: string, options?: any) {
+		super(
+			dbname,
+			{
+				...(options || {}),
+				addons: [observable, syncable, ...((options && options.addons) ? options.addons : [])]
+			}
+		);
 	}
 
 	public createUUID(): string {
-		return Dexie.Observable.createUUID();
+		return observable.createUUID();
 	}
 
 	public registerSyncProtocol(name: string, protocol: ISyncProtocol): void {
-		Dexie.Syncable.registerSyncProtocol(name, protocol);
+		syncable.registerSyncProtocol(name, protocol);
 	}
 
 	public observe(comparator: () => Promise<any>): Subject<any> {
 		// TODO: Optimize the observable!
 		const subject = new Subject();
 		comparator().then((r) => subject.next(r));
+		// @ts-ignore
 		this.on('changes', (changes: any) => {
 			comparator().then((r) => subject.next(r));
 		});

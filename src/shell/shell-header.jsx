@@ -69,7 +69,7 @@ export default function ShellHeader({
 				subscription.unsubscribe();
 			});
 		}
-	}, [appsCache]);
+	}, [appsCache, addPanel]);
 
 	return (
 		<Container

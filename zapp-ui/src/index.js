@@ -66,3 +66,4 @@ export { extendTheme } from './theme/Theme';
 export { default as ThemeContext } from './theme/ThemeContext';
 export { default as ThemeProvider } from './theme/ThemeProvider';
 export { useScreenMode } from './hooks/useScreenMode';
+export { useSnackbar } from './hooks/useSnackbar';

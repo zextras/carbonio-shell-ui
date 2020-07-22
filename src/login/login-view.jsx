@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import {
@@ -150,10 +150,16 @@ function LoginForm() {
 		passwordRef
 	} = useLoginView();
 	const { t } = useTranslation();
+	const [showAuthError, setShowAuthError] = useState(false);
 
-	const onSubmit = function(e) {
-		doLogin(e);
-	};
+	const onSubmit = useCallback((e) => {
+		setShowAuthError(false);
+		doLogin(e)
+			.catch((err) => {
+				if (err.message.startsWith('authentication failed'))
+					setShowAuthError(true);
+			});
+	}, [doLogin, setShowAuthError]);
 
 	return (
 		<form onSubmit={onSubmit} style={{ width: '100%' }}>
@@ -166,9 +172,18 @@ function LoginForm() {
 			<Row padding={{vertical: 'extralarge'}} mainAlignment="space-between">
 				<Checkbox label={t('Remember me')} />
 			</Row>
-			<Row padding={{bottom: 'extralarge'}}>
+			<Row orientation="vertical" crossAlignment="flex-start" padding={{bottom: 'extralarge'}}>
 				<Button onClick={onSubmit} label={t('Login')} size="fill" />
+				{ showAuthError && (
+					<Padding top="small">
+						<Text color="error" overflow="break-word">
+							{ t('The username or password is incorrect') }.
+							{ t('Verify that CAPS LOCK is not on, and then retype the current username and password') }.
+						</Text>
+					</Padding>
+				)}
 			</Row>
+			<input type="submit" style={{ display: 'none'}} />
 		</form>
 	);
 }

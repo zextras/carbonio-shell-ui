@@ -12,8 +12,10 @@
 import React, { useCallback, useState } from 'react';
 import { Row, extendTheme, ThemeProvider, Responsive } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
+import styled from 'styled-components';
 import PanelsRouterContainer from './panels/panels-router-container';
 import AppLoaderContextProvider from '../app/app-loader-context-provider';
+import ShellThemeProvider from './shell-theme-provider';
 import ShellContextProvider from './shell-context-provider';
 import SharedUiComponentsContextProvider
 	from '../shared-ui-components/shared-ui-components-context-provider';
@@ -26,7 +28,7 @@ import AppPanelWindow from './panels/app-panel-window';
 
 export default function ShellView() {
 	return (
-		<ThemeProvider theme={extendTheme({ palette: {light: {}, dark: {}}})}>
+		<ShellThemeProvider>
 			<ShellContextProvider>
 				<AppLoaderContextProvider>
 					<SharedUiComponentsContextProvider>
@@ -34,9 +36,21 @@ export default function ShellView() {
 					</SharedUiComponentsContextProvider>
 				</AppLoaderContextProvider>
 			</ShellContextProvider>
-		</ThemeProvider>
+		</ShellThemeProvider>
 	);
 }
+
+const Background = styled.div`
+	background: ${({ theme }) => theme.palette.gray6.regular};
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	min-height: 100%;
+	max-height: 100%;
+	width: 100%;
+	min-width: 100%;
+	max-width: 100%;
+`;
 
 export function Shell() {
 	const db = useShellDb();
@@ -66,7 +80,7 @@ export function Shell() {
 	];
 
 	return (
-		<>
+		<Background>
 			<ShellHeader
 				userBarIsOpen={userOpen}
 				mobileNavIsOpen={mobileNavOpen}
@@ -88,6 +102,6 @@ export function Shell() {
 			<Responsive mode="desktop">
 				<AppPanelWindow />
 			</Responsive>
-		</>
+		</Background>
 	);
 }

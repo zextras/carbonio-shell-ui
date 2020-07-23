@@ -36,6 +36,7 @@ type cliSettingsNamespace = {
 		label: string;
 		version: string;
 		description: string;
+		type: string;
 	};
 };
 

@@ -42,7 +42,6 @@ export default function ShellHeader({
 	const refCreateOptions = useRef(createOptions);
 
 	useEffect(() => {
-		console.log("useEffect");
 		const subscriptions = map(appsCache, (app) => {
 			return app.createOptions.subscribe((options) => {
 				setCreateOptions(

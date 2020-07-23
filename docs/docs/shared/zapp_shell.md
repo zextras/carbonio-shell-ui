@@ -81,8 +81,8 @@ type AppCreateOption = {
 	onClick?: () => void;
 	app: {
 		path: string;
-        boardPath?: string;
-        getPath?: () => undefined;
+		boardPath?: string;
+		getPath?: () => undefined;
 	};
 	label: string;
 };

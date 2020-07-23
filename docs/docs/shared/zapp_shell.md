@@ -64,16 +64,25 @@ Set the options shown to *Create* things replacing the previous data.
 
 Usually these options are related to the *Create* button shown in the [header of the shell][3].
 
-Only one option between `onClick` and `panel` is required.
+Depending on the current app selected, the creation will be opened in the board or directly in the app.
+For this purpose you can specify `app.path` and/or `app.boardPath`.
+There's also the `app.getPath` callback, it returns the url to which redirect the creation.
+It's used in place of the simple `app.path` for more advanced implementations.
+
 - `onClick`: Callback invoked when the option is selected
-- `panel.path`: When the options is seleted the `path` is opened as [panel][4]
+- `app.path`: If the current selected app is the same as the one registering this option, the `path` is opened directly in app.
+If, instead the app is not currently active, the `path` is opened as [board][4]
+- `app.boardPath`: If provided, this is the path that will be used to redirect the user to the [board][4]
+- `app.getPath`: If provided, this callback will be used instead of the `path` for the app redirect.
 
 ```typescript
 type AppCreateOption = {
 	id: string;
 	onClick?: () => void;
-	panel?: {
+	app: {
 		path: string;
+        boardPath?: string;
+        getPath?: () => undefined;
 	};
 	label: string;
 };

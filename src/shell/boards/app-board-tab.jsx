@@ -21,30 +21,29 @@ const TabContainer = styled(Row)`
 	user-select: none;
 `;
 
-export default function AppPanelTab({ idx }) {
+export default function AppBoardTab({ idx }) {
 	const {
-		panels,
-		removePanel,
-		currentPanel,
-		setCurrentPanel
+		removeBoard,
+		currentBoard,
+		setCurrentBoard
 	} = useContext(ShellContext);
 
 	const onClick = useCallback((ev) => {
 		ev.stopPropagation();
 		ev.preventDefault();
-		setCurrentPanel(idx)
-	}, [setCurrentPanel, idx]);
+		setCurrentBoard(idx)
+	}, [setCurrentBoard, idx]);
 
 	const onRemove = useCallback((ev) => {
 		ev.stopPropagation();
 		ev.preventDefault();
-		removePanel(idx);
-	}, [removePanel, idx]);
+		removeBoard(idx);
+	}, [removeBoard, idx]);
 
 	return (
-		<TabContainer active={currentPanel === idx}>
+		<TabContainer active={currentBoard === idx}>
 			<Row height="100%" onClick={onClick} takeAvailableSpace={true}>
-				<Text size="large" weight={currentPanel === idx ? 'bold' : 'regular'} color={currentPanel === idx ? 'text' : 'secondary'}>Tab Title</Text>
+				<Text size="large" weight={currentBoard === idx ? 'bold' : 'regular'} color={currentBoard === idx ? 'text' : 'secondary'}>Tab Title</Text>
 			</Row>
 			<IconButton iconColor="secondary" icon="Close" onClick={onRemove} size="small" />
 		</TabContainer>

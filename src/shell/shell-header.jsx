@@ -37,7 +37,7 @@ export default function ShellHeader({
 	const { t } = useTranslation();
 	const screenMode = useScreenMode();
 	const [appsCache, appsLoaded] = useAppsCache();
-	const { addPanel } = useContext(ShellContext);
+	const { addBoard } = useContext(ShellContext);
 	const [createOptions, setCreateOptions] = useState([]);
 	const refCreateOptions = useRef(createOptions);
 
@@ -59,7 +59,7 @@ export default function ShellHeader({
 											history.push(`/${app.pkg.package}` + (option.app.getPath && option.app.getPath() || option.app.path));
 										}
 										else {
-											addPanel(`/${app.pkg.package}` + (option.app.boardPath || option.app.path));
+											addBoard(`/${app.pkg.package}` + (option.app.boardPath || option.app.path));
 										}
 										option.onClick && option.onClick();
 									}
@@ -77,7 +77,7 @@ export default function ShellHeader({
 				subscription.unsubscribe();
 			});
 		}
-	}, [appsCache, addPanel, history]);
+	}, [appsCache, addBoard, history]);
 
 	return (
 		<Container

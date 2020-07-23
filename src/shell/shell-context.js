@@ -13,15 +13,15 @@ import { createContext, useContext } from 'react';
 
 const ShellContext = createContext({
 	isMobile: true,
-	panels: [],
-	currentPanel: 0,
+	boards: [],
+	currentBoard: 0,
 	largeView: false,
 	minimized: false,
-	addPanel: (panel) => undefined,
-	removePanel: (idx) => undefined,
-	removeAllPanel: () => undefined,
-	updatePanel: (idx, url) => undefined,
-	setCurrentPanel: (idx) => undefined,
+	addBoard: (board) => undefined,
+	removeBoard: (idx) => undefined,
+	removeAllBoards: () => undefined,
+	updateBoard: (idx, url) => undefined,
+	setCurrentBoard: (idx) => undefined,
 	toggleLargeView: () => undefined,
 	toggleMinimized: () => undefined
 });

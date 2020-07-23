@@ -14,7 +14,7 @@ import { createMemoryHistory } from 'history';
 import styled from 'styled-components';
 import { reduce } from 'lodash';
 import { useAppsCache } from '../../app/app-loader-context';
-import AppPanelRoutes from '../../app/app-panel-routes';
+import AppBoardRoutes from '../../app/app-board-routes';
 import ShellContext from '../shell-context';
 
 const _container = styled.div`
@@ -24,11 +24,11 @@ const _container = styled.div`
 	overflow-y: auto;
 `;
 
-export default function AppPanel({ idx }) {
+export default function AppBoard({ idx }) {
 	const {
-		currentPanel,
-		panels,
-		updatePanel
+		currentBoard,
+		boards,
+		updateBoard
 	} = useContext(ShellContext);
 	const [appsCache, appsLoaded] = useAppsCache();
 	const [children, setChildren] = useState([]);
@@ -38,7 +38,7 @@ export default function AppPanel({ idx }) {
 			appsCache,
 			(r, v, k) => {
 				r.push((
-					<AppPanelRoutes key={k} app={v} />
+					<AppBoardRoutes key={k} app={v} />
 				));
 				return r;
 			},
@@ -51,20 +51,20 @@ export default function AppPanel({ idx }) {
 
 	useEffect(() => {
 		return history.listen((l, a) => {
-			updatePanel(idx, `${l.pathname}${l.search}${l.hash}`);
+			updateBoard(idx, `${l.pathname}${l.search}${l.hash}`);
 		});
-	}, [history, idx, updatePanel]);
+	}, [history, idx, updateBoard]);
 
 	useEffect(() => {
 		const l = history.location;
-		if (`${l.pathname}${l.search}${l.hash}` !== panels[idx]) {
-			history.push(panels[idx]);
+		if (`${l.pathname}${l.search}${l.hash}` !== boards[idx]) {
+			history.push(boards[idx]);
 		}
-	}, [history, idx, panels]);
+	}, [history, idx, boards]);
 
 	return (
-		<_container show={currentPanel === idx}>
-			<Router key={panels[idx] + idx} history={history}>
+		<_container show={currentBoard === idx}>
+			<Router key={boards[idx] + idx} history={history}>
 				{ children }
 			</Router>
 		</_container>

@@ -11,7 +11,7 @@
       "architecture/components/index",
       "architecture/components/bootstrapper",
       "architecture/components/app_loader",
-      "architecture/components/app_panel_window",
+      "architecture/components/app_board_window",
       "architecture/components/shell_view",
       "architecture/components/shell_db",
       "architecture/components/shell_network_service"

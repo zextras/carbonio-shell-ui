@@ -99,5 +99,5 @@ Any component of an App can use the [`useAppContext()`][5] hook to retrieve the 
 [1]: architecture/components/secondary_bar.md
 [2]: https://reactjs.org/docs/react-api.html#reactlazy
 [3]: architecture/components/shell_view.md#shell-header
-[4]: architecture/components/app_panel_window.md#panel-container
+[4]: architecture/components/app_board_window.md#board-container
 [5]: hooks.md#useappcontext

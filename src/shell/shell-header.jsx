@@ -58,7 +58,7 @@ export default function ShellHeader({
 											history.push(`/${app.pkg.package}` + (option.app.getPath && option.app.getPath() || option.app.path));
 										}
 										else {
-											addBoard(`/${app.pkg.package}` + (option.app.boardPath || option.app.path));
+											addBoard(`/${app.pkg.package}` + (option.app.boardPath || option.app.path), option.label);
 										}
 										option.onClick && option.onClick();
 									}

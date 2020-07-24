@@ -58,7 +58,7 @@ export default function ShellPrimaryBar({
 				)}
 			</Row>
 			{
-				shellBoards.length > 0 && (
+				Object.keys(shellBoards).length > 0 && (
 					<Row>
 						<IconButton
 							iconColor="primary"

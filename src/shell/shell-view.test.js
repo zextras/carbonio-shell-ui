@@ -16,7 +16,6 @@ jest.mock('@zextras/zapp-ui');
 jest.mock('../db/database');
 
 jest.mock('./shell-header');
-jest.mock('./main-menu');
 jest.mock('./shell-secondary-bar');
 jest.mock('./boards/boards-router-container');
 jest.mock('./boards/app-board-window');

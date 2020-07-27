@@ -81,12 +81,12 @@ export default function app() {
 		{
 			id: 'create-contact',
 			label: 'New Contact',
-			panel: { path: '/contact/new' }
+			app: { path: '/contact/new', getPath: () => '/getPath/contacts/new' },
 		},
 		{
 			id: 'create-mail',
 			label: 'New Mail',
-			panel: { path: '/mail/new' }
+			app: { path: '/mail/new', boardPath: '/board/mail/new' },
 		}
 	]);
 }

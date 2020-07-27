@@ -18,8 +18,8 @@ jest.mock('../db/database');
 jest.mock('./shell-header');
 jest.mock('./main-menu');
 jest.mock('./shell-secondary-bar');
-jest.mock('./panels/panels-router-container');
-jest.mock('./panels/app-panel-window');
+jest.mock('./boards/boards-router-container');
+jest.mock('./boards/app-board-window');
 jest.mock('../bootstrap/bootstrapper-context-provider');
 
 import ShellView from './shell-view';

@@ -30,12 +30,12 @@ export { useAppPkg, useAppContext, useFiberChannel } from '../app/app-context';
 // @ts-ignore
 export { useTranslation } from '../i18n/hooks';
 
-export function useAddPanelCallback(path: string): () => void {
-	const { addPanel } = useContext(ShellContext);
+export function useAddBoardCallback(path: string): () => void {
+	const { addBoard } = useContext(ShellContext);
 	const { pkg } = useContext(AppContext);
 	return useCallback(() => {
-		addPanel(`/${pkg.package}${path}`);
-	}, [addPanel, path, pkg]);
+		addBoard(`/${pkg.package}${path}`);
+	}, [addBoard, path, pkg]);
 }
 
 export function usePushHistoryCallback(): (location: LocationDescriptor) => void {

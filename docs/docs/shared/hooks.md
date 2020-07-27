@@ -24,12 +24,12 @@ function useAppContext(): any {}
 ```
 Return the object set with the [`setAppContext()`][1] function enhanced with the App Package data.
 
-## useAddPanelCallback
+## useAddBoardCallback
 ```typescript
-function useAddPanelCallback(path: string): () => void {}
+function useAddBoardCallback(path: string): () => void {}
 ```
 
-Create a callback to add a panel set on the provided path.
+Create a callback to add a board set on the provided path.
 
 ## usePushHistoryCallback
 ```typescript

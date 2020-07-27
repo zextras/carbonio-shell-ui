@@ -8,8 +8,8 @@ Array [
   >
     MainMenu
     ShellSecondaryBar
-    PanelsRouterContainer
+    BoardsRouterContainer
   </div>,
-  "AppPanelWindow",
+  "AppBoardWindow",
 ]
 `;

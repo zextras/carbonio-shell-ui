@@ -10,14 +10,15 @@
  */
 
 import React, { useMemo, useState, useLayoutEffect, useCallback } from 'react';
+import { pickBy } from 'lodash';
 import ShellContext from './shell-context';
 import { useFiberChannelFactory } from '../bootstrap/bootstrapper-context';
 
 export default function ShellContextProvider({ children }) {
 	const fiberChannelFactory = useFiberChannelFactory();
 	const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerHeight > window.innerWidth : false);
-	const [boards, setBoards] = useState([]);
-	const [currentBoard, setCurrentBoard] = useState(0);
+	const [boards, setBoards] = useState({});
+	const [currentBoard, setCurrentBoard] = useState(undefined);
 	const [largeView, setLargeView] = useState(false);
 	const [minimized, setMinimized] = useState(false);
 
@@ -27,29 +28,32 @@ export default function ShellContextProvider({ children }) {
 		[isMobile, setIsMobile]
 	);
 
-	const addBoard = useCallback((board) => {
-		const newBoards = [...boards, board];
+	const addBoard = useCallback((boardUrl) => {
+		const key = String(Date.now() * (Math.floor(Math.random() * 1000) + 1));
+		const newBoards = {...boards, [key]: { url: boardUrl }};
+		setCurrentBoard(key);
 		setBoards(newBoards);
-		setCurrentBoard(newBoards.length - 1);
 		setMinimized(false);
 	}, [boards, setBoards, setCurrentBoard, setMinimized]);
 
 	const removeBoard = useCallback((idx) => {
-		if (currentBoard > 0 && currentBoard >= idx) setCurrentBoard(currentBoard - 1);
-		if (boards.length === 1) setLargeView(false);
-		const updatedBoards = [...boards];
-		updatedBoards.splice(idx, 1);
-		setBoards(updatedBoards);
+		const boardKeys = Object.keys(boards);
+		if (currentBoard === idx) {
+			const removedBoardIndex = boardKeys.indexOf(idx);
+			setCurrentBoard(boardKeys[removedBoardIndex > 0 ? removedBoardIndex - 1 : 1]);
+		}
+		if (boardKeys.length === 1) setLargeView(false);
+		setBoards(pickBy(boards, (board, key) => key !== idx));
 	}, [boards, setBoards, currentBoard, setCurrentBoard]);
 
 	const removeAllBoards = useCallback(() => {
-		setBoards([]);
+		setBoards({});
 		setLargeView(false);
 	}, [setBoards, setLargeView]);
 
 	const updateBoard = useCallback((idx, url) => {
-		const updatedBoards = [...boards];
-		updatedBoards.splice(idx, 1, url);
+		const updatedBoards = {...boards};
+		updatedBoards[idx].url = url;
 		setBoards(updatedBoards);
 	}, [boards, setBoards]);
 

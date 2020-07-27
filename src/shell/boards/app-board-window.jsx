@@ -70,10 +70,10 @@ export default function AppBoardWindow() {
 		(r, v, k) => {
 			const [t, p] = r;
 			t.push((
-				<AppBoardTab key={v + k} idx={k} />
+				<AppBoardTab key={k} idx={k} />
 			));
 			p.push((
-				<AppBoard key={v + k} idx={k} />
+				<AppBoard key={k} idx={k} />
 			));
 			return r;
 		},

@@ -57,14 +57,14 @@ export default function AppBoard({ idx }) {
 
 	useEffect(() => {
 		const l = history.location;
-		if (`${l.pathname}${l.search}${l.hash}` !== boards[idx]) {
-			history.push(boards[idx]);
+		if (`${l.pathname}${l.search}${l.hash}` !== boards[idx].url) {
+			history.push(boards[idx].url);
 		}
 	}, [history, idx, boards]);
 
 	return (
 		<_container show={currentBoard === idx}>
-			<Router key={boards[idx] + idx} history={history}>
+			<Router key={idx} history={history}>
 				{ children }
 			</Router>
 		</_container>

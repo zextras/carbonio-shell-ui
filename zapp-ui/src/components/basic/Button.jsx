@@ -75,9 +75,9 @@ const Button = React.forwardRef(function({
 	const buttonRef = useRef(undefined);
 	const combinedRef = useCombinedRefs(ref, buttonRef);
 
-	const keyPress = useCallback(() => {
+	const keyPress = useCallback((e) => {
 		if (!disabled) {
-			onClick();
+			onClick(e);
 		}
 	}, [disabled, onClick]);
 

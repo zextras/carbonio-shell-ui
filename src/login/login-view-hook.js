@@ -33,12 +33,16 @@ export default function useLoginView() {
 
 	const doLogin = useCallback((ev) => {
 		ev.preventDefault();
-		network.doLogin(
-			usernameRef.current.value,
-			passwordRef.current.value
-		)
-			.then((account) => db.accounts.add(account))
-			.then(() => returnToPage());
+		return new Promise(function(resolve, reject) {
+			network.doLogin(
+				usernameRef.current.value,
+				passwordRef.current.value
+			)
+				.then((account) => db.accounts.add(account))
+				.then(() => resolve())
+				.then(() => returnToPage())
+				.catch((err) => reject(err));
+		});
 	}, [returnToPage, usernameRef, passwordRef, db, network]);
 
 	return {

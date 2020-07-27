@@ -23,6 +23,7 @@ const TabContainer = styled(Row)`
 
 export default function AppBoardTab({ idx }) {
 	const {
+		boards,
 		removeBoard,
 		currentBoard,
 		setCurrentBoard
@@ -43,7 +44,11 @@ export default function AppBoardTab({ idx }) {
 	return (
 		<TabContainer active={currentBoard === idx}>
 			<Row height="100%" onClick={onClick} takeAvailableSpace={true}>
-				<Text size="large" weight={currentBoard === idx ? 'bold' : 'regular'} color={currentBoard === idx ? 'text' : 'secondary'}>Tab Title</Text>
+				<Text
+					size="large"
+					weight={currentBoard === idx ? 'bold' : 'regular'}
+					color={currentBoard === idx ? 'text' : 'secondary'}
+				>{ boards[idx].title }</Text>
 			</Row>
 			<IconButton iconColor="secondary" icon="Close" onClick={onRemove} size="small" />
 		</TabContainer>

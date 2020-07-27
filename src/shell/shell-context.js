@@ -17,10 +17,10 @@ const ShellContext = createContext({
 	currentBoard: 0,
 	largeView: false,
 	minimized: false,
-	addBoard: (board) => undefined,
+	addBoard: (boardUrl, boardTitle) => undefined,
 	removeBoard: (idx) => undefined,
 	removeAllBoards: () => undefined,
-	updateBoard: (idx, url) => undefined,
+	updateBoard: (idx, boardUrl, boardTitle) => undefined,
 	setCurrentBoard: (idx) => undefined,
 	toggleLargeView: () => undefined,
 	toggleMinimized: () => undefined

@@ -9,17 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { default as Lodash, map, orderBy, compact, keyBy } from 'lodash';
-import { BehaviorSubject } from 'rxjs';
-import { ComponentClass, LazyExoticComponent } from 'react';
+import { default as Lodash, map, orderBy } from 'lodash';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as RxJS from 'rxjs';
-import * as RxJSOperators from 'rxjs/operators';
-import * as ReactRouterDom from 'react-router-dom';
-import * as PropTypes from 'prop-types';
-import * as Moment from 'moment';
-import * as ReactI18n from 'react-i18next';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import * as ZappUI from "@zextras/zapp-ui";
@@ -28,19 +20,7 @@ import * as ZappUI from "@zextras/zapp-ui";
 import * as StyledComponents from 'styled-components';
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
 import { AccountAppsData, AppPkgDescription, ThemePkgDescription } from '../db/account';
-import * as hooks from '../shell/hooks';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
-import SharedUiComponentsFactory from '../shared-ui-components/shared-ui-components-factory'
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
-import AppLink from './app-link';
-import { wrapAppDbConstructor } from './app-db';
-import { FC, FCSink, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
-import validateSharedUiComponent from '../shared-ui-components/shared-ui-components-validator';
-import ShellDb from '../db/shell-db';
-import ShellNetworkService from '../network/shell-network-service';
+import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 
 type AppModuleFunction = () => void;
 
@@ -53,30 +33,8 @@ type IChildWindow = Window & {
 type SharedLibrariesAppsMap = {
 	'react': {};
 	'react-dom': {};
-	'react-i18next': {};
 	'lodash': {};
-	'rxjs': {};
-	'rxjs/operators': {};
-	'react-router-dom': {};
 	'styled-components': {};
-	'prop-types': {};
-	'moment': {};
-	'@zextras/zapp-shell': {
-		// These signatures are in the documentation
-		// If changed update also the documentation.
-		db: {
-			Database: any;
-		};
-		setMainMenuItems: (items: MainMenuItemData[]) => void;
-		setRoutes: (routes: AppRouteDescription[]) => void;
-		setCreateOptions: (options: AppCreateOption[]) => void;
-		setAppContext: (obj: any) => void;
-		addSharedUiComponent: (scope: string, componentClass: ComponentClass) => void;
-		fiberChannel: FC;
-		fiberChannelSink: FCSink;
-		hooks: any;
-		ui: any;
-	};
 	'@zextras/zapp-ui': {};
 };
 
@@ -89,55 +47,6 @@ type MainSubMenuItemData = {
 	children?: Array<MainSubMenuItemData>;
 };
 
-// Type is in the documentation. If changed update also the documentation.
-type MainMenuItemData = {
-	id: string;
-	icon: string;
-	label: string;
-	to: string;
-	children?: Array<MainSubMenuItemData>;
-	app: string;
-};
-
-// Type is in the documentation. If changed update also the documentation.
-type AppRouteDescription = {
-	route: string;
-	view: LazyExoticComponent<any>;
-	label: LazyExoticComponent<any>;
-};
-
-// Type is in the documentation. If changed update also the documentation.
-type AppCreateOption = {
-	id: string;
-	onClick?: () => void;
-	panel?: {
-		path: string;
-	};
-	label: string;
-};
-
-type SharedUiComponentsDescriptor = {
-	[scope: string]: {
-		pkg: AppPkgDescription;
-		componentClass: ComponentClass;
-	}[];
-};
-
-type LoadedAppRuntime = AppInjections & {
-	pkg: AppPkgDescription;
-};
-
-export type LoadedAppsCache = {
-	[pkgName: string]: LoadedAppRuntime;
-};
-
-type AppInjections = {
-	mainMenuItems: BehaviorSubject<MainMenuItemData[]>;
-	routes: BehaviorSubject<AppRouteDescription[]>;
-	createOptions: BehaviorSubject<AppCreateOption[]>;
-	appContext: BehaviorSubject<any>;
-	sharedUiComponents: BehaviorSubject<SharedUiComponentsDescriptor>;
-};
 
 const _iframes: { [pkgName: string]: HTMLIFrameElement } = {};
 // const _revertableActions: { [pkgName: string]: RevertableActionCollection } = {};

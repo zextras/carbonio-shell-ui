@@ -10,6 +10,7 @@
  */
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import { map, reduce } from 'lodash';
+import { useHistory } from 'react-router-dom';
 import {
 	Button,
 	Container,
@@ -32,10 +33,11 @@ export default function ShellHeader({
 	onUserClick,
 	quota
 }) {
+	const history = useHistory();
 	const { t } = useTranslation();
 	const screenMode = useScreenMode();
 	const [appsCache, appsLoaded] = useAppsCache();
-	const { addPanel } = useContext(ShellContext);
+	const { addBoard } = useContext(ShellContext);
 	const [createOptions, setCreateOptions] = useState([]);
 	const refCreateOptions = useRef(createOptions);
 
@@ -52,7 +54,12 @@ export default function ShellHeader({
 									label: option.label,
 									icon: option.icon,
 									click: () => {
-										option.panel && addPanel(`/${app.pkg.package}${option.panel.path}`);
+										if (window.top.location.pathname.startsWith(`/${app.pkg.package}`)) {
+											history.push(`/${app.pkg.package}` + (option.app.getPath && option.app.getPath() || option.app.path));
+										}
+										else {
+											addBoard(`/${app.pkg.package}` + (option.app.boardPath || option.app.path));
+										}
 										option.onClick && option.onClick();
 									}
 								});
@@ -69,7 +76,7 @@ export default function ShellHeader({
 				subscription.unsubscribe();
 			});
 		}
-	}, [appsCache, addPanel]);
+	}, [appsCache, addBoard, history]);
 
 	return (
 		<Container

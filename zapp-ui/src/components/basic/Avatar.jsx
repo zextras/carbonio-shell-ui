@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Icon from './Icon';
 import defaultTheme from '../../theme/Theme';
 
 const AvatarContainer = styled.div`
-	width: ${props => props.theme.sizes.avatar[props.size].diameter};
-	min-width: ${props => props.theme.sizes.avatar[props.size].diameter};
-	height: ${props => props.theme.sizes.avatar[props.size].diameter};
-	min-height: ${props => props.theme.sizes.avatar[props.size].diameter};
-	background: ${props => props.theme.avatarColors[props.background]} url(${props => props.picture}) no-repeat;
+	width: ${({ theme, size }) => theme.sizes.avatar[size].diameter};
+	min-width: ${({ theme, size }) => theme.sizes.avatar[size].diameter};
+	height: ${({ theme, size }) => theme.sizes.avatar[size].diameter};
+	min-height: ${({ theme, size }) => theme.sizes.avatar[size].diameter};
+	background: ${({ theme, background }) => theme.avatarColors[background]} url(${({ picture }) => picture}) no-repeat;
 	background-size: contain;
 	border-radius: 50%;
 	display: flex;
@@ -16,11 +17,18 @@ const AvatarContainer = styled.div`
 	align-items: center;
 `;
 const Capitals = styled.p`
-	font-size: ${props => props.theme.sizes.avatar[props.size].font};
-	color: ${props => props.theme.palette.gray6.regular};
-	font-family: ${props => props.theme.fonts['default']};
-	font-weight: ${props => props.theme.fonts.weight['regular']};
+	font-size: ${({ theme, size }) => theme.sizes.avatar[size].font};
+	color: ${({ theme }) => theme.palette.gray6.regular};
+	font-family: ${({ theme }) => theme.fonts['default']};
+	font-weight: ${({ theme }) => theme.fonts.weight['regular']};
 	user-select: none;
+`;
+
+const AvatarIcon = styled(Icon)`
+	width: calc(${({ theme, size }) => theme.sizes.avatar[size].diameter} - 25%);
+	min-width: calc(${({ theme, size }) => theme.sizes.avatar[size].diameter} - 25%);
+	height: calc(${({ theme, size }) => theme.sizes.avatar[size].diameter} - 25%);
+	min-height: calc(${({ theme, size }) => theme.sizes.avatar[size].diameter} - 25%);
 `;
 
 const _SPECIAL_CHARS_REGEX = /[&/\\#,+()$~%.'":*?!<>{}@^_`=]/g;
@@ -32,10 +40,10 @@ function calcCapitals(label) {
 	if (noSpecString.replace(_WHITESPACE_REGEX, '').length !== 0) {
 		label = noSpecString;
 	}
-	else { return '?' }
+	else { return null }
 
 	if (label.replace(_WHITESPACE_REGEX, '').length === 0) {
-		return '?';
+		return null;
 	}
 	if (label.length <= 2) {
 		return label;
@@ -62,9 +70,36 @@ function calcColor(label) {
 	return `avatar_${(sum % 50) +1}`;
 }
 
-const Avatar = React.forwardRef(function({size, label, colorLabel, picture}, ref) {
-	const color = calcColor(colorLabel || label);
-	const capitals = calcCapitals(label.toUpperCase());
+const Avatar = React.forwardRef(function({size, label, colorLabel, picture, icon, fallbackIcon}, ref) {
+	const color = useMemo(() => calcColor(colorLabel || label), [colorLabel, label]);
+	const capitals = useMemo(() => calcCapitals(label.toUpperCase()), [label]);
+	const symbol = useMemo(() => {
+		if (typeof icon !== 'undefined') {
+			return (
+				<AvatarIcon
+					size={size}
+					icon={icon}
+					color="gray6"
+				/>
+			);
+		}
+		if (capitals !== null) {
+			return (
+				<Capitals
+					size={size}
+				>
+					{capitals}
+				</Capitals>
+			)
+		}
+		return (
+			<AvatarIcon
+				size={size}
+				icon={fallbackIcon}
+				color="gray6"
+			/>
+		);
+	}, [capitals, icon, fallbackIcon, size]);
 	return (
 		<AvatarContainer
 			ref={ref}
@@ -72,13 +107,7 @@ const Avatar = React.forwardRef(function({size, label, colorLabel, picture}, ref
 			picture={picture}
 			background={color}
 		>
-			{!picture &&
-				<Capitals
-					size={size}
-				>
-					{capitals}
-				</Capitals>
-			}
+			{!picture && symbol}
 		</AvatarContainer>
 	);
 });
@@ -94,11 +123,16 @@ Avatar.propTypes = {
 	/** string to be used as capitals, or for its calculation */
 	label: PropTypes.string.isRequired,
 	/** string to be used for the background color calculation */
-	colorLabel: PropTypes.string
+	colorLabel: PropTypes.string,
+	/** icon to display instead of the capitals */
+	icon: PropTypes.string,
+	/** icon to display as capitals fallback */
+	fallbackIcon: PropTypes.string,
 };
 
 Avatar.defaultProps = {
-	size: 'medium'
+	size: 'medium',
+	fallbackIcon: 'QuestionMark'
 };
 
 export default Avatar;

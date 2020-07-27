@@ -10,16 +10,17 @@
  */
 
 import React, { useMemo, useState, useLayoutEffect, useCallback } from 'react';
+import { pickBy } from 'lodash';
 import ShellContext from './shell-context';
 import { useFiberChannelFactory } from '../bootstrap/bootstrapper-context';
 
 export default function ShellContextProvider({ children }) {
 	const fiberChannelFactory = useFiberChannelFactory();
-	const [ isMobile, setIsMobile ] = useState(typeof window !== 'undefined' ? window.innerHeight > window.innerWidth : false);
-	const [ panels, setPanels ] = useState([]);
-	const [ currentPanel, setCurrentPanel ] = useState(0);
-	const [ largeView, setLargeView ] = useState(false);
-	const [ minimized, setMinimized ] = useState(false);
+	const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerHeight > window.innerWidth : false);
+	const [boards, setBoards] = useState({});
+	const [currentBoard, setCurrentBoard] = useState(undefined);
+	const [largeView, setLargeView] = useState(false);
+	const [minimized, setMinimized] = useState(false);
 
 	const handleResize = useCallback(({ target }) => {
 			if (isMobile !== (target.innerHeight > target.innerWidth)) setIsMobile(target.innerHeight > target.innerWidth);
@@ -27,31 +28,34 @@ export default function ShellContextProvider({ children }) {
 		[isMobile, setIsMobile]
 	);
 
-	const addPanel = useCallback((panel) => {
-		const newPanels = [...panels, panel];
-		setPanels(newPanels);
-		setCurrentPanel(newPanels.length - 1);
+	const addBoard = useCallback((boardUrl) => {
+		const key = String(Date.now() * (Math.floor(Math.random() * 1000) + 1));
+		const newBoards = {...boards, [key]: { url: boardUrl }};
+		setCurrentBoard(key);
+		setBoards(newBoards);
 		setMinimized(false);
-	}, [panels, setPanels, setCurrentPanel, setMinimized]);
+	}, [boards, setBoards, setCurrentBoard, setMinimized]);
 
-	const removePanel = useCallback((idx) => {
-		if (currentPanel > 0 && currentPanel >= idx) setCurrentPanel(currentPanel - 1);
-		if (panels.length === 1) setLargeView(false);
-		const updatedPanels = [...panels];
-		updatedPanels.splice(idx, 1);
-		setPanels(updatedPanels);
-	}, [panels, setPanels, currentPanel, setCurrentPanel]);
+	const removeBoard = useCallback((idx) => {
+		const boardKeys = Object.keys(boards);
+		if (currentBoard === idx) {
+			const removedBoardIndex = boardKeys.indexOf(idx);
+			setCurrentBoard(boardKeys[removedBoardIndex > 0 ? removedBoardIndex - 1 : 1]);
+		}
+		if (boardKeys.length === 1) setLargeView(false);
+		setBoards(pickBy(boards, (board, key) => key !== idx));
+	}, [boards, setBoards, currentBoard, setCurrentBoard]);
 
-	const removeAllPanel = useCallback(() => {
-		setPanels([]);
+	const removeAllBoards = useCallback(() => {
+		setBoards({});
 		setLargeView(false);
-	}, [setPanels, setLargeView]);
+	}, [setBoards, setLargeView]);
 
-	const updatePanel = useCallback((idx, url) => {
-		const updatedPanels = [...panels];
-		updatedPanels.splice(idx, 1, url);
-		setPanels(updatedPanels);
-	}, [panels, setPanels]);
+	const updateBoard = useCallback((idx, url) => {
+		const updatedBoards = {...boards};
+		updatedBoards[idx].url = url;
+		setBoards(updatedBoards);
+	}, [boards, setBoards]);
 
 	const toggleLargeView = useCallback(() => setLargeView((largeView) => !largeView), [setLargeView]);
 	const toggleMinimized = useCallback(() => setMinimized((minimized) => !minimized), [setMinimized]);
@@ -66,13 +70,13 @@ export default function ShellContextProvider({ children }) {
 
 	const value = useMemo(() => ({
 		isMobile,
-		panels,
-		addPanel,
-		removePanel,
-		removeAllPanel,
-		updatePanel,
-		currentPanel,
-		setCurrentPanel,
+		boards,
+		addBoard,
+		removeBoard,
+		removeAllBoards,
+		updateBoard,
+		currentBoard,
+		setCurrentBoard,
 		fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink({ name: PACKAGE_NAME, version: PACKAGE_VERSION }),
 		fiberChannel: fiberChannelFactory.getAppFiberChannel({ name: PACKAGE_NAME, version: PACKAGE_VERSION }),
 		largeView,
@@ -81,13 +85,13 @@ export default function ShellContextProvider({ children }) {
 		toggleMinimized
 	}), [
 		isMobile,
-		panels,
-		addPanel,
-		removePanel,
-		removeAllPanel,
-		updatePanel,
-		currentPanel,
-		setCurrentPanel,
+		boards,
+		addBoard,
+		removeBoard,
+		removeAllBoards,
+		updateBoard,
+		currentBoard,
+		setCurrentBoard,
 		fiberChannelFactory,
 		largeView,
 		toggleLargeView,

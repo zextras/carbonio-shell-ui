@@ -9,15 +9,16 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import {
 	Button,
 	Checkbox,
 	Container,
 	extendTheme,
 	Input,
+	Link,
 	Logo,
 	Modal,
 	Row,
@@ -27,7 +28,9 @@ import {
 	Text,
 	Tooltip,
 	ThemeProvider,
-	useScreenMode
+	useScreenMode,
+	useSnackbar,
+	Paragraph
 } from '@zextras/zapp-ui';
 
 import useLoginView from './login-view-hook';
@@ -75,12 +78,6 @@ const FormWrapper = styled(Container)`
 		height: auto;
 	`}
 `;
-const HelpLink = styled(Text)`
-	cursor: pointer;
-`;
-const PrivacyLink = styled(Link)`
-	text-decoration: none;
-`;
 const Separator = styled.div`
 	width: 1px;
 	height: 16px;
@@ -115,9 +112,9 @@ function Login() {
 							<Padding bottom="extralarge" style={{ width: '100%' }}>
 								<LoginForm />
 								<Row mainAlignment="flex-start">
-									<HelpLink color="primary" onClick={() => setOpenHelpModal(true)}>{ t('Help') }?</HelpLink>
+									<Link color="primary" size="medium" onClick={() => setOpenHelpModal(true)}>{ t('Help') }?</Link>
 									<Separator />
-									<Text as={PrivacyLink} to="/" color="primary">Privacy policy</Text>
+									<Link as={RouterLink} to="/" size="medium" color="primary">Privacy policy</Link>
 								</Row>
 							</Padding>
 						</Container>
@@ -150,26 +147,64 @@ function LoginForm() {
 		passwordRef
 	} = useLoginView();
 	const { t } = useTranslation();
+	const createSnackbar = useSnackbar();
+	const [showAuthError, setShowAuthError] = useState(false);
+	const [openOfflineModal, setOpenOfflineModal] = useState(false);
+	const [openGenericModal, setOpenGenericModal] = useState(false);
 
-	const onSubmit = function(e) {
-		doLogin(e);
-	};
+	const onSubmit = useCallback((e) => {
+		setShowAuthError(false);
+		doLogin(e)
+			.catch((err) => {
+				if (err.message.startsWith('authentication failed'))
+					setShowAuthError(true);
+				else {
+					const snackbarRef = createSnackbar(
+						{
+							key: String(Date.now()),
+							type: 'error',
+							label: 'Can not do the login now.',
+							actionLabel: 'Details',
+							replace: true,
+							onActionClick: () => {
+								window.top.navigator.onLine ? setOpenGenericModal(true) : setOpenOfflineModal(true);
+								snackbarRef();
+							},
+							autoHideTimeout: 5000,
+						}
+					);
+				}
+			});
+	}, [doLogin, createSnackbar, setShowAuthError, setOpenGenericModal, setOpenOfflineModal]);
 
 	return (
-		<form onSubmit={onSubmit} style={{ width: '100%' }}>
-			<Row padding={{ bottom: 'large' }}>
-				<Input inputRef={usernameRef} label={t('Username')} backgroundColor="gray5" />
-			</Row>
-			<Row>
-				<PasswordInput inputRef={passwordRef} label={t('Password')} backgroundColor="gray5" />
-			</Row>
-			<Row padding={{vertical: 'extralarge'}} mainAlignment="space-between">
-				<Checkbox label={t('Remember me')} />
-			</Row>
-			<Row padding={{bottom: 'extralarge'}}>
-				<Button onClick={onSubmit} label={t('Login')} size="fill" />
-			</Row>
-		</form>
+		<>
+			<form onSubmit={onSubmit} style={{ width: '100%' }}>
+				<Row padding={{ bottom: 'large' }}>
+					<Input inputRef={usernameRef} label={t('Username')} backgroundColor="gray5" />
+				</Row>
+				<Row>
+					<PasswordInput inputRef={passwordRef} label={t('Password')} backgroundColor="gray5" />
+				</Row>
+				<Row padding={{vertical: 'extralarge'}} mainAlignment="space-between">
+					<Checkbox label={t('Remember me')} />
+				</Row>
+				<Row orientation="vertical" crossAlignment="flex-start" padding={{bottom: 'extralarge'}}>
+					<Button onClick={onSubmit} label={t('Login')} size="fill" />
+					{ showAuthError && (
+						<Padding top="small">
+							<Text color="error" overflow="break-word">
+								{ t('The username or password is incorrect') }.
+								{ t('Verify that CAPS LOCK is not on, and then retype the current username and password') }.
+							</Text>
+						</Padding>
+					)}
+				</Row>
+				<input type="submit" style={{ display: 'none'}} />
+			</form>
+			<OfflineModal open={openOfflineModal} onClose={() => setOpenOfflineModal(false)} />
+			<GenericErrorModal open={openGenericModal} onClose={() => setOpenGenericModal(false)} />
+		</>
 	);
 }
 
@@ -181,9 +216,34 @@ function HelpModal({ open, onClose }) {
 			open={open}
 			onClose={onClose}
 		>
-			<Padding bottom="small"><Text>Do you need help?</Text></Padding>
-			<Padding bottom="small"><Text>Please call this number: 1234 - 45678910</Text></Padding>
-			<Padding bottom="small"><Text>Or write an email to: help.assistance@iris.com</Text></Padding>
+			<Paragraph>Do you need help?</Paragraph>
+			<Paragraph>Please call this number: <Link href="tel:+123445678910">1234 - 45678910</Link></Paragraph>
+			<Paragraph>Or write an email to: <Link href="mailto:help.assistance@iris.com" target="_blank">help.assistance@iris.com</Link></Paragraph>
+		</Modal>
+	);
+}
+function OfflineModal({ open, onClose }) {
+	const { t } = useTranslation();
+	return (
+		<Modal
+			title="Offline"
+			open={open}
+			onClose={onClose}
+		>
+			<Paragraph>You are currently offline, please check your internet connection.</Paragraph>
+		</Modal>
+	);
+}
+
+function GenericErrorModal({ open, onClose }) {
+	const { t } = useTranslation();
+	return (
+		<Modal
+			title="Error"
+			open={open}
+			onClose={onClose}
+		>
+			<Paragraph>Generic error text placeholder.</Paragraph>
 		</Modal>
 	);
 }

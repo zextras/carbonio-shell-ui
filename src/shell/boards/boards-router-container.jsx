@@ -15,9 +15,9 @@ import styled from 'styled-components';
 import { reduce } from 'lodash';
 import { Container } from '@zextras/zapp-ui';
 import { useAppsCache } from '../../app/app-loader-context';
-import AppPanelRoutes from '../../app/app-panel-routes';
+import AppBoardRoutes from '../../app/app-board-routes';
 
-const _PanelsRouterContainer = styled(Container)`
+const _BoardsRouterContainer = styled(Container)`
 	flex-grow: 1;
 	flex-basis: 0;
 	min-width: 1px;
@@ -25,7 +25,7 @@ const _PanelsRouterContainer = styled(Container)`
 	overflow-y: auto;
 `;
 
-export default function PanelsRouterContainer() {
+export default function BoardsRouterContainer() {
 	const [appsCache, appsLoaded] = useAppsCache();
 	const [children, setChildren] = useState([]);
 
@@ -34,7 +34,7 @@ export default function PanelsRouterContainer() {
 			appsCache,
 			(r, v, k) => {
 				r.push((
-					<AppPanelRoutes key={k} app={v} />
+					<AppBoardRoutes key={k} app={v} />
 				));
 				return r;
 			},
@@ -44,10 +44,10 @@ export default function PanelsRouterContainer() {
 	}, [appsCache, appsLoaded, setChildren]);
 
 	return (
-		<_PanelsRouterContainer>
+		<_BoardsRouterContainer>
 			<Switch>
 				{ children }
 			</Switch>
-		</_PanelsRouterContainer>
+		</_BoardsRouterContainer>
 	);
 }

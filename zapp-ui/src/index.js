@@ -3,6 +3,7 @@ export { default as Avatar } from './components/basic/Avatar';
 export { default as Badge } from './components/basic/Badge';
 export { default as Button } from './components/basic/Button';
 export { default as Icon } from './components/basic/Icon';
+export { default as Link } from './components/basic/Link';
 export { default as LoadMore } from './components/basic/LoadMore';
 export { default as Logo } from './components/basic/Logo';
 export { default as Text } from './components/basic/Text';
@@ -11,6 +12,7 @@ export { default as Text } from './components/basic/Text';
 export { default as Container } from './components/layout/Container';
 export { default as Divider } from './components/layout/Divider';
 export { default as Padding } from './components/layout/Padding';
+export { default as Paragraph } from './components/layout/Paragraph';
 export { default as Row } from './components/layout/Row';
 
 /** Inputs components */
@@ -64,3 +66,4 @@ export { extendTheme } from './theme/Theme';
 export { default as ThemeContext } from './theme/ThemeContext';
 export { default as ThemeProvider } from './theme/ThemeProvider';
 export { useScreenMode } from './hooks/useScreenMode';
+export { useSnackbar } from './hooks/useSnackbar';

@@ -13,7 +13,7 @@ import React, { useCallback, useState } from 'react';
 import { Row, extendTheme, ThemeProvider, Responsive } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import PanelsRouterContainer from './panels/panels-router-container';
+import BoardsRouterContainer from './boards/boards-router-container';
 import AppLoaderContextProvider from '../app/app-loader-context-provider';
 import ShellThemeProvider from './shell-theme-provider';
 import ShellContextProvider from './shell-context-provider';
@@ -24,7 +24,7 @@ import { useTranslation } from '../i18n/hooks';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
 import ShellMenuPanel from './shell-menu-panel';
-import AppPanelWindow from './panels/app-panel-window';
+import AppBoardWindow from './boards/app-board-window';
 
 export default function ShellView() {
 	return (
@@ -96,11 +96,11 @@ export function Shell() {
 					userMenuTree={userMenuTree}
 					quota={quota}
 				/>
-				<PanelsRouterContainer />
+				<BoardsRouterContainer />
 				<ShellMenuPanel menuIsOpen={userOpen} tree={userMenuTree} />
 			</Row>
 			<Responsive mode="desktop">
-				<AppPanelWindow />
+				<AppBoardWindow />
 			</Responsive>
 		</Background>
 	);

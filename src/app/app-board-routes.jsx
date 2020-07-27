@@ -16,7 +16,7 @@ import LoadingView from '../bootstrap/loading-view';
 import { useBehaviorSubject } from '../shell/hooks';
 import AppContextProvider from './app-context-provider';
 
-function AppPanelRoute({ route, pkg }) {
+function AppBoardRoute({ route, pkg }) {
 	const RouteView = route.view;
 	return (
 		<Route exact path={`/${pkg.package}${route.route}`}>
@@ -27,13 +27,13 @@ function AppPanelRoute({ route, pkg }) {
 	);
 }
 
-export default function AppPanelRoutes({ app }) {
+export default function AppBoardRoutes({ app }) {
 	const routes = useBehaviorSubject(app.routes);
 	const children = reduce(
 		routes,
 		(r, v, k) => {
 			r.push((
-				<AppPanelRoute key={v.route} pkg={app.pkg} route={v} />
+				<AppBoardRoute key={v.route} pkg={app.pkg} route={v} />
 			));
 			return r;
 		},

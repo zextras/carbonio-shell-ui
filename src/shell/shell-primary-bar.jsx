@@ -26,7 +26,7 @@ export default function ShellPrimaryBar({
 	activeApp
 }) {
 	const {
-		panels: shellPanels,
+		boards: shellBoards,
 		minimized,
 		toggleMinimized
 	} = useContext(ShellContext);
@@ -58,7 +58,7 @@ export default function ShellPrimaryBar({
 				)}
 			</Row>
 			{
-				shellPanels.length > 0 && (
+				Object.keys(shellBoards).length > 0 && (
 					<Row>
 						<IconButton
 							iconColor="primary"

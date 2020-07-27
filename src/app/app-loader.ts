@@ -110,8 +110,10 @@ type AppRouteDescription = {
 type AppCreateOption = {
 	id: string;
 	onClick?: () => void;
-	panel?: {
+	app: {
 		path: string;
+		boardPath?: string;
+		getPath?: () => undefined;
 	};
 	label: string;
 };

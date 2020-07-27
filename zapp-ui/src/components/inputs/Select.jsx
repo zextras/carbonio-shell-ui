@@ -68,16 +68,31 @@ const TabContainer = styled(Container)`
 `;
 
 function selectedReducer(state, action) {
-  if (!action.multiple) return action.item ? [action.item] : [];
+  if (!action.multiple) {
+    action.onChange(action.item.value);
+    return action.item ? [action.item] : [];
+  }
   switch (action.type) {
-    case 'push':
-      return [...state, {...action.item}];
-    case 'remove':
-      return state.filter(obj => obj.value !== action.item.value);
-    case 'selectAll':
-      return [...action.items];
-    case 'reset':
-      return [];
+    case 'push': {
+      const newState = [...state, {...action.item}];
+      action.onChange(newState);
+      return newState;
+    }
+    case 'remove': {
+      const newState = state.filter(obj => obj.value !== action.item.value);
+      action.onChange(newState);
+      return newState;
+    }
+    case 'selectAll': {
+      const newState = [...action.items];
+      action.onChange(newState);
+      return newState;
+    }
+    case 'reset': {
+      const newState = [];
+      action.onChange(newState);
+      return newState;
+    }
     default:
       throw new Error();
   }
@@ -110,10 +125,10 @@ const Select = React.forwardRef(function({
           icon: isSelected ? 'CheckmarkSquare' : 'Square',
           click: () => {
             if (multiple && isSelected) {
-              dispatchSelected({type: 'remove', item, multiple: multiple});
+              dispatchSelected({type: 'remove', item: item, multiple: multiple, onChange: onChange});
             }
             else if((!multiple && (isEmpty(selected) || item.value !== selected[0].value)) || multiple) {
-              dispatchSelected({type: 'push', item, multiple: multiple});
+              dispatchSelected({type: 'push', item: item, multiple: multiple, onChange: onChange});
             }
           },
           selected: isSelected
@@ -136,18 +151,13 @@ const Select = React.forwardRef(function({
         label: i18nAllLabel,
         icon: isSelected ? 'CheckmarkSquare' : 'Square',
         click: () => {
-          dispatchSelected({ type: isSelected ? 'reset' : 'selectAll', items: items, multiple: multiple });
+          dispatchSelected({ type: isSelected ? 'reset' : 'selectAll', items: items, multiple: multiple, onChange: onChange });
         },
         selected: isSelected
       },
       ...mappedItems
     ];
-  }, [multiple, mappedItems]);
-
-  const isFirstRun = useRef(true);
-  useEffect(() => {
-    isFirstRun.current ? isFirstRun.current = false : onChange && onChange(multiple ? selected : selected[0].value);
-  }, [onChange, multiple, selected]);
+  }, [multiple, mappedItems, onChange]);
 
   return (
     <Dropdown

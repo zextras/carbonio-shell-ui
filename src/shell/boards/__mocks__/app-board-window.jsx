@@ -8,8 +8,7 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React from 'react';
 
 export default function() {
-	return 'PanelsRouterContainer';
+	return 'AppBoardWindow';
 }

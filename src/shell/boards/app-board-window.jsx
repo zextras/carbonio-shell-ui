@@ -13,8 +13,8 @@ import styled, { css } from 'styled-components';
 import { reduce } from 'lodash';
 import { Container, Divider, IconButton, Row, Padding } from '@zextras/zapp-ui';
 import ShellContext from '../shell-context';
-import AppPanelTab from './app-panel-tab';
-import AppPanel from './app-panel';
+import AppBoardTab from './app-board-tab';
+import AppBoard from './app-board';
 
 const BoardContainer = styled.div`
 	position: fixed;
@@ -48,32 +48,32 @@ const Board = styled(Container)`
 	`}
 `;
 const BoardHeader = styled(Row)``;
-const PanelsContainer = styled(Row)`
+const BoardDeatilContainer = styled(Row)`
 	min-height: 0;
 `;
 const BackButton = styled(IconButton)``;
 const TabsContainer = styled(Row)``;
 const Actions = styled(Row)``;
 
-export default function AppPanelWindow() {
+export default function AppBoardWindow() {
 	const {
-		panels: shellPanels,
+		boards: shellBoards,
 		largeView,
 		toggleLargeView,
 		minimized,
 		toggleMinimized,
-		removeAllPanel
+		removeAllBoards
 	} = useContext(ShellContext);
 
-	const [tabs, panels] = reduce(
-		shellPanels,
+	const [tabs, boards] = reduce(
+		shellBoards,
 		(r, v, k) => {
 			const [t, p] = r;
 			t.push((
-				<AppPanelTab key={v + k} idx={k} />
+				<AppBoardTab key={k} idx={k} />
 			));
 			p.push((
-				<AppPanel key={v + k} idx={k} />
+				<AppBoard key={k} idx={k} />
 			));
 			return r;
 		},
@@ -98,13 +98,13 @@ export default function AppPanelWindow() {
 					</TabsContainer>
 					<Actions padding={{ all: 'extrasmall' }}>
 						<Padding right="extrasmall"><IconButton icon={ largeView ? 'CollapseOutline' : 'ExpandOutline' } onClick={toggleLargeView} /></Padding>
-						<IconButton icon="CloseOutline" onClick={removeAllPanel} />
+						<IconButton icon="CloseOutline" onClick={removeAllBoards} />
 					</Actions>
 				</BoardHeader>
 				<Divider style={{ height: '2px' }}/>
-				<PanelsContainer takeAvailableSpace={true}>
-					{ panels }
-				</PanelsContainer>
+				<BoardDeatilContainer takeAvailableSpace={true}>
+					{ boards }
+				</BoardDeatilContainer>
 			</Board>
 		</BoardContainer>
 	);

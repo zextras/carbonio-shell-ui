@@ -15,7 +15,7 @@ jest.mock('../db/database');
 
 import { collectAllTo } from './shell-secondary-bar';
 
-describe('Shell Link', () => {
+describe.skip('Shell Link', () => {
 	test('Collect all to', () => {
 		const collected = collectAllTo('package', {
 			to: '/0',

@@ -11,9 +11,9 @@
 
 import { filter, reduce } from 'lodash';
 import ShellDb from '../db/shell-db';
-import Account, { AppPkgDescription } from '../db/account';
+import Account, { AppPkgDescription, ThemePkgDescription } from '../db/account';
 import { ZimletPkgDescription } from '../network/soap/types';
-import { zimletToAppPkgDescription } from '../network/soap/utils';
+import { zimletToAppPkgDescription, zimletToThemePkgDescription } from '../network/soap/utils';
 import { E2EContext } from './e2e-types';
 
 const ACCOUNT_ID = '00000000-0000-4000-8000-000000000000';
@@ -56,7 +56,9 @@ export default function(ctxt: E2EContext): Promise<void> {
 						label: `${cliSettings.app_package!.label}`,
 						name: `${cliSettings.app_package!.name}`,
 						version: `${cliSettings.app_package!.version}`,
-						'zapp-main': 'app.bundle.js',
+						...(cliSettings.app_package!.type === 'app'
+							? { 'zapp-main': 'app.bundle.js' }
+							: { 'zapp-theme': 'theme.bundle.js' }),
 					}]
 				});
 				break;
@@ -121,7 +123,14 @@ export default function(ctxt: E2EContext): Promise<void> {
 							(r, z) => ([...r, zimletToAppPkgDescription(z)]),
 							[]
 						),
-						[]
+						reduce<ZimletPkgDescription, ThemePkgDescription[]>(
+							filter(
+								zimlet,
+								(z) => (z.zimlet[0].zapp === 'true' && typeof z.zimlet[0]['zapp-theme'] !== 'undefined')
+							),
+							(r, z) => ([...r, zimletToThemePkgDescription(z)]),
+							[]
+						),
 					)
 				))
 			.then(() => {

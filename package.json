@@ -40,7 +40,6 @@
     "@types/webpack-env": "1.15.1",
     "@typescript-eslint/eslint-plugin": "2.5.0",
     "@typescript-eslint/parser": "2.5.0",
-    "@zextras/zapp-cli": "0.0.28",
     "autoprefixer": "9.7.4",
     "babel-jest": "25.1.0",
     "babel-loader": "8.0.6",

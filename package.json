@@ -1,6 +1,6 @@
 {
   "name": "@zextras/zapp-shell",
-  "version": "0.0.56",
+  "version": "0.0.57",
   "description": "A web application framework",
   "scripts": {
     "start": "ZX_SHELL_FLAVOR=E2E webpack-dev-server --config webpack.e2e.config.js",

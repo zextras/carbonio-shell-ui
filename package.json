@@ -7,7 +7,7 @@
     "webdriver:start": "webdriver-manager update && webdriver-manager start",
     "test:e2e": "protractor protractor.conf.js",
     "test": "jest",
-    "prepublishOnly": "npm run build:clean && npm run build",
+    "prepublishOnly": "npm run build:clean && ZX_SHELL_FLAVOR=NPM npm run build",
     "postpublish": "rm -rf lib",
     "type-check": "npx tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",

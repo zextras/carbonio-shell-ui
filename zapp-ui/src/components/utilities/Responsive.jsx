@@ -19,7 +19,7 @@ Responsive.propTypes = {
 	/** Whether the component's children should be displayed on mobile or desktop mode */
 	mode: PropTypes.oneOf(['desktop', 'mobile']).isRequired,
 	/** The Window element to use to determine the screenMode */
-	target: PropTypes.instanceOf(Window)
+	target: PropTypes.object
 };
 
 export default Responsive;

@@ -1,8 +1,11 @@
 /docs/
 /lib/
 /src/
+/svg/
 /.nvmrc
-/babel.config.js
 /styleguide.config.js
 /webpack.config.js
 /Jenkinsfile
+/.idea
+/.babelrc
+/*.tgz

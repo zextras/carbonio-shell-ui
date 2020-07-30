@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Shared UI Components Factory Render a scope with Components registered, with props 1`] = `"Scope-1-Component"`;
+
+exports[`Shared UI Components Factory Render a scope with Components registered, without props 1`] = `"Scope-1-Component"`;
+
+exports[`Shared UI Components Factory Render a scope with NO Components registered 1`] = `null`;

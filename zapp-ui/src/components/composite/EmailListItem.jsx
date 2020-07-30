@@ -2,19 +2,19 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { find } from 'lodash';
 import styled from 'styled-components';
-import Text from '../primitive/Text';
-import Container from '../primitive/Container';
-import Avatar from '../primitive/Avatar';
-import Divider from '../primitive/Divider';
-import Icon from '../primitive/Icon';
-import Padding from '../primitive/Padding';
+import Text from '../basic/Text';
+import Container from '../layout/Container';
+import Avatar from '../basic/Avatar';
+import Divider from '../layout/Divider';
+import Icon from '../basic/Icon';
+import Padding from '../layout/Padding';
 
 const AvatarContainer = styled.div``;
 
 const HoverAvatar = styled.div`
-	background: ${({theme, selected}) => theme.colors.background[selected ? 'bg_1' : 'bg_7']};
+	background: ${({theme, selected}) => theme.palette[selected ? 'primary' : 'gray6'].regular};
 	box-sizing: border-box;
-	border: ${({theme, selecting}) => selecting ? `2px solid ${theme.colors.border.bd_2}` : 'none'};
+	border: ${({theme, selecting}) => selecting ? `2px solid ${theme.palette.primary.regular}` : 'none'};
 	width: ${({theme}) => theme.sizes.avatar.medium.diameter};
 	min-width: ${({theme}) => theme.sizes.avatar.medium.diameter};
 	height: ${({theme}) => theme.sizes.avatar.medium.diameter};
@@ -26,10 +26,10 @@ const HoverAvatar = styled.div`
 	${({theme, selected, selecting, selectable}) => selectable ?
 	`&:hover {
 		background: ${selected 
-			? theme.colors.hover.hv_1 
+			? theme.palette.primary.hover 
 			: (selecting
-					? theme.colors.hover.hv_7
-					: theme.colors.background.bg_5
+					? theme.palette.gray6.hover
+					: theme.palette.gray2.regular
 				)
 			};
 	 > ${AvatarContainer} {
@@ -42,18 +42,19 @@ const PaddedText = styled(Container)`
 `;
 
 const HoverContainer = styled(Container)`
-	background: ${({theme, selected}) => theme.colors.background[selected ? 'bg_11' : 'bg_7']};
+	background: ${({theme, selected}) => theme.palette[selected ? 'highlight' : 'gray6'].regular};
 	& :hover {
-		background: ${({theme}) => theme.colors.hover.hv_7}
+		background: ${({theme}) => theme.palette.gray6.hover}
 	}
 `;
 
-function EmailListItem({ email, selected, selecting, onSelect, onDeselect, folder, selectable }) {
+const EmailListItem = React.forwardRef(function({ email, selected, selecting, onSelect, onDeselect, folder, selectable }, ref) {
 	const mainContact = useMemo(() => {
 		return find(email.contacts, ['type', (folder === 'Sent' || folder === 'Drafts')? 't' : 'f'])
 	}, email.contacts);
 	return (
 		<HoverContainer
+			ref={ref}
 			orientation="vertical"
 			width="fill"
 			height="fit"
@@ -87,7 +88,7 @@ function EmailListItem({ email, selected, selecting, onSelect, onDeselect, folde
 								/>
 							</AvatarContainer>
 						}
-						{ (selected || !selecting) && <Icon size="large" icon="Checkmark" color={selected ? 'txt_3' : 'txt_1'}/> }
+						{ (selected || !selecting) && <Icon size="large" icon="Checkmark" color={selected ? 'gray6' : 'text'}/> }
 					</HoverAvatar>
 				</Padding>
 				<Container
@@ -104,7 +105,7 @@ function EmailListItem({ email, selected, selecting, onSelect, onDeselect, folde
 						padding={{bottom: 'extrasmall'}}
 					>
 						<Text
-							color={email.read ? 'txt_1' : 'txt_2'}
+							color={email.read ? 'text' : 'primary'}
 							weight={email.read ? 'regular' : 'bold'}
 						>
 							{mainContact.displayName || mainContact.address}
@@ -114,8 +115,8 @@ function EmailListItem({ email, selected, selecting, onSelect, onDeselect, folde
 							width="fit"
 						>
 							{email.attachment && <Padding horizontal="extrasmall"><Icon icon="Attach"/></Padding>}
-							{email.flagged && <Padding horizontal="extrasmall"><Icon color="txt_5" icon="Flag"/></Padding>}
-							<Text size="small" color="txt_4">{email.date}</Text>
+							{email.flagged && <Padding horizontal="extrasmall"><Icon color="error" icon="Flag"/></Padding>}
+							<Text size="small" color="secondary">{email.date}</Text>
 						</Container>
 					</Container>
 					<Container
@@ -141,7 +142,7 @@ function EmailListItem({ email, selected, selecting, onSelect, onDeselect, folde
 								</Text>
 							</PaddedText>
 							<Text
-								color="txt_4"
+								color="secondary"
 							>
 								{email.fragment}
 							</Text>
@@ -150,10 +151,10 @@ function EmailListItem({ email, selected, selecting, onSelect, onDeselect, folde
 							orientation="horizontal"
 							width="fit"
 						>
-							{email.urgent && <Padding horizontal="extrasmall"><Icon color="txt_5" icon="ArrowUpward"/></Padding>}
+							{email.urgent && <Padding horizontal="extrasmall"><Icon color="error" icon="ArrowUpward"/></Padding>}
 							{folder &&
 								<Container
-									background={email.read ? 'bg_10' : 'bg_1'}
+									background={email.read ? 'gray4' : 'primary'}
 									height="20px"
 									width="fit"
 									padding={{vertical: 'extrasmall', horizontal: 'small'}}
@@ -163,7 +164,7 @@ function EmailListItem({ email, selected, selecting, onSelect, onDeselect, folde
 								>
 									<Text
 										size="small"
-										color={email.read ? 'txt_1' : 'txt_3'}
+										color={email.read ? 'text' : 'gray6'}
 									>
 										{folder}
 									</Text>
@@ -176,7 +177,7 @@ function EmailListItem({ email, selected, selecting, onSelect, onDeselect, folde
 			<Divider/>
 		</HoverContainer>
 	);
-}
+});
 
 EmailListItem.propTypes = {
 	folder: PropTypes.string,

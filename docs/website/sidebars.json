@@ -1,16 +1,33 @@
 {
   "docs": {
-    "Architecture": [
-      "architecture/api",
-      "architecture/apps",
-      "architecture/architecture",
-      "architecture/context_actions",
-      "architecture/data",
-      "architecture/operation_queue",
-      "architecture/service_worker",
-      "architecture/soap"
+    "Shared": [
+      "shared/zapp_shell",
+      "shared/hooks",
+      "shared/shared_packages"
     ],
-    "Main": ["main"],
-    "Notes": ["notes", "subtrees"]
+    "Architecture": [
+      "architecture/foundations",
+      "architecture/fiberchannel",
+      "architecture/components/index",
+      "architecture/components/bootstrapper",
+      "architecture/components/app_loader",
+      "architecture/components/app_board_window",
+      "architecture/components/shell_view",
+      "architecture/components/shell_db",
+      "architecture/components/shell_network_service"
+    ],
+    "Classes": [
+      "architecture/classes/account",
+      "architecture/classes/database"
+    ],
+    "Main": [
+      "main"
+    ],
+    "Notes": [
+      "architecture/soap",
+      "notes",
+      "subtrees",
+      "testing"
+    ]
   }
 }

@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Text from '../primitive/Text';
-import Container from '../primitive/Container';
-import Avatar from '../primitive/Avatar';
-import Divider from '../primitive/Divider';
-import Icon from '../primitive/Icon';
-import Padding from '../primitive/Padding';
-import IconButton from '../primitive/IconButton';
+import Text from '../basic/Text';
+import Container from '../layout/Container';
+import Avatar from '../basic/Avatar';
+import Divider from '../layout/Divider';
+import Icon from '../basic/Icon';
+import Padding from '../layout/Padding';
+import IconButton from '../inputs/IconButton';
 
 const AvatarContainer = styled.div``;
 
 const HoverArea = styled.div`
 	background: ${
-		({theme, selected}) => (selected ? theme.colors.background['bg_1'] : 'none')
+		({theme, selected}) => (selected ? theme.palette.primary.regular : 'none')
 	};
 	width: ${({theme}) => theme.sizes.avatar.medium.diameter};
 	min-width: ${({theme}) => theme.sizes.avatar.medium.diameter};
@@ -24,17 +24,18 @@ const HoverArea = styled.div`
 	justify-content: center;
 	align-items: center;
 	&:hover {
-		background: ${({theme}) => theme.colors.background['bg_2']};
+		background: ${({theme}) => theme.palette.highlight.hover};
 	 > ${AvatarContainer} {
 	 	display: none;
 	 }
 	}
 `;
 
-function ContactListItem({ contact, selected, onSelect, onDeselect, actions }) {
+const ContactListItem = React.forwardRef(function({ contact, selected, onSelect, onDeselect, actions }, ref) {
 	const [ itemHover, setItemHover ] = useState(false);
 	return (
 		<Container
+			ref={ref}
 			orientation="vertical"
 			width="fill"
 			height="fit"
@@ -56,7 +57,7 @@ function ContactListItem({ contact, selected, onSelect, onDeselect, actions }) {
 				height="fit"
 				mainAlignment="flex-start"
 				crossAlignment="flex-start"
-				background={itemHover ? 'bg_10' : (selected ? 'bg_11' : 'bg_7')}
+				background={itemHover ? 'gray4' : (selected ? 'highlight' : 'gray6')}
 			>
 				<Padding all="small">
 					<HoverArea
@@ -73,7 +74,7 @@ function ContactListItem({ contact, selected, onSelect, onDeselect, actions }) {
 							</AvatarContainer>
 						}
 						{ selected &&
-							<Icon size="large" icon="Checkmark" color="txt_3"/>
+							<Icon size="large" icon="Checkmark" color="gray6"/>
 						}
 					</HoverArea>
 				</Padding>
@@ -89,7 +90,7 @@ function ContactListItem({ contact, selected, onSelect, onDeselect, actions }) {
 							{`${contact.firstName} ${contact.lastName}`}
 						</Text>
 					</Padding>
-					<Text size="small" color="txt_4" overflow="ellipsis">
+					<Text size="small" color="secondary" overflow="ellipsis">
 						{contact.email}
 					</Text>
 				</Container>
@@ -112,7 +113,7 @@ function ContactListItem({ contact, selected, onSelect, onDeselect, actions }) {
 			<Divider/>
 		</Container>
 	);
-}
+});
 
 ContactListItem.propTypes = {
 	contact: PropTypes.shape(

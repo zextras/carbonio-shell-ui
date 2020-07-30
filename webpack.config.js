@@ -3,19 +3,43 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DefinePlugin = require('webpack').DefinePlugin;
 const pkg = require('./zapp.conf.js');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const babelRCApp = require('./babel.config.app.js');
-const babelRCServiceworker = require('./babel.config.serviceworker.js');
+// const babelRCServiceworker = require('./babel.config.serviceworker.js');
 
-module.exports = [{
-	mode: 'development',
+/**
+ * The flavor of the build
+ * @type {'npm' | 'e2e' | 'app'}
+ */
+const flavor = process.env.ZX_SHELL_FLAVOR || 'APP';
+
+let indexFile;
+const pathsToCopy = [
+	{ from: 'assets', to: 'assets' },
+	{ from: 'node_modules/tinymce/skins', to: 'tinymce/skins/' },
+];
+switch (flavor.toUpperCase()) {
+	case 'NPM':
+	case 'E2E':
+		indexFile = path.resolve(process.cwd(), 'src', 'index-npm.tsx');
+		pathsToCopy.push({ from: 'translations', to: 'shelli18n' });
+		break;
+	case 'APP':
+	default:
+		indexFile = path.resolve(process.cwd(), 'src', 'index.tsx');
+		pathsToCopy.push({ from: 'translations', to: 'i18n' });
+}
+
+module.exports = {
+	mode: flavor.toUpperCase() !== 'APP' ? 'development' : 'production',
 	entry: {
-		index: path.resolve(process.cwd(), 'src', 'index.js')
+		index: indexFile
 	},
 	devtool: 'source-map',
 	output: {
 		path: path.resolve(process.cwd(), 'build'),
-		filename: '[name].[hash:8].js',
+		filename: flavor.toUpperCase() !== 'APP' ? '[name].js' : '[name].[hash:8].js',
 		chunkFilename: '[name].[chunkhash:8].chunk.js',
 		publicPath: '/'
 	},
@@ -49,9 +73,6 @@ module.exports = [{
 					{
 						loader: require.resolve('css-loader'),
 						options: {
-							modules: {
-								localIdentName: '[name]__[local]___[hash:base64:5]'
-							},
 							importLoaders: 1,
 							sourceMap: true
 						}
@@ -78,7 +99,7 @@ module.exports = [{
 				test: /\.properties$/,
 				use: [{
 					loader: path.resolve(
-						process.cwd(), 
+						process.cwd(),
 						'node_modules', 
 						'@zextras', 
 						'zapp-cli', 
@@ -90,9 +111,13 @@ module.exports = [{
 		]
 	},
 	plugins: [
+		new CopyPlugin({
+			patterns: pathsToCopy,
+		}),
 		new DefinePlugin({
 			PACKAGE_VERSION: JSON.stringify(pkg.version),
-			PACKAGE_NAME: JSON.stringify(pkg.pkgName)
+			PACKAGE_NAME: JSON.stringify(pkg.pkgName),
+			FLAVOR: JSON.stringify(flavor.toUpperCase())
 		}),
 		new MiniCssExtractPlugin({
 			filename: 'style.[chunkhash:8].css',
@@ -100,12 +125,13 @@ module.exports = [{
 			ignoreOrder: false
 		}),
 		new HtmlWebpackPlugin({
-			title: 'Zextras Shell',
 			inject: true,
-			meta: {
-				viewport: 'minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no',
-				'x-ua-compatible': { 'http-equiv': 'x-ua-compatible', content: 'ie=edge' }
-			}
+			template: path.resolve(
+				process.cwd(),
+				'src',
+				'index.html'
+			),
+			chunks: ['index']
 		}),
 		new HtmlWebpackPlugin({
 				inject: false,
@@ -120,35 +146,4 @@ module.exports = [{
 				PACKAGE_DESCRIPTION: pkg.pkgDescription
 			})
 	]
-}, {
-	mode: 'development',
-	entry: {
-		'shell-sw': path.resolve(process.cwd(), 'src', 'serviceworker', 'main.ts'),
-	},
-	devtool: 'inline-source-map',
-	output: {
-		path: path.resolve(process.cwd(), 'build'),
-		filename: '[name].js',
-		publicPath: '/'
-	},
-	target: 'webworker',
-	resolve: {
-		extensions: ['*', '.js', '.ts']
-	},
-	module: {
-			rules: [
-				{
-					test: /\.[jt]s$/,
-					exclude: /node_modules/,
-					loader: require.resolve('babel-loader'),
-					options: babelRCServiceworker
-				}
-			]
-	},
-	plugins: [
-		new DefinePlugin({
-			PACKAGE_VERSION: JSON.stringify(pkg.version),
-			PACKAGE_NAME: JSON.stringify(pkg.pkgName)
-		})
-	]
-}];
+};

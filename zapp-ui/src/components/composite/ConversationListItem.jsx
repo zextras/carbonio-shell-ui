@@ -2,22 +2,22 @@ import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { find, map } from 'lodash';
 import styled from 'styled-components';
-import Text from '../primitive/Text';
-import Container from '../primitive/Container';
-import Avatar from '../primitive/Avatar';
-import Divider from '../primitive/Divider';
-import Icon from '../primitive/Icon';
-import Padding from '../primitive/Padding';
-import IconButton from "../primitive/IconButton";
+import Text from '../basic/Text';
+import Container from '../layout/Container';
+import Avatar from '../basic/Avatar';
+import Divider from '../layout/Divider';
+import Icon from '../basic/Icon';
+import Padding from '../layout/Padding';
+import IconButton from "../inputs/IconButton";
 import Collapse from "../utilities/Collapse";
 import EmailListItem from "./EmailListItem";
 
 const AvatarContainer = styled.div``;
 
 const HoverAvatar = styled.div`
-	background: ${({theme, selected}) => theme.colors.background[selected ? 'bg_1' : 'bg_7']};
+	background: ${({theme, selected}) => theme.palette[selected ? 'primary' : 'gray6'].regular};
 	box-sizing: border-box;
-	border: ${({theme, selecting}) => selecting ? `2px solid ${theme.colors.border.bd_2}` : 'none'};
+	border: ${({theme, selecting}) => selecting ? `2px solid ${theme.palette.primary.regular}` : 'none'};
 	width: ${({theme}) => theme.sizes.avatar.medium.diameter};
 	min-width: ${({theme}) => theme.sizes.avatar.medium.diameter};
 	height: ${({theme}) => theme.sizes.avatar.medium.diameter};
@@ -28,10 +28,10 @@ const HoverAvatar = styled.div`
 	align-items: center;
 	&:hover {
 		background: ${({theme, selected, selecting}) => selected
-	? theme.colors.hover.hv_1
+	? theme.palette.primary.regular
 	: (selecting
-			? theme.colors.hover.hv_7
-			: theme.colors.background.bg_5
+			? theme.palette.gray6.hover
+			: theme.palette.gray2.regular
 	)
 };
 	> ${AvatarContainer} {
@@ -44,19 +44,20 @@ const PaddedText = styled(Container)`
 `;
 
 const HoverContainer = styled(Container)`
-	background: ${({theme, selected}) => theme.colors.background[selected ? 'bg_11' : 'bg_7']};
+	background: ${({theme, selected}) => theme.palette[selected ? 'highlight' : 'gray6'].regular};
 	& :hover {
-		background: ${({theme}) => theme.colors.hover.hv_7}
+		background: ${({theme}) => theme.palette.gray6.hover}
 	}
 `;
 
-function ConversationListItem({ conversation, emails, selected, selecting, onSelect, onDeselect }) {
+const ConversationListItem = React.forwardRef(function({ conversation, emails, selected, selecting, onSelect, onDeselect }, ref) {
 	const [open, setOpen] = useState(false);
 	const mainContact = useMemo(() => {
 		return find(conversation.contacts, ['type', (conversation.folder === 'Sent' || conversation.folder === 'Drafts')? 't' : 'f'])
 	}, conversation.contacts);
 	return (
 		<Container
+			ref={ref}
 			orientation="vertical"
 			width="fill"
 			height="fit"
@@ -86,7 +87,7 @@ function ConversationListItem({ conversation, emails, selected, selecting, onSel
 							/>
 						</AvatarContainer>
 						}
-						{ (selected || !selecting) && <Icon size="large" icon="Checkmark" color={selected ? 'txt_3' : 'txt_1'}/> }
+						{ (selected || !selecting) && <Icon size="large" icon="Checkmark" color={selected ? 'gray6' : 'text'}/> }
 					</HoverAvatar>
 				</Padding>
 				<Container
@@ -103,7 +104,7 @@ function ConversationListItem({ conversation, emails, selected, selecting, onSel
 						padding={{bottom: 'extrasmall'}}
 					>
 						<Text
-							color={conversation.read ? 'txt_1' : 'txt_2'}
+							color={conversation.read ? 'text' : 'primary'}
 							weight={conversation.read ? 'regular' : 'bold'}
 						>
 							{mainContact.displayName || mainContact.address}
@@ -113,8 +114,8 @@ function ConversationListItem({ conversation, emails, selected, selecting, onSel
 							width="fit"
 						>
 							{conversation.attachment && <Padding horizontal="extrasmall"><Icon icon="Attach"/></Padding>}
-							{conversation.flagged && <Padding horizontal="extrasmall"><Icon color="txt_5" icon="Flag"/></Padding>}
-							<Text size="small" color="txt_4">{conversation.date}</Text>
+							{conversation.flagged && <Padding horizontal="extrasmall"><Icon color="error" icon="Flag"/></Padding>}
+							<Text size="small" color="secondary">{conversation.date}</Text>
 						</Container>
 					</Container>
 					<Container
@@ -123,7 +124,7 @@ function ConversationListItem({ conversation, emails, selected, selecting, onSel
 					>
 						<Padding right="extrasmall">
 							<Container
-								background={conversation.read ? 'bg_10' : 'bg_1'}
+								background={conversation.read ? 'gray4' : 'primary'}
 								height="20px"
 								width="fit"
 								padding={{vertical: 'extrasmall', horizontal: 'small'}}
@@ -133,7 +134,7 @@ function ConversationListItem({ conversation, emails, selected, selecting, onSel
 							>
 								<Text
 									size="small"
-									color={conversation.read ? 'txt_1' : 'txt_3'}
+									color={conversation.read ? 'text' : 'gray6'}
 								>
 									{conversation.msgCount}
 								</Text>
@@ -158,7 +159,7 @@ function ConversationListItem({ conversation, emails, selected, selecting, onSel
 								</Text>
 							</PaddedText>
 							<Text
-								color="txt_4"
+								color="secondary"
 							>
 								{conversation.fragment}
 							</Text>
@@ -167,7 +168,7 @@ function ConversationListItem({ conversation, emails, selected, selecting, onSel
 							orientation="horizontal"
 							width="fit"
 						>
-							{conversation.urgent && <Padding horizontal="extrasmall"><Icon color="txt_5" icon="ArrowUpward"/></Padding>}
+							{conversation.urgent && <Padding horizontal="extrasmall"><Icon color="error" icon="ArrowUpward"/></Padding>}
 							<IconButton size="small" icon={open ? 'ChevronUp' : 'ChevronDown'} onClick={() => setOpen(!open)}/>
 						</Container>
 					</Container>
@@ -185,7 +186,7 @@ function ConversationListItem({ conversation, emails, selected, selecting, onSel
 			</Collapse>
 		</Container>
 	);
-}
+});
 
 ConversationListItem.propTypes = {
 	conversation: PropTypes.shape(

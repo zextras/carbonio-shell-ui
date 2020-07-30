@@ -1,7 +1,14 @@
 import { map, reduce } from 'lodash';
 
-export default function generateColorMap({light, dark}, options) {
-    return populateValues(populateKeys(light || {}, dark || {}, options || {}) || { light: {}, dark: {}}, options || {});
+export default function generateColorMap(palette = {}, options) {
+    return populateValues(
+      populateKeys(
+        palette.light || {},
+        palette.dark || {},
+        options || {}
+        ) || { light: {}, dark: {}},
+      options || {}
+      );
 };
 
 function populateKeys(light, dark, options) {

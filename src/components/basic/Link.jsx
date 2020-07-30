@@ -42,7 +42,7 @@ const Link = React.forwardRef(function ({
 			tabIndex={0}
 			forwardedAs={as}
 			size={size}
-			underlined={underlined}
+			underlined={underlined ? 1 : 0}
 			{...rest}
 		>
 			{ children }

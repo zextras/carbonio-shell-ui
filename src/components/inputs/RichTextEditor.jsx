@@ -3,12 +3,6 @@ import PropTypes from 'prop-types';
 
 import tinymce from 'tinymce/tinymce';
 
-require.context(
-  'file-loader?name=tinymce/[path][name].[ext]&context=node_modules/tinymce!tinymce/skins',
-  true,
-  /.*/
-);
-
 import 'tinymce/themes/silver';
 
 import 'tinymce/plugins/advlist';

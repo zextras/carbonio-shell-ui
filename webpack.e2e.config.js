@@ -39,7 +39,8 @@ module.exports = merge(common, {
 						name: 'com_example_awesome_app',
 						label: 'My Awesome App',
 						version: '0.0.0',
-						description: 'An awesome app to test the shell.'
+						description: 'An awesome app to test the shell.',
+						type: 'app'
 					}
 				});
 			});

@@ -83,7 +83,7 @@ function loadThemeModule(
 			script.type = 'text/javascript';
 			script.setAttribute('src', path);
 			script.addEventListener('error', reject);
-			iframe.contentDocument.body.appendChild(script);
+			iframe.onload = () => iframe.contentDocument!.body.appendChild(script);
 			_iframes[appPkg.package] = iframe;
 		} else
 			reject(new Error('Cannot create extension loader'));

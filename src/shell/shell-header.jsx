@@ -98,7 +98,7 @@ export default function ShellHeader({
 					<Container orientation="horizontal" mainAlignment="flex-start" width="50%">
 						<Container orientation="horizontal" width="fit" padding={{ right: 'small' }}>
 							<Dropdown items={createOptions} placement="bottom-end">
-								<Button label={t("New")} icon="Plus" />
+								<Button label={t("New")} icon="ArrowIosDownwardOutline" />
 							</Dropdown>
 						</Container>
 						{/*	<SearchInput/> */}

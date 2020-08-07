@@ -15,15 +15,12 @@ import { omit } from 'lodash';
 import { lt } from 'semver';
 import {
 	FC,
-	FCEvent,
-	FCPartialEvent,
-	FCPromisedEvent,
-	FCSink,
 	IFCSink,
 	IFiberChannelFactory
 } from './fiber-channel-types';
 import { AppPkgDescription } from '../db/account';
 import { LoadedAppsCache } from '../app/app-loader';
+import { FCEvent, FCPartialEvent, FCPromisedEvent, FCSink } from '../../types';
 
 type WithPromiseId = { _promiseIdRequest?: string; _promiseIdResponse?: string };
 

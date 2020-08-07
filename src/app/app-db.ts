@@ -9,8 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { AppPkgDescription } from '../db/account';
+
 import { Database } from '../db/database';
+import { AppPkgDescription } from '../../types';
 
 export function wrapAppDbConstructor(pkg: AppPkgDescription): any {
 	abstract class AppDb extends Database {

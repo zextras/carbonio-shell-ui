@@ -10,8 +10,7 @@
  */
 
 import { Observable } from 'rxjs';
-import { AppPkgDescription } from '../db/account';
-import { FCEvent, FCPromisedEvent, FCSink } from '../../types';
+import { AppPkgDescription, FCEvent, FCPromisedEvent, FCSink } from '../../types';
 
 
 export type IFCSink = <T extends {} | string, R extends {} | string>(event: FCEvent<T>) => void | Promise<R>;

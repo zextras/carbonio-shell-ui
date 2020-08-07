@@ -11,9 +11,25 @@
  */
 
 import { ComponentClass, LazyExoticComponent } from 'react';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ISyncProtocol } from 'dexie-syncable/api';
-import Dexie, { DexieOptions } from 'dexie';
+import Dexie, { Database, DexieOptions } from 'dexie';
+import { LocationDescriptor } from 'history';
+
+export type BasePkgDescription = {
+	priority: number;
+	package: string;
+	name: string;
+	description: string;
+	version: string;
+	resourceUrl: string;
+	entryPoint: string;
+};
+
+export type AppPkgDescription = BasePkgDescription & {
+	swExtension?: string;
+	styleEntryPoint?: string;
+};
 
 export type FCPartialEvent<T extends {} | string> = {
 	asPromise?: true;
@@ -95,7 +111,18 @@ export function addSharedUiComponent (scope: string, componentClass: ComponentCl
 export const fiberChannel: FC;
 export const fiberChannelSink: FCSink;
 
-export const hooks: any;
+export const hooks: {
+	useAddBoardCallback(path: string): () => void;
+	usePushHistoryCallback(): (location: LocationDescriptor) => void;
+	useGoBackHistoryCallback(): () => void;
+	useReplaceHistoryCallback(): (location: LocationDescriptor) => void;
+	useBehaviorSubject<T>(observable: BehaviorSubject<T>): T;
+	useAppContext(): () => {};
+	useObserveDb(): (query: () => Promise<any>, db: Database) => {};
+	useAppPkg(): () => AppPkgDescription;
+};
+
+
 export const ui: any;
 
 export const db: {

@@ -11,7 +11,7 @@
 
 import { default as Lodash, map, orderBy, compact, keyBy } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { ComponentClass, LazyExoticComponent } from 'react';
+import { ComponentClass } from 'react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as RxJS from 'rxjs';
@@ -27,7 +27,7 @@ import * as ZappUI from "@zextras/zapp-ui";
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
-import { AccountAppsData, AppPkgDescription } from '../db/account';
+import { AccountAppsData } from '../db/account';
 import * as hooks from '../shell/hooks';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
@@ -41,7 +41,7 @@ import { FC, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import validateSharedUiComponent from '../shared-ui-components/shared-ui-components-validator';
 import ShellDb from '../db/shell-db';
 import ShellNetworkService from '../network/shell-network-service';
-import { AppCreateOption, AppRouteDescription, FCSink, MainMenuItemData } from '../../types';
+import { AppCreateOption, AppPkgDescription, AppRouteDescription, FCSink, MainMenuItemData } from '../../types';
 
 type AppModuleFunction = () => void;
 

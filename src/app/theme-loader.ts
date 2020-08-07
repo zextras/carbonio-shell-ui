@@ -19,8 +19,9 @@ import * as ZappUI from "@zextras/zapp-ui";
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
-import { AccountAppsData, AppPkgDescription, ThemePkgDescription } from '../db/account';
+import { AccountAppsData, ThemePkgDescription } from '../db/account';
 import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
+import { AppPkgDescription } from '../../types';
 
 type AppModuleFunction = () => void;
 

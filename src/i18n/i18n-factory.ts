@@ -10,10 +10,10 @@
  */
 
 import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
-import { AppPkgDescription } from '../db/account';
 import i18next, { i18n } from 'i18next';
 import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import { AppPkgDescription } from '../../types';
 
 export default class I18nFactory {
 	private _fcFactory: IFiberChannelFactory ;

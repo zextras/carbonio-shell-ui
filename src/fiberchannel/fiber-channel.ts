@@ -18,9 +18,8 @@ import {
 	IFCSink,
 	IFiberChannelFactory
 } from './fiber-channel-types';
-import { AppPkgDescription } from '../db/account';
 import { LoadedAppsCache } from '../app/app-loader';
-import { FCEvent, FCPartialEvent, FCPromisedEvent, FCSink } from '../../types';
+import { AppPkgDescription, FCEvent, FCPartialEvent, FCPromisedEvent, FCSink } from '../../types';
 
 type WithPromiseId = { _promiseIdRequest?: string; _promiseIdResponse?: string };
 

@@ -9,25 +9,12 @@
  * *** END LICENSE BLOCK *****
  */
 
+import { AppPkgDescription, BasePkgDescription } from '../../types';
+
 export type AccountLoginData = {
 	/** Zimbra auth token */ t: string;
 	/** Username */ u: string;
 	/** Password */ p: string;
-};
-
-type BasePkgDescription = {
-	priority: number;
-	package: string;
-	name: string;
-	description: string;
-	version: string;
-	resourceUrl: string;
-	entryPoint: string;
-};
-
-export type AppPkgDescription = BasePkgDescription & {
-	swExtension?: string;
-	styleEntryPoint?: string;
 };
 
 export type ThemePkgDescription = BasePkgDescription & {};

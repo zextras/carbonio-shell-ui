@@ -9,11 +9,12 @@
  * *** END LICENSE BLOCK *****
  */
 
-import Account, { AppPkgDescription, ThemePkgDescription } from '../db/account';
+import Account, { ThemePkgDescription } from '../db/account';
 import ShellDb from '../db/shell-db';
 import { GetInfoResponse, ZimletPkgDescription } from './soap/types';
 import { filter, reduce } from 'lodash';
 import { zimletToAppPkgDescription, zimletToThemePkgDescription } from './soap/utils';
+import { AppPkgDescription } from '../../types';
 
 export default class ShellNetworkService {
 

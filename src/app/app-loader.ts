@@ -11,7 +11,7 @@
 
 import { default as Lodash, map, orderBy, compact, keyBy } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { ComponentClass, LazyExoticComponent } from 'react';
+import { ComponentClass } from 'react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as RxJS from 'rxjs';
@@ -27,7 +27,7 @@ import * as ZappUI from "@zextras/zapp-ui";
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
-import { AccountAppsData, AppPkgDescription } from '../db/account';
+import { AccountAppsData } from '../db/account';
 import * as hooks from '../shell/hooks';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
@@ -37,10 +37,11 @@ import SharedUiComponentsFactory from '../shared-ui-components/shared-ui-compone
 // @ts-ignore
 import AppLink from './app-link';
 import { wrapAppDbConstructor } from './app-db';
-import { FC, FCSink, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
+import { FC, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import validateSharedUiComponent from '../shared-ui-components/shared-ui-components-validator';
 import ShellDb from '../db/shell-db';
 import ShellNetworkService from '../network/shell-network-service';
+import { AppCreateOption, AppPkgDescription, AppRouteDescription, FCSink, MainMenuItemData } from '../../types';
 
 type AppModuleFunction = () => void;
 
@@ -78,44 +79,6 @@ type SharedLibrariesAppsMap = {
 		ui: any;
 	};
 	'@zextras/zapp-ui': {};
-};
-
-// Type is in the documentation. If changed update also the documentation.
-type MainSubMenuItemData = {
-	id: string;
-	icon?: string;
-	label: string;
-	to: string;
-	children?: Array<MainSubMenuItemData>;
-};
-
-// Type is in the documentation. If changed update also the documentation.
-type MainMenuItemData = {
-	id: string;
-	icon: string;
-	label: string;
-	to: string;
-	children?: Array<MainSubMenuItemData>;
-	app: string;
-};
-
-// Type is in the documentation. If changed update also the documentation.
-type AppRouteDescription = {
-	route: string;
-	view: LazyExoticComponent<any>;
-	label: LazyExoticComponent<any>;
-};
-
-// Type is in the documentation. If changed update also the documentation.
-type AppCreateOption = {
-	id: string;
-	onClick?: () => void;
-	app: {
-		path: string;
-		boardPath?: string;
-		getPath?: () => undefined;
-	};
-	label: string;
 };
 
 type SharedUiComponentsDescriptor = {

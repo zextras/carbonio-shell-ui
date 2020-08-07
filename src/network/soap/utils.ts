@@ -9,8 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { AppPkgDescription, ThemePkgDescription } from '../../db/account';
+import { ThemePkgDescription } from '../../db/account';
 import { ZimletPkgDescription } from './types';
+import { AppPkgDescription } from '../../../types';
 
 export function zimletToAppPkgDescription(z: ZimletPkgDescription): AppPkgDescription {
 	return {

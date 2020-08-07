@@ -11,10 +11,11 @@
 
 import { filter, reduce } from 'lodash';
 import ShellDb from '../db/shell-db';
-import Account, { AppPkgDescription, ThemePkgDescription } from '../db/account';
+import Account, {  ThemePkgDescription } from '../db/account';
 import { ZimletPkgDescription } from '../network/soap/types';
 import { zimletToAppPkgDescription, zimletToThemePkgDescription } from '../network/soap/utils';
 import { E2EContext } from './e2e-types';
+import { AppPkgDescription } from '../../types';
 
 const ACCOUNT_ID = '00000000-0000-4000-8000-000000000000';
 const ACCOUNT_NAME = 'user@example.com';

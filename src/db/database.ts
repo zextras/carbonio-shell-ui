@@ -14,8 +14,9 @@ import observable from 'dexie-observable';
 import syncable from 'dexie-syncable';
 import { ISyncProtocol } from 'dexie-syncable/api';
 import { Subject } from 'rxjs';
+import { IDatabase } from '../../types';
 
-export abstract class Database extends Dexie {
+export abstract class Database extends Dexie implements IDatabase {
 
 	constructor(dbname: string, options?: any) {
 		super(

@@ -10,32 +10,9 @@
  */
 
 import { Observable } from 'rxjs';
-import { AppPkgDescription } from '../db/account';
+import { AppPkgDescription, FCEvent, FCPromisedEvent, FCSink } from '../../types';
 
-export type FCPartialEvent<T extends {} | string> = {
-	asPromise?: true;
-	to?: {
-		version: string;
-		app: string;
-	};
-	event: string;
-	data: T;
-};
 
-export type FCEvent<T extends {} | string> = FCPartialEvent<T> & {
-	from: string;
-	version: string;
-};
-
-export type FCPartialPromisedEvent<T extends {} | string> = FCPartialEvent<T> & {
-	asPromise: true;
-};
-
-export type FCPromisedEvent<T extends {} | string, R extends {} | string> = FCEvent<T> & {
-	sendResponse: (data: R) => void;
-};
-
-export type FCSink = <T extends {} | string, R extends {} | string>(event: FCPartialEvent<T> | FCPartialPromisedEvent<T>) => void | Promise<R>;
 export type IFCSink = <T extends {} | string, R extends {} | string>(event: FCEvent<T>) => void | Promise<R>;
 export type FC = Observable<FCEvent<any> | FCPromisedEvent<any, any>>;
 

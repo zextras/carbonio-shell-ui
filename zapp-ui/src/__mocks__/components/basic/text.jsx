@@ -9,4 +9,8 @@
  * *** END LICENSE BLOCK *****
  */
 
-export { default as Text } from './components/basic/text';
+import React from 'react';
+
+export default function Text({ children }) {
+	return `Text: ${children}`;
+}

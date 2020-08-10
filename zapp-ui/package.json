@@ -7,9 +7,8 @@
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build",
     "icons:build": "npx @svgr/cli -d src/icons svg && npx create-index -ri ./src/icons",
-    "build": "npm run clean && webpack",
-    "clean": "rm -rf dist/*",
-    "prepack": "npm run clean && npx babel src -d dist -s true"
+    "build": "npx babel src -d dist -s true",
+    "clean": "rm -rf dist/*"
   },
   "repository": {
     "type": "git",

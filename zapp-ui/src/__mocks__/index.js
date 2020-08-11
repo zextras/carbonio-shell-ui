@@ -23,21 +23,21 @@ export { default as Container } from './components/layout/container';
 export { default as Divider } from './components/layout/divider';
 export { default as Padding } from './components/layout/padding';
 export { default as Paragraph } from './components/layout/paragraph';
-export { default as Row } from './components/layout/Row';
+export { default as Row } from './components/layout/row';
 
-/!** Inputs components *!/
-/* export { default as Checkbox } from './components/inputs/Checkbox';
-export { default as ChipInput } from './components/inputs/ChipInput';
-export { default as EmailComposerInput } from './components/inputs/EmailComposerInput';
-export { default as FileLoader } from './components/inputs/FileLoader';
-export { default as IconButton } from './components/inputs/IconButton';
-export { default as IconCheckbox } from './components/inputs/IconCheckbox';
-export { Input, PasswordInput } from './components/inputs/Input';
-export { default as SearchInput } from './components/inputs/SearchInput';
-export { default as Select } from './components/inputs/Select';
+/** Inputs components */
+export { default as Checkbox } from './components/inputs/checkbox';
+export { default as ChipInput } from './components/inputs/chipInput';
+export { default as EmailComposerInput } from './components/inputs/emailComposerInput';
+export { default as FileLoader } from './components/inputs/fileLoader';
+export { default as IconButton } from './components/inputs/iconButton';
+export { default as IconCheckbox } from './components/inputs/iconCheckbox';
+export { Input, PasswordInput } from './components/inputs/input';
+export { default as SearchInput } from './components/inputs/searchInput';
+export { default as Select } from './components/inputs/select';
 //export { default as RichTextEditor } from './components/inputs/RichTextEditor';
 
-/!** Navigation components *!/
+/* /!** Navigation components *!/
 export { default as Accordion } from './components/navigation/Accordion';
 export { default as Breadcrumbs } from './components/navigation/Breadcrumbs';
 

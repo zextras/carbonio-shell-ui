@@ -123,4 +123,94 @@ describe('Test Mocks', () => {
 		expect(tree).toMatchSnapshot();
 	});
 
+	test('Mock of Checkbox Component', () => {
+		const component = renderer.create(
+			<Components.Checkbox label="checkbox label"/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of ChipInput Component', () => {
+		const component = renderer.create(
+			<Components.ChipInput value="contactsTo"/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of EmailComposerInput Component', () => {
+		const component = renderer.create(
+			<Components.EmailComposerInput placeholder="Object"/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of FileLoader Component', () => {
+		const component = renderer.create(
+			<Components.FileLoader/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of IconButton Component', () => {
+		const component = renderer.create(
+			<Components.IconButton icon="Pricetags"/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of IconCheckbox Component', () => {
+		const component = renderer.create(
+			<Components.IconCheckbox icon="Text"/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of PasswordInput Component', () => {
+		const component = renderer.create(
+			<Components.PasswordInput label="PasswordInput"/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of Input Component', () => {
+		const component = renderer.create(
+			<Components.Input label="Input"/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of SearchInput Component', () => {
+		const component = renderer.create(
+			<Components.SearchInput/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of Select Component', () => {
+		const component = renderer.create(
+			<Components.Select label="Select an item"/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+
+/*	test('Mock of RichTextEditor Component', () => {
+		const component = renderer.create(
+			<Components.RichTextEditor initialValue="<p>This is the initial content of the editor</p>"/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});*/
+
+
 });

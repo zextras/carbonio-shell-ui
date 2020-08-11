@@ -9,20 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 import React from 'react';
-import {reduce} from 'lodash';
 
-export default function Container({ children, orientation }) {
-
-	const wrapped = reduce(
-		children,
-		(acc,v,k)=>{
-			acc.push(<li key={k}>{v}</li>);
-			return acc;
-		}, []
-	)
-	return (
-			<ul>{`Container (orientation=${orientation}):`}
-				{wrapped}
-			</ul>
-	);
+export default function Accordion({ label }) {
+	return `label: ${ label }`;
 }

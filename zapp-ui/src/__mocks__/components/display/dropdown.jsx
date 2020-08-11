@@ -8,10 +8,11 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
+
 import React from 'react';
 import {reduce} from 'lodash';
 
-export default function Container({ children, orientation }) {
+export default function Dropdown({ children, items }) {
 
 	const wrapped = reduce(
 		children,
@@ -21,8 +22,8 @@ export default function Container({ children, orientation }) {
 		}, []
 	)
 	return (
-			<ul>{`Container (orientation=${orientation}):`}
-				{wrapped}
-			</ul>
+		<ul>{`Dropdown (items=${items}):`}
+			{wrapped}
+		</ul>
 	);
 }

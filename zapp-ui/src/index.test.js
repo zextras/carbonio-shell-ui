@@ -203,7 +203,6 @@ describe('Test Mocks', () => {
 		expect(tree).toMatchSnapshot();
 	});
 
-
 /*	test('Mock of RichTextEditor Component', () => {
 		const component = renderer.create(
 			<Components.RichTextEditor initialValue="<p>This is the initial content of the editor</p>"/>
@@ -212,5 +211,70 @@ describe('Test Mocks', () => {
 		expect(tree).toMatchSnapshot();
 	});*/
 
+	test('Mock of Accordion Component', () => {
+		const component = renderer.create(
+			<Components.Accordion label="Accordion"/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of Breadcrumbs Component', () => {
+		const component = renderer.create(
+			<Components.Breadcrumbs/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of Chip Component', () => {
+		const component = renderer.create(
+			<Components.Chip label="example"/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of Dropdown Component', () => {
+		const items = [
+			{
+				id: 'activity-1',
+				icon: 'Activity',
+				label: 'Some Item',
+				click: () => console.log("click1")
+			},
+			{
+				id: 'activity-2',
+				icon: 'Plus',
+				label: 'Some  Other Item',
+				click: () => console.log("click2")
+			},
+			{
+				id: 'activity-3',
+				icon: 'Activity',
+				label: 'Some Item',
+				click: () => console.log("click3")
+			}
+		];
+
+		const component = renderer.create(
+			<Components.Dropdown items={items}>
+				<Components.IconButton icon="ArrowDown" />
+				<Components.IconButton icon="ArrowUp" />
+				<Components.IconButton icon="ArrowLeft" />
+				<Components.IconButton icon="ArrowRight" />
+			</Components.Dropdown>,
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of List Component', () => {
+		const component = renderer.create(
+			<Components.List amount ={ 2 }/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
 
 });

@@ -1,12 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Test Mocks Mock of Accordion Component 1`] = `"label: Accordion"`;
+
 exports[`Test Mocks Mock of Avatar Component 1`] = `"label: Sent"`;
 
 exports[`Test Mocks Mock of Badge Component 1`] = `"value: testValue"`;
 
+exports[`Test Mocks Mock of Breadcrumbs Component 1`] = `"crumbs: undefined"`;
+
 exports[`Test Mocks Mock of Button Component 1`] = `"label: Button"`;
 
 exports[`Test Mocks Mock of Checkbox Component 1`] = `"label: checkbox label"`;
+
+exports[`Test Mocks Mock of Chip Component 1`] = `"label: example"`;
 
 exports[`Test Mocks Mock of ChipInput Component 1`] = `"value: contactsTo"`;
 
@@ -27,6 +33,24 @@ exports[`Test Mocks Mock of Container Component 1`] = `
 
 exports[`Test Mocks Mock of Divider Component 1`] = `"color: gray2"`;
 
+exports[`Test Mocks Mock of Dropdown Component 1`] = `
+<ul>
+  Dropdown (items=[object Object],[object Object],[object Object]):
+  <li>
+    icon: ArrowDown
+  </li>
+  <li>
+    icon: ArrowUp
+  </li>
+  <li>
+    icon: ArrowLeft
+  </li>
+  <li>
+    icon: ArrowRight
+  </li>
+</ul>
+`;
+
 exports[`Test Mocks Mock of EmailComposerInput Component 1`] = `"placeholder: Object"`;
 
 exports[`Test Mocks Mock of FileLoader Component 1`] = `"onChange: unset"`;
@@ -40,6 +64,8 @@ exports[`Test Mocks Mock of IconCheckbox Component 1`] = `"icon: Text"`;
 exports[`Test Mocks Mock of Input Component 1`] = `"label: Input"`;
 
 exports[`Test Mocks Mock of Link Component 1`] = `"color: primary"`;
+
+exports[`Test Mocks Mock of List Component 1`] = `"Factory: unset and amount: 2"`;
 
 exports[`Test Mocks Mock of LoadMore Component 1`] = `"label: open"`;
 

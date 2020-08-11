@@ -37,15 +37,16 @@ export { default as SearchInput } from './components/inputs/searchInput';
 export { default as Select } from './components/inputs/select';
 //export { default as RichTextEditor } from './components/inputs/RichTextEditor';
 
-/* /!** Navigation components *!/
-export { default as Accordion } from './components/navigation/Accordion';
-export { default as Breadcrumbs } from './components/navigation/Breadcrumbs';
+/** navigation components */
 
-/!** Data display components *!/
-export { default as Chip } from './components/display/Chip';
-export { default as Dropdown } from './components/display/Dropdown';
-export { default as List } from './components/display/List';
-export { default as ListHeader } from './components/display/ListHeader';
+export { default as Accordion } from './components/navigation/accordion';
+export { default as Breadcrumbs } from './components/navigation/breadcrumbs';
+
+/** display components */
+export { default as Chip } from './components/display/chip';
+export { default as Dropdown } from './components/display/dropdown';
+export { default as List } from './components/display/list';
+/*export { default as ListHeader } from './components/display/ListHeader';
 export { default as Popover } from './components/display/Popover';
 export { default as Popper } from './components/display/Popper';
 export { default as Tooltip } from './components/display/Tooltip';
@@ -70,14 +71,7 @@ export { default as GenericFileIcon } from './components/composite/GenericFileIc
 export { default as Header } from './components/composite/Header';
 export { default as MenuPanel } from './components/composite/MenuPanel';
 export { default as NavigationPanel } from './components/composite/NavigationPanel';
-export { MessageBubble, ReplyMessage } from './components/composite/MessageBubble';
-
-export { extendTheme } from './theme/Theme';
-export { default as ThemeContext } from './theme/ThemeContext';
-export { default as ThemeProvider } from './theme/ThemeProvider';
-export { useScreenMode } from './hooks/useScreenMode';
-export { useSnackbar } from './hooks/useSnackbar';*/
-
+export { MessageBubble, ReplyMessage } from './components/composite/MessageBubble';*/
 
 
 

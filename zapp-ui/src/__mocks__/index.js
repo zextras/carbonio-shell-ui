@@ -21,12 +21,12 @@ export { default as Text } from './components/basic/text';
 /** Layout components */
 export { default as Container } from './components/layout/container';
 export { default as Divider } from './components/layout/divider';
-/*export { default as Padding } from './components/layout/Padding';
-export { default as Paragraph } from './components/layout/Paragraph';
+export { default as Padding } from './components/layout/padding';
+export { default as Paragraph } from './components/layout/paragraph';
 export { default as Row } from './components/layout/Row';
 
 /!** Inputs components *!/
-export { default as Checkbox } from './components/inputs/Checkbox';
+/* export { default as Checkbox } from './components/inputs/Checkbox';
 export { default as ChipInput } from './components/inputs/ChipInput';
 export { default as EmailComposerInput } from './components/inputs/EmailComposerInput';
 export { default as FileLoader } from './components/inputs/FileLoader';

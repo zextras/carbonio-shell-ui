@@ -99,4 +99,28 @@ describe('Test Mocks', () => {
 		expect(tree).toMatchSnapshot();
 	});
 
+	test('Mock of Padding Component', () => {
+		const component = renderer.create(
+			<Components.Padding vertical="small">Example Padding</Components.Padding>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of Paragraph Component', () => {
+		const component = renderer.create(
+			<Components.Paragraph overflow="break-word">Example Text</Components.Paragraph>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of Row Component', () => {
+		const component = renderer.create(
+			<Components.Row display="flex">Example Text</Components.Row>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
 });

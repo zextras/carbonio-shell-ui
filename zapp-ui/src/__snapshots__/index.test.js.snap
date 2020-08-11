@@ -31,4 +31,6 @@ exports[`Test Mocks Mock of LoadMore Component 1`] = `"label: open"`;
 
 exports[`Test Mocks Mock of Logo Component 1`] = `"size: small"`;
 
+exports[`Test Mocks Mock of Padding Component 1`] = `"vertical: small"`;
+
 exports[`Test Mocks Mock of Text Component 1`] = `"Text (size=small): Example Text"`;

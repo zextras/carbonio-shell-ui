@@ -8,9 +8,8 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-
 import React from 'react';
 
-export default function Text({ children, size }) {
-	return `Text (size=${size}): ${children}`;
+export default function Divider({ color }) {
+	return `color: ${color}`;
 }

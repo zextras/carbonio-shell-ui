@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Mocks Mock of Avatar Component 1`] = `"label: Sent"`;
+
+exports[`Test Mocks Mock of Badge Component 1`] = `"value: testValue"`;
+
+exports[`Test Mocks Mock of Button Component 1`] = `"label: Button"`;
+
+exports[`Test Mocks Mock of Container Component 1`] = `
+<ul>
+  Container (orientation=vertical):
+  <li>
+    Text (size=small): Example Text 1
+  </li>
+  <li>
+    Text (size=medium): Example Text 2
+  </li>
+  <li>
+    Text (size=large): Example Text 3
+  </li>
+</ul>
+`;
+
+exports[`Test Mocks Mock of Divider Component 1`] = `"color: gray2"`;
+
+exports[`Test Mocks Mock of Icon Component 1`] = `"size: small"`;
+
+exports[`Test Mocks Mock of Link Component 1`] = `"color: primary"`;
+
+exports[`Test Mocks Mock of LoadMore Component 1`] = `"label: open"`;
+
+exports[`Test Mocks Mock of Logo Component 1`] = `"size: small"`;
+
+exports[`Test Mocks Mock of Text Component 1`] = `"Text (size=small): Example Text"`;

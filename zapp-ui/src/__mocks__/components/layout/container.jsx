@@ -8,9 +8,20 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-
 import React from 'react';
 
-export default function Text({ children, size }) {
-	return `Text (size=${size}): ${children}`;
+export default function Container({ children, orientation }) {
+	return (
+			<ul>{`Container (orientation=${orientation}):`}
+				<li>
+					{children[0]}
+				</li>
+				<li>
+					{children[1]}
+				</li>
+				<li>
+					{children[2]}
+				</li>
+			</ul>
+	);
 }

@@ -277,4 +277,76 @@ describe('Test Mocks', () => {
 		expect(tree).toMatchSnapshot();
 	});
 
+	test('Mock of ListHeader Component', () => {
+		const component = renderer.create(
+			<Components.ListHeader/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of Popover Component', () => {
+		const component = renderer.create(
+			<Components.Popover placement="right"/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of Popper Component', () => {
+		const component = renderer.create(
+			<Components.Popover placement="left"/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of tooltip Component', () => {
+		const component = renderer.create(
+			<Components.Tooltip label='test label'/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of Table Component', () => {
+		const component = renderer.create(
+			<Components.Table/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of Modal Component', () => {
+		const component = renderer.create(
+			<Components.Modal title='title test'/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of Quota Component', () => {
+		const component = renderer.create(
+			<Components.Quota/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of Snackbar Component', () => {
+		const component = renderer.create(
+			<Components.Snackbar label="test label"/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
+	test('Mock of Catcher Component', () => {
+		const component = renderer.create(
+			<Components.Catcher/>
+		);
+		let tree = component.toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+
 });

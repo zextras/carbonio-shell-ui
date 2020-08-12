@@ -35,7 +35,7 @@ exports[`Test Mocks Mock of Divider Component 1`] = `"color: gray2"`;
 
 exports[`Test Mocks Mock of Dropdown Component 1`] = `
 <ul>
-  Dropdown (items=[object Object],[object Object],[object Object]):
+  Dropdown (items id= activity-1,activity-2,activity-3):
   <li>
     icon: ArrowDown
   </li>
@@ -67,9 +67,13 @@ exports[`Test Mocks Mock of Link Component 1`] = `"color: primary"`;
 
 exports[`Test Mocks Mock of List Component 1`] = `"Factory: unset and amount: 2"`;
 
+exports[`Test Mocks Mock of ListHeader Component 1`] = `"ListHeader (allSelected= unset)"`;
+
 exports[`Test Mocks Mock of LoadMore Component 1`] = `"label: open"`;
 
 exports[`Test Mocks Mock of Logo Component 1`] = `"size: small"`;
+
+exports[`Test Mocks Mock of Modal Component 1`] = `"Modal (title = title test)"`;
 
 exports[`Test Mocks Mock of Padding Component 1`] = `"vertical: small"`;
 
@@ -77,10 +81,22 @@ exports[`Test Mocks Mock of Paragraph Component 1`] = `"overflow: break-word"`;
 
 exports[`Test Mocks Mock of PasswordInput Component 1`] = `"label: PasswordInput"`;
 
+exports[`Test Mocks Mock of Popover Component 1`] = `"Popover (placement = right)"`;
+
+exports[`Test Mocks Mock of Popper Component 1`] = `"Popover (placement = left)"`;
+
+exports[`Test Mocks Mock of Quota Component 1`] = `"Quota (fill = unset)"`;
+
 exports[`Test Mocks Mock of Row Component 1`] = `"display: flex"`;
 
 exports[`Test Mocks Mock of SearchInput Component 1`] = `"onChange: unset"`;
 
 exports[`Test Mocks Mock of Select Component 1`] = `"label: Select an item"`;
 
+exports[`Test Mocks Mock of Snackbar Component 1`] = `"Snackbar (label = undefined)"`;
+
+exports[`Test Mocks Mock of Table Component 1`] = `"Table (rowFactory = unset)"`;
+
 exports[`Test Mocks Mock of Text Component 1`] = `"Text (size=small): Example Text"`;
+
+exports[`Test Mocks Mock of tooltip Component 1`] = `"Tooltip (label = test label)"`;

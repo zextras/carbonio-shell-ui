@@ -46,32 +46,32 @@ export { default as Breadcrumbs } from './components/navigation/breadcrumbs';
 export { default as Chip } from './components/display/chip';
 export { default as Dropdown } from './components/display/dropdown';
 export { default as List } from './components/display/list';
-/*export { default as ListHeader } from './components/display/ListHeader';
-export { default as Popover } from './components/display/Popover';
-export { default as Popper } from './components/display/Popper';
-export { default as Tooltip } from './components/display/Tooltip';
-export { default as Table } from './components/display/Table';
+export { default as ListHeader } from './components/display/listHeader';
+export { default as Popover } from './components/display/popover';
+export { default as Popper } from './components/display/popper';
+export { default as Tooltip } from './components/display/tooltip';
+export { default as Table } from './components/display/table';
 
-/!** Feedback components *!/
-export { default as Modal } from './components/feedback/Modal';
-export { default as Quota } from './components/feedback/Quota';
-export { default as Snackbar } from './components/feedback/Snackbar';
+/** Feedback components**/
+export { default as Modal } from './components/feedback/modal';
+export { default as Quota } from './components/feedback/quota';
+export { default as Snackbar } from './components/feedback/snackbar';
 
-/!** Utilities components *!/
-export { default as Collapse, Collapser } from './components/utilities/Collapse';
-export { default as Catcher } from './components/utilities/Catcher';
-export { default as Responsive } from './components/utilities/Responsive';
-export { SnackbarManagerContext, SnackbarManager } from './components/utilities/SnackbarManager';
-export { default as Transition } from './components/utilities/Transition';
+/** Utilities components **/
+/*export { default as Collapse, Collapser } from './components/utilities/collapse';
+export { default as Catcher } from './components/utilities/catcher';
+export { default as Responsive } from './components/utilities/responsive';
+export { SnackbarManagerContext, SnackbarManager } from './components/utilities/snackbarManager';
+export { default as Transition } from './components/utilities/transition';
 
 /!** Composite components *!/
-export { default as DownloadFileButton } from './components/composite/DownloadFileButton';
-export { default as FormSection, FormRow } from './components/composite/FormSection';
-export { default as GenericFileIcon } from './components/composite/GenericFileIcon';
-export { default as Header } from './components/composite/Header';
-export { default as MenuPanel } from './components/composite/MenuPanel';
-export { default as NavigationPanel } from './components/composite/NavigationPanel';
-export { MessageBubble, ReplyMessage } from './components/composite/MessageBubble';*/
+export { default as DownloadFileButton } from './components/composite/downloadFileButton';
+export { default as FormSection, FormRow } from './components/composite/formSection';
+export { default as GenericFileIcon } from './components/composite/genericFileIcon';
+export { default as Header } from './components/composite/header';
+export { default as MenuPanel } from './components/composite/menuPanel';
+export { default as NavigationPanel } from './components/composite/navigationPanel';
+export { MessageBubble, ReplyMessage } from './components/composite/messageBubble';*/
 
 
 

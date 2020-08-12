@@ -14,15 +14,23 @@ import {reduce} from 'lodash';
 
 export default function Dropdown({ children, items }) {
 
+	const itemsList = reduce(
+		items,
+		(acc,v,k)=>{
+			acc.push(v.id);
+			return acc;
+		}, []
+	);
+
 	const wrapped = reduce(
 		children,
 		(acc,v,k)=>{
 			acc.push(<li key={k}>{v}</li>);
 			return acc;
 		}, []
-	)
+	);
 	return (
-		<ul>{`Dropdown (items=${items}):`}
+		<ul>{`Dropdown (items id= ${itemsList}):`}
 			{wrapped}
 		</ul>
 	);

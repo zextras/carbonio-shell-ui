@@ -12,5 +12,5 @@
 import React from 'react';
 
 export default function Text({ children, size }) {
-	return `Text (size=${size}): ${children}`;
+	return `Text (size=${size}, children=${children})`;
 }

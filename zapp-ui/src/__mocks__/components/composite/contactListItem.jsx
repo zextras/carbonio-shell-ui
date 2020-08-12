@@ -11,6 +11,6 @@
 
 import React from 'react';
 
-export default function FileLoader({ onChange }) {
-	return `FileLoader (onChange= ${onChange? 'set' : 'unset' })`;
+export default function ContactListItem({ contact }) {
+	return `ContactListItem (contact firstname= ${contact.firstName} , lastName= ${contact.lastName} , email= ${contact.email} )`;
 }

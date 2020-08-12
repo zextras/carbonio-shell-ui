@@ -12,5 +12,5 @@
 import React from 'react';
 
 export default function IconCheckbox({ icon }) {
-	return `icon: ${ icon }`;
+	return `IconCheckbox (icon= ${ icon })`;
 }

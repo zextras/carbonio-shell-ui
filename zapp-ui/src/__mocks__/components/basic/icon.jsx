@@ -12,5 +12,5 @@
 import React from 'react';
 
 export default function Icon({size}) {
-	return `size: ${size}`;
+	return `Icon (size= ${size})`;
 }

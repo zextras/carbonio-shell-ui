@@ -12,5 +12,5 @@
 import React from 'react';
 
 export default function EmailComposerInput({ placeholder }) {
-	return `placeholder: ${placeholder}`;
+	return `EmailComposerInput (placeholder= ${placeholder})`;
 }

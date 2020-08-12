@@ -30,7 +30,7 @@ export default function Dropdown({ children, items }) {
 		}, []
 	);
 	return (
-		<ul>{`Dropdown (items id= ${itemsList}):`}
+		<ul>{`Dropdown (items id=${itemsList}):`}
 			{wrapped}
 		</ul>
 	);

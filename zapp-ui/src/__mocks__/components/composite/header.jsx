@@ -11,6 +11,6 @@
 
 import React from 'react';
 
-export default function FileLoader({ onChange }) {
-	return `FileLoader (onChange= ${onChange? 'set' : 'unset' })`;
+export default function Header({ quota,onMenuClick,onUserClick,navigationBarIsOpen,userBarIsOpen }) {
+	return `Header ( quota=${quota}, onMenuClick=${onMenuClick?'set':'unset'}, onUserClick=${onUserClick?'set':'unset'}, navigationBarIsOpen=${navigationBarIsOpen?'set':'unset'}, userBarIsOpen=${userBarIsOpen?'set':'unset'})`;
 }

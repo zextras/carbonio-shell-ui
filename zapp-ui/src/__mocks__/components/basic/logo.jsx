@@ -11,6 +11,6 @@
 
 import React from 'react';
 
-export default function Logo({ size }) {
-	return `size: ${size}`;
+export default function Logo({ size, children }) {
+	return `Logo (size= ${size}, children=${children})`;
 }

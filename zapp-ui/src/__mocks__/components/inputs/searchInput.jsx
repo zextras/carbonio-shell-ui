@@ -12,5 +12,5 @@
 import React from 'react';
 
 export default function SearchInput({ onChange }) {
-	return `onChange: ${onChange? 'set' : 'unset' }`;
+	return `SearchInput (onChange= ${onChange? 'set' : 'unset' })`;
 }

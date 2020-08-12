@@ -11,6 +11,6 @@
 
 import React from 'react';
 
-export default function FileLoader({ onChange }) {
-	return `FileLoader (onChange= ${onChange? 'set' : 'unset' })`;
+export default function Collapse({ open }) {
+	return `Collapse (open = ${open? 'set':'unset'})`;
 }

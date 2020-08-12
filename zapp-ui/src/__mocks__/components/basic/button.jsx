@@ -12,5 +12,5 @@
 import React from 'react';
 
 export default function Button({ label }) {
-	return `label: ${label}`;
+	return `Button (label= ${label})`;
 }

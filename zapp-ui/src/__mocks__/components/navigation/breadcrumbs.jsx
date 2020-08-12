@@ -12,5 +12,5 @@
 import React from 'react';
 
 export default function Breadcrumbs({ crumbs }) {
-	return `crumbs: ${crumbs? 'defined' : 'undefined' }`;
+	return `BreadCrumbs (crumbs= ${crumbs? 'defined' : 'undefined' })`;
 }

@@ -12,5 +12,5 @@
 import React from 'react';
 
 export default function LoadMore({label}) {
-	return `label: ${label}`;
+	return `LoadMore (label= ${label})`;
 }

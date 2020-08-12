@@ -12,5 +12,5 @@
 import React from 'react';
 
 export default function Avatar({ label }) {
-	return `label: ${label}`;
+	return `Avatar (label= ${label})`;
 }

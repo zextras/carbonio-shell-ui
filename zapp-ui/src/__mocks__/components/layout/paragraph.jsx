@@ -12,5 +12,5 @@
 import React from 'react';
 
 export default function Paragraph({ overflow }) {
-	return `overflow: ${overflow}`;
+	return `Paragraph (overflow= ${overflow})`;
 }

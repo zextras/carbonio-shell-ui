@@ -58,20 +58,21 @@ export { default as Quota } from './components/feedback/quota';
 export { default as Snackbar } from './components/feedback/snackbar';
 
 /** Utilities components **/
-/*export { default as Collapse, Collapser } from './components/utilities/collapse';
+export { default as Collapse, Collapser } from './components/utilities/collapse';
 export { default as Catcher } from './components/utilities/catcher';
 export { default as Responsive } from './components/utilities/responsive';
 export { SnackbarManagerContext, SnackbarManager } from './components/utilities/snackbarManager';
 export { default as Transition } from './components/utilities/transition';
 
-/!** Composite components *!/
+/** Composite components */
+export { default as ContactListItem } from './components/composite/contactListItem'
 export { default as DownloadFileButton } from './components/composite/downloadFileButton';
 export { default as FormSection, FormRow } from './components/composite/formSection';
 export { default as GenericFileIcon } from './components/composite/genericFileIcon';
 export { default as Header } from './components/composite/header';
 export { default as MenuPanel } from './components/composite/menuPanel';
 export { default as NavigationPanel } from './components/composite/navigationPanel';
-export { MessageBubble, ReplyMessage } from './components/composite/messageBubble';*/
+export { default as MessageBubble } from './components/composite/messageBubble';
 
 
 

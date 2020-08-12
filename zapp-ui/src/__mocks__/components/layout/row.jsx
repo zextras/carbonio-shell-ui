@@ -13,5 +13,5 @@
 import React from 'react';
 
 export default function Row({ display }) {
-	return `display: ${display}`;
+	return `Row (display= ${display})`;
 }

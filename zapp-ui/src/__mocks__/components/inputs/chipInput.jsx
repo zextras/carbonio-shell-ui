@@ -12,5 +12,5 @@
 import React from 'react';
 
 export default function ChipInput({ value }) {
-	return `value: ${value}`;
+	return `ChipInput (value0 ${value})`;
 }

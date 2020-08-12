@@ -12,5 +12,5 @@
 import React from 'react';
 
 export default function IconButton({ icon }) {
-	return `icon: ${ icon }`;
+	return `IconButton (icon= ${ icon })`;
 }

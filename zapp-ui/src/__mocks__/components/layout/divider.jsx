@@ -11,5 +11,5 @@
 import React from 'react';
 
 export default function Divider({ color }) {
-	return `color: ${color}`;
+	return `Divider (color= ${color})`;
 }

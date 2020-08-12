@@ -12,5 +12,5 @@
 import React from 'react';
 
 export default function List({ Factory,amount }) {
-	return `Factory: ${ Factory? 'set' : 'unset' } and amount: ${amount}`;
+	return `List (Factory= ${ Factory? 'set' : 'unset' } ,amount: ${amount})`;
 }

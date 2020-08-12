@@ -12,5 +12,5 @@
 import React from 'react';
 
 export default function Padding({ vertical }) {
-	return `vertical: ${vertical}`;
+	return `Padding (vertical= ${vertical})`;
 }

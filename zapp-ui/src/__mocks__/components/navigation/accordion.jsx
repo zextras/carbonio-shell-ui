@@ -11,5 +11,5 @@
 import React from 'react';
 
 export default function Accordion({ label }) {
-	return `label: ${ label }`;
+	return `Accordion (label= ${ label })`;
 }

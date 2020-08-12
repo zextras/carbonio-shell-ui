@@ -1,39 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test Mocks Mock of Accordion Component 1`] = `"label: Accordion"`;
+exports[`Test Mocks basic components Mock of Avatar Component 1`] = `"label: Sent"`;
 
-exports[`Test Mocks Mock of Avatar Component 1`] = `"label: Sent"`;
+exports[`Test Mocks basic components Mock of Badge Component 1`] = `"value: testValue"`;
 
-exports[`Test Mocks Mock of Badge Component 1`] = `"value: testValue"`;
+exports[`Test Mocks basic components Mock of Button Component 1`] = `"label: Button"`;
 
-exports[`Test Mocks Mock of Breadcrumbs Component 1`] = `"crumbs: undefined"`;
+exports[`Test Mocks basic components Mock of Icon Component 1`] = `"size: small"`;
 
-exports[`Test Mocks Mock of Button Component 1`] = `"label: Button"`;
+exports[`Test Mocks basic components Mock of Link Component 1`] = `"color: primary"`;
 
-exports[`Test Mocks Mock of Checkbox Component 1`] = `"label: checkbox label"`;
+exports[`Test Mocks basic components Mock of LoadMore Component 1`] = `"label: open"`;
 
-exports[`Test Mocks Mock of Chip Component 1`] = `"label: example"`;
+exports[`Test Mocks basic components Mock of Logo Component 1`] = `"size: small"`;
 
-exports[`Test Mocks Mock of ChipInput Component 1`] = `"value: contactsTo"`;
+exports[`Test Mocks basic components Mock of Text Component 1`] = `"Text (size=small): Example Text"`;
 
-exports[`Test Mocks Mock of Container Component 1`] = `
-<ul>
-  Container (orientation=vertical):
-  <li>
-    Text (size=small): Example Text 1
-  </li>
-  <li>
-    Text (size=medium): Example Text 2
-  </li>
-  <li>
-    Text (size=large): Example Text 3
-  </li>
-</ul>
-`;
+exports[`Test Mocks composites components Mock of DownloadFileButton Component 1`] = `"DownloadFileButton ( fileName: Example.text )"`;
 
-exports[`Test Mocks Mock of Divider Component 1`] = `"color: gray2"`;
+exports[`Test Mocks composites components Mock of FormSection Component 1`] = `"FormSection (label:test label)"`;
 
-exports[`Test Mocks Mock of Dropdown Component 1`] = `
+exports[`Test Mocks composites components Mock of GenericFileIcon Component 1`] = `"GenericFileIcon ( fileName: test name )"`;
+
+exports[`Test Mocks composites components Mock of Header Component 1`] = `"Header ( quota:63, onMenuClick:unset, onUserClick:unset, navigationBarIsOpen:unset, userBarIsOpen:unset)"`;
+
+exports[`Test Mocks composites components Mock of MenuPanel Component 1`] = `"MenuPanel ( menuIsOpen:unset, tree:set)"`;
+
+exports[`Test Mocks composites components Mock of MessageBubble Component 1`] = `"MessageBubble ( position:left)"`;
+
+exports[`Test Mocks composites components Mock of NavigationPanel Component 1`] = `"NavigationPanel ( menuTree:set, navigationBarIsOpen:unset, onCollapserClick:unset,tree:set,)"`;
+
+exports[`Test Mocks display components Mock of Chip Component 1`] = `"label: example"`;
+
+exports[`Test Mocks display components Mock of Dropdown Component 1`] = `
 <ul>
   Dropdown (items id= activity-1,activity-2,activity-3):
   <li>
@@ -51,52 +50,75 @@ exports[`Test Mocks Mock of Dropdown Component 1`] = `
 </ul>
 `;
 
-exports[`Test Mocks Mock of EmailComposerInput Component 1`] = `"placeholder: Object"`;
+exports[`Test Mocks display components Mock of List Component 1`] = `"Factory: unset and amount: 2"`;
 
-exports[`Test Mocks Mock of FileLoader Component 1`] = `"onChange: unset"`;
+exports[`Test Mocks display components Mock of ListHeader Component 1`] = `"ListHeader (allSelected = unset)"`;
 
-exports[`Test Mocks Mock of Icon Component 1`] = `"size: small"`;
+exports[`Test Mocks display components Mock of Popover Component 1`] = `"Popover (placement = right)"`;
 
-exports[`Test Mocks Mock of IconButton Component 1`] = `"icon: Pricetags"`;
+exports[`Test Mocks display components Mock of Popper Component 1`] = `"Popover (placement = left)"`;
 
-exports[`Test Mocks Mock of IconCheckbox Component 1`] = `"icon: Text"`;
+exports[`Test Mocks display components Mock of Table Component 1`] = `"Table (rowFactory = unset)"`;
 
-exports[`Test Mocks Mock of Input Component 1`] = `"label: Input"`;
+exports[`Test Mocks display components Mock of tooltip Component 1`] = `"Tooltip (label = test label)"`;
 
-exports[`Test Mocks Mock of Link Component 1`] = `"color: primary"`;
+exports[`Test Mocks inputs components Mock of Checkbox Component 1`] = `"label: checkbox label"`;
 
-exports[`Test Mocks Mock of List Component 1`] = `"Factory: unset and amount: 2"`;
+exports[`Test Mocks inputs components Mock of ChipInput Component 1`] = `"value: contactsTo"`;
 
-exports[`Test Mocks Mock of ListHeader Component 1`] = `"ListHeader (allSelected= unset)"`;
+exports[`Test Mocks inputs components Mock of EmailComposerInput Component 1`] = `"placeholder: Object"`;
 
-exports[`Test Mocks Mock of LoadMore Component 1`] = `"label: open"`;
+exports[`Test Mocks inputs components Mock of FileLoader Component 1`] = `"onChange: unset"`;
 
-exports[`Test Mocks Mock of Logo Component 1`] = `"size: small"`;
+exports[`Test Mocks inputs components Mock of IconButton Component 1`] = `"icon: Pricetags"`;
 
-exports[`Test Mocks Mock of Modal Component 1`] = `"Modal (title = title test)"`;
+exports[`Test Mocks inputs components Mock of IconCheckbox Component 1`] = `"icon: Text"`;
 
-exports[`Test Mocks Mock of Padding Component 1`] = `"vertical: small"`;
+exports[`Test Mocks inputs components Mock of Input Component 1`] = `"label: Input"`;
 
-exports[`Test Mocks Mock of Paragraph Component 1`] = `"overflow: break-word"`;
+exports[`Test Mocks inputs components Mock of PasswordInput Component 1`] = `"label: PasswordInput"`;
 
-exports[`Test Mocks Mock of PasswordInput Component 1`] = `"label: PasswordInput"`;
+exports[`Test Mocks inputs components Mock of SearchInput Component 1`] = `"onChange: unset"`;
 
-exports[`Test Mocks Mock of Popover Component 1`] = `"Popover (placement = right)"`;
+exports[`Test Mocks inputs components Mock of Select Component 1`] = `"label: Select an item"`;
 
-exports[`Test Mocks Mock of Popper Component 1`] = `"Popover (placement = left)"`;
+exports[`Test Mocks layout components Mock of Container Component 1`] = `
+<ul>
+  Container (orientation=vertical):
+  <li>
+    Text (size=small): Example Text 1
+  </li>
+  <li>
+    Text (size=medium): Example Text 2
+  </li>
+  <li>
+    Text (size=large): Example Text 3
+  </li>
+</ul>
+`;
 
-exports[`Test Mocks Mock of Quota Component 1`] = `"Quota (fill = unset)"`;
+exports[`Test Mocks layout components Mock of Divider Component 1`] = `"color: gray2"`;
 
-exports[`Test Mocks Mock of Row Component 1`] = `"display: flex"`;
+exports[`Test Mocks layout components Mock of Padding Component 1`] = `"vertical: small"`;
 
-exports[`Test Mocks Mock of SearchInput Component 1`] = `"onChange: unset"`;
+exports[`Test Mocks layout components Mock of Paragraph Component 1`] = `"overflow: break-word"`;
 
-exports[`Test Mocks Mock of Select Component 1`] = `"label: Select an item"`;
+exports[`Test Mocks layout components Mock of Row Component 1`] = `"display: flex"`;
 
-exports[`Test Mocks Mock of Snackbar Component 1`] = `"Snackbar (label = undefined)"`;
+exports[`Test Mocks modal components Mock of Modal Component 1`] = `"Modal (title = title test)"`;
 
-exports[`Test Mocks Mock of Table Component 1`] = `"Table (rowFactory = unset)"`;
+exports[`Test Mocks modal components Mock of Quota Component 1`] = `"Quota (fill = unset)"`;
 
-exports[`Test Mocks Mock of Text Component 1`] = `"Text (size=small): Example Text"`;
+exports[`Test Mocks modal components Mock of Snackbar Component 1`] = `"Snackbar (label = test label)"`;
 
-exports[`Test Mocks Mock of tooltip Component 1`] = `"Tooltip (label = test label)"`;
+exports[`Test Mocks navigation components Mock of Accordion Component 1`] = `"label: Accordion"`;
+
+exports[`Test Mocks navigation components Mock of Breadcrumbs Component 1`] = `"crumbs: undefined"`;
+
+exports[`Test Mocks utilities components Mock of Catcher Component 1`] = `"Catcher (onError = unset)"`;
+
+exports[`Test Mocks utilities components Mock of Collapse Component 1`] = `"Collapse (open = unset)"`;
+
+exports[`Test Mocks utilities components Mock of Responsive Component 1`] = `"Responsive (mode = unset)"`;
+
+exports[`Test Mocks utilities components Mock of Transition Component 1`] = `"Transition (transitionTarget = all)"`;

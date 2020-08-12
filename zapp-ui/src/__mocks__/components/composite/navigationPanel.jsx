@@ -11,6 +11,6 @@
 
 import React from 'react';
 
-export default function FileLoader({ onChange }) {
-	return `FileLoader (onChange= ${onChange? 'set' : 'unset' })`;
+export default function NavigationPanel({ menuTree,navigationBarIsOpen,onCollapserClick,tree }) {
+	return `NavigationPanel ( menuTree=${menuTree? 'set':'unset'}, navigationBarIsOpen=${navigationBarIsOpen? 'set':'unset'}, onCollapserClick=${onCollapserClick? 'set':'unset'},tree=${tree? 'set':'unset'},)`;
 }

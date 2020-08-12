@@ -16,5 +16,5 @@ export function Input({ label }) {
 }
 
 export function PasswordInput({ label }) {
-	return `label: ${ label }`;
+	return `PasswordInput (label= ${ label })`;
 }

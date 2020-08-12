@@ -12,5 +12,5 @@
 import React from 'react';
 
 export default function Select({ label }) {
-	return `label: ${ label }`;
+	return `Select (label= ${ label })`;
 }

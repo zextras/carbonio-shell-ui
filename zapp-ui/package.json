@@ -1,0 +1,63 @@
+{
+  "name": "@zextras/zapp-ui",
+  "version": "0.0.32",
+  "description": "An awesome UI for Zextras Projects.",
+  "main": "dist/index.js",
+  "scripts": {
+    "styleguide": "styleguidist server",
+    "styleguide:build": "styleguidist build",
+    "test": "jest",
+    "icons:build": "npx @svgr/cli -d src/icons svg && npx create-index -ri ./src/icons",
+    "build": "npx babel src -d dist -s true",
+    "clean": "rm -rf dist/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/zextras/zapp-ui.git"
+  },
+  "keywords": [
+    "Zextras",
+    "zapp",
+    "ui",
+    "DesignSystem"
+  ],
+  "author": "Michele Olivo <michele.olivo@zextras.com>",
+  "license": "UNLICENSED",
+  "homepage": "https://bitbucket.org/zextras/zapp-ui#readme",
+  "devDependencies": {
+    "@babel/cli": "7.10.1",
+    "@babel/core": "7.7.5",
+    "@babel/preset-env": "7.7.6",
+    "@babel/preset-react": "7.7.4",
+    "@quickbaseoss/babel-plugin-styled-components-css-namespace": "1.0.1",
+    "@svgr/cli": "4.3.3",
+    "babel-loader": "8.0.6",
+    "babel-plugin-styled-components": "1.10.6",
+    "create-index": "2.6.0",
+    "file-loader": "5.1.0",
+    "jest": "25.1.0",
+    "jest-junit": "10.0.0",
+    "prop-types": "15.7.2",
+    "react": "16.12.0",
+    "react-dom": "16.12.0",
+    "react-test-renderer": "16.13.1",
+    "react-styleguidist": "10.6.0",
+    "styled-components": "5.1.0",
+    "webpack": "4.41.2",
+    "webpack-cli": "3.3.10"
+  },
+  "browserslist": [
+    ">1%",
+    "last 1 version",
+    "Firefox ESR",
+    "not dead"
+  ],
+  "dependencies": {
+    "@popperjs/core": "2.0.6",
+    "@tinymce/tinymce-react": "3.5.0",
+    "core-js": "3.6.4",
+    "lodash": "4.17.15",
+    "react-virtuoso": "0.12.6",
+    "tinymce": "5.2.0"
+  }
+}

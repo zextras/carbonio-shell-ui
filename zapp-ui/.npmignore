@@ -1,0 +1,11 @@
+/docs/
+/lib/
+/src/
+/svg/
+/.nvmrc
+/styleguide.config.js
+/webpack.config.js
+/Jenkinsfile
+/.idea
+/.babelrc
+/*.tgz

@@ -61,7 +61,7 @@ export { default as Snackbar } from './components/feedback/snackbar';
 export { default as Collapse, Collapser } from './components/utilities/collapse';
 export { default as Catcher } from './components/utilities/catcher';
 export { default as Responsive } from './components/utilities/responsive';
-export { SnackbarManagerContext, SnackbarManager } from './components/utilities/snackbarManager';
+/*export { SnackbarManagerContext, SnackbarManager } from './components/utilities/snackbarManager';*/
 export { default as Transition } from './components/utilities/transition';
 
 /** Composite components */

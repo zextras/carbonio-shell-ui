@@ -6,6 +6,7 @@
   "scripts": {
     "styleguide": "styleguidist server",
     "styleguide:build": "styleguidist build",
+    "test": "jest",
     "icons:build": "npx @svgr/cli -d src/icons svg && npx create-index -ri ./src/icons",
     "build": "npx babel src -d dist -s true",
     "clean": "rm -rf dist/*"

@@ -9,8 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 
+/*
 import React from 'react';
 
 export default function SnackbarManager({ children }) {
 	return `SnackbarManager (children = ${children? 'set':'unset'})`;
-}
+}*/

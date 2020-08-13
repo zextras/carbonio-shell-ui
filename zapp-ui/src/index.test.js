@@ -10,6 +10,7 @@
  */
 import React from 'react';
 import renderer from 'react-test-renderer';
+
 jest.mock('./index');
 import * as Components from './index';
 
@@ -347,7 +348,7 @@ describe('Test Mocks', () => {
 
 		test('Mock of Quota Component', () => {
 			const component = renderer.create(
-				<Components.Quota/>
+				<Components.Quota fill={10}/>
 			);
 			let tree = component.toJSON();
 			expect(tree).toMatchSnapshot();
@@ -381,7 +382,7 @@ describe('Test Mocks', () => {
 
 		test('Mock of Responsive Component', () => {
 			const component = renderer.create(
-				<Components.Responsive/>
+				<Components.Responsive mode="mobile"/>
 			);
 			let tree = component.toJSON();
 			expect(tree).toMatchSnapshot();

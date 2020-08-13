@@ -184,7 +184,7 @@ pipeline {
                         script {
                             cmd sh: "nvm use && npm install"
                             cmd sh: "nvm use && npm run build"
-                            archiveArtifacts artifacts: 'dist/zapp-ui.js', fingerprint: true
+                            // archiveArtifacts artifacts: 'dist/zapp-ui.js', fingerprint: true
                         }
                     }
                 }

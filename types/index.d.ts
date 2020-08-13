@@ -113,12 +113,12 @@ export const fiberChannelSink: FCSink;
 
 export const hooks: {
 	useAddBoardCallback(path: string): () => void;
-	usePushHistoryCallback(): (location: LocationDescriptor) => void;
-	useGoBackHistoryCallback(): () => void;
-	useReplaceHistoryCallback(): (location: LocationDescriptor) => void;
+	usePushHistoryCallback(location: LocationDescriptor): void;
+	useGoBackHistoryCallback(): void;
+	useReplaceHistoryCallback(location: LocationDescriptor): void;
 	useBehaviorSubject<T>(observable: BehaviorSubject<T>): T;
-	useAppContext(): () => {};
-	useObserveDb(): (query: () => Promise<any>, db: Database) => {};
+	useAppContext<T>(): T;
+	useObserveDb<T>(query: () => Promise<T>, db: Database): [T, boolean];
 	useAppPkg(): () => AppPkgDescription;
 };
 

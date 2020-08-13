@@ -9,10 +9,10 @@
  * *** END LICENSE BLOCK *****
  */
 /* eslint-env worker */
-
-import { unwrapResponse, wrapRequest } from './Soap';
 import { reduce } from 'lodash';
+import { unwrapResponse, wrapRequest } from './Soap';
 import IdbService from '../idb/IdbService';
+
 
 const idbSrvc = new IdbService();
 
@@ -68,7 +68,7 @@ async function sendSOAPRequest() {
 		}
 	} else {
 		const resp = await response.json();
-		const [ data, notifications ] = unwrapResponse('NoOp', resp);
+		const [data, notifications] = unwrapResponse('NoOp', resp);
 		if (notifications) {
 			const newNotifySeq	= reduce(notifications, (max, { seq }) => (max < seq) ? seq : max, sessionData.notifySeq);
 			const storedAccountData = await db.get('soapSessions', _sessionId);

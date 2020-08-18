@@ -45,8 +45,8 @@ function RichTextEditor({ onEditorChange, inline, initialValue }) {
     <_TinyMCE
       value={content}
       init={{
-        skin_url: 'tinymce/skins/ui/oxide',
-        content_css: 'tinymce/skins/content/default/content.css',
+        skin_url: '/tinymce/skins/ui/oxide',
+        content_css: '/tinymce/skins/content/default/content.css',
         height: 500,
         menubar: false,
         statusbar: false,

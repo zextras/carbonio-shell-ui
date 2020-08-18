@@ -28,7 +28,7 @@ describe.skip('Shell View', () => {
 	beforeAll(() => {
 		global.PACKAGE_NAME = 'com_zextras_zapp_shell';
 		global.PACKAGE_VERSION = '0.0.0';
-	})
+	});
 
 	test('Basic structure', () => {
 		let component;

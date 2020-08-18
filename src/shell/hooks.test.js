@@ -12,25 +12,22 @@
 import React from 'react';
 import { BehaviorSubject } from 'rxjs';
 import { renderHook, act } from '@testing-library/react-hooks';
+import { useBehaviorSubject } from './hooks';
 
 jest.mock('@zextras/zapp-ui');
 jest.mock('../db/database');
 
-import { useBehaviorSubject } from './hooks';
-
 describe('Hooks', () => {
-
 	test('useBehaviorSubject', () => {
 		const bs = new BehaviorSubject(1);
-		const { result } = renderHook(() => useBehaviorSubject(bs))
+		const { result } = renderHook(() => useBehaviorSubject(bs));
 
 		expect(result.current).toBe(1);
 
 		act(() => {
 			bs.next(2);
-		})
+		});
 
 		expect(result.current).toBe(2);
 	});
-
 });

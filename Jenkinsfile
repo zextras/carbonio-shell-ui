@@ -179,6 +179,17 @@ pipeline {
 						}
 					}
 				}
+				stage('Linting') {
+                    agent {
+                        node {
+                            label 'nodejs-agent-v2'
+                        }
+                    }
+                    steps {
+                        cmd sh: "nvm use && npm install"
+                        cmd sh: "nvm use && npx eslint src/"
+                    }
+                }
 			}
 		}
 

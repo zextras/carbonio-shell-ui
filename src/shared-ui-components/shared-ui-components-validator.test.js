@@ -13,7 +13,6 @@ import React from 'react';
 import validateSharedUiComponent from './shared-ui-components-validator';
 
 describe('Shared UI Components Validator', () => {
-
 	test('Component is ok', () => {
 		const TestComponent = () => 'TestComponent';
 		TestComponent.propTypes = {};
@@ -30,5 +29,4 @@ describe('Shared UI Components Validator', () => {
 			validateSharedUiComponent(TestComponent);
 		}).toThrowError('Shared UI Components MUST declare \'propTypes\'.');
 	});
-
 });

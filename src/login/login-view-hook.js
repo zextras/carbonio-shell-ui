@@ -10,8 +10,10 @@
  */
 
 import { useHistory, useLocation } from 'react-router-dom';
+import {
+	useCallback, useEffect, useRef, useState
+} from 'react';
 import { useShellDb, useShellNetworkService } from '../bootstrap/bootstrapper-context';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 export default function useLoginView() {
 	const history = useHistory();
@@ -33,7 +35,7 @@ export default function useLoginView() {
 
 	const doLogin = useCallback((ev) => {
 		ev.preventDefault();
-		return new Promise(function(resolve, reject) {
+		return new Promise(((resolve, reject) => {
 			network.doLogin(
 				usernameRef.current.value,
 				passwordRef.current.value
@@ -42,7 +44,7 @@ export default function useLoginView() {
 				.then(() => resolve())
 				.then(() => returnToPage())
 				.catch((err) => reject(err));
-		});
+		}));
 	}, [returnToPage, usernameRef, passwordRef, db, network]);
 
 	return {

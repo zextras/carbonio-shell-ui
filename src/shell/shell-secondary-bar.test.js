@@ -9,11 +9,10 @@
  * *** END LICENSE BLOCK *****
  */
 import React from 'react';
+import { collectAllTo } from './shell-secondary-bar';
 
 jest.mock('@zextras/zapp-ui');
 jest.mock('../db/database');
-
-import { collectAllTo } from './shell-secondary-bar';
 
 describe.skip('Shell Link', () => {
 	test('Collect all to', () => {

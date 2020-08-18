@@ -11,19 +11,17 @@
 import React from 'react';
 import { act, create } from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
+import BootstrapperRouterContent from './bootstrapper-router-content';
 
 jest.mock('./bootstrapper-lazy-loader');
 
-import BootstrapperRouterContent from './bootstrapper-router-content';
-
 describe('Boostrapper Router Content', () => {
-
 	test('Route to Shell with no Account', () => {
 		let component;
 		act(() => {
 			component = create(
 				<MemoryRouter>
-					<BootstrapperRouterContent accounts={[]}/>
+					<BootstrapperRouterContent accounts={[]} />
 				</MemoryRouter>
 			);
 		});
@@ -35,7 +33,7 @@ describe('Boostrapper Router Content', () => {
 		act(() => {
 			component = create(
 				<MemoryRouter>
-					<BootstrapperRouterContent accounts={[{}]}/>
+					<BootstrapperRouterContent accounts={[{}]} />
 				</MemoryRouter>
 			);
 		});
@@ -47,11 +45,10 @@ describe('Boostrapper Router Content', () => {
 		act(() => {
 			component = create(
 				<MemoryRouter initialEntries={['/logout']}>
-					<BootstrapperRouterContent accounts={[{}]}/>
+					<BootstrapperRouterContent accounts={[{}]} />
 				</MemoryRouter>
 			);
 		});
 		expect(component.toJSON()).toMatchSnapshot();
 	});
-
 });

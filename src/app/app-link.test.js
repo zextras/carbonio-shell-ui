@@ -26,13 +26,13 @@ import BootstrapperContextProvider from '../bootstrap/bootstrapper-context-provi
 import AppLoaderContextProvider from './app-loader-context-provider';
 
 describe('App Link', () => {
-
 	beforeEach(() => {
-		AppLoaderContextProvider.mockImplementationOnce(({ children }) => {
-			return <AppLoaderContext.Provider
+		AppLoaderContextProvider.mockImplementationOnce(({ children }) => (
+			<AppLoaderContext.Provider
 				value={{
 					appsCache: {
-						'com_example_package': {
+						// eslint-disable-next-line @typescript-eslint/camelcase
+						com_example_package: {
 							pkg: {},
 							mainMenuItems: new BehaviorSubject([]),
 							routes: new BehaviorSubject([]),
@@ -45,7 +45,7 @@ describe('App Link', () => {
 			>
 				{ children }
 			</AppLoaderContext.Provider>
-		});
+		));
 	});
 
 	test('Link without parameters', () => {
@@ -104,5 +104,4 @@ describe('App Link', () => {
 		const el = component.root.findByType('a');
 		expect(el.props.href).toBe('/com_example_package/destination');
 	});
-
 });

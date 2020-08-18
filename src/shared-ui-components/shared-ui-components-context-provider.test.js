@@ -11,75 +11,71 @@
 import React, { useContext } from 'react';
 import { BehaviorSubject } from 'rxjs';
 import { act, create } from 'react-test-renderer';
-
-jest.mock('../app/app-loader-context-provider');
-
 import AppLoaderContextProvider from '../app/app-loader-context-provider';
 import AppLoaderContext from '../app/app-loader-context';
 import SharedUiComponentsContextProvider from './shared-ui-components-context-provider';
 import SharedUiComponentsContext from './shared-ui-components-context';
 
-describe('Shared UI Components Context Provider', () => {
+jest.mock('../app/app-loader-context-provider');
 
+describe('Shared UI Components Context Provider', () => {
 	test('Merge all App Scopes', () => {
 		const ComponentClass11 = jest.fn().mockImplementation(() => 'Scope-1-Component-Package-1');
 		const ComponentClass21 = jest.fn().mockImplementation(() => 'Scope-2-Component-Package-1');
 		const ComponentClass22 = jest.fn().mockImplementation(() => 'Scope-2-Component-Package-2');
 		const ComponentClass32 = jest.fn().mockImplementation(() => 'Scope-3-Component-Package-2');
-		AppLoaderContextProvider.mockImplementationOnce(({ children }) => {
-			return (
-				<AppLoaderContext.Provider
-					value={{
-						appsCache: {
-							'com_example_package_1': {
-								sharedUiComponents: new BehaviorSubject({
-									'scope-1': [{
-										pkg: {
-											package: 'com_example_package_1',
-										},
-										componentClass: ComponentClass11
-									}],
-									'scope-2': [{
-										pkg: {
-											package: 'com_example_package_1',
-										},
-										componentClass: ComponentClass21
-									}]
-								})
-							},
-							'com_example_package_2': {
-								sharedUiComponents: new BehaviorSubject({
-									'scope-2': [{
-										pkg: {
-											package: 'com_example_package_2',
-										},
-										componentClass: ComponentClass22
-									}],
-									'scope-3': [{
-										pkg: {
-											package: 'com_example_package_2',
-										},
-										componentClass: ComponentClass32
-									}]
-								})
-							}
+		AppLoaderContextProvider.mockImplementationOnce(({ children }) => (
+			<AppLoaderContext.Provider
+				value={{
+					appsCache: {
+						// eslint-disable-next-line @typescript-eslint/camelcase
+						com_example_package_1: {
+							sharedUiComponents: new BehaviorSubject({
+								'scope-1': [{
+									pkg: {
+										package: 'com_example_package_1',
+									},
+									componentClass: ComponentClass11
+								}],
+								'scope-2': [{
+									pkg: {
+										package: 'com_example_package_1',
+									},
+									componentClass: ComponentClass21
+								}]
+							})
 						},
-						appsLoaded: true
-					}}
-				>
-					{children}
-				</AppLoaderContext.Provider>
-			);
-		});
+						// eslint-disable-next-line @typescript-eslint/camelcase
+						com_example_package_2: {
+							sharedUiComponents: new BehaviorSubject({
+								'scope-2': [{
+									pkg: {
+										package: 'com_example_package_2',
+									},
+									componentClass: ComponentClass22
+								}],
+								'scope-3': [{
+									pkg: {
+										package: 'com_example_package_2',
+									},
+									componentClass: ComponentClass32
+								}]
+							})
+						}
+					},
+					appsLoaded: true
+				}}
+			>
+				{children}
+			</AppLoaderContext.Provider>
+		));
 
 		const tester = jest.fn();
 
 		function Tester() {
 			const { scopes } = useContext(SharedUiComponentsContext);
 			tester(scopes);
-			return `Tester scopes: ${Object.keys(scopes).reduce((p, c, i) => {
-				return `${p}${i > 0 ? ' ' : ''}${c}`;
-			}, [], '')}`;
+			return `Tester scopes: ${Object.keys(scopes).reduce((p, c, i) => `${p}${i > 0 ? ' ' : ''}${c}`, [], '')}`;
 		}
 
 		let component;
@@ -121,5 +117,4 @@ describe('Shared UI Components Context Provider', () => {
 			}],
 		});
 	});
-
 });

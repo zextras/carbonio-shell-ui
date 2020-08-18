@@ -1,27 +1,3 @@
-// old code
-/*module.exports = {
-	"parser": "@typescript-eslint/parser",
-	"parserOptions": {
-		"project": "./tsconfig.json",
-		"tsconfigRootDir": "."
-	},
-	"extends": [
-		"eslint:recommended",
-		"plugin:@typescript-eslint/eslint-recommended",
-		"plugin:@typescript-eslint/recommended",
-		"plugin:@typescript-eslint/recommended-requiring-type-checking"
-	],
-	"plugins": [
-		"react",
-		"react-hooks",
-		"@typescript-eslint"
-	],
-	"rules": {
-		"react-hooks/rules-of-hooks": "error",
-		"react-hooks/exhaustive-deps": "warn",
-		"@typescript-eslint/interface-name-prefix": ["error" , { "prefixWithI": "always" }]
-	}
-};*/
 module.exports = {
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
@@ -34,6 +10,7 @@ module.exports = {
 	},
 	"plugins": [
 		"@typescript-eslint/eslint-plugin",
+		"react",
 		"react-hooks",
 		"jest"
 	],
@@ -94,5 +71,9 @@ module.exports = {
 		'@typescript-eslint/no-unused-vars': 'warn',
 		'import/no-unresolved': [2, { ignore: ['^@zextras/zapp-shell/(context|fc|idb|network|router|service|sync)'] }],
 		'no-extra-semi': 'off'
-	}
+	},
+	/**
+	 * @description rule of eslint-plugin-react
+	 */
+	"react/jsx-boolean-value": 2 //Enforce boolean attributes notation in JSX
 };

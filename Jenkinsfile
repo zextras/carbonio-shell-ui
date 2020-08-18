@@ -178,7 +178,7 @@ pipeline {
 							// publishCoverage adapters: [coberturaAdapter('coverage/cobertura-coverage.xml')], calculateDiffForChangeRequests: true, failNoReports: true
 						}
 					}
-				}
+				} //Linter addition
 				stage('Linting') {
                     agent {
                         node {

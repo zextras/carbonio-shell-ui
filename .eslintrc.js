@@ -63,6 +63,10 @@ module.exports = {
 		'comma-dangle': 'off',
 		'no-underscore-dangle': 'off',
 		'brace-style': ['error', 'stroustrup'],
+		/**
+		 * @description rule of eslint-plugin-react
+		 */
+		'react/jsx-boolean-value': 'always', //Enforce boolean attributes notation in JSX
 		'react/jsx-indent': ['error', 'tab'],
 		'react/jsx-indent-props': ['error', 'tab'],
 		'@typescript-eslint/interface-name-prefix': 'off',
@@ -72,8 +76,5 @@ module.exports = {
 		'import/no-unresolved': [2, { ignore: ['^@zextras/zapp-shell/(context|fc|idb|network|router|service|sync)'] }],
 		'no-extra-semi': 'off'
 	},
-	/**
-	 * @description rule of eslint-plugin-react
-	 */
-	"react/jsx-boolean-value": 2 //Enforce boolean attributes notation in JSX
+
 };

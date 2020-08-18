@@ -100,10 +100,10 @@ module.exports = {
 				use: [{
 					loader: path.resolve(
 						process.cwd(),
-						'node_modules', 
-						'@zextras', 
-						'zapp-cli', 
-						'utils', 
+						'node_modules',
+						'@zextras',
+						'zapp-cli',
+						'utils',
 						'properties-loader.js'
 					)
 				}]
@@ -134,16 +134,16 @@ module.exports = {
 			chunks: ['index']
 		}),
 		new HtmlWebpackPlugin({
-				inject: false,
-				template: path.resolve(
-					process.cwd(),
-					'zimlet_def.template.xml'
-				),
-				filename: `${pkg.pkgName}.xml`,
-				PACKAGE_VERSION: pkg.version,
-				PACKAGE_NAME: pkg.pkgName,
-				PACKAGE_LABEL: pkg.pkgLabel,
-				PACKAGE_DESCRIPTION: pkg.pkgDescription
-			})
+			inject: false,
+			template: path.resolve(
+				process.cwd(),
+				'zimlet_def.template.xml'
+			),
+			filename: `${pkg.pkgName}.xml`,
+			PACKAGE_VERSION: pkg.version,
+			PACKAGE_NAME: pkg.pkgName,
+			PACKAGE_LABEL: pkg.pkgLabel,
+			PACKAGE_DESCRIPTION: pkg.pkgDescription
+		})
 	]
 };

@@ -66,7 +66,7 @@ module.exports = {
 		/**
 		 * @description rule of eslint-plugin-react
 		 */
-		'react/jsx-boolean-value': ['always', 1] //Enforce boolean attributes notation in JSX
+		'react/jsx-boolean-value': ['always', 1],//Enforce boolean attributes notation in JSX
 		'react/jsx-indent': ['error', 'tab'],
 		'react/jsx-indent-props': ['error', 'tab'],
 		'@typescript-eslint/interface-name-prefix': 'off',
@@ -76,5 +76,4 @@ module.exports = {
 		'import/no-unresolved': [2, { ignore: ['^@zextras/zapp-shell/(context|fc|idb|network|router|service|sync)'] }],
 		'no-extra-semi': 'off'
 	},
-
 };

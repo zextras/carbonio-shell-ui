@@ -9,7 +9,8 @@
     "test": "jest",
     "icons:build": "npx @svgr/cli -d src/icons svg && npx create-index -ri ./src/icons",
     "build": "npx babel src -d dist -s true",
-    "clean": "rm -rf dist/*"
+    "clean": "rm -rf dist/*",
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "repository": {
     "type": "git",

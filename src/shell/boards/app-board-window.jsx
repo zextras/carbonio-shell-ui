@@ -10,7 +10,7 @@
  */
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
-import { reduce } from 'lodash';
+import { reduce } from 'lodash';// eslint-disable-next-line
 import { Container, Divider, IconButton, Row, Padding } from '@zextras/zapp-ui';
 import ShellContext from '../shell-context';
 import AppBoardTab from './app-board-tab';
@@ -97,11 +97,11 @@ export default function AppBoardWindow() {
 						{ tabs }
 					</TabsContainer>
 					<Actions padding={{ all: 'extrasmall' }}>
-						<Padding right="extrasmall"><IconButton icon={ largeView ? 'CollapseOutline' : 'ExpandOutline' } onClick={toggleLargeView} /></Padding>
+						<Padding right="extrasmall"><IconButton icon={largeView ? 'CollapseOutline' : 'ExpandOutline'} onClick={toggleLargeView} /></Padding>
 						<IconButton icon="CloseOutline" onClick={removeAllBoards} />
 					</Actions>
 				</BoardHeader>
-				<Divider style={{ height: '2px' }}/>
+				<Divider style={{ height: '2px' }} />
 				<BoardDeatilContainer takeAvailableSpace={true}>
 					{ boards }
 				</BoardDeatilContainer>

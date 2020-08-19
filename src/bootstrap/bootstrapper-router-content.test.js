@@ -8,12 +8,12 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React from 'react';
-import { act, create } from 'react-test-renderer';
-import { MemoryRouter } from 'react-router-dom';
-import BootstrapperRouterContent from './bootstrapper-router-content';
-
 jest.mock('./bootstrapper-lazy-loader');
+// eslint-disable-next-line
+import React from 'react';// eslint-disable-next-line
+import { act, create } from 'react-test-renderer';// eslint-disable-next-line
+import { MemoryRouter } from 'react-router-dom';// eslint-disable-next-line
+import BootstrapperRouterContent from './bootstrapper-router-content';
 
 describe('Boostrapper Router Content', () => {
 	test('Route to Shell with no Account', () => {

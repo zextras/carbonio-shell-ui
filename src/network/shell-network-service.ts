@@ -11,15 +11,15 @@
 
 import Account, { ThemePkgDescription } from '../db/account';
 import ShellDb from '../db/shell-db';
-import { GetInfoResponse, ZimletPkgDescription } from './soap/types';
+import { GetInfoResponse, ZimletPkgDescription } from './soap/types'; // eslint-disable-next-line
 import { filter, reduce } from 'lodash';
 import { zimletToAppPkgDescription, zimletToThemePkgDescription } from './soap/utils';
 import { AppPkgDescription } from '../../types';
 
 export default class ShellNetworkService {
-
+// eslint-disable-next-line
 	constructor(private _shellDb: ShellDb) {}
-
+	// eslint-disable-next-line
 	public getAccountInfo(): Promise<GetInfoResponse> {
 		return fetch(
 			'/service/soap/GetInfoRequest',
@@ -71,7 +71,7 @@ export default class ShellNetworkService {
 				if (response.Body.Fault) throw new Error(response.Body.Fault.Reason.Text);
 				return response;
 			})
-			.then((authResp) => authResp.Body.AuthResponse)
+			.then((authResp) => authResp.Body.AuthResponse)// eslint-disable-next-line
 			.then((authResp) => {
 				return this.getAccountInfo()
 					.then((getInfoResp) => (new Account(
@@ -101,7 +101,7 @@ export default class ShellNetworkService {
 					)));
 			});
 	}
-
+	// eslint-disable-next-line
 	public doLogout(): Promise<void> {
 		return fetch(
 			'/service/soap/EndSessionRequest',
@@ -121,7 +121,7 @@ export default class ShellNetworkService {
 			.then((response) => {
 				if (response.Body.Fault) throw new Error(response.Body.Fault.Reason.Text);
 				return response;
-			})
+			});
 	}
 
 	/*
@@ -157,5 +157,4 @@ export default class ShellNetworkService {
 			})
 	}
  */
-
 }

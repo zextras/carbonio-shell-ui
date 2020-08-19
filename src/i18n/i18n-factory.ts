@@ -8,7 +8,7 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-
+// eslint-disable-next-line
 import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import i18next, { i18n } from 'i18next';
 import Backend from 'i18next-http-backend';
@@ -24,16 +24,16 @@ export default class I18nFactory {
 
 	public getShellI18n(): i18n {
 		return this.getAppI18n({
-			priority: 0,
-			package: PACKAGE_NAME,
+			priority: 0, // eslint-disable-next-line
+			package: PACKAGE_NAME, // eslint-disable-next-line
 			name: PACKAGE_NAME,
-			description: '',
+			description: '', // eslint-disable-next-line
 			version: PACKAGE_VERSION,
-			resourceUrl: '',
+			resourceUrl: '', // eslint-disable-next-line
 			entryPoint : ''
 		});
 	}
-
+	// eslint-disable-next-line
 	public getAppI18n(appPkgDescription: AppPkgDescription): i18n {
 		// const sink = this._fcFactory.getAppFiberChannelSink(appPkgDescription);
 		const newI18n = i18next.createInstance();
@@ -54,7 +54,7 @@ export default class I18nFactory {
 					escapeValue: false, // not needed for react as it escapes by default
 				},
 
-				missingKeyHandler: (lng, ns, key, fallbackValue) => {
+				missingKeyHandler: (lng, ns, key, fallbackValue) => { // eslint-disable-next-line
 					console.warn(`Missing translation with key`, key);
 				},
 
@@ -64,5 +64,4 @@ export default class I18nFactory {
 			});
 		return newI18n;
 	}
-
 }

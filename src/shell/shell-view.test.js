@@ -9,9 +9,6 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React from 'react';
-import { act, create } from 'react-test-renderer';
-
 // jest.mock('@zextras/zapp-ui');
 // jest.mock('../db/database');
 //
@@ -20,6 +17,9 @@ import { act, create } from 'react-test-renderer';
 // jest.mock('./boards/boards-router-container');
 // jest.mock('./boards/app-board-window');
 // jest.mock('../bootstrap/bootstrapper-context-provider');
+
+import React from 'react';
+import { act, create } from 'react-test-renderer';
 
 // import ShellView from './shell-view';
 // import BootstrapperContextProvider from '../bootstrap/bootstrapper-context-provider';

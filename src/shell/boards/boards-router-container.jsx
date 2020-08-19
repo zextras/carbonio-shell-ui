@@ -12,7 +12,7 @@
 import React, { useEffect, useState } from 'react';
 import { Switch } from 'react-router-dom';
 import styled from 'styled-components';
-import { reduce } from 'lodash';
+import { reduce } from 'lodash';// eslint-disable-next-line
 import { Container } from '@zextras/zapp-ui';
 import { useAppsCache } from '../../app/app-loader-context';
 import AppBoardRoutes from '../../app/app-board-routes';
@@ -43,7 +43,7 @@ export default function BoardsRouterContainer() {
 		setChildren(childrn);
 	}, [appsCache, appsLoaded, setChildren]);
 
-	return (
+	return ( // eslint-disable-next-line
 		<_BoardsRouterContainer>
 			<Switch>
 				{ children }

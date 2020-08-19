@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 import React, { useCallback, useContext } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components';// eslint-disable-next-line
 import { IconButton, Text, Row } from '@zextras/zapp-ui';
 import ShellContext from '../shell-context';
 
@@ -32,7 +32,7 @@ export default function AppBoardTab({ idx }) {
 	const onClick = useCallback((ev) => {
 		ev.stopPropagation();
 		ev.preventDefault();
-		setCurrentBoard(idx)
+		setCurrentBoard(idx);
 	}, [setCurrentBoard, idx]);
 
 	const onRemove = useCallback((ev) => {
@@ -48,7 +48,9 @@ export default function AppBoardTab({ idx }) {
 					size="large"
 					weight={currentBoard === idx ? 'bold' : 'regular'}
 					color={currentBoard === idx ? 'text' : 'secondary'}
-				>{ boards[idx].title }</Text>
+				>
+					{ boards[idx].title }
+				</Text>
 			</Row>
 			<IconButton iconColor="secondary" icon="Close" onClick={onRemove} size="small" />
 		</TabContainer>

@@ -8,14 +8,13 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-
-import React from 'react';
-import { BehaviorSubject } from 'rxjs';
-import { renderHook, act } from '@testing-library/react-hooks';
-import { useBehaviorSubject } from './hooks';
-
 jest.mock('@zextras/zapp-ui');
 jest.mock('../db/database');
+// eslint-disable-next-line
+import React from 'react';// eslint-disable-next-line
+import { BehaviorSubject } from 'rxjs';// eslint-disable-next-line
+import { renderHook, act } from '@testing-library/react-hooks';// eslint-disable-next-line
+import { useBehaviorSubject } from './hooks';
 
 describe('Hooks', () => {
 	test('useBehaviorSubject', () => {

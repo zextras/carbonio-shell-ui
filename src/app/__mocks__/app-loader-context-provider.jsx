@@ -10,7 +10,7 @@
  */
 import React from 'react';
 import AppLoaderContext from '../app-loader-context';
-
+// eslint-disable-next-line
 const AppLoaderContextProvider = jest.fn().mockImplementation(({ children }) => {
 	return (
 		<AppLoaderContext.Provider

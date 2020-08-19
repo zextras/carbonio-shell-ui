@@ -10,7 +10,7 @@
  */
 
 import React from 'react';
-import { useBehaviorSubject } from '../shell/hooks';
+import { useBehaviorSubject } from '../shell/hooks';// eslint-disable-next-line
 import { reduce } from 'lodash';
 import { useIsMobile } from '../shell/shell-context';
 import AppMainMenuItemChild from './app-main-menu-item-child';
@@ -27,7 +27,7 @@ export default function AppMainMenuItems({ app }) {
 			const subChildren = [];
 			if (isMobile && v.children) {
 				reduce(
-					v.children,
+					v.children, // eslint-disable-next-line
 					(r, v, k) => {
 						r.push((
 							<AppMainMenuItemChild key={v.id} pkg={app.pkg} data={v} />
@@ -57,4 +57,3 @@ export default function AppMainMenuItems({ app }) {
 		</>
 	);
 }
-

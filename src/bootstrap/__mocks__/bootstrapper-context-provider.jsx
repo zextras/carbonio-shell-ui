@@ -9,12 +9,12 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React from 'react';
-import BootstrapperContext from '../bootstrapper-context';
-import FiberChannelFactory from '../../fiberchannel/fiber-channel';
-import I18nFactory from '../../i18n/i18n-factory';
-
 jest.mock('../../i18n/i18n-factory');
+// eslint-disable-next-line
+import React from 'react';// eslint-disable-next-line
+import BootstrapperContext from '../bootstrapper-context';// eslint-disable-next-line
+import FiberChannelFactory from '../../fiberchannel/fiber-channel';// eslint-disable-next-line
+import I18nFactory from '../../i18n/i18n-factory';
 
 const BootstrapperContextProvider = jest.fn().mockImplementation(({ children }) => {
 	return (

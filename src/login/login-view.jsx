@@ -30,7 +30,7 @@ import {
 	ThemeProvider,
 	useScreenMode,
 	useSnackbar,
-	Paragraph
+	Paragraph // eslint-disable-next-line
 } from '@zextras/zapp-ui';
 
 import useLoginView from './login-view-hook';
@@ -87,7 +87,7 @@ const Separator = styled.div`
 
 export default function LoginView() {
 	return (
-		<ThemeProvider theme={extendTheme({ palette: {light: {}, dark: {}}})}>
+		<ThemeProvider theme={extendTheme({ palette: { light: {}, dark: {} } })}>
 			<SnackbarManager>
 				<Login />
 			</SnackbarManager>
@@ -156,8 +156,7 @@ function LoginForm() {
 		setShowAuthError(false);
 		doLogin(e)
 			.catch((err) => {
-				if (err.message.startsWith('authentication failed'))
-					setShowAuthError(true);
+				if (err.message.startsWith('authentication failed')) setShowAuthError(true);
 				else {
 					const snackbarRef = createSnackbar(
 						{

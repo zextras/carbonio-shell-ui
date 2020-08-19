@@ -11,13 +11,13 @@
 
 import React, { lazy } from 'react';
 
-export default function LazyBootstrapper({ onBeforeBoot }) {
+export default function LazyBootstrapper({ onBeforeBoot }) { // eslint-disable-next-line
 	const _LazyBootstrapper = lazy(() => {
 		return import(/* webpackChunkName: "bootstrapper" */ './bootstrapper')
 			.then(({ default: bootstrapper }) => bootstrapper(onBeforeBoot));
 	});
 
-	return (
+	return ( // eslint-disable-next-line
 		<_LazyBootstrapper />
 	);
 }

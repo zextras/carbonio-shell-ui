@@ -10,9 +10,10 @@
  */
 
 import { Observable } from 'rxjs';
-import { AppPkgDescription, FCEvent, FCPromisedEvent, FCSink } from '../../types';
-
-
+import {
+	AppPkgDescription, FCEvent, FCPromisedEvent, FCSink
+} from '../../types';
+// eslint-disable-next-line
 export type IFCSink = <T extends {} | string, R extends {} | string>(event: FCEvent<T>) => void | Promise<R>;
 export type FC = Observable<FCEvent<any> | FCPromisedEvent<any, any>>;
 

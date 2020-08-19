@@ -27,11 +27,11 @@ export default function AppLink({ to, ...rest }) {
 		else {
 			urlTo = to;
 		}
-		return (
+		return (// eslint-disable-next-line
 			<_Link to={{ pathname: `/${pkg.package}${urlTo}`, search: urlSearch }} {...rest} />
-		);
+		);// eslint-disable-next-line
 	} else {
-		return (
+		return (// eslint-disable-next-line
 			<_Link to={{ ...to, pathname: `/${pkg.package}${to.pathname}` }} {...rest} />
 		);
 	}

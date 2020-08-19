@@ -8,21 +8,21 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React from 'react';
-import { act, create } from 'react-test-renderer';
-import { MemoryRouter } from 'react-router-dom';
-import { BehaviorSubject } from 'rxjs';
-import AppLink from './app-link';
-import AppContextProvider from './app-context-provider';
-import AppLoaderContext from './app-loader-context';
-import BootstrapperContextProvider from '../bootstrap/bootstrapper-context-provider';
-import AppLoaderContextProvider from './app-loader-context-provider';
-
 jest.mock('@zextras/zapp-ui');
 jest.mock('../db/database');
 jest.mock('../fiberchannel/fiber-channel');
 jest.mock('../bootstrap/bootstrapper-context-provider');
 jest.mock('./app-loader-context-provider');
+// eslint-disable-next-line
+import React from 'react';// eslint-disable-next-line
+import { act, create } from 'react-test-renderer';// eslint-disable-next-line
+import { MemoryRouter } from 'react-router-dom';// eslint-disable-next-line
+import { BehaviorSubject } from 'rxjs';// eslint-disable-next-line
+import AppLink from './app-link';// eslint-disable-next-line
+import AppContextProvider from './app-context-provider';// eslint-disable-next-line
+import AppLoaderContext from './app-loader-context';// eslint-disable-next-line
+import BootstrapperContextProvider from '../bootstrap/bootstrapper-context-provider';// eslint-disable-next-line
+import AppLoaderContextProvider from './app-loader-context-provider';
 
 describe('App Link', () => {
 	beforeEach(() => {

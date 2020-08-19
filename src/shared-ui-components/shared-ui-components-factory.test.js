@@ -8,19 +8,19 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React from 'react';
-import { act, create } from 'react-test-renderer';
-import { BehaviorSubject } from 'rxjs';
-import SharedUiComponentsContextProvider from './shared-ui-components-context-provider';
-import SharedUiComponentsFactory from './shared-ui-components-factory';
-import SharedUiComponentsContext from './shared-ui-components-context';
-import AppLoaderContextProvider from '../app/app-loader-context-provider';
-import BootstrapperContextProvider from '../bootstrap/bootstrapper-context-provider';
-import AppLoaderContext from '../app/app-loader-context';
-
 jest.mock('../app/app-loader-context-provider');
 jest.mock('./shared-ui-components-context-provider');
 jest.mock('../bootstrap/bootstrapper-context-provider');
+// eslint-disable-next-line
+import React from 'react';// eslint-disable-next-line
+import { act, create } from 'react-test-renderer';// eslint-disable-next-line
+import { BehaviorSubject } from 'rxjs';// eslint-disable-next-line
+import SharedUiComponentsContextProvider from './shared-ui-components-context-provider';// eslint-disable-next-line
+import SharedUiComponentsFactory from './shared-ui-components-factory';// eslint-disable-next-line
+import SharedUiComponentsContext from './shared-ui-components-context';// eslint-disable-next-line
+import AppLoaderContextProvider from '../app/app-loader-context-provider';// eslint-disable-next-line
+import BootstrapperContextProvider from '../bootstrap/bootstrapper-context-provider';// eslint-disable-next-line
+import AppLoaderContext from '../app/app-loader-context';
 
 describe('Shared UI Components Factory', () => {
 	test('Render a scope with NO Components registered', () => {

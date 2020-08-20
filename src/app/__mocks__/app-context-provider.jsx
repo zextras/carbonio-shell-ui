@@ -12,7 +12,7 @@
 import React from 'react';
 import { Subject } from 'rxjs';
 import AppContext from '../app-context';
-// eslint-disable-next-line
+
 const AppContextProvider = jest.fn().mockImplementation(({ children }) => {
 	return (
 		<AppContext.Provider

@@ -10,8 +10,8 @@
  */
 jest.mock('@zextras/zapp-ui');
 jest.mock('../db/database');
-// eslint-disable-next-line
-import React from 'react';// eslint-disable-next-line
+
+import React from 'react';
 import { collectAllTo } from './shell-secondary-bar';
 
 describe.skip('Shell Link', () => {

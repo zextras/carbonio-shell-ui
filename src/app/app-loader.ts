@@ -9,12 +9,12 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { // eslint-disable-next-line
-	default as Lodash, map, orderBy, compact, keyBy } from 'lodash';// eslint-disable-next-line
-import { BehaviorSubject } from 'rxjs';// eslint-disable-next-line
-import { ComponentClass } from 'react';// eslint-disable-next-line
-import * as React from 'react';// eslint-disable-next-line
-import * as ReactDOM from 'react-dom';// eslint-disable-next-line
+import {
+	default as Lodash, map, orderBy, compact, keyBy } from 'lodash';
+import { BehaviorSubject } from 'rxjs';
+import { ComponentClass } from 'react';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import * as RxJS from 'rxjs';
 import * as RxJSOperators from 'rxjs/operators';
 import * as ReactRouterDom from 'react-router-dom';
@@ -23,7 +23,6 @@ import * as Moment from 'moment';
 import * as ReactI18n from 'react-i18next';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-// eslint-disable-next-line
 import * as ZappUI from '@zextras/zapp-ui';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
@@ -122,7 +121,7 @@ function loadAppModule(
 	}: AppInjections,
 	fiberChannelFactory: IFiberChannelFactory,
 ): Promise<AppModuleFunction> {
-	return new Promise((resolve, reject) => { // eslint-disable-next-line
+	return new Promise((resolve, reject) => {
 		const path = `${ appPkg.resourceUrl }/${ appPkg.entryPoint }`;
 		const iframe: HTMLIFrameElement = document.createElement('iframe');
 		iframe.style.display = 'none';
@@ -157,11 +156,10 @@ function loadAppModule(
 			// 		);
 			// 	});
 			(iframe.contentWindow as IChildWindow).__ZAPP_SHARED_LIBRARIES__ = {
-				// eslint-disable-next-line
 				'react': React,
 				'react-dom': ReactDOM,
-				'react-i18next': ReactI18n, // eslint-disable-next-line
-				'lodash': Lodash, // eslint-disable-next-line
+				'react-i18next': ReactI18n,
+				'lodash': Lodash,
 				'rxjs': RxJS,
 				'rxjs/operators': RxJSOperators,
 				'react-router-dom': {
@@ -169,7 +167,7 @@ function loadAppModule(
 					Link: AppLink
 				},
 				'styled-components': StyledComponents,
-				'prop-types': PropTypes, // eslint-disable-next-line
+				'prop-types': PropTypes,
 				'moment': Moment,
 				'@zextras/zapp-shell': {
 					db: {
@@ -202,14 +200,14 @@ function loadAppModule(
 				},
 				'@zextras/zapp-ui': ZappUI
 			};
-			(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve; // eslint-disable-next-line
+			(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve;
+			// eslint-disable-next-line max-len
 			(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (extModule: AppModuleFunction): void => {
 				// Errors are not collected here because the HMR works only on develpment mode.
-				// eslint-disable-next-line
 				console.log(`HMR ${ path }`, extModule);
 				sharedUiComponents.next({});
 				extModule.call(undefined);
-			}; // eslint-disable-next-line
+			};
 			switch (FLAVOR) {
 				case 'NPM':
 				case 'E2E': // eslint-disable-next-line
@@ -219,8 +217,9 @@ function loadAppModule(
 			script.setAttribute('src', path);
 			script.addEventListener('error', reject);
 			iframe.contentDocument.body.appendChild(script);
-			_iframes[appPkg.package] = iframe; // eslint-disable-next-line
-		} else reject(new Error('Cannot create extension loader'));
+			_iframes[appPkg.package] = iframe;
+		}
+		else reject(new Error('Cannot create extension loader'));
 	});
 }
 
@@ -295,8 +294,8 @@ export function loadApps(
 		.then((loaded) => {
 			const sink = fiberChannelFactory.getShellFiberChannelSink();
 			sink({
-				to: { // eslint-disable-next-line
-					version: PACKAGE_VERSION, // eslint-disable-next-line
+				to: {
+					version: PACKAGE_VERSION,
 					app: PACKAGE_NAME
 				},
 				event: 'all-apps-loaded',

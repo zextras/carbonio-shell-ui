@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 import React from 'react';
-// eslint-disable-next-line
-export default function() {
+
+export default function () {
 	return 'ShellSecondaryBar';
 }

@@ -30,7 +30,7 @@ import {
 	ThemeProvider,
 	useScreenMode,
 	useSnackbar,
-	Paragraph // eslint-disable-next-line
+	Paragraph
 } from '@zextras/zapp-ui';
 
 import useLoginView from './login-view-hook';

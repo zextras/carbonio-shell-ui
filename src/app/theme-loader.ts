@@ -8,13 +8,13 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-// eslint-disable-next-line
+
 import { default as Lodash, map, orderBy } from 'lodash';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-// eslint-disable-next-line
+
 import * as ZappUI from '@zextras/zapp-ui';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
@@ -55,7 +55,7 @@ const _iframes: { [pkgName: string]: HTMLIFrameElement } = {};
 function loadThemeModule(
 	appPkg: AppPkgDescription,
 ): Promise<AppModuleFunction> {
-	return new Promise((resolve, reject) => { // eslint-disable-next-line
+	return new Promise((resolve, reject) => {
 		const path = `${ appPkg.resourceUrl }/${ appPkg.entryPoint }`;
 		const iframe: HTMLIFrameElement = document.createElement('iframe');
 		iframe.style.display = 'none';
@@ -64,9 +64,8 @@ function loadThemeModule(
 		if (iframe.contentWindow && iframe.contentDocument) {
 			const script: HTMLScriptElement = iframe.contentDocument.createElement('script');
 			(iframe.contentWindow as IChildWindow).__ZAPP_SHARED_LIBRARIES__ = {
-				// eslint-disable-next-line
 				'react': React,
-				'react-dom': ReactDOM, // eslint-disable-next-line
+				'react-dom': ReactDOM,
 				'lodash': Lodash,
 				'styled-components': StyledComponents,
 				'@zextras/zapp-ui': ZappUI
@@ -74,7 +73,6 @@ function loadThemeModule(
 			(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve; // eslint-disable-next-line
 			(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (extModule: AppModuleFunction): void => {
 				// Errors are not collected here because the HMR works only on development mode.
-				// eslint-disable-next-line
 				console.log(`HMR ${ path }`, extModule);
 				extModule.call(undefined);
 			}; // eslint-disable-next-line
@@ -87,7 +85,7 @@ function loadThemeModule(
 			script.setAttribute('src', path);
 			script.addEventListener('error', reject);
 			iframe.contentDocument.body.appendChild(script);
-			_iframes[appPkg.package] = iframe; // eslint-disable-next-line
+			_iframes[appPkg.package] = iframe;
 		} else reject(new Error('Cannot create extension loader'));
 	});
 }
@@ -126,8 +124,8 @@ export function loadThemes(
 		.then((pkgTheme) => {
 			const sink = fiberChannelFactory.getShellFiberChannelSink();
 			sink({
-				to: { // eslint-disable-next-line
-					version: PACKAGE_VERSION, // eslint-disable-next-line
+				to: {
+					version: PACKAGE_VERSION,
 					app: PACKAGE_NAME
 				},
 				event: 'all-apps-loaded',

@@ -10,7 +10,7 @@
  */
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
-import { reduce } from 'lodash';// eslint-disable-next-line
+import { reduce } from 'lodash';
 import { Container, Divider, IconButton, Row, Padding } from '@zextras/zapp-ui';
 import ShellContext from '../shell-context';
 import AppBoardTab from './app-board-tab';

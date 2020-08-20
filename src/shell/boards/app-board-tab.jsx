@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 import React, { useCallback, useContext } from 'react';
-import styled from 'styled-components';// eslint-disable-next-line
+import styled from 'styled-components';
 import { IconButton, Text, Row } from '@zextras/zapp-ui';
 import ShellContext from '../shell-context';
 

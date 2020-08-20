@@ -9,13 +9,13 @@
  * *** END LICENSE BLOCK *****
  */
 jest.mock('../app/app-loader-context-provider');
-// eslint-disable-next-line
-import React, { useContext } from 'react';// eslint-disable-next-line
-import { BehaviorSubject } from 'rxjs';// eslint-disable-next-line
-import { act, create } from 'react-test-renderer';// eslint-disable-next-line
-import AppLoaderContextProvider from '../app/app-loader-context-provider';// eslint-disable-next-line
-import AppLoaderContext from '../app/app-loader-context';// eslint-disable-next-line
-import SharedUiComponentsContextProvider from './shared-ui-components-context-provider';// eslint-disable-next-line
+
+import React, { useContext } from 'react';
+import { BehaviorSubject } from 'rxjs';
+import { act, create } from 'react-test-renderer';
+import AppLoaderContextProvider from '../app/app-loader-context-provider';
+import AppLoaderContext from '../app/app-loader-context';
+import SharedUiComponentsContextProvider from './shared-ui-components-context-provider';
 import SharedUiComponentsContext from './shared-ui-components-context';
 
 describe('Shared UI Components Context Provider', () => {

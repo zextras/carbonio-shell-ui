@@ -18,7 +18,7 @@ export function zimletToAppPkgDescription(z: ZimletPkgDescription): AppPkgDescri
 		package: z.zimlet[0].name,
 		name: z.zimlet[0].label,
 		version: z.zimlet[0].version,
-		priority: z.zimletContext[0].priority, // eslint-disable-next-line
+		priority: z.zimletContext[0].priority,
 		resourceUrl: `/zx/zimlet/${ z.zimlet[0].name }`,
 		description: z.zimlet[0].description,
 		entryPoint: z.zimlet[0]['zapp-main']!,
@@ -32,7 +32,7 @@ export function zimletToThemePkgDescription(z: ZimletPkgDescription): ThemePkgDe
 		package: z.zimlet[0].name,
 		name: z.zimlet[0].label,
 		version: z.zimlet[0].version,
-		priority: z.zimletContext[0].priority, // eslint-disable-next-line
+		priority: z.zimletContext[0].priority,
 		resourceUrl: `/zx/zimlet/${ z.zimlet[0].name }`,
 		description: z.zimlet[0].description,
 		entryPoint: z.zimlet[0]['zapp-theme']!,

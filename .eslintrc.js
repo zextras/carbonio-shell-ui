@@ -71,6 +71,7 @@ module.exports = {
 		'react/jsx-indent-props': ['error', 'tab'],
 		'@typescript-eslint/interface-name-prefix': 'off',
 		'implicit-arrow-linebreak': 'off',
+		'import/first':'off',
 		'import/no-extraneous-dependencies': 'warn',
 		'@typescript-eslint/no-unused-vars': 'warn',
 		'import/no-unresolved': [2, { ignore: ['^@zextras/zapp-shell/(context|fc|idb|network|router|service|sync)'] }],

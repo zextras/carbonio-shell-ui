@@ -9,17 +9,18 @@
  * *** END LICENSE BLOCK *****
  */
 
+import { filter, reduce } from 'lodash';
 import Account, { ThemePkgDescription } from '../db/account';
 import ShellDb from '../db/shell-db';
-import { GetInfoResponse, ZimletPkgDescription } from './soap/types'; // eslint-disable-next-line
-import { filter, reduce } from 'lodash';
+import { GetInfoResponse, ZimletPkgDescription } from './soap/types';
 import { zimletToAppPkgDescription, zimletToThemePkgDescription } from './soap/utils';
 import { AppPkgDescription } from '../../types';
 
 export default class ShellNetworkService {
-// eslint-disable-next-line
+
+	// eslint-disable-next-line no-useless-constructor
 	constructor(private _shellDb: ShellDb) {}
-	// eslint-disable-next-line
+
 	public getAccountInfo(): Promise<GetInfoResponse> {
 		return fetch(
 			'/service/soap/GetInfoRequest',
@@ -101,7 +102,7 @@ export default class ShellNetworkService {
 					)));
 			});
 	}
-	// eslint-disable-next-line
+
 	public doLogout(): Promise<void> {
 		return fetch(
 			'/service/soap/EndSessionRequest',

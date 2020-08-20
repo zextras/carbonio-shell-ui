@@ -12,7 +12,7 @@
 import React, { useEffect, useState } from 'react';
 import { Switch } from 'react-router-dom';
 import styled from 'styled-components';
-import { reduce } from 'lodash';// eslint-disable-next-line
+import { reduce } from 'lodash';
 import { Container } from '@zextras/zapp-ui';
 import { useAppsCache } from '../../app/app-loader-context';
 import AppBoardRoutes from '../../app/app-board-routes';

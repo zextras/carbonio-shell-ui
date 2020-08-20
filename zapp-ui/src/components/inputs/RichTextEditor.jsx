@@ -29,10 +29,11 @@ import 'tinymce/plugins/wordcount';
 import 'tinymce/plugins/quickbars';
 
 import { Editor as _TinyMCE } from '@tinymce/tinymce-react';
+import { useEffect } from 'react';
 
 // Toolbar: alignleft aligncenter alignright alignjustify |
 
-function RichTextEditor({ onEditorChange, inline, initialValue, minHeight, maxHeight }) {
+function RichTextEditor({ onEditorChange, inline, initialValue, value, minHeight, maxHeight }) {
   const [ content, setContent ] = useState(initialValue);
   const _onEditorChange = useCallback((content, editor) => {
     setContent(content);
@@ -41,6 +42,7 @@ function RichTextEditor({ onEditorChange, inline, initialValue, minHeight, maxHe
       editor.getContent({format: 'html'})
     ]);
   }, [setContent, onEditorChange]);
+  useEffect(() => setContent(value), [value]);
 
   return (
     <_TinyMCE
@@ -99,6 +101,8 @@ RichTextEditor.propTypes = {
   inline: PropTypes.bool,
   /** The initial content of the editor */
   initialValue: PropTypes.string,
+  /** The content of the editor (controlled mode) */
+  value: PropTypes.string,
   /** Minimum height of the editor content */
   minHeight: PropTypes.number,
   /** Maximum height of the editor content */
@@ -107,7 +111,6 @@ RichTextEditor.propTypes = {
 
 RichTextEditor.defaultProps = {
   inline: false,
-  initialValue: '',
   minHeight: 100,
   maxHeight: 2500,
 };

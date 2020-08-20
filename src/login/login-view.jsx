@@ -130,7 +130,9 @@ function Login() {
 								<Padding all="extrasmall" right="small"><Tooltip label="Yandex"><img src={logoYandex} width="18px" /></Tooltip></Padding>
 								<Padding all="extrasmall" right="small"><Tooltip label="UC"><img src={logoUC} width="18px" /></Tooltip></Padding>
 							</Row>
-							<Text size="small">Copyright &copy; { new Date().getFullYear() } Zextras, All rights reserved</Text>
+							<Text size="small">
+Copyright &copy;{ new Date().getFullYear() } Zextras, All rights reserved
+							</Text>
 						</Container>
 					</FormWrapper>
 				</FormContainer>
@@ -188,7 +190,7 @@ function LoginForm() {
 				<Row padding={{vertical: 'extralarge'}} mainAlignment="space-between">
 					<Checkbox label={t('Remember me')} />
 				</Row>
-				<Row orientation="vertical" crossAlignment="flex-start" padding={{bottom: 'extralarge'}}>
+				<Row orientation="vertical" crossAlignment="flex-start" padding={{ bottom: 'extralarge' }}>
 					<Button onClick={onSubmit} label={t('Login')} size="fill" />
 					{ showAuthError && (
 						<Padding top="small">
@@ -199,7 +201,7 @@ function LoginForm() {
 						</Padding>
 					)}
 				</Row>
-				<input type="submit" style={{ display: 'none'}} />
+				<input type="submit" style={{ display: 'none' }} />
 			</form>
 			<OfflineModal open={openOfflineModal} onClose={() => setOpenOfflineModal(false)} />
 			<GenericErrorModal open={openGenericModal} onClose={() => setOpenGenericModal(false)} />
@@ -216,8 +218,14 @@ function HelpModal({ open, onClose }) {
 			onClose={onClose}
 		>
 			<Paragraph>Do you need help?</Paragraph>
-			<Paragraph>Please call this number: <Link href="tel:+123445678910">1234 - 45678910</Link></Paragraph>
-			<Paragraph>Or write an email to: <Link href="mailto:help.assistance@iris.com" target="_blank">help.assistance@iris.com</Link></Paragraph>
+			<Paragraph>
+Please call this number:
+				<Link href="tel:+123445678910">1234 - 45678910</Link>
+			</Paragraph>
+			<Paragraph>
+Or write an email to:
+				<Link href="mailto:help.assistance@iris.com" target="_blank">help.assistance@iris.com</Link>
+			</Paragraph>
 		</Modal>
 	);
 }

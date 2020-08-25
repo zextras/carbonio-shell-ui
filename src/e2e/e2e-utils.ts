@@ -10,12 +10,8 @@
  */
 
 import setLoginData from './set-login-data';
-import {
-	addMockedResponse,
-	install as installMockableFetch,
-	throwErrorIfRequestNotMocked
-} from './mockable-fetch';
 import { E2EContext } from './e2e-types';
+import loadMockedApi from './load-mocked-api';
 
 let ctxtCache: E2EContext;
 
@@ -26,14 +22,11 @@ interface IE2eInstrumentedWindow extends Window {
 
 function installOnWindow(wnd: Window, ctxt: E2EContext): void {
 	if (!ctxtCache && ctxt) ctxtCache = ctxt;
-	// Inject the instruments for the e2e tests
-	installMockableFetch(wnd);
 	// Expose the instruments
 	(wnd as unknown as IE2eInstrumentedWindow)['e2e'] = {
 		setLoginData: () => setLoginData(ctxt),
-		addMockedResponse,
-		throwErrorIfRequestNotMocked,
 		installOnWindow: (w: Window, ctxt?: E2EContext) => installOnWindow(w, ctxt || ctxtCache),
+		loadMockedApi
 	};
 	console.debug('e2e Utils installed.');
 }

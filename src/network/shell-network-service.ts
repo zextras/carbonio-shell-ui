@@ -9,15 +9,16 @@
  * *** END LICENSE BLOCK *****
  */
 
+import { filter, reduce } from 'lodash';
 import Account, { ThemePkgDescription } from '../db/account';
 import ShellDb from '../db/shell-db';
 import { GetInfoResponse, ZimletPkgDescription } from './soap/types';
-import { filter, reduce } from 'lodash';
 import { zimletToAppPkgDescription, zimletToThemePkgDescription } from './soap/utils';
 import { AppPkgDescription } from '../../types';
 
 export default class ShellNetworkService {
 
+	// eslint-disable-next-line no-useless-constructor
 	constructor(private _shellDb: ShellDb) {}
 
 	public getAccountInfo(): Promise<GetInfoResponse> {
@@ -71,7 +72,7 @@ export default class ShellNetworkService {
 				if (response.Body.Fault) throw new Error(response.Body.Fault.Reason.Text);
 				return response;
 			})
-			.then((authResp) => authResp.Body.AuthResponse)
+			.then((authResp) => authResp.Body.AuthResponse)// eslint-disable-next-line
 			.then((authResp) => {
 				return this.getAccountInfo()
 					.then((getInfoResp) => (new Account(
@@ -121,7 +122,7 @@ export default class ShellNetworkService {
 			.then((response) => {
 				if (response.Body.Fault) throw new Error(response.Body.Fault.Reason.Text);
 				return response;
-			})
+			});
 	}
 
 	/*
@@ -157,5 +158,4 @@ export default class ShellNetworkService {
 			})
 	}
  */
-
 }

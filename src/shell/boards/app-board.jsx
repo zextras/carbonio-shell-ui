@@ -8,7 +8,9 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, {
+	useContext, useEffect, useMemo, useState
+} from 'react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import styled from 'styled-components';
@@ -16,7 +18,7 @@ import { reduce } from 'lodash';
 import { useAppsCache } from '../../app/app-loader-context';
 import AppBoardRoutes from '../../app/app-board-routes';
 import ShellContext from '../shell-context';
-
+// eslint-disable-next-line
 const _container = styled.div`
 	display: ${(props) => props.show ? 'block' : 'none'};
 	height: 100%;
@@ -48,7 +50,7 @@ export default function AppBoard({ idx }) {
 	}, [appsCache, appsLoaded, setChildren]);
 
 	const history = useMemo(() => createMemoryHistory(), []);
-
+	// eslint-disable-next-line
 	useEffect(() => {
 		return history.listen((l, a) => {
 			updateBoard(idx, `${l.pathname}${l.search}${l.hash}`);
@@ -62,7 +64,7 @@ export default function AppBoard({ idx }) {
 		}
 	}, [history, idx, boards]);
 
-	return (
+	return ( // eslint-disable-next-line
 		<_container show={currentBoard === idx}>
 			<Router key={idx} history={history}>
 				{ children }

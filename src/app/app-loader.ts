@@ -9,7 +9,8 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { default as Lodash, map, orderBy, compact, keyBy } from 'lodash';
+import {
+	default as Lodash, map, orderBy, compact, keyBy } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
 import { ComponentClass } from 'react';
 import * as React from 'react';
@@ -22,7 +23,7 @@ import * as Moment from 'moment';
 import * as ReactI18n from 'react-i18next';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import * as ZappUI from "@zextras/zapp-ui";
+import * as ZappUI from '@zextras/zapp-ui';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
@@ -31,7 +32,7 @@ import { AccountAppsData } from '../db/account';
 import * as hooks from '../shell/hooks';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import SharedUiComponentsFactory from '../shared-ui-components/shared-ui-components-factory'
+import SharedUiComponentsFactory from '../shared-ui-components/shared-ui-components-factory';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
@@ -41,7 +42,9 @@ import { FC, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import validateSharedUiComponent from '../shared-ui-components/shared-ui-components-validator';
 import ShellDb from '../db/shell-db';
 import ShellNetworkService from '../network/shell-network-service';
-import { AppCreateOption, AppPkgDescription, AppRouteDescription, FCSink, MainMenuItemData } from '../../types';
+import {
+	AppCreateOption, AppPkgDescription, AppRouteDescription, FCSink, MainMenuItemData
+} from '../../types';
 
 type AppModuleFunction = () => void;
 
@@ -130,6 +133,7 @@ function loadAppModule(
 			// 	this._routerSrvc,
 			// 	this._itemActionSrvc
 			// );
+			// eslint-disable-next-line
 			// const syncOperations: BehaviorSubject<Array<ISyncOperation<unknown, ISyncOpRequest<unknown>>>> = new BehaviorSubject(
 			// 	map(
 			// 		loFilter(
@@ -197,6 +201,7 @@ function loadAppModule(
 				'@zextras/zapp-ui': ZappUI
 			};
 			(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve;
+			// eslint-disable-next-line max-len
 			(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (extModule: AppModuleFunction): void => {
 				// Errors are not collected here because the HMR works only on develpment mode.
 				console.log(`HMR ${ path }`, extModule);
@@ -205,7 +210,7 @@ function loadAppModule(
 			};
 			switch (FLAVOR) {
 				case 'NPM':
-				case 'E2E':
+				case 'E2E': // eslint-disable-next-line
 					e2e.installOnWindow(iframe.contentWindow);
 			}
 			script.type = 'text/javascript';
@@ -213,8 +218,8 @@ function loadAppModule(
 			script.addEventListener('error', reject);
 			iframe.contentDocument.body.appendChild(script);
 			_iframes[appPkg.package] = iframe;
-		} else
-			reject(new Error('Cannot create extension loader'));
+		}
+		else reject(new Error('Cannot create extension loader'));
 	});
 }
 

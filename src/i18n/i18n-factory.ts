@@ -9,10 +9,10 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import i18next, { i18n } from 'i18next';
 import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import { AppPkgDescription } from '../../types';
 
 export default class I18nFactory {
@@ -30,7 +30,7 @@ export default class I18nFactory {
 			description: '',
 			version: PACKAGE_VERSION,
 			resourceUrl: '',
-			entryPoint : ''
+			entryPoint: ''
 		});
 	}
 
@@ -64,5 +64,4 @@ export default class I18nFactory {
 			});
 		return newI18n;
 	}
-
 }

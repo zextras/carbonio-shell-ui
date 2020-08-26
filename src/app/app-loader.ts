@@ -210,7 +210,7 @@ function loadAppModule(
 			};
 			switch (FLAVOR) {
 				case 'NPM':
-				case 'E2E': // eslint-disable-next-line
+				case 'E2E':
 					e2e.installOnWindow(iframe.contentWindow);
 			}
 			script.type = 'text/javascript';

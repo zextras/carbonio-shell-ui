@@ -12,8 +12,6 @@ import React from 'react';
 import AppContext from './app-context';
 
 export default class AppErrorCatcher extends React.Component {
-	static contextType = AppContext;
-
 	constructor(props) {
 		super(props);
 		this.state = { hasError: false };
@@ -22,14 +20,20 @@ export default class AppErrorCatcher extends React.Component {
 	componentDidCatch(error, info) {
 		// Display fallback UI
 		this.setState({ hasError: true });
+		// eslint-disable-next-line react/destructuring-assignment
 		this.context.fiberChannelSink('report-exception', { exception: error });
 	}
 
+	// eslint-disable-next-line react/static-property-placement
+	static contextType = AppContext;
+
 	render() {
+		// eslint-disable-next-line react/destructuring-assignment
 		if (this.state.hasError) {
 			// You can render any custom fallback UI
 			return <h1>Something went wrong.</h1>;
 		}
+		// eslint-disable-next-line react/destructuring-assignment
 		return this.props.children;
 	}
 }

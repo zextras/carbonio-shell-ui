@@ -14,12 +14,15 @@ import FiberChannelFactory from './fiber-channel';
 function setAllAppsLoaded(fcf) {
 	fcf.getShellFiberChannelSink()({
 		to: {
+			// eslint-disable-next-line no-undef
 			version: PACKAGE_VERSION,
+			// eslint-disable-next-line no-undef
 			app: PACKAGE_NAME
 		},
 		event: 'all-apps-loaded',
 		data: {
-			'com_example_package': {
+			// eslint-disable-next-line @typescript-eslint/camelcase
+			com_example_package: {
 				pkg: {
 					package: 'com_example_package',
 					version: '0.0.0'
@@ -30,7 +33,6 @@ function setAllAppsLoaded(fcf) {
 }
 
 describe('Fiber Channel', () => {
-
 	test('Internal fiber channel and sink', () => {
 		const fcf = new FiberChannelFactory();
 		setAllAppsLoaded(fcf);
@@ -41,7 +43,7 @@ describe('Fiber Channel', () => {
 			version: '0.0.0',
 			event: 'event',
 			data: {}
-		}
+		};
 		fcf.getInternalFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
 		sink(ev);
 		expect(checker).toBeCalledWith(ev);
@@ -141,7 +143,7 @@ describe('Fiber Channel', () => {
 		expect(returned).toBe('return-value');
 	});
 
-	test('Cache an event until apps are loaded',  () => {
+	test('Cache an event until apps are loaded', () => {
 		const fcf = new FiberChannelFactory();
 		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
@@ -165,9 +167,11 @@ describe('Fiber Channel', () => {
 		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
 		try {
 			sink({ to: { app: 'com_example_package' }, event: 'event' });
-		} catch (err) {
+		}
+		catch (err) {
 			expect(err.message).toBe('API Version not specified.');
-		} finally {
+		}
+		finally {
 			expect(checker).not.toHaveBeenCalled();
 		}
 	});
@@ -180,14 +184,16 @@ describe('Fiber Channel', () => {
 		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
 		try {
 			sink({ to: { app: 'com_example_package', version: '1.0.0' }, event: 'event' });
-		} catch (err) {
+		}
+		catch (err) {
 			expect(err.message).toBe('API Version cannot be satisfied.');
-		} finally {
+		}
+		finally {
 			expect(checker).not.toHaveBeenCalled();
 		}
 	});
 
-	test('Reject on error on unsupported API Version',  async () => {
+	test('Reject on error on unsupported API Version', async () => {
 		const fcf = new FiberChannelFactory();
 		setAllAppsLoaded(fcf);
 		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
@@ -199,11 +205,12 @@ describe('Fiber Channel', () => {
 				asPromise: true,
 				event: 'event'
 			});
-		} catch (err) {
+		}
+		catch (err) {
 			expect(err.message).toBe('API Version cannot be satisfied.');
-		} finally {
+		}
+		finally {
 			expect(checker).not.toHaveBeenCalled();
 		}
 	});
-
 });

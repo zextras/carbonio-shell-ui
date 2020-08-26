@@ -8,11 +8,10 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React from 'react';
-
 jest.mock('@zextras/zapp-ui');
 jest.mock('../db/database');
 
+import React from 'react';
 import { collectAllTo } from './shell-secondary-bar';
 
 describe.skip('Shell Link', () => {

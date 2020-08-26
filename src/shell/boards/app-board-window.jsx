@@ -97,11 +97,11 @@ export default function AppBoardWindow() {
 						{ tabs }
 					</TabsContainer>
 					<Actions padding={{ all: 'extrasmall' }}>
-						<Padding right="extrasmall"><IconButton icon={ largeView ? 'CollapseOutline' : 'ExpandOutline' } onClick={toggleLargeView} /></Padding>
+						<Padding right="extrasmall"><IconButton icon={largeView ? 'CollapseOutline' : 'ExpandOutline'} onClick={toggleLargeView} /></Padding>
 						<IconButton icon="CloseOutline" onClick={removeAllBoards} />
 					</Actions>
 				</BoardHeader>
-				<Divider style={{ height: '2px' }}/>
+				<Divider style={{ height: '2px' }} />
 				<BoardDeatilContainer takeAvailableSpace={true}>
 					{ boards }
 				</BoardDeatilContainer>

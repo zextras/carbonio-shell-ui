@@ -9,7 +9,6 @@
  * *** END LICENSE BLOCK *****
  */
 
-
 import { Database } from '../db/database';
 import { AppPkgDescription } from '../../types';
 

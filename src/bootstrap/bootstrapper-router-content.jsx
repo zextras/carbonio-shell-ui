@@ -8,7 +8,6 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-
 import React, { Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import LoadingView from './loading-view';
@@ -22,7 +21,7 @@ export default function BootstrapperRouterContent({ accounts }) {
 					path="/login"
 					exact
 					render={({ location }) =>
-						accounts.length > 0 ? (
+						(accounts.length > 0 ? (
 							<Redirect
 								to={{
 									pathname: '/',
@@ -31,14 +30,13 @@ export default function BootstrapperRouterContent({ accounts }) {
 							/>
 						) : (
 							<LazyLoginView />
-						)
-					}
+						))}
 				/>
 				<Route
 					path="/logout"
 					exact
 					render={({ location }) =>
-						accounts.length > 0 ? (
+						(accounts.length > 0 ? (
 							<LazyLogoutView />
 						) : (
 							<Redirect
@@ -47,13 +45,12 @@ export default function BootstrapperRouterContent({ accounts }) {
 									state: { from: location }
 								}}
 							/>
-						)
-					}
+						))}
 				/>
 				<Route
 					path="*"
 					render={({ location }) =>
-						accounts.length > 0 ? (
+						(accounts.length > 0 ? (
 							<LazyShellView />
 						) : (
 							<Redirect
@@ -62,8 +59,7 @@ export default function BootstrapperRouterContent({ accounts }) {
 									state: { from: location }
 								}}
 							/>
-						)
-					}
+						))}
 				/>
 			</Switch>
 		</Suspense>

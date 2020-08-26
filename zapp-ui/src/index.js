@@ -25,13 +25,13 @@ export { default as IconCheckbox } from './components/inputs/IconCheckbox';
 export { Input, PasswordInput } from './components/inputs/Input';
 export { default as SearchInput } from './components/inputs/SearchInput';
 export { default as Select } from './components/inputs/Select';
-//export { default as RichTextEditor } from './components/inputs/RichTextEditor';
+export { default as RichTextEditor } from './components/inputs/RichTextEditor';
 
-/** Navigation components */
+/** navigation components */
 export { default as Accordion } from './components/navigation/Accordion';
 export { default as Breadcrumbs } from './components/navigation/Breadcrumbs';
 
-/** Data display components */
+/** display components */
 export { default as Chip } from './components/display/Chip';
 export { default as Dropdown } from './components/display/Dropdown';
 export { default as List } from './components/display/List';

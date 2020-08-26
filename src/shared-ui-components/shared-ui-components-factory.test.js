@@ -8,14 +8,13 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React from 'react';
-import { act, create } from 'react-test-renderer';
-import { BehaviorSubject } from 'rxjs';
-
 jest.mock('../app/app-loader-context-provider');
 jest.mock('./shared-ui-components-context-provider');
 jest.mock('../bootstrap/bootstrapper-context-provider');
 
+import React from 'react';
+import { act, create } from 'react-test-renderer';
+import { BehaviorSubject } from 'rxjs';// eslint-disable-next-line
 import SharedUiComponentsContextProvider from './shared-ui-components-context-provider';
 import SharedUiComponentsFactory from './shared-ui-components-factory';
 import SharedUiComponentsContext from './shared-ui-components-context';
@@ -24,7 +23,6 @@ import BootstrapperContextProvider from '../bootstrap/bootstrapper-context-provi
 import AppLoaderContext from '../app/app-loader-context';
 
 describe('Shared UI Components Factory', () => {
-
 	test('Render a scope with NO Components registered', () => {
 		SharedUiComponentsContextProvider.mockImplementationOnce(
 			({ children }) => (
@@ -38,18 +36,16 @@ describe('Shared UI Components Factory', () => {
 			)
 		);
 
-		AppLoaderContextProvider.mockImplementationOnce(({ children }) => {
-			return (
-				<AppLoaderContext.Provider
-					value={{
-						appsCache: {},
-						appsLoaded: true
-					}}
-				>
-					{ children }
-				</AppLoaderContext.Provider>
-			);
-		});
+		AppLoaderContextProvider.mockImplementationOnce(({ children }) => (
+			<AppLoaderContext.Provider
+				value={{
+					appsCache: {},
+					appsLoaded: true
+				}}
+			>
+				{ children }
+			</AppLoaderContext.Provider>
+		));
 
 		let component;
 		act(() => {
@@ -57,11 +53,11 @@ describe('Shared UI Components Factory', () => {
 				<BootstrapperContextProvider>
 					<AppLoaderContextProvider>
 						<SharedUiComponentsContextProvider>
-							<SharedUiComponentsFactory scope="scope-1"/>
+							<SharedUiComponentsFactory scope="scope-1" />
 						</SharedUiComponentsContextProvider>
 					</AppLoaderContextProvider>
 				</BootstrapperContextProvider>
-			)
+			);
 		});
 		expect(component.toJSON()).toMatchSnapshot();
 	});
@@ -86,22 +82,21 @@ describe('Shared UI Components Factory', () => {
 			)
 		);
 
-		AppLoaderContextProvider.mockImplementationOnce(({ children }) => {
-			return (
-				<AppLoaderContext.Provider
-					value={{
-						appsCache: {
-							'com_example_package': {
-								appContext: new BehaviorSubject()
-							}
-						},
-						appsLoaded: true
-					}}
-				>
-					{ children }
-				</AppLoaderContext.Provider>
-			);
-		});
+		AppLoaderContextProvider.mockImplementationOnce(({ children }) => (
+			<AppLoaderContext.Provider
+				value={{
+					appsCache: {
+						// eslint-disable-next-line @typescript-eslint/camelcase
+						com_example_package: {
+							appContext: new BehaviorSubject()
+						}
+					},
+					appsLoaded: true
+				}}
+			>
+				{ children }
+			</AppLoaderContext.Provider>
+		));
 
 		let component;
 		act(() => {
@@ -109,7 +104,7 @@ describe('Shared UI Components Factory', () => {
 				<BootstrapperContextProvider>
 					<AppLoaderContextProvider>
 						<SharedUiComponentsContextProvider>
-							<SharedUiComponentsFactory scope="scope-1"/>
+							<SharedUiComponentsFactory scope="scope-1" />
 						</SharedUiComponentsContextProvider>
 					</AppLoaderContextProvider>
 				</BootstrapperContextProvider>
@@ -138,22 +133,21 @@ describe('Shared UI Components Factory', () => {
 			)
 		);
 
-		AppLoaderContextProvider.mockImplementationOnce(({ children }) => {
-			return (
-				<AppLoaderContext.Provider
-					value={{
-						appsCache: {
-							'com_example_package': {
-								appContext: new BehaviorSubject()
-							}
-						},
-						appsLoaded: true
-					}}
-				>
-					{ children }
-				</AppLoaderContext.Provider>
-			);
-		});
+		AppLoaderContextProvider.mockImplementationOnce(({ children }) => (
+			<AppLoaderContext.Provider
+				value={{
+					appsCache: {
+						// eslint-disable-next-line @typescript-eslint/camelcase
+						com_example_package: {
+							appContext: new BehaviorSubject()
+						}
+					},
+					appsLoaded: true
+				}}
+			>
+				{ children }
+			</AppLoaderContext.Provider>
+		));
 
 		let component;
 		act(() => {
@@ -163,7 +157,7 @@ describe('Shared UI Components Factory', () => {
 						<SharedUiComponentsContextProvider>
 							<SharedUiComponentsFactory
 								scope="scope-1"
-								customProp1={true}
+								customProp1
 								customProp2="string prop value"
 							/>
 						</SharedUiComponentsContextProvider>
@@ -177,5 +171,4 @@ describe('Shared UI Components Factory', () => {
 			customProp2: 'string prop value'
 		}, {}); // Second parameter exists if the component is a forwarded ref.
 	});
-
 });

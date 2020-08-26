@@ -8,31 +8,30 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React from 'react';
-import { act, create } from 'react-test-renderer';
-import { MemoryRouter } from 'react-router-dom';
-import { BehaviorSubject } from 'rxjs';
-
 jest.mock('@zextras/zapp-ui');
 jest.mock('../db/database');
 jest.mock('../fiberchannel/fiber-channel');
 jest.mock('../bootstrap/bootstrapper-context-provider');
 jest.mock('./app-loader-context-provider');
 
-import AppLink from '../app/app-link';
+import React from 'react';
+import { act, create } from 'react-test-renderer';
+import { MemoryRouter } from 'react-router-dom';
+import { BehaviorSubject } from 'rxjs';
+import AppLink from './app-link';
 import AppContextProvider from './app-context-provider';
 import AppLoaderContext from './app-loader-context';
 import BootstrapperContextProvider from '../bootstrap/bootstrapper-context-provider';
 import AppLoaderContextProvider from './app-loader-context-provider';
 
 describe('App Link', () => {
-
 	beforeEach(() => {
-		AppLoaderContextProvider.mockImplementationOnce(({ children }) => {
-			return <AppLoaderContext.Provider
+		AppLoaderContextProvider.mockImplementationOnce(({ children }) => (
+			<AppLoaderContext.Provider
 				value={{
 					appsCache: {
-						'com_example_package': {
+						// eslint-disable-next-line @typescript-eslint/camelcase
+						com_example_package: {
 							pkg: {},
 							mainMenuItems: new BehaviorSubject([]),
 							routes: new BehaviorSubject([]),
@@ -45,7 +44,7 @@ describe('App Link', () => {
 			>
 				{ children }
 			</AppLoaderContext.Provider>
-		});
+		));
 	});
 
 	test('Link without parameters', () => {
@@ -104,5 +103,4 @@ describe('App Link', () => {
 		const el = component.root.findByType('a');
 		expect(el.props.href).toBe('/com_example_package/destination');
 	});
-
 });

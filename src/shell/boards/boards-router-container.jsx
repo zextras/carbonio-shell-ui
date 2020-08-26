@@ -43,7 +43,7 @@ export default function BoardsRouterContainer() {
 		setChildren(childrn);
 	}, [appsCache, appsLoaded, setChildren]);
 
-	return (
+	return ( // eslint-disable-next-line
 		<_BoardsRouterContainer>
 			<Switch>
 				{ children }

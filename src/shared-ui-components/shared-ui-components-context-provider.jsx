@@ -8,7 +8,9 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+	useCallback, useEffect, useMemo, useState
+} from 'react';
 import { reduce } from 'lodash';
 import { combineLatest } from 'rxjs';
 import { useAppsCache } from '../app/app-loader-context';
@@ -21,11 +23,11 @@ export default function SharedUiComponentsContextProvider({ children }) {
 	const mergeAndSetScopes = useCallback((appScopes, canSet) => {
 		if (!canSet) return;
 		const newScopes = reduce(
-			appScopes,
+			appScopes, // eslint-disable-next-line
 			(r1, v1, k1) => {
 				return reduce(
 					v1,
-					(r2, v2, k2) => {
+					(r2, v2, k2) => { // eslint-disable-next-line
 						if (!r2[k2]) r2[k2] = [];
 						r2[k2].push(...v2);
 						return r2;
@@ -60,9 +62,9 @@ export default function SharedUiComponentsContextProvider({ children }) {
 			sub.unsubscribe();
 		};
 	}, [appsCache, appsLoaded, mergeAndSetScopes]);
-
+	// eslint-disable-next-line
 	const value = useMemo(() => {
-		return {
+		return { // eslint-disable-next-line
 			scopes: scopes
 		};
 	}, [

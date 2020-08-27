@@ -9,15 +9,32 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { lazy } from 'react';
+import React from 'react';
+import { usePromise } from '../shell/hooks';
+import LoadingView from './loading-view';
 
 export default function LazyBootstrapper({ onBeforeBoot }) {
-	const _LazyBootstrapper = lazy(() => {
-		return import(/* webpackChunkName: "bootstrapper" */ './bootstrapper')
-			.then(({ default: bootstrapper }) => bootstrapper(onBeforeBoot));
-	});
-
-	return (
-		<_LazyBootstrapper />
+	const [result, errorMessage, state] = usePromise(
+		() => import(/* webpackChunkName: "bootstrapper" */ './bootstrapper')
+			.then(({ default: bootstrapper }) => bootstrapper(onBeforeBoot)),
+		[onBeforeBoot]
 	);
+
+	switch (state) {
+		case 'rejected': {
+			return (
+				<pre>{ errorMessage }</pre>
+			);
+		}
+		case 'resolved': {
+			const { default: _LazyBootstrapper } = result;
+			return (
+				<_LazyBootstrapper />
+			);
+		}
+		default:
+			return (
+				<LoadingView />
+			);
+	}
 }

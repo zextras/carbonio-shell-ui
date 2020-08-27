@@ -186,6 +186,7 @@ pipeline {
                         }
                     }
                     steps {
+						executeNpmLogin()
                         cmd sh: "nvm use && npm install"
                         cmd sh: "nvm use && npx eslint src/"
                     }

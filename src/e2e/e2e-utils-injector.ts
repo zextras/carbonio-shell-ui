@@ -14,7 +14,7 @@ import { E2EContext } from './e2e-types';
 export default function loadDevelopmentEnv(ctxt: E2EContext): Promise<void> {
 	return import(/* webpackChunkName: "e2e-utils" */ './e2e-utils')
 		.then((
-			{ default: injectE2EUtils, setCliSettings }
+			{ default: injectE2EUtils, setCliSettings, waitForE2ESetupCompleted }
 		) => injectE2EUtils(ctxt)
 			.then(() => {
 				switch (FLAVOR) {
@@ -25,9 +25,16 @@ export default function loadDevelopmentEnv(ctxt: E2EContext): Promise<void> {
 							.then(setCliSettings)
 							.then((cliSettings: cliSettingsNamespace) => {
 								if (!cliSettings.server) {
-									return e2e.setLoginData();
+									return e2e.setLoginData()
+										.then(() => {
+											if (cliSettings.isE2E) return waitForE2ESetupCompleted();
+										})
+										.catch((err) => {
+											console.error(err);
+											throw err;
+										});
 								}
 							});
-			}
-		}));
+				}
+			}));
 }

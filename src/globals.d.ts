@@ -17,9 +17,11 @@ type e2eNamespace = {
 	setLoginData(): Promise<void>;
 	installOnWindow(wnd: Window, ctxt?: any /* E2EContext */): void;
 	loadMockedApi(path: string): Promise<void>;
+	setupCompleted(): void;
 };
 
 type cliSettingsNamespace = {
+	isE2E?: boolean;
 	server?: string;
 	app_package?: {
 		package: string;

@@ -10,7 +10,6 @@
  */
 
 import { filter, reduce } from 'lodash';
-import ShellDb from '../db/shell-db';
 import Account, {  ThemePkgDescription } from '../db/account';
 import { ZimletPkgDescription } from '../network/soap/types';
 import { zimletToAppPkgDescription, zimletToThemePkgDescription } from '../network/soap/utils';
@@ -64,76 +63,35 @@ export default function(ctxt: E2EContext): Promise<void> {
 				});
 				break;
 		}
-		// Mocking response to prevent to call api calls in case of explicit login/logout
-		e2e.addMockedResponse({
-			request: {
-				input: '/service/soap/AuthRequest'
-			},
-			response: {
-				Body: {
-					AuthResponse: {
-						authToken: [{
-							_content: ''
-						}]
-					}
-				}
-			}
-		});
-		e2e.addMockedResponse({
-			request: {
-				input: '/service/soap/GetInfoRequest'
-			},
-			response: {
-				Body: {
-					GetInfoResponse: {
-						id: ACCOUNT_ID,
-						name: ACCOUNT_NAME,
-						zimlets: {
-							zimlet
-						}
-					}
-				}
-			}
-		});
-		e2e.addMockedResponse({
-			request: {
-				input: '/service/soap/EndSessionRequest'
-			},
-			response: {
-				Body: {
-					EndSessionResponse: {}
-				}
-			}
-		});
 		// Injecting the user ass logged in
 		ctxt.db.accounts.clear()
 			.then(() => ctxt.db.accounts.add(
-					new Account(
-						ACCOUNT_ID,
-						ACCOUNT_ID,
-						{
-							t: '',
-							u: '',
-							p: ''
-						},
-						reduce<ZimletPkgDescription, AppPkgDescription[]>(
-							filter<ZimletPkgDescription>(
-								zimlet,
-								(z) => (z.zimlet[0].zapp === 'true' && typeof z.zimlet[0]['zapp-main'] !== 'undefined')
-							),
-							(r, z) => ([...r, zimletToAppPkgDescription(z)]),
-							[]
+				new Account(
+					ACCOUNT_ID,
+					ACCOUNT_ID,
+					{
+						t: '',
+						u: '',
+						p: ''
+					},
+					reduce<ZimletPkgDescription, AppPkgDescription[]>(
+						filter<ZimletPkgDescription>(
+							zimlet,
+							(z) => (z.zimlet[0].zapp === 'true' && typeof z.zimlet[0]['zapp-main'] !== 'undefined')
 						),
-						reduce<ZimletPkgDescription, ThemePkgDescription[]>(
-							filter(
-								zimlet,
-								(z) => (z.zimlet[0].zapp === 'true' && typeof z.zimlet[0]['zapp-theme'] !== 'undefined')
-							),
-							(r, z) => ([...r, zimletToThemePkgDescription(z)]),
-							[]
+						(r, z) => ([...r, zimletToAppPkgDescription(z)]),
+						[]
+					),
+					reduce<ZimletPkgDescription, ThemePkgDescription[]>(
+						filter(
+							zimlet,
+							(z) => (z.zimlet[0].zapp === 'true' && typeof z.zimlet[0]['zapp-theme'] !== 'undefined')
 						),
-					)
-				))
+						(r, z) => ([...r, zimletToThemePkgDescription(z)]),
+						[]
+					),
+				)
+			))
 			.then(() => {
 				resolve();
 			});

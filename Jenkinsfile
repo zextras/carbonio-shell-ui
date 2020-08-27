@@ -1,5 +1,9 @@
 @Library("zextras-library@0.5.0") _
 
+def nodeCmd(String cmd) {
+	sh '. load_nvm && nvm install && nvm use && ' + cmd
+}
+
 def getCommitParentsCount() {
 	return sh(script: '''
 		COMMIT_ID=$(git log -1 --oneline | sed 's/ .*//')
@@ -157,8 +161,8 @@ pipeline {
 					}
 					steps {
 						executeNpmLogin()
-						cmd sh: "nvm use && npm install"
-						cmd sh: "nvm use && npm run type-check"
+						nodeCmd 'npm install'
+						nodeCmd 'npm run type-check'
 					}
 				}
 				stage('Unit Tests') {
@@ -169,8 +173,8 @@ pipeline {
 					}
 					steps {
 						executeNpmLogin()
-						cmd sh: "nvm use && npm install"
-						cmd sh: "nvm use && npm run test"
+						nodeCmd 'npm install'
+						nodeCmd 'npm run test'
 					}
 					post {
 						always {
@@ -187,8 +191,8 @@ pipeline {
 					}
 					steps {
 						executeNpmLogin()
-						cmd sh: "nvm use && npm install"
-						cmd sh: "nvm use && npx eslint src/"
+						nodeCmd 'npm install'
+						nodeCmd 'npx eslint src/'
 					}
 				}
 			}
@@ -215,8 +219,8 @@ pipeline {
 					}
 					steps {
 						executeNpmLogin()
-						cmd sh: "nvm use && npm install"
-						cmd sh: "nvm use && NODE_ENV='production' npm run build:zimlet"
+						nodeCmd 'npm install'
+						nodeCmd 'NODE_ENV="production" npm run build:zimlet'
 						stash includes: 'pkg/com_zextras_zapp_shell.zip', name: 'zimlet_package_unsigned'
 					}
 				}
@@ -235,8 +239,8 @@ pipeline {
 					}
 					steps {
 						script {
-							cmd sh: "nvm use && cd docs/website && npm install"
-							cmd sh: "nvm use && cd docs/website && BRANCH_NAME=${BRANCH_NAME} npm run build"
+							nodeCmd 'cd docs/website && npm install'
+							nodeCmd 'cd docs/website && BRANCH_NAME=${BRANCH_NAME} npm run build'
 							stash includes: 'docs/website/build/com_zextras_zapp_shell/', name: 'doc'
 						}
 					}
@@ -314,8 +318,8 @@ pipeline {
 					steps {
 						script {
 							executeNpmLogin()
-							cmd sh: "nvm use && npm install"
-							cmd sh: "nvm use && NODE_ENV='production' npm publish"
+							nodeCmd 'npm install'
+							nodeCmd 'NODE_ENV="production" npm publish'
 						}
 					}
 				}
@@ -335,8 +339,8 @@ pipeline {
 					steps {
 						script {
 							executeNpmLogin()
-							cmd sh: "nvm use && npm install"
-							cmd sh: "nvm use && NODE_ENV='production' npm publish --tag beta"
+							nodeCmd 'npm install'
+							nodeCmd 'NODE_ENV="production" npm publish --tag beta'
 						}
 					}
 				}

@@ -180,17 +180,17 @@ pipeline {
 					}
 				}
 				stage('Linting') {
-                    agent {
-                        node {
-                            label 'nodejs-agent-v2'
-                        }
-                    }
-                    steps {
+					agent {
+						node {
+							label 'nodejs-agent-v2'
+						}
+					}
+					steps {
 						executeNpmLogin()
-                        cmd sh: "nvm use && npm install"
-                        cmd sh: "nvm use && npx eslint src/"
-                    }
-                }
+						cmd sh: "nvm use && npm install"
+						cmd sh: "nvm use && npx eslint src/"
+					}
+				}
 			}
 		}
 

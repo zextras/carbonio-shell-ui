@@ -29,6 +29,7 @@ export { useAppPkg, useAppContext, useFiberChannel } from '../app/app-context';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 export { useTranslation } from '../i18n/hooks';
+export { default as usePromise } from 'react-use-promise';
 
 export function useAddBoardCallback(path: string): () => void {
 	const { addBoard } = useContext(ShellContext);

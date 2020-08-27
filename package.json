@@ -1,6 +1,6 @@
 {
   "name": "@zextras/zapp-shell",
-  "version": "0.0.63",
+  "version": "0.0.64",
   "description": "A web application framework",
   "types": "./types/index.d.ts",
   "scripts": {

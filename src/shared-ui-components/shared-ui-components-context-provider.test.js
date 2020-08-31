@@ -8,6 +8,8 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
+jest.mock('../app/app-loader-context-provider');
+
 import React, { useContext } from 'react';
 import { BehaviorSubject } from 'rxjs';
 import { act, create } from 'react-test-renderer';
@@ -15,8 +17,6 @@ import AppLoaderContextProvider from '../app/app-loader-context-provider';
 import AppLoaderContext from '../app/app-loader-context';
 import SharedUiComponentsContextProvider from './shared-ui-components-context-provider';
 import SharedUiComponentsContext from './shared-ui-components-context';
-
-jest.mock('../app/app-loader-context-provider');
 
 describe('Shared UI Components Context Provider', () => {
 	test('Merge all App Scopes', () => {

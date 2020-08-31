@@ -8,6 +8,12 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
+jest.mock('@zextras/zapp-ui');
+jest.mock('../db/database');
+jest.mock('../fiberchannel/fiber-channel');
+jest.mock('../bootstrap/bootstrapper-context-provider');
+jest.mock('./app-loader-context-provider');
+
 import React from 'react';
 import { act, create } from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
@@ -17,12 +23,6 @@ import AppContextProvider from './app-context-provider';
 import AppLoaderContext from './app-loader-context';
 import BootstrapperContextProvider from '../bootstrap/bootstrapper-context-provider';
 import AppLoaderContextProvider from './app-loader-context-provider';
-
-jest.mock('@zextras/zapp-ui');
-jest.mock('../db/database');
-jest.mock('../fiberchannel/fiber-channel');
-jest.mock('../bootstrap/bootstrapper-context-provider');
-jest.mock('./app-loader-context-provider');
 
 describe('App Link', () => {
 	beforeEach(() => {

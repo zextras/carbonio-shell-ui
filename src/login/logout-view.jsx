@@ -24,7 +24,7 @@ export default function LogoutView() {
 		ev.preventDefault();
 		db.accounts.clear()
 			.then(() => network.doLogout())
-			.then( () => {
+			.then(() => {
 				history.push({
 					pathname: '/'
 				});

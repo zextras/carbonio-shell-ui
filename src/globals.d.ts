@@ -9,26 +9,19 @@
  * *** END LICENSE BLOCK *****
  */
 
-type MockedResponse = {
-	request: {
-		input: RequestInfo;
-		init?: RequestInit;
-	};
-	response: any;
-};
-
 declare const PACKAGE_VERSION: string;
 declare const PACKAGE_NAME: string;
 declare const FLAVOR: 'APP'|'E2E'|'NPM';
 
 type e2eNamespace = {
 	setLoginData(): Promise<void>;
-	addMockedResponse(response: MockedResponse): void;
-	throwErrorIfRequestNotMocked(val: boolean): void;
 	installOnWindow(wnd: Window, ctxt?: any /* E2EContext */): void;
+	loadMockedApi(path: string): Promise<void>;
+	setupCompleted(): void;
 };
 
 type cliSettingsNamespace = {
+	isE2E?: boolean;
 	server?: string;
 	app_package?: {
 		package: string;

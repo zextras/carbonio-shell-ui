@@ -30,7 +30,8 @@ export default function AppLink({ to, ...rest }) {
 		return (
 			<_Link to={{ pathname: `/${pkg.package}${urlTo}`, search: urlSearch }} {...rest} />
 		);
-	} else {
+	}
+	else {
 		return (
 			<_Link to={{ ...to, pathname: `/${pkg.package}${to.pathname}` }} {...rest} />
 		);

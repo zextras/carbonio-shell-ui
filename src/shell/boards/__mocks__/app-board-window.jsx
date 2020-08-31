@@ -8,7 +8,7 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-
+// eslint-disable-next-line
 export default function() {
 	return 'AppBoardWindow';
 }

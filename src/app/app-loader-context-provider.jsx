@@ -31,10 +31,10 @@ export default function AppLoaderContextProvider({ children }) {
 			.then((cache) => {
 				if (!canSet) return;
 				setAppsCache([cache, true]);
-			});
+			}); // eslint-disable-next-line
 		return () => {
 			canSet = false;
-		}
+		};
 	}, [accounts, accountLoaded, fiberChannelFactory, setAppsCache]);
 
 	const value = useMemo(() => ({

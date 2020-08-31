@@ -40,30 +40,29 @@ export default function bootstrapper(onBeforeBoot) {
 			if (onBeforeBoot) {
 				return onBeforeBoot(container)
 					.then(() => container)
-					.catch(() => container);
+					.catch((err) => {
+						throw err;
+					});
 			}
-			else {
-				return container;
-			}
+			return container;
 		})
 		.then(({
 			db,
 			shellNetworkService,
 			fiberChannelFactory,
 			i18nFactory
-		}) => {
-			return {
-				'default': () => (
-					<BootstrapperContextProvider
-						shellDb={db}
-						shellNetworkService={shellNetworkService}
-						fiberChannelFactory={fiberChannelFactory}
-						i18nFactory={i18nFactory}
-					>
-						<I18nProvider i18n={i18nFactory.getShellI18n()}>
-							<BootstrapperRouter />
-						</I18nProvider>
-					</BootstrapperContextProvider>)
-			};
-		});
+		}) => ({
+			'default': () => (
+				<BootstrapperContextProvider
+					shellDb={db}
+					shellNetworkService={shellNetworkService}
+					fiberChannelFactory={fiberChannelFactory}
+					i18nFactory={i18nFactory}
+				>
+					<I18nProvider i18n={i18nFactory.getShellI18n()}>
+						<BootstrapperRouter />
+					</I18nProvider>
+				</BootstrapperContextProvider>)
+			})
+		);
 }

@@ -44,7 +44,6 @@ module.exports = {
 		 */
 		"@typescript-eslint/prefer-interface": "off", // also want to use "type"
 		//"@typescript-eslint/explicit-function-return-type": "off", // annoying to force return type
-
 		/**
 		 * @description rules of eslint-plugin-react
 		 */
@@ -71,6 +70,7 @@ module.exports = {
 		'react/jsx-indent-props': ['error', 'tab'],
 		'@typescript-eslint/interface-name-prefix': 'off',
 		'implicit-arrow-linebreak': 'off',
+		'import/first':'off',
 		'import/no-extraneous-dependencies': 'warn',
 		'@typescript-eslint/no-unused-vars': 'warn',
 		'import/no-unresolved': [2, { ignore: ['^@zextras/zapp-shell/(context|fc|idb|network|router|service|sync)'] }],

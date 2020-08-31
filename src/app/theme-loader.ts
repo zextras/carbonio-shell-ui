@@ -14,7 +14,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import * as ZappUI from "@zextras/zapp-ui";
+
+import * as ZappUI from '@zextras/zapp-ui';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
@@ -48,7 +49,6 @@ type MainSubMenuItemData = {
 	children?: Array<MainSubMenuItemData>;
 };
 
-
 const _iframes: { [pkgName: string]: HTMLIFrameElement } = {};
 // const _revertableActions: { [pkgName: string]: RevertableActionCollection } = {};
 
@@ -70,15 +70,15 @@ function loadThemeModule(
 				'styled-components': StyledComponents,
 				'@zextras/zapp-ui': ZappUI
 			};
-			(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve;
+			(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve; // eslint-disable-next-line
 			(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (extModule: AppModuleFunction): void => {
 				// Errors are not collected here because the HMR works only on development mode.
 				console.log(`HMR ${ path }`, extModule);
 				extModule.call(undefined);
-			};
+			}; // eslint-disable-next-line
 			switch (FLAVOR) {
 				case 'NPM':
-				case 'E2E':
+				case 'E2E': // eslint-disable-next-line
 					e2e.installOnWindow(iframe.contentWindow);
 			}
 			script.type = 'text/javascript';
@@ -86,8 +86,7 @@ function loadThemeModule(
 			script.addEventListener('error', reject);
 			iframe.contentDocument.body.appendChild(script);
 			_iframes[appPkg.package] = iframe;
-		} else
-			reject(new Error('Cannot create extension loader'));
+		} else reject(new Error('Cannot create extension loader'));
 	});
 }
 
@@ -108,7 +107,7 @@ function loadTheme(
 				}
 			});
 			return false;
-		})
+		});
 }
 
 export function loadThemes(

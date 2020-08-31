@@ -8,19 +8,19 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
+jest.mock('../app/app-loader-context-provider');
+jest.mock('./shared-ui-components-context-provider');
+jest.mock('../bootstrap/bootstrapper-context-provider');
+
 import React from 'react';
 import { act, create } from 'react-test-renderer';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';// eslint-disable-next-line
 import SharedUiComponentsContextProvider from './shared-ui-components-context-provider';
 import SharedUiComponentsFactory from './shared-ui-components-factory';
 import SharedUiComponentsContext from './shared-ui-components-context';
 import AppLoaderContextProvider from '../app/app-loader-context-provider';
 import BootstrapperContextProvider from '../bootstrap/bootstrapper-context-provider';
 import AppLoaderContext from '../app/app-loader-context';
-
-jest.mock('../app/app-loader-context-provider');
-jest.mock('./shared-ui-components-context-provider');
-jest.mock('../bootstrap/bootstrapper-context-provider');
 
 describe('Shared UI Components Factory', () => {
 	test('Render a scope with NO Components registered', () => {

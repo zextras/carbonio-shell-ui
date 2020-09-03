@@ -17,16 +17,75 @@ import { zimletToAppPkgDescription, zimletToThemePkgDescription } from './soap/u
 import { AppPkgDescription } from '../../types';
 
 export default class ShellNetworkService {
+	private _fetch = fetch.bind(window);
+	private _account: Account;
 
 	// eslint-disable-next-line no-useless-constructor
-	constructor(private _shellDb: ShellDb) {}
+	constructor(private _shellDb: ShellDb) {
+		_shellDb.observe(() => _shellDb.accounts.toCollection().limit(1).toArray())
+			.subscribe((a) => {
+				this._account = a;
+			});
+	}
 
-	public getAccountInfo(): Promise<GetInfoResponse> {
+	public getAppFetch(appPackageDescription: AppPkgDescription): (input: RequestInfo, init?: RequestInit) => Promise<Response> {
+		return (input: RequestInfo, init?: RequestInit) => {
+			return this._fetch(
+				input,
+				init
+			);
+		};
+	}
+
+	public getAppSoapFetch(appPackageDescription: AppPkgDescription): <REQ extends {}, RESP extends {}>(api: string, body: {[apiRequest: string]: REQ}) => Promise<RESP> {
+		const _fetch = this.getAppFetch(appPackageDescription);
+		return (api, body) => {
+			const request: { Header?: any; Body: any } = {
+				Body: {
+					[`${api}Request`]: body
+				}
+			};
+			if (this._account) {
+				request.Header = {
+					_jsns: 'urn:zimbra',
+					context: {
+						csrfToken: this._account.csrfToken
+					}
+				};
+			}
+			return _fetch(
+				`/service/soap/${api}Request`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(request)
+				}
+			)
+				.then((r) => r.json())
+				.then((resp) => {
+					if (resp.Body.Fault) throw new Error(resp.Body.Fault.Reason.Text);
+					return resp.Body[`${api}Response`];
+				});
+		};
+	}
+
+	private _getAccountInfo(csrfToken: string): Promise<GetInfoResponse> {
 		return fetch(
 			'/service/soap/GetInfoRequest',
 			{
 				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
 				body: JSON.stringify({
+					Header: {
+						_jsns: 'urn:zimbra',
+						context: {
+							csrfToken
+						}
+					},
 					Body: {
 						GetInfoRequest: {
 							_jsns: 'urn:zimbraAccount'
@@ -48,10 +107,15 @@ export default class ShellNetworkService {
 			'/service/soap/AuthRequest',
 			{
 				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
 				body: JSON.stringify({
 					Body: {
 						AuthRequest: {
 							_jsns: 'urn:zimbraAccount',
+							csrfTokenSecured: '1',
+							// generateDeviceId: '1',
 							account: {
 								by: 'name',
 								_content: username
@@ -74,10 +138,11 @@ export default class ShellNetworkService {
 			})
 			.then((authResp) => authResp.Body.AuthResponse)// eslint-disable-next-line
 			.then((authResp) => {
-				return this.getAccountInfo()
+				return this._getAccountInfo(authResp.csrfToken._content)
 					.then((getInfoResp) => (new Account(
 						getInfoResp.id,
 						getInfoResp.name,
+						authResp.csrfToken._content,
 						{
 							t: authResp.authToken[0]._content,
 							u: username,
@@ -104,10 +169,14 @@ export default class ShellNetworkService {
 	}
 
 	public doLogout(): Promise<void> {
+		// TODO: Add the csrf token
 		return fetch(
 			'/service/soap/EndSessionRequest',
 			{
 				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
 				body: JSON.stringify({
 					Body: {
 						EndSessionRequest: {
@@ -131,6 +200,9 @@ export default class ShellNetworkService {
 			'/service/soap/AuthRequest',
 			{
 				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
 				body: JSON.stringify({
 					Body: {
 						AuthRequest: {
@@ -141,6 +213,7 @@ export default class ShellNetworkService {
 							},
 							authToken: {
 								verifyAccount: '1',
+								csrfTokenSecured: '1',
 								_content: sessionData.authToken
 							},
 							prefs: [

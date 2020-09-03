@@ -28,7 +28,7 @@ export default class ShellNetworkService {
 			});
 	}
 
-	public getAppFetch(appPackageDescription: AppPkgDescription): (input: RequestInfo, init?: RequestInit) => Promise<Response> {
+	private _getAppFetch(appPackageDescription: AppPkgDescription): (input: RequestInfo, init?: RequestInit) => Promise<Response> {
 		return (input: RequestInfo, init?: RequestInit) => {
 			return this._fetch(
 				input,
@@ -38,7 +38,7 @@ export default class ShellNetworkService {
 	}
 
 	public getAppSoapFetch(appPackageDescription: AppPkgDescription): <REQ extends {}, RESP extends {}>(api: string, body: {[apiRequest: string]: REQ}) => Promise<RESP> {
-		const _fetch = this.getAppFetch(appPackageDescription);
+		const _fetch = this._getAppFetch(appPackageDescription);
 		return (api, body) => {
 			const request: { Header?: any; Body: any } = {
 				Body: {

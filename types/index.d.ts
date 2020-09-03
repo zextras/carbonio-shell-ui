@@ -119,9 +119,8 @@ export const hooks: {
 	useBehaviorSubject<T>(observable: BehaviorSubject<T>): T;
 	useAppContext<T>(): T;
 	useObserveDb<T>(query: () => Promise<T>, db: Database): [T, boolean];
-	useAppPkg(): () => AppPkgDescription;
+	useAppPkg(): AppPkgDescription;
 };
-
 
 export const ui: any;
 
@@ -129,3 +128,4 @@ export const db: {
 	Database: IDatabaseConstructor;
 };
 
+export function soapFetch<REQ, RESP>(api: string, body: {[apiRequest: string]: REQ}): Promise<RESP>;

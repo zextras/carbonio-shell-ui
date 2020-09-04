@@ -18,7 +18,8 @@ import { AppPkgDescription, SoapFetch } from '../../types';
 
 export default class ShellNetworkService {
 	private _fetch = fetch.bind(window);
-	private _account: Account;
+
+	private _account?: Account;
 
 	// eslint-disable-next-line no-useless-constructor
 	constructor(private _shellDb: ShellDb) {
@@ -30,12 +31,10 @@ export default class ShellNetworkService {
 	}
 
 	private _getAppFetch(appPackageDescription: AppPkgDescription): (input: RequestInfo, init?: RequestInit) => Promise<Response> {
-		return (input: RequestInfo, init?: RequestInit) => {
-			return this._fetch(
-				input,
-				init
-			);
-		};
+		return (input: RequestInfo, init?: RequestInit) => this._fetch(
+			input,
+			init
+		);
 	}
 
 	public getAppSoapFetch(appPackageDescription: AppPkgDescription): SoapFetch {

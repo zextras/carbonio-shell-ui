@@ -1,4 +1,3 @@
-
 /*
  * *** BEGIN LICENSE BLOCK *****
  * Copyright (C) 2011-2020 ZeXtras
@@ -128,4 +127,21 @@ export const db: {
 	Database: IDatabaseConstructor;
 };
 
-export function soapFetch<REQ, RESP>(api: string, body: {[apiRequest: string]: REQ}): Promise<RESP>;
+export type SoapRequest = {
+	_jsns: 'urn:zimbra'
+		| 'urn:zimbraAccount'
+		| 'urn:zimbraAdmin'
+		| 'urn:zimbraAdminExt'
+		| 'urn:zimbraMail'
+		| 'urn:zimbraRepl'
+		| 'urn:zimbraSync'
+		| 'urn:zimbraVoice'
+	;
+};
+
+export type SoapFetch =
+	<REQ, RESP>(api: string, body: REQ & SoapRequest) => Promise<RESP>;
+
+export const network: {
+	soapFetch: SoapFetch;
+};

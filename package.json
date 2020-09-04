@@ -17,7 +17,7 @@
     "build:types": "tsc --emitDeclarationOnly && tsc src/extension/shimmed/*.ts --outDir lib/",
     "build:zimlet": "npm run build:clean && npm run build && mkdir -p pkg && cd build && zip -r ../pkg/com_zextras_zapp_shell.zip .",
     "watch:docs": "cd docs/website/ && npm start || npm install && npm start",
-    "deploy": "ZX_SHELL_FLAVOR=NPM npm run prepublishOnly && rm -rf $PKG_PATH/node_modules/@zextras/zapp-shell/build/ && cp -r build/ $PKG_PATH/node_modules/@zextras/zapp-shell/ && cp -r types/ $PKG_PATH/node_modules/@zextras/zapp-shell/"
+    "deploy": "ZX_SHELL_FLAVOR=NPM npm run prepublishOnly && rm -rf $PKG_PATH/node_modules/@zextras/zapp-shell/build/ && cp -r build/ $PKG_PATH/node_modules/@zextras/zapp-shell/build/ && cp -r types/ $PKG_PATH/node_modules/@zextras/zapp-shell/types/"
   },
   "keywords": [
     "zapp",

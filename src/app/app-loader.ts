@@ -43,7 +43,7 @@ import validateSharedUiComponent from '../shared-ui-components/shared-ui-compone
 import ShellDb from '../db/shell-db';
 import ShellNetworkService from '../network/shell-network-service';
 import {
-	AppCreateOption, AppPkgDescription, AppRouteDescription, FCSink, MainMenuItemData
+	AppCreateOption, AppPkgDescription, AppRouteDescription, FCSink, MainMenuItemData, SoapFetch
 } from '../../types';
 
 type AppModuleFunction = () => void;
@@ -72,7 +72,7 @@ type SharedLibrariesAppsMap = {
 			Database: any;
 		};
 		network: {
-			soapFetch: <REQ, RESP>(api: string, body: {[apiRequest: string]: REQ}) => Promise<RESP>;
+			soapFetch: SoapFetch;
 		};
 		setMainMenuItems: (items: MainMenuItemData[]) => void;
 		setRoutes: (routes: AppRouteDescription[]) => void;
@@ -127,7 +127,7 @@ function loadAppModule(
 ): Promise<AppModuleFunction> {
 	return new Promise((resolve, reject) => {
 		try {
-			const path = `${ appPkg.resourceUrl }/${ appPkg.entryPoint }`;
+			const path = `${appPkg.resourceUrl}/${appPkg.entryPoint}`;
 			const iframe: HTMLIFrameElement = document.createElement('iframe');
 			iframe.style.display = 'none';
 			// iframe.setAttribute('src', path);

@@ -14,7 +14,7 @@ import Account, { ThemePkgDescription } from '../db/account';
 import ShellDb from '../db/shell-db';
 import { GetInfoResponse, ZimletPkgDescription } from './soap/types';
 import { zimletToAppPkgDescription, zimletToThemePkgDescription } from './soap/utils';
-import { AppPkgDescription } from '../../types';
+import { AppPkgDescription, SoapFetch } from '../../types';
 
 export default class ShellNetworkService {
 	private _fetch = fetch.bind(window);
@@ -22,6 +22,7 @@ export default class ShellNetworkService {
 
 	// eslint-disable-next-line no-useless-constructor
 	constructor(private _shellDb: ShellDb) {
+		// TODO: Validate the session
 		_shellDb.observe(() => _shellDb.accounts.toCollection().limit(1).toArray())
 			.subscribe((a) => {
 				this._account = a;
@@ -37,7 +38,7 @@ export default class ShellNetworkService {
 		};
 	}
 
-	public getAppSoapFetch(appPackageDescription: AppPkgDescription): <REQ extends {}, RESP extends {}>(api: string, body: {[apiRequest: string]: REQ}) => Promise<RESP> {
+	public getAppSoapFetch(appPackageDescription: AppPkgDescription): SoapFetch {
 		const _fetch = this._getAppFetch(appPackageDescription);
 		return (api, body) => {
 			const request: { Header?: any; Body: any } = {
@@ -72,7 +73,7 @@ export default class ShellNetworkService {
 	}
 
 	private _getAccountInfo(csrfToken: string): Promise<GetInfoResponse> {
-		return fetch(
+		return this._fetch(
 			'/service/soap/GetInfoRequest',
 			{
 				method: 'POST',
@@ -103,7 +104,7 @@ export default class ShellNetworkService {
 	}
 
 	public doLogin(username: string, password: string): Promise<Account> {
-		return fetch(
+		return this._fetch(
 			'/service/soap/AuthRequest',
 			{
 				method: 'POST',
@@ -170,7 +171,7 @@ export default class ShellNetworkService {
 
 	public doLogout(): Promise<void> {
 		// TODO: Add the csrf token
-		return fetch(
+		return this._fetch(
 			'/service/soap/EndSessionRequest',
 			{
 				method: 'POST',

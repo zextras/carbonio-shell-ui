@@ -5,13 +5,14 @@ import Text from './Text';
 import Icon from './Icon';
 import Padding from '../layout/Padding';
 
-const LoadMore = React.forwardRef(function({ label }, ref) {
+const LoadMore = React.forwardRef(function({ label, ...rest }, ref) {
 	return (
 		<Container
 			ref={ref}
 			orientation="horizontal"
 			width="fill"
 			height="40px"
+			{...rest}
 		>
 			<Icon icon="Sync"/>
 			{label && <Padding left="small"><Text style={{userSelect: 'none'}}>{label}</Text></Padding>}

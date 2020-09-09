@@ -63,7 +63,7 @@ const StyledTable = styled.table`
 	}
 `;
 
-const DefaultHeaderFactory = ({ headers, onChange, allSelected, selectionMode }) => {
+const DefaultHeaderFactory = ({ headers, onChange, allSelected, selectionMode, multiSelect }) => {
 	const [showCkb, setShowCkb] = useState(false);
 	const LabelFactory = useCallback(({ selected, label, open, focus }) => {
 		return (
@@ -91,7 +91,7 @@ const DefaultHeaderFactory = ({ headers, onChange, allSelected, selectionMode })
 			onFocus={() => setShowCkb(true)}
 			onBlur={() => setShowCkb(false)}
 		>
-			<th width="30px" height="30px" align="center">{ (showCkb || selectionMode || allSelected) && <Checkbox iconSize="medium" value={allSelected} onClick={onChange} iconColor={selectionMode ? 'primary' : 'text'} /> }</th>
+			<th width="30px" height="30px" align="center">{ multiSelect && (showCkb || selectionMode || allSelected) && <Checkbox iconSize="medium" value={allSelected} onClick={onChange} iconColor={selectionMode ? 'primary' : 'text'} /> }</th>
 			{
 				Object.keys(headers).map((column) => {
 					const hasItems = !isEmpty(headers[column].items);
@@ -115,7 +115,7 @@ const DefaultHeaderFactory = ({ headers, onChange, allSelected, selectionMode })
 		</tr>
 	);
 };
-const DefaultRowFactory = ({ index, row, onChange, selected, selectionMode } ) => {
+const DefaultRowFactory = ({ index, row, onChange, selected, selectionMode, multiSelect } ) => {
 	const ckbRef = useRef(undefined);
 	const [showCkb, setShowCkb] = useState(selected || selectionMode);
 	const _onChange = () => onChange(row.id);
@@ -136,8 +136,8 @@ const DefaultRowFactory = ({ index, row, onChange, selected, selectionMode } ) =
 			clickable={row.clickable}
 		>
 			<td width="30px" height="30px" align="center">
-				{ !(showCkb || selected || selectionMode) && <Text>{ index }</Text> }
-				{ (showCkb || selected || selectionMode) && <Checkbox ref={ckbRef} iconSize="medium" value={selected} onClick={_onChange} iconColor={selectionMode ? 'primary' : 'text'} /> }
+				{ !(showCkb || selected || multiSelect && selectionMode) && <Text>{ index }</Text> }
+				{ (showCkb || selected || multiSelect && selectionMode) && <Checkbox ref={ckbRef} iconSize="medium" value={selected} onClick={_onChange} iconColor={multiSelect && selectionMode || selected ? 'primary' : 'text'} /> }
 			</td>
 			{ row.columns.map((column, index) => <td key={index}>{ typeof column === 'string' ? <Text>{ column }</Text> : column }</td>) }
 		</TableRow>
@@ -147,6 +147,9 @@ const DefaultRowFactory = ({ index, row, onChange, selected, selectionMode } ) =
 function selectedReducer(state, action) {
 	switch (action.type) {
 		case 'toggle': {
+			if (!action.multiSelect) {
+				return state.includes(action.id) ? [] : [action.id];
+			}
 			return state.includes(action.id) ? state.filter(id => id !== action.id) : [...state, action.id];
 		}
 		case 'addAll': {
@@ -167,16 +170,25 @@ const Table = React.forwardRef(function({
 	HeaderFactory,
 	onSelectionChange,
 	defaultSelection,
-	selectedRows
+	selectedRows,
+	multiSelect,
+	...rest
 }, ref) {
 	const [selected, dispatchSelected] = useReducer(selectedReducer, defaultSelection || selectedRows || []);
 
 	const controlledMode = useMemo(() => typeof selectedRows !== 'undefined', []);
 
 	const controlledOnToggle = useCallback((id) => {
-		onSelectionChange && onSelectionChange(selected.includes(id) ? selected.filter(_id => _id !== id) : [...selected, id]);
-	}, [onSelectionChange, selected]);
-	const uncontrolledOnToggle = useCallback((id) => dispatchSelected({type: 'toggle', id: id}), []);
+		if (onSelectionChange) {
+			if (multiSelect) {
+				onSelectionChange(selected.includes(id) ? selected.filter(_id => _id !== id) : [...selected, id]);
+			}
+			else {
+				onSelectionChange(selected.includes(id) ? [] : [id]);
+			}
+		}
+	}, [onSelectionChange, selected, multiSelect]);
+	const uncontrolledOnToggle = useCallback((id) => dispatchSelected({type: 'toggle', id: id, multiSelect: multiSelect}), [multiSelect]);
 
 	const controlledOnToggleAll = useCallback(() => {
 		selected.length === rows.length ?
@@ -205,7 +217,7 @@ const Table = React.forwardRef(function({
 	}, [controlledMode, selectedRows]);
 
 	return (
-		<TableContainer>
+		<TableContainer {...rest}>
 			<StyledTable ref={ref}>
 				<thead>
 					<HeaderFactory
@@ -213,6 +225,7 @@ const Table = React.forwardRef(function({
 						onChange={controlledMode ? controlledOnToggleAll : uncontrolledOnToggleAll}
 						allSelected={selected.length === rows.length}
 						selectionMode={selected.length > 0}
+						multiSelect={multiSelect}
 					/>
 				</thead>
 				<tbody>
@@ -224,6 +237,7 @@ const Table = React.forwardRef(function({
 							onChange={controlledMode ? controlledOnToggle : uncontrolledOnToggle}
 							selected={selected.includes(row.id)}
 							selectionMode={selected.length > 0}
+							multiSelect={multiSelect}
 						/>
 					))}
 				</tbody>
@@ -268,12 +282,15 @@ Table.propTypes = {
 	defaultSelection: PropTypes.arrayOf(PropTypes.string),
 	/** Array of the selected rows (Array of rows ids). To use only if you want the table to be in controlled mode. */
 	selectedRows: PropTypes.arrayOf(PropTypes.string),
+	/** Whether or not multiple rows are selectable. */
+	multiSelect: PropTypes.bool,
 };
 Table.defaultProps = {
 	rows: [],
 	headers: [],
 	RowFactory: DefaultRowFactory,
-	HeaderFactory: DefaultHeaderFactory
+	HeaderFactory: DefaultHeaderFactory,
+	multiSelect: true
 };
 
 export default Table;

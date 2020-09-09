@@ -31,7 +31,7 @@ import { Editor as _TinyMCE } from '@tinymce/tinymce-react';
 
 // Toolbar: alignleft aligncenter alignright alignjustify |
 
-function RichTextEditor({ onEditorChange, inline, initialValue }) {
+function RichTextEditor({ onEditorChange, inline, initialValue, ...rest }) {
   const [ content, setContent ] = useState(initialValue);
   const _onEditorChange = useCallback((content, editor) => {
     setContent(content);
@@ -84,6 +84,7 @@ function RichTextEditor({ onEditorChange, inline, initialValue }) {
         contextmenu: inline ? '' : '',
       }}
       onEditorChange={_onEditorChange}
+      {...rest}
     />
   );
 }

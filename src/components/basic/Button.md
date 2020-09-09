@@ -133,3 +133,38 @@ const click = () => console.log('click!');
     </Container>
 </Container>
 ```
+
+### Loading
+
+```jsx
+import { Container, Text } from '@zextras/zapp-ui';
+
+const click = () => console.log('click!');
+
+<Container orientation="horizontal" mainAlignment="space-around" height={400} width="fill">
+    <Container orientation="vertical" mainAlignment="space-around" background="gray5" height={400} width="30%">
+        <Button label="Button" color="primary" onClick={click} loading />
+        <Button label="Button" color="secondary" onClick={click} loading />
+        <Button label="Button" color="warning" onClick={click} loading />
+        <Button label="Button" color="error" onClick={click} loading />
+        <Button label="Button" color="success" onClick={click} loading />
+        <Button label="Button" color="info" onClick={click} loading disabled />
+    </Container>
+    <Container orientation="vertical" mainAlignment="space-around" background="gray5" height={400} width="30%">
+        <Button type="outlined" label="Button" color="primary" onClick={click} loading />
+        <Button type="outlined" label="Button" color="secondary" onClick={click} loading />
+        <Button type="outlined" label="Button" color="warning" onClick={click} loading />
+        <Button type="outlined" label="Button" color="error" onClick={click} loading />
+        <Button type="outlined" label="Button" color="success" onClick={click} loading />
+        <Button type="outlined" label="Button" color="info" onClick={click} loading disabled />
+    </Container>
+    <Container orientation="vertical" mainAlignment="space-around" background="gray5" height={400} width="30%">
+        <Button type="ghost" label="Button" color="primary" onClick={click} loading />
+        <Button type="ghost" label="Button" color="secondary" onClick={click} loading />
+        <Button type="ghost" label="Button" color="warning" onClick={click} loading />
+        <Button type="ghost" label="Button" color="error" onClick={click} loading />
+        <Button type="ghost" label="Button" color="success" onClick={click} loading />
+        <Button type="ghost" label="Button" color="info" onClick={click} loading disabled />
+    </Container>
+</Container>
+```

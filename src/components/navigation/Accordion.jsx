@@ -23,7 +23,18 @@ const AccordionContainerEl = styled(Container)`
 	${({theme}) => pseudoClasses(theme, 'gray5')};
 `;
 
-const Accordion = React.forwardRef(function({ active, label, items, icon, divider, level, click, badgeType, badgeCounter }, ref) {
+const Accordion = React.forwardRef(function({
+	active,
+	label,
+	items,
+	icon,
+	divider,
+	level,
+	click,
+	badgeType,
+	badgeCounter,
+	...rest
+}, ref) {
 	const [open, setOpen] = useState(false);
 	const innerRef = useRef(undefined);
 	const accordionRef = useCombinedRefs(ref, innerRef);
@@ -46,6 +57,7 @@ const Accordion = React.forwardRef(function({ active, label, items, icon, divide
 			width="fill"
 			height="fit"
 			background="gray5"
+			{...rest}
 		>
 			<AccordionContainerEl
 				ref={accordionRef}

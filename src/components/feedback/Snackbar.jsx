@@ -46,7 +46,8 @@ const Snackbar = React.forwardRef(function({
 	onClose,
 	zIndex,
 	autoHideTimeout,
-	target
+	target,
+	...rest
 }, ref) {
 	const screenMode = useScreenMode(target);
 
@@ -72,6 +73,7 @@ const Snackbar = React.forwardRef(function({
 				height="auto"
 				width="auto"
 				zIndex={zIndex}
+				{...rest}
 			>
 				<Row
 					mainAlignment="flex-start"

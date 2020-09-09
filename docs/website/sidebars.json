@@ -3,6 +3,7 @@
     "Shared": [
       "shared/zapp_shell",
       "shared/hooks",
+      "shared/network",
       "shared/shared_packages"
     ],
     "Architecture": [

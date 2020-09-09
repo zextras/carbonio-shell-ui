@@ -4,6 +4,11 @@ title: Hooks
 
 The Shell shares some hooks as utility for the React components.
 
+Shared hooks can be used with the import:
+```typescript
+import { hooks } from '@zextras/zapp-shell';
+```
+
 ## useObserveDb
 ```typescript
 function useObserveDb(query: () => Promise<any>, db: Database): any {}

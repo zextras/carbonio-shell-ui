@@ -25,6 +25,7 @@ export type AccountThemesData = Array<ThemePkgDescription>;
 export interface IAccount {
 	id: string;
 	name: string;
+	csrfToken: string;
 	login: AccountLoginData;
 	apps: AccountAppsData;
 	themes: AccountThemesData;
@@ -36,6 +37,7 @@ export default class Account implements IAccount {
 	constructor(
 		public id: string,
 		public name: string,
+		public csrfToken: string,
 		public login: AccountLoginData,
 		public apps: AccountAppsData,
 		public themes: AccountThemesData

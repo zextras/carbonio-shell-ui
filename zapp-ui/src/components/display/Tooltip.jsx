@@ -30,7 +30,7 @@ const TooltipWrapperWithCss = styled(TooltipWrapper)`
 	`};
 `;
 
-const Tooltip = React.forwardRef(function({ label, placement, maxWidth, children }, ref) {
+const Tooltip = React.forwardRef(function({ label, placement, maxWidth, children, ...rest }, ref) {
 	const [open, setOpen] = useState(undefined);
 	const popperInstanceRef = useRef(undefined);
 	const triggerRef = useRef(undefined);
@@ -89,7 +89,7 @@ const Tooltip = React.forwardRef(function({ label, placement, maxWidth, children
 	return (
 		<Fragment>
 			{ cloneElement(children, { ref: triggerRef }) }
-			<TooltipWrapperWithCss open={open} ref={tooltipRef} maxWidth={maxWidth}>{ label }</TooltipWrapperWithCss>
+			<TooltipWrapperWithCss open={open} ref={tooltipRef} maxWidth={maxWidth} {...rest}>{ label }</TooltipWrapperWithCss>
 		</Fragment>
 	);
 });

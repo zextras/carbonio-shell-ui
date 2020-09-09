@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import Container from '../layout/Container';
 import Icon from './Icon';
 import Text from './Text';
@@ -30,6 +30,7 @@ const Label = styled(Text)`
 	padding: 0 ${(props) => props.theme.sizes.padding.extrasmall};
 `;
 const ContainerEl = styled(Container)`
+	position: relative;
 	cursor: ${(props) => props.disabled ? 'default' : 'pointer'};
 	max-width: 100%;
 	color: ${({theme, textColor}) => theme.palette[textColor].regular};
@@ -56,6 +57,21 @@ const ContainerEl = styled(Container)`
 	${({bdColor}) => bdColor && css`
 		border: 1px solid currentColor;
 	`};
+	${({theme, loading, disabled, bdColor}) => loading && bdColor && css`
+		border-color: ${theme.palette[bdColor][disabled ? 'disabled' : 'regular']};
+		&:hover{
+			border-color: ${theme.palette[bdColor].hover};
+		}
+		&:focus{
+			border-color: ${theme.palette[bdColor].focus};
+		}
+		&:active{
+			border-color: ${theme.palette[bdColor].active};
+		}
+	`}
+	${({loading}) => loading && css`
+		color: transparent !important;
+	`}
 `;
 
 const Button = React.forwardRef(function({
@@ -70,6 +86,7 @@ const Button = React.forwardRef(function({
 	icon,
 	iconPlacement,
 	onClick,
+	loading,
 	...rest
 }, ref) {
 	const buttonRef = useRef(undefined);
@@ -99,6 +116,7 @@ const Button = React.forwardRef(function({
 			bdColor={type === 'outlined' ? bdColor : undefined}
 			background={bgColor}
 			disabled={disabled}
+			loading={loading ? 1 : 0}
 			padding={{
 				vertical: 'small',
 				horizontal: 'medium'
@@ -113,6 +131,7 @@ const Button = React.forwardRef(function({
 				<Container width="fit" height="fit" padding={{horizontal: 'extrasmall'}}>
 					<Icon icon={icon} size="medium" color="currentColor" />
 				</Container> }
+			{ loading && <LoadingIcon color={textColor}/> }
 		</ContainerEl>
 	);
 });
@@ -146,6 +165,8 @@ Button.propTypes = {
 	icon: PropTypes.string,
 	/** Icon position */
 	iconPlacement: PropTypes.oneOf(['left', 'right']),
+	/** whether to show the loading icon */
+	loading: PropTypes.bool,
 	/** whether to disable the button or not */
 	disabled: PropTypes.bool
 };
@@ -155,7 +176,45 @@ Button.defaultProps = {
 	type: 'default',
 	size: 'fit',
 	iconPlacement: 'right',
+	loading: false,
 	disabled: false
+};
+
+const rotateKeyframes = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+	}
+`;
+const rotateAnimation = css`
+	${rotateKeyframes} .75s linear infinite;
+`;
+const LoadingContainer = styled(Container)`
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+`;
+const Spinner = styled.span`
+	display: inline-block;
+	width: 0.75rem;
+	height: 0.75rem;
+	vertical-align: text-bottom;
+	color: ${({theme, color}) => theme.palette[color].regular};
+	border: .125em solid currentColor;
+	border-right-color: transparent;
+	border-radius: 50%;
+	animation: ${rotateAnimation};
+`;
+const LoadingIcon = ({ color }) => {
+	return (
+		<LoadingContainer>
+			<Spinner color={color} />
+		</LoadingContainer>
+	);
 };
 
 export default Button;

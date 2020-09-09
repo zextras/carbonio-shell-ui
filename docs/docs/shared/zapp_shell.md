@@ -5,7 +5,7 @@ title: @zextras/zapp-shell
 `@zextras/zapp-shell` is the package for the methods exposed by the Shell to the Apps. This package is handled by the
 `zapp-cli` and is injected by the Shell at runtime.
 
-The method exposed to the Apps are confined to the app context for securilty reasons.
+The method exposed to the Apps are confined to the app context for security reasons.
 
 ## Usage
 To use a method or a class exposed by the package, simply import it as any package.

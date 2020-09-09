@@ -11,10 +11,11 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import AppLoaderContext from './app-loader-context';
-import { useFiberChannelFactory, useUserAccounts } from '../bootstrap/bootstrapper-context';
+import { useFiberChannelFactory, useShellNetworkService, useUserAccounts } from '../bootstrap/bootstrapper-context';
 import { loadApps } from './app-loader';
 
 export default function AppLoaderContextProvider({ children }) {
+	const shellNetworkService = useShellNetworkService();
 	const { accounts, accountLoaded } = useUserAccounts();
 	const fiberChannelFactory = useFiberChannelFactory();
 	const [[appsCache, appsLoaded], setAppsCache] = useState([{}, false]);
@@ -27,6 +28,7 @@ export default function AppLoaderContextProvider({ children }) {
 		loadApps(
 			accounts,
 			fiberChannelFactory,
+			shellNetworkService
 		)
 			.then((cache) => {
 				if (!canSet) return;

@@ -21,7 +21,8 @@ const ListHeader = React.forwardRef(function({
   onSelectAll,
   onDeselectAll,
   actionStack,
-  itemsCount
+  itemsCount,
+  ...rest
 }, ref) {
   const theme = useContext(ThemeContext);
   const actionsWidth = useMemo(() => {
@@ -29,7 +30,15 @@ const ListHeader = React.forwardRef(function({
   }, [actionStack, theme.sizes]);
 
   return (
-    <Container ref={ref} orientation="horizontal" mainAlignment="space-between" width="fill" height="fit" padding={{ horizontal: 'extrasmall' }}>
+    <Container
+      ref={ref}
+      orientation="horizontal"
+      mainAlignment="space-between"
+      width="fill"
+      height="fit"
+      padding={{ horizontal: 'extrasmall' }}
+      {...rest}
+    >
       <Responsive mode="mobile">
         <IconButton icon="ArrowBack" onClick={onBackClick}/>
       </Responsive>

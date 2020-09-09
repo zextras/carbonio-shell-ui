@@ -17,6 +17,7 @@ import { E2EContext } from './e2e-types';
 import { AppPkgDescription } from '../../types';
 
 const ACCOUNT_ID = '00000000-0000-4000-8000-000000000000';
+const CSRF_TOKEN = '0_0000000000000000000000000000000000000000';
 const ACCOUNT_NAME = 'user@example.com';
 
 export default function(ctxt: E2EContext): Promise<void> {
@@ -69,6 +70,7 @@ export default function(ctxt: E2EContext): Promise<void> {
 				new Account(
 					ACCOUNT_ID,
 					ACCOUNT_ID,
+					CSRF_TOKEN,
 					{
 						t: '',
 						u: '',

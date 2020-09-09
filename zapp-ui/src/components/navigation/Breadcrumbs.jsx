@@ -12,11 +12,11 @@ const CheckDiv = styled.div`
 	width: 100%
 `;
 
-function Breadcrumbs({ crumbs }) {
+function Breadcrumbs({ crumbs, ...rest }) {
 	const [visibleCrumbs, hiddenCrumbs, containerRef] = useSplitVisibility(crumbs, 'start');
 
 	return (
-		<CheckDiv ref={containerRef} >
+		<CheckDiv ref={containerRef}  {...rest}>
 			<Container orientation="horizontal" mainAlignment="flex-start" width="fit">
 				{
 					hiddenCrumbs.length > 0 &&

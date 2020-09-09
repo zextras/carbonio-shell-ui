@@ -33,7 +33,7 @@ import { useEffect } from 'react';
 
 // Toolbar: alignleft aligncenter alignright alignjustify |
 
-function RichTextEditor({ onEditorChange, inline, initialValue, value, minHeight, maxHeight }) {
+function RichTextEditor({ onEditorChange, inline, initialValue, value, minHeight, maxHeight, ...rest }) {
   const [ content, setContent ] = useState(initialValue);
   const _onEditorChange = useCallback((content, editor) => {
     setContent(content);
@@ -90,6 +90,7 @@ function RichTextEditor({ onEditorChange, inline, initialValue, value, minHeight
         max_height: maxHeight,
       }}
       onEditorChange={_onEditorChange}
+      {...rest}
     />
   );
 }

@@ -109,7 +109,8 @@ const Select = React.forwardRef(function({
   display,
   dropdownWidth,
   dropdownMaxWidth,
-  LabelFactory
+  LabelFactory,
+  ...rest
 }, ref) {
   const [selected, dispatchSelected] = useReducer(selectedReducer, defaultSelection ? (multiple ? defaultSelection : [defaultSelection]) : []);
   const [open, setOpen] = useState(false);
@@ -171,6 +172,7 @@ const Select = React.forwardRef(function({
       onOpen={onOpen}
       onClose={onClose}
       placement="bottom-end"
+      {...rest}
     >
       <TabContainer
         ref={ref}

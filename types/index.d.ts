@@ -1,4 +1,3 @@
-
 /*
  * *** BEGIN LICENSE BLOCK *****
  * Copyright (C) 2011-2020 ZeXtras
@@ -119,9 +118,8 @@ export const hooks: {
 	useBehaviorSubject<T>(observable: BehaviorSubject<T>): T;
 	useAppContext<T>(): T;
 	useObserveDb<T>(query: () => Promise<T>, db: Database): [T, boolean];
-	useAppPkg(): () => AppPkgDescription;
+	useAppPkg(): AppPkgDescription;
 };
-
 
 export const ui: any;
 
@@ -133,3 +131,22 @@ export const accounts: Array<{
 	name: string;
 	id: string;
 }>;
+
+export type SoapRequest = {
+	_jsns: 'urn:zimbra'
+		| 'urn:zimbraAccount'
+		| 'urn:zimbraAdmin'
+		| 'urn:zimbraAdminExt'
+		| 'urn:zimbraMail'
+		| 'urn:zimbraRepl'
+		| 'urn:zimbraSync'
+		| 'urn:zimbraVoice'
+	;
+};
+
+export type SoapFetch =
+	<REQ, RESP>(api: string, body: REQ & SoapRequest) => Promise<RESP>;
+
+export const network: {
+	soapFetch: SoapFetch;
+};

@@ -70,7 +70,15 @@ function calcColor(label) {
 	return `avatar_${(sum % 50) +1}`;
 }
 
-const Avatar = React.forwardRef(function({size, label, colorLabel, picture, icon, fallbackIcon}, ref) {
+const Avatar = React.forwardRef(function({
+	size,
+	label,
+	colorLabel,
+	picture,
+	icon,
+	fallbackIcon,
+	...rest
+}, ref) {
 	const color = useMemo(() => calcColor(colorLabel || label), [colorLabel, label]);
 	const capitals = useMemo(() => calcCapitals(label.toUpperCase()), [label]);
 	const symbol = useMemo(() => {
@@ -106,6 +114,7 @@ const Avatar = React.forwardRef(function({size, label, colorLabel, picture, icon
 			size={size}
 			picture={picture}
 			background={color}
+			{...rest}
 		>
 			{!picture && symbol}
 		</AvatarContainer>

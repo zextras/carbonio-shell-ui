@@ -64,7 +64,8 @@ const IconCheckbox = React.forwardRef(function({
 	size,
 	margin,
 	value,
-	onChange
+	onChange,
+	...rest
 }, ref) {
 	const [checked, setChecked] = useState(value || defaultChecked || false);
 	const checkedRef = useRef(defaultChecked);
@@ -106,6 +107,7 @@ const IconCheckbox = React.forwardRef(function({
 			style={{cursor: disabled ? 'default' : 'pointer'}}
 			onClick={handleClick}
 			crossAlignment="center"
+			{...rest}
 		>
 			<IconWrapper
 				ref={iconCheckboxRef}

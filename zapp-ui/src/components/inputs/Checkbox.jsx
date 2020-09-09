@@ -26,7 +26,8 @@ const Checkbox = React.forwardRef(function({
 	padding,
 	disabled,
 	onClick,
-	onChange
+	onChange,
+	...rest
 }, ref) {
 	const [checked, setChecked] = useState(value || defaultChecked || false);
 	const innerRef = useRef(undefined);
@@ -65,6 +66,7 @@ const Checkbox = React.forwardRef(function({
 			style={{ cursor: disabled ? 'default' : 'pointer' }}
 			onClick={handleClick}
 			crossAlignment="center"
+			{...rest}
 		>
 			<IconWrapper disabled={disabled} tabIndex={disabled ? -1 : 0}>
 				<Icon size={iconSize} icon={checked ? 'CheckmarkSquare' : 'Square'} color={iconColor} />

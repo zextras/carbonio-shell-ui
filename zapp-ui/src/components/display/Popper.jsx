@@ -19,7 +19,16 @@ const PopperWrapper = styled.div`
 	outline: 0;
 `;
 
-const Popper = React.forwardRef(function({ open, anchorEl, virtualElement, disableRestoreFocus, placement, onClose, children }, ref) {
+const Popper = React.forwardRef(function({
+	open,
+	anchorEl,
+	virtualElement,
+	disableRestoreFocus,
+	placement,
+	onClose,
+	children,
+	...rest
+}, ref) {
 	const innerRef = useRef(undefined);
 	const popperRef = useCombinedRefs(ref, innerRef);
 	const wrapperRef = useRef(undefined);
@@ -110,7 +119,7 @@ const Popper = React.forwardRef(function({ open, anchorEl, virtualElement, disab
 	}, [open, startSentinelRef, endSentinelRef]);
 
 	return (
-		<PopperContainer ref={popperRef} open={open}>
+		<PopperContainer ref={popperRef} open={open} {...rest}>
 			<div tabIndex={0} ref={startSentinelRef}></div>
 			<PopperWrapper ref={wrapperRef} tabIndex={-1}>{ children }</PopperWrapper>
 			<div tabIndex={0} ref={endSentinelRef}></div>

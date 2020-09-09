@@ -10,6 +10,7 @@ import Button from '../basic/Button';
 import Container from '../layout/Container';
 import Divider from '../layout/Divider';
 import IconButton from '../inputs/IconButton';
+import Row from '../layout/Row';
 import Text from '../basic/Text';
 import Transition from '../utilities/Transition';
 import useKeyboard from '../../hooks/useKeyboard';
@@ -106,6 +107,8 @@ const ModalContent = styled(Container)`
 const ModalTitle = styled(Text)`
 	box-sizing: border-box;
 	width: 100%;
+	flex-grow: 1;
+	flex-basis: 0;
 	padding: ${(props) => props.theme.sizes.padding.small };
 	${(props) => props.centered && css`
 		text-align: center;
@@ -144,9 +147,7 @@ const ConfirmButton = styled(Button)`
 	flex-shrink: 1;
 `;
 const ModalCloseIcon = styled(IconButton)`
-	position: absolute;
-	top: 8px;
-	right: 8px;
+	padding: ${({ theme }) => theme.sizes.padding.extrasmall};
 `;
 
 const Modal = React.forwardRef(function({
@@ -164,6 +165,8 @@ const Modal = React.forwardRef(function({
 	dismissLabel,
 	copyLabel,
 	optionalFooter,
+	customFooter,
+	showCloseIcon,
 	children,
 	...rest
 }, ref) {
@@ -226,25 +229,31 @@ const Modal = React.forwardRef(function({
 			<Transition type="scale-in" apply={open}>
 				<ModalWrapper screenMode={screenMode}>
 					<ModalContent tabIndex={-1} ref={modalWrapperRef} screenMode={screenMode} size={size} crossAlignment="flex-start" height="auto">
-						<ModalTitle centered={centered} color={type === 'error' ? 'error' : undefined} size="large" weight="bold">{ title }</ModalTitle>
+						<Row width="100%">
+							<ModalTitle centered={centered} color={type === 'error' ? 'error' : undefined} size="large" weight="bold">{ title }</ModalTitle>
+							{ onSecondaryAction && secondaryActionLabel && <ModalCloseIcon icon="Close" size="medium" onClick={onClose} /> }
+						</Row>
 						<Divider />
 						<ModalBody centered={centered} ref={modalBodyRef}>{ children }</ModalBody>
 						<Divider />
-						<ModalFooter
-							type={type}
-							centered={centered}
-							optionalFooter={optionalFooter}
-							confirmLabel={confirmLabel}
-							confirmColor={confirmColor}
-							dismissLabel={dismissLabel}
-							onConfirm={onConfirm}
-							onClose={onClose}
-							onSecondaryAction={onSecondaryAction}
-							secondaryActionLabel={secondaryActionLabel}
-							onCopyClipboard={onCopyClipboard}
-							copyLabel={copyLabel}
-						/>
-						{ onSecondaryAction && secondaryActionLabel && <ModalCloseIcon icon="Close" size="small" onClick={onClose} />}
+						<ModalFooterWrapper orientation={centered ? 'vertical' : 'horizontal'} mainAlignment="flex-end" padding={{ top: "large" }}>
+							{ customFooter ? customFooter :
+								<ModalFooter
+									type={type}
+									centered={centered}
+									optionalFooter={optionalFooter}
+									confirmLabel={confirmLabel}
+									confirmColor={confirmColor}
+									dismissLabel={dismissLabel}
+									onConfirm={onConfirm}
+									onClose={onClose}
+									onSecondaryAction={onSecondaryAction}
+									secondaryActionLabel={secondaryActionLabel}
+									onCopyClipboard={onCopyClipboard}
+									copyLabel={copyLabel}
+								/>
+							}
+						</ModalFooterWrapper>
 					</ModalContent>
 				</ModalWrapper>
 			</Transition>
@@ -282,6 +291,10 @@ Modal.propTypes = {
 	copyLabel: PropTypes.string,
 	/** Optional element to show in the footer of the Modal */
 	optionalFooter: PropTypes.element,
+	/** Prop to override the default footer buttons */
+	customFooter: PropTypes.element,
+	/** Show icon to close Modal */
+	showCloseIcon: PropTypes.bool,
 	/** Css property to handle the stack order of multiple modals */
 	zIndex: PropTypes.number
 };
@@ -293,6 +306,7 @@ Modal.defaultProps = {
 	confirmLabel: 'OK',
 	confirmColor: 'primary',
 	copyLabel: 'Copy',
+	showCloseIcon: false,
 	zIndex: 100
 };
 
@@ -325,7 +339,7 @@ function ModalFooter({
 	}, [type, onSecondaryAction, secondaryActionLabel, onClose, dismissLabel]);
 
 	return (
-		<ModalFooterWrapper orientation={centered ? 'vertical' : 'horizontal'} mainAlignment="flex-end" padding={{ top: "large" }}>
+		<>
 			{ optionalFooter && <OptionalFooterContainer padding={centered ? { bottom: 'large' } : { right: 'large' }} orientation="horizontal" mainAlignment="flex-start">
 				{ optionalFooter }
 			</OptionalFooterContainer> }
@@ -333,7 +347,7 @@ function ModalFooter({
 				{ secondaryButton }
 				<ConfirmButton color={confirmColor} onClick={onConfirm || onClose} label={confirmLabel} />
 			</ButtonContainer>
-		</ModalFooterWrapper>
+		</>
 	);
 }
 

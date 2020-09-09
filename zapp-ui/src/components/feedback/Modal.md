@@ -124,6 +124,29 @@ const closeHandler = () => setOpen(false);
 </>
 ```
 
+#### Custom footer
+```jsx
+import { useState } from 'react';
+import { Button, Checkbox, Text } from '@zextras/zapp-ui';
+
+const [open, setOpen] = useState(false);
+const clickHandler = () => setOpen(true);
+const closeHandler = () => setOpen(false);
+
+<>
+    <Button label="Trigger Modal" onClick={clickHandler}/>
+    <Modal
+        title="Title_bold_dark"
+        open={open}
+        customFooter={<Button label={"I'm a custom footer"} onClick={closeHandler} />}
+        showCloseIcon={true}
+        onClose={closeHandler}
+    >
+        <Text overflow="break-word">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</Text>
+    </Modal>
+</>
+```
+
 #### Nested Modal (Never use)
 ```jsx
 import { useState } from 'react';

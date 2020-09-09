@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import ThemeContext from '../../theme/ThemeContext';
 import defaultTheme from '../../theme/Theme';
 
-const Logo = React.forwardRef(function({ size }, ref) {
+const Logo = React.forwardRef(function({ size, ...rest }, ref) {
 	const theme = useContext(ThemeContext);
 	const LogoEl = theme.logo.svg;
 
 	return (
-		<LogoEl ref={ref} height={theme.logo.size[size]} />
+		<LogoEl ref={ref} height={theme.logo.size[size]} {...rest} />
 	);
 });
 

@@ -18,7 +18,7 @@ const [value, setValue] = useState('Some default value');
             }  
             backgroundColor="gray6"
         />        
-        <PasswordInput label="Password"/>
+        <PasswordInput hasError={true} label="Password"/>
         <PasswordInput disabled label="Disabled Password"/>
     </Container>    
 </Container>

@@ -18,9 +18,9 @@ const QuotaFill = styled.div`
 	border-radius: ${props => props.theme.borderRadius};
 `;
 
-const Quota = React.forwardRef(function({ fill }, ref) {
+const Quota = React.forwardRef(function({ fill, ...rest }, ref) {
 	return (
-		<QuotaBar ref={ref}>
+		<QuotaBar ref={ref} {...rest}>
 			<QuotaFill fill={fill}/>
 		</QuotaBar>
 	);

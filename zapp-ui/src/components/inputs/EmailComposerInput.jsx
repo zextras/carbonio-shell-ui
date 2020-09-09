@@ -25,23 +25,14 @@ const EmailComposerInputContainer = styled.div`
 		&:focus {
 			outline: none;
 			background: ${theme.palette.gray6.focus};
-			& input {
-				background: ${theme.palette.gray6.focus};
-			}
 		}
 		&:hover {
 			outline: none;
 			background: ${theme.palette.gray6.hover};
-			& input {
-				background: ${theme.palette.gray6.hover};
-			}
 		}
 		&:active {
 			outline: none;
 			background: ${theme.palette.gray6.active};
-			& input {
-				background: ${theme.palette.gray6.active};
-			}
 		}
 	`};
 	${(props) => props.active && css`
@@ -85,6 +76,9 @@ const InputContainer = styled.div`
 		height: ${props => `calc(${props.theme.sizes.avatar.small.diameter} + ${props.theme.sizes.padding.extrasmall} * 2)`};
 		margin: 0;
 		border: none;
+		color: ${props => props.theme.palette.text.regular};
+		padding: 0;
+		background-color: transparent !important;
 		font-size: ${props => props.theme.sizes.font.medium};
 		line-height: ${props => `calc(${props.theme.sizes.avatar.small.diameter} + ${props.theme.sizes.padding.extrasmall} * 2)`};
 

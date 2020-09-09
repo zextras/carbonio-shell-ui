@@ -26,7 +26,8 @@ const Label = styled.label`
 
 const SearchInput = React.forwardRef(function({
 	inputRef,
-	onChange
+	onChange,
+	...rest
 }, ref) {
 
 	const [active, setActive] = useState(false);
@@ -60,6 +61,7 @@ const SearchInput = React.forwardRef(function({
 				position: 'relative',
 			}}
 			onClick={onInputFocus}
+			{...rest}
 		>
 			<Label htmlFor={'search'} active={active || (comboRef.current && comboRef.current.value !== '')}>
 				Search

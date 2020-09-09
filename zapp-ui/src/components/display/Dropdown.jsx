@@ -52,7 +52,8 @@ const Dropdown = React.forwardRef(function({
 	multiple,
 	onOpen,
 	onClose,
-	children
+	children,
+	...rest
 }, ref) {
 	const [open, setOpen] = useState(false);
 	const openRef = useRef(open);
@@ -78,8 +79,11 @@ const Dropdown = React.forwardRef(function({
 		onClose && onClose();
 	}, [disableRestoreFocus, onClose]);
 
-	const handleClick = useCallback(() => {
-		!disabled && !openRef.current && openPopper();
+	const handleClick = useCallback((e) => {
+		if (!disabled && !openRef.current) {
+			e.preventDefault();
+			openPopper();
+		}
 	}, [disabled, openPopper, closePopper]);
 
 	const clickOutsidePopper = useCallback((e) => {
@@ -143,7 +147,7 @@ const Dropdown = React.forwardRef(function({
 	}, [items, multiple, closePopper]);
 
 	return (
-		<PopperDropdownWrapper display={display}>
+		<PopperDropdownWrapper ref={ref} display={display} {...rest}>
 			{ React.cloneElement( children, {ref: triggerRef, onClick: handleClick} )}
 			<PopperList ref={dropdownRef} width={width} maxWidth={maxWidth} open={open}>
 				<div tabIndex={0} ref={startSentinelRef}></div>

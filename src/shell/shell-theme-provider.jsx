@@ -21,7 +21,7 @@ const ThemeModeSwitcher = ({}) => {
 		window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 	);
 	const mediaChangeCallback = useCallback(
-		(e) => setMediaPrefers(e.matches ? "dark" : "light"),
+		(e) => setMediaPrefers(e.matches ? 'dark' : 'light'),
 		[setMediaPrefers]
 	);
 
@@ -65,7 +65,7 @@ const ShellThemeProvider = ({ children }) => {
 							acc,
 							extendTheme(v)
 						),
-						{...baseTheme}
+						{ ...baseTheme }
 					)
 				);
 			});
@@ -82,7 +82,7 @@ const ShellThemeProvider = ({ children }) => {
 			loadThemesCb();
 			setThemesLoaded(true);
 		}
-	}, [loadThemesCb, themesLoaded])
+	}, [loadThemesCb, themesLoaded]);
 	return (
 		<ThemeProvider theme={baseTheme}>
 			<ThemeModeSwitcher />

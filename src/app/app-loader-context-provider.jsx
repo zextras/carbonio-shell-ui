@@ -25,8 +25,8 @@ export default function AppLoaderContextProvider({ children }) {
 		let canSet = true;
 		setAppsCache([{}, false]);
 		loadApps(
-			accounts[0].apps,
-			fiberChannelFactory
+			accounts,
+			fiberChannelFactory,
 		)
 			.then((cache) => {
 				if (!canSet) return;

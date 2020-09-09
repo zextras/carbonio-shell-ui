@@ -10,7 +10,7 @@
  */
 
 import {
-	default as Lodash, map, orderBy, compact, keyBy } from 'lodash';
+	default as Lodash, map, orderBy, compact, keyBy, pick } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
 import { ComponentClass } from 'react';
 import * as React from 'react';
@@ -28,7 +28,7 @@ import * as ZappUI from '@zextras/zapp-ui';
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
-import { AccountAppsData } from '../db/account';
+import { AccountAppsData, IAccount } from '../db/account';
 import * as hooks from '../shell/hooks';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
@@ -71,6 +71,10 @@ type SharedLibrariesAppsMap = {
 		db: {
 			Database: any;
 		};
+		accounts: Array<{
+			name: string;
+			id: string;
+		}>;
 		setMainMenuItems: (items: MainMenuItemData[]) => void;
 		setRoutes: (routes: AppRouteDescription[]) => void;
 		setCreateOptions: (options: AppCreateOption[]) => void;
@@ -117,9 +121,10 @@ function loadAppModule(
 		routes,
 		createOptions,
 		sharedUiComponents,
-		appContext
+		appContext,
 	}: AppInjections,
 	fiberChannelFactory: IFiberChannelFactory,
+	accounts: Array<IAccount>
 ): Promise<AppModuleFunction> {
 	return new Promise((resolve, reject) => {
 		const path = `${ appPkg.resourceUrl }/${ appPkg.entryPoint }`;
@@ -173,6 +178,10 @@ function loadAppModule(
 					db: {
 						Database: wrapAppDbConstructor(appPkg)
 					},
+					accounts: map(
+						accounts,
+						(acc) => pick(acc, ['name', 'id'])
+					),
 					setMainMenuItems: (items) => mainMenuItems.next(items),
 					setRoutes: (r) => routes.next(r),
 					setCreateOptions: (options) => createOptions.next(options),
@@ -225,7 +234,8 @@ function loadAppModule(
 
 function loadApp(
 	pkg: AppPkgDescription,
-	fiberChannelFactory: IFiberChannelFactory
+	fiberChannelFactory: IFiberChannelFactory,
+	accounts: Array<IAccount>
 ): Promise<LoadedAppRuntime|undefined> {
 	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
 	const mainMenuItems = new BehaviorSubject<MainMenuItemData[]>([]);
@@ -240,9 +250,10 @@ function loadApp(
 			routes,
 			createOptions,
 			sharedUiComponents,
-			appContext
+			appContext,
 		},
-		fiberChannelFactory
+		fiberChannelFactory,
+		accounts
 	)
 		.then((appModule) => appModule.call(undefined))
 		// .then(() => {
@@ -280,13 +291,13 @@ function loadApp(
 }
 
 export function loadApps(
-	apps: AccountAppsData,
+	accounts: Array<IAccount>,
 	fiberChannelFactory: IFiberChannelFactory
 ): Promise<LoadedAppsCache> {
 	return Promise.all(
 		map(
-			orderBy(apps, 'priority'),
-			(pkg) => loadApp(pkg, fiberChannelFactory)
+			orderBy(accounts[0].apps, 'priority'),
+			(pkg) => loadApp(pkg, fiberChannelFactory, accounts)
 		)
 	)
 		.then((loaded) => compact(loaded))

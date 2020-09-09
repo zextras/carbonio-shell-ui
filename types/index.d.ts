@@ -129,3 +129,7 @@ export const db: {
 	Database: IDatabaseConstructor;
 };
 
+export const accounts: Array<{
+	name: string;
+	id: string;
+}>;

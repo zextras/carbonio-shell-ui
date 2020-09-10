@@ -26,7 +26,10 @@ export default class ShellNetworkService {
 		// TODO: Validate the session
 		_shellDb.observe(() => _shellDb.accounts.toCollection().limit(1).toArray())
 			.subscribe((a) => {
-				this._account = a;
+				if (a && a.length > 0) {
+					const [account] = a;
+					this._account = account;
+				}
 			});
 	}
 

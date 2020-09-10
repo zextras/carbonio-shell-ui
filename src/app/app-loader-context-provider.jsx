@@ -26,7 +26,7 @@ export default function AppLoaderContextProvider({ children }) {
 		let canSet = true;
 		setAppsCache([{}, false]);
 		loadApps(
-			accounts[0].apps,
+			accounts,
 			fiberChannelFactory,
 			shellNetworkService
 		)

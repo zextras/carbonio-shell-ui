@@ -13,7 +13,8 @@ import {
 	setMainMenuItems,
 	setRoutes,
 	setCreateOptions,
-	setAppContext
+	setAppContext,
+	accounts
 } from '@zextras/zapp-shell';
 
 export default function app() {

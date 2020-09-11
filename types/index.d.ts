@@ -130,6 +130,7 @@ export const db: {
 export const accounts: Array<{
 	name: string;
 	id: string;
+	displayName: string;
 }>;
 
 export type SoapRequest = {

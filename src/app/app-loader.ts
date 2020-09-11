@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-default */
 /*
  * *** BEGIN LICENSE BLOCK *****
  * Copyright (C) 2011-2020 ZeXtras
@@ -12,8 +13,8 @@
 import {
 	default as Lodash, map, orderBy, compact, keyBy, pick
 } from 'lodash';
-import { BehaviorSubject } from 'rxjs';
-import { ComponentClass } from 'react';
+import { default as RxJS, BehaviorSubject } from 'rxjs';
+import { default as React, ComponentClass } from 'react';
 import * as ReactDOM from 'react-dom';
 import * as RxJSOperators from 'rxjs/operators';
 import * as ReactRouterDom from 'react-router-dom';
@@ -72,6 +73,7 @@ type SharedLibrariesAppsMap = {
 		accounts: Array<{
 			name: string;
 			id: string;
+			displayName: string;
 		}>;
 		network: {
 			soapFetch: SoapFetch;
@@ -183,7 +185,7 @@ function loadAppModule(
 						},
 						accounts: map(
 							accounts,
-							(acc) => pick(acc, ['name', 'id'])
+							(acc) => pick(acc, ['name', 'id', 'displayName'])
 						),
 						setMainMenuItems: (items) => mainMenuItems.next(items),
 						setRoutes: (r) => routes.next(r),

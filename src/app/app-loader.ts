@@ -73,6 +73,7 @@ type SharedLibrariesAppsMap = {
 		accounts: Array<{
 			name: string;
 			id: string;
+			displayName: string;
 		}>;
 		network: {
 			soapFetch: SoapFetch;
@@ -184,7 +185,7 @@ function loadAppModule(
 						},
 						accounts: map(
 							accounts,
-							(acc) => pick(acc, ['name', 'id'])
+							(acc) => pick(acc, ['name', 'id', 'displayName'])
 						),
 						setMainMenuItems: (items) => mainMenuItems.next(items),
 						setRoutes: (r) => routes.next(r),

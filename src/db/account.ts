@@ -29,6 +29,7 @@ export interface IAccount {
 	login: AccountLoginData;
 	apps: AccountAppsData;
 	themes: AccountThemesData;
+	displayName: string;
 }
 
 export default class Account implements IAccount {
@@ -40,6 +41,7 @@ export default class Account implements IAccount {
 		public csrfToken: string,
 		public login: AccountLoginData,
 		public apps: AccountAppsData,
-		public themes: AccountThemesData
+		public themes: AccountThemesData,
+		public displayName: string,
 	) { }
 }

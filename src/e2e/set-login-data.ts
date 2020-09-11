@@ -64,7 +64,7 @@ export default function(ctxt: E2EContext): Promise<void> {
 				});
 				break;
 		}
-		// Injecting the user ass logged in
+		// Injecting the user as logged in
 		ctxt.db.accounts.clear()
 			.then(() => ctxt.db.accounts.add(
 				new Account(
@@ -92,6 +92,7 @@ export default function(ctxt: E2EContext): Promise<void> {
 						(r, z) => ([...r, zimletToThemePkgDescription(z)]),
 						[]
 					),
+					ACCOUNT_ID
 				)
 			))
 			.then(() => {

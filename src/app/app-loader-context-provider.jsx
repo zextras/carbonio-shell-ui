@@ -37,7 +37,7 @@ export default function AppLoaderContextProvider({ children }) {
 		return () => {
 			canSet = false;
 		};
-	}, [accounts, accountLoaded, fiberChannelFactory, setAppsCache]);
+	}, [accounts, accountLoaded, fiberChannelFactory, shellNetworkService]);
 
 	const value = useMemo(() => ({
 		appsCache,

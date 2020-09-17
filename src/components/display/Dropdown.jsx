@@ -69,7 +69,7 @@ const Dropdown = React.forwardRef(function({
 
 		setTimeout(() => {
 			const selectedItems = dropdownRef.current.querySelectorAll('.selected');
-			selectedItems.length > 0 ? selectedItems[0].focus() : popperItemsRef.current.children[0].focus();
+			selectedItems.length > 0 ? selectedItems[0].focus() : popperItemsRef.current.children[0] && popperItemsRef.current.children[0].focus();
 		}, 1);
 	}, [onOpen]);
 

@@ -16,6 +16,7 @@ import Transition from '../utilities/Transition';
 import useKeyboard from '../../hooks/useKeyboard';
 import { useScreenMode } from '../../hooks/useScreenMode';
 import { useCombinedRefs } from '../../hooks/useCombinedRefs';
+import defaultTheme from "../../theme/Theme";
 
 const modalMinWidth = { extrasmall: '20%', small: '25%', medium: '35%', large: '50%' };
 const modalWidth = { extrasmall: '400px', small: '500px', medium: '650px', large: '800px' };
@@ -98,7 +99,7 @@ const ModalContent = styled(Container)`
 	min-width: ${(props) => modalMinWidth[props.size] };
 	width: ${(props) => modalWidth[props.size] };
 
-	background-color: ${(props) => props.theme.palette.gray6.regular};
+	background-color: ${(props) => props.theme.palette[props.background].regular};
 	border-radius: 16px;
 	box-shadow: 0px 0px 4px 0px rgba(166,166,166,0.5);
 	outline: none;
@@ -151,6 +152,7 @@ const ModalCloseIcon = styled(IconButton)`
 `;
 
 const Modal = React.forwardRef(function({
+	background,
 	type,
 	title,
 	size,
@@ -166,6 +168,7 @@ const Modal = React.forwardRef(function({
 	copyLabel,
 	optionalFooter,
 	customFooter,
+	hideFooter,
 	showCloseIcon,
 	children,
 	...rest
@@ -228,32 +231,36 @@ const Modal = React.forwardRef(function({
 			<div tabIndex={0} ref={startSentinelRef}></div>
 			<Transition type="scale-in" apply={open}>
 				<ModalWrapper screenMode={screenMode}>
-					<ModalContent tabIndex={-1} ref={modalWrapperRef} screenMode={screenMode} size={size} crossAlignment="flex-start" height="auto">
+					<ModalContent background={background} tabIndex={-1} ref={modalWrapperRef} screenMode={screenMode} size={size} crossAlignment="flex-start" height="auto">
 						<Row width="100%">
 							<ModalTitle centered={centered} color={type === 'error' ? 'error' : undefined} size="large" weight="bold">{ title }</ModalTitle>
-							{ onSecondaryAction && secondaryActionLabel && <ModalCloseIcon icon="Close" size="medium" onClick={onClose} /> }
+							{ showCloseIcon && <ModalCloseIcon icon="Close" size="medium" onClick={onClose} /> }
 						</Row>
 						<Divider />
 						<ModalBody centered={centered} ref={modalBodyRef}>{ children }</ModalBody>
-						<Divider />
-						<ModalFooterWrapper orientation={centered ? 'vertical' : 'horizontal'} mainAlignment="flex-end" padding={{ top: "large" }}>
-							{ customFooter ? customFooter :
-								<ModalFooter
-									type={type}
-									centered={centered}
-									optionalFooter={optionalFooter}
-									confirmLabel={confirmLabel}
-									confirmColor={confirmColor}
-									dismissLabel={dismissLabel}
-									onConfirm={onConfirm}
-									onClose={onClose}
-									onSecondaryAction={onSecondaryAction}
-									secondaryActionLabel={secondaryActionLabel}
-									onCopyClipboard={onCopyClipboard}
-									copyLabel={copyLabel}
-								/>
-							}
-						</ModalFooterWrapper>
+						{ !hideFooter && (
+							<>
+								<Divider/>
+								<ModalFooterWrapper orientation={centered ? 'vertical' : 'horizontal'} mainAlignment="flex-end" padding={{top: "large"}}>
+									{customFooter ? customFooter :
+										<ModalFooter
+											type={type}
+											centered={centered}
+											optionalFooter={optionalFooter}
+											confirmLabel={confirmLabel}
+											confirmColor={confirmColor}
+											dismissLabel={dismissLabel}
+											onConfirm={onConfirm}
+											onClose={onClose}
+											onSecondaryAction={onSecondaryAction}
+											secondaryActionLabel={secondaryActionLabel}
+											onCopyClipboard={onCopyClipboard}
+											copyLabel={copyLabel}
+										/>
+									}
+								</ModalFooterWrapper>
+							</>
+						)}
 					</ModalContent>
 				</ModalWrapper>
 			</Transition>
@@ -263,6 +270,8 @@ const Modal = React.forwardRef(function({
 });
 
 Modal.propTypes = {
+	/** Modal background */
+	background: Container.propTypes.background,
 	/** Modal type */
 	type: PropTypes.oneOf(['default', 'error']),
 	/** Modal title */
@@ -293,6 +302,8 @@ Modal.propTypes = {
 	optionalFooter: PropTypes.element,
 	/** Prop to override the default footer buttons */
 	customFooter: PropTypes.element,
+	/** Hide the footer completely */
+	hideFooter: PropTypes.bool,
 	/** Show icon to close Modal */
 	showCloseIcon: PropTypes.bool,
 	/** Css property to handle the stack order of multiple modals */
@@ -307,7 +318,8 @@ Modal.defaultProps = {
 	confirmColor: 'primary',
 	copyLabel: 'Copy',
 	showCloseIcon: false,
-	zIndex: 100
+	zIndex: 100,
+	background: 'gray6',
 };
 
 function ModalFooter({

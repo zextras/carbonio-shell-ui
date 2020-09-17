@@ -29,6 +29,7 @@ const items = [
         background="gray5"
         label="Select an item"
         onChange={console.log}
+        defaultSelection={{ value: '4', label: 'goodnight' }}
     />
     <Input
         label="Select an item"

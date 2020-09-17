@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-default */
 /*
  * *** BEGIN LICENSE BLOCK *****
  * Copyright (C) 2011-2020 ZeXtras
@@ -10,12 +11,11 @@
  */
 
 import {
-	default as Lodash, map, orderBy, compact, keyBy } from 'lodash';
-import { BehaviorSubject } from 'rxjs';
-import { ComponentClass } from 'react';
-import * as React from 'react';
+	default as Lodash, map, orderBy, compact, keyBy, pick
+} from 'lodash';
+import { default as RxJS, BehaviorSubject } from 'rxjs';
+import { default as React, ComponentClass } from 'react';
 import * as ReactDOM from 'react-dom';
-import * as RxJS from 'rxjs';
 import * as RxJSOperators from 'rxjs/operators';
 import * as ReactRouterDom from 'react-router-dom';
 import * as PropTypes from 'prop-types';
@@ -28,7 +28,7 @@ import * as ZappUI from '@zextras/zapp-ui';
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
-import { AccountAppsData } from '../db/account';
+import { IAccount } from '../db/account';
 import * as hooks from '../shell/hooks';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
@@ -40,7 +40,6 @@ import AppLink from './app-link';
 import { wrapAppDbConstructor } from './app-db';
 import { FC, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import validateSharedUiComponent from '../shared-ui-components/shared-ui-components-validator';
-import ShellDb from '../db/shell-db';
 import ShellNetworkService from '../network/shell-network-service';
 import {
 	AppCreateOption, AppPkgDescription, AppRouteDescription, FCSink, MainMenuItemData, SoapFetch
@@ -71,6 +70,11 @@ type SharedLibrariesAppsMap = {
 		db: {
 			Database: any;
 		};
+		accounts: Array<{
+			name: string;
+			id: string;
+			displayName: string;
+		}>;
 		network: {
 			soapFetch: SoapFetch;
 		};
@@ -120,9 +124,10 @@ function loadAppModule(
 		routes,
 		createOptions,
 		sharedUiComponents,
-		appContext
+		appContext,
 	}: AppInjections,
 	fiberChannelFactory: IFiberChannelFactory,
+	accounts: Array<IAccount>,
 	shellNetworkService: ShellNetworkService
 ): Promise<AppModuleFunction> {
 	return new Promise((resolve, reject) => {
@@ -161,11 +166,11 @@ function loadAppModule(
 				// 		);
 				// 	});
 				(iframe.contentWindow as IChildWindow).__ZAPP_SHARED_LIBRARIES__ = {
-					'react': React,
+					react: React,
 					'react-dom': ReactDOM,
 					'react-i18next': ReactI18n,
-					'lodash': Lodash,
-					'rxjs': RxJS,
+					lodash: Lodash,
+					rxjs: RxJS,
 					'rxjs/operators': RxJSOperators,
 					'react-router-dom': {
 						...ReactRouterDom,
@@ -173,11 +178,15 @@ function loadAppModule(
 					},
 					'styled-components': StyledComponents,
 					'prop-types': PropTypes,
-					'moment': Moment,
+					moment: Moment,
 					'@zextras/zapp-shell': {
 						db: {
 							Database: wrapAppDbConstructor(appPkg)
 						},
+						accounts: map(
+							accounts,
+							(acc) => pick(acc, ['name', 'id', 'displayName'])
+						),
 						setMainMenuItems: (items) => mainMenuItems.next(items),
 						setRoutes: (r) => routes.next(r),
 						setCreateOptions: (options) => createOptions.next(options),
@@ -212,7 +221,7 @@ function loadAppModule(
 				// eslint-disable-next-line max-len
 				(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (extModule: AppModuleFunction): void => {
 					// Errors are not collected here because the HMR works only on develpment mode.
-					console.log(`HMR ${ path }`, extModule);
+					console.log(`HMR ${path}`, extModule);
 					sharedUiComponents.next({});
 					extModule.call(undefined);
 				};
@@ -238,6 +247,7 @@ function loadAppModule(
 function loadApp(
 	pkg: AppPkgDescription,
 	fiberChannelFactory: IFiberChannelFactory,
+	accounts: Array<IAccount>,
 	shellNetworkService: ShellNetworkService
 ): Promise<LoadedAppRuntime|undefined> {
 	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
@@ -253,9 +263,10 @@ function loadApp(
 			routes,
 			createOptions,
 			sharedUiComponents,
-			appContext
+			appContext,
 		},
 		fiberChannelFactory,
+		accounts,
 		shellNetworkService
 	)
 		.then((appModule) => appModule.call(undefined))
@@ -294,16 +305,17 @@ function loadApp(
 }
 
 export function loadApps(
-	apps: AccountAppsData,
+	accounts: Array<IAccount>,
 	fiberChannelFactory: IFiberChannelFactory,
 	shellNetworkService: ShellNetworkService
 ): Promise<LoadedAppsCache> {
 	return Promise.all(
 		map(
-			orderBy(apps, 'priority'),
+			orderBy(accounts[0].apps, 'priority'),
 			(pkg) => loadApp(
 				pkg,
 				fiberChannelFactory,
+				accounts,
 				shellNetworkService
 			)
 		)

@@ -167,6 +167,7 @@ export default class ShellNetworkService {
 							(r, z) => ([...r, zimletToThemePkgDescription(z)]),
 							[]
 						),
+						getInfoResp.attrs._attrs.displayName,
 					)));
 			});
 	}

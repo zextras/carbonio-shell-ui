@@ -26,7 +26,7 @@ export default function AppLoaderContextProvider({ children }) {
 		let canSet = true;
 		setAppsCache([{}, false]);
 		loadApps(
-			accounts[0].apps,
+			accounts,
 			fiberChannelFactory,
 			shellNetworkService
 		)
@@ -37,7 +37,7 @@ export default function AppLoaderContextProvider({ children }) {
 		return () => {
 			canSet = false;
 		};
-	}, [accounts, accountLoaded, fiberChannelFactory, setAppsCache]);
+	}, [accounts, accountLoaded, fiberChannelFactory, shellNetworkService]);
 
 	const value = useMemo(() => ({
 		appsCache,

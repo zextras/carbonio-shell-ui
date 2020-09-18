@@ -10,16 +10,11 @@
  */
 
 import React, { useEffect, useState } from 'react';
+import { combineLatest } from 'rxjs';
 import { map, reduce } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import {
-	Accordion,
 	Container,
-	Collapse,
-	Collapser,
-	IconButton,
-	Padding,
-	Quota,
 	Responsive
 } from '@zextras/zapp-ui';
 import { useAppsCache } from '../app/app-loader-context';
@@ -81,8 +76,10 @@ export default function ShellNavigationBar({
 	const [mainMenuItems, setMainMenuItems] = useState({});
 
 	useEffect(() => {
-		const subscriptions = map(appsCache, (app) => {
-			return app.mainMenuItems.subscribe((menuItems) => {
+		combineLatest(
+			reduce(appsCache, 'mainMenuItems')
+		)
+			.subscribe((menuItems) => {
 				setMainMenuItems(
 					reduce(
 						menuItems,
@@ -106,12 +103,7 @@ export default function ShellNavigationBar({
 					)
 				);
 			});
-		});
-		return () => {
-			subscriptions.forEach((subscription) => {
-				subscription.unsubscribe();
-			});
-		}
+		return () => {}
 	}, [appsCache]);
 
 	return (

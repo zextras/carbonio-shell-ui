@@ -84,11 +84,11 @@ export default function ShellNavigationBar({
 					acc.push(
 						app.mainMenuItems.pipe(
 							rxMap((items) => ({ items, app }))
-						),
-						[]
+						)
 					);
 					return acc;
-				}
+				},
+				[]
 			)
 		)
 			.subscribe((appItems) => {

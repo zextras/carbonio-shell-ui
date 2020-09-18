@@ -67,7 +67,7 @@ export default function AppBoard({ idx }) {
 									r.push(
 										<Route key={`${app.pkg.package}|${appRoute.route}`} exact path={`/${app.pkg.package}${appRoute.route}`}>
 											<Suspense fallback={<LoadingView />}>
-												<AppContextProvider pkg={app.pkg}>
+												<AppContextProvider key={app.pkg.package} pkg={app.pkg}>
 													<RouteView />
 												</AppContextProvider>
 											</Suspense>

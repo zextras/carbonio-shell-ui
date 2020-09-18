@@ -80,11 +80,15 @@ export default function ShellNavigationBar({
 		const subscription = combineLatest(
 			reduce(
 				appsCache,
-				(acc, app, key) => app.mainMenuItems.pipe(
-					rxMap((items) => ({ items, app }))
-				),
-				[]
-			)
+				(acc, app) => {
+					acc.push(
+						app.mainMenuItems.pipe(
+							rxMap((items) => ({ items, app }))
+						),
+						[]
+					);
+					return acc;
+				}
 		)
 			.subscribe((appItems) => {
 				setMainMenuItems(

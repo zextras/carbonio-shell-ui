@@ -10,39 +10,19 @@
  */
 
 import React, { Suspense } from 'react';
-import { reduce } from 'lodash';
 import { Route } from 'react-router-dom';
 import LoadingView from '../bootstrap/loading-view';
-import { useBehaviorSubject } from '../shell/hooks';
 import AppContextProvider from './app-context-provider';
 
-function AppBoardRoute({ route, pkg }) {
+export default function AppBoardRoute({ route, pkg }) {
 	const RouteView = route.view;
 	return (
 		<Route exact path={`/${pkg.package}${route.route}`}>
 			<Suspense fallback={<LoadingView />}>
-				<RouteView />
+				<AppContextProvider pkg={pkg}>
+					<RouteView />
+				</AppContextProvider>
 			</Suspense>
 		</Route>
-	);
-}
-
-export default function AppBoardRoutes({ app }) {
-	const routes = useBehaviorSubject(app.routes);
-	const children = reduce(
-		routes,
-		(r, v, k) => {
-			r.push((
-				<AppBoardRoute key={v.route} pkg={app.pkg} route={v} />
-			));
-			return r;
-		},
-		[]
-	);
-
-	return (
-		<AppContextProvider pkg={app.pkg}>
-			{ children }
-		</AppContextProvider>
 	);
 }

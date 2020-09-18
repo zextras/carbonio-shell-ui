@@ -89,6 +89,7 @@ export default function ShellNavigationBar({
 					);
 					return acc;
 				}
+			)
 		)
 			.subscribe((appItems) => {
 				setMainMenuItems(

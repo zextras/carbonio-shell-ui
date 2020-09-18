@@ -91,7 +91,7 @@ export default function ShellNavigationBar({
 					reduce(
 						appItems,
 						(acc, { items, app }) => {
-							acc[app.pkg.package] = reduce(
+							reduce(
 								items,
 								(r, menuItem, k) => {
 									r[menuItem.id] = {
@@ -109,7 +109,7 @@ export default function ShellNavigationBar({
 									};
 									return r;
 								},
-								{}
+								acc
 							);
 							return acc;
 						},

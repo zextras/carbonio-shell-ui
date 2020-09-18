@@ -10,16 +10,12 @@
  */
 
 import React, { useEffect, useState } from 'react';
+import { combineLatest } from 'rxjs';
+import { map as rxMap } from 'rxjs/operators';
 import { map, reduce } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import {
-	Accordion,
 	Container,
-	Collapse,
-	Collapser,
-	IconButton,
-	Padding,
-	Quota,
 	Responsive
 } from '@zextras/zapp-ui';
 import { useAppsCache } from '../app/app-loader-context';
@@ -81,38 +77,58 @@ export default function ShellNavigationBar({
 	const [mainMenuItems, setMainMenuItems] = useState({});
 
 	useEffect(() => {
-		const subscriptions = map(appsCache, (app) => {
-			return app.mainMenuItems.subscribe((menuItems) => {
+		const subscription = combineLatest(
+			reduce(
+				appsCache,
+				(acc, app) => {
+					acc.push(
+						app.mainMenuItems.pipe(
+							rxMap((items) => ({ items, app }))
+						)
+					);
+					return acc;
+				},
+				[]
+			)
+		)
+			.subscribe((appItems) => {
 				setMainMenuItems(
 					reduce(
-						menuItems,
-						(r, menuItem, k) => {
-							r[menuItem.id] = {
-								id: menuItem.id,
-								label: menuItem.label,
-								icon: menuItem.icon || '',
-								click: () => {
-									setActiveApp(menuItem.id);
-									history.push(getAppLink(menuItem.to, app.pkg));
+						appItems,
+						(acc, { items, app }) => {
+							reduce(
+								items,
+								(r, menuItem, k) => {
+									r[menuItem.id] = {
+										id: menuItem.id,
+										label: menuItem.label,
+										icon: menuItem.icon || '',
+										click: () => {
+											setActiveApp(menuItem.id);
+											history.push(getAppLink(menuItem.to, app.pkg));
+										},
+										items: getFolderStructures(menuItem.children, app, history),
+										to: menuItem.to,
+										pkgName: app.pkg.package,
+										allTos: collectAllTo(app.pkg.package, menuItem)
+									};
+									return r;
 								},
-								items: getFolderStructures(menuItem.children, app, history),
-								to: menuItem.to,
-								pkgName: app.pkg.package,
-								allTos: collectAllTo(app.pkg.package, menuItem)
-							};
-							return r;
+								acc
+							);
+							return acc;
 						},
 						{}
 					)
 				);
 			});
-		});
+
 		return () => {
-			subscriptions.forEach((subscription) => {
+			if (subscription) {
 				subscription.unsubscribe();
-			});
-		}
-	}, [appsCache]);
+			}
+		};
+	}, [appsCache, setMainMenuItems, history]);
 
 	return (
 		<Container

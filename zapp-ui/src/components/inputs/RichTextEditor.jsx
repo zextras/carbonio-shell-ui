@@ -23,7 +23,6 @@ import 'tinymce/plugins/insertdatetime';
 import 'tinymce/plugins/media';
 import 'tinymce/plugins/table';
 import 'tinymce/plugins/paste';
-import 'tinymce/plugins/code';
 import 'tinymce/plugins/help';
 import 'tinymce/plugins/wordcount';
 import 'tinymce/plugins/quickbars';

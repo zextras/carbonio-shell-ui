@@ -9,7 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 import React, { useEffect, useState, useRef, useContext } from 'react';
-import { map, reduce } from 'lodash';
+import { combineLatest } from 'rxjs';
+import { map as rxMap } from 'rxjs/operators';
+import { reduce } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import {
 	Button,
@@ -42,41 +44,61 @@ export default function ShellHeader({
 	const refCreateOptions = useRef(createOptions);
 
 	useEffect(() => {
-		const subscriptions = map(appsCache, (app) => {
-			return app.createOptions.subscribe((options) => {
+		const subscription = combineLatest(
+			reduce(
+				appsCache,
+				(acc, app) => {
+					acc.push(
+						app.createOptions.pipe(
+							rxMap((items) => ({ items, app }))
+						)
+					);
+					return acc;
+				},
+				[]
+			)
+		)
+			.subscribe((_createOptions) => {
 				setCreateOptions(
 					reduce(
-						options,
-						(r, option, k) => {
-							if (refCreateOptions.current.filter(op => op.id === option.id).length === 0) {
-								r.push({
-									id: option.id,
-									label: option.label,
-									icon: option.icon,
-									click: () => {
-										if (window.top.location.pathname.startsWith(`/${app.pkg.package}`)) {
-											history.push(`/${app.pkg.package}` + (option.app.getPath && option.app.getPath() || option.app.path));
-										}
-										else {
-											addBoard(`/${app.pkg.package}` + (option.app.boardPath || option.app.path), option.label);
-										}
-										option.onClick && option.onClick();
+						_createOptions,
+						(acc, { items, app }) => {
+							reduce(
+								items,
+								(r, option) => {
+									if (refCreateOptions.current.filter((op) => op.id === option.id).length === 0) {
+										r.push({
+											id: option.id,
+											label: option.label,
+											icon: option.icon,
+											click: () => {
+												if (window.top.location.pathname.startsWith(`/${app.pkg.package}`)) {
+													history.push(`/${app.pkg.package}` + (option.app.getPath && option.app.getPath() || option.app.path));
+												}
+												else {
+													addBoard(`/${app.pkg.package}` + (option.app.boardPath || option.app.path), option.label);
+												}
+												option.onClick && option.onClick();
+											}
+										});
 									}
-								});
-							}
-							return r;
+									return r;
+								},
+								acc
+							);
+							return acc;
 						},
 						[]
 					)
 				);
 			});
-		});
+
 		return () => {
-			subscriptions.forEach((subscription) => {
+			if (subscription) {
 				subscription.unsubscribe();
-			});
-		}
-	}, [appsCache, addBoard, history]);
+			}
+		};
+	}, [appsCache, addBoard, setCreateOptions, history]);
 
 	return (
 		<Container

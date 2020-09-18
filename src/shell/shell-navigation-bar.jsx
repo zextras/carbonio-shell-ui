@@ -10,8 +10,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { combineLatest } from 'rxjs';
-import { map, reduce } from 'lodash';
+import { map, reduce, keys } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import {
 	Container,
@@ -76,34 +75,40 @@ export default function ShellNavigationBar({
 	const [mainMenuItems, setMainMenuItems] = useState({});
 
 	useEffect(() => {
-		combineLatest(
-			reduce(appsCache, 'mainMenuItems')
-		)
-			.subscribe((menuItems) => {
-				setMainMenuItems(
-					reduce(
-						menuItems,
-						(r, menuItem, k) => {
-							r[menuItem.id] = {
-								id: menuItem.id,
-								label: menuItem.label,
-								icon: menuItem.icon || '',
-								click: () => {
-									setActiveApp(menuItem.id);
-									history.push(getAppLink(menuItem.to, app.pkg));
-								},
-								items: getFolderStructures(menuItem.children, app, history),
-								to: menuItem.to,
-								pkgName: app.pkg.package,
-								allTos: collectAllTo(app.pkg.package, menuItem)
-							};
-							return r;
-						},
-						{}
-					)
+		const subscriptions = map(appsCache, (app) => {
+			return app.mainMenuItems.subscribe((menuItems) => {
+				const newItems = reduce(
+					menuItems,
+					(r, menuItem, k) => {
+						r[menuItem.id] = {
+							id: menuItem.id,
+							label: menuItem.label,
+							icon: menuItem.icon || '',
+							click: () => {
+								setActiveApp(menuItem.id);
+								history.push(getAppLink(menuItem.to, app.pkg));
+							},
+							items: getFolderStructures(menuItem.children, app, history),
+							to: menuItem.to,
+							pkgName: app.pkg.package,
+							allTos: collectAllTo(app.pkg.package, menuItem)
+						};
+						return r;
+					},
+					{}
 				);
+
+				setMainMenuItems({
+					...mainMenuItems,
+					...newItems
+				});
 			});
-		return () => {}
+		});
+		return () => {
+			subscriptions.forEach((subscription) => {
+				subscription.unsubscribe();
+			});
+		}
 	}, [appsCache]);
 
 	return (

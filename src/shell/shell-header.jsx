@@ -9,7 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 import React, { useEffect, useState, useRef, useContext } from 'react';
-import { map, reduce } from 'lodash';
+import { combineLatest } from 'rxjs';
+import { map as rxMap } from 'rxjs/operators';
+import { reduce } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import {
 	Button,
@@ -25,8 +27,6 @@ import {
 import { useTranslation } from '../i18n/hooks';
 import { useAppsCache } from '../app/app-loader-context';
 import ShellContext from './shell-context';
-import { combineLatest } from 'rxjs';
-import { map as rxMap } from 'rxjs/internal/operators/map';
 
 export default function ShellHeader({
 	userBarIsOpen,

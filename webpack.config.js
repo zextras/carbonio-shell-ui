@@ -17,7 +17,7 @@ const flavor = process.env.ZX_SHELL_FLAVOR || 'APP';
 let indexFile;
 const pathsToCopy = [
 	{ from: 'assets', to: 'assets' },
-	{ from: 'node_modules/tinymce/skins', to: 'tinymce/skins/' },
+	{ from: 'tinymce/skins', to: 'tinymce/skins/' },
 ];
 switch (flavor.toUpperCase()) {
 	case 'NPM':

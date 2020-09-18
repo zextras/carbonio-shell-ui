@@ -25,6 +25,8 @@ import {
 import { useTranslation } from '../i18n/hooks';
 import { useAppsCache } from '../app/app-loader-context';
 import ShellContext from './shell-context';
+import { combineLatest } from 'rxjs';
+import { map as rxMap } from 'rxjs/internal/operators/map';
 
 export default function ShellHeader({
 	userBarIsOpen,
@@ -42,13 +44,26 @@ export default function ShellHeader({
 	const refCreateOptions = useRef(createOptions);
 
 	useEffect(() => {
-		const subscriptions = map(appsCache, (app) => {
-			return app.createOptions.subscribe((options) => {
+		const subscription = combineLatest(
+			reduce(
+				appsCache,
+				(acc, app) => {
+					acc.push(
+						app.createOptions.pipe(
+							rxMap((items) => ({ items, app }))
+						)
+					);
+					return acc;
+				},
+				[]
+			)
+		)
+			.subscribe((_createOptions) => {
 				setCreateOptions(
 					reduce(
-						options,
-						(r, option, k) => {
-							if (refCreateOptions.current.filter(op => op.id === option.id).length === 0) {
+						_createOptions,
+						(r, { option, app }, k) => {
+							if (refCreateOptions.current.filter((op) => op.id === option.id).length === 0) {
 								r.push({
 									id: option.id,
 									label: option.label,
@@ -70,13 +85,13 @@ export default function ShellHeader({
 					)
 				);
 			});
-		});
+
 		return () => {
-			subscriptions.forEach((subscription) => {
+			if (subscription) {
 				subscription.unsubscribe();
-			});
-		}
-	}, [appsCache, addBoard, history]);
+			}
+		};
+	}, [appsCache, addBoard, setCreateOptions, history]);
 
 	return (
 		<Container

@@ -109,7 +109,7 @@ export default function ShellNavigationBar({
 				subscription.unsubscribe();
 			});
 		}
-	}, [appsCache]);
+	}, [appsCache, mainMenuItems, setMainMenuItems, history]);
 
 	return (
 		<Container

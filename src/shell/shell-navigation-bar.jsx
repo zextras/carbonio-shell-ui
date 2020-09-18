@@ -10,7 +10,9 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { map, reduce, keys } from 'lodash';
+import { combineLatest } from 'rxjs';
+import { map as rxMap } from 'rxjs/operators';
+import { map, reduce } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import {
 	Container,
@@ -75,41 +77,53 @@ export default function ShellNavigationBar({
 	const [mainMenuItems, setMainMenuItems] = useState({});
 
 	useEffect(() => {
-		const subscriptions = map(appsCache, (app) => {
-			return app.mainMenuItems.subscribe((menuItems) => {
-				const newItems = reduce(
-					menuItems,
-					(r, menuItem, k) => {
-						r[menuItem.id] = {
-							id: menuItem.id,
-							label: menuItem.label,
-							icon: menuItem.icon || '',
-							click: () => {
-								setActiveApp(menuItem.id);
-								history.push(getAppLink(menuItem.to, app.pkg));
-							},
-							items: getFolderStructures(menuItem.children, app, history),
-							to: menuItem.to,
-							pkgName: app.pkg.package,
-							allTos: collectAllTo(app.pkg.package, menuItem)
-						};
-						return r;
-					},
-					{}
+		const subscription = combineLatest(
+			reduce(
+				appsCache,
+				(acc, app, key) => app.mainMenuItems.pipe(
+					rxMap((items) => ({ items, app }))
+				),
+				[]
+			)
+		)
+			.subscribe((appItems) => {
+				setMainMenuItems(
+					reduce(
+						appItems,
+						(acc, { items, app }) => {
+							acc[app.pkg.package] = reduce(
+								items,
+								(r, menuItem, k) => {
+									r[menuItem.id] = {
+										id: menuItem.id,
+										label: menuItem.label,
+										icon: menuItem.icon || '',
+										click: () => {
+											setActiveApp(menuItem.id);
+											history.push(getAppLink(menuItem.to, app.pkg));
+										},
+										items: getFolderStructures(menuItem.children, app, history),
+										to: menuItem.to,
+										pkgName: app.pkg.package,
+										allTos: collectAllTo(app.pkg.package, menuItem)
+									};
+									return r;
+								},
+								{}
+							);
+							return acc;
+						},
+						{}
+					)
 				);
+			});
 
-				setMainMenuItems({
-					...mainMenuItems,
-					...newItems
-				});
-			});
-		});
 		return () => {
-			subscriptions.forEach((subscription) => {
+			if (subscription) {
 				subscription.unsubscribe();
-			});
-		}
-	}, [appsCache, mainMenuItems, setMainMenuItems, history]);
+			}
+		};
+	}, [appsCache, setMainMenuItems, history]);
 
 	return (
 		<Container

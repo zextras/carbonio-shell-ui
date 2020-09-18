@@ -55,7 +55,7 @@ export default function BoardsRouterContainer() {
 								appRoutes,
 								(r, appRoute) => {
 									r.push(
-										<AppBoardRoute key={appRoute.route} pkg={app.pkg} route={appRoute} />
+										<AppBoardRoute key={`${app.pkg.package}|${appRoute.route}`} pkg={app.pkg} route={appRoute} />
 									);
 									return r;
 								},

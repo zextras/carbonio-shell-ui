@@ -13,6 +13,7 @@ import { createContext, useContext } from 'react';
 
 const AppContext = createContext({
 	pkg: undefined,
+	appCtxt: undefined
 });
 
 export function useAppPkg() {
@@ -21,7 +22,8 @@ export function useAppPkg() {
 }
 
 export function useAppContext() {
-	return useContext(AppContext);
+	const { appCtxt } = useContext(AppContext);
+	return appCtxt;
 }
 
 export function useFiberChannel() {

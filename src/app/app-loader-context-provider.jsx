@@ -13,6 +13,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import AppLoaderContext from './app-loader-context';
 import { useFiberChannelFactory, useShellNetworkService, useUserAccounts } from '../bootstrap/bootstrapper-context';
 import { loadApps } from './app-loader';
+import AppContextCacheProvider from './app-context-cache-provider';
 
 export default function AppLoaderContextProvider({ children }) {
 	const shellNetworkService = useShellNetworkService();
@@ -51,7 +52,9 @@ export default function AppLoaderContextProvider({ children }) {
 		<AppLoaderContext.Provider
 			value={value}
 		>
-			{ children }
+			<AppContextCacheProvider>
+				{ children }
+			</AppContextCacheProvider>
 		</AppLoaderContext.Provider>
 	);
 }

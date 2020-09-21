@@ -9,9 +9,10 @@
  * *** END LICENSE BLOCK *****
  */
 import React, {
+	Suspense,
 	useContext, useEffect, useMemo, useState
 } from 'react';
-import { Router } from 'react-router-dom';
+import { Route, Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import styled from 'styled-components';
 import { reduce } from 'lodash';
@@ -20,6 +21,8 @@ import { map as rxMap } from 'rxjs/operators';
 import { useAppsCache } from '../../app/app-loader-context';
 import AppBoardRoute from '../../app/app-board-route';
 import ShellContext from '../shell-context';
+import LoadingView from '../../bootstrap/loading-view';
+import AppContextProvider from '../../app/app-context-provider';
 // eslint-disable-next-line
 const _container = styled.div`
 	display: ${(props) => props.show ? 'block' : 'none'};
@@ -60,8 +63,15 @@ export default function AppBoard({ idx }) {
 							reduce(
 								appRoutes,
 								(r, appRoute) => {
+									const RouteView = appRoute.view;
 									r.push(
-										<AppBoardRoute key={`${app.pkg.package}|${appRoute.route}`} pkg={app.pkg} route={appRoute} />
+										<Route key={`${app.pkg.package}|${appRoute.route}`} exact path={`/${app.pkg.package}${appRoute.route}`}>
+											<Suspense fallback={<LoadingView />}>
+												<AppContextProvider key={app.pkg.package} pkg={app.pkg}>
+													<RouteView />
+												</AppContextProvider>
+											</Suspense>
+										</Route>
 									);
 									return r;
 								},

@@ -9,8 +9,8 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useEffect, useState } from 'react';
-import { Switch } from 'react-router-dom';
+import React, { Suspense, useEffect, useState } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import { reduce } from 'lodash';
 import { combineLatest } from 'rxjs';
@@ -18,6 +18,8 @@ import { map as rxMap } from 'rxjs/operators';
 import { Container } from '@zextras/zapp-ui';
 import { useAppsCache } from '../../app/app-loader-context';
 import AppBoardRoute from '../../app/app-board-route';
+import LoadingView from '../../bootstrap/loading-view';
+import AppContextProvider from '../../app/app-context-provider';
 
 const _BoardsRouterContainer = styled(Container)`
 	flex-grow: 1;
@@ -54,8 +56,15 @@ export default function BoardsRouterContainer() {
 							reduce(
 								appRoutes,
 								(r, appRoute) => {
+									const RouteView = appRoute.view;
 									r.push(
-										<AppBoardRoute key={`${app.pkg.package}|${appRoute.route}`} pkg={app.pkg} route={appRoute} />
+										<Route key={`${app.pkg.package}|${appRoute.route}`} exact path={`/${app.pkg.package}${appRoute.route}`}>
+											<Suspense fallback={<LoadingView />}>
+												<AppContextProvider key={app.pkg.package} pkg={app.pkg}>
+													<RouteView />
+												</AppContextProvider>
+											</Suspense>
+										</Route>
 									);
 									return r;
 								},

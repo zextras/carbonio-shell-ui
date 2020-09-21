@@ -9,30 +9,28 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import AppContext from './app-context';
-import { useAppsCache } from './app-loader-context';
 import { useFiberChannelFactory, useI18nFactory } from '../bootstrap/bootstrapper-context';
 import AppErrorCatcher from './app-error-catcher';
 import I18nProvider from '../i18n/i18n-provider';
+import { useAppContextCache } from './app-context-cache-context';
 
 export default function AppContextProvider({ pkg, children }) {
-	const [appsCache, appsLoaded] = useAppsCache();
+	const appContextCache = useAppContextCache();
 	const fiberChannelFactory = useFiberChannelFactory();
 	const i18nFactory = useI18nFactory();
-	const [appCtxt, setAppCtxt] = useState({});
 
-	useEffect(() => {
-		const sub = appsCache[pkg.package].appContext.subscribe(setAppCtxt);
-		return () => sub.unsubscribe();
-	}, [appsCache, pkg]);
-
-	const value = useMemo(() => ({
+	const memoizedContextFcns = useMemo(() => ({
 		pkg,
 		fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(pkg),
-		fiberChannel: fiberChannelFactory.getAppFiberChannel(pkg),
-		...appCtxt
-	}), [pkg, appCtxt, fiberChannelFactory]);
+		fiberChannel: fiberChannelFactory.getAppFiberChannel(pkg)
+	}), [pkg, fiberChannelFactory]);
+
+	const value = useMemo(() => ({
+		...memoizedContextFcns,
+		appCtxt: appContextCache[pkg.package]
+	}), [pkg, memoizedContextFcns, appContextCache]);
 
 	const i18n = useMemo(() => i18nFactory.getAppI18n(pkg), [i18nFactory, pkg]);
 

@@ -63,7 +63,7 @@ export default function AppContextProvider({ pkg, children }) {
 							acc[app.pkg.package] = appContext;
 							return acc;
 						},
-						[]
+						{}
 					)
 				});
 			});

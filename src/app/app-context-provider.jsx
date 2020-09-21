@@ -9,30 +9,82 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useReducer } from 'react';
+import { combineLatest } from 'rxjs';
+import { reduce } from 'lodash';
+import { map as rxMap } from 'rxjs/operators';
 import AppContext from './app-context';
 import { useAppsCache } from './app-loader-context';
 import { useFiberChannelFactory, useI18nFactory } from '../bootstrap/bootstrapper-context';
 import AppErrorCatcher from './app-error-catcher';
 import I18nProvider from '../i18n/i18n-provider';
 
+const appContextCacheInitialState = {};
+
+function appContextReducer(state, { type, ...rest }) {
+	switch (type) {
+		case 'set-app-context': {
+			return {
+				...rest.appsCtxts
+			};
+		}
+		default:
+			throw new Error();
+	}
+}
+
 export default function AppContextProvider({ pkg, children }) {
 	const [appsCache, appsLoaded] = useAppsCache();
 	const fiberChannelFactory = useFiberChannelFactory();
 	const i18nFactory = useI18nFactory();
-	const [appCtxt, setAppCtxt] = useState({});
+	const [appContextCache, dispatchAppContext] = useReducer(appContextReducer, appContextCacheInitialState);
 
 	useEffect(() => {
-		const sub = appsCache[pkg.package].appContext.subscribe(setAppCtxt);
-		return () => sub.unsubscribe();
-	}, [appsCache, pkg]);
+		const subscription = combineLatest(
+			reduce(
+				appsCache,
+				(acc, app) => {
+					acc.push(
+						app.appContext.pipe(
+							rxMap((appContext) => ({ appContext, app }))
+						)
+					);
+					return acc;
+				},
+				[]
+			)
+		)
+			.subscribe((_appContexts) => {
+				dispatchAppContext({
+					type: 'set-app-context',
+					appsCtxts: reduce(
+						_appContexts,
+						(acc, { appContext, app }) => {
+							acc[app.pkg.package] = appContext;
+							return acc;
+						},
+						[]
+					)
+				});
+			});
 
-	const value = useMemo(() => ({
+		return () => {
+			if (subscription) {
+				subscription.unsubscribe();
+			}
+		};
+	}, [appsCache, dispatchAppContext]);
+
+	const memoizedContextFcns = useMemo(() => ({
 		pkg,
 		fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(pkg),
-		fiberChannel: fiberChannelFactory.getAppFiberChannel(pkg),
-		...appCtxt
-	}), [pkg, appCtxt, fiberChannelFactory]);
+		fiberChannel: fiberChannelFactory.getAppFiberChannel(pkg)
+	}), [pkg, fiberChannelFactory]);
+
+	const value = useMemo(() => ({
+		...memoizedContextFcns,
+		appCtxt: appContextCache[pkg.package]
+	}), [pkg, memoizedContextFcns, appContextCache]);
 
 	const i18n = useMemo(() => i18nFactory.getAppI18n(pkg), [i18nFactory, pkg]);
 

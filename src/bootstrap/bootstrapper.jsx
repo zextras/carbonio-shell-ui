@@ -24,10 +24,11 @@ export default function bootstrapper(onBeforeBoot) {
 
 	return shellDb.open()
 		.then((db) => {
-			const shellNetworkService = new ShellNetworkService(
-				shellDb
-			);
 			const fiberChannelFactory = new FiberChannelFactory();
+			const shellNetworkService = new ShellNetworkService(
+				shellDb,
+				fiberChannelFactory
+			);
 			const i18nFactory = new I18nFactory(fiberChannelFactory);
 			return {
 				db,
@@ -52,7 +53,7 @@ export default function bootstrapper(onBeforeBoot) {
 			fiberChannelFactory,
 			i18nFactory
 		}) => ({
-			'default': () => (
+			default: () => (
 				<BootstrapperContextProvider
 					shellDb={db}
 					shellNetworkService={shellNetworkService}
@@ -62,7 +63,7 @@ export default function bootstrapper(onBeforeBoot) {
 					<I18nProvider i18n={i18nFactory.getShellI18n()}>
 						<BootstrapperRouter />
 					</I18nProvider>
-				</BootstrapperContextProvider>)
-			})
-		);
+				</BootstrapperContextProvider>
+			)
+		}));
 }

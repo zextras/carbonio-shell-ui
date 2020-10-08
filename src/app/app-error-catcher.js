@@ -8,32 +8,25 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React from 'react';
-import AppContext from './app-context';
+import React, { useCallback, useContext } from 'react';
+import { useFiberChannel } from './app-context';
+import Catcher from "../../zapp-ui/src/components/utilities/Catcher";
 
-export default class AppErrorCatcher extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = { hasError: false };
-	}
+function AppErrorCatcher({ children }) {
 
-	componentDidCatch(error, info) {
-		// Display fallback UI
-		this.setState({ hasError: true });
-		// eslint-disable-next-line react/destructuring-assignment
-		this.context.fiberChannelSink('report-exception', { exception: error });
-	}
+	const { fiberChannelSink } = useFiberChannel();
 
-	// eslint-disable-next-line react/static-property-placement
-	static contextType = AppContext;
-
-	render() {
-		// eslint-disable-next-line react/destructuring-assignment
-		if (this.state.hasError) {
-			// You can render any custom fallback UI
-			return <h1>Something went wrong.</h1>;
-		}
-		// eslint-disable-next-line react/destructuring-assignment
-		return this.props.children;
-	}
+	const onError = useCallback((error) => {
+		fiberChannelSink({
+			event: 'report-exception',
+			data: { exception: error }
+		})
+	}, [fiberChannelSink])
+	return (
+		<Catcher onError={onError}>
+			{children}
+		</Catcher>
+	);
 }
+
+export default AppErrorCatcher;

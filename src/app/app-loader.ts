@@ -1,3 +1,4 @@
+/* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
 /*
  * *** BEGIN LICENSE BLOCK *****
@@ -13,8 +14,10 @@
 import {
 	default as Lodash, map, orderBy, compact, keyBy, pick
 } from 'lodash';
-import { default as RxJS, BehaviorSubject } from 'rxjs';
-import { default as React, ComponentClass } from 'react';
+import * as RxJS from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
+import * as React from 'react';
+import { ComponentClass } from 'react';
 import * as ReactDOM from 'react-dom';
 import * as RxJSOperators from 'rxjs/operators';
 import * as ReactRouterDom from 'react-router-dom';

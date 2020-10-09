@@ -71,9 +71,9 @@ describe('Fiber Channel', () => {
 	test('Internal fiber channel and App Sink', () => {
 		const fcf = new FiberChannelFactory();
 		setAllAppsLoaded(fcf);
-		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
+		const sink = fcf.getAppFiberChannelSink({ package: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
-		fcf.getInternalFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
+		fcf.getInternalFiberChannel({ package: 'com_example_package', version: '0.0.0' }).subscribe(checker);
 		sink({
 			event: 'event',
 			data: {}
@@ -89,9 +89,9 @@ describe('Fiber Channel', () => {
 	test('App fiber channel and App Sink', () => {
 		const fcf = new FiberChannelFactory();
 		setAllAppsLoaded(fcf);
-		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
+		const sink = fcf.getAppFiberChannelSink({ package: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
-		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
+		fcf.getAppFiberChannel({ package: 'com_example_package', version: '0.0.0' }).subscribe(checker);
 		sink({ event: 'event' });
 		expect(checker).toBeCalledWith({
 			from: 'com_example_package',
@@ -104,9 +104,9 @@ describe('Fiber Channel', () => {
 	test('App fiber channel and App Sink, event for App', () => {
 		const fcf = new FiberChannelFactory();
 		setAllAppsLoaded(fcf);
-		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
+		const sink = fcf.getAppFiberChannelSink({ package: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
-		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
+		fcf.getAppFiberChannel({ package: 'com_example_package', version: '0.0.0' }).subscribe(checker);
 		sink({ to: { app: 'com_example_package', version: '0.0.0' }, event: 'event' });
 		expect(checker).toBeCalledWith({
 			from: 'com_example_package',
@@ -123,9 +123,9 @@ describe('Fiber Channel', () => {
 	test('App fiber channel and App Sink, event for another App', () => {
 		const fcf = new FiberChannelFactory();
 		setAllAppsLoaded(fcf);
-		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
+		const sink = fcf.getAppFiberChannelSink({ package: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
-		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
+		fcf.getAppFiberChannel({ package: 'com_example_package', version: '0.0.0' }).subscribe(checker);
 		sink({ to: { app: 'com_example_another_package', version: '0.0.0' }, event: 'event' });
 		expect(checker).not.toBeCalled();
 	});
@@ -133,8 +133,8 @@ describe('Fiber Channel', () => {
 	test('App fiber channel and App Sink, Promised event', async () => {
 		const fcf = new FiberChannelFactory();
 		setAllAppsLoaded(fcf);
-		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
-		const fc = fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' });
+		const sink = fcf.getAppFiberChannelSink({ package: 'com_example_package', version: '0.0.0' });
+		const fc = fcf.getAppFiberChannel({ package: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
 		checker.mockImplementationOnce(({ sendResponse }) => sendResponse('return-value'));
 		fc.subscribe(checker);
@@ -145,9 +145,9 @@ describe('Fiber Channel', () => {
 
 	test('Cache an event until apps are loaded', () => {
 		const fcf = new FiberChannelFactory();
-		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
+		const sink = fcf.getAppFiberChannelSink({ package: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
-		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
+		fcf.getAppFiberChannel({ package: 'com_example_package', version: '0.0.0' }).subscribe(checker);
 		sink({ event: 'event' });
 		expect(checker).not.toHaveBeenCalled();
 		setAllAppsLoaded(fcf);
@@ -162,9 +162,9 @@ describe('Fiber Channel', () => {
 	test('Throw error on missing API Version', () => {
 		const fcf = new FiberChannelFactory();
 		setAllAppsLoaded(fcf);
-		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
+		const sink = fcf.getAppFiberChannelSink({ package: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
-		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
+		fcf.getAppFiberChannel({ package: 'com_example_package', version: '0.0.0' }).subscribe(checker);
 		try {
 			sink({ to: { app: 'com_example_package' }, event: 'event' });
 		}
@@ -179,9 +179,9 @@ describe('Fiber Channel', () => {
 	test('Throw error on unsupported API Version', () => {
 		const fcf = new FiberChannelFactory();
 		setAllAppsLoaded(fcf);
-		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
+		const sink = fcf.getAppFiberChannelSink({ package: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
-		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
+		fcf.getAppFiberChannel({ package: 'com_example_package', version: '0.0.0' }).subscribe(checker);
 		try {
 			sink({ to: { app: 'com_example_package', version: '1.0.0' }, event: 'event' });
 		}
@@ -196,9 +196,9 @@ describe('Fiber Channel', () => {
 	test('Reject on error on unsupported API Version', async () => {
 		const fcf = new FiberChannelFactory();
 		setAllAppsLoaded(fcf);
-		const sink = fcf.getAppFiberChannelSink({ name: 'com_example_package', version: '0.0.0' });
+		const sink = fcf.getAppFiberChannelSink({ package: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
-		fcf.getAppFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
+		fcf.getAppFiberChannel({ package: 'com_example_package', version: '0.0.0' }).subscribe(checker);
 		try {
 			const returned = await sink({
 				to: { app: 'com_example_package', version: '1.0.0' },

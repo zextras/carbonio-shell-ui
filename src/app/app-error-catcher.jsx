@@ -8,7 +8,7 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback } from 'react';
 import { useFiberChannel } from './app-context';
 import Catcher from "../../zapp-ui/src/components/utilities/Catcher";
 

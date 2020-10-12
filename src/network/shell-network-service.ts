@@ -75,7 +75,7 @@ export default class ShellNetworkService {
 				.then((r) => r.json())
 				.then((resp) => {
 					if (resp.Body.Fault) {
-						appSink({ event: 'report-exception', data: { exception: resp.Body.Fault.Reason.Text } });
+						appSink({ event: 'report-exception', data: { exception: new Error(resp.Body.Fault.Reason.Text) } });
 						throw new Error(resp.Body.Fault.Reason.Text);
 					}
 					return resp.Body[`${api}Response`];

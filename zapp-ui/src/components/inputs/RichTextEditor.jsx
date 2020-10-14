@@ -5,7 +5,6 @@ import tinymce from 'tinymce/tinymce';
 
 import 'tinymce/themes/silver';
 
-import 'tinymce/plugins/autoresize';
 import 'tinymce/plugins/advlist';
 import 'tinymce/plugins/autolink';
 import 'tinymce/plugins/lists';
@@ -17,7 +16,6 @@ import 'tinymce/plugins/preview';
 import 'tinymce/plugins/anchor';
 import 'tinymce/plugins/searchreplace';
 import 'tinymce/plugins/visualblocks';
-import 'tinymce/plugins/code';
 import 'tinymce/plugins/fullscreen';
 import 'tinymce/plugins/insertdatetime';
 import 'tinymce/plugins/media';
@@ -32,7 +30,7 @@ import { useEffect } from 'react';
 
 // Toolbar: alignleft aligncenter alignright alignjustify |
 
-function RichTextEditor({ onEditorChange, inline, initialValue, value, minHeight, maxHeight, ...rest }) {
+function RichTextEditor({ onEditorChange, inline, initialValue, value, ...rest }) {
   const [ content, setContent ] = useState(initialValue);
   const _onEditorChange = useCallback((content, editor) => {
     setContent(content);
@@ -56,7 +54,6 @@ function RichTextEditor({ onEditorChange, inline, initialValue, value, minHeight
         resize: false,
         inline,
         plugins: [
-          'autoresize',
           'advlist',
           'autolink',
           'lists',
@@ -85,8 +82,6 @@ function RichTextEditor({ onEditorChange, inline, initialValue, value, minHeight
         quickbars_insert_toolbar: inline ? 'bullist numlist' : '',
         quickbars_selection_toolbar: inline ? 'bold italic underline | forecolor backcolor | removeformat | quicklink': 'quicklink',
         contextmenu: inline ? '' : '',
-        min_height: minHeight,
-        max_height: maxHeight,
       }}
       onEditorChange={_onEditorChange}
       {...rest}
@@ -103,16 +98,10 @@ RichTextEditor.propTypes = {
   initialValue: PropTypes.string,
   /** The content of the editor (controlled mode) */
   value: PropTypes.string,
-  /** Minimum height of the editor content */
-  minHeight: PropTypes.number,
-  /** Maximum height of the editor content */
-  maxHeight: PropTypes.number
 };
 
 RichTextEditor.defaultProps = {
   inline: false,
-  minHeight: 100,
-  maxHeight: 2500,
 };
 
 export default RichTextEditor;

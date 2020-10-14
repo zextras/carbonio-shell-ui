@@ -30,6 +30,7 @@ export { default as RichTextEditor } from './components/inputs/RichTextEditor';
 /** navigation components */
 export { default as Accordion } from './components/navigation/Accordion';
 export { default as Breadcrumbs } from './components/navigation/Breadcrumbs';
+export { TabBar, DefaultTabBarItem } from './components/navigation/TabBar';
 
 /** display components */
 export { default as Chip } from './components/display/Chip';
@@ -49,6 +50,7 @@ export { default as Snackbar } from './components/feedback/Snackbar';
 /** Utilities components */
 export { default as Collapse, Collapser } from './components/utilities/Collapse';
 export { default as Catcher } from './components/utilities/Catcher';
+export { default as Portal } from './components/utilities/Portal';
 export { default as Responsive } from './components/utilities/Responsive';
 export { SnackbarManagerContext, SnackbarManager } from './components/utilities/SnackbarManager';
 export { default as Transition } from './components/utilities/Transition';

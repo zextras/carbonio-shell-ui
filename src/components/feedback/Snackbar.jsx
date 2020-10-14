@@ -9,6 +9,7 @@ import Container from '../layout/Container';
 import Padding from '../layout/Padding';
 import Row from '../layout/Row';
 import Transition from '../utilities/Transition';
+import Portal from "../utilities/Portal";
 
 const SnackContainer = styled(Container)`
 	position: fixed;
@@ -47,6 +48,7 @@ const Snackbar = React.forwardRef(function({
 	zIndex,
 	autoHideTimeout,
 	target,
+	disablePortal,
 	...rest
 }, ref) {
 	const screenMode = useScreenMode(target);
@@ -62,40 +64,42 @@ const Snackbar = React.forwardRef(function({
 		}
 	}, [open, disableAutoHide]);
 
-	if (!open) return null;
+	if (disablePortal && !open) return null;
 	return (
-		<Transition ref={ref} type="fade-in-right">
-			<SnackContainer
-				screenMode={screenMode}
-				orientation="horizontal"
-				mainAlignment="space-between"
-				background={type}
-				height="auto"
-				width="auto"
-				zIndex={zIndex}
-				{...rest}
-			>
-				<Row
-					mainAlignment="flex-start"
-					takeAvailableSpace={true}
-					padding={{
-						top: 'small',
-						bottom: 'small',
-						left: 'small'
-					}}
+		<Portal show={open} disablePortal={disablePortal}>
+			<Transition ref={ref} type="fade-in-right">
+				<SnackContainer
+					screenMode={screenMode}
+					orientation="horizontal"
+					mainAlignment="space-between"
+					background={type}
+					height="auto"
+					width="auto"
+					zIndex={zIndex}
+					{...rest}
 				>
-					<Icon size="large" icon={icons[type]} color="gray6" />
-					<Padding left="medium" right="medium" style={{
-						flexBasis: 0,
-						flexGrow: 1,
-						minWidth: '1px'
-					}}>
-						<Text color="gray6" size="large">{ label }</Text>
-					</Padding>
-				</Row>
-				{ !hideButton && <Padding right="extrasmall"><Button label={actionLabel} type="ghost" labelColor="gray6" onClick={handleClick} /></Padding> }
-			</SnackContainer>
-		</Transition>
+					<Row
+						mainAlignment="flex-start"
+						takeAvailableSpace={true}
+						padding={{
+							top: 'small',
+							bottom: 'small',
+							left: 'small'
+						}}
+					>
+						<Icon size="large" icon={icons[type]} color="gray6" />
+						<Padding left="medium" right="medium" style={{
+							flexBasis: 0,
+							flexGrow: 1,
+							minWidth: '1px'
+						}}>
+							<Text color="gray6" size="large">{ label }</Text>
+						</Padding>
+					</Row>
+					{ !hideButton && <Padding right="extrasmall"><Button label={actionLabel} type="ghost" labelColor="gray6" onClick={handleClick} /></Padding> }
+				</SnackContainer>
+			</Transition>
+		</Portal>
 	);
 });
 
@@ -121,7 +125,9 @@ Snackbar.propTypes = {
 	/** autoHide timing in milliseconds */
 	autoHideTimeout: PropTypes.number,
 	/** Window object to use as reference to determine the screenMode */
-	target: PropTypes.instanceOf(Window)
+	target: PropTypes.instanceOf(Window),
+	/** Flag to disable the Portal implementation */
+	disablePortal: PropTypes.bool
 };
 
 Snackbar.defaultProps = {
@@ -130,7 +136,7 @@ Snackbar.defaultProps = {
 	actionLabel: 'Ok',
 	disableAutoHide: false,
 	hideButton: false,
-	zIndex: 101,
+	zIndex: 1000,
 	autoHideTimeout: 4000,
 	target: window.top
 };

@@ -13,8 +13,8 @@
 import {
 	default as Lodash, map, orderBy, compact, keyBy, pick
 } from 'lodash';
-import { default as RxJS, BehaviorSubject } from 'rxjs';
-import { default as React, ComponentClass } from 'react';
+import RxJS, { BehaviorSubject } from 'rxjs';
+import React, { ComponentClass } from 'react';
 import * as ReactDOM from 'react-dom';
 import * as RxJSOperators from 'rxjs/operators';
 import * as ReactRouterDom from 'react-router-dom';
@@ -24,6 +24,7 @@ import * as ReactI18n from 'react-i18next';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import * as ZappUI from '@zextras/zapp-ui';
+import RichTextEditor from '../../zapp-ui/src/components/inputs/RichTextEditor';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
@@ -215,7 +216,7 @@ function loadAppModule(
 							SharedUiComponentsFactory
 						}
 					},
-					'@zextras/zapp-ui': ZappUI
+					'@zextras/zapp-ui': { ...ZappUI, RichTextEditor }
 				};
 				(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve;
 				// eslint-disable-next-line max-len

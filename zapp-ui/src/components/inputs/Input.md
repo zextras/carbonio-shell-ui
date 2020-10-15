@@ -3,11 +3,11 @@ The input component works like a standard html input, and can be either [control
 import { useState } from 'react';
 import { Container, Padding, Text, PasswordInput } from '@zextras/zapp-ui';
 
-const [value, setValue] = useState('Some default value');
+const [value, setValue] = useState('Some Controlled value');
 
 <Container orientation="horizontal" mainAlignment="center" background="gray5" height="fill" width="fill">
     <Container orientation="vertical" mainAlignment="space-around" height="300px" width="50%">
-        <Input label="Input"/>
+        <Input autoComplete="on" autoFocus label="Input" defaultValue="Default Value" />
         <Input
             label="Some other Input"
             value={value}
@@ -15,11 +15,11 @@ const [value, setValue] = useState('Some default value');
                 (ev) => {
                     setValue(ev.target.value)
                 }
-            }  
+            }
             backgroundColor="gray6"
-        />        
+        />
         <PasswordInput hasError={true} label="Password"/>
         <PasswordInput disabled label="Disabled Password"/>
-    </Container>    
+    </Container>
 </Container>
 ```

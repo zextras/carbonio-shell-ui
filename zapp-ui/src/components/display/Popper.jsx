@@ -2,6 +2,7 @@ import React, { useState, useLayoutEffect, useEffect, useRef, useCallback, useMe
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import { createPopper } from '@popperjs/core';
+import Portal from '../utilities/Portal';
 import { useCombinedRefs } from '../../hooks/useCombinedRefs';
 import useKeyboard from '../../hooks/useKeyboard';
 
@@ -27,6 +28,7 @@ const Popper = React.forwardRef(function({
 	placement,
 	onClose,
 	children,
+	disablePortal,
 	...rest
 }, ref) {
 	const innerRef = useRef(undefined);
@@ -100,8 +102,8 @@ const Popper = React.forwardRef(function({
 
 	useEffect(() => {
 		if (open) {
-			window.addEventListener('click', closePopper);
-			return () => window.removeEventListener('click', closePopper);
+			window.top.document.addEventListener('click', closePopper);
+			return () => window.top.document.removeEventListener('click', closePopper);
 		}
 	}, [open, closePopper]);
 
@@ -119,11 +121,13 @@ const Popper = React.forwardRef(function({
 	}, [open, startSentinelRef, endSentinelRef]);
 
 	return (
-		<PopperContainer ref={popperRef} open={open} {...rest}>
-			<div tabIndex={0} ref={startSentinelRef}></div>
-			<PopperWrapper ref={wrapperRef} tabIndex={-1}>{ children }</PopperWrapper>
-			<div tabIndex={0} ref={endSentinelRef}></div>
-		</PopperContainer>
+		<Portal show={open} disablePortal={disablePortal}>
+			<PopperContainer ref={popperRef} open={open} {...rest}>
+				<div tabIndex={0} ref={startSentinelRef}></div>
+				<PopperWrapper ref={wrapperRef} tabIndex={-1}>{ children }</PopperWrapper>
+				<div tabIndex={0} ref={endSentinelRef}></div>
+			</PopperContainer>
+		</Portal>
 	);
 });
 
@@ -159,6 +163,8 @@ Popper.propTypes = {
 	]),
 	/** Callback for closed Popper */
 	onClose: PropTypes.func.isRequired,
+	/** Flag to disable the Portal implementation */
+	disablePortal: PropTypes.bool
 };
 
 Popper.defaultProps = {

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import defaultTheme from '../../theme/Theme';
 
 const Comp = styled.div`
-  color: ${({theme, color}) => theme.palette[color].regular};
+  color: ${({theme, color, disabled}) => theme.palette[color][disabled ? 'disabled' : 'regular']};
   font-family: ${({theme}) => theme.fonts['default']};
   font-size: ${({theme, size}) => theme.sizes.font[size]};
   font-weight: ${({theme, weight}) => theme.fonts.weight[weight]};
@@ -45,14 +45,16 @@ Text.propTypes = {
 		PropTypes.oneOf(Object.keys(defaultTheme.fonts.weight))
 	]),
 	/** Overflow handling */
-	overflow: PropTypes.oneOf(['ellipsis', 'break-word'])
+	overflow: PropTypes.oneOf(['ellipsis', 'break-word']),
+	disabled: PropTypes.bool
 };
 
 Text.defaultProps = {
 	color: 'text',
 	size: 'medium',
 	weight: 'regular',
-	overflow: 'ellipsis'
+	overflow: 'ellipsis',
+	disabled: false
 };
 
 export default Text;

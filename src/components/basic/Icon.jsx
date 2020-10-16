@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ThemeContext } from '@zextras/zapp-ui';
 import defaultTheme from '../../theme/Theme';
 
-const Icon = React.forwardRef(function({ icon, size, color, disabled, style, ...rest }, ref) {
+const Icon = React.forwardRef(function({ icon, size, color, customColor, disabled, style, ...rest }, ref) {
 	const theme = useContext(ThemeContext);
 	const IconComp = useMemo(() => theme.icons[icon] || theme.icons.AlertTriangleOutline, [theme.icons, icon]);
 	return (
@@ -14,7 +14,7 @@ const Icon = React.forwardRef(function({ icon, size, color, disabled, style, ...
 			fill="currentColor"
 			style={{
 				display: 'block',
-				color: theme.palette[color][disabled ? 'disabled' : 'regular'],
+				color: (customColor ? customColor : theme.palette[color][disabled ? 'disabled' : 'regular']),
 				...style
 			}}
 			{...rest}
@@ -33,6 +33,8 @@ Icon.propTypes = {
 		PropTypes.string,
 		PropTypes.oneOf(Object.keys(defaultTheme.palette.light))
 	]),
+	/** Custom color, css syntax */
+	customColor: PropTypes.string,
 	/** Icon name, as key for the theme's icon map */
 	icon: PropTypes.oneOfType([
 		PropTypes.string,

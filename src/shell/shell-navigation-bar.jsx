@@ -65,12 +65,12 @@ function getFolderStructures( folders, app, history ) {
 }
 
 export default function ShellNavigationBar({
-	navigationBarIsOpen,
-	mobileNavIsOpen,
-	onCollapserClick,
-	userMenuTree,
-	quota
-}) {
+																						 navigationBarIsOpen,
+																						 mobileNavIsOpen,
+																						 onCollapserClick,
+																						 userMenuTree,
+																						 quota
+																					 }) {
 	const history = useHistory();
 	const [activeApp, setActiveApp] = useState(undefined);
 	const [appsCache, appsLoaded] = useAppsCache();
@@ -107,6 +107,7 @@ export default function ShellNavigationBar({
 											setActiveApp(menuItem.id);
 											history.push(getAppLink(menuItem.to, app.pkg));
 										},
+										customComponent: menuItem.customComponent,
 										items: getFolderStructures(menuItem.children, app, history),
 										to: menuItem.to,
 										pkgName: app.pkg.package,

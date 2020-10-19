@@ -19,6 +19,9 @@ import { setCreateOptions } from '@zextras/zapp-shell';
 Set the main menu item data object replacing the previous data, his children are rendered inside the
 component formerly known as *[Secondary bar][1]*.
 
+As an alternative to the `children` field it is possible to pass a `customcomponent` which will be rendered
+in the *[Secondary bar][1]*.
+
 ```typescript
 type MainMenuItemData = {
 	id: string;
@@ -26,6 +29,7 @@ type MainMenuItemData = {
 	label: string;
 	to: string;
 	children?: Array<MainSubMenuItemData>;
+    customComponent?: React.Component;
 	app: string;
 };
 

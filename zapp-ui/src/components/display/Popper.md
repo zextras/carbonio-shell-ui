@@ -22,7 +22,7 @@ const [open, setOpen] = useState(false);
 const buttonRef = useRef(undefined);
 
 <>
-  <Button ref={buttonRef} label="Click me!" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)} />
+  <Button ref={buttonRef} label="Hover me!" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)} />
   <Popper open={open} anchorEl={buttonRef} placement="right" onClose={() => setOpen(false)} disableRestoreFocus={true}>
     <Text>This is the content of the Popper</Text>
   </Popper>

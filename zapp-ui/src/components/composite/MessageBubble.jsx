@@ -327,6 +327,7 @@ const MessageBubble = React.forwardRef(function({
 						onOpen={onDropdownOpen}
 						onClose={onDropdownClose}
 						disableRestoreFocus={true}
+						placement="bottom-end"
 					>
 						<IconButton iconColor="currentColor" size="small" icon="ArrowIosDownward" />
 					</Dropdown>

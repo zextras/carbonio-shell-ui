@@ -143,6 +143,9 @@ function loadAppModule(
 			document.body.appendChild(iframe);
 			if (iframe.contentWindow && iframe.contentDocument) {
 				const script: HTMLScriptElement = iframe.contentDocument.createElement('script');
+				iframe.contentWindow.onerror = (msg, url, lineNo, columnNo, error) => {
+					fiberChannelFactory.getAppFiberChannelSink(appPkg)({ event: 'report-exception', data: { exception: error } });
+				};
 				// const revertables = _revertableActions[appPkg.package] = new RevertableActionCollection(
 				// 	this._routerSrvc,
 				// 	this._itemActionSrvc

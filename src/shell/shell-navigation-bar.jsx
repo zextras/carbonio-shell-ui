@@ -14,10 +14,7 @@ import { combineLatest } from 'rxjs';
 import { map as rxMap } from 'rxjs/operators';
 import { map, reduce } from 'lodash';
 import { useHistory } from 'react-router-dom';
-import {
-	Container,
-	Responsive
-} from '@zextras/zapp-ui';
+import { Container, Responsive } from '@zextras/zapp-ui';
 import { useAppsCache } from '../app/app-loader-context';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
@@ -65,12 +62,12 @@ function getFolderStructures( folders, app, history ) {
 }
 
 export default function ShellNavigationBar({
-																						 navigationBarIsOpen,
-																						 mobileNavIsOpen,
-																						 onCollapserClick,
-																						 userMenuTree,
-																						 quota
-																					 }) {
+	navigationBarIsOpen,
+	mobileNavIsOpen,
+	onCollapserClick,
+	userMenuTree,
+	quota
+}) {
 	const history = useHistory();
 	const [activeApp, setActiveApp] = useState(undefined);
 	const [appsCache, appsLoaded] = useAppsCache();

@@ -20,10 +20,10 @@ import {
 } from '@zextras/zapp-ui';
 
 export default function ShellSecondaryBar({
-																						navigationBarIsOpen,
-																						mainMenuItems,
-																						onCollapserClick
-																					}) {
+	navigationBarIsOpen,
+	mainMenuItems,
+	onCollapserClick
+}) {
 	return (
 		<>
 			<Collapse
@@ -42,25 +42,28 @@ export default function ShellSecondaryBar({
 					}}
 				>
 					<Switch>
-						{ map(mainMenuItems,
-							(menuItem) => (
-								<Route key={`/${menuItem.pkgName}${menuItem.to}`} exact path={menuItem.allTos}>
-									{
-										menuItem.customComponent
-											? menuItem.customComponent
-											: menuItem.items.map((folder, index) =>
-												<Accordion
-													key={index}
-													click={folder.click}
-													active={true}
-													icon={folder.icon}
-													label={folder.label}
-													items={folder.items || []}
-												/>
-											)}
-								</Route>
+						{
+							map(mainMenuItems,
+								(menuItem) => (
+									<Route key={`/${menuItem.pkgName}${menuItem.to}`} exact path={menuItem.allTos}>
+										{
+											menuItem.customComponent
+												? menuItem.customComponent
+												: menuItem.items.map((folder, index) => (
+													<Accordion
+														key={index}
+														click={folder.click}
+														active={true}
+														icon={folder.icon}
+														label={folder.label}
+														items={folder.items || []}
+													/>
+												))
+										}
+									</Route>
+								)
 							)
-						)}
+						}
 					</Switch>
 				</Container>
 			</Collapse>

@@ -29,9 +29,9 @@ export function useSplitVisibility(items, removeFrom = 'end') {
 		function handleResize() {
 			setWidth(window.innerWidth);
 		}
-		window.addEventListener("resize", handleResize);
-		return () => window.removeEventListener("resize", handleResize);
-	}, [width]);
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
 
 	const containerRef = useRef();
 	useEffect(()=> {

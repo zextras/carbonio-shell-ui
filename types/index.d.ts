@@ -67,6 +67,7 @@ export type MainMenuItemData = {
 	label: string;
 	to: string;
 	children?: Array<MainSubMenuItemData>;
+	customComponent?: React.Component;
 };
 // Type is in the documentation. If changed update also the documentation.
 export type AppRouteDescription = {

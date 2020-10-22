@@ -28,14 +28,18 @@ const Popover = React.forwardRef(function({ children, open, anchorEl, activateOn
 			});
 			setInnerOpen(true);
 			onMouseMove.cancel();
-			anchorEl.current.removeEventListener('mousemove', onMouseMove);
+			if (anchorEl.current) {
+				anchorEl.current.removeEventListener('mousemove', onMouseMove);
+			}
 		}
 	}, 300), [innerOpen, anchorEl]);
 
 	const closePopover = useCallback(() => {
 		setInnerOpen(false);
 		onMouseMove.cancel();
-		anchorEl.current.removeEventListener('mousemove', onMouseMove);
+		if (anchorEl.current) {
+			anchorEl.current.removeEventListener('mousemove', onMouseMove);
+		}
 	}, [onMouseMove, anchorEl]);
 	const innerOnClose = useCallback(() => !activateOnHover && onClose(), [activateOnHover, onClose]);
 
@@ -55,14 +59,16 @@ const Popover = React.forwardRef(function({ children, open, anchorEl, activateOn
 	}, [closePopover, popoverRef, anchorEl, onMouseMove]);
 
 	useEffect(() => {
-		if (activateOnHover) {
+		if (activateOnHover && anchorEl.current) {
 			anchorEl.current.addEventListener('mouseenter', onMouseEnter);
 			anchorEl.current.addEventListener('mouseleave', onMouseLeave);
 			window.top.document.addEventListener('scroll', closePopover);
 			return () => {
-				anchorEl.current.removeEventListener('mouseenter', onMouseEnter);
-				anchorEl.current.removeEventListener('mouseleave', onMouseLeave);
-				window.top.document.removeEventListener('scroll', closePopover);
+				if (anchorEl.current) {
+					anchorEl.current.removeEventListener('mouseenter', onMouseEnter);
+					anchorEl.current.removeEventListener('mouseleave', onMouseLeave);
+					window.top.document.removeEventListener('scroll', closePopover);
+				}
 			};
 		}
 	}, [anchorEl, activateOnHover, onMouseEnter, onMouseLeave, closePopover]);

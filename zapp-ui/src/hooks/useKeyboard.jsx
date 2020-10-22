@@ -65,7 +65,7 @@ export function getKeyboardPreset(type, callback, ref = undefined) {
 	return eventsArray;
 }
 
-export function useKeyboard(ref, events) {
+function useKeyboard(ref, events) {
 	const keyEvents = useMemo(() => {
 		return map(events, ({ keys, callback, haveToPreventDefault = true }) => {
 			return (e) => {

@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { createContext, useContext } from 'react';
+import { createContext, useCallback, useContext } from 'react';
 
 const ShellContext = createContext({
 	isMobile: true,
@@ -38,6 +38,14 @@ export function useIsMobile() {
 export function useFiberChannel() {
 	const { fiberChannelSink, fiberChannel } = useContext(ShellContext);
 	return { fiberChannelSink, fiberChannel };
+}
+
+export function useCurrentBoard() {
+	const { currentBoard, removeBoard } = useContext(ShellContext);
+	const removeCurrentBoard = useCallback(() => {
+		removeBoard(currentBoard);
+	}, [currentBoard, removeBoard]);
+	return removeCurrentBoard;
 }
 
 export default ShellContext;

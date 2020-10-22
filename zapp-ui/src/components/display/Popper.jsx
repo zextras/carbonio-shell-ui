@@ -1,4 +1,6 @@
-import React, { useState, useLayoutEffect, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, {
+	useState, useLayoutEffect, useEffect, useRef, useCallback, useMemo
+} from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import { createPopper } from '@popperjs/core';
@@ -20,7 +22,7 @@ const PopperWrapper = styled.div`
 	outline: 0;
 `;
 
-const Popper = React.forwardRef(function({
+const Popper = React.forwardRef(({
 	open,
 	anchorEl,
 	virtualElement,
@@ -30,7 +32,7 @@ const Popper = React.forwardRef(function({
 	children,
 	disablePortal,
 	...rest
-}, ref) {
+}, ref) => {
 	const innerRef = useRef(undefined);
 	const popperRef = useCombinedRefs(ref, innerRef);
 	const wrapperRef = useRef(undefined);
@@ -38,18 +40,18 @@ const Popper = React.forwardRef(function({
 	const startSentinelRef = useRef(undefined);
 	const endSentinelRef = useRef(undefined);
 
-	const closePopper = useCallback((e) => !(popperRef.current && popperRef.current.contains(e.target)) && onClose && onClose(), [onClose]);
+	const closePopper = useCallback((e) => !(popperRef.current && popperRef.current.contains(e.target)) && onClose && onClose(), [onClose, popperRef]);
 	const keyboardClosePopper = useCallback((e) => {
 		!disableRestoreFocus && getAnchorEl(anchorEl).focus();
 		onClose && onClose();
 	}, [anchorEl, disableRestoreFocus, onClose]);
 
 	const onStartSentinelFocus = useCallback(() => {
-		const nodeList = wrapperRef.current ? wrapperRef.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])' : []);
+		const nodeList = wrapperRef.current ? wrapperRef.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])') : [];
 		nodeList.length > 0 && nodeList[nodeList.length - 1].focus();
 	}, []);
 	const onEndSentinelFocus = useCallback(() => {
-		const node = wrapperRef.current ? wrapperRef.current.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])' : []);
+		const node = wrapperRef.current ? wrapperRef.current.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])') : [];
 		node && node.focus();
 	}, []);
 
@@ -59,7 +61,7 @@ const Popper = React.forwardRef(function({
 	useLayoutEffect(() => {
 		if (open) {
 			const popperOptions = {
-				placement: placement,
+				placement,
 				modifiers: [
 					{
 						name: 'offset',
@@ -72,17 +74,20 @@ const Popper = React.forwardRef(function({
 
 			const _anchorEl = getAnchorEl(anchorEl);
 			if (_anchorEl) {
-				let _virtualElement = undefined;
+				let _virtualElement;
 				if (virtualElement) {
-					_virtualElement = { getBoundingClientRect: () => ({
-						width: 0,
-						height: 0,
-						top: virtualElement.y,
-						right: virtualElement.x,
-						bottom: virtualElement.y,
-						left: virtualElement.x
-					})};
-				}else{
+					_virtualElement = {
+						getBoundingClientRect: () => ({
+							width: 0,
+							height: 0,
+							top: virtualElement.y,
+							right: virtualElement.x,
+							bottom: virtualElement.y,
+							left: virtualElement.x
+						})
+					};
+				}
+				else {
 					popperOptions.modifiers.push({
 						name: 'flip',
 						options: {
@@ -115,17 +120,17 @@ const Popper = React.forwardRef(function({
 			return () => {
 				startSentinelRef.current && startSentinelRef.current.removeEventListener('focus', onStartSentinelFocus);
 				endSentinelRef.current && endSentinelRef.current.removeEventListener('focus', onEndSentinelFocus);
-			}
+			};
 		}
 		return () => {};
-	}, [open, startSentinelRef, endSentinelRef]);
+	}, [open, startSentinelRef, endSentinelRef, onStartSentinelFocus, onEndSentinelFocus]);
 
 	return (
 		<Portal show={open} disablePortal={disablePortal}>
 			<PopperContainer ref={popperRef} open={open} {...rest}>
-				<div tabIndex={0} ref={startSentinelRef}></div>
+				<div tabIndex={0} ref={startSentinelRef} />
 				<PopperWrapper ref={wrapperRef} tabIndex={-1}>{ children }</PopperWrapper>
-				<div tabIndex={0} ref={endSentinelRef}></div>
+				<div tabIndex={0} ref={endSentinelRef} />
 			</PopperContainer>
 		</Portal>
 	);
@@ -139,7 +144,8 @@ Popper.propTypes = {
 		PropTypes.func,
 		PropTypes.shape({ current: PropTypes.Element })
 	]).isRequired,
-	/** Optional parameter to anchor the popper to a virtual element, defined by his x, y coordinates (ex. {x: 2, y: 2}) */
+	/** Optional parameter to anchor the popper to a virtual element,
+	 * defined by his x, y coordinates (ex. {x: 2, y: 2}) */
 	virtualElement: PropTypes.object,
 	/** Whether or not to disable the re-focus of Popper trigger */
 	disableRestoreFocus: PropTypes.bool,
@@ -170,7 +176,9 @@ Popper.propTypes = {
 Popper.defaultProps = {
 	open: false,
 	disableRestoreFocus: false,
-	placement: 'bottom-end'
+	placement: 'bottom-end',
+	virtualElement: null,
+	disablePortal: false
 };
 
 export default Popper;

@@ -82,12 +82,18 @@ export default function app() {
 		{
 			id: 'create-contact',
 			label: 'New Contact',
-			app: { path: '/contact/new', getPath: () => '/getPath/contacts/new' },
+			app: {
+				boardPath: '/contact/new',
+				getPath: () => '/board/contacts/new',
+			},
 		},
 		{
 			id: 'create-mail',
 			label: 'New Mail',
-			app: { path: '/mail/new', boardPath: '/board/mail/new' },
+			app: {
+				boardPath: '/mail/new',
+				getPath: () => '/board/mail/new'
+			},
 		}
 	]);
 }

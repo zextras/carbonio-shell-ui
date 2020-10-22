@@ -67,5 +67,10 @@ export { MessageBubble, ReplyMessage } from './components/composite/MessageBubbl
 export { extendTheme } from './theme/Theme';
 export { default as ThemeContext } from './theme/ThemeContext';
 export { default as ThemeProvider } from './theme/ThemeProvider';
+
+export { useCombinedRefs } from './hooks/useCombinedRefs';
+export { useHiddenCount } from './hooks/useHiddenCount';
+export { default as useKeyboard, getKeyboardPreset } from './hooks/useKeyboard';
 export { useScreenMode } from './hooks/useScreenMode';
 export { useSnackbar } from './hooks/useSnackbar';
+export { useSplitVisibility } from './hooks/useSplitVisibility';

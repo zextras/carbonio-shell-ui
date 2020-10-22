@@ -34,13 +34,13 @@ const Checkbox = React.forwardRef(function({
 	const ckbRef = useCombinedRefs(ref, innerRef);
 
 	const uncontrolledMode = useMemo(() => typeof value === 'undefined', [value]);
-	const handleClick = useCallback(() => {
+	const handleClick = useCallback((ev) => {
 		if (!disabled) {
 			if (uncontrolledMode) {
 				setChecked((checked) => !checked);
 			}
 			if (onClick) {
-				onClick();
+				onClick(ev);
 			}
 		}
 	}, [disabled, uncontrolledMode, onClick]);

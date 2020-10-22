@@ -15,6 +15,7 @@ import ShellDb from '../db/shell-db';
 import { GetInfoResponse, ZimletPkgDescription } from './soap/types';
 import { zimletToAppPkgDescription, zimletToThemePkgDescription } from './soap/utils';
 import { AppPkgDescription, SoapFetch } from '../../types';
+import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 
 export default class ShellNetworkService {
 	private _fetch = fetch.bind(window);
@@ -22,7 +23,10 @@ export default class ShellNetworkService {
 	private _account?: Account;
 
 	// eslint-disable-next-line no-useless-constructor
-	constructor(private _shellDb: ShellDb) {
+	constructor(
+		private _shellDb: ShellDb,
+		private _FCFactory: IFiberChannelFactory
+	) {
 		// TODO: Validate the session
 		_shellDb.observe(() => _shellDb.accounts.toCollection().limit(1).toArray())
 			.subscribe((a) => {
@@ -41,6 +45,8 @@ export default class ShellNetworkService {
 	}
 
 	public getAppSoapFetch(appPackageDescription: AppPkgDescription): SoapFetch {
+		const appSink = this._FCFactory.getAppFiberChannelSink(appPackageDescription);
+		console.log(appSink);
 		const _fetch = this._getAppFetch(appPackageDescription);
 		return (api, body) => {
 			const request: { Header?: any; Body: any } = {
@@ -68,8 +74,14 @@ export default class ShellNetworkService {
 			)
 				.then((r) => r.json())
 				.then((resp) => {
-					if (resp.Body.Fault) throw new Error(resp.Body.Fault.Reason.Text);
+					if (resp.Body.Fault) {
+						appSink({ event: 'report-exception', data: { exception: new Error(resp.Body.Fault.Reason.Text) } });
+						throw new Error(resp.Body.Fault.Reason.Text);
+					}
 					return resp.Body[`${api}Response`];
+				})
+				.catch((err) => {
+					appSink({ event: 'report-exception', data: { exception: err } });
 				});
 		};
 	}

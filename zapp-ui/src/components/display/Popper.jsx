@@ -38,18 +38,18 @@ const Popper = React.forwardRef(function({
 	const startSentinelRef = useRef(undefined);
 	const endSentinelRef = useRef(undefined);
 
-	const closePopper = useCallback((e) => !popperRef.current.contains(e.target) && onClose && onClose(), [onClose]);
+	const closePopper = useCallback((e) => !(popperRef.current && popperRef.current.contains(e.target)) && onClose && onClose(), [onClose]);
 	const keyboardClosePopper = useCallback((e) => {
 		!disableRestoreFocus && getAnchorEl(anchorEl).focus();
 		onClose && onClose();
 	}, [anchorEl, disableRestoreFocus, onClose]);
 
 	const onStartSentinelFocus = useCallback(() => {
-		const nodeList = wrapperRef.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+		const nodeList = wrapperRef.current ? wrapperRef.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])' : []);
 		nodeList.length > 0 && nodeList[nodeList.length - 1].focus();
 	}, []);
 	const onEndSentinelFocus = useCallback(() => {
-		const node = wrapperRef.current.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+		const node = wrapperRef.current ? wrapperRef.current.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])' : []);
 		node && node.focus();
 	}, []);
 
@@ -109,15 +109,15 @@ const Popper = React.forwardRef(function({
 
 	useEffect(() => {
 		if (open) {
-			wrapperRef.current.focus();
-			startSentinelRef.current.addEventListener('focus', onStartSentinelFocus);
-			endSentinelRef.current.addEventListener('focus', onEndSentinelFocus);
-
+			wrapperRef.current && wrapperRef.current.focus();
+			startSentinelRef.current && startSentinelRef.current.addEventListener('focus', onStartSentinelFocus);
+			endSentinelRef.current && endSentinelRef.current.addEventListener('focus', onEndSentinelFocus);
 			return () => {
 				startSentinelRef.current && startSentinelRef.current.removeEventListener('focus', onStartSentinelFocus);
 				endSentinelRef.current && endSentinelRef.current.removeEventListener('focus', onEndSentinelFocus);
 			}
 		}
+		return () => {};
 	}, [open, startSentinelRef, endSentinelRef]);
 
 	return (

@@ -9,12 +9,12 @@
  * *** END LICENSE BLOCK *****
  */
 /* eslint-disable */
-import app from './app';
+import App from './app';
 
-window.__ZAPP_EXPORT__(app);
+window.__ZAPP_EXPORT__(App);
 
 if (module.hot) {
 	module.hot.accept('./app.jsx', () => {
-		window.__ZAPP_HMR_EXPORT__(app);
+		window.__ZAPP_HMR_EXPORT__(App);
 	});
 }

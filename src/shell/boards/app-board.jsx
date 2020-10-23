@@ -89,7 +89,7 @@ export default function AppBoard({ idx }) {
 				subscription.unsubscribe();
 			}
 		};
-	}, [appsCache, setRoutes]);
+	}, [appsCache]);
 
 	const history = useMemo(() => createMemoryHistory(), []);
 	// eslint-disable-next-line

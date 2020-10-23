@@ -10,7 +10,7 @@
  */
 
 import { Container, IconButton, Row } from '@zextras/zapp-ui';
-import { map } from 'lodash';
+import { map, isEmpty } from 'lodash';
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import { BoardValueContext, BoardSetterContext } from './boards/board-context';
@@ -59,7 +59,7 @@ function ToggleBoardIcon() {
 	const { boards, minimized } = useContext(BoardValueContext);
 	const { toggleMinimized } = useContext(BoardSetterContext);
 
-	if (!Object.keys(boards).length) return null;
+	if (isEmpty(boards)) return null;
 	return (
 		<IconButton
 			iconColor="primary"

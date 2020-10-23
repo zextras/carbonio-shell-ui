@@ -26,6 +26,7 @@ import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
 import ShellMenuPanel from './shell-menu-panel';
 import AppBoardWindow from './boards/app-board-window';
+import AppLoaderMounter from '../app/app-loader-mounter';
 
 export default function ShellView() {
 	return (

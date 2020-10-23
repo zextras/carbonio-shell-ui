@@ -10,7 +10,10 @@
  */
 import React, {
 	Suspense,
-	useContext, useEffect, useMemo, useState
+	useContext,
+	useEffect,
+	useMemo,
+	useState
 } from 'react';
 import { Route, Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
@@ -19,9 +22,10 @@ import { reduce } from 'lodash';
 import { combineLatest } from 'rxjs';
 import { map as rxMap } from 'rxjs/operators';
 import { useAppsCache } from '../../app/app-loader-context';
-import ShellContext from '../shell-context';
 import LoadingView from '../../bootstrap/loading-view';
 import AppContextProvider from '../../app/app-context-provider';
+import { BoardValueContext, BoardSetterContext } from './board-context';
+
 // eslint-disable-next-line
 const _container = styled.div`
 	display: ${(props) => props.show ? 'block' : 'none'};
@@ -31,11 +35,8 @@ const _container = styled.div`
 `;
 
 export default function AppBoard({ idx }) {
-	const {
-		currentBoard,
-		boards,
-		updateBoard
-	} = useContext(ShellContext);
+	const { boards, currentBoard } = useContext(BoardValueContext);
+	const { updateBoard } = useContext(BoardSetterContext);
 	const [appsCache] = useAppsCache();
 	const [routes, setRoutes] = useState([]);
 

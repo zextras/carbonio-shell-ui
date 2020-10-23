@@ -19,6 +19,7 @@ import ShellThemeProvider from './shell-theme-provider';
 import ShellContextProvider from './shell-context-provider';
 import SharedUiComponentsContextProvider
 	from '../shared-ui-components/shared-ui-components-context-provider';
+import BoardContextProvider from './boards/board-context-provider';
 import { useShellDb, useShellNetworkService } from '../bootstrap/bootstrapper-context';
 import { useTranslation } from '../i18n/hooks';
 import ShellHeader from './shell-header';
@@ -31,12 +32,13 @@ export default function ShellView() {
 	return (
 		<ShellThemeProvider>
 			<ShellContextProvider>
-				<AppLoaderContextProvider>
-					<SharedUiComponentsContextProvider>
-						<Shell />
-					</SharedUiComponentsContextProvider>
-					<AppLoaderMounter />
-				</AppLoaderContextProvider>
+				<BoardContextProvider>
+					<AppLoaderContextProvider>
+						<SharedUiComponentsContextProvider>
+							<Shell />
+						</SharedUiComponentsContextProvider>
+					</AppLoaderContextProvider>
+				</BoardContextProvider>
 			</ShellContextProvider>
 		</ShellThemeProvider>
 	);

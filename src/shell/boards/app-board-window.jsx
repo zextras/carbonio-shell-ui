@@ -21,9 +21,9 @@ import {
 	Button,
 	useHiddenCount
 } from '@zextras/zapp-ui';
-import ShellContext from '../shell-context';
 import AppBoardTab from './app-board-tab';
 import AppBoard from './app-board';
+import { BoardSetterContext, BoardValueContext } from './board-context';
 
 const BoardContainer = styled.div`
 	position: fixed;
@@ -68,12 +68,14 @@ export default function AppBoardWindow() {
 		boards: shellBoards,
 		currentBoard,
 		largeView,
+		minimized
+	} = useContext(BoardValueContext);
+	const {
 		toggleLargeView,
-		minimized,
 		toggleMinimized,
 		removeAllBoards,
 		setCurrentBoard
-	} = useContext(ShellContext);
+	} = useContext(BoardSetterContext);
 
 	const [tabs, boards] = useMemo(() => reduce(
 		shellBoards,

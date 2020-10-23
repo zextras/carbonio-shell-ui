@@ -37,6 +37,7 @@ export default function ShellView() {
 						<SharedUiComponentsContextProvider>
 							<Shell />
 						</SharedUiComponentsContextProvider>
+						<AppLoaderMounter />
 					</AppLoaderContextProvider>
 				</BoardContextProvider>
 			</ShellContextProvider>

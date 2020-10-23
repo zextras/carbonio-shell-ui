@@ -7,13 +7,14 @@ import { useCombinedRefs } from '../../hooks/useCombinedRefs';
 
 const PopoverContainer = styled.div`
 	padding: ${(props) => props.theme.sizes.padding.small};
-	border-radius: ${(props) => props.theme.borderRadius};
+	border-radius: ${(props) => (props.styleAsModal ? '16px' : props.theme.borderRadius)};
 	background-color: ${(props) => props.theme.palette.gray6.regular};
 	box-shadow: 0px 0px 4px 0px rgba(166,166,166,0.5);
 	max-width: 92vw;
+	outline: none;
 `;
 
-const Popover = React.forwardRef(function({ children, open, anchorEl, activateOnHover, placement, onClose, ...rest }, ref) {
+const Popover = React.forwardRef(function({ children, open, anchorEl, activateOnHover, placement, onClose, styleAsModal, ...rest }, ref) {
 	const innerRef = useRef(undefined);
 	const popoverRef = useCombinedRefs(ref, innerRef);
 	const [innerOpen, setInnerOpen] = useState(false);
@@ -27,40 +28,47 @@ const Popover = React.forwardRef(function({ children, open, anchorEl, activateOn
 			});
 			setInnerOpen(true);
 			onMouseMove.cancel();
-			anchorEl.current.removeEventListener('mousemove', onMouseMove);
+			if (anchorEl.current) {
+				anchorEl.current.removeEventListener('mousemove', onMouseMove);
+			}
 		}
 	}, 300), [innerOpen, anchorEl]);
 
 	const closePopover = useCallback(() => {
 		setInnerOpen(false);
 		onMouseMove.cancel();
-		anchorEl.current.removeEventListener('mousemove', onMouseMove);
+		if (anchorEl.current) {
+			anchorEl.current.removeEventListener('mousemove', onMouseMove);
+		}
 	}, [onMouseMove, anchorEl]);
 	const innerOnClose = useCallback(() => !activateOnHover && onClose(), [activateOnHover, onClose]);
 
-	const onMouseEnter = useCallback(() => !innerOpen && anchorEl.current.addEventListener('mousemove', onMouseMove), [innerOpen, onMouseMove, anchorEl]);
+	const onMouseEnter = useCallback(() => !innerOpen && anchorEl.current && anchorEl.current.addEventListener('mousemove', onMouseMove), [innerOpen, onMouseMove, anchorEl]);
 	const onMouseLeave = useCallback((e) => {
-		if (e.relatedTarget !== popoverRef.current && !popoverRef.current.contains(e.relatedTarget)) {
+		onMouseMove.cancel();
+		if ((e.relatedTarget !== popoverRef.current) && popoverRef.current && !popoverRef.current.contains(e.relatedTarget)) {
 			closePopover();
 		}
-		else {
+		else if (popoverRef.current) {
 			popoverRef.current.addEventListener('mouseleave', (e) => {
-				if (e.toElement !== anchorEl.current && !anchorEl.current.contains(e.toElement)) {
+				if ((e.toElement !== anchorEl.current) && anchorEl.current && !anchorEl.current.contains(e.toElement)) {
 					closePopover();
 				}
 			});
 		}
-	}, [closePopover, popoverRef, anchorEl]);
+	}, [closePopover, popoverRef, anchorEl, onMouseMove]);
 
 	useEffect(() => {
-		if (activateOnHover) {
+		if (activateOnHover && anchorEl.current) {
 			anchorEl.current.addEventListener('mouseenter', onMouseEnter);
 			anchorEl.current.addEventListener('mouseleave', onMouseLeave);
 			window.top.document.addEventListener('scroll', closePopover);
 			return () => {
-				anchorEl.current.removeEventListener('mouseenter', onMouseEnter);
-				anchorEl.current.removeEventListener('mouseleave', onMouseLeave);
-				window.top.document.removeEventListener('scroll', closePopover);
+				if (anchorEl.current) {
+					anchorEl.current.removeEventListener('mouseenter', onMouseEnter);
+					anchorEl.current.removeEventListener('mouseleave', onMouseLeave);
+					window.top.document.removeEventListener('scroll', closePopover);
+				}
 			};
 		}
 	}, [anchorEl, activateOnHover, onMouseEnter, onMouseLeave, closePopover]);
@@ -75,17 +83,20 @@ const Popover = React.forwardRef(function({ children, open, anchorEl, activateOn
 			onClose={innerOnClose}
 			{...rest}
 		>
-			<PopoverContainer>{ children }</PopoverContainer>
+			<PopoverContainer styleAsModal={styleAsModal}>{ children }</PopoverContainer>
 		</Popper>
 	);
 });
 
 Popover.propTypes = {
 	/** Whether to activate the popover on hover of anchorEl. If true, the 'open' prop will be ignored.  */
-	activateOnHover: PropTypes.bool
+	activateOnHover: PropTypes.bool,
+	/** Whether to style the popover container as a modal component */
+	styleAsModal: PropTypes.bool
 };
 Popover.defaultProps = {
-	activateOnHover: false
+	activateOnHover: false,
+	styleAsModal: false
 };
 
 export default Popover;

@@ -14,10 +14,7 @@ import { combineLatest } from 'rxjs';
 import { map as rxMap } from 'rxjs/operators';
 import { map, reduce } from 'lodash';
 import { useHistory } from 'react-router-dom';
-import {
-	Container,
-	Responsive
-} from '@zextras/zapp-ui';
+import { Container, Responsive } from '@zextras/zapp-ui';
 import { useAppsCache } from '../app/app-loader-context';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
@@ -107,6 +104,7 @@ export default function ShellNavigationBar({
 											setActiveApp(menuItem.id);
 											history.push(getAppLink(menuItem.to, app.pkg));
 										},
+										customComponent: menuItem.customComponent,
 										items: getFolderStructures(menuItem.children, app, history),
 										to: menuItem.to,
 										pkgName: app.pkg.package,

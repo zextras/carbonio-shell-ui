@@ -10,36 +10,32 @@
  */
 import React, { useCallback, useContext } from 'react';
 import styled from 'styled-components';
-import { IconButton, Text, Row } from '@zextras/zapp-ui';
-import ShellContext from '../shell-context';
+import { IconButton, Text, Row, Padding } from '@zextras/zapp-ui';
+import { BoardValueContext, BoardSetterContext } from './board-context';
 
 const TabContainer = styled(Row)`
 	cursor: pointer;
 	height: 100%;
-	width: 152px;
-	margin: 0 8px 0 0;
+	width: 160px;
 	user-select: none;
 `;
 
 export default function AppBoardTab({ idx }) {
 	const {
 		boards,
+		currentBoard
+	} = useContext(BoardValueContext);
+	const {
 		removeBoard,
-		currentBoard,
 		setCurrentBoard
-	} = useContext(ShellContext);
+	} = useContext(BoardSetterContext);
 
-	const onClick = useCallback((ev) => {
-		ev.stopPropagation();
-		ev.preventDefault();
-		setCurrentBoard(idx);
-	}, [setCurrentBoard, idx]);
+	const onClick = useCallback(() => setCurrentBoard(idx), [idx]);
 
 	const onRemove = useCallback((ev) => {
 		ev.stopPropagation();
-		ev.preventDefault();
 		removeBoard(idx);
-	}, [removeBoard, idx]);
+	}, [idx]);
 
 	return (
 		<TabContainer active={currentBoard === idx}>
@@ -49,10 +45,12 @@ export default function AppBoardTab({ idx }) {
 					weight={currentBoard === idx ? 'bold' : 'regular'}
 					color={currentBoard === idx ? 'text' : 'secondary'}
 				>
-					{ boards[idx].title }
+					{boards[idx].title}
 				</Text>
 			</Row>
-			<IconButton iconColor="secondary" icon="Close" onClick={onRemove} size="small" />
+			<Padding right="small">
+				<IconButton iconColor="secondary" icon="Close" onClick={onRemove} size="small" />
+			</Padding>
 		</TabContainer>
 	);
 }

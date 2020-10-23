@@ -10,10 +10,10 @@
  */
 
 import { Container, IconButton, Row } from '@zextras/zapp-ui';
-import { map } from 'lodash';
+import { map, isEmpty } from 'lodash';
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
-import ShellContext from './shell-context';
+import { BoardValueContext, BoardSetterContext } from './boards/board-context';
 
 const AppIcon = styled(IconButton)`
 	${(props) => props.active && css`
@@ -21,16 +21,7 @@ const AppIcon = styled(IconButton)`
 	`}	
 `;
 
-export default function ShellPrimaryBar({
-	mainMenuItems,
-	activeApp
-}) {
-	const {
-		boards: shellBoards,
-		minimized,
-		toggleMinimized
-	} = useContext(ShellContext);
-
+export default function ShellPrimaryBar({ mainMenuItems, activeApp }) {
 	return (
 		<Container
 			width={48}
@@ -46,29 +37,35 @@ export default function ShellPrimaryBar({
 				wrap="nowrap"
 				style={{ minHeight: '1px', overflowY: 'overlay' }}
 			>
-				{ map(mainMenuItems, (app, key) =>
+				{map(mainMenuItems, (app, key) => (
 					<AppIcon
 						key={key}
-						iconColor={activeApp === app.id ? 'primary' : 'text'}
-						active={activeApp === app.id}
 						icon={app.icon}
+						active={activeApp === app.id}
+						iconColor={activeApp === app.id ? 'primary' : 'text'}
 						onClick={app.click}
 						size="large"
 					/>
-				)}
+				))}
 			</Row>
-			{
-				Object.keys(shellBoards).length > 0 && (
-					<Row>
-						<IconButton
-							iconColor="primary"
-							icon={minimized ? 'BoardOpen' : 'BoardCollapse'}
-							onClick={toggleMinimized}
-							size="large"
-						/>
-					</Row>
-				)
-			}
+			<Row>
+				<ToggleBoardIcon />
+			</Row>
 		</Container>
+	);
+}
+
+function ToggleBoardIcon() {
+	const { boards, minimized } = useContext(BoardValueContext);
+	const { toggleMinimized } = useContext(BoardSetterContext);
+
+	if (isEmpty(boards)) return null;
+	return (
+		<IconButton
+			iconColor="primary"
+			icon={minimized ? 'BoardOpen' : 'BoardCollapse'}
+			onClick={toggleMinimized}
+			size="large"
+		/>
 	);
 }

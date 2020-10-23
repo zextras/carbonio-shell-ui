@@ -6,6 +6,7 @@ import Padding from '../layout/Padding';
 import Icon from '../basic/Icon';
 import Text from '../basic/Text';
 import Container from '../layout/Container';
+import Portal from '../utilities/Portal';
 import useKeyboard, { getKeyboardPreset } from '../../hooks/useKeyboard';
 import { pseudoClasses } from '../utilities/functions';
 
@@ -21,12 +22,16 @@ const PopperList = styled.div`
 	pointer-events: none;
 	background-color: ${({theme}) => theme.palette.gray5.regular};
 	box-shadow: 0px 0px 4px 0px rgba(166,166,166,0.5);
-	z-index: 99;
+	z-index: 999;
 	
 	padding: ${(props) => props.theme.sizes.padding.small} 0;
 	max-width: ${(props) => props.width === '100%' ? '100%' : props.maxWidth};
 	max-height: 50vh;
-	width: ${(props) => props.width};
+	width: ${(props) =>
+		props.width === '100%' && props.triggerRef.current
+			? props.triggerRef.current.clientWidth + 'px'
+			: 'auto'
+	};
 	overflow-y: auto;
 
 	&, > [tabindex="-1"]:focus {
@@ -53,6 +58,7 @@ const Dropdown = React.forwardRef(function({
 	onOpen,
 	onClose,
 	children,
+	disablePortal,
 	...rest
 }, ref) {
 	const [open, setOpen] = useState(false);
@@ -66,14 +72,10 @@ const Dropdown = React.forwardRef(function({
 	const openPopper = useCallback(() => {
 		setOpen(true);
 		onOpen && onOpen();
-
-		setTimeout(() => {
-			const selectedItems = dropdownRef.current.querySelectorAll('.selected');
-			selectedItems.length > 0 ? selectedItems[0].focus() : popperItemsRef.current.children[0] && popperItemsRef.current.children[0].focus();
-		}, 1);
 	}, [onOpen]);
 
-	const closePopper = useCallback(() => {
+	const closePopper = useCallback((e) => {
+		e && e.stopPropagation();
 		setOpen(false);
 		!disableRestoreFocus && triggerRef.current.focus();
 		onClose && onClose();
@@ -84,10 +86,10 @@ const Dropdown = React.forwardRef(function({
 			e.preventDefault();
 			openPopper();
 		}
-	}, [disabled, openPopper, closePopper]);
+	}, [disabled, openPopper]);
 
 	const clickOutsidePopper = useCallback((e) => {
-		e.target !== dropdownRef.current && !dropdownRef.current.contains(e.target) && closePopper();
+		dropdownRef.current && e.target !== dropdownRef.current && !dropdownRef.current.contains(e.target) && closePopper();
 	}, [closePopper]);
 
 	const onStartSentinelFocus = useCallback(() => popperItemsRef.current.querySelector('div[tabindex]:last-child').focus(), []);
@@ -95,9 +97,9 @@ const Dropdown = React.forwardRef(function({
 
 	const triggerEvents = handleTriggerEvents && useMemo(() => getKeyboardPreset('button', handleClick), [handleClick]);
 	handleTriggerEvents && useKeyboard(triggerRef, triggerEvents);
-	const listEvents = useMemo(() => getKeyboardPreset('list', () => {}, popperItemsRef), [popperItemsRef]);
+	const listEvents = useMemo(() => getKeyboardPreset('list', () => {}, popperItemsRef), [open, popperItemsRef]);
 	useKeyboard(popperItemsRef, listEvents);
-	const escapeEvent = useMemo(() => [{ type: 'keydown', callback: closePopper, keys: ['Escape'] }], [closePopper]);
+	const escapeEvent = useMemo(() => [{ type: 'keydown', callback: closePopper, keys: ['Escape'] }], [open, closePopper]);
 	useKeyboard(dropdownRef, escapeEvent);
 
 	useLayoutEffect(() => {
@@ -112,10 +114,19 @@ const Dropdown = React.forwardRef(function({
 	}, [open, placement]);
 
 	useEffect(() => {
-		openRef.current = open;
-		open && setTimeout(() => window.addEventListener('click', clickOutsidePopper), 1);
+		open && setTimeout(() => {
+			const selectedItems = dropdownRef.current ? dropdownRef.current.querySelectorAll('.zapp-selected') : [];
+			selectedItems.length > 0
+				? selectedItems[0].focus()
+				: popperItemsRef.current && popperItemsRef.current.children[0] && popperItemsRef.current.children[0].focus();
+		}, 1);
+	}, [open]);
 
-		return () => window.removeEventListener('click', clickOutsidePopper);
+	useEffect(() => {
+		openRef.current = open;
+		open && setTimeout(() => window.top.document.addEventListener('click', clickOutsidePopper), 1);
+
+		return () => window.top.document.removeEventListener('click', clickOutsidePopper);
 	}, [open, closePopper]);
 
 	useEffect(() => {
@@ -148,12 +159,20 @@ const Dropdown = React.forwardRef(function({
 
 	return (
 		<PopperDropdownWrapper ref={ref} display={display} {...rest}>
-			{ React.cloneElement( children, {ref: triggerRef, onClick: handleClick} )}
-			<PopperList ref={dropdownRef} width={width} maxWidth={maxWidth} open={open}>
-				<div tabIndex={0} ref={startSentinelRef}></div>
-				<div ref={popperItemsRef} tabIndex={-1}>{ popperListItems }</div>
-				<div tabIndex={0} ref={endSentinelRef}></div>
-			</PopperList>
+			{ React.cloneElement(children, { ref: triggerRef, onClick: handleClick }) }
+			<Portal show={open} disablePortal={disablePortal}>
+				<PopperList
+					ref={dropdownRef}
+					open={open}
+					width={width}
+					maxWidth={maxWidth}
+					triggerRef={triggerRef}
+				>
+					<div tabIndex={0} ref={startSentinelRef}></div>
+					<div ref={popperItemsRef} tabIndex={-1}>{ popperListItems }</div>
+					<div tabIndex={0} ref={endSentinelRef}></div>
+				</PopperList>
+			</Portal>
 		</PopperDropdownWrapper>
 	);
 });
@@ -207,6 +226,8 @@ Dropdown.propTypes = {
 		'left-start',
 		'left-end'
 	]),
+	/** Flag to disable the Portal implementation */
+	disablePortal: PropTypes.bool
 };
 
 Dropdown.defaultProps = {
@@ -234,11 +255,11 @@ function PopperListItem({ icon, label, click, selected }) {
 	return (
 		<ContainerEl
 			ref={itemRef}
-			className={selected ? 'selected' : ''}
+			className={selected ? 'zapp-selected' : ''}
 			orientation="horizontal"
 			mainAlignment="flex-start"
 			padding={{ vertical: 'small', horizontal: 'large' }}
-			style={ { cursor: click ? 'pointer' :  'default'}}
+			style={{ cursor: click ? 'pointer' :  'default'}}
 			onClick={click}
 			tabIndex={0}
 		>
@@ -248,7 +269,7 @@ function PopperListItem({ icon, label, click, selected }) {
 					<Icon icon={icon} size="medium" color="text" style={{ pointerEvents: 'none' }} />
 				</Padding>
 			}
-			<Text size="medium" weight="regular" color="text">
+			<Text size="medium" weight={selected ? 'bold' : 'regular'} color="text">
 				{label}
 			</Text>
 		</ContainerEl>

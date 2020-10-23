@@ -25,11 +25,12 @@ export { default as IconCheckbox } from './components/inputs/IconCheckbox';
 export { Input, PasswordInput } from './components/inputs/Input';
 export { default as SearchInput } from './components/inputs/SearchInput';
 export { default as Select } from './components/inputs/Select';
-export { default as RichTextEditor } from './components/inputs/RichTextEditor';
+// export { default as RichTextEditor } from './components/inputs/RichTextEditor';
 
 /** navigation components */
 export { default as Accordion } from './components/navigation/Accordion';
 export { default as Breadcrumbs } from './components/navigation/Breadcrumbs';
+export { TabBar, DefaultTabBarItem } from './components/navigation/TabBar';
 
 /** display components */
 export { default as Chip } from './components/display/Chip';
@@ -49,6 +50,7 @@ export { default as Snackbar } from './components/feedback/Snackbar';
 /** Utilities components */
 export { default as Collapse, Collapser } from './components/utilities/Collapse';
 export { default as Catcher } from './components/utilities/Catcher';
+export { default as Portal } from './components/utilities/Portal';
 export { default as Responsive } from './components/utilities/Responsive';
 export { SnackbarManagerContext, SnackbarManager } from './components/utilities/SnackbarManager';
 export { default as Transition } from './components/utilities/Transition';
@@ -65,5 +67,10 @@ export { MessageBubble, ReplyMessage } from './components/composite/MessageBubbl
 export { extendTheme } from './theme/Theme';
 export { default as ThemeContext } from './theme/ThemeContext';
 export { default as ThemeProvider } from './theme/ThemeProvider';
+
+export { useCombinedRefs } from './hooks/useCombinedRefs';
+export { useHiddenCount } from './hooks/useHiddenCount';
+export { default as useKeyboard, getKeyboardPreset } from './hooks/useKeyboard';
 export { useScreenMode } from './hooks/useScreenMode';
 export { useSnackbar } from './hooks/useSnackbar';
+export { useSplitVisibility } from './hooks/useSplitVisibility';

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
 /*
  * *** BEGIN LICENSE BLOCK *****
@@ -13,8 +14,8 @@
 import {
 	default as Lodash, map, orderBy, compact, keyBy, pick
 } from 'lodash';
-import { default as RxJS, BehaviorSubject } from 'rxjs';
-import { default as React, ComponentClass } from 'react';
+import RxJS, { BehaviorSubject } from 'rxjs';
+import React, { ComponentClass } from 'react';
 import * as ReactDOM from 'react-dom';
 import * as RxJSOperators from 'rxjs/operators';
 import * as ReactRouterDom from 'react-router-dom';
@@ -23,10 +24,22 @@ import * as Moment from 'moment';
 import * as ReactI18n from 'react-i18next';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
+import * as ReactRedux from 'react-redux';
+import * as ReduxJSToolkit from '@reduxjs/toolkit';
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+import logger from 'redux-logger';
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
 import * as ZappUI from '@zextras/zapp-ui';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+import RichTextEditor from '../../zapp-ui/src/components/inputs/RichTextEditor';
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
 import { IAccount } from '../db/account';
 import * as hooks from '../shell/hooks';
@@ -45,18 +58,18 @@ import {
 	AppCreateOption, AppPkgDescription, AppRouteDescription, FCSink, MainMenuItemData, SoapFetch
 } from '../../types';
 
-type AppModuleFunction = () => void;
-
 type IChildWindow = Window & {
 	__ZAPP_SHARED_LIBRARIES__: SharedLibrariesAppsMap;
-	__ZAPP_EXPORT__: (value?: AppModuleFunction | PromiseLike<AppModuleFunction> | undefined) => void;
-	__ZAPP_HMR_EXPORT__: (mod: AppModuleFunction) => void;
+	__ZAPP_EXPORT__: (value?: ComponentClass | PromiseLike<ComponentClass> | undefined) => void;
+	__ZAPP_HMR_EXPORT__: (appClass: ComponentClass) => void;
 };
 
 type SharedLibrariesAppsMap = {
 	'react': {};
 	'react-dom': {};
 	'react-i18next': {};
+	'react-redux': {};
+	'@reduxjs/toolkit': {};
 	'lodash': {};
 	'rxjs': {};
 	'rxjs/operators': {};
@@ -112,6 +125,7 @@ type AppInjections = {
 	createOptions: BehaviorSubject<AppCreateOption[]>;
 	appContext: BehaviorSubject<any>;
 	sharedUiComponents: BehaviorSubject<SharedUiComponentsDescriptor>;
+	entryPoint: BehaviorSubject<ComponentClass|null>;
 };
 
 const _iframes: { [pkgName: string]: HTMLIFrameElement } = {};
@@ -125,11 +139,12 @@ function loadAppModule(
 		createOptions,
 		sharedUiComponents,
 		appContext,
+		entryPoint
 	}: AppInjections,
 	fiberChannelFactory: IFiberChannelFactory,
 	accounts: Array<IAccount>,
 	shellNetworkService: ShellNetworkService
-): Promise<AppModuleFunction> {
+): Promise<ComponentClass> {
 	return new Promise((resolve, reject) => {
 		try {
 			const path = `${appPkg.resourceUrl}/${appPkg.entryPoint}`;
@@ -139,6 +154,9 @@ function loadAppModule(
 			document.body.appendChild(iframe);
 			if (iframe.contentWindow && iframe.contentDocument) {
 				const script: HTMLScriptElement = iframe.contentDocument.createElement('script');
+				iframe.contentWindow.onerror = (msg, url, lineNo, columnNo, error) => {
+					fiberChannelFactory.getAppFiberChannelSink(appPkg)({ event: 'report-exception', data: { exception: error } });
+				};
 				// const revertables = _revertableActions[appPkg.package] = new RevertableActionCollection(
 				// 	this._routerSrvc,
 				// 	this._itemActionSrvc
@@ -169,6 +187,7 @@ function loadAppModule(
 					react: React,
 					'react-dom': ReactDOM,
 					'react-i18next': ReactI18n,
+					'react-redux': ReactRedux,
 					lodash: Lodash,
 					rxjs: RxJS,
 					'rxjs/operators': RxJSOperators,
@@ -176,9 +195,23 @@ function loadAppModule(
 						...ReactRouterDom,
 						Link: AppLink
 					},
-					'styled-components': StyledComponents,
-					'prop-types': PropTypes,
 					moment: Moment,
+					'prop-types': PropTypes,
+					'styled-components': StyledComponents,
+					'@reduxjs/toolkit': {
+						...ReduxJSToolkit,
+						configureStore: (options: any) => {
+							return ReduxJSToolkit.configureStore({
+								...options,
+								devTools: (FLAVOR === 'NPM' || FLAVOR === 'E2E') ? {
+									name: appPkg.package
+								} : false,
+								middleware: (FLAVOR === 'NPM' || FLAVOR === 'E2E')
+									? (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
+									: options.middleware
+							});
+						}
+					},
 					'@zextras/zapp-shell': {
 						db: {
 							Database: wrapAppDbConstructor(appPkg)
@@ -215,17 +248,16 @@ function loadAppModule(
 							SharedUiComponentsFactory
 						}
 					},
-					'@zextras/zapp-ui': ZappUI
+					'@zextras/zapp-ui': { ...ZappUI, RichTextEditor }
 				};
 				(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve;
 				// eslint-disable-next-line max-len
-				(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (extModule: AppModuleFunction): void => {
+				(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (appClass: ComponentClass): void => {
 					// Errors are not collected here because the HMR works only on develpment mode.
-					console.log(`HMR ${path}`, extModule);
-					sharedUiComponents.next({});
-					extModule.call(undefined);
+					console.log(`HMR ${path}`);
+					entryPoint.next(appClass);
 				};
-				switch (FLAVOR) {
+				switch(FLAVOR) {
 					case 'NPM':
 					case 'E2E':
 						e2e.installOnWindow(iframe.contentWindow);
@@ -256,6 +288,7 @@ function loadApp(
 	const createOptions = new BehaviorSubject<AppCreateOption[]>([]);
 	const appContext = new BehaviorSubject<any>({});
 	const sharedUiComponents = new BehaviorSubject<SharedUiComponentsDescriptor>({});
+	const entryPoint = new BehaviorSubject<ComponentClass|null>(null);
 	return loadAppModule(
 		pkg,
 		{
@@ -264,12 +297,13 @@ function loadApp(
 			createOptions,
 			sharedUiComponents,
 			appContext,
+			entryPoint
 		},
 		fiberChannelFactory,
 		accounts,
 		shellNetworkService
 	)
-		.then((appModule) => appModule.call(undefined))
+		.then((appClass) => entryPoint.next(appClass))
 		// .then(() => {
 		// 	this._fcSink<{ package: string; version: string }>('app:loaded', {
 		// 		package: pkg.package,
@@ -300,7 +334,8 @@ function loadApp(
 			routes,
 			createOptions,
 			sharedUiComponents,
-			appContext
+			appContext,
+			entryPoint
 		} : undefined));
 }
 

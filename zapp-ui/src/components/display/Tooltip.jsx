@@ -2,6 +2,7 @@ import React, { useState, useEffect, useLayoutEffect, useCallback, useRef, clone
 import { createPopper } from '@popperjs/core';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
+import Portal from '../utilities/Portal';
 import Text from '../basic/Text';
 import { useCombinedRefs } from '../../hooks/useCombinedRefs';
 
@@ -17,7 +18,7 @@ const TooltipWrapperWithCss = styled(TooltipWrapper)`
 	position: fixed;
 	top: -1000px;
 	left: -1000px;
-	z-index: 98;
+	z-index: 999;
 
 	max-width: ${(props) => props.maxWidth};
 	padding: ${(props) => props.theme.sizes.padding.small};
@@ -30,7 +31,14 @@ const TooltipWrapperWithCss = styled(TooltipWrapper)`
 	`};
 `;
 
-const Tooltip = React.forwardRef(function({ label, placement, maxWidth, children, ...rest }, ref) {
+const Tooltip = React.forwardRef(function Tooltip({
+	label,
+	placement,
+	maxWidth,
+	children,
+	disablePortal,
+	...rest
+}, ref) {
 	const [open, setOpen] = useState(undefined);
 	const popperInstanceRef = useRef(undefined);
 	const triggerRef = useRef(undefined);
@@ -89,7 +97,9 @@ const Tooltip = React.forwardRef(function({ label, placement, maxWidth, children
 	return (
 		<Fragment>
 			{ cloneElement(children, { ref: triggerRef }) }
-			<TooltipWrapperWithCss open={open} ref={tooltipRef} maxWidth={maxWidth} {...rest}>{ label }</TooltipWrapperWithCss>
+			<Portal show={open} disablePortal={disablePortal}>
+				<TooltipWrapperWithCss open={open} ref={tooltipRef} maxWidth={maxWidth} {...rest}>{ label }</TooltipWrapperWithCss>
+			</Portal>
 		</Fragment>
 	);
 });
@@ -101,6 +111,8 @@ Tooltip.propTypes = {
 	placement: PropTypes.oneOf(['left', 'top', 'right', 'bottom']),
 	/** Tooltip max-width css property */
 	maxWidth: PropTypes.string,
+	/** Flag to disable the Portal implementation */
+	disablePortal: PropTypes.bool
 };
 
 Tooltip.defaultProps = {

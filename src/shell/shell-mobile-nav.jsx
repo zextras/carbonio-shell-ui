@@ -18,6 +18,7 @@ import {
 	Padding,
 	Quota
 } from '@zextras/zapp-ui';
+import NavigationBarAccordion from './navigation-bar-custom-accordion';
 
 export default function ShellMobileNav({
 	mobileNavIsOpen,
@@ -60,15 +61,24 @@ export default function ShellMobileNav({
 					>
 						{
 							map(mainMenuItems, (app, key) =>
-								<Accordion
-									key={key}
-									level={0}
-									icon={app.icon}
-									label={app.label}
-									click={app.click}
-									items={app.items}
-									divider={true}
-								/>
+								app.customComponent
+									?	<NavigationBarAccordion
+										key={key}
+										icon={app.icon}
+										label={app.label}
+										click={app.click}
+										customComponent={app.customComponent}
+										divider={true}
+									/>
+									: <Accordion
+										key={key}
+										level={0}
+										icon={app.icon}
+										label={app.label}
+										click={app.click}
+										items={app.items}
+										divider={true}
+									/>
 							)
 						}
 					</Container>
@@ -79,7 +89,7 @@ export default function ShellMobileNav({
 						mainAlignment="flex-end"
 					>
 						{
-							menuTree.map((app, index) =>
+							map(menuTree, (app, index) =>
 								<Accordion
 									key={index}
 									level={0}
@@ -92,7 +102,7 @@ export default function ShellMobileNav({
 							)
 						}
 						<Padding vertical="medium">
-							<Quota fill={quota}/>
+							<Quota fill={quota} />
 						</Padding>
 					</Container>
 				</Container>

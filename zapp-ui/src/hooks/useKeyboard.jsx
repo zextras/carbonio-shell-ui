@@ -65,9 +65,7 @@ export function getKeyboardPreset(type, callback, ref = undefined) {
 	return eventsArray;
 }
 
-export function useKeyboard(ref, events) {
-	if (events.length === 0) return;
-
+function useKeyboard(ref, events) {
 	const keyEvents = useMemo(() => {
 		return map(events, ({ keys, callback, haveToPreventDefault = true }) => {
 			return (e) => {
@@ -82,20 +80,20 @@ export function useKeyboard(ref, events) {
 	}, [events]);
 
 	useEffect(() => {
-		if (ref.current != null) {
+		if (ref.current) {
 			forEach(keyEvents, (keyEvent, index) => {
 				ref.current.addEventListener(events[index].type, keyEvent);
 			});
 		}
 
 		return () => {
-			if (ref.current != null) {
+			if (ref.current) {
 				forEach(keyEvents, (keyEvent, index) => {
 					ref.current.removeEventListener(events[index].type, keyEvent);
 				});
 			}
 		};
-	}, [ref, events, keyEvents]);
+	}, [ref.current, events, keyEvents]);
 }
 
 export default useKeyboard;

@@ -19,50 +19,56 @@ import {
 	IFiberChannelFactory
 } from './fiber-channel-types';
 import { LoadedAppsCache } from '../app/app-loader';
-import { AppPkgDescription, FCEvent, FCPartialEvent, FCPromisedEvent, FCSink } from '../../types';
+import {
+	AppPkgDescription, FCEvent, FCPartialEvent, FCPromisedEvent, FCSink
+} from '../../types';
 
 type WithPromiseId = { _promiseIdRequest?: string; _promiseIdResponse?: string };
 
 export default class FiberChannelFactory implements IFiberChannelFactory {
-
 	private _channel = new Subject<FCEvent<any> & WithPromiseId | FCPromisedEvent<any, any> & WithPromiseId>();
+
 	private _channelCache = new ReplaySubject<FCEvent<any> & WithPromiseId | FCPromisedEvent<any, any> & WithPromiseId>();
+
 	private _id = 0;
+
 	private _appsLoaded = false;
+
 	private _appsCache: LoadedAppsCache = {};
 
 	constructor() {
 		this.getShellFiberChannel()
-			.pipe(filter(({ to }) => to ? to.app === PACKAGE_NAME : false))
+			.pipe(filter(({ to }) => (to ? to.app === PACKAGE_NAME : false)))
 			.pipe(filter(({ event }) => event === 'all-apps-loaded'))
 			.subscribe(({ data }) => this._onAllAppsLoaded(data));
 	}
 
-	public getAppFiberChannelSink({ name, version }: AppPkgDescription): FCSink {
+	public getAppFiberChannelSink(pkg: AppPkgDescription): FCSink {
 		const subject = new Subject<FCEvent<any> | FCEvent<any> & WithPromiseId>();
 		subject.subscribe((ev) => this._cacheOrEmitEvent(ev));
 		return (ev: FCPartialEvent<any>): void | Promise<any> => {
-			const event = { ...ev, from: name, version: version, data: ev.data || {} };
+			const event = {
+				...ev, from: pkg.package, version: pkg.version, data: ev.data || {}
+			};
 			if (ev.asPromise) {
 				return this._getPromiseForRequest(subject, event);
 			}
-			else {
-				this._checkDestinationVersion(event);
-				subject.next(event);
-			}
+
+			this._checkDestinationVersion(event);
+			subject.next(event);
 		};
 	}
 
-	public getAppFiberChannel({ name, version }: AppPkgDescription): FC {
+	public getAppFiberChannel(pkg: AppPkgDescription): FC {
 		const subject = new Subject<FCEvent<any> | FCPromisedEvent<any, any>>();
 		this._channel.pipe(
-			filter(({ to }) => !to || to.app === name)
+			filter(({ to }) => !to || to.app === pkg.package)
 		).subscribe((ev) => {
 			if (ev.asPromise) {
 				subject.next({
 					...omit(
 						ev,
-						['_promiseIdResponse',  '_promiseIdRequest']
+						['_promiseIdResponse', '_promiseIdRequest']
 					),
 					sendResponse: (data: any) => {
 						this._channel.next({
@@ -70,8 +76,8 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 								app: ev.from,
 								version: ev.version
 							},
-							from: name,
-							version: version,
+							from: pkg.package,
+							version: pkg.version,
 							event: `${ev.event}-response`,
 							_promiseIdResponse: ev._promiseIdRequest,
 							data
@@ -93,10 +99,9 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 			if (ev.asPromise) {
 				return this._getPromiseForRequest(subject, ev);
 			}
-			else {
-				this._checkDestinationVersion(ev);
-				subject.next(ev);
-			}
+
+			this._checkDestinationVersion(ev);
+			subject.next(ev);
 		};
 	}
 
@@ -107,7 +112,7 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 				subject.next({
 					...omit(
 						ev,
-						['_promiseIdResponse',  '_promiseIdRequest']
+						['_promiseIdResponse', '_promiseIdRequest']
 					),
 					sendResponse: (data: any) => {
 						this._channel.next({
@@ -116,7 +121,7 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 								version: ev.version
 							},
 							from: name,
-							version: version,
+							version,
 							event: `${ev.event}-response`,
 							_promiseIdResponse: ev._promiseIdRequest,
 							data
@@ -136,12 +141,13 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 			const id = `${++this._id}`;
 			try {
 				this._checkDestinationVersion(ev);
-			} catch (err) {
+			}
+			catch (err) {
 				reject(err);
 				return;
 			}
 			this._channel.pipe(
-				filter((ev) => ev._promiseIdResponse ? ev._promiseIdResponse === id : false)
+				filter((ev) => (ev._promiseIdResponse ? ev._promiseIdResponse === id : false))
 			)
 				.subscribe(({ data }) => resolve(data));
 			subject.next({
@@ -159,7 +165,7 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 			description: '',
 			version: PACKAGE_VERSION,
 			resourceUrl: '',
-			entryPoint : ''
+			entryPoint: ''
 		});
 	}
 
@@ -171,7 +177,7 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 			description: '',
 			version: PACKAGE_VERSION,
 			resourceUrl: '',
-			entryPoint : ''
+			entryPoint: ''
 		});
 	}
 
@@ -184,7 +190,7 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 
 	private _cacheOrEmitEvent(ev: FCEvent<any> | FCPromisedEvent<any, any>): void {
 		if (this._appsLoaded || (ev.to && ev.to.app === PACKAGE_NAME)) {
-				this._channel.next(ev);
+			this._channel.next(ev);
 		}
 		else {
 			this._channelCache.next(ev);
@@ -195,7 +201,7 @@ export default class FiberChannelFactory implements IFiberChannelFactory {
 		if (ev.to && !ev.to.version) {
 			throw new Error('API Version not specified.');
 		}
-		if(ev.to && this._appsCache[ev.to.app] && lt(this._appsCache[ev.to.app].pkg.version, ev.to.version)) {
+		if (ev.to && this._appsCache[ev.to.app] && lt(this._appsCache[ev.to.app].pkg.version, ev.to.version)) {
 			throw new Error('API Version cannot be satisfied.');
 		}
 	}

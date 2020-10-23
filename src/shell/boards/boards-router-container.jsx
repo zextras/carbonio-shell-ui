@@ -17,7 +17,6 @@ import { combineLatest } from 'rxjs';
 import { map as rxMap } from 'rxjs/operators';
 import { Container } from '@zextras/zapp-ui';
 import { useAppsCache } from '../../app/app-loader-context';
-import AppBoardRoute from '../../app/app-board-route';
 import LoadingView from '../../bootstrap/loading-view';
 import AppContextProvider from '../../app/app-context-provider';
 
@@ -82,7 +81,7 @@ export default function BoardsRouterContainer() {
 				subscription.unsubscribe();
 			}
 		};
-	}, [appsCache, setRoutes]);
+	}, [appsCache]);
 
 	return ( // eslint-disable-next-line
 		<_BoardsRouterContainer>

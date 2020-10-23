@@ -11,25 +11,7 @@
 
 import { createContext, useContext } from 'react';
 
-const ShellContext = createContext({
-	isMobile: true,
-	boards: [],
-	currentBoard: 0,
-	largeView: false,
-	minimized: false,
-	addBoard: (boardUrl, boardTitle) => undefined,
-	removeBoard: (idx) => undefined,
-	removeAllBoards: () => undefined,
-	updateBoard: (idx, boardUrl, boardTitle) => undefined,
-	setCurrentBoard: (idx) => undefined,
-	toggleLargeView: () => undefined,
-	toggleMinimized: () => undefined
-});
-
-export function useIsMobile() {
-	const { isMobile } = useContext(ShellContext);
-	return isMobile;
-}
+const ShellContext = createContext({ isMobile: true });
 
 /**
  * use the fiberchannel in a Shell context.

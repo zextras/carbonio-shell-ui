@@ -8,13 +8,22 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef, useMemo } from 'react';
 import styled, { css } from 'styled-components';
-import { reduce } from 'lodash';
-import { Container, Divider, IconButton, Row, Padding } from '@zextras/zapp-ui';
-import ShellContext from '../shell-context';
+import { reduce, map, slice } from 'lodash';
+import {
+	Container,
+	Divider,
+	IconButton,
+	Row,
+	Padding,
+	Dropdown,
+	Button,
+	useHiddenCount
+} from '@zextras/zapp-ui';
 import AppBoardTab from './app-board-tab';
 import AppBoard from './app-board';
+import { BoardSetterContext, BoardValueContext } from './board-context';
 
 const BoardContainer = styled.div`
 	position: fixed;
@@ -52,33 +61,32 @@ const BoardDeatilContainer = styled(Row)`
 	min-height: 0;
 `;
 const BackButton = styled(IconButton)``;
-const TabsContainer = styled(Row)``;
 const Actions = styled(Row)``;
 
 export default function AppBoardWindow() {
 	const {
 		boards: shellBoards,
+		currentBoard,
 		largeView,
+		minimized
+	} = useContext(BoardValueContext);
+	const {
 		toggleLargeView,
-		minimized,
 		toggleMinimized,
-		removeAllBoards
-	} = useContext(ShellContext);
+		removeAllBoards,
+		setCurrentBoard
+	} = useContext(BoardSetterContext);
 
-	const [tabs, boards] = reduce(
+	const [tabs, boards] = useMemo(() => reduce(
 		shellBoards,
 		(r, v, k) => {
 			const [t, p] = r;
-			t.push((
-				<AppBoardTab key={k} idx={k} />
-			));
-			p.push((
-				<AppBoard key={k} idx={k} />
-			));
+			t.push({ key: k, ...v });
+			p.push(<AppBoard key={k} idx={k} />);
 			return r;
 		},
 		[[], []]
-	);
+	), [shellBoards]);
 
 	if (!tabs.length) return null;
 	return (
@@ -93,9 +101,12 @@ export default function AppBoardWindow() {
 			>
 				<BoardHeader background="gray5">
 					<Padding all="extrasmall"><BackButton icon="ChevronLeftOutline" onClick={toggleMinimized} /></Padding>
-					<TabsContainer height="100%" mainAlignment="flex-start" takeAvailableSpace={true}>
-						{ tabs }
-					</TabsContainer>
+					<TabsList
+						tabs={tabs}
+						largeView={largeView}
+						currentBoard={currentBoard}
+						setCurrentBoard={setCurrentBoard}
+					/>
 					<Actions padding={{ all: 'extrasmall' }}>
 						<Padding right="extrasmall"><IconButton icon={largeView ? 'CollapseOutline' : 'ExpandOutline'} onClick={toggleLargeView} /></Padding>
 						<IconButton icon="CloseOutline" onClick={removeAllBoards} />
@@ -107,5 +118,46 @@ export default function AppBoardWindow() {
 				</BoardDeatilContainer>
 			</Board>
 		</BoardContainer>
+	);
+}
+
+function TabsList({ tabs, currentBoard, setCurrentBoard, largeView }) {
+	const tabContainerRef = useRef();
+	const [hiddenTabsCount, recalculateHiddenTabs] = useHiddenCount(tabContainerRef, largeView);
+
+	useEffect(() => {
+		recalculateHiddenTabs();
+	}, [tabs, largeView, tabContainerRef.current]);
+
+	return (
+		<Row
+			wrap="nowrap"
+			height="100%"
+			mainAlignment="flex-start"
+			takeAvailableSpace={true}
+		>
+			<Row
+				ref={tabContainerRef}
+				height="48px"
+				mainAlignment="flex-start"
+				style={{ overflow: 'hidden' }}
+			>
+				{tabs && map(tabs, (tab) => <AppBoardTab key={tab.key} idx={tab.key} />)}
+			</Row>
+			{hiddenTabsCount > 0 && (
+				<Dropdown
+					style={{ flexGrow: '1' }}
+					items={map(slice(tabs, -hiddenTabsCount), (tab) => ({
+						id: tab.key,
+						label: tab.title,
+						icon: tab.icon,
+						click: () => setCurrentBoard(tab.key),
+						selected: tab.key === currentBoard
+					}))}
+				>
+					<Button type="ghost" color="secondary" label={`+${hiddenTabsCount}`} />
+				</Dropdown>
+			)}
+		</Row>
 	);
 }

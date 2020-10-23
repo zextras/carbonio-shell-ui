@@ -9,15 +9,22 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { useCallback, useContext, useEffect, useState } from 'react';
+import {
+	useCallback,
+	useContext,
+	useEffect,
+	useState
+} from 'react';
 import { skip } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { useHistory } from 'react-router-dom';
 import { LocationDescriptor } from 'history';
-
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import ShellContext from './shell-context';
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+import { BoardSetterContext } from './boards/board-context';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import AppContext from '../app/app-context';
@@ -32,11 +39,16 @@ export { useTranslation } from '../i18n/hooks';
 export { default as usePromise } from 'react-use-promise';
 
 export function useAddBoardCallback(path: string): () => void {
-	const { addBoard } = useContext(ShellContext);
+	const { addBoard } = useContext(BoardSetterContext);
 	const { pkg } = useContext(AppContext);
 	return useCallback(() => {
 		addBoard(`/${pkg.package}${path}`);
 	}, [addBoard, path, pkg]);
+}
+
+export function useRemoveCurrentBoard(): () => void {
+	const { removeCurrentBoard } = useContext(BoardSetterContext);
+	return removeCurrentBoard;
 }
 
 export function usePushHistoryCallback(): (location: LocationDescriptor) => void {
@@ -47,7 +59,7 @@ export function usePushHistoryCallback(): (location: LocationDescriptor) => void
 			history.push(`/${pkg.package}${location}`);
 		}
 		else {
-			history.push({...location, pathname: `/${pkg.package}${location.pathname}` });
+			history.push({ ...location, pathname: `/${pkg.package}${location.pathname}` });
 		}
 	}, [pkg, history]);
 }
@@ -68,7 +80,7 @@ export function useReplaceHistoryCallback(): (location: LocationDescriptor) => v
 			history.replace(`/${pkg.package}${location}`);
 		}
 		else {
-			history.replace({...location, pathname: `/${pkg.package}${location.pathname}` });
+			history.replace({ ...location, pathname: `/${pkg.package}${location.pathname}` });
 		}
 	}, [pkg, history]);
 }
@@ -83,7 +95,12 @@ export function useBehaviorSubject<T>(observable: BehaviorSubject<T>): T {
 		return () => {
 			canSet = false;
 			sub.unsubscribe();
-		}
+		};
 	}, [observable, setValue]);
 	return value;
+}
+
+export function useIsMobile(): boolean {
+	const { isMobile } = useContext(ShellContext);
+	return isMobile;
 }

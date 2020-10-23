@@ -1,4 +1,5 @@
 import React, {
+	useState,
 	useEffect,
 	useMemo,
 	useCallback,
@@ -10,13 +11,13 @@ import Button from '../basic/Button';
 import Container from '../layout/Container';
 import Divider from '../layout/Divider';
 import IconButton from '../inputs/IconButton';
+import Portal from '../utilities/Portal';
 import Row from '../layout/Row';
 import Text from '../basic/Text';
 import Transition from '../utilities/Transition';
 import useKeyboard from '../../hooks/useKeyboard';
 import { useScreenMode } from '../../hooks/useScreenMode';
 import { useCombinedRefs } from '../../hooks/useCombinedRefs';
-import defaultTheme from "../../theme/Theme";
 
 const modalMinWidth = { extrasmall: '20%', small: '25%', medium: '35%', large: '50%' };
 const modalWidth = { extrasmall: '400px', small: '500px', medium: '650px', large: '800px' };
@@ -55,49 +56,37 @@ const ModalContainer = styled.div`
 	left: 0;
 	right: 0;
 	padding: ${(props) => `${props.theme.sizes.padding.medium} ${props.theme.sizes.padding.medium} 0`};
-	overflow-y: auto;
 	background-color: rgba(0,0,0,0);
 	opacity: 0;
 	pointer-events: none;
 	transition: 0.3s ease-out;
 	z-index: -1;
+	justify-content: center;
+	align-items: center;
 
+	${(props) => (props.mounted || props.open) && css`
+		z-index: ${(props) => props.zIndex};
+	`};
 	${(props) => props.open && css`
 		background-color: rgba(0,0,0,0.5);
 		opacity: 1;
 		pointer-events: auto;
-		z-index: ${(props) => props.zIndex};
-	`};
-	${(props) => props.screenMode === 'mobile' && css`
-		justify-content: center;
-		align-items: center;
-	`};
-	${(props) => props.screenMode === 'desktop' && css`
-		align-items: flex-start;
 	`};
 `;
 const ModalWrapper = styled.div`
 	max-width: 100%;
 	width: 100%;
-	margin: 0 auto;
-	${(props) => props.screenMode === 'mobile' && css`
-		margin: auto;
-	`};
+	margin: auto;
 	box-sizing: border-box;
 	pointer-events: none;
 `;
 const ModalContent = styled(Container)`
 	position: relative;
-	transform: translateY(20vh);
-	${(props) => props.screenMode === 'mobile' && css`
-		transform: translateY(0);
-	`};
-
 	margin: 0 auto ${(props) => props.theme.sizes.padding.medium};
 	padding: ${(props) => `${props.theme.sizes.padding.extralarge} ${props.theme.sizes.padding.extralarge} 0`};
 	max-width: 100%;
-	min-width: ${(props) => modalMinWidth[props.size] };
-	width: ${(props) => modalWidth[props.size] };
+	min-width: ${(props) => modalMinWidth[props.size]};
+	width: ${(props) => modalWidth[props.size]};
 
 	background-color: ${(props) => props.theme.palette[props.background].regular};
 	border-radius: 16px;
@@ -110,21 +99,24 @@ const ModalTitle = styled(Text)`
 	width: 100%;
 	flex-grow: 1;
 	flex-basis: 0;
-	padding: ${(props) => props.theme.sizes.padding.small };
+	padding: ${(props) => props.theme.sizes.padding.small};
 	${(props) => props.centered && css`
 		text-align: center;
 	`};
 `;
 const ModalBody = styled.div`
+	overflow-y: auto;
+	max-height: ${(props) => props.maxHeight};
+	max-width: 100%;
 	box-sizing: border-box;
 	width: 100%;
-	padding: ${(props) => props.theme.sizes.padding.small };
+	padding: ${(props) => props.theme.sizes.padding.small};
 	${(props) => props.centered && css`
 		text-align: center;
 	`};
 `;
 const ModalFooterWrapper = styled(Container)`
-	padding: ${(props) => `${props.theme.sizes.padding.large} 0` };
+	padding: ${(props) => `${props.theme.sizes.padding.large} 0`};
 `;
 const OptionalFooterContainer = styled(Container)`
 	min-width: 1px;
@@ -151,7 +143,7 @@ const ModalCloseIcon = styled(IconButton)`
 	padding: ${({ theme }) => theme.sizes.padding.extrasmall};
 `;
 
-const Modal = React.forwardRef(function({
+const Modal = React.forwardRef(function Modal({
 	background,
 	type,
 	title,
@@ -170,27 +162,30 @@ const Modal = React.forwardRef(function({
 	customFooter,
 	hideFooter,
 	showCloseIcon,
+	maxHeight,
 	children,
+	disablePortal,
 	...rest
 }, ref) {
+	const [delayedOpen, setDelayedOpen] = useState(false);
 
 	const innerRef = useRef(undefined);
 	const modalRef = useCombinedRefs(ref, innerRef);
-	const modalWrapperRef = useRef(undefined);
+	const modalContentRef = useRef(undefined);
 	const modalBodyRef = useRef(undefined);
 	const startSentinelRef = useRef(undefined);
 	const endSentinelRef = useRef(undefined);
 
 	const screenMode = useScreenMode();
 
-	const onBackdropClick = useCallback((e) => !modalWrapperRef.current.contains(e.target) && onClose(e), [onClose]);
+	const onBackdropClick = useCallback((e) => modalContentRef.current && !modalContentRef.current.contains(e.target) && onClose(e), [onClose]);
 	const onCopyClipboard = useCallback(() => copyToClipboard(modalBodyRef.current), []);
 
 	const onStartSentinelFocus = useCallback(() => {
-		const nodeList = modalWrapperRef.current.querySelectorAll('[tabindex]');
+		const nodeList = modalContentRef.current.querySelectorAll('[tabindex]');
 		nodeList[nodeList.length - 1].focus();
 	}, []);
-	const onEndSentinelFocus = useCallback(() => modalWrapperRef.current.querySelector('[tabindex]').focus(), []);
+	const onEndSentinelFocus = useCallback(() => modalContentRef.current.querySelector('[tabindex]').focus(), []);
 
 	const escapeEvent = useMemo(() => [{ type: 'keydown', callback: onClose, keys: ['Escape'] }], [onClose]);
 	useKeyboard(modalRef, escapeEvent);
@@ -201,7 +196,7 @@ const Modal = React.forwardRef(function({
 			const defaultPaddingRight = window.top.document.body.style.paddingRight;
 
 			window.top.document.body.style.overflowY = 'hidden';
-			isBodyOverflowing(modalRef) && (window.top.document.body.style.paddingRight = getScrollbarSize()+'px');
+			isBodyOverflowing(modalRef) && (window.top.document.body.style.paddingRight = `${getScrollbarSize()}px`);
 
 			return () => {
 				window.top.document.body.style.overflowY = defaultOverflowY;
@@ -214,7 +209,7 @@ const Modal = React.forwardRef(function({
 		const focusedElement = window.top.document.activeElement;
 
 		if (open) {
-			modalWrapperRef.current.focus();
+			modalContentRef.current.focus();
 			startSentinelRef.current.addEventListener('focus', onStartSentinelFocus);
 			endSentinelRef.current.addEventListener('focus', onEndSentinelFocus);
 		}
@@ -226,46 +221,78 @@ const Modal = React.forwardRef(function({
 		};
 	}, [open, onStartSentinelFocus, onEndSentinelFocus]);
 
+	useEffect(() => {
+		setTimeout(() => setDelayedOpen(open), 1);
+	}, [open]);
+
 	return (
-		<ModalContainer ref={modalRef} open={open} screenMode={screenMode} onClick={onBackdropClick} { ...rest }>
-			<div tabIndex={0} ref={startSentinelRef}></div>
-			<Transition type="scale-in" apply={open}>
-				<ModalWrapper screenMode={screenMode}>
-					<ModalContent background={background} tabIndex={-1} ref={modalWrapperRef} screenMode={screenMode} size={size} crossAlignment="flex-start" height="auto">
-						<Row width="100%">
-							<ModalTitle centered={centered} color={type === 'error' ? 'error' : undefined} size="large" weight="bold">{ title }</ModalTitle>
-							{ showCloseIcon && <ModalCloseIcon icon="Close" size="medium" onClick={onClose} /> }
-						</Row>
-						<Divider />
-						<ModalBody centered={centered} ref={modalBodyRef}>{ children }</ModalBody>
-						{ !hideFooter && (
-							<>
-								<Divider/>
-								<ModalFooterWrapper orientation={centered ? 'vertical' : 'horizontal'} mainAlignment="flex-end" padding={{top: "large"}}>
-									{customFooter ? customFooter :
-										<ModalFooter
-											type={type}
-											centered={centered}
-											optionalFooter={optionalFooter}
-											confirmLabel={confirmLabel}
-											confirmColor={confirmColor}
-											dismissLabel={dismissLabel}
-											onConfirm={onConfirm}
-											onClose={onClose}
-											onSecondaryAction={onSecondaryAction}
-											secondaryActionLabel={secondaryActionLabel}
-											onCopyClipboard={onCopyClipboard}
-											copyLabel={copyLabel}
-										/>
-									}
-								</ModalFooterWrapper>
-							</>
-						)}
-					</ModalContent>
-				</ModalWrapper>
-			</Transition>
-			<div tabIndex={0} ref={endSentinelRef}></div>
-		</ModalContainer>
+		<Portal show={open} disablePortal={disablePortal}>
+			<ModalContainer
+				ref={modalRef}
+				open={delayedOpen}
+				mounted={open}
+				screenMode={screenMode}
+				onClick={onBackdropClick}
+				{...rest}
+			>
+				<div tabIndex={0} ref={startSentinelRef}></div>
+				<Transition type="scale-in" apply={delayedOpen}>
+					<ModalWrapper>
+						<ModalContent
+							ref={modalContentRef}
+							background={background}
+							tabIndex={-1}
+							screenMode={screenMode}
+							size={size}
+							crossAlignment="flex-start"
+							height="auto"
+						>
+							<Row width="100%">
+								<ModalTitle
+									centered={centered}
+									color={type === 'error' ? 'error' : undefined}
+									size="large"
+									weight="bold"
+								>
+									{title}
+								</ModalTitle>
+								{showCloseIcon && <ModalCloseIcon icon="Close" size="medium" onClick={onClose} />}
+							</Row>
+							<Divider />
+							<ModalBody centered={centered} ref={modalBodyRef} maxHeight={maxHeight}>{children}</ModalBody>
+							{!hideFooter && (
+								<>
+									<Divider />
+									<ModalFooterWrapper
+										orientation={centered ? 'vertical' : 'horizontal'}
+										mainAlignment="flex-end"
+										padding={{ top: "large" }}
+									>
+										{customFooter ? customFooter :
+											<ModalFooter
+												type={type}
+												centered={centered}
+												optionalFooter={optionalFooter}
+												confirmLabel={confirmLabel}
+												confirmColor={confirmColor}
+												dismissLabel={dismissLabel}
+												onConfirm={onConfirm}
+												onClose={onClose}
+												onSecondaryAction={onSecondaryAction}
+												secondaryActionLabel={secondaryActionLabel}
+												onCopyClipboard={onCopyClipboard}
+												copyLabel={copyLabel}
+											/>
+										}
+									</ModalFooterWrapper>
+								</>
+							)}
+						</ModalContent>
+					</ModalWrapper>
+				</Transition>
+				<div tabIndex={0} ref={endSentinelRef}></div>
+			</ModalContainer>
+		</Portal>
 	);
 });
 
@@ -307,7 +334,11 @@ Modal.propTypes = {
 	/** Show icon to close Modal */
 	showCloseIcon: PropTypes.bool,
 	/** Css property to handle the stack order of multiple modals */
-	zIndex: PropTypes.number
+	zIndex: PropTypes.number,
+	/** max height of the modal body */
+	maxHeight: PropTypes.string,
+	/** Flag to disable the Portal implementation */
+	disablePortal: PropTypes.bool
 };
 
 Modal.defaultProps = {
@@ -318,8 +349,9 @@ Modal.defaultProps = {
 	confirmColor: 'primary',
 	copyLabel: 'Copy',
 	showCloseIcon: false,
-	zIndex: 100,
+	zIndex: 999,
 	background: 'gray6',
+	maxHeight: '60vh',
 };
 
 function ModalFooter({
@@ -353,10 +385,10 @@ function ModalFooter({
 	return (
 		<>
 			{ optionalFooter && <OptionalFooterContainer padding={centered ? { bottom: 'large' } : { right: 'large' }} orientation="horizontal" mainAlignment="flex-start">
-				{ optionalFooter }
-			</OptionalFooterContainer> }
+				{optionalFooter}
+			</OptionalFooterContainer>}
 			<ButtonContainer orientation="horizontal" mainAlignment={centered ? 'center' : 'flex-end'}>
-				{ secondaryButton }
+				{secondaryButton}
 				<ConfirmButton color={confirmColor} onClick={onConfirm || onClose} label={confirmLabel} />
 			</ButtonContainer>
 		</>

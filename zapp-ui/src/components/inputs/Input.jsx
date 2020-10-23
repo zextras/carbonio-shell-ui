@@ -11,7 +11,7 @@ const ContainerEl = styled(Container)`
 		pointer-events: none;
 		opacity: 0.5;
 	`};
-	${({theme, background, disabled}) => !disabled && css`
+	${({ theme, background, disabled }) => !disabled && css`
 		transition: background 0.2s ease-out;
 		&:focus {
 			outline: none;
@@ -33,12 +33,12 @@ const InputEl = styled.input`
 	width: 100%;
 	outline: 0;
 	background: transparent !important;
-	font-size: ${({theme}) => theme.sizes.font.medium};
-	font-weight: ${({theme}) => theme.fonts.weight.regular};
-	font-family: ${({theme}) => theme.fonts.default};
-	color: ${({theme, color}) => theme.palette[color].regular};
+	font-size: ${({ theme }) => theme.sizes.font.medium};
+	font-weight: ${({ theme }) => theme.fonts.weight.regular};
+	font-family: ${({ theme }) => theme.fonts.default};
+	color: ${({ theme, color }) => theme.palette[color].regular};
 	transition: background 0.2s ease-out;
-	padding: ${({theme}) => `calc(${theme.sizes.padding.large} + ${theme.sizes.padding.extrasmall}) ${theme.sizes.padding.large} ${theme.sizes.padding.small}`}!important;
+	padding: ${({ theme }) => `calc(${theme.sizes.padding.large} + ${theme.sizes.padding.extrasmall}) ${theme.sizes.padding.large} ${theme.sizes.padding.small}`}!important;
 	${({ hasIcon, theme }) => hasIcon && css`
 		padding-right: calc(${theme.sizes.padding.large} * 2 + ${theme.sizes.icon.large})!important;
 	`}
@@ -47,13 +47,13 @@ const InputEl = styled.input`
 
 const Label = styled.label`
 	position: absolute;
-	top: ${({theme, active}) => active ? `calc(${theme.sizes.padding.small} - 1px)` : '50%'};
-	left: ${({theme}) => theme.sizes.padding.large};
-	font-size: ${({theme, active}) => theme.sizes.font[active ? 'small' : 'medium']};
-	font-weight: ${({theme}) => theme.fonts.weight.regular};
-	font-family: ${({theme}) => theme.fonts.default};
-	color: ${({theme, hasError, hasFocus}) => theme.palette[hasError ? 'error' : (hasFocus ? 'primary' : 'secondary')].regular};
-	transform: translateY(${({active}) => active ? '0': '-50%'});
+	top: ${({ theme, active }) => active ? `calc(${theme.sizes.padding.small} - 1px)` : '50%'};
+	left: ${({ theme }) => theme.sizes.padding.large};
+	font-size: ${({ theme, active }) => theme.sizes.font[active ? 'small' : 'medium']};
+	font-weight: ${({ theme }) => theme.fonts.weight.regular};
+	font-family: ${({ theme }) => theme.fonts.default};
+	color: ${({ theme, hasError, hasFocus }) => theme.palette[hasError ? 'error' : (hasFocus ? 'primary' : 'secondary')].regular};
+	transform: translateY(${({ active }) => active ? '0' : '-50%'});
 	transition: transform 150ms ease-out, font-size 150ms ease-out, top 150ms ease-out, left 150ms ease-out;
 	pointer-events: none;
 `;
@@ -63,17 +63,20 @@ const InputUnderline = styled.div`
 	bottom: 0;
 	width: 100%;
 	height: 1px;
-	background: ${({theme, color}) => theme.palette[color].regular};
+	background: ${({ theme, color }) => theme.palette[color].regular};
 `;
 const IconContainer = styled(Container)`
 	position: absolute;
-	right: ${({theme}) => theme.sizes.padding.large};
+	right: ${({ theme }) => theme.sizes.padding.large};
 	cursor: pointer;
 `;
 
-const Input = React.forwardRef(function({
+const Input = React.forwardRef(function ({
+	autoFocus,
+	autoComplete,
 	borderColor,
 	backgroundColor,
+	defaultValue,
 	disabled,
 	textColor,
 	label,
@@ -90,7 +93,7 @@ const Input = React.forwardRef(function({
 	const [id] = useState(`input-${Input._newId++}`);
 
 	const onInputFocus = useCallback(() => {
-		if (!disabled) {
+		if (!disabled && comboRef && comboRef.current) {
 			setActive(true);
 			comboRef.current.focus();
 		}
@@ -118,12 +121,14 @@ const Input = React.forwardRef(function({
 				htmlFor={id}
 				hasFocus={active}
 				hasError={hasError}
-				active={active || (comboRef.current && comboRef.current.value !== '') || !(comboRef.current || !value)}
-				style={{userSelect: 'none'}}
+				active={active || (comboRef.current && comboRef.current.value !== '') || !(comboRef.current || !value) || autoFocus || defaultValue}
+				style={{ userSelect: 'none' }}
 			>
 				{label}
 			</Label>
 			<InputEl
+				autoFocus={autoFocus || undefined}
+				autoComplete={autoComplete ? autoComplete : 'off'} // This one seems to be a React quirk, 'off' doesn't really work
 				background={backgroundColor}
 				color={textColor}
 				ref={comboRef}
@@ -132,7 +137,8 @@ const Input = React.forwardRef(function({
 				onBlur={onInputBlur}
 				id={id}
 				name={label}
-				value={value}
+				defaultValue={defaultValue || undefined}
+				value={value || undefined}
 				onChange={onChange}
 				disabled={disabled}
 			/>
@@ -167,11 +173,19 @@ Input.propTypes = {
 	inputRef: PropTypes.object,
 	/** value of the input */
 	value: PropTypes.string,
+	/** default value of the input */
+	defaultValue: PropTypes.string,
 	/** Whether or not the input has an error */
-	hasError: PropTypes.bool
+	hasError: PropTypes.bool,
+	/** Whether or not the input should focus on load */
+	autoFocus: PropTypes.bool,
+	/** input autocompletion type (HTML input attribute) */
+	autoComplete: PropTypes.string
 };
 
 Input.defaultProps = {
+	autoFocus: false,
+	autoComplete: 'off',
 	backgroundColor: 'gray6',
 	disabled: false,
 	textColor: 'text',
@@ -181,7 +195,7 @@ Input.defaultProps = {
 
 Input._newId = 0;
 
-const PasswordInput = React.forwardRef(function({
+const PasswordInput = React.forwardRef(function ({
 	borderColor,
 	backgroundColor,
 	disabled,
@@ -203,7 +217,7 @@ const PasswordInput = React.forwardRef(function({
 	const onInputFocus = useCallback(() => {
 		if (!disabled) {
 			setActive(true);
-			comboRef.current.focus()
+			comboRef.current.focus();
 		}
 	}, [setActive, comboRef, disabled]);
 
@@ -253,7 +267,7 @@ const PasswordInput = React.forwardRef(function({
 				hasFocus={active}
 				hasError={hasError}
 				active={active || (comboRef.current && comboRef.current.value !== '')}
-				style={{userSelect: 'none'}}
+				style={{ userSelect: 'none' }}
 			>
 				{label}
 			</Label>

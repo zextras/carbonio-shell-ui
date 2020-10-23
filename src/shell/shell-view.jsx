@@ -10,7 +10,7 @@
  */
 
 import React, { useCallback, useState } from 'react';
-import { Row, extendTheme, ThemeProvider, Responsive } from '@zextras/zapp-ui';
+import { Row, Responsive } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import BoardsRouterContainer from './boards/boards-router-container';
@@ -25,6 +25,7 @@ import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
 import ShellMenuPanel from './shell-menu-panel';
 import AppBoardWindow from './boards/app-board-window';
+import AppLoaderMounter from '../app/app-loader-mounter';
 
 export default function ShellView() {
 	return (
@@ -34,6 +35,7 @@ export default function ShellView() {
 					<SharedUiComponentsContextProvider>
 						<Shell />
 					</SharedUiComponentsContextProvider>
+					<AppLoaderMounter />
 				</AppLoaderContextProvider>
 			</ShellContextProvider>
 		</ShellThemeProvider>
@@ -66,7 +68,7 @@ export function Shell() {
 		ev.preventDefault();
 		db.accounts.clear()
 			.then(() => network.doLogout())
-			.then( () => history.push({ pathname: '/' }));
+			.then(() => history.push({ pathname: '/' }));
 	}, [db, network, history]);
 
 	const quota = 30;
@@ -88,7 +90,7 @@ export function Shell() {
 				onUserClick={() => setUserOpen(!userOpen)}
 				quota={quota}
 			/>
-			<Row crossAlignment="unset" flexGrow="1" style={{position: 'relative'}}>
+			<Row crossAlignment="unset" flexGrow="1" style={{ position: 'relative' }}>
 				<ShellNavigationBar
 					navigationBarIsOpen={navOpen}
 					mobileNavIsOpen={mobileNavOpen}

@@ -19,7 +19,6 @@ import { reduce } from 'lodash';
 import { combineLatest } from 'rxjs';
 import { map as rxMap } from 'rxjs/operators';
 import { useAppsCache } from '../../app/app-loader-context';
-import AppBoardRoute from '../../app/app-board-route';
 import ShellContext from '../shell-context';
 import LoadingView from '../../bootstrap/loading-view';
 import AppContextProvider from '../../app/app-context-provider';
@@ -89,7 +88,7 @@ export default function AppBoard({ idx }) {
 				subscription.unsubscribe();
 			}
 		};
-	}, [appsCache, setRoutes]);
+	}, [appsCache]);
 
 	const history = useMemo(() => createMemoryHistory(), []);
 	// eslint-disable-next-line

@@ -10,7 +10,7 @@
  */
 
 import { Container, IconButton, Row } from '@zextras/zapp-ui';
-import { map } from 'lodash';
+import { map, isEmpty } from 'lodash';
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import ShellContext from './shell-context';
@@ -46,7 +46,7 @@ export default function ShellPrimaryBar({
 				wrap="nowrap"
 				style={{ minHeight: '1px', overflowY: 'overlay' }}
 			>
-				{ map(mainMenuItems, (app, key) =>
+				{ map(mainMenuItems, (app, key) => (
 					<AppIcon
 						key={key}
 						iconColor={activeApp === app.id ? 'primary' : 'text'}
@@ -55,10 +55,10 @@ export default function ShellPrimaryBar({
 						onClick={app.click}
 						size="large"
 					/>
-				)}
+				))}
 			</Row>
 			{
-				Object.keys(shellBoards).length > 0 && (
+				!isEmpty(shellBoards) && (
 					<Row>
 						<IconButton
 							iconColor="primary"

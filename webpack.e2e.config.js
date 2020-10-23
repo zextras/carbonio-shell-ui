@@ -14,10 +14,12 @@ module.exports = merge(common, {
 		// lodash: '__ZAPP_SHARED_LIBRARIES__[\'lodash\']',
 		// rxjs: '__ZAPP_SHARED_LIBRARIES__[\'rxjs\']',
 		// 'rxjs/operators': '__ZAPP_SHARED_LIBRARIES__[\'rxjs/operators\']',
+		// 'react-redux': '__ZAPP_SHARED_LIBRARIES__[\'react-redux\']',
 		// 'react-router-dom': '__ZAPP_SHARED_LIBRARIES__[\'react-router-dom\']',
 		// 'styled-components': '__ZAPP_SHARED_LIBRARIES__[\'styled-components\']',
 		// 'prop-types': '__ZAPP_SHARED_LIBRARIES__[\'prop-types\']',
 		// moment: '__ZAPP_SHARED_LIBRARIES__[\'moment\']',
+		// '@reduxjs/toolkit': '__ZAPP_SHARED_LIBRARIES__[\'@reduxjs/toolkit\']',
 		'@zextras/zapp-shell': '__ZAPP_SHARED_LIBRARIES__[\'@zextras/zapp-shell\']',
 		// '@zextras/zapp-ui': '__ZAPP_SHARED_LIBRARIES__[\'@zextras/zapp-ui\']'
 	},

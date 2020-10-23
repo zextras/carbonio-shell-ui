@@ -11,8 +11,7 @@
 
 import React from 'react';
 import { reduce } from 'lodash';
-import { useBehaviorSubject } from '../shell/hooks';
-import { useIsMobile } from '../shell/shell-context';
+import { useBehaviorSubject, useIsMobile } from '../shell/hooks';
 import AppMainMenuItemChild from './app-main-menu-item-child';
 import AppContextProvider from './app-context-provider';
 import AppLink from './app-link';
@@ -40,11 +39,13 @@ export default function AppMainMenuItems({ app }) {
 			r.push((
 				<li key={v.id}>
 					<AppContextProvider pkg={app.pkg}>
-						{v.icon} <AppLink to={v.to}>{ v.label }</AppLink>
+						{v.icon} <AppLink to={v.to}>{v.label}</AppLink>
 					</AppContextProvider>
-					{ subChildren.length > 0 && <ul>
-						{ subChildren }
-					</ul> }
+					{subChildren.length > 0 && (
+						<ul>
+							{subChildren}
+						</ul>
+					)}
 				</li>
 			));
 			return r;
@@ -53,7 +54,7 @@ export default function AppMainMenuItems({ app }) {
 	);
 	return (
 		<>
-			{ children }
+			{children}
 		</>
 	);
 }

@@ -269,7 +269,7 @@ function PopperListItem({ icon, label, click, selected }) {
 					<Icon icon={icon} size="medium" color="text" style={{ pointerEvents: 'none' }} />
 				</Padding>
 			}
-			<Text size="medium" weight="regular" color="text">
+			<Text size="medium" weight={selected ? 'bold' : 'regular'} color="text">
 				{label}
 			</Text>
 		</ContainerEl>

@@ -9,27 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { createContext, useCallback, useContext } from 'react';
+import { createContext, useContext } from 'react';
 
-const ShellContext = createContext({
-	isMobile: true,
-	boards: [],
-	currentBoard: 0,
-	largeView: false,
-	minimized: false,
-	addBoard: (boardUrl, boardTitle) => undefined,
-	removeBoard: (idx) => undefined,
-	removeAllBoards: () => undefined,
-	updateBoard: (idx, boardUrl, boardTitle) => undefined,
-	setCurrentBoard: (idx) => undefined,
-	toggleLargeView: () => undefined,
-	toggleMinimized: () => undefined
-});
-
-export function useIsMobile() {
-	const { isMobile } = useContext(ShellContext);
-	return isMobile;
-}
+const ShellContext = createContext({ isMobile: true });
 
 /**
  * use the fiberchannel in a Shell context.
@@ -38,14 +20,6 @@ export function useIsMobile() {
 export function useFiberChannel() {
 	const { fiberChannelSink, fiberChannel } = useContext(ShellContext);
 	return { fiberChannelSink, fiberChannel };
-}
-
-export function useCurrentBoard() {
-	const { currentBoard, removeBoard } = useContext(ShellContext);
-	const removeCurrentBoard = useCallback(() => {
-		removeBoard(currentBoard);
-	}, [currentBoard, removeBoard]);
-	return removeCurrentBoard;
 }
 
 export default ShellContext;

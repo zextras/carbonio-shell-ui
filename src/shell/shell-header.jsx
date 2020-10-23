@@ -8,7 +8,12 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, { useEffect, useState, useRef, useContext } from 'react';
+import React, {
+	useEffect,
+	useState,
+	useRef,
+	useContext
+} from 'react';
 import { combineLatest } from 'rxjs';
 import { map as rxMap } from 'rxjs/operators';
 import { reduce } from 'lodash';
@@ -26,7 +31,7 @@ import {
 } from '@zextras/zapp-ui';
 import { useTranslation } from '../i18n/hooks';
 import { useAppsCache } from '../app/app-loader-context';
-import ShellContext from './shell-context';
+import { BoardSetterContext } from './boards/board-context';
 
 export default function ShellHeader({
 	userBarIsOpen,
@@ -39,7 +44,7 @@ export default function ShellHeader({
 	const { t } = useTranslation();
 	const screenMode = useScreenMode();
 	const [appsCache, appsLoaded] = useAppsCache();
-	const { addBoard } = useContext(ShellContext);
+	const { addBoard } = useContext(BoardSetterContext);
 	const [createOptions, setCreateOptions] = useState([]);
 	const refCreateOptions = useRef(createOptions);
 
@@ -73,10 +78,10 @@ export default function ShellHeader({
 											icon: option.icon,
 											click: () => {
 												if (window.top.location.pathname.startsWith(`/${app.pkg.package}`)) {
-													history.push(`/${app.pkg.package}` + (option.app.getPath && option.app.getPath() || option.app.path));
+													history.push(`/${app.pkg.package}${(option.app.getPath && option.app.getPath()) || option.app.path}`);
 												}
 												else {
-													addBoard(`/${app.pkg.package}` + (option.app.boardPath || option.app.path), option.label);
+													addBoard(`/${app.pkg.package}${option.app.boardPath || option.app.path}`, option.label);
 												}
 												option.onClick && option.onClick();
 											}
@@ -120,17 +125,17 @@ export default function ShellHeader({
 					<Container orientation="horizontal" mainAlignment="flex-start" width="50%">
 						<Container orientation="horizontal" width="fit" padding={{ right: 'small' }}>
 							<Dropdown items={createOptions} placement="bottom-end">
-								<Button label={t("New")} icon="ArrowIosDownwardOutline" />
+								<Button label={t('New')} icon="ArrowIosDownwardOutline" />
 							</Dropdown>
 						</Container>
 						{/*	<SearchInput/> */}
 					</Container>
-					<Container orientation="horizontal" width="50%" mainAlignment="flex-end" padding={{ right: 'extrasmall'}}>
+					<Container orientation="horizontal" width="50%" mainAlignment="flex-end" padding={{ right: 'extrasmall' }}>
 						<Padding right="small">
-							<Quota fill={quota}/>
+							<Quota fill={quota} />
 						</Padding>
 						<IconButton icon="BellOutline" iconColor="text" />
-						<IconButton icon={ userBarIsOpen ? 'Close' : 'PersonOutline' } iconColor="text" onClick={onUserClick}/>
+						<IconButton icon={userBarIsOpen ? 'Close' : 'PersonOutline'} iconColor="text" onClick={onUserClick} />
 					</Container>
 				</Container>
 			</Responsive>

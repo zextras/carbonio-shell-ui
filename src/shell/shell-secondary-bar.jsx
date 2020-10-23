@@ -43,7 +43,8 @@ export default function ShellSecondaryBar({
 				>
 					<Switch>
 						{
-							map(mainMenuItems,
+							map(
+								mainMenuItems,
 								(menuItem) => (
 									<Route key={`/${menuItem.pkgName}${menuItem.to}`} exact path={menuItem.allTos}>
 										{
@@ -67,7 +68,7 @@ export default function ShellSecondaryBar({
 					</Switch>
 				</Container>
 			</Collapse>
-			<Collapser clickCallback={onCollapserClick}/>
+			<Collapser clickCallback={onCollapserClick} />
 		</>
 	);
 }

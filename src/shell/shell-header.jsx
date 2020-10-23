@@ -38,7 +38,7 @@ export default function ShellHeader({
 	const history = useHistory();
 	const { t } = useTranslation();
 	const screenMode = useScreenMode();
-	const [appsCache, appsLoaded] = useAppsCache();
+	const [appsCache] = useAppsCache();
 	const { addBoard } = useContext(ShellContext);
 	const [createOptions, setCreateOptions] = useState([]);
 	const refCreateOptions = useRef(createOptions);

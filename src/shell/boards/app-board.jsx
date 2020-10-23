@@ -36,7 +36,7 @@ const _container = styled.div`
 
 export default function AppBoard({ idx }) {
 	const { boards, currentBoard } = useContext(BoardValueContext);
-	const { updateBoard	} = useContext(BoardSetterContext);
+	const { updateBoard } = useContext(BoardSetterContext);
 	const [appsCache] = useAppsCache();
 	const [routes, setRoutes] = useState([]);
 

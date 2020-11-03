@@ -192,7 +192,7 @@ pipeline {
 					steps {
 						executeNpmLogin()
 						nodeCmd 'npm install'
-						nodeCmd 'npx eslint src/'
+						nodeCmd 'npm run lint'
 					}
 				}
 			}

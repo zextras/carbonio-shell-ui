@@ -1,10 +1,23 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
+/*
+ * *** BEGIN LICENSE BLOCK *****
+ * Copyright (C) 2011-2020 Zextras
+ *
+ *  The contents of this file are subject to the Zextras EULA;
+ * you may not use this file except in compliance with the EULA.
+ * You may obtain a copy of the EULA at
+ * http://www.zextras.com/zextras-eula.html
+ * *** END LICENSE BLOCK *****
+ */
+
+import React, {
+	useCallback, useMemo, useRef, useState
+} from 'react';
 import styled from 'styled-components';
 import {
 	Container, Text, Divider, Icon, IconButton, Padding, Collapse
 } from '@zextras/zapp-ui';
 import useKeyboard, { getKeyboardPreset } from '../../zapp-ui/src/hooks/useKeyboard';
-import { useCombinedRefs } from '../../zapp-ui/src/hooks/useCombinedRefs';
+import { useCombinedRefs } from '../../zapp-ui/src';
 import { pseudoClasses } from '../../zapp-ui/src/components/utilities/functions';
 
 const AccordionContainerEl = styled(Container)`
@@ -14,10 +27,10 @@ const AccordionContainerEl = styled(Container)`
 		${props.level === 0 ? props.theme.sizes.padding.large : props.theme.sizes.padding.medium}
 		calc(${props.theme.sizes.padding.large} + ${props.level > 1 ? props.theme.sizes.padding.medium : '0px'})
 	`};
-	${({theme}) => pseudoClasses(theme, 'gray5')};
+	${({ theme }) => pseudoClasses(theme, 'gray5')};
 `;
 
-const NavigationBarAccordion = React.forwardRef(function({
+const NavigationBarAccordion = React.forwardRef(({
 	active,
 	icon,
 	divider,
@@ -25,7 +38,7 @@ const NavigationBarAccordion = React.forwardRef(function({
 	customComponent,
 	label,
 	...rest
-}, ref) {
+}, ref) => {
 	const level = 0;
 	const [open, setOpen] = useState(false);
 	const innerRef = useRef(undefined);

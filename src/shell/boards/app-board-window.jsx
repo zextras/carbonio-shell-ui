@@ -1,14 +1,16 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 ZeXtras
+ * Copyright (C) 2011-2020 Zextras
  *
- * The contents of this file are subject to the ZeXtras EULA;
+ *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
  * You may obtain a copy of the EULA at
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, { useContext, useEffect, useRef, useMemo } from 'react';
+import React, {
+	useContext, useEffect, useRef, useMemo
+} from 'react';
 import styled, { css } from 'styled-components';
 import { reduce, map, slice } from 'lodash';
 import {
@@ -121,7 +123,9 @@ export default function AppBoardWindow() {
 	);
 }
 
-function TabsList({ tabs, currentBoard, setCurrentBoard, largeView }) {
+function TabsList({
+	tabs, currentBoard, setCurrentBoard, largeView
+}) {
 	const tabContainerRef = useRef();
 	const [hiddenTabsCount, recalculateHiddenTabs] = useHiddenCount(tabContainerRef, largeView);
 

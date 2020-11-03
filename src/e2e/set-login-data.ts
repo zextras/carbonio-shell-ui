@@ -1,26 +1,22 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 ZeXtras
+ * Copyright (C) 2011-2020 Zextras
  *
- * The contents of this file are subject to the ZeXtras EULA;
+ *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
  * You may obtain a copy of the EULA at
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
 
-import { filter, reduce } from 'lodash';
-import Account, {  ThemePkgDescription } from '../db/account';
 import { ZimletPkgDescription } from '../network/soap/types';
-import { zimletToAppPkgDescription, zimletToThemePkgDescription } from '../network/soap/utils';
 import { E2EContext } from './e2e-types';
-import { AppPkgDescription } from '../../types';
 
 const ACCOUNT_ID = '00000000-0000-4000-8000-000000000000';
 const CSRF_TOKEN = '0_0000000000000000000000000000000000000000';
 const ACCOUNT_NAME = 'user@example.com';
 
-export default function(ctxt: E2EContext): Promise<void> {
+export default function (ctxt: E2EContext): Promise<void> {
 	return new Promise((resolve, reject) => {
 		const zimlet: ZimletPkgDescription[] = [];
 		switch (FLAVOR) {
@@ -63,40 +59,45 @@ export default function(ctxt: E2EContext): Promise<void> {
 					}]
 				});
 				break;
+			default:
 		}
+		// TODO: Inject the data into the store!
+		resolve();
 		// Injecting the user as logged in
-		ctxt.db.accounts.clear()
-			.then(() => ctxt.db.accounts.add(
-				new Account(
-					ACCOUNT_ID,
-					ACCOUNT_ID,
-					CSRF_TOKEN,
-					{
-						t: '',
-						u: '',
-						p: ''
-					},
-					reduce<ZimletPkgDescription, AppPkgDescription[]>(
-						filter<ZimletPkgDescription>(
-							zimlet,
-							(z) => (z.zimlet[0].zapp === 'true' && typeof z.zimlet[0]['zapp-main'] !== 'undefined')
-						),
-						(r, z) => ([...r, zimletToAppPkgDescription(z)]),
-						[]
-					),
-					reduce<ZimletPkgDescription, ThemePkgDescription[]>(
-						filter(
-							zimlet,
-							(z) => (z.zimlet[0].zapp === 'true' && typeof z.zimlet[0]['zapp-theme'] !== 'undefined')
-						),
-						(r, z) => ([...r, zimletToThemePkgDescription(z)]),
-						[]
-					),
-					ACCOUNT_ID
-				)
-			))
-			.then(() => {
-				resolve();
-			});
+		// ctxt.db.accounts.clear()
+		// 	.then(() => ctxt.db.accounts.add(
+		// 		new Account(
+		// 			ACCOUNT_ID,
+		// 			ACCOUNT_ID,
+		// 			CSRF_TOKEN,
+		// 			{
+		// 				t: '',
+		// 				u: '',
+		// 				p: ''
+		// 			},
+		// 			reduce<ZimletPkgDescription, AppPkgDescription[]>(
+		// 				filter<ZimletPkgDescription>(
+		// 					zimlet,
+		// eslint-disable-next-line max-len
+		// 					(z) => (z.zimlet[0].zapp === 'true' && typeof z.zimlet[0]['zapp-main'] !== 'undefined')
+		// 				),
+		// 				(r, z) => ([...r, zimletToAppPkgDescription(z)]),
+		// 				[]
+		// 			),
+		// 			reduce<ZimletPkgDescription, ThemePkgDescription[]>(
+		// 				filter(
+		// 					zimlet,
+		// eslint-disable-next-line max-len
+		// 					(z) => (z.zimlet[0].zapp === 'true' && typeof z.zimlet[0]['zapp-theme'] !== 'undefined')
+		// 				),
+		// 				(r, z) => ([...r, zimletToThemePkgDescription(z)]),
+		// 				[]
+		// 			),
+		// 			ACCOUNT_ID
+		// 		)
+		// 	))
+		// 	.then(() => {
+		// 		resolve();
+		// 	});
 	});
 }

@@ -1,8 +1,8 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 ZeXtras
+ * Copyright (C) 2011-2020 Zextras
  *
- * The contents of this file are subject to the ZeXtras EULA;
+ *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
  * You may obtain a copy of the EULA at
  * http://www.zextras.com/zextras-eula.html
@@ -10,7 +10,9 @@
  */
 import React, { useCallback, useContext } from 'react';
 import styled from 'styled-components';
-import { IconButton, Text, Row, Padding } from '@zextras/zapp-ui';
+import {
+	IconButton, Text, Row, Padding
+} from '@zextras/zapp-ui';
 import { BoardValueContext, BoardSetterContext } from './board-context';
 
 const TabContainer = styled(Row)`

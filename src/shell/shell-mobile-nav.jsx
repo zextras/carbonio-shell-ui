@@ -1,8 +1,8 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 ZeXtras
+ * Copyright (C) 2011-2020 Zextras
  *
- * The contents of this file are subject to the ZeXtras EULA;
+ *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
  * You may obtain a copy of the EULA at
  * http://www.zextras.com/zextras-eula.html
@@ -44,7 +44,7 @@ export default function ShellMobileNav({
 				crossSize="100%"
 			>
 				<Container
-					width={256+48+12}
+					width={256 + 48 + 12}
 					height="fill"
 					orientation="vertical"
 					mainAlignment="space-between"
@@ -60,26 +60,30 @@ export default function ShellMobileNav({
 						mainAlignment="space-between"
 					>
 						{
-							map(mainMenuItems, (app, key) =>
+							map(mainMenuItems, (app, key) => (
 								app.customComponent
-									?	<NavigationBarAccordion
-										key={key}
-										icon={app.icon}
-										label={app.label}
-										click={app.click}
-										customComponent={app.customComponent}
-										divider={true}
-									/>
-									: <Accordion
-										key={key}
-										level={0}
-										icon={app.icon}
-										label={app.label}
-										click={app.click}
-										items={app.items}
-										divider={true}
-									/>
-							)
+									?	(
+										<NavigationBarAccordion
+											key={key}
+											icon={app.icon}
+											label={app.label}
+											click={app.click}
+											customComponent={app.customComponent}
+											divider={true}
+										/>
+									)
+									: (
+										<Accordion
+											key={key}
+											level={0}
+											icon={app.icon}
+											label={app.label}
+											click={app.click}
+											items={app.items}
+											divider={true}
+										/>
+									)
+							))
 						}
 					</Container>
 					<Container
@@ -89,7 +93,7 @@ export default function ShellMobileNav({
 						mainAlignment="flex-end"
 					>
 						{
-							map(menuTree, (app, index) =>
+							map(menuTree, (app, index) => (
 								<Accordion
 									key={index}
 									level={0}
@@ -99,7 +103,7 @@ export default function ShellMobileNav({
 									items={app.folders}
 									divider={true}
 								/>
-							)
+							))
 						}
 						<Padding vertical="medium">
 							<Quota fill={quota} />

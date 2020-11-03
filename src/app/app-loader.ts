@@ -1,20 +1,24 @@
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/no-named-default */
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 ZeXtras
+ * Copyright (C) 2011-2020 Zextras
  *
- * The contents of this file are subject to the ZeXtras EULA;
+ *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
  * You may obtain a copy of the EULA at
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
 
+/* eslint-disable import/no-duplicates */
+/* eslint-disable import/no-named-default */
 import {
-	default as Lodash, map, orderBy, compact, keyBy, pick
+	default as Lodash, map, orderBy, compact, keyBy, forEach
 } from 'lodash';
-import RxJS, { BehaviorSubject } from 'rxjs';
+import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
+import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
+import { Reducer } from 'redux';
+import * as RxJS from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import React, { ComponentClass } from 'react';
 import * as ReactDOM from 'react-dom';
 import * as RxJSOperators from 'rxjs/operators';
@@ -22,30 +26,30 @@ import * as ReactRouterDom from 'react-router-dom';
 import * as PropTypes from 'prop-types';
 import * as Moment from 'moment';
 import * as ReactI18n from 'react-i18next';
+import * as Msw from 'msw';
+import * as Faker from 'faker';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import * as ReactRedux from 'react-redux';
 import * as ReduxJSToolkit from '@reduxjs/toolkit';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
-import logger from 'redux-logger';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
 import * as ZappUI from '@zextras/zapp-ui';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
+import { Store } from '@reduxjs/toolkit';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import RichTextEditor from '../../zapp-ui/src/components/inputs/RichTextEditor';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
-import { IAccount } from '../db/account';
 import * as hooks from '../shell/hooks';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import SharedUiComponentsFactory from '../shared-ui-components/shared-ui-components-factory';
+import StoreFactory from '../store/store-factory';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
@@ -55,13 +59,27 @@ import { FC, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import validateSharedUiComponent from '../shared-ui-components/shared-ui-components-validator';
 import ShellNetworkService from '../network/shell-network-service';
 import {
-	AppCreateOption, AppPkgDescription, AppRouteDescription, FCSink, MainMenuItemData, SoapFetch
+	Account,
+	AppCreateOption,
+	AppPkgDescription,
+	AppRouteDescription,
+	FCSink,
+	MainMenuItemData,
+	SoapFetch
 } from '../../types';
 
-type IChildWindow = Window & {
-	__ZAPP_SHARED_LIBRARIES__: SharedLibrariesAppsMap;
+type IChildWindow<T> = Window & {
+	__ZAPP_SHARED_LIBRARIES__: T;
 	__ZAPP_EXPORT__: (value?: ComponentClass | PromiseLike<ComponentClass> | undefined) => void;
 	__ZAPP_HMR_EXPORT__: (appClass: ComponentClass) => void;
+	__ZAPP_HANDLERS__: (handlers: RequestHandlersList) => void;
+	__ZAPP_HMR_HANDLERS__: (handlers: RequestHandlersList) => void;
+};
+
+type SharedLibrariesHandlersMap = {
+	'lodash': {};
+	'msw': {};
+	'faker': {};
 };
 
 type SharedLibrariesAppsMap = {
@@ -80,14 +98,14 @@ type SharedLibrariesAppsMap = {
 	'@zextras/zapp-shell': {
 		// These signatures are in the documentation
 		// If changed update also the documentation.
+		/** @deprecated */
 		db: {
 			Database: any;
 		};
-		accounts: Array<{
-			name: string;
-			id: string;
-			displayName: string;
-		}>;
+		store: {
+			store: Store<any>;
+			setReducer(nextReducer: Reducer): void;
+		};
 		network: {
 			soapFetch: SoapFetch;
 		};
@@ -120,167 +138,237 @@ export type LoadedAppsCache = {
 };
 
 type AppInjections = {
+	appContext: BehaviorSubject<any>;
+	createOptions: BehaviorSubject<AppCreateOption[]>;
+	entryPoint: BehaviorSubject<ComponentClass|null>;
 	mainMenuItems: BehaviorSubject<MainMenuItemData[]>;
 	routes: BehaviorSubject<AppRouteDescription[]>;
-	createOptions: BehaviorSubject<AppCreateOption[]>;
-	appContext: BehaviorSubject<any>;
 	sharedUiComponents: BehaviorSubject<SharedUiComponentsDescriptor>;
-	entryPoint: BehaviorSubject<ComponentClass|null>;
+	store: Store<any>;
 };
 
 const _iframes: { [pkgName: string]: HTMLIFrameElement } = {};
 // const _revertableActions: { [pkgName: string]: RevertableActionCollection } = {};
 
+function updateAppHandlers(
+	appPkg: AppPkgDescription,
+	handlers: RequestHandlersList
+): void {
+	const worker = e2e.getMSWorker<SetupWorkerApi>();
+	if (worker) {
+		worker.resetHandlers();
+		forEach(handlers, (h) => worker.use(h));
+	}
+}
+
+function loadAppHandlers(
+	appPkg: AppPkgDescription,
+	fiberChannelFactory: IFiberChannelFactory,
+): Promise<void> {
+	if (appPkg.handlers) {
+		return new Promise<void>((resolve, reject) => {
+			try {
+				const path = `${appPkg.resourceUrl}/${appPkg.handlers}`;
+				const iframe: HTMLIFrameElement = document.createElement('iframe');
+				iframe.style.display = 'none';
+				// iframe.setAttribute('src', path);
+				document.body.appendChild(iframe);
+				if (iframe.contentWindow && iframe.contentDocument) {
+					const script: HTMLScriptElement = iframe.contentDocument.createElement('script');
+					iframe.contentWindow.onerror = (
+						msg,
+						url,
+						lineNo,
+						columnNo,
+						error
+					): void => {
+						fiberChannelFactory.getAppFiberChannelSink(appPkg)({ event: 'report-exception', data: { exception: error } });
+					};
+					// eslint-disable-next-line max-len
+					(iframe.contentWindow as IChildWindow<SharedLibrariesHandlersMap>).__ZAPP_SHARED_LIBRARIES__ = {
+						faker: Faker,
+						lodash: Lodash,
+						msw: Msw
+					} as any;
+					// eslint-disable-next-line max-len,@typescript-eslint/explicit-function-return-type
+					(iframe.contentWindow as IChildWindow<SharedLibrariesHandlersMap>).__ZAPP_HANDLERS__ = (handlers) => {
+						updateAppHandlers(appPkg, handlers);
+						resolve();
+					};
+					// eslint-disable-next-line max-len,@typescript-eslint/explicit-function-return-type
+					(iframe.contentWindow as IChildWindow<SharedLibrariesHandlersMap>).__ZAPP_HMR_HANDLERS__ = (handlers) => updateAppHandlers(appPkg, handlers);
+					script.type = 'text/javascript';
+					script.setAttribute('src', path);
+					script.addEventListener('error', reject);
+					iframe.contentDocument.body.appendChild(script);
+					_iframes[`${appPkg.package}-handlers`] = iframe;
+				}
+				else reject(new Error('Cannot create extension loader'));
+			}
+			catch (err) {
+				reject(err);
+			}
+		});
+	}
+	return Promise.resolve();
+}
+
 function loadAppModule(
 	appPkg: AppPkgDescription,
 	{
+		appContext,
+		createOptions,
+		entryPoint,
 		mainMenuItems,
 		routes,
-		createOptions,
 		sharedUiComponents,
-		appContext,
-		entryPoint
+		store
 	}: AppInjections,
 	fiberChannelFactory: IFiberChannelFactory,
-	accounts: Array<IAccount>,
 	shellNetworkService: ShellNetworkService
 ): Promise<ComponentClass> {
-	return new Promise((resolve, reject) => {
-		try {
-			const path = `${appPkg.resourceUrl}/${appPkg.entryPoint}`;
-			const iframe: HTMLIFrameElement = document.createElement('iframe');
-			iframe.style.display = 'none';
-			// iframe.setAttribute('src', path);
-			document.body.appendChild(iframe);
-			if (iframe.contentWindow && iframe.contentDocument) {
-				const script: HTMLScriptElement = iframe.contentDocument.createElement('script');
-				iframe.contentWindow.onerror = (msg, url, lineNo, columnNo, error) => {
-					fiberChannelFactory.getAppFiberChannelSink(appPkg)({ event: 'report-exception', data: { exception: error } });
-				};
-				// const revertables = _revertableActions[appPkg.package] = new RevertableActionCollection(
-				// 	this._routerSrvc,
-				// 	this._itemActionSrvc
-				// );
-				// eslint-disable-next-line
-				// const syncOperations: BehaviorSubject<Array<ISyncOperation<unknown, ISyncOpRequest<unknown>>>> = new BehaviorSubject(
-				// 	map(
-				// 		loFilter(
-				// 			this._syncSrvc.syncOperations.getValue(),
-				// 			(op) => op.app.package === appPkg.package
-				// 		),
-				// 		(op) => op.operation
-				// 	)
-				// );
-				// this._syncSrvc.syncOperations
-				// 	.subscribe((ops) => {
-				// 		syncOperations.next(
-				// 			map(
-				// 				loFilter(
-				// 					ops,
-				// 					(op) => op.app.package === appPkg.package
-				// 				),
-				// 				(op) => op.operation
-				// 			)
-				// 		);
-				// 	});
-				(iframe.contentWindow as IChildWindow).__ZAPP_SHARED_LIBRARIES__ = {
-					react: React,
-					'react-dom': ReactDOM,
-					'react-i18next': ReactI18n,
-					'react-redux': ReactRedux,
-					lodash: Lodash,
-					rxjs: RxJS,
-					'rxjs/operators': RxJSOperators,
-					'react-router-dom': {
-						...ReactRouterDom,
-						Link: AppLink
-					},
-					moment: Moment,
-					'prop-types': PropTypes,
-					'styled-components': StyledComponents,
-					'@reduxjs/toolkit': {
-						...ReduxJSToolkit,
-						configureStore: (options: any) => {
-							return ReduxJSToolkit.configureStore({
-								...options,
-								devTools: (FLAVOR === 'NPM' || FLAVOR === 'E2E') ? {
-									name: appPkg.package
-								} : false,
-								middleware: (FLAVOR === 'NPM' || FLAVOR === 'E2E')
-									? (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
-									: options.middleware
-							});
-						}
-					},
-					'@zextras/zapp-shell': {
-						db: {
-							Database: wrapAppDbConstructor(appPkg)
+	return loadAppHandlers(appPkg, fiberChannelFactory)
+		.then(() => new Promise((resolve, reject) => {
+			try {
+				const path = `${appPkg.resourceUrl}/${appPkg.entryPoint}`;
+				const iframe: HTMLIFrameElement = document.createElement('iframe');
+				iframe.style.display = 'none';
+				// iframe.setAttribute('src', path);
+				document.body.appendChild(iframe);
+				if (iframe.contentWindow && iframe.contentDocument) {
+					const script: HTMLScriptElement = iframe.contentDocument.createElement('script');
+					iframe.contentWindow.onerror = (
+						msg,
+						url,
+						lineNo,
+						columnNo,
+						error
+					): void => {
+						fiberChannelFactory.getAppFiberChannelSink(appPkg)({ event: 'report-exception', data: { exception: error } });
+					};
+					// eslint-disable-next-line max-len
+					// const revertables = _revertableActions[appPkg.package] = new RevertableActionCollection(
+					// 	this._routerSrvc,
+					// 	this._itemActionSrvc
+					// );
+					// eslint-disable-next-line
+					// const syncOperations: BehaviorSubject<Array<ISyncOperation<unknown, ISyncOpRequest<unknown>>>> = new BehaviorSubject(
+					// 	map(
+					// 		loFilter(
+					// 			this._syncSrvc.syncOperations.getValue(),
+					// 			(op) => op.app.package === appPkg.package
+					// 		),
+					// 		(op) => op.operation
+					// 	)
+					// );
+					// this._syncSrvc.syncOperations
+					// 	.subscribe((ops) => {
+					// 		syncOperations.next(
+					// 			map(
+					// 				loFilter(
+					// 					ops,
+					// 					(op) => op.app.package === appPkg.package
+					// 				),
+					// 				(op) => op.operation
+					// 			)
+					// 		);
+					// 	});
+					// eslint-disable-next-line max-len
+					(iframe.contentWindow as IChildWindow<SharedLibrariesAppsMap>).__ZAPP_SHARED_LIBRARIES__ = {
+						react: React,
+						'react-dom': ReactDOM,
+						'react-i18next': ReactI18n,
+						'react-redux': ReactRedux,
+						lodash: Lodash,
+						rxjs: RxJS,
+						'rxjs/operators': RxJSOperators,
+						'react-router-dom': {
+							...ReactRouterDom,
+							Link: AppLink
 						},
-						accounts: map(
-							accounts,
-							(acc) => pick(acc, ['name', 'id', 'displayName'])
-						),
-						setMainMenuItems: (items) => mainMenuItems.next(items),
-						setRoutes: (r) => routes.next(r),
-						setCreateOptions: (options) => createOptions.next(options),
-						setAppContext: (obj: any) => appContext.next(obj),
-						addSharedUiComponent: (scope: string, componentClass: ComponentClass) => {
-							validateSharedUiComponent(componentClass);
-							const scopes: SharedUiComponentsDescriptor = sharedUiComponents.getValue();
-							sharedUiComponents.next({
-								...scopes,
-								[scope]: [
-									...(scopes[scope] ? scopes[scope] : []),
-									{
-										pkg: appPkg,
-										componentClass
-									}
-								]
-							});
+						moment: Moment,
+						'prop-types': PropTypes,
+						'styled-components': StyledComponents,
+						'@reduxjs/toolkit': {
+							...ReduxJSToolkit,
+							configureStore: (): void => {
+								throw new Error('Apps must use the store given by the Shell.');
+							},
+							createStore: (): void => {
+								throw new Error('Apps must use the store given by the Shell.');
+							}
 						},
-						fiberChannel: fiberChannelFactory.getAppFiberChannel(appPkg),
-						fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(appPkg),
-						hooks,
-						network: {
-							soapFetch: shellNetworkService.getAppSoapFetch(appPkg)
+						'@zextras/zapp-shell': {
+							db: {
+								Database: wrapAppDbConstructor(appPkg)
+							},
+							store: {
+								store,
+								setReducer: (reducer): void => store.replaceReducer(reducer)
+							},
+							setMainMenuItems: (items): void => mainMenuItems.next(items),
+							setRoutes: (r): void => routes.next(r),
+							setCreateOptions: (options): void => createOptions.next(options),
+							setAppContext: (obj: any): void => appContext.next(obj),
+							addSharedUiComponent: (scope: string, componentClass: ComponentClass): void => {
+								validateSharedUiComponent(componentClass);
+								const scopes: SharedUiComponentsDescriptor = sharedUiComponents.getValue();
+								sharedUiComponents.next({
+									...scopes,
+									[scope]: [
+										...(scopes[scope] ? scopes[scope] : []),
+										{
+											pkg: appPkg,
+											componentClass
+										}
+									]
+								});
+							},
+							fiberChannel: fiberChannelFactory.getAppFiberChannel(appPkg),
+							fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(appPkg),
+							hooks,
+							network: {
+								soapFetch: shellNetworkService.getAppSoapFetch(appPkg)
+							},
+							ui: {
+								SharedUiComponentsFactory
+							}
 						},
-						ui: {
-							SharedUiComponentsFactory
-						}
-					},
-					'@zextras/zapp-ui': { ...ZappUI, RichTextEditor }
-				};
-				(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve;
-				// eslint-disable-next-line max-len
-				(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (appClass: ComponentClass): void => {
-					// Errors are not collected here because the HMR works only on develpment mode.
-					console.log(`HMR ${path}`);
-					entryPoint.next(appClass);
-				};
-				switch(FLAVOR) {
-					case 'NPM':
-					case 'E2E':
-						e2e.installOnWindow(iframe.contentWindow);
+						'@zextras/zapp-ui': { ...ZappUI, RichTextEditor }
+					};
+					(iframe.contentWindow as IChildWindow<SharedLibrariesAppsMap>).__ZAPP_EXPORT__ = resolve;
+					// eslint-disable-next-line max-len
+					(iframe.contentWindow as IChildWindow<SharedLibrariesAppsMap>).__ZAPP_HMR_EXPORT__ = (appClass: ComponentClass): void => {
+						// Errors are not collected here because the HMR works only on develpment mode.
+						console.log(`HMR ${path}`);
+						entryPoint.next(appClass);
+					};
+					switch (FLAVOR) {
+						case 'NPM':
+						case 'E2E':
+							e2e.installOnWindow(iframe.contentWindow);
+							break;
+						default:
+					}
+					script.type = 'text/javascript';
+					script.setAttribute('src', path);
+					script.addEventListener('error', reject);
+					iframe.contentDocument.body.appendChild(script);
+					_iframes[`${appPkg.package}-loader`] = iframe;
 				}
-				script.type = 'text/javascript';
-				script.setAttribute('src', path);
-				script.addEventListener('error', reject);
-				iframe.contentDocument.body.appendChild(script);
-				_iframes[appPkg.package] = iframe;
+				else reject(new Error('Cannot create extension loader'));
 			}
-			else reject(new Error('Cannot create extension loader'));
-		}
-		catch (err) {
-			reject(err);
-		}
-	});
+			catch (err) {
+				reject(err);
+			}
+		}));
 }
 
 function loadApp(
 	pkg: AppPkgDescription,
 	fiberChannelFactory: IFiberChannelFactory,
-	accounts: Array<IAccount>,
-	shellNetworkService: ShellNetworkService
+	shellNetworkService: ShellNetworkService,
+	storeFactory: StoreFactory,
 ): Promise<LoadedAppRuntime|undefined> {
 	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
 	const mainMenuItems = new BehaviorSubject<MainMenuItemData[]>([]);
@@ -289,18 +377,19 @@ function loadApp(
 	const appContext = new BehaviorSubject<any>({});
 	const sharedUiComponents = new BehaviorSubject<SharedUiComponentsDescriptor>({});
 	const entryPoint = new BehaviorSubject<ComponentClass|null>(null);
+	const store = storeFactory.getStoreForApp(pkg);
 	return loadAppModule(
 		pkg,
 		{
+			appContext,
+			createOptions,
+			entryPoint,
 			mainMenuItems,
 			routes,
-			createOptions,
 			sharedUiComponents,
-			appContext,
-			entryPoint
+			store
 		},
 		fiberChannelFactory,
-		accounts,
 		shellNetworkService
 	)
 		.then((appClass) => entryPoint.next(appClass))
@@ -330,19 +419,21 @@ function loadApp(
 		})
 		.then((loaded) => (loaded ? {
 			pkg,
+			appContext,
+			createOptions,
+			entryPoint,
 			mainMenuItems,
 			routes,
-			createOptions,
 			sharedUiComponents,
-			appContext,
-			entryPoint
+			store
 		} : undefined));
 }
 
 export function loadApps(
-	accounts: Array<IAccount>,
+	accounts: Array<Account>,
 	fiberChannelFactory: IFiberChannelFactory,
-	shellNetworkService: ShellNetworkService
+	shellNetworkService: ShellNetworkService,
+	storeFactory: StoreFactory
 ): Promise<LoadedAppsCache> {
 	return Promise.all(
 		map(
@@ -350,8 +441,8 @@ export function loadApps(
 			(pkg) => loadApp(
 				pkg,
 				fiberChannelFactory,
-				accounts,
-				shellNetworkService
+				shellNetworkService,
+				storeFactory
 			)
 		)
 	)

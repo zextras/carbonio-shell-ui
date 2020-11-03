@@ -38,12 +38,14 @@ module.exports = {
 			"allowShortCircuit": true,
 			"allowTernary": true
 		}], // https://eslint.org/docs/rules/no-unused-expressions
+		"no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state", "appointment", "r"] }],
 
 		/**
 		 * @description rules of @typescript-eslint
 		 */
 		"@typescript-eslint/prefer-interface": "off", // also want to use "type"
 		//"@typescript-eslint/explicit-function-return-type": "off", // annoying to force return type
+
 		/**
 		 * @description rules of eslint-plugin-react
 		 */
@@ -51,6 +53,7 @@ module.exports = {
 			"extensions": [".jsx", ".tsx"]
 		}], // also want to use with ".tsx"
 		"react/prop-types": "off", // Is this incompatible with TS props type?
+		"react/jsx-props-no-spreading": "warn",
 
 		/**
 		 * @description rules of eslint-plugin-react-hooks
@@ -69,11 +72,29 @@ module.exports = {
 		'react/jsx-indent': ['error', 'tab'],
 		'react/jsx-indent-props': ['error', 'tab'],
 		'@typescript-eslint/interface-name-prefix': 'off',
+		'@typescript-eslint/explicit-function-return-type': 'off',
+		"@typescript-eslint/no-use-before-define": ["error", { "functions": false, "classes": false, "variables": true }],
 		'implicit-arrow-linebreak': 'off',
-		'import/first':'off',
+		'import/first': 'off',
 		'import/no-extraneous-dependencies': 'warn',
 		'@typescript-eslint/no-unused-vars': 'warn',
-		'import/no-unresolved': [2, { ignore: ['^@zextras/zapp-shell/(context|fc|idb|network|router|service|sync)'] }],
+		'import/no-unresolved': [2, { ignore: ['^@zextras/zapp-ui'] } ],
 		'no-extra-semi': 'off'
 	},
+	"overrides": [
+		{ // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/explicit-function-return-type.md
+			// enable the rule specifically for TypeScript files
+			"files": ["*.ts", "*.tsx"],
+			"rules": {
+				"@typescript-eslint/explicit-function-return-type": ["error"]
+			}
+		}
+	],
+	'globals': {
+		"FLAVOR": "readonly",
+		"PACKAGE_NAME": "readonly",
+		"PACKAGE_VERSION": "readonly",
+		"e2e": "readonly",
+		"cliSettings": "readonly",
+	}
 };

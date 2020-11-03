@@ -1,8 +1,8 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 ZeXtras
+ * Copyright (C) 2011-2020 Zextras
  *
- * The contents of this file are subject to the ZeXtras EULA;
+ *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
  * You may obtain a copy of the EULA at
  * http://www.zextras.com/zextras-eula.html
@@ -11,21 +11,15 @@
 
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { useUserAccounts } from './bootstrapper-context';
-import LoadingView from './loading-view';
 import BootstrapperRouterContent from './bootstrapper-router-content';
+import { useUserAccounts } from '../store/shell-store-hooks';
 
 export default function BootstrapperRouter() {
-	const { accounts, accountLoaded } = useUserAccounts();
+	const accounts = useUserAccounts();
 
-	return accountLoaded ?
-		(
-			<BrowserRouter>
-				<BootstrapperRouterContent accounts={accounts} />
-			</BrowserRouter>
-		)
-		:
-		(
-			<LoadingView />
-		);
+	return (
+		<BrowserRouter>
+			<BootstrapperRouterContent accounts={accounts} />
+		</BrowserRouter>
+	);
 }

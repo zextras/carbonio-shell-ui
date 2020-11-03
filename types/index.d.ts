@@ -138,14 +138,14 @@ export const hooks: {
 	useAppContext<T>(): T;
 	useAppPkg(): AppPkgDescription;
 	useBehaviorSubject<T>(observable: BehaviorSubject<T>): T;
-	useFiberChannel();
+	useFiberChannel(): FC;
 	useGoBackHistoryCallback(): void;
 	useObserveDb<T>(query: () => Promise<T>, db: Database): [T, boolean];
-	usePromise();
+	usePromise(): any;
 	usePushHistoryCallback(): (location: LocationDescriptor) => void;
 	useRemoveCurrentBoard(): () => void;
 	useReplaceHistoryCallback(): (location: LocationDescriptor) => void;
-	useTranslation();
+	useTranslation(): any;
 	useUserAccounts(): Account[];
 };
 

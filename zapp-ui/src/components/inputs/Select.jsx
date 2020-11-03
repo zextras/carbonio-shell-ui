@@ -1,4 +1,6 @@
-import React, { useState, useMemo, useCallback, useReducer, useEffect } from 'react';
+import React, {
+	useState, useMemo, useCallback, useReducer, useEffect
+} from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import { some, isEmpty } from 'lodash';
@@ -9,14 +11,14 @@ import Icon from '../basic/Icon';
 import Padding from '../layout/Padding';
 import Row from '../layout/Row';
 import Text from '../basic/Text';
-import defaultTheme from "../../theme/Theme";
+import defaultTheme from '../../theme/Theme';
 
 const Label = styled(Text)`
-  position: absolute;
-  top: ${props => props.selected ? `calc(${props.theme.sizes.padding.small} - 1px)` : '50%'};
-  left: ${(props) => props.theme.sizes.padding.large};
-  transform: translateY(${props => props.selected ? '0' : '-50%'});
-  transition: 150ms ease-out;
+	position: absolute;
+	top: ${({ selected, theme }) => (selected ? `calc(${theme.sizes.padding.small} - 1px)` : '50%')};
+	left: ${({ theme }) => theme.sizes.padding.large};
+	transform: translateY(${({ selected }) => (selected ? '0' : '-50%')});
+	transition: 150ms ease-out;
 `;
 const ContainerEl = styled(Container)`
 	transition: background 0.2s ease-out;
@@ -27,47 +29,51 @@ const ContainerEl = styled(Container)`
 		background: ${props.theme.palette[props.background].focus}
 	`}
 `;
-const DefaultLabelFactory = ({ selected, label, open, focus, background }) => {
-	return (
-		<>
-			<ContainerEl
-				orientation="horizontal"
-				width="fill"
-				crossAlignment="flex-end"
-				mainAlignment="space-between"
-				borderRadius="half"
-				padding={{
-					horizontal: 'large',
-					vertical: 'small'
-				}}
-				background={background}
-				focus={focus}
-			>
-				<Row takeAvailableSpace={true} mainAlignment="unset">
-					<Padding top="medium" style={{ width: '100%' }}>
-						<Text size="medium" style={{ minHeight: '1.167em' }}>
-							{ !isEmpty(selected) && selected.reduce((arr, obj) => ([...arr, obj.label]), []).join(', ') }
-						</Text>
-					</Padding>
-					<Label
-						selected={!isEmpty(selected)}
-						size={!isEmpty(selected) ? 'small' : 'medium'}
-						color={open || focus ? 'primary' : 'secondary'}
-					>
-						{label}
-					</Label>
-				</Row>
-				<Icon
-					size="medium"
-					icon={open ? 'ArrowUp' : 'ArrowDown'}
+const DefaultLabelFactory = ({
+	selected, label, open, focus, background
+}) => (
+	<>
+		<ContainerEl
+			orientation="horizontal"
+			width="fill"
+			crossAlignment="flex-end"
+			mainAlignment="space-between"
+			borderRadius="half"
+			padding={{
+				horizontal: 'large',
+				vertical: 'small'
+			}}
+			background={background}
+			focus={focus}
+		>
+			<Row takeAvailableSpace mainAlignment="unset">
+				<Padding top="medium" style={{ width: '100%' }}>
+					{selected.length === 1 && selected[0].customComponent
+						? selected[0].customComponent
+						: (
+							<Text size="medium" style={{ minHeight: '1.167em' }}>
+								{ !isEmpty(selected) && selected.reduce((arr, obj) => ([...arr, obj.label]), []).join(', ')}
+							</Text>
+						)}
+				</Padding>
+				<Label
+					selected={!isEmpty(selected)}
+					size={!isEmpty(selected) ? 'small' : 'medium'}
 					color={open || focus ? 'primary' : 'secondary'}
-					style={{ alignSelf: 'center', pointerEvents: 'none' }}
-				/>
-			</ContainerEl>
-			<Divider color={open || focus ? 'primary' : 'gray2'} />
-		</>
-	);
-};
+				>
+					{label}
+				</Label>
+			</Row>
+			<Icon
+				size="medium"
+				icon={open ? 'ArrowUp' : 'ArrowDown'}
+				color={open || focus ? 'primary' : 'secondary'}
+				style={{ alignSelf: 'center', pointerEvents: 'none' }}
+			/>
+		</ContainerEl>
+		<Divider color={open || focus ? 'primary' : 'gray2'} />
+	</>
+);
 
 const TabContainer = styled(Container)`
 	position: relative;
@@ -85,12 +91,12 @@ function selectedReducer(state, action) {
 	}
 	switch (action.type) {
 		case 'push': {
-			const newState = [...state, {...action.item}];
+			const newState = [...state, { ...action.item }];
 			action.onChange(newState);
 			return newState;
 		}
 		case 'remove': {
-			const newState = state.filter(obj => obj.value !== action.item.value);
+			const newState = state.filter((obj) => obj.value !== action.item.value);
 			action.onChange(newState);
 			return newState;
 		}
@@ -112,7 +118,7 @@ function selectedReducer(state, action) {
 			throw new Error();
 	}
 }
-const Select = React.forwardRef(function({
+const Select = React.forwardRef(({
 	background,
 	disabled,
 	items,
@@ -128,7 +134,7 @@ const Select = React.forwardRef(function({
 	selection,
 	disablePortal,
 	...rest
-}, ref) {
+}, ref) => {
 	const [selected, dispatchSelected] = useReducer(
 		selectedReducer,
 		defaultSelection ? (multiple ? defaultSelection : [defaultSelection]) : []
@@ -138,31 +144,37 @@ const Select = React.forwardRef(function({
 
 	useEffect(() => {
 		if (selection) {
-			dispatchSelected({ multiple, onChange, item: selection, type: 'set' })
+			dispatchSelected({
+				multiple, onChange, item: selection, type: 'set'
+			});
 		}
-	}, [multiple, selection]);
+	}, [multiple, onChange, selection]);
 
-	const mappedItems = useMemo(() => {
-		return items.map(
-			(item, index) => {
-				const isSelected = some(selected, { 'value': item.value });
-				return {
-					id: `${index}-${item.label}`,
-					label: item.label,
-					icon: isSelected ? 'CheckmarkSquare' : 'Square',
-					click: () => {
-						if (multiple && isSelected) {
-							dispatchSelected({type: 'remove', item: item, multiple: multiple, onChange: onChange});
-						}
-						else if((!multiple && (isEmpty(selected) || item.value !== selected[0].value)) || multiple) {
-							dispatchSelected({type: 'push', item: item, multiple: multiple, onChange: onChange});
-						}
-					},
-					selected: isSelected
-				};
-			}
-		);
-	}, [items, selected, multiple, onChange]);
+	const mappedItems = useMemo(() => items.map(
+		(item, index) => {
+			const isSelected = some(selected, { value: item.value });
+			return {
+				id: `${index}-${item.label}`,
+				label: item.label,
+				icon: isSelected ? 'CheckmarkSquare' : 'Square',
+				click: () => {
+					if (multiple && isSelected) {
+						dispatchSelected({
+							type: 'remove', item, multiple, onChange
+						});
+					}
+					else if ((!multiple && (isEmpty(selected) || item.value !== selected[0].value)) || multiple) {
+						dispatchSelected({
+							type: 'push', item, multiple, onChange
+						});
+					}
+				},
+				selected: isSelected,
+				disabled: item.disabled,
+				customComponent: item.customComponent
+			};
+		}
+	), [items, selected, multiple, onChange]);
 
 	const onOpen = useCallback(() => setOpen(true), []);
 	const onClose = useCallback(() => setOpen(false), []);
@@ -178,13 +190,15 @@ const Select = React.forwardRef(function({
 				label: i18nAllLabel,
 				icon: isSelected ? 'CheckmarkSquare' : 'Square',
 				click: () => {
-					dispatchSelected({ type: isSelected ? 'reset' : 'selectAll', items: items, multiple: multiple, onChange: onChange });
+					dispatchSelected({
+						type: isSelected ? 'reset' : 'selectAll', items, multiple, onChange
+					});
 				},
 				selected: isSelected
 			},
 			...mappedItems
 		];
-	}, [multiple, mappedItems, onChange]);
+	}, [multiple, selected.length, items, i18nAllLabel, mappedItems, onChange]);
 
 	return (
 		<Dropdown
@@ -192,7 +206,7 @@ const Select = React.forwardRef(function({
 			width={dropdownWidth}
 			maxWidth={dropdownMaxWidth}
 			items={multiple ? multipleMappedItems : mappedItems}
-			handleTriggerEvents={true}
+			handleTriggerEvents
 			multiple={multiple}
 			disabled={disabled}
 			onOpen={onOpen}

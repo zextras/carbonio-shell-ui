@@ -12,6 +12,28 @@ module.exports = {
 			content: 'docs/introduction.md'
 		},
 		{
+			name: 'Documentation',
+			sections: [
+				{
+					name: 'Default Theme',
+					content: 'docs/default-theme.md',
+				},
+				{
+					name: 'Icons',
+					content: 'docs/icons.md',
+				},
+				{
+					name: 'HSL',
+					content: 'docs/HSL-Colors.md',
+				},
+				{
+					name: 'Theming',
+					content: 'docs/theming.md',
+				}
+			],
+			sectionDepth: 2
+		},
+		{
 			name: 'Getting Started',
 			content: 'docs/getting-started.md'
 		},
@@ -65,28 +87,6 @@ module.exports = {
 					components: 'src/components/composite/**/*.jsx',
 					exampleMode: 'collapse',
 					usageMode: 'expand',
-				}
-			],
-			sectionDepth: 2
-		},
-		{
-			name: 'Documentation',
-			sections: [
-				{
-					name: 'HSL',
-					content: 'docs/HSL-Colors.md',
-				},
-				{
-					name: 'Theming',
-					content: 'docs/theming.md',
-				},
-				{
-					name: 'Default Theme',
-					content: 'docs/default-theme.md',
-				},
-				{
-					name: 'Icons',
-					content: 'docs/icons.md',
 				}
 			],
 			sectionDepth: 2

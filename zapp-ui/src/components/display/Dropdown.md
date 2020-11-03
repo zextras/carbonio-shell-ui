@@ -1,6 +1,7 @@
 
 Dropdowns are toggleable, contextual overlays for displaying lists of links and more. They’re toggled by clicking.
 
+Dropdown list items can be customized with components and/or disabled.
 ```jsx
 import { useMemo } from 'react';
 import { Container, Padding, Text, Button, IconButton } from '@zextras/zapp-ui';
@@ -15,14 +16,21 @@ const items = [
     {
         id: 'activity-2',
         icon: 'Plus',
-        label: 'Some  Other Item',
-        click: () => console.log("click2")
+        label: 'Some Other Item',
+        click: () => console.log("click2"),
+        disabled: true
     },
     {
         id: 'activity-3',
         icon: 'Activity',
-        label: 'Some Item',
+        label: 'Yet Another Item',
         click: () => console.log("click3")
+    },
+    {
+        id: 'activity-4',
+        icon: 'Activity',
+        label: 'Some Item',
+        customComponent: <Button label="click me!" onClick={() => console.log("click4")}/>
     }
 ];
 
@@ -45,4 +53,29 @@ const items = [
         <Button icon="ArrowDown" label="Create" />
     </Dropdown>
 </>
+```
+
+### Development status:
+```jsx noEditor
+import { Container, Icon } from '@zextras/zapp-ui';
+import StatusTable from 'status-table';
+const items = [{
+    feature: 'Test',
+    status: 2,
+    notes: 'This is how the development status checklist table will appear'
+},
+{
+    feature: 'Some completed feature',
+    status: 1,
+    notes: 'Completed!'
+},
+{
+    feature: 'Something missing',
+    status: 3,
+    notes: ''
+},
+];
+
+<StatusTable items={items} />
+
 ```

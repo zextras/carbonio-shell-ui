@@ -47,13 +47,13 @@ const InputEl = styled.input`
 
 const Label = styled.label`
 	position: absolute;
-	top: ${({ theme, active }) => active ? `calc(${theme.sizes.padding.small} - 1px)` : '50%'};
+	top: ${({ theme, active }) => (active ? `calc(${theme.sizes.padding.small} - 1px)` : '50%')};
 	left: ${({ theme }) => theme.sizes.padding.large};
 	font-size: ${({ theme, active }) => theme.sizes.font[active ? 'small' : 'medium']};
 	font-weight: ${({ theme }) => theme.fonts.weight.regular};
 	font-family: ${({ theme }) => theme.fonts.default};
 	color: ${({ theme, hasError, hasFocus }) => theme.palette[hasError ? 'error' : (hasFocus ? 'primary' : 'secondary')].regular};
-	transform: translateY(${({ active }) => active ? '0' : '-50%'});
+	transform: translateY(${({ active }) => (active ? '0' : '-50%')});
 	transition: transform 150ms ease-out, font-size 150ms ease-out, top 150ms ease-out, left 150ms ease-out;
 	pointer-events: none;
 `;
@@ -71,7 +71,7 @@ const IconContainer = styled(Container)`
 	cursor: pointer;
 `;
 
-const Input = React.forwardRef(function ({
+const Input = React.forwardRef(({
 	autoFocus,
 	autoComplete,
 	borderColor,
@@ -84,12 +84,12 @@ const Input = React.forwardRef(function ({
 	value,
 	onChange,
 	hasError,
+	inputName,
 	...rest
-}, ref) {
-
+}, ref) => {
 	const [active, setActive] = useState(false);
 	const innerRef = useRef();
-	const comboRef = !!inputRef ? useCombinedRefs(inputRef, innerRef) : innerRef;
+	const comboRef = inputRef ? useCombinedRefs(inputRef, innerRef) : innerRef;
 	const [id] = useState(`input-${Input._newId++}`);
 
 	const onInputFocus = useCallback(() => {
@@ -128,7 +128,7 @@ const Input = React.forwardRef(function ({
 			</Label>
 			<InputEl
 				autoFocus={autoFocus || undefined}
-				autoComplete={autoComplete ? autoComplete : 'off'} // This one seems to be a React quirk, 'off' doesn't really work
+				autoComplete={autoComplete || 'off'} // This one seems to be a React quirk, 'off' doesn't really work
 				background={backgroundColor}
 				color={textColor}
 				ref={comboRef}
@@ -136,7 +136,7 @@ const Input = React.forwardRef(function ({
 				onFocus={onInputFocus}
 				onBlur={onInputBlur}
 				id={id}
-				name={label}
+				name={inputName || label}
 				defaultValue={defaultValue || undefined}
 				value={value || undefined}
 				onChange={onChange}
@@ -180,7 +180,9 @@ Input.propTypes = {
 	/** Whether or not the input should focus on load */
 	autoFocus: PropTypes.bool,
 	/** input autocompletion type (HTML input attribute) */
-	autoComplete: PropTypes.string
+	autoComplete: PropTypes.string,
+	/** HTML input name */
+	inputName: PropTypes.string
 };
 
 Input.defaultProps = {
@@ -195,7 +197,7 @@ Input.defaultProps = {
 
 Input._newId = 0;
 
-const PasswordInput = React.forwardRef(function ({
+const PasswordInput = React.forwardRef(({
 	borderColor,
 	backgroundColor,
 	disabled,
@@ -205,13 +207,13 @@ const PasswordInput = React.forwardRef(function ({
 	value,
 	onChange,
 	hasError,
+	inputName,
 	...rest
-}, ref) {
-
+}, ref) => {
 	const [active, setActive] = useState(false);
 	const [show, setShow] = useState(false);
 	const innerRef = useRef();
-	const comboRef = !!inputRef ? useCombinedRefs(inputRef, innerRef) : innerRef;
+	const comboRef = inputRef ? useCombinedRefs(inputRef, innerRef) : innerRef;
 	const [id] = useState(`password-${PasswordInput._newId++}`);
 
 	const onInputFocus = useCallback(() => {
@@ -224,7 +226,7 @@ const PasswordInput = React.forwardRef(function ({
 	const onShowClick = useCallback((ev) => {
 		ev.stopPropagation();
 		setShow(!show);
-	}, [setActive, setShow, show]);
+	}, [setShow, show]);
 
 	const onInputBlur = useCallback(() => setActive(false), [setActive]);
 
@@ -252,14 +254,14 @@ const PasswordInput = React.forwardRef(function ({
 				onFocus={onInputFocus}
 				onBlur={onInputBlur}
 				id={id}
-				name={label}
+				name={inputName || label}
 				value={value}
 				onChange={onChange}
 				disabled={disabled}
-				hasIcon={true}
+				hasIcon
 			/>
 			<IconContainer onClick={onShowClick} width="fit" height="fit">
-				<Icon icon={show ? "Eye" : "EyeOff"} size="large" color={hasError ? 'error' : (active ? 'primary' : 'secondary')} />
+				<Icon icon={show ? 'Eye' : 'EyeOff'} size="large" color={hasError ? 'error' : (active ? 'primary' : 'secondary')} />
 			</IconContainer>
 			<InputUnderline color={hasError ? 'error' : (active ? 'primary' : borderColor)} />
 			<Label

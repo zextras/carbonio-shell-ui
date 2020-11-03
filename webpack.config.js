@@ -24,6 +24,7 @@ switch (flavor.toUpperCase()) {
 	case 'E2E':
 		indexFile = path.resolve(process.cwd(), 'src', 'index-npm.tsx');
 		pathsToCopy.push({ from: 'translations', to: 'shelli18n' });
+		pathsToCopy.push({ from: 'src/mockServiceWorker.js', to: 'mockServiceWorker.js' });
 		break;
 	case 'APP':
 	default:

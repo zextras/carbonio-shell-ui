@@ -1,4 +1,6 @@
-import React, {useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo} from 'react';
+import React, {
+	useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo
+} from 'react';
 import { createPopper } from '@popperjs/core';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
@@ -13,25 +15,25 @@ import { pseudoClasses } from '../utilities/functions';
 const PopperDropdownWrapper = styled.div`
 	position: relative;
 	display: ${(props) => props.display};
-	width: ${(props) => props.display === 'block' ? '100%' : 'auto'};
+	width: ${(props) => (props.display === 'block' ? '100%' : 'auto')};
 `;
 const PopperList = styled.div`
 	position: absolute;
 	display: none;
 	visibility: hidden;
 	pointer-events: none;
-	background-color: ${({theme}) => theme.palette.gray5.regular};
+	background-color: ${({ theme }) => theme.palette.gray5.regular};
 	box-shadow: 0px 0px 4px 0px rgba(166,166,166,0.5);
 	z-index: 999;
 	
 	padding: ${(props) => props.theme.sizes.padding.small} 0;
-	max-width: ${(props) => props.width === '100%' ? '100%' : props.maxWidth};
+	max-width: ${(props) => (props.width === '100%' ? '100%' : props.maxWidth)};
 	max-height: 50vh;
 	width: ${(props) =>
-		props.width === '100%' && props.triggerRef.current
-			? props.triggerRef.current.clientWidth + 'px'
-			: 'auto'
-	};
+		(props.width === '100%' && props.triggerRef.current
+			? `${props.triggerRef.current.clientWidth}px`
+			: 'auto')
+};
 	overflow-y: auto;
 
 	&, > [tabindex="-1"]:focus {
@@ -45,7 +47,7 @@ const PopperList = styled.div`
 	`};
 `;
 
-const Dropdown = React.forwardRef(function({
+const Dropdown = React.forwardRef(({
 	disabled,
 	items,
 	placement,
@@ -60,7 +62,7 @@ const Dropdown = React.forwardRef(function({
 	children,
 	disablePortal,
 	...rest
-}, ref) {
+}, ref) => {
 	const [open, setOpen] = useState(false);
 	const openRef = useRef(open);
 	const dropdownRef = useRef(undefined);
@@ -97,15 +99,15 @@ const Dropdown = React.forwardRef(function({
 
 	const triggerEvents = handleTriggerEvents && useMemo(() => getKeyboardPreset('button', handleClick), [handleClick]);
 	handleTriggerEvents && useKeyboard(triggerRef, triggerEvents);
-	const listEvents = useMemo(() => getKeyboardPreset('list', () => {}, popperItemsRef), [open, popperItemsRef]);
+	const listEvents = useMemo(() => getKeyboardPreset('list', () => {}, popperItemsRef), [popperItemsRef]);
 	useKeyboard(popperItemsRef, listEvents);
-	const escapeEvent = useMemo(() => [{ type: 'keydown', callback: closePopper, keys: ['Escape'] }], [open, closePopper]);
+	const escapeEvent = useMemo(() => [{ type: 'keydown', callback: closePopper, keys: ['Escape'] }], [closePopper]);
 	useKeyboard(dropdownRef, escapeEvent);
 
 	useLayoutEffect(() => {
 		if (open) {
 			const popperOptions = {
-				placement: placement
+				placement
 			};
 			const popperInstance = createPopper(triggerRef.current, dropdownRef.current, popperOptions);
 
@@ -127,7 +129,7 @@ const Dropdown = React.forwardRef(function({
 		open && setTimeout(() => window.top.document.addEventListener('click', clickOutsidePopper), 1);
 
 		return () => window.top.document.removeEventListener('click', clickOutsidePopper);
-	}, [open, closePopper]);
+	}, [open, closePopper, clickOutsidePopper]);
 
 	useEffect(() => {
 		if (open) {
@@ -140,22 +142,22 @@ const Dropdown = React.forwardRef(function({
 			startSentinelRef.current && startSentinelRef.current.removeEventListener('focus', onStartSentinelFocus);
 			endSentinelRef.current && endSentinelRef.current.removeEventListener('focus', onEndSentinelFocus);
 		};
-	}, [open, startSentinelRef, endSentinelRef]);
+	}, [open, startSentinelRef, endSentinelRef, onStartSentinelFocus, onEndSentinelFocus]);
 
-	const popperListItems = useMemo(() => {
-		return items.map((item) =>
-			<PopperListItem
-				icon={item.icon}
-				label={item.label}
-				click={(e) => {
-					item.click(e);
-					!multiple && closePopper();
-				}}
-				selected={item.selected}
-				key={item.id}
-			/>
-		)
-	}, [items, multiple, closePopper]);
+	const popperListItems = useMemo(() => items.map((item) => (
+		<PopperListItem
+			icon={item.icon}
+			label={item.label}
+			click={(e) => {
+				item.click(e);
+				!multiple && closePopper();
+			}}
+			selected={item.selected}
+			key={item.id}
+			customComponent={item.customComponent}
+			disabled={item.disabled}
+		/>
+	)), [items, multiple, closePopper]);
 
 	return (
 		<PopperDropdownWrapper ref={ref} display={display} {...rest}>
@@ -168,9 +170,9 @@ const Dropdown = React.forwardRef(function({
 					maxWidth={maxWidth}
 					triggerRef={triggerRef}
 				>
-					<div tabIndex={0} ref={startSentinelRef}></div>
+					<div tabIndex={0} ref={startSentinelRef} />
 					<div ref={popperItemsRef} tabIndex={-1}>{ popperListItems }</div>
-					<div tabIndex={0} ref={endSentinelRef}></div>
+					<div tabIndex={0} ref={endSentinelRef} />
 				</PopperList>
 			</Portal>
 		</PopperDropdownWrapper>
@@ -178,16 +180,18 @@ const Dropdown = React.forwardRef(function({
 });
 
 Dropdown.propTypes = {
-	/** whether to disable the Dropdown or not */
+	/** Whether to disable the Dropdown or not */
 	disabled: PropTypes.bool,
-	/** Map of items to display */
+	/** Array of items to display */
 	items: PropTypes.arrayOf(
 		PropTypes.shape({
 			id: PropTypes.string.isRequired,
 			label: PropTypes.string.isRequired,
 			icon: PropTypes.string,
 			click: PropTypes.func,
-			selected: PropTypes.bool
+			selected: PropTypes.bool,
+			customComponent: PropTypes.node,
+			disabled: PropTypes.bool
 		})
 	).isRequired,
 	/** Css display property */
@@ -238,15 +242,19 @@ Dropdown.defaultProps = {
 	maxWidth: '300px',
 	handleTriggerEvents: false,
 	disableRestoreFocus: false,
-	multiple: false
+	multiple: false,
+	disablePortal: false
 };
 
 const ContainerEl = styled(Container)`
 	user-select: none;
-	${({theme}) => pseudoClasses(theme, 'gray5')};
+	outline: none;
+	${({ theme, disabled }) => !disabled && pseudoClasses(theme, 'gray5')};
 `;
 
-function PopperListItem({ icon, label, click, selected }) {
+function PopperListItem({
+	icon, label, click, selected, customComponent, disabled
+}) {
 	const itemRef = useRef(undefined);
 
 	const keyEvents = useMemo(() => getKeyboardPreset('listItem', click), [click]);
@@ -259,19 +267,24 @@ function PopperListItem({ icon, label, click, selected }) {
 			orientation="horizontal"
 			mainAlignment="flex-start"
 			padding={{ vertical: 'small', horizontal: 'large' }}
-			style={{ cursor: click ? 'pointer' :  'default'}}
-			onClick={click}
-			tabIndex={0}
+			style={{ cursor: (click && !disabled) ? 'pointer' : 'default' }}
+			onClick={disabled ? null : click}
+			tabIndex={disabled ? null : 0}
+			disabled={disabled}
 		>
-			{
-				icon &&
-				<Padding right="small">
-					<Icon icon={icon} size="medium" color="text" style={{ pointerEvents: 'none' }} />
-				</Padding>
-			}
-			<Text size="medium" weight={selected ? 'bold' : 'regular'} color="text">
-				{label}
-			</Text>
+			{customComponent || (
+				<>
+					{icon
+							&& (
+								<Padding right="small">
+									<Icon icon={icon} size="medium" color={disabled ? 'secondary' : 'text'} style={{ pointerEvents: 'none' }} />
+								</Padding>
+							)}
+					<Text size="medium" weight={selected ? 'bold' : 'regular'} color={disabled ? 'secondary' : 'text'}>
+						{label}
+					</Text>
+				</>
+			)}
 		</ContainerEl>
 	);
 }

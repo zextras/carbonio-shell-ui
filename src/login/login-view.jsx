@@ -1,14 +1,15 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 ZeXtras
+ * Copyright (C) 2011-2020 Zextras
  *
- * The contents of this file are subject to the ZeXtras EULA;
+ *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
  * You may obtain a copy of the EULA at
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
 
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useCallback, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
@@ -112,7 +113,9 @@ function Login() {
 							<Padding bottom="extralarge" style={{ width: '100%' }}>
 								<LoginForm />
 								<Row mainAlignment="flex-start">
-									<Link color="primary" size="medium" onClick={() => setOpenHelpModal(true)}>{ t('Help') }?</Link>
+									<Link color="primary" size="medium" onClick={() => setOpenHelpModal(true)}>
+										{ t('Help') }
+									</Link>
 									<Separator />
 									<Link as={RouterLink} to="/" size="medium" color="primary">Privacy policy</Link>
 								</Row>
@@ -121,17 +124,49 @@ function Login() {
 						<Container crossAlignment="flex-start" height="auto" padding={{ bottom: 'extralarge' }}>
 							<Text>{ t('Supported browsers') }</Text>
 							<Row padding={{ top: 'medium', bottom: 'extralarge' }} wrap="nowrap">
-								<Padding all="extrasmall" right="small"><Tooltip label="Chrome"><img src={logoChrome} width="18px" /></Tooltip></Padding>
-								<Padding all="extrasmall" right="small"><Tooltip label="Firefox"><img src={logoFirefox} width="18px" /></Tooltip></Padding>
-								<Padding all="extrasmall" right="small"><Tooltip label="Internet Explorer 11+"><img src={logoIE} width="18px" /></Tooltip></Padding>
-								<Padding all="extrasmall" right="small"><Tooltip label="Edge"><img src={logoEdge} width="18px" /></Tooltip></Padding>
-								<Padding all="extrasmall" right="small"><Tooltip label="Safari"><img src={logoSafari} width="18px" /></Tooltip></Padding>
-								<Padding all="extrasmall" right="small"><Tooltip label="Opera"><img src={logoOpera} width="18px" /></Tooltip></Padding>
-								<Padding all="extrasmall" right="small"><Tooltip label="Yandex"><img src={logoYandex} width="18px" /></Tooltip></Padding>
-								<Padding all="extrasmall" right="small"><Tooltip label="UC"><img src={logoUC} width="18px" /></Tooltip></Padding>
+								<Padding all="extrasmall" right="small">
+									<Tooltip label={t('supported_browsers.chrome')}>
+										<img src={logoChrome} width="18px" alt={t('supported_browsers.chrome')} />
+									</Tooltip>
+								</Padding>
+								<Padding all="extrasmall" right="small">
+									<Tooltip label={t('supported_browsers.firefox')}>
+										<img src={logoFirefox} width="18px" alt={t('supported_browsers.firefox')} />
+									</Tooltip>
+								</Padding>
+								<Padding all="extrasmall" right="small">
+									<Tooltip label={t('supported_browsers.ie_11_up')}>
+										<img src={logoIE} width="18px" alt={t('supported_browsers.ie_11_up')} />
+									</Tooltip>
+								</Padding>
+								<Padding all="extrasmall" right="small">
+									<Tooltip label={t('supported_browsers.edge')}>
+										<img src={logoEdge} width="18px" alt={t('supported_browsers.edge')} />
+									</Tooltip>
+								</Padding>
+								<Padding all="extrasmall" right="small">
+									<Tooltip label={t('supported_browsers.safari')}>
+										<img src={logoSafari} width="18px" alt={t('supported_browsers.safari')} />
+									</Tooltip>
+								</Padding>
+								<Padding all="extrasmall" right="small">
+									<Tooltip label={t('supported_browsers.opera')}>
+										<img src={logoOpera} width="18px" alt={t('supported_browsers.opera')} />
+									</Tooltip>
+								</Padding>
+								<Padding all="extrasmall" right="small">
+									<Tooltip label={t('supported_browsers.yandex')}>
+										<img src={logoYandex} width="18px" alt={t('supported_browsers.yandex')} />
+									</Tooltip>
+								</Padding>
+								<Padding all="extrasmall" right="small">
+									<Tooltip label={t('supported_browsers.uc')}>
+										<img src={logoUC} width="18px" alt={t('supported_browsers.uc')} />
+									</Tooltip>
+								</Padding>
 							</Row>
 							<Text size="small">
-Copyright &copy;{ new Date().getFullYear() } Zextras, All rights reserved
+								{t('copyright', { year: new Date().getFullYear() })}
 							</Text>
 						</Container>
 					</FormWrapper>
@@ -187,7 +222,7 @@ function LoginForm() {
 				<Row>
 					<PasswordInput inputRef={passwordRef} label={t('Password')} backgroundColor="gray5" />
 				</Row>
-				<Row padding={{vertical: 'extralarge'}} mainAlignment="space-between">
+				<Row padding={{ vertical: 'extralarge' }} mainAlignment="space-between">
 					<Checkbox label={t('Remember me')} />
 				</Row>
 				<Row orientation="vertical" crossAlignment="flex-start" padding={{ bottom: 'extralarge' }}>
@@ -195,8 +230,8 @@ function LoginForm() {
 					{ showAuthError && (
 						<Padding top="small">
 							<Text color="error" overflow="break-word">
-								{ t('The username or password is incorrect') }.
-								{ t('Verify that CAPS LOCK is not on, and then retype the current username and password') }.
+								{ t('The username or password is incorrect') }
+								{ t('Verify that CAPS LOCK is not on, and then retype the current username and password') }
 							</Text>
 						</Padding>
 					)}
@@ -219,11 +254,11 @@ function HelpModal({ open, onClose }) {
 		>
 			<Paragraph>Do you need help?</Paragraph>
 			<Paragraph>
-Please call this number:
+				Please call this number:
 				<Link href="tel:+123445678910">1234 - 45678910</Link>
 			</Paragraph>
 			<Paragraph>
-Or write an email to:
+				Or write an email to:
 				<Link href="mailto:help.assistance@iris.com" target="_blank">help.assistance@iris.com</Link>
 			</Paragraph>
 		</Modal>

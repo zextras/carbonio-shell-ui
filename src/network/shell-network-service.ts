@@ -1,44 +1,38 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 ZeXtras
+ * Copyright (C) 2011-2020 Zextras
  *
- * The contents of this file are subject to the ZeXtras EULA;
+ *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
  * You may obtain a copy of the EULA at
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
 
-import { filter, reduce } from 'lodash';
-import Account, { ThemePkgDescription } from '../db/account';
-import ShellDb from '../db/shell-db';
-import { GetInfoResponse, ZimletPkgDescription } from './soap/types';
-import { zimletToAppPkgDescription, zimletToThemePkgDescription } from './soap/utils';
-import { AppPkgDescription, SoapFetch } from '../../types';
+import { AppPkgDescription, SoapFetch, Account } from '../../types';
 import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
+import { ShellStore } from '../store/create-shell-store';
+import { doLogin, doLogout, selectCSRFToken } from '../store/accounts-slice';
 
 export default class ShellNetworkService {
 	private _fetch = fetch.bind(window);
 
-	private _account?: Account;
+	private _csrfToken?: string;
 
-	// eslint-disable-next-line no-useless-constructor
 	constructor(
-		private _shellDb: ShellDb,
+		private _store: ShellStore,
 		private _FCFactory: IFiberChannelFactory
 	) {
-		// TODO: Validate the session
-		_shellDb.observe(() => _shellDb.accounts.toCollection().limit(1).toArray())
-			.subscribe((a) => {
-				if (a && a.length > 0) {
-					const [account] = a;
-					this._account = account;
-				}
-			});
+		this._csrfToken = selectCSRFToken(_store.getState());
+		_store.subscribe(() => {
+			this._csrfToken = selectCSRFToken(_store.getState());
+		});
 	}
 
-	private _getAppFetch(appPackageDescription: AppPkgDescription): (input: RequestInfo, init?: RequestInit) => Promise<Response> {
-		return (input: RequestInfo, init?: RequestInit) => this._fetch(
+	private _getAppFetch(
+		appPackageDescription: AppPkgDescription
+	): (input: RequestInfo, init?: RequestInit) => Promise<Response> {
+		return (input: RequestInfo, init?: RequestInit): Promise<Response> => this._fetch(
 			input,
 			init
 		);
@@ -48,17 +42,17 @@ export default class ShellNetworkService {
 		const appSink = this._FCFactory.getAppFiberChannelSink(appPackageDescription);
 		console.log(appSink);
 		const _fetch = this._getAppFetch(appPackageDescription);
-		return (api, body) => {
+		return (api, body): Promise<any> => {
 			const request: { Header?: any; Body: any } = {
 				Body: {
 					[`${api}Request`]: body
 				}
 			};
-			if (this._account) {
+			if (this._csrfToken) {
 				request.Header = {
 					_jsns: 'urn:zimbra',
 					context: {
-						csrfToken: this._account.csrfToken
+						csrfToken: this._csrfToken
 					}
 				};
 			}
@@ -86,128 +80,23 @@ export default class ShellNetworkService {
 		};
 	}
 
-	private _getAccountInfo(csrfToken: string): Promise<GetInfoResponse> {
-		return this._fetch(
-			'/service/soap/GetInfoRequest',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					Header: {
-						_jsns: 'urn:zimbra',
-						context: {
-							csrfToken
-						}
-					},
-					Body: {
-						GetInfoRequest: {
-							_jsns: 'urn:zimbraAccount'
-						}
-					}
-				})
-			}
-		)
-			.then((resp) => resp.json())
-			.then((response) => {
-				if (response.Body.Fault) throw new Error(response.Body.Fault.Reason.Text);
-				return response;
-			})
-			.then((response) => response.Body.GetInfoResponse);
-	}
-
 	public doLogin(username: string, password: string): Promise<Account> {
-		return this._fetch(
-			'/service/soap/AuthRequest',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					Body: {
-						AuthRequest: {
-							_jsns: 'urn:zimbraAccount',
-							csrfTokenSecured: '1',
-							// generateDeviceId: '1',
-							account: {
-								by: 'name',
-								_content: username
-							},
-							password: {
-								_content: password
-							},
-							prefs: [
-								{ pref: { name: 'zimbraPrefMailPollingInterval' } },
-							]
-						}
-					}
-				})
-			}
-		)
-			.then((resp) => resp.json())
-			.then((response) => {
-				if (response.Body.Fault) throw new Error(response.Body.Fault.Reason.Text);
-				return response;
+		return this._store.dispatch(
+			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+			// @ts-ignore
+			doLogin({
+				username,
+				password
 			})
-			.then((authResp) => authResp.Body.AuthResponse)// eslint-disable-next-line
-			.then((authResp) => {
-				return this._getAccountInfo(authResp.csrfToken._content)
-					.then((getInfoResp) => (new Account(
-						getInfoResp.id,
-						getInfoResp.name,
-						authResp.csrfToken._content,
-						{
-							t: authResp.authToken[0]._content,
-							u: username,
-							p: password
-						},
-						reduce<ZimletPkgDescription, AppPkgDescription[]>(
-							filter<ZimletPkgDescription>(
-								getInfoResp.zimlets.zimlet,
-								(z) => (z.zimlet[0].zapp === 'true' && typeof z.zimlet[0]['zapp-main'] !== 'undefined')
-							),
-							(r, z) => ([...r, zimletToAppPkgDescription(z)]),
-							[]
-						),
-						reduce<ZimletPkgDescription, ThemePkgDescription[]>(
-							filter(
-								getInfoResp.zimlets.zimlet,
-								(z) => (z.zimlet[0].zapp === 'true' && typeof z.zimlet[0]['zapp-theme'] !== 'undefined')
-							),
-							(r, z) => ([...r, zimletToThemePkgDescription(z)]),
-							[]
-						),
-						getInfoResp.attrs._attrs.displayName,
-					)));
-			});
+		);
 	}
 
 	public doLogout(): Promise<void> {
-		// TODO: Add the csrf token
-		return this._fetch(
-			'/service/soap/EndSessionRequest',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					Body: {
-						EndSessionRequest: {
-							_jsns: 'urn:zimbraAccount',
-							logoff: '1'
-						}
-					}
-				})
-			}
-		)
-			.then((resp) => resp.json())
-			.then((response) => {
-				if (response.Body.Fault) throw new Error(response.Body.Fault.Reason.Text);
-				return response;
-			});
+		return this._store.dispatch(
+			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+			// @ts-ignore
+			doLogout()
+		);
 	}
 
 	/*

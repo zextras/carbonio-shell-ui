@@ -15,50 +15,25 @@ import { setCreateOptions } from '@zextras/zapp-shell';
 ```
 
 ## API
-### setMainMenuItems(items: MainMenuItemData[]): void
-Set the main menu item data object replacing the previous data, his children are rendered inside the
-component formerly known as *[Secondary bar][1]*.
 
-As an alternative to the `children` field it is possible to pass a custom component (field `customComponent`)
-which will be rendered in the *[Secondary bar][1]*.
+### db
 
+#### Database
+
+### network
+
+#### soapFetch
 ```typescript
-type MainMenuItemData = {
-	id: string;
-	icon: string;
-	label: string;
-	to: string;
-	children?: Array<MainSubMenuItemData>;
-	customComponent?: React.Component;
-	app: string;
-};
-
-type MainSubMenuItemData = {
-	id: string;
-	icon?: string;
-	label: string;
-	to: string;
-	children?: Array<MainSubMenuItemData>;
-};
-``` 
-
-### setRoutes
-```typescript
-function setRoutes(routes: AppRouteDescription[]): void {}
+function soapFetch<REQ, RESP>(api: string, body: REQ & SoapRequest): Promise<RESP> {}
 ```
-Set the routes handled by the App replacing the previous data.
 
-Routes MUST render a [lazy components][2] to reduce the main App bundle and improve the system load.
-
+### setAppContext
 ```typescript
-import { LazyExoticComponent } from 'react';
-
-type AppRouteDescription = {
-	route: string;
-	view: LazyExoticComponent<any>;
-	label: LazyExoticComponent<any>;
-};
+function setAppContext(obj: any): void {}
 ```
+Set an object that will be passed to any component of the App using the `AppContext`.
+
+Any component of an App can use the [`useAppContext()`][5] hook to retrieve the object.
 
 ### setCreateOptions
 ```typescript
@@ -92,13 +67,62 @@ type AppCreateOption = {
 };
 ```
 
-### setAppContext
-```typescript
-function setAppContext(obj: any): void {}
-```
-Set an object that will be passed to any component of the App using the `AppContext`.
+### setMainMenuItems(items: MainMenuItemData[]): void
+Set the main menu item data object replacing the previous data, his children are rendered inside the
+component formerly known as *[Secondary bar][1]*.
 
-Any component of an App can use the [`useAppContext()`][5] hook to retrieve the object.
+As an alternative to the `children` field it is possible to pass a custom component (field `customComponent`)
+which will be rendered in the *[Secondary bar][1]*.
+
+```typescript
+type MainMenuItemData = {
+	id: string;
+	icon: string;
+	label: string;
+	to: string;
+	children?: Array<MainSubMenuItemData>;
+	customComponent?: React.Component;
+	app: string;
+};
+
+type MainSubMenuItemData = {
+	id: string;
+	icon?: string;
+	label: string;
+	to: string;
+	children?: Array<MainSubMenuItemData>;
+};
+```
+
+### setRoutes
+```typescript
+function setRoutes(routes: AppRouteDescription[]): void {}
+```
+Set the routes handled by the App replacing the previous data.
+
+Routes MUST render a [lazy components][2] to reduce the main App bundle and improve the system load.
+
+```typescript
+import { LazyExoticComponent } from 'react';
+
+type AppRouteDescription = {
+	route: string;
+	view: LazyExoticComponent<any>;
+	label: LazyExoticComponent<any>;
+};
+```
+
+### store
+
+#### store
+```typescript
+const store: Store<any>;
+```
+
+#### setReducer
+```typescript
+function setReducer(nextReducer: Reducer): void {}
+```
 
 [1]: architecture/components/secondary_bar.md
 [2]: https://reactjs.org/docs/react-api.html#reactlazy

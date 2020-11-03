@@ -1,8 +1,8 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 ZeXtras
+ * Copyright (C) 2011-2020 Zextras
  *
- * The contents of this file are subject to the ZeXtras EULA;
+ *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
  * You may obtain a copy of the EULA at
  * http://www.zextras.com/zextras-eula.html
@@ -23,15 +23,14 @@ import ShellMobileNav from './shell-mobile-nav';
 function collectAllTo(pkgName, { to, children }) {
 	return reduce(
 		children || [],
-		(r, v, k) => {
-			return [...r, ...collectAllTo(pkgName, v)];
-		},
+		(r, v) => ([...r, ...collectAllTo(pkgName, v)]),
 		[`/${pkgName}${to}`]
 	);
 }
 
 const HAS_SEARCH_REG = /\?/;
-function getAppLink( to, pkg ) {
+
+function getAppLink(to, pkg) {
 	if (typeof to === 'string') {
 		let urlTo = '';
 		let urlSearch = '';
@@ -43,12 +42,11 @@ function getAppLink( to, pkg ) {
 		}
 		return { pathname: `/${pkg.package}${urlTo}`, search: urlSearch };
 	}
-	else {
-		return { ...to, pathname: `/${pkg.package}${to.pathname}` };
-	}
+
+	return { ...to, pathname: `/${pkg.package}${to.pathname}` };
 }
 
-function getFolderStructures( folders, app, history ) {
+function getFolderStructures(folders, app, history) {
 	return map(folders, (folder) => {
 		const _folderObj = {
 			id: folder.id,
@@ -70,7 +68,7 @@ export default function ShellNavigationBar({
 }) {
 	const history = useHistory();
 	const [activeApp, setActiveApp] = useState(undefined);
-	const [appsCache, appsLoaded] = useAppsCache();
+	const [appsCache] = useAppsCache();
 	const [mainMenuItems, setMainMenuItems] = useState({});
 
 	useEffect(() => {

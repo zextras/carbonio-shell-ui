@@ -1,8 +1,8 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 ZeXtras
+ * Copyright (C) 2011-2020 Zextras
  *
- * The contents of this file are subject to the ZeXtras EULA;
+ *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
  * You may obtain a copy of the EULA at
  * http://www.zextras.com/zextras-eula.html
@@ -10,7 +10,7 @@
  */
 
 import React, { useContext } from 'react';
-import { Link as _Link } from 'react-router-dom';
+import { Link as RRLink } from 'react-router-dom';
 import AppContext from './app-context';
 
 const HAS_SEARCH_REG = /\?/;
@@ -28,12 +28,11 @@ export default function AppLink({ to, ...rest }) {
 			urlTo = to;
 		}
 		return (
-			<_Link to={{ pathname: `/${pkg.package}${urlTo}`, search: urlSearch }} {...rest} />
+			<RRLink to={{ pathname: `/${pkg.package}${urlTo}`, search: urlSearch }} {...rest} />
 		);
 	}
-	else {
-		return (
-			<_Link to={{ ...to, pathname: `/${pkg.package}${to.pathname}` }} {...rest} />
-		);
-	}
+
+	return (
+		<RRLink to={{ ...to, pathname: `/${pkg.package}${to.pathname}` }} {...rest} />
+	);
 }

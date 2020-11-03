@@ -4,7 +4,8 @@ His children will be built within the element, passing the options as `props`.
 The dropdown menu and the items are rendered like [Dropdown](#/Components/Primitives/Dropdown)
 
 ```jsx
-import {Input} from '@zextras/zapp-ui';
+import { useState } from 'react';
+import { Input, Text, Container, Icon } from '@zextras/zapp-ui';
 const items = [
     {
         label: 'hi',
@@ -21,20 +22,28 @@ const items = [
     {
         label: 'goodnight',
         value: '4'
+    },
+    {
+        label: 'nothing',
+        value: '5',
+        disabled: true
+    },
+    {
+        label: 'custom',
+        value: '6',
+        customComponent: <Container width="fit" mainAlignment="flex-start" orientation="horizontal"><Icon icon="People" color="primary"/><Text weight="bold">Special Greeting</Text></Container>
     }
 ];
+const [selected, setSelected] = useState(4);
 <>
     <Select
         items={items}
         background="gray5"
         label="Select an item"
-        onChange={console.log}
+        onChange={setSelected}
         defaultSelection={{ value: '4', label: 'goodnight' }}
     />
-    <Input
-        label="Select an item"
-        backgroundColor="gray5"
-    />
+    <Text>Currently selected: {items[selected - 1].label}</Text>
 </>
 ```
 

@@ -1,14 +1,15 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 ZeXtras
+ * Copyright (C) 2011-2020 Zextras
  *
- * The contents of this file are subject to the ZeXtras EULA;
+ *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
  * You may obtain a copy of the EULA at
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
 
+/* eslint-disable react/no-array-index-key */
 import React from 'react';
 import {
 	Accordion,
@@ -50,7 +51,7 @@ export default function ShellMenuPanel({
 						mainAlignment="flex-start"
 					>
 						{
-							tree.map((app, index) =>
+							tree.map((app, index) => (
 								<Accordion
 									key={index}
 									level={0}
@@ -60,7 +61,7 @@ export default function ShellMenuPanel({
 									items={app.folders}
 									divider
 								/>
-							)
+							))
 						}
 					</Container>
 				</Collapse>

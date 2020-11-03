@@ -15,6 +15,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ISyncProtocol } from 'dexie-syncable/api';
 import Dexie, { Database, DexieOptions } from 'dexie';
 import { LocationDescriptor } from 'history';
+import { Store } from '@reduxjs/toolkit';
 
 export type BasePkgDescription = {
 	priority: number;

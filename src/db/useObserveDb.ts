@@ -1,8 +1,8 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 ZeXtras
+ * Copyright (C) 2011-2020 Zextras
  *
- * The contents of this file are subject to the ZeXtras EULA;
+ *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
  * You may obtain a copy of the EULA at
  * http://www.zextras.com/zextras-eula.html
@@ -15,9 +15,9 @@ import { Database } from './database';
 export function useObserveDb(query: () => Promise<any>, db: Database): any {
 	const [val, setVal] = useState([null, false]);
 
-	useEffect(() => {
+	useEffect((): () => void => {
 		let canSet = true;
-		if (!db) return;
+		if (!db) return (): void => undefined;
 		setVal([null, false]);
 		query().then((v) => {
 			if (canSet) setVal([v, true]);
@@ -26,7 +26,8 @@ export function useObserveDb(query: () => Promise<any>, db: Database): any {
 			.subscribe((v) => {
 				if (canSet) setVal([v, true]);
 			});
-		return () => {
+
+		return (): void => {
 			canSet = false;
 			sub.unsubscribe();
 		};

@@ -1,8 +1,8 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 ZeXtras
+ * Copyright (C) 2011-2020 Zextras
  *
- * The contents of this file are subject to the ZeXtras EULA;
+ *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
  * You may obtain a copy of the EULA at
  * http://www.zextras.com/zextras-eula.html
@@ -10,6 +10,7 @@
  */
 
 import { ComponentClass, LazyExoticComponent } from 'react';
+import { Reducer } from 'redux';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ISyncProtocol } from 'dexie-syncable/api';
 import Dexie, { Database, DexieOptions } from 'dexie';
@@ -28,6 +29,27 @@ export type BasePkgDescription = {
 export type AppPkgDescription = BasePkgDescription & {
 	swExtension?: string;
 	styleEntryPoint?: string;
+	handlers?: string;
+};
+
+export type ThemePkgDescription = BasePkgDescription & {};
+
+export type AccountAppsData = Array<AppPkgDescription>;
+export type AccountThemesData = Array<ThemePkgDescription>;
+
+export type AccountLoginData = {
+	/** Zimbra auth token */ t: string;
+	/** Username */ u: string;
+	/** Password */ p: string;
+	csrfToken: string;
+};
+
+export type Account = {
+	id: string;
+	name: string;
+	apps: AccountAppsData;
+	themes: AccountThemesData;
+	displayName: string;
 };
 
 export type FCPartialEvent<T extends {} | string> = {
@@ -113,26 +135,31 @@ export const fiberChannelSink: FCSink;
 
 export const hooks: {
 	useAddBoardCallback(path: string): () => void;
-	usePushHistoryCallback(): (location: LocationDescriptor) => void;
-	useGoBackHistoryCallback(): void;
-	useReplaceHistoryCallback(): (location: LocationDescriptor) => void;
-	useBehaviorSubject<T>(observable: BehaviorSubject<T>): T;
 	useAppContext<T>(): T;
-	useObserveDb<T>(query: () => Promise<T>, db: Database): [T, boolean];
 	useAppPkg(): AppPkgDescription;
+	useBehaviorSubject<T>(observable: BehaviorSubject<T>): T;
+	useFiberChannel();
+	useGoBackHistoryCallback(): void;
+	useObserveDb<T>(query: () => Promise<T>, db: Database): [T, boolean];
+	usePromise();
+	usePushHistoryCallback(): (location: LocationDescriptor) => void;
+	useRemoveCurrentBoard(): () => void;
+	useReplaceHistoryCallback(): (location: LocationDescriptor) => void;
+	useTranslation();
+	useUserAccounts(): Account[];
 };
 
 export const ui: any;
 
+/** @deprecated */
 export const db: {
 	Database: IDatabaseConstructor;
 };
 
-export const accounts: Array<{
-	name: string;
-	id: string;
-	displayName: string;
-}>;
+export const store: {
+	store: Store<any>;
+	setReducer(nextReducer: Reducer): void;
+};
 
 export type SoapRequest = {
 	_jsns: 'urn:zimbra'

@@ -1,8 +1,8 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 ZeXtras
+ * Copyright (C) 2011-2020 Zextras
  *
- * The contents of this file are subject to the ZeXtras EULA;
+ *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
  * You may obtain a copy of the EULA at
  * http://www.zextras.com/zextras-eula.html
@@ -32,7 +32,10 @@ function appContextReducer(state, { type, ...rest }) {
 
 export default function AppContextCacheProvider({ children }) {
 	const [appsCache, appsLoaded] = useAppsCache();
-	const [appContextCache, dispatchAppContext] = useReducer(appContextReducer, appContextCacheInitialState);
+	const [appContextCache, dispatchAppContext] = useReducer(
+		appContextReducer,
+		appContextCacheInitialState
+	);
 
 	useEffect(() => {
 		const subscription = combineLatest(
@@ -54,9 +57,9 @@ export default function AppContextCacheProvider({ children }) {
 					type: 'set-app-context',
 					appsCtxts: reduce(
 						_appContexts,
-						(acc, { appContext, app }) => {
-							acc[app.pkg.package] = appContext;
-							return acc;
+						(r, { appContext, app }) => {
+							r[app.pkg.package] = appContext;
+							return r;
 						},
 						{}
 					)

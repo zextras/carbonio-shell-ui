@@ -11,6 +11,7 @@ If you need a version different from the shimmed one you need to create an alias
 | Name | Version |
 |---:|:---|
 | [dexie] | 2.0.4 (Syncable: 1.0.0-beta.6, Observable: 1.0.0-beta.6) |
+| [@redux/toolkit] | 1.4.0 |
 | [react] | 16.12.0 |
 | [react-dom][react] | 16.12.0 |
 | [lodash] | 4.17.15 |
@@ -28,3 +29,4 @@ If you need a version different from the shimmed one you need to create an alias
 [styled-components]: https://styled-components.com/
 [prop-types]: https://reactjs.org/docs/typechecking-with-proptypes.html
 [moment]: https://momentjs.com
+[@redux/toolkit]: https://redux-toolkit.js.org/

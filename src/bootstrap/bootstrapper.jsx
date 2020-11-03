@@ -1,68 +1,66 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 ZeXtras
+ * Copyright (C) 2011-2020 Zextras
  *
- * The contents of this file are subject to the ZeXtras EULA;
+ *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
  * You may obtain a copy of the EULA at
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
 
-import React, { lazy } from 'react';
+import React from 'react';
 import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-context-provider';
-// TODO: Can be loaded asynchronously
-import ShellDb from '../db/shell-db';
 import ShellNetworkService from '../network/shell-network-service';
 import FiberChannelFactory from '../fiberchannel/fiber-channel';
-import I18nProvider from '../i18n/i18n-provider';
 import I18nFactory from '../i18n/i18n-factory';
+import createShellStore from '../store/create-shell-store';
+import StoreFactory from '../store/store-factory';
 
 export default function bootstrapper(onBeforeBoot) {
-	const shellDb = new ShellDb();
+	const { shellStore, shellStorePersistor } = createShellStore();
 
-	return shellDb.open()
-		.then((db) => {
-			const fiberChannelFactory = new FiberChannelFactory();
-			const shellNetworkService = new ShellNetworkService(
-				shellDb,
-				fiberChannelFactory
-			);
-			const i18nFactory = new I18nFactory(fiberChannelFactory);
-			return {
-				db,
-				shellNetworkService,
-				fiberChannelFactory,
-				i18nFactory
-			};
-		})
-		.then((container) => {
-			if (onBeforeBoot) {
-				return onBeforeBoot(container)
-					.then(() => container)
-					.catch((err) => {
-						throw err;
-					});
-			}
-			return container;
-		})
+	const fiberChannelFactory = new FiberChannelFactory();
+	const i18nFactory = new I18nFactory(fiberChannelFactory);
+	const shellNetworkService = new ShellNetworkService(
+		shellStore,
+		fiberChannelFactory
+	);
+	const storeFactory = new StoreFactory();
+
+	const container = {
+		fiberChannelFactory,
+		i18nFactory,
+		shellNetworkService,
+		shellStore,
+		storeFactory,
+	};
+
+	return ((onBeforeBoot)
+		? (onBeforeBoot(container)
+			.then(() => (container))
+			.catch((err) => {
+				throw err;
+			}))
+		: (Promise.resolve((container))))
 		.then(({
-			db,
-			shellNetworkService,
-			fiberChannelFactory,
-			i18nFactory
+			fiberChannelFactory: _fiberChannelFactory,
+			i18nFactory: _i18nFactory,
+			shellNetworkService: _shellNetworkService,
+			shellStore: _shellStore,
+			storeFactory: _storeFactory,
 		}) => ({
 			default: () => (
 				<BootstrapperContextProvider
-					shellDb={db}
-					shellNetworkService={shellNetworkService}
-					fiberChannelFactory={fiberChannelFactory}
-					i18nFactory={i18nFactory}
+					fiberChannelFactory={_fiberChannelFactory}
+					i18nFactory={_i18nFactory}
+					shellNetworkService={_shellNetworkService}
+					shellStore={_shellStore}
+					storeFactory={_storeFactory}
+					shellStorePersistor={shellStorePersistor}
 				>
-					<I18nProvider i18n={i18nFactory.getShellI18n()}>
-						<BootstrapperRouter />
-					</I18nProvider>
+					<BootstrapperRouter />
 				</BootstrapperContextProvider>
 			)
 		}));

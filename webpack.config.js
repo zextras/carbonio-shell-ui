@@ -5,7 +5,7 @@ const DefinePlugin = require('webpack').DefinePlugin;
 const pkg = require('./zapp.conf.js');
 const CopyPlugin = require('copy-webpack-plugin');
 
-const babelRCApp = require('./babel.config.app.js');
+const babelRCApp = require('./babel.config.js');
 // const babelRCServiceworker = require('./babel.config.serviceworker.js');
 
 /**

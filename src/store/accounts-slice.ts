@@ -168,31 +168,37 @@ export const doLogout = createAsyncThunk<void, void>(
 	'accounts/doLogout',
 	async (payload, { getState }) => {
 		const csrfToken = selectCSRFToken(getState());
-		const res = await fetch(
-			'/service/soap/EndSessionRequest',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					Header: {
-						_jsns: 'urn:zimbra',
-						context: {
-							csrfToken
-						}
+		try {
+			const res = await fetch(
+				'/service/soap/EndSessionRequest',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
 					},
-					Body: {
-						EndSessionRequest: {
-							_jsns: 'urn:zimbraAccount',
-							logoff: '1'
+					body: JSON.stringify({
+						Header: {
+							_jsns: 'urn:zimbra',
+							context: {
+								csrfToken
+							}
+						},
+						Body: {
+							EndSessionRequest: {
+								_jsns: 'urn:zimbraAccount'
+							}
 						}
-					}
-				})
+					})
+				}
+			);
+			const response = await res.json();
+			if (response.Body.Fault) throw new Error(response.Body.Fault.Reason.Text);
+		}
+		catch (err) {
+			if (!/Unexpected end of JSON input/i.test(err.message)) {
+				throw err;
 			}
-		);
-		const response = await res.json();
-		if (response.Body.Fault) throw new Error(response.Body.Fault.Reason.Text);
+		}
 	}
 );
 

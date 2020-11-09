@@ -20,7 +20,6 @@ import ShellContextProvider from './shell-context-provider';
 import SharedUiComponentsContextProvider
 	from '../shared-ui-components/shared-ui-components-context-provider';
 import BoardContextProvider from './boards/board-context-provider';
-import { useShellNetworkService } from '../bootstrap/bootstrapper-context';
 import { useTranslation } from '../i18n/hooks';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
@@ -29,6 +28,7 @@ import AppBoardWindow from './boards/app-board-window';
 import AppLoaderMounter from '../app/app-loader-mounter';
 import { useDispatch, useSessionState, useUserAccounts } from '../store/shell-store-hooks';
 import { verifySession } from '../store/session-slice';
+import { doLogout } from '../store/accounts-slice';
 
 export default function ShellView() {
 	return (
@@ -61,7 +61,7 @@ const Background = styled.div`
 
 export function Shell() {
 	const history = useHistory();
-	const network = useShellNetworkService();
+	const dispatch = useDispatch();
 
 	const [userOpen, setUserOpen] = useState(false);
 	const [navOpen, setNavOpen] = useState(true);
@@ -70,14 +70,14 @@ export function Shell() {
 
 	const accounts = useUserAccounts();
 	const sessionState = useSessionState();
-	const dispatch = useDispatch();
 
-	const doLogout = useCallback((ev) => {
+	const doLogoutCbk = useCallback((ev) => {
 		ev.preventDefault();
-		network.doLogout()
-			.then(() => network.doLogout())
+		dispatch(
+			doLogout()
+		)
 			.then(() => history.push({ pathname: '/' }));
-	}, [network, history]);
+	}, []);
 
 	const quota = 30;
 	const userMenuTree = [
@@ -85,7 +85,7 @@ export function Shell() {
 			label: t('Logout'),
 			icon: 'LogOut',
 			folders: [],
-			click: doLogout
+			click: doLogoutCbk
 		}
 	];
 

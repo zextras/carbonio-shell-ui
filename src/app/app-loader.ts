@@ -12,7 +12,7 @@
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
 import {
-	default as Lodash, map, orderBy, compact, keyBy, forEach
+	default as Lodash, map, orderBy, compact, keyBy, forEach, forOwn
 } from 'lodash';
 import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
 import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
@@ -148,6 +148,7 @@ type AppInjections = {
 };
 
 const _iframes: { [pkgName: string]: HTMLIFrameElement } = {};
+let _iframeId = 0;
 // const _revertableActions: { [pkgName: string]: RevertableActionCollection } = {};
 
 function updateAppHandlers(
@@ -170,8 +171,10 @@ function loadAppHandlers(
 			try {
 				const path = `${appPkg.resourceUrl}/${appPkg.handlers}`;
 				const iframe: HTMLIFrameElement = document.createElement('iframe');
+				iframe.setAttribute('data-pkg_name', appPkg.package);
+				iframe.setAttribute('data-pkg_version', appPkg.version);
+				iframe.setAttribute('data-is_app', 'true');
 				iframe.style.display = 'none';
-				// iframe.setAttribute('src', path);
 				document.body.appendChild(iframe);
 				if (iframe.contentWindow && iframe.contentDocument) {
 					const script: HTMLScriptElement = iframe.contentDocument.createElement('script');
@@ -201,7 +204,7 @@ function loadAppHandlers(
 					script.setAttribute('src', path);
 					script.addEventListener('error', reject);
 					iframe.contentDocument.body.appendChild(script);
-					_iframes[`${appPkg.package}-handlers`] = iframe;
+					_iframes[`${appPkg.package}-handlers-${_iframeId += 1}`] = iframe;
 				}
 				else reject(new Error('Cannot create extension loader'));
 			}
@@ -232,8 +235,10 @@ function loadAppModule(
 			try {
 				const path = `${appPkg.resourceUrl}/${appPkg.entryPoint}`;
 				const iframe: HTMLIFrameElement = document.createElement('iframe');
+				iframe.setAttribute('data-pkg_name', appPkg.package);
+				iframe.setAttribute('data-pkg_version', appPkg.version);
+				iframe.setAttribute('data-is_handlers', 'true');
 				iframe.style.display = 'none';
-				// iframe.setAttribute('src', path);
 				document.body.appendChild(iframe);
 				if (iframe.contentWindow && iframe.contentDocument) {
 					const script: HTMLScriptElement = iframe.contentDocument.createElement('script');
@@ -354,7 +359,7 @@ function loadAppModule(
 					script.setAttribute('src', path);
 					script.addEventListener('error', reject);
 					iframe.contentDocument.body.appendChild(script);
-					_iframes[`${appPkg.package}-loader`] = iframe;
+					_iframes[`${appPkg.package}-loader-${_iframeId += 1}`] = iframe;
 				}
 				else reject(new Error('Cannot create extension loader'));
 			}
@@ -459,5 +464,17 @@ export function loadApps(
 				data: loaded
 			});
 			return loaded;
+		});
+}
+
+export function unloadApps(): Promise<void> {
+	return Promise.resolve()
+		.then(() => {
+			forOwn(
+				_iframes,
+				(iframe) => {
+					if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+				}
+			);
 		});
 }

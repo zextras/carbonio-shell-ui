@@ -9,10 +9,10 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { AppPkgDescription, SoapFetch, Account } from '../../types';
+import { AppPkgDescription, SoapFetch } from '../../types';
 import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import { ShellStore } from '../store/create-shell-store';
-import { doLogin, doLogout, selectCSRFToken } from '../store/accounts-slice';
+import { selectCSRFToken } from '../store/accounts-slice';
 
 export default class ShellNetworkService {
 	private _fetch = fetch.bind(window);
@@ -79,61 +79,4 @@ export default class ShellNetworkService {
 				});
 		};
 	}
-
-	public doLogin(username: string, password: string): Promise<Account> {
-		return this._store.dispatch(
-			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-			// @ts-ignore
-			doLogin({
-				username,
-				password
-			})
-		);
-	}
-
-	public doLogout(): Promise<void> {
-		return this._store.dispatch(
-			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-			// @ts-ignore
-			doLogout()
-		);
-	}
-
-	/*
-	public validateSession(sessionData: IStoredSessionData): Promise<IStoredSessionData> {
-		return fetch(
-			'/service/soap/AuthRequest',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					Body: {
-						AuthRequest: {
-							_jsns: 'urn:zimbraAccount',
-							account: {
-								by: 'id',
-								_content: sessionData.id
-							},
-							authToken: {
-								verifyAccount: '1',
-								csrfTokenSecured: '1',
-								_content: sessionData.authToken
-							},
-							prefs: [
-								{ pref: { name: 'zimbraPrefMailPollingInterval' } },
-							]
-						}
-					}
-				})
-			}
-		)
-			.then((resp) => resp.json())
-			.then((response) => {
-				if (response.Body.Fault) throw new Error(response.Body.Fault.Reason.Text);
-				return sessionData;
-			})
-	}
- */
 }

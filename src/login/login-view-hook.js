@@ -13,12 +13,13 @@ import { useHistory, useLocation } from 'react-router-dom';
 import {
 	useCallback, useEffect, useRef, useState
 } from 'react';
-import { useShellNetworkService } from '../bootstrap/bootstrapper-context';
+import { useDispatch } from '../store/shell-store-hooks';
+import { doLogin } from '../store/accounts-slice';
 
 export default function useLoginView() {
 	const history = useHistory();
 	const location = useLocation();
-	const network = useShellNetworkService();
+	const dispatch = useDispatch();
 
 	const [from, setFrom] = useState();
 	useEffect(() => {
@@ -32,21 +33,19 @@ export default function useLoginView() {
 		history.replace(from);
 	}, [history, from]);
 
-	const doLogin = useCallback((ev) => {
+	const doLoginCbk = useCallback((ev) => {
 		ev.preventDefault();
-		return new Promise(((resolve, reject) => {
-			network.doLogin(
-				usernameRef.current.value,
-				passwordRef.current.value
-			)
-				.then(() => resolve())
-				.then(() => returnToPage())
-				.catch((err) => reject(err));
-		}));
-	}, [returnToPage, usernameRef, passwordRef, network]);
+		return dispatch(
+			doLogin({
+				username: usernameRef.current.value,
+				password: passwordRef.current.value
+			})
+		)
+			.then(() => returnToPage());
+	}, [returnToPage, usernameRef, passwordRef]);
 
 	return {
-		doLogin,
+		doLogin: doLoginCbk,
 		usernameRef,
 		passwordRef,
 		returnToPage

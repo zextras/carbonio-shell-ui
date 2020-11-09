@@ -11,25 +11,25 @@
 
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useShellNetworkService } from '../bootstrap/bootstrapper-context';
 import { useTranslation } from '../i18n/hooks';
+import { useDispatch } from '../store/shell-store-hooks';
+import { doLogout } from '../store/accounts-slice';
 
 export default function LogoutView() {
 	const history = useHistory();
-	const network = useShellNetworkService();
+	const dispatch = useDispatch();
 	const { t } = useTranslation();
 
-	const doLogout = useCallback((ev) => {
+	const doLogoutCbk = useCallback((ev) => {
 		ev.preventDefault();
-		network.doLogout().then(() => {
-			history.push({
-				pathname: '/'
-			});
-		});
-	}, [network, history]);
+		dispatch(
+			doLogout()
+		)
+			.then(() => history.push({ pathname: '/' }));
+	}, []);
 
 	return (
-		<form onSubmit={doLogout}>
+		<form onSubmit={doLogoutCbk}>
 			{ t('You are going to be logged-out') }
 			<button type="submit">{ t('Log me out') }</button>
 		</form>

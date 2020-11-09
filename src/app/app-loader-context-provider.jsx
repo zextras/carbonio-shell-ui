@@ -12,7 +12,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import AppLoaderContext from './app-loader-context';
 import { useFiberChannelFactory, useShellNetworkService, useStoreFactory } from '../bootstrap/bootstrapper-context';
-import { loadApps } from './app-loader';
+import { loadApps, unloadApps } from './app-loader';
 import AppContextCacheProvider from './app-context-cache-provider';
 import { useUserAccounts } from '../store/shell-store-hooks';
 
@@ -24,20 +24,29 @@ export default function AppLoaderContextProvider({ children }) {
 	const [[appsCache, appsLoaded], setAppsCache] = useState([{}, false]);
 
 	useEffect(() => {
-		if (accounts.length < 1) return;
-		console.log('Accounts changed, un/loading apps!');
+		console.log('Accounts changed, un/loading Apps!');
 		let canSet = true;
-		setAppsCache([{}, false]);
-		loadApps(
-			accounts,
-			fiberChannelFactory,
-			shellNetworkService,
-			storeFactory
-		)
-			.then((cache) => {
-				if (!canSet) return;
-				setAppsCache([cache, true]);
-			}); // eslint-disable-next-line
+		if (accounts.length < 1) {
+			// TODO: Component unmounted before the cleanup!
+			unloadApps()
+				.then(() => {
+					if (!canSet) return;
+					setAppsCache([{}, false]);
+				})
+				.catch();
+		}
+		else {
+			loadApps(
+				accounts,
+				fiberChannelFactory,
+				shellNetworkService,
+				storeFactory
+			)
+				.then((cache) => {
+					if (!canSet) return;
+					setAppsCache([cache, true]);
+				});
+		}
 		return () => {
 			canSet = false;
 		};

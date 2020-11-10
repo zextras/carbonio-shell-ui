@@ -13,7 +13,7 @@ import fetch from 'node-fetch';
 function soapFetch(api, body) {
 	const request = {
 		Body: {
-			[`${ api }Request`]: body,
+			[`${api}Request`]: body,
 		},
 	};
 	// if (this._csrfToken) {
@@ -25,7 +25,7 @@ function soapFetch(api, body) {
 	// 	};
 	// }
 	return fetch(
-		new URL(`/service/soap/${ api }Request`, 'http://localhost'),
+		new URL(`/service/soap/${api}Request`, 'http://localhost'),
 		{
 			method: 'POST',
 			headers: {
@@ -39,7 +39,7 @@ function soapFetch(api, body) {
 			if (resp.Body.Fault) {
 				throw new Error(resp.Body.Fault.Reason.Text);
 			}
-			return resp.Body[`${ api }Response`];
+			return resp.Body[`${api}Response`];
 		});
 }
 

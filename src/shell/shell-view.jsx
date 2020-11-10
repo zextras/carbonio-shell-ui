@@ -14,8 +14,6 @@ import { Row, Responsive } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import BoardsRouterContainer from './boards/boards-router-container';
-import AppLoaderContextProvider from '../app/app-loader-context-provider';
-import ShellThemeProvider from './shell-theme-provider';
 import ShellContextProvider from './shell-context-provider';
 import SharedUiComponentsContextProvider
 	from '../shared-ui-components/shared-ui-components-context-provider';
@@ -25,25 +23,19 @@ import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
 import ShellMenuPanel from './shell-menu-panel';
 import AppBoardWindow from './boards/app-board-window';
-import AppLoaderMounter from '../app/app-loader-mounter';
 import { useDispatch, useSessionState, useUserAccounts } from '../store/shell-store-hooks';
 import { verifySession } from '../store/session-slice';
 import { doLogout } from '../store/accounts-slice';
 
 export default function ShellView() {
 	return (
-		<ShellThemeProvider>
-			<ShellContextProvider>
-				<BoardContextProvider>
-					<AppLoaderContextProvider>
-						<SharedUiComponentsContextProvider>
-							<Shell />
-						</SharedUiComponentsContextProvider>
-						<AppLoaderMounter />
-					</AppLoaderContextProvider>
-				</BoardContextProvider>
-			</ShellContextProvider>
-		</ShellThemeProvider>
+		<ShellContextProvider>
+			<BoardContextProvider>
+				<SharedUiComponentsContextProvider>
+					<Shell />
+				</SharedUiComponentsContextProvider>
+			</BoardContextProvider>
+		</ShellContextProvider>
 	);
 }
 

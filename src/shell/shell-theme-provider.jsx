@@ -60,7 +60,6 @@ const ShellThemeProvider = ({ children }) => {
 		console.log('Accounts changed, un/loading Themes!');
 		let canSet = true;
 		if (accounts.length < 1) {
-			// TODO: Component unmounted before the cleanup!
 			unloadThemes()
 				.then(() => {
 					if (!canSet) return;

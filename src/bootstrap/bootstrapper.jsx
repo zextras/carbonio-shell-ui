@@ -17,6 +17,9 @@ import FiberChannelFactory from '../fiberchannel/fiber-channel';
 import I18nFactory from '../i18n/i18n-factory';
 import createShellStore from '../store/create-shell-store';
 import StoreFactory from '../store/store-factory';
+import AppLoaderContextProvider from '../app/app-loader-context-provider';
+import AppLoaderMounter from '../app/app-loader-mounter';
+import ShellThemeProvider from '../shell/shell-theme-provider';
 
 export default function bootstrapper(onBeforeBoot) {
 	const { shellStore, shellStorePersistor } = createShellStore();

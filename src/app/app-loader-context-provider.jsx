@@ -27,7 +27,6 @@ export default function AppLoaderContextProvider({ children }) {
 		console.log('Accounts changed, un/loading Apps!');
 		let canSet = true;
 		if (accounts.length < 1) {
-			// TODO: Component unmounted before the cleanup!
 			unloadApps()
 				.then(() => {
 					if (!canSet) return;

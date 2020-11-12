@@ -5,7 +5,7 @@ const DefinePlugin = require('webpack').DefinePlugin;
 const pkg = require('./zapp.conf.js');
 const CopyPlugin = require('copy-webpack-plugin');
 
-const babelRCApp = require('./babel.config.js');
+const babelRC = require('./babel.config.js');
 // const babelRCServiceworker = require('./babel.config.serviceworker.js');
 
 /**
@@ -39,7 +39,7 @@ module.exports = {
 	},
 	devtool: 'source-map',
 	output: {
-		path: path.resolve(process.cwd(), 'build'),
+		path: path.resolve(process.cwd(), 'dist', 'public'),
 		filename: flavor.toUpperCase() !== 'APP' ? '[name].js' : '[name].[hash:8].js',
 		chunkFilename: '[name].[chunkhash:8].chunk.js',
 		publicPath: '/'
@@ -57,7 +57,7 @@ module.exports = {
 				test: /\.[jt]sx?$/,
 				exclude: /node_modules/,
 				loader: require.resolve('babel-loader'),
-				options: babelRCApp
+				options: babelRC()
 			},
 			{
 				test: /\.(css)$/,

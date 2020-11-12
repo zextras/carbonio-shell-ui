@@ -1,5 +1,5 @@
 module.exports = function (api) {
-	const isTest = api.env('test');
+	const isTest = api ? api.env('test') : false;
 
 	return ({
 		presets: [

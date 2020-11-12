@@ -54,7 +54,6 @@ import StoreFactory from '../store/store-factory';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import AppLink from './app-link';
-import { wrapAppDbConstructor } from './app-db';
 import { FC, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import validateSharedUiComponent from '../shared-ui-components/shared-ui-components-validator';
 import ShellNetworkService from '../network/shell-network-service';
@@ -98,10 +97,6 @@ type SharedLibrariesAppsMap = {
 	'@zextras/zapp-shell': {
 		// These signatures are in the documentation
 		// If changed update also the documentation.
-		/** @deprecated */
-		db: {
-			Database: any;
-		};
 		store: {
 			store: Store<any>;
 			setReducer(nextReducer: Reducer): void;
@@ -304,9 +299,6 @@ function loadAppModule(
 							}
 						},
 						'@zextras/zapp-shell': {
-							db: {
-								Database: wrapAppDbConstructor(appPkg)
-							},
 							store: {
 								store,
 								setReducer: (reducer): void => store.replaceReducer(reducer)

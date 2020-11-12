@@ -10,6 +10,7 @@
  */
 
 import { configureStore, Store, combineReducers } from '@reduxjs/toolkit';
+import { Reducer } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -26,7 +27,28 @@ type ShellState = {
 export type ShellStore = Store<ShellState>;
 
 export default function createShellStore(
-): { shellStore: ShellStore; shellStorePersistor: Persistor } {
+	persist: boolean
+): { shellStore: ShellStore; shellStorePersistor?: Persistor } {
+	const combinedReducer = combineReducers({
+		accounts: accountsReducer,
+		session: sessionReducer,
+	});
+	let reducer: Reducer;
+	if (persist) {
+		reducer = persistReducer(
+			{
+				key: 'store:com_zextras_zapp_shell',
+				storage,
+				blacklist: [
+					'session'
+				]
+			},
+			combinedReducer
+		);
+	}
+	else {
+		reducer = combinedReducer;
+	}
 	const shellStore = configureStore({
 		devTools: (FLAVOR === 'NPM' || FLAVOR === 'E2E')
 			? { name: 'com_zextras_zapp_shell' }
@@ -36,21 +58,10 @@ export default function createShellStore(
 			? (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
 			// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 			: (getDefaultMiddleware) => getDefaultMiddleware(),
-		reducer: persistReducer(
-			{
-				key: 'store:com_zextras_zapp_shell',
-				storage,
-				blacklist: [
-					'session'
-				]
-			},
-			combineReducers({
-				accounts: accountsReducer,
-				session: sessionReducer,
-			})
-		)
+		reducer
 	});
-	const shellStorePersistor = persistStore(shellStore);
+	let shellStorePersistor;
+	if (persist) shellStorePersistor = persistStore(shellStore);
 	return {
 		shellStore,
 		shellStorePersistor

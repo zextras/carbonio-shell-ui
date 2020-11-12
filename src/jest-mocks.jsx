@@ -8,7 +8,11 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
+import path from 'path';
+import React from 'react';
+import { render as rtlRender } from '@testing-library/react';
 import fetch from 'node-fetch';
+import AppContextWrapper from './mocks/app-context-wrapper';
 
 function soapFetch(api, body) {
 	const request = {
@@ -49,3 +53,36 @@ export const network = {
 
 export const fiberChannel = jest.fn();
 export const fiberChannelSink = jest.fn();
+
+function render(ui, { ctxt, reducer, ...options } = { ctxt: {} }) {
+	const confPath = path.resolve(
+		process.cwd(),
+		'zapp.conf.js'
+	);
+	// eslint-disable-next-line max-len
+	// eslint-disable-next-line global-require,import/no-dynamic-require,@typescript-eslint/no-var-requires
+	const conf = require(confPath);
+
+	const Wrapper = ({ children }) => (
+		<AppContextWrapper
+			packageName={conf.pkgName}
+			packageVersion={conf.version}
+			ctxt={ctxt}
+			reducer={reducer}
+		>
+			{ children }
+		</AppContextWrapper>
+	);
+
+	return rtlRender(
+		ui,
+		{
+			wrapper: Wrapper,
+			...options,
+		}
+	);
+}
+
+export const test = {
+	render
+};

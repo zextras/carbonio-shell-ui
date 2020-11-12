@@ -29,7 +29,6 @@ import { BoardSetterContext } from './boards/board-context';
 // @ts-ignore
 import AppContext from '../app/app-context';
 
-export { useObserveDb } from '../db/useObserveDb';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 export { useAppPkg, useAppContext, useFiberChannel } from '../app/app-context';

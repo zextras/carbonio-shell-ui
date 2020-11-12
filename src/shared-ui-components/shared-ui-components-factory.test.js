@@ -13,7 +13,7 @@ jest.mock('./shared-ui-components-context-provider');
 jest.mock('../bootstrap/bootstrapper-context-provider');
 
 import React from 'react';
-import { act, create } from 'react-test-renderer';
+import { render } from '@testing-library/react';
 import { BehaviorSubject } from 'rxjs';// eslint-disable-next-line
 import SharedUiComponentsContextProvider from './shared-ui-components-context-provider';
 import SharedUiComponentsFactory from './shared-ui-components-factory';
@@ -47,19 +47,16 @@ describe.skip('Shared UI Components Factory', () => {
 			</AppLoaderContext.Provider>
 		));
 
-		let component;
-		act(() => {
-			component = create(
-				<BootstrapperContextProvider>
-					<AppLoaderContextProvider>
-						<SharedUiComponentsContextProvider>
-							<SharedUiComponentsFactory scope="scope-1" />
-						</SharedUiComponentsContextProvider>
-					</AppLoaderContextProvider>
-				</BootstrapperContextProvider>
-			);
-		});
-		expect(component.toJSON()).toMatchSnapshot();
+		const { container } = render(
+			<BootstrapperContextProvider>
+				<AppLoaderContextProvider>
+					<SharedUiComponentsContextProvider>
+						<SharedUiComponentsFactory scope="scope-1" />
+					</SharedUiComponentsContextProvider>
+				</AppLoaderContextProvider>
+			</BootstrapperContextProvider>
+		);
+		expect(container).toMatchSnapshot();
 	});
 
 	test('Render a scope with Components registered, without props', () => {
@@ -98,19 +95,16 @@ describe.skip('Shared UI Components Factory', () => {
 			</AppLoaderContext.Provider>
 		));
 
-		let component;
-		act(() => {
-			component = create(
-				<BootstrapperContextProvider>
-					<AppLoaderContextProvider>
-						<SharedUiComponentsContextProvider>
-							<SharedUiComponentsFactory scope="scope-1" />
-						</SharedUiComponentsContextProvider>
-					</AppLoaderContextProvider>
-				</BootstrapperContextProvider>
-			);
-		});
-		expect(component.toJSON()).toMatchSnapshot();
+		const { container } = render(
+			<BootstrapperContextProvider>
+				<AppLoaderContextProvider>
+					<SharedUiComponentsContextProvider>
+						<SharedUiComponentsFactory scope="scope-1" />
+					</SharedUiComponentsContextProvider>
+				</AppLoaderContextProvider>
+			</BootstrapperContextProvider>
+		);
+		expect(container).toMatchSnapshot();
 	});
 
 	test('Render a scope with Components registered, with props', () => {
@@ -149,23 +143,20 @@ describe.skip('Shared UI Components Factory', () => {
 			</AppLoaderContext.Provider>
 		));
 
-		let component;
-		act(() => {
-			component = create(
-				<BootstrapperContextProvider>
-					<AppLoaderContextProvider>
-						<SharedUiComponentsContextProvider>
-							<SharedUiComponentsFactory
-								scope="scope-1"
-								customProp1
-								customProp2="string prop value"
-							/>
-						</SharedUiComponentsContextProvider>
-					</AppLoaderContextProvider>
-				</BootstrapperContextProvider>
-			);
-		});
-		expect(component.toJSON()).toMatchSnapshot();
+		const { container } = render(
+			<BootstrapperContextProvider>
+				<AppLoaderContextProvider>
+					<SharedUiComponentsContextProvider>
+						<SharedUiComponentsFactory
+							scope="scope-1"
+							customProp1
+							customProp2="string prop value"
+						/>
+					</SharedUiComponentsContextProvider>
+				</AppLoaderContextProvider>
+			</BootstrapperContextProvider>
+		);
+		expect(container).toMatchSnapshot();
 		expect(ComponentClass).toHaveBeenCalledWith({
 			customProp1: true,
 			customProp2: 'string prop value'

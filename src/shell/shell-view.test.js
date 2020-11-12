@@ -10,7 +10,6 @@
  */
 
 // jest.mock('@zextras/zapp-ui');
-// jest.mock('../db/database');
 //
 // jest.mock('./shell-header');
 // jest.mock('./shell-secondary-bar');
@@ -19,22 +18,19 @@
 // jest.mock('../bootstrap/bootstrapper-context-provider');
 
 import React from 'react';
-import { act, create } from 'react-test-renderer';
+import { render } from '@testing-library/react';
 
 // import ShellView from './shell-view';
 // import BootstrapperContextProvider from '../bootstrap/bootstrapper-context-provider';
 
-describe.skip('Shell View', () => {
+describe('Shell View', () => {
 	beforeAll(() => {
 		global.PACKAGE_NAME = 'com_zextras_zapp_shell';
 		global.PACKAGE_VERSION = '0.0.0';
 	});
 
 	test('Basic structure', () => {
-		let component;
-		act(() => {
-			component = create(<></>);
-		});
+		const { container } = render(<></>);
 		// act(() => {
 		// 	component = create(
 		// 		<BootstrapperContextProvider>
@@ -42,6 +38,6 @@ describe.skip('Shell View', () => {
 		// 		</BootstrapperContextProvider>
 		// 	);
 		// });
-		expect(component.toJSON()).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 	});
 });

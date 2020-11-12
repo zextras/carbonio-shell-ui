@@ -10,13 +10,12 @@
  */
 jest.mock('@zextras/zapp-ui');
 jest.mock('../store/store-factory');
-jest.mock('../db/database');
 jest.mock('../fiberchannel/fiber-channel');
 jest.mock('../bootstrap/bootstrapper-context-provider');
 jest.mock('./app-loader-context-provider');
 
 import React from 'react';
-import { act, create } from 'react-test-renderer';
+import { act, render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { BehaviorSubject } from 'rxjs';
 import AppLink from './app-link';
@@ -49,28 +48,25 @@ describe.skip('App Link', () => {
 	});
 
 	test('Link without parameters', () => {
-		let component;
-		act(() => {
-			component = create(
-				<MemoryRouter>
-					<BootstrapperContextProvider>
-						<AppLoaderContextProvider>
-							<AppContextProvider pkg={{ package: 'com_example_package' }}>
-								<AppLink to="/destination">Link</AppLink>
-							</AppContextProvider>
-						</AppLoaderContextProvider>
-					</BootstrapperContextProvider>
-				</MemoryRouter>
-			);
-		});
-		const el = component.root.findByType('a');
+		const { container } = render(
+			<MemoryRouter>
+				<BootstrapperContextProvider>
+					<AppLoaderContextProvider>
+						<AppContextProvider pkg={{ package: 'com_example_package' }}>
+							<AppLink to="/destination">Link</AppLink>
+						</AppContextProvider>
+					</AppLoaderContextProvider>
+				</BootstrapperContextProvider>
+			</MemoryRouter>
+		);
+		const el = container.findByType('a');
 		expect(el.props.href).toBe('/com_example_package/destination');
 	});
 
 	test('Link with parameters', () => {
 		let component;
 		act(() => {
-			component = create(
+			component = render(
 				<MemoryRouter>
 					<BootstrapperContextProvider>
 						<AppLoaderContextProvider>
@@ -89,7 +85,7 @@ describe.skip('App Link', () => {
 	test('Link without parameters, to as object', () => {
 		let component;
 		act(() => {
-			component = create(
+			component = render(
 				<MemoryRouter>
 					<BootstrapperContextProvider>
 						<AppLoaderContextProvider>

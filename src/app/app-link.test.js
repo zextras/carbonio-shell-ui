@@ -30,7 +30,6 @@ describe.skip('App Link', () => {
 			<AppLoaderContext.Provider
 				value={{
 					appsCache: {
-						// eslint-disable-next-line @typescript-eslint/camelcase
 						com_example_package: {
 							pkg: {},
 							mainMenuItems: new BehaviorSubject([]),

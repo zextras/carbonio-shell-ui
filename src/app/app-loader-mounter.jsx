@@ -22,7 +22,7 @@ export default function AppLoaderMounter() {
 	useEffect(() => {
 		if (isEmpty(appsCache)) {
 			setAppClasses([]);
-			return () => {};
+			return () => undefined;
 		}
 		const subscription = combineLatest(
 			reduce(

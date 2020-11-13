@@ -27,18 +27,6 @@ import { useDispatch, useSessionState, useUserAccounts } from '../store/shell-st
 import { verifySession } from '../store/session-slice';
 import { doLogout } from '../store/accounts-slice';
 
-export default function ShellView() {
-	return (
-		<ShellContextProvider>
-			<BoardContextProvider>
-				<SharedUiComponentsContextProvider>
-					<Shell />
-				</SharedUiComponentsContextProvider>
-			</BoardContextProvider>
-		</ShellContextProvider>
-	);
-}
-
 const Background = styled.div`
 	background: ${({ theme }) => theme.palette.gray6.regular};
 	display: flex;
@@ -113,5 +101,17 @@ export function Shell() {
 				<AppBoardWindow />
 			</Responsive>
 		</Background>
+	);
+}
+
+export default function ShellView() {
+	return (
+		<ShellContextProvider>
+			<BoardContextProvider>
+				<SharedUiComponentsContextProvider>
+					<Shell />
+				</SharedUiComponentsContextProvider>
+			</BoardContextProvider>
+		</ShellContextProvider>
 	);
 }

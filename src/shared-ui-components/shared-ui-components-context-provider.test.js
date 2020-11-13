@@ -28,7 +28,6 @@ describe('Shared UI Components Context Provider', () => {
 			<AppLoaderContext.Provider
 				value={{
 					appsCache: {
-						// eslint-disable-next-line @typescript-eslint/camelcase
 						com_example_package_1: {
 							sharedUiComponents: new BehaviorSubject({
 								'scope-1': [{
@@ -45,7 +44,6 @@ describe('Shared UI Components Context Provider', () => {
 								}]
 							})
 						},
-						// eslint-disable-next-line @typescript-eslint/camelcase
 						com_example_package_2: {
 							sharedUiComponents: new BehaviorSubject({
 								'scope-2': [{

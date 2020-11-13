@@ -18,8 +18,23 @@ import { BoardValueContext, BoardSetterContext } from './boards/board-context';
 const AppIcon = styled(IconButton)`
 	${(props) => props.active && css`
 		background-color: ${props.theme.palette.gray5.regular}
-	`}	
+	`}
 `;
+
+function ToggleBoardIcon() {
+	const { boards, minimized } = useContext(BoardValueContext);
+	const { toggleMinimized } = useContext(BoardSetterContext);
+
+	if (isEmpty(boards)) return null;
+	return (
+		<IconButton
+			iconColor="primary"
+			icon={minimized ? 'BoardOpen' : 'BoardCollapse'}
+			onClick={toggleMinimized}
+			size="large"
+		/>
+	);
+}
 
 export default function ShellPrimaryBar({ mainMenuItems, activeApp }) {
 	return (
@@ -52,20 +67,5 @@ export default function ShellPrimaryBar({ mainMenuItems, activeApp }) {
 				<ToggleBoardIcon />
 			</Row>
 		</Container>
-	);
-}
-
-function ToggleBoardIcon() {
-	const { boards, minimized } = useContext(BoardValueContext);
-	const { toggleMinimized } = useContext(BoardSetterContext);
-
-	if (isEmpty(boards)) return null;
-	return (
-		<IconButton
-			iconColor="primary"
-			icon={minimized ? 'BoardOpen' : 'BoardCollapse'}
-			onClick={toggleMinimized}
-			size="large"
-		/>
 	);
 }

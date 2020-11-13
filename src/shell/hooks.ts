@@ -19,24 +19,29 @@ import { skip } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { useHistory } from 'react-router-dom';
 import { LocationDescriptor } from 'history';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import ShellContext from './shell-context';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { BoardSetterContext } from './boards/board-context';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppContext from '../app/app-context';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export { useAppPkg, useAppContext, useFiberChannel } from '../app/app-context';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export { useTranslation } from '../i18n/hooks';
 export { default as usePromise } from 'react-use-promise';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export { useUserAccounts } from '../store/shell-store-hooks';
 

@@ -21,7 +21,6 @@ function setAllAppsLoaded(fcf) {
 		},
 		event: 'all-apps-loaded',
 		data: {
-			// eslint-disable-next-line @typescript-eslint/camelcase
 			com_example_package: {
 				pkg: {
 					package: 'com_example_package',

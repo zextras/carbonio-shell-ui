@@ -83,7 +83,6 @@ describe.skip('Shared UI Components Factory', () => {
 			<AppLoaderContext.Provider
 				value={{
 					appsCache: {
-						// eslint-disable-next-line @typescript-eslint/camelcase
 						com_example_package: {
 							appContext: new BehaviorSubject()
 						}
@@ -131,7 +130,6 @@ describe.skip('Shared UI Components Factory', () => {
 			<AppLoaderContext.Provider
 				value={{
 					appsCache: {
-						// eslint-disable-next-line @typescript-eslint/camelcase
 						com_example_package: {
 							appContext: new BehaviorSubject()
 						}

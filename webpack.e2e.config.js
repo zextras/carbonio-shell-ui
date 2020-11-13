@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const merge = require('webpack-merge');
-const common = require('./webpack.config.js');
 const CopyPlugin = require('copy-webpack-plugin');
+const common = require('./webpack.config.js');
 
 module.exports = merge(common, {
 	entry: {

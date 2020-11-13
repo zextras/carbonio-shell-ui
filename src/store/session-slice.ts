@@ -26,9 +26,9 @@ type SessionSlice = {
 export const verifySession = createAsyncThunk(
 	'session/verifySession',
 	async (args, { getState, dispatch }) => {
-		const [account] = selectAccounts(getState());
-		const csrfToken = selectCSRFToken(getState());
-		const authToken = selectAuthToken(getState());
+		const [account] = selectAccounts(getState() as any);
+		const csrfToken = selectCSRFToken(getState() as any);
+		const authToken = selectAuthToken(getState() as any);
 		try {
 			const res = await fetch(
 				'/service/soap/AuthRequest',
@@ -65,7 +65,7 @@ export const verifySession = createAsyncThunk(
 		}
 		catch (e) {
 			if ((/expired/i).test(e.message)) {
-				const credentials = selectAuthCredentials(getState());
+				const credentials = selectAuthCredentials(getState() as any);
 				if (credentials) {
 					const { u: username, p: password } = credentials;
 					dispatch(
@@ -101,7 +101,7 @@ const verifySessionRejected: CaseReducer<SessionSlice> = (state, { error }) => {
 	state.error = error.message;
 };
 
-const sessionSlice = createSlice<SessionSlice, {}>({
+const sessionSlice = createSlice<SessionSlice, any>({
 	name: 'session',
 	initialState: {
 		status: 'init',

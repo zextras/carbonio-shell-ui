@@ -28,30 +28,29 @@ import * as Moment from 'moment';
 import * as ReactI18n from 'react-i18next';
 import * as Msw from 'msw';
 import * as Faker from 'faker';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as ReactRedux from 'react-redux';
 import * as ReduxJSToolkit from '@reduxjs/toolkit';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as ZappUI from '@zextras/zapp-ui';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
 import { Store } from '@reduxjs/toolkit';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import RichTextEditor from '../../zapp-ui/src/components/inputs/RichTextEditor';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
 import * as hooks from '../shell/hooks';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import SharedUiComponentsFactory from '../shared-ui-components/shared-ui-components-factory';
 import StoreFactory from '../store/store-factory';
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppLink from './app-link';
 import { FC, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
@@ -76,24 +75,24 @@ type IChildWindow<T> = Window & {
 };
 
 type SharedLibrariesHandlersMap = {
-	'lodash': {};
-	'msw': {};
-	'faker': {};
+	'lodash': unknown;
+	'msw': unknown;
+	'faker': unknown;
 };
 
 type SharedLibrariesAppsMap = {
-	'react': {};
-	'react-dom': {};
-	'react-i18next': {};
-	'react-redux': {};
-	'@reduxjs/toolkit': {};
-	'lodash': {};
-	'rxjs': {};
-	'rxjs/operators': {};
-	'react-router-dom': {};
-	'styled-components': {};
-	'prop-types': {};
-	'moment': {};
+	'react': unknown;
+	'react-dom': unknown;
+	'react-i18next': unknown;
+	'react-redux': unknown;
+	'@reduxjs/toolkit': unknown;
+	'lodash': unknown;
+	'rxjs': unknown;
+	'rxjs/operators': unknown;
+	'react-router-dom': unknown;
+	'styled-components': unknown;
+	'prop-types': unknown;
+	'moment': unknown;
 	'@zextras/zapp-shell': {
 		// These signatures are in the documentation
 		// If changed update also the documentation.
@@ -111,10 +110,10 @@ type SharedLibrariesAppsMap = {
 		addSharedUiComponent: (scope: string, componentClass: ComponentClass) => void;
 		fiberChannel: FC;
 		fiberChannelSink: FCSink;
-		hooks: any;
-		ui: any;
+		hooks: unknown;
+		ui: unknown;
 	};
-	'@zextras/zapp-ui': {};
+	'@zextras/zapp-ui': unknown;
 };
 
 type SharedUiComponentsDescriptor = {

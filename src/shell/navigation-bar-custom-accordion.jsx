@@ -30,7 +30,8 @@ const AccordionContainerEl = styled(Container)`
 	${({ theme }) => pseudoClasses(theme, 'gray5')};
 `;
 
-const NavigationBarAccordion = React.forwardRef(({
+// eslint-disable-next-line prefer-arrow-callback
+const NavigationBarAccordion = React.forwardRef(function NavigationBarAccordionCls({
 	active,
 	icon,
 	divider,
@@ -38,7 +39,7 @@ const NavigationBarAccordion = React.forwardRef(({
 	customComponent,
 	label,
 	...rest
-}, ref) => {
+}, ref) {
 	const level = 0;
 	const [open, setOpen] = useState(false);
 	const innerRef = useRef(undefined);

@@ -12,15 +12,13 @@
 import Lodash, { forOwn, map, orderBy } from 'lodash';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-
 import * as ZappUI from '@zextras/zapp-ui';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
-
 import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import { AccountAppsData, AppPkgDescription, ThemePkgDescription } from '../../types';
 
@@ -33,11 +31,11 @@ type IChildWindow = Window & {
 };
 
 type SharedLibrariesAppsMap = {
-	'react': {};
-	'react-dom': {};
-	'lodash': {};
-	'styled-components': {};
-	'@zextras/zapp-ui': {};
+	'react': unknown;
+	'react-dom': unknown;
+	'lodash': unknown;
+	'styled-components': unknown;
+	'@zextras/zapp-ui': unknown;
 };
 
 // Type is in the documentation. If changed update also the documentation.

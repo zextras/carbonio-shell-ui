@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const DefinePlugin = require('webpack').DefinePlugin;
-const pkg = require('./zapp.conf.js');
+const { DefinePlugin } = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
+const pkg = require('./zapp.conf.js');
 
 const babelRC = require('./babel.config.js');
 // const babelRCServiceworker = require('./babel.config.serviceworker.js');
@@ -40,7 +42,7 @@ module.exports = {
 	devtool: 'source-map',
 	output: {
 		path: path.resolve(process.cwd(), 'dist', 'public'),
-		filename: flavor.toUpperCase() !== 'APP' ? '[name].js' : '[name].[hash:8].js',
+		filename: flavor.toUpperCase() !== 'APP' ? '[name].js' : '[name].[chunkhash:8].js',
 		chunkFilename: '[name].[chunkhash:8].chunk.js',
 		publicPath: '/'
 	},
@@ -67,9 +69,6 @@ module.exports = {
 				use: [
 					{
 						loader: MiniCssExtractPlugin.loader,
-						options: {
-							hmr: process.env.NODE_ENV === 'development'
-						}
 					},
 					{
 						loader: require.resolve('css-loader'),

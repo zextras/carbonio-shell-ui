@@ -12,11 +12,9 @@
 import { configureStore, Store, combineReducers } from '@reduxjs/toolkit';
 import { Reducer } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
-import logger from 'redux-logger';
 import { Persistor } from 'redux-persist/es/types';
+import storage from 'redux-persist/lib/storage';
+import logger from 'redux-logger';
 import accountsReducer, { AccountsSlice } from './accounts-slice';
 import sessionReducer from './session-slice';
 

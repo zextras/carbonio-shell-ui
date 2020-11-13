@@ -51,17 +51,19 @@ export default function bootstrapper(onBeforeBoot) {
 			shellStore: _shellStore,
 			storeFactory: _storeFactory,
 		}) => ({
-			default: () => (
-				<BootstrapperContextProvider
-					fiberChannelFactory={_fiberChannelFactory}
-					i18nFactory={_i18nFactory}
-					shellNetworkService={_shellNetworkService}
-					shellStore={_shellStore}
-					storeFactory={_storeFactory}
-					shellStorePersistor={shellStorePersistor}
-				>
-					<BootstrapperRouter />
-				</BootstrapperContextProvider>
-			)
+			default: function BoostrapperCls() {
+				return (
+					<BootstrapperContextProvider
+						fiberChannelFactory={_fiberChannelFactory}
+						i18nFactory={_i18nFactory}
+						shellNetworkService={_shellNetworkService}
+						shellStore={_shellStore}
+						storeFactory={_storeFactory}
+						shellStorePersistor={shellStorePersistor}
+					>
+						<BootstrapperRouter />
+					</BootstrapperContextProvider>
+				);
+			}
 		}));
 }

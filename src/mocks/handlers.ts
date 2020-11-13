@@ -159,7 +159,7 @@ export function generateHandlers(cliSettings: any): RequestHandlersList {
 				version: `${cliSettings.app_package.version}`
 			};
 			if (cliSettings.hasHandlers) {
-				// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
 				zimletData['zapp-handlers'] = 'handlers.bundle.js';
 			}

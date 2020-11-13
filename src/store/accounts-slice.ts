@@ -39,6 +39,31 @@ type NormalizeAccountParams = {
 	password: string;
 };
 
+export function selectAccounts({ accounts }: { accounts: AccountsSlice }): Account[] {
+	return accounts.accounts;
+}
+
+export function selectCSRFToken({ accounts }: { accounts: AccountsSlice }): string | undefined {
+	if (accounts.accounts.length > 0) {
+		return accounts.credentials[accounts.accounts[0].id].csrfToken;
+	}
+	return undefined;
+}
+
+export function selectAuthToken({ accounts }: { accounts: AccountsSlice }): string | undefined {
+	if (accounts.accounts.length > 0) {
+		return accounts.credentials[accounts.accounts[0].id].t;
+	}
+	return undefined;
+}
+
+export function selectAuthCredentials({ accounts }: { accounts: AccountsSlice }): AccountLoginData | undefined {
+	if (accounts.accounts.length > 0) {
+		return accounts.credentials[accounts.accounts[0].id];
+	}
+	return undefined;
+}
+
 function normalizeAccount(
 	{ username, password }: NormalizeAccountParams,
 	{ csrfToken, authToken }: AuthResponse,
@@ -167,7 +192,7 @@ const doLoginRejected: CaseReducer<AccountsSlice> = (state: Draft<AccountsSlice>
 export const doLogout = createAsyncThunk<void, void>(
 	'accounts/doLogout',
 	async (payload, { getState }) => {
-		const csrfToken = selectCSRFToken(getState());
+		const csrfToken = selectCSRFToken(getState() as any);
 		try {
 			const res = await fetch(
 				'/service/soap/EndSessionRequest',
@@ -214,7 +239,7 @@ const doLogoutFulfilled: CaseReducer<
 	state.credentials = {};
 };
 
-const accountsSlice = createSlice<AccountsSlice, {}>({
+const accountsSlice = createSlice<AccountsSlice, any>({
 	name: 'accounts',
 	initialState: {
 		status: 'idle',
@@ -233,28 +258,3 @@ const accountsSlice = createSlice<AccountsSlice, {}>({
 });
 
 export default accountsSlice.reducer;
-
-export function selectAccounts({ accounts }: any): Account[] {
-	return accounts.accounts;
-}
-
-export function selectCSRFToken({ accounts }: any): string | undefined {
-	if (accounts.accounts.length > 0) {
-		return accounts.credentials[accounts.accounts[0].id].csrfToken;
-	}
-	return undefined;
-}
-
-export function selectAuthToken({ accounts }: any): string | undefined {
-	if (accounts.accounts.length > 0) {
-		return accounts.credentials[accounts.accounts[0].id].t;
-	}
-	return undefined;
-}
-
-export function selectAuthCredentials({ accounts }: any): AccountLoginData | undefined {
-	if (accounts.accounts.length > 0) {
-		return accounts.credentials[accounts.accounts[0].id];
-	}
-	return undefined;
-}

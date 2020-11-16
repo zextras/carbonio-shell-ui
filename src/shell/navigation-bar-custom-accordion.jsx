@@ -14,11 +14,9 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 import {
-	Container, Text, Divider, Icon, IconButton, Padding, Collapse
+	Container, Text, Divider, Icon, IconButton, Padding, Collapse,
+	useCombinedRefs, useKeyboard, getKeyboardPreset, pseudoClasses
 } from '@zextras/zapp-ui';
-import useKeyboard, { getKeyboardPreset } from '../../zapp-ui/src/hooks/useKeyboard';
-import { useCombinedRefs } from '../../zapp-ui/src';
-import { pseudoClasses } from '../../zapp-ui/src/components/utilities/functions';
 
 const AccordionContainerEl = styled(Container)`
 	padding: ${(props) => `
@@ -30,7 +28,8 @@ const AccordionContainerEl = styled(Container)`
 	${({ theme }) => pseudoClasses(theme, 'gray5')};
 `;
 
-const NavigationBarAccordion = React.forwardRef(({
+// eslint-disable-next-line prefer-arrow-callback
+const NavigationBarAccordion = React.forwardRef(function NavigationBarAccordionCls({
 	active,
 	icon,
 	divider,
@@ -38,7 +37,7 @@ const NavigationBarAccordion = React.forwardRef(({
 	customComponent,
 	label,
 	...rest
-}, ref) => {
+}, ref) {
 	const level = 0;
 	const [open, setOpen] = useState(false);
 	const innerRef = useRef(undefined);

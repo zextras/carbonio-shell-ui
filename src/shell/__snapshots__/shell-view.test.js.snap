@@ -1,15 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Shell View Basic structure 1`] = `
-Array [
-  "ShellHeader",
-  <div
-    className="shell-view__ShellContainer-g4iw6k-0 kRkeAu"
-  >
-    MainMenu
-    ShellSecondaryBar
-    BoardsRouterContainer
-  </div>,
-  "AppBoardWindow",
-]
-`;
+exports[`Shell View Basic structure 1`] = `<div />`;

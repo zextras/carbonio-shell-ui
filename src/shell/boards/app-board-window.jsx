@@ -27,6 +27,49 @@ import AppBoardTab from './app-board-tab';
 import AppBoard from './app-board';
 import { BoardSetterContext, BoardValueContext } from './board-context';
 
+function TabsList({
+	tabs, currentBoard, setCurrentBoard, largeView
+}) {
+	const tabContainerRef = useRef();
+	const [hiddenTabsCount, recalculateHiddenTabs] = useHiddenCount(tabContainerRef, largeView);
+
+	useEffect(() => {
+		recalculateHiddenTabs();
+	}, [tabs, largeView, tabContainerRef.current]);
+
+	return (
+		<Row
+			wrap="nowrap"
+			height="100%"
+			mainAlignment="flex-start"
+			takeAvailableSpace={true}
+		>
+			<Row
+				ref={tabContainerRef}
+				height="48px"
+				mainAlignment="flex-start"
+				style={{ overflow: 'hidden' }}
+			>
+				{tabs && map(tabs, (tab) => <AppBoardTab key={tab.key} idx={tab.key} />)}
+			</Row>
+			{hiddenTabsCount > 0 && (
+				<Dropdown
+					style={{ flexGrow: '1' }}
+					items={map(slice(tabs, -hiddenTabsCount), (tab) => ({
+						id: tab.key,
+						label: tab.title,
+						icon: tab.icon,
+						click: () => setCurrentBoard(tab.key),
+						selected: tab.key === currentBoard
+					}))}
+				>
+					<Button type="ghost" color="secondary" label={`+${hiddenTabsCount}`} />
+				</Dropdown>
+			)}
+		</Row>
+	);
+}
+
 const BoardContainer = styled.div`
 	position: fixed;
 	top: 48px;
@@ -120,48 +163,5 @@ export default function AppBoardWindow() {
 				</BoardDeatilContainer>
 			</Board>
 		</BoardContainer>
-	);
-}
-
-function TabsList({
-	tabs, currentBoard, setCurrentBoard, largeView
-}) {
-	const tabContainerRef = useRef();
-	const [hiddenTabsCount, recalculateHiddenTabs] = useHiddenCount(tabContainerRef, largeView);
-
-	useEffect(() => {
-		recalculateHiddenTabs();
-	}, [tabs, largeView, tabContainerRef.current]);
-
-	return (
-		<Row
-			wrap="nowrap"
-			height="100%"
-			mainAlignment="flex-start"
-			takeAvailableSpace={true}
-		>
-			<Row
-				ref={tabContainerRef}
-				height="48px"
-				mainAlignment="flex-start"
-				style={{ overflow: 'hidden' }}
-			>
-				{tabs && map(tabs, (tab) => <AppBoardTab key={tab.key} idx={tab.key} />)}
-			</Row>
-			{hiddenTabsCount > 0 && (
-				<Dropdown
-					style={{ flexGrow: '1' }}
-					items={map(slice(tabs, -hiddenTabsCount), (tab) => ({
-						id: tab.key,
-						label: tab.title,
-						icon: tab.icon,
-						click: () => setCurrentBoard(tab.key),
-						selected: tab.key === currentBoard
-					}))}
-				>
-					<Button type="ghost" color="secondary" label={`+${hiddenTabsCount}`} />
-				</Dropdown>
-			)}
-		</Row>
 	);
 }

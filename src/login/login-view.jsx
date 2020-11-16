@@ -47,133 +47,29 @@ import logoOpera from './images/logo-opera.svg';
 import logoYandex from './images/logo-yandex.svg';
 import logoUC from './images/logo-ucbrowser.svg';
 
-const LoginContainer = styled(Container)`
-	padding: 0 100px;
-	background: url(${backgroundImage}) no-repeat 75% center/cover;
-	justify-content: center;
-	align-items: flex-start;
-	${({ screenMode, theme }) => screenMode === 'mobile' && css`
-		padding: 0 12px;
-		align-items: center;	
-	`}
-`;
-const FormContainer = styled.div`
-	max-width: 100%;
-	max-height: 100vh;
-	box-shadow: 0px 0px 20px -7px rgba(0,0,0,0.3);
-`;
-const FormWrapper = styled(Container)`
-	width: auto;
-	height: auto;
-	background-color: #fff;
-	padding: 48px 48px 0;
-	width: 436px;
-	max-width: 100%;
-	max-height: 620px;
-	height: 100vh;
-	overflow-y: auto;
-	${({ screenMode, theme }) => screenMode === 'mobile' && css`
-		padding: 20px 20px 0;
-		width: 360px;
-		max-height: 100%;
-		height: auto;
-	`}
-`;
-const Separator = styled.div`
-	width: 1px;
-	height: 16px;
-	margin: 0 10px 0 12px;
-	background-color: #828282;
-`;
-
-export default function LoginView() {
-	return (
-		<ThemeProvider theme={extendTheme({ palette: { light: {}, dark: {} } })}>
-			<SnackbarManager>
-				<Login />
-			</SnackbarManager>
-		</ThemeProvider>
-	);
-};
-
-function Login() {
+function OfflineModal({ open, onClose }) {
 	const { t } = useTranslation();
-	const screenMode = useScreenMode();
-	const [openHelpModal, setOpenHelpModal] = useState(false);
-
 	return (
-		<>
-			<LoginContainer screenMode={screenMode}>
-				<FormContainer>
-					<FormWrapper mainAlignment="space-between" screenMode={screenMode}>
-						<Container mainAlignment="flex-start" height="auto">
-							<Padding value="48px 0 48px">
-								<Logo />
-							</Padding>
-							<Padding bottom="extralarge" style={{ width: '100%' }}>
-								<LoginForm />
-								<Row mainAlignment="flex-start">
-									<Link color="primary" size="medium" onClick={() => setOpenHelpModal(true)}>
-										{ t('Help') }
-									</Link>
-									<Separator />
-									<Link as={RouterLink} to="/" size="medium" color="primary">Privacy policy</Link>
-								</Row>
-							</Padding>
-						</Container>
-						<Container crossAlignment="flex-start" height="auto" padding={{ bottom: 'extralarge' }}>
-							<Text>{ t('Supported browsers') }</Text>
-							<Row padding={{ top: 'medium', bottom: 'extralarge' }} wrap="nowrap">
-								<Padding all="extrasmall" right="small">
-									<Tooltip label={t('supported_browsers.chrome')}>
-										<img src={logoChrome} width="18px" alt={t('supported_browsers.chrome')} />
-									</Tooltip>
-								</Padding>
-								<Padding all="extrasmall" right="small">
-									<Tooltip label={t('supported_browsers.firefox')}>
-										<img src={logoFirefox} width="18px" alt={t('supported_browsers.firefox')} />
-									</Tooltip>
-								</Padding>
-								<Padding all="extrasmall" right="small">
-									<Tooltip label={t('supported_browsers.ie_11_up')}>
-										<img src={logoIE} width="18px" alt={t('supported_browsers.ie_11_up')} />
-									</Tooltip>
-								</Padding>
-								<Padding all="extrasmall" right="small">
-									<Tooltip label={t('supported_browsers.edge')}>
-										<img src={logoEdge} width="18px" alt={t('supported_browsers.edge')} />
-									</Tooltip>
-								</Padding>
-								<Padding all="extrasmall" right="small">
-									<Tooltip label={t('supported_browsers.safari')}>
-										<img src={logoSafari} width="18px" alt={t('supported_browsers.safari')} />
-									</Tooltip>
-								</Padding>
-								<Padding all="extrasmall" right="small">
-									<Tooltip label={t('supported_browsers.opera')}>
-										<img src={logoOpera} width="18px" alt={t('supported_browsers.opera')} />
-									</Tooltip>
-								</Padding>
-								<Padding all="extrasmall" right="small">
-									<Tooltip label={t('supported_browsers.yandex')}>
-										<img src={logoYandex} width="18px" alt={t('supported_browsers.yandex')} />
-									</Tooltip>
-								</Padding>
-								<Padding all="extrasmall" right="small">
-									<Tooltip label={t('supported_browsers.uc')}>
-										<img src={logoUC} width="18px" alt={t('supported_browsers.uc')} />
-									</Tooltip>
-								</Padding>
-							</Row>
-							<Text size="small">
-								{t('copyright', { year: new Date().getFullYear() })}
-							</Text>
-						</Container>
-					</FormWrapper>
-				</FormContainer>
-			</LoginContainer>
-			<HelpModal open={openHelpModal} onClose={() => setOpenHelpModal(false)} />
-		</>
+		<Modal
+			title="Offline"
+			open={open}
+			onClose={onClose}
+		>
+			<Paragraph>You are currently offline, please check your internet connection.</Paragraph>
+		</Modal>
+	);
+}
+
+function GenericErrorModal({ open, onClose }) {
+	const { t } = useTranslation();
+	return (
+		<Modal
+			title="Error"
+			open={open}
+			onClose={onClose}
+		>
+			<Paragraph>Generic error text placeholder.</Paragraph>
+		</Modal>
 	);
 }
 
@@ -264,28 +160,133 @@ function HelpModal({ open, onClose }) {
 		</Modal>
 	);
 }
-function OfflineModal({ open, onClose }) {
+
+const LoginContainer = styled(Container)`
+	padding: 0 100px;
+	background: url(${backgroundImage}) no-repeat 75% center/cover;
+	justify-content: center;
+	align-items: flex-start;
+	${({ screenMode, theme }) => screenMode === 'mobile' && css`
+		padding: 0 12px;
+		align-items: center;	
+	`}
+`;
+const FormContainer = styled.div`
+	max-width: 100%;
+	max-height: 100vh;
+	box-shadow: 0px 0px 20px -7px rgba(0,0,0,0.3);
+`;
+const FormWrapper = styled(Container)`
+	width: auto;
+	height: auto;
+	background-color: #fff;
+	padding: 48px 48px 0;
+	width: 436px;
+	max-width: 100%;
+	max-height: 620px;
+	height: 100vh;
+	overflow-y: auto;
+	${({ screenMode, theme }) => screenMode === 'mobile' && css`
+		padding: 20px 20px 0;
+		width: 360px;
+		max-height: 100%;
+		height: auto;
+	`}
+`;
+const Separator = styled.div`
+	width: 1px;
+	height: 16px;
+	margin: 0 10px 0 12px;
+	background-color: #828282;
+`;
+
+function Login() {
 	const { t } = useTranslation();
+	const screenMode = useScreenMode();
+	const [openHelpModal, setOpenHelpModal] = useState(false);
+
 	return (
-		<Modal
-			title="Offline"
-			open={open}
-			onClose={onClose}
-		>
-			<Paragraph>You are currently offline, please check your internet connection.</Paragraph>
-		</Modal>
+		<>
+			<LoginContainer screenMode={screenMode}>
+				<FormContainer>
+					<FormWrapper mainAlignment="space-between" screenMode={screenMode}>
+						<Container mainAlignment="flex-start" height="auto">
+							<Padding value="48px 0 48px">
+								<Logo />
+							</Padding>
+							<Padding bottom="extralarge" style={{ width: '100%' }}>
+								<LoginForm />
+								<Row mainAlignment="flex-start">
+									<Link color="primary" size="medium" onClick={() => setOpenHelpModal(true)}>
+										{ t('Help') }
+									</Link>
+									<Separator />
+									<Link as={RouterLink} to="/" size="medium" color="primary">Privacy policy</Link>
+								</Row>
+							</Padding>
+						</Container>
+						<Container crossAlignment="flex-start" height="auto" padding={{ bottom: 'extralarge' }}>
+							<Text>{ t('Supported browsers') }</Text>
+							<Row padding={{ top: 'medium', bottom: 'extralarge' }} wrap="nowrap">
+								<Padding all="extrasmall" right="small">
+									<Tooltip label={t('supported_browsers.chrome')}>
+										<img src={logoChrome} width="18px" alt={t('supported_browsers.chrome')} />
+									</Tooltip>
+								</Padding>
+								<Padding all="extrasmall" right="small">
+									<Tooltip label={t('supported_browsers.firefox')}>
+										<img src={logoFirefox} width="18px" alt={t('supported_browsers.firefox')} />
+									</Tooltip>
+								</Padding>
+								<Padding all="extrasmall" right="small">
+									<Tooltip label={t('supported_browsers.ie_11_up')}>
+										<img src={logoIE} width="18px" alt={t('supported_browsers.ie_11_up')} />
+									</Tooltip>
+								</Padding>
+								<Padding all="extrasmall" right="small">
+									<Tooltip label={t('supported_browsers.edge')}>
+										<img src={logoEdge} width="18px" alt={t('supported_browsers.edge')} />
+									</Tooltip>
+								</Padding>
+								<Padding all="extrasmall" right="small">
+									<Tooltip label={t('supported_browsers.safari')}>
+										<img src={logoSafari} width="18px" alt={t('supported_browsers.safari')} />
+									</Tooltip>
+								</Padding>
+								<Padding all="extrasmall" right="small">
+									<Tooltip label={t('supported_browsers.opera')}>
+										<img src={logoOpera} width="18px" alt={t('supported_browsers.opera')} />
+									</Tooltip>
+								</Padding>
+								<Padding all="extrasmall" right="small">
+									<Tooltip label={t('supported_browsers.yandex')}>
+										<img src={logoYandex} width="18px" alt={t('supported_browsers.yandex')} />
+									</Tooltip>
+								</Padding>
+								<Padding all="extrasmall" right="small">
+									<Tooltip label={t('supported_browsers.uc')}>
+										<img src={logoUC} width="18px" alt={t('supported_browsers.uc')} />
+									</Tooltip>
+								</Padding>
+							</Row>
+							<Text size="small">
+								{t('copyright', { year: new Date().getFullYear() })}
+							</Text>
+						</Container>
+					</FormWrapper>
+				</FormContainer>
+			</LoginContainer>
+			<HelpModal open={openHelpModal} onClose={() => setOpenHelpModal(false)} />
+		</>
 	);
 }
 
-function GenericErrorModal({ open, onClose }) {
-	const { t } = useTranslation();
+export default function LoginView() {
 	return (
-		<Modal
-			title="Error"
-			open={open}
-			onClose={onClose}
-		>
-			<Paragraph>Generic error text placeholder.</Paragraph>
-		</Modal>
+		<ThemeProvider theme={extendTheme({ palette: { light: {}, dark: {} } })}>
+			<SnackbarManager>
+				<Login />
+			</SnackbarManager>
+		</ThemeProvider>
 	);
 }

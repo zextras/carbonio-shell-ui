@@ -39,6 +39,31 @@ type NormalizeAccountParams = {
 	password: string;
 };
 
+export function selectAccounts({ accounts }: { accounts: AccountsSlice }): Account[] {
+	return accounts.accounts;
+}
+
+export function selectCSRFToken({ accounts }: { accounts: AccountsSlice }): string | undefined {
+	if (accounts.accounts.length > 0) {
+		return accounts.credentials[accounts.accounts[0].id].csrfToken;
+	}
+	return undefined;
+}
+
+export function selectAuthToken({ accounts }: { accounts: AccountsSlice }): string | undefined {
+	if (accounts.accounts.length > 0) {
+		return accounts.credentials[accounts.accounts[0].id].t;
+	}
+	return undefined;
+}
+
+export function selectAuthCredentials({ accounts }: { accounts: AccountsSlice }): AccountLoginData | undefined {
+	if (accounts.accounts.length > 0) {
+		return accounts.credentials[accounts.accounts[0].id];
+	}
+	return undefined;
+}
+
 function normalizeAccount(
 	{ username, password }: NormalizeAccountParams,
 	{ csrfToken, authToken }: AuthResponse,
@@ -167,32 +192,38 @@ const doLoginRejected: CaseReducer<AccountsSlice> = (state: Draft<AccountsSlice>
 export const doLogout = createAsyncThunk<void, void>(
 	'accounts/doLogout',
 	async (payload, { getState }) => {
-		const csrfToken = selectCSRFToken(getState());
-		const res = await fetch(
-			'/service/soap/EndSessionRequest',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					Header: {
-						_jsns: 'urn:zimbra',
-						context: {
-							csrfToken
-						}
+		const csrfToken = selectCSRFToken(getState() as any);
+		try {
+			const res = await fetch(
+				'/service/soap/EndSessionRequest',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
 					},
-					Body: {
-						EndSessionRequest: {
-							_jsns: 'urn:zimbraAccount',
-							logoff: '1'
+					body: JSON.stringify({
+						Header: {
+							_jsns: 'urn:zimbra',
+							context: {
+								csrfToken
+							}
+						},
+						Body: {
+							EndSessionRequest: {
+								_jsns: 'urn:zimbraAccount'
+							}
 						}
-					}
-				})
+					})
+				}
+			);
+			const response = await res.json();
+			if (response.Body.Fault) throw new Error(response.Body.Fault.Reason.Text);
+		}
+		catch (err) {
+			if (!/Unexpected end of JSON input/i.test(err.message)) {
+				throw err;
 			}
-		);
-		const response = await res.json();
-		if (response.Body.Fault) throw new Error(response.Body.Fault.Reason.Text);
+		}
 	}
 );
 
@@ -208,7 +239,7 @@ const doLogoutFulfilled: CaseReducer<
 	state.credentials = {};
 };
 
-const accountsSlice = createSlice<AccountsSlice, {}>({
+const accountsSlice = createSlice<AccountsSlice, any>({
 	name: 'accounts',
 	initialState: {
 		status: 'idle',
@@ -227,28 +258,3 @@ const accountsSlice = createSlice<AccountsSlice, {}>({
 });
 
 export default accountsSlice.reducer;
-
-export function selectAccounts({ accounts }: any): Account[] {
-	return accounts.accounts;
-}
-
-export function selectCSRFToken({ accounts }: any): string | undefined {
-	if (accounts.accounts.length > 0) {
-		return accounts.credentials[accounts.accounts[0].id].csrfToken;
-	}
-	return undefined;
-}
-
-export function selectAuthToken({ accounts }: any): string | undefined {
-	if (accounts.accounts.length > 0) {
-		return accounts.credentials[accounts.accounts[0].id].t;
-	}
-	return undefined;
-}
-
-export function selectAuthCredentials({ accounts }: any): AccountLoginData | undefined {
-	if (accounts.accounts.length > 0) {
-		return accounts.credentials[accounts.accounts[0].id];
-	}
-	return undefined;
-}

@@ -11,44 +11,35 @@
 jest.mock('./bootstrapper-lazy-loader');
 
 import React from 'react';
-import { act, create } from 'react-test-renderer';
+import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import BootstrapperRouterContent from './bootstrapper-router-content';
 
 describe('Boostrapper Router Content', () => {
 	test('Route to Shell with no Account', () => {
-		let component;
-		act(() => {
-			component = create(
-				<MemoryRouter>
-					<BootstrapperRouterContent accounts={[]} />
-				</MemoryRouter>
-			);
-		});
-		expect(component.toJSON()).toMatchSnapshot();
+		const { container } = render(
+			<MemoryRouter>
+				<BootstrapperRouterContent accounts={[]} />
+			</MemoryRouter>
+		);
+		expect(container).toMatchSnapshot();
 	});
 
 	test('Route to Shell with Account', () => {
-		let component;
-		act(() => {
-			component = create(
-				<MemoryRouter>
-					<BootstrapperRouterContent accounts={[{}]} />
-				</MemoryRouter>
-			);
-		});
-		expect(component.toJSON()).toMatchSnapshot();
+		const { container } = render(
+			<MemoryRouter>
+				<BootstrapperRouterContent accounts={[{}]} />
+			</MemoryRouter>
+		);
+		expect(container).toMatchSnapshot();
 	});
 
 	test('Route to Logout with Account', () => {
-		let component;
-		act(() => {
-			component = create(
-				<MemoryRouter initialEntries={['/logout']}>
-					<BootstrapperRouterContent accounts={[{}]} />
-				</MemoryRouter>
-			);
-		});
-		expect(component.toJSON()).toMatchSnapshot();
+		const { container } = render(
+			<MemoryRouter initialEntries={['/logout']}>
+				<BootstrapperRouterContent accounts={[{}]} />
+			</MemoryRouter>
+		);
+		expect(container).toMatchSnapshot();
 	});
 });

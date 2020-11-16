@@ -8,6 +8,7 @@
 /pkg/
 /src/
 /test/
+/tinymce/
 /translations/
 /zapp-ui/
 /.eslintrc.js
@@ -18,6 +19,7 @@
 /junit.xml
 /postcss.config.js
 /protractor.conf.js
+/rollup.config.js
 /shell.iml
 /tsconfig.json
 /webpack.config.js

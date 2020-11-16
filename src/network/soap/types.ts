@@ -9,6 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type SoapResponseContent = {};
 
 export type ZimletPkgDescription = {

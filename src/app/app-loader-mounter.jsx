@@ -10,7 +10,7 @@
  */
 import React, { useEffect, useMemo, useState } from 'react';
 import { combineLatest } from 'rxjs';
-import { reduce } from 'lodash';
+import { reduce, isEmpty } from 'lodash';
 import { map as rxMap } from 'rxjs/operators';
 import { useAppsCache } from './app-loader-context';
 import AppContextProvider from './app-context-provider';
@@ -20,6 +20,10 @@ export default function AppLoaderMounter() {
 	const [appsClasses, setAppClasses] = useState([]);
 
 	useEffect(() => {
+		if (isEmpty(appsCache)) {
+			setAppClasses([]);
+			return () => undefined;
+		}
 		const subscription = combineLatest(
 			reduce(
 				appsCache,

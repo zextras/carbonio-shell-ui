@@ -9,7 +9,6 @@
  * *** END LICENSE BLOCK *****
  */
 jest.mock('@zextras/zapp-ui');
-jest.mock('../db/database');
 
 import React from 'react';
 import { BehaviorSubject } from 'rxjs';

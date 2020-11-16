@@ -9,11 +9,10 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { ComponentClass, LazyExoticComponent } from 'react';
+import { RenderOptions, RenderResult } from '@testing-library/react';
+import React, { ComponentClass, LazyExoticComponent } from 'react';
 import { Reducer } from 'redux';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { ISyncProtocol } from 'dexie-syncable/api';
-import Dexie, { Database, DexieOptions } from 'dexie';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { LocationDescriptor } from 'history';
 import { Store } from '@reduxjs/toolkit';
 
@@ -110,18 +109,6 @@ export type AppCreateOption = {
 	label: string;
 };
 
-interface IDatabase {
-	createUUID(): string;
-	registerSyncProtocol(name: string, protocol: ISyncProtocol): void;
-	observe(comparator: () => Promise<any>): Subject<any>;
-}
-
-interface IEnhancedDatabase extends Dexie, IDatabase {}
-
-interface IDatabaseConstructor {
-	new(databaseName: string, options?: DexieOptions): IEnhancedDatabase;
-}
-
 export type FCSink = <T extends {} | string, R extends {} | string>(event: FCPartialEvent<T> | FCPartialPromisedEvent<T>) => void | Promise<R>;
 export type FC = Observable<FCEvent<any> | FCPromisedEvent<any, any>>;
 
@@ -141,7 +128,6 @@ export const hooks: {
 	useBehaviorSubject<T>(observable: BehaviorSubject<T>): T;
 	useFiberChannel(): FC;
 	useGoBackHistoryCallback(): void;
-	useObserveDb<T>(query: () => Promise<T>, db: Database): [T, boolean];
 	usePromise(): any;
 	usePushHistoryCallback(): (location: LocationDescriptor) => void;
 	useRemoveCurrentBoard(): () => void;
@@ -151,11 +137,6 @@ export const hooks: {
 };
 
 export const ui: any;
-
-/** @deprecated */
-export const db: {
-	Database: IDatabaseConstructor;
-};
 
 export const store: {
 	store: Store<any>;
@@ -179,4 +160,11 @@ export type SoapFetch =
 
 export const network: {
 	soapFetch: SoapFetch;
+};
+
+export const test: {
+	render(
+		ui: React.ReactElement,
+		options?: Omit<RenderOptions, 'queries'>,
+	): RenderResult;
 };

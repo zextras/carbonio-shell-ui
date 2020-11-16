@@ -14,7 +14,7 @@ import {
 	AppPkgDescription, FCEvent, FCPromisedEvent, FCSink
 } from '../../types';
 
-// eslint-disable-next-line max-len
+// eslint-disable-next-line max-len,@typescript-eslint/ban-types
 export type IFCSink = <T extends {} | string, R extends {} | string>(event: FCEvent<T>) => void | Promise<R>;
 export type FC = Observable<FCEvent<any> | FCPromisedEvent<any, any>>;
 

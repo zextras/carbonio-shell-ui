@@ -9,18 +9,16 @@
  * *** END LICENSE BLOCK *****
  */
 
-import Lodash, { map, orderBy } from 'lodash';
+import Lodash, { forOwn, map, orderBy } from 'lodash';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-
 import * as ZappUI from '@zextras/zapp-ui';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
-
 import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import { AccountAppsData, AppPkgDescription, ThemePkgDescription } from '../../types';
 
@@ -33,11 +31,11 @@ type IChildWindow = Window & {
 };
 
 type SharedLibrariesAppsMap = {
-	'react': {};
-	'react-dom': {};
-	'lodash': {};
-	'styled-components': {};
-	'@zextras/zapp-ui': {};
+	'react': unknown;
+	'react-dom': unknown;
+	'lodash': unknown;
+	'styled-components': unknown;
+	'@zextras/zapp-ui': unknown;
 };
 
 // Type is in the documentation. If changed update also the documentation.
@@ -50,6 +48,7 @@ type MainSubMenuItemData = {
 };
 
 const _iframes: { [pkgName: string]: HTMLIFrameElement } = {};
+let _iframeId = 0;
 // const _revertableActions: { [pkgName: string]: RevertableActionCollection } = {};
 
 function loadThemeModule(
@@ -58,8 +57,10 @@ function loadThemeModule(
 	return new Promise((resolve, reject) => {
 		const path = `${appPkg.resourceUrl}/${appPkg.entryPoint}`;
 		const iframe: HTMLIFrameElement = document.createElement('iframe');
+		iframe.setAttribute('data-pkg_name', appPkg.package);
+		iframe.setAttribute('data-pkg_version', appPkg.version);
+		iframe.setAttribute('data-is_theme', 'true');
 		iframe.style.display = 'none';
-		// iframe.setAttribute('src', path);
 		document.body.appendChild(iframe);
 		if (iframe.contentWindow && iframe.contentDocument) {
 			const script: HTMLScriptElement = iframe.contentDocument.createElement('script');
@@ -85,9 +86,9 @@ function loadThemeModule(
 			script.setAttribute('src', path);
 			script.addEventListener('error', reject);
 			iframe.contentDocument.body.appendChild(script);
-			_iframes[appPkg.package] = iframe;
+			_iframes[`${appPkg.package}-theme-${_iframeId += 1}`] = iframe;
 		}
-		else reject(new Error('Cannot create extension loader'));
+		else reject(new Error('Cannot create theme loader'));
 	});
 }
 
@@ -133,5 +134,17 @@ export function loadThemes(
 				data: pkgTheme
 			});
 			return pkgTheme;
+		});
+}
+
+export function unloadThemes(): Promise<void> {
+	return Promise.resolve()
+		.then(() => {
+			forOwn(
+				_iframes,
+				(iframe) => {
+					if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+				}
+			);
 		});
 }

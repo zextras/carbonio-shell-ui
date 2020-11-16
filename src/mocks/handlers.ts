@@ -28,23 +28,126 @@ function getCompleteResponse(api: string, response: any): any {
 export function generateHandlers(cliSettings: any): RequestHandlersList {
 	console.log('CLI Settings', cliSettings);
 	return [
-		rest.post(getCompleteUrl('Auth'), (req, res, ctx) => res(
-			ctx.status(200),
-			ctx.json(getCompleteResponse('Auth', {
-				csrfToken: {
-					_content: `0_${faker.random.alphaNumeric(40)}`
-				},
-				authToken: [{
-					_content: `0_${faker.random.hexaDecimal(327)}`
-				}],
-				lifetime: 35999999,
-				// skin: [{ _content: 'tree' }],
-				prefs: {
-					_attrs: {
-						zimbraPrefMailPollingInterval: '500'
+		rest.post(getCompleteUrl('Auth'), (req, res, ctx) => {
+			const authToken = `0_${faker.random.hexaDecimal(327)}`;
+			return res(
+				ctx.status(200),
+				ctx.set('Content-Type', 'application/json'),
+				ctx.cookie(
+					'ZM_AUTH_TOKEN',
+					authToken,
+					{
+						path: '/',
+						httpOnly: true,
+						secure: true,
 					}
+				),
+				ctx.json(getCompleteResponse('Auth', {
+					csrfToken: {
+						_content: `0_${faker.random.alphaNumeric(40)}`
+					},
+					authToken: [{
+						_content: authToken
+					}],
+					lifetime: 35999999,
+					// skin: [{ _content: 'tree' }],
+					prefs: {
+						_attrs: {
+							zimbraPrefMailPollingInterval: '500'
+						}
+					}
+				})),
+			);
+		}),
+		rest.post(getCompleteUrl('EndSession'), (req, res, ctx) => res(
+			ctx.status(200),
+			ctx.cookie(
+				'ZM_AUTH_TOKEN',
+				'',
+				{
+					path: '/',
+					httpOnly: true,
+					secure: true,
+					expires: new Date(0),
+					maxAge: 0
 				}
-			})),
+			),
+			ctx.cookie(
+				'JSESSIONID',
+				'',
+				{
+					path: '/',
+					httpOnly: true,
+					secure: true,
+					expires: new Date(0),
+					maxAge: 0
+				}
+			),
+			ctx.cookie(
+				'AUTH_TOKEN_TYPE',
+				'',
+				{
+					path: '/',
+					httpOnly: true,
+					secure: true,
+					expires: new Date(0),
+					maxAge: 0
+				}
+			),
+			ctx.cookie(
+				'T',
+				'',
+				{
+					path: '/',
+					httpOnly: true,
+					secure: true,
+					expires: new Date(0),
+					maxAge: 0
+				}
+			),
+			ctx.cookie(
+				'Y',
+				'',
+				{
+					path: '/',
+					httpOnly: true,
+					secure: true,
+					expires: new Date(0),
+					maxAge: 0
+				}
+			),
+			ctx.cookie(
+				'ADMIN_AUTH_KEY',
+				'',
+				{
+					path: '/',
+					httpOnly: true,
+					secure: true,
+					expires: new Date(0),
+					maxAge: 0
+				}
+			),
+			ctx.cookie(
+				'ZM_TEST',
+				'true',
+				{
+					path: '/',
+					secure: true,
+					expires: new Date(0),
+					maxAge: 0
+				}
+			),
+			// ctx.cookie(
+			// 	'ZM_LOGIN_CSRF',
+			// 	'', // UUID?
+			// 	{
+			// 		path: '/',
+			// 		httpOnly: true,
+			// 		secure: true,
+			// 		expires: new Date(0),
+			// 		maxAge: 0
+			// 	}
+			// ),
 		)),
 		rest.post(getCompleteUrl('GetInfo'), (req, res, ctx) => {
 			const zimletData = {
@@ -56,7 +159,7 @@ export function generateHandlers(cliSettings: any): RequestHandlersList {
 				version: `${cliSettings.app_package.version}`
 			};
 			if (cliSettings.hasHandlers) {
-				// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
 				zimletData['zapp-handlers'] = 'handlers.bundle.js';
 			}

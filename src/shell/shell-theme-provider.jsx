@@ -12,10 +12,9 @@
 import React, {
 	useCallback, useContext, useEffect, useState
 } from 'react';
-import { reduce, merge } from 'lodash';
-import { extendTheme, ThemeContext, ThemeProvider } from '../../zapp-ui/src';
+import { extendTheme, ThemeContext, ThemeProvider } from '@zextras/zapp-ui';
 import { useFiberChannelFactory } from '../bootstrap/bootstrapper-context';
-import { loadThemes } from '../app/theme-loader';
+import { loadThemes, unloadThemes } from '../app/theme-loader';
 import { useUserAccounts } from '../store/shell-store-hooks';
 
 const ThemeModeSwitcher = () => {
@@ -50,46 +49,52 @@ const ThemeModeSwitcher = () => {
 };
 
 const ShellThemeProvider = ({ children }) => {
-	const [baseTheme, setBaseTheme] = useState(extendTheme({}));
-	const [themesLoaded, setThemesLoaded] = useState(false);
 	const accounts = useUserAccounts();
 	const fiberChannelFactory = useFiberChannelFactory();
-	const loadThemesCb = useCallback(() => {
-		loadThemes(
-			accounts[0].themes,
-			fiberChannelFactory,
-			baseTheme
-		)
-			.then((themes) => {
-				setBaseTheme(
-					reduce(
-						themes,
-						(acc, v) => merge(
-							acc,
-							extendTheme(v)
-						),
-						{ ...baseTheme }
-					)
-				);
-			});
-	}, [accounts, fiberChannelFactory, baseTheme]);
+	const [[themeCache, themeLoaded], setThemeCache] = useState([
+		extendTheme({}),
+		false
+	]);
 
 	useEffect(() => {
-		if (accounts.length > 0) {
-			setThemesLoaded(false);
+		console.log('Accounts changed, un/loading Themes!');
+		let canSet = true;
+		if (accounts.length < 1) {
+			unloadThemes()
+				.then(() => {
+					if (!canSet) return;
+					setThemeCache([
+						extendTheme({}),
+						false
+					]);
+				})
+				.catch();
 		}
+		else {
+			loadThemes(
+				accounts[0].themes,
+				fiberChannelFactory,
+				extendTheme({})
+			)
+				.then((themes) => {
+					if (!canSet) return;
+					setThemeCache([
+						extendTheme(themes[0]),
+						true
+					]);
+				});
+		}
+		return () => {
+			canSet = false;
+		};
 	}, [accounts]);
 
-	useEffect(() => {
-		if (!themesLoaded) {
-			loadThemesCb();
-			setThemesLoaded(true);
-		}
-	}, [loadThemesCb, themesLoaded]);
 	return (
-		<ThemeProvider theme={baseTheme}>
+		<ThemeProvider
+			theme={themeCache}
+		>
 			<ThemeModeSwitcher />
-			{children}
+			{ children }
 		</ThemeProvider>
 	);
 };

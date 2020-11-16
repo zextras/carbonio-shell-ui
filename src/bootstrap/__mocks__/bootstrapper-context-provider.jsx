@@ -24,7 +24,7 @@ import createShellStore from '../../store/create-shell-store';
 
 const BootstrapperContextProvider = jest.fn().mockImplementation(({ children }) => {
 	const ctxt = useMemo(() => {
-		const { shellStore } = createShellStore();
+		const { shellStore } = createShellStore(false);
 		const fiberChannelFactory = new FiberChannelFactory();
 		const i18nFactory = new I18nFactory(fiberChannelFactory);
 		const shellNetworkService = new ShellNetworkService(

@@ -15,6 +15,9 @@ import { PersistGate } from 'redux-persist/integration/react';
 import BootstrapperContext from './bootstrapper-context';
 import I18nProvider from '../i18n/i18n-provider';
 import ShellStoreContext from '../store/shell-store-context';
+import ShellThemeProvider from '../shell/shell-theme-provider';
+import AppLoaderContextProvider from '../app/app-loader-context-provider';
+import AppLoaderMounter from '../app/app-loader-mounter';
 
 export default function BootstrapperContextProvider({
 	children,
@@ -39,9 +42,14 @@ export default function BootstrapperContextProvider({
 						storeFactory,
 					}}
 				>
-					<I18nProvider i18n={i18nFactory.getShellI18n()}>
-						{ children }
-					</I18nProvider>
+					<ShellThemeProvider>
+						<I18nProvider i18n={i18nFactory.getShellI18n()}>
+							<AppLoaderContextProvider>
+								{ children }
+								<AppLoaderMounter />
+							</AppLoaderContextProvider>
+						</I18nProvider>
+					</ShellThemeProvider>
 				</BootstrapperContext.Provider>
 			</PersistGate>
 		</Provider>

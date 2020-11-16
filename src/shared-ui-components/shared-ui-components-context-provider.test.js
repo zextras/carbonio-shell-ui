@@ -12,7 +12,7 @@ jest.mock('../app/app-loader-context-provider');
 
 import React, { useContext } from 'react';
 import { BehaviorSubject } from 'rxjs';
-import { act, create } from 'react-test-renderer';
+import { render } from '@testing-library/react';
 import AppLoaderContextProvider from '../app/app-loader-context-provider';
 import AppLoaderContext from '../app/app-loader-context';
 import SharedUiComponentsContextProvider from './shared-ui-components-context-provider';
@@ -28,7 +28,6 @@ describe('Shared UI Components Context Provider', () => {
 			<AppLoaderContext.Provider
 				value={{
 					appsCache: {
-						// eslint-disable-next-line @typescript-eslint/camelcase
 						com_example_package_1: {
 							sharedUiComponents: new BehaviorSubject({
 								'scope-1': [{
@@ -45,7 +44,6 @@ describe('Shared UI Components Context Provider', () => {
 								}]
 							})
 						},
-						// eslint-disable-next-line @typescript-eslint/camelcase
 						com_example_package_2: {
 							sharedUiComponents: new BehaviorSubject({
 								'scope-2': [{
@@ -78,18 +76,15 @@ describe('Shared UI Components Context Provider', () => {
 			return `Tester scopes: ${Object.keys(scopes).reduce((p, c, i) => `${p}${i > 0 ? ' ' : ''}${c}`, [], '')}`;
 		}
 
-		let component;
-		act(() => {
-			component = create(
-				<AppLoaderContextProvider>
-					<SharedUiComponentsContextProvider>
-						<Tester />
-					</SharedUiComponentsContextProvider>
-				</AppLoaderContextProvider>
-			);
-		});
+		const { container } = render(
+			<AppLoaderContextProvider>
+				<SharedUiComponentsContextProvider>
+					<Tester />
+				</SharedUiComponentsContextProvider>
+			</AppLoaderContextProvider>
+		);
 
-		expect(component.toJSON()).toMatchSnapshot();
+		expect(container).toMatchSnapshot();
 		expect(tester).toHaveBeenCalledTimes(2);
 		expect(tester).toHaveBeenLastCalledWith({
 			'scope-1': [{

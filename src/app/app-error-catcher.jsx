@@ -9,8 +9,8 @@
  * *** END LICENSE BLOCK *****
  */
 import React, { useCallback } from 'react';
+import { Catcher } from '@zextras/zapp-ui';
 import { useFiberChannel } from './app-context';
-import Catcher from '../../zapp-ui/src/components/utilities/Catcher';
 
 export default function AppErrorCatcher({ children }) {
 	const { fiberChannelSink } = useFiberChannel();

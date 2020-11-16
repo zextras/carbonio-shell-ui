@@ -10,8 +10,6 @@
  */
 
 import { Store, configureStore, createSlice } from '@reduxjs/toolkit';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
 import logger from 'redux-logger';
 import { AppPkgDescription } from '../../types';
 

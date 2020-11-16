@@ -20,7 +20,7 @@ export default {
 	},
 	plugins: [
 		nodeResolve({
-			extensions: ['.js', '.jsx']
+			extensions: ['.js', '.jsx', '.ts', '.tsx']
 		}),
 		commonjs(),
 		babel({

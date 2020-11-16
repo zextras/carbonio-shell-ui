@@ -12,7 +12,7 @@
 import React, {
 	useCallback, useContext, useEffect, useState
 } from 'react';
-import { extendTheme, ThemeContext, ThemeProvider } from '../../zapp-ui/src';
+import { extendTheme, ThemeContext, ThemeProvider } from '@zextras/zapp-ui';
 import { useFiberChannelFactory } from '../bootstrap/bootstrapper-context';
 import { loadThemes, unloadThemes } from '../app/theme-loader';
 import { useUserAccounts } from '../store/shell-store-hooks';

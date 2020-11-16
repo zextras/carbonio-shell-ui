@@ -14,11 +14,9 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 import {
-	Container, Text, Divider, Icon, IconButton, Padding, Collapse
+	Container, Text, Divider, Icon, IconButton, Padding, Collapse,
+	useCombinedRefs, useKeyboard, getKeyboardPreset, pseudoClasses
 } from '@zextras/zapp-ui';
-import useKeyboard, { getKeyboardPreset } from '../../zapp-ui/src/hooks/useKeyboard';
-import { useCombinedRefs } from '../../zapp-ui/src';
-import { pseudoClasses } from '../../zapp-ui/src/components/utilities/functions';
 
 const AccordionContainerEl = styled(Container)`
 	padding: ${(props) => `

@@ -41,7 +41,7 @@ import * as StyledComponents from 'styled-components';
 import { Store } from '@reduxjs/toolkit';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import RichTextEditor from '../../zapp-ui/src/components/inputs/RichTextEditor';
+import { RichTextEditor } from '@zextras/zapp-ui/dist/zapp-ui.rich-text-editor';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';

@@ -19,7 +19,7 @@ const flavor = process.env.ZX_SHELL_FLAVOR || 'APP';
 let indexFile;
 const pathsToCopy = [
 	{ from: 'assets', to: 'assets' },
-	{ from: 'tinymce/skins', to: 'tinymce/skins/' },
+	{ from: 'node_modules/@zextras/zapp-ui/dist/tinymce/skins', to: 'tinymce/skins/' },
 ];
 switch (flavor.toUpperCase()) {
 	case 'NPM':
@@ -49,9 +49,7 @@ module.exports = {
 	target: 'web',
 	resolve: {
 		extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
-		alias: {
-			'@zextras/zapp-ui': path.resolve(process.cwd(), 'zapp-ui', 'src', 'index'),
-		}
+		alias: {}
 	},
 	module: {
 		rules: [

@@ -28,7 +28,8 @@ export default function AppContextWrapper({
 	packageVersion,
 	children,
 	ctxt,
-	reducer
+	reducer,
+	preloadedState
 }) {
 	const { appContext } = useMemo(() => {
 		const _pkg = {
@@ -48,7 +49,8 @@ export default function AppContextWrapper({
 				devTools: {
 					name: _pkg.package,
 				},
-				reducer: reducer || { _useless: _uselessSlice.reducer }
+				reducer: reducer || { _useless: _uselessSlice.reducer },
+				preloadedState
 			})
 		};
 
@@ -59,7 +61,7 @@ export default function AppContextWrapper({
 			},
 			pkg: _pkg
 		};
-	}, [packageName, packageVersion, ctxt, reducer]);
+	}, [packageName, packageVersion, ctxt, reducer, preloadedState]);
 
 	return (
 		<ThemeProvider

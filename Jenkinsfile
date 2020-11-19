@@ -80,17 +80,13 @@ pipeline {
 		LOCAL_REGISTRY = "https://npm.zextras.com"
 		COMMIT_PARENTS_COUNT = getCommitParentsCount()
 		REPOSITORY_NAME = getRepositoryName()
+		TRANSLATIONS_REPOSITORY_NAME = "zextras/com_zextras_zapp_shell"
 	}
 	stages {
 
 //============================================ Release Automation ======================================================
 
-		stage('Bump Version') {
-			agent {
-				node {
-					label 'nodejs-agent-v2'
-				}
-			}
+		stage('Release automation') {
 			when {
 				beforeAgent true
 				allOf {
@@ -98,50 +94,154 @@ pipeline {
 					environment name: 'COMMIT_PARENTS_COUNT', value: '2'
 				}
 			}
-			steps {
-				script {
-					def nextVersion = calculateNextVersion()
-					def tempBranchName = sh(script: """#!/bin/bash
-							echo \"version-bumper/v$nextVersion\"\$( { [[ $BRANCH_NAME == 'beta' ]] && echo '-beta'; } || echo '' )
-						""", returnStdout: true).trim()
-					sh(script: """#!/bin/bash
-						git config user.email \"bot@zextras.com\"
-						git config user.name \"Tarsier Bot\"
-						git remote set-url origin \$(git remote -v | head -n1 | cut -d\$'\t' -f2 | cut -d\" \" -f1 | sed 's!https://bitbucket.org/zextras!git@bitbucket.org:zextras!g')
-						sed --in-place --regexp-extended 's/\"version\": +\"[0-9]+\\.[0-9]+\\.[0-9]+\"/\"version\": \"$nextVersion\"/' package.json
-						git add package.json
-						git commit -m \"Bumped version to $nextVersion\$( { [[ $BRANCH_NAME == 'beta' ]] && echo ' Beta'; } || echo '' )\"
-						git tag -a v$nextVersion\$( { [[ $BRANCH_NAME == 'beta' ]] && echo '-beta'; } || echo '' ) -m \"Version $nextVersion\$( { [[ $BRANCH_NAME == 'beta' ]] && echo ' Beta'; } || echo '' )\"
-						git push --tags
-						git push origin HEAD:$BRANCH_NAME
-						git push origin HEAD:refs/heads/$tempBranchName
-					""")
-					withCredentials([usernameColonPassword(credentialsId: 'tarsier-bot-pr-token', variable: 'PR_ACCESS')]) {
-						sh(script: """
-							curl https://api.bitbucket.org/2.0/repositories/$REPOSITORY_NAME/pullrequests \
-							-u '$PR_ACCESS' \
-							--request POST \
-							--header 'Content-Type: application/json' \
-							--data '{
-									\"title\": \"Bumped version to $nextVersion into $BRANCH_NAME\",
-									\"source\": {
-										\"branch\": {
-											\"name\": \"$tempBranchName\"
-										}
-									},
-									\"destination\": {
-										\"branch\": {
-											\"name\": \"devel\"
-										}
-									},
-									\"close_source_branch\": true
-								}'
+			parallel {
+				stage('Pull translations. Bump Version (Release)') {
+					agent {
+						node {
+							label 'nodejs-agent-v2'
+						}
+					}
+					when {
+						beforeAgent true
+						allOf {
+							expression { BRANCH_NAME ==~ /(release)/ }
+							environment name: 'COMMIT_PARENTS_COUNT', value: '2'
+						}
+					}
+                    steps {
+                        script {
+                            def nextVersion = calculateNextVersion()
+                            def tempBranchName = sh(script: """#!/bin/bash
+                                    echo \"version-bumper/v$nextVersion\"\$( { [[ $BRANCH_NAME == 'beta' ]] && echo '-beta'; } || echo '' )
+                                """, returnStdout: true).trim()
+                            sh(script: """#!/bin/bash
+                                git config user.email \"bot@zextras.com\"
+                                git config user.name \"Tarsier Bot\"
+                                git remote set-url origin \$(git remote -v | head -n1 | cut -d\$'\t' -f2 | cut -d\" \" -f1 | sed 's!https://bitbucket.org/zextras!git@bitbucket.org:zextras!g')
+                                git fetch --unshallow
+                                git subtree pull --squash --prefix translations/ git@bitbucket.org:$TRANSLATIONS_REPOSITORY_NAME\\.git master
+                                sed --in-place --regexp-extended 's/\"version\": +\"[0-9]+\\.[0-9]+\\.[0-9]+\"/\"version\": \"$nextVersion\"/' package.json
+                                git add package.json
+                                git commit -m \"Bumped version to $nextVersion\$( { [[ $BRANCH_NAME == 'beta' ]] && echo ' Beta'; } || echo '' )\"
+                                git tag -a v$nextVersion\$( { [[ $BRANCH_NAME == 'beta' ]] && echo '-beta'; } || echo '' ) -m \"Version $nextVersion\$( { [[ $BRANCH_NAME == 'beta' ]] && echo ' Beta'; } || echo '' )\"
+                                git push --tags
+                                git push origin HEAD:$BRANCH_NAME
+                                git push origin HEAD:refs/heads/$tempBranchName
+                            """)
+                            withCredentials([usernameColonPassword(credentialsId: 'tarsier-bot-pr-token', variable: 'PR_ACCESS')]) {
+                                sh(script: """
+                                    curl https://api.bitbucket.org/2.0/repositories/$REPOSITORY_NAME/pullrequests \
+                                    -u '$PR_ACCESS' \
+                                    --request POST \
+                                    --header 'Content-Type: application/json' \
+                                    --data '{
+                                            \"title\": \"Bumped version to $nextVersion into $BRANCH_NAME\",
+                                            \"source\": {
+                                                \"branch\": {
+                                                    \"name\": \"$tempBranchName\"
+                                                }
+                                            },
+                                            \"destination\": {
+                                                \"branch\": {
+                                                    \"name\": \"devel\"
+                                                }
+                                            },
+                                            \"close_source_branch\": true
+                                        }'
+                                    """)
+                            }
+                        }
+                    }
+                }
+                stage('Push translations. Bump Version (Beta)') {
+					agent {
+						node {
+							label 'nodejs-agent-v2'
+						}
+					}
+					when {
+						beforeAgent true
+						allOf {
+							expression { BRANCH_NAME ==~ /(beta)/ }
+							environment name: 'COMMIT_PARENTS_COUNT', value: '2'
+						}
+					}
+					steps {
+						script {
+							def nextVersion = calculateNextVersion()
+							def tempBranchName = sh(script: """#!/bin/bash
+									echo \"version-bumper/v$nextVersion\"\$( { [[ $BRANCH_NAME == 'beta' ]] && echo '-beta'; } || echo '' )
+								""", returnStdout: true).trim()
+							def tempTranslationsBranchName = sh(script: """#!/bin/bash
+									echo \"translations-updater/v$nextVersion\"\$( { [[ $BRANCH_NAME == 'beta' ]] && echo '-beta'; } || echo '' )
+								""", returnStdout: true).trim()
+							executeNpmLogin()
+							nodeCmd 'npm install'
+							nodeCmd 'NODE_ENV="production" npm run build'
+							sh(script: """#!/bin/bash
+								git config user.email \"bot@zextras.com\"
+								git config user.name \"Tarsier Bot\"
+								git remote set-url origin \$(git remote -v | head -n1 | cut -d\$'\t' -f2 | cut -d\" \" -f1 | sed 's!https://bitbucket.org/zextras!git@bitbucket.org:zextras!g')
+								git add translations
+								git commit -m \"Extracted translations\"
+								sed --in-place --regexp-extended 's/\"version\": +\"[0-9]+\\.[0-9]+\\.[0-9]+\"/\"version\": \"$nextVersion\"/' package.json
+								git add package.json
+								git commit -m \"Bumped version to $nextVersion\$( { [[ $BRANCH_NAME == 'beta' ]] && echo ' Beta'; } || echo '' )\"
+								git tag -a v$nextVersion\$( { [[ $BRANCH_NAME == 'beta' ]] && echo '-beta'; } || echo '' ) -m \"Version $nextVersion\$( { [[ $BRANCH_NAME == 'beta' ]] && echo ' Beta'; } || echo '' )\"
+								git push --tags
+								git push origin HEAD:$BRANCH_NAME
+								git push origin HEAD:refs/heads/$tempBranchName
+								git fetch --unshallow
+								git subtree push --squash --prefix translations/ git@bitbucket.org:$TRANSLATIONS_REPOSITORY_NAME\\.git $tempTranslationsBranchName
 							""")
-
+							withCredentials([usernameColonPassword(credentialsId: 'tarsier-bot-pr-token', variable: 'PR_ACCESS')]) {
+								sh(script: """#!/bin/bash
+									curl https://api.bitbucket.org/2.0/repositories/$REPOSITORY_NAME/pullrequests \
+									-u '$PR_ACCESS' \
+									--request POST \
+									--header 'Content-Type: application/json' \
+									--data '{
+											\"title\": \"Bumped version to $nextVersion into $BRANCH_NAME\",
+											\"source\": {
+												\"branch\": {
+													\"name\": \"$tempBranchName\"
+												}
+											},
+											\"destination\": {
+												\"branch\": {
+													\"name\": \"devel\"
+												}
+											},
+											\"close_source_branch\": true
+										}'
+								""")
+								sh(script: """#!/bin/bash
+									curl https://api.bitbucket.org/2.0/repositories/$TRANSLATIONS_REPOSITORY_NAME/pullrequests \
+									-u '$PR_ACCESS' \
+									--request POST \
+									--header 'Content-Type: application/json' \
+									--data '{
+											\"title\": \"Updated translations in $nextVersion\",
+											\"source\": {
+												\"branch\": {
+													\"name\": \"$tempTranslationsBranchName\"
+												}
+											},
+											\"destination\": {
+												\"branch\": {
+													\"name\": \"master\"
+												}
+											},
+											\"close_source_branch\": true
+										}'
+								""")
+							}
+						}
 					}
 				}
 			}
-		}
+        }
+
 
 //============================================ Tests ===================================================================
 

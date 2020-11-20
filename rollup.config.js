@@ -43,6 +43,7 @@ export default {
 		'@testing-library/react-hooks',
 		'@testing-library/user-event',
 		'@zextras/zapp-ui',
+		'react-router-dom',
 		'core-js',
 		'moment',
 		'msw',

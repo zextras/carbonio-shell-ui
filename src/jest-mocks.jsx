@@ -12,6 +12,7 @@ import path from 'path';
 import React from 'react';
 import { render as rtlRender } from '@testing-library/react';
 import fetch from 'node-fetch';
+import { MemoryRouter } from 'react-router-dom';
 import AppContextWrapper from './mocks/app-context-wrapper';
 
 function soapFetch(api, body) {
@@ -54,7 +55,16 @@ export const network = {
 export const fiberChannel = jest.fn();
 export const fiberChannelSink = jest.fn();
 
-function render(ui, { ctxt, reducer, ...options } = { ctxt: {} }) {
+function render(
+	ui,
+	{
+		ctxt,
+		reducer,
+		preloadedState,
+		initialRouterEntries = ['/'],
+		...options
+	}
+) {
 	const confPath = path.resolve(
 		process.cwd(),
 		'zapp.conf.js'
@@ -64,14 +74,17 @@ function render(ui, { ctxt, reducer, ...options } = { ctxt: {} }) {
 	const conf = require(confPath);
 
 	const Wrapper = ({ children }) => (
-		<AppContextWrapper
-			packageName={conf.pkgName}
-			packageVersion={conf.version}
-			ctxt={ctxt}
-			reducer={reducer}
-		>
-			{ children }
-		</AppContextWrapper>
+		<MemoryRouter initialEntries={initialRouterEntries}>
+			<AppContextWrapper
+				packageName={conf.pkgName}
+				packageVersion={conf.version}
+				ctxt={ctxt}
+				reducer={reducer}
+				preloadedState={preloadedState}
+			>
+				{ children }
+			</AppContextWrapper>
+		</MemoryRouter>
 	);
 
 	return rtlRender(

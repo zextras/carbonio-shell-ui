@@ -27,7 +27,7 @@ export default function AppContextWrapper({
 	packageName,
 	packageVersion,
 	children,
-	ctxt,
+	ctxt = {},
 	reducer,
 	preloadedState
 }) {

@@ -12,7 +12,7 @@
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
 import {
-	default as Lodash, map, orderBy, compact, keyBy, forEach, forOwn
+	default as Lodash, map, orderBy, compact, keyBy, forEach, forOwn, reduce
 } from 'lodash';
 import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
 import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
@@ -107,7 +107,7 @@ type SharedLibrariesAppsMap = {
 		setRoutes: (routes: AppRouteDescription[]) => void;
 		setCreateOptions: (options: AppCreateOption[]) => void;
 		setAppContext: (obj: any) => void;
-		addSharedUiComponent: (scope: string, componentClass: ComponentClass) => void;
+		registerSharedUiComponents: (components: SharedUiComponentsDescriptor) => void;
 		fiberChannel: FC;
 		fiberChannelSink: FCSink;
 		hooks: unknown;
@@ -116,12 +116,7 @@ type SharedLibrariesAppsMap = {
 	'@zextras/zapp-ui': unknown;
 };
 
-type SharedUiComponentsDescriptor = {
-	[scope: string]: {
-		pkg: AppPkgDescription;
-		componentClass: ComponentClass;
-	}[];
-};
+type SharedUiComponentsDescriptor = { [id: string]: { pkg: string, versions: { [version: string]: FC } } };
 
 type LoadedAppRuntime = AppInjections & {
 	pkg: AppPkgDescription;
@@ -306,19 +301,26 @@ function loadAppModule(
 							setRoutes: (r): void => routes.next(r),
 							setCreateOptions: (options): void => createOptions.next(options),
 							setAppContext: (obj: any): void => appContext.next(obj),
-							addSharedUiComponent: (scope: string, componentClass: ComponentClass): void => {
-								validateSharedUiComponent(componentClass);
-								const scopes: SharedUiComponentsDescriptor = sharedUiComponents.getValue();
-								sharedUiComponents.next({
-									...scopes,
-									[scope]: [
-										...(scopes[scope] ? scopes[scope] : []),
-										{
-											pkg: appPkg,
-											componentClass
-										}
-									]
-								});
+							registerSharedUiComponents: (
+								components: { [id: string]: { versions: { [version: string]: FC } } }
+							): void => {
+								sharedUiComponents.next(
+									reduce(
+										components,
+										(
+											acc: SharedUiComponentsDescriptor,
+											comp: { versions: Record<string, FC> },
+											id: string
+										): SharedUiComponentsDescriptor => ({
+											...acc,
+											[id]: {
+												pkg: appPkg.package,
+												versions: comp.versions
+											}
+										}),
+										sharedUiComponents.getValue()
+									)
+								);
 							},
 							fiberChannel: fiberChannelFactory.getAppFiberChannel(appPkg),
 							fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(appPkg),

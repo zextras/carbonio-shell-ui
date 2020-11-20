@@ -10,6 +10,7 @@
  */
 
 import {
+	FC,
 	useCallback,
 	useContext,
 	useEffect,
@@ -44,6 +45,10 @@ export { default as usePromise } from 'react-use-promise';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export { useUserAccounts } from '../store/shell-store-hooks';
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+export { useSharedComponent } from '../shared-ui-components/use-shared-component';
 
 export function useAddBoardCallback(path: string): () => void {
 	const { addBoard } = useContext(BoardSetterContext);

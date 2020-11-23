@@ -2,31 +2,25 @@
 title: Shared UI Components
 ---
 
-Zextras Shell allow Apps to share UI Components and using them to improve Apps integrations.
+Zextras Shell allows Apps to share UI Components and use them to improve Apps integrations.
 
 An app can register any Component as it needs.
 
 ## Use a shared UI Component
-Any UI component can render shared UI Components. These components are created by a Factory exposed to the App Codebase.
-
-The `SharedUiComponentsFactory` will render *the list* of the components registered for the requested scope.
-
-Any property passed to the factory will be passed down to the component.
+Any UI component can render shared UI Components. These components are retrieved by the `useSharedCompontent` hook.
 
 ```jsx
 import React from 'react';
 import { ui } from '@zextras/zapp-shell';
 
-const SharedUiComponentsFactory = ui.SharedUiComponentsFactory;
-
 function MyComponent() {
+  const ComponentFromAnotherApp = useSharedComponent('component_id', '1');
   return (
       <>
           <div>
             I am using shared components!
           </div>
-          <SharedUiComponentsFactory 
-            scope="interesting-scope"
+          <ComponentFromAnotherApp 
             customProp="My custom PROP value"
           />
       </>
@@ -37,10 +31,6 @@ function MyComponent() {
 ## Share a UI Component
 A Component can see only the App Context its belongs to. Hooks related to the App Context can be used.
 
-Components must define its `propTypes` or the `addSharedUiComponent` will throw an error.
-
-As the Components registered are not requested to be suspended is heavily suggested to [suspend][1] the components to improve
-system performances. 
 
 ```jsx
 import React from 'react';
@@ -58,19 +48,19 @@ function MySharedComponent({ customProp }) {
     </div>
   );
 }
-MySharedComponent.propTypes = {
-  customProp: PropTypes.string.isRequired
-};
 
 export default function app() {
-  setAppContext({
-    contextValue: 'A value from the App Context'
-  });
-
-  addSharedUiComponent(
-    'interesting-scope',
-    MySharedComponent
-  );
+  // ...
+	useEffect(() => {
+		registerSharedUiComponents({
+			test_component: {
+				versions: {
+					1: MySharedComponent
+				}
+			}
+		});
+  }, []);
+  // ...
 }
 ```
 

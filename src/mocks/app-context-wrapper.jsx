@@ -9,6 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 import React, { useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
 import { BehaviorSubject } from 'rxjs';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
@@ -36,9 +37,11 @@ export default function AppContextWrapper({
 			package: packageName,
 			version: packageVersion
 		};
+		let history = useHistory();
 
 		// eslint-disable-next-line no-param-reassign
 		ctxt.current = {
+			history,
 			appContext: new BehaviorSubject({}),
 			createOptions: new BehaviorSubject([]),
 			entryPoint: new BehaviorSubject(null),

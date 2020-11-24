@@ -26,7 +26,7 @@ const BootstrapperContextProvider = jest.fn().mockImplementation(({ children }) 
 	const ctxt = useMemo(() => {
 		const { shellStore } = createShellStore(false);
 		const fiberChannelFactory = new FiberChannelFactory();
-		const i18nFactory = new I18nFactory(fiberChannelFactory);
+		const i18nFactory = new I18nFactory();
 		const shellNetworkService = new ShellNetworkService(
 			shellStore,
 			fiberChannelFactory

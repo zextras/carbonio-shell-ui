@@ -13,10 +13,10 @@ import { useHistory } from 'react-router-dom';
 import { BehaviorSubject } from 'rxjs';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
-import i18next from 'i18next';
 import { extendTheme, ThemeProvider } from '@zextras/zapp-ui';
 import AppContext from '../app/app-context';
 import I18nProvider from '../i18n/i18n-provider';
+import I18nFactory from '../i18n/i18n-test-factory';
 
 const _uselessSlice = createSlice({
 	name: '_useless',
@@ -32,12 +32,14 @@ export default function AppContextWrapper({
 	reducer,
 	preloadedState
 }) {
-	const { appContext } = useMemo(() => {
+	const history = useHistory();
+
+	const { appContext, i18nFactory, pkg } = useMemo(() => {
 		const _pkg = {
 			package: packageName,
 			version: packageVersion
 		};
-		let history = useHistory();
+
 
 		// eslint-disable-next-line no-param-reassign
 		ctxt.current = {
@@ -62,9 +64,10 @@ export default function AppContextWrapper({
 				_pkg,
 				...ctxt.current
 			},
-			pkg: _pkg
+			pkg: _pkg,
+			i18nFactory: new I18nFactory()
 		};
-	}, [packageName, packageVersion, ctxt, reducer, preloadedState]);
+	}, [packageName, packageVersion, ctxt, reducer, preloadedState, history]);
 
 	return (
 		<ThemeProvider
@@ -74,7 +77,7 @@ export default function AppContextWrapper({
 				<AppContext.Provider
 					value={appContext}
 				>
-					<I18nProvider i18n={i18next.createInstance()}>
+					<I18nProvider i18n={i18nFactory.getAppI18n(pkg)}>
 						{ children }
 					</I18nProvider>
 				</AppContext.Provider>

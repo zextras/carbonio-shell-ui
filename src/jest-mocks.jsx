@@ -119,3 +119,12 @@ function render(
 export const testUtils = {
 	render
 };
+
+export const hooks = {
+	useReplaceHistoryCallback: jest.fn(() => {
+		throw new Error('Mock \'useReplaceHistoryCallback\' is not implemented');
+	}),
+	usePushHistoryCallback: jest.fn(() => {
+		throw new Error('Mock \'usePushHistoryCallback\' is not implemented');
+	})
+}

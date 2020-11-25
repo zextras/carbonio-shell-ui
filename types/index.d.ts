@@ -162,7 +162,7 @@ export const network: {
 	soapFetch: SoapFetch;
 };
 
-export const test: {
+export const testUtils: {
 	render(
 		ui: React.ReactElement,
 		options?: Omit<RenderOptions, 'queries'>,

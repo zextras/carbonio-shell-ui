@@ -25,6 +25,7 @@ export default {
 		commonjs(),
 		babel({
 			babelHelpers: 'runtime',
+			extensions: ['.js', '.jsx', '.ts', '.tsx'],
 			presets: [
 				'@babel/preset-react',
 				'@babel/preset-typescript'

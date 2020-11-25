@@ -8,95 +8,48 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-jest.mock('@zextras/zapp-ui');
-jest.mock('../store/store-factory');
-jest.mock('../fiberchannel/fiber-channel');
-jest.mock('../bootstrap/bootstrapper-context-provider');
-jest.mock('./app-loader-context-provider');
 
 import React from 'react';
-import { act, render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { BehaviorSubject } from 'rxjs';
+import { screen } from '@testing-library/dom';
+import { testUtils } from '../jest-mocks';
 import AppLink from './app-link';
-import AppContextProvider from './app-context-provider';
-import AppLoaderContext from './app-loader-context';
-import BootstrapperContextProvider from '../bootstrap/bootstrapper-context-provider';
-import AppLoaderContextProvider from './app-loader-context-provider';
 
-describe.skip('App Link', () => {
-	beforeEach(() => {
-		AppLoaderContextProvider.mockImplementationOnce(({ children }) => (
-			<AppLoaderContext.Provider
-				value={{
-					appsCache: {
-						com_example_package: {
-							pkg: {},
-							mainMenuItems: new BehaviorSubject([]),
-							routes: new BehaviorSubject([]),
-							createOptions: new BehaviorSubject([]),
-							appContext: new BehaviorSubject({}),
-						}
-					},
-					appsLoaded: true
-				}}
-			>
-				{ children }
-			</AppLoaderContext.Provider>
-		));
-	});
+describe('App Link', () => {
 
 	test('Link without parameters', () => {
-		const { container } = render(
-			<MemoryRouter>
-				<BootstrapperContextProvider>
-					<AppLoaderContextProvider>
-						<AppContextProvider pkg={{ package: 'com_example_package' }}>
-							<AppLink to="/destination">Link</AppLink>
-						</AppContextProvider>
-					</AppLoaderContextProvider>
-				</BootstrapperContextProvider>
-			</MemoryRouter>
+		testUtils.render(
+			<AppLink to="/destination">Link</AppLink>,
+			{
+				packageName: 'com_example_app',
+				packageVersion: '1.0.0'
+			}
 		);
-		const el = container.findByType('a');
-		expect(el.props.href).toBe('/com_example_package/destination');
+		expect(screen.getByText('Link')).toBeInTheDocument();
+		expect(screen.getByText('Link').href).toBe('http://localhost/com_example_app/destination');
 	});
 
 	test('Link with parameters', () => {
-		let component;
-		act(() => {
-			component = render(
-				<MemoryRouter>
-					<BootstrapperContextProvider>
-						<AppLoaderContextProvider>
-							<AppContextProvider pkg={{ package: 'com_example_package' }}>
-								<AppLink to="/destination?param=true">Link</AppLink>
-							</AppContextProvider>
-						</AppLoaderContextProvider>
-					</BootstrapperContextProvider>
-				</MemoryRouter>
-			);
-		});
-		const el = component.root.findByType('a');
-		expect(el.props.href).toBe('/com_example_package/destination?param=true');
+		testUtils.render(
+			<AppLink to="/destination?param=true">Link</AppLink>,
+			{
+				packageName: 'com_example_app',
+				packageVersion: '1.0.0'
+			}
+		);
+		expect(screen.getByText('Link')).toBeInTheDocument();
+		expect(screen.getByText('Link').href).toBe('http://localhost/com_example_app/destination?param=true');
 	});
 
 	test('Link without parameters, to as object', () => {
-		let component;
-		act(() => {
-			component = render(
-				<MemoryRouter>
-					<BootstrapperContextProvider>
-						<AppLoaderContextProvider>
-							<AppContextProvider pkg={{ package: 'com_example_package' }}>
-								<AppLink to={{ pathname: '/destination' }}>Link</AppLink>
-							</AppContextProvider>
-						</AppLoaderContextProvider>
-					</BootstrapperContextProvider>
-				</MemoryRouter>
-			);
-		});
-		const el = component.root.findByType('a');
-		expect(el.props.href).toBe('/com_example_package/destination');
+		testUtils.render(
+			<AppLink to={{ pathname: '/destination' }}>Link</AppLink>,
+			{
+				packageName: 'com_example_app',
+				packageVersion: '1.0.0'
+			}
+		);
+		expect(screen.getByText('Link')).toBeInTheDocument();
+		expect(screen.getByText('Link').href).toBe('http://localhost/com_example_app/destination');
 	});
+
 });

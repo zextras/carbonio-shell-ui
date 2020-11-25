@@ -33,6 +33,7 @@ export default function ShellSecondaryBar({
 				maxSize="256px"
 			>
 				<Container
+					role="menu"
 					width={256}
 					height="fill"
 					orientation="vertical"
@@ -53,6 +54,7 @@ export default function ShellSecondaryBar({
 												? menuItem.customComponent
 												: menuItem.items.map((folder, index) => (
 													<Accordion
+														role="menuitem"
 														key={index}
 														click={folder.click}
 														active={true}

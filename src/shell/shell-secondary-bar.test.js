@@ -8,24 +8,101 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-jest.mock('@zextras/zapp-ui');
 
 import React from 'react';
-import { collectAllTo } from './shell-secondary-bar';
+import { screen } from '@testing-library/dom';
+import { testUtils } from '../jest-shell-mocks';
+import ShellSecondaryBar from './shell-secondary-bar';
 
-describe.skip('Shell Link', () => {
-	test('Collect all to', () => {
-		const collected = collectAllTo('package', {
-			to: '/0',
-			children: [{
-				to: '/1',
-				children: [{
-					to: '/1.1'
-				}]
+describe('Secondary bar', () => {
+	test('Empty secondary bar', () => {
+		const onCollapserClick = jest.fn();
+		testUtils.render(
+			<ShellSecondaryBar
+				mainMenuItems={[]}
+				navigationBarIsOpen={true}
+				onCollapserClick={onCollapserClick}
+			/>
+		);
+		expect(screen.getByRole('menu')).toBeInTheDocument();
+	});
+
+	test('Render children of current App', () => {
+		const onCollapserClick = jest.fn();
+		const mainMenuItems = [{
+			pkgName: 'com_example_app',
+			to: '/',
+			allTos: ['/com_example_app/'],
+			items: [{
+				label: 'App 1 Folder 1'
 			}, {
-				to: '/2'
+				label: 'App 1 Folder 2'
 			}]
-		});
-		expect(collected).toStrictEqual(['/package/0', '/package/1', '/package/1.1', '/package/2']);
+		}];
+		testUtils.render(
+			<ShellSecondaryBar
+				mainMenuItems={mainMenuItems}
+				navigationBarIsOpen={true}
+				onCollapserClick={onCollapserClick}
+			/>,
+			{
+				initialRouterEntries: ['/com_example_app']
+			}
+		);
+		expect(screen.getByRole('menu')).toBeInTheDocument();
+		expect(screen.getAllByRole('menuitem').length).toBe(2);
+		expect(screen.getAllByRole('menuitem')[0]).toHaveTextContent('App 1 Folder 1');
+		expect(screen.getAllByRole('menuitem')[1]).toHaveTextContent('App 1 Folder 2');
+	});
+
+	test('Do not render children of another App', () => {
+		const onCollapserClick = jest.fn();
+		const mainMenuItems = [{
+			pkgName: 'com_example_app_1',
+			to: '/',
+			allTos: ['/com_example_app_1/'],
+			items: [{
+				label: 'App 1 Folder 1'
+			}, {
+				label: 'App 1 Folder 2'
+			}]
+		}];
+		testUtils.render(
+			<ShellSecondaryBar
+				mainMenuItems={mainMenuItems}
+				navigationBarIsOpen={true}
+				onCollapserClick={onCollapserClick}
+			/>,
+			{
+				initialRouterEntries: ['/com_example_app_2']
+			}
+		);
+		expect(screen.getByRole('menu')).toBeInTheDocument();
+		expect(screen.queryAllByRole('menuitem').length).toBe(0);
+	});
+
+	test('Render a custom component', () => {
+		const onCollapserClick = jest.fn();
+		function CustomComponent() {
+			return "Hello world!";
+		}
+		const mainMenuItems = [{
+			pkgName: 'com_example_app',
+			to: '/',
+			allTos: ['/com_example_app/'],
+			customComponent: CustomComponent
+		}];
+		testUtils.render(
+			<ShellSecondaryBar
+				mainMenuItems={mainMenuItems}
+				navigationBarIsOpen={true}
+				onCollapserClick={onCollapserClick}
+			/>,
+			{
+				initialRouterEntries: ['/com_example_app']
+			}
+		);
+		expect(screen.getByRole('menu')).toBeInTheDocument();
+		expect(screen.getByText(/hello world/i)).toBeInTheDocument();
 	});
 });

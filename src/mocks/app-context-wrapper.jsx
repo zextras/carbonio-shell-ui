@@ -13,7 +13,6 @@ import { useHistory } from 'react-router-dom';
 import { BehaviorSubject } from 'rxjs';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
-import { extendTheme, ThemeProvider } from '@zextras/zapp-ui';
 import AppContext from '../app/app-context';
 import I18nProvider from '../i18n/i18n-provider';
 import I18nFactory from '../i18n/i18n-test-factory';
@@ -28,7 +27,7 @@ export default function AppContextWrapper({
 	packageName,
 	packageVersion,
 	children,
-	ctxt = {},
+	ctxt,
 	reducer,
 	preloadedState
 }) {
@@ -61,7 +60,7 @@ export default function AppContextWrapper({
 
 		return {
 			appContext: {
-				_pkg,
+				pkg: _pkg,
 				...ctxt.current
 			},
 			pkg: _pkg,
@@ -70,18 +69,14 @@ export default function AppContextWrapper({
 	}, [packageName, packageVersion, ctxt, reducer, preloadedState, history]);
 
 	return (
-		<ThemeProvider
-			theme={extendTheme({})}
-		>
-			<Provider store={appContext.store}>
-				<AppContext.Provider
-					value={appContext}
-				>
-					<I18nProvider i18n={i18nFactory.getAppI18n(pkg)}>
-						{ children }
-					</I18nProvider>
-				</AppContext.Provider>
-			</Provider>
-		</ThemeProvider>
+		<Provider store={appContext.store}>
+			<AppContext.Provider
+				value={appContext}
+			>
+				<I18nProvider i18n={i18nFactory.getAppI18n(pkg)}>
+					{ children }
+				</I18nProvider>
+			</AppContext.Provider>
+		</Provider>
 	);
 }

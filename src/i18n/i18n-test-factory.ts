@@ -23,12 +23,12 @@ export default class I18nTestFactory extends I18nFactory {
 			.init({
 				lng: 'en',
 				fallbackLng: 'en',
-				debug: true,
+				debug: false,
 
 				interpolation: {
 					escapeValue: false, // not needed for react as it escapes by default
 				},
-				resources: { en: {  } },
+				resources: { en: { translation: {} } },
 			});
 		return newI18n;
 	}

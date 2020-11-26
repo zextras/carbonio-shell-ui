@@ -83,7 +83,10 @@ describe('Secondary bar', () => {
 				initialRouterEntries: ['/com_example_app']
 			}
 		);
-		screen.debug();
+		expect(screen.getByText(/^App 1 Folder 1$/i)).toBeInTheDocument();
+		expect(screen.getByText(/^App 1 Folder 1\.1$/i)).toBeInTheDocument();
+		expect(screen.getByText(/^App 1 Folder 1\.1\.1$/i)).toBeInTheDocument();
+		expect(screen.getByText(/^App 1 Folder 2$/i)).toBeInTheDocument();
 	});
 
 	test('Do not render children of another App', () => {

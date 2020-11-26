@@ -55,6 +55,37 @@ describe('Secondary bar', () => {
 		expect(screen.getAllByRole('menuitem')[1]).toHaveTextContent('App 1 Folder 2');
 	});
 
+	test('Render children of current App. Nested 3 times.', () => {
+		const onCollapserClick = jest.fn();
+		const mainMenuItems = [{
+			pkgName: 'com_example_app',
+			to: '/',
+			allTos: ['/com_example_app/'],
+			items: [{
+				label: 'App 1 Folder 1',
+				items: [{
+					label: 'App 1 Folder 1.1',
+					items: [{
+						label: 'App 1 Folder 1.1.1'
+					}]
+				}]
+			}, {
+				label: 'App 1 Folder 2'
+			}]
+		}];
+		testUtils.render(
+			<ShellSecondaryBar
+				mainMenuItems={mainMenuItems}
+				navigationBarIsOpen={true}
+				onCollapserClick={onCollapserClick}
+			/>,
+			{
+				initialRouterEntries: ['/com_example_app']
+			}
+		);
+		screen.debug();
+	});
+
 	test('Do not render children of another App', () => {
 		const onCollapserClick = jest.fn();
 		const mainMenuItems = [{

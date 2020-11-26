@@ -52,10 +52,10 @@ export default function ShellSecondaryBar({
 										{
 											menuItem.customComponent
 												? menuItem.customComponent
-												: menuItem.items.map((folder, index) => (
+												: menuItem.items.map((folder) => (
 													<Accordion
 														role="menuitem"
-														key={index}
+														key={`${folder.label ?? ''}_${folder.icon ?? ''}`}
 														click={folder.click}
 														active={true}
 														icon={folder.icon}

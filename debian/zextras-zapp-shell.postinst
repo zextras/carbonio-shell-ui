@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+chown zimbra:zimbra -R /opt/zimbra/zimlets/com_zextras_zapp_shell.zip
+

@@ -18,7 +18,7 @@ import { doLogout } from '../store/accounts-slice';
 export default function LogoutView() {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const { t } = useTranslation();
+	const [ t ] = useTranslation();
 
 	const doLogoutCbk = useCallback((ev) => {
 		ev.preventDefault();

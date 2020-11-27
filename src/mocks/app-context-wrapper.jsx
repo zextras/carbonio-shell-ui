@@ -11,10 +11,10 @@
 import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { BehaviorSubject } from 'rxjs';
+import { I18nextProvider } from 'react-i18next';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import AppContext from '../app/app-context';
-import I18nProvider from '../i18n/i18n-provider';
 import I18nFactory from '../i18n/i18n-test-factory';
 
 const _uselessSlice = createSlice({
@@ -68,14 +68,16 @@ export default function AppContextWrapper({
 		};
 	}, [packageName, packageVersion, ctxt, reducer, preloadedState, history]);
 
+	const i18n = useMemo(() => i18nFactory.getAppI18n(pkg), [i18nFactory, pkg]);
+
 	return (
 		<Provider store={appContext.store}>
 			<AppContext.Provider
 				value={appContext}
 			>
-				<I18nProvider i18n={i18nFactory.getAppI18n(pkg)}>
+				<I18nextProvider i18n={i18n}>
 					{ children }
-				</I18nProvider>
+				</I18nextProvider>
 			</AppContext.Provider>
 		</Provider>
 	);

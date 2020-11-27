@@ -89,7 +89,7 @@ const reducer = (state, action) => {
 };
 
 export default function BoardContextProvider({ children }) {
-	const { t } = useTranslation();
+	const [ t ] = useTranslation();
 	const [boardState, dispatch] = useReducer(
 		reducer,
 		{

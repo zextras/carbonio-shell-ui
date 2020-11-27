@@ -41,7 +41,7 @@ export default function ShellHeader({
 	quota
 }) {
 	const history = useHistory();
-	const { t } = useTranslation();
+	const [ t ] = useTranslation();
 	const screenMode = useScreenMode();
 	const [appsCache] = useAppsCache();
 	const { addBoard } = useContext(BoardSetterContext);

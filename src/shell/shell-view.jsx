@@ -46,7 +46,7 @@ export function Shell() {
 	const [userOpen, setUserOpen] = useState(false);
 	const [navOpen, setNavOpen] = useState(true);
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
-	const { t } = useTranslation();
+	const [ t ] = useTranslation();
 
 	const accounts = useUserAccounts();
 	const sessionState = useSessionState();

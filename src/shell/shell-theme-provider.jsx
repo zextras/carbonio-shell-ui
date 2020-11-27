@@ -79,7 +79,7 @@ const ShellThemeProvider = ({ children }) => {
 				.then((themes) => {
 					if (!canSet) return;
 					setThemeCache([
-						extendTheme(themes[0]),
+						extendTheme(themes[0] ?? {}),
 						true
 					]);
 				});

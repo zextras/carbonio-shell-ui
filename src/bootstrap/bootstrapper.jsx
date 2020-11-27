@@ -22,7 +22,7 @@ export default function bootstrapper(onBeforeBoot) {
 	const { shellStore, shellStorePersistor } = createShellStore(true);
 
 	const fiberChannelFactory = new FiberChannelFactory();
-	const i18nFactory = new I18nFactory(fiberChannelFactory);
+	const i18nFactory = new I18nFactory();
 	const shellNetworkService = new ShellNetworkService(
 		shellStore,
 		fiberChannelFactory

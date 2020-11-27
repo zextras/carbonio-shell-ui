@@ -13,6 +13,7 @@
 import React, { useCallback, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
 	Button,
 	Checkbox,
@@ -33,9 +34,7 @@ import {
 	useSnackbar,
 	Paragraph
 } from '@zextras/zapp-ui';
-
 import useLoginView from './login-view-hook';
-import { useTranslation } from '../i18n/hooks';
 
 import backgroundImage from './images/bg.jpg';
 import logoChrome from './images/logo-chrome.svg';
@@ -48,7 +47,6 @@ import logoYandex from './images/logo-yandex.svg';
 import logoUC from './images/logo-ucbrowser.svg';
 
 function OfflineModal({ open, onClose }) {
-	const { t } = useTranslation();
 	return (
 		<Modal
 			title="Offline"
@@ -61,7 +59,6 @@ function OfflineModal({ open, onClose }) {
 }
 
 function GenericErrorModal({ open, onClose }) {
-	const { t } = useTranslation();
 	return (
 		<Modal
 			title="Error"
@@ -79,7 +76,7 @@ function LoginForm() {
 		usernameRef,
 		passwordRef
 	} = useLoginView();
-	const { t } = useTranslation();
+	const [ t ] = useTranslation();
 	const createSnackbar = useSnackbar();
 	const [showAuthError, setShowAuthError] = useState(false);
 	const [openOfflineModal, setOpenOfflineModal] = useState(false);
@@ -201,7 +198,7 @@ const Separator = styled.div`
 `;
 
 function Login() {
-	const { t } = useTranslation();
+	const [ t ] = useTranslation();
 	const screenMode = useScreenMode();
 	const [openHelpModal, setOpenHelpModal] = useState(false);
 

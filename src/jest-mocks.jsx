@@ -12,7 +12,29 @@ import path from 'path';
 import React from 'react';
 import { render as rtlRender } from '@testing-library/react';
 import fetch from 'node-fetch';
+import { MemoryRouter } from 'react-router-dom';
+import { extendTheme, ThemeProvider } from '@zextras/zapp-ui';
 import AppContextWrapper from './mocks/app-context-wrapper';
+
+const confPath = path.resolve(
+	process.cwd(),
+	'zapp.conf.js'
+);
+// eslint-disable-next-line max-len
+// eslint-disable-next-line global-require,import/no-dynamic-require,@typescript-eslint/no-var-requires
+const conf = require(confPath);
+
+// jest.mock('react-i18next', () => ({
+// 	// this mock makes sure any components using the translate hook can use it without a warning being shown
+// 	useTranslation: () => {
+// 		return {
+// 			t: (str) => str,
+// 			i18n: {
+// 				changeLanguage: () => new Promise(() => {}),
+// 			},
+// 		};
+// 	},
+// }));
 
 function soapFetch(api, body) {
 	const request = {
@@ -54,24 +76,35 @@ export const network = {
 export const fiberChannel = jest.fn();
 export const fiberChannelSink = jest.fn();
 
-function render(ui, { ctxt, reducer, ...options } = { ctxt: {} }) {
-	const confPath = path.resolve(
-		process.cwd(),
-		'zapp.conf.js'
-	);
-	// eslint-disable-next-line max-len
-	// eslint-disable-next-line global-require,import/no-dynamic-require,@typescript-eslint/no-var-requires
-	const conf = require(confPath);
+function render(
+	ui,
+	{
+		ctxt = {},
+		reducer,
+		preloadedState,
+		initialRouterEntries = ['/'],
+		packageName = conf.pkgName,
+		packageVersion = conf.version,
+		...options
+	} = {}
+) {
 
 	const Wrapper = ({ children }) => (
-		<AppContextWrapper
-			packageName={conf.pkgName}
-			packageVersion={conf.version}
-			ctxt={ctxt}
-			reducer={reducer}
-		>
-			{ children }
-		</AppContextWrapper>
+		<MemoryRouter initialEntries={initialRouterEntries}>
+			<ThemeProvider
+				theme={extendTheme({})}
+			>
+				<AppContextWrapper
+					packageName={packageName}
+					packageVersion={packageVersion}
+					ctxt={ctxt}
+					reducer={reducer}
+					preloadedState={preloadedState}
+				>
+					{ children }
+				</AppContextWrapper>
+			</ThemeProvider>
+		</MemoryRouter>
 	);
 
 	return rtlRender(
@@ -83,6 +116,15 @@ function render(ui, { ctxt, reducer, ...options } = { ctxt: {} }) {
 	);
 }
 
-export const test = {
+export const testUtils = {
 	render
 };
+
+export const hooks = {
+	useReplaceHistoryCallback: jest.fn(() => {
+		throw new Error('Mock \'useReplaceHistoryCallback\' is not implemented');
+	}),
+	usePushHistoryCallback: jest.fn(() => {
+		throw new Error('Mock \'usePushHistoryCallback\' is not implemented');
+	})
+}

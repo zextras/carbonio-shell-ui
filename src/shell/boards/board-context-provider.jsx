@@ -11,7 +11,7 @@
 
 import React, { useCallback, useMemo, useReducer, } from 'react';
 import { pickBy } from 'lodash';
-import { useTranslation } from '../../i18n/hooks';
+import { useTranslation } from 'react-i18next';
 import { BoardValueContext, BoardSetterContext } from './board-context';
 
 function getRandomKey() {
@@ -89,7 +89,7 @@ const reducer = (state, action) => {
 };
 
 export default function BoardContextProvider({ children }) {
-	const { t } = useTranslation();
+	const [ t ] = useTranslation();
 	const [boardState, dispatch] = useReducer(
 		reducer,
 		{

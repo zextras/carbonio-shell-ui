@@ -12,15 +12,10 @@
 import i18next, { i18n } from 'i18next';
 import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import { AppPkgDescription } from '../../types';
 
 export default class I18nFactory {
-	private _fcFactory: IFiberChannelFactory ;
-
-	constructor(fcFactory: IFiberChannelFactory) {
-		this._fcFactory = fcFactory;
-	}
+	private _cache: {[pkg: string]: i18n} = {};
 
 	public getShellI18n(): i18n {
 		return this.getAppI18n({
@@ -37,6 +32,9 @@ export default class I18nFactory {
 	// eslint-disable-next-line class-methods-use-this
 	public getAppI18n(appPkgDescription: AppPkgDescription): i18n {
 		// const sink = this._fcFactory.getAppFiberChannelSink(appPkgDescription);
+		if (this._cache[appPkgDescription.package]) {
+			return this._cache[appPkgDescription.package];
+		}
 		const newI18n = i18next.createInstance();
 		newI18n
 			// load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
@@ -63,6 +61,7 @@ export default class I18nFactory {
 					loadPath: `/zx/zimlet/${appPkgDescription.package}/i18n/{{lng}}.json`,
 				},
 			});
+		this._cache[appPkgDescription.package] = newI18n;
 		return newI18n;
 	}
 }

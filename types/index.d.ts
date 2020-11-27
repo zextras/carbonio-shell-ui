@@ -132,7 +132,6 @@ export const hooks: {
 	usePushHistoryCallback(): (location: LocationDescriptor) => void;
 	useRemoveCurrentBoard(): () => void;
 	useReplaceHistoryCallback(): (location: LocationDescriptor) => void;
-	useTranslation(): any;
 	useUserAccounts(): Account[];
 };
 

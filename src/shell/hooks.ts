@@ -36,9 +36,6 @@ import AppContext from '../app/app-context';
 // @ts-ignore
 export { useAppPkg, useAppContext, useFiberChannel } from '../app/app-context';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export { useTranslation } from '../i18n/hooks';
 export { default as usePromise } from 'react-use-promise';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

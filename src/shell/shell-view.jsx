@@ -13,12 +13,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Row, Responsive } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import BoardsRouterContainer from './boards/boards-router-container';
 import ShellContextProvider from './shell-context-provider';
 import SharedUiComponentsContextProvider
 	from '../shared-ui-components/shared-ui-components-context-provider';
 import BoardContextProvider from './boards/board-context-provider';
-import { useTranslation } from '../i18n/hooks';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
 import ShellMenuPanel from './shell-menu-panel';

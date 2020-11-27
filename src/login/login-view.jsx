@@ -13,6 +13,7 @@
 import React, { useCallback, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link as RouterLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
 	Button,
 	Checkbox,
@@ -33,9 +34,7 @@ import {
 	useSnackbar,
 	Paragraph
 } from '@zextras/zapp-ui';
-
 import useLoginView from './login-view-hook';
-import { useTranslation } from '../i18n/hooks';
 
 import backgroundImage from './images/bg.jpg';
 import logoChrome from './images/logo-chrome.svg';

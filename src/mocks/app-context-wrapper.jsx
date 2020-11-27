@@ -9,13 +9,13 @@
  * *** END LICENSE BLOCK *****
  */
 import React, { useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
 import { BehaviorSubject } from 'rxjs';
+import { I18nextProvider } from 'react-i18next';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
-import i18next from 'i18next';
-import { extendTheme, ThemeProvider } from '@zextras/zapp-ui';
 import AppContext from '../app/app-context';
-import I18nProvider from '../i18n/i18n-provider';
+import I18nFactory from '../i18n/i18n-test-factory';
 
 const _uselessSlice = createSlice({
 	name: '_useless',
@@ -28,16 +28,21 @@ export default function AppContextWrapper({
 	packageVersion,
 	children,
 	ctxt,
-	reducer
+	reducer,
+	preloadedState
 }) {
-	const { appContext } = useMemo(() => {
+	const history = useHistory();
+
+	const { appContext, i18nFactory, pkg } = useMemo(() => {
 		const _pkg = {
 			package: packageName,
 			version: packageVersion
 		};
 
+
 		// eslint-disable-next-line no-param-reassign
 		ctxt.current = {
+			history,
 			appContext: new BehaviorSubject({}),
 			createOptions: new BehaviorSubject([]),
 			entryPoint: new BehaviorSubject(null),
@@ -48,32 +53,32 @@ export default function AppContextWrapper({
 				devTools: {
 					name: _pkg.package,
 				},
-				reducer: reducer || { _useless: _uselessSlice.reducer }
+				reducer: reducer || { _useless: _uselessSlice.reducer },
+				preloadedState
 			})
 		};
 
 		return {
 			appContext: {
-				_pkg,
+				pkg: _pkg,
 				...ctxt.current
 			},
-			pkg: _pkg
+			pkg: _pkg,
+			i18nFactory: new I18nFactory()
 		};
-	}, [packageName, packageVersion, ctxt, reducer]);
+	}, [packageName, packageVersion, ctxt, reducer, preloadedState, history]);
+
+	const i18n = useMemo(() => i18nFactory.getAppI18n(pkg), [i18nFactory, pkg]);
 
 	return (
-		<ThemeProvider
-			theme={extendTheme({})}
-		>
-			<Provider store={appContext.store}>
-				<AppContext.Provider
-					value={appContext}
-				>
-					<I18nProvider i18n={i18next.createInstance()}>
-						{ children }
-					</I18nProvider>
-				</AppContext.Provider>
-			</Provider>
-		</ThemeProvider>
+		<Provider store={appContext.store}>
+			<AppContext.Provider
+				value={appContext}
+			>
+				<I18nextProvider i18n={i18n}>
+					{ children }
+				</I18nextProvider>
+			</AppContext.Provider>
+		</Provider>
 	);
 }

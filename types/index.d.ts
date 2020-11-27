@@ -132,7 +132,6 @@ export const hooks: {
 	usePushHistoryCallback(): (location: LocationDescriptor) => void;
 	useRemoveCurrentBoard(): () => void;
 	useReplaceHistoryCallback(): (location: LocationDescriptor) => void;
-	useTranslation(): any;
 	useUserAccounts(): Account[];
 };
 
@@ -162,7 +161,7 @@ export const network: {
 	soapFetch: SoapFetch;
 };
 
-export const test: {
+export const testUtils: {
 	render(
 		ui: React.ReactElement,
 		options?: Omit<RenderOptions, 'queries'>,

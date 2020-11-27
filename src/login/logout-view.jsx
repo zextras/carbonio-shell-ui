@@ -11,14 +11,14 @@
 
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useTranslation } from '../i18n/hooks';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from '../store/shell-store-hooks';
 import { doLogout } from '../store/accounts-slice';
 
 export default function LogoutView() {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const { t } = useTranslation();
+	const [ t ] = useTranslation();
 
 	const doLogoutCbk = useCallback((ev) => {
 		ev.preventDefault();

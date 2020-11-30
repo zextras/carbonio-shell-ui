@@ -1,0 +1,9 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@ --parallel
+
+override_dh_auto_install:
+	mkdir -p $$(pwd)/debian/tmp/opt/zimbra/zimlets
+	cp $$(pwd)/com_zextras_zapp_shell.zip \
+	$$(pwd)/debian/tmp/opt/zimbra/zimlets

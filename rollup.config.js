@@ -25,6 +25,7 @@ export default {
 		commonjs(),
 		babel({
 			babelHelpers: 'runtime',
+			extensions: ['.js', '.jsx', '.ts', '.tsx'],
 			presets: [
 				'@babel/preset-react',
 				'@babel/preset-typescript'
@@ -43,6 +44,7 @@ export default {
 		'@testing-library/react-hooks',
 		'@testing-library/user-event',
 		'@zextras/zapp-ui',
+		'react-router-dom',
 		'core-js',
 		'moment',
 		'msw',

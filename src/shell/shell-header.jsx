@@ -18,6 +18,7 @@ import { combineLatest } from 'rxjs';
 import { map as rxMap } from 'rxjs/operators';
 import { reduce } from 'lodash';
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
 	Button,
 	Container,
@@ -29,7 +30,6 @@ import {
 	Quota,
 	useScreenMode
 } from '@zextras/zapp-ui';
-import { useTranslation } from '../i18n/hooks';
 import { useAppsCache } from '../app/app-loader-context';
 import { BoardSetterContext } from './boards/board-context';
 
@@ -41,7 +41,7 @@ export default function ShellHeader({
 	quota
 }) {
 	const history = useHistory();
-	const { t } = useTranslation();
+	const [ t ] = useTranslation();
 	const screenMode = useScreenMode();
 	const [appsCache] = useAppsCache();
 	const { addBoard } = useContext(BoardSetterContext);

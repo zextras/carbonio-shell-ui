@@ -11,10 +11,10 @@
 
 import React, { useMemo } from 'react';
 import { Provider } from 'react-redux';
+import { I18nextProvider } from 'react-i18next';
 import AppContext from './app-context';
 import { useFiberChannelFactory, useI18nFactory, useStoreFactory } from '../bootstrap/bootstrapper-context';
 import AppErrorCatcher from './app-error-catcher';
-import I18nProvider from '../i18n/i18n-provider';
 import { useAppContextCache } from './app-context-cache-context';
 
 export default function AppContextProvider({ pkg, children }) {
@@ -43,11 +43,11 @@ export default function AppContextProvider({ pkg, children }) {
 			<AppContext.Provider
 				value={value}
 			>
-				<I18nProvider i18n={i18n}>
+				<I18nextProvider i18n={i18n}>
 					<AppErrorCatcher>
 						{ children }
 					</AppErrorCatcher>
-				</I18nProvider>
+				</I18nextProvider>
 			</AppContext.Provider>
 		</Provider>
 	);

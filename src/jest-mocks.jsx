@@ -16,7 +16,6 @@ import { MemoryRouter } from 'react-router-dom';
 import { extendTheme, ThemeProvider } from '@zextras/zapp-ui';
 import AppContextWrapper from './mocks/app-context-wrapper';
 import { usePushHistoryCallback, useReplaceHistoryCallback } from './shell/hooks';
-import faker from 'faker';
 
 const confPath = path.resolve(
 	process.cwd(),
@@ -125,21 +124,5 @@ export const testUtils = {
 export const hooks = {
 	useReplaceHistoryCallback: jest.fn(useReplaceHistoryCallback),
 	usePushHistoryCallback: jest.fn(usePushHistoryCallback),
-	useUserAccounts: () => [{
-		"id": faker.random.uuid(),
-		"name": "john.red@colors.com", // I think that for some test is useful to have a know an account
-		"displayName": "John Red",
-		"apps": [{
-			"package": "com_zextras_zapp_mails",
-			"name": "Mails",
-			"version": "0.0.19",
-			"priority": 14,
-			"resourceUrl": "/zx/zimlet/com_zextras_zapp_mails",
-			"description": "Mails app for Zextras",
-			"entryPoint": "app.bundle.js",
-			"handlers": "handler" +
-				"s.bundle.js"
-		}],
-		"themes": []
-	}]
+	useUserAccounts: jest.fn(() => []),
 };

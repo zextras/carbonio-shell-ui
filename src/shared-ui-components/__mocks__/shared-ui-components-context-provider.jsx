@@ -14,9 +14,7 @@ import SharedUiComponentsContext from '../shared-ui-components-context';
 
 const SharedUiComponentsContextProvider = jest.fn().mockImplementation(({ children }) => (
 	<SharedUiComponentsContext.Provider
-		value={{
-			scopes: {}
-		}}
+		value={{}}
 	>
 		{ children }
 	</SharedUiComponentsContext.Provider>

@@ -388,7 +388,7 @@ pipeline {
 						beforeAgent true
 						not {
 							allOf {
-								expression { BRANCH_NAME ==~ /(release|beta)/ }
+								expression { BRANCH_NAME ==~ /(devel)/ }
 								environment name: 'COMMIT_PARENTS_COUNT', value: '2'
 							}
 						}
@@ -437,7 +437,7 @@ pipeline {
 						beforeAgent true
 						not {
 							allOf {
-								expression { BRANCH_NAME ==~ /(release|beta)/ }
+								expression { BRANCH_NAME ==~ /(devel)/ }
 								environment name: 'COMMIT_PARENTS_COUNT', value: '2'
 							}
 						}

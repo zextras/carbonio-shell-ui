@@ -276,6 +276,108 @@ pipeline {
 			}
 		}
 
+		stage('Build DEB/RPM packages') {
+			parallel {
+				stage('Ubuntu') {
+					agent {
+						node {
+							label 'base-agent-v1'
+						}
+					}
+					when {
+						beforeAgent true
+						not {
+							allOf {
+								expression { BRANCH_NAME ==~ /(devel)/ }
+								environment name: 'COMMIT_PARENTS_COUNT', value: '2'
+							}
+						}
+					}
+					steps {
+						unstash 'zimlet_package'
+						script {
+							env.CONTAINER1_ID = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} ubuntu:18.04').trim()
+						}
+						sh "docker cp ${WORKSPACE} ${env.CONTAINER1_ID}:/u"
+						sh "docker exec -t ${env.CONTAINER1_ID} bash -c \"cd /u; ./build-pkgs.sh shell\""
+						sh "docker cp ${env.CONTAINER1_ID}:/u/artifacts/. ${WORKSPACE}"
+						script {
+							def server = Artifactory.server 'zextras-artifactory'
+							def buildInfo = Artifactory.newBuildInfo()
+
+							def uploadSpec = """{
+								"files": [
+									{
+										"pattern": "*.deb",
+										"target": "debian-local/pool/",
+										"props": "deb.distribution=bionic;deb.component=main;deb.architecture=amd64"
+									}
+								]
+							}"""
+							server.upload spec: uploadSpec, buildInfo: buildInfo
+							server.publishBuildInfo buildInfo
+						}
+					}
+					post {
+						success {
+							archiveArtifacts artifacts: "*.deb", fingerprint: true
+						}
+						always {
+							sh "docker kill ${env.CONTAINER1_ID}"
+						}
+					}
+				}
+				stage('CentOS') {
+					agent {
+						node {
+							label 'base-agent-v1'
+						}
+					}
+					when {
+						beforeAgent true
+						not {
+							allOf {
+								expression { BRANCH_NAME ==~ /(devel)/ }
+								environment name: 'COMMIT_PARENTS_COUNT', value: '2'
+							}
+						}
+					}
+					steps {
+						unstash 'zimlet_package'
+						script {
+							env.CONTAINER2_ID = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} centos:7').trim()
+						}
+						sh "docker cp ${WORKSPACE} ${env.CONTAINER2_ID}:/r"
+						sh "docker exec -t ${env.CONTAINER2_ID} bash -c \"cd /r; ./build-pkgs.sh shell\""
+						sh "docker cp ${env.CONTAINER2_ID}:/r/artifacts/. ${WORKSPACE}"
+						script {
+							def server = Artifactory.server 'zextras-artifactory'
+							def buildInfo = Artifactory.newBuildInfo()
+
+							def uploadSpec = """{
+								"files": [
+									{
+										"pattern": "(*)-(*)-(*).rpm",
+										"target": "rpm-local/zextras/{1}/{1}-{2}-{3}.rpm",
+										"props": "rpm.metadata.arch=x86_64;rpm.metadata.vendor=Zextras"
+									}
+								]
+							}"""
+							server.upload spec: uploadSpec, buildInfo: buildInfo
+							server.publishBuildInfo buildInfo
+						}
+					}
+					post {
+						success {
+							archiveArtifacts artifacts: "*.rpm", fingerprint: true
+						}
+						always {
+							sh "docker kill ${env.CONTAINER2_ID}"
+						}
+					}
+				}
+			}
+		}
 //============================================ Deploy ==================================================================
 
 		stage('Deploy') {

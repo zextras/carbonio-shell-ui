@@ -46,15 +46,11 @@ import { RichTextEditor } from '@zextras/zapp-ui/dist/zapp-ui.rich-text-editor';
 // @ts-ignore
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
 import * as hooks from '../shell/hooks';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import SharedUiComponentsFactory from '../shared-ui-components/shared-ui-components-factory';
 import StoreFactory from '../store/store-factory';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppLink from './app-link';
 import { FC, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
-import validateSharedUiComponent from '../shared-ui-components/shared-ui-components-validator';
 import ShellNetworkService from '../network/shell-network-service';
 import {
 	Account,
@@ -327,9 +323,6 @@ function loadAppModule(
 							hooks,
 							network: {
 								soapFetch: shellNetworkService.getAppSoapFetch(appPkg)
-							},
-							ui: {
-								SharedUiComponentsFactory
 							}
 						},
 						'@zextras/zapp-ui': { ...ZappUI, RichTextEditor }

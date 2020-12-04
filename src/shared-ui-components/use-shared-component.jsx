@@ -5,7 +5,6 @@ import { SharedUIComponentsContext } from './shared-ui-components-context'
 
 export function useSharedComponent(id, version) {
 	const components = useContext(SharedUIComponentsContext);
-	console.log(components);
 	const Component = useMemo(() => {
 		const C = get(components, [id, 'versions', version]);
 		if (C) {

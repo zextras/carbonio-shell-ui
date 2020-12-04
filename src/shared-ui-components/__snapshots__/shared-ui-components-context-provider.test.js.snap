@@ -5,9 +5,3 @@ exports[`Shared UI Components Context Provider Merge all App Registered UI Compo
   Tester scopes: 
 </div>
 `;
-
-exports[`Shared UI Components Context Provider Merge all App Scopes 1`] = `
-<div>
-  Tester scopes: scope-1 scope-2 scope-3
-</div>
-`;

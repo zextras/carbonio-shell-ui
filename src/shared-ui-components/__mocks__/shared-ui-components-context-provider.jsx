@@ -10,14 +10,14 @@
  */
 
 import React from 'react';
-import SharedUiComponentsContext from '../shared-ui-components-context';
+import { SharedUIComponentsContext } from '../shared-ui-components-context';
 
-const SharedUiComponentsContextProvider = jest.fn().mockImplementation(({ children }) => (
-	<SharedUiComponentsContext.Provider
+const SharedUIComponentsContextProvider = jest.fn().mockImplementation(({ children }) => (
+	<SharedUIComponentsContext.Provider
 		value={{}}
 	>
 		{ children }
-	</SharedUiComponentsContext.Provider>
+	</SharedUIComponentsContext.Provider>
 ));
 
-export default SharedUiComponentsContextProvider;
+export default SharedUIComponentsContextProvider;

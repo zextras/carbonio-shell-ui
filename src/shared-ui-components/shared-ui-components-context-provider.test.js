@@ -8,16 +8,15 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import { testUtils } from '../jest-shell-mocks';
+jest.mock('../app/app-loader-context-provider');
 
 import React, { useContext } from 'react';
 import { BehaviorSubject } from 'rxjs';
 import AppLoaderContextProvider from '../app/app-loader-context-provider';
 import AppLoaderContext from '../app/app-loader-context';
-import SharedUiComponentsContextProvider from './shared-ui-components-context-provider';
+import SharedUIComponentsContextProvider from './shared-ui-components-context-provider';
 import { SharedUIComponentsContext } from './shared-ui-components-context';
-
-jest.mock('../app/app-loader-context-provider');
+import { testUtils } from '../jest-shell-mocks';
 
 describe('Shared UI Components Context Provider', () => {
 	test('Merge all App Registered UI Components', () => {
@@ -83,14 +82,14 @@ describe('Shared UI Components Context Provider', () => {
 
 		const { container } = testUtils.render(
 			<AppLoaderContextProvider>
-				<SharedUiComponentsContextProvider>
+				<SharedUIComponentsContextProvider>
 					<Tester />
-				</SharedUiComponentsContextProvider>
+				</SharedUIComponentsContextProvider>
 			</AppLoaderContextProvider>
 		);
 
 		expect(container).toMatchSnapshot();
-		expect(tester).toHaveBeenCalledTimes(2);
+		expect(tester).toHaveBeenCalledTimes(1);
 		expect(tester).toHaveBeenLastCalledWith({
 			'component-4': {
 				pkg: 'com_example_package_2',

@@ -8,7 +8,6 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-jest.mock('@zextras/zapp-ui');
 
 import React from 'react';
 import { BehaviorSubject } from 'rxjs';

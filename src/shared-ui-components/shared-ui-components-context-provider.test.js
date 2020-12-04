@@ -8,15 +8,16 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-jest.mock('../app/app-loader-context-provider');
+import { testUtils } from '../jest-shell-mocks';
 
 import React, { useContext } from 'react';
 import { BehaviorSubject } from 'rxjs';
-import { render } from '@testing-library/react';
 import AppLoaderContextProvider from '../app/app-loader-context-provider';
 import AppLoaderContext from '../app/app-loader-context';
 import SharedUiComponentsContextProvider from './shared-ui-components-context-provider';
-import SharedUiComponentsContext from './shared-ui-components-context';
+import { SharedUIComponentsContext } from './shared-ui-components-context';
+
+jest.mock('../app/app-loader-context-provider');
 
 describe('Shared UI Components Context Provider', () => {
 	test('Merge all App Registered UI Components', () => {
@@ -75,12 +76,12 @@ describe('Shared UI Components Context Provider', () => {
 		const tester = jest.fn();
 
 		function Tester() {
-			const ctxt = useContext(SharedUiComponentsContext);
+			const ctxt = useContext(SharedUIComponentsContext);
 			tester(ctxt);
 			return `Tester scopes: ${Object.keys(ctxt).reduce((p, c, i) => `${p}${i > 0 ? ' ' : ''}${c}`, [], '')}`;
 		}
 
-		const { container } = render(
+		const { container } = testUtils.render(
 			<AppLoaderContextProvider>
 				<SharedUiComponentsContextProvider>
 					<Tester />

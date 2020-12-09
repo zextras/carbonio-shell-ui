@@ -309,7 +309,7 @@ function loadAppModule(
 										): SharedUiComponentsDescriptor => ({
 											...acc,
 											[id]: {
-												pkg: appPkg.package,
+												pkg: appPkg,
 												versions: comp.versions
 											}
 										}),

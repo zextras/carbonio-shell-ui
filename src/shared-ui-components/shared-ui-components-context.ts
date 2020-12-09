@@ -10,11 +10,12 @@
  */
 
 import { createContext, FC } from 'react';
+import { AppPkgDescription } from '../../types';
 
 export type SharedUIComponentsMap = {
 	[id: string]: {
 		pkg: string;
-		versions: { [version: string]: FC }
+		versions: AppPkgDescription;
 	}
 };
 

@@ -107,7 +107,6 @@ type SharedLibrariesAppsMap = {
 		fiberChannel: FC;
 		fiberChannelSink: FCSink;
 		hooks: unknown;
-		ui: unknown;
 	};
 	'@zextras/zapp-ui': unknown;
 };

@@ -70,7 +70,6 @@ describe('useSharedComponent hook', () => {
 		function Tester() {
 			const ctxt = useContext(SharedUIComponentsContext);
 			const C = useSharedComponent('component-4', '1');
-			console.log(C);
 			tester(ctxt);
 			return <C/>;
 		}

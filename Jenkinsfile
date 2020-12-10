@@ -43,6 +43,7 @@ def executeNpmLogin() {
 }
 
 def createRelease(branchName) {
+    println("Inside createRelease")
     def isRelease = branch ==~ /(release)/
     sh(script: """#!/bin/bash
         git config user.email \"bot@zextras.com\"
@@ -266,34 +267,34 @@ pipeline {
 				}
 			}
             steps {
+                createRelease("$BRANCH_NAME")
+                archiveArtifacts(
+                    artifacts: "README.md",
+                    fingerprint: true
+                )
+                stash(
+                    includes: "README.md",
+                    name: 'readme'
+                )
+                createBuild(true)
+                archiveArtifacts(
+                    artifacts: "pkg/com_zextras_zapp_shell.zip",
+                    fingerprint: true
+                )
+                stash(
+                    includes: "pkg/com_zextras_zapp_shell.zip",
+                    name: 'zimlet_package'
+                )
+                createDocumentation("$BRANCH_NAME")
                 script {
-                    createRelease("$BRANCH_NAME")
-                    archiveArtifacts(
-                        artifacts: "README.md",
-                        fingerprint: true
-                    )
-                    stash(
-                        includes: "README.md",
-                        name: 'readme'
-                    )
-                    createBuild(true)
-                    archiveArtifacts(
-                        artifacts: "pkg/com_zextras_zapp_shell.zip",
-                        fingerprint: true
-                    )
-                    stash(
-                        includes: "pkg/com_zextras_zapp_shell.zip",
-                        name: 'zimlet_package'
-                    )
-                    createDocumentation("$BRANCH_NAME")
                     doc.rm(file: "iris/zapp-shell/$BRANCH_NAME")
                     doc.mkdir(folder: "iris/zapp-shell/$BRANCH_NAME")
                     doc.upload(
                         file: "docs/website/build/com_zextras_zapp_shell/**",
                         destination: "iris/zapp-shell/$BRANCH_NAME"
                     )
-                    publishOnNpm("$BRANCH_NAME")
                 }
+                publishOnNpm("$BRANCH_NAME")
             }
         }
 

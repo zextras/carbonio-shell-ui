@@ -114,7 +114,7 @@ def createRelease(branchName) {
             --request POST \
             --header 'Content-Type: application/json' \
             --data '{
-                \"title\": \"Bumped version to $nextVersion\",
+                \"title\": \"Bumped version to ${getCurrentVersion()}\",
                 \"source\": {
                     \"branch\": {
                         \"name\": \"version-bumper/v${getCurrentVersion()}\"

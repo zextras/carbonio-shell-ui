@@ -328,9 +328,6 @@ pipeline {
 							label 'base-agent-v1'
 						}
 					}
-					options {
-                        skipDefaultCheckout(true)
-                    }
 					steps {
 						unstash 'zimlet_package'
 						script {
@@ -371,9 +368,6 @@ pipeline {
 							label 'base-agent-v1'
 						}
 					}
-					options {
-                        skipDefaultCheckout(true)
-                    }
 					steps {
 						unstash 'zimlet_package'
 						script {

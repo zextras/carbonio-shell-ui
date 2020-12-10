@@ -94,7 +94,7 @@ def createRelease(branchName) {
                             \"name\": \"master\"
                         }
                     },
-                    \"reviewers\": $defaultReviewers
+                    \"reviewers\": $defaultReviewers,
                     \"close_source_branch\": true
                 }'
             """)
@@ -136,7 +136,7 @@ def createRelease(branchName) {
                         \"name\": \"devel\"
                     }
                 },
-                \"reviewers\": $defaultReviewers
+                \"reviewers\": $defaultReviewers,
                 \"close_source_branch\": true
             }'
         """)

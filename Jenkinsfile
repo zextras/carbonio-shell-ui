@@ -43,7 +43,8 @@ def executeNpmLogin() {
 }
 
 def createRelease(branchName) {
-    def isRelease = branch ==~ /(release)/
+    def isRelease = branchName ==~ /(release)/
+    println("Inside createRelease")
     sh(script: """#!/bin/bash
         git config user.email \"bot@zextras.com\"
         git config user.name \"Tarsier Bot\"
@@ -97,6 +98,12 @@ def createRelease(branchName) {
         }
     }
     sh(script: """#!/bin/bash
+        echo \"---\ntitle: Change Log\n---\"> docs/docs/CHANGELOG.md
+        cat CHANGELOG.md >> docs/docs/CHANGELOG.md
+        git add docs/docs/CHANGELOG.md
+        git commit --no-verify -m "Updated change log into documentation"
+    """)
+    sh(script: """#!/bin/bash
       git push --follow-tags origin HEAD:$branchName
       git push origin HEAD:refs/heads/version-bumper/v${getCurrentVersion()}
     """)
@@ -113,7 +120,7 @@ def createRelease(branchName) {
             --request POST \
             --header 'Content-Type: application/json' \
             --data '{
-                \"title\": \"Bumped version to $nextVersion\",
+                \"title\": \"Bumped version to ${getCurrentVersion()}\",
                 \"source\": {
                     \"branch\": {
                         \"name\": \"version-bumper/v${getCurrentVersion()}\"
@@ -142,7 +149,7 @@ def createBuild(sign) {
                 url: "git@bitbucket.org:zextras/artifact-deployer.git"
             )
             sh(script: """#!/bin/bash
-                ./sign-zextras-zip pkg/com_zextras_zapp_shell.zip
+                ./sign-zextras-zip ../pkg/com_zextras_zapp_shell.zip
             """)
         }
     }
@@ -157,7 +164,7 @@ def createDocumentation(branchName) {
 }
 
 def publishOnNpm(branchName) {
-    def isRelease = branch ==~ /(release)/
+    def isRelease = branchName ==~ /(release)/
     executeNpmLogin()
     nodeCmd "npm install"
     if (isRelease) {

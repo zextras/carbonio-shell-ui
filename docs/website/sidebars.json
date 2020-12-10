@@ -22,7 +22,8 @@
       "architecture/classes/database"
     ],
     "Main": [
-      "main"
+      "main",
+      "CHANGELOG"
     ],
     "Notes": [
       "architecture/soap",

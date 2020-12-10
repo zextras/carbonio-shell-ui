@@ -43,9 +43,7 @@ def executeNpmLogin() {
 }
 
 def createRelease(branchName) {
-    script {
-        def isRelease = branch ==~ /(release)/
-    }
+    def isRelease = branchName ==~ /(release)/
     println("Inside createRelease")
     sh(script: """#!/bin/bash
         git config user.email \"bot@zextras.com\"
@@ -160,7 +158,7 @@ def createDocumentation(branchName) {
 }
 
 def publishOnNpm(branchName) {
-    def isRelease = branch ==~ /(release)/
+    def isRelease = branchName ==~ /(release)/
     executeNpmLogin()
     nodeCmd "npm install"
     if (isRelease) {

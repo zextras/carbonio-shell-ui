@@ -98,6 +98,10 @@ def createRelease(branchName) {
         }
     }
     sh(script: """#!/bin/bash
+        echo \"---\\ntitle: Change Log\\n---\"> docs/docs/CHANGELOG.md
+        cat CHANGELOG.md >> docs/docs/CHANGELOG.md
+    """)
+    sh(script: """#!/bin/bash
       git push --follow-tags origin HEAD:$branchName
       git push origin HEAD:refs/heads/version-bumper/v${getCurrentVersion()}
     """)
@@ -143,7 +147,7 @@ def createBuild(sign) {
                 url: "git@bitbucket.org:zextras/artifact-deployer.git"
             )
             sh(script: """#!/bin/bash
-                ./sign-zextras-zip pkg/com_zextras_zapp_shell.zip
+                ./sign-zextras-zip ../pkg/com_zextras_zapp_shell.zip
             """)
         }
     }

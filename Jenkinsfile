@@ -297,6 +297,16 @@ pipeline {
                     includes: "pkg/com_zextras_zapp_shell.zip",
                     name: 'zimlet_package'
                 )
+                // BEGIN: Stashes for deb and rpm generation
+                stash(
+                    includes: "build-pkgs.sh,debian/**",
+                    name: "deb_workspace"
+                )
+                stash(
+                    includes: "build-pkgs.sh,*.spec",
+                    name: "rpm_workspace"
+                )
+                // END: Stashes for deb and rpm generation
                 createDocumentation("$BRANCH_NAME")
                 script {
                     doc.rm(file: "iris/zapp-shell/$BRANCH_NAME")
@@ -322,14 +332,18 @@ pipeline {
 				}
             }
 			parallel {
-				stage('Ubuntu') {
+				stage("Ubuntu") {
 					agent {
 						node {
-							label 'base-agent-v1'
+							label "base-agent-v1"
 						}
 					}
+					options {
+                        skipDefaultCheckout(true)
+                    }
 					steps {
-						unstash 'zimlet_package'
+						unstash "zimlet_package"
+						unstash "deb_workspace"
 						script {
 							env.CONTAINER1_ID = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} ubuntu:18.04').trim()
 						}
@@ -362,14 +376,18 @@ pipeline {
 						}
 					}
 				}
-				stage('CentOS') {
+				stage("CentOS") {
 					agent {
 						node {
-							label 'base-agent-v1'
+							label "base-agent-v1"
 						}
 					}
+					options {
+                        skipDefaultCheckout(true)
+                    }
 					steps {
-						unstash 'zimlet_package'
+						unstash "zimlet_package"
+						unstash "rpm_workspace"
 						script {
 							env.CONTAINER2_ID = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} centos:7').trim()
 						}

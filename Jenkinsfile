@@ -43,8 +43,10 @@ def executeNpmLogin() {
 }
 
 def createRelease(branchName) {
+    script {
+        def isRelease = branch ==~ /(release)/
+    }
     println("Inside createRelease")
-    def isRelease = branch ==~ /(release)/
     sh(script: """#!/bin/bash
         git config user.email \"bot@zextras.com\"
         git config user.name \"Tarsier Bot\"

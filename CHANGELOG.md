@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.102-beta.8](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.7...v0.0.102-beta.8) (2020-12-10)
+
 ### [0.0.102-beta.7](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.6...v0.0.102-beta.7) (2020-12-10)
 
 ### [0.0.102-beta.6](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.5...v0.0.102-beta.6) (2020-12-10)

@@ -15,6 +15,7 @@ import fetch from 'node-fetch';
 import { MemoryRouter } from 'react-router-dom';
 import { extendTheme, ThemeProvider } from '@zextras/zapp-ui';
 import AppContextWrapper from './mocks/app-context-wrapper';
+import { usePushHistoryCallback, useReplaceHistoryCallback } from './shell/hooks';
 
 const confPath = path.resolve(
 	process.cwd(),
@@ -121,10 +122,7 @@ export const testUtils = {
 };
 
 export const hooks = {
-	useReplaceHistoryCallback: jest.fn(() => {
-		throw new Error('Mock \'useReplaceHistoryCallback\' is not implemented');
-	}),
-	usePushHistoryCallback: jest.fn(() => {
-		throw new Error('Mock \'usePushHistoryCallback\' is not implemented');
-	})
-}
+	useReplaceHistoryCallback: jest.fn(useReplaceHistoryCallback),
+	usePushHistoryCallback: jest.fn(usePushHistoryCallback),
+	useUserAccounts: jest.fn(() => []),
+};

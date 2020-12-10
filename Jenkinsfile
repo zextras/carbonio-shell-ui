@@ -100,6 +100,8 @@ def createRelease(branchName) {
     sh(script: """#!/bin/bash
         echo \"---\ntitle: Change Log\n---\"> docs/docs/CHANGELOG.md
         cat CHANGELOG.md >> docs/docs/CHANGELOG.md
+        git add docs/docs/CHANGELOG.md
+        git commit --no-verify -m "Updated change log into documentation"
     """)
     sh(script: """#!/bin/bash
       git push --follow-tags origin HEAD:$branchName

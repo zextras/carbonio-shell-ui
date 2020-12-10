@@ -20,7 +20,7 @@
     "build:clean": "rm -rf lib && rm -rf dist && rm -rf pkg",
     "build": "webpack --config webpack.config.js && rollup -c rollup.config.js",
     "build:types": "tsc --emitDeclarationOnly && tsc src/extension/shimmed/*.ts --outDir lib/",
-    "build:zimlet": "npm run build:clean && npm run build && mkdir -p pkg && cd dist/public && zip -r ../../pkg/com_zextras_zapp_shell.zip .",
+    "build:zimlet": "npm run build:clean && npm run build && cp CHANGELOG.md dist/public/ && mkdir -p pkg && cd dist/public && zip -r ../../pkg/com_zextras_zapp_shell.zip .",
     "watch:docs": "cd docs/website/ && npm start || npm install && npm start",
     "deploy": "ZX_SHELL_FLAVOR=NPM npm run prepublishOnly && rm -rf $PKG_PATH/node_modules/@zextras/zapp-shell/dist/ && cp -r dist/ $PKG_PATH/node_modules/@zextras/zapp-shell/dist/ && rm -rf $PKG_PATH/node_modules/@zextras/zapp-shell/types/ && cp -r types/ $PKG_PATH/node_modules/@zextras/zapp-shell/types && cp package.json $PKG_PATH/node_modules/@zextras/zapp-shell/ && cd $PKG_PATH/node_modules/@zextras/zapp-shell/ && rm -rf node_modules && npm i --only=prod"
   },

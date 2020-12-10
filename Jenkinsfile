@@ -73,6 +73,8 @@ def createRelease(branchName) {
                 curl https://api.bitbucket.org/2.0/repositories/$REPOSITORY_NAME/default-reviewers \
                 -u '$PR_ACCESS' \
                 --request GET
+                |
+                jq '.values | map_values({ uuid: .uuid })'
             """, returnStdout: true).trim()
             println(defaultReviewers)
             sh(script: """#!/bin/bash
@@ -92,6 +94,7 @@ def createRelease(branchName) {
                             \"name\": \"master\"
                         }
                     },
+                    \"reviewers\": $defaultReviewers
                     \"close_source_branch\": true
                 }'
             """)
@@ -112,6 +115,8 @@ def createRelease(branchName) {
             curl https://api.bitbucket.org/2.0/repositories/$REPOSITORY_NAME/default-reviewers \
             -u '$PR_ACCESS' \
             --request GET
+            |
+            jq '.values | map_values({ uuid: .uuid })'
         """, returnStdout: true).trim()
         println(defaultReviewers)
         sh(script: """
@@ -131,6 +136,7 @@ def createRelease(branchName) {
                         \"name\": \"devel\"
                     }
                 },
+                \"reviewers\": $defaultReviewers
                 \"close_source_branch\": true
             }'
         """)

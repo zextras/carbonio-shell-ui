@@ -11,7 +11,7 @@ set_pkgs_author() {
 retrieve_previous_tag() {
   local previous_tag
   if [ ! -f /usr/bin/git ]; then
-    install_deps
+    install_deps bump
   fi
   previous_tag="$(git describe --abbrev=0 "$(git describe --abbrev=0 --tags)^")"
   printf "%s" "${previous_tag}"
@@ -42,28 +42,31 @@ bump_rpm() {
   local branch="${3}"
   local name="${4}"
 
-  local argline="--packaging-branch $branch \
-    --git-author \
-    --spec-file=zextras-zapp-$name.spec \
-    --spawn-editor=0"
+  local argline="--packaging-branch ${branch} \
+		--git-author \
+		--spec-file=zextras-zapp-${name}.spec \
+		--spawn-editor=0"
 
-  local valid_rel=${current_version%*.beta*}b${current_version##*.}
-  
+  local valid_rel="${current_version%*.beta*}b${current_version##*.}"
+
   gbp rpm-ch ${argline} \
     --since ${previous_version} \
     --changelog-revision ${valid_rel}
 
-  sed -i -e "s/Version:\([ ]*\).*/Version:\1${valid_rel}/g" zextras-zapp-$name.spec
+  sed -i -e "s/Version:\([ ]*\).*/Version:\1${valid_rel}/g" "zextras-zapp-${name}.spec"
 }
 
 install_deps() {
+  local action_flag="${1}"
+	local packages
+
   if [ -f /etc/redhat-release ]; then
 
     ## Set the yum proxy
     sed -i"" '2iproxy=http://aptproxy.local.zextras.com:3142' \
-    /etc/yum.conf
+      /etc/yum.conf
 
-    yum install -y rpm-build
+    yum install -q -y rpm-build
     mkdir -p /root/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 
   else
@@ -71,18 +74,23 @@ install_deps() {
     #Set the apt HTTP proxy
     echo 'Acquire::HTTP::Proxy "http://aptproxy.local.studiostorti.com:3142";' >/etc/apt/apt.conf.d/01proxy
     echo 'Acquire::HTTPS::Proxy "false";' >>/etc/apt/apt.conf.d/01proxy
-    ln -snf /usr/share/zoneinfo/"$TZ" /etc/localtime && echo "$TZ" > /etc/timezone
+    ln -snf /usr/share/zoneinfo/"${TZ}" /etc/localtime && echo "${TZ}" >/etc/timezone
 
-    apt-get update
-    apt-get install -y --no-install-recommends \
-      build-essential \
+    if [ "${action_flag}" == "bump" ]; then
+		  packages="git-buildpackage \
+			git-buildpackage-rpm \
+			libdistro-info-perl"
+		else
+			packages="build-essential \
       cdbs \
       devscripts \
-      fakeroot \
-      git-buildpackage \
-      git-buildpackage-rpm \
-      libdistro-info-perl
+      fakeroot"
+    fi
 
+    apt-get update
+    apt-get install -q -y \
+      --no-install-recommends \
+      "${packages}"
   fi
 }
 
@@ -102,13 +110,13 @@ prepare() {
 }
 
 build_rpm() {
-  mv "pkg/com_zextras_zapp_$name.zip" /root/rpmbuild/SOURCES/
-  rpmbuild -ba "zextras-zapp-$name.spec" || exit 1
+  mv "pkg/com_zextras_zapp_${name}.zip" /root/rpmbuild/SOURCES/
+  rpmbuild -ba "zextras-zapp-${name}.spec" || exit 1
   mv /root/rpmbuild/RPMS/*/*.rpm artifacts
 }
 
 build_deb() {
-  mv "pkg/com_zextras_zapp_$name.zip" .
+  mv "pkg/com_zextras_zapp_${name}.zip" .
   dpkg-buildpackage -b || exit 1
   mv ../*.deb artifacts
 }
@@ -116,7 +124,7 @@ build_deb() {
 build() {
   prepare
   set_pkgs_author
-  install_deps
+  install_deps build
   if [ -f /etc/redhat-release ]; then
     build_rpm
   else

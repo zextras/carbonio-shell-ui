@@ -1,13 +1,23 @@
 #!/bin/bash
 
 if [ $# -ne 1 ]; then
-    echo "$0: usage: build-pkgs.sh <zapp_component>"
+    echo "$0: usage: build-pkgs.sh <zapp_component> <version>"
     exit 1
 fi
 
 name=$1
+version=$2
 
 mkdir artifacts
+
+# Download changelog utility
+curl -O -L -C -  https://github.com/M0Rf30/changelog/releases/download/0.1.0/changelog
+chmod +x changelog
+
+# Init changelog skeleton
+./changelog init --author "Zextras SRL" --email "packages@zextras.com" --since "$version"
+./changelog prepare --author "Zextras SRL" --email "packages@zextras.com"
+./changelog debian --vars='{"name":"zextras-zapp-shell"}'
 
 if [ -f /etc/redhat-release ]; then
   ## Set the yum proxy

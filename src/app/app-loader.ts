@@ -215,7 +215,20 @@ function loadAppModule(
 	shellNetworkService: ShellNetworkService
 ): Promise<ComponentClass> {
 	return loadAppHandlers(appPkg, fiberChannelFactory)
-		.then(() => new Promise((resolve, reject) => {
+		.then(() => new Promise((_resolve, _reject) => {
+			let resolved = false;
+			const resolve: (...args: any[]) => void = (...args) => {
+				if (!resolved) {
+					resolved = true;
+					_resolve(...args);
+				}
+			};
+			const reject: (e: Error) => void = (e) => {
+				if (!resolved) {
+					resolved = true;
+					_reject(e);
+				}
+			};
 			try {
 				const path = `${appPkg.resourceUrl}/${appPkg.entryPoint}`;
 				const iframe: HTMLIFrameElement = document.createElement('iframe');
@@ -234,6 +247,7 @@ function loadAppModule(
 						error
 					): void => {
 						fiberChannelFactory.getAppFiberChannelSink(appPkg)({ event: 'report-exception', data: { exception: error } });
+						reject(error ?? new Error(typeof msg === 'string' ? msg : 'Error while loading App.'));
 					};
 					// eslint-disable-next-line max-len
 					// const revertables = _revertableActions[appPkg.package] = new RevertableActionCollection(
@@ -342,7 +356,7 @@ function loadAppModule(
 					}
 					script.type = 'text/javascript';
 					script.setAttribute('src', path);
-					script.addEventListener('error', reject);
+					script.addEventListener('error', (ev) => reject(ev.error));
 					iframe.contentDocument.body.appendChild(script);
 					_iframes[`${appPkg.package}-loader-${_iframeId += 1}`] = iframe;
 				}

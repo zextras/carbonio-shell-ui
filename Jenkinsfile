@@ -43,7 +43,8 @@ def executeNpmLogin() {
 }
 
 def createRelease(branchName) {
-    def isRelease = branch ==~ /(release)/
+    def isRelease = branchName ==~ /(release)/
+    println("Inside createRelease")
     sh(script: """#!/bin/bash
         git config user.email \"bot@zextras.com\"
         git config user.name \"Tarsier Bot\"
@@ -71,7 +72,9 @@ def createRelease(branchName) {
             def defaultReviewers = sh(script: """
                 curl https://api.bitbucket.org/2.0/repositories/$REPOSITORY_NAME/default-reviewers \
                 -u '$PR_ACCESS' \
-                --request GET
+                --request GET \
+                | \
+                jq '.values | map_values({ uuid: .uuid })'
             """, returnStdout: true).trim()
             println(defaultReviewers)
             sh(script: """#!/bin/bash
@@ -91,11 +94,18 @@ def createRelease(branchName) {
                             \"name\": \"master\"
                         }
                     },
+                    \"reviewers\": $defaultReviewers,
                     \"close_source_branch\": true
                 }'
             """)
         }
     }
+    sh(script: """#!/bin/bash
+        echo \"---\ntitle: Change Log\n---\"> docs/docs/CHANGELOG.md
+        cat CHANGELOG.md >> docs/docs/CHANGELOG.md
+        git add docs/docs/CHANGELOG.md
+        git commit --no-verify -m "Updated change log into documentation"
+    """)
     sh(script: """#!/bin/bash
       git push --follow-tags origin HEAD:$branchName
       git push origin HEAD:refs/heads/version-bumper/v${getCurrentVersion()}
@@ -104,7 +114,9 @@ def createRelease(branchName) {
         def defaultReviewers = sh(script: """
             curl https://api.bitbucket.org/2.0/repositories/$REPOSITORY_NAME/default-reviewers \
             -u '$PR_ACCESS' \
-            --request GET
+            --request GET \
+            | \
+            jq '.values | map_values({ uuid: .uuid })'
         """, returnStdout: true).trim()
         println(defaultReviewers)
         sh(script: """
@@ -113,7 +125,7 @@ def createRelease(branchName) {
             --request POST \
             --header 'Content-Type: application/json' \
             --data '{
-                \"title\": \"Bumped version to $nextVersion\",
+                \"title\": \"Bumped version to ${getCurrentVersion()}\",
                 \"source\": {
                     \"branch\": {
                         \"name\": \"version-bumper/v${getCurrentVersion()}\"
@@ -124,6 +136,7 @@ def createRelease(branchName) {
                         \"name\": \"devel\"
                     }
                 },
+                \"reviewers\": $defaultReviewers,
                 \"close_source_branch\": true
             }'
         """)
@@ -142,7 +155,7 @@ def createBuild(sign) {
                 url: "git@bitbucket.org:zextras/artifact-deployer.git"
             )
             sh(script: """#!/bin/bash
-                ./sign-zextras-zip pkg/com_zextras_zapp_shell.zip
+                ./sign-zextras-zip ../pkg/com_zextras_zapp_shell.zip
             """)
         }
     }
@@ -157,7 +170,7 @@ def createDocumentation(branchName) {
 }
 
 def publishOnNpm(branchName) {
-    def isRelease = branch ==~ /(release)/
+    def isRelease = branchName ==~ /(release)/
     executeNpmLogin()
     nodeCmd "npm install"
     if (isRelease) {
@@ -284,6 +297,16 @@ pipeline {
                     includes: "pkg/com_zextras_zapp_shell.zip",
                     name: 'zimlet_package'
                 )
+                // BEGIN: Stashes for deb and rpm generation
+                stash(
+                    includes: "build-pkgs.sh,debian/**",
+                    name: "deb_workspace"
+                )
+                stash(
+                    includes: "build-pkgs.sh,*.spec",
+                    name: "rpm_workspace"
+                )
+                // END: Stashes for deb and rpm generation
                 createDocumentation("$BRANCH_NAME")
                 script {
                     doc.rm(file: "iris/zapp-shell/$BRANCH_NAME")
@@ -309,22 +332,23 @@ pipeline {
 				}
             }
 			parallel {
-				stage('Ubuntu') {
+				stage("Ubuntu") {
 					agent {
 						node {
-							label 'base-agent-v1'
+							label "base-agent-v1"
 						}
 					}
 					options {
                         skipDefaultCheckout(true)
                     }
 					steps {
-						unstash 'zimlet_package'
+						unstash "zimlet_package"
+						unstash "deb_workspace"
 						script {
 							env.CONTAINER1_ID = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} ubuntu:18.04').trim()
 						}
 						sh "docker cp ${WORKSPACE} ${env.CONTAINER1_ID}:/u"
-						sh "docker exec -t ${env.CONTAINER1_ID} bash -c \"cd /u; ./build-pkgs.sh shell\""
+						sh "docker exec -t ${env.CONTAINER1_ID} bash -c \"cd /u; ./build-pkgs.sh shell ${getCurrentVersion()}\""
 						sh "docker cp ${env.CONTAINER1_ID}:/u/artifacts/. ${WORKSPACE}"
 						script {
 							def server = Artifactory.server 'zextras-artifactory'
@@ -352,22 +376,23 @@ pipeline {
 						}
 					}
 				}
-				stage('CentOS') {
+				stage("CentOS") {
 					agent {
 						node {
-							label 'base-agent-v1'
+							label "base-agent-v1"
 						}
 					}
 					options {
                         skipDefaultCheckout(true)
                     }
 					steps {
-						unstash 'zimlet_package'
+						unstash "zimlet_package"
+						unstash "rpm_workspace"
 						script {
 							env.CONTAINER2_ID = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} centos:7').trim()
 						}
 						sh "docker cp ${WORKSPACE} ${env.CONTAINER2_ID}:/r"
-						sh "docker exec -t ${env.CONTAINER2_ID} bash -c \"cd /r; ./build-pkgs.sh shell\""
+						sh "docker exec -t ${env.CONTAINER2_ID} bash -c \"cd /r; ./build-pkgs.sh shell ${getCurrentVersion()}\""
 						sh "docker cp ${env.CONTAINER2_ID}:/r/artifacts/. ${WORKSPACE}"
 						script {
 							def server = Artifactory.server 'zextras-artifactory'

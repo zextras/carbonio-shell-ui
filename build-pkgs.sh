@@ -58,7 +58,7 @@ bump_rpm() {
 
 install_deps() {
   local action_flag="${1}"
-	local packages
+  local packages
 
   if [ -f /etc/redhat-release ]; then
 
@@ -66,7 +66,7 @@ install_deps() {
     sed -i"" '2iproxy=http://aptproxy.local.zextras.com:3142' \
       /etc/yum.conf
 
-    yum install -q -y rpm-build
+    yum install -q -y rpm-build || exit 1
     mkdir -p /root/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 
   else
@@ -77,11 +77,11 @@ install_deps() {
     ln -snf /usr/share/zoneinfo/"${TZ}" /etc/localtime && echo "${TZ}" >/etc/timezone
 
     if [ "${action_flag}" == "bump" ]; then
-		  packages="git-buildpackage \
+      packages="git-buildpackage \
 			git-buildpackage-rpm \
 			libdistro-info-perl"
-		else
-			packages="build-essential \
+    else
+      packages="build-essential \
       cdbs \
       devscripts \
       fakeroot"
@@ -90,7 +90,7 @@ install_deps() {
     apt-get update
     apt-get install -q -y \
       --no-install-recommends \
-      "${packages}"
+      ${packages} || exit 1
   fi
 }
 

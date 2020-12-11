@@ -21,7 +21,7 @@ bump_deb() {
   local previous_tag
   previous_tag="$(retrieve_previous_tag)"
 
-  local argline="--debian-branch $branch --git-author"
+  local argline="--debian-branch ${branch} --git-author"
 
   if [[ "${branch}" =~ "beta" ]]; then
     argline+=" -D unstable"
@@ -48,7 +48,7 @@ bump_rpm() {
 		--spec-file=zextras-zapp-${name}.spec \
 		--spawn-editor=0"
 
-  local valid_rel="${current_tag%*.beta*}b${current_tag##*.}"
+  local valid_tag="${current_tag%*.beta*}b${current_tag##*.}"
 
   gbp rpm-ch ${argline} \
     --since ${previous_tag} \
@@ -96,12 +96,11 @@ install_deps() {
 }
 
 bump() {
-  local previous_version="${1}"
-  local current_version="${2}"
-  local branch="${3}"
-  local name="${4}"
-  bump_deb "${current_version#v}" "${branch}"
-  bump_rpm "${current_version#v}" "${branch}" "${name}"
+  local current_tag="${1}"
+  local branch="${2}"
+  local name="${3}"
+  bump_deb "${current_tag#v}" "${branch}"
+  bump_rpm "${current_tag#v}" "${branch}" "${name}"
 }
 
 prepare() {
@@ -142,11 +141,11 @@ process_args() {
 
   case "$1" in
     bump)
-      local current_version="${2}"
+      local current_tag="${2}"
       local branch=${3}
       local name=${4}
       install_deps "${1}"
-      bump "${current_version}" "${branch}" "${name}"
+      bump "${current_tag}" "${branch}" "${name}"
       ;;
     build)
       install_deps "${1}"

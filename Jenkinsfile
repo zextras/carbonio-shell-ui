@@ -321,45 +321,25 @@ pipeline {
 		}
 
 		stage('Version Bump for DEB/RPM') {
-			when {
-				beforeAgent(true)
-				allOf {
-					expression { BRANCH_NAME ==~ /(release|beta)/ }
-					environment(
-						name: "COMMIT_PARENTS_COUNT",
-						value: "2"
-					)
-				}
-			}
 			steps {
 				unstash "deb_workspace"
 				unstash "rpm_workspace"
 				script {
-					env.CONTAINER1_ID = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} ubuntu:18.04').trim()
+					currentVersion = getCurrentVersion()
+					containerId = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} ubuntu:18.04').trim()
 				}
-				sh "docker cp ${WORKSPACE} ${env.CONTAINER1_ID}:/u"
-				sh "docker exec -t ${env.CONTAINER1_ID} bash -c \"cd /u; ./build-pkgs.sh bump ${getCurrentVersion()} ${BRANCH} shell\""
+				sh "docker cp ${WORKSPACE} ${containerId}:/u"
+				sh "docker exec -t ${containerId} bash -c \"cd /u; ./build-pkgs.sh bump v${currentVersion} ${BRANCH_NAME} shell\""
 				stash "deb_workspace"
 				stash "rpm_workspace"
 			}
 			post {
 				always {
-					sh "docker kill ${env.CONTAINER1_ID}"
+					sh "docker kill ${containerId}"
 				}
 			}
 		}
-
 		stage('Build DEB/RPM packages') {
-			when {
-				beforeAgent(true)
-				allOf {
-					expression { BRANCH_NAME ==~ /(release|beta)/ }
-					environment(
-						name: "COMMIT_PARENTS_COUNT",
-						value: "2"
-					)
-				}
-			}
 			parallel {
 				stage("Ubuntu") {
 					agent {
@@ -374,15 +354,14 @@ pipeline {
 						unstash "zimlet_package"
 						unstash "deb_workspace"
 						script {
-							env.CONTAINER1_ID = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} ubuntu:18.04').trim()
+							containerId = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} ubuntu:18.04').trim()
 						}
-						sh "docker cp ${WORKSPACE} ${env.CONTAINER1_ID}:/u"
-						sh "docker exec -t ${env.CONTAINER1_ID} bash -c \"cd /u; ./build-pkgs.sh shell ${getCurrentVersion()}\""
-						sh "docker cp ${env.CONTAINER1_ID}:/u/artifacts/. ${WORKSPACE}"
+						sh "docker cp ${WORKSPACE} ${containerId}:/u"
+						sh "docker exec -t ${containerId} bash -c \"cd /u; ./build-pkgs.sh shell ${getCurrentVersion()}\""
+						sh "docker cp ${containerId}:/u/artifacts/. ${WORKSPACE}"
 						script {
 							def server = Artifactory.server 'zextras-artifactory'
 							def buildInfo = Artifactory.newBuildInfo()
-
 							def uploadSpec = """{
 								"files": [
 									{
@@ -401,7 +380,7 @@ pipeline {
 							archiveArtifacts artifacts: "*.deb", fingerprint: true
 						}
 						always {
-							sh "docker kill ${env.CONTAINER1_ID}"
+							sh "docker kill ${containerId}"
 						}
 					}
 				}
@@ -418,15 +397,14 @@ pipeline {
 						unstash "zimlet_package"
 						unstash "rpm_workspace"
 						script {
-							env.CONTAINER2_ID = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} centos:7').trim()
+							containerId = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} centos:7').trim()
 						}
-						sh "docker cp ${WORKSPACE} ${env.CONTAINER2_ID}:/r"
-						sh "docker exec -t ${env.CONTAINER2_ID} bash -c \"cd /r; ./build-pkgs.sh shell ${getCurrentVersion()}\""
-						sh "docker cp ${env.CONTAINER2_ID}:/r/artifacts/. ${WORKSPACE}"
+						sh "docker cp ${WORKSPACE} ${containerId}:/r"
+						sh "docker exec -t ${containerId} bash -c \"cd /r; ./build-pkgs.sh shell ${getCurrentVersion()}\""
+						sh "docker cp ${containerId}:/r/artifacts/. ${WORKSPACE}"
 						script {
 							def server = Artifactory.server 'zextras-artifactory'
 							def buildInfo = Artifactory.newBuildInfo()
-
 							def uploadSpec = """{
 								"files": [
 									{
@@ -445,7 +423,7 @@ pipeline {
 							archiveArtifacts artifacts: "*.rpm", fingerprint: true
 						}
 						always {
-							sh "docker kill ${env.CONTAINER2_ID}"
+							sh "docker kill ${containerId}"
 						}
 					}
 				}

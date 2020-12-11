@@ -1,4 +1,7 @@
 #!/bin/bash
+set -ex
+export DEBIAN_FRONTEND=noninteractive
+export TZ=Europe/Rome
 
 set_pkgs_author() {
   git config user.name "Zextras SRL"
@@ -57,7 +60,7 @@ install_deps() {
   if [ -f /etc/redhat-release ]; then
 
     ## Set the yum proxy
-    #sed -i"" '2iproxy=http://aptproxy.local.zextras.com:3142' \
+    sed -i"" '2iproxy=http://aptproxy.local.zextras.com:3142' \
     /etc/yum.conf
 
     yum install -y rpm-build
@@ -66,8 +69,9 @@ install_deps() {
   else
 
     #Set the apt HTTP proxy
-    # echo 'Acquire::HTTP::Proxy "http://aptproxy.local.studiostorti.com:3142";' >/etc/apt/apt.conf.d/01proxy
-    # echo 'Acquire::HTTPS::Proxy "false";' >>/etc/apt/apt.conf.d/01proxy
+    echo 'Acquire::HTTP::Proxy "http://aptproxy.local.studiostorti.com:3142";' >/etc/apt/apt.conf.d/01proxy
+    echo 'Acquire::HTTPS::Proxy "false";' >>/etc/apt/apt.conf.d/01proxy
+    ln -snf /usr/share/zoneinfo/"$TZ" /etc/localtime && echo "$TZ" > /etc/timezone
 
     apt-get update
     apt-get install -y --no-install-recommends \

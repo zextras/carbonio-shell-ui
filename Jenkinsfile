@@ -299,12 +299,8 @@ pipeline {
 				)
 				// BEGIN: Stashes for deb and rpm generation
 				stash(
-					includes: "build-pkgs.sh,debian/**",
-					name: "deb_workspace"
-				)
-				stash(
-					includes: "build-pkgs.sh,*.spec",
-					name: "rpm_workspace"
+					includes: "build-pkgs.sh,*.spec,debian/**,.git,package.json",
+					name: "debrpm_workspace"
 				)
 				// END: Stashes for deb and rpm generation
 				createDocumentation("$BRANCH_NAME")
@@ -322,16 +318,14 @@ pipeline {
 
 		stage('Version Bump for DEB/RPM') {
 			steps {
-				unstash "deb_workspace"
-				unstash "rpm_workspace"
+				unstash "debrpm_workspace"
 				script {
 					currentVersion = getCurrentVersion()
 					containerId = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} ubuntu:18.04').trim()
 				}
 				sh "docker cp ${WORKSPACE} ${containerId}:/u"
 				sh "docker exec -t ${containerId} bash -c \"cd /u; ./build-pkgs.sh bump v${currentVersion} ${BRANCH_NAME} shell\""
-				stash "deb_workspace"
-				stash "rpm_workspace"
+				stash "debrpm_workspace"
 			}
 			post {
 				always {
@@ -352,7 +346,7 @@ pipeline {
 					}
 					steps {
 						unstash "zimlet_package"
-						unstash "deb_workspace"
+						unstash "debrpm_workspace"
 						script {
 							containerId = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} ubuntu:18.04').trim()
 						}
@@ -395,7 +389,7 @@ pipeline {
 					}
 					steps {
 						unstash "zimlet_package"
-						unstash "rpm_workspace"
+						unstash "debrpm_workspace"
 						script {
 							containerId = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} centos:7').trim()
 						}

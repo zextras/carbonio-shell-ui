@@ -70,7 +70,7 @@ def createRelease(branchName) {
         """)
         withCredentials([usernameColonPassword(credentialsId: 'tarsier-bot-pr-token', variable: 'PR_ACCESS')]) {
             def defaultReviewers = sh(script: """
-                curl https://api.bitbucket.org/2.0/repositories/$REPOSITORY_NAME/default-reviewers \
+                curl https://api.bitbucket.org/2.0/repositories/$TRANSLATIONS_REPOSITORY_NAME/default-reviewers \
                 -u '$PR_ACCESS' \
                 --request GET \
                 | \

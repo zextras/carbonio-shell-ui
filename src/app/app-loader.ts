@@ -111,7 +111,7 @@ type SharedLibrariesAppsMap = {
 	'@zextras/zapp-ui': unknown;
 };
 
-type SharedUiComponentsDescriptor = { [id: string]: { pkg: string, versions: { [version: string]: FC } } };
+type SharedUiComponentsDescriptor = { [id: string]: { pkg: AppPkgDescription, versions: { [version: string]: FC } } };
 
 type LoadedAppRuntime = AppInjections & {
 	pkg: AppPkgDescription;

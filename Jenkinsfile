@@ -348,7 +348,7 @@ pipeline {
 							env.CONTAINER1_ID = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} ubuntu:18.04').trim()
 						}
 						sh "docker cp ${WORKSPACE} ${env.CONTAINER1_ID}:/u"
-						sh "docker exec -t ${env.CONTAINER1_ID} bash -c \"cd /u; ./build-pkgs.sh shell\""
+						sh "docker exec -t ${env.CONTAINER1_ID} bash -c \"cd /u; ./build-pkgs.sh shell ${getCurrentVersion()}\""
 						sh "docker cp ${env.CONTAINER1_ID}:/u/artifacts/. ${WORKSPACE}"
 						script {
 							def server = Artifactory.server 'zextras-artifactory'
@@ -392,7 +392,7 @@ pipeline {
 							env.CONTAINER2_ID = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} centos:7').trim()
 						}
 						sh "docker cp ${WORKSPACE} ${env.CONTAINER2_ID}:/r"
-						sh "docker exec -t ${env.CONTAINER2_ID} bash -c \"cd /r; ./build-pkgs.sh shell\""
+						sh "docker exec -t ${env.CONTAINER2_ID} bash -c \"cd /r; ./build-pkgs.sh shell ${getCurrentVersion()}\""
 						sh "docker cp ${env.CONTAINER2_ID}:/r/artifacts/. ${WORKSPACE}"
 						script {
 							def server = Artifactory.server 'zextras-artifactory'

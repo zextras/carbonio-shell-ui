@@ -357,7 +357,7 @@ pipeline {
 							containerId = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} ubuntu:18.04').trim()
 						}
 						sh "docker cp ${WORKSPACE} ${containerId}:/u"
-						sh "docker exec -t ${containerId} bash -c \"cd /u; ./build-pkgs.sh shell ${getCurrentVersion()}\""
+						sh "docker exec -t ${containerId} bash -c \"cd /u; ./build-pkgs.sh shell\""
 						sh "docker cp ${containerId}:/u/artifacts/. ${WORKSPACE}"
 						script {
 							def server = Artifactory.server 'zextras-artifactory'
@@ -400,7 +400,7 @@ pipeline {
 							containerId = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} centos:7').trim()
 						}
 						sh "docker cp ${WORKSPACE} ${containerId}:/r"
-						sh "docker exec -t ${containerId} bash -c \"cd /r; ./build-pkgs.sh shell ${getCurrentVersion()}\""
+						sh "docker exec -t ${containerId} bash -c \"cd /r; ./build-pkgs.sh shell\""
 						sh "docker cp ${containerId}:/r/artifacts/. ${WORKSPACE}"
 						script {
 							def server = Artifactory.server 'zextras-artifactory'

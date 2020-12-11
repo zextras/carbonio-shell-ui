@@ -1,0 +1,26 @@
+{
+    "Help": "",
+    "Log me out": "Log me out",
+    "Login": "",
+    "Logout": "Logout",
+    "New": "New",
+    "New tab": "New tab",
+    "Password": "",
+    "Remember me": "",
+    "Supported browsers": "",
+    "The username or password is incorrect": "",
+    "Username": "",
+    "Verify that CAPS LOCK is not on, and then retype the current username and password": "",
+    "You are going to be logged-out": "You are going to be logged-out.",
+    "copyright": "",
+    "supported_browsers": {
+        "chrome": "",
+        "edge": "",
+        "firefox": "",
+        "ie_11_up": "",
+        "opera": "",
+        "safari": "",
+        "uc": "",
+        "yandex": ""
+    }
+}

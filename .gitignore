@@ -1,9 +1,0 @@
-/node_modules/
-/build/
-/dist/
-/pkg/
-/lib/
-/deploy/
-/junit.xml
-/coverage/
-/e2e/output/

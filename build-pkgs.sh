@@ -10,17 +10,16 @@ set_pkgs_author() {
 
 retrieve_previous_tag() {
   local previous_tag
-  if [ ! -f /usr/bin/git ]; then
-    install_deps bump
-  fi
   previous_tag="$(git describe --abbrev=0 "$(git describe --abbrev=0 --tags)^")"
   printf "%s" "${previous_tag}"
 }
 
 bump_deb() {
-  local previous_version="${1}"
-  local current_version="${2}"
-  local branch="${3}"
+  local current_tag="${1}"
+  local branch="${2}"
+
+  local previous_tag
+  previous_tag="$(retrieve_previous_tag)"
 
   local argline="--debian-branch $branch --git-author"
 
@@ -31,29 +30,31 @@ bump_deb() {
   fi
 
   gbp dch ${argline} \
-    --since ${previous_version} \
-    --new-version ${current_version} \
+    --since ${previous_tag} \
+    --new-version ${current_tag} \
     --git-author
 }
 
 bump_rpm() {
-  local previous_version="${1}"
-  local current_version="${2}"
-  local branch="${3}"
-  local name="${4}"
+  local current_tag="${1}"
+  local branch="${2}"
+  local name="${3}"
+
+  local previous_tag
+  previous_tag="$(retrieve_previous_tag)"
 
   local argline="--packaging-branch ${branch} \
 		--git-author \
 		--spec-file=zextras-zapp-${name}.spec \
 		--spawn-editor=0"
 
-  local valid_rel="${current_version%*.beta*}b${current_version##*.}"
+  local valid_rel="${current_tag%*.beta*}b${current_tag##*.}"
 
   gbp rpm-ch ${argline} \
-    --since ${previous_version} \
-    --changelog-revision ${valid_rel}
+    --since ${previous_tag} \
+    --changelog-revision ${valid_tag}
 
-  sed -i -e "s/Version:\([ ]*\).*/Version:\1${valid_rel}/g" "zextras-zapp-${name}.spec"
+  sed -i -e "s/Version:\([ ]*\).*/Version:\1${valid_tag}/g" "zextras-zapp-${name}.spec"
 }
 
 install_deps() {
@@ -99,8 +100,8 @@ bump() {
   local current_version="${2}"
   local branch="${3}"
   local name="${4}"
-  bump_deb "${previous_version}" "${current_version#v}" "${branch}"
-  bump_rpm "${previous_version}" "${current_version#v}" "${branch}" "${name}"
+  bump_deb "${current_version#v}" "${branch}"
+  bump_rpm "${current_version#v}" "${branch}" "${name}"
 }
 
 prepare() {
@@ -122,9 +123,7 @@ build_deb() {
 }
 
 build() {
-  prepare
   set_pkgs_author
-  install_deps build
   if [ -f /etc/redhat-release ]; then
     build_rpm
   else
@@ -146,12 +145,11 @@ process_args() {
       local current_version="${2}"
       local branch=${3}
       local name=${4}
-      local previous_version
-      previous_version="$(retrieve_previous_tag)"
-
-      bump "${previous_version}" "${current_version}" "${branch}" "${name}"
+      install_deps "${1}"
+      bump "${current_version}" "${branch}" "${name}"
       ;;
     build)
+      install_deps "${1}"
       local name="${2}"
       build "${name}"
       ;;

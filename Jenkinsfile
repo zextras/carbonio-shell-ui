@@ -314,10 +314,12 @@ pipeline {
 			steps {
 				script {
 					currentVersion = getCurrentVersion()
-					containerId = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} ubuntu:18.04').trim()
+					containerId1 = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} ubuntu:18.04').trim()
 				}
-				sh "docker cp ${WORKSPACE} ${containerId}:/u"
-				sh "docker exec -t ${containerId} bash -c \"cd /u; ./build-pkgs.sh bump v${currentVersion} ${BRANCH_NAME} shell\""
+				sh "docker cp ${WORKSPACE} ${containerId1}:/u"
+				sh "docker exec -t ${containerId1} bash -c \"cd /u; ./build-pkgs.sh bump v${currentVersion} ${BRANCH_NAME} shell\""
+				sh "docker cp ${containerId1}:/u/. ${WORKSPACE}"
+
 				// BEGIN: Stashes for deb and rpm generation
 				stash(
 					includes: "build-pkgs.sh,*.spec,debian/**",
@@ -327,7 +329,7 @@ pipeline {
 			}
 			post {
 				always {
-					sh "docker kill ${containerId}"
+					sh "docker kill ${containerId1}"
 				}
 			}
 		}
@@ -347,11 +349,11 @@ pipeline {
 						unstash "zimlet_package"
 						unstash "debrpm_workspace"
 						script {
-							containerId = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} ubuntu:18.04').trim()
+							containerId2 = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} ubuntu:18.04').trim()
 						}
-						sh "docker cp ${WORKSPACE} ${containerId}:/u"
-						sh "docker exec -t ${containerId} bash -c \"cd /u; ./build-pkgs.sh build shell\""
-						sh "docker cp ${containerId}:/u/artifacts/. ${WORKSPACE}"
+						sh "docker cp ${WORKSPACE} ${containerId2}:/u"
+						sh "docker exec -t ${containerId2} bash -c \"cd /u; ./build-pkgs.sh build shell\""
+						sh "docker cp ${containerId2}:/u/artifacts/. ${WORKSPACE}"
 						script {
 							def server = Artifactory.server 'zextras-artifactory'
 							def buildInfo = Artifactory.newBuildInfo()
@@ -373,7 +375,7 @@ pipeline {
 							archiveArtifacts artifacts: "*.deb", fingerprint: true
 						}
 						always {
-							sh "docker kill ${containerId}"
+							sh "docker kill ${containerId2}"
 						}
 					}
 				}
@@ -390,11 +392,11 @@ pipeline {
 						unstash "zimlet_package"
 						unstash "debrpm_workspace"
 						script {
-							containerId = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} centos:7').trim()
+							containerId3 = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} centos:7').trim()
 						}
-						sh "docker cp ${WORKSPACE} ${containerId}:/r"
-						sh "docker exec -t ${containerId} bash -c \"cd /r; ./build-pkgs.sh build shell\""
-						sh "docker cp ${containerId}:/r/artifacts/. ${WORKSPACE}"
+						sh "docker cp ${WORKSPACE} ${containerId3}:/r"
+						sh "docker exec -t ${containerId3} bash -c \"cd /r; ./build-pkgs.sh build shell\""
+						sh "docker cp ${containerId3}:/r/artifacts/. ${WORKSPACE}"
 						script {
 							def server = Artifactory.server 'zextras-artifactory'
 							def buildInfo = Artifactory.newBuildInfo()
@@ -416,7 +418,7 @@ pipeline {
 							archiveArtifacts artifacts: "*.rpm", fingerprint: true
 						}
 						always {
-							sh "docker kill ${containerId}"
+							sh "docker kill ${containerId3}"
 						}
 					}
 				}

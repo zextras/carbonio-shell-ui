@@ -297,12 +297,6 @@ pipeline {
 					includes: "pkg/com_zextras_zapp_shell.zip",
 					name: 'zimlet_package'
 				)
-				// BEGIN: Stashes for deb and rpm generation
-				stash(
-					includes: "build-pkgs.sh,*.spec,debian/**,.git,package.json",
-					name: "debrpm_workspace"
-				)
-				// END: Stashes for deb and rpm generation
 				createDocumentation("$BRANCH_NAME")
 				script {
 					doc.rm(file: "iris/zapp-shell/$BRANCH_NAME")
@@ -318,14 +312,18 @@ pipeline {
 
 		stage('Version Bump for DEB/RPM') {
 			steps {
-				unstash "debrpm_workspace"
 				script {
 					currentVersion = getCurrentVersion()
 					containerId = sh(returnStdout: true, script: 'docker run -dt ${NETWORK_OPTS} ubuntu:18.04').trim()
 				}
 				sh "docker cp ${WORKSPACE} ${containerId}:/u"
 				sh "docker exec -t ${containerId} bash -c \"cd /u; ./build-pkgs.sh bump v${currentVersion} ${BRANCH_NAME} shell\""
-				stash "debrpm_workspace"
+				// BEGIN: Stashes for deb and rpm generation
+				stash(
+					includes: "build-pkgs.sh,*.spec,debian/**",
+					name: "debrpm_workspace"
+				)
+				// END: Stashes for deb and rpm generation
 			}
 			post {
 				always {
@@ -333,6 +331,7 @@ pipeline {
 				}
 			}
 		}
+
 		stage('Build DEB/RPM packages') {
 			parallel {
 				stage("Ubuntu") {

@@ -21,7 +21,7 @@ bump_deb() {
   local previous_tag
   previous_tag="$(retrieve_previous_tag)"
 
-  local argline="--debian-branch ${branch} --git-author"
+  local argline="--ignore-branch --git-author"
 
   if [[ "${branch}" =~ "beta" ]]; then
     argline+=" -D unstable"
@@ -43,7 +43,7 @@ bump_rpm() {
   local previous_tag
   previous_tag="$(retrieve_previous_tag)"
 
-  local argline="--packaging-branch ${branch} \
+  local argline="--ignore-branch \
 		--git-author \
 		--spec-file=zextras-zapp-${name}.spec \
 		--spawn-editor=0"

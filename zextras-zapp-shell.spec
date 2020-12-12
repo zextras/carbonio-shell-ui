@@ -32,5 +32,5 @@ fi
 /opt/zimbra/zimlets/com_zextras_zapp_shell.zip
 
 %changelog
-* Wed Nov 18 2020 Zextras Packaging Services <packaging@zextras.com>
+* Wed Nov 18 2020 Zextras SRL <packages@zextras.com>
 - initial packaging

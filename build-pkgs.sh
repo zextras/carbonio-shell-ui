@@ -67,7 +67,7 @@ install_deps() {
     sed -i"" '2iproxy=http://aptproxy.local.zextras.com:3142' \
       /etc/yum.conf
 
-    yum install -q -y rpm-build || exit 1
+    yum install -q -y git rpm-build || exit 1
     mkdir -p /root/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}
 
   else
@@ -100,6 +100,7 @@ bump() {
   local current_tag="${1}"
   local branch="${2}"
   local name="${3}"
+  set_pkgs_author
   bump_deb "${current_tag#v}" "${branch}"
   bump_rpm "${current_tag#v}" "${branch}" "${name}"
 }
@@ -123,7 +124,8 @@ build_deb() {
 }
 
 build() {
-  set_pkgs_author
+  prepare
+
   if [ -f /etc/redhat-release ]; then
     build_rpm
   else
@@ -149,7 +151,6 @@ process_args() {
       bump "${current_tag}" "${branch}" "${name}"
       ;;
     build)
-      prepare
       install_deps "${1}"
       local name="${2}"
       build "${name}"

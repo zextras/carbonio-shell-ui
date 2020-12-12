@@ -48,7 +48,7 @@ bump_rpm() {
 		--spec-file=zextras-zapp-${name}.spec \
 		--spawn-editor=0"
 
-  local valid_tag="${current_tag%*.beta*}b${current_tag##*.}"
+  local valid_tag="${current_tag%-beta*}b${current_tag##*.}"
 
   gbp rpm-ch ${argline} \
     --since ${previous_tag} \
@@ -148,6 +148,7 @@ process_args() {
       bump "${current_tag}" "${branch}" "${name}"
       ;;
     build)
+      prepare
       install_deps "${1}"
       local name="${2}"
       build "${name}"

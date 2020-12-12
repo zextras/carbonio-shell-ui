@@ -322,7 +322,7 @@ pipeline {
 
 				// BEGIN: Stashes for deb and rpm generation
 				stash(
-					includes: "build-pkgs.sh,*.spec,debian/**",
+					includes: ".git,build-pkgs.sh,*.spec,debian/**",
 					name: "debrpm_workspace"
 				)
 				// END: Stashes for deb and rpm generation

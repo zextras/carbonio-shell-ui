@@ -85,7 +85,8 @@ install_deps() {
       packages="build-essential \
       cdbs \
       devscripts \
-      fakeroot"
+      fakeroot \
+      git"
     fi
 
     apt-get update

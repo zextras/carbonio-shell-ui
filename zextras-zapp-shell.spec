@@ -22,7 +22,8 @@ if [ $1 -eq 1 ]; then
 .: Congratulations! Every bit is in its right place :.
 
 Please restart the Zimbra Web Application (mailboxd) manually.
-E.g. « su - zimbra -c 'zmmailboxdctl restart' »
+Run:
+su - zimbra -c 'zmmailboxdctl restart'
 EOF
 fi
 

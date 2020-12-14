@@ -1,8 +1,9 @@
 {
-  "Cancel": "Annulla",
-  "Log me out": "Esci",
-  "Login": "Entra",
-  "Password": "Password",
-  "Username": "Nome utente",
-  "You are going to be logged-out": "Stai per uscrire."
+    "Cancel": "Annulla",
+    "Log me out": "Esci",
+    "Login": "Entra",
+    "Password": "Password",
+    "Username": "Nome utente",
+    "You are going to be logged-out": "Stai per uscire.",
+    "New tab": "Nuova scheda"
 }

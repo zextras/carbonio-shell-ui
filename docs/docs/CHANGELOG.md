@@ -5,6 +5,55 @@ title: Change Log
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.102-beta.33](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.32...v0.0.102-beta.33) (2020-12-14)
+
+### [0.0.102-beta.32](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.31...v0.0.102-beta.32) (2020-12-14)
+
+
+### Bug Fixes
+
+* added support for `zapp-version` field in zimlet meta data ([7662069](https://bitbucket.org/zextras/zapp-shell/commit/7662069b25305a3b4cb1f0cc9ddcdd30363f2129))
+
+### [0.0.102-beta.31](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.30...v0.0.102-beta.31) (2020-12-12)
+
+### [0.0.102-beta.30](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.29...v0.0.102-beta.30) (2020-12-12)
+
+### [0.0.102-beta.29](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.28...v0.0.102-beta.29) (2020-12-12)
+
+### [0.0.102-beta.28](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.27...v0.0.102-beta.28) (2020-12-12)
+
+### [0.0.102-beta.27](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.26...v0.0.102-beta.27) (2020-12-12)
+
+### [0.0.102-beta.26](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.25...v0.0.102-beta.26) (2020-12-12)
+
+### [0.0.102-beta.25](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.24...v0.0.102-beta.25) (2020-12-12)
+
+### [0.0.102-beta.24](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.23...v0.0.102-beta.24) (2020-12-12)
+
+### [0.0.102-beta.23](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.22...v0.0.102-beta.23) (2020-12-12)
+
+### [0.0.102-beta.22](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.21...v0.0.102-beta.22) (2020-12-11)
+
+### [0.0.102-beta.21](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.20...v0.0.102-beta.21) (2020-12-11)
+
+### [0.0.102-beta.20](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.19...v0.0.102-beta.20) (2020-12-11)
+
+### [0.0.102-beta.19](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.18...v0.0.102-beta.19) (2020-12-11)
+
+### [0.0.102-beta.18](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.17...v0.0.102-beta.18) (2020-12-11)
+
+### [0.0.102-beta.17](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.16...v0.0.102-beta.17) (2020-12-11)
+
+### [0.0.102-beta.16](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.15...v0.0.102-beta.16) (2020-12-11)
+
+### [0.0.102-beta.15](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.14...v0.0.102-beta.15) (2020-12-11)
+
+### [0.0.102-beta.14](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.13...v0.0.102-beta.14) (2020-12-11)
+
+### [0.0.102-beta.13](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.11...v0.0.102-beta.13) (2020-12-11)
+
+### [0.0.102-beta.11](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.10...v0.0.102-beta.11) (2020-12-11)
+
 ### [0.0.102-beta.10](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.9...v0.0.102-beta.10) (2020-12-11)
 
 ### [0.0.102-beta.9](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.8...v0.0.102-beta.9) (2020-12-11)

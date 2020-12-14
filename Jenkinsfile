@@ -64,8 +64,8 @@ def createRelease(branchName) {
 		nodeCmd "npx pinst --enable"
 		nodeCmd "npm run release -- --no-verify --prerelease beta"
 		sh(script: """#!/bin/bash
-			# git add translations
-			# git commit -m 'Extracted translations'
+			git add translations
+			git commit --no-verify -m 'chore(i18n): extracted translations'
 			git subtree push --squash --prefix translations/ git@bitbucket.org:$TRANSLATIONS_REPOSITORY_NAME\\.git translations-updater/v${getCurrentVersion()}
 		""")
 		withCredentials([usernameColonPassword(credentialsId: 'tarsier-bot-pr-token', variable: 'PR_ACCESS')]) {
@@ -104,7 +104,7 @@ def createRelease(branchName) {
 		echo \"---\ntitle: Change Log\n---\"> docs/docs/CHANGELOG.md
 		cat CHANGELOG.md >> docs/docs/CHANGELOG.md
 		git add docs/docs/CHANGELOG.md
-		git commit --no-verify -m "Updated change log into documentation"
+		git commit --no-verify -m "chore(release): updated change log into documentation"
 	""")
 	sh(script: """#!/bin/bash
 	  git push --follow-tags origin HEAD:$branchName
@@ -281,12 +281,12 @@ pipeline {
 			steps {
 				createRelease("$BRANCH_NAME")
 				archiveArtifacts(
-					artifacts: "README.md",
+					artifacts: "CHANGELOG.md",
 					fingerprint: true
 				)
 				stash(
-					includes: "README.md",
-					name: 'readme'
+					includes: "CHANGELOG.md",
+					name: 'changelog'
 				)
 				createBuild(true)
 				archiveArtifacts(
@@ -310,7 +310,17 @@ pipeline {
 			}
 		}
 
-		stage('Version Bump for DEB/RPM') {
+		stage("Version Bump for DEB/RPM") {
+			when {
+				beforeAgent(true)
+				allOf {
+					expression { BRANCH_NAME ==~ /(release|beta)/ }
+					environment(
+						name: "COMMIT_PARENTS_COUNT",
+						value: "2"
+					)
+				}
+			}
 			steps {
 				script {
 					currentVersion = getCurrentVersion()
@@ -334,7 +344,17 @@ pipeline {
 			}
 		}
 
-		stage('Build DEB/RPM packages') {
+		stage("Build DEB/RPM packages") {
+			when {
+				beforeAgent(true)
+				allOf {
+					expression { BRANCH_NAME ==~ /(release|beta)/ }
+					environment(
+						name: "COMMIT_PARENTS_COUNT",
+						value: "2"
+					)
+				}
+			}
 			parallel {
 				stage("Ubuntu") {
 					agent {

@@ -1,8 +1,8 @@
 Source: zextras-zapp-shell
 Section: comm
 Priority: optional
-Maintainer: Zextras Packaging Services <gianluca.boiano@zextras.com>
-Uploaders: Zextras Packaging Services <gianluca.boiano@zextras.com>
+Maintainer: Zextras SRL <packages@zextras.com>
+Uploaders: Zextras SRL <packages@zextras.com>
 Standards-Version: 3.9.5
 Homepage: https://zextras.com
 

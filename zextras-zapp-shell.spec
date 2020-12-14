@@ -22,7 +22,8 @@ if [ $1 -eq 1 ]; then
 .: Congratulations! Every bit is in its right place :.
 
 Please restart the Zimbra Web Application (mailboxd) manually.
-E.g. « su - zimbra -c 'zmmailboxdctl restart' »
+Run:
+su - zimbra -c 'zmmailboxdctl restart'
 EOF
 fi
 
@@ -31,5 +32,5 @@ fi
 /opt/zimbra/zimlets/com_zextras_zapp_shell.zip
 
 %changelog
-* Wed Nov 18 2020 Zextras Packaging Services <packaging@zextras.com>
+* Wed Nov 18 2020 Zextras SRL <packages@zextras.com>
 - initial packaging

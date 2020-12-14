@@ -8,74 +8,48 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, {
-	useCallback, useEffect, useMemo, useState
-} from 'react';
-import { reduce } from 'lodash';
+import React, { useState, useEffect } from 'react';
+import { map, merge } from 'lodash';
 import { combineLatest } from 'rxjs';
 import { useAppsCache } from '../app/app-loader-context';
-import SharedUiComponentsContext from './shared-ui-components-context';
+import { SharedUIComponentsContext } from './shared-ui-components-context';
 
-export default function SharedUiComponentsContextProvider({ children }) {
+const SharedUIComponentsContextProvider = ({ children }) => {
+
 	const [appsCache, appsLoaded] = useAppsCache();
-	const [scopes, setScopes] = useState({});
-
-	const mergeAndSetScopes = useCallback((appScopes, canSet) => {
-		if (!canSet) return;
-		const newScopes = reduce(
-			appScopes, // eslint-disable-next-line
-			(r1, v1, k1) => {
-				return reduce(
-					v1,
-					(r2, v2, k2) => { // eslint-disable-next-line
-						if (!r2[k2]) r2[k2] = [];
-						r2[k2].push(...v2);
-						return r2;
-					},
-					r1
-				);
-			},
-			{}
-		);
-		setScopes(newScopes);
-	}, [setScopes]);
+	const [components, setComponents] = useState({});
 
 	useEffect(() => {
 		let canSet = true;
 
 		const combined = combineLatest(
-			reduce(
+			map(
 				appsLoaded ? appsCache : {},
-				(r, v, k) => {
-					r.push(v.sharedUiComponents);
-					return r;
-				},
-				[]
+				'sharedUiComponents'
 			)
 		);
+
 		const sub = combined.subscribe(
-			(s) => mergeAndSetScopes(s, canSet)
+			(comps) => {
+				if (canSet) {
+					setComponents((c) => merge(c, ...comps));
+				}
+			}
 		);
 
 		return () => {
 			canSet = false;
 			sub.unsubscribe();
 		};
-	}, [appsCache, appsLoaded, mergeAndSetScopes]);
-	// eslint-disable-next-line
-	const value = useMemo(() => {
-		return { // eslint-disable-next-line
-			scopes: scopes
-		};
-	}, [
-		scopes
-	]);
+	}, [appsCache, appsLoaded]);
 
 	return (
-		<SharedUiComponentsContext.Provider
-			value={value}
+		<SharedUIComponentsContext.Provider
+			value={components}
 		>
 			{ children }
-		</SharedUiComponentsContext.Provider>
+		</SharedUIComponentsContext.Provider>
 	);
-}
+};
+
+export default SharedUIComponentsContextProvider;

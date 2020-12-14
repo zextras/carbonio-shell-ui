@@ -83,7 +83,7 @@ export default function BoardsRouterContainer() {
 		};
 	}, [appsCache]);
 
-	return ( // eslint-disable-next-line
+	return (
 		<_BoardsRouterContainer>
 			<Switch>
 				{ routes }

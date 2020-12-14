@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useSharedComponent hook get a shared component 1`] = `
+<div>
+  AppContextProvider props: 
+  {"pkg":"com_example_package_2"}
+  Scope-2-Component-Package-2
+</div>
+`;

@@ -40,7 +40,6 @@ export default class ShellNetworkService {
 
 	public getAppSoapFetch(appPackageDescription: AppPkgDescription): SoapFetch {
 		const appSink = this._FCFactory.getAppFiberChannelSink(appPackageDescription);
-		console.log(appSink);
 		const _fetch = this._getAppFetch(appPackageDescription);
 		return (api, body): Promise<any> => {
 			const request: { Header?: any; Body: any } = {

@@ -9,13 +9,14 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { createContext, useContext } from 'react';
+import { createContext, FC } from 'react';
+import { AppPkgDescription } from '../../types';
 
-const SharedUiComponentsContext = createContext();
+export type SharedUIComponentsMap = {
+	[id: string]: {
+		pkg: string;
+		versions: AppPkgDescription;
+	}
+};
 
-export function useSharedUiComponentsScope(scopeName) {
-	const { scopes } = useContext(SharedUiComponentsContext);
-	return scopes[scopeName] || [];
-}
-
-export default SharedUiComponentsContext;
+export const SharedUIComponentsContext = createContext<SharedUIComponentsMap>({});

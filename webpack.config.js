@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
+const { coerce, valid } = require('semver');
 const pkg = require('./zapp.conf.js');
 
 const babelRC = require('./babel.config.js');
@@ -138,6 +139,7 @@ module.exports = {
 				'zimlet_def.template.xml'
 			),
 			filename: `${pkg.pkgName}.xml`,
+			ZIMBRA_PACKAGE_VERSION: valid(coerce(pkg.version)),
 			PACKAGE_VERSION: pkg.version,
 			PACKAGE_NAME: pkg.pkgName,
 			PACKAGE_LABEL: pkg.pkgLabel,

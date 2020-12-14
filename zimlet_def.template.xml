@@ -1,6 +1,7 @@
 <zimlet
   name="<%= htmlWebpackPlugin.options.PACKAGE_NAME %>"
-  version="<%= htmlWebpackPlugin.options.PACKAGE_VERSION %>"
+  version="<%= htmlWebpackPlugin.options.ZIMBRA_PACKAGE_VERSION %>"
+  zapp-version="<%= htmlWebpackPlugin.options.PACKAGE_VERSION %>"
   description="<%= htmlWebpackPlugin.options.PACKAGE_DESCRIPTION %>"
   label="<%- '${msg.label}' %>"
   zapp="true"

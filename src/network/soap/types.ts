@@ -20,6 +20,7 @@ export type ZimletPkgDescription = {
 		version: string;
 		/* Property related to Zextras */ zapp?: 'true';
 		/* Property related to Zextras */ 'zapp-main'?: string;
+		/* Property related to Zextras */ 'zapp-version'?: string;
 		/* Property related to Zextras */ 'zapp-handlers'?: string;
 		/* Property related to Zextras */ 'zapp-style'?: string;
 		/* Property related to Zextras */ 'zapp-theme'?: string;

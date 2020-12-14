@@ -12,14 +12,14 @@ jest.mock('../app/app-loader-context-provider');
 
 import React, { useContext } from 'react';
 import { BehaviorSubject } from 'rxjs';
-import { render } from '@testing-library/react';
 import AppLoaderContextProvider from '../app/app-loader-context-provider';
 import AppLoaderContext from '../app/app-loader-context';
-import SharedUiComponentsContextProvider from './shared-ui-components-context-provider';
-import SharedUiComponentsContext from './shared-ui-components-context';
+import SharedUIComponentsContextProvider from './shared-ui-components-context-provider';
+import { SharedUIComponentsContext } from './shared-ui-components-context';
+import { testUtils } from '../jest-shell-mocks';
 
 describe('Shared UI Components Context Provider', () => {
-	test('Merge all App Scopes', () => {
+	test('Merge all App Registered UI Components', () => {
 		const ComponentClass11 = jest.fn().mockImplementation(() => 'Scope-1-Component-Package-1');
 		const ComponentClass21 = jest.fn().mockImplementation(() => 'Scope-2-Component-Package-1');
 		const ComponentClass22 = jest.fn().mockImplementation(() => 'Scope-2-Component-Package-2');
@@ -30,34 +30,38 @@ describe('Shared UI Components Context Provider', () => {
 					appsCache: {
 						com_example_package_1: {
 							sharedUiComponents: new BehaviorSubject({
-								'scope-1': [{
-									pkg: {
-										package: 'com_example_package_1',
-									},
-									componentClass: ComponentClass11
-								}],
-								'scope-2': [{
-									pkg: {
-										package: 'com_example_package_1',
-									},
-									componentClass: ComponentClass21
-								}]
+								'component-1': {
+									pkg: { package: 'com_example_package_1' },
+									versions: {
+										'1': ComponentClass11,
+										'2': ComponentClass11
+									}
+								},
+								'component-2': {
+									pkg: { package: 'com_example_package_1' },
+									versions: {
+										'1': ComponentClass21,
+										'2': ComponentClass21
+									}
+								}
 							})
 						},
 						com_example_package_2: {
 							sharedUiComponents: new BehaviorSubject({
-								'scope-2': [{
-									pkg: {
-										package: 'com_example_package_2',
-									},
-									componentClass: ComponentClass22
-								}],
-								'scope-3': [{
-									pkg: {
-										package: 'com_example_package_2',
-									},
-									componentClass: ComponentClass32
-								}]
+								'component-4': {
+									pkg: { package: 'com_example_package_2' },
+									versions: {
+										'1': ComponentClass22,
+										'2': ComponentClass22
+									}
+								},
+								'component-3': {
+									pkg: { package: 'com_example_package_2' },
+									versions: {
+										'1': ComponentClass32,
+										'2': ComponentClass32
+									}
+								}
 							})
 						}
 					},
@@ -71,45 +75,50 @@ describe('Shared UI Components Context Provider', () => {
 		const tester = jest.fn();
 
 		function Tester() {
-			const { scopes } = useContext(SharedUiComponentsContext);
-			tester(scopes);
-			return `Tester scopes: ${Object.keys(scopes).reduce((p, c, i) => `${p}${i > 0 ? ' ' : ''}${c}`, [], '')}`;
+			const ctxt = useContext(SharedUIComponentsContext);
+			tester(ctxt);
+			return `Tester scopes: ${Object.keys(ctxt).reduce((p, c, i) => `${p}${i > 0 ? ' ' : ''}${c}`, [], '')}`;
 		}
 
-		const { container } = render(
+		const { container } = testUtils.render(
 			<AppLoaderContextProvider>
-				<SharedUiComponentsContextProvider>
+				<SharedUIComponentsContextProvider>
 					<Tester />
-				</SharedUiComponentsContextProvider>
+				</SharedUIComponentsContextProvider>
 			</AppLoaderContextProvider>
 		);
 
 		expect(container).toMatchSnapshot();
-		expect(tester).toHaveBeenCalledTimes(2);
+		expect(tester).toHaveBeenCalledTimes(1);
 		expect(tester).toHaveBeenLastCalledWith({
-			'scope-1': [{
-				pkg: {
-					package: 'com_example_package_1',
-				},
-				componentClass: ComponentClass11
-			}],
-			'scope-2': [{
-				pkg: {
-					package: 'com_example_package_1',
-				},
-				componentClass: ComponentClass21
-			}, {
-				pkg: {
-					package: 'com_example_package_2',
-				},
-				componentClass: ComponentClass22
-			}],
-			'scope-3': [{
-				pkg: {
-					package: 'com_example_package_2',
-				},
-				componentClass: ComponentClass32
-			}],
+			'component-4': {
+				pkg: { package: 'com_example_package_2' },
+				versions: {
+					'1': ComponentClass22,
+					'2': ComponentClass22
+				}
+			},
+			'component-3': {
+				pkg: { package: 'com_example_package_2' },
+				versions: {
+					'1': ComponentClass32,
+					'2': ComponentClass32
+				}
+			},
+			'component-1': {
+				pkg: { package: 'com_example_package_1' },
+				versions: {
+					'1': ComponentClass11,
+					'2': ComponentClass11
+				}
+			},
+			'component-2': {
+				pkg: { package: 'com_example_package_1' },
+				versions: {
+					'1': ComponentClass21,
+					'2': ComponentClass21
+				}
+			}
 		});
 	});
 });

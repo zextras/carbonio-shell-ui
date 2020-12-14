@@ -12,7 +12,7 @@
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
 import {
-	default as Lodash, map, orderBy, compact, keyBy, forEach, forOwn
+	default as Lodash, map, orderBy, compact, keyBy, forEach, forOwn, reduce
 } from 'lodash';
 import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
 import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
@@ -46,15 +46,11 @@ import { RichTextEditor } from '@zextras/zapp-ui/dist/zapp-ui.rich-text-editor';
 // @ts-ignore
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
 import * as hooks from '../shell/hooks';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import SharedUiComponentsFactory from '../shared-ui-components/shared-ui-components-factory';
 import StoreFactory from '../store/store-factory';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppLink from './app-link';
 import { FC, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
-import validateSharedUiComponent from '../shared-ui-components/shared-ui-components-validator';
 import ShellNetworkService from '../network/shell-network-service';
 import {
 	Account,
@@ -107,21 +103,15 @@ type SharedLibrariesAppsMap = {
 		setRoutes: (routes: AppRouteDescription[]) => void;
 		setCreateOptions: (options: AppCreateOption[]) => void;
 		setAppContext: (obj: any) => void;
-		addSharedUiComponent: (scope: string, componentClass: ComponentClass) => void;
+		registerSharedUiComponents: (components: SharedUiComponentsDescriptor) => void;
 		fiberChannel: FC;
 		fiberChannelSink: FCSink;
 		hooks: unknown;
-		ui: unknown;
 	};
 	'@zextras/zapp-ui': unknown;
 };
 
-type SharedUiComponentsDescriptor = {
-	[scope: string]: {
-		pkg: AppPkgDescription;
-		componentClass: ComponentClass;
-	}[];
-};
+type SharedUiComponentsDescriptor = { [id: string]: { pkg: AppPkgDescription, versions: { [version: string]: FC } } };
 
 type LoadedAppRuntime = AppInjections & {
 	pkg: AppPkgDescription;
@@ -320,28 +310,32 @@ function loadAppModule(
 							setRoutes: (r): void => routes.next(r),
 							setCreateOptions: (options): void => createOptions.next(options),
 							setAppContext: (obj: any): void => appContext.next(obj),
-							addSharedUiComponent: (scope: string, componentClass: ComponentClass): void => {
-								validateSharedUiComponent(componentClass);
-								const scopes: SharedUiComponentsDescriptor = sharedUiComponents.getValue();
-								sharedUiComponents.next({
-									...scopes,
-									[scope]: [
-										...(scopes[scope] ? scopes[scope] : []),
-										{
-											pkg: appPkg,
-											componentClass
-										}
-									]
-								});
+							registerSharedUiComponents: (
+								components: { [id: string]: { versions: { [version: string]: FC } } }
+							): void => {
+								sharedUiComponents.next(
+									reduce(
+										components,
+										(
+											acc: SharedUiComponentsDescriptor,
+											comp: { versions: Record<string, FC> },
+											id: string
+										): SharedUiComponentsDescriptor => ({
+											...acc,
+											[id]: {
+												pkg: appPkg,
+												versions: comp.versions
+											}
+										}),
+										sharedUiComponents.getValue()
+									)
+								);
 							},
 							fiberChannel: fiberChannelFactory.getAppFiberChannel(appPkg),
 							fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(appPkg),
 							hooks,
 							network: {
 								soapFetch: shellNetworkService.getAppSoapFetch(appPkg)
-							},
-							ui: {
-								SharedUiComponentsFactory
 							}
 						},
 						'@zextras/zapp-ui': { ...ZappUI, RichTextEditor }

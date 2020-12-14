@@ -5,6 +5,13 @@ title: Change Log
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.102-beta.32](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.31...v0.0.102-beta.32) (2020-12-14)
+
+
+### Bug Fixes
+
+* added support for `zapp-version` field in zimlet meta data ([7662069](https://bitbucket.org/zextras/zapp-shell/commit/7662069b25305a3b4cb1f0cc9ddcdd30363f2129))
+
 ### [0.0.102-beta.31](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.30...v0.0.102-beta.31) (2020-12-12)
 
 ### [0.0.102-beta.30](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.29...v0.0.102-beta.30) (2020-12-12)

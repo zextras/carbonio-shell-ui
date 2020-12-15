@@ -1,6 +1,6 @@
 {
   "name": "@zextras/zapp-shell",
-  "version": "0.0.102-beta.34",
+  "version": "0.0.102-beta.35",
   "description": "A web application framework",
   "types": "./types/index.d.ts",
   "main": "dist/zapp-shell.bundle.js",
@@ -62,7 +62,7 @@
     "@types/redux-logger": "3.0.8",
     "@types/semver": "7.3.4",
     "@types/webpack-env": "1.15.3",
-    "@zextras/zapp-cli": "^0.0.69-deve.3",
+    "@zextras/zapp-cli": "^0.0.69-devel.4",
     "@zextras/zapp-ui": "^0.0.64-beta.6",
     "autoprefixer": "10.0.2",
     "babel-jest": "26.6.3",

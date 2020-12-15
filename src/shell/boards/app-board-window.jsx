@@ -42,7 +42,7 @@ function TabsList({
 			wrap="nowrap"
 			height="100%"
 			mainAlignment="flex-start"
-			takeAvailableSpace={true}
+			takeAvailableSpace
 		>
 			<Row
 				ref={tabContainerRef}
@@ -78,6 +78,7 @@ const BoardContainer = styled.div`
 	right: 0;
 	background-color: rgba(0,0,0,0);
 	pointer-events: none;
+	z-index: 10;
 	${({ largeView }) => largeView && css`
 		background-color: rgba(0,0,0,0.5);
 		pointer-events: auto;
@@ -87,6 +88,7 @@ const BoardContainer = styled.div`
 	`}
 `;
 const Board = styled(Container)`
+	z-index: 5;
 	position: absolute;
 	left: 24px;
 	bottom: 0;
@@ -158,7 +160,7 @@ export default function AppBoardWindow() {
 					</Actions>
 				</BoardHeader>
 				<Divider style={{ height: '2px' }} />
-				<BoardDeatilContainer takeAvailableSpace={true}>
+				<BoardDeatilContainer takeAvailableSpace>
 					{ boards }
 				</BoardDeatilContainer>
 			</Board>

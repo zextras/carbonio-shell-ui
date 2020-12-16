@@ -5,6 +5,19 @@ title: Change Log
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.102-beta.36](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.35...v0.0.102-beta.36) (2020-12-16)
+
+
+### Features
+
+* added useRemoveCurrentBoard mock ([142210e](https://bitbucket.org/zextras/zapp-shell/commit/142210e00a1032419aaf26f33b5fb17f7273022f))
+
+
+### Bug Fixes
+
+* added z-index property to the board container ([574e4b6](https://bitbucket.org/zextras/zapp-shell/commit/574e4b61b336260e51ba0584e61fb0e9d994e31a))
+* disabled automatic darkmode ([f3d7aaa](https://bitbucket.org/zextras/zapp-shell/commit/f3d7aaad7a0c4efa5721f130a024498fe66def34))
+
 ### [0.0.102-beta.35](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.34...v0.0.102-beta.35) (2020-12-15)
 
 ### [0.0.102-beta.34](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.33...v0.0.102-beta.34) (2020-12-14)

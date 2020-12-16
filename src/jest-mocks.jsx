@@ -125,4 +125,5 @@ export const hooks = {
 	useReplaceHistoryCallback: jest.fn(useReplaceHistoryCallback),
 	usePushHistoryCallback: jest.fn(usePushHistoryCallback),
 	useUserAccounts: jest.fn(() => []),
+	useRemoveCurrentBoard: jest.fn()
 };

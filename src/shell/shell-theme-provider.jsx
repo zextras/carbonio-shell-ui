@@ -9,49 +9,16 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, {
-	useCallback, useContext, useEffect, useState
-} from 'react';
-import { extendTheme, ThemeContext, ThemeProvider } from '@zextras/zapp-ui';
+import React, { useEffect, useState } from 'react';
+import { extendTheme, ThemeProvider } from '@zextras/zapp-ui';
 import { useFiberChannelFactory } from '../bootstrap/bootstrapper-context';
 import { loadThemes, unloadThemes } from '../app/theme-loader';
 import { useUserAccounts } from '../store/shell-store-hooks';
 
-const ThemeModeSwitcher = () => {
-	const { mode, setMode } = useContext(ThemeContext);
-	const [mediaPrefers, setMediaPrefers] = useState(
-		window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-	);
-	const mediaChangeCallback = useCallback(
-		(e) => setMediaPrefers(e.matches ? 'dark' : 'light'),
-		[setMediaPrefers]
-	);
-
-	useEffect(
-		() => {
-			window.matchMedia('(prefers-color-scheme: dark)').addEventListener(
-				'change',
-				mediaChangeCallback
-			);
-			return () => window.matchMedia('(prefers-color-scheme: dark)').removeEventListener(
-				'change',
-				mediaChangeCallback
-			);
-		},
-		[mediaChangeCallback]
-	);
-
-	useEffect(() => {
-		if (mediaPrefers !== mode) setMode(mediaPrefers);
-	}, [mode, setMode, mediaPrefers]);
-
-	return null;
-};
-
 const ShellThemeProvider = ({ children }) => {
 	const accounts = useUserAccounts();
 	const fiberChannelFactory = useFiberChannelFactory();
-	const [[themeCache, themeLoaded], setThemeCache] = useState([
+	const [[themeCache], setThemeCache] = useState([
 		extendTheme({}),
 		false
 	]);
@@ -87,13 +54,12 @@ const ShellThemeProvider = ({ children }) => {
 		return () => {
 			canSet = false;
 		};
-	}, [accounts]);
+	}, [accounts, fiberChannelFactory]);
 
 	return (
 		<ThemeProvider
 			theme={themeCache}
 		>
-			<ThemeModeSwitcher />
 			{ children }
 		</ThemeProvider>
 	);

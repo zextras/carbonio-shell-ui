@@ -15,7 +15,7 @@ import fetch from 'node-fetch';
 import { MemoryRouter } from 'react-router-dom';
 import { extendTheme, ThemeProvider } from '@zextras/zapp-ui';
 import AppContextWrapper from './mocks/app-context-wrapper';
-import { usePushHistoryCallback, useReplaceHistoryCallback } from './shell/hooks';
+import { usePushHistoryCallback, useReplaceHistoryCallback, useRemoveCurrentBoard } from './shell/hooks';
 
 const confPath = path.resolve(
 	process.cwd(),
@@ -125,4 +125,5 @@ export const hooks = {
 	useReplaceHistoryCallback: jest.fn(useReplaceHistoryCallback),
 	usePushHistoryCallback: jest.fn(usePushHistoryCallback),
 	useUserAccounts: jest.fn(() => []),
+	useRemoveCurrentBoard: jest.fn(useRemoveCurrentBoard)
 };

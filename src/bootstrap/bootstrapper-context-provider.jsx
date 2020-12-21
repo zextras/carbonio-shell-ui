@@ -18,6 +18,7 @@ import ShellStoreContext from '../store/shell-store-context';
 import ShellThemeProvider from '../shell/shell-theme-provider';
 import AppLoaderContextProvider from '../app/app-loader-context-provider';
 import AppLoaderMounter from '../app/app-loader-mounter';
+import BoardContextProvider from '../shell/boards/board-context-provider';
 
 export default function BootstrapperContextProvider({
 	children,
@@ -45,8 +46,10 @@ export default function BootstrapperContextProvider({
 					<ShellThemeProvider>
 						<I18nextProvider i18n={i18nFactory.getShellI18n()}>
 							<AppLoaderContextProvider>
-								{ children }
-								<AppLoaderMounter />
+								<BoardContextProvider>
+									{ children }
+									<AppLoaderMounter />
+								</BoardContextProvider>
 							</AppLoaderContextProvider>
 						</I18nextProvider>
 					</ShellThemeProvider>

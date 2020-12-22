@@ -13,6 +13,8 @@
     "Verify that CAPS LOCK is not on, and then retype the current username and password": "",
     "You are going to be logged-out": "You are going to be logged-out.",
     "copyright": "",
+    "Switch to dark mode": "Switch to dark mode",
+    "Switch to light mode": "Switch to light mode",
     "supported_browsers": {
         "chrome": "",
         "edge": "",

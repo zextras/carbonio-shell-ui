@@ -122,11 +122,9 @@ export function Shell() {
 export default function ShellView() {
 	return (
 		<ShellContextProvider>
-			<BoardContextProvider>
-				<SharedUiComponentsContextProvider>
-					<Shell />
-				</SharedUiComponentsContextProvider>
-			</BoardContextProvider>
+			<SharedUiComponentsContextProvider>
+				<Shell />
+			</SharedUiComponentsContextProvider>
 		</ShellContextProvider>
 	);
 }

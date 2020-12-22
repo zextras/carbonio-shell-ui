@@ -9,8 +9,8 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useCallback, useEffect, useState } from 'react';
-import { Row, Responsive } from '@zextras/zapp-ui';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { Row, Responsive, ThemeContext } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
@@ -60,14 +60,29 @@ export function Shell() {
 	}, []);
 
 	const quota = 30;
-	const userMenuTree = [
+
+	const { mode, setMode } = useContext(ThemeContext);
+
+	const toggleDarkMode = useCallback((ev) => {
+		ev.preventDefault();
+		if (mode === 'light') setMode('dark');
+		else setMode('light');
+	}, [setMode, mode]);
+
+	const userMenuTree = useMemo(() => [
+		{
+			label: mode === 'light' ? t('Switch to dark mode') : t('Switch to light mode'),
+			icon:  mode === 'light' ? 'MoonOutline' : 'SunOutline',
+			folders: [],
+			click: toggleDarkMode
+		},
 		{
 			label: t('Logout'),
 			icon: 'LogOut',
 			folders: [],
 			click: doLogoutCbk
 		}
-	];
+	], [doLogoutCbk, toggleDarkMode, mode]);
 
 	useEffect(() => {
 		if (sessionState === 'init' && accounts.length > 0) {

@@ -5,6 +5,18 @@ title: Change Log
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.102-beta.37](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.36...v0.0.102-beta.37) (2020-12-23)
+
+
+### Features
+
+* added dark mode switch ([534763c](https://bitbucket.org/zextras/zapp-shell/commit/534763c775a35360eab87c4fee0db4390766506f))
+
+
+### Bug Fixes
+
+* moved the BoardContextProvider up in the component tree to enable board management ([fb004a8](https://bitbucket.org/zextras/zapp-shell/commit/fb004a833dd3140e12bfafc91e33333c91dcfd2d))
+
 ### [0.0.102-beta.36](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.35...v0.0.102-beta.36) (2020-12-16)
 
 

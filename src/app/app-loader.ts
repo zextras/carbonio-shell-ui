@@ -12,7 +12,7 @@
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
 import {
-	default as Lodash, map, orderBy, compact, keyBy, forEach, forOwn, reduce
+	default as Lodash, map, orderBy, compact, keyBy, forEach, forOwn, reduce, filter
 } from 'lodash';
 import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
 import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
@@ -375,6 +375,7 @@ function loadApp(
 	storeFactory: StoreFactory,
 ): Promise<LoadedAppRuntime|undefined> {
 	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
+	console.log(cliSettings);
 	const mainMenuItems = new BehaviorSubject<MainMenuItemData[]>([]);
 	const routes = new BehaviorSubject<AppRouteDescription[]>([]);
 	const createOptions = new BehaviorSubject<AppCreateOption[]>([]);
@@ -382,6 +383,7 @@ function loadApp(
 	const sharedUiComponents = new BehaviorSubject<SharedUiComponentsDescriptor>({});
 	const entryPoint = new BehaviorSubject<ComponentClass|null>(null);
 	const store = storeFactory.getStoreForApp(pkg);
+	console.log(pkg);
 	return loadAppModule(
 		pkg,
 		{
@@ -441,7 +443,9 @@ export function loadApps(
 ): Promise<LoadedAppsCache> {
 	return Promise.all(
 		map(
-			orderBy(accounts[0].apps, 'priority'),
+			cliSettings?.disableErrorReporter
+				? filter(orderBy(accounts[0].apps, 'priority'), (pkg) => pkg.package !== "com_zextras_zapp_error_reporter")
+				: orderBy(accounts[0].apps, 'priority'),
 			(pkg) => loadApp(
 				pkg,
 				fiberChannelFactory,

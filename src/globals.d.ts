@@ -23,6 +23,7 @@ type e2eNamespace = {
 type cliSettingsNamespace = {
 	isE2E?: boolean;
 	server?: string;
+	disableErrorReporter?: boolean;
 	// eslint-disable-next-line camelcase
 	app_package?: {
 		package: string;

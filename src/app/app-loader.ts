@@ -443,9 +443,9 @@ export function loadApps(
 ): Promise<LoadedAppsCache> {
 	return Promise.all(
 		map(
-			cliSettings?.disableErrorReporter
-				? filter(orderBy(accounts[0].apps, 'priority'), (pkg) => pkg.package !== "com_zextras_zapp_error_reporter")
-				: orderBy(accounts[0].apps, 'priority'),
+			cliSettings?.enableErrorReporter
+				? orderBy(accounts[0].apps, 'priority')
+				: filter(orderBy(accounts[0].apps, 'priority'), (pkg) => pkg.package !== "com_zextras_zapp_error_reporter"),
 			(pkg) => loadApp(
 				pkg,
 				fiberChannelFactory,

@@ -375,7 +375,6 @@ function loadApp(
 	storeFactory: StoreFactory,
 ): Promise<LoadedAppRuntime|undefined> {
 	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
-	console.log(cliSettings);
 	const mainMenuItems = new BehaviorSubject<MainMenuItemData[]>([]);
 	const routes = new BehaviorSubject<AppRouteDescription[]>([]);
 	const createOptions = new BehaviorSubject<AppCreateOption[]>([]);
@@ -383,7 +382,6 @@ function loadApp(
 	const sharedUiComponents = new BehaviorSubject<SharedUiComponentsDescriptor>({});
 	const entryPoint = new BehaviorSubject<ComponentClass|null>(null);
 	const store = storeFactory.getStoreForApp(pkg);
-	console.log(pkg);
 	return loadAppModule(
 		pkg,
 		{

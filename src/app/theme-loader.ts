@@ -9,33 +9,22 @@
  * *** END LICENSE BLOCK *****
  */
 
-import Lodash, { forOwn, map, orderBy } from 'lodash';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import * as ZappUI from '@zextras/zapp-ui';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import * as StyledComponents from 'styled-components';
+import { forOwn, map, orderBy } from 'lodash';
+import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
 import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import { AccountAppsData, AppPkgDescription, ThemePkgDescription } from '../../types';
+import { injectSharedLibraries, SharedLibrariesAppsMap } from './app-loader';
 
 type AppModuleFunction = () => void;
 
-type IChildWindow = Window & {
-	__ZAPP_SHARED_LIBRARIES__: SharedLibrariesAppsMap;
-	__ZAPP_EXPORT__: (value?: AppModuleFunction | PromiseLike<AppModuleFunction> | undefined) => void;
-	__ZAPP_HMR_EXPORT__: (mod: AppModuleFunction) => void;
-};
-
-type SharedLibrariesAppsMap = {
-	'react': unknown;
-	'react-dom': unknown;
-	'lodash': unknown;
-	'styled-components': unknown;
-	'@zextras/zapp-ui': unknown;
+export type IShellWindow<T> = Window & {
+	__ZAPP_SHARED_LIBRARIES__: T;
+	// eslint-disable-next-line max-len
+	__ZAPP_EXPORT__: {[pkgName: string]: (value?: AppModuleFunction | PromiseLike<AppModuleFunction> | undefined) => void};
+	__ZAPP_HMR_EXPORT__: {[pkgName: string]: (mod: AppModuleFunction) => void};
+	__ZAPP_HANDLERS__: {[pkgName: string]: (handlers: RequestHandlersList) => void};
+	__ZAPP_HMR_HANDLERS__: {[pkgName: string]: (handlers: RequestHandlersList) => void};
 };
 
 // Type is in the documentation. If changed update also the documentation.
@@ -47,48 +36,53 @@ type MainSubMenuItemData = {
 	children?: Array<MainSubMenuItemData>;
 };
 
-const _iframes: { [pkgName: string]: HTMLIFrameElement } = {};
-let _iframeId = 0;
+const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
+let _scriptId = 0;
 // const _revertableActions: { [pkgName: string]: RevertableActionCollection } = {};
 
 function loadThemeModule(
 	appPkg: AppPkgDescription,
+	fiberChannelFactory: IFiberChannelFactory,
 ): Promise<AppModuleFunction> {
-	return new Promise((resolve, reject) => {
-		const path = `${appPkg.resourceUrl}/${appPkg.entryPoint}`;
-		const iframe: HTMLIFrameElement = document.createElement('iframe');
-		iframe.setAttribute('data-pkg_name', appPkg.package);
-		iframe.setAttribute('data-pkg_version', appPkg.version);
-		iframe.setAttribute('data-is_theme', 'true');
-		iframe.style.display = 'none';
-		document.body.appendChild(iframe);
-		if (iframe.contentWindow && iframe.contentDocument) {
-			const script: HTMLScriptElement = iframe.contentDocument.createElement('script');
-			(iframe.contentWindow as IChildWindow).__ZAPP_SHARED_LIBRARIES__ = {
-				react: React,
-				'react-dom': ReactDOM,
-				lodash: Lodash,
-				'styled-components': StyledComponents,
-				'@zextras/zapp-ui': ZappUI
-			};
-			(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve; // eslint-disable-next-line
-			(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (extModule: AppModuleFunction): void => {
-				// Errors are not collected here because the HMR works only on development mode.
-				console.log(`HMR ${path}`, extModule);
-				extModule.call(undefined);
-			}; // eslint-disable-next-line
-			switch (FLAVOR) {
-				case 'NPM':
-				case 'E2E': // eslint-disable-next-line
-					e2e.installOnWindow(iframe.contentWindow);
+	return new Promise((_resolve, _reject) => {
+		let resolved = false;
+		const resolve: (...args: any[]) => void = (...args) => {
+			if (!resolved) {
+				resolved = true;
+				_resolve(...args);
 			}
-			script.type = 'text/javascript';
-			script.setAttribute('src', path);
-			script.addEventListener('error', reject);
-			iframe.contentDocument.body.appendChild(script);
-			_iframes[`${appPkg.package}-theme-${_iframeId += 1}`] = iframe;
+		};
+		const reject: (e: Error) => void = (e) => {
+			if (!resolved) {
+				resolved = true;
+				_reject(e);
+			}
+		};
+		try {
+			// eslint-disable-next-line max-len
+			(window as unknown as IShellWindow<SharedLibrariesAppsMap>).__ZAPP_EXPORT__[appPkg.package] = resolve;
+			// eslint-disable-next-line max-len
+			(window as unknown as IShellWindow<SharedLibrariesAppsMap>).__ZAPP_HMR_EXPORT__[appPkg.package] = (extModule: AppModuleFunction): void => {
+				// Errors are not collected here because the HMR works only on develpment mode.
+				console.log(`HMR '${appPkg.resourceUrl}/${appPkg.entryPoint}'`);
+				extModule.call(undefined);
+			};
+			const script: HTMLScriptElement = document.createElement('script');
+			script.setAttribute('type', 'text/javascript');
+			script.setAttribute('data-pkg_name', appPkg.package);
+			script.setAttribute('data-pkg_version', appPkg.version);
+			script.setAttribute('data-is_theme', 'true');
+			script.setAttribute('src', `${appPkg.resourceUrl}/${appPkg.entryPoint}`);
+			script.addEventListener('error', (ev) => {
+				fiberChannelFactory.getAppFiberChannelSink(appPkg)({ event: 'report-exception', data: { exception: ev.error } });
+				reject(ev.error);
+			});
+			document.body.appendChild(script);
+			_scripts[`${appPkg.package}-theme-${_scriptId += 1}`] = script;
 		}
-		else reject(new Error('Cannot create theme loader'));
+		catch (err) {
+			reject(err);
+		}
 	});
 }
 
@@ -98,7 +92,10 @@ function loadTheme(
 	theme: any
 ): Promise<any|undefined> {
 	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
-	return loadThemeModule(pkg)
+	return loadThemeModule(
+		pkg,
+		fiberChannelFactory,
+	)
 		.then((themeModule) => themeModule.call(theme))
 		.catch((e) => {
 			const sink = fiberChannelFactory.getAppFiberChannelSink(pkg);
@@ -117,6 +114,7 @@ export function loadThemes(
 	fiberChannelFactory: IFiberChannelFactory,
 	theme: any
 ): Promise<any> {
+	injectSharedLibraries();
 	return Promise.all(
 		map(
 			orderBy(themes, 'priority'),
@@ -141,9 +139,9 @@ export function unloadThemes(): Promise<void> {
 	return Promise.resolve()
 		.then(() => {
 			forOwn(
-				_iframes,
-				(iframe) => {
-					if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+				_scripts,
+				(script) => {
+					if (script.parentNode) script.parentNode.removeChild(script);
 				}
 			);
 		});

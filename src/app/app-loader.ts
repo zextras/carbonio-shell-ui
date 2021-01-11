@@ -12,7 +12,7 @@
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
 import {
-	default as Lodash, map, orderBy, compact, keyBy, forEach, forOwn, reduce
+	default as Lodash, map, orderBy, compact, keyBy, forEach, forOwn, reduce, filter
 } from 'lodash';
 import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
 import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
@@ -441,7 +441,9 @@ export function loadApps(
 ): Promise<LoadedAppsCache> {
 	return Promise.all(
 		map(
-			orderBy(accounts[0].apps, 'priority'),
+			cliSettings?.enableErrorReporter
+				? orderBy(accounts[0].apps, 'priority')
+				: filter(orderBy(accounts[0].apps, 'priority'), (pkg) => pkg.package !== "com_zextras_zapp_error_reporter"),
 			(pkg) => loadApp(
 				pkg,
 				fiberChannelFactory,

@@ -9,10 +9,20 @@
  * *** END LICENSE BLOCK *****
  */
 
+// eslint-disable-next-line max-classes-per-file
 import { AppPkgDescription, SoapFetch } from '../../types';
 import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import { ShellStore } from '../store/create-shell-store';
 import { selectCSRFToken } from '../store/accounts-slice';
+
+export class SoapError extends Error {
+	details: any;
+
+	constructor(message: string, details: any) {
+		super(message);
+		this.details = details;
+	}
+}
 
 export default class ShellNetworkService {
 	private _fetch = fetch.bind(window);
@@ -68,14 +78,10 @@ export default class ShellNetworkService {
 				.then((r) => r.json())
 				.then((resp) => {
 					if (resp.Body.Fault) {
-						appSink({ event: 'report-exception', data: { exception: new Error(resp.Body.Fault.Reason.Text) } });
-						throw new Error(resp.Body.Fault.Reason.Text);
+						throw new SoapError(resp.Body.Fault.Reason.Text, resp.Body.Fault.Detail.Error);
 					}
 					return resp.Body[`${api}Response`];
 				})
-				.catch((err) => {
-					appSink({ event: 'report-exception', data: { exception: err } });
-				});
 		};
 	}
 }

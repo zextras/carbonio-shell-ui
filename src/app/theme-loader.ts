@@ -9,22 +9,21 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { forOwn, map, orderBy } from 'lodash';
-import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
+import { compact, forOwn, map, orderBy } from 'lodash';
+import { BehaviorSubject, Subscription } from 'rxjs';
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
 import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
-import { AccountAppsData, AppPkgDescription, ThemePkgDescription } from '../../types';
-import { injectSharedLibraries, SharedLibrariesAppsMap } from './app-loader';
+import { Account, AppPkgDescription, ThemePkgDescription } from '../../types';
+import { injectSharedLibraries, IShellWindow, SharedLibrariesAppsMap } from './app-loader';
 
-type AppModuleFunction = () => void;
+type ThemeInjections = {
+	entryPoint: BehaviorSubject<ThemeModuleFunction|null>;
+};
 
-export type IShellWindow<T> = Window & {
-	__ZAPP_SHARED_LIBRARIES__: T;
-	// eslint-disable-next-line max-len
-	__ZAPP_EXPORT__: {[pkgName: string]: (value?: AppModuleFunction | PromiseLike<AppModuleFunction> | undefined) => void};
-	__ZAPP_HMR_EXPORT__: {[pkgName: string]: (mod: AppModuleFunction) => void};
-	__ZAPP_HANDLERS__: {[pkgName: string]: (handlers: RequestHandlersList) => void};
-	__ZAPP_HMR_HANDLERS__: {[pkgName: string]: (handlers: RequestHandlersList) => void};
+type ThemeModuleFunction = () => void;
+
+type LoadedThemeRuntime = ThemeInjections & {
+	pkg: ThemePkgDescription;
 };
 
 // Type is in the documentation. If changed update also the documentation.
@@ -42,8 +41,11 @@ let _scriptId = 0;
 
 function loadThemeModule(
 	appPkg: AppPkgDescription,
+	{
+		entryPoint
+	}: ThemeInjections,
 	fiberChannelFactory: IFiberChannelFactory,
-): Promise<AppModuleFunction> {
+): Promise<void> {
 	return new Promise((_resolve, _reject) => {
 		let resolved = false;
 		const resolve: (...args: any[]) => void = (...args) => {
@@ -60,13 +62,10 @@ function loadThemeModule(
 		};
 		try {
 			// eslint-disable-next-line max-len
-			(window as unknown as IShellWindow<SharedLibrariesAppsMap>).__ZAPP_EXPORT__[appPkg.package] = resolve;
-			// eslint-disable-next-line max-len
-			(window as unknown as IShellWindow<SharedLibrariesAppsMap>).__ZAPP_HMR_EXPORT__[appPkg.package] = (extModule: AppModuleFunction): void => {
-				// Errors are not collected here because the HMR works only on develpment mode.
-				console.log(`HMR '${appPkg.resourceUrl}/${appPkg.entryPoint}'`);
-				extModule.call(undefined);
-			};
+			(window as unknown as IShellWindow<SharedLibrariesAppsMap, ThemeModuleFunction>).__ZAPP_HMR_EXPORT__[appPkg.package] = (themeFn: ThemeModuleFunction): void => {
+				entryPoint.next(themeFn);
+				resolve();
+			}
 			const script: HTMLScriptElement = document.createElement('script');
 			script.setAttribute('type', 'text/javascript');
 			script.setAttribute('data-pkg_name', appPkg.package);
@@ -89,14 +88,16 @@ function loadThemeModule(
 function loadTheme(
 	pkg: ThemePkgDescription,
 	fiberChannelFactory: IFiberChannelFactory,
-	theme: any
-): Promise<any|undefined> {
-	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
+): Promise<LoadedThemeRuntime|undefined> {
+	const entryPoint = new BehaviorSubject<ThemeModuleFunction|null>(null);
 	return loadThemeModule(
 		pkg,
+		{
+			entryPoint
+		},
 		fiberChannelFactory,
 	)
-		.then((themeModule) => themeModule.call(theme))
+		.then(() => true)
 		.catch((e) => {
 			const sink = fiberChannelFactory.getAppFiberChannelSink(pkg);
 			sink({
@@ -106,36 +107,64 @@ function loadTheme(
 				}
 			});
 			return false;
-		});
+		})
+		.then((loaded) => (loaded ? {
+			pkg,
+			entryPoint
+		} : undefined));
 }
 
+let subscription: Subscription|undefined;
+
 export function loadThemes(
-	themes: AccountAppsData,
+	accounts: Array<Account>,
 	fiberChannelFactory: IFiberChannelFactory,
-	theme: any
-): Promise<any> {
+	setThemeCache: (cache: any) => void,
+): Promise<void> {
 	injectSharedLibraries();
-	return Promise.all(
+	return Promise.all<LoadedThemeRuntime|undefined>(
 		map(
-			orderBy(themes, 'priority'),
-			(pkg) => loadTheme(pkg, fiberChannelFactory, theme)
+			orderBy(accounts[0].themes, 'priority'),
+			(pkg) => loadTheme(
+				pkg,
+				fiberChannelFactory
+			)
 		)
 	)
-		.then((pkgTheme) => {
+		.then((loaded) => compact<LoadedThemeRuntime>(loaded))
+		.then((loaded) => orderBy<LoadedThemeRuntime>(loaded, 'pkg.priority'))
+		.then((loaded) => {
+			if (subscription) {
+				subscription.unsubscribe();
+				subscription = undefined;
+			}
+			if (loaded.length > 0) {
+				subscription = loaded[0].entryPoint.subscribe((themeFn) => {
+					if (themeFn) {
+						setThemeCache(themeFn());
+					}
+				});
+			}
+			return loaded;
+		})
+		.then((loaded) => {
 			const sink = fiberChannelFactory.getShellFiberChannelSink();
 			sink({
 				to: {
 					version: PACKAGE_VERSION,
 					app: PACKAGE_NAME
 				},
-				event: 'all-apps-loaded',
-				data: pkgTheme
+				event: 'all-themes-loaded',
+				data: loaded
 			});
-			return pkgTheme;
 		});
 }
 
 export function unloadThemes(): Promise<void> {
+	if (subscription) {
+		subscription.unsubscribe();
+		subscription = undefined;
+	}
 	return Promise.resolve()
 		.then(() => {
 			forOwn(

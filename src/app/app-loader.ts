@@ -62,11 +62,9 @@ import {
 	SoapFetch
 } from '../../types';
 
-type IShellWindow<T> = Window & {
+export type IShellWindow<T, R> = Window & {
 	__ZAPP_SHARED_LIBRARIES__: T;
-	__ZAPP_EXPORT__: {[pkgName: string]: (value?: ComponentClass | PromiseLike<ComponentClass> | undefined) => void};
-	__ZAPP_HMR_EXPORT__: {[pkgName: string]: (appClass: ComponentClass) => void};
-	__ZAPP_HANDLERS__: {[pkgName: string]: (handlers: RequestHandlersList) => void};
+	__ZAPP_HMR_EXPORT__: {[pkgName: string]: (appClass: R) => void};
 	__ZAPP_HMR_HANDLERS__: {[pkgName: string]: (handlers: RequestHandlersList) => void};
 };
 
@@ -142,41 +140,6 @@ function updateAppHandlers(
 	}
 }
 
-function loadAppHandlers(
-	appPkg: AppPkgDescription,
-	fiberChannelFactory: IFiberChannelFactory,
-): Promise<void> {
-	if (appPkg.handlers) {
-		return new Promise<void>((resolve, reject) => {
-			try {
-				const script: HTMLScriptElement = document.createElement('script');
-				// eslint-disable-next-line max-len,@typescript-eslint/explicit-function-return-type
-				(window as unknown as IShellWindow<SharedLibrariesAppsMap>).__ZAPP_HANDLERS__[appPkg.package] = (handlers) => {
-					updateAppHandlers(appPkg, handlers);
-					resolve();
-				};
-				// eslint-disable-next-line max-len,@typescript-eslint/explicit-function-return-type
-				(window as unknown as IShellWindow<SharedLibrariesAppsMap>).__ZAPP_HMR_HANDLERS__[appPkg.package] = (handlers) => updateAppHandlers(appPkg, handlers);
-				script.setAttribute('type', 'text/javascript');
-				script.setAttribute('data-pkg_name', appPkg.package);
-				script.setAttribute('data-pkg_version', appPkg.version);
-				script.setAttribute('data-is_handlers', 'true');
-				script.setAttribute('src', `${appPkg.resourceUrl}/${appPkg.handlers}`);
-				script.addEventListener('error', (ev) => {
-					fiberChannelFactory.getAppFiberChannelSink(appPkg)({ event: 'report-exception', data: { exception: ev.error } });
-					reject(ev.error);
-				});
-				document.body.appendChild(script);
-				_scripts[`${appPkg.package}-handlers-${_scriptId += 1}`] = script;
-			}
-			catch (err) {
-				reject(err);
-			}
-		});
-	}
-	return Promise.resolve();
-}
-
 function loadAppModule(
 	appPkg: AppPkgDescription,
 	{
@@ -190,85 +153,86 @@ function loadAppModule(
 	}: AppInjections,
 	fiberChannelFactory: IFiberChannelFactory,
 	shellNetworkService: ShellNetworkService
-): Promise<ComponentClass> {
-	return loadAppHandlers(appPkg, fiberChannelFactory)
-		.then(() => new Promise((_resolve, _reject) => {
-			let resolved = false;
-			const resolve: (...args: any[]) => void = (...args) => {
-				if (!resolved) {
-					resolved = true;
-					_resolve(...args);
+): Promise<void> {
+	return new Promise((_resolve, _reject) => {
+		let resolved = false;
+		const resolve: (...args: any[]) => void = (...args) => {
+			if (!resolved) {
+				resolved = true;
+				_resolve(...args);
+			}
+		};
+		const reject: (e: Error) => void = (e) => {
+			if (!resolved) {
+				resolved = true;
+				_reject(e);
+			}
+		};
+		try {
+			// eslint-disable-next-line max-len
+			(window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>).__ZAPP_SHARED_LIBRARIES__['@zextras/zapp-shell'][appPkg.package] = {
+				store: {
+					store,
+					setReducer: (reducer): void => store.replaceReducer(reducer)
+				},
+				setMainMenuItems: (items): void => mainMenuItems.next(items),
+				setRoutes: (r): void => routes.next(r),
+				setCreateOptions: (options): void => createOptions.next(options),
+				setAppContext: (obj: any): void => appContext.next(obj),
+				registerSharedUiComponents: (
+					components: { [id: string]: { versions: { [version: string]: FC } } }
+				): void => {
+					sharedUiComponents.next(
+						reduce(
+							components,
+							(
+								acc: SharedUiComponentsDescriptor,
+								comp: { versions: Record<string, FC> },
+								id: string
+							): SharedUiComponentsDescriptor => ({
+								...acc,
+								[id]: {
+									pkg: appPkg,
+									versions: comp.versions
+								}
+							}),
+							sharedUiComponents.getValue()
+						)
+					);
+				},
+				fiberChannel: fiberChannelFactory.getAppFiberChannel(appPkg),
+				fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(appPkg),
+				hooks,
+				network: {
+					soapFetch: shellNetworkService.getAppSoapFetch(appPkg)
 				}
 			};
-			const reject: (e: Error) => void = (e) => {
-				if (!resolved) {
-					resolved = true;
-					_reject(e);
-				}
-			};
-			try {
-				// eslint-disable-next-line max-len
-				(window as unknown as IShellWindow<SharedLibrariesAppsMap>).__ZAPP_SHARED_LIBRARIES__['@zextras/zapp-shell'][appPkg.package] = {
-					store: {
-						store,
-						setReducer: (reducer): void => store.replaceReducer(reducer)
-					},
-					setMainMenuItems: (items): void => mainMenuItems.next(items),
-					setRoutes: (r): void => routes.next(r),
-					setCreateOptions: (options): void => createOptions.next(options),
-					setAppContext: (obj: any): void => appContext.next(obj),
-					registerSharedUiComponents: (
-						components: { [id: string]: { versions: { [version: string]: FC } } }
-					): void => {
-						sharedUiComponents.next(
-							reduce(
-								components,
-								(
-									acc: SharedUiComponentsDescriptor,
-									comp: { versions: Record<string, FC> },
-									id: string
-								): SharedUiComponentsDescriptor => ({
-									...acc,
-									[id]: {
-										pkg: appPkg,
-										versions: comp.versions
-									}
-								}),
-								sharedUiComponents.getValue()
-							)
-						);
-					},
-					fiberChannel: fiberChannelFactory.getAppFiberChannel(appPkg),
-					fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(appPkg),
-					hooks,
-					network: {
-						soapFetch: shellNetworkService.getAppSoapFetch(appPkg)
-					}
-				};
-				(window as unknown as IShellWindow<SharedLibrariesAppsMap>).__ZAPP_EXPORT__[appPkg.package] = resolve;
-				// eslint-disable-next-line max-len
-				(window as unknown as IShellWindow<SharedLibrariesAppsMap>).__ZAPP_HMR_EXPORT__[appPkg.package] = (appClass: ComponentClass): void => {
-					// Errors are not collected here because the HMR works only on develpment mode.
-					console.log(`HMR '${appPkg.resourceUrl}/${appPkg.entryPoint}'`);
-					entryPoint.next(appClass);
-				};
-				const script: HTMLScriptElement = document.createElement('script');
-				script.setAttribute('type', 'text/javascript');
-				script.setAttribute('data-pkg_name', appPkg.package);
-				script.setAttribute('data-pkg_version', appPkg.version);
-				script.setAttribute('data-is_app', 'true');
-				script.setAttribute('src', `${appPkg.resourceUrl}/${appPkg.entryPoint}`);
-				script.addEventListener('error', (ev) => {
-					fiberChannelFactory.getAppFiberChannelSink(appPkg)({ event: 'report-exception', data: { exception: ev.error } });
-					reject(ev.error);
-				});
-				document.body.appendChild(script);
-				_scripts[`${appPkg.package}-loader-${_scriptId += 1}`] = script;
+
+			// eslint-disable-next-line max-len
+			(window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>).__ZAPP_HMR_EXPORT__[appPkg.package] = (appClass: ComponentClass): void => {
+				entryPoint.next(appClass);
+				resolve();
 			}
-			catch (err) {
-				reject(err);
-			}
-		}));
+			// eslint-disable-next-line max-len
+			(window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>).__ZAPP_HMR_HANDLERS__[appPkg.package] = (handlers: RequestHandlersList): void =>
+				updateAppHandlers(appPkg, handlers);
+			const script: HTMLScriptElement = document.createElement('script');
+			script.setAttribute('type', 'text/javascript');
+			script.setAttribute('data-pkg_name', appPkg.package);
+			script.setAttribute('data-pkg_version', appPkg.version);
+			script.setAttribute('data-is_app', 'true');
+			script.setAttribute('src', `${appPkg.resourceUrl}/${appPkg.entryPoint}`);
+			script.addEventListener('error', (ev) => {
+				fiberChannelFactory.getAppFiberChannelSink(appPkg)({ event: 'report-exception', data: { exception: ev.error } });
+				reject(ev.error);
+			});
+			document.body.appendChild(script);
+			_scripts[`${appPkg.package}-loader-${_scriptId += 1}`] = script;
+		}
+		catch (err) {
+			reject(err);
+		}
+	});
 }
 
 function loadApp(
@@ -299,7 +263,6 @@ function loadApp(
 		fiberChannelFactory,
 		shellNetworkService
 	)
-		.then((appClass) => entryPoint.next(appClass))
 		// .then(() => {
 		// 	this._fcSink<{ package: string; version: string }>('app:loaded', {
 		// 		package: pkg.package,
@@ -337,7 +300,8 @@ function loadApp(
 }
 
 export function injectSharedLibraries(): void {
-	const wnd: IShellWindow<SharedLibrariesAppsMap> = window as unknown as IShellWindow<SharedLibrariesAppsMap>;
+	// eslint-disable-next-line max-len
+	const wnd: IShellWindow<SharedLibrariesAppsMap, ComponentClass> = window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>;
 	if (wnd.__ZAPP_SHARED_LIBRARIES__) {
 		return;
 	}
@@ -368,14 +332,12 @@ export function injectSharedLibraries(): void {
 		'@zextras/zapp-shell': {},
 		'@zextras/zapp-ui': { ...ZappUI, RichTextEditor }
 	};
-	wnd.__ZAPP_EXPORT__ = {};
 	wnd.__ZAPP_HMR_EXPORT__ = {};
 	switch (FLAVOR) {
 		case 'NPM':
 		case 'E2E':
 			wnd.__ZAPP_SHARED_LIBRARIES__.faker = Faker;
 			wnd.__ZAPP_SHARED_LIBRARIES__.msw = Msw;
-			wnd.__ZAPP_HANDLERS__ = {};
 			wnd.__ZAPP_HMR_HANDLERS__ = {};
 			break;
 		default:
@@ -389,11 +351,12 @@ export function loadApps(
 	storeFactory: StoreFactory
 ): Promise<LoadedAppsCache> {
 	injectSharedLibraries();
+	const apps = cliSettings?.enableErrorReporter
+		? orderBy(accounts[0].apps, 'priority')
+		: filter(orderBy(accounts[0].apps, 'priority'), (pkg) => pkg.package !== "com_zextras_zapp_error_reporter");
 	return Promise.all(
 		map(
-			cliSettings?.enableErrorReporter
-				? orderBy(accounts[0].apps, 'priority')
-				: filter(orderBy(accounts[0].apps, 'priority'), (pkg) => pkg.package !== "com_zextras_zapp_error_reporter"),
+			apps,
 			(pkg) => loadApp(
 				pkg,
 				fiberChannelFactory,

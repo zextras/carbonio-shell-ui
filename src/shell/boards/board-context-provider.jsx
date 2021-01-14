@@ -24,8 +24,8 @@ const reducer = (state, action) => {
 			const returnValue = {
 				...state,
 				boards: {
+					[boardKey]: { url: action.payload.url, title: action.payload.title },
 					...state.boards,
-					[boardKey]: { url: action.payload.url, title: action.payload.title }
 				},
 				currentBoard: boardKey,
 				minimized: false

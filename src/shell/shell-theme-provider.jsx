@@ -15,13 +15,10 @@ import { useFiberChannelFactory } from '../bootstrap/bootstrapper-context';
 import { loadThemes, unloadThemes } from '../app/theme-loader';
 import { useUserAccounts } from '../store/shell-store-hooks';
 
-const ShellThemeProvider = ({ children }) => {
+export default function ShellThemeProvider({ children }) {
 	const accounts = useUserAccounts();
 	const fiberChannelFactory = useFiberChannelFactory();
-	const [[themeCache], setThemeCache] = useState([
-		extendTheme({}),
-		false
-	]);
+	const [[themeCache], setThemeCache] = useState([{}, false]);
 
 	useEffect(() => {
 		console.log('Accounts changed, un/loading Themes!');
@@ -30,26 +27,20 @@ const ShellThemeProvider = ({ children }) => {
 			unloadThemes()
 				.then(() => {
 					if (!canSet) return;
-					setThemeCache([
-						extendTheme({}),
-						false
-					]);
+					setThemeCache([{}, false]);
 				})
 				.catch();
 		}
 		else {
 			loadThemes(
-				accounts[0].themes,
+				accounts,
 				fiberChannelFactory,
-				extendTheme({})
-			)
-				.then((themes) => {
+				(cache) => {
 					if (!canSet) return;
-					setThemeCache([
-						extendTheme(themes[0] ?? {}),
-						true
-					]);
-				});
+					setThemeCache([cache, true]);
+				}
+			)
+				.then();
 		}
 		return () => {
 			canSet = false;
@@ -58,11 +49,9 @@ const ShellThemeProvider = ({ children }) => {
 
 	return (
 		<ThemeProvider
-			theme={themeCache}
+			theme={extendTheme(themeCache)}
 		>
 			{ children }
 		</ThemeProvider>
 	);
-};
-
-export default ShellThemeProvider;
+}

@@ -157,6 +157,11 @@ export type SoapRequest = {
 export type SoapFetch =
 	<REQ, RESP>(api: string, body: REQ & SoapRequest) => Promise<RESP>;
 
+export type SoapError = {
+	message: string;
+	details: any;
+};
+
 export const network: {
 	soapFetch: SoapFetch;
 };

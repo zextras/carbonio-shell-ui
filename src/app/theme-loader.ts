@@ -9,33 +9,21 @@
  * *** END LICENSE BLOCK *****
  */
 
-import Lodash, { forOwn, map, orderBy } from 'lodash';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import * as ZappUI from '@zextras/zapp-ui';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import * as StyledComponents from 'styled-components';
+import { compact, forOwn, map, orderBy } from 'lodash';
+import { BehaviorSubject, Subscription } from 'rxjs';
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
 import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
-import { AccountAppsData, AppPkgDescription, ThemePkgDescription } from '../../types';
+import { Account, AppPkgDescription, ThemePkgDescription } from '../../types';
+import { injectSharedLibraries, IShellWindow, SharedLibrariesAppsMap } from './app-loader';
 
-type AppModuleFunction = () => void;
-
-type IChildWindow = Window & {
-	__ZAPP_SHARED_LIBRARIES__: SharedLibrariesAppsMap;
-	__ZAPP_EXPORT__: (value?: AppModuleFunction | PromiseLike<AppModuleFunction> | undefined) => void;
-	__ZAPP_HMR_EXPORT__: (mod: AppModuleFunction) => void;
+type ThemeInjections = {
+	entryPoint: BehaviorSubject<ThemeModuleFunction|null>;
 };
 
-type SharedLibrariesAppsMap = {
-	'react': unknown;
-	'react-dom': unknown;
-	'lodash': unknown;
-	'styled-components': unknown;
-	'@zextras/zapp-ui': unknown;
+type ThemeModuleFunction = () => void;
+
+type LoadedThemeRuntime = ThemeInjections & {
+	pkg: ThemePkgDescription;
 };
 
 // Type is in the documentation. If changed update also the documentation.
@@ -47,59 +35,69 @@ type MainSubMenuItemData = {
 	children?: Array<MainSubMenuItemData>;
 };
 
-const _iframes: { [pkgName: string]: HTMLIFrameElement } = {};
-let _iframeId = 0;
+const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
+let _scriptId = 0;
 // const _revertableActions: { [pkgName: string]: RevertableActionCollection } = {};
 
 function loadThemeModule(
 	appPkg: AppPkgDescription,
-): Promise<AppModuleFunction> {
-	return new Promise((resolve, reject) => {
-		const path = `${appPkg.resourceUrl}/${appPkg.entryPoint}`;
-		const iframe: HTMLIFrameElement = document.createElement('iframe');
-		iframe.setAttribute('data-pkg_name', appPkg.package);
-		iframe.setAttribute('data-pkg_version', appPkg.version);
-		iframe.setAttribute('data-is_theme', 'true');
-		iframe.style.display = 'none';
-		document.body.appendChild(iframe);
-		if (iframe.contentWindow && iframe.contentDocument) {
-			const script: HTMLScriptElement = iframe.contentDocument.createElement('script');
-			(iframe.contentWindow as IChildWindow).__ZAPP_SHARED_LIBRARIES__ = {
-				react: React,
-				'react-dom': ReactDOM,
-				lodash: Lodash,
-				'styled-components': StyledComponents,
-				'@zextras/zapp-ui': ZappUI
-			};
-			(iframe.contentWindow as IChildWindow).__ZAPP_EXPORT__ = resolve; // eslint-disable-next-line
-			(iframe.contentWindow as IChildWindow).__ZAPP_HMR_EXPORT__ = (extModule: AppModuleFunction): void => {
-				// Errors are not collected here because the HMR works only on development mode.
-				console.log(`HMR ${path}`, extModule);
-				extModule.call(undefined);
-			}; // eslint-disable-next-line
-			switch (FLAVOR) {
-				case 'NPM':
-				case 'E2E': // eslint-disable-next-line
-					e2e.installOnWindow(iframe.contentWindow);
+	{
+		entryPoint
+	}: ThemeInjections,
+	fiberChannelFactory: IFiberChannelFactory,
+): Promise<void> {
+	return new Promise((_resolve, _reject) => {
+		let resolved = false;
+		const resolve: (...args: any[]) => void = (...args) => {
+			if (!resolved) {
+				resolved = true;
+				_resolve(...args);
 			}
-			script.type = 'text/javascript';
-			script.setAttribute('src', path);
-			script.addEventListener('error', reject);
-			iframe.contentDocument.body.appendChild(script);
-			_iframes[`${appPkg.package}-theme-${_iframeId += 1}`] = iframe;
+		};
+		const reject: (e: Error) => void = (e) => {
+			if (!resolved) {
+				resolved = true;
+				_reject(e);
+			}
+		};
+		try {
+			// eslint-disable-next-line max-len
+			(window as unknown as IShellWindow<SharedLibrariesAppsMap, ThemeModuleFunction>).__ZAPP_HMR_EXPORT__[appPkg.package] = (themeFn: ThemeModuleFunction): void => {
+				entryPoint.next(themeFn);
+				resolve();
+			}
+			const script: HTMLScriptElement = document.createElement('script');
+			script.setAttribute('type', 'text/javascript');
+			script.setAttribute('data-pkg_name', appPkg.package);
+			script.setAttribute('data-pkg_version', appPkg.version);
+			script.setAttribute('data-is_theme', 'true');
+			script.setAttribute('src', `${appPkg.resourceUrl}/${appPkg.entryPoint}`);
+			script.addEventListener('error', (ev) => {
+				fiberChannelFactory.getAppFiberChannelSink(appPkg)({ event: 'report-exception', data: { exception: ev.error } });
+				reject(ev.error);
+			});
+			document.body.appendChild(script);
+			_scripts[`${appPkg.package}-theme-${_scriptId += 1}`] = script;
 		}
-		else reject(new Error('Cannot create theme loader'));
+		catch (err) {
+			reject(err);
+		}
 	});
 }
 
 function loadTheme(
 	pkg: ThemePkgDescription,
 	fiberChannelFactory: IFiberChannelFactory,
-	theme: any
-): Promise<any|undefined> {
-	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
-	return loadThemeModule(pkg)
-		.then((themeModule) => themeModule.call(theme))
+): Promise<LoadedThemeRuntime|undefined> {
+	const entryPoint = new BehaviorSubject<ThemeModuleFunction|null>(null);
+	return loadThemeModule(
+		pkg,
+		{
+			entryPoint
+		},
+		fiberChannelFactory,
+	)
+		.then(() => true)
 		.catch((e) => {
 			const sink = fiberChannelFactory.getAppFiberChannelSink(pkg);
 			sink({
@@ -109,41 +107,70 @@ function loadTheme(
 				}
 			});
 			return false;
-		});
+		})
+		.then((loaded) => (loaded ? {
+			pkg,
+			entryPoint
+		} : undefined));
 }
 
+let subscription: Subscription|undefined;
+
 export function loadThemes(
-	themes: AccountAppsData,
+	accounts: Array<Account>,
 	fiberChannelFactory: IFiberChannelFactory,
-	theme: any
-): Promise<any> {
-	return Promise.all(
+	setThemeCache: (cache: any) => void,
+): Promise<void> {
+	injectSharedLibraries();
+	return Promise.all<LoadedThemeRuntime|undefined>(
 		map(
-			orderBy(themes, 'priority'),
-			(pkg) => loadTheme(pkg, fiberChannelFactory, theme)
+			orderBy(accounts[0].themes, 'priority'),
+			(pkg) => loadTheme(
+				pkg,
+				fiberChannelFactory
+			)
 		)
 	)
-		.then((pkgTheme) => {
+		.then((loaded) => compact<LoadedThemeRuntime>(loaded))
+		.then((loaded) => orderBy<LoadedThemeRuntime>(loaded, 'pkg.priority'))
+		.then((loaded) => {
+			if (subscription) {
+				subscription.unsubscribe();
+				subscription = undefined;
+			}
+			if (loaded.length > 0) {
+				subscription = loaded[0].entryPoint.subscribe((themeFn) => {
+					if (themeFn) {
+						setThemeCache(themeFn());
+					}
+				});
+			}
+			return loaded;
+		})
+		.then((loaded) => {
 			const sink = fiberChannelFactory.getShellFiberChannelSink();
 			sink({
 				to: {
 					version: PACKAGE_VERSION,
 					app: PACKAGE_NAME
 				},
-				event: 'all-apps-loaded',
-				data: pkgTheme
+				event: 'all-themes-loaded',
+				data: loaded
 			});
-			return pkgTheme;
 		});
 }
 
 export function unloadThemes(): Promise<void> {
+	if (subscription) {
+		subscription.unsubscribe();
+		subscription = undefined;
+	}
 	return Promise.resolve()
 		.then(() => {
 			forOwn(
-				_iframes,
-				(iframe) => {
-					if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+				_scripts,
+				(script) => {
+					if (script.parentNode) script.parentNode.removeChild(script);
 				}
 			);
 		});

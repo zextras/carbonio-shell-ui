@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.102-beta.38](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.37...v0.0.102-beta.38) (2021-01-14)
+
+
+### Features
+
+* implemented error reporter inhibitor ([8f87af2](https://bitbucket.org/zextras/zapp-shell/commit/8f87af2b947c95796ce0e3594c6b5761ef21f3b4))
+* new board's tabs appear on start of tab list ([523c4f1](https://bitbucket.org/zextras/zapp-shell/commit/523c4f11b5d936b75f31bbc7c2fbf1a74aa9f471))
+* reviewed app and theme loading ([ae11e0f](https://bitbucket.org/zextras/zapp-shell/commit/ae11e0f77762a841e46ad892f38af811d1e213c8))
+
+
+### Bug Fixes
+
+* fixed app loading in firefox ([91f6243](https://bitbucket.org/zextras/zapp-shell/commit/91f62438aa2095562ae686c378764a1c35f4254e))
+* removed reporting of SoapFetch requests, returned complete error ([b215e84](https://bitbucket.org/zextras/zapp-shell/commit/b215e848e49716e0ab33e4cc93bc6f1a07a5d157))
+
 ### [0.0.102-beta.37](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.36...v0.0.102-beta.37) (2020-12-23)
 
 

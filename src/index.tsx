@@ -8,6 +8,7 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
+
 import './index.css';
 
 import React, { Suspense } from 'react';

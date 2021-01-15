@@ -25,10 +25,10 @@ export default class StoreFactory {
 	getStoreForApp(pkg: AppPkgDescription): Store<any> {
 		if (this._cache[pkg.package]) return this._cache[pkg.package];
 		const store = configureStore({
-			devTools: (FLAVOR === 'NPM' || FLAVOR === 'E2E') ? {
+			devTools: (FLAVOR === 'NPM') ? {
 				name: pkg.package
 			} : false,
-			middleware: (FLAVOR === 'NPM' || FLAVOR === 'E2E')
+			middleware: (FLAVOR === 'NPM')
 				// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 				? (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
 				// eslint-disable-next-line @typescript-eslint/explicit-function-return-type

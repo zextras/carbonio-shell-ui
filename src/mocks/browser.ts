@@ -13,6 +13,6 @@ import { setupWorker } from 'msw';
 import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
 import { generateHandlers } from './handlers';
 
-export function generateWorker(cliSettings: any): SetupWorkerApi {
+export function generateWorker(cliSettings: cliSettingsNamespace): SetupWorkerApi {
 	return setupWorker(...generateHandlers(cliSettings));
 }

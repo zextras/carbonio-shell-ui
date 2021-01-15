@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.102-beta.40](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.39...v0.0.102-beta.40) (2021-01-15)
+
+
+### Features
+
+* added useUpdateCurrentBoard hook ([f0717cf](https://bitbucket.org/zextras/zapp-shell/commit/f0717cf1c0fe4f9a5393f7758513f5f550e2458e))
+
+
+### Bug Fixes
+
+* added title hook ([4d9dbe7](https://bitbucket.org/zextras/zapp-shell/commit/4d9dbe73c076fb9fd8169f4c0efcea4c8ad6cf8e))
+
 ### [0.0.102-beta.39](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.38...v0.0.102-beta.39) (2021-01-14)
 
 ### [0.0.102-beta.38](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.37...v0.0.102-beta.38) (2021-01-14)

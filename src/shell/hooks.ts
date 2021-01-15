@@ -55,6 +55,11 @@ export function useAddBoardCallback(path: string): () => void {
 	}, [addBoard, path, pkg]);
 }
 
+export function useUpdateCurrentBoard(): (url: string, title: string) => void {
+	const { updateCurrentBoard } = useContext(BoardSetterContext);
+	return updateCurrentBoard;
+}
+
 export function useRemoveCurrentBoard(): () => void {
 	const { removeCurrentBoard } = useContext(BoardSetterContext);
 	return removeCurrentBoard;

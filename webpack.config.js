@@ -13,7 +13,7 @@ const babelRC = require('./babel.config.js');
 
 /**
  * The flavor of the build
- * @type {'npm' | 'e2e' | 'app'}
+ * @type {'npm' | 'app'}
  */
 const flavor = process.env.ZX_SHELL_FLAVOR || 'APP';
 

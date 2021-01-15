@@ -48,10 +48,10 @@ export default function createShellStore(
 		reducer = combinedReducer;
 	}
 	const shellStore = configureStore({
-		devTools: (FLAVOR === 'NPM' || FLAVOR === 'E2E')
+		devTools: (FLAVOR === 'NPM')
 			? { name: 'com_zextras_zapp_shell' }
 			: false,
-		middleware: (FLAVOR === 'NPM' || FLAVOR === 'E2E')
+		middleware: (FLAVOR === 'NPM')
 			// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 			? (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
 			// eslint-disable-next-line @typescript-eslint/explicit-function-return-type

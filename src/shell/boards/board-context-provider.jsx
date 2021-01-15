@@ -64,6 +64,15 @@ const reducer = (state, action) => {
 				boards: updatedBoards
 			};
 		}
+		case 'UPDATE_CURRENT_BOARD': {
+			const updatedBoards = { ...state.boards };
+			if (action.payload.url) set(updatedBoards, '[state.currentBoard].url', payload.url);
+			if (action.payload.title) set(updatedBoards, '[state.currentBoard].title', payload.title);
+			return {
+				...state,
+				boards: updatedBoards
+			};
+			}
 		case 'SET_CURRENT_BOARD': {
 			return {
 				...state,
@@ -115,6 +124,9 @@ export default function BoardContextProvider({ children }) {
 	const updateBoard = useCallback((key, url, title) => {
 		dispatch({ type: 'UPDATE_BOARD', payload: { key, url, title } });
 	}, []);
+	const updateCurrentBoard=useCallback((url, title) => {
+		dispatch({ type: 'UPDATE_CURRENT_BOARD', payload: { url, title } });
+	}, [])
 	const setCurrentBoard = useCallback((key) => {
 		dispatch({ type: 'SET_CURRENT_BOARD', payload: { key } });
 	}, []);
@@ -133,7 +145,8 @@ export default function BoardContextProvider({ children }) {
 		updateBoard,
 		setCurrentBoard,
 		toggleLargeView,
-		toggleMinimized
+		toggleMinimized,
+		updateCurrentBoard
 	}), []);
 
 	return (

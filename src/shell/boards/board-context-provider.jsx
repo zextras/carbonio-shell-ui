@@ -10,7 +10,7 @@
  */
 
 import React, { useCallback, useMemo, useReducer, } from 'react';
-import { pickBy } from 'lodash';
+import { pickBy, set } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { BoardValueContext, BoardSetterContext } from './board-context';
 
@@ -64,6 +64,15 @@ const reducer = (state, action) => {
 				boards: updatedBoards
 			};
 		}
+		case 'UPDATE_CURRENT_BOARD': {
+			const updatedBoards = { ...state.boards };
+			if (action.payload.url) set(updatedBoards, '[state.currentBoard].url', action.payload.url);
+			if (action.payload.title) set(updatedBoards, '[state.currentBoard].title', action.payload.title);
+			return {
+				...state,
+				boards: updatedBoards
+			};
+		}
 		case 'SET_CURRENT_BOARD': {
 			return {
 				...state,
@@ -102,7 +111,7 @@ export default function BoardContextProvider({ children }) {
 
 	const addBoard = useCallback((url, title = t('New tab')) => {
 		dispatch({ type: 'ADD_BOARD', payload: { url, title } });
-	}, []);
+	}, [t]);
 	const removeBoard = useCallback((key) => {
 		dispatch({ type: 'REMOVE_BOARD', payload: { key } });
 	}, []);
@@ -115,6 +124,9 @@ export default function BoardContextProvider({ children }) {
 	const updateBoard = useCallback((key, url, title) => {
 		dispatch({ type: 'UPDATE_BOARD', payload: { key, url, title } });
 	}, []);
+	const updateCurrentBoard=useCallback((url, title) => {
+		dispatch({ type: 'UPDATE_CURRENT_BOARD', payload: { url, title } });
+	}, [])
 	const setCurrentBoard = useCallback((key) => {
 		dispatch({ type: 'SET_CURRENT_BOARD', payload: { key } });
 	}, []);
@@ -133,8 +145,19 @@ export default function BoardContextProvider({ children }) {
 		updateBoard,
 		setCurrentBoard,
 		toggleLargeView,
-		toggleMinimized
-	}), []);
+		toggleMinimized,
+		updateCurrentBoard
+	}), [
+		addBoard,
+		removeAllBoards,
+		removeBoard,
+		removeCurrentBoard,
+		setCurrentBoard,
+		toggleLargeView,
+		toggleMinimized,
+		updateBoard, 
+		updateCurrentBoard
+	]);
 
 	return (
 		<BoardValueContext.Provider value={boardState}>

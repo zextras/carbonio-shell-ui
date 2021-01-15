@@ -133,7 +133,7 @@ function updateAppHandlers(
 	appPkg: AppPkgDescription,
 	handlers: RequestHandlersList
 ): void {
-	const worker = e2e.getMSWorker<SetupWorkerApi>();
+	const worker = devUtils.getMSWorker<SetupWorkerApi>();
 	if (worker) {
 		worker.resetHandlers();
 		forEach(handlers, (h) => worker.use(h));
@@ -335,7 +335,6 @@ export function injectSharedLibraries(): void {
 	wnd.__ZAPP_HMR_EXPORT__ = {};
 	switch (FLAVOR) {
 		case 'NPM':
-		case 'E2E':
 			wnd.__ZAPP_SHARED_LIBRARIES__.faker = Faker;
 			wnd.__ZAPP_SHARED_LIBRARIES__.msw = Msw;
 			wnd.__ZAPP_HMR_HANDLERS__ = {};

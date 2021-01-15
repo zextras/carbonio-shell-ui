@@ -24,6 +24,7 @@ const BoardSetterContext = createContext({
 	removeAllBoards: () => undefined,
 	updateBoard: (key, url, title) => undefined,
 	setCurrentBoard: (key) => undefined,
+	updateCurrentBoard: (url, title) => undefined,
 	toggleLargeView: () => undefined,
 	toggleMinimized: () => undefined
 });

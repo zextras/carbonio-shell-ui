@@ -66,8 +66,6 @@ const reducer = (state, action) => {
 		}
 		case 'UPDATE_CURRENT_BOARD': {
 			const updatedBoards = { ...state.boards };
-			// if (action.payload.url) set(updatedBoards, '[state.currentBoard].url', action.payload.url);
-			// if (action.payload.title) set(updatedBoards, '[state.currentBoard].title', action.payload.title);
 			if (action.payload.url) updatedBoards[state.currentBoard].url = action.payload.url;
 			if (action.payload.title) updatedBoards[state.currentBoard].title = action.payload.title;
 			return {

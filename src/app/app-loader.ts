@@ -133,10 +133,12 @@ function updateAppHandlers(
 	appPkg: AppPkgDescription,
 	handlers: RequestHandlersList
 ): void {
-	const worker = devUtils.getMSWorker<SetupWorkerApi>();
-	if (worker) {
-		worker.resetHandlers();
-		forEach(handlers, (h) => worker.use(h));
+	if (typeof devUtils !== 'undefined') {
+		const worker = devUtils.getMSWorker<SetupWorkerApi>();
+		if (worker) {
+			worker.resetHandlers();
+			forEach(handlers, (h) => worker.use(h));
+		}
 	}
 }
 

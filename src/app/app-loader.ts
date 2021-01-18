@@ -133,10 +133,12 @@ function updateAppHandlers(
 	appPkg: AppPkgDescription,
 	handlers: RequestHandlersList
 ): void {
-	const worker = devUtils.getMSWorker<SetupWorkerApi>();
-	if (worker) {
-		worker.resetHandlers();
-		forEach(handlers, (h) => worker.use(h));
+	if (FLAVOR === 'NPM' && typeof devUtils !== 'undefined') {
+		const worker = devUtils.getMSWorker<SetupWorkerApi>();
+		if (worker) {
+			worker.resetHandlers();
+			forEach(handlers, (h) => worker.use(h));
+		}
 	}
 }
 
@@ -213,9 +215,12 @@ function loadAppModule(
 				entryPoint.next(appClass);
 				resolve();
 			}
-			// eslint-disable-next-line max-len
-			(window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>).__ZAPP_HMR_HANDLERS__[appPkg.package] = (handlers: RequestHandlersList): void =>
-				updateAppHandlers(appPkg, handlers);
+
+			if (FLAVOR === 'NPM' && typeof cliSettings !== 'undefined' && cliSettings.hasHandlers) {
+				// eslint-disable-next-line max-len
+				(window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>).__ZAPP_HMR_HANDLERS__[appPkg.package] = (handlers: RequestHandlersList): void =>
+					updateAppHandlers(appPkg, handlers);
+			}
 			const script: HTMLScriptElement = document.createElement('script');
 			script.setAttribute('type', 'text/javascript');
 			script.setAttribute('data-pkg_name', appPkg.package);

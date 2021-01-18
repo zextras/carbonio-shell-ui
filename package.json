@@ -10,7 +10,7 @@
     "webdriver:start": "webdriver-manager update && webdriver-manager start",
     "test:e2e": "protractor protractor.conf.js",
     "test": "jest",
-    "_postinstall": "is-ci || husky install",
+    "postinstall": "is-ci || husky install",
     "prepublish": "pinst --disable",
     "prepublishOnly": "npm run build:clean && ZX_SHELL_FLAVOR=NPM npm run build",
     "postpublish": "pinst --enable && rm -rf lib",

@@ -38,5 +38,5 @@ type cliSettingsNamespace = {
 /**
  * Installed only on 'npm' package.
  */
-declare const devUtils: devUtilsNamespace;
-declare const cliSettings: cliSettingsNamespace;
+declare const devUtils: devUtilsNamespace | undefined;
+declare const cliSettings: cliSettingsNamespace | undefined;

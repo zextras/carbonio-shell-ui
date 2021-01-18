@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.102-beta.43](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.42...v0.0.102-beta.43) (2021-01-18)
+
+
+### Bug Fixes
+
+* removed _ from postinstall in package.json ([3290f12](https://bitbucket.org/zextras/zapp-shell/commit/3290f1241fba3323b6974a9902171a6253ec7764))
+* updated  add title hook ([cb98579](https://bitbucket.org/zextras/zapp-shell/commit/cb98579eecb76c7ff37755a383bd1f536566ccab))
+* updated  add title hook ([a8db78e](https://bitbucket.org/zextras/zapp-shell/commit/a8db78e57bc9e6708008238fa192f9a0c0d73fa2))
+* updated condition for production environment ([6c0534c](https://bitbucket.org/zextras/zapp-shell/commit/6c0534c592e902ddb7b087a6f03e73f7f07b7aa7))
+
 ### [0.0.102-beta.42](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.41...v0.0.102-beta.42) (2021-01-18)
 
 

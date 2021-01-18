@@ -350,7 +350,7 @@ export function loadApps(
 	storeFactory: StoreFactory
 ): Promise<LoadedAppsCache> {
 	injectSharedLibraries();
-	const apps = cliSettings?.enableErrorReporter
+	const apps = (!cliSettings || cliSettings.enableErrorReporter)
 		? orderBy(accounts[0].apps, 'priority')
 		: filter(orderBy(accounts[0].apps, 'priority'), (pkg) => pkg.package !== "com_zextras_zapp_error_reporter");
 	return Promise.all(

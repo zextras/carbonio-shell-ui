@@ -64,7 +64,7 @@ export default function AppLoaderMounter() {
 
 	return (
 		<div
-			hidden={true}
+			hidden
 			style={{ height: 0, overflow: 'hidden' }}
 		>
 			{ children }

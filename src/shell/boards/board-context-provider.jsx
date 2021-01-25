@@ -28,7 +28,8 @@ const reducer = (state, action) => {
 					...state.boards,
 				},
 				currentBoard: boardKey,
-				minimized: false
+				minimized: false,
+				count:Object.keys(state.boards).length
 			};
 			return returnValue;
 		}
@@ -44,14 +45,16 @@ const reducer = (state, action) => {
 				...state,
 				boards: pickBy(state.boards, (board, key) => key !== boardToRemove),
 				largeView: boardKeys.length === 1 ? false : state.largeView,
-				currentBoard: newCurrentBoard
+				currentBoard: newCurrentBoard,
+				count:Object.keys(state.boards).length
 			};
 		}
 		case 'REMOVE_ALL_BOARDS': {
 			return {
 				...state,
 				boards: {},
-				largeView: false
+				largeView: false,
+				count:0
 			};
 		}
 		case 'UPDATE_BOARD': {
@@ -91,6 +94,13 @@ const reducer = (state, action) => {
 				minimized: !state.minimized
 			};
 		}
+		case 'GET_COUNT': {
+			return {
+				...state,
+				count:Object.keys(state.boards).length
+			};
+			// return Object.keys(state.boards).length
+		}
 		default:
 			console.warn('Unrecognized action type in BoardContext');
 			return state;
@@ -105,7 +115,8 @@ export default function BoardContextProvider({ children }) {
 			boards: {},
 			currentBoard: 0,
 			largeView: false,
-			minimized: false
+			minimized: false,
+			count:0
 		}
 	);
 
@@ -136,6 +147,9 @@ export default function BoardContextProvider({ children }) {
 	const toggleMinimized = useCallback(() => {
 		dispatch({ type: 'TOGGLE_MINIMIZED' });
 	}, []);
+	const getBoardCount = useCallback(() => {
+		dispatch({ type: 'GET_COUNT' });
+	}, []);
 
 	const boardSetters = useMemo(() => ({
 		addBoard,
@@ -146,7 +160,8 @@ export default function BoardContextProvider({ children }) {
 		setCurrentBoard,
 		toggleLargeView,
 		toggleMinimized,
-		updateCurrentBoard
+		updateCurrentBoard,
+		getBoardCount
 	}), [
 		addBoard,
 		removeAllBoards,
@@ -156,7 +171,8 @@ export default function BoardContextProvider({ children }) {
 		toggleLargeView,
 		toggleMinimized,
 		updateBoard, 
-		updateCurrentBoard
+		updateCurrentBoard,
+		getBoardCount
 	]);
 
 	return (

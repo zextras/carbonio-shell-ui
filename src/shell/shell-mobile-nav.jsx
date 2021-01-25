@@ -69,7 +69,7 @@ export default function ShellMobileNav({
 											label={app.label}
 											click={app.click}
 											customComponent={app.customComponent}
-											divider={true}
+											divider
 										/>
 									)
 									: (
@@ -80,7 +80,7 @@ export default function ShellMobileNav({
 											label={app.label}
 											click={app.click}
 											items={app.items}
-											divider={true}
+											divider
 										/>
 									)
 							))
@@ -101,7 +101,7 @@ export default function ShellMobileNav({
 									click={app.click}
 									label={app.label}
 									items={app.folders}
-									divider={true}
+									divider
 								/>
 							))
 						}

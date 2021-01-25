@@ -65,6 +65,10 @@ export function useRemoveCurrentBoard(): () => void {
 	return removeCurrentBoard;
 }
 
+export function useGetBoardCount(): () => void {
+	const { getBoardCount } =useContext(BoardSetterContext);
+	return getBoardCount;
+}
 export function usePushHistoryCallback(): (location: LocationDescriptor) => void {
 	const { pkg } = useContext(AppContext);
 	const history = useHistory();
@@ -77,6 +81,7 @@ export function usePushHistoryCallback(): (location: LocationDescriptor) => void
 		}
 	}, [pkg, history]);
 }
+
 
 export function useGoBackHistoryCallback(): () => void {
 	const history = useHistory();

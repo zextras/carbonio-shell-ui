@@ -15,6 +15,9 @@ import { useFiberChannelFactory, useShellNetworkService, useStoreFactory } from 
 import { loadApps, unloadApps } from './app-loader';
 import AppContextCacheProvider from './app-context-cache-provider';
 import { useUserAccounts } from '../store/shell-store-hooks';
+import {checkUpdate} from '../update-log/check-update'
+import ChangeLogModal from '../update-log/change-log-modal';
+
 
 export default function AppLoaderContextProvider({ children }) {
 	const shellNetworkService = useShellNetworkService();
@@ -22,6 +25,8 @@ export default function AppLoaderContextProvider({ children }) {
 	const fiberChannelFactory = useFiberChannelFactory();
 	const storeFactory = useStoreFactory();
 	const [[appsCache, appsLoaded], setAppsCache] = useState([{}, false]);
+	const [showUpdateModal, setShowUpdateModal] = useState(false);
+
 
 	useEffect(() => {
 		console.log('Accounts changed, un/loading Apps!');
@@ -42,6 +47,7 @@ export default function AppLoaderContextProvider({ children }) {
 				storeFactory
 			)
 				.then((cache) => {
+				   	setShowUpdateModal(checkUpdate());	
 					if (!canSet) return;
 					setAppsCache([cache, true]);
 				});
@@ -51,21 +57,27 @@ export default function AppLoaderContextProvider({ children }) {
 		};
 	}, [accounts, fiberChannelFactory, shellNetworkService, storeFactory]);
 
+   
+	 
 	const value = useMemo(() => ({
 		appsCache,
-		appsLoaded
+		appsLoaded,showUpdateModal
 	}), [
 		appsCache,
-		appsLoaded
+		appsLoaded,showUpdateModal
 	]);
 
+   
 	return (
 		<AppLoaderContext.Provider
 			value={value}
 		>
 			<AppContextCacheProvider>
+				{showUpdateModal ? <ChangeLogModal cache={value.appsCache}/>:null}		 
 				{ children }
 			</AppContextCacheProvider>
 		</AppLoaderContext.Provider>
 	);
 }
+
+

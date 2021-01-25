@@ -57,7 +57,7 @@ export default function ShellSecondaryBar({
 														role="menuitem"
 														key={`${folder.label ?? ''}_${folder.icon ?? ''}`}
 														click={folder.click}
-														active={true}
+														active
 														icon={folder.icon}
 														label={folder.label}
 														items={folder.items || []}

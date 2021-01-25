@@ -20,7 +20,7 @@ describe('Secondary bar', () => {
 		testUtils.render(
 			<ShellSecondaryBar
 				mainMenuItems={[]}
-				navigationBarIsOpen={true}
+				navigationBarIsOpen
 				onCollapserClick={onCollapserClick}
 			/>
 		);
@@ -42,7 +42,7 @@ describe('Secondary bar', () => {
 		testUtils.render(
 			<ShellSecondaryBar
 				mainMenuItems={mainMenuItems}
-				navigationBarIsOpen={true}
+				navigationBarIsOpen
 				onCollapserClick={onCollapserClick}
 			/>,
 			{
@@ -76,7 +76,7 @@ describe('Secondary bar', () => {
 		testUtils.render(
 			<ShellSecondaryBar
 				mainMenuItems={mainMenuItems}
-				navigationBarIsOpen={true}
+				navigationBarIsOpen
 				onCollapserClick={onCollapserClick}
 			/>,
 			{
@@ -104,7 +104,7 @@ describe('Secondary bar', () => {
 		testUtils.render(
 			<ShellSecondaryBar
 				mainMenuItems={mainMenuItems}
-				navigationBarIsOpen={true}
+				navigationBarIsOpen
 				onCollapserClick={onCollapserClick}
 			/>,
 			{
@@ -129,7 +129,7 @@ describe('Secondary bar', () => {
 		testUtils.render(
 			<ShellSecondaryBar
 				mainMenuItems={mainMenuItems}
-				navigationBarIsOpen={true}
+				navigationBarIsOpen
 				onCollapserClick={onCollapserClick}
 			/>,
 			{

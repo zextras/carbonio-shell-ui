@@ -47,6 +47,7 @@ export default function BootstrapperContextProvider({
 						<I18nextProvider i18n={i18nFactory.getShellI18n()}>
 							<AppLoaderContextProvider>
 								<BoardContextProvider>
+							       
 									{ children }
 									<AppLoaderMounter />
 								</BoardContextProvider>

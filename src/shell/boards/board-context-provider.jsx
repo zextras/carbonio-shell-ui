@@ -10,7 +10,7 @@
  */
 
 import React, { useCallback, useMemo, useReducer, } from 'react';
-import { pickBy, set } from 'lodash';
+import { pickBy } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { BoardValueContext, BoardSetterContext } from './board-context';
 
@@ -29,7 +29,6 @@ const reducer = (state, action) => {
 				},
 				currentBoard: boardKey,
 				minimized: false,
-				count:Object.keys(state.boards).length
 			};
 			return returnValue;
 		}
@@ -46,7 +45,6 @@ const reducer = (state, action) => {
 				boards: pickBy(state.boards, (board, key) => key !== boardToRemove),
 				largeView: boardKeys.length === 1 ? false : state.largeView,
 				currentBoard: newCurrentBoard,
-				count:Object.keys(state.boards).length
 			};
 		}
 		case 'REMOVE_ALL_BOARDS': {
@@ -54,7 +52,6 @@ const reducer = (state, action) => {
 				...state,
 				boards: {},
 				largeView: false,
-				count:0
 			};
 		}
 		case 'UPDATE_BOARD': {
@@ -109,7 +106,7 @@ export default function BoardContextProvider({ children }) {
 			boards: {},
 			currentBoard: 0,
 			largeView: false,
-			minimized: false,
+			minimized: false
 		}
 	);
 
@@ -150,7 +147,7 @@ export default function BoardContextProvider({ children }) {
 		setCurrentBoard,
 		toggleLargeView,
 		toggleMinimized,
-		updateCurrentBoard,
+		updateCurrentBoard
 	}), [
 		addBoard,
 		removeAllBoards,
@@ -160,7 +157,7 @@ export default function BoardContextProvider({ children }) {
 		toggleLargeView,
 		toggleMinimized,
 		updateBoard, 
-		updateCurrentBoard,
+		updateCurrentBoard
 	]);
 
 	return (

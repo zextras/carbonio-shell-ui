@@ -13,18 +13,11 @@
 import moment from 'moment';
 
 export function checkUpdate (){
-
 	const today=moment();
 	const nextNotifyOn=Number(localStorage.getItem('nextNotifyOn'));
-	console.log("nextNotifyOn:",nextNotifyOn);
 	const differenceInDays =moment(nextNotifyOn).diff(today, 'days');
-	    console.log("differncexxx:",differenceInDays)
 	if(differenceInDays <=0){
-		//  executeReading(fakeCache);
 		return true;
 	}
-		
-	// console.log("Will have to wait till next Notification Date")
 	return false;
-		
 }

@@ -24,7 +24,7 @@ const Title = styled(Text)`
   background: ${({ theme }) => theme.palette.gray5.regular};
 `;
 
-
+const CHANGELOG_VERSION_REGEX = /([0-9]\.[0-9]\.[0-9][0-9]-beta\.[0-9])/;
 
 export default function ChangeLogModal({ cache }) {
 	const [mdpackage, setMdPackage] = useState({});
@@ -40,22 +40,15 @@ export default function ChangeLogModal({ cache }) {
 				.then((res) => res.text())
 				.then((content) => {
 					const changelogVersion = content.match(
-						/([0-9]\.[0-9]\.[0-9][0-9]-beta\.[0-9])/
+						CHANGELOG_VERSION_REGEX
 					)[0];
-					console.log("Package Version:", value.pkg.version);
-					console.log(
-						"Version Compare:",
-						value.pkg.version.localeCompare(changelogVersion)
-					);
 					if (value.pkg.version.localeCompare(changelogVersion) !== 0) {
 						const requiredContent = content.substr(191, content.length);
 						updateLog[data[key].pkg.name] = requiredContent;
 						if (count === Object.keys(data).length) setMdPackage(updateLog);
-						setTimeout(() => setShowUpdate(true), 1500);
-		  } 
-		  else console.log("No Update Available");
+						setTimeout(() => setShowUpdate(true), 15000);
+					}
 				})
-
 				.catch((err) => {
 					console.log("error:", err);
 				});
@@ -72,7 +65,6 @@ export default function ChangeLogModal({ cache }) {
 		const nextNotifyOn = today.add(15, "days").valueOf();
 		localStorage.setItem("nextNotifyOn", nextNotifyOn);
 	};
-
 
 	return (
 		<div>

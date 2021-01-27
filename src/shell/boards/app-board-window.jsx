@@ -8,7 +8,7 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, {	useContext, useEffect, useRef, useMemo} from 'react';
+import React, { useContext, useEffect, useRef, useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { reduce, map, slice } from 'lodash';
 import {

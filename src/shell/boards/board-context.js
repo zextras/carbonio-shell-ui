@@ -16,7 +16,6 @@ const BoardValueContext = createContext({
 	currentBoard: 0,
 	largeView: false,
 	minimized: false,
-	count:0
 });
 const BoardSetterContext = createContext({
 	addBoard: (url, title) => undefined,
@@ -27,7 +26,7 @@ const BoardSetterContext = createContext({
 	setCurrentBoard: (key) => undefined,
 	updateCurrentBoard: (url, title) => undefined,
 	toggleLargeView: () => undefined,
-	toggleMinimized: () => undefined,
+	toggleMinimized: () => undefined
 });
 
 export { BoardValueContext, BoardSetterContext };

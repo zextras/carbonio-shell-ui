@@ -27,7 +27,6 @@ export default function AppLoaderContextProvider({ children }) {
 	const [[appsCache, appsLoaded], setAppsCache] = useState([{}, false]);
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
 
-
 	useEffect(() => {
 		console.log('Accounts changed, un/loading Apps!');
 		let canSet = true;
@@ -47,7 +46,7 @@ export default function AppLoaderContextProvider({ children }) {
 				storeFactory
 			)
 				.then((cache) => {
-				   	setShowUpdateModal(checkUpdate());	
+					setShowUpdateModal(checkUpdate());	
 					if (!canSet) return;
 					setAppsCache([cache, true]);
 				});
@@ -57,17 +56,16 @@ export default function AppLoaderContextProvider({ children }) {
 		};
 	}, [accounts, fiberChannelFactory, shellNetworkService, storeFactory]);
 
-   
-	 
 	const value = useMemo(() => ({
 		appsCache,
-		appsLoaded,showUpdateModal
+		appsLoaded,
+		showUpdateModal
 	}), [
 		appsCache,
-		appsLoaded,showUpdateModal
+		appsLoaded,
+		showUpdateModal
 	]);
 
-   
 	return (
 		<AppLoaderContext.Provider
 			value={value}

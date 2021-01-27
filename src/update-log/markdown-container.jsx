@@ -3,12 +3,10 @@ import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
 import styled from "styled-components";
 
-
-
 const Content = styled.span`
   width: 100%;
   font-family: ${({ theme }) => theme.fonts.default};
-  font-size: 12px;
+  font-size: ${({ theme }) => theme.sizes.font.medium};
   text-align: justify;
   color: ${({ theme }) => theme.palette.text.regular};
 `;
@@ -22,7 +20,7 @@ export default function MarkdownContainer({content}) {
 			<ReactMarkdown
 				plugins={[gfm]}
 				renderers={renderers}
-			> 
+			>
 				{content}
 			</ReactMarkdown>
 		</div>

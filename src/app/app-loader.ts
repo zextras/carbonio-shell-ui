@@ -133,10 +133,12 @@ function updateAppHandlers(
 	appPkg: AppPkgDescription,
 	handlers: RequestHandlersList
 ): void {
-	const worker = e2e.getMSWorker<SetupWorkerApi>();
-	if (worker) {
-		worker.resetHandlers();
-		forEach(handlers, (h) => worker.use(h));
+	if (FLAVOR === 'NPM' && typeof devUtils !== 'undefined') {
+		const worker = devUtils.getMSWorker<SetupWorkerApi>();
+		if (worker) {
+			worker.resetHandlers();
+			forEach(handlers, (h) => worker.use(h));
+		}
 	}
 }
 
@@ -213,9 +215,12 @@ function loadAppModule(
 				entryPoint.next(appClass);
 				resolve();
 			}
-			// eslint-disable-next-line max-len
-			(window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>).__ZAPP_HMR_HANDLERS__[appPkg.package] = (handlers: RequestHandlersList): void =>
-				updateAppHandlers(appPkg, handlers);
+
+			if (FLAVOR === 'NPM' && typeof cliSettings !== 'undefined' && cliSettings.hasHandlers) {
+				// eslint-disable-next-line max-len
+				(window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>).__ZAPP_HMR_HANDLERS__[appPkg.package] = (handlers: RequestHandlersList): void =>
+					updateAppHandlers(appPkg, handlers);
+			}
 			const script: HTMLScriptElement = document.createElement('script');
 			script.setAttribute('type', 'text/javascript');
 			script.setAttribute('data-pkg_name', appPkg.package);
@@ -335,7 +340,6 @@ export function injectSharedLibraries(): void {
 	wnd.__ZAPP_HMR_EXPORT__ = {};
 	switch (FLAVOR) {
 		case 'NPM':
-		case 'E2E':
 			wnd.__ZAPP_SHARED_LIBRARIES__.faker = Faker;
 			wnd.__ZAPP_SHARED_LIBRARIES__.msw = Msw;
 			wnd.__ZAPP_HMR_HANDLERS__ = {};
@@ -351,9 +355,10 @@ export function loadApps(
 	storeFactory: StoreFactory
 ): Promise<LoadedAppsCache> {
 	injectSharedLibraries();
-	const apps = cliSettings?.enableErrorReporter
-		? orderBy(accounts[0].apps, 'priority')
-		: filter(orderBy(accounts[0].apps, 'priority'), (pkg) => pkg.package !== "com_zextras_zapp_error_reporter");
+	const orderedApps = orderBy(accounts[0].apps, 'priority');
+	const apps = (typeof cliSettings === 'undefined' || cliSettings.enableErrorReporter)
+		? orderedApps
+		: filter(orderedApps, (pkg) => pkg.package !== "com_zextras_zapp_error_reporter");
 	return Promise.all(
 		map(
 			apps,

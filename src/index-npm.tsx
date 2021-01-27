@@ -14,7 +14,7 @@ import React, { Suspense } from 'react';
 import { render } from 'react-dom';
 import LoadingView from './bootstrap/loading-view';
 import LazyBootstrapper from './bootstrap/lazy-bootstrapper';
-import loadDevelopmentEnv from './e2e/e2e-utils-injector';
+import loadDevelopmentEnv from './dev/dev-utils-injector';
 
 render(
 	(

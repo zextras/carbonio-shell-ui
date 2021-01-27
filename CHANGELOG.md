@@ -2,6 +2,46 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.102-beta.45](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.44...v0.0.102-beta.45) (2021-01-25)
+
+### [0.0.102-beta.44](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.43...v0.0.102-beta.44) (2021-01-18)
+
+
+### Bug Fixes
+
+* updated production runtime environment ([5ecfeac](https://bitbucket.org/zextras/zapp-shell/commit/5ecfeac3aac20734eb3e3616d8a213866dd0c169))
+
+### [0.0.102-beta.43](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.42...v0.0.102-beta.43) (2021-01-18)
+
+
+### Bug Fixes
+
+* removed _ from postinstall in package.json ([3290f12](https://bitbucket.org/zextras/zapp-shell/commit/3290f1241fba3323b6974a9902171a6253ec7764))
+* updated  add title hook ([cb98579](https://bitbucket.org/zextras/zapp-shell/commit/cb98579eecb76c7ff37755a383bd1f536566ccab))
+* updated  add title hook ([a8db78e](https://bitbucket.org/zextras/zapp-shell/commit/a8db78e57bc9e6708008238fa192f9a0c0d73fa2))
+* updated condition for production environment ([6c0534c](https://bitbucket.org/zextras/zapp-shell/commit/6c0534c592e902ddb7b087a6f03e73f7f07b7aa7))
+
+### [0.0.102-beta.42](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.41...v0.0.102-beta.42) (2021-01-18)
+
+
+### Bug Fixes
+
+* fixed app loading on production runtime ([8d61398](https://bitbucket.org/zextras/zapp-shell/commit/8d6139802ac49d61c617dbcd48c5c9d58532af08))
+
+### [0.0.102-beta.41](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.40...v0.0.102-beta.41) (2021-01-15)
+
+### [0.0.102-beta.40](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.39...v0.0.102-beta.40) (2021-01-15)
+
+
+### Features
+
+* added useUpdateCurrentBoard hook ([f0717cf](https://bitbucket.org/zextras/zapp-shell/commit/f0717cf1c0fe4f9a5393f7758513f5f550e2458e))
+
+
+### Bug Fixes
+
+* added title hook ([4d9dbe7](https://bitbucket.org/zextras/zapp-shell/commit/4d9dbe73c076fb9fd8169f4c0efcea4c8ad6cf8e))
+
 ### [0.0.102-beta.39](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.38...v0.0.102-beta.39) (2021-01-14)
 
 ### [0.0.102-beta.38](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.37...v0.0.102-beta.38) (2021-01-14)

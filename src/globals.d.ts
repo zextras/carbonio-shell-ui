@@ -11,32 +11,32 @@
 
 declare const PACKAGE_VERSION: string;
 declare const PACKAGE_NAME: string;
-declare const FLAVOR: 'APP'|'E2E'|'NPM';
+declare const FLAVOR: 'APP'|'NPM';
 
-type e2eNamespace = {
-	setLoginData(): Promise<void>;
-	installOnWindow(wnd: Window, ctxt?: any /* E2EContext */): void;
-	setupCompleted(): void;
+type devUtilsNamespace = {
+	installOnWindow(wnd: Window, ctxt?: any /* DevUtilsContext */): void;
 	getMSWorker<T /* SetupWorkerApi */>(): T | undefined;
 };
 
 type cliSettingsNamespace = {
-	isE2E?: boolean;
 	server?: string;
 	enableErrorReporter?: boolean;
+	hasHandlers?: boolean;
+	isWatch: boolean;
+	isStandalone: boolean;
 	// eslint-disable-next-line camelcase
-	app_package?: {
+	app_package: {
 		package: string;
 		name: string;
 		label: string;
 		version: string;
 		description: string;
-		type: string;
+		type: 'theme'|'app';
 	};
 };
 
 /**
- * Installed only on 'e2e' and 'npm' package.
+ * Installed only on 'npm' package.
  */
-declare const e2e: e2eNamespace;
-declare const cliSettings: cliSettingsNamespace;
+declare const devUtils: devUtilsNamespace | undefined;
+declare const cliSettings: cliSettingsNamespace | undefined;

@@ -10,10 +10,10 @@
  */
 
 import { ReactElement } from 'react';
-import { E2EContext } from '../e2e/e2e-types';
+import { DevUtilsContext } from '../dev/dev-types';
 
 type LazyBootstrapperProps = {
-	onBeforeBoot?: (ctxt: E2EContext) => Promise<void>;
+	onBeforeBoot?: (ctxt: DevUtilsContext) => Promise<void>;
 };
 
 export default function(props: LazyBootstrapperProps): ReactElement<LazyBootstrapperProps>;

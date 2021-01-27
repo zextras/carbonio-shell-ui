@@ -28,7 +28,6 @@ const BoardSetterContext = createContext({
 	updateCurrentBoard: (url, title) => undefined,
 	toggleLargeView: () => undefined,
 	toggleMinimized: () => undefined,
-	getBoardCount: () => undefined
 });
 
 export { BoardValueContext, BoardSetterContext };

@@ -94,13 +94,7 @@ const reducer = (state, action) => {
 				minimized: !state.minimized
 			};
 		}
-		case 'GET_COUNT': {
-			return {
-				...state,
-				count:Object.keys(state.boards).length
-			};
-			// return Object.keys(state.boards).length
-		}
+	
 		default:
 			console.warn('Unrecognized action type in BoardContext');
 			return state;
@@ -116,7 +110,6 @@ export default function BoardContextProvider({ children }) {
 			currentBoard: 0,
 			largeView: false,
 			minimized: false,
-			count:0
 		}
 	);
 
@@ -147,10 +140,7 @@ export default function BoardContextProvider({ children }) {
 	const toggleMinimized = useCallback(() => {
 		dispatch({ type: 'TOGGLE_MINIMIZED' });
 	}, []);
-	const getBoardCount = useCallback(() => {
-		dispatch({ type: 'GET_COUNT' });
-	}, []);
-
+	
 	const boardSetters = useMemo(() => ({
 		addBoard,
 		removeBoard,
@@ -161,7 +151,6 @@ export default function BoardContextProvider({ children }) {
 		toggleLargeView,
 		toggleMinimized,
 		updateCurrentBoard,
-		getBoardCount
 	}), [
 		addBoard,
 		removeAllBoards,
@@ -172,7 +161,6 @@ export default function BoardContextProvider({ children }) {
 		toggleMinimized,
 		updateBoard, 
 		updateCurrentBoard,
-		getBoardCount
 	]);
 
 	return (

@@ -46,11 +46,10 @@ export default function ChangeLogModal({ cache }) {
 						const requiredContent = content.substr(191, content.length);
 						updateLog[data[key].pkg.name] = requiredContent;
 						if (count === Object.keys(data).length) setMdPackage(updateLog);
-						setTimeout(() => setShowUpdate(true), 1500);
+						setTimeout(() => setShowUpdate(true), 15000);
 					}
 				})
-				.catch((err) => {
-				});
+				.catch((err) => null);
 		});
 	};
 

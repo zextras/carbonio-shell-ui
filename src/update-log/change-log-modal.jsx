@@ -46,11 +46,10 @@ export default function ChangeLogModal({ cache }) {
 						const requiredContent = content.substr(191, content.length);
 						updateLog[data[key].pkg.name] = requiredContent;
 						if (count === Object.keys(data).length) setMdPackage(updateLog);
-						setTimeout(() => setShowUpdate(true), 15000);
+						setTimeout(() => setShowUpdate(true), 1500);
 					}
 				})
 				.catch((err) => {
-					console.log("error:", err);
 				});
 		});
 	};
@@ -71,11 +70,11 @@ export default function ChangeLogModal({ cache }) {
 			<Modal
 				title='Change Log'
 				open={showUpdate}
-				onConfirm={() => setShowUpdate(false)}
+				onConfirm={remindLater}
 				onClose={() => setShowUpdate(false)}
 				dismissLabel='Cancel'
 				confirmLabel='Close'
-				onSecondaryAction={remindLater}
+				onSecondaryAction={() => setShowUpdate(false) }
 				secondaryActionLabel='Remind Later'>
 				<Container>
 					{Object.keys(mdpackage).map((key) => {

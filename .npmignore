@@ -3,7 +3,6 @@
 /artifact-deployer/
 /assets/
 /docs/
-/e2e/
 /extractedTranslations
 /pkg/
 /src/
@@ -23,7 +22,6 @@
 /shell.iml
 /tsconfig.json
 /webpack.config.js
-/webpack.e2e.config.js
 /zapp.conf.js
 /zapp.webpack.js
 /zimlet_def.template.xml

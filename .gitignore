@@ -5,5 +5,4 @@
 /lib/
 /deploy/
 /junit.xml
-/coverage/
-/e2e/output/
+/coverage/cobertura-coverage.xml

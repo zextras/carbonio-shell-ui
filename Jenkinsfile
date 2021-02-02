@@ -1,5 +1,5 @@
 library(
-	identifier: 'zapp-jenkins-lib@v0.0.12',
+	identifier: 'zapp-jenkins-lib@v0.0.15',
 	retriever: modernSCM([
 		$class: 'GitSCMSource',
 	 		remote: 'git@bitbucket.org:zextras/zapp-jenkins-lib.git',
@@ -8,32 +8,7 @@ library(
 )
 
 zappPipeline(
-	onlyCustomBuild: true,
-	onBuild: {
-		withCredentials([
-			usernamePassword(
-				credentialsId: 'npm-zextras-bot-auth', 
-				usernameVariable: 'NPM_USERNAME', 
-				passwordVariable: 'NPM_PASSWORD'
-			)
-		]) {
-			npm(
-				install: true,
-				username: "${NPM_USERNAME}",
-				password: "${NPM_PASSWORD}",
-				script: 'build:zimlet',
-				varEnv: [
-					NODE_ENV: 'production'
-				]
-			)
-		}
-		dir('pkg') {
-			stash(
-				includes: "${zipName}.zip",
-				name: 'zimbra_app_package'
-			)
-		}
-	},
+	buildScript: 'build:zimlet',
 	onPublish: {
 		withCredentials([
 			usernamePassword(

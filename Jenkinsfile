@@ -18,6 +18,8 @@ zappPipeline(
 			)
 		]) {
 			npm(
+				username: "${NPM_USERNAME}",
+				password: "${NPM_PASSWORD}",
 				install: true
 			)
 			if ("${BRANCH_NAME}" ==~ /(release)/) {

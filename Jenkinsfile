@@ -1,5 +1,5 @@
 library(
-	identifier: 'zapp-jenkins-lib@v0.0.18',
+	identifier: 'zapp-jenkins-lib@v0.0.19',
 	retriever: modernSCM([
 		$class: 'GitSCMSource',
 	 		remote: 'git@bitbucket.org:zextras/zapp-jenkins-lib.git',
@@ -17,9 +17,11 @@ zappPipeline(
 				passwordVariable: 'NPM_PASSWORD'
 			)
 		]) {
+			npm(
+				install: true
+			)
 			if ("${BRANCH_NAME}" ==~ /(release)/) {
 				npm(
-					install: true,
 					username: "${NPM_USERNAME}",
 					password: "${NPM_PASSWORD}",
 					script: 'publish',
@@ -29,7 +31,6 @@ zappPipeline(
 				)
 			} else {
 				npm(
-					install: true,
 					username: "${NPM_USERNAME}",
 					password: "${NPM_PASSWORD}",
 					script: 'publish --tag beta',

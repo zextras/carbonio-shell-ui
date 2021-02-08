@@ -13,7 +13,7 @@ import React from 'react';
 import { render as rtlRender } from '@testing-library/react';
 import fetch from 'node-fetch';
 import { MemoryRouter } from 'react-router-dom';
-import { extendTheme, ThemeProvider } from '@zextras/zapp-ui';
+import { ThemeContextProvider } from '@zextras/zapp-ui';
 import AppContextWrapper from './mocks/app-context-wrapper';
 import { usePushHistoryCallback, useReplaceHistoryCallback, useRemoveCurrentBoard } from './shell/hooks';
 
@@ -92,9 +92,7 @@ function render(
 
 	const Wrapper = ({ children }) => (
 		<MemoryRouter initialEntries={initialRouterEntries}>
-			<ThemeProvider
-				theme={extendTheme({})}
-			>
+			<ThemeContextProvider>
 				<AppContextWrapper
 					packageName={packageName}
 					packageVersion={packageVersion}
@@ -104,7 +102,7 @@ function render(
 				>
 					{ children }
 				</AppContextWrapper>
-			</ThemeProvider>
+			</ThemeContextProvider>
 		</MemoryRouter>
 	);
 

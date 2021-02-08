@@ -68,13 +68,13 @@ export default function ShellNavigationBar({
 }) {
 	const history = useHistory();
 	const [activeApp, setActiveApp] = useState(undefined);
-	const [appsCache] = useAppsCache();
+	const { cache } = useAppsCache();
 	const [mainMenuItems, setMainMenuItems] = useState({});
 
 	useEffect(() => {
 		const subscription = combineLatest(
 			reduce(
-				appsCache,
+				cache,
 				(acc, app) => {
 					acc.push(
 						app.mainMenuItems.pipe(
@@ -124,7 +124,7 @@ export default function ShellNavigationBar({
 				subscription.unsubscribe();
 			}
 		};
-	}, [appsCache, setMainMenuItems, history]);
+	}, [cache, setMainMenuItems, history]);
 
 	return (
 		<Container

@@ -9,8 +9,8 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { Row, Responsive, ThemeContext } from '@zextras/zapp-ui';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Row, Responsive, useThemeVariant, useSetThemeMode, THEME_MODE } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +18,6 @@ import BoardsRouterContainer from './boards/boards-router-container';
 import ShellContextProvider from './shell-context-provider';
 import SharedUiComponentsContextProvider
 	from '../shared-ui-components/shared-ui-components-context-provider';
-import BoardContextProvider from './boards/board-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
 import ShellMenuPanel from './shell-menu-panel';
@@ -50,6 +49,8 @@ export function Shell() {
 
 	const accounts = useUserAccounts();
 	const sessionState = useSessionState();
+	const themeVariant = useThemeVariant();
+	const setThemeMode = useSetThemeMode();
 
 	const doLogoutCbk = useCallback((ev) => {
 		ev.preventDefault();
@@ -61,18 +62,16 @@ export function Shell() {
 
 	const quota = 30;
 
-	const { mode, setMode } = useContext(ThemeContext);
-
 	const toggleDarkMode = useCallback((ev) => {
 		ev.preventDefault();
-		if (mode === 'light') setMode('dark');
-		else setMode('light');
-	}, [setMode, mode]);
+		if (themeVariant === THEME_MODE.LIGHT) setThemeMode(THEME_MODE.DARK);
+		else setThemeMode(THEME_MODE.LIGHT);
+	}, [themeVariant, setThemeMode]);
 
 	const userMenuTree = useMemo(() => [
 		{
-			label: mode === 'light' ? t('Switch to dark mode') : t('Switch to light mode'),
-			icon:  mode === 'light' ? 'MoonOutline' : 'SunOutline',
+			label: themeVariant === THEME_MODE.LIGHT ? t('Switch to dark mode') : t('Switch to light mode'),
+			icon:  themeVariant === THEME_MODE.LIGHT ? 'MoonOutline' : 'SunOutline',
 			folders: [],
 			click: toggleDarkMode
 		},
@@ -82,7 +81,7 @@ export function Shell() {
 			folders: [],
 			click: doLogoutCbk
 		}
-	], [doLogoutCbk, toggleDarkMode, mode]);
+	], [doLogoutCbk, toggleDarkMode, themeVariant, t]);
 
 	useEffect(() => {
 		if (sessionState === 'init' && accounts.length > 0) {

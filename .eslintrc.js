@@ -6,7 +6,6 @@ module.exports = {
 		FLAVOR: 'readonly',
 		PACKAGE_NAME: 'readonly',
 		PACKAGE_VERSION: 'readonly',
-		e2e: 'readonly',
 		cliSettings: 'readonly',
 	}
 };

@@ -26,17 +26,11 @@ This flavor is provided for the release of the deployed instance of Zextras Shel
 ### NPM
 This flavor is provided for the release of the [npm package][1] provided by the [Zapp CLI][2].
 
-It is the same of the [app][3] flavor with some instruments for App develpment and App e2e testing.
+It is the same of the [app][3] flavor with some instruments for App develpment and Testing.
 
 **Presets**:
 - Mocked [`fetch`][5] calls
 - User is logged in
-
-### E2E
-This flavor is provided for the Shell's own e2e tests.
-
-**Presets**:
-- Mocked [`fetch`][5] calls
 
 ## Code style
 - Any component which handle any kind of data is written in Typescript.
@@ -45,5 +39,4 @@ This flavor is provided for the Shell's own e2e tests.
 [1]: https://www.npmjs.com/package/@zextras/zapp-shell
 [2]: https://www.npmjs.com/package/@zextras/zapp-cli
 [3]: #app
-[4]: testing.md#e2e-tests
 [5]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API

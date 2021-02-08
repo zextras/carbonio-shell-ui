@@ -2,7 +2,7 @@ module.exports = {
 	globals: {
 		PACKAGE_VERSION: '0.0.0',
 		PACKAGE_NAME: 'com_zextras_zapp_shell',
-		FLAVOR: 'E2E'
+		FLAVOR: 'NPM'
 	},
 	transform: {
 		"^.+\\.[t|j]sx?$": ['babel-jest', { configFile: './babel.config.jest.js' }]
@@ -16,8 +16,8 @@ module.exports = {
 	clearMocks: true,
 	collectCoverage: true,
 	collectCoverageFrom: ['src/**/*.js', 'src/**/*.jsx', 'src/**/*.ts', 'src/**/*.tsx'],
-	// coverageDirectory: 'test/coverage',
-	coverageReporters: ['text'],
+	coverageDirectory: 'coverage',
+	coverageReporters: ['text', 'cobertura'],
 	reporters: ['default', 'jest-junit'],
 	// testMatch: ['/test/**/*.js?(x)'],
 	setupFilesAfterEnv: [

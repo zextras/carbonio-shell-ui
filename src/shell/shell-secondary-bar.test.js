@@ -50,9 +50,9 @@ describe('Secondary bar', () => {
 			}
 		);
 		expect(screen.getByRole('menu')).toBeInTheDocument();
-		expect(screen.getAllByRole('menuitem').length).toBe(2);
+		expect(screen.getAllByRole('menuitem').length).toBe(1);
 		expect(screen.getAllByRole('menuitem')[0]).toHaveTextContent('App 1 Folder 1');
-		expect(screen.getAllByRole('menuitem')[1]).toHaveTextContent('App 1 Folder 2');
+		expect(screen.getAllByRole('menuitem')[0]).toHaveTextContent('App 1 Folder 2');
 	});
 
 	test('Render children of current App. Nested 3 times.', () => {

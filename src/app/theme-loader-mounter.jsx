@@ -1,6 +1,6 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 Zextras
+ * Copyright (C) 2011-2021 Zextras
  *
  *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
@@ -8,20 +8,20 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
+
 import React, { useEffect, useMemo, useState } from 'react';
 import { combineLatest } from 'rxjs';
 import { reduce, isEmpty } from 'lodash';
 import { map as rxMap } from 'rxjs/operators';
-import { useAppsCache } from './app-loader-context';
-import AppContextProvider from './app-context-provider';
+import { useThemesCache } from './app-loader-context';
 
-export default function AppLoaderMounter() {
-	const { cache, loaded } = useAppsCache();
-	const [appsClasses, setAppClasses] = useState([]);
+export default function ThemeLoaderMounter() {
+	const { cache } = useThemesCache();
+	const [themesClasses, setThemeClasses] = useState([]);
 
 	useEffect(() => {
 		if (isEmpty(cache)) {
-			setAppClasses([]);
+			setThemeClasses([]);
 			return () => undefined;
 		}
 		const subscription = combineLatest(
@@ -30,7 +30,7 @@ export default function AppLoaderMounter() {
 				(acc, { pkg, entryPoint }) => {
 					acc.push(
 						entryPoint.pipe(
-							rxMap((AppClass) => ({ AppClass, pkg }))
+							rxMap((ThemeClass) => ({ ThemeClass, pkg }))
 						)
 					);
 					return acc;
@@ -38,8 +38,8 @@ export default function AppLoaderMounter() {
 				[]
 			)
 		)
-			.subscribe((_appsClasses) => {
-				setAppClasses(_appsClasses);
+			.subscribe((_themesClasses) => {
+				setThemeClasses(_themesClasses);
 			});
 
 		return () => {
@@ -50,21 +50,19 @@ export default function AppLoaderMounter() {
 	}, [cache]);
 
 	const children = useMemo(() => reduce(
-		appsClasses,
-		(acc, { AppClass, pkg }) => {
+		themesClasses,
+		(acc, { ThemeClass, pkg }) => {
 			acc.push((
-				<AppContextProvider key={pkg.package} pkg={pkg}>
-					<AppClass />
-				</AppContextProvider>
+				<ThemeClass key={pkg.package} />
 			));
 			return acc;
 		},
 		[]
-	), [appsClasses]);
+	), [themesClasses]);
 
 	return (
 		<div
-			data-testid="app-mounter"
+			data-testid="theme-mounter"
 			hidden={true}
 			style={{ height: 0, overflow: 'hidden' }}
 		>

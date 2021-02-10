@@ -37,13 +37,13 @@ const _container = styled.div`
 export default function AppBoard({ idx }) {
 	const { boards, currentBoard } = useContext(BoardValueContext);
 	const { updateBoard } = useContext(BoardSetterContext);
-	const [appsCache] = useAppsCache();
+	const { cache } = useAppsCache();
 	const [routes, setRoutes] = useState([]);
 
 	useEffect(() => {
 		const subscription = combineLatest(
 			reduce(
-				appsCache,
+				cache,
 				(acc, app) => {
 					acc.push(
 						app.routes.pipe(
@@ -89,7 +89,7 @@ export default function AppBoard({ idx }) {
 				subscription.unsubscribe();
 			}
 		};
-	}, [appsCache]);
+	}, [cache]);
 
 	const history = useMemo(() => createMemoryHistory(), []);
 	// eslint-disable-next-line

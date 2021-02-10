@@ -14,9 +14,8 @@ import { combineLatest } from 'rxjs';
 import { useAppsCache } from '../app/app-loader-context';
 import { SharedUIComponentsContext } from './shared-ui-components-context';
 
-const SharedUIComponentsContextProvider = ({ children }) => {
-
-	const [appsCache, appsLoaded] = useAppsCache();
+export default function SharedUIComponentsContextProvider({ children }) {
+	const { cache, loaded } = useAppsCache();
 	const [components, setComponents] = useState({});
 
 	useEffect(() => {
@@ -24,7 +23,7 @@ const SharedUIComponentsContextProvider = ({ children }) => {
 
 		const combined = combineLatest(
 			map(
-				appsLoaded ? appsCache : {},
+				loaded ? cache : {},
 				'sharedUiComponents'
 			)
 		);
@@ -41,7 +40,7 @@ const SharedUIComponentsContextProvider = ({ children }) => {
 			canSet = false;
 			sub.unsubscribe();
 		};
-	}, [appsCache, appsLoaded]);
+	}, [cache, loaded]);
 
 	return (
 		<SharedUIComponentsContext.Provider
@@ -50,6 +49,4 @@ const SharedUIComponentsContextProvider = ({ children }) => {
 			{ children }
 		</SharedUIComponentsContext.Provider>
 	);
-};
-
-export default SharedUIComponentsContextProvider;
+}

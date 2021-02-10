@@ -31,7 +31,7 @@ function appContextReducer(state, { type, ...rest }) {
 }
 
 export default function AppContextCacheProvider({ children }) {
-	const [appsCache, appsLoaded] = useAppsCache();
+	const { cache } = useAppsCache();
 	const [appContextCache, dispatchAppContext] = useReducer(
 		appContextReducer,
 		appContextCacheInitialState
@@ -40,7 +40,7 @@ export default function AppContextCacheProvider({ children }) {
 	useEffect(() => {
 		const subscription = combineLatest(
 			reduce(
-				appsCache,
+				cache,
 				(acc, app) => {
 					acc.push(
 						app.appContext.pipe(
@@ -71,7 +71,7 @@ export default function AppContextCacheProvider({ children }) {
 				subscription.unsubscribe();
 			}
 		};
-	}, [appsCache, dispatchAppContext]);
+	}, [cache, dispatchAppContext]);
 
 	return (
 		<AppContextCache.Provider

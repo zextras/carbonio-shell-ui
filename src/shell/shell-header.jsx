@@ -43,7 +43,7 @@ export default function ShellHeader({
 	const history = useHistory();
 	const [ t ] = useTranslation();
 	const screenMode = useScreenMode();
-	const [appsCache] = useAppsCache();
+	const { cache } = useAppsCache();
 	const { addBoard } = useContext(BoardSetterContext);
 	const [createOptions, setCreateOptions] = useState([]);
 	const refCreateOptions = useRef(createOptions);
@@ -51,7 +51,7 @@ export default function ShellHeader({
 	useEffect(() => {
 		const subscription = combineLatest(
 			reduce(
-				appsCache,
+				cache,
 				(acc, app) => {
 					acc.push(
 						app.createOptions.pipe(
@@ -103,7 +103,7 @@ export default function ShellHeader({
 				subscription.unsubscribe();
 			}
 		};
-	}, [appsCache, addBoard, setCreateOptions, history]);
+	}, [cache, addBoard, setCreateOptions, history]);
 
 	return (
 		<Container

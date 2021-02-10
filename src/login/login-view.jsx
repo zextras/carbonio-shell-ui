@@ -18,7 +18,6 @@ import {
 	Button,
 	Checkbox,
 	Container,
-	extendTheme,
 	Input,
 	Link,
 	Logo,
@@ -29,7 +28,7 @@ import {
 	SnackbarManager,
 	Text,
 	Tooltip,
-	ThemeProvider,
+	ThemeContextProvider,
 	useScreenMode,
 	useSnackbar,
 	Paragraph
@@ -280,10 +279,8 @@ function Login() {
 
 export default function LoginView() {
 	return (
-		<ThemeProvider theme={extendTheme({ palette: { light: {}, dark: {} } })}>
-			<SnackbarManager>
-				<Login />
-			</SnackbarManager>
-		</ThemeProvider>
+		<SnackbarManager>
+			<Login />
+		</SnackbarManager>
 	);
 }

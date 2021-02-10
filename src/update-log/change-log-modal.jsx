@@ -9,13 +9,12 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useEffect, useState } from "react";
-import { forEach } from "lodash";
-import { Modal, Text, Button, Container, Divider } from "@zextras/zapp-ui";
-import styled from "styled-components";
-import moment from "moment";
+import React, { useCallback, useEffect, useState } from 'react';
+import { forEach } from 'lodash';
+import { Modal, Text, Container, Divider } from '@zextras/zapp-ui';
+import styled from 'styled-components';
+import moment from 'moment';
 import MarkdownContainer from './markdown-container'
-
 
 const Title = styled(Text)`
   width: 100%;
@@ -29,9 +28,8 @@ const CHANGELOG_VERSION_REGEX = /([0-9]\.[0-9]\.[0-9][0-9]-beta\.[0-9])/;
 export default function ChangeLogModal({ cache }) {
 	const [mdpackage, setMdPackage] = useState({});
 	const [showUpdate, setShowUpdate] = useState(false);
-	const [nextDate, setNextDate] = useState(new Date());
 
-	const executeReading = async (data) => {
+	const executeReading = useCallback(async (data) => {
 		const updateLog = {};
 		let count = 0;
 		forEach(data, async (value, key) => {
@@ -51,18 +49,23 @@ export default function ChangeLogModal({ cache }) {
 				})
 				.catch((err) => null);
 		});
-	};
+	}, [setMdPackage, setShowUpdate]);
 
 	useEffect(() => {
-		executeReading(cache);
-	}, [cache]);
+		executeReading(cache)
+			.then();
+	}, [cache, executeReading]);
 
-	const remindLater = () => {
+	const remindLater = useCallback(() => {
 		setShowUpdate(false);
 		const today = moment();
 		const nextNotifyOn = today.add(15, "days").valueOf();
 		localStorage.setItem("nextNotifyOn", nextNotifyOn);
-	};
+	}, [setShowUpdate]);
+
+	const onClose = useCallback(() => {
+		setShowUpdate(false)
+	}, [setShowUpdate]);
 
 	return (
 		<div>
@@ -70,10 +73,10 @@ export default function ChangeLogModal({ cache }) {
 				title='Change Log'
 				open={showUpdate}
 				onConfirm={remindLater}
-				onClose={() => setShowUpdate(false)}
+				onClose={onClose}
 				dismissLabel='Cancel'
 				confirmLabel='Close'
-				onSecondaryAction={() => setShowUpdate(false) }
+				onSecondaryAction={onClose}
 				secondaryActionLabel='Remind Later'>
 				<Container>
 					{Object.keys(mdpackage).map((key) => {

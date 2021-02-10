@@ -12,13 +12,18 @@
 import { createContext, useContext } from 'react';
 
 const AppLoaderContext = createContext({
-	appsCache: {},
-	appsLoaded: false
+	apps: { cache: {}, loaded: false },
+	themes: { cache: {}, loaded: false },
 });
 
 export function useAppsCache() {
-	const { appsCache, appsLoaded } = useContext(AppLoaderContext);
-	return [appsCache, appsLoaded];
+	const { apps } = useContext(AppLoaderContext);
+	return apps;
+}
+
+export function useThemesCache() {
+	const { themes } = useContext(AppLoaderContext);
+	return themes;
 }
 
 export default AppLoaderContext;

@@ -47,16 +47,18 @@ function getAppLink(to, pkg) {
 }
 
 function getFolderStructures(folders, app, history) {
-	return map(folders, (folder) => {
-		const _folderObj = {
-			id: folder.id,
-			label: folder.label,
-			click: () => history.push(getAppLink(folder.to, app.pkg))
-		};
-		if (folder.icon) _folderObj.icon = folder.icon;
-		if (folder.children) _folderObj.items = getFolderStructures(folder.children, app, history);
-		return _folderObj;
-	});
+	return map(folders, (folder) => ({
+		...folder,
+		onClick: (ev) => {
+			if (folder.onClick) {
+				folder.onClick(ev);
+			}
+			if (folder.to) {
+				history.push(getAppLink(folder.to, app.pkg))
+			}
+		},
+		items: getFolderStructures(folder.items, app, history)
+	}));
 }
 
 export default function ShellNavigationBar({
@@ -68,13 +70,13 @@ export default function ShellNavigationBar({
 }) {
 	const history = useHistory();
 	const [activeApp, setActiveApp] = useState(undefined);
-	const [appsCache] = useAppsCache();
+	const { cache } = useAppsCache();
 	const [mainMenuItems, setMainMenuItems] = useState({});
 
 	useEffect(() => {
 		const subscription = combineLatest(
 			reduce(
-				appsCache,
+				cache,
 				(acc, app) => {
 					acc.push(
 						app.mainMenuItems.pipe(
@@ -103,7 +105,7 @@ export default function ShellNavigationBar({
 											history.push(getAppLink(menuItem.to, app.pkg));
 										},
 										customComponent: menuItem.customComponent,
-										items: getFolderStructures(menuItem.children, app, history),
+										items: getFolderStructures(menuItem.items, app, history),
 										to: menuItem.to,
 										pkgName: app.pkg.package,
 										allTos: collectAllTo(app.pkg.package, menuItem)
@@ -124,7 +126,7 @@ export default function ShellNavigationBar({
 				subscription.unsubscribe();
 			}
 		};
-	}, [appsCache, setMainMenuItems, history]);
+	}, [cache, setMainMenuItems, history]);
 
 	return (
 		<Container

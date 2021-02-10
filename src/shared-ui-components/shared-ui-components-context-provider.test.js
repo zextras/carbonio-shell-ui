@@ -27,45 +27,48 @@ describe('Shared UI Components Context Provider', () => {
 		AppLoaderContextProvider.mockImplementationOnce(({ children }) => (
 			<AppLoaderContext.Provider
 				value={{
-					appsCache: {
-						com_example_package_1: {
-							sharedUiComponents: new BehaviorSubject({
-								'component-1': {
-									pkg: { package: 'com_example_package_1' },
-									versions: {
-										'1': ComponentClass11,
-										'2': ComponentClass11
+					themes: { cache: {}, loaded: false },
+					apps: {
+						cache: {
+							com_example_package_1: {
+								sharedUiComponents: new BehaviorSubject({
+									'component-1': {
+										pkg: {package: 'com_example_package_1'},
+										versions: {
+											'1': ComponentClass11,
+											'2': ComponentClass11
+										}
+									},
+									'component-2': {
+										pkg: {package: 'com_example_package_1'},
+										versions: {
+											'1': ComponentClass21,
+											'2': ComponentClass21
+										}
 									}
-								},
-								'component-2': {
-									pkg: { package: 'com_example_package_1' },
-									versions: {
-										'1': ComponentClass21,
-										'2': ComponentClass21
+								})
+							},
+							com_example_package_2: {
+								sharedUiComponents: new BehaviorSubject({
+									'component-4': {
+										pkg: {package: 'com_example_package_2'},
+										versions: {
+											'1': ComponentClass22,
+											'2': ComponentClass22
+										}
+									},
+									'component-3': {
+										pkg: {package: 'com_example_package_2'},
+										versions: {
+											'1': ComponentClass32,
+											'2': ComponentClass32
+										}
 									}
-								}
-							})
+								})
+							}
 						},
-						com_example_package_2: {
-							sharedUiComponents: new BehaviorSubject({
-								'component-4': {
-									pkg: { package: 'com_example_package_2' },
-									versions: {
-										'1': ComponentClass22,
-										'2': ComponentClass22
-									}
-								},
-								'component-3': {
-									pkg: { package: 'com_example_package_2' },
-									versions: {
-										'1': ComponentClass32,
-										'2': ComponentClass32
-									}
-								}
-							})
-						}
-					},
-					appsLoaded: true
+						loaded: true
+					}
 				}}
 			>
 				{children}

@@ -80,7 +80,7 @@ type MainMenuItemData = {
 	icon: string;
 	label: string;
 	to: string;
-	children?: Array<MainSubMenuItemData>;
+	items?: Array<MainSubMenuItemData>;
 	customComponent?: React.Component;
 	app: string;
 };
@@ -90,7 +90,7 @@ type MainSubMenuItemData = {
 	icon?: string;
 	label: string;
 	to: string;
-	children?: Array<MainSubMenuItemData>;
+	items?: Array<MainSubMenuItemData>;
 };
 ```
 

@@ -20,9 +20,9 @@ import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
 import ShellMobileNav from './shell-mobile-nav';
 
-function collectAllTo(pkgName, { to, children }) {
+function collectAllTo(pkgName, { to, items }) {
 	return reduce(
-		children || [],
+		items || [],
 		(r, v) => ([...r, ...collectAllTo(pkgName, v)]),
 		[`/${pkgName}${to}`]
 	);
@@ -110,7 +110,7 @@ export default function ShellNavigationBar({
 						(acc, { items, app }) => {
 							reduce(
 								items,
-								(r, menuItem, k) => {
+								(r, menuItem) => {
 									r[menuItem.id] = {
 										id: menuItem.id,
 										label: menuItem.label,

@@ -10,6 +10,7 @@
  */
 
 import React from 'react';
+import { ThemeContextProvider } from '@zextras/zapp-ui';
 import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-context-provider';
 import ShellNetworkService from '../network/shell-network-service';
@@ -53,16 +54,18 @@ export default function bootstrapper(onBeforeBoot) {
 		}) => ({
 			default: function BoostrapperCls() {
 				return (
-					<BootstrapperContextProvider
-						fiberChannelFactory={_fiberChannelFactory}
-						i18nFactory={_i18nFactory}
-						shellNetworkService={_shellNetworkService}
-						shellStore={_shellStore}
-						storeFactory={_storeFactory}
-						shellStorePersistor={shellStorePersistor}
-					>
-						<BootstrapperRouter />
-					</BootstrapperContextProvider>
+					<ThemeContextProvider>
+						<BootstrapperContextProvider
+							fiberChannelFactory={_fiberChannelFactory}
+							i18nFactory={_i18nFactory}
+							shellNetworkService={_shellNetworkService}
+							shellStore={_shellStore}
+							storeFactory={_storeFactory}
+							shellStorePersistor={shellStorePersistor}
+						>
+							<BootstrapperRouter />
+						</BootstrapperContextProvider>
+					</ThemeContextProvider>
 				);
 			}
 		}));

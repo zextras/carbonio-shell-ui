@@ -13,9 +13,10 @@ import React from 'react';
 import { render as rtlRender } from '@testing-library/react';
 import fetch from 'node-fetch';
 import { MemoryRouter } from 'react-router-dom';
-import { extendTheme, ThemeProvider } from '@zextras/zapp-ui';
+import { ThemeContextProvider } from '@zextras/zapp-ui';
 import AppContextWrapper from './mocks/app-context-wrapper';
 import { usePushHistoryCallback, useReplaceHistoryCallback, useRemoveCurrentBoard } from './shell/hooks';
+import { useSharedComponent } from './shared-ui-components/use-shared-component';
 
 const confPath = path.resolve(
 	process.cwd(),
@@ -92,9 +93,7 @@ function render(
 
 	const Wrapper = ({ children }) => (
 		<MemoryRouter initialEntries={initialRouterEntries}>
-			<ThemeProvider
-				theme={extendTheme({})}
-			>
+			<ThemeContextProvider>
 				<AppContextWrapper
 					packageName={packageName}
 					packageVersion={packageVersion}
@@ -104,7 +103,7 @@ function render(
 				>
 					{ children }
 				</AppContextWrapper>
-			</ThemeProvider>
+			</ThemeContextProvider>
 		</MemoryRouter>
 	);
 
@@ -125,5 +124,6 @@ export const hooks = {
 	useReplaceHistoryCallback: jest.fn(useReplaceHistoryCallback),
 	usePushHistoryCallback: jest.fn(usePushHistoryCallback),
 	useUserAccounts: jest.fn(() => []),
-	useRemoveCurrentBoard: jest.fn(useRemoveCurrentBoard)
+	useRemoveCurrentBoard: jest.fn(useRemoveCurrentBoard),
+	useSharedComponent: jest.fn(useSharedComponent),
 };

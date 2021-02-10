@@ -12,7 +12,7 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { render as rtlRender } from '@testing-library/react';
-import { extendTheme, ThemeProvider } from '@zextras/zapp-ui';
+import { ThemeContextProvider } from '@zextras/zapp-ui';
 
 
 function render(
@@ -25,11 +25,9 @@ function render(
 ) {
 	const Wrapper = ({ children }) => (
 		<MemoryRouter initialEntries={initialRouterEntries}>
-			<ThemeProvider
-				theme={extendTheme({})}
-			>
+			<ThemeContextProvider>
 				{ children }
-			</ThemeProvider>
+			</ThemeContextProvider>
 		</MemoryRouter>
 	);
 

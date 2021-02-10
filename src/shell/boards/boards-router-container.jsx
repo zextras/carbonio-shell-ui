@@ -29,13 +29,13 @@ const _BoardsRouterContainer = styled(Container)`
 `;
 
 export default function BoardsRouterContainer() {
-	const [appsCache] = useAppsCache();
+	const { cache } = useAppsCache();
 	const [routes, setRoutes] = useState([]);
 
 	useEffect(() => {
 		const subscription = combineLatest(
 			reduce(
-				appsCache,
+				cache,
 				(acc, app) => {
 					acc.push(
 						app.routes.pipe(
@@ -81,7 +81,7 @@ export default function BoardsRouterContainer() {
 				subscription.unsubscribe();
 			}
 		};
-	}, [appsCache]);
+	}, [cache]);
 
 	return (
 		<_BoardsRouterContainer>

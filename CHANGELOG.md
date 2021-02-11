@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.1](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.0...v0.1.0-beta.1) (2021-02-11)
+
+
+### Features
+
+* added active folder highlight ([f8ddc4d](https://bitbucket.org/zextras/zapp-shell/commit/f8ddc4d293505055f0fdee5c90bf3b20caa26bba))
+
+
+### Bug Fixes
+
+* fixed the disappearing secondary and mobile bar elements ([e21ab71](https://bitbucket.org/zextras/zapp-shell/commit/e21ab71bccce79524fce5bde7b167167c65141f3))
+
 ## [0.1.0-beta.0](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.58...v0.1.0-beta.0) (2021-02-10)
 
 

@@ -9,10 +9,10 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { combineLatest } from 'rxjs';
 import { map as rxMap } from 'rxjs/operators';
-import { map, reduce } from 'lodash';
+import { map, reduce, endsWith } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { Container, Responsive } from '@zextras/zapp-ui';
 import { useAppsCache } from '../app/app-loader-context';
@@ -20,9 +20,9 @@ import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
 import ShellMobileNav from './shell-mobile-nav';
 
-function collectAllTo(pkgName, { to, children }) {
+function collectAllTo(pkgName, { to, items }) {
 	return reduce(
-		children || [],
+		items || [],
 		(r, v) => ([...r, ...collectAllTo(pkgName, v)]),
 		[`/${pkgName}${to}`]
 	);
@@ -57,9 +57,20 @@ function getFolderStructures(folders, app, history) {
 				history.push(getAppLink(folder.to, app.pkg))
 			}
 		},
+		active: history.location.pathname === `/${app.pkg.package}${folder.to}`,
 		items: getFolderStructures(folder.items, app, history)
 	}));
 }
+
+const setActiveItem = (menuItems, pathname) => map(
+	menuItems,
+	(item) => ({
+		...item,
+		active: endsWith(pathname, item.to),
+		items: setActiveItem(item.items, pathname)
+	})
+);
+
 
 export default function ShellNavigationBar({
 	navigationBarIsOpen,
@@ -71,8 +82,12 @@ export default function ShellNavigationBar({
 	const history = useHistory();
 	const [activeApp, setActiveApp] = useState(undefined);
 	const { cache } = useAppsCache();
-	const [mainMenuItems, setMainMenuItems] = useState({});
+	const [_mainMenuItems, setMainMenuItems] = useState({});
 
+	const mainMenuItems = useMemo(
+		() => setActiveItem(_mainMenuItems, history.location.pathname),
+		[_mainMenuItems, history.location.pathname]
+	);
 	useEffect(() => {
 		const subscription = combineLatest(
 			reduce(
@@ -95,7 +110,7 @@ export default function ShellNavigationBar({
 						(acc, { items, app }) => {
 							reduce(
 								items,
-								(r, menuItem, k) => {
+								(r, menuItem) => {
 									r[menuItem.id] = {
 										id: menuItem.id,
 										label: menuItem.label,

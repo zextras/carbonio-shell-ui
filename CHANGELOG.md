@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.0](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.58...v0.1.0-beta.0) (2021-02-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* updated theme management plase verify the theme entrypoint
+
+* updated theme loading to be the same as the app ([240b8f5](https://bitbucket.org/zextras/zapp-shell/commit/240b8f58581745a978a31e3e227eca49c0c3be6a))
+
 ### [0.0.102-beta.58](https://bitbucket.org/zextras/zapp-shell/compare/v0.0.102-beta.57...v0.0.102-beta.58) (2021-02-10)
 
 

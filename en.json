@@ -14,6 +14,12 @@
     "Username": "",
     "Verify that CAPS LOCK is not on, and then retype the current username and password": "",
     "You are going to be logged-out": "You are going to be logged-out.",
+    "changelog": {
+        "cancel": "Cancel",
+        "close": "Close",
+        "remind-later": "Remind Later",
+        "title": "Change Log"
+    },
     "copyright": "",
     "supported_browsers": {
         "chrome": "",

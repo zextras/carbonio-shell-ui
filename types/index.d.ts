@@ -80,7 +80,7 @@ export type MainSubMenuItemData = {
 	icon?: string;
 	label: string;
 	to: string;
-	children?: Array<MainSubMenuItemData>;
+	items?: Array<MainSubMenuItemData>;
 };
 // Type is in the documentation. If changed update also the documentation.
 export type MainMenuItemData = {
@@ -88,7 +88,7 @@ export type MainMenuItemData = {
 	icon: string;
 	label: string;
 	to: string;
-	children?: Array<MainSubMenuItemData>;
+	items?: Array<MainSubMenuItemData>;
 	customComponent?: React.Component;
 };
 // Type is in the documentation. If changed update also the documentation.

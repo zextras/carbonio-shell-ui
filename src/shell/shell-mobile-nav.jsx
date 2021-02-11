@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { map } from 'lodash';
 import {
 	Accordion,
@@ -62,25 +62,25 @@ export default function ShellMobileNav({
 						{
 							map(mainMenuItems, (app, key) => (
 								app.customComponent
-									?	(
+									? (
 										<NavigationBarAccordion
 											key={key}
 											icon={app.icon}
 											label={app.label}
 											click={app.click}
 											customComponent={app.customComponent}
-											divider={true}
+											divider
 										/>
 									)
 									: (
 										<Accordion
 											key={key}
-											level={0}
-											icon={app.icon}
-											label={app.label}
-											click={app.click}
-											items={app.items}
-											divider={true}
+											items={[
+												{
+													...app,
+													divider: true
+												}
+											]}
 										/>
 									)
 							))
@@ -92,19 +92,9 @@ export default function ShellMobileNav({
 						orientation="vertical"
 						mainAlignment="flex-end"
 					>
-						{
-							map(menuTree, (app, index) => (
-								<Accordion
-									key={index}
-									level={0}
-									icon={app.icon}
-									click={app.click}
-									label={app.label}
-									items={app.folders}
-									divider={true}
-								/>
-							))
-						}
+						<Accordion
+							items={menuTree}
+						/>
 						<Padding vertical="medium">
 							<Quota fill={quota} />
 						</Padding>

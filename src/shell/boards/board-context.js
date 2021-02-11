@@ -15,7 +15,7 @@ const BoardValueContext = createContext({
 	boards: {},
 	currentBoard: 0,
 	largeView: false,
-	minimized: false,
+	minimized: false
 });
 const BoardSetterContext = createContext({
 	addBoard: (url, title) => undefined,

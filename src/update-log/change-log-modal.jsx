@@ -11,6 +11,7 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { forEach } from 'lodash';
+import { useTranslation } from 'react-i18next';
 import { Modal, Text, Container, Divider } from '@zextras/zapp-ui';
 import styled from 'styled-components';
 import moment from 'moment';
@@ -28,7 +29,7 @@ const CHANGELOG_VERSION_REGEX = /([0-9]\.[0-9]\.[0-9][0-9]-beta\.[0-9])/;
 export default function ChangeLogModal({ cache }) {
 	const [mdpackage, setMdPackage] = useState({});
 	const [showUpdate, setShowUpdate] = useState(false);
-
+	const { t } = useTranslation();
 	const executeReading = useCallback(async (data) => {
 		const updateLog = {};
 		let count = 0;
@@ -59,8 +60,8 @@ export default function ChangeLogModal({ cache }) {
 	const remindLater = useCallback(() => {
 		setShowUpdate(false);
 		const today = moment();
-		const nextNotifyOn = today.add(15, "days").valueOf();
-		localStorage.setItem("nextNotifyOn", nextNotifyOn);
+		const nextNotifyOn = today.add(15, 'days').valueOf();
+		localStorage.setItem('nextNotifyOn', nextNotifyOn);
 	}, [setShowUpdate]);
 
 	const onClose = useCallback(() => {
@@ -70,25 +71,27 @@ export default function ChangeLogModal({ cache }) {
 	return (
 		<div>
 			<Modal
-				title='Change Log'
+				title={t('changelog.title')}
 				open={showUpdate}
 				onConfirm={remindLater}
 				onClose={onClose}
-				dismissLabel='Cancel'
-				confirmLabel='Close'
+				dismissLabel={t('changelog.cancel')}
+				confirmLabel={t('changelog.close')}
 				onSecondaryAction={onClose}
-				secondaryActionLabel='Remind Later'>
+				secondaryActionLabel={t('changelog.remind-later')}
+			>
 				<Container>
 					{Object.keys(mdpackage).map((key) => {
 						return (
 							<Container
-								orientation='vertical'
-								mainAlignment='baseline'
+								orientation="vertical"
+								mainAlignment="baseline"
 								key={key}
-								crossAlignment='baseline'>
-								<Title weight='bold'>{key}</Title>
+								crossAlignment="baseline"
+							>
+								<Title weight="bold">{key}</Title>
 								<MarkdownContainer content={mdpackage[key]} />
-								<Divider color='secondary' />
+								<Divider color="secondary" />
 							</Container>
 						);
 					})}

@@ -28,7 +28,7 @@ const reducer = (state, action) => {
 					...state.boards,
 				},
 				currentBoard: boardKey,
-				minimized: false,
+				minimized: false
 			};
 			return returnValue;
 		}
@@ -44,14 +44,14 @@ const reducer = (state, action) => {
 				...state,
 				boards: pickBy(state.boards, (board, key) => key !== boardToRemove),
 				largeView: boardKeys.length === 1 ? false : state.largeView,
-				currentBoard: newCurrentBoard,
+				currentBoard: newCurrentBoard
 			};
 		}
 		case 'REMOVE_ALL_BOARDS': {
 			return {
 				...state,
 				boards: {},
-				largeView: false,
+				largeView: false
 			};
 		}
 		case 'UPDATE_BOARD': {
@@ -91,7 +91,6 @@ const reducer = (state, action) => {
 				minimized: !state.minimized
 			};
 		}
-	
 		default:
 			console.warn('Unrecognized action type in BoardContext');
 			return state;

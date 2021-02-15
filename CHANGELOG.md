@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.2](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.1...v0.1.0-beta.2) (2021-02-15)
+
+
+### Features
+
+* show modal with changelog if new version is available ([95c99cc](https://bitbucket.org/zextras/zapp-shell/commit/95c99cca0f16ffbff38f9b2d5e9c660bced28aad))
+
+
+### Bug Fixes
+
+* remove the board count action ([998919a](https://bitbucket.org/zextras/zapp-shell/commit/998919aef3c7473d2e67de67ed121a09cd427afe))
+* show notifcation in 15s instead of 1.5s ([778aa0c](https://bitbucket.org/zextras/zapp-shell/commit/778aa0c6c78b5b91667f6a3a23afaea4c68fe858))
+* switch remind_later and close button actions ([a745aaf](https://bitbucket.org/zextras/zapp-shell/commit/a745aafcb08591192c2e6a8961bed7181c823933))
+
 ## [0.1.0-beta.1](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.0...v0.1.0-beta.1) (2021-02-11)
 
 

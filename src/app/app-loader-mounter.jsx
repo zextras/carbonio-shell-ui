@@ -16,7 +16,7 @@ import { useAppsCache } from './app-loader-context';
 import AppContextProvider from './app-context-provider';
 
 export default function AppLoaderMounter() {
-	const { cache, loaded } = useAppsCache();
+	const { cache } = useAppsCache();
 	const [appsClasses, setAppClasses] = useState([]);
 
 	useEffect(() => {

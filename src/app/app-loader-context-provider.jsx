@@ -15,6 +15,9 @@ import { useFiberChannelFactory, useShellNetworkService, useStoreFactory } from 
 import { loadApps, loadThemes, unloadAppsAndThemes } from './app-loader';
 import AppContextCacheProvider from './app-context-cache-provider';
 import { useUserAccounts } from '../store/shell-store-hooks';
+import {checkUpdate} from '../update-log/check-update'
+import ChangeLogModal from '../update-log/change-log-modal';
+
 
 export default function AppLoaderContextProvider({ children }) {
 	const shellNetworkService = useShellNetworkService();
@@ -22,6 +25,7 @@ export default function AppLoaderContextProvider({ children }) {
 	const fiberChannelFactory = useFiberChannelFactory();
 	const storeFactory = useStoreFactory();
 	const [[appsCache, appsLoaded], setAppsCache] = useState([{}, false]);
+	const [showUpdateModal, setShowUpdateModal] = useState(false);
 	const [[themesCache, themesLoaded], setThemeCache] = useState([{}, false]);
 
 	useEffect(() => {
@@ -52,6 +56,7 @@ export default function AppLoaderContextProvider({ children }) {
 				)
 				.then(([_appsCache, _themesCache]) => {
 					if (!canSet) return;
+					setShowUpdateModal(checkUpdate());
 					setAppsCache([_appsCache, true]);
 					setThemeCache([_themesCache, true]);
 				});
@@ -64,11 +69,13 @@ export default function AppLoaderContextProvider({ children }) {
 	const value = useMemo(() => ({
 		apps: { cache: appsCache, loaded: appsLoaded },
 		themes: { cache: themesCache, loaded: themesLoaded },
+		showUpdateModal
 	}), [
 		appsCache,
 		appsLoaded,
 		themesCache,
 		themesLoaded,
+		showUpdateModal
 	]);
 
 	return (
@@ -76,8 +83,11 @@ export default function AppLoaderContextProvider({ children }) {
 			value={value}
 		>
 			<AppContextCacheProvider>
+				{showUpdateModal ? <ChangeLogModal cache={value.apps.cache} /> : null}
 				{ children }
 			</AppContextCacheProvider>
 		</AppLoaderContext.Provider>
 	);
 }
+
+

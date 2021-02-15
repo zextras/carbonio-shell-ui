@@ -41,7 +41,7 @@ export default function AppBoardTab({ idx }) {
 
 	return (
 		<TabContainer active={currentBoard === idx}>
-			<Row height="100%" onClick={onClick} takeAvailableSpace={true}>
+			<Row height="100%" onClick={onClick} takeAvailableSpace>
 				<Text
 					size="large"
 					weight={currentBoard === idx ? 'bold' : 'regular'}

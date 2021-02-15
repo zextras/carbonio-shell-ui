@@ -48,7 +48,7 @@ export default function ShellPrimaryBar({ mainMenuItems, activeApp }) {
 			<Row
 				mainAlignment="flex-start"
 				orientation="vertical"
-				takeAvailableSpace={true}
+				takeAvailableSpace
 				wrap="nowrap"
 				style={{ minHeight: '1px', overflowY: 'overlay' }}
 			>

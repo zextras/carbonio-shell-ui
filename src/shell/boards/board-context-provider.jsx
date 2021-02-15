@@ -10,7 +10,7 @@
  */
 
 import React, { useCallback, useMemo, useReducer, } from 'react';
-import { pickBy, set } from 'lodash';
+import { pickBy } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { BoardValueContext, BoardSetterContext } from './board-context';
 
@@ -136,7 +136,7 @@ export default function BoardContextProvider({ children }) {
 	const toggleMinimized = useCallback(() => {
 		dispatch({ type: 'TOGGLE_MINIMIZED' });
 	}, []);
-
+	
 	const boardSetters = useMemo(() => ({
 		addBoard,
 		removeBoard,

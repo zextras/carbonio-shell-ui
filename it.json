@@ -7,5 +7,13 @@
     "You are going to be logged-out": "Stai per uscire.",
     "New tab": "Nuova scheda",
     "New": "Nuovo",
-    "Logout": "Esci"
+    "Logout": "Esci",
+    "changelog": {
+        "title": "Novità",
+        "remind-later": "Ricorda più tardi",
+        "close": "Chiudi",
+        "cancel": "Annulla"
+    },
+    "Switch to light mode": "Passa a modalità chiara",
+    "Switch to dark mode": "Passa a modalità scura"
 }

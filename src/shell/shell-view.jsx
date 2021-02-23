@@ -70,12 +70,12 @@ export function Shell() {
 
 	const userMenuTree = useMemo(() => [
 		{
-			label: themeVariant === THEME_MODE.LIGHT ? t('Switch to dark mode') : t('Switch to light mode'),
+			label: themeVariant === THEME_MODE.LIGHT ? t('theme-switch.dark') : t('theme-switch.light'),
 			icon:  themeVariant === THEME_MODE.LIGHT ? 'MoonOutline' : 'SunOutline',
 			onClick: toggleDarkMode
 		},
 		{
-			label: t('Logout'),
+			label: t('logout'),
 			icon: 'LogOut',
 			onClick: doLogoutCbk
 		}

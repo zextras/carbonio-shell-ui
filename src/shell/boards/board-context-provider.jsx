@@ -109,7 +109,7 @@ export default function BoardContextProvider({ children }) {
 		}
 	);
 
-	const addBoard = useCallback((url, title = t('New tab')) => {
+	const addBoard = useCallback((url, title = t('new-tab')) => {
 		dispatch({ type: 'ADD_BOARD', payload: { url, title } });
 	}, [t]);
 	const removeBoard = useCallback((key) => {

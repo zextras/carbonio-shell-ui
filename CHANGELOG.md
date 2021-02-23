@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.4](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.3...v0.1.0-beta.4) (2021-02-23)
+
+
+### Features
+
+* added automatic routing to the highest-priority app ([099f125](https://bitbucket.org/zextras/zapp-shell/commit/099f1257af2c5111709d7cb86b2078016155c9d6))
+
+
+### Bug Fixes
+
+* restored and expanded translations ([4e0e717](https://bitbucket.org/zextras/zapp-shell/commit/4e0e71781557476a3ca6b7ee12919955636b87f3))
+* zimbra authReq sets token expiration preventing the 500 error ([7713325](https://bitbucket.org/zextras/zapp-shell/commit/7713325fc0796f642f8c0dbafa4d00512d876043))
+* zimbra authReq sets token expiration preventing the 500 error ([f3d887f](https://bitbucket.org/zextras/zapp-shell/commit/f3d887f75b83943e2b3bd8f7bcd0fd1c0be5523d))
+
 ## [0.1.0-beta.3](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.2...v0.1.0-beta.3) (2021-02-23)
 
 ## [0.1.0-beta.2](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.1...v0.1.0-beta.2) (2021-02-15)

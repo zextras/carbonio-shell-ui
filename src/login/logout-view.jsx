@@ -30,8 +30,8 @@ export default function LogoutView() {
 
 	return (
 		<form onSubmit={doLogoutCbk}>
-			{ t('You are going to be logged-out') }
-			<button type="submit">{ t('Log me out') }</button>
+			{ t('logout-modal.warning') }
+			<button type="submit">{ t('logout-modal.confirm') }</button>
 		</form>
 	);
 }

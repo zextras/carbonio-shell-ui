@@ -50,19 +50,9 @@ export default function ShellMenuPanel({
 						orientation="vertical"
 						mainAlignment="flex-start"
 					>
-						{
-							tree.map((app, index) => (
-								<Accordion
-									key={index}
-									level={0}
-									click={app.click}
-									icon={app.icon}
-									label={app.label}
-									items={app.folders}
-									divider
-								/>
-							))
-						}
+						<Accordion
+							items={tree}
+						/>
 					</Container>
 				</Collapse>
 			</Responsive>

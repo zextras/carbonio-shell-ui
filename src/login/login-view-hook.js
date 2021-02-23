@@ -42,7 +42,7 @@ export default function useLoginView() {
 			})
 		)
 			.then(() => returnToPage());
-	}, [returnToPage, usernameRef, passwordRef]);
+	}, [dispatch, returnToPage]);
 
 	return {
 		doLogin: doLoginCbk,

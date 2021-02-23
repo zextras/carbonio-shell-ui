@@ -109,21 +109,21 @@ function LoginForm() {
 		<>
 			<form onSubmit={onSubmit} style={{ width: '100%' }}>
 				<Row padding={{ bottom: 'large' }}>
-					<Input inputRef={usernameRef} label={t('Username')} backgroundColor="gray5" />
+					<Input inputRef={usernameRef} label={t('login.username')} backgroundColor="gray5" />
 				</Row>
 				<Row>
-					<PasswordInput inputRef={passwordRef} label={t('Password')} backgroundColor="gray5" />
+					<PasswordInput inputRef={passwordRef} label={t('login.password')} backgroundColor="gray5" />
 				</Row>
 				<Row padding={{ vertical: 'extralarge' }} mainAlignment="space-between">
-					<Checkbox label={t('Remember me')} />
+					<Checkbox label={t('login.remember-me')} />
 				</Row>
 				<Row orientation="vertical" crossAlignment="flex-start" padding={{ bottom: 'extralarge' }}>
-					<Button onClick={onSubmit} label={t('Login')} size="fill" />
+					<Button onClick={onSubmit} label={t('login.login')} size="fill" />
 					{ showAuthError && (
 						<Padding top="small">
 							<Text color="error" overflow="break-word">
-								{ t('The username or password is incorrect') }
-								{ t('Verify that CAPS LOCK is not on, and then retype the current username and password') }
+								{ t('login.incorrect') }
+								{ t('login.verify-caps-lock') }
 							</Text>
 						</Padding>
 					)}
@@ -140,7 +140,7 @@ function HelpModal({ open, onClose }) {
 	const { t } = useTranslation();
 	return (
 		<Modal
-			title={t('Help')}
+			title={t('login.help')}
 			open={open}
 			onClose={onClose}
 		>
@@ -214,7 +214,7 @@ function Login() {
 								<LoginForm />
 								<Row mainAlignment="flex-start">
 									<Link color="primary" size="medium" onClick={() => setOpenHelpModal(true)}>
-										{ t('Help') }
+										{ t('login.help') }
 									</Link>
 									<Separator />
 									<Link as={RouterLink} to="/" size="medium" color="primary">Privacy policy</Link>
@@ -222,7 +222,7 @@ function Login() {
 							</Padding>
 						</Container>
 						<Container crossAlignment="flex-start" height="auto" padding={{ bottom: 'extralarge' }}>
-							<Text>{ t('Supported browsers') }</Text>
+							<Text>{ t('login.supported-browsers') }</Text>
 							<Row padding={{ top: 'medium', bottom: 'extralarge' }} wrap="nowrap">
 								<Padding all="extrasmall" right="small">
 									<Tooltip label={t('supported_browsers.chrome')}>

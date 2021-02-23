@@ -132,6 +132,7 @@ async function getAccountInfo({ csrfToken }: { csrfToken: string }): Promise<Get
 export const doLogin = createAsyncThunk<[Account, AccountLoginData], DoLoginArgs>(
 	'accounts/doLogin',
 	async ({ username, password }, meta) => {
+		console.log('orcodioooo');
 		const res = await fetch(
 			'/service/soap/AuthRequest',
 			{
@@ -145,6 +146,7 @@ export const doLogin = createAsyncThunk<[Account, AccountLoginData], DoLoginArgs
 						AuthRequest: {
 							_jsns: 'urn:zimbraAccount',
 							csrfTokenSecured: '1',
+							persistAuthTokenCookie: '1',
 							// generateDeviceId: '1',
 							account: {
 								by: 'name',
@@ -162,7 +164,9 @@ export const doLogin = createAsyncThunk<[Account, AccountLoginData], DoLoginArgs
 			}
 		);
 		const response = await res.json();
-		if (response.Body.Fault) throw new Error(response.Body.Fault.Reason.Text);
+		if (response.Body.Fault) {
+			throw new Error(response.Body.Fault.Reason.Text);
+		}
 		const authResp = response.Body.AuthResponse;
 		const getInfoResp = await getAccountInfo({ csrfToken: authResp.csrfToken._content });
 		return normalizeAccount({ username, password }, authResp, getInfoResp);

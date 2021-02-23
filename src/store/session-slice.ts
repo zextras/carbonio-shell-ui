@@ -47,6 +47,7 @@ export const verifySession = createAsyncThunk(
 						Body: {
 							AuthRequest: {
 								_jsns: 'urn:zimbraAccount',
+								persistAuthTokenCookie: '1',
 								account: {
 									by: 'id',
 									_content: account.id,

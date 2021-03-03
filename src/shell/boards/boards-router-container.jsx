@@ -129,6 +129,11 @@ export default function BoardsRouterContainer() {
 		<_BoardsRouterContainer>
 			<Switch>
 				{ routes }
+				<Route key="com_zextras_zapp_settings/general" exact path="/com_zextras_zapp_settings/general">
+					<Suspense fallback={<LoadingView />}>
+						<div>CIAONE</div>
+					</Suspense>
+				</Route>
 			</Switch>
 		</_BoardsRouterContainer>
 	);

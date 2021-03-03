@@ -12,7 +12,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { combineLatest } from 'rxjs';
 import { map as rxMap } from 'rxjs/operators';
-import { map, reduce, endsWith } from 'lodash';
+import { map, reduce, endsWith, set } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { Container, Responsive } from '@zextras/zapp-ui';
 import { useAppsCache } from '../app/app-loader-context';
@@ -42,7 +42,6 @@ function getAppLink(to, pkg) {
 		}
 		return { pathname: `/${pkg.package}${urlTo}`, search: urlSearch };
 	}
-
 	return { ...to, pathname: `/${pkg.package}${to.pathname}` };
 }
 
@@ -71,7 +70,6 @@ const setActiveItem = (menuItems, pathname) => map(
 	})
 );
 
-
 export default function ShellNavigationBar({
 	navigationBarIsOpen,
 	mobileNavIsOpen,
@@ -83,10 +81,34 @@ export default function ShellNavigationBar({
 	const [activeApp, setActiveApp] = useState(undefined);
 	const { cache } = useAppsCache();
 	const [_mainMenuItems, setMainMenuItems] = useState({});
-
+	const settings = useMemo(() => ({
+		id: 'settings-main',
+		icon: 'Settings2Outline',
+		active: false,
+		allTos: ['/com_zextras_zapp_settings/', '/com_zextras_zapp_settings/general'],
+		label: 'Settings',
+		pkgName: 'com_zextras_zapp_settings',
+		to: '/com_zextras_zapp_settings/',
+		items: [
+			{
+				badgeCounter: undefined,
+				id: 'general',
+				label: 'General',
+				parent: '1',
+				onClick: () => {
+					history.push('/com_zextras_zapp_settings/general');
+				}
+			}
+		],
+		click: () => {
+			console.log('let\'s set some tings');
+			setActiveApp('settings-main');
+			history.push('/com_zextras_zapp_settings/general');
+		}
+	}), [history]);
 	const mainMenuItems = useMemo(
-		() => setActiveItem(_mainMenuItems, history.location.pathname),
-		[_mainMenuItems, history.location.pathname]
+		() => setActiveItem(set(_mainMenuItems, 'settings-main', settings), history.location.pathname),
+		[_mainMenuItems, history.location.pathname, settings]
 	);
 	useEffect(() => {
 		const subscription = combineLatest(

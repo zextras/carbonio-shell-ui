@@ -11,6 +11,7 @@
 
 import React, { Suspense } from 'react';
 import { Route } from 'react-router-dom';
+import { map } from 'lodash';
 import LoadingView from '../bootstrap/loading-view';
 import { Displayer } from './settings-view';
 
@@ -39,10 +40,18 @@ export const generateSettingsApp = (setActiveApp, history) => ({
 	}
 })
 
-export const SettingsRoutes = () => (
-	<Route key="com_zextras_zapp_settings/general" exact path="/com_zextras_zapp_settings/general">
-		<Suspense fallback={<LoadingView />}>
-			<Displayer />
-		</Suspense>
-	</Route>
-);
+export const SettingsRoutes = () => {
+
+
+	return (
+		<>
+			{map(['eeeee'], (route) => (
+				<Route key="com_zextras_zapp_settings/general" exact path="/com_zextras_zapp_settings/general">
+					<Suspense fallback={<LoadingView />}>
+						<Displayer />
+					</Suspense>
+				</Route>
+			))}
+		</>
+	);
+};

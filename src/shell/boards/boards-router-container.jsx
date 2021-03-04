@@ -19,6 +19,7 @@ import { Container } from '@zextras/zapp-ui';
 import { useAppsCache } from '../../app/app-loader-context';
 import LoadingView from '../../bootstrap/loading-view';
 import AppContextProvider from '../../app/app-context-provider';
+import { SettingsRoutes } from '../../settings/settings-app';
 
 const _BoardsRouterContainer = styled(Container)`
 	flex-grow: 1;
@@ -33,6 +34,7 @@ export default function BoardsRouterContainer() {
 	const [routes, setRoutes] = useState([]);
 	const [mainRoute, setMainRoute] = useState();
 	const history = useHistory();
+
 	useEffect(() => {
 		let timedRouting;
 		if (loaded && history.location.pathname === '/' && mainRoute) {
@@ -44,6 +46,7 @@ export default function BoardsRouterContainer() {
 			}
 		}
 	}, [history, loaded, mainRoute])
+
 	useEffect(() => {
 		const subscriptions = [
 			combineLatest(
@@ -127,14 +130,12 @@ export default function BoardsRouterContainer() {
 
 	return (
 		<_BoardsRouterContainer>
-			<Switch>
-				{ routes }
-				<Route key="com_zextras_zapp_settings/general" exact path="/com_zextras_zapp_settings/general">
-					<Suspense fallback={<LoadingView />}>
-						<div>CIAONE</div>
-					</Suspense>
-				</Route>
-			</Switch>
+			<Container mainAlignment='flex-start'>
+				<Switch>
+					{ routes }
+					<SettingsRoutes />
+				</Switch>
+			</Container>
 		</_BoardsRouterContainer>
 	);
 }

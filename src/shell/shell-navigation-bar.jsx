@@ -19,6 +19,7 @@ import { useAppsCache } from '../app/app-loader-context';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
 import ShellMobileNav from './shell-mobile-nav';
+import { generateSettingsApp } from '../settings/settings-app';
 
 function collectAllTo(pkgName, { to, items }) {
 	return reduce(
@@ -81,35 +82,11 @@ export default function ShellNavigationBar({
 	const [activeApp, setActiveApp] = useState(undefined);
 	const { cache } = useAppsCache();
 	const [_mainMenuItems, setMainMenuItems] = useState({});
-	const settings = useMemo(() => ({
-		id: 'settings-main',
-		icon: 'Settings2Outline',
-		active: false,
-		allTos: ['/com_zextras_zapp_settings/', '/com_zextras_zapp_settings/general'],
-		label: 'Settings',
-		pkgName: 'com_zextras_zapp_settings',
-		to: '/com_zextras_zapp_settings/',
-		items: [
-			{
-				badgeCounter: undefined,
-				id: 'general',
-				label: 'General',
-				parent: '1',
-				onClick: () => {
-					history.push('/com_zextras_zapp_settings/general');
-				}
-			}
-		],
-		click: () => {
-			console.log('let\'s set some tings');
-			setActiveApp('settings-main');
-			history.push('/com_zextras_zapp_settings/general');
-		}
-	}), [history]);
 	const mainMenuItems = useMemo(
-		() => setActiveItem(set(_mainMenuItems, 'settings-main', settings), history.location.pathname),
-		[_mainMenuItems, history.location.pathname, settings]
+		() => setActiveItem(set(_mainMenuItems, 'settings-main', generateSettingsApp(setActiveApp, history)), history.location.pathname),
+		[_mainMenuItems, history]
 	);
+
 	useEffect(() => {
 		const subscription = combineLatest(
 			reduce(

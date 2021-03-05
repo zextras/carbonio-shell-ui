@@ -133,7 +133,7 @@ export default function BoardsRouterContainer() {
 			<Container mainAlignment='flex-start'>
 				<Switch>
 					{ routes }
-					<SettingsRoutes />
+					<SettingsRoutes cache={cache} />
 				</Switch>
 			</Container>
 		</_BoardsRouterContainer>

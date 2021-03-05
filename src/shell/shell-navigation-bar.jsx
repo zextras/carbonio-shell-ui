@@ -82,7 +82,7 @@ export default function ShellNavigationBar({
 	const [activeApp, setActiveApp] = useState(undefined);
 	const { cache } = useAppsCache();
 	const [_mainMenuItems, setMainMenuItems] = useState({});
-	const settingsApp = useSettingsApps(setActiveApp, history);
+	const settingsApp = useSettingsApps(cache, setActiveApp, history);
 
 	const mainMenuItems = useMemo(
 		() => setActiveItem({..._mainMenuItems, settingsApp }, history.location.pathname),

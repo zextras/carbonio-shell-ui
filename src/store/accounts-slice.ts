@@ -12,7 +12,7 @@
 import {
 	CaseReducer, createAsyncThunk, createSlice, Draft, PayloadAction
 } from '@reduxjs/toolkit';
-import { filter, reduce, isEmpty } from 'lodash';
+import { filter, reduce, isEmpty, map } from 'lodash';
 import {
 	AppPkgDescription,
 	AccountLoginData,
@@ -33,6 +33,8 @@ type DoLoginArgs = {
 	username: string;
 	password: string;
 };
+
+type ModifyPrefsArgs = Record<string, string>;
 
 type NormalizeAccountParams = {
 	username: string;
@@ -68,9 +70,10 @@ function normalizeAccount(
 	{ username, password }: NormalizeAccountParams,
 	{ csrfToken, authToken }: AuthResponse,
 	{
-		id, name, zimlets, attrs
+		id, name, zimlets, attrs, prefs, identities, signatures
 	}: GetInfoResponse
 ): [Account, AccountLoginData] {
+	const settings = prefs._attrs;
 	const apps = reduce<ZimletPkgDescription, AppPkgDescription[]>(
 		filter<ZimletPkgDescription>(
 			zimlets.zimlet,
@@ -92,7 +95,10 @@ function normalizeAccount(
 		name,
 		displayName: attrs._attrs.displayName,
 		apps,
-		themes
+		themes,
+		settings,
+		identities,
+		signatures
 	}, {
 		t: authToken[0]._content,
 		u: username,
@@ -242,6 +248,60 @@ const doLogoutFulfilled: CaseReducer<
 	state.credentials = {};
 };
 
+export const modifyPrefs = createAsyncThunk<any, ModifyPrefsArgs>(
+	'accounts/modifyPrefs',
+	async (mods, { getState }) => {
+		console.log(mods);
+		const csrfToken = selectCSRFToken(getState() as any);
+		const res = await fetch(
+			'/service/soap/ModifyPrefsRequest',
+			{
+				method: 'POST',
+				// credentials: 'omit',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					Header: {
+						_jsns: 'urn:zimbra',
+						context: {
+							csrfToken
+						}
+					},
+					Body: {
+						ModifyPrefsRequest: {
+							_jsns: 'urn:zimbraAccount',
+							prefs: map(mods, (mod, key) => ([
+								{ pref: { name: key, _content: mod } },
+							])
+							)
+						}
+					}
+				})
+			}
+		);
+		const response = await res.json();
+		if (response.Body.Fault) {
+			throw new Error(response.Body.Fault.Reason.Text);
+		}
+		const modPrefResp = response.Body.ModifyPrefsResponse;
+		console.log(modPrefResp)
+		return 'hehe';
+	}
+);
+
+const modifyPrefsPending = (...args: any[]): void => {
+	console.log(args);
+};
+
+const modifyPrefsFulfilled = (...args: any[]): void => {
+	console.log(args);
+};
+
+const modifyPrefsRejected = (...args: any[]): void => {
+	console.log(args);
+};
+
 const accountsSlice = createSlice<AccountsSlice, any>({
 	name: 'accounts',
 	initialState: {
@@ -254,6 +314,9 @@ const accountsSlice = createSlice<AccountsSlice, any>({
 		builder.addCase(doLogin.pending, doLoginPending);
 		builder.addCase(doLogin.fulfilled, doLoginFulfilled);
 		builder.addCase(doLogin.rejected, doLoginRejected);
+		builder.addCase(modifyPrefs.pending, modifyPrefsPending);
+		builder.addCase(modifyPrefs.fulfilled, modifyPrefsFulfilled);
+		builder.addCase(modifyPrefs.rejected, modifyPrefsRejected);
 		builder.addCase(doLogout.pending, doLogoutPending);
 		builder.addCase(doLogout.fulfilled, doLogoutFulfilled);
 		builder.addCase(doLogout.rejected, doLoginRejected);

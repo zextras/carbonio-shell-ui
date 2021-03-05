@@ -14,7 +14,7 @@ import { Route } from 'react-router-dom';
 import LoadingView from '../bootstrap/loading-view';
 import { Displayer } from './settings-view';
 
-export const generateSettingsApp = (setActiveApp, history) => ({
+const generateSettingsApp = (setActiveApp, history) => ({
 	id: 'settings-main',
 	icon: 'Settings2Outline',
 	active: false,
@@ -38,6 +38,10 @@ export const generateSettingsApp = (setActiveApp, history) => ({
 		history.push('/com_zextras_zapp_settings/general');
 	}
 })
+
+export function useSettingsApps(setActiveApp, history) {
+	return generateSettingsApp(setActiveApp, history);
+}
 
 export const SettingsRoutes = () => (
 	<Route key="com_zextras_zapp_settings/general" exact path="/com_zextras_zapp_settings/general">

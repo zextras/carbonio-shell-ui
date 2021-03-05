@@ -12,14 +12,14 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { combineLatest } from 'rxjs';
 import { map as rxMap } from 'rxjs/operators';
-import { map, reduce, endsWith, set } from 'lodash';
+import { map, reduce, endsWith } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { Container, Responsive } from '@zextras/zapp-ui';
 import { useAppsCache } from '../app/app-loader-context';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
 import ShellMobileNav from './shell-mobile-nav';
-import { generateSettingsApp } from '../settings/settings-app';
+import { useSettingsApps } from '../settings/settings-app';
 
 function collectAllTo(pkgName, { to, items }) {
 	return reduce(
@@ -82,9 +82,11 @@ export default function ShellNavigationBar({
 	const [activeApp, setActiveApp] = useState(undefined);
 	const { cache } = useAppsCache();
 	const [_mainMenuItems, setMainMenuItems] = useState({});
+	const settingsApp = useSettingsApps(setActiveApp, history);
+
 	const mainMenuItems = useMemo(
-		() => setActiveItem(set(_mainMenuItems, 'settings-main', generateSettingsApp(setActiveApp, history)), history.location.pathname),
-		[_mainMenuItems, history]
+		() => setActiveItem({..._mainMenuItems, settingsApp }, history.location.pathname),
+		[_mainMenuItems, history.location.pathname, settingsApp]
 	);
 
 	useEffect(() => {

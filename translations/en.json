@@ -6,6 +6,12 @@
         "title": "Title"
     },
     "copyright": "Copyright",
+    "displayer": {
+        "button": {
+            "primary": "",
+            "secondary": ""
+        }
+    },
     "login": {
         "help": "Help",
         "incorrect": "The username or password is incorrect",

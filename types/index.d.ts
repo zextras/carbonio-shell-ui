@@ -98,6 +98,14 @@ export type AppRouteDescription = {
 	label: LazyExoticComponent<any>;
 };
 // Type is in the documentation. If changed update also the documentation.
+export type AppSettingsRouteDescription = {
+	route: string;
+	view: LazyExoticComponent<any>;
+	label: LazyExoticComponent<any>;
+	to: string;
+	id: string;
+};
+// Type is in the documentation. If changed update also the documentation.
 export type AppCreateOption = {
 	id: string;
 	onClick?: () => void;

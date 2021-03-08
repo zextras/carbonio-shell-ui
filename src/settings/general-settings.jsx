@@ -11,24 +11,30 @@
 import React, { useCallback, useState } from 'react';
 import { Breadcrumbs, Button, Container, Divider, Padding } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
+import {  useHistory} from 'react-router-dom';
 import { useUserAccounts, useDispatch } from '../store/shell-store-hooks';
 import { modifyPrefs } from '../store/accounts-slice';
 
 export const DisplayerHeader = ({ label, onCancel, onSave, mods }) => {
 	const [t] = useTranslation();
-
+	const history = useHistory();
 	const onSaveCb = useCallback(() => {
 		console.log('save button clicked!'); onSave(mods);
-	}, []);
+	}, [mods, onSave]);
 	const onCancelCb = useCallback(() => {
 		console.log('cancel button clicked!'); onCancel(mods);
-	}, []);
+	}, [mods, onCancel]);
 
 	const crumbs = [
 		{
-			id: 'general-mains',
+			id: 'settings',
+			label: 'Settings',
+			click: () => history.push('/com_zextras_zapp_settings/general')
+		},
+		{
+			id: 'general',
 			label,
-			click: () => console.log('General')
+			click: () => history.push('/com_zextras_zapp_settings/general')
 		}
 	];
 
@@ -36,7 +42,7 @@ export const DisplayerHeader = ({ label, onCancel, onSave, mods }) => {
 		<Container orientation="vertical" mainAlignment="flex-start" height="fit" >
 			<Container mainAlignment="flex-end" orientation="horizontal" padding={{all:'small'}} >
 				<Breadcrumbs crumbs={ crumbs }/>
-				<Button label={t('settings.button.secondary')} color='secondary' onClick={onCancelCb} disabled={mods}/>
+				<Button label={t('settings.button.secondary')} color='secondary' onClick={onCancelCb} disabled={!!mods}/>
 				<Padding horizontal='small' />
 				<Button label={t('settings.button.primary')} color='primary' onClick={onSaveCb} disabled={!mods}/>
 			</Container>
@@ -45,25 +51,13 @@ export const DisplayerHeader = ({ label, onCancel, onSave, mods }) => {
 	)
 }
 
-export const DisplayerContainer = ({setMods}) => {
-	const onClick = () => setMods('ciaone');
-	// load app settings inside
-	return (
-		<Container onClick={onClick}>
-			ciaone
-		</Container>
-	)
-}
-
 const GeneralSettings = () => {
 	const [mods, setMods] = useState(undefined);
-	const accounts = useUserAccounts();
-	const dispatch = useDispatch();
-	console.log(accounts);
+	// const accounts = useUserAccounts();
+	// const dispatch = useDispatch();
 	return(
 		<Container background="gray5" mainAlignment="flex-start">
-			<DisplayerHeader mods={mods} label="General" onCancel={console.log} onSave={() => dispatch(modifyPrefs({ zimbraPrefCalendarDayHourStart: "9" }))} />
-			<Button onClick={() => setMods({ zimbraPrefCalendarDayHourStart: "9" })} label="general cià" />
+			<DisplayerHeader mods={mods} label="General" onCancel={console.log} onSave={console.log} />
 		</Container>
 	);
 }

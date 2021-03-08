@@ -12,7 +12,7 @@
 import {
 	CaseReducer, createAsyncThunk, createSlice, Draft, PayloadAction
 } from '@reduxjs/toolkit';
-import { filter, reduce, isEmpty, map } from 'lodash';
+import { filter, reduce, isEmpty, map, cloneDeep } from 'lodash';
 import {
 	AppPkgDescription,
 	AccountLoginData,
@@ -251,13 +251,11 @@ const doLogoutFulfilled: CaseReducer<
 export const modifyPrefs = createAsyncThunk<any, ModifyPrefsArgs>(
 	'accounts/modifyPrefs',
 	async (mods, { getState }) => {
-		console.log(mods);
 		const csrfToken = selectCSRFToken(getState() as any);
 		const res = await fetch(
 			'/service/soap/ModifyPrefsRequest',
 			{
 				method: 'POST',
-				// credentials: 'omit',
 				headers: {
 					'Content-Type': 'application/json'
 				},
@@ -271,10 +269,7 @@ export const modifyPrefs = createAsyncThunk<any, ModifyPrefsArgs>(
 					Body: {
 						ModifyPrefsRequest: {
 							_jsns: 'urn:zimbraAccount',
-							prefs: map(mods, (mod, key) => ([
-								{ pref: { name: key, _content: mod } },
-							])
-							)
+							pref: mods,
 						}
 					}
 				})
@@ -284,22 +279,56 @@ export const modifyPrefs = createAsyncThunk<any, ModifyPrefsArgs>(
 		if (response.Body.Fault) {
 			throw new Error(response.Body.Fault.Reason.Text);
 		}
-		const modPrefResp = response.Body.ModifyPrefsResponse;
-		console.log(modPrefResp)
-		return 'hehe';
+		const prefsRes = await fetch(
+			'/service/soap/GetPrefsRequest',
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					Header: {
+						_jsns: 'urn:zimbra',
+						context: {
+							csrfToken
+						}
+					},
+					Body: {
+						GetPrefsRequest: {
+							_jsns: 'urn:zimbraAccount'
+						}
+					}
+				})
+			}
+		);
+		const prefsResponse = await prefsRes.json();
+		if (prefsResponse.Body.Fault) {
+			throw new Error(prefsResponse.Body.Fault.Reason.Text);
+		}
+		return prefsResponse.Body.GetPrefsResponse._attrs;
 	}
 );
 
-const modifyPrefsPending = (...args: any[]): void => {
-	console.log(args);
+const modifyPrefsPending: 
+	CaseReducer<AccountsSlice>
+= (state, { meta, payload }) => {
+	// eslint-disable-next-line no-param-reassign
+	meta.arg.prevSettings = cloneDeep(state.accounts[0].settings);
+	state.accounts[0].settings = payload;
+	state.status = 'working';
 };
 
-const modifyPrefsFulfilled = (...args: any[]): void => {
-	console.log(args);
+const modifyPrefsFulfilled: 
+	CaseReducer<AccountsSlice>
+= (state) => {
+	state.status = 'idle';
 };
 
-const modifyPrefsRejected = (...args: any[]): void => {
-	console.log(args);
+const modifyPrefsRejected: 
+	CaseReducer<AccountsSlice>
+= (state, { meta }: any) => {
+	state.status = 'idle';
+	state.accounts[0].settings = meta.arg.prevSettings;
 };
 
 const accountsSlice = createSlice<AccountsSlice, any>({

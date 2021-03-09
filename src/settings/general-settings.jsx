@@ -12,8 +12,8 @@ import React, { useCallback, useState } from 'react';
 import { Breadcrumbs, Button, Container, Divider, Padding } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useUserAccounts, useDispatch } from '../store/shell-store-hooks';
-import { modifyPrefs } from '../store/accounts-slice';
+// import { useUserAccounts, useDispatch } from '../store/shell-store-hooks';
+// import { modifyPrefs } from '../store/accounts-slice';
 
 export const DisplayerHeader = ({ label, onCancel, onSave, mods }) => {
 	const [t] = useTranslation();

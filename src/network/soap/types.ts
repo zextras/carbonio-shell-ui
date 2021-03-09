@@ -41,6 +41,15 @@ export type GetInfoResponse = SoapResponseContent & {
 			displayName: string;
 		};
 	};
+	prefs: {
+		_attrs: Record<string, string>;
+	};
+	signatures: {
+		signature: Array<any>;
+	};
+	identities: {
+		identity: Array<any>;
+	}
 	zimlets: {
 		zimlet: Array<ZimletPkgDescription>;
 	};

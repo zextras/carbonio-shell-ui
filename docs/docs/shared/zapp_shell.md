@@ -100,7 +100,7 @@ function setRoutes(routes: AppRouteDescription[]): void {}
 ```
 Set the routes handled by the App replacing the previous data.
 
-Routes MUST render a [lazy components][2] to reduce the main App bundle and improve the system load.
+Routes MUST render a [lazy component][2] to reduce the main App bundle and improve the system load.
 
 ```typescript
 import { LazyExoticComponent } from 'react';
@@ -109,6 +109,26 @@ type AppRouteDescription = {
 	route: string;
 	view: LazyExoticComponent<any>;
 	label: LazyExoticComponent<any>;
+};
+```
+
+### setSettingsRoutes
+```typescript
+function setSettingsRoutes(routes: AppSettingsRouteDescription[]): void {}
+```
+Set the routes handled by the Settings App replacing the previous data.
+
+Routes MUST render a [lazy component][2] to reduce the main App bundle and improve the system load.
+
+```typescript
+import { LazyExoticComponent } from 'react';
+
+type AppSettingsRouteDescription = {
+	route: string;
+	view: LazyExoticComponent<any>;
+	label: LazyExoticComponent<any>;
+	to: string;
+	id: string;
 };
 ```
 

@@ -32,7 +32,7 @@ export type AppPkgDescription = BasePkgDescription & {
 	handlers?: string;
 };
 
-export type ThemePkgDescription = BasePkgDescription & {};
+export type ThemePkgDescription = BasePkgDescription & unknown;
 
 export type AccountAppsData = Array<AppPkgDescription>;
 export type AccountThemesData = Array<ThemePkgDescription>;
@@ -50,9 +50,12 @@ export type Account = {
 	apps: AccountAppsData;
 	themes: AccountThemesData;
 	displayName: string;
+	settings: Record<string, any>;
+	signatures: { signature: Array<any>; };
+	identities: { identity: Array<any>; };
 };
 
-export type FCPartialEvent<T extends {} | string> = {
+export type FCPartialEvent<T extends unknown | string> = {
 	asPromise?: true;
 	to?: {
 		version: string;
@@ -62,16 +65,16 @@ export type FCPartialEvent<T extends {} | string> = {
 	data: T;
 };
 
-export type FCEvent<T extends {} | string> = FCPartialEvent<T> & {
+export type FCEvent<T extends unknown | string> = FCPartialEvent<T> & {
 	from: string;
 	version: string;
 };
 
-export type FCPartialPromisedEvent<T extends {} | string> = FCPartialEvent<T> & {
+export type FCPartialPromisedEvent<T extends unknown | string> = FCPartialEvent<T> & {
 	asPromise: true;
 };
 
-export type FCPromisedEvent<T extends {} | string, R extends {} | string> = FCEvent<T> & {
+export type FCPromisedEvent<T extends unknown | string, R extends unknown | string> = FCEvent<T> & {
 	sendResponse: (data: R) => void;
 };
 // Type is in the documentation. If changed update also the documentation.
@@ -98,6 +101,14 @@ export type AppRouteDescription = {
 	label: LazyExoticComponent<any>;
 };
 // Type is in the documentation. If changed update also the documentation.
+export type AppSettingsRouteDescription = {
+	route: string;
+	view: LazyExoticComponent<any>;
+	label: LazyExoticComponent<any>;
+	to: string;
+	id: string;
+};
+// Type is in the documentation. If changed update also the documentation.
 export type AppCreateOption = {
 	id: string;
 	onClick?: () => void;
@@ -109,7 +120,9 @@ export type AppCreateOption = {
 	label: string;
 };
 
-export type FCSink = <T extends {} | string, R extends {} | string>(event: FCPartialEvent<T> | FCPartialPromisedEvent<T>) => void | Promise<R>;
+export type FCSink = <T extends unknown | string, R extends unknown | string>(
+	event: FCPartialEvent<T> | FCPartialPromisedEvent<T>
+) => void | Promise<R>;
 export type FC = Observable<FCEvent<any> | FCPromisedEvent<any, any>>;
 
 export function setMainMenuItems (items: MainMenuItemData[]): void;
@@ -168,6 +181,7 @@ export const network: {
 
 export const testUtils: {
 	render(
+		// eslint-disable-next-line no-shadow
 		ui: React.ReactElement,
 		options?: Omit<RenderOptions, 'queries'>,
 	): RenderResult;

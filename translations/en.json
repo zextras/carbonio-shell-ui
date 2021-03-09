@@ -23,6 +23,12 @@
     },
     "new": "New",
     "new-tab": "New tab",
+    "settings": {
+        "button": {
+            "primary": "Save",
+            "secondary": "Cancel"
+        }
+    },
     "supported_browsers": {
         "chrome": "Chrome",
         "edge": "Edge",

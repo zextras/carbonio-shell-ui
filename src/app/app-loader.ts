@@ -57,6 +57,7 @@ import {
 	AppCreateOption,
 	AppPkgDescription,
 	AppRouteDescription,
+	AppSettingsRouteDescription,
 	FCSink,
 	MainMenuItemData,
 	SoapFetch, ThemePkgDescription,
@@ -93,6 +94,7 @@ type SharedLibrariesAppsMap = {
 		};
 		setMainMenuItems: (items: MainMenuItemData[]) => void;
 		setRoutes: (routes: AppRouteDescription[]) => void;
+		setSettingsRoutes: (routes: AppSettingsRouteDescription[]) => void;
 		setCreateOptions: (options: AppCreateOption[]) => void;
 		setAppContext: (obj: any) => void;
 		registerSharedUiComponents: (components: SharedUiComponentsDescriptor) => void;
@@ -140,6 +142,7 @@ type AppInjections = {
 	entryPoint: BehaviorSubject<ComponentClass|null>;
 	mainMenuItems: BehaviorSubject<MainMenuItemData[]>;
 	routes: BehaviorSubject<AppRouteDescription[]>;
+	settingsRoutes: BehaviorSubject<AppSettingsRouteDescription[]>;
 	sharedUiComponents: BehaviorSubject<SharedUiComponentsDescriptor>;
 	store: Store<any>;
 };
@@ -173,6 +176,7 @@ function loadAppModule(
 		entryPoint,
 		mainMenuItems,
 		routes,
+		settingsRoutes,
 		sharedUiComponents,
 		store
 	}: AppInjections,
@@ -202,6 +206,7 @@ function loadAppModule(
 				},
 				setMainMenuItems: (items): void => mainMenuItems.next(items),
 				setRoutes: (r): void => routes.next(r),
+				setSettingsRoutes: (r): void => settingsRoutes.next(r),
 				setCreateOptions: (options): void => createOptions.next(options),
 				setAppContext: (obj: any): void => appContext.next(obj),
 				registerSharedUiComponents: (
@@ -324,6 +329,7 @@ function loadApp(
 	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
 	const mainMenuItems = new BehaviorSubject<MainMenuItemData[]>([]);
 	const routes = new BehaviorSubject<AppRouteDescription[]>([]);
+	const settingsRoutes = new BehaviorSubject<AppSettingsRouteDescription[]>([]);
 	const createOptions = new BehaviorSubject<AppCreateOption[]>([]);
 	const appContext = new BehaviorSubject<any>({});
 	const sharedUiComponents = new BehaviorSubject<SharedUiComponentsDescriptor>({});
@@ -337,6 +343,7 @@ function loadApp(
 			entryPoint,
 			mainMenuItems,
 			routes,
+			settingsRoutes,
 			sharedUiComponents,
 			store
 		},
@@ -374,6 +381,7 @@ function loadApp(
 			entryPoint,
 			mainMenuItems,
 			routes,
+			settingsRoutes,
 			sharedUiComponents,
 			store
 		} : undefined));

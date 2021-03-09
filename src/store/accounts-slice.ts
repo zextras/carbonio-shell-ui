@@ -12,7 +12,7 @@
 import {
 	CaseReducer, createAsyncThunk, createSlice, Draft, PayloadAction
 } from '@reduxjs/toolkit';
-import { filter, reduce, isEmpty } from 'lodash';
+import { filter, reduce, isEmpty, map, cloneDeep } from 'lodash';
 import {
 	AppPkgDescription,
 	AccountLoginData,
@@ -33,6 +33,8 @@ type DoLoginArgs = {
 	username: string;
 	password: string;
 };
+
+type ModifyPrefsArgs = Record<string, string>;
 
 type NormalizeAccountParams = {
 	username: string;
@@ -68,9 +70,10 @@ function normalizeAccount(
 	{ username, password }: NormalizeAccountParams,
 	{ csrfToken, authToken }: AuthResponse,
 	{
-		id, name, zimlets, attrs
+		id, name, zimlets, attrs, prefs, identities, signatures
 	}: GetInfoResponse
 ): [Account, AccountLoginData] {
+	const settings = prefs._attrs;
 	const apps = reduce<ZimletPkgDescription, AppPkgDescription[]>(
 		filter<ZimletPkgDescription>(
 			zimlets.zimlet,
@@ -92,7 +95,10 @@ function normalizeAccount(
 		name,
 		displayName: attrs._attrs.displayName,
 		apps,
-		themes
+		themes,
+		settings,
+		identities,
+		signatures
 	}, {
 		t: authToken[0]._content,
 		u: username,
@@ -242,6 +248,89 @@ const doLogoutFulfilled: CaseReducer<
 	state.credentials = {};
 };
 
+export const modifyPrefs = createAsyncThunk<any, ModifyPrefsArgs>(
+	'accounts/modifyPrefs',
+	async (mods, { getState }) => {
+		const csrfToken = selectCSRFToken(getState() as any);
+		const res = await fetch(
+			'/service/soap/ModifyPrefsRequest',
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					Header: {
+						_jsns: 'urn:zimbra',
+						context: {
+							csrfToken
+						}
+					},
+					Body: {
+						ModifyPrefsRequest: {
+							_jsns: 'urn:zimbraAccount',
+							pref: mods,
+						}
+					}
+				})
+			}
+		);
+		const response = await res.json();
+		if (response.Body.Fault) {
+			throw new Error(response.Body.Fault.Reason.Text);
+		}
+		const prefsRes = await fetch(
+			'/service/soap/GetPrefsRequest',
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					Header: {
+						_jsns: 'urn:zimbra',
+						context: {
+							csrfToken
+						}
+					},
+					Body: {
+						GetPrefsRequest: {
+							_jsns: 'urn:zimbraAccount'
+						}
+					}
+				})
+			}
+		);
+		const prefsResponse = await prefsRes.json();
+		if (prefsResponse.Body.Fault) {
+			throw new Error(prefsResponse.Body.Fault.Reason.Text);
+		}
+		return prefsResponse.Body.GetPrefsResponse._attrs;
+	}
+);
+
+const modifyPrefsPending: 
+	CaseReducer<AccountsSlice>
+= (state, { meta, payload }) => {
+	// eslint-disable-next-line no-param-reassign
+	meta.arg.prevSettings = cloneDeep(state.accounts[0].settings);
+	state.accounts[0].settings = payload;
+	state.status = 'working';
+};
+
+const modifyPrefsFulfilled: 
+	CaseReducer<AccountsSlice>
+= (state) => {
+	state.status = 'idle';
+};
+
+const modifyPrefsRejected: 
+	CaseReducer<AccountsSlice>
+= (state, { meta }: any) => {
+	state.status = 'idle';
+	state.accounts[0].settings = meta.arg.prevSettings;
+};
+
 const accountsSlice = createSlice<AccountsSlice, any>({
 	name: 'accounts',
 	initialState: {
@@ -254,6 +343,9 @@ const accountsSlice = createSlice<AccountsSlice, any>({
 		builder.addCase(doLogin.pending, doLoginPending);
 		builder.addCase(doLogin.fulfilled, doLoginFulfilled);
 		builder.addCase(doLogin.rejected, doLoginRejected);
+		builder.addCase(modifyPrefs.pending, modifyPrefsPending);
+		builder.addCase(modifyPrefs.fulfilled, modifyPrefsFulfilled);
+		builder.addCase(modifyPrefs.rejected, modifyPrefsRejected);
 		builder.addCase(doLogout.pending, doLogoutPending);
 		builder.addCase(doLogout.fulfilled, doLogoutFulfilled);
 		builder.addCase(doLogout.rejected, doLoginRejected);

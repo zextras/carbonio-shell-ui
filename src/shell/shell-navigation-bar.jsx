@@ -19,6 +19,7 @@ import { useAppsCache } from '../app/app-loader-context';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
 import ShellMobileNav from './shell-mobile-nav';
+import { useSettingsApps } from '../settings/settings-app';
 
 function collectAllTo(pkgName, { to, items }) {
 	return reduce(
@@ -42,7 +43,6 @@ function getAppLink(to, pkg) {
 		}
 		return { pathname: `/${pkg.package}${urlTo}`, search: urlSearch };
 	}
-
 	return { ...to, pathname: `/${pkg.package}${to.pathname}` };
 }
 
@@ -71,7 +71,6 @@ const setActiveItem = (menuItems, pathname) => map(
 	})
 );
 
-
 export default function ShellNavigationBar({
 	navigationBarIsOpen,
 	mobileNavIsOpen,
@@ -83,11 +82,13 @@ export default function ShellNavigationBar({
 	const [activeApp, setActiveApp] = useState(undefined);
 	const { cache } = useAppsCache();
 	const [_mainMenuItems, setMainMenuItems] = useState({});
+	const settingsApp = useSettingsApps(cache, setActiveApp, history);
 
 	const mainMenuItems = useMemo(
-		() => setActiveItem(_mainMenuItems, history.location.pathname),
-		[_mainMenuItems, history.location.pathname]
+		() => setActiveItem({..._mainMenuItems, settingsApp }, history.location.pathname),
+		[_mainMenuItems, history.location.pathname, settingsApp]
 	);
+
 	useEffect(() => {
 		const subscription = combineLatest(
 			reduce(

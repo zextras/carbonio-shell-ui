@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.7](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.6...v0.1.0-beta.7) (2021-03-09)
+
+
+### Features
+
+* created settings app ([30ee8a7](https://bitbucket.org/zextras/zapp-shell/commit/30ee8a777fd8aad4138490aba2fc63203886b52d))
+* implement setting view ([b3cbfbc](https://bitbucket.org/zextras/zapp-shell/commit/b3cbfbcbd6b783c230b6981742ecd12f1863850a))
+* preparation work on settings data management ([aa46ccf](https://bitbucket.org/zextras/zapp-shell/commit/aa46ccf0087f324984cc96d8095a76c97a207998))
+
 ## [0.1.0-beta.6](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.5...v0.1.0-beta.6) (2021-03-02)
 
 ## [0.1.0-beta.5](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.4...v0.1.0-beta.5) (2021-03-02)

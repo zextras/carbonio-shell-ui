@@ -12,7 +12,7 @@
 import { useContext } from 'react';
 import { createDispatchHook, createSelectorHook, createStoreHook } from 'react-redux';
 import ShellStoreContext from './shell-store-context';
-import { selectAccounts } from './accounts-slice';
+import { selectAccounts, selectCSRFToken } from './accounts-slice';
 import { selectSessionState } from './session-slice';
 
 export function useReduxContext() {
@@ -36,4 +36,8 @@ export function useUserAccounts() {
 
 export function useSessionState() {
 	return useSelector(selectSessionState);
+}
+
+export function useCSRFToken() {
+	return useSelector(selectCSRFToken);
 }

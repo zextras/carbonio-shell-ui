@@ -15,7 +15,6 @@ import { Reducer } from 'redux';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LocationDescriptor } from 'history';
 import { Store } from '@reduxjs/toolkit';
-import { selectCSRFToken } from '../src/store/accounts-slice';
 
 export type BasePkgDescription = {
 	priority: number;

@@ -41,7 +41,7 @@ export { default as usePromise } from 'react-use-promise';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-export { useUserAccounts } from '../store/shell-store-hooks';
+export { useUserAccounts, useCSRFToken } from '../store/shell-store-hooks';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

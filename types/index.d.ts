@@ -146,6 +146,7 @@ export const hooks: {
 	useRemoveCurrentBoard(): () => void;
 	useReplaceHistoryCallback(): (location: LocationDescriptor) => void;
 	useUserAccounts(): Account[];
+	useCSRFToken(): string;
 };
 
 export const ui: any;

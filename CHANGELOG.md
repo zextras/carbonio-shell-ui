@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.9](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.8...v0.1.0-beta.9) (2021-03-22)
+
+
+### Features
+
+* expose csrf token to apps through hooks ([133174e](https://bitbucket.org/zextras/zapp-shell/commit/133174eee89a3abb1b738a44d074cf8d7c92b101))
+
 ## [0.1.0-beta.8](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.7...v0.1.0-beta.8) (2021-03-09)
 
 ## [0.1.0-beta.7](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.6...v0.1.0-beta.7) (2021-03-09)

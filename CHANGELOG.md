@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.10](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.9...v0.1.0-beta.10) (2021-03-30)
+
+
+### Features
+
+* mocks added for useAppContext and setAppContext ([7a69cc9](https://bitbucket.org/zextras/zapp-shell/commit/7a69cc9f8a79982349e78b2ad8e07248a50eca4d))
+* mocks added for useAppContext and setAppContext ([90c1227](https://bitbucket.org/zextras/zapp-shell/commit/90c12276acb6811030dfd75cf5540638d4c52f5f))
+
 ## [0.1.0-beta.9](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.8...v0.1.0-beta.9) (2021-03-22)
 
 

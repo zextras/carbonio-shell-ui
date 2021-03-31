@@ -15,7 +15,7 @@ import fetch from 'node-fetch';
 import { MemoryRouter } from 'react-router-dom';
 import { ThemeContextProvider } from '@zextras/zapp-ui';
 import AppContextWrapper from './mocks/app-context-wrapper';
-import { usePushHistoryCallback, useReplaceHistoryCallback, useRemoveCurrentBoard } from './shell/hooks';
+import { usePushHistoryCallback, useReplaceHistoryCallback, useAppContext, useRemoveCurrentBoard } from './shell/hooks';
 import { useSharedComponent } from './shared-ui-components/use-shared-component';
 
 const confPath = path.resolve(
@@ -101,7 +101,7 @@ function render(
 					reducer={reducer}
 					preloadedState={preloadedState}
 				>
-					{ children }
+					{children}
 				</AppContextWrapper>
 			</ThemeContextProvider>
 		</MemoryRouter>
@@ -120,10 +120,14 @@ export const testUtils = {
 	render
 };
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+export const setAppContext = jest.fn(() => { });
+
 export const hooks = {
 	useReplaceHistoryCallback: jest.fn(useReplaceHistoryCallback),
 	usePushHistoryCallback: jest.fn(usePushHistoryCallback),
-	useUserAccounts: jest.fn(() => []),
+	useUserAccounts: jest.fn(() => [{ name: "" }]),
 	useRemoveCurrentBoard: jest.fn(useRemoveCurrentBoard),
 	useSharedComponent: jest.fn(useSharedComponent),
+	useAppContext: jest.fn(useAppContext)
 };

@@ -153,6 +153,7 @@ export const hooks: {
 	useReplaceHistoryCallback(): (location: LocationDescriptor) => void;
 	useUserAccounts(): Account[];
 	useRegisterTheme(extension: (theme: never) => never, id: string): void;
+	useCSRFToken(): string;
 };
 
 export const ui: any;

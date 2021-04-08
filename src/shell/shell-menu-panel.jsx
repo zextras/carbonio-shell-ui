@@ -11,17 +11,9 @@
 
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
-import {
-	Accordion,
-	Collapse,
-	Container,
-	Responsive
-} from '@zextras/zapp-ui';
+import { Accordion, Collapse, Container, Responsive } from '@zextras/zapp-ui';
 
-export default function ShellMenuPanel({
-	menuIsOpen,
-	tree,
-}) {
+export default function ShellMenuPanel({ menuIsOpen, tree }) {
 	return (
 		<Container
 			orientation="horizontal"
@@ -39,20 +31,9 @@ export default function ShellMenuPanel({
 			}}
 		>
 			<Responsive mode="desktop">
-				<Collapse
-					orientation="horizontal"
-					open={menuIsOpen}
-					maxSize="256px"
-				>
-					<Container
-						width={256}
-						height="fill"
-						orientation="vertical"
-						mainAlignment="flex-start"
-					>
-						<Accordion
-							items={tree}
-						/>
+				<Collapse orientation="horizontal" open={menuIsOpen} maxSize="256px">
+					<Container width={256} height="fill" orientation="vertical" mainAlignment="flex-start">
+						<Accordion items={tree} />
 					</Container>
 				</Collapse>
 			</Responsive>

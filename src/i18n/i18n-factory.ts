@@ -15,7 +15,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import { AppPkgDescription } from '../../types';
 
 export default class I18nFactory {
-	private _cache: {[pkg: string]: i18n} = {};
+	private _cache: { [pkg: string]: i18n } = {};
 
 	public getShellI18n(): i18n {
 		return this.getAppI18n({
@@ -50,7 +50,7 @@ export default class I18nFactory {
 				debug: false,
 
 				interpolation: {
-					escapeValue: false, // not needed for react as it escapes by default
+					escapeValue: false // not needed for react as it escapes by default
 				},
 
 				missingKeyHandler: (lng, ns, key, fallbackValue) => {
@@ -58,8 +58,8 @@ export default class I18nFactory {
 				},
 
 				backend: {
-					loadPath: `/zx/zimlet/${appPkgDescription.package}/i18n/{{lng}}.json`,
-				},
+					loadPath: `/zx/zimlet/${appPkgDescription.package}/i18n/{{lng}}.json`
+				}
 			});
 		this._cache[appPkgDescription.package] = newI18n;
 		return newI18n;

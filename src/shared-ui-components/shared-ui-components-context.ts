@@ -16,7 +16,7 @@ export type SharedUIComponentsMap = {
 	[id: string]: {
 		pkg: string;
 		versions: AppPkgDescription;
-	}
+	};
 };
 
 export const SharedUIComponentsContext = createContext<SharedUIComponentsMap>({});

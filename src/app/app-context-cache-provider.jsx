@@ -42,29 +42,24 @@ export default function AppContextCacheProvider({ children }) {
 			reduce(
 				cache,
 				(acc, app) => {
-					acc.push(
-						app.appContext.pipe(
-							rxMap((appContext) => ({ appContext, app }))
-						)
-					);
+					acc.push(app.appContext.pipe(rxMap((appContext) => ({ appContext, app }))));
 					return acc;
 				},
 				[]
 			)
-		)
-			.subscribe((_appContexts) => {
-				dispatchAppContext({
-					type: 'set-app-context',
-					appsCtxts: reduce(
-						_appContexts,
-						(r, { appContext, app }) => {
-							r[app.pkg.package] = appContext;
-							return r;
-						},
-						{}
-					)
-				});
+		).subscribe((_appContexts) => {
+			dispatchAppContext({
+				type: 'set-app-context',
+				appsCtxts: reduce(
+					_appContexts,
+					(r, { appContext, app }) => {
+						r[app.pkg.package] = appContext;
+						return r;
+					},
+					{}
+				)
 			});
+		});
 
 		return () => {
 			if (subscription) {
@@ -73,11 +68,5 @@ export default function AppContextCacheProvider({ children }) {
 		};
 	}, [cache, dispatchAppContext]);
 
-	return (
-		<AppContextCache.Provider
-			value={appContextCache}
-		>
-			{ children }
-		</AppContextCache.Provider>
-	);
+	return <AppContextCache.Provider value={appContextCache}>{children}</AppContextCache.Provider>;
 }

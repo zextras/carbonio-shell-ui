@@ -11,7 +11,5 @@
 import React from 'react';
 
 export default function NoRouteMatchView() {
-	return (
-		<div>Oops, something went wrong. :(</div>
-	);
+	return <div>Oops, something went wrong. :(</div>;
 }

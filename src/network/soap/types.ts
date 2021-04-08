@@ -33,6 +33,12 @@ export type ZimletPkgDescription = {
 	}>;
 };
 
+export type ZimletProp = {
+	name: string;
+	zimlet: string;
+	_content: string;
+};
+
 export type GetInfoResponse = SoapResponseContent & {
 	name: string;
 	id: string;
@@ -49,9 +55,12 @@ export type GetInfoResponse = SoapResponseContent & {
 	};
 	identities: {
 		identity: Array<any>;
-	}
+	};
 	zimlets: {
 		zimlet: Array<ZimletPkgDescription>;
+	};
+	props: {
+		prop: Array<ZimletProp>;
 	};
 };
 

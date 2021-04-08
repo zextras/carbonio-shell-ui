@@ -9,13 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import {
-	FC,
-	useCallback,
-	useContext,
-	useEffect,
-	useState
-} from 'react';
+import { FC, useCallback, useContext, useEffect, useState } from 'react';
 import { skip } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { useHistory } from 'react-router-dom';
@@ -32,6 +26,7 @@ import { BoardSetterContext } from './boards/board-context';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppContext from '../app/app-context';
+import { ThemeCallbacksContext } from '../bootstrap/shell-theme-context-provider';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -46,6 +41,13 @@ export { useUserAccounts } from '../store/shell-store-hooks';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export { useSharedComponent } from '../shared-ui-components/use-shared-component';
+
+export const useRegisterTheme = (extension: (theme: any) => any, id: string): void => {
+	const { addExtension } = useContext(ThemeCallbacksContext);
+	useEffect(() => {
+		addExtension(extension, id);
+	}, [addExtension, extension, id]);
+};
 
 export function useAddBoardCallback(path: string): () => void {
 	const { addBoard } = useContext(BoardSetterContext);
@@ -68,35 +70,36 @@ export function useRemoveCurrentBoard(): () => void {
 export function usePushHistoryCallback(): (location: LocationDescriptor) => void {
 	const { pkg } = useContext(AppContext);
 	const history = useHistory();
-	return useCallback((location: LocationDescriptor) => {
-		if (typeof location === 'string') {
-			history.push(`/${pkg.package}${location}`);
-		}
-		else {
-			history.push({ ...location, pathname: `/${pkg.package}${location.pathname}` });
-		}
-	}, [pkg, history]);
+	return useCallback(
+		(location: LocationDescriptor) => {
+			if (typeof location === 'string') {
+				history.push(`/${pkg.package}${location}`);
+			} else {
+				history.push({ ...location, pathname: `/${pkg.package}${location.pathname}` });
+			}
+		},
+		[pkg, history]
+	);
 }
 
 export function useGoBackHistoryCallback(): () => void {
 	const history = useHistory();
-	return useCallback(
-		() => history.goBack(),
-		[history]
-	);
+	return useCallback(() => history.goBack(), [history]);
 }
 
 export function useReplaceHistoryCallback(): (location: LocationDescriptor) => void {
 	const { pkg } = useContext(AppContext);
 	const history = useHistory();
-	return useCallback((location: LocationDescriptor) => {
-		if (typeof location === 'string') {
-			history.replace(`/${pkg.package}${location}`);
-		}
-		else {
-			history.replace({ ...location, pathname: `/${pkg.package}${location.pathname}` });
-		}
-	}, [pkg, history]);
+	return useCallback(
+		(location: LocationDescriptor) => {
+			if (typeof location === 'string') {
+				history.replace(`/${pkg.package}${location}`);
+			} else {
+				history.replace({ ...location, pathname: `/${pkg.package}${location.pathname}` });
+			}
+		},
+		[pkg, history]
+	);
 }
 
 export function useBehaviorSubject<T>(observable: BehaviorSubject<T>): T {

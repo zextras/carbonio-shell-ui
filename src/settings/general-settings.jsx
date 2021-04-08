@@ -12,6 +12,11 @@ import React, { useCallback, useState } from 'react';
 import { Breadcrumbs, Button, Container, Divider, Padding } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
+import { set } from 'lodash';
+import { useDispatch } from '../store/shell-store-hooks';
+import { modifyPrefs } from '../store/accounts-slice';
+import AppearanceSettings from './appearance-settings';
+import { useUserAccounts } from '../shell/hooks';
 // import { useUserAccounts, useDispatch } from '../store/shell-store-hooks';
 // import { modifyPrefs } from '../store/accounts-slice';
 
@@ -19,10 +24,10 @@ export const DisplayerHeader = ({ label, onCancel, onSave, mods }) => {
 	const [t] = useTranslation();
 	const history = useHistory();
 	const onSaveCb = useCallback(() => {
-		console.log('save button clicked!'); onSave(mods);
+		onSave(mods);
 	}, [mods, onSave]);
 	const onCancelCb = useCallback(() => {
-		console.log('cancel button clicked!'); onCancel(mods);
+		onCancel(mods);
 	}, [mods, onCancel]);
 
 	const crumbs = [
@@ -38,28 +43,63 @@ export const DisplayerHeader = ({ label, onCancel, onSave, mods }) => {
 		}
 	];
 
-	return(
-		<Container orientation="vertical" mainAlignment="flex-start" height="fit" >
-			<Container mainAlignment="flex-end" orientation="horizontal" padding={{all:'small'}} >
-				<Breadcrumbs crumbs={ crumbs }/>
-				<Button label={t('settings.button.secondary')} color='secondary' onClick={onCancelCb} disabled={!!mods}/>
-				<Padding horizontal='small' />
-				<Button label={t('settings.button.primary')} color='primary' onClick={onSaveCb} disabled={!mods}/>
+	return (
+		<Container orientation="vertical" mainAlignment="flex-start" height="fit">
+			<Container mainAlignment="flex-end" orientation="horizontal" padding={{ all: 'small' }}>
+				<Breadcrumbs crumbs={crumbs} />
+				<Button
+					label={t('settings.button.secondary')}
+					color="secondary"
+					onClick={onCancelCb}
+					disabled
+				/>
+				<Padding horizontal="small" />
+				<Button
+					label={t('settings.button.primary')}
+					color="primary"
+					onClick={onSaveCb}
+					disabled={!mods}
+				/>
 			</Container>
-			<Divider color="gray1"/>
+			<Divider color="gray1" />
 		</Container>
-	)
-}
+	);
+};
 
 const GeneralSettings = () => {
 	const [mods, setMods] = useState(undefined);
-	// const accounts = useUserAccounts();
-	// const dispatch = useDispatch();
-	return(
+	const [t] = useTranslation();
+	const [acct] = useUserAccounts();
+	const [original] = useState(acct.settings);
+	const dispatch = useDispatch();
+	const addMod = useCallback((type, key, value) => {
+		setMods((m) => ({
+			...m,
+			[type]: {
+				...m?.[type],
+				[key]: value
+			}
+		}));
+	}, []);
+	const onSave = useCallback(() => {
+		dispatch(modifyPrefs(mods));
+		setMods({});
+	}, [dispatch, mods]);
+	const onCancel = useCallback(() => {
+		dispatch(modifyPrefs(original));
+		setMods({});
+	}, [dispatch, original]);
+	return (
 		<Container background="gray5" mainAlignment="flex-start">
-			<DisplayerHeader mods={mods} label="General" onCancel={console.log} onSave={console.log} />
+			<DisplayerHeader
+				mods={mods}
+				label={t('settins.general.general', 'General Settings')}
+				onCancel={onCancel}
+				onSave={onSave}
+			/>
+			<AppearanceSettings settings={acct.settings} addMod={addMod} />
 		</Container>
 	);
-}
+};
 
 export default GeneralSettings;

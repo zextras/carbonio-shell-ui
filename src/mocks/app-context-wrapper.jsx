@@ -39,7 +39,6 @@ export default function AppContextWrapper({
 			version: packageVersion
 		};
 
-
 		// eslint-disable-next-line no-param-reassign
 		ctxt.current = {
 			history,
@@ -51,7 +50,7 @@ export default function AppContextWrapper({
 			sharedUiComponents: new BehaviorSubject({}),
 			store: configureStore({
 				devTools: {
-					name: _pkg.package,
+					name: _pkg.package
 				},
 				reducer: reducer || { _useless: _uselessSlice.reducer },
 				preloadedState
@@ -72,12 +71,8 @@ export default function AppContextWrapper({
 
 	return (
 		<Provider store={appContext.store}>
-			<AppContext.Provider
-				value={appContext}
-			>
-				<I18nextProvider i18n={i18n}>
-					{ children }
-				</I18nextProvider>
+			<AppContext.Provider value={appContext}>
+				<I18nextProvider i18n={i18n}>{children}</I18nextProvider>
 			</AppContext.Provider>
 		</Provider>
 	);

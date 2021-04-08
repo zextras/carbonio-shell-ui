@@ -9,13 +9,20 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, {
-	useCallback, useMemo, useRef, useState
-} from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import {
-	Container, Text, Divider, Icon, IconButton, Padding, Collapse,
-	useCombinedRefs, useKeyboard, getKeyboardPreset, pseudoClasses
+	Container,
+	Text,
+	Divider,
+	Icon,
+	IconButton,
+	Padding,
+	Collapse,
+	useCombinedRefs,
+	useKeyboard,
+	getKeyboardPreset,
+	pseudoClasses
 } from '@zextras/zapp-ui';
 
 const AccordionContainerEl = styled(Container)`
@@ -23,46 +30,43 @@ const AccordionContainerEl = styled(Container)`
 		${props.level === 0 ? props.theme.sizes.padding.large : props.theme.sizes.padding.medium}
 		${props.theme.sizes.padding.large}
 		${props.level === 0 ? props.theme.sizes.padding.large : props.theme.sizes.padding.medium}
-		calc(${props.theme.sizes.padding.large} + ${props.level > 1 ? props.theme.sizes.padding.medium : '0px'})
+		calc(${props.theme.sizes.padding.large} + ${
+		props.level > 1 ? props.theme.sizes.padding.medium : '0px'
+	})
 	`};
 	${({ theme }) => pseudoClasses(theme, 'gray5')};
 `;
 
 // eslint-disable-next-line prefer-arrow-callback
-const NavigationBarAccordion = React.forwardRef(function NavigationBarAccordionCls({
-	active,
-	icon,
-	divider,
-	click,
-	customComponent,
-	label,
-	...rest
-}, ref) {
+const NavigationBarAccordion = React.forwardRef(function NavigationBarAccordionCls(
+	{ active, icon, divider, click, customComponent, label, ...rest },
+	ref
+) {
 	const level = 0;
 	const [open, setOpen] = useState(false);
 	const innerRef = useRef(undefined);
 	const accordionRef = useCombinedRefs(ref, innerRef);
 
-	const handleClick = useCallback((e) => {
-		setOpen(true);
-		if (click) click(e);
-	}, [setOpen, click]);
-	const expandOnIconClick = useCallback((e) => {
-		e.stopPropagation();
-		setOpen((isOpen) => !isOpen);
-	}, [setOpen]);
+	const handleClick = useCallback(
+		(e) => {
+			setOpen(true);
+			if (click) click(e);
+		},
+		[setOpen, click]
+	);
+	const expandOnIconClick = useCallback(
+		(e) => {
+			e.stopPropagation();
+			setOpen((isOpen) => !isOpen);
+		},
+		[setOpen]
+	);
 
 	const keyEvents = useMemo(() => getKeyboardPreset('button', handleClick), [handleClick]);
 	useKeyboard(accordionRef, keyEvents);
 
 	return (
-		<Container
-			orientation="vertical"
-			width="fill"
-			height="fit"
-			background="gray5"
-			{...rest}
-		>
+		<Container orientation="vertical" width="fill" height="fit" background="gray5" {...rest}>
 			<AccordionContainerEl
 				ref={accordionRef}
 				level={level}
@@ -98,21 +102,12 @@ const NavigationBarAccordion = React.forwardRef(function NavigationBarAccordionC
 					style={{ cursor: 'pointer' }}
 				/>
 			</AccordionContainerEl>
-			<Collapse
-				crossSize="100%"
-				orientation="vertical"
-				open={open}
-			>
-				<Container
-					orientation="vertical"
-					height="fit"
-					width="fill"
-					crossAlignment="flex-start"
-				>
-					{ customComponent }
+			<Collapse crossSize="100%" orientation="vertical" open={open}>
+				<Container orientation="vertical" height="fit" width="fill" crossAlignment="flex-start">
+					{customComponent}
 				</Container>
 			</Collapse>
-			{ divider && <Divider color="gray2" />}
+			{divider && <Divider color="gray2" />}
 		</Container>
 	);
 });

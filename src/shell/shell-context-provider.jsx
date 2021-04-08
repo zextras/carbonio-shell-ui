@@ -18,23 +18,20 @@ export default function ShellContextProvider({ children }) {
 	const fiberChannelFactory = useFiberChannelFactory();
 	const screenMode = useScreenMode();
 
-	const value = useMemo(() => ({
-		isMobile: screenMode === 'mobile',
-		fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink({
-			name: PACKAGE_NAME,
-			version: PACKAGE_VERSION
+	const value = useMemo(
+		() => ({
+			isMobile: screenMode === 'mobile',
+			fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink({
+				name: PACKAGE_NAME,
+				version: PACKAGE_VERSION
+			}),
+			fiberChannel: fiberChannelFactory.getAppFiberChannel({
+				name: PACKAGE_NAME,
+				version: PACKAGE_VERSION
+			})
 		}),
-		fiberChannel: fiberChannelFactory.getAppFiberChannel({
-			name: PACKAGE_NAME,
-			version: PACKAGE_VERSION
-		})
-	}), [screenMode, fiberChannelFactory]);
-
-	return (
-		<ShellContext.Provider
-			value={value}
-		>
-			{ children }
-		</ShellContext.Provider>
+		[screenMode, fiberChannelFactory]
 	);
+
+	return <ShellContext.Provider value={value}>{children}</ShellContext.Provider>;
 }

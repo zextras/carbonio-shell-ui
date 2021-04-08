@@ -1,17 +1,22 @@
 module.exports = function (api) {
 	const isTest = api ? api.env('test') : false;
 
-	return ({
+	return {
 		presets: [
-			['@babel/preset-env', isTest ? {
-				targets: {
-					node: 'current',
-				},
-			} : {
-				modules: false,
-				useBuiltIns: 'usage',
-				corejs: 3
-			}],
+			[
+				'@babel/preset-env',
+				isTest
+					? {
+							targets: {
+								node: 'current'
+							}
+					  }
+					: {
+							modules: false,
+							useBuiltIns: 'usage',
+							corejs: 3
+					  }
+			],
 			'@babel/preset-react',
 			'@babel/preset-typescript'
 		],
@@ -19,12 +24,15 @@ module.exports = function (api) {
 			'@babel/plugin-transform-runtime',
 			'@babel/plugin-proposal-class-properties',
 			'babel-plugin-styled-components',
-			['i18next-extract', {
-				outputPath: 'translations/{{ns}}.json',
-				discardOldKeys: true,
-				defaultNS: 'en',
-				jsonSpace: 4
-			}]
+			[
+				'i18next-extract',
+				{
+					outputPath: 'translations/{{ns}}.json',
+					discardOldKeys: true,
+					defaultNS: 'en',
+					jsonSpace: 4
+				}
+			]
 		]
-	});
+	};
 };

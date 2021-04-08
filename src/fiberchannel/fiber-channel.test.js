@@ -43,7 +43,9 @@ describe('Fiber Channel', () => {
 			event: 'event',
 			data: {}
 		};
-		fcf.getInternalFiberChannel({ name: 'com_example_package', version: '0.0.0' }).subscribe(checker);
+		fcf
+			.getInternalFiberChannel({ name: 'com_example_package', version: '0.0.0' })
+			.subscribe(checker);
 		sink(ev);
 		expect(checker).toBeCalledWith(ev);
 	});
@@ -72,7 +74,9 @@ describe('Fiber Channel', () => {
 		setAllAppsLoaded(fcf);
 		const sink = fcf.getAppFiberChannelSink({ package: 'com_example_package', version: '0.0.0' });
 		const checker = jest.fn();
-		fcf.getInternalFiberChannel({ package: 'com_example_package', version: '0.0.0' }).subscribe(checker);
+		fcf
+			.getInternalFiberChannel({ package: 'com_example_package', version: '0.0.0' })
+			.subscribe(checker);
 		sink({
 			event: 'event',
 			data: {}
@@ -166,11 +170,9 @@ describe('Fiber Channel', () => {
 		fcf.getAppFiberChannel({ package: 'com_example_package', version: '0.0.0' }).subscribe(checker);
 		try {
 			sink({ to: { app: 'com_example_package' }, event: 'event' });
-		}
-		catch (err) {
+		} catch (err) {
 			expect(err.message).toBe('API Version not specified.');
-		}
-		finally {
+		} finally {
 			expect(checker).not.toHaveBeenCalled();
 		}
 	});
@@ -183,11 +185,9 @@ describe('Fiber Channel', () => {
 		fcf.getAppFiberChannel({ package: 'com_example_package', version: '0.0.0' }).subscribe(checker);
 		try {
 			sink({ to: { app: 'com_example_package', version: '1.0.0' }, event: 'event' });
-		}
-		catch (err) {
+		} catch (err) {
 			expect(err.message).toBe('API Version cannot be satisfied.');
-		}
-		finally {
+		} finally {
 			expect(checker).not.toHaveBeenCalled();
 		}
 	});
@@ -204,11 +204,9 @@ describe('Fiber Channel', () => {
 				asPromise: true,
 				event: 'event'
 			});
-		}
-		catch (err) {
+		} catch (err) {
 			expect(err.message).toBe('API Version cannot be satisfied.');
-		}
-		finally {
+		} finally {
 			expect(checker).not.toHaveBeenCalled();
 		}
 	});

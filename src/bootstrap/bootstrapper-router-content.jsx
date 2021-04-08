@@ -21,7 +21,7 @@ export default function BootstrapperRouterContent({ accounts }) {
 					path="/login"
 					exact
 					render={({ location }) =>
-						(accounts.length > 0 ? (
+						accounts.length > 0 ? (
 							<Redirect
 								to={{
 									pathname: '/',
@@ -30,13 +30,14 @@ export default function BootstrapperRouterContent({ accounts }) {
 							/>
 						) : (
 							<LazyLoginView />
-						))}
+						)
+					}
 				/>
 				<Route
 					path="/logout"
 					exact
 					render={({ location }) =>
-						(accounts.length > 0 ? (
+						accounts.length > 0 ? (
 							<LazyLogoutView />
 						) : (
 							<Redirect
@@ -45,12 +46,13 @@ export default function BootstrapperRouterContent({ accounts }) {
 									state: { from: location }
 								}}
 							/>
-						))}
+						)
+					}
 				/>
 				<Route
 					path="*"
 					render={({ location }) =>
-						(accounts.length > 0 ? (
+						accounts.length > 0 ? (
 							<LazyShellView />
 						) : (
 							<Redirect
@@ -59,7 +61,8 @@ export default function BootstrapperRouterContent({ accounts }) {
 									state: { from: location }
 								}}
 							/>
-						))}
+						)
+					}
 				/>
 			</Switch>
 		</Suspense>

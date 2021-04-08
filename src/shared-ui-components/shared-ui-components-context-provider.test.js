@@ -33,17 +33,17 @@ describe('Shared UI Components Context Provider', () => {
 							com_example_package_1: {
 								sharedUiComponents: new BehaviorSubject({
 									'component-1': {
-										pkg: {package: 'com_example_package_1'},
+										pkg: { package: 'com_example_package_1' },
 										versions: {
-											'1': ComponentClass11,
-											'2': ComponentClass11
+											1: ComponentClass11,
+											2: ComponentClass11
 										}
 									},
 									'component-2': {
-										pkg: {package: 'com_example_package_1'},
+										pkg: { package: 'com_example_package_1' },
 										versions: {
-											'1': ComponentClass21,
-											'2': ComponentClass21
+											1: ComponentClass21,
+											2: ComponentClass21
 										}
 									}
 								})
@@ -51,17 +51,17 @@ describe('Shared UI Components Context Provider', () => {
 							com_example_package_2: {
 								sharedUiComponents: new BehaviorSubject({
 									'component-4': {
-										pkg: {package: 'com_example_package_2'},
+										pkg: { package: 'com_example_package_2' },
 										versions: {
-											'1': ComponentClass22,
-											'2': ComponentClass22
+											1: ComponentClass22,
+											2: ComponentClass22
 										}
 									},
 									'component-3': {
-										pkg: {package: 'com_example_package_2'},
+										pkg: { package: 'com_example_package_2' },
 										versions: {
-											'1': ComponentClass32,
-											'2': ComponentClass32
+											1: ComponentClass32,
+											2: ComponentClass32
 										}
 									}
 								})
@@ -80,7 +80,11 @@ describe('Shared UI Components Context Provider', () => {
 		function Tester() {
 			const ctxt = useContext(SharedUIComponentsContext);
 			tester(ctxt);
-			return `Tester scopes: ${Object.keys(ctxt).reduce((p, c, i) => `${p}${i > 0 ? ' ' : ''}${c}`, [], '')}`;
+			return `Tester scopes: ${Object.keys(ctxt).reduce(
+				(p, c, i) => `${p}${i > 0 ? ' ' : ''}${c}`,
+				[],
+				''
+			)}`;
 		}
 
 		const { container } = testUtils.render(
@@ -97,29 +101,29 @@ describe('Shared UI Components Context Provider', () => {
 			'component-4': {
 				pkg: { package: 'com_example_package_2' },
 				versions: {
-					'1': ComponentClass22,
-					'2': ComponentClass22
+					1: ComponentClass22,
+					2: ComponentClass22
 				}
 			},
 			'component-3': {
 				pkg: { package: 'com_example_package_2' },
 				versions: {
-					'1': ComponentClass32,
-					'2': ComponentClass32
+					1: ComponentClass32,
+					2: ComponentClass32
 				}
 			},
 			'component-1': {
 				pkg: { package: 'com_example_package_1' },
 				versions: {
-					'1': ComponentClass11,
-					'2': ComponentClass11
+					1: ComponentClass11,
+					2: ComponentClass11
 				}
 			},
 			'component-2': {
 				pkg: { package: 'com_example_package_1' },
 				versions: {
-					'1': ComponentClass21,
-					'2': ComponentClass21
+					1: ComponentClass21,
+					2: ComponentClass21
 				}
 			}
 		});

@@ -10,7 +10,7 @@
  */
 
 import React from 'react';
-import { ThemeContextProvider } from '@zextras/zapp-ui';
+import { ThemeProvider } from './shell-theme-context-provider';
 import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-context-provider';
 import ShellNetworkService from '../network/shell-network-service';
@@ -24,10 +24,7 @@ export default function bootstrapper(onBeforeBoot) {
 
 	const fiberChannelFactory = new FiberChannelFactory();
 	const i18nFactory = new I18nFactory();
-	const shellNetworkService = new ShellNetworkService(
-		shellStore,
-		fiberChannelFactory
-	);
+	const shellNetworkService = new ShellNetworkService(shellStore, fiberChannelFactory);
 	const storeFactory = new StoreFactory();
 
 	const container = {
@@ -35,26 +32,27 @@ export default function bootstrapper(onBeforeBoot) {
 		i18nFactory,
 		shellNetworkService,
 		shellStore,
-		storeFactory,
+		storeFactory
 	};
 
-	return ((onBeforeBoot)
-		? (onBeforeBoot(container)
-			.then(() => (container))
-			.catch((err) => {
-				throw err;
-			}))
-		: (Promise.resolve((container))))
-		.then(({
+	return (onBeforeBoot
+		? onBeforeBoot(container)
+				.then(() => container)
+				.catch((err) => {
+					throw err;
+				})
+		: Promise.resolve(container)
+	).then(
+		({
 			fiberChannelFactory: _fiberChannelFactory,
 			i18nFactory: _i18nFactory,
 			shellNetworkService: _shellNetworkService,
 			shellStore: _shellStore,
-			storeFactory: _storeFactory,
+			storeFactory: _storeFactory
 		}) => ({
 			default: function BoostrapperCls() {
 				return (
-					<ThemeContextProvider>
+					<ThemeProvider>
 						<BootstrapperContextProvider
 							fiberChannelFactory={_fiberChannelFactory}
 							i18nFactory={_i18nFactory}
@@ -65,8 +63,9 @@ export default function bootstrapper(onBeforeBoot) {
 						>
 							<BootstrapperRouter />
 						</BootstrapperContextProvider>
-					</ThemeContextProvider>
+					</ThemeProvider>
 				);
 			}
-		}));
+		})
+	);
 }

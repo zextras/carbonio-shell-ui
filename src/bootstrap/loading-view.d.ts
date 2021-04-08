@@ -11,4 +11,4 @@
 
 import { ReactElement } from 'react';
 
-export default function(): ReactElement;
+export default function (): ReactElement;

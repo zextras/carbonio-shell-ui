@@ -13,7 +13,7 @@ import { createContext, useContext } from 'react';
 
 const AppLoaderContext = createContext({
 	apps: { cache: {}, loaded: false },
-	themes: { cache: {}, loaded: false },
+	themes: { cache: {}, loaded: false }
 });
 
 export function useAppsCache() {

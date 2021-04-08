@@ -13,7 +13,11 @@ import React, { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
 import AppContext from './app-context';
-import { useFiberChannelFactory, useI18nFactory, useStoreFactory } from '../bootstrap/bootstrapper-context';
+import {
+	useFiberChannelFactory,
+	useI18nFactory,
+	useStoreFactory
+} from '../bootstrap/bootstrapper-context';
 import AppErrorCatcher from './app-error-catcher';
 import { useAppContextCache } from './app-context-cache-context';
 
@@ -23,16 +27,22 @@ export default function AppContextProvider({ pkg, children }) {
 	const i18nFactory = useI18nFactory();
 	const storeFactory = useStoreFactory();
 
-	const memoizedContextFcns = useMemo(() => ({
-		pkg,
-		fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(pkg),
-		fiberChannel: fiberChannelFactory.getAppFiberChannel(pkg)
-	}), [pkg, fiberChannelFactory]);
+	const memoizedContextFcns = useMemo(
+		() => ({
+			pkg,
+			fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(pkg),
+			fiberChannel: fiberChannelFactory.getAppFiberChannel(pkg)
+		}),
+		[pkg, fiberChannelFactory]
+	);
 
-	const value = useMemo(() => ({
-		...memoizedContextFcns,
-		appCtxt: appContextCache[pkg.package]
-	}), [pkg, memoizedContextFcns, appContextCache]);
+	const value = useMemo(
+		() => ({
+			...memoizedContextFcns,
+			appCtxt: appContextCache[pkg.package]
+		}),
+		[pkg, memoizedContextFcns, appContextCache]
+	);
 
 	const store = useMemo(() => storeFactory.getStoreForApp(pkg), [pkg, storeFactory]);
 
@@ -40,13 +50,9 @@ export default function AppContextProvider({ pkg, children }) {
 
 	return (
 		<Provider store={store}>
-			<AppContext.Provider
-				value={value}
-			>
+			<AppContext.Provider value={value}>
 				<I18nextProvider i18n={i18n}>
-					<AppErrorCatcher>
-						{ children }
-					</AppErrorCatcher>
+					<AppErrorCatcher>{children}</AppErrorCatcher>
 				</I18nextProvider>
 			</AppContext.Provider>
 		</Provider>

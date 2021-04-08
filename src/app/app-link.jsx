@@ -23,16 +23,11 @@ export default function AppLink({ to, ...rest }) {
 		let urlSearch = '';
 		if (HAS_SEARCH_REG.test(to)) {
 			[urlTo, urlSearch] = to.split('?');
-		}
-		else {
+		} else {
 			urlTo = to;
 		}
-		return (
-			<RRLink to={{ pathname: `/${pkg.package}${urlTo}`, search: urlSearch }} {...rest} />
-		);
+		return <RRLink to={{ pathname: `/${pkg.package}${urlTo}`, search: urlSearch }} {...rest} />;
 	}
 
-	return (
-		<RRLink to={{ ...to, pathname: `/${pkg.package}${to.pathname}` }} {...rest} />
-	);
+	return <RRLink to={{ ...to, pathname: `/${pkg.package}${to.pathname}` }} {...rest} />;
 }

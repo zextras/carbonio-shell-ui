@@ -22,11 +22,7 @@ import ShellMobileNav from './shell-mobile-nav';
 import { useSettingsApps } from '../settings/settings-app';
 
 function collectAllTo(pkgName, { to, items }) {
-	return reduce(
-		items || [],
-		(r, v) => ([...r, ...collectAllTo(pkgName, v)]),
-		[`/${pkgName}${to}`]
-	);
+	return reduce(items || [], (r, v) => [...r, ...collectAllTo(pkgName, v)], [`/${pkgName}${to}`]);
 }
 
 const HAS_SEARCH_REG = /\?/;
@@ -37,8 +33,7 @@ function getAppLink(to, pkg) {
 		let urlSearch = '';
 		if (HAS_SEARCH_REG.test(to)) {
 			[urlTo, urlSearch] = to.split('?');
-		}
-		else {
+		} else {
 			urlTo = to;
 		}
 		return { pathname: `/${pkg.package}${urlTo}`, search: urlSearch };
@@ -54,7 +49,7 @@ function getFolderStructures(folders, app, history) {
 				folder.onClick(ev);
 			}
 			if (folder.to) {
-				history.push(getAppLink(folder.to, app.pkg))
+				history.push(getAppLink(folder.to, app.pkg));
 			}
 		},
 		active: history.location.pathname === `/${app.pkg.package}${folder.to}`,
@@ -62,14 +57,12 @@ function getFolderStructures(folders, app, history) {
 	}));
 }
 
-const setActiveItem = (menuItems, pathname) => map(
-	menuItems,
-	(item) => ({
+const setActiveItem = (menuItems, pathname) =>
+	map(menuItems, (item) => ({
 		...item,
 		active: endsWith(pathname, item.to),
 		items: setActiveItem(item.items, pathname)
-	})
-);
+	}));
 
 export default function ShellNavigationBar({
 	navigationBarIsOpen,
@@ -85,7 +78,7 @@ export default function ShellNavigationBar({
 	const settingsApp = useSettingsApps(cache, setActiveApp, history);
 
 	const mainMenuItems = useMemo(
-		() => setActiveItem({..._mainMenuItems, settingsApp }, history.location.pathname),
+		() => setActiveItem({ ..._mainMenuItems, settingsApp }, history.location.pathname),
 		[_mainMenuItems, history.location.pathname, settingsApp]
 	);
 
@@ -94,48 +87,43 @@ export default function ShellNavigationBar({
 			reduce(
 				cache,
 				(acc, app) => {
-					acc.push(
-						app.mainMenuItems.pipe(
-							rxMap((items) => ({ items, app }))
-						)
-					);
+					acc.push(app.mainMenuItems.pipe(rxMap((items) => ({ items, app }))));
 					return acc;
 				},
 				[]
 			)
-		)
-			.subscribe((appItems) => {
-				setMainMenuItems(
-					reduce(
-						appItems,
-						(acc, { items, app }) => {
-							reduce(
-								items,
-								(r, menuItem) => {
-									r[menuItem.id] = {
-										id: menuItem.id,
-										label: menuItem.label,
-										icon: menuItem.icon || '',
-										click: () => {
-											setActiveApp(menuItem.id);
-											history.push(getAppLink(menuItem.to, app.pkg));
-										},
-										customComponent: menuItem.customComponent,
-										items: getFolderStructures(menuItem.items, app, history),
-										to: menuItem.to,
-										pkgName: app.pkg.package,
-										allTos: collectAllTo(app.pkg.package, menuItem)
-									};
-									return r;
-								},
-								acc
-							);
-							return acc;
-						},
-						{}
-					)
-				);
-			});
+		).subscribe((appItems) => {
+			setMainMenuItems(
+				reduce(
+					appItems,
+					(acc, { items, app }) => {
+						reduce(
+							items,
+							(r, menuItem) => {
+								r[menuItem.id] = {
+									id: menuItem.id,
+									label: menuItem.label,
+									icon: menuItem.icon || '',
+									click: () => {
+										setActiveApp(menuItem.id);
+										history.push(getAppLink(menuItem.to, app.pkg));
+									},
+									customComponent: menuItem.customComponent,
+									items: getFolderStructures(menuItem.items, app, history),
+									to: menuItem.to,
+									pkgName: app.pkg.package,
+									allTos: collectAllTo(app.pkg.package, menuItem)
+								};
+								return r;
+							},
+							acc
+						);
+						return acc;
+					},
+					{}
+				)
+			);
+		});
 
 		return () => {
 			if (subscription) {
@@ -154,10 +142,7 @@ export default function ShellNavigationBar({
 			crossAlignment="flex-start"
 		>
 			<Responsive mode="desktop">
-				<ShellPrimaryBar
-					mainMenuItems={mainMenuItems}
-					activeApp={activeApp}
-				/>
+				<ShellPrimaryBar mainMenuItems={mainMenuItems} activeApp={activeApp} />
 				<ShellSecondaryBar
 					navigationBarIsOpen={navigationBarIsOpen}
 					mainMenuItems={mainMenuItems}

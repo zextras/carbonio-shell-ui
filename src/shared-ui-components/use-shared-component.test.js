@@ -29,29 +29,29 @@ describe('useSharedComponent hook', () => {
 					'component-4': {
 						pkg: 'com_example_package_2',
 						versions: {
-							'1': ComponentClass22,
-							'2': ComponentClass22
+							1: ComponentClass22,
+							2: ComponentClass22
 						}
 					},
 					'component-3': {
 						pkg: 'com_example_package_2',
 						versions: {
-							'1': ComponentClass32,
-							'2': ComponentClass32
+							1: ComponentClass32,
+							2: ComponentClass32
 						}
 					},
 					'component-1': {
 						pkg: 'com_example_package_1',
 						versions: {
-							'1': ComponentClass11,
-							'2': ComponentClass11
+							1: ComponentClass11,
+							2: ComponentClass11
 						}
 					},
 					'component-2': {
 						pkg: 'com_example_package_1',
 						versions: {
-							'1': ComponentClass21,
-							'2': ComponentClass21
+							1: ComponentClass21,
+							2: ComponentClass21
 						}
 					}
 				}}
@@ -71,7 +71,7 @@ describe('useSharedComponent hook', () => {
 			const ctxt = useContext(SharedUIComponentsContext);
 			const C = useSharedComponent('component-4', '1');
 			tester(ctxt);
-			return <C/>;
+			return <C />;
 		}
 
 		const { container } = testUtils.render(

@@ -11,7 +11,7 @@
 
 declare const PACKAGE_VERSION: string;
 declare const PACKAGE_NAME: string;
-declare const FLAVOR: 'APP'|'NPM';
+declare const FLAVOR: 'APP' | 'NPM';
 
 type devUtilsNamespace = {
 	installOnWindow(wnd: Window, ctxt?: any /* DevUtilsContext */): void;
@@ -31,7 +31,7 @@ type cliSettingsNamespace = {
 		label: string;
 		version: string;
 		description: string;
-		type: 'theme'|'app';
+		type: 'theme' | 'app';
 	};
 };
 
@@ -40,3 +40,4 @@ type cliSettingsNamespace = {
  */
 declare const devUtils: devUtilsNamespace | undefined;
 declare const cliSettings: cliSettingsNamespace | undefined;
+declare module '@zextras/zapp-ui';

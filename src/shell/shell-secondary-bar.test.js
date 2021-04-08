@@ -29,16 +29,21 @@ describe('Secondary bar', () => {
 
 	test('Render children of current App', () => {
 		const onCollapserClick = jest.fn();
-		const mainMenuItems = [{
-			pkgName: 'com_example_app',
-			to: '/',
-			allTos: ['/com_example_app/'],
-			items: [{
-				label: 'App 1 Folder 1'
-			}, {
-				label: 'App 1 Folder 2'
-			}]
-		}];
+		const mainMenuItems = [
+			{
+				pkgName: 'com_example_app',
+				to: '/',
+				allTos: ['/com_example_app/'],
+				items: [
+					{
+						label: 'App 1 Folder 1'
+					},
+					{
+						label: 'App 1 Folder 2'
+					}
+				]
+			}
+		];
 		testUtils.render(
 			<ShellSecondaryBar
 				mainMenuItems={mainMenuItems}
@@ -57,22 +62,31 @@ describe('Secondary bar', () => {
 
 	test('Render children of current App. Nested 3 times.', () => {
 		const onCollapserClick = jest.fn();
-		const mainMenuItems = [{
-			pkgName: 'com_example_app',
-			to: '/',
-			allTos: ['/com_example_app/'],
-			items: [{
-				label: 'App 1 Folder 1',
-				items: [{
-					label: 'App 1 Folder 1.1',
-					items: [{
-						label: 'App 1 Folder 1.1.1'
-					}]
-				}]
-			}, {
-				label: 'App 1 Folder 2'
-			}]
-		}];
+		const mainMenuItems = [
+			{
+				pkgName: 'com_example_app',
+				to: '/',
+				allTos: ['/com_example_app/'],
+				items: [
+					{
+						label: 'App 1 Folder 1',
+						items: [
+							{
+								label: 'App 1 Folder 1.1',
+								items: [
+									{
+										label: 'App 1 Folder 1.1.1'
+									}
+								]
+							}
+						]
+					},
+					{
+						label: 'App 1 Folder 2'
+					}
+				]
+			}
+		];
 		testUtils.render(
 			<ShellSecondaryBar
 				mainMenuItems={mainMenuItems}
@@ -91,16 +105,21 @@ describe('Secondary bar', () => {
 
 	test('Do not render children of another App', () => {
 		const onCollapserClick = jest.fn();
-		const mainMenuItems = [{
-			pkgName: 'com_example_app_1',
-			to: '/',
-			allTos: ['/com_example_app_1/'],
-			items: [{
-				label: 'App 1 Folder 1'
-			}, {
-				label: 'App 1 Folder 2'
-			}]
-		}];
+		const mainMenuItems = [
+			{
+				pkgName: 'com_example_app_1',
+				to: '/',
+				allTos: ['/com_example_app_1/'],
+				items: [
+					{
+						label: 'App 1 Folder 1'
+					},
+					{
+						label: 'App 1 Folder 2'
+					}
+				]
+			}
+		];
 		testUtils.render(
 			<ShellSecondaryBar
 				mainMenuItems={mainMenuItems}
@@ -118,14 +137,16 @@ describe('Secondary bar', () => {
 	test('Render a custom component', () => {
 		const onCollapserClick = jest.fn();
 		function CustomComponent() {
-			return "Hello world!";
+			return 'Hello world!';
 		}
-		const mainMenuItems = [{
-			pkgName: 'com_example_app',
-			to: '/',
-			allTos: ['/com_example_app/'],
-			customComponent: CustomComponent
-		}];
+		const mainMenuItems = [
+			{
+				pkgName: 'com_example_app',
+				to: '/',
+				allTos: ['/com_example_app/'],
+				customComponent: CustomComponent
+			}
+		];
 		testUtils.render(
 			<ShellSecondaryBar
 				mainMenuItems={mainMenuItems}

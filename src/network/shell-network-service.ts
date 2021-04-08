@@ -18,6 +18,7 @@ import { selectCSRFToken } from '../store/accounts-slice';
 export class SoapError extends Error {
 	details: any;
 
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 	constructor(message: string, details: any) {
 		super(message);
 		this.details = details;
@@ -29,10 +30,7 @@ export default class ShellNetworkService {
 
 	private _csrfToken?: string;
 
-	constructor(
-		private _store: ShellStore,
-		private _FCFactory: IFiberChannelFactory
-	) {
+	constructor(private _store: ShellStore, private _FCFactory: IFiberChannelFactory) {
 		this._csrfToken = selectCSRFToken(_store.getState());
 		_store.subscribe(() => {
 			this._csrfToken = selectCSRFToken(_store.getState());
@@ -42,10 +40,7 @@ export default class ShellNetworkService {
 	private _getAppFetch(
 		appPackageDescription: AppPkgDescription
 	): (input: RequestInfo, init?: RequestInit) => Promise<Response> {
-		return (input: RequestInfo, init?: RequestInit): Promise<Response> => this._fetch(
-			input,
-			init
-		);
+		return (input: RequestInfo, init?: RequestInit): Promise<Response> => this._fetch(input, init);
 	}
 
 	public getAppSoapFetch(appPackageDescription: AppPkgDescription): SoapFetch {
@@ -65,23 +60,20 @@ export default class ShellNetworkService {
 					}
 				};
 			}
-			return _fetch(
-				`/service/soap/${api}Request`,
-				{
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify(request)
-				}
-			)
+			return _fetch(`/service/soap/${api}Request`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(request)
+			})
 				.then((r) => r.json())
 				.then((resp) => {
 					if (resp.Body.Fault) {
 						throw new SoapError(resp.Body.Fault.Reason.Text, resp.Body.Fault.Detail.Error);
 					}
 					return resp.Body[`${api}Response`];
-				})
+				});
 		};
 	}
 }

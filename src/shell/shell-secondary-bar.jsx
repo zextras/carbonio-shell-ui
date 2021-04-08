@@ -13,12 +13,7 @@
 import React from 'react';
 import { map } from 'lodash';
 import { Route, Switch } from 'react-router-dom';
-import {
-	Accordion,
-	Collapse,
-	Collapser,
-	Container
-} from '@zextras/zapp-ui';
+import { Accordion, Collapse, Collapser, Container } from '@zextras/zapp-ui';
 
 export default function ShellSecondaryBar({
 	navigationBarIsOpen,
@@ -27,11 +22,7 @@ export default function ShellSecondaryBar({
 }) {
 	return (
 		<>
-			<Collapse
-				orientation="horizontal"
-				open={navigationBarIsOpen}
-				maxSize="256px"
-			>
+			<Collapse orientation="horizontal" open={navigationBarIsOpen} maxSize="256px">
 				<Container
 					role="menu"
 					width={256}
@@ -44,26 +35,15 @@ export default function ShellSecondaryBar({
 					}}
 				>
 					<Switch>
-						{
-							map(
-								mainMenuItems,
-								(menuItem) => (
-									<Route key={`/${menuItem.pkgName}${menuItem.to}`} exact path={menuItem.allTos}>
-										{
-											menuItem.customComponent
-												? menuItem.customComponent
-												: (
-													<Accordion
-														role="menuitem"
-														active
-														items={menuItem.items || []}
-													/>
-												)
-										}
-									</Route>
-								)
-							)
-						}
+						{map(mainMenuItems, (menuItem) => (
+							<Route key={`/${menuItem.pkgName}${menuItem.to}`} exact path={menuItem.allTos}>
+								{menuItem.customComponent ? (
+									menuItem.customComponent
+								) : (
+									<Accordion role="menuitem" active items={menuItem.items || []} />
+								)}
+							</Route>
+						))}
 					</Switch>
 				</Container>
 			</Collapse>

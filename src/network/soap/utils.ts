@@ -35,6 +35,6 @@ export function zimletToThemePkgDescription(z: ZimletPkgDescription): ThemePkgDe
 		priority: z.zimletContext[0].priority,
 		resourceUrl: `/zx/zimlet/${z.zimlet[0].name}`,
 		description: z.zimlet[0].description,
-		entryPoint: z.zimlet[0]['zapp-theme']!,
+		entryPoint: z.zimlet[0]['zapp-theme']!
 	};
 }

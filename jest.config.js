@@ -5,7 +5,7 @@ module.exports = {
 		FLAVOR: 'NPM'
 	},
 	transform: {
-		"^.+\\.[t|j]sx?$": ['babel-jest', { configFile: './babel.config.jest.js' }]
+		'^.+\\.[t|j]sx?$': ['babel-jest', { configFile: './babel.config.jest.js' }]
 	},
 	moduleDirectories: [
 		'node_modules',
@@ -20,10 +20,6 @@ module.exports = {
 	coverageReporters: ['text', 'cobertura'],
 	reporters: ['default', 'jest-junit'],
 	// testMatch: ['/test/**/*.js?(x)'],
-	setupFilesAfterEnv: [
-		"<rootDir>/src/jest-env-setup.js"
-	],
-	setupFiles: [
-		"<rootDir>/src/jest-polyfills.js"
-	]
+	setupFilesAfterEnv: ['<rootDir>/src/jest-env-setup.js'],
+	setupFiles: ['<rootDir>/src/jest-polyfills.js']
 };

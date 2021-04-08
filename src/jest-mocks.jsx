@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /*
  * *** BEGIN LICENSE BLOCK *****
  * Copyright (C) 2011-2020 Zextras
@@ -8,20 +9,22 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import path from 'path';
+
 import React from 'react';
 import { render as rtlRender } from '@testing-library/react';
 import fetch from 'node-fetch';
 import { MemoryRouter } from 'react-router-dom';
-import { ThemeContextProvider } from '@zextras/zapp-ui';
+import { ThemeProvider } from '@zextras/zapp-ui';
 import AppContextWrapper from './mocks/app-context-wrapper';
-import { usePushHistoryCallback, useReplaceHistoryCallback, useAppContext, useRemoveCurrentBoard } from './shell/hooks';
+import {
+	usePushHistoryCallback,
+	useReplaceHistoryCallback,
+	useAppContext,
+	useRemoveCurrentBoard
+} from './shell/hooks';
 import { useSharedComponent } from './shared-ui-components/use-shared-component';
 
-const confPath = path.resolve(
-	process.cwd(),
-	'zapp.conf.js'
-);
+const confPath = '../zapp.conf.js';
 // eslint-disable-next-line max-len
 // eslint-disable-next-line global-require,import/no-dynamic-require,@typescript-eslint/no-var-requires
 const conf = require(confPath);
@@ -41,8 +44,8 @@ const conf = require(confPath);
 function soapFetch(api, body) {
 	const request = {
 		Body: {
-			[`${api}Request`]: body,
-		},
+			[`${api}Request`]: body
+		}
 	};
 	// if (this._csrfToken) {
 	// 	request.Header = {
@@ -52,16 +55,13 @@ function soapFetch(api, body) {
 	// 		}
 	// 	};
 	// }
-	return fetch(
-		new URL(`/service/soap/${api}Request`, 'http://localhost'),
-		{
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(request),
+	return fetch(new URL(`/service/soap/${api}Request`, 'http://localhost'), {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
 		},
-	)
+		body: JSON.stringify(request)
+	})
 		.then((r) => r.json())
 		.then((resp) => {
 			if (resp.Body.Fault) {
@@ -72,7 +72,7 @@ function soapFetch(api, body) {
 }
 
 export const network = {
-	soapFetch,
+	soapFetch
 };
 
 export const fiberChannel = jest.fn();
@@ -90,10 +90,9 @@ function render(
 		...options
 	} = {}
 ) {
-
 	const Wrapper = ({ children }) => (
 		<MemoryRouter initialEntries={initialRouterEntries}>
-			<ThemeContextProvider>
+			<ThemeProvider>
 				<AppContextWrapper
 					packageName={packageName}
 					packageVersion={packageVersion}
@@ -103,17 +102,14 @@ function render(
 				>
 					{children}
 				</AppContextWrapper>
-			</ThemeContextProvider>
+			</ThemeProvider>
 		</MemoryRouter>
 	);
 
-	return rtlRender(
-		ui,
-		{
-			wrapper: Wrapper,
-			...options,
-		}
-	);
+	return rtlRender(ui, {
+		wrapper: Wrapper,
+		...options
+	});
 }
 
 export const testUtils = {
@@ -121,12 +117,14 @@ export const testUtils = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-export const setAppContext = jest.fn(() => { });
+export const setAppContext = jest.fn(() => {});
 
 export const hooks = {
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
+	useRegisterTheme: jest.fn(),
 	useReplaceHistoryCallback: jest.fn(useReplaceHistoryCallback),
 	usePushHistoryCallback: jest.fn(usePushHistoryCallback),
-	useUserAccounts: jest.fn(() => [{ name: "" }]),
+	useUserAccounts: jest.fn(() => [{ name: '' }]),
 	useRemoveCurrentBoard: jest.fn(useRemoveCurrentBoard),
 	useSharedComponent: jest.fn(useSharedComponent),
 	useAppContext: jest.fn(useAppContext)

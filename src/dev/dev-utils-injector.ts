@@ -13,11 +13,9 @@ import { DevUtilsContext } from './dev-types';
 import { generateWorker } from '../mocks/browser';
 
 export default function loadDevelopmentEnv(ctxt: DevUtilsContext): Promise<void> {
-	return import(/* webpackChunkName: "dev-utils" */ './dev-utils')
-		.then((
-			{ default: injectDevUtils, setCliSettings }
-		) => injectDevUtils(ctxt)
-			.then(() => {
+	return import(/* webpackChunkName: "dev-utils" */ './dev-utils').then(
+		({ default: injectDevUtils, setCliSettings }) =>
+			injectDevUtils(ctxt).then(() => {
 				switch (FLAVOR) {
 					case 'NPM':
 						return fetch('/_cli')
@@ -27,10 +25,9 @@ export default function loadDevelopmentEnv(ctxt: DevUtilsContext): Promise<void>
 								const worker = generateWorker(cliSettings);
 								// eslint-disable-next-line no-param-reassign
 								ctxt.mswjs = worker;
-								return worker.start()
-									.then(() => {
-										return undefined;
-									})
+								return worker
+									.start()
+									.then(() => undefined)
 									.catch((err) => {
 										console.error(err);
 										throw err;
@@ -39,5 +36,6 @@ export default function loadDevelopmentEnv(ctxt: DevUtilsContext): Promise<void>
 					default:
 						return undefined;
 				}
-			}));
+			})
+	);
 }

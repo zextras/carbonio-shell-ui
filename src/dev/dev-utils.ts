@@ -22,19 +22,18 @@ function installOnWindow(wnd: Window, ctxt: DevUtilsContext): void {
 	if (!ctxtCache && ctxt) ctxtCache = ctxt;
 	// Expose the instruments
 	// eslint-disable-next-line no-param-reassign
-	(wnd as unknown as IDevUtilsInstrumentedWindow).devUtils = {
+	((wnd as unknown) as IDevUtilsInstrumentedWindow).devUtils = {
 		installOnWindow: (w: Window, _c?: DevUtilsContext): void => installOnWindow(w, _c || ctxtCache),
-		getMSWorker: (): any | undefined => ctxtCache.mswjs,
+		getMSWorker: (): any | undefined => ctxtCache.mswjs
 	};
 	console.debug('Dev Utils installed.');
 }
 
 export default function (ctxt: DevUtilsContext): Promise<void> {
-	return Promise.resolve()
-		.then(() => installOnWindow(window, ctxt));
+	return Promise.resolve().then(() => installOnWindow(window, ctxt));
 }
 
 export function setCliSettings(cliSettings: cliSettingsNamespace): cliSettingsNamespace {
-	(window as unknown as IDevUtilsInstrumentedWindow).cliSettings = cliSettings;
+	((window as unknown) as IDevUtilsInstrumentedWindow).cliSettings = cliSettings;
 	return cliSettings;
 }

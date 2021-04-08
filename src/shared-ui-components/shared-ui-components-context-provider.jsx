@@ -21,20 +21,13 @@ export default function SharedUIComponentsContextProvider({ children }) {
 	useEffect(() => {
 		let canSet = true;
 
-		const combined = combineLatest(
-			map(
-				loaded ? cache : {},
-				'sharedUiComponents'
-			)
-		);
+		const combined = combineLatest(map(loaded ? cache : {}, 'sharedUiComponents'));
 
-		const sub = combined.subscribe(
-			(comps) => {
-				if (canSet) {
-					setComponents((c) => merge(c, ...comps));
-				}
+		const sub = combined.subscribe((comps) => {
+			if (canSet) {
+				setComponents((c) => merge(c, ...comps));
 			}
-		);
+		});
 
 		return () => {
 			canSet = false;
@@ -43,10 +36,8 @@ export default function SharedUIComponentsContextProvider({ children }) {
 	}, [cache, loaded]);
 
 	return (
-		<SharedUIComponentsContext.Provider
-			value={components}
-		>
-			{ children }
+		<SharedUIComponentsContext.Provider value={components}>
+			{children}
 		</SharedUIComponentsContext.Provider>
 	);
 }

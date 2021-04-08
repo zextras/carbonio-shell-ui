@@ -13,7 +13,6 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
 import { PersistGate } from 'redux-persist/integration/react';
-import { ThemeContextProvider } from '@zextras/zapp-ui';
 import BootstrapperContext from './bootstrapper-context';
 import ShellStoreContext from '../store/shell-store-context';
 import AppLoaderContextProvider from '../app/app-loader-context-provider';
@@ -28,26 +27,23 @@ export default function BootstrapperContextProvider({
 	shellNetworkService,
 	shellStore,
 	shellStorePersistor,
-	storeFactory,
+	storeFactory
 }) {
 	return (
-		<Provider
-			context={ShellStoreContext}
-			store={shellStore}
-		>
+		<Provider context={ShellStoreContext} store={shellStore}>
 			<PersistGate loading={null} persistor={shellStorePersistor}>
 				<BootstrapperContext.Provider
 					value={{
 						fiberChannelFactory,
 						i18nFactory,
 						shellNetworkService,
-						storeFactory,
+						storeFactory
 					}}
 				>
 					<I18nextProvider i18n={i18nFactory.getShellI18n()}>
 						<AppLoaderContextProvider>
 							<BoardContextProvider>
-								{ children }
+								{children}
 								<AppLoaderMounter />
 							</BoardContextProvider>
 							<ThemeLoaderMounter />

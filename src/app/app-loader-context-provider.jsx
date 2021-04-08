@@ -11,13 +11,16 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import AppLoaderContext from './app-loader-context';
-import { useFiberChannelFactory, useShellNetworkService, useStoreFactory } from '../bootstrap/bootstrapper-context';
+import {
+	useFiberChannelFactory,
+	useShellNetworkService,
+	useStoreFactory
+} from '../bootstrap/bootstrapper-context';
 import { loadApps, loadThemes, unloadAppsAndThemes } from './app-loader';
 import AppContextCacheProvider from './app-context-cache-provider';
 import { useUserAccounts } from '../store/shell-store-hooks';
-import {checkUpdate} from '../update-log/check-update'
+import { checkUpdate } from '../update-log/check-update';
 import ChangeLogModal from '../update-log/change-log-modal';
-
 
 export default function AppLoaderContextProvider({ children }) {
 	const shellNetworkService = useShellNetworkService();
@@ -39,55 +42,40 @@ export default function AppLoaderContextProvider({ children }) {
 					setThemeCache([{}, false]);
 				})
 				.catch();
-		}
-		else {
-			loadApps(
-				accounts,
-				fiberChannelFactory,
-				shellNetworkService,
-				storeFactory
-			)
-				.then(
-					(_appsCache) => loadThemes(
-						accounts,
-						fiberChannelFactory,
-					)
-						.then((_themesCache) => [_appsCache, _themesCache])
+		} else {
+			loadApps(accounts, fiberChannelFactory, shellNetworkService, storeFactory)
+				.then((_appsCache) =>
+					loadThemes(accounts, fiberChannelFactory).then((_themesCache) => [
+						_appsCache,
+						_themesCache
+					])
 				)
 				.then(([_appsCache, _themesCache]) => {
 					if (!canSet) return;
 					setShowUpdateModal(checkUpdate());
 					setAppsCache([_appsCache, true]);
-					setThemeCache([_themesCache, true]);
+					// setThemeCache([_themesCache, true]);
 				});
 		}
 		return () => {
 			canSet = false;
 		};
 	}, [accounts, fiberChannelFactory, shellNetworkService, storeFactory]);
-
-	const value = useMemo(() => ({
-		apps: { cache: appsCache, loaded: appsLoaded },
-		themes: { cache: themesCache, loaded: themesLoaded },
-		showUpdateModal
-	}), [
-		appsCache,
-		appsLoaded,
-		themesCache,
-		themesLoaded,
-		showUpdateModal
-	]);
+	const value = useMemo(
+		() => ({
+			apps: { cache: appsCache, loaded: appsLoaded },
+			themes: { cache: themesCache, loaded: themesLoaded },
+			showUpdateModal
+		}),
+		[appsCache, appsLoaded, themesCache, themesLoaded, showUpdateModal]
+	);
 
 	return (
-		<AppLoaderContext.Provider
-			value={value}
-		>
+		<AppLoaderContext.Provider value={value}>
 			<AppContextCacheProvider>
 				{showUpdateModal ? <ChangeLogModal cache={value.apps.cache} /> : null}
-				{ children }
+				{children}
 			</AppContextCacheProvider>
 		</AppLoaderContext.Provider>
 	);
 }
-
-

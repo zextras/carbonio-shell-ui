@@ -18,20 +18,20 @@ import { doLogout } from '../store/accounts-slice';
 export default function LogoutView() {
 	const history = useHistory();
 	const dispatch = useDispatch();
-	const [ t ] = useTranslation();
+	const [t] = useTranslation();
 
-	const doLogoutCbk = useCallback((ev) => {
-		ev.preventDefault();
-		dispatch(
-			doLogout()
-		)
-			.then(() => history.push({ pathname: '/' }));
-	}, []);
+	const doLogoutCbk = useCallback(
+		(ev) => {
+			ev.preventDefault();
+			dispatch(doLogout()).then(() => history.push({ pathname: '/' }));
+		},
+		[dispatch, history]
+	);
 
 	return (
 		<form onSubmit={doLogoutCbk}>
-			{ t('logout-modal.warning') }
-			<button type="submit">{ t('logout-modal.confirm') }</button>
+			{t('logout-modal.warning')}
+			<button type="submit">{t('logout-modal.confirm')}</button>
 		</form>
 	);
 }

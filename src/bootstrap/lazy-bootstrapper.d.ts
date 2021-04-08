@@ -16,4 +16,4 @@ type LazyBootstrapperProps = {
 	onBeforeBoot?: (ctxt: DevUtilsContext) => Promise<void>;
 };
 
-export default function(props: LazyBootstrapperProps): ReactElement<LazyBootstrapperProps>;
+export default function (props: LazyBootstrapperProps): ReactElement<LazyBootstrapperProps>;

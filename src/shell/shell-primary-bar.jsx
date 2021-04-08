@@ -16,9 +16,11 @@ import styled, { css } from 'styled-components';
 import { BoardValueContext, BoardSetterContext } from './boards/board-context';
 
 const AppIcon = styled(IconButton)`
-	${(props) => props.active && css`
-		background-color: ${props.theme.palette.gray5.regular}
-	`}
+	${(props) =>
+		props.active &&
+		css`
+			background-color: ${props.theme.palette.gray5.regular};
+		`}
 `;
 
 function ToggleBoardIcon() {

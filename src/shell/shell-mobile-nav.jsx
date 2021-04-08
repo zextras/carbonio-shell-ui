@@ -11,21 +11,10 @@
 
 import React, { useMemo } from 'react';
 import { map } from 'lodash';
-import {
-	Accordion,
-	Collapse,
-	Container,
-	Padding,
-	Quota
-} from '@zextras/zapp-ui';
+import { Accordion, Collapse, Container, Padding, Quota } from '@zextras/zapp-ui';
 import NavigationBarAccordion from './navigation-bar-custom-accordion';
 
-export default function ShellMobileNav({
-	mobileNavIsOpen,
-	mainMenuItems,
-	menuTree,
-	quota
-}) {
+export default function ShellMobileNav({ mobileNavIsOpen, mainMenuItems, menuTree, quota }) {
 	return (
 		<Container
 			height="fill"
@@ -38,11 +27,7 @@ export default function ShellMobileNav({
 				zIndex: 3
 			}}
 		>
-			<Collapse
-				orientation="horizontal"
-				open={mobileNavIsOpen}
-				crossSize="100%"
-			>
+			<Collapse orientation="horizontal" open={mobileNavIsOpen} crossSize="100%">
 				<Container
 					width={256 + 48 + 12}
 					height="fill"
@@ -53,48 +38,32 @@ export default function ShellMobileNav({
 						overflowY: 'auto'
 					}}
 				>
-					<Container
-						width="fill"
-						height="fit"
-						orientation="vertical"
-						mainAlignment="space-between"
-					>
-						{
-							map(mainMenuItems, (app, key) => (
-								app.customComponent
-									? (
-										<NavigationBarAccordion
-											key={key}
-											icon={app.icon}
-											label={app.label}
-											click={app.click}
-											customComponent={app.customComponent}
-											divider
-										/>
-									)
-									: (
-										<Accordion
-											key={key}
-											items={[
-												{
-													...app,
-													divider: true
-												}
-											]}
-										/>
-									)
-							))
-						}
+					<Container width="fill" height="fit" orientation="vertical" mainAlignment="space-between">
+						{map(mainMenuItems, (app, key) =>
+							app.customComponent ? (
+								<NavigationBarAccordion
+									key={key}
+									icon={app.icon}
+									label={app.label}
+									click={app.click}
+									customComponent={app.customComponent}
+									divider
+								/>
+							) : (
+								<Accordion
+									key={key}
+									items={[
+										{
+											...app,
+											divider: true
+										}
+									]}
+								/>
+							)
+						)}
 					</Container>
-					<Container
-						width="fill"
-						height="fit"
-						orientation="vertical"
-						mainAlignment="flex-end"
-					>
-						<Accordion
-							items={menuTree}
-						/>
+					<Container width="fill" height="fit" orientation="vertical" mainAlignment="flex-end">
+						<Accordion items={menuTree} />
 						<Padding vertical="medium">
 							<Quota fill={quota} />
 						</Padding>

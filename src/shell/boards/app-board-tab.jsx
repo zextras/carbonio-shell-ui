@@ -10,9 +10,7 @@
  */
 import React, { useCallback, useContext } from 'react';
 import styled from 'styled-components';
-import {
-	IconButton, Text, Row, Padding
-} from '@zextras/zapp-ui';
+import { IconButton, Text, Row, Padding } from '@zextras/zapp-ui';
 import { BoardValueContext, BoardSetterContext } from './board-context';
 
 const TabContainer = styled(Row)`
@@ -23,21 +21,18 @@ const TabContainer = styled(Row)`
 `;
 
 export default function AppBoardTab({ idx }) {
-	const {
-		boards,
-		currentBoard
-	} = useContext(BoardValueContext);
-	const {
-		removeBoard,
-		setCurrentBoard
-	} = useContext(BoardSetterContext);
+	const { boards, currentBoard } = useContext(BoardValueContext);
+	const { removeBoard, setCurrentBoard } = useContext(BoardSetterContext);
 
-	const onClick = useCallback(() => setCurrentBoard(idx), [idx]);
+	const onClick = useCallback(() => setCurrentBoard(idx), [idx, setCurrentBoard]);
 
-	const onRemove = useCallback((ev) => {
-		ev.stopPropagation();
-		removeBoard(idx);
-	}, [idx]);
+	const onRemove = useCallback(
+		(ev) => {
+			ev.stopPropagation();
+			removeBoard(idx);
+		},
+		[idx, removeBoard]
+	);
 
 	return (
 		<TabContainer active={currentBoard === idx}>

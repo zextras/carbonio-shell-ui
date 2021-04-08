@@ -8,12 +8,7 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, {
-	useEffect,
-	useState,
-	useRef,
-	useContext
-} from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { combineLatest } from 'rxjs';
 import { map as rxMap } from 'rxjs/operators';
 import { reduce } from 'lodash';
@@ -41,7 +36,7 @@ export default function ShellHeader({
 	quota
 }) {
 	const history = useHistory();
-	const [ t ] = useTranslation();
+	const [t] = useTranslation();
 	const screenMode = useScreenMode();
 	const { cache } = useAppsCache();
 	const { addBoard } = useContext(BoardSetterContext);
@@ -53,50 +48,51 @@ export default function ShellHeader({
 			reduce(
 				cache,
 				(acc, app) => {
-					acc.push(
-						app.createOptions.pipe(
-							rxMap((items) => ({ items, app }))
-						)
-					);
+					acc.push(app.createOptions.pipe(rxMap((items) => ({ items, app }))));
 					return acc;
 				},
 				[]
 			)
-		)
-			.subscribe((_createOptions) => {
-				setCreateOptions(
-					reduce(
-						_createOptions,
-						(acc, { items, app }) => {
-							reduce(
-								items,
-								(r, option) => {
-									if (refCreateOptions.current.filter((op) => op.id === option.id).length === 0) {
-										r.push({
-											id: option.id,
-											label: option.label,
-											icon: option.icon,
-											click: () => {
-												if (window.top.location.pathname.startsWith(`/${app.pkg.package}`)) {
-													history.push(`/${app.pkg.package}${(option.app.getPath && option.app.getPath()) || option.app.path}`);
-												}
-												else {
-													addBoard(`/${app.pkg.package}${option.app.boardPath || option.app.path}`, option.label);
-												}
-												option.onClick && option.onClick();
+		).subscribe((_createOptions) => {
+			setCreateOptions(
+				reduce(
+					_createOptions,
+					(acc, { items, app }) => {
+						reduce(
+							items,
+							(r, option) => {
+								if (refCreateOptions.current.filter((op) => op.id === option.id).length === 0) {
+									r.push({
+										id: option.id,
+										label: option.label,
+										icon: option.icon,
+										click: () => {
+											if (window.top.location.pathname.startsWith(`/${app.pkg.package}`)) {
+												history.push(
+													`/${app.pkg.package}${
+														(option.app.getPath && option.app.getPath()) || option.app.path
+													}`
+												);
+											} else {
+												addBoard(
+													`/${app.pkg.package}${option.app.boardPath || option.app.path}`,
+													option.label
+												);
 											}
-										});
-									}
-									return r;
-								},
-								acc
-							);
-							return acc;
-						},
-						[]
-					)
-				);
-			});
+											option.onClick && option.onClick();
+										}
+									});
+								}
+								return r;
+							},
+							acc
+						);
+						return acc;
+					},
+					[]
+				)
+			);
+		});
 
 		return () => {
 			if (subscription) {
@@ -112,11 +108,16 @@ export default function ShellHeader({
 			width="fill"
 			height="fit"
 			mainAlignment="space-between"
-			padding={{ vertical: 'extrasmall', left: screenMode === 'desktop' ? 'extralarge' : 'extrasmall' }}
+			padding={{
+				vertical: 'extrasmall',
+				left: screenMode === 'desktop' ? 'extralarge' : 'extrasmall'
+			}}
 		>
 			<Container orientation="horizontal" width="fit" mainAlignment="flex-start">
 				<Responsive mode="mobile">
-					<Padding right="small"><IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} /></Padding>
+					<Padding right="small">
+						<IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} />
+					</Padding>
 				</Responsive>
 				<Logo size="small" />
 			</Container>
@@ -130,17 +131,30 @@ export default function ShellHeader({
 						</Container>
 						{/*	<SearchInput/> */}
 					</Container>
-					<Container orientation="horizontal" width="50%" mainAlignment="flex-end" padding={{ right: 'extrasmall' }}>
+					<Container
+						orientation="horizontal"
+						width="50%"
+						mainAlignment="flex-end"
+						padding={{ right: 'extrasmall' }}
+					>
 						<Padding right="small">
 							<Quota fill={quota} />
 						</Padding>
 						<IconButton icon="BellOutline" iconColor="text" />
-						<IconButton icon={userBarIsOpen ? 'Close' : 'PersonOutline'} iconColor="text" onClick={onUserClick} />
+						<IconButton
+							icon={userBarIsOpen ? 'Close' : 'PersonOutline'}
+							iconColor="text"
+							onClick={onUserClick}
+						/>
 					</Container>
 				</Container>
 			</Responsive>
 			<Responsive mode="mobile">
-				<Container orientation="horizontal" mainAlignment="flex-end" padding={{ right: 'extrasmall' }}>
+				<Container
+					orientation="horizontal"
+					mainAlignment="flex-end"
+					padding={{ right: 'extrasmall' }}
+				>
 					{/* <IconButton icon="Search" /> */}
 					<Dropdown items={createOptions} placement="bottom-start">
 						<IconButton icon="Plus" />

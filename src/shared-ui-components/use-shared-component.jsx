@@ -1,7 +1,7 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useMemo } from 'react';
 import { get } from 'lodash';
-import AppContextProvider from "../app/app-context-provider";
-import { SharedUIComponentsContext } from './shared-ui-components-context'
+import AppContextProvider from '../app/app-context-provider';
+import { SharedUIComponentsContext } from './shared-ui-components-context';
 
 export function useSharedComponent(id, version) {
 	const components = useContext(SharedUIComponentsContext);
@@ -13,7 +13,7 @@ export function useSharedComponent(id, version) {
 					<C {...props} />
 				</AppContextProvider>
 			);
-			return SharedComponent
+			return SharedComponent;
 		}
 		return null;
 	}, [components, id, version]);

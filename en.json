@@ -33,8 +33,8 @@
         "general": {
             "general": "General Settings",
             "theme_auto": "Auto",
-            "theme_disabled": "Disabled",
-            "theme_enabled": "Enabled",
+            "theme_disabled": "Light Mode",
+            "theme_enabled": "Dark Mode",
             "theme_mode": "Theme Mode",
             "theme_options": "Theme Options"
         }

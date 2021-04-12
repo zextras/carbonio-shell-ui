@@ -17,15 +17,15 @@ const AppearanceSettings: FC<{
 	const items = useMemo(
 		() => [
 			{
-				label: t('settins.general.theme_auto', 'Auto'),
+				label: t('settins.general.theme_auto'),
 				value: 'auto'
 			},
 			{
-				label: t('settins.general.theme_enabled', 'Enabled'),
+				label: t('settins.general.theme_enabled'),
 				value: 'enabled'
 			},
 			{
-				label: t('settins.general.theme_disabled', 'Disabled'),
+				label: t('settins.general.theme_disabled'),
 				value: 'disabled'
 			}
 		],
@@ -46,7 +46,11 @@ const AppearanceSettings: FC<{
 		[addMod, drMode, setDarkReaderState]
 	);
 	return (
-		<FormSubSection label={t('settins.general.theme_options', 'Theme Options')} maxWidth="512px">
+		<FormSubSection
+			label={t('settins.general.theme_options', 'Theme Options')}
+			minWidth="calc(min(100%, 512px))"
+			width="50%"
+		>
 			<Select
 				items={items}
 				selection={defaultSelection}

@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useCallback, useMemo, useReducer, } from 'react';
+import React, { useCallback, useMemo, useReducer } from 'react';
 import { pickBy } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { BoardValueContext, BoardSetterContext } from './board-context';
@@ -25,7 +25,7 @@ const reducer = (state, action) => {
 				...state,
 				boards: {
 					[boardKey]: { url: action.payload.url, title: action.payload.title },
-					...state.boards,
+					...state.boards
 				},
 				currentBoard: boardKey,
 				minimized: false
@@ -98,20 +98,20 @@ const reducer = (state, action) => {
 };
 
 export default function BoardContextProvider({ children }) {
-	const [ t ] = useTranslation();
-	const [boardState, dispatch] = useReducer(
-		reducer,
-		{
-			boards: {},
-			currentBoard: 0,
-			largeView: false,
-			minimized: false
-		}
-	);
+	const [t] = useTranslation();
+	const [boardState, dispatch] = useReducer(reducer, {
+		boards: {},
+		currentBoard: 0,
+		largeView: false,
+		minimized: false
+	});
 
-	const addBoard = useCallback((url, title = t('new-tab')) => {
-		dispatch({ type: 'ADD_BOARD', payload: { url, title } });
-	}, [t]);
+	const addBoard = useCallback(
+		(url, title = t('new-tab')) => {
+			dispatch({ type: 'ADD_BOARD', payload: { url, title } });
+		},
+		[t]
+	);
 	const removeBoard = useCallback((key) => {
 		dispatch({ type: 'REMOVE_BOARD', payload: { key } });
 	}, []);
@@ -124,9 +124,9 @@ export default function BoardContextProvider({ children }) {
 	const updateBoard = useCallback((key, url, title) => {
 		dispatch({ type: 'UPDATE_BOARD', payload: { key, url, title } });
 	}, []);
-	const updateCurrentBoard=useCallback((url, title) => {
+	const updateCurrentBoard = useCallback((url, title) => {
 		dispatch({ type: 'UPDATE_CURRENT_BOARD', payload: { url, title } });
-	}, [])
+	}, []);
 	const setCurrentBoard = useCallback((key) => {
 		dispatch({ type: 'SET_CURRENT_BOARD', payload: { key } });
 	}, []);
@@ -136,34 +136,35 @@ export default function BoardContextProvider({ children }) {
 	const toggleMinimized = useCallback(() => {
 		dispatch({ type: 'TOGGLE_MINIMIZED' });
 	}, []);
-	
-	const boardSetters = useMemo(() => ({
-		addBoard,
-		removeBoard,
-		removeCurrentBoard,
-		removeAllBoards,
-		updateBoard,
-		setCurrentBoard,
-		toggleLargeView,
-		toggleMinimized,
-		updateCurrentBoard
-	}), [
-		addBoard,
-		removeAllBoards,
-		removeBoard,
-		removeCurrentBoard,
-		setCurrentBoard,
-		toggleLargeView,
-		toggleMinimized,
-		updateBoard, 
-		updateCurrentBoard
-	]);
+
+	const boardSetters = useMemo(
+		() => ({
+			addBoard,
+			removeBoard,
+			removeCurrentBoard,
+			removeAllBoards,
+			updateBoard,
+			setCurrentBoard,
+			toggleLargeView,
+			toggleMinimized,
+			updateCurrentBoard
+		}),
+		[
+			addBoard,
+			removeAllBoards,
+			removeBoard,
+			removeCurrentBoard,
+			setCurrentBoard,
+			toggleLargeView,
+			toggleMinimized,
+			updateBoard,
+			updateCurrentBoard
+		]
+	);
 
 	return (
 		<BoardValueContext.Provider value={boardState}>
-			<BoardSetterContext.Provider value={boardSetters}>
-				{ children }
-			</BoardSetterContext.Provider>
+			<BoardSetterContext.Provider value={boardSetters}>{children}</BoardSetterContext.Provider>
 		</BoardValueContext.Provider>
 	);
 }

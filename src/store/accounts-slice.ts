@@ -9,15 +9,14 @@
  * *** END LICENSE BLOCK *****
  */
 
-import {
-	CaseReducer, createAsyncThunk, createSlice, Draft, PayloadAction
-} from '@reduxjs/toolkit';
+import { CaseReducer, createAsyncThunk, createSlice, Draft, PayloadAction } from '@reduxjs/toolkit';
 import { filter, reduce, isEmpty, map, cloneDeep } from 'lodash';
 import {
 	AppPkgDescription,
 	AccountLoginData,
 	ThemePkgDescription,
-	Account
+	Account,
+	AccountSettings
 } from '../../types';
 import { AuthResponse, GetInfoResponse, ZimletPkgDescription } from '../network/soap/types';
 import { zimletToAppPkgDescription, zimletToThemePkgDescription } from '../network/soap/utils';
@@ -34,7 +33,10 @@ type DoLoginArgs = {
 	password: string;
 };
 
-type ModifyPrefsArgs = Record<string, string>;
+export type ModifyPrefsArgs = {
+	props: Record<string, { value: any; app: string }>;
+	prefs: Record<string, any>;
+};
 
 type NormalizeAccountParams = {
 	username: string;
@@ -59,77 +61,88 @@ export function selectAuthToken({ accounts }: { accounts: AccountsSlice }): stri
 	return undefined;
 }
 
-export function selectAuthCredentials({ accounts }: { accounts: AccountsSlice }): AccountLoginData | undefined {
+export function selectAuthCredentials({
+	accounts
+}: {
+	accounts: AccountsSlice;
+}): AccountLoginData | undefined {
 	if (accounts.accounts.length > 0) {
 		return accounts.credentials[accounts.accounts[0].id];
 	}
 	return undefined;
 }
 
+function normalizeSettings(
+	settings: Pick<GetInfoResponse, 'attrs' | 'prefs' | 'props'>
+): AccountSettings {
+	return {
+		attrs: settings.attrs._attrs,
+		prefs: settings.prefs._attrs,
+		props: settings.props.prop
+	};
+}
 function normalizeAccount(
 	{ username, password }: NormalizeAccountParams,
 	{ csrfToken, authToken }: AuthResponse,
-	{
-		id, name, zimlets, attrs, prefs, identities, signatures
-	}: GetInfoResponse
+	{ id, name, zimlets, attrs, prefs, identities, signatures, props }: GetInfoResponse
 ): [Account, AccountLoginData] {
-	const settings = prefs._attrs;
+	const settings = normalizeSettings({ attrs, prefs, props });
 	const apps = reduce<ZimletPkgDescription, AppPkgDescription[]>(
 		filter<ZimletPkgDescription>(
 			zimlets.zimlet,
-			(z) => (z.zimlet[0].zapp === 'true' && typeof z.zimlet[0]['zapp-main'] !== 'undefined')
+			(z) => z.zimlet[0].zapp === 'true' && typeof z.zimlet[0]['zapp-main'] !== 'undefined'
 		),
-		(r, z) => ([...r, zimletToAppPkgDescription(z)]),
+		(r, z) => [...r, zimletToAppPkgDescription(z)],
 		[]
 	);
 	const themes = reduce<ZimletPkgDescription, ThemePkgDescription[]>(
 		filter(
 			zimlets.zimlet,
-			(z) => (z.zimlet[0].zapp === 'true' && typeof z.zimlet[0]['zapp-theme'] !== 'undefined')
+			(z) => z.zimlet[0].zapp === 'true' && typeof z.zimlet[0]['zapp-theme'] !== 'undefined'
 		),
-		(r, z) => ([...r, zimletToThemePkgDescription(z)]),
+		(r, z) => [...r, zimletToThemePkgDescription(z)],
 		[]
 	);
-	return [{
-		id,
-		name,
-		displayName: attrs._attrs.displayName,
-		apps,
-		themes,
-		settings,
-		identities,
-		signatures
-	}, {
-		t: authToken[0]._content,
-		u: username,
-		p: password,
-		csrfToken: csrfToken._content,
-	}];
+	return [
+		{
+			id,
+			name,
+			displayName: attrs._attrs.displayName,
+			apps,
+			themes,
+			settings,
+			identities,
+			signatures
+		},
+		{
+			t: authToken[0]._content,
+			u: username,
+			p: password,
+			csrfToken: csrfToken._content
+		}
+	];
 }
 
 async function getAccountInfo({ csrfToken }: { csrfToken: string }): Promise<GetInfoResponse> {
-	const res = await fetch(
-		'/service/soap/GetInfoRequest',
-		{
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				Header: {
-					_jsns: 'urn:zimbra',
-					context: {
-						csrfToken
-					}
-				},
-				Body: {
-					GetInfoRequest: {
-						_jsns: 'urn:zimbraAccount'
-					}
+	const res = await fetch('/service/soap/GetInfoRequest', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			Header: {
+				_jsns: 'urn:zimbra',
+				context: {
+					csrfToken
 				}
-			})
-		}
-	);
+			},
+			Body: {
+				GetInfoRequest: {
+					_jsns: 'urn:zimbraAccount'
+				}
+			}
+		})
+	});
 	const response = await res.json();
 	if (response.Body.Fault) throw new Error(response.Body.Fault.Reason.Text);
 	return response.Body.GetInfoResponse;
@@ -138,36 +151,31 @@ async function getAccountInfo({ csrfToken }: { csrfToken: string }): Promise<Get
 export const doLogin = createAsyncThunk<[Account, AccountLoginData], DoLoginArgs>(
 	'accounts/doLogin',
 	async ({ username, password }, meta) => {
-		const res = await fetch(
-			'/service/soap/AuthRequest',
-			{
-				method: 'POST',
-				// credentials: 'omit',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					Body: {
-						AuthRequest: {
-							_jsns: 'urn:zimbraAccount',
-							csrfTokenSecured: '1',
-							persistAuthTokenCookie: '1',
-							// generateDeviceId: '1',
-							account: {
-								by: 'name',
-								_content: username
-							},
-							password: {
-								_content: password
-							},
-							prefs: [
-								{ pref: { name: 'zimbraPrefMailPollingInterval' } },
-							]
-						}
+		const res = await fetch('/service/soap/AuthRequest', {
+			method: 'POST',
+			// credentials: 'omit',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				Body: {
+					AuthRequest: {
+						_jsns: 'urn:zimbraAccount',
+						csrfTokenSecured: '1',
+						persistAuthTokenCookie: '1',
+						// generateDeviceId: '1',
+						account: {
+							by: 'name',
+							_content: username
+						},
+						password: {
+							_content: password
+						},
+						prefs: [{ pref: { name: 'zimbraPrefMailPollingInterval' } }]
 					}
-				})
-			}
-		);
+				}
+			})
+		});
 		const response = await res.json();
 		if (response.Body.Fault) {
 			throw new Error(response.Body.Fault.Reason.Text);
@@ -183,10 +191,10 @@ const doLoginPending: CaseReducer<AccountsSlice> = (state) => {
 	if (!isEmpty(state.accounts)) state.accounts = [];
 };
 
-const doLoginFulfilled: CaseReducer<
-	AccountsSlice,
-	PayloadAction<[Account, AccountLoginData]>
-> = (state: Draft<AccountsSlice>, { payload }) => {
+const doLoginFulfilled: CaseReducer<AccountsSlice, PayloadAction<[Account, AccountLoginData]>> = (
+	state: Draft<AccountsSlice>,
+	{ payload }
+) => {
 	const [account, credentials] = payload;
 	state.status = 'idle';
 	state.accounts = [account];
@@ -203,32 +211,28 @@ export const doLogout = createAsyncThunk<void, void>(
 	async (payload, { getState }) => {
 		const csrfToken = selectCSRFToken(getState() as any);
 		try {
-			const res = await fetch(
-				'/service/soap/EndSessionRequest',
-				{
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({
-						Header: {
-							_jsns: 'urn:zimbra',
-							context: {
-								csrfToken
-							}
-						},
-						Body: {
-							EndSessionRequest: {
-								_jsns: 'urn:zimbraAccount'
-							}
+			const res = await fetch('/service/soap/EndSessionRequest', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					Header: {
+						_jsns: 'urn:zimbra',
+						context: {
+							csrfToken
 						}
-					})
-				}
-			);
+					},
+					Body: {
+						EndSessionRequest: {
+							_jsns: 'urn:zimbraAccount'
+						}
+					}
+				})
+			});
 			const response = await res.json();
 			if (response.Body.Fault) throw new Error(response.Body.Fault.Reason.Text);
-		}
-		catch (err) {
+		} catch (err) {
 			if (!/Unexpected end of JSON input/i.test(err.message)) {
 				throw err;
 			}
@@ -240,9 +244,9 @@ const doLogoutPending: CaseReducer<AccountsSlice> = (state) => {
 	state.status = 'working';
 };
 
-const doLogoutFulfilled: CaseReducer<
-	AccountsSlice, PayloadAction<void>
-> = (state: Draft<AccountsSlice>) => {
+const doLogoutFulfilled: CaseReducer<AccountsSlice, PayloadAction<void>> = (
+	state: Draft<AccountsSlice>
+) => {
 	state.status = 'idle';
 	state.accounts = [];
 	state.credentials = {};
@@ -252,81 +256,71 @@ export const modifyPrefs = createAsyncThunk<any, ModifyPrefsArgs>(
 	'accounts/modifyPrefs',
 	async (mods, { getState }) => {
 		const csrfToken = selectCSRFToken(getState() as any);
-		const res = await fetch(
-			'/service/soap/ModifyPrefsRequest',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					Header: {
-						_jsns: 'urn:zimbra',
-						context: {
-							csrfToken
-						}
-					},
-					Body: {
-						ModifyPrefsRequest: {
-							_jsns: 'urn:zimbraAccount',
-							pref: mods,
-						}
+		const requests: any = {};
+		if (mods.props) {
+			requests.ModifyPropertiesRequest = [
+				{
+					_jsns: 'urn:zimbraAccount',
+					prop: map(mods.props, (prop, key) => ({
+						zimlet: prop.app ?? 'com_zextras_zapp_shell',
+						name: key,
+						_content: prop.value
+					}))
+				}
+			];
+		}
+		if (mods.prefs) {
+			requests.ModifyPrefsRequest = [
+				{
+					_jsns: 'urn:zimbraAccount',
+					pref: map(mods.prefs, (value, key) => ({
+						name: key,
+						_content: value
+					}))
+				}
+			];
+		}
+		const res = await fetch('/service/soap/BatchRequest', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				Header: {
+					_jsns: 'urn:zimbra',
+					context: {
+						csrfToken
 					}
-				})
-			}
-		);
+				},
+				Body: {
+					BatchRequest: {
+						_jsns: 'urn:zimbra',
+						onerror: 'continue',
+						...requests
+					}
+				}
+			})
+		});
 		const response = await res.json();
 		if (response.Body.Fault) {
 			throw new Error(response.Body.Fault.Reason.Text);
 		}
-		const prefsRes = await fetch(
-			'/service/soap/GetPrefsRequest',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					Header: {
-						_jsns: 'urn:zimbra',
-						context: {
-							csrfToken
-						}
-					},
-					Body: {
-						GetPrefsRequest: {
-							_jsns: 'urn:zimbraAccount'
-						}
-					}
-				})
-			}
-		);
-		const prefsResponse = await prefsRes.json();
-		if (prefsResponse.Body.Fault) {
-			throw new Error(prefsResponse.Body.Fault.Reason.Text);
-		}
-		return prefsResponse.Body.GetPrefsResponse._attrs;
+		const { attrs, prefs, props } = await getAccountInfo({ csrfToken: csrfToken ?? '' });
+		return { attrs, prefs, props };
 	}
 );
 
-const modifyPrefsPending: 
-	CaseReducer<AccountsSlice>
-= (state, { meta, payload }) => {
+const modifyPrefsPending: CaseReducer<AccountsSlice> = (state, { meta, payload }) => {
 	// eslint-disable-next-line no-param-reassign
 	meta.arg.prevSettings = cloneDeep(state.accounts[0].settings);
-	state.accounts[0].settings = payload;
 	state.status = 'working';
 };
 
-const modifyPrefsFulfilled: 
-	CaseReducer<AccountsSlice>
-= (state) => {
+const modifyPrefsFulfilled: CaseReducer<AccountsSlice> = (state, { meta, payload }) => {
 	state.status = 'idle';
 };
 
-const modifyPrefsRejected: 
-	CaseReducer<AccountsSlice>
-= (state, { meta }: any) => {
+const modifyPrefsRejected: CaseReducer<AccountsSlice> = (state, { meta }: any) => {
 	state.status = 'idle';
 	state.accounts[0].settings = meta.arg.prevSettings;
 };
@@ -336,7 +330,7 @@ const accountsSlice = createSlice<AccountsSlice, any>({
 	initialState: {
 		status: 'idle',
 		accounts: [],
-		credentials: {},
+		credentials: {}
 	},
 	reducers: {},
 	extraReducers: (builder) => {

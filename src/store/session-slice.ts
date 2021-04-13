@@ -11,11 +11,14 @@
 
 import { CaseReducer, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
-	selectAccounts, selectAuthToken,
-	selectCSRFToken, doLogin, selectAuthCredentials
+	selectAccounts,
+	selectAuthToken,
+	selectCSRFToken,
+	doLogin,
+	selectAuthCredentials
 } from './accounts-slice';
 
-type SessionState = 'init'|'verifying'|'verified'|'error';
+type SessionState = 'init' | 'verifying' | 'verified' | 'error';
 
 type SessionSlice = {
 	currentAccountId?: string;
@@ -30,48 +33,42 @@ export const verifySession = createAsyncThunk(
 		const csrfToken = selectCSRFToken(getState() as any);
 		const authToken = selectAuthToken(getState() as any);
 		try {
-			const res = await fetch(
-				'/service/soap/AuthRequest',
-				{
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
+			const res = await fetch('/service/soap/AuthRequest', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					Header: {
+						_jsns: 'urn:zimbra',
+						context: {
+							csrfToken
+						}
 					},
-					body: JSON.stringify({
-						Header: {
-							_jsns: 'urn:zimbra',
-							context: {
-								csrfToken
-							}
-						},
-						Body: {
-							AuthRequest: {
-								_jsns: 'urn:zimbraAccount',
-								persistAuthTokenCookie: '1',
-								account: {
-									by: 'id',
-									_content: account.id,
-								},
-								authToken: {
-									verifyAccount: '1',
-									_content: authToken,
-								},
+					Body: {
+						AuthRequest: {
+							_jsns: 'urn:zimbraAccount',
+							persistAuthTokenCookie: '1',
+							account: {
+								by: 'id',
+								_content: account.id
+							},
+							authToken: {
+								verifyAccount: '1',
+								_content: authToken
 							}
 						}
-					})
-				}
-			);
+					}
+				})
+			});
 			const response = await res.json();
 			if (response.Body.Fault) throw new Error(response.Body.Fault.Reason.Text);
-		}
-		catch (e) {
-			if ((/expired/i).test(e.message)) {
+		} catch (e) {
+			if (/expired/i.test(e.message)) {
 				const credentials = selectAuthCredentials(getState() as any);
 				if (credentials) {
 					const { u: username, p: password } = credentials;
-					dispatch(
-						doLogin({ username, password })
-					);
+					dispatch(doLogin({ username, password }));
 				}
 			}
 			return {
@@ -90,8 +87,7 @@ const verifySessionFulfilled: CaseReducer<SessionSlice> = (state, { payload }) =
 	const { error } = payload;
 	if (!error) {
 		state.status = 'verified';
-	}
-	else {
+	} else {
 		state.status = 'error';
 		state.error = error.message;
 	}
@@ -105,7 +101,7 @@ const verifySessionRejected: CaseReducer<SessionSlice> = (state, { error }) => {
 const sessionSlice = createSlice<SessionSlice, any>({
 	name: 'session',
 	initialState: {
-		status: 'init',
+		status: 'init'
 	},
 	reducers: {},
 	extraReducers: (builder) => {

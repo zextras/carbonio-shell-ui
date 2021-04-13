@@ -11,6 +11,12 @@
 
 import { lazy } from 'react';
 
-export const LazyLoginView = lazy(() => (import(/* webpackChunkName: "login-view" */ '../login/login-view')));
-export const LazyLogoutView = lazy(() => (import(/* webpackChunkName: "logout-view" */ '../login/logout-view')));
-export const LazyShellView = lazy(() => (import(/* webpackChunkName: "shell-view" */ '../shell/shell-view')));
+export const LazyLoginView = lazy(() =>
+	import(/* webpackChunkName: "login-view" */ '../login/login-view')
+);
+export const LazyLogoutView = lazy(() =>
+	import(/* webpackChunkName: "logout-view" */ '../login/logout-view')
+);
+export const LazyShellView = lazy(() =>
+	import(/* webpackChunkName: "shell-view" */ '../shell/shell-view')
+);

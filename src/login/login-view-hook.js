@@ -10,9 +10,7 @@
  */
 
 import { useHistory, useLocation } from 'react-router-dom';
-import {
-	useCallback, useEffect, useRef, useState
-} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from '../store/shell-store-hooks';
 import { doLogin } from '../store/accounts-slice';
 
@@ -33,16 +31,18 @@ export default function useLoginView() {
 		history.replace(from);
 	}, [history, from]);
 
-	const doLoginCbk = useCallback((ev) => {
-		ev.preventDefault();
-		return dispatch(
-			doLogin({
-				username: usernameRef.current.value,
-				password: passwordRef.current.value
-			})
-		)
-			.then(() => returnToPage());
-	}, [dispatch, returnToPage]);
+	const doLoginCbk = useCallback(
+		(ev) => {
+			ev.preventDefault();
+			return dispatch(
+				doLogin({
+					username: usernameRef.current.value,
+					password: passwordRef.current.value
+				})
+			).then(() => returnToPage());
+		},
+		[dispatch, returnToPage]
+	);
 
 	return {
 		doLogin: doLoginCbk,

@@ -25,23 +25,17 @@ import AppBoardTab from './app-board-tab';
 import AppBoard from './app-board';
 import { BoardSetterContext, BoardValueContext } from './board-context';
 
-function TabsList({
-	tabs, currentBoard, setCurrentBoard, largeView
-}) {
+function TabsList({ tabs, currentBoard, setCurrentBoard, largeView }) {
 	const tabContainerRef = useRef();
 	const [hiddenTabsCount, recalculateHiddenTabs] = useHiddenCount(tabContainerRef, largeView);
 
 	useEffect(() => {
 		recalculateHiddenTabs();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [tabs, largeView, tabContainerRef.current]);
 
 	return (
-		<Row
-			wrap="nowrap"
-			height="100%"
-			mainAlignment="flex-start"
-			takeAvailableSpace
-		>
+		<Row wrap="nowrap" height="100%" mainAlignment="flex-start" takeAvailableSpace>
 			<Row
 				ref={tabContainerRef}
 				height="48px"
@@ -74,16 +68,20 @@ const BoardContainer = styled.div`
 	bottom: 0;
 	left: 48px;
 	right: 0;
-	background-color: rgba(0,0,0,0);
+	background-color: rgba(0, 0, 0, 0);
 	pointer-events: none;
 	z-index: 10;
-	${({ largeView }) => largeView && css`
-		background-color: rgba(0,0,0,0.5);
-		pointer-events: auto;
-	`}
-	${({ minimized }) => minimized && css`
-		display: none;
-	`}
+	${({ largeView }) =>
+		largeView &&
+		css`
+			background-color: rgba(0, 0, 0, 0.5);
+			pointer-events: auto;
+		`}
+	${({ minimized }) =>
+		minimized &&
+		css`
+			display: none;
+		`}
 `;
 const Board = styled(Container)`
 	z-index: 5;
@@ -93,13 +91,15 @@ const Board = styled(Container)`
 	width: 700px;
 	height: 60vh;
 	min-height: 400px;
-	box-shadow: 0 2px 5px 0 rgba(125,125,125,0.5);
+	box-shadow: 0 2px 5px 0 rgba(125, 125, 125, 0.5);
 	pointer-events: auto;
-	${({ largeView }) => largeView && css`
-		height: calc(100% - 24px);
-		width: calc(100% - 24px * 2);
-		min-height: auto;
-	`}
+	${({ largeView }) =>
+		largeView &&
+		css`
+			height: calc(100% - 24px);
+			width: calc(100% - 24px * 2);
+			min-height: auto;
+		`}
 `;
 const BoardHeader = styled(Row)``;
 const BoardDeatilContainer = styled(Row)`
@@ -109,43 +109,34 @@ const BackButton = styled(IconButton)``;
 const Actions = styled(Row)``;
 
 export default function AppBoardWindow() {
-	const {
-		boards: shellBoards,
-		currentBoard,
-		largeView,
-		minimized
-	} = useContext(BoardValueContext);
-	const {
-		toggleLargeView,
-		toggleMinimized,
-		removeAllBoards,
-		setCurrentBoard
-	} = useContext(BoardSetterContext);
+	const { boards: shellBoards, currentBoard, largeView, minimized } = useContext(BoardValueContext);
+	const { toggleLargeView, toggleMinimized, removeAllBoards, setCurrentBoard } = useContext(
+		BoardSetterContext
+	);
 
-	const [tabs, boards] = useMemo(() => reduce(
-		shellBoards,
-		(r, v, k) => {
-			const [t, p] = r;
-			t.push({ key: k, ...v });
-			p.push(<AppBoard key={k} idx={k} />);
-			return r;
-		},
-		[[], []]
-	), [shellBoards]);
+	const [tabs, boards] = useMemo(
+		() =>
+			reduce(
+				shellBoards,
+				(r, v, k) => {
+					const [t, p] = r;
+					t.push({ key: k, ...v });
+					p.push(<AppBoard key={k} idx={k} />);
+					return r;
+				},
+				[[], []]
+			),
+		[shellBoards]
+	);
 
 	if (!tabs.length) return null;
 	return (
-		<BoardContainer
-			largeView={largeView}
-			minimized={minimized}
-		>
-			<Board
-				background="gray6"
-				crossAlignment="unset"
-				largeView={largeView}
-			>
+		<BoardContainer largeView={largeView} minimized={minimized}>
+			<Board background="gray6" crossAlignment="unset" largeView={largeView}>
 				<BoardHeader background="gray5">
-					<Padding all="extrasmall"><BackButton icon="ChevronLeftOutline" onClick={toggleMinimized} /></Padding>
+					<Padding all="extrasmall">
+						<BackButton icon="ChevronLeftOutline" onClick={toggleMinimized} />
+					</Padding>
 					<TabsList
 						tabs={tabs}
 						largeView={largeView}
@@ -153,14 +144,17 @@ export default function AppBoardWindow() {
 						setCurrentBoard={setCurrentBoard}
 					/>
 					<Actions padding={{ all: 'extrasmall' }}>
-						<Padding right="extrasmall"><IconButton icon={largeView ? 'CollapseOutline' : 'ExpandOutline'} onClick={toggleLargeView} /></Padding>
+						<Padding right="extrasmall">
+							<IconButton
+								icon={largeView ? 'CollapseOutline' : 'ExpandOutline'}
+								onClick={toggleLargeView}
+							/>
+						</Padding>
 						<IconButton icon="CloseOutline" onClick={removeAllBoards} />
 					</Actions>
 				</BoardHeader>
 				<Divider style={{ height: '2px' }} />
-				<BoardDeatilContainer takeAvailableSpace>
-					{ boards }
-				</BoardDeatilContainer>
+				<BoardDeatilContainer takeAvailableSpace>{boards}</BoardDeatilContainer>
 			</Board>
 		</BoardContainer>
 	);

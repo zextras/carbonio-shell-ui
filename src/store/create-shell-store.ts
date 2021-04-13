@@ -29,7 +29,7 @@ export default function createShellStore(
 ): { shellStore: ShellStore; shellStorePersistor?: Persistor } {
 	const combinedReducer = combineReducers({
 		accounts: accountsReducer,
-		session: sessionReducer,
+		session: sessionReducer
 	});
 	let reducer: Reducer;
 	if (persist) {
@@ -37,25 +37,21 @@ export default function createShellStore(
 			{
 				key: 'store:com_zextras_zapp_shell',
 				storage,
-				blacklist: [
-					'session'
-				]
+				blacklist: ['session']
 			},
 			combinedReducer
 		);
-	}
-	else {
+	} else {
 		reducer = combinedReducer;
 	}
 	const shellStore = configureStore({
-		devTools: (FLAVOR === 'NPM')
-			? { name: 'com_zextras_zapp_shell' }
-			: false,
-		middleware: (FLAVOR === 'NPM')
-			// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-			? (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
-			// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-			: (getDefaultMiddleware) => getDefaultMiddleware(),
+		devTools: FLAVOR === 'NPM' ? { name: 'com_zextras_zapp_shell' } : false,
+		middleware:
+			FLAVOR === 'NPM'
+				? // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+				  (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
+				: // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+				  (getDefaultMiddleware) => getDefaultMiddleware(),
 		reducer
 	});
 	let shellStorePersistor;

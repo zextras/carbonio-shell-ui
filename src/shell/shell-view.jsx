@@ -9,19 +9,20 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Row, Responsive, useThemeVariant, useSetThemeMode, THEME_MODE } from '@zextras/zapp-ui';
+import React, { useCallback, useEffect, useMemo, useState, useContext } from 'react';
+import { Row, Responsive } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
+import { find } from 'lodash';
 import BoardsRouterContainer from './boards/boards-router-container';
 import ShellContextProvider from './shell-context-provider';
-import SharedUiComponentsContextProvider
-	from '../shared-ui-components/shared-ui-components-context-provider';
+import SharedUiComponentsContextProvider from '../shared-ui-components/shared-ui-components-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
 import ShellMenuPanel from './shell-menu-panel';
 import AppBoardWindow from './boards/app-board-window';
+import { ThemeCallbacksContext } from '../bootstrap/shell-theme-context-provider';
 import { useDispatch, useSessionState, useUserAccounts } from '../store/shell-store-hooks';
 import { verifySession } from '../store/session-slice';
 import { doLogout } from '../store/accounts-slice';
@@ -38,6 +39,17 @@ const Background = styled.div`
 	max-width: 100%;
 `;
 
+function DRListener() {
+	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
+	const [{ settings }] = useUserAccounts();
+	useEffect(() => {
+		const darkreaderState =
+			find(settings?.props ?? [], ['name', 'zappDarkreaderMode'])?._content ?? 'auto';
+		setDarkReaderState(darkreaderState);
+	}, [setDarkReaderState, settings]);
+	return null;
+}
+
 export function Shell() {
 	const history = useHistory();
 	const dispatch = useDispatch();
@@ -45,52 +57,54 @@ export function Shell() {
 	const [userOpen, setUserOpen] = useState(false);
 	const [navOpen, setNavOpen] = useState(true);
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
-	const [ t ] = useTranslation();
+	const [t] = useTranslation();
 
 	const accounts = useUserAccounts();
 	const sessionState = useSessionState();
-	const themeVariant = useThemeVariant();
-	const setThemeMode = useSetThemeMode();
-
-	const doLogoutCbk = useCallback((ev) => {
-		ev.preventDefault();
-		dispatch(
-			doLogout()
-		)
-			.then(() => history.push({ pathname: '/' }));
-	}, [dispatch, history]);
+	const doLogoutCbk = useCallback(
+		(ev) => {
+			ev.preventDefault();
+			dispatch(doLogout()).then(() => history.push({ pathname: '/' }));
+		},
+		[dispatch, history]
+	);
 
 	const quota = 30;
 
-	const toggleDarkMode = useCallback((ev) => {
-		ev.preventDefault();
-		if (themeVariant === THEME_MODE.LIGHT) setThemeMode(THEME_MODE.DARK);
-		else setThemeMode(THEME_MODE.LIGHT);
-	}, [themeVariant, setThemeMode]);
+	// const toggleDarkMode = useCallback(
+	// 	(ev) => {
+	// 		ev.preventDefault();
+	// 		if (themeVariant === THEME_MODE.LIGHT) setThemeMode(THEME_MODE.DARK);
+	// 		else setThemeMode(THEME_MODE.LIGHT);
+	// 	},
+	// 	[themeVariant, setThemeMode]
+	// );
 
-	const userMenuTree = useMemo(() => [
-		{
-			label: themeVariant === THEME_MODE.LIGHT ? t('theme-switch.dark') : t('theme-switch.light'),
-			icon:  themeVariant === THEME_MODE.LIGHT ? 'MoonOutline' : 'SunOutline',
-			onClick: toggleDarkMode
-		},
-		{
-			label: t('logout'),
-			icon: 'LogOut',
-			onClick: doLogoutCbk
-		}
-	], [doLogoutCbk, toggleDarkMode, themeVariant, t]);
+	const userMenuTree = useMemo(
+		() => [
+			// {
+			// 	label: themeVariant === THEME_MODE.LIGHT ? t('theme-switch.dark') : t('theme-switch.light'),
+			// 	icon: themeVariant === THEME_MODE.LIGHT ? 'MoonOutline' : 'SunOutline',
+			// 	onClick: toggleDarkMode
+			// },
+			{
+				label: t('logout'),
+				icon: 'LogOut',
+				onClick: doLogoutCbk
+			}
+		],
+		[doLogoutCbk, t]
+	);
 
 	useEffect(() => {
 		if (sessionState === 'init' && accounts.length > 0) {
-			dispatch(
-				verifySession()
-			);
+			dispatch(verifySession());
 		}
 	}, [accounts, sessionState, dispatch]);
 
 	return (
 		<Background>
+			<DRListener />
 			<ShellHeader
 				userBarIsOpen={userOpen}
 				mobileNavIsOpen={mobileNavOpen}

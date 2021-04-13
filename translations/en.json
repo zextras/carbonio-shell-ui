@@ -29,6 +29,16 @@
             "secondary": "Cancel"
         }
     },
+    "settins": {
+        "general": {
+            "general": "General Settings",
+            "theme_auto": "Auto",
+            "theme_disabled": "Light Mode",
+            "theme_enabled": "Dark Mode",
+            "theme_mode": "Theme Mode",
+            "theme_options": "Theme Options"
+        }
+    },
     "supported_browsers": {
         "chrome": "Chrome",
         "edge": "Edge",
@@ -38,9 +48,5 @@
         "safari": "Safari",
         "uc": "UC",
         "yandex": "Yandex"
-    },
-    "theme-switch": {
-        "dark": "Switch to dark mode",
-        "light": "Switch to light mode"
     }
 }

@@ -44,15 +44,21 @@ export type AccountLoginData = {
 	csrfToken: string;
 };
 
+export type AccountSettings = {
+	attrs: Record<string, any>;
+	prefs: Record<string, any>;
+	props: Array<ZimletProp>;
+};
+
 export type Account = {
 	id: string;
 	name: string;
 	apps: AccountAppsData;
 	themes: AccountThemesData;
 	displayName: string;
-	settings: Record<string, any>;
-	signatures: { signature: Array<any>; };
-	identities: { identity: Array<any>; };
+	settings: AccountSettings;
+	signatures: { signature: Array<any> };
+	identities: { identity: Array<any> };
 };
 
 export type FCPartialEvent<T extends unknown | string> = {
@@ -125,11 +131,11 @@ export type FCSink = <T extends unknown | string, R extends unknown | string>(
 ) => void | Promise<R>;
 export type FC = Observable<FCEvent<any> | FCPromisedEvent<any, any>>;
 
-export function setMainMenuItems (items: MainMenuItemData[]): void;
-export function setRoutes (routes: AppRouteDescription[]): void;
-export function setCreateOptions (options: AppCreateOption[]): void;
-export function setAppContext (obj: any): void;
-export function addSharedUiComponent (scope: string, componentClass: ComponentClass): void;
+export function setMainMenuItems(items: MainMenuItemData[]): void;
+export function setRoutes(routes: AppRouteDescription[]): void;
+export function setCreateOptions(options: AppCreateOption[]): void;
+export function setAppContext(obj: any): void;
+export function addSharedUiComponent(scope: string, componentClass: ComponentClass): void;
 
 export const fiberChannel: FC;
 export const fiberChannelSink: FCSink;
@@ -145,7 +151,12 @@ export const hooks: {
 	usePushHistoryCallback(): (location: LocationDescriptor) => void;
 	useRemoveCurrentBoard(): () => void;
 	useReplaceHistoryCallback(): (location: LocationDescriptor) => void;
+	useSaveSettingsCallback(): (mods: {
+		props: Record<string, { value: any; app: string }>;
+		prefs: Record<string, any>;
+	}) => void;
 	useUserAccounts(): Account[];
+	useRegisterTheme(extension: (theme: never) => never, id: string): void;
 	useCSRFToken(): string;
 };
 
@@ -157,19 +168,18 @@ export const store: {
 };
 
 export type SoapRequest = {
-	_jsns: 'urn:zimbra'
+	_jsns:
+		| 'urn:zimbra'
 		| 'urn:zimbraAccount'
 		| 'urn:zimbraAdmin'
 		| 'urn:zimbraAdminExt'
 		| 'urn:zimbraMail'
 		| 'urn:zimbraRepl'
 		| 'urn:zimbraSync'
-		| 'urn:zimbraVoice'
-	;
+		| 'urn:zimbraVoice';
 };
 
-export type SoapFetch =
-	<REQ, RESP>(api: string, body: REQ & SoapRequest) => Promise<RESP>;
+export type SoapFetch = <REQ, RESP>(api: string, body: REQ & SoapRequest) => Promise<RESP>;
 
 export type SoapError = {
 	message: string;
@@ -184,6 +194,6 @@ export const testUtils: {
 	render(
 		// eslint-disable-next-line no-shadow
 		ui: React.ReactElement,
-		options?: Omit<RenderOptions, 'queries'>,
+		options?: Omit<RenderOptions, 'queries'>
 	): RenderResult;
 };

@@ -17,10 +17,8 @@ import LazyBootstrapper from './bootstrap/lazy-bootstrapper';
 import loadDevelopmentEnv from './dev/dev-utils-injector';
 
 render(
-	(
-		<Suspense fallback={<LoadingView />}>
-			<LazyBootstrapper onBeforeBoot={loadDevelopmentEnv} />
-		</Suspense>
-	),
+	<Suspense fallback={<LoadingView />}>
+		<LazyBootstrapper onBeforeBoot={loadDevelopmentEnv} />
+	</Suspense>,
 	document.getElementById('app')
 );

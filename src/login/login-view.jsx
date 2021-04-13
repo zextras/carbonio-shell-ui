@@ -28,7 +28,6 @@ import {
 	SnackbarManager,
 	Text,
 	Tooltip,
-	ThemeContextProvider,
 	useScreenMode,
 	useSnackbar,
 	Paragraph
@@ -47,11 +46,7 @@ import logoUC from './images/logo-ucbrowser.svg';
 
 function OfflineModal({ open, onClose }) {
 	return (
-		<Modal
-			title="Offline"
-			open={open}
-			onClose={onClose}
-		>
+		<Modal title="Offline" open={open} onClose={onClose}>
 			<Paragraph>You are currently offline, please check your internet connection.</Paragraph>
 		</Modal>
 	);
@@ -59,51 +54,43 @@ function OfflineModal({ open, onClose }) {
 
 function GenericErrorModal({ open, onClose }) {
 	return (
-		<Modal
-			title="Error"
-			open={open}
-			onClose={onClose}
-		>
+		<Modal title="Error" open={open} onClose={onClose}>
 			<Paragraph>Generic error text placeholder.</Paragraph>
 		</Modal>
 	);
 }
 
 function LoginForm() {
-	const {
-		doLogin,
-		usernameRef,
-		passwordRef
-	} = useLoginView();
-	const [ t ] = useTranslation();
+	const { doLogin, usernameRef, passwordRef } = useLoginView();
+	const [t] = useTranslation();
 	const createSnackbar = useSnackbar();
 	const [showAuthError, setShowAuthError] = useState(false);
 	const [openOfflineModal, setOpenOfflineModal] = useState(false);
 	const [openGenericModal, setOpenGenericModal] = useState(false);
 
-	const onSubmit = useCallback((e) => {
-		setShowAuthError(false);
-		doLogin(e)
-			.catch((err) => {
+	const onSubmit = useCallback(
+		(e) => {
+			setShowAuthError(false);
+			doLogin(e).catch((err) => {
 				if (err.message.startsWith('authentication failed')) setShowAuthError(true);
 				else {
-					const snackbarRef = createSnackbar(
-						{
-							key: String(Date.now()),
-							type: 'error',
-							label: 'Can not do the login now.',
-							actionLabel: 'Details',
-							replace: true,
-							onActionClick: () => {
-								window.top.navigator.onLine ? setOpenGenericModal(true) : setOpenOfflineModal(true);
-								snackbarRef();
-							},
-							autoHideTimeout: 5000,
-						}
-					);
+					const snackbarRef = createSnackbar({
+						key: String(Date.now()),
+						type: 'error',
+						label: 'Can not do the login now.',
+						actionLabel: 'Details',
+						replace: true,
+						onActionClick: () => {
+							window.top.navigator.onLine ? setOpenGenericModal(true) : setOpenOfflineModal(true);
+							snackbarRef();
+						},
+						autoHideTimeout: 5000
+					});
 				}
 			});
-	}, [doLogin, createSnackbar, setShowAuthError, setOpenGenericModal, setOpenOfflineModal]);
+		},
+		[doLogin, createSnackbar, setShowAuthError, setOpenGenericModal, setOpenOfflineModal]
+	);
 
 	return (
 		<>
@@ -112,18 +99,22 @@ function LoginForm() {
 					<Input inputRef={usernameRef} label={t('login.username')} backgroundColor="gray5" />
 				</Row>
 				<Row>
-					<PasswordInput inputRef={passwordRef} label={t('login.password')} backgroundColor="gray5" />
+					<PasswordInput
+						inputRef={passwordRef}
+						label={t('login.password')}
+						backgroundColor="gray5"
+					/>
 				</Row>
 				<Row padding={{ vertical: 'extralarge' }} mainAlignment="space-between">
 					<Checkbox label={t('login.remember-me')} />
 				</Row>
 				<Row orientation="vertical" crossAlignment="flex-start" padding={{ bottom: 'extralarge' }}>
 					<Button onClick={onSubmit} label={t('login.login')} size="fill" />
-					{ showAuthError && (
+					{showAuthError && (
 						<Padding top="small">
 							<Text color="error" overflow="break-word">
-								{ t('login.incorrect') }
-								{ t('login.verify-caps-lock') }
+								{t('login.incorrect')}
+								{t('login.verify-caps-lock')}
 							</Text>
 						</Padding>
 					)}
@@ -139,11 +130,7 @@ function LoginForm() {
 function HelpModal({ open, onClose }) {
 	const { t } = useTranslation();
 	return (
-		<Modal
-			title={t('login.help')}
-			open={open}
-			onClose={onClose}
-		>
+		<Modal title={t('login.help')} open={open} onClose={onClose}>
 			<Paragraph>Do you need help?</Paragraph>
 			<Paragraph>
 				Please call this number:
@@ -151,7 +138,9 @@ function HelpModal({ open, onClose }) {
 			</Paragraph>
 			<Paragraph>
 				Or write an email to:
-				<Link href="mailto:help.assistance@iris.com" target="_blank">help.assistance@iris.com</Link>
+				<Link href="mailto:help.assistance@iris.com" target="_blank">
+					help.assistance@iris.com
+				</Link>
 			</Paragraph>
 		</Modal>
 	);
@@ -162,15 +151,17 @@ const LoginContainer = styled(Container)`
 	background: url(${backgroundImage}) no-repeat 75% center/cover;
 	justify-content: center;
 	align-items: flex-start;
-	${({ screenMode, theme }) => screenMode === 'mobile' && css`
-		padding: 0 12px;
-		align-items: center;	
-	`}
+	${({ screenMode, theme }) =>
+		screenMode === 'mobile' &&
+		css`
+			padding: 0 12px;
+			align-items: center;
+		`}
 `;
 const FormContainer = styled.div`
 	max-width: 100%;
 	max-height: 100vh;
-	box-shadow: 0px 0px 20px -7px rgba(0,0,0,0.3);
+	box-shadow: 0px 0px 20px -7px rgba(0, 0, 0, 0.3);
 `;
 const FormWrapper = styled(Container)`
 	width: auto;
@@ -182,12 +173,14 @@ const FormWrapper = styled(Container)`
 	max-height: 620px;
 	height: 100vh;
 	overflow-y: auto;
-	${({ screenMode, theme }) => screenMode === 'mobile' && css`
-		padding: 20px 20px 0;
-		width: 360px;
-		max-height: 100%;
-		height: auto;
-	`}
+	${({ screenMode, theme }) =>
+		screenMode === 'mobile' &&
+		css`
+			padding: 20px 20px 0;
+			width: 360px;
+			max-height: 100%;
+			height: auto;
+		`}
 `;
 const Separator = styled.div`
 	width: 1px;
@@ -197,7 +190,7 @@ const Separator = styled.div`
 `;
 
 function Login() {
-	const [ t ] = useTranslation();
+	const [t] = useTranslation();
 	const screenMode = useScreenMode();
 	const [openHelpModal, setOpenHelpModal] = useState(false);
 
@@ -214,15 +207,17 @@ function Login() {
 								<LoginForm />
 								<Row mainAlignment="flex-start">
 									<Link color="primary" size="medium" onClick={() => setOpenHelpModal(true)}>
-										{ t('login.help') }
+										{t('login.help')}
 									</Link>
 									<Separator />
-									<Link as={RouterLink} to="/" size="medium" color="primary">Privacy policy</Link>
+									<Link as={RouterLink} to="/" size="medium" color="primary">
+										Privacy policy
+									</Link>
 								</Row>
 							</Padding>
 						</Container>
 						<Container crossAlignment="flex-start" height="auto" padding={{ bottom: 'extralarge' }}>
-							<Text>{ t('login.supported-browsers') }</Text>
+							<Text>{t('login.supported-browsers')}</Text>
 							<Row padding={{ top: 'medium', bottom: 'extralarge' }} wrap="nowrap">
 								<Padding all="extrasmall" right="small">
 									<Tooltip label={t('supported_browsers.chrome')}>
@@ -265,9 +260,7 @@ function Login() {
 									</Tooltip>
 								</Padding>
 							</Row>
-							<Text size="small">
-								{t('copyright', { year: new Date().getFullYear() })}
-							</Text>
+							<Text size="small">{t('copyright', { year: new Date().getFullYear() })}</Text>
 						</Container>
 					</FormWrapper>
 				</FormContainer>

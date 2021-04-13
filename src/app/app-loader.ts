@@ -12,7 +12,15 @@
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
 import {
-	default as Lodash, map, orderBy, compact, keyBy, forEach, forOwn, reduce, filter
+	default as Lodash,
+	map,
+	orderBy,
+	compact,
+	keyBy,
+	forEach,
+	forOwn,
+	reduce,
+	filter
 } from 'lodash';
 import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
 import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
@@ -60,65 +68,79 @@ import {
 	AppSettingsRouteDescription,
 	FCSink,
 	MainMenuItemData,
-	SoapFetch, ThemePkgDescription,
+	SoapFetch,
+	ThemePkgDescription
 } from '../../types';
+import {
+	useAddSharedFunction,
+	useRemoveSharedFunction,
+	useSharedFunction
+} from '../zustand/selectors';
+import { UnknownFunction } from '../zustand/store-types';
 
 type IShellWindow<T, R> = Window & {
 	__ZAPP_SHARED_LIBRARIES__: T;
-	__ZAPP_HMR_EXPORT__: {[pkgName: string]: (appClass: R) => void};
-	__ZAPP_HMR_HANDLERS__: {[pkgName: string]: (handlers: RequestHandlersList) => void};
+	__ZAPP_HMR_EXPORT__: { [pkgName: string]: (appClass: R) => void };
+	__ZAPP_HMR_HANDLERS__: { [pkgName: string]: (handlers: RequestHandlersList) => void };
 };
 
 type SharedLibrariesAppsMap = {
-	'react': unknown;
+	react: unknown;
 	'react-dom': unknown;
 	'react-i18next': unknown;
 	'react-redux': unknown;
 	'@reduxjs/toolkit': unknown;
-	'lodash': unknown;
-	'rxjs': unknown;
+	lodash: unknown;
+	rxjs: unknown;
 	'rxjs/operators': unknown;
 	'react-router-dom': unknown;
 	'styled-components': unknown;
 	'prop-types': unknown;
-	'moment': unknown;
-	'@zextras/zapp-shell': {[pkgName: string]: {
-		// These signatures are in the documentation
-		// If changed update also the documentation.
-		store: {
-			store: Store<any>;
-			setReducer(nextReducer: Reducer): void;
+	moment: unknown;
+	'@zextras/zapp-shell': {
+		[pkgName: string]: {
+			// These signatures are in the documentation
+			// If changed update also the documentation.
+			store: {
+				store: Store<any>;
+				setReducer(nextReducer: Reducer): void;
+			};
+			network: {
+				soapFetch: SoapFetch;
+			};
+			setMainMenuItems: (items: MainMenuItemData[]) => void;
+			setRoutes: (routes: AppRouteDescription[]) => void;
+			setSettingsRoutes: (routes: AppSettingsRouteDescription[]) => void;
+			setCreateOptions: (options: AppCreateOption[]) => void;
+			setAppContext: (obj: any) => void;
+			useSharedFunction: (id: string) => UnknownFunction | undefined;
+			useAddSharedFunction: (id: string, fn: UnknownFunction) => void;
+			useRemoveSharedFunction: (id: string) => void;
+			registerSharedUiComponents: (components: SharedUiComponentsDescriptor) => void;
+			fiberChannel: FC;
+			fiberChannelSink: FCSink;
+			hooks: unknown;
 		};
-		network: {
-			soapFetch: SoapFetch;
-		};
-		setMainMenuItems: (items: MainMenuItemData[]) => void;
-		setRoutes: (routes: AppRouteDescription[]) => void;
-		setSettingsRoutes: (routes: AppSettingsRouteDescription[]) => void;
-		setCreateOptions: (options: AppCreateOption[]) => void;
-		setAppContext: (obj: any) => void;
-		registerSharedUiComponents: (components: SharedUiComponentsDescriptor) => void;
-		fiberChannel: FC;
-		fiberChannelSink: FCSink;
-		hooks: unknown;
-	}};
+	};
 	'@zextras/zapp-ui': unknown;
-	'msw'?: unknown;
-	'faker'?: unknown;
+	msw?: unknown;
+	faker?: unknown;
 };
 
 type SharedLibrariesThemesMap = {
-	'react': unknown;
+	react: unknown;
 	'react-dom': unknown;
-	'lodash': unknown;
+	lodash: unknown;
 	'styled-components': unknown;
 	'prop-types': unknown;
 	'@zextras/zapp-ui': unknown;
-	'msw'?: unknown;
-	'faker'?: unknown;
+	msw?: unknown;
+	faker?: unknown;
 };
 
-type SharedUiComponentsDescriptor = { [id: string]: { pkg: AppPkgDescription, versions: { [version: string]: FC } } };
+type SharedUiComponentsDescriptor = {
+	[id: string]: { pkg: AppPkgDescription; versions: { [version: string]: FC } };
+};
 
 type LoadedAppRuntime = AppInjections & {
 	pkg: AppPkgDescription;
@@ -139,7 +161,7 @@ export type LoadedThemesCache = {
 type AppInjections = {
 	appContext: BehaviorSubject<any>;
 	createOptions: BehaviorSubject<AppCreateOption[]>;
-	entryPoint: BehaviorSubject<ComponentClass|null>;
+	entryPoint: BehaviorSubject<ComponentClass | null>;
 	mainMenuItems: BehaviorSubject<MainMenuItemData[]>;
 	routes: BehaviorSubject<AppRouteDescription[]>;
 	settingsRoutes: BehaviorSubject<AppSettingsRouteDescription[]>;
@@ -148,17 +170,14 @@ type AppInjections = {
 };
 
 type ThemeInjections = {
-	entryPoint: BehaviorSubject<ComponentClass|null>;
+	entryPoint: BehaviorSubject<ComponentClass | null>;
 };
 
 const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
 // const _revertableActions: { [pkgName: string]: RevertableActionCollection } = {};
 
-function updateAppHandlers(
-	appPkg: AppPkgDescription,
-	handlers: RequestHandlersList
-): void {
+function updateAppHandlers(appPkg: AppPkgDescription, handlers: RequestHandlersList): void {
 	if (FLAVOR === 'NPM' && typeof devUtils !== 'undefined') {
 		const worker = devUtils.getMSWorker<SetupWorkerApi>();
 		if (worker) {
@@ -199,7 +218,10 @@ function loadAppModule(
 		};
 		try {
 			// eslint-disable-next-line max-len
-			(window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>).__ZAPP_SHARED_LIBRARIES__['@zextras/zapp-shell'][appPkg.package] = {
+			((window as unknown) as IShellWindow<
+				SharedLibrariesAppsMap,
+				ComponentClass
+			>).__ZAPP_SHARED_LIBRARIES__['@zextras/zapp-shell'][appPkg.package] = {
 				store: {
 					store,
 					setReducer: (reducer): void => store.replaceReducer(reducer)
@@ -209,9 +231,12 @@ function loadAppModule(
 				setSettingsRoutes: (r): void => settingsRoutes.next(r),
 				setCreateOptions: (options): void => createOptions.next(options),
 				setAppContext: (obj: any): void => appContext.next(obj),
-				registerSharedUiComponents: (
-					components: { [id: string]: { versions: { [version: string]: FC } } }
-				): void => {
+				useAddSharedFunction: useAddSharedFunction(appPkg.package),
+				useRemoveSharedFunction: useRemoveSharedFunction(appPkg.package),
+				useSharedFunction,
+				registerSharedUiComponents: (components: {
+					[id: string]: { versions: { [version: string]: FC } };
+				}): void => {
 					sharedUiComponents.next(
 						reduce(
 							components,
@@ -239,14 +264,20 @@ function loadAppModule(
 			};
 
 			// eslint-disable-next-line max-len
-			(window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>).__ZAPP_HMR_EXPORT__[appPkg.package] = (appClass: ComponentClass): void => {
+			((window as unknown) as IShellWindow<
+				SharedLibrariesAppsMap,
+				ComponentClass
+			>).__ZAPP_HMR_EXPORT__[appPkg.package] = (appClass: ComponentClass): void => {
 				entryPoint.next(appClass);
 				resolve();
-			}
+			};
 
 			if (FLAVOR === 'NPM' && typeof cliSettings !== 'undefined' && cliSettings.hasHandlers) {
 				// eslint-disable-next-line max-len
-				(window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>).__ZAPP_HMR_HANDLERS__[appPkg.package] = (handlers: RequestHandlersList): void =>
+				((window as unknown) as IShellWindow<
+					SharedLibrariesAppsMap,
+					ComponentClass
+				>).__ZAPP_HMR_HANDLERS__[appPkg.package] = (handlers: RequestHandlersList): void =>
 					updateAppHandlers(appPkg, handlers);
 			}
 			const script: HTMLScriptElement = document.createElement('script');
@@ -256,13 +287,15 @@ function loadAppModule(
 			script.setAttribute('data-is_app', 'true');
 			script.setAttribute('src', `${appPkg.resourceUrl}/${appPkg.entryPoint}`);
 			script.addEventListener('error', (ev) => {
-				fiberChannelFactory.getAppFiberChannelSink(appPkg)({ event: 'report-exception', data: { exception: ev.error } });
+				fiberChannelFactory.getAppFiberChannelSink(appPkg)({
+					event: 'report-exception',
+					data: { exception: ev.error }
+				});
 				reject(ev.error);
 			});
 			document.body.appendChild(script);
-			_scripts[`${appPkg.package}-loader-${_scriptId += 1}`] = script;
-		}
-		catch (err) {
+			_scripts[`${appPkg.package}-loader-${(_scriptId += 1)}`] = script;
+		} catch (err) {
 			reject(err);
 		}
 	});
@@ -270,10 +303,8 @@ function loadAppModule(
 
 function loadThemeModule(
 	themePkg: AppPkgDescription,
-	{
-		entryPoint,
-	}: ThemeInjections,
-	fiberChannelFactory: IFiberChannelFactory,
+	{ entryPoint }: ThemeInjections,
+	fiberChannelFactory: IFiberChannelFactory
 ): Promise<void> {
 	return new Promise((_resolve, _reject) => {
 		let resolved = false;
@@ -291,14 +322,20 @@ function loadThemeModule(
 		};
 		try {
 			// eslint-disable-next-line max-len
-			(window as unknown as IShellWindow<SharedLibrariesThemesMap, ComponentClass>).__ZAPP_HMR_EXPORT__[themePkg.package] = (appClass: ComponentClass): void => {
+			((window as unknown) as IShellWindow<
+				SharedLibrariesThemesMap,
+				ComponentClass
+			>).__ZAPP_HMR_EXPORT__[themePkg.package] = (appClass: ComponentClass): void => {
 				entryPoint.next(appClass);
 				resolve();
-			}
+			};
 
 			if (FLAVOR === 'NPM' && typeof cliSettings !== 'undefined' && cliSettings.hasHandlers) {
 				// eslint-disable-next-line max-len
-				(window as unknown as IShellWindow<SharedLibrariesThemesMap, ComponentClass>).__ZAPP_HMR_HANDLERS__[themePkg.package] = (handlers: RequestHandlersList): void =>
+				((window as unknown) as IShellWindow<
+					SharedLibrariesThemesMap,
+					ComponentClass
+				>).__ZAPP_HMR_HANDLERS__[themePkg.package] = (handlers: RequestHandlersList): void =>
 					updateAppHandlers(themePkg, handlers);
 			}
 			const script: HTMLScriptElement = document.createElement('script');
@@ -308,13 +345,15 @@ function loadThemeModule(
 			script.setAttribute('data-is_theme', 'true');
 			script.setAttribute('src', `${themePkg.resourceUrl}/${themePkg.entryPoint}`);
 			script.addEventListener('error', (ev) => {
-				fiberChannelFactory.getAppFiberChannelSink(themePkg)({ event: 'report-exception', data: { exception: ev.error } });
+				fiberChannelFactory.getAppFiberChannelSink(themePkg)({
+					event: 'report-exception',
+					data: { exception: ev.error }
+				});
 				reject(ev.error);
 			});
 			document.body.appendChild(script);
-			_scripts[`${themePkg.package}-loader-${_scriptId += 1}`] = script;
-		}
-		catch (err) {
+			_scripts[`${themePkg.package}-loader-${(_scriptId += 1)}`] = script;
+		} catch (err) {
 			reject(err);
 		}
 	});
@@ -324,8 +363,8 @@ function loadApp(
 	pkg: AppPkgDescription,
 	fiberChannelFactory: IFiberChannelFactory,
 	shellNetworkService: ShellNetworkService,
-	storeFactory: StoreFactory,
-): Promise<LoadedAppRuntime|undefined> {
+	storeFactory: StoreFactory
+): Promise<LoadedAppRuntime | undefined> {
 	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
 	const mainMenuItems = new BehaviorSubject<MainMenuItemData[]>([]);
 	const routes = new BehaviorSubject<AppRouteDescription[]>([]);
@@ -333,106 +372,121 @@ function loadApp(
 	const createOptions = new BehaviorSubject<AppCreateOption[]>([]);
 	const appContext = new BehaviorSubject<any>({});
 	const sharedUiComponents = new BehaviorSubject<SharedUiComponentsDescriptor>({});
-	const entryPoint = new BehaviorSubject<ComponentClass|null>(null);
+	const entryPoint = new BehaviorSubject<ComponentClass | null>(null);
 	const store = storeFactory.getStoreForApp(pkg);
-	return loadAppModule(
-		pkg,
-		{
-			appContext,
-			createOptions,
-			entryPoint,
-			mainMenuItems,
-			routes,
-			settingsRoutes,
-			sharedUiComponents,
-			store
-		},
-		fiberChannelFactory,
-		shellNetworkService
-	)
-		// .then(() => {
-		// 	this._fcSink<{ package: string; version: string }>('app:loaded', {
-		// 		package: pkg.package,
-		// 		version: pkg.version
-		// 	});
-		// })
-		// .catch((err) => {
-		// 	this._fcSink<{ package: string; version: string; error: Error }>('app:load-error', {
-		// 		package: pkg.package,
-		// 		version: pkg.version,
-		// 		error: err
-		// 	});
-		// })
-		.then(() => true)
-		.catch((e) => {
-			const sink = fiberChannelFactory.getAppFiberChannelSink(pkg);
-			sink({
-				event: 'report-exception',
-				data: {
-					exception: e
-				}
-			});
-			return false;
-		})
-		.then((loaded) => (loaded ? {
+	return (
+		loadAppModule(
 			pkg,
-			appContext,
-			createOptions,
-			entryPoint,
-			mainMenuItems,
-			routes,
-			settingsRoutes,
-			sharedUiComponents,
-			store
-		} : undefined));
+			{
+				appContext,
+				createOptions,
+				entryPoint,
+				mainMenuItems,
+				routes,
+				settingsRoutes,
+				sharedUiComponents,
+				store
+			},
+			fiberChannelFactory,
+			shellNetworkService
+		)
+			// .then(() => {
+			// 	this._fcSink<{ package: string; version: string }>('app:loaded', {
+			// 		package: pkg.package,
+			// 		version: pkg.version
+			// 	});
+			// })
+			// .catch((err) => {
+			// 	this._fcSink<{ package: string; version: string; error: Error }>('app:load-error', {
+			// 		package: pkg.package,
+			// 		version: pkg.version,
+			// 		error: err
+			// 	});
+			// })
+			.then(() => true)
+			.catch((e) => {
+				const sink = fiberChannelFactory.getAppFiberChannelSink(pkg);
+				sink({
+					event: 'report-exception',
+					data: {
+						exception: e
+					}
+				});
+				return false;
+			})
+			.then((loaded) =>
+				loaded
+					? {
+							pkg,
+							appContext,
+							createOptions,
+							entryPoint,
+							mainMenuItems,
+							routes,
+							settingsRoutes,
+							sharedUiComponents,
+							store
+					  }
+					: undefined
+			)
+	);
 }
 
 function loadTheme(
 	pkg: AppPkgDescription,
-	fiberChannelFactory: IFiberChannelFactory,
-): Promise<LoadedThemeRuntime|undefined> {
+	fiberChannelFactory: IFiberChannelFactory
+): Promise<LoadedThemeRuntime | undefined> {
 	// this._fcSink<{ package: string }>('theme:preload', { package: pkg.package });
-	const entryPoint = new BehaviorSubject<ComponentClass|null>(null);
-	return loadThemeModule(
-		pkg,
-		{
-			entryPoint,
-		},
-		fiberChannelFactory,
-	)
-		// .then(() => {
-		// 	this._fcSink<{ package: string; version: string }>('theme:loaded', {
-		// 		package: pkg.package,
-		// 		version: pkg.version
-		// 	});
-		// })
-		// .catch((err) => {
-		// 	this._fcSink<{ package: string; version: string; error: Error }>('theme:load-error', {
-		// 		package: pkg.package,
-		// 		version: pkg.version,
-		// 		error: err
-		// 	});
-		// })
-		.then(() => true)
-		.catch((e) => {
-			const sink = fiberChannelFactory.getAppFiberChannelSink(pkg);
-			sink({
-				event: 'report-exception',
-				data: {
-					exception: e
-				}
-			});
-			return false;
-		})
-		.then((loaded) => (loaded ? {
+	const entryPoint = new BehaviorSubject<ComponentClass | null>(null);
+	return (
+		loadThemeModule(
 			pkg,
-			entryPoint,
-		} : undefined));
+			{
+				entryPoint
+			},
+			fiberChannelFactory
+		)
+			// .then(() => {
+			// 	this._fcSink<{ package: string; version: string }>('theme:loaded', {
+			// 		package: pkg.package,
+			// 		version: pkg.version
+			// 	});
+			// })
+			// .catch((err) => {
+			// 	this._fcSink<{ package: string; version: string; error: Error }>('theme:load-error', {
+			// 		package: pkg.package,
+			// 		version: pkg.version,
+			// 		error: err
+			// 	});
+			// })
+			.then(() => true)
+			.catch((e) => {
+				const sink = fiberChannelFactory.getAppFiberChannelSink(pkg);
+				sink({
+					event: 'report-exception',
+					data: {
+						exception: e
+					}
+				});
+				return false;
+			})
+			.then((loaded) =>
+				loaded
+					? {
+							pkg,
+							entryPoint
+					  }
+					: undefined
+			)
+	);
 }
 
 function injectSharedLibraries(): void {
 	// eslint-disable-next-line max-len
-	const wnd: IShellWindow<SharedLibrariesAppsMap, ComponentClass> = window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>;
+	const wnd: IShellWindow<
+		SharedLibrariesAppsMap,
+		ComponentClass
+	> = (window as unknown) as IShellWindow<SharedLibrariesAppsMap, ComponentClass>;
 	if (wnd.__ZAPP_SHARED_LIBRARIES__) {
 		return;
 	}
@@ -482,19 +536,12 @@ export function loadApps(
 ): Promise<LoadedAppsCache> {
 	injectSharedLibraries();
 	const orderedApps = orderBy(accounts[0].apps, 'priority');
-	const apps = (typeof cliSettings === 'undefined' || cliSettings.enableErrorReporter)
-		? orderedApps
-		: filter(orderedApps, (pkg) => pkg.package !== "com_zextras_zapp_error_reporter");
+	const apps =
+		typeof cliSettings === 'undefined' || cliSettings.enableErrorReporter
+			? orderedApps
+			: filter(orderedApps, (pkg) => pkg.package !== 'com_zextras_zapp_error_reporter');
 	return Promise.all(
-		map(
-			apps,
-			(pkg) => loadApp(
-				pkg,
-				fiberChannelFactory,
-				shellNetworkService,
-				storeFactory
-			)
-		)
+		map(apps, (pkg) => loadApp(pkg, fiberChannelFactory, shellNetworkService, storeFactory))
 	)
 		.then((loaded) => compact(loaded))
 		.then((loaded) => keyBy(loaded, 'pkg.package'))
@@ -514,21 +561,13 @@ export function loadApps(
 
 export function loadThemes(
 	accounts: Array<Account>,
-	fiberChannelFactory: IFiberChannelFactory,
+	fiberChannelFactory: IFiberChannelFactory
 ): Promise<LoadedThemesCache> {
 	injectSharedLibraries();
 	const orderedThemes = orderBy(accounts[0].themes, 'priority');
 	// Load only the first theme by priority
-	const themes = (orderedThemes.length < 1) ? [] : [orderedThemes[0]];
-	return Promise.all(
-		map(
-			themes,
-			(pkg) => loadTheme(
-				pkg,
-				fiberChannelFactory
-			)
-		)
-	)
+	const themes = orderedThemes.length < 1 ? [] : [orderedThemes[0]];
+	return Promise.all(map(themes, (pkg) => loadTheme(pkg, fiberChannelFactory)))
 		.then((loaded) => compact(loaded))
 		.then((loaded) => keyBy(loaded, 'pkg.package'))
 		.then((loaded) => {
@@ -546,13 +585,9 @@ export function loadThemes(
 }
 
 export function unloadAppsAndThemes(): Promise<void> {
-	return Promise.resolve()
-		.then(() => {
-			forOwn(
-				_scripts,
-				(script) => {
-					if (script.parentNode) script.parentNode.removeChild(script);
-				}
-			);
+	return Promise.resolve().then(() => {
+		forOwn(_scripts, (script) => {
+			if (script.parentNode) script.parentNode.removeChild(script);
 		});
+	});
 }

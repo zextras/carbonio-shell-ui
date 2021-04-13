@@ -20,19 +20,23 @@ const _uselessSlice = createSlice({
 });
 
 export default class StoreFactory {
-	private _cache: {[pkgName: string]: Store<any>} = {};
+	private _cache: { [pkgName: string]: Store<any> } = {};
 
 	getStoreForApp(pkg: AppPkgDescription): Store<any> {
 		if (this._cache[pkg.package]) return this._cache[pkg.package];
 		const store = configureStore({
-			devTools: (FLAVOR === 'NPM') ? {
-				name: pkg.package
-			} : false,
-			middleware: (FLAVOR === 'NPM')
-				// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-				? (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
-				// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-				: (getDefaultMiddleware) => getDefaultMiddleware(),
+			devTools:
+				FLAVOR === 'NPM'
+					? {
+							name: pkg.package
+					  }
+					: false,
+			middleware:
+				FLAVOR === 'NPM'
+					? // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+					  (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
+					: // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+					  (getDefaultMiddleware) => getDefaultMiddleware(),
 			reducer: {
 				_useless: _uselessSlice.reducer
 			}

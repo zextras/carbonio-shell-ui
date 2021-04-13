@@ -15,15 +15,14 @@ import { useFiberChannel } from './app-context';
 export default function AppErrorCatcher({ children }) {
 	const { fiberChannelSink } = useFiberChannel();
 
-	const onError = useCallback((error) => {
-		fiberChannelSink({
-			event: 'report-exception',
-			data: { exception: error }
-		});
-	}, [fiberChannelSink]);
-	return (
-		<Catcher onError={onError}>
-			{children}
-		</Catcher>
+	const onError = useCallback(
+		(error) => {
+			fiberChannelSink({
+				event: 'report-exception',
+				data: { exception: error }
+			});
+		},
+		[fiberChannelSink]
 	);
+	return <Catcher onError={onError}>{children}</Catcher>;
 }

@@ -28,19 +28,14 @@ export default function AppLoaderMounter() {
 			reduce(
 				cache,
 				(acc, { pkg, entryPoint }) => {
-					acc.push(
-						entryPoint.pipe(
-							rxMap((AppClass) => ({ AppClass, pkg }))
-						)
-					);
+					acc.push(entryPoint.pipe(rxMap((AppClass) => ({ AppClass, pkg }))));
 					return acc;
 				},
 				[]
 			)
-		)
-			.subscribe((_appsClasses) => {
-				setAppClasses(_appsClasses);
-			});
+		).subscribe((_appsClasses) => {
+			setAppClasses(_appsClasses);
+		});
 
 		return () => {
 			if (subscription) {
@@ -49,26 +44,26 @@ export default function AppLoaderMounter() {
 		};
 	}, [cache]);
 
-	const children = useMemo(() => reduce(
-		appsClasses,
-		(acc, { AppClass, pkg }) => {
-			acc.push((
-				<AppContextProvider key={pkg.package} pkg={pkg}>
-					<AppClass />
-				</AppContextProvider>
-			));
-			return acc;
-		},
-		[]
-	), [appsClasses]);
+	const children = useMemo(
+		() =>
+			reduce(
+				appsClasses,
+				(acc, { AppClass, pkg }) => {
+					acc.push(
+						<AppContextProvider key={pkg.package} pkg={pkg}>
+							<AppClass />
+						</AppContextProvider>
+					);
+					return acc;
+				},
+				[]
+			),
+		[appsClasses]
+	);
 
 	return (
-		<div
-			data-testid="app-mounter"
-			hidden={true}
-			style={{ height: 0, overflow: 'hidden' }}
-		>
-			{ children }
+		<div data-testid="app-mounter" hidden style={{ height: 0, overflow: 'hidden' }}>
+			{children}
 		</div>
 	);
 }

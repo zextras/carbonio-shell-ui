@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /*
  * *** BEGIN LICENSE BLOCK *****
  * Copyright (C) 2011-2020 Zextras
@@ -12,32 +13,19 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { render as rtlRender } from '@testing-library/react';
-import { ThemeContextProvider } from '@zextras/zapp-ui';
+import { ThemeProvider } from '@zextras/zapp-ui';
 
-
-function render(
-	ui,
-	{
-		ctxt = {},
-		initialRouterEntries = ['/'],
-		...options
-	} = {}
-) {
+function render(ui, { initialRouterEntries = ['/'], ...options } = {}) {
 	const Wrapper = ({ children }) => (
 		<MemoryRouter initialEntries={initialRouterEntries}>
-			<ThemeContextProvider>
-				{ children }
-			</ThemeContextProvider>
+			<ThemeProvider>{children}</ThemeProvider>
 		</MemoryRouter>
 	);
 
-	return rtlRender(
-		ui,
-		{
-			wrapper: Wrapper,
-			...options,
-		}
-	);
+	return rtlRender(ui, {
+		wrapper: Wrapper,
+		...options
+	});
 }
 
 export const testUtils = {

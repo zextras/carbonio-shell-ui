@@ -8,13 +8,7 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, {
-	Suspense,
-	useContext,
-	useEffect,
-	useMemo,
-	useState
-} from 'react';
+import React, { Suspense, useContext, useEffect, useMemo, useState } from 'react';
 import { Route, Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import styled from 'styled-components';
@@ -45,44 +39,43 @@ export default function AppBoard({ idx }) {
 			reduce(
 				cache,
 				(acc, app) => {
-					acc.push(
-						app.routes.pipe(
-							rxMap((appRoutes) => ({ appRoutes, app }))
-						)
-					);
+					acc.push(app.routes.pipe(rxMap((appRoutes) => ({ appRoutes, app }))));
 					return acc;
 				},
 				[]
 			)
-		)
-			.subscribe((allAppRoutes) => {
-				setRoutes(
-					reduce(
-						allAppRoutes,
-						(acc, { appRoutes, app }) => {
-							reduce(
-								appRoutes,
-								(r, appRoute) => {
-									const RouteView = appRoute.view;
-									r.push(
-										<Route key={`${app.pkg.package}|${appRoute.route}`} exact path={`/${app.pkg.package}${appRoute.route}`}>
-											<Suspense fallback={<LoadingView />}>
-												<AppContextProvider key={app.pkg.package} pkg={app.pkg}>
-													<RouteView />
-												</AppContextProvider>
-											</Suspense>
-										</Route>
-									);
-									return r;
-								},
-								acc
-							);
-							return acc;
-						},
-						[]
-					)
-				);
-			});
+		).subscribe((allAppRoutes) => {
+			setRoutes(
+				reduce(
+					allAppRoutes,
+					(acc, { appRoutes, app }) => {
+						reduce(
+							appRoutes,
+							(r, appRoute) => {
+								const RouteView = appRoute.view;
+								r.push(
+									<Route
+										key={`${app.pkg.package}|${appRoute.route}`}
+										exact
+										path={`/${app.pkg.package}${appRoute.route}`}
+									>
+										<Suspense fallback={<LoadingView />}>
+											<AppContextProvider key={app.pkg.package} pkg={app.pkg}>
+												<RouteView />
+											</AppContextProvider>
+										</Suspense>
+									</Route>
+								);
+								return r;
+							},
+							acc
+						);
+						return acc;
+					},
+					[]
+				)
+			);
+		});
 
 		return () => {
 			if (subscription) {
@@ -106,10 +99,11 @@ export default function AppBoard({ idx }) {
 		}
 	}, [history, idx, boards]);
 
-	return ( // eslint-disable-next-line
+	return (
+		// eslint-disable-next-line
 		<_container show={currentBoard === idx}>
 			<Router key={idx} history={history}>
-				{ routes }
+				{routes}
 			</Router>
 		</_container>
 	);

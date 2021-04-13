@@ -14,20 +14,24 @@ import { zimletToAppPkgDescription, zimletToThemePkgDescription } from './utils'
 describe('Network SOAP Utils', () => {
 	test('Zimlet to App', () => {
 		const app = zimletToAppPkgDescription({
-			zimletContext: [{
-				baseUrl: '/service/zimlet/com_zextras_zapp_app/',
-				priority: 10,
-				presence: 'enabled'
-			}],
-			zimlet: [{
-				description: 'App for Shell',
-				zapp: 'true',
-				'zapp-main': 'app.bundle.js',
-				label: 'App',
-				name: 'com_zextras_zapp_app',
-				version: '0.0.1',
-				'zapp-serviceworker-extension': 'serviceworker.com_zextras_zapp_app.bundle.js'
-			}]
+			zimletContext: [
+				{
+					baseUrl: '/service/zimlet/com_zextras_zapp_app/',
+					priority: 10,
+					presence: 'enabled'
+				}
+			],
+			zimlet: [
+				{
+					description: 'App for Shell',
+					zapp: 'true',
+					'zapp-main': 'app.bundle.js',
+					label: 'App',
+					name: 'com_zextras_zapp_app',
+					version: '0.0.1',
+					'zapp-serviceworker-extension': 'serviceworker.com_zextras_zapp_app.bundle.js'
+				}
+			]
 		});
 		expect(app).toStrictEqual({
 			package: 'com_zextras_zapp_app',
@@ -39,27 +43,31 @@ describe('Network SOAP Utils', () => {
 			entryPoint: 'app.bundle.js',
 			handlers: undefined,
 			styleEntryPoint: undefined,
-			swExtension: 'serviceworker.com_zextras_zapp_app.bundle.js',
+			swExtension: 'serviceworker.com_zextras_zapp_app.bundle.js'
 		});
 	});
 
 	test('Zimlet to App, custom ZApp version', () => {
 		const app = zimletToAppPkgDescription({
-			zimletContext: [{
-				baseUrl: '/service/zimlet/com_zextras_zapp_app/',
-				priority: 10,
-				presence: 'enabled'
-			}],
-			zimlet: [{
-				description: 'App for Shell',
-				zapp: 'true',
-				'zapp-main': 'app.bundle.js',
-				label: 'App',
-				name: 'com_zextras_zapp_app',
-				version: '0.0.1',
-				'zapp-version': '0.0.1-beta.0',
-				'zapp-serviceworker-extension': 'serviceworker.com_zextras_zapp_app.bundle.js'
-			}]
+			zimletContext: [
+				{
+					baseUrl: '/service/zimlet/com_zextras_zapp_app/',
+					priority: 10,
+					presence: 'enabled'
+				}
+			],
+			zimlet: [
+				{
+					description: 'App for Shell',
+					zapp: 'true',
+					'zapp-main': 'app.bundle.js',
+					label: 'App',
+					name: 'com_zextras_zapp_app',
+					version: '0.0.1',
+					'zapp-version': '0.0.1-beta.0',
+					'zapp-serviceworker-extension': 'serviceworker.com_zextras_zapp_app.bundle.js'
+				}
+			]
 		});
 		expect(app).toStrictEqual({
 			package: 'com_zextras_zapp_app',
@@ -71,25 +79,29 @@ describe('Network SOAP Utils', () => {
 			entryPoint: 'app.bundle.js',
 			handlers: undefined,
 			styleEntryPoint: undefined,
-			swExtension: 'serviceworker.com_zextras_zapp_app.bundle.js',
+			swExtension: 'serviceworker.com_zextras_zapp_app.bundle.js'
 		});
 	});
 
 	test('Zimlet to Theme', () => {
 		const theme = zimletToThemePkgDescription({
-			zimletContext: [{
-				baseUrl: '/service/zimlet/com_zextras_zapp_theme/',
-				priority: 10,
-				presence: 'enabled'
-			}],
-			zimlet: [{
-				description: 'Theme for Shell',
-				zapp: 'true',
-				'zapp-theme': 'theme.bundle.js',
-				label: 'Theme',
-				name: 'com_zextras_zapp_theme',
-				version: '0.0.1',
-			}]
+			zimletContext: [
+				{
+					baseUrl: '/service/zimlet/com_zextras_zapp_theme/',
+					priority: 10,
+					presence: 'enabled'
+				}
+			],
+			zimlet: [
+				{
+					description: 'Theme for Shell',
+					zapp: 'true',
+					'zapp-theme': 'theme.bundle.js',
+					label: 'Theme',
+					name: 'com_zextras_zapp_theme',
+					version: '0.0.1'
+				}
+			]
 		});
 		expect(theme).toStrictEqual({
 			package: 'com_zextras_zapp_theme',
@@ -98,26 +110,30 @@ describe('Network SOAP Utils', () => {
 			priority: 10,
 			resourceUrl: '/zx/zimlet/com_zextras_zapp_theme',
 			description: 'Theme for Shell',
-			entryPoint: 'theme.bundle.js',
+			entryPoint: 'theme.bundle.js'
 		});
 	});
 
 	test('Zimlet to Theme, custom ZApp version', () => {
 		const theme = zimletToThemePkgDescription({
-			zimletContext: [{
-				baseUrl: '/service/zimlet/com_zextras_zapp_theme/',
-				priority: 10,
-				presence: 'enabled'
-			}],
-			zimlet: [{
-				description: 'Theme for Shell',
-				zapp: 'true',
-				'zapp-theme': 'theme.bundle.js',
-				label: 'Theme',
-				name: 'com_zextras_zapp_theme',
-				version: '0.0.1',
-				'zapp-version': '0.0.1-beta.0',
-			}]
+			zimletContext: [
+				{
+					baseUrl: '/service/zimlet/com_zextras_zapp_theme/',
+					priority: 10,
+					presence: 'enabled'
+				}
+			],
+			zimlet: [
+				{
+					description: 'Theme for Shell',
+					zapp: 'true',
+					'zapp-theme': 'theme.bundle.js',
+					label: 'Theme',
+					name: 'com_zextras_zapp_theme',
+					version: '0.0.1',
+					'zapp-version': '0.0.1-beta.0'
+				}
+			]
 		});
 		expect(theme).toStrictEqual({
 			package: 'com_zextras_zapp_theme',
@@ -126,7 +142,7 @@ describe('Network SOAP Utils', () => {
 			priority: 10,
 			resourceUrl: '/zx/zimlet/com_zextras_zapp_theme',
 			description: 'Theme for Shell',
-			entryPoint: 'theme.bundle.js',
+			entryPoint: 'theme.bundle.js'
 		});
 	});
 });

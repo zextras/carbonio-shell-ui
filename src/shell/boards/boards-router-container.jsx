@@ -44,8 +44,8 @@ export default function BoardsRouterContainer() {
 			if (timedRouting) {
 				clearTimeout(timedRouting);
 			}
-		}
-	}, [history, loaded, mainRoute])
+		};
+	}, [history, loaded, mainRoute]);
 
 	useEffect(() => {
 		const subscriptions = [
@@ -53,73 +53,62 @@ export default function BoardsRouterContainer() {
 				reduce(
 					cache,
 					(acc, app) => {
-						acc.push(
-							app.routes.pipe(
-								rxMap((appRoutes) => ({ appRoutes, app }))
-							)
-						);
+						acc.push(app.routes.pipe(rxMap((appRoutes) => ({ appRoutes, app }))));
 						return acc;
 					},
 					[]
 				)
-			)
-				.subscribe((allAppRoutes) => {
-					setRoutes(
-						reduce(
-							allAppRoutes,
-							(acc, { appRoutes, app }) => {
-								reduce(
-									appRoutes,
-									(r, appRoute) => {
-										const RouteView = appRoute.view;
-										r.push(
-											<Route key={`${app.pkg.package}|${appRoute.route}`} exact path={`/${app.pkg.package}${appRoute.route}`}>
-												<Suspense fallback={<LoadingView />}>
-													<AppContextProvider key={app.pkg.package} pkg={app.pkg}>
-														<RouteView />
-													</AppContextProvider>
-												</Suspense>
-											</Route>
-										);
-										return r;
-									},
-									acc
-								);
-								return acc;
-							},
-							[]
-						)
-					);
-				}),
+			).subscribe((allAppRoutes) => {
+				setRoutes(
+					reduce(
+						allAppRoutes,
+						(acc, { appRoutes, app }) => {
+							reduce(
+								appRoutes,
+								(r, appRoute) => {
+									const RouteView = appRoute.view;
+									r.push(
+										<Route
+											key={`${app.pkg.package}|${appRoute.route}`}
+											exact
+											path={`/${app.pkg.package}${appRoute.route}`}
+										>
+											<Suspense fallback={<LoadingView />}>
+												<AppContextProvider key={app.pkg.package} pkg={app.pkg}>
+													<RouteView />
+												</AppContextProvider>
+											</Suspense>
+										</Route>
+									);
+									return r;
+								},
+								acc
+							);
+							return acc;
+						},
+						[]
+					)
+				);
+			}),
 			combineLatest(
 				reduce(
 					cache,
 					(acc, app) => {
-						acc.push(
-							app.mainMenuItems.pipe(
-								rxMap((mainRoutes) => ({ mainRoutes, app }))
-							)
-						);
+						acc.push(app.mainMenuItems.pipe(rxMap((mainRoutes) => ({ mainRoutes, app }))));
 						return acc;
 					},
 					[]
 				)
-			)
-				.subscribe((allMainRoutes) => {
-					const fastest = minBy(
-						filter(
-							allMainRoutes,
-							({ mainRoutes }) => mainRoutes.length > 0
-						),
-						({ app }) => app.pkg.priority
-					);
-					if (fastest) {
-						const route = `${fastest?.app?.pkg?.package}${fastest?.mainRoutes?.[0].to}`;
-						setMainRoute(
-							route
-						);
-					}
-				}),
+			).subscribe((allMainRoutes) => {
+				const fastest = minBy(
+					filter(allMainRoutes, ({ mainRoutes }) => mainRoutes.length > 0),
+					({ app }) => app.pkg.priority
+				);
+				if (fastest) {
+					const route = `${fastest?.app?.pkg?.package}${fastest?.mainRoutes?.[0].to}`;
+					setMainRoute(route);
+				}
+			})
 		];
 		return () => {
 			if (subscriptions && subscriptions.length > 0) {
@@ -130,9 +119,9 @@ export default function BoardsRouterContainer() {
 
 	return (
 		<_BoardsRouterContainer>
-			<Container mainAlignment='flex-start'>
+			<Container mainAlignment="flex-start">
 				<Switch>
-					{ routes }
+					{routes}
 					<SettingsRoutes cache={cache} />
 				</Switch>
 			</Container>

@@ -15,26 +15,22 @@ import LoadingView from './loading-view';
 
 export default function LazyBootstrapper({ onBeforeBoot }) {
 	const [result, errorMessage, state] = usePromise(
-		() => import(/* webpackChunkName: "bootstrapper" */ './bootstrapper')
-			.then(({ default: bootstrapper }) => bootstrapper(onBeforeBoot)),
+		() =>
+			import(
+				/* webpackChunkName: "bootstrapper" */ './bootstrapper'
+			).then(({ default: bootstrapper }) => bootstrapper(onBeforeBoot)),
 		[onBeforeBoot]
 	);
 
 	switch (state) {
 		case 'rejected': {
-			return (
-				<pre>{ errorMessage }</pre>
-			);
+			return <pre>{errorMessage}</pre>;
 		}
 		case 'resolved': {
 			const { default: LoadedLazyBootstrapper } = result;
-			return (
-				<LoadedLazyBootstrapper />
-			);
+			return <LoadedLazyBootstrapper />;
 		}
 		default:
-			return (
-				<LoadingView />
-			);
+			return <LoadingView />;
 	}
 }

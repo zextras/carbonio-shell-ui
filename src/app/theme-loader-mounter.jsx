@@ -28,19 +28,14 @@ export default function ThemeLoaderMounter() {
 			reduce(
 				cache,
 				(acc, { pkg, entryPoint }) => {
-					acc.push(
-						entryPoint.pipe(
-							rxMap((ThemeClass) => ({ ThemeClass, pkg }))
-						)
-					);
+					acc.push(entryPoint.pipe(rxMap((ThemeClass) => ({ ThemeClass, pkg }))));
 					return acc;
 				},
 				[]
 			)
-		)
-			.subscribe((_themesClasses) => {
-				setThemeClasses(_themesClasses);
-			});
+		).subscribe((_themesClasses) => {
+			setThemeClasses(_themesClasses);
+		});
 
 		return () => {
 			if (subscription) {
@@ -49,24 +44,22 @@ export default function ThemeLoaderMounter() {
 		};
 	}, [cache]);
 
-	const children = useMemo(() => reduce(
-		themesClasses,
-		(acc, { ThemeClass, pkg }) => {
-			acc.push((
-				<ThemeClass key={pkg.package} />
-			));
-			return acc;
-		},
-		[]
-	), [themesClasses]);
+	const children = useMemo(
+		() =>
+			reduce(
+				themesClasses,
+				(acc, { ThemeClass, pkg }) => {
+					acc.push(<ThemeClass key={pkg.package} />);
+					return acc;
+				},
+				[]
+			),
+		[themesClasses]
+	);
 
 	return (
-		<div
-			data-testid="theme-mounter"
-			hidden={true}
-			style={{ height: 0, overflow: 'hidden' }}
-		>
-			{ children }
+		<div data-testid="theme-mounter" hidden style={{ height: 0, overflow: 'hidden' }}>
+			{children}
 		</div>
 	);
 }

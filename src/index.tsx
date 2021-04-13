@@ -17,10 +17,8 @@ import LoadingView from './bootstrap/loading-view';
 import LazyBootstrapper from './bootstrap/lazy-bootstrapper';
 
 render(
-	(
-		<Suspense fallback={<LoadingView />}>
-			<LazyBootstrapper />
-		</Suspense>
-	),
+	<Suspense fallback={<LoadingView />}>
+		<LazyBootstrapper />
+	</Suspense>,
 	document.getElementById('app')
 );

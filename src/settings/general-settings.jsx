@@ -44,7 +44,12 @@ export const DisplayerHeader = ({ label, onCancel, onSave, mods }) => {
 	];
 
 	return (
-		<Container orientation="vertical" mainAlignment="flex-start" height="fit">
+		<Container
+			orientation="vertical"
+			mainAlignment="flex-start"
+			height="fit"
+			padding={{ bottom: 'medium' }}
+		>
 			<Container mainAlignment="flex-end" orientation="horizontal" padding={{ all: 'small' }}>
 				<Breadcrumbs crumbs={crumbs} />
 				<Button
@@ -90,7 +95,7 @@ const GeneralSettings = () => {
 		setMods({});
 	}, [dispatch, original]);
 	return (
-		<Container background="gray5" mainAlignment="flex-start">
+		<Container background="gray5" mainAlignment="flex-start" padding={{ all: 'medium' }}>
 			<DisplayerHeader
 				mods={mods}
 				label={t('settins.general.general', 'General Settings')}

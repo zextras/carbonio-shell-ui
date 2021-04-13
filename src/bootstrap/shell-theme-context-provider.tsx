@@ -32,15 +32,13 @@ export const ThemeProvider: FC = ({ children }) => {
 				break;
 			case 'enabled':
 				enable({
-					sepia: -50,
-					contrast: 95
+					sepia: -50
 				});
 				break;
 			default:
 			case 'auto':
 				auto({
-					sepia: -50,
-					contrast: 95
+					sepia: -50
 				});
 				break;
 		}

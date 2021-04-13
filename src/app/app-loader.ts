@@ -71,6 +71,12 @@ import {
 	SoapFetch,
 	ThemePkgDescription
 } from '../../types';
+import {
+	useAddSharedFunction,
+	useRemoveSharedFunction,
+	useSharedFunction
+} from '../zustand/selectors';
+import { UnknownFunction } from '../zustand/store-types';
 
 type IShellWindow<T, R> = Window & {
 	__ZAPP_SHARED_LIBRARIES__: T;
@@ -107,6 +113,9 @@ type SharedLibrariesAppsMap = {
 			setSettingsRoutes: (routes: AppSettingsRouteDescription[]) => void;
 			setCreateOptions: (options: AppCreateOption[]) => void;
 			setAppContext: (obj: any) => void;
+			useSharedFunction: (id: string) => UnknownFunction | undefined;
+			useAddSharedFunction: (id: string, fn: UnknownFunction) => void;
+			useRemoveSharedFunction: (id: string) => void;
 			registerSharedUiComponents: (components: SharedUiComponentsDescriptor) => void;
 			fiberChannel: FC;
 			fiberChannelSink: FCSink;
@@ -222,6 +231,9 @@ function loadAppModule(
 				setSettingsRoutes: (r): void => settingsRoutes.next(r),
 				setCreateOptions: (options): void => createOptions.next(options),
 				setAppContext: (obj: any): void => appContext.next(obj),
+				useAddSharedFunction: useAddSharedFunction(appPkg.package),
+				useRemoveSharedFunction: useRemoveSharedFunction(appPkg.package),
+				useSharedFunction,
 				registerSharedUiComponents: (components: {
 					[id: string]: { versions: { [version: string]: FC } };
 				}): void => {

@@ -33,7 +33,10 @@ type DoLoginArgs = {
 	password: string;
 };
 
-type ModifyPrefsArgs = Record<string, string>;
+export type ModifyPrefsArgs = {
+	props: Record<string, { value: any; app: string }>;
+	prefs: Record<string, any>;
+};
 
 type NormalizeAccountParams = {
 	username: string;
@@ -258,10 +261,10 @@ export const modifyPrefs = createAsyncThunk<any, ModifyPrefsArgs>(
 			requests.ModifyPropertiesRequest = [
 				{
 					_jsns: 'urn:zimbraAccount',
-					prop: map(mods.props, (value, key) => ({
-						zimlet: 'com_zextras_zapp_shell',
+					prop: map(mods.props, (prop, key) => ({
+						zimlet: prop.app ?? 'com_zextras_zapp_shell',
 						name: key,
-						_content: value
+						_content: prop.value
 					}))
 				}
 			];

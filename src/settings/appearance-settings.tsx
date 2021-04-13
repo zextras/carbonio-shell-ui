@@ -7,7 +7,7 @@ import { AccountSettings } from '../../types';
 
 const AppearanceSettings: FC<{
 	settings: AccountSettings;
-	addMod: (type: string, key: string, value: string) => void;
+	addMod: (type: string, key: string, value: { value: any; app: string }) => void;
 }> = ({ settings, addMod }) => {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
 	const [drMode, setDrMode] = useState<'auto' | 'enabled' | 'disabled'>(
@@ -40,7 +40,7 @@ const AppearanceSettings: FC<{
 			if (v !== drMode) {
 				setDrMode((old) => (v !== old ? v : old));
 				setDarkReaderState(v);
-				addMod('props', 'zappDarkreaderMode', v);
+				addMod('props', 'zappDarkreaderMode', { app: 'com_zextras_zapp_shell', value: v });
 			}
 		},
 		[addMod, drMode, setDarkReaderState]

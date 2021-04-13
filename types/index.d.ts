@@ -151,6 +151,10 @@ export const hooks: {
 	usePushHistoryCallback(): (location: LocationDescriptor) => void;
 	useRemoveCurrentBoard(): () => void;
 	useReplaceHistoryCallback(): (location: LocationDescriptor) => void;
+	useSaveSettingsCallback(): (mods: {
+		props: Record<string, { value: any; app: string }>;
+		prefs: Record<string, any>;
+	}) => void;
 	useUserAccounts(): Account[];
 	useRegisterTheme(extension: (theme: never) => never, id: string): void;
 	useCSRFToken(): string;

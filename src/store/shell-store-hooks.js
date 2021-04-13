@@ -9,10 +9,10 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { useContext } from 'react';
+import { useContext, useCallback } from 'react';
 import { createDispatchHook, createSelectorHook, createStoreHook } from 'react-redux';
 import ShellStoreContext from './shell-store-context';
-import { selectAccounts, selectCSRFToken } from './accounts-slice';
+import { selectAccounts, selectCSRFToken, modifyPrefs } from './accounts-slice';
 import { selectSessionState } from './session-slice';
 
 export function useReduxContext() {
@@ -29,6 +29,12 @@ export function useReduxContext() {
 export const useDispatch = createDispatchHook(ShellStoreContext);
 export const useSelector = createSelectorHook(ShellStoreContext);
 export const useStore = createStoreHook(ShellStoreContext);
+
+export function useSaveSettingsCallback() {
+	const dispatch = useDispatch();
+	const saveSettings = useCallback((mods) => dispatch(modifyPrefs(mods)), [dispatch]);
+	return saveSettings;
+}
 
 export function useUserAccounts() {
 	return useSelector(selectAccounts);

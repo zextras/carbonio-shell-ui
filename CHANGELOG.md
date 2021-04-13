@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.11](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.10...v0.1.0-beta.11) (2021-04-13)
+
+
+### Features
+
+* added function share feature, introduced zustand store ([36191b7](https://bitbucket.org/zextras/zapp-shell/commit/36191b79c6630e1140d968591e2fa199355e5687))
+* added useSaveSettingsCallback hook ([928a3cb](https://bitbucket.org/zextras/zapp-shell/commit/928a3cb274b2333d9199a8706652ab46272b5aef))
+* completed code linting and theming overhaul ([e2efe88](https://bitbucket.org/zextras/zapp-shell/commit/e2efe889e6ab7b0d9d93e62b3b1aa9b577a68027))
+
 ## [0.1.0-beta.10](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.9...v0.1.0-beta.10) (2021-03-30)
 
 

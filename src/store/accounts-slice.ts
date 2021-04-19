@@ -324,13 +324,18 @@ export const modifyPrefs = createAsyncThunk<any, ModifyPrefsArgs>(
 	}
 );
 
-const modifyPrefsPending: CaseReducer<AccountsSlice> = (state, { meta, payload }) => {
+const modifyPrefsPending: CaseReducer<AccountsSlice> = (state, { meta }) => {
 	// eslint-disable-next-line no-param-reassign
 	meta.arg.prevSettings = cloneDeep(state.accounts[0].settings);
 	state.status = 'working';
 };
 
-const modifyPrefsFulfilled: CaseReducer<AccountsSlice> = (state, { meta, payload }) => {
+const modifyPrefsFulfilled: CaseReducer<AccountsSlice> = (state, { payload }) => {
+	state.accounts[0].settings = {
+		attrs: payload.attrs._attrs,
+		prefs: payload.prefs._attrs,
+		props: payload.props.prop
+	};
 	state.status = 'idle';
 };
 

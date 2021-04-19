@@ -1,4 +1,4 @@
-import React, { FC, useState, useMemo, useContext, useCallback } from 'react';
+import React, { FC, useState, useMemo, useContext, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormSubSection, Select } from '@zextras/zapp-ui';
 import { find } from 'lodash';
@@ -44,6 +44,11 @@ const AppearanceSettings: FC<{
 			}
 		},
 		[addMod, drMode, setDarkReaderState]
+	);
+	useEffect(
+		() => (): void =>
+			setDarkReaderState(find(settings.props, ['name', 'zappDarkreaderMode'])?._content ?? 'auto'),
+		[setDarkReaderState, settings.props]
 	);
 	return (
 		<FormSubSection

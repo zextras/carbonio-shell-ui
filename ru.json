@@ -42,5 +42,10 @@
         "remind-later": "Напомнить позже",
         "close": "Закрыть",
         "cancel": "Отменить"
+    },
+    "settins": {
+        "general": {
+            "general": "Общие Настройки"
+        }
     }
 }

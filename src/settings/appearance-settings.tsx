@@ -5,13 +5,16 @@ import { find } from 'lodash';
 import { ThemeCallbacksContext } from '../bootstrap/shell-theme-context-provider';
 import { AccountSettings } from '../../types';
 
+type DRPropValues = 'auto' | 'enabled' | 'disabled';
+
 const AppearanceSettings: FC<{
 	settings: AccountSettings;
 	addMod: (type: string, key: string, value: { value: any; app: string }) => void;
 }> = ({ settings, addMod }) => {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
-	const [drMode, setDrMode] = useState<'auto' | 'enabled' | 'disabled'>(
-		find(settings.props, ['name', 'zappDarkreaderMode'])?._content ?? 'auto'
+	const [drMode, setDrMode] = useState<DRPropValues>(
+		((find(settings.props, ['name', 'zappDarkreaderMode'])?._content as unknown) as DRPropValues) ??
+			'auto'
 	);
 	const [t] = useTranslation();
 	const items = useMemo(
@@ -47,7 +50,10 @@ const AppearanceSettings: FC<{
 	);
 	useEffect(
 		() => (): void =>
-			setDarkReaderState(find(settings.props, ['name', 'zappDarkreaderMode'])?._content ?? 'auto'),
+			setDarkReaderState(
+				((find(settings.props, ['name', 'zappDarkreaderMode'])
+					?._content as unknown) as DRPropValues) ?? 'auto'
+			),
 		[setDarkReaderState, settings.props]
 	);
 	return (

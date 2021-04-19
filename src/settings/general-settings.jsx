@@ -56,7 +56,7 @@ export const DisplayerHeader = ({ label, onCancel, onSave, mods }) => {
 					label={t('settings.button.secondary')}
 					color="secondary"
 					onClick={onCancelCb}
-					disabled
+					disabled={!mods}
 				/>
 				<Padding horizontal="small" />
 				<Button
@@ -72,7 +72,7 @@ export const DisplayerHeader = ({ label, onCancel, onSave, mods }) => {
 };
 
 const GeneralSettings = () => {
-	const [mods, setMods] = useState(undefined);
+	const [mods, setMods] = useState({});
 	const [t] = useTranslation();
 	const [acct] = useUserAccounts();
 	const [original] = useState(acct.settings);
@@ -91,9 +91,8 @@ const GeneralSettings = () => {
 		setMods({});
 	}, [dispatch, mods]);
 	const onCancel = useCallback(() => {
-		dispatch(modifyPrefs(original));
 		setMods({});
-	}, [dispatch, original]);
+	}, []);
 	return (
 		<Container background="gray5" mainAlignment="flex-start" padding={{ all: 'medium' }}>
 			<DisplayerHeader

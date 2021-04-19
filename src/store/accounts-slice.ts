@@ -258,48 +258,62 @@ export const modifyPrefs = createAsyncThunk<any, ModifyPrefsArgs>(
 		const csrfToken = selectCSRFToken(getState() as any);
 		const requests: any = {};
 		if (mods.props) {
-			requests.ModifyPropertiesRequest = [
-				{
-					_jsns: 'urn:zimbraAccount',
-					prop: map(mods.props, (prop, key) => ({
-						zimlet: prop.app ?? 'com_zextras_zapp_shell',
-						name: key,
-						_content: prop.value
-					}))
-				}
-			];
+			requests.ModifyPropertiesRequest = `<ModifyPropertiesRequest xmlns="urn:zimbraAccount">
+			${map(
+				mods.props,
+				(prop, key) =>
+					`<prop name="${key}" zimlet="${prop.app ?? 'com_zextras_zapp_shell'}">${
+						prop.value
+					}</prop>`
+			)}
+			</ModifyPropertiesRequest>
+			`;
+			// [
+			// 	{
+			// 		_jsns: 'urn:zimbraAccount',
+			// 		prop: map(mods.props, (prop, key) => ({
+			// 			zimlet: prop.app ?? 'com_zextras_zapp_shell',
+			// 			name: key,
+			// 			_content: prop.value
+			// 		}))
+			// 	}
+			// ];
 		}
 		if (mods.prefs) {
-			requests.ModifyPrefsRequest = [
-				{
-					_jsns: 'urn:zimbraAccount',
-					pref: map(mods.prefs, (value, key) => ({
-						name: key,
-						_content: value
-					}))
-				}
-			];
+			requests.ModifyPrefsRequest = `<ModifyPrefsRequest xmlns="urn:zimbraAccount">
+			${map(mods.prefs, (pref, key) => `<pref name="${key}">${pref}</pref>`)}
+			</ModifyPrefsRequest>
+			`;
+			// [
+			// 	{
+			// 		_jsns: 'urn:zimbraAccount',
+			// 		prefs: map(mods.prefs, (value, key) => ({
+			// 			name: key,
+			// 			_content: value
+			// 		}))
+			// 	}
+			// ];
 		}
 		const res = await fetch('/service/soap/BatchRequest', {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json'
+				'content-type': 'application/soap+xml'
 			},
-			body: JSON.stringify({
-				Header: {
-					_jsns: 'urn:zimbra',
-					context: {
-						csrfToken
-					}
-				},
-				Body: {
-					BatchRequest: {
-						_jsns: 'urn:zimbra',
-						onerror: 'continue',
-						...requests
-					}
-				}
-			})
+			body: `<?xml version="1.0" encoding="utf-8"?>
+			<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+				<soap:Header>
+					<context xmlns="urn:zimbra">
+						<account by="name">${(getState() as any).accounts.accounts[0].name}</account>
+						<format type="js"/>
+						<csrfToken>${csrfToken}</csrfToken>
+					</context>
+				</soap:Header>
+				<soap:Body>
+					${requests.ModifyPrefsRequest ?? ''}
+					${requests.ModifyPropertiesRequest ?? ''}
+				</soap:Body>
+			</soap:Envelope>
+		`
 		});
 		const response = await res.json();
 		if (response.Body.Fault) {

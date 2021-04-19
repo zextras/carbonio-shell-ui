@@ -9,6 +9,8 @@
  * *** END LICENSE BLOCK *****
  */
 
+import { ZimletProp } from '../../../types';
+
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type SoapResponseContent = {};
 
@@ -31,12 +33,6 @@ export type ZimletPkgDescription = {
 		presence: 'enabled';
 		priority: number;
 	}>;
-};
-
-export type ZimletProp = {
-	name: string;
-	zimlet: string;
-	_content: string;
 };
 
 export type GetInfoResponse = SoapResponseContent & {

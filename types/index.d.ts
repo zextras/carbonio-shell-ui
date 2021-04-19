@@ -44,6 +44,12 @@ export type AccountLoginData = {
 	csrfToken: string;
 };
 
+export type ZimletProp = {
+	name: string;
+	zimlet: string;
+	_content: string;
+};
+
 export type AccountSettings = {
 	attrs: Record<string, any>;
 	prefs: Record<string, any>;

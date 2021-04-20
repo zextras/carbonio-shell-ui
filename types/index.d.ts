@@ -162,7 +162,6 @@ export const hooks: {
 		prefs: Record<string, any>;
 	}) => void;
 	useUserAccounts(): Account[];
-	useRegisterTheme(extension: (theme: never) => never, id: string): void;
 	useCSRFToken(): string;
 };
 

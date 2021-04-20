@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { FC, useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { skip } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { useHistory } from 'react-router-dom';
@@ -26,7 +26,6 @@ import { BoardSetterContext } from './boards/board-context';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppContext from '../app/app-context';
-import { ThemeCallbacksContext } from '../bootstrap/shell-theme-context-provider';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -41,13 +40,6 @@ export { useUserAccounts, useCSRFToken, useSaveSettingsCallback } from '../store
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export { useSharedComponent } from '../shared-ui-components/use-shared-component';
-
-export const useRegisterTheme = (extension: (theme: any) => any, id: string): void => {
-	const { addExtension } = useContext(ThemeCallbacksContext);
-	useEffect(() => {
-		addExtension(extension, id);
-	}, [addExtension, extension, id]);
-};
 
 export function useAddBoardCallback(path: string): () => void {
 	const { addBoard } = useContext(BoardSetterContext);

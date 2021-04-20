@@ -24,7 +24,7 @@ import {
 } from './shell/hooks';
 import { useSharedComponent } from './shared-ui-components/use-shared-component';
 
-const confPath = '../zapp.conf.js';
+const confPath = `${process.cwd()}/zapp.conf.js`;
 // eslint-disable-next-line max-len
 // eslint-disable-next-line global-require,import/no-dynamic-require,@typescript-eslint/no-var-requires
 const conf = require(confPath);
@@ -121,7 +121,6 @@ export const setAppContext = jest.fn(() => {});
 
 export const hooks = {
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	useRegisterTheme: jest.fn(),
 	useReplaceHistoryCallback: jest.fn(useReplaceHistoryCallback),
 	usePushHistoryCallback: jest.fn(usePushHistoryCallback),
 	useUserAccounts: jest.fn(() => [{ name: '' }]),

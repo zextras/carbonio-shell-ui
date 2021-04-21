@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.16](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.15...v0.1.0-beta.16) (2021-04-21)
+
+
+### Bug Fixes
+
+* disabled caching of the html index ([3430704](https://bitbucket.org/zextras/zapp-shell/commit/3430704c7664d1383483985c76a25ec5b0084d3b))
+
 ## [0.1.0-beta.15](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.14...v0.1.0-beta.15) (2021-04-20)
 
 

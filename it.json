@@ -36,5 +36,18 @@
     "theme-switch": {
         "dark": "Passa al tema scuro",
         "light": "Passa al tema chiaro"
+    },
+    "settins": {
+        "general": {
+            "theme_options": "Opzioni Tema",
+            "theme_mode": "Modalità Tema",
+            "theme_enabled": "Tema Scuro",
+            "theme_disabled": "Tema Chiaro"
+        }
+    },
+    "settings": {
+        "button": {
+            "primary": "Salva"
+        }
     }
 }

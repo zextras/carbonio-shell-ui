@@ -45,7 +45,12 @@
     },
     "settins": {
         "general": {
-            "general": "Общие Настройки"
+            "general": "Общие Настройки",
+            "theme_mode": "Выбор Темы",
+            "theme_options": "Параметры Темы",
+            "theme_enabled": "Темный режим",
+            "theme_disabled": "Светлый режим",
+            "theme_auto": "Автоматический"
         }
     }
 }

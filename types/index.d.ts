@@ -10,11 +10,12 @@
  */
 
 import { RenderOptions, RenderResult } from '@testing-library/react';
-import React, { ComponentClass, LazyExoticComponent } from 'react';
+import React, { ComponentClass, LazyExoticComponent, useMemo } from 'react';
 import { Reducer } from 'redux';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LocationDescriptor } from 'history';
 import { Store } from '@reduxjs/toolkit';
+import { UnknownFunction } from '../src/zustand/store-types';
 
 export type BasePkgDescription = {
 	priority: number;
@@ -142,6 +143,10 @@ export function setRoutes(routes: AppRouteDescription[]): void;
 export function setCreateOptions(options: AppCreateOption[]): void;
 export function setAppContext(obj: any): void;
 export function addSharedUiComponent(scope: string, componentClass: ComponentClass): void;
+
+export const useAddSharedFunction: (app: string) => (id: string, fn: UnknownFunction) => void;
+export const setSettingsRoutes: (routes: AppSettingsRouteDescription[]) => void;
+export const useSharedFunction: (id: string) => UnknownFunction | undefined;
 
 export const fiberChannel: FC;
 export const fiberChannelSink: FCSink;

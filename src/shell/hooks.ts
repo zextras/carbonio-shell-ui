@@ -41,12 +41,12 @@ export { useUserAccounts, useCSRFToken, useSaveSettingsCallback } from '../store
 // @ts-ignore
 export { useSharedComponent } from '../shared-ui-components/use-shared-component';
 
-export function useAddBoardCallback(path: string): () => void {
+export function useAddBoardCallback(path: string, context?: string): () => void {
 	const { addBoard } = useContext(BoardSetterContext);
 	const { pkg } = useContext(AppContext);
 	return useCallback(() => {
-		addBoard(`/${pkg.package}${path}`);
-	}, [addBoard, path, pkg]);
+		addBoard(`/${context ?? pkg.package}${path}`);
+	}, [addBoard, context, path, pkg?.package]);
 }
 
 export function useUpdateCurrentBoard(): (url: string, title: string) => void {

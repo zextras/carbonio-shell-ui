@@ -10,7 +10,7 @@
  */
 
 import { RenderOptions, RenderResult } from '@testing-library/react';
-import React, { ComponentClass, LazyExoticComponent, useMemo } from 'react';
+import React, { ComponentClass, LazyExoticComponent } from 'react';
 import { Reducer } from 'redux';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LocationDescriptor } from 'history';

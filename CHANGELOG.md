@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.17](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.16...v0.1.0-beta.17) (2021-05-17)
+
+
+### Features
+
+* add board and export new shell types ([55c63d7](https://bitbucket.org/zextras/zapp-shell/commit/55c63d7fb0be6c9a3a6139976c694e9e4b592fe6))
+
 ## [0.1.0-beta.16](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.15...v0.1.0-beta.16) (2021-04-21)
 
 

@@ -128,3 +128,5 @@ export const hooks = {
 	useSharedComponent: jest.fn(useSharedComponent),
 	useAppContext: jest.fn(useAppContext)
 };
+
+export const useSharedFunction = jest.fn(() => jest.fn());

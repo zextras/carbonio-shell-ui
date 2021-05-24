@@ -26,8 +26,7 @@ const SyncInitializer = ({ store }) => {
 	const csrfToken = selectCSRFToken(store.getState());
 
 	useEffect(() => {
-		console.log(csrfToken, store.getState()?.sync);
-		if (csrfToken && store.getState()?.sync) {
+		if (csrfToken && store?.getState()?.sync) {
 			store.dispatch(startSync());
 		}
 	}, [csrfToken, store]);
@@ -54,17 +53,16 @@ export default function BootstrapperContextProvider({
 						storeFactory
 					}}
 				>
-					<SyncInitializer store={shellStore}>
-						<I18nextProvider i18n={i18nFactory.getShellI18n()}>
-							<AppLoaderContextProvider>
-								<BoardContextProvider>
-									{children}
-									<AppLoaderMounter />
-								</BoardContextProvider>
-								<ThemeLoaderMounter />
-							</AppLoaderContextProvider>
-						</I18nextProvider>
-					</SyncInitializer>
+					<SyncInitializer store={shellStore} />
+					<I18nextProvider i18n={i18nFactory.getShellI18n()}>
+						<AppLoaderContextProvider>
+							<BoardContextProvider>
+								{children}
+								<AppLoaderMounter />
+							</BoardContextProvider>
+							<ThemeLoaderMounter />
+						</AppLoaderContextProvider>
+					</I18nextProvider>
 				</BootstrapperContext.Provider>
 			</PersistGate>
 		</Provider>

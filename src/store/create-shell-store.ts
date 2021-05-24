@@ -38,11 +38,13 @@ export default function createShellStore(
 					},
 					accountsReducer
 				),
-				session: sessionReducer
+				session: sessionReducer,
+				sync: syncReducer
 		  })
 		: combineReducers({
 				accounts: accountsReducer,
-				session: sessionReducer
+				session: sessionReducer,
+				sync: syncReducer
 		  });
 
 	const shellStore = configureStore({

@@ -33,9 +33,13 @@ export { useAppPkg, useAppContext, useFiberChannel } from '../app/app-context';
 
 export { default as usePromise } from 'react-use-promise';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export { useUserAccounts, useCSRFToken, useSaveSettingsCallback } from '../store/shell-store-hooks';
+export {
+	useUserAccounts,
+	useCSRFToken,
+	useSaveSettingsCallback,
+	useCurrentSync, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	useFirstSync // @ts-ignore
+} from '../store/shell-store-hooks';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

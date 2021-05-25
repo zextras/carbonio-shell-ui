@@ -10,7 +10,7 @@
  */
 
 import { CaseReducer, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { sync } from './actions/sync';
+import { sync as syncer } from './actions/sync';
 
 export type SyncSlice = {
 	status: 'idle' | 'init' | 'stopped' | 'syncing';
@@ -28,10 +28,12 @@ const performSyncPending: CaseReducer<SyncSlice> = (state) => {
 
 const performSyncFulfilled: CaseReducer<SyncSlice> = (state, { payload }: any) => {
 	const { token } = payload;
-	if (!state.firstSync) {
+	if (!state.token) {
 		state.firstSync = payload.sync;
 	}
-	state.syncResponse = payload.sync;
+	if (Object.keys(payload.sync).length > 3) {
+		state.syncResponse = payload.sync;
+	}
 	state.token = token;
 	state.status = state.intervalId > 0 ? 'idle' : 'stopped';
 };
@@ -51,10 +53,10 @@ export const startSync = createAsyncThunk(
 	async (arg, { getState, dispatch }: any) => {
 		const { status, intervalId } = getState().sync;
 		if (status === 'init' || status === 'stopped') {
-			await dispatch(sync());
+			await dispatch(syncer());
 			const interval = setInterval(
 				(_dispatch) => {
-					_dispatch(sync());
+					_dispatch(syncer());
 				},
 				5000,
 				dispatch
@@ -72,7 +74,7 @@ export const startSync = createAsyncThunk(
 );
 
 const syncSlice = createSlice<SyncSlice, any>({
-	name: 'sync',
+	name: 'syncer',
 	initialState: {
 		status: 'init',
 		intervalId: -1,
@@ -82,11 +84,25 @@ const syncSlice = createSlice<SyncSlice, any>({
 	},
 	reducers: {},
 	extraReducers: (builder) => {
-		builder.addCase(sync.pending, performSyncPending);
-		builder.addCase(sync.fulfilled, performSyncFulfilled);
-		builder.addCase(sync.rejected, performSyncRejected);
+		builder.addCase(syncer.pending, performSyncPending);
+		builder.addCase(syncer.fulfilled, performSyncFulfilled);
+		builder.addCase(syncer.rejected, performSyncRejected);
 		builder.addCase(startSync.fulfilled, startSyncFulfilled);
 	}
 });
 
 export default syncSlice.reducer;
+
+export function selectSyncResponse({ sync }: { sync: SyncSlice }): any {
+	if (sync.syncResponse) {
+		return sync.syncResponse;
+	}
+	return undefined;
+}
+
+export function selectFirstSync({ sync }: { sync: SyncSlice }): any {
+	if (sync.firstSync) {
+		return sync.firstSync;
+	}
+	return undefined;
+}

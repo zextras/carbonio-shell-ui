@@ -169,6 +169,8 @@ export const hooks: {
 	}) => void;
 	useUserAccounts(): Account[];
 	useCSRFToken(): string;
+	useFirstSync(): any;
+	useCurrentSync(): any;
 };
 
 export const ui: any;

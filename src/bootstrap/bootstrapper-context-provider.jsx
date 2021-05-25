@@ -22,7 +22,7 @@ import BoardContextProvider from '../shell/boards/board-context-provider';
 import { selectCSRFToken } from '../store/accounts-slice';
 import { startSync } from '../store/sync-slice';
 
-const SyncInitializer = ({ store }) => {
+const SyncProvider = ({ store }) => {
 	const csrfToken = selectCSRFToken(store.getState());
 
 	useEffect(() => {
@@ -53,7 +53,7 @@ export default function BootstrapperContextProvider({
 						storeFactory
 					}}
 				>
-					<SyncInitializer store={shellStore} />
+					<SyncProvider store={shellStore} />
 					<I18nextProvider i18n={i18nFactory.getShellI18n()}>
 						<AppLoaderContextProvider>
 							<BoardContextProvider>

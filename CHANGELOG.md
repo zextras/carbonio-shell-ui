@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.20](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.19...v0.1.0-beta.20) (2021-05-27)
+
+
+### Features
+
+* exposing hooks to apps ([4d47ef9](https://bitbucket.org/zextras/zapp-shell/commit/4d47ef9ffe609df2ac18cec98d68fd00064669b1))
+* sync request implementation inside shell ([e988161](https://bitbucket.org/zextras/zapp-shell/commit/e9881618adebac10856c9b6121fcc20ffc0164ec))
+
 ## [0.1.0-beta.19](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.18...v0.1.0-beta.19) (2021-05-18)
 
 

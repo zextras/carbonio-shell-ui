@@ -14,6 +14,7 @@ import { createDispatchHook, createSelectorHook, createStoreHook } from 'react-r
 import ShellStoreContext from './shell-store-context';
 import { selectAccounts, selectCSRFToken, modifyPrefs } from './accounts-slice';
 import { selectSessionState } from './session-slice';
+import { selectFirstSync, selectSyncResponse } from './sync-slice';
 
 export function useReduxContext() {
 	const contextValue = useContext(ShellStoreContext);
@@ -46,4 +47,12 @@ export function useSessionState() {
 
 export function useCSRFToken() {
 	return useSelector(selectCSRFToken);
+}
+
+export function useCurrentSync() {
+	return useSelector(selectSyncResponse);
+}
+
+export function useFirstSync() {
+	return useSelector(selectFirstSync);
 }

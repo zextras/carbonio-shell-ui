@@ -67,18 +67,10 @@ export default function ShellHeader({
 										label: option.label,
 										icon: option.icon,
 										click: () => {
-											if (window.top.location.pathname.startsWith(`/${app.pkg.package}`)) {
-												history.push(
-													`/${app.pkg.package}${
-														(option.app.getPath && option.app.getPath()) || option.app.path
-													}`
-												);
-											} else {
-												addBoard(
-													`/${app.pkg.package}${option.app.boardPath || option.app.path}`,
-													option.label
-												);
-											}
+											addBoard(
+												`/${app.pkg.package}${option.app.boardPath || option.app.path}`,
+												option.label
+											);
 											option.onClick && option.onClick();
 										}
 									});

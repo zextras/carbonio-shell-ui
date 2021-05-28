@@ -63,9 +63,12 @@ export function useRemoveCurrentBoard(): () => void {
 	return removeCurrentBoard;
 }
 
-export function useGetBoardConfig(): () => unknown {
-	const { boards, currentBoard } = useContext(BoardValueContext);
-	return boards[currentBoard]?.config;
+export function useBoardConfig(): unknown {
+	const context: any = useContext(BoardValueContext);
+	if (context) {
+		return context.boards?.[context.currentBoard]?.context;
+	}
+	return undefined;
 }
 
 export function usePushHistoryCallback(): (location: LocationDescriptor) => void {

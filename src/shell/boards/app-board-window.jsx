@@ -144,6 +144,14 @@ export default function AppBoardWindow() {
 						setCurrentBoard={setCurrentBoard}
 					/>
 					<Actions padding={{ all: 'extrasmall' }}>
+						{boards[currentBoard]?.context?.onReturnToApp && (
+							<Padding right="extrasmall">
+								<IconButton
+									icon={'DiagonalArrowRightUp'}
+									onClick={boards[currentBoard]?.context?.onReturnToApp}
+								/>
+							</Padding>
+						)}
 						<Padding right="extrasmall">
 							<IconButton
 								icon={largeView ? 'CollapseOutline' : 'ExpandOutline'}

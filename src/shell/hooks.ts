@@ -21,7 +21,7 @@ import ShellContext from './shell-context';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { BoardSetterContext } from './boards/board-context';
+import { BoardSetterContext, BoardValueContext } from './boards/board-context';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -45,12 +45,12 @@ export {
 // @ts-ignore
 export { useSharedComponent } from '../shared-ui-components/use-shared-component';
 
-export function useAddBoardCallback(path: string, context?: string): () => void {
+export function useAddBoardCallback(path: string, context?: unknown | { app: string }): () => void {
 	const { addBoard } = useContext(BoardSetterContext);
 	const { pkg } = useContext(AppContext);
 	return useCallback(() => {
-		addBoard(`/${context ?? pkg.package}${path}`);
-	}, [addBoard, context, path, pkg?.package]);
+		addBoard(`/${(context as { app: string })?.app ?? pkg.package}${path}`, context);
+	}, [addBoard, context, path, pkg.package]);
 }
 
 export function useUpdateCurrentBoard(): (url: string, title: string) => void {
@@ -61,6 +61,14 @@ export function useUpdateCurrentBoard(): (url: string, title: string) => void {
 export function useRemoveCurrentBoard(): () => void {
 	const { removeCurrentBoard } = useContext(BoardSetterContext);
 	return removeCurrentBoard;
+}
+
+export function useBoardConfig(): unknown {
+	const context: any = useContext(BoardValueContext);
+	if (context) {
+		return context.boards?.[context.currentBoard]?.context;
+	}
+	return undefined;
 }
 
 export function usePushHistoryCallback(): (location: LocationDescriptor) => void {

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.21](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.20...v0.1.0-beta.21) (2021-05-28)
+
+
+### Features
+
+* expanded board functionality with the context object ([22360af](https://bitbucket.org/zextras/zapp-shell/commit/22360af71afdc3d510774e6e9dd4bcf8cc9393a1))
+* open board by default ([3f4817a](https://bitbucket.org/zextras/zapp-shell/commit/3f4817a3dc359607104ee5e6551714ff049568be))
+
 ## [0.1.0-beta.20](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.19...v0.1.0-beta.20) (2021-05-27)
 
 

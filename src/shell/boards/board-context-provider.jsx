@@ -24,7 +24,11 @@ const reducer = (state, action) => {
 			const returnValue = {
 				...state,
 				boards: {
-					[boardKey]: { url: action.payload.url, title: action.payload.title },
+					[boardKey]: {
+						url: action.payload.url,
+						title: action.payload.title,
+						context: action.payload.context
+					},
 					...state.boards
 				},
 				currentBoard: boardKey,
@@ -107,8 +111,8 @@ export default function BoardContextProvider({ children }) {
 	});
 
 	const addBoard = useCallback(
-		(url, title = t('new-tab')) => {
-			dispatch({ type: 'ADD_BOARD', payload: { url, title } });
+		(url, title = t('new-tab'), context) => {
+			dispatch({ type: 'ADD_BOARD', payload: { url, title, context } });
 		},
 		[t]
 	);

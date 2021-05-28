@@ -535,7 +535,7 @@ export function loadApps(
 	storeFactory: StoreFactory
 ): Promise<LoadedAppsCache> {
 	injectSharedLibraries();
-	const orderedApps = orderBy(accounts[0].apps, 'priority');
+	const orderedApps = orderBy(accounts[0]?.apps ?? [], 'priority');
 	const apps =
 		typeof cliSettings === 'undefined' || cliSettings.enableErrorReporter
 			? orderedApps

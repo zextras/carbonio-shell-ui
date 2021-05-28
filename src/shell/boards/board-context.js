@@ -18,7 +18,7 @@ const BoardValueContext = createContext({
 	minimized: false
 });
 const BoardSetterContext = createContext({
-	addBoard: (url, title) => undefined,
+	addBoard: (url, title, context) => undefined,
 	removeBoard: (key) => undefined,
 	removeCurrentBoard: () => undefined,
 	removeAllBoards: () => undefined,

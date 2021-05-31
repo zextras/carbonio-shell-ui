@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.22](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.21...v0.1.0-beta.22) (2021-05-31)
+
+
+### Bug Fixes
+
+* update syncRequest properly ([05f30d1](https://bitbucket.org/zextras/zapp-shell/commit/05f30d199c47c0d3d86eb7cd922de90abc027ab9))
+
 ## [0.1.0-beta.21](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.20...v0.1.0-beta.21) (2021-05-28)
 
 

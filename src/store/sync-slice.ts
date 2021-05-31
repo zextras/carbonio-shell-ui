@@ -31,7 +31,7 @@ const performSyncFulfilled: CaseReducer<SyncSlice> = (state, { payload }: any) =
 	if (!state.token) {
 		state.firstSync = payload.sync;
 	}
-	if (Object.keys(payload.sync).length > 3) {
+	if (Object.keys(payload?.sync)?.length > 3 || Object.keys(state?.syncResponse)?.length > 3) {
 		state.syncResponse = payload.sync;
 	}
 	state.token = token;

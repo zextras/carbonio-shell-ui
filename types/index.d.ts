@@ -153,7 +153,7 @@ export const fiberChannel: FC;
 export const fiberChannelSink: FCSink;
 
 export const hooks: {
-	useAddBoardCallback(path: string, context?: unknown | { app: string }): () => void;
+	useAddBoardCallback(): (path: string, context?: unknown | { app: string }) => void;
 	useGetBoardConfig(): () => unknown;
 	useAppContext<T>(): T;
 	useAppPkg(): AppPkgDescription;

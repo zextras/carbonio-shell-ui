@@ -111,8 +111,11 @@ export default function BoardContextProvider({ children }) {
 	});
 
 	const addBoard = useCallback(
-		(url, title = t('new-tab'), context) => {
-			dispatch({ type: 'ADD_BOARD', payload: { url, title, context } });
+		(url, context) => {
+			dispatch({
+				type: 'ADD_BOARD',
+				payload: { url, title: context?.title ?? t('new-tab'), context }
+			});
 		},
 		[t]
 	);

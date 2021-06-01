@@ -45,12 +45,18 @@ export {
 // @ts-ignore
 export { useSharedComponent } from '../shared-ui-components/use-shared-component';
 
-export function useAddBoardCallback(): (path: string, context?: unknown | { app: string }) => void {
+export function useAddBoardCallback(): (
+	path: string,
+	context?: unknown | { app: string; title: string }
+) => void {
 	const { addBoard } = useContext(BoardSetterContext);
 	const { pkg } = useContext(AppContext);
 	const callback = useCallback(
 		(path: string, context?: unknown | { app: string }) => {
-			addBoard(`/${(context as { app: string })?.app ?? pkg.package}${path}`, context);
+			addBoard(
+				`/${(context as { app: string; title: string })?.app ?? pkg.package}${path}`,
+				context
+			);
 		},
 		[addBoard, pkg.package]
 	);

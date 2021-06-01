@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.23](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.22...v0.1.0-beta.23) (2021-06-01)
+
+
+### Bug Fixes
+
+* add board works correctly ([890fd13](https://bitbucket.org/zextras/zapp-shell/commit/890fd137c3166716393c493ce3fb2b8879d60495))
+* sync starts properly ([30f828d](https://bitbucket.org/zextras/zapp-shell/commit/30f828dd0f0df669bf216744db451f5851a6f8b2))
+
 ## [0.1.0-beta.22](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.21...v0.1.0-beta.22) (2021-05-31)
 
 

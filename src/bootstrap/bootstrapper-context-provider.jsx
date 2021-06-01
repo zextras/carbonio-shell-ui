@@ -19,11 +19,11 @@ import AppLoaderContextProvider from '../app/app-loader-context-provider';
 import AppLoaderMounter from '../app/app-loader-mounter';
 import ThemeLoaderMounter from '../app/theme-loader-mounter';
 import BoardContextProvider from '../shell/boards/board-context-provider';
-import { selectCSRFToken } from '../store/accounts-slice';
 import { startSync } from '../store/sync-slice';
+import { useCSRFToken } from '../store/shell-store-hooks';
 
 const SyncProvider = ({ store }) => {
-	const csrfToken = selectCSRFToken(store.getState());
+	const csrfToken = useCSRFToken();
 
 	useEffect(() => {
 		if (csrfToken && store?.getState()?.sync) {

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.24](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.23...v0.1.0-beta.24) (2021-06-11)
+
+
+### Features
+
+* shell new button direct action ([86f4500](https://bitbucket.org/zextras/zapp-shell/commit/86f45006f44ec6b98faf7cd674d769dae9d5a471))
+
 ## [0.1.0-beta.23](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.22...v0.1.0-beta.23) (2021-06-01)
 
 

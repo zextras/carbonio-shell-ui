@@ -11,11 +11,10 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import { combineLatest } from 'rxjs';
 import { map as rxMap } from 'rxjs/operators';
-import { reduce } from 'lodash';
+import { reduce, find } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
-	Button,
 	Container,
 	Dropdown,
 	IconButton,
@@ -23,7 +22,8 @@ import {
 	Padding,
 	Responsive,
 	Quota,
-	useScreenMode
+	useScreenMode,
+	MultiButton
 } from '@zextras/zapp-ui';
 import { useAppsCache } from '../app/app-loader-context';
 import { BoardSetterContext } from './boards/board-context';
@@ -66,6 +66,7 @@ export default function ShellHeader({
 										id: option.id,
 										label: option.label,
 										icon: option.icon,
+										package: app.pkg.package,
 										click: () => {
 											addBoard(
 												`/${app.pkg.package}${option.app.boardPath || option.app.path}`,
@@ -117,9 +118,16 @@ export default function ShellHeader({
 				<Container orientation="horizontal" width="calc(100vw - 316px)">
 					<Container orientation="horizontal" mainAlignment="flex-start" width="50%">
 						<Container orientation="horizontal" width="fit" padding={{ right: 'small' }}>
-							<Dropdown items={createOptions} placement="bottom-end">
-								<Button label={t('new')} icon="ArrowIosDownwardOutline" />
-							</Dropdown>
+							<MultiButton
+								background="primary"
+								label={t('new')}
+								onClick={() => {
+									find(createOptions, {
+										package: history.location.pathname.split('/')?.[1]
+									})?.click();
+								}}
+								items={createOptions}
+							/>
 						</Container>
 						{/*	<SearchInput/> */}
 					</Container>

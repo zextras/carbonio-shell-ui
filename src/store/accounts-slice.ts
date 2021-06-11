@@ -281,7 +281,7 @@ export const modifyPrefs = createAsyncThunk<any, ModifyPrefsArgs>(
 		}
 		if (mods.prefs) {
 			requests.ModifyPrefsRequest = `<ModifyPrefsRequest xmlns="urn:zimbraAccount">
-			${map(mods.prefs, (pref, key) => `<pref name="${key}">${pref}</pref>`)}
+			${map(mods.prefs, (pref, key) => `<pref name="${key}">${pref}</pref>`).join('')}
 			</ModifyPrefsRequest>
 			`;
 			// [

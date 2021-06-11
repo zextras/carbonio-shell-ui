@@ -21,6 +21,7 @@ import AppContextCacheProvider from './app-context-cache-provider';
 import { useUserAccounts } from '../store/shell-store-hooks';
 import { checkUpdate } from '../update-log/check-update';
 import ChangeLogModal from '../update-log/change-log-modal';
+import { useAppStore } from '../zustand/app/store';
 
 export default function AppLoaderContextProvider({ children }) {
 	const shellNetworkService = useShellNetworkService();
@@ -30,7 +31,6 @@ export default function AppLoaderContextProvider({ children }) {
 	const [[appsCache, appsLoaded], setAppsCache] = useState([{}, false]);
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
 	const [[themesCache, themesLoaded], setThemeCache] = useState([{}, false]);
-
 	useEffect(() => {
 		console.log('Accounts changed, un/loading Apps and Themes!');
 		let canSet = true;
@@ -51,10 +51,12 @@ export default function AppLoaderContextProvider({ children }) {
 					])
 				)
 				.then(([_appsCache, _themesCache]) => {
-					if (!canSet) return;
-					setShowUpdateModal(checkUpdate());
-					setAppsCache([_appsCache, true]);
-					// setThemeCache([_themesCache, true]);
+					if (canSet) {
+						setShowUpdateModal(checkUpdate());
+						setAppsCache([_appsCache, true]);
+						// setThemeCache([_themesCache, true]);
+					}
+					return _appsCache;
 				});
 		}
 		return () => {

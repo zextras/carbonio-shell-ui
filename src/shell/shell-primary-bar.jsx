@@ -13,7 +13,9 @@ import { Container, IconButton, Row } from '@zextras/zapp-ui';
 import { map, isEmpty } from 'lodash';
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import { BoardValueContext, BoardSetterContext } from './boards/board-context';
+import { useAppList } from '../zustand/app/hooks';
 
 const AppIcon = styled(IconButton)`
 	${(props) =>
@@ -38,7 +40,9 @@ function ToggleBoardIcon() {
 	);
 }
 
-export default function ShellPrimaryBar({ mainMenuItems, activeApp }) {
+export default function ShellPrimaryBar({ activeApp }) {
+	const apps = useAppList();
+	const history = useHistory();
 	return (
 		<Container
 			width={48}
@@ -54,13 +58,13 @@ export default function ShellPrimaryBar({ mainMenuItems, activeApp }) {
 				wrap="nowrap"
 				style={{ minHeight: '1px', overflowY: 'overlay' }}
 			>
-				{map(mainMenuItems, (app, key) => (
+				{map(apps, (app) => (
 					<AppIcon
-						key={key}
+						key={app.core.package}
 						icon={app.icon}
-						active={activeApp === app.id}
-						iconColor={activeApp === app.id ? 'primary' : 'text'}
-						onClick={app.click}
+						active={activeApp === app.core.package}
+						iconColor={activeApp === app.core.package ? 'primary' : 'text'}
+						onClick={() => history.push(`/${app.core.package}/`)}
 						size="large"
 					/>
 				))}

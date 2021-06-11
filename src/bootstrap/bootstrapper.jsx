@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ThemeProvider } from './shell-theme-context-provider';
 import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-context-provider';
@@ -18,6 +18,20 @@ import FiberChannelFactory from '../fiberchannel/fiber-channel';
 import I18nFactory from '../i18n/i18n-factory';
 import createShellStore from '../store/create-shell-store';
 import StoreFactory from '../store/store-factory';
+import { useAppStore } from '../zustand/app/store';
+import { useUserAccounts } from '../store/shell-store-hooks';
+
+const AppStoreInterface = () => {
+	const addApps = useAppStore((s) => s.setters.addApps);
+	const accounts = useUserAccounts();
+	useEffect(() => {
+		if (accounts && accounts.length > 0) {
+			console.log('setting apps!', accounts[0].apps);
+			addApps(accounts[0].apps);
+		}
+	}, [accounts, addApps]);
+	return null;
+};
 
 export default function bootstrapper(onBeforeBoot) {
 	const { shellStore, shellStorePersistor } = createShellStore(true);
@@ -61,6 +75,7 @@ export default function bootstrapper(onBeforeBoot) {
 							storeFactory={_storeFactory}
 							shellStorePersistor={shellStorePersistor}
 						>
+							<AppStoreInterface />
 							<BootstrapperRouter />
 						</BootstrapperContextProvider>
 					</ThemeProvider>

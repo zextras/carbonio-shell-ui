@@ -77,6 +77,7 @@ import {
 	useSharedFunction
 } from '../zustand/selectors';
 import { UnknownFunction } from '../zustand/store-types';
+import { appStore, useAppStore } from '../zustand/app/store';
 
 type IShellWindow<T, R> = Window & {
 	__ZAPP_SHARED_LIBRARIES__: T;
@@ -104,6 +105,10 @@ type SharedLibrariesAppsMap = {
 			store: {
 				store: Store<any>;
 				setReducer(nextReducer: Reducer): void;
+			};
+			zStore: {
+				useAppStore: unknown;
+				appStore: unknown;
 			};
 			network: {
 				soapFetch: SoapFetch;
@@ -225,6 +230,10 @@ function loadAppModule(
 				store: {
 					store,
 					setReducer: (reducer): void => store.replaceReducer(reducer)
+				},
+				zStore: {
+					useAppStore,
+					appStore
 				},
 				setMainMenuItems: (items): void => mainMenuItems.next(items),
 				setRoutes: (r): void => routes.next(r),

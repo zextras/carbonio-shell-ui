@@ -11,6 +11,8 @@
 
 import { CaseReducer, createAsyncThunk, createSlice, Draft, PayloadAction } from '@reduxjs/toolkit';
 import { filter, reduce, isEmpty, map, cloneDeep } from 'lodash';
+// eslint-disable-next-line camelcase
+import { unstable_batchedUpdates } from 'react-dom';
 import {
 	AppPkgDescription,
 	AccountLoginData,
@@ -20,6 +22,7 @@ import {
 } from '../../types';
 import { AuthResponse, GetInfoResponse, ZimletPkgDescription } from '../network/soap/types';
 import { zimletToAppPkgDescription, zimletToThemePkgDescription } from '../network/soap/utils';
+import { appStore } from '../zustand/app/store';
 
 export type AccountsSlice = {
 	status: 'idle' | 'working';
@@ -199,6 +202,10 @@ const doLoginFulfilled: CaseReducer<AccountsSlice, PayloadAction<[Account, Accou
 	state.status = 'idle';
 	state.accounts = [account];
 	state.credentials[account.id] = credentials;
+	console.log(account);
+	unstable_batchedUpdates(() => {
+		appStore.getState().setters.addApps(account.apps);
+	});
 };
 
 const doLoginRejected: CaseReducer<AccountsSlice> = (state: Draft<AccountsSlice>, { error }) => {

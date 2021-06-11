@@ -8,7 +8,7 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, Suspense } from 'react';
 import { Breadcrumbs, Button, Container, Divider, Padding } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -17,6 +17,7 @@ import { useDispatch } from '../store/shell-store-hooks';
 import { modifyPrefs } from '../store/accounts-slice';
 import AppearanceSettings from './appearance-settings';
 import { useUserAccounts } from '../shell/hooks';
+import { useAppStore } from '../zustand/app/store';
 // import { useUserAccounts, useDispatch } from '../store/shell-store-hooks';
 // import { modifyPrefs } from '../store/accounts-slice';
 
@@ -29,7 +30,8 @@ export const DisplayerHeader = ({ label, onCancel, onSave, mods }) => {
 	const onCancelCb = useCallback(() => {
 		onCancel(mods);
 	}, [mods, onCancel]);
-
+	const View = useAppStore((s) => s.apps.com_zextras_zapp_contacts?.views?.app);
+	console.log(View);
 	const crumbs = [
 		{
 			id: 'settings',
@@ -67,6 +69,7 @@ export const DisplayerHeader = ({ label, onCancel, onSave, mods }) => {
 				/>
 			</Container>
 			<Divider color="gray1" />
+			{View && <View />}
 		</Container>
 	);
 };

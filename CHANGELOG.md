@@ -2,6 +2,60 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.24](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.23...v0.1.0-beta.24) (2021-06-11)
+
+
+### Features
+
+* shell new button direct action ([86f4500](https://bitbucket.org/zextras/zapp-shell/commit/86f45006f44ec6b98faf7cd674d769dae9d5a471))
+
+## [0.1.0-beta.23](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.22...v0.1.0-beta.23) (2021-06-01)
+
+
+### Bug Fixes
+
+* add board works correctly ([890fd13](https://bitbucket.org/zextras/zapp-shell/commit/890fd137c3166716393c493ce3fb2b8879d60495))
+* sync starts properly ([30f828d](https://bitbucket.org/zextras/zapp-shell/commit/30f828dd0f0df669bf216744db451f5851a6f8b2))
+
+## [0.1.0-beta.22](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.21...v0.1.0-beta.22) (2021-05-31)
+
+
+### Bug Fixes
+
+* update syncRequest properly ([05f30d1](https://bitbucket.org/zextras/zapp-shell/commit/05f30d199c47c0d3d86eb7cd922de90abc027ab9))
+
+## [0.1.0-beta.21](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.20...v0.1.0-beta.21) (2021-05-28)
+
+
+### Features
+
+* expanded board functionality with the context object ([22360af](https://bitbucket.org/zextras/zapp-shell/commit/22360af71afdc3d510774e6e9dd4bcf8cc9393a1))
+* open board by default ([3f4817a](https://bitbucket.org/zextras/zapp-shell/commit/3f4817a3dc359607104ee5e6551714ff049568be))
+
+## [0.1.0-beta.20](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.19...v0.1.0-beta.20) (2021-05-27)
+
+
+### Features
+
+* exposing hooks to apps ([4d47ef9](https://bitbucket.org/zextras/zapp-shell/commit/4d47ef9ffe609df2ac18cec98d68fd00064669b1))
+* sync request implementation inside shell ([e988161](https://bitbucket.org/zextras/zapp-shell/commit/e9881618adebac10856c9b6121fcc20ffc0164ec))
+
+## [0.1.0-beta.19](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.18...v0.1.0-beta.19) (2021-05-18)
+
+
+### Bug Fixes
+
+* useSharedFunction mock and zustand types ([746a3a4](https://bitbucket.org/zextras/zapp-shell/commit/746a3a4282bc93b1b6b34673f12f0729bda767fe))
+
+## [0.1.0-beta.18](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.17...v0.1.0-beta.18) (2021-05-17)
+
+## [0.1.0-beta.17](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.16...v0.1.0-beta.17) (2021-05-17)
+
+
+### Features
+
+* add board and export new shell types ([55c63d7](https://bitbucket.org/zextras/zapp-shell/commit/55c63d7fb0be6c9a3a6139976c694e9e4b592fe6))
+
 ## [0.1.0-beta.16](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.15...v0.1.0-beta.16) (2021-04-21)
 
 

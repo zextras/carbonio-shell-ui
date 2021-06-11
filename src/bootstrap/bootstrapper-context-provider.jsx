@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -19,6 +19,19 @@ import AppLoaderContextProvider from '../app/app-loader-context-provider';
 import AppLoaderMounter from '../app/app-loader-mounter';
 import ThemeLoaderMounter from '../app/theme-loader-mounter';
 import BoardContextProvider from '../shell/boards/board-context-provider';
+import { startSync } from '../store/sync-slice';
+import { useCSRFToken } from '../store/shell-store-hooks';
+
+const SyncProvider = ({ store }) => {
+	const csrfToken = useCSRFToken();
+
+	useEffect(() => {
+		if (csrfToken && store?.getState()?.sync) {
+			store.dispatch(startSync());
+		}
+	}, [csrfToken, store]);
+	return null;
+};
 
 export default function BootstrapperContextProvider({
 	children,
@@ -40,6 +53,7 @@ export default function BootstrapperContextProvider({
 						storeFactory
 					}}
 				>
+					<SyncProvider store={shellStore} />
 					<I18nextProvider i18n={i18nFactory.getShellI18n()}>
 						<AppLoaderContextProvider>
 							<BoardContextProvider>

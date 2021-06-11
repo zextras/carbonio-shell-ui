@@ -51,7 +51,7 @@ export function selectAccounts({ accounts }: { accounts: AccountsSlice }): Accou
 }
 
 export function selectCSRFToken({ accounts }: { accounts: AccountsSlice }): string | undefined {
-	if (accounts.accounts.length > 0) {
+	if (accounts?.accounts?.length > 0) {
 		return accounts.credentials[accounts.accounts[0].id].csrfToken;
 	}
 	return undefined;
@@ -153,7 +153,7 @@ async function getAccountInfo({ csrfToken }: { csrfToken: string }): Promise<Get
 
 export const doLogin = createAsyncThunk<[Account, AccountLoginData], DoLoginArgs>(
 	'accounts/doLogin',
-	async ({ username, password }, meta) => {
+	async ({ username, password }, { dispatch }) => {
 		const res = await fetch('/service/soap/AuthRequest', {
 			method: 'POST',
 			// credentials: 'omit',
@@ -288,7 +288,7 @@ export const modifyPrefs = createAsyncThunk<any, ModifyPrefsArgs>(
 		}
 		if (mods.prefs) {
 			requests.ModifyPrefsRequest = `<ModifyPrefsRequest xmlns="urn:zimbraAccount">
-			${map(mods.prefs, (pref, key) => `<pref name="${key}">${pref}</pref>`)}
+			${map(mods.prefs, (pref, key) => `<pref name="${key}">${pref}</pref>`).join('')}
 			</ModifyPrefsRequest>
 			`;
 			// [

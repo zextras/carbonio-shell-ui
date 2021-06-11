@@ -143,11 +143,18 @@ export function setCreateOptions(options: AppCreateOption[]): void;
 export function setAppContext(obj: any): void;
 export function addSharedUiComponent(scope: string, componentClass: ComponentClass): void;
 
+export const useAddSharedFunction: (
+	app: string
+) => (id: string, fn: (args: unknown) => unknown) => void;
+export const setSettingsRoutes: (routes: AppSettingsRouteDescription[]) => void;
+export const useSharedFunction: (id: string) => (args: unknown) => unknown | undefined;
+
 export const fiberChannel: FC;
 export const fiberChannelSink: FCSink;
 
 export const hooks: {
-	useAddBoardCallback(path: string): () => void;
+	useAddBoardCallback(): (path: string, context?: unknown | { app: string; title: string }) => void;
+	useGetBoardConfig(): () => unknown;
 	useAppContext<T>(): T;
 	useAppPkg(): AppPkgDescription;
 	useBehaviorSubject<T>(observable: BehaviorSubject<T>): T;
@@ -163,6 +170,8 @@ export const hooks: {
 	}) => void;
 	useUserAccounts(): Account[];
 	useCSRFToken(): string;
+	useFirstSync(): any;
+	useCurrentSync(): any;
 };
 
 export const ui: any;

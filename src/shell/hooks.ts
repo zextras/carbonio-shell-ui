@@ -21,7 +21,7 @@ import ShellContext from './shell-context';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { BoardSetterContext } from './boards/board-context';
+import { BoardSetterContext, BoardValueContext } from './boards/board-context';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -33,20 +33,34 @@ export { useAppPkg, useAppContext, useFiberChannel } from '../app/app-context';
 
 export { default as usePromise } from 'react-use-promise';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export { useUserAccounts, useCSRFToken, useSaveSettingsCallback } from '../store/shell-store-hooks';
+export {
+	useUserAccounts,
+	useCSRFToken,
+	useSaveSettingsCallback,
+	useCurrentSync, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	useFirstSync // @ts-ignore
+} from '../store/shell-store-hooks';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export { useSharedComponent } from '../shared-ui-components/use-shared-component';
 
-export function useAddBoardCallback(path: string): () => void {
+export function useAddBoardCallback(): (
+	path: string,
+	context?: unknown | { app: string; title: string }
+) => void {
 	const { addBoard } = useContext(BoardSetterContext);
 	const { pkg } = useContext(AppContext);
-	return useCallback(() => {
-		addBoard(`/${pkg.package}${path}`);
-	}, [addBoard, path, pkg]);
+	const callback = useCallback(
+		(path: string, context?: unknown | { app: string }) => {
+			addBoard(
+				`/${(context as { app: string; title: string })?.app ?? pkg.package}${path}`,
+				context
+			);
+		},
+		[addBoard, pkg.package]
+	);
+	return callback;
 }
 
 export function useUpdateCurrentBoard(): (url: string, title: string) => void {
@@ -57,6 +71,14 @@ export function useUpdateCurrentBoard(): (url: string, title: string) => void {
 export function useRemoveCurrentBoard(): () => void {
 	const { removeCurrentBoard } = useContext(BoardSetterContext);
 	return removeCurrentBoard;
+}
+
+export function useBoardConfig(): unknown {
+	const context: any = useContext(BoardValueContext);
+	if (context) {
+		return context.boards?.[context.currentBoard]?.context;
+	}
+	return undefined;
 }
 
 export function usePushHistoryCallback(): (location: LocationDescriptor) => void {

@@ -16,6 +16,7 @@ import { combineLatest } from 'rxjs';
 import { map as rxMap } from 'rxjs/operators';
 import LoadingView from '../bootstrap/loading-view';
 import AppContextProvider from '../app/app-context-provider';
+import ModuleVersionSettings from './module-version-settings';
 
 const GeneralSettings = lazy(() => import('./general-settings'));
 

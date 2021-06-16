@@ -21,6 +21,11 @@
         "confirm": "Log me out",
         "warning": "You are going to be logged-out"
     },
+    "module": {
+        "app": {
+            "version": "Applications version"
+        }
+    },
     "new": "New",
     "new-tab": "New tab",
     "supported_browsers": {

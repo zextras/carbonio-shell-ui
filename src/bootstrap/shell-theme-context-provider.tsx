@@ -1,5 +1,5 @@
 import React, { createContext, FC, useCallback, useEffect, useState } from 'react';
-import { ThemeProvider as UIThemeProvider } from '@zextras/zapp-ui';
+import { ThemeProvider as UIThemeProvider, SnackbarManager, ModalManager } from '@zextras/zapp-ui';
 import { enable, disable, auto } from 'darkreader';
 import { reduce } from 'lodash';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -53,7 +53,9 @@ export const ThemeProvider: FC = ({ children }) => {
 	return (
 		<UIThemeProvider extension={aggregatedExtensions}>
 			<ThemeCallbacksContext.Provider value={{ addExtension, setDarkReaderState }}>
-				{children}
+				<ModalManager>
+					<SnackbarManager>{children}</SnackbarManager>
+				</ModalManager>
 			</ThemeCallbacksContext.Provider>
 		</UIThemeProvider>
 	);

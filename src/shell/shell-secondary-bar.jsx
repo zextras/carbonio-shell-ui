@@ -10,17 +10,44 @@
  */
 
 /* eslint-disable react/no-array-index-key */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { map } from 'lodash';
-import { Route, Switch } from 'react-router-dom';
-import { Accordion, Collapse, Collapser, Container } from '@zextras/zapp-ui';
+import { Route, Switch, useHistory } from 'react-router-dom';
+import { Collapse, Collapser, Container, Accordion } from '@zextras/zapp-ui';
+import { useUserAccounts } from '../store/shell-store-hooks';
+import { useApps, useAppList } from '../zustand/app/hooks';
+import AppContextProvider from '../app/app-context-provider';
 
-export default function ShellSecondaryBar({
-	navigationBarIsOpen,
-	mainMenuItems,
-	onCollapserClick
-}) {
-	return (
+const SidebarSwitch = ({ item }) => (
+	<Route key={`/${item.id}`} exact path={`/${item.id}`}>
+		<AppContextProvider pkg={item.id}>{item.sidebar && <item.sidebar />}</AppContextProvider>
+	</Route>
+);
+
+export default function ShellSecondaryBar({ navigationBarIsOpen, onCollapserClick, activeApp }) {
+	const apps = useApps();
+	const disabled = useMemo(() => activeApp && !apps[activeApp]?.views?.sidebar, [activeApp, apps]);
+	const history = useHistory();
+	const accounts = useUserAccounts();
+	const items = useMemo(
+		() =>
+			map(accounts, (account) => ({
+				id: account.id,
+				label: account?.displayName ?? account?.name,
+				icon: 'PersonOutline',
+				open: true,
+				items: map(apps, (app) => ({
+					id: app.core.package,
+					label: app.core.name,
+					icon: app.icon,
+					onClick: () => history.push(`/${app.core.package}`),
+					sidebar: app.views?.sidebar,
+					CustomComponent: SidebarSwitch
+				}))
+			})),
+		[accounts, apps, history]
+	);
+	return disabled ? null : (
 		<>
 			<Collapse orientation="horizontal" open={navigationBarIsOpen} maxSize="256px">
 				<Container
@@ -35,15 +62,7 @@ export default function ShellSecondaryBar({
 					}}
 				>
 					<Switch>
-						{map(mainMenuItems, (menuItem) => (
-							<Route key={`/${menuItem.pkgName}${menuItem.to}`} exact path={menuItem.allTos}>
-								{menuItem.customComponent ? (
-									menuItem.customComponent
-								) : (
-									<Accordion role="menuitem" active items={menuItem.items || []} />
-								)}
-							</Route>
-						))}
+						<Accordion items={items} />
 					</Switch>
 				</Container>
 			</Collapse>

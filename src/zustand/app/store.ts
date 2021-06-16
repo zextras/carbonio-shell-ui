@@ -3,9 +3,12 @@ import createStore from 'zustand/vanilla';
 import { reduce } from 'lodash';
 import { produce } from 'immer';
 import { AppData, AppState, CoreAppData, IntegrationsRegister } from './store-types';
+import { settingsAppData } from '../../settings/settings-app-data';
 
 export const appStore = createStore<AppState>((set) => ({
-	apps: {},
+	apps: {
+		com_zextras_zapp_settings: settingsAppData
+	},
 	integrations: {
 		components: {},
 		hooks: {},
@@ -30,6 +33,12 @@ export const appStore = createStore<AppState>((set) => ({
 			set(
 				produce((state) => {
 					state.apps[id] = { ...state.apps[id], ...data };
+				})
+			),
+		setAppContext: (id: string) => (data: unknown): void =>
+			set(
+				produce((state) => {
+					state.apps[id].context = data;
 				})
 			),
 		registerIntegrations: (appId: string) => ({

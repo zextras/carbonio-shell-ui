@@ -9,17 +9,13 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useEffect, useState, useMemo } from 'react';
-import { combineLatest } from 'rxjs';
-import { map as rxMap } from 'rxjs/operators';
+import React, { useMemo } from 'react';
 import { map, reduce, endsWith } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { Container, Responsive } from '@zextras/zapp-ui';
-import { useAppsCache } from '../app/app-loader-context';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
 import ShellMobileNav from './shell-mobile-nav';
-import { useSettingsApps } from '../settings/settings-app';
 
 function collectAllTo(pkgName, { to, items }) {
 	return reduce(items || [], (r, v) => [...r, ...collectAllTo(pkgName, v)], [`/${pkgName}${to}`]);
@@ -68,70 +64,12 @@ export default function ShellNavigationBar({
 	navigationBarIsOpen,
 	mobileNavIsOpen,
 	onCollapserClick,
-	userMenuTree,
 	quota
 }) {
 	const history = useHistory();
-	const [activeApp, setActiveApp] = useState(undefined);
-	const { cache } = useAppsCache();
-	const [_mainMenuItems, setMainMenuItems] = useState({});
-	const settingsApp = useSettingsApps(cache, setActiveApp, history);
-
-	const mainMenuItems = useMemo(
-		() => setActiveItem({ ..._mainMenuItems, settingsApp }, history.location.pathname),
-		[_mainMenuItems, history.location.pathname, settingsApp]
-	);
-
-	useEffect(() => {
-		const subscription = combineLatest(
-			reduce(
-				cache,
-				(acc, app) => {
-					acc.push(app.mainMenuItems.pipe(rxMap((items) => ({ items, app }))));
-					return acc;
-				},
-				[]
-			)
-		).subscribe((appItems) => {
-			setMainMenuItems(
-				reduce(
-					appItems,
-					(acc, { items, app }) => {
-						reduce(
-							items,
-							(r, menuItem) => {
-								r[menuItem.id] = {
-									id: menuItem.id,
-									label: menuItem.label,
-									icon: menuItem.icon || '',
-									click: () => {
-										setActiveApp(menuItem.id);
-										history.push(getAppLink(menuItem.to, app.pkg));
-									},
-									customComponent: menuItem.customComponent,
-									items: getFolderStructures(menuItem.items, app, history),
-									to: menuItem.to,
-									pkgName: app.pkg.package,
-									allTos: collectAllTo(app.pkg.package, menuItem)
-								};
-								return r;
-							},
-							acc
-						);
-						return acc;
-					},
-					{}
-				)
-			);
-		});
-
-		return () => {
-			if (subscription) {
-				subscription.unsubscribe();
-			}
-		};
-	}, [cache, setMainMenuItems, history]);
-
+	const activeApp = useMemo(() => history.location.pathname.split('/')[1], [
+		history.location.pathname
+	]);
 	return (
 		<Container
 			orientation="horizontal"
@@ -142,20 +80,15 @@ export default function ShellNavigationBar({
 			crossAlignment="flex-start"
 		>
 			<Responsive mode="desktop">
-				<ShellPrimaryBar mainMenuItems={mainMenuItems} activeApp={activeApp} />
+				<ShellPrimaryBar activeApp={activeApp} />
 				<ShellSecondaryBar
 					navigationBarIsOpen={navigationBarIsOpen}
-					mainMenuItems={mainMenuItems}
 					onCollapserClick={onCollapserClick}
+					activeApp={activeApp}
 				/>
 			</Responsive>
 			<Responsive mode="mobile">
-				<ShellMobileNav
-					mobileNavIsOpen={mobileNavIsOpen}
-					mainMenuItems={mainMenuItems}
-					menuTree={userMenuTree}
-					quota={quota}
-				/>
+				<ShellMobileNav mobileNavIsOpen={mobileNavIsOpen} quota={quota} activeApp={activeApp} />
 			</Responsive>
 		</Container>
 	);

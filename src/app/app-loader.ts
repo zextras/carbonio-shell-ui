@@ -11,17 +11,7 @@
 
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
-import {
-	default as Lodash,
-	map,
-	orderBy,
-	compact,
-	keyBy,
-	forEach,
-	forOwn,
-	reduce,
-	filter
-} from 'lodash';
+import { default as Lodash, map, orderBy, compact, keyBy, forEach, forOwn, filter } from 'lodash';
 import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
 import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
 import { Reducer } from 'redux';
@@ -71,13 +61,8 @@ import {
 	SoapFetch,
 	ThemePkgDescription
 } from '../../types';
-import {
-	useAddSharedFunction,
-	useRemoveSharedFunction,
-	useSharedFunction
-} from '../zustand/selectors';
-import { UnknownFunction } from '../zustand/store-types';
-import { appStore, useAppStore } from '../zustand/app/store';
+import { appStore } from '../zustand/app/store';
+import { RuntimeAppData } from '../zustand/app/store-types';
 
 type IShellWindow<T, R> = Window & {
 	__ZAPP_SHARED_LIBRARIES__: T;
@@ -106,22 +91,11 @@ type SharedLibrariesAppsMap = {
 				store: Store<any>;
 				setReducer(nextReducer: Reducer): void;
 			};
-			zStore: {
-				useAppStore: unknown;
-				appStore: unknown;
-			};
 			network: {
 				soapFetch: SoapFetch;
 			};
-			setMainMenuItems: (items: MainMenuItemData[]) => void;
-			setRoutes: (routes: AppRouteDescription[]) => void;
-			setSettingsRoutes: (routes: AppSettingsRouteDescription[]) => void;
-			setCreateOptions: (options: AppCreateOption[]) => void;
+			registerAppData: (data: RuntimeAppData) => void;
 			setAppContext: (obj: any) => void;
-			useSharedFunction: (id: string) => UnknownFunction | undefined;
-			useAddSharedFunction: (id: string, fn: UnknownFunction) => void;
-			useRemoveSharedFunction: (id: string) => void;
-			registerSharedUiComponents: (components: SharedUiComponentsDescriptor) => void;
 			fiberChannel: FC;
 			fiberChannelSink: FCSink;
 			hooks: unknown;
@@ -231,39 +205,8 @@ function loadAppModule(
 					store,
 					setReducer: (reducer): void => store.replaceReducer(reducer)
 				},
-				zStore: {
-					useAppStore,
-					appStore
-				},
-				setMainMenuItems: (items): void => mainMenuItems.next(items),
-				setRoutes: (r): void => routes.next(r),
-				setSettingsRoutes: (r): void => settingsRoutes.next(r),
-				setCreateOptions: (options): void => createOptions.next(options),
+				registerAppData: appStore.getState().setters.registerAppData(appPkg.package),
 				setAppContext: (obj: any): void => appContext.next(obj),
-				useAddSharedFunction: useAddSharedFunction(appPkg.package),
-				useRemoveSharedFunction: useRemoveSharedFunction(appPkg.package),
-				useSharedFunction,
-				registerSharedUiComponents: (components: {
-					[id: string]: { versions: { [version: string]: FC } };
-				}): void => {
-					sharedUiComponents.next(
-						reduce(
-							components,
-							(
-								acc: SharedUiComponentsDescriptor,
-								comp: { versions: Record<string, FC> },
-								id: string
-							): SharedUiComponentsDescriptor => ({
-								...acc,
-								[id]: {
-									pkg: appPkg,
-									versions: comp.versions
-								}
-							}),
-							sharedUiComponents.getValue()
-						)
-					);
-				},
 				fiberChannel: fiberChannelFactory.getAppFiberChannel(appPkg),
 				fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(appPkg),
 				hooks,

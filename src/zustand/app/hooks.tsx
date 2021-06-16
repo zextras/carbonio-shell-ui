@@ -4,14 +4,18 @@
 import { sortBy } from 'lodash';
 import React, { useMemo, FC } from 'react';
 import { useAppStore } from './store';
-import { AppData } from './store-types';
+import { AppData, AppsMap } from './store-types';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppContextProvider from '../../app/app-context-provider';
 
 export const useApp = (id: string): AppData => useAppStore((s) => s.apps[id]);
 
+export const useApps = (): AppsMap => useAppStore((s) => s.apps);
+
 export const useAppList = (): Array<AppData> => useAppStore((s) => sortBy(s.apps, 'core.priority'));
+
+export const useAppContext = (id: string) => (): unknown => useAppStore((s) => s.apps[id]?.context);
 
 export const useIntegratedHook = (id: string): unknown =>
 	useAppStore((s) => s.integrations.hooks[id]?.item);

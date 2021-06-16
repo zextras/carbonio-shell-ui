@@ -14,7 +14,7 @@ import { screen } from '@testing-library/dom';
 import { testUtils } from '../jest-shell-mocks';
 import ShellSecondaryBar from './shell-secondary-bar';
 
-describe('Secondary bar', () => {
+describe.skip('Secondary bar', () => {
 	test('Empty secondary bar', () => {
 		const onCollapserClick = jest.fn();
 		testUtils.render(

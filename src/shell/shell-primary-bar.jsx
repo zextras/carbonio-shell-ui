@@ -58,16 +58,24 @@ export default function ShellPrimaryBar({ activeApp }) {
 				wrap="nowrap"
 				style={{ minHeight: '1px', overflowY: 'overlay' }}
 			>
-				{map(apps, (app) => (
-					<AppIcon
-						key={app.core.package}
-						icon={app.icon}
-						active={activeApp === app.core.package}
-						iconColor={activeApp === app.core.package ? 'primary' : 'text'}
-						onClick={() => history.push(`/${app.core.package}/`)}
-						size="large"
-					/>
-				))}
+				{map(apps, (app) => {
+					if (!app.icon) {
+						return null;
+					}
+					if (typeof app.icon === 'string') {
+						return (
+							<AppIcon
+								key={app.core.package}
+								icon={app.icon}
+								active={activeApp === app.core.package}
+								iconColor={activeApp === app.core.package ? 'primary' : 'text'}
+								onClick={() => history.push(`/${app.core.package}/`)}
+								size="large"
+							/>
+						);
+					}
+					return <app.icon active={app.core.package === activeApp} />;
+				})}
 			</Row>
 			<Row>
 				<ToggleBoardIcon />

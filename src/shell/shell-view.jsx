@@ -15,7 +15,7 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { find } from 'lodash';
-import BoardsRouterContainer from './boards/boards-router-container';
+import AppViewContainer from './app-view-container';
 import ShellContextProvider from './shell-context-provider';
 import SharedUiComponentsContextProvider from '../shared-ui-components/shared-ui-components-context-provider';
 import ShellHeader from './shell-header';
@@ -120,7 +120,7 @@ export function Shell() {
 					userMenuTree={userMenuTree}
 					quota={quota}
 				/>
-				<BoardsRouterContainer />
+				<AppViewContainer />
 				<ShellMenuPanel menuIsOpen={userOpen} tree={userMenuTree} />
 			</Row>
 			<Responsive mode="desktop">

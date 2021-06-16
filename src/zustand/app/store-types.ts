@@ -5,10 +5,11 @@ export type SharedAction = {
 	id: string;
 	label: string;
 	icon: string | Component;
-	types: Array<string>;
+	types?: Array<string>;
 	// eslint-disable-next-line @typescript-eslint/ban-types
 	click: Function;
-	validator: (...args: unknown[]) => boolean;
+	disabled?: boolean;
+	getDisabledStatus?: (...args: unknown[]) => boolean;
 };
 
 export type CoreAppData = {
@@ -21,30 +22,31 @@ export type CoreAppData = {
 	entryPoint: string;
 };
 
-export type UninitializedApp = {
+export type UninitializedAppData = {
 	core: CoreAppData;
 	redux?: Store;
 };
 
-export type AppData = UninitializedApp &
-	Partial<{
-		icon: string | Component<{ active: boolean }>;
-		views: {
-			app: Component;
-			board: Component;
-			settings: Component;
-			sidebar: Component;
-		};
-		context: unknown;
-		search: {
-			onSearch?: (query: string) => void;
-			route?: string;
-		};
-		newButton: {
-			primary: SharedAction;
-			secondaryItems: Array<SharedAction>;
-		};
-	}>;
+export type RuntimeAppData = Partial<{
+	icon: string | Component<{ active: boolean }>;
+	views: {
+		app?: Component;
+		board?: Component;
+		settings?: Component;
+		sidebar?: Component;
+	};
+	context: unknown;
+	search: {
+		onSearch?: (query: string) => void;
+		route?: string;
+	};
+	newButton: {
+		primary: SharedAction;
+		secondaryItems: Array<SharedAction>;
+	};
+}>;
+
+export type AppData = UninitializedAppData & RuntimeAppData;
 
 export type AppsMap = Record<string, AppData>;
 
@@ -72,8 +74,9 @@ export type IntegrationsRegister = {
 
 export type Setters = {
 	addApps: (apps: Array<CoreAppData>) => void;
-	registerAppData: (id: string) => (data: Partial<Omit<AppData, 'core'>>) => void;
+	registerAppData: (id: string) => (data: RuntimeAppData) => void;
 	registerIntegrations: (id: string) => (data: IntegrationsRegister) => void;
+	setAppContext: (id: string) => (data: unknown) => void;
 };
 
 export type AppState = {

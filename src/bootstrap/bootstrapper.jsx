@@ -26,8 +26,7 @@ const AppStoreInterface = () => {
 	const accounts = useUserAccounts();
 	useEffect(() => {
 		if (accounts && accounts.length > 0) {
-			console.log('setting apps!', accounts[0].apps);
-			addApps(accounts[0].apps);
+			addApps([...accounts[0].apps]);
 		}
 	}, [accounts, addApps]);
 	return null;

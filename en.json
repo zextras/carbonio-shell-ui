@@ -23,22 +23,6 @@
     },
     "new": "New",
     "new-tab": "New tab",
-    "settings": {
-        "button": {
-            "primary": "Save",
-            "secondary": "Cancel"
-        }
-    },
-    "settins": {
-        "general": {
-            "general": "General Settings",
-            "theme_auto": "Auto",
-            "theme_disabled": "Light Mode",
-            "theme_enabled": "Dark Mode",
-            "theme_mode": "Theme Mode",
-            "theme_options": "Theme Options"
-        }
-    },
     "supported_browsers": {
         "chrome": "Chrome",
         "edge": "Edge",

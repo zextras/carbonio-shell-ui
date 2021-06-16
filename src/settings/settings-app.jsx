@@ -16,6 +16,8 @@ import { Accordion } from '@zextras/zapp-ui';
 import LoadingView from '../bootstrap/loading-view';
 import { useAppList } from '../zustand/app/hooks';
 import { useAppStore } from '../zustand/app/store';
+import AppContextProvider from '../app/app-context-provider';
+import ModuleVersionSettings from './module-version-settings';
 
 const GeneralSettings = lazy(() => import('./general-settings'));
 

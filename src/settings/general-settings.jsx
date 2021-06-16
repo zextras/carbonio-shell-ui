@@ -15,6 +15,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from '../store/shell-store-hooks';
 import { modifyPrefs } from '../store/accounts-slice';
 import AppearanceSettings from './appearance-settings';
+import ModuleVersionSettings from './module-version-settings';
 import { useUserAccounts } from '../shell/hooks';
 
 export const DisplayerHeader = ({ label, onCancel, onSave, mods }) => {
@@ -90,15 +91,18 @@ const GeneralSettings = () => {
 		setMods({});
 	}, []);
 	return (
-		<Container background="gray5" mainAlignment="flex-start" padding={{ all: 'medium' }}>
-			<DisplayerHeader
-				mods={mods}
-				label={t('settins.general.general', 'General Settings')}
-				onCancel={onCancel}
-				onSave={onSave}
-			/>
-			<AppearanceSettings settings={acct.settings} addMod={addMod} />
-		</Container>
+		<>
+			<Container background="gray5" mainAlignment="flex-start" padding={{ all: 'medium' }}>
+				<DisplayerHeader
+					mods={mods}
+					label={t('settins.general.general', 'General Settings')}
+					onCancel={onCancel}
+					onSave={onSave}
+				/>
+				<AppearanceSettings settings={acct.settings} addMod={addMod} />
+				<ModuleVersionSettings />
+			</Container>
+		</>
 	);
 };
 

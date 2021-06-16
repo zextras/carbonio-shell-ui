@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.25](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.24...v0.1.0-beta.25) (2021-06-14)
+
+
+### Features
+
+* added copy to clipboard function ([1f39f9a](https://bitbucket.org/zextras/zapp-shell/commit/1f39f9abeb1b7f9fed85d4300890d5c0f1e126f1))
+* added module versions section to settings ([b8ba7c1](https://bitbucket.org/zextras/zapp-shell/commit/b8ba7c138ec227f5c0ec964a3ae38061cfb1ba9b))
+
 ## [0.1.0-beta.24](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.23...v0.1.0-beta.24) (2021-06-11)
 
 

@@ -19,18 +19,17 @@ import {
 	Logo,
 	Padding,
 	Responsive,
-	Quota,
 	useScreenMode,
 	MultiButton
 } from '@zextras/zapp-ui';
+import { UserQuota } from './user-quota';
 import { useAppStore } from '../app-store';
 
 export default function ShellHeader({
 	userBarIsOpen,
 	mobileNavIsOpen,
 	onMobileMenuClick,
-	onUserClick,
-	quota
+	onUserClick
 }) {
 	const history = useHistory();
 	const [t] = useTranslation();
@@ -107,7 +106,7 @@ export default function ShellHeader({
 						padding={{ right: 'extrasmall' }}
 					>
 						<Padding right="small">
-							<Quota fill={quota} />
+							<UserQuota />
 						</Padding>
 						<IconButton icon="BellOutline" iconColor="text" />
 						<IconButton

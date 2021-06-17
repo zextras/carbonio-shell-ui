@@ -14,7 +14,7 @@ import { Row, Responsive } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { find } from 'lodash';
+import { find, get } from 'lodash';
 import AppViewContainer from './app-view-container';
 import ShellContextProvider from './shell-context-provider';
 import SharedUiComponentsContextProvider from '../shared-ui-components/shared-ui-components-context-provider';
@@ -69,8 +69,6 @@ export function Shell() {
 		[dispatch, history]
 	);
 
-	const quota = 30;
-
 	const userMenuTree = useMemo(
 		() => [
 			{
@@ -96,7 +94,6 @@ export function Shell() {
 				mobileNavIsOpen={mobileNavOpen}
 				onMobileMenuClick={() => setMobileNavOpen(!mobileNavOpen)}
 				onUserClick={() => setUserOpen(!userOpen)}
-				quota={quota}
 			/>
 			<Row crossAlignment="unset" flexGrow="1" style={{ position: 'relative' }}>
 				<ShellNavigationBar
@@ -104,7 +101,6 @@ export function Shell() {
 					mobileNavIsOpen={mobileNavOpen}
 					onCollapserClick={() => setNavOpen(!navOpen)}
 					userMenuTree={userMenuTree}
-					quota={quota}
 				/>
 				<AppViewContainer />
 				<ShellMenuPanel menuIsOpen={userOpen} tree={userMenuTree} />

@@ -168,16 +168,7 @@ function updateAppHandlers(appPkg: AppPkgDescription, handlers: RequestHandlersL
 
 function loadAppModule(
 	appPkg: AppPkgDescription,
-	{
-		appContext,
-		createOptions,
-		entryPoint,
-		mainMenuItems,
-		routes,
-		settingsRoutes,
-		sharedUiComponents,
-		store
-	}: AppInjections,
+	{ appContext, entryPoint, store }: AppInjections,
 	fiberChannelFactory: IFiberChannelFactory,
 	shellNetworkService: ShellNetworkService
 ): Promise<void> {

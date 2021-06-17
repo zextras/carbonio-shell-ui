@@ -11,10 +11,11 @@
 
 import React, { useMemo } from 'react';
 import { map } from 'lodash';
-import { Accordion, Collapse, Container, Padding, Quota } from '@zextras/zapp-ui';
+import { Accordion, Collapse, Container, Padding } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
 import { useAppList } from '../app-store/hooks';
 import { useUserAccounts } from '../store/shell-store-hooks';
+import { UserQuota } from './user-quota';
 
 export default function ShellMobileNav({ mobileNavIsOpen, menuTree, quota }) {
 	const apps = useAppList();
@@ -73,7 +74,7 @@ export default function ShellMobileNav({ mobileNavIsOpen, menuTree, quota }) {
 					<Container width="fill" height="fit" orientation="vertical" mainAlignment="flex-end">
 						<Accordion items={menuTree} />
 						<Padding vertical="medium">
-							<Quota fill={quota} />
+							<UserQuota />
 						</Padding>
 					</Container>
 				</Container>

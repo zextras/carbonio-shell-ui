@@ -19,8 +19,7 @@ import ShellMobileNav from './shell-mobile-nav';
 export default function ShellNavigationBar({
 	navigationBarIsOpen,
 	mobileNavIsOpen,
-	onCollapserClick,
-	quota
+	onCollapserClick
 }) {
 	const history = useHistory();
 	const activeApp = useMemo(() => history.location.pathname.split('/')[1], [
@@ -44,7 +43,7 @@ export default function ShellNavigationBar({
 				/>
 			</Responsive>
 			<Responsive mode="mobile">
-				<ShellMobileNav mobileNavIsOpen={mobileNavIsOpen} quota={quota} activeApp={activeApp} />
+				<ShellMobileNav mobileNavIsOpen={mobileNavIsOpen} activeApp={activeApp} />
 			</Responsive>
 		</Container>
 	);

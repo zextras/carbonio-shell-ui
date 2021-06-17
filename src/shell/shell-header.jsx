@@ -8,10 +8,8 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, { useEffect, useState, useRef, useContext } from 'react';
-import { combineLatest } from 'rxjs';
-import { map as rxMap } from 'rxjs/operators';
-import { reduce, find } from 'lodash';
+import React, { useMemo } from 'react';
+import { reduce, map } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -25,8 +23,7 @@ import {
 	useScreenMode,
 	MultiButton
 } from '@zextras/zapp-ui';
-import { useAppsCache } from '../app/app-loader-context';
-import { BoardSetterContext } from './boards/board-context';
+import { useAppStore } from '../app-store';
 
 export default function ShellHeader({
 	userBarIsOpen,
@@ -38,61 +35,36 @@ export default function ShellHeader({
 	const history = useHistory();
 	const [t] = useTranslation();
 	const screenMode = useScreenMode();
-	const { cache } = useAppsCache();
-	const { addBoard } = useContext(BoardSetterContext);
-	const [createOptions, setCreateOptions] = useState([]);
-	const refCreateOptions = useRef(createOptions);
+	const currentApp = useMemo(() => history.location.pathname.split('/')[1], [
+		history.location.pathname
+	]);
+	const [primaryAction, secondaryActions] = useAppStore((s) => [
+		s.apps[currentApp]?.newButton?.primary,
+		reduce(
+			s.apps,
+			(acc, app, key) => {
+				if (app.newButton?.secondaryItems) {
+					if (acc.length > 0) {
+						acc.push({ type: 'divider', id: key, key });
+					}
+					acc.push(
+						map(app.newButton?.secondaryItems, (item) => ({
+							...item,
+							key: item.id,
+							disabled: item.disabled || item.getDisabledState()
+						}))
+					);
+				}
+				return acc;
+			},
+			[]
+		)
+	]);
 
-	useEffect(() => {
-		const subscription = combineLatest(
-			reduce(
-				cache,
-				(acc, app) => {
-					acc.push(app.createOptions.pipe(rxMap((items) => ({ items, app }))));
-					return acc;
-				},
-				[]
-			)
-		).subscribe((_createOptions) => {
-			setCreateOptions(
-				reduce(
-					_createOptions,
-					(acc, { items, app }) => {
-						reduce(
-							items,
-							(r, option) => {
-								if (refCreateOptions.current.filter((op) => op.id === option.id).length === 0) {
-									r.push({
-										id: option.id,
-										label: option.label,
-										icon: option.icon,
-										package: app.pkg.package,
-										click: () => {
-											addBoard(
-												`/${app.pkg.package}${option.app.boardPath || option.app.path}`,
-												option.label
-											);
-											option.onClick && option.onClick();
-										}
-									});
-								}
-								return r;
-							},
-							acc
-						);
-						return acc;
-					},
-					[]
-				)
-			);
-		});
-
-		return () => {
-			if (subscription) {
-				subscription.unsubscribe();
-			}
-		};
-	}, [cache, addBoard, setCreateOptions, history]);
+	const isMultiButtonDisabled = useMemo(
+		() => !!primaryAction || primaryAction?.disabled || primaryAction?.getDisabledState?.(),
+		[primaryAction]
+	);
 
 	return (
 		<Container
@@ -120,13 +92,10 @@ export default function ShellHeader({
 						<Container orientation="horizontal" width="fit" padding={{ right: 'small' }}>
 							<MultiButton
 								background="primary"
-								label={t('new')}
-								onClick={() => {
-									find(createOptions, {
-										package: history.location.pathname.split('/')?.[1]
-									})?.click();
-								}}
-								items={createOptions}
+								label={t('new', 'New')}
+								onClick={primaryAction?.click}
+								items={secondaryActions}
+								disabled={isMultiButtonDisabled}
 							/>
 						</Container>
 						{/*	<SearchInput/> */}
@@ -156,7 +125,7 @@ export default function ShellHeader({
 					padding={{ right: 'extrasmall' }}
 				>
 					{/* <IconButton icon="Search" /> */}
-					<Dropdown items={createOptions} placement="bottom-start">
+					<Dropdown items={secondaryActions} placement="bottom-start">
 						<IconButton icon="Plus" />
 					</Dropdown>
 				</Container>

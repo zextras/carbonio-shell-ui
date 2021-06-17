@@ -9,7 +9,7 @@ type DRPropValues = 'auto' | 'enabled' | 'disabled';
 
 const AppearanceSettings: FC<{
 	settings: AccountSettings;
-	addMod: (type: string, key: string, value: { value: any; app: string }) => void;
+	addMod: (type: 'prefs' | 'props', key: string, value: { value: any; app: string }) => void;
 }> = ({ settings, addMod }) => {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
 	const [drMode, setDrMode] = useState<DRPropValues>(
@@ -20,15 +20,15 @@ const AppearanceSettings: FC<{
 	const items = useMemo(
 		() => [
 			{
-				label: t('settins.general.theme_auto'),
+				label: t('settings.general.theme_auto', 'Auto'),
 				value: 'auto'
 			},
 			{
-				label: t('settins.general.theme_enabled'),
+				label: t('settings.general.theme_enabled', 'Enabled'),
 				value: 'enabled'
 			},
 			{
-				label: t('settins.general.theme_disabled'),
+				label: t('settings.general.theme_disabled', 'Disabled'),
 				value: 'disabled'
 			}
 		],
@@ -58,14 +58,14 @@ const AppearanceSettings: FC<{
 	);
 	return (
 		<FormSubSection
-			label={t('settins.general.theme_options', 'Theme Options')}
+			label={t('settings.general.theme_options', 'Theme Options')}
 			minWidth="calc(min(100%, 512px))"
 			width="50%"
 		>
 			<Select
 				items={items}
 				selection={defaultSelection}
-				label={t('settins.general.theme_mode', 'Theme Mode')}
+				label={t('settings.general.theme_mode', 'Theme Mode')}
 				onChange={onSelectionChange}
 			/>
 		</FormSubSection>

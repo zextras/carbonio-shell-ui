@@ -114,7 +114,7 @@ export default function BoardContextProvider({ children }) {
 		(url, context) => {
 			dispatch({
 				type: 'ADD_BOARD',
-				payload: { url, title: context?.title ?? t('new-tab'), context }
+				payload: { url, title: context?.title ?? t('new-tab', 'New Tab'), context }
 			});
 		},
 		[t]

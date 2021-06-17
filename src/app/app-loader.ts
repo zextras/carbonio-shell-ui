@@ -61,8 +61,8 @@ import {
 	SoapFetch,
 	ThemePkgDescription
 } from '../../types';
-import { appStore } from '../zustand/app/store';
-import { RuntimeAppData } from '../zustand/app/store-types';
+import { appStore } from '../app-store';
+import { RuntimeAppData } from '../app-store/store-types';
 
 type IShellWindow<T, R> = Window & {
 	__ZAPP_SHARED_LIBRARIES__: T;

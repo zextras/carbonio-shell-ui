@@ -9,7 +9,8 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ThemeProvider } from './shell-theme-context-provider';
 import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-context-provider';
@@ -18,17 +19,26 @@ import FiberChannelFactory from '../fiberchannel/fiber-channel';
 import I18nFactory from '../i18n/i18n-factory';
 import createShellStore from '../store/create-shell-store';
 import StoreFactory from '../store/store-factory';
-import { useAppStore } from '../zustand/app/store';
+import { useAppStore } from '../app-store';
 import { useUserAccounts } from '../store/shell-store-hooks';
+import { settingsAppData, getSettingsCore } from '../settings/settings-app';
+import { SETTINGS_APP_ID } from '../constants';
 
 const AppStoreInterface = () => {
-	const addApps = useAppStore((s) => s.setters.addApps);
+	const { addApps, registerAppData } = useAppStore((s) => s.setters);
 	const accounts = useUserAccounts();
+	const [status, setStatus] = useState(0);
+	const [t] = useTranslation();
 	useEffect(() => {
-		if (accounts && accounts.length > 0) {
-			addApps([...accounts[0].apps]);
+		if (accounts && accounts.length > 0 && status === 0) {
+			addApps([...accounts[0].apps, getSettingsCore(t)]);
+			setStatus(1);
 		}
-	}, [accounts, addApps]);
+		if (status === 1) {
+			registerAppData(SETTINGS_APP_ID)(settingsAppData);
+			setStatus(2);
+		}
+	}, [accounts, addApps, status, registerAppData, t]);
 	return null;
 };
 

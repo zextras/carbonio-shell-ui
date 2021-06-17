@@ -3,12 +3,9 @@ import createStore from 'zustand/vanilla';
 import { reduce } from 'lodash';
 import { produce } from 'immer';
 import { AppData, AppState, CoreAppData, IntegrationsRegister } from './store-types';
-import { settingsAppData } from '../../settings/settings-app-data';
 
 export const appStore = createStore<AppState>((set) => ({
-	apps: {
-		com_zextras_zapp_settings: settingsAppData
-	},
+	apps: {},
 	integrations: {
 		components: {},
 		hooks: {},

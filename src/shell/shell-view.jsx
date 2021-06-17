@@ -71,22 +71,8 @@ export function Shell() {
 
 	const quota = 30;
 
-	// const toggleDarkMode = useCallback(
-	// 	(ev) => {
-	// 		ev.preventDefault();
-	// 		if (themeVariant === THEME_MODE.LIGHT) setThemeMode(THEME_MODE.DARK);
-	// 		else setThemeMode(THEME_MODE.LIGHT);
-	// 	},
-	// 	[themeVariant, setThemeMode]
-	// );
-
 	const userMenuTree = useMemo(
 		() => [
-			// {
-			// 	label: themeVariant === THEME_MODE.LIGHT ? t('theme-switch.dark') : t('theme-switch.light'),
-			// 	icon: themeVariant === THEME_MODE.LIGHT ? 'MoonOutline' : 'SunOutline',
-			// 	onClick: toggleDarkMode
-			// },
 			{
 				label: t('logout'),
 				icon: 'LogOut',

@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import { map } from 'lodash';
 import { Container } from '@zextras/zapp-ui';
 import AppContextProvider from '../app/app-context-provider';
-import { useAppList } from '../zustand/app/hooks';
+import { useAppList } from '../app-store/hooks';
 
 const _BoardsRouterContainer = styled(Container)`
 	flex-grow: 1;
@@ -30,7 +30,7 @@ export default function AppViewContainer() {
 	const routes = useMemo(
 		() =>
 			map(apps, (app) => (
-				<Route key={`${app.core.package}`} path={`/${app.core.package}`}>
+				<Route key={app.core.package} path={`/${app.core.package}`}>
 					<AppContextProvider key={app.core.package} pkg={app.core.package}>
 						<app.views.app />
 					</AppContextProvider>

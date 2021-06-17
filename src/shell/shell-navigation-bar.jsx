@@ -10,55 +10,11 @@
  */
 
 import React, { useMemo } from 'react';
-import { map, reduce, endsWith } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { Container, Responsive } from '@zextras/zapp-ui';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
 import ShellMobileNav from './shell-mobile-nav';
-
-function collectAllTo(pkgName, { to, items }) {
-	return reduce(items || [], (r, v) => [...r, ...collectAllTo(pkgName, v)], [`/${pkgName}${to}`]);
-}
-
-const HAS_SEARCH_REG = /\?/;
-
-function getAppLink(to, pkg) {
-	if (typeof to === 'string') {
-		let urlTo = '';
-		let urlSearch = '';
-		if (HAS_SEARCH_REG.test(to)) {
-			[urlTo, urlSearch] = to.split('?');
-		} else {
-			urlTo = to;
-		}
-		return { pathname: `/${pkg.package}${urlTo}`, search: urlSearch };
-	}
-	return { ...to, pathname: `/${pkg.package}${to.pathname}` };
-}
-
-function getFolderStructures(folders, app, history) {
-	return map(folders, (folder) => ({
-		...folder,
-		onClick: (ev) => {
-			if (folder.onClick) {
-				folder.onClick(ev);
-			}
-			if (folder.to) {
-				history.push(getAppLink(folder.to, app.pkg));
-			}
-		},
-		active: history.location.pathname === `/${app.pkg.package}${folder.to}`,
-		items: getFolderStructures(folder.items, app, history)
-	}));
-}
-
-const setActiveItem = (menuItems, pathname) =>
-	map(menuItems, (item) => ({
-		...item,
-		active: endsWith(pathname, item.to),
-		items: setActiveItem(item.items, pathname)
-	}));
 
 export default function ShellNavigationBar({
 	navigationBarIsOpen,

@@ -3,11 +3,11 @@
 
 import { sortBy } from 'lodash';
 import React, { useMemo, FC } from 'react';
-import { useAppStore } from './store';
+import { useAppStore } from '.';
 import { AppData, AppsMap } from './store-types';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import AppContextProvider from '../../app/app-context-provider';
+import AppContextProvider from '../app/app-context-provider';
 
 export const useApp = (id: string): AppData => useAppStore((s) => s.apps[id]);
 

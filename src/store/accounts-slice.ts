@@ -22,7 +22,7 @@ import {
 } from '../../types';
 import { AuthResponse, GetInfoResponse, ZimletPkgDescription } from '../network/soap/types';
 import { zimletToAppPkgDescription, zimletToThemePkgDescription } from '../network/soap/utils';
-import { appStore } from '../zustand/app/store';
+import { appStore } from '../app-store';
 
 export type AccountsSlice = {
 	status: 'idle' | 'working';

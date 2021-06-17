@@ -1,5 +1,5 @@
 import { Store } from '@reduxjs/toolkit';
-import { Component } from 'react';
+import { Component, FunctionComponent } from 'react';
 
 export type SharedAction = {
 	id: string;
@@ -30,10 +30,10 @@ export type UninitializedAppData = {
 export type RuntimeAppData = Partial<{
 	icon: string | Component<{ active: boolean }>;
 	views: {
-		app?: Component;
-		board?: Component;
-		settings?: Component;
-		sidebar?: Component;
+		app?: Component | FunctionComponent;
+		board?: Component | FunctionComponent;
+		settings?: Component | FunctionComponent;
+		sidebar?: Component | FunctionComponent;
 	};
 	context: unknown;
 	search: {

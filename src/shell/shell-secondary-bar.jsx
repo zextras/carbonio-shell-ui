@@ -15,11 +15,11 @@ import { map } from 'lodash';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { Collapse, Collapser, Container, Accordion } from '@zextras/zapp-ui';
 import { useUserAccounts } from '../store/shell-store-hooks';
-import { useApps, useAppList } from '../zustand/app/hooks';
+import { useApps } from '../app-store/hooks';
 import AppContextProvider from '../app/app-context-provider';
 
 const SidebarSwitch = ({ item }) => (
-	<Route key={`/${item.id}`} exact path={`/${item.id}`}>
+	<Route key={`/${item.id}`} path={`/${item.id}`}>
 		<AppContextProvider pkg={item.id}>{item.sidebar && <item.sidebar />}</AppContextProvider>
 	</Route>
 );

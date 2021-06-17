@@ -21,7 +21,6 @@ import AppContextCacheProvider from './app-context-cache-provider';
 import { useUserAccounts } from '../store/shell-store-hooks';
 import { checkUpdate } from '../update-log/check-update';
 import ChangeLogModal from '../update-log/change-log-modal';
-import { useAppStore } from '../zustand/app/store';
 
 export default function AppLoaderContextProvider({ children }) {
 	const shellNetworkService = useShellNetworkService();

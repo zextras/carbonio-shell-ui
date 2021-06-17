@@ -12,15 +12,12 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormSubSection, Container, Text, Badge, Divider, Tooltip } from '@zextras/zapp-ui';
-import { AccountSettings } from '../../types';
-import { useUserAccounts } from '../shell/hooks';
+import { map } from 'lodash';
+import { useAppList } from '../app-store/hooks';
 
-const ModuleVersionSettings: FC<{
-	settings: AccountSettings;
-	addMod: (type: string, key: string, value: { value: any; app: string }) => void;
-}> = ({ settings, addMod }) => {
+const ModuleVersionSettings: FC = () => {
+	const apps = useAppList();
 	const [t] = useTranslation();
-	const accounts = useUserAccounts();
 
 	const copyToClipboard: any = (e: any) => {
 		e.preventDefault();
@@ -34,13 +31,13 @@ const ModuleVersionSettings: FC<{
 				minWidth="calc(min(100%, 512px))"
 				width="50%"
 			>
-				{accounts[0].apps.map((item: any) => (
-					<Container key={item.entryPoint} padding={{ horizontal: 'large', vertical: 'small' }}>
+				{map(apps, (app: any) => (
+					<Container key={app.core.package} padding={{ horizontal: 'large', vertical: 'small' }}>
 						<Container orientation="horizontal" mainAlignment="space-between">
-							<Text>{item.name}</Text>
+							<Text>{app.core.name}</Text>
 							<Tooltip placement="top" label="Click to copy">
 								<Text style={{ cursor: 'pointer' }} onClick={(e: any): any => copyToClipboard(e)}>
-									Version: {item.version}
+									Version: {app.core.version}
 								</Text>
 							</Tooltip>
 						</Container>
@@ -49,7 +46,8 @@ const ModuleVersionSettings: FC<{
 							mainAlignment="space-between"
 							padding={{ top: 'extrasmall', bottom: 'medium' }}
 						>
-							<Text color="secondary">{item.description}</Text>
+							<Text color="secondary">{app.core.description}</Text>
+							{/* TODO: with giuliano: remove the hardcoded colors and convert to a sc */}
 							<Badge value="Active" style={{ backgroundColor: '#8bc34a', color: 'white' }}></Badge>
 						</Container>
 						<Divider color="gray2" />

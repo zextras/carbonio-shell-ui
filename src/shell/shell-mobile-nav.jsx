@@ -13,7 +13,7 @@ import React, { useMemo } from 'react';
 import { map } from 'lodash';
 import { Accordion, Collapse, Container, Padding, Quota } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
-import { useAppList } from '../zustand/app/hooks';
+import { useAppList } from '../app-store/hooks';
 import { useUserAccounts } from '../store/shell-store-hooks';
 
 export default function ShellMobileNav({ mobileNavIsOpen, menuTree, quota }) {

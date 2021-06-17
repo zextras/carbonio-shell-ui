@@ -1,41 +1,58 @@
 {
     "changelog": {
-        "cancel": "Cancel",
-        "close": "Close",
-        "remind-later": "Remind Later",
-        "title": "Title"
+        "cancel": "",
+        "close": "",
+        "remind-later": "",
+        "title": ""
     },
-    "copyright": "Copyright",
+    "copyright": "",
     "login": {
-        "help": "Help",
-        "incorrect": "The username or password is incorrect",
-        "login": "Login",
-        "password": "Password",
-        "remember-me": "Remember me",
-        "supported-browsers": "Supported browsers",
-        "username": "Username",
-        "verify-caps-lock": "Verify that CAPS LOCK is not on, and then retype the current username and password"
+        "help": "",
+        "incorrect": "",
+        "login": "",
+        "password": "",
+        "remember-me": "",
+        "supported-browsers": "",
+        "username": "",
+        "verify-caps-lock": ""
     },
-    "logout": "Logout",
+    "logout": "",
     "logout-modal": {
-        "confirm": "Log me out",
-        "warning": "You are going to be logged-out"
+        "confirm": "",
+        "warning": ""
     },
     "module": {
         "app": {
-            "version": "Applications version"
+            "version": "Application versions"
         }
     },
     "new": "New",
-    "new-tab": "New tab",
+    "new-tab": "New Tab",
+    "settings": {
+        "app": "Settings",
+        "app_description": "Settings Module",
+        "button": {
+            "primary": "Save",
+            "secondary": "Cancel"
+        },
+        "general": {
+            "general": "General",
+            "theme_auto": "Auto",
+            "theme_disabled": "Disabled",
+            "theme_enabled": "Enabled",
+            "theme_mode": "Theme Mode",
+            "theme_options": "Theme Options"
+        },
+        "general_tab": "General"
+    },
     "supported_browsers": {
-        "chrome": "Chrome",
-        "edge": "Edge",
-        "firefox": "Firefox",
-        "ie_11_up": "Internet Explorer 11+",
-        "opera": "Opera",
-        "safari": "Safari",
-        "uc": "UC",
-        "yandex": "Yandex"
+        "chrome": "",
+        "edge": "",
+        "firefox": "",
+        "ie_11_up": "",
+        "opera": "",
+        "safari": "",
+        "uc": "",
+        "yandex": ""
     }
 }

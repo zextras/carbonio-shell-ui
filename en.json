@@ -54,5 +54,9 @@
         "safari": "",
         "uc": "",
         "yandex": ""
+    },
+    "user_quota": {
+        "limited": "",
+        "unlimited": "Congrats! Unlimited space available"
     }
 }

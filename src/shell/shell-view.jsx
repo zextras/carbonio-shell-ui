@@ -17,7 +17,6 @@ import { useTranslation } from 'react-i18next';
 import { find, get } from 'lodash';
 import AppViewContainer from './app-view-container';
 import ShellContextProvider from './shell-context-provider';
-import SharedUiComponentsContextProvider from '../shared-ui-components/shared-ui-components-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
 import ShellMenuPanel from './shell-menu-panel';
@@ -115,9 +114,7 @@ export function Shell() {
 export default function ShellView() {
 	return (
 		<ShellContextProvider>
-			<SharedUiComponentsContextProvider>
-				<Shell />
-			</SharedUiComponentsContextProvider>
+			<Shell />
 		</ShellContextProvider>
 	);
 }

@@ -9,7 +9,7 @@ import { AppData, AppsMap } from './store-types';
 // @ts-ignore
 import AppContextProvider from '../app/app-context-provider';
 
-export const getApp = (id: string): AppData => appStore.getState().apps[id];
+export const getApp = (id: string) => (): AppData => appStore.getState().apps[id];
 
 export const getApps = (): AppsMap => appStore.getState().apps;
 

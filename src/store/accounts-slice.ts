@@ -202,7 +202,6 @@ const doLoginFulfilled: CaseReducer<AccountsSlice, PayloadAction<[Account, Accou
 	state.status = 'idle';
 	state.accounts = [account];
 	state.credentials[account.id] = credentials;
-	console.log(account);
 	unstable_batchedUpdates(() => {
 		appStore.getState().setters.addApps(account.apps);
 	});

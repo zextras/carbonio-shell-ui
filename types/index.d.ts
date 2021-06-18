@@ -141,7 +141,6 @@ export function setMainMenuItems(items: MainMenuItemData[]): void;
 export function setRoutes(routes: AppRouteDescription[]): void;
 export function setCreateOptions(options: AppCreateOption[]): void;
 export function setAppContext(obj: any): void;
-export function addSharedUiComponent(scope: string, componentClass: ComponentClass): void;
 
 export const useAddSharedFunction: (
 	app: string
@@ -152,27 +151,28 @@ export const useSharedFunction: (id: string) => (args: unknown) => unknown | und
 export const fiberChannel: FC;
 export const fiberChannelSink: FCSink;
 
-export const hooks: {
-	useAddBoardCallback(): (path: string, context?: unknown | { app: string; title: string }) => void;
-	useGetBoardConfig(): () => unknown;
-	useAppContext<T>(): T;
-	useAppPkg(): AppPkgDescription;
-	useBehaviorSubject<T>(observable: BehaviorSubject<T>): T;
-	useFiberChannel(): FC;
-	useGoBackHistoryCallback(): void;
-	usePromise(): any;
-	usePushHistoryCallback(): (location: LocationDescriptor) => void;
-	useRemoveCurrentBoard(): () => void;
-	useReplaceHistoryCallback(): (location: LocationDescriptor) => void;
-	useSaveSettingsCallback(): (mods: {
-		props: Record<string, { value: any; app: string }>;
-		prefs: Record<string, any>;
-	}) => void;
-	useUserAccounts(): Account[];
-	useCSRFToken(): string;
-	useFirstSync(): any;
-	useCurrentSync(): any;
-};
+export const useAddBoardCallback: () => (
+	path: string,
+	context?: unknown | { app: string; title: string }
+) => void;
+export const useGetBoardConfig: () => () => unknown;
+export const useAppContext: <T>() => T;
+export const useAppPkg: () => AppPkgDescription;
+export const useBehaviorSubject: <T>(observable: BehaviorSubject<T>) => T;
+export const useFiberChannel: () => FC;
+export const useGoBackHistoryCallback: () => void;
+export const usePromise: () => any;
+export const usePushHistoryCallback: () => (location: LocationDescriptor) => void;
+export const useRemoveCurrentBoard: () => () => void;
+export const useReplaceHistoryCallback: () => (location: LocationDescriptor) => void;
+export const useSaveSettingsCallback: () => (mods: {
+	props: Record<string, { value: any; app: string }>;
+	prefs: Record<string, any>;
+}) => void;
+export const useUserAccounts: () => Account[];
+export const useCSRFToken: () => string;
+export const useFirstSync: () => any;
+export const useCurrentSync: () => any;
 
 export const ui: any;
 

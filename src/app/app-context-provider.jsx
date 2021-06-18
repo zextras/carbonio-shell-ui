@@ -20,34 +20,34 @@ import {
 } from '../bootstrap/bootstrapper-context';
 import AppErrorCatcher from './app-error-catcher';
 import { useAppContextCache } from './app-context-cache-context';
+import { useAppStore } from '../app-store';
 
 export default function AppContextProvider({ pkg, children }) {
 	const appContextCache = useAppContextCache();
 	const fiberChannelFactory = useFiberChannelFactory();
 	const i18nFactory = useI18nFactory();
 	const storeFactory = useStoreFactory();
-
+	const app = useAppStore((s) => s.apps[pkg]?.core);
 	const memoizedContextFcns = useMemo(
 		() => ({
-			pkg,
-			fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(pkg),
-			fiberChannel: fiberChannelFactory.getAppFiberChannel(pkg)
+			app,
+			fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(app),
+			fiberChannel: fiberChannelFactory.getAppFiberChannel(app)
 		}),
-		[pkg, fiberChannelFactory]
+		[app, fiberChannelFactory]
 	);
 
 	const value = useMemo(
 		() => ({
 			...memoizedContextFcns,
-			appCtxt: appContextCache[pkg.package]
+			appCtxt: appContextCache[app.package]
 		}),
-		[pkg, memoizedContextFcns, appContextCache]
+		[app, memoizedContextFcns, appContextCache]
 	);
 
-	const store = useMemo(() => storeFactory.getStoreForApp(pkg), [pkg, storeFactory]);
+	const store = useMemo(() => storeFactory.getStoreForApp(app), [app, storeFactory]);
 
-	const i18n = useMemo(() => i18nFactory.getAppI18n(pkg), [i18nFactory, pkg]);
-
+	const i18n = useMemo(() => i18nFactory.getAppI18n(app), [i18nFactory, app]);
 	return (
 		<Provider store={store}>
 			<AppContext.Provider value={value}>

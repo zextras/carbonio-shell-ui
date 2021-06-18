@@ -47,7 +47,6 @@ export default function AppContextWrapper({
 			entryPoint: new BehaviorSubject(null),
 			mainMenuItems: new BehaviorSubject([]),
 			routes: new BehaviorSubject([]),
-			sharedUiComponents: new BehaviorSubject({}),
 			store: configureStore({
 				devTools: {
 					name: _pkg.package

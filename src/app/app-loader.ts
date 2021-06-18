@@ -17,7 +17,7 @@ import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
 import { Reducer } from 'redux';
 import * as RxJS from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
-import React, { ComponentClass } from 'react';
+import React, { ComponentClass, FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import * as RxJSOperators from 'rxjs/operators';
 import * as ReactRouterDom from 'react-router-dom';
@@ -43,11 +43,10 @@ import { RichTextEditor } from '@zextras/zapp-ui/dist/zapp-ui.rich-text-editor';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
-import * as hooks from '../shell/hooks';
+
+import { LinkProps } from 'react-router-dom';
 import StoreFactory from '../store/store-factory';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import AppLink from './app-link';
+
 import { FC, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import ShellNetworkService from '../network/shell-network-service';
 import {
@@ -63,6 +62,10 @@ import {
 } from '../../types';
 import { appStore } from '../app-store';
 import { RuntimeAppData } from '../app-store/store-types';
+import { getAppGetters } from './app-loader-getters';
+import { getAppHooks } from './app-loader-hooks';
+import { getAppLink } from './app-link';
+import { Spinner } from '../shell/spinner';
 
 type IShellWindow<T, R> = Window & {
 	__ZAPP_SHARED_LIBRARIES__: T;
@@ -84,7 +87,7 @@ type SharedLibrariesAppsMap = {
 	'prop-types': unknown;
 	moment: unknown;
 	'@zextras/zapp-shell': {
-		[pkgName: string]: {
+		[pkgName: string]: unknown & {
 			// These signatures are in the documentation
 			// If changed update also the documentation.
 			store: {
@@ -98,7 +101,8 @@ type SharedLibrariesAppsMap = {
 			setAppContext: (obj: any) => void;
 			fiberChannel: FC;
 			fiberChannelSink: FCSink;
-			hooks: unknown;
+			AppLink: FunctionComponent<LinkProps>;
+			Spinner: FunctionComponent;
 		};
 	};
 	'@zextras/zapp-ui': unknown;
@@ -115,10 +119,6 @@ type SharedLibrariesThemesMap = {
 	'@zextras/zapp-ui': unknown;
 	msw?: unknown;
 	faker?: unknown;
-};
-
-type SharedUiComponentsDescriptor = {
-	[id: string]: { pkg: AppPkgDescription; versions: { [version: string]: FC } };
 };
 
 type LoadedAppRuntime = AppInjections & {
@@ -144,7 +144,6 @@ type AppInjections = {
 	mainMenuItems: BehaviorSubject<MainMenuItemData[]>;
 	routes: BehaviorSubject<AppRouteDescription[]>;
 	settingsRoutes: BehaviorSubject<AppSettingsRouteDescription[]>;
-	sharedUiComponents: BehaviorSubject<SharedUiComponentsDescriptor>;
 	store: Store<any>;
 };
 
@@ -200,10 +199,17 @@ function loadAppModule(
 				setAppContext: (obj: any): void => appContext.next(obj),
 				fiberChannel: fiberChannelFactory.getAppFiberChannel(appPkg),
 				fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(appPkg),
-				hooks,
 				network: {
 					soapFetch: shellNetworkService.getAppSoapFetch(appPkg)
-				}
+				},
+				AppLink: getAppLink(appPkg.package),
+				Spinner,
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				...getAppGetters(appPkg.package),
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				...getAppHooks(appPkg.package)
 			};
 
 			// eslint-disable-next-line max-len
@@ -314,7 +320,6 @@ function loadApp(
 	const settingsRoutes = new BehaviorSubject<AppSettingsRouteDescription[]>([]);
 	const createOptions = new BehaviorSubject<AppCreateOption[]>([]);
 	const appContext = new BehaviorSubject<any>({});
-	const sharedUiComponents = new BehaviorSubject<SharedUiComponentsDescriptor>({});
 	const entryPoint = new BehaviorSubject<ComponentClass | null>(null);
 	const store = storeFactory.getStoreForApp(pkg);
 	return (
@@ -327,7 +332,6 @@ function loadApp(
 				mainMenuItems,
 				routes,
 				settingsRoutes,
-				sharedUiComponents,
 				store
 			},
 			fiberChannelFactory,
@@ -367,7 +371,6 @@ function loadApp(
 							mainMenuItems,
 							routes,
 							settingsRoutes,
-							sharedUiComponents,
 							store
 					  }
 					: undefined
@@ -441,10 +444,7 @@ function injectSharedLibraries(): void {
 		lodash: Lodash,
 		rxjs: RxJS,
 		'rxjs/operators': RxJSOperators,
-		'react-router-dom': {
-			...ReactRouterDom,
-			Link: AppLink
-		},
+		'react-router-dom': ReactRouterDom,
 		moment: Moment,
 		'prop-types': PropTypes,
 		'styled-components': StyledComponents,

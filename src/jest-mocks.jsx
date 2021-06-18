@@ -17,12 +17,10 @@ import { MemoryRouter } from 'react-router-dom';
 import { ThemeProvider } from '@zextras/zapp-ui';
 import AppContextWrapper from './mocks/app-context-wrapper';
 import {
-	usePushHistoryCallback,
-	useReplaceHistoryCallback,
-	useAppContext,
+	getUsePushHistoryCallback,
+	getUseReplaceHistoryCallback,
 	useRemoveCurrentBoard
 } from './shell/hooks';
-import { useSharedComponent } from './shared-ui-components/use-shared-component';
 
 const confPath = `${process.cwd()}/zapp.conf.js`;
 // eslint-disable-next-line max-len
@@ -121,12 +119,10 @@ export const setAppContext = jest.fn(() => {});
 
 export const hooks = {
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	useReplaceHistoryCallback: jest.fn(useReplaceHistoryCallback),
-	usePushHistoryCallback: jest.fn(usePushHistoryCallback),
+	useReplaceHistoryCallback: jest.fn(getUseReplaceHistoryCallback('com_zextras_test')),
+	usePushHistoryCallback: jest.fn(getUsePushHistoryCallback('com_zextras_test')),
 	useUserAccounts: jest.fn(() => [{ name: '' }]),
-	useRemoveCurrentBoard: jest.fn(useRemoveCurrentBoard),
-	useSharedComponent: jest.fn(useSharedComponent),
-	useAppContext: jest.fn(useAppContext)
+	useRemoveCurrentBoard: jest.fn(useRemoveCurrentBoard)
 };
 
 export const useSharedFunction = jest.fn(() => jest.fn());

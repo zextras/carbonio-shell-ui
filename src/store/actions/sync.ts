@@ -18,7 +18,6 @@ export const sync = createAsyncThunk(
 		const { token } = getState().sync;
 		const csrfToken = selectCSRFToken(getState() as any);
 
-		console.log('Perform a Sync!');
 		const data = {
 			Body: {
 				SyncRequest: {

@@ -18,11 +18,14 @@ import { useUserAccounts } from '../store/shell-store-hooks';
 import { useApps } from '../app-store/hooks';
 import AppContextProvider from '../app/app-context-provider';
 
-const SidebarSwitch = ({ item }) => (
-	<Route key={`/${item.id}`} path={`/${item.id}`}>
-		<AppContextProvider pkg={item.id}>{item.sidebar && <item.sidebar />}</AppContextProvider>
-	</Route>
-);
+const SidebarSwitch = ({ item }) =>
+	item.sidebar ? (
+		<Route key={`/${item.id}`} path={`/${item.id}`}>
+			<AppContextProvider pkg={item.id}>
+				<item.sidebar />
+			</AppContextProvider>
+		</Route>
+	) : null;
 
 export default function ShellSecondaryBar({ navigationBarIsOpen, onCollapserClick, activeApp }) {
 	const apps = useApps();

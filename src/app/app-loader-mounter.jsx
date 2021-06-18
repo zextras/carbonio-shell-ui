@@ -50,7 +50,7 @@ export default function AppLoaderMounter() {
 				appsClasses,
 				(acc, { AppClass, pkg }) => {
 					acc.push(
-						<AppContextProvider key={pkg.package} pkg={pkg}>
+						<AppContextProvider key={pkg.package} pkg={pkg.package}>
 							<AppClass />
 						</AppContextProvider>
 					);

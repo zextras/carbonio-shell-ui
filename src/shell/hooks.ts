@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /*
  * *** BEGIN LICENSE BLOCK *****
  * Copyright (C) 2011-2020 Zextras
@@ -25,11 +26,7 @@ import { BoardSetterContext, BoardValueContext } from './boards/board-context';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import AppContext from '../app/app-context';
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export { useAppPkg, useAppContext, useFiberChannel } from '../app/app-context';
+export { useAppPkg, useFiberChannel } from '../app/app-context';
 
 export { default as usePromise } from 'react-use-promise';
 
@@ -41,27 +38,19 @@ export {
 	useFirstSync // @ts-ignore
 } from '../store/shell-store-hooks';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export { useSharedComponent } from '../shared-ui-components/use-shared-component';
-
-export function useAddBoardCallback(): (
+export const getUseAddBoardCallback = (appId: string) => (): ((
 	path: string,
-	context?: unknown | { app: string; title: string }
-) => void {
+	context?: unknown | { app: string }
+) => void) => {
 	const { addBoard } = useContext(BoardSetterContext);
-	const { pkg } = useContext(AppContext);
 	const callback = useCallback(
 		(path: string, context?: unknown | { app: string }) => {
-			addBoard(
-				`/${(context as { app: string; title: string })?.app ?? pkg.package}${path}`,
-				context
-			);
+			addBoard(`/${(context as { app: string; title: string })?.app ?? appId}${path}`, context);
 		},
-		[addBoard, pkg.package]
+		[addBoard]
 	);
 	return callback;
-}
+};
 
 export function useUpdateCurrentBoard(): (url: string, title: string) => void {
 	const { updateCurrentBoard } = useContext(BoardSetterContext);
@@ -81,40 +70,42 @@ export function useBoardConfig(): unknown {
 	return undefined;
 }
 
-export function usePushHistoryCallback(): (location: LocationDescriptor) => void {
-	const { pkg } = useContext(AppContext);
+export const getUsePushHistoryCallback = (appId: string) => (): ((
+	location: LocationDescriptor
+) => void) => {
 	const history = useHistory();
 	return useCallback(
 		(location: LocationDescriptor) => {
 			if (typeof location === 'string') {
-				history.push(`/${pkg.package}${location}`);
+				history.push(`/${appId}${location}`);
 			} else {
-				history.push({ ...location, pathname: `/${pkg.package}${location.pathname}` });
+				history.push({ ...location, pathname: `/${appId}${location.pathname}` });
 			}
 		},
-		[pkg, history]
+		[history]
 	);
-}
+};
 
 export function useGoBackHistoryCallback(): () => void {
 	const history = useHistory();
 	return useCallback(() => history.goBack(), [history]);
 }
 
-export function useReplaceHistoryCallback(): (location: LocationDescriptor) => void {
-	const { pkg } = useContext(AppContext);
+export const getUseReplaceHistoryCallback = (appId: string) => (): ((
+	location: LocationDescriptor
+) => void) => {
 	const history = useHistory();
 	return useCallback(
 		(location: LocationDescriptor) => {
 			if (typeof location === 'string') {
-				history.replace(`/${pkg.package}${location}`);
+				history.replace(`/${appId}${location}`);
 			} else {
-				history.replace({ ...location, pathname: `/${pkg.package}${location.pathname}` });
+				history.replace({ ...location, pathname: `/${appId}${location.pathname}` });
 			}
 		},
-		[pkg, history]
+		[history]
 	);
-}
+};
 
 export function useBehaviorSubject<T>(observable: BehaviorSubject<T>): T {
 	const [value, setValue] = useState(observable.getValue());

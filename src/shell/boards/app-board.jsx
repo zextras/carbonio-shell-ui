@@ -8,17 +8,14 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, { Suspense, useContext, useEffect, useMemo, useState } from 'react';
-import { Route, Router } from 'react-router-dom';
+import React, { useContext, useEffect, useMemo } from 'react';
+import { Route, Router, useHistory } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import styled from 'styled-components';
-import { reduce } from 'lodash';
-import { combineLatest } from 'rxjs';
-import { map as rxMap } from 'rxjs/operators';
-import { useAppsCache } from '../../app/app-loader-context';
-import LoadingView from '../../bootstrap/loading-view';
+import { map } from 'lodash';
 import AppContextProvider from '../../app/app-context-provider';
 import { BoardValueContext, BoardSetterContext } from './board-context';
+import { useApps } from '../../app-store/hooks';
 
 // eslint-disable-next-line
 const _container = styled.div`
@@ -31,58 +28,21 @@ const _container = styled.div`
 export default function AppBoard({ idx }) {
 	const { boards, currentBoard } = useContext(BoardValueContext);
 	const { updateBoard } = useContext(BoardSetterContext);
-	const { cache } = useAppsCache();
-	const [routes, setRoutes] = useState([]);
-
-	useEffect(() => {
-		const subscription = combineLatest(
-			reduce(
-				cache,
-				(acc, app) => {
-					acc.push(app.routes.pipe(rxMap((appRoutes) => ({ appRoutes, app }))));
-					return acc;
-				},
-				[]
-			)
-		).subscribe((allAppRoutes) => {
-			setRoutes(
-				reduce(
-					allAppRoutes,
-					(acc, { appRoutes, app }) => {
-						reduce(
-							appRoutes,
-							(r, appRoute) => {
-								const RouteView = appRoute.view;
-								r.push(
-									<Route
-										key={`${app.pkg.package}|${appRoute.route}`}
-										exact
-										path={`/${app.pkg.package}${appRoute.route}`}
-									>
-										<Suspense fallback={<LoadingView />}>
-											<AppContextProvider key={app.pkg.package} pkg={app.pkg}>
-												<RouteView />
-											</AppContextProvider>
-										</Suspense>
-									</Route>
-								);
-								return r;
-							},
-							acc
-						);
-						return acc;
-					},
-					[]
-				)
-			);
-		});
-
-		return () => {
-			if (subscription) {
-				subscription.unsubscribe();
-			}
-		};
-	}, [cache]);
+	const apps = useApps();
+	const windowHistory = useHistory();
+	const routes = useMemo(
+		() =>
+			map(apps, (app, appId) =>
+				app.views?.board ? (
+					<Route key={appId} path={`/${appId}`}>
+						<AppContextProvider key={appId} pkg={appId}>
+							<app.views.board windowHistory={windowHistory} />
+						</AppContextProvider>
+					</Route>
+				) : null
+			),
+		[apps, windowHistory]
+	);
 
 	const history = useMemo(() => createMemoryHistory(), []);
 	// eslint-disable-next-line

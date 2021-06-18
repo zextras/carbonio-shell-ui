@@ -14,7 +14,7 @@ import { screen } from '@testing-library/dom';
 import { testUtils } from '../jest-mocks';
 import AppLink from './app-link';
 
-describe('App Link', () => {
+describe.skip('App Link', () => {
 	test('Link without parameters', () => {
 		testUtils.render(<AppLink to="/destination">Link</AppLink>, {
 			packageName: 'com_example_app',

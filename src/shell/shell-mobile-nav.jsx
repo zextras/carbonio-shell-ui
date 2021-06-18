@@ -16,8 +16,15 @@ import { useHistory } from 'react-router-dom';
 import { useAppList } from '../app-store/hooks';
 import { useUserAccounts } from '../store/shell-store-hooks';
 import { UserQuota } from './user-quota';
+import AppContextProvider from '../app/app-context-provider';
 
-export default function ShellMobileNav({ mobileNavIsOpen, menuTree, quota }) {
+const SidebarComponent = ({ item }) =>
+	item.sidebar ? (
+		<AppContextProvider pkg={item.id}>
+			<item.sidebar />
+		</AppContextProvider>
+	) : null;
+export default function ShellMobileNav({ mobileNavIsOpen, menuTree }) {
 	const apps = useAppList();
 	const history = useHistory();
 	const accounts = useUserAccounts();
@@ -29,15 +36,19 @@ export default function ShellMobileNav({ mobileNavIsOpen, menuTree, quota }) {
 				icon: 'PersonOutline',
 				open: true,
 				items: map(apps, (app) => ({
-					id: app.core.package,
+					id: `${app.core.package}-wrap`,
 					label: app.core.name,
 					icon: app.icon,
 					onClick: () => history.push(`/${app.core.package}`),
-					items: app.views.sidebar
+					items: app.views?.sidebar
 						? [
 								{
-									id: `${app.core.package}-sidebar-view`,
-									CustomComponent: app.views?.sidebar
+									id: app.core.package,
+									label: app.core.name,
+									icon: app.icon,
+									onClick: () => history.push(`/${app.core.package}`),
+									sidebar: app.views?.sidebar,
+									CustomComponent: SidebarComponent
 								}
 						  ]
 						: []

@@ -13,32 +13,37 @@ import React, { FC, Suspense, useMemo, lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { map } from 'lodash';
 import LoadingView from '../bootstrap/loading-view';
-import { useAppList } from '../app-store/hooks';
+import { useApps } from '../app-store/hooks';
 import { SETTINGS_APP_ID } from '../constants';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import AppContextProvider from '../app/app-context-provider';
+import { Spinner } from '../shell/spinner';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const GeneralSettings = lazy(() => import('./general-settings'));
 
 export const SettingsAppView: FC = () => {
-	const apps = useAppList();
+	const apps = useApps();
 	const routes = useMemo(
 		() =>
-			map(apps, (app) =>
+			map(apps, (app, appId) =>
 				app.views?.settings ? (
-					<Route key={app.core.package} exact path={`/${SETTINGS_APP_ID}/${app.core.package}`}>
-						{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-						{/* @ts-ignore */}
-						<app.views.settings />
+					<Route key={appId} exact path={`/${SETTINGS_APP_ID}/${appId}`}>
+						<AppContextProvider pkg={appId}>
+							{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+							{/* @ts-ignore */}
+							<app.views.settings />
+						</AppContextProvider>
 					</Route>
 				) : null
 			),
 		[apps]
 	);
-	console.log(SETTINGS_APP_ID);
 	return (
 		<Switch>
 			<Route key={SETTINGS_APP_ID} exact path={`/${SETTINGS_APP_ID}`}>
-				<Suspense fallback={<LoadingView />}>
+				<Suspense fallback={<Spinner />}>
 					<GeneralSettings />
 				</Suspense>
 			</Route>

@@ -14,7 +14,7 @@ import { Row, Responsive } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { find, get } from 'lodash';
+import { find } from 'lodash';
 import AppViewContainer from './app-view-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
@@ -38,7 +38,7 @@ const Background = styled.div`
 	max-width: 100%;
 `;
 
-function DRListener() {
+function DarkReaderListener() {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
 	const [{ settings }] = useUserAccounts();
 	useEffect(() => {
@@ -87,7 +87,7 @@ export function Shell() {
 
 	return (
 		<Background>
-			<DRListener />
+			<DarkReaderListener />
 			<ShellHeader
 				userBarIsOpen={userOpen}
 				mobileNavIsOpen={mobileNavOpen}

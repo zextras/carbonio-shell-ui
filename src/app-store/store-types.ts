@@ -1,4 +1,3 @@
-import { Store } from '@reduxjs/toolkit';
 import { Component, FunctionComponent } from 'react';
 
 export type SharedAction = {
@@ -24,7 +23,6 @@ export type CoreAppData = {
 
 export type UninitializedAppData = {
 	core: CoreAppData;
-	redux?: Store;
 };
 
 export type RuntimeAppData = Partial<{

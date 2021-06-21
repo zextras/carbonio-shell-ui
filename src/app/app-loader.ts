@@ -62,7 +62,7 @@ import {
 } from '../../types';
 import { appStore } from '../app-store';
 import { RuntimeAppData } from '../app-store/store-types';
-import { getAppGetters } from './app-loader-getters';
+import { getAppGetters } from './app-loader-functions';
 import { getAppHooks } from './app-loader-hooks';
 import { getAppLink } from './app-link';
 import { Spinner } from '../shell/spinner';
@@ -94,9 +94,7 @@ type SharedLibrariesAppsMap = {
 				store: Store<any>;
 				setReducer(nextReducer: Reducer): void;
 			};
-			network: {
-				soapFetch: SoapFetch;
-			};
+			soapFetch: SoapFetch;
 			registerAppData: (data: RuntimeAppData) => void;
 			setAppContext: (obj: any) => void;
 			fiberChannel: FC;
@@ -199,9 +197,7 @@ function loadAppModule(
 				setAppContext: (obj: any): void => appContext.next(obj),
 				fiberChannel: fiberChannelFactory.getAppFiberChannel(appPkg),
 				fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(appPkg),
-				network: {
-					soapFetch: shellNetworkService.getAppSoapFetch(appPkg)
-				},
+				soapFetch: shellNetworkService.getAppSoapFetch(appPkg),
 				AppLink: getAppLink(appPkg.package),
 				Spinner,
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment

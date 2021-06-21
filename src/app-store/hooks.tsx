@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* THIS FILE CONTAINS HOOKS, BUT ESLINT IS DUMB */
 
-import { sortBy } from 'lodash';
-import React, { useMemo, FC } from 'react';
+import { sortBy, filter, find, map } from 'lodash';
+import React, { useMemo, FC, FunctionComponent } from 'react';
 import { useAppStore } from '.';
-import { AppData, AppsMap } from './store-types';
+import { AppData, AppsMap, IntegratedActionsMap, SharedAction } from './store-types';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppContextProvider from '../app/app-context-provider';
@@ -17,16 +17,32 @@ export const useAppList = (): Array<AppData> => useAppStore((s) => sortBy(s.apps
 
 export const useAppContext = (id: string) => (): unknown => useAppStore((s) => s.apps[id]?.context);
 
-export const useIntegratedHook = (id: string): unknown =>
-	useAppStore((s) => s.integrations.hooks[id]?.item);
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const useIntegratedHook = (id: string): [Function, boolean] => {
+	const integration = useAppStore((s) => s.integrations.hooks[id]?.item);
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
+	return integration ? [integration, true] : [(): void => {}, false];
+};
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const useIntegratedFunction = (id: string): [Function, boolean] => {
+	const integration = useAppStore((s) => s.integrations.functions[id]?.item);
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
+	return integration ? [integration, true] : [(): void => {}, false];
+};
+export const useIntegratedAction = (id: string): [SharedAction, boolean] => {
+	const integration = useAppStore((s) => s.integrations.actions[id]?.item);
+	return [integration ?? undefined, !!integration];
+};
 
-export const useIntegratedFunction = (id: string): unknown =>
-	useAppStore((s) => s.integrations.functions[id]?.item);
+export const useIntegratedActionsByType = (type: string): Array<SharedAction> =>
+	useAppStore((s) =>
+		map(
+			filter(s.integrations.actions, (action) => !!find(action.item.types ?? [], type)),
+			'item'
+		)
+	);
 
-export const useIntegratedAction = (id: string): unknown =>
-	useAppStore((s) => s.integrations.actions[id]?.item);
-
-export const useIntegratedComponent = (id: string): unknown => {
+export const useIntegratedComponent = (id: string): [FunctionComponent<unknown>, boolean] => {
 	const Integration = useAppStore((s) => s.integrations.components[id]);
 	return useMemo(() => {
 		if (Integration) {
@@ -37,8 +53,8 @@ export const useIntegratedComponent = (id: string): unknown => {
 					<Integration.item {...props} />
 				</AppContextProvider>
 			);
-			return C;
+			return [C, true];
 		}
-		return null;
+		return [(): null => null, false];
 	}, [Integration]);
 };

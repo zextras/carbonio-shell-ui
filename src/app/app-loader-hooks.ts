@@ -20,6 +20,7 @@ import {
 	useIntegratedHook,
 	useIntegratedFunction,
 	useIntegratedAction,
+	useIntegratedActionsByType,
 	useIntegratedComponent
 } from '../app-store/hooks';
 
@@ -34,6 +35,7 @@ export const getAppHooks = (pkg: string): unknown => ({
 	useIntegratedFunction,
 	useIntegratedAction,
 	useIntegratedComponent,
+	useIntegratedActionsByType,
 	useUserAccounts,
 	useCSRFToken,
 	useSaveSettingsCallback,

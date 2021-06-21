@@ -13,6 +13,7 @@ import React, { useCallback, useMemo, useReducer } from 'react';
 import { pickBy } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { BoardValueContext, BoardSetterContext } from './board-context';
+import { useContextBridge } from '../../app-store/context-bridge';
 
 function getRandomKey() {
 	return String(Date.now() * (Math.floor(Math.random() * 1000) + 1));
@@ -20,18 +21,17 @@ function getRandomKey() {
 const reducer = (state, action) => {
 	switch (action.type) {
 		case 'ADD_BOARD': {
-			const boardKey = getRandomKey();
 			const returnValue = {
 				...state,
 				boards: {
-					[boardKey]: {
+					[action.payload.boardKey]: {
 						url: action.payload.url,
 						title: action.payload.title,
 						context: action.payload.context
 					},
 					...state.boards
 				},
-				currentBoard: boardKey,
+				currentBoard: action.payload.boardKey,
 				minimized: false
 			};
 			return returnValue;
@@ -112,10 +112,12 @@ export default function BoardContextProvider({ children }) {
 
 	const addBoard = useCallback(
 		(url, context) => {
+			const boardKey = getRandomKey();
 			dispatch({
 				type: 'ADD_BOARD',
-				payload: { url, title: context?.title ?? t('new-tab', 'New Tab'), context }
+				payload: { url, title: context?.title ?? t('new-tab', 'New Tab'), context, boardKey }
 			});
+			return boardKey;
 		},
 		[t]
 	);
@@ -168,6 +170,25 @@ export default function BoardContextProvider({ children }) {
 			updateCurrentBoard
 		]
 	);
+
+	const cbFunctions = useMemo(
+		() => ({
+			packageDependentFunctions: {
+				addBoard: (pkg) => (path, context) => {
+					addBoard(`/${context?.app ?? pkg}${path}`, context);
+				}
+			},
+			functions: {
+				removeBoard,
+				removeCurrentBoard,
+				updateBoard,
+				setCurrentBoard,
+				updateCurrentBoard
+			}
+		}),
+		[addBoard, removeBoard, removeCurrentBoard, setCurrentBoard, updateBoard, updateCurrentBoard]
+	);
+	useContextBridge(cbFunctions);
 
 	return (
 		<BoardValueContext.Provider value={boardState}>

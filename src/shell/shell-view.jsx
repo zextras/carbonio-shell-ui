@@ -51,9 +51,12 @@ function DarkReaderListener() {
 }
 
 const MainAppRerouter = () => {
+	const accounts = useUserAccounts();
 	const apps = useAppList();
 	const first = useMemo(() => filter(apps, (app) => !!app.views?.app)[0], [apps]);
-	return first ? <Redirect from="/" to={`/${first?.core?.package}`} /> : null;
+	return accounts.length > 0 && first ? (
+		<Redirect from="/" to={`/${first?.core?.package}`} />
+	) : null;
 };
 
 export function Shell() {

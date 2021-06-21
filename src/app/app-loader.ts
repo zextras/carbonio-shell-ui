@@ -66,6 +66,7 @@ import { getAppGetters } from './app-loader-functions';
 import { getAppHooks } from './app-loader-hooks';
 import { getAppLink } from './app-link';
 import { Spinner } from '../shell/spinner';
+import { ZIMBRA_STANDARD_COLORS, FOLDERS } from '../constants';
 
 type IShellWindow<T, R> = Window & {
 	__ZAPP_SHARED_LIBRARIES__: T;
@@ -101,6 +102,8 @@ type SharedLibrariesAppsMap = {
 			fiberChannelSink: FCSink;
 			AppLink: FunctionComponent<LinkProps>;
 			Spinner: FunctionComponent;
+			FOLDERS: Record<string, string>;
+			ZIMBRA_STANDARD_COLORS: Array<{ zValue: number; hex: string; zLabel: string }>;
 		};
 	};
 	'@zextras/zapp-ui': unknown;
@@ -201,6 +204,8 @@ function loadAppModule(
 				soapFetch: shellNetworkService.getAppSoapFetch(appPkg),
 				AppLink: getAppLink(appPkg.package),
 				Spinner,
+				FOLDERS,
+				ZIMBRA_STANDARD_COLORS,
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
 				...getAppGetters(appPkg.package),

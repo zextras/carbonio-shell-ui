@@ -16,6 +16,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { LocationDescriptor } from 'history';
 import { Store } from '@reduxjs/toolkit';
 import { LinkProps } from 'react-router-dom';
+import { number, string } from 'prop-types';
 
 export type SharedAction = {
 	id: string;
@@ -317,3 +318,28 @@ export const useSaveSettingsCallback: () => (mods: {
 }) => void;
 export const useUpdateCurrentBoard: () => (url: string, title: string) => void;
 export const useUserAccounts: () => Account[];
+
+// it's an eslint bug
+// eslint-disable-next-line no-shadow
+export const ZIMBRA_STANDARD_COLORS: Array<{ zValue: number; hex: string; zLabel: string }>;
+
+// it's an eslint bug
+// eslint-disable-next-line no-shadow
+export enum FOLDERS {
+	USER_ROOT = '1',
+	INBOX = '2',
+	TRASH = '3',
+	SPAM = '4',
+	SENT = '5',
+	DRAFTS = '6',
+	CONTACTS = '7',
+	TAGS = '8',
+	CONVERSATIONS = '9',
+	CALENDAR = '10',
+	ROOT = '11',
+	NOTEBOOK = '12', // no longer created in new mailboxes since Helix (bug 39647).  old mailboxes may still contain a system folder with id 12
+	AUTO_CONTACTS = '13',
+	IM_LOGS = '14',
+	TASKS = '15',
+	BRIEFCASE = '16'
+}

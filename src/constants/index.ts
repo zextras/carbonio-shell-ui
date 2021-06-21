@@ -45,5 +45,3 @@ export const FOLDERS = {
 };
 
 export const SETTINGS_APP_ID = 'com_zextras_zapp_settings';
-
-export const ROOT_PATH = '/';

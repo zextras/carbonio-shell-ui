@@ -1,29 +1,29 @@
 {
     "changelog": {
-        "cancel": "",
-        "close": "",
-        "remind-later": "",
-        "title": ""
+        "cancel": "Cancel",
+        "close": "Close",
+        "remind-later": "Remind Later",
+        "title": "Title"
     },
-    "copyright": "",
+    "copyright": "Copyright",
     "login": {
-        "help": "",
-        "incorrect": "",
-        "login": "",
-        "password": "",
-        "remember-me": "",
-        "supported-browsers": "",
-        "username": "",
-        "verify-caps-lock": ""
+        "help": "Help",
+        "incorrect": "The username or password is incorrect",
+        "login": "Login",
+        "password": "Password",
+        "remember-me": "Remember me",
+        "supported-browsers": "Supported browsers",
+        "username": "Username",
+        "verify-caps-lock": "Verify that CAPS LOCK is not on, and then retype the current username and password"
     },
-    "logout": "",
+    "logout": "Logout",
     "logout-modal": {
-        "confirm": "",
-        "warning": ""
+        "confirm": "Log me out",
+        "warning": "You are going to be logged-out"
     },
     "module": {
         "app": {
-            "version": "Application versions"
+            "version": "Applications version"
         }
     },
     "new": "New",
@@ -46,14 +46,14 @@
         "general_tab": "General"
     },
     "supported_browsers": {
-        "chrome": "",
-        "edge": "",
-        "firefox": "",
-        "ie_11_up": "",
-        "opera": "",
-        "safari": "",
-        "uc": "",
-        "yandex": ""
+        "chrome": "Chrome",
+        "edge": "Edge",
+        "firefox": "Firefox",
+        "ie_11_up": "Internet Explorer 11+",
+        "opera": "Opera",
+        "safari": "Safari",
+        "uc": "UC",
+        "yandex": "Yandex"
     },
     "user_quota": {
         "limited": "",

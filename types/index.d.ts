@@ -1,6 +1,6 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 Zextras
+ * Copyright (C) 2011-2021 Zextras
  *
  *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
@@ -261,6 +261,7 @@ export const store: {
 	store: Store<any>;
 	setReducer(nextReducer: Reducer): void;
 };
+export const registerIntegrations: (data: IntegrationsRegister) => void;
 export const registerAppData: (data: Partial<RuntimeAppData>) => void;
 export const setAppContext: <T>(obj: T) => void;
 export const soapFetch: SoapFetch;

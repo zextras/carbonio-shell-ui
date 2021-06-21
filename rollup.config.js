@@ -1,6 +1,6 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 Zextras
+ * Copyright (C) 2011-2021 Zextras
  *
  *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
@@ -26,14 +26,8 @@ export default {
 		babel({
 			babelHelpers: 'runtime',
 			extensions: ['.js', '.jsx', '.ts', '.tsx'],
-			presets: [
-				'@babel/preset-react',
-				'@babel/preset-typescript'
-			],
-			plugins: [
-				'@babel/plugin-proposal-class-properties',
-				'babel-plugin-styled-components'
-			],
+			presets: ['@babel/preset-react', '@babel/preset-typescript'],
+			plugins: ['@babel/plugin-proposal-class-properties', 'babel-plugin-styled-components'],
 			ignore: ['node_modules']
 		})
 	],

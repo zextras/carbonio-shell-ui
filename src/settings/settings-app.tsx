@@ -15,7 +15,7 @@ import { SETTINGS_APP_ID } from '../constants';
 import { CoreAppData } from '../app-store/store-types';
 
 export const getSettingsCore = (t: TFunction): CoreAppData => ({
-	priority: 100,
+	priority: -1,
 	package: SETTINGS_APP_ID,
 	name: t('settings.app', 'Settings'),
 	description: t('settings.app_description', 'Settings Module'),

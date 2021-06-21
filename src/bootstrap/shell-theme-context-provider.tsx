@@ -1,5 +1,15 @@
+/*
+ * *** BEGIN LICENSE BLOCK *****
+ * Copyright (C) 2011-2021 Zextras
+ *
+ *  The contents of this file are subject to the Zextras EULA;
+ * you may not use this file except in compliance with the EULA.
+ * You may obtain a copy of the EULA at
+ * http://www.zextras.com/zextras-eula.html
+ * *** END LICENSE BLOCK *****
+ */
 import React, { createContext, FC, useCallback, useEffect, useState } from 'react';
-import { ThemeProvider as UIThemeProvider, SnackbarManager, ModalManager } from '@zextras/zapp-ui';
+import { ThemeProvider as UIThemeProvider } from '@zextras/zapp-ui';
 import { enable, disable, auto } from 'darkreader';
 import { reduce } from 'lodash';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -53,9 +63,7 @@ export const ThemeProvider: FC = ({ children }) => {
 	return (
 		<UIThemeProvider extension={aggregatedExtensions}>
 			<ThemeCallbacksContext.Provider value={{ addExtension, setDarkReaderState }}>
-				<ModalManager>
-					<SnackbarManager>{children}</SnackbarManager>
-				</ModalManager>
+				{children}
 			</ThemeCallbacksContext.Provider>
 		</UIThemeProvider>
 	);

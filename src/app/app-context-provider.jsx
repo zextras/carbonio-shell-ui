@@ -1,6 +1,6 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 Zextras
+ * Copyright (C) 2011-2021 Zextras
  *
  *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
@@ -12,6 +12,7 @@
 import React, { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
+import { ModalManager, SnackbarManager } from '@zextras/zapp-ui';
 import AppContext from './app-context';
 import {
 	useFiberChannelFactory,
@@ -52,7 +53,11 @@ export default function AppContextProvider({ pkg, children }) {
 		<Provider store={store}>
 			<AppContext.Provider value={value}>
 				<I18nextProvider i18n={i18n}>
-					<AppErrorCatcher>{children}</AppErrorCatcher>
+					<ModalManager>
+						<SnackbarManager>
+							<AppErrorCatcher>{children}</AppErrorCatcher>
+						</SnackbarManager>
+					</ModalManager>
 				</I18nextProvider>
 			</AppContext.Provider>
 		</Provider>

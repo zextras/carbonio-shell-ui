@@ -1,6 +1,6 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 Zextras
+ * Copyright (C) 2011-2021 Zextras
  *
  *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
@@ -10,8 +10,8 @@
  */
 
 import React, { useCallback, useEffect, useMemo, useState, useContext } from 'react';
-import { Row, Responsive } from '@zextras/zapp-ui';
-import { useHistory } from 'react-router-dom';
+import { Row, Responsive, ModalManager, SnackbarManager } from '@zextras/zapp-ui';
+import { useHistory, useRouteMatch, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { find } from 'lodash';
@@ -25,6 +25,7 @@ import { ThemeCallbacksContext } from '../bootstrap/shell-theme-context-provider
 import { useDispatch, useSessionState, useUserAccounts } from '../store/shell-store-hooks';
 import { verifySession } from '../store/session-slice';
 import { doLogout } from '../store/accounts-slice';
+import { useAppList } from '../app-store/hooks';
 
 const Background = styled.div`
 	background: ${({ theme }) => theme.palette.gray6.regular};
@@ -48,6 +49,11 @@ function DarkReaderListener() {
 	}, [setDarkReaderState, settings]);
 	return null;
 }
+
+const MainAppRerouter = () => {
+	const first = useAppList()?.[0];
+	return first ? <Redirect from="/" to={`/${first?.core.package}`} /> : null;
+};
 
 export function Shell() {
 	const history = useHistory();
@@ -88,6 +94,7 @@ export function Shell() {
 	return (
 		<Background>
 			<DarkReaderListener />
+			<MainAppRerouter />
 			<ShellHeader
 				userBarIsOpen={userOpen}
 				mobileNavIsOpen={mobileNavOpen}
@@ -114,7 +121,11 @@ export function Shell() {
 export default function ShellView() {
 	return (
 		<ShellContextProvider>
-			<Shell />
+			<ModalManager>
+				<SnackbarManager>
+					<Shell />
+				</SnackbarManager>
+			</ModalManager>
 		</ShellContextProvider>
 	);
 }

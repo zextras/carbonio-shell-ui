@@ -1,6 +1,6 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 Zextras
+ * Copyright (C) 2011-2021 Zextras
  *
  *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
@@ -10,13 +10,7 @@
  */
 
 import { RenderOptions, RenderResult } from '@testing-library/react';
-import React, {
-	ComponentClass,
-	FunctionComponent,
-	LazyExoticComponent,
-	Component,
-	FunctionComponent
-} from 'react';
+import React, { LazyExoticComponent, Component, FunctionComponent } from 'react';
 import { Reducer } from 'redux';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LocationDescriptor } from 'history';
@@ -261,6 +255,7 @@ export const store: {
 	store: Store<any>;
 	setReducer(nextReducer: Reducer): void;
 };
+export const registerIntegrations: (data: IntegrationsRegister) => void;
 export const registerAppData: (data: Partial<RuntimeAppData>) => void;
 export const setAppContext: <T>(obj: T) => void;
 export const soapFetch: SoapFetch;

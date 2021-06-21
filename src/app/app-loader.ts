@@ -195,7 +195,7 @@ function loadAppModule(
 				},
 				registerAppData: appStore.getState().setters.registerAppData(appPkg.package),
 				registerIntegrations: appStore.getState().setters.registerIntegrations(appPkg.package),
-				setAppContext: (obj: any): void => appContext.next(obj),
+				setAppContext: appStore.getState().setters.setAppContext(appPkg.package),
 				fiberChannel: fiberChannelFactory.getAppFiberChannel(appPkg),
 				fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(appPkg),
 				soapFetch: shellNetworkService.getAppSoapFetch(appPkg),

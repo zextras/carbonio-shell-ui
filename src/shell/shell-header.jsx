@@ -47,10 +47,10 @@ export default function ShellHeader({
 						acc.push({ type: 'divider', id: key, key });
 					}
 					acc.push(
-						map(app.newButton?.secondaryItems, (item) => ({
+						...map(app.newButton?.secondaryItems, (item) => ({
 							...item,
 							key: item.id,
-							disabled: item.disabled || item.getDisabledState()
+							disabled: item.disabled || item.getDisabledState?.()
 						}))
 					);
 				}

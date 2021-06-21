@@ -14,7 +14,7 @@ import { Row, Responsive, ModalManager, SnackbarManager } from '@zextras/zapp-ui
 import { useHistory, useRouteMatch, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { find } from 'lodash';
+import { find, filter } from 'lodash';
 import AppViewContainer from './app-view-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
@@ -51,8 +51,9 @@ function DarkReaderListener() {
 }
 
 const MainAppRerouter = () => {
-	const first = useAppList()?.[0];
-	return first ? <Redirect from="/" to={`/${first?.core.package}`} /> : null;
+	const apps = useAppList();
+	const first = useMemo(() => filter(apps, (app) => !!app.views?.app)[0], [apps]);
+	return first ? <Redirect from="/" to={`/${first?.core?.package}`} /> : null;
 };
 
 export function Shell() {

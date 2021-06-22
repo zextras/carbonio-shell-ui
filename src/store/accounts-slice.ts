@@ -328,7 +328,7 @@ export const modifyPrefs = createAsyncThunk<any, ModifyPrefsArgs>(
 								mods.permissions.freeBusy.new.gt === 'all' &&
 								mods.permissions.freeBusy.new.deny
 							) {
-								return `<ace right="viewFreeBusy" gt="${mods.permissions.freeBusy.new.gt}" deny=1/>`;
+								return `<ace right="viewFreeBusy" gt="${mods.permissions.freeBusy.new.gt}" deny="1"/>`;
 							}
 							if (mods.permissions.freeBusy.new.gt === 'usr') {
 								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -349,7 +349,7 @@ export const modifyPrefs = createAsyncThunk<any, ModifyPrefsArgs>(
 								mods.permissions.inviteRight.new.gt === 'all' &&
 								mods.permissions.inviteRight.new.deny
 							) {
-								return `<ace right="invite" gt="${mods.permissions.inviteRight.new.gt}" deny=1/>`;
+								return `<ace right="invite" gt="${mods.permissions.inviteRight.new.gt}" deny="1"/>`;
 							}
 							if (mods.permissions.inviteRight.new.gt === 'usr') {
 								// eslint-disable-next-line @typescript-eslint/ban-ts-comment

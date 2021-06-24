@@ -1,6 +1,6 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 Zextras
+ * Copyright (C) 2011-2021 Zextras
  *
  *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
@@ -10,14 +10,13 @@
  */
 
 import React, { useCallback, useEffect, useMemo, useState, useContext } from 'react';
-import { Row, Responsive } from '@zextras/zapp-ui';
-import { useHistory } from 'react-router-dom';
+import { Row, Responsive, ModalManager, SnackbarManager } from '@zextras/zapp-ui';
+import { useHistory, useRouteMatch, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
-import { find } from 'lodash';
-import BoardsRouterContainer from './boards/boards-router-container';
+import { find, filter } from 'lodash';
+import AppViewContainer from './app-view-container';
 import ShellContextProvider from './shell-context-provider';
-import SharedUiComponentsContextProvider from '../shared-ui-components/shared-ui-components-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
 import ShellMenuPanel from './shell-menu-panel';
@@ -26,6 +25,7 @@ import { ThemeCallbacksContext } from '../bootstrap/shell-theme-context-provider
 import { useDispatch, useSessionState, useUserAccounts } from '../store/shell-store-hooks';
 import { verifySession } from '../store/session-slice';
 import { doLogout } from '../store/accounts-slice';
+import { useAppList } from '../app-store/hooks';
 
 const Background = styled.div`
 	background: ${({ theme }) => theme.palette.gray6.regular};
@@ -39,7 +39,7 @@ const Background = styled.div`
 	max-width: 100%;
 `;
 
-function DRListener() {
+function DarkReaderListener() {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
 	const [{ settings }] = useUserAccounts();
 	useEffect(() => {
@@ -49,6 +49,15 @@ function DRListener() {
 	}, [setDarkReaderState, settings]);
 	return null;
 }
+
+const MainAppRerouter = () => {
+	const accounts = useUserAccounts();
+	const apps = useAppList();
+	const first = useMemo(() => filter(apps, (app) => !!app.views?.app)[0], [apps]);
+	return accounts.length > 0 && first ? (
+		<Redirect from="/" to={`/${first?.core?.package}`} />
+	) : null;
+};
 
 export function Shell() {
 	const history = useHistory();
@@ -69,24 +78,8 @@ export function Shell() {
 		[dispatch, history]
 	);
 
-	const quota = 30;
-
-	// const toggleDarkMode = useCallback(
-	// 	(ev) => {
-	// 		ev.preventDefault();
-	// 		if (themeVariant === THEME_MODE.LIGHT) setThemeMode(THEME_MODE.DARK);
-	// 		else setThemeMode(THEME_MODE.LIGHT);
-	// 	},
-	// 	[themeVariant, setThemeMode]
-	// );
-
 	const userMenuTree = useMemo(
 		() => [
-			// {
-			// 	label: themeVariant === THEME_MODE.LIGHT ? t('theme-switch.dark') : t('theme-switch.light'),
-			// 	icon: themeVariant === THEME_MODE.LIGHT ? 'MoonOutline' : 'SunOutline',
-			// 	onClick: toggleDarkMode
-			// },
 			{
 				label: t('logout'),
 				icon: 'LogOut',
@@ -104,13 +97,13 @@ export function Shell() {
 
 	return (
 		<Background>
-			<DRListener />
+			<DarkReaderListener />
+			<MainAppRerouter />
 			<ShellHeader
 				userBarIsOpen={userOpen}
 				mobileNavIsOpen={mobileNavOpen}
 				onMobileMenuClick={() => setMobileNavOpen(!mobileNavOpen)}
 				onUserClick={() => setUserOpen(!userOpen)}
-				quota={quota}
 			/>
 			<Row crossAlignment="unset" flexGrow="1" style={{ position: 'relative' }}>
 				<ShellNavigationBar
@@ -118,9 +111,8 @@ export function Shell() {
 					mobileNavIsOpen={mobileNavOpen}
 					onCollapserClick={() => setNavOpen(!navOpen)}
 					userMenuTree={userMenuTree}
-					quota={quota}
 				/>
-				<BoardsRouterContainer />
+				<AppViewContainer />
 				<ShellMenuPanel menuIsOpen={userOpen} tree={userMenuTree} />
 			</Row>
 			<Responsive mode="desktop">
@@ -133,9 +125,11 @@ export function Shell() {
 export default function ShellView() {
 	return (
 		<ShellContextProvider>
-			<SharedUiComponentsContextProvider>
-				<Shell />
-			</SharedUiComponentsContextProvider>
+			<ModalManager>
+				<SnackbarManager>
+					<Shell />
+				</SnackbarManager>
+			</ModalManager>
 		</ShellContextProvider>
 	);
 }

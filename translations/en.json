@@ -27,22 +27,23 @@
         }
     },
     "new": "New",
-    "new-tab": "New tab",
+    "new-tab": "New Tab",
     "settings": {
+        "app": "Settings",
+        "app_description": "Settings Module",
         "button": {
             "primary": "Save",
             "secondary": "Cancel"
-        }
-    },
-    "settins": {
+        },
         "general": {
-            "general": "General Settings",
+            "general": "General",
             "theme_auto": "Auto",
-            "theme_disabled": "Light Mode",
-            "theme_enabled": "Dark Mode",
+            "theme_disabled": "Disabled",
+            "theme_enabled": "Enabled",
             "theme_mode": "Theme Mode",
             "theme_options": "Theme Options"
-        }
+        },
+        "general_tab": "General"
     },
     "supported_browsers": {
         "chrome": "Chrome",
@@ -53,5 +54,9 @@
         "safari": "Safari",
         "uc": "UC",
         "yandex": "Yandex"
+    },
+    "user_quota": {
+        "limited": "",
+        "unlimited": "Congrats! Unlimited space available"
     }
 }

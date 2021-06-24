@@ -8,20 +8,25 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, FC } from 'react';
 import { Breadcrumbs, Button, Container, Divider, Padding } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { set } from 'lodash';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { useDispatch } from '../store/shell-store-hooks';
 import { modifyPrefs } from '../store/accounts-slice';
 import AppearanceSettings from './appearance-settings';
 import ModuleVersionSettings from './module-version-settings';
 import { useUserAccounts } from '../shell/hooks';
-// import { useUserAccounts, useDispatch } from '../store/shell-store-hooks';
-// import { modifyPrefs } from '../store/accounts-slice';
+import { SETTINGS_APP_ID } from '../constants';
 
-export const DisplayerHeader = ({ label, onCancel, onSave, mods }) => {
+export const DisplayerHeader: FC<{
+	label: string;
+	onCancel: (mods: Record<string, unknown>) => void;
+	onSave: (mods: Record<string, unknown>) => void;
+	mods: Record<string, unknown>;
+}> = ({ label, onCancel, onSave, mods }) => {
 	const [t] = useTranslation();
 	const history = useHistory();
 	const onSaveCb = useCallback(() => {
@@ -30,17 +35,16 @@ export const DisplayerHeader = ({ label, onCancel, onSave, mods }) => {
 	const onCancelCb = useCallback(() => {
 		onCancel(mods);
 	}, [mods, onCancel]);
-
 	const crumbs = [
 		{
 			id: 'settings',
-			label: 'Settings',
-			click: () => history.push('/com_zextras_zapp_settings/general')
+			label: t('settings.app', 'Settings'),
+			click: (): void => history.push(`/${SETTINGS_APP_ID}/`)
 		},
 		{
 			id: 'general',
 			label,
-			click: () => history.push('/com_zextras_zapp_settings/general')
+			click: (): void => history.push(`/${SETTINGS_APP_ID}/`)
 		}
 	];
 
@@ -54,14 +58,14 @@ export const DisplayerHeader = ({ label, onCancel, onSave, mods }) => {
 			<Container mainAlignment="flex-end" orientation="horizontal" padding={{ all: 'small' }}>
 				<Breadcrumbs crumbs={crumbs} />
 				<Button
-					label={t('settings.button.secondary')}
+					label={t('settings.button.secondary', 'Cancel')}
 					color="secondary"
 					onClick={onCancelCb}
 					disabled={!mods}
 				/>
 				<Padding horizontal="small" />
 				<Button
-					label={t('settings.button.primary')}
+					label={t('settings.button.primary', 'Save')}
 					color="primary"
 					onClick={onSaveCb}
 					disabled={!mods}
@@ -72,13 +76,21 @@ export const DisplayerHeader = ({ label, onCancel, onSave, mods }) => {
 	);
 };
 
-const GeneralSettings = () => {
-	const [mods, setMods] = useState({});
+type PropsMods = Record<string, { app: string; value: unknown }>;
+type PrefsMods = Record<string, unknown>;
+
+type Mods = {
+	props?: PropsMods;
+	prefs?: PrefsMods;
+};
+
+const GeneralSettings: FC = () => {
+	const [mods, setMods] = useState<Mods>({});
 	const [t] = useTranslation();
 	const [acct] = useUserAccounts();
 	const [original] = useState(acct.settings);
 	const dispatch = useDispatch();
-	const addMod = useCallback((type, key, value) => {
+	const addMod = useCallback((type: 'props' | 'prefs', key, value) => {
 		setMods((m) => ({
 			...m,
 			[type]: {
@@ -88,6 +100,8 @@ const GeneralSettings = () => {
 		}));
 	}, []);
 	const onSave = useCallback(() => {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
 		dispatch(modifyPrefs(mods));
 		setMods({});
 	}, [dispatch, mods]);
@@ -99,7 +113,7 @@ const GeneralSettings = () => {
 			<Container background="gray5" mainAlignment="flex-start" padding={{ all: 'medium' }}>
 				<DisplayerHeader
 					mods={mods}
-					label={t('settins.general.general', 'General Settings')}
+					label={t('settings.general.general', 'General Settings')}
 					onCancel={onCancel}
 					onSave={onSave}
 				/>

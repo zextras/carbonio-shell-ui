@@ -1,6 +1,6 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 Zextras
+ * Copyright (C) 2011-2021 Zextras
  *
  *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
@@ -30,9 +30,11 @@ export default function AppLoaderContextProvider({ children }) {
 	const [[appsCache, appsLoaded], setAppsCache] = useState([{}, false]);
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
 	const [[themesCache, themesLoaded], setThemeCache] = useState([{}, false]);
-
 	useEffect(() => {
-		console.log('Accounts changed, un/loading Apps and Themes!');
+		console.log(
+			'%cAccounts changed, un/loading Apps and Themes',
+			'font-size: 1.1rem; color: darkred; background: lightgray; padding: 0.2rem'
+		);
 		let canSet = true;
 		if (accounts.length < 1) {
 			unloadAppsAndThemes()
@@ -51,10 +53,12 @@ export default function AppLoaderContextProvider({ children }) {
 					])
 				)
 				.then(([_appsCache, _themesCache]) => {
-					if (!canSet) return;
-					setShowUpdateModal(checkUpdate());
-					setAppsCache([_appsCache, true]);
-					// setThemeCache([_themesCache, true]);
+					if (canSet) {
+						setShowUpdateModal(checkUpdate());
+						setAppsCache([_appsCache, true]);
+						// setThemeCache([_themesCache, true]);
+					}
+					return _appsCache;
 				});
 		}
 		return () => {

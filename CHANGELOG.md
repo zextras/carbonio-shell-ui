@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.26](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.25...v0.1.0-beta.26) (2021-06-22)
+
+
+### Features
+
+* permission settings soap request  added ([b94970c](https://bitbucket.org/zextras/zapp-shell/commit/b94970c4541ced08d79d3c7ff75484680dd5b191))
+
 ## [0.1.0-beta.25](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.24...v0.1.0-beta.25) (2021-06-14)
 
 

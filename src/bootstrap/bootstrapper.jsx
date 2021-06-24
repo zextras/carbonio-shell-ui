@@ -1,6 +1,6 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 Zextras
+ * Copyright (C) 2011-2021 Zextras
  *
  *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
@@ -9,7 +9,8 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ThemeProvider } from './shell-theme-context-provider';
 import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-context-provider';
@@ -18,6 +19,28 @@ import FiberChannelFactory from '../fiberchannel/fiber-channel';
 import I18nFactory from '../i18n/i18n-factory';
 import createShellStore from '../store/create-shell-store';
 import StoreFactory from '../store/store-factory';
+import { useAppStore } from '../app-store';
+import { useUserAccounts } from '../store/shell-store-hooks';
+import { settingsAppData, getSettingsCore } from '../settings/settings-app';
+import { SETTINGS_APP_ID } from '../constants';
+
+const AppStoreInterface = () => {
+	const { addApps, registerAppData } = useAppStore((s) => s.setters);
+	const accounts = useUserAccounts();
+	const [status, setStatus] = useState(0);
+	const [t] = useTranslation();
+	useEffect(() => {
+		if (accounts && accounts.length > 0 && status === 0) {
+			addApps([...accounts[0].apps, getSettingsCore(t)]);
+			setStatus(1);
+		}
+		if (status === 1) {
+			registerAppData(SETTINGS_APP_ID)(settingsAppData);
+			setStatus(2);
+		}
+	}, [accounts, addApps, status, registerAppData, t]);
+	return null;
+};
 
 export default function bootstrapper(onBeforeBoot) {
 	const { shellStore, shellStorePersistor } = createShellStore(true);
@@ -61,6 +84,7 @@ export default function bootstrapper(onBeforeBoot) {
 							storeFactory={_storeFactory}
 							shellStorePersistor={shellStorePersistor}
 						>
+							<AppStoreInterface />
 							<BootstrapperRouter />
 						</BootstrapperContextProvider>
 					</ThemeProvider>

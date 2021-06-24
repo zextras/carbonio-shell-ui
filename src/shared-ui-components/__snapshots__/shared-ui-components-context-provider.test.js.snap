@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Shared UI Components Context Provider Merge all App Registered UI Components 1`] = `
-<div>
-  Tester scopes: 
-</div>
-`;

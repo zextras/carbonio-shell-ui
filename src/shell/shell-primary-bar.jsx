@@ -1,6 +1,6 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 Zextras
+ * Copyright (C) 2011-2021 Zextras
  *
  *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
@@ -13,7 +13,9 @@ import { Container, IconButton, Row } from '@zextras/zapp-ui';
 import { map, isEmpty } from 'lodash';
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import { BoardValueContext, BoardSetterContext } from './boards/board-context';
+import { useAppList } from '../app-store/hooks';
 
 const AppIcon = styled(IconButton)`
 	${(props) =>
@@ -38,7 +40,9 @@ function ToggleBoardIcon() {
 	);
 }
 
-export default function ShellPrimaryBar({ mainMenuItems, activeApp }) {
+export default function ShellPrimaryBar({ activeApp }) {
+	const apps = useAppList();
+	const history = useHistory();
 	return (
 		<Container
 			width={48}
@@ -54,16 +58,24 @@ export default function ShellPrimaryBar({ mainMenuItems, activeApp }) {
 				wrap="nowrap"
 				style={{ minHeight: '1px', overflowY: 'overlay' }}
 			>
-				{map(mainMenuItems, (app, key) => (
-					<AppIcon
-						key={key}
-						icon={app.icon}
-						active={activeApp === app.id}
-						iconColor={activeApp === app.id ? 'primary' : 'text'}
-						onClick={app.click}
-						size="large"
-					/>
-				))}
+				{map(apps, (app) => {
+					if (!app.icon) {
+						return null;
+					}
+					if (typeof app.icon === 'string') {
+						return (
+							<AppIcon
+								key={app.core.package}
+								icon={app.icon}
+								active={activeApp === app.core.package}
+								iconColor={activeApp === app.core.package ? 'primary' : 'text'}
+								onClick={() => history.push(`/${app.core.package}/`)}
+								size="large"
+							/>
+						);
+					}
+					return <app.icon active={app.core.package === activeApp} />;
+				})}
 			</Row>
 			<Row>
 				<ToggleBoardIcon />

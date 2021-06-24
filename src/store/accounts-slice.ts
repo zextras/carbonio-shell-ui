@@ -1,6 +1,6 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 Zextras
+ * Copyright (C) 2011-2021 Zextras
  *
  *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
@@ -11,6 +11,8 @@
 
 import { CaseReducer, createAsyncThunk, createSlice, Draft, PayloadAction } from '@reduxjs/toolkit';
 import { filter, reduce, isEmpty, map, cloneDeep } from 'lodash';
+// eslint-disable-next-line camelcase
+import { unstable_batchedUpdates } from 'react-dom';
 import {
 	AppPkgDescription,
 	AccountLoginData,
@@ -20,6 +22,7 @@ import {
 } from '../../types';
 import { AuthResponse, GetInfoResponse, ZimletPkgDescription } from '../network/soap/types';
 import { zimletToAppPkgDescription, zimletToThemePkgDescription } from '../network/soap/utils';
+import { appStore } from '../app-store';
 
 export type AccountsSlice = {
 	status: 'idle' | 'working';
@@ -200,6 +203,9 @@ const doLoginFulfilled: CaseReducer<AccountsSlice, PayloadAction<[Account, Accou
 	state.status = 'idle';
 	state.accounts = [account];
 	state.credentials[account.id] = credentials;
+	unstable_batchedUpdates(() => {
+		appStore.getState().setters.addApps(account.apps);
+	});
 };
 
 const doLoginRejected: CaseReducer<AccountsSlice> = (state: Draft<AccountsSlice>, { error }) => {

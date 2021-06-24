@@ -1,6 +1,6 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 Zextras
+ * Copyright (C) 2011-2021 Zextras
  *
  *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
@@ -12,6 +12,7 @@
 import React, { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
+import { ModalManager, SnackbarManager } from '@zextras/zapp-ui';
 import AppContext from './app-context';
 import {
 	useFiberChannelFactory,
@@ -20,39 +21,43 @@ import {
 } from '../bootstrap/bootstrapper-context';
 import AppErrorCatcher from './app-error-catcher';
 import { useAppContextCache } from './app-context-cache-context';
+import { useAppStore } from '../app-store';
 
 export default function AppContextProvider({ pkg, children }) {
 	const appContextCache = useAppContextCache();
 	const fiberChannelFactory = useFiberChannelFactory();
 	const i18nFactory = useI18nFactory();
 	const storeFactory = useStoreFactory();
-
+	const app = useAppStore((s) => s.apps[pkg]?.core);
 	const memoizedContextFcns = useMemo(
 		() => ({
-			pkg,
-			fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(pkg),
-			fiberChannel: fiberChannelFactory.getAppFiberChannel(pkg)
+			app,
+			fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(app),
+			fiberChannel: fiberChannelFactory.getAppFiberChannel(app)
 		}),
-		[pkg, fiberChannelFactory]
+		[app, fiberChannelFactory]
 	);
 
 	const value = useMemo(
 		() => ({
 			...memoizedContextFcns,
-			appCtxt: appContextCache[pkg.package]
+			appCtxt: appContextCache[app.package]
 		}),
-		[pkg, memoizedContextFcns, appContextCache]
+		[app, memoizedContextFcns, appContextCache]
 	);
 
-	const store = useMemo(() => storeFactory.getStoreForApp(pkg), [pkg, storeFactory]);
+	const store = useMemo(() => storeFactory.getStoreForApp(app), [app, storeFactory]);
 
-	const i18n = useMemo(() => i18nFactory.getAppI18n(pkg), [i18nFactory, pkg]);
-
+	const i18n = useMemo(() => i18nFactory.getAppI18n(app), [i18nFactory, app]);
 	return (
 		<Provider store={store}>
 			<AppContext.Provider value={value}>
 				<I18nextProvider i18n={i18n}>
-					<AppErrorCatcher>{children}</AppErrorCatcher>
+					<ModalManager>
+						<SnackbarManager>
+							<AppErrorCatcher>{children}</AppErrorCatcher>
+						</SnackbarManager>
+					</ModalManager>
 				</I18nextProvider>
 			</AppContext.Provider>
 		</Provider>

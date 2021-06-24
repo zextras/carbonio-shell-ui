@@ -1,6 +1,6 @@
 /*
  * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2020 Zextras
+ * Copyright (C) 2011-2021 Zextras
  *
  *  The contents of this file are subject to the Zextras EULA;
  * you may not use this file except in compliance with the EULA.
@@ -11,23 +11,13 @@
 
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
-import {
-	default as Lodash,
-	map,
-	orderBy,
-	compact,
-	keyBy,
-	forEach,
-	forOwn,
-	reduce,
-	filter
-} from 'lodash';
+import { default as Lodash, map, orderBy, compact, keyBy, forEach, forOwn, filter } from 'lodash';
 import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
 import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
 import { Reducer } from 'redux';
 import * as RxJS from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
-import React, { ComponentClass } from 'react';
+import React, { ComponentClass, FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import * as RxJSOperators from 'rxjs/operators';
 import * as ReactRouterDom from 'react-router-dom';
@@ -53,11 +43,10 @@ import { RichTextEditor } from '@zextras/zapp-ui/dist/zapp-ui.rich-text-editor';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 // import RevertableActionCollection from '../../extension/RevertableActionCollection';
-import * as hooks from '../shell/hooks';
+
+import { LinkProps } from 'react-router-dom';
 import StoreFactory from '../store/store-factory';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import AppLink from './app-link';
+
 import { FC, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import ShellNetworkService from '../network/shell-network-service';
 import {
@@ -71,12 +60,13 @@ import {
 	SoapFetch,
 	ThemePkgDescription
 } from '../../types';
-import {
-	useAddSharedFunction,
-	useRemoveSharedFunction,
-	useSharedFunction
-} from '../zustand/selectors';
-import { UnknownFunction } from '../zustand/store-types';
+import { appStore } from '../app-store';
+import { RuntimeAppData } from '../app-store/store-types';
+import { getAppGetters } from './app-loader-functions';
+import { getAppHooks } from './app-loader-hooks';
+import { getAppLink } from './app-link';
+import { Spinner } from '../shell/spinner';
+import { ZIMBRA_STANDARD_COLORS, FOLDERS } from '../constants';
 
 type IShellWindow<T, R> = Window & {
 	__ZAPP_SHARED_LIBRARIES__: T;
@@ -98,28 +88,22 @@ type SharedLibrariesAppsMap = {
 	'prop-types': unknown;
 	moment: unknown;
 	'@zextras/zapp-shell': {
-		[pkgName: string]: {
+		[pkgName: string]: unknown & {
 			// These signatures are in the documentation
 			// If changed update also the documentation.
 			store: {
 				store: Store<any>;
 				setReducer(nextReducer: Reducer): void;
 			};
-			network: {
-				soapFetch: SoapFetch;
-			};
-			setMainMenuItems: (items: MainMenuItemData[]) => void;
-			setRoutes: (routes: AppRouteDescription[]) => void;
-			setSettingsRoutes: (routes: AppSettingsRouteDescription[]) => void;
-			setCreateOptions: (options: AppCreateOption[]) => void;
+			soapFetch: SoapFetch;
+			registerAppData: (data: RuntimeAppData) => void;
 			setAppContext: (obj: any) => void;
-			useSharedFunction: (id: string) => UnknownFunction | undefined;
-			useAddSharedFunction: (id: string, fn: UnknownFunction) => void;
-			useRemoveSharedFunction: (id: string) => void;
-			registerSharedUiComponents: (components: SharedUiComponentsDescriptor) => void;
 			fiberChannel: FC;
 			fiberChannelSink: FCSink;
-			hooks: unknown;
+			AppLink: FunctionComponent<LinkProps>;
+			Spinner: FunctionComponent;
+			FOLDERS: Record<string, string>;
+			ZIMBRA_STANDARD_COLORS: Array<{ zValue: number; hex: string; zLabel: string }>;
 		};
 	};
 	'@zextras/zapp-ui': unknown;
@@ -136,10 +120,6 @@ type SharedLibrariesThemesMap = {
 	'@zextras/zapp-ui': unknown;
 	msw?: unknown;
 	faker?: unknown;
-};
-
-type SharedUiComponentsDescriptor = {
-	[id: string]: { pkg: AppPkgDescription; versions: { [version: string]: FC } };
 };
 
 type LoadedAppRuntime = AppInjections & {
@@ -165,7 +145,6 @@ type AppInjections = {
 	mainMenuItems: BehaviorSubject<MainMenuItemData[]>;
 	routes: BehaviorSubject<AppRouteDescription[]>;
 	settingsRoutes: BehaviorSubject<AppSettingsRouteDescription[]>;
-	sharedUiComponents: BehaviorSubject<SharedUiComponentsDescriptor>;
 	store: Store<any>;
 };
 
@@ -189,16 +168,7 @@ function updateAppHandlers(appPkg: AppPkgDescription, handlers: RequestHandlersL
 
 function loadAppModule(
 	appPkg: AppPkgDescription,
-	{
-		appContext,
-		createOptions,
-		entryPoint,
-		mainMenuItems,
-		routes,
-		settingsRoutes,
-		sharedUiComponents,
-		store
-	}: AppInjections,
+	{ appContext, entryPoint, store }: AppInjections,
 	fiberChannelFactory: IFiberChannelFactory,
 	shellNetworkService: ShellNetworkService
 ): Promise<void> {
@@ -226,41 +196,22 @@ function loadAppModule(
 					store,
 					setReducer: (reducer): void => store.replaceReducer(reducer)
 				},
-				setMainMenuItems: (items): void => mainMenuItems.next(items),
-				setRoutes: (r): void => routes.next(r),
-				setSettingsRoutes: (r): void => settingsRoutes.next(r),
-				setCreateOptions: (options): void => createOptions.next(options),
-				setAppContext: (obj: any): void => appContext.next(obj),
-				useAddSharedFunction: useAddSharedFunction(appPkg.package),
-				useRemoveSharedFunction: useRemoveSharedFunction(appPkg.package),
-				useSharedFunction,
-				registerSharedUiComponents: (components: {
-					[id: string]: { versions: { [version: string]: FC } };
-				}): void => {
-					sharedUiComponents.next(
-						reduce(
-							components,
-							(
-								acc: SharedUiComponentsDescriptor,
-								comp: { versions: Record<string, FC> },
-								id: string
-							): SharedUiComponentsDescriptor => ({
-								...acc,
-								[id]: {
-									pkg: appPkg,
-									versions: comp.versions
-								}
-							}),
-							sharedUiComponents.getValue()
-						)
-					);
-				},
+				registerAppData: appStore.getState().setters.registerAppData(appPkg.package),
+				registerIntegrations: appStore.getState().setters.registerIntegrations(appPkg.package),
+				setAppContext: appStore.getState().setters.setAppContext(appPkg.package),
 				fiberChannel: fiberChannelFactory.getAppFiberChannel(appPkg),
 				fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(appPkg),
-				hooks,
-				network: {
-					soapFetch: shellNetworkService.getAppSoapFetch(appPkg)
-				}
+				soapFetch: shellNetworkService.getAppSoapFetch(appPkg),
+				AppLink: getAppLink(appPkg.package),
+				Spinner,
+				FOLDERS,
+				ZIMBRA_STANDARD_COLORS,
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				...getAppGetters(appPkg.package),
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				...getAppHooks(appPkg.package)
 			};
 
 			// eslint-disable-next-line max-len
@@ -371,7 +322,6 @@ function loadApp(
 	const settingsRoutes = new BehaviorSubject<AppSettingsRouteDescription[]>([]);
 	const createOptions = new BehaviorSubject<AppCreateOption[]>([]);
 	const appContext = new BehaviorSubject<any>({});
-	const sharedUiComponents = new BehaviorSubject<SharedUiComponentsDescriptor>({});
 	const entryPoint = new BehaviorSubject<ComponentClass | null>(null);
 	const store = storeFactory.getStoreForApp(pkg);
 	return (
@@ -384,7 +334,6 @@ function loadApp(
 				mainMenuItems,
 				routes,
 				settingsRoutes,
-				sharedUiComponents,
 				store
 			},
 			fiberChannelFactory,
@@ -424,7 +373,6 @@ function loadApp(
 							mainMenuItems,
 							routes,
 							settingsRoutes,
-							sharedUiComponents,
 							store
 					  }
 					: undefined
@@ -498,10 +446,7 @@ function injectSharedLibraries(): void {
 		lodash: Lodash,
 		rxjs: RxJS,
 		'rxjs/operators': RxJSOperators,
-		'react-router-dom': {
-			...ReactRouterDom,
-			Link: AppLink
-		},
+		'react-router-dom': ReactRouterDom,
 		moment: Moment,
 		'prop-types': PropTypes,
 		'styled-components': StyledComponents,

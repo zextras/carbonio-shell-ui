@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.27](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.26...v0.1.0-beta.27) (2021-06-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* refer to the documentation for the new Shell API
+
+### Features
+
+* functioning quota indicator ([ba87d50](https://bitbucket.org/zextras/zapp-shell/commit/ba87d5043c15806351e0110ef0108318a45bdd90))
+* implemented temporary context bridge, finalized typings ([cdac7a8](https://bitbucket.org/zextras/zapp-shell/commit/cdac7a8977c98db1a6c8b1dcb1551a57f662dd5d))
+* reworked api ([bd80fae](https://bitbucket.org/zextras/zapp-shell/commit/bd80fae6200aecd94381966bbf90ebeb02888355))
+
+
+* completed the shell refactor ([6de94e3](https://bitbucket.org/zextras/zapp-shell/commit/6de94e326ff7a9d9a541d65316b2598535ebaf1f))
+
 ## [0.1.0-beta.26](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.25...v0.1.0-beta.26) (2021-06-22)
 
 

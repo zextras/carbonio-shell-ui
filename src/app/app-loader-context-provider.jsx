@@ -31,7 +31,10 @@ export default function AppLoaderContextProvider({ children }) {
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
 	const [[themesCache, themesLoaded], setThemeCache] = useState([{}, false]);
 	useEffect(() => {
-		console.log('Accounts changed, un/loading Apps and Themes!');
+		console.log(
+			'%cAccounts changed, un/loading Apps and Themes',
+			'font-size: 1.1rem; color: darkred; background: lightgray; padding: 0.2rem'
+		);
 		let canSet = true;
 		if (accounts.length < 1) {
 			unloadAppsAndThemes()

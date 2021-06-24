@@ -27,7 +27,6 @@ function getCompleteResponse(api: string, response: any): any {
 }
 
 export function generateHandlers(cliSettings: cliSettingsNamespace): RequestHandlersList {
-	console.log('CLI Settings', cliSettings);
 	const handlers = [];
 	if (!cliSettings.server) {
 		handlers.push(

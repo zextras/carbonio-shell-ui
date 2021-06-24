@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 import React, { useMemo } from 'react';
-import { reduce, map } from 'lodash';
+import { reduce, map, dropRight } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -39,24 +39,27 @@ export default function ShellHeader({
 	]);
 	const [primaryAction, secondaryActions] = useAppStore((s) => [
 		s.apps[currentApp]?.newButton?.primary,
-		reduce(
-			s.apps,
-			(acc, app, key) => {
-				if (app.newButton?.secondaryItems) {
-					if (acc.length > 0) {
-						acc.push({ type: 'divider', id: key, key });
+		dropRight(
+			reduce(
+				s.apps,
+				(acc, app, key) => {
+					if (acc.length > 0 && acc[acc.length - 1]?.type !== 'divider') {
+						acc.push({ type: 'divider', id: key, label: '' });
+					}
+					if (app?.newButton?.primary) {
+						acc.push(app?.newButton?.primary);
 					}
 					acc.push(
 						...map(app.newButton?.secondaryItems, (item) => ({
 							...item,
-							key: item.id,
 							disabled: item.disabled || item.getDisabledState?.()
 						}))
 					);
-				}
-				return acc;
-			},
-			[]
+					return acc;
+				},
+				[]
+			),
+			1
 		)
 	]);
 

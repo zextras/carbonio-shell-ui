@@ -56,38 +56,46 @@ export const appStore = createStore<AppState>((set) => ({
 		}: IntegrationsRegister): void =>
 			set(
 				produce((state) => {
-					state.integrations.components = reduce(
-						components,
-						(acc, val, key) => {
-							// eslint-disable-next-line no-param-reassign
-							acc[key] = { app: appId, item: val };
-						},
-						state.integrations.components
-					);
-					state.integrations.hooks = reduce(
-						hooks,
-						(acc, val, key) => {
-							// eslint-disable-next-line no-param-reassign
-							acc[key] = { app: appId, item: val };
-						},
-						state.integrations.hooks
-					);
-					state.integrations.functions = reduce(
-						functions,
-						(acc, val, key) => {
-							// eslint-disable-next-line no-param-reassign
-							acc[key] = { app: appId, item: val };
-						},
-						state.integrations.functions
-					);
-					state.integrations.actions = reduce(
-						actions,
-						(acc, val, key) => {
-							// eslint-disable-next-line no-param-reassign
-							acc[key] = { app: appId, item: val };
-						},
-						state.integrations.actions
-					);
+					if (components) {
+						state.integrations.components = reduce(
+							components,
+							(acc, val, key) => {
+								// eslint-disable-next-line no-param-reassign
+								acc[key] = { app: appId, item: val };
+							},
+							state.integrations.components ?? {}
+						);
+					}
+					if (hooks) {
+						state.integrations.hooks = reduce(
+							hooks,
+							(acc, val, key) => {
+								// eslint-disable-next-line no-param-reassign
+								acc[key] = { app: appId, item: val };
+							},
+							state.integrations.hooks ?? {}
+						);
+					}
+					if (functions) {
+						state.integrations.functions = reduce(
+							functions,
+							(acc, val, key) => {
+								// eslint-disable-next-line no-param-reassign
+								acc[key] = { app: appId, item: val };
+							},
+							state.integrations.functions ?? {}
+						);
+					}
+					if (actions) {
+						state.integrations.actions = reduce(
+							actions,
+							(acc, val, key) => {
+								// eslint-disable-next-line no-param-reassign
+								acc[key] = { app: appId, item: val };
+							},
+							state.integrations.actions ?? {}
+						);
+					}
 				})
 			)
 	}

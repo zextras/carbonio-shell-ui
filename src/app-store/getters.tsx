@@ -30,21 +30,21 @@ export const getAppContext = (id: string) => (): unknown => appStore.getState().
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getIntegratedHook = (id: string): [Function, boolean] => {
-	const integration = appStore.getState().integrations.hooks[id]?.item;
+	const integration = appStore.getState().integrations.hooks?.[id]?.item;
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	return integration ? [integration, true] : [(): void => {}, false];
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getIntegratedFunction = (id: string): [Function, boolean] => {
-	const integration = appStore.getState().integrations.functions[id]?.item;
+	const integration = appStore.getState().integrations.functions?.[id]?.item;
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	return integration ? [integration, true] : [(): void => {}, false];
 };
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getIntegratedAction = (id: string): [SharedAction | undefined, boolean] => {
-	const integration = appStore.getState().integrations.actions[id]?.item;
+	const integration = appStore.getState().integrations.actions?.[id]?.item;
 	return integration ? [integration, true] : [undefined, false];
 };
 
@@ -58,7 +58,7 @@ export const getIntegratedActionsByType = (type: string): Array<unknown> =>
 	);
 
 export const getIntegratedComponent = (id: string): [FC<unknown>, boolean] => {
-	const Integration = appStore.getState().integrations.components[id];
+	const Integration = appStore.getState().integrations.components?.[id];
 	if (Integration) {
 		const IntegrationWithContext: FC = (props: unknown) => (
 			<AppContextProvider pkg={Integration.app}>

@@ -11,6 +11,7 @@
 
 import React, { FC, useState, useCallback, useEffect } from 'react';
 import { ChipInput, Container, Dropdown, IconButton, Tooltip } from '@zextras/zapp-ui';
+import { useTranslation } from 'react-i18next';
 
 function useLocalStorage<T>(key: string, initialValue: T): any {
 	const [storedValue, setStoredValue] = useState<T>(() => {
@@ -33,6 +34,8 @@ function useLocalStorage<T>(key: string, initialValue: T): any {
 	};
 	return [storedValue, setValue] as const;
 }
+
+const [t] = useTranslation();
 
 const lastSearches = [
 	{
@@ -156,7 +159,7 @@ export function SearchBar({ placeholder, disablePortal = false, inputRef }: Sear
 	return (
 		<>
 			<Container>
-				<Tooltip label="Type one or more keywords to start a search" placement="bottom">
+				<Tooltip label={t('type-start-search')} placement="bottom">
 					<ChipInput
 						inputRef={inputRef}
 						placeholder={placeholder}
@@ -203,7 +206,7 @@ export function SearchBar({ placeholder, disablePortal = false, inputRef }: Sear
 					<div style={{ width: '100%' }} />
 				</Dropdown>
 			</Container>
-			<Tooltip label="Clear search" placement="bottom">
+			<Tooltip label={t('clear-search')} placement="bottom">
 				<IconButton
 					icon="BackspaceOutline"
 					style={{
@@ -216,7 +219,7 @@ export function SearchBar({ placeholder, disablePortal = false, inputRef }: Sear
 					onClick={clearSearch}
 				/>
 			</Tooltip>
-			<Tooltip label="Start search" placement="bottom">
+			<Tooltip label={t('start-search')} placement="bottom">
 				<IconButton
 					icon="Search"
 					style={{

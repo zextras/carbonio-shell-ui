@@ -35,8 +35,6 @@ function useLocalStorage<T>(key: string, initialValue: T): any {
 	return [storedValue, setValue] as const;
 }
 
-const [t] = useTranslation();
-
 const lastSearches = [
 	{
 		id: 'suggestion1',
@@ -115,6 +113,7 @@ export function SearchBar({ placeholder, disablePortal = false, inputRef }: Sear
 	const [inputChipSelected, setInputChipSelected] = useState(false);
 	const [deleteIconActive, setDeleteIconActive] = useState(false);
 	const [chipInputValue, setChipInputValue] = useState([]);
+	const [t] = useTranslation();
 
 	const onChipFocus = useCallback(() => {
 		setInputChipSelected(true);

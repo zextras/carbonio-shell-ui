@@ -8,8 +8,8 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, { useMemo } from 'react';
-import { reduce, map, dropRight } from 'lodash';
+import React, { useMemo, useRef } from 'react';
+import { reduce, map } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -24,6 +24,7 @@ import {
 } from '@zextras/zapp-ui';
 import { UserQuota } from './user-quota';
 import { useAppStore } from '../app-store';
+import { SearchBar } from './shell-search-bar';
 
 export default function ShellHeader({
 	userBarIsOpen,
@@ -39,34 +40,40 @@ export default function ShellHeader({
 	]);
 	const [primaryAction, secondaryActions] = useAppStore((s) => [
 		s.apps[currentApp]?.newButton?.primary,
-		dropRight(
-			reduce(
-				s.apps,
-				(acc, app, key) => {
-					if (acc.length > 0 && acc[acc.length - 1]?.type !== 'divider') {
-						acc.push({ type: 'divider', id: key, label: '' });
-					}
-					if (app?.newButton?.primary) {
-						acc.push(app?.newButton?.primary);
+		reduce(
+			s.apps,
+			(acc, app, key) => {
+				if (app.newButton?.secondaryItems) {
+					if (acc.length > 0) {
+						acc.push({ type: 'divider', id: key, key });
 					}
 					acc.push(
 						...map(app.newButton?.secondaryItems, (item) => ({
 							...item,
+							key: item.id,
 							disabled: item.disabled || item.getDisabledState?.()
 						}))
 					);
-					return acc;
-				},
-				[]
-			),
-			1
+				}
+				return acc;
+			},
+			[]
 		)
 	]);
+
+	const inputRef = useRef();
 
 	const isMultiButtonDisabled = useMemo(
 		() => !!primaryAction || primaryAction?.disabled || primaryAction?.getDisabledState?.(),
 		[primaryAction]
 	);
+
+	const searchBarPlaceholder = `Search in ${
+		currentApp
+			.slice(currentApp.lastIndexOf('_') + 1)
+			.charAt(0)
+			.toUpperCase() + currentApp.slice(currentApp.lastIndexOf('_') + 1).slice(1)
+	}`;
 
 	return (
 		<Container
@@ -80,31 +87,37 @@ export default function ShellHeader({
 				left: screenMode === 'desktop' ? 'extralarge' : 'extrasmall'
 			}}
 		>
-			<Container orientation="horizontal" width="fit" mainAlignment="flex-start">
+			<Container
+				orientation="horizontal"
+				width="fill"
+				mainAlignment="space-between"
+				style={{ maxWidth: '288px' }}
+			>
 				<Responsive mode="mobile">
 					<Padding right="small">
 						<IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} />
 					</Padding>
 				</Responsive>
-				<Logo size="small" />
+				<Container orientation="horizontal" width="fill" mainAlignment="space-between">
+					<Logo size="small" />
+					<MultiButton
+						style={{ marginLeft: 'auto' }}
+						background="primary"
+						label={t('new', 'New')}
+						onClick={primaryAction?.click}
+						items={secondaryActions}
+						disabled={isMultiButtonDisabled}
+					/>
+				</Container>
 			</Container>
 			<Responsive mode="desktop">
 				<Container orientation="horizontal" width="calc(100vw - 316px)">
-					<Container orientation="horizontal" mainAlignment="flex-start" width="50%">
-						<Container orientation="horizontal" width="fit" padding={{ right: 'small' }}>
-							<MultiButton
-								background="primary"
-								label={t('new', 'New')}
-								onClick={primaryAction?.click}
-								items={secondaryActions}
-								disabled={isMultiButtonDisabled}
-							/>
-						</Container>
-						{/*	<SearchInput/> */}
+					<Container orientation="horizontal" mainAlignment="flex-start" width="40%">
+						<SearchBar inputRef={inputRef} placeholder={searchBarPlaceholder} value={[]} />
 					</Container>
 					<Container
 						orientation="horizontal"
-						width="50%"
+						width="60%"
 						mainAlignment="flex-end"
 						padding={{ right: 'extrasmall' }}
 					>
@@ -126,7 +139,6 @@ export default function ShellHeader({
 					mainAlignment="flex-end"
 					padding={{ right: 'extrasmall' }}
 				>
-					{/* <IconButton icon="Search" /> */}
 					<Dropdown items={secondaryActions} placement="bottom-start">
 						<IconButton icon="Plus" />
 					</Dropdown>

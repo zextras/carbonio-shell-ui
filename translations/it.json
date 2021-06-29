@@ -1,40 +1,40 @@
 {
-    "changelog": {
-        "cancel": "Annulla",
-        "close": "Chiudi",
-        "remind-later": "Ricorda Più Tardi",
-        "title": "Titolo"
-    },
-    "copyright": "Copyright",
-    "login": {
-        "help": "Aiuto",
-        "incorrect": "Nome utente o password sono errati",
-        "login": "Login",
-        "password": "Password",
-        "remember-me": "Ricordami",
-        "supported-browsers": "Browser supportati",
-        "username": "Nome Utente",
-        "verify-caps-lock": "Verifica che il CAPS LOCK non sia attivo, e ridigita nome utente e password"
-    },
-    "logout": "Esci",
-    "logout-modal": {
-        "confirm": "Disconnettimi",
-        "warning": "Stai per essere disconnesso"
-    },
-    "new": "Nuovo",
-    "new-tab": "Nuova tab",
-    "supported_browsers": {
-        "chrome": "Chrome",
-        "edge": "Edge",
-        "firefox": "Firefox",
-        "ie_11_up": "Internet Explorer 11+",
-        "opera": "Opera",
-        "safari": "Safari",
-        "uc": "UC",
-        "yandex": "Yandex"
-    },
-    "theme-switch": {
-        "dark": "Passa al tema scuro",
-        "light": "Passa al tema chiaro"
-    }
+	"changelog": {
+		"cancel": "Annulla",
+		"close": "Chiudi",
+		"remind_later": "Ricorda Più Tardi",
+		"title": "Titolo"
+	},
+	"copyright": "Copyright",
+	"login": {
+		"help": "Aiuto",
+		"incorrect": "Nome utente o password sono errati",
+		"login": "Login",
+		"password": "Password",
+		"remember_me": "Ricordami",
+		"supported_browsers": "Browser supportati",
+		"username": "Nome Utente",
+		"verify_caps_lock": "Verifica che il CAPS LOCK non sia attivo, e ridigita nome utente e password"
+	},
+	"logout": "Esci",
+	"logout_modal": {
+		"confirm": "Disconnettimi",
+		"warning": "Stai per essere disconnesso"
+	},
+	"new": "Nuovo",
+	"new_tab": "Nuova tab",
+	"supported_browsers": {
+		"chrome": "Chrome",
+		"edge": "Edge",
+		"firefox": "Firefox",
+		"ie_11_up": "Internet Explorer 11+",
+		"opera": "Opera",
+		"safari": "Safari",
+		"uc": "UC",
+		"yandex": "Yandex"
+	},
+	"theme_switch": {
+		"dark": "Passa al tema scuro",
+		"light": "Passa al tema chiaro"
+	}
 }

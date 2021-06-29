@@ -78,7 +78,7 @@ export default function ChangeLogModal({ cache }) {
 				dismissLabel={t('changelog.cancel')}
 				confirmLabel={t('changelog.close')}
 				onSecondaryAction={onClose}
-				secondaryActionLabel={t('changelog.remind-later')}
+				secondaryActionLabel={t('changelog.remind_later')}
 			>
 				<Container>
 					{Object.keys(mdpackage).map((key) => (

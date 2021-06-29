@@ -115,7 +115,7 @@ export default function BoardContextProvider({ children }) {
 			const boardKey = getRandomKey();
 			dispatch({
 				type: 'ADD_BOARD',
-				payload: { url, title: context?.title ?? t('new-tab', 'New Tab'), context, boardKey }
+				payload: { url, title: context?.title ?? t('new_tab', 'New Tab'), context, boardKey }
 			});
 			return boardKey;
 		},

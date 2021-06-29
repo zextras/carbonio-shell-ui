@@ -15,7 +15,7 @@ import { Accordion, Collapse, Container, Padding } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
 import { useAppList } from '../app-store/hooks';
 import { useUserAccounts } from '../store/shell-store-hooks';
-import { UserQuota } from './user-quota';
+import { UserQuota } from './user_quota';
 import AppContextProvider from '../app/app-context-provider';
 
 const SidebarComponent = ({ item }) =>

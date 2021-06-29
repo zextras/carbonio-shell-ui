@@ -137,7 +137,7 @@ export function SearchBar({ placeholder, disablePortal = false, inputRef }: Sear
 	return (
 		<>
 			<Container>
-				<Tooltip label={t('type-start-search')} placement="bottom">
+				<Tooltip label={t('type-start_search')} placement="bottom">
 					<ChipInput
 						inputRef={inputRef}
 						placeholder={placeholder}
@@ -184,7 +184,7 @@ export function SearchBar({ placeholder, disablePortal = false, inputRef }: Sear
 					<div style={{ width: '100%' }} />
 				</Dropdown>
 			</Container>
-			<Tooltip label={t('clear-search')} placement="bottom">
+			<Tooltip label={t('clear_search')} placement="bottom">
 				<IconButton
 					icon="BackspaceOutline"
 					style={{
@@ -197,7 +197,7 @@ export function SearchBar({ placeholder, disablePortal = false, inputRef }: Sear
 					onClick={clearSearch}
 				/>
 			</Tooltip>
-			<Tooltip label={t('start-search')} placement="bottom">
+			<Tooltip label={t('start_search')} placement="bottom">
 				<IconButton
 					icon="Search"
 					style={{

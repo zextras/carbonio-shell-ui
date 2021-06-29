@@ -22,7 +22,7 @@ import {
 	useScreenMode,
 	MultiButton
 } from '@zextras/zapp-ui';
-import { UserQuota } from './user_quota';
+import { UserQuota } from './user-quota';
 import { useAppStore } from '../app-store';
 import { SearchBar } from './shell-search-bar';
 

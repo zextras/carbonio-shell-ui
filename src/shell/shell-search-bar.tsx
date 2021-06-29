@@ -13,28 +13,6 @@ import React, { FC, useState, useCallback, useEffect } from 'react';
 import { ChipInput, Container, Dropdown, IconButton, Tooltip } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
 
-function useLocalStorage<T>(key: string, initialValue: T): any {
-	const [storedValue, setStoredValue] = useState<T>(() => {
-		try {
-			const item = window.localStorage.getItem(key);
-			return item ? JSON.parse(item) : initialValue;
-		} catch (error) {
-			console.log(error);
-			return initialValue;
-		}
-	});
-	const setValue = (value: T | ((val: T) => T)): any => {
-		try {
-			const valueToStore = value instanceof Function ? value(storedValue) : value;
-			setStoredValue(valueToStore);
-			window.localStorage.setItem(key, JSON.stringify(valueToStore));
-		} catch (error) {
-			console.log(error);
-		}
-	};
-	return [storedValue, setValue] as const;
-}
-
 const lastSearches = [
 	{
 		id: 'suggestion1',
@@ -130,6 +108,7 @@ export function SearchBar({ placeholder, disablePortal = false, inputRef }: Sear
 
 	const onType = (ev: any): any => {
 		ev.textContent?.length > 0 ? setDeleteIconActive(true) : setDeleteIconActive(false);
+		setForceOpenInput(false);
 	};
 
 	const clearSearch = useCallback(() => {

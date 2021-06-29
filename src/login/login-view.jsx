@@ -106,7 +106,7 @@ function LoginForm() {
 					/>
 				</Row>
 				<Row padding={{ vertical: 'extralarge' }} mainAlignment="space-between">
-					<Checkbox label={t('login.remember-me')} />
+					<Checkbox label={t('login.remember_me')} />
 				</Row>
 				<Row orientation="vertical" crossAlignment="flex-start" padding={{ bottom: 'extralarge' }}>
 					<Button onClick={onSubmit} label={t('login.login')} size="fill" />
@@ -114,7 +114,7 @@ function LoginForm() {
 						<Padding top="small">
 							<Text color="error" overflow="break-word">
 								{t('login.incorrect')}
-								{t('login.verify-caps-lock')}
+								{t('login.verify_caps_lock')}
 							</Text>
 						</Padding>
 					)}
@@ -217,7 +217,7 @@ function Login() {
 							</Padding>
 						</Container>
 						<Container crossAlignment="flex-start" height="auto" padding={{ bottom: 'extralarge' }}>
-							<Text>{t('login.supported-browsers')}</Text>
+							<Text>{t('login.supported_browsers')}</Text>
 							<Row padding={{ top: 'medium', bottom: 'extralarge' }} wrap="nowrap">
 								<Padding all="extrasmall" right="small">
 									<Tooltip label={t('supported_browsers.chrome')}>

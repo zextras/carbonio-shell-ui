@@ -9,66 +9,11 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC, useState, useCallback, useEffect } from 'react';
+import React, { FC, useState, useCallback, useEffect, useMemo } from 'react';
 import { ChipInput, Container, Dropdown, IconButton, Tooltip } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
-
-function useLocalStorage<T>(key: string, initialValue: T): any {
-	const [storedValue, setStoredValue] = useState<T>(() => {
-		try {
-			const item = window.localStorage.getItem(key);
-			return item ? JSON.parse(item) : initialValue;
-		} catch (error) {
-			console.log(error);
-			return initialValue;
-		}
-	});
-	const setValue = (value: T | ((val: T) => T)): any => {
-		try {
-			const valueToStore = value instanceof Function ? value(storedValue) : value;
-			setStoredValue(valueToStore);
-			window.localStorage.setItem(key, JSON.stringify(valueToStore));
-		} catch (error) {
-			console.log(error);
-		}
-	};
-	return [storedValue, setValue] as const;
-}
-
-const [t] = useTranslation();
-
-const lastSearches = [
-	{
-		id: 'suggestion1',
-		icon: 'HistoryOutline',
-		application: 'zapp-mails',
-		label: 'suggestion 1'
-	},
-	{
-		id: 'suggestion2',
-		icon: 'HistoryOutline',
-		application: 'zapp-mails',
-		label: 'suggestion 2'
-	},
-	{
-		id: 'suggestion3',
-		icon: 'HistoryOutline',
-		application: 'zapp-mails',
-		label: 'suggestion 3'
-	},
-	{
-		id: 'suggestion4',
-		icon: 'HistoryOutline',
-		application: 'zapp-mails',
-		label: 'suggestion 4'
-	},
-	{
-		id: 'suggestion5',
-		icon: 'HistoryOutline',
-		application: 'zapp-mails',
-		label: 'suggestion 5'
-	}
-];
+import { map, last, uniqBy } from 'lodash';
+import { useLocalStorage } from './hooks';
 
 const searchResults = [
 	{
@@ -115,13 +60,15 @@ export function SearchBar({ placeholder, disablePortal = false, inputRef }: Sear
 	const [inputChipSelected, setInputChipSelected] = useState(false);
 	const [deleteIconActive, setDeleteIconActive] = useState(false);
 	const [chipInputValue, setChipInputValue] = useState([]);
+	const [t] = useTranslation();
 
+	const [storedValue, setStoredValue] = useLocalStorage('shell', []);
 	const onChipFocus = useCallback(() => {
 		setInputChipSelected(true);
-		deleteIconActive || lastSearches?.length > 0 || inputRef.current
+		deleteIconActive || storedValue?.length > 0 || inputRef.current
 			? setForceOpenInput(true)
 			: setForceOpenInput(false);
-	}, [deleteIconActive, inputRef]);
+	}, [deleteIconActive, inputRef, storedValue]);
 
 	useEffect(() => {
 		window.addEventListener('keypress', (event) =>
@@ -131,6 +78,7 @@ export function SearchBar({ placeholder, disablePortal = false, inputRef }: Sear
 
 	const onType = (ev: any): any => {
 		ev.textContent?.length > 0 ? setDeleteIconActive(true) : setDeleteIconActive(false);
+		setForceOpenInput(false);
 	};
 
 	const clearSearch = useCallback(() => {
@@ -141,20 +89,34 @@ export function SearchBar({ placeholder, disablePortal = false, inputRef }: Sear
 		setInputChipSelected(false);
 	}, [inputRef]);
 
-	const onChipsChange = useCallback((c) => {
-		setChipInputValue(c);
-	}, []);
+	const valueToStore = storedValue;
+
+	const onChipsChange = useCallback(
+		(e) => {
+			setChipInputValue(e);
+			const k = e.length ? JSON.parse(`{"label": "${last(map(e, (v) => v.value))}"}`) : false;
+			k ? valueToStore?.push(k) : null;
+			const valueToStoreSorted = uniqBy(valueToStore, 'label');
+			k ? setStoredValue(valueToStoreSorted) : null;
+		},
+		[setStoredValue, valueToStore]
+	);
+
+	const p = [...storedValue];
+	const lastSearches = p.reverse().slice(0, 5);
+
+	// useEffect(() => {
+	// 	p = [...storedValue];
+	// 	lastSearches = p.reverse().slice(0, 5);
+	// }, [storedValue]);
 
 	useEffect(() => {
-		if (
-			(lastSearches?.length > 0 || inputRef.current || setDeleteIconActive) &&
-			inputChipSelected
-		) {
+		if ((storedValue?.length > 0 || inputRef.current || setDeleteIconActive) && inputChipSelected) {
 			setForceOpenInput(true);
 		} else {
 			setForceOpenInput(false);
 		}
-	}, [inputChipSelected, inputRef]);
+	}, [inputChipSelected, inputRef, storedValue]);
 
 	return (
 		<>

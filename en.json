@@ -1,65 +1,65 @@
 {
-    "changelog": {
-        "cancel": "Cancel",
-        "close": "Close",
-        "remind-later": "Remind Later",
-        "title": "Title"
-    },
-    "clear-search": "Clear search",
-    "copyright": "Copyright",
-    "login": {
-        "help": "Help",
-        "incorrect": "The username or password is incorrect",
-        "login": "Login",
-        "password": "Password",
-        "remember-me": "Remember me",
-        "supported-browsers": "Supported browsers",
-        "username": "Username",
-        "verify-caps-lock": "Verify that CAPS LOCK is not on, and then retype the current username and password"
-    },
-    "logout": "Logout",
-    "logout-modal": {
-        "confirm": "Log me out",
-        "warning": "You are going to be logged-out"
-    },
-    "module": {
-        "app": {
-            "version": "Applications version"
-        }
-    },
-    "new": "New",
-    "new-tab": "New Tab",
-    "settings": {
-        "app": "Settings",
-        "app_description": "Settings Module",
-        "button": {
-            "primary": "Save",
-            "secondary": "Cancel"
-        },
-        "general": {
-            "general": "General",
-            "theme_auto": "Auto",
-            "theme_disabled": "Disabled",
-            "theme_enabled": "Enabled",
-            "theme_mode": "Theme Mode",
-            "theme_options": "Theme Options"
-        },
-        "general_tab": "General"
-    },
-    "start-search": "Start search",
-    "supported_browsers": {
-        "chrome": "Chrome",
-        "edge": "Edge",
-        "firefox": "Firefox",
-        "ie_11_up": "Internet Explorer 11+",
-        "opera": "Opera",
-        "safari": "Safari",
-        "uc": "UC",
-        "yandex": "Yandex"
-    },
-    "type-start-search": "Type one or more keywords to start a search",
-    "user_quota": {
-        "limited": "",
-        "unlimited": "Congrats! Unlimited space available"
-    }
+	"changelog": {
+		"cancel": "Cancel",
+		"close": "Close",
+		"remind_later": "Remind Later",
+		"title": "Title"
+	},
+	"clear_search": "Clear search",
+	"copyright": "Copyright",
+	"login": {
+		"help": "Help",
+		"incorrect": "The username or password is incorrect",
+		"login": "Login",
+		"password": "Password",
+		"remember_me": "Remember me",
+		"supported_browsers": "Supported browsers",
+		"username": "Username",
+		"verify_caps_lock": "Verify that CAPS LOCK is not on, and then retype the current username and password"
+	},
+	"logout": "Logout",
+	"logout_modal": {
+		"confirm": "Log me out",
+		"warning": "You are going to be logged-out"
+	},
+	"module": {
+		"app": {
+			"version": "Applications version"
+		}
+	},
+	"new": "New",
+	"new_tab": "New Tab",
+	"settings": {
+		"app": "Settings",
+		"app_description": "Settings Module",
+		"button": {
+			"primary": "Save",
+			"secondary": "Cancel"
+		},
+		"general": {
+			"general": "General",
+			"theme_auto": "Auto",
+			"theme_disabled": "Disabled",
+			"theme_enabled": "Enabled",
+			"theme_mode": "Theme Mode",
+			"theme_options": "Theme Options"
+		},
+		"general_tab": "General"
+	},
+	"start_search": "Start search",
+	"supported_browsers": {
+		"chrome": "Chrome",
+		"edge": "Edge",
+		"firefox": "Firefox",
+		"ie_11_up": "Internet Explorer 11+",
+		"opera": "Opera",
+		"safari": "Safari",
+		"uc": "UC",
+		"yandex": "Yandex"
+	},
+	"type_start_search": "Type one or more keywords to start a search",
+	"user_quota": {
+		"limited": "",
+		"unlimited": "Congrats! Unlimited space available"
+	}
 }

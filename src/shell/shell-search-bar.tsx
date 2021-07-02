@@ -101,8 +101,9 @@ export function SearchBar({ placeholder, disablePortal = false, inputRef }: Sear
 	}, [deleteIconActive, inputRef]);
 
 	useEffect(() => {
-		window.addEventListener('keypress', (event) =>
-			event.key === 'Enter' ? inputRef.current.focus() : null
+		window.addEventListener(
+			'keypress',
+			(event: any) => event.key === 'Enter' && event.target.isContentEditable === false
 		);
 	}, [inputRef]);
 

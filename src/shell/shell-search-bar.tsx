@@ -138,7 +138,7 @@ export function SearchBar({ placeholder, disablePortal = false, inputRef }: Sear
 	return (
 		<>
 			<Container>
-				<Tooltip label={t('type-start_search')} placement="bottom">
+				<Tooltip label={t('type_start_search')} placement="bottom">
 					<ChipInput
 						inputRef={inputRef}
 						placeholder={placeholder}

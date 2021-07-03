@@ -138,7 +138,7 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 				valueToStore?.push({
 					id: currentApp,
 					label: last(map(e, (item) => item.value)),
-					click: () => addChip(e)
+					click: addChip(last(map(e, (item) => item.value)))
 				});
 			}
 			const valueToStoreSorted = uniqWith(valueToStore, isEqual);

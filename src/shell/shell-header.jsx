@@ -68,13 +68,6 @@ export default function ShellHeader({
 		[primaryAction]
 	);
 
-	const searchBarPlaceholder = `Search in ${
-		currentApp
-			.slice(currentApp.lastIndexOf('_') + 1)
-			.charAt(0)
-			.toUpperCase() + currentApp.slice(currentApp.lastIndexOf('_') + 1).slice(1)
-	}`;
-
 	return (
 		<Container
 			orientation="horizontal"
@@ -113,7 +106,7 @@ export default function ShellHeader({
 			<Responsive mode="desktop">
 				<Container orientation="horizontal" width="calc(100vw - 316px)">
 					<Container orientation="horizontal" mainAlignment="flex-start" width="40%">
-						<SearchBar inputRef={inputRef} placeholder={searchBarPlaceholder} value={[]} />
+						<SearchBar inputRef={inputRef} currentApp={currentApp} />
 					</Container>
 					<Container
 						orientation="horizontal"

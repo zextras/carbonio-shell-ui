@@ -30,8 +30,8 @@ export default function LogoutView() {
 
 	return (
 		<form onSubmit={doLogoutCbk}>
-			{t('logout-modal.warning')}
-			<button type="submit">{t('logout-modal.confirm')}</button>
+			{t('logout_modal.warning')}
+			<button type="submit">{t('logout_modal.confirm')}</button>
 		</form>
 	);
 }

@@ -2,23 +2,23 @@
     "changelog": {
         "cancel": "Cancel",
         "close": "Close",
-        "remind-later": "Remind Later",
+        "remind_later": "Remind Later",
         "title": "Title"
     },
-    "clear-search": "Clear search",
+    "clear_search": "",
     "copyright": "Copyright",
     "login": {
         "help": "Help",
         "incorrect": "The username or password is incorrect",
         "login": "Login",
         "password": "Password",
-        "remember-me": "Remember me",
-        "supported-browsers": "Supported browsers",
+        "remember_me": "Remember me",
+        "supported_browsers": "Supported browsers",
         "username": "Username",
-        "verify-caps-lock": "Verify that CAPS LOCK is not on, and then retype the current username and password"
+        "verify_caps_lock": "Verify that CAPS LOCK is not on, and then retype the current username and password"
     },
     "logout": "Logout",
-    "logout-modal": {
+    "logout_modal": {
         "confirm": "Log me out",
         "warning": "You are going to be logged-out"
     },
@@ -28,7 +28,7 @@
         }
     },
     "new": "New",
-    "new-tab": "New Tab",
+    "new_tab": "New Tab",
     "settings": {
         "app": "Settings",
         "app_description": "Settings Module",
@@ -46,7 +46,7 @@
         },
         "general_tab": "General"
     },
-    "start-search": "Start search",
+    "start_search": "",
     "supported_browsers": {
         "chrome": "Chrome",
         "edge": "Edge",
@@ -57,7 +57,7 @@
         "uc": "UC",
         "yandex": "Yandex"
     },
-    "type-start-search": "Type one or more keywords to start a search",
+    "type_start_search": "",
     "user_quota": {
         "limited": "",
         "unlimited": "Congrats! Unlimited space available"

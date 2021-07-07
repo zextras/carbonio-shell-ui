@@ -65,7 +65,7 @@ export default function ShellSecondaryBar({ navigationBarIsOpen, onCollapserClic
 					}}
 				>
 					<Switch>
-						<Accordion items={items} />
+						<Accordion items={items} background="gray4" />
 					</Switch>
 				</Container>
 			</Collapse>

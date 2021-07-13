@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.31](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.30...v0.1.0-beta.31) (2021-07-13)
+
+
+### Features
+
+* out of office settings added ([8d80325](https://bitbucket.org/zextras/zapp-shell/commit/8d80325037bbdb9affd7bf1ba801f03cbd0046ab))
+
+
+### Bug Fixes
+
+* accordion root level gray4 backgorund ([73e6fb6](https://bitbucket.org/zextras/zapp-shell/commit/73e6fb6d8078690800090d5d0298da8de19a9307))
+
 ## [0.1.0-beta.30](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.29...v0.1.0-beta.30) (2021-07-13)
 
 

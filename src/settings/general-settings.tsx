@@ -18,6 +18,7 @@ import { useDispatch } from '../store/shell-store-hooks';
 import { modifyPrefs } from '../store/accounts-slice';
 import AppearanceSettings from './appearance-settings';
 import ModuleVersionSettings from './module-version-settings';
+import OutOfOfficeSettings from './out-of-office-view';
 import { useUserAccounts } from '../shell/hooks';
 import { SETTINGS_APP_ID } from '../constants';
 
@@ -110,7 +111,12 @@ const GeneralSettings: FC = () => {
 	}, []);
 	return (
 		<>
-			<Container background="gray5" mainAlignment="flex-start" padding={{ all: 'medium' }}>
+			<Container
+				background="gray5"
+				mainAlignment="flex-start"
+				padding={{ all: 'medium' }}
+				style={{ overflow: 'auto' }}
+			>
 				<DisplayerHeader
 					mods={mods}
 					label={t('settings.general.general', 'General Settings')}
@@ -118,6 +124,7 @@ const GeneralSettings: FC = () => {
 					onSave={onSave}
 				/>
 				<AppearanceSettings settings={acct.settings} addMod={addMod} />
+				<OutOfOfficeSettings settings={acct.settings} addMod={addMod} />
 				<ModuleVersionSettings />
 			</Container>
 		</>

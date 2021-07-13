@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.30](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.29...v0.1.0-beta.30) (2021-07-13)
+
+
+### Bug Fixes
+
+* translation ([63e0dec](https://bitbucket.org/zextras/zapp-shell/commit/63e0dec7ae0116c654ef0b424ce6ece329e2aa34))
+* unwanted behaviour searh bar ([af9bf26](https://bitbucket.org/zextras/zapp-shell/commit/af9bf263db41e3cee1270ffaf46131e31713df04))
+
 ## [0.1.0-beta.29](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.28...v0.1.0-beta.29) (2021-06-29)
 
 

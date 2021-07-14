@@ -25,6 +25,7 @@ import {
 import { UserQuota } from './user-quota';
 import { useAppStore } from '../app-store';
 import { SearchBar } from './shell-search-bar';
+import { useCSRFToken } from '../store/shell-store-hooks';
 
 export default function ShellHeader({
 	userBarIsOpen,
@@ -38,6 +39,9 @@ export default function ShellHeader({
 	const currentApp = useMemo(() => history.location.pathname.split('/')[1], [
 		history.location.pathname
 	]);
+
+	const csrfToken = useCSRFToken();
+
 	const [primaryAction, secondaryActions] = useAppStore((s) => [
 		s.apps[currentApp]?.newButton?.primary,
 		reduce(
@@ -106,7 +110,11 @@ export default function ShellHeader({
 			<Responsive mode="desktop">
 				<Container orientation="horizontal" width="calc(100vw - 316px)">
 					<Container orientation="horizontal" mainAlignment="flex-start" width="40%">
-						<SearchBar inputRef={inputRef} currentApp={currentApp} />
+						{(currentApp.indexOf('mails') !== -1 ||
+							currentApp.indexOf('contacts') !== -1 ||
+							currentApp.indexOf('calendar') !== -1) && (
+							<SearchBar inputRef={inputRef} currentApp={currentApp} csrfToken={csrfToken} />
+						)}
 					</Container>
 					<Container
 						orientation="horizontal"
@@ -115,6 +123,7 @@ export default function ShellHeader({
 						padding={{ right: 'extrasmall' }}
 					>
 						<Padding right="small">
+							{/* <ContactInput /> */}
 							<UserQuota />
 						</Padding>
 						<IconButton icon="BellOutline" iconColor="text" />

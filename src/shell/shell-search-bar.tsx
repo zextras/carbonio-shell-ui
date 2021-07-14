@@ -10,43 +10,10 @@
  */
 
 import React, { FC, useState, useCallback, useEffect, useMemo } from 'react';
-import { ChipInput, Container, Dropdown, IconButton, Tooltip } from '@zextras/zapp-ui';
+import { ChipInput, Container, IconButton, Tooltip } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
-import { map, last, uniqWith, isEqual } from 'lodash';
+import { uniqWith, uniqBy, sortBy, isEqual } from 'lodash';
 import { useLocalStorage } from './hooks';
-
-const searchResults = [
-	{
-		id: 'result1',
-		icon: 'AvatarOutline',
-		application: 'zapp-mails',
-		label: 'result 1'
-	},
-	{
-		id: 'result2',
-		icon: 'AvatarOutline',
-		application: 'zapp-mails',
-		label: 'result 2'
-	},
-	{
-		id: 'result3',
-		icon: 'AvatarOutline',
-		application: 'zapp-mails',
-		label: 'result 3'
-	},
-	{
-		id: 'result4',
-		icon: 'AvatarOutline',
-		application: 'zapp-mails',
-		label: 'result 4'
-	},
-	{
-		id: 'result5',
-		icon: 'AvatarOutline',
-		application: 'zapp-mails',
-		label: 'result 5'
-	}
-];
 
 type SearchBarProps = {
 	currentApp: string;
@@ -54,14 +21,12 @@ type SearchBarProps = {
 };
 
 export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
-	const [lastSearchesDropdownOpen, setLastSearchesDropdownOpen] = useState(false);
-	const [resultsDropdownOpen, setResultsDropdownOpen] = useState(false);
 	const [searchIconActive, setSearchIconActive] = useState(false);
 	const [deleteIconActive, setDeleteIconActive] = useState(false);
 	const [chipInputValue, setChipInputValue] = useState([]);
 	const [searchText, setSearchText] = useState('');
 	const [t] = useTranslation();
-	const [storedValue, setStoredValue] = useLocalStorage('shell', []);
+	const [storedValue, setStoredValue] = useLocalStorage('search_suggestions', []);
 
 	const searchBarPlaceholder = `Search in ${
 		currentApp
@@ -70,47 +35,39 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 			.toUpperCase() + currentApp.slice(currentApp.lastIndexOf('_') + 1).slice(1)
 	}`;
 
-	const addChip = useCallback(
-		(item) => {
-			if (inputRef.current) {
-				inputRef.current.textContent = ''; // eslint-disable-line no-param-reassign
-				inputRef.current.focus();
-			}
-			setChipInputValue((c): any => [...c, item]);
-			setLastSearchesDropdownOpen(false);
-		},
-		[inputRef]
-	);
-
 	const lastSearches = useMemo(() => {
-		const items =
-			searchText === ''
-				? [...storedValue]
-						.filter((item: any) => item.id === currentApp)
-						.reverse()
-						.slice(0, 5)
-				: [...storedValue]
-						.filter((item: any) => item.id === currentApp && item.label.indexOf(searchText) !== -1)
-						.slice(0, 5);
-		return items;
-	}, [searchText, currentApp, storedValue]);
+		if (searchIconActive) {
+			const items =
+				searchText === ''
+					? [...storedValue]
+							.filter((item: any) => item.app === currentApp)
+							.reverse()
+							.slice(0, 5)
+					: [...storedValue]
+							.filter(
+								(item: any) => item.app === currentApp && item.label.indexOf(searchText) !== -1
+							)
+							.slice(0, 5);
+			return items;
+		}
+		return [];
+	}, [searchText, storedValue, currentApp, searchIconActive]);
 
-	const onChipFocus = useCallback(() => {
+	const onChipFocus = (): any => {
 		setSearchIconActive(true);
-		setLastSearchesDropdownOpen(true);
-	}, []);
+	};
 
 	const onChipBlur = useCallback(() => {
 		setSearchIconActive(false);
-		setLastSearchesDropdownOpen(false);
 	}, []);
 
 	useEffect(() => {
-		window.addEventListener('keypress', (event: any) =>
-			event.key === 'Enter' && event.target.isContentEditable === false
-				? inputRef.current.focus()
-				: null
-		);
+		window.addEventListener('keypress', (event: any) => {
+			if (event.key === '/' && event.target.isContentEditable === false) {
+				event.preventDefault();
+				inputRef.current.focus();
+			}
+		});
 	}, [inputRef]);
 
 	const onType = (ev: any): any => {
@@ -120,31 +77,41 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 		setSearchText(ev.textContent);
 	};
 
-	const clearSearch = useCallback(() => {
+	const clearSearch = (): any => {
 		inputRef.current.innerText = ''; // eslint-disable-line no-param-reassign
 		setChipInputValue([]);
-		setLastSearchesDropdownOpen(false);
 		setDeleteIconActive(false);
 		setSearchIconActive(false);
 		setSearchText('');
-	}, [inputRef]);
+		inputRef.current.focus();
+	};
 
 	const valueToStore = useMemo(() => [...storedValue], [storedValue]);
 
-	const onChipsChange = useCallback(
-		(e) => {
-			setChipInputValue(e);
+	const storeLastSearch = useCallback(
+		(e: string) => {
 			if (e.length) {
 				valueToStore?.push({
-					id: currentApp,
-					label: last(map(e, (item) => item.value)),
-					click: addChip(last(map(e, (item) => item.value)))
+					id: storedValue.length,
+					app: currentApp,
+					label: e
 				});
+				const valueToStoreSorted = sortBy(
+					uniqWith(uniqBy(valueToStore, 'label').concat(uniqBy(valueToStore, 'app')), isEqual),
+					'id'
+				);
+				setStoredValue(valueToStoreSorted);
 			}
-			const valueToStoreSorted = uniqWith(valueToStore, isEqual);
-			setStoredValue(valueToStoreSorted);
 		},
-		[setStoredValue, valueToStore, addChip, currentApp]
+		[storedValue, currentApp, setStoredValue, valueToStore]
+	);
+
+	const onAdd = useCallback(
+		(e: any) => {
+			setChipInputValue((c): any => [...c, { label: e }]);
+			storeLastSearch(e);
+		},
+		[storeLastSearch]
 	);
 
 	return (
@@ -156,10 +123,12 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 						placeholder={searchBarPlaceholder}
 						confirmChipOnBlur={false}
 						onInputType={onType}
-						onChange={onChipsChange}
+						onChange={null}
 						onFocus={onChipFocus}
+						onAdd={onAdd}
 						onBlur={onChipBlur}
 						value={chipInputValue}
+						options={lastSearches}
 						background="gray5"
 						style={{
 							cursor: 'pointer',
@@ -169,33 +138,6 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 						}}
 					/>
 				</Tooltip>
-				<Dropdown
-					disablePortal={false}
-					maxHeight="234px"
-					disableAutoFocus
-					disableRestoreFocus
-					display="block"
-					width="100%"
-					maxWidth="100%"
-					items={lastSearches}
-					forceOpen={lastSearchesDropdownOpen}
-				>
-					<div style={{ width: '100%' }} />
-				</Dropdown>
-				<Dropdown
-					disablePortal={false}
-					maxHeight="500px"
-					disableAutoFocus
-					disableRestoreFocus
-					display="block"
-					width="100%"
-					maxWidth="100%"
-					items={searchResults}
-					forceOpen={resultsDropdownOpen}
-					onClose={(): any => setResultsDropdownOpen(false)}
-				>
-					<div style={{ width: '100%' }} />
-				</Dropdown>
 			</Container>
 			<Tooltip label={t('clear_search')} placement="bottom">
 				<IconButton
@@ -221,9 +163,7 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 					}}
 					backgroundColor={searchIconActive ? 'primary' : 'transparent'}
 					iconColor="gray6"
-					onClick={(): any => {
-						deleteIconActive || chipInputValue?.length > 0 ? setResultsDropdownOpen(true) : null;
-					}}
+					onClick={null}
 				/>
 			</Tooltip>
 		</>

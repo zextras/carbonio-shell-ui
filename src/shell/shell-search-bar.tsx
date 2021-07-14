@@ -27,7 +27,7 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 	const [searchText, setSearchText] = useState('');
 	const [t] = useTranslation();
 	const [storedValue, setStoredValue] = useLocalStorage('search_suggestions', []);
-
+	const [options, setOptions] = useState<any>([]);
 	const searchBarPlaceholder = `Search in ${
 		currentApp
 			.slice(currentApp.lastIndexOf('_') + 1)
@@ -70,14 +70,29 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 		});
 	}, [inputRef]);
 
-	const onType = (ev: any): any => {
+	const onType = (ev: any): void => {
 		if (ev.textContent?.length > 0) {
 			setDeleteIconActive(true);
 		}
 		setSearchText(ev.textContent);
+		if (searchIconActive) {
+			const items =
+				ev.textContent === ''
+					? [...storedValue]
+							.filter((item: any) => item.app === currentApp)
+							.reverse()
+							.slice(0, 5)
+					: [...storedValue]
+							.filter(
+								(item: any) => item.app === currentApp && item.label.indexOf(ev.textContent) !== -1
+							)
+							.slice(0, 5);
+			setOptions(items);
+		}
+		setOptions([]);
 	};
 
-	const clearSearch = (): any => {
+	const clearSearch = (): void => {
 		inputRef.current.innerText = ''; // eslint-disable-line no-param-reassign
 		setChipInputValue([]);
 		setDeleteIconActive(false);
@@ -92,7 +107,7 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 		(e: string) => {
 			if (e.length) {
 				valueToStore?.push({
-					id: storedValue.length,
+					id: `${storedValue.length}`,
 					app: currentApp,
 					label: e
 				});
@@ -107,9 +122,10 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 	);
 
 	const onAdd = useCallback(
-		(e: any) => {
+		(e: string): { label: string } => {
 			setChipInputValue((c): any => [...c, { label: e }]);
 			storeLastSearch(e);
+			return { label: e };
 		},
 		[storeLastSearch]
 	);
@@ -123,11 +139,11 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 						placeholder={searchBarPlaceholder}
 						confirmChipOnBlur={false}
 						onInputType={onType}
-						onChange={null}
+						// onChange={setChipInputValue}
 						onFocus={onChipFocus}
 						onAdd={onAdd}
 						onBlur={onChipBlur}
-						value={chipInputValue}
+						defaultValue={chipInputValue}
 						options={lastSearches}
 						background="gray5"
 						style={{

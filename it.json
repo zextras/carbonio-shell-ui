@@ -33,7 +33,7 @@
 		"uc": "UC",
 		"yandex": "Yandex"
 	},
-	"theme-switch": {
+	"theme_switch": {
 		"dark": "Passa al tema scuro",
 		"light": "Passa al tema chiaro"
 	}

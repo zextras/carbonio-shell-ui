@@ -12,7 +12,7 @@
 import React, { FC, useState, useCallback, useEffect, useMemo } from 'react';
 import { ChipInput, Container, IconButton, Tooltip } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
-import { uniqWith, uniqBy, sortBy, isEqual } from 'lodash';
+import { uniqWith, uniqBy, sortBy, isEqual, debounce } from 'lodash';
 import { useLocalStorage } from './hooks';
 
 type SearchBarProps = {
@@ -24,34 +24,17 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 	const [searchIconActive, setSearchIconActive] = useState(false);
 	const [deleteIconActive, setDeleteIconActive] = useState(false);
 	const [chipInputValue, setChipInputValue] = useState([]);
-	const [searchText, setSearchText] = useState('');
+	// const [searchText, setSearchText] = useState('');
 	const [t] = useTranslation();
 	const [storedValue, setStoredValue] = useLocalStorage('search_suggestions', []);
 	const [options, setOptions] = useState<any>([]);
+
 	const searchBarPlaceholder = `Search in ${
 		currentApp
 			.slice(currentApp.lastIndexOf('_') + 1)
 			.charAt(0)
 			.toUpperCase() + currentApp.slice(currentApp.lastIndexOf('_') + 1).slice(1)
 	}`;
-
-	const lastSearches = useMemo(() => {
-		if (searchIconActive) {
-			const items =
-				searchText === ''
-					? [...storedValue]
-							.filter((item: any) => item.app === currentApp)
-							.reverse()
-							.slice(0, 5)
-					: [...storedValue]
-							.filter(
-								(item: any) => item.app === currentApp && item.label.indexOf(searchText) !== -1
-							)
-							.slice(0, 5);
-			return items;
-		}
-		return [];
-	}, [searchText, storedValue, currentApp, searchIconActive]);
 
 	const onChipFocus = (): any => {
 		setSearchIconActive(true);
@@ -70,65 +53,57 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 		});
 	}, [inputRef]);
 
-	const onType = (ev: any): void => {
-		if (ev.textContent?.length > 0) {
-			setDeleteIconActive(true);
-		}
-		setSearchText(ev.textContent);
-		if (searchIconActive) {
-			const items =
-				ev.textContent === ''
-					? [...storedValue]
-							.filter((item: any) => item.app === currentApp)
-							.reverse()
-							.slice(0, 5)
-					: [...storedValue]
-							.filter(
-								(item: any) => item.app === currentApp && item.label.indexOf(ev.textContent) !== -1
-							)
-							.slice(0, 5);
-			setOptions(items);
-		}
-		setOptions([]);
-	};
+	const optionsFixed = [{ label: '1' }, { label: '2' }, { label: '3' }, { label: '4' }];
+
+	const onType = useMemo(
+		() =>
+			debounce((ev: any): void => {
+				if (ev.textContent?.length > 0) {
+					setDeleteIconActive(true);
+					const items =
+						ev.textContent === ''
+							? [...storedValue]
+									.filter((item: any) => item.app === currentApp)
+									.reverse()
+									.slice(0, 5)
+							: [...storedValue]
+									.filter(
+										(item: any) =>
+											item.app === currentApp && item.label.indexOf(ev.textContent) !== -1
+									)
+									.slice(0, 5);
+					setOptions(items);
+				}
+				setOptions([]);
+
+				// setSearchText(ev.textContent);
+			}, 200),
+		[]
+	);
 
 	const clearSearch = (): void => {
 		inputRef.current.innerText = ''; // eslint-disable-line no-param-reassign
 		setChipInputValue([]);
 		setDeleteIconActive(false);
 		setSearchIconActive(false);
-		setSearchText('');
+		// setSearchText('');
 		inputRef.current.focus();
 	};
 
-	const valueToStore = useMemo(() => [...storedValue], [storedValue]);
-
-	const storeLastSearch = useCallback(
-		(e: string) => {
-			if (e.length) {
-				valueToStore?.push({
-					id: `${storedValue.length}`,
-					app: currentApp,
-					label: e
-				});
-				const valueToStoreSorted = sortBy(
-					uniqWith(uniqBy(valueToStore, 'label').concat(uniqBy(valueToStore, 'app')), isEqual),
-					'id'
-				);
-				setStoredValue(valueToStoreSorted);
-			}
-		},
-		[storedValue, currentApp, setStoredValue, valueToStore]
-	);
-
-	const onAdd = useCallback(
-		(e: string): { label: string } => {
-			setChipInputValue((c): any => [...c, { label: e }]);
-			storeLastSearch(e);
-			return { label: e };
-		},
-		[storeLastSearch]
-	);
+	const onAdd = useCallback((e: string): { label: string } => {
+		setChipInputValue((c): any => [...c, { label: e }]);
+		[...storedValue]?.push({
+			id: `${storedValue.length}`,
+			app: currentApp,
+			label: e
+		});
+		const valueToStoreSorted = sortBy(
+			uniqWith(uniqBy([...storedValue], 'label').concat(uniqBy([...storedValue], 'app')), isEqual),
+			'id'
+		);
+		setStoredValue(valueToStoreSorted);
+		return { label: e };
+	}, []);
 
 	return (
 		<>
@@ -144,11 +119,11 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 						onAdd={onAdd}
 						onBlur={onChipBlur}
 						defaultValue={chipInputValue}
-						options={lastSearches}
+						options={optionsFixed}
 						background="gray5"
 						style={{
 							cursor: 'pointer',
-							height: '43px',
+							height: '48px',
 							backgroundColor: '#F5F6F8',
 							bordeRadius: '2px 2px 0px 0px'
 						}}

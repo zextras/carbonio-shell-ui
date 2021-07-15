@@ -54,7 +54,7 @@ export default function BootstrapperRouter() {
 	const accounts = useUserAccounts();
 
 	return (
-		<BrowserRouter>
+		<BrowserRouter basename="/iris">
 			<ContextBridge />
 			<BootstrapperRouterContent accounts={accounts} />
 		</BrowserRouter>

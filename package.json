@@ -29,7 +29,14 @@
 		"zapp",
 		"zextras"
 	],
-	"author": "Michele Olivo <michele.olivo@zextras.com>",
+	"author": "Zextras Dexter's Lab Team <dexterlab@zextras.com>",
+	"maintainers": [
+		"Matteo Dal Zovo <matteo.dalzovo@zextras.com>",
+		"Gabriele Marino <gabriele.marino@zextras.com>",
+		"Abhishek Kumar <abhishek.kumar@zextras.com>",
+		"Manan Patel <manan.patel@zextras.com>",
+		"Giuliano Caregnato <giuliano.caregnato@zextras.com>"
+	],
 	"license": "UNLICENSED",
 	"devDependencies": {
 		"@babel/core": "7.13.14",

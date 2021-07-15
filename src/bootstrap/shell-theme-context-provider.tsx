@@ -10,11 +10,13 @@
  */
 import React, { createContext, FC, useCallback, useEffect, useState } from 'react';
 import { ThemeProvider as UIThemeProvider } from '@zextras/zapp-ui';
-import { enable, disable, auto } from 'darkreader';
+import { enable, disable, auto, setFetchMethod } from 'darkreader';
 import { reduce } from 'lodash';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import Logo from './logo';
+
+setFetchMethod(window.fetch);
 
 export type ThemeExtension = (theme: any) => any;
 export type ThemeExtensionMap = Record<string, ThemeExtension>;

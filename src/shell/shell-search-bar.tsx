@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /*
  * *** BEGIN LICENSE BLOCK *****
  * Copyright (C) 2011-2021 Zextras
@@ -9,11 +10,20 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC, useState, useCallback, useEffect, useMemo } from 'react';
-import { ChipInput, Container, IconButton, Tooltip } from '@zextras/zapp-ui';
+import React, { useContext, useState, useCallback, useEffect, useMemo } from 'react';
+import { ChipInput, Container, IconButton, Tooltip, ThemeContext } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
 import { uniqWith, uniqBy, sortBy, isEqual, debounce } from 'lodash';
+import styled from 'styled-components';
 import { useLocalStorage } from './hooks';
+
+const StyledContainer = styled(Container)`
+	height: 42px;
+	overflow-y: hidden;
+	&:first-child {
+		transform: translateY(-1px);
+	}
+`;
 
 type SearchBarProps = {
 	currentApp: string;
@@ -21,10 +31,10 @@ type SearchBarProps = {
 };
 
 export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
+	const theme = useContext(ThemeContext) as unknown;
 	const [searchIconActive, setSearchIconActive] = useState(false);
 	const [deleteIconActive, setDeleteIconActive] = useState(false);
 	const [chipInputValue, setChipInputValue] = useState([]);
-	// const [searchText, setSearchText] = useState('');
 	const [t] = useTranslation();
 	const [storedValue, setStoredValue] = useLocalStorage('search_suggestions', []);
 	const [options, setOptions] = useState<any>([]);
@@ -53,8 +63,6 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 		});
 	}, [inputRef]);
 
-	const optionsFixed = [{ label: '1' }, { label: '2' }, { label: '3' }, { label: '4' }];
-
 	const onType = useMemo(
 		() =>
 			debounce((ev: any): void => {
@@ -72,11 +80,10 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 											item.app === currentApp && item.label.indexOf(ev.textContent) !== -1
 									)
 									.slice(0, 5);
-					setOptions(items);
+					setOptions(items.map((i) => ({ ...i, value: i.label })));
+					return;
 				}
 				setOptions([]);
-
-				// setSearchText(ev.textContent);
 			}, 200),
 		[currentApp, storedValue]
 	);
@@ -86,7 +93,6 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 		setChipInputValue([]);
 		setDeleteIconActive(false);
 		setSearchIconActive(false);
-		// setSearchText('');
 		inputRef.current.focus();
 	};
 
@@ -113,34 +119,34 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 
 	return (
 		<>
-			<Container>
+			<StyledContainer>
 				<Tooltip label={t('type_start_search')} placement="bottom">
 					<ChipInput
 						inputRef={inputRef}
 						placeholder={searchBarPlaceholder}
 						confirmChipOnBlur={false}
 						onInputType={onType}
-						// onChange={setChipInputValue}
 						onFocus={onChipFocus}
 						onAdd={onAdd}
 						onBlur={onChipBlur}
 						defaultValue={chipInputValue}
-						options={optionsFixed}
+						options={options}
 						background="gray5"
 						style={{
 							cursor: 'pointer',
-							height: '48px',
-							backgroundColor: '#F5F6F8',
+							// @ts-ignore
+							backgroundColor: theme.palette.gray5.regular,
 							bordeRadius: '2px 2px 0px 0px'
 						}}
 					/>
 				</Tooltip>
-			</Container>
+			</StyledContainer>
 			<Tooltip label={t('clear_search')} placement="bottom">
 				<IconButton
 					icon="BackspaceOutline"
 					style={{
-						border: '1px solid #2b73d2',
+						// @ts-ignore
+						border: `1px solid ${theme.palette.primary.regular}`,
 						display: deleteIconActive || chipInputValue?.length > 0 ? 'block' : 'none',
 						marginLeft: '4px',
 						cursor: 'pointer'
@@ -153,8 +159,16 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 				<IconButton
 					icon="Search"
 					style={{
-						border: searchIconActive ? '1px solid #2b73d2' : '1px solid #aac8ee',
-						backgroundColor: searchIconActive ? '#2b73d2' : '#aac8ee',
+						border: searchIconActive
+							? // @ts-ignore
+							  `1px solid ${theme.palette.primary.regular}`
+							: // @ts-ignore
+							  `1px solid ${theme.palette.highlight.regular}`,
+						backgroundColor: searchIconActive
+							? // @ts-ignore
+							  theme.palette.primary.regular
+							: // @ts-ignore
+							  theme.palette.highlight.regular,
 						marginLeft: '8px',
 						cursor: 'pointer'
 					}}

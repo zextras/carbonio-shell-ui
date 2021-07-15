@@ -11,32 +11,33 @@
 
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
-import { Accordion, Collapse, Container, Responsive } from '@zextras/zapp-ui';
+import { Container, Responsive } from '@zextras/zapp-ui';
+import styled from 'styled-components';
 
-export default function ShellMenuPanel({ menuIsOpen, tree }) {
+const Spacer = styled.div`
+	position: relative;
+	width: ${({ mode }) => (mode === 'open' ? 256 : 40)}px;
+	height: 100%;
+	transition: width 0.2s;
+`;
+const Panel = styled(Container)`
+	width: ${({ mode }) => (mode !== 'closed' ? 256 : 40)}px;
+	height: 100%;
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	transition: width 0.2s;
+`;
+
+export default function ShellMenuPanel({ mode, children }) {
 	return (
-		<Container
-			orientation="horizontal"
-			background="gray5"
-			width="fit"
-			height="fill"
-			mainAlignment="flex-start"
-			crossAlignment="flex-start"
-			style={{
-				position: 'absolute',
-				top: 0,
-				right: 0,
-				zIndex: 3,
-				boxShadow: '0 2px 5px 0 rgba(125,125,125,0.5)'
-			}}
-		>
-			<Responsive mode="desktop">
-				<Collapse orientation="horizontal" open={menuIsOpen} maxSize="256px">
-					<Container width={256} height="fill" orientation="vertical" mainAlignment="flex-start">
-						<Accordion items={tree} />
-					</Container>
-				</Collapse>
-			</Responsive>
-		</Container>
+		<Responsive mode="desktop">
+			<Spacer mode={mode}>
+				<Panel mode={mode} mainAlignment="flex-start">
+					{children}
+				</Panel>
+			</Spacer>
+		</Responsive>
 	);
 }

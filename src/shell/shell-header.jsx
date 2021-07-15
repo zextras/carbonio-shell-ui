@@ -26,12 +26,7 @@ import { UserQuota } from './user-quota';
 import { useAppStore } from '../app-store';
 import { SearchBar } from './shell-search-bar';
 
-export default function ShellHeader({
-	userBarIsOpen,
-	mobileNavIsOpen,
-	onMobileMenuClick,
-	onUserClick
-}) {
+export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, children }) {
 	const history = useHistory();
 	const [t] = useTranslation();
 	const screenMode = useScreenMode();
@@ -124,12 +119,15 @@ export default function ShellHeader({
 						<Padding right="small">
 							<UserQuota />
 						</Padding>
-						<IconButton icon="BellOutline" iconColor="text" />
 						<IconButton
-							icon={userBarIsOpen ? 'Close' : 'PersonOutline'}
+							icon="BellOutline"
 							iconColor="text"
-							onClick={onUserClick}
+							onClick={() => {
+								// eslint-disable-next-line no-console
+								console.log('not implemented');
+							}}
 						/>
+						{children}
 					</Container>
 				</Container>
 			</Responsive>

@@ -37,6 +37,8 @@
             "secondary": "Cancel"
         },
         "general": {
+            "account": "Account",
+            "account_logout": "Logout",
             "general": "General",
             "theme_auto": "Auto",
             "theme_disabled": "Disabled",
@@ -90,7 +92,7 @@
         "uc": "UC",
         "yandex": "Yandex"
     },
-    "type-start_search": "",
+    "type_start_search": "",
     "user_quota": {
         "limited": "",
         "unlimited": "Congrats! Unlimited space available"

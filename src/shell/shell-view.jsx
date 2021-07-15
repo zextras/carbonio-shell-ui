@@ -10,8 +10,17 @@
  */
 
 import React, { useCallback, useEffect, useMemo, useState, useContext } from 'react';
-import { Row, Responsive, ModalManager, SnackbarManager } from '@zextras/zapp-ui';
-import { useHistory, useRouteMatch, Redirect } from 'react-router-dom';
+import {
+	Row,
+	Responsive,
+	ModalManager,
+	SnackbarManager,
+	IconButton,
+	Avatar,
+	Container,
+	Text
+} from '@zextras/zapp-ui';
+import { useHistory, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import { find, filter } from 'lodash';
@@ -26,6 +35,8 @@ import { useDispatch, useSessionState, useUserAccounts } from '../store/shell-st
 import { verifySession } from '../store/session-slice';
 import { doLogout } from '../store/accounts-slice';
 import { useAppList } from '../app-store/hooks';
+import { useAppStore } from '../app-store';
+import AppContextProvider from '../app/app-context-provider';
 
 const Background = styled.div`
 	background: ${({ theme }) => theme.palette.gray6.regular};
@@ -63,7 +74,7 @@ export function Shell() {
 	const history = useHistory();
 	const dispatch = useDispatch();
 
-	const [userOpen, setUserOpen] = useState(false);
+	const [chatPanelMode, setChatPanelMode] = useState('closed'); // values: 'closed', 'overlap', 'open'
 	const [navOpen, setNavOpen] = useState(true);
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
 	const [t] = useTranslation();
@@ -94,17 +105,21 @@ export function Shell() {
 			dispatch(verifySession());
 		}
 	}, [accounts, sessionState, dispatch]);
+	const TeamViews = useAppStore((state) => state.apps.com_zextras_zapp_team?.views?.teambar);
 
+	useEffect(() => {
+		setNavOpen((n) => !(n && chatPanelMode === 'open'));
+	}, [chatPanelMode]);
 	return (
 		<Background>
 			<DarkReaderListener />
 			<MainAppRerouter />
 			<ShellHeader
-				userBarIsOpen={userOpen}
 				mobileNavIsOpen={mobileNavOpen}
 				onMobileMenuClick={() => setMobileNavOpen(!mobileNavOpen)}
-				onUserClick={() => setUserOpen(!userOpen)}
-			/>
+			>
+				{TeamViews && <TeamViews.icon mode={chatPanelMode} setMode={setChatPanelMode} />}
+			</ShellHeader>
 			<Row crossAlignment="unset" flexGrow="1" style={{ position: 'relative' }}>
 				<ShellNavigationBar
 					navigationBarIsOpen={navOpen}
@@ -113,7 +128,13 @@ export function Shell() {
 					userMenuTree={userMenuTree}
 				/>
 				<AppViewContainer />
-				<ShellMenuPanel menuIsOpen={userOpen} tree={userMenuTree} />
+				{TeamViews && (
+					<AppContextProvider pkg="com_zextras_zapp_team">
+						<ShellMenuPanel mode={chatPanelMode} setMode={setChatPanelMode}>
+							<TeamViews.sidebar mode={chatPanelMode} setMode={setChatPanelMode} />
+						</ShellMenuPanel>
+					</AppContextProvider>
+				)}
 			</Row>
 			<Responsive mode="desktop">
 				<AppBoardWindow />

@@ -16,6 +16,7 @@ import { useHistory } from 'react-router-dom';
 // @ts-ignore
 import { useDispatch } from '../store/shell-store-hooks';
 import { modifyPrefs } from '../store/accounts-slice';
+import Logout from './logout';
 import AppearanceSettings from './appearance-settings';
 import ModuleVersionSettings from './module-version-settings';
 import OutOfOfficeSettings from './out-of-office-view';
@@ -123,6 +124,7 @@ const GeneralSettings: FC = () => {
 					onCancel={onCancel}
 					onSave={onSave}
 				/>
+				<Logout />
 				<AppearanceSettings settings={acct.settings} addMod={addMod} />
 				<OutOfOfficeSettings settings={acct.settings} addMod={addMod} />
 				<ModuleVersionSettings />

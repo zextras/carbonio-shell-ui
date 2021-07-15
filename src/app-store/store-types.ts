@@ -42,6 +42,10 @@ export type RuntimeAppData = Partial<{
 		board?: Component | FunctionComponent;
 		settings?: Component | FunctionComponent;
 		sidebar?: Component | FunctionComponent;
+		teambar?: {
+			icon: Component | FunctionComponent;
+			sidebar: Component | FunctionComponent;
+		};
 	};
 	context: unknown;
 	search: {

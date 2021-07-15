@@ -78,7 +78,7 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 
 				// setSearchText(ev.textContent);
 			}, 200),
-		[]
+		[currentApp, storedValue]
 	);
 
 	const clearSearch = (): void => {
@@ -90,20 +90,26 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 		inputRef.current.focus();
 	};
 
-	const onAdd = useCallback((e: string): { label: string } => {
-		setChipInputValue((c): any => [...c, { label: e }]);
-		[...storedValue]?.push({
-			id: `${storedValue.length}`,
-			app: currentApp,
-			label: e
-		});
-		const valueToStoreSorted = sortBy(
-			uniqWith(uniqBy([...storedValue], 'label').concat(uniqBy([...storedValue], 'app')), isEqual),
-			'id'
-		);
-		setStoredValue(valueToStoreSorted);
-		return { label: e };
-	}, []);
+	const onAdd = useCallback(
+		(e: string): { label: string } => {
+			setChipInputValue((c): any => [...c, { label: e }]);
+			[...storedValue]?.push({
+				id: `${storedValue.length}`,
+				app: currentApp,
+				label: e
+			});
+			const valueToStoreSorted = sortBy(
+				uniqWith(
+					uniqBy([...storedValue], 'label').concat(uniqBy([...storedValue], 'app')),
+					isEqual
+				),
+				'id'
+			);
+			setStoredValue(valueToStoreSorted);
+			return { label: e };
+		},
+		[currentApp, storedValue, setStoredValue]
+	);
 
 	return (
 		<>

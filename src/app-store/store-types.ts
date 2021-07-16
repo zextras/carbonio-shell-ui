@@ -8,7 +8,7 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import { Component, FunctionComponent } from 'react';
+import { Component, ComponentClass, FunctionComponent } from 'react';
 
 export type SharedAction = {
 	id: string;
@@ -33,6 +33,7 @@ export type CoreAppData = {
 
 export type UninitializedAppData = {
 	core: CoreAppData;
+	class?: Component;
 };
 
 export type RuntimeAppData = Partial<{
@@ -86,6 +87,7 @@ export type IntegrationsRegister = {
 
 export type Setters = {
 	addApps: (apps: Array<CoreAppData>) => void;
+	setAppClass: (id: string, component: ComponentClass) => void;
 	registerAppData: (id: string) => (data: RuntimeAppData) => void;
 	registerIntegrations: (id: string) => (data: IntegrationsRegister) => void;
 	setAppContext: (id: string) => (data: unknown) => void;

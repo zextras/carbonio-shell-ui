@@ -16,7 +16,6 @@ import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
 import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
 import { Reducer } from 'redux';
 import * as RxJS from 'rxjs';
-import { BehaviorSubject } from 'rxjs';
 import React, { ComponentClass, FunctionComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import * as RxJSOperators from 'rxjs/operators';
@@ -40,26 +39,13 @@ import { Store } from '@reduxjs/toolkit';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { RichTextEditor } from '@zextras/zapp-ui/dist/zapp-ui.rich-text-editor';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-// import RevertableActionCollection from '../../extension/RevertableActionCollection';
 
 import { LinkProps } from 'react-router-dom';
 import StoreFactory from '../store/store-factory';
 
 import { FC, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import ShellNetworkService from '../network/shell-network-service';
-import {
-	Account,
-	AppCreateOption,
-	AppPkgDescription,
-	AppRouteDescription,
-	AppSettingsRouteDescription,
-	FCSink,
-	MainMenuItemData,
-	SoapFetch,
-	ThemePkgDescription
-} from '../../types';
+import { Account, AppPkgDescription, FCSink, SoapFetch } from '../../types';
 import { appStore } from '../app-store';
 import { RuntimeAppData } from '../app-store/store-types';
 import { getAppGetters } from './app-loader-functions';
@@ -68,7 +54,7 @@ import { getAppLink } from './app-link';
 import { Spinner } from '../shell/spinner';
 import { ZIMBRA_STANDARD_COLORS, FOLDERS } from '../constants';
 
-type IShellWindow<T, R> = Window & {
+export type IShellWindow<T, R> = Window & {
 	__ZAPP_SHARED_LIBRARIES__: T;
 	__ZAPP_HMR_EXPORT__: { [pkgName: string]: (appClass: R) => void };
 	__ZAPP_HMR_HANDLERS__: { [pkgName: string]: (handlers: RequestHandlersList) => void };
@@ -89,15 +75,13 @@ type SharedLibrariesAppsMap = {
 	moment: unknown;
 	'@zextras/zapp-shell': {
 		[pkgName: string]: unknown & {
-			// These signatures are in the documentation
-			// If changed update also the documentation.
 			store: {
-				store: Store<any>;
+				store: Store<unknown>;
 				setReducer(nextReducer: Reducer): void;
 			};
 			soapFetch: SoapFetch;
 			registerAppData: (data: RuntimeAppData) => void;
-			setAppContext: (obj: any) => void;
+			setAppContext: (obj: unknown) => void;
 			fiberChannel: FC;
 			fiberChannelSink: FCSink;
 			AppLink: FunctionComponent<LinkProps>;
@@ -111,52 +95,23 @@ type SharedLibrariesAppsMap = {
 	faker?: unknown;
 };
 
-type SharedLibrariesThemesMap = {
-	react: unknown;
-	'react-dom': unknown;
-	lodash: unknown;
-	'styled-components': unknown;
-	'prop-types': unknown;
-	'@zextras/zapp-ui': unknown;
-	msw?: unknown;
-	faker?: unknown;
-};
-
 type LoadedAppRuntime = AppInjections & {
 	pkg: AppPkgDescription;
-};
-
-type LoadedThemeRuntime = ThemeInjections & {
-	pkg: ThemePkgDescription;
 };
 
 export type LoadedAppsCache = {
 	[pkgName: string]: LoadedAppRuntime;
 };
 
-export type LoadedThemesCache = {
-	[pkgName: string]: LoadedThemeRuntime;
-};
-
 type AppInjections = {
-	appContext: BehaviorSubject<any>;
-	createOptions: BehaviorSubject<AppCreateOption[]>;
-	entryPoint: BehaviorSubject<ComponentClass | null>;
-	mainMenuItems: BehaviorSubject<MainMenuItemData[]>;
-	routes: BehaviorSubject<AppRouteDescription[]>;
-	settingsRoutes: BehaviorSubject<AppSettingsRouteDescription[]>;
 	store: Store<any>;
 };
 
-type ThemeInjections = {
-	entryPoint: BehaviorSubject<ComponentClass | null>;
-};
-
-const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
+export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
 // const _revertableActions: { [pkgName: string]: RevertableActionCollection } = {};
 
-function updateAppHandlers(appPkg: AppPkgDescription, handlers: RequestHandlersList): void {
+export function updateAppHandlers(appPkg: AppPkgDescription, handlers: RequestHandlersList): void {
 	if (FLAVOR === 'NPM' && typeof devUtils !== 'undefined') {
 		const worker = devUtils.getMSWorker<SetupWorkerApi>();
 		if (worker) {
@@ -168,9 +123,10 @@ function updateAppHandlers(appPkg: AppPkgDescription, handlers: RequestHandlersL
 
 function loadAppModule(
 	appPkg: AppPkgDescription,
-	{ appContext, entryPoint, store }: AppInjections,
+	store: Store<any>,
 	fiberChannelFactory: IFiberChannelFactory,
-	shellNetworkService: ShellNetworkService
+	shellNetworkService: ShellNetworkService,
+	setAppClass: (id: string, appClass: ComponentClass) => void
 ): Promise<void> {
 	return new Promise((_resolve, _reject) => {
 		let resolved = false;
@@ -219,7 +175,8 @@ function loadAppModule(
 				SharedLibrariesAppsMap,
 				ComponentClass
 			>).__ZAPP_HMR_EXPORT__[appPkg.package] = (appClass: ComponentClass): void => {
-				entryPoint.next(appClass);
+				console.log('running ', appPkg.package, appClass);
+				setAppClass(appPkg.package, appClass);
 				resolve();
 			};
 
@@ -252,64 +209,6 @@ function loadAppModule(
 	});
 }
 
-function loadThemeModule(
-	themePkg: AppPkgDescription,
-	{ entryPoint }: ThemeInjections,
-	fiberChannelFactory: IFiberChannelFactory
-): Promise<void> {
-	return new Promise((_resolve, _reject) => {
-		let resolved = false;
-		const resolve: (...args: any[]) => void = (...args) => {
-			if (!resolved) {
-				resolved = true;
-				_resolve(...args);
-			}
-		};
-		const reject: (e: Error) => void = (e) => {
-			if (!resolved) {
-				resolved = true;
-				_reject(e);
-			}
-		};
-		try {
-			// eslint-disable-next-line max-len
-			((window as unknown) as IShellWindow<
-				SharedLibrariesThemesMap,
-				ComponentClass
-			>).__ZAPP_HMR_EXPORT__[themePkg.package] = (appClass: ComponentClass): void => {
-				entryPoint.next(appClass);
-				resolve();
-			};
-
-			if (FLAVOR === 'NPM' && typeof cliSettings !== 'undefined' && cliSettings.hasHandlers) {
-				// eslint-disable-next-line max-len
-				((window as unknown) as IShellWindow<
-					SharedLibrariesThemesMap,
-					ComponentClass
-				>).__ZAPP_HMR_HANDLERS__[themePkg.package] = (handlers: RequestHandlersList): void =>
-					updateAppHandlers(themePkg, handlers);
-			}
-			const script: HTMLScriptElement = document.createElement('script');
-			script.setAttribute('type', 'text/javascript');
-			script.setAttribute('data-pkg_name', themePkg.package);
-			script.setAttribute('data-pkg_version', themePkg.version);
-			script.setAttribute('data-is_theme', 'true');
-			script.setAttribute('src', `${themePkg.resourceUrl}/${themePkg.entryPoint}`);
-			script.addEventListener('error', (ev) => {
-				fiberChannelFactory.getAppFiberChannelSink(themePkg)({
-					event: 'report-exception',
-					data: { exception: ev.error }
-				});
-				reject(ev.error);
-			});
-			document.body.appendChild(script);
-			_scripts[`${themePkg.package}-loader-${(_scriptId += 1)}`] = script;
-		} catch (err) {
-			reject(err);
-		}
-	});
-}
-
 function loadApp(
 	pkg: AppPkgDescription,
 	fiberChannelFactory: IFiberChannelFactory,
@@ -317,116 +216,28 @@ function loadApp(
 	storeFactory: StoreFactory
 ): Promise<LoadedAppRuntime | undefined> {
 	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
-	const mainMenuItems = new BehaviorSubject<MainMenuItemData[]>([]);
-	const routes = new BehaviorSubject<AppRouteDescription[]>([]);
-	const settingsRoutes = new BehaviorSubject<AppSettingsRouteDescription[]>([]);
-	const createOptions = new BehaviorSubject<AppCreateOption[]>([]);
-	const appContext = new BehaviorSubject<any>({});
-	const entryPoint = new BehaviorSubject<ComponentClass | null>(null);
 	const store = storeFactory.getStoreForApp(pkg);
-	return (
-		loadAppModule(
-			pkg,
-			{
-				appContext,
-				createOptions,
-				entryPoint,
-				mainMenuItems,
-				routes,
-				settingsRoutes,
-				store
-			},
-			fiberChannelFactory,
-			shellNetworkService
-		)
-			// .then(() => {
-			// 	this._fcSink<{ package: string; version: string }>('app:loaded', {
-			// 		package: pkg.package,
-			// 		version: pkg.version
-			// 	});
-			// })
-			// .catch((err) => {
-			// 	this._fcSink<{ package: string; version: string; error: Error }>('app:load-error', {
-			// 		package: pkg.package,
-			// 		version: pkg.version,
-			// 		error: err
-			// 	});
-			// })
-			.then(() => true)
-			.catch((e) => {
-				const sink = fiberChannelFactory.getAppFiberChannelSink(pkg);
-				sink({
-					event: 'report-exception',
-					data: {
-						exception: e
-					}
-				});
-				return false;
-			})
-			.then((loaded) =>
-				loaded
-					? {
-							pkg,
-							appContext,
-							createOptions,
-							entryPoint,
-							mainMenuItems,
-							routes,
-							settingsRoutes,
-							store
-					  }
-					: undefined
-			)
-	);
-}
-
-function loadTheme(
-	pkg: AppPkgDescription,
-	fiberChannelFactory: IFiberChannelFactory
-): Promise<LoadedThemeRuntime | undefined> {
-	// this._fcSink<{ package: string }>('theme:preload', { package: pkg.package });
-	const entryPoint = new BehaviorSubject<ComponentClass | null>(null);
-	return (
-		loadThemeModule(
-			pkg,
-			{
-				entryPoint
-			},
-			fiberChannelFactory
-		)
-			// .then(() => {
-			// 	this._fcSink<{ package: string; version: string }>('theme:loaded', {
-			// 		package: pkg.package,
-			// 		version: pkg.version
-			// 	});
-			// })
-			// .catch((err) => {
-			// 	this._fcSink<{ package: string; version: string; error: Error }>('theme:load-error', {
-			// 		package: pkg.package,
-			// 		version: pkg.version,
-			// 		error: err
-			// 	});
-			// })
-			.then(() => true)
-			.catch((e) => {
-				const sink = fiberChannelFactory.getAppFiberChannelSink(pkg);
-				sink({
-					event: 'report-exception',
-					data: {
-						exception: e
-					}
-				});
-				return false;
-			})
-			.then((loaded) =>
-				loaded
-					? {
-							pkg,
-							entryPoint
-					  }
-					: undefined
-			)
-	);
+	const { setAppClass } = appStore.getState().setters;
+	return loadAppModule(pkg, store, fiberChannelFactory, shellNetworkService, setAppClass)
+		.then(() => true)
+		.catch((e) => {
+			const sink = fiberChannelFactory.getAppFiberChannelSink(pkg);
+			sink({
+				event: 'report-exception',
+				data: {
+					exception: e
+				}
+			});
+			return false;
+		})
+		.then((loaded) =>
+			loaded
+				? {
+						pkg,
+						store
+				  }
+				: undefined
+		);
 }
 
 function injectSharedLibraries(): void {
@@ -498,31 +309,6 @@ export function loadApps(
 					app: PACKAGE_NAME
 				},
 				event: 'all-apps-loaded',
-				data: loaded
-			});
-			return loaded;
-		});
-}
-
-export function loadThemes(
-	accounts: Array<Account>,
-	fiberChannelFactory: IFiberChannelFactory
-): Promise<LoadedThemesCache> {
-	injectSharedLibraries();
-	const orderedThemes = orderBy(accounts[0].themes, 'priority');
-	// Load only the first theme by priority
-	const themes = orderedThemes.length < 1 ? [] : [orderedThemes[0]];
-	return Promise.all(map(themes, (pkg) => loadTheme(pkg, fiberChannelFactory)))
-		.then((loaded) => compact(loaded))
-		.then((loaded) => keyBy(loaded, 'pkg.package'))
-		.then((loaded) => {
-			const sink = fiberChannelFactory.getShellFiberChannelSink();
-			sink({
-				to: {
-					version: PACKAGE_VERSION,
-					app: PACKAGE_NAME
-				},
-				event: 'all-themes-loaded',
 				data: loaded
 			});
 			return loaded;

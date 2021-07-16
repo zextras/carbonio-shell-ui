@@ -24,7 +24,7 @@ const SidebarSwitch = ({ item, sidebarIsOpen }) =>
 	item.sidebar ? (
 		<Route key={`/${item.id}`} path={`/${item.id}`}>
 			<AppContextProvider pkg={item.id}>
-				<item.sidebar expanded={sidebarIsOpen} />
+				<item.sidebar expanded={item.sidebarIsOpen} />
 			</AppContextProvider>
 		</Route>
 	) : null;

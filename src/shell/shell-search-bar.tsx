@@ -10,12 +10,26 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useContext, useState, useCallback, useEffect, useMemo } from 'react';
-import { ChipInput, Container, IconButton, Tooltip, ThemeContext } from '@zextras/zapp-ui';
+import React, { useContext, useState, useCallback, useEffect, useMemo, FC } from 'react';
+import {
+	ChipInput,
+	Container,
+	IconButton,
+	Tooltip,
+	ThemeContext,
+	Select,
+	Row,
+	Icon,
+	Text
+} from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
-import { uniqWith, uniqBy, sortBy, isEqual, debounce } from 'lodash';
+import { uniqWith, uniqBy, sortBy, isEqual, debounce, reduce, filter, find } from 'lodash';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import { useLocalStorage } from './hooks';
+import { SEARCH_APP_ID } from '../constants';
+import { useApps } from '../app-store/hooks';
+import { AppData, AppsMap } from '../app-store/store-types';
 
 const StyledContainer = styled(Container)`
 	height: 42px;
@@ -25,6 +39,37 @@ const StyledContainer = styled(Container)`
 	}
 `;
 
+type SelectLabelFactoryProps = {
+	selected: [{ label: string; value: string }];
+	open: boolean;
+	focus: boolean;
+};
+
+const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus }) => (
+	<Container
+		orientation="horizontal"
+		background="gray5"
+		width="fill"
+		crossAlignment="center"
+		mainAlignment="space-between"
+		borderRadius="half"
+		padding={{
+			vertical: 'small'
+		}}
+	>
+		<Row takeAvailableSpace mainAlignment="unset">
+			<Text size="medium" color={open || focus ? 'primary' : 'text'}>
+				{selected[0]?.label}
+			</Text>
+		</Row>
+		<Icon
+			size="large"
+			icon={open ? 'ChevronUpOutline' : 'ChevronDownOutline'}
+			color={open || focus ? 'primary' : 'secondary'}
+			style={{ alignSelf: 'center' }}
+		/>
+	</Container>
+);
 type SearchBarProps = {
 	currentApp: string;
 	inputRef: any;
@@ -38,13 +83,13 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 	const [t] = useTranslation();
 	const [storedValue, setStoredValue] = useLocalStorage('search_suggestions', []);
 	const [options, setOptions] = useState<any>([]);
-
-	const searchBarPlaceholder = `Search in ${
-		currentApp
-			.slice(currentApp.lastIndexOf('_') + 1)
-			.charAt(0)
-			.toUpperCase() + currentApp.slice(currentApp.lastIndexOf('_') + 1).slice(1)
-	}`;
+	const history = useHistory();
+	const apps = useApps();
+	const searchBarPlaceholder = useMemo(() => t('search.in', { app: apps[currentApp]?.core.name }), [
+		apps,
+		currentApp,
+		t
+	]);
 
 	const onChipFocus = (): any => {
 		setSearchIconActive(true);
@@ -117,19 +162,66 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 		[currentApp, storedValue, setStoredValue]
 	);
 
+	const onSearch = useCallback(() => {
+		history.push(
+			`/${SEARCH_APP_ID}/${currentApp}?query=${chipInputValue
+				.reduce(
+					(acc: string, val: { label: string }) =>
+						// eslint-disable-next-line no-useless-escape
+						`${acc}${val.label.split(' ').length > 1 ? `\\"${val.label}\\"` : val.label} `,
+					''
+				)
+				.trim()}`
+		);
+	}, [chipInputValue, currentApp, history]);
+
+	const moduleSelectorItems = useMemo(
+		() =>
+			filter(apps, (app) => !!app.views?.search).map((app) => ({
+				label: app.core.name,
+				value: app.core.package
+			})),
+		[apps]
+	);
+
+	const [selectedModule, setSelectedModule] = useState(
+		find(moduleSelectorItems, ['value', currentApp]) ?? moduleSelectorItems[0]
+	);
+	const onSelectChange = useCallback(
+		(value: string): void =>
+			setSelectedModule(find(moduleSelectorItems, ['value', value]) ?? moduleSelectorItems[0]),
+		[moduleSelectorItems]
+	);
+	useEffect(() => {
+		setSelectedModule(find(moduleSelectorItems, ['value', currentApp]) ?? moduleSelectorItems[0]);
+	}, [currentApp, moduleSelectorItems]);
+
 	return (
 		<>
-			<StyledContainer>
-				<Tooltip label={t('type_start_search')} placement="bottom">
+			<StyledContainer orientation="horizontal">
+				<Container width="40%" padding={{ left: 'small' }}>
+					<Select
+						items={moduleSelectorItems}
+						defaultSelection={selectedModule}
+						background="gray6"
+						label={t('search.module', 'Module')}
+						onChange={onSelectChange}
+						LabelFactory={SelectLabelFactory}
+					/>
+				</Container>
+				<Tooltip
+					label={t('search.type_start', 'Type one or more keywords to start a search')}
+					placement="bottom"
+				>
 					<ChipInput
 						inputRef={inputRef}
-						placeholder={searchBarPlaceholder}
-						confirmChipOnBlur={false}
+						placeholder={t('search.input_label', 'Search')}
 						onInputType={onType}
 						onFocus={onChipFocus}
 						onAdd={onAdd}
 						onBlur={onChipBlur}
 						defaultValue={chipInputValue}
+						confirmChipOnBlur
 						options={options}
 						background="gray5"
 						style={{
@@ -141,7 +233,7 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 					/>
 				</Tooltip>
 			</StyledContainer>
-			<Tooltip label={t('clear_search')} placement="bottom">
+			<Tooltip label={t('search.clear', 'Clear search')} placement="bottom">
 				<IconButton
 					icon="BackspaceOutline"
 					style={{
@@ -155,7 +247,7 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 					onClick={clearSearch}
 				/>
 			</Tooltip>
-			<Tooltip label={t('start_search')} placement="bottom">
+			<Tooltip label={t('search.start', 'Start search')} placement="bottom">
 				<IconButton
 					icon="Search"
 					style={{
@@ -174,7 +266,7 @@ export function SearchBar({ currentApp, inputRef }: SearchBarProps): any {
 					}}
 					backgroundColor={searchIconActive ? 'primary' : 'transparent'}
 					iconColor="gray6"
-					onClick={null}
+					onClick={onSearch}
 				/>
 			</Tooltip>
 		</>

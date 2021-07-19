@@ -110,11 +110,11 @@ export default function ShellHeader({
 			<Responsive mode="desktop">
 				<Container orientation="horizontal" width="calc(100vw - 316px)">
 					<Container orientation="horizontal" mainAlignment="flex-start" width="40%">
-						{(currentApp.indexOf('mails') !== -1 ||
+						{/* {(currentApp.indexOf('mails') !== -1 ||
 							currentApp.indexOf('contacts') !== -1 ||
-							currentApp.indexOf('calendar') !== -1) && (
-							<SearchBar inputRef={inputRef} currentApp={currentApp} csrfToken={csrfToken} />
-						)}
+							currentApp.indexOf('calendar') !== -1) && ( */}
+						<SearchBar inputRef={inputRef} currentApp={currentApp} csrfToken={csrfToken} />
+						{/* )} */}
 					</Container>
 					<Container
 						orientation="horizontal"

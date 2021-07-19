@@ -41,7 +41,7 @@ export default function AppLoaderContextProvider({ children }) {
 	}, [accounts, fiberChannelFactory, shellNetworkService, storeFactory]);
 	return (
 		<>
-			{showUpdateModal ? <ChangeLogModal cache={{}} /> : null}
+			{showUpdateModal ? <ChangeLogModal /> : null}
 			{children}
 		</>
 	);

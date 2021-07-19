@@ -50,7 +50,7 @@ module.exports = {
 		path: path.resolve(process.cwd(), 'dist', 'public'),
 		filename: flavor.toUpperCase() !== 'APP' ? '[name].js' : '[name].[chunkhash:8].js',
 		chunkFilename: '[name].[chunkhash:8].chunk.js',
-		publicPath: '/'
+		publicPath: './'
 	},
 	target: 'web',
 	resolve: {

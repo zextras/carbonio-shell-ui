@@ -9,18 +9,18 @@
  * *** END LICENSE BLOCK *****
  */
 
-/* eslint-disable react/no-array-index-key */
 import React, { useMemo } from 'react';
 import { map } from 'lodash';
 import styled from 'styled-components';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Container, Accordion } from '@zextras/zapp-ui';
+
 import { useUserAccounts } from '../store/shell-store-hooks';
 import { useApps } from '../app-store/hooks';
 import AppContextProvider from '../app/app-context-provider';
 import { Collapser } from './collapser';
 
-const SidebarSwitch = ({ item, sidebarIsOpen }) =>
+const SidebarSwitch = ({ item }) =>
 	item.sidebar ? (
 		<Route key={`/${item.id}`} path={`/${item.id}`}>
 			<AppContextProvider pkg={item.id}>
@@ -53,8 +53,6 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 					id: app.core.package,
 					label: app.core.name,
 					icon: app.icon,
-					// eslint-disable-next-line @typescript-eslint/no-empty-function
-					onClick: () => {},
 					sidebar: app.views?.sidebar,
 					sidebarIsOpen,
 					CustomComponent: SidebarSwitch

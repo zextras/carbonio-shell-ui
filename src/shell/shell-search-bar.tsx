@@ -261,8 +261,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 							style={{
 								// @ts-ignore
 								border: `1px solid ${theme.palette.primary.regular}`,
-								display: 'block',
-								cursor: 'pointer'
+								display: 'block'
 							}}
 							iconColor="primary"
 							onClick={clearSearch}
@@ -279,10 +278,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 					<IconButton
 						icon="Search"
 						disabled={query.length < 1}
-						style={{
-							cursor: 'pointer'
-						}}
-						backgroundColor={query.length > 0 ? 'primary' : 'transparent'}
+						backgroundColor="primary"
 						iconColor="gray6"
 						onClick={onSearch}
 					/>

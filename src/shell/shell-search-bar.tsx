@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /*
  * *** BEGIN LICENSE BLOCK *****
  * Copyright (C) 2011-2021 Zextras
@@ -9,211 +10,284 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC, useState, useCallback, useEffect } from 'react';
-import { ChipInput, Container, Dropdown, IconButton, Tooltip } from '@zextras/zapp-ui';
+import React, { useContext, useState, useCallback, useEffect, useMemo, FC, useRef } from 'react';
+import {
+	ChipInput,
+	Container,
+	IconButton,
+	Tooltip,
+	ThemeContext,
+	Select,
+	Row,
+	Icon,
+	Text,
+	Padding
+} from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
+import { filter, find } from 'lodash';
+import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
+import { useLocalStorage } from './hooks';
+import { SEARCH_APP_ID } from '../constants';
+import { useApps } from '../app-store/hooks';
+import { useSearchStore } from '../search/search-store';
 
-const lastSearches = [
-	{
-		id: 'suggestion1',
-		icon: 'HistoryOutline',
-		application: 'zapp-mails',
-		label: 'suggestion 1'
-	},
-	{
-		id: 'suggestion2',
-		icon: 'HistoryOutline',
-		application: 'zapp-mails',
-		label: 'suggestion 2'
-	},
-	{
-		id: 'suggestion3',
-		icon: 'HistoryOutline',
-		application: 'zapp-mails',
-		label: 'suggestion 3'
-	},
-	{
-		id: 'suggestion4',
-		icon: 'HistoryOutline',
-		application: 'zapp-mails',
-		label: 'suggestion 4'
-	},
-	{
-		id: 'suggestion5',
-		icon: 'HistoryOutline',
-		application: 'zapp-mails',
-		label: 'suggestion 5'
+const StyledContainer = styled(Container)`
+	height: 42px;
+	overflow-y: hidden;
+	&:first-child {
+		transform: translateY(-1px);
 	}
-];
+`;
 
-const searchResults = [
-	{
-		id: 'result1',
-		icon: 'AvatarOutline',
-		application: 'zapp-mails',
-		label: 'result 1'
-	},
-	{
-		id: 'result2',
-		icon: 'AvatarOutline',
-		application: 'zapp-mails',
-		label: 'result 2'
-	},
-	{
-		id: 'result3',
-		icon: 'AvatarOutline',
-		application: 'zapp-mails',
-		label: 'result 3'
-	},
-	{
-		id: 'result4',
-		icon: 'AvatarOutline',
-		application: 'zapp-mails',
-		label: 'result 4'
-	},
-	{
-		id: 'result5',
-		icon: 'AvatarOutline',
-		application: 'zapp-mails',
-		label: 'result 5'
-	}
-];
-
-type SearchBarProps = {
-	placeholder: string;
-	disablePortal: boolean;
-	inputRef: any;
+type SelectLabelFactoryProps = {
+	selected: [{ label: string; value: string }];
+	open: boolean;
+	focus: boolean;
 };
 
-export function SearchBar({ placeholder, disablePortal = false, inputRef }: SearchBarProps): any {
-	const [forceOpenInput, setForceOpenInput] = useState(false);
-	const [forceOpenResults, setForceOpenResults] = useState(false);
-	const [inputChipSelected, setInputChipSelected] = useState(false);
-	const [deleteIconActive, setDeleteIconActive] = useState(false);
-	const [chipInputValue, setChipInputValue] = useState([]);
+const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus }) => {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const theme: any = useContext(ThemeContext);
+	return (
+		<Container
+			orientation="horizontal"
+			background="gray5"
+			height={42}
+			width="fill"
+			crossAlignment="center"
+			mainAlignment="space-between"
+			borderRadius="half"
+			style={{ borderRight: `1px solid ${theme.palette.gray4.regular}` }}
+			padding={{
+				left: 'extrasmall',
+				vertical: 'extrasmall'
+			}}
+		>
+			<Row takeAvailableSpace mainAlignment="unset" padding={{ left: 'extrasmall' }}>
+				<Text size="medium" color={open || focus ? 'primary' : 'text'}>
+					{selected[0]?.label}
+				</Text>
+			</Row>
+			<Icon
+				size="large"
+				icon={open ? 'ChevronUpOutline' : 'ChevronDownOutline'}
+				color={open || focus ? 'primary' : 'secondary'}
+				style={{ alignSelf: 'center' }}
+			/>
+		</Container>
+	);
+};
+type SearchBarProps = {
+	currentApp: string;
+};
+
+export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
+	const inputRef = useRef<HTMLInputElement>();
+	const theme = useContext(ThemeContext) as unknown;
 	const [t] = useTranslation();
-
-	const onChipFocus = useCallback(() => {
-		setInputChipSelected(true);
-		deleteIconActive || lastSearches?.length > 0 || inputRef.current
-			? setForceOpenInput(true)
-			: setForceOpenInput(false);
-	}, [deleteIconActive, inputRef]);
-
+	const [storedValue, setStoredValue] = useLocalStorage('search_suggestions', []);
+	const apps = useApps();
+	const history = useHistory();
+	const update = useSearchStore((s) => s.update);
 	useEffect(() => {
-		window.addEventListener(
-			'keypress',
-			(event: any) => event.key === 'Enter' && event.target.isContentEditable === false
-		);
-	}, [inputRef]);
-
-	const onType = (ev: any): any => {
-		ev.textContent?.length > 0 ? setDeleteIconActive(true) : setDeleteIconActive(false);
-		setForceOpenInput(false);
-	};
-
-	const clearSearch = useCallback(() => {
-		inputRef.current.innerText = ''; // eslint-disable-line no-param-reassign
-		setChipInputValue([]);
-		setForceOpenInput(false);
-		setDeleteIconActive(false);
-		setInputChipSelected(false);
-	}, [inputRef]);
-
-	const onChipsChange = useCallback((c) => {
-		setChipInputValue(c);
+		window.addEventListener('keypress', (event: KeyboardEvent) => {
+			// isContentEditable is actually present
+			// @ts-ignore
+			if (event.key === '/' && event?.target?.isContentEditable === false) {
+				event.preventDefault();
+				inputRef.current?.focus();
+			}
+		});
 	}, []);
 
-	useEffect(() => {
-		if (
-			(lastSearches?.length > 0 || inputRef.current || setDeleteIconActive) &&
-			inputChipSelected
-		) {
-			setForceOpenInput(true);
-		} else {
-			setForceOpenInput(false);
-		}
-	}, [inputChipSelected, inputRef]);
+	const moduleSelectorItems = useMemo<
+		Array<{ label: string; value: string; customComponent: JSX.Element }>
+	>(
+		() =>
+			filter(apps, (app) => !!app.views?.search).map((app) => ({
+				customComponent: (
+					<Container width="fill" mainAlignment="flex-start" orientation="horizontal">
+						<Padding horizontal="extrasmall">
+							<Icon icon={app.icon} />
+						</Padding>
+						<Text>{app.core.name}</Text>
+					</Container>
+				),
+				label: app.core.name,
+				value: app.core.package
+			})),
+		[apps]
+	);
 
+	const [moduleSelection, setModuleSelection] = useState<{ value: string }>();
+
+	const appSuggestions = useMemo(
+		() => filter(storedValue, (v) => v.app === moduleSelection?.value).reverse(),
+		[moduleSelection, storedValue]
+	);
+	useEffect(() => {
+		setModuleSelection(
+			currentApp
+				? find(moduleSelectorItems, (mod) => mod.value === currentApp) ?? moduleSelectorItems[0]
+				: moduleSelectorItems[0]
+		);
+	}, [currentApp, moduleSelectorItems]);
+
+	const [query, setQuery] = useState<Array<string>>([]);
+	const onSearch = useCallback(() => {
+		update(moduleSelection?.value, query.join(' '));
+		if (currentApp !== SEARCH_APP_ID) {
+			history.push('/search');
+		}
+	}, [currentApp, history, moduleSelection?.value, query, update]);
+
+	const [options, setOptions] = useState<Array<{ label: string }>>([]);
+
+	const updateOptions = useCallback(
+		(target: HTMLInputElement): void => {
+			if (target.textContent && target.textContent.length > 0) {
+				setOptions(
+					appSuggestions
+						.filter(
+							(v: { label: string }): boolean =>
+								v.label?.indexOf(target.textContent as string) !== -1
+						)
+						.slice(0, 5)
+				);
+				return;
+			}
+			setOptions(appSuggestions.slice(0, 5));
+		},
+		[appSuggestions]
+	);
+	const onInputType = useCallback(
+		(ev) => {
+			updateOptions(ev.target);
+		},
+		[updateOptions]
+	);
+	const clearSearch = useCallback((): void => {
+		if (inputRef.current) {
+			inputRef.current.innerText = '';
+			inputRef.current?.focus();
+		}
+		// eslint-disable-line no-param-reassign
+		setQuery([]);
+	}, []);
+	const onQueryChange = useCallback(
+		(newQuery) => {
+			if (
+				newQuery[newQuery.length - 1]?.label &&
+				moduleSelection?.value &&
+				!find(appSuggestions, (v) => v.label === newQuery[newQuery.length - 1]?.label)
+			) {
+				setStoredValue(
+					(
+						value: Array<{ value: string; label: string; icon: string; app: string; id: string }>
+					) => [
+						...value,
+						{
+							value: newQuery[newQuery.length - 1].label,
+							label: newQuery[newQuery.length - 1].label,
+							icon: 'ClockOutline',
+							app: moduleSelection.value,
+							id: `${value.length}`
+						}
+					]
+				);
+			}
+			if (inputRef.current) {
+				updateOptions(inputRef.current);
+			}
+			setQuery(newQuery);
+		},
+		[appSuggestions, moduleSelection?.value, setStoredValue, updateOptions]
+	);
+
+	const onSelectionChange = useCallback(
+		(newVal) => {
+			setModuleSelection(find(moduleSelectorItems, (item) => item.value === newVal));
+		},
+		[moduleSelectorItems]
+	);
+
+	const showClear = useMemo(
+		() =>
+			query.length > 0 ||
+			(inputRef.current?.textContent && inputRef.current?.textContent?.length > 0),
+		[query.length]
+	);
 	return (
-		<>
-			<Container>
-				<Tooltip label={t('type_start_search')} placement="bottom">
+		<Container orientation="horizontal" mainAlignment="flex-start">
+			<Container
+				maxHeight="42px"
+				orientation="horizontal"
+				mainAlignment="flex-start"
+				width="50%"
+				maxWidth="512px"
+			>
+				<Container minWidth="128px" width="35%" padding={{ left: 'small' }}>
+					<Select
+						items={moduleSelectorItems}
+						background="gray6"
+						label={t('search.module', 'Module')}
+						selection={moduleSelection}
+						onChange={onSelectionChange}
+						LabelFactory={SelectLabelFactory}
+					/>
+				</Container>
+				<StyledContainer orientation="horizontal">
 					<ChipInput
 						inputRef={inputRef}
-						placeholder={placeholder}
-						confirmChipOnBlur={false}
-						onInputType={onType}
-						onChange={onChipsChange}
-						onFocus={onChipFocus}
-						value={chipInputValue}
+						value={query}
+						placeholder={t('search.input_label', 'Search')}
+						confirmChipOnBlur
 						background="gray5"
 						style={{
-							cursor: 'pointer',
-							height: '43px',
-							backgroundColor: '#F5F6F8',
-							bordeRadius: '2px 2px 0px 0px'
+							cursor: 'pointer'
 						}}
+						onChange={onQueryChange}
+						onInputType={onInputType}
+						options={options}
+					/>
+				</StyledContainer>
+			</Container>
+			{showClear && (
+				<Padding left="small">
+					<Tooltip label={t('search.clear', 'Clear search')} placement="bottom">
+						<IconButton
+							icon="BackspaceOutline"
+							style={{
+								// @ts-ignore
+								border: `1px solid ${theme.palette.primary.regular}`,
+								display: 'block',
+								cursor: 'pointer'
+							}}
+							iconColor="primary"
+							onClick={clearSearch}
+						/>
+					</Tooltip>
+				</Padding>
+			)}
+			<Padding left="small">
+				<Tooltip
+					disabled={query.length < 1}
+					label={t('search.start', 'Start search')}
+					placement="bottom"
+				>
+					<IconButton
+						icon="Search"
+						disabled={query.length < 1}
+						style={{
+							cursor: 'pointer'
+						}}
+						backgroundColor={query.length > 0 ? 'primary' : 'transparent'}
+						iconColor="gray6"
+						onClick={onSearch}
 					/>
 				</Tooltip>
-				<Dropdown
-					disablePortal={disablePortal}
-					maxHeight="234px"
-					disableAutoFocus
-					disableRestoreFocus
-					display="block"
-					width="100%"
-					maxWidth="100%"
-					items={lastSearches}
-					forceOpen={forceOpenInput}
-					onClose={(): any => setForceOpenInput(false)}
-				>
-					<div style={{ width: '100%' }} />
-				</Dropdown>
-				<Dropdown
-					disablePortal={disablePortal}
-					maxHeight="500px"
-					disableAutoFocus
-					disableRestoreFocus
-					display="block"
-					width="100%"
-					maxWidth="100%"
-					items={searchResults}
-					forceOpen={forceOpenResults}
-					onClose={(): any => setForceOpenResults(false)}
-				>
-					<div style={{ width: '100%' }} />
-				</Dropdown>
-			</Container>
-			<Tooltip label={t('clear_search')} placement="bottom">
-				<IconButton
-					icon="BackspaceOutline"
-					style={{
-						border: '1px solid #2b73d2',
-						display: deleteIconActive || chipInputValue?.length > 0 ? 'block' : 'none',
-						marginLeft: '4px',
-						cursor: 'pointer'
-					}}
-					iconColor="primary"
-					onClick={clearSearch}
-				/>
-			</Tooltip>
-			<Tooltip label={t('start_search')} placement="bottom">
-				<IconButton
-					icon="Search"
-					style={{
-						border: inputChipSelected ? '1px solid #2b73d2' : '1px solid #aac8ee',
-						backgroundColor: inputChipSelected ? '#2b73d2' : '#aac8ee',
-						marginLeft: '8px',
-						cursor: 'pointer'
-					}}
-					backgroundColor={inputChipSelected ? 'primary' : 'transparent'}
-					iconColor="gray6"
-					onClick={(): any => {
-						deleteIconActive || chipInputValue?.length > 0 ? setForceOpenResults(true) : null;
-					}}
-				/>
-			</Tooltip>
-		</>
+			</Padding>
+		</Container>
 	);
-}
+};

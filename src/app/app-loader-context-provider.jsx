@@ -30,8 +30,8 @@ export default function AppLoaderContextProvider({ children }) {
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
 	useEffect(() => {
 		console.log(
-			'%cAccounts changed, un/loading Apps and Themes',
-			'font-size: 1.1rem; color: darkred; background: lightgray; padding: 0.2rem'
+			'%cLOADING APPS',
+			'font-size: 1rem; color: white; background: #2b73d2; padding: 0.5rem; font-family: sans-serif; border-radius: 0.1rem; width: 100%'
 		);
 		if (accounts.length < 1) {
 			unloadAppsAndThemes();

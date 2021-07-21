@@ -113,7 +113,7 @@ export function Shell() {
 	return (
 		<Background>
 			<DarkReaderListener />
-			<MainAppRerouter />
+			{/* <MainAppRerouter /> */}
 			<ShellHeader
 				mobileNavIsOpen={mobileNavOpen}
 				onMobileMenuClick={() => setMobileNavOpen(!mobileNavOpen)}

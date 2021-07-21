@@ -5,7 +5,6 @@
         "remind_later": "Remind Later",
         "title": "Title"
     },
-    "clear_search": "Clear search",
     "copyright": "Copyright",
     "login": {
         "help": "Help",
@@ -29,6 +28,14 @@
     },
     "new": "New",
     "new_tab": "New Tab",
+    "search": {
+        "app": "Search",
+        "app_description": "Search Module",
+        "clear": "Clear search",
+        "input_label": "Search",
+        "module": "Module",
+        "start": "Start search"
+    },
     "settings": {
         "app": "Settings",
         "app_description": "Settings Module",
@@ -81,7 +88,6 @@
             }
         }
     },
-    "start_search": "Start search",
     "supported_browsers": {
         "chrome": "Chrome",
         "edge": "Edge",
@@ -92,7 +98,6 @@
         "uc": "UC",
         "yandex": "Yandex"
     },
-    "type_start_search": "",
     "user_quota": {
         "limited": "",
         "unlimited": "Congrats! Unlimited space available"

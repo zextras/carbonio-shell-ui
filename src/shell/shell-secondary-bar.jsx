@@ -24,7 +24,9 @@ const SidebarSwitch = ({ item, sidebarIsOpen }) =>
 	item.sidebar ? (
 		<Route key={`/${item.id}`} path={`/${item.id}`}>
 			<AppContextProvider pkg={item.id}>
-				<item.sidebar expanded={item.sidebarIsOpen} />
+				<Container>
+					<item.sidebar expanded={item.sidebarIsOpen} />
+				</Container>
 			</AppContextProvider>
 		</Route>
 	) : null;
@@ -39,7 +41,6 @@ const SidebarContainer = styled(Container)`
 export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, activeApp }) {
 	const apps = useApps();
 	const disabled = useMemo(() => activeApp && !apps[activeApp]?.views?.sidebar, [activeApp, apps]);
-	const history = useHistory();
 	const accounts = useUserAccounts();
 	const items = useMemo(
 		() =>
@@ -52,6 +53,8 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 					id: app.core.package,
 					label: app.core.name,
 					icon: app.icon,
+					// eslint-disable-next-line @typescript-eslint/no-empty-function
+					onClick: () => {},
 					sidebar: app.views?.sidebar,
 					sidebarIsOpen,
 					CustomComponent: SidebarSwitch

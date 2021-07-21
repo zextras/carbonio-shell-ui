@@ -42,6 +42,7 @@ export type RuntimeAppData = Partial<{
 		app?: Component | FunctionComponent;
 		board?: Component | FunctionComponent;
 		settings?: Component | FunctionComponent;
+		search?: Component | FunctionComponent;
 		sidebar?: Component | FunctionComponent;
 		teambar?: {
 			icon: Component | FunctionComponent;
@@ -49,16 +50,11 @@ export type RuntimeAppData = Partial<{
 		};
 	};
 	context: unknown;
-	search: {
-		onSearch?: (query: string) => void;
-		route?: string;
-	};
 	newButton: {
 		primary: SharedAction;
 		secondaryItems: Array<SharedAction>;
 	};
 }>;
-
 export type AppData = UninitializedAppData & RuntimeAppData;
 
 export type AppsMap = Record<string, AppData>;

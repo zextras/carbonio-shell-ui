@@ -183,10 +183,19 @@ export default function BoardContextProvider({ children }) {
 				removeCurrentBoard,
 				updateBoard,
 				setCurrentBoard,
-				updateCurrentBoard
+				updateCurrentBoard,
+				toggleMinimizedBoard: toggleMinimized
 			}
 		}),
-		[addBoard, removeBoard, removeCurrentBoard, setCurrentBoard, updateBoard, updateCurrentBoard]
+		[
+			addBoard,
+			removeBoard,
+			removeCurrentBoard,
+			setCurrentBoard,
+			toggleMinimized,
+			updateBoard,
+			updateCurrentBoard
+		]
 	);
 	useContextBridge(cbFunctions);
 

@@ -32,7 +32,17 @@ export const ThemeCallbacksContext = createContext<{
 export const ThemeProvider: FC = ({ children }) => {
 	// TODO: update when the DS is fully typed :D
 	const [extensions, setExtensions] = useState<ThemeExtensionMap>({
-		zextrasLogo: (t) => ({ ...t, logo: { ...t.logo, svg: Logo } })
+		zextrasLogo: (t) => ({ ...t, logo: { ...t.logo, svg: Logo } }),
+		fonts: (theme) => {
+			// eslint-disable-next-line no-param-reassign
+			theme.sizes.font = {
+				extrasmall: '12px',
+				small: '14px',
+				medium: '16px',
+				large: '18px'
+			};
+			return theme;
+		}
 	});
 	const [darkReaderState, setDarkReaderState] = useState<'auto' | 'disabled' | 'enabled'>('auto');
 	useEffect(() => {

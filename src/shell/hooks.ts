@@ -133,7 +133,7 @@ export function useLocalStorage<T>(key: string, initialValue: T): any {
 			const item = window.localStorage.getItem(key);
 			return item ? JSON.parse(item) : initialValue;
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 			return initialValue;
 		}
 	});
@@ -143,7 +143,7 @@ export function useLocalStorage<T>(key: string, initialValue: T): any {
 			setStoredValue(valueToStore);
 			localStorage.setItem(key, JSON.stringify(valueToStore));
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 		}
 	};
 	return [storedValue, setValue] as const;

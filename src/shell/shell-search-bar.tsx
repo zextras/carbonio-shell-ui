@@ -13,7 +13,6 @@
 import React, { useContext, useState, useCallback, useEffect, useMemo, FC, useRef } from 'react';
 import {
 	ChipInput,
-	Dropdown,
 	Container,
 	IconButton,
 	Tooltip,
@@ -25,13 +24,12 @@ import {
 	Padding
 } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
-import { uniqWith, uniqBy, sortBy, isEqual, debounce, reduce, filter, find } from 'lodash';
+import { filter, find } from 'lodash';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useLocalStorage } from './hooks';
 import { SEARCH_APP_ID } from '../constants';
 import { useApps } from '../app-store/hooks';
-import { AppData, AppsMap } from '../app-store/store-types';
 import { useSearchStore } from '../search/search-store';
 
 const StyledContainer = styled(Container)`
@@ -84,7 +82,7 @@ type SearchBarProps = {
 	currentApp: string;
 };
 
-export function SearchBar({ currentApp }: SearchBarProps): any {
+export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 	const inputRef = useRef<HTMLInputElement>();
 	const theme = useContext(ThemeContext) as unknown;
 	const [t] = useTranslation();
@@ -93,8 +91,10 @@ export function SearchBar({ currentApp }: SearchBarProps): any {
 	const history = useHistory();
 	const update = useSearchStore((s) => s.update);
 	useEffect(() => {
-		window.addEventListener('keypress', (event: any) => {
-			if (event.key === '/' && event.target.isContentEditable === false) {
+		window.addEventListener('keypress', (event: KeyboardEvent) => {
+			// isContentEditable is actually present
+			// @ts-ignore
+			if (event.key === '/' && event?.target?.isContentEditable === false) {
 				event.preventDefault();
 				inputRef.current?.focus();
 			}
@@ -120,7 +120,7 @@ export function SearchBar({ currentApp }: SearchBarProps): any {
 		[apps]
 	);
 
-	const [moduleSelection, setModuleSelection] = useState<any>();
+	const [moduleSelection, setModuleSelection] = useState<{ value: string }>();
 
 	const appSuggestions = useMemo(
 		() => filter(storedValue, (v) => v.app === moduleSelection?.value).reverse(),
@@ -136,7 +136,6 @@ export function SearchBar({ currentApp }: SearchBarProps): any {
 
 	const [query, setQuery] = useState<Array<string>>([]);
 	const onSearch = useCallback(() => {
-		console.log('updating to', moduleSelection?.value, query.join(' '));
 		update(moduleSelection?.value, query.join(' '));
 		if (currentApp !== SEARCH_APP_ID) {
 			history.push('/search');
@@ -183,16 +182,20 @@ export function SearchBar({ currentApp }: SearchBarProps): any {
 				moduleSelection?.value &&
 				!find(appSuggestions, (v) => v.label === newQuery[newQuery.length - 1]?.label)
 			) {
-				setStoredValue((value: any) => [
-					...value,
-					{
-						value: newQuery[newQuery.length - 1].label,
-						label: newQuery[newQuery.length - 1].label,
-						icon: 'ClockOutline',
-						app: moduleSelection.value,
-						id: `${value.length}`
-					}
-				]);
+				setStoredValue(
+					(
+						value: Array<{ value: string; label: string; icon: string; app: string; id: string }>
+					) => [
+						...value,
+						{
+							value: newQuery[newQuery.length - 1].label,
+							label: newQuery[newQuery.length - 1].label,
+							icon: 'ClockOutline',
+							app: moduleSelection.value,
+							id: `${value.length}`
+						}
+					]
+				);
 			}
 			if (inputRef.current) {
 				updateOptions(inputRef.current);
@@ -287,4 +290,4 @@ export function SearchBar({ currentApp }: SearchBarProps): any {
 			</Padding>
 		</Container>
 	);
-}
+};

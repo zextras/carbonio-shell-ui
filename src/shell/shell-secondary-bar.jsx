@@ -9,10 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 
-/* eslint-disable react/no-array-index-key */
 import React, { useMemo } from 'react';
 import { map } from 'lodash';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Collapse, Collapser, Container, Accordion } from '@zextras/zapp-ui';
 import { useUserAccounts } from '../store/shell-store-hooks';
 import { useApps } from '../app-store/hooks';
@@ -44,8 +43,6 @@ export default function ShellSecondaryBar({ navigationBarIsOpen, onCollapserClic
 					id: app.core.package,
 					label: app.core.name,
 					icon: app.icon,
-					// eslint-disable-next-line @typescript-eslint/no-empty-function
-					onClick: () => {},
 					sidebar: app.views?.sidebar,
 					CustomComponent: SidebarSwitch
 				}))

@@ -8,7 +8,7 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 import { reduce, map } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +25,6 @@ import {
 import { UserQuota } from './user-quota';
 import { useAppStore } from '../app-store';
 import { SearchBar } from './shell-search-bar';
-import { useCSRFToken } from '../store/shell-store-hooks';
 
 export default function ShellHeader({
 	userBarIsOpen,

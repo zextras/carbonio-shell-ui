@@ -41,14 +41,6 @@ export const ThemeProvider: FC = ({ children }) => {
 				medium: '16px',
 				large: '18px'
 			};
-			// eslint-disable-next-line no-param-reassign
-			theme.sizes.padding = {
-				extrasmall: '8px',
-				small: '12px',
-				medium: '16px',
-				large: '24px',
-				extralarge: '32px'
-			};
 			return theme;
 		}
 	});

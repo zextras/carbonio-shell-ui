@@ -50,12 +50,9 @@ export type RuntimeAppData = Partial<{
 		board?: Component | FunctionComponent;
 		settings?: Component | FunctionComponent;
 		sidebar?: Component | FunctionComponent;
+		search?: Component | FunctionComponent;
 	};
 	context: unknown;
-	search: {
-		onSearch?: (query: string) => void;
-		route?: string;
-	};
 	newButton: {
 		primary: SharedAction;
 		secondaryItems: Array<SharedAction>;

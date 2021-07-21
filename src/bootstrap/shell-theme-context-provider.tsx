@@ -35,7 +35,7 @@ export const ThemeProvider: FC = ({ children }) => {
 		zextrasLogo: (t) => ({ ...t, logo: { ...t.logo, svg: Logo } }),
 		fonts: (theme) => {
 			// eslint-disable-next-line no-param-reassign
-			theme.sizes.fonts = {
+			theme.sizes.font = {
 				extrasmall: '12px',
 				small: '14px',
 				medium: '16px',

@@ -22,7 +22,9 @@ const SidebarSwitch = ({ item }) =>
 	item.sidebar ? (
 		<Route key={`/${item.id}`} path={`/${item.id}`}>
 			<AppContextProvider pkg={item.id}>
-				<item.sidebar />
+				<Container>
+					<item.sidebar />
+				</Container>
 			</AppContextProvider>
 		</Route>
 	) : null;
@@ -30,7 +32,6 @@ const SidebarSwitch = ({ item }) =>
 export default function ShellSecondaryBar({ navigationBarIsOpen, onCollapserClick, activeApp }) {
 	const apps = useApps();
 	const disabled = useMemo(() => activeApp && !apps[activeApp]?.views?.sidebar, [activeApp, apps]);
-	const history = useHistory();
 	const accounts = useUserAccounts();
 	const items = useMemo(
 		() =>
@@ -43,12 +44,13 @@ export default function ShellSecondaryBar({ navigationBarIsOpen, onCollapserClic
 					id: app.core.package,
 					label: app.core.name,
 					icon: app.icon,
-					onClick: () => history.push(`/${app.core.package}`),
+					// eslint-disable-next-line @typescript-eslint/no-empty-function
+					onClick: () => {},
 					sidebar: app.views?.sidebar,
 					CustomComponent: SidebarSwitch
 				}))
 			})),
-		[accounts, apps, history]
+		[accounts, apps]
 	);
 	return disabled ? null : (
 		<>

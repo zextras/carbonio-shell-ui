@@ -32,11 +32,9 @@
         "app": "Search",
         "app_description": "Search Module",
         "clear": "Clear search",
-        "in": "Search in {{app}}",
         "input_label": "Search",
         "module": "Module",
-        "start": "Start search",
-        "type_start": "Type one or more keywords to start a search"
+        "start": "Start search"
     },
     "settings": {
         "app": "Settings",

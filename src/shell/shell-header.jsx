@@ -40,8 +40,6 @@ export default function ShellHeader({
 		history.location.pathname
 	]);
 
-	const csrfToken = useCSRFToken();
-
 	const [primaryAction, secondaryActions] = useAppStore((s) => [
 		s.apps[currentApp]?.newButton?.primary,
 		reduce(
@@ -50,6 +48,9 @@ export default function ShellHeader({
 				if (app.newButton?.secondaryItems) {
 					if (acc.length > 0) {
 						acc.push({ type: 'divider', id: key, key });
+					}
+					if (app.newButton?.primary) {
+						acc.push(app.newButton?.primary);
 					}
 					acc.push(
 						...map(app.newButton?.secondaryItems, (item) => ({
@@ -64,8 +65,6 @@ export default function ShellHeader({
 			[]
 		)
 	]);
-
-	const inputRef = useRef();
 
 	const isMultiButtonDisabled = useMemo(
 		() => !!primaryAction || primaryAction?.disabled || primaryAction?.getDisabledState?.(),
@@ -98,7 +97,7 @@ export default function ShellHeader({
 				<Container orientation="horizontal" width="fill" mainAlignment="space-between">
 					<Logo size="small" />
 					<MultiButton
-						style={{ marginLeft: 'auto' }}
+						style={{ marginLeft: 'auto', height: '42px' }}
 						background="primary"
 						label={t('new', 'New')}
 						onClick={primaryAction?.click}
@@ -109,16 +108,10 @@ export default function ShellHeader({
 			</Container>
 			<Responsive mode="desktop">
 				<Container orientation="horizontal" width="calc(100vw - 316px)">
-					<Container orientation="horizontal" mainAlignment="flex-start" width="40%">
-						{/* {(currentApp.indexOf('mails') !== -1 ||
-							currentApp.indexOf('contacts') !== -1 ||
-							currentApp.indexOf('calendar') !== -1) && ( */}
-						<SearchBar inputRef={inputRef} currentApp={currentApp} csrfToken={csrfToken} />
-						{/* )} */}
-					</Container>
+					<SearchBar currentApp={currentApp} />
 					<Container
 						orientation="horizontal"
-						width="60%"
+						width="40%"
 						mainAlignment="flex-end"
 						padding={{ right: 'extrasmall' }}
 					>

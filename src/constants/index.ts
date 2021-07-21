@@ -43,5 +43,4 @@ export const FOLDERS = {
 	TASKS: '15',
 	BRIEFCASE: '16'
 };
-
 export const SETTINGS_APP_ID = 'com_zextras_zapp_settings';

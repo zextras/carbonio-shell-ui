@@ -4,6 +4,7 @@
   zapp-version="<%= htmlWebpackPlugin.options.PACKAGE_VERSION %>"
   description="<%= htmlWebpackPlugin.options.PACKAGE_DESCRIPTION %>"
   label="<%- '${msg.label}' %>"
+  commit-id="<%- htmlWebpackPlugin.options.COMMIT_ID %>"
   zapp="true"
 >
 	<!-- TODO: Add here the resources -->

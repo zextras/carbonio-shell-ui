@@ -46,7 +46,7 @@ export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, childr
 						...map(app.newButton?.secondaryItems, (item) => ({
 							...item,
 							key: item.id,
-							disabled: item.disabled || item.getDisabledState?.()
+							disabled: item.disabled || item.getDisabledStatus?.()
 						}))
 					);
 				}

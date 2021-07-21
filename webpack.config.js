@@ -6,6 +6,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const { coerce, valid } = require('semver');
+const commitHash = require('child_process')
+	.execSync('git rev-parse --short HEAD')
+	.toString()
+	.trim();
+
 const pkg = require('./zapp.conf.js');
 
 const babelRC = require('./babel.config.js');
@@ -119,6 +124,7 @@ module.exports = {
 			patterns: pathsToCopy
 		}),
 		new DefinePlugin({
+			COMMIT_ID: JSON.stringify(commitHash.toString().trim()),
 			PACKAGE_VERSION: JSON.stringify(pkg.version),
 			PACKAGE_NAME: JSON.stringify(pkg.pkgName),
 			FLAVOR: JSON.stringify(flavor.toUpperCase())
@@ -142,6 +148,12 @@ module.exports = {
 			PACKAGE_NAME: pkg.pkgName,
 			PACKAGE_LABEL: pkg.pkgLabel,
 			PACKAGE_DESCRIPTION: pkg.pkgDescription
+		}),
+		new HtmlWebpackPlugin({
+			inject: false,
+			template: path.resolve(process.cwd(), 'commit.template'),
+			filename: 'commit',
+			COMMIT_ID: commitHash
 		})
 	]
 };

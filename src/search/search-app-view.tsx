@@ -19,7 +19,7 @@ import { useSearchStore } from './search-store';
 import { AppData } from '../../types/index';
 
 export const SearchAppView: FC = () => {
-	const { query, module, update } = useSearchStore();
+	const { query, module, update, addQueryChip } = useSearchStore();
 	const apps = useApps();
 	useEffect(() => {
 		if (!module) {
@@ -36,7 +36,7 @@ export const SearchAppView: FC = () => {
 		<AppContextProvider pkg={module}>
 			{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 			{/* @ts-ignore */}
-			<Search query={query} />
+			<Search query={query} addQueryChip={addQueryChip} />
 		</AppContextProvider>
 	) : null;
 };

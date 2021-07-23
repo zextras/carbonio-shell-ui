@@ -77,7 +77,7 @@ export default function AppLoaderContextProvider({ children }) {
 	return (
 		<AppLoaderContext.Provider value={value}>
 			<AppContextCacheProvider>
-				{showUpdateModal ? <ChangeLogModal cache={value.apps.cache} /> : null}
+				{/* {showUpdateModal ? <ChangeLogModal cache={value.apps.cache} /> : null} */}
 				{children}
 			</AppContextCacheProvider>
 		</AppLoaderContext.Provider>

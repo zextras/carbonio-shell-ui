@@ -285,7 +285,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 						}
 						confirmChipOnBlur
 						confirmChipOnSpace={false}
-						separators={['comma', 'TAB']}
+						separators={['Comma', 'Enter']}
 						background="gray5"
 						style={{
 							cursor: 'pointer'

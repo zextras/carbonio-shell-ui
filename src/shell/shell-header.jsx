@@ -46,7 +46,7 @@ export default function ShellHeader({
 			(acc, app, key) => {
 				if (app.newButton?.secondaryItems) {
 					if (acc.length > 0) {
-						acc.push({ type: 'divider', id: key, key });
+						acc.push({ type: 'divider', id: key, key, label: 'really?' });
 					}
 					if (app.newButton?.primary) {
 						acc.push(app.newButton?.primary);

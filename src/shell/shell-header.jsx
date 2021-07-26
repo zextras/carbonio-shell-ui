@@ -24,7 +24,7 @@ import {
 } from '@zextras/zapp-ui';
 import { UserQuota } from './user-quota';
 import { useAppStore } from '../app-store';
-import { SearchBar } from './shell-search-bar';
+import { SearchBar } from '../search/search-bar';
 
 export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, children }) {
 	const history = useHistory();
@@ -41,7 +41,7 @@ export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, childr
 			(acc, app, key) => {
 				if (app.newButton?.secondaryItems) {
 					if (acc.length > 0) {
-						acc.push({ type: 'divider', id: key, key });
+						acc.push({ type: 'divider', id: key, key, label: 'really?' });
 					}
 					if (app.newButton?.primary) {
 						acc.push(app.newButton?.primary);

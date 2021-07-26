@@ -14,7 +14,7 @@ import { BrowserRouter, useHistory } from 'react-router-dom';
 import { SnackbarManagerContext, ModalManagerContext } from '@zextras/zapp-ui';
 import BootstrapperRouterContent from './bootstrapper-router-content';
 import { useUserAccounts } from '../store/shell-store-hooks';
-
+import AppLoaderMounter from '../app/app-loader-mounter';
 import { useContextBridge } from '../app-store/context-bridge';
 
 const ContextBridge = () => {
@@ -56,6 +56,7 @@ export default function BootstrapperRouter() {
 	return (
 		<BrowserRouter basename={`/static/iris/${COMMIT_ID}/`}>
 			<ContextBridge />
+			<AppLoaderMounter />
 			<BootstrapperRouterContent accounts={accounts} />
 		</BrowserRouter>
 	);

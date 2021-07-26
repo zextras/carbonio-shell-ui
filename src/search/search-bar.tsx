@@ -27,10 +27,10 @@ import { useTranslation } from 'react-i18next';
 import { filter, find } from 'lodash';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import { useLocalStorage } from './hooks';
+import { useLocalStorage } from '../shell/hooks';
 import { SEARCH_APP_ID } from '../constants';
 import { useApps } from '../app-store/hooks';
-import { useSearchStore } from '../search/search-store';
+import { useSearchStore } from './search-store';
 
 const StyledContainer = styled(Container)`
 	height: 42px;
@@ -120,7 +120,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 		[apps]
 	);
 
-	const [moduleSelection, setModuleSelection] = useState<{ value: string }>();
+	const [moduleSelection, setModuleSelection] = useState<{ value: string; label: string }>();
 
 	const appSuggestions = useMemo(
 		() => filter(storedValue, (v) => v.app === moduleSelection?.value).reverse(),
@@ -134,13 +134,26 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 		);
 	}, [currentApp, moduleSelectorItems]);
 
-	const [query, setQuery] = useState<Array<string>>([]);
+	const [query, setQuery] = useState<Array<{ label: string }>>([]);
+
+	const setAddQueryChip = useSearchStore((s) => s.setAddQueryChip);
+	useEffect(() => {
+		setAddQueryChip((value: string) => setQuery((q) => [...q, { label: value, hasAvatar: false }]));
+	}, [setAddQueryChip]);
+
+	const updateQuery = useCallback(() => {
+		update(moduleSelection?.value, `"${query.map((q) => q.label).join('" "')}"`);
+	}, [moduleSelection?.value, query, update]);
+
+	useEffect(() => {
+		updateQuery();
+	}, [updateQuery]);
 	const onSearch = useCallback(() => {
-		update(moduleSelection?.value, query.join(' '));
+		updateQuery();
 		if (currentApp !== SEARCH_APP_ID) {
 			history.push('/search');
 		}
-	}, [currentApp, history, moduleSelection?.value, query, update]);
+	}, [currentApp, history, updateQuery]);
 
 	const [options, setOptions] = useState<Array<{ label: string }>>([]);
 
@@ -201,8 +214,9 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 				updateOptions(inputRef.current);
 			}
 			setQuery(newQuery);
+			updateQuery();
 		},
-		[appSuggestions, moduleSelection?.value, setStoredValue, updateOptions]
+		[appSuggestions, moduleSelection?.value, setStoredValue, updateOptions, updateQuery]
 	);
 
 	const onSelectionChange = useCallback(
@@ -218,6 +232,46 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 			(inputRef.current?.textContent && inputRef.current?.textContent?.length > 0),
 		[query.length]
 	);
+
+	const onChipAdd = useCallback(
+		(newChip: string) => ({
+			label: newChip,
+			hasAvatar: false
+		}),
+		[]
+	);
+
+	useEffect(() => {
+		const ref = inputRef.current;
+		const search = (ev: KeyboardEvent): void => {
+			if (ev.key === 'Enter') {
+				onSearch();
+			}
+		};
+		if (ref) {
+			ref.addEventListener('keypress', search);
+		}
+		return (): void => {
+			ref?.removeEventListener('keypress', search);
+		};
+	}, [onSearch]);
+
+	const [inputHasFocus, setInputHasFocus] = useState(false);
+	useEffect(() => {
+		const ref = inputRef.current;
+		const focusCb = (): void => setInputHasFocus(true);
+		const blurCb = (): void => setInputHasFocus(false);
+		if (ref) {
+			ref.addEventListener('focus', focusCb);
+			ref.addEventListener('blur', blurCb);
+		}
+		return (): void => {
+			if (ref) {
+				ref.removeEventListener('focus', focusCb);
+				ref.removeEventListener('blur', blurCb);
+			}
+		};
+	});
 	return (
 		<Container orientation="horizontal" mainAlignment="flex-start">
 			<Container
@@ -241,21 +295,31 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 					<ChipInput
 						inputRef={inputRef}
 						value={query}
-						placeholder={t('search.input_label', 'Search')}
+						onAdd={onChipAdd}
+						placeholder={
+							inputHasFocus && moduleSelection
+								? t('search.active_input_label', 'Separate keywords with a comma or TAB')
+								: t('search.idle_input_label', 'Search in {{module}}', {
+										module: moduleSelection?.label
+								  })
+						}
 						confirmChipOnBlur
+						confirmChipOnSpace={false}
+						separators={['Comma', 'Enter']}
 						background="gray5"
 						style={{
-							cursor: 'pointer'
+							cursor: 'pointer',
+							overflowX: 'hidden'
 						}}
 						onChange={onQueryChange}
 						onInputType={onInputType}
-						options={options}
+						options={inputHasFocus ? options : []}
 					/>
 				</StyledContainer>
 			</Container>
 			{showClear && (
 				<Padding left="small">
-					<Tooltip label={t('search.clear', 'Clear search')} placement="bottom">
+					<Tooltip label={t('search.clear', 'Clear search input')} placement="bottom">
 						<IconButton
 							icon="BackspaceOutline"
 							style={{

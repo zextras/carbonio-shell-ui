@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.32](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.31...v0.1.0-beta.32) (2021-07-26)
+
+
+### Features
+
+* added list component (on trial for DS addition), moved app mounter under the browserrouter ([25fc623](https://bitbucket.org/zextras/zapp-shell/commit/25fc62315d521ef5dbe1a464556082b42b3addd9))
+* improved search bar, variust post-refactor fixes and improvements ([a19284e](https://bitbucket.org/zextras/zapp-shell/commit/a19284e5c5a5171dd67418cf82391be0c728c704))
+* localstorage implementation of searches ([c370995](https://bitbucket.org/zextras/zapp-shell/commit/c37099561cf900abd41f4b596e1c43f48cd01847))
+* suggestions dynamic search ([d7bb4e3](https://bitbucket.org/zextras/zapp-shell/commit/d7bb4e393a8bc1c98c2bc1b2971cfa6d8b78f2b5))
+* suggestions dynamic search ([b4db5fe](https://bitbucket.org/zextras/zapp-shell/commit/b4db5febcfbff52ebe5f9ca5479d56669776a837))
+
+
+### Bug Fixes
+
+* fixed dropdown flickering ([b7f3fd4](https://bitbucket.org/zextras/zapp-shell/commit/b7f3fd489b0d43a5a21e1b6ad03928b3f1f92c0a))
+* new font and padding sizes implemented ([9feb8ad](https://bitbucket.org/zextras/zapp-shell/commit/9feb8ad59b0980b66edba88fb4f512046aa89b8c))
+
 ## [0.1.0-beta.31](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.30...v0.1.0-beta.31) (2021-07-13)
 
 

@@ -41,19 +41,15 @@ export type RuntimeAppData = Partial<{
 		app?: Component | FunctionComponent;
 		board?: Component | FunctionComponent;
 		settings?: Component | FunctionComponent;
+		search?: Component | FunctionComponent;
 		sidebar?: Component | FunctionComponent;
 	};
 	context: unknown;
-	search: {
-		onSearch?: (query: string) => void;
-		route?: string;
-	};
 	newButton: {
 		primary: SharedAction;
 		secondaryItems: Array<SharedAction>;
 	};
 }>;
-
 export type AppData = UninitializedAppData & RuntimeAppData;
 
 export type AppsMap = Record<string, AppData>;

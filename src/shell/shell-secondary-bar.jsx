@@ -9,10 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 
-/* eslint-disable react/no-array-index-key */
 import React, { useMemo } from 'react';
 import { map } from 'lodash';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { Collapse, Collapser, Container, Accordion } from '@zextras/zapp-ui';
 import { useUserAccounts } from '../store/shell-store-hooks';
 import { useApps } from '../app-store/hooks';
@@ -22,7 +21,9 @@ const SidebarSwitch = ({ item }) =>
 	item.sidebar ? (
 		<Route key={`/${item.id}`} path={`/${item.id}`}>
 			<AppContextProvider pkg={item.id}>
-				<item.sidebar />
+				<Container>
+					<item.sidebar />
+				</Container>
 			</AppContextProvider>
 		</Route>
 	) : null;
@@ -30,7 +31,6 @@ const SidebarSwitch = ({ item }) =>
 export default function ShellSecondaryBar({ navigationBarIsOpen, onCollapserClick, activeApp }) {
 	const apps = useApps();
 	const disabled = useMemo(() => activeApp && !apps[activeApp]?.views?.sidebar, [activeApp, apps]);
-	const history = useHistory();
 	const accounts = useUserAccounts();
 	const items = useMemo(
 		() =>
@@ -43,12 +43,11 @@ export default function ShellSecondaryBar({ navigationBarIsOpen, onCollapserClic
 					id: app.core.package,
 					label: app.core.name,
 					icon: app.icon,
-					onClick: () => history.push(`/${app.core.package}`),
 					sidebar: app.views?.sidebar,
 					CustomComponent: SidebarSwitch
 				}))
 			})),
-		[accounts, apps, history]
+		[accounts, apps]
 	);
 	return disabled ? null : (
 		<>

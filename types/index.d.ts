@@ -16,7 +16,24 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { LocationDescriptor } from 'history';
 import { Store } from '@reduxjs/toolkit';
 import { LinkProps } from 'react-router-dom';
-import { number, string } from 'prop-types';
+
+type ListItemProps<T extends { id: string }> = {
+	item: T;
+	items: Array<T>;
+	active?: boolean;
+	selected?: boolean;
+	selecting?: boolean;
+	index: number;
+	visible: boolean;
+};
+export type ListProps<T extends { id: string }> = {
+	ItemComponent: FunctionComponent<ListItemProps<T>>;
+	items: Array<T>;
+	active?: boolean;
+	selected?: boolean;
+	selecting?: boolean;
+	onListBottom?: () => void;
+};
 
 export type SharedAction = {
 	id: string;
@@ -50,12 +67,9 @@ export type RuntimeAppData = Partial<{
 		board?: Component | FunctionComponent;
 		settings?: Component | FunctionComponent;
 		sidebar?: Component | FunctionComponent;
+		search?: Component | FunctionComponent;
 	};
 	context: unknown;
-	search: {
-		onSearch?: (query: string) => void;
-		route?: string;
-	};
 	newButton: {
 		primary: SharedAction;
 		secondaryItems: Array<SharedAction>;
@@ -174,48 +188,6 @@ export type FCPartialPromisedEvent<T extends unknown | string> = FCPartialEvent<
 export type FCPromisedEvent<T extends unknown | string, R extends unknown | string> = FCEvent<T> & {
 	sendResponse: (data: R) => void;
 };
-// Type is in the documentation. If changed update also the documentation.
-export type MainSubMenuItemData = {
-	id: string;
-	icon?: string;
-	label: string;
-	to: string;
-	items?: Array<MainSubMenuItemData>;
-};
-// Type is in the documentation. If changed update also the documentation.
-export type MainMenuItemData = {
-	id: string;
-	icon: string;
-	label: string;
-	to: string;
-	items?: Array<MainSubMenuItemData>;
-	customComponent?: React.Component;
-};
-// Type is in the documentation. If changed update also the documentation.
-export type AppRouteDescription = {
-	route: string;
-	view: LazyExoticComponent<any>;
-	label: LazyExoticComponent<any>;
-};
-// Type is in the documentation. If changed update also the documentation.
-export type AppSettingsRouteDescription = {
-	route: string;
-	view: LazyExoticComponent<any>;
-	label: LazyExoticComponent<any>;
-	to: string;
-	id: string;
-};
-// Type is in the documentation. If changed update also the documentation.
-export type AppCreateOption = {
-	id: string;
-	onClick?: () => void;
-	app: {
-		path: string;
-		boardPath?: string;
-		getPath?: () => undefined;
-	};
-	label: string;
-};
 
 export type FCSink = <T extends unknown | string, R extends unknown | string>(
 	event: FCPartialEvent<T> | FCPartialPromisedEvent<T>
@@ -257,11 +229,12 @@ export const store: {
 	setReducer(nextReducer: Reducer): void;
 };
 export const registerIntegrations: (data: IntegrationsRegister) => void;
-export const registerAppData: (data: Partial<RuntimeAppData>) => void;
+export const registerAppData: (data: RuntimeAppData) => void;
 export const setAppContext: <T>(obj: T) => void;
 export const soapFetch: SoapFetch;
 export const Applink: FunctionComponent<LinkProps>;
 export const Spinner: FunctionComponent;
+export const List: FunctionComponent<ListProps<any>>;
 export const fiberChannel: FC;
 export const fiberChannelSink: FCSink;
 
@@ -299,7 +272,7 @@ export const useCSRFToken: () => string;
 export const useCurrentSync: () => any;
 export const useFiberChannel: () => FC;
 export const useFirstSync: () => any;
-export const useGoBackHistoryCallback: () => void;
+export const useGoBackHistoryCallback: () => () => void;
 export const useIntegratedAction: (id: string) => [SharedAction | undefined, boolean];
 export const useIntegratedActionsByType: (type: string) => Array<SharedAction>;
 export const useIntegratedComponent: (id: string) => [React.FC<unknown>, boolean];

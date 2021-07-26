@@ -9,29 +9,25 @@
  * *** END LICENSE BLOCK *****
  */
 import { TFunction } from 'react-i18next';
-import { SettingsAppView } from './settings-app-view';
-import { SettingsSidebar } from './settings-sidebar';
-import { SETTINGS_APP_ID } from '../constants';
+import { SearchAppView } from './search-app-view';
 import { CoreAppData } from '../app-store/store-types';
+import { SEARCH_APP_ID } from '../constants/index';
 
-export const getSettingsCore = (t: TFunction): CoreAppData => ({
-	priority: -2,
-	package: SETTINGS_APP_ID,
-	name: t('settings.app', 'Settings'),
-	description: t('settings.app_description', 'Settings Module'),
+export const getSearchCore = (t: TFunction): CoreAppData => ({
+	priority: -1,
+	package: SEARCH_APP_ID,
+	name: t('search.app', 'Search'),
+	description: t('search.app_description', 'Search Module'),
 	version: '0.0.0',
 	resourceUrl: '',
 	entryPoint: ''
 });
 
-export const settingsAppData = {
-	icon: 'Settings2Outline',
+export const searchAppData = {
+	icon: 'SearchModOutline',
 	views: {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
-		app: SettingsAppView,
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		sidebar: SettingsSidebar
+		app: SearchAppView
 	}
 };

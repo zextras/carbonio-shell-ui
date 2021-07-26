@@ -17,6 +17,7 @@ import { LocationDescriptor } from 'history';
 import { Store } from '@reduxjs/toolkit';
 import { LinkProps } from 'react-router-dom';
 import { number, string } from 'prop-types';
+import { ListProps } from '../src/ui-extras/list';
 
 export type SharedAction = {
 	id: string;
@@ -259,6 +260,7 @@ export const setAppContext: <T>(obj: T) => void;
 export const soapFetch: SoapFetch;
 export const Applink: FunctionComponent<LinkProps>;
 export const Spinner: FunctionComponent;
+export const List: FunctionComponent<ListProps>;
 export const fiberChannel: FC;
 export const fiberChannelSink: FCSink;
 

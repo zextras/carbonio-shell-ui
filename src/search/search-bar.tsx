@@ -27,10 +27,10 @@ import { useTranslation } from 'react-i18next';
 import { filter, find } from 'lodash';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import { useLocalStorage } from './hooks';
+import { useLocalStorage } from '../shell/hooks';
 import { SEARCH_APP_ID } from '../constants';
 import { useApps } from '../app-store/hooks';
-import { useSearchStore } from '../search/search-store';
+import { useSearchStore } from './search-store';
 
 const StyledContainer = styled(Container)`
 	height: 42px;
@@ -145,6 +145,9 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 		update(moduleSelection?.value, `"${query.map((q) => q.label).join('" "')}"`);
 	}, [moduleSelection?.value, query, update]);
 
+	useEffect(() => {
+		updateQuery();
+	}, [updateQuery]);
 	const onSearch = useCallback(() => {
 		updateQuery();
 		if (currentApp !== SEARCH_APP_ID) {
@@ -252,6 +255,23 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 			ref?.removeEventListener('keypress', search);
 		};
 	}, [onSearch]);
+
+	const [inputHasFocus, setInputHasFocus] = useState(false);
+	useEffect(() => {
+		const ref = inputRef.current;
+		const focusCb = (): void => setInputHasFocus(true);
+		const blurCb = (): void => setInputHasFocus(false);
+		if (ref) {
+			ref.addEventListener('focus', focusCb);
+			ref.addEventListener('blur', blurCb);
+		}
+		return (): void => {
+			if (ref) {
+				ref.removeEventListener('focus', focusCb);
+				ref.removeEventListener('blur', blurCb);
+			}
+		};
+	});
 	return (
 		<Container orientation="horizontal" mainAlignment="flex-start">
 			<Container
@@ -277,7 +297,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 						value={query}
 						onAdd={onChipAdd}
 						placeholder={
-							(inputRef.current === document.activeElement || query.length > 0) && moduleSelection
+							inputHasFocus && moduleSelection
 								? t('search.active_input_label', 'Separate keywords with a comma or TAB')
 								: t('search.idle_input_label', 'Search in {{module}}', {
 										module: moduleSelection?.label
@@ -288,11 +308,12 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 						separators={['Comma', 'Enter']}
 						background="gray5"
 						style={{
-							cursor: 'pointer'
+							cursor: 'pointer',
+							overflowX: 'hidden'
 						}}
 						onChange={onQueryChange}
 						onInputType={onInputType}
-						options={options}
+						options={inputHasFocus ? options : []}
 					/>
 				</StyledContainer>
 			</Container>

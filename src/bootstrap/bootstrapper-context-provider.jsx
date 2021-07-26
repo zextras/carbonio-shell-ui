@@ -16,7 +16,6 @@ import { PersistGate } from 'redux-persist/integration/react';
 import BootstrapperContext from './bootstrapper-context';
 import ShellStoreContext from '../store/shell-store-context';
 import AppLoaderContextProvider from '../app/app-loader-context-provider';
-import AppLoaderMounter from '../app/app-loader-mounter';
 import ThemeLoaderMounter from '../app/theme-loader-mounter';
 import BoardContextProvider from '../shell/boards/board-context-provider';
 import { startSync } from '../store/sync-slice';
@@ -56,10 +55,7 @@ export default function BootstrapperContextProvider({
 					<SyncProvider store={shellStore} />
 					<I18nextProvider i18n={i18nFactory.getShellI18n()}>
 						<AppLoaderContextProvider>
-							<BoardContextProvider>
-								{children}
-								<AppLoaderMounter />
-							</BoardContextProvider>
+							<BoardContextProvider>{children}</BoardContextProvider>
 							<ThemeLoaderMounter />
 						</AppLoaderContextProvider>
 					</I18nextProvider>

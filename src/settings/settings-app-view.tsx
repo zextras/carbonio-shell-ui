@@ -18,7 +18,7 @@ import { SETTINGS_APP_ID } from '../constants';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppContextProvider from '../app/app-context-provider';
-import { Spinner } from '../shell/spinner';
+import { Spinner } from '../ui-extras/spinner';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const GeneralSettings = lazy(() => import('./general-settings'));

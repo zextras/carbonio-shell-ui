@@ -24,7 +24,7 @@ import {
 } from '@zextras/zapp-ui';
 import { UserQuota } from './user-quota';
 import { useAppStore } from '../app-store';
-import { SearchBar } from './shell-search-bar';
+import { SearchBar } from '../search/search-bar';
 
 export default function ShellHeader({
 	userBarIsOpen,

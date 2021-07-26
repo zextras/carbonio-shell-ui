@@ -256,22 +256,6 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 		};
 	}, [onSearch]);
 
-	const [inputHasFocus, setInputHasFocus] = useState(false);
-	useEffect(() => {
-		const ref = inputRef.current;
-		const focusCb = (): void => setInputHasFocus(true);
-		const blurCb = (): void => setInputHasFocus(false);
-		if (ref) {
-			ref.addEventListener('focus', focusCb);
-			ref.addEventListener('blur', blurCb);
-		}
-		return (): void => {
-			if (ref) {
-				ref.removeEventListener('focus', focusCb);
-				ref.removeEventListener('blur', blurCb);
-			}
-		};
-	});
 	return (
 		<Container orientation="horizontal" mainAlignment="flex-start">
 			<Container
@@ -297,7 +281,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 						value={query}
 						onAdd={onChipAdd}
 						placeholder={
-							inputHasFocus && moduleSelection
+							moduleSelection && query.length
 								? t('search.active_input_label', 'Separate keywords with a comma or TAB')
 								: t('search.idle_input_label', 'Search in {{module}}', {
 										module: moduleSelection?.label
@@ -313,7 +297,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 						}}
 						onChange={onQueryChange}
 						onInputType={onInputType}
-						options={inputHasFocus ? options : []}
+						options={options}
 					/>
 				</StyledContainer>
 			</Container>

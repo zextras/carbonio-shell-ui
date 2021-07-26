@@ -16,7 +16,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { LocationDescriptor } from 'history';
 import { Store } from '@reduxjs/toolkit';
 import { LinkProps } from 'react-router-dom';
-import { number, string } from 'prop-types';
 
 type ListItemProps<T extends { id: string }> = {
 	item: T;
@@ -28,7 +27,7 @@ type ListItemProps<T extends { id: string }> = {
 	visible: boolean;
 };
 export type ListProps<T extends { id: string }> = {
-	ItemComponent: FC<ListItemProps<T>>;
+	ItemComponent: FunctionComponent<ListItemProps<T>>;
 	items: Array<T>;
 	active?: boolean;
 	selected?: boolean;
@@ -230,12 +229,12 @@ export const store: {
 	setReducer(nextReducer: Reducer): void;
 };
 export const registerIntegrations: (data: IntegrationsRegister) => void;
-export const registerAppData: (data: Partial<RuntimeAppData>) => void;
+export const registerAppData: (data: RuntimeAppData) => void;
 export const setAppContext: <T>(obj: T) => void;
 export const soapFetch: SoapFetch;
 export const Applink: FunctionComponent<LinkProps>;
 export const Spinner: FunctionComponent;
-export const List: FunctionComponent<ListProps>;
+export const List: FunctionComponent<ListProps<any>>;
 export const fiberChannel: FC;
 export const fiberChannelSink: FCSink;
 

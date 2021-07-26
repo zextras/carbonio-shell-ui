@@ -49,17 +49,7 @@ import StoreFactory from '../store/store-factory';
 
 import { FC, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import ShellNetworkService from '../network/shell-network-service';
-import {
-	Account,
-	AppCreateOption,
-	AppPkgDescription,
-	AppRouteDescription,
-	AppSettingsRouteDescription,
-	FCSink,
-	MainMenuItemData,
-	SoapFetch,
-	ThemePkgDescription
-} from '../../types';
+import { Account, AppPkgDescription, FCSink, SoapFetch, ThemePkgDescription } from '../../types';
 import { appStore } from '../app-store';
 import { RuntimeAppData } from '../app-store/store-types';
 import { getAppGetters } from './app-loader-functions';
@@ -140,13 +130,14 @@ export type LoadedThemesCache = {
 	[pkgName: string]: LoadedThemeRuntime;
 };
 
+// This is going to be erased anyway
 type AppInjections = {
 	appContext: BehaviorSubject<any>;
-	createOptions: BehaviorSubject<AppCreateOption[]>;
+	createOptions: BehaviorSubject<any[]>;
 	entryPoint: BehaviorSubject<ComponentClass | null>;
-	mainMenuItems: BehaviorSubject<MainMenuItemData[]>;
-	routes: BehaviorSubject<AppRouteDescription[]>;
-	settingsRoutes: BehaviorSubject<AppSettingsRouteDescription[]>;
+	mainMenuItems: BehaviorSubject<any[]>;
+	routes: BehaviorSubject<any[]>;
+	settingsRoutes: BehaviorSubject<any[]>;
 	store: Store<any>;
 };
 
@@ -320,10 +311,10 @@ function loadApp(
 	storeFactory: StoreFactory
 ): Promise<LoadedAppRuntime | undefined> {
 	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
-	const mainMenuItems = new BehaviorSubject<MainMenuItemData[]>([]);
-	const routes = new BehaviorSubject<AppRouteDescription[]>([]);
-	const settingsRoutes = new BehaviorSubject<AppSettingsRouteDescription[]>([]);
-	const createOptions = new BehaviorSubject<AppCreateOption[]>([]);
+	const mainMenuItems = new BehaviorSubject<any>([]);
+	const routes = new BehaviorSubject<any>([]);
+	const settingsRoutes = new BehaviorSubject<any>([]);
+	const createOptions = new BehaviorSubject<any>([]);
 	const appContext = new BehaviorSubject<any>({});
 	const entryPoint = new BehaviorSubject<ComponentClass | null>(null);
 	const store = storeFactory.getStoreForApp(pkg);

@@ -8,7 +8,7 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 import { reduce, map } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -24,7 +24,7 @@ import {
 } from '@zextras/zapp-ui';
 import { UserQuota } from './user-quota';
 import { useAppStore } from '../app-store';
-import { SearchBar } from './shell-search-bar';
+import { SearchBar } from '../search/search-bar';
 
 export default function ShellHeader({
 	userBarIsOpen,
@@ -38,6 +38,7 @@ export default function ShellHeader({
 	const currentApp = useMemo(() => history.location.pathname.split('/')[1], [
 		history.location.pathname
 	]);
+
 	const [primaryAction, secondaryActions] = useAppStore((s) => [
 		s.apps[currentApp]?.newButton?.primary,
 		reduce(
@@ -45,7 +46,10 @@ export default function ShellHeader({
 			(acc, app, key) => {
 				if (app.newButton?.secondaryItems) {
 					if (acc.length > 0) {
-						acc.push({ type: 'divider', id: key, key });
+						acc.push({ type: 'divider', id: key, key, label: 'really?' });
+					}
+					if (app.newButton?.primary) {
+						acc.push(app.newButton?.primary);
 					}
 					acc.push(
 						...map(app.newButton?.secondaryItems, (item) => ({
@@ -61,19 +65,10 @@ export default function ShellHeader({
 		)
 	]);
 
-	const inputRef = useRef();
-
 	const isMultiButtonDisabled = useMemo(
 		() => !!primaryAction || primaryAction?.disabled || primaryAction?.getDisabledState?.(),
 		[primaryAction]
 	);
-
-	const searchBarPlaceholder = `Search in ${
-		currentApp
-			.slice(currentApp.lastIndexOf('_') + 1)
-			.charAt(0)
-			.toUpperCase() + currentApp.slice(currentApp.lastIndexOf('_') + 1).slice(1)
-	}`;
 
 	return (
 		<Container
@@ -101,7 +96,7 @@ export default function ShellHeader({
 				<Container orientation="horizontal" width="fill" mainAlignment="space-between">
 					<Logo size="small" />
 					<MultiButton
-						style={{ marginLeft: 'auto' }}
+						style={{ marginLeft: 'auto', height: '42px' }}
 						background="primary"
 						label={t('new', 'New')}
 						onClick={primaryAction?.click}
@@ -112,16 +107,15 @@ export default function ShellHeader({
 			</Container>
 			<Responsive mode="desktop">
 				<Container orientation="horizontal" width="calc(100vw - 316px)">
-					<Container orientation="horizontal" mainAlignment="flex-start" width="40%">
-						<SearchBar inputRef={inputRef} placeholder={searchBarPlaceholder} value={[]} />
-					</Container>
+					<SearchBar currentApp={currentApp} />
 					<Container
 						orientation="horizontal"
-						width="60%"
+						width="40%"
 						mainAlignment="flex-end"
 						padding={{ right: 'extrasmall' }}
 					>
 						<Padding right="small">
+							{/* <ContactInput /> */}
 							<UserQuota />
 						</Padding>
 						<IconButton icon="BellOutline" iconColor="text" />

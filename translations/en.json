@@ -1,34 +1,42 @@
 {
     "changelog": {
-        "cancel": "Cancel",
-        "close": "Close",
-        "remind_later": "Remind Later",
-        "title": "Title"
+        "cancel": "",
+        "close": "",
+        "remind_later": "",
+        "title": ""
     },
-    "clear_search": "Clear search",
-    "copyright": "Copyright",
+    "copyright": "",
     "login": {
-        "help": "Help",
-        "incorrect": "The username or password is incorrect",
-        "login": "Login",
-        "password": "Password",
-        "remember_me": "Remember me",
-        "supported_browsers": "Supported browsers",
-        "username": "Username",
-        "verify_caps_lock": "Verify that CAPS LOCK is not on, and then retype the current username and password"
+        "help": "",
+        "incorrect": "",
+        "login": "",
+        "password": "",
+        "remember_me": "",
+        "supported_browsers": "",
+        "username": "",
+        "verify_caps_lock": ""
     },
-    "logout": "Logout",
+    "logout": "",
     "logout_modal": {
-        "confirm": "Log me out",
-        "warning": "You are going to be logged-out"
+        "confirm": "",
+        "warning": ""
     },
     "module": {
         "app": {
-            "version": "Applications version"
+            "version": "Application versions"
         }
     },
     "new": "New",
     "new_tab": "New Tab",
+    "search": {
+        "active_input_label": "Separate keywords with a comma or TAB",
+        "app": "Search",
+        "app_description": "Search Module",
+        "clear": "Clear search input",
+        "idle_input_label": "Search in {{module}}",
+        "module": "Module",
+        "start": "Start search"
+    },
     "settings": {
         "app": "Settings",
         "app_description": "Settings Module",
@@ -37,7 +45,7 @@
             "secondary": "Cancel"
         },
         "general": {
-            "general": "General",
+            "general": "General Settings",
             "theme_auto": "Auto",
             "theme_disabled": "Disabled",
             "theme_enabled": "Enabled",
@@ -79,18 +87,16 @@
             }
         }
     },
-    "start_search": "Start search",
     "supported_browsers": {
-        "chrome": "Chrome",
-        "edge": "Edge",
-        "firefox": "Firefox",
-        "ie_11_up": "Internet Explorer 11+",
-        "opera": "Opera",
-        "safari": "Safari",
-        "uc": "UC",
-        "yandex": "Yandex"
+        "chrome": "",
+        "edge": "",
+        "firefox": "",
+        "ie_11_up": "",
+        "opera": "",
+        "safari": "",
+        "uc": "",
+        "yandex": ""
     },
-    "type-start_search": "",
     "user_quota": {
         "limited": "",
         "unlimited": "Congrats! Unlimited space available"

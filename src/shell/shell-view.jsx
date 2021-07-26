@@ -98,7 +98,7 @@ export function Shell() {
 	return (
 		<Background>
 			<DarkReaderListener />
-			<MainAppRerouter />
+			{/* <MainAppRerouter /> */}
 			<ShellHeader
 				userBarIsOpen={userOpen}
 				mobileNavIsOpen={mobileNavOpen}

@@ -22,7 +22,8 @@ import StoreFactory from '../store/store-factory';
 import { useAppStore } from '../app-store';
 import { useUserAccounts } from '../store/shell-store-hooks';
 import { settingsAppData, getSettingsCore } from '../settings/settings-app';
-import { SETTINGS_APP_ID } from '../constants';
+import { searchAppData, getSearchCore } from '../search/search-app';
+import { SETTINGS_APP_ID, SEARCH_APP_ID } from '../constants';
 
 const AppStoreInterface = () => {
 	const { addApps, registerAppData } = useAppStore((s) => s.setters);
@@ -31,11 +32,12 @@ const AppStoreInterface = () => {
 	const [t] = useTranslation();
 	useEffect(() => {
 		if (accounts && accounts.length > 0 && status === 0) {
-			addApps([...accounts[0].apps, getSettingsCore(t)]);
+			addApps([...accounts[0].apps, getSettingsCore(t), getSearchCore(t)]);
 			setStatus(1);
 		}
 		if (status === 1) {
 			registerAppData(SETTINGS_APP_ID)(settingsAppData);
+			registerAppData(SEARCH_APP_ID)(searchAppData);
 			setStatus(2);
 		}
 	}, [accounts, addApps, status, registerAppData, t]);

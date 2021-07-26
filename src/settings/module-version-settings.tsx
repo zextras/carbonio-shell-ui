@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /*
  * *** BEGIN LICENSE BLOCK *****
  * Copyright (C) 2011-2021 Zextras
@@ -9,21 +10,39 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { FC } from 'react';
+import React, { FC, useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormSubSection, Container, Text, Badge, Divider, Tooltip } from '@zextras/zapp-ui';
+import {
+	FormSubSection,
+	Container,
+	Text,
+	Badge,
+	Divider,
+	Tooltip,
+	ThemeContext
+} from '@zextras/zapp-ui';
 import { map } from 'lodash';
 import { useAppList } from '../app-store/hooks';
+
+import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../constants/index';
 
 const ModuleVersionSettings: FC = () => {
 	const apps = useAppList();
 	const [t] = useTranslation();
+	const theme = useContext(ThemeContext);
 
 	const copyToClipboard: any = (e: any) => {
 		e.preventDefault();
 		navigator.clipboard.writeText(e.target.innerText);
 	};
 
+	const filteredList = useMemo(
+		() =>
+			apps.filter(
+				(app) => app.core.package !== SEARCH_APP_ID && app.core.package !== SETTINGS_APP_ID
+			),
+		[apps]
+	);
 	return (
 		<>
 			<FormSubSection
@@ -31,7 +50,7 @@ const ModuleVersionSettings: FC = () => {
 				minWidth="calc(min(100%, 512px))"
 				width="50%"
 			>
-				{map(apps, (app: any) => (
+				{map(filteredList, (app: any) => (
 					<Container key={app.core.package} padding={{ horizontal: 'large', vertical: 'small' }}>
 						<Container orientation="horizontal" mainAlignment="space-between">
 							<Text>{app.core.name}</Text>
@@ -47,8 +66,15 @@ const ModuleVersionSettings: FC = () => {
 							padding={{ top: 'extrasmall', bottom: 'medium' }}
 						>
 							<Text color="secondary">{app.core.description}</Text>
-							{/* TODO: with giuliano: remove the hardcoded colors and convert to a sc */}
-							<Badge value="Active" style={{ backgroundColor: '#8bc34a', color: 'white' }}></Badge>
+							<Badge
+								value="Active"
+								style={{
+									// @ts-ignore
+									backgroundColor: theme.palette.success.regular,
+									// @ts-ignore
+									color: theme.palette.gray6.regular
+								}}
+							></Badge>
 						</Container>
 						<Divider color="gray2" />
 					</Container>

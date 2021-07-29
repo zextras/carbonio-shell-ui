@@ -21,7 +21,7 @@
         "confirm": "Log me out",
         "warning": "You are going to be logged-out"
     },
-   "module": {
+    "module": {
         "app": {
             "version": "Application versions"
         }

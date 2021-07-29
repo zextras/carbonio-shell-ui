@@ -22,10 +22,8 @@ export const SearchAppView: FC = () => {
 	const { query, module, updateModule, updateQuery } = useSearchStore();
 	const apps = useApps();
 	useEffect(() => {
-		console.log('module:', module);
 		if (!module) {
 			const nextModule = find(apps, (app: AppData): boolean => !!app.views?.search)?.core.package;
-			console.log('resetting:', nextModule);
 
 			if (nextModule) {
 				updateModule(nextModule);

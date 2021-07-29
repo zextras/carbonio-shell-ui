@@ -74,7 +74,6 @@ const TeamIcon = ({ setMode }) => (
 	<IconButton
 		icon="TeamOutline"
 		onClick={() => {
-			console.log('ciaone');
 			setMode((mode) => (mode === 'open' ? 'closed' : 'open'));
 		}}
 	/>
@@ -84,7 +83,6 @@ const TeamSidebar = ({ setMode }) => (
 	<Container
 		background="success"
 		onClick={() => {
-			console.log('ciaone');
 			setMode((mode) => (mode === 'closed' ? 'overlap' : 'open'));
 		}}
 	>

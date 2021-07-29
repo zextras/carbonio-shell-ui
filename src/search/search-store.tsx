@@ -1,14 +1,23 @@
+import { isFunction } from 'lodash';
 import create from 'zustand';
 
 type SearchState = {
-	query?: string;
+	query: Array<{ label: string } & unknown>;
 	module?: string;
-	addQueryChip?: (value: string) => void;
-	update: (module?: string, query?: string) => void;
-	setAddQueryChip: (fn: (value: string) => void) => void;
+	updateQuery: (
+		query:
+			| Array<{ label: string } & unknown>
+			| ((q: Array<{ label: string } & unknown>) => Array<{ label: string } & unknown>)
+	) => void;
+	updateModule: (module: string) => void;
 };
 
-export const useSearchStore = create<SearchState>((set) => ({
-	setAddQueryChip: (fn: (value: string) => void): void => set({ addQueryChip: fn }),
-	update: (module?: string, query?: string): void => set({ module, query })
+export const useSearchStore = create<SearchState>((set, get) => ({
+	query: [],
+	updateQuery: (
+		query:
+			| Array<{ label: string } & unknown>
+			| ((q: Array<{ label: string } & unknown>) => Array<{ label: string } & unknown>)
+	): void => set({ query: isFunction(query) ? query(get().query) : query }),
+	updateModule: (module: string): void => set({ module })
 }));

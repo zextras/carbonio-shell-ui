@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { find } from 'lodash';
+import { find, update } from 'lodash';
 import React, { FC, useMemo, useEffect } from 'react';
 import { useApps } from '../app-store/hooks';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -19,13 +19,19 @@ import { useSearchStore } from './search-store';
 import { AppData } from '../../types/index';
 
 export const SearchAppView: FC = () => {
-	const { query, module, update, addQueryChip } = useSearchStore();
+	const { query, module, updateModule, updateQuery } = useSearchStore();
 	const apps = useApps();
 	useEffect(() => {
+		console.log('module:', module);
 		if (!module) {
-			update(find(apps, (app: AppData): boolean => !!app.views?.search)?.core.package);
+			const nextModule = find(apps, (app: AppData): boolean => !!app.views?.search)?.core.package;
+			console.log('resetting:', nextModule);
+
+			if (nextModule) {
+				updateModule(nextModule);
+			}
 		}
-	}, [apps, module, update]);
+	}, [apps, module, updateModule]);
 
 	const Search = useMemo(
 		() => (module && apps[module]?.views?.search ? apps[module]?.views?.search : null),
@@ -36,7 +42,7 @@ export const SearchAppView: FC = () => {
 		<AppContextProvider pkg={module}>
 			{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 			{/* @ts-ignore */}
-			<Search query={query} addQueryChip={addQueryChip} />
+			<Search query={query} updateQuery={updateQuery} />
 		</AppContextProvider>
 	) : null;
 };

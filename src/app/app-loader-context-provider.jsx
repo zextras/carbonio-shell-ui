@@ -27,59 +27,22 @@ export default function AppLoaderContextProvider({ children }) {
 	const accounts = useUserAccounts();
 	const fiberChannelFactory = useFiberChannelFactory();
 	const storeFactory = useStoreFactory();
-	const [[appsCache, appsLoaded], setAppsCache] = useState([{}, false]);
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
-	const [[themesCache, themesLoaded], setThemeCache] = useState([{}, false]);
 	useEffect(() => {
 		console.log(
 			'%cLOADING APPS',
-			'font-size: 1rem; color: white; background: #2b73d2; padding: 0.5rem; font-family: sans-serif; border-radius: 0.1rem; width: 100%'
+			'font-size: 1rem; color: white; background: #2b73d2; padding: 0.4rem; font-family: sans-serif; border-radius: 0.1rem; width: 100%'
 		);
-		let canSet = true;
 		if (accounts.length < 1) {
-			unloadAppsAndThemes()
-				.then(() => {
-					if (!canSet) return;
-					setAppsCache([{}, false]);
-					setThemeCache([{}, false]);
-				})
-				.catch();
+			unloadAppsAndThemes();
 		} else {
-			loadApps(accounts, fiberChannelFactory, shellNetworkService, storeFactory)
-				.then((_appsCache) =>
-					loadThemes(accounts, fiberChannelFactory).then((_themesCache) => [
-						_appsCache,
-						_themesCache
-					])
-				)
-				.then(([_appsCache, _themesCache]) => {
-					if (canSet) {
-						setShowUpdateModal(checkUpdate());
-						setAppsCache([_appsCache, true]);
-						// setThemeCache([_themesCache, true]);
-					}
-					return _appsCache;
-				});
+			loadApps(accounts, fiberChannelFactory, shellNetworkService, storeFactory);
 		}
-		return () => {
-			canSet = false;
-		};
 	}, [accounts, fiberChannelFactory, shellNetworkService, storeFactory]);
-	const value = useMemo(
-		() => ({
-			apps: { cache: appsCache, loaded: appsLoaded },
-			themes: { cache: themesCache, loaded: themesLoaded },
-			showUpdateModal
-		}),
-		[appsCache, appsLoaded, themesCache, themesLoaded, showUpdateModal]
-	);
-
 	return (
-		<AppLoaderContext.Provider value={value}>
-			<AppContextCacheProvider>
-				{/* {showUpdateModal ? <ChangeLogModal cache={value.apps.cache} /> : null} */}
-				{children}
-			</AppContextCacheProvider>
-		</AppLoaderContext.Provider>
+		<>
+			{/* {showUpdateModal ? <ChangeLogModal cache={value.apps.cache} /> : null} */}
+			{children}
+		</>
 	);
 }

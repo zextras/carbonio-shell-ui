@@ -21,7 +21,7 @@
         "confirm": "Log me out",
         "warning": "You are going to be logged-out"
     },
-   "module": {
+    "module": {
         "app": {
             "version": "Application versions"
         }
@@ -45,7 +45,9 @@
             "secondary": "Cancel"
         },
         "general": {
-            "general": "General Settings",
+            "account": "Account",
+            "account_logout": "Logout",
+            "general": "General",
             "theme_auto": "Auto",
             "theme_disabled": "Disabled",
             "theme_enabled": "Enabled",

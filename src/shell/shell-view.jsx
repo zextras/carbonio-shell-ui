@@ -70,30 +70,26 @@ const MainAppRerouter = () => {
 	) : null;
 };
 
-const TeamIcon = ({ setMode }) => (
-	<IconButton
-		icon="TeamOutline"
-		onClick={() => {
-			setMode((mode) => (mode === 'open' ? 'closed' : 'open'));
-		}}
-	/>
-);
+// const TeamIcon = ({ setMode }) => (
+// 	<IconButton
+// 		icon="TeamOutline"
+// 		onClick={() => {
+// 			setMode((mode) => (mode === 'open' ? 'closed' : 'open'));
+// 		}}
+// 	/>
+// );
 
-const TeamSidebar = ({ setMode }) => (
-	<Container
-		background="success"
-		onClick={() => {
-			setMode((mode) => (mode === 'closed' ? 'overlap' : 'open'));
-		}}
-	>
-		Hello From Team!
-	</Container>
-);
+// const TeamSidebar = ({ setMode }) => (
+// 	<Container
+// 		background="success"
+// 		onClick={() => {
+// 			setMode((mode) => (mode === 'closed' ? 'overlap' : 'open'));
+// 		}}
+// 	>
+// 		Hello From Team!
+// 	</Container>
+// );
 
-const testTeamViews = {
-	icon: TeamIcon,
-	sidebar: TeamSidebar
-};
 export function Shell() {
 	const history = useHistory();
 	const dispatch = useDispatch();
@@ -129,9 +125,7 @@ export function Shell() {
 			dispatch(verifySession());
 		}
 	}, [accounts, sessionState, dispatch]);
-	const TeamViews = useAppStore(
-		(state) => state.apps.com_zextras_zapp_team?.views?.teambar ?? testTeamViews
-	);
+	const TeamViews = useAppStore((state) => state.apps.com_zextras_zapp_team?.views?.teambar);
 
 	useEffect(() => {
 		setNavOpen((n) => !(n && chatPanelMode === 'open'));

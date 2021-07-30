@@ -43,9 +43,8 @@ import { RichTextEditor } from '@zextras/zapp-ui/dist/zapp-ui.rich-text-editor';
 import { LinkProps } from 'react-router-dom';
 import StoreFactory from '../store/store-factory';
 
-import { FC, IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import ShellNetworkService from '../network/shell-network-service';
-import { Account, AppPkgDescription, FCSink, SoapFetch } from '../../types';
+import { Account, AppPkgDescription, SoapFetch } from '../../types';
 import { appStore } from '../app-store';
 import { RuntimeAppData } from '../app-store/store-types';
 import { getAppGetters } from './app-loader-functions';
@@ -83,8 +82,6 @@ type SharedLibrariesAppsMap = {
 			soapFetch: SoapFetch;
 			registerAppData: (data: RuntimeAppData) => void;
 			setAppContext: (obj: unknown) => void;
-			fiberChannel: FC;
-			fiberChannelSink: FCSink;
 			AppLink: FunctionComponent<LinkProps>;
 			Spinner: FunctionComponent;
 			List: FunctionComponent;
@@ -126,7 +123,6 @@ export function updateAppHandlers(appPkg: AppPkgDescription, handlers: RequestHa
 function loadAppModule(
 	appPkg: AppPkgDescription,
 	store: Store<any>,
-	fiberChannelFactory: IFiberChannelFactory,
 	shellNetworkService: ShellNetworkService,
 	setAppClass: (id: string, appClass: ComponentClass) => void
 ): Promise<void> {
@@ -155,10 +151,7 @@ function loadAppModule(
 					setReducer: (reducer): void => store.replaceReducer(reducer)
 				},
 				registerAppData: appStore.getState().setters.registerAppData(appPkg.package),
-				registerIntegrations: appStore.getState().setters.registerIntegrations(appPkg.package),
 				setAppContext: appStore.getState().setters.setAppContext(appPkg.package),
-				fiberChannel: fiberChannelFactory.getAppFiberChannel(appPkg),
-				fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(appPkg),
 				soapFetch: shellNetworkService.getAppSoapFetch(appPkg),
 				AppLink: getAppLink(appPkg.package),
 				Spinner,
@@ -196,13 +189,6 @@ function loadAppModule(
 			script.setAttribute('data-pkg_version', appPkg.version);
 			script.setAttribute('data-is_app', 'true');
 			script.setAttribute('src', `${appPkg.resourceUrl}/${appPkg.entryPoint}`);
-			script.addEventListener('error', (ev) => {
-				fiberChannelFactory.getAppFiberChannelSink(appPkg)({
-					event: 'report-exception',
-					data: { exception: ev.error }
-				});
-				reject(ev.error);
-			});
 			document.body.appendChild(script);
 			_scripts[`${appPkg.package}-loader-${(_scriptId += 1)}`] = script;
 		} catch (err) {
@@ -213,25 +199,14 @@ function loadAppModule(
 
 function loadApp(
 	pkg: AppPkgDescription,
-	fiberChannelFactory: IFiberChannelFactory,
 	shellNetworkService: ShellNetworkService,
 	storeFactory: StoreFactory
 ): Promise<LoadedAppRuntime | undefined> {
 	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
 	const store = storeFactory.getStoreForApp(pkg);
 	const { setAppClass } = appStore.getState().setters;
-	return loadAppModule(pkg, store, fiberChannelFactory, shellNetworkService, setAppClass)
+	return loadAppModule(pkg, store, shellNetworkService, setAppClass)
 		.then(() => true)
-		.catch((e) => {
-			const sink = fiberChannelFactory.getAppFiberChannelSink(pkg);
-			sink({
-				event: 'report-exception',
-				data: {
-					exception: e
-				}
-			});
-			return false;
-		})
 		.then((loaded) =>
 			loaded
 				? {
@@ -288,7 +263,6 @@ function injectSharedLibraries(): void {
 
 export function loadApps(
 	accounts: Array<Account>,
-	fiberChannelFactory: IFiberChannelFactory,
 	shellNetworkService: ShellNetworkService,
 	storeFactory: StoreFactory
 ): Promise<LoadedAppsCache> {
@@ -298,23 +272,9 @@ export function loadApps(
 		typeof cliSettings === 'undefined' || cliSettings.enableErrorReporter
 			? orderedApps
 			: filter(orderedApps, (pkg) => pkg.package !== 'com_zextras_zapp_error_reporter');
-	return Promise.all(
-		map(apps, (pkg) => loadApp(pkg, fiberChannelFactory, shellNetworkService, storeFactory))
-	)
+	return Promise.all(map(apps, (pkg) => loadApp(pkg, shellNetworkService, storeFactory)))
 		.then((loaded) => compact(loaded))
-		.then((loaded) => keyBy(loaded, 'pkg.package'))
-		.then((loaded) => {
-			const sink = fiberChannelFactory.getShellFiberChannelSink();
-			sink({
-				to: {
-					version: PACKAGE_VERSION,
-					app: PACKAGE_NAME
-				},
-				event: 'all-apps-loaded',
-				data: loaded
-			});
-			return loaded;
-		});
+		.then((loaded) => keyBy(loaded, 'pkg.package'));
 }
 
 export function unloadAppsAndThemes(): Promise<void> {

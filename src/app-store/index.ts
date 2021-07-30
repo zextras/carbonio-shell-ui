@@ -12,6 +12,7 @@ import create from 'zustand';
 import createStore from 'zustand/vanilla';
 import { reduce } from 'lodash';
 import { produce } from 'immer';
+import { Component, ComponentClass } from 'react';
 import { AppData, AppState, CoreAppData, IntegrationsRegister } from './store-types';
 
 export const appStore = createStore<AppState>((set) => ({
@@ -34,6 +35,14 @@ export const appStore = createStore<AppState>((set) => ({
 						}),
 						state.apps
 					);
+				})
+			),
+		setAppClass: (id: string, component: ComponentClass): void =>
+			set(
+				produce((state) => {
+					if (state.apps[id]) {
+						state.apps[id].class = component;
+					}
 				})
 			),
 		registerAppData: (id: string) => (data: Partial<Omit<AppData, 'core'>>): void =>

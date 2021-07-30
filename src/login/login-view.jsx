@@ -96,20 +96,24 @@ function LoginForm() {
 		<>
 			<form onSubmit={onSubmit} style={{ width: '100%' }}>
 				<Row padding={{ bottom: 'large' }}>
-					<Input inputRef={usernameRef} label={t('login.username')} backgroundColor="gray5" />
+					<Input
+						inputRef={usernameRef}
+						label={t('login.username', 'Username')}
+						backgroundColor="gray5"
+					/>
 				</Row>
 				<Row>
 					<PasswordInput
 						inputRef={passwordRef}
-						label={t('login.password')}
+						label={t('login.password', 'Password')}
 						backgroundColor="gray5"
 					/>
 				</Row>
 				<Row padding={{ vertical: 'extralarge' }} mainAlignment="space-between">
-					<Checkbox label={t('login.remember_me')} />
+					<Checkbox label={t('login.remember_me', 'Remember me')} />
 				</Row>
 				<Row orientation="vertical" crossAlignment="flex-start" padding={{ bottom: 'extralarge' }}>
-					<Button onClick={onSubmit} label={t('login.login')} size="fill" />
+					<Button onClick={onSubmit} label={t('login.login', 'Login')} size="fill" />
 					{showAuthError && (
 						<Padding top="small">
 							<Text color="error" overflow="break-word">

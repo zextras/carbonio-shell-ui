@@ -26,12 +26,7 @@ import { UserQuota } from './user-quota';
 import { useAppStore } from '../app-store';
 import { SearchBar } from '../search/search-bar';
 
-export default function ShellHeader({
-	userBarIsOpen,
-	mobileNavIsOpen,
-	onMobileMenuClick,
-	onUserClick
-}) {
+export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, children }) {
 	const history = useHistory();
 	const [t] = useTranslation();
 	const screenMode = useScreenMode();
@@ -55,7 +50,7 @@ export default function ShellHeader({
 						...map(app.newButton?.secondaryItems, (item) => ({
 							...item,
 							key: item.id,
-							disabled: item.disabled || item.getDisabledState?.()
+							disabled: item.disabled || item.getDisabledStatus?.()
 						}))
 					);
 				}
@@ -118,12 +113,9 @@ export default function ShellHeader({
 							{/* <ContactInput /> */}
 							<UserQuota />
 						</Padding>
-						<IconButton icon="BellOutline" iconColor="text" />
-						<IconButton
-							icon={userBarIsOpen ? 'Close' : 'PersonOutline'}
-							iconColor="text"
-							onClick={onUserClick}
-						/>
+						{/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+						<IconButton icon="BellOutline" iconColor="text" onClick={() => {}} />
+						{children}
 					</Container>
 				</Container>
 			</Responsive>

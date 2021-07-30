@@ -37,7 +37,7 @@ export default function ShellNavigationBar({
 			<Responsive mode="desktop">
 				<ShellPrimaryBar activeApp={activeApp} />
 				<ShellSecondaryBar
-					navigationBarIsOpen={navigationBarIsOpen}
+					sidebarIsOpen={navigationBarIsOpen}
 					onCollapserClick={onCollapserClick}
 					activeApp={activeApp}
 				/>

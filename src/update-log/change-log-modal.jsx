@@ -16,6 +16,7 @@ import { Modal, Text, Container, Divider } from '@zextras/zapp-ui';
 import styled from 'styled-components';
 import moment from 'moment';
 import MarkdownContainer from './markdown-container';
+import { useApps } from '../app-store/hooks';
 
 const Title = styled(Text)`
 	width: 100%;
@@ -26,36 +27,31 @@ const Title = styled(Text)`
 
 const CHANGELOG_VERSION_REGEX = /([0-9]\.[0-9]\.[0-9][0-9]-beta\.[0-9])/;
 
-export default function ChangeLogModal({ cache }) {
+export default function ChangeLogModal() {
 	const [mdpackage, setMdPackage] = useState({});
 	const [showUpdate, setShowUpdate] = useState(false);
 	const { t } = useTranslation();
-	const executeReading = useCallback(
-		async (data) => {
-			const updateLog = {};
-			let count = 0;
-			forEach(data, async (value, key) => {
-				count += 1;
-				fetch(`${data[key].pkg.resourceUrl}/CHANGELOG.md`)
-					.then((res) => res.text())
-					.then((content) => {
-						const changelogVersion = content.match(CHANGELOG_VERSION_REGEX)[0];
-						if (value.pkg.version.localeCompare(changelogVersion) !== 0) {
-							const requiredContent = content.substr(191, content.length);
-							updateLog[data[key].pkg.name] = requiredContent;
-							if (count === Object.keys(data).length) setMdPackage(updateLog);
-							setTimeout(() => setShowUpdate(true), 15000);
-						}
-					})
-					.catch((err) => null);
-			});
-		},
-		[setMdPackage, setShowUpdate]
-	);
+	const apps = useApps();
 
 	useEffect(() => {
-		executeReading(cache).then();
-	}, [cache, executeReading]);
+		const updateLog = {};
+		let count = 0;
+		forEach(apps, async (value, key) => {
+			count += 1;
+			fetch(`${apps[key].core.resourceUrl}/CHANGELOG.md`)
+				.then((res) => res.text())
+				.then((content) => {
+					const changelogVersion = content.match(CHANGELOG_VERSION_REGEX)[0];
+					if (value.core.version.localeCompare(changelogVersion) !== 0) {
+						const requiredContent = content.substr(191, content.length);
+						updateLog[apps[key].crossAlignment.name] = requiredContent;
+						if (count === Object.keys(apps).length) setMdPackage(updateLog);
+						setTimeout(() => setShowUpdate(true), 15000);
+					}
+				})
+				.catch(() => null);
+		});
+	}, [apps]);
 
 	const remindLater = useCallback(() => {
 		setShowUpdate(false);

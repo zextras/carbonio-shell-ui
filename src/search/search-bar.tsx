@@ -21,7 +21,8 @@ import {
 	Row,
 	Icon,
 	Text,
-	Padding
+	Padding,
+	Dropdown
 } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
 import { filter, find } from 'lodash';
@@ -89,17 +90,8 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 	const [storedValue, setStoredValue] = useLocalStorage('search_suggestions', []);
 	const apps = useApps();
 	const history = useHistory();
-	const update = useSearchStore((s) => s.update);
-	useEffect(() => {
-		window.addEventListener('keypress', (event: KeyboardEvent) => {
-			// isContentEditable is actually present
-			// @ts-ignore
-			if (event.key === '/' && event?.target?.isContentEditable === false) {
-				event.preventDefault();
-				inputRef.current?.focus();
-			}
-		});
-	}, []);
+	const { updateQuery, updateModule, query } = useSearchStore();
+	const [moduleSelection, setModuleSelection] = useState<{ value: string; label: string }>();
 
 	const moduleSelectorItems = useMemo<
 		Array<{ label: string; value: string; customComponent: JSX.Element }>
@@ -120,51 +112,36 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 		[apps]
 	);
 
-	const [moduleSelection, setModuleSelection] = useState<{ value: string; label: string }>();
-
 	const appSuggestions = useMemo(
-		() => filter(storedValue, (v) => v.app === moduleSelection?.value).reverse(),
-		[moduleSelection, storedValue]
+		() =>
+			filter(storedValue, (v) => v.app === moduleSelection?.value)
+				.reverse()
+				.map((item: { label: string }) => ({
+					...item,
+					hasAvatar: false,
+					click: (): void => {
+						updateQuery((q: Array<{ label: string }>) => [...q, item]);
+					}
+				})),
+		[moduleSelection?.value, storedValue, updateQuery]
 	);
-	useEffect(() => {
-		setModuleSelection(
-			currentApp
-				? find(moduleSelectorItems, (mod) => mod.value === currentApp) ?? moduleSelectorItems[0]
-				: moduleSelectorItems[0]
-		);
-	}, [currentApp, moduleSelectorItems]);
-
-	const [query, setQuery] = useState<Array<{ label: string }>>([]);
-
-	const setAddQueryChip = useSearchStore((s) => s.setAddQueryChip);
-	useEffect(() => {
-		setAddQueryChip((value: string) => setQuery((q) => [...q, { label: value, hasAvatar: false }]));
-	}, [setAddQueryChip]);
-
-	const updateQuery = useCallback(() => {
-		update(moduleSelection?.value, `"${query.map((q) => q.label).join('" "')}"`);
-	}, [moduleSelection?.value, query, update]);
-
-	useEffect(() => {
-		updateQuery();
-	}, [updateQuery]);
 	const onSearch = useCallback(() => {
-		updateQuery();
 		if (currentApp !== SEARCH_APP_ID) {
 			history.push('/search');
 		}
-	}, [currentApp, history, updateQuery]);
+	}, [currentApp, history]);
 
 	const [options, setOptions] = useState<Array<{ label: string }>>([]);
 
 	const updateOptions = useCallback(
-		(target: HTMLInputElement): void => {
+		(target: HTMLInputElement, q: Array<any>): void => {
 			if (target.textContent && target.textContent.length > 0) {
 				setOptions(
 					appSuggestions
 						.filter(
 							(v: { label: string }): boolean =>
-								v.label?.indexOf(target.textContent as string) !== -1
+								v.label?.indexOf(target.textContent as string) !== -1 &&
+								!find(q, (i) => i.value === v.label)
 						)
 						.slice(0, 5)
 				);
@@ -174,20 +151,20 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 		},
 		[appSuggestions]
 	);
+
 	const onInputType = useCallback(
 		(ev) => {
-			updateOptions(ev.target);
+			updateOptions(ev.target, query);
 		},
-		[updateOptions]
+		[query, updateOptions]
 	);
 	const clearSearch = useCallback((): void => {
 		if (inputRef.current) {
 			inputRef.current.innerText = '';
 			inputRef.current?.focus();
 		}
-		// eslint-disable-line no-param-reassign
-		setQuery([]);
-	}, []);
+		updateQuery([]);
+	}, [updateQuery]);
 	const onQueryChange = useCallback(
 		(newQuery) => {
 			if (
@@ -211,10 +188,9 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 				);
 			}
 			if (inputRef.current) {
-				updateOptions(inputRef.current);
+				updateOptions(inputRef.current, newQuery);
 			}
-			setQuery(newQuery);
-			updateQuery();
+			updateQuery(newQuery);
 		},
 		[appSuggestions, moduleSelection?.value, setStoredValue, updateOptions, updateQuery]
 	);
@@ -226,13 +202,6 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 		[moduleSelectorItems]
 	);
 
-	const showClear = useMemo(
-		() =>
-			query.length > 0 ||
-			(inputRef.current?.textContent && inputRef.current?.textContent?.length > 0),
-		[query.length]
-	);
-
 	const onChipAdd = useCallback(
 		(newChip: string) => ({
 			label: newChip,
@@ -242,7 +211,46 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 	);
 
 	useEffect(() => {
+		window.addEventListener('keypress', (event: KeyboardEvent) => {
+			// isContentEditable is actually present
+			// @ts-ignore
+			if (event.key === '/' && event?.target?.isContentEditable === false) {
+				event.preventDefault();
+				inputRef.current?.focus();
+			}
+		});
+	}, []);
+
+	useEffect(() => {
+		const nextModule = find(moduleSelectorItems, (mod) => mod.value === currentApp);
+		if (nextModule) {
+			setModuleSelection(nextModule);
+		} else if (!moduleSelection) {
+			setModuleSelection(moduleSelectorItems[0]);
+		}
+
+		// setModuleSelection(
+		// 	currentApp && currentApp !== SEARCH_APP_ID
+		// 		? find(moduleSelectorItems, (mod) => mod.value === currentApp) ?? moduleSelectorItems[0]
+		// 		: moduleSelectorItems[0]
+		// );
+	}, [currentApp, moduleSelection, moduleSelectorItems]);
+	useEffect(() => {
+		updateModule(moduleSelection?.value ?? moduleSelectorItems[0]?.value);
+	}, [moduleSelection?.value, moduleSelectorItems, updateModule]);
+
+	const showClear = useMemo(
+		() =>
+			query.length > 0 ||
+			(inputRef.current?.textContent && inputRef.current?.textContent?.length > 0),
+		[query.length]
+	);
+
+	const [inputHasFocus, setInputHasFocus] = useState(false);
+
+	useEffect(() => {
 		const ref = inputRef.current;
+		const focusCb = (): void => setInputHasFocus(true);
 		const search = (ev: KeyboardEvent): void => {
 			if (ev.key === 'Enter') {
 				onSearch();
@@ -250,56 +258,74 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 		};
 		if (ref) {
 			ref.addEventListener('keypress', search);
+			ref.addEventListener('focus', focusCb);
 		}
 		return (): void => {
 			ref?.removeEventListener('keypress', search);
+			ref?.removeEventListener('focus', focusCb);
 		};
 	}, [onSearch]);
 
 	return (
-		<Container orientation="horizontal" mainAlignment="flex-start">
-			<Container
-				maxHeight="42px"
-				orientation="horizontal"
-				mainAlignment="flex-start"
-				width="50%"
-				maxWidth="512px"
-			>
-				<Container minWidth="128px" width="35%" padding={{ left: 'small' }}>
-					<Select
-						items={moduleSelectorItems}
-						background="gray6"
-						label={t('search.module', 'Module')}
-						selection={moduleSelection}
-						onChange={onSelectionChange}
-						LabelFactory={SelectLabelFactory}
-					/>
+		<Container orientation="horizontal" mainAlignment="flex-start" padding={{ left: 'small' }}>
+			<Container minWidth="512px" width="max-content">
+				<Container
+					maxHeight="42px"
+					orientation="horizontal"
+					mainAlignment="flex-start"
+					width="fill"
+					maxWidth="512px"
+				>
+					<Container minWidth="128px" width="35%">
+						<Select
+							items={moduleSelectorItems}
+							background="gray6"
+							label={t('search.module', 'Module')}
+							selection={moduleSelection}
+							onChange={onSelectionChange}
+							LabelFactory={SelectLabelFactory}
+						/>
+					</Container>
+					<StyledContainer orientation="horizontal">
+						<ChipInput
+							inputRef={inputRef}
+							value={query}
+							onAdd={onChipAdd}
+							placeholder={
+								inputHasFocus && moduleSelection
+									? t('search.active_input_label', 'Separate keywords with a comma or TAB')
+									: t('search.idle_input_label', 'Search in {{module}}', {
+											module: moduleSelection?.label
+									  })
+							}
+							confirmChipOnBlur
+							confirmChipOnSpace={false}
+							separators={['Comma', 'Enter']}
+							background="gray5"
+							style={{
+								cursor: 'pointer',
+								overflowX: 'hidden'
+							}}
+							onChange={onQueryChange}
+							onInputType={onInputType}
+						/>
+					</StyledContainer>
 				</Container>
-				<StyledContainer orientation="horizontal">
-					<ChipInput
-						inputRef={inputRef}
-						value={query}
-						onAdd={onChipAdd}
-						placeholder={
-							moduleSelection && query.length
-								? t('search.active_input_label', 'Separate keywords with a comma or TAB')
-								: t('search.idle_input_label', 'Search in {{module}}', {
-										module: moduleSelection?.label
-								  })
-						}
-						confirmChipOnBlur
-						confirmChipOnSpace={false}
-						separators={['Comma', 'Enter']}
-						background="gray5"
-						style={{
-							cursor: 'pointer',
-							overflowX: 'hidden'
-						}}
-						onChange={onQueryChange}
-						onInputType={onInputType}
-						options={options}
-					/>
-				</StyledContainer>
+				<Dropdown
+					maxHeight="234px"
+					disableAutoFocus
+					disableRestoreFocus
+					confirmChipOnBlur={false}
+					confirmChipOnSpace={false}
+					display="block"
+					width="100%"
+					maxWidth="100%"
+					items={options}
+					forceOpen={inputHasFocus && options.length > 0}
+					onClose={(): void => setInputHasFocus(false)}
+				>
+					<div style={{ width: '100%' }} />
+				</Dropdown>
 			</Container>
 			{showClear && (
 				<Padding left="small">

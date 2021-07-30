@@ -8,62 +8,45 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, { useEffect, useMemo, useState } from 'react';
-import { combineLatest } from 'rxjs';
-import { reduce, isEmpty } from 'lodash';
-import { map as rxMap } from 'rxjs/operators';
-import { useAppsCache } from './app-loader-context';
+import React, { useState, memo, useEffect } from 'react';
+import { find, map, reduce } from 'lodash';
+import { useApps } from '../app-store/hooks';
 import AppContextProvider from './app-context-provider';
 
 export default function AppLoaderMounter() {
-	const { cache } = useAppsCache();
-	const [appsClasses, setAppClasses] = useState([]);
+	const apps = useApps();
 
+	const [classes, setClasses] = useState({ list: [], mounted: [] });
 	useEffect(() => {
-		if (isEmpty(cache)) {
-			setAppClasses([]);
-			return () => undefined;
-		}
-		const subscription = combineLatest(
+		setClasses((c) =>
 			reduce(
-				cache,
-				(acc, { pkg, entryPoint }) => {
-					acc.push(entryPoint.pipe(rxMap((AppClass) => ({ AppClass, pkg }))));
+				apps,
+				(acc, app, id) => {
+					if (app.class && !find(acc.mounted, (i) => i === id)) {
+						const App = memo(app.class);
+						// eslint-disable-next-line no-param-reassign
+						acc.list.push(
+							<AppContextProvider key={id} pkg={id}>
+								<App key={id} />
+							</AppContextProvider>
+						);
+						acc.mounted.push(id);
+					}
 					return acc;
 				},
-				[]
+				c
 			)
-		).subscribe((_appsClasses) => {
-			setAppClasses(_appsClasses);
-		});
-
-		return () => {
-			if (subscription) {
-				subscription.unsubscribe();
-			}
-		};
-	}, [cache]);
-
-	const children = useMemo(
-		() =>
-			reduce(
-				appsClasses,
-				(acc, { AppClass, pkg }) => {
-					acc.push(
-						<AppContextProvider key={pkg.package} pkg={pkg.package}>
-							<AppClass />
-						</AppContextProvider>
-					);
-					return acc;
-				},
-				[]
-			),
-		[appsClasses]
-	);
+		);
+	}, [apps]);
 
 	return (
-		<div data-testid="app-mounter" hidden style={{ height: 0, overflow: 'hidden' }}>
-			{children}
+		<div
+			data-testid="app-mounter"
+			key="app-mounter"
+			hidden
+			style={{ height: 0, overflow: 'hidden' }}
+		>
+			{classes.list}
 		</div>
 	);
 }

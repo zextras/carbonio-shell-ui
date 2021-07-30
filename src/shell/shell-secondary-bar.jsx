@@ -11,24 +11,34 @@
 
 import React, { useMemo } from 'react';
 import { map } from 'lodash';
+import styled from 'styled-components';
 import { Route, Switch } from 'react-router-dom';
-import { Collapse, Collapser, Container, Accordion } from '@zextras/zapp-ui';
+import { Container, Accordion } from '@zextras/zapp-ui';
+
 import { useUserAccounts } from '../store/shell-store-hooks';
 import { useApps } from '../app-store/hooks';
 import AppContextProvider from '../app/app-context-provider';
+import { Collapser } from './collapser';
 
 const SidebarSwitch = ({ item }) =>
 	item.sidebar ? (
 		<Route key={`/${item.id}`} path={`/${item.id}`}>
 			<AppContextProvider pkg={item.id}>
 				<Container>
-					<item.sidebar />
+					<item.sidebar expanded={item.sidebarIsOpen} />
 				</Container>
 			</AppContextProvider>
 		</Route>
 	) : null;
 
-export default function ShellSecondaryBar({ navigationBarIsOpen, onCollapserClick, activeApp }) {
+const SidebarContainer = styled(Container)`
+	min-width: 40px;
+	max-width: 264px;
+	width: ${({ sidebarIsOpen }) => (sidebarIsOpen ? 264 : 40)}px;
+	transition: width 300ms;
+`;
+
+export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, activeApp }) {
 	const apps = useApps();
 	const disabled = useMemo(() => activeApp && !apps[activeApp]?.views?.sidebar, [activeApp, apps]);
 	const accounts = useUserAccounts();
@@ -44,31 +54,32 @@ export default function ShellSecondaryBar({ navigationBarIsOpen, onCollapserClic
 					label: app.core.name,
 					icon: app.icon,
 					sidebar: app.views?.sidebar,
+					sidebarIsOpen,
 					CustomComponent: SidebarSwitch
 				}))
 			})),
-		[accounts, apps]
+		[accounts, apps, sidebarIsOpen]
 	);
+
 	return disabled ? null : (
 		<>
-			<Collapse orientation="horizontal" open={navigationBarIsOpen} maxSize="256px">
-				<Container
-					role="menu"
-					width={256}
-					height="fill"
-					orientation="vertical"
-					mainAlignment="flex-start"
-					style={{
-						maxHeight: 'calc(100vh - 48px)',
-						overflowY: 'auto'
-					}}
-				>
-					<Switch>
-						<Accordion items={items} background="gray4" />
-					</Switch>
-				</Container>
-			</Collapse>
-			<Collapser clickCallback={onCollapserClick} />
+			<SidebarContainer
+				sidebarIsOpen={sidebarIsOpen}
+				role="menu"
+				height="fill"
+				orientation="vertical"
+				mainAlignment="flex-start"
+				onClick={sidebarIsOpen ? undefined : onCollapserClick}
+				style={{
+					maxHeight: 'calc(100vh - 48px)',
+					overflowY: 'auto'
+				}}
+			>
+				<Switch>
+					<Accordion items={items} background="gray4" />
+				</Switch>
+			</SidebarContainer>
+			<Collapser onClick={onCollapserClick} open={sidebarIsOpen} />
 		</>
 	);
 }

@@ -53,6 +53,7 @@ import { getAppLink } from './app-link';
 import { Spinner } from '../ui-extras/spinner';
 import { List } from '../ui-extras/list';
 import { ZIMBRA_STANDARD_COLORS, FOLDERS } from '../constants';
+import { useIntegrationsStore } from '../integrations/store';
 
 export type IShellWindow<T, R> = Window & {
 	__ZAPP_SHARED_LIBRARIES__: T;
@@ -152,6 +153,10 @@ function loadAppModule(
 				},
 				registerAppData: appStore.getState().setters.registerAppData(appPkg.package),
 				setAppContext: appStore.getState().setters.setAppContext(appPkg.package),
+				registerHooks: useIntegrationsStore.getState().registerHooks,
+				registerFunctions: useIntegrationsStore.getState().registerFunctions,
+				registerActions: useIntegrationsStore.getState().registerActions,
+				registerComponents: useIntegrationsStore.getState().registerComponents(appPkg.package),
 				soapFetch: shellNetworkService.getAppSoapFetch(appPkg),
 				AppLink: getAppLink(appPkg.package),
 				Spinner,

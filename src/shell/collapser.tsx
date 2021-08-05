@@ -17,6 +17,7 @@ const VerticalDivider = styled.div`
 `;
 
 const Bubble = styled.div<{ open: boolean }>`
+	cursor: pointer;
 	z-index: 2;
 	display: flex;
 	align-items: center;

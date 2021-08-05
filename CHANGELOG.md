@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.36](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.35...v0.1.0-beta.36) (2021-08-05)
+
+
+### Bug Fixes
+
+* added pointer cursor to collapser ([bc82526](https://bitbucket.org/zextras/zapp-shell/commit/bc82526874d0f05326aadf6a9177d66f7449d1af))
+
 ## [0.1.0-beta.35](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.34...v0.1.0-beta.35) (2021-07-30)
 
 

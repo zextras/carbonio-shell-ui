@@ -178,7 +178,6 @@ function loadAppModule(
 				SharedLibrariesAppsMap,
 				ComponentClass
 			>).__ZAPP_HMR_EXPORT__[appPkg.package] = (appClass: ComponentClass): void => {
-				console.log('running ', appPkg.package, appClass);
 				setAppClass(appPkg.package, appClass);
 				resolve();
 			};

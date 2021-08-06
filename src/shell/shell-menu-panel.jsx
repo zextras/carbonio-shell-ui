@@ -22,6 +22,7 @@ const Spacer = styled.div`
 `;
 const Panel = styled(Container)`
 	width: ${({ mode }) => (mode !== 'closed' ? 256 : 40)}px;
+	border-radius: 0;
 	height: 100%;
 	position: absolute;
 	right: 0;

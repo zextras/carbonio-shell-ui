@@ -33,8 +33,8 @@ const SidebarSwitch = ({ item }) =>
 
 const SidebarContainer = styled(Container)`
 	min-width: 40px;
-	max-width: 256px;
-	width: ${({ sidebarIsOpen }) => (sidebarIsOpen ? 256 : 40)}px;
+	max-width: 264px;
+	width: ${({ sidebarIsOpen }) => (sidebarIsOpen ? 264 : 40)}px;
 	transition: width 300ms;
 `;
 
@@ -60,6 +60,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 			})),
 		[accounts, apps, sidebarIsOpen]
 	);
+
 	return disabled ? null : (
 		<>
 			<SidebarContainer
@@ -68,6 +69,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 				height="fill"
 				orientation="vertical"
 				mainAlignment="flex-start"
+				onClick={sidebarIsOpen ? undefined : onCollapserClick}
 				style={{
 					maxHeight: 'calc(100vh - 48px)',
 					overflowY: 'auto'

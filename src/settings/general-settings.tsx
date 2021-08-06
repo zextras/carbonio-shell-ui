@@ -128,6 +128,7 @@ const GeneralSettings: FC = () => {
 				<AppearanceSettings settings={acct.settings} addMod={addMod} />
 				<OutOfOfficeSettings settings={acct.settings} addMod={addMod} />
 				<ModuleVersionSettings />
+				<Logout />
 			</Container>
 		</>
 	);

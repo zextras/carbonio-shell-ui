@@ -113,14 +113,8 @@ export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, childr
 							{/* <ContactInput /> */}
 							<UserQuota />
 						</Padding>
-						<IconButton
-							icon="BellOutline"
-							iconColor="text"
-							onClick={() => {
-								// eslint-disable-next-line no-console
-								console.log('not implemented');
-							}}
-						/>
+						{/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+						<IconButton icon="BellOutline" iconColor="text" onClick={() => {}} />
 						{children}
 					</Container>
 				</Container>

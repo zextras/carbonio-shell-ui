@@ -31,7 +31,7 @@ export default function AppLoaderContextProvider({ children }) {
 	useEffect(() => {
 		console.log(
 			'%cLOADING APPS',
-			'font-size: 1rem; color: white; background: #2b73d2; padding: 0.5rem; font-family: sans-serif; border-radius: 0.1rem; width: 100%'
+			'color: white; background: #2b73d2;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
 		);
 		if (accounts.length < 1) {
 			unloadAppsAndThemes();

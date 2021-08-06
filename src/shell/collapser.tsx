@@ -9,14 +9,15 @@ const VerticalDivider = styled.div`
 	width: 1px;
 	max-width: 1px;
 	min-width: 1px;
-	background-color: ${({ theme }): string => theme.palette.gray6.regular};
+	background-color: ${({ theme }): string => theme.palette.gray2.regular};
 	transition: background 0.2s;
 	&:hover {
-		background-color: ${({ theme }): string => theme.palette.gray3.regular};
+		background-color: ${({ theme }): string => theme.palette.gray2.hover};
 	}
 `;
 
 const Bubble = styled.div<{ open: boolean }>`
+	cursor: pointer;
 	z-index: 2;
 	display: flex;
 	align-items: center;
@@ -27,14 +28,14 @@ const Bubble = styled.div<{ open: boolean }>`
 	width: 24px;
 	height: 24px;
 	border-radius: 50%;
-	background-color: ${({ theme }): string => theme.palette.gray4.regular};
+	background-color: ${({ theme }): string => theme.palette.gray2.regular};
 	transition: background-color 0.2s, transform 0.2s;
 	transform: scaleX(${({ open }): number => (open ? 1 : -1)});
 	&:hover {
-		background-color: ${({ theme }): string => theme.palette.gray3.regular};
+		background-color: ${({ theme }): string => theme.palette.gray2.hover};
 	}
 	&:active {
-		background-color: ${({ theme }): string => theme.palette.gray2.regular};
+		background-color: ${({ theme }): string => theme.palette.gray2.active};
 	}
 `;
 

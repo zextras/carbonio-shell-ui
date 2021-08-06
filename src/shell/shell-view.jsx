@@ -70,6 +70,26 @@ const MainAppRerouter = () => {
 	) : null;
 };
 
+// const TeamIcon = ({ setMode }) => (
+// 	<IconButton
+// 		icon="TeamOutline"
+// 		onClick={() => {
+// 			setMode((mode) => (mode === 'open' ? 'closed' : 'open'));
+// 		}}
+// 	/>
+// );
+
+// const TeamSidebar = ({ setMode }) => (
+// 	<Container
+// 		background="success"
+// 		onClick={() => {
+// 			setMode((mode) => (mode === 'closed' ? 'overlap' : 'open'));
+// 		}}
+// 	>
+// 		Hello From Team!
+// 	</Container>
+// );
+
 export function Shell() {
 	const history = useHistory();
 	const dispatch = useDispatch();

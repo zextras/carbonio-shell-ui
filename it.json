@@ -1,56 +1,54 @@
 {
-    "changelog": {
-        "cancel": "Annulla",
-        "close": "Chiudi",
-        "remind-later": "Ricorda Più Tardi",
-        "title": "Novità"
-    },
-    "copyright": "Copyright",
-    "login": {
-        "help": "Aiuto",
-        "incorrect": "Nome utente o password sono errati",
-        "login": "Login",
-        "password": "Password",
-        "remember-me": "Ricordami",
-        "supported-browsers": "Browser supportati",
-        "username": "Nome Utente",
-        "verify-caps-lock": "Verifica che il CAPS LOCK non sia attivo, e ridigita nome utente e password"
-    },
-    "logout": "Esci",
-    "logout-modal": {
-        "confirm": "Disconnettimi",
-        "warning": "Stai per essere disconnesso"
-    },
-    "new": "Nuovo",
-    "new-tab": "Nuova tab",
-    "supported_browsers": {
-        "chrome": "Chrome",
-        "edge": "Edge",
-        "firefox": "Firefox",
-        "ie_11_up": "Internet Explorer 11+",
-        "opera": "Opera",
-        "safari": "Safari",
-        "uc": "UC",
-        "yandex": "Yandex"
-    },
-    "theme-switch": {
-        "dark": "Passa al tema scuro",
-        "light": "Passa al tema chiaro"
-    },
-    "settins": {
-        "general": {
-            "theme_options": "Opzioni Tema",
-            "theme_mode": "Modalità Tema",
-            "theme_enabled": "Tema Scuro",
-            "theme_disabled": "Tema Chiaro",
-            "theme_auto": "Auto",
-            "general": "Impostazioni Generali"
-        }
-    },
-    "settings": {
-        "button": {
-            "primary": "Salva",
-            "secondary": "Annulla"
-        }
-    }
+	"changelog": {
+		"cancel": "Annulla",
+		"close": "Chiudi",
+		"remind_later": "Ricorda Più Tardi",
+		"title": "Novità"
+	},
+	"copyright": "Copyright",
+	"login": {
+		"help": "Aiuto",
+		"incorrect": "Nome utente o password sono errati",
+		"login": "Login",
+		"password": "Password",
+		"remember_me": "Ricordami",
+		"supported_browsers": "Browser supportati",
+		"username": "Nome Utente",
+		"verify_caps_lock": "Verifica che il CAPS LOCK non sia attivo, e ridigita nome utente e password"
+	},
+	"logout": "Esci",
+	"logout_modal": {
+		"confirm": "Disconnettimi",
+		"warning": "Stai per essere disconnesso"
+	},
+	"new": "Nuovo",
+	"new_tab": "Nuova tab",
+	"supported_browsers": {
+		"chrome": "Chrome",
+		"edge": "Edge",
+		"firefox": "Firefox",
+		"ie_11_up": "Internet Explorer 11+",
+		"opera": "Opera",
+		"safari": "Safari",
+		"uc": "UC",
+		"yandex": "Yandex"
+	},
+	"theme_switch": {
+		"dark": "Passa al tema scuro",
+		"light": "Passa al tema chiaro"
+	},
+	"settings": {
+		"button": {
+			"primary": "Salva",
+			"secondary": "Annulla"
+		},
+		"general": {
+			"theme_options": "Opzioni Tema",
+			"theme_mode": "Modalità Tema",
+			"theme_enabled": "Tema Scuro",
+			"theme_disabled": "Tema Chiaro",
+			"theme_auto": "Auto",
+			"general": "Impostazioni Generali"
+		}
+	}
 }

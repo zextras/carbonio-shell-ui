@@ -1,0 +1,56 @@
+{
+    "copyright": "Авторские права",
+    "theme-switch": {
+        "light": "Перейти в светлый режим",
+        "dark": "Перейти в темный режим"
+    },
+    "supported_browsers": {
+        "yandex": "Yandex",
+        "uc": "UC",
+        "safari": "Safari",
+        "opera": "Opera",
+        "ie_11_up": "Internet Explorer 11+",
+        "firefox": "Firefox",
+        "edge": "Edge",
+        "chrome": "Chrome"
+    },
+    "settings": {
+        "button": {
+            "secondary": "Отменить",
+            "primary": "Сохранить"
+        }
+    },
+    "new-tab": "Новая вкладка",
+    "new": "Новый",
+    "logout-modal": {
+        "warning": "Вы собираетесь выйти из системы",
+        "confirm": "Выйти из системы"
+    },
+    "logout": "Выйти",
+    "login": {
+        "verify-caps-lock": "Убедитесь, что CAPS LOCK не включен, а затем повторно введите имя пользователя и пароль",
+        "username": "Имя пользователя",
+        "supported-browsers": "Поддерживаемые браузеры",
+        "remember-me": "Напомнить мне",
+        "password": "Пароль",
+        "login": "Логин",
+        "incorrect": "Имя пользователя или пароль неверны",
+        "help": "Помощь"
+    },
+    "changelog": {
+        "title": "Журнал изменений",
+        "remind-later": "Напомнить позже",
+        "close": "Закрыть",
+        "cancel": "Отменить"
+    },
+    "settins": {
+        "general": {
+            "general": "Общие Настройки",
+            "theme_mode": "Выбор Темы",
+            "theme_options": "Параметры Темы",
+            "theme_enabled": "Темный режим",
+            "theme_disabled": "Светлый режим",
+            "theme_auto": "Автоматический"
+        }
+    }
+}

@@ -12,17 +12,11 @@ import create from 'zustand';
 import createStore from 'zustand/vanilla';
 import { reduce } from 'lodash';
 import { produce } from 'immer';
-import { Component, ComponentClass } from 'react';
-import { AppData, AppState, CoreAppData, IntegrationsRegister } from './store-types';
+import { ComponentClass } from 'react';
+import { AppData, AppState, CoreAppData } from './store-types';
 
 export const appStore = createStore<AppState>((set) => ({
 	apps: {},
-	integrations: {
-		components: {},
-		hooks: {},
-		functions: {},
-		actions: {}
-	},
 	setters: {
 		addApps: (apps: Array<CoreAppData>): void =>
 			set(
@@ -55,56 +49,6 @@ export const appStore = createStore<AppState>((set) => ({
 			set(
 				produce((state) => {
 					state.apps[id].context = data;
-				})
-			),
-		registerIntegrations: (appId: string) => ({
-			components,
-			hooks,
-			functions,
-			actions
-		}: IntegrationsRegister): void =>
-			set(
-				produce((state) => {
-					if (components) {
-						state.integrations.components = reduce(
-							components,
-							(acc, val, key) => ({
-								...acc,
-								[key]: { app: appId, item: val }
-							}),
-							state.integrations.components
-						);
-					}
-					if (hooks) {
-						state.integrations.hooks = reduce(
-							hooks,
-							(acc, val, key) => ({
-								...acc,
-								[key]: { app: appId, item: val }
-							}),
-							state.integrations.hooks
-						);
-					}
-					if (functions) {
-						state.integrations.functions = reduce(
-							functions,
-							(acc, val, key) => ({
-								...acc,
-								[key]: { app: appId, item: val }
-							}),
-							state.integrations.functions
-						);
-					}
-					if (actions) {
-						state.integrations.actions = reduce(
-							actions,
-							(acc, val, key) => ({
-								...acc,
-								[key]: { app: appId, item: val }
-							}),
-							state.integrations.actions
-						);
-					}
 				})
 			)
 	}

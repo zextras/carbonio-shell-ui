@@ -25,15 +25,16 @@ import {
 	getUseReplaceHistoryCallback,
 	useIsMobile
 } from '../shell/hooks';
+import { useApp, useAppContext } from '../app-store/hooks';
 import {
-	useApp,
-	useAppContext,
-	useIntegratedHook,
+	useAction,
+	useActions,
+	useActionsFactory,
+	useFactory,
+	useIntegratedComponent,
 	useIntegratedFunction,
-	useIntegratedAction,
-	useIntegratedActionsByType,
-	useIntegratedComponent
-} from '../app-store/hooks';
+	useIntegratedHook
+} from '../integrations/hooks';
 
 export const getAppHooks = (pkg: string): unknown => ({
 	// The returned function is a hook
@@ -44,9 +45,11 @@ export const getAppHooks = (pkg: string): unknown => ({
 	useApp: useApp(pkg),
 	useIntegratedHook,
 	useIntegratedFunction,
-	useIntegratedAction,
 	useIntegratedComponent,
-	useIntegratedActionsByType,
+	useAction,
+	useActions,
+	useActionsFactory,
+	useFactory,
 	useUserAccounts,
 	useCSRFToken,
 	useSaveSettingsCallback,

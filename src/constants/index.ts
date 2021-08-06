@@ -47,3 +47,20 @@ export const FOLDERS = {
 export const SETTINGS_APP_ID = 'settings';
 
 export const SEARCH_APP_ID = 'search';
+
+export const ACTION_TYPES = {
+	CONVERSATION: 'conversation',
+	CONVERSATION_lIST: 'conversation_list',
+	MESSAGE: 'message',
+	MESSAGE_lIST: 'message_list',
+	CONTACT: 'contact',
+	CONTACT_lIST: 'contact_list',
+	INVITE: 'invite',
+	INVITE_lIST: 'invite_list',
+	APPOINTMENT: 'appointment',
+	APPOINTMENT_lIST: 'appointment_list',
+	FOLDER: 'folder',
+	FOLDER_lIST: 'folder_list',
+	CALENDAR: 'calendar',
+	CALENDAR_lIST: 'calendar_list'
+};

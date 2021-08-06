@@ -80,32 +80,9 @@ export type AppData = UninitializedAppData & RuntimeAppData;
 
 export type AppsMap = Record<string, AppData>;
 
-export type IntegratedComponentsMap = Record<string, { app: string; item: Component }>;
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type IntegratedHooksMap = Record<string, { app: string; item: Function }>;
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type IntegratedFunctionsMap = Record<string, { app: string; item: Function }>;
-export type IntegratedActionsMap = Record<string, { app: string; item: SharedAction }>;
-
-export type Integrations = {
-	components: IntegratedComponentsMap;
-	hooks: IntegratedHooksMap;
-	functions: IntegratedFunctionsMap;
-	actions: IntegratedActionsMap;
-};
-export type IntegrationsRegister = {
-	components: Record<string, Component>;
-	// eslint-disable-next-line @typescript-eslint/ban-types
-	hooks: Record<string, Function>;
-	// eslint-disable-next-line @typescript-eslint/ban-types
-	functions: Record<string, Function>;
-	actions: Record<string, SharedAction>;
-};
-
 export type Setters = {
 	addApps: (apps: Array<CoreAppData>) => void;
 	registerAppData: (id: string) => (data: RuntimeAppData) => void;
-	registerIntegrations: (id: string) => (data: IntegrationsRegister) => void;
 	setAppContext: (id: string) => (data: unknown) => void;
 };
 
@@ -148,24 +125,6 @@ export type ZimletProp = {
 	zimlet: string;
 	_content: string;
 };
-
-export type AccountSettings = {
-	attrs: Record<string, any>;
-	prefs: Record<string, any>;
-	props: Array<ZimletProp>;
-};
-
-export type Account = {
-	id: string;
-	name: string;
-	apps: AccountAppsData;
-	themes: AccountThemesData;
-	displayName: string;
-	settings: AccountSettings;
-	signatures: { signature: Array<any> };
-	identities: { identity: Array<any> };
-};
-
 export type FCPartialEvent<T extends unknown | string> = {
 	asPromise?: true;
 	to?: {
@@ -193,6 +152,23 @@ export type FCSink = <T extends unknown | string, R extends unknown | string>(
 	event: FCPartialEvent<T> | FCPartialPromisedEvent<T>
 ) => void | Promise<R>;
 export type FC = Observable<FCEvent<any> | FCPromisedEvent<any, any>>;
+
+export type AccountSettings = {
+	attrs: Record<string, any>;
+	prefs: Record<string, any>;
+	props: Array<ZimletProp>;
+};
+
+export type Account = {
+	id: string;
+	name: string;
+	apps: AccountAppsData;
+	themes: AccountThemesData;
+	displayName: string;
+	settings: AccountSettings;
+	signatures: { signature: Array<any> };
+	identities: { identity: Array<any> };
+};
 
 export const ui: any;
 
@@ -228,7 +204,6 @@ export const store: {
 	store: Store<any>;
 	setReducer(nextReducer: Reducer): void;
 };
-export const registerIntegrations: (data: IntegrationsRegister) => void;
 export const registerAppData: (data: RuntimeAppData) => void;
 export const setAppContext: <T>(obj: T) => void;
 export const soapFetch: SoapFetch;
@@ -273,8 +248,6 @@ export const useCurrentSync: () => any;
 export const useFiberChannel: () => FC;
 export const useFirstSync: () => any;
 export const useGoBackHistoryCallback: () => () => void;
-export const useIntegratedAction: (id: string) => [SharedAction | undefined, boolean];
-export const useIntegratedActionsByType: (type: string) => Array<SharedAction>;
 export const useIntegratedComponent: (id: string) => [React.FC<unknown>, boolean];
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const useIntegratedFunction: (id: string) => [Function, boolean];
@@ -316,3 +289,48 @@ export enum FOLDERS {
 	TASKS = '15',
 	BRIEFCASE = '16'
 }
+export const registerActions: (
+	...items: Array<{ id: string; action: ActionFactory<unknown>; type: string }>
+) => void;
+export const registerComponents: (
+	app: string
+) => (...items: Array<{ id: string; component: Component }>) => void;
+export const registerHooks: (...items: Array<{ id: string; hook: AnyFunction }>) => void;
+export const registerFunctions: (...items: Array<{ id: string; fn: AnyFunction }>) => void;
+
+export type Action = {
+	id: string;
+	label: string;
+	icon: string;
+	click: (ev: unknown) => void;
+	type: string;
+	primary?: boolean;
+	group?: string;
+	disabled?: boolean;
+	[key: string]: unknown;
+};
+
+export type ActionFactory<T> = (target: T) => Action;
+
+export type ActionMap = Record<string, Record<string, ActionFactory<unknown>>>;
+export type ComponentMap = Record<string, { app: string; item: Component }>;
+export type HookMap = Record<string, AnyFunction>;
+export type FunctionMap = Record<string, AnyFunction>;
+
+export type AnyFunction = (...args: unknown[]) => unknown;
+
+export const getIntegratedComponent: (id: string) => [FunctionComponent<unknown>, boolean];
+export const getActions: <T>(target: T, type: string) => Array<Action>;
+export const getActionsFactory: (type: string) => <T>(target: T) => Array<Action>;
+export const getAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];
+export const getFactory: <T>(type: string, id: string) => [ActionFactory<T> | undefined, boolean];
+export const useIntegratedHook: (id: string) => [AnyFunction, boolean];
+export const useIntegratedFunction: (id: string) => [AnyFunction, boolean];
+export const useIntegratedComponent: (id: string) => [FunctionComponent<unknown>, boolean];
+export const useActions: <T>(target: T, type: string) => Array<Action>;
+export const useActionsFactory: <T>(type: string) => CombinedActionFactory<T>;
+export const useAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];
+export const useActionFactory: <T>(
+	type: string,
+	id: string
+) => [ActionFactory<T> | undefined, boolean];

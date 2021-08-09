@@ -36,6 +36,7 @@ const SidebarContainer = styled(Container)`
 	max-width: 264px;
 	width: ${({ sidebarIsOpen }) => (sidebarIsOpen ? 264 : 48)}px;
 	transition: width 300ms;
+	overflow-x: hidden;
 `;
 
 export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, activeApp }) {

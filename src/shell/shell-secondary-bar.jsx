@@ -10,10 +10,10 @@
  */
 
 import React, { useMemo } from 'react';
-import { map } from 'lodash';
+import { map, reduce } from 'lodash';
 import styled from 'styled-components';
 import { Route, Switch } from 'react-router-dom';
-import { Container, Accordion } from '@zextras/zapp-ui';
+import { Container, Accordion, IconButton, Padding, Tooltip, Icon } from '@zextras/zapp-ui';
 
 import { useUserAccounts } from '../store/shell-store-hooks';
 import { useApps } from '../app-store/hooks';
@@ -24,7 +24,7 @@ const SidebarSwitch = ({ item }) =>
 	item.sidebar ? (
 		<Route key={`/${item.id}`} path={`/${item.id}`}>
 			<AppContextProvider pkg={item.id}>
-				<Container>
+				<Container mainAlignment="flex-start">
 					<item.sidebar expanded={item.sidebarIsOpen} />
 				</Container>
 			</AppContextProvider>
@@ -32,9 +32,9 @@ const SidebarSwitch = ({ item }) =>
 	) : null;
 
 const SidebarContainer = styled(Container)`
-	min-width: 40px;
+	min-width: 48px;
 	max-width: 264px;
-	width: ${({ sidebarIsOpen }) => (sidebarIsOpen ? 264 : 40)}px;
+	width: ${({ sidebarIsOpen }) => (sidebarIsOpen ? 264 : 48)}px;
 	transition: width 300ms;
 `;
 
@@ -76,7 +76,30 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 				}}
 			>
 				<Switch>
-					<Accordion items={items} background="gray4" />
+					{sidebarIsOpen ? (
+						<Accordion items={items} />
+					) : (
+						<>
+							<Tooltip label={accounts[0].displayName ?? accounts[0].name} placement="right">
+								<Padding all="medium">
+									<Icon size="large" icon="PersonOutline" />
+								</Padding>
+							</Tooltip>
+							{map(apps, (app) => (
+								<SidebarSwitch
+									key={app.core.package}
+									item={{
+										id: app.core.package,
+										label: app.core.name,
+										icon: app.icon,
+										sidebar: app.views?.sidebar,
+										sidebarIsOpen,
+										CustomComponent: SidebarSwitch
+									}}
+								/>
+							))}
+						</>
+					)}
 				</Switch>
 			</SidebarContainer>
 			<Collapser onClick={onCollapserClick} open={sidebarIsOpen} />

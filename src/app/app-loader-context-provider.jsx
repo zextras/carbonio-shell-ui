@@ -36,7 +36,7 @@ export default function AppLoaderContextProvider({ children }) {
 		if (accounts.length < 1) {
 			unloadAppsAndThemes();
 		} else {
-			loadApps(accounts, fiberChannelFactory, shellNetworkService, storeFactory);
+			loadApps(accounts, shellNetworkService, storeFactory);
 		}
 	}, [accounts, fiberChannelFactory, shellNetworkService, storeFactory]);
 	return (

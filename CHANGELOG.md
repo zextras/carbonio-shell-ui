@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.39](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.38...v0.1.0-beta.39) (2021-08-10)
+
+## [0.1.0-beta.38](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.37...v0.1.0-beta.38) (2021-08-09)
+
+## [0.1.0-beta.37](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.36...v0.1.0-beta.37) (2021-08-09)
+
+
+### Bug Fixes
+
+* fixes sidebar graphical issues ([9e09b4e](https://bitbucket.org/zextras/zapp-shell/commit/9e09b4e4173d3591799e969a4e5a9602781fc765))
+
 ## [0.1.0-beta.36](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.35...v0.1.0-beta.36) (2021-08-05)
 
 

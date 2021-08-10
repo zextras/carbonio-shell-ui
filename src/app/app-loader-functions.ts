@@ -10,25 +10,28 @@
  */
 
 import { reduce } from 'lodash';
-import {
-	getApp,
-	getAppContext,
-	getIntegratedHook,
-	getIntegratedFunction,
-	getIntegratedAction,
-	getIntegratedActionsByType,
-	getIntegratedComponent
-} from '../app-store/getters';
+import { getApp, getAppContext } from '../app-store/getters';
 import { contextBridge } from '../app-store/context-bridge';
+import {
+	getAction,
+	getActions,
+	getActionsFactory,
+	getFactory,
+	getIntegratedComponent,
+	getIntegratedFunction,
+	getIntegratedHook
+} from '../integrations/getters';
 
 export const getAppGetters = (pkg: string): unknown => ({
 	getAppContext: getAppContext(pkg),
 	getApp: getApp(pkg),
-	getIntegratedHook,
-	getIntegratedFunction,
-	getIntegratedAction,
+	getAction,
+	getActions,
+	getActionsFactory,
+	getFactory,
 	getIntegratedComponent,
-	getIntegratedActionsByType,
+	getIntegratedFunction,
+	getIntegratedHook,
 	getBridgedFunctions: (): unknown => {
 		const { packageDependentFunctions, functions } = contextBridge.getState();
 		return {

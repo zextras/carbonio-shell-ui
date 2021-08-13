@@ -9,62 +9,18 @@
  * *** END LICENSE BLOCK *****
  */
 import React, { Suspense } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
 import LoadingView from './loading-view';
-import { LazyLoginView, LazyLogoutView, LazyShellView } from './bootstrapper-lazy-loader';
+import { LazyShellView } from './bootstrapper-lazy-loader';
+import { goToLogin } from '../account/go-to-login';
 
 export default function BootstrapperRouterContent({ accounts }) {
+	if (accounts.length === 0) {
+		goToLogin();
+		return null;
+	}
 	return (
 		<Suspense fallback={<LoadingView />}>
-			<Switch>
-				<Route
-					path="/login"
-					exact
-					render={({ location }) =>
-						accounts.length > 0 ? (
-							<Redirect
-								to={{
-									pathname: '/',
-									state: { from: location }
-								}}
-							/>
-						) : (
-							<LazyLoginView />
-						)
-					}
-				/>
-				<Route
-					path="/logout"
-					exact
-					render={({ location }) =>
-						accounts.length > 0 ? (
-							<LazyLogoutView />
-						) : (
-							<Redirect
-								to={{
-									pathname: '/login',
-									state: { from: location }
-								}}
-							/>
-						)
-					}
-				/>
-				<Route
-					path="*"
-					render={({ location }) =>
-						accounts.length > 0 ? (
-							<LazyShellView />
-						) : (
-							<Redirect
-								to={{
-									pathname: '/login',
-									state: { from: location }
-								}}
-							/>
-						)
-					}
-				/>
-			</Switch>
+			<LazyShellView />
 		</Suspense>
 	);
 }

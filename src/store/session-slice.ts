@@ -29,8 +29,8 @@ type SessionSlice = {
 export const verifySession = createAsyncThunk(
 	'session/verifySession',
 	async (args, { getState, dispatch }) => {
-		const [account] = selectAccounts(getState() as any);
-		const csrfToken = selectCSRFToken(getState() as any);
+		// const [account] = selectAccounts(getState() as any);
+		// const csrfToken = selectCSRFToken(getState() as any);
 		const authToken = selectAuthToken(getState() as any);
 		try {
 			const res = await fetch('/service/soap/AuthRequest', {
@@ -40,21 +40,17 @@ export const verifySession = createAsyncThunk(
 				},
 				body: JSON.stringify({
 					Header: {
-						_jsns: 'urn:zimbra',
-						context: {
-							csrfToken
-						}
+						_jsns: 'urn:zimbra'
+						// context: {
+						// 	csrfToken
+						// }
 					},
 					Body: {
 						AuthRequest: {
 							_jsns: 'urn:zimbraAccount',
 							persistAuthTokenCookie: '1',
-							account: {
-								by: 'id',
-								_content: account.id
-							},
 							authToken: {
-								verifyAccount: '1',
+								// verifyAccount: '1'
 								_content: authToken
 							}
 						}

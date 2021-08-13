@@ -45,18 +45,15 @@ const AppStoreInterface = () => {
 };
 
 export default function bootstrapper(onBeforeBoot) {
-	const { shellStore, shellStorePersistor } = createShellStore(true);
+	// const { shellStore, shellStorePersistor } = createShellStore(true);
 
 	const fiberChannelFactory = new FiberChannelFactory();
 	const i18nFactory = new I18nFactory();
-	const shellNetworkService = new ShellNetworkService(shellStore, fiberChannelFactory);
 	const storeFactory = new StoreFactory();
 
 	const container = {
 		fiberChannelFactory,
 		i18nFactory,
-		shellNetworkService,
-		shellStore,
 		storeFactory
 	};
 
@@ -72,7 +69,6 @@ export default function bootstrapper(onBeforeBoot) {
 			fiberChannelFactory: _fiberChannelFactory,
 			i18nFactory: _i18nFactory,
 			shellNetworkService: _shellNetworkService,
-			shellStore: _shellStore,
 			storeFactory: _storeFactory
 		}) => ({
 			default: function BoostrapperCls() {
@@ -82,9 +78,7 @@ export default function bootstrapper(onBeforeBoot) {
 							fiberChannelFactory={_fiberChannelFactory}
 							i18nFactory={_i18nFactory}
 							shellNetworkService={_shellNetworkService}
-							shellStore={_shellStore}
 							storeFactory={_storeFactory}
-							shellStorePersistor={shellStorePersistor}
 						>
 							<AppStoreInterface />
 							<BootstrapperRouter />

@@ -10,16 +10,7 @@
  */
 
 import React, { useCallback, useEffect, useMemo, useState, useContext } from 'react';
-import {
-	Row,
-	Responsive,
-	ModalManager,
-	SnackbarManager,
-	IconButton,
-	Avatar,
-	Container,
-	Text
-} from '@zextras/zapp-ui';
+import { Row, Responsive, ModalManager, SnackbarManager } from '@zextras/zapp-ui';
 import { useHistory, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';

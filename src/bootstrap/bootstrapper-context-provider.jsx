@@ -12,25 +12,11 @@
 import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
-import { PersistGate } from 'redux-persist/integration/react';
 import BootstrapperContext from './bootstrapper-context';
 import ShellStoreContext from '../store/shell-store-context';
 import AppLoaderContextProvider from '../app/app-loader-context-provider';
 import ThemeLoaderMounter from '../app/theme-loader-mounter';
 import BoardContextProvider from '../shell/boards/board-context-provider';
-import { startSync } from '../store/sync-slice';
-import { useCSRFToken } from '../store/shell-store-hooks';
-
-const SyncProvider = ({ store }) => {
-	const csrfToken = useCSRFToken();
-
-	useEffect(() => {
-		if (csrfToken && store?.getState()?.sync) {
-			store.dispatch(startSync());
-		}
-	}, [csrfToken, store]);
-	return null;
-};
 
 export default function BootstrapperContextProvider({
 	children,
@@ -43,24 +29,21 @@ export default function BootstrapperContextProvider({
 }) {
 	return (
 		<Provider context={ShellStoreContext} store={shellStore}>
-			<PersistGate loading={null} persistor={shellStorePersistor}>
-				<BootstrapperContext.Provider
-					value={{
-						fiberChannelFactory,
-						i18nFactory,
-						shellNetworkService,
-						storeFactory
-					}}
-				>
-					<SyncProvider store={shellStore} />
-					<I18nextProvider i18n={i18nFactory.getShellI18n()}>
-						<AppLoaderContextProvider>
-							<BoardContextProvider>{children}</BoardContextProvider>
-							<ThemeLoaderMounter />
-						</AppLoaderContextProvider>
-					</I18nextProvider>
-				</BootstrapperContext.Provider>
-			</PersistGate>
+			<BootstrapperContext.Provider
+				value={{
+					fiberChannelFactory,
+					i18nFactory,
+					shellNetworkService,
+					storeFactory
+				}}
+			>
+				<I18nextProvider i18n={i18nFactory.getShellI18n()}>
+					<AppLoaderContextProvider>
+						<BoardContextProvider>{children}</BoardContextProvider>
+						<ThemeLoaderMounter />
+					</AppLoaderContextProvider>
+				</I18nextProvider>
+			</BootstrapperContext.Provider>
 		</Provider>
 	);
 }

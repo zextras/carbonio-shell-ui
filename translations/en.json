@@ -5,22 +5,7 @@
         "remind_later": "Remind Later",
         "title": "Title"
     },
-    "copyright": "Copyright",
-    "login": {
-        "help": "Help",
-        "incorrect": "The username or password is incorrect",
-        "login": "Login",
-        "password": "Password",
-        "remember_me": "Remember me",
-        "supported_browsers": "Supported browsers",
-        "username": "Username",
-        "verify_caps_lock": "Verify that CAPS LOCK is not on, and then retype the current username and password"
-    },
     "logout": "Logout",
-    "logout_modal": {
-        "confirm": "Log me out",
-        "warning": "You are going to be logged-out"
-    },
     "module": {
         "app": {
             "version": "Application versions"
@@ -88,16 +73,6 @@
                 "out_of_office": "Out of Office"
             }
         }
-    },
-    "supported_browsers": {
-        "chrome": "",
-        "edge": "",
-        "firefox": "",
-        "ie_11_up": "",
-        "opera": "",
-        "safari": "",
-        "uc": "",
-        "yandex": ""
     },
     "user_quota": {
         "limited": "",

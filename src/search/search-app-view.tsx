@@ -38,7 +38,7 @@ export const SearchAppView: FC = () => {
 						<AppContextProvider pkg={app.core.package}>
 							{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 							{/* @ts-ignore */}
-							<app.views.search useQuery={useQuery} AdvancedSearchButton={AdvancedSearchButton} />
+							<app.views.search useQuery={useQuery} />
 						</AppContextProvider>
 					</Route>
 				)

@@ -28,6 +28,7 @@ export type Action = {
 };
 
 export type ActionFactory<T> = (target: T) => Action;
+export type CombinedActionFactory<T> = (target: T) => Array<Action>;
 
 export type ActionMap = Record<string, Record<string, ActionFactory<unknown>>>;
 export type ComponentMap = Record<string, { app: string; item: Component }>;

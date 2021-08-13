@@ -14,7 +14,7 @@
 import { compact, map } from 'lodash';
 import React, { useMemo, FC, FunctionComponent, useCallback } from 'react';
 import { useIntegrationsStore } from './store';
-import { Action, ActionFactory } from './types';
+import { Action, ActionFactory, CombinedActionFactory } from './types';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppContextProvider from '../app/app-context-provider';
@@ -69,7 +69,7 @@ export const useActions = <T,>(target: T, type: string): Array<Action> => {
 	return actions;
 };
 
-export const useActionsFactory = (type: string): any => {
+export const useActionsFactory = <T,>(type: string): CombinedActionFactory<T> => {
 	const factories = useIntegrationsStore((s) => s.actions[type]);
 	const combinedFactory = useCallback(
 		(target: unknown) =>
@@ -106,7 +106,7 @@ export const useAction = <T,>(
 	return [action, !!action];
 };
 
-export const useFactory = <T,>(
+export const useActionFactory = <T,>(
 	type: string,
 	id: string
 ): [ActionFactory<T> | undefined, boolean] => {

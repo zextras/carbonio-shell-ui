@@ -49,7 +49,7 @@ export default function ShellPrimaryBar({ activeApp }) {
 	const history = useHistory();
 	return (
 		<ContainerWithDivider
-			width={48}
+			width={49}
 			height="fill"
 			background="gray6"
 			orientation="vertical"

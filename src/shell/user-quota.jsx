@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 import React, { useMemo } from 'react';
-import { Tooltip, Quota } from '@zextras/zapp-ui';
+import { Tooltip, Quota, Container } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
 import { useUserAccounts } from '../store/shell-store-hooks';
 
@@ -41,8 +41,10 @@ export const UserQuota = () => {
 	);
 
 	return (
-		<Tooltip label={label}>
-			<Quota fill={quota > 0 ? quota : 0} fillBackground={fillBackground} />
-		</Tooltip>
+		<Container width="fit" padding={{ right: 'medium' }}>
+			<Tooltip label={label}>
+				<Quota fill={quota > 0 ? quota : 0} fillBackground={fillBackground} />
+			</Tooltip>
+		</Container>
 	);
 };

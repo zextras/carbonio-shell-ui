@@ -70,66 +70,55 @@ export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, childr
 			orientation="horizontal"
 			background="gray3"
 			width="fill"
-			height="fit"
+			height="60px"
+			minHeight="60px"
+			maxHeight="60px"
 			mainAlignment="space-between"
 			padding={{
-				vertical: 'extrasmall',
-				left: screenMode === 'desktop' ? 'extralarge' : 'extrasmall'
+				horizontal: screenMode === 'desktop' ? 'large' : 'extrasmall',
+				vertical: 'small'
 			}}
 		>
-			<Container
-				orientation="horizontal"
-				width="fill"
-				mainAlignment="space-between"
-				style={{ maxWidth: '288px' }}
-			>
+			<Container orientation="horizontal" width="75%" mainAlignment="space-between">
 				<Responsive mode="mobile">
 					<Padding right="small">
 						<IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} />
 					</Padding>
 				</Responsive>
-				<Container orientation="horizontal" width="fill" mainAlignment="space-between">
-					<Logo size="small" />
+				<Logo size="large" style={{ minWidth: 'max-content' }} />
+				<Padding horizontal="large">
 					<MultiButton
-						style={{ marginLeft: 'auto', height: '42px' }}
+						style={{ height: '44px' }}
 						background="primary"
 						label={t('new', 'New')}
 						onClick={primaryAction?.click}
 						items={secondaryActions}
 						disabled={isMultiButtonDisabled}
 					/>
-				</Container>
-			</Container>
-			<Responsive mode="desktop">
-				<Container orientation="horizontal" width="calc(100vw - 316px)">
+				</Padding>
+				<Responsive mode="desktop">
 					<SearchBar currentApp={currentApp} />
+				</Responsive>
+			</Container>
+			<Container orientation="horizontal" width="25%" mainAlignment="flex-end">
+				<Responsive mode="desktop">
+					<UserQuota />
+					{/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+					<IconButton icon="BellOutline" iconColor="text" onClick={() => {}} />
+					{children}
+				</Responsive>
+				<Responsive mode="mobile">
 					<Container
 						orientation="horizontal"
-						width="40%"
 						mainAlignment="flex-end"
 						padding={{ right: 'extrasmall' }}
 					>
-						<Padding right="small">
-							{/* <ContactInput /> */}
-							<UserQuota />
-						</Padding>
-						{/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-						<IconButton icon="BellOutline" iconColor="text" onClick={() => {}} />
-						{children}
+						<Dropdown items={secondaryActions} placement="bottom-start">
+							<IconButton icon="Plus" />
+						</Dropdown>
 					</Container>
-				</Container>
-			</Responsive>
-			<Responsive mode="mobile">
-				<Container
-					orientation="horizontal"
-					mainAlignment="flex-end"
-					padding={{ right: 'extrasmall' }}
-				>
-					<Dropdown items={secondaryActions} placement="bottom-start">
-						<IconButton icon="Plus" />
-					</Dropdown>
-				</Container>
-			</Responsive>
+				</Responsive>
+			</Container>
 		</Container>
 	);
 }

@@ -10,17 +10,6 @@
  */
 import { Component, ComponentClass, FunctionComponent } from 'react';
 
-export type SharedAction = {
-	id: string;
-	label: string;
-	icon: string | Component;
-	types?: Array<string>;
-	// eslint-disable-next-line @typescript-eslint/ban-types
-	click: Function;
-	disabled?: boolean;
-	getDisabledStatus?: (...args: unknown[]) => boolean;
-};
-
 export type CoreAppData = {
 	priority: number;
 	package: string;
@@ -50,47 +39,19 @@ export type RuntimeAppData = Partial<{
 		};
 	};
 	context: unknown;
-	newButton: {
-		primary: SharedAction;
-		secondaryItems: Array<SharedAction>;
-	};
 }>;
 export type AppData = UninitializedAppData & RuntimeAppData;
 
 export type AppsMap = Record<string, AppData>;
 
-export type IntegratedComponentsMap = Record<string, { app: string; item: Component }>;
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type IntegratedHooksMap = Record<string, { app: string; item: Function }>;
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type IntegratedFunctionsMap = Record<string, { app: string; item: Function }>;
-export type IntegratedActionsMap = Record<string, { app: string; item: SharedAction }>;
-
-export type Integrations = {
-	components: IntegratedComponentsMap;
-	hooks: IntegratedHooksMap;
-	functions: IntegratedFunctionsMap;
-	actions: IntegratedActionsMap;
-};
-export type IntegrationsRegister = {
-	components: Record<string, Component>;
-	// eslint-disable-next-line @typescript-eslint/ban-types
-	hooks: Record<string, Function>;
-	// eslint-disable-next-line @typescript-eslint/ban-types
-	functions: Record<string, Function>;
-	actions: Record<string, SharedAction>;
-};
-
 export type Setters = {
 	addApps: (apps: Array<CoreAppData>) => void;
 	setAppClass: (id: string, component: ComponentClass) => void;
 	registerAppData: (id: string) => (data: RuntimeAppData) => void;
-	registerIntegrations: (id: string) => (data: IntegrationsRegister) => void;
 	setAppContext: (id: string) => (data: unknown) => void;
 };
 
 export type AppState = {
 	apps: AppsMap;
-	integrations: Integrations;
 	setters: Setters;
 };

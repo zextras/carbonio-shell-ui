@@ -300,6 +300,7 @@ export type Action = {
 	disabled?: boolean;
 	[key: string]: unknown;
 };
+export type CombinedActionFactory<T> = (target: T) => Array<Action>;
 
 export type ActionFactory<T> = (target: T) => Action;
 

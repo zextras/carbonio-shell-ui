@@ -25,6 +25,10 @@ const AppIcon = styled(IconButton)`
 		`}
 `;
 
+const ContainerWithDivider = styled(Container)`
+	border-right: 1px solid ${({ theme }) => theme.palette.gray3.regular};
+`;
+
 function ToggleBoardIcon() {
 	const { boards, minimized } = useContext(BoardValueContext);
 	const { toggleMinimized } = useContext(BoardSetterContext);
@@ -44,7 +48,7 @@ export default function ShellPrimaryBar({ activeApp }) {
 	const apps = useAppList();
 	const history = useHistory();
 	return (
-		<Container
+		<ContainerWithDivider
 			width={48}
 			height="fill"
 			background="gray6"
@@ -80,6 +84,6 @@ export default function ShellPrimaryBar({ activeApp }) {
 			<Row>
 				<ToggleBoardIcon />
 			</Row>
-		</Container>
+		</ContainerWithDivider>
 	);
 }

@@ -34,10 +34,10 @@ import { useApps } from '../app-store/hooks';
 import { useSearchStore } from './search-store';
 
 const StyledContainer = styled(Container)`
-	height: 42px;
+	height: 44px;
 	overflow-y: hidden;
 	&:first-child {
-		transform: translateY(-1px);
+		transform: translateY(-2px);
 	}
 `;
 
@@ -54,18 +54,15 @@ const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus
 		<Container
 			orientation="horizontal"
 			background="gray5"
-			height={42}
-			width="fill"
+			height={44}
+			width="fit"
+			minWidth="150px"
 			crossAlignment="center"
 			mainAlignment="space-between"
 			borderRadius="half"
 			style={{ borderRight: `1px solid ${theme.palette.gray4.regular}` }}
-			padding={{
-				left: 'extrasmall',
-				vertical: 'extrasmall'
-			}}
 		>
-			<Row takeAvailableSpace mainAlignment="unset" padding={{ left: 'extrasmall' }}>
+			<Row takeAvailableSpace mainAlignment="unset" padding={{ left: 'small' }}>
 				<Text size="medium" color={open || focus ? 'primary' : 'text'}>
 					{selected[0]?.label}
 				</Text>
@@ -127,9 +124,9 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 	);
 	const onSearch = useCallback(() => {
 		if (currentApp !== SEARCH_APP_ID) {
-			history.push('/search');
+			history.push(`/search/${moduleSelection?.value}`);
 		}
-	}, [currentApp, history]);
+	}, [currentApp, history, moduleSelection?.value]);
 
 	const [options, setOptions] = useState<Array<{ label: string }>>([]);
 
@@ -198,8 +195,10 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 	const onSelectionChange = useCallback(
 		(newVal) => {
 			setModuleSelection(find(moduleSelectorItems, (item) => item.value === newVal));
+			updateQuery([]);
+			history.push(`/search/${newVal}`);
 		},
-		[moduleSelectorItems]
+		[history, moduleSelectorItems, updateQuery]
 	);
 
 	const onChipAdd = useCallback(
@@ -267,16 +266,10 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 	}, [onSearch]);
 
 	return (
-		<Container orientation="horizontal" mainAlignment="flex-start" padding={{ left: 'small' }}>
-			<Container minWidth="512px" width="max-content">
-				<Container
-					maxHeight="42px"
-					orientation="horizontal"
-					mainAlignment="flex-start"
-					width="fill"
-					maxWidth="512px"
-				>
-					<Container minWidth="128px" width="35%">
+		<Container orientation="horizontal">
+			<Container minWidth="512px" width="fill">
+				<Container orientation="horizontal" width="fill">
+					<Container width="fit">
 						<Select
 							items={moduleSelectorItems}
 							background="gray6"

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.43](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.42...v0.1.0-beta.43) (2021-08-13)
+
+
+### Bug Fixes
+
+* fixed exported types ([8fcd7a0](https://bitbucket.org/zextras/zapp-shell/commit/8fcd7a0489dba8d504e81e324c4e08009158217d))
+* temporarily fixed search redirection ([75eebcb](https://bitbucket.org/zextras/zapp-shell/commit/75eebcb5b451df9d7ff9cd2b9396494e37228fe9))
+
 ## [0.1.0-beta.42](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.41...v0.1.0-beta.42) (2021-08-13)
 
 

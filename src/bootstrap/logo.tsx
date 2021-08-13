@@ -16,7 +16,7 @@ const Logo: FC = (props) => (
 		id="logo-zextras_svg__Livello_1"
 		x={0}
 		y={0}
-		viewBox="0 0 509.1 85.2"
+		viewBox="0 0 509.1 82.2"
 		xmlSpace="preserve"
 		{...props}
 	>

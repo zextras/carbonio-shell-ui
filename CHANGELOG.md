@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.41](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.40...v0.1.0-beta.41) (2021-08-13)
+
+
+### Features
+
+* restyled sell header and updated advanced search behavior ([d9534ff](https://bitbucket.org/zextras/zapp-shell/commit/d9534ffa2ea8bb219db42117ec335956f9ac175a))
+
+
+### Bug Fixes
+
+* primary bar scrollbar ([577e4a4](https://bitbucket.org/zextras/zapp-shell/commit/577e4a49ed8c572ef915f8d041d8d864b996162b))
+
 ## [0.1.0-beta.40](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.39...v0.1.0-beta.40) (2021-08-13)
 
 ## [0.1.0-beta.39](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.38...v0.1.0-beta.39) (2021-08-10)

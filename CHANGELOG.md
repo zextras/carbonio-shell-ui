@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.42](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.41...v0.1.0-beta.42) (2021-08-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* updated shares and actions management
+
+### Features
+
+* updated action typings ([07c70d3](https://bitbucket.org/zextras/zapp-shell/commit/07c70d38232540b375f6a34b87ef2b3e0a489446))
+
+
+* updated shares and actions management ([382018b](https://bitbucket.org/zextras/zapp-shell/commit/382018bb7195e4fb8532308a99a9f156c4361bc0))
+
 ## [0.1.0-beta.41](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.40...v0.1.0-beta.41) (2021-08-13)
 
 

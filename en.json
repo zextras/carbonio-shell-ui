@@ -21,6 +21,11 @@
         "confirm": "Log me out",
         "warning": "You are going to be logged-out"
     },
+    "message": {
+        "snackbar": {
+            "settings_saved": "Edits saved correctly"
+        }
+    },
     "module": {
         "app": {
             "version": "Application versions"
@@ -91,6 +96,9 @@
                 "out_of_office": "Out of Office"
             }
         }
+    },
+    "snackbar": {
+        "error": "Something went wrong, please try again"
     },
     "supported_browsers": {
         "chrome": "",

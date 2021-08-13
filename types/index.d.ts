@@ -88,7 +88,6 @@ export type Setters = {
 
 export type AppState = {
 	apps: AppsMap;
-	integrations: Integrations;
 	setters: Setters;
 };
 
@@ -232,7 +231,6 @@ export const getBridgedFunctions: () => {
 };
 export const getIntegratedAction: (id: string) => [SharedAction | undefined, boolean];
 export const getIntegratedActionsByType: (type: string) => Array<SharedAction>;
-export const getIntegratedComponent: (id: string) => [React.FC<unknown>, boolean];
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getIntegratedFunction: (id: string) => [Function, boolean];
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -248,11 +246,6 @@ export const useCurrentSync: () => any;
 export const useFiberChannel: () => FC;
 export const useFirstSync: () => any;
 export const useGoBackHistoryCallback: () => () => void;
-export const useIntegratedComponent: (id: string) => [React.FC<unknown>, boolean];
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const useIntegratedFunction: (id: string) => [Function, boolean];
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const useIntegratedHook: (id: string) => [Function, boolean];
 export const useIsMobile: () => boolean;
 export const usePromise: () => any;
 export const usePushHistoryCallback: () => (location: LocationDescriptor) => void;
@@ -292,9 +285,7 @@ export enum FOLDERS {
 export const registerActions: (
 	...items: Array<{ id: string; action: ActionFactory<unknown>; type: string }>
 ) => void;
-export const registerComponents: (
-	app: string
-) => (...items: Array<{ id: string; component: Component }>) => void;
+export const registerComponents: (...items: Array<{ id: string; component: Component }>) => void;
 export const registerHooks: (...items: Array<{ id: string; hook: AnyFunction }>) => void;
 export const registerFunctions: (...items: Array<{ id: string; fn: AnyFunction }>) => void;
 

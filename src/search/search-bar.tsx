@@ -124,7 +124,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 	);
 	const onSearch = useCallback(() => {
 		if (currentApp !== SEARCH_APP_ID) {
-			history.push(`/search/${moduleSelection?.value}`);
+			history.push(`/${SEARCH_APP_ID}/${moduleSelection?.value}`);
 		}
 	}, [currentApp, history, moduleSelection?.value]);
 
@@ -196,9 +196,11 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 		(newVal) => {
 			setModuleSelection(find(moduleSelectorItems, (item) => item.value === newVal));
 			updateQuery([]);
-			history.push(`/search/${newVal}`);
+			if (currentApp === SEARCH_APP_ID) {
+				history.push(`/${SEARCH_APP_ID}/${newVal}`);
+			}
 		},
-		[history, moduleSelectorItems, updateQuery]
+		[currentApp, history, moduleSelectorItems, updateQuery]
 	);
 
 	const onChipAdd = useCallback(

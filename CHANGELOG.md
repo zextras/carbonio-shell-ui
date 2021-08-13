@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.44](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.43...v0.1.0-beta.44) (2021-08-13)
+
+
+### Bug Fixes
+
+* removed search button ([83a8942](https://bitbucket.org/zextras/zapp-shell/commit/83a8942c83607128160c418bfeaa4cd22e6a3614))
+
 ## [0.1.0-beta.43](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.42...v0.1.0-beta.43) (2021-08-13)
 
 

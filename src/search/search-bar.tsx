@@ -33,6 +33,14 @@ import { SEARCH_APP_ID } from '../constants';
 import { useApps } from '../app-store/hooks';
 import { useSearchStore } from './search-store';
 
+const OutlinedIconButton = styled(IconButton)`
+	border: 1px solid ${({ theme }): string => theme.palette.primary.regular};
+	display: 'block';
+	& svg {
+		border: none;
+	}
+`;
+
 const StyledContainer = styled(Container)`
 	height: 44px;
 	overflow-y: hidden;
@@ -81,6 +89,7 @@ type SearchBarProps = {
 };
 
 export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
+	const [searchIsEnabled, setSearchIsEnabled] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
 	const theme = useContext(ThemeContext) as unknown;
 	const [t] = useTranslation();
@@ -109,99 +118,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 		[apps]
 	);
 
-	const appSuggestions = useMemo(
-		() =>
-			filter(storedValue, (v) => v.app === moduleSelection?.value)
-				.reverse()
-				.map((item: { label: string }) => ({
-					...item,
-					hasAvatar: false,
-					click: (): void => {
-						updateQuery((q: Array<{ label: string }>) => [...q, item]);
-					}
-				})),
-		[moduleSelection?.value, storedValue, updateQuery]
-	);
-	const onSearch = useCallback(() => {
-		if (currentApp !== SEARCH_APP_ID) {
-			history.push(`/${SEARCH_APP_ID}/${moduleSelection?.value}`);
-		}
-	}, [currentApp, history, moduleSelection?.value]);
-
 	const [options, setOptions] = useState<Array<{ label: string }>>([]);
-
-	const updateOptions = useCallback(
-		(target: HTMLInputElement, q: Array<any>): void => {
-			if (target.textContent && target.textContent.length > 0) {
-				setOptions(
-					appSuggestions
-						.filter(
-							(v: { label: string }): boolean =>
-								v.label?.indexOf(target.textContent as string) !== -1 &&
-								!find(q, (i) => i.value === v.label)
-						)
-						.slice(0, 5)
-				);
-				return;
-			}
-			setOptions(appSuggestions.slice(0, 5));
-		},
-		[appSuggestions]
-	);
-
-	const onInputType = useCallback(
-		(ev) => {
-			updateOptions(ev.target, query);
-		},
-		[query, updateOptions]
-	);
-	const clearSearch = useCallback((): void => {
-		if (inputRef.current) {
-			inputRef.current.innerText = '';
-			inputRef.current?.focus();
-		}
-		updateQuery([]);
-	}, [updateQuery]);
-	const onQueryChange = useCallback(
-		(newQuery) => {
-			if (
-				newQuery[newQuery.length - 1]?.label &&
-				moduleSelection?.value &&
-				!find(appSuggestions, (v) => v.label === newQuery[newQuery.length - 1]?.label)
-			) {
-				setStoredValue(
-					(
-						value: Array<{ value: string; label: string; icon: string; app: string; id: string }>
-					) => [
-						...value,
-						{
-							value: newQuery[newQuery.length - 1].label,
-							label: newQuery[newQuery.length - 1].label,
-							icon: 'ClockOutline',
-							app: moduleSelection.value,
-							id: `${value.length}`
-						}
-					]
-				);
-			}
-			if (inputRef.current) {
-				updateOptions(inputRef.current, newQuery);
-			}
-			updateQuery(newQuery);
-		},
-		[appSuggestions, moduleSelection?.value, setStoredValue, updateOptions, updateQuery]
-	);
-
-	const onSelectionChange = useCallback(
-		(newVal) => {
-			setModuleSelection(find(moduleSelectorItems, (item) => item.value === newVal));
-			updateQuery([]);
-			if (currentApp === SEARCH_APP_ID) {
-				history.push(`/${SEARCH_APP_ID}/${newVal}`);
-			}
-		},
-		[currentApp, history, moduleSelectorItems, updateQuery]
-	);
 
 	const onChipAdd = useCallback(
 		(newChip: string) => ({
@@ -212,7 +129,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 	);
 
 	useEffect(() => {
-		window.addEventListener('keypress', (event: KeyboardEvent) => {
+		window.addEventListener('keypress', (event: any) => {
 			// isContentEditable is actually present
 			// @ts-ignore
 			if (event.key === '/' && event?.target?.isContentEditable === false) {
@@ -240,35 +157,149 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 		updateModule(moduleSelection?.value ?? moduleSelectorItems[0]?.value);
 	}, [moduleSelection?.value, moduleSelectorItems, updateModule]);
 
+	const [inputHasFocus, setInputHasFocus] = useState(false);
+
+	const [inputState, setInputState] = useState(query);
 	const showClear = useMemo(
 		() =>
-			query.length > 0 ||
+			inputState.length > 0 ||
 			(inputRef.current?.textContent && inputRef.current?.textContent?.length > 0),
-		[query.length]
+		[inputState.length]
 	);
-
-	const [inputHasFocus, setInputHasFocus] = useState(false);
+	const clearSearch = useCallback((): void => {
+		if (inputRef.current) {
+			inputRef.current.innerText = '';
+			inputRef.current?.focus();
+		}
+		setInputState([]);
+	}, []);
+	const onSearch = useCallback(() => {
+		updateQuery(inputState);
+		if (currentApp !== SEARCH_APP_ID) {
+			history.push(`/${SEARCH_APP_ID}/${moduleSelection?.value}`);
+		}
+		setSearchIsEnabled(false);
+	}, [currentApp, history, inputState, moduleSelection?.value, updateQuery]);
 
 	useEffect(() => {
 		const ref = inputRef.current;
 		const focusCb = (): void => setInputHasFocus(true);
-		const search = (ev: KeyboardEvent): void => {
-			if (ev.key === 'Enter') {
-				onSearch();
-			}
-		};
 		if (ref) {
-			ref.addEventListener('keypress', search);
 			ref.addEventListener('focus', focusCb);
 		}
 		return (): void => {
-			ref?.removeEventListener('keypress', search);
 			ref?.removeEventListener('focus', focusCb);
 		};
-	}, [onSearch]);
+	}, [onChipAdd, onSearch]);
 
+	const appSuggestions = useMemo(
+		() =>
+			filter(storedValue, (v) => v.app === moduleSelection?.value)
+				.reverse()
+				.map((item: { label: string }) => ({
+					...item,
+					hasAvatar: false,
+					click: (): void => {
+						setInputState((q: Array<{ label: string }>) => [...q, item]);
+					}
+				})),
+		[moduleSelection?.value, storedValue, setInputState]
+	);
+
+	const updateOptions = useCallback(
+		(target: HTMLInputElement, q: Array<any>): void => {
+			if (target.textContent && target.textContent.length > 0) {
+				setOptions(
+					appSuggestions
+						.filter(
+							(v: { label: string }): boolean =>
+								v.label?.indexOf(target.textContent as string) !== -1 &&
+								!find(q, (i) => i.value === v.label)
+						)
+						.slice(0, 5)
+				);
+				return;
+			}
+			setOptions(appSuggestions.slice(0, 5));
+		},
+		[appSuggestions]
+	);
+
+	const onQueryChange = useCallback(
+		(newQuery) => {
+			if (
+				newQuery[newQuery.length - 1]?.label &&
+				moduleSelection?.value &&
+				!find(appSuggestions, (v) => v.label === newQuery[newQuery.length - 1]?.label)
+			) {
+				setStoredValue(
+					(
+						value: Array<{ value: string; label: string; icon: string; app: string; id: string }>
+					) => [
+						...value,
+						{
+							value: newQuery[newQuery.length - 1].label,
+							label: newQuery[newQuery.length - 1].label,
+							icon: 'ClockOutline',
+							app: moduleSelection.value,
+							id: `${value.length}`
+						}
+					]
+				);
+			}
+			if (inputRef.current) {
+				updateOptions(inputRef.current, newQuery);
+			}
+			setInputState(newQuery);
+			setSearchIsEnabled(true);
+		},
+		[appSuggestions, moduleSelection?.value, setStoredValue, updateOptions]
+	);
+
+	const onInputType = useCallback(
+		(ev) => {
+			updateOptions(ev.target, query);
+		},
+		[query, updateOptions]
+	);
+
+	const onSelectionChange = useCallback(
+		(newVal) => {
+			setModuleSelection(find(moduleSelectorItems, (item) => item.value === newVal));
+			setInputState([]);
+			updateQuery([]);
+			if (currentApp === SEARCH_APP_ID) {
+				history.push(`/${SEARCH_APP_ID}/${newVal}`);
+			}
+		},
+		[currentApp, history, moduleSelectorItems, updateQuery]
+	);
+	const [triggerSearch, setTriggerSearch] = useState(false);
+	const containerRef = useRef<HTMLDivElement>();
+	useEffect(() => {
+		const ref = inputRef.current;
+		const searchCb = (ev: any): void => {
+			if (ev.key === 'Enter') {
+				setTriggerSearch(true);
+			}
+		};
+		if (ref) {
+			ref.addEventListener('keyup', searchCb);
+		}
+		return (): void => {
+			if (ref) {
+				ref.removeEventListener('keyup', searchCb);
+			}
+		};
+	}, [onSearch]);
+	useEffect(() => {
+		if (triggerSearch) {
+			onSearch();
+			setTriggerSearch(false);
+		}
+	}, [onSearch, triggerSearch]);
 	return (
-		<Container orientation="horizontal">
+		<Container orientation="horizontal" minWidth="0" ref={containerRef}>
 			<Container minWidth="512px" width="fill">
 				<Container orientation="horizontal" width="fill">
 					<Container width="fit">
@@ -284,7 +315,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 					<StyledContainer orientation="horizontal">
 						<ChipInput
 							inputRef={inputRef}
-							value={query}
+							value={inputState}
 							onAdd={onChipAdd}
 							placeholder={
 								inputHasFocus && moduleSelection
@@ -325,28 +356,22 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 			{showClear && (
 				<Padding left="small">
 					<Tooltip label={t('search.clear', 'Clear search input')} placement="bottom">
-						<IconButton
-							icon="BackspaceOutline"
-							style={{
-								// @ts-ignore
-								border: `1px solid ${theme.palette.primary.regular}`,
-								display: 'block'
-							}}
-							iconColor="primary"
-							onClick={clearSearch}
-						/>
+						<OutlinedIconButton icon="BackspaceOutline" iconColor="primary" onClick={clearSearch} />
 					</Tooltip>
 				</Padding>
 			)}
 			<Padding left="small">
 				<Tooltip
-					disabled={query.length < 1}
-					label={t('search.start', 'Start search')}
+					label={
+						searchIsEnabled && inputState.length > 0
+							? t('search.start', 'Start search')
+							: t('search.edit_to_start', 'Edit your search to start a new one')
+					}
 					placement="bottom"
 				>
 					<IconButton
 						icon="Search"
-						disabled={query.length < 1}
+						disabled={!searchIsEnabled && inputState.length > 0}
 						backgroundColor="primary"
 						iconColor="gray6"
 						onClick={onSearch}

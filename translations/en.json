@@ -35,11 +35,10 @@
     "new_tab": "New Tab",
     "search": {
         "active_input_label": "Separate keywords with a comma or TAB",
-        "advanced_filters": "",
-        "advanced_filters_plural": "",
         "app": "Search",
         "app_description": "Search Module",
         "clear": "Clear search input",
+        "edit_to_start": "Edit your search to start a new one",
         "idle_input_label": "Search in {{module}}",
         "module": "Module",
         "results_for": "Results for:",
@@ -111,7 +110,7 @@
         "yandex": ""
     },
     "user_quota": {
-        "limited": "",
+        "limited": "{{quota}}% space used",
         "unlimited": "Congrats! Unlimited space available"
     }
 }

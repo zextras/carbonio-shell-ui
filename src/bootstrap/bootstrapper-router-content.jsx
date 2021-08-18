@@ -13,11 +13,7 @@ import LoadingView from './loading-view';
 import { LazyShellView } from './bootstrapper-lazy-loader';
 import { goToLogin } from '../account/go-to-login';
 
-export default function BootstrapperRouterContent({ accounts }) {
-	if (accounts.length === 0) {
-		goToLogin();
-		return null;
-	}
+export default function BootstrapperRouterContent() {
 	return (
 		<Suspense fallback={<LoadingView />}>
 			<LazyShellView />

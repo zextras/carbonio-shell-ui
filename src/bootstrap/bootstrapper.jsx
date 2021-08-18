@@ -24,10 +24,13 @@ import { useUserAccounts } from '../store/shell-store-hooks';
 import { settingsAppData, getSettingsCore } from '../settings/settings-app';
 import { searchAppData, getSearchCore } from '../search/search-app';
 import { SETTINGS_APP_ID, SEARCH_APP_ID } from '../constants';
+import { useAccountStore } from '../account/account-store';
+
+const accounts = []; // useUserAccounts();
 
 const AppStoreInterface = () => {
 	const { addApps, registerAppData } = useAppStore((s) => s.setters);
-	const accounts = useUserAccounts();
+	// const accounts = useUserAccounts();
 	const [status, setStatus] = useState(0);
 	const [t] = useTranslation();
 	useEffect(() => {
@@ -40,7 +43,7 @@ const AppStoreInterface = () => {
 			registerAppData(SEARCH_APP_ID)(searchAppData);
 			setStatus(2);
 		}
-	}, [accounts, addApps, status, registerAppData, t]);
+	}, [addApps, status, registerAppData, t]);
 	return null;
 };
 
@@ -72,6 +75,11 @@ export default function bootstrapper(onBeforeBoot) {
 			storeFactory: _storeFactory
 		}) => ({
 			default: function BoostrapperCls() {
+				const init = useAccountStore((s) => s.init);
+				useEffect(() => {
+					console.log('here');
+					init().then(console.log);
+				});
 				return (
 					<ThemeProvider>
 						<BootstrapperContextProvider

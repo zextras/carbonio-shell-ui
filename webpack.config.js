@@ -7,7 +7,7 @@ const { DefinePlugin } = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const { coerce, valid } = require('semver');
 const commitHash = require('child_process')
-	.execSync('git rev-parse --short HEAD')
+	.execSync('git rev-parse HEAD')
 	.toString()
 	.trim();
 

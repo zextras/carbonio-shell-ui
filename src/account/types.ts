@@ -1,13 +1,8 @@
 export type AccountState = {
 	accounts: Array<Account>;
-
-	fetch: () => Promise<unknown>;
-	notify: unknown;
-
-	syncToken: string;
-
-	requestSync: () => Promise<void>;
-	verifyAccount: () => Promise<void>;
+	context: any;
+	init: () => Promise<void>;
+	soapFetch: <Request, Response>(api: string, body: Request) => Promise<Response>;
 };
 export type Account = {
 	id: string;

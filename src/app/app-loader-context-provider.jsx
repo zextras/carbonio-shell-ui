@@ -22,9 +22,11 @@ import { useUserAccounts } from '../store/shell-store-hooks';
 import { checkUpdate } from '../update-log/check-update';
 import ChangeLogModal from '../update-log/change-log-modal';
 
+const accounts = []; // useUserAccounts();
+
 export default function AppLoaderContextProvider({ children }) {
 	const shellNetworkService = useShellNetworkService();
-	const accounts = useUserAccounts();
+	// const accounts = useUserAccounts();
 	const fiberChannelFactory = useFiberChannelFactory();
 	const storeFactory = useStoreFactory();
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -38,7 +40,7 @@ export default function AppLoaderContextProvider({ children }) {
 		} else {
 			loadApps(accounts, shellNetworkService, storeFactory);
 		}
-	}, [accounts, fiberChannelFactory, shellNetworkService, storeFactory]);
+	}, [fiberChannelFactory, shellNetworkService, storeFactory]);
 	return (
 		<>
 			{/* {showUpdateModal ? <ChangeLogModal cache={value.apps.cache} /> : null} */}

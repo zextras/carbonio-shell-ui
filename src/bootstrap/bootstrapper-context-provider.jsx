@@ -9,11 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useEffect } from 'react';
-import { Provider } from 'react-redux';
+import React from 'react';
 import { I18nextProvider } from 'react-i18next';
 import BootstrapperContext from './bootstrapper-context';
-import ShellStoreContext from '../store/shell-store-context';
 import AppLoaderContextProvider from '../app/app-loader-context-provider';
 import ThemeLoaderMounter from '../app/theme-loader-mounter';
 import BoardContextProvider from '../shell/boards/board-context-provider';
@@ -23,27 +21,23 @@ export default function BootstrapperContextProvider({
 	fiberChannelFactory,
 	i18nFactory,
 	shellNetworkService,
-	shellStore,
-	shellStorePersistor,
 	storeFactory
 }) {
 	return (
-		<Provider context={ShellStoreContext} store={shellStore}>
-			<BootstrapperContext.Provider
-				value={{
-					fiberChannelFactory,
-					i18nFactory,
-					shellNetworkService,
-					storeFactory
-				}}
-			>
-				<I18nextProvider i18n={i18nFactory.getShellI18n()}>
-					<AppLoaderContextProvider>
-						<BoardContextProvider>{children}</BoardContextProvider>
-						<ThemeLoaderMounter />
-					</AppLoaderContextProvider>
-				</I18nextProvider>
-			</BootstrapperContext.Provider>
-		</Provider>
+		<BootstrapperContext.Provider
+			value={{
+				fiberChannelFactory,
+				i18nFactory,
+				shellNetworkService,
+				storeFactory
+			}}
+		>
+			<I18nextProvider i18n={i18nFactory.getShellI18n()}>
+				<AppLoaderContextProvider>
+					<BoardContextProvider>{children}</BoardContextProvider>
+					<ThemeLoaderMounter />
+				</AppLoaderContextProvider>
+			</I18nextProvider>
+		</BootstrapperContext.Provider>
 	);
 }

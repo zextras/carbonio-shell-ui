@@ -9,13 +9,15 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { BrowserRouter, useHistory } from 'react-router-dom';
 import { SnackbarManagerContext, ModalManagerContext } from '@zextras/zapp-ui';
 import BootstrapperRouterContent from './bootstrapper-router-content';
 import { useUserAccounts } from '../store/shell-store-hooks';
 import AppLoaderMounter from '../app/app-loader-mounter';
 import { useContextBridge } from '../app-store/context-bridge';
+import { useAccountStore } from '../account/account-store';
+import { BASE_URL } from '../constants';
 
 const ContextBridge = () => {
 	const accounts = useUserAccounts();
@@ -50,11 +52,11 @@ const ContextBridge = () => {
 	return null;
 };
 
+const accounts = [];
 export default function BootstrapperRouter() {
-	const accounts = useUserAccounts();
-
+	//	const accounts = useUserAccounts();
 	return (
-		<BrowserRouter basename="/iris/">
+		<BrowserRouter basename={BASE_URL}>
 			<ContextBridge />
 			<AppLoaderMounter />
 			<BootstrapperRouterContent accounts={accounts} />

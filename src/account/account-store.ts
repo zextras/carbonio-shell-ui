@@ -59,7 +59,7 @@ export const useAccountStore = create<AccountState>((set, get) => ({
 			.catch((err) => {
 				console.log('there was an error checking user data');
 				console.error(err);
-				goToLogin();
+				// goToLogin();
 			}),
 	soapFetch: <Request, Response>(api: string, body: Request): Promise<Response> =>
 		fetch(`/service/soap/${api}Request`, {

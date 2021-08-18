@@ -64,5 +64,3 @@ export const ACTION_TYPES = {
 	CALENDAR: 'calendar',
 	CALENDAR_lIST: 'calendar_list'
 };
-
-export const BASE_URL = `/static/iris/zextras-zapp-shell/${COMMIT_ID}`;

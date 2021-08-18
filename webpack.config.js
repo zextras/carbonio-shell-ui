@@ -6,15 +6,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const { coerce, valid } = require('semver');
-const commitHash = require('child_process')
-	.execSync('git rev-parse HEAD')
-	.toString()
-	.trim();
-
+const commitHash = require('child_process').execSync('git rev-parse HEAD').toString().trim();
 const pkg = require('./zapp.conf.js');
 
 const babelRC = require('./babel.config.js');
 // const babelRCServiceworker = require('./babel.config.serviceworker.js');
+
+const basePath = `/static/iris/zextras-zapp-shell/${commitHash}`;
 
 /**
  * The flavor of the build
@@ -127,7 +125,8 @@ module.exports = {
 			COMMIT_ID: JSON.stringify(commitHash.toString().trim()),
 			PACKAGE_VERSION: JSON.stringify(pkg.version),
 			PACKAGE_NAME: JSON.stringify(pkg.pkgName),
-			FLAVOR: JSON.stringify(flavor.toUpperCase())
+			FLAVOR: JSON.stringify(flavor.toUpperCase()),
+			BASE_PATH: JSON.stringify(basePath)
 		}),
 		new MiniCssExtractPlugin({
 			filename: 'style.[chunkhash:8].css',
@@ -136,8 +135,9 @@ module.exports = {
 		}),
 		new HtmlWebpackPlugin({
 			inject: true,
-			template: path.resolve(process.cwd(), 'src', 'index.html'),
-			chunks: ['index']
+			template: path.resolve(process.cwd(), 'src', 'index.template.html'),
+			chunks: ['index'],
+			BASE_PATH: basePath
 		}),
 		new HtmlWebpackPlugin({
 			inject: false,

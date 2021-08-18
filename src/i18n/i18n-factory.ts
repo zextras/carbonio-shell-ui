@@ -58,7 +58,7 @@ export default class I18nFactory {
 				},
 
 				backend: {
-					loadPath: `/zx/zimlet/${appPkgDescription.package}/i18n/{{lng}}.json`
+					loadPath: `${BASE_PATH}/i18n/{{lng}}.json`
 				}
 			});
 		this._cache[appPkgDescription.package] = newI18n;

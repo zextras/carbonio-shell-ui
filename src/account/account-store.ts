@@ -1,7 +1,12 @@
 import create from 'zustand';
+import UAParser from 'ua-parser-js';
 import { goToLogin } from './go-to-login';
 import { normalizeAccount } from './normalization';
 import { Account, AccountState, GetInfoResponse } from './types';
+
+const { os, browser } = UAParser();
+
+console.log('detected', os, browser);
 
 const getAccount = (accounts: Array<Account>): { by: string; _content: string } | undefined => {
 	if (accounts.length > 0) {
@@ -31,7 +36,12 @@ export const useAccountStore = create<AccountState>((set, get) => ({
 			},
 			body: JSON.stringify({
 				Header: {
-					_jsns: 'urn:zimbra'
+					_jsns: 'urn:zimbra',
+					context: {
+						userAgent: {
+							name: `CarbonioWebClient - ${browser.name} ${browser.version} (${os.name})`
+						}
+					}
 				},
 				Body: {
 					GetInfoRequest: {
@@ -82,7 +92,12 @@ export const useAccountStore = create<AccountState>((set, get) => ({
 							seq: get().context?.notify?.seq
 						},
 						session: get().context?.session,
-						account: getAccount(get().accounts)
+						account: getAccount(get().accounts),
+						context: {
+							userAgent: {
+								name: `CarbonioWebClient - ${browser.name} ${browser.version} (${os.name})`
+							}
+						}
 					}
 				}
 			})

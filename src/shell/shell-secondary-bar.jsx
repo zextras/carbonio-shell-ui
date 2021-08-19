@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import { Route, Switch } from 'react-router-dom';
 import { Container, Accordion, IconButton, Padding, Tooltip, Icon } from '@zextras/zapp-ui';
 
-import { useUserAccounts } from '../store/shell-store-hooks';
+import { useUserAccounts } from '../account/hooks';
 import { useApps } from '../app-store/hooks';
 import AppContextProvider from '../app/app-context-provider';
 import { Collapser } from './collapser';

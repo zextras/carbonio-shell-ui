@@ -13,9 +13,9 @@ import React, { useContext } from 'react';
 import { BrowserRouter, useHistory } from 'react-router-dom';
 import { SnackbarManagerContext, ModalManagerContext } from '@zextras/zapp-ui';
 import BootstrapperRouterContent from './bootstrapper-router-content';
-import { useUserAccounts } from '../store/shell-store-hooks';
 import AppLoaderMounter from '../app/app-loader-mounter';
 import { useContextBridge } from '../app-store/context-bridge';
+import { useUserAccounts } from '../account/hooks';
 
 const ContextBridge = () => {
 	const accounts = useUserAccounts();

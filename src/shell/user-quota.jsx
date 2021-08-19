@@ -11,7 +11,7 @@
 import React, { useMemo } from 'react';
 import { Tooltip, Quota } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
-import { useUserAccounts } from '../store/shell-store-hooks';
+import { useUserAccounts } from '../account/hooks';
 
 export const UserQuota = () => {
 	const [t] = useTranslation();

@@ -12,8 +12,10 @@ const pkg = require('./zapp.conf.js');
 const babelRC = require('./babel.config.js');
 // const babelRCServiceworker = require('./babel.config.serviceworker.js');
 
-const basePath = `/static/iris/zextras-zapp-shell/${commitHash}`;
+const basePath = `/static/iris/zextras-zapp-shell/${commitHash}/`;
 
+console.log('Building Shell using base path: ');
+console.log(` ${basePath} `);
 /**
  * The flavor of the build
  * @type {'npm' | 'app'}
@@ -53,7 +55,7 @@ module.exports = {
 		path: path.resolve(process.cwd(), 'dist', 'public'),
 		filename: flavor.toUpperCase() !== 'APP' ? '[name].js' : '[name].[chunkhash:8].js',
 		chunkFilename: '[name].[chunkhash:8].chunk.js',
-		publicPath: './'
+		publicPath: basePath
 	},
 	target: 'web',
 	resolve: {

@@ -14,7 +14,7 @@ import { map } from 'lodash';
 import { Accordion, Collapse, Container, Padding } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
 import { useAppList } from '../app-store/hooks';
-import { useUserAccounts } from '../store/shell-store-hooks';
+import { useUserAccounts } from '../account/hooks';
 import { UserQuota } from './user-quota';
 import AppContextProvider from '../app/app-context-provider';
 

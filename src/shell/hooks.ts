@@ -23,6 +23,7 @@ import ShellContext from './shell-context';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { BoardSetterContext, BoardValueContext } from './boards/board-context';
+import { useUserAccount } from '../account/hooks';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -31,13 +32,13 @@ export { useAppPkg, useFiberChannel } from '../app/app-context';
 export { default as usePromise } from 'react-use-promise';
 
 export {
-	useUserAccounts,
 	useCSRFToken,
 	useSaveSettingsCallback,
 	useCurrentSync, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	useFirstSync // @ts-ignore
 } from '../store/shell-store-hooks';
 
+export { useUserAccounts, useUserAccount, useUserSettings } from '../account/hooks';
 export const getUseAddBoardCallback = (appId: string) => (): ((
 	path: string,
 	context?: unknown | { app: string }

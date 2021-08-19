@@ -22,12 +22,14 @@ import ShellNavigationBar from './shell-navigation-bar';
 import ShellMenuPanel from './shell-menu-panel';
 import AppBoardWindow from './boards/app-board-window';
 import { ThemeCallbacksContext } from '../bootstrap/shell-theme-context-provider';
-import { useDispatch, useSessionState, useUserAccounts } from '../store/shell-store-hooks';
+import { useDispatch, useSessionState } from '../store/shell-store-hooks';
+
 import { verifySession } from '../store/session-slice';
 import { doLogout } from '../store/accounts-slice';
 import { useAppList } from '../app-store/hooks';
 import { useAppStore } from '../app-store';
 import AppContextProvider from '../app/app-context-provider';
+import { useUserAccounts } from '../account/hooks';
 
 const Background = styled.div`
 	background: ${({ theme }) => theme.palette.gray6.regular};

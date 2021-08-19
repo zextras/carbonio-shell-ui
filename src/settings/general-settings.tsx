@@ -20,7 +20,7 @@ import Logout from './logout';
 import AppearanceSettings from './appearance-settings';
 import ModuleVersionSettings from './module-version-settings';
 import OutOfOfficeSettings from './out-of-office-view';
-import { useUserAccounts } from '../shell/hooks';
+import { useUserAccounts } from '../account/hooks';
 import { SETTINGS_APP_ID } from '../constants';
 
 export const DisplayerHeader: FC<{

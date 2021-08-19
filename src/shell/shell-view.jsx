@@ -37,6 +37,7 @@ import { doLogout } from '../store/accounts-slice';
 import { useAppList } from '../app-store/hooks';
 import { useAppStore } from '../app-store';
 import AppContextProvider from '../app/app-context-provider';
+import { useIntegrationsStore } from '../integrations/store';
 
 const Background = styled.div`
 	background: ${({ theme }) => theme.palette.gray6.regular};
@@ -94,6 +95,7 @@ export function Shell() {
 	const history = useHistory();
 	const dispatch = useDispatch();
 
+	useIntegrationsStore(console.log);
 	const [chatPanelMode, setChatPanelMode] = useState('closed'); // values: 'closed', 'overlap', 'open'
 	const [navOpen, setNavOpen] = useState(true);
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);

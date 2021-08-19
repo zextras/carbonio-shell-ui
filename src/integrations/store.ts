@@ -26,7 +26,7 @@ export const useIntegrationsStore = create<IntegrationsState>((set) => ({
 		set(
 			produce((state) => {
 				forEach(items, ({ id, component }) => {
-					state.actions[id] = { app, item: component };
+					state.components[id] = { app, item: component };
 				});
 			})
 		),
@@ -34,7 +34,7 @@ export const useIntegrationsStore = create<IntegrationsState>((set) => ({
 		set(
 			produce((state) => {
 				forEach(items, ({ id, hook }) => {
-					state.actions[id] = hook;
+					state.hooks[id] = hook;
 				});
 			})
 		),
@@ -42,7 +42,7 @@ export const useIntegrationsStore = create<IntegrationsState>((set) => ({
 		set(
 			produce((state) => {
 				forEach(items, ({ id, fn }) => {
-					state.actions[id] = fn;
+					state.functions[id] = fn;
 				});
 			})
 		)

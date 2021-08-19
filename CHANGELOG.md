@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.48](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.47...v0.1.0-beta.48) (2021-08-19)
+
+
+### Bug Fixes
+
+* integrations were all stored in the actions state ([ada8f5a](https://bitbucket.org/zextras/zapp-shell/commit/ada8f5a96f93a38f0330a06b90995e84cb6c3580))
+
 ## [0.1.0-beta.47](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.46...v0.1.0-beta.47) (2021-08-17)
 
 

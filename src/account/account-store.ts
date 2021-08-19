@@ -1,6 +1,7 @@
 import create from 'zustand';
 import { goToLogin } from './go-to-login';
-import { Account, AccountState } from './types';
+import { normalizeAccount } from './normalization';
+import { Account, AccountState, GetInfoResponse } from './types';
 
 const getAccount = (accounts: Array<Account>): { by: string; _content: string } | undefined => {
 	if (accounts.length > 0) {
@@ -40,7 +41,7 @@ export const useAccountStore = create<AccountState>((set, get) => ({
 			})
 		})
 			.then((res) => res?.json())
-			.then((res: any): any => {
+			.then((res): void => {
 				if (res?.Body?.Fault) {
 					if (res?.Body.Fault.Detail?.Error?.Code === 'service.AUTH_REQUIRED') {
 						goToLogin();
@@ -54,12 +55,15 @@ export const useAccountStore = create<AccountState>((set, get) => ({
 						context: res?.Header?.context
 					});
 				}
-				return res;
+				if (res?.Body?.GetInfoResponse) {
+					set({
+						accounts: normalizeAccount(res?.Body?.GetInfoResponse as GetInfoResponse)
+					});
+				}
 			})
 			.catch((err) => {
 				console.log('there was an error checking user data');
 				console.error(err);
-				// goToLogin();
 			}),
 	soapFetch: <Request, Response>(api: string, body: Request): Promise<Response> =>
 		fetch(`/service/soap/${api}Request`, {

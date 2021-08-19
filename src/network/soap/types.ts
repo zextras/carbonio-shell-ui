@@ -35,7 +35,7 @@ export type ZimletPkgDescription = {
 	}>;
 };
 
-export type GetInfoResponse = SoapResponseContent & {
+export type GetInfoResponse = {
 	name: string;
 	id: string;
 	attrs: {

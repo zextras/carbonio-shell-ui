@@ -9,38 +9,62 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { find, update } from 'lodash';
-import React, { FC, useMemo, useEffect } from 'react';
+import { map, filter } from 'lodash';
+import React, { FC, useMemo, useCallback, useEffect } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import { Container, Text, Chip, Padding, Divider, Button } from '@zextras/zapp-ui';
+import { useTranslation } from 'react-i18next';
 import { useApps } from '../app-store/hooks';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppContextProvider from '../app/app-context-provider';
 import { useSearchStore } from './search-store';
-import { AppData } from '../../types/index';
+import { SEARCH_APP_ID } from '../constants';
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+const useQuery = (): [Array<any>, Function] => useSearchStore((s) => [s.query, s.updateQuery]);
 
 export const SearchAppView: FC = () => {
-	const { query, module, updateModule, updateQuery } = useSearchStore();
+	const { query } = useSearchStore();
 	const apps = useApps();
-	useEffect(() => {
-		if (!module) {
-			const nextModule = find(apps, (app: AppData): boolean => !!app.views?.search)?.core.package;
+	const [t] = useTranslation();
 
-			if (nextModule) {
-				updateModule(nextModule);
-			}
-		}
-	}, [apps, module, updateModule]);
-
-	const Search = useMemo(
-		() => (module && apps[module]?.views?.search ? apps[module]?.views?.search : null),
-		[apps, module]
+	const routes = useMemo(
+		() =>
+			map(
+				filter(apps, (app): boolean => !!app.views?.search),
+				(app) => (
+					<Route key={`/${app.core.package}`} path={`/${SEARCH_APP_ID}/${app.core.package}`}>
+						<AppContextProvider pkg={app.core.package}>
+							{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+							{/* @ts-ignore */}
+							<app.views.search useQuery={useQuery} />
+						</AppContextProvider>
+					</Route>
+				)
+			),
+		[apps]
 	);
-
-	return module ? (
-		<AppContextProvider pkg={module}>
-			{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-			{/* @ts-ignore */}
-			<Search query={query} updateQuery={updateQuery} />
-		</AppContextProvider>
-	) : null;
+	return (
+		<>
+			<Container
+				orientation="horizontal"
+				mainAlignment="flex-start"
+				background="gray5"
+				height="fit"
+				minHeight="48px"
+				padding={{ horizontal: 'large', vertical: 'medium' }}
+				style={{ flexWrap: 'wrap' }}
+			>
+				<Text color="secondary">{t('search.results_for', 'Results for:')}</Text>
+				{map(query, (q) => (
+					<Padding key={q.label} all="extrasmall">
+						<Chip {...q} background="gray2" />
+					</Padding>
+				))}
+			</Container>
+			<Divider color="gray3" />
+			<Switch>{routes}</Switch>
+		</>
+	);
 };

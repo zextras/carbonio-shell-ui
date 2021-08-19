@@ -30,7 +30,7 @@ import {
 	useAction,
 	useActions,
 	useActionsFactory,
-	useFactory,
+	useActionFactory,
 	useIntegratedComponent,
 	useIntegratedFunction,
 	useIntegratedHook
@@ -49,7 +49,7 @@ export const getAppHooks = (pkg: string): unknown => ({
 	useAction,
 	useActions,
 	useActionsFactory,
-	useFactory,
+	useActionFactory,
 	useUserAccounts,
 	useCSRFToken,
 	useSaveSettingsCallback,

@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 import React, { useCallback, useState, FC } from 'react';
-import { Breadcrumbs, Button, Container, Divider, Padding } from '@zextras/zapp-ui';
+import { Breadcrumbs, Button, Container, Divider, Padding, useSnackbar } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -91,7 +91,8 @@ const GeneralSettings: FC = () => {
 	const [t] = useTranslation();
 	const [acct] = useUserAccounts();
 	const [original] = useState(acct.settings);
-	const dispatch = useDispatch();
+	// const dispatch = useDispatch();
+	const dispatch = useCallback(() => console.log('replace me!'), []);
 	const addMod = useCallback((type: 'props' | 'prefs', key, value) => {
 		setMods((m) => ({
 			...m,
@@ -101,12 +102,34 @@ const GeneralSettings: FC = () => {
 			}
 		}));
 	}, []);
+	const createSnackbar = useSnackbar();
+
 	const onSave = useCallback(() => {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
-		dispatch(modifyPrefs(mods));
+		dispatch(modifyPrefs(mods)).then((res) => {
+			if (res.type.includes('fulfilled')) {
+				createSnackbar({
+					key: `new`,
+					replace: true,
+					type: 'info',
+					label: t('message.snackbar.settings_saved', 'Edits saved correctly'),
+					autoHideTimeout: 3000,
+					hideButton: true
+				});
+			} else {
+				createSnackbar({
+					key: `new`,
+					replace: true,
+					type: 'error',
+					label: t('snackbar.error', 'Something went wrong, please try again'),
+					autoHideTimeout: 3000,
+					hideButton: true
+				});
+			}
+		});
 		setMods({});
-	}, [dispatch, mods]);
+	}, [createSnackbar, dispatch, mods, t]);
 	const onCancel = useCallback(() => {
 		setMods({});
 	}, []);

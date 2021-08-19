@@ -17,16 +17,13 @@ import { doLogout } from '../store/accounts-slice';
 
 export default function LogoutView() {
 	const history = useHistory();
-	const dispatch = useDispatch();
+	// const dispatch = useDispatch();
 	const [t] = useTranslation();
 
-	const doLogoutCbk = useCallback(
-		(ev) => {
-			ev.preventDefault();
-			dispatch(doLogout()).then(() => history.push({ pathname: '/' }));
-		},
-		[dispatch, history]
-	);
+	const doLogoutCbk = useCallback((ev) => {
+		ev.preventDefault();
+		// dispatch(doLogout()).then(() => history.push({ pathname: '/' }));
+	}, []);
 
 	return (
 		<form onSubmit={doLogoutCbk}>

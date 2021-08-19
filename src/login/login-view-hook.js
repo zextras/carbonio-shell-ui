@@ -17,7 +17,7 @@ import { doLogin } from '../store/accounts-slice';
 export default function useLoginView() {
 	const history = useHistory();
 	const location = useLocation();
-	const dispatch = useDispatch();
+	// const dispatch = useDispatch();
 
 	const [from, setFrom] = useState();
 	useEffect(() => {
@@ -31,18 +31,15 @@ export default function useLoginView() {
 		history.replace(from);
 	}, [history, from]);
 
-	const doLoginCbk = useCallback(
-		(ev) => {
-			ev.preventDefault();
-			return dispatch(
-				doLogin({
-					username: usernameRef.current.value,
-					password: passwordRef.current.value
-				})
-			).then(() => returnToPage());
-		},
-		[dispatch, returnToPage]
-	);
+	const doLoginCbk = useCallback((ev) => {
+		ev.preventDefault();
+		// return dispatch(
+		// 	doLogin({
+		// 		username: usernameRef.current.value,
+		// 		password: passwordRef.current.value
+		// 	})
+		// ).then(() => returnToPage());
+	}, []);
 
 	return {
 		doLogin: doLoginCbk,

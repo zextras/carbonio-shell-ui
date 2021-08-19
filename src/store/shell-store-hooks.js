@@ -32,7 +32,8 @@ export const useSelector = createSelectorHook(ShellStoreContext);
 export const useStore = createStoreHook(ShellStoreContext);
 
 export function useSaveSettingsCallback() {
-	const dispatch = useDispatch();
+	// const dispatch = useDispatch();
+	const dispatch = console.log;
 	const saveSettings = useCallback((mods) => dispatch(modifyPrefs(mods)), [dispatch]);
 	return saveSettings;
 }

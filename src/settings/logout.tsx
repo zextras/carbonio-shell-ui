@@ -16,16 +16,18 @@ import { useHistory } from 'react-router-dom';
 // @ts-ignore
 import { useDispatch } from '../store/shell-store-hooks';
 import { doLogout } from '../store/accounts-slice';
+import { goToLogin } from '../account/go-to-login';
 
 const Logout: FC = () => {
 	const [t] = useTranslation();
-	const history = useHistory();
+	// const history = useHistory();
 
-	const dispatch = useDispatch();
+	// const dispatch = useDispatch();
 
 	const onClick = useCallback(() => {
-		dispatch(doLogout()).then(() => history.push({ pathname: '/' }));
-	}, [dispatch, history]);
+		goToLogin();
+		// dispatch(doLogout()).then(() => history.push({ pathname: '/' }));
+	}, []);
 	return (
 		<FormSubSection
 			label={t('settings.general.account', 'Account')}

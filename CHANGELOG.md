@@ -2,6 +2,70 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.47](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.46...v0.1.0-beta.47) (2021-08-17)
+
+
+### Features
+
+* updated search bar behavior ([f4d9942](https://bitbucket.org/zextras/zapp-shell/commit/f4d99428aaf48f6aefa277fcb143f2f2a2ea5887))
+
+## [0.1.0-beta.46](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.45...v0.1.0-beta.46) (2021-08-16)
+
+
+### Bug Fixes
+
+* corrected search routing ([a87d1c6](https://bitbucket.org/zextras/zapp-shell/commit/a87d1c6632e425d66cc4490a8387c9f9d053bee7))
+
+## [0.1.0-beta.45](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.44...v0.1.0-beta.45) (2021-08-13)
+
+
+### Bug Fixes
+
+* types ([4cbd569](https://bitbucket.org/zextras/zapp-shell/commit/4cbd5691255ac314179025dc37f1919549ff0725))
+
+## [0.1.0-beta.44](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.43...v0.1.0-beta.44) (2021-08-13)
+
+
+### Bug Fixes
+
+* removed search button ([83a8942](https://bitbucket.org/zextras/zapp-shell/commit/83a8942c83607128160c418bfeaa4cd22e6a3614))
+
+## [0.1.0-beta.43](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.42...v0.1.0-beta.43) (2021-08-13)
+
+
+### Bug Fixes
+
+* fixed exported types ([8fcd7a0](https://bitbucket.org/zextras/zapp-shell/commit/8fcd7a0489dba8d504e81e324c4e08009158217d))
+* temporarily fixed search redirection ([75eebcb](https://bitbucket.org/zextras/zapp-shell/commit/75eebcb5b451df9d7ff9cd2b9396494e37228fe9))
+
+## [0.1.0-beta.42](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.41...v0.1.0-beta.42) (2021-08-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* updated shares and actions management
+
+### Features
+
+* updated action typings ([07c70d3](https://bitbucket.org/zextras/zapp-shell/commit/07c70d38232540b375f6a34b87ef2b3e0a489446))
+
+
+* updated shares and actions management ([382018b](https://bitbucket.org/zextras/zapp-shell/commit/382018bb7195e4fb8532308a99a9f156c4361bc0))
+
+## [0.1.0-beta.41](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.40...v0.1.0-beta.41) (2021-08-13)
+
+
+### Features
+
+* restyled sell header and updated advanced search behavior ([d9534ff](https://bitbucket.org/zextras/zapp-shell/commit/d9534ffa2ea8bb219db42117ec335956f9ac175a))
+
+
+### Bug Fixes
+
+* primary bar scrollbar ([577e4a4](https://bitbucket.org/zextras/zapp-shell/commit/577e4a49ed8c572ef915f8d041d8d864b996162b))
+
+## [0.1.0-beta.40](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.39...v0.1.0-beta.40) (2021-08-13)
+
 ## [0.1.0-beta.39](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.38...v0.1.0-beta.39) (2021-08-10)
 
 ## [0.1.0-beta.38](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.37...v0.1.0-beta.38) (2021-08-09)

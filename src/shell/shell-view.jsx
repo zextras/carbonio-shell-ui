@@ -9,11 +9,10 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useCallback, useEffect, useMemo, useState, useContext } from 'react';
+import React, { useEffect, useMemo, useState, useContext } from 'react';
 import { Row, Responsive, ModalManager, SnackbarManager } from '@zextras/zapp-ui';
-import { useHistory, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import { useTranslation } from 'react-i18next';
 import { find, filter } from 'lodash';
 import AppViewContainer from './app-view-container';
 import ShellContextProvider from './shell-context-provider';
@@ -22,10 +21,7 @@ import ShellNavigationBar from './shell-navigation-bar';
 import ShellMenuPanel from './shell-menu-panel';
 import AppBoardWindow from './boards/app-board-window';
 import { ThemeCallbacksContext } from '../bootstrap/shell-theme-context-provider';
-import { useDispatch, useSessionState } from '../store/shell-store-hooks';
 
-import { verifySession } from '../store/session-slice';
-import { doLogout } from '../store/accounts-slice';
 import { useAppList } from '../app-store/hooks';
 import { useAppStore } from '../app-store';
 import AppContextProvider from '../app/app-context-provider';
@@ -84,40 +80,10 @@ const MainAppRerouter = () => {
 // );
 
 export function Shell() {
-	const history = useHistory();
-	const dispatch = useDispatch();
-
 	const [chatPanelMode, setChatPanelMode] = useState('closed'); // values: 'closed', 'overlap', 'open'
 	const [navOpen, setNavOpen] = useState(true);
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
-	const [t] = useTranslation();
 
-	const accounts = useUserAccounts();
-	const sessionState = useSessionState();
-	const doLogoutCbk = useCallback(
-		(ev) => {
-			ev.preventDefault();
-			dispatch(doLogout()).then(() => history.push({ pathname: '/' }));
-		},
-		[dispatch, history]
-	);
-
-	const userMenuTree = useMemo(
-		() => [
-			{
-				label: t('logout'),
-				icon: 'LogOut',
-				onClick: doLogoutCbk
-			}
-		],
-		[doLogoutCbk, t]
-	);
-
-	useEffect(() => {
-		if (sessionState === 'init' && accounts.length > 0) {
-			dispatch(verifySession());
-		}
-	}, [accounts, sessionState, dispatch]);
 	const TeamViews = useAppStore((state) => state.apps.com_zextras_zapp_team?.views?.teambar);
 
 	useEffect(() => {
@@ -138,7 +104,6 @@ export function Shell() {
 					navigationBarIsOpen={navOpen}
 					mobileNavIsOpen={mobileNavOpen}
 					onCollapserClick={() => setNavOpen(!navOpen)}
-					userMenuTree={userMenuTree}
 				/>
 				<AppViewContainer />
 				{TeamViews && (

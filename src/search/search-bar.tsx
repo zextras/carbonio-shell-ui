@@ -144,18 +144,13 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 	}, []);
 
 	useEffect(() => {
-		const nextModule = find(moduleSelectorItems, (mod) => mod.value === currentApp);
-		if (nextModule) {
-			setModuleSelection(nextModule);
-		} else if (!moduleSelection) {
-			setModuleSelection(moduleSelectorItems[0]);
-		}
-		setModuleSelection(
+		setModuleSelection((current) =>
 			currentApp && currentApp !== SEARCH_APP_ID
 				? find(moduleSelectorItems, (mod) => mod.value === currentApp) ?? moduleSelectorItems[0]
-				: moduleSelectorItems[0]
+				: current ?? moduleSelectorItems[0]
 		);
-	}, [currentApp, moduleSelection, moduleSelectorItems]);
+	}, [currentApp, moduleSelectorItems]);
+
 	useEffect(() => {
 		updateModule(moduleSelection?.value ?? moduleSelectorItems[0]?.value);
 	}, [moduleSelection?.value, moduleSelectorItems, updateModule]);

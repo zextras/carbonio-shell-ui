@@ -57,8 +57,8 @@ export const SearchAppView: FC = () => {
 				style={{ flexWrap: 'wrap' }}
 			>
 				<Text color="secondary">{t('search.results_for', 'Results for:')}</Text>
-				{map(query, (q) => (
-					<Padding key={q.label} all="extrasmall">
+				{map(query, (q, i) => (
+					<Padding key={`${i}${q.label}`} all="extrasmall">
 						<Chip {...q} background="gray2" />
 					</Padding>
 				))}

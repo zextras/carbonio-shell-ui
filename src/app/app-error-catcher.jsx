@@ -10,19 +10,10 @@
  */
 import React, { useCallback } from 'react';
 import { Catcher } from '@zextras/zapp-ui';
-import { useFiberChannel } from './app-context';
 
 export default function AppErrorCatcher({ children }) {
-	const { fiberChannelSink } = useFiberChannel();
-
-	const onError = useCallback(
-		(error) => {
-			fiberChannelSink({
-				event: 'report-exception',
-				data: { exception: error }
-			});
-		},
-		[fiberChannelSink]
-	);
+	const onError = useCallback((error) => {
+		// ({event: 'report-exception',data: { exception: error }});
+	}, []);
 	return <Catcher onError={onError}>{children}</Catcher>;
 }

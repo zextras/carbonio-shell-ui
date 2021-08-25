@@ -26,9 +26,4 @@ export function useAppContext() {
 	return appCtxt;
 }
 
-export function useFiberChannel() {
-	const { fiberChannelSink, fiberChannel } = useContext(AppContext);
-	return { fiberChannelSink, fiberChannel };
-}
-
 export default AppContext;

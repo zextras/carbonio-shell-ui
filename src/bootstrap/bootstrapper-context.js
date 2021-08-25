@@ -12,16 +12,10 @@
 import { createContext, useContext } from 'react';
 
 const BootstrapperContext = createContext({
-	// fiberChannelFactory,
 	// i18nFactory,
 	// shellNetworkService,
 	// storeFactory,
 });
-
-export function useFiberChannelFactory() {
-	const { fiberChannelFactory } = useContext(BootstrapperContext);
-	return fiberChannelFactory;
-}
 
 export function useI18nFactory() {
 	const { i18nFactory } = useContext(BootstrapperContext);

@@ -209,8 +209,6 @@ export const soapFetch: SoapFetch;
 export const Applink: FunctionComponent<LinkProps>;
 export const Spinner: FunctionComponent;
 export const List: FunctionComponent<ListProps<any>>;
-export const fiberChannel: FC;
-export const fiberChannelSink: FCSink;
 
 export const getApp: () => AppData;
 export const getAppContext: <T>() => T;
@@ -243,7 +241,6 @@ export const useBehaviorSubject: <T>(observable: BehaviorSubject<T>) => T;
 export const useBoardConfig: <T>() => T;
 export const useCSRFToken: () => string;
 export const useCurrentSync: () => any;
-export const useFiberChannel: () => FC;
 export const useFirstSync: () => any;
 export const useGoBackHistoryCallback: () => () => void;
 export const useIsMobile: () => boolean;

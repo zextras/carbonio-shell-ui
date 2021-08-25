@@ -16,7 +16,6 @@ import I18nFactory from './i18n-factory';
 export default class I18nTestFactory extends I18nFactory {
 	// eslint-disable-next-line class-methods-use-this
 	public getAppI18n(appPkgDescription: AppPkgDescription): i18n {
-		// const sink = this._fcFactory.getAppFiberChannelSink(appPkgDescription);
 		const newI18n = i18next.createInstance();
 		newI18n
 			// init i18next

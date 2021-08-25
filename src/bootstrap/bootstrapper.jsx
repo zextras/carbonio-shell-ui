@@ -15,7 +15,6 @@ import { ThemeProvider } from './shell-theme-context-provider';
 import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-context-provider';
 import ShellNetworkService from '../network/shell-network-service';
-import FiberChannelFactory from '../fiberchannel/fiber-channel';
 import I18nFactory from '../i18n/i18n-factory';
 import createShellStore from '../store/create-shell-store';
 import StoreFactory from '../store/store-factory';
@@ -48,12 +47,10 @@ const AppStoreInterface = () => {
 export default function bootstrapper(onBeforeBoot) {
 	// const { shellStore, shellStorePersistor } = createShellStore(true);
 
-	const fiberChannelFactory = new FiberChannelFactory();
 	const i18nFactory = new I18nFactory();
 	const storeFactory = new StoreFactory();
 
 	const container = {
-		fiberChannelFactory,
 		i18nFactory,
 		storeFactory
 	};
@@ -67,7 +64,6 @@ export default function bootstrapper(onBeforeBoot) {
 		: Promise.resolve(container)
 	).then(
 		({
-			fiberChannelFactory: _fiberChannelFactory,
 			i18nFactory: _i18nFactory,
 			shellNetworkService: _shellNetworkService,
 			storeFactory: _storeFactory
@@ -81,7 +77,6 @@ export default function bootstrapper(onBeforeBoot) {
 				return (
 					<ThemeProvider>
 						<BootstrapperContextProvider
-							fiberChannelFactory={_fiberChannelFactory}
 							i18nFactory={_i18nFactory}
 							shellNetworkService={_shellNetworkService}
 							storeFactory={_storeFactory}

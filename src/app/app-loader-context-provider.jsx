@@ -10,11 +10,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import {
-	useFiberChannelFactory,
-	useShellNetworkService,
-	useStoreFactory
-} from '../bootstrap/bootstrapper-context';
+import { useShellNetworkService, useStoreFactory } from '../bootstrap/bootstrapper-context';
 import { loadApps, unloadAppsAndThemes } from './app-loader';
 import { checkUpdate } from '../update-log/check-update';
 import ChangeLogModal from '../update-log/change-log-modal';
@@ -23,7 +19,6 @@ import { useUserAccounts } from '../account/hooks';
 export default function AppLoaderContextProvider({ children }) {
 	const shellNetworkService = useShellNetworkService();
 	const accounts = useUserAccounts();
-	const fiberChannelFactory = useFiberChannelFactory();
 	const storeFactory = useStoreFactory();
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
 	useEffect(() => {
@@ -36,7 +31,7 @@ export default function AppLoaderContextProvider({ children }) {
 		} else {
 			loadApps(accounts, shellNetworkService, storeFactory);
 		}
-	}, [accounts, fiberChannelFactory, shellNetworkService, storeFactory]);
+	}, [accounts, shellNetworkService, storeFactory]);
 	return (
 		<>
 			{/* {showUpdateModal ? <ChangeLogModal cache={value.apps.cache} /> : null} */}

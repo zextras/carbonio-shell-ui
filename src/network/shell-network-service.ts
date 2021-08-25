@@ -11,7 +11,6 @@
 
 // eslint-disable-next-line max-classes-per-file
 import { AppPkgDescription, SoapFetch } from '../../types';
-import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import { ShellStore } from '../store/create-shell-store';
 import { selectCSRFToken } from '../store/accounts-slice';
 
@@ -30,7 +29,7 @@ export default class ShellNetworkService {
 
 	private _csrfToken?: string;
 
-	constructor(private _store: ShellStore, private _FCFactory: IFiberChannelFactory) {
+	constructor(private _store: ShellStore) {
 		this._csrfToken = selectCSRFToken(_store.getState());
 		_store.subscribe(() => {
 			this._csrfToken = selectCSRFToken(_store.getState());
@@ -44,7 +43,6 @@ export default class ShellNetworkService {
 	}
 
 	public getAppSoapFetch(appPackageDescription: AppPkgDescription): SoapFetch {
-		const appSink = this._FCFactory.getAppFiberChannelSink(appPackageDescription);
 		const _fetch = this._getAppFetch(appPackageDescription);
 		return (api, body): Promise<any> => {
 			const request: { Header?: any; Body: any } = {

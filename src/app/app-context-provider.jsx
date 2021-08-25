@@ -14,28 +14,21 @@ import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
 import { ModalManager, SnackbarManager } from '@zextras/zapp-ui';
 import AppContext from './app-context';
-import {
-	useFiberChannelFactory,
-	useI18nFactory,
-	useStoreFactory
-} from '../bootstrap/bootstrapper-context';
+import { useI18nFactory, useStoreFactory } from '../bootstrap/bootstrapper-context';
 import AppErrorCatcher from './app-error-catcher';
 import { useAppContextCache } from './app-context-cache-context';
 import { useAppStore } from '../app-store';
 
 export default function AppContextProvider({ pkg, children }) {
 	const appContextCache = useAppContextCache();
-	const fiberChannelFactory = useFiberChannelFactory();
 	const i18nFactory = useI18nFactory();
 	const storeFactory = useStoreFactory();
 	const app = useAppStore((s) => s.apps[pkg]?.core);
 	const memoizedContextFcns = useMemo(
 		() => ({
-			app,
-			fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink(app),
-			fiberChannel: fiberChannelFactory.getAppFiberChannel(app)
+			app
 		}),
-		[app, fiberChannelFactory]
+		[app]
 	);
 
 	const value = useMemo(

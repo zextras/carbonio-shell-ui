@@ -11,12 +11,10 @@
 
 import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
 import ShellNetworkService from '../network/shell-network-service';
-import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import I18nFactory from '../i18n/i18n-factory';
 
 export type DevUtilsContext = {
 	shellNetworkService: ShellNetworkService;
-	fiberChannelFactory: IFiberChannelFactory;
 	i18nFactory: I18nFactory;
 	mswjs?: SetupWorkerApi;
 };

@@ -73,9 +73,6 @@ export const network = {
 	soapFetch
 };
 
-export const fiberChannel = jest.fn();
-export const fiberChannelSink = jest.fn();
-
 function render(
 	ui,
 	{

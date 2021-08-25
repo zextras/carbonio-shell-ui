@@ -27,7 +27,7 @@ import { useUserAccount } from '../account/hooks';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-export { useAppPkg, useFiberChannel } from '../app/app-context';
+export { useAppPkg } from '../app/app-context';
 
 export { default as usePromise } from 'react-use-promise';
 

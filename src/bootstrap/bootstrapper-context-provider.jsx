@@ -18,7 +18,6 @@ import BoardContextProvider from '../shell/boards/board-context-provider';
 
 export default function BootstrapperContextProvider({
 	children,
-	fiberChannelFactory,
 	i18nFactory,
 	shellNetworkService,
 	storeFactory
@@ -26,7 +25,6 @@ export default function BootstrapperContextProvider({
 	return (
 		<BootstrapperContext.Provider
 			value={{
-				fiberChannelFactory,
 				i18nFactory,
 				shellNetworkService,
 				storeFactory

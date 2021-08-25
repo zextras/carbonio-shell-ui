@@ -31,7 +31,6 @@ export default class I18nFactory {
 
 	// eslint-disable-next-line class-methods-use-this
 	public getAppI18n(appPkgDescription: AppPkgDescription): i18n {
-		// const sink = this._fcFactory.getAppFiberChannelSink(appPkgDescription);
 		if (this._cache[appPkgDescription.package]) {
 			return this._cache[appPkgDescription.package];
 		}

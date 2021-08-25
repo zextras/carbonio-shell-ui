@@ -10,11 +10,9 @@
  */
 
 import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
-import ShellNetworkService from '../network/shell-network-service';
 import I18nFactory from '../i18n/i18n-factory';
 
 export type DevUtilsContext = {
-	shellNetworkService: ShellNetworkService;
 	i18nFactory: I18nFactory;
 	mswjs?: SetupWorkerApi;
 };

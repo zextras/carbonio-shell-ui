@@ -27,10 +27,6 @@ export default class ShellNetworkService {
 
 	private _csrfToken?: string;
 
-	constructor(private _store: ShellStore) {
-		_store.subscribe(() => {});
-	}
-
 	private _getAppFetch(
 		appPackageDescription: AppPkgDescription
 	): (input: RequestInfo, init?: RequestInit) => Promise<Response> {

@@ -43,7 +43,6 @@ import { RichTextEditor } from '@zextras/zapp-ui/dist/zapp-ui.rich-text-editor';
 import { LinkProps } from 'react-router-dom';
 import StoreFactory from '../store/store-factory';
 
-import ShellNetworkService from '../network/shell-network-service';
 import { Account, AppPkgDescription, SoapFetch } from '../../types';
 import { appStore } from '../app-store';
 import { RuntimeAppData } from '../app-store/store-types';
@@ -124,7 +123,6 @@ export function updateAppHandlers(appPkg: AppPkgDescription, handlers: RequestHa
 function loadAppModule(
 	appPkg: AppPkgDescription,
 	store: Store<any>,
-	shellNetworkService: ShellNetworkService,
 	setAppClass: (id: string, appClass: ComponentClass) => void
 ): Promise<void> {
 	return new Promise((_resolve, _reject) => {
@@ -157,7 +155,6 @@ function loadAppModule(
 				registerFunctions: useIntegrationsStore.getState().registerFunctions,
 				registerActions: useIntegrationsStore.getState().registerActions,
 				registerComponents: useIntegrationsStore.getState().registerComponents(appPkg.package),
-				soapFetch: shellNetworkService.getAppSoapFetch(appPkg),
 				AppLink: getAppLink(appPkg.package),
 				Spinner,
 				List,
@@ -204,13 +201,12 @@ function loadAppModule(
 
 function loadApp(
 	pkg: AppPkgDescription,
-	shellNetworkService: ShellNetworkService,
 	storeFactory: StoreFactory
 ): Promise<LoadedAppRuntime | undefined> {
 	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
 	const store = storeFactory.getStoreForApp(pkg);
 	const { setAppClass } = appStore.getState().setters;
-	return loadAppModule(pkg, store, shellNetworkService, setAppClass)
+	return loadAppModule(pkg, store, setAppClass)
 		.then(() => true)
 		.then((loaded) =>
 			loaded
@@ -268,7 +264,6 @@ function injectSharedLibraries(): void {
 
 export function loadApps(
 	accounts: Array<Account>,
-	shellNetworkService: ShellNetworkService,
 	storeFactory: StoreFactory
 ): Promise<LoadedAppsCache> {
 	injectSharedLibraries();
@@ -277,7 +272,7 @@ export function loadApps(
 		typeof cliSettings === 'undefined' || cliSettings.enableErrorReporter
 			? orderedApps
 			: filter(orderedApps, (pkg) => pkg.package !== 'com_zextras_zapp_error_reporter');
-	return Promise.all(map(apps, (pkg) => loadApp(pkg, shellNetworkService, storeFactory)))
+	return Promise.all(map(apps, (pkg) => loadApp(pkg, storeFactory)))
 		.then((loaded) => compact(loaded))
 		.then((loaded) => keyBy(loaded, 'pkg.package'));
 }

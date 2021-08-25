@@ -30,7 +30,7 @@ const AppStoreInterface = () => {
 	const [t] = useTranslation();
 	useEffect(() => {
 		if (account && status === 0) {
-			addApps(getSettingsCore(t), getSearchCore(t));
+			addApps([getSettingsCore(t), getSearchCore(t)]);
 			setStatus(1);
 		}
 		if (status === 1) {

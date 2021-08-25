@@ -45,7 +45,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 	const account = useUserAccount();
 	const items = useMemo(
 		() => ({
-			id: account.id,
+			id: account?.id,
 			label: account?.displayName ?? account?.name,
 			icon: 'PersonOutline',
 			open: true,
@@ -58,7 +58,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 				CustomComponent: SidebarSwitch
 			}))
 		}),
-		[account?.displayName, account.id, account?.name, apps, sidebarIsOpen]
+		[account?.displayName, account?.id, account?.name, apps, sidebarIsOpen]
 	);
 
 	return disabled ? null : (
@@ -80,7 +80,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 						<Accordion items={items} />
 					) : (
 						<>
-							<Tooltip label={account.displayName ?? account.name} placement="right">
+							<Tooltip label={account?.displayName ?? account?.name} placement="right">
 								<Padding all="medium">
 									<Icon size="large" icon="PersonOutline" />
 								</Padding>

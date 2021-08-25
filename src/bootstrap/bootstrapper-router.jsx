@@ -15,7 +15,7 @@ import { SnackbarManagerContext, ModalManagerContext } from '@zextras/zapp-ui';
 import BootstrapperRouterContent from './bootstrapper-router-content';
 import AppLoaderMounter from '../app/app-loader-mounter';
 import { useContextBridge } from '../app-store/context-bridge';
-import { useUserAccounts } from '../account/hooks';
+import { useUserAccount } from '../account/hooks';
 
 const ContextBridge = ({ accounts }) => {
 	const history = useHistory();
@@ -50,12 +50,12 @@ const ContextBridge = ({ accounts }) => {
 };
 
 export default function BootstrapperRouter() {
-	const accounts = useUserAccounts();
+	const account = useUserAccount();
 	return (
 		<BrowserRouter basename={BASE_PATH}>
-			<ContextBridge accounts={accounts} />
+			<ContextBridge accounts={account} />
 			<AppLoaderMounter />
-			<BootstrapperRouterContent accounts={accounts} />
+			<BootstrapperRouterContent accounts={account} />
 		</BrowserRouter>
 	);
 }

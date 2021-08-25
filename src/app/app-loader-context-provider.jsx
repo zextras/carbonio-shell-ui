@@ -14,11 +14,11 @@ import { useShellNetworkService, useStoreFactory } from '../bootstrap/bootstrapp
 import { loadApps, unloadAppsAndThemes } from './app-loader';
 import { checkUpdate } from '../update-log/check-update';
 import ChangeLogModal from '../update-log/change-log-modal';
-import { useUserAccounts } from '../account/hooks';
+import { useUserAccount } from '../account/hooks';
 
 export default function AppLoaderContextProvider({ children }) {
 	const shellNetworkService = useShellNetworkService();
-	const accounts = useUserAccounts();
+	const account = useUserAccount();
 	const storeFactory = useStoreFactory();
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
 	useEffect(() => {
@@ -26,12 +26,12 @@ export default function AppLoaderContextProvider({ children }) {
 			'%cLOADING APPS',
 			'color: white; background: #2b73d2;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
 		);
-		if (accounts.length < 1) {
+		if (account) {
 			unloadAppsAndThemes();
 		} else {
-			loadApps(accounts, shellNetworkService, storeFactory);
+			loadApps(account, shellNetworkService, storeFactory);
 		}
-	}, [accounts, shellNetworkService, storeFactory]);
+	}, [account, shellNetworkService, storeFactory]);
 	return (
 		<>
 			{/* {showUpdateModal ? <ChangeLogModal cache={value.apps.cache} /> : null} */}

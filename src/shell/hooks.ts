@@ -30,7 +30,7 @@ export { useAppPkg } from '../app/app-context';
 
 export { default as usePromise } from 'react-use-promise';
 
-export { useUserAccounts, useUserAccount, useUserSettings } from '../account/hooks';
+export { useUserAccount, useUserAccounts, useUserSettings } from '../account/hooks';
 export const getUseAddBoardCallback = (appId: string) => (): ((
 	path: string,
 	context?: unknown | { app: string }

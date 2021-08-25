@@ -11,7 +11,6 @@
 import React, { FC, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormSubSection, Button } from '@zextras/zapp-ui';
-import { useHistory } from 'react-router-dom';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { goToLogin } from '../account/go-to-login';

@@ -1,4 +1,5 @@
 import { filter, reduce } from 'lodash';
+import { CoreAppData } from '../../types';
 import { zimletToAppPkgDescription } from '../network/soap/utils';
 import {
 	Account,
@@ -25,7 +26,7 @@ export const normalizeAccount = ({
 	identities,
 	signatures,
 	props
-}: GetInfoResponse): Array<Account> => {
+}: GetInfoResponse): { account: Account; settings: AccountSettings; apps: Array<CoreAppData> } => {
 	const settings = normalizeSettings({ attrs, prefs, props });
 	const apps = reduce<ZimletPkgDescription, AppPkgDescription[]>(
 		filter<ZimletPkgDescription>(
@@ -36,15 +37,15 @@ export const normalizeAccount = ({
 		[]
 	);
 
-	return [
-		{
+	return {
+		account: {
 			id,
 			name,
 			displayName: attrs._attrs.displayName,
-			apps,
-			settings,
 			identities,
 			signatures
-		}
-	];
+		},
+		settings,
+		apps
+	};
 };

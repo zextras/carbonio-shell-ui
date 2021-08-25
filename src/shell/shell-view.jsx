@@ -25,7 +25,8 @@ import { ThemeCallbacksContext } from '../bootstrap/shell-theme-context-provider
 import { useAppList } from '../app-store/hooks';
 import { useAppStore } from '../app-store';
 import AppContextProvider from '../app/app-context-provider';
-import { useUserAccounts } from '../account/hooks';
+import { useUserAccount, useUserSettings } from '../account/hooks';
+import { useAccountStore } from '../account/account-store';
 
 const Background = styled.div`
 	background: ${({ theme }) => theme.palette.gray6.regular};
@@ -41,7 +42,7 @@ const Background = styled.div`
 
 function DarkReaderListener() {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
-	const [{ settings }] = useUserAccounts();
+	const settings = useUserSettings();
 	useEffect(() => {
 		const darkreaderState =
 			find(settings?.props ?? [], ['name', 'zappDarkreaderMode'])?._content ?? 'auto';
@@ -51,12 +52,10 @@ function DarkReaderListener() {
 }
 
 const MainAppRerouter = () => {
-	const accounts = useUserAccounts();
+	const account = useUserAccount();
 	const apps = useAppList();
 	const first = useMemo(() => filter(apps, (app) => !!app.views?.app)[0], [apps]);
-	return accounts.length > 0 && first ? (
-		<Redirect from="/" to={`/${first?.core?.package}`} />
-	) : null;
+	return account && first ? <Redirect from="/" to={`/${first?.core?.package}`} /> : null;
 };
 
 // const TeamIcon = ({ setMode }) => (
@@ -84,6 +83,7 @@ export function Shell() {
 	const [navOpen, setNavOpen] = useState(true);
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
+	useAccountStore(console.log);
 	const TeamViews = useAppStore((state) => state.apps.com_zextras_zapp_team?.views?.teambar);
 
 	useEffect(() => {

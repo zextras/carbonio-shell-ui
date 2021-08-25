@@ -1,15 +1,16 @@
 export type AccountState = {
-	accounts: Array<Account>;
+	account?: Account;
+	settings: AccountSettings;
 	context: any;
 	init: () => Promise<void>;
 	soapFetch: <Request, Response>(api: string, body: Request) => Promise<Response>;
 };
 export type Account = {
-	apps: Array<AppPkgDescription>;
+	// apps: Array<AppPkgDescription>;
 	id: string;
 	name: string;
 	displayName: string;
-	settings: AccountSettings;
+	//	settings: AccountSettings;
 	signatures: { signature: Array<unknown> };
 	identities: { identity: Array<unknown> };
 };

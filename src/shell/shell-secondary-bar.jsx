@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import { Route, Switch } from 'react-router-dom';
 import { Container, Accordion, IconButton, Padding, Tooltip, Icon } from '@zextras/zapp-ui';
 
-import { useUserAccounts } from '../account/hooks';
+import { useUserAccount } from '../account/hooks';
 import { useApps } from '../app-store/hooks';
 import AppContextProvider from '../app/app-context-provider';
 import { Collapser } from './collapser';
@@ -42,7 +42,7 @@ const SidebarContainer = styled(Container)`
 export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, activeApp }) {
 	const apps = useApps();
 	const disabled = useMemo(() => activeApp && !apps[activeApp]?.views?.sidebar, [activeApp, apps]);
-	const accounts = useUserAccounts();
+	const accounts = useUserAccount();
 	const items = useMemo(
 		() =>
 			map(accounts, (account) => ({

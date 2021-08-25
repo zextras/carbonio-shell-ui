@@ -11,12 +11,12 @@
 import React, { useMemo } from 'react';
 import { Tooltip, Quota, Container } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
-import { useUserAccounts } from '../account/hooks';
+import { useUserAccount } from '../account/hooks';
 
 export const UserQuota = () => {
 	const [t] = useTranslation();
 
-	const [account] = useUserAccounts();
+	const account = useUserAccount();
 
 	const quota = useMemo(() => {
 		const userQuota = account.settings?.attrs?.zimbraMailQuota;

@@ -18,7 +18,7 @@ import Logout from './logout';
 import AppearanceSettings from './appearance-settings';
 import ModuleVersionSettings from './module-version-settings';
 import OutOfOfficeSettings from './out-of-office-view';
-import { useUserAccounts } from '../account/hooks';
+import { useUserSettings } from '../account/hooks';
 import { SETTINGS_APP_ID } from '../constants';
 
 export const DisplayerHeader: FC<{
@@ -87,8 +87,8 @@ type Mods = {
 const GeneralSettings: FC = () => {
 	const [mods, setMods] = useState<Mods>({});
 	const [t] = useTranslation();
-	const [acct] = useUserAccounts();
-	const [original] = useState(acct.settings);
+	const settings = useUserSettings();
+	const [original] = useState(settings);
 	// const dispatch = useDispatch();
 	const dispatch = useCallback(() => console.log('replace me!'), []);
 	const addMod = useCallback((type: 'props' | 'prefs', key, value) => {
@@ -146,8 +146,8 @@ const GeneralSettings: FC = () => {
 					onSave={onSave}
 				/>
 				<Logout />
-				<AppearanceSettings settings={acct.settings} addMod={addMod} />
-				<OutOfOfficeSettings settings={acct.settings} addMod={addMod} />
+				<AppearanceSettings settings={settings} addMod={addMod} />
+				<OutOfOfficeSettings settings={settings} addMod={addMod} />
 				<ModuleVersionSettings />
 				<Logout />
 			</Container>

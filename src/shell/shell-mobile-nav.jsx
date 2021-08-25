@@ -14,7 +14,7 @@ import { map } from 'lodash';
 import { Accordion, Collapse, Container, Padding } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
 import { useAppList } from '../app-store/hooks';
-import { useUserAccounts } from '../account/hooks';
+import { useUserAccount } from '../account/hooks';
 import { UserQuota } from './user-quota';
 import AppContextProvider from '../app/app-context-provider';
 
@@ -27,34 +27,33 @@ const SidebarComponent = ({ item }) =>
 export default function ShellMobileNav({ mobileNavIsOpen, menuTree }) {
 	const apps = useAppList();
 	const history = useHistory();
-	const accounts = useUserAccounts();
+	const account = useUserAccount();
 	const items = useMemo(
-		() =>
-			map(accounts, (account) => ({
-				id: account.id,
-				label: account?.displayName ?? account?.name,
-				icon: 'PersonOutline',
-				open: true,
-				items: map(apps, (app) => ({
-					id: `${app.core.package}-wrap`,
-					label: app.core.name,
-					icon: app.icon,
-					onClick: () => history.push(`/${app.core.package}`),
-					items: app.views?.sidebar
-						? [
-								{
-									id: app.core.package,
-									label: app.core.name,
-									icon: app.icon,
-									onClick: () => history.push(`/${app.core.package}`),
-									sidebar: app.views?.sidebar,
-									CustomComponent: SidebarComponent
-								}
-						  ]
-						: []
-				}))
-			})),
-		[accounts, apps, history]
+		() => ({
+			id: account.id,
+			label: account?.displayName ?? account?.name,
+			icon: 'PersonOutline',
+			open: true,
+			items: map(apps, (app) => ({
+				id: `${app.core.package}-wrap`,
+				label: app.core.name,
+				icon: app.icon,
+				onClick: () => history.push(`/${app.core.package}`),
+				items: app.views?.sidebar
+					? [
+							{
+								id: app.core.package,
+								label: app.core.name,
+								icon: app.icon,
+								onClick: () => history.push(`/${app.core.package}`),
+								sidebar: app.views?.sidebar,
+								CustomComponent: SidebarComponent
+							}
+					  ]
+					: []
+			}))
+		}),
+		[account?.displayName, account.id, account?.name, apps, history]
 	);
 	return (
 		<Container

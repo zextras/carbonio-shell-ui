@@ -21,16 +21,16 @@ import { settingsAppData, getSettingsCore } from '../settings/settings-app';
 import { searchAppData, getSearchCore } from '../search/search-app';
 import { SETTINGS_APP_ID, SEARCH_APP_ID } from '../constants';
 import { useAccountStore } from '../account/account-store';
-import { useUserAccounts } from '../account/hooks';
+import { useUserAccount } from '../account/hooks';
 
 const AppStoreInterface = () => {
 	const { addApps, registerAppData } = useAppStore((s) => s.setters);
-	const accounts = useUserAccounts;
+	const account = useUserAccount;
 	const [status, setStatus] = useState(0);
 	const [t] = useTranslation();
 	useEffect(() => {
-		if (accounts && accounts.length > 0 && status === 0) {
-			addApps([...accounts[0].apps, getSettingsCore(t), getSearchCore(t)]);
+		if (account && status === 0) {
+			addApps(getSettingsCore(t), getSearchCore(t));
 			setStatus(1);
 		}
 		if (status === 1) {
@@ -38,7 +38,7 @@ const AppStoreInterface = () => {
 			registerAppData(SEARCH_APP_ID)(searchAppData);
 			setStatus(2);
 		}
-	}, [addApps, status, registerAppData, t, accounts]);
+	}, [addApps, status, registerAppData, t, account]);
 	return null;
 };
 

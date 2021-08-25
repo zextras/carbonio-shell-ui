@@ -16,16 +16,12 @@ import AppLoaderContextProvider from '../app/app-loader-context-provider';
 import ThemeLoaderMounter from '../app/theme-loader-mounter';
 import BoardContextProvider from '../shell/boards/board-context-provider';
 
-export default function BootstrapperContextProvider({
-	children,
-	i18nFactory,
-	shellNetworkService
-}) {
+export default function BootstrapperContextProvider({ children, i18nFactory, storeFactory }) {
 	return (
 		<BootstrapperContext.Provider
 			value={{
-				i18nFactory,
-				shellNetworkService
+				storeFactory,
+				i18nFactory
 			}}
 		>
 			<I18nextProvider i18n={i18nFactory.getShellI18n()}>

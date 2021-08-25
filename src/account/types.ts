@@ -1,9 +1,12 @@
+import { string } from 'prop-types';
+
 export type AccountState = {
 	account?: Account;
 	settings: AccountSettings;
 	context: any;
 	init: () => Promise<void>;
 	soapFetch: <Request, Response>(api: string, body: Request) => Promise<Response>;
+	xmlSoapFetch: <Request, Response>(api: string, body: Request) => Promise<Response>;
 };
 export type Account = {
 	// apps: Array<AppPkgDescription>;
@@ -88,3 +91,27 @@ export type AppPkgDescription = BasePkgDescription & {
 	styleEntryPoint?: string;
 	handlers?: string;
 };
+
+export type SuccessSoapResponse<R> = {
+	Body: Record<string, R>;
+	Header: any;
+};
+
+export type ErrorSoapResponse = {
+	Body: {
+		Fault: {
+			Detail: {
+				Error: {
+					Code: string;
+					Detail: string;
+				};
+			};
+			Reason: {
+				Text: string;
+			};
+		};
+	};
+	Header: any;
+};
+
+export type SoapResponse<R> = SuccessSoapResponse<R> | ErrorSoapResponse;

@@ -43,9 +43,9 @@ import { RichTextEditor } from '@zextras/zapp-ui/dist/zapp-ui.rich-text-editor';
 import { LinkProps } from 'react-router-dom';
 import StoreFactory from '../store/store-factory';
 
-import { Account, AppPkgDescription, SoapFetch } from '../../types';
+import { AppPkgDescription, SoapFetch } from '../../types';
 import { appStore } from '../app-store';
-import { AppData, RuntimeAppData } from '../app-store/store-types';
+import { RuntimeAppData } from '../app-store/store-types';
 import { getAppGetters } from './app-loader-functions';
 import { getAppHooks } from './app-loader-hooks';
 import { getAppLink } from './app-link';

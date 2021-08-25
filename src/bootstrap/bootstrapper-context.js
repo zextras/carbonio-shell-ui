@@ -14,17 +14,12 @@ import { createContext, useContext } from 'react';
 const BootstrapperContext = createContext({
 	// i18nFactory,
 	// shellNetworkService,
-	// storeFactory,
+	// storeFactory
 });
 
 export function useI18nFactory() {
 	const { i18nFactory } = useContext(BootstrapperContext);
 	return i18nFactory;
-}
-
-export function useShellNetworkService() {
-	const { shellNetworkService } = useContext(BootstrapperContext);
-	return shellNetworkService;
 }
 
 export function useStoreFactory() {

@@ -10,14 +10,13 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { useShellNetworkService, useStoreFactory } from '../bootstrap/bootstrapper-context';
+import { useStoreFactory } from '../bootstrap/bootstrapper-context';
 import { loadApps, unloadAppsAndThemes } from './app-loader';
 import { checkUpdate } from '../update-log/check-update';
 import ChangeLogModal from '../update-log/change-log-modal';
 import { useUserAccount } from '../account/hooks';
 
 export default function AppLoaderContextProvider({ children }) {
-	const shellNetworkService = useShellNetworkService();
 	const account = useUserAccount();
 	const storeFactory = useStoreFactory();
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -29,9 +28,9 @@ export default function AppLoaderContextProvider({ children }) {
 		if (account) {
 			unloadAppsAndThemes();
 		} else {
-			loadApps(shellNetworkService, storeFactory);
+			loadApps(storeFactory);
 		}
-	}, [account, shellNetworkService, storeFactory]);
+	}, [account, storeFactory]);
 	return (
 		<>
 			{/* {showUpdateModal ? <ChangeLogModal cache={value.apps.cache} /> : null} */}

@@ -119,9 +119,7 @@ export const baseXmlFetch = (get: GetState<AccountState>, set: SetState<AccountS
 				</context>
 			</soap:Header>
 			<soap:Body>
-				<${api}Request>
-					${body}
-				</${api}Request>
+				${body}
 			</soap:Body>
 		</soap:Envelope>`
 	}) // TODO proper error handling

@@ -20,6 +20,8 @@ import ModuleVersionSettings from './module-version-settings';
 import OutOfOfficeSettings from './out-of-office-view';
 import { useUserSettings } from '../account/hooks';
 import { SETTINGS_APP_ID } from '../constants';
+import { editSettings } from '../account/edit-settings';
+import { Mods } from '../account/types';
 
 export const DisplayerHeader: FC<{
 	label: string;
@@ -76,21 +78,11 @@ export const DisplayerHeader: FC<{
 	);
 };
 
-type PropsMods = Record<string, { app: string; value: unknown }>;
-type PrefsMods = Record<string, unknown>;
-
-type Mods = {
-	props?: PropsMods;
-	prefs?: PrefsMods;
-};
-
 const GeneralSettings: FC = () => {
 	const [mods, setMods] = useState<Mods>({});
 	const [t] = useTranslation();
 	const settings = useUserSettings();
 	const [original] = useState(settings);
-	// const dispatch = useDispatch();
-	const dispatch = useCallback(() => console.log('replace me!'), []);
 	const addMod = useCallback((type: 'props' | 'prefs', key, value) => {
 		setMods((m) => ({
 			...m,
@@ -105,7 +97,7 @@ const GeneralSettings: FC = () => {
 	const onSave = useCallback(() => {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
-		dispatch(modifyPrefs(mods)).then((res) => {
+		editSettings(mods).then((res) => {
 			if (res.type.includes('fulfilled')) {
 				createSnackbar({
 					key: `new`,
@@ -127,7 +119,7 @@ const GeneralSettings: FC = () => {
 			}
 		});
 		setMods({});
-	}, [createSnackbar, dispatch, mods, t]);
+	}, [createSnackbar, mods, t]);
 	const onCancel = useCallback(() => {
 		setMods({});
 	}, []);

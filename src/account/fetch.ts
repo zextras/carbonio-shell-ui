@@ -98,11 +98,10 @@ export const baseJsonFetch = (get: GetState<AccountState>, set: SetState<Account
 		.catch(console.error);
 
 export const baseXmlFetch = (get: GetState<AccountState>, set: SetState<AccountState>) => <
-	Request,
 	Response
 >(
 	api: string,
-	body: Request
+	body: string
 ): Promise<Response> =>
 	fetch(`/service/soap/${api}Request`, {
 		method: 'POST',

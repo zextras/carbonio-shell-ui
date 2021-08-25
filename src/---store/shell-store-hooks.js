@@ -12,9 +12,10 @@
 import { useContext, useCallback } from 'react';
 import { createDispatchHook, createSelectorHook, createStoreHook } from 'react-redux';
 import ShellStoreContext from './shell-store-context';
-import { selectAccounts, selectCSRFToken, modifyPrefs } from './accounts-slice';
+import { selectAccounts, selectCSRFToken } from './accounts-slice';
 import { selectSessionState } from './session-slice';
 import { selectFirstSync, selectSyncResponse } from './sync-slice';
+import { editSettings } from '../account/edit-settings';
 
 export function useReduxContext() {
 	const contextValue = useContext(ShellStoreContext);
@@ -32,9 +33,7 @@ export const useSelector = createSelectorHook(ShellStoreContext);
 export const useStore = createStoreHook(ShellStoreContext);
 
 export function useSaveSettingsCallback() {
-	// const dispatch = useDispatch();
-	const dispatch = console.log;
-	const saveSettings = useCallback((mods) => dispatch(modifyPrefs(mods)), [dispatch]);
+	const saveSettings = useCallback((mods) => editSettings(mods), []);
 	return saveSettings;
 }
 

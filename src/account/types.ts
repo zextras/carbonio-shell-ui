@@ -6,7 +6,7 @@ export type AccountState = {
 	context: any;
 	init: () => Promise<void>;
 	soapFetch: <Request, Response>(api: string, body: Request) => Promise<Response>;
-	xmlSoapFetch: <Request, Response>(api: string, body: Request) => Promise<Response>;
+	xmlSoapFetch: <Response>(api: string, body: string) => Promise<Response>;
 };
 export type Account = {
 	// apps: Array<AppPkgDescription>;
@@ -115,3 +115,17 @@ export type ErrorSoapResponse = {
 };
 
 export type SoapResponse<R> = SuccessSoapResponse<R> | ErrorSoapResponse;
+
+export type PropsMods = Record<string, { app: string; value: unknown }>;
+
+export type PermissionsMods = {
+	freeBusy: any;
+	inviteRight: any;
+};
+export type PrefsMods = Record<string, unknown>;
+
+export type Mods = {
+	props?: PropsMods;
+	prefs?: PrefsMods;
+	permissions?: PermissionsMods;
+};

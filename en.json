@@ -5,11 +5,6 @@
         "remind_later": "Remind Later",
         "title": "Title"
     },
-    "logout": "Logout",
-    "logout_modal": {
-        "confirm": "Log me out",
-        "warning": "You are going to be logged-out"
-    },
     "message": {
         "snackbar": {
             "settings_saved": "Edits saved correctly"
@@ -87,16 +82,6 @@
     },
     "snackbar": {
         "error": "Something went wrong, please try again"
-    },
-    "supported_browsers": {
-        "chrome": "",
-        "edge": "",
-        "firefox": "",
-        "ie_11_up": "",
-        "opera": "",
-        "safari": "",
-        "uc": "",
-        "yandex": ""
     },
     "user_quota": {
         "limited": "{{quota}}% space used",

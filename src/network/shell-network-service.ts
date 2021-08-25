@@ -11,8 +11,6 @@
 
 // eslint-disable-next-line max-classes-per-file
 import { AppPkgDescription, SoapFetch } from '../../types';
-import { ShellStore } from '../store/create-shell-store';
-import { selectCSRFToken } from '../store/accounts-slice';
 
 export class SoapError extends Error {
 	details: any;
@@ -30,10 +28,7 @@ export default class ShellNetworkService {
 	private _csrfToken?: string;
 
 	constructor(private _store: ShellStore) {
-		this._csrfToken = selectCSRFToken(_store.getState());
-		_store.subscribe(() => {
-			this._csrfToken = selectCSRFToken(_store.getState());
-		});
+		_store.subscribe(() => {});
 	}
 
 	private _getAppFetch(

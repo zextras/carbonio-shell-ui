@@ -19,15 +19,13 @@ import BoardContextProvider from '../shell/boards/board-context-provider';
 export default function BootstrapperContextProvider({
 	children,
 	i18nFactory,
-	shellNetworkService,
-	storeFactory
+	shellNetworkService
 }) {
 	return (
 		<BootstrapperContext.Provider
 			value={{
 				i18nFactory,
-				shellNetworkService,
-				storeFactory
+				shellNetworkService
 			}}
 		>
 			<I18nextProvider i18n={i18nFactory.getShellI18n()}>

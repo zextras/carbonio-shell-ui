@@ -14,9 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { ThemeProvider } from './shell-theme-context-provider';
 import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-context-provider';
-import ShellNetworkService from '../network/shell-network-service';
 import I18nFactory from '../i18n/i18n-factory';
-import createShellStore from '../store/create-shell-store';
 import StoreFactory from '../store/store-factory';
 import { useAppStore } from '../app-store';
 import { settingsAppData, getSettingsCore } from '../settings/settings-app';
@@ -71,9 +69,8 @@ export default function bootstrapper(onBeforeBoot) {
 			default: function BoostrapperCls() {
 				const init = useAccountStore((s) => s.init);
 				useEffect(() => {
-					console.log('here');
-					init().then(console.log);
-				});
+					init();
+				}, [init]);
 				return (
 					<ThemeProvider>
 						<BootstrapperContextProvider

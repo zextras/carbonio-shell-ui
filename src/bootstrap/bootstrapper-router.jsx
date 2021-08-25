@@ -17,8 +17,7 @@ import AppLoaderMounter from '../app/app-loader-mounter';
 import { useContextBridge } from '../app-store/context-bridge';
 import { useUserAccounts } from '../account/hooks';
 
-const ContextBridge = () => {
-	const accounts = useUserAccounts();
+const ContextBridge = ({ accounts }) => {
 	const history = useHistory();
 	const createSnackbar = useContext(SnackbarManagerContext);
 	const createModal = useContext(ModalManagerContext);
@@ -50,11 +49,11 @@ const ContextBridge = () => {
 	return null;
 };
 
-const accounts = [];
 export default function BootstrapperRouter() {
+	const accounts = useUserAccounts();
 	return (
 		<BrowserRouter basename={BASE_PATH}>
-			<ContextBridge />
+			<ContextBridge accounts={accounts} />
 			<AppLoaderMounter />
 			<BootstrapperRouterContent accounts={accounts} />
 		</BrowserRouter>

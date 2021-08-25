@@ -14,8 +14,6 @@ import { FormSubSection, Button } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { useDispatch } from '../store/shell-store-hooks';
-import { doLogout } from '../store/accounts-slice';
 import { goToLogin } from '../account/go-to-login';
 
 const Logout: FC = () => {

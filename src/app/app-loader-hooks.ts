@@ -11,10 +11,6 @@
 
 import {
 	useUserAccounts,
-	useCSRFToken,
-	useSaveSettingsCallback,
-	useCurrentSync,
-	useFirstSync,
 	getUseAddBoardCallback,
 	useUpdateCurrentBoard,
 	useRemoveCurrentBoard,
@@ -50,10 +46,6 @@ export const getAppHooks = (pkg: string): unknown => ({
 	useActionsFactory,
 	useActionFactory,
 	useUserAccounts,
-	useCSRFToken,
-	useSaveSettingsCallback,
-	useCurrentSync,
-	useFirstSync,
 	useAddBoardCallback: getUseAddBoardCallback(pkg),
 	useUpdateCurrentBoard,
 	useRemoveCurrentBoard,

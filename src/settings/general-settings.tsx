@@ -14,8 +14,6 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { useDispatch } from '../store/shell-store-hooks';
-import { modifyPrefs } from '../store/accounts-slice';
 import Logout from './logout';
 import AppearanceSettings from './appearance-settings';
 import ModuleVersionSettings from './module-version-settings';

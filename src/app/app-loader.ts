@@ -45,7 +45,7 @@ import StoreFactory from '../store/store-factory';
 
 import { Account, AppPkgDescription, SoapFetch } from '../../types';
 import { appStore } from '../app-store';
-import { RuntimeAppData } from '../app-store/store-types';
+import { AppData, RuntimeAppData } from '../app-store/store-types';
 import { getAppGetters } from './app-loader-functions';
 import { getAppHooks } from './app-loader-hooks';
 import { getAppLink } from './app-link';
@@ -262,17 +262,14 @@ function injectSharedLibraries(): void {
 	}
 }
 
-export function loadApps(
-	accounts: Array<Account>,
-	storeFactory: StoreFactory
-): Promise<LoadedAppsCache> {
+export function loadApps(storeFactory: StoreFactory): Promise<LoadedAppsCache> {
 	injectSharedLibraries();
-	const orderedApps = orderBy(accounts[0]?.apps ?? [], 'priority');
+	const orderedApps = orderBy(appStore.getState().apps ?? [], 'priority');
 	const apps =
 		typeof cliSettings === 'undefined' || cliSettings.enableErrorReporter
 			? orderedApps
-			: filter(orderedApps, (pkg) => pkg.package !== 'com_zextras_zapp_error_reporter');
-	return Promise.all(map(apps, (pkg) => loadApp(pkg, storeFactory)))
+			: filter(orderedApps, (app) => app.core.package !== 'com_zextras_zapp_error_reporter');
+	return Promise.all(map(apps, (app) => loadApp(app.core, storeFactory)))
 		.then((loaded) => compact(loaded))
 		.then((loaded) => keyBy(loaded, 'pkg.package'));
 }

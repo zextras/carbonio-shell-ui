@@ -42,24 +42,23 @@ const SidebarContainer = styled(Container)`
 export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, activeApp }) {
 	const apps = useApps();
 	const disabled = useMemo(() => activeApp && !apps[activeApp]?.views?.sidebar, [activeApp, apps]);
-	const accounts = useUserAccount();
+	const account = useUserAccount();
 	const items = useMemo(
-		() =>
-			map(accounts, (account) => ({
-				id: account.id,
-				label: account?.displayName ?? account?.name,
-				icon: 'PersonOutline',
-				open: true,
-				items: map(apps, (app) => ({
-					id: app.core.package,
-					label: app.core.name,
-					icon: app.icon,
-					sidebar: app.views?.sidebar,
-					sidebarIsOpen,
-					CustomComponent: SidebarSwitch
-				}))
-			})),
-		[accounts, apps, sidebarIsOpen]
+		() => ({
+			id: account.id,
+			label: account?.displayName ?? account?.name,
+			icon: 'PersonOutline',
+			open: true,
+			items: map(apps, (app) => ({
+				id: app.core.package,
+				label: app.core.name,
+				icon: app.icon,
+				sidebar: app.views?.sidebar,
+				sidebarIsOpen,
+				CustomComponent: SidebarSwitch
+			}))
+		}),
+		[account?.displayName, account.id, account?.name, apps, sidebarIsOpen]
 	);
 
 	return disabled ? null : (
@@ -81,7 +80,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 						<Accordion items={items} />
 					) : (
 						<>
-							<Tooltip label={accounts[0].displayName ?? accounts[0].name} placement="right">
+							<Tooltip label={account.displayName ?? account.name} placement="right">
 								<Padding all="medium">
 									<Icon size="large" icon="PersonOutline" />
 								</Padding>

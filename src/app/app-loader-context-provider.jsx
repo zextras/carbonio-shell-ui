@@ -29,7 +29,7 @@ export default function AppLoaderContextProvider({ children }) {
 		if (account) {
 			unloadAppsAndThemes();
 		} else {
-			loadApps(account, shellNetworkService, storeFactory);
+			loadApps(shellNetworkService, storeFactory);
 		}
 	}, [account, shellNetworkService, storeFactory]);
 	return (

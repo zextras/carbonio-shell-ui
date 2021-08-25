@@ -1,9 +1,9 @@
 {
     "changelog": {
-        "cancel": "Cancel",
-        "close": "Close",
-        "remind_later": "Remind Later",
-        "title": "Title"
+        "cancel": "",
+        "close": "",
+        "remind_later": "",
+        "title": ""
     },
     "message": {
         "snackbar": {
@@ -38,7 +38,7 @@
         "general": {
             "account": "Account",
             "account_logout": "Logout",
-            "general": "General",
+            "general": "General Settings",
             "theme_auto": "Auto",
             "theme_disabled": "Disabled",
             "theme_enabled": "Enabled",
@@ -84,7 +84,7 @@
         "error": "Something went wrong, please try again"
     },
     "user_quota": {
-        "limited": "{{quota}}% space used",
-        "unlimited": "Congrats! Unlimited space available"
+        "limited": "",
+        "unlimited": "Unlimited space available"
     }
 }

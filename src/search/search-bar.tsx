@@ -25,13 +25,13 @@ import {
 	Dropdown
 } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
-import { filter, find } from 'lodash';
+import { filter, find, reduce } from 'lodash';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useLocalStorage } from '../shell/hooks';
 import { SEARCH_APP_ID } from '../constants';
 import { useApps } from '../app-store/hooks';
-import { useSearchStore } from './search-store';
+import { QueryChip, useSearchStore } from './search-store';
 
 const OutlinedIconButton = styled(IconButton)`
 	border: 1px solid ${({ theme }): string => theme.palette.primary.regular};
@@ -98,7 +98,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 	const history = useHistory();
 	const { updateQuery, updateModule, query } = useSearchStore();
 	const [moduleSelection, setModuleSelection] = useState<{ value: string; label: string }>();
-
+	const [changedBySearchBar, setChangedBySearchBar] = useState(false);
 	const moduleSelectorItems = useMemo<
 		Array<{ label: string; value: string; customComponent: JSX.Element }>
 	>(
@@ -118,11 +118,11 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 		[apps]
 	);
 
-	const [options, setOptions] = useState<Array<{ label: string }>>([]);
+	const [options, setOptions] = useState<Array<{ label: string; hasAvatar: false }>>([]);
 
 	const onChipAdd = useCallback(
 		(newChip: string) => ({
-			label: newChip,
+			label: newChip.trim(),
 			hasAvatar: false
 		}),
 		[]
@@ -132,7 +132,11 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 		window.addEventListener('keypress', (event: any) => {
 			// isContentEditable is actually present
 			// @ts-ignore
-			if (event.key === '/' && event?.target?.isContentEditable === false) {
+			if (
+				event.key === '/' &&
+				event?.target?.isContentEditable === false &&
+				event?.target?.nodeName !== 'INPUT'
+			) {
 				event.preventDefault();
 				inputRef.current?.focus();
 			}
@@ -140,19 +144,13 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 	}, []);
 
 	useEffect(() => {
-		const nextModule = find(moduleSelectorItems, (mod) => mod.value === currentApp);
-		if (nextModule) {
-			setModuleSelection(nextModule);
-		} else if (!moduleSelection) {
-			setModuleSelection(moduleSelectorItems[0]);
-		}
+		setModuleSelection((current) =>
+			currentApp && currentApp !== SEARCH_APP_ID
+				? find(moduleSelectorItems, (mod) => mod.value === currentApp) ?? moduleSelectorItems[0]
+				: current ?? moduleSelectorItems[0]
+		);
+	}, [currentApp, moduleSelectorItems]);
 
-		// setModuleSelection(
-		// 	currentApp && currentApp !== SEARCH_APP_ID
-		// 		? find(moduleSelectorItems, (mod) => mod.value === currentApp) ?? moduleSelectorItems[0]
-		// 		: moduleSelectorItems[0]
-		// );
-	}, [currentApp, moduleSelection, moduleSelectorItems]);
 	useEffect(() => {
 		updateModule(moduleSelection?.value ?? moduleSelectorItems[0]?.value);
 	}, [moduleSelection?.value, moduleSelectorItems, updateModule]);
@@ -174,11 +172,28 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 		setInputState([]);
 	}, []);
 	const onSearch = useCallback(() => {
-		updateQuery(inputState);
+		updateQuery((currentQuery) =>
+			reduce(
+				inputState,
+				(acc, chip) => {
+					if (!find(currentQuery, (c: QueryChip): boolean => c.label === chip.label)) {
+						acc.push(chip);
+					}
+					return acc;
+				},
+				filter(
+					currentQuery,
+					(qchip: QueryChip): boolean =>
+						qchip.isQueryFilter ||
+						!!find(inputState, (c: QueryChip): boolean => c.label === qchip.label)
+				)
+			)
+		);
 		if (currentApp !== SEARCH_APP_ID) {
 			history.push(`/${SEARCH_APP_ID}/${moduleSelection?.value}`);
 		}
 		setSearchIsEnabled(false);
+		setChangedBySearchBar(true);
 	}, [currentApp, history, inputState, moduleSelection?.value, updateQuery]);
 
 	useEffect(() => {
@@ -192,15 +207,15 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 		};
 	}, [onChipAdd, onSearch]);
 
-	const appSuggestions = useMemo(
+	const appSuggestions = useMemo<Array<QueryChip & { hasAvatar: false }>>(
 		() =>
 			filter(storedValue, (v) => v.app === moduleSelection?.value)
 				.reverse()
-				.map((item: { label: string }) => ({
+				.map((item: QueryChip) => ({
 					...item,
 					hasAvatar: false,
 					click: (): void => {
-						setInputState((q: Array<{ label: string }>) => [...q, item]);
+						setInputState((q: Array<QueryChip>) => [...q, item]);
 					}
 				})),
 		[moduleSelection?.value, storedValue, setInputState]
@@ -212,15 +227,15 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 				setOptions(
 					appSuggestions
 						.filter(
-							(v: { label: string }): boolean =>
+							(v: QueryChip): boolean =>
 								v.label?.indexOf(target.textContent as string) !== -1 &&
 								!find(q, (i) => i.value === v.label)
 						)
 						.slice(0, 5)
 				);
-				return;
+			} else {
+				setOptions(appSuggestions.slice(0, 5));
 			}
-			setOptions(appSuggestions.slice(0, 5));
 		},
 		[appSuggestions]
 	);
@@ -298,6 +313,15 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 			setTriggerSearch(false);
 		}
 	}, [onSearch, triggerSearch]);
+
+	useEffect(() => {
+		setChangedBySearchBar((value) => {
+			if (!value) {
+				setInputState(filter(query, (q) => !q.isQueryFilter));
+			}
+			return false;
+		});
+	}, [query]);
 	return (
 		<Container orientation="horizontal" minWidth="0" ref={containerRef}>
 			<Container minWidth="512px" width="fill">

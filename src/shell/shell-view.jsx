@@ -83,6 +83,7 @@ export function Shell() {
 	const [navOpen, setNavOpen] = useState(true);
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
+	useAppStore(console.log);
 	useAccountStore(console.log);
 	const TeamViews = useAppStore((state) => state.apps.com_zextras_zapp_team?.views?.teambar);
 

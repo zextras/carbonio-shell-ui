@@ -137,7 +137,6 @@ const GeneralSettings: FC = () => {
 					onCancel={onCancel}
 					onSave={onSave}
 				/>
-				<Logout />
 				<AppearanceSettings settings={settings} addMod={addMod} />
 				<OutOfOfficeSettings settings={settings} addMod={addMod} />
 				<ModuleVersionSettings />

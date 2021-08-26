@@ -42,6 +42,13 @@ const getXmlAccount = (acc?: Account): string => {
 	return '';
 };
 
+const getXmlSession = (context?: any): string => {
+	if (context?.session?.id) {
+		return `<session id="${context?.session?.id}"/>`;
+	}
+	return '';
+};
+
 const handleResponse = <R>(api: string, res: SoapResponse<R>, set: SetState<AccountState>): R => {
 	if (res?.Body?.Fault) {
 		if ((<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Code === 'service.AUTH_REQUIRED') {
@@ -110,17 +117,10 @@ export const baseXmlFetch = (get: GetState<AccountState>, set: SetState<AccountS
 		},
 		body: `<?xml version="1.0" encoding="utf-8"?>
 		<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
-			<soap:Header>
-				<context xmlns="urn:zimbra">
-					<userAgent name="${userAgent}" version="8.8.15_GA_202108105"/>
-					<session id="${get().context?.session?.id}"/>
-					${getXmlAccount(get().account)}
-					<format type="js"/>
-				</context>
-			</soap:Header>
-			<soap:Body>
-				${body}
-			</soap:Body>
+			<soap:Header><context xmlns="urn:zimbra"><userAgent name="${userAgent}" version="8.8.15_GA_202108105"/>${getXmlSession(
+			get().context
+		)}${getXmlAccount(get().account)}<format type="js"/></context></soap:Header>
+			<soap:Body>${body}</soap:Body>
 		</soap:Envelope>`
 	}) // TODO proper error handling
 		.then((res) => res?.json())

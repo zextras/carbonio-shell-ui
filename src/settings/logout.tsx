@@ -11,19 +11,12 @@
 import React, { FC, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormSubSection, Button } from '@zextras/zapp-ui';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { goToLogin } from '../account/go-to-login';
+import { logout } from '../account/logout';
 
 const Logout: FC = () => {
 	const [t] = useTranslation();
-	// const history = useHistory();
-
-	// const dispatch = useDispatch();
-
 	const onClick = useCallback(() => {
-		goToLogin();
-		// dispatch(doLogout()).then(() => history.push({ pathname: '/' }));
+		logout();
 	}, []);
 	return (
 		<FormSubSection

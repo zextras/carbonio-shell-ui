@@ -3,19 +3,21 @@ import { useAccountStore } from './account-store';
 import { Mods } from './types';
 
 export const editSettings = (mods: Mods): Promise<any> =>
-	useAccountStore.getState().xmlSoapFetch(
-		'Batch',
-		`<BatchRequest xmlns="urn:zimbra" onerror="stop">${
-			mods.props
-				? `<ModifyPropertiesRequest xmlns="urn:zimbraAccount">${map(
-						mods.props,
-						(prop, key) =>
-							`<prop name="${key}" zimlet="${prop.app ?? 'com_zextras_zapp_shell'}">${
-								prop.value
-							}</prop>`
-				  )}</ModifyPropertiesRequest>`
-				: ''
-		}
+	useAccountStore
+		.getState()
+		.xmlSoapFetch(
+			'Batch',
+			`<BatchRequest xmlns="urn:zimbra" onerror="stop">${
+				mods.props
+					? `<ModifyPropertiesRequest xmlns="urn:zimbraAccount">${map(
+							mods.props,
+							(prop, key) =>
+								`<prop name="${key}" zimlet="${prop.app ?? 'com_zextras_zapp_shell'}">${
+									prop.value
+								}</prop>`
+					  )}</ModifyPropertiesRequest>`
+					: ''
+			}
 	${
 		mods.prefs
 			? `<ModifyPrefsRequest xmlns="urn:zimbraAccount">${map(
@@ -97,4 +99,5 @@ export const editSettings = (mods: Mods): Promise<any> =>
 	</GrantRightsRequest>`
 			: ''
 	}</BatchRequest>`
-	);
+		)
+		.then(console.log);

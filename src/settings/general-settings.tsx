@@ -97,8 +97,8 @@ const GeneralSettings: FC = () => {
 	const onSave = useCallback(() => {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
-		editSettings(mods).then((res) => {
-			if (res.type.includes('fulfilled')) {
+		editSettings(mods)
+			.then(() => {
 				createSnackbar({
 					key: `new`,
 					replace: true,
@@ -107,7 +107,8 @@ const GeneralSettings: FC = () => {
 					autoHideTimeout: 3000,
 					hideButton: true
 				});
-			} else {
+			})
+			.catch(() => {
 				createSnackbar({
 					key: `new`,
 					replace: true,
@@ -116,8 +117,7 @@ const GeneralSettings: FC = () => {
 					autoHideTimeout: 3000,
 					hideButton: true
 				});
-			}
-		});
+			});
 		setMods({});
 	}, [createSnackbar, mods, t]);
 	const onCancel = useCallback(() => {

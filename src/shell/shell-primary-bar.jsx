@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { Container, IconButton, Row } from '@zextras/zapp-ui';
+import { Container, IconButton, Row, Tooltip } from '@zextras/zapp-ui';
 import { map, isEmpty } from 'lodash';
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
@@ -68,14 +68,16 @@ export default function ShellPrimaryBar({ activeApp }) {
 					}
 					if (typeof app.icon === 'string') {
 						return (
-							<AppIcon
-								key={app.core.package}
-								icon={app.icon}
-								active={activeApp === app.core.package}
-								iconColor={activeApp === app.core.package ? 'primary' : 'text'}
-								onClick={() => history.push(`/${app.core.package}/`)}
-								size="large"
-							/>
+							<Tooltip label={app.core.label}>
+								<AppIcon
+									key={app.core.package}
+									icon={app.icon}
+									active={activeApp === app.core.package}
+									iconColor={activeApp === app.core.package ? 'primary' : 'text'}
+									onClick={() => history.push(`/${app.core.package}/`)}
+									size="large"
+								/>
+							</Tooltip>
 						);
 					}
 					return <app.icon active={app.core.package === activeApp} />;

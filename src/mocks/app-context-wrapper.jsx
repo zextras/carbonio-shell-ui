@@ -14,7 +14,6 @@ import { BehaviorSubject } from 'rxjs';
 import { I18nextProvider } from 'react-i18next';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
-import AppContext from '../app/app-context';
 import I18nFactory from '../i18n/i18n-test-factory';
 
 const _uselessSlice = createSlice({
@@ -70,9 +69,7 @@ export default function AppContextWrapper({
 
 	return (
 		<Provider store={appContext.store}>
-			<AppContext.Provider value={appContext}>
-				<I18nextProvider i18n={i18n}>{children}</I18nextProvider>
-			</AppContext.Provider>
+			<I18nextProvider i18n={i18n}>{children}</I18nextProvider>
 		</Provider>
 	);
 }

@@ -9,13 +9,17 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useContext } from 'react';
+import React, { useContext, Suspense, lazy } from 'react';
 import { BrowserRouter, useHistory } from 'react-router-dom';
 import { SnackbarManagerContext, ModalManagerContext } from '@zextras/zapp-ui';
-import BootstrapperRouterContent from './bootstrapper-router-content';
 import AppLoaderMounter from '../app/app-loader-mounter';
 import { useContextBridge } from '../app-store/context-bridge';
 import { useUserAccount } from '../account/hooks';
+import LoadingView from './loading-view';
+
+export const LazyShellView = lazy(() =>
+	import(/* webpackChunkName: "shell-view" */ '../shell/shell-view')
+);
 
 const ContextBridge = () => {
 	const history = useHistory();
@@ -24,8 +28,6 @@ const ContextBridge = () => {
 	const createModal = useContext(ModalManagerContext);
 	useContextBridge({
 		functions: {
-			getAccounts: () => [account],
-			getAccount: () => account,
 			getHistory: () => history,
 			createSnackbar,
 			createModal,
@@ -56,7 +58,9 @@ export default function BootstrapperRouter() {
 		<BrowserRouter basename={BASE_PATH}>
 			<ContextBridge />
 			<AppLoaderMounter />
-			<BootstrapperRouterContent />
+			<Suspense fallback={<LoadingView />}>
+				<LazyShellView />
+			</Suspense>
 		</BrowserRouter>
 	);
 }

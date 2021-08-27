@@ -11,10 +11,8 @@
 
 import React from 'react';
 import { I18nextProvider } from 'react-i18next';
-import BootstrapperContext from './bootstrapper-context';
-import AppLoaderContextProvider from '../app/app-loader-context-provider';
-import ThemeLoaderMounter from '../app/theme-loader-mounter';
 import BoardContextProvider from '../shell/boards/board-context-provider';
+import { BootstrapperContext } from './bootstrapper-context';
 
 export default function BootstrapperContextProvider({ children, i18nFactory, storeFactory }) {
 	return (
@@ -25,10 +23,7 @@ export default function BootstrapperContextProvider({ children, i18nFactory, sto
 			}}
 		>
 			<I18nextProvider i18n={i18nFactory.getShellI18n()}>
-				<AppLoaderContextProvider>
-					<BoardContextProvider>{children}</BoardContextProvider>
-					<ThemeLoaderMounter />
-				</AppLoaderContextProvider>
+				<BoardContextProvider>{children}</BoardContextProvider>
 			</I18nextProvider>
 		</BootstrapperContext.Provider>
 	);

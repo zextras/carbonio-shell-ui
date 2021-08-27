@@ -24,10 +24,6 @@ import ShellContext from './shell-context';
 // @ts-ignore
 import { BoardSetterContext, BoardValueContext } from './boards/board-context';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export { useAppPkg } from '../app/app-context';
-
 export { default as usePromise } from 'react-use-promise';
 
 export { useUserAccount, useUserAccounts, useUserSettings } from '../account/hooks';

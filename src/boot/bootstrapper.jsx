@@ -11,9 +11,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ThemeProvider } from './shell-theme-context-provider';
+import { ThemeProvider } from './theme-provider';
 import BootstrapperRouter from './bootstrapper-router';
-import BootstrapperContextProvider from './bootstrapper-context-provider';
+import BootstrapperContextProvider from './bootstrapper-provider';
 import I18nFactory from '../i18n/i18n-factory';
 import StoreFactory from '../store/store-factory';
 import { useAppStore } from '../app-store';
@@ -22,6 +22,7 @@ import { searchAppData, getSearchCore } from '../search/search-app';
 import { SETTINGS_APP_ID, SEARCH_APP_ID } from '../constants';
 import { useAccountStore } from '../account/account-store';
 import { useUserAccount } from '../account/hooks';
+import { AppLoader } from '../app/app-loader';
 
 const AppStoreInterface = () => {
 	const { addApps, registerAppData } = useAppStore((s) => s.setters);
@@ -60,30 +61,21 @@ export default function bootstrapper(onBeforeBoot) {
 					throw err;
 				})
 		: Promise.resolve(container)
-	).then(
-		({
-			i18nFactory: _i18nFactory,
-			shellNetworkService: _shellNetworkService,
-			storeFactory: _storeFactory
-		}) => ({
-			default: function BoostrapperCls() {
-				const init = useAccountStore((s) => s.init);
-				useEffect(() => {
-					init();
-				}, [init]);
-				return (
-					<ThemeProvider>
-						<BootstrapperContextProvider
-							i18nFactory={_i18nFactory}
-							shellNetworkService={_shellNetworkService}
-							storeFactory={_storeFactory}
-						>
-							<AppStoreInterface />
-							<BootstrapperRouter />
-						</BootstrapperContextProvider>
-					</ThemeProvider>
-				);
-			}
-		})
-	);
+	).then(({ i18nFactory: _i18nFactory, storeFactory: _storeFactory }) => ({
+		default: function BoostrapperCls() {
+			const init = useAccountStore((s) => s.init);
+			useEffect(() => {
+				init();
+			}, [init]);
+			return (
+				<ThemeProvider>
+					<BootstrapperContextProvider i18nFactory={_i18nFactory} storeFactory={_storeFactory}>
+						<AppLoader />
+						<AppStoreInterface />
+						<BootstrapperRouter />
+					</BootstrapperContextProvider>
+				</ThemeProvider>
+			);
+		}
+	}));
 }

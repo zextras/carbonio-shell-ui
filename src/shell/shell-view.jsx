@@ -20,7 +20,7 @@ import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
 import ShellMenuPanel from './shell-menu-panel';
 import AppBoardWindow from './boards/app-board-window';
-import { ThemeCallbacksContext } from '../bootstrap/shell-theme-context-provider';
+import { ThemeCallbacksContext } from '../boot/theme-provider';
 
 import { useAppList } from '../app-store/hooks';
 import { useAppStore } from '../app-store';

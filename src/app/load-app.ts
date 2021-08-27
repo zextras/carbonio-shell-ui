@@ -11,36 +11,14 @@
 
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
-import { default as Lodash, map, orderBy, compact, keyBy, forEach, forOwn, filter } from 'lodash';
+import { forEach, forOwn } from 'lodash';
 import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
 import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
 import { Reducer } from 'redux';
-import * as RxJS from 'rxjs';
-import React, { ComponentClass, FunctionComponent } from 'react';
-import * as ReactDOM from 'react-dom';
-import * as RxJSOperators from 'rxjs/operators';
-import * as ReactRouterDom from 'react-router-dom';
-import * as PropTypes from 'prop-types';
-import * as Moment from 'moment';
-import * as ReactI18n from 'react-i18next';
-import * as Msw from 'msw';
-import * as Faker from 'faker';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import * as ReactRedux from 'react-redux';
-import * as ReduxJSToolkit from '@reduxjs/toolkit';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import * as ZappUI from '@zextras/zapp-ui';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import * as StyledComponents from 'styled-components';
-import { Store } from '@reduxjs/toolkit';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { RichTextEditor } from '@zextras/zapp-ui/dist/zapp-ui.rich-text-editor';
 
 import { LinkProps } from 'react-router-dom';
+import { ComponentClass, FunctionComponent } from 'react';
+import { Store } from '@reduxjs/toolkit';
 import StoreFactory from '../store/store-factory';
 
 import { AppPkgDescription, SoapFetch } from '../../types';
@@ -50,7 +28,6 @@ import { getAppGetters } from './app-loader-functions';
 import { getAppHooks } from './app-loader-hooks';
 import { getAppLink } from './app-link';
 import { Spinner } from '../ui-extras/spinner';
-import { List } from '../ui-extras/list';
 import { ZIMBRA_STANDARD_COLORS, FOLDERS } from '../constants';
 import { useIntegrationsStore } from '../integrations/store';
 
@@ -60,7 +37,7 @@ export type IShellWindow<T, R> = Window & {
 	__ZAPP_HMR_HANDLERS__: { [pkgName: string]: (handlers: RequestHandlersList) => void };
 };
 
-type SharedLibrariesAppsMap = {
+export type SharedLibrariesAppsMap = {
 	react: unknown;
 	'react-dom': unknown;
 	'react-i18next': unknown;
@@ -94,7 +71,7 @@ type SharedLibrariesAppsMap = {
 	faker?: unknown;
 };
 
-type LoadedAppRuntime = AppInjections & {
+export type LoadedAppRuntime = AppInjections & {
 	pkg: AppPkgDescription;
 };
 
@@ -102,7 +79,7 @@ export type LoadedAppsCache = {
 	[pkgName: string]: LoadedAppRuntime;
 };
 
-type AppInjections = {
+export type AppInjections = {
 	store: Store<any>;
 };
 
@@ -157,7 +134,6 @@ function loadAppModule(
 				registerComponents: useIntegrationsStore.getState().registerComponents(appPkg.package),
 				AppLink: getAppLink(appPkg.package),
 				Spinner,
-				List,
 				FOLDERS,
 				ZIMBRA_STANDARD_COLORS,
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -199,7 +175,7 @@ function loadAppModule(
 	});
 }
 
-function loadApp(
+export function loadApp(
 	pkg: AppPkgDescription,
 	storeFactory: StoreFactory
 ): Promise<LoadedAppRuntime | undefined> {
@@ -218,63 +194,7 @@ function loadApp(
 		);
 }
 
-function injectSharedLibraries(): void {
-	// eslint-disable-next-line max-len
-	const wnd: IShellWindow<
-		SharedLibrariesAppsMap,
-		ComponentClass
-	> = (window as unknown) as IShellWindow<SharedLibrariesAppsMap, ComponentClass>;
-	if (wnd.__ZAPP_SHARED_LIBRARIES__) {
-		return;
-	}
-	wnd.__ZAPP_SHARED_LIBRARIES__ = {
-		react: React,
-		'react-dom': ReactDOM,
-		'react-i18next': ReactI18n,
-		'react-redux': ReactRedux,
-		lodash: Lodash,
-		rxjs: RxJS,
-		'rxjs/operators': RxJSOperators,
-		'react-router-dom': ReactRouterDom,
-		moment: Moment,
-		'prop-types': PropTypes,
-		'styled-components': StyledComponents,
-		'@reduxjs/toolkit': {
-			...ReduxJSToolkit,
-			configureStore: (): void => {
-				throw new Error('Apps must use the store given by the Shell.');
-			},
-			createStore: (): void => {
-				throw new Error('Apps must use the store given by the Shell.');
-			}
-		},
-		'@zextras/zapp-shell': {},
-		'@zextras/zapp-ui': { ...ZappUI, RichTextEditor }
-	};
-	wnd.__ZAPP_HMR_EXPORT__ = {};
-	switch (FLAVOR) {
-		case 'NPM':
-			wnd.__ZAPP_SHARED_LIBRARIES__.faker = Faker;
-			wnd.__ZAPP_SHARED_LIBRARIES__.msw = Msw;
-			wnd.__ZAPP_HMR_HANDLERS__ = {};
-			break;
-		default:
-	}
-}
-
-export function loadApps(storeFactory: StoreFactory): Promise<LoadedAppsCache> {
-	injectSharedLibraries();
-	const orderedApps = orderBy(appStore.getState().apps ?? [], 'priority');
-	const apps =
-		typeof cliSettings === 'undefined' || cliSettings.enableErrorReporter
-			? orderedApps
-			: filter(orderedApps, (app) => app.core.package !== 'com_zextras_zapp_error_reporter');
-	return Promise.all(map(apps, (app) => loadApp(app.core, storeFactory)))
-		.then((loaded) => compact(loaded))
-		.then((loaded) => keyBy(loaded, 'pkg.package'));
-}
-
-export function unloadAppsAndThemes(): Promise<void> {
+export function unloadApps(): Promise<void> {
 	return Promise.resolve().then(() => {
 		forOwn(_scripts, (script) => {
 			if (script.parentNode) script.parentNode.removeChild(script);

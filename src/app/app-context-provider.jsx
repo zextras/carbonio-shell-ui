@@ -13,46 +13,27 @@ import React, { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
 import { ModalManager, SnackbarManager } from '@zextras/zapp-ui';
-import AppContext from './app-context';
-import { useI18nFactory, useStoreFactory } from '../bootstrap/bootstrapper-context';
+import { useStoreFactory, useI18nFactory } from '../boot/bootstrapper-provider';
 import AppErrorCatcher from './app-error-catcher';
-import { useAppContextCache } from './app-context-cache-context';
 import { useAppStore } from '../app-store';
 
 export default function AppContextProvider({ pkg, children }) {
-	const appContextCache = useAppContextCache();
 	const i18nFactory = useI18nFactory();
 	const storeFactory = useStoreFactory();
 	const app = useAppStore((s) => s.apps[pkg]?.core);
-	const memoizedContextFcns = useMemo(
-		() => ({
-			app
-		}),
-		[app]
-	);
-
-	const value = useMemo(
-		() => ({
-			...memoizedContextFcns,
-			appCtxt: appContextCache[app.package]
-		}),
-		[app, memoizedContextFcns, appContextCache]
-	);
 
 	const store = useMemo(() => storeFactory.getStoreForApp(app), [app, storeFactory]);
 
 	const i18n = useMemo(() => i18nFactory.getAppI18n(app), [i18nFactory, app]);
 	return (
 		<Provider store={store}>
-			<AppContext.Provider value={value}>
-				<I18nextProvider i18n={i18n}>
-					<ModalManager>
-						<SnackbarManager>
-							<AppErrorCatcher>{children}</AppErrorCatcher>
-						</SnackbarManager>
-					</ModalManager>
-				</I18nextProvider>
-			</AppContext.Provider>
+			<I18nextProvider i18n={i18n}>
+				<ModalManager>
+					<SnackbarManager>
+						<AppErrorCatcher>{children}</AppErrorCatcher>
+					</SnackbarManager>
+				</ModalManager>
+			</I18nextProvider>
 		</Provider>
 	);
 }

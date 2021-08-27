@@ -1,6 +1,6 @@
 import create from 'zustand';
 import { normalizeAccount } from './normalization';
-import { AccountState, GetInfoResponse } from './types';
+import { AccountState, GetInfoResponse, Tag, ZextrasComponent } from './types';
 import { useAppStore } from '../app-store';
 import { baseJsonFetch, baseXmlFetch } from './fetch';
 
@@ -8,6 +8,7 @@ import { baseJsonFetch, baseXmlFetch } from './fetch';
 // @ts-ignore
 export const useAccountStore = create<AccountState>((set, get) => ({
 	account: undefined,
+	version: '',
 	settings: {
 		prefs: {},
 		attrs: {},
@@ -16,25 +17,25 @@ export const useAccountStore = create<AccountState>((set, get) => ({
 	context: {},
 	init: (): Promise<void> =>
 		get()
-			.soapFetch<any, GetInfoResponse>('GetInfo', {
+			.soapFetch<{ _jsns: string }, GetInfoResponse>('GetInfo', {
 				_jsns: 'urn:zimbraAccount'
 			})
 			.then((res): void => {
 				if (res) {
-					const { account, settings, apps } = normalizeAccount(res);
+					const { account, settings, apps, version } = normalizeAccount(res);
 					useAppStore.getState().setters.addApps(apps);
-					set({ account, settings });
+					set({ account, settings, version });
 				}
 			})
 			.then(() => fetch('/static/iris/components.json'))
 			.then((r) => r.json())
-			.then(console.log)
+			.then(({ components }: { components: Array<ZextrasComponent> }) => set({ components }))
 			.then(() =>
-				get().soapFetch<any, any>('GetTag', {
+				get().soapFetch<{ _jsns: string }, { tag: Array<Tag> }>('GetTag', {
 					_jsns: 'urn:zimbraMail'
 				})
 			)
-			.then(console.log)
+			.then(({ tag }) => set({ tags: tag }))
 			.catch((err) => {
 				console.log('there was an error checking user data');
 				console.error(err);

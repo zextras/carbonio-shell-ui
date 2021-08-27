@@ -3,10 +3,23 @@ import { string } from 'prop-types';
 export type AccountState = {
 	account?: Account;
 	settings: AccountSettings;
+	version: string;
 	context: any;
 	init: () => Promise<void>;
 	soapFetch: <Request, Response>(api: string, body: Request) => Promise<Response>;
 	xmlSoapFetch: <Response>(api: string, body: string) => Promise<Response>;
+	tags: Array<Tag>;
+	components: Array<ZextrasComponent>;
+};
+
+export type ZextrasComponent = {
+	commit: string;
+	display: string;
+	// eslint-disable-next-line camelcase
+	js_entrypoint: string;
+	name: string;
+	priority: number;
+	version: string;
 };
 export type Account = {
 	// apps: Array<AppPkgDescription>;
@@ -18,6 +31,12 @@ export type Account = {
 	identities: { identity: Array<unknown> };
 };
 
+export type Tag = {
+	color?: string;
+	id: string;
+	name: string;
+	rgb?: string;
+};
 export type AccountSettings = {
 	attrs: Record<string, unknown>;
 	prefs: Record<string, unknown>;
@@ -74,6 +93,7 @@ export type GetInfoResponse = {
 	props: {
 		prop: Array<ZimletProp>;
 	};
+	version: string;
 };
 
 export type BasePkgDescription = {

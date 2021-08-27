@@ -25,8 +25,14 @@ export const normalizeAccount = ({
 	zimlets,
 	identities,
 	signatures,
-	props
-}: GetInfoResponse): { account: Account; settings: AccountSettings; apps: Array<CoreAppData> } => {
+	props,
+	version
+}: GetInfoResponse): {
+	account: Account;
+	settings: AccountSettings;
+	apps: Array<CoreAppData>;
+	version: string;
+} => {
 	const settings = normalizeSettings({ attrs, prefs, props });
 	const apps = reduce<ZimletPkgDescription, AppPkgDescription[]>(
 		filter<ZimletPkgDescription>(
@@ -36,7 +42,6 @@ export const normalizeAccount = ({
 		(r, z) => [...r, zimletToAppPkgDescription(z)],
 		[]
 	);
-
 	return {
 		account: {
 			id,
@@ -46,6 +51,7 @@ export const normalizeAccount = ({
 			signatures
 		},
 		settings,
-		apps
+		apps,
+		version
 	};
 };

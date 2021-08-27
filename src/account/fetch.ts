@@ -93,7 +93,8 @@ export const baseJsonFetch = (get: GetState<AccountState>, set: SetState<Account
 					account: getAccount(get().account as Account),
 					context: {
 						userAgent: {
-							name: userAgent
+							name: userAgent,
+							version: get().version
 						}
 					}
 				}
@@ -117,9 +118,11 @@ export const baseXmlFetch = (get: GetState<AccountState>, set: SetState<AccountS
 		},
 		body: `<?xml version="1.0" encoding="utf-8"?>
 		<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
-			<soap:Header><context xmlns="urn:zimbra"><userAgent name="${userAgent}" version="8.8.15_GA_202108105"/>${getXmlSession(
-			get().context
-		)}${getXmlAccount(get().account)}<format type="js"/></context></soap:Header>
+			<soap:Header><context xmlns="urn:zimbra"><userAgent name="${userAgent}" version="${
+			get().version
+		}"/>${getXmlSession(get().context)}${getXmlAccount(
+			get().account
+		)}<format type="js"/></context></soap:Header>
 			<soap:Body>${body}</soap:Body>
 		</soap:Envelope>`
 	}) // TODO proper error handling

@@ -14,8 +14,8 @@ import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import { map } from 'lodash';
 import { Container } from '@zextras/zapp-ui';
-import AppContextProvider from '../app/app-context-provider';
-import { useApps } from '../app-store/hooks';
+import AppContextProvider from '../boot/app/app-context-provider';
+import { useApps } from '../stores/app-store/hooks';
 
 const _BoardsRouterContainer = styled(Container)`
 	flex-grow: 1;

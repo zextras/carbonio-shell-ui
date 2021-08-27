@@ -23,13 +23,13 @@ import StoreFactory from '../store/store-factory';
 
 import { AppPkgDescription, SoapFetch } from '../../../types';
 import { appStore } from '../stores/app-store';
-import { RuntimeAppData } from '../../stores/app-store/store-types';
+import { RuntimeAppData } from '../stores/app-store/store-types';
 import { getAppGetters } from './app-loader-functions';
 import { getAppHooks } from './app-loader-hooks';
 import { getAppLink } from './app-link';
 import { Spinner } from '../../ui-extras/spinner';
 import { ZIMBRA_STANDARD_COLORS, FOLDERS } from '../../constants';
-import { useIntegrationsStore } from '../../integrations/store';
+import { useIntegrationsStore } from '../integrations/store';
 
 export type IShellWindow<T, R> = Window & {
 	__ZAPP_SHARED_LIBRARIES__: T;

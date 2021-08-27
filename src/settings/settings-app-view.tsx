@@ -13,11 +13,11 @@ import React, { FC, Suspense, useMemo, lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { map } from 'lodash';
 import LoadingView from '../boot/loading-view';
-import { useApps } from '../app-store/hooks';
+import { useApps } from '../stores/app-store/hooks';
 import { SETTINGS_APP_ID } from '../constants';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import AppContextProvider from '../app/app-context-provider';
+import AppContextProvider from '../boot/app/app-context-provider';
 import { Spinner } from '../ui-extras/spinner';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

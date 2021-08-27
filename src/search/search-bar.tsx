@@ -30,7 +30,7 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useLocalStorage } from '../shell/hooks';
 import { SEARCH_APP_ID } from '../constants';
-import { useApps } from '../app-store/hooks';
+import { useApps } from '../stores/app-store/hooks';
 import { QueryChip, useSearchStore } from './search-store';
 
 const OutlinedIconButton = styled(IconButton)`

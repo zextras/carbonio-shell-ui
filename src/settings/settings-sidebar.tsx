@@ -14,7 +14,7 @@ import { useHistory } from 'react-router-dom';
 import { reduce } from 'lodash';
 import { Accordion } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
-import { useAppList } from '../app-store/hooks';
+import { useAppList } from '../stores/app-store/hooks';
 import { SETTINGS_APP_ID } from '../constants';
 
 export const SettingsSidebar: FC = () => {

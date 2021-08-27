@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { loadApps, unloadAllApps } from './load-apps';
-import { useUserAccount } from '../../account/hooks';
+import { useUserAccount } from '../account/hooks';
 import { useStoreFactory } from '../bootstrapper-context';
 
 export function AppLoader() {

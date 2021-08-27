@@ -15,7 +15,7 @@ import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { BoardValueContext, BoardSetterContext } from './boards/board-context';
-import { useAppList } from '../app-store/hooks';
+import { useAppList } from '../stores/app-store/hooks';
 
 const AppIcon = styled(IconButton)`
 	${(props) =>
@@ -68,7 +68,7 @@ export default function ShellPrimaryBar({ activeApp }) {
 					}
 					if (typeof app.icon === 'string') {
 						return (
-							<Tooltip label={app.core.label}>
+							<Tooltip label={app.core.name} placement="right">
 								<AppIcon
 									key={app.core.package}
 									icon={app.icon}

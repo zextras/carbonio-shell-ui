@@ -10,8 +10,8 @@
  */
 
 import { reduce } from 'lodash';
-import { getApp, getAppContext } from '../stores/app-store/getters';
-import { contextBridge } from '../../stores/app-store/context-bridge';
+import { getApp, getAppContext } from '../stores/app/getters';
+import { contextBridge } from '../stores/app/context-bridge';
 import {
 	getAction,
 	getActions,
@@ -20,7 +20,7 @@ import {
 	getIntegratedComponent,
 	getIntegratedFunction,
 	getIntegratedHook
-} from '../integrations/getters';
+} from '../stores/integrations/getters';
 
 export const getAppGetters = (pkg: string): unknown => ({
 	getAppContext: getAppContext(pkg),

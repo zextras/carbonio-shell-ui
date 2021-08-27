@@ -22,9 +22,9 @@ import ShellMenuPanel from './shell-menu-panel';
 import AppBoardWindow from './boards/app-board-window';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 
-import { useAppList } from '../app-store/hooks';
-import { useAppStore } from '../app-store';
-import AppContextProvider from '../app/app-context-provider';
+import { useAppList } from '../stores/app-store/hooks';
+import { useAppStore } from '../stores/app-store';
+import AppContextProvider from '../boot/app/app-context-provider';
 import { useUserAccount, useUserSettings } from '../account/hooks';
 import { useAccountStore } from '../account/account-store';
 

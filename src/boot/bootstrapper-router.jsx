@@ -12,8 +12,8 @@
 import React, { useContext, Suspense, lazy } from 'react';
 import { BrowserRouter, useHistory } from 'react-router-dom';
 import { SnackbarManagerContext, ModalManagerContext } from '@zextras/zapp-ui';
-import AppLoaderMounter from '../app/app-loader-mounter';
-import { useContextBridge } from '../app-store/context-bridge';
+import AppLoaderMounter from './app/app-loader-mounter';
+import { useContextBridge } from '../stores/app-store/context-bridge';
 import { useUserAccount } from '../account/hooks';
 import LoadingView from './loading-view';
 

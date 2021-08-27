@@ -13,10 +13,10 @@ import React, { useMemo } from 'react';
 import { map } from 'lodash';
 import { Accordion, Collapse, Container, Padding } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
-import { useAppList } from '../app-store/hooks';
+import { useAppList } from '../stores/app-store/hooks';
 import { useUserAccount } from '../account/hooks';
 import { UserQuota } from './user-quota';
-import AppContextProvider from '../app/app-context-provider';
+import AppContextProvider from '../boot/app/app-context-provider';
 
 const SidebarComponent = ({ item }) =>
 	item.sidebar ? (

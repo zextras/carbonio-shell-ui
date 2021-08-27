@@ -12,7 +12,7 @@ import { TFunction } from 'react-i18next';
 import { SettingsAppView } from './settings-app-view';
 import { SettingsSidebar } from './settings-sidebar';
 import { SETTINGS_APP_ID } from '../constants';
-import { CoreAppData } from '../app-store/store-types';
+import { CoreAppData } from '../stores/app-store/store-types';
 
 export const getSettingsCore = (t: TFunction): CoreAppData => ({
 	priority: -2,

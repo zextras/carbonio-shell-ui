@@ -10,7 +10,7 @@
  */
 import { TFunction } from 'react-i18next';
 import { SearchAppView } from './search-app-view';
-import { CoreAppData } from '../app-store/store-types';
+import { CoreAppData } from '../stores/app-store/store-types';
 import { SEARCH_APP_ID } from '../constants/index';
 
 export const getSearchCore = (t: TFunction): CoreAppData => ({

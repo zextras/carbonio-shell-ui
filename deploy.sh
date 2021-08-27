@@ -1,0 +1,1 @@
+ssh -t root@10.66.64.32 'apt update; apt upgrade -y zextras-zapp-shell'

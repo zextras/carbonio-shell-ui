@@ -13,9 +13,9 @@ import React, { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
 import { ModalManager, SnackbarManager } from '@zextras/zapp-ui';
-import { useStoreFactory, useI18nFactory } from '../boot/bootstrapper-context';
+import { useStoreFactory, useI18nFactory } from '../bootstrapper-context';
 import AppErrorCatcher from './app-error-catcher';
-import { useAppStore } from '../app-store';
+import { useAppStore } from '../stores/app';
 
 export default function AppContextProvider({ pkg, children }) {
 	const i18nFactory = useI18nFactory();

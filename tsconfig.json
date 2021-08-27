@@ -6,7 +6,7 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx"
-, "src/boot/bootstrapper-hooks.js", "src/app/app-loader.jsx"  ],
+, "src/boot/bootstrapper-hooks.js", "src/stores/app/app-loader.jsx"  ],
   "exclude": [
     "node_modules"
   ]

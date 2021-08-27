@@ -1,7 +1,7 @@
 import create from 'zustand';
 import { normalizeAccount } from './normalization';
 import { AccountState, GetInfoResponse, Tag, ZextrasComponent } from './types';
-import { useAppStore } from '../app-store';
+import { useAppStore } from '../app';
 import { baseJsonFetch, baseXmlFetch } from './fetch';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

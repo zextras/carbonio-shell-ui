@@ -8,7 +8,11 @@ import { baseJsonFetch, baseXmlFetch } from './fetch';
 // @ts-ignore
 export const useAccountStore = create<AccountState>((set, get) => ({
 	account: undefined,
-	settings: {},
+	settings: {
+		prefs: {},
+		attrs: {},
+		props: []
+	},
 	context: {},
 	init: (): Promise<void> =>
 		get()

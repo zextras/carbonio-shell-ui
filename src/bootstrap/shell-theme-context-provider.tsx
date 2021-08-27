@@ -88,7 +88,7 @@ const themeSizes = (
 };
 
 export const ThemeProvider: FC = ({ children }) => {
-	const zimbraPrefFontSize = useAccountStore((s) => s.settings.prefs.zimbraPrefFontSize as string);
+	const zimbraPrefFontSize = useAccountStore((s) => s.settings.prefs?.zimbraPrefFontSize as string);
 	// TODO: update when the DS is fully typed :D
 	const [extensions, setExtensions] = useState<ThemeExtensionMap>({
 		zextrasLogo: (t) => ({ ...t, logo: { ...t.logo, svg: Logo } }),

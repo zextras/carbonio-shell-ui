@@ -29,31 +29,33 @@ export default function ShellMobileNav({ mobileNavIsOpen, menuTree }) {
 	const history = useHistory();
 	const account = useUserAccount();
 	const items = useMemo(
-		() => ({
-			id: account.id,
-			label: account?.displayName ?? account?.name,
-			icon: 'PersonOutline',
-			open: true,
-			items: map(apps, (app) => ({
-				id: `${app.core.package}-wrap`,
-				label: app.core.name,
-				icon: app.icon,
-				onClick: () => history.push(`/${app.core.package}`),
-				items: app.views?.sidebar
-					? [
-							{
-								id: app.core.package,
-								label: app.core.name,
-								icon: app.icon,
-								onClick: () => history.push(`/${app.core.package}`),
-								sidebar: app.views?.sidebar,
-								CustomComponent: SidebarComponent
-							}
-					  ]
-					: []
-			}))
-		}),
-		[account?.displayName, account.id, account?.name, apps, history]
+		() => [
+			{
+				id: account?.id,
+				label: account?.displayName ?? account?.name,
+				icon: 'PersonOutline',
+				open: true,
+				items: map(apps, (app) => ({
+					id: `${app.core.package}-wrap`,
+					label: app.core.name,
+					icon: app.icon,
+					onClick: () => history.push(`/${app.core.package}`),
+					items: app.views?.sidebar
+						? [
+								{
+									id: app.core.package,
+									label: app.core.name,
+									icon: app.icon,
+									onClick: () => history.push(`/${app.core.package}`),
+									sidebar: app.views?.sidebar,
+									CustomComponent: SidebarComponent
+								}
+						  ]
+						: []
+				}))
+			}
+		],
+		[account?.displayName, account?.id, account?.name, apps, history]
 	);
 	return (
 		<Container

@@ -44,20 +44,22 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 	const disabled = useMemo(() => activeApp && !apps[activeApp]?.views?.sidebar, [activeApp, apps]);
 	const account = useUserAccount();
 	const items = useMemo(
-		() => ({
-			id: account?.id,
-			label: account?.displayName ?? account?.name,
-			icon: 'PersonOutline',
-			open: true,
-			items: map(apps, (app) => ({
-				id: app.core.package,
-				label: app.core.name,
-				icon: app.icon,
-				sidebar: app.views?.sidebar,
-				sidebarIsOpen,
-				CustomComponent: SidebarSwitch
-			}))
-		}),
+		() => [
+			{
+				id: account?.id,
+				label: account?.displayName ?? account?.name,
+				icon: 'PersonOutline',
+				open: true,
+				items: map(apps, (app) => ({
+					id: app.core.package,
+					label: app.core.name,
+					icon: app.icon,
+					sidebar: app.views?.sidebar,
+					sidebarIsOpen,
+					CustomComponent: SidebarSwitch
+				}))
+			}
+		],
 		[account?.displayName, account?.id, account?.name, apps, sidebarIsOpen]
 	);
 

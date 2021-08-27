@@ -24,7 +24,8 @@ const ContextBridge = () => {
 	const createModal = useContext(ModalManagerContext);
 	useContextBridge({
 		functions: {
-			getAccounts: () => account,
+			getAccounts: () => [account],
+			getAccount: () => account,
 			getHistory: () => history,
 			createSnackbar,
 			createModal,

@@ -12,9 +12,8 @@ import React, { createContext, FC, useCallback, useEffect, useState } from 'reac
 import { ThemeProvider as UIThemeProvider } from '@zextras/zapp-ui';
 import { enable, disable, auto, setFetchMethod } from 'darkreader';
 import { reduce } from 'lodash';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import Logo from './logo';
+import { useAccountStore } from '../account/account-store';
 
 setFetchMethod(window.fetch);
 
@@ -31,7 +30,65 @@ export const ThemeCallbacksContext = createContext<{
 	setDarkReaderState: (newState: 'auto' | 'enabled' | 'disabled') => {}
 });
 
+const themeSizes = (
+	size: 'small' | 'normal' | 'large' | 'larger' | 'default' | string
+): ThemeExtension => {
+	switch (size) {
+		case 'small': {
+			return (t: any): any => {
+				// eslint-disable-next-line no-param-reassign
+				t.sizes.font = {
+					extrasmall: '10px',
+					small: '12px',
+					medium: '14px',
+					large: '16px'
+				};
+				return t;
+			};
+		}
+		case 'large': {
+			return (t: any): any => {
+				// eslint-disable-next-line no-param-reassign
+				t.sizes.font = {
+					extrasmall: '14px',
+					small: '16px',
+					medium: '18px',
+					large: '20px'
+				};
+				return t;
+			};
+		}
+		case 'larger': {
+			return (t: any): any => {
+				// eslint-disable-next-line no-param-reassign
+				t.sizes.font = {
+					extrasmall: '16px',
+					small: '18px',
+					medium: '20px',
+					large: '22px'
+				};
+				return t;
+			};
+		}
+		case 'default':
+		case 'normal':
+		default: {
+			return (t: any): any => {
+				// eslint-disable-next-line no-param-reassign
+				t.sizes.font = {
+					extrasmall: '12px',
+					small: '14px',
+					medium: '16px',
+					large: '18px'
+				};
+				return t;
+			};
+		}
+	}
+};
+
 export const ThemeProvider: FC = ({ children }) => {
+	const zimbraPrefFontSize = useAccountStore((s) => s.settings.prefs.zimbraPrefFontSize as string);
 	// TODO: update when the DS is fully typed :D
 	const [extensions, setExtensions] = useState<ThemeExtensionMap>({
 		zextrasLogo: (t) => ({ ...t, logo: { ...t.logo, svg: Logo } }),
@@ -46,6 +103,12 @@ export const ThemeProvider: FC = ({ children }) => {
 			return theme;
 		}
 	});
+	useEffect(() => {
+		setExtensions((e) => ({
+			...e,
+			fonts: themeSizes(zimbraPrefFontSize)
+		}));
+	}, [zimbraPrefFontSize]);
 	const [darkReaderState, setDarkReaderState] = useState<'auto' | 'disabled' | 'enabled'>('auto');
 	useEffect(() => {
 		switch (darkReaderState) {

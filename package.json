@@ -1,6 +1,6 @@
 {
 	"name": "@zextras/zapp-shell",
-	"version": "0.1.8",
+	"version": "0.1.9",
 	"description": "A web application framework",
 	"types": "./types/index.d.ts",
 	"main": "dist/zapp-shell.bundle.js",

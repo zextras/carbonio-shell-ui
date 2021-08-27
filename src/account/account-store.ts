@@ -11,18 +11,26 @@ export const useAccountStore = create<AccountState>((set, get) => ({
 	settings: {},
 	context: {},
 	init: (): Promise<void> =>
-		baseJsonFetch(get, set)<any, GetInfoResponse>('GetInfo', {
-			_jsns: 'urn:zimbraAccount'
-		})
+		get()
+			.soapFetch<any, GetInfoResponse>('GetInfo', {
+				_jsns: 'urn:zimbraAccount'
+			})
 			.then((res): void => {
 				if (res) {
 					const { account, settings, apps } = normalizeAccount(res);
 					useAppStore.getState().setters.addApps(apps);
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
 					set({ account, settings });
 				}
 			})
+			.then(() => fetch('/static/iris/components.json'))
+			.then((r) => r.json())
+			.then(console.log)
+			.then(() =>
+				get().soapFetch<any, any>('GetTag', {
+					_jsns: 'urn:zimbraMail'
+				})
+			)
+			.then(console.log)
 			.catch((err) => {
 				console.log('there was an error checking user data');
 				console.error(err);

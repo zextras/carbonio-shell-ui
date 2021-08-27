@@ -1,10 +1,4 @@
 {
-    "changelog": {
-        "cancel": "",
-        "close": "",
-        "remind_later": "",
-        "title": ""
-    },
     "message": {
         "snackbar": {
             "settings_saved": "Edits saved correctly"

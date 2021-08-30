@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.50](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.49...v0.1.0-beta.50) (2021-08-23)
+
+## [0.1.0-beta.49](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.48...v0.1.0-beta.49) (2021-08-20)
+
+
+### Bug Fixes
+
+* module search selection ([157baa4](https://bitbucket.org/zextras/zapp-shell/commit/157baa45b40e07b003e14b323972cf58ad561490))
+* search bar and query state coupling ([f5c5351](https://bitbucket.org/zextras/zapp-shell/commit/f5c5351a0d17a8744525f1c67fc0c55a85868b4b))
+
+## [0.1.0-beta.48](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.47...v0.1.0-beta.48) (2021-08-19)
+
+
+### Bug Fixes
+
+* integrations were all stored in the actions state ([ada8f5a](https://bitbucket.org/zextras/zapp-shell/commit/ada8f5a96f93a38f0330a06b90995e84cb6c3580))
+
+## [0.1.0-beta.47](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.46...v0.1.0-beta.47) (2021-08-17)
+
+
+### Features
+
+* updated search bar behavior ([f4d9942](https://bitbucket.org/zextras/zapp-shell/commit/f4d99428aaf48f6aefa277fcb143f2f2a2ea5887))
+
+## [0.1.0-beta.46](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.45...v0.1.0-beta.46) (2021-08-16)
+
+
+### Bug Fixes
+
+* corrected search routing ([a87d1c6](https://bitbucket.org/zextras/zapp-shell/commit/a87d1c6632e425d66cc4490a8387c9f9d053bee7))
+
 ## [0.1.0-beta.45](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.44...v0.1.0-beta.45) (2021-08-13)
 
 

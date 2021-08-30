@@ -79,7 +79,7 @@ export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, childr
 				vertical: 'small'
 			}}
 		>
-			<Container orientation="horizontal" width="75%" mainAlignment="space-between">
+			<Container orientation="horizontal" width="75%" maxWidth="75%" mainAlignment="space-between">
 				<Responsive mode="mobile">
 					<Padding right="small">
 						<IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} />

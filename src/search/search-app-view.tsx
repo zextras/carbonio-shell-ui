@@ -14,12 +14,12 @@ import React, { FC, useMemo, useCallback, useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Container, Text, Chip, Padding, Divider, Button } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
 import { useApps } from '../app-store/hooks';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppContextProvider from '../app/app-context-provider';
 import { useSearchStore } from './search-store';
+import { SEARCH_APP_ID } from '../constants';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const useQuery = (): [Array<any>, Function] => useSearchStore((s) => [s.query, s.updateQuery]);
@@ -34,7 +34,7 @@ export const SearchAppView: FC = () => {
 			map(
 				filter(apps, (app): boolean => !!app.views?.search),
 				(app) => (
-					<Route key={`/${app.core.package}`} path={`/${app.core.package}`}>
+					<Route key={`/${app.core.package}`} path={`/${SEARCH_APP_ID}/${app.core.package}`}>
 						<AppContextProvider pkg={app.core.package}>
 							{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 							{/* @ts-ignore */}
@@ -57,8 +57,8 @@ export const SearchAppView: FC = () => {
 				style={{ flexWrap: 'wrap' }}
 			>
 				<Text color="secondary">{t('search.results_for', 'Results for:')}</Text>
-				{map(query, (q) => (
-					<Padding key={q.label} all="extrasmall">
+				{map(query, (q, i) => (
+					<Padding key={`${i}${q.label}`} all="extrasmall">
 						<Chip {...q} background="gray2" />
 					</Padding>
 				))}

@@ -32,6 +32,7 @@ import { useLocalStorage } from '../shell/hooks';
 import { SEARCH_APP_ID } from '../constants';
 import { useApps } from '../app-store/hooks';
 import { useSearchStore } from './search-store';
+import { handleKeyboardShortcuts } from '../keyboard-shortcuts/keyboard-shortcuts';
 
 const StyledContainer = styled(Container)`
 	height: 44px;
@@ -78,9 +79,11 @@ const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus
 };
 type SearchBarProps = {
 	currentApp: string;
+	primaryAction: unknown;
+	secondaryActions: unknown;
 };
 
-export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
+export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secondaryActions }) => {
 	const inputRef = useRef<HTMLInputElement>();
 	const theme = useContext(ThemeContext) as unknown;
 	const [t] = useTranslation();
@@ -89,7 +92,6 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 	const history = useHistory();
 	const { updateQuery, updateModule, query } = useSearchStore();
 	const [moduleSelection, setModuleSelection] = useState<{ value: string; label: string }>();
-
 	const moduleSelectorItems = useMemo<
 		Array<{ label: string; value: string; customComponent: JSX.Element }>
 	>(
@@ -212,15 +214,19 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 	);
 
 	useEffect(() => {
-		window.addEventListener('keypress', (event: KeyboardEvent) => {
-			// isContentEditable is actually present
-			// @ts-ignore
-			if (event.key === '/' && event?.target?.isContentEditable === false) {
-				event.preventDefault();
-				inputRef.current?.focus();
-			}
-		});
-	}, []);
+		const handler = (event: KeyboardEvent): unknown =>
+			handleKeyboardShortcuts({
+				event,
+				inputRef,
+				primaryAction,
+				secondaryActions,
+				currentApp
+			});
+		document.addEventListener('keydown', handler);
+		return (): void => {
+			document.removeEventListener('keydown', handler);
+		};
+	}, [currentApp, inputRef, primaryAction, secondaryActions]);
 
 	useEffect(() => {
 		const nextModule = find(moduleSelectorItems, (mod) => mod.value === currentApp);

@@ -97,7 +97,11 @@ export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, childr
 					/>
 				</Padding>
 				<Responsive mode="desktop">
-					<SearchBar currentApp={currentApp} />
+					<SearchBar
+						currentApp={currentApp}
+						primaryAction={primaryAction}
+						secondaryActions={secondaryActions}
+					/>
 				</Responsive>
 			</Container>
 			<Container orientation="horizontal" width="25%" mainAlignment="flex-end">

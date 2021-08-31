@@ -22,7 +22,7 @@ import {
 	ThemeContext
 } from '@zextras/zapp-ui';
 import { map } from 'lodash';
-import { useAppList } from '../stores/app-store/hooks';
+import { useAppList } from '../store/app/hooks';
 
 import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../constants/index';
 

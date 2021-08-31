@@ -38,7 +38,7 @@ import { RichTextEditor } from '@zextras/zapp-ui/dist/zapp-ui.rich-text-editor';
 
 import StoreFactory from '../../redux/store-factory';
 
-import { appStore } from '../stores/app-store';
+import { appStore } from '../../store/app';
 import {
 	IShellWindow,
 	loadApp,

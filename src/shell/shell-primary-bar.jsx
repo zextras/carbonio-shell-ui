@@ -15,7 +15,7 @@ import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { BoardValueContext, BoardSetterContext } from './boards/board-context';
-import { useAppList } from '../stores/app-store/hooks';
+import { useAppList } from '../store/app/hooks';
 
 const AppIcon = styled(IconButton)`
 	${(props) =>

@@ -11,7 +11,7 @@
 import React, { FC, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormSubSection, Button } from '@zextras/zapp-ui';
-import { logout } from '../account/logout';
+import { logout } from '../store/account/logout';
 
 const Logout: FC = () => {
 	const [t] = useTranslation();

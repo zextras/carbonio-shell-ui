@@ -13,8 +13,8 @@ import React, { useContext, Suspense, lazy } from 'react';
 import { BrowserRouter, useHistory } from 'react-router-dom';
 import { SnackbarManagerContext, ModalManagerContext } from '@zextras/zapp-ui';
 import AppLoaderMounter from './app/app-loader-mounter';
-import { useContextBridge } from '../stores/app-store/context-bridge';
-import { useUserAccount } from '../account/hooks';
+import { useContextBridge } from '../store/app/context-bridge';
+import { useUserAccount } from '../store/account/hooks';
 import LoadingView from './loading-view';
 
 export const LazyShellView = lazy(() =>

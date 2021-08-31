@@ -14,7 +14,7 @@ import React, { FC, useMemo, useCallback, useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Container, Text, Chip, Padding, Divider, Button } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
-import { useApps } from '../stores/app-store/hooks';
+import { useApps } from '../store/app/hooks';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppContextProvider from '../boot/app/app-context-provider';

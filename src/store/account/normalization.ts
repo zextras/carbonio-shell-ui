@@ -1,6 +1,6 @@
 import { filter, reduce } from 'lodash';
 import { CoreAppData } from '../../../types';
-import { zimletToAppPkgDescription } from '../network/soap/utils';
+import { zimletToAppPkgDescription } from '../../network/soap/utils';
 import {
 	Account,
 	AccountSettings,

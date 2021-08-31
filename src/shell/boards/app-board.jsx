@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import { map } from 'lodash';
 import AppContextProvider from '../../boot/app/app-context-provider';
 import { BoardValueContext, BoardSetterContext } from './board-context';
-import { useApps } from '../../stores/app-store/hooks';
+import { useApps } from '../../store/app/hooks';
 
 // eslint-disable-next-line
 const _container = styled.div`

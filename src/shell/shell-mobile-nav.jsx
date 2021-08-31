@@ -13,8 +13,8 @@ import React, { useMemo } from 'react';
 import { map } from 'lodash';
 import { Accordion, Collapse, Container, Padding } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
-import { useAppList } from '../stores/app-store/hooks';
-import { useUserAccount } from '../account/hooks';
+import { useAppList } from '../store/app/hooks';
+import { useUserAccount } from '../store/account/hooks';
 import { UserQuota } from './user-quota';
 import AppContextProvider from '../boot/app/app-context-provider';
 

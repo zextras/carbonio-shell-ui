@@ -18,10 +18,10 @@ import Logout from './logout';
 import AppearanceSettings from './appearance-settings';
 import ModuleVersionSettings from './module-version-settings';
 import OutOfOfficeSettings from './out-of-office-view';
-import { useUserSettings } from '../account/hooks';
+import { useUserSettings } from '../store/account/hooks';
 import { SETTINGS_APP_ID } from '../constants';
-import { editSettings } from '../account/edit-settings';
-import { Mods } from '../account/types';
+import { editSettings } from '../store/account/edit-settings';
+import { Mods } from '../store/account/types';
 
 export const DisplayerHeader: FC<{
 	label: string;

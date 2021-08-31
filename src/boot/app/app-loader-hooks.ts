@@ -20,7 +20,7 @@ import {
 	getUseReplaceHistoryCallback,
 	useIsMobile
 } from '../../shell/hooks';
-import { useApp, useAppContext } from '../stores/app-store/hooks';
+import { useApp, useAppContext } from '../../store/app/hooks';
 import {
 	useAction,
 	useActions,
@@ -29,7 +29,7 @@ import {
 	useIntegratedComponent,
 	useIntegratedFunction,
 	useIntegratedHook
-} from '../integrations/hooks';
+} from '../../store/integrations/hooks';
 
 export const getAppHooks = (pkg: string): unknown => ({
 	// The returned function is a hook

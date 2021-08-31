@@ -17,7 +17,7 @@ import { useIntegrationsStore } from './store';
 import { Action, ActionFactory } from './types';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import AppContextProvider from '../app/app-context-provider';
+import AppContextProvider from '../../boot/app/app-context-provider';
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getIntegratedHook = (id: string): [Function, boolean] => {
 	const integration = useIntegrationsStore.getState().hooks?.[id];

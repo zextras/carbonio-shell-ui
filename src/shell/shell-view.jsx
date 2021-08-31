@@ -22,11 +22,11 @@ import ShellMenuPanel from './shell-menu-panel';
 import AppBoardWindow from './boards/app-board-window';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 
-import { useAppList } from '../stores/app-store/hooks';
-import { useAppStore } from '../stores/app-store';
+import { useAppList } from '../store/app/hooks';
+import { useAppStore } from '../store/app';
 import AppContextProvider from '../boot/app/app-context-provider';
-import { useUserAccount, useUserSettings } from '../account/hooks';
-import { useAccountStore } from '../account/account-store';
+import { useUserAccount, useUserSettings } from '../store/account/hooks';
+import { useAccountStore } from '../store/account/account-store';
 
 const Background = styled.div`
 	background: ${({ theme }) => theme.palette.gray6.regular};

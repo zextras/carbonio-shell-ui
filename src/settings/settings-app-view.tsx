@@ -13,7 +13,7 @@ import React, { FC, Suspense, useMemo, lazy } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { map } from 'lodash';
 import LoadingView from '../boot/loading-view';
-import { useApps } from '../stores/app-store/hooks';
+import { useApps } from '../store/app/hooks';
 import { SETTINGS_APP_ID } from '../constants';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

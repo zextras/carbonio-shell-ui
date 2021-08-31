@@ -16,12 +16,12 @@ import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-provider';
 import I18nFactory from '../i18n/i18n-factory';
 import StoreFactory from '../redux/store-factory';
-import { useAppStore } from '../stores/app-store';
+import { useAppStore } from '../store/app';
 import { settingsAppData, getSettingsCore } from '../settings/settings-app';
 import { searchAppData, getSearchCore } from '../search/search-app';
 import { SETTINGS_APP_ID, SEARCH_APP_ID } from '../constants';
-import { useAccountStore } from '../account/account-store';
-import { useUserAccount } from '../account/hooks';
+import { useAccountStore } from '../store/account/account-store';
+import { useUserAccount } from '../store/account/hooks';
 import { AppLoader } from './app/app-loader';
 
 const AppStoreInterface = () => {

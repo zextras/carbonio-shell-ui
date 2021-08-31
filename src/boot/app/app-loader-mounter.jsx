@@ -10,7 +10,7 @@
  */
 import React, { useState, memo, useEffect } from 'react';
 import { find, map, reduce } from 'lodash';
-import { useApps } from '../stores/app-store/hooks';
+import { useApps } from '../../store/app/hooks';
 import AppContextProvider from './app-context-provider';
 
 export default function AppLoaderMounter() {

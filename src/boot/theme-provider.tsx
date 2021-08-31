@@ -13,7 +13,7 @@ import { ThemeProvider as UIThemeProvider } from '@zextras/zapp-ui';
 import { enable, disable, auto, setFetchMethod } from 'darkreader';
 import { reduce } from 'lodash';
 import Logo from './logo';
-import { useAccountStore } from '../account/account-store';
+import { useAccountStore } from '../store/account/account-store';
 
 setFetchMethod(window.fetch);
 

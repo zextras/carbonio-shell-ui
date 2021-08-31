@@ -26,7 +26,7 @@ import { BoardSetterContext, BoardValueContext } from './boards/board-context';
 
 export { default as usePromise } from 'react-use-promise';
 
-export { useUserAccount, useUserAccounts, useUserSettings } from '../account/hooks';
+export { useUserAccount, useUserAccounts, useUserSettings } from '../store/account/hooks';
 export const getUseAddBoardCallback = (appId: string) => (): ((
 	path: string,
 	context?: unknown | { app: string }

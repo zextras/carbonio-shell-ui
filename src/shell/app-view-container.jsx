@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import { map } from 'lodash';
 import { Container } from '@zextras/zapp-ui';
 import AppContextProvider from '../boot/app/app-context-provider';
-import { useApps } from '../stores/app-store/hooks';
+import { useApps } from '../store/app/hooks';
 
 const _BoardsRouterContainer = styled(Container)`
 	flex-grow: 1;

@@ -1,4 +1,5 @@
 import { map } from 'lodash';
+import { SHELL_APP_ID } from '../../constants';
 import { useAccountStore } from './account-store';
 import { Mods } from './types';
 
@@ -6,6 +7,7 @@ export const editSettings = (mods: Mods): Promise<any> =>
 	useAccountStore
 		.getState()
 		.xmlSoapFetch(
+			SHELL_APP_ID,
 			'Batch',
 			`<BatchRequest xmlns="urn:zimbra" onerror="stop">${
 				mods.props

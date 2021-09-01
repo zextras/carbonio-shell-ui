@@ -9,19 +9,19 @@
  * *** END LICENSE BLOCK *****
  */
 import { Component, ComponentClass, FunctionComponent } from 'react';
+import { ZextrasModule } from '../account/types';
 
 export type CoreAppData = {
-	priority: number;
-	package: string;
+	commit: string;
+	display: string;
+	entry: string;
 	name: string;
-	description: string;
+	priority: number;
 	version: string;
-	resourceUrl: string;
-	entryPoint: string;
 };
 
 export type UninitializedAppData = {
-	core: CoreAppData;
+	core: ZextrasModule;
 	class?: Component;
 };
 
@@ -45,7 +45,7 @@ export type AppData = UninitializedAppData & RuntimeAppData;
 export type AppsMap = Record<string, AppData>;
 
 export type Setters = {
-	addApps: (apps: Array<CoreAppData>) => void;
+	addApps: (apps: Array<ZextrasModule>) => void;
 	setAppClass: (id: string, component: ComponentClass) => void;
 	registerAppData: (id: string) => (data: RuntimeAppData) => void;
 	setAppContext: (id: string) => (data: unknown) => void;

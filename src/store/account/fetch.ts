@@ -1,17 +1,23 @@
 import UAParser from 'ua-parser-js';
-import { GetState, SetState } from 'zustand';
 import { goToLogin } from './go-to-login';
-import {
-	Account,
-	AccountState,
-	ErrorSoapResponse,
-	SoapResponse,
-	SuccessSoapResponse
-} from './types';
+import { Account, ErrorSoapResponse, SoapResponse, SuccessSoapResponse } from './types';
+import { getApp } from '../app/getters';
+import { useAccountStore } from './account-store';
+import { getIntegratedFunction } from '../integrations/getters';
 
 const { os, browser } = UAParser();
 
-const userAgent = `CarbonioWebClient - ${browser.name} ${browser.version} (${os.name})`;
+export const userAgent = `CarbonioWebClient - ${browser.name} ${browser.version} (${os.name})`;
+
+export const report = (appId: string) => (error: Error, hint?: unknown): void => {
+	const app = getApp(appId)();
+	const account = useAccountStore.getState().account as Account;
+	const [reportError, available] = getIntegratedFunction('report-error');
+	if (available) {
+		reportError(error, app?.core ?? { id: 'com_zextras_zapp_shell' }, account.id, hint);
+	}
+};
+
 const getAccount = (acc?: Account): { by: string; _content: string } | undefined => {
 	if (acc) {
 		if (acc.name) {
@@ -49,7 +55,7 @@ const getXmlSession = (context?: any): string => {
 	return '';
 };
 
-const handleResponse = <R>(api: string, res: SoapResponse<R>, set: SetState<AccountState>): R => {
+const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 	if (res?.Body?.Fault) {
 		if ((<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Code === 'service.AUTH_REQUIRED') {
 			goToLogin();
@@ -61,16 +67,14 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>, set: SetState<Acco
 		);
 	}
 	if (res?.Header?.context) {
-		set({
+		useAccountStore.setState({
 			context: res?.Header?.context
 		});
 	}
 	return (<SuccessSoapResponse<R>>res).Body[`${api}Response`] as R;
 };
-export const baseJsonFetch = (get: GetState<AccountState>, set: SetState<AccountState>) => <
-	Request,
-	Response
->(
+export const baseJsonFetch = <Request, Response>(
+	app: string,
 	api: string,
 	body: Request
 ): Promise<Response | void> =>
@@ -87,14 +91,14 @@ export const baseJsonFetch = (get: GetState<AccountState>, set: SetState<Account
 				context: {
 					_jsns: 'urn:zimbra',
 					notify: {
-						seq: get().context?.notify?.seq
+						seq: useAccountStore.getState().context?.notify?.seq
 					},
-					session: get().context?.session,
-					account: getAccount(get().account as Account),
+					session: useAccountStore.getState().context?.session,
+					account: getAccount(useAccountStore.getState().account as Account),
 					context: {
 						userAgent: {
 							name: userAgent,
-							version: get().version
+							version: useAccountStore.getState().zimbraVersion
 						}
 					}
 				}
@@ -102,15 +106,10 @@ export const baseJsonFetch = (get: GetState<AccountState>, set: SetState<Account
 		})
 	}) // TODO proper error handling
 		.then((res) => res?.json())
-		.then((res: SoapResponse<Response>) => handleResponse(api, res, set))
-		.catch(console.error);
+		.then((res: SoapResponse<Response>) => handleResponse(api, res))
+		.catch((e) => report(app)(e));
 
-export const baseXmlFetch = (get: GetState<AccountState>, set: SetState<AccountState>) => <
-	Response
->(
-	api: string,
-	body: string
-): Promise<Response> =>
+export const baseXmlFetch = <Response>(app: string, api: string, body: string): Promise<Response> =>
 	fetch(`/service/soap/${api}Request`, {
 		method: 'POST',
 		headers: {
@@ -119,9 +118,9 @@ export const baseXmlFetch = (get: GetState<AccountState>, set: SetState<AccountS
 		body: `<?xml version="1.0" encoding="utf-8"?>
 		<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
 			<soap:Header><context xmlns="urn:zimbra"><userAgent name="${userAgent}" version="${
-			get().version
-		}"/>${getXmlSession(get().context)}${getXmlAccount(
-			get().account
+			useAccountStore.getState().zimbraVersion
+		}"/>${getXmlSession(useAccountStore.getState().context)}${getXmlAccount(
+			useAccountStore.getState().account
 		)}<format type="js"/></context></soap:Header>
 			<soap:Body>${body}</soap:Body>
 		</soap:Envelope>`
@@ -135,10 +134,10 @@ export const baseXmlFetch = (get: GetState<AccountState>, set: SetState<AccountS
 				throw new Error(`${res?.Body.Fault.Detail?.Error?.Detail}: ${res.Body.Fault.Reason?.Text}`);
 			}
 			if (res?.Header?.context) {
-				set({
+				useAccountStore.setState({
 					context: res?.Header?.context
 				});
 			}
 			return res.Body[`${api}Response`] as Response;
 		})
-		.catch(console.error);
+		.catch((e) => report(app)(e));

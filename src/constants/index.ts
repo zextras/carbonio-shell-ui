@@ -44,6 +44,7 @@ export const FOLDERS = {
 	BRIEFCASE: '16'
 };
 
+export const SHELL_APP_ID = 'com_zextras_zapp_shell';
 export const SETTINGS_APP_ID = 'settings';
 
 export const SEARCH_APP_ID = 'search';

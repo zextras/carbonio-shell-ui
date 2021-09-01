@@ -7,7 +7,7 @@ const { DefinePlugin } = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const { coerce, valid } = require('semver');
 const commitHash = require('child_process').execSync('git rev-parse HEAD').toString().trim();
-const pkg = require('./zapp.conf.js');
+const pkg = require('./package.json');
 
 const babelRC = require('./babel.config.js');
 // const babelRCServiceworker = require('./babel.config.serviceworker.js');
@@ -126,7 +126,7 @@ module.exports = {
 		new DefinePlugin({
 			COMMIT_ID: JSON.stringify(commitHash.toString().trim()),
 			PACKAGE_VERSION: JSON.stringify(pkg.version),
-			PACKAGE_NAME: JSON.stringify(pkg.pkgName),
+			PACKAGE_NAME: JSON.stringify(pkg.zapp.name),
 			FLAVOR: JSON.stringify(flavor.toUpperCase()),
 			BASE_PATH: JSON.stringify(basePath)
 		}),
@@ -140,16 +140,6 @@ module.exports = {
 			template: path.resolve(process.cwd(), 'src', 'index.template.html'),
 			chunks: ['index'],
 			BASE_PATH: basePath
-		}),
-		new HtmlWebpackPlugin({
-			inject: false,
-			template: path.resolve(process.cwd(), 'zimlet_def.template.xml'),
-			filename: `${pkg.pkgName}.xml`,
-			ZIMBRA_PACKAGE_VERSION: valid(coerce(pkg.version)),
-			PACKAGE_VERSION: pkg.version,
-			PACKAGE_NAME: pkg.pkgName,
-			PACKAGE_LABEL: pkg.pkgLabel,
-			PACKAGE_DESCRIPTION: pkg.pkgDescription
 		}),
 		new HtmlWebpackPlugin({
 			inject: false,

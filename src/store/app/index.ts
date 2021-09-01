@@ -14,18 +14,19 @@ import { reduce } from 'lodash';
 import { produce } from 'immer';
 import { ComponentClass } from 'react';
 import { AppData, AppState, CoreAppData } from './store-types';
+import { ZextrasModule } from '../account/types';
 
 export const appStore = createStore<AppState>((set) => ({
 	apps: {},
 	setters: {
-		addApps: (apps: Array<CoreAppData>): void =>
+		addApps: (apps: Array<ZextrasModule>): void =>
 			set(
 				produce((state) => {
 					state.apps = reduce(
 						apps,
 						(acc, core) => ({
 							...acc,
-							[core.package]: { core }
+							[core.name]: { core }
 						}),
 						state.apps
 					);

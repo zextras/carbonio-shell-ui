@@ -1,18 +1,16 @@
-import { string } from 'prop-types';
-
 export type AccountState = {
 	account?: Account;
 	settings: AccountSettings;
-	version: string;
+	zimbraVersion: string;
 	context: any;
 	init: () => Promise<void>;
-	soapFetch: <Request, Response>(api: string, body: Request) => Promise<Response>;
-	xmlSoapFetch: <Response>(api: string, body: string) => Promise<Response>;
+	setContext: (context: any) => void;
+	xmlSoapFetch: <Response>(app: string, api: string, body: string) => Promise<Response>;
 	tags: Array<Tag>;
-	components: Array<ZextrasComponent>;
+	shell: ZextrasModule;
 };
 
-export type ZextrasComponent = {
+export type ZextrasModule = {
 	commit: string;
 	display: string;
 	// eslint-disable-next-line camelcase

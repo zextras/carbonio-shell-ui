@@ -19,7 +19,7 @@ export const report = (appId: string) => (error: Error, hint?: unknown): void =>
 	const app = getApp(appId)();
 	const [reportError, available] = getIntegratedFunction('report-error');
 	if (available) {
-		reportError(error, app?.core ?? { id: 'com_zextras_zapp_shell' }, hint);
+		reportError(error, app?.core ?? { id: 'carbonio-shell' }, hint);
 	}
 };
 

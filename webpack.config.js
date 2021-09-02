@@ -12,7 +12,7 @@ const pkg = require('./package.json');
 const babelRC = require('./babel.config.js');
 // const babelRCServiceworker = require('./babel.config.serviceworker.js');
 
-const basePath = `/static/iris/zextras-zapp-shell/${commitHash}/`;
+const basePath = `/static/iris/carbonio-shell/${commitHash}/`;
 
 console.log('Building Shell using base path: ');
 console.log(` ${basePath} `);

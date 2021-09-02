@@ -13,9 +13,7 @@ export const editSettings = (mods: Mods): Promise<any> =>
 					? `<ModifyPropertiesRequest xmlns="urn:zimbraAccount">${map(
 							mods.props,
 							(prop, key) =>
-								`<prop name="${key}" zimlet="${prop.app ?? 'com_zextras_zapp_shell'}">${
-									prop.value
-								}</prop>`
+								`<prop name="${key}" zimlet="${prop.app ?? 'carbonio-shell'}">${prop.value}</prop>`
 					  )}</ModifyPropertiesRequest>`
 					: ''
 			}

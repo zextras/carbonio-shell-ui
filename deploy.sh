@@ -1,1 +1,1 @@
-ssh -t root@10.66.64.32 'apt update; apt upgrade -y zextras-zapp-shell'
+ssh -t root@10.66.64.49 'apt update; apt upgrade -y carbonio-shell'

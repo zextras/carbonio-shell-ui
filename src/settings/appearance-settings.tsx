@@ -53,7 +53,7 @@ const AppearanceSettings: FC<{
 			if (v !== drMode) {
 				setDrMode((old) => (v !== old ? v : old));
 				setDarkReaderState(v);
-				addMod('props', 'zappDarkreaderMode', { app: 'com_zextras_zapp_shell', value: v });
+				addMod('props', 'zappDarkreaderMode', { app: 'carbonio-shell', value: v });
 			}
 		},
 		[addMod, drMode, setDarkReaderState]

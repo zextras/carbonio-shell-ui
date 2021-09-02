@@ -1,7 +1,7 @@
 module.exports = {
 	globals: {
 		PACKAGE_VERSION: '0.0.0',
-		PACKAGE_NAME: 'com_zextras_zapp_shell',
+		PACKAGE_NAME: 'carbonio-shell',
 		FLAVOR: 'NPM'
 	},
 	transform: {

@@ -11,7 +11,7 @@
 
 import { Store, configureStore, createSlice } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
-import { AppPkgDescription } from '../../types';
+import { ZextrasModule } from '../store/account/types';
 
 const _uselessSlice = createSlice({
 	name: '_useless',
@@ -22,13 +22,13 @@ const _uselessSlice = createSlice({
 export default class StoreFactory {
 	private _cache: { [pkgName: string]: Store<any> } = {};
 
-	getStoreForApp(pkg: AppPkgDescription): Store<any> {
-		if (this._cache[pkg.package]) return this._cache[pkg.package];
+	getStoreForApp(pkg: ZextrasModule): Store<any> {
+		if (this._cache[pkg.name]) return this._cache[pkg.name];
 		const store = configureStore({
 			devTools:
 				FLAVOR === 'NPM'
 					? {
-							name: pkg.package
+							name: pkg.name
 					  }
 					: false,
 			middleware:
@@ -41,7 +41,7 @@ export default class StoreFactory {
 				_useless: _uselessSlice.reducer
 			}
 		});
-		this._cache[pkg.package] = store;
+		this._cache[pkg.name] = store;
 		return store;
 	}
 }

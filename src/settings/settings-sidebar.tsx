@@ -29,12 +29,12 @@ export const SettingsSidebar: FC = () => {
 				(acc: Array<unknown>, app) => {
 					if (app.views?.settings) {
 						acc.push({
-							id: app.core.package,
+							id: app.core.name,
 							label: app.core.name,
 							icon: app.icon,
 							onClick: (e: MouseEvent): void => {
 								e.stopPropagation();
-								history.push(`/${SETTINGS_APP_ID}/${app.core.package}`);
+								history.push(`/${SETTINGS_APP_ID}/${app.core.route}`);
 							}
 						});
 					}

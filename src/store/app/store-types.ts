@@ -11,15 +11,6 @@
 import { Component, ComponentClass, FunctionComponent } from 'react';
 import { ZextrasModule } from '../account/types';
 
-export type CoreAppData = {
-	commit: string;
-	display: string;
-	entry: string;
-	name: string;
-	priority: number;
-	version: string;
-};
-
 export type UninitializedAppData = {
 	core: ZextrasModule;
 	class?: Component;

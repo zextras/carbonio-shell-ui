@@ -12,16 +12,16 @@ import { TFunction } from 'react-i18next';
 import { SettingsAppView } from './settings-app-view';
 import { SettingsSidebar } from './settings-sidebar';
 import { SETTINGS_APP_ID } from '../constants';
-import { CoreAppData } from '../store/app/store-types';
+import { ZextrasModule } from '../store/account/types';
 
-export const getSettingsCore = (t: TFunction): CoreAppData => ({
-	priority: -2,
-	package: SETTINGS_APP_ID,
-	name: t('settings.app', 'Settings'),
-	description: t('settings.app_description', 'Settings Module'),
+export const getSettingsCore = (t: TFunction): ZextrasModule => ({
+	priority: 1,
+	name: SETTINGS_APP_ID,
 	version: '0.0.0',
-	resourceUrl: '',
-	entryPoint: ''
+	js_entrypoint: '',
+	route: 'settings',
+	commit: '',
+	display: 'Settings'
 });
 
 export const settingsAppData = {

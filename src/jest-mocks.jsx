@@ -22,7 +22,7 @@ import {
 	useRemoveCurrentBoard
 } from './shell/hooks';
 
-const confPath = `${process.cwd()}/zapp.conf.js`;
+const confPath = `${process.cwd()}/package.json`;
 // eslint-disable-next-line max-len
 // eslint-disable-next-line global-require,import/no-dynamic-require,@typescript-eslint/no-var-requires
 const conf = require(confPath);
@@ -80,7 +80,7 @@ function render(
 		reducer,
 		preloadedState,
 		initialRouterEntries = ['/'],
-		packageName = conf.pkgName,
+		packageName = conf.zapp.name,
 		packageVersion = conf.version,
 		...options
 	} = {}

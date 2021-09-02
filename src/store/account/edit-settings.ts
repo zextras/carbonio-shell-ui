@@ -6,8 +6,7 @@ import { Mods } from './types';
 export const editSettings = (mods: Mods): Promise<any> =>
 	useAccountStore
 		.getState()
-		.xmlSoapFetch(
-			SHELL_APP_ID,
+		.xmlSoapFetch(SHELL_APP_ID)(
 			'Batch',
 			`<BatchRequest xmlns="urn:zimbra" onerror="stop">${
 				mods.props

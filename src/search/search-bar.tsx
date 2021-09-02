@@ -112,8 +112,8 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 						<Text>{app.core.name}</Text>
 					</Container>
 				),
-				label: app.core.name,
-				value: app.core.package
+				label: app.core.display,
+				value: app.core.name
 			})),
 		[apps]
 	);

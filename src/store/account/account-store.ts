@@ -1,6 +1,7 @@
 import create from 'zustand';
 import { AccountState } from './types';
 import { getInfo } from './get-info';
+import { getSoapFetch, getXmlSoapFetch } from './fetch';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -14,5 +15,13 @@ export const useAccountStore = create<AccountState>((set, get) => ({
 	},
 	context: {},
 	setContext: (context: any): void => set({ context }),
-	init: (): Promise<void> => getInfo()
+	init: (): Promise<void> => getInfo(set, get),
+	soapFetch: (
+		app: string
+	): (<Request, Response>(api: string, body: Request) => Promise<Response | void>) =>
+		getSoapFetch(app, set, get),
+	xmlSoapFetch: (
+		app: string
+	): (<Request, Response>(api: string, body: Request) => Promise<Response | void>) =>
+		getXmlSoapFetch(app, set, get)
 }));

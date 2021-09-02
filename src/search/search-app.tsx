@@ -10,17 +10,17 @@
  */
 import { TFunction } from 'react-i18next';
 import { SearchAppView } from './search-app-view';
-import { CoreAppData } from '../store/app/store-types';
 import { SEARCH_APP_ID } from '../constants/index';
+import { ZextrasModule } from '../store/account/types';
 
-export const getSearchCore = (t: TFunction): CoreAppData => ({
-	priority: -1,
-	package: SEARCH_APP_ID,
-	name: t('search.app', 'Search'),
-	description: t('search.app_description', 'Search Module'),
+export const getSearchCore = (t: TFunction): ZextrasModule => ({
+	priority: 2,
+	name: SEARCH_APP_ID,
+	display: t('search.app', 'Search'),
 	version: '0.0.0',
-	resourceUrl: '',
-	entryPoint: ''
+	js_entrypoint: '',
+	commit: '',
+	route: SEARCH_APP_ID
 });
 
 export const searchAppData = {

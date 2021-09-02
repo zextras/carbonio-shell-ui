@@ -13,7 +13,7 @@ import createStore from 'zustand/vanilla';
 import { reduce } from 'lodash';
 import { produce } from 'immer';
 import { ComponentClass } from 'react';
-import { AppData, AppState, CoreAppData } from './store-types';
+import { AppData, AppState } from './store-types';
 import { ZextrasModule } from '../account/types';
 
 export const appStore = createStore<AppState>((set) => ({

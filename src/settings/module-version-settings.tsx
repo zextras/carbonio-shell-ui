@@ -38,9 +38,7 @@ const ModuleVersionSettings: FC = () => {
 
 	const filteredList = useMemo(
 		() =>
-			apps.filter(
-				(app) => app.core.package !== SEARCH_APP_ID && app.core.package !== SETTINGS_APP_ID
-			),
+			apps.filter((app) => app.core.name !== SEARCH_APP_ID && app.core.name !== SETTINGS_APP_ID),
 		[apps]
 	);
 	return (

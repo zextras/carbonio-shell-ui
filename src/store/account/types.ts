@@ -5,7 +5,12 @@ export type AccountState = {
 	context: any;
 	init: () => Promise<void>;
 	setContext: (context: any) => void;
-	xmlSoapFetch: <Response>(app: string, api: string, body: string) => Promise<Response>;
+	xmlSoapFetch: (
+		app: string
+	) => <Request, Response>(api: string, body: Request) => Promise<Response | undefined>;
+	soapFetch: (
+		app: string
+	) => <Request, Response>(api: string, body: Request) => Promise<Response | undefined>;
 	tags: Array<Tag>;
 	shell: ZextrasModule;
 };
@@ -18,7 +23,9 @@ export type ZextrasModule = {
 	name: string;
 	priority: number;
 	version: string;
+	route: string;
 };
+
 export type Account = {
 	// apps: Array<AppPkgDescription>;
 	id: string;
@@ -94,17 +101,7 @@ export type GetInfoResponse = {
 	version: string;
 };
 
-export type BasePkgDescription = {
-	priority: number;
-	package: string;
-	name: string;
-	description: string;
-	version: string;
-	resourceUrl: string;
-	entryPoint: string;
-};
-
-export type AppPkgDescription = BasePkgDescription & {
+export type AppPkgDescription = ZextrasModule & {
 	swExtension?: string;
 	styleEntryPoint?: string;
 	handlers?: string;

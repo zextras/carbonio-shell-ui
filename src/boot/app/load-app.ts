@@ -30,6 +30,7 @@ import { getAppLink } from './app-link';
 import { Spinner } from '../../ui-extras/spinner';
 import { ZIMBRA_STANDARD_COLORS, FOLDERS } from '../../constants';
 import { useIntegrationsStore } from '../../store/integrations/store';
+import { ZextrasModule } from '../../store/account/types';
 
 export type IShellWindow<T, R> = Window & {
 	__ZAPP_SHARED_LIBRARIES__: T;
@@ -72,7 +73,7 @@ export type SharedLibrariesAppsMap = {
 };
 
 export type LoadedAppRuntime = AppInjections & {
-	pkg: AppPkgDescription;
+	pkg: ZextrasModule;
 };
 
 export type LoadedAppsCache = {
@@ -87,7 +88,7 @@ export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
 // const _revertableActions: { [pkgName: string]: RevertableActionCollection } = {};
 
-export function updateAppHandlers(appPkg: AppPkgDescription, handlers: RequestHandlersList): void {
+export function updateAppHandlers(appPkg: ZextrasModule, handlers: RequestHandlersList): void {
 	if (FLAVOR === 'NPM' && typeof devUtils !== 'undefined') {
 		const worker = devUtils.getMSWorker<SetupWorkerApi>();
 		if (worker) {
@@ -98,7 +99,7 @@ export function updateAppHandlers(appPkg: AppPkgDescription, handlers: RequestHa
 }
 
 function loadAppModule(
-	appPkg: AppPkgDescription,
+	appPkg: ZextrasModule,
 	store: Store<any>,
 	setAppClass: (id: string, appClass: ComponentClass) => void
 ): Promise<void> {
@@ -121,35 +122,35 @@ function loadAppModule(
 			((window as unknown) as IShellWindow<
 				SharedLibrariesAppsMap,
 				ComponentClass
-			>).__ZAPP_SHARED_LIBRARIES__['@zextras/zapp-shell'][appPkg.package] = {
+			>).__ZAPP_SHARED_LIBRARIES__['@zextras/zapp-shell'][appPkg.name] = {
 				store: {
 					store,
 					setReducer: (reducer): void => store.replaceReducer(reducer)
 				},
-				registerAppData: appStore.getState().setters.registerAppData(appPkg.package),
-				setAppContext: appStore.getState().setters.setAppContext(appPkg.package),
+				registerAppData: appStore.getState().setters.registerAppData(appPkg.name),
+				setAppContext: appStore.getState().setters.setAppContext(appPkg.name),
 				registerHooks: useIntegrationsStore.getState().registerHooks,
 				registerFunctions: useIntegrationsStore.getState().registerFunctions,
 				registerActions: useIntegrationsStore.getState().registerActions,
-				registerComponents: useIntegrationsStore.getState().registerComponents(appPkg.package),
-				AppLink: getAppLink(appPkg.package),
+				registerComponents: useIntegrationsStore.getState().registerComponents(appPkg.name),
+				AppLink: getAppLink(appPkg.name),
 				Spinner,
 				FOLDERS,
 				ZIMBRA_STANDARD_COLORS,
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
-				...getAppGetters(appPkg.package),
+				...getAppGetters(appPkg.name),
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
-				...getAppHooks(appPkg.package)
+				...getAppHooks(appPkg.name)
 			};
 
 			// eslint-disable-next-line max-len
 			((window as unknown) as IShellWindow<
 				SharedLibrariesAppsMap,
 				ComponentClass
-			>).__ZAPP_HMR_EXPORT__[appPkg.package] = (appClass: ComponentClass): void => {
-				setAppClass(appPkg.package, appClass);
+			>).__ZAPP_HMR_EXPORT__[appPkg.name] = (appClass: ComponentClass): void => {
+				setAppClass(appPkg.name, appClass);
 				resolve();
 			};
 
@@ -158,17 +159,17 @@ function loadAppModule(
 				((window as unknown) as IShellWindow<
 					SharedLibrariesAppsMap,
 					ComponentClass
-				>).__ZAPP_HMR_HANDLERS__[appPkg.package] = (handlers: RequestHandlersList): void =>
+				>).__ZAPP_HMR_HANDLERS__[appPkg.name] = (handlers: RequestHandlersList): void =>
 					updateAppHandlers(appPkg, handlers);
 			}
 			const script: HTMLScriptElement = document.createElement('script');
 			script.setAttribute('type', 'text/javascript');
-			script.setAttribute('data-pkg_name', appPkg.package);
+			script.setAttribute('data-pkg_name', appPkg.name);
 			script.setAttribute('data-pkg_version', appPkg.version);
 			script.setAttribute('data-is_app', 'true');
-			script.setAttribute('src', `${appPkg.resourceUrl}/${appPkg.entryPoint}`);
+			script.setAttribute('src', `${appPkg.js_entrypoint}`);
 			document.body.appendChild(script);
-			_scripts[`${appPkg.package}-loader-${(_scriptId += 1)}`] = script;
+			_scripts[`${appPkg.name}-loader-${(_scriptId += 1)}`] = script;
 		} catch (err) {
 			reject(err);
 		}
@@ -176,7 +177,7 @@ function loadAppModule(
 }
 
 export function loadApp(
-	pkg: AppPkgDescription,
+	pkg: ZextrasModule,
 	storeFactory: StoreFactory
 ): Promise<LoadedAppRuntime | undefined> {
 	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });

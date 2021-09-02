@@ -18,15 +18,16 @@ type handleKeyboardShortcutsProps = {
 };
 
 export const handleKeyboardShortcuts = (props: handleKeyboardShortcutsProps): void => {
+	console.log('$$$ event ', props.event);
 	const ctrlModifierIsActive = props.event.ctrlKey || props.event.metaKey;
-	const consoleLogKeyCombination = (): void =>
+	const consoleLogKeyCombination = (): void => {
 		console.log(
 			`key pressed: %c  ${props.event.ctrlKey ? 'Ctrl/Cmd + ' : ''}${props.event.key}  `,
 			'color: white; background: #39b654; border-radius: 5px; padding: 8px; width: 100%; font-size:18px; font-weight: 800'
 		);
-
-	props.event.preventDefault();
-	props.event.stopImmediatePropagation();
+		props.event.preventDefault();
+		props.event.stopImmediatePropagation();
+	};
 
 	const createEmail = props.secondaryActions?.filter((item: any) => item.id === 'create-mail')[0]
 		?.click;
@@ -46,7 +47,11 @@ export const handleKeyboardShortcuts = (props: handleKeyboardShortcutsProps): vo
 			break;
 
 		case 'n':
-			if (props.primaryAction) {
+			if (
+				props.primaryAction &&
+				props.event?.target?.isContentEditable === false &&
+				props.event?.target?.nodeName !== 'INPUT'
+			) {
 				consoleLogKeyCombination();
 				props.primaryAction.click();
 			}
@@ -78,6 +83,7 @@ export const handleKeyboardShortcuts = (props: handleKeyboardShortcutsProps): vo
 				props.event?.target?.isContentEditable === false &&
 				props.event?.target?.nodeName !== 'INPUT'
 			) {
+				props.event.preventDefault();
 				consoleLogKeyCombination();
 				props.inputRef ? props.inputRef.current?.focus() : null;
 			}

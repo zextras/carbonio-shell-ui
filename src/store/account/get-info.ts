@@ -23,7 +23,7 @@ export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>
 			set({ shell: find(components[0], (c) => c.name === SHELL_APP_ID)! });
 			useAppStore
 				.getState()
-				.setters.addApps(filter(components[0], (app) => app.name === SHELL_APP_ID));
+				.setters.addApps(filter(components[0], (app) => app.name !== SHELL_APP_ID));
 		})
 		.then(() =>
 			get().soapFetch(SHELL_APP_ID)<{ _jsns: string }, { tag: Array<Tag> }>('GetTag', {

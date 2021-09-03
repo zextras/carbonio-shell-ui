@@ -25,7 +25,7 @@ export const getSettingsCore = (t: TFunction): ZextrasModule => ({
 });
 
 export const settingsAppData = {
-	icon: 'Settings2Outline',
+	icon: 'SettingsModOutline',
 	views: {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore

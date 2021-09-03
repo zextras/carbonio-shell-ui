@@ -52,7 +52,7 @@ module.exports = {
 	},
 	devtool: 'source-map',
 	output: {
-		path: path.resolve(process.cwd(), 'dist', 'public'),
+		path: path.resolve(process.cwd(), 'dist'),
 		filename: flavor.toUpperCase() !== 'APP' ? '[name].js' : '[name].[chunkhash:8].js',
 		chunkFilename: '[name].[chunkhash:8].chunk.js',
 		publicPath: basePath

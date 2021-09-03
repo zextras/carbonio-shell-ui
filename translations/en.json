@@ -14,7 +14,6 @@
     "search": {
         "active_input_label": "Separate keywords with a comma or TAB",
         "app": "Search",
-        "app_description": "Search Module",
         "clear": "Clear search input",
         "edit_to_start": "Edit your search to start a new one",
         "idle_input_label": "Search in {{module}}",
@@ -24,7 +23,6 @@
     },
     "settings": {
         "app": "Settings",
-        "app_description": "Settings Module",
         "button": {
             "primary": "Save",
             "secondary": "Cancel"

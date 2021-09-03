@@ -47,6 +47,7 @@ import {
 	_scripts,
 	unloadApps
 } from './load-app';
+import { AppData } from '../../store/app/store-types';
 
 function injectSharedLibraries(): void {
 	// eslint-disable-next-line max-len
@@ -92,13 +93,16 @@ function injectSharedLibraries(): void {
 	}
 }
 
-export function loadApps(storeFactory: StoreFactory): Promise<LoadedAppsCache> {
+export function loadApps(
+	storeFactory: StoreFactory,
+	apps: Array<AppData>
+): Promise<LoadedAppsCache> {
 	injectSharedLibraries();
-	const orderedApps = orderBy(appStore.getState().apps ?? [], 'priority');
-	const apps =
+	const appsToLoad =
 		typeof cliSettings === 'undefined' || cliSettings.enableErrorReporter
-			? orderedApps
-			: filter(orderedApps, (app) => app.core.name !== 'carbonio-error-reporter');
+			? apps
+			: filter(apps, (app) => app.core.name !== 'carbonio-error-reporter');
+	console.log(apps);
 	return Promise.all(map(apps, (app) => loadApp(app.core, storeFactory)))
 		.then((loaded) => compact(loaded))
 		.then((loaded) => keyBy(loaded, 'pkg.name'));

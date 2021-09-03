@@ -14,11 +14,11 @@ export function AppLoader() {
 				'%cLOADING APPS',
 				'color: white; background: #2b73d2;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
 			);
-			loadApps(storeFactory);
+			loadApps(storeFactory, apps);
 		}
 		return () => {
 			unloadAllApps();
 		};
-	}, [apps.length, storeFactory]);
+	}, [apps, storeFactory]);
 	return null;
 }

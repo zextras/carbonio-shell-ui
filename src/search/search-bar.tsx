@@ -132,21 +132,6 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 	);
 
 	useEffect(() => {
-		window.addEventListener('keypress', (event: any) => {
-			// isContentEditable is actually present
-			// @ts-ignore
-			if (
-				event.key === '/' &&
-				event?.target?.isContentEditable === false &&
-				event?.target?.nodeName !== 'INPUT'
-			) {
-				event.preventDefault();
-				inputRef.current?.focus();
-			}
-		});
-	}, []);
-
-	useEffect(() => {
 		setModuleSelection((current) =>
 			currentApp && currentApp !== SEARCH_APP_ID
 				? find(moduleSelectorItems, (mod) => mod.value === currentApp) ?? moduleSelectorItems[0]

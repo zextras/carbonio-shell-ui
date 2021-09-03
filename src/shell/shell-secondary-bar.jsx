@@ -24,7 +24,7 @@ import { SettingsSidebar } from '../settings/settings-sidebar';
 
 const SidebarSwitch = ({ item }) =>
 	item.sidebar ? (
-		<Route key={`/${item.id}`} path={`/${item.id}`}>
+		<Route key={`/${item.id}`} path={`/${item.route}`}>
 			<AppContextProvider pkg={item.id}>
 				<Container mainAlignment="flex-start">
 					<item.sidebar expanded={item.sidebarIsOpen} />
@@ -56,6 +56,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 				items: [
 					...map(apps, (app) => ({
 						id: app.core.name,
+						route: app.core.route,
 						label: app.core.display,
 						icon: app.icon,
 						sidebar: app.views?.sidebar,
@@ -64,6 +65,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 					})),
 					{
 						id: SETTINGS_APP_ID,
+						route: SETTINGS_APP_ID,
 						label: t('settings', 'Settings'),
 						icon: 'SettingsModOutline',
 						sidebar: SettingsSidebar,
@@ -72,6 +74,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 					},
 					{
 						id: SEARCH_APP_ID,
+						route: SEARCH_APP_ID,
 						label: t('search', 'Search'),
 						icon: 'SearchModOutline',
 						sidebarIsOpen,

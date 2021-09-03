@@ -34,7 +34,7 @@ export default function AppViewContainer() {
 		() => [
 			...map(apps, (app, appId) =>
 				app.views?.app ? (
-					<Route key={appId} path={`/${appId}`}>
+					<Route key={appId} path={`/${app.core.route}`}>
 						<AppContextProvider key={appId} pkg={appId}>
 							<app.views.app />
 						</AppContextProvider>

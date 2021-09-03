@@ -1,5 +1,5 @@
 import { GetState, SetState } from 'zustand';
-import { find } from 'lodash';
+import { filter, find } from 'lodash';
 import { SHELL_APP_ID } from '../../constants';
 import { useAppStore } from '../app';
 import { normalizeAccount } from './normalization';
@@ -18,10 +18,12 @@ export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>
 		})
 		.then(() => fetch('/static/iris/components.json'))
 		.then((r) => r.json())
-		.then(({ components }: { components: Array<ZextrasModule> }) => {
+		.then(({ components }: { components: [Array<ZextrasModule>] }) => {
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			set({ shell: find(components, (c) => c.name === SHELL_APP_ID)! });
-			useAppStore.getState().setters.addApps(components);
+			set({ shell: find(components[0], (c) => c.name === SHELL_APP_ID)! });
+			useAppStore
+				.getState()
+				.setters.addApps(filter(components[0], (app) => app.name === SHELL_APP_ID));
 		})
 		.then(() =>
 			get().soapFetch(SHELL_APP_ID)<{ _jsns: string }, { tag: Array<Tag> }>('GetTag', {

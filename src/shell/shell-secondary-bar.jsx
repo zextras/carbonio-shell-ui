@@ -22,6 +22,14 @@ import { Collapser } from './collapser';
 import { SETTINGS_APP_ID, SEARCH_APP_ID } from '../constants';
 import { SettingsSidebar } from '../settings/settings-sidebar';
 
+const SettingsSidebarRoute = ({ item }) => (
+	<Route key={`/${item.id}`} path={`/${item.route}`}>
+		<Container mainAlignment="flex-start">
+			<SettingsSidebar expanded={item.sidebarIsOpen} />
+		</Container>
+	</Route>
+);
+
 const SidebarSwitch = ({ item }) =>
 	item.sidebar ? (
 		<Route key={`/${item.id}`} path={`/${item.route}`}>
@@ -68,9 +76,8 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 						route: SETTINGS_APP_ID,
 						label: t('settings', 'Settings'),
 						icon: 'SettingsModOutline',
-						sidebar: SettingsSidebar,
 						sidebarIsOpen,
-						CustomComponent: SidebarSwitch
+						CustomComponent: SettingsSidebarRoute
 					},
 					{
 						id: SEARCH_APP_ID,
@@ -78,7 +85,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 						label: t('search', 'Search'),
 						icon: 'SearchModOutline',
 						sidebarIsOpen,
-						CustomComponent: SidebarSwitch
+						CustomComponent: () => null
 					}
 				]
 			}

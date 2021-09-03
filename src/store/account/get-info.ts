@@ -18,12 +18,12 @@ export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>
 		})
 		.then(() => fetch('/static/iris/components.json'))
 		.then((r) => r.json())
-		.then(({ components }: { components: [Array<ZextrasModule>] }) => {
+		.then(({ components }: { components: Array<ZextrasModule> }) => {
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			set({ shell: find(components[0], (c) => c.name === SHELL_APP_ID)! });
+			set({ shell: find(components, (c) => c.name === SHELL_APP_ID)! });
 			useAppStore
 				.getState()
-				.setters.addApps(filter(components[0], (app) => app.name !== SHELL_APP_ID));
+				.setters.addApps(filter(components, (app) => app.name !== SHELL_APP_ID));
 		})
 		.then(() =>
 			get().soapFetch(SHELL_APP_ID)<{ _jsns: string }, { tag: Array<Tag> }>('GetTag', {

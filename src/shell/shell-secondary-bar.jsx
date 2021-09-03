@@ -10,7 +10,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { map, reduce } from 'lodash';
+import { find, map, reduce } from 'lodash';
 import styled from 'styled-components';
 import { Route, Switch } from 'react-router-dom';
 import { Container, Accordion, IconButton, Padding, Tooltip, Icon } from '@zextras/zapp-ui';
@@ -51,7 +51,10 @@ const SidebarContainer = styled(Container)`
 
 export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, activeApp }) {
 	const apps = useApps();
-	const disabled = useMemo(() => activeApp && !apps[activeApp]?.views?.sidebar, [activeApp, apps]);
+	const disabled = useMemo(() => !activeApp || find(apps, (app) => app.core.route === activeApp), [
+		activeApp,
+		apps
+	]);
 	const account = useUserAccount();
 	const [t] = useTranslation();
 	const items = useMemo(
@@ -74,7 +77,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 					{
 						id: SETTINGS_APP_ID,
 						route: SETTINGS_APP_ID,
-						label: t('settings', 'Settings'),
+						label: t('settings.app', 'Settings'),
 						icon: 'SettingsModOutline',
 						sidebarIsOpen,
 						CustomComponent: SettingsSidebarRoute
@@ -82,7 +85,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 					{
 						id: SEARCH_APP_ID,
 						route: SEARCH_APP_ID,
-						label: t('search', 'Search'),
+						label: t('search.app', 'Search'),
 						icon: 'SearchModOutline',
 						sidebarIsOpen,
 						CustomComponent: () => null

@@ -84,7 +84,7 @@ export default function ShellPrimaryBar({ activeApp }) {
 					}
 					return <app.icon active={app.core.route === activeApp} />;
 				})}
-				<Tooltip label={t('search', 'Search')} placement="right" key={SEARCH_APP_ID}>
+				<Tooltip label={t('search.app', 'Search')} placement="right" key={SEARCH_APP_ID}>
 					<AppIcon
 						icon="SearchModOutline"
 						active={activeApp === SEARCH_APP_ID}
@@ -93,7 +93,7 @@ export default function ShellPrimaryBar({ activeApp }) {
 						size="large"
 					/>
 				</Tooltip>
-				<Tooltip label={t('settings', 'Settings')} placement="right" key={SETTINGS_APP_ID}>
+				<Tooltip label={t('settings.app', 'Settings')} placement="right" key={SETTINGS_APP_ID}>
 					<AppIcon
 						icon="SettingsModOutline"
 						active={activeApp === SETTINGS_APP_ID}

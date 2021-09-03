@@ -60,20 +60,20 @@ export default function ShellMobileNav({ mobileNavIsOpen, menuTree }) {
 					})),
 					{
 						id: `${SEARCH_APP_ID}-wrap`,
-						label: t('search', 'Search'),
+						label: t('search.app', 'Search'),
 						icon: 'SearchModOutline',
 						onClick: () => history.push(`/${SEARCH_APP_ID}`),
 						items: []
 					},
 					{
 						id: `${SETTINGS_APP_ID}-wrap`,
-						label: t('settings', 'Settings'),
+						label: t('settings.app', 'Settings'),
 						icon: 'SettingsModOutline',
 						onClick: () => history.push(`/${SETTINGS_APP_ID}`),
 						items: [
 							{
 								id: SETTINGS_APP_ID,
-								label: t('settings', 'Settings'),
+								label: t('settings.app', 'Settings'),
 								icon: 'SettingsModOutline',
 								onClick: () => history.push(`/${SETTINGS_APP_ID}`),
 								sidebar: SettingsSidebar,

@@ -14,11 +14,13 @@ import { map, reduce } from 'lodash';
 import styled from 'styled-components';
 import { Route, Switch } from 'react-router-dom';
 import { Container, Accordion, IconButton, Padding, Tooltip, Icon } from '@zextras/zapp-ui';
-
+import { useTranslation } from 'react-i18next';
 import { useUserAccount } from '../store/account/hooks';
 import { useApps } from '../store/app/hooks';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { Collapser } from './collapser';
+import { SETTINGS_APP_ID, SEARCH_APP_ID } from '../constants';
+import { SettingsSidebar } from '../settings/settings-sidebar';
 
 const SidebarSwitch = ({ item }) =>
 	item.sidebar ? (
@@ -43,6 +45,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 	const apps = useApps();
 	const disabled = useMemo(() => activeApp && !apps[activeApp]?.views?.sidebar, [activeApp, apps]);
 	const account = useUserAccount();
+	const [t] = useTranslation();
 	const items = useMemo(
 		() => [
 			{
@@ -50,17 +53,34 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 				label: account?.displayName ?? account?.name,
 				icon: 'PersonOutline',
 				open: true,
-				items: map(apps, (app) => ({
-					id: app.core.name,
-					label: app.core.display,
-					icon: app.icon,
-					sidebar: app.views?.sidebar,
-					sidebarIsOpen,
-					CustomComponent: SidebarSwitch
-				}))
+				items: [
+					...map(apps, (app) => ({
+						id: app.core.name,
+						label: app.core.display,
+						icon: app.icon,
+						sidebar: app.views?.sidebar,
+						sidebarIsOpen,
+						CustomComponent: SidebarSwitch
+					})),
+					{
+						id: SETTINGS_APP_ID,
+						label: t('settings', 'Settings'),
+						icon: 'SettingsModOutline',
+						sidebar: SettingsSidebar,
+						sidebarIsOpen,
+						CustomComponent: SidebarSwitch
+					},
+					{
+						id: SEARCH_APP_ID,
+						label: t('search', 'Search'),
+						icon: 'SearchModOutline',
+						sidebarIsOpen,
+						CustomComponent: SidebarSwitch
+					}
+				]
 			}
 		],
-		[account?.displayName, account?.id, account?.name, apps, sidebarIsOpen]
+		[account?.displayName, account?.id, account?.name, apps, sidebarIsOpen, t]
 	);
 
 	return disabled ? null : (

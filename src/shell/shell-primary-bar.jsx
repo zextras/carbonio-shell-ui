@@ -14,8 +14,10 @@ import { map, isEmpty } from 'lodash';
 import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { BoardValueContext, BoardSetterContext } from './boards/board-context';
 import { useAppList } from '../store/app/hooks';
+import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../constants';
 
 const AppIcon = styled(IconButton)`
 	${(props) =>
@@ -47,6 +49,7 @@ function ToggleBoardIcon() {
 export default function ShellPrimaryBar({ activeApp }) {
 	const apps = useAppList();
 	const history = useHistory();
+	const [t] = useTranslation();
 	return (
 		<ContainerWithDivider
 			width={49}
@@ -81,6 +84,24 @@ export default function ShellPrimaryBar({ activeApp }) {
 					}
 					return <app.icon active={app.core.name === activeApp} />;
 				})}
+				<Tooltip label={t('search', 'Search')} placement="right" key={SEARCH_APP_ID}>
+					<AppIcon
+						icon="SearchModOutline"
+						active={activeApp === SEARCH_APP_ID}
+						iconColor={activeApp === SEARCH_APP_ID ? 'primary' : 'text'}
+						onClick={() => history.push(`/${SEARCH_APP_ID}/`)}
+						size="large"
+					/>
+				</Tooltip>
+				<Tooltip label={t('settings', 'Settings')} placement="right" key={SETTINGS_APP_ID}>
+					<AppIcon
+						icon="SettingsModOutline"
+						active={activeApp === SETTINGS_APP_ID}
+						iconColor={activeApp === SETTINGS_APP_ID ? 'primary' : 'text'}
+						onClick={() => history.push(`/${SETTINGS_APP_ID}/`)}
+						size="large"
+					/>
+				</Tooltip>
 			</Row>
 			<Row>
 				<ToggleBoardIcon />

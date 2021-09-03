@@ -24,24 +24,20 @@ import { useAccountStore } from '../store/account/account-store';
 import { useUserAccount } from '../store/account/hooks';
 import { AppLoader } from './app/app-loader';
 
-const AppStoreInterface = () => {
-	const { addApps, registerAppData } = useAppStore((s) => s.setters);
-	const account = useUserAccount;
-	const [status, setStatus] = useState(0);
-	const [t] = useTranslation();
-	useEffect(() => {
-		if (account && status === 0) {
-			addApps([getSettingsCore(t), getSearchCore(t)]);
-			setStatus(1);
-		}
-		if (status === 1) {
-			registerAppData(SETTINGS_APP_ID)(settingsAppData);
-			registerAppData(SEARCH_APP_ID)(searchAppData);
-			setStatus(2);
-		}
-	}, [addApps, status, registerAppData, t, account]);
-	return null;
-};
+// const AppStoreInterface = () => {
+// 	const { addApps, registerAppData } = useAppStore((s) => s.setters);
+// 	const account = useUserAccount;
+// 	const [status, setStatus] = useState(0);
+// 	const [t] = useTranslation();
+// 	useEffect(() => {
+// 		if (status === 1) {
+// 			registerAppData(SETTINGS_APP_ID)(settingsAppData);
+// 			registerAppData(SEARCH_APP_ID)(searchAppData);
+// 			setStatus(2);
+// 		}
+// 	}, [addApps, status, registerAppData, t, account]);
+// 	return null;
+// };
 
 export default function bootstrapper(onBeforeBoot) {
 	// const { shellStore, shellStorePersistor } = createShellStore(true);
@@ -71,7 +67,7 @@ export default function bootstrapper(onBeforeBoot) {
 				<ThemeProvider>
 					<BootstrapperContextProvider i18nFactory={_i18nFactory} storeFactory={_storeFactory}>
 						<AppLoader />
-						<AppStoreInterface />
+						{/* <AppStoreInterface /> */}
 						<BootstrapperRouter />
 					</BootstrapperContextProvider>
 				</ThemeProvider>

@@ -13,10 +13,13 @@ import React, { useMemo } from 'react';
 import { map } from 'lodash';
 import { Accordion, Collapse, Container, Padding } from '@zextras/zapp-ui';
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAppList } from '../store/app/hooks';
 import { useUserAccount } from '../store/account/hooks';
 import { UserQuota } from './user-quota';
 import AppContextProvider from '../boot/app/app-context-provider';
+import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../constants';
+import { SettingsSidebar } from '../settings/settings-sidebar';
 
 const SidebarComponent = ({ item }) =>
 	item.sidebar ? (
@@ -28,6 +31,7 @@ export default function ShellMobileNav({ mobileNavIsOpen, menuTree }) {
 	const apps = useAppList();
 	const history = useHistory();
 	const account = useUserAccount();
+	const [t] = useTranslation();
 	const items = useMemo(
 		() => [
 			{
@@ -35,27 +39,52 @@ export default function ShellMobileNav({ mobileNavIsOpen, menuTree }) {
 				label: account?.displayName ?? account?.name,
 				icon: 'PersonOutline',
 				open: true,
-				items: map(apps, (app) => ({
-					id: `${app.core.name}-wrap`,
-					label: app.core.display,
-					icon: app.icon,
-					onClick: () => history.push(`/${app.core.route}`),
-					items: app.views?.sidebar
-						? [
-								{
-									id: app.core.name,
-									label: app.core.display,
-									icon: app.icon,
-									onClick: () => history.push(`/${app.core.route}`),
-									sidebar: app.views?.sidebar,
-									CustomComponent: SidebarComponent
-								}
-						  ]
-						: []
-				}))
+				items: [
+					...map(apps, (app) => ({
+						id: `${app.core.name}-wrap`,
+						label: app.core.display,
+						icon: app.icon,
+						onClick: () => history.push(`/${app.core.route}`),
+						items: app.views?.sidebar
+							? [
+									{
+										id: app.core.name,
+										label: app.core.display,
+										icon: app.icon,
+										onClick: () => history.push(`/${app.core.route}`),
+										sidebar: app.views?.sidebar,
+										CustomComponent: SidebarComponent
+									}
+							  ]
+							: []
+					})),
+					{
+						id: `${SEARCH_APP_ID}-wrap`,
+						label: t('search', 'Search'),
+						icon: 'SearchModOutline',
+						onClick: () => history.push(`/${SEARCH_APP_ID}`),
+						items: []
+					},
+					{
+						id: `${SETTINGS_APP_ID}-wrap`,
+						label: t('settings', 'Settings'),
+						icon: 'SettingsModOutline',
+						onClick: () => history.push(`/${SETTINGS_APP_ID}`),
+						items: [
+							{
+								id: SETTINGS_APP_ID,
+								label: t('settings', 'Settings'),
+								icon: 'SettingsModOutline',
+								onClick: () => history.push(`/${SETTINGS_APP_ID}`),
+								sidebar: SettingsSidebar,
+								CustomComponent: SidebarComponent
+							}
+						]
+					}
+				]
 			}
 		],
-		[account?.displayName, account?.id, account?.name, apps, history]
+		[account?.displayName, account?.id, account?.name, apps, history, t]
 	);
 	return (
 		<Container

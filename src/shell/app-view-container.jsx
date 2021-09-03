@@ -16,6 +16,9 @@ import { map } from 'lodash';
 import { Container } from '@zextras/zapp-ui';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { useApps } from '../store/app/hooks';
+import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../constants';
+import { SearchAppView } from '../search/search-app-view';
+import { SettingsAppView } from '../settings/settings-app-view';
 
 const _BoardsRouterContainer = styled(Container)`
 	flex-grow: 1;
@@ -28,8 +31,8 @@ const _BoardsRouterContainer = styled(Container)`
 export default function AppViewContainer() {
 	const apps = useApps();
 	const routes = useMemo(
-		() =>
-			map(apps, (app, appId) =>
+		() => [
+			...map(apps, (app, appId) =>
 				app.views?.app ? (
 					<Route key={appId} path={`/${appId}`}>
 						<AppContextProvider key={appId} pkg={appId}>
@@ -38,6 +41,13 @@ export default function AppViewContainer() {
 					</Route>
 				) : null
 			),
+			<Route key={SEARCH_APP_ID} path={`/${SEARCH_APP_ID}`}>
+				<SearchAppView />
+			</Route>,
+			<Route key={SETTINGS_APP_ID} path={`/${SETTINGS_APP_ID}`}>
+				<SettingsAppView />
+			</Route>
+		],
 		[apps]
 	);
 

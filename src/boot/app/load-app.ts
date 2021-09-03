@@ -180,7 +180,6 @@ export function loadApp(
 	pkg: ZextrasModule,
 	storeFactory: StoreFactory
 ): Promise<LoadedAppRuntime | undefined> {
-	// this._fcSink<{ package: string }>('app:preload', { package: pkg.package });
 	const store = storeFactory.getStoreForApp(pkg);
 	const { setAppClass } = appStore.getState().setters;
 	return loadAppModule(pkg, store, setAppClass)

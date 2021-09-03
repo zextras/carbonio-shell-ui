@@ -49,7 +49,7 @@ const ModuleVersionSettings: FC = () => {
 				width="50%"
 			>
 				{map(filteredList, (app: any) => (
-					<Container key={app.core.package} padding={{ horizontal: 'large', vertical: 'small' }}>
+					<Container key={app.core.name} padding={{ horizontal: 'large', vertical: 'small' }}>
 						<Container orientation="horizontal" mainAlignment="space-between">
 							<Text>{app.core.name}</Text>
 							<Tooltip placement="top" label="Click to copy">
@@ -63,7 +63,7 @@ const ModuleVersionSettings: FC = () => {
 							mainAlignment="space-between"
 							padding={{ top: 'extrasmall', bottom: 'medium' }}
 						>
-							<Text color="secondary">{app.core.description}</Text>
+							<Text color="secondary">{app.core.display}</Text>
 							<Badge
 								value="Active"
 								style={{

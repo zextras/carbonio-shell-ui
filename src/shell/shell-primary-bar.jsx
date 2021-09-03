@@ -68,19 +68,18 @@ export default function ShellPrimaryBar({ activeApp }) {
 					}
 					if (typeof app.icon === 'string') {
 						return (
-							<Tooltip label={app.core.name} placement="right">
+							<Tooltip label={app.core.name} placement="right" key={app.core.name}>
 								<AppIcon
-									key={app.core.package}
 									icon={app.icon}
-									active={activeApp === app.core.package}
-									iconColor={activeApp === app.core.package ? 'primary' : 'text'}
-									onClick={() => history.push(`/${app.core.package}/`)}
+									active={activeApp === app.core.name}
+									iconColor={activeApp === app.core.name ? 'primary' : 'text'}
+									onClick={() => history.push(`/${app.core.route}/`)}
 									size="large"
 								/>
 							</Tooltip>
 						);
 					}
-					return <app.icon active={app.core.package === activeApp} />;
+					return <app.icon active={app.core.name === activeApp} />;
 				})}
 			</Row>
 			<Row>

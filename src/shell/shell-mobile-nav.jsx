@@ -36,17 +36,17 @@ export default function ShellMobileNav({ mobileNavIsOpen, menuTree }) {
 				icon: 'PersonOutline',
 				open: true,
 				items: map(apps, (app) => ({
-					id: `${app.core.package}-wrap`,
-					label: app.core.name,
+					id: `${app.core.name}-wrap`,
+					label: app.core.display,
 					icon: app.icon,
-					onClick: () => history.push(`/${app.core.package}`),
+					onClick: () => history.push(`/${app.core.route}`),
 					items: app.views?.sidebar
 						? [
 								{
-									id: app.core.package,
-									label: app.core.name,
+									id: app.core.name,
+									label: app.core.display,
 									icon: app.icon,
-									onClick: () => history.push(`/${app.core.package}`),
+									onClick: () => history.push(`/${app.core.route}`),
 									sidebar: app.views?.sidebar,
 									CustomComponent: SidebarComponent
 								}

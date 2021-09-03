@@ -48,7 +48,7 @@ export default function AppContextWrapper({
 			routes: new BehaviorSubject([]),
 			store: configureStore({
 				devTools: {
-					name: _pkg.package
+					name: _pkg.name
 				},
 				reducer: reducer || { _useless: _uselessSlice.reducer },
 				preloadedState

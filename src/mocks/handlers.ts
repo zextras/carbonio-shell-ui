@@ -130,7 +130,7 @@ export function generateHandlers(cliSettings: cliSettingsNamespace): RequestHand
 					{
 						zimletContext: [
 							{
-								baseUrl: `/service/zimlet/${cliSettings.app_package.package}/`,
+								baseUrl: `/service/zimlet/${cliSettings.app_package.name}/`,
 								priority: 1,
 								presence: 'enabled'
 							}

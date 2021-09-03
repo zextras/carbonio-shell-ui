@@ -55,7 +55,7 @@ const MainAppRerouter = () => {
 	const account = useUserAccount();
 	const apps = useAppList();
 	const first = useMemo(() => filter(apps, (app) => !!app.views?.app)[0], [apps]);
-	return account && first ? <Redirect from="/" to={`/${first?.core?.package}`} /> : null;
+	return account && first ? <Redirect from="/" to={`/${first?.core?.route}`} /> : null;
 };
 
 export function Shell() {

@@ -101,7 +101,7 @@ export function loadApps(storeFactory: StoreFactory): Promise<LoadedAppsCache> {
 			: filter(orderedApps, (app) => app.core.name !== 'com_zextras_zapp_error_reporter');
 	return Promise.all(map(apps, (app) => loadApp(app.core, storeFactory)))
 		.then((loaded) => compact(loaded))
-		.then((loaded) => keyBy(loaded, 'pkg.package'));
+		.then((loaded) => keyBy(loaded, 'pkg.name'));
 }
 
 export function unloadAllApps(): Promise<void> {

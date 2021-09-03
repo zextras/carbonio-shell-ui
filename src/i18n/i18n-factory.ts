@@ -13,6 +13,7 @@ import i18next, { i18n } from 'i18next';
 import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { AppPkgDescription } from '../../types';
+import { ZextrasModule } from '../store/account/types';
 
 export default class I18nFactory {
 	private _cache: { [pkg: string]: i18n } = {};
@@ -20,19 +21,19 @@ export default class I18nFactory {
 	public getShellI18n(): i18n {
 		return this.getAppI18n({
 			priority: 0,
-			package: PACKAGE_NAME,
 			name: PACKAGE_NAME,
-			description: '',
 			version: PACKAGE_VERSION,
-			resourceUrl: '',
-			entryPoint: ''
+			js_entrypoint: '',
+			commit: '',
+			display: 'Shell',
+			route: 'shell'
 		});
 	}
 
 	// eslint-disable-next-line class-methods-use-this
-	public getAppI18n(appPkgDescription: AppPkgDescription): i18n {
-		if (this._cache[appPkgDescription.package]) {
-			return this._cache[appPkgDescription.package];
+	public getAppI18n(appPkgDescription: ZextrasModule): i18n {
+		if (this._cache[appPkgDescription.name]) {
+			return this._cache[appPkgDescription.name];
 		}
 		const newI18n = i18next.createInstance();
 		newI18n
@@ -60,7 +61,7 @@ export default class I18nFactory {
 					loadPath: `${BASE_PATH}/i18n/{{lng}}.json`
 				}
 			});
-		this._cache[appPkgDescription.package] = newI18n;
+		this._cache[appPkgDescription.name] = newI18n;
 		return newI18n;
 	}
 }

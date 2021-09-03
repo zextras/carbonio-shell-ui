@@ -51,8 +51,8 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 				icon: 'PersonOutline',
 				open: true,
 				items: map(apps, (app) => ({
-					id: app.core.package,
-					label: app.core.name,
+					id: app.core.name,
+					label: app.core.display,
 					icon: app.icon,
 					sidebar: app.views?.sidebar,
 					sidebarIsOpen,
@@ -89,10 +89,10 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 							</Tooltip>
 							{map(apps, (app) => (
 								<SidebarSwitch
-									key={app.core.package}
+									key={app.core.name}
 									item={{
-										id: app.core.package,
-										label: app.core.name,
+										id: app.core.name,
+										label: app.core.display,
 										icon: app.icon,
 										sidebar: app.views?.sidebar,
 										sidebarIsOpen,

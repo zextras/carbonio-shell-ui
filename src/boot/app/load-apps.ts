@@ -98,7 +98,7 @@ export function loadApps(storeFactory: StoreFactory): Promise<LoadedAppsCache> {
 	const apps =
 		typeof cliSettings === 'undefined' || cliSettings.enableErrorReporter
 			? orderedApps
-			: filter(orderedApps, (app) => app.core.name !== 'com_zextras_zapp_error_reporter');
+			: filter(orderedApps, (app) => app.core.name !== 'carbonio-error-reporter');
 	return Promise.all(map(apps, (app) => loadApp(app.core, storeFactory)))
 		.then((loaded) => compact(loaded))
 		.then((loaded) => keyBy(loaded, 'pkg.name'));

@@ -10,14 +10,17 @@
  */
 
 import React, { FC, Suspense, useMemo, lazy } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Prompt, Route, Switch } from 'react-router-dom';
 import { map } from 'lodash';
+import { createModal, Text } from '@zextras/zapp-ui';
 import { useApps } from '../store/app/hooks';
 import { SETTINGS_APP_ID } from '../constants';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppContextProvider from '../boot/app/app-context-provider';
 import { Spinner } from '../ui-extras/spinner';
+import { RouteLeavingGuard } from '../ui-extras/nav-guard';
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const GeneralSettings = lazy(() => import('./general-settings'));
@@ -52,6 +55,7 @@ export const SettingsAppView: FC = () => {
 	);
 	return (
 		<Switch>
+			<RouteLeavingGuard />
 			<Route key={SETTINGS_APP_ID} exact path={`/${SETTINGS_APP_ID}`}>
 				<Suspense fallback={<Spinner />}>
 					<GeneralSettings />

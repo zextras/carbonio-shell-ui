@@ -20,9 +20,38 @@ import { useApps } from '../store/app/hooks';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { useSearchStore } from './search-store';
 import { SEARCH_APP_ID } from '../constants';
+import { RouteLeavingGuard } from '../ui-extras/nav-guard';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const useQuery = (): [Array<any>, Function] => useSearchStore((s) => [s.query, s.updateQuery]);
+
+const ResultsFor: FC<{ count: number }> = ({ count }) => {
+	const [query] = useQuery();
+	const [t] = useTranslation();
+	return (
+		<>
+			<Container
+				orientation="horizontal"
+				mainAlignment="flex-start"
+				background="gray5"
+				height="fit"
+				minHeight="48px"
+				padding={{ horizontal: 'large', vertical: 'medium' }}
+				style={{ flexWrap: 'wrap' }}
+			>
+				<Text color="secondary">
+					{t('search.results_for', { defualtValue: '{{count}} Results for:', count })}
+				</Text>
+				{map(query, (q, i) => (
+					<Padding key={`${i}${q.label}`} all="extrasmall">
+						<Chip {...q} background="gray2" />
+					</Padding>
+				))}
+			</Container>
+			<Divider color="gray3" />
+		</>
+	);
+};
 
 export const SearchAppView: FC = () => {
 	const { query } = useSearchStore();
@@ -38,7 +67,7 @@ export const SearchAppView: FC = () => {
 						<AppContextProvider pkg={app.core.name}>
 							{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 							{/* @ts-ignore */}
-							<app.views.search useQuery={useQuery} />
+							<app.views.search useQuery={useQuery} resultsFor={ResultsFor} />
 						</AppContextProvider>
 					</Route>
 				)
@@ -47,23 +76,12 @@ export const SearchAppView: FC = () => {
 	);
 	return (
 		<>
-			<Container
-				orientation="horizontal"
-				mainAlignment="flex-start"
-				background="gray5"
-				height="fit"
-				minHeight="48px"
-				padding={{ horizontal: 'large', vertical: 'medium' }}
-				style={{ flexWrap: 'wrap' }}
+			<RouteLeavingGuard
+				when
+				title={t('search.leave.title', 'Are you sure you want to leave this module?')}
 			>
-				<Text color="secondary">{t('search.results_for', 'Results for:')}</Text>
-				{map(query, (q, i) => (
-					<Padding key={`${i}${q.label}`} all="extrasmall">
-						<Chip {...q} background="gray2" />
-					</Padding>
-				))}
-			</Container>
-			<Divider color="gray3" />
+				<Text>{t('search.leave.warning', 'The current search results will be lost')}</Text>
+			</RouteLeavingGuard>
 			<Switch>{routes}</Switch>
 		</>
 	);

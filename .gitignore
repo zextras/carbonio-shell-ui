@@ -6,3 +6,5 @@
 /deploy/
 /junit.xml
 /coverage/cobertura-coverage.xml
+/.vscode/
+/.idea/

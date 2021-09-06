@@ -221,47 +221,31 @@ function Login() {
 							</Padding>
 						</Container>
 						<Container crossAlignment="flex-start" height="auto" padding={{ bottom: 'extralarge' }}>
-							<Text>{t('login.supported_browsers')}</Text>
+							<Text>{t('login.supported_browsers', 'Supported browsers:')}</Text>
 							<Row padding={{ top: 'medium', bottom: 'extralarge' }} wrap="nowrap">
 								<Padding all="extrasmall" right="small">
-									<Tooltip label={t('supported_browsers.chrome')}>
-										<img src={logoChrome} width="18px" alt={t('supported_browsers.chrome')} />
-									</Tooltip>
+									<img src={logoChrome} width="18px" alt={''} />
 								</Padding>
 								<Padding all="extrasmall" right="small">
-									<Tooltip label={t('supported_browsers.firefox')}>
-										<img src={logoFirefox} width="18px" alt={t('supported_browsers.firefox')} />
-									</Tooltip>
+									<img src={logoFirefox} width="18px" alt={''} />
 								</Padding>
 								<Padding all="extrasmall" right="small">
-									<Tooltip label={t('supported_browsers.ie_11_up')}>
-										<img src={logoIE} width="18px" alt={t('supported_browsers.ie_11_up')} />
-									</Tooltip>
+									<img src={logoIE} width="18px" alt={''} />
 								</Padding>
 								<Padding all="extrasmall" right="small">
-									<Tooltip label={t('supported_browsers.edge')}>
-										<img src={logoEdge} width="18px" alt={t('supported_browsers.edge')} />
-									</Tooltip>
+									<img src={logoEdge} width="18px" alt={''} />
 								</Padding>
 								<Padding all="extrasmall" right="small">
-									<Tooltip label={t('supported_browsers.safari')}>
-										<img src={logoSafari} width="18px" alt={t('supported_browsers.safari')} />
-									</Tooltip>
+									<img src={logoSafari} width="18px" alt={''} />
 								</Padding>
 								<Padding all="extrasmall" right="small">
-									<Tooltip label={t('supported_browsers.opera')}>
-										<img src={logoOpera} width="18px" alt={t('supported_browsers.opera')} />
-									</Tooltip>
+									<img src={logoOpera} width="18px" alt={''} />
 								</Padding>
 								<Padding all="extrasmall" right="small">
-									<Tooltip label={t('supported_browsers.yandex')}>
-										<img src={logoYandex} width="18px" alt={t('supported_browsers.yandex')} />
-									</Tooltip>
+									<img src={logoYandex} width="18px" alt={''} />
 								</Padding>
 								<Padding all="extrasmall" right="small">
-									<Tooltip label={t('supported_browsers.uc')}>
-										<img src={logoUC} width="18px" alt={t('supported_browsers.uc')} />
-									</Tooltip>
+									<img src={logoUC} width="18px" alt={''} />
 								</Padding>
 							</Row>
 							<Text size="small">{t('copyright', { year: new Date().getFullYear() })}</Text>

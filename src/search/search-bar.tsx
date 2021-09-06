@@ -31,6 +31,7 @@ import { useHistory } from 'react-router-dom';
 import { useLocalStorage } from '../shell/hooks';
 import { SEARCH_APP_ID } from '../constants';
 import { useApps } from '../app-store/hooks';
+import { handleKeyboardShortcuts } from '../keyboard-shortcuts/keyboard-shortcuts';
 import { QueryChip, useSearchStore } from './search-store';
 
 const OutlinedIconButton = styled(IconButton)`
@@ -86,9 +87,11 @@ const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus
 };
 type SearchBarProps = {
 	currentApp: string;
+	primaryAction: unknown;
+	secondaryActions: unknown;
 };
 
-export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
+export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secondaryActions }) => {
 	const [searchIsEnabled, setSearchIsEnabled] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
 	const theme = useContext(ThemeContext) as unknown;
@@ -127,21 +130,6 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 		}),
 		[]
 	);
-
-	useEffect(() => {
-		window.addEventListener('keypress', (event: any) => {
-			// isContentEditable is actually present
-			// @ts-ignore
-			if (
-				event.key === '/' &&
-				event?.target?.isContentEditable === false &&
-				event?.target?.nodeName !== 'INPUT'
-			) {
-				event.preventDefault();
-				inputRef.current?.focus();
-			}
-		});
-	}, []);
 
 	useEffect(() => {
 		setModuleSelection((current) =>
@@ -291,6 +279,22 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 	);
 	const [triggerSearch, setTriggerSearch] = useState(false);
 	const containerRef = useRef<HTMLDivElement>();
+
+	useEffect(() => {
+		const handler = (event: KeyboardEvent): unknown =>
+			handleKeyboardShortcuts({
+				event,
+				inputRef,
+				primaryAction,
+				secondaryActions,
+				currentApp
+			});
+		document.addEventListener('keydown', handler);
+		return (): void => {
+			document.removeEventListener('keydown', handler);
+		};
+	}, [currentApp, inputRef, primaryAction, secondaryActions]);
+
 	useEffect(() => {
 		const ref = inputRef.current;
 		const searchCb = (ev: any): void => {

@@ -3,7 +3,7 @@
 		"cancel": "Annulla",
 		"close": "Chiudi",
 		"remind_later": "Ricorda Più Tardi",
-		"title": "Titolo"
+		"title": "Novità"
 	},
 	"copyright": "Copyright",
 	"login": {
@@ -36,5 +36,19 @@
 	"theme_switch": {
 		"dark": "Passa al tema scuro",
 		"light": "Passa al tema chiaro"
+	},
+	"settings": {
+		"button": {
+			"primary": "Salva",
+			"secondary": "Annulla"
+		},
+		"general": {
+			"theme_options": "Opzioni Tema",
+			"theme_mode": "Modalità Tema",
+			"theme_enabled": "Tema Scuro",
+			"theme_disabled": "Tema Chiaro",
+			"theme_auto": "Auto",
+			"general": "Impostazioni Generali"
+		}
 	}
 }

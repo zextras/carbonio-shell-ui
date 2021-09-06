@@ -2,8 +2,8 @@
     "changelog": {
         "cancel": "Cancel",
         "close": "Close",
-        "remind_later": "Remind Later",
-        "title": "Title"
+        "remind-later": "Remind Later",
+        "title": "Change Log"
     },
     "copyright": "Copyright",
     "login": {

@@ -37,7 +37,7 @@ export const handleKeyboardShortcuts = (props: handleKeyboardShortcutsProps): vo
 
 	const consoleLogKeyCombination = (): void => {
 		console.log(
-			`sequence: %c  ${props.event.ctrlKey ? 'Ctrl/Cmd + ' : ''}${keySequence
+			`keys pressed: %c  ${props.event.ctrlKey ? 'Ctrl/Cmd + ' : ''}${keySequence
 				?.split('')
 				.join(' + ')} `,
 			'color: white; background: #39b654; border-radius: 5px; padding: 8px; width: 100%; font-size:18px; font-weight: 800'

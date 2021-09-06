@@ -1,25 +1,25 @@
 {
     "changelog": {
-        "cancel": "",
-        "close": "",
-        "remind_later": "",
-        "title": ""
+        "cancel": "Cancel",
+        "close": "Close",
+        "remind_later": "Remind Later",
+        "title": "Title"
     },
-    "copyright": "",
+    "copyright": "Copyright",
     "login": {
-        "help": "",
-        "incorrect": "",
+        "help": "Help",
+        "incorrect": "The username or password is incorrect",
         "login": "Login",
         "password": "Password",
         "remember_me": "Remember me",
-        "supported_browsers": "",
+        "supported_browsers": "Supported browsers",
         "username": "Username",
-        "verify_caps_lock": ""
+        "verify_caps_lock": "Verify that CAPS LOCK is not on, and then retype the current username and password"
     },
-    "logout": "",
+    "logout": "Logout",
     "logout_modal": {
-        "confirm": "",
-        "warning": ""
+        "confirm": "Log me out",
+        "warning": "You are going to be logged-out"
     },
     "message": {
         "snackbar": {
@@ -99,18 +99,8 @@
     "snackbar": {
         "error": "Something went wrong, please try again"
     },
-    "supported_browsers": {
-        "chrome": "",
-        "edge": "",
-        "firefox": "",
-        "ie_11_up": "",
-        "opera": "",
-        "safari": "",
-        "uc": "",
-        "yandex": ""
-    },
     "user_quota": {
-        "limited": "",
+        "limited": "{{quota}}% space used",
         "unlimited": "Unlimited space available"
     }
 }

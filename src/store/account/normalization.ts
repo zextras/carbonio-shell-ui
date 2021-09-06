@@ -1,7 +1,4 @@
-import { filter, reduce } from 'lodash';
-import { CoreAppData } from '../../../types';
-import { zimletToAppPkgDescription } from '../../network/soap/utils';
-import { Account, AccountSettings, AppPkgDescription, GetInfoResponse } from './types';
+import { Account, AccountSettings, GetInfoResponse } from './types';
 
 const normalizeSettings = (
 	settings: Pick<GetInfoResponse, 'attrs' | 'prefs' | 'props'>

@@ -24,6 +24,7 @@
     "settings": {
         "app": "Settings",
         "button": {
+            "confirm": "Confirm",
             "primary": "Save",
             "secondary": "Cancel"
         },
@@ -38,6 +39,10 @@
             "theme_options": "Theme Options"
         },
         "general_tab": "General",
+        "leave": {
+            "title": "Are you sure you want to leave this page?",
+            "warning": "Any unsaved change will be lost"
+        },
         "out_of_office": {
             "do_not_send_auto_replies": "Do not send auto replies",
             "external_senders": {

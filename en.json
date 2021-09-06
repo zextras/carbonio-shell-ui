@@ -21,6 +21,11 @@
         "confirm": "Log me out",
         "warning": "You are going to be logged-out"
     },
+    "message": {
+        "snackbar": {
+            "settings_saved": "Edits saved correctly"
+        }
+    },
     "module": {
         "app": {
             "version": "Application versions"
@@ -33,8 +38,10 @@
         "app": "Search",
         "app_description": "Search Module",
         "clear": "Clear search input",
+        "edit_to_start": "Edit your search to start a new one",
         "idle_input_label": "Search in {{module}}",
         "module": "Module",
+        "results_for": "Results for:",
         "start": "Start search"
     },
     "settings": {
@@ -47,7 +54,7 @@
         "general": {
             "account": "Account",
             "account_logout": "Logout",
-            "general": "General",
+            "general": "General Settings",
             "theme_auto": "Auto",
             "theme_disabled": "Disabled",
             "theme_enabled": "Enabled",
@@ -89,18 +96,11 @@
             }
         }
     },
-    "supported_browsers": {
-        "chrome": "",
-        "edge": "",
-        "firefox": "",
-        "ie_11_up": "",
-        "opera": "",
-        "safari": "",
-        "uc": "",
-        "yandex": ""
+    "snackbar": {
+        "error": "Something went wrong, please try again"
     },
     "user_quota": {
-        "limited": "",
-        "unlimited": "Congrats! Unlimited space available"
+        "limited": "{{quota}}% space used",
+        "unlimited": "Unlimited space available"
     }
 }

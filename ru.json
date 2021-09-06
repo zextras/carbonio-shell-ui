@@ -18,6 +18,48 @@
         "button": {
             "secondary": "Отменить",
             "primary": "Сохранить"
+        },
+        "general": {
+            "theme_enabled": "Включено",
+            "theme_mode": "Режим Theme",
+            "account": "Учетная запись",
+            "account_logout": "Выйти",
+            "general": "Общие настройки",
+            "theme_disabled": "Отключено",
+            "theme_options": "Параметры Темы"
+        },
+        "app": "Настройки",
+        "app_description": "Настройки Модуля",
+        "general_tab": "Общие",
+        "out_of_office": {
+            "do_not_send_auto_replies": "Не отправлять автоответы",
+            "external_senders": {
+                "do_not_send_to_external": "Не отправлять автоответчик внешнему отправителю",
+                "send_custom_in_organisation": "Отправить персонализированное сообщение тем, кто не входит в мою организацию",
+                "send_custom_not_in_organisation": "Отправить персонализированное сообщение тем, кто не входит в мою организацию и адресную книгу",
+                "send_standard_auto_reply": "Отправить стандартное сообщение с автоответом"
+            },
+            "headings": {
+                "create_appointment": "Календарь встречи",
+                "settings_label": "Настройки Вне офиса",
+                "time_period": "Период времени"
+            },
+            "labels": {
+                "all_day": "Весь день:",
+                "auto_reply_message": "Авто ответ:",
+                "auto_reply_message_external": "Сообщение с авто-ответом для внешних отправителей:",
+                "create_appointment": "Создать встречу:",
+                "out_of_office": "Вне офиса",
+                "out_of_office_status": "Статус Вне офиса:",
+                "send_auto_reply_period": "Отправлять авто ответы в течение следующего периода:",
+                "start_date": "Дата начала",
+                "start_time": "Время начала:"
+            },
+            "send_auto_replies": "Отправить авто ответы",
+            "status": {
+                "busy": "Занят",
+                "out_of_office": "Вне офиса"
+            }
         }
     },
     "new-tab": "Новая вкладка",
@@ -35,7 +77,10 @@
         "password": "Пароль",
         "login": "Логин",
         "incorrect": "Имя пользователя или пароль неверны",
-        "help": "Помощь"
+        "help": "Помощь",
+        "remember_me": "Запомнить меня",
+        "supported_browsers": "Поддерживаемые браузеры",
+        "verify_caps_lock": "Убедитесь, что CAPS LOCK не включен, а затем повторно введите текущее имя пользователя и пароль"
     },
     "changelog": {
         "title": "Журнал изменений",
@@ -52,5 +97,36 @@
             "theme_disabled": "Светлый режим",
             "theme_auto": "Автоматический"
         }
+    },
+    "search": {
+        "clear": "Очистить условия поиска",
+        "idle_input_label": "Искать в {{module}}",
+        "module": "Модуль",
+        "app": "Поиск",
+        "app_description": "Модуль поиска",
+        "start": "Начать поиск",
+        "results_for": "Результаты по запросу:",
+        "edit_to_start": "Измените параметры поиска, чтобы начать новый"
+    },
+    "logout_modal": {
+        "confirm": "Выйти из системы",
+        "warning": "Вы собираетесь выйти из системы"
+    },
+    "module": {
+        "app": {
+            "version": "Версии приложения"
+        }
+    },
+    "new_tab": "Новая вкладка",
+    "message": {
+        "snackbar": {
+            "settings_saved": "Правки сохранены"
+        }
+    },
+    "snackbar": {
+        "error": "Что-то пошло не так, попробуйте еще раз"
+    },
+    "user_quota": {
+        "unlimited": "Доступно неограниченное пространство"
     }
 }

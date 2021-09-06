@@ -23,6 +23,7 @@ import { SETTINGS_APP_ID, SEARCH_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account/account-store';
 import { useUserAccount } from '../store/account/hooks';
 import { AppLoader } from './app/app-loader';
+import { loadApps, unloadAllApps } from './app/load-apps';
 
 // const AppStoreInterface = () => {
 // 	const { addApps, registerAppData } = useAppStore((s) => s.setters);
@@ -61,13 +62,12 @@ export default function bootstrapper(onBeforeBoot) {
 		default: function BoostrapperCls() {
 			const init = useAccountStore((s) => s.init);
 			useEffect(() => {
-				init();
+				init().then(() => loadApps(_storeFactory, useAppStore.getState().apps));
+				return () => unloadAllApps();
 			}, [init]);
 			return (
 				<ThemeProvider>
 					<BootstrapperContextProvider i18nFactory={_i18nFactory} storeFactory={_storeFactory}>
-						<AppLoader />
-						{/* <AppStoreInterface /> */}
 						<BootstrapperRouter />
 					</BootstrapperContextProvider>
 				</ThemeProvider>

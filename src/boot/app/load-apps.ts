@@ -102,7 +102,10 @@ export function loadApps(
 		typeof cliSettings === 'undefined' || cliSettings.enableErrorReporter
 			? apps
 			: filter(apps, (app) => app.core.name !== 'carbonio-error-reporter');
-	console.log(apps);
+	console.log(
+		'%cLOADING APPS',
+		'color: white; background: #2b73d2;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
+	);
 	return Promise.all(map(appsToLoad, (app) => loadApp(app.core, storeFactory)))
 		.then((loaded) => compact(loaded))
 		.then((loaded) => keyBy(loaded, 'pkg.name'));

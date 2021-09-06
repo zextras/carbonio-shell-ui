@@ -10,10 +10,6 @@ export function AppLoader() {
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
 	useEffect(() => {
 		if (apps.length > 0) {
-			console.log(
-				'%cLOADING APPS',
-				'color: white; background: #2b73d2;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
-			);
 			loadApps(storeFactory, apps);
 		}
 		return () => {

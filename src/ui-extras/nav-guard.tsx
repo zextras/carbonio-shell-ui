@@ -47,7 +47,6 @@ export const RouteLeavingGuard: FC<{ title: string; when?: boolean }> = ({
 				dismissLabel={t('settings.button.secondary', 'Cancel')}
 				confirmLabel={t('settings.button.confirm', 'Confirm')}
 			>
-				{'U sure bro?'}
 				{children}
 			</Modal>
 		</>

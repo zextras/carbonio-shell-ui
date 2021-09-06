@@ -13,6 +13,7 @@ import React, { FC, Suspense, useMemo, lazy } from 'react';
 import { Prompt, Route, Switch } from 'react-router-dom';
 import { map } from 'lodash';
 import { createModal, Text } from '@zextras/zapp-ui';
+import { useTranslation } from 'react-i18next';
 import { useApps } from '../store/app/hooks';
 import { SETTINGS_APP_ID } from '../constants';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -27,6 +28,7 @@ const GeneralSettings = lazy(() => import('./general-settings'));
 
 export const SettingsAppView: FC = () => {
 	const apps = useApps();
+	const [t] = useTranslation();
 	const routes = useMemo(
 		() =>
 			map(apps, (app, appId) =>
@@ -44,7 +46,12 @@ export const SettingsAppView: FC = () => {
 	);
 	return (
 		<>
-			<RouteLeavingGuard />
+			<RouteLeavingGuard
+				when
+				title={t('settings.leave.title', 'Are you sure you want to leave this page?')}
+			>
+				<Text>{t('settings.leave.warning', 'Any unsaved change will be lost')}</Text>
+			</RouteLeavingGuard>
 			<Switch>
 				<Route key={SETTINGS_APP_ID} exact path={`/${SETTINGS_APP_ID}`}>
 					<Suspense fallback={<Spinner />}>

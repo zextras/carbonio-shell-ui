@@ -25,17 +25,6 @@ import { RouteLeavingGuard } from '../ui-extras/nav-guard';
 // @ts-ignore
 const GeneralSettings = lazy(() => import('./general-settings'));
 
-/*
- * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2021 Zextras
- *
- *  The contents of this file are subject to the Zextras EULA;
- * you may not use this file except in compliance with the EULA.
- * You may obtain a copy of the EULA at
- * http://www.zextras.com/zextras-eula.html
- * *** END LICENSE BLOCK *****
- */
-
 export const SettingsAppView: FC = () => {
 	const apps = useApps();
 	const routes = useMemo(
@@ -54,14 +43,16 @@ export const SettingsAppView: FC = () => {
 		[apps]
 	);
 	return (
-		<Switch>
+		<>
 			<RouteLeavingGuard />
-			<Route key={SETTINGS_APP_ID} exact path={`/${SETTINGS_APP_ID}`}>
-				<Suspense fallback={<Spinner />}>
-					<GeneralSettings />
-				</Suspense>
-			</Route>
-			{routes}
-		</Switch>
+			<Switch>
+				<Route key={SETTINGS_APP_ID} exact path={`/${SETTINGS_APP_ID}`}>
+					<Suspense fallback={<Spinner />}>
+						<GeneralSettings />
+					</Suspense>
+				</Route>
+				{routes}
+			</Switch>
+		</>
 	);
 };

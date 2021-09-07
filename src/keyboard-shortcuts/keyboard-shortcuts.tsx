@@ -36,64 +36,62 @@ export const handleKeyboardShortcuts = (props: handleKeyboardShortcutsProps): vo
 	const ctrlModifierIsActive = props.event.ctrlKey || props.event.metaKey;
 
 	const consoleLogKeyCombination = (): void => {
-		console.log(
-			`keys pressed: %c  ${props.event.ctrlKey ? 'Ctrl/Cmd + ' : ''}${keySequence
-				?.split('')
-				.join(' + ')} `,
-			'color: white; background: #39b654; border-radius: 5px; padding: 8px; width: 100%; font-size:18px; font-weight: 800'
-		);
+		// console.log(
+		// 	`keys pressed: %c  ${props.event.ctrlKey ? 'Ctrl/Cmd + ' : ''}${keySequence
+		// 		?.split('')
+		// 		.join(' + ')} `,
+		// 	'color: white; background: #39b654; border-radius: 5px; padding: 8px; width: 100%; font-size:18px; font-weight: 800'
+		// );
 		props.event.preventDefault();
 		props.event.stopImmediatePropagation();
+
+		props.event.target.nodeName !== 'TEXTAREA';
 	};
+
+	const isGlobalContext =
+		props.event?.target?.isContentEditable === false &&
+		props.event?.target?.nodeName !== 'INPUT' &&
+		props.event.target.nodeName !== 'TEXTAREA';
 
 	const callKeyboardShortcutAction = (): void => {
 		switch (keySequence) {
 			case 'n':
-				if (
-					props.primaryAction &&
-					props.event?.target?.isContentEditable === false &&
-					props.event?.target?.nodeName !== 'INPUT'
-				) {
+				if (props.primaryAction && isGlobalContext) {
 					consoleLogKeyCombination();
 					props.primaryAction.click();
 				}
 				break;
 
 			case 'nm':
-				if (
-					props.event?.target?.isContentEditable === false &&
-					props.event?.target?.nodeName !== 'INPUT'
-				) {
+				if (isGlobalContext) {
 					consoleLogKeyCombination();
 					createEmail();
 				}
 				break;
 
 			case 'na':
-				if (
-					props.event?.target?.isContentEditable === false &&
-					props.event?.target?.nodeName !== 'INPUT'
-				) {
+				if (isGlobalContext) {
 					consoleLogKeyCombination();
 					createAppointment();
 				}
 				break;
 
 			case 'nc':
-				if (
-					props.event?.target?.isContentEditable === false &&
-					props.event?.target?.nodeName !== 'INPUT'
-				) {
+				if (isGlobalContext) {
+					consoleLogKeyCombination();
+					createContact();
+				}
+				break;
+
+			case 'c':
+				if (isGlobalContext) {
 					consoleLogKeyCombination();
 					createContact();
 				}
 				break;
 
 			case '/':
-				if (
-					props.event?.target?.isContentEditable === false &&
-					props.event?.target?.nodeName !== 'INPUT'
-				) {
+				if (isGlobalContext) {
 					props.event.preventDefault();
 					consoleLogKeyCombination();
 					props.inputRef ? props.inputRef.current?.focus() : null;

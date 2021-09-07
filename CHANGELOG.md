@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.54](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.53...v0.1.0-beta.54) (2021-09-07)
+
+
+### Bug Fixes
+
+* hotfix keyboard shortcuts ([db4ca80](https://bitbucket.org/zextras/zapp-shell/commit/db4ca806a01ad68e6da9210d456206e0e06f7bee))
+
 ## [0.1.0-beta.53](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.52...v0.1.0-beta.53) (2021-09-06)
 
 

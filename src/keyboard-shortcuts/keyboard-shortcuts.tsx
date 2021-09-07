@@ -44,8 +44,6 @@ export const handleKeyboardShortcuts = (props: handleKeyboardShortcutsProps): vo
 		// );
 		props.event.preventDefault();
 		props.event.stopImmediatePropagation();
-
-		props.event.target.nodeName !== 'TEXTAREA';
 	};
 
 	const isGlobalContext =

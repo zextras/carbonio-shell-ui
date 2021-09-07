@@ -21,14 +21,20 @@ import { ComponentClass, FunctionComponent } from 'react';
 import { Store } from '@reduxjs/toolkit';
 import StoreFactory from '../../redux/store-factory';
 
-import { AppPkgDescription, SoapFetch } from '../../../types';
 import { appStore } from '../../store/app';
 import { RuntimeAppData } from '../../store/app/store-types';
 import { getAppGetters } from './app-loader-functions';
 import { getAppHooks } from './app-loader-hooks';
 import { getAppLink } from './app-link';
 import { Spinner } from '../../ui-extras/spinner';
-import { ZIMBRA_STANDARD_COLORS, FOLDERS } from '../../constants';
+import {
+	ZIMBRA_STANDARD_COLORS,
+	FOLDERS,
+	SHELL_APP_ID,
+	SETTINGS_APP_ID,
+	SEARCH_APP_ID,
+	ACTION_TYPES
+} from '../../constants';
 import { useIntegrationsStore } from '../../store/integrations/store';
 import { ZextrasModule } from '../../store/account/types';
 
@@ -57,13 +63,15 @@ export type SharedLibrariesAppsMap = {
 				store: Store<unknown>;
 				setReducer(nextReducer: Reducer): void;
 			};
-			soapFetch: SoapFetch;
 			registerAppData: (data: RuntimeAppData) => void;
 			setAppContext: (obj: unknown) => void;
 			AppLink: FunctionComponent<LinkProps>;
 			Spinner: FunctionComponent;
-			List: FunctionComponent;
 			FOLDERS: Record<string, string>;
+			SHELL_APP_ID: string;
+			SETTINGS_APP_ID: string;
+			SEARCH_APP_ID: string;
+			ACTION_TYPES: Record<string, string>;
 			ZIMBRA_STANDARD_COLORS: Array<{ zValue: number; hex: string; zLabel: string }>;
 		};
 	};
@@ -137,6 +145,10 @@ function loadAppModule(
 				Spinner,
 				FOLDERS,
 				ZIMBRA_STANDARD_COLORS,
+				SHELL_APP_ID,
+				SETTINGS_APP_ID,
+				SEARCH_APP_ID,
+				ACTION_TYPES,
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
 				...getAppGetters(appPkg.name),

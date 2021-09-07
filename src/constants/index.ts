@@ -46,7 +46,6 @@ export const FOLDERS = {
 
 export const SHELL_APP_ID = 'carbonio-shell';
 export const SETTINGS_APP_ID = 'settings';
-
 export const SEARCH_APP_ID = 'search';
 
 export const ACTION_TYPES = {

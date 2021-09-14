@@ -5,8 +5,8 @@ import { LinkProps } from 'react-router-dom';
 import { Reducer, Store } from 'redux';
 import { LocationDescriptor } from 'history';
 import { AppData, RuntimeAppData } from '../apps';
-import { ActionFactory, AnyFunction, CombinedActionFactory } from '../integrations';
-import { AccountSettings, Tag } from '../account';
+import { ActionFactory, AnyFunction, CombinedActionFactory, Action } from '../integrations';
+import { AccountSettings, Tag, Account, NotifyObject } from '../account';
 import { SoapFetch } from '../network';
 
 export const ui: any;
@@ -101,7 +101,7 @@ export const useApp: () => AppData;
 export const useAppContext: <T>() => T;
 
 export const useGoBackHistoryCallback: () => () => void;
-export const usePushHistoryCallback: () => (location: LocationDesctiptor) => void;
+export const usePushHistoryCallback: () => (location: LocationDescriptor) => void;
 export const useReplaceHistoryCallback: () => (location: LocationDescriptor) => void;
 
 export const useUserAccounts: () => [Account];
@@ -144,7 +144,7 @@ export const getIntegratedFunction: (id: string) => [Function, boolean];
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getIntegratedHook: (id: string) => [Function, boolean];
 
-export const getIntegratedComponent: (id: string) => [FunctionComponent<unknown>, boolean];
+export const getIntegratedComponent: (id: string) => [FC<unknown>, boolean];
 export const getActions: <T>(target: T, type: string) => Array<Action>;
 export const getActionsFactory: (type: string) => <T>(target: T) => Array<Action>;
 export const getAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];

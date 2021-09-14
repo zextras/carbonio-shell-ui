@@ -10,7 +10,7 @@
  */
 
 import i18next, { i18n } from 'i18next';
-import { ZextrasModule } from '../store/account/types';
+import { ZextrasModule } from '../../types';
 import I18nFactory from './i18n-factory';
 
 export default class I18nTestFactory extends I18nFactory {

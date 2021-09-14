@@ -14,11 +14,9 @@ import { enable, disable, auto, setFetchMethod } from 'darkreader';
 import { reduce } from 'lodash';
 import Logo from './logo';
 import { useAccountStore } from '../store/account/account-store';
+import { ThemeExtension, ThemeExtensionMap } from '../../types';
 
 setFetchMethod(window.fetch);
-
-export type ThemeExtension = (theme: any) => any;
-export type ThemeExtensionMap = Record<string, ThemeExtension>;
 
 export const ThemeCallbacksContext = createContext<{
 	addExtension: (newExtension: ThemeExtension, id: string) => void;

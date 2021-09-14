@@ -14,8 +14,7 @@
 import { sortBy } from 'lodash';
 
 import { appStore } from '.';
-import { ZextrasModule } from '../account/types';
-import { AppData, AppsMap } from './store-types';
+import { AppData, AppsMap, ZextrasModule } from '../../../types';
 
 export const getApp = (id: string) => (): AppData => appStore.getState().apps[id];
 

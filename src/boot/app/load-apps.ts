@@ -38,16 +38,8 @@ import { RichTextEditor } from '@zextras/zapp-ui/dist/zapp-ui.rich-text-editor';
 
 import StoreFactory from '../../redux/store-factory';
 
-import { appStore } from '../../store/app';
-import {
-	IShellWindow,
-	loadApp,
-	LoadedAppsCache,
-	SharedLibrariesAppsMap,
-	_scripts,
-	unloadApps
-} from './load-app';
-import { AppData } from '../../store/app/store-types';
+import { loadApp, unloadApps } from './load-app';
+import { AppData, IShellWindow, LoadedAppsCache, SharedLibrariesAppsMap } from '../../../types';
 
 function injectSharedLibraries(): void {
 	// eslint-disable-next-line max-len

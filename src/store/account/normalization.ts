@@ -1,5 +1,4 @@
-import { GetInfoResponse } from '../../network/types';
-import { Account, AccountSettings } from './types';
+import { GetInfoResponse, Account, AccountSettings } from '../../../types';
 
 const normalizeSettings = (
 	settings: Pick<GetInfoResponse, 'attrs' | 'prefs' | 'props'>

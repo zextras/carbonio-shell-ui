@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { DevUtilsContext } from './dev-types';
+import { DevUtilsContext } from '../../types';
 
 let ctxtCache: DevUtilsContext;
 

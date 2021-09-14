@@ -13,9 +13,8 @@ import createStore from 'zustand/vanilla';
 import { find, reduce } from 'lodash';
 import { produce } from 'immer';
 import { ComponentClass } from 'react';
-import { AppData, AppState } from './store-types';
-import { ZextrasModule } from '../account/types';
 import { SHELL_APP_ID } from '../../constants';
+import { AppData, AppState, ZextrasModule } from '../../../types';
 
 export const appStore = createStore<AppState>((set) => ({
 	apps: {},

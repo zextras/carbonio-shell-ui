@@ -14,15 +14,12 @@
 import { forEach, forOwn } from 'lodash';
 import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
 import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
-import { Reducer } from 'redux';
 
-import { LinkProps } from 'react-router-dom';
-import { ComponentClass, FunctionComponent } from 'react';
+import { ComponentClass } from 'react';
 import { Store } from '@reduxjs/toolkit';
 import StoreFactory from '../../redux/store-factory';
 
 import { appStore } from '../../store/app';
-import { RuntimeAppData } from '../../store/app/store-types';
 import { getAppGetters } from './app-loader-functions';
 import { getAppHooks } from './app-loader-hooks';
 import { getAppLink } from './app-link';
@@ -36,63 +33,14 @@ import {
 	ACTION_TYPES
 } from '../../constants';
 import { useIntegrationsStore } from '../../store/integrations/store';
-import { ZextrasModule } from '../../store/account/types';
 import { report } from '../../network/report';
 import { useAccountStore } from '../../store/account/account-store';
-
-export type IShellWindow<T, R> = Window & {
-	__ZAPP_SHARED_LIBRARIES__: T;
-	__ZAPP_HMR_EXPORT__: { [pkgName: string]: (appClass: R) => void };
-	__ZAPP_HMR_HANDLERS__: { [pkgName: string]: (handlers: RequestHandlersList) => void };
-};
-
-export type SharedLibrariesAppsMap = {
-	react: unknown;
-	'react-dom': unknown;
-	'react-i18next': unknown;
-	'react-redux': unknown;
-	'@reduxjs/toolkit': unknown;
-	lodash: unknown;
-	rxjs: unknown;
-	'rxjs/operators': unknown;
-	'react-router-dom': unknown;
-	'styled-components': unknown;
-	'prop-types': unknown;
-	moment: unknown;
-	'@zextras/zapp-shell': {
-		[pkgName: string]: unknown & {
-			store: {
-				store: Store<unknown>;
-				setReducer(nextReducer: Reducer): void;
-			};
-			registerAppData: (data: RuntimeAppData) => void;
-			setAppContext: (obj: unknown) => void;
-			AppLink: FunctionComponent<LinkProps>;
-			Spinner: FunctionComponent;
-			FOLDERS: Record<string, string>;
-			SHELL_APP_ID: string;
-			SETTINGS_APP_ID: string;
-			SEARCH_APP_ID: string;
-			ACTION_TYPES: Record<string, string>;
-			ZIMBRA_STANDARD_COLORS: Array<{ zValue: number; hex: string; zLabel: string }>;
-		};
-	};
-	'@zextras/zapp-ui': unknown;
-	msw?: unknown;
-	faker?: unknown;
-};
-
-export type LoadedAppRuntime = AppInjections & {
-	pkg: ZextrasModule;
-};
-
-export type LoadedAppsCache = {
-	[pkgName: string]: LoadedAppRuntime;
-};
-
-export type AppInjections = {
-	store: Store<any>;
-};
+import {
+	IShellWindow,
+	LoadedAppRuntime,
+	SharedLibrariesAppsMap,
+	ZextrasModule
+} from '../../../types';
 
 export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;

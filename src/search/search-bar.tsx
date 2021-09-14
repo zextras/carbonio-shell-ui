@@ -31,7 +31,8 @@ import { useHistory } from 'react-router-dom';
 import { useLocalStorage } from '../shell/hooks';
 import { SEARCH_APP_ID } from '../constants';
 import { useApps } from '../store/app/hooks';
-import { QueryChip, useSearchStore } from './search-store';
+import { useSearchStore } from './search-store';
+import { QueryChip, SearchBarProps, SelectLabelFactoryProps } from '../../types';
 
 const OutlinedIconButton = styled(IconButton)`
 	border: 1px solid ${({ theme }): string => theme.palette.primary.regular};
@@ -48,12 +49,6 @@ const StyledContainer = styled(Container)`
 		transform: translateY(-2px);
 	}
 `;
-
-type SelectLabelFactoryProps = {
-	selected: [{ label: string; value: string }];
-	open: boolean;
-	focus: boolean;
-};
 
 const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus }) => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -83,9 +78,6 @@ const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus
 			/>
 		</Container>
 	);
-};
-type SearchBarProps = {
-	currentApp: string;
 };
 
 export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {

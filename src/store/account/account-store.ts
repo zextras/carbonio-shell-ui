@@ -1,5 +1,5 @@
 import create from 'zustand';
-import { AccountContext, AccountState } from './types';
+import { AccountContext, AccountState } from '../../../types';
 import { getInfo } from '../../network/get-info';
 import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
 

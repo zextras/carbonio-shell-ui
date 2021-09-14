@@ -12,11 +12,10 @@
 import i18next, { i18n } from 'i18next';
 import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import { AppPkgDescription } from '../../types';
-import { ZextrasModule } from '../store/account/types';
+import { II18nFactory, ZextrasModule } from '../../types';
 
-export default class I18nFactory {
-	private _cache: { [pkg: string]: i18n } = {};
+export default class I18nFactory implements II18nFactory {
+	_cache: { [pkg: string]: i18n } = {};
 
 	public getShellI18n(): i18n {
 		return this.getAppI18n({

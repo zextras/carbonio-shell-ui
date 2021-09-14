@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 import { Component, ComponentClass, FunctionComponent } from 'react';
-import { ZextrasModule } from '../account/types';
+import { ZextrasModule } from '../account';
 
 export type UninitializedAppData = {
 	core: ZextrasModule;

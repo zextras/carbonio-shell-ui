@@ -11,7 +11,7 @@
 
 import { Store, configureStore, createSlice } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
-import { ZextrasModule } from '../store/account/types';
+import { ZextrasModule } from '../../types';
 
 const _uselessSlice = createSlice({
 	name: '_useless',

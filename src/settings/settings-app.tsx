@@ -12,7 +12,7 @@ import { TFunction } from 'react-i18next';
 import { SettingsAppView } from './settings-app-view';
 import { SettingsSidebar } from './settings-sidebar';
 import { SETTINGS_APP_ID } from '../constants';
-import { ZextrasModule } from '../store/account/types';
+import { ZextrasModule } from '../../types';
 
 export const getSettingsCore = (t: TFunction): ZextrasModule => ({
 	priority: 1,

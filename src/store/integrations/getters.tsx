@@ -14,7 +14,7 @@
 import { compact, map } from 'lodash';
 import React, { FC, FunctionComponent } from 'react';
 import { useIntegrationsStore } from './store';
-import { Action, ActionFactory } from './types';
+import { Action, ActionFactory } from '../../../types';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppContextProvider from '../../boot/app/app-context-provider';

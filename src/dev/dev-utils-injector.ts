@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { DevUtilsContext } from './dev-types';
+import { DevUtilsContext } from '../../types';
 import { generateWorker } from '../mocks/browser';
 
 export default function loadDevelopmentEnv(ctxt: DevUtilsContext): Promise<void> {

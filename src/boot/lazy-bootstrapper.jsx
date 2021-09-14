@@ -9,11 +9,11 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React from 'react';
+import React, { FC } from 'react';
 import { usePromise } from '../shell/hooks';
 import LoadingView from './loading-view';
 
-export default function LazyBootstrapper({ onBeforeBoot }) {
+const LazyBootstrapper = ({ onBeforeBoot }) => {
 	const [result, errorMessage, state] = usePromise(
 		() =>
 			import(
@@ -33,4 +33,6 @@ export default function LazyBootstrapper({ onBeforeBoot }) {
 		default:
 			return <LoadingView />;
 	}
-}
+};
+
+export default LazyBootstrapper;

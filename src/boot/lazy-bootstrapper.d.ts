@@ -9,8 +9,8 @@
  * *** END LICENSE BLOCK *****
  */
 
+import { any } from 'prop-types';
 import { ReactElement } from 'react';
-import { DevUtilsContext } from '../dev/dev-types';
 
 type LazyBootstrapperProps = {
 	onBeforeBoot?: (ctxt: DevUtilsContext) => Promise<void>;

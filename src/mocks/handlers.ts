@@ -12,7 +12,7 @@
 import { rest } from 'msw';
 import faker from 'faker';
 import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
-import { ZimletPkgDescription } from '../network/types';
+import { ZimletPkgDescription } from '../../types';
 
 function getCompleteUrl(api: string): string {
 	return `/service/soap/${api}Request`;

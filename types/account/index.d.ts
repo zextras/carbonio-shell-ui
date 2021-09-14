@@ -56,12 +56,12 @@ export type Tag = {
 	rgb?: string;
 };
 export type AccountSettings = {
-	attrs: Record<string, unknown>;
-	prefs: Record<string, unknown>;
+	attrs: Record<string, string | number>;
+	prefs: Record<string, string | number>;
 	props: Array<ZimletProp>;
 };
 export type ZimletProp = {
 	name: string;
 	zimlet: string;
-	_content: string;
+	_content: string | number;
 };

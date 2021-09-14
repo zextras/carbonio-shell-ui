@@ -9,20 +9,14 @@
  * *** END LICENSE BLOCK *****
  */
 
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useEffect } from 'react';
 import { ThemeProvider } from './theme-provider';
 import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-provider';
 import I18nFactory from '../i18n/i18n-factory';
 import StoreFactory from '../redux/store-factory';
 import { useAppStore } from '../store/app';
-import { settingsAppData, getSettingsCore } from '../settings/settings-app';
-import { searchAppData, getSearchCore } from '../search/search-app';
-import { SETTINGS_APP_ID, SEARCH_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account/account-store';
-import { useUserAccount } from '../store/account/hooks';
-import { AppLoader } from './app/app-loader';
 import { loadApps, unloadAllApps } from './app/load-apps';
 
 // const AppStoreInterface = () => {
@@ -40,7 +34,7 @@ import { loadApps, unloadAllApps } from './app/load-apps';
 // 	return null;
 // };
 
-export default function bootstrapper(onBeforeBoot) {
+function bootstrapper(onBeforeBoot) {
 	// const { shellStore, shellStorePersistor } = createShellStore(true);
 
 	const i18nFactory = new I18nFactory();
@@ -75,3 +69,5 @@ export default function bootstrapper(onBeforeBoot) {
 		}
 	}));
 }
+
+export default bootstrapper;

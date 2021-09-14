@@ -2,7 +2,7 @@ import produce from 'immer';
 import create from 'zustand';
 import { forEach } from 'lodash';
 import { Component } from 'react';
-import { ActionFactory, AnyFunction, IntegrationsState } from './types';
+import { ActionFactory, AnyFunction, IntegrationsState } from '../../../types';
 
 export const useIntegrationsStore = create<IntegrationsState>((set) => ({
 	actions: {},

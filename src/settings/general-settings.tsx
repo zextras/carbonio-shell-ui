@@ -21,7 +21,7 @@ import OutOfOfficeSettings from './out-of-office-view';
 import { useUserSettings } from '../store/account/hooks';
 import { SETTINGS_APP_ID } from '../constants';
 import { editSettings } from '../network/edit-settings';
-import { Mods } from '../network/types';
+import { Mods } from '../../types';
 
 export const DisplayerHeader: FC<{
 	label: string;

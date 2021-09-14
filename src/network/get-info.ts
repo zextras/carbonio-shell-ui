@@ -1,10 +1,8 @@
 import { GetState, SetState } from 'zustand';
-import { filter, find } from 'lodash';
 import { SHELL_APP_ID } from '../constants';
 import { useAppStore } from '../store/app';
 import { normalizeAccount } from '../store/account/normalization';
-import { GetInfoResponse } from './types';
-import { AccountState, ZextrasModule, Tag } from '../store/account/types';
+import { AccountState, GetInfoResponse, Tag, ZextrasModule } from '../../types';
 
 export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>): Promise<void> =>
 	get()

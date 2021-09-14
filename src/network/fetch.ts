@@ -1,10 +1,15 @@
 import { GetState, SetState } from 'zustand';
 import { SHELL_APP_ID } from '../constants';
-import { AccountState, Account } from '../store/account/types';
 import { getApp, getShell } from '../store/app/getters';
 import { goToLogin } from './go-to-login';
 import { report } from './report';
-import { ErrorSoapResponse, SoapResponse, SuccessSoapResponse } from './types';
+import {
+	Account,
+	AccountState,
+	ErrorSoapResponse,
+	SoapResponse,
+	SuccessSoapResponse
+} from '../../types';
 import { userAgent } from './user-agent';
 
 const getAccount = (acc?: Account): { by: string; _content: string } | undefined => {

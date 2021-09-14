@@ -9,10 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
-import I18nFactory from '../i18n/i18n-factory';
+import React, { FC } from 'react';
 
-export type DevUtilsContext = {
-	i18nFactory: I18nFactory;
-	mswjs?: SetupWorkerApi;
-};
+const LoadingView: FC = () => <div>Loading...</div>;
+export default LoadingView;

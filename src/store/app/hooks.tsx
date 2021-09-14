@@ -13,7 +13,7 @@
 
 import { sortBy } from 'lodash';
 import { useAppStore } from '.';
-import { AppData, AppsMap } from './store-types';
+import { AppData, AppsMap } from '../../../types';
 
 export const useApp = (id: string) => (): AppData => useAppStore((s) => s.apps[id]);
 

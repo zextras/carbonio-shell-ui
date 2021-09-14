@@ -11,7 +11,7 @@
 import { TFunction } from 'react-i18next';
 import { SearchAppView } from './search-app-view';
 import { SEARCH_APP_ID } from '../constants/index';
-import { ZextrasModule } from '../store/account/types';
+import { ZextrasModule } from '../../types';
 
 export const getSearchCore = (t: TFunction): ZextrasModule => ({
 	priority: 2,

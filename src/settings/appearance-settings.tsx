@@ -13,9 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { FormSubSection, Select } from '@zextras/zapp-ui';
 import { find } from 'lodash';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
-import { AccountSettings } from '../../types';
-
-type DRPropValues = 'auto' | 'enabled' | 'disabled';
+import { AccountSettings, DRPropValues } from '../../types';
 
 const AppearanceSettings: FC<{
 	settings: AccountSettings;

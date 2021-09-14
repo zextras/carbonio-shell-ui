@@ -1,7 +1,7 @@
 import { map } from 'lodash';
 import { SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account/account-store';
-import { Mods } from './types';
+import { Mods } from '../../types';
 
 export const editSettings = (mods: Mods): Promise<any> =>
 	useAccountStore

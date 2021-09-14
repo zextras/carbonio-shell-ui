@@ -13,14 +13,7 @@ import create from 'zustand';
 import createStore from 'zustand/vanilla';
 import { reduce } from 'lodash';
 import { useEffect } from 'react';
-
-export type PackageDependentFunction = (pkg: string) => Function;
-
-export type ContextBridgeState = {
-	packageDependentFunctions: Record<string, PackageDependentFunction>;
-	functions: Record<string, Function>;
-	add: (content: Omit<ContextBridgeState, 'add'>) => void;
-};
+import { ContextBridgeState } from '../../../types';
 
 export const contextBridge = createStore<ContextBridgeState>((set, get) => ({
 	packageDependentFunctions: {},

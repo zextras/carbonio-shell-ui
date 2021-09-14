@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.54](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.53...v0.1.0-beta.54) (2021-09-07)
+
+
+### Bug Fixes
+
+* hotfix keyboard shortcuts ([db4ca80](https://bitbucket.org/zextras/zapp-shell/commit/db4ca806a01ad68e6da9210d456206e0e06f7bee))
+
+## [0.1.0-beta.53](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.52...v0.1.0-beta.53) (2021-09-06)
+
+
+### Features
+
+* added key sequence recognition ([dcc4338](https://bitbucket.org/zextras/zapp-shell/commit/dcc4338501cc830990e1edf68dcf53633bea8d3b))
+* added keyboard shortcuts ([0895869](https://bitbucket.org/zextras/zapp-shell/commit/08958690bc00f8db6c5ce25d14d40136d12d04b3))
+
+## [0.1.0-beta.52](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.51...v0.1.0-beta.52) (2021-09-06)
+
+## [0.1.0-beta.51](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.50...v0.1.0-beta.51) (2021-09-03)
+
 ## [0.1.0-beta.50](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.49...v0.1.0-beta.50) (2021-08-23)
 
 ## [0.1.0-beta.49](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.48...v0.1.0-beta.49) (2021-08-20)

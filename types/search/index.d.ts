@@ -15,6 +15,8 @@ export type SearchState = {
 
 export type SearchBarProps = {
 	currentApp: string;
+	primaryAction: unknown;
+	secondaryActions: unknown;
 };
 
 export type SelectLabelFactoryProps = {

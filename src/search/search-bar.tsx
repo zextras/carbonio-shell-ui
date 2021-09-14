@@ -33,6 +33,7 @@ import { SEARCH_APP_ID } from '../constants';
 import { useApps } from '../store/app/hooks';
 import { useSearchStore } from './search-store';
 import { QueryChip, SearchBarProps, SelectLabelFactoryProps } from '../../types';
+import { handleKeyboardShortcuts } from '../keyboard-shortcuts/keyboard-shortcuts';
 
 const OutlinedIconButton = styled(IconButton)`
 	border: 1px solid ${({ theme }): string => theme.palette.primary.regular};
@@ -80,7 +81,7 @@ const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus
 	);
 };
 
-export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
+export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secondaryActions }) => {
 	const [searchIsEnabled, setSearchIsEnabled] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
 	const theme = useContext(ThemeContext) as unknown;
@@ -119,21 +120,6 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 		}),
 		[]
 	);
-
-	useEffect(() => {
-		window.addEventListener('keypress', (event: any) => {
-			// isContentEditable is actually present
-			// @ts-ignore
-			if (
-				event.key === '/' &&
-				event?.target?.isContentEditable === false &&
-				event?.target?.nodeName !== 'INPUT'
-			) {
-				event.preventDefault();
-				inputRef.current?.focus();
-			}
-		});
-	}, []);
 
 	useEffect(() => {
 		setModuleSelection((current) =>
@@ -283,6 +269,22 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 	);
 	const [triggerSearch, setTriggerSearch] = useState(false);
 	const containerRef = useRef<HTMLDivElement>();
+
+	useEffect(() => {
+		const handler = (event: KeyboardEvent): unknown =>
+			handleKeyboardShortcuts({
+				event,
+				inputRef,
+				primaryAction,
+				secondaryActions,
+				currentApp
+			});
+		document.addEventListener('keydown', handler);
+		return (): void => {
+			document.removeEventListener('keydown', handler);
+		};
+	}, [currentApp, inputRef, primaryAction, secondaryActions]);
+
 	useEffect(() => {
 		const ref = inputRef.current;
 		const searchCb = (ev: any): void => {

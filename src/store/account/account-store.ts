@@ -1,5 +1,5 @@
 import create from 'zustand';
-import { AccountContext, AccountState } from '../../../types';
+import { AccountContext, AccountState, SoapFetch } from '../../../types';
 import { getInfo } from '../../network/get-info';
 import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
 
@@ -16,12 +16,6 @@ export const useAccountStore = create<AccountState>((set, get) => ({
 	context: {},
 	setContext: (context: AccountContext): void => set({ context }),
 	init: (): Promise<void> => getInfo(set, get),
-	soapFetch: (
-		app: string
-	): (<Request, Response>(api: string, body: Request) => Promise<Response | void>) =>
-		getSoapFetch(app, set, get),
-	xmlSoapFetch: (
-		app: string
-	): (<Request, Response>(api: string, body: Request) => Promise<Response | void>) =>
-		getXmlSoapFetch(app, set, get)
+	soapFetch: (app: string): SoapFetch => getSoapFetch(app, set, get),
+	xmlSoapFetch: (app: string): SoapFetch => getXmlSoapFetch(app, set, get)
 }));

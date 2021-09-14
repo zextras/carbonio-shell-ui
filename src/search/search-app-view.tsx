@@ -40,7 +40,11 @@ const ResultsFor: FC<{ count: number }> = ({ count }) => {
 				style={{ flexWrap: 'wrap' }}
 			>
 				<Text color="secondary">
-					{t('search.results_for', { defualtValue: '{{count}} Results for:', count })}
+					{t('search.results_for', {
+						defaultValue: '{{count}} Result for:',
+						defaultValue_plural: '{{count}} Results for:',
+						count
+					})}
 				</Text>
 				{map(query, (q, i) => (
 					<Padding key={`${i}${q.label}`} all="extrasmall">

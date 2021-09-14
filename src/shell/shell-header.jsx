@@ -104,7 +104,7 @@ export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, childr
 				<Responsive mode="desktop">
 					<UserQuota />
 					{/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-					<IconButton icon="BellOutline" iconColor="text" onClick={() => {}} />
+					{/* <IconButton icon="BellOutline" iconColor="text" onClick={() => {}} /> */}
 					{children}
 				</Responsive>
 				<Responsive mode="mobile">

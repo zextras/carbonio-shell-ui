@@ -1,3 +1,5 @@
+import { SoapFetch, ZimletProp } from '../network';
+
 export type AccountState = {
 	account?: Account;
 	settings: AccountSettings;
@@ -5,12 +7,8 @@ export type AccountState = {
 	context: AccountContext;
 	init: () => Promise<void>;
 	setContext: (context: unknown) => void;
-	xmlSoapFetch: (
-		app: string
-	) => <Request, Response>(api: string, body: Request) => Promise<Response | undefined>;
-	soapFetch: (
-		app: string
-	) => <Request, Response>(api: string, body: Request) => Promise<Response | undefined>;
+	xmlSoapFetch: (app: string) => SoapFetch;
+	soapFetch: (app: string) => SoapFetch;
 	tags: Array<Tag>;
 };
 
@@ -59,9 +57,4 @@ export type AccountSettings = {
 	attrs: Record<string, string | number>;
 	prefs: Record<string, string | number>;
 	props: Array<ZimletProp>;
-};
-export type ZimletProp = {
-	name: string;
-	zimlet: string;
-	_content: string | number;
 };

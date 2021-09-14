@@ -17,8 +17,13 @@
         "clear": "Clear search input",
         "edit_to_start": "Edit your search to start a new one",
         "idle_input_label": "Search in {{module}}",
+        "leave": {
+            "title": "Are you sure you want to leave this module?",
+            "warning": "The current search results will be lost"
+        },
         "module": "Module",
-        "results_for": "Results for:",
+        "results_for": "{{count}} Result for:",
+        "results_for_plural": "{{count}} Results for:",
         "start": "Start search"
     },
     "settings": {

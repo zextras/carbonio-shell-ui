@@ -28,10 +28,10 @@ export const UserQuota = () => {
 	}, [settings]);
 
 	const label = useMemo(() => {
-		if (quota < 0) {
+		if (!quota || quota < 0) {
 			return t('user_quota.unlimited', 'Unlimited space available');
 		}
-		return t('user_quota.limited', { default: '{{quota}}% space used', quota });
+		return t('user_quota.limited', { defaultValue: '{{quota}}% space used', quota });
 	}, [quota, t]);
 
 	const fillBackground = useMemo(

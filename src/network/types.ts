@@ -1,19 +1,8 @@
-/*
- * *** BEGIN LICENSE BLOCK *****
- * Copyright (C) 2011-2021 Zextras
- *
- *  The contents of this file are subject to the Zextras EULA;
- * you may not use this file except in compliance with the EULA.
- * You may obtain a copy of the EULA at
- * http://www.zextras.com/zextras-eula.html
- * *** END LICENSE BLOCK *****
- */
-
-import { ZimletProp } from '../../../types';
-
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type SoapResponseContent = {};
-
+export type ZimletProp = {
+	name: string;
+	zimlet: string;
+	_content: string;
+};
 export type ZimletPkgDescription = {
 	zimlet: Array<{
 		name: string;
@@ -58,13 +47,43 @@ export type GetInfoResponse = {
 	props: {
 		prop: Array<ZimletProp>;
 	};
+	version: string;
 };
 
-export type AuthResponse = SoapResponseContent & {
-	csrfToken: {
-		_content: string;
+export type SuccessSoapResponse<R> = {
+	Body: Record<string, R>;
+	Header: any;
+};
+
+export type ErrorSoapResponse = {
+	Body: {
+		Fault: {
+			Detail: {
+				Error: {
+					Code: string;
+					Detail: string;
+				};
+			};
+			Reason: {
+				Text: string;
+			};
+		};
 	};
-	authToken: Array<{
-		_content: string;
-	}>;
+	Header: any;
+};
+
+export type SoapResponse<R> = SuccessSoapResponse<R> | ErrorSoapResponse;
+
+export type PropsMods = Record<string, { app: string; value: unknown }>;
+
+export type PermissionsMods = {
+	freeBusy: any;
+	inviteRight: any;
+};
+export type PrefsMods = Record<string, unknown>;
+
+export type Mods = {
+	props?: PropsMods;
+	prefs?: PrefsMods;
+	permissions?: PermissionsMods;
 };

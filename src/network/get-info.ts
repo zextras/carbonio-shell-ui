@@ -1,23 +1,24 @@
 import { GetState, SetState } from 'zustand';
 import { filter, find } from 'lodash';
-import { SHELL_APP_ID } from '../../constants';
-import { useAppStore } from '../app';
-import { normalizeAccount } from './normalization';
-import { GetInfoResponse, ZextrasModule, Tag, AccountState } from './types';
+import { SHELL_APP_ID } from '../constants';
+import { useAppStore } from '../store/app';
+import { normalizeAccount } from '../store/account/normalization';
+import { GetInfoResponse } from './types';
+import { AccountState, ZextrasModule, Tag } from '../store/account/types';
 
 export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>): Promise<void> =>
 	get()
 		.soapFetch(SHELL_APP_ID)<{ _jsns: string }, GetInfoResponse>('GetInfo', {
 			_jsns: 'urn:zimbraAccount'
 		})
-		.then((res): void => {
+		.then((res: any): void => {
 			if (res) {
 				const { account, settings, version } = normalizeAccount(res);
 				set({ account, settings, zimbraVersion: version });
 			}
 		})
 		.then(() => fetch('/static/iris/components.json'))
-		.then((r) => r.json())
+		.then((r: any) => r.json())
 		.then(({ components }: { components: Array<ZextrasModule> }) => {
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			useAppStore.getState().setters.addApps(components);
@@ -27,8 +28,8 @@ export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>
 				_jsns: 'urn:zimbraMail'
 			})
 		)
-		.then((r) => set({ tags: r?.tag ?? [] }))
-		.catch((err) => {
+		.then((r: any) => set({ tags: r?.tag ?? [] }))
+		.catch((err: unknown) => {
 			console.log('there was an error checking user data');
 			console.error(err);
 		});

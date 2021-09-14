@@ -37,7 +37,7 @@ import {
 } from '../../constants';
 import { useIntegrationsStore } from '../../store/integrations/store';
 import { ZextrasModule } from '../../store/account/types';
-import { report } from '../../store/account/report';
+import { report } from '../../network/report';
 import { useAccountStore } from '../../store/account/account-store';
 
 export type IShellWindow<T, R> = Window & {

@@ -20,8 +20,8 @@ import ModuleVersionSettings from './module-version-settings';
 import OutOfOfficeSettings from './out-of-office-view';
 import { useUserSettings } from '../store/account/hooks';
 import { SETTINGS_APP_ID } from '../constants';
-import { editSettings } from '../store/account/edit-settings';
-import { Mods } from '../store/account/types';
+import { editSettings } from '../network/edit-settings';
+import { Mods } from '../network/types';
 
 export const DisplayerHeader: FC<{
 	label: string;

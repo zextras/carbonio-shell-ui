@@ -1,7 +1,7 @@
 import create from 'zustand';
 import { AccountContext, AccountState } from './types';
-import { getInfo } from './get-info';
-import { getSoapFetch, getXmlSoapFetch } from './fetch';
+import { getInfo } from '../../network/get-info';
+import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

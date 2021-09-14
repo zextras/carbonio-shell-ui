@@ -1,5 +1,5 @@
 import create from 'zustand';
-import { AccountState } from './types';
+import { AccountContext, AccountState } from './types';
 import { getInfo } from './get-info';
 import { getSoapFetch, getXmlSoapFetch } from './fetch';
 
@@ -14,7 +14,7 @@ export const useAccountStore = create<AccountState>((set, get) => ({
 		props: []
 	},
 	context: {},
-	setContext: (context: any): void => set({ context }),
+	setContext: (context: AccountContext): void => set({ context }),
 	init: (): Promise<void> => getInfo(set, get),
 	soapFetch: (
 		app: string

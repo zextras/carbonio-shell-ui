@@ -49,7 +49,12 @@ const getXmlSession = (context?: any): string => {
 	return '';
 };
 
-const handleResponse = <R>(api: string, res: SoapResponse<R>, set: SetState<AccountState>): R => {
+const handleResponse = <R>(
+	api: string,
+	res: SoapResponse<R>,
+	set: SetState<AccountState>,
+	get: GetState<AccountState>
+): R => {
 	if (res?.Body?.Fault) {
 		if ((<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Code === 'service.AUTH_REQUIRED') {
 			goToLogin();
@@ -62,7 +67,10 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>, set: SetState<Acco
 	}
 	if (res?.Header?.context) {
 		set({
-			context: res?.Header?.context
+			context: {
+				...get().context,
+				...res?.Header?.setContext
+			}
 		});
 	}
 	return (<SuccessSoapResponse<R>>res).Body[`${api}Response`] as R;
@@ -100,7 +108,7 @@ export const getSoapFetch = (
 		})
 	}) // TODO proper error handling
 		.then((res) => res?.json())
-		.then((res: SoapResponse<Response>) => handleResponse(api, res, set))
+		.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
 		.catch((e) => report(app === SHELL_APP_ID ? getShell()! : getApp(app)()?.core)(e));
 
 export const getXmlSoapFetch = (
@@ -124,5 +132,5 @@ export const getXmlSoapFetch = (
 		</soap:Envelope>`
 	}) // TODO proper error handling
 		.then((res) => res?.json())
-		.then((res: SoapResponse<Response>) => handleResponse(api, res, set))
+		.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
 		.catch((e) => report(app === SHELL_APP_ID ? getShell()! : getApp(app)()?.core)(e));

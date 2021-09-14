@@ -2,9 +2,9 @@ export type AccountState = {
 	account?: Account;
 	settings: AccountSettings;
 	zimbraVersion: string;
-	context: any;
+	context: AccountContext;
 	init: () => Promise<void>;
-	setContext: (context: any) => void;
+	setContext: (context: unknown) => void;
 	xmlSoapFetch: (
 		app: string
 	) => <Request, Response>(api: string, body: Request) => Promise<Response | undefined>;
@@ -12,6 +12,20 @@ export type AccountState = {
 		app: string
 	) => <Request, Response>(api: string, body: Request) => Promise<Response | undefined>;
 	tags: Array<Tag>;
+};
+
+export type AccountContext = {
+	refresh?: NotifyObject;
+	notify?: NotifyObject;
+	change?: { token: number };
+	session?: { id: number; _content: number };
+};
+
+export type NotifyObject = {
+	seq?: number;
+	version?: string;
+	mbx?: [{ s: number }];
+	folder?: Array<unknown>;
 };
 
 export type ZextrasModule = {

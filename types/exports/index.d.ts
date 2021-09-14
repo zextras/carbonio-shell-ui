@@ -1,4 +1,11 @@
 /* eslint-disable camelcase */
+import { RenderOptions, RenderResult } from '@testing-library/react';
+import { Component, FC } from 'react';
+import { LinkProps } from 'react-router-dom';
+import { Reducer, Store } from 'redux';
+import { LocationDescriptor } from 'history';
+import { AppData, RuntimeAppData } from '../apps';
+import { ActionFactory, AnyFunction, CombinedActionFactory } from '../integrations';
 import { AccountSettings, Tag } from '../account';
 import { SoapFetch } from '../network';
 
@@ -56,8 +63,8 @@ export enum FOLDERS {
 	TASKS = '15',
 	BRIEFCASE = '16'
 }
-export const Applink: FunctionComponent<LinkProps>;
-export const Spinner: FunctionComponent;
+export const Applink: FC<LinkProps>;
+export const Spinner: FC;
 
 export const SHELL_APP_ID: string;
 export const SETTINGS_APP_ID: string;
@@ -94,7 +101,7 @@ export const useApp: () => AppData;
 export const useAppContext: <T>() => T;
 
 export const useGoBackHistoryCallback: () => () => void;
-export const usePushHistoryCallback: () => (location: LocationDescriptor) => void;
+export const usePushHistoryCallback: () => (location: LocationDesctiptor) => void;
 export const useReplaceHistoryCallback: () => (location: LocationDescriptor) => void;
 
 export const useUserAccounts: () => [Account];
@@ -105,7 +112,7 @@ export const useNotify: () => NotifyObject;
 
 export const useIntegratedHook: (id: string) => [AnyFunction, boolean];
 export const useIntegratedFunction: (id: string) => [AnyFunction, boolean];
-export const useIntegratedComponent: (id: string) => [FunctionComponent<unknown>, boolean];
+export const useIntegratedComponent: (id: string) => [FC<unknown>, boolean];
 export const useActions: <T>(target: T, type: string) => Array<Action>;
 export const useActionsFactory: <T>(type: string) => CombinedActionFactory<T>;
 export const useAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];

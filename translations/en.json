@@ -23,7 +23,7 @@
         },
         "module": "Module",
         "results_for": "{{count}} Result for:",
-        "results_for_plural": "{{count}} Results for:",
+        "results_for_plural": "",
         "start": "Start search"
     },
     "settings": {
@@ -86,7 +86,7 @@
         "error": "Something went wrong, please try again"
     },
     "user_quota": {
-        "limited": "",
+        "limited": "{{quota}}% space used",
         "unlimited": "Unlimited space available"
     }
 }

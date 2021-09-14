@@ -1,6 +1,8 @@
-import UAParser from 'ua-parser-js';
 import { GetState, SetState } from 'zustand';
+import { SHELL_APP_ID } from '../../constants';
+import { getApp, getShell } from '../app/getters';
 import { goToLogin } from './go-to-login';
+import { report } from './report';
 import {
 	Account,
 	AccountState,
@@ -8,20 +10,7 @@ import {
 	SoapResponse,
 	SuccessSoapResponse
 } from './types';
-import { getApp } from '../app/getters';
-import { getIntegratedFunction } from '../integrations/getters';
-
-const { os, browser } = UAParser();
-
-export const userAgent = `CarbonioWebClient - ${browser.name} ${browser.version} (${os.name})`;
-
-export const report = (appId: string) => (error: Error, hint?: unknown): void => {
-	const app = getApp(appId)();
-	const [reportError, available] = getIntegratedFunction('report-error');
-	if (available) {
-		reportError(error, app?.core ?? { id: 'carbonio-shell' }, hint);
-	}
-};
+import { userAgent } from './user-agent';
 
 const getAccount = (acc?: Account): { by: string; _content: string } | undefined => {
 	if (acc) {
@@ -95,16 +84,16 @@ export const getSoapFetch = (
 			Header: {
 				context: {
 					_jsns: 'urn:zimbra',
-					notify: {
-						seq: get().context?.notify?.seq
-					},
+					notify: get().context?.notify?.seq
+						? {
+								seq: get().context?.notify?.seq
+						  }
+						: undefined,
 					session: get().context?.session ?? {},
 					account: getAccount(get().account as Account),
-					context: {
-						userAgent: {
-							name: userAgent,
-							version: get().zimbraVersion
-						}
+					userAgent: {
+						name: userAgent,
+						version: get().zimbraVersion
 					}
 				}
 			}
@@ -112,7 +101,7 @@ export const getSoapFetch = (
 	}) // TODO proper error handling
 		.then((res) => res?.json())
 		.then((res: SoapResponse<Response>) => handleResponse(api, res, set))
-		.catch((e) => report(app)(e));
+		.catch((e) => report(app === SHELL_APP_ID ? getShell()! : getApp(app)()?.core)(e));
 
 export const getXmlSoapFetch = (
 	app: string,
@@ -136,4 +125,4 @@ export const getXmlSoapFetch = (
 	}) // TODO proper error handling
 		.then((res) => res?.json())
 		.then((res: SoapResponse<Response>) => handleResponse(api, res, set))
-		.catch((e) => report(app)(e));
+		.catch((e) => report(app === SHELL_APP_ID ? getShell()! : getApp(app)()?.core)(e));

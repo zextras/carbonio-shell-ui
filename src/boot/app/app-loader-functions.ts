@@ -21,6 +21,12 @@ import {
 	getIntegratedFunction,
 	getIntegratedHook
 } from '../../store/integrations/getters';
+import {
+	getUserAccount,
+	getUserAccounts,
+	getUserSettings,
+	getTags
+} from '../../store/account/hooks';
 
 export const getAppGetters = (pkg: string): unknown => ({
 	getAppContext: getAppContext(pkg),
@@ -32,6 +38,10 @@ export const getAppGetters = (pkg: string): unknown => ({
 	getIntegratedComponent,
 	getIntegratedFunction,
 	getIntegratedHook,
+	getUserAccount,
+	getUserAccounts,
+	getUserSettings,
+	getTags,
 	getBridgedFunctions: (): unknown => {
 		const { packageDependentFunctions, functions } = contextBridge.getState();
 		return {

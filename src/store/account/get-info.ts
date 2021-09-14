@@ -20,10 +20,7 @@ export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>
 		.then((r) => r.json())
 		.then(({ components }: { components: Array<ZextrasModule> }) => {
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			set({ shell: find(components, (c) => c.name === SHELL_APP_ID)! });
-			useAppStore
-				.getState()
-				.setters.addApps(filter(components, (app) => app.name !== SHELL_APP_ID));
+			useAppStore.getState().setters.addApps(components);
 		})
 		.then(() =>
 			get().soapFetch(SHELL_APP_ID)<{ _jsns: string }, { tag: Array<Tag> }>('GetTag', {

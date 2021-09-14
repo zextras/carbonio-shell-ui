@@ -14,7 +14,6 @@ import { BrowserRouter, useHistory } from 'react-router-dom';
 import { SnackbarManagerContext, ModalManagerContext } from '@zextras/zapp-ui';
 import AppLoaderMounter from './app/app-loader-mounter';
 import { useContextBridge } from '../store/app/context-bridge';
-import { useUserAccount } from '../store/account/hooks';
 import LoadingView from './loading-view';
 
 export const LazyShellView = lazy(() =>
@@ -23,7 +22,6 @@ export const LazyShellView = lazy(() =>
 
 const ContextBridge = () => {
 	const history = useHistory();
-	const account = useUserAccount();
 	const createSnackbar = useContext(SnackbarManagerContext);
 	const createModal = useContext(ModalManagerContext);
 	useContextBridge({

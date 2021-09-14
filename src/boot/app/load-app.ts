@@ -37,6 +37,8 @@ import {
 } from '../../constants';
 import { useIntegrationsStore } from '../../store/integrations/store';
 import { ZextrasModule } from '../../store/account/types';
+import { report } from '../../store/account/report';
+import { useAccountStore } from '../../store/account/account-store';
 
 export type IShellWindow<T, R> = Window & {
 	__ZAPP_SHARED_LIBRARIES__: T;
@@ -135,6 +137,9 @@ function loadAppModule(
 					store,
 					setReducer: (reducer): void => store.replaceReducer(reducer)
 				},
+				report: report(appPkg),
+				soapFetch: useAccountStore.getState().soapFetch(appPkg.name),
+				xmlSoapFetch: useAccountStore.getState().xmlSoapFetch(appPkg.name),
 				registerAppData: appStore.getState().setters.registerAppData(appPkg.name),
 				setAppContext: appStore.getState().setters.setAppContext(appPkg.name),
 				registerHooks: useIntegrationsStore.getState().registerHooks,
@@ -183,6 +188,9 @@ function loadAppModule(
 			document.body.appendChild(script);
 			_scripts[`${appPkg.name}-loader-${(_scriptId += 1)}`] = script;
 		} catch (err) {
+			console.error(err);
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-ignore
 			reject(err);
 		}
 	});

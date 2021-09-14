@@ -45,4 +45,5 @@ export type Setters = {
 export type AppState = {
 	apps: AppsMap;
 	setters: Setters;
+	shell?: ZextrasModule;
 };

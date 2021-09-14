@@ -10,11 +10,12 @@
  */
 import create from 'zustand';
 import createStore from 'zustand/vanilla';
-import { reduce } from 'lodash';
+import { find, reduce } from 'lodash';
 import { produce } from 'immer';
 import { ComponentClass } from 'react';
 import { AppData, AppState } from './store-types';
 import { ZextrasModule } from '../account/types';
+import { SHELL_APP_ID } from '../../constants';
 
 export const appStore = createStore<AppState>((set) => ({
 	apps: {},
@@ -24,12 +25,16 @@ export const appStore = createStore<AppState>((set) => ({
 				produce((state) => {
 					state.apps = reduce(
 						apps,
-						(acc, core) => ({
-							...acc,
-							[core.name]: { core }
-						}),
+						(acc, core) =>
+							core.name === SHELL_APP_ID
+								? acc
+								: {
+										...acc,
+										[core.name]: { core }
+								  },
 						state.apps
 					);
+					state.shell = find(apps, (app) => app.name === SHELL_APP_ID);
 				})
 			),
 		setAppClass: (id: string, component: ComponentClass): void =>

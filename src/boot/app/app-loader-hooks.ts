@@ -9,8 +9,8 @@
  * *** END LICENSE BLOCK *****
  */
 
+import { from } from 'rxjs';
 import {
-	useUserAccounts,
 	getUseAddBoardCallback,
 	useUpdateCurrentBoard,
 	useRemoveCurrentBoard,
@@ -30,6 +30,13 @@ import {
 	useIntegratedFunction,
 	useIntegratedHook
 } from '../../store/integrations/hooks';
+import {
+	useUserAccount,
+	useUserAccounts,
+	useUserSettings,
+	useTags,
+	useNotify
+} from '../../store/account/hooks';
 
 export const getAppHooks = (pkg: string): unknown => ({
 	// The returned function is a hook
@@ -45,7 +52,6 @@ export const getAppHooks = (pkg: string): unknown => ({
 	useActions,
 	useActionsFactory,
 	useActionFactory,
-	useUserAccounts,
 	useAddBoardCallback: getUseAddBoardCallback(pkg),
 	useUpdateCurrentBoard,
 	useRemoveCurrentBoard,
@@ -53,5 +59,10 @@ export const getAppHooks = (pkg: string): unknown => ({
 	usePushHistoryCallback: getUsePushHistoryCallback(pkg),
 	useGoBackHistoryCallback,
 	useReplaceHistoryCallback: getUseReplaceHistoryCallback(pkg),
-	useIsMobile
+	useIsMobile,
+	useUserAccount,
+	useUserAccounts,
+	useUserSettings,
+	useTags,
+	useNotify
 });

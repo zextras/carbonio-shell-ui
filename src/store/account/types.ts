@@ -12,7 +12,6 @@ export type AccountState = {
 		app: string
 	) => <Request, Response>(api: string, body: Request) => Promise<Response | undefined>;
 	tags: Array<Tag>;
-	shell: ZextrasModule;
 };
 
 export type ZextrasModule = {

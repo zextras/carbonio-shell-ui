@@ -14,16 +14,17 @@ import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { II18nFactory, ZextrasModule } from '../../types';
 import { getShell } from '../store/app/getters';
+import { SHELL_APP_ID } from '../constants';
 
 export default class I18nFactory implements II18nFactory {
 	_cache: { [pkg: string]: i18n } = {};
 
 	public getShellI18n(): i18n {
-		return this.getAppI18n(getShell()!);
+		return this.getAppI18n(getShell() ?? { name: SHELL_APP_ID });
 	}
 
 	// eslint-disable-next-line class-methods-use-this
-	public getAppI18n(appPkgDescription: ZextrasModule): i18n {
+	public getAppI18n(appPkgDescription: ZextrasModule | { name: string }): i18n {
 		if (this._cache[appPkgDescription.name]) {
 			return this._cache[appPkgDescription.name];
 		}

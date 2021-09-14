@@ -29,6 +29,7 @@ export type NotifyObject = {
 export type ZextrasModule = {
 	commit: string;
 	display: string;
+	description: string;
 	// eslint-disable-next-line camelcase
 	js_entrypoint: string;
 	name: string;

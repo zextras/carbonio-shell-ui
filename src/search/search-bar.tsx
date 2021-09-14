@@ -101,7 +101,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp }) => {
 						<Padding horizontal="extrasmall">
 							<Icon icon={app.icon} />
 						</Padding>
-						<Text>{app.core.name}</Text>
+						<Text>{app.core.display}</Text>
 					</Container>
 				),
 				label: app.core.display,

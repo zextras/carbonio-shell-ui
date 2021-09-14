@@ -13,20 +13,13 @@ import i18next, { i18n } from 'i18next';
 import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { II18nFactory, ZextrasModule } from '../../types';
+import { getShell } from '../store/app/getters';
 
 export default class I18nFactory implements II18nFactory {
 	_cache: { [pkg: string]: i18n } = {};
 
 	public getShellI18n(): i18n {
-		return this.getAppI18n({
-			priority: 0,
-			name: PACKAGE_NAME,
-			version: PACKAGE_VERSION,
-			js_entrypoint: '',
-			commit: '',
-			display: 'Shell',
-			route: 'shell'
-		});
+		return this.getAppI18n(getShell()!);
 	}
 
 	// eslint-disable-next-line class-methods-use-this

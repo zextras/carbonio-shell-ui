@@ -71,7 +71,7 @@ export default function ShellPrimaryBar({ activeApp }) {
 					}
 					if (typeof app.icon === 'string') {
 						return (
-							<Tooltip label={app.core.name} placement="right" key={app.core.name}>
+							<Tooltip label={app.core.display} placement="right" key={app.core.name}>
 								<AppIcon
 									icon={app.icon}
 									active={activeApp === app.core.route}

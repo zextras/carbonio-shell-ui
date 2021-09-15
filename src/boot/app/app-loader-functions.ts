@@ -52,16 +52,17 @@ import {
 	useIntegratedFunction,
 	useIntegratedHook
 } from '../../store/integrations/hooks';
+import { ZextrasModule } from '../../../types';
 
-export const getAppFunctions = (pkg: string): unknown => ({
+export const getAppFunctions = (pkg: ZextrasModule): unknown => ({
 	// The returned function is a hook
 	// eslint-disable-next-line react-hooks/rules-of-hooks
-	useAppContext: useAppContext(pkg),
-	getAppContext: getAppContext(pkg),
+	useAppContext: useAppContext(pkg.name),
+	getAppContext: getAppContext(pkg.name),
 	// The returned function is a hook
 	// eslint-disable-next-line react-hooks/rules-of-hooks
-	useApp: useApp(pkg),
-	getApp: getApp(pkg),
+	useApp: useApp(pkg.name),
+	getApp: getApp(pkg.name),
 	useIntegratedHook,
 	getIntegratedHook,
 	useIntegratedFunction,
@@ -87,18 +88,18 @@ export const getAppFunctions = (pkg: string): unknown => ({
 	getTags,
 	useNotify,
 	useRefresh,
-	useAddBoardCallback: getUseAddBoardCallback(pkg),
+	useAddBoardCallback: getUseAddBoardCallback(pkg.name),
 	useUpdateCurrentBoard,
 	useRemoveCurrentBoard,
 	useBoardConfig,
-	usePushHistoryCallback: getUsePushHistoryCallback(pkg),
+	usePushHistoryCallback: getUsePushHistoryCallback(pkg.route),
 	useGoBackHistoryCallback,
-	useReplaceHistoryCallback: getUseReplaceHistoryCallback(pkg),
+	useReplaceHistoryCallback: getUseReplaceHistoryCallback(pkg.route),
 	getBridgedFunctions: (): unknown => {
 		const { packageDependentFunctions, functions } = contextBridge.getState();
 		return {
 			...functions,
-			...reduce(packageDependentFunctions, (acc, f, name) => ({ ...acc, [name]: f(pkg) }), {})
+			...reduce(packageDependentFunctions, (acc, f, name) => ({ ...acc, [name]: f(pkg.name) }), {})
 		};
 	}
 });

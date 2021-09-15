@@ -67,7 +67,7 @@ export const SearchAppView: FC = () => {
 			map(
 				filter(apps, (app): boolean => !!app.views?.search),
 				(app) => (
-					<Route key={`/${app.core.name}`} path={`/${SEARCH_APP_ID}/${app.core.route}`}>
+					<Route key={`/${app.core.route}`} path={`/${SEARCH_APP_ID}/${app.core.route}`}>
 						<AppContextProvider pkg={app.core.name}>
 							{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 							{/* @ts-ignore */}

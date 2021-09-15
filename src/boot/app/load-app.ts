@@ -103,7 +103,7 @@ function loadAppModule(
 				ACTION_TYPES,
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
-				...getAppFunctions(appPkg.name)
+				...getAppFunctions(appPkg)
 			};
 
 			// eslint-disable-next-line max-len

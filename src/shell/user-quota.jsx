@@ -22,7 +22,7 @@ export const UserQuota = () => {
 	const quota = useMemo(() => {
 		const userQuota = settings?.attrs?.zimbraMailQuota;
 		console.log('quota:', used, userQuota);
-		if (used && userQuota) {
+		if (used && userQuota && userQuota > 0) {
 			return Math.floor((used / userQuota) * 100);
 		}
 		return -1;

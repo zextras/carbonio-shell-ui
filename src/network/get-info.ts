@@ -21,12 +21,6 @@ export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			useAppStore.getState().setters.addApps(components);
 		})
-		.then(() =>
-			get().soapFetch(SHELL_APP_ID)<{ _jsns: string }, { tag: Array<Tag> }>('GetTag', {
-				_jsns: 'urn:zimbraMail'
-			})
-		)
-		.then((r: any) => set({ tags: r?.tag ?? [] }))
 		.catch((err: unknown) => {
 			console.log('there was an error checking user data');
 			console.error(err);

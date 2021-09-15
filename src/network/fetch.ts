@@ -8,7 +8,8 @@ import {
 	AccountState,
 	ErrorSoapResponse,
 	SoapResponse,
-	SuccessSoapResponse
+	SuccessSoapResponse,
+	Tag
 } from '../../types';
 import { userAgent } from './user-agent';
 
@@ -68,7 +69,9 @@ const handleResponse = <R>(
 	if (res?.Header?.context) {
 		const usedQuota =
 			res.Header.context?.refresh?.mbx?.[0]?.s ?? res.Header.context?.notify?.[0]?.mbx?.[0]?.s;
+		const tags = res.Header.context?.refresh?.tags?.tag as Array<Tag>;
 		set({
+			tags: tags ?? get().tags,
 			usedQuota: usedQuota ?? get().usedQuota,
 			context: {
 				...get().context,

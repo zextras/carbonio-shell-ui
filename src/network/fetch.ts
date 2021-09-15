@@ -69,7 +69,7 @@ const handleResponse = <R>(
 		set({
 			context: {
 				...get().context,
-				...res?.Header?.setContext
+				...res?.Header?.context
 			}
 		});
 	}

@@ -93,7 +93,7 @@ function loadAppModule(
 				registerFunctions: useIntegrationsStore.getState().registerFunctions,
 				registerActions: useIntegrationsStore.getState().registerActions,
 				registerComponents: useIntegrationsStore.getState().registerComponents(appPkg.name),
-				AppLink: getAppLink(appPkg.name),
+				AppLink: getAppLink(appPkg.route),
 				Spinner,
 				FOLDERS,
 				ZIMBRA_STANDARD_COLORS,

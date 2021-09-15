@@ -4,19 +4,17 @@ import { useAccountStore } from '../store/account/store';
 import { Mods } from '../../types';
 
 export const editSettings = (mods: Mods): Promise<any> =>
-	useAccountStore
-		.getState()
-		.xmlSoapFetch(SHELL_APP_ID)(
-			'Batch',
-			`<BatchRequest xmlns="urn:zimbra" onerror="stop">${
-				mods.props
-					? `<ModifyPropertiesRequest xmlns="urn:zimbraAccount">${map(
-							mods.props,
-							(prop, key) =>
-								`<prop name="${key}" zimlet="${prop.app ?? 'carbonio-shell'}">${prop.value}</prop>`
-					  )}</ModifyPropertiesRequest>`
-					: ''
-			}
+	useAccountStore.getState().xmlSoapFetch(SHELL_APP_ID)(
+		'Batch',
+		`<BatchRequest xmlns="urn:zimbra" onerror="stop">${
+			mods.props
+				? `<ModifyPropertiesRequest xmlns="urn:zimbraAccount">${map(
+						mods.props,
+						(prop, key) =>
+							`<prop name="${key}" zimlet="${prop.app ?? 'carbonio-shell'}">${prop.value}</prop>`
+				  )}</ModifyPropertiesRequest>`
+				: ''
+		}
 	${
 		mods.prefs
 			? `<ModifyPrefsRequest xmlns="urn:zimbraAccount">${map(
@@ -98,5 +96,4 @@ export const editSettings = (mods: Mods): Promise<any> =>
 	</GrantRightsRequest>`
 			: ''
 	}</BatchRequest>`
-		)
-		.then(console.log);
+	);

@@ -62,9 +62,6 @@ export function Shell() {
 	const [chatPanelMode, setChatPanelMode] = useState('closed'); // values: 'closed', 'overlap', 'open'
 	const [navOpen, setNavOpen] = useState(true);
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
-
-	useAppStore(console.log);
-	useAccountStore(console.log);
 	const TeamViews = useAppStore((state) => state.apps.com_zextras_zapp_team?.views?.teambar);
 
 	useEffect(() => {

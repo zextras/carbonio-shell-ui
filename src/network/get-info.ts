@@ -1,6 +1,6 @@
 import { GetState, SetState } from 'zustand';
 import { SHELL_APP_ID } from '../constants';
-import { useAppStore } from '../store/app';
+import { useAppStore } from '../store/app/store';
 import { normalizeAccount } from '../store/account/normalization';
 import { AccountState, GetInfoResponse, Tag, ZextrasModule } from '../../types';
 

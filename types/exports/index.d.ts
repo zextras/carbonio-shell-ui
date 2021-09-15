@@ -108,7 +108,8 @@ export const useUserAccounts: () => [Account];
 export const useUserAccount: () => Account;
 export const useUserSettings: () => AccountSettings;
 export const useTags: () => Array<Tag>;
-export const useNotify: () => NotifyObject;
+export const useNotify: () => [NotifyObject];
+export const useRefresh: () => NotifyObject;
 
 export const useIntegratedHook: (id: string) => [AnyFunction, boolean];
 export const useIntegratedFunction: (id: string) => [AnyFunction, boolean];

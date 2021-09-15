@@ -13,7 +13,7 @@ import i18next, { i18n } from 'i18next';
 import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { II18nFactory, ZextrasModule } from '../../types';
-import { getShell } from '../store/app/getters';
+import { getShell } from '../store/app/hooks';
 import { SHELL_APP_ID } from '../constants';
 
 export default class I18nFactory implements II18nFactory {

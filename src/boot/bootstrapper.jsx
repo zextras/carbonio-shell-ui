@@ -15,8 +15,8 @@ import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-provider';
 import I18nFactory from '../i18n/i18n-factory';
 import StoreFactory from '../redux/store-factory';
-import { useAppStore } from '../store/app';
-import { useAccountStore } from '../store/account/account-store';
+import { useAppStore } from '../store/app/store';
+import { useAccountStore } from '../store/account/store';
 import { loadApps, unloadAllApps } from './app/load-apps';
 
 // const AppStoreInterface = () => {

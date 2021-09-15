@@ -23,10 +23,10 @@ import AppBoardWindow from './boards/app-board-window';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 
 import { useAppList } from '../store/app/hooks';
-import { useAppStore } from '../store/app';
+import { useAppStore } from '../store/app/store';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { useUserAccount, useUserSettings } from '../store/account/hooks';
-import { useAccountStore } from '../store/account/account-store';
+import { useAccountStore } from '../store/account/store';
 
 const Background = styled.div`
 	background: ${({ theme }) => theme.palette.gray6.regular};

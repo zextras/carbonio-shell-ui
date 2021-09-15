@@ -19,9 +19,8 @@ import { ComponentClass } from 'react';
 import { Store } from '@reduxjs/toolkit';
 import StoreFactory from '../../redux/store-factory';
 
-import { appStore } from '../../store/app';
-import { getAppGetters } from './app-loader-functions';
-import { getAppHooks } from './app-loader-hooks';
+import { appStore } from '../../store/app/store';
+import { getAppFunctions } from './app-loader-functions';
 import { getAppLink } from './app-link';
 import { Spinner } from '../../ui-extras/spinner';
 import {
@@ -34,7 +33,7 @@ import {
 } from '../../constants';
 import { useIntegrationsStore } from '../../store/integrations/store';
 import { report } from '../../network/report';
-import { useAccountStore } from '../../store/account/account-store';
+import { useAccountStore } from '../../store/account/store';
 import {
 	IShellWindow,
 	LoadedAppRuntime,
@@ -104,10 +103,7 @@ function loadAppModule(
 				ACTION_TYPES,
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
-				...getAppGetters(appPkg.name),
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				...getAppHooks(appPkg.name)
+				...getAppFunctions(appPkg.name)
 			};
 
 			// eslint-disable-next-line max-len

@@ -10,11 +10,12 @@ export type AccountState = {
 	xmlSoapFetch: (app: string) => SoapFetch;
 	soapFetch: (app: string) => SoapFetch;
 	tags: Array<Tag>;
+	usedQuota: number;
 };
 
 export type AccountContext = {
 	refresh?: NotifyObject;
-	notify?: NotifyObject;
+	notify?: [NotifyObject];
 	change?: { token: number };
 	session?: { id: number; _content: number };
 };

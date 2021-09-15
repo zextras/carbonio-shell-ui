@@ -1,6 +1,6 @@
 import { GetState, SetState } from 'zustand';
 import { SHELL_APP_ID } from '../constants';
-import { getApp, getShell } from '../store/app/getters';
+import { getApp, getShell } from '../store/app/hooks';
 import { goToLogin } from './go-to-login';
 import { report } from './report';
 import {
@@ -66,7 +66,10 @@ const handleResponse = <R>(
 		);
 	}
 	if (res?.Header?.context) {
+		const usedQuota =
+			res.Header.context?.refresh?.mbx?.[0]?.s ?? res.Header.context?.notify?.[0]?.mbx?.[0]?.s;
 		set({
+			usedQuota: usedQuota ?? get().usedQuota,
 			context: {
 				...get().context,
 				...res?.Header?.context
@@ -92,9 +95,9 @@ export const getSoapFetch = (
 			Header: {
 				context: {
 					_jsns: 'urn:zimbra',
-					notify: get().context?.notify?.seq
+					notify: get().context?.notify?.[0]?.seq
 						? {
-								seq: get().context?.notify?.seq
+								seq: get().context?.notify?.[0]?.seq
 						  }
 						: undefined,
 					session: get().context?.session ?? {},

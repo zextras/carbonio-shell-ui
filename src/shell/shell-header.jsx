@@ -23,7 +23,7 @@ import {
 	MultiButton
 } from '@zextras/zapp-ui';
 import { UserQuota } from './user-quota';
-import { useAppStore } from '../store/app';
+import { useAppStore } from '../store/app/store';
 import { SearchBar } from '../search/search-bar';
 
 export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, children }) {

@@ -84,7 +84,7 @@ export const getAction = <T,>(
 	id: string,
 	target?: T
 ): [Action | undefined, boolean] => {
-	const factory = useIntegrationsStore.getState().actions[type][id];
+	const factory = useIntegrationsStore.getState().actions[type]?.[id];
 	const action = factory?.(target);
 	return [action, !!action];
 };
@@ -93,6 +93,6 @@ export const getFactory = <T,>(
 	type: string,
 	id: string
 ): [ActionFactory<T> | undefined, boolean] => {
-	const factory = useIntegrationsStore.getState().actions[type][id];
+	const factory = useIntegrationsStore.getState().actions[type]?.[id];
 	return [factory, !!factory];
 };

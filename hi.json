@@ -1,1 +1,41 @@
-{}
+{
+    "changelog": {
+        "cancel": "कैंसल करें",
+        "close": "बंद करें"
+    },
+    "login": {
+        "help": "हेल्प करें",
+        "login": "लॉगिन करें",
+        "password": "पासवर्ड",
+        "username": "यूज़रनेम"
+    },
+    "logout": "लॉगआउट करें",
+    "new": "नया",
+    "search": {
+        "app": "सर्च करें",
+        "module": "मॉड्यूल"
+    },
+    "settings": {
+        "app": "सेटिंग्स",
+        "button": {
+            "primary": "सेव करें",
+            "secondary": "कैंसल करें"
+        },
+        "general": {
+            "account": "अकाउंट",
+            "account_logout": "लॉगआउट करें",
+            "theme_disabled": "बंद हुआ",
+            "theme_enabled": "चालू है"
+        },
+        "general_tab": "सामान्य",
+        "out_of_office": {
+            "labels": {
+                "end_date": "ख़त्म तारीख़",
+                "start_date": "शुरू तारीख़"
+            },
+            "status": {
+                "busy": "व्यस्त"
+            }
+        }
+    }
+}

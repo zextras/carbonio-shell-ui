@@ -21,7 +21,7 @@
         },
         "general": {
             "theme_enabled": "Включено",
-            "theme_mode": "Режим Theme",
+            "theme_mode": "Режим Темы",
             "account": "Учетная запись",
             "account_logout": "Выйти",
             "general": "Общие настройки",
@@ -40,7 +40,7 @@
                 "send_standard_auto_reply": "Отправить стандартное сообщение с автоответом"
             },
             "headings": {
-                "create_appointment": "Календарь встречи",
+                "create_appointment": "Встреча в Календаре",
                 "settings_label": "Настройки Вне офиса",
                 "time_period": "Период времени"
             },
@@ -51,11 +51,12 @@
                 "create_appointment": "Создать встречу:",
                 "out_of_office": "Вне офиса",
                 "out_of_office_status": "Статус Вне офиса:",
-                "send_auto_reply_period": "Отправлять авто ответы в течение следующего периода:",
+                "send_auto_reply_period": "Отправлять автоответы в течение следующего периода:",
                 "start_date": "Дата начала",
-                "start_time": "Время начала:"
+                "start_time": "Время начала:",
+                "external_senders": "Внешние отправители"
             },
-            "send_auto_replies": "Отправить авто ответы",
+            "send_auto_replies": "Отправить автоответы",
             "status": {
                 "busy": "Занят",
                 "out_of_office": "Вне офиса"
@@ -106,7 +107,8 @@
         "app_description": "Модуль поиска",
         "start": "Начать поиск",
         "results_for": "Результаты по запросу:",
-        "edit_to_start": "Измените параметры поиска, чтобы начать новый"
+        "edit_to_start": "Измените параметры поиска, чтобы начать новый",
+        "active_input_label": "Разделяйте ключевые слова запятой или TAB"
     },
     "logout_modal": {
         "confirm": "Выйти из системы",
@@ -124,9 +126,10 @@
         }
     },
     "snackbar": {
-        "error": "Что-то пошло не так, попробуйте еще раз"
+        "error": "Что-то пошло не так, повторите попытку"
     },
     "user_quota": {
-        "unlimited": "Доступно неограниченное пространство"
+        "unlimited": "Доступно неограниченное пространство",
+        "limited": "Использовано {{quota}}% места"
     }
 }

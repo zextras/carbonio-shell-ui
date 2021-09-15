@@ -12,20 +12,21 @@ import React, { useMemo } from 'react';
 import { Tooltip, Quota, Container } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
 import { useUserSettings } from '../store/account/hooks';
+import { useAccountStore } from '../store/account/store';
 
 export const UserQuota = () => {
 	const [t] = useTranslation();
 
 	const settings = useUserSettings();
-
+	const used = useAccountStore((s) => s.usedQuota);
 	const quota = useMemo(() => {
 		const userQuota = settings?.attrs?.zimbraMailQuota;
-		const used = settings?.used;
+		console.log('quota:', used, userQuota);
 		if (used && userQuota) {
 			return Math.floor((used / userQuota) * 100);
 		}
-		return -used;
-	}, [settings]);
+		return -1;
+	}, [settings?.attrs?.zimbraMailQuota, used]);
 
 	const label = useMemo(() => {
 		if (!quota || quota < 0) {

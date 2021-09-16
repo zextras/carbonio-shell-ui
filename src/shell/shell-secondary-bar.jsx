@@ -51,10 +51,15 @@ const SidebarContainer = styled(Container)`
 
 export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, activeApp }) {
 	const apps = useApps();
-	const disabled = useMemo(() => !activeApp || find(apps, (app) => app.core.route === activeApp), [
-		activeApp,
-		apps
-	]);
+	const disabled = useMemo(
+		() =>
+			!(
+				activeApp &&
+				(find(apps, (app) => app.core.route === activeApp)?.views?.sidebar ||
+					activeApp === 'settings')
+			),
+		[activeApp, apps]
+	);
 	const account = useUserAccount();
 	const [t] = useTranslation();
 	const items = useMemo(

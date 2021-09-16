@@ -1,1 +1,40 @@
-{}
+{
+    "changelog": {
+        "cancel": "Batal",
+        "close": "Tutup"
+    },
+    "login": {
+        "help": "Bantuan",
+        "login": "Masuk",
+        "password": "Kata sandi",
+        "username": "Nama Pengguna"
+    },
+    "search": {
+        "module": "Modul",
+        "app": "Cari"
+    },
+    "settings": {
+        "out_of_office": {
+            "labels": {
+                "end_date": "Tanggal Selesai",
+                "start_date": "Tanggal Mulai"
+            },
+            "status": {
+                "busy": "Sibuk"
+            }
+        },
+        "app": "Setelan",
+        "button": {
+            "primary": "Simpan",
+            "secondary": "Batal"
+        },
+        "general": {
+            "account": "Akun",
+            "account_logout": "Keluar",
+            "theme_disabled": "Nonaktif",
+            "theme_enabled": "Aktif"
+        }
+    },
+    "logout": "Keluar",
+    "new": "Baru"
+}

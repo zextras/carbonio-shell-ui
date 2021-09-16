@@ -12,6 +12,7 @@
 import i18next, { i18n } from 'i18next';
 import Backend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import { dropRight } from 'lodash';
 import { II18nFactory, ZextrasModule } from '../../types';
 import { getShell } from '../store/app/hooks';
 import { SHELL_APP_ID } from '../constants';
@@ -29,6 +30,10 @@ export default class I18nFactory implements II18nFactory {
 			return this._cache[appPkgDescription.name];
 		}
 		const newI18n = i18next.createInstance();
+		const baseI18nPath =
+			appPkgDescription.name === SHELL_APP_ID
+				? BASE_PATH
+				: dropRight((appPkgDescription as ZextrasModule).js_entrypoint.split('/'));
 		newI18n
 			// load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
 			// learn more: https://github.com/i18next/i18next-http-backend
@@ -51,7 +56,7 @@ export default class I18nFactory implements II18nFactory {
 				},
 
 				backend: {
-					loadPath: `${BASE_PATH}/i18n/{{lng}}.json`
+					loadPath: `${baseI18nPath}/i18n/{{lng}}.json`
 				}
 			});
 		this._cache[appPkgDescription.name] = newI18n;

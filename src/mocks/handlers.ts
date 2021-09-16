@@ -42,9 +42,6 @@ export function generateHandlers(cliSettings: cliSettingsNamespace): RequestHand
 					}),
 					ctx.json(
 						getCompleteResponse('Auth', {
-							csrfToken: {
-								_content: `0_${faker.random.alphaNumeric(40)}`
-							},
 							authToken: [
 								{
 									_content: authToken

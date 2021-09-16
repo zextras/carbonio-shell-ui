@@ -33,7 +33,7 @@ export default class I18nFactory implements II18nFactory {
 		const baseI18nPath =
 			appPkgDescription.name === SHELL_APP_ID
 				? BASE_PATH
-				: dropRight((appPkgDescription as ZextrasModule).js_entrypoint.split('/'));
+				: dropRight((appPkgDescription as ZextrasModule).js_entrypoint.split('/')).join('/');
 		newI18n
 			// load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
 			// learn more: https://github.com/i18next/i18next-http-backend

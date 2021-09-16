@@ -30,7 +30,7 @@ export const SettingsSidebar: FC = () => {
 					if (app.views?.settings) {
 						acc.push({
 							id: app.core.name,
-							label: app.core.name,
+							label: app.core.display,
 							icon: app.icon,
 							onClick: (e: MouseEvent): void => {
 								e.stopPropagation();

@@ -10,7 +10,7 @@
  */
 import React, { useMemo } from 'react';
 import { reduce, map } from 'lodash';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
 	Container,
@@ -27,12 +27,10 @@ import { useAppStore } from '../store/app/store';
 import { SearchBar } from '../search/search-bar';
 
 export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, children }) {
-	const history = useHistory();
+	const location = useLocation();
 	const [t] = useTranslation();
 	const screenMode = useScreenMode();
-	const currentApp = useMemo(() => history.location.pathname.split('/')[1], [
-		history.location.pathname
-	]);
+	const currentApp = useMemo(() => location.pathname.split('/')[1], [location.pathname]);
 
 	const [primaryAction, secondaryActions] = useAppStore((s) => [
 		s.apps[currentApp]?.newButton?.primary,

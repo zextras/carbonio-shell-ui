@@ -51,7 +51,9 @@ const ModuleVersionSettings: FC = () => {
 				{map(filteredList, (app: any) => (
 					<Container key={app.core.name} padding={{ horizontal: 'large', vertical: 'small' }}>
 						<Container orientation="horizontal" mainAlignment="space-between">
-							<Text>{app.core.name}</Text>
+							<Text>
+								{app.core.display} ({app.core.name})
+							</Text>
 							<Tooltip placement="top" label="Click to copy">
 								<Text style={{ cursor: 'pointer' }} onClick={(e: any): any => copyToClipboard(e)}>
 									Version: {app.core.version}
@@ -63,7 +65,7 @@ const ModuleVersionSettings: FC = () => {
 							mainAlignment="space-between"
 							padding={{ top: 'extrasmall', bottom: 'medium' }}
 						>
-							<Text color="secondary">{app.core.display}</Text>
+							<Text color="secondary">{app.core.description}</Text>
 							<Badge
 								value="Active"
 								style={{

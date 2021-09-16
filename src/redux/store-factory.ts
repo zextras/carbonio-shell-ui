@@ -36,7 +36,7 @@ export default class StoreFactory {
 					? // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 					  (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
 					: // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-					  (getDefaultMiddleware) => getDefaultMiddleware(),
+					  (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 			reducer: {
 				_useless: _uselessSlice.reducer
 			}

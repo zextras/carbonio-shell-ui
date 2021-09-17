@@ -13,6 +13,7 @@
 /* eslint-disable import/no-named-default */
 
 import React, { ComponentClass } from 'react';
+import * as PropTypes from 'prop-types';
 import * as ReactDOM from 'react-dom';
 import * as Lodash from 'lodash';
 import * as ReactRouterDom from 'react-router-dom';
@@ -45,6 +46,7 @@ export function injectSharedLibraries(): void {
 		return;
 	}
 	wnd.__ZAPP_SHARED_LIBRARIES__ = {
+		'prop-types': PropTypes,
 		react: React,
 		'react-dom': ReactDOM,
 		'react-i18next': ReactI18n,

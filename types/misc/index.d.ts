@@ -50,6 +50,7 @@ export type IShellWindow<T, R> = Window & {
 };
 
 export type SharedLibrariesAppsMap = {
+	'prop-types': unknown;
 	react: unknown;
 	'react-dom': unknown;
 	'react-i18next': unknown;

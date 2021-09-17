@@ -88,4 +88,4 @@ export type Mods = {
 	permissions?: PermissionsMods;
 };
 
-export type SoapFetch = <Request, Response>(api: string, body: Request) => Promise<Response | void>;
+export type SoapFetch = <Request, Response>(api: string, body: Request) => Promise<Response>;

@@ -43,7 +43,7 @@ export const UserQuota = () => {
 
 	return (
 		<Container width="fit" padding={{ right: 'medium' }}>
-			<Tooltip label={label}>
+			<Tooltip label={label} placement="bottom">
 				<Quota fill={quota > 0 ? quota : 0} fillBackground={fillBackground} />
 			</Tooltip>
 		</Container>

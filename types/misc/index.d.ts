@@ -56,11 +56,8 @@ export type SharedLibrariesAppsMap = {
 	'react-redux': unknown;
 	'@reduxjs/toolkit': unknown;
 	lodash: unknown;
-	rxjs: unknown;
-	'rxjs/operators': unknown;
 	'react-router-dom': unknown;
 	'styled-components': unknown;
-	'prop-types': unknown;
 	moment: unknown;
 	'@zextras/zapp-shell': {
 		[pkgName: string]: unknown & {

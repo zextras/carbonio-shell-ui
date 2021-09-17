@@ -9,35 +9,39 @@
  * *** END LICENSE BLOCK *****
  */
 import React, { useState, memo, useEffect } from 'react';
-import { find, map, reduce } from 'lodash';
-import { useApps } from '../../store/app/hooks';
+import { find, reduce } from 'lodash';
+import { useHistory } from 'react-router';
+import { useAppList } from '../../store/app/hooks';
 import AppContextProvider from './app-context-provider';
 
 export default function AppLoaderMounter() {
-	const apps = useApps();
-
+	const apps = useAppList();
+	const history = useHistory();
 	const [classes, setClasses] = useState({ list: [], mounted: [] });
 	useEffect(() => {
 		setClasses((c) =>
 			reduce(
 				apps,
-				(acc, app, id) => {
-					if (app.class && !find(acc.mounted, (i) => i === id)) {
+				(acc, app, idx) => {
+					if (app.class && !find(acc.mounted, (i) => i === app.core.name)) {
 						const App = memo(app.class);
 						// eslint-disable-next-line no-param-reassign
 						acc.list.push(
-							<AppContextProvider key={id} pkg={id}>
-								<App key={id} />
+							<AppContextProvider key={app.core.name} pkg={app.core.name}>
+								<App key={app.core.name} />
 							</AppContextProvider>
 						);
-						acc.mounted.push(id);
+						acc.mounted.push(app.core.name);
+						if (idx === 0) {
+							history.replace(`/${app.core.route}/`);
+						}
 					}
 					return acc;
 				},
 				c
 			)
 		);
-	}, [apps]);
+	}, [apps, history]);
 
 	return (
 		<div

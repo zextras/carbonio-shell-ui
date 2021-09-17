@@ -85,7 +85,7 @@ export const getSoapFetch = (
 	app: string,
 	set: SetState<AccountState>,
 	get: GetState<AccountState>
-) => <Request, Response>(api: string, body: Request): Promise<Response | void> =>
+) => <Request, Response>(api: string, body: Request): Promise<Response> =>
 	fetch(`/service/soap/${api}Request`, {
 		method: 'POST',
 		headers: {
@@ -115,13 +115,15 @@ export const getSoapFetch = (
 	}) // TODO proper error handling
 		.then((res) => res?.json())
 		.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
-		.catch((e) => report(app === SHELL_APP_ID ? getShell()! : getApp(app)()?.core)(e));
+		.catch((e) =>
+			report(app === SHELL_APP_ID ? getShell()! : getApp(app)()?.core)(e)
+		) as Promise<Response>;
 
 export const getXmlSoapFetch = (
 	app: string,
 	set: SetState<AccountState>,
 	get: GetState<AccountState>
-) => <Request, Response>(api: string, body: Request): Promise<Response | void> =>
+) => <Request, Response>(api: string, body: Request): Promise<Response> =>
 	fetch(`/service/soap/${api}Request`, {
 		method: 'POST',
 		headers: {
@@ -139,4 +141,6 @@ export const getXmlSoapFetch = (
 	}) // TODO proper error handling
 		.then((res) => res?.json())
 		.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
-		.catch((e) => report(app === SHELL_APP_ID ? getShell()! : getApp(app)()?.core)(e));
+		.catch((e) =>
+			report(app === SHELL_APP_ID ? getShell()! : getApp(app)()?.core)(e)
+		) as Promise<Response>;

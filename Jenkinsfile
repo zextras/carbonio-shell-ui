@@ -1,5 +1,5 @@
 library(
-	identifier: 'zapp-jenkins-lib@v0.0.36',
+	identifier: 'zapp-jenkins-lib@v0.0.37',
 	retriever: modernSCM([
 		$class: 'GitSCMSource',
 		remote: 'git@bitbucket.org:zextras/zapp-jenkins-lib.git',

@@ -1,1 +1,41 @@
-{}
+{
+    "settings": {
+        "out_of_office": {
+            "labels": {
+                "end_date": "วันที่สุดท้าย",
+                "start_date": "วันที่เริ่มต้น"
+            },
+            "status": {
+                "busy": "ไม่ว่าง"
+            }
+        },
+        "app": "การตั้งค่า",
+        "button": {
+            "primary": "บันทึก",
+            "secondary": "ยกเลิก"
+        },
+        "general": {
+            "account": "บัญชีผู้ใช้",
+            "account_logout": "ออกจากระบบ",
+            "theme_disabled": "ปิดการใช้งาน",
+            "theme_enabled": "เปิดการใช้งาน"
+        },
+        "general_tab": "ทั่วไป"
+    },
+    "changelog": {
+        "cancel": "ยกเลิก",
+        "close": "ปิด"
+    },
+    "login": {
+        "help": "ช่วยเหลือ",
+        "login": "เข้าสู่ระบบ",
+        "password": "รหัสผ่าน",
+        "username": "ชื่อผู้ใช้"
+    },
+    "logout": "ออกจากระบบ",
+    "new": "ใหม่",
+    "search": {
+        "app": "ค้นหา",
+        "module": "โมดูล"
+    }
+}

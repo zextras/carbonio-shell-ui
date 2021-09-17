@@ -1,1 +1,41 @@
-{}
+{
+    "changelog": {
+        "cancel": "キャンセル",
+        "close": "閉じる"
+    },
+    "settings": {
+        "out_of_office": {
+            "labels": {
+                "start_date": "開始日",
+                "end_date": "終了日"
+            },
+            "status": {
+                "busy": "予定あり"
+            }
+        },
+        "app": "設定",
+        "button": {
+            "primary": "保存する",
+            "secondary": "キャンセル"
+        },
+        "general": {
+            "account": "アカウント",
+            "account_logout": "ログアウト",
+            "theme_disabled": "無効",
+            "theme_enabled": "有効"
+        },
+        "general_tab": "一般設定"
+    },
+    "login": {
+        "help": "ヘルプ",
+        "login": "ログイン",
+        "password": "パスワード",
+        "username": "ユーザー名"
+    },
+    "logout": "ログアウト",
+    "new": "新規",
+    "search": {
+        "app": "検索する",
+        "module": "モジュール"
+    }
+}

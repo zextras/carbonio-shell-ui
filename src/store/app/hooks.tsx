@@ -20,7 +20,7 @@ export const useApp = (id: string) => (): AppData => useAppStore((s) => s.apps[i
 export const useApps = (): AppsMap => useAppStore((s) => s.apps);
 
 export const useAppList = (): Array<AppData> =>
-	useAppStore((s) => sortBy(s.apps, (a) => -a.core.priority));
+	useAppStore((s) => sortBy(s.apps, (a) => a.core.priority));
 
 export const useAppContext = (id: string) => (): unknown => useAppStore((s) => s.apps[id]?.context);
 
@@ -30,7 +30,8 @@ export const getApp = (id: string) => (): AppData => appStore.getState().apps[id
 
 export const getApps = (): AppsMap => appStore.getState().apps;
 
-export const getAppList = (): Array<AppData> => sortBy(appStore.getState().apps, 'core.priority');
+export const getAppList = (): Array<AppData> =>
+	sortBy(appStore.getState().apps, (a) => a.core.priority);
 
 export const getAppContext = (id: string) => (): unknown => appStore.getState().apps[id]?.context;
 export const getShell = (): ZextrasModule | undefined => appStore.getState().shell;

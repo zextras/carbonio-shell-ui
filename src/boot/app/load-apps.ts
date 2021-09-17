@@ -30,7 +30,7 @@ export function loadApps(storeFactory: StoreFactory, apps: Array<AppData>): void
 		'color: white; background: #2b73d2;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
 	);
 	forEach(
-		sortBy(appsToLoad, (app) => -app.core.priority),
+		sortBy(appsToLoad, (app) => app.core.priority),
 		(app) => loadApp(app.core, storeFactory)
 	);
 }

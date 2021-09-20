@@ -130,6 +130,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 									key={app.core.name}
 									item={{
 										id: app.core.name,
+										route: app.core.route,
 										label: app.core.display,
 										icon: app.icon,
 										sidebar: app.views?.sidebar,

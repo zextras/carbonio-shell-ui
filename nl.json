@@ -1,1 +1,41 @@
-{}
+{
+    "changelog": {
+        "cancel": "Annuleren",
+        "close": "Sluiten"
+    },
+    "login": {
+        "help": "Help",
+        "login": "Inloggen",
+        "password": "Wachtwoord",
+        "username": "Gebruikersnaam"
+    },
+    "new": "Nieuw",
+    "search": {
+        "app": "Zoeken",
+        "module": "Module"
+    },
+    "settings": {
+        "out_of_office": {
+            "labels": {
+                "end_date": "Einddatum",
+                "start_date": "Startdatum"
+            },
+            "status": {
+                "busy": "Bezet"
+            }
+        },
+        "app": "Instellingen",
+        "button": {
+            "primary": "Opslaan",
+            "secondary": "Annuleren"
+        },
+        "general": {
+            "account": "Account",
+            "account_logout": "Uitloggen",
+            "theme_disabled": "Uitgeschakeld",
+            "theme_enabled": "Ingeschakeld"
+        },
+        "general_tab": "Algemeen"
+    },
+    "logout": "Uitloggen"
+}

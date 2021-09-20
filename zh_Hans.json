@@ -1,1 +1,41 @@
-{}
+{
+    "changelog": {
+        "cancel": "取消",
+        "close": "关闭"
+    },
+    "settings": {
+        "app": "设置",
+        "button": {
+            "primary": "保存",
+            "secondary": "取消"
+        },
+        "out_of_office": {
+            "labels": {
+                "start_date": "开始日期",
+                "end_date": "结束日期"
+            },
+            "status": {
+                "busy": "忙碌"
+            }
+        },
+        "general": {
+            "account": "账户",
+            "account_logout": "注销",
+            "theme_disabled": "已禁用",
+            "theme_enabled": "已启用"
+        },
+        "general_tab": "通用"
+    },
+    "login": {
+        "help": "帮助",
+        "login": "登录",
+        "password": "密码",
+        "username": "用户名"
+    },
+    "logout": "注销",
+    "new": "新建",
+    "search": {
+        "app": "搜索",
+        "module": "模块"
+    }
+}

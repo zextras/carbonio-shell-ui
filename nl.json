@@ -35,10 +35,17 @@
                 "all_day": "Hele dag:",
                 "auto_reply_message": "Auto-antwoordbericht:",
                 "auto_reply_message_external": "Auto-antwoordbericht voor externe afzenders:",
-                "create_appointment": "Afspraak creëren:"
+                "create_appointment": "Afspraak creëren:",
+                "end_time": "Eindtijd:",
+                "external_senders": "Externe afzenders",
+                "out_of_office": "Niet op kantoor",
+                "out_of_office_status": "Status Niet op kantoor:",
+                "send_auto_reply_period": "Auto-antwoorden versturen tijdens de volgende periode:",
+                "start_time": "Starttijd:"
             },
             "status": {
-                "busy": "Bezet"
+                "busy": "Bezet",
+                "out_of_office": "Niet op kantoor"
             },
             "do_not_send_auto_replies": "Geen automatische antwoorden sturen",
             "external_senders": {
@@ -51,7 +58,8 @@
                 "create_appointment": "Agenda Afspraak",
                 "settings_label": "Instellingen \"Niet op kantoor\"",
                 "time_period": "Tijdsperiode"
-            }
+            },
+            "send_auto_replies": "Automatisch antwoorden sturen"
         },
         "app": "Instellingen",
         "button": {
@@ -87,5 +95,12 @@
             "version": "Applicatieversies"
         }
     },
-    "new_tab": "Nieuwe Tab"
+    "new_tab": "Nieuwe Tab",
+    "snackbar": {
+        "error": "Er is iets misgegaan, probeer het opnieuw"
+    },
+    "user_quota": {
+        "limited": "{{quota}}% ruimte gebruikt",
+        "unlimited": "Onbeperkte ruimte beschikbaar"
+    }
 }

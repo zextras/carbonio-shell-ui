@@ -1,1 +1,40 @@
-{}
+{
+    "changelog": {
+        "cancel": "Cancelar",
+        "close": "Cerrar"
+    },
+    "search": {
+        "module": "Módulo",
+        "app": "Búsqueda"
+    },
+    "settings": {
+        "out_of_office": {
+            "labels": {
+                "start_date": "Fecha de inicio",
+                "end_date": "Fecha de finalización"
+            },
+            "status": {
+                "busy": "Ocupado"
+            }
+        },
+        "app": "Configuraciones",
+        "button": {
+            "primary": "Guardar",
+            "secondary": "Cancelar"
+        },
+        "general": {
+            "account": "Cuenta",
+            "account_logout": "Cerrar sesión",
+            "theme_disabled": "Desactivado",
+            "theme_enabled": "Activado"
+        }
+    },
+    "login": {
+        "help": "Ayuda",
+        "login": "Iniciar sesión",
+        "password": "Contraseña",
+        "username": "Nombre de usuario"
+    },
+    "logout": "Cerrar sesión",
+    "new": "Nuevo"
+}

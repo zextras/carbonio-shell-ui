@@ -74,7 +74,8 @@
                 "out_of_office": "Non in ufficio",
                 "send_auto_reply_period": "Invia riposta automatica durante questo periodo:",
                 "start_date": "Data di inizio",
-                "start_time": "Ora di inizio:"
+                "start_time": "Ora di inizio:",
+                "out_of_office_status": "Stato Fuori Ufficio:"
             },
             "headings": {
                 "create_appointment": "Appuntamento in Calendario",

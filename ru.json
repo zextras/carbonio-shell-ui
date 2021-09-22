@@ -26,17 +26,18 @@
             "account_logout": "Выйти",
             "general": "Общие настройки",
             "theme_disabled": "Отключено",
-            "theme_options": "Параметры Темы"
+            "theme_options": "Параметры Темы",
+            "theme_auto": "Автоматически"
         },
         "app": "Настройки",
         "app_description": "Настройки Модуля",
-        "general_tab": "Общие",
+        "general_tab": "Основные настройки",
         "out_of_office": {
             "do_not_send_auto_replies": "Не отправлять автоответы",
             "external_senders": {
                 "do_not_send_to_external": "Не отправлять автоответчик внешнему отправителю",
-                "send_custom_in_organisation": "Отправить персонализированное сообщение тем, кто не входит в мою организацию",
-                "send_custom_not_in_organisation": "Отправить персонализированное сообщение тем, кто не входит в мою организацию и адресную книгу",
+                "send_custom_in_organisation": "Отправить настраиваемое сообщение тем, кто кто не является сотрудником",
+                "send_custom_not_in_organisation": "Отправить настраиваемое сообщение тем, кого нет в адресной книге и кто не является сотрудником",
                 "send_standard_auto_reply": "Отправить стандартное сообщение с автоответом"
             },
             "headings": {
@@ -47,14 +48,16 @@
             "labels": {
                 "all_day": "Весь день:",
                 "auto_reply_message": "Авто ответ:",
-                "auto_reply_message_external": "Сообщение с авто-ответом для внешних отправителей:",
+                "auto_reply_message_external": "Авто ответ для внешних отправителей:",
                 "create_appointment": "Создать встречу:",
                 "out_of_office": "Вне офиса",
                 "out_of_office_status": "Статус Вне офиса:",
                 "send_auto_reply_period": "Отправлять автоответы в течение следующего периода:",
                 "start_date": "Дата начала",
                 "start_time": "Время начала:",
-                "external_senders": "Внешние отправители"
+                "external_senders": "Внешние отправители",
+                "end_date": "Дата окончания",
+                "end_time": "Время окончания:"
             },
             "send_auto_replies": "Отправить автоответы",
             "status": {

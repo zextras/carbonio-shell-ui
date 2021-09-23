@@ -1,17 +1,43 @@
 {
     "changelog": {
         "cancel": "キャンセル",
-        "close": "閉じる"
+        "close": "閉じる",
+        "remind-later": "後でリマインドする",
+        "title": "変更ログ"
     },
     "settings": {
         "out_of_office": {
             "labels": {
                 "start_date": "開始日",
-                "end_date": "終了日"
+                "end_date": "終了日",
+                "all_day": "終日:",
+                "auto_reply_message": "自動返信メッセージ:",
+                "create_appointment": "予定を作成する:",
+                "end_time": "終了時間:",
+                "external_senders": "外部送信者",
+                "out_of_office": "外出中",
+                "out_of_office_status": "外出中のステータス:",
+                "send_auto_reply_period": "以下の期間中に自動返信を送信します:",
+                "start_time": "開始時間:",
+                "auto_reply_message_external": "外部送信者への自動返信メッセージ:"
             },
             "status": {
-                "busy": "予定あり"
-            }
+                "busy": "予定あり",
+                "out_of_office": "外出中"
+            },
+            "do_not_send_auto_replies": "自動返信しない",
+            "external_senders": {
+                "do_not_send_to_external": "自動返信メッセージを外部の送信者に送信しない",
+                "send_custom_not_in_organisation": "組織とアドレス帳以外の人にカスタムメッセージを送信する",
+                "send_standard_auto_reply": "標準の自動返信メッセージを送信する",
+                "send_custom_in_organisation": "組織以外の人にカスタムメッセージを送信する"
+            },
+            "headings": {
+                "create_appointment": "カレンダーの予定",
+                "settings_label": "不在時の設定",
+                "time_period": "期間"
+            },
+            "send_auto_replies": "自動返信する"
         },
         "app": "設定",
         "button": {
@@ -22,20 +48,59 @@
             "account": "アカウント",
             "account_logout": "ログアウト",
             "theme_disabled": "無効",
-            "theme_enabled": "有効"
+            "theme_enabled": "有効",
+            "general": "一般設定",
+            "theme_auto": "自動",
+            "theme_mode": "テーマモード",
+            "theme_options": "テーマのオプション"
         },
-        "general_tab": "一般設定"
+        "general_tab": "一般設定",
+        "app_description": "設定モジュール"
     },
     "login": {
         "help": "ヘルプ",
         "login": "ログイン",
         "password": "パスワード",
-        "username": "ユーザー名"
+        "username": "ユーザー名",
+        "incorrect": "ユーザー名またはパスワードに誤りがあります",
+        "remember_me": "リマインドする",
+        "supported_browsers": "サポートされているブラウザ",
+        "verify_caps_lock": "Caps Lockが有効になっていないことを確認してから、現在のユーザー名とパスワードを再入力してください"
     },
     "logout": "ログアウト",
     "new": "新規",
     "search": {
         "app": "検索する",
-        "module": "モジュール"
+        "module": "モジュール",
+        "active_input_label": "キーワードをコンマまたはTABで区切ります",
+        "app_description": "検索モジュール",
+        "clear": "検索入力をクリアする",
+        "idle_input_label": "{{module}}で検索する",
+        "results_for": "検索結果:",
+        "start": "検索を開始する",
+        "edit_to_start": "検索を編集して新しい検索を開始します"
+    },
+    "copyright": "著作権",
+    "logout_modal": {
+        "confirm": "ログアウトする",
+        "warning": "ログアウトします"
+    },
+    "message": {
+        "snackbar": {
+            "settings_saved": "編集が保存されました"
+        }
+    },
+    "module": {
+        "app": {
+            "version": "アプリケーションのバージョン"
+        }
+    },
+    "new_tab": "新しいタブ",
+    "snackbar": {
+        "error": "エラーが発生しました。再度お試しください"
+    },
+    "user_quota": {
+        "limited": "{{quota}}％の空き容量が使用されました",
+        "unlimited": "利用可能な無制限の空き容量"
     }
 }

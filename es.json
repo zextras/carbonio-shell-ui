@@ -5,7 +5,8 @@
     },
     "search": {
         "module": "Módulo",
-        "app": "Búsqueda"
+        "app": "Búsqueda",
+        "results_for": "Resultados para:"
     },
     "settings": {
         "out_of_office": {
@@ -36,5 +37,10 @@
         "username": "Nombre de usuario"
     },
     "logout": "Cerrar sesión",
-    "new": "Nuevo"
+    "new": "Nuevo",
+    "message": {
+        "snackbar": {
+            "settings_saved": "Ediciones guardadas correctamente"
+        }
+    }
 }

@@ -23,7 +23,7 @@ const AppIcon = styled(IconButton)`
 	${(props) =>
 		props.active &&
 		css`
-			background-color: ${props.theme.palette.gray5.regular};
+			background-color: ${props.theme.palette.gray4.regular};
 		`}
 `;
 

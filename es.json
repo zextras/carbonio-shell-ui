@@ -42,5 +42,8 @@
         "snackbar": {
             "settings_saved": "Ediciones guardadas correctamente"
         }
+    },
+    "snackbar": {
+        "error": "Algo fue mal, por favor, prueba de nuevo"
     }
 }

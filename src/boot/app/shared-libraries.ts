@@ -31,10 +31,12 @@ import * as ZappUI from '@zextras/zapp-ui';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
+
+import { IShellWindow, SharedLibrariesAppsMap } from '../../../types';
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { RichTextEditor } from '@zextras/zapp-ui/dist/zapp-ui.rich-text-editor';
-import { IShellWindow, SharedLibrariesAppsMap } from '../../../types';
+import { RichTextEditor } from './rte-wrap';
 
 export function injectSharedLibraries(): void {
 	// eslint-disable-next-line max-len

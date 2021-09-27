@@ -62,7 +62,7 @@ export function Shell() {
 	const [chatPanelMode, setChatPanelMode] = useState('closed'); // values: 'closed', 'overlap', 'open'
 	const [navOpen, setNavOpen] = useState(true);
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
-	const TeamViews = useAppStore((state) => state.apps.com_zextras_zapp_team?.views?.teambar);
+	const TeamViews = useAppStore((state) => state.apps['carbonio-team']?.views?.teambar);
 
 	useEffect(() => {
 		setNavOpen((n) => !(n && chatPanelMode === 'open'));
@@ -85,7 +85,7 @@ export function Shell() {
 				/>
 				<AppViewContainer />
 				{TeamViews && (
-					<AppContextProvider pkg="com_zextras_zapp_team">
+					<AppContextProvider pkg="carbonio-team">
 						<ShellMenuPanel mode={chatPanelMode} setMode={setChatPanelMode}>
 							<TeamViews.sidebar mode={chatPanelMode} setMode={setChatPanelMode} />
 						</ShellMenuPanel>

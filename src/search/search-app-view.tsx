@@ -10,10 +10,9 @@
  */
 
 import { map, filter } from 'lodash';
-import React, { FC, useMemo, useCallback, useEffect } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Container, Text, Chip, Padding, Divider, Button } from '@zextras/zapp-ui';
-import { useTranslation } from 'react-i18next';
 import { useApps } from '../app-store/hooks';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -24,11 +23,30 @@ import { SEARCH_APP_ID } from '../constants';
 // eslint-disable-next-line @typescript-eslint/ban-types
 const useQuery = (): [Array<any>, Function] => useSearchStore((s) => [s.query, s.updateQuery]);
 
-export const SearchAppView: FC = () => {
-	const { query } = useSearchStore();
-	const apps = useApps();
-	const [t] = useTranslation();
+const ResultsHeader: FC<{ query: Array<any>; label: string }> = ({ query, label }) => (
+	<>
+		<Container
+			orientation="horizontal"
+			mainAlignment="flex-start"
+			background="gray5"
+			height="fit"
+			minHeight="48px"
+			padding={{ horizontal: 'large', vertical: 'medium' }}
+			style={{ flexWrap: 'wrap' }}
+		>
+			<Text color="secondary">{label}</Text>
+			{map(query, (q, i) => (
+				<Padding key={`${i}${q.label}`} all="extrasmall">
+					<Chip {...q} background="gray2" />
+				</Padding>
+			))}
+		</Container>
+		<Divider color="gray3" />
+	</>
+);
 
+export const SearchAppView: FC = () => {
+	const apps = useApps();
 	const routes = useMemo(
 		() =>
 			map(
@@ -38,33 +56,12 @@ export const SearchAppView: FC = () => {
 						<AppContextProvider pkg={app.core.package}>
 							{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 							{/* @ts-ignore */}
-							<app.views.search useQuery={useQuery} />
+							<app.views.search useQuery={useQuery} ResultsHeader={ResultsHeader} />
 						</AppContextProvider>
 					</Route>
 				)
 			),
 		[apps]
 	);
-	return (
-		<>
-			<Container
-				orientation="horizontal"
-				mainAlignment="flex-start"
-				background="gray5"
-				height="fit"
-				minHeight="48px"
-				padding={{ horizontal: 'large', vertical: 'medium' }}
-				style={{ flexWrap: 'wrap' }}
-			>
-				<Text color="secondary">{t('search.results_for', 'Results for:')}</Text>
-				{map(query, (q, i) => (
-					<Padding key={`${i}${q.label}`} all="extrasmall">
-						<Chip {...q} background="gray2" />
-					</Padding>
-				))}
-			</Container>
-			<Divider color="gray3" />
-			<Switch>{routes}</Switch>
-		</>
-	);
+	return <Switch>{routes}</Switch>;
 };

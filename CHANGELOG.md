@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.56](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.55...v0.1.0-beta.56) (2021-09-30)
+
+
+### Features
+
+* moved Results Header to the view props ([a682197](https://bitbucket.org/zextras/zapp-shell/commit/a68219722d373b4011156f015d42db0b9b0c5685))
+
 ## [0.1.0-beta.55](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.54...v0.1.0-beta.55) (2021-09-20)
 
 ## [0.1.0-beta.54](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.53...v0.1.0-beta.54) (2021-09-07)

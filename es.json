@@ -1,22 +1,54 @@
 {
     "changelog": {
         "cancel": "Cancelar",
-        "close": "Cerrar"
+        "close": "Cerrar",
+        "remind-later": "Recordarme después",
+        "title": "Registro de cambios"
     },
     "search": {
         "module": "Módulo",
         "app": "Búsqueda",
-        "results_for": "Resultados para:"
+        "results_for": "Resultados para:",
+        "active_input_label": "Separa las palabras clave con una coma o con el tabulador",
+        "app_description": "Buscar módulo",
+        "clear": "Limpiar entrada de búsqueda",
+        "idle_input_label": "Buscar en {{module}}",
+        "edit_to_start": "Edita tu búsqueda para empezar una nueva",
+        "start": "Iniciar búsqueda"
     },
     "settings": {
         "out_of_office": {
             "labels": {
                 "start_date": "Fecha de inicio",
-                "end_date": "Fecha de finalización"
+                "end_date": "Fecha de finalización",
+                "all_day": "Todo el día:",
+                "auto_reply_message": "Mensaje de respuesta automática:",
+                "auto_reply_message_external": "Mensaje de respuesta automática para remitentes externos:",
+                "create_appointment": "Crear cita:",
+                "end_time": "Hora de finalización:",
+                "external_senders": "Remitentes externos",
+                "out_of_office": "Fuera de la oficina",
+                "out_of_office_status": "Estado fuera de la oficina:",
+                "send_auto_reply_period": "Enviar respuestas automáticas durante el siguiente periodo:",
+                "start_time": "Hora de inicio:"
             },
             "status": {
-                "busy": "Ocupado"
-            }
+                "busy": "Ocupado",
+                "out_of_office": "Fuera de la oficina"
+            },
+            "external_senders": {
+                "do_not_send_to_external": "No enviar un mensaje de respuesta automática al remitente externo",
+                "send_custom_in_organisation": "Enviar mensaje personalizado a aquellos que no están en mi organización",
+                "send_custom_not_in_organisation": "Enviar mensaje personalizado a aquellos que no están en mi organización ni libreta de direcciones",
+                "send_standard_auto_reply": "Enviar mensaje de respuesta automática estándar"
+            },
+            "do_not_send_auto_replies": "No enviar respuestas automáticas",
+            "headings": {
+                "create_appointment": "Cita en el calendario",
+                "settings_label": "Ajustes fuera de la oficina",
+                "time_period": "Periodo de tiempo"
+            },
+            "send_auto_replies": "Enviar respuestas automáticas"
         },
         "app": "Configuraciones",
         "button": {
@@ -27,14 +59,24 @@
             "account": "Cuenta",
             "account_logout": "Cerrar sesión",
             "theme_disabled": "Desactivado",
-            "theme_enabled": "Activado"
-        }
+            "theme_enabled": "Activado",
+            "general": "Ajustes generales",
+            "theme_auto": "Auto",
+            "theme_mode": "Modo tema",
+            "theme_options": "Opciones del tema"
+        },
+        "app_description": "Módulo de ajustes",
+        "general_tab": "General"
     },
     "login": {
         "help": "Ayuda",
         "login": "Iniciar sesión",
         "password": "Contraseña",
-        "username": "Nombre de usuario"
+        "username": "Nombre de usuario",
+        "incorrect": "El nombre de usuario o la contraseña es incorrecto",
+        "remember_me": "Recordarme",
+        "supported_browsers": "Navegadores soportados",
+        "verify_caps_lock": "Comprueba que BLOQUEAR MAYÚSCULAS no esté activado, luego vuelve a introducir el nombre de usuario y la contraseña actuales"
     },
     "logout": "Cerrar sesión",
     "new": "Nuevo",
@@ -45,5 +87,20 @@
     },
     "snackbar": {
         "error": "Algo fue mal, por favor, prueba de nuevo"
+    },
+    "copyright": "Derechos de autor",
+    "logout_modal": {
+        "confirm": "Desconectarme",
+        "warning": "Vas a desconectarte"
+    },
+    "module": {
+        "app": {
+            "version": "Versiones de la aplicación"
+        }
+    },
+    "new_tab": "Nueva pestaña",
+    "user_quota": {
+        "limited": "{{quota}} de espacio utilizado",
+        "unlimited": "Espacio ilimitado disponible"
     }
 }

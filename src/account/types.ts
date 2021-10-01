@@ -5,7 +5,6 @@ export type AccountState = {
 	sync: unknown;
 	notify: unknown;
 
-	csrfToken: string;
 	syncToken: string;
 	headerToken: string;
 

@@ -51,13 +51,6 @@ export function selectAccounts({ accounts }: { accounts: AccountsSlice }): Accou
 	return accounts.accounts;
 }
 
-export function selectCSRFToken({ accounts }: { accounts: AccountsSlice }): string | undefined {
-	if (accounts?.accounts?.length > 0) {
-		return accounts.credentials[accounts.accounts[0].id].csrfToken;
-	}
-	return undefined;
-}
-
 export function selectAuthToken({ accounts }: { accounts: AccountsSlice }): string | undefined {
 	if (accounts.accounts.length > 0) {
 		return accounts.credentials[accounts.accounts[0].id].t;
@@ -87,7 +80,7 @@ function normalizeSettings(
 }
 function normalizeAccount(
 	{ username, password }: NormalizeAccountParams,
-	{ csrfToken, authToken }: AuthResponse,
+	{ authToken }: AuthResponse,
 	{ id, name, zimlets, attrs, prefs, identities, signatures, props }: GetInfoResponse
 ): [Account, AccountLoginData] {
 	const settings = normalizeSettings({ attrs, prefs, props });
@@ -121,13 +114,12 @@ function normalizeAccount(
 		{
 			t: authToken[0]._content,
 			u: username,
-			p: password,
-			csrfToken: csrfToken._content
+			p: password
 		}
 	];
 }
 
-async function getAccountInfo({ csrfToken }: { csrfToken: string }): Promise<GetInfoResponse> {
+async function getAccountInfo(): Promise<GetInfoResponse> {
 	const res = await fetch('/service/soap/GetInfoRequest', {
 		method: 'POST',
 		headers: {
@@ -135,10 +127,7 @@ async function getAccountInfo({ csrfToken }: { csrfToken: string }): Promise<Get
 		},
 		body: JSON.stringify({
 			Header: {
-				_jsns: 'urn:zimbra',
-				context: {
-					csrfToken
-				}
+				_jsns: 'urn:zimbra'
 			},
 			Body: {
 				GetInfoRequest: {
@@ -165,7 +154,6 @@ export const doLogin = createAsyncThunk<[Account, AccountLoginData], DoLoginArgs
 				Body: {
 					AuthRequest: {
 						_jsns: 'urn:zimbraAccount',
-						csrfTokenSecured: '1',
 						persistAuthTokenCookie: '1',
 						// generateDeviceId: '1',
 						account: {
@@ -185,7 +173,7 @@ export const doLogin = createAsyncThunk<[Account, AccountLoginData], DoLoginArgs
 			throw new Error(response.Body.Fault.Reason.Text);
 		}
 		const authResp = response.Body.AuthResponse;
-		const getInfoResp = await getAccountInfo({ csrfToken: authResp.csrfToken._content });
+		const getInfoResp = await getAccountInfo();
 		return normalizeAccount({ username, password }, authResp, getInfoResp);
 	}
 );
@@ -216,7 +204,6 @@ const doLoginRejected: CaseReducer<AccountsSlice> = (state: Draft<AccountsSlice>
 export const doLogout = createAsyncThunk<void, void>(
 	'accounts/doLogout',
 	async (payload, { getState }) => {
-		const csrfToken = selectCSRFToken(getState() as any);
 		try {
 			const res = await fetch('/service/soap/EndSessionRequest', {
 				method: 'POST',
@@ -225,10 +212,7 @@ export const doLogout = createAsyncThunk<void, void>(
 				},
 				body: JSON.stringify({
 					Header: {
-						_jsns: 'urn:zimbra',
-						context: {
-							csrfToken
-						}
+						_jsns: 'urn:zimbra'
 					},
 					Body: {
 						EndSessionRequest: {
@@ -262,7 +246,6 @@ const doLogoutFulfilled: CaseReducer<AccountsSlice, PayloadAction<void>> = (
 export const modifyPrefs = createAsyncThunk<any, ModifyPrefsArgs>(
 	'accounts/modifyPrefs',
 	async (mods, { getState }) => {
-		const csrfToken = selectCSRFToken(getState() as any);
 		const requests: any = {};
 		if (mods.props) {
 			requests.ModifyPropertiesRequest = `<ModifyPropertiesRequest xmlns="urn:zimbraAccount">
@@ -383,7 +366,6 @@ export const modifyPrefs = createAsyncThunk<any, ModifyPrefsArgs>(
 					<context xmlns="urn:zimbra">
 						<account by="name">${(getState() as any).accounts.accounts[0].name}</account>
 						<format type="js"/>
-						<csrfToken>${csrfToken}</csrfToken>
 					</context>
 				</soap:Header>
 				<soap:Body>
@@ -398,7 +380,7 @@ export const modifyPrefs = createAsyncThunk<any, ModifyPrefsArgs>(
 		if (response.Body.Fault) {
 			throw new Error(response.Body.Fault.Reason.Text);
 		}
-		const { attrs, prefs, props } = await getAccountInfo({ csrfToken: csrfToken ?? '' });
+		const { attrs, prefs, props } = await getAccountInfo();
 		return { attrs, prefs, props };
 	}
 );

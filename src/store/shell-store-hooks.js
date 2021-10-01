@@ -12,7 +12,7 @@
 import { useContext, useCallback } from 'react';
 import { createDispatchHook, createSelectorHook, createStoreHook } from 'react-redux';
 import ShellStoreContext from './shell-store-context';
-import { selectAccounts, selectCSRFToken, modifyPrefs } from './accounts-slice';
+import { selectAccounts, modifyPrefs } from './accounts-slice';
 import { selectSessionState } from './session-slice';
 import { selectFirstSync, selectSyncResponse } from './sync-slice';
 
@@ -43,10 +43,6 @@ export function useUserAccounts() {
 
 export function useSessionState() {
 	return useSelector(selectSessionState);
-}
-
-export function useCSRFToken() {
-	return useSelector(selectCSRFToken);
 }
 
 export function useCurrentSync() {

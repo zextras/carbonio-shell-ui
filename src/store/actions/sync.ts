@@ -10,13 +10,11 @@
  */
 
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { selectCSRFToken } from '../accounts-slice';
 
 export const sync = createAsyncThunk(
 	'shell/sync',
 	async (arg, { getState }: any) => {
 		const { token } = getState().sync;
-		const csrfToken = selectCSRFToken(getState() as any);
 
 		const data = {
 			Body: {
@@ -27,9 +25,6 @@ export const sync = createAsyncThunk(
 				}
 			},
 			Header: {
-				context: {
-					csrfToken
-				},
 				_jsns: 'urn:zimbra'
 			}
 		};

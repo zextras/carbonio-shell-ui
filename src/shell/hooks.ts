@@ -32,7 +32,6 @@ export { default as usePromise } from 'react-use-promise';
 
 export {
 	useUserAccounts,
-	useCSRFToken,
 	useSaveSettingsCallback,
 	useCurrentSync, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	useFirstSync // @ts-ignore

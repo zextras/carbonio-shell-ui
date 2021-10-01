@@ -11,7 +11,6 @@
 
 import {
 	useUserAccounts,
-	useCSRFToken,
 	useSaveSettingsCallback,
 	useCurrentSync,
 	useFirstSync,
@@ -51,7 +50,6 @@ export const getAppHooks = (pkg: string): unknown => ({
 	useActionsFactory,
 	useActionFactory,
 	useUserAccounts,
-	useCSRFToken,
 	useSaveSettingsCallback,
 	useCurrentSync,
 	useFirstSync,

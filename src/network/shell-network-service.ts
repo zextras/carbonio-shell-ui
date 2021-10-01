@@ -13,7 +13,6 @@
 import { AppPkgDescription, SoapFetch } from '../../types';
 import { IFiberChannelFactory } from '../fiberchannel/fiber-channel-types';
 import { ShellStore } from '../store/create-shell-store';
-import { selectCSRFToken } from '../store/accounts-slice';
 
 export class SoapError extends Error {
 	details: any;
@@ -28,13 +27,8 @@ export class SoapError extends Error {
 export default class ShellNetworkService {
 	private _fetch = fetch.bind(window);
 
-	private _csrfToken?: string;
-
 	constructor(private _store: ShellStore, private _FCFactory: IFiberChannelFactory) {
-		this._csrfToken = selectCSRFToken(_store.getState());
-		_store.subscribe(() => {
-			this._csrfToken = selectCSRFToken(_store.getState());
-		});
+		_store;
 	}
 
 	private _getAppFetch(
@@ -52,14 +46,9 @@ export default class ShellNetworkService {
 					[`${api}Request`]: body
 				}
 			};
-			if (this._csrfToken) {
-				request.Header = {
-					_jsns: 'urn:zimbra',
-					context: {
-						csrfToken: this._csrfToken
-					}
-				};
-			}
+			request.Header = {
+				_jsns: 'urn:zimbra'
+			};
 			return _fetch(`/service/soap/${api}Request`, {
 				method: 'POST',
 				headers: {

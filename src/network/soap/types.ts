@@ -61,9 +61,6 @@ export type GetInfoResponse = SoapResponseContent & {
 };
 
 export type AuthResponse = SoapResponseContent & {
-	csrfToken: {
-		_content: string;
-	};
 	authToken: Array<{
 		_content: string;
 	}>;

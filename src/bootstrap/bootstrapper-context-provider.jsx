@@ -19,16 +19,13 @@ import AppLoaderContextProvider from '../app/app-loader-context-provider';
 import ThemeLoaderMounter from '../app/theme-loader-mounter';
 import BoardContextProvider from '../shell/boards/board-context-provider';
 import { startSync } from '../store/sync-slice';
-import { useCSRFToken } from '../store/shell-store-hooks';
 
 const SyncProvider = ({ store }) => {
-	const csrfToken = useCSRFToken();
-
 	useEffect(() => {
-		if (csrfToken && store?.getState()?.sync) {
+		if (store?.getState()?.sync) {
 			store.dispatch(startSync());
 		}
-	}, [csrfToken, store]);
+	}, [store]);
 	return null;
 };
 

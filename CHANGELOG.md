@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.57](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.56...v0.1.0-beta.57) (2021-10-04)
+
+
+### Bug Fixes
+
+* removed csrf token usage ([9621e4d](https://bitbucket.org/zextras/zapp-shell/commit/9621e4d3a7d4f7e09976d181870725b7bf46e319))
+
 ## [0.1.0-beta.56](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.55...v0.1.0-beta.56) (2021-09-30)
 
 

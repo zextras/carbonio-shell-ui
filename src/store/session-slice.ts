@@ -10,13 +10,7 @@
  */
 
 import { CaseReducer, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import {
-	selectAccounts,
-	selectAuthToken,
-	selectCSRFToken,
-	doLogin,
-	selectAuthCredentials
-} from './accounts-slice';
+import { selectAccounts, selectAuthToken, doLogin, selectAuthCredentials } from './accounts-slice';
 
 type SessionState = 'init' | 'verifying' | 'verified' | 'error';
 
@@ -30,7 +24,6 @@ export const verifySession = createAsyncThunk(
 	'session/verifySession',
 	async (args, { getState, dispatch }) => {
 		const [account] = selectAccounts(getState() as any);
-		const csrfToken = selectCSRFToken(getState() as any);
 		const authToken = selectAuthToken(getState() as any);
 		try {
 			const res = await fetch('/service/soap/AuthRequest', {
@@ -40,10 +33,7 @@ export const verifySession = createAsyncThunk(
 				},
 				body: JSON.stringify({
 					Header: {
-						_jsns: 'urn:zimbra',
-						context: {
-							csrfToken
-						}
+						_jsns: 'urn:zimbra'
 					},
 					Body: {
 						AuthRequest: {

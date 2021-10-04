@@ -116,7 +116,6 @@ export type AccountLoginData = {
 	/** Zimbra auth token */ t: string;
 	/** Username */ u: string;
 	/** Password */ p: string;
-	csrfToken: string;
 };
 
 export type ZimletProp = {
@@ -241,7 +240,6 @@ export const useApp: () => AppData;
 export const useAppContext: <T>() => T;
 export const useBehaviorSubject: <T>(observable: BehaviorSubject<T>) => T;
 export const useBoardConfig: <T>() => T;
-export const useCSRFToken: () => string;
 export const useCurrentSync: () => any;
 export const useFiberChannel: () => FC;
 export const useFirstSync: () => any;

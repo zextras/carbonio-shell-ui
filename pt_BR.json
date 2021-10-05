@@ -1,7 +1,9 @@
 {
     "changelog": {
         "cancel": "Cancelar",
-        "close": "Fechar"
+        "close": "Fechar",
+        "remind-later": "Lembrar Depois",
+        "title": "Registro de Alterações"
     },
     "settings": {
         "app": "Configurações",
@@ -12,29 +14,93 @@
         "out_of_office": {
             "labels": {
                 "start_date": "Data de inicio",
-                "end_date": "Data final"
+                "end_date": "Data Final",
+                "all_day": "Todo o Dia:",
+                "auto_reply_message": "Mensagem de Resposta Automática:",
+                "auto_reply_message_external": "Mensagem de Resposta Automática para Remetentes Externos:",
+                "create_appointment": "Criar Compromisso:",
+                "end_time": "Hota Final:",
+                "external_senders": "Remetentes Externos",
+                "out_of_office": "Fora do Escritório",
+                "out_of_office_status": "Status Fora do Escritório:",
+                "send_auto_reply_period": "Enviar respostas automáticas durante o seguinte período:",
+                "start_time": "Hora de Início:"
             },
             "status": {
-                "busy": "Ocupado"
-            }
+                "busy": "Ocupado",
+                "out_of_office": "Fora do Escritório"
+            },
+            "do_not_send_auto_replies": "Não enviar respostas automáticas",
+            "external_senders": {
+                "do_not_send_to_external": "Não enviar mensagens de resposta automática a um remetente externo",
+                "send_standard_auto_reply": "Enviar mensagem de resposta automática padrão",
+                "send_custom_in_organisation": "Enviar mensagem personalizada a quem não faz parte da minha organização",
+                "send_custom_not_in_organisation": "Enviar mensagem personalizada a quem não faz parte da minha organização ou agenda de endereços"
+            },
+            "headings": {
+                "create_appointment": "Compromisso do Calendário",
+                "settings_label": "Configurações para Fora do Escritório",
+                "time_period": "Período de Tempo"
+            },
+            "send_auto_replies": "Enviar mensagens automáticas"
         },
         "general": {
             "account": "Conta",
             "account_logout": "Terminar sessão",
             "theme_disabled": "Desabilitado",
-            "theme_enabled": "habilitado"
-        }
+            "theme_enabled": "Habilitado",
+            "general": "Configurações Gerais",
+            "theme_auto": "Auto",
+            "theme_mode": "Modo Temático",
+            "theme_options": "Opções de Tema"
+        },
+        "app_description": "Módulo de Configurações",
+        "general_tab": "Geral"
     },
     "login": {
         "help": "Ajuda",
         "login": "Iniciar sessão",
         "password": "Senha",
-        "username": "Nome de usuário"
+        "username": "Nome de usuário",
+        "incorrect": "Nome do usuário ou senha incorretos",
+        "remember_me": "Lembrar de mim",
+        "supported_browsers": "Navegadores suportados",
+        "verify_caps_lock": "Verifique se o CAPS LOCK não está ativado e digite novamente o nome do usuário e a senha"
     },
     "logout": "Terminar sessão",
     "new": "Nova",
     "search": {
         "app": "Buscar",
-        "module": "Módulo"
+        "module": "Módulo",
+        "active_input_label": "Separe as palavras-chave com vírgula ou TAB",
+        "app_description": "Módulo de Pesquisa",
+        "clear": "Limpar caixa de pesquisa",
+        "edit_to_start": "Edite para fazer uma nova pesquisa",
+        "idle_input_label": "Buscar em {{module}}",
+        "results_for": "Resultados para:",
+        "start": "Iniciar busca"
+    },
+    "copyright": "Direito Autoral",
+    "logout_modal": {
+        "confirm": "Desconectar-me",
+        "warning": "Você será desconectado"
+    },
+    "message": {
+        "snackbar": {
+            "settings_saved": "Edições salvas corretamente"
+        }
+    },
+    "module": {
+        "app": {
+            "version": "Versões do aplicativo"
+        }
+    },
+    "new_tab": "Nova Aba",
+    "user_quota": {
+        "limited": "{{quota}}% espaço utilizado",
+        "unlimited": "Espaço ilimitado disponível"
+    },
+    "snackbar": {
+        "error": "Algo deu errado. Tente novamente"
     }
 }

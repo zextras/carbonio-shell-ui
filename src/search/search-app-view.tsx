@@ -10,9 +10,9 @@
  */
 
 import { map, filter } from 'lodash';
-import React, { FC, useMemo, useCallback, useEffect } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Container, Text, Chip, Padding, Divider, Button } from '@zextras/zapp-ui';
+import { Container, Text, Chip, Padding, Divider } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
 import { useApps } from '../store/app/hooks';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -20,48 +20,36 @@ import { useApps } from '../store/app/hooks';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { useSearchStore } from './search-store';
 import { SEARCH_APP_ID } from '../constants';
-import { RouteLeavingGuard } from '../ui-extras/nav-guard';
+// import { RouteLeavingGuard } from '../ui-extras/nav-guard';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const useQuery = (): [Array<any>, Function] => useSearchStore((s) => [s.query, s.updateQuery]);
 
-const ResultsFor: FC<{ count: number }> = ({ count }) => {
-	const [query] = useQuery();
-	const [t] = useTranslation();
-	return (
-		<>
-			<Container
-				orientation="horizontal"
-				mainAlignment="flex-start"
-				background="gray5"
-				height="fit"
-				minHeight="48px"
-				padding={{ horizontal: 'large', vertical: 'medium' }}
-				style={{ flexWrap: 'wrap' }}
-			>
-				<Text color="secondary">
-					{t('search.results_for', {
-						defaultValue: '{{count}} Result for:',
-						defaultValue_plural: '{{count}} Results for:',
-						count
-					})}
-				</Text>
-				{map(query, (q, i) => (
-					<Padding key={`${i}${q.label}`} all="extrasmall">
-						<Chip {...q} background="gray2" />
-					</Padding>
-				))}
-			</Container>
-			<Divider color="gray3" />
-		</>
-	);
-};
+const ResultsHeader: FC<{ query: Array<any>; label: string }> = ({ query, label }) => (
+	<>
+		<Container
+			orientation="horizontal"
+			mainAlignment="flex-start"
+			background="gray5"
+			height="fit"
+			minHeight="48px"
+			padding={{ horizontal: 'large', vertical: 'medium' }}
+			style={{ flexWrap: 'wrap' }}
+		>
+			<Text color="secondary">{label}</Text>
+			{map(query, (q, i) => (
+				<Padding key={`${i}${q.label}`} all="extrasmall">
+					<Chip {...q} background="gray2" />
+				</Padding>
+			))}
+		</Container>
+		<Divider color="gray3" />
+	</>
+);
 
 export const SearchAppView: FC = () => {
-	const { query } = useSearchStore();
-	const apps = useApps();
 	const [t] = useTranslation();
-
+	const apps = useApps();
 	const routes = useMemo(
 		() =>
 			map(
@@ -71,7 +59,7 @@ export const SearchAppView: FC = () => {
 						<AppContextProvider pkg={app.core.name}>
 							{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 							{/* @ts-ignore */}
-							<app.views.search useQuery={useQuery} resultsFor={ResultsFor} />
+							<app.views.search useQuery={useQuery} ResultsHeader={ResultsHeader} />
 						</AppContextProvider>
 					</Route>
 				)
@@ -80,12 +68,12 @@ export const SearchAppView: FC = () => {
 	);
 	return (
 		<>
-			<RouteLeavingGuard
+			{/* <RouteLeavingGuard
 				when
 				title={t('search.leave.title', 'Are you sure you want to leave this module?')}
 			>
 				<Text>{t('search.leave.warning', 'The current search results will be lost')}</Text>
-			</RouteLeavingGuard>
+			</RouteLeavingGuard> */}
 			<Switch>{routes}</Switch>
 		</>
 	);

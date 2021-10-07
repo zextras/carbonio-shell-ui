@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.58](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.57...v0.1.0-beta.58) (2021-10-04)
+
+
+### Features
+
+* updated dependencies ([bd5211b](https://bitbucket.org/zextras/zapp-shell/commit/bd5211b1ec0dc281a40e3882a2243b1519667a78))
+
+## [0.1.0-beta.57](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.56...v0.1.0-beta.57) (2021-10-04)
+
+
+### Bug Fixes
+
+* removed csrf token usage ([9621e4d](https://bitbucket.org/zextras/zapp-shell/commit/9621e4d3a7d4f7e09976d181870725b7bf46e319))
+
+## [0.1.0-beta.56](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.55...v0.1.0-beta.56) (2021-09-30)
+
+
+### Features
+
+* moved Results Header to the view props ([a682197](https://bitbucket.org/zextras/zapp-shell/commit/a68219722d373b4011156f015d42db0b9b0c5685))
+
 ## [0.1.0-beta.55](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.54...v0.1.0-beta.55) (2021-09-20)
 
 ## [0.1.0-beta.54](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.53...v0.1.0-beta.54) (2021-09-07)

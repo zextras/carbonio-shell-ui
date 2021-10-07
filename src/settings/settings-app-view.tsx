@@ -46,12 +46,12 @@ export const SettingsAppView: FC = () => {
 	);
 	return (
 		<>
-			<RouteLeavingGuard
+			{/* <RouteLeavingGuard
 				when
 				title={t('settings.leave.title', 'Are you sure you want to leave this page?')}
 			>
 				<Text>{t('settings.leave.warning', 'Any unsaved change will be lost')}</Text>
-			</RouteLeavingGuard>
+			</RouteLeavingGuard> */}
 			<Switch>
 				<Route key={SETTINGS_APP_ID} exact path={`/${SETTINGS_APP_ID}`}>
 					<Suspense fallback={<Spinner />}>

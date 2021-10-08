@@ -23,11 +23,15 @@ import { SEARCH_APP_ID } from '../constants';
 // eslint-disable-next-line @typescript-eslint/ban-types
 const useQuery = (): [Array<any>, Function] => useSearchStore((s) => [s.query, s.updateQuery]);
 
-const ResultsHeader: FC<{ query: Array<any>; label: string }> = ({ query, label }) => (
+const ResultsHeader: FC<{ query: Array<any>; label: string; updateQuery: any }> = ({
+	query,
+	label,
+	updateQuery
+}) => (
 	<>
 		<Container
 			orientation="horizontal"
-			mainAlignment="flex-start"
+			mainAlignment="space-between"
 			background="gray5"
 			height="fit"
 			minHeight="48px"
@@ -40,6 +44,16 @@ const ResultsHeader: FC<{ query: Array<any>; label: string }> = ({ query, label 
 					<Chip {...q} background="gray2" />
 				</Padding>
 			))}
+			<Button
+				label="CLEAR SEARCH QUERY"
+				icon="CloseOutline"
+				color="primary"
+				size="large"
+				type="ghost"
+				onClick={(): any => {
+					updateQuery([]);
+				}}
+			/>
 		</Container>
 		<Divider color="gray3" />
 	</>

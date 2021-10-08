@@ -41,7 +41,6 @@
         "edit_to_start": "Edit your search to start a new one",
         "idle_input_label": "Search in {{module}}",
         "module": "Module",
-        "results_for": "Results for:",
         "start": "Start search"
     },
     "settings": {

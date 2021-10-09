@@ -97,7 +97,7 @@
     },
     "new_tab": "Nieuwe Tab",
     "snackbar": {
-        "error": "Er is iets misgegaan, probeer het opnieuw"
+        "error": "Er ging iets mis, probeer het opnieuw"
     },
     "user_quota": {
         "limited": "{{quota}}% ruimte gebruikt",

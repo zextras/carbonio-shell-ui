@@ -6,6 +6,9 @@
         "title": "Title"
     },
     "copyright": "Copyright",
+    "label": {
+        "clear_search_query": "CLEAR SEARCH QUERY"
+    },
     "login": {
         "help": "Help",
         "incorrect": "The username or password is incorrect",

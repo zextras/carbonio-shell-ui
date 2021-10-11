@@ -1,5 +1,5 @@
 module.exports = {
-	extends: ['./node_modules/@zextras/zapp-cli/rules'],
+	extends: ['./node_modules/@zextras/zapp-configs/rules/prettier'],
 	globals: {
 		BASE_PATH: 'readonly',
 		FLAVOR: 'readonly',

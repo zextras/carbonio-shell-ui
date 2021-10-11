@@ -1,5 +1,5 @@
 {
-  "extends": "@zextras/zapp-cli/tsconfig.json",
+  "extends": "@zextras/zapp-configs/rules/typescript.json",
   "compilerOptions": {
     "skipLibCheck": true
   },

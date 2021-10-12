@@ -19,12 +19,12 @@
         "module": "Modul",
         "app": "Cari",
         "active_input_label": "Pisahkan kata kunci dengan koma atau TAB",
-        "app_description": "Modul Penelusuran",
-        "clear": "Bersihkan input penelusuran",
-        "edit_to_start": "Edit penelusuran Anda untuk memulai yang baru",
-        "idle_input_label": "Telusuri di {{module}}",
+        "app_description": "Modul Pencarian",
+        "clear": "Bersihkan input pencarian",
+        "edit_to_start": "Edit pencarian Anda untuk memulai yang baru",
+        "idle_input_label": "Cari di {{module}}",
         "results_for": "Hasil untuk:",
-        "start": "Mulai penelusuran"
+        "start": "Mulai pencarian"
     },
     "settings": {
         "out_of_office": {
@@ -56,11 +56,11 @@
             "headings": {
                 "settings_label": "Pengaturan di Luar Kantor",
                 "time_period": "Jangka Waktu",
-                "create_appointment": "Tandai Janji Temu di Kalender"
+                "create_appointment": "Janji Temu Kalender"
             },
             "send_auto_replies": "Kirim balasan otomatis"
         },
-        "app": "Setelan",
+        "app": "Pengaturan",
         "button": {
             "primary": "Simpan",
             "secondary": "Batal"
@@ -68,11 +68,11 @@
         "general": {
             "account": "Akun",
             "account_logout": "Keluar",
-            "theme_disabled": "Nonaktif",
-            "theme_enabled": "Aktif",
+            "theme_disabled": "Dinonaktifkan",
+            "theme_enabled": "Diaktifkan",
             "general": "Pengaturan Umum",
             "theme_auto": "Otomatis",
-            "theme_options": "Pilihan Tema",
+            "theme_options": "Opsi Tema",
             "theme_mode": "Mode Tema"
         },
         "app_description": "Modul Pengaturan",

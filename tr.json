@@ -1,1 +1,106 @@
-{}
+{
+    "changelog": {
+        "cancel": "İptal",
+        "close": "Kapat",
+        "remind-later": "Daha sonra hatırlat",
+        "title": "Değişim Logu"
+    },
+    "copyright": "Copyright",
+    "login": {
+        "help": "Yardım",
+        "login": "Kullanıcı girişi",
+        "password": "Parola",
+        "remember_me": "Beni hatırla",
+        "supported_browsers": "Desteklenen tarayıcılar",
+        "username": "Kullanıcı adı",
+        "incorrect": "Kullanıcı adı veya parola hatalı",
+        "verify_caps_lock": "CAPS LOCK açık olmadığını kontrol ederek kullanıcı adı ve parolayı yeniden yazın"
+    },
+    "logout": "Oturumu kapat",
+    "logout_modal": {
+        "confirm": "Oturumu kapat",
+        "warning": "Oturumunuz kapatılacak"
+    },
+    "message": {
+        "snackbar": {
+            "settings_saved": "Değişiklikler başarıyla kaydedildi"
+        }
+    },
+    "new": "Yeni",
+    "new_tab": "Yeni Sekme",
+    "search": {
+        "active_input_label": "Anahtar kelimeleri virgül veya TAB ile ayırın",
+        "app": "Ara",
+        "results_for": "Sonuçlar:",
+        "start": "Aramayı başlat",
+        "app_description": "Arama Modülü",
+        "clear": "Arama girişini sil",
+        "edit_to_start": "Yeni bir arama yapmak için düzenleyin",
+        "idle_input_label": "{{module}} içinde ara",
+        "module": "Modül"
+    },
+    "settings": {
+        "app": "Ayarlar",
+        "app_description": "Ayarlar Modülü",
+        "button": {
+            "primary": "Kaydet",
+            "secondary": "İptal"
+        },
+        "general": {
+            "account": "Hesap",
+            "account_logout": "Oturumu kapat",
+            "general": "Genel Ayarlar",
+            "theme_auto": "Auto",
+            "theme_disabled": "Aktif değil",
+            "theme_enabled": "Aktif",
+            "theme_mode": "Tema Modu",
+            "theme_options": "Tema Seçenekleri"
+        },
+        "general_tab": "Genel",
+        "out_of_office": {
+            "external_senders": {
+                "do_not_send_to_external": "Dışarıdan kullanıcılara otomatik yanıt gönderme",
+                "send_custom_in_organisation": "Benim organizasyonumda olmayanlara özel mesaj gönder",
+                "send_custom_not_in_organisation": "Benim organizasyonumda ve adres defterimde olmayanlara özel mesaj gönder",
+                "send_standard_auto_reply": "Standart otomatik yanıt mesajı gönder"
+            },
+            "do_not_send_auto_replies": "Otomatik yanıtlar gönderme",
+            "headings": {
+                "create_appointment": "Takvim Randevusu",
+                "settings_label": "Ofis Dışında Ayarları",
+                "time_period": "Zaman Aralığı"
+            },
+            "labels": {
+                "all_day": "Tüm Gün:",
+                "auto_reply_message": "Otomatik Yanıt Mesajı:",
+                "auto_reply_message_external": "Dışarıdan gönderenler için Otomatik Yanıt Mesajı:",
+                "create_appointment": "Randevu Oluştur:",
+                "end_date": "Bitiş Tarihi",
+                "end_time": "Bitiş Zamanı:",
+                "external_senders": "Dışarıdan Gönderenler",
+                "out_of_office": "Ofis Dışında",
+                "out_of_office_status": "Ofis Dışında Durumu:",
+                "send_auto_reply_period": "Bu zaman aralığında otomatik yanıtlar gönder:",
+                "start_date": "Başlangıç Tarihi",
+                "start_time": "Başlama Zamanı:"
+            },
+            "send_auto_replies": "Otomatik yanıtlar gönder",
+            "status": {
+                "busy": "Meşgul",
+                "out_of_office": "Ofis Dışında"
+            }
+        }
+    },
+    "snackbar": {
+        "error": "Bir hata oluştu, lütfen tekrar deneyin"
+    },
+    "user_quota": {
+        "limited": "Kotanızdan %{{quota}} kullanıldı",
+        "unlimited": "Sınırsız kota kullanılıyor"
+    },
+    "module": {
+        "app": {
+            "version": "Uygulama sürümleri"
+        }
+    }
+}

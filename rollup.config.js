@@ -49,7 +49,6 @@ export default {
 		'react-dom',
 		'react-i18next',
 		'react-redux',
-		'rxjs',
 		'styled-components'
 	]
 };

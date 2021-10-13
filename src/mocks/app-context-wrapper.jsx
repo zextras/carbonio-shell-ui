@@ -10,7 +10,6 @@
  */
 import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { BehaviorSubject } from 'rxjs';
 import { I18nextProvider } from 'react-i18next';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';

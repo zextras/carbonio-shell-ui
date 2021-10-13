@@ -5,14 +5,15 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
-const { coerce, valid } = require('semver');
 const commitHash = require('child_process').execSync('git rev-parse HEAD').toString().trim();
 const pkg = require('./package.json');
 
-const babelRC = require('./babel.config.js');
+const babelRC = require('./babel.config');
 // const babelRCServiceworker = require('./babel.config.serviceworker.js');
 
 const basePath = `/static/iris/carbonio-shell/${commitHash}/`;
+
+const server = require('./.dev.json');
 
 console.log('Building Shell using base path: ');
 console.log(` ${basePath} `);
@@ -24,7 +25,6 @@ const flavor = process.env.ZX_SHELL_FLAVOR || 'APP';
 
 let indexFile;
 const pathsToCopy = [
-	{ from: 'assets', to: 'assets' },
 	{
 		from: 'node_modules/@zextras/zapp-ui/dist/tinymce/skins',
 		to: 'tinymce/skins/'
@@ -50,7 +50,7 @@ module.exports = {
 	entry: {
 		index: indexFile
 	},
-	devtool: 'source-map',
+	devtool: server ? 'eval' : 'source-map',
 	output: {
 		path: path.resolve(process.cwd(), 'dist'),
 		filename: flavor.toUpperCase() !== 'APP' ? '[name].js' : '[name].[chunkhash:8].js',
@@ -61,6 +61,30 @@ module.exports = {
 	resolve: {
 		extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
 		alias: {}
+	},
+	devServer: {
+		client: {
+			overlay: false
+		},
+		port: 9000,
+		compress: true,
+		allowedHosts: 'all',
+		https: true,
+		open: [basePath],
+		proxy: [
+			{
+				context: ['/service/**', `/static/**`, '!/static/login', `!/static/iris/carbonio-shell`],
+				target: `https://${server.host}/`,
+				secure: false,
+				logLevel: 'debug'
+			},
+			{
+				context: [`${basePath}i18n/**`],
+				target: 'https://localhost:9000/',
+				pathRewrite: { [`${basePath}i18n/`]: '/shelli18n/' },
+				secure: false
+			}
+		]
 	},
 	module: {
 		rules: [
@@ -75,7 +99,8 @@ module.exports = {
 				exclude: [/node_modules\/tinymce/],
 				use: [
 					{
-						loader: MiniCssExtractPlugin.loader
+						loader: MiniCssExtractPlugin.loader,
+						options: {}
 					},
 					{
 						loader: require.resolve('css-loader'),
@@ -94,26 +119,11 @@ module.exports = {
 			},
 			{
 				test: /\.(png|jpg|gif|woff2?|svg|eot|ttf|ogg|mp3)$/,
-				exclude: /assets/,
+				include: [/src/],
 				use: [
 					{
 						loader: require.resolve('file-loader'),
 						options: {}
-					}
-				]
-			},
-			{
-				test: /\.properties$/,
-				use: [
-					{
-						loader: path.resolve(
-							process.cwd(),
-							'node_modules',
-							'@zextras',
-							'zapp-cli',
-							'utils',
-							'properties-loader.js'
-						)
 					}
 				]
 			}
@@ -124,6 +134,7 @@ module.exports = {
 			patterns: pathsToCopy
 		}),
 		new DefinePlugin({
+			WATCH_SERVER: JSON.stringify(server),
 			COMMIT_ID: JSON.stringify(commitHash.toString().trim()),
 			PACKAGE_VERSION: JSON.stringify(pkg.version),
 			PACKAGE_NAME: JSON.stringify(pkg.zapp.name),

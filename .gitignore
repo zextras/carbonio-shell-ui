@@ -8,3 +8,4 @@
 /coverage/cobertura-coverage.xml
 /.vscode/
 /.idea/
+.dev.json

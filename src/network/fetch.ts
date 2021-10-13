@@ -81,66 +81,62 @@ const handleResponse = <R>(
 	}
 	return (<SuccessSoapResponse<R>>res).Body[`${api}Response`] as R;
 };
-export const getSoapFetch = (
-	app: string,
-	set: SetState<AccountState>,
-	get: GetState<AccountState>
-) => <Request, Response>(api: string, body: Request): Promise<Response> =>
-	fetch(`/service/soap/${api}Request`, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({
-			Body: {
-				[`${api}Request`]: body
+export const getSoapFetch =
+	(app: string, set: SetState<AccountState>, get: GetState<AccountState>) =>
+	<Request, Response>(api: string, body: Request): Promise<Response> =>
+		fetch(`/service/soap/${api}Request`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
 			},
-			Header: {
-				context: {
-					_jsns: 'urn:zimbra',
-					notify: get().context?.notify?.[0]?.seq
-						? {
-								seq: get().context?.notify?.[0]?.seq
-						  }
-						: undefined,
-					session: get().context?.session ?? {},
-					account: getAccount(get().account as Account),
-					userAgent: {
-						name: userAgent,
-						version: get().zimbraVersion
+			body: JSON.stringify({
+				Body: {
+					[`${api}Request`]: body
+				},
+				Header: {
+					context: {
+						_jsns: 'urn:zimbra',
+						notify: get().context?.notify?.[0]?.seq
+							? {
+									seq: get().context?.notify?.[0]?.seq
+							  }
+							: undefined,
+						session: get().context?.session ?? {},
+						account: getAccount(get().account as Account),
+						userAgent: {
+							name: userAgent,
+							version: get().zimbraVersion
+						}
 					}
 				}
-			}
-		})
-	}) // TODO proper error handling
-		.then((res) => res?.json())
-		.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
-		.catch((e) =>
-			report(app === SHELL_APP_ID ? getShell()! : getApp(app)()?.core)(e)
-		) as Promise<Response>;
+			})
+		}) // TODO proper error handling
+			.then((res) => res?.json())
+			.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
+			.catch((e) =>
+				report(app === SHELL_APP_ID ? getShell()! : getApp(app)()?.core)(e)
+			) as Promise<Response>;
 
-export const getXmlSoapFetch = (
-	app: string,
-	set: SetState<AccountState>,
-	get: GetState<AccountState>
-) => <Request, Response>(api: string, body: Request): Promise<Response> =>
-	fetch(`/service/soap/${api}Request`, {
-		method: 'POST',
-		headers: {
-			'content-type': 'application/soap+xml'
-		},
-		body: `<?xml version="1.0" encoding="utf-8"?>
+export const getXmlSoapFetch =
+	(app: string, set: SetState<AccountState>, get: GetState<AccountState>) =>
+	<Request, Response>(api: string, body: Request): Promise<Response> =>
+		fetch(`/service/soap/${api}Request`, {
+			method: 'POST',
+			headers: {
+				'content-type': 'application/soap+xml'
+			},
+			body: `<?xml version="1.0" encoding="utf-8"?>
 		<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
 			<soap:Header><context xmlns="urn:zimbra"><userAgent name="${userAgent}" version="${
-			get().zimbraVersion
-		}"/>${getXmlSession(get().context)}${getXmlAccount(
-			get().account
-		)}<format type="js"/></context></soap:Header>
+				get().zimbraVersion
+			}"/>${getXmlSession(get().context)}${getXmlAccount(
+				get().account
+			)}<format type="js"/></context></soap:Header>
 			<soap:Body>${body}</soap:Body>
 		</soap:Envelope>`
-	}) // TODO proper error handling
-		.then((res) => res?.json())
-		.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
-		.catch((e) =>
-			report(app === SHELL_APP_ID ? getShell()! : getApp(app)()?.core)(e)
-		) as Promise<Response>;
+		}) // TODO proper error handling
+			.then((res) => res?.json())
+			.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
+			.catch((e) =>
+				report(app === SHELL_APP_ID ? getShell()! : getApp(app)()?.core)(e)
+			) as Promise<Response>;

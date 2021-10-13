@@ -1,13 +1,19 @@
 {
     "changelog": {
         "cancel": "Abbrechen",
-        "close": "Schließen"
+        "close": "Schließen",
+        "remind-later": "Später erinnern",
+        "title": "Änderungsprotokoll"
     },
     "login": {
         "help": "Hilfe",
         "login": "Login",
         "password": "Passwort",
-        "username": "Benutzername"
+        "username": "Benutzername",
+        "incorrect": "Der Benutzername oder das Passwort ist falsch",
+        "remember_me": "Login merken",
+        "supported_browsers": "Unterstützte Browser",
+        "verify_caps_lock": "Überprüfen Sie, dass die FESTSTELLTASTE nicht eingestellt ist, und geben Sie den aktuellen Benutzernamen und das Passwort erneut ein"
     },
     "logout": "Logout",
     "new": "Neu",
@@ -37,5 +43,6 @@
                 "busy": "Beschäftigt"
             }
         }
-    }
+    },
+    "copyright": "Urheberrecht"
 }

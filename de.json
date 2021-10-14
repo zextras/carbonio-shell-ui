@@ -19,7 +19,14 @@
     "new": "Neu",
     "search": {
         "app": "Suchen",
-        "module": "Module"
+        "module": "Module",
+        "active_input_label": "Trennen Sie Suchwörter mit einem Komma oder TAB",
+        "app_description": "Suchmodul",
+        "clear": "Sucheingabe löschen",
+        "edit_to_start": "Bearbeiten Sie Ihre Suche, um eine neue zu starten",
+        "idle_input_label": "Suchen in {{module}}",
+        "results_for": "Ergebnisse für:",
+        "start": "Suche starten"
     },
     "settings": {
         "app": "Einstellungen",
@@ -42,7 +49,23 @@
             "status": {
                 "busy": "Beschäftigt"
             }
+        },
+        "app_description": "Modul Einstellungen"
+    },
+    "copyright": "Urheberrecht",
+    "logout_modal": {
+        "warning": "Sie werden abgemeldet",
+        "confirm": "Melde mich ab"
+    },
+    "message": {
+        "snackbar": {
+            "settings_saved": "Änderungen korrekt gespeichert"
         }
     },
-    "copyright": "Urheberrecht"
+    "module": {
+        "app": {
+            "version": "Versionen der Applikationen"
+        }
+    },
+    "new_tab": "Neuer Reiter"
 }

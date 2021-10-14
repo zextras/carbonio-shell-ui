@@ -6,6 +6,9 @@
         "title": "Title"
     },
     "copyright": "Copyright",
+    "label": {
+        "clear_search_query": "CLEAR SEARCH QUERY"
+    },
     "login": {
         "help": "Help",
         "incorrect": "The username or password is incorrect",
@@ -41,7 +44,6 @@
         "edit_to_start": "Edit your search to start a new one",
         "idle_input_label": "Search in {{module}}",
         "module": "Module",
-        "results_for": "Results for:",
         "start": "Start search"
     },
     "settings": {

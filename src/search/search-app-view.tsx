@@ -13,6 +13,7 @@ import { map, filter } from 'lodash';
 import React, { FC, useMemo } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Container, Text, Chip, Padding, Divider, Button } from '@zextras/zapp-ui';
+import { useTranslation } from 'react-i18next';
 import { useApps } from '../app-store/hooks';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -23,27 +24,49 @@ import { SEARCH_APP_ID } from '../constants';
 // eslint-disable-next-line @typescript-eslint/ban-types
 const useQuery = (): [Array<any>, Function] => useSearchStore((s) => [s.query, s.updateQuery]);
 
-const ResultsHeader: FC<{ query: Array<any>; label: string }> = ({ query, label }) => (
-	<>
-		<Container
-			orientation="horizontal"
-			mainAlignment="flex-start"
-			background="gray5"
-			height="fit"
-			minHeight="48px"
-			padding={{ horizontal: 'large', vertical: 'medium' }}
-			style={{ flexWrap: 'wrap' }}
-		>
-			<Text color="secondary">{label}</Text>
-			{map(query, (q, i) => (
-				<Padding key={`${i}${q.label}`} all="extrasmall">
-					<Chip {...q} background="gray2" />
-				</Padding>
-			))}
-		</Container>
-		<Divider color="gray3" />
-	</>
-);
+const ResultsHeader: FC<{ label: string }> = ({ label }) => {
+	const [t] = useTranslation();
+	const [query, updateQuery] = useQuery();
+	return (
+		<>
+			<Container
+				orientation="horizontal"
+				mainAlignment="flex-start"
+				width="100%"
+				background="gray5"
+				height="fit"
+				minHeight="48px"
+				padding={{ horizontal: 'large', vertical: 'medium' }}
+				style={{ flexWrap: 'wrap' }}
+			>
+				<Container width="85%" orientation="horizontal" mainAlignment="flex-start">
+					<Text color="secondary">{label}</Text>
+
+					{map(query, (q, i) => (
+						<Padding key={`${i}${q.label}`} all="extrasmall">
+							<Chip {...q} background="gray2" />
+						</Padding>
+					))}
+				</Container>
+				{query?.length > 0 && (
+					<Container width="15%" mainAlignment="flex-end">
+						<Button
+							label={t('label.clear_search_query', 'CLEAR SEARCH QUERY')}
+							icon="CloseOutline"
+							color="primary"
+							size="large"
+							type="ghost"
+							onClick={(): any => {
+								updateQuery([]);
+							}}
+						/>
+					</Container>
+				)}
+			</Container>
+			<Divider color="gray3" />
+		</>
+	);
+};
 
 export const SearchAppView: FC = () => {
 	const apps = useApps();

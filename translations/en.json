@@ -1,28 +1,28 @@
 {
     "changelog": {
-        "cancel": "Cancel",
-        "close": "Close",
-        "remind_later": "Remind Later",
-        "title": "Title"
+        "cancel": "",
+        "close": "",
+        "remind_later": "",
+        "title": ""
     },
-    "copyright": "Copyright",
+    "copyright": "",
     "label": {
         "clear_search_query": "CLEAR SEARCH QUERY"
     },
     "login": {
-        "help": "Help",
-        "incorrect": "The username or password is incorrect",
+        "help": "",
+        "incorrect": "",
         "login": "Login",
         "password": "Password",
         "remember_me": "Remember me",
-        "supported_browsers": "Supported browsers",
+        "supported_browsers": "Supported browsers:",
         "username": "Username",
-        "verify_caps_lock": "Verify that CAPS LOCK is not on, and then retype the current username and password"
+        "verify_caps_lock": ""
     },
-    "logout": "Logout",
+    "logout": "",
     "logout_modal": {
-        "confirm": "Log me out",
-        "warning": "You are going to be logged-out"
+        "confirm": "",
+        "warning": ""
     },
     "message": {
         "snackbar": {

@@ -22,7 +22,6 @@ import {
 	useScreenMode,
 	MultiButton
 } from '@zextras/zapp-ui';
-import { UserQuota } from './user-quota';
 import { useAppStore } from '../app-store';
 import { SearchBar } from '../search/search-bar';
 
@@ -94,6 +93,12 @@ export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, childr
 						onClick={primaryAction?.click}
 						items={secondaryActions}
 						disabled={isMultiButtonDisabled}
+						buttonFontSize="small"
+						buttonContainerPadding={{ all: 'extrasmall' }}
+						// buttonlabelPadding={{ all: 'extrasmall' }}
+						iconPadding={{ all: 'extrasmall' }}
+						padding={{ all: 'small' }}
+						// iconCustomSize={{ iconSize: 'medium', iconPadding: 'extrasmall' }}
 					/>
 				</Padding>
 				<Responsive mode="desktop">
@@ -106,9 +111,7 @@ export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, childr
 			</Container>
 			<Container orientation="horizontal" width="25%" mainAlignment="flex-end">
 				<Responsive mode="desktop">
-					<UserQuota />
 					{/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-					<IconButton icon="BellOutline" iconColor="text" onClick={() => {}} />
 					{children}
 				</Responsive>
 				<Responsive mode="mobile">

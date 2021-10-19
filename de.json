@@ -56,7 +56,9 @@
                 "end_time": "Endzeit:",
                 "external_senders": "Externe Absender",
                 "out_of_office": "Nicht im Büro",
-                "start_time": "Startzeit:"
+                "start_time": "Startzeit:",
+                "out_of_office_status": "Abwesenheitsstatus:",
+                "send_auto_reply_period": "Automatische Antworten während des folgenden Zeitraums senden:"
             },
             "status": {
                 "busy": "Beschäftigt",
@@ -73,7 +75,8 @@
                 "create_appointment": "Kalendertermin",
                 "settings_label": "Abwesenheitseinstellungen",
                 "time_period": "Zeitraum"
-            }
+            },
+            "send_auto_replies": "Automatische Antworten senden"
         },
         "app_description": "Modul Einstellungen"
     },
@@ -95,5 +98,9 @@
     "new_tab": "Neuer Reiter",
     "snackbar": {
         "error": "Etwas ist schiefgegangen, bitte versuchen Sie es erneut"
+    },
+    "user_quota": {
+        "limited": "{{quota}}% Speicherplatz genutzt",
+        "unlimited": "Unbegrenzter Speicherplatz verfügbar"
     }
 }

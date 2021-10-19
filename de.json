@@ -54,10 +54,13 @@
                 "auto_reply_message_external": "Automatische Antwort für externe Absender:",
                 "create_appointment": "Termin erstellen:",
                 "end_time": "Endzeit:",
-                "external_senders": "Externe Absender"
+                "external_senders": "Externe Absender",
+                "out_of_office": "Nicht im Büro",
+                "start_time": "Startzeit:"
             },
             "status": {
-                "busy": "Beschäftigt"
+                "busy": "Beschäftigt",
+                "out_of_office": "Nicht im Büro"
             },
             "do_not_send_auto_replies": "Keine automatischen Antworten versenden",
             "external_senders": {
@@ -89,5 +92,8 @@
             "version": "Versionen der Applikationen"
         }
     },
-    "new_tab": "Neuer Reiter"
+    "new_tab": "Neuer Reiter",
+    "snackbar": {
+        "error": "Etwas ist schiefgegangen, bitte versuchen Sie es erneut"
+    }
 }

@@ -24,6 +24,9 @@ import {
 } from '@zextras/zapp-ui';
 import { useAppStore } from '../app-store';
 import { SearchBar } from '../search/search-bar';
+import styled from 'styled-components';
+
+const MultiButtonEl = styled(MultiButton)``;
 
 export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, children }) {
 	const history = useHistory();
@@ -86,19 +89,18 @@ export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, childr
 				</Responsive>
 				<Logo size="large" style={{ minWidth: 'max-content' }} />
 				<Padding horizontal="large">
-					<MultiButton
+					<MultiButtonEl
 						style={{ height: '44px' }}
 						background="primary"
 						label={t('new', 'New')}
 						onClick={primaryAction?.click}
 						items={secondaryActions}
 						disabled={isMultiButtonDisabled}
-						buttonFontSize="small"
-						buttonContainerPadding={{ all: 'extrasmall' }}
-						// buttonlabelPadding={{ all: 'extrasmall' }}
-						iconPadding={{ all: 'extrasmall' }}
-						padding={{ all: 'small' }}
-						// iconCustomSize={{ iconSize: 'medium', iconPadding: 'extrasmall' }}
+						// buttonFontSize="small"
+						// buttonContainerPadding={{ all: 'none' }}
+						// buttonLabelPadding={{ all: 'large' }}
+						// iconPadding={{ right: 'small' }}
+						// padding={{ all: 'large' }}
 					/>
 				</Padding>
 				<Responsive mode="desktop">
@@ -110,10 +112,7 @@ export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, childr
 				</Responsive>
 			</Container>
 			<Container orientation="horizontal" width="25%" mainAlignment="flex-end">
-				<Responsive mode="desktop">
-					{/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-					{children}
-				</Responsive>
+				<Responsive mode="desktop">{children}</Responsive>
 				<Responsive mode="mobile">
 					<Container
 						orientation="horizontal"

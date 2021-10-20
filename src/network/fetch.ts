@@ -58,6 +58,7 @@ const handleResponse = <R>(
 ): R => {
 	if (res?.Body?.Fault) {
 		if ((<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Code === 'service.AUTH_REQUIRED') {
+			console.log('what?');
 			goToLogin();
 		}
 		throw new Error(

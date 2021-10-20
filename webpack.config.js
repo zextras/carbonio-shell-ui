@@ -13,9 +13,8 @@ const babelRC = require('./babel.config');
 
 const basePath = `/static/iris/carbonio-shell/${commitHash}/`;
 
-const server = require('./.dev.json');
-
-console.log('Building Shell using base path: ');
+const server = `https://${process.env.PROXY_SERVER}/`;
+console.log(`Building Shell in ${process.argv.mode} using base path: `);
 console.log(` ${basePath} `);
 /**
  * The flavor of the build
@@ -46,11 +45,11 @@ switch (flavor.toUpperCase()) {
 }
 
 module.exports = {
-	mode: flavor.toUpperCase() !== 'APP' ? 'development' : 'production',
+	mode: server || flavor.toUpperCase() !== 'APP' ? 'development' : 'production',
 	entry: {
 		index: indexFile
 	},
-	devtool: server ? 'eval' : 'source-map',
+	devtool: 'source-map',
 	output: {
 		path: path.resolve(process.cwd(), 'dist'),
 		filename: flavor.toUpperCase() !== 'APP' ? '[name].js' : '[name].[chunkhash:8].js',
@@ -63,26 +62,37 @@ module.exports = {
 		alias: {}
 	},
 	devServer: {
-		client: {
-			overlay: false
-		},
+		// client: {
+		// 	overlay: false
+		// },
 		port: 9000,
-		compress: true,
-		allowedHosts: 'all',
+		historyApiFallback: true,
+		// compress: true,
+		// allowedHosts: 'all',
 		https: true,
-		open: [basePath],
+		open: ['/static/login', basePath],
 		proxy: [
 			{
-				context: ['/service/**', `/static/**`, '!/static/login', `!/static/iris/carbonio-shell`],
-				target: `https://${server.host}/`,
-				secure: false,
-				logLevel: 'debug'
+				context: ['/static/login/**'],
+				target: server,
+				changeOrigin: true,
+				autoRewrite: true,
+				cookieDomainRewrite: {
+					//	[server]: 'localhost:9000'
+					'*': server
+				}
 			},
 			{
-				context: [`${basePath}i18n/**`],
-				target: 'https://localhost:9000/',
-				pathRewrite: { [`${basePath}i18n/`]: '/shelli18n/' },
-				secure: false
+				context: ['**', '!/static/iris/carbonio-shell/**'],
+				target: server,
+				ws: true,
+				secure: false,
+				// changeOrigin: true,
+				// autoRewrite: true,
+				// logLevel: 'debug',
+				cookieDomainRewrite: {
+					[server]: 'localhost:9000'
+				}
 			}
 		]
 	},

@@ -1,3 +1,9 @@
 export const goToLogin: () => void = () => {
-	window.location.assign(`${window.origin}/static/login`);
+	console.log('bye!');
+	debugger;
+	window?.location?.assign?.(
+		`${window?.location?.origin}${
+			window?.location?.port ? `:${window?.location?.port}` : ''
+		}/static/login`
+	);
 };

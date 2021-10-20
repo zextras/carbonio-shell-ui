@@ -114,9 +114,7 @@ export default function ShellMobileNav({ mobileNavIsOpen, menuTree }) {
 					</Container>
 					<Container width="fill" height="fit" orientation="vertical" mainAlignment="flex-end">
 						<Accordion items={menuTree} />
-						<Padding vertical="medium">
-							<UserQuota />
-						</Padding>
+						<Padding vertical="medium">{/* <UserQuota /> */}</Padding>
 					</Container>
 				</Container>
 			</Collapse>

@@ -10,10 +10,10 @@
  */
 
 import React, { useMemo } from 'react';
-import { map, reduce } from 'lodash';
+import { map } from 'lodash';
 import styled from 'styled-components';
 import { Route, Switch } from 'react-router-dom';
-import { Container, Accordion, IconButton, Padding, Tooltip, Icon } from '@zextras/zapp-ui';
+import { Container, Accordion, Padding, Tooltip, Icon } from '@zextras/zapp-ui';
 
 import { useUserAccounts } from '../store/shell-store-hooks';
 import { useApps } from '../app-store/hooks';

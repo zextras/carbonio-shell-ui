@@ -49,6 +49,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 				id: account.id,
 				label: account?.displayName ?? account?.name,
 				open: true,
+				accountOwner: true,
 				items: map(apps, (app) => ({
 					id: app.core.package,
 					label: app.core.name,
@@ -77,7 +78,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 			>
 				<Switch>
 					{sidebarIsOpen ? (
-						<Accordion items={items} accountOwner />
+						<Accordion items={items} />
 					) : (
 						<>
 							<Tooltip label={accounts[0].displayName ?? accounts[0].name} placement="right">

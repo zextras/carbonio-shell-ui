@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.59](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.58...v0.1.0-beta.59) (2021-10-20)
+
+
+### Bug Fixes
+
+* temporarily fixed Jenkinsfile error ([fe099dd](https://bitbucket.org/zextras/zapp-shell/commit/fe099dd8a216ba0f57e21b9ba6bf13e018549a9c))
+* the maximum height of the app does not exceed screen view ([a4790c5](https://bitbucket.org/zextras/zapp-shell/commit/a4790c51b584ea7e54ed35196054c0c57914ee2b))
+
 ## [0.1.0-beta.58](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.57...v0.1.0-beta.58) (2021-10-04)
 
 

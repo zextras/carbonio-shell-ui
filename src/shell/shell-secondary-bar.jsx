@@ -10,10 +10,10 @@
  */
 
 import React, { useMemo } from 'react';
-import { map, reduce } from 'lodash';
+import { map } from 'lodash';
 import styled from 'styled-components';
 import { Route, Switch } from 'react-router-dom';
-import { Container, Accordion, IconButton, Padding, Tooltip, Icon } from '@zextras/zapp-ui';
+import { Container, Accordion, Padding, Tooltip, Icon } from '@zextras/zapp-ui';
 
 import { useUserAccounts } from '../store/shell-store-hooks';
 import { useApps } from '../app-store/hooks';
@@ -48,12 +48,14 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 			map(accounts, (account) => ({
 				id: account.id,
 				label: account?.displayName ?? account?.name,
-				icon: 'PersonOutline',
+				level: 0,
+				textProps: { weight: 'bold' },
 				open: true,
 				items: map(apps, (app) => ({
 					id: app.core.package,
 					label: app.core.name,
 					icon: app.icon,
+					level: 0,
 					sidebar: app.views?.sidebar,
 					sidebarIsOpen,
 					CustomComponent: SidebarSwitch

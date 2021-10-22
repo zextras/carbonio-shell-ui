@@ -97,7 +97,6 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 										icon: app.icon,
 										sidebar: app.views?.sidebar,
 										sidebarIsOpen,
-										// textProps: `weight="bold"`,
 										CustomComponent: SidebarSwitch
 									}}
 								/>

@@ -137,10 +137,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 	useEffect(() => {
 		setModuleSelection((current) =>
 			currentApp && currentApp !== SEARCH_APP_ID
-				? {
-						label: 'Contacts',
-						value: 'com_zextras_zapp_contacts'
-				  }
+				? find(moduleSelectorItems, (mod) => mod.value === currentApp) ?? moduleSelectorItems[0]
 				: current ?? moduleSelectorItems[0]
 		);
 	}, [currentApp, moduleSelectorItems]);

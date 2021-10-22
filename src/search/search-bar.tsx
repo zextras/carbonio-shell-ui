@@ -84,7 +84,6 @@ const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus
 export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secondaryActions }) => {
 	const [searchIsEnabled, setSearchIsEnabled] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
-	const theme = useContext(ThemeContext) as unknown;
 	const [t] = useTranslation();
 	const [storedValue, setStoredValue] = useLocalStorage('search_suggestions', []);
 	const apps = useApps();

@@ -9,11 +9,10 @@ const commitHash = require('child_process').execSync('git rev-parse HEAD').toStr
 const pkg = require('./package.json');
 
 const babelRC = require('./babel.config');
-// const babelRCServiceworker = require('./babel.config.serviceworker.js');
 
 const basePath = `/static/iris/carbonio-shell/${commitHash}/`;
 
-const server = `https://${process.env.PROXY_SERVER}/`;
+const server = `https://${process.env.PROXY_SERVER || '127.0.0.1:8443'}/`;
 console.log(`Building Shell in ${process.argv.mode} using base path: `);
 console.log(` ${basePath} `);
 /**
@@ -62,35 +61,27 @@ module.exports = {
 		alias: {}
 	},
 	devServer: {
-		// client: {
-		// 	overlay: false
-		// },
 		port: 9000,
 		historyApiFallback: true,
-		// compress: true,
-		// allowedHosts: 'all',
 		https: true,
-		open: ['/static/login', basePath],
+		open: [basePath],
 		proxy: [
 			{
 				context: ['/static/login/**'],
 				target: server,
-				changeOrigin: true,
-				autoRewrite: true,
+				secure: false,
 				cookieDomainRewrite: {
-					//	[server]: 'localhost:9000'
-					'*': server
+					'*': server,
+					[server]: 'localhost:9000'
 				}
 			},
 			{
-				context: ['**', '!/static/iris/carbonio-shell/**'],
+				context: ['!/static/iris/carbonio-shell/**/*'],
 				target: server,
-				ws: true,
 				secure: false,
-				// changeOrigin: true,
-				// autoRewrite: true,
-				// logLevel: 'debug',
+				logLevel: 'debug',
 				cookieDomainRewrite: {
+					'*': server,
 					[server]: 'localhost:9000'
 				}
 			}

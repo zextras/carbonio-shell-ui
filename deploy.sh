@@ -1,1 +1,0 @@
-ssh -t root@10.66.64.49 'apt update; apt upgrade -y carbonio-shell'

@@ -3,6 +3,7 @@ import { SHELL_APP_ID } from '../constants';
 import { useAppStore } from '../store/app/store';
 import { normalizeAccount } from '../store/account/normalization';
 import { AccountState, GetInfoResponse, Tag, ZextrasModule } from '../../types';
+import { goToLogin } from './go-to-login';
 
 export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>): Promise<void> =>
 	get()
@@ -24,4 +25,5 @@ export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>
 		.catch((err: unknown) => {
 			console.log('there was an error checking user data');
 			console.error(err);
+			goToLogin();
 		});

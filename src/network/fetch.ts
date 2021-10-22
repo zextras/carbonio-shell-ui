@@ -58,7 +58,6 @@ const handleResponse = <R>(
 ): R => {
 	if (res?.Body?.Fault) {
 		if ((<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Code === 'service.AUTH_REQUIRED') {
-			console.log('what?');
 			goToLogin();
 		}
 		throw new Error(
@@ -138,6 +137,7 @@ export const getXmlSoapFetch =
 		}) // TODO proper error handling
 			.then((res) => res?.json())
 			.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
-			.catch((e) =>
-				report(app === SHELL_APP_ID ? getShell()! : getApp(app)()?.core)(e)
-			) as Promise<Response>;
+			.catch((e) => {
+				report(app === SHELL_APP_ID ? getShell()! : getApp(app)()?.core)(e);
+				throw e;
+			}) as Promise<Response>;

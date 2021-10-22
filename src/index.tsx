@@ -10,7 +10,6 @@
  */
 
 import './index.css';
-
 import React, { Suspense } from 'react';
 import { render } from 'react-dom';
 import LoadingView from './bootstrap/loading-view';

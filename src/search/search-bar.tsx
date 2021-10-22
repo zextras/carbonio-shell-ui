@@ -67,14 +67,14 @@ const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus
 			style={{ borderRight: `1px solid ${theme.palette.gray4.regular}` }}
 		>
 			<Row takeAvailableSpace mainAlignment="unset" padding={{ left: 'small' }}>
-				<Text size="medium" color={open || focus ? 'primary' : 'text'}>
+				<Text size="small" color={open || focus ? 'primary' : 'text'}>
 					{selected[0]?.label}
 				</Text>
 			</Row>
 			<Icon
 				size="large"
 				icon={open ? 'ChevronUpOutline' : 'ChevronDownOutline'}
-				color={open || focus ? 'primary' : 'secondary'}
+				color={open || focus ? 'primary' : 'text'}
 				style={{ alignSelf: 'center' }}
 			/>
 		</Container>
@@ -90,7 +90,10 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 	const apps = useApps();
 	const history = useHistory();
 	const { updateQuery, updateModule, query } = useSearchStore();
-	const [moduleSelection, setModuleSelection] = useState<{ value: string; label: string }>();
+	const [moduleSelection, setModuleSelection] = useState<{
+		value: string;
+		label: string;
+	}>();
 	const [changedBySearchBar, setChangedBySearchBar] = useState(false);
 	const moduleSelectorItems = useMemo<
 		Array<{ label: string; value: string; customComponent: JSX.Element }>
@@ -328,6 +331,9 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 							selection={moduleSelection}
 							onChange={onSelectionChange}
 							LabelFactory={SelectLabelFactory}
+							style={{ fontSize: '14px' }}
+							color="text"
+							fontSize="small"
 						/>
 					</Container>
 					<StyledContainer orientation="horizontal">
@@ -389,7 +395,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 				>
 					<IconButton
 						icon="Search"
-						disabled={!searchIsEnabled && inputState.length > 0}
+						disabled={!(searchIsEnabled && inputState.length > 0)}
 						backgroundColor="primary"
 						iconColor="gray6"
 						onClick={onSearch}

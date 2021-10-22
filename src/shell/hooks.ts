@@ -13,7 +13,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { skip } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { LocationDescriptor } from 'history';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -84,15 +84,22 @@ export const getUseReplaceHistoryCallback = (appId: string) => (): ((
 	location: LocationDescriptor
 ) => void) => {
 	const history = useHistory();
+	const loc = useLocation();
 	return useCallback(
 		(location: LocationDescriptor) => {
-			if (typeof location === 'string') {
+			if (loc.pathname.includes('/search/')) {
+				if (typeof location === 'string') {
+					history.replace(`/search/${appId}${location}`);
+				} else {
+					history.replace({ ...location, pathname: `/search/${appId}${location.pathname}` });
+				}
+			} else if (typeof location === 'string') {
 				history.replace(`/${appId}${location}`);
 			} else {
 				history.replace({ ...location, pathname: `/${appId}${location.pathname}` });
 			}
 		},
-		[history]
+		[history, loc.pathname]
 	);
 };
 

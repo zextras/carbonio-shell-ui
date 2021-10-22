@@ -1,4 +1,7 @@
 {
+    "label": {
+        "clear_search_query": "CLEAR SEARCH QUERY"
+    },
     "message": {
         "snackbar": {
             "settings_saved": "Edits saved correctly"
@@ -12,24 +15,11 @@
     "new": "New",
     "new_tab": "New Tab",
     "search": {
-        "active_input_label": "Separate keywords with a comma or TAB",
-        "app": "Search",
-        "clear": "Clear search input",
-        "edit_to_start": "Edit your search to start a new one",
-        "idle_input_label": "Search in {{module}}",
-        "leave": {
-            "title": "Are you sure you want to leave this module?",
-            "warning": "The current search results will be lost"
-        },
-        "module": "Module",
-        "results_for": "{{count}} Result for:",
-        "results_for_plural": "",
-        "start": "Start search"
+        "app": "Search"
     },
     "settings": {
         "app": "Settings",
         "button": {
-            "confirm": "Confirm",
             "primary": "Save",
             "secondary": "Cancel"
         },
@@ -44,10 +34,6 @@
             "theme_options": "Theme Options"
         },
         "general_tab": "General",
-        "leave": {
-            "title": "Are you sure you want to leave this page?",
-            "warning": "Any unsaved change will be lost"
-        },
         "out_of_office": {
             "do_not_send_auto_replies": "Do not send auto replies",
             "external_senders": {

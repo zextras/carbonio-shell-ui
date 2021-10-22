@@ -48,12 +48,14 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 			map(accounts, (account) => ({
 				id: account.id,
 				label: account?.displayName ?? account?.name,
+				level: 0,
+				textProps: { weight: 'bold' },
 				open: true,
-				accountOwner: true,
 				items: map(apps, (app) => ({
 					id: app.core.package,
 					label: app.core.name,
 					icon: app.icon,
+					level: 0,
 					sidebar: app.views?.sidebar,
 					sidebarIsOpen,
 					CustomComponent: SidebarSwitch
@@ -95,6 +97,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 										icon: app.icon,
 										sidebar: app.views?.sidebar,
 										sidebarIsOpen,
+										// textProps: `weight="bold"`,
 										CustomComponent: SidebarSwitch
 									}}
 								/>

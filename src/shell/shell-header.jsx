@@ -22,7 +22,6 @@ import {
 	useScreenMode,
 	MultiButton
 } from '@zextras/zapp-ui';
-import { UserQuota } from './user-quota';
 import { useAppStore } from '../app-store';
 import { SearchBar } from '../search/search-bar';
 
@@ -105,12 +104,7 @@ export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, childr
 				</Responsive>
 			</Container>
 			<Container orientation="horizontal" width="25%" mainAlignment="flex-end">
-				<Responsive mode="desktop">
-					<UserQuota />
-					{/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
-					<IconButton icon="BellOutline" iconColor="text" onClick={() => {}} />
-					{children}
-				</Responsive>
+				<Responsive mode="desktop">{children}</Responsive>
 				<Responsive mode="mobile">
 					<Container
 						orientation="horizontal"

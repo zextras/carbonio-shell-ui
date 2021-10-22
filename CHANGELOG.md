@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.60](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.59...v0.1.0-beta.60) (2021-10-22)
+
+
+### Features
+
+* graphical enhancements ([1acb265](https://bitbucket.org/zextras/zapp-shell/commit/1acb2657f7766ed4481fa6add828658237ed9816))
+
+
+### Bug Fixes
+
+* accordion levels and textProps ([b7d8b0c](https://bitbucket.org/zextras/zapp-shell/commit/b7d8b0c49eb57ad9a8cb40b6b2354c90fe5188a6))
+
 ## [0.1.0-beta.59](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.58...v0.1.0-beta.59) (2021-10-20)
 
 

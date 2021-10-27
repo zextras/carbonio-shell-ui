@@ -23,27 +23,28 @@ export default function AppLoaderMounter() {
 			reduce(
 				apps,
 				(acc, app, idx) => {
-					if (app.class && !find(acc.mounted, (i) => i === app.core.name)) {
+					if (app.class) {
 						const App = memo(app.class);
-						// eslint-disable-next-line no-param-reassign
-						acc.list.push(
-							<AppContextProvider key={app.core.name} pkg={app.core.name}>
-								<App key={app.core.name} />
-							</AppContextProvider>
-						);
-						acc.mounted.push(app.core.name);
-						if (idx === 0) {
-							history.replace(`/${app.core.route}/`);
+						if (!find(acc.mounted, (i) => i === app.core.name)) {
+							// eslint-disable-next-line no-param-reassign
+							acc.list.push(
+								<AppContextProvider key={app.core.name} pkg={app.core.name}>
+									<App key={app.core.name} />
+								</AppContextProvider>
+							);
+							acc.mounted.push(app.core.name);
+							if (idx === 0) {
+								history.replace(`/${app.core.route}/`);
+							}
+						} else if (FLAVOR === 'NPM' && cliSettings?.app_package?.name === app.core.name) {
+							const i = findIndex(acc.list, (a) => a.key === app.core.name);
+							// eslint-disable-next-line no-param-reassign
+							acc.list[i] = (
+								<AppContextProvider key={app.core.name} pkg={app.core.name}>
+									<App key={app.core.name} />
+								</AppContextProvider>
+							);
 						}
-						// } else if (app.class && FLAVOR === 'NPM') {
-						// 	const i = findIndex(acc.list, (a) => a.key === app.core.name);
-						// 	const App = memo(app.class);
-						// 	// eslint-disable-next-line no-param-reassign
-						// 	acc.list[i] = (
-						// 		<AppContextProvider key={app.core.name} pkg={app.core.name}>
-						// 			<App key={app.core.name} />
-						// 		</AppContextProvider>
-						// 	);
 					}
 					return acc;
 				},

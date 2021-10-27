@@ -21,7 +21,7 @@ import ShellContext from './shell-context';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { BoardSetterContext, BoardValueContext } from './boards/board-context';
-import { SEARCH_APP_ID } from '../../types';
+import { SEARCH_APP_ID } from '../constants';
 
 export { useUserAccount, useUserAccounts, useUserSettings } from '../store/account/hooks';
 export const getUseAddBoardCallback =

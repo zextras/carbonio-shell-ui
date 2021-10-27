@@ -36,8 +36,6 @@ import { loadApps, unloadAllApps } from './app/load-apps';
 
 function bootstrapper(onBeforeBoot) {
 	// const { shellStore, shellStorePersistor } = createShellStore(true);
-	console.log('here2');
-
 	const i18nFactory = new I18nFactory();
 	const storeFactory = new StoreFactory();
 

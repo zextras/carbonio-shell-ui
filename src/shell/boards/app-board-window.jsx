@@ -139,8 +139,8 @@ export default function AppBoardWindow() {
 			reduce(
 				shellBoards,
 				(r, v, k) => {
-					const [t, p] = r;
-					t.push({ key: k, ...v });
+					const [_t, p] = r;
+					_t.push({ key: k, ...v });
 					p.push(<AppBoard key={k} idx={k} />);
 					return r;
 				},

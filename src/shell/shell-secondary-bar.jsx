@@ -10,10 +10,10 @@
  */
 
 import React, { useMemo } from 'react';
-import { find, map, reduce } from 'lodash';
+import { find, map } from 'lodash';
 import styled from 'styled-components';
 import { Route, Switch } from 'react-router-dom';
-import { Container, Accordion, IconButton, Padding, Tooltip, Icon } from '@zextras/zapp-ui';
+import { Container, Accordion, Padding, Tooltip, Icon } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
 import { useUserAccount } from '../store/account/hooks';
 import { useApps } from '../store/app/hooks';
@@ -67,7 +67,8 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 			{
 				id: account?.id,
 				label: account?.displayName ?? account?.name,
-				icon: 'PersonOutline',
+				level: 0,
+				textProps: { weight: 'bold' },
 				open: true,
 				items: [
 					...map(apps, (app) => ({
@@ -75,6 +76,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 						route: app.core.route,
 						label: app.core.display,
 						icon: app.icon,
+						level: 0,
 						sidebar: app.views?.sidebar,
 						sidebarIsOpen,
 						CustomComponent: SidebarSwitch
@@ -84,6 +86,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 						route: SETTINGS_APP_ID,
 						label: t('settings.app', 'Settings'),
 						icon: 'SettingsModOutline',
+						level: 0,
 						sidebarIsOpen,
 						CustomComponent: SettingsSidebarRoute
 					},
@@ -92,6 +95,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 						route: SEARCH_APP_ID,
 						label: t('search.app', 'Search'),
 						icon: 'SearchModOutline',
+						level: 0,
 						sidebarIsOpen,
 						CustomComponent: () => null
 					}

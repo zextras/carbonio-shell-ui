@@ -1,4 +1,7 @@
 {
+    "label": {
+        "clear_search_query": "CLEAR SEARCH QUERY"
+    },
     "message": {
         "snackbar": {
             "settings_saved": "Edits saved correctly"

@@ -23,7 +23,7 @@ export default class StoreFactory {
 	private _cache: { [pkgName: string]: Store<any> } = {};
 
 	getStoreForApp(pkg: ZextrasModule): Store<any> {
-		if (this._cache[pkg.name]) return this._cache[pkg.name];
+		if (this._cache[pkg.name]) return this._cache[pkg?.name];
 		const store = configureStore({
 			devTools:
 				FLAVOR === 'NPM'
@@ -41,7 +41,7 @@ export default class StoreFactory {
 				_useless: _uselessSlice.reducer
 			}
 		});
-		this._cache[pkg.name] = store;
+		this._cache[pkg?.name] = store;
 		return store;
 	}
 }

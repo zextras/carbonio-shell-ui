@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 import React, { useState, memo, useEffect } from 'react';
-import { find, reduce } from 'lodash';
+import { find, findIndex, reduce } from 'lodash';
 import { useHistory } from 'react-router';
 import { useAppList } from '../../store/app/hooks';
 import AppContextProvider from './app-context-provider';
@@ -19,7 +19,7 @@ export default function AppLoaderMounter() {
 	const history = useHistory();
 	const [classes, setClasses] = useState({ list: [], mounted: [] });
 	useEffect(() => {
-		setClasses((c) =>
+		setClasses((old) =>
 			reduce(
 				apps,
 				(acc, app, idx) => {
@@ -35,14 +35,22 @@ export default function AppLoaderMounter() {
 						if (idx === 0) {
 							history.replace(`/${app.core.route}/`);
 						}
+						// } else if (app.class && FLAVOR === 'NPM') {
+						// 	const i = findIndex(acc.list, (a) => a.key === app.core.name);
+						// 	const App = memo(app.class);
+						// 	// eslint-disable-next-line no-param-reassign
+						// 	acc.list[i] = (
+						// 		<AppContextProvider key={app.core.name} pkg={app.core.name}>
+						// 			<App key={app.core.name} />
+						// 		</AppContextProvider>
+						// 	);
 					}
 					return acc;
 				},
-				c
+				old
 			)
 		);
 	}, [apps, history]);
-
 	return (
 		<div
 			data-testid="app-mounter"

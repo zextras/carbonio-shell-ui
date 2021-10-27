@@ -77,7 +77,7 @@ export function Shell() {
 			>
 				{TeamViews && <TeamViews.icon mode={chatPanelMode} setMode={setChatPanelMode} />}
 			</ShellHeader>
-			<Row crossAlignment="unset" flexGrow="1" style={{ position: 'relative' }}>
+			<Row crossAlignment="unset" style={{ position: 'relative', flexGrow: '1' }}>
 				<ShellNavigationBar
 					navigationBarIsOpen={navOpen}
 					mobileNavIsOpen={mobileNavOpen}

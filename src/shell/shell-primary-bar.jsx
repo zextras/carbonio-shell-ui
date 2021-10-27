@@ -12,20 +12,12 @@
 import { Container, IconButton, Row, Tooltip } from '@zextras/zapp-ui';
 import { map, isEmpty } from 'lodash';
 import React, { useContext } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { BoardValueContext, BoardSetterContext } from './boards/board-context';
 import { useAppList } from '../store/app/hooks';
 import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../constants';
-
-const AppIcon = styled(IconButton)`
-	${(props) =>
-		props.active &&
-		css`
-			background-color: ${props.theme.palette.gray4.regular};
-		`}
-`;
 
 const ContainerWithDivider = styled(Container)`
 	border-right: 1px solid ${({ theme }) => theme.palette.gray3.regular};
@@ -72,9 +64,9 @@ export default function ShellPrimaryBar({ activeApp }) {
 					if (typeof app.icon === 'string') {
 						return (
 							<Tooltip label={app.core.display} placement="right" key={app.core.name}>
-								<AppIcon
+								<IconButton
 									icon={app.icon}
-									active={activeApp === app.core.route}
+									backgroundColor={activeApp === app.core.route ? 'gray4' : 'gray6'}
 									iconColor={activeApp === app.core.route ? 'primary' : 'text'}
 									onClick={() => history.push(`/${app.core.route}/`)}
 									size="large"
@@ -85,18 +77,18 @@ export default function ShellPrimaryBar({ activeApp }) {
 					return <app.icon active={app.core.route === activeApp} />;
 				})}
 				<Tooltip label={t('search.app', 'Search')} placement="right" key={SEARCH_APP_ID}>
-					<AppIcon
+					<IconButton
 						icon="SearchModOutline"
-						active={activeApp === SEARCH_APP_ID}
+						backgroundColor={activeApp === SEARCH_APP_ID ? 'gray4' : 'gray6'}
 						iconColor={activeApp === SEARCH_APP_ID ? 'primary' : 'text'}
 						onClick={() => history.push(`/${SEARCH_APP_ID}/`)}
 						size="large"
 					/>
 				</Tooltip>
 				<Tooltip label={t('settings.app', 'Settings')} placement="right" key={SETTINGS_APP_ID}>
-					<AppIcon
+					<IconButton
 						icon="SettingsModOutline"
-						active={activeApp === SETTINGS_APP_ID}
+						backgroundColor={activeApp === SETTINGS_APP_ID ? 'gray4' : 'gray6'}
 						iconColor={activeApp === SETTINGS_APP_ID ? 'primary' : 'text'}
 						onClick={() => history.push(`/${SETTINGS_APP_ID}/`)}
 						size="large"

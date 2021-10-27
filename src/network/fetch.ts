@@ -1,4 +1,5 @@
 import { GetState, SetState } from 'zustand';
+import { find } from 'lodash';
 import { SHELL_APP_ID } from '../constants';
 import { getApp, getShell } from '../store/app/hooks';
 import { goToLogin } from './go-to-login';
@@ -57,7 +58,12 @@ const handleResponse = <R>(
 	get: GetState<AccountState>
 ): R => {
 	if (res?.Body?.Fault) {
-		if ((<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Code === 'service.AUTH_REQUIRED') {
+		if (
+			find(
+				['service.AUTH_REQUIRED', 'service.AUTH_EXPIRED'],
+				(code) => code === (<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Code
+			)
+		) {
 			goToLogin();
 		}
 		throw new Error(

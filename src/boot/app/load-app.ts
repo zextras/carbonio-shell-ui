@@ -76,10 +76,9 @@ function loadAppModule(
 		};
 		try {
 			// eslint-disable-next-line max-len
-			((window as unknown) as IShellWindow<
-				SharedLibrariesAppsMap,
-				ComponentClass
-			>).__ZAPP_SHARED_LIBRARIES__['@zextras/zapp-shell'][appPkg.name] = {
+			(
+				window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>
+			).__ZAPP_SHARED_LIBRARIES__['@zextras/zapp-shell'][appPkg.name] = {
 				store: {
 					store,
 					setReducer: (reducer): void => store.replaceReducer(reducer)
@@ -107,20 +106,18 @@ function loadAppModule(
 			};
 
 			// eslint-disable-next-line max-len
-			((window as unknown) as IShellWindow<
-				SharedLibrariesAppsMap,
-				ComponentClass
-			>).__ZAPP_HMR_EXPORT__[appPkg.name] = (appClass: ComponentClass): void => {
+			(
+				window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>
+			).__ZAPP_HMR_EXPORT__[appPkg.name] = (appClass: ComponentClass): void => {
 				setAppClass(appPkg.name, appClass);
 				resolve();
 			};
 
 			if (FLAVOR === 'NPM' && typeof cliSettings !== 'undefined' && cliSettings.hasHandlers) {
 				// eslint-disable-next-line max-len
-				((window as unknown) as IShellWindow<
-					SharedLibrariesAppsMap,
-					ComponentClass
-				>).__ZAPP_HMR_HANDLERS__[appPkg.name] = (handlers: RequestHandlersList): void =>
+				(
+					window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>
+				).__ZAPP_HMR_HANDLERS__[appPkg.name] = (handlers: RequestHandlersList): void =>
 					updateAppHandlers(appPkg, handlers);
 			}
 			const script: HTMLScriptElement = document.createElement('script');

@@ -8,7 +8,7 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, { useContext, useEffect, useRef, useMemo } from 'react';
+import React, { useContext, useRef, useMemo, useLayoutEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { reduce, map, slice } from 'lodash';
 import {
@@ -19,17 +19,19 @@ import {
 	Padding,
 	Dropdown,
 	Button,
-	useHiddenCount
+	useHiddenCount,
+	Tooltip
 } from '@zextras/zapp-ui';
+import { useTranslation } from 'react-i18next';
 import AppBoardTab from './app-board-tab';
 import AppBoard from './app-board';
 import { BoardSetterContext, BoardValueContext } from './board-context';
 
-function TabsList({ tabs, currentBoard, setCurrentBoard, largeView }) {
+function TabsList({ tabs, currentBoard, setCurrentBoard, largeView, t }) {
 	const tabContainerRef = useRef();
 	const [hiddenTabsCount, recalculateHiddenTabs] = useHiddenCount(tabContainerRef, largeView);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		recalculateHiddenTabs();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [tabs, largeView, tabContainerRef.current]);
@@ -41,22 +43,39 @@ function TabsList({ tabs, currentBoard, setCurrentBoard, largeView }) {
 				height="48px"
 				mainAlignment="flex-start"
 				style={{ overflow: 'hidden' }}
+				width="calc(100% - 8px)"
 			>
-				{tabs && map(tabs, (tab) => <AppBoardTab key={tab.key} idx={tab.key} />)}
+				{tabs &&
+					map(tabs, (tab) => (
+						<AppBoardTab key={tab.key} idx={tab.key} icon="MailModOutline" iconSize="large" />
+					))}
 			</Row>
 			{hiddenTabsCount > 0 && (
-				<Dropdown
-					style={{ flexGrow: '1' }}
-					items={map(slice(tabs, -hiddenTabsCount), (tab) => ({
-						id: tab.key,
-						label: tab.title,
-						icon: tab.icon,
-						click: () => setCurrentBoard(tab.key),
-						selected: tab.key === currentBoard
-					}))}
-				>
-					<Button type="ghost" color="secondary" label={`+${hiddenTabsCount}`} />
-				</Dropdown>
+				<>
+					<Container width="fit" padding={{ horizontal: 'extrasmall', vertical: 'extrasmall' }}>
+						<Container width="1px" heigth="fill" background="gray3" />
+					</Container>
+					<Dropdown
+						width="fit"
+						style={{ flexGrow: '1' }}
+						items={map(slice(tabs, -hiddenTabsCount), (tab) => ({
+							id: tab.key,
+							label: tab.title,
+							icon: tab.icon,
+							click: () => setCurrentBoard(tab.key),
+							selected: tab.key === currentBoard
+						}))}
+					>
+						<Tooltip label={t('board.show_tabs', 'Show other tabs')} placement="top">
+							<Button
+								type="ghost"
+								color="secondary"
+								label={`+${hiddenTabsCount}`}
+								padding={{ all: 'extrasmall' }}
+							/>
+						</Tooltip>
+					</Dropdown>
+				</>
 			)}
 		</Row>
 	);
@@ -109,6 +128,7 @@ const BackButton = styled(IconButton)``;
 const Actions = styled(Row)``;
 
 export default function AppBoardWindow() {
+	const [t] = useTranslation();
 	const { boards: shellBoards, currentBoard, largeView, minimized } = useContext(BoardValueContext);
 	const { toggleLargeView, toggleMinimized, removeAllBoards, setCurrentBoard } = useContext(
 		BoardSetterContext
@@ -135,13 +155,16 @@ export default function AppBoardWindow() {
 			<Board background="gray6" crossAlignment="unset" largeView={largeView}>
 				<BoardHeader background="gray5">
 					<Padding all="extrasmall">
-						<BackButton icon="ChevronLeftOutline" onClick={toggleMinimized} />
+						<Tooltip label={t('board.hide', 'Hide board')} placement="top">
+							<BackButton icon="BoardCollapseOutline" onClick={toggleMinimized} />
+						</Tooltip>
 					</Padding>
 					<TabsList
 						tabs={tabs}
 						largeView={largeView}
 						currentBoard={currentBoard}
 						setCurrentBoard={setCurrentBoard}
+						t={t}
 					/>
 					<Actions padding={{ all: 'extrasmall' }}>
 						{boards[currentBoard]?.context?.onReturnToApp && (
@@ -153,12 +176,21 @@ export default function AppBoardWindow() {
 							</Padding>
 						)}
 						<Padding right="extrasmall">
-							<IconButton
-								icon={largeView ? 'CollapseOutline' : 'ExpandOutline'}
-								onClick={toggleLargeView}
-							/>
+							<Tooltip label={t('board.open_app', 'Open in app')} placement="top">
+								<IconButton icon="DiagonalArrowRightUpOutline" onClick={toggleLargeView} />
+							</Tooltip>
 						</Padding>
-						<IconButton icon="CloseOutline" onClick={removeAllBoards} />
+						<Padding right="extrasmall">
+							<Tooltip label={t('board.enlarge', 'Enlarge board')} placement="top">
+								<IconButton
+									icon={largeView ? 'CollapseOutline' : 'ExpandOutline'}
+									onClick={toggleLargeView}
+								/>
+							</Tooltip>
+						</Padding>
+						<Tooltip label={t('board.close_tabs', 'Close all your tabs')} placement="top">
+							<IconButton icon="CloseOutline" onClick={removeAllBoards} />
+						</Tooltip>
 					</Actions>
 				</BoardHeader>
 				<Divider style={{ height: '2px' }} />

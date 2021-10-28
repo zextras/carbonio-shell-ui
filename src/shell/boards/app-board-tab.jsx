@@ -46,7 +46,7 @@ export default function AppBoardTab({ idx, icon, iconSize }) {
 	);
 
 	return (
-		<Container orientation="row" width="fit">
+		<Container orientation="row" width="fit" maxWidth="100%">
 			{currentBoard !== idx ? <VerticalDivider /> : null}
 			<TabContainer active={currentBoard === idx} padding={{ all: 'extrasmall' }}>
 				<Row
@@ -64,11 +64,9 @@ export default function AppBoardTab({ idx, icon, iconSize }) {
 							weight="regular"
 							color={currentBoard === idx ? 'text' : 'secondary'}
 							padding={{ right: 'small' }}
-							width="fit"
+							overflow="ellipsis"
 						>
-							{boards[idx].title.length > 65
-								? boards[idx].title.slice(0, 65).concat('...')
-								: boards[idx].title}
+							{boards[idx].title}
 						</Text>
 					</Tooltip>
 				</Row>

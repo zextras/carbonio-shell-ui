@@ -25,6 +25,13 @@ const TabContainer = styled(Row)`
 	padding: 2px 4px;
 `;
 
+const VerticalDivider = styled(Container)`
+	width: 1px;
+	height: 100%;
+	background: ${({ theme }) => theme.palette.gray3.regular};
+	margin: ${({ theme }) => theme.sizes.padding.extrasmall};
+`;
+
 export default function AppBoardTab({ idx, icon, iconSize }) {
 	const { boards, currentBoard } = useContext(BoardValueContext);
 	const { removeBoard, setCurrentBoard } = useContext(BoardSetterContext);
@@ -40,14 +47,7 @@ export default function AppBoardTab({ idx, icon, iconSize }) {
 
 	return (
 		<Container orientation="row" width="fit">
-			{currentBoard !== idx ? (
-				<Container
-					width="1px"
-					heigth="fill"
-					background="gray3"
-					style={{ marginLeft: '4px', marginRight: '4px' }}
-				/>
-			) : null}
+			{currentBoard !== idx ? <VerticalDivider /> : null}
 			<TabContainer active={currentBoard === idx} padding={{ all: 'extrasmall' }}>
 				<Row
 					height="100%"
@@ -60,7 +60,7 @@ export default function AppBoardTab({ idx, icon, iconSize }) {
 					<Padding right="small" />
 					<Tooltip label={boards[idx].title} placement="top" maxWidth="700px">
 						<Text
-							size="16px"
+							size="medium"
 							weight="regular"
 							color={currentBoard === idx ? 'text' : 'secondary'}
 							padding={{ right: 'small' }}

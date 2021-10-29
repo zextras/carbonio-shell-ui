@@ -19,8 +19,8 @@ import * as Lodash from 'lodash';
 import * as ReactRouterDom from 'react-router-dom';
 import * as Moment from 'moment';
 import * as ReactI18n from 'react-i18next';
-import * as Msw from 'msw';
-import * as Faker from 'faker';
+// import * as Msw from 'msw';
+// import * as Faker from 'faker';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as ReactRedux from 'react-redux';
@@ -40,10 +40,8 @@ import { RichTextEditor } from './rte-wrap';
 
 export function injectSharedLibraries(): void {
 	// eslint-disable-next-line max-len
-	const wnd: IShellWindow<
-		SharedLibrariesAppsMap,
-		ComponentClass
-	> = (window as unknown) as IShellWindow<SharedLibrariesAppsMap, ComponentClass>;
+	const wnd: IShellWindow<SharedLibrariesAppsMap, ComponentClass> =
+		window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>;
 	if (wnd.__ZAPP_SHARED_LIBRARIES__) {
 		return;
 	}
@@ -72,8 +70,6 @@ export function injectSharedLibraries(): void {
 	wnd.__ZAPP_HMR_EXPORT__ = {};
 	switch (FLAVOR) {
 		case 'NPM':
-			wnd.__ZAPP_SHARED_LIBRARIES__.faker = Faker;
-			wnd.__ZAPP_SHARED_LIBRARIES__.msw = Msw;
 			wnd.__ZAPP_HMR_HANDLERS__ = {};
 			break;
 		default:

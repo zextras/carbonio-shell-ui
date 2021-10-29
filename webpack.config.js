@@ -12,7 +12,7 @@ const babelRC = require('./babel.config');
 
 const basePath = `/static/iris/carbonio-shell/${commitHash}/`;
 
-const server = `https://${process.env.PROXY_SERVER || '127.0.0.1:8443'}/`;
+const server = `https://${process.env.PROXY_SERVER || '127.0.0.1:4443'}/`;
 console.log(`Building Shell using base path: `);
 console.log(` ${basePath} `);
 /**

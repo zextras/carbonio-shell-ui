@@ -26,8 +26,10 @@ import { useTranslation } from 'react-i18next';
 import AppBoardTab from './app-board-tab';
 import AppBoard from './app-board';
 import { BoardSetterContext, BoardValueContext } from './board-context';
+import { useApps } from '../../app-store/hooks';
 
 function TabsList({ tabs, currentBoard, setCurrentBoard, largeView, t }) {
+	const apps = useApps();
 	const tabContainerRef = useRef();
 	const [hiddenTabsCount, recalculateHiddenTabs] = useHiddenCount(tabContainerRef, largeView);
 
@@ -47,7 +49,12 @@ function TabsList({ tabs, currentBoard, setCurrentBoard, largeView, t }) {
 			>
 				{tabs &&
 					map(tabs, (tab) => (
-						<AppBoardTab key={tab.key} idx={tab.key} icon="MailModOutline" iconSize="large" />
+						<AppBoardTab
+							key={tab.key}
+							idx={tab.key}
+							icon={apps?.[tab.app]?.icon ?? 'Edit2Outline'}
+							iconSize="large"
+						/>
 					))}
 			</Row>
 			{hiddenTabsCount > 0 && (

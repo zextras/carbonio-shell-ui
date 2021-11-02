@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-beta.63](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.62...v0.1.0-beta.63) (2021-10-29)
+
+## [0.1.0-beta.62](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.61...v0.1.0-beta.62) (2021-10-29)
+
+
+### Features
+
+* added automatic icon to new tabs ([4a2859d](https://bitbucket.org/zextras/zapp-shell/commit/4a2859d5b5adc42112bae67915ac45b5671b787f))
+* improved board header ([778a8f3](https://bitbucket.org/zextras/zapp-shell/commit/778a8f39e5d80070f9c50a890c6c2a4d109ad809))
+
 ## [0.1.0-beta.61](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.60...v0.1.0-beta.61) (2021-10-22)
 
 ## [0.1.0-beta.60](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.59...v0.1.0-beta.60) (2021-10-22)

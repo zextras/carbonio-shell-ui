@@ -27,7 +27,8 @@ const reducer = (state, action) => {
 					[action.payload.boardKey]: {
 						url: action.payload.url,
 						title: action.payload.title,
-						context: action.payload.context
+						context: action.payload.context,
+						app: action.payload.app
 					},
 					...state.boards
 				},
@@ -111,11 +112,11 @@ export default function BoardContextProvider({ children }) {
 	});
 
 	const addBoard = useCallback(
-		(url, context) => {
+		(url, context, app) => {
 			const boardKey = getRandomKey();
 			dispatch({
 				type: 'ADD_BOARD',
-				payload: { url, title: context?.title ?? t('new_tab', 'New Tab'), context, boardKey }
+				payload: { url, title: context?.title ?? t('new_tab', 'New Tab'), context, boardKey, app }
 			});
 			return boardKey;
 		},
@@ -175,7 +176,7 @@ export default function BoardContextProvider({ children }) {
 		() => ({
 			packageDependentFunctions: {
 				addBoard: (pkg) => (path, context) => {
-					addBoard(`/${context?.app ?? pkg}${path}`, context);
+					addBoard(`/${context?.app ?? pkg}${path}`, context, pkg);
 				}
 			},
 			functions: {

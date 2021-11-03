@@ -15,7 +15,7 @@ import { render as rtlRender } from '@testing-library/react';
 import fetch from 'node-fetch';
 import { MemoryRouter } from 'react-router-dom';
 import { ThemeProvider } from '@zextras/zapp-ui';
-import AppContextWrapper from './mocks/app-context-wrapper';
+// import AppContextWrapper from './mocks/app-context-wrapper';
 import {
 	getUsePushHistoryCallback,
 	getUseReplaceHistoryCallback,
@@ -88,15 +88,15 @@ function render(
 	const Wrapper = ({ children }) => (
 		<MemoryRouter initialEntries={initialRouterEntries}>
 			<ThemeProvider>
-				<AppContextWrapper
+				{/* <AppContextWrapper
 					packageName={packageName}
 					packageVersion={packageVersion}
 					ctxt={ctxt}
 					reducer={reducer}
 					preloadedState={preloadedState}
-				>
-					{children}
-				</AppContextWrapper>
+				> */}
+				{children}
+				{/* </AppContextWrapper> */}
 			</ThemeProvider>
 		</MemoryRouter>
 	);

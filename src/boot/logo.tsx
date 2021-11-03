@@ -22,7 +22,7 @@ const Logo: FC = (props) => (
 			y="0"
 			viewBox="0 0 998.5 154.9"
 			xmlSpace="preserve"
-			fill="#182126"
+			fill="currentColor"
 			{...props}
 		>
 			<g>

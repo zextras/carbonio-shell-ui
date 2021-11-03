@@ -21,9 +21,7 @@ export default function AppContextProvider({ pkg, children }) {
 	const i18nFactory = useI18nFactory();
 	const storeFactory = useStoreFactory();
 	const app = useAppStore((s) => s.apps[pkg]?.core);
-
 	const store = useMemo(() => storeFactory.getStoreForApp(app), [app, storeFactory]);
-
 	const i18n = useMemo(() => i18nFactory.getAppI18n(app), [i18nFactory, app]);
 	return (
 		<Provider store={store}>

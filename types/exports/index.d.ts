@@ -107,6 +107,7 @@ export const useReplaceHistoryCallback: () => (location: LocationDescriptor) => 
 export const useUserAccounts: () => [Account];
 export const useUserAccount: () => Account;
 export const useUserSettings: () => AccountSettings;
+export const useUserSetting: <T = void>(...path: Array<string>) => string | T;
 export const useTags: () => Array<Tag>;
 export const useNotify: () => [NotifyObject];
 export const useRefresh: () => NotifyObject;
@@ -153,4 +154,5 @@ export const getFactory: <T>(type: string, id: string) => [ActionFactory<T> | un
 export const getUserAccount: () => Account;
 export const getUserAccounts: () => [Account];
 export const getUserSettings: () => AccountSettings;
+export const getUserSetting: <T = void>(...path: Array<string>) => string | T;
 export const getTags: () => Array<Tag>;

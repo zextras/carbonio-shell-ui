@@ -20,9 +20,9 @@ import { ZextrasModule } from '../account';
 
 export interface II18nFactory {
 	_cache: { [pkg: string]: i18n };
-
+	locale: string;
+	setLocale(locale: string): void;
 	getShellI18n(): i18n;
-
 	getAppI18n(appPkgDescription: ZextrasModule): i18n;
 }
 

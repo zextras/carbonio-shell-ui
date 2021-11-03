@@ -11,8 +11,8 @@
 
 import i18next, { i18n } from 'i18next';
 import Backend from 'i18next-http-backend';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import { dropRight } from 'lodash';
+// import LanguageDetector from 'i18next-browser-languagedetector';
+import { dropRight, forEach } from 'lodash';
 import { II18nFactory, ZextrasModule } from '../../types';
 import { getShell } from '../store/app/hooks';
 import { SHELL_APP_ID } from '../constants';
@@ -20,8 +20,17 @@ import { SHELL_APP_ID } from '../constants';
 export default class I18nFactory implements II18nFactory {
 	_cache: { [pkg: string]: i18n } = {};
 
+	locale = 'en';
+
 	public getShellI18n(): i18n {
 		return this.getAppI18n(getShell() ?? { name: SHELL_APP_ID });
+	}
+
+	public setLocale(locale: string): void {
+		this.locale = locale;
+		forEach(this._cache, (appI18n) => {
+			appI18n.changeLanguage(locale);
+		});
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -40,21 +49,19 @@ export default class I18nFactory implements II18nFactory {
 			.use(Backend)
 			// detect user language
 			// learn more: https://github.com/i18next/i18next-browser-languageDetector
-			.use(LanguageDetector)
+			// .use(LanguageDetector)
 			// init i18next
 			// for all options read: https://www.i18next.com/overview/configuration-options
 			.init({
+				lng: this.locale,
 				fallbackLng: 'en',
 				debug: false,
-
 				interpolation: {
 					escapeValue: false // not needed for react as it escapes by default
 				},
-
 				missingKeyHandler: (lng, ns, key, fallbackValue) => {
 					console.warn(`Missing translation with key '${key}'`);
 				},
-
 				backend: {
 					loadPath: `${baseI18nPath}/i18n/{{lng}}.json`
 				}

@@ -56,7 +56,12 @@ function bootstrapper(onBeforeBoot) {
 		default: function BoostrapperCls() {
 			const init = useAccountStore((s) => s.init);
 			useEffect(() => {
-				init().then(() => loadApps(_storeFactory, useAppStore.getState().apps));
+				init().then(() => {
+					_i18nFactory.setLocale(
+						useAccountStore.getState()?.settings?.prefs?.zimbraPrefLocale?.split?.('_')?.[0] ?? 'en'
+					);
+					loadApps(_storeFactory, useAppStore.getState().apps);
+				});
 				return () => unloadAllApps();
 			}, [init]);
 			return (

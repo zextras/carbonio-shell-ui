@@ -55,6 +55,7 @@ export type Tag = {
 	name: string;
 	rgb?: string;
 };
+
 export type AccountSettings = {
 	attrs: Record<string, string | number>;
 	prefs: Record<string, string | number>;

@@ -33,7 +33,7 @@ export const SettingsAppView: FC = () => {
 		() =>
 			map(apps, (app, appId) =>
 				app.views?.settings ? (
-					<Route key={appId} exact path={`/${SETTINGS_APP_ID}/${appId}`}>
+					<Route key={appId} exact path={`/${SETTINGS_APP_ID}/${app.core.route}`}>
 						<AppContextProvider pkg={appId}>
 							{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 							{/* @ts-ignore */}

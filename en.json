@@ -1,4 +1,12 @@
 {
+    "board": {
+        "close_tab": "Close Tab",
+        "close_tabs": "Close all your tabs",
+        "enlarge": "Enlarge board",
+        "hide": "Hide board",
+        "open_app": "Open in app",
+        "show_tabs": "Show other tabs"
+    },
     "label": {
         "clear_search_query": "CLEAR SEARCH QUERY"
     },

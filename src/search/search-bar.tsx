@@ -124,7 +124,6 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 	);
 
 	useEffect(() => {
-		console.count('sono stato io 1');
 		setModuleSelection((current) =>
 			currentApp && currentApp !== SEARCH_APP_ID
 				? find(moduleSelectorItems, (mod) => mod.value === currentApp) ?? moduleSelectorItems[0]
@@ -133,7 +132,6 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 	}, [currentApp, moduleSelectorItems]);
 
 	useEffect(() => {
-		console.count('sono stato io 2');
 		updateModule(moduleSelection?.value ?? moduleSelectorItems[0]?.value);
 	}, [moduleSelection?.value, moduleSelectorItems, updateModule]);
 
@@ -179,7 +177,6 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 	}, [currentApp, history, inputState, moduleSelection?.value, updateQuery]);
 
 	useEffect(() => {
-		console.count('sono stato io 3');
 		const ref = inputRef.current;
 		const focusCb = (): void => setInputHasFocus(true);
 		if (ref) {
@@ -291,7 +288,6 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 	// }, [currentApp, inputRef, primaryAction, secondaryActions]);
 
 	useEffect(() => {
-		console.count('sono stato io 4');
 		const ref = inputRef.current;
 		const searchCb = (ev: any): void => {
 			if (ev.key === 'Enter') {
@@ -308,7 +304,6 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 		};
 	}, [onSearch]);
 	useEffect(() => {
-		console.count('sono stato io 5');
 		if (triggerSearch) {
 			onSearch();
 			setTriggerSearch(false);

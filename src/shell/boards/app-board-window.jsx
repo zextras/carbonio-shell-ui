@@ -90,7 +90,7 @@ function TabsList({ tabs, currentBoard, setCurrentBoard, largeView, t }) {
 
 const BoardContainer = styled.div`
 	position: fixed;
-	top: 48px;
+	top: 60px;
 	bottom: 0;
 	left: 48px;
 	right: 0;

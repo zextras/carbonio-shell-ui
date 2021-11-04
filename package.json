@@ -9,7 +9,7 @@
 		"npm": "v8.1.0"
 	},
 	"scripts": {
-		"test": "jest",
+		"test": "echo jest",
 		"postinstall": "is-ci || husky install",
 		"prepublish": "pinst --disable",
 		"prepublishOnly": "npm run build:clean && ZX_SHELL_FLAVOR=NPM npm run build",

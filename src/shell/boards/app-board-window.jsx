@@ -181,13 +181,20 @@ export default function AppBoardWindow() {
 								/>
 							</Padding>
 						)}
-						<Padding right="extrasmall">
+						{/* <Padding right="extrasmall">
 							<Tooltip label={t('board.open_app', 'Open in app')} placement="top">
 								<IconButton icon="DiagonalArrowRightUpOutline" onClick={toggleLargeView} />
 							</Tooltip>
-						</Padding>
+						</Padding> */}
 						<Padding right="extrasmall">
-							<Tooltip label={t('board.enlarge', 'Enlarge board')} placement="top">
+							<Tooltip
+								label={
+									largeView
+										? t('board.reduce', 'Reduce board')
+										: t('board.enlarge', 'Enlarge board')
+								}
+								placement="top"
+							>
 								<IconButton
 									icon={largeView ? 'CollapseOutline' : 'ExpandOutline'}
 									onClick={toggleLargeView}

@@ -70,7 +70,7 @@ export function injectSharedLibraries(): void {
 	wnd.__ZAPP_HMR_EXPORT__ = {};
 	switch (FLAVOR) {
 		case 'NPM':
-			wnd.__ZAPP_HMR_HANDLERS__ = {};
+			// wnd.__ZAPP_HMR_HANDLERS__ = {};
 			break;
 		default:
 	}

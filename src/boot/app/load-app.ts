@@ -12,8 +12,8 @@
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
 import { forEach, forOwn } from 'lodash';
-import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
-import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
+// import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
+// import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
 
 import { ComponentClass } from 'react';
 import { Store } from '@reduxjs/toolkit';
@@ -45,15 +45,15 @@ export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
 // const _revertableActions: { [pkgName: string]: RevertableActionCollection } = {};
 
-export function updateAppHandlers(appPkg: ZextrasModule, handlers: RequestHandlersList): void {
-	if (FLAVOR === 'NPM' && typeof devUtils !== 'undefined') {
-		const worker = devUtils.getMSWorker<SetupWorkerApi>();
-		if (worker) {
-			worker.resetHandlers();
-			forEach(handlers, (h) => worker.use(h));
-		}
-	}
-}
+// export function updateAppHandlers(appPkg: ZextrasModule, handlers: RequestHandlersList): void {
+// 	if (FLAVOR === 'NPM' && typeof devUtils !== 'undefined') {
+// 		const worker = devUtils.getMSWorker<SetupWorkerApi>();
+// 		if (worker) {
+// 			worker.resetHandlers();
+// 			forEach(handlers, (h) => worker.use(h));
+// 		}
+// 	}
+// }
 
 function loadAppModule(
 	appPkg: ZextrasModule,
@@ -115,10 +115,10 @@ function loadAppModule(
 
 			if (FLAVOR === 'NPM' && typeof cliSettings !== 'undefined' && cliSettings.hasHandlers) {
 				// eslint-disable-next-line max-len
-				(
-					window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>
-				).__ZAPP_HMR_HANDLERS__[appPkg.name] = (handlers: RequestHandlersList): void =>
-					updateAppHandlers(appPkg, handlers);
+				// (
+				// 	window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>
+				// ).__ZAPP_HMR_HANDLERS__[appPkg.name] = (handlers: RequestHandlersList): void =>
+				// 	updateAppHandlers(appPkg, handlers);
 			}
 			const script: HTMLScriptElement = document.createElement('script');
 			script.setAttribute('type', 'text/javascript');

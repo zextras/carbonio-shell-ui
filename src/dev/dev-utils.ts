@@ -9,27 +9,28 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { DevUtilsContext } from '../../types';
+// import { DevUtilsContext } from '../../types';
 
-let ctxtCache: DevUtilsContext;
+let ctxtCache: unknown; // DevUtilsContext;
 
 interface IDevUtilsInstrumentedWindow extends Window {
 	devUtils: devUtilsNamespace;
 	cliSettings: cliSettingsNamespace;
 }
 
-function installOnWindow(wnd: Window, ctxt: DevUtilsContext): void {
+function installOnWindow(wnd: Window, ctxt: unknown /* DevUtilsContext */): void {
 	if (!ctxtCache && ctxt) ctxtCache = ctxt;
 	// Expose the instruments
 	// eslint-disable-next-line no-param-reassign
 	(wnd as unknown as IDevUtilsInstrumentedWindow).devUtils = {
-		installOnWindow: (w: Window, _c?: DevUtilsContext): void => installOnWindow(w, _c || ctxtCache),
-		getMSWorker: (): any | undefined => ctxtCache.mswjs
+		installOnWindow: (w: Window, _c?: unknown /* DevUtilsContext */): void =>
+			installOnWindow(w, _c || ctxtCache)
+		// getMSWorker: (): any | undefined => ctxtCache.mswjs
 	};
 	console.debug('Dev Utils installed.');
 }
 
-export default function (ctxt: DevUtilsContext): Promise<void> {
+export default function (ctxt: unknown /* DevUtilsContext */): Promise<void> {
 	return Promise.resolve().then(() => installOnWindow(window, ctxt));
 }
 

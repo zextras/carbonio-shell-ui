@@ -3,15 +3,14 @@ import { SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account/store';
 import { Mods } from '../../types';
 
-export const editSettings = (mods: Mods): Promise<any> =>
+export const editSettings = (mods: Mods, app: string = SHELL_APP_ID): Promise<any> =>
 	useAccountStore.getState().xmlSoapFetch(SHELL_APP_ID)(
 		'Batch',
 		`<BatchRequest xmlns="urn:zimbra" onerror="stop">${
 			mods.props
 				? `<ModifyPropertiesRequest xmlns="urn:zimbraAccount">${map(
 						mods.props,
-						(prop, key) =>
-							`<prop name="${key}" zimlet="${prop.app ?? 'carbonio-shell'}">${prop.value}</prop>`
+						(prop, key) => `<prop name="${key}" zimlet="${prop.app ?? app}">${prop.value}</prop>`
 				  )}</ModifyPropertiesRequest>`
 				: ''
 		}
@@ -97,3 +96,8 @@ export const editSettings = (mods: Mods): Promise<any> =>
 			: ''
 	}</BatchRequest>`
 	);
+
+export const getEditSettingsForApp =
+	(app: string) =>
+	(mods: Mods): Promise<any> =>
+		editSettings(mods, app);

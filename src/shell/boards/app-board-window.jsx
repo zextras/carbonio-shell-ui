@@ -137,9 +137,8 @@ const Actions = styled(Row)``;
 export default function AppBoardWindow() {
 	const [t] = useTranslation();
 	const { boards: shellBoards, currentBoard, largeView, minimized } = useContext(BoardValueContext);
-	const { toggleLargeView, toggleMinimized, removeAllBoards, setCurrentBoard } = useContext(
-		BoardSetterContext
-	);
+	const { toggleLargeView, toggleMinimized, removeAllBoards, setCurrentBoard } =
+		useContext(BoardSetterContext);
 
 	const [tabs, boards] = useMemo(
 		() =>

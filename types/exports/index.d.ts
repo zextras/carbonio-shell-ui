@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { RenderOptions, RenderResult } from '@testing-library/react';
+// import { RenderOptions, RenderResult } from '@testing-library/react';
 import { Component, FC } from 'react';
 import { LinkProps } from 'react-router-dom';
 import { Reducer, Store } from 'redux';
@@ -11,17 +11,17 @@ import { SoapFetch } from '../network';
 
 export const ui: any;
 
-export const testUtils: {
-	render(
-		// eslint-disable-next-line no-shadow
-		ui: React.ReactElement,
-		options?: Omit<RenderOptions, 'queries'>
-	): RenderResult;
-};
+// export const testUtils: {
+// 	render(
+// 		// eslint-disable-next-line no-shadow
+// 		ui: React.ReactElement,
+// 		options?: Omit<RenderOptions, 'queries'>
+// 	): RenderResult;
+// };
 
 // ???
-export const useSaveSettingsCallback: () => (mods: {
-	props: Record<string, { value: any; app: string }>;
+export const editSettings: () => (mods: {
+	props: Record<string, { value: any; app?: string }>;
 	prefs: Record<string, any>;
 }) => void;
 

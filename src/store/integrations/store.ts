@@ -20,16 +20,16 @@ export const useIntegrationsStore = create<IntegrationsState>((set) => ({
 				});
 			})
 		),
-	registerComponents: (app: string) => (
-		...items: Array<{ id: string; component: Component }>
-	): void =>
-		set(
-			produce((state) => {
-				forEach(items, ({ id, component }) => {
-					state.components[id] = { app, item: component };
-				});
-			})
-		),
+	registerComponents:
+		(app: string) =>
+		(...items: Array<{ id: string; component: Component }>): void =>
+			set(
+				produce((state) => {
+					forEach(items, ({ id, component }) => {
+						state.components[id] = { app, item: component };
+					});
+				})
+			),
 	registerHooks: (...items: Array<{ id: string; hook: AnyFunction }>): void =>
 		set(
 			produce((state) => {

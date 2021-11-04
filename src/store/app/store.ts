@@ -44,18 +44,22 @@ export const appStore = createStore<AppState>((set) => ({
 					}
 				})
 			),
-		registerAppData: (id: string) => (data: Partial<Omit<AppData, 'core'>>): void =>
-			set(
-				produce((state) => {
-					state.apps[id] = { ...state.apps[id], ...data };
-				})
-			),
-		setAppContext: (id: string) => (data: unknown): void =>
-			set(
-				produce((state) => {
-					state.apps[id].context = data;
-				})
-			)
+		registerAppData:
+			(id: string) =>
+			(data: Partial<Omit<AppData, 'core'>>): void =>
+				set(
+					produce((state) => {
+						state.apps[id] = { ...state.apps[id], ...data };
+					})
+				),
+		setAppContext:
+			(id: string) =>
+			(data: unknown): void =>
+				set(
+					produce((state) => {
+						state.apps[id].context = data;
+					})
+				)
 	}
 }));
 

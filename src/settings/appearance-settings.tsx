@@ -21,7 +21,7 @@ const AppearanceSettings: FC<{
 }> = ({ settings, addMod }) => {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
 	const [drMode, setDrMode] = useState<DRPropValues>(
-		((find(settings.props, ['name', 'zappDarkreaderMode'])?._content as unknown) as DRPropValues) ??
+		(find(settings.props, ['name', 'zappDarkreaderMode'])?._content as unknown as DRPropValues) ??
 			'auto'
 	);
 	const [t] = useTranslation();
@@ -42,10 +42,10 @@ const AppearanceSettings: FC<{
 		],
 		[t]
 	);
-	const defaultSelection = useMemo(() => find(items, ['value', drMode]) ?? items[0], [
-		drMode,
-		items
-	]);
+	const defaultSelection = useMemo(
+		() => find(items, ['value', drMode]) ?? items[0],
+		[drMode, items]
+	);
 	const onSelectionChange = useCallback(
 		(v) => {
 			if (v !== drMode) {
@@ -59,8 +59,8 @@ const AppearanceSettings: FC<{
 	useEffect(
 		() => (): void =>
 			setDarkReaderState(
-				((find(settings.props, ['name', 'zappDarkreaderMode'])
-					?._content as unknown) as DRPropValues) ?? 'auto'
+				(find(settings.props, ['name', 'zappDarkreaderMode'])
+					?._content as unknown as DRPropValues) ?? 'auto'
 			),
 		[setDarkReaderState, settings.props]
 	);

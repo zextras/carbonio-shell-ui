@@ -11,7 +11,7 @@
  */
 
 import React from 'react';
-import { render as rtlRender } from '@testing-library/react';
+// import { render as rtlRender } from '@testing-library/react';
 import fetch from 'node-fetch';
 import { MemoryRouter } from 'react-router-dom';
 import { ThemeProvider } from '@zextras/zapp-ui';
@@ -101,10 +101,10 @@ function render(
 		</MemoryRouter>
 	);
 
-	return rtlRender(ui, {
-		wrapper: Wrapper,
-		...options
-	});
+	// return rtlRender(ui, {
+	// 	wrapper: Wrapper,
+	// 	...options
+	// });
 }
 
 export const testUtils = {

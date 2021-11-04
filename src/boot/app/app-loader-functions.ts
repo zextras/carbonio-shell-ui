@@ -53,6 +53,7 @@ import {
 	useIntegratedHook
 } from '../../store/integrations/hooks';
 import { ZextrasModule } from '../../../types';
+import { editSettings, getEditSettingsForApp } from '../../network/edit-settings';
 
 export const getAppFunctions = (pkg: ZextrasModule): unknown => ({
 	// The returned function is a hook
@@ -101,5 +102,6 @@ export const getAppFunctions = (pkg: ZextrasModule): unknown => ({
 			...functions,
 			...reduce(packageDependentFunctions, (acc, f, name) => ({ ...acc, [name]: f(pkg.name) }), {})
 		};
-	}
+	},
+	editSettings: getEditSettingsForApp(pkg.name)
 });

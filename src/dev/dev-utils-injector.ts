@@ -9,9 +9,9 @@
  * *** END LICENSE BLOCK *****
  */
 
-import { DevUtilsContext } from '../../types';
+// import { DevUtilsContext } from '../../types';
 
-export default function loadDevelopmentEnv(ctxt: DevUtilsContext): Promise<void> {
+export default function loadDevelopmentEnv(ctxt: unknown /* DevUtilsContext */): Promise<void> {
 	return import(/* webpackChunkName: "dev-utils" */ './dev-utils').then(
 		({ default: injectDevUtils, setCliSettings }) =>
 			injectDevUtils(ctxt).then(() => {

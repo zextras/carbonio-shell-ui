@@ -11,8 +11,6 @@
 
 import { Reducer, Store } from '@reduxjs/toolkit';
 import { i18n } from 'i18next';
-import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
-import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
 import { FunctionComponent } from 'react';
 import { LinkProps } from 'react-router-dom';
 import { RuntimeAppData } from '../apps';
@@ -26,10 +24,10 @@ export interface II18nFactory {
 	getAppI18n(appPkgDescription: ZextrasModule): i18n;
 }
 
-export type DevUtilsContext = {
-	i18nFactory: II18nFactory;
-	mswjs?: SetupWorkerApi;
-};
+// export type DevUtilsContext = {
+// 	i18nFactory: II18nFactory;
+// 	mswjs?: SetupWorkerApi;
+// };
 
 export type DRPropValues = 'auto' | 'enabled' | 'disabled';
 
@@ -46,7 +44,7 @@ export type ContextBridgeState = {
 export type IShellWindow<T, R> = Window & {
 	__ZAPP_SHARED_LIBRARIES__: T;
 	__ZAPP_HMR_EXPORT__: { [pkgName: string]: (appClass: R) => void };
-	__ZAPP_HMR_HANDLERS__: { [pkgName: string]: (handlers: RequestHandlersList) => void };
+	// __ZAPP_HMR_HANDLERS__: { [pkgName: string]: (handlers: RequestHandlersList) => void };
 };
 
 export type SharedLibrariesAppsMap = {

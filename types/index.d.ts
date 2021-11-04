@@ -10,7 +10,7 @@
  */
 
 export * from './network';
-export * from './exports/index.d';
+export * from './exports';
 export * from './account';
 export * from './apps';
 export * from './integrations';

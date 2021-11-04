@@ -1,6 +1,6 @@
 {
 	"name": "@zextras/zapp-shell",
-	"version": "0.1.30",
+	"version": "0.1.31",
 	"description": "The Zextras Carbonio web client",
 	"types": "./types/index.d.ts",
 	"main": "dist/zapp-shell.bundle.js",
@@ -39,7 +39,8 @@
 		"Abhishek Kumar <abhishek.kumar@zextras.com>",
 		"Manan Patel <manan.patel@zextras.com>",
 		"Giuliano Caregnato <giuliano.caregnato@zextras.com>",
-		"Divyang Dodiya <divyang.dodiya@zextras.com>"
+		"Divyang Dodiya <divyang.dodiya@zextras.com>",
+		"Dhaval Dodiya <dhaval.dodiya@zextras.com>"
 	],
 	"license": "UNLICENSED",
 	"devDependencies": {

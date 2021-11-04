@@ -1,7 +1,5 @@
 import { get, join } from 'lodash';
-import { useCallback } from 'react';
-import { Account, AccountSettings, Mods, NotifyObject, Tag } from '../../../types';
-import { editSettings } from '../../network/edit-settings';
+import { Account, AccountSettings, NotifyObject, Tag } from '../../../types';
 import { useAccountStore } from './store';
 
 export const useUserAccount = (): Account => useAccountStore((s) => s.account as Account);

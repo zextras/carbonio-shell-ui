@@ -100,4 +100,7 @@ export const editSettings = (mods: Mods, app: string = SHELL_APP_ID): Promise<an
 export const getEditSettingsForApp =
 	(app: string) =>
 	(mods: Mods): Promise<any> =>
-		editSettings(mods, app);
+		editSettings(mods, app).then((r) => {
+			r.type = 'fulfilled';
+			return r;
+		});

@@ -23,7 +23,7 @@ export const ui: any;
 export const editSettings: () => (mods: {
 	props: Record<string, { value: any; app?: string }>;
 	prefs: Record<string, any>;
-}) => void;
+}) => Promise<any>;
 
 // Generic stuff
 export const store: {

@@ -73,7 +73,7 @@ const AppearanceSettings: FC<{
 			<Select
 				items={items}
 				selection={defaultSelection}
-				label={t('settings.general.theme_mode', 'Theme Mode')}
+				label={t('settings.general.dark_mode', 'Dark Mode')}
 				onChange={onSelectionChange}
 			/>
 		</FormSubSection>

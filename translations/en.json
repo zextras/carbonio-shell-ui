@@ -41,11 +41,11 @@
         "general": {
             "account": "Account",
             "account_logout": "Logout",
+            "dark_mode": "Dark Mode",
             "general": "General Settings",
             "theme_auto": "Auto",
             "theme_disabled": "Disabled",
             "theme_enabled": "Enabled",
-            "theme_mode": "Theme Mode",
             "theme_options": "Theme Options"
         },
         "general_tab": "General",

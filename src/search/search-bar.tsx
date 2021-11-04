@@ -93,7 +93,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 		value: string;
 		label: string;
 	}>();
-	const [changedBySearchBar, setChangedBySearchBar] = useState(false);
+	// const [changedBySearchBar, setChangedBySearchBar] = useState(false);
 	const moduleSelectorItems = useMemo<
 		Array<{ label: string; value: string; customComponent: JSX.Element }>
 	>(
@@ -108,7 +108,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 					</Container>
 				),
 				label: app.core.display,
-				value: app.core.name
+				value: app.core.route
 			})),
 		[apps]
 	);
@@ -124,6 +124,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 	);
 
 	useEffect(() => {
+		console.count('sono stato io 1');
 		setModuleSelection((current) =>
 			currentApp && currentApp !== SEARCH_APP_ID
 				? find(moduleSelectorItems, (mod) => mod.value === currentApp) ?? moduleSelectorItems[0]
@@ -132,6 +133,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 	}, [currentApp, moduleSelectorItems]);
 
 	useEffect(() => {
+		console.count('sono stato io 2');
 		updateModule(moduleSelection?.value ?? moduleSelectorItems[0]?.value);
 	}, [moduleSelection?.value, moduleSelectorItems, updateModule]);
 
@@ -173,10 +175,11 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 			history.push(`/${SEARCH_APP_ID}/${moduleSelection?.value}`);
 		}
 		setSearchIsEnabled(false);
-		setChangedBySearchBar(true);
+		// setChangedBySearchBar(true);
 	}, [currentApp, history, inputState, moduleSelection?.value, updateQuery]);
 
 	useEffect(() => {
+		console.count('sono stato io 3');
 		const ref = inputRef.current;
 		const focusCb = (): void => setInputHasFocus(true);
 		if (ref) {
@@ -272,22 +275,23 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 	const [triggerSearch, setTriggerSearch] = useState(false);
 	const containerRef = useRef<HTMLDivElement>();
 
-	useEffect(() => {
-		const handler = (event: KeyboardEvent): unknown =>
-			handleKeyboardShortcuts({
-				event,
-				inputRef,
-				primaryAction,
-				secondaryActions,
-				currentApp
-			});
-		document.addEventListener('keydown', handler);
-		return (): void => {
-			document.removeEventListener('keydown', handler);
-		};
-	}, [currentApp, inputRef, primaryAction, secondaryActions]);
+	// useEffect(() => {
+	// 	const handler = (event: KeyboardEvent): unknown =>
+	// 		handleKeyboardShortcuts({
+	// 			event,
+	// 			inputRef,
+	// 			primaryAction,
+	// 			secondaryActions,
+	// 			currentApp
+	// 		});
+	// 	document.addEventListener('keydown', handler);
+	// 	return (): void => {
+	// 		document.removeEventListener('keydown', handler);
+	// 	};
+	// }, [currentApp, inputRef, primaryAction, secondaryActions]);
 
 	useEffect(() => {
+		console.count('sono stato io 4');
 		const ref = inputRef.current;
 		const searchCb = (ev: any): void => {
 			if (ev.key === 'Enter') {
@@ -304,20 +308,21 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 		};
 	}, [onSearch]);
 	useEffect(() => {
+		console.count('sono stato io 5');
 		if (triggerSearch) {
 			onSearch();
 			setTriggerSearch(false);
 		}
 	}, [onSearch, triggerSearch]);
 
-	useEffect(() => {
-		setChangedBySearchBar((value) => {
-			if (!value) {
-				setInputState(filter(query, (q) => !q.isQueryFilter));
-			}
-			return false;
-		});
-	}, [query]);
+	// useEffect(() => {
+	// 	setChangedBySearchBar((value) => {
+	// 		if (!value) {
+	// 			setInputState(filter(query, (q) => !q.isQueryFilter));
+	// 		}
+	// 		return false;
+	// 	});
+	// }, [query]);
 	return (
 		<Container orientation="horizontal" minWidth="0" ref={containerRef}>
 			<Container minWidth="512px" width="fill">

@@ -112,8 +112,7 @@ export const getSoapFetch =
 									seq: get().context?.notify?.[0]?.seq
 							  }
 							: undefined,
-						// session: get().context?.session ?? {},
-						session: {},
+						session: get().context?.session ?? {},
 						account: getAccount(get().account as Account),
 						userAgent: {
 							name: userAgent,

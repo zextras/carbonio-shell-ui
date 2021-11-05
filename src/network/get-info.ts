@@ -5,11 +5,16 @@ import { normalizeAccount } from '../store/account/normalization';
 import { AccountSettings, AccountState, GetInfoResponse, Tag, ZextrasModule } from '../../types';
 import { goToLogin } from './go-to-login';
 
-const parsePollingInterval = (settings: AccountSettings): void => {
-	const polling = (settings.prefs?.zimbraPrefMailPollingInterval ?? '') as string;
-	// if (polling.includes('m')) {
-		
-	// }
+const parsePollingInterval = (settings: AccountSettings): number => {
+	const pollingPref = (settings.prefs?.zimbraPrefMailPollingInterval ?? '') as string;
+	const pollingValue = parseInt(pollingPref, 10);
+	if (Number.isNaN(pollingValue)) {
+		return 30000;
+	}
+	if (pollingPref.includes('m')) {
+		return pollingValue * 60 * 1000;
+	}
+	return pollingValue * 1000;
 };
 export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>): Promise<void> =>
 	get()

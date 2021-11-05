@@ -1,19 +1,22 @@
-import { map } from 'lodash';
+import { find, findIndex, map, merge, reduce } from 'lodash';
 import { SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account/store';
-import { Mods } from '../../types';
+import { AccountState, Mods } from '../../types';
 
-export const editSettings = (mods: Mods, app: string = SHELL_APP_ID): Promise<any> =>
-	useAccountStore.getState().xmlSoapFetch(SHELL_APP_ID)(
-		'Batch',
-		`<BatchRequest xmlns="urn:zimbra" onerror="stop">${
-			mods.props
-				? `<ModifyPropertiesRequest xmlns="urn:zimbraAccount">${map(
-						mods.props,
-						(prop, key) => `<prop name="${key}" zimlet="${prop.app ?? app}">${prop.value}</prop>`
-				  )}</ModifyPropertiesRequest>`
-				: ''
-		}
+export const editSettings = (mods: Mods, appId: string = SHELL_APP_ID): Promise<any> =>
+	useAccountStore
+		.getState()
+		.xmlSoapFetch(SHELL_APP_ID)(
+			'Batch',
+			`<BatchRequest xmlns="urn:zimbra" onerror="stop">${
+				mods.props
+					? `<ModifyPropertiesRequest xmlns="urn:zimbraAccount">${map(
+							mods.props,
+							(prop, key) =>
+								`<prop name="${key}" zimlet="${prop.app ?? appId}">${prop.value}</prop>`
+					  )}</ModifyPropertiesRequest>`
+					: ''
+			}
 	${
 		mods.prefs
 			? `<ModifyPrefsRequest xmlns="urn:zimbraAccount">${map(
@@ -95,7 +98,45 @@ export const editSettings = (mods: Mods, app: string = SHELL_APP_ID): Promise<an
 	</GrantRightsRequest>`
 			: ''
 	}</BatchRequest>`
-	);
+		)
+		.then((r) => {
+			useAccountStore.setState((s: AccountState) => ({
+				settings: {
+					...s.settings,
+					prefs: reduce(
+						mods.prefs,
+						(acc, pref, key) => ({
+							...acc,
+							[key]: pref as string
+						}),
+						s.settings.prefs
+					),
+					props: reduce(
+						mods.props,
+						(acc, { app, value }, key) => {
+							const propIndex = findIndex(acc, (p) => p.name === key && p.zimlet === app);
+							if (propIndex >= 0) {
+								// eslint-disable-next-line no-param-reassign
+								acc[propIndex] = {
+									name: key,
+									zimlet: app,
+									_content: value as string
+								};
+							} else {
+								acc.push({
+									name: key,
+									zimlet: app,
+									_content: value as string
+								});
+							}
+							return acc;
+						},
+						s.settings.props
+					)
+				}
+			}));
+			return r;
+		});
 
 export const getEditSettingsForApp =
 	(app: string) =>

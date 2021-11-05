@@ -76,8 +76,7 @@ export default function ShellMobileNav({ mobileNavIsOpen, menuTree }) {
 								label: t('settings.app', 'Settings'),
 								icon: 'SettingsModOutline',
 								onClick: () => history.push(`/${SETTINGS_APP_ID}`),
-								sidebar: SettingsSidebar,
-								CustomComponent: SidebarComponent
+								CustomComponent: SettingsSidebar
 							}
 						]
 					}

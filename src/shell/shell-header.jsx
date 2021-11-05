@@ -8,7 +8,7 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { reduce, map, find } from 'lodash';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -29,7 +29,21 @@ export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, childr
 	const location = useLocation();
 	const [t] = useTranslation();
 	const screenMode = useScreenMode();
-	const currentAppRoute = useMemo(() => location.pathname.split('/')[1], [location.pathname]);
+	const xcurrentAppRoute = useMemo(() => location.pathname.split('/')[1], [location.pathname]);
+	const [currentAppRoute, setCurrentAppRoute] = useState(() => location.pathname.split('/')[1]);
+	useEffect(() => {
+		setCurrentAppRoute((old) => {
+			const next = location.pathname.split('/')[1];
+			return next === old ? old : next;
+		});
+	}, [location.pathname]);
+
+	useEffect(() => {
+		console.log('memo', xcurrentAppRoute);
+	}, [xcurrentAppRoute]);
+	useEffect(() => {
+		console.log('state', currentAppRoute);
+	}, [currentAppRoute]);
 
 	const [primaryAction, secondaryActions] = useAppStore((s) => {
 		const currentApp = find(s.apps, (a) => a.core.route === currentAppRoute);

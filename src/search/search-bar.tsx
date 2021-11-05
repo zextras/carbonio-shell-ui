@@ -88,7 +88,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 	const [storedValue, setStoredValue] = useLocalStorage('search_suggestions', []);
 	const apps = useApps();
 	useEffect(() => {
-		console.log('changed', apps);
+		console.log('changed: apps', apps);
 	}, [apps]);
 	const history = useHistory();
 	const { updateQuery, updateModule, query } = useSearchStore();
@@ -116,6 +116,9 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 		[apps]
 	);
 
+	useEffect(() => {
+		console.log('changed: moduleSelectorItems', moduleSelectorItems);
+	}, [moduleSelectorItems]);
 	const [options, setOptions] = useState<Array<{ label: string; hasAvatar: false }>>([]);
 
 	const onChipAdd = useCallback(
@@ -127,6 +130,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 	);
 
 	useEffect(() => {
+		console.log('changed: runnung setModuleSelection');
 		setModuleSelection((current) =>
 			currentApp && currentApp !== SEARCH_APP_ID
 				? find(moduleSelectorItems, (mod) => mod.value === currentApp) ?? moduleSelectorItems[0]
@@ -263,6 +267,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 
 	const onSelectionChange = useCallback(
 		(newVal) => {
+			console.log('changed: dunno, onSelectionChange');
 			setModuleSelection(find(moduleSelectorItems, (item) => item.value === newVal));
 			setInputState([]);
 			updateQuery([]);

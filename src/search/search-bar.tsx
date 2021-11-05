@@ -87,6 +87,9 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 	const [t] = useTranslation();
 	const [storedValue, setStoredValue] = useLocalStorage('search_suggestions', []);
 	const apps = useApps();
+	useEffect(() => {
+		console.log('changed', apps);
+	}, [apps]);
 	const history = useHistory();
 	const { updateQuery, updateModule, query } = useSearchStore();
 	const [moduleSelection, setModuleSelection] = useState<{

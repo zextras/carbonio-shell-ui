@@ -29,21 +29,7 @@ export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, childr
 	const location = useLocation();
 	const [t] = useTranslation();
 	const screenMode = useScreenMode();
-	const xcurrentAppRoute = useMemo(() => location.pathname.split('/')[1], [location.pathname]);
-	const [currentAppRoute, setCurrentAppRoute] = useState(() => location.pathname.split('/')[1]);
-	useEffect(() => {
-		setCurrentAppRoute((old) => {
-			const next = location.pathname.split('/')[1];
-			return next === old ? old : next;
-		});
-	}, [location.pathname]);
-
-	useEffect(() => {
-		console.log('memo', xcurrentAppRoute);
-	}, [xcurrentAppRoute]);
-	useEffect(() => {
-		console.log('state', currentAppRoute);
-	}, [currentAppRoute]);
+	const currentAppRoute = useMemo(() => location.pathname.split('/')[1], [location.pathname]);
 
 	const [primaryAction, secondaryActions] = useAppStore((s) => {
 		const currentApp = find(s.apps, (a) => a.core.route === currentAppRoute);

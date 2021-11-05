@@ -49,7 +49,7 @@ export const appStore = createStore<AppState>((set) => ({
 			(data: Partial<Omit<AppData, 'core'>>): void =>
 				set(
 					produce((state) => {
-						state.apps[id] = { ...state.apps[id], ...data };
+						Object.assign(state.apps[id], data);
 					})
 				),
 		setAppContext:

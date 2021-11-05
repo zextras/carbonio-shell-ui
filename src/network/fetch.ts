@@ -13,6 +13,7 @@ import {
 	Tag
 } from '../../types';
 import { userAgent } from './user-agent';
+import { noOp } from './noOp';
 
 const getAccount = (acc?: Account): { by: string; _content: string } | undefined => {
 	if (acc) {
@@ -57,6 +58,9 @@ const handleResponse = <R>(
 	set: SetState<AccountState>,
 	get: GetState<AccountState>
 ): R => {
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
+	clearTimeout(get().noOpTimeout);
 	if (res?.Body?.Fault) {
 		if (
 			find(
@@ -77,6 +81,7 @@ const handleResponse = <R>(
 			res.Header.context?.refresh?.mbx?.[0]?.s ?? res.Header.context?.notify?.[0]?.mbx?.[0]?.s;
 		const tags = res.Header.context?.refresh?.tags?.tag as Array<Tag>;
 		set({
+			noOpTimeout: setTimeout(() => noOp(get), 10000),
 			tags: tags ?? get().tags,
 			usedQuota: usedQuota ?? get().usedQuota,
 			context: {
@@ -107,7 +112,8 @@ export const getSoapFetch =
 									seq: get().context?.notify?.[0]?.seq
 							  }
 							: undefined,
-						session: get().context?.session ?? {},
+						// session: get().context?.session ?? {},
+						session: {},
 						account: getAccount(get().account as Account),
 						userAgent: {
 							name: userAgent,

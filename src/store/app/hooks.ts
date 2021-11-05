@@ -11,13 +11,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* THIS FILE CONTAINS HOOKS, BUT ESLINT IS DUMB */
 
-import { sortBy } from 'lodash';
+import { reduce, sortBy } from 'lodash';
 import { useAppStore, appStore } from './store';
 import { AppData, AppsMap, ZextrasModule } from '../../../types';
 
 export const useApp = (id: string) => (): AppData => useAppStore((s) => s.apps[id]);
 
 export const useApps = (): AppsMap => useAppStore((s) => s.apps);
+export const useAppCores = (): { [appId: string]: ZextrasModule } =>
+	useAppStore((s) => reduce(s.apps, (acc, app, id) => ({ ...acc, [id]: app.core }), {}));
 
 export const useAppList = (): Array<AppData> =>
 	useAppStore((s) => sortBy(s.apps, (a) => a.core.priority));

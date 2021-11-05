@@ -17,8 +17,9 @@ import { ContextBridgeState } from '../../types';
 
 export const contextBridge = createStore<ContextBridgeState>((set, get) => ({
 	packageDependentFunctions: {},
+	routeDependentFunctions: {},
 	functions: {},
-	add: ({ packageDependentFunctions, functions }): void => {
+	add: ({ packageDependentFunctions, routeDependentFunctions, functions }): void => {
 		set((s) => ({
 			packageDependentFunctions: reduce(
 				packageDependentFunctions ?? {},
@@ -28,6 +29,15 @@ export const contextBridge = createStore<ContextBridgeState>((set, get) => ({
 					return acc;
 				},
 				s.packageDependentFunctions
+			),
+			routeDependentFunctions: reduce(
+				routeDependentFunctions ?? {},
+				(acc, f, key) => {
+					// eslint-disable-next-line no-param-reassign
+					acc[key] = f;
+					return acc;
+				},
+				s.routeDependentFunctions
 			),
 			functions: reduce(
 				functions ?? {},

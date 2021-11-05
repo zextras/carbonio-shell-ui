@@ -18,5 +18,6 @@ export const useAccountStore = create<AccountState>((set, get) => ({
 	init: (): Promise<void> => getInfo(set, get),
 	soapFetch: (app: string): SoapFetch => getSoapFetch(app, set, get),
 	xmlSoapFetch: (app: string): SoapFetch => getXmlSoapFetch(app, set, get),
-	usedQuota: 0
+	usedQuota: 0,
+	lastNotificationTime: Date.now()
 }));

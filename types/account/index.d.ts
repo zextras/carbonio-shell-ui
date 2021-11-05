@@ -1,6 +1,7 @@
 import { SoapFetch, ZimletProp } from '../network';
 
 export type AccountState = {
+	noOpTimeout: unknown;
 	account?: Account;
 	settings: AccountSettings;
 	zimbraVersion: string;

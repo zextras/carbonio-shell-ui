@@ -31,19 +31,19 @@ const ContextBridge = () => {
 			createModal,
 			historyGoBack: () => history.goBack()
 		},
-		packageDependentFunctions: {
-			historyPush: (pkg) => (location) => {
+		routeDependentFunctions: {
+			historyPush: (route) => (location) => {
 				if (typeof location === 'string') {
-					history.replace(`/${pkg}${location}`);
+					history.replace(`/${route}${location}`);
 				} else {
-					history.replace({ ...location, pathname: `/${pkg}${location.pathname}` });
+					history.replace({ ...location, pathname: `/${route}${location.pathname}` });
 				}
 			},
-			historyReplace: (pkg) => (location) => {
+			historyReplace: (route) => (location) => {
 				if (typeof location === 'string') {
-					history.replace(`/${pkg}${location}`);
+					history.replace(`/${route}${location}`);
 				} else {
-					history.replace({ ...location, pathname: `/${pkg}${location.pathname}` });
+					history.replace({ ...location, pathname: `/${route}${location.pathname}` });
 				}
 			}
 		}

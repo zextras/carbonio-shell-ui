@@ -2,9 +2,15 @@ import { GetState, SetState } from 'zustand';
 import { SHELL_APP_ID } from '../constants';
 import { useAppStore } from '../store/app/store';
 import { normalizeAccount } from '../store/account/normalization';
-import { AccountState, GetInfoResponse, Tag, ZextrasModule } from '../../types';
+import { AccountSettings, AccountState, GetInfoResponse, Tag, ZextrasModule } from '../../types';
 import { goToLogin } from './go-to-login';
 
+const parsePollingInterval = (settings: AccountSettings): void => {
+	const polling = (settings.prefs?.zimbraPrefMailPollingInterval ?? '') as string;
+	// if (polling.includes('m')) {
+		
+	// }
+};
 export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>): Promise<void> =>
 	get()
 		.soapFetch(SHELL_APP_ID)<{ _jsns: string }, GetInfoResponse>('GetInfo', {
@@ -13,7 +19,12 @@ export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>
 		.then((res: any): void => {
 			if (res) {
 				const { account, settings, version } = normalizeAccount(res);
-				set({ account, settings, zimbraVersion: version });
+				set({
+					account,
+					settings,
+					// pollingInterval: parsePollingInterval(settings),
+					zimbraVersion: version
+				});
 			}
 		})
 		.then(() => fetch('/static/iris/components.json'))

@@ -262,12 +262,12 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 		(newVal) => {
 			setModuleSelection(find(moduleSelectorItems, (item) => item.value === newVal));
 			setInputState([]);
-			// updateQuery([]);
+			updateQuery([]);
 			if (currentApp === SEARCH_APP_ID) {
-				history.push(`/${SEARCH_APP_ID}/${newVal}`);
+				// history.push(`/${SEARCH_APP_ID}/${newVal}`);
 			}
 		},
-		[currentApp, history, moduleSelectorItems]
+		[currentApp, moduleSelectorItems, updateQuery]
 	);
 	const [triggerSearch, setTriggerSearch] = useState(false);
 	const containerRef = useRef<HTMLDivElement>();

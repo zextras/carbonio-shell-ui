@@ -32,7 +32,9 @@ export interface II18nFactory {
 export type DRPropValues = 'auto' | 'enabled' | 'disabled';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export type PackageDependentFunction = (route: string) => Function;
+export type PackageDependentFunction = (app: string) => Function;
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type RouteDependentFunction = (route: string) => Function;
 
 export type ContextBridgeState = {
 	packageDependentFunctions: Record<string, PackageDependentFunction>;

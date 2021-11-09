@@ -41,17 +41,42 @@
             "theme_enabled": "चालू है",
             "general": "जनरल सेटिंग्स",
             "theme_auto": "ऑटो",
-            "theme_mode": "थीम मोड"
+            "theme_mode": "थीम मोड",
+            "theme_options": "थीम के ऑप्शन"
         },
         "general_tab": "सामान्य",
         "out_of_office": {
             "labels": {
                 "end_date": "ख़त्म तारीख़",
-                "start_date": "शुरू तारीख़"
+                "start_date": "शुरू तारीख़",
+                "all_day": "पूरे दिन:",
+                "auto_reply_message_external": "बाहरी भेजने वालों के लिए ऑटो-रिप्लाई मैसेज:",
+                "create_appointment": "एपॉइंटमेंट बनाएँ:",
+                "end_time": "समाप्त समय:",
+                "external_senders": "बाहरी भेजने वाले",
+                "out_of_office": "आउट ऑफ ऑफिस",
+                "send_auto_reply_period": "इस समय के दौरान ऑटो-रिप्लाई भेजें:",
+                "start_time": "शुरू टाइम:",
+                "auto_reply_message": "ऑटो-रिप्लाई मैसेज:",
+                "out_of_office_status": "आउट ऑफ ऑफिस स्टेटस:"
             },
             "status": {
-                "busy": "व्यस्त"
-            }
+                "busy": "व्यस्त",
+                "out_of_office": "आउट ऑफ ऑफिस"
+            },
+            "do_not_send_auto_replies": "ऑटो रिप्लाई न भेजें",
+            "external_senders": {
+                "do_not_send_to_external": "बाहरी भेजने वाले को ऑटो-रिप्लाई मैसेज न भेजें",
+                "send_custom_in_organisation": "जो मेरी कंपनी में नहीं है उनके लिए अलग मैसेज भेजें",
+                "send_custom_not_in_organisation": "जो मेरी कंपनी और एड्रेस बुक में नहीं है उनके लिए अलग मैसेज भेजें",
+                "send_standard_auto_reply": "स्टैंडर्ड ऑटो-रिप्लाई मैसेज भेजें"
+            },
+            "headings": {
+                "create_appointment": "कैलेंडर एपॉइंटमेंट",
+                "settings_label": "आउट ऑफ ऑफिस सेटिंग्स",
+                "time_period": "समय अवधि"
+            },
+            "send_auto_replies": "ऑटो रिप्लाई भेजें"
         },
         "app_description": "सेटिंग्स मॉड्यूल"
     },
@@ -70,5 +95,12 @@
         }
     },
     "new_tab": "नई टैब",
-    "copyright": "कॉपीराइट"
+    "copyright": "कॉपीराइट",
+    "user_quota": {
+        "limited": "{{quota}}% जगह इस्तेमाल की गई",
+        "unlimited": "असीमित जगह उपलब्ध है"
+    },
+    "snackbar": {
+        "error": "कुछ गड़बड़ हुई, दोबारा कोशिश करें"
+    }
 }

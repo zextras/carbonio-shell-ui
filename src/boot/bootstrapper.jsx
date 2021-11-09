@@ -10,6 +10,7 @@
  */
 
 import React, { useEffect } from 'react';
+import { SnackbarManager, ModalManager } from '@zextras/zapp-ui';
 import { ThemeProvider } from './theme-provider';
 import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-provider';
@@ -66,9 +67,13 @@ function bootstrapper(onBeforeBoot) {
 			}, [init]);
 			return (
 				<ThemeProvider>
-					<BootstrapperContextProvider i18nFactory={_i18nFactory} storeFactory={_storeFactory}>
-						<BootstrapperRouter />
-					</BootstrapperContextProvider>
+					<SnackbarManager>
+						<ModalManager>
+							<BootstrapperContextProvider i18nFactory={_i18nFactory} storeFactory={_storeFactory}>
+								<BootstrapperRouter />
+							</BootstrapperContextProvider>
+						</ModalManager>
+					</SnackbarManager>
 				</ThemeProvider>
 			);
 		}

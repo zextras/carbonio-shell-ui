@@ -118,8 +118,8 @@ export const ThemeProvider: FC = ({ children }) => {
 					sepia: -50
 				});
 				break;
-			default:
 			case 'auto':
+			default:
 				auto({
 					sepia: -50
 				});

@@ -10,8 +10,8 @@
  */
 
 import { Container, IconButton, Row, Tooltip } from '@zextras/zapp-ui';
-import { map, isEmpty } from 'lodash';
-import React, { useContext } from 'react';
+import { map, isEmpty, reduce } from 'lodash';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -42,6 +42,33 @@ export default function ShellPrimaryBar({ activeApp }) {
 	const apps = useAppList();
 	const history = useHistory();
 	const [t] = useTranslation();
+	const [routes, setRoutes] = useState({});
+	useEffect(() => {
+		console.log('apps', apps);
+	}, [apps]);
+	useEffect(() => {
+		setRoutes((r) => ({
+			...reduce(
+				apps,
+				(acc, app) => ({
+					...acc,
+					[app.core.name]:
+						activeApp === app.core.route
+							? history.location.pathname
+							: acc[app.core.name] ?? `/${app.core.route}/`
+				}),
+				r
+			),
+			[SEARCH_APP_ID]:
+				activeApp === SEARCH_APP_ID
+					? history.location.pathname
+					: r[SEARCH_APP_ID] ?? `/${SEARCH_APP_ID}/`,
+			[SETTINGS_APP_ID]:
+				activeApp === SETTINGS_APP_ID
+					? history.location.pathname
+					: r[SETTINGS_APP_ID] ?? `/${SETTINGS_APP_ID}/`
+		}));
+	}, [activeApp, apps, history.location.pathname]);
 	return (
 		<ContainerWithDivider
 			width={49}
@@ -68,7 +95,7 @@ export default function ShellPrimaryBar({ activeApp }) {
 									icon={app.icon}
 									backgroundColor={activeApp === app.core.route ? 'gray4' : 'gray6'}
 									iconColor={activeApp === app.core.route ? 'primary' : 'text'}
-									onClick={() => history.push(`/${app.core.route}/`)}
+									onClick={() => history.push(routes[app.core.name])}
 									size="large"
 								/>
 							</Tooltip>
@@ -81,7 +108,7 @@ export default function ShellPrimaryBar({ activeApp }) {
 						icon="SearchModOutline"
 						backgroundColor={activeApp === SEARCH_APP_ID ? 'gray4' : 'gray6'}
 						iconColor={activeApp === SEARCH_APP_ID ? 'primary' : 'text'}
-						onClick={() => history.push(`/${SEARCH_APP_ID}/`)}
+						onClick={() => history.push(routes[SEARCH_APP_ID])}
 						size="large"
 					/>
 				</Tooltip>
@@ -90,7 +117,7 @@ export default function ShellPrimaryBar({ activeApp }) {
 						icon="SettingsModOutline"
 						backgroundColor={activeApp === SETTINGS_APP_ID ? 'gray4' : 'gray6'}
 						iconColor={activeApp === SETTINGS_APP_ID ? 'primary' : 'text'}
-						onClick={() => history.push(`/${SETTINGS_APP_ID}/`)}
+						onClick={() => history.push(routes[SETTINGS_APP_ID])}
 						size="large"
 					/>
 				</Tooltip>

@@ -12,17 +12,22 @@
 /* THIS FILE CONTAINS HOOKS, BUT ESLINT IS DUMB */
 
 import { reduce, sortBy } from 'lodash';
+import { useMemo } from 'react';
 import { useAppStore, appStore } from './store';
 import { AppData, AppsMap, ZextrasModule } from '../../../types';
 
 export const useApp = (id: string) => (): AppData => useAppStore((s) => s.apps[id]);
 
 export const useApps = (): AppsMap => useAppStore((s) => s.apps);
-export const useAppCores = (): { [appId: string]: ZextrasModule } =>
-	useAppStore((s) => reduce(s.apps, (acc, app, id) => ({ ...acc, [id]: app.core }), {}));
+export const useAppCores = (): { [appId: string]: ZextrasModule } => {
+	const apps = useAppStore((s) => s.apps);
+	return useMemo(() => reduce(apps, (acc, app, id) => ({ ...acc, [id]: app.core }), {}), [apps]);
+};
 
-export const useAppList = (): Array<AppData> =>
-	useAppStore((s) => sortBy(s.apps, (a) => a.core.priority));
+export const useAppList = (): Array<AppData> => {
+	const apps = useAppStore((s) => s.apps);
+	return useMemo(() => sortBy(apps, (a) => a.core.priority), [apps]);
+};
 
 export const useAppContext = (id: string) => (): unknown => useAppStore((s) => s.apps[id]?.context);
 

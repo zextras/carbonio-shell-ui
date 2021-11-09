@@ -1,3 +1,4 @@
+/* eslint-disable import/no-import-module-exports */
 /*
  * *** BEGIN LICENSE BLOCK *****
  * Copyright (C) 2011-2021 Zextras

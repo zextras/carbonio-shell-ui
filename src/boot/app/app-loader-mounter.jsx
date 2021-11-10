@@ -36,14 +36,14 @@ export default function AppLoaderMounter() {
 							if (idx === 0) {
 								history.replace(`/${app.core.route}/`);
 							}
-						} else if (FLAVOR === 'NPM' && cliSettings?.app_package?.name === app.core.name) {
-							const i = findIndex(acc.list, (a) => a.key === app.core.name);
-							// eslint-disable-next-line no-param-reassign
-							acc.list[i] = (
-								<AppContextProvider key={app.core.name} pkg={app.core.name}>
-									<App key={app.core.name} />
-								</AppContextProvider>
-							);
+							// } else if (FLAVOR === 'NPM' && cliSettings?.app_package?.name === app.core.name) {
+							// 	const i = findIndex(acc.list, (a) => a.key === app.core.name);
+							// 	// eslint-disable-next-line no-param-reassign
+							// 	acc.list[i] = (
+							// 		<AppContextProvider key={app.core.name} pkg={app.core.name}>
+							// 			<App key={app.core.name} />
+							// 		</AppContextProvider>
+							// 	);
 						}
 					}
 					return acc;

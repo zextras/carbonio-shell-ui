@@ -44,9 +44,6 @@ export default function ShellPrimaryBar({ activeApp }) {
 	const [t] = useTranslation();
 	const [routes, setRoutes] = useState({});
 	useEffect(() => {
-		console.log('apps', apps);
-	}, [apps]);
-	useEffect(() => {
 		setRoutes((r) => ({
 			...reduce(
 				apps,
@@ -85,7 +82,7 @@ export default function ShellPrimaryBar({ activeApp }) {
 				style={{ minHeight: '1px', overflowY: 'overlay' }}
 			>
 				{map(apps, (app) => {
-					if (!app.icon) {
+					if (!app.icon || !app.views?.app) {
 						return null;
 					}
 					if (typeof app.icon === 'string') {

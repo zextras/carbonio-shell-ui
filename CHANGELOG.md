@@ -2,6 +2,60 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0-beta.0](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.63...v0.2.0-beta.0) (2021-11-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* deprecated docs and fiber channel
+
+### Features
+
+* added base sdk, removed cli ([65a71b9](https://bitbucket.org/zextras/zapp-shell/commit/65a71b9be772c67cdbdef474ad0c5d2781860c21))
+* added commit id global value and file ([7a1cff1](https://bitbucket.org/zextras/zapp-shell/commit/7a1cff13f51a561fa74b0a916c973f07fdf52234))
+* added first draft  of route memoization ([58152fa](https://bitbucket.org/zextras/zapp-shell/commit/58152fa773374326ef944546e01bca860e577f90))
+* added tag management ([4a26d96](https://bitbucket.org/zextras/zapp-shell/commit/4a26d96835d25eebb89e0d41eba2e06bb1b39745))
+* added tooltip to primary bar elements ([9cf4065](https://bitbucket.org/zextras/zapp-shell/commit/9cf40653204ea1f95f189d43fc9b837e971a8298))
+* applied new store usage ([663f35c](https://bitbucket.org/zextras/zapp-shell/commit/663f35c1390664487bc7927e9953bbeddeeb9338))
+* basic sub-route implementation ([a981c12](https://bitbucket.org/zextras/zapp-shell/commit/a981c1295ea5cdf6e5cf341eef0a7829fd8336a3))
+* complete types overhaul ([2997f46](https://bitbucket.org/zextras/zapp-shell/commit/2997f46c5708f76365917aa862aa5b671bd211bf))
+* de-synchronized app loading ([1399ddd](https://bitbucket.org/zextras/zapp-shell/commit/1399ddd61c350bdb497808d2f282b2be9d0de23c))
+* deprecated docs and fiber channel ([a914a5c](https://bitbucket.org/zextras/zapp-shell/commit/a914a5ccb776ffe4d3fa7e144cb1de9361e679a9))
+* edit-settings ([c50225b](https://bitbucket.org/zextras/zapp-shell/commit/c50225b4e0f60de067e56671a496956d1e1fb591))
+* improved context header management ([c30a61b](https://bitbucket.org/zextras/zapp-shell/commit/c30a61b57a105a8f55362c2524f202a407dba219))
+* improved loading by running functions in band ([15a02f6](https://bitbucket.org/zextras/zapp-shell/commit/15a02f6735db8d559d0704acfd72242e1733a1ab))
+* minimized app-loading procedure ([450d00a](https://bitbucket.org/zextras/zapp-shell/commit/450d00a4ef74d0a41a8eb9d90f1cf9d7d65c07c2))
+* noop cyclic requests ([57e3dcc](https://bitbucket.org/zextras/zapp-shell/commit/57e3dcc3d264416a0f3a2759952d2992a798379f))
+* subrouting, team chat bar, improved collapser, mini sidebar ([9354432](https://bitbucket.org/zextras/zapp-shell/commit/9354432c4206fea7d8d03210149e5a0e178dc149))
+* updated jenkinslib ([865bb99](https://bitbucket.org/zextras/zapp-shell/commit/865bb998ceafac97ed5cf0f033efbdb86f8bfe83))
+
+
+### Bug Fixes
+
+* auth appearing in primary bar ([3c952dd](https://bitbucket.org/zextras/zapp-shell/commit/3c952dd6dff6a809489c4855fc578dfffe148d92))
+* edit settings return confirmation ([4fcaf67](https://bitbucket.org/zextras/zapp-shell/commit/4fcaf674d62201f6ccb95d0a25240abfeadb2356))
+* empty search app ([a8ee8c0](https://bitbucket.org/zextras/zapp-shell/commit/a8ee8c073e3d15e7404c23c58811cf03931090d7))
+* error in routeDependentFunctions type ([7852c06](https://bitbucket.org/zextras/zapp-shell/commit/7852c06a27e597871ce92c6b39af2b7c64f18cf6))
+* fixed wrong labels for apps ([c54c754](https://bitbucket.org/zextras/zapp-shell/commit/c54c7546f28453404b0756408da247fa396e25d6))
+* header in firefox ([0739bfb](https://bitbucket.org/zextras/zapp-shell/commit/0739bfb29141c0c635046093d22f83b13e3f939b))
+* header session ([0ea9b9a](https://bitbucket.org/zextras/zapp-shell/commit/0ea9b9a68043f2ef9a544d039ed92c8fb1a3d086))
+* increased board backdrop offset ([61cf105](https://bitbucket.org/zextras/zapp-shell/commit/61cf10595b7b4e630acf29901e27cf496d90faf5))
+* loading priority ([c914675](https://bitbucket.org/zextras/zapp-shell/commit/c9146758f956cffa464076d650aa0c0e1b964500))
+* readded modal and snackbar managers ([873f769](https://bitbucket.org/zextras/zapp-shell/commit/873f769b995b25d4ba31ae74e63f9179ca18b0f2))
+* removed app remount ([f55ff08](https://bitbucket.org/zextras/zapp-shell/commit/f55ff085694db77158304ef583ed2430a83132fc))
+* removed logs ([30e3725](https://bitbucket.org/zextras/zapp-shell/commit/30e372544ccdb9986ef856ae741d81c99752f5a9))
+* rolled back previous fix ([8c7da18](https://bitbucket.org/zextras/zapp-shell/commit/8c7da1800468807ae89776dd123a531b8c6ce0bf))
+* route in bridgedFunctions ([b1eebe8](https://bitbucket.org/zextras/zapp-shell/commit/b1eebe82affbdc529ff9bebc064e4811f99817ba))
+* search bar not working from outside of the module ([ccfcc64](https://bitbucket.org/zextras/zapp-shell/commit/ccfcc64e8c5e16f6b2e1185eee5d770dae600565))
+* search redirection on displayer opening ([fcc8c19](https://bitbucket.org/zextras/zapp-shell/commit/fcc8c190c315a8d3f5e07d74492520c3b9ba4a5b))
+* settings save reactivity ([ae148f8](https://bitbucket.org/zextras/zapp-shell/commit/ae148f8b9d84b616e32ed49858d9b90fd74a07fc))
+* settings views and incorrect locale ([6173848](https://bitbucket.org/zextras/zapp-shell/commit/6173848c62db8f8c6ed74e27ca717491afdc4ffc))
+* store ([64c7e8a](https://bitbucket.org/zextras/zapp-shell/commit/64c7e8a2d075330c5c573c51174534e5a77ad80f))
+* tentative fix to search bug ([3c37034](https://bitbucket.org/zextras/zapp-shell/commit/3c37034f4ebbc965fba02399df861c1e1a268648))
+* type declarations ([dabef77](https://bitbucket.org/zextras/zapp-shell/commit/dabef770dfbfe150215042d2c347a29635a51958))
+* typo ([08e3301](https://bitbucket.org/zextras/zapp-shell/commit/08e330132707fbb26b86d537b7ec8b71563c7248))
+* updated darkmode settings string ([ee6b088](https://bitbucket.org/zextras/zapp-shell/commit/ee6b088bda83fa3b8d188ca274aa96916d430f2c))
+
 ## [0.1.0-beta.63](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.62...v0.1.0-beta.63) (2021-10-29)
 
 ## [0.1.0-beta.62](https://bitbucket.org/zextras/zapp-shell/compare/v0.1.0-beta.61...v0.1.0-beta.62) (2021-10-29)

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-import-module-exports */
 /*
  * *** BEGIN LICENSE BLOCK *****
  * Copyright (C) 2011-2021 Zextras
@@ -12,8 +13,10 @@
 import './index.css';
 import React, { Suspense } from 'react';
 import { render } from 'react-dom';
-import LoadingView from './bootstrap/loading-view';
-import LazyBootstrapper from './bootstrap/lazy-bootstrapper';
+import LoadingView from './boot/loading-view';
+import LazyBootstrapper from './boot/lazy-bootstrapper';
+
+if (module.hot) module.hot.accept();
 
 render(
 	<Suspense fallback={<LoadingView />}>

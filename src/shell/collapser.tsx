@@ -35,7 +35,7 @@ const Bubble = styled.div<{ open: boolean }>`
 		background-color: ${({ theme }): string => theme.palette.gray2.hover};
 	}
 	&:active {
-		background-color: ${({ theme }): string => theme.palette.gray2.hover};
+		background-color: ${({ theme }): string => theme.palette.gray2.active};
 	}
 `;
 

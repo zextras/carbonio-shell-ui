@@ -5,12 +5,16 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
-const { coerce, valid } = require('semver');
-const pkg = require('./zapp.conf.js');
+const commitHash = require('child_process').execSync('git rev-parse HEAD').toString().trim();
+const pkg = require('./package.json');
 
-const babelRC = require('./babel.config.js');
-// const babelRCServiceworker = require('./babel.config.serviceworker.js');
+const babelRC = require('./babel.config');
 
+const basePath = `/static/iris/carbonio-shell/${commitHash}/`;
+
+const server = `https://${process.env.PROXY_SERVER || '127.0.0.1:4443'}/`;
+console.log(`Building Shell using base path: `);
+console.log(` ${basePath} `);
 /**
  * The flavor of the build
  * @type {'npm' | 'app'}
@@ -19,7 +23,6 @@ const flavor = process.env.ZX_SHELL_FLAVOR || 'APP';
 
 let indexFile;
 const pathsToCopy = [
-	{ from: 'assets', to: 'assets' },
 	{
 		from: 'node_modules/@zextras/zapp-ui/dist/tinymce/skins',
 		to: 'tinymce/skins/'
@@ -41,21 +44,48 @@ switch (flavor.toUpperCase()) {
 }
 
 module.exports = {
-	mode: flavor.toUpperCase() !== 'APP' ? 'development' : 'production',
+	mode: server || flavor.toUpperCase() !== 'APP' ? 'development' : 'production',
 	entry: {
 		index: indexFile
 	},
 	devtool: 'source-map',
 	output: {
-		path: path.resolve(process.cwd(), 'dist', 'public'),
+		path: path.resolve(process.cwd(), 'dist'),
 		filename: flavor.toUpperCase() !== 'APP' ? '[name].js' : '[name].[chunkhash:8].js',
 		chunkFilename: '[name].[chunkhash:8].chunk.js',
-		publicPath: '/'
+		publicPath: basePath
 	},
 	target: 'web',
 	resolve: {
 		extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
 		alias: {}
+	},
+	devServer: {
+		port: 9000,
+		historyApiFallback: true,
+		https: true,
+		open: [basePath],
+		proxy: [
+			{
+				context: ['/static/login/**'],
+				target: server,
+				secure: false,
+				cookieDomainRewrite: {
+					'*': server,
+					[server]: 'localhost:9000'
+				}
+			},
+			{
+				context: ['!/static/iris/carbonio-shell/**/*'],
+				target: server,
+				secure: false,
+				logLevel: 'debug',
+				cookieDomainRewrite: {
+					'*': server,
+					[server]: 'localhost:9000'
+				}
+			}
+		]
 	},
 	module: {
 		rules: [
@@ -70,7 +100,8 @@ module.exports = {
 				exclude: [/node_modules\/tinymce/],
 				use: [
 					{
-						loader: MiniCssExtractPlugin.loader
+						loader: MiniCssExtractPlugin.loader,
+						options: {}
 					},
 					{
 						loader: require.resolve('css-loader'),
@@ -89,26 +120,11 @@ module.exports = {
 			},
 			{
 				test: /\.(png|jpg|gif|woff2?|svg|eot|ttf|ogg|mp3)$/,
-				exclude: /assets/,
+				include: [/src/],
 				use: [
 					{
 						loader: require.resolve('file-loader'),
 						options: {}
-					}
-				]
-			},
-			{
-				test: /\.properties$/,
-				use: [
-					{
-						loader: path.resolve(
-							process.cwd(),
-							'node_modules',
-							'@zextras',
-							'zapp-cli',
-							'utils',
-							'properties-loader.js'
-						)
 					}
 				]
 			}
@@ -119,9 +135,12 @@ module.exports = {
 			patterns: pathsToCopy
 		}),
 		new DefinePlugin({
+			WATCH_SERVER: JSON.stringify(server),
+			COMMIT_ID: JSON.stringify(commitHash.toString().trim()),
 			PACKAGE_VERSION: JSON.stringify(pkg.version),
-			PACKAGE_NAME: JSON.stringify(pkg.pkgName),
-			FLAVOR: JSON.stringify(flavor.toUpperCase())
+			PACKAGE_NAME: JSON.stringify(pkg.zapp.name),
+			FLAVOR: JSON.stringify(flavor.toUpperCase()),
+			BASE_PATH: JSON.stringify(basePath)
 		}),
 		new MiniCssExtractPlugin({
 			filename: 'style.[chunkhash:8].css',
@@ -130,18 +149,15 @@ module.exports = {
 		}),
 		new HtmlWebpackPlugin({
 			inject: true,
-			template: path.resolve(process.cwd(), 'src', 'index.html'),
-			chunks: ['index']
+			template: path.resolve(process.cwd(), 'src', 'index.template.html'),
+			chunks: ['index'],
+			BASE_PATH: basePath
 		}),
 		new HtmlWebpackPlugin({
 			inject: false,
-			template: path.resolve(process.cwd(), 'zimlet_def.template.xml'),
-			filename: `${pkg.pkgName}.xml`,
-			ZIMBRA_PACKAGE_VERSION: valid(coerce(pkg.version)),
-			PACKAGE_VERSION: pkg.version,
-			PACKAGE_NAME: pkg.pkgName,
-			PACKAGE_LABEL: pkg.pkgLabel,
-			PACKAGE_DESCRIPTION: pkg.pkgDescription
+			template: path.resolve(process.cwd(), 'commit.template'),
+			filename: 'commit',
+			COMMIT_ID: commitHash
 		})
 	]
 };

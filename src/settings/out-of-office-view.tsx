@@ -41,13 +41,11 @@ const OutOfOfficeView: FC<{
 		settings.prefs.zimbraPrefOutOfOfficeReplyEnabled === 'TRUE'
 	);
 	const [inputZimbraPrefOutOfOfficeReply, setInputZimbraPrefOutOfOfficeReply] = useState<string>(
-		settings.prefs.zimbraPrefOutOfOfficeReply
+		settings.prefs.zimbraPrefOutOfOfficeReply as string
 	);
 
-	const [
-		inputZimbraPrefOutOfOfficeExternalReply,
-		setInputZimbraPrefOutOfOfficeExternalReply
-	] = useState<string>(settings.prefs.zimbraPrefOutOfOfficeExternalReply);
+	const [inputZimbraPrefOutOfOfficeExternalReply, setInputZimbraPrefOutOfOfficeExternalReply] =
+		useState<string>(settings.prefs.zimbraPrefOutOfOfficeExternalReply as string);
 
 	const [createAppointmentDisabled, setCreateAppointmentDisabled] = useState<boolean>(false);
 	const [externalReplyInput, setExternalReplyInput] = useState<boolean>(

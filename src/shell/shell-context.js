@@ -13,13 +13,4 @@ import { createContext, useContext } from 'react';
 
 const ShellContext = createContext({ isMobile: true });
 
-/**
- * use the fiberchannel in a Shell context.
- * @returns {{fiberChannelSink, fiberChannel}}
- */
-export function useFiberChannel() {
-	const { fiberChannelSink, fiberChannel } = useContext(ShellContext);
-	return { fiberChannelSink, fiberChannel };
-}
-
 export default ShellContext;

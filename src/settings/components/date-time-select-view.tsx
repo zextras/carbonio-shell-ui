@@ -42,11 +42,11 @@ const DateTimeSelect: FC<{
 	);
 
 	const [dateZimbraPrefOutOfOfficeFromDate, setZimbraPrefOutOfOfficeFromDate] = useState<string>(
-		settings.prefs.zimbraPrefOutOfOfficeFromDate
+		settings.prefs.zimbraPrefOutOfOfficeFromDate as string
 	);
 
 	const [dateZimbraPrefOutOfOfficeUntilDate, setZimbraPrefOutOfOfficeUntilDate] = useState<string>(
-		settings.prefs.zimbraPrefOutOfOfficeUntilDate
+		settings.prefs.zimbraPrefOutOfOfficeUntilDate as string
 	);
 	const [allDay, setAllDay] = useState<boolean>(false);
 	const [allDayDisabled, setAllDayDisabled] = useState<boolean>(false);

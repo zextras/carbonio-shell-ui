@@ -22,7 +22,7 @@ import {
 	ThemeContext
 } from '@zextras/zapp-ui';
 import { map } from 'lodash';
-import { useAppList } from '../app-store/hooks';
+import { useAppList } from '../store/app/hooks';
 
 import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../constants/index';
 
@@ -38,9 +38,7 @@ const ModuleVersionSettings: FC = () => {
 
 	const filteredList = useMemo(
 		() =>
-			apps.filter(
-				(app) => app.core.package !== SEARCH_APP_ID && app.core.package !== SETTINGS_APP_ID
-			),
+			apps.filter((app) => app.core.name !== SEARCH_APP_ID && app.core.name !== SETTINGS_APP_ID),
 		[apps]
 	);
 	return (
@@ -51,9 +49,11 @@ const ModuleVersionSettings: FC = () => {
 				width="50%"
 			>
 				{map(filteredList, (app: any) => (
-					<Container key={app.core.package} padding={{ horizontal: 'large', vertical: 'small' }}>
+					<Container key={app.core.name} padding={{ horizontal: 'large', vertical: 'small' }}>
 						<Container orientation="horizontal" mainAlignment="space-between">
-							<Text>{app.core.name}</Text>
+							<Text>
+								{app.core.display} ({app.core.name})
+							</Text>
 							<Tooltip placement="top" label="Click to copy">
 								<Text style={{ cursor: 'pointer' }} onClick={(e: any): any => copyToClipboard(e)}>
 									Version: {app.core.version}

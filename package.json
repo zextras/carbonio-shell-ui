@@ -137,7 +137,7 @@
 	},
 	"zapp": {
 		"name": "carbonio-shell",
-		"translations_repository": "git@bitbucket.org:zextras/carbonio-shell.git",
+		"translations_repository": "git@bitbucket.org:zextras/com_zextras_zapp_shell.git",
 		"display": "Carbonio Shell",
 		"route": "shell",
 		"priority": -1

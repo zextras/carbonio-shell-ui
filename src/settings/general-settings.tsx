@@ -14,14 +14,14 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { useDispatch } from '../store/shell-store-hooks';
-import { modifyPrefs } from '../store/accounts-slice';
 import Logout from './logout';
 import AppearanceSettings from './appearance-settings';
 import ModuleVersionSettings from './module-version-settings';
 import OutOfOfficeSettings from './out-of-office-view';
-import { useUserAccounts } from '../shell/hooks';
+import { useUserSettings } from '../store/account/hooks';
 import { SETTINGS_APP_ID } from '../constants';
+import { editSettings } from '../network/edit-settings';
+import { Mods } from '../../types';
 
 export const DisplayerHeader: FC<{
 	label: string;
@@ -78,20 +78,11 @@ export const DisplayerHeader: FC<{
 	);
 };
 
-type PropsMods = Record<string, { app: string; value: unknown }>;
-type PrefsMods = Record<string, unknown>;
-
-type Mods = {
-	props?: PropsMods;
-	prefs?: PrefsMods;
-};
-
 const GeneralSettings: FC = () => {
 	const [mods, setMods] = useState<Mods>({});
 	const [t] = useTranslation();
-	const [acct] = useUserAccounts();
-	const [original] = useState(acct.settings);
-	const dispatch = useDispatch();
+	const settings = useUserSettings();
+	const [original] = useState(settings);
 	const addMod = useCallback((type: 'props' | 'prefs', key, value) => {
 		setMods((m) => ({
 			...m,
@@ -106,8 +97,8 @@ const GeneralSettings: FC = () => {
 	const onSave = useCallback(() => {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
-		dispatch(modifyPrefs(mods)).then((res) => {
-			if (res.type.includes('fulfilled')) {
+		editSettings(mods)
+			.then(() => {
 				createSnackbar({
 					key: `new`,
 					replace: true,
@@ -116,7 +107,8 @@ const GeneralSettings: FC = () => {
 					autoHideTimeout: 3000,
 					hideButton: true
 				});
-			} else {
+			})
+			.catch(() => {
 				createSnackbar({
 					key: `new`,
 					replace: true,
@@ -125,10 +117,9 @@ const GeneralSettings: FC = () => {
 					autoHideTimeout: 3000,
 					hideButton: true
 				});
-			}
-		});
+			});
 		setMods({});
-	}, [createSnackbar, dispatch, mods, t]);
+	}, [createSnackbar, mods, t]);
 	const onCancel = useCallback(() => {
 		setMods({});
 	}, []);
@@ -146,8 +137,8 @@ const GeneralSettings: FC = () => {
 					onCancel={onCancel}
 					onSave={onSave}
 				/>
-				<AppearanceSettings settings={acct.settings} addMod={addMod} />
-				<OutOfOfficeSettings settings={acct.settings} addMod={addMod} />
+				<AppearanceSettings settings={settings} addMod={addMod} />
+				<OutOfOfficeSettings settings={settings} addMod={addMod} />
 				<ModuleVersionSettings />
 				<Logout />
 			</Container>

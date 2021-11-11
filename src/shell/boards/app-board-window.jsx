@@ -26,7 +26,7 @@ import { useTranslation } from 'react-i18next';
 import AppBoardTab from './app-board-tab';
 import AppBoard from './app-board';
 import { BoardSetterContext, BoardValueContext } from './board-context';
-import { useApps } from '../../app-store/hooks';
+import { useApps } from '../../store/app/hooks';
 
 function TabsList({ tabs, currentBoard, setCurrentBoard, largeView, t }) {
 	const apps = useApps();
@@ -90,7 +90,7 @@ function TabsList({ tabs, currentBoard, setCurrentBoard, largeView, t }) {
 
 const BoardContainer = styled.div`
 	position: fixed;
-	top: 48px;
+	top: 60px;
 	bottom: 0;
 	left: 48px;
 	right: 0;
@@ -137,9 +137,8 @@ const Actions = styled(Row)``;
 export default function AppBoardWindow() {
 	const [t] = useTranslation();
 	const { boards: shellBoards, currentBoard, largeView, minimized } = useContext(BoardValueContext);
-	const { toggleLargeView, toggleMinimized, removeAllBoards, setCurrentBoard } = useContext(
-		BoardSetterContext
-	);
+	const { toggleLargeView, toggleMinimized, removeAllBoards, setCurrentBoard } =
+		useContext(BoardSetterContext);
 
 	const [tabs, boards] = useMemo(
 		() =>
@@ -182,13 +181,20 @@ export default function AppBoardWindow() {
 								/>
 							</Padding>
 						)}
-						<Padding right="extrasmall">
+						{/* <Padding right="extrasmall">
 							<Tooltip label={t('board.open_app', 'Open in app')} placement="top">
 								<IconButton icon="DiagonalArrowRightUpOutline" onClick={toggleLargeView} />
 							</Tooltip>
-						</Padding>
+						</Padding> */}
 						<Padding right="extrasmall">
-							<Tooltip label={t('board.enlarge', 'Enlarge board')} placement="top">
+							<Tooltip
+								label={
+									largeView
+										? t('board.reduce', 'Reduce board')
+										: t('board.enlarge', 'Enlarge board')
+								}
+								placement="top"
+							>
 								<IconButton
 									icon={largeView ? 'CollapseOutline' : 'ExpandOutline'}
 									onClick={toggleLargeView}

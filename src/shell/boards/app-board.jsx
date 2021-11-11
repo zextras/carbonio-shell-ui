@@ -13,9 +13,9 @@ import { Route, Router, useHistory } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import styled from 'styled-components';
 import { map } from 'lodash';
-import AppContextProvider from '../../app/app-context-provider';
+import AppContextProvider from '../../boot/app/app-context-provider';
 import { BoardValueContext, BoardSetterContext } from './board-context';
-import { useApps } from '../../app-store/hooks';
+import { useApps } from '../../store/app/hooks';
 
 // eslint-disable-next-line
 const _container = styled.div`

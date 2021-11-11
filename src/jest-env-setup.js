@@ -9,7 +9,7 @@
  * *** END LICENSE BLOCK *****
  */
 
-import '@testing-library/jest-dom/extend-expect';
+// import '@testing-library/jest-dom/extend-expect';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const crypto = require('crypto');

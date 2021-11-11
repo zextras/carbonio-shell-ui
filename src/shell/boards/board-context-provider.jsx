@@ -13,7 +13,7 @@ import React, { useCallback, useMemo, useReducer } from 'react';
 import { pickBy } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { BoardValueContext, BoardSetterContext } from './board-context';
-import { useContextBridge } from '../../app-store/context-bridge';
+import { useContextBridge } from '../../store/context-bridge';
 
 function getRandomKey() {
 	return String(Date.now() * (Math.floor(Math.random() * 1000) + 1));

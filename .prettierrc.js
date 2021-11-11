@@ -1,3 +1,3 @@
 module.exports = {
-	...require('@zextras/zapp-cli/rules/prettier')
+	...require('@zextras/zapp-configs/rules/prettier')
 }

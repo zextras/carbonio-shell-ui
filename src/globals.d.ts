@@ -12,10 +12,12 @@
 declare const PACKAGE_VERSION: string;
 declare const PACKAGE_NAME: string;
 declare const FLAVOR: 'APP' | 'NPM';
+declare const BASE_PATH: string;
+declare const WATCH_SERVER: { host: string; user: string; pw: string; s };
 
 type devUtilsNamespace = {
 	installOnWindow(wnd: Window, ctxt?: any /* DevUtilsContext */): void;
-	getMSWorker<T /* SetupWorkerApi */>(): T | undefined;
+	// getMSWorker<T /* SetupWorkerApi */>(): T | undefined;
 };
 
 type cliSettingsNamespace = {

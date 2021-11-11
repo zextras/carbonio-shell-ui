@@ -30,9 +30,10 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useLocalStorage } from '../shell/hooks';
 import { SEARCH_APP_ID } from '../constants';
-import { useApps } from '../app-store/hooks';
+import { useApps } from '../store/app/hooks';
+import { useSearchStore } from './search-store';
+import { QueryChip, SearchBarProps, SelectLabelFactoryProps } from '../../types';
 import { handleKeyboardShortcuts } from '../keyboard-shortcuts/keyboard-shortcuts';
-import { QueryChip, useSearchStore } from './search-store';
 
 const OutlinedIconButton = styled(IconButton)`
 	border: 1px solid ${({ theme }): string => theme.palette.primary.regular};
@@ -49,12 +50,6 @@ const StyledContainer = styled(Container)`
 		transform: translateY(-2px);
 	}
 `;
-
-type SelectLabelFactoryProps = {
-	selected: [{ label: string; value: string }];
-	open: boolean;
-	focus: boolean;
-};
 
 const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus }) => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -85,26 +80,21 @@ const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus
 		</Container>
 	);
 };
-type SearchBarProps = {
-	currentApp: string;
-	primaryAction: unknown;
-	secondaryActions: unknown;
-};
 
 export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secondaryActions }) => {
 	const [searchIsEnabled, setSearchIsEnabled] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
-	const theme = useContext(ThemeContext) as unknown;
 	const [t] = useTranslation();
 	const [storedValue, setStoredValue] = useLocalStorage('search_suggestions', []);
 	const apps = useApps();
+
 	const history = useHistory();
 	const { updateQuery, updateModule, query } = useSearchStore();
 	const [moduleSelection, setModuleSelection] = useState<{
 		value: string;
 		label: string;
 	}>();
-	const [changedBySearchBar, setChangedBySearchBar] = useState(false);
+	// const [changedBySearchBar, setChangedBySearchBar] = useState(false);
 	const moduleSelectorItems = useMemo<
 		Array<{ label: string; value: string; customComponent: JSX.Element }>
 	>(
@@ -115,11 +105,11 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 						<Padding horizontal="extrasmall">
 							<Icon icon={app.icon} />
 						</Padding>
-						<Text>{app.core.name}</Text>
+						<Text>{app.core.display}</Text>
 					</Container>
 				),
-				label: app.core.name,
-				value: app.core.package
+				label: app.core.display,
+				value: app.core.route
 			})),
 		[apps]
 	);
@@ -184,7 +174,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 			history.push(`/${SEARCH_APP_ID}/${moduleSelection?.value}`);
 		}
 		setSearchIsEnabled(false);
-		setChangedBySearchBar(true);
+		// setChangedBySearchBar(true);
 	}, [currentApp, history, inputState, moduleSelection?.value, updateQuery]);
 
 	useEffect(() => {
@@ -272,31 +262,31 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 	const onSelectionChange = useCallback(
 		(newVal) => {
 			setModuleSelection(find(moduleSelectorItems, (item) => item.value === newVal));
-			setInputState([]);
-			updateQuery([]);
+			// setInputState([]);
+			// updateQuery([]);
 			if (currentApp === SEARCH_APP_ID) {
 				history.push(`/${SEARCH_APP_ID}/${newVal}`);
 			}
 		},
-		[currentApp, history, moduleSelectorItems, updateQuery]
+		[currentApp, history, moduleSelectorItems]
 	);
 	const [triggerSearch, setTriggerSearch] = useState(false);
 	const containerRef = useRef<HTMLDivElement>();
 
-	useEffect(() => {
-		const handler = (event: KeyboardEvent): unknown =>
-			handleKeyboardShortcuts({
-				event,
-				inputRef,
-				primaryAction,
-				secondaryActions,
-				currentApp
-			});
-		document.addEventListener('keydown', handler);
-		return (): void => {
-			document.removeEventListener('keydown', handler);
-		};
-	}, [currentApp, inputRef, primaryAction, secondaryActions]);
+	// useEffect(() => {
+	// 	const handler = (event: KeyboardEvent): unknown =>
+	// 		handleKeyboardShortcuts({
+	// 			event,
+	// 			inputRef,
+	// 			primaryAction,
+	// 			secondaryActions,
+	// 			currentApp
+	// 		});
+	// 	document.addEventListener('keydown', handler);
+	// 	return (): void => {
+	// 		document.removeEventListener('keydown', handler);
+	// 	};
+	// }, [currentApp, inputRef, primaryAction, secondaryActions]);
 
 	useEffect(() => {
 		const ref = inputRef.current;
@@ -321,14 +311,14 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 		}
 	}, [onSearch, triggerSearch]);
 
-	useEffect(() => {
-		setChangedBySearchBar((value) => {
-			if (!value) {
-				setInputState(filter(query, (q) => !q.isQueryFilter));
-			}
-			return false;
-		});
-	}, [query]);
+	// useEffect(() => {
+	// 	setChangedBySearchBar((value) => {
+	// 		if (!value) {
+	// 			setInputState(filter(query, (q) => !q.isQueryFilter));
+	// 		}
+	// 		return false;
+	// 	});
+	// }, [query]);
 	return (
 		<Container orientation="horizontal" minWidth="0" ref={containerRef}>
 			<Container minWidth="512px" width="fill">

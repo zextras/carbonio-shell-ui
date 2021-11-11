@@ -11,8 +11,6 @@
  */
 
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { skip } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
 import { useHistory, useLocation } from 'react-router-dom';
 import { LocationDescriptor } from 'history';
 
@@ -23,33 +21,20 @@ import ShellContext from './shell-context';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { BoardSetterContext, BoardValueContext } from './boards/board-context';
+import { SEARCH_APP_ID } from '../constants';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export { useAppPkg, useFiberChannel } from '../app/app-context';
-
-export { default as usePromise } from 'react-use-promise';
-
-export {
-	useUserAccounts,
-	useSaveSettingsCallback,
-	useCurrentSync, // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	useFirstSync // @ts-ignore
-} from '../store/shell-store-hooks';
-
-export const getUseAddBoardCallback = (appId: string) => (): ((
-	path: string,
-	context?: unknown | { app: string }
-) => void) => {
-	const { addBoard } = useContext(BoardSetterContext);
-	const callback = useCallback(
-		(path: string, context?: unknown | { app: string }) => {
-			addBoard(`/${(context as { app: string; title: string })?.app ?? appId}${path}`, context);
-		},
-		[addBoard]
-	);
-	return callback;
-};
+export { useUserAccount, useUserAccounts, useUserSettings } from '../store/account/hooks';
+export const getUseAddBoardCallback =
+	(appId: string) => (): ((path: string, context?: unknown | { app: string }) => void) => {
+		const { addBoard } = useContext(BoardSetterContext);
+		const callback = useCallback(
+			(path: string, context?: unknown | { app: string }) => {
+				addBoard(`/${(context as { app: string; title: string })?.app ?? appId}${path}`, context);
+			},
+			[addBoard]
+		);
+		return callback;
+	};
 
 export function useUpdateCurrentBoard(): (url: string, title: string) => void {
 	const { updateCurrentBoard } = useContext(BoardSetterContext);
@@ -69,64 +54,60 @@ export function useBoardConfig(): unknown {
 	return undefined;
 }
 
-export const getUsePushHistoryCallback = (appId: string) => (): ((
-	location: LocationDescriptor
-) => void) => {
-	const history = useHistory();
-	return useCallback(
-		(location: LocationDescriptor) => {
-			if (typeof location === 'string') {
-				history.push(`/${appId}${location}`);
-			} else {
-				history.push({ ...location, pathname: `/${appId}${location.pathname}` });
-			}
-		},
-		[history]
-	);
-};
+export const getUsePushHistoryCallback =
+	(appId: string) => (): ((location: LocationDescriptor) => void) => {
+		const history = useHistory();
+		const loc = useLocation();
+		return useCallback(
+			(location: LocationDescriptor) => {
+				if (loc.pathname.includes(`/${SEARCH_APP_ID}/`)) {
+					if (typeof location === 'string') {
+						history.push(`/${SEARCH_APP_ID}/${appId}${location}`);
+					} else {
+						history.push({
+							...location,
+							pathname: `/${SEARCH_APP_ID}/${appId}${location.pathname}`
+						});
+					}
+				} else if (typeof location === 'string') {
+					history.push(`/${appId}${location}`);
+				} else {
+					history.push({ ...location, pathname: `/${appId}${location.pathname}` });
+				}
+			},
+			[history, loc.pathname]
+		);
+	};
 
 export function useGoBackHistoryCallback(): () => void {
 	const history = useHistory();
 	return useCallback(() => history.goBack(), [history]);
 }
 
-export const getUseReplaceHistoryCallback = (appId: string) => (): ((
-	location: LocationDescriptor
-) => void) => {
-	const history = useHistory();
-	const loc = useLocation();
-	return useCallback(
-		(location: LocationDescriptor) => {
-			if (loc.pathname.includes('/search/')) {
-				if (typeof location === 'string') {
-					history.replace(`/search/${appId}${location}`);
+export const getUseReplaceHistoryCallback =
+	(appId: string) => (): ((location: LocationDescriptor) => void) => {
+		const history = useHistory();
+		const loc = useLocation();
+		return useCallback(
+			(location: LocationDescriptor) => {
+				if (loc.pathname.includes(`/${SEARCH_APP_ID}/`)) {
+					if (typeof location === 'string') {
+						history.replace(`/${SEARCH_APP_ID}/${appId}${location}`);
+					} else {
+						history.replace({
+							...location,
+							pathname: `/${SEARCH_APP_ID}/${appId}${location.pathname}`
+						});
+					}
+				} else if (typeof location === 'string') {
+					history.replace(`/${appId}${location}`);
 				} else {
-					history.replace({ ...location, pathname: `/search/${appId}${location.pathname}` });
+					history.replace({ ...location, pathname: `/${appId}${location.pathname}` });
 				}
-			} else if (typeof location === 'string') {
-				history.replace(`/${appId}${location}`);
-			} else {
-				history.replace({ ...location, pathname: `/${appId}${location.pathname}` });
-			}
-		},
-		[history, loc.pathname]
-	);
-};
-
-export function useBehaviorSubject<T>(observable: BehaviorSubject<T>): T {
-	const [value, setValue] = useState(observable.getValue());
-	useEffect(() => {
-		let canSet = true;
-		const sub = observable.pipe(skip(1)).subscribe((v) => {
-			if (canSet) setValue(v);
-		});
-		return (): void => {
-			canSet = false;
-			sub.unsubscribe();
-		};
-	}, [observable, setValue]);
-	return value;
-}
+			},
+			[history, loc.pathname]
+		);
+	};
 
 export function useIsMobile(): boolean {
 	const { isMobile } = useContext(ShellContext);

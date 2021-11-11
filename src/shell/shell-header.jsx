@@ -8,9 +8,9 @@
  * http://www.zextras.com/zextras-eula.html
  * *** END LICENSE BLOCK *****
  */
-import React, { useMemo } from 'react';
-import { reduce, map } from 'lodash';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useMemo, useState } from 'react';
+import { reduce, map, find } from 'lodash';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
 	Container,
@@ -22,42 +22,43 @@ import {
 	useScreenMode,
 	MultiButton
 } from '@zextras/zapp-ui';
-import { useAppStore } from '../app-store';
+import { useAppStore } from '../store/app/store';
 import { SearchBar } from '../search/search-bar';
 
 export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, children }) {
-	const history = useHistory();
+	const location = useLocation();
 	const [t] = useTranslation();
 	const screenMode = useScreenMode();
-	const currentApp = useMemo(() => history.location.pathname.split('/')[1], [
-		history.location.pathname
-	]);
+	const currentAppRoute = useMemo(() => location.pathname.split('/')[1], [location.pathname]);
 
-	const [primaryAction, secondaryActions] = useAppStore((s) => [
-		s.apps[currentApp]?.newButton?.primary,
-		reduce(
-			s.apps,
-			(acc, app, key) => {
-				if (app.newButton?.secondaryItems) {
-					if (acc.length > 0) {
-						acc.push({ type: 'divider', id: key, key, label: 'really?' });
+	const [primaryAction, secondaryActions] = useAppStore((s) => {
+		const currentApp = find(s.apps, (a) => a.core.route === currentAppRoute);
+		return [
+			currentApp?.newButton?.primary,
+			reduce(
+				s.apps,
+				(acc, app, key) => {
+					if (app.newButton?.secondaryItems) {
+						if (acc.length > 0) {
+							acc.push({ type: 'divider', id: key, key, label: 'really?' });
+						}
+						if (app.newButton?.primary) {
+							acc.push(app.newButton?.primary);
+						}
+						acc.push(
+							...map(app.newButton?.secondaryItems, (item) => ({
+								...item,
+								key: item.id,
+								disabled: item.disabled || item.getDisabledStatus?.()
+							}))
+						);
 					}
-					if (app.newButton?.primary) {
-						acc.push(app.newButton?.primary);
-					}
-					acc.push(
-						...map(app.newButton?.secondaryItems, (item) => ({
-							...item,
-							key: item.id,
-							disabled: item.disabled || item.getDisabledStatus?.()
-						}))
-					);
-				}
-				return acc;
-			},
-			[]
-		)
-	]);
+					return acc;
+				},
+				[]
+			)
+		];
+	});
 
 	const isMultiButtonDisabled = useMemo(
 		() => !!primaryAction || primaryAction?.disabled || primaryAction?.getDisabledState?.(),
@@ -84,7 +85,7 @@ export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, childr
 						<IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} />
 					</Padding>
 				</Responsive>
-				<Logo size="large" style={{ minWidth: 'max-content' }} />
+				<Logo size="large" style={{ minWidth: '160px' }} />
 				<Padding horizontal="large">
 					<MultiButton
 						style={{ height: '44px' }}
@@ -97,7 +98,7 @@ export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, childr
 				</Padding>
 				<Responsive mode="desktop">
 					<SearchBar
-						currentApp={currentApp}
+						currentApp={currentAppRoute}
 						primaryAction={primaryAction}
 						secondaryActions={secondaryActions}
 					/>

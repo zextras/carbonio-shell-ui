@@ -1,8 +1,14 @@
 {
-	"extends": "@zextras/zapp-cli/tsconfig.json",
-	"compilerOptions": {
-		"skipLibCheck": true
-	},
-	"include": ["src/**/*.ts", "src/**/*.tsx"],
-	"exclude": ["node_modules"]
+  "extends": "@zextras/zapp-configs/rules/typescript.json",
+  "compilerOptions": {
+    "skipLibCheck": true
+  },
+  "include": [
+    "types/**/*.d.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

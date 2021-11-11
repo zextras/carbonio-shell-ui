@@ -11,18 +11,18 @@
  */
 
 import React from 'react';
-import { render as rtlRender } from '@testing-library/react';
+// import { render as rtlRender } from '@testing-library/react';
 import fetch from 'node-fetch';
 import { MemoryRouter } from 'react-router-dom';
 import { ThemeProvider } from '@zextras/zapp-ui';
-import AppContextWrapper from './mocks/app-context-wrapper';
+// import AppContextWrapper from './mocks/app-context-wrapper';
 import {
 	getUsePushHistoryCallback,
 	getUseReplaceHistoryCallback,
 	useRemoveCurrentBoard
 } from './shell/hooks';
 
-const confPath = `${process.cwd()}/zapp.conf.js`;
+const confPath = `${process.cwd()}/package.json`;
 // eslint-disable-next-line max-len
 // eslint-disable-next-line global-require,import/no-dynamic-require,@typescript-eslint/no-var-requires
 const conf = require(confPath);
@@ -73,9 +73,6 @@ export const network = {
 	soapFetch
 };
 
-export const fiberChannel = jest.fn();
-export const fiberChannelSink = jest.fn();
-
 function render(
 	ui,
 	{
@@ -83,7 +80,7 @@ function render(
 		reducer,
 		preloadedState,
 		initialRouterEntries = ['/'],
-		packageName = conf.pkgName,
+		packageName = conf.zapp.name,
 		packageVersion = conf.version,
 		...options
 	} = {}
@@ -91,23 +88,23 @@ function render(
 	const Wrapper = ({ children }) => (
 		<MemoryRouter initialEntries={initialRouterEntries}>
 			<ThemeProvider>
-				<AppContextWrapper
+				{/* <AppContextWrapper
 					packageName={packageName}
 					packageVersion={packageVersion}
 					ctxt={ctxt}
 					reducer={reducer}
 					preloadedState={preloadedState}
-				>
-					{children}
-				</AppContextWrapper>
+				> */}
+				{children}
+				{/* </AppContextWrapper> */}
 			</ThemeProvider>
 		</MemoryRouter>
 	);
 
-	return rtlRender(ui, {
-		wrapper: Wrapper,
-		...options
-	});
+	// return rtlRender(ui, {
+	// 	wrapper: Wrapper,
+	// 	...options
+	// });
 }
 
 export const testUtils = {

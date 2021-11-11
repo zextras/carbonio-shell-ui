@@ -10,7 +10,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Container, Responsive } from '@zextras/zapp-ui';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
@@ -21,10 +21,8 @@ export default function ShellNavigationBar({
 	mobileNavIsOpen,
 	onCollapserClick
 }) {
-	const history = useHistory();
-	const activeApp = useMemo(() => history.location.pathname.split('/')[1], [
-		history.location.pathname
-	]);
+	const location = useLocation();
+	const activeApp = useMemo(() => location.pathname.split('/')[1], [location.pathname]);
 	return (
 		<Container
 			orientation="horizontal"

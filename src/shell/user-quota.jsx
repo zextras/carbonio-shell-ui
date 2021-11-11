@@ -11,24 +11,25 @@
 import React, { useMemo } from 'react';
 import { Tooltip, Quota, Container } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
-import { useUserAccounts } from '../store/shell-store-hooks';
+import { useUserSettings } from '../store/account/hooks';
+import { useAccountStore } from '../store/account/store';
 
 export const UserQuota = () => {
 	const [t] = useTranslation();
 
-	const [account] = useUserAccounts();
-
+	const settings = useUserSettings();
+	const used = useAccountStore((s) => s.usedQuota);
 	const quota = useMemo(() => {
-		const userQuota = account.settings?.attrs?.zimbraMailQuota;
-		const used = account.settings?.used;
-		if (used && userQuota) {
+		const userQuota = settings?.attrs?.zimbraMailQuota;
+		console.log('quota:', used, userQuota);
+		if (used && userQuota && userQuota > 0) {
 			return Math.floor((used / userQuota) * 100);
 		}
-		return -used;
-	}, [account]);
+		return -1;
+	}, [settings?.attrs?.zimbraMailQuota, used]);
 
 	const label = useMemo(() => {
-		if (quota < 0) {
+		if (!quota || quota < 0) {
 			return t('user_quota.unlimited', 'Unlimited space available');
 		}
 		return t('user_quota.limited', { defaultValue: '{{quota}}% space used', quota });
@@ -42,7 +43,7 @@ export const UserQuota = () => {
 
 	return (
 		<Container width="fit" padding={{ right: 'medium' }}>
-			<Tooltip label={label}>
+			<Tooltip label={label} placement="bottom">
 				<Quota fill={quota > 0 ? quota : 0} fillBackground={fillBackground} />
 			</Tooltip>
 		</Container>

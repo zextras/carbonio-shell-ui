@@ -1,9 +1,8 @@
 import moment from 'moment';
 import { TFunction } from 'i18next';
+import { AccountSettings } from '../../../types';
 
 // const [t] = useTranslation();
-type prefsType = Record<string, string | number>;
-type settingType = Record<string, prefsType>;
 
 export const ItemsSendAutoReplies = (t: TFunction): any => [
 	{
@@ -59,7 +58,7 @@ export const ItemsOutOfOfficeStatus = (t: TFunction): any => [
 ];
 
 export const getExternalSendersPrefsData = (
-	settings: settingType,
+	settings: AccountSettings,
 	ret: string,
 	t: TFunction
 ): string => {
@@ -87,7 +86,7 @@ export const getExternalSendersPrefsData = (
 };
 
 export const getOutOfOfficeStatusPrefsData = (
-	settings: settingType,
+	settings: AccountSettings,
 	ret: string,
 	t: TFunction
 ): string => {

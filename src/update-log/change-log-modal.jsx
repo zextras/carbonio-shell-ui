@@ -16,7 +16,7 @@ import { Modal, Text, Container, Divider } from '@zextras/zapp-ui';
 import styled from 'styled-components';
 import moment from 'moment';
 import MarkdownContainer from './markdown-container';
-import { useApps } from '../app-store/hooks';
+import { useApps } from '../store/app/hooks';
 
 const Title = styled(Text)`
 	width: 100%;

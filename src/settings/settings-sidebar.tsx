@@ -14,7 +14,7 @@ import { useHistory } from 'react-router-dom';
 import { reduce } from 'lodash';
 import { Accordion } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
-import { useAppList } from '../app-store/hooks';
+import { useAppList } from '../store/app/hooks';
 import { SETTINGS_APP_ID } from '../constants';
 
 export const SettingsSidebar: FC = () => {
@@ -29,12 +29,12 @@ export const SettingsSidebar: FC = () => {
 				(acc: Array<unknown>, app) => {
 					if (app.views?.settings) {
 						acc.push({
-							id: app.core.package,
-							label: app.core.name,
+							id: app.core.name,
+							label: app.core.display,
 							icon: app.icon,
 							onClick: (e: MouseEvent): void => {
 								e.stopPropagation();
-								history.push(`/${SETTINGS_APP_ID}/${app.core.package}`);
+								history.push(`/${SETTINGS_APP_ID}/${app.core.route}`);
 							}
 						});
 					}

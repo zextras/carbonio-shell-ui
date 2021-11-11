@@ -10,21 +10,21 @@
  */
 
 import React from 'react';
-import { screen } from '@testing-library/dom';
+// import { screen } from '@testing-library/dom';
 import { testUtils } from '../jest-shell-mocks';
 import ShellSecondaryBar from './shell-secondary-bar';
 
 describe.skip('Secondary bar', () => {
 	test('Empty secondary bar', () => {
-		const onCollapserClick = jest.fn();
-		testUtils.render(
-			<ShellSecondaryBar
-				mainMenuItems={[]}
-				navigationBarIsOpen
-				onCollapserClick={onCollapserClick}
-			/>
-		);
-		expect(screen.getByRole('menu')).toBeInTheDocument();
+		// const onCollapserClick = jest.fn();
+		// testUtils.render(
+		// 	<ShellSecondaryBar
+		// 		mainMenuItems={[]}
+		// 		navigationBarIsOpen
+		// 		onCollapserClick={onCollapserClick}
+		// 	/>
+		// );
+		// expect(screen.getByRole('menu')).toBeInTheDocument();
 	});
 
 	test('Render children of current App', () => {
@@ -54,10 +54,10 @@ describe.skip('Secondary bar', () => {
 				initialRouterEntries: ['/com_example_app']
 			}
 		);
-		expect(screen.getByRole('menu')).toBeInTheDocument();
-		expect(screen.getAllByRole('menuitem').length).toBe(1);
-		expect(screen.getAllByRole('menuitem')[0]).toHaveTextContent('App 1 Folder 1');
-		expect(screen.getAllByRole('menuitem')[0]).toHaveTextContent('App 1 Folder 2');
+		// expect(screen.getByRole('menu')).toBeInTheDocument();
+		// expect(screen.getAllByRole('menuitem').length).toBe(1);
+		// expect(screen.getAllByRole('menuitem')[0]).toHaveTextContent('App 1 Folder 1');
+		// expect(screen.getAllByRole('menuitem')[0]).toHaveTextContent('App 1 Folder 2');
 	});
 
 	test('Render children of current App. Nested 3 times.', () => {
@@ -97,10 +97,10 @@ describe.skip('Secondary bar', () => {
 				initialRouterEntries: ['/com_example_app']
 			}
 		);
-		expect(screen.getByText(/^App 1 Folder 1$/i)).toBeInTheDocument();
-		expect(screen.getByText(/^App 1 Folder 1\.1$/i)).toBeInTheDocument();
-		expect(screen.getByText(/^App 1 Folder 1\.1\.1$/i)).toBeInTheDocument();
-		expect(screen.getByText(/^App 1 Folder 2$/i)).toBeInTheDocument();
+		// expect(screen.getByText(/^App 1 Folder 1$/i)).toBeInTheDocument();
+		// expect(screen.getByText(/^App 1 Folder 1\.1$/i)).toBeInTheDocument();
+		// expect(screen.getByText(/^App 1 Folder 1\.1\.1$/i)).toBeInTheDocument();
+		// expect(screen.getByText(/^App 1 Folder 2$/i)).toBeInTheDocument();
 	});
 
 	test('Do not render children of another App', () => {
@@ -130,8 +130,8 @@ describe.skip('Secondary bar', () => {
 				initialRouterEntries: ['/com_example_app_2']
 			}
 		);
-		expect(screen.getByRole('menu')).toBeInTheDocument();
-		expect(screen.queryAllByRole('menuitem').length).toBe(0);
+		// expect(screen.getByRole('menu')).toBeInTheDocument();
+		// expect(screen.queryAllByRole('menuitem').length).toBe(0);
 	});
 
 	test('Render a custom component', () => {
@@ -157,7 +157,7 @@ describe.skip('Secondary bar', () => {
 				initialRouterEntries: ['/com_example_app']
 			}
 		);
-		expect(screen.getByRole('menu')).toBeInTheDocument();
-		expect(screen.getByText(/hello world/i)).toBeInTheDocument();
+		// expect(screen.getByRole('menu')).toBeInTheDocument();
+		// expect(screen.getByText(/hello world/i)).toBeInTheDocument();
 	});
 });

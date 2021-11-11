@@ -10,13 +10,12 @@
  */
 
 import i18next, { i18n } from 'i18next';
-import { AppPkgDescription } from '../../types';
+import { ZextrasModule } from '../../types';
 import I18nFactory from './i18n-factory';
 
 export default class I18nTestFactory extends I18nFactory {
 	// eslint-disable-next-line class-methods-use-this
-	public getAppI18n(appPkgDescription: AppPkgDescription): i18n {
-		// const sink = this._fcFactory.getAppFiberChannelSink(appPkgDescription);
+	public getAppI18n(appPkgDescription: ZextrasModule): i18n {
 		const newI18n = i18next.createInstance();
 		newI18n
 			// init i18next

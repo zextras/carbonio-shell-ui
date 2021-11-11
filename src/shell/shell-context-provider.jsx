@@ -12,25 +12,15 @@
 import React, { useMemo } from 'react';
 import { useScreenMode } from '@zextras/zapp-ui';
 import ShellContext from './shell-context';
-import { useFiberChannelFactory } from '../bootstrap/bootstrapper-context';
 
 export default function ShellContextProvider({ children }) {
-	const fiberChannelFactory = useFiberChannelFactory();
 	const screenMode = useScreenMode();
 
 	const value = useMemo(
 		() => ({
-			isMobile: screenMode === 'mobile',
-			fiberChannelSink: fiberChannelFactory.getAppFiberChannelSink({
-				name: PACKAGE_NAME,
-				version: PACKAGE_VERSION
-			}),
-			fiberChannel: fiberChannelFactory.getAppFiberChannel({
-				name: PACKAGE_NAME,
-				version: PACKAGE_VERSION
-			})
+			isMobile: screenMode === 'mobile'
 		}),
-		[screenMode, fiberChannelFactory]
+		[screenMode]
 	);
 
 	return <ShellContext.Provider value={value}>{children}</ShellContext.Provider>;

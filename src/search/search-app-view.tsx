@@ -12,14 +12,15 @@
 import { map, filter } from 'lodash';
 import React, { FC, useMemo } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Container, Text, Chip, Padding, Divider, Button } from '@zextras/zapp-ui';
+import { Container, Chip, Padding, Divider, Text, Button } from '@zextras/zapp-ui';
 import { useTranslation } from 'react-i18next';
-import { useApps } from '../app-store/hooks';
+import { useApps } from '../store/app/hooks';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import AppContextProvider from '../app/app-context-provider';
+import AppContextProvider from '../boot/app/app-context-provider';
 import { useSearchStore } from './search-store';
 import { SEARCH_APP_ID } from '../constants';
+// import { RouteLeavingGuard } from '../ui-extras/nav-guard';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 const useQuery = (): [Array<any>, Function] => useSearchStore((s) => [s.query, s.updateQuery]);
@@ -69,14 +70,15 @@ const ResultsHeader: FC<{ label: string }> = ({ label }) => {
 };
 
 export const SearchAppView: FC = () => {
+	const [t] = useTranslation();
 	const apps = useApps();
 	const routes = useMemo(
 		() =>
 			map(
 				filter(apps, (app): boolean => !!app.views?.search),
 				(app) => (
-					<Route key={`/${app.core.package}`} path={`/${SEARCH_APP_ID}/${app.core.package}`}>
-						<AppContextProvider pkg={app.core.package}>
+					<Route key={`/${app.core.route}`} path={`/${SEARCH_APP_ID}/${app.core.route}`}>
+						<AppContextProvider pkg={app.core.name}>
 							{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
 							{/* @ts-ignore */}
 							<app.views.search useQuery={useQuery} ResultsHeader={ResultsHeader} />
@@ -86,5 +88,15 @@ export const SearchAppView: FC = () => {
 			),
 		[apps]
 	);
-	return <Switch>{routes}</Switch>;
+	return (
+		<>
+			{/* <RouteLeavingGuard
+				when
+				title={t('search.leave.title', 'Are you sure you want to leave this module?')}
+			>
+				<Text>{t('search.leave.warning', 'The current search results will be lost')}</Text>
+			</RouteLeavingGuard> */}
+			<Switch>{routes}</Switch>
+		</>
+	);
 };

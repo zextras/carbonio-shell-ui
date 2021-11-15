@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0-beta.3](https://bitbucket.org/zextras/zapp-shell/compare/v0.2.0-beta.2...v0.2.0-beta.3) (2021-11-15)
+
+
+### Bug Fixes
+
+* wrong zimlet path ([fceee12](https://bitbucket.org/zextras/zapp-shell/commit/fceee128dc85ed9abeecd434b20b7ee57ab672a4))
+
 ## [0.2.0-beta.2](https://bitbucket.org/zextras/zapp-shell/compare/v0.2.0-beta.1...v0.2.0-beta.2) (2021-11-12)
 
 

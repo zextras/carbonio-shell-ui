@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2021 2021 Zextras <https://www.zextras.com>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import React, { FC, Suspense, useMemo, lazy } from 'react';
 import { Prompt, Route, Switch } from 'react-router-dom';
 import { map } from 'lodash';

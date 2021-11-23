@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2021 2021 Zextras <https://www.zextras.com>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import React from 'react';
 import { I18nextProvider } from 'react-i18next';
 import BoardContextProvider from '../shell/boards/board-context-provider';

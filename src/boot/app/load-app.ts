@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2021 2021 Zextras <https://www.zextras.com>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
 import { forEach, forOwn } from 'lodash';

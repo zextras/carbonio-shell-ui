@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2021 2021 Zextras <https://www.zextras.com>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import i18next, { i18n } from 'i18next';
 import Backend from 'i18next-http-backend';
 // import LanguageDetector from 'i18next-browser-languagedetector';

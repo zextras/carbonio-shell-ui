@@ -67,7 +67,7 @@
 		"@types/styled-components": "^5.1.15",
 		"@types/ua-parser-js": "^0.7.36",
 		"@types/webpack-env": "1.16.3",
-		"@zextras/zapp-configs": "0.1.9",
+		"@zextras/zapp-configs": "0.1.10",
 		"@zextras/zapp-ui": "0.1.0-beta.42",
 		"autoprefixer": "10.4.0",
 		"babel-jest": "27.3.1",

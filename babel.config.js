@@ -28,7 +28,6 @@ module.exports = function (api) {
 				'i18next-extract',
 				{
 					outputPath: 'translations/{{ns}}.json',
-					discardOldKeys: false,
 					defaultNS: 'en',
 					jsonSpace: 4
 				}

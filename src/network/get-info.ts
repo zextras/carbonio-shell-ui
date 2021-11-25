@@ -24,8 +24,9 @@ const parsePollingInterval = (settings: AccountSettings): number => {
 };
 export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>): Promise<void> =>
 	get()
-		.soapFetch(SHELL_APP_ID)<{ _jsns: string }, GetInfoResponse>('GetInfo', {
-			_jsns: 'urn:zimbraAccount'
+		.soapFetch(SHELL_APP_ID)<{ _jsns: string; rights: string }, GetInfoResponse>('GetInfo', {
+			_jsns: 'urn:zimbraAccount',
+			rights: 'sendAs,sendAsDistList,viewFreeBusy'
 		})
 		.then((res: any): void => {
 			if (res) {

@@ -33,7 +33,7 @@ export default function AppLoaderMounter() {
 								</AppContextProvider>
 							);
 							acc.mounted.push(app.core.name);
-							if (idx === 0 && history.location.pathname !== '/') {
+							if (idx === 0 && history.location.pathname === '/') {
 								history.replace(`/${app.core.route}/`);
 							}
 							// } else if (FLAVOR === 'NPM' && cliSettings?.app_package?.name === app.core.name) {

@@ -1,10 +1,13 @@
 import { get, join } from 'lodash';
+import { useMemo } from 'react';
 import { Account, AccountSettings, NotifyObject, Tag } from '../../../types';
 import { useAccountStore } from './store';
 
 export const useUserAccount = (): Account => useAccountStore((s) => s.account as Account);
-export const useUserAccounts = (): Array<Account> =>
-	useAccountStore((s) => (s.account ? [s.account as Account] : []));
+export const useUserAccounts = (): Array<Account> => {
+	const acct = useAccountStore((s) => s.account);
+	return useMemo(() => (acct ? [acct as Account] : []), [acct]);
+};
 export const useUserSettings = (): AccountSettings => useAccountStore((s) => s.settings);
 export const useUserSetting = <T = void>(...path: Array<string>): string | T =>
 	useAccountStore((s) => get(s.settings, join(path)));

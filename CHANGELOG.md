@@ -1,12 +1,19 @@
-<!--
-SPDX-FileCopyrightText: 2021 2021 Zextras <https://www.zextras.com>
-
-SPDX-License-Identifier: CC-BY-NC-SA-4.0
--->
-
 # Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [0.2.5-beta.0](https://bitbucket.org/zextras/zapp-shell/compare/v0.2.0-beta.3...v0.2.5-beta.0) (2021-11-29)
+
+
+### Features
+
+* licensing ([69fbc11](https://bitbucket.org/zextras/zapp-shell/commit/69fbc11df636a19c41f2b57e2be44b6cb2318de4))
+* polished licensing files ([9a55ec8](https://bitbucket.org/zextras/zapp-shell/commit/9a55ec80a120032b932f8a81c0bc51697638d385))
+
+
+### Bug Fixes
+
+* auto-routing only on empty path ([f0e69e6](https://bitbucket.org/zextras/zapp-shell/commit/f0e69e6de07db9c25a6b4d4d35e92fbb30b302ab))
 
 ## [0.2.0-beta.3](https://bitbucket.org/zextras/zapp-shell/compare/v0.2.0-beta.2...v0.2.0-beta.3) (2021-11-15)
 

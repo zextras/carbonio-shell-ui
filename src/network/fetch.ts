@@ -1,3 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2021 2021 Zextras <https://www.zextras.com>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
 import { GetState, SetState } from 'zustand';
 import { find } from 'lodash';
 import { SHELL_APP_ID } from '../constants';

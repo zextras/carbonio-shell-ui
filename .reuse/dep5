@@ -1,0 +1,19 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: carbonio-shell
+Upstream-Contact: Zextras <https://www.zextras.com>
+
+Files: translations/*
+Copyright: 2021 Zextras <https://www.zextras.com>
+License: AGPL-3.0-only
+
+Files: .idea/*
+Copyright: 2021 Zextras <https://www.zextras.com>
+License: CC0-1.0
+
+Files: .vscode/*
+Copyright: 2021 Zextras <https://www.zextras.com>
+License: CC0-1.0
+
+Files: .husky/*
+Copyright: 2021 Zextras <https://www.zextras.com>
+License: CC0-1.0

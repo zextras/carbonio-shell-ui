@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { DynamicThemeFix } from 'darkreader';
+
 /*
 	reference: https://zextras.atlassian.net/wiki/spaces/IRIS/pages/223215854/UI+Guidelines+and+theming
 */
@@ -58,4 +60,11 @@ export const ACTION_TYPES = {
 	FOLDER_lIST: 'folder_list',
 	CALENDAR: 'calendar',
 	CALENDAR_lIST: 'calendar_list'
+};
+
+export const darkReaderDynamicThemeFixes: DynamicThemeFix = {
+	ignoreImageAnalysis: ['.no-dr-invert'],
+	invert: [],
+	css: '',
+	ignoreInlineStyle: []
 };

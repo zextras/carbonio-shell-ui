@@ -1,23 +1,22 @@
+// SPDX-FileCopyrightText: 2021 2021 Zextras <https://www.zextras.com>
+//
+// SPDX-License-Identifier: CC0-1.0
+
 module.exports = {
-	"parser": "@typescript-eslint/parser",
-	"parserOptions": {
-		"project": "./tsconfig.json",
-		"tsconfigRootDir": "."
+	extends: ['./node_modules/@zextras/zapp-configs/rules/eslint'],
+	settings: {
+		'import/resolver': {
+			node: {
+				extensions: ['.js', '.jsx', '.d.ts', '.ts', '.tsx']
+			}
+		}
 	},
-	"extends": [
-		"eslint:recommended",
-		"plugin:@typescript-eslint/eslint-recommended",
-		"plugin:@typescript-eslint/recommended",
-		"plugin:@typescript-eslint/recommended-requiring-type-checking"
-	],
-	"plugins": [
-		"react",
-		"react-hooks",
-		"@typescript-eslint"
-	],
-	"rules": {
-		"react-hooks/rules-of-hooks": "error",
-		"react-hooks/exhaustive-deps": "warn",
-		"@typescript-eslint/interface-name-prefix": ["error" , { "prefixWithI": "always" }]
+	globals: {
+		WATCH_SERVER: 'readonly',
+		BASE_PATH: 'readonly',
+		FLAVOR: 'readonly',
+		PACKAGE_NAME: 'readonly',
+		PACKAGE_VERSION: 'readonly',
+		cliSettings: 'readonly'
 	}
 };

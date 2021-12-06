@@ -1,0 +1,106 @@
+{
+    "changelog": {
+        "cancel": "कैंसल करें",
+        "close": "बंद करें",
+        "remind-later": "बाद में याद दिलाएँ",
+        "title": "लॉग बदलें"
+    },
+    "login": {
+        "help": "हेल्प करें",
+        "login": "लॉगिन करें",
+        "password": "पासवर्ड",
+        "username": "यूज़रनेम",
+        "remember_me": "मुझे याद रखें",
+        "supported_browsers": "सपोर्ट किए गए ब्राऊज़र",
+        "incorrect": "यूज़रनेम और पासवर्ड गलत है",
+        "verify_caps_lock": "जांच कर लें कि CAPS LOCK चालू नहीं है, इसके बाद वर्तमान यूज़रनेम और पासवर्ड दोबारा टाइप करें"
+    },
+    "logout": "लॉगआउट करें",
+    "new": "नया",
+    "search": {
+        "app": "सर्च करें",
+        "module": "मॉड्यूल",
+        "app_description": "सर्च मॉड्यूल",
+        "clear": "सर्च इनपुट साफ करें",
+        "edit_to_start": "नई सर्च शुरू करने के लिए अपनी सर्च को बदलें",
+        "results_for": "इसके नतीजे:",
+        "start": "सर्च शुरू करें",
+        "active_input_label": "कीवर्ड कॉमा या टैब से अलग-अलग करें",
+        "idle_input_label": "{{module}} में सर्च करें"
+    },
+    "settings": {
+        "app": "सेटिंग्स",
+        "button": {
+            "primary": "सेव करें",
+            "secondary": "कैंसल करें"
+        },
+        "general": {
+            "account": "अकाउंट",
+            "account_logout": "लॉगआउट करें",
+            "theme_disabled": "बंद हुआ",
+            "theme_enabled": "चालू है",
+            "general": "जनरल सेटिंग्स",
+            "theme_auto": "ऑटो",
+            "theme_mode": "थीम मोड",
+            "theme_options": "थीम के ऑप्शन"
+        },
+        "general_tab": "सामान्य",
+        "out_of_office": {
+            "labels": {
+                "end_date": "ख़त्म तारीख़",
+                "start_date": "शुरू तारीख़",
+                "all_day": "पूरे दिन:",
+                "auto_reply_message_external": "बाहरी भेजने वालों के लिए ऑटो-रिप्लाई मैसेज:",
+                "create_appointment": "एपॉइंटमेंट बनाएँ:",
+                "end_time": "समाप्त समय:",
+                "external_senders": "बाहरी भेजने वाले",
+                "out_of_office": "आउट ऑफ ऑफिस",
+                "send_auto_reply_period": "इस समय के दौरान ऑटो-रिप्लाई भेजें:",
+                "start_time": "शुरू टाइम:",
+                "auto_reply_message": "ऑटो-रिप्लाई मैसेज:",
+                "out_of_office_status": "आउट ऑफ ऑफिस स्टेटस:"
+            },
+            "status": {
+                "busy": "व्यस्त",
+                "out_of_office": "आउट ऑफ ऑफिस"
+            },
+            "do_not_send_auto_replies": "ऑटो रिप्लाई न भेजें",
+            "external_senders": {
+                "do_not_send_to_external": "बाहरी भेजने वाले को ऑटो-रिप्लाई मैसेज न भेजें",
+                "send_custom_in_organisation": "जो मेरी कंपनी में नहीं है उनके लिए अलग मैसेज भेजें",
+                "send_custom_not_in_organisation": "जो मेरी कंपनी और एड्रेस बुक में नहीं है उनके लिए अलग मैसेज भेजें",
+                "send_standard_auto_reply": "स्टैंडर्ड ऑटो-रिप्लाई मैसेज भेजें"
+            },
+            "headings": {
+                "create_appointment": "कैलेंडर एपॉइंटमेंट",
+                "settings_label": "आउट ऑफ ऑफिस सेटिंग्स",
+                "time_period": "समय अवधि"
+            },
+            "send_auto_replies": "ऑटो रिप्लाई भेजें"
+        },
+        "app_description": "सेटिंग्स मॉड्यूल"
+    },
+    "logout_modal": {
+        "confirm": "मुझे लॉग आउट कर दें",
+        "warning": "आप लॉग आउट होने जा रहे हैं"
+    },
+    "message": {
+        "snackbar": {
+            "settings_saved": "बदलाव ठीक से सेव हो गए"
+        }
+    },
+    "module": {
+        "app": {
+            "version": "एप्लिकेशन वर्शन"
+        }
+    },
+    "new_tab": "नई टैब",
+    "copyright": "कॉपीराइट",
+    "user_quota": {
+        "limited": "{{quota}}% जगह इस्तेमाल की गई",
+        "unlimited": "असीमित जगह उपलब्ध है"
+    },
+    "snackbar": {
+        "error": "कुछ गड़बड़ हुई, दोबारा कोशिश करें"
+    }
+}

@@ -1,0 +1,106 @@
+{
+    "settings": {
+        "out_of_office": {
+            "labels": {
+                "end_date": "วันที่สุดท้าย",
+                "start_date": "วันที่เริ่มต้น",
+                "all_day": "ทั้งวัน:",
+                "auto_reply_message": "ข้อความตอบกลับอัตโนมัติ:",
+                "auto_reply_message_external": "ข้อความตอบกลับอัตโนมัติสำหรับผู้ส่งภายนอก:",
+                "create_appointment": "สร้างการนัดหมาย:",
+                "end_time": "เวลาสิ้นสุด:",
+                "external_senders": "ผู้ส่งภายนอก",
+                "out_of_office": "ไม่อยู่",
+                "out_of_office_status": "สถานะไม่อยู่:",
+                "send_auto_reply_period": "ส่งการตอบกลับอัตโนมัติในช่วงเวลาต่อไปนี้:",
+                "start_time": "เวลาเริ่มต้น:"
+            },
+            "status": {
+                "busy": "ไม่ว่าง",
+                "out_of_office": "ไม่อยู่"
+            },
+            "do_not_send_auto_replies": "อย่าส่งการตอบกลับอัตโนมัติ",
+            "external_senders": {
+                "do_not_send_to_external": "อย่าส่งข้อความตอบกลับอัตโนมัติไปยังผู้ส่งภายนอก",
+                "send_custom_in_organisation": "ส่งข้อความที่กำหนดเองไปยังผู้ที่ไม่ได้อยู่ในองค์กรของฉัน",
+                "send_custom_not_in_organisation": "ส่งข้อความที่กำหนดเองไปยังผู้ที่ไม่ได้อยู่ในองค์กรและสมุดที่อยู่ของฉัน",
+                "send_standard_auto_reply": "ส่งข้อความตอบกลับอัตโนมัติแบบมาตรฐาน"
+            },
+            "headings": {
+                "create_appointment": "ปฏิทินการนัดหมาย",
+                "settings_label": "การตั้งค่าเมื่อไม่อยู่ที่สำนักงาน",
+                "time_period": "ระยะเวลา"
+            },
+            "send_auto_replies": "ส่งการตอบกลับอัตโนมัติ"
+        },
+        "app": "การตั้งค่า",
+        "button": {
+            "primary": "บันทึก",
+            "secondary": "ยกเลิก"
+        },
+        "general": {
+            "account": "บัญชีผู้ใช้",
+            "account_logout": "ออกจากระบบ",
+            "theme_disabled": "ปิดการใช้งาน",
+            "theme_enabled": "เปิดการใช้งาน",
+            "general": "การตั้งค่าทั่วไป",
+            "theme_auto": "อัตโนมัติ",
+            "theme_mode": "โหมดธีม",
+            "theme_options": "ตัวเลือกธีม"
+        },
+        "general_tab": "ทั่วไป",
+        "app_description": "โมดูลการตั้งค่า"
+    },
+    "changelog": {
+        "cancel": "ยกเลิก",
+        "close": "ปิด",
+        "remind-later": "เตือนในภายหลัง",
+        "title": "เปลี่ยนบันทึก"
+    },
+    "login": {
+        "help": "ช่วยเหลือ",
+        "login": "เข้าสู่ระบบ",
+        "password": "รหัสผ่าน",
+        "username": "ชื่อผู้ใช้",
+        "incorrect": "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
+        "remember_me": "จดจำฉัน",
+        "supported_browsers": "เบราว์เซอร์ที่รองรับ",
+        "verify_caps_lock": "ตรวจสอบว่า CAPS LOCK ไม่ได้เปิดอยู่ จากนั้นพิมพ์ชื่อผู้ใช้และรหัสผ่านปัจจุบันอีกครั้ง"
+    },
+    "logout": "ออกจากระบบ",
+    "new": "ใหม่",
+    "search": {
+        "app": "ค้นหา",
+        "module": "โมดูล",
+        "active_input_label": "แยกคำหลักด้วยเครื่องหมายจุลภาคหรือ TAB",
+        "app_description": "ค้นหาโมดูล",
+        "clear": "ล้างข้อมูลการค้นหา",
+        "edit_to_start": "แก้ไขการค้นหาของคุณเพื่อเริ่มต้นใหม่",
+        "idle_input_label": "ค้นหาใน {{module}}",
+        "results_for": "ผลลัพธ์สำหรับ:",
+        "start": "เริ่มค้นหา"
+    },
+    "copyright": "ลิขสิทธิ์",
+    "logout_modal": {
+        "confirm": "ออกจากระบบ",
+        "warning": "คุณกำลังจะออกจากระบบ"
+    },
+    "message": {
+        "snackbar": {
+            "settings_saved": "บันทึกการแก้ไขอย่างถูกต้อง"
+        }
+    },
+    "module": {
+        "app": {
+            "version": "เวอร์ชันแอปพลิเคชัน"
+        }
+    },
+    "new_tab": "แท็บใหม่",
+    "user_quota": {
+        "limited": "ใช้พื้นที่ไป {{quota}}%",
+        "unlimited": "มีพื้นที่แบบไม่จำกัด"
+    },
+    "snackbar": {
+        "error": "เกิดข้อผิดพลาดบางอย่าง โปรดลองใหม่อีกครั้ง"
+    }
+}

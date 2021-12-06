@@ -1,0 +1,106 @@
+{
+    "changelog": {
+        "cancel": "Abbrechen",
+        "close": "Schließen",
+        "remind-later": "Später erinnern",
+        "title": "Änderungsprotokoll"
+    },
+    "login": {
+        "help": "Hilfe",
+        "login": "Login",
+        "password": "Passwort",
+        "username": "Benutzername",
+        "incorrect": "Der Benutzername oder das Passwort ist falsch",
+        "remember_me": "Login merken",
+        "supported_browsers": "Unterstützte Browser",
+        "verify_caps_lock": "Überprüfen Sie, dass die FESTSTELLTASTE nicht eingestellt ist, und geben Sie den aktuellen Benutzernamen und das Passwort erneut ein"
+    },
+    "logout": "Logout",
+    "new": "Neu",
+    "search": {
+        "app": "Suchen",
+        "module": "Module",
+        "active_input_label": "Trennen Sie Suchwörter mit einem Komma oder TAB",
+        "app_description": "Suchmodul",
+        "clear": "Sucheingabe löschen",
+        "edit_to_start": "Bearbeiten Sie Ihre Suche, um eine neue zu starten",
+        "idle_input_label": "Suchen in {{module}}",
+        "results_for": "Ergebnisse für:",
+        "start": "Suche starten"
+    },
+    "settings": {
+        "app": "Einstellungen",
+        "button": {
+            "primary": "Speichern",
+            "secondary": "Abbrechen"
+        },
+        "general": {
+            "account": "Konto",
+            "account_logout": "Logout",
+            "theme_disabled": "Deaktiviert",
+            "theme_enabled": "Aktiviert",
+            "general": "Allgemeine Einstellungen",
+            "theme_auto": "Auto",
+            "theme_mode": "Themenmodus",
+            "theme_options": "Themenoptionen"
+        },
+        "general_tab": "Allgemein",
+        "out_of_office": {
+            "labels": {
+                "end_date": "Enddatum",
+                "start_date": "Startdatum",
+                "all_day": "Ganztägig:",
+                "auto_reply_message": "Automatische Nachricht:",
+                "auto_reply_message_external": "Automatische Antwort für externe Absender:",
+                "create_appointment": "Termin erstellen:",
+                "end_time": "Endzeit:",
+                "external_senders": "Externe Absender",
+                "out_of_office": "Nicht im Büro",
+                "start_time": "Startzeit:",
+                "out_of_office_status": "Abwesenheitsstatus:",
+                "send_auto_reply_period": "Automatische Antworten während des folgenden Zeitraums senden:"
+            },
+            "status": {
+                "busy": "Beschäftigt",
+                "out_of_office": "Nicht im Büro"
+            },
+            "do_not_send_auto_replies": "Keine automatischen Antworten versenden",
+            "external_senders": {
+                "do_not_send_to_external": "Keine automatische Antwort an externe Absender senden",
+                "send_custom_in_organisation": "Benutzerdefinierte Nachricht an diejenigen schicken, die nicht meiner Organisation angehören",
+                "send_custom_not_in_organisation": "Benutzerdefinierte Nachricht an diejenigen schicken, die nicht meiner Organisation angehören und nicht in meinem Adressbuch sind",
+                "send_standard_auto_reply": "automatische Standardnachricht senden"
+            },
+            "headings": {
+                "create_appointment": "Kalendertermin",
+                "settings_label": "Abwesenheitseinstellungen",
+                "time_period": "Zeitraum"
+            },
+            "send_auto_replies": "Automatische Antworten senden"
+        },
+        "app_description": "Modul Einstellungen"
+    },
+    "copyright": "Urheberrecht",
+    "logout_modal": {
+        "warning": "Sie werden abgemeldet",
+        "confirm": "Melde mich ab"
+    },
+    "message": {
+        "snackbar": {
+            "settings_saved": "Änderungen korrekt gespeichert"
+        }
+    },
+    "module": {
+        "app": {
+            "version": "Versionen der Applikationen"
+        }
+    },
+    "new_tab": "Neuer Reiter",
+    "snackbar": {
+        "error": "Etwas ist schiefgegangen, bitte versuchen Sie es erneut"
+    },
+    "user_quota": {
+        "limited": "{{quota}}% Speicherplatz genutzt",
+        "unlimited": "Unbegrenzter Speicherplatz verfügbar"
+    }
+}

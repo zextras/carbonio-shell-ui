@@ -1,0 +1,106 @@
+{
+    "changelog": {
+        "cancel": "Batal",
+        "close": "Tutup",
+        "remind-later": "Ingatkan Nanti",
+        "title": "Ubah Log"
+    },
+    "login": {
+        "help": "Bantuan",
+        "login": "Masuk",
+        "password": "Kata sandi",
+        "username": "Nama Pengguna",
+        "incorrect": "Nama pengguna atau kata sandi salah",
+        "remember_me": "Ingat saya",
+        "supported_browsers": "Browser yang didukung",
+        "verify_caps_lock": "Pastikan CAPS LOCK mati, lalu ketik ulang nama pengguna dan kata sandi"
+    },
+    "search": {
+        "module": "Modul",
+        "app": "Cari",
+        "active_input_label": "Pisahkan kata kunci dengan koma atau TAB",
+        "app_description": "Modul Pencarian",
+        "clear": "Bersihkan input pencarian",
+        "edit_to_start": "Edit pencarian Anda untuk memulai yang baru",
+        "idle_input_label": "Cari di {{module}}",
+        "results_for": "Hasil untuk:",
+        "start": "Mulai pencarian"
+    },
+    "settings": {
+        "out_of_office": {
+            "labels": {
+                "end_date": "Tanggal Selesai",
+                "start_date": "Tanggal Mulai",
+                "auto_reply_message_external": "Pesan Balasan Otomatis kepada Pengirim eksternal:",
+                "create_appointment": "Buat Janji Temu:",
+                "auto_reply_message": "Pesan Balasan Otomatis:",
+                "external_senders": "Pengirim Eksternal",
+                "out_of_office": "Di Luar Kantor",
+                "all_day": "Sepanjang Hari:",
+                "end_time": "Waktu Selesai:",
+                "out_of_office_status": "Status Di Luar Kantor:",
+                "send_auto_reply_period": "Kirim balasan otomatis selama periode berikut:",
+                "start_time": "Waktu Mulai:"
+            },
+            "status": {
+                "busy": "Sibuk",
+                "out_of_office": "Di Luar Kantor"
+            },
+            "do_not_send_auto_replies": "Jangan kirim balasan otomatis",
+            "external_senders": {
+                "do_not_send_to_external": "Jangan kirim pesan balasan otomatis ke pengirim eksternal",
+                "send_standard_auto_reply": "Kirim pesan balasan otomatis standar",
+                "send_custom_in_organisation": "Kirim pesan kustom ke orang di luar organisasi saya",
+                "send_custom_not_in_organisation": "Kirim pesan kustom ke orang di luar organisasi dan buku alamat saya"
+            },
+            "headings": {
+                "settings_label": "Pengaturan di Luar Kantor",
+                "time_period": "Jangka Waktu",
+                "create_appointment": "Janji Temu Kalender"
+            },
+            "send_auto_replies": "Kirim balasan otomatis"
+        },
+        "app": "Pengaturan",
+        "button": {
+            "primary": "Simpan",
+            "secondary": "Batal"
+        },
+        "general": {
+            "account": "Akun",
+            "account_logout": "Keluar",
+            "theme_disabled": "Dinonaktifkan",
+            "theme_enabled": "Diaktifkan",
+            "general": "Pengaturan Umum",
+            "theme_auto": "Otomatis",
+            "theme_options": "Opsi Tema",
+            "theme_mode": "Mode Tema"
+        },
+        "app_description": "Modul Pengaturan",
+        "general_tab": "Umum"
+    },
+    "logout": "Keluar",
+    "new": "Baru",
+    "copyright": "Hak cipta",
+    "logout_modal": {
+        "confirm": "Keluarkan saya",
+        "warning": "Anda akan keluar"
+    },
+    "message": {
+        "snackbar": {
+            "settings_saved": "Hasil edit disimpan dengan benar"
+        }
+    },
+    "module": {
+        "app": {
+            "version": "Versi aplikasi"
+        }
+    },
+    "new_tab": "Tab Baru",
+    "snackbar": {
+        "error": "Terjadi kesalahan, coba lagi"
+    },
+    "user_quota": {
+        "limited": "{{quota}} % ruang yang digunakan",
+        "unlimited": "Tersedia ruang tak terbatas"
+    }
+}

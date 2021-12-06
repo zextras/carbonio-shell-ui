@@ -4,12 +4,33 @@
         "close_tabs": "Close all your tabs",
         "enlarge": "Enlarge board",
         "hide": "Hide board",
-        "open_app": "Open in app",
         "reduce": "Reduce board",
         "show_tabs": "Show other tabs"
     },
+    "changelog": {
+        "cancel": "Cancel",
+        "close": "Close",
+        "remind-later": "Remind Later",
+        "title": "Change Log"
+    },
+    "copyright": "Copyright",
     "label": {
         "clear_search_query": "CLEAR SEARCH QUERY"
+    },
+    "login": {
+        "help": "Help",
+        "incorrect": "The username or password is incorrect",
+        "login": "Login",
+        "password": "Password",
+        "remember_me": "Remember me",
+        "supported_browsers": "Supported browsers",
+        "username": "Username",
+        "verify_caps_lock": "Verify that CAPS LOCK is not on, and then retype the current username and password"
+    },
+    "logout": "Logout",
+    "logout_modal": {
+        "confirm": "Log me out",
+        "warning": "You are going to be logged-out"
     },
     "message": {
         "snackbar": {
@@ -26,14 +47,17 @@
     "search": {
         "active_input_label": "Separate keywords with a comma or TAB",
         "app": "Search",
+        "app_description": "Search Module",
         "clear": "Clear search input",
         "edit_to_start": "Edit your search to start a new one",
         "idle_input_label": "Search in {{module}}",
         "module": "Module",
+        "results_for": "Results for:",
         "start": "Start search"
     },
     "settings": {
         "app": "Settings",
+        "app_description": "Settings Module",
         "button": {
             "primary": "Save",
             "secondary": "Cancel"
@@ -46,6 +70,7 @@
             "theme_auto": "Auto",
             "theme_disabled": "Disabled",
             "theme_enabled": "Enabled",
+            "theme_mode": "Theme Mode",
             "theme_options": "Theme Options"
         },
         "general_tab": "General",

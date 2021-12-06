@@ -1,40 +1,121 @@
 {
-	"changelog": {
-		"cancel": "Annulla",
-		"close": "Chiudi",
-		"remind_later": "Ricorda Più Tardi",
-		"title": "Titolo"
-	},
-	"copyright": "Copyright",
-	"login": {
-		"help": "Aiuto",
-		"incorrect": "Nome utente o password sono errati",
-		"login": "Login",
-		"password": "Password",
-		"remember_me": "Ricordami",
-		"supported_browsers": "Browser supportati",
-		"username": "Nome Utente",
-		"verify_caps_lock": "Verifica che il CAPS LOCK non sia attivo, e ridigita nome utente e password"
-	},
-	"logout": "Esci",
-	"logout_modal": {
-		"confirm": "Disconnettimi",
-		"warning": "Stai per essere disconnesso"
-	},
-	"new": "Nuovo",
-	"new_tab": "Nuova tab",
-	"supported_browsers": {
-		"chrome": "Chrome",
-		"edge": "Edge",
-		"firefox": "Firefox",
-		"ie_11_up": "Internet Explorer 11+",
-		"opera": "Opera",
-		"safari": "Safari",
-		"uc": "UC",
-		"yandex": "Yandex"
-	},
-	"theme_switch": {
-		"dark": "Passa al tema scuro",
-		"light": "Passa al tema chiaro"
-	}
+    "changelog": {
+        "cancel": "Annulla",
+        "close": "Chiudi",
+        "remind_later": "Ricorda Più Tardi",
+        "title": "Novità",
+        "remind-later": "Ricorda Più Tardi"
+    },
+    "copyright": "Copyright",
+    "login": {
+        "help": "Aiuto",
+        "incorrect": "Nome utente o password sono errati",
+        "login": "Login",
+        "password": "Password",
+        "remember_me": "Ricordami",
+        "supported_browsers": "Browser supportati",
+        "username": "Nome Utente",
+        "verify_caps_lock": "Verifica che il CAPS LOCK non sia attivo, e ridigita nome utente e password"
+    },
+    "logout": "Esci",
+    "logout_modal": {
+        "confirm": "Disconnettimi",
+        "warning": "Stai per essere disconnesso"
+    },
+    "new": "Nuovo",
+    "new_tab": "Nuova tab",
+    "supported_browsers": {
+        "chrome": "Chrome",
+        "edge": "Edge",
+        "firefox": "Firefox",
+        "ie_11_up": "Internet Explorer 11+",
+        "opera": "Opera",
+        "safari": "Safari",
+        "uc": "UC",
+        "yandex": "Yandex"
+    },
+    "theme_switch": {
+        "dark": "Passa al tema scuro",
+        "light": "Passa al tema chiaro"
+    },
+    "settings": {
+        "button": {
+            "primary": "Salva",
+            "secondary": "Annulla"
+        },
+        "general": {
+            "theme_options": "Opzioni Tema",
+            "theme_mode": "Modalità Tema",
+            "theme_enabled": "Tema Scuro",
+            "theme_disabled": "Tema Chiaro",
+            "theme_auto": "Auto",
+            "general": "Impostazioni Generali",
+            "account": "Account",
+            "account_logout": "Esci"
+        },
+        "app": "Impostazioni",
+        "app_description": "Impostazioni Modulo",
+        "out_of_office": {
+            "do_not_send_auto_replies": "Non inviare risposte automatiche",
+            "external_senders": {
+                "do_not_send_to_external": "Non inviare messaggi di risposta automatica a mittenti esterni",
+                "send_custom_in_organisation": "Invia messaggio personalizzato a coloro che non appartengono alla mia organizzazione",
+                "send_custom_not_in_organisation": "Invia messaggio personalizzato a coloro che non appartengono alla mia organizzazione o rubrica",
+                "send_standard_auto_reply": "Invia un messaggio standard di risposta automatica"
+            },
+            "labels": {
+                "all_day": "Tutto il Giorno:",
+                "end_date": "Data di fine",
+                "auto_reply_message": "Messaggio risposta automatica:",
+                "auto_reply_message_external": "Messaggio di risposta automatica per mittenti esterni:",
+                "create_appointment": "Crea Appuntamento:",
+                "end_time": "Data di Fine:",
+                "external_senders": "Mittenti Esterni",
+                "out_of_office": "Non in ufficio",
+                "send_auto_reply_period": "Invia riposta automatica durante questo periodo:",
+                "start_date": "Data di inizio",
+                "start_time": "Ora di inizio:",
+                "out_of_office_status": "Stato Fuori Ufficio:"
+            },
+            "headings": {
+                "create_appointment": "Appuntamento in Calendario",
+                "settings_label": "Impostazioni Fuori Ufficio",
+                "time_period": "Periodo di Tempo"
+            },
+            "send_auto_replies": "Invia riposte automatiche",
+            "status": {
+                "busy": "Occupato",
+                "out_of_office": "Non in ufficio"
+            }
+        },
+        "general_tab": "Generale"
+    },
+    "module": {
+        "app": {
+            "version": "Versione applicazione"
+        }
+    },
+    "search": {
+        "active_input_label": "Separa le parole chiave usando una virgola oppure TAB",
+        "app": "Cerca",
+        "app_description": "Cerca Modulo",
+        "edit_to_start": "Modifica la ricerca per iniziarne una nuova",
+        "idle_input_label": "Cerca in {{module}}",
+        "module": "Modulo",
+        "results_for": "Risultati per:",
+        "start": "Inizia ricerca",
+        "clear": "Cancella ricerca"
+    },
+    "message": {
+        "snackbar": {
+            "settings_saved": "Modifiche salvate correttamente"
+        }
+    },
+    "user_quota": {
+        "limited": "{{quota}}% di spazio usato",
+        "unlimited": "Spazio disponibile illimitato"
+    },
+    "snackbar": {
+        "error": "Qualcosa è andato storto. riprova"
+    }
 }

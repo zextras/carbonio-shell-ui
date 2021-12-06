@@ -1,4 +1,12 @@
 {
+    "board": {
+        "close_tab": "Close Tab",
+        "close_tabs": "Close all your tabs",
+        "enlarge": "Enlarge board",
+        "hide": "Hide board",
+        "reduce": "Reduce board",
+        "show_tabs": "Show other tabs"
+    },
     "changelog": {
         "cancel": "Cancel",
         "close": "Close",
@@ -6,6 +14,9 @@
         "title": "Change Log"
     },
     "copyright": "Copyright",
+    "label": {
+        "clear_search_query": "CLEAR SEARCH QUERY"
+    },
     "login": {
         "help": "Help",
         "incorrect": "The username or password is incorrect",
@@ -54,6 +65,7 @@
         "general": {
             "account": "Account",
             "account_logout": "Logout",
+            "dark_mode": "Dark Mode",
             "general": "General Settings",
             "theme_auto": "Auto",
             "theme_disabled": "Disabled",

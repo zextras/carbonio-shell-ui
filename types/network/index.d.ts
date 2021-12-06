@@ -54,6 +54,7 @@ export type GetInfoResponse = {
 		prop: Array<ZimletProp>;
 	};
 	version: string;
+	rights: AccountRights;
 };
 
 export type SuccessSoapResponse<R> = {

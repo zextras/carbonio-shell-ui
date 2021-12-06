@@ -11,6 +11,7 @@ import { reduce } from 'lodash';
 import Logo from './logo';
 import { useAccountStore } from '../store/account/store';
 import { ThemeExtension, ThemeExtensionMap } from '../../types';
+import { darkReaderDynamicThemeFixes } from '../constants';
 
 setFetchMethod(window.fetch);
 
@@ -110,15 +111,21 @@ export const ThemeProvider: FC = ({ children }) => {
 				disable();
 				break;
 			case 'enabled':
-				enable({
-					sepia: -50
-				});
+				enable(
+					{
+						sepia: -50
+					},
+					darkReaderDynamicThemeFixes
+				);
 				break;
 			case 'auto':
 			default:
-				auto({
-					sepia: -50
-				});
+				auto(
+					{
+						sepia: -50
+					},
+					darkReaderDynamicThemeFixes
+				);
 				break;
 		}
 	}, [darkReaderState]);

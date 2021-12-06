@@ -26,7 +26,7 @@ export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>
 	get()
 		.soapFetch(SHELL_APP_ID)<{ _jsns: string; rights: string }, GetInfoResponse>('GetInfo', {
 			_jsns: 'urn:zimbraAccount',
-			rights: 'sendAs,sendAsDistList,viewFreeBusy'
+			rights: 'sendAs,sendAsDistList,viewFreeBusy,sendOnBehalfOf,sendOnBehalfOfDistList'
 		})
 		.then((res: any): void => {
 			if (res) {

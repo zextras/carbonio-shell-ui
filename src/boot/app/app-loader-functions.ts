@@ -26,7 +26,11 @@ import {
 	useUserSettings,
 	useTags,
 	useNotify,
-	useRefresh
+	useRefresh,
+	useUserRight,
+	useUserRights,
+	getUserRight,
+	getUserRights
 } from '../../store/account/hooks';
 import {
 	getUseAddBoardCallback,
@@ -80,6 +84,10 @@ export const getAppFunctions = (pkg: ZextrasModule): unknown => ({
 	getUserAccounts,
 	useUserSettings,
 	getUserSettings,
+	useUserRight,
+	useUserRights,
+	getUserRight,
+	getUserRights,
 	useTags,
 	getTags,
 	useNotify,

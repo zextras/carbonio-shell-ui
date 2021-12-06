@@ -22,7 +22,8 @@ export const normalizeAccount = ({
 	identities,
 	signatures,
 	props,
-	version
+	version,
+	rights
 }: GetInfoResponse): {
 	account: Account;
 	settings: AccountSettings;
@@ -35,7 +36,8 @@ export const normalizeAccount = ({
 			name,
 			displayName: attrs._attrs.displayName,
 			identities,
-			signatures
+			signatures,
+			rights
 		},
 		settings,
 		version

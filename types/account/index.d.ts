@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { SoapFetch, ZimletProp } from '../network';
+import { SoapFetch, ZimletProp, AccountRights } from '../network';
 
 export type AccountState = {
 	noOpTimeout: unknown;
@@ -54,6 +54,7 @@ export type Account = {
 	//	settings: AccountSettings;
 	signatures: { signature: Array<unknown> };
 	identities: { identity: Array<unknown> };
+	rights: AccountRights;
 };
 
 export type Tag = {
@@ -67,4 +68,24 @@ export type AccountSettings = {
 	attrs: Record<string, string | number>;
 	prefs: Record<string, string | number>;
 	props: Array<ZimletProp>;
+};
+
+export type AccountRightTarget = {
+	d: string;
+	id: string;
+	name: string;
+	type: string;
+};
+
+export type AccountRightName =
+	| 'sendAs'
+	| 'sendAsDistList'
+	| 'viewFreeBusy'
+	| 'sendOnBehalfOf'
+	| 'sendOnBehalfOfDistList';
+export type AccountRights = {
+	targets: Array<{
+		right: AccountRightName;
+		target: Array<AccountRightTarget>;
+	}>;
 };

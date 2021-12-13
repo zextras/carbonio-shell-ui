@@ -7,30 +7,11 @@
         "reduce": "Reduce board",
         "show_tabs": "Show other tabs"
     },
-    "changelog": {
-        "cancel": "Cancel",
-        "close": "Close",
-        "remind-later": "Remind Later",
-        "title": "Change Log"
-    },
-    "copyright": "Copyright",
     "label": {
-        "clear_search_query": "CLEAR SEARCH QUERY"
-    },
-    "login": {
-        "help": "Help",
-        "incorrect": "The username or password is incorrect",
-        "login": "Login",
-        "password": "Password",
-        "remember_me": "Remember me",
-        "supported_browsers": "Supported browsers",
-        "username": "Username",
-        "verify_caps_lock": "Verify that CAPS LOCK is not on, and then retype the current username and password"
-    },
-    "logout": "Logout",
-    "logout_modal": {
-        "confirm": "Log me out",
-        "warning": "You are going to be logged-out"
+        "cancel": "Cancel",
+        "clear_search_query": "CLEAR SEARCH QUERY",
+        "edit_to_start_search": "Edit your search to start a new one",
+        "out_of_office": "Out of Office"
     },
     "message": {
         "snackbar": {
@@ -48,13 +29,9 @@
         "active_input_label": "Separate your keywords by a comma or pressing TAB",
         "already_clear": "Search input is already clear",
         "app": "Search",
-        "app_description": "Search Module",
         "clear": "Clear search input",
-        "edit_to_start": "Edit your search to start a new one",
-        "edit_to_start_search": "Edit your search to start a new one",
         "idle_input_label": "Search in {{module}}",
         "module": "Module",
-        "results_for": "Results for:",
         "start": "Start search",
         "type_or_choose_suggestion": "Type or choose some keywords to start a search",
         "type_to_start_search": "Type some keywords to start a search",
@@ -62,10 +39,8 @@
     },
     "settings": {
         "app": "Settings",
-        "app_description": "Settings Module",
         "button": {
-            "primary": "Save",
-            "secondary": "Cancel"
+            "primary": "Save"
         },
         "general": {
             "account": "Account",
@@ -75,7 +50,6 @@
             "theme_auto": "Auto",
             "theme_disabled": "Disabled",
             "theme_enabled": "Enabled",
-            "theme_mode": "Theme Mode",
             "theme_options": "Theme Options"
         },
         "general_tab": "General",
@@ -100,7 +74,6 @@
                 "end_date": "End Date",
                 "end_time": "End Time:",
                 "external_senders": "External Senders",
-                "out_of_office": "Out of Office",
                 "out_of_office_status": "Out Of Office Status:",
                 "send_auto_reply_period": "Send auto-replies during the following period:",
                 "start_date": "Start Date",
@@ -108,8 +81,7 @@
             },
             "send_auto_replies": "Send auto replies",
             "status": {
-                "busy": "Busy",
-                "out_of_office": "Out of Office"
+                "busy": "Busy"
             }
         }
     },

@@ -45,15 +45,20 @@
     "new": "New",
     "new_tab": "New Tab",
     "search": {
-        "active_input_label": "Separate keywords with a comma or TAB",
+        "active_input_label": "Separate your keywords by a comma or pressing TAB",
+        "already_clear": "Search input is already clear",
         "app": "Search",
         "app_description": "Search Module",
         "clear": "Clear search input",
         "edit_to_start": "Edit your search to start a new one",
+        "edit_to_start_search": "Edit your search to start a new one",
         "idle_input_label": "Search in {{module}}",
         "module": "Module",
         "results_for": "Results for:",
-        "start": "Start search"
+        "start": "Start search",
+        "type_or_choose_suggestion": "Type or choose some keywords to start a search",
+        "type_to_start_search": "Type some keywords to start a search",
+        "unable_to_parse_query": "Unable to parse the search query, clear it and retry"
     },
     "settings": {
         "app": "Settings",

@@ -55,8 +55,8 @@
             "account_logout": "Oturumu kapat",
             "general": "Genel Ayarlar",
             "theme_auto": "Auto",
-            "theme_disabled": "Aktif değil",
-            "theme_enabled": "Aktif",
+            "theme_disabled": "Kullanıma kapalı",
+            "theme_enabled": "Kullanıma açık",
             "theme_mode": "Tema Modu",
             "theme_options": "Tema Seçenekleri",
             "dark_mode": "Koyu Mod"

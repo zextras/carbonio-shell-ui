@@ -96,7 +96,7 @@
         }
     },
     "search": {
-        "active_input_label": "Separa le parole chiave usando una virgola oppure TAB",
+        "active_input_label": "Separa le parole chiave usando una virgola oppure il tasto TAB",
         "app": "Cerca",
         "app_description": "Cerca Modulo",
         "edit_to_start": "Modifica la ricerca per iniziarne una nuova",
@@ -117,5 +117,17 @@
     },
     "snackbar": {
         "error": "Qualcosa è andato storto. riprova"
+    },
+    "board": {
+        "close_tabs": "Chiudi tutte le schede",
+        "close_tab": "Chiudi Finestra",
+        "enlarge": "Ingrandisci finestra",
+        "show_tabs": "Mostra altre schede"
+    },
+    "label": {
+        "cancel": "Cancella",
+        "clear_search_query": "PULISCI QUERY DI RICERCA",
+        "edit_to_start_search": "Modifica la ricerca per iniziarne una nuova",
+        "out_of_office": "Fuori Ufficio"
     }
 }

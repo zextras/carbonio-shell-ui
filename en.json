@@ -1,95 +1,95 @@
 {
-    "board": {
-        "close_tab": "Close Tab",
-        "close_tabs": "Close all your tabs",
-        "enlarge": "Enlarge board",
-        "hide": "Hide board",
-        "reduce": "Reduce board",
-        "show_tabs": "Show other tabs"
-    },
-    "label": {
-        "cancel": "Cancel",
-        "clear_search_query": "CLEAR SEARCH QUERY",
-        "edit_to_start_search": "Edit your search to start a new one",
-        "out_of_office": "Out of Office"
-    },
-    "message": {
-        "snackbar": {
-            "settings_saved": "Edits saved correctly"
-        }
-    },
-    "module": {
-        "app": {
-            "version": "Application versions"
-        }
-    },
-    "new": "New",
-    "new_tab": "New Tab",
-    "search": {
-        "active_input_label": "Separate your keywords by a comma or pressing TAB",
-        "already_clear": "Search input is already clear",
-        "app": "Search",
-        "clear": "Clear search input",
-        "idle_input_label": "Search in {{module}}",
-        "module": "Module",
-        "start": "Start search",
-        "type_or_choose_suggestion": "Type or choose some keywords to start a search",
-        "type_to_start_search": "Type some keywords to start a search",
-        "unable_to_parse_query": "Unable to parse the search query, clear it and retry"
-    },
-    "settings": {
-        "app": "Settings",
-        "button": {
-            "primary": "Save"
-        },
-        "general": {
-            "account": "Account",
-            "account_logout": "Logout",
-            "dark_mode": "Dark Mode",
-            "general": "General Settings",
-            "theme_auto": "Auto",
-            "theme_disabled": "Disabled",
-            "theme_enabled": "Enabled",
-            "theme_options": "Theme Options"
-        },
-        "general_tab": "General",
-        "out_of_office": {
-            "do_not_send_auto_replies": "Do not send auto replies",
-            "external_senders": {
-                "do_not_send_to_external": "Don’t send an auto-reply message to external sender",
-                "send_custom_in_organisation": "Send custom message to those not in my organisation",
-                "send_custom_not_in_organisation": "Send custom message to those not in my organisation and address book",
-                "send_standard_auto_reply": "Send standard auto-reply message"
-            },
-            "headings": {
-                "create_appointment": "Calendar Appointment",
-                "settings_label": "Out of Office Settings",
-                "time_period": "Time Period"
-            },
-            "labels": {
-                "all_day": "All Day:",
-                "auto_reply_message": "Auto-Reply Message:",
-                "auto_reply_message_external": "Auto-Reply Message for External senders:",
-                "create_appointment": "Create Appointment:",
-                "end_date": "End Date",
-                "end_time": "End Time:",
-                "external_senders": "External Senders",
-                "out_of_office_status": "Out Of Office Status:",
-                "send_auto_reply_period": "Send auto-replies during the following period:",
-                "start_date": "Start Date",
-                "start_time": "Start Time:"
-            },
-            "send_auto_replies": "Send auto replies",
-            "status": {
-                "busy": "Busy"
-            }
-        }
-    },
-    "snackbar": {
-        "error": "Something went wrong, please try again"
-    },
-    "user_quota": {
-        "limited": "{{quota}}% space used",
-        "unlimited": "Unlimited space available"
-    }
+	"board": {
+		"close_tab": "Close Tab",
+		"close_tabs": "Close all your tabs",
+		"enlarge": "Enlarge board",
+		"hide": "Hide board",
+		"reduce": "Reduce board",
+		"show_tabs": "Show other tabs"
+	},
+	"label": {
+		"cancel": "Cancel",
+		"clear_search_query": "CLEAR SEARCH",
+		"edit_to_start_search": "Edit your search to start a new one",
+		"out_of_office": "Out of Office"
+	},
+	"message": {
+		"snackbar": {
+			"settings_saved": "Edits saved correctly"
+		}
+	},
+	"module": {
+		"app": {
+			"version": "Application versions"
+		}
+	},
+	"new": "New",
+	"new_tab": "New Tab",
+	"search": {
+		"active_input_label": "Separate your keywords by a comma or pressing TAB",
+		"already_clear": "Search input is already clear",
+		"app": "Search",
+		"clear": "Clear search input",
+		"idle_input_label": "Search in {{module}}",
+		"module": "Module",
+		"start": "Start search",
+		"type_or_choose_suggestion": "Type or choose some keywords to start a search",
+		"type_to_start_search": "Type some keywords to start a search",
+		"unable_to_parse_query": "Unable to complete the search, clear it and retry"
+	},
+	"settings": {
+		"app": "Settings",
+		"button": {
+			"primary": "Save"
+		},
+		"general": {
+			"account": "Account",
+			"account_logout": "Logout",
+			"dark_mode": "Dark Mode",
+			"general": "General Settings",
+			"theme_auto": "Auto",
+			"theme_disabled": "Disabled",
+			"theme_enabled": "Enabled",
+			"theme_options": "Theme Options"
+		},
+		"general_tab": "General",
+		"out_of_office": {
+			"do_not_send_auto_replies": "Do not send auto-replies",
+			"external_senders": {
+				"do_not_send_to_external": "Don’t send an auto-reply message to external sender",
+				"send_custom_in_organisation": "Send custom message to those who are not in my organization",
+				"send_custom_not_in_organisation": "Send custom message to those who are not in my organization or address book",
+				"send_standard_auto_reply": "Send standard auto-reply message"
+			},
+			"headings": {
+				"create_appointment": "Calendar Appointment",
+				"settings_label": "Out of Office Settings",
+				"time_period": "Time Period"
+			},
+			"labels": {
+				"all_day": "All Day:",
+				"auto_reply_message": "Auto-Reply Message:",
+				"auto_reply_message_external": "Auto-Reply Message for External senders:",
+				"create_appointment": "Create Appointment:",
+				"end_date": "End Date",
+				"end_time": "End Time:",
+				"external_senders": "External Senders",
+				"out_of_office_status": "Out Of Office Status:",
+				"send_auto_reply_period": "Send auto-replies during the following period:",
+				"start_date": "Start Date",
+				"start_time": "Start Time:"
+			},
+			"send_auto_replies": "Send auto-replies",
+			"status": {
+				"busy": "Busy"
+			}
+		}
+	},
+	"snackbar": {
+		"error": "Something went wrong, please try again"
+	},
+	"user_quota": {
+		"limited": "{{quota}}% space used",
+		"unlimited": "Unlimited space available"
+	}
 }

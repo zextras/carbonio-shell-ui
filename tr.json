@@ -29,7 +29,7 @@
     "new": "Yeni",
     "new_tab": "Yeni Sekme",
     "search": {
-        "active_input_label": "Anahtar kelimeleri virgül veya TAB ile ayırın",
+        "active_input_label": "Anahtar kelimelerinizi virgül veya TAB tuşu ile ayırın",
         "app": "Ara",
         "results_for": "Sonuçlar:",
         "start": "Aramayı başlat",
@@ -37,7 +37,11 @@
         "clear": "Arama girişini sil",
         "edit_to_start": "Yeni bir arama yapmak için düzenleyin",
         "idle_input_label": "{{module}} içinde ara",
-        "module": "Modül"
+        "module": "Modül",
+        "already_clear": "Arama girişi zaten silinmiş",
+        "type_or_choose_suggestion": "Aramayı başlatmak için bazı anahtar kelimeler yazın veya seçin",
+        "type_to_start_search": "Aramayı başlatmak için bazı anahtar kelimeler yazın",
+        "unable_to_parse_query": "Arama sorgusu çözümlenemedi, silip yeniden deneyin"
     },
     "settings": {
         "app": "Ayarlar",
@@ -51,10 +55,11 @@
             "account_logout": "Oturumu kapat",
             "general": "Genel Ayarlar",
             "theme_auto": "Auto",
-            "theme_disabled": "Aktif değil",
-            "theme_enabled": "Aktif",
+            "theme_disabled": "Kullanıma kapalı",
+            "theme_enabled": "Kullanıma açık",
             "theme_mode": "Tema Modu",
-            "theme_options": "Tema Seçenekleri"
+            "theme_options": "Tema Seçenekleri",
+            "dark_mode": "Koyu Mod"
         },
         "general_tab": "Genel",
         "out_of_office": {
@@ -102,5 +107,19 @@
         "app": {
             "version": "Uygulama sürümleri"
         }
+    },
+    "board": {
+        "close_tab": "Sekmeyi Kapat",
+        "close_tabs": "Tüm sekmeleri kapat",
+        "enlarge": "Panoyu büyüt",
+        "hide": "Panoyu gizle",
+        "reduce": "Panoyu küçült",
+        "show_tabs": "Diğer sekmeleri göster"
+    },
+    "label": {
+        "cancel": "İptal",
+        "clear_search_query": "ARAMA SORGUSUNU TEMİZLE",
+        "edit_to_start_search": "Yeni bir arama yapmak için düzenleyin",
+        "out_of_office": "Ofis Dışında"
     }
 }

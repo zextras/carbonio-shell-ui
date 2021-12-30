@@ -89,7 +89,9 @@
         "error": "Something went wrong, please try again"
     },
     "user_quota": {
-        "limited": "{{quota}}% space used",
-        "unlimited": "Unlimited space available"
+        "limited": "You have filled {{quota}}% of the available space",
+        "space_full": "It seems that all available space is full",
+        "title": "User's quota",
+        "unlimited": "You have unlimited space available"
     }
 }

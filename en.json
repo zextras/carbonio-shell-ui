@@ -35,7 +35,7 @@
         "start": "Start search",
         "type_or_choose_suggestion": "Type or choose some keywords to start a search",
         "type_to_start_search": "Type some keywords to start a search",
-        "unable_to_parse_query": "Unable to parse the search query, clear it and retry"
+        "unable_to_parse_query": "Unable to complete the search, clear it and retry"
     },
     "settings": {
         "app": "Settings",
@@ -56,7 +56,7 @@
         "out_of_office": {
             "do_not_send_auto_replies": "Do not send auto-replies",
             "external_senders": {
-                "do_not_send_to_external": "Don’t send an auto-reply message to external sender",
+                "do_not_send_to_external": "Don't send an auto-reply message to external sender",
                 "send_custom_in_organisation": "Send custom message to those who are not in my organization",
                 "send_custom_not_in_organisation": "Send custom message to those who are not in my organization and address book",
                 "send_standard_auto_reply": "Send standard auto-reply message"
@@ -79,7 +79,7 @@
                 "start_date": "Start Date",
                 "start_time": "Start Time:"
             },
-            "send_auto_replies": "Send-auto replies",
+            "send_auto_replies": "Send auto-replies",
             "status": {
                 "busy": "Busy"
             }

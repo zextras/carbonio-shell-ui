@@ -41,7 +41,7 @@
         "already_clear": "Arama girişi zaten silinmiş",
         "type_or_choose_suggestion": "Aramayı başlatmak için bazı anahtar kelimeler yazın veya seçin",
         "type_to_start_search": "Aramayı başlatmak için bazı anahtar kelimeler yazın",
-        "unable_to_parse_query": "Arama sorgusu çözümlenemedi, silip yeniden deneyin"
+        "unable_to_parse_query": "Arama tamamlanamadı, silip yeniden deneyin"
     },
     "settings": {
         "app": "Ayarlar",
@@ -69,7 +69,7 @@
                 "send_custom_not_in_organisation": "Benim organizasyonumda ve adres defterimde olmayanlara özel mesaj gönder",
                 "send_standard_auto_reply": "Standart otomatik yanıt mesajı gönder"
             },
-            "do_not_send_auto_replies": "Otomatik yanıtlar gönderme",
+            "do_not_send_auto_replies": "Otomatik yanıtları gönderme",
             "headings": {
                 "create_appointment": "Takvim Randevusu",
                 "settings_label": "Ofis Dışında Ayarları",
@@ -100,8 +100,10 @@
         "error": "Bir hata oluştu, lütfen tekrar deneyin"
     },
     "user_quota": {
-        "limited": "Kotanızdan %{{quota}} kullanıldı",
-        "unlimited": "Sınırsız kota kullanılıyor"
+        "limited": "Kullanılabilir kotanızdan % {{quota}} kullanıldı",
+        "unlimited": "Sınırsız kota kullanıyorsunuz",
+        "space_full": "Tüm kullanılabilir kotanız doldu",
+        "title": "Kullanıcı kotası"
     },
     "module": {
         "app": {
@@ -118,7 +120,7 @@
     },
     "label": {
         "cancel": "İptal",
-        "clear_search_query": "ARAMA SORGUSUNU TEMİZLE",
+        "clear_search_query": "ARAMAYI TEMİZLE",
         "edit_to_start_search": "Yeni bir arama yapmak için düzenleyin",
         "out_of_office": "Ofis Dışında"
     }

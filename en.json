@@ -17,9 +17,6 @@
         "reload": "Reload",
         "time_zone": "Time Zone"
     },
-    "lable": {
-        "reload": "Reload"
-    },
     "locale": {
         "English": "English",
         "chinese_china": "Chinese (China)",
@@ -27,7 +24,8 @@
         "german": "German",
         "hindi": "Hindi",
         "italian": "Italian",
-        "japanese": "Japanese",       
+        "japanese": "Japanese",
+        "label_": "Portuguese - {{value}}",
         "label_chinese": "Chinese (China) - {{value}}",
         "label_dutch": "Dutch - {{value}}",
         "label_english": "English - {{value}}",

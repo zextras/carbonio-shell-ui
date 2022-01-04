@@ -51,7 +51,8 @@
             "theme_auto": "Auto",
             "general": "Impostazioni Generali",
             "account": "Account",
-            "account_logout": "Esci"
+            "account_logout": "Esci",
+            "dark_mode": "Tema Scuro"
         },
         "app": "Impostazioni",
         "app_description": "Impostazioni Modulo",
@@ -104,7 +105,10 @@
         "module": "Modulo",
         "results_for": "Risultati per:",
         "start": "Inizia ricerca",
-        "clear": "Cancella ricerca"
+        "clear": "Cancella ricerca",
+        "type_or_choose_suggestion": "Digita o scegli una parola chiave per iniziare una ricerca",
+        "type_to_start_search": "Digita una parola chiave per iniziare la ricerca",
+        "unable_to_parse_query": "Impossibile completare la ricerca, cancella e riprova"
     },
     "message": {
         "snackbar": {
@@ -122,7 +126,9 @@
         "close_tabs": "Chiudi tutte le schede",
         "close_tab": "Chiudi Finestra",
         "enlarge": "Ingrandisci finestra",
-        "show_tabs": "Mostra altre schede"
+        "show_tabs": "Mostra altre schede",
+        "hide": "Nascondi finestra",
+        "reduce": "Riduci finestra"
     },
     "label": {
         "cancel": "Cancella",

@@ -10,6 +10,7 @@
     "label": {
         "cancel": "Cancel",
         "clear_search_query": "CLEAR SEARCH",
+        "discard_changes": "DISCARD CHANGES",
         "edit_to_start_search": "Edit your search to start a new one",
         "out_of_office": "Out of Office"
     },

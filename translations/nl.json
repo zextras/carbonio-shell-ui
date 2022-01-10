@@ -1,0 +1,106 @@
+{
+    "changelog": {
+        "cancel": "Annuleren",
+        "close": "Sluiten",
+        "remind-later": "Later herinneren",
+        "title": "Log wijzigen"
+    },
+    "login": {
+        "help": "Help",
+        "login": "Inloggen",
+        "password": "Wachtwoord",
+        "username": "Gebruikersnaam",
+        "incorrect": "De gebruikersnaam of het wachtwoord is onjuist",
+        "remember_me": "Herinner mij",
+        "supported_browsers": "Ondersteunde browsers",
+        "verify_caps_lock": "Controleer of CAPS LOCK niet aan staat, en typ dan de huidige gebruikersnaam en wachtwoord opnieuw"
+    },
+    "new": "Nieuw",
+    "search": {
+        "app": "Zoeken",
+        "module": "Module",
+        "active_input_label": "Trefwoorden scheiden met een komma of TAB",
+        "app_description": "Module zoeken",
+        "clear": "Zoekingang wissen",
+        "edit_to_start": "Wijzig uw zoekopdracht om een nieuwe te starten",
+        "idle_input_label": "Zoeken in {{module}}",
+        "results_for": "Resultaten voor:",
+        "start": "Start zoeken"
+    },
+    "settings": {
+        "out_of_office": {
+            "labels": {
+                "end_date": "Einddatum",
+                "start_date": "Startdatum",
+                "all_day": "Hele dag:",
+                "auto_reply_message": "Auto-antwoordbericht:",
+                "auto_reply_message_external": "Auto-antwoordbericht voor externe afzenders:",
+                "create_appointment": "Afspraak creëren:",
+                "end_time": "Eindtijd:",
+                "external_senders": "Externe afzenders",
+                "out_of_office": "Niet op kantoor",
+                "out_of_office_status": "Status Niet op kantoor:",
+                "send_auto_reply_period": "Auto-antwoorden versturen tijdens de volgende periode:",
+                "start_time": "Starttijd:"
+            },
+            "status": {
+                "busy": "Bezet",
+                "out_of_office": "Niet op kantoor"
+            },
+            "do_not_send_auto_replies": "Geen automatische antwoorden sturen",
+            "external_senders": {
+                "do_not_send_to_external": "Geen auto-antwoord bericht naar externe afzender sturen",
+                "send_custom_not_in_organisation": "Een aangepast bericht sturen naar personen die niet in mijn organisatie en adresboek staan",
+                "send_standard_auto_reply": "Standaard auto-antwoordbericht sturen",
+                "send_custom_in_organisation": "Een aangepast bericht sturen naar personen die geen deel uitmaken van mijn organisatie"
+            },
+            "headings": {
+                "create_appointment": "Agenda Afspraak",
+                "settings_label": "Instellingen \"Niet op kantoor\"",
+                "time_period": "Tijdsperiode"
+            },
+            "send_auto_replies": "Automatisch antwoorden sturen"
+        },
+        "app": "Instellingen",
+        "button": {
+            "primary": "Opslaan",
+            "secondary": "Annuleren"
+        },
+        "general": {
+            "account": "Account",
+            "account_logout": "Uitloggen",
+            "theme_disabled": "Uitgeschakeld",
+            "theme_enabled": "Ingeschakeld",
+            "general": "Algemene instellingen",
+            "theme_auto": "Auto",
+            "theme_mode": "Thema Modus",
+            "theme_options": "Thema Opties"
+        },
+        "general_tab": "Algemeen",
+        "app_description": "Instellingen Module"
+    },
+    "logout": "Uitloggen",
+    "copyright": "Copyright",
+    "logout_modal": {
+        "confirm": "Log me uit",
+        "warning": "Je zult uitgelogd worden"
+    },
+    "message": {
+        "snackbar": {
+            "settings_saved": "Bewerkingen correct opgeslagen"
+        }
+    },
+    "module": {
+        "app": {
+            "version": "Applicatieversies"
+        }
+    },
+    "new_tab": "Nieuwe Tab",
+    "snackbar": {
+        "error": "Er ging iets mis, probeer het opnieuw"
+    },
+    "user_quota": {
+        "limited": "{{quota}}% ruimte gebruikt",
+        "unlimited": "Onbeperkte ruimte beschikbaar"
+    }
+}

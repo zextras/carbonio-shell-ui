@@ -1,0 +1,19 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: carbonio-sdk
+Upstream-Contact: Zextras <https://www.zextras.com>
+
+Files: .gitignore
+Copyright: 2021 Zextras <https://www.zextras.com>
+License: CC0-1.0
+
+Files: .idea/*
+Copyright: 2021 Zextras <https://www.zextras.com>
+License: CC0-1.0
+
+Files: .vscode/*
+Copyright: 2021 Zextras <https://www.zextras.com>
+License: CC0-1.0
+
+Files: .husky/*
+Copyright: 2021 Zextras <https://www.zextras.com>
+License: CC0-1.0

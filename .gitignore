@@ -1,0 +1,14 @@
+# SPDX-FileCopyrightText: 2021 Zextras <https://www.zextras.com>
+
+# SPDX-License-Identifier: CC0-1.0
+/node_modules/
+/build/
+/dist/
+/pkg/
+/lib/
+/deploy/
+/junit.xml
+/coverage/cobertura-coverage.xml
+/.vscode/
+/.idea/
+.dev.json

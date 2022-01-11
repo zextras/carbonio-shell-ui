@@ -44,7 +44,7 @@ export const FOLDERS = {
 export const SHELL_APP_ID = 'carbonio-shell-ui';
 export const SETTINGS_APP_ID = 'settings';
 export const SEARCH_APP_ID = 'search';
-export const TEAM_APP_ID = 'carbonio-chats-ui';
+export const CHATS_APP_ID = 'carbonio-chats-ui';
 export const ACTION_TYPES = {
 	CONVERSATION: 'conversation',
 	CONVERSATION_lIST: 'conversation_list',

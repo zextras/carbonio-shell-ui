@@ -20,7 +20,7 @@ export type RuntimeAppData = Partial<{
 		settings?: Component | FunctionComponent;
 		search?: Component | FunctionComponent;
 		sidebar?: Component | FunctionComponent;
-		teambar?: {
+		chatbar?: {
 			icon: Component | FunctionComponent;
 			sidebar: Component | FunctionComponent;
 		};

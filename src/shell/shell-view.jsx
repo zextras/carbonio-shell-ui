@@ -22,7 +22,7 @@ import { useAppStore } from '../store/app/store';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { useUserAccount, useUserSettings } from '../store/account/hooks';
 import { useAccountStore } from '../store/account/store';
-import { TEAM_APP_ID } from '../constants';
+import { CHATS_APP_ID } from '../constants';
 
 const Background = styled.div`
 	background: ${({ theme }) => theme.palette.gray6.regular};
@@ -58,7 +58,7 @@ export function Shell() {
 	const [chatPanelMode, setChatPanelMode] = useState('closed'); // values: 'closed', 'overlap', 'open'
 	const [navOpen, setNavOpen] = useState(true);
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
-	const TeamViews = useAppStore((state) => state.apps[TEAM_APP_ID]?.views?.teambar);
+	const ChatsViews = useAppStore((state) => state.apps[CHATS_APP_ID]?.views?.chatbar);
 
 	useEffect(() => {
 		setNavOpen((n) => !(n && chatPanelMode === 'open'));
@@ -71,7 +71,7 @@ export function Shell() {
 				mobileNavIsOpen={mobileNavOpen}
 				onMobileMenuClick={() => setMobileNavOpen(!mobileNavOpen)}
 			>
-				{TeamViews && <TeamViews.icon mode={chatPanelMode} setMode={setChatPanelMode} />}
+				{ChatsViews && <ChatsViews.icon mode={chatPanelMode} setMode={setChatPanelMode} />}
 			</ShellHeader>
 			<Row crossAlignment="unset" style={{ position: 'relative', flexGrow: '1' }}>
 				<ShellNavigationBar
@@ -80,10 +80,10 @@ export function Shell() {
 					onCollapserClick={() => setNavOpen(!navOpen)}
 				/>
 				<AppViewContainer />
-				{TeamViews && (
-					<AppContextProvider pkg={TEAM_APP_ID}>
+				{ChatsViews && (
+					<AppContextProvider pkg={CHATS_APP_ID}>
 						<ShellMenuPanel mode={chatPanelMode} setMode={setChatPanelMode}>
-							<TeamViews.sidebar mode={chatPanelMode} setMode={setChatPanelMode} />
+							<ChatsViews.sidebar mode={chatPanelMode} setMode={setChatPanelMode} />
 						</ShellMenuPanel>
 					</AppContextProvider>
 				)}

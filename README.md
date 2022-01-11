@@ -10,10 +10,10 @@ SPDX-License-Identifier: AGPL-3.0-only
 The SDK for Carbonio Apps development
 
 <p align="center">
-  <a href="https://github.com/zextras/{{ .repoName }}/graphs/contributors" alt="Contributors">
-  <img src="https://img.shields.io/github/contributors/zextras/{{ .repoName }}" /></a>
-  <a href="https://github.com/zextras/{{ .repoName }}/pulse" alt="Activity">
-  <img src="https://img.shields.io/github/commit-activity/m/zextras/{{ .repoName }}" /></a>
+  <a href="https://github.com/zextras/carbonio-ui-sdk/graphs/contributors" alt="Contributors">
+  <img src="https://img.shields.io/github/contributors/zextras/carbonio-ui-sdk" /></a>
+  <a href="https://github.com/zextras/carbonio-ui-sdk/pulse" alt="Activity">
+  <img src="https://img.shields.io/github/commit-activity/m/zextras/carbonio-ui-sdk" /></a>
   <img src="https://img.shields.io/badge/license-AGPL%203-green" alt="License AGPL 3">
   <img src="https://img.shields.io/badge/project-carbonio-informational" alt="Project Carbonio">
   <a href="https://twitter.com/intent/follow?screen_name=zextras">

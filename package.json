@@ -1,0 +1,47 @@
+{
+  "name": "carbonio-ui-sdk",
+  "version": "1.0.0",
+  "description": "Zextras Carbonio Web SDK",
+  "main": "scripts/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:Zextras/carbonio-ui-sdk.git"
+  },
+  "keywords": [
+    "Zextras",
+    "Carbonio",
+    "SDK"
+  ],
+	"author": "Zextras DL Team <https://www.zextras.com/carbonio/>",
+	"maintainers": [
+		"Matteo Dal Zovo <matteo.dalzovo@zextras.com>",
+		"Gabriele Marino <gabriele.marino@zextras.com>",
+		"Abhishek Kumar <abhishek.kumar@zextras.com>",
+		"Giuliano Caregnato <giuliano.caregnato@zextras.com>",
+		"Dhaval Dodiya <dhaval.dodiya@zextras.com>"
+	],
+	"license": "AGPL-3.0-only",
+  "homepage": "https://github.com/Zextras/carbonio-ui-sdk#readme",
+  "dependencies": {
+    "arg": "^5.0.1",
+    "babel-loader": "^8.2.3",
+    "chalk": "^4.1.2",
+    "child-process": "^1.0.2",
+    "copy-webpack-plugin": "^10.0.0",
+    "css-loader": "^6.5.1",
+    "file-loader": "^6.2.0",
+    "fs": "0.0.1-security",
+    "handlebars-loader": "^1.7.1",
+    "html-webpack-plugin": "^5.5.0",
+    "less-loader": "^10.2.0",
+    "mini-css-extract-plugin": "^2.4.5",
+    "node-http-proxy-json": "^0.1.9",
+    "postcss-loader": "^6.2.0",
+    "react-hot-loader": "^4.13.0",
+    "semver": "^7.3.5",
+    "webpack": "^5.64.4",
+    "webpack-bundle-analyzer": "^4.5.0",
+    "webpack-dev-server": "^4.6.0",
+    "zlib": "^1.0.5"
+  }
+}

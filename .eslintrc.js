@@ -5,7 +5,7 @@
  */
 
 module.exports = {
-	extends: ['./node_modules/@zextras/zapp-configs/rules/eslint'],
+	extends: ['./node_modules/@zextras/carbonio-ui-configs/rules/eslint'],
 	settings: {
 		'import/resolver': {
 			node: {

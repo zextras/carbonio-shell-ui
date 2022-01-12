@@ -3,5 +3,5 @@
 // SPDX-License-Identifier: CC0-1.0
 
 module.exports = {
-	...require('@zextras/zapp-configs/rules/prettier')
+	...require('@zextras/carbonio-ui-configs/rules/prettier')
 }

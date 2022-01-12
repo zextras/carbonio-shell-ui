@@ -11,8 +11,7 @@
 	"scripts": {
 		"test": "echo jest",
 		"postinstall": "is-ci || husky install",
-		"prepublish": "pinst --disable",
-		"prepublishOnly": "npm run build:clean && ZX_SHELL_FLAVOR=NPM npm run build",
+		"prepublishOnly": "pinst --disable && npm run build:clean && ZX_SHELL_FLAVOR=NPM npm run build",
 		"postpublish": "pinst --enable && rm -rf lib",
 		"type-check": "tsc --noEmit",
 		"type-check:watch": "npm run type-check -- --watch",
@@ -63,7 +62,7 @@
 		"@types/styled-components": "^5.1.15",
 		"@types/ua-parser-js": "^0.7.36",
 		"@types/webpack-env": "1.16.3",
-		"@zextras/zapp-configs": "0.1.10",
+		"@zextras/carbonio-ui-configs": "^0.1.11",
 		"@zextras/zapp-ui": "0.1.2-beta.3",
 		"autoprefixer": "10.4.0",
 		"babel-jest": "27.3.1",

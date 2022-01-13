@@ -120,6 +120,16 @@
                 "busy": "Busy"
             }
         },
+        "search_settings": {
+            "headings": {
+                "search_settings_label": "Search"
+            },
+            "labels": {
+                "include_search_in_shared_folder": "Include Shared Folder in Searches",
+                "include_search_in_spam_folder": "Include Spam Folder in Searches",
+                "include_search_in_trash_folder": "Include Trash Folder in Searches"
+            }
+        },
         "timezone_and_language": "Time Zone and Language"
     },
     "snackbar": {

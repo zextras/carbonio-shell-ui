@@ -1,1 +1,51 @@
-{}
+{
+    "label": {
+        "cancel": "Annuler",
+        "language": "Langue",
+        "discard_changes": "REJETER LES MODIFICATIONS",
+        "edit_to_start_search": "Modifier votre recherche pour en lancer une nouvelle",
+        "no": "Non"
+    },
+    "search": {
+        "clear": "Effacer la saisie de recherche",
+        "already_clear": "L'entrée de recherche est déjà effacée",
+        "app": "Recherche",
+        "module": "Module",
+        "type_to_start_search": "Tapez quelques mots-clés pour lancer une recherche"
+    },
+    "message": {
+        "snackbar": {
+            "settings_saved": "Modifications sauvées correctement"
+        }
+    },
+    "new": "Nouveau",
+    "settings": {
+        "app": "Paramètres",
+        "button": {
+            "primary": "Sauvegarder"
+        },
+        "general": {
+            "account": "Compte",
+            "account_logout": "Déconnexion",
+            "theme_disabled": "Désactivé",
+            "theme_enabled": "Activé"
+        },
+        "general_tab": "Général",
+        "out_of_office": {
+            "external_senders": {
+                "do_not_send_to_external": "N'envoyez pas de message de réponse automatique à un expéditeur externe",
+                "send_standard_auto_reply": "Envoyer un message de réponse automatique standard"
+            },
+            "labels": {
+                "end_date": "Date de fin",
+                "start_date": "Date de départ"
+            },
+            "status": {
+                "busy": "Occupé"
+            }
+        }
+    },
+    "snackbar": {
+        "error": "Quelque chose s'est mal passé, veuillez recommencer"
+    }
+}

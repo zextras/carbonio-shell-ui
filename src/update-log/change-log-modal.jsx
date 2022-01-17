@@ -7,7 +7,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { forEach } from 'lodash';
 import { useTranslation } from 'react-i18next';
-import { Modal, Text, Container, Divider } from '@zextras/zapp-ui';
+import { Modal, Text, Container, Divider } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 import moment from 'moment';
 import MarkdownContainer from './markdown-container';

@@ -6,7 +6,7 @@
 
 import React, { useContext, Suspense, lazy } from 'react';
 import { BrowserRouter, useHistory } from 'react-router-dom';
-import { SnackbarManagerContext, ModalManagerContext } from '@zextras/zapp-ui';
+import { SnackbarManagerContext, ModalManagerContext } from '@zextras/carbonio-design-system';
 import AppLoaderMounter from './app/app-loader-mounter';
 import { useContextBridge } from '../store/context-bridge';
 import LoadingView from './loading-view';

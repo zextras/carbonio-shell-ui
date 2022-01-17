@@ -6,7 +6,7 @@
 
 import React, { FC, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormSubSection, Button } from '@zextras/zapp-ui';
+import { FormSubSection, Button } from '@zextras/carbonio-design-system';
 import { logout } from '../network/logout';
 
 const Logout: FC = () => {

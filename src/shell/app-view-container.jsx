@@ -8,7 +8,7 @@ import React, { useMemo } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import { map } from 'lodash';
-import { Container } from '@zextras/zapp-ui';
+import { Container } from '@zextras/carbonio-design-system';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { useApps } from '../store/app/hooks';
 import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../constants';

@@ -6,7 +6,7 @@
 
 import React, { FC, useState, useMemo, useContext, useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormSubSection, Select } from '@zextras/zapp-ui';
+import { FormSubSection, Select } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 import { AccountSettings, DRPropValues } from '../../types';

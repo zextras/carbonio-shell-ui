@@ -9,7 +9,7 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 // import { render as rtlRender } from '@testing-library/react';
-import { ThemeProvider } from '@zextras/zapp-ui';
+import { ThemeProvider } from '@zextras/carbonio-design-system';
 
 function render(ui, { initialRouterEntries = ['/'], ...options } = {}) {
 	const Wrapper = ({ children }) => (

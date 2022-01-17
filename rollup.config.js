@@ -33,7 +33,7 @@ export default {
 		'@testing-library/react',
 		'@testing-library/react-hooks',
 		'@testing-library/user-event',
-		'@zextras/zapp-ui',
+		'@zextras/carbonio-design-system',
 		'react-router-dom',
 		'core-js',
 		'moment',

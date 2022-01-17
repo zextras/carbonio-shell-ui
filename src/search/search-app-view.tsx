@@ -7,7 +7,7 @@
 import { map, filter } from 'lodash';
 import React, { FC, useCallback, useMemo } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Container, Chip, Padding, Divider, Text, Button } from '@zextras/zapp-ui';
+import { Container, Chip, Padding, Divider, Text, Button } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { useApps } from '../store/app/hooks';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

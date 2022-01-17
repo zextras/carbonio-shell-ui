@@ -7,7 +7,7 @@
 import React, { useEffect, useState, FC } from 'react';
 import { Location } from 'history';
 import { Prompt, useHistory } from 'react-router';
-import { Modal } from '@zextras/zapp-ui';
+import { Modal } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 
 export const RouteLeavingGuard: FC<{ title: string; when?: boolean }> = ({

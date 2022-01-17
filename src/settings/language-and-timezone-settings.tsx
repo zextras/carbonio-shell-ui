@@ -5,7 +5,7 @@
  */
 
 import React, { useCallback, FC, useMemo } from 'react';
-import { Container, FormSubSection, Modal, Select, Text, Padding } from '@zextras/zapp-ui';
+import { Container, FormSubSection, Modal, Select, Text, Padding } from '@zextras/carbonio-design-system';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import momentLocalizer from 'react-widgets-moment';

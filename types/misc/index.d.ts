@@ -56,7 +56,7 @@ export type SharedLibrariesAppsMap = {
 	'react-router-dom': unknown;
 	'styled-components': unknown;
 	moment: unknown;
-	'@zextras/zapp-shell': {
+	'@zextras/carbonio-shell-ui': {
 		[pkgName: string]: unknown & {
 			store: {
 				store: Store<unknown>;

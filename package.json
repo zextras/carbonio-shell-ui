@@ -1,6 +1,6 @@
 {
 	"name": "@zextras/carbonio-shell-ui",
-	"version": "0.3.0-rc.1",
+	"version": "0.3.0-rc.3",
 	"description": "The Zextras Carbonio web client",
 	"types": "./types/index.d.ts",
 	"main": "dist/zapp-shell.bundle.js",
@@ -9,15 +9,15 @@
 		"npm": "v8.1.0"
 	},
 	"scripts": {
+		"build:clean": "rm -rf lib && rm -rf dist && rm -rf pkg",
 		"test": "echo jest",
 		"postinstall": "is-ci || husky install",
-		"prepublishOnly": "pinst --disable && npm run build:clean && ZX_SHELL_FLAVOR=NPM npm run build",
+		"prepublishOnly": "pinst --disable && npm run build:clean",
 		"postpublish": "pinst --enable && rm -rf lib",
 		"type-check": "tsc --noEmit",
 		"type-check:watch": "npm run type-check -- --watch",
 		"lint": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to node_modules/@zextras/zapp-config src",
 		"build": "node sdk build && rollup -c rollup.config.js",
-		"deployNpm": "ZX_SHELL_FLAVOR=NPM npm run prepublishOnly && rm -rf $PKG_PATH/node_modules/@zextras/zapp-shell/dist/ && cp -r dist/ $PKG_PATH/node_modules/@zextras/zapp-shell/dist/ && rm -rf $PKG_PATH/node_modules/@zextras/zapp-shell/types/ && cp -r types/ $PKG_PATH/node_modules/@zextras/zapp-shell/types && cp package.json $PKG_PATH/node_modules/@zextras/zapp-shell/ && cd $PKG_PATH/node_modules/@zextras/zapp-shell/ && rm -rf node_modules && npm i --only=prod",
 		"deploy": "node sdk deploy",
 		"start": "node sdk watch"
 	},

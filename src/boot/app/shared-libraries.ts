@@ -59,7 +59,7 @@ export function injectSharedLibraries(): void {
 				throw new Error('Apps must use the store given by the Shell.');
 			}
 		},
-		'@zextras/zapp-shell': {},
+		'@zextras/carbonio-shell-ui': {},
 		'@zextras/carbonio-design-system': { ...ZappUI, RichTextEditor }
 	};
 	wnd.__ZAPP_HMR_EXPORT__ = {};

@@ -39,11 +39,7 @@ const SearchSettingsView: FC<{
 	}, [searchInSpamFolder, searchInTrashFolder, searchInSharedFolder, setMode]);
 
 	return (
-		<FormSubSection
-			label={t('settings.search_settings.headings.search_settings_label', 'Search')}
-			minWidth="calc(min(100%, 512px))"
-			width="50%"
-		>
+		<FormSubSection label={t('search.app', 'Search')} minWidth="calc(min(100%, 512px))" width="50%">
 			<Container crossAlignment="baseline" padding={{ all: 'small' }}>
 				<Checkbox
 					label={t(

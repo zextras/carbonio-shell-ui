@@ -4,19 +4,29 @@
         "language": "Langue",
         "discard_changes": "REJETER LES MODIFICATIONS",
         "edit_to_start_search": "Modifier votre recherche pour en lancer une nouvelle",
-        "no": "Non"
+        "no": "Non",
+        "clear_search_query": "EFFACER LA RECHERCHE",
+        "out_of_office": "Hors du Bureau",
+        "reload": "Recharger",
+        "time_zone": "Fuseau horaire"
     },
     "search": {
         "clear": "Effacer la saisie de recherche",
         "already_clear": "L'entrée de recherche est déjà effacée",
         "app": "Recherche",
         "module": "Module",
-        "type_to_start_search": "Tapez quelques mots-clés pour lancer une recherche"
+        "type_to_start_search": "Tapez quelques mots-clés pour lancer une recherche",
+        "active_input_label": "Séparez vos mots-clés par une virgule ou en appuyant sur TAB",
+        "idle_input_label": "Rechercher dans {{module}}",
+        "start": "Démarrer la recherche",
+        "type_or_choose_suggestion": "Tapez ou choisissez des mots-clés pour lancer une recherche",
+        "unable_to_parse_query": "Impossible de terminer la recherche, effacez-la et réessayez"
     },
     "message": {
         "snackbar": {
-            "settings_saved": "Modifications sauvées correctement"
-        }
+            "settings_saved": "Modifications enregistrées correctement"
+        },
+        "reload": "\tVoulez-vous recharger l'application maintenant pour afficher la nouvelle langue ?\n(Sinon, la nouvelle langue apparaîtra la prochaine fois que vous vous connecterez.)"
     },
     "new": "Nouveau",
     "settings": {
@@ -28,22 +38,45 @@
             "account": "Compte",
             "account_logout": "Déconnexion",
             "theme_disabled": "Désactivé",
-            "theme_enabled": "Activé"
+            "theme_enabled": "Activé",
+            "dark_mode": "Mode sombre",
+            "general": "Paramètres généraux",
+            "theme_auto": "Auto",
+            "theme_options": "Options du thème"
         },
         "general_tab": "Général",
         "out_of_office": {
             "external_senders": {
                 "do_not_send_to_external": "N'envoyez pas de message de réponse automatique à un expéditeur externe",
-                "send_standard_auto_reply": "Envoyer un message de réponse automatique standard"
+                "send_standard_auto_reply": "Envoyer un message de réponse automatique standard",
+                "send_custom_in_organisation": "Envoyer un message personnalisé à ceux qui ne font pas partie de mon organisation",
+                "send_custom_not_in_organisation": "Envoyer un message personnalisé à ceux qui ne sont pas dans mon organisation et mon carnet d'adresses"
             },
             "labels": {
                 "end_date": "Date de fin",
-                "start_date": "Date de départ"
+                "start_date": "Date de départ",
+                "all_day": "Toute la journée :",
+                "auto_reply_message": "Message de réponse automatique :",
+                "auto_reply_message_external": "Message de réponse automatique pour les expéditeurs externes :",
+                "create_appointment": "Créer un rendez-vous :",
+                "end_time": "Heure de fin :",
+                "external_senders": "Expéditeurs externes",
+                "out_of_office_status": "Statut d'absence du bureau :",
+                "send_auto_reply_period": "Envoyer des réponses automatiques pendant la période suivante :",
+                "start_time": "Heure de début :"
             },
             "status": {
                 "busy": "Occupé"
-            }
-        }
+            },
+            "do_not_send_auto_replies": "Ne pas envoyer de réponses automatiques",
+            "headings": {
+                "create_appointment": "Rendez-vous du calendrier",
+                "settings_label": "Paramètres d'absence du bureau",
+                "time_period": "Période de temps"
+            },
+            "send_auto_replies": "Envoyer des réponses automatiques"
+        },
+        "timezone_and_language": "Fuseau horaire et langue"
     },
     "snackbar": {
         "error": "Quelque chose s'est mal passé, veuillez recommencer"
@@ -63,7 +96,7 @@
         "bangkok_hanoi_jakarta": "{{value}} Bangkok, Hanoï, Jakarta",
         "beirut": "{{value}} Beyrouth",
         "belgrade_bratislava_budapest_ljubljana_prague": "{{value}} Belgrade, Bratislava, Budapest, Ljubljana, Prague",
-        "brasilia": "{{value}} Brasilia",
+        "brasilia": "{{value}} Brésil",
         "britain_ireland_portugal": "{{value}} Grande-Bretagne, Irlande, Portugal",
         "brussels_copenhagen_madrid_paris ": "{{value}} Bruxelles, Copenhague, Madrid, Paris",
         "cape_verde_is": "{{value}} Cap-Vert Est.",
@@ -136,5 +169,55 @@
         "moscow_st_petersburg_volgograd_rtz_2": "{{value}} Moscou, Saint-Pétersbourg, Volgograd (RTZ 2)",
         "us_canada_central": "{{value}} US/Canada Central",
         "vladivostok_magadan": "{{value}} États-Unis/Canada Pacifique"
+    },
+    "board": {
+        "close_tab": "Fermer l'onglet",
+        "close_tabs": "Fermer tous les onglets",
+        "enlarge": "Agrandir le panneau",
+        "hide": "Cacher le panneau",
+        "reduce": "Réduire le panneau",
+        "show_tabs": "Montrer les autres onglets"
+    },
+    "locale": {
+        "English": "Anglais",
+        "chinese_china": "Chinois (Chine)",
+        "dutch": "Néerlandais",
+        "german": "Allemand",
+        "hindi": "Hindi",
+        "italian": "Italien",
+        "japanese": "Japonais",
+        "label_chinese": "Chinois (Chine) - {{value}}",
+        "label_dutch": "Néerlandais - {{value}}",
+        "label_english": "Anglais - {{value}}",
+        "label_german": "Allemand - {{value}}",
+        "label_hindi": "Hindi - {{value}}",
+        "label_italian": "Italien - {{value}}",
+        "label_japanese": "Japonais - {{value}}",
+        "label_portuguese": "Portugais - {{value}}",
+        "label_portuguese_brazil": "Portugais - {{value}}",
+        "label_romanian": "Roumain - {{value}}",
+        "label_russian": "Russe - {{value}}",
+        "label_spanish": "Espagnol - {{value}}",
+        "label_thai": "Thaïlandais - {{value}}",
+        "label_turkish": "Turc - {{value}}",
+        "portuguese": "Portugais",
+        "portuguese_brazil": "Portugais (Brésil)",
+        "romanian": "Roumain",
+        "russian": "Russe",
+        "spanish": "Espagnol",
+        "thai": "Thaïlandais",
+        "turkish": "Turc"
+    },
+    "module": {
+        "app": {
+            "version": "Version de l'application"
+        }
+    },
+    "new_tab": "Nouvel onglet",
+    "user_quota": {
+        "limited": "Vous avez utilisé {{quota}}% de votre espace disponible",
+        "space_full": "Il semble que tout l'espace disponible soit plein",
+        "title": "Quota de l'utilisateur",
+        "unlimited": "Vous disposez d'un espace illimité"
     }
 }

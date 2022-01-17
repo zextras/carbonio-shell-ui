@@ -74,7 +74,7 @@ export type SharedLibrariesAppsMap = {
 			ZIMBRA_STANDARD_COLORS: Array<{ zValue: number; hex: string; zLabel: string }>;
 		};
 	};
-	'@zextras/zapp-ui': unknown;
+	'@zextras/carbonio-design-system': unknown;
 	msw?: unknown;
 	faker?: unknown;
 };

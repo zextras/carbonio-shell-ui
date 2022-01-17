@@ -5,7 +5,7 @@
  */
 
 import React, { useCallback } from 'react';
-import { Catcher } from '@zextras/zapp-ui';
+import { Catcher } from '@zextras/carbonio-design-system';
 
 export default function AppErrorCatcher({ children }) {
 	const onError = useCallback((error) => {

@@ -5,7 +5,14 @@
  */
 
 import React, { useState, useCallback, FC, useEffect, useMemo } from 'react';
-import { Container, FormSubSection, Input, Checkbox, Select, Padding } from '@zextras/zapp-ui';
+import {
+	Container,
+	FormSubSection,
+	Input,
+	Checkbox,
+	Select,
+	Padding
+} from '@zextras/carbonio-design-system';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import momentLocalizer from 'react-widgets-moment';

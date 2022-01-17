@@ -12,7 +12,6 @@
 /test/
 /tinymce/
 /translations/
-/zapp-ui/
 /.eslintrc.js
 /.nvmrc
 /babel.config.js

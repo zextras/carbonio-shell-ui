@@ -6,7 +6,7 @@
 
 import React, { useMemo } from 'react';
 import { map } from 'lodash';
-import { Accordion, Collapse, Container, Padding } from '@zextras/zapp-ui';
+import { Accordion, Collapse, Container, Padding } from '@zextras/carbonio-design-system';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAppList } from '../store/app/hooks';

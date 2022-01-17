@@ -22,7 +22,7 @@ import * as ReactRedux from 'react-redux';
 import * as ReduxJSToolkit from '@reduxjs/toolkit';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import * as ZappUI from '@zextras/zapp-ui';
+import * as ZappUI from '@zextras/carbonio-design-system';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
@@ -60,7 +60,7 @@ export function injectSharedLibraries(): void {
 			}
 		},
 		'@zextras/zapp-shell': {},
-		'@zextras/zapp-ui': { ...ZappUI, RichTextEditor }
+		'@zextras/carbonio-design-system': { ...ZappUI, RichTextEditor }
 	};
 	wnd.__ZAPP_HMR_EXPORT__ = {};
 	switch (FLAVOR) {

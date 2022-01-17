@@ -7,7 +7,7 @@
 import React, { FC, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { reduce } from 'lodash';
-import { Accordion } from '@zextras/zapp-ui';
+import { Accordion } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { useAppList } from '../store/app/hooks';
 import { SETTINGS_APP_ID } from '../constants';

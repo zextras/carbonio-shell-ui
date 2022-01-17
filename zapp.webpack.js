@@ -31,7 +31,7 @@ const flavor = process.env.ZX_SHELL_FLAVOR || 'APP';
 let indexFile;
 const pathsToCopy = [
 	{
-		from: 'node_modules/@zextras/zapp-ui/dist/tinymce/skins',
+		from: 'node_modules/@zextras/carbonio-design-system/dist/tinymce/skins',
 		to: 'tinymce/skins/'
 	},
 	{

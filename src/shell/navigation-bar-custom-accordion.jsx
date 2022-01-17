@@ -18,7 +18,7 @@ import {
 	useKeyboard,
 	getKeyboardPreset,
 	pseudoClasses
-} from '@zextras/zapp-ui';
+} from '@zextras/carbonio-design-system';
 
 const AccordionContainerEl = styled(Container)`
 	padding: ${(props) => `

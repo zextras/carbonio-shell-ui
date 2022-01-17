@@ -5,7 +5,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { useScreenMode } from '@zextras/zapp-ui';
+import { useScreenMode } from '@zextras/carbonio-design-system';
 import ShellContext from './shell-context';
 
 export default function ShellContextProvider({ children }) {

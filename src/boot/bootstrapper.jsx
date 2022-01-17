@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect } from 'react';
-import { SnackbarManager, ModalManager } from '@zextras/zapp-ui';
+import { SnackbarManager, ModalManager } from '@zextras/carbonio-design-system';
 import { ThemeProvider } from './theme-provider';
 import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-provider';

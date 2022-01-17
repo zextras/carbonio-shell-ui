@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useCallback, FC, useEffect, useMemo } from 'react';
-import { Container, Checkbox, Text, Icon, Padding } from '@zextras/zapp-ui';
+import { Container, Checkbox, Text, Icon, Padding } from '@zextras/carbonio-design-system';
 
 import moment from 'moment';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';

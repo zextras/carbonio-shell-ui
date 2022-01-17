@@ -18,7 +18,7 @@ import {
 	Icon,
 	Text,
 	Padding
-} from '@zextras/zapp-ui';
+} from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { filter, find, map, reduce } from 'lodash';
 import styled from 'styled-components';

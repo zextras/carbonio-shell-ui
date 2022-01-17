@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Container, IconButton, Row, Tooltip } from '@zextras/zapp-ui';
+import { Container, IconButton, Row, Tooltip } from '@zextras/carbonio-design-system';
 import { map, isEmpty, reduce } from 'lodash';
 import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';

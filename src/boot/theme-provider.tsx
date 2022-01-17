@@ -5,7 +5,7 @@
  */
 
 import React, { createContext, FC, useCallback, useEffect, useState } from 'react';
-import { ThemeProvider as UIThemeProvider } from '@zextras/zapp-ui';
+import { ThemeProvider as UIThemeProvider } from '@zextras/carbonio-design-system';
 import { enable, disable, auto, setFetchMethod } from 'darkreader';
 import { reduce } from 'lodash';
 import Logo from './logo';

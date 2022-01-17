@@ -7,7 +7,7 @@
 import React, { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
-import { ModalManager, SnackbarManager } from '@zextras/zapp-ui';
+import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import { useStoreFactory, useI18nFactory } from '../bootstrapper-context';
 import AppErrorCatcher from './app-error-catcher';
 import { useAppStore } from '../../store/app/store';

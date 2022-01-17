@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect, useMemo, useState, useContext } from 'react';
-import { Row, Responsive, ModalManager, SnackbarManager } from '@zextras/zapp-ui';
+import { Row, Responsive, ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { find, filter } from 'lodash';

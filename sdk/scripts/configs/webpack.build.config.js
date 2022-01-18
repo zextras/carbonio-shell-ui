@@ -177,7 +177,5 @@ exports.setupWebpackBuildConfig = (options, { basePath, commitHash }) => {
 	// eslint-disable-next-line max-len
 	// eslint-disable-next-line global-require,import/no-dynamic-require,@typescript-eslint/no-var-requires
 	const molder = require(confPath);
-	molder(defaultConfig, pkg, options);
-
-	return defaultConfig;
+	return molder(defaultConfig, pkg, options, 'production');
 };

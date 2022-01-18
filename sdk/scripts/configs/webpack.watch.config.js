@@ -27,7 +27,7 @@ exports.setupWebpackWatchConfig = (options, { basePath, shellHash }) => {
 			hot: true,
 			port: 9000,
 			historyApiFallback: {
-				index: basePath,
+				index: basePath
 				// TODO: remove once confirmed that it is not needed
 				// rewrites: { from: '/static/iris/carbonio-shell-ui/current', to: `${basePath}/index.html` }
 			},
@@ -222,7 +222,9 @@ exports.setupWebpackWatchConfig = (options, { basePath, shellHash }) => {
 		}
 	};
 	if (!options.useLocalDS) {
-		defaultConfig.externals['@zextras/carbonio-design-system'] = `__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-design-system']`
+		defaultConfig.externals[
+			'@zextras/carbonio-design-system'
+		] = `__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-design-system']`;
 	}
 	const confPath = path.resolve(process.cwd(), 'zapp.webpack.js');
 	if (!fs.existsSync(confPath)) {
@@ -230,7 +232,5 @@ exports.setupWebpackWatchConfig = (options, { basePath, shellHash }) => {
 	}
 	// eslint-disable-next-line global-require, import/no-dynamic-require
 	const molder = require(confPath);
-	molder(defaultConfig, pkg, options);
-
-	return defaultConfig;
+	return molder(defaultConfig, pkg, options, 'development');
 };

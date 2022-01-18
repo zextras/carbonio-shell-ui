@@ -6,7 +6,7 @@
 
 /* eslint-disable no-console */
 const arg = require('arg');
-const { execSync, spawn } = require('child_process');
+const { execSync } = require('child_process');
 const chalk = require('chalk');
 const { runBuild } = require('./build');
 const { pkg } = require('./utils/pkg');
@@ -44,7 +44,8 @@ const updateJson = (jsonObject, stats) => {
 		version: pkg.version,
 		priority: pkg.zapp.priority,
 		js_entrypoint:
-			buildSetup.basePath + Object.keys(stats.compilation.assets).find((p) => ENTRY_REGEX.test(p))
+			buildSetup.basePath +
+			Object.keys(stats.compilation.assets).find((p) => ENTRY_REGEX.test(p) ?? '')
 	});
 	return { components };
 };
@@ -53,9 +54,9 @@ exports.runDeploy = async () => {
 	const stats = await runBuild();
 	if (options.host) {
 		const target = `${options.user}@${options.host}`;
-		console.log('- Deploying to the carbonio podman container...');
+		console.log('- Deploying to the specified host...');
 		execSync(
-			`ssh ${target} "cd /opt/zextras/web/iris/ && rm -rf ${pkg.zapp.name}/* && mkdir -p ${pkg.zapp.name}/${buildSetup.commitHash}"`
+			`ssh ${target} "cd /opt/zextras/web/iris/ && rm -rf ${pkg.zapp.name}/* && mkdir -p ${pkg.zapp.name}/${buildSetup.commitHash} ${pkg.zapp.name}/current"`
 		);
 		execSync(
 			`scp -r dist/* ${target}:/opt/zextras/web/iris/${pkg.zapp.name}/${buildSetup.commitHash}`
@@ -68,6 +69,10 @@ exports.runDeploy = async () => {
 			)
 		).replace(/"/g, '\\"');
 		execSync(`ssh ${target} "echo '${components}' > /opt/zextras/web/iris/components.json"`);
+		console.log('- Updating current index...');
+		execSync(
+			`ssh ${target} "cp /opt/zextras/web/iris/${pkg.zapp.name}/${buildSetup.commitHash}/index.html /opt/zextras/web/iris/${pkg.zapp.name}/current/index.html || :"`
+		);
 		console.log(chalk.bgBlue.white.bold('Deploy Completed'));
 	} else {
 		console.log(chalk.bgYellow.white('Target host not specified, skippind deploy step'));

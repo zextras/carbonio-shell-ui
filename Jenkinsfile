@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 library(
-	identifier: 'zapp-jenkins-lib@devel-on-pg-and-no-translations-pull',
+	identifier: 'zapp-jenkins-lib@github-pipeline',
 	retriever: modernSCM([
 		$class: 'GitSCMSource',
 		remote: 'git@bitbucket.org:zextras/zapp-jenkins-lib.git',

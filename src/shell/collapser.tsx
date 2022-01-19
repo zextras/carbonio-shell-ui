@@ -6,7 +6,7 @@
 
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
-import { Icon } from '@zextras/zapp-ui';
+import { Icon } from '@zextras/carbonio-design-system';
 
 const VerticalDivider = styled.div`
 	position: relative;

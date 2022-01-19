@@ -204,27 +204,28 @@ exports.setupWebpackWatchConfig = (options, { basePath, shellHash }) => {
 					{ from: 'CHANGELOG.md', to: '.', noErrorOnMissing: true }
 				]
 			})
-		]
+		],
+		externals: {
+			/* Exports for Apps */
+			react: `__ZAPP_SHARED_LIBRARIES__['react']`,
+			'react-dom': `__ZAPP_SHARED_LIBRARIES__['react-dom']`,
+			'react-i18next': `__ZAPP_SHARED_LIBRARIES__['react-i18next']`,
+			'react-redux': `__ZAPP_SHARED_LIBRARIES__['react-redux']`,
+			lodash: `__ZAPP_SHARED_LIBRARIES__['lodash']`,
+			'react-router-dom': `__ZAPP_SHARED_LIBRARIES__['react-router-dom']`,
+			moment: `__ZAPP_SHARED_LIBRARIES__['moment']`,
+			'styled-components': `__ZAPP_SHARED_LIBRARIES__['styled-components']`,
+			'@reduxjs/toolkit': `__ZAPP_SHARED_LIBRARIES__['@reduxjs/toolkit']`,
+			'@zextras/carbonio-shell-ui': `__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-shell-ui']['${pkg.zapp.name}']`,
+			/* Exports for App's Handlers */
+			msw: `__ZAPP_SHARED_LIBRARIES__['msw']`
+		}
 	};
-
-	defaultConfig.externals = {
-		/* Exports for Apps */
-		react: `__ZAPP_SHARED_LIBRARIES__['react']`,
-		'react-dom': `__ZAPP_SHARED_LIBRARIES__['react-dom']`,
-		'react-i18next': `__ZAPP_SHARED_LIBRARIES__['react-i18next']`,
-		'react-redux': `__ZAPP_SHARED_LIBRARIES__['react-redux']`,
-		lodash: `__ZAPP_SHARED_LIBRARIES__['lodash']`,
-		'react-router-dom': `__ZAPP_SHARED_LIBRARIES__['react-router-dom']`,
-		moment: `__ZAPP_SHARED_LIBRARIES__['moment']`,
-		'styled-components': `__ZAPP_SHARED_LIBRARIES__['styled-components']`,
-		'@reduxjs/toolkit': `__ZAPP_SHARED_LIBRARIES__['@reduxjs/toolkit']`,
-		'@zextras/zapp-shell': `__ZAPP_SHARED_LIBRARIES__['@zextras/zapp-shell']['${pkg.zapp.name}']`,
-		'@zextras/zapp-ui': `__ZAPP_SHARED_LIBRARIES__['@zextras/zapp-ui']`,
-		/* Exports for App's Handlers */
-		faker: `__ZAPP_SHARED_LIBRARIES__['faker']`,
-		msw: `__ZAPP_SHARED_LIBRARIES__['msw']`
-	};
-
+	if (!options.useLocalDS) {
+		defaultConfig.externals[
+			'@zextras/carbonio-design-system'
+		] = `__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-design-system']`;
+	}
 	const confPath = path.resolve(process.cwd(), 'zapp.webpack.js');
 	if (!fs.existsSync(confPath)) {
 		return defaultConfig;

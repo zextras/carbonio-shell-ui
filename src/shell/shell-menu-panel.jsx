@@ -6,7 +6,7 @@
 
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
-import { Container, Responsive } from '@zextras/zapp-ui';
+import { Container, Responsive } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 
 const Spacer = styled.div`

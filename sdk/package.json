@@ -5,14 +5,12 @@
   "main": "scripts/index.js",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/zextras/zapp-sdk.git"
+    "url": "git+ssh://git@github.com:Zextras/carbonio-ui-sdk.git"
   },
   "keywords": [
     "Zextras",
     "Carbonio",
-    "SDK",
-    "Iris",
-    "Zapp"
+    "SDK"
   ],
 	"author": "Zextras DL Team <https://www.zextras.com/carbonio/>",
 	"maintainers": [
@@ -23,7 +21,7 @@
 		"Dhaval Dodiya <dhaval.dodiya@zextras.com>"
 	],
 	"license": "AGPL-3.0-only",
-  "homepage": "https://bitbucket.org/zextras/zapp-sdk#readme",
+  "homepage": "https://github.com/Zextras/carbonio-ui-sdk#readme",
   "dependencies": {
     "arg": "^5.0.1",
     "babel-loader": "^8.2.3",

@@ -6,7 +6,7 @@
 
 import React, { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Container, Responsive } from '@zextras/zapp-ui';
+import { Container, Responsive } from '@zextras/carbonio-design-system';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
 import ShellMobileNav from './shell-mobile-nav';

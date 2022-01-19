@@ -16,7 +16,7 @@ import {
 	Divider,
 	Tooltip,
 	ThemeContext
-} from '@zextras/zapp-ui';
+} from '@zextras/carbonio-design-system';
 import { map } from 'lodash';
 import { useAppList } from '../store/app/hooks';
 

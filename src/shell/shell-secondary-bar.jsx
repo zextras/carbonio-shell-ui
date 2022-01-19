@@ -8,7 +8,7 @@ import React, { useMemo } from 'react';
 import { find, map } from 'lodash';
 import styled from 'styled-components';
 import { Route, Switch } from 'react-router-dom';
-import { Container, Accordion, Padding, Tooltip, Icon } from '@zextras/zapp-ui';
+import { Container, Accordion, Padding, Tooltip, Icon } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { useUserAccount } from '../store/account/hooks';
 import { useApps } from '../store/app/hooks';

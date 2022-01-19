@@ -10,7 +10,7 @@ import React from 'react';
 // import { render as rtlRender } from '@testing-library/react';
 import fetch from 'node-fetch';
 import { MemoryRouter } from 'react-router-dom';
-import { ThemeProvider } from '@zextras/zapp-ui';
+import { ThemeProvider } from '@zextras/carbonio-design-system';
 // import AppContextWrapper from './mocks/app-context-wrapper';
 import {
 	getUsePushHistoryCallback,

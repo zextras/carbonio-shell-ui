@@ -17,7 +17,7 @@ import {
 	Responsive,
 	useScreenMode,
 	MultiButton
-} from '@zextras/zapp-ui';
+} from '@zextras/carbonio-design-system';
 import { useAppStore } from '../store/app/store';
 import { SearchBar } from '../search/search-bar';
 

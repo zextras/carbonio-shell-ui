@@ -13,7 +13,7 @@ import {
 	Padding,
 	useSnackbar,
 	Shimmer
-} from '@zextras/zapp-ui';
+} from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

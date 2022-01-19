@@ -13,7 +13,7 @@ const prefix = '/static/iris/';
 const commitHash = execSync('git rev-parse HEAD').toString().trim();
 const basePath = `${prefix}${pkg.zapp.name}/${commitHash}/`;
 const shellHash = fs.existsSync('node_modules/@zextras/zapp-shell/dist/commit')
-	? execSync('cat node_modules/@zextras/zapp-shell/dist/commit').toString().trim()
+	? execSync('cat node_modules/@zextras/carbonio-shell-ui/dist/commit').toString().trim()
 	: commitHash;
 
 exports.buildSetup = {

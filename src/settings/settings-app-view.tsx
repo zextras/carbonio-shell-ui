@@ -7,7 +7,7 @@
 import React, { FC, Suspense, useMemo, lazy } from 'react';
 import { Prompt, Route, Switch } from 'react-router-dom';
 import { map } from 'lodash';
-import { createModal, Text } from '@zextras/zapp-ui';
+import { createModal, Text } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { useApps } from '../store/app/hooks';
 import { SETTINGS_APP_ID } from '../constants';

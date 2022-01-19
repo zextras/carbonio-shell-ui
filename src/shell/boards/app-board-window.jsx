@@ -17,7 +17,7 @@ import {
 	Button,
 	useHiddenCount,
 	Tooltip
-} from '@zextras/zapp-ui';
+} from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import AppBoardTab from './app-board-tab';
 import AppBoard from './app-board';

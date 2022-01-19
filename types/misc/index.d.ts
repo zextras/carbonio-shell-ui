@@ -56,7 +56,7 @@ export type SharedLibrariesAppsMap = {
 	'react-router-dom': unknown;
 	'styled-components': unknown;
 	moment: unknown;
-	'@zextras/zapp-shell': {
+	'@zextras/carbonio-shell-ui': {
 		[pkgName: string]: unknown & {
 			store: {
 				store: Store<unknown>;
@@ -74,7 +74,7 @@ export type SharedLibrariesAppsMap = {
 			ZIMBRA_STANDARD_COLORS: Array<{ zValue: number; hex: string; zLabel: string }>;
 		};
 	};
-	'@zextras/zapp-ui': unknown;
+	'@zextras/carbonio-design-system': unknown;
 	msw?: unknown;
 	faker?: unknown;
 };

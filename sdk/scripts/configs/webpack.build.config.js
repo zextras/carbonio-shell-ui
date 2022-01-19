@@ -161,13 +161,15 @@ exports.setupWebpackBuildConfig = (options, { basePath, commitHash }) => {
 		moment: `__ZAPP_SHARED_LIBRARIES__['moment']`,
 		'styled-components': `__ZAPP_SHARED_LIBRARIES__['styled-components']`,
 		'@reduxjs/toolkit': `__ZAPP_SHARED_LIBRARIES__['@reduxjs/toolkit']`,
-		'@zextras/zapp-shell': `__ZAPP_SHARED_LIBRARIES__['@zextras/zapp-shell']['${pkg.zapp.name}']`,
-		'@zextras/zapp-ui': `__ZAPP_SHARED_LIBRARIES__['@zextras/zapp-ui']`,
+		'@zextras/carbonio-shell-ui': `__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-shell-ui']['${pkg.zapp.name}']`,
+		'@zextras/carbonio-design-system': `__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-design-system']`,
 		/* Exports for App's Handlers */
 		faker: `__ZAPP_SHARED_LIBRARIES__['faker']`,
 		msw: `__ZAPP_SHARED_LIBRARIES__['msw']`
 	};
+
 	const confPath = path.resolve(process.cwd(), 'zapp.webpack.js');
+
 	if (!fs.existsSync(confPath)) {
 		return defaultConfig;
 	}
@@ -175,6 +177,5 @@ exports.setupWebpackBuildConfig = (options, { basePath, commitHash }) => {
 	// eslint-disable-next-line max-len
 	// eslint-disable-next-line global-require,import/no-dynamic-require,@typescript-eslint/no-var-requires
 	const molder = require(confPath);
-
 	return molder(defaultConfig, pkg, options, 'production');
 };

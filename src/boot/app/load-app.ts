@@ -73,7 +73,7 @@ function loadAppModule(
 			// eslint-disable-next-line max-len
 			(
 				window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>
-			).__ZAPP_SHARED_LIBRARIES__['@zextras/zapp-shell'][appPkg.name] = {
+			).__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-shell-ui'][appPkg.name] = {
 				store: {
 					store,
 					setReducer: (reducer): void => store.replaceReducer(reducer)

@@ -5,7 +5,7 @@
  */
 
 import React, { FC } from 'react';
-import { Button, Container } from '@zextras/zapp-ui';
+import { Button, Container } from '@zextras/carbonio-design-system';
 
 export const Spinner: FC = () => (
 	<Container width="fill" height="fill" mainAlignment="center" crossAlignment="center">

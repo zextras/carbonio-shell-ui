@@ -45,7 +45,7 @@ const updateJson = (jsonObject, stats) => {
 		priority: pkg.zapp.priority,
 		js_entrypoint:
 			buildSetup.basePath +
-			(Object.keys(stats.compilation.assets).find((p) => ENTRY_REGEX.test(p)) ?? '')
+			Object.keys(stats.compilation.assets).find((p) => ENTRY_REGEX.test(p) ?? '')
 	});
 	return { components };
 };
@@ -54,7 +54,7 @@ exports.runDeploy = async () => {
 	const stats = await runBuild();
 	if (options.host) {
 		const target = `${options.user}@${options.host}`;
-		console.log('- Deploying to the specified host');
+		console.log('- Deploying to the specified host...');
 		execSync(
 			`ssh ${target} "cd /opt/zextras/web/iris/ && rm -rf ${pkg.zapp.name}/* && mkdir -p ${pkg.zapp.name}/${buildSetup.commitHash} ${pkg.zapp.name}/current"`
 		);
@@ -71,7 +71,7 @@ exports.runDeploy = async () => {
 		execSync(`ssh ${target} "echo '${components}' > /opt/zextras/web/iris/components.json"`);
 		console.log('- Updating current index...');
 		execSync(
-			`ssh ${target} "cp /opt/zextras/web/iris/${pkg.zapp.name}/${buildSetup.commitHash}/index.html /opt/zextras/web/iris/${pkg.zapp.name}/current/index.html"`
+			`ssh ${target} "cp /opt/zextras/web/iris/${pkg.zapp.name}/${buildSetup.commitHash}/index.html /opt/zextras/web/iris/${pkg.zapp.name}/current/index.html || :"`
 		);
 		console.log(chalk.bgBlue.white.bold('Deploy Completed'));
 	} else {

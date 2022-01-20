@@ -5,7 +5,7 @@
  */
 
 import React, { useState, FC, useEffect, useCallback } from 'react';
-import { Container, FormSubSection, Checkbox } from '@zextras/zapp-ui';
+import { Container, FormSubSection, Checkbox } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { AccountSettings } from '../../types';
 

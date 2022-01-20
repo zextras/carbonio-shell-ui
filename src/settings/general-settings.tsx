@@ -29,6 +29,7 @@ import { SETTINGS_APP_ID } from '../constants';
 import { editSettings } from '../network/edit-settings';
 import { Mods } from '../../types';
 import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
+import SearchSettingsView from './search-settings-view';
 
 export const DisplayerHeader: FC<{
 	label: string;
@@ -205,6 +206,7 @@ const GeneralSettings: FC = () => {
 					/>
 
 					<OutOfOfficeSettings settings={settings} addMod={addMod} />
+					<SearchSettingsView settings={settings} addMod={addMod} />
 					<ModuleVersionSettings />
 					<UserQuota mobileView={false} />
 					<Logout />

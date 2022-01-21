@@ -78,7 +78,9 @@
         "idle_input_label": "{{module}}で検索する",
         "results_for": "検索結果:",
         "start": "検索を開始する",
-        "edit_to_start": "検索を編集して新しい検索を開始します"
+        "edit_to_start": "検索を編集して新しい検索を開始します",
+        "already_clear": "検索入力はすでにクリアされています",
+        "type_to_start_search": "検索を開始するには、キーワードをいくつか入力してください"
     },
     "copyright": "著作権",
     "logout_modal": {
@@ -102,5 +104,12 @@
     "user_quota": {
         "limited": "{{quota}}％の空き容量が使用されました",
         "unlimited": "利用可能な無制限の空き容量"
+    },
+    "label": {
+        "language": "言語",
+        "no": "いいえ",
+        "cancel": "キャンセル",
+        "edit_to_start_search": "検索を編集して新しい検索を開始します",
+        "out_of_office": "外出中"
     }
 }

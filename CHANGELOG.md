@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0-rc.5](https://github.com/zextras/carbonio-shell-ui/compare/v0.3.0-rc.4...v0.3.0-rc.5) (2022-01-21)
+
+
+### Features
+
+* added beta mark to header logo ([dff28a6](https://github.com/zextras/carbonio-shell-ui/commit/dff28a62942f49134c601e44a8b14071f936b2f7))
+
 ## 0.3.0-rc.4 (2022-01-20)
 
 

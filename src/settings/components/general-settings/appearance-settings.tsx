@@ -8,9 +8,9 @@ import React, { FC, useState, useMemo, useContext, useCallback, useEffect } from
 import { useTranslation } from 'react-i18next';
 import { FormSubSection, Select } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
-import { ThemeCallbacksContext } from '../boot/theme-provider';
-import { AccountSettings, DRPropValues } from '../../types';
-import { SHELL_APP_ID } from '../constants';
+import { ThemeCallbacksContext } from '../../../boot/theme-provider';
+import { AccountSettings, DRPropValues } from '../../../../types';
+import { SHELL_APP_ID } from '../../../constants';
 
 const AppearanceSettings: FC<{
 	settings: AccountSettings;

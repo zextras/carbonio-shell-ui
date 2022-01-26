@@ -18,9 +18,9 @@ import {
 	ThemeContext
 } from '@zextras/carbonio-design-system';
 import { map } from 'lodash';
-import { useAppList } from '../store/app/hooks';
+import { useAppList } from '../../../store/app/hooks';
 
-import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../constants/index';
+import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../../../constants/index';
 
 const ModuleVersionSettings: FC = () => {
 	const apps = useAppList();

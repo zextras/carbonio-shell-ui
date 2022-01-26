@@ -87,12 +87,29 @@ export type PermissionsMods = {
 	freeBusy: any;
 	inviteRight: any;
 };
+
+export type CreateIdentityProps = {
+	requestId: number;
+	zimbraPrefIdentityName: string | undfined;
+	zimbraPrefFromDisplay: string | undfined;
+	zimbraPrefFromAddress: string | undfined;
+};
+
+export type IdentityMods = {
+	id: string;
+	prefs?: Record<string, string>;
+	action: string;
+	deleteList?: string[];
+	createList?: { prefs: CreateIdentityProps }[];
+};
+
 export type PrefsMods = Record<string, unknown>;
 
 export type Mods = {
 	props?: PropsMods;
 	prefs?: PrefsMods;
 	permissions?: PermissionsMods;
+	identity?: IdentityMods;
 };
 
 export type SoapFetch = <Request, Response>(

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { find, findIndex, map, merge, reduce } from 'lodash';
+import { findIndex, map, reduce } from 'lodash';
 import { SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account/store';
 import { AccountState, Mods } from '../../types';
@@ -29,6 +29,33 @@ export const editSettings = (mods: Mods, appId: string = SHELL_APP_ID): Promise<
 					mods.prefs,
 					(pref, key) => `<pref name="${key}">${pref}</pref>`
 			  ).join('')}</ModifyPrefsRequest>`
+			: ''
+	}
+	${
+		mods.identity?.action === 'modify'
+			? `<ModifyIdentityRequest xmlns="urn:zimbraAccount" requestId="0"><identity id="${
+					mods.identity.id
+			  }">${map(mods.identity, (pref, key) => `<a name="${key}">${pref}</a>`).join(
+					''
+			  )}<a name="zimbraPrefFromAddressType">sendAs</a></identity></ModifyIdentityRequest>`
+			: ''
+	}
+	${
+		mods.identity?.action === 'delete'
+			? map(
+					mods.identity.deleteList,
+					(item) =>
+						`<DeleteIdentityRequest xmlns="urn:zimbraAccount" requestId="0"><identity id="${item}"/></DeleteIdentityRequest>`
+			  ).join('')
+			: ''
+	}
+	${
+		mods.identity?.action === 'create'
+			? map(
+					mods.identity.createList,
+					(item) =>
+						`<CreateIdentityRequest xmlns="urn:zimbraAccount" requestId="${item.prefs.requestId}"><identity name="${item.prefs.zimbraPrefIdentityName}"><a name="zimbraPrefIdentityName">${item.prefs.zimbraPrefIdentityName}</a><a name="zimbraPrefFromDisplay">${item.prefs.zimbraPrefFromDisplay}</a><a name="zimbraPrefFromAddress">${item.prefs.zimbraPrefFromAddress}</a><a name="zimbraPrefFromAddressType">sendAs</a><a name="zimbraPrefReplyToEnabled">FALSE</a><a name="zimbraPrefReplyToDisplay"></a><a name="zimbraPrefReplyToAddress"></a><a name="zimbraPrefDefaultSignatureId"></a><a name="zimbraPrefForwardReplySignatureId"></a><a name="zimbraPrefWhenSentToEnabled">FALSE</a><a name="zimbraPrefWhenInFoldersEnabled">FALSE</a></identity></CreateIdentityRequest>`
+			  ).join('')
 			: ''
 	}
 	${

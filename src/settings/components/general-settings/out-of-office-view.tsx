@@ -17,11 +17,11 @@ import {
 // eslint-disable-next-line import/no-extraneous-dependencies
 import momentLocalizer from 'react-widgets-moment';
 import { useTranslation } from 'react-i18next';
-import { AccountSettings } from '../../types';
-import Heading from './components/settings-heading';
+import { AccountSettings } from '../../../../types';
+import Heading from '../settings-heading';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import DateTimeSelect from './components/date-time-select-view';
+import DateTimeSelect from '../date-time-select-view';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import {
@@ -30,7 +30,7 @@ import {
 	ItemsOutOfOfficeStatus,
 	getOutOfOfficeStatusPrefsData,
 	ItemsSendAutoReplies
-} from './components/utils';
+} from '../utils';
 
 momentLocalizer();
 

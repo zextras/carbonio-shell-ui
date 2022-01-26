@@ -17,9 +17,9 @@
 		"type-check": "tsc --noEmit",
 		"type-check:watch": "npm run type-check -- --watch",
 		"lint": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to node_modules/@zextras/zapp-config src",
-		"build": "node sdk build && rollup -c rollup.config.js",
-		"deploy": "node sdk deploy",
-		"start": "node sdk watch"
+		"build": "sdk build && rollup -c rollup.config.js",
+		"deploy": "sdk deploy",
+		"start": "sdk watch"
 	},
 	"files": [
 		"dist/",

@@ -6,7 +6,7 @@
 	"types": "./types/index.d.ts",
 	"engines": {
 		"node": "v16",
-		"npm": "v8.1.0"
+		"npm": "v8"
 	},
 	"scripts": {
 		"build:clean": "rm -rf lib && rm -rf dist && rm -rf pkg",
@@ -63,6 +63,7 @@
 		"@types/ua-parser-js": "^0.7.36",
 		"@types/webpack-env": "1.16.3",
 		"@zextras/carbonio-ui-configs": "^0.1.11",
+		"@zextras/carbonio-ui-sdk": "github:Zextras/carbonio-ui-sdk#npm-package",
 		"autoprefixer": "10.4.0",
 		"babel-jest": "27.3.1",
 		"babel-loader": "8.2.3",
@@ -129,11 +130,10 @@
 		"react-redux": "^7.2.6",
 		"styled-components": "^5.3.3"
 	},
-	"zapp": {
+	"carbonio": {
 		"name": "carbonio-shell-ui",
 		"translations_repository": "git@bitbucket.org:zextras/com_zextras_zapp_shell.git",
-		"display": "Carbonio Shell",
-		"route": "shell",
+		"type": "shell",
 		"priority": -1
 	}
 }

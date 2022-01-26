@@ -1,11 +1,8 @@
 /*
- * SPDX-FileCopyrightText: 2021 Zextras <https://www.zextras.com>
+ * SPDX-FileCopyrightText: 2022 Zextras <https://www.zextras.com>
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-// SPDX-FileCopyrightText: 2021 Zextras <https://www.zextras.com>
-//
-// SPDX-License-Identifier: AGPL-3.0-only
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 
@@ -159,7 +156,7 @@ module.exports = (_, pkg, options, mode) => {
 				WATCH_SERVER: JSON.stringify(server),
 				COMMIT_ID: JSON.stringify(commitHash.toString().trim()),
 				PACKAGE_VERSION: JSON.stringify(pkg.version),
-				PACKAGE_NAME: JSON.stringify(pkg.zapp.name),
+				PACKAGE_NAME: JSON.stringify(pkg.carbonio.name),
 				FLAVOR: JSON.stringify(flavor.toUpperCase()),
 				BASE_PATH: JSON.stringify(baseStaticPath)
 			}),
@@ -179,6 +176,20 @@ module.exports = (_, pkg, options, mode) => {
 				template: path.resolve(process.cwd(), 'commit.template'),
 				filename: 'commit',
 				COMMIT_ID: commitHash
+			}),
+			new HtmlWebpackPlugin({
+				inject: false,
+				template: path.resolve(
+					process.cwd(),
+					'node_modules/@zextras/carbonio-ui-sdk/scripts/configs/component.template'
+				),
+				filename: 'component.json',
+				name: pkg.carbonio.name,
+				description: pkg.description,
+				version: pkg.version,
+				commit: commitHash,
+				priority: pkg.carbonio.priority,
+				type: pkg.carbonio.type
 			})
 		]
 	};

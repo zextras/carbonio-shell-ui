@@ -21,7 +21,6 @@ import { useAppList } from '../store/app/hooks';
 import { useAppStore } from '../store/app/store';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { useUserAccount, useUserSettings } from '../store/account/hooks';
-import { useAccountStore } from '../store/account/store';
 import { CHATS_APP_ID } from '../constants';
 
 const Background = styled.div`

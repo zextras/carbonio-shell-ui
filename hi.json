@@ -26,7 +26,9 @@
         "results_for": "इसके नतीजे:",
         "start": "सर्च शुरू करें",
         "active_input_label": "कीवर्ड कॉमा या टैब से अलग-अलग करें",
-        "idle_input_label": "{{module}} में सर्च करें"
+        "idle_input_label": "{{module}} में सर्च करें",
+        "already_clear": "सर्च इनपुट पहले ही साफ है",
+        "type_to_start_search": "कोई सर्च शुरू करने के लिए कुछ कीवर्ड टाइप करें"
     },
     "settings": {
         "app": "सेटिंग्स",
@@ -102,5 +104,12 @@
     },
     "snackbar": {
         "error": "कुछ गड़बड़ हुई, दोबारा कोशिश करें"
+    },
+    "label": {
+        "cancel": "कैंसल करें",
+        "out_of_office": "आउट ऑफ ऑफिस",
+        "edit_to_start_search": "नई सर्च शुरू करने के लिए अपनी सर्च को बदलें",
+        "language": "भाषा",
+        "no": "नहीं"
     }
 }

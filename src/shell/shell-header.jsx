@@ -4,9 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useEffect, useMemo, useState } from 'react';
-import { reduce, map, find } from 'lodash';
-import { useLocation } from 'react-router-dom';
+import React, { useMemo } from 'react';
+import { reduce, map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import {
 	Container,
@@ -19,42 +18,38 @@ import {
 	MultiButton
 } from '@zextras/carbonio-design-system';
 import { useAppStore } from '../store/app/store';
-import { SearchBar } from '../search/search-bar';
+import { useApps } from '../store/app/hooks';
 
-export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, children }) {
-	const location = useLocation();
+export default function ShellHeader({ activeRoute, mobileNavIsOpen, onMobileMenuClick, children }) {
 	const [t] = useTranslation();
 	const screenMode = useScreenMode();
-	const currentAppRoute = useMemo(() => location.pathname.split('/')[1], [location.pathname]);
+	const apps = useApps();
 
-	const [primaryAction, secondaryActions] = useAppStore((s) => {
-		const currentApp = find(s.apps, (a) => a.core.route === currentAppRoute);
-		return [
-			currentApp?.newButton?.primary,
-			reduce(
-				s.apps,
-				(acc, app, key) => {
-					if (app.newButton?.secondaryItems) {
-						if (acc.length > 0) {
-							acc.push({ type: 'divider', id: key, key, label: 'really?' });
-						}
-						if (app.newButton?.primary) {
-							acc.push(app.newButton?.primary);
-						}
-						acc.push(
-							...map(app.newButton?.secondaryItems, (item) => ({
-								...item,
-								key: item.id,
-								disabled: item.disabled || item.getDisabledStatus?.()
-							}))
-						);
+	const [primaryAction, secondaryActions] = useAppStore((s) => [
+		apps[activeRoute.app]?.newButton?.primary,
+		reduce(
+			s.apps,
+			(acc, app, key) => {
+				if (app.newButton?.secondaryItems) {
+					if (acc.length > 0) {
+						acc.push({ type: 'divider', id: key, key, label: 'really?' });
 					}
-					return acc;
-				},
-				[]
-			)
-		];
-	});
+					if (app.newButton?.primary) {
+						acc.push(app.newButton?.primary);
+					}
+					acc.push(
+						...map(app.newButton?.secondaryItems, (item) => ({
+							...item,
+							key: item.id,
+							disabled: item.disabled || item.getDisabledStatus?.()
+						}))
+					);
+				}
+				return acc;
+			},
+			[]
+		)
+	]);
 
 	const isMultiButtonDisabled = useMemo(
 		() => !!primaryAction || primaryAction?.disabled || primaryAction?.getDisabledState?.(),
@@ -93,11 +88,11 @@ export default function ShellHeader({ mobileNavIsOpen, onMobileMenuClick, childr
 					/>
 				</Padding>
 				<Responsive mode="desktop">
-					<SearchBar
-						currentApp={currentAppRoute}
+					{/* <SearchBar
+						currentAppView={currentAppView}
 						primaryAction={primaryAction}
 						secondaryActions={secondaryActions}
-					/>
+					/> */}
 				</Responsive>
 			</Container>
 			<Container orientation="horizontal" width="25%" mainAlignment="flex-end">

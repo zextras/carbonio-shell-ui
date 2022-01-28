@@ -5,39 +5,32 @@
  */
 
 import React, { FC, Suspense, useMemo, lazy } from 'react';
-import { Prompt, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { map } from 'lodash';
-import { createModal, Text } from '@zextras/carbonio-design-system';
-import { useTranslation } from 'react-i18next';
-import { useApps } from '../store/app/hooks';
 import { SETTINGS_APP_ID } from '../constants';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppContextProvider from '../boot/app/app-context-provider';
 import { Spinner } from '../ui-extras/spinner';
 import { RouteLeavingGuard } from '../ui-extras/nav-guard';
+import { useAppStore } from '../store/app/store';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const GeneralSettings = lazy(() => import('./general-settings'));
 
 export const SettingsAppView: FC = () => {
-	const apps = useApps();
-	const [t] = useTranslation();
+	const settingsViews = useAppStore((s) => s.views.settings);
 	const routes = useMemo(
 		() =>
-			map(apps, (app, appId) =>
-				app.views?.settings ? (
-					<Route key={appId} exact path={`/${SETTINGS_APP_ID}/${app.core.route}`}>
-						<AppContextProvider pkg={appId}>
-							{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-							{/* @ts-ignore */}
-							<app.views.settings />
-						</AppContextProvider>
-					</Route>
-				) : null
-			),
-		[apps]
+			map(settingsViews, (view) => (
+				<Route key={view.route} exact path={`/${SETTINGS_APP_ID}/${view.route}`}>
+					<AppContextProvider pkg={view.app}>
+						<view.component />
+					</AppContextProvider>
+				</Route>
+			)),
+		[settingsViews]
 	);
 	return (
 		<>

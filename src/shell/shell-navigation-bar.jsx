@@ -14,10 +14,9 @@ import ShellMobileNav from './shell-mobile-nav';
 export default function ShellNavigationBar({
 	navigationBarIsOpen,
 	mobileNavIsOpen,
-	onCollapserClick
+	onCollapserClick,
+	activeRoute
 }) {
-	const location = useLocation();
-	const activeApp = useMemo(() => location.pathname.split('/')[1], [location.pathname]);
 	return (
 		<Container
 			orientation="horizontal"
@@ -28,15 +27,15 @@ export default function ShellNavigationBar({
 			crossAlignment="flex-start"
 		>
 			<Responsive mode="desktop">
-				<ShellPrimaryBar activeApp={activeApp} />
+				<ShellPrimaryBar activeRoute={activeRoute} />
 				<ShellSecondaryBar
 					sidebarIsOpen={navigationBarIsOpen}
 					onCollapserClick={onCollapserClick}
-					activeApp={activeApp}
+					activeRoute={activeRoute}
 				/>
 			</Responsive>
 			<Responsive mode="mobile">
-				<ShellMobileNav mobileNavIsOpen={mobileNavIsOpen} activeApp={activeApp} />
+				<ShellMobileNav mobileNavIsOpen={mobileNavIsOpen} activeRoute={activeRoute} />
 			</Responsive>
 		</Container>
 	);

@@ -11,7 +11,6 @@ import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAppList } from '../store/app/hooks';
 import { useUserAccount } from '../store/account/hooks';
-import { UserQuota } from '../settings/user-quota';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../constants';
 import { SettingsSidebar } from '../settings/settings-sidebar';

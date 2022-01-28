@@ -51,10 +51,10 @@ import {
 	useIntegratedFunction,
 	useIntegratedHook
 } from '../../store/integrations/hooks';
-import { ZextrasModule } from '../../../types';
+import { CarbonioModule } from '../../../types';
 import { getEditSettingsForApp } from '../../network/edit-settings';
 
-export const getAppFunctions = (pkg: ZextrasModule): unknown => ({
+export const getAppFunctions = (pkg: CarbonioModule): unknown => ({
 	// The returned function is a hook
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	useAppContext: useAppContext(pkg.name),

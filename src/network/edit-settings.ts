@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { find, findIndex, map, merge, reduce } from 'lodash';
+import { findIndex, map, reduce } from 'lodash';
 import { SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account/store';
 import { AccountState, Mods } from '../../types';

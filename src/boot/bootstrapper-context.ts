@@ -6,14 +6,14 @@
 
 import { createContext, useContext } from 'react';
 
-export const BootstrapperContext = createContext({});
+export const BootstrapperContext = createContext<any>({});
 
-export function useI18nFactory() {
+export function useI18nFactory(): any {
 	const { i18nFactory } = useContext(BootstrapperContext);
 	return i18nFactory;
 }
 
-export function useStoreFactory() {
+export function useStoreFactory(): any {
 	const { storeFactory } = useContext(BootstrapperContext);
 	return storeFactory;
 }

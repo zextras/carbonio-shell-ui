@@ -94,7 +94,11 @@ const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus
 	);
 };
 
-export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secondaryActions }) => {
+export const SearchBar: FC<SearchBarProps> = ({
+	currentAppView,
+	primaryAction,
+	secondaryActions
+}) => {
 	const [searchIsEnabled, setSearchIsEnabled] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
 	const [t] = useTranslation();

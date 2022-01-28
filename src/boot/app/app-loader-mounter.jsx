@@ -5,7 +5,7 @@
  */
 
 import React, { useState, memo, useEffect } from 'react';
-import { find, findIndex, reduce } from 'lodash';
+import { find, reduce } from 'lodash';
 import { useHistory } from 'react-router';
 import { useAppList } from '../../store/app/hooks';
 import AppContextProvider from './app-context-provider';
@@ -21,23 +21,23 @@ export default function AppLoaderMounter() {
 				(acc, app, idx) => {
 					if (app.class) {
 						const App = memo(app.class);
-						if (!find(acc.mounted, (i) => i === app.core.name)) {
+						if (!find(acc.mounted, (i) => i === app.name)) {
 							// eslint-disable-next-line no-param-reassign
 							acc.list.push(
-								<AppContextProvider key={app.core.name} pkg={app.core.name}>
-									<App key={app.core.name} />
+								<AppContextProvider key={app.name} pkg={app.name}>
+									<App key={app.name} />
 								</AppContextProvider>
 							);
-							acc.mounted.push(app.core.name);
-							if (idx === 0 && history.location.pathname === '/') {
-								history.replace(`/${app.core.route}/`);
-							}
-							// } else if (FLAVOR === 'NPM' && cliSettings?.app_package?.name === app.core.name) {
-							// 	const i = findIndex(acc.list, (a) => a.key === app.core.name);
+							acc.mounted.push(app.name);
+							// if (idx === 0 && history.location.pathname === '/') {
+							// 	history.replace(`/${app.route}/`);
+							// }
+							// } else if (FLAVOR === 'NPM' && cliSettings?.app_package?.name === app.name) {
+							// 	const i = findIndex(acc.list, (a) => a.key === app.name);
 							// 	// eslint-disable-next-line no-param-reassign
 							// 	acc.list[i] = (
-							// 		<AppContextProvider key={app.core.name} pkg={app.core.name}>
-							// 			<App key={app.core.name} />
+							// 		<AppContextProvider key={app.name} pkg={app.name}>
+							// 			<App key={app.name} />
 							// 		</AppContextProvider>
 							// 	);
 						}

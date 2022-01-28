@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ZextrasModule } from '../../types';
+import { CarbonioModule } from '../../types';
 import { getIntegratedFunction } from '../store/integrations/getters';
 
 export const report =
-	(app: ZextrasModule) =>
+	(app: CarbonioModule) =>
 	(error: Error, hint?: unknown): void => {
 		const [reportError, available] = getIntegratedFunction('report-error');
 		if (available) {

@@ -8,7 +8,7 @@ import { GetState, SetState } from 'zustand';
 import { SHELL_APP_ID } from '../constants';
 import { useAppStore } from '../store/app/store';
 import { normalizeAccount } from '../store/account/normalization';
-import { AccountSettings, AccountState, GetInfoResponse, Tag, ZextrasModule } from '../../types';
+import { AccountSettings, AccountState, GetInfoResponse, Tag, CarbonioModule } from '../../types';
 import { goToLogin } from './go-to-login';
 
 const parsePollingInterval = (settings: AccountSettings): number => {
@@ -41,7 +41,7 @@ export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>
 		})
 		.then(() => fetch('/static/iris/components.json'))
 		.then((r: any) => r.json())
-		.then(({ components }: { components: Array<ZextrasModule> }) => {
+		.then(({ components }: { components: Array<CarbonioModule> }) => {
 			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 			useAppStore.getState().setters.addApps(components);
 		})

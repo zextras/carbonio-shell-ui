@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
 import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
@@ -12,10 +12,10 @@ import { useStoreFactory, useI18nFactory } from '../bootstrapper-context';
 import AppErrorCatcher from './app-error-catcher';
 import { useAppStore } from '../../store/app/store';
 
-export default function AppContextProvider({ pkg, children }) {
+const AppContextProvider: FC<{ pkg: string }> = ({ pkg, children }) => {
 	const i18nFactory = useI18nFactory();
 	const storeFactory = useStoreFactory();
-	const app = useAppStore((s) => s.apps[pkg]?.core);
+	const app = useAppStore((s) => s.apps[pkg]);
 	const store = useMemo(() => storeFactory.getStoreForApp(app), [app, storeFactory]);
 	const i18n = useMemo(() => i18nFactory.getAppI18n(app), [i18nFactory, app]);
 	return (
@@ -29,4 +29,6 @@ export default function AppContextProvider({ pkg, children }) {
 			</I18nextProvider>
 		</Provider>
 	);
-}
+};
+
+export default AppContextProvider;

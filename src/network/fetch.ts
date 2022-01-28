@@ -143,7 +143,7 @@ export const getSoapFetch =
 			.then((res) => res?.json())
 			.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
 			.catch((e) =>
-				report(app === SHELL_APP_ID ? getShell()! : getApp(app)()?.core)(e)
+				report(app === SHELL_APP_ID ? getShell() : getApp(app)())(e)
 			) as Promise<Response>;
 
 export const getXmlSoapFetch =
@@ -168,6 +168,6 @@ export const getXmlSoapFetch =
 			.then((res) => res?.json())
 			.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
 			.catch((e) => {
-				report(app === SHELL_APP_ID ? getShell()! : getApp(app)()?.core)(e);
+				report(app === SHELL_APP_ID ? getShell() : getApp(app)())(e);
 				throw e;
 			}) as Promise<Response>;

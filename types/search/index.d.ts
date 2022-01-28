@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { AppView } from '../apps';
+
 export type QueryChip = {
 	label: string;
 	value?: string;
@@ -23,7 +25,7 @@ export type SearchState = {
 };
 
 export type SearchBarProps = {
-	currentApp: string;
+	currentAppView: AppView;
 	primaryAction: unknown;
 	secondaryActions: unknown;
 };

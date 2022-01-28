@@ -17,8 +17,6 @@ const babelRC = require('./babel.config');
 
 const baseStaticPath = `/static/iris/carbonio-shell-ui/${commitHash}/`;
 
-console.log(`Building Shell using base static path: `);
-console.log(` ${baseStaticPath} `);
 /**
  * The flavor of the build
  * @type {'npm' | 'app'}
@@ -170,6 +168,23 @@ module.exports = (_, pkg, options, mode) => {
 				template: path.resolve(process.cwd(), 'src', 'index.template.html'),
 				chunks: ['index'],
 				BASE_PATH: baseStaticPath
+				// 	SHELL_ENV: 'carbonio'
+				// }),
+				// new HtmlWebpackPlugin({
+				// 	inject: true,
+				// 	template: path.resolve(process.cwd(), 'src', 'index.template.html'),
+				// 	chunks: ['index'],
+				// 	filename: 'admin.html',
+				// 	BASE_PATH: baseStaticPath,
+				// 	SHELL_ENV: 'admin'
+				// }),
+				// new HtmlWebpackPlugin({
+				// 	inject: true,
+				// 	template: path.resolve(process.cwd(), 'src', 'index.template.html'),
+				// 	chunks: ['index'],
+				// 	filename: 'standalone.html',
+				// 	BASE_PATH: baseStaticPath,
+				// 	SHELL_ENV: 'standalone'
 			}),
 			new HtmlWebpackPlugin({
 				inject: false,

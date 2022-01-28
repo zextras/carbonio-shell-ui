@@ -11,22 +11,22 @@ import { filter, forEach, sortBy } from 'lodash';
 import StoreFactory from '../../redux/store-factory';
 
 import { loadApp, unloadApps } from './load-app';
-import { AppData } from '../../../types';
+import { CarbonioModule } from '../../../types';
 import { injectSharedLibraries } from './shared-libraries';
 
-export function loadApps(storeFactory: StoreFactory, apps: Array<AppData>): void {
+export function loadApps(storeFactory: StoreFactory, apps: Array<CarbonioModule>): void {
 	injectSharedLibraries();
 	const appsToLoad =
 		typeof cliSettings === 'undefined' || cliSettings.enableErrorReporter
 			? apps
-			: filter(apps, (app) => app.core.name !== 'carbonio-error-reporter-ui');
+			: filter(apps, (app) => app.name !== 'carbonio-error-reporter-ui');
 	console.log(
 		'%cLOADING APPS',
 		'color: white; background: #2b73d2;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
 	);
 	forEach(
-		sortBy(appsToLoad, (app) => app.core.priority),
-		(app) => loadApp(app.core, storeFactory)
+		sortBy(appsToLoad, (app) => app.priority),
+		(app) => loadApp(app, storeFactory)
 	);
 }
 

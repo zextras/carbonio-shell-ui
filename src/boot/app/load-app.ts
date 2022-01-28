@@ -10,11 +10,11 @@ import { forEach, forOwn } from 'lodash';
 // import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
 // import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
 
-import { ComponentClass } from 'react';
+import { ComponentClass, ComponentType } from 'react';
 import { Store } from '@reduxjs/toolkit';
 import StoreFactory from '../../redux/store-factory';
 
-import { appStore } from '../../store/app/store';
+import { useAppStore } from '../../store/app/store';
 import { getAppFunctions } from './app-loader-functions';
 import { getAppLink } from './app-link';
 import { Spinner } from '../../ui-extras/spinner';
@@ -33,14 +33,14 @@ import {
 	IShellWindow,
 	LoadedAppRuntime,
 	SharedLibrariesAppsMap,
-	ZextrasModule
+	CarbonioModule
 } from '../../../types';
 
 export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
 // const _revertableActions: { [pkgName: string]: RevertableActionCollection } = {};
 
-// export function updateAppHandlers(appPkg: ZextrasModule, handlers: RequestHandlersList): void {
+// export function updateAppHandlers(appPkg: CarbonioModule, handlers: RequestHandlersList): void {
 // 	if (FLAVOR === 'NPM' && typeof devUtils !== 'undefined') {
 // 		const worker = devUtils.getMSWorker<SetupWorkerApi>();
 // 		if (worker) {
@@ -50,11 +50,7 @@ let _scriptId = 0;
 // 	}
 // }
 
-function loadAppModule(
-	appPkg: ZextrasModule,
-	store: Store<any>,
-	setAppClass: (id: string, appClass: ComponentClass) => void
-): Promise<void> {
+function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<void> {
 	return new Promise((_resolve, _reject) => {
 		let resolved = false;
 		const resolve: (...args: any[]) => void = (...args) => {
@@ -81,8 +77,7 @@ function loadAppModule(
 				report: report(appPkg),
 				soapFetch: useAccountStore.getState().soapFetch(appPkg.name),
 				xmlSoapFetch: useAccountStore.getState().xmlSoapFetch(appPkg.name),
-				registerAppData: appStore.getState().setters.registerAppData(appPkg.name),
-				setAppContext: appStore.getState().setters.setAppContext(appPkg.name),
+				setAppContext: useAppStore.getState().setters.setAppContext(appPkg.name),
 				registerHooks: useIntegrationsStore.getState().registerHooks,
 				registerFunctions: useIntegrationsStore.getState().registerFunctions,
 				registerActions: useIntegrationsStore.getState().registerActions,
@@ -103,8 +98,13 @@ function loadAppModule(
 			// eslint-disable-next-line max-len
 			(
 				window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>
-			).__ZAPP_HMR_EXPORT__[appPkg.name] = (appClass: ComponentClass): void => {
-				setAppClass(appPkg.name, appClass);
+			).__ZAPP_HMR_EXPORT__[appPkg.name] = (appClass: ComponentType): void => {
+				useAppStore.setState((state) => ({
+					entryPoints: {
+						...state.entryPoints,
+						[appPkg.name]: appClass
+					}
+				}));
 				resolve();
 			};
 
@@ -133,12 +133,11 @@ function loadAppModule(
 }
 
 export function loadApp(
-	pkg: ZextrasModule,
+	pkg: CarbonioModule,
 	storeFactory: StoreFactory
 ): Promise<LoadedAppRuntime | undefined> {
 	const store = storeFactory.getStoreForApp(pkg);
-	const { setAppClass } = appStore.getState().setters;
-	return loadAppModule(pkg, store, setAppClass)
+	return loadAppModule(pkg, store)
 		.then(() => true)
 		.then((loaded) =>
 			loaded

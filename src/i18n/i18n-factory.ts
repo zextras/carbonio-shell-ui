@@ -8,7 +8,7 @@ import i18next, { i18n } from 'i18next';
 import Backend from 'i18next-http-backend';
 // import LanguageDetector from 'i18next-browser-languagedetector';
 import { dropRight, forEach } from 'lodash';
-import { II18nFactory, ZextrasModule } from '../../types';
+import { II18nFactory, CarbonioModule } from '../../types';
 import { getShell } from '../store/app/hooks';
 import { SHELL_APP_ID } from '../constants';
 
@@ -29,7 +29,7 @@ export default class I18nFactory implements II18nFactory {
 	}
 
 	// eslint-disable-next-line class-methods-use-this
-	public getAppI18n(appPkgDescription: ZextrasModule | { name: string }): i18n {
+	public getAppI18n(appPkgDescription: CarbonioModule | { name: string }): i18n {
 		if (this._cache[appPkgDescription.name]) {
 			return this._cache[appPkgDescription.name];
 		}
@@ -37,7 +37,7 @@ export default class I18nFactory implements II18nFactory {
 		const baseI18nPath =
 			appPkgDescription.name === SHELL_APP_ID
 				? BASE_PATH
-				: dropRight((appPkgDescription as ZextrasModule).js_entrypoint.split('/')).join('/');
+				: dropRight((appPkgDescription as CarbonioModule).js_entrypoint.split('/')).join('/');
 		newI18n
 			// load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
 			// learn more: https://github.com/i18next/i18next-http-backend

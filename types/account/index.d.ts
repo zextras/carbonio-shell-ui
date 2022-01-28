@@ -35,18 +35,6 @@ export type NotifyObject = {
 	folder?: Array<unknown>;
 };
 
-export type ZextrasModule = {
-	commit: string;
-	display: string;
-	description: string;
-	// eslint-disable-next-line camelcase
-	js_entrypoint: string;
-	name: string;
-	priority: number;
-	version: string;
-	route: string;
-};
-
 export type Account = {
 	// apps: Array<AppPkgDescription>;
 	id: string;

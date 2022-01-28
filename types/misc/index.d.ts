@@ -9,14 +9,14 @@ import { i18n } from 'i18next';
 import { FunctionComponent } from 'react';
 import { LinkProps } from 'react-router-dom';
 import { RuntimeAppData } from '../apps';
-import { ZextrasModule } from '../account';
+import { CarbonioModule } from '../account';
 
 export interface II18nFactory {
 	_cache: { [pkg: string]: i18n };
 	locale: string;
 	setLocale(locale: string): void;
 	getShellI18n(): i18n;
-	getAppI18n(appPkgDescription: ZextrasModule): i18n;
+	getAppI18n(appPkgDescription: CarbonioModule): i18n;
 }
 
 // export type DevUtilsContext = {
@@ -80,7 +80,7 @@ export type SharedLibrariesAppsMap = {
 };
 
 export type LoadedAppRuntime = AppInjections & {
-	pkg: ZextrasModule;
+	pkg: CarbonioModule;
 };
 
 export type LoadedAppsCache = {

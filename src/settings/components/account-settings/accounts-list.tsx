@@ -181,7 +181,7 @@ const AccountsList = ({
 				mainAlignment="flex-start"
 			>
 				<Padding horizontal="medium" bottom="large" width="100%">
-					<Text weight="bold">{t('label.accounts_list.title', 'Accounts list')}</Text>
+					<Text weight="bold">{t('label.accounts_list', 'Accounts list')}</Text>
 				</Padding>
 				<List
 					items={identities}

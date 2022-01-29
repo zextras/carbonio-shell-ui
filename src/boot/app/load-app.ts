@@ -14,7 +14,7 @@ import { ComponentClass, ComponentType } from 'react';
 import { Store } from '@reduxjs/toolkit';
 import StoreFactory from '../../redux/store-factory';
 
-import { useAppStore } from '../../store/app/store';
+import { useAppStore } from '../../store/app';
 import { getAppFunctions } from './app-loader-functions';
 import { getAppLink } from './app-link';
 import { Spinner } from '../../ui-extras/spinner';
@@ -28,12 +28,13 @@ import {
 } from '../../constants';
 import { useIntegrationsStore } from '../../store/integrations/store';
 import { report } from '../../network/report';
-import { useAccountStore } from '../../store/account/store';
+import { useAccountStore } from '../../store/account';
 import {
 	IShellWindow,
 	LoadedAppRuntime,
 	SharedLibrariesAppsMap,
-	CarbonioModule
+	CarbonioModule,
+	AccountState
 } from '../../../types';
 
 export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
@@ -82,7 +83,7 @@ function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<void>
 				registerFunctions: useIntegrationsStore.getState().registerFunctions,
 				registerActions: useIntegrationsStore.getState().registerActions,
 				registerComponents: useIntegrationsStore.getState().registerComponents(appPkg.name),
-				AppLink: getAppLink(appPkg.route),
+				// AppLink: getAppLink(appPkg.route),
 				Spinner,
 				FOLDERS,
 				ZIMBRA_STANDARD_COLORS,
@@ -132,21 +133,9 @@ function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<void>
 	});
 }
 
-export function loadApp(
-	pkg: CarbonioModule,
-	storeFactory: StoreFactory
-): Promise<LoadedAppRuntime | undefined> {
+export function loadApp(pkg: CarbonioModule, storeFactory: StoreFactory): Promise<CarbonioModule> {
 	const store = storeFactory.getStoreForApp(pkg);
-	return loadAppModule(pkg, store)
-		.then(() => true)
-		.then((loaded) =>
-			loaded
-				? {
-						pkg,
-						store
-				  }
-				: undefined
-		);
+	return loadAppModule(pkg, store).then(() => pkg);
 }
 
 export function unloadApps(): Promise<void> {

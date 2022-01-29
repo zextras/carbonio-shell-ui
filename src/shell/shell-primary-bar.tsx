@@ -14,8 +14,7 @@ import { useTranslation } from 'react-i18next';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { BoardValueContext, BoardSetterContext } from './boards/board-context';
-import { useRoutes } from '../store/app/hooks';
-import { useAppStore } from '../store/app/store';
+import { useAppStore } from '../store/app';
 import { AppRoute } from '../../types';
 
 const ContainerWithDivider = styled(Container)`

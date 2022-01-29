@@ -70,5 +70,6 @@ export const darkReaderDynamicThemeFixes: DynamicThemeFix = {
 			background-color: #fff !important;
 		}
 	`,
-	ignoreInlineStyle: []
+	ignoreInlineStyle: [],
+	disableStyleSheetsProxy: false
 };

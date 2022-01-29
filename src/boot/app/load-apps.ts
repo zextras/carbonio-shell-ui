@@ -6,7 +6,7 @@
 
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
-import { filter, forEach, sortBy } from 'lodash';
+import { filter, map } from 'lodash';
 
 import StoreFactory from '../../redux/store-factory';
 
@@ -24,10 +24,7 @@ export function loadApps(storeFactory: StoreFactory, apps: Array<CarbonioModule>
 		'%cLOADING APPS',
 		'color: white; background: #2b73d2;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
 	);
-	forEach(
-		sortBy(appsToLoad, (app) => app.priority),
-		(app) => loadApp(app, storeFactory)
-	);
+	Promise.allSettled(map(appsToLoad, (app) => loadApp(app, storeFactory))).then(console.log);
 }
 
 export function unloadAllApps(): Promise<void> {

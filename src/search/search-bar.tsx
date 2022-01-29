@@ -25,7 +25,7 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useLocalStorage } from '../shell/hooks';
 import { SEARCH_APP_ID } from '../constants';
-import { useApps } from '../store/app/hooks';
+import { useApps } from '../store/app';
 import { useSearchStore } from './search-store';
 import { QueryChip, SearchBarProps, SelectLabelFactoryProps } from '../../types';
 import { handleKeyboardShortcuts } from '../keyboard-shortcuts/keyboard-shortcuts';

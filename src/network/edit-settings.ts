@@ -6,7 +6,7 @@
 
 import { findIndex, map, reduce } from 'lodash';
 import { SHELL_APP_ID } from '../constants';
-import { useAccountStore } from '../store/account/store';
+import { useAccountStore } from '../store/account';
 import { AccountState, Mods } from '../../types';
 
 export const editSettings = (mods: Mods, appId: string = SHELL_APP_ID): Promise<any> =>

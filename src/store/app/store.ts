@@ -6,7 +6,7 @@
 
 import produce from 'immer';
 import { filter, find, findIndex, merge, omit, reduce, unionWith } from 'lodash';
-import create from 'zustand';
+import create, { GetState, SetState, StoreApi, UseBoundStore } from 'zustand';
 import {
 	AppRouteData,
 	AppState,
@@ -17,17 +17,12 @@ import {
 	PrimaryAccessoryView,
 	PrimaryBarView,
 	SearchView,
-	SEARCH_APP_ID,
 	SecondaryAccessoryView,
 	SecondaryBarView,
 	SettingsView,
-	SETTINGS_APP_ID,
 	SHELL_APP_ID,
 	UtilityView
 } from '../../../types';
-import { SearchAppView } from '../../search/search-app-view';
-import { SettingsAppView } from '../../settings/settings-app-view';
-import { SettingsSidebar } from '../../settings/settings-sidebar';
 import { normalizeApp } from './utils';
 
 const filterById = <T extends { id: string }>(items: Array<T>, id: string): Array<T> =>
@@ -49,67 +44,11 @@ export const useAppStore = create<AppState>((set) => ({
 		displayName: 'Shell'
 	},
 	entryPoints: {},
-	routes: {
-		[SEARCH_APP_ID]: {
-			route: SEARCH_APP_ID,
-			id: SEARCH_APP_ID,
-			app: SEARCH_APP_ID
-		},
-		[SETTINGS_APP_ID]: {
-			route: SETTINGS_APP_ID,
-			id: SETTINGS_APP_ID,
-			app: SETTINGS_APP_ID
-		}
-	},
+	routes: {},
 	views: {
-		primaryBar: [
-			{
-				id: SEARCH_APP_ID,
-				app: SEARCH_APP_ID,
-				route: SEARCH_APP_ID,
-				component: 'SearchModOutline',
-				position: 15,
-				visible: true,
-				label: 'Search',
-				badge: {
-					show: false
-				}
-			},
-			{
-				id: SETTINGS_APP_ID,
-				app: SETTINGS_APP_ID,
-				route: SETTINGS_APP_ID,
-				component: 'SettingsModOutline',
-				position: 16,
-				visible: true,
-				label: 'Settings',
-				badge: {
-					show: false
-				}
-			}
-		],
-		secondaryBar: [
-			{
-				id: SETTINGS_APP_ID,
-				app: SETTINGS_APP_ID,
-				route: SETTINGS_APP_ID,
-				component: SettingsSidebar
-			}
-		],
-		appView: [
-			{
-				id: SEARCH_APP_ID,
-				app: SEARCH_APP_ID,
-				route: SEARCH_APP_ID,
-				component: SearchAppView
-			},
-			{
-				id: SETTINGS_APP_ID,
-				app: SETTINGS_APP_ID,
-				route: SETTINGS_APP_ID,
-				component: SettingsAppView
-			}
-		],
+		primaryBar: [],
+		secondaryBar: [],
+		appView: [],
 		board: [],
 		utilityBar: [],
 		settings: [],
@@ -325,4 +264,4 @@ export const useAppStore = create<AppState>((set) => ({
 			);
 		}
 	}
-}));
+})) as UseBoundStore<AppState, StoreApi<AppState>>;

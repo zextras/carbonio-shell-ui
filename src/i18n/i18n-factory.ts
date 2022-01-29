@@ -9,7 +9,7 @@ import Backend from 'i18next-http-backend';
 // import LanguageDetector from 'i18next-browser-languagedetector';
 import { dropRight, forEach } from 'lodash';
 import { II18nFactory, CarbonioModule } from '../../types';
-import { getShell } from '../store/app/hooks';
+import { getShell } from '../store/app';
 import { SHELL_APP_ID } from '../constants';
 
 export default class I18nFactory implements II18nFactory {

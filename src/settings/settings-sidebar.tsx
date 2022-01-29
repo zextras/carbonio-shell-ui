@@ -9,9 +9,8 @@ import { useHistory } from 'react-router-dom';
 import { map } from 'lodash';
 import { Accordion } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
-import { useApps } from '../store/app/hooks';
 import { SETTINGS_APP_ID } from '../constants';
-import { useAppStore } from '../store/app/store';
+import { useApps, useAppStore } from '../store/app';
 
 export const SettingsSidebar: FC = () => {
 	const apps = useApps();

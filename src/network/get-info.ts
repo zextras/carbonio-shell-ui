@@ -6,7 +6,7 @@
 
 import { GetState, SetState } from 'zustand';
 import { SHELL_APP_ID } from '../constants';
-import { useAppStore } from '../store/app/store';
+import { useAppStore } from '../store/app';
 import { normalizeAccount } from '../store/account/normalization';
 import { AccountSettings, AccountState, GetInfoResponse, Tag, CarbonioModule } from '../../types';
 import { goToLogin } from './go-to-login';

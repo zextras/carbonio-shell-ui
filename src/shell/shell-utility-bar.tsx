@@ -8,7 +8,7 @@ import { Container, Tooltip, IconButton, Responsive } from '@zextras/carbonio-de
 import { find, map } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { useAppStore } from '../store/app/store';
+import { useAppStore } from '../store/app';
 import AppContextProvider from '../boot/app/app-context-provider';
 
 /* eslint-disable react/no-array-index-key */

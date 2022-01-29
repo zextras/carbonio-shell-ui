@@ -5,7 +5,7 @@
  */
 
 import { reduce } from 'lodash';
-import { getApp, getAppContext, useApp, useAppContext } from '../../store/app/hooks';
+import { getApp, getAppContext, useApp, useAppContext } from '../../store/app';
 import { contextBridge } from '../../store/context-bridge';
 import {
 	getAction,
@@ -31,7 +31,7 @@ import {
 	useUserRights,
 	getUserRight,
 	getUserRights
-} from '../../store/account/hooks';
+} from '../../store/account';
 import {
 	getUseAddBoardCallback,
 	useUpdateCurrentBoard,

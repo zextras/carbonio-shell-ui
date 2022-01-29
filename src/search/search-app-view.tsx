@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { useSearchStore } from './search-store';
 import { SEARCH_APP_ID } from '../constants';
-import { useAppStore } from '../store/app/store';
+import { useAppStore } from '../store/app';
 import { QueryChip } from '../../types';
 // import { RouteLeavingGuard } from '../ui-extras/nav-guard';
 

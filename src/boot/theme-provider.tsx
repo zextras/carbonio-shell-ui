@@ -9,7 +9,7 @@ import { ThemeProvider as UIThemeProvider } from '@zextras/carbonio-design-syste
 import { enable, disable, auto, setFetchMethod } from 'darkreader';
 import { reduce } from 'lodash';
 import Logo from './logo';
-import { useAccountStore } from '../store/account/store';
+import { useAccountStore } from '../store/account';
 import { ThemeExtension, ThemeExtensionMap } from '../../types';
 import { darkReaderDynamicThemeFixes } from '../constants';
 

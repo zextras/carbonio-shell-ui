@@ -7,7 +7,7 @@
 import { GetState, SetState } from 'zustand';
 import { find } from 'lodash';
 import { SHELL_APP_ID } from '../constants';
-import { getApp, getShell } from '../store/app/hooks';
+import { getApp, getShell } from '../store/app';
 import { goToLogin } from './go-to-login';
 import { report } from './report';
 import {

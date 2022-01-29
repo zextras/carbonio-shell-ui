@@ -19,7 +19,7 @@ import ShellContext from './shell-context';
 import { BoardSetterContext, BoardValueContext } from './boards/board-context';
 import { SEARCH_APP_ID } from '../constants';
 
-export { useUserAccount, useUserAccounts, useUserSettings } from '../store/account/hooks';
+export { useUserAccount, useUserAccounts, useUserSettings } from '../store/account';
 export const getUseAddBoardCallback =
 	(appId: string) => (): ((path: string, context?: unknown | { app: string }) => void) => {
 		const { addBoard } = useContext(BoardSetterContext);

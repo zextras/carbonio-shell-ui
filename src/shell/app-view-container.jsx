@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { map } from 'lodash';
 import { Container } from '@zextras/carbonio-design-system';
 import AppContextProvider from '../boot/app/app-context-provider';
-import { useAppStore } from '../store/app/store';
+import { useAppStore } from '../store/app';
 
 const _BoardsRouterContainer = styled(Container)`
 	flex-grow: 1;

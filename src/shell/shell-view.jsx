@@ -16,9 +16,8 @@ import ShellNavigationBar from './shell-navigation-bar';
 import AppBoardWindow from './boards/app-board-window';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 
-import { useAppStore } from '../store/app/store';
-import { useRoutes } from '../store/app/hooks';
-import { useUserSettings } from '../store/account/hooks';
+import { useAppStore, useRoutes } from '../store/app';
+import { useUserSettings } from '../store/account';
 import { ShellUtilityBar, ShellUtilityPanel } from './shell-utility-bar';
 
 const Background = styled.div`

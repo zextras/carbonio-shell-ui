@@ -11,6 +11,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
+const CircularDependencyPlugin = require('circular-dependency-plugin');
 const commitHash = require('child_process').execSync('git rev-parse HEAD').toString().trim();
 
 const babelRC = require('./babel.config');
@@ -149,6 +150,17 @@ module.exports = (_, pkg, options, mode) => {
 		plugins: [
 			new CopyPlugin({
 				patterns: pathsToCopy
+			}),
+			new CircularDependencyPlugin({
+				// exclude detection of files based on a RegExp
+				exclude: /node_modules/,
+				// add errors to webpack instead of warnings
+				failOnError: false,
+				// allow import cycles that include an asyncronous import,
+				// e.g. via import(/* webpackMode: "weak" */ './file.js')
+				allowAsyncCycles: true,
+				// set the current working directory for displaying module paths
+				cwd: process.cwd()
 			}),
 			new DefinePlugin({
 				WATCH_SERVER: JSON.stringify(server),

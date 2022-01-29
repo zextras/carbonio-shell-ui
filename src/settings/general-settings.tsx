@@ -24,7 +24,7 @@ import AppearanceSettings from './appearance-settings';
 import ModuleVersionSettings from './module-version-settings';
 import OutOfOfficeSettings from './out-of-office-view';
 import UserQuota from './user-quota';
-import { useUserSettings } from '../store/account/hooks';
+import { useUserSettings } from '../store/account';
 import { SETTINGS_APP_ID } from '../constants';
 import { editSettings } from '../network/edit-settings';
 import { Mods } from '../../types';

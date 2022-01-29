@@ -22,7 +22,7 @@ import { useTranslation } from 'react-i18next';
 import AppBoardTab from './app-board-tab';
 import AppBoard from './app-board';
 import { BoardSetterContext, BoardValueContext } from './board-context';
-import { useApps } from '../../store/app/hooks';
+import { useApps } from '../../store/app';
 
 function TabsList({ tabs, currentBoard, setCurrentBoard, largeView, t }) {
 	const apps = useApps();

@@ -17,8 +17,7 @@ import {
 	useScreenMode,
 	MultiButton
 } from '@zextras/carbonio-design-system';
-import { useAppStore } from '../store/app/store';
-import { useApps } from '../store/app/hooks';
+import { useAppStore, useApps } from '../store/app';
 
 export default function ShellHeader({ activeRoute, mobileNavIsOpen, onMobileMenuClick, children }) {
 	const [t] = useTranslation();

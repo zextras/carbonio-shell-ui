@@ -11,7 +11,7 @@ import { Route, Switch } from 'react-router-dom';
 import { Container } from '@zextras/carbonio-design-system';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { Collapser } from './collapser';
-import { useAppStore } from '../store/app/store';
+import { useAppStore } from '../store/app';
 import { AppRoute } from '../../types';
 
 const SidebarContainer = styled(Container)`

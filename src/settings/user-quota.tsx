@@ -7,8 +7,8 @@
 import React, { useMemo, ReactElement } from 'react';
 import { Quota, Container, FormSubSection, Text, Tooltip } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
-import { useUserSettings } from '../store/account/hooks';
-import { useAccountStore } from '../store/account/store';
+import { useUserSettings } from '../store/account';
+import { useAccountStore } from '../store/account';
 
 interface UserQuotaProps {
 	mobileView: boolean;

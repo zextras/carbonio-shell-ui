@@ -13,7 +13,7 @@ import { SETTINGS_APP_ID } from '../constants';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { Spinner } from '../ui-extras/spinner';
 import { RouteLeavingGuard } from '../ui-extras/nav-guard';
-import { useAppStore } from '../store/app/store';
+import { useAppStore } from '../store/app';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

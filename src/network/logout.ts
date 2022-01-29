@@ -5,7 +5,7 @@
  */
 
 import { SHELL_APP_ID } from '../constants';
-import { useAccountStore } from '../store/account/store';
+import { useAccountStore } from '../store/account';
 import { goToLogin } from './go-to-login';
 
 export const logout = (): Promise<void> =>

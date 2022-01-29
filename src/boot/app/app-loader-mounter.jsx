@@ -7,7 +7,7 @@
 import React, { useState, memo, useEffect } from 'react';
 import { find, reduce } from 'lodash';
 import { useHistory } from 'react-router';
-import { useAppList } from '../../store/app/hooks';
+import { useAppList } from '../../store/app';
 import AppContextProvider from './app-context-provider';
 
 export default function AppLoaderMounter() {

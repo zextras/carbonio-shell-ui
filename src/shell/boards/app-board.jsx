@@ -20,6 +20,7 @@ const _container = styled.div`
 	width: 100%;
 	overflow-y: auto;
 `;
+const history = createMemoryHistory();
 
 export default function AppBoard({ idx }) {
 	const { boards, currentBoard } = useContext(BoardValueContext);
@@ -40,7 +41,6 @@ export default function AppBoard({ idx }) {
 		[apps, windowHistory]
 	);
 
-	const history = useMemo(() => createMemoryHistory(), []);
 	// eslint-disable-next-line
 	useEffect(() => {
 		return history.listen((l, a) => {

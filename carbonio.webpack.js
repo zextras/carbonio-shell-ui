@@ -66,7 +66,7 @@ module.exports = (_, pkg, options, mode) => {
 		},
 		target: 'web',
 		resolve: {
-			extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
+			extensions: ['*', '.js', '.jsx', '.ts', '.tsx', '.d.ts'],
 			alias: {}
 		},
 		devServer: {
@@ -93,7 +93,15 @@ module.exports = (_, pkg, options, mode) => {
 					}
 				},
 				{
-					context: ['!/static/iris/carbonio-shell-ui/**/*', '!/carbonio/', '!/carbonio/**/*'],
+					context: [
+						'!/static/iris/carbonio-shell-ui/**/*',
+						'!/carbonio/',
+						'!/carbonio/**/*',
+						'!/admin/',
+						'!/admin/**/*',
+						'!/standalone/',
+						'!/standalone/**/*'
+					],
 					target: server,
 					secure: false,
 					logLevel: 'debug',
@@ -156,7 +164,7 @@ module.exports = (_, pkg, options, mode) => {
 				exclude: /node_modules/,
 				// add errors to webpack instead of warnings
 				failOnError: false,
-				// allow import cycles that include an asyncronous import,
+				// allow import cycles that include an asynchronous import,
 				// e.g. via import(/* webpackMode: "weak" */ './file.js')
 				allowAsyncCycles: true,
 				// set the current working directory for displaying module paths
@@ -179,24 +187,24 @@ module.exports = (_, pkg, options, mode) => {
 				inject: true,
 				template: path.resolve(process.cwd(), 'src', 'index.template.html'),
 				chunks: ['index'],
-				BASE_PATH: baseStaticPath
-				// 	SHELL_ENV: 'carbonio'
-				// }),
-				// new HtmlWebpackPlugin({
-				// 	inject: true,
-				// 	template: path.resolve(process.cwd(), 'src', 'index.template.html'),
-				// 	chunks: ['index'],
-				// 	filename: 'admin.html',
-				// 	BASE_PATH: baseStaticPath,
-				// 	SHELL_ENV: 'admin'
-				// }),
-				// new HtmlWebpackPlugin({
-				// 	inject: true,
-				// 	template: path.resolve(process.cwd(), 'src', 'index.template.html'),
-				// 	chunks: ['index'],
-				// 	filename: 'standalone.html',
-				// 	BASE_PATH: baseStaticPath,
-				// 	SHELL_ENV: 'standalone'
+				BASE_PATH: baseStaticPath,
+				SHELL_ENV: 'carbonio'
+			}),
+			new HtmlWebpackPlugin({
+				inject: true,
+				template: path.resolve(process.cwd(), 'src', 'index.template.html'),
+				chunks: ['index'],
+				filename: 'admin.html',
+				BASE_PATH: baseStaticPath,
+				SHELL_ENV: 'admin'
+			}),
+			new HtmlWebpackPlugin({
+				inject: true,
+				template: path.resolve(process.cwd(), 'src', 'index.template.html'),
+				chunks: ['index'],
+				filename: 'standalone.html',
+				BASE_PATH: baseStaticPath,
+				SHELL_ENV: 'standalone'
 			}),
 			new HtmlWebpackPlugin({
 				inject: false,

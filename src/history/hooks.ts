@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { find, startsWith, replace } from 'lodash';
+import { find, startsWith, replace, trim } from 'lodash';
 import { useMemo, useCallback } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { AppRoute } from '../../types';
@@ -15,7 +15,7 @@ export const useCurrentRoute = (): AppRoute | undefined => {
 	const location = useLocation();
 	const routes = useRoutes();
 	return useMemo(
-		() => find(routes, (r) => startsWith(location.pathname, r.route)),
+		() => find(routes, (r) => startsWith(trim(location.pathname, '/'), r.route)),
 		[location.pathname, routes]
 	);
 };
@@ -46,12 +46,12 @@ export const useReplaceHistoryCallback = (prefix?: string): ((path?: string) => 
 export const getCurrentRoute = (): AppRoute | undefined => {
 	const history = useContextBridge.getState().functions.getHistory?.();
 	const routes = getRoutes();
-	return find(routes, (r) => startsWith(history.location.pathname, r.route));
+	return find(routes, (r) => startsWith(trim(history.location.pathname, '/'), r.route));
 };
 
 export const getPushHistoryCallback = (prefix?: string): ((path?: string) => void) => {
 	const history = useContextBridge.getState().functions.getHistory?.();
-	return (path?: string): void => history.push(replace(`/commit.template${prefix}/${path}`, '//', '/'));
+	return (path?: string): void => history.push(replace(`/${prefix}/${path}`, '//', '/'));
 };
 
 export function getGoBackHistoryCallback(): () => void {

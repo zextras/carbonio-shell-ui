@@ -5,10 +5,9 @@
  */
 
 import produce from 'immer';
-import { filter, find, findIndex, identity, merge, omit, reduce, unionWith } from 'lodash';
-import create, { GetState, SetState, StoreApi, UseBoundStore } from 'zustand';
+import { filter, find, findIndex, merge, omit, reduce, unionWith } from 'lodash';
+import create, { StoreApi, UseBoundStore } from 'zustand';
 import {
-	AppRouteData,
 	AppRouteDescriptor,
 	AppState,
 	AppView,

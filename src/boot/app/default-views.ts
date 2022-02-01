@@ -15,14 +15,14 @@ import { AppState, SHELL_APP_ID } from '../../../types';
 import GeneralSettings from '../../settings/general-settings';
 
 const settingsRoute = {
-	route: `/${SETTINGS_APP_ID}`,
+	route: SETTINGS_APP_ID,
 	id: SETTINGS_APP_ID,
 	app: SETTINGS_APP_ID
 };
 const settingsPrimaryBar = {
 	id: SETTINGS_APP_ID,
 	app: SETTINGS_APP_ID,
-	route: `/${SETTINGS_APP_ID}`,
+	route: SETTINGS_APP_ID,
 	component: 'SettingsModOutline',
 	position: 16,
 	visible: true,
@@ -34,14 +34,14 @@ const settingsPrimaryBar = {
 const settingsSecondaryBar = {
 	id: SETTINGS_APP_ID,
 	app: SETTINGS_APP_ID,
-	route: `/${SETTINGS_APP_ID}`,
+	route: SETTINGS_APP_ID,
 	component: SettingsSidebar
 };
 
 const settingsAppView = {
 	id: SETTINGS_APP_ID,
 	app: SETTINGS_APP_ID,
-	route: `/${SETTINGS_APP_ID}`,
+	route: SETTINGS_APP_ID,
 	component: SettingsAppView
 };
 const settingsGeneralView = {
@@ -55,14 +55,14 @@ const settingsGeneralView = {
 };
 
 const searchRoute = {
-	route: `/${SEARCH_APP_ID}`,
+	route: SEARCH_APP_ID,
 	id: SEARCH_APP_ID,
 	app: SEARCH_APP_ID
 };
 const searchPrimaryBar = {
 	id: SEARCH_APP_ID,
 	app: SEARCH_APP_ID,
-	route: `/${SEARCH_APP_ID}`,
+	route: SEARCH_APP_ID,
 	component: 'SearchModOutline',
 	position: 15,
 	visible: true,
@@ -74,7 +74,7 @@ const searchPrimaryBar = {
 const searchAppView = {
 	id: SEARCH_APP_ID,
 	app: SEARCH_APP_ID,
-	route: `/${SEARCH_APP_ID}`,
+	route: SEARCH_APP_ID,
 	component: SearchAppView
 };
 

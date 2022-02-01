@@ -45,7 +45,7 @@ export const normalizeRoute = (
 	data: Partial<AppRouteDescriptor>,
 	app: CarbonioModule
 ): AppRouteDescriptor => {
-	const route = `/${trim(data.route ?? app.name, '/')}`;
+	const route = trim(data.route ?? app.name, '/');
 	return {
 		app: app.name,
 		route,
@@ -64,7 +64,7 @@ export const normalizeSettingsView = (
 	data: Partial<SettingsView>,
 	app: CarbonioModule
 ): SettingsView => {
-	const route = `/${trim(data.route ?? app.name, '/')}`;
+	const route = trim(data.route ?? app.name, '/');
 	return {
 		app: app.name,
 		route,
@@ -76,7 +76,7 @@ export const normalizeSettingsView = (
 	};
 };
 export const normalizeSearchView = (data: Partial<SearchView>, app: CarbonioModule): SearchView => {
-	const route = `/${trim(data.route ?? app.name, '/')}`;
+	const route = trim(data.route ?? app.name, '/');
 	return {
 		app: app.name,
 		route,
@@ -88,7 +88,7 @@ export const normalizeUtilityView = (
 	data: Partial<UtilityView>,
 	app: CarbonioModule
 ): UtilityView => {
-	const route = `/${trim(data.route ?? app.name, '/')}`;
+	const route = trim(data.route ?? app.name, '/');
 	return {
 		app: app.name,
 		route,
@@ -104,7 +104,7 @@ export const normalizePrimaryAccessoryView = (
 	data: Partial<PrimaryAccessoryView>,
 	app: CarbonioModule
 ): PrimaryAccessoryView => {
-	const route = `/${trim(data.route ?? app.name, '/')}`;
+	const route = trim(data.route ?? app.name, '/');
 	return {
 		app: app.name,
 		route,
@@ -116,7 +116,7 @@ export const normalizeSecondaryAccessoryView = (
 	data: Partial<SecondaryAccessoryView>,
 	app: CarbonioModule
 ): SecondaryAccessoryView => {
-	const route = `/${trim(data.route ?? app.name, '/')}`;
+	const route = trim(data.route ?? app.name, '/');
 	return {
 		app: app.name,
 		route,
@@ -126,7 +126,7 @@ export const normalizeSecondaryAccessoryView = (
 };
 
 export const normalizeBoardView = (data: Partial<BoardView>, app: CarbonioModule): BoardView => {
-	const route = `/${trim(data.route ?? app.name, '/')}`;
+	const route = trim(data.route ?? app.name, '/');
 	return {
 		app: app.name,
 		route,

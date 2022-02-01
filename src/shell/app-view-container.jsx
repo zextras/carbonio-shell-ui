@@ -25,7 +25,7 @@ export default function AppViewContainer() {
 	const routes = useMemo(
 		() => [
 			...map(appViews, (view) => (
-				<Route key={view.id} path={view.route}>
+				<Route key={view.id} path={`/${view.route}`}>
 					<AppContextProvider key={view.app} pkg={view.app}>
 						<view.component />
 					</AppContextProvider>

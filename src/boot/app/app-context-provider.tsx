@@ -18,7 +18,6 @@ const AppContextProvider: FC<{ pkg: string }> = ({ pkg, children }) => {
 	const app = useMemo(() => getApp(pkg)() ?? getShell(), [pkg]);
 	const store = useMemo(() => storeFactory.getStoreForApp(app), [app, storeFactory]);
 	const i18n = useMemo(() => i18nFactory.getAppI18n(app), [i18nFactory, app]);
-	console.log('@@@ going through here', pkg);
 	return (
 		<Provider store={store}>
 			<I18nextProvider i18n={i18n}>

@@ -75,7 +75,7 @@ export default function ShellHeader({ activeRoute, mobileNavIsOpen, onMobileMenu
 						<IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} />
 					</Padding>
 				</Responsive>
-				<Logo height="40px" />
+				<Logo height="32px" />
 				<Padding horizontal="large">
 					<MultiButton
 						style={{ height: '44px' }}

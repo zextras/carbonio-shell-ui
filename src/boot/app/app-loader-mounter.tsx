@@ -4,36 +4,54 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useState, useEffect, FC, ComponentType } from 'react';
-import { map, reduce } from 'lodash';
-import { useHistory } from 'react-router';
+import React, { FC, memo, useEffect, useMemo } from 'react';
+import { map } from 'lodash';
 import { useAppStore } from '../../store/app';
 import AppContextProvider from './app-context-provider';
 
+const Mounter: FC<{ appId: string }> = ({ children, appId }) => (
+	<div key={appId} id={appId}>
+		<AppContextProvider key={appId} pkg={appId}>
+			{children}
+		</AppContextProvider>
+	</div>
+);
+
 const AppLoaderMounter: FC = () => {
 	const entryPoints = useAppStore((s) => s.entryPoints);
-	const history = useHistory();
-	const [modules, setModules] = useState<Record<string, ComponentType>>({});
+	const entries = useMemo(
+		() =>
+			map(entryPoints, (Comp, appId) => {
+				const MemoComp = memo(Comp);
+				return (
+					<Mounter key={appId} appId={appId}>
+						<MemoComp />
+					</Mounter>
+				);
+			}),
+		[entryPoints]
+	);
+	// const history = useHistory();
+	// const [modules, setModules] = useState<Record<string, ComponentType>>({});
+	// useEffect(() => {
+	// 	setModules((old) =>
+	// 		reduce(
+	// 			entryPoints,
+	// 			(acc, ep, appId) => {
+	// 				// const App = memo(ep);
+	// 				if (!acc[appId]) {
+	// 					// eslint-disable-next-line no-param-reassign
+	// 					acc[appId] = ep;
+	// 				}
+	// 				return acc;
+	// 			},
+	// 			old
+	// 		)
+	// 	);
+	// }, [entryPoints, history]);
 	useEffect(() => {
-		setModules((old) =>
-			reduce(
-				entryPoints,
-				(acc, ep, appId) => {
-					console.log('@@@ looping', acc, ep, appId);
-					// const App = memo(ep);
-					if (!acc[appId]) {
-						// eslint-disable-next-line no-param-reassign
-						acc[appId] = ep;
-					}
-					return acc;
-				},
-				old
-			)
-		);
-	}, [entryPoints, history]);
-
-	console.log('@@@ entryPoints ', entryPoints);
-	console.log('@@@ modules ', modules);
+		console.log('@@@ entryPoints ', entryPoints);
+	}, [entryPoints]);
 
 	return (
 		<div
@@ -42,17 +60,7 @@ const AppLoaderMounter: FC = () => {
 			hidden
 			style={{ height: 0, overflow: 'hidden' }}
 		>
-			{map(modules, (C, appId) => (
-				<div key={appId} id={appId}>
-					{((): null => {
-						console.log('@@@ IIFE', Object.keys(modules));
-						return null;
-					})()}
-					<AppContextProvider key={appId} pkg={appId}>
-						<C key={appId} />
-					</AppContextProvider>
-				</div>
-			))}
+			{entries}
 		</div>
 	);
 };

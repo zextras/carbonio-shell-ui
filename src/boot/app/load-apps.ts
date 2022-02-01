@@ -26,9 +26,7 @@ export function loadApps(storeFactory: StoreFactory, apps: Array<CarbonioModule>
 		'%cLOADING APPS',
 		'color: white; background: #2b73d2;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
 	);
-	Promise.allSettled(map(appsToLoad, (app) => loadApp(app, storeFactory))).then((a) =>
-		console.log('@@@ loaded', a)
-	);
+	Promise.allSettled(map(appsToLoad, (app) => loadApp(app, storeFactory)));
 }
 
 export function unloadAllApps(): Promise<void> {

@@ -7,7 +7,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import {
-	AppRouteData,
+	AppRouteDescriptor,
 	BoardView,
 	CarbonioModule,
 	PrimaryAccessoryView,
@@ -17,13 +17,21 @@ import {
 	UtilityView
 } from '../../../types';
 import { useAppStore } from '../../store/app';
-import { normalizeRoute, normalizeSettingsView, normalizeSearchView, normalizeUtilityView, normalizePrimaryAccessoryView, normalizeSecondaryAccessoryView, normalizeBoardView } from '../../store/app/utils';
+import {
+	normalizeRoute,
+	normalizeSettingsView,
+	normalizeSearchView,
+	normalizeUtilityView,
+	normalizePrimaryAccessoryView,
+	normalizeSecondaryAccessoryView,
+	normalizeBoardView
+} from '../../store/app/utils';
 import { useIntegrationsStore } from '../../store/integrations/store';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getAppSetters = (pkg: CarbonioModule): Record<string, Function> => ({
 	setAppContext: useAppStore.getState().setters.setAppContext(pkg.name),
-	addRoute: (route: Partial<AppRouteData>) =>
+	addRoute: (route: Partial<AppRouteDescriptor>) =>
 		useAppStore.getState().setters.addRoute(normalizeRoute(route, pkg)),
 	setRouteVisibility: (routeId: string, visible: boolean) =>
 		useAppStore.getState().setters.setRouteVisibility(routeId, visible),

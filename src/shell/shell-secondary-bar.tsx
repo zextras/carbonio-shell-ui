@@ -55,7 +55,7 @@ const ShellSecondaryBar: FC<SecondaryBarProps> = ({
 			>
 				<Switch>
 					{map(secondaryBarViews, (view) => (
-						<Route key={`/${view.id}`} path={`/${view.route}`}>
+						<Route key={view.id} path={view.route}>
 							<AppContextProvider pkg={view.app}>
 								<Container mainAlignment="flex-start">
 									<view.component expanded={sidebarIsOpen} />

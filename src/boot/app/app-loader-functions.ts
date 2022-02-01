@@ -8,7 +8,7 @@
 
 import { reduce } from 'lodash';
 import { getApp, getAppContext, useApp, useAppContext } from '../../store/app';
-import { contextBridge } from '../../store/context-bridge';
+import { useContextBridge } from '../../store/context-bridge';
 import {
 	getAction,
 	getActions,
@@ -34,13 +34,7 @@ import {
 	getUserRight,
 	getUserRights
 } from '../../store/account';
-import {
-	getUseAddBoardCallback,
-	useUpdateCurrentBoard,
-	useRemoveCurrentBoard,
-	useBoardConfig,
-	useIsMobile
-} from '../../shell/hooks';
+import { useIsMobile } from '../../shell/hooks';
 import {
 	useAction,
 	useActions,
@@ -50,8 +44,24 @@ import {
 	useIntegratedFunction,
 	useIntegratedHook
 } from '../../store/integrations/hooks';
-import { CarbonioModule } from '../../../types';
+import {
+	CarbonioModule,
+	useBoardConfig,
+	useRemoveCurrentBoard,
+	useUpdateCurrentBoard
+} from '../../../types';
 import { getEditSettingsForApp } from '../../network/edit-settings';
+import {
+	usePushHistoryCallback,
+	useGoBackHistoryCallback,
+	useReplaceHistoryCallback,
+	getCurrentRoute,
+	getGoBackHistoryCallback,
+	getPushHistoryCallback,
+	getReplaceHistoryCallback,
+	useCurrentRoute
+} from '../../history/hooks';
+import { getUseAddBoardCallback } from '../../shell/boards/board-hooks';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({
@@ -96,8 +106,16 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	useUpdateCurrentBoard,
 	useRemoveCurrentBoard,
 	useBoardConfig,
+	usePushHistoryCallback,
+	useGoBackHistoryCallback,
+	useReplaceHistoryCallback,
+	useCurrentRoute,
+	getCurrentRoute,
+	getPushHistoryCallback,
+	getGoBackHistoryCallback,
+	getReplaceHistoryCallback,
 	getBridgedFunctions: (): unknown => {
-		const { packageDependentFunctions, functions } = contextBridge.getState();
+		const { packageDependentFunctions, functions } = useContextBridge.getState();
 		return {
 			...functions,
 			...reduce(packageDependentFunctions, (acc, f, name) => ({ ...acc, [name]: f(pkg.name) }), {})

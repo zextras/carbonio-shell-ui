@@ -4,21 +4,20 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useEffect, useState, useContext, useMemo } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Row, Responsive, ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
-import { find, trim, startsWith } from 'lodash';
+import { find } from 'lodash';
 import AppViewContainer from './app-view-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
 import AppBoardWindow from './boards/app-board-window';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
-
-import { useAppStore, useRoutes } from '../store/app';
+import { useAppStore } from '../store/app';
 import { useUserSettings } from '../store/account';
 import { ShellUtilityBar, ShellUtilityPanel } from './shell-utility-bar';
+import { useCurrentRoute } from '../history/hooks';
 
 const Background = styled.div`
 	background: ${({ theme }) => theme.palette.gray6.regular};
@@ -48,13 +47,7 @@ export function Shell() {
 	const [navOpen, setNavOpen] = useState(true);
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
 	const [current, setCurrent] = useState(undefined);
-	const location = useLocation();
-
-	const routes = useRoutes();
-	const activeRoute = useMemo(
-		() => find(routes, (r) => startsWith(trim(location.pathname, '/'), r.route)),
-		[location.pathname, routes]
-	);
+	const activeRoute = useCurrentRoute();
 
 	useEffect(() => {
 		setNavOpen((n) => !(n && chatPanelMode === 'open'));

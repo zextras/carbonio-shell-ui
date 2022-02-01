@@ -17,7 +17,7 @@ export type CarbonioModule = {
 	type: 'app' | 'admin' | 'shell';
 	attrKey: string;
 	icon: string;
-	displayName: string;
+	display: string;
 };
 
 export type AppRoute = {
@@ -68,7 +68,11 @@ export type UtilityView = CarbonioView<PrimaryBarComponentProps> & {
 	label: string;
 };
 
-export type SettingsView = CarbonioView<SettingsViewProps>;
+export type SettingsView = CarbonioView<SettingsViewProps> & {
+	icon: string;
+	label: string;
+	position: number;
+};
 
 export type SearchView = CarbonioView<SearchViewProps>;
 
@@ -76,10 +80,22 @@ export type PrimaryAccessoryView = CarbonioView<PrimaryAccessoryViewProps>;
 
 export type SecondaryAccessoryView = CarbonioView<SecondaryAccessoryViewProps>;
 
+export type AppRouteDescriptor = {
+	id: string;
+	route: string;
+	app: string;
+	primaryBar: string | ComponentType<PrimaryBarComponentProps>;
+	badge: BadgeInfo;
+	position: number;
+	visible: boolean;
+	label: string;
+	secondaryBar?: ComponentType<SecondaryBarComponentProps>;
+	appView: ComponentType<AppViewComponentProps>;
+};
 export type AppSetters = {
 	addApps: (apps: Array<Partial<CarbonioModule>>) => void;
 	// add route (id route primaryBar secondaryBar app)
-	addRoute: (routeData: AppRouteData) => string;
+	addRoute: (routeData: AppRouteDescriptor) => string;
 	setRouteVisibility: (id: string, visible: boolean) => void;
 	// remove route (id | route)
 	removeRoute: (id: string) => void;

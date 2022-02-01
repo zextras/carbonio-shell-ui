@@ -137,6 +137,8 @@
 		"name": "carbonio-shell-ui",
 		"translations_repository": "git@bitbucket.org:zextras/com_zextras_zapp_shell.git",
 		"type": "shell",
-		"priority": -1
+		"priority": -1,
+		"display": "Shell",
+		"icon": "CubeOutline"
 	}
 }

@@ -228,7 +228,10 @@ module.exports = (_, pkg, options, mode) => {
 				version: pkg.version,
 				commit: commitHash,
 				priority: pkg.carbonio.priority,
-				type: pkg.carbonio.type
+				type: pkg.carbonio.type,
+				attrKey: pkg.carbonio.attrKey ?? '',
+				icon: pkg.carbonio.icon ?? 'CubeOutline',
+				display: pkg.carbonio.display
 			})
 		]
 	};

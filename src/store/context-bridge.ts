@@ -5,15 +5,13 @@
  */
 
 /* eslint-disable @typescript-eslint/ban-types */
-import create from 'zustand';
-import createStore from 'zustand/vanilla';
+import create, { UseBoundStore, StoreApi } from 'zustand';
 import { reduce } from 'lodash';
 import { useEffect } from 'react';
 import { ContextBridgeState } from '../../types';
 
-export const contextBridge = createStore<ContextBridgeState>((set) => ({
+export const useContextBridge = create<ContextBridgeState>((set) => ({
 	packageDependentFunctions: {},
-	routeDependentFunctions: {},
 	functions: {},
 	add: ({ packageDependentFunctions, functions }): void => {
 		set((s) => ({
@@ -37,12 +35,10 @@ export const contextBridge = createStore<ContextBridgeState>((set) => ({
 			)
 		}));
 	}
-}));
+})) as UseBoundStore<ContextBridgeState, StoreApi<ContextBridgeState>>;
 
-export const _useContextBridge = create(contextBridge);
-
-export const useContextBridge = (content: Omit<ContextBridgeState, 'add'>): void => {
-	const addFunctions = _useContextBridge(({ add }) => add);
+export const useBridge = (content: Omit<ContextBridgeState, 'add'>): void => {
+	const addFunctions = useContextBridge(({ add }) => add);
 	useEffect(() => {
 		addFunctions(content);
 	}, [content, addFunctions]);

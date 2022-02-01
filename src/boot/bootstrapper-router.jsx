@@ -8,14 +8,14 @@ import React, { useContext } from 'react';
 import { BrowserRouter, useHistory } from 'react-router-dom';
 import { SnackbarManagerContext, ModalManagerContext } from '@zextras/carbonio-design-system';
 import AppLoaderMounter from './app/app-loader-mounter';
-import { useContextBridge } from '../store/context-bridge';
+import { useBridge } from '../store/context-bridge';
 import ShellView from '../shell/shell-view';
 
 const ContextBridge = () => {
 	const history = useHistory();
 	const createSnackbar = useContext(SnackbarManagerContext);
 	const createModal = useContext(ModalManagerContext);
-	useContextBridge({
+	useBridge({
 		functions: {
 			getHistory: () => history,
 			createSnackbar,

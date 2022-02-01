@@ -21,11 +21,11 @@ const _BoardsRouterContainer = styled(Container)`
 `;
 
 export default function AppViewContainer() {
-	const appViews = useAppStore((s) => s.views.appViews);
+	const appViews = useAppStore((s) => s.views.appView);
 	const routes = useMemo(
 		() => [
 			...map(appViews, (view) => (
-				<Route key={view.id} path={`/${view.route}`}>
+				<Route key={view.id} path={view.route}>
 					<AppContextProvider key={view.app} pkg={view.app}>
 						<view.component />
 					</AppContextProvider>

@@ -5,10 +5,11 @@
  */
 
 import produce from 'immer';
-import { filter, find, findIndex, merge, omit, reduce, unionWith } from 'lodash';
+import { filter, find, findIndex, identity, merge, omit, reduce, unionWith } from 'lodash';
 import create, { GetState, SetState, StoreApi, UseBoundStore } from 'zustand';
 import {
 	AppRouteData,
+	AppRouteDescriptor,
 	AppState,
 	AppView,
 	BadgeInfo,
@@ -41,7 +42,7 @@ export const useAppStore = create<AppState>((set) => ({
 		type: 'shell',
 		attrKey: '',
 		icon: '',
-		displayName: 'Shell'
+		display: 'Shell'
 	},
 	entryPoints: {},
 	routes: {},
@@ -87,27 +88,52 @@ export const useAppStore = create<AppState>((set) => ({
 				);
 			},
 		// add route (id route primaryBar secondaryBar app)
-		addRoute: (routeData: AppRouteData): string => {
+		addRoute: (routeData: AppRouteDescriptor): string => {
 			set(
 				produce((state: AppState) => {
 					state.routes[routeData.id] = routeData;
 					if (routeData.primaryBar) {
 						state.views.primaryBar = unionWith<PrimaryBarView>(
-							[routeData.primaryBar],
+							[
+								{
+									app: routeData.app,
+									id: routeData.id,
+									route: routeData.route,
+									component: routeData.primaryBar,
+									badge: routeData.badge,
+									position: routeData.position,
+									visible: routeData.visible,
+									label: routeData.label
+								}
+							],
 							state.views.primaryBar,
 							(a, b): boolean => a.id === b.id
 						);
 					}
 					if (routeData.secondaryBar) {
 						state.views.secondaryBar = unionWith<SecondaryBarView>(
-							[routeData.secondaryBar],
+							[
+								{
+									app: routeData.app,
+									id: routeData.id,
+									route: routeData.route,
+									component: routeData.secondaryBar
+								}
+							],
 							state.views.secondaryBar,
 							(a, b): boolean => a.id === b.id
 						);
 					}
 					if (routeData.appView) {
 						state.views.appView = unionWith<AppView>(
-							[routeData.appView],
+							[
+								{
+									app: routeData.app,
+									id: routeData.id,
+									route: routeData.route,
+									component: routeData.appView
+								}
+							],
 							state.views.appView,
 							(a, b): boolean => a.id === b.id
 						);

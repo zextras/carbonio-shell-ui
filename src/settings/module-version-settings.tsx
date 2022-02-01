@@ -48,7 +48,7 @@ const ModuleVersionSettings: FC = () => {
 					<Container key={app.name} padding={{ horizontal: 'large', vertical: 'small' }}>
 						<Container orientation="horizontal" mainAlignment="space-between">
 							<Text>
-								{app.displayName} ({app.name})
+								{app.display} ({app.name})
 							</Text>
 							<Tooltip placement="top" label="Click to copy">
 								<Text style={{ cursor: 'pointer' }} onClick={(e: any): any => copyToClipboard(e)}>

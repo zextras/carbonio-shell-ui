@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 
 const ShellContext = createContext({ isMobile: true });
 

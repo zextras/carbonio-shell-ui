@@ -36,8 +36,8 @@ const ShellSecondaryBar: FC<SecondaryBarProps> = ({
 	const secondaryBarViews = useAppStore((s) => s.views.secondaryBar);
 	const secondaryBarAccessoryViews = useAppStore((s) => s.views.secondaryBarAccessories);
 	const disabled = useMemo(
-		() => findIndex(secondaryBarViews, (view) => view.id === activeRoute.id) < 0,
-		[activeRoute.id, secondaryBarViews]
+		() => findIndex(secondaryBarViews, (view) => view.id === activeRoute?.id) < 0,
+		[activeRoute?.id, secondaryBarViews]
 	);
 	return disabled ? null : (
 		<>

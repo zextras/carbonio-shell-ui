@@ -8,7 +8,6 @@ import React, { createContext, FC, useCallback, useEffect, useState } from 'reac
 import { ThemeProvider as UIThemeProvider } from '@zextras/carbonio-design-system';
 import { enable, disable, auto, setFetchMethod } from 'darkreader';
 import { reduce } from 'lodash';
-import Logo from './logo';
 import { useAccountStore } from '../store/account';
 import { ThemeExtension, ThemeExtensionMap } from '../../types';
 import { darkReaderDynamicThemeFixes } from '../constants';
@@ -86,7 +85,6 @@ export const ThemeProvider: FC = ({ children }) => {
 	const zimbraPrefFontSize = useAccountStore((s) => s.settings.prefs?.zimbraPrefFontSize as string);
 	// TODO: update when the DS is fully typed :D
 	const [extensions, setExtensions] = useState<ThemeExtensionMap>({
-		zextrasLogo: (t) => ({ ...t, logo: { ...t.logo, svg: Logo } }),
 		fonts: (theme) => {
 			// eslint-disable-next-line no-param-reassign
 			theme.sizes.font = {

@@ -4,81 +4,53 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useMemo } from 'react';
-import { map } from 'lodash';
+import React from 'react';
+import { reduce, find } from 'lodash';
 import { Accordion, Collapse, Container, Padding } from '@zextras/carbonio-design-system';
 import { useHistory } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { useAppList } from '../store/app';
-import { useUserAccount } from '../store/account';
+import { useAppStore } from '../store/app';
 import AppContextProvider from '../boot/app/app-context-provider';
-import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../constants';
-import { SettingsSidebar } from '../settings/settings-sidebar';
 
 const SidebarComponent = ({ item }) =>
-	item.sidebar ? (
+	item.secondary ? (
 		<AppContextProvider pkg={item.id}>
-			<item.sidebar />
+			<item.secondary />
 		</AppContextProvider>
 	) : null;
+
 export default function ShellMobileNav({ mobileNavIsOpen, menuTree }) {
-	const apps = useAppList();
 	const history = useHistory();
-	const account = useUserAccount();
-	const [t] = useTranslation();
-	const items = useMemo(
-		() => [
-			{
-				id: account?.id,
-				label: account?.displayName ?? account?.name,
-				icon: 'PersonOutline',
-				open: true,
-				items: [
-					...map(apps, (app) => ({
-						id: `${app.core.name}-wrap`,
-						label: app.core.display,
-						icon: app.icon,
-						onClick: () => history.push(`/${app.core.route}`),
-						items: app.views?.sidebar
+	const views = useAppStore((s) =>
+		reduce(
+			s.routes,
+			(acc, val) => {
+				const primary = find(s.views.primaryBar, (item) => item.id === val.id);
+				const secondary = find(s.views.secondaryBar, (item) => item.id === val.id);
+				if (primary && primary.visible) {
+					acc.push({
+						id: `${val.app}-wrap`,
+						label: primary.label,
+						icon: typeof primary.component === 'string' ? primary.component : 'Cube',
+						onClick: () => history.push(`/${val.route}`),
+						items: secondary
 							? [
 									{
-										id: app.core.name,
-										label: app.core.display,
-										icon: app.icon,
-										onClick: () => history.push(`/${app.core.route}`),
-										sidebar: app.views?.sidebar,
+										id: secondary.id,
+										label: secondary.id,
+										icon: 'Cube',
+										secondary: secondary.component,
 										CustomComponent: SidebarComponent
 									}
 							  ]
 							: []
-					})),
-					{
-						id: `${SEARCH_APP_ID}-wrap`,
-						label: t('search.app', 'Search'),
-						icon: 'SearchModOutline',
-						onClick: () => history.push(`/${SEARCH_APP_ID}`),
-						items: []
-					},
-					{
-						id: `${SETTINGS_APP_ID}-wrap`,
-						label: t('settings.app', 'Settings'),
-						icon: 'SettingsModOutline',
-						onClick: () => history.push(`/${SETTINGS_APP_ID}`),
-						items: [
-							{
-								id: SETTINGS_APP_ID,
-								label: t('settings.app', 'Settings'),
-								icon: 'SettingsModOutline',
-								onClick: () => history.push(`/${SETTINGS_APP_ID}`),
-								CustomComponent: SettingsSidebar
-							}
-						]
-					}
-				]
-			}
-		],
-		[account?.displayName, account?.id, account?.name, apps, history, t]
+					});
+				}
+				return acc;
+			},
+			[]
+		)
 	);
+
 	return (
 		<Container
 			height="fill"
@@ -103,7 +75,7 @@ export default function ShellMobileNav({ mobileNavIsOpen, menuTree }) {
 					}}
 				>
 					<Container width="fill" height="fit" orientation="vertical" mainAlignment="space-between">
-						<Accordion items={items} />
+						<Accordion items={views} />
 					</Container>
 					<Container width="fill" height="fit" orientation="vertical" mainAlignment="flex-end">
 						<Accordion items={menuTree} />

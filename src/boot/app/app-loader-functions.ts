@@ -3,6 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+// The 'useXXX' functions actually return hooks
+/* eslint-disable react-hooks/rules-of-hooks */
 
 import { reduce } from 'lodash';
 import { getApp, getAppContext, useApp, useAppContext } from '../../store/app';
@@ -37,9 +39,6 @@ import {
 	useUpdateCurrentBoard,
 	useRemoveCurrentBoard,
 	useBoardConfig,
-	getUsePushHistoryCallback,
-	useGoBackHistoryCallback,
-	getUseReplaceHistoryCallback,
 	useIsMobile
 } from '../../shell/hooks';
 import {
@@ -54,15 +53,15 @@ import {
 import { CarbonioModule } from '../../../types';
 import { getEditSettingsForApp } from '../../network/edit-settings';
 
-export const getAppFunctions = (pkg: CarbonioModule): unknown => ({
-	// The returned function is a hook
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({
+	// APP STORE FUNCTIONS
 	useAppContext: useAppContext(pkg.name),
 	getAppContext: getAppContext(pkg.name),
-	// The returned function is a hook
-	// eslint-disable-next-line react-hooks/rules-of-hooks
 	useApp: useApp(pkg.name),
 	getApp: getApp(pkg.name),
+
+	// INTEGRATIONS
 	useIntegratedHook,
 	getIntegratedHook,
 	useIntegratedFunction,
@@ -77,6 +76,7 @@ export const getAppFunctions = (pkg: CarbonioModule): unknown => ({
 	getActionsFactory,
 	useActionFactory,
 	getFactory,
+	// ACCOUNTS AND STUFF
 	useIsMobile,
 	useUserAccount,
 	getUserAccount,
@@ -96,16 +96,11 @@ export const getAppFunctions = (pkg: CarbonioModule): unknown => ({
 	useUpdateCurrentBoard,
 	useRemoveCurrentBoard,
 	useBoardConfig,
-	usePushHistoryCallback: getUsePushHistoryCallback(pkg.route),
-	useGoBackHistoryCallback,
-	useReplaceHistoryCallback: getUseReplaceHistoryCallback(pkg.route),
 	getBridgedFunctions: (): unknown => {
-		const { packageDependentFunctions, routeDependentFunctions, functions } =
-			contextBridge.getState();
+		const { packageDependentFunctions, functions } = contextBridge.getState();
 		return {
 			...functions,
-			...reduce(packageDependentFunctions, (acc, f, name) => ({ ...acc, [name]: f(pkg.name) }), {}),
-			...reduce(routeDependentFunctions, (acc, f, name) => ({ ...acc, [name]: f(pkg.route) }), {})
+			...reduce(packageDependentFunctions, (acc, f, name) => ({ ...acc, [name]: f(pkg.name) }), {})
 		};
 	},
 	editSettings: getEditSettingsForApp(pkg.name)

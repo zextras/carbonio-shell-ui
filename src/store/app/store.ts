@@ -155,13 +155,13 @@ export const useAppStore = create<AppState>((set) => ({
 		},
 
 		// add board
-		addBoardView: (id: string, data: BoardView): string => {
+		addBoardView: (data: BoardView): string => {
 			set(
 				produce((state: AppState) => {
 					state.views.board.push(data);
 				})
 			);
-			return id;
+			return data.id;
 		},
 
 		// remove board
@@ -174,13 +174,13 @@ export const useAppStore = create<AppState>((set) => ({
 		},
 
 		// add settings
-		addSettingsView: (id: string, data: SettingsView): string => {
+		addSettingsView: (data: SettingsView): string => {
 			set(
 				produce((state: AppState) => {
 					state.views.settings.push(data);
 				})
 			);
-			return id;
+			return data.id;
 		},
 
 		// remove settings
@@ -193,13 +193,13 @@ export const useAppStore = create<AppState>((set) => ({
 		},
 		//
 		// add search
-		addSearchView: (id: string, data: SearchView): string => {
+		addSearchView: (data: SearchView): string => {
 			set(
 				produce((state: AppState) => {
 					state.views.search.push(data);
 				})
 			);
-			return id;
+			return data.id;
 		},
 		// remove search
 		removeSearchView: (id: string): void => {
@@ -211,13 +211,13 @@ export const useAppStore = create<AppState>((set) => ({
 		},
 		//
 		// add utility
-		addUtilityView: (id: string, data: UtilityView): string => {
+		addUtilityView: (data: UtilityView): string => {
 			set(
 				produce((state: AppState) => {
 					state.views.utilityBar.push(data);
 				})
 			);
-			return id;
+			return data.id;
 		},
 		// remove utility
 		removeUtilityView: (id: string): void => {
@@ -229,13 +229,13 @@ export const useAppStore = create<AppState>((set) => ({
 		},
 		//
 		// add primaryAccessory
-		addPrimaryAccessoryView: (id: string, data: PrimaryAccessoryView): string => {
+		addPrimaryAccessoryView: (data: PrimaryAccessoryView): string => {
 			set(
 				produce((state: AppState) => {
 					state.views.primaryBarAccessories.push(data);
 				})
 			);
-			return id;
+			return data.id;
 		},
 		// remove primaryAccessory
 		removePrimaryAccessoryView: (id: string): void => {
@@ -247,13 +247,13 @@ export const useAppStore = create<AppState>((set) => ({
 		},
 		//
 		// add secondaryAccessory
-		addSecondaryAccessoryView: (id: string, data: SecondaryAccessoryView): string => {
+		addSecondaryAccessoryView: (data: SecondaryAccessoryView): string => {
 			set(
 				produce((state: AppState) => {
 					state.views.secondaryBarAccessories.push(data);
 				})
 			);
-			return id;
+			return data.id;
 		},
 		// remove secondaryAccessory
 		removeSecondaryAccessoryView: (id: string): void => {

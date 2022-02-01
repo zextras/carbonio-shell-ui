@@ -6,7 +6,6 @@
 import React, { FC, useMemo } from 'react';
 import { Container, Tooltip, IconButton, Responsive } from '@zextras/carbonio-design-system';
 import { find, map } from 'lodash';
-import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useAppStore } from '../store/app';
 import AppContextProvider from '../boot/app/app-context-provider';
@@ -31,12 +30,9 @@ const Panel = styled(Container)`
 `;
 
 export const ShellUtilityBar: FC<{
-	mode: 'closed' | 'overlap' | 'open';
 	setMode: (m: 'closed' | 'overlap' | 'open') => void;
-	current?: string;
 	setCurrent: (c: string) => void;
-}> = ({ mode, setMode, current, setCurrent }) => {
-	const history = useHistory();
+}> = ({ setMode, setCurrent }) => {
 	const utilityViews = useAppStore((s) => s.views.utilityBar);
 
 	return (

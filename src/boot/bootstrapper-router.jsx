@@ -4,16 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useContext, Suspense, lazy } from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter, useHistory } from 'react-router-dom';
 import { SnackbarManagerContext, ModalManagerContext } from '@zextras/carbonio-design-system';
 import AppLoaderMounter from './app/app-loader-mounter';
 import { useContextBridge } from '../store/context-bridge';
-import LoadingView from './loading-view';
-
-export const LazyShellView = lazy(() =>
-	import(/* webpackChunkName: "shell-view" */ '../shell/shell-view')
-);
+import ShellView from '../shell/shell-view';
 
 const ContextBridge = () => {
 	const history = useHistory();
@@ -23,24 +19,7 @@ const ContextBridge = () => {
 		functions: {
 			getHistory: () => history,
 			createSnackbar,
-			createModal,
-			historyGoBack: () => history.goBack()
-		},
-		routeDependentFunctions: {
-			historyPush: (route) => (location) => {
-				if (typeof location === 'string') {
-					history.replace(`/${route}${location}`);
-				} else {
-					history.replace({ ...location, pathname: `/${route}${location.pathname}` });
-				}
-			},
-			historyReplace: (route) => (location) => {
-				if (typeof location === 'string') {
-					history.replace(`/${route}${location}`);
-				} else {
-					history.replace({ ...location, pathname: `/${route}${location.pathname}` });
-				}
-			}
+			createModal
 		}
 	});
 	return null;
@@ -51,9 +30,7 @@ export default function BootstrapperRouter() {
 		<BrowserRouter basename="/carbonio/">
 			<ContextBridge />
 			<AppLoaderMounter />
-			<Suspense fallback={<LoadingView />}>
-				<LazyShellView />
-			</Suspense>
+			<ShellView />
 		</BrowserRouter>
 	);
 }

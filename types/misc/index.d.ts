@@ -19,11 +19,6 @@ export interface II18nFactory {
 	getAppI18n(appPkgDescription: CarbonioModule): i18n;
 }
 
-// export type DevUtilsContext = {
-// 	i18nFactory: II18nFactory;
-// 	mswjs?: SetupWorkerApi;
-// };
-
 export type DRPropValues = 'auto' | 'enabled' | 'disabled';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -33,7 +28,6 @@ export type RouteDependentFunction = (route: string) => Function;
 
 export type ContextBridgeState = {
 	packageDependentFunctions: Record<string, PackageDependentFunction>;
-	routeDependentFunctions: Record<string, RouteDependentFunction>;
 	// eslint-disable-next-line @typescript-eslint/ban-types
 	functions: Record<string, Function>;
 	add: (content: Omit<ContextBridgeState, 'add'>) => void;

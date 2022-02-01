@@ -29,7 +29,7 @@ export type AppRoute = {
 
 export type AppRouteData = AppRoute & {
 	primaryBar: PrimaryBarView;
-	secondaryBar: SecondaryBarView;
+	secondaryBar?: SecondaryBarView;
 	appView: AppView;
 };
 
@@ -88,32 +88,32 @@ export type AppSetters = {
 	updatePrimaryBadge: (id: string, badge: BadgeInfo) => void;
 	//
 	// add board
-	addBoardView: (id: string, data: BoardView) => string;
+	addBoardView: (data: BoardView) => string;
 	// remove board
 	removeBoardView: (id: string) => void;
 	//
 	// add settings
-	addSettingsView: (id: string, data: SettingsView) => string;
+	addSettingsView: (data: SettingsView) => string;
 	// remove settings
 	removeSettingsView: (id: string) => void;
 	//
 	// add search
-	addSearchView: (id: string, data: SearchView) => string;
+	addSearchView: (data: SearchView) => string;
 	// remove search
 	removeSearchView: (id: string) => void;
 	//
 	// add utility
-	addUtilityView: (id: string, data: UtilityView) => string;
+	addUtilityView: (data: UtilityView) => string;
 	// remove utility
 	removeUtilityView: (id: string) => void;
 	//
 	// add primaryAccessory
-	addPrimaryAccessoryView: (id: string, data: PrimaryAccessoryView) => string;
+	addPrimaryAccessoryView: (data: PrimaryAccessoryView) => string;
 	// remove primaryAccessory
 	removePrimaryAccessoryView: (id: string) => void;
 	//
 	// add secondaryAccessory
-	addSecondaryAccessoryView: (id: string, data: SecondaryAccessoryView) => string;
+	addSecondaryAccessoryView: (data: SecondaryAccessoryView) => string;
 	// remove secondaryAccessory
 	removeSecondaryAccessoryView: (id: string) => void;
 	setAppContext: (app: string) => (context: unknown) => void;

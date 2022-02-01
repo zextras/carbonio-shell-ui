@@ -9,6 +9,7 @@ import { Catcher } from '@zextras/carbonio-design-system';
 
 const AppErrorCatcher: FC = ({ children }) => {
 	const onError = useCallback((error) => {
+		console.error(error);
 		// ({event: 'report-exception',data: { exception: error }});
 	}, []);
 	return <Catcher onError={onError}>{children}</Catcher>;

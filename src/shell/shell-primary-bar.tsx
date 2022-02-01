@@ -66,15 +66,15 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 							<Tooltip label={view.label} placement="right" key={view.id}>
 								<IconButton
 									icon={view.component}
-									backgroundColor={activeRoute.id === view.id ? 'gray4' : 'gray6'}
-									iconColor={activeRoute.id === view.id ? 'primary' : 'text'}
+									backgroundColor={activeRoute?.id === view.id ? 'gray4' : 'gray6'}
+									iconColor={activeRoute?.id === view.id ? 'primary' : 'text'}
 									onClick={(): void => history.push(view.route)}
 									size="large"
 								/>
 							</Tooltip>
 						);
 					}
-					return <view.component active={view.id === activeRoute.id} />;
+					return <view.component active={view.id === activeRoute?.id} />;
 				})}
 			</Row>
 			<Row>

@@ -13,18 +13,22 @@ import StoreFactory from '../../redux/store-factory';
 import { loadApp, unloadApps } from './load-app';
 import { CarbonioModule } from '../../../types';
 import { injectSharedLibraries } from './shared-libraries';
+import { SHELL_APP_ID } from '../../constants';
 
 export function loadApps(storeFactory: StoreFactory, apps: Array<CarbonioModule>): void {
 	injectSharedLibraries();
-	const appsToLoad =
-		typeof cliSettings === 'undefined' || cliSettings.enableErrorReporter
-			? apps
-			: filter(apps, (app) => app.name !== 'carbonio-error-reporter-ui');
+	const appsToLoad = filter(apps, (app) => {
+		if (app.name === SHELL_APP_ID) return false;
+		if (typeof cliSettings !== 'undefined' && !cliSettings.enableErrorReporter) return false;
+		return true;
+	});
 	console.log(
 		'%cLOADING APPS',
 		'color: white; background: #2b73d2;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
 	);
-	Promise.allSettled(map(appsToLoad, (app) => loadApp(app, storeFactory))).then(console.log);
+	Promise.allSettled(map(appsToLoad, (app) => loadApp(app, storeFactory))).then((a) =>
+		console.log('@@@ loaded', a)
+	);
 }
 
 export function unloadAllApps(): Promise<void> {

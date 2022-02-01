@@ -6,36 +6,19 @@
 
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
-import { forEach, forOwn } from 'lodash';
-// import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
-// import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
-
-import { ComponentClass, ComponentType } from 'react';
+import { forOwn } from 'lodash';
+import { ComponentType } from 'react';
 import { Store } from '@reduxjs/toolkit';
 import StoreFactory from '../../redux/store-factory';
 
 import { useAppStore } from '../../store/app';
 import { getAppFunctions } from './app-loader-functions';
-import { getAppLink } from './app-link';
 import { Spinner } from '../../ui-extras/spinner';
-import {
-	ZIMBRA_STANDARD_COLORS,
-	FOLDERS,
-	SHELL_APP_ID,
-	SETTINGS_APP_ID,
-	SEARCH_APP_ID,
-	ACTION_TYPES
-} from '../../constants';
-import { useIntegrationsStore } from '../../store/integrations/store';
+import * as CONSTANTS from '../../constants';
 import { report } from '../../network/report';
 import { useAccountStore } from '../../store/account';
-import {
-	IShellWindow,
-	LoadedAppRuntime,
-	SharedLibrariesAppsMap,
-	CarbonioModule,
-	AccountState
-} from '../../../types';
+import { IShellWindow, SharedLibrariesAppsMap, CarbonioModule } from '../../../types';
+import { getAppSetters } from './app-loader-setters';
 
 export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
@@ -51,13 +34,13 @@ let _scriptId = 0;
 // 	}
 // }
 
-function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<void> {
+function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<CarbonioModule> {
 	return new Promise((_resolve, _reject) => {
 		let resolved = false;
 		const resolve: (...args: any[]) => void = (...args) => {
 			if (!resolved) {
 				resolved = true;
-				_resolve(...args);
+				_resolve(appPkg);
 			}
 		};
 		const reject: (e: Error) => void = (e) => {
@@ -67,9 +50,8 @@ function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<void>
 			}
 		};
 		try {
-			// eslint-disable-next-line max-len
 			(
-				window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>
+				window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentType>
 			).__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-shell-ui'][appPkg.name] = {
 				store: {
 					store,
@@ -78,44 +60,32 @@ function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<void>
 				report: report(appPkg),
 				soapFetch: useAccountStore.getState().soapFetch(appPkg.name),
 				xmlSoapFetch: useAccountStore.getState().xmlSoapFetch(appPkg.name),
-				setAppContext: useAppStore.getState().setters.setAppContext(appPkg.name),
-				registerHooks: useIntegrationsStore.getState().registerHooks,
-				registerFunctions: useIntegrationsStore.getState().registerFunctions,
-				registerActions: useIntegrationsStore.getState().registerActions,
-				registerComponents: useIntegrationsStore.getState().registerComponents(appPkg.name),
 				// AppLink: getAppLink(appPkg.route),
 				Spinner,
-				FOLDERS,
-				ZIMBRA_STANDARD_COLORS,
-				SHELL_APP_ID,
-				SETTINGS_APP_ID,
-				SEARCH_APP_ID,
-				ACTION_TYPES,
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				...getAppFunctions(appPkg)
+				...getAppSetters(appPkg),
+				...getAppFunctions(appPkg),
+				...CONSTANTS
 			};
 
-			// eslint-disable-next-line max-len
 			(
-				window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>
-			).__ZAPP_HMR_EXPORT__[appPkg.name] = (appClass: ComponentType): void => {
+				window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentType>
+			).__ZAPP_HMR_EXPORT__[appPkg.name] = (appComponent: ComponentType): void => {
 				useAppStore.setState((state) => ({
 					entryPoints: {
 						...state.entryPoints,
-						[appPkg.name]: appClass
+						[appPkg.name]: appComponent
 					}
 				}));
-				resolve();
+				resolve(appPkg);
 			};
 
-			if (FLAVOR === 'NPM' && typeof cliSettings !== 'undefined' && cliSettings.hasHandlers) {
-				// eslint-disable-next-line max-len
-				// (
-				// 	window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>
-				// ).__ZAPP_HMR_HANDLERS__[appPkg.name] = (handlers: RequestHandlersList): void =>
-				// 	updateAppHandlers(appPkg, handlers);
-			}
+			// if (FLAVOR === 'NPM' && typeof cliSettings !== 'undefined' && cliSettings.hasHandlers) {
+			// eslint-disable-next-line max-len
+			// (
+			// 	window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>
+			// ).__ZAPP_HMR_HANDLERS__[appPkg.name] = (handlers: RequestHandlersList): void =>
+			// 	updateAppHandlers(appPkg, handlers);
+			// }
 			const script: HTMLScriptElement = document.createElement('script');
 			script.setAttribute('type', 'text/javascript');
 			script.setAttribute('data-pkg_name', appPkg.name);
@@ -135,7 +105,7 @@ function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<void>
 
 export function loadApp(pkg: CarbonioModule, storeFactory: StoreFactory): Promise<CarbonioModule> {
 	const store = storeFactory.getStoreForApp(pkg);
-	return loadAppModule(pkg, store).then(() => pkg);
+	return loadAppModule(pkg, store);
 }
 
 export function unloadApps(): Promise<void> {

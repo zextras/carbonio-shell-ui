@@ -105,11 +105,6 @@ export const useBoardConfig: <T>() => T;
 
 export const useApp: () => AppData;
 export const useAppContext: <T>() => T;
-
-export const useGoBackHistoryCallback: () => () => void;
-export const usePushHistoryCallback: () => (location: LocationDescriptor) => void;
-export const useReplaceHistoryCallback: () => (location: LocationDescriptor) => void;
-
 export const useUserAccounts: () => [Account];
 export const useUserAccount: () => Account;
 export const useUserSettings: () => AccountSettings;
@@ -136,9 +131,6 @@ export const getBridgedFunctions: () => {
 	createModal: (...params: any[]) => void;
 	createSnackbar: (...params: any[]) => void;
 	getHistory: () => History;
-	historyGoBack: () => void;
-	historyPush: (location: LocationDescriptor) => void;
-	historyReplace: (location: LocationDescriptor) => void;
 	removeBoard: (key: string) => void;
 	removeCurrentBoard: () => void;
 	setCurrentBoard: (key: string) => void;

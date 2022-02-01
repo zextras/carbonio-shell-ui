@@ -10,14 +10,15 @@ import { I18nextProvider } from 'react-i18next';
 import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import { useStoreFactory, useI18nFactory } from '../bootstrapper-context';
 import AppErrorCatcher from './app-error-catcher';
-import { useApp } from '../../store/app';
+import { getApp, getShell } from '../../store/app';
 
 const AppContextProvider: FC<{ pkg: string }> = ({ pkg, children }) => {
 	const i18nFactory = useI18nFactory();
 	const storeFactory = useStoreFactory();
-	const app = useApp(pkg);
+	const app = useMemo(() => getApp(pkg)() ?? getShell(), [pkg]);
 	const store = useMemo(() => storeFactory.getStoreForApp(app), [app, storeFactory]);
 	const i18n = useMemo(() => i18nFactory.getAppI18n(app), [i18nFactory, app]);
+	console.log('@@@ going through here', pkg);
 	return (
 		<Provider store={store}>
 			<I18nextProvider i18n={i18n}>

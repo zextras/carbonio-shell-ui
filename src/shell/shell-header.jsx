@@ -11,13 +11,13 @@ import {
 	Container,
 	Dropdown,
 	IconButton,
-	Logo,
 	Padding,
 	Responsive,
 	useScreenMode,
 	MultiButton
 } from '@zextras/carbonio-design-system';
 import { useAppStore, useApps } from '../store/app';
+import Logo from '../svg/carbonio-beta.svg';
 
 export default function ShellHeader({ activeRoute, mobileNavIsOpen, onMobileMenuClick, children }) {
 	const [t] = useTranslation();
@@ -25,7 +25,7 @@ export default function ShellHeader({ activeRoute, mobileNavIsOpen, onMobileMenu
 	const apps = useApps();
 
 	const [primaryAction, secondaryActions] = useAppStore((s) => [
-		apps[activeRoute.app]?.newButton?.primary,
+		apps[activeRoute?.app]?.newButton?.primary,
 		reduce(
 			s.apps,
 			(acc, app, key) => {
@@ -75,7 +75,7 @@ export default function ShellHeader({ activeRoute, mobileNavIsOpen, onMobileMenu
 						<IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} />
 					</Padding>
 				</Responsive>
-				<Logo size="large" style={{ minWidth: '160px' }} />
+				<Logo height="40px" />
 				<Padding horizontal="large">
 					<MultiButton
 						style={{ height: '44px' }}

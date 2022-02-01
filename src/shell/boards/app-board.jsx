@@ -11,10 +11,9 @@ import styled from 'styled-components';
 import { map } from 'lodash';
 import AppContextProvider from '../../boot/app/app-context-provider';
 import { BoardValueContext, BoardSetterContext } from './board-context';
-import { useApps } from '../../store/app';
+import { useAppStore } from '../../store/app';
 
-// eslint-disable-next-line
-const _container = styled.div`
+const BoardContainer = styled.div`
 	display: ${(props) => (props.show ? 'block' : 'none')};
 	height: 100%;
 	width: 100%;
@@ -25,42 +24,40 @@ const history = createMemoryHistory();
 export default function AppBoard({ idx }) {
 	const { boards, currentBoard } = useContext(BoardValueContext);
 	const { updateBoard } = useContext(BoardSetterContext);
-	const apps = useApps();
+	const boardViews = useAppStore((s) => s.views.board);
 	const windowHistory = useHistory();
 	const routes = useMemo(
 		() =>
-			map(apps, (app, appId) =>
-				app.views?.board ? (
-					<Route key={appId} path={`/${appId}`}>
-						<AppContextProvider key={appId} pkg={appId}>
-							<app.views.board windowHistory={windowHistory} />
-						</AppContextProvider>
-					</Route>
-				) : null
-			),
-		[apps, windowHistory]
+			map(boardViews, (view) => (
+				<Route key={view.id} path={`/${view.route}`}>
+					<AppContextProvider key={view.id} pkg={view.app}>
+						<view.component windowHistory={windowHistory} />
+					</AppContextProvider>
+				</Route>
+			)),
+		[boardViews, windowHistory]
 	);
 
-	// eslint-disable-next-line
-	useEffect(() => {
-		return history.listen((l, a) => {
-			updateBoard(idx, `${l.pathname}${l.search}${l.hash}`);
-		});
-	}, [history, idx, updateBoard]);
+	useEffect(
+		() =>
+			history.listen((l, a) => {
+				updateBoard(idx, `${l.pathname}${l.search}${l.hash}`);
+			}),
+		[idx, updateBoard]
+	);
 
 	useEffect(() => {
 		const l = history.location;
 		if (`${l.pathname}${l.search}${l.hash}` !== boards[idx].url) {
 			history.push(boards[idx].url);
 		}
-	}, [history, idx, boards]);
+	}, [idx, boards]);
 
 	return (
-		// eslint-disable-next-line
-		<_container show={currentBoard === idx}>
+		<BoardContainer show={currentBoard === idx}>
 			<Router key={idx} history={history}>
 				{routes}
 			</Router>
-		</_container>
+		</BoardContainer>
 	);
 }

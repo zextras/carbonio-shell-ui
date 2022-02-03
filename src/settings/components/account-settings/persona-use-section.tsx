@@ -8,13 +8,13 @@ import React, { useMemo, useEffect, ReactElement, useState, useCallback } from '
 import { Container, Text, Padding, Input, Row, Checkbox } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
 import { IdentityProps } from '../../../../types';
-import { REGEX_VALIDATION } from '../../../constants';
+import { EMAIL_VALIDATION_REGEX } from '../../../constants';
 
 type PersonaUseSectionProps = {
 	t: TFunction;
 	items: IdentityProps;
 	setMods: (mods: { [key: string]: unknown }) => void;
-	updateIdentities: (id: string, key: string, pref: string) => void;
+	updateIdentities: (id: string, key: string, prefs: string) => void;
 };
 
 const PersonaUseSection = ({
@@ -66,7 +66,7 @@ const PersonaUseSection = ({
 			setWhenSentToAddresses(ev.target.value);
 			if (
 				whenSentToAddresses === items.whenSentToAddresses ||
-				!REGEX_VALIDATION.test(ev.target.value)
+				!EMAIL_VALIDATION_REGEX.test(ev.target.value)
 			) {
 				setMods({});
 			} else {

@@ -16,7 +16,7 @@ import {
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
 import { map } from 'lodash';
-import { SHELL_APP_ID, REGEX_VALIDATION } from '../../../constants';
+import { SHELL_APP_ID, EMAIL_VALIDATION_REGEX } from '../../../constants';
 import { IdentityProps, Mods } from '../../../../types';
 import { useAccountStore } from '../../../store/account/store';
 
@@ -53,7 +53,7 @@ const PasswordRecoverySettings = ({
 			}
 		): void => {
 			setEmailValue(ev.target.value);
-			setIsValidEmail(REGEX_VALIDATION.test(ev.target.value));
+			setIsValidEmail(EMAIL_VALIDATION_REGEX.test(ev.target.value));
 		},
 		[setEmailValue, setIsValidEmail]
 	);

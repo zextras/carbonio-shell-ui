@@ -25,7 +25,7 @@ type SettingsSentMessagesProps = {
 	items: IdentityProps;
 	isExternalAccount: boolean;
 	setMods: (mods: { [key: string]: unknown }) => void;
-	updateIdentities: (id: string, key: string, pref: string) => void;
+	updateIdentities: (id: string, key: string, prefs: string) => void;
 };
 
 const SettingsSentMessages = ({

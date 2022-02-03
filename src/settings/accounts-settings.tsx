@@ -90,7 +90,7 @@ const AccountsSettings = (): ReactElement => {
 		value?: string;
 		action?: string;
 		deleteList?: string[];
-		createList?: { pref: CreateIdentityProps }[];
+		createList?: { prefs: CreateIdentityProps }[];
 	};
 	const addMod = useCallback((arg: AddModProps) => {
 		const { type, id, key, value, action, deleteList, createList } = arg;
@@ -102,7 +102,7 @@ const AccountsSettings = (): ReactElement => {
 	}, []);
 
 	const createIdentities = useCallback(
-		(createList: { pref: CreateIdentityProps }[]) => {
+		(createList: { prefs: CreateIdentityProps }[]) => {
 			const arg = {
 				type: 'identity',
 				id: undefined,

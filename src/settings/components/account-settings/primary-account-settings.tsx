@@ -12,7 +12,7 @@ import { IdentityProps } from '../../../../types';
 interface PrimaryAccountSettingsProps {
 	t: TFunction;
 	items: IdentityProps;
-	updateIdentities: (id: string, key: string, pref: string) => void;
+	updateIdentities: (id: string, key: string, prefs: string) => void;
 	setMods: (mods: { [key: string]: unknown }) => void;
 }
 

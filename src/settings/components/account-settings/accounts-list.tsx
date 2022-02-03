@@ -28,7 +28,7 @@ type AccountsListProps = {
 	setSelectedIdentityId: (value: number) => void;
 	setMods: (mods: { [key: string]: unknown }) => void;
 	deleteIdentities: (deleteList: string[]) => void;
-	createIdentities: (createList: { pref: CreateIdentityProps }[]) => void;
+	createIdentities: (createList: { prefs: CreateIdentityProps }[]) => void;
 };
 
 type ListItemProps = {
@@ -99,7 +99,7 @@ const AccountsList = ({
 	const createModal = useContext(ModalManagerContext);
 
 	const [createListrequestId, setCreateListrequestId] = useState(0);
-	const createList = useMemo((): any => [], []);
+	const [createList, setCreateList] = useState<{ prefs: CreateIdentityProps }[]>([]);
 	const addNewPersona = useCallback(() => {
 		const newPersonaNextNumber =
 			Number(
@@ -134,13 +134,16 @@ const AccountsList = ({
 		});
 		setIdentities(identities);
 		setCreateListrequestId(createListrequestId + 1);
-		createList.push({
-			prefs: {
-				requestId: createListrequestId,
-				zimbraPrefIdentityName: newPersonaName,
-				zimbraPrefFromDisplay: identities[0]?.fromDisplay,
-				zimbraPrefFromAddress: identities[0]?.fromAddress
-			}
+		setCreateList((state) => {
+			state.push({
+				prefs: {
+					requestId: createListrequestId,
+					zimbraPrefIdentityName: newPersonaName,
+					zimbraPrefFromDisplay: identities[0]?.fromDisplay,
+					zimbraPrefFromAddress: identities[0]?.fromAddress
+				}
+			});
+			return state;
 		});
 		createIdentities(createList);
 		setSelectedIdentityId(identities.length - 1);
@@ -156,7 +159,7 @@ const AccountsList = ({
 
 	const isDisabled = false;
 
-	const deleteList = useMemo((): string[] => [], []);
+	const [deleteList, setDeleteList] = useState<string[]>([]);
 	const onConfirmDelete = useCallback((): void => {
 		const newIdentities = map(
 			filter(
@@ -165,7 +168,10 @@ const AccountsList = ({
 			),
 			(item: IdentityProps, index: number) => ({ ...item, id: index.toString() })
 		);
-		deleteList.push(identities[selectedIdentityId]?.identityId);
+		setDeleteList((state) => {
+			state.push(identities[selectedIdentityId]?.identityId);
+			return state;
+		});
 		setIdentities(newIdentities);
 		deleteIdentities(deleteList);
 	}, [identities, selectedIdentityId, setIdentities, deleteList, deleteIdentities]);

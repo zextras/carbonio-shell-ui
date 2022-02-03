@@ -109,16 +109,7 @@ const PasswordRecoverySettings = ({
 				mainAlignment="flex-start"
 			>
 				<Row takeAvailableSpace padding={{ right: 'small' }}>
-					<Input
-						label={inputLabel}
-						value={emailValue}
-						background="gray5"
-						onChange={(
-							ev: MouseEvent & {
-								target: HTMLButtonElement;
-							}
-						): void => onChange(ev)}
-					/>
+					<Input label={inputLabel} value={emailValue} background="gray5" onChange={onChange} />
 				</Row>
 				<Row width="fit">
 					<Button
@@ -126,7 +117,7 @@ const PasswordRecoverySettings = ({
 						color="primary"
 						type="outlined"
 						disabled={!isValidEmail}
-						onClick={(): void => onSubmit()}
+						onClick={onSubmit}
 					/>
 				</Row>
 			</Row>

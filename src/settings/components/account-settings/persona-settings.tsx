@@ -91,11 +91,7 @@ const PersonaSettings = ({
 						label={t('label.persona_name', 'Persona Name')}
 						value={personaLabel}
 						background="gray5"
-						onChange={(
-							ev: MouseEvent & {
-								target: HTMLButtonElement;
-							}
-						): void => onChange(ev)}
+						onChange={onChange}
 					/>
 				</Row>
 			</Row>

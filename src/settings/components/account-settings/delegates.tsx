@@ -141,7 +141,10 @@ const Delegates = ({
 				>
 					<Radio
 						width="100%"
-						label={t('label.save_my_folder', 'Save a copy of sent messages to my Sent folder')}
+						label={t(
+							'label.save_to_my_sent_folder',
+							'Save a copy of sent messages to my Sent folder'
+						)}
 						value="1"
 					/>
 					<Radio

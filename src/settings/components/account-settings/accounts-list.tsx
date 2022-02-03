@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, ReactElement, useMemo, useState } from 'react';
+import React, { useCallback, ReactElement, useMemo, useState, useContext } from 'react';
 import {
 	Container,
 	Text,
@@ -13,12 +13,12 @@ import {
 	Row,
 	Padding,
 	Button,
-	Icon
+	Icon,
+	ModalManagerContext
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
 import { map, filter, max } from 'lodash';
 import { IdentityProps, CreateIdentityProps } from '../../../../types';
-import ConfirmDeleteModal from './confirm-delete-modal';
 
 type AccountsListProps = {
 	t: TFunction;
@@ -57,7 +57,6 @@ const AccountsList = ({
 			setMods({});
 		}
 	};
-	const [openModal, setOpenModal] = useState(false);
 	const ListItem = ({ item }: ListItemProps): ReactElement => (
 		<>
 			<Container
@@ -96,6 +95,8 @@ const AccountsList = ({
 			<Divider />
 		</>
 	);
+
+	const createModal = useContext(ModalManagerContext);
 
 	const [createListrequestId, setCreateListrequestId] = useState(0);
 	const createList = useMemo((): any => [], []);
@@ -156,8 +157,7 @@ const AccountsList = ({
 	const isDisabled = false;
 
 	const deleteList = useMemo((): string[] => [], []);
-	const onDelete = useCallback((): void => {
-		setOpenModal(false);
+	const onConfirmDelete = useCallback((): void => {
 		const newIdentities = map(
 			filter(
 				identities,
@@ -169,6 +169,32 @@ const AccountsList = ({
 		setIdentities(newIdentities);
 		deleteIdentities(deleteList);
 	}, [identities, selectedIdentityId, setIdentities, deleteList, deleteIdentities]);
+	const onDelete = useCallback((): void => {
+		// I'm disabling lint as the DS is not defining the type
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		const closeModal = createModal({
+			title: t('label.permanent_delete_title', 'Are you sure to permanently delete this Persona?'),
+			onConfirm: () => {
+				onConfirmDelete();
+				closeModal();
+			},
+			confirmLabel: t('label.delete_permanently', 'Delete permanently'),
+			confirmColor: 'error',
+			showCloseIcon: true,
+			onClose: () => closeModal(),
+			children: (
+				<Padding all="small">
+					<Text overflow="break-word">
+						{t(
+							'messages.permanent_delete_body',
+							'If you permanently delete this Persona you will not be able to recover it. Continue?'
+						)}
+					</Text>
+				</Padding>
+			)
+		});
+	}, [createModal, t, onConfirmDelete]);
 
 	return (
 		<>
@@ -218,20 +244,13 @@ const AccountsList = ({
 				</Padding>
 				<Button
 					label={t('label.delete', 'Delete')}
-					onClick={(): void => setOpenModal(true)}
+					onClick={(): void => onDelete()}
 					color="error"
 					type="outlined"
 					disabled={identities[selectedIdentityId]?.type === t('label.primary', 'Primary')}
 				/>
-				{/* <//Row> */}
 			</Row>
 			<Padding bottom="large" />
-			<ConfirmDeleteModal
-				t={t}
-				onConfirm={onDelete}
-				setOpenModal={setOpenModal}
-				openModal={openModal}
-			/>
 		</>
 	);
 };

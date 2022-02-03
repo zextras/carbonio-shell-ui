@@ -17,7 +17,7 @@ import {
 	Icon
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import { filter } from 'lodash';
+import { filter, find } from 'lodash';
 import { IdentityProps } from '../../../../types';
 
 type SettingsSentMessagesProps = {
@@ -84,8 +84,8 @@ const SettingsSentMessages = ({
 		() => [{ value: items.fromAddress, label: items.fromAddress }],
 		[items]
 	);
-	const [fromAddress, setFromAddress] = useState(
-		filter(fromAddressArray, (item) => item.value === items.fromAddress)[0]
+	const [fromAddress, setFromAddress] = useState(() =>
+		find(fromAddressArray, (item) => item.value === items.fromAddress)
 	);
 	useEffect(
 		() => setFromAddress(filter(fromAddressArray, (item) => item.value === items.fromAddress)[0]),

@@ -26,7 +26,7 @@ import SettingsSentMessages from './components/account-settings/settings-sent-me
 import PasswordRecoverySettings from './components/account-settings/password-recovery-settings';
 import Delegates from './components/account-settings/delegates';
 import PersonaSettings from './components/account-settings/persona-settings';
-import UsePersona from './components/account-settings/use-persona';
+import PersonaUseSection from './components/account-settings/persona-use-section';
 // external accounts not yet activated, graphical part is complete
 // import ExternalAccount from './components/account-settings/external-account-settings';
 // import AdvancedSettings from './components/account-settings/advanced-settings';
@@ -82,42 +82,69 @@ const AccountsSettings = (): ReactElement => {
 	const [t] = useTranslation();
 	const accountSettings = useUserAccount();
 	const [activeDelegateView, setActiveDelegateView] = useState('0');
-	const addMod = useCallback(
-		(
-			type: 'props' | 'prefs' | 'identity',
-			id: string | undefined,
-			key: any,
-			value?: string,
-			action?: string,
-			deleteList?: string[],
-			createList?: CreateIdentityProps
-		) => {
-			setMods((m) => ({
-				...m,
 
-				[type]: { id, action, deleteList, createList, ...m?.[type], [key]: value }
-			}));
-		},
-		[]
-	);
+	type AddModProps = {
+		type: 'identity' | 'props' | 'prefs';
+		id: string | undefined;
+		key: any;
+		value?: string;
+		action?: string;
+		deleteList?: string[];
+		createList?: { pref: CreateIdentityProps }[];
+	};
+	const addMod = useCallback((arg: AddModProps) => {
+		const { type, id, key, value, action, deleteList, createList } = arg;
+		setMods((m) => ({
+			...m,
+
+			[type]: { id, action, deleteList, createList, ...m?.[type], [key]: value }
+		}));
+	}, []);
 
 	const createIdentities = useCallback(
-		(createList) => {
-			addMod('identity', undefined, undefined, undefined, 'create', undefined, createList);
+		(createList: { pref: CreateIdentityProps }[]) => {
+			const arg = {
+				type: 'identity',
+				id: undefined,
+				key: undefined,
+				value: undefined,
+				action: 'create',
+				createList,
+				deleteList: undefined
+			} as AddModProps;
+			addMod(arg);
 		},
 		[addMod]
 	);
 
 	const updateIdentities = useCallback(
 		(id, key, pref) => {
-			addMod('identity', id, key, pref, 'modify', undefined, undefined);
+			const arg = {
+				type: 'identity',
+				id,
+				key,
+				value: pref,
+				action: 'modify',
+				createList: undefined,
+				deleteList: undefined
+			} as AddModProps;
+			addMod(arg);
 		},
 		[addMod]
 	);
 
 	const deleteIdentities = useCallback(
 		(deleteList: string[]) => {
-			addMod('identity', undefined, undefined, undefined, 'delete', deleteList);
+			const arg = {
+				type: 'identity',
+				id: undefined,
+				key: undefined,
+				value: undefined,
+				action: 'delete',
+				createList: undefined,
+				deleteList
+			} as AddModProps;
+			addMod(arg);
 		},
 		[addMod]
 	);
@@ -316,7 +343,7 @@ const AccountsSettings = (): ReactElement => {
 							updateIdentities={updateIdentities}
 							setMods={setMods}
 						/>
-						<UsePersona
+						<PersonaUseSection
 							t={t}
 							items={identities[selectedIdentityId]}
 							updateIdentities={updateIdentities}

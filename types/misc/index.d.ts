@@ -144,3 +144,27 @@ export type Folder = {
 	perm?: string;
 	retentionPolicy?: unknown;
 };
+
+export type CreateModalProps = {
+	background: string;
+	centered: boolean;
+	children: React.ReactElement;
+	confirmColor: string;
+	confirmLabel: string;
+	copyLabel: string;
+	customFooter: React.ReactElement;
+	disablePortal: boolean;
+	dismissLabel: string;
+	hideFooter: boolean;
+	maxHeight: string;
+	onClose: () => void;
+	onConfirm: () => void;
+	onSecondaryAction: () => void;
+	optionalFooter: React.ReactElement;
+	secondaryActionLabel: string;
+	showCloseIcon: boolean;
+	size: string;
+	title: string;
+	type: string;
+	zIndex: number;
+};

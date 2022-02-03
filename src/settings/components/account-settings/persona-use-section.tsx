@@ -10,14 +10,19 @@ import { TFunction } from 'i18next';
 import { IdentityProps } from '../../../../types';
 import { REGEX_VALIDATION } from '../../../constants';
 
-type UsePersonaProps = {
+type PersonaUseSectionProps = {
 	t: TFunction;
 	items: IdentityProps;
 	setMods: (mods: { [key: string]: unknown }) => void;
 	updateIdentities: (id: string, key: string, pref: string) => void;
 };
 
-const UsePersona = ({ t, items, setMods, updateIdentities }: UsePersonaProps): ReactElement => {
+const PersonaUseSection = ({
+	t,
+	items,
+	setMods,
+	updateIdentities
+}: PersonaUseSectionProps): ReactElement => {
 	const title = useMemo(() => t('label.use_persona', 'Use this persona'), [t]);
 	const whenSentToLabel = useMemo(
 		() => t('label.when_replying', 'When replying or forwarding messages sent to:'),
@@ -123,7 +128,7 @@ const UsePersona = ({ t, items, setMods, updateIdentities }: UsePersonaProps): R
 				<Checkbox
 					label={whenSentToLabel}
 					value={whenSentToEnabled}
-					onClick={(): void => onClickWhenSentToEnabled()}
+					onClick={onClickWhenSentToEnabled}
 				/>
 			</Row>
 			<Row
@@ -188,4 +193,4 @@ const UsePersona = ({ t, items, setMods, updateIdentities }: UsePersonaProps): R
 	);
 };
 
-export default UsePersona;
+export default PersonaUseSection;

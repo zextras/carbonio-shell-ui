@@ -19,6 +19,7 @@ import {
 import { TFunction } from 'i18next';
 import { filter, find } from 'lodash';
 import { IdentityProps } from '../../../../types';
+import { EMAIL_VALIDATION_REGEX } from '../../../constants';
 
 type SettingsSentMessagesProps = {
 	t: TFunction;
@@ -43,9 +44,13 @@ const SettingsSentMessages = ({
 		setReplyToEnabled(items.replyToEnabled === 'TRUE');
 	}, [items.replyToEnabled]);
 
+	const [replyToAddress, setReplyToAddress] = useState(items.replyToAddress);
 	const checkboxOnClick = useCallback(() => {
 		setReplyToEnabled(!replyToEnabled);
-		if (!replyToEnabled === (items.replyToEnabled === 'TRUE')) {
+		if (
+			!replyToEnabled === (items.replyToEnabled === 'TRUE') ||
+			!EMAIL_VALIDATION_REGEX.test(replyToAddress || '')
+		) {
 			setMods({});
 		} else {
 			updateIdentities(
@@ -54,7 +59,14 @@ const SettingsSentMessages = ({
 				replyToEnabled ? 'FALSE' : 'TRUE'
 			);
 		}
-	}, [items.replyToEnabled, replyToEnabled, setMods, updateIdentities, items.identityId]);
+	}, [
+		replyToEnabled,
+		items.replyToEnabled,
+		items.identityId,
+		replyToAddress,
+		setMods,
+		updateIdentities
+	]);
 
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [fromDisplayValue, setFromDisplayValue] = useState(items.fromDisplay || ' ');
@@ -135,8 +147,6 @@ const SettingsSentMessages = ({
 		[updateIdentities, items?.replyToDisplay, items.identityId, setMods]
 	);
 
-	const [replyToAddress, setReplyToAddress] = useState(items.replyToAddress);
-
 	const replyToAddressLabel = useMemo(
 		() =>
 			replyToAddress === (undefined || '') ? t('label.choose_account', 'Choose an account') : ' ',
@@ -159,7 +169,10 @@ const SettingsSentMessages = ({
 	const onChangeReplyToAddress = useCallback(
 		(ev) => {
 			setReplyToAddress(ev.target.value);
-			if (ev.target.value === items.replyToAddress) {
+			if (
+				ev.target.value === items.replyToAddress ||
+				!EMAIL_VALIDATION_REGEX.test(ev.target.value)
+			) {
 				setMods({});
 			} else {
 				updateIdentities(items.identityId, 'zimbraPrefReplyToAddress', ev.target.value);

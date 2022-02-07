@@ -14,7 +14,19 @@ import {
 	Text
 } from '@zextras/carbonio-design-system';
 import { useTranslation, TFunction } from 'react-i18next';
-import { map, filter, includes, findIndex, reduce, forEach } from 'lodash';
+import {
+	map,
+	filter,
+	includes,
+	findIndex,
+	reduce,
+	forEach,
+	find,
+	replace,
+	lowerFirst,
+	isUndefined,
+	isEmpty
+} from 'lodash';
 import { useUserAccount } from '../store/account/hooks';
 import { editSettings } from '../network/edit-settings';
 import { SHELL_APP_ID } from '../constants';
@@ -105,12 +117,8 @@ const AccountsSettings = (): ReactElement => {
 		(createList: { prefs: CreateIdentityProps }[]) => {
 			const arg = {
 				type: 'identity',
-				id: undefined,
-				key: undefined,
-				value: undefined,
 				action: 'create',
-				createList,
-				deleteList: undefined
+				createList
 			} as AddModProps;
 			addMod(arg);
 		},
@@ -124,9 +132,7 @@ const AccountsSettings = (): ReactElement => {
 				id,
 				key,
 				value: pref,
-				action: 'modify',
-				createList: undefined,
-				deleteList: undefined
+				action: 'modify'
 			} as AddModProps;
 			addMod(arg);
 		},
@@ -137,11 +143,7 @@ const AccountsSettings = (): ReactElement => {
 		(deleteList: string[]) => {
 			const arg = {
 				type: 'identity',
-				id: undefined,
-				key: undefined,
-				value: undefined,
 				action: 'delete',
-				createList: undefined,
 				deleteList
 			} as AddModProps;
 			addMod(arg);
@@ -255,9 +257,7 @@ const AccountsSettings = (): ReactElement => {
 					hideButton: true
 				});
 			});
-
 		const modsKeys = filter(Object.keys(Object.values(mods)[0]), (item) => item.includes('zimbra'));
-
 		forEach(modsKeys, (key, index) => {
 			const zimbraPrefKeyIndex = findIndex(
 				Object.keys(Object.values(mods)[0]),
@@ -268,14 +268,19 @@ const AccountsSettings = (): ReactElement => {
 				accountSettings.identities.identity,
 				(item) => item.id === mods.identity?.id
 			)[0]._attrs[key] = modsValue;
+			const result = map(identities, (item) => {
+				const keyToSet = find<keyof IdentityProps>(
+					Object.keys(item) as Array<keyof IdentityProps>,
+					(_item) => _item === lowerFirst(replace(modsKeys[index], 'zimbraPref', ''))
+				);
 
-			setIdentities(
-				map(identities, (item) =>
-					item.identityId === mods.identity?.id && key === 'zimbraPrefIdentityName'
-						? { ...item, identityName: modsValue }
-						: item
-				)
-			);
+				if (typeof keyToSet === 'string' && item.identityId === mods.identity?.id) {
+					// eslint-disable-next-line no-param-reassign
+					item[keyToSet] = modsValue;
+				}
+				return item;
+			});
+			setIdentities(result);
 		});
 		setMods({});
 	}, [mods, createSnackbar, t, identities, accountSettings]);

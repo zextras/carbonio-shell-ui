@@ -78,7 +78,9 @@
         "edit_to_start": "编辑搜索以开始新的",
         "idle_input_label": "在{{module}}中搜索",
         "results_for": "结果：",
-        "start": "开始搜索"
+        "start": "开始搜索",
+        "already_clear": "搜索输入已清除",
+        "type_to_start_search": "输入一些关键词以开始搜索"
     },
     "logout_modal": {
         "confirm": "登出",
@@ -102,5 +104,11 @@
     "user_quota": {
         "limited": "{{quota}}%空间已使用",
         "unlimited": "无限空间可用"
+    },
+    "label": {
+        "cancel": "取消",
+        "language": "语言",
+        "no": "否",
+        "edit_to_start_search": "编辑搜索以开始新的"
     }
 }

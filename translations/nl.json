@@ -25,7 +25,9 @@
         "edit_to_start": "Wijzig uw zoekopdracht om een nieuwe te starten",
         "idle_input_label": "Zoeken in {{module}}",
         "results_for": "Resultaten voor:",
-        "start": "Start zoeken"
+        "start": "Start zoeken",
+        "already_clear": "Zoekinput is al gewist",
+        "type_to_start_search": "Typ enkele trefwoorden om een zoekopdracht te starten"
     },
     "settings": {
         "out_of_office": {
@@ -102,5 +104,12 @@
     "user_quota": {
         "limited": "{{quota}}% ruimte gebruikt",
         "unlimited": "Onbeperkte ruimte beschikbaar"
+    },
+    "label": {
+        "cancel": "Annuleren",
+        "edit_to_start_search": "Bewerk uw zoekopdracht om een nieuwe zoekopdracht te starten",
+        "out_of_office": "Niet op kantoor",
+        "language": "Taal",
+        "no": "Nee"
     }
 }

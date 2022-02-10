@@ -232,6 +232,13 @@ export const localeList = (
 		localName: t('locale.turkish', 'Turkish'),
 		label: t('locale.label_turkish', { value: 'Türkçe', defaultValue: 'Turkish - {{value}}' }),
 		value: 'tr'
+	},
+	{
+		id: 'fr',
+		name: 'français',
+		localName: t('locale.french', 'French'),
+		label: t('locale.label_french', { value: 'français', defaultValue: 'French - {{value}}' }),
+		value: 'fr'
 	}
 ];
 // TODO: For future languages

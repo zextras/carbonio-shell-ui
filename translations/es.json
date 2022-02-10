@@ -14,7 +14,9 @@
         "clear": "Limpiar entrada de búsqueda",
         "idle_input_label": "Buscar en {{module}}",
         "edit_to_start": "Edita tu búsqueda para empezar una nueva",
-        "start": "Iniciar búsqueda"
+        "start": "Iniciar búsqueda",
+        "already_clear": "La entrada de búsqueda ya está borrada",
+        "type_to_start_search": "Introduce algunas palabras clave para iniciar una búsqueda"
     },
     "settings": {
         "out_of_office": {
@@ -102,5 +104,17 @@
     "user_quota": {
         "limited": "{{quota}} de espacio utilizado",
         "unlimited": "Espacio ilimitado disponible"
+    },
+    "label": {
+        "cancel": "Cancelar",
+        "edit_to_start_search": "Edita tu búsqueda para empezar una nueva",
+        "out_of_office": "Fuera de la oficina",
+        "language": "Idioma",
+        "no": "No"
+    },
+    "timezone": {
+        "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}} Ámsterdam, Berlín, Berna, Roma, Estocolmo, Viena",
+        "gmt_02": "{{value}} GMT-02",
+        "gmt_11": "{{value}} GMT-11"
     }
 }

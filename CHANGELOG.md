@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0-rc.7](https://github.com/zextras/carbonio-shell-ui/compare/v0.3.0-rc.6...v0.3.0-rc.7) (2022-02-10)
+
+
+### Features
+
+* french language support added to language settings ([76e89f9](https://github.com/zextras/carbonio-shell-ui/commit/76e89f9661c873f08ddcb25757d28d6f7b898555))
+
 ## [0.3.0-rc.6](https://github.com/zextras/carbonio-shell-ui/compare/v0.3.0-rc.5...v0.3.0-rc.6) (2022-01-21)
 
 ## [0.3.0-rc.5](https://github.com/zextras/carbonio-shell-ui/compare/v0.3.0-rc.4...v0.3.0-rc.5) (2022-01-21)

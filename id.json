@@ -24,7 +24,9 @@
         "edit_to_start": "Edit pencarian Anda untuk memulai yang baru",
         "idle_input_label": "Cari di {{module}}",
         "results_for": "Hasil untuk:",
-        "start": "Mulai pencarian"
+        "start": "Mulai pencarian",
+        "already_clear": "Input pencarian sudah dibersihkan",
+        "type_to_start_search": "Ketik beberapa kata kunci untuk memulai pencarian"
     },
     "settings": {
         "out_of_office": {
@@ -102,5 +104,12 @@
     "user_quota": {
         "limited": "{{quota}} % ruang yang digunakan",
         "unlimited": "Tersedia ruang tak terbatas"
+    },
+    "label": {
+        "cancel": "Batal",
+        "edit_to_start_search": "Edit pencarian Anda untuk memulai yang baru",
+        "out_of_office": "Di Luar Kantor",
+        "language": "Bahasa",
+        "no": "Tidak"
     }
 }

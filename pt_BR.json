@@ -78,7 +78,9 @@
         "edit_to_start": "Edite para fazer uma nova pesquisa",
         "idle_input_label": "Buscar em {{module}}",
         "results_for": "Resultados para:",
-        "start": "Iniciar busca"
+        "start": "Iniciar busca",
+        "already_clear": "Caixa de pesquisa está vazia",
+        "type_to_start_search": "Digite algumas palavras-chave para fazer uma pesquisa"
     },
     "copyright": "Direito Autoral",
     "logout_modal": {
@@ -102,5 +104,12 @@
     },
     "snackbar": {
         "error": "Algo deu errado. Tente novamente"
+    },
+    "label": {
+        "language": "Idioma",
+        "cancel": "Cancelar",
+        "edit_to_start_search": "Edite para fazer uma nova pesquisa",
+        "out_of_office": "Fora do Escritório",
+        "no": "Não"
     }
 }

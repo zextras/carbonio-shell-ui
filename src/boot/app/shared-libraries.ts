@@ -29,10 +29,6 @@ import * as StyledComponents from 'styled-components';
 
 import { IShellWindow, SharedLibrariesAppsMap } from '../../../types';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { RichTextEditor } from './rte-wrap';
-
 export function injectSharedLibraries(): void {
 	// eslint-disable-next-line max-len
 	const wnd: IShellWindow<SharedLibrariesAppsMap, ComponentClass> =
@@ -60,7 +56,7 @@ export function injectSharedLibraries(): void {
 			}
 		},
 		'@zextras/carbonio-shell-ui': {},
-		'@zextras/carbonio-design-system': { ...ZappUI, RichTextEditor }
+		'@zextras/carbonio-design-system': ZappUI
 	};
 	wnd.__ZAPP_HMR_EXPORT__ = {};
 	switch (FLAVOR) {

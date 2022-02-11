@@ -29,7 +29,7 @@ const Bubble = styled.div<{ open: boolean }>`
 	align-items: center;
 	justify-content: center;
 	position: absolute;
-	top: 50%;
+	top: 4%;
 	left: -12px;
 	width: 24px;
 	height: 24px;

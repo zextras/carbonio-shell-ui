@@ -81,7 +81,7 @@ module.exports = (_, pkg, options, mode) => {
 				]
 			},
 			https: true,
-			open: ['/carbonio/'],
+			open: ['/carbonioAdmin/ciao'],
 			proxy: [
 				{
 					context: ['/static/login/**'],
@@ -97,12 +97,22 @@ module.exports = (_, pkg, options, mode) => {
 						'!/static/iris/carbonio-shell-ui/**/*',
 						'!/carbonio/',
 						'!/carbonio/**/*',
-						'!/admin/',
-						'!/admin/**/*',
-						'!/standalone/',
-						'!/standalone/**/*'
+						'!/carbonioAdmin/',
+						'!/carbonioAdmin/**/*',
+						'!/carbonioStandalone/',
+						'!/carbonioStandalone/**/*'
 					],
 					target: server,
+					secure: false,
+					logLevel: 'debug',
+					cookieDomainRewrite: {
+						'*': server,
+						[server]: 'localhost:9000'
+					}
+				},
+				{
+					context: ['/carbonioAdmin/**/*'],
+					target: `https://localhost:9000/${baseStaticPath}/admin.html`,
 					secure: false,
 					logLevel: 'debug',
 					cookieDomainRewrite: {
@@ -122,7 +132,7 @@ module.exports = (_, pkg, options, mode) => {
 				},
 				{
 					test: /\.(css)$/,
-					exclude: [/node_modules\/tinymce/],
+					// exclude: [/node_modules\/tinymce/],
 					use: [
 						{
 							loader: MiniCssExtractPlugin.loader,
@@ -200,7 +210,7 @@ module.exports = (_, pkg, options, mode) => {
 				chunks: ['index'],
 				filename: 'admin.html',
 				BASE_PATH: baseStaticPath,
-				SHELL_ENV: 'admin'
+				SHELL_ENV: 'carbonioAdmin'
 			}),
 			new HtmlWebpackPlugin({
 				inject: true,
@@ -208,7 +218,7 @@ module.exports = (_, pkg, options, mode) => {
 				chunks: ['index'],
 				filename: 'standalone.html',
 				BASE_PATH: baseStaticPath,
-				SHELL_ENV: 'standalone'
+				SHELL_ENV: 'carbonioStandalone'
 			}),
 			new HtmlWebpackPlugin({
 				inject: false,

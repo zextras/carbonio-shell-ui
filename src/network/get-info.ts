@@ -5,6 +5,7 @@
  */
 
 import { GetState, SetState } from 'zustand';
+import { filter } from 'lodash';
 import { SHELL_APP_ID } from '../constants';
 import { useAppStore } from '../store/app';
 import { normalizeAccount } from '../store/account/normalization';
@@ -42,8 +43,9 @@ export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>
 		.then(() => fetch('/static/iris/components.json'))
 		.then((r: any) => r.json())
 		.then(({ components }: { components: Array<CarbonioModule> }) => {
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			useAppStore.getState().setters.addApps(components);
+			useAppStore
+				.getState()
+				.setters.addApps(filter(components, (c) => c.type === __SHELL_ENV__ || c.type === 'shell'));
 		})
 		.catch((err: unknown) => {
 			console.log('there was an error checking user data');

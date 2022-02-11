@@ -5,12 +5,12 @@
  */
 
 import React, { useMemo } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
-import { map } from 'lodash';
+import { map, find } from 'lodash';
 import { Container } from '@zextras/carbonio-design-system';
 import AppContextProvider from '../boot/app/app-context-provider';
-import { useAppStore } from '../store/app';
+import { useAppList, useAppStore, useRoutes } from '../store/app';
 
 const _BoardsRouterContainer = styled(Container)`
 	flex-grow: 1;
@@ -19,6 +19,19 @@ const _BoardsRouterContainer = styled(Container)`
 	max-height: calc(100vh - 60px);
 	overflow-y: auto;
 `;
+
+const FirstAppRedirect = () => {
+	const apps = useAppList();
+	const routes = useRoutes();
+	const match = useRouteMatch();
+	const location = useLocation();
+	const mainRoute = useMemo(
+		() => find(routes, (r) => apps[0]?.name === r.app)?.route,
+		[apps, routes]
+	);
+	console.log('@@@ weee', apps, routes, mainRoute, match, location, __SHELL_ENV__);
+	return mainRoute ? <Redirect exact strict from="/" to={`/${mainRoute}`} /> : null;
+};
 
 export default function AppViewContainer() {
 	const appViews = useAppStore((s) => s.views.appView);
@@ -38,7 +51,10 @@ export default function AppViewContainer() {
 	return (
 		<_BoardsRouterContainer>
 			<Container mainAlignment="flex-start">
-				<Switch>{routes}</Switch>
+				<Switch>
+					{routes}
+					<FirstAppRedirect />
+				</Switch>
 			</Container>
 		</_BoardsRouterContainer>
 	);

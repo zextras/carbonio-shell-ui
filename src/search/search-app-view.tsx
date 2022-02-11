@@ -6,7 +6,7 @@
 
 import { map } from 'lodash';
 import React, { FC, useCallback, useMemo } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container, Chip, Padding, Divider, Text, Button } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -99,7 +99,15 @@ export const SearchAppView: FC = () => {
 			>
 				<Text>{t('search.leave.warning', 'The current search results will be lost')}</Text>
 			</RouteLeavingGuard> */}
-			<Switch>{routes}</Switch>
+			<Switch>
+				{routes}
+				<Redirect
+					exact
+					strict
+					from={`/${SEARCH_APP_ID}`}
+					to={`/${SEARCH_APP_ID}/${searchViews[0]?.route}`}
+				/>
+			</Switch>
 		</>
 	);
 };

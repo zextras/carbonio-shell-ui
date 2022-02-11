@@ -14,6 +14,7 @@ import StoreFactory from '../../redux/store-factory';
 import { useAppStore } from '../../store/app';
 import { getAppFunctions } from './app-loader-functions';
 import { Spinner } from '../../ui-extras/spinner';
+import { AppLink } from '../../ui-extras/app-link';
 import * as CONSTANTS from '../../constants';
 import { report } from '../../network/report';
 import { useAccountStore } from '../../store/account';
@@ -60,7 +61,7 @@ function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<Carbo
 				report: report(appPkg),
 				soapFetch: useAccountStore.getState().soapFetch(appPkg.name),
 				xmlSoapFetch: useAccountStore.getState().xmlSoapFetch(appPkg.name),
-				// AppLink: getAppLink(appPkg.route),
+				AppLink,
 				Spinner,
 				...getAppSetters(appPkg),
 				...getAppFunctions(appPkg),
@@ -76,6 +77,10 @@ function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<Carbo
 						[appPkg.name]: appComponent
 					}
 				}));
+				console.info(
+					`%c ${appPkg.name} loaded`,
+					'color: white; background: #8bc34a;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
+				);
 				resolve(appPkg);
 			};
 

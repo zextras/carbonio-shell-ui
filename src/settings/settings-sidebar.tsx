@@ -6,29 +6,40 @@
 
 import React, { FC, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { map } from 'lodash';
-import { Accordion } from '@zextras/carbonio-design-system';
-import { useTranslation } from 'react-i18next';
+import { map, toUpper } from 'lodash';
+import { Accordion, Tooltip, IconButton } from '@zextras/carbonio-design-system';
 import { SETTINGS_APP_ID } from '../constants';
 import { useAppStore } from '../store/app';
+import { pushHistory } from '../history/hooks';
 
-export const SettingsSidebar: FC = () => {
+export const SettingsSidebar: FC<{ expanded: boolean }> = ({ expanded }) => {
 	const settingsViews = useAppStore((s) => s.views.settings);
 	const history = useHistory();
-	const [t] = useTranslation();
 	const items = useMemo(
-		() => [
-			...map(settingsViews, (view) => ({
+		() =>
+			settingsViews.map((view) => ({
 				id: view.route,
 				label: view.label,
 				icon: view.icon,
 				onClick: (e: MouseEvent): void => {
 					e.stopPropagation();
-					history.push(`/${SETTINGS_APP_ID}${view.route}`);
+					history.push(`/${SETTINGS_APP_ID}/${view.route}`);
 				}
-			}))
-		],
+			})),
 		[history, settingsViews]
 	);
-	return <Accordion items={items} />;
+	const collapsedItems = useMemo(
+		() =>
+			settingsViews.map((v) => (
+				<Tooltip label={v.label} placement="right" key={v.id}>
+					<IconButton
+						icon={v.icon}
+						onClick={(): void => pushHistory(`/${SETTINGS_APP_ID}/${v.route}`)}
+						size="large"
+					/>
+				</Tooltip>
+			)),
+		[settingsViews]
+	);
+	return expanded ? <Accordion items={items} /> : <>{collapsedItems}</>;
 };

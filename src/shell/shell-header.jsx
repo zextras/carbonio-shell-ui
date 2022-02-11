@@ -4,57 +4,25 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useMemo } from 'react';
-import { reduce, map } from 'lodash';
-import { useTranslation } from 'react-i18next';
+import React from 'react';
 import {
 	Container,
-	Dropdown,
 	IconButton,
 	Padding,
 	Responsive,
-	useScreenMode,
-	MultiButton
+	useScreenMode
 } from '@zextras/carbonio-design-system';
-import { useAppStore, useApps } from '../store/app';
 import Logo from '../svg/carbonio-beta.svg';
+import LogoAdmin from '../svg/carbonio-admin-panel.svg';
+import { SearchBar } from '../search/search-bar';
+import { CreationButton } from './creation-button';
+import { useAppStore } from '../store/app';
+import { SHELL_MODES } from '../constants';
+import { ShellMode } from '../multimode';
 
 export default function ShellHeader({ activeRoute, mobileNavIsOpen, onMobileMenuClick, children }) {
-	const [t] = useTranslation();
 	const screenMode = useScreenMode();
-	const apps = useApps();
-
-	const [primaryAction, secondaryActions] = useAppStore((s) => [
-		apps[activeRoute?.app]?.newButton?.primary,
-		reduce(
-			s.apps,
-			(acc, app, key) => {
-				if (app.newButton?.secondaryItems) {
-					if (acc.length > 0) {
-						acc.push({ type: 'divider', id: key, key, label: 'really?' });
-					}
-					if (app.newButton?.primary) {
-						acc.push(app.newButton?.primary);
-					}
-					acc.push(
-						...map(app.newButton?.secondaryItems, (item) => ({
-							...item,
-							key: item.id,
-							disabled: item.disabled || item.getDisabledStatus?.()
-						}))
-					);
-				}
-				return acc;
-			},
-			[]
-		)
-	]);
-
-	const isMultiButtonDisabled = useMemo(
-		() => !!primaryAction || primaryAction?.disabled || primaryAction?.getDisabledState?.(),
-		[primaryAction]
-	);
-
+	const searchEnabled = useAppStore((s) => s.views.search.length > 0);
 	return (
 		<Container
 			orientation="horizontal"
@@ -75,23 +43,27 @@ export default function ShellHeader({ activeRoute, mobileNavIsOpen, onMobileMenu
 						<IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} />
 					</Padding>
 				</Responsive>
-				<Logo height="32px" />
-				<Padding horizontal="large">
-					<MultiButton
-						style={{ height: '44px' }}
-						background="primary"
-						label={t('new', 'New')}
-						onClick={primaryAction?.click}
-						items={secondaryActions}
-						disabled={isMultiButtonDisabled}
-					/>
-				</Padding>
+				<Container width={320} height={32} crossAlignment="flex-start">
+					<ShellMode exclude={[SHELL_MODES.ADMIN]}>
+						<Logo height="32px" />
+					</ShellMode>
+					<ShellMode include={[SHELL_MODES.ADMIN]}>
+						<LogoAdmin height="32px" />
+					</ShellMode>
+				</Container>
+				<ShellMode exclude={[SHELL_MODES.ADMIN]}>
+					<Padding horizontal="large">
+						<CreationButton activeRoute={activeRoute} />
+					</Padding>
+				</ShellMode>
 				<Responsive mode="desktop">
-					{/* <SearchBar
-						currentAppView={currentAppView}
-						primaryAction={primaryAction}
-						secondaryActions={secondaryActions}
-					/> */}
+					{searchEnabled && (
+						<SearchBar
+							activeRoute={activeRoute}
+							// primaryAction={primaryAction}
+							// secondaryActions={secondaryActions}
+						/>
+					)}
 				</Responsive>
 			</Container>
 			<Container orientation="horizontal" width="25%" mainAlignment="flex-end">
@@ -102,9 +74,9 @@ export default function ShellHeader({ activeRoute, mobileNavIsOpen, onMobileMenu
 						mainAlignment="flex-end"
 						padding={{ right: 'extrasmall' }}
 					>
-						<Dropdown items={secondaryActions} placement="bottom-start">
+						{/* <Dropdown items={secondaryActions} placement="bottom-start">
 							<IconButton icon="Plus" />
-						</Dropdown>
+						</Dropdown> */}
 					</Container>
 				</Responsive>
 			</Container>

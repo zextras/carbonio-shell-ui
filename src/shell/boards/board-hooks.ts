@@ -12,8 +12,8 @@ export const getUseAddBoardCallback =
 	(appId: string) => (): ((path: string, context?: unknown | { app: string }) => void) => {
 		const { addBoard } = useContext(BoardSetterContext);
 		const callback = useCallback(
-			(path: string, context?: unknown | { app: string }) => {
-				addBoard(`/${(context as { app: string; title: string })?.app ?? appId}${path}`, context);
+			(path: string, context?: unknown | { app?: string }) => {
+				addBoard(path, context, (context as { app?: string })?.app ?? appId);
 			},
 			[addBoard]
 		);

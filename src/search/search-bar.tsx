@@ -25,7 +25,7 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useLocalStorage } from '../shell/hooks';
 import { SEARCH_APP_ID } from '../constants';
-import { useApps } from '../store/app';
+import { useApps, useAppStore } from '../store/app';
 import { useSearchStore } from './search-store';
 import { QueryChip, SearchBarProps, SelectLabelFactoryProps } from '../../types';
 import { handleKeyboardShortcuts } from '../keyboard-shortcuts/keyboard-shortcuts';
@@ -49,7 +49,7 @@ const StyledChipInput = styled(ChipInput)`
 `;
 
 const StyledContainer = styled(Container)`
-	height: 44px;
+	height: 42px;
 	overflow-y: hidden;
 	&:first-child {
 		transform: translateY(-2px);
@@ -68,7 +68,7 @@ const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus
 		<Container
 			orientation="horizontal"
 			background={disabled ? 'gray5' : 'gray6'}
-			height={44}
+			height={42}
 			width="fit"
 			minWidth="150px"
 			crossAlignment="center"
@@ -95,15 +95,17 @@ const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus
 };
 
 export const SearchBar: FC<SearchBarProps> = ({
-	currentAppView,
-	primaryAction,
-	secondaryActions
+	currentRoute
+	// primaryAction,
+	// secondaryActions
 }) => {
+	const searchViews = useAppStore((s) => s.views.search);
+	const apps = useApps();
+
 	const [searchIsEnabled, setSearchIsEnabled] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
 	const [t] = useTranslation();
 	const [storedValue, setStoredValue] = useLocalStorage('search_suggestions', []);
-	const apps = useApps();
 	const [inputTyped, setInputTyped] = useState('');
 	const history = useHistory();
 	const { updateQuery, updateModule, query, searchDisabled, setSearchDisabled } = useSearchStore();
@@ -118,30 +120,31 @@ export const SearchBar: FC<SearchBarProps> = ({
 		Array<{ label: string; value: string; customComponent: JSX.Element }>
 	>(
 		() =>
-			filter(apps, (app) => !!app.views?.search).map((app) => ({
+			map(searchViews, (view) => ({
 				customComponent: (
 					<Container mainAlignment="flex-start" orientation="horizontal">
 						<Padding horizontal="extrasmall">
-							<Icon icon={app.icon} />
+							<Icon icon={view.icon} />
 						</Padding>
-						<Text>{app.core.display}</Text>
+						<Text>{view.label}</Text>
 					</Container>
 				),
-				label: app.core.display,
-				value: app.core.route
+				label: view.label,
+				value: view.route
 			})),
-		[apps]
+		[searchViews]
 	);
 
 	const [options, setOptions] = useState<Array<{ label: string; hasAvatar: false }>>([]);
 
 	useEffect(() => {
 		setModuleSelection((current) =>
-			currentApp && currentApp !== SEARCH_APP_ID
-				? find(moduleSelectorItems, (mod) => mod.value === currentApp) ?? moduleSelectorItems[0]
+			currentRoute?.app !== SEARCH_APP_ID
+				? find(moduleSelectorItems, (mod) => mod.value === currentRoute?.route) ??
+				  moduleSelectorItems[0]
 				: current ?? moduleSelectorItems[0]
 		);
-	}, [currentApp, moduleSelectorItems]);
+	}, [currentRoute, moduleSelectorItems]);
 
 	useEffect(() => {
 		updateModule(moduleSelection?.value ?? moduleSelectorItems[0]?.value);
@@ -213,12 +216,12 @@ export const SearchBar: FC<SearchBarProps> = ({
 				)
 			);
 		});
-		if (currentApp !== SEARCH_APP_ID) {
+		if (currentRoute?.app !== SEARCH_APP_ID) {
 			history.push(`/${SEARCH_APP_ID}/${moduleSelection?.value}`);
 		}
 		setSearchIsEnabled(false);
 		// setChangedBySearchBar(true);
-	}, [currentApp, history, inputState, moduleSelection?.value, updateQuery, inputTyped]);
+	}, [updateQuery, currentRoute?.app, inputTyped, inputState, history, moduleSelection?.value]);
 
 	const appSuggestions = useMemo<Array<QueryChip & { hasAvatar: false }>>(
 		() =>
@@ -315,11 +318,11 @@ export const SearchBar: FC<SearchBarProps> = ({
 			setModuleSelection(find(moduleSelectorItems, (item) => item.value === newVal));
 			// setInputState([]);
 			// updateQuery([]);
-			if (currentApp === SEARCH_APP_ID) {
+			if (currentRoute?.app === SEARCH_APP_ID) {
 				history.push(`/${SEARCH_APP_ID}/${newVal}`);
 			}
 		},
-		[currentApp, history, moduleSelectorItems]
+		[currentRoute?.app, history, moduleSelectorItems]
 	);
 	const [triggerSearch, setTriggerSearch] = useState(false);
 	const containerRef = useRef<HTMLDivElement>();

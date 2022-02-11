@@ -12,15 +12,15 @@ import I18nFactory from '../i18n/i18n-factory';
 import StoreFactory from '../redux/store-factory';
 
 export const init = (_i18nFactory: I18nFactory, _storeFactory: StoreFactory): void => {
-	registerDefaultViews();
 	useAccountStore
 		.getState()
 		.init()
 		.then(() => {
 			_i18nFactory.setLocale(
-				(useAccountStore.getState().settings?.prefs?.zimbraPrefLocale as string)?.split?.(
-					'_'
-				)?.[0] ?? 'en'
+				(
+					(useAccountStore.getState().settings?.prefs?.zimbraPrefLocale as string) ??
+					(useAccountStore.getState().settings?.attrs?.zimbraLocale as string)
+				)?.split?.('_')?.[0] ?? 'en'
 			);
 			loadApps(_storeFactory, Object.values(useAppStore.getState().apps));
 		});

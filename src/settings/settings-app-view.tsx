@@ -5,7 +5,7 @@
  */
 
 import React, { FC, useMemo } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { map } from 'lodash';
 import { SETTINGS_APP_ID } from '../constants';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -15,11 +15,10 @@ import { useAppStore } from '../store/app';
 
 export const SettingsAppView: FC = () => {
 	const settingsViews = useAppStore((s) => s.views.settings);
-	console.log(settingsViews);
 	const routes = useMemo(
 		() =>
 			map(settingsViews, (view) => (
-				<Route key={view.route} exact path={`/${SETTINGS_APP_ID}${view.route}`}>
+				<Route key={view.route} exact path={`/${SETTINGS_APP_ID}/${view.route}`}>
 					<AppContextProvider pkg={view.app}>
 						<view.component />
 					</AppContextProvider>
@@ -27,5 +26,10 @@ export const SettingsAppView: FC = () => {
 			)),
 		[settingsViews]
 	);
-	return <Switch>{routes}</Switch>;
+	return (
+		<Switch>
+			{routes}
+			<Redirect from={`/${SETTINGS_APP_ID}`} exact strict to={`/${SETTINGS_APP_ID}/general`} />
+		</Switch>
+	);
 };

@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { Route, Router, useHistory } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
 import styled from 'styled-components';
 import { map } from 'lodash';
+import { createMemoryHistory } from 'history';
 import AppContextProvider from '../../boot/app/app-context-provider';
 import { BoardValueContext, BoardSetterContext } from './board-context';
 import { useAppStore } from '../../store/app';
@@ -19,10 +19,10 @@ const BoardContainer = styled.div`
 	width: 100%;
 	overflow-y: auto;
 `;
-const history = createMemoryHistory();
 
 export default function AppBoard({ idx }) {
 	const { boards, currentBoard } = useContext(BoardValueContext);
+	const [history] = useState(() => createMemoryHistory({ initialEntries: [boards[idx].url] }));
 	const { updateBoard } = useContext(BoardSetterContext);
 	const boardViews = useAppStore((s) => s.views.board);
 	const windowHistory = useHistory();
@@ -38,26 +38,27 @@ export default function AppBoard({ idx }) {
 		[boardViews, windowHistory]
 	);
 
-	useEffect(
-		() =>
-			history.listen((l, a) => {
-				updateBoard(idx, `${l.pathname}${l.search}${l.hash}`);
-			}),
-		[idx, updateBoard]
-	);
+	useEffect(() => {
+		const unlisten = history.listen(({ location }) => {
+			if (`${location.pathname}${location.search}${location.hash}` !== boards[idx].url) {
+				updateBoard(idx, `${location.pathname}${location.search}${location.hash}`);
+			}
+		});
+		return () => {
+			unlisten();
+		};
+	}, [boards, history, idx, updateBoard]);
 
 	useEffect(() => {
 		const l = history.location;
 		if (`${l.pathname}${l.search}${l.hash}` !== boards[idx].url) {
 			history.push(boards[idx].url);
 		}
-	}, [idx, boards]);
+	}, [idx, boards, history]);
 
 	return (
 		<BoardContainer show={currentBoard === idx}>
-			<Router key={idx} history={history}>
-				{routes}
-			</Router>
+			<Router history={history}>{routes}</Router>
 		</BoardContainer>
 	);
 }

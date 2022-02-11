@@ -124,7 +124,7 @@ const Board = styled(Container)`
 		`}
 `;
 const BoardHeader = styled(Row)``;
-const BoardDeatilContainer = styled(Row)`
+const BoardDetailContainer = styled(Row)`
 	min-height: 0;
 `;
 const BackButton = styled(IconButton)``;
@@ -140,17 +140,16 @@ export default function AppBoardWindow() {
 		() =>
 			reduce(
 				shellBoards,
-				(r, v, k) => {
-					const [_t, p] = r;
-					_t.push({ key: k, ...v });
-					p.push(<AppBoard key={k} idx={k} />);
-					return r;
+				(acc, board, boardId) => {
+					const [_tabs, _boards] = acc;
+					_tabs.push({ key: boardId, ...board });
+					_boards.push(<AppBoard key={boardId} idx={boardId} />);
+					return acc;
 				},
 				[[], []]
 			),
 		[shellBoards]
 	);
-
 	if (!tabs.length) return null;
 	return (
 		<BoardContainer largeView={largeView} minimized={minimized}>
@@ -203,7 +202,7 @@ export default function AppBoardWindow() {
 					</Actions>
 				</BoardHeader>
 				<Divider style={{ height: '2px' }} />
-				<BoardDeatilContainer takeAvailableSpace>{boards}</BoardDeatilContainer>
+				<BoardDetailContainer takeAvailableSpace>{boards}</BoardDetailContainer>
 			</Board>
 		</BoardContainer>
 	);

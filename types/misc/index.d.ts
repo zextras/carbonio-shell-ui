@@ -83,3 +83,5 @@ export type LoadedAppsCache = {
 export type AppInjections = {
 	store: Store<any>;
 };
+
+export type ShellModes = 'carbonio' | 'carbonioStandalone' | 'carbonioAdmin';

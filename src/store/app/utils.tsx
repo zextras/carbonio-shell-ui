@@ -24,10 +24,10 @@ export const normalizeApp = (app: Partial<CarbonioModule>): CarbonioModule => ({
 	// eslint-disable-next-line camelcase
 	js_entrypoint: app.js_entrypoint ?? '',
 	name: app.name ?? 'module',
-	priority: 99,
+	priority: app.priority ?? 99,
 	version: app.version ?? '',
-	type: 'app',
-	attrKey: app.attrKey ?? '',
+	type: app.type ?? 'app',
+	attrKey: app.attrKey,
 	icon: app.icon ?? 'Cube',
 	display: app.display ?? 'Module'
 });
@@ -81,7 +81,10 @@ export const normalizeSearchView = (data: Partial<SearchView>, app: CarbonioModu
 		app: app.name,
 		route,
 		id: data?.id ?? route,
-		component: data?.component ?? FallbackView
+		component: data?.component ?? FallbackView,
+		label: data.label ?? app.display,
+		icon: data.icon ?? app.icon,
+		position: data.position ?? app.priority ?? 99
 	};
 };
 export const normalizeUtilityView = (

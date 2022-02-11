@@ -4,18 +4,41 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Container, IconButton, Row, Tooltip } from '@zextras/carbonio-design-system';
-import { map, isEmpty } from 'lodash';
-import React, { useContext, FC } from 'react';
+import {
+	Container,
+	IconButton,
+	Row,
+	Tooltip,
+	Text,
+	Padding,
+	Icon
+} from '@zextras/carbonio-design-system';
+import { map, isEmpty, trim } from 'lodash';
+import React, { useContext, FC, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 // TODO: convert boards management to ts (and maybe a zustand store)
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { BoardValueContext, BoardSetterContext } from './boards/board-context';
 import { useAppStore } from '../store/app';
-import { AppRoute } from '../../types';
+import { AppRoute, PrimaryBarView } from '../../types';
+import { pushHistory } from '../history/hooks';
+import BadgeWrap from './badge-wrap';
+import { isAdmin, ShellMode } from '../multimode';
+import { SHELL_MODES } from '../constants';
+
+const PrimaryContainer = styled(Container)<{ active: boolean }>`
+	background: ${({ theme, active }): string => theme.palette[active ? 'gray4' : 'gray6'].regular};
+	cursor: pointer;
+	transition: background 0.2s ease-out;
+	&:hover {
+		background: ${({ theme, active }): string => theme.palette[active ? 'gray4' : 'gray6'].hover};
+	}
+	&:focus {
+		background: ${({ theme, active }): string => theme.palette[active ? 'gray4' : 'gray6'].focus};
+	}
+`;
 
 const ContainerWithDivider = styled(Container)`
 	border-right: 1px solid ${({ theme }): string => theme.palette.gray3.regular};
@@ -36,15 +59,74 @@ const ToggleBoardIcon: FC = () => {
 	);
 };
 
+type PrimaryBarItemProps = {
+	view: PrimaryBarView;
+	active: boolean;
+	onClick: () => void;
+};
+
+const AdminPrimaryBarElement: FC<PrimaryBarItemProps> = ({ view, active, onClick }) => (
+	<PrimaryContainer
+		orientation="horizontal"
+		mainAlignment="flex-start"
+		height="48px"
+		onClick={onClick}
+	>
+		<BadgeWrap badge={view.badge}>
+			{typeof view.component === 'string' ? (
+				<Icon icon={view.component} color={active ? 'primary' : 'text'} size="large" />
+			) : (
+				<view.component active={active} />
+			)}
+		</BadgeWrap>
+		<Padding all="medium" left="extrasmall" right="large">
+			<Text color={active ? 'primary' : 'text'}>{view.label}</Text>
+		</Padding>
+	</PrimaryContainer>
+);
+
+const PrimaryBarElement: FC<PrimaryBarItemProps> = ({ view, active, onClick }) => (
+	<Tooltip label={view.label} placement="right" key={view.id}>
+		<BadgeWrap badge={view.badge}>
+			{typeof view.component === 'string' ? (
+				<IconButton
+					icon={view.component}
+					backgroundColor={active ? 'gray4' : 'gray6'}
+					iconColor={active ? 'primary' : 'text'}
+					onClick={onClick}
+					size="large"
+				/>
+			) : (
+				<view.component active={active} />
+			)}
+		</BadgeWrap>
+	</Tooltip>
+);
+
 const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 	const primaryBarViews = useAppStore((s) => s.views.primaryBar);
-	const primaryBarAccessoryViews = useAppStore((s) => s.views.primaryBarAccessories);
-	const history = useHistory();
-	const [t] = useTranslation();
 
+	const [routes, setRoutes] = useState<Record<string, string>>({});
+	const history = useHistory();
+
+	useEffect(() => {
+		setRoutes((r) =>
+			primaryBarViews.reduce((acc, v) => {
+				// eslint-disable-next-line no-param-reassign
+				if (!acc[v.id]) acc[v.id] = v.route;
+				return acc;
+			}, r)
+		);
+	}, [primaryBarViews]);
+	useEffect(() => {
+		if (activeRoute) {
+			setRoutes((r) => ({ ...r, [activeRoute.id]: trim(history.location.pathname, '/') }));
+		}
+	}, [activeRoute, history.location.pathname, primaryBarViews]);
+	const primaryBarAccessoryViews = useAppStore((s) => s.views.primaryBarAccessories);
 	return (
 		<ContainerWithDivider
-			width={49}
+			width={isAdmin() ? 'fit' : 49}
 			height="fill"
 			background="gray6"
 			orientation="vertical"
@@ -52,32 +134,39 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 		>
 			<Row
 				mainAlignment="flex-start"
+				crossAlignment="flext-start"
 				orientation="vertical"
 				takeAvailableSpace
 				wrap="nowrap"
 				style={{ minHeight: '1px', overflowY: 'overlay' }}
 			>
-				{map(primaryBarViews, (view) => {
-					if (!view.visible) {
-						return null;
-					}
-					if (typeof view.component === 'string') {
-						return (
-							<Tooltip label={view.label} placement="right" key={view.id}>
-								<IconButton
-									icon={view.component}
-									backgroundColor={activeRoute?.id === view.id ? 'gray4' : 'gray6'}
-									iconColor={activeRoute?.id === view.id ? 'primary' : 'text'}
-									onClick={(): void => history.push(`/${view.route}`)}
-									size="large"
+				<ShellMode include={[SHELL_MODES.ADMIN]}>
+					{map(primaryBarViews, (view) =>
+						// eslint-disable-next-line no-nested-ternary
+						view.visible ? (
+							isAdmin() ? (
+								<AdminPrimaryBarElement
+									onClick={(): void => history.push(`/${routes[view.id]}`)}
+									view={view}
+									active={activeRoute?.id === view.id}
 								/>
-							</Tooltip>
-						);
-					}
-					return <view.component active={view.id === activeRoute?.id} />;
-				})}
+							) : (
+								<PrimaryBarElement
+									onClick={(): void => history.push(`/${routes[view.id]}`)}
+									view={view}
+									active={activeRoute?.id === view.id}
+								/>
+							)
+						) : null
+					)}
+				</ShellMode>
 			</Row>
-			<Row>
+			<Row
+				mainAlignment="flex-end"
+				orientation="vertical"
+				wrap="nowrap"
+				style={{ minHeight: '1px', overflowY: 'overlay' }}
+			>
 				<ToggleBoardIcon />
 			</Row>
 		</ContainerWithDivider>

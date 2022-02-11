@@ -44,24 +44,24 @@ import {
 	useIntegratedFunction,
 	useIntegratedHook
 } from '../../store/integrations/hooks';
-import {
-	CarbonioModule,
-	useBoardConfig,
-	useRemoveCurrentBoard,
-	useUpdateCurrentBoard
-} from '../../../types';
+import { CarbonioModule } from '../../../types';
 import { getEditSettingsForApp } from '../../network/edit-settings';
 import {
 	usePushHistoryCallback,
 	useGoBackHistoryCallback,
 	useReplaceHistoryCallback,
 	getCurrentRoute,
-	getGoBackHistoryCallback,
-	getPushHistoryCallback,
-	getReplaceHistoryCallback,
-	useCurrentRoute
+	useCurrentRoute,
+	replaceHistory,
+	goBackHistory,
+	pushHistory
 } from '../../history/hooks';
-import { getUseAddBoardCallback } from '../../shell/boards/board-hooks';
+import {
+	getUseAddBoardCallback,
+	useBoardConfig,
+	useRemoveCurrentBoard,
+	useUpdateCurrentBoard
+} from '../../shell/boards/board-hooks';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({
@@ -86,8 +86,7 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	getActionsFactory,
 	useActionFactory,
 	getFactory,
-	// ACCOUNTS AND STUFF
-	useIsMobile,
+	// ACCOUNTS
 	useUserAccount,
 	getUserAccount,
 	useUserAccounts,
@@ -102,24 +101,27 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	getTags,
 	useNotify,
 	useRefresh,
+	// BOARDS
 	useAddBoardCallback: getUseAddBoardCallback(pkg.name),
 	useUpdateCurrentBoard,
 	useRemoveCurrentBoard,
 	useBoardConfig,
+	// HISTORY
 	usePushHistoryCallback,
 	useGoBackHistoryCallback,
 	useReplaceHistoryCallback,
 	useCurrentRoute,
 	getCurrentRoute,
-	getPushHistoryCallback,
-	getGoBackHistoryCallback,
-	getReplaceHistoryCallback,
+	pushHistory,
+	goBackHistory,
+	replaceHistory,
+	// STUFF
+	useIsMobile,
 	getBridgedFunctions: (): unknown => {
 		const { packageDependentFunctions, functions } = useContextBridge.getState();
 		return {
 			...functions,
 			...reduce(packageDependentFunctions, (acc, f, name) => ({ ...acc, [name]: f(pkg.name) }), {})
 		};
-	},
-	editSettings: getEditSettingsForApp(pkg.name)
+	}
 });

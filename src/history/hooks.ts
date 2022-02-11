@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { To } from 'history';
 import { find, startsWith, replace, trim } from 'lodash';
 import { useMemo, useCallback } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -19,12 +20,49 @@ export const useCurrentRoute = (): AppRoute | undefined => {
 		[location.pathname, routes]
 	);
 };
+export const getCurrentRoute = (): AppRoute | undefined => {
+	const history = useContextBridge.getState().functions.getHistory?.();
+	const routes = getRoutes();
+	return find(routes, (r) => startsWith(trim(history.location.pathname, '/'), r.route));
+};
 
-export const usePushHistoryCallback = (prefix?: string): ((path?: string) => void) => {
+type HistoryParams =
+	| {
+			path: To;
+			route?: string;
+	  }
+	| string;
+
+export const parseParams = (params: HistoryParams): To => {
+	if (typeof params === 'string') {
+		return replace(`/${getCurrentRoute()?.route}/${params}`, '//', '/');
+	}
+	const routeToApply = params.route
+		? find(getRoutes(), (r) => r.id === params.route || r.route === params.route)
+		: getCurrentRoute();
+	return typeof params.path === 'string'
+		? replace(`/${routeToApply?.route}/${params.path}`, '//', '/')
+		: {
+				search: params.path.search,
+				hash: params.path.hash,
+				pathname: replace(`/${routeToApply?.route}/${params.path.pathname}`, '//', '/')
+		  };
+};
+
+export const usePushHistoryCallback = (): ((params: HistoryParams) => void) => {
 	const history = useHistory();
 	const cb = useCallback(
-		(path?: string): void => history.push(replace(`/${prefix}/${path}`, '//', '/')),
-		[history, prefix]
+		(params: HistoryParams): void => history.push(parseParams(params)),
+		[history]
+	);
+	return cb;
+};
+
+export const useReplaceHistoryCallback = (): ((params: HistoryParams) => void) => {
+	const history = useHistory();
+	const cb = useCallback(
+		(params: HistoryParams): void => history.replace(parseParams(params)),
+		[history]
 	);
 	return cb;
 };
@@ -34,31 +72,15 @@ export function useGoBackHistoryCallback(): () => void {
 	return history.goBack;
 }
 
-export const useReplaceHistoryCallback = (prefix?: string): ((path?: string) => void) => {
-	const history = useHistory();
-	const cb = useCallback(
-		(path?: string): void => history.replace(replace(`/${prefix}/${path}`, '//', '/')),
-		[history, prefix]
-	);
-	return cb;
-};
-
-export const getCurrentRoute = (): AppRoute | undefined => {
+export const pushHistory = (params: HistoryParams): void => {
 	const history = useContextBridge.getState().functions.getHistory?.();
-	const routes = getRoutes();
-	return find(routes, (r) => startsWith(trim(history.location.pathname, '/'), r.route));
+	history.push(parseParams(params));
 };
 
-export const getPushHistoryCallback = (prefix?: string): ((path?: string) => void) => {
+export const replaceHistory = (params: HistoryParams): void => {
 	const history = useContextBridge.getState().functions.getHistory?.();
-	return (path?: string): void => history.push(replace(`/${prefix}/${path}`, '//', '/'));
+	history.replace(parseParams(params));
 };
 
-export function getGoBackHistoryCallback(): () => void {
-	return useContextBridge.getState().functions.getHistory?.().goBack;
-}
-
-export const getReplaceHistoryCallback = (prefix?: string): ((path?: string) => void) => {
-	const history = useContextBridge.getState().functions.getHistory?.();
-	return (path?: string): void => history.replace(replace(`/${prefix}/${path}`, '//', '/'));
-};
+export const goBackHistory = (): void =>
+	useContextBridge.getState().functions.getHistory?.().goBack();

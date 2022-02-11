@@ -22,10 +22,12 @@ export default class I18nFactory implements II18nFactory {
 	}
 
 	public setLocale(locale: string): void {
-		this.locale = locale;
-		forEach(this._cache, (appI18n) => {
-			appI18n.changeLanguage(locale);
-		});
+		if (this.locale !== locale) {
+			this.locale = locale;
+			forEach(this._cache, (appI18n) => {
+				appI18n.changeLanguage(locale);
+			});
+		}
 	}
 
 	// eslint-disable-next-line class-methods-use-this

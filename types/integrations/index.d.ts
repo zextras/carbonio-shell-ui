@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Component } from 'react';
+import { ComponentType } from 'react';
 
 export type IntegrationsState = {
 	actions: ActionMap;
@@ -16,7 +16,7 @@ export type IntegrationsState = {
 	) => void;
 	registerComponents: (
 		app: string
-	) => (...items: Array<{ id: string; component: Component }>) => void;
+	) => (...items: Array<{ id: string; component: ComponentType }>) => void;
 	registerHooks: (...items: Array<{ id: string; hook: AnyFunction }>) => void;
 	registerFunctions: (...items: Array<{ id: string; fn: AnyFunction }>) => void;
 };
@@ -37,7 +37,7 @@ export type ActionFactory<T> = (target: T) => Action;
 export type CombinedActionFactory<T> = (target: T) => Array<Action>;
 
 export type ActionMap = Record<string, Record<string, ActionFactory<unknown>>>;
-export type ComponentMap = Record<string, { app: string; item: Component }>;
+export type ComponentMap = Record<string, { app: string; item: ComponentType<any> }>;
 export type HookMap = Record<string, AnyFunction>;
 export type FunctionMap = Record<string, AnyFunction>;
 

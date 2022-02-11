@@ -16,6 +16,7 @@ module.exports = {
 	globals: {
 		WATCH_SERVER: 'readonly',
 		BASE_PATH: 'readonly',
+		__SHELL_ENV__: 'readonly',
 		FLAVOR: 'readonly',
 		PACKAGE_NAME: 'readonly',
 		PACKAGE_VERSION: 'readonly',

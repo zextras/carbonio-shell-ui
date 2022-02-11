@@ -14,8 +14,8 @@ export type CarbonioModule = {
 	name: string;
 	priority: number;
 	version: string;
-	type: 'app' | 'admin' | 'shell';
-	attrKey: string;
+	type: 'carbonio' | 'carbonioAdmin' | 'shell' | 'carbonioStandalone';
+	attrKey?: string;
 	icon: string;
 	display: string;
 };
@@ -74,7 +74,11 @@ export type SettingsView = CarbonioView<SettingsViewProps> & {
 	position: number;
 };
 
-export type SearchView = CarbonioView<SearchViewProps>;
+export type SearchView = CarbonioView<SearchViewProps> & {
+	icon: string;
+	label: string;
+	position: number;
+};
 
 export type PrimaryAccessoryView = CarbonioView<PrimaryAccessoryViewProps>;
 
@@ -101,7 +105,8 @@ export type AppSetters = {
 	removeRoute: (id: string) => void;
 	//
 	// update primaryBar
-	updatePrimaryBadge: (id: string, badge: BadgeInfo) => void;
+	updatePrimaryBadge: (badge: Partial<BadgeInfo>, id: string) => void;
+	updateUtilityBadge: (badge: Partial<BadgeInfo>, id: string) => void;
 	//
 	// add board
 	addBoardView: (data: BoardView) => string;

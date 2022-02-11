@@ -10,6 +10,7 @@ import { SnackbarManagerContext, ModalManagerContext } from '@zextras/carbonio-d
 import AppLoaderMounter from './app/app-loader-mounter';
 import { useBridge } from '../store/context-bridge';
 import ShellView from '../shell/shell-view';
+import { BASENAME } from '../constants';
 
 const ContextBridge = () => {
 	const history = useHistory();
@@ -27,7 +28,7 @@ const ContextBridge = () => {
 
 export default function BootstrapperRouter() {
 	return (
-		<BrowserRouter basename="/carbonio/">
+		<BrowserRouter basename={BASENAME}>
 			<ContextBridge />
 			<AppLoaderMounter />
 			<ShellView />

@@ -5,6 +5,7 @@
  */
 
 import { DynamicThemeFix } from 'darkreader';
+import { ShellModes } from '../../types';
 
 /*
 	reference: https://zextras.atlassian.net/wiki/spaces/IRIS/pages/223215854/UI+Guidelines+and+theming
@@ -59,17 +60,27 @@ export const ACTION_TYPES = {
 	FOLDER: 'folder',
 	FOLDER_lIST: 'folder_list',
 	CALENDAR: 'calendar',
-	CALENDAR_lIST: 'calendar_list'
+	CALENDAR_lIST: 'calendar_list',
+	NEW: 'new'
 };
 
 export const darkReaderDynamicThemeFixes: DynamicThemeFix = {
-	ignoreImageAnalysis: ['.no-dr-invert'],
+	ignoreImageAnalysis: ['.no-dr-invert *'],
 	invert: [],
 	css: `
-		.tox-edit-area, .force-white-bg {
+		.tox, .force-white-bg, .tox-swatches-menu, .tox .tox-edit-area__iframe {
 			background-color: #fff !important;
+			background: #fff !important;
 		}
 	`,
-	ignoreInlineStyle: [],
+	ignoreInlineStyle: ['.tox-menu *'],
 	disableStyleSheetsProxy: false
 };
+
+export const SHELL_MODES: Record<string, ShellModes> = {
+	CARBONIO: 'carbonio',
+	STANDALONE: 'carbonioStandalone',
+	ADMIN: 'carbonioAdmin'
+};
+
+export const BASENAME = `/${__SHELL_ENV__}/`;

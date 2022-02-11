@@ -12,7 +12,8 @@ import {
 	Divider,
 	Padding,
 	useSnackbar,
-	Shimmer
+	Shimmer,
+	FormSubSection
 } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -30,6 +31,7 @@ import { editSettings } from '../network/edit-settings';
 import { Mods } from '../../types';
 import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
 import SearchSettingsView from './search-settings-view';
+import Composer from '../store/integrations/composer';
 
 export const DisplayerHeader: FC<{
 	label: string;

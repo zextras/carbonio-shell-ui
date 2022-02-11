@@ -18,6 +18,7 @@ export type CarbonioModule = {
 	attrKey?: string;
 	icon: string;
 	display: string;
+	sentryDsn?: string;
 };
 
 export type AppRoute = {
@@ -47,6 +48,15 @@ export type CarbonioView<P> = {
 	component: ComponentType<P>;
 };
 
+export type CarbonioAccessoryView<P> = {
+	id: string;
+	app: string;
+	whitelistRoutes?: Array<string>;
+	blacklistRoutes?: Array<string>;
+	position: number;
+	component: ComponentType<P>;
+};
+
 export type PrimaryBarView = Omit<CarbonioView<PrimaryBarComponentProps>, 'component'> & {
 	component: string | ComponentType<PrimaryBarComponentProps>;
 	badge: BadgeInfo;
@@ -61,10 +71,9 @@ export type AppView = CarbonioView<AppViewComponentProps>;
 
 export type BoardView = CarbonioView<BoardViewComponentProps>;
 
-export type UtilityView = CarbonioView<PrimaryBarComponentProps> & {
+export type UtilityView = CarbonioAccessoryView<PrimaryBarComponentProps> & {
 	button: string | ComponentType<PrimaryBarComponentProps>;
 	badge: BadgeInfo;
-	position: number;
 	label: string;
 };
 
@@ -80,9 +89,13 @@ export type SearchView = CarbonioView<SearchViewProps> & {
 	position: number;
 };
 
-export type PrimaryAccessoryView = CarbonioView<PrimaryAccessoryViewProps>;
+export type PrimaryAccessoryView = CarbonioAccessoryView<PrimaryAccessoryViewProps> & {
+	component: string | ComponentType;
+	onClick?: (ev: any) => void;
+	label: string;
+};
 
-export type SecondaryAccessoryView = CarbonioView<SecondaryAccessoryViewProps>;
+export type SecondaryAccessoryView = CarbonioAccessoryView<SecondaryAccessoryViewProps>;
 
 export type AppRouteDescriptor = {
 	id: string;

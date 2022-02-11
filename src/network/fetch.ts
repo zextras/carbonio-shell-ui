@@ -6,10 +6,7 @@
 
 import { GetState, SetState } from 'zustand';
 import { find } from 'lodash';
-import { SHELL_APP_ID } from '../constants';
-import { getApp, getShell } from '../store/app';
 import { goToLogin } from './go-to-login';
-import { report } from './report';
 import {
 	Account,
 	AccountState,
@@ -20,6 +17,7 @@ import {
 } from '../../types';
 import { userAgent } from './user-agent';
 import { noOp } from './noOp';
+import { report } from '../reporting';
 
 const getAccount = (
 	acc?: Account,
@@ -142,9 +140,7 @@ export const getSoapFetch =
 		}) // TODO proper error handling
 			.then((res) => res?.json())
 			.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
-			.catch((e) =>
-				report(app === SHELL_APP_ID ? getShell() : getApp(app)())(e)
-			) as Promise<Response>;
+			.catch((e) => report(app)(e)) as Promise<Response>;
 
 export const getXmlSoapFetch =
 	(app: string, set: SetState<AccountState>, get: GetState<AccountState>) =>
@@ -168,6 +164,6 @@ export const getXmlSoapFetch =
 			.then((res) => res?.json())
 			.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
 			.catch((e) => {
-				report(app === SHELL_APP_ID ? getShell() : getApp(app)())(e);
+				report(app)(e);
 				throw e;
 			}) as Promise<Response>;

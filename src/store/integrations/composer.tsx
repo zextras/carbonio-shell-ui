@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Container } from '@zextras/carbonio-design-system';
 // TinyMCE so the global var exists
 // eslint-disable-next-line no-unused-vars
@@ -60,21 +60,26 @@ const Composer: FC<ComposerProps> = ({
 	inline = false,
 	value,
 	baseAssetsUrl,
+	initialValue,
 	...rest
 }) => {
+	const [content, setContent] = useState(initialValue);
 	const _onEditorChange = useCallback(
 		(newContent, editor) => {
+			setContent(newContent);
 			onEditorChange?.([
 				editor.getContent({ format: 'text' }),
 				editor.getContent({ format: 'html' })
 			]);
 		},
-		[onEditorChange]
+		[setContent, onEditorChange]
 	);
+	useEffect(() => setContent(value), [value]);
+
 	return (
 		<Container height="fit">
 			<Editor
-				value={value}
+				value={content}
 				init={{
 					skin_url: `${baseAssetsUrl}/tinymce/skins/ui/oxide`,
 					content_css: `${baseAssetsUrl}/tinymce/skins/content/default/content.css`,

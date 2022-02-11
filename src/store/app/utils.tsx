@@ -26,10 +26,11 @@ export const normalizeApp = (app: Partial<CarbonioModule>): CarbonioModule => ({
 	name: app.name ?? 'module',
 	priority: app.priority ?? 99,
 	version: app.version ?? '',
-	type: app.type ?? 'app',
+	type: app.type ?? 'carbonio',
 	attrKey: app.attrKey,
 	icon: app.icon ?? 'Cube',
-	display: app.display ?? 'Module'
+	display: app.display ?? 'Module',
+	sentryDsn: app.sentryDsn
 });
 
 const FallbackView: FC = () => <p>Missing Component</p>;
@@ -90,43 +91,41 @@ export const normalizeSearchView = (data: Partial<SearchView>, app: CarbonioModu
 export const normalizeUtilityView = (
 	data: Partial<UtilityView>,
 	app: CarbonioModule
-): UtilityView => {
-	const route = trim(data.route ?? app.name, '/');
-	return {
-		app: app.name,
-		route,
-		id: data?.id ?? route,
-		component: data?.component ?? FallbackView,
-		button: data?.button ?? 'Cube',
-		badge: normalizeBadgeInfo(data?.badge ?? {}),
-		position: data?.position ?? app.priority,
-		label: data?.label ?? ''
-	};
-};
+): UtilityView => ({
+	app: app.name,
+	id: data?.id ?? app.name,
+	whitelistRoutes: data?.whitelistRoutes,
+	blacklistRoutes: data?.blacklistRoutes,
+	component: data?.component ?? FallbackView,
+	button: data?.button ?? 'Cube',
+	badge: normalizeBadgeInfo(data?.badge ?? {}),
+	position: data?.position ?? app.priority,
+	label: data?.label ?? app.display
+});
 export const normalizePrimaryAccessoryView = (
 	data: Partial<PrimaryAccessoryView>,
 	app: CarbonioModule
-): PrimaryAccessoryView => {
-	const route = trim(data.route ?? app.name, '/');
-	return {
-		app: app.name,
-		route,
-		id: data?.id ?? route,
-		component: data?.component ?? FallbackView
-	};
-};
+): PrimaryAccessoryView => ({
+	app: app.name,
+	onClick: data?.onClick,
+	label: data?.label ?? app.display,
+	position: data?.position ?? app.priority,
+	whitelistRoutes: data?.whitelistRoutes,
+	blacklistRoutes: data?.blacklistRoutes,
+	id: data?.id ?? app.name,
+	component: data?.component ?? FallbackView
+});
 export const normalizeSecondaryAccessoryView = (
 	data: Partial<SecondaryAccessoryView>,
 	app: CarbonioModule
-): SecondaryAccessoryView => {
-	const route = trim(data.route ?? app.name, '/');
-	return {
-		app: app.name,
-		route,
-		id: data?.id ?? route,
-		component: data?.component ?? FallbackView
-	};
-};
+): SecondaryAccessoryView => ({
+	app: app.name,
+	position: data?.position ?? app.priority,
+	whitelistRoutes: data?.whitelistRoutes,
+	blacklistRoutes: data?.blacklistRoutes,
+	id: data?.id ?? app.name,
+	component: data?.component ?? FallbackView
+});
 
 export const normalizeBoardView = (data: Partial<BoardView>, app: CarbonioModule): BoardView => {
 	const route = trim(data.route ?? app.name, '/');

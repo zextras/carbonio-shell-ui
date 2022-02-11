@@ -16,10 +16,10 @@ import { getAppFunctions } from './app-loader-functions';
 import { Spinner } from '../../ui-extras/spinner';
 import { AppLink } from '../../ui-extras/app-link';
 import * as CONSTANTS from '../../constants';
-import { report } from '../../network/report';
 import { useAccountStore } from '../../store/account';
 import { IShellWindow, SharedLibrariesAppsMap, CarbonioModule } from '../../../types';
 import { getAppSetters } from './app-loader-setters';
+import { report } from '../../reporting';
 
 export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
@@ -58,7 +58,7 @@ function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<Carbo
 					store,
 					setReducer: (reducer): void => store.replaceReducer(reducer)
 				},
-				report: report(appPkg),
+				report: report(appPkg.name),
 				soapFetch: useAccountStore.getState().soapFetch(appPkg.name),
 				xmlSoapFetch: useAccountStore.getState().xmlSoapFetch(appPkg.name),
 				AppLink,

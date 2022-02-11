@@ -58,26 +58,26 @@ function TabsList({ tabs, currentBoard, setCurrentBoard, largeView, t }) {
 					<Container width="fit" padding={{ horizontal: 'extrasmall', vertical: 'extrasmall' }}>
 						<Container width="1px" heigth="fill" background="gray3" />
 					</Container>
-					<Dropdown
-						width="fit"
-						style={{ flexGrow: '1' }}
-						items={map(slice(tabs, -hiddenTabsCount), (tab) => ({
-							id: tab.key,
-							label: tab.title,
-							icon: tab.icon,
-							click: () => setCurrentBoard(tab.key),
-							selected: tab.key === currentBoard
-						}))}
-					>
-						<Tooltip label={t('board.show_tabs', 'Show other tabs')} placement="top">
+					<Tooltip label={t('board.show_tabs', 'Show other tabs')} placement="top">
+						<Dropdown
+							width="fit"
+							style={{ flexGrow: '1' }}
+							items={map(slice(tabs, -hiddenTabsCount), (tab) => ({
+								id: tab.key,
+								label: tab.title,
+								icon: tab.icon,
+								click: () => setCurrentBoard(tab.key),
+								selected: tab.key === currentBoard
+							}))}
+						>
 							<Button
 								type="ghost"
 								color="secondary"
 								label={`+${hiddenTabsCount}`}
 								padding={{ all: 'extrasmall' }}
 							/>
-						</Tooltip>
-					</Dropdown>
+						</Dropdown>
+					</Tooltip>
 				</>
 			)}
 		</Row>

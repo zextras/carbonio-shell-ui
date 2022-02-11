@@ -15,6 +15,7 @@ import { SettingsSidebar } from '../../settings/settings-sidebar';
 import { AppState, PrimaryBarView, SHELL_APP_ID } from '../../../types';
 import GeneralSettings from '../../settings/general-settings';
 import { isAdmin, isClient } from '../../multimode';
+import Feedback from '../../reporting/feedback';
 
 const settingsRoute = {
 	route: SETTINGS_APP_ID,
@@ -80,6 +81,12 @@ const searchAppView = {
 	component: SearchAppView
 };
 
+const feedbackBoardView = {
+	id: 'feedback',
+	app: SHELL_APP_ID,
+	component: Feedback,
+	route: 'feedback'
+};
 export const registerDefaultViews = (t: TFunction): void => {
 	useAppStore.setState(
 		produce((s: AppState) => {
@@ -101,6 +108,7 @@ export const registerDefaultViews = (t: TFunction): void => {
 				s.views.appView = [searchAppView, settingsAppView];
 				s.views.settings = [settingsGeneralView];
 			}
+			s.views.board = [feedbackBoardView];
 		})
 	);
 };

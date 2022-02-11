@@ -4,27 +4,26 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useMemo, ReactElement } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Quota, Container, FormSubSection, Text, Tooltip } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
-import { useUserSettings } from '../store/account';
-import { useAccountStore } from '../store/account';
+import { useAccountStore, useUserSettings } from '../store/account';
 
 interface UserQuotaProps {
 	mobileView: boolean;
 }
 
-const UserQuota = (mobileView: UserQuotaProps): ReactElement => {
+const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 	const [t] = useTranslation();
 
 	const settings = useUserSettings();
-	const used = Number(useAccountStore((s) => s.usedQuota));
+	const used = useAccountStore((s) => s.usedQuota);
 	const quota = useMemo(() => {
 		const userQuota = Number(settings?.attrs?.zimbraMailQuota);
 		if (used && userQuota && userQuota > 0) {
-			return Math.floor((used / userQuota) * 100);
+			return Math.round((used / userQuota) * 100);
 		}
-		return 100;
+		return -1;
 	}, [settings?.attrs?.zimbraMailQuota, used]);
 
 	const description = useMemo(() => {
@@ -55,33 +54,29 @@ const UserQuota = (mobileView: UserQuotaProps): ReactElement => {
 	}, [quota]);
 
 	return mobileView ? (
-		<>
-			<Container width="fit" padding={{ right: 'medium' }}>
-				<Tooltip label={description} placement="bottom">
-					<Quota fill={quota > 0 ? quota : 0} fillBackground={fillBackground} />
-				</Tooltip>
-			</Container>
-		</>
+		<Container width="fit" padding={{ right: 'medium' }}>
+			<Tooltip label={description} placement="bottom">
+				<Quota fill={quota > 0 ? quota : 0} fillBackground={fillBackground} />
+			</Tooltip>
+		</Container>
 	) : (
-		<>
-			<FormSubSection
-				label={t('user_quota.title', "User's quota")}
-				minWidth="calc(min(100%, 512px))"
-				width="50%"
-			>
-				<Container width="fill" padding={{ vertical: 'medium' }}>
-					<Container
-						orientation="horizontal"
-						mainAlignment="flex-start"
-						takeAvailableSpace
-						padding={{ bottom: 'medium' }}
-					>
-						<Text orientation="left">{description}</Text>
-					</Container>
-					<Quota fill={quota === -1 ? 100 : quota} fillBackground={fillBackground} />
+		<FormSubSection
+			label={t('user_quota.title', "User's quota")}
+			minWidth="calc(min(100%, 512px))"
+			width="50%"
+		>
+			<Container width="fill" padding={{ vertical: 'medium' }}>
+				<Container
+					orientation="horizontal"
+					mainAlignment="flex-start"
+					takeAvailableSpace
+					padding={{ bottom: 'medium' }}
+				>
+					<Text orientation="left">{description}</Text>
 				</Container>
-			</FormSubSection>
-		</>
+				<Quota fill={quota === -1 ? 100 : quota} fillBackground={fillBackground} />
+			</Container>
+		</FormSubSection>
 	);
 };
 

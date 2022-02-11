@@ -15,12 +15,12 @@ import { CarbonioModule } from '../../../types';
 import { injectSharedLibraries } from './shared-libraries';
 import { SHELL_APP_ID } from '../../constants';
 import { getUserSetting } from '../../store/account';
+import { useReporter } from '../../reporting';
 
 export function loadApps(storeFactory: StoreFactory, apps: Array<CarbonioModule>): void {
 	injectSharedLibraries();
 	const appsToLoad = filter(apps, (app) => {
 		if (app.name === SHELL_APP_ID) return false;
-		if (typeof cliSettings !== 'undefined' && !cliSettings.enableErrorReporter) return false;
 		if (app.attrKey && getUserSetting('attrs', app.attrKey) !== 'TRUE') return false;
 		return true;
 	});
@@ -28,6 +28,7 @@ export function loadApps(storeFactory: StoreFactory, apps: Array<CarbonioModule>
 		'%cLOADING APPS',
 		'color: white; background: #2b73d2;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
 	);
+	useReporter.getState().setClients(appsToLoad);
 	Promise.allSettled(map(appsToLoad, (app) => loadApp(app, storeFactory)));
 }
 

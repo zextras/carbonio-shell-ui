@@ -13,8 +13,8 @@ import {
 	Padding,
 	Icon
 } from '@zextras/carbonio-design-system';
-import { map, isEmpty, trim } from 'lodash';
-import React, { useContext, FC, useState, useEffect } from 'react';
+import { map, isEmpty, trim, filter, sortBy } from 'lodash';
+import React, { useContext, FC, useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 // TODO: convert boards management to ts (and maybe a zustand store)
@@ -22,11 +22,12 @@ import { useHistory } from 'react-router-dom';
 // @ts-ignore
 import { BoardValueContext, BoardSetterContext } from './boards/board-context';
 import { useAppStore } from '../store/app';
-import { AppRoute, PrimaryBarView } from '../../types';
-import { pushHistory } from '../history/hooks';
+import { AppRoute, PrimaryAccessoryView, PrimaryBarView } from '../../types';
 import BadgeWrap from './badge-wrap';
 import { isAdmin, ShellMode } from '../multimode';
 import { SHELL_MODES } from '../constants';
+import AppContextProvider from '../boot/app/app-context-provider';
+import { checkRoute } from '../utility-bar/utils';
 
 const PrimaryContainer = styled(Container)<{ active: boolean }>`
 	background: ${({ theme, active }): string => theme.palette[active ? 'gray4' : 'gray6'].regular};
@@ -65,6 +66,10 @@ type PrimaryBarItemProps = {
 	onClick: () => void;
 };
 
+type PrimaryBarAccessoryItemProps = {
+	view: PrimaryAccessoryView;
+};
+
 const AdminPrimaryBarElement: FC<PrimaryBarItemProps> = ({ view, active, onClick }) => (
 	<PrimaryContainer
 		orientation="horizontal"
@@ -79,7 +84,7 @@ const AdminPrimaryBarElement: FC<PrimaryBarItemProps> = ({ view, active, onClick
 				<view.component active={active} />
 			)}
 		</BadgeWrap>
-		<Padding all="medium" left="extrasmall" right="large">
+		<Padding right="large">
 			<Text color={active ? 'primary' : 'text'}>{view.label}</Text>
 		</Padding>
 	</PrimaryContainer>
@@ -103,6 +108,45 @@ const PrimaryBarElement: FC<PrimaryBarItemProps> = ({ view, active, onClick }) =
 	</Tooltip>
 );
 
+const PrimaryBarAccessoryElement: FC<PrimaryBarAccessoryItemProps> = ({ view }) =>
+	isAdmin() ? (
+		<AppContextProvider key={view.id} pkg={view.app}>
+			<PrimaryContainer
+				orientation="horizontal"
+				mainAlignment="flex-start"
+				height="48px"
+				onClick={view.onClick}
+			>
+				<Container width={48} height={48} style={{ position: 'relative' }}>
+					{typeof view.component === 'string' ? (
+						<Icon icon={view.component} size="large" />
+					) : (
+						<view.component />
+					)}
+				</Container>
+				<Padding right="large">
+					<Text>{view.label}</Text>
+				</Padding>
+			</PrimaryContainer>
+		</AppContextProvider>
+	) : (
+		<Tooltip label={view.label} placement="right" key={view.id}>
+			<AppContextProvider key={view.id} pkg={view.app}>
+				{typeof view.component === 'string' ? (
+					<IconButton
+						icon={view.component}
+						backgroundColor="gray6"
+						iconColor="text"
+						onClick={view.onClick}
+						size="large"
+					/>
+				) : (
+					<view.component />
+				)}
+			</AppContextProvider>
+		</Tooltip>
+	);
+
 const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 	const primaryBarViews = useAppStore((s) => s.views.primaryBar);
 
@@ -124,6 +168,14 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 		}
 	}, [activeRoute, history.location.pathname, primaryBarViews]);
 	const primaryBarAccessoryViews = useAppStore((s) => s.views.primaryBarAccessories);
+	const accessories = useMemo(
+		() =>
+			sortBy(
+				filter(primaryBarAccessoryViews, (v) => checkRoute(v, activeRoute)),
+				'position'
+			),
+		[activeRoute, primaryBarAccessoryViews]
+	);
 	return (
 		<ContainerWithDivider
 			width={isAdmin() ? 'fit' : 49}
@@ -131,10 +183,11 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 			background="gray6"
 			orientation="vertical"
 			mainAlignment="flex-start"
+			crossAlignment="flex-start"
 		>
 			<Row
 				mainAlignment="flex-start"
-				crossAlignment="flext-start"
+				crossAlignment="flex-start"
 				orientation="vertical"
 				takeAvailableSpace
 				wrap="nowrap"
@@ -144,19 +197,23 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 					{map(primaryBarViews, (view) =>
 						// eslint-disable-next-line no-nested-ternary
 						view.visible ? (
-							isAdmin() ? (
-								<AdminPrimaryBarElement
-									onClick={(): void => history.push(`/${routes[view.id]}`)}
-									view={view}
-									active={activeRoute?.id === view.id}
-								/>
-							) : (
-								<PrimaryBarElement
-									onClick={(): void => history.push(`/${routes[view.id]}`)}
-									view={view}
-									active={activeRoute?.id === view.id}
-								/>
-							)
+							<AdminPrimaryBarElement
+								onClick={(): void => history.push(`/${routes[view.id]}`)}
+								view={view}
+								active={activeRoute?.id === view.id}
+							/>
+						) : null
+					)}
+				</ShellMode>
+				<ShellMode exclude={[SHELL_MODES.ADMIN]}>
+					{map(primaryBarViews, (view) =>
+						// eslint-disable-next-line no-nested-ternary
+						view.visible ? (
+							<PrimaryBarElement
+								onClick={(): void => history.push(`/${routes[view.id]}`)}
+								view={view}
+								active={activeRoute?.id === view.id}
+							/>
 						) : null
 					)}
 				</ShellMode>
@@ -167,6 +224,9 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 				wrap="nowrap"
 				style={{ minHeight: '1px', overflowY: 'overlay' }}
 			>
+				{accessories.map((v) => (
+					<PrimaryBarAccessoryElement view={v} key={v.id} />
+				))}
 				<ToggleBoardIcon />
 			</Row>
 		</ContainerWithDivider>

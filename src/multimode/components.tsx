@@ -6,7 +6,7 @@
 import React, { FC, useMemo } from 'react';
 import { ShellModes } from '../../types';
 
-export const ShellMode: FC<{ include: ShellModes[]; exclude: ShellModes[] }> = ({
+export const ShellMode: FC<{ include?: ShellModes[]; exclude?: ShellModes[] }> = ({
 	include,
 	exclude,
 	children

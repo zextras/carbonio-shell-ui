@@ -14,9 +14,8 @@ import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
 import AppBoardWindow from './boards/app-board-window';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
-import { useAppStore } from '../store/app';
 import { useUserSettings } from '../store/account';
-import { ShellUtilityBar, ShellUtilityPanel } from './shell-utility-bar';
+import { ShellUtilityBar, ShellUtilityPanel } from '../utility-bar';
 import { useCurrentRoute } from '../history/hooks';
 
 const Background = styled.div`
@@ -43,17 +42,9 @@ function DarkReaderListener() {
 }
 
 export function Shell() {
-	const [chatPanelMode, setChatPanelMode] = useState('closed'); // values: 'closed', 'overlap', 'open'
-	const [navOpen, setNavOpen] = useState(true);
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
-	const [current, setCurrent] = useState(undefined);
 	const activeRoute = useCurrentRoute();
 
-	useEffect(() => {
-		setNavOpen((n) => !(n && chatPanelMode === 'open'));
-	}, [chatPanelMode]);
-
-	const showUtilityBar = useAppStore((s) => s.views.utilityBar.length > 0);
 	return (
 		<Background>
 			<DarkReaderListener />
@@ -63,31 +54,12 @@ export function Shell() {
 				mobileNavIsOpen={mobileNavOpen}
 				onMobileMenuClick={() => setMobileNavOpen(!mobileNavOpen)}
 			>
-				{showUtilityBar && (
-					<ShellUtilityBar
-						mode={chatPanelMode}
-						setMode={setChatPanelMode}
-						current={current}
-						setCurrent={setCurrent}
-					/>
-				)}
+				<ShellUtilityBar />
 			</ShellHeader>
 			<Row crossAlignment="unset" style={{ position: 'relative', flexGrow: '1' }}>
-				<ShellNavigationBar
-					activeRoute={activeRoute}
-					navigationBarIsOpen={navOpen}
-					mobileNavIsOpen={mobileNavOpen}
-					onCollapserClick={() => setNavOpen(!navOpen)}
-				/>
+				<ShellNavigationBar activeRoute={activeRoute} mobileNavIsOpen={mobileNavOpen} />
 				<AppViewContainer />
-				{showUtilityBar && (
-					<ShellUtilityPanel
-						mode={chatPanelMode}
-						setMode={setChatPanelMode}
-						current={current}
-						setCurrent={setCurrent}
-					/>
-				)}
+				<ShellUtilityPanel />
 			</Row>
 			<Responsive mode="desktop">
 				<AppBoardWindow />

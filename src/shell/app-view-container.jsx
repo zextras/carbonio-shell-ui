@@ -5,7 +5,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { Redirect, Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import { map, find } from 'lodash';
 import { Container } from '@zextras/carbonio-design-system';
@@ -23,13 +23,10 @@ const _BoardsRouterContainer = styled(Container)`
 const FirstAppRedirect = () => {
 	const apps = useAppList();
 	const routes = useRoutes();
-	const match = useRouteMatch();
-	const location = useLocation();
 	const mainRoute = useMemo(
 		() => find(routes, (r) => apps[0]?.name === r.app)?.route,
 		[apps, routes]
 	);
-	console.log('@@@ weee', apps, routes, mainRoute, match, location, __SHELL_ENV__);
 	return mainRoute ? <Redirect exact strict from="/" to={`/${mainRoute}`} /> : null;
 };
 

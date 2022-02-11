@@ -8,11 +8,15 @@
         "show_tabs": "Show other tabs"
     },
     "label": {
+        "account_menu": "Account menu",
         "cancel": "Cancel",
         "clear_search_query": "CLEAR SEARCH",
         "discard_changes": "DISCARD CHANGES",
+        "documentation": "Documentation",
         "edit_to_start_search": "Edit your search to start a new one",
+        "feedback": "Feedback",
         "language": "Language",
+        "logout": "Logout",
         "no": "No",
         "out_of_office": "Out of Office",
         "reload": "Reload",

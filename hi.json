@@ -25,10 +25,12 @@
         "edit_to_start": "नई सर्च शुरू करने के लिए अपनी सर्च को बदलें",
         "results_for": "इसके नतीजे:",
         "start": "सर्च शुरू करें",
-        "active_input_label": "कीवर्ड कॉमा या टैब से अलग-अलग करें",
+        "active_input_label": "कॉमा या टैब दबाकर अपने कीवर्ड अलग-अलग करें",
         "idle_input_label": "{{module}} में सर्च करें",
         "already_clear": "सर्च इनपुट पहले ही साफ है",
-        "type_to_start_search": "कोई सर्च शुरू करने के लिए कुछ कीवर्ड टाइप करें"
+        "type_to_start_search": "कोई सर्च शुरू करने के लिए कुछ कीवर्ड टाइप करें",
+        "type_or_choose_suggestion": "कोई सर्च शुरू करने के लिए कुछ कीवर्ड टाइप करें या चुनें",
+        "unable_to_parse_query": "सर्च पूरी नहीं कर पा रहा, क्लियर करके दोबारा कोशिश करें"
     },
     "settings": {
         "app": "सेटिंग्स",
@@ -44,7 +46,8 @@
             "general": "जनरल सेटिंग्स",
             "theme_auto": "ऑटो",
             "theme_mode": "थीम मोड",
-            "theme_options": "थीम के ऑप्शन"
+            "theme_options": "थीम के ऑप्शन",
+            "dark_mode": "डार्क मोड"
         },
         "general_tab": "सामान्य",
         "out_of_office": {
@@ -66,11 +69,11 @@
                 "busy": "व्यस्त",
                 "out_of_office": "आउट ऑफ ऑफिस"
             },
-            "do_not_send_auto_replies": "ऑटो रिप्लाई न भेजें",
+            "do_not_send_auto_replies": "ऑटो-रिप्लाई न भेजें",
             "external_senders": {
-                "do_not_send_to_external": "बाहरी भेजने वाले को ऑटो-रिप्लाई मैसेज न भेजें",
-                "send_custom_in_organisation": "जो मेरी कंपनी में नहीं है उनके लिए अलग मैसेज भेजें",
-                "send_custom_not_in_organisation": "जो मेरी कंपनी और एड्रेस बुक में नहीं है उनके लिए अलग मैसेज भेजें",
+                "do_not_send_to_external": "बाहरी भेजने वाले को कोई ऑटो-रिप्लाई मैसेज न भेजें",
+                "send_custom_in_organisation": "जो मेरी कंपनी में नहीं है उनके लिए कस्टम मैसेज भेजें",
+                "send_custom_not_in_organisation": "जो मेरी कंपनी और एड्रेस बुक में नहीं है उनके लिए कस्टम मैसेज भेजें",
                 "send_standard_auto_reply": "स्टैंडर्ड ऑटो-रिप्लाई मैसेज भेजें"
             },
             "headings": {
@@ -78,9 +81,10 @@
                 "settings_label": "आउट ऑफ ऑफिस सेटिंग्स",
                 "time_period": "समय अवधि"
             },
-            "send_auto_replies": "ऑटो रिप्लाई भेजें"
+            "send_auto_replies": "ऑटो-रिप्लाई भेजें"
         },
-        "app_description": "सेटिंग्स मॉड्यूल"
+        "app_description": "सेटिंग्स मॉड्यूल",
+        "timezone_and_language": "टाइम ज़ोन और भाषा"
     },
     "logout_modal": {
         "confirm": "मुझे लॉग आउट कर दें",
@@ -89,7 +93,8 @@
     "message": {
         "snackbar": {
             "settings_saved": "बदलाव ठीक से सेव हो गए"
-        }
+        },
+        "reload": "\tक्या आप नई भाषा दिखाने के लिए एप्लिकेशन को अभी रीलोड करना चाहते हैं?\n(नहीं तो, नई भाषा आपके अगली बार साइन इन करने पर दिखेगी।)"
     },
     "module": {
         "app": {
@@ -99,8 +104,10 @@
     "new_tab": "नई टैब",
     "copyright": "कॉपीराइट",
     "user_quota": {
-        "limited": "{{quota}}% जगह इस्तेमाल की गई",
-        "unlimited": "असीमित जगह उपलब्ध है"
+        "limited": "आपने उपलब्ध जगह का {{quota}}% इस्तेमाल कर लिया है",
+        "unlimited": "आपके पास असीमित जगह उपलब्ध है",
+        "space_full": "ऐसा लगता है कि उपलब्ध जगह फुल हो गई है",
+        "title": "यूज़र का कोटा"
     },
     "snackbar": {
         "error": "कुछ गड़बड़ हुई, दोबारा कोशिश करें"
@@ -110,6 +117,137 @@
         "out_of_office": "आउट ऑफ ऑफिस",
         "edit_to_start_search": "नई सर्च शुरू करने के लिए अपनी सर्च को बदलें",
         "language": "भाषा",
-        "no": "नहीं"
+        "no": "नहीं",
+        "clear_search_query": "सर्च क्लीयर करें",
+        "discard_changes": "बदलाव रद्द करें",
+        "reload": "फिर से लोड करें",
+        "time_zone": "टाइम ज़ोन"
+    },
+    "board": {
+        "close_tab": "टैब बंद करने",
+        "close_tabs": "अपनी सभी टैब बंद करें",
+        "hide": "बोर्ड छिपाएँ",
+        "reduce": "बोर्ड छोटा करें",
+        "show_tabs": "दूसरी टैब दिखाएँ",
+        "enlarge": "बोर्ड बड़ा करें"
+    },
+    "locale": {
+        "hindi": "हिन्दी",
+        "label_english": "अँग्रेजी - {{value}}",
+        "label_portuguese_brazil": "पुर्तगाली - {{value}}",
+        "portuguese_brazil": "पुर्तगाली (ब्राज़ील)",
+        "English": "अँग्रेजी",
+        "chinese_china": "चाइनीज़ (चीन)",
+        "dutch": "डच",
+        "german": "जर्मन",
+        "italian": "इटालियन",
+        "japanese": "जापानी",
+        "label_chinese": "चाइनीज़ (चीन) -{{value}}",
+        "label_dutch": "डच - {{value}}",
+        "label_german": "जर्मन - {{value}}",
+        "label_hindi": "हिन्दी - {{value}}",
+        "label_italian": "इटालियन - {{value}}",
+        "label_japanese": "जापानी - {{value}}",
+        "label_portuguese": "पुर्तगाली - {{value}}",
+        "label_romanian": "रोमानियन - {{value}}",
+        "label_russian": "रूसी - {{value}}",
+        "label_spanish": "स्पेनिश - {{value}}",
+        "label_thai": "थाई - {{value}}",
+        "label_turkish": "तुर्की - {{value}}",
+        "portuguese": "पुर्तगाली",
+        "romanian": "रोमानियन",
+        "russian": "रूसी",
+        "spanish": "स्पेनिश",
+        "thai": "थाई",
+        "turkish": "तुर्की"
+    },
+    "timezone": {
+        "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}} एम्स्टर्डैम, बर्लिन, बर्न, रॉम, स्टॉकहोम, विएना",
+        "athens_beirut_bucharest_istanbul": "{{value}} एथेंस, बेरूत, बुखारेस्ट, इस्तांबुल",
+        "beijing_chongqing_hong_kong_urumqi": "{{value}} बीजिंग, चोंगकिंग, हाँग काँग, उरुमक़ी",
+        "belgrade_bratislava_budapest_ljubljana_prague": "{{value}} बेलग्रेड, ब्रातीस्लावा, बुडापेस्ट, ल्यूब्याना, प्राग",
+        "brussels_copenhagen_madrid_paris ": "{{value}} ब्रूसेल्स, कोपेनहागेन, मैड्रिड, पेरिस",
+        "chennai_kolkata_mumbai_new_delhi": "{{value}} चेन्नई, कोलकाता, मुंबई, नई दिल्ली",
+        "coordinated_universal_time": "{{value}} कोओर्डिनेटेड यूनिवर्सल टाईम",
+        "ekaterinburg_rtz_4": "{{value}} इकाटेरिनबर्ग (RTZ 4)",
+        "greenland": "{{value}} ग्रीनलैंड",
+        "harare_pretoria": "{{value}} हरारे, प्रिटोरिया",
+        "irkutsk_rtz_7": "{{value}} इर्कुत्स्क (RTZ 7)",
+        "moscow_st_petersburg_volgograd_rtz_2": "{{value}} मॉस्को, सेंट पीटर्सबर्ग, वोल्गोग्राद (RTZ 2)",
+        "pacific_south_america": "{{value}} प्रशांत दक्षिण अमेरिका",
+        "sarajevo_skopje_warsaw_zagreb": "{{value}} साराएवो, स्कोप्ये, वारसॉ, ज़ाग्रेब",
+        "us_canada_eastern": "{{value}} यूएस/कनाडा ईस्टर्न",
+        "vladivostok_magadan": "{{value}} व्लादिवोस्तोक_मागादान_rtz_9",
+        "abu_dhabi_muscat": "{{value}} आबू धाबी, मस्कट",
+        "alaska": "{{value}} अलास्का",
+        "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} एनाडीर, पेट्रोपावलोव्स्क-कामचैट्सकी (RTZ 11)",
+        "argentina": "{{value}} अर्जेंटीना",
+        "arizona": "{{value}} एरिज़ोना",
+        "asuncion": "{{value}} असंशियन",
+        "atlantic_time_canada": "{{value}} एटलांटिक टाइम (कनाडा)",
+        "azores": "{{value}} अज़ोरेस",
+        "baja_california": "{{value}} बाहा कैलिफोर्निया",
+        "baku": "{{value}} बाकू",
+        "bangkok_hanoi_jakarta": "{{value}} बैंकॉक, हनोई, जकार्ता",
+        "beirut": "{{value}} बेरूत",
+        "brasilia": "{{value}} ब्राज़ीलिया",
+        "britain_ireland_portugal": "{{value}} बर्लिन, आयरलैंड, पुर्तगाल",
+        "cape_verde_is": "{{value}} केप वर्ड आइलैंड.",
+        "caracas": "{{value}} काराकास",
+        "casablanca": "{{value}} कासाब्लांका",
+        "cayenne_fortaleza": "{{value}} केन, फ़ोर्टालेज़ा",
+        "central_america": "{{value}} मध्य अमेरिका",
+        "chihuahua_la_paz_mazatlan": "{{value}} चुआऊआ, ला पाज़, मज़ाटलन",
+        "chita": "{{value}} चीता",
+        "christmas_island": "{{value}} क्रिसमस आईलैंड",
+        "colombia": "{{value}} कोलम्बिया",
+        "cuiaba": "{{value}} कुयाबा",
+        "darwin": "{{value}} डार्विन",
+        "dateline": "{{value}} डेटलाइन",
+        "dhaka": "{{value}} ढाका",
+        "egypt": "{{value}} मिस्र",
+        "eucla": "{{value}} इयूक्ला",
+        "georgetown_la_paz_manaus_san_juan": "{{value}} जॉर्जटाउन, ला पाज़, मानाउस, सान हुआन",
+        "gmt_02": "{{value}} जीएमटी -02",
+        "gmt_11": "{{value}} जीएमटी -11",
+        "guadalajara_mexico_city_monterrey ": "{{value}} गुआदलहारा, मेक्सिको सिटी, मोंटेर्री",
+        "hawaii": "{{value}} हवाई",
+        "helsinki_kyiv_riga_sofia_tallinn_vilnius": "{{value}} हेलसिंकी, कीव, रीगा, सोफिया, तालिन, विलनियस",
+        "indiana_east": "{{value}} इंडियाना (ईस्ट)",
+        "istanbul": "{{value}} इस्तांबुल",
+        "jerusalem": "{{value}} येरूसलम",
+        "jordan": "{{value}} जॉर्डन",
+        "kabul": "{{value}} काबुल",
+        "iraq": "{{value}} इराक़",
+        "kaliningrad_rtz_1": "{{value}} कालीनीनग्राद (RTZ 1)",
+        "kathmandu": "{{value}} काठमांडू",
+        "korea": "{{value}} कोरिया",
+        "krasnoyarsk_rtz_6": "{{value}} क्रास्नोयार्स्क (RTZ 6)",
+        "kuwait_riyadh": "{{value}} कुवैत, रियाध",
+        "la_paz": "{{value}} ला पाज़",
+        "magadan": "{{value}} मागाडान",
+        "manaus": "{{value}} मानाउस",
+        "mid_atlantic": "{{value}} मध्य-एटलांटिक",
+        "minsk": "{{value}} मिंस्क",
+        "monrovia": "{{value}} मोनरोविया",
+        "montevideo": "{{value}} मोंटेविडियो",
+        "nairobi": "{{value}} नैरोबी",
+        "namibia": "{{value}} नामीबिया",
+        "newfoundland": "{{value}} न्यूफाउंडलैंड",
+        "nuku_alofa": "{{value}} नुकुआलोफ़ा",
+        "port_louis": "{{value}} पोर्ट लूई",
+        "pyongyang": "{{value}} प्योंगयांग",
+        "samoa": "{{value}} सामोआ",
+        "saskatchewan": "{{value}} सस्काट्चेवान",
+        "sri_jayawardenepura_kotte": "{{value}} श्री जयवर्दनेपुरा कोटे",
+        "tbilisi": "{{value}} त्बिलिसी",
+        "tehran": "{{value}} तेहरान",
+        "us_canada_central": "{{value}} यूएस/कनाडा सेंट्रल",
+        "us_canada_mountain": "{{value}} यूएस/कनाडा माउंटेन",
+        "us_canada_pacific": "{{value}} यूएस/कनाडा पैसिफिक",
+        "west_central_africa": "{{value}} पश्चिमी मध्य अफ्रीका",
+        "yangon": "{{value}} यांगोन",
+        "yerevan": "{{value}} येरेवान",
+        "damascus": "{{value}} दमश्क"
     }
 }

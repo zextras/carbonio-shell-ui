@@ -58,7 +58,7 @@ export function Shell() {
 			</ShellHeader>
 			<Row crossAlignment="unset" style={{ position: 'relative', flexGrow: '1' }}>
 				<ShellNavigationBar activeRoute={activeRoute} mobileNavIsOpen={mobileNavOpen} />
-				<AppViewContainer />
+				<AppViewContainer activeRoute={activeRoute} />
 				<ShellUtilityPanel />
 			</Row>
 			<Responsive mode="desktop">

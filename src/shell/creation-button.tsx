@@ -28,7 +28,11 @@ const useSecondaryActions = (
 				(acc, app, i) =>
 					app.name === activeRoute?.app
 						? acc
-						: [...acc, { type: 'divider', id: `divider-${i}` }, ...(byApp[app.name] ?? [])],
+						: [
+								...acc,
+								{ type: 'divider', label: '', id: `divider-${i}` },
+								...(byApp[app.name] ?? [])
+						  ],
 				[] as Array<Action | { type: string; id: string }>
 			)
 		],

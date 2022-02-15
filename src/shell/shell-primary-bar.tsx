@@ -198,6 +198,7 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 						// eslint-disable-next-line no-nested-ternary
 						view.visible ? (
 							<AdminPrimaryBarElement
+								key={view.id}
 								onClick={(): void => history.push(`/${routes[view.id]}`)}
 								view={view}
 								active={activeRoute?.id === view.id}
@@ -210,6 +211,7 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 						// eslint-disable-next-line no-nested-ternary
 						view.visible ? (
 							<PrimaryBarElement
+								key={view.id}
 								onClick={(): void => history.push(`/${routes[view.id]}`)}
 								view={view}
 								active={activeRoute?.id === view.id}

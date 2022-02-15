@@ -25,7 +25,7 @@ export type SearchState = {
 };
 
 export type SearchBarProps = {
-	currentRoute: AppView;
+	activeRoute: AppView;
 	primaryAction: unknown;
 	secondaryActions: unknown;
 };

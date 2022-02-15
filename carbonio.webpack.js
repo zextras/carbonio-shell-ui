@@ -74,14 +74,25 @@ module.exports = (_, pkg, options, mode) => {
 			historyApiFallback: {
 				index: `${baseStaticPath}/index.html`,
 				rewrites: [
-					{
-						from: /\/carbonio\/*/,
-						to: `${baseStaticPath}/index.html`
-					}
+					// eslint-disable-next-line no-nested-ternary
+					options.watchType === 'carbonioAdmin'
+						? {
+								from: /\/carbonioAdmin\/*/,
+								to: `${baseStaticPath}/admin.html`
+						  }
+						: options.watchType === 'carbonioStandalone'
+						? {
+								from: /\/carbonioStandalone\/*/,
+								to: `${baseStaticPath}/standalone.html`
+						  }
+						: {
+								from: /\/carbonio\/*/,
+								to: `${baseStaticPath}/index.html`
+						  }
 				]
 			},
 			https: true,
-			open: ['/carbonioAdmin/ciao'],
+			open: [`/${options.watchType || 'carbonio'}/`],
 			proxy: [
 				{
 					context: ['/static/login/**'],
@@ -95,12 +106,8 @@ module.exports = (_, pkg, options, mode) => {
 				{
 					context: [
 						'!/static/iris/carbonio-shell-ui/**/*',
-						'!/carbonio/',
-						'!/carbonio/**/*',
-						'!/carbonioAdmin/',
-						'!/carbonioAdmin/**/*',
-						'!/carbonioStandalone/',
-						'!/carbonioStandalone/**/*'
+						`!/${options.watchType || 'carbonio'}/`,
+						`!/${options.watchType || 'carbonio'}/**/*`
 					],
 					target: server,
 					secure: false,

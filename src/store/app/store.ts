@@ -208,7 +208,7 @@ export const useAppStore = create<AppState>((set) => ({
 		addSearchView: (data: SearchView): string => {
 			set(
 				produce((state: AppState) => {
-					state.views.search = unionBy([data], state.views.search, 'id');
+					state.views.search = sortBy(unionBy([data], state.views.search, 'id'), 'position');
 				})
 			);
 			return data.id;

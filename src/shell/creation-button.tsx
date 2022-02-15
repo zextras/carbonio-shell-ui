@@ -5,47 +5,48 @@
  */
 
 import React, { FC, useMemo } from 'react';
-import { reduce, find, sortBy } from 'lodash';
+import { reduce, find, sortBy, filter, partition, groupBy } from 'lodash';
 import { MultiButton } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { useActions } from '../store/integrations/hooks';
 import { ACTION_TYPES } from '../constants';
 import { Action, AppRoute } from '../../types';
+import { useAppList } from '../store/app';
+
+const useSecondaryActions = (
+	actions: Array<Action>,
+	activeRoute?: AppRoute
+): Array<Action | { type: string; id: string }> => {
+	const apps = useAppList();
+
+	const byApp = useMemo(() => groupBy(actions, 'app'), [actions]);
+	return useMemo(
+		() => [
+			...(byApp[activeRoute?.app ?? ''] ?? []),
+			...reduce(
+				apps,
+				(acc, app, i) =>
+					app.name === activeRoute?.app
+						? acc
+						: [...acc, { type: 'divider', id: `divider-${i}` }, ...(byApp[app.name] ?? [])],
+				[] as Array<Action | { type: string; id: string }>
+			)
+		],
+		[activeRoute?.app, apps, byApp]
+	);
+};
 
 export const CreationButton: FC<{ activeRoute?: AppRoute }> = ({ activeRoute }) => {
 	const [t] = useTranslation();
-
 	const actions = useActions(activeRoute, ACTION_TYPES.NEW);
-
-	const primaryAction = useMemo<Action | undefined>(
+	const primaryAction = useMemo(
 		() =>
-			find(actions, (a) => a.group === activeRoute?.id && a.primary) ??
-			(find(actions, (a) => a.primary) as Action | undefined),
-		[actions, activeRoute?.id]
+			actions?.find?.(
+				(a) => (a.group === activeRoute?.id || a.group === activeRoute?.app) && a.primary
+			) ?? actions?.find?.((a) => a.primary),
+		[actions, activeRoute?.app, activeRoute?.id]
 	);
-
-	const secondaryActions = useMemo(
-		() =>
-			reduce(
-				sortBy(actions, (a) => a.group),
-				(acc, action, i) => {
-					if (action.group !== acc.prevGroup) {
-						if (acc.prevGroup !== '') {
-							acc.list.push({ type: 'divider', id: `divider-${i}` });
-						}
-						// eslint-disable-next-line no-param-reassign
-						acc.prevGroup = action.group ?? '';
-					}
-					acc.list.push(action);
-					return acc;
-				},
-				{
-					list: [] as Array<Action | { type: 'divider'; id: string }>,
-					prevGroup: ''
-				}
-			).list,
-		[actions]
-	);
+	const secondaryActions = useSecondaryActions(actions, activeRoute);
 
 	return (
 		<MultiButton

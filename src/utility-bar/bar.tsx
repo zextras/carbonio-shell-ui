@@ -53,7 +53,9 @@ export const ShellUtilityBar: FC = () => {
 			{
 				id: 'docs',
 				label: t('label.documentation', 'Documentation'),
-				click: console.log,
+				// TODO: Replace when the correct link is available
+				// eslint-disable-next-line @typescript-eslint/no-empty-function
+				click: (): void => {},
 				disabled: true,
 				icon: 'InfoOutline'
 			},

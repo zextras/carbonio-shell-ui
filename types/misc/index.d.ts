@@ -29,7 +29,7 @@ export type ContextBridgeState = {
 	packageDependentFunctions: Record<string, PackageDependentFunction>;
 	// eslint-disable-next-line @typescript-eslint/ban-types
 	functions: Record<string, Function>;
-	add: (content: Omit<ContextBridgeState, 'add'>) => void;
+	add: (content: Partial<Omit<ContextBridgeState, 'add'>>) => void;
 };
 
 export type IShellWindow<T, R> = Window & {

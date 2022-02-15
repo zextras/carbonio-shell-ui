@@ -37,7 +37,7 @@ export const useContextBridge = create<ContextBridgeState>((set) => ({
 	}
 })) as UseBoundStore<ContextBridgeState, StoreApi<ContextBridgeState>>;
 
-export const useBridge = (content: Omit<ContextBridgeState, 'add'>): void => {
+export const useBridge = (content: Partial<Omit<ContextBridgeState, 'add'>>): void => {
 	const addFunctions = useContextBridge(({ add }) => add);
 	useEffect(() => {
 		addFunctions(content);

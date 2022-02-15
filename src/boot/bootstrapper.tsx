@@ -15,12 +15,23 @@ import I18nFactory from '../i18n/i18n-factory';
 import StoreFactory from '../redux/store-factory';
 import { unloadAllApps } from './app/load-apps';
 import { registerDefaultViews } from './app/default-views';
+import { useBridge } from '../store/context-bridge';
 
 const DefaultViewsRegister: FC = () => {
 	const [t] = useTranslation();
 	useEffect(() => {
 		registerDefaultViews(t);
 	}, [t]);
+	return null;
+};
+
+const TBridge: FC<{ i18nFactory: I18nFactory }> = ({ i18nFactory }) => {
+	useBridge({
+		functions: {},
+		packageDependentFunctions: {
+			t: (app) => i18nFactory.getAppI18n({ name: app }).t
+		}
+	});
 	return null;
 };
 
@@ -38,6 +49,7 @@ const Bootstrapper: FC = () => {
 			<SnackbarManager>
 				<ModalManager>
 					<BootstrapperContextProvider i18nFactory={i18nFactory} storeFactory={storeFactory}>
+						<TBridge i18nFactory={i18nFactory} />
 						<DefaultViewsRegister />
 						<BootstrapperRouter />
 					</BootstrapperContextProvider>

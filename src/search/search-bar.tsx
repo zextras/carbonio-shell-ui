@@ -95,12 +95,11 @@ const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus
 };
 
 export const SearchBar: FC<SearchBarProps> = ({
-	currentRoute
+	activeRoute
 	// primaryAction,
 	// secondaryActions
 }) => {
 	const searchViews = useAppStore((s) => s.views.search);
-	const apps = useApps();
 
 	const [searchIsEnabled, setSearchIsEnabled] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
@@ -108,7 +107,8 @@ export const SearchBar: FC<SearchBarProps> = ({
 	const [storedValue, setStoredValue] = useLocalStorage('search_suggestions', []);
 	const [inputTyped, setInputTyped] = useState('');
 	const history = useHistory();
-	const { updateQuery, updateModule, query, searchDisabled, setSearchDisabled } = useSearchStore();
+	const { updateQuery, module, updateModule, query, searchDisabled, setSearchDisabled } =
+		useSearchStore();
 	const [moduleSelection, setModuleSelection] = useState<{
 		value: string;
 		label: string;
@@ -137,19 +137,23 @@ export const SearchBar: FC<SearchBarProps> = ({
 
 	const [options, setOptions] = useState<Array<{ label: string; hasAvatar: false }>>([]);
 
+	// 1 - update moduleSelection when route changes
 	useEffect(() => {
-		setModuleSelection((current) =>
-			currentRoute?.app !== SEARCH_APP_ID
-				? find(moduleSelectorItems, (mod) => mod.value === currentRoute?.route) ??
-				  moduleSelectorItems[0]
-				: current ?? moduleSelectorItems[0]
-		);
-	}, [currentRoute, moduleSelectorItems]);
-
+		if (activeRoute) {
+			setModuleSelection((selection) =>
+				activeRoute.route !== selection?.value
+					? find(moduleSelectorItems, (i) => i.value === activeRoute.route) ??
+					  moduleSelectorItems?.[0]
+					: moduleSelectorItems?.[0]
+			);
+		} else {
+			setModuleSelection(moduleSelectorItems?.[0]);
+		}
+	}, [activeRoute, moduleSelectorItems]);
+	// 2 - update module when moduleSelection changes
 	useEffect(() => {
-		updateModule(moduleSelection?.value ?? moduleSelectorItems[0]?.value);
-	}, [moduleSelection?.value, moduleSelectorItems, updateModule]);
-
+		if (moduleSelection && module !== moduleSelection.value) updateModule(moduleSelection.value);
+	}, [module, moduleSelection, updateModule]);
 	const [inputHasFocus, setInputHasFocus] = useState(false);
 
 	const [inputState, setInputState] = useState(query);
@@ -216,12 +220,12 @@ export const SearchBar: FC<SearchBarProps> = ({
 				)
 			);
 		});
-		if (currentRoute?.app !== SEARCH_APP_ID) {
+		if (activeRoute?.app !== SEARCH_APP_ID) {
 			history.push(`/${SEARCH_APP_ID}/${moduleSelection?.value}`);
 		}
 		setSearchIsEnabled(false);
 		// setChangedBySearchBar(true);
-	}, [updateQuery, currentRoute?.app, inputTyped, inputState, history, moduleSelection?.value]);
+	}, [updateQuery, activeRoute?.app, inputTyped, inputState, history, moduleSelection?.value]);
 
 	const appSuggestions = useMemo<Array<QueryChip & { hasAvatar: false }>>(
 		() =>
@@ -318,11 +322,11 @@ export const SearchBar: FC<SearchBarProps> = ({
 			setModuleSelection(find(moduleSelectorItems, (item) => item.value === newVal));
 			// setInputState([]);
 			// updateQuery([]);
-			if (currentRoute?.app === SEARCH_APP_ID) {
+			if (activeRoute?.app === SEARCH_APP_ID) {
 				history.push(`/${SEARCH_APP_ID}/${newVal}`);
 			}
 		},
-		[currentRoute?.app, history, moduleSelectorItems]
+		[activeRoute?.app, history, moduleSelectorItems]
 	);
 	const [triggerSearch, setTriggerSearch] = useState(false);
 	const containerRef = useRef<HTMLDivElement>();

@@ -5,7 +5,7 @@
  */
 
 import React, { FC, useMemo } from 'react';
-import { reduce, find, sortBy, filter, partition, groupBy } from 'lodash';
+import { reduce, groupBy } from 'lodash';
 import { MultiButton } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { useActions } from '../store/integrations/hooks';

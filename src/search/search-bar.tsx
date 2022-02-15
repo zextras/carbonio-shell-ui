@@ -306,6 +306,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 		},
 		[query, updateOptions, isTyping]
 	);
+
 	useEffect(() => {
 		if (moduleSelection?.value) {
 			const suggestions = filter(
@@ -350,7 +351,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 		const ref = inputRef.current;
 		const searchCb = (ev: any): void => {
 			if (ev.key === 'Enter') {
-				setTriggerSearch(true);
+				setTimeout(() => setTriggerSearch(true), 0);
 			}
 		};
 		if (ref) {
@@ -362,6 +363,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 			}
 		};
 	}, [onSearch]);
+
 	useEffect(() => {
 		if (triggerSearch) {
 			onSearch();
@@ -488,6 +490,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 									}}
 									onChange={onQueryChange}
 									onInputType={onInputType}
+									onInputTypeDebounce={0}
 									onBlur={removeFocus}
 									onFocus={addFocus}
 									disableOptions={disableOptions}

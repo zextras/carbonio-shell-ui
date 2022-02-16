@@ -205,7 +205,7 @@
         "montevideo": "{{value}} Монтевидео",
         "newfoundland": "{{value}} Ньюфаундленд",
         "sarajevo_skopje_warsaw_zagreb": "{{value}} Сараево, Скопье, Варшава, Загреб",
-        "vladivostok_magadan": "{{value}} Владивосток_Магадан_rtz_9",
+        "vladivostok_magadan": "{{value}} Владивосток, Магадан",
         "abu_dhabi_muscat": "{{value}} Абу-Даби, Маскат",
         "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}} Амстердам, Берлин, Берн, Рим, Стокгольм, Вена",
         "arizona": "{{value}} Аризона",
@@ -277,7 +277,7 @@
         "yerevan": "{{value}} Ереван",
         "us_canada_eastern": "{{value}} US/Canada Eastern",
         "alaska": "{{value}} Аляска",
-        "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Анадырь, Петропавловск-Камчатский(RTZ 11)",
+        "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}}  Анадырь, Петропавловск-Камчатский",
         "coordinated_universal_time": "{{value}} Всемирное координированное время",
         "moscow_st_petersburg_volgograd_rtz_2": "{{value}} Москва, Санкт-Петербург, Волгоград(RTZ 2)",
         "us_canada_central": "{{value}} US/Canada Central"

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React from 'react';
+import React, { FC } from 'react';
 import {
 	Container,
 	IconButton,
@@ -17,10 +17,15 @@ import LogoAdmin from '../svg/carbonio-admin-panel.svg';
 import { SearchBar } from '../search/search-bar';
 import { CreationButton } from './creation-button';
 import { useAppStore } from '../store/app';
-import { SHELL_MODES } from '../constants';
+import { AppRoute } from '../../types';
 import { ShellMode } from '../multimode';
+import { SHELL_MODES } from '../constants';
 
-export default function ShellHeader({ activeRoute, mobileNavIsOpen, onMobileMenuClick, children }) {
+const ShellHeader: FC<{
+	activeRoute: AppRoute;
+	mobileNavIsOpen: boolean;
+	onMobileMenuClick: () => void;
+}> = ({ activeRoute, mobileNavIsOpen, onMobileMenuClick, children }) => {
 	const screenMode = useScreenMode();
 	const searchEnabled = useAppStore((s) => s.views.search.length > 0);
 	return (
@@ -82,4 +87,5 @@ export default function ShellHeader({ activeRoute, mobileNavIsOpen, onMobileMenu
 			</Container>
 		</Container>
 	);
-}
+};
+export default ShellHeader;

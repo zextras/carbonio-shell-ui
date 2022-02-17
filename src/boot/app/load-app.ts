@@ -8,7 +8,7 @@
 /* eslint-disable import/no-named-default */
 import { forOwn } from 'lodash';
 import { ComponentType } from 'react';
-import { Store } from '@reduxjs/toolkit';
+import { Reducer, Store } from '@reduxjs/toolkit';
 import StoreFactory from '../../redux/store-factory';
 
 import { useAppStore } from '../../store/app';
@@ -17,7 +17,7 @@ import { Spinner } from '../../ui-extras/spinner';
 import { AppLink } from '../../ui-extras/app-link';
 import * as CONSTANTS from '../../constants';
 import { useAccountStore } from '../../store/account';
-import { IShellWindow, SharedLibrariesAppsMap, CarbonioModule } from '../../../types';
+import { IShellWindow, CarbonioModule } from '../../../types';
 import { getAppSetters } from './app-loader-setters';
 import { report } from '../../reporting';
 
@@ -51,16 +51,14 @@ function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<Carbo
 			}
 		};
 		try {
-			(
-				window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentType>
-			).__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-shell-ui'][appPkg.name] = {
+			(window as unknown as IShellWindow).__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-shell-ui'][
+				appPkg.name
+			] = {
 				store: {
 					store,
-					setReducer: (reducer): void => store.replaceReducer(reducer)
+					setReducer: (reducer: Reducer): void => store.replaceReducer(reducer)
 				},
 				report: report(appPkg.name),
-				soapFetch: useAccountStore.getState().soapFetch(appPkg.name),
-				xmlSoapFetch: useAccountStore.getState().xmlSoapFetch(appPkg.name),
 				AppLink,
 				Spinner,
 				...getAppSetters(appPkg),
@@ -68,9 +66,9 @@ function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<Carbo
 				...CONSTANTS
 			};
 
-			(
-				window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentType>
-			).__ZAPP_HMR_EXPORT__[appPkg.name] = (appComponent: ComponentType): void => {
+			(window as unknown as IShellWindow).__ZAPP_HMR_EXPORT__[appPkg.name] = (
+				appComponent: ComponentType
+			): void => {
 				useAppStore.setState((state) => ({
 					entryPoints: {
 						...state.entryPoints,

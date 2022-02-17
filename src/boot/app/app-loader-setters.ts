@@ -78,9 +78,13 @@ export const getAppSetters = (pkg: CarbonioModule): Record<string, Function> => 
 		// remove secondaryAccessory
 		removeSecondaryAccessoryView: appSetters.removeSecondaryAccessoryView,
 		registerHooks: integrations.registerHooks,
+		removeHooks: integrations.removeHooks,
 		registerFunctions: integrations.registerFunctions,
+		removeFunctions: integrations.removeFunctions,
 		registerActions: integrations.registerActions,
+		removeActions: integrations.removeActions,
 		registerComponents: integrations.registerComponents(pkg.name),
+		removeComponents: integrations.removeComponents,
 		editSettings: getEditSettingsForApp(pkg.name)
 	};
 };

@@ -7,15 +7,17 @@
 
 import produce from 'immer';
 import { TFunction } from 'i18next';
-import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../../constants';
 import { useAppStore } from '../../store/app';
 import { SearchAppView } from '../../search/search-app-view';
 import { SettingsAppView } from '../../settings/settings-app-view';
 import { SettingsSidebar } from '../../settings/settings-sidebar';
-import { AppState, PrimaryBarView, SHELL_APP_ID } from '../../../types';
+import { AppState, PrimaryBarView } from '../../../types';
 import GeneralSettings from '../../settings/general-settings';
 import { isAdmin, isClient } from '../../multimode';
 import Feedback from '../../reporting/feedback';
+import DevBoard from '../../dev/dev-board';
+import DevBoardTrigger from '../../dev/dev-board-trigger';
+import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
 
 const settingsRoute = {
 	route: SETTINGS_APP_ID,
@@ -87,6 +89,19 @@ const feedbackBoardView = {
 	component: Feedback,
 	route: 'feedback'
 };
+const devModeBoardView = {
+	id: 'dev-mode',
+	app: SHELL_APP_ID,
+	component: DevBoard,
+	route: 'devtools'
+};
+const devModeTrigger = {
+	id: 'dev-mode-t',
+	component: DevBoardTrigger,
+	label: 'Dev Tools',
+	app: SHELL_APP_ID,
+	position: 100
+};
 export const registerDefaultViews = (t: TFunction): void => {
 	useAppStore.setState(
 		produce((s: AppState) => {
@@ -109,6 +124,10 @@ export const registerDefaultViews = (t: TFunction): void => {
 				s.views.settings = [settingsGeneralView];
 			}
 			s.views.board = [feedbackBoardView];
+			if (__CARBONIO_DEV__) {
+				s.views.board.push(devModeBoardView);
+				s.views.primaryBarAccessories.push(devModeTrigger);
+			}
 		})
 	);
 };

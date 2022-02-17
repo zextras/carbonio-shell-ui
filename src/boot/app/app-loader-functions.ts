@@ -13,7 +13,7 @@ import {
 	getAction,
 	getActions,
 	getActionsFactory,
-	getFactory,
+	getActionFactory,
 	getIntegratedComponent,
 	getIntegratedFunction,
 	getIntegratedHook
@@ -32,7 +32,8 @@ import {
 	useUserRight,
 	useUserRights,
 	getUserRight,
-	getUserRights
+	getUserRights,
+	useAccountStore
 } from '../../store/account';
 import { useIsMobile } from '../../shell/hooks';
 import {
@@ -65,6 +66,9 @@ import {
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({
+	soapFetch: useAccountStore.getState().soapFetch(pkg.name),
+	xmlSoapFetch: useAccountStore.getState().xmlSoapFetch(pkg.name),
+
 	// APP STORE FUNCTIONS
 	useAppContext: useAppContext(pkg.name),
 	getAppContext: getAppContext(pkg.name),
@@ -85,7 +89,7 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	useActionsFactory,
 	getActionsFactory,
 	useActionFactory,
-	getFactory,
+	getActionFactory,
 	// ACCOUNTS
 	useUserAccount,
 	getUserAccount,

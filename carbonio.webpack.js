@@ -18,13 +18,6 @@ const babelRC = require('./babel.config');
 
 const baseStaticPath = `/static/iris/carbonio-shell-ui/${commitHash}/`;
 
-/**
- * The flavor of the build
- * @type {'npm' | 'app'}
- */
-const flavor = process.env.ZX_SHELL_FLAVOR || 'APP';
-
-let indexFile;
 const pathsToCopy = [
 	{
 		from: 'node_modules/@zextras/carbonio-design-system/dist/tinymce/skins',
@@ -33,34 +26,24 @@ const pathsToCopy = [
 	{
 		from: 'assets/',
 		to: ''
+	},
+	{
+		from: 'translations',
+		to: 'i18n'
 	}
 ];
-switch (flavor.toUpperCase()) {
-	case 'NPM':
-		indexFile = path.resolve(process.cwd(), 'src', 'index-npm.tsx');
-		pathsToCopy.push({ from: 'translations', to: 'shelli18n' });
-		pathsToCopy.push({
-			from: 'src/mockServiceWorker.js',
-			to: 'mockServiceWorker.js'
-		});
-		break;
-	case 'APP':
-	default:
-		indexFile = path.resolve(process.cwd(), 'src', 'index.tsx');
-		pathsToCopy.push({ from: 'translations', to: 'i18n' });
-}
 
 module.exports = (_, pkg, options, mode) => {
 	const server = `https://${options.host ?? 'localhost:4443'}`;
 	return {
 		mode,
 		entry: {
-			index: indexFile
+			index: path.resolve(process.cwd(), 'src', 'index.tsx')
 		},
 		devtool: 'source-map',
 		output: {
 			path: path.resolve(process.cwd(), 'dist'),
-			filename: flavor.toUpperCase() !== 'APP' ? '[name].js' : '[name].[chunkhash:8].js',
+			filename: '[name].[chunkhash:8].js',
 			chunkFilename: '[name].[chunkhash:8].chunk.js',
 			publicPath: baseStaticPath
 		},
@@ -196,7 +179,6 @@ module.exports = (_, pkg, options, mode) => {
 				COMMIT_ID: JSON.stringify(commitHash.toString().trim()),
 				PACKAGE_VERSION: JSON.stringify(pkg.version),
 				PACKAGE_NAME: JSON.stringify(pkg.carbonio.name),
-				FLAVOR: JSON.stringify(flavor.toUpperCase()),
 				BASE_PATH: JSON.stringify(baseStaticPath)
 			}),
 			new MiniCssExtractPlugin({

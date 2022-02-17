@@ -9,13 +9,10 @@
 import { Component, FC } from 'react';
 import { LinkProps } from 'react-router-dom';
 import { Reducer, Store } from 'redux';
-import { LocationDescriptor } from 'history';
 import { AppData, RuntimeAppData } from '../apps';
 import { ActionFactory, AnyFunction, CombinedActionFactory, Action } from '../integrations';
 import { AccountSettings, Tag, Account, NotifyObject } from '../account';
 import { SoapFetch } from '../network';
-
-export const ui: any;
 
 // export const testUtils: {
 // 	render(
@@ -91,7 +88,8 @@ export enum ACTION_TYPES {
 	FOLDER = 'folder',
 	FOLDER_lIST = 'folder_list',
 	CALENDAR = 'calendar',
-	CALENDAR_lIST = 'calendar_list'
+	CALENDAR_lIST = 'calendar_list',
+	NEW = 'new'
 }
 
 // HOOKS

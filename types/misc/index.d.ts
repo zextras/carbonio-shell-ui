@@ -32,44 +32,10 @@ export type ContextBridgeState = {
 	add: (content: Partial<Omit<ContextBridgeState, 'add'>>) => void;
 };
 
-export type IShellWindow<T, R> = Window & {
-	__ZAPP_SHARED_LIBRARIES__: T;
-	__ZAPP_HMR_EXPORT__: { [pkgName: string]: (appClass: R) => void };
+export type IShellWindow = Window & {
+	__ZAPP_SHARED_LIBRARIES__: { [name: string]: any };
+	__ZAPP_HMR_EXPORT__: { [pkgName: string]: (appClass: ComponentType) => void };
 	// __ZAPP_HMR_HANDLERS__: { [pkgName: string]: (handlers: RequestHandlersList) => void };
-};
-
-export type SharedLibrariesAppsMap = {
-	'prop-types': unknown;
-	react: unknown;
-	'react-dom': unknown;
-	'react-i18next': unknown;
-	'react-redux': unknown;
-	'@reduxjs/toolkit': unknown;
-	lodash: unknown;
-	'react-router-dom': unknown;
-	'styled-components': unknown;
-	moment: unknown;
-	'@zextras/carbonio-shell-ui': {
-		[pkgName: string]: unknown & {
-			store: {
-				store: Store<unknown>;
-				setReducer(nextReducer: Reducer): void;
-			};
-			registerAppData: (data: RuntimeAppData) => void;
-			setAppContext: (obj: unknown) => void;
-			AppLink: FunctionComponent<LinkProps>;
-			Spinner: FunctionComponent;
-			FOLDERS: Record<string, string>;
-			SHELL_APP_ID: string;
-			SETTINGS_APP_ID: string;
-			SEARCH_APP_ID: string;
-			ACTION_TYPES: Record<string, string>;
-			ZIMBRA_STANDARD_COLORS: Array<{ zValue: number; hex: string; zLabel: string }>;
-		};
-	};
-	'@zextras/carbonio-design-system': unknown;
-	msw?: unknown;
-	faker?: unknown;
 };
 
 export type LoadedAppRuntime = AppInjections & {

@@ -13,9 +13,9 @@ import StoreFactory from '../../redux/store-factory';
 import { loadApp, unloadApps } from './load-app';
 import { CarbonioModule } from '../../../types';
 import { injectSharedLibraries } from './shared-libraries';
-import { SHELL_APP_ID } from '../../constants';
 import { getUserSetting } from '../../store/account';
 import { useReporter } from '../../reporting';
+import { SHELL_APP_ID } from '../../constants';
 
 export function loadApps(storeFactory: StoreFactory, apps: Array<CarbonioModule>): void {
 	injectSharedLibraries();

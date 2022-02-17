@@ -5,8 +5,8 @@
  */
 
 import create, { StoreApi, UseBoundStore } from 'zustand';
-import { BrowserClient, Event, EventHint, Hub, Severity } from '@sentry/browser';
-import { get, reduce } from 'lodash';
+import { BrowserClient, Hub } from '@sentry/browser';
+import { reduce } from 'lodash';
 import { CarbonioModule, SHELL_APP_ID } from '../../types';
 
 type ReporterState = {

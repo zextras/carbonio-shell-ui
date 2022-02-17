@@ -5,7 +5,7 @@
  */
 
 import React, { useMemo } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { map, find } from 'lodash';
 import { Container } from '@zextras/carbonio-design-system';
@@ -23,11 +23,14 @@ const _BoardsRouterContainer = styled(Container)`
 const FirstAppRedirect = () => {
 	const apps = useAppList();
 	const routes = useRoutes();
+	const location = useLocation();
 	const mainRoute = useMemo(
 		() => find(routes, (r) => apps[0]?.name === r.app)?.route,
 		[apps, routes]
 	);
-	return mainRoute ? <Redirect exact strict from="/" to={`/${mainRoute}`} /> : null;
+	return mainRoute && location?.pathname === '/' ? (
+		<Redirect exact strict from="/" to={`/${mainRoute}`} />
+	) : null;
 };
 
 export default function AppViewContainer() {
@@ -48,10 +51,8 @@ export default function AppViewContainer() {
 	return (
 		<_BoardsRouterContainer>
 			<Container mainAlignment="flex-start">
-				<Switch>
-					{routes}
-					<FirstAppRedirect />
-				</Switch>
+				<Switch>{routes}</Switch>
+				<FirstAppRedirect />
 			</Container>
 		</_BoardsRouterContainer>
 	);

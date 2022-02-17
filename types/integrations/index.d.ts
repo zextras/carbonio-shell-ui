@@ -11,13 +11,17 @@ export type IntegrationsState = {
 	components: ComponentMap;
 	hooks: HookMap;
 	functions: FunctionMap;
+	removeActions: (...ids: Array<string>) => void;
 	registerActions: (
 		...items: Array<{ id: string; action: ActionFactory<unknown>; type: string }>
 	) => void;
+	removeComponents: (...ids: Array<string>) => void;
 	registerComponents: (
 		app: string
 	) => (...items: Array<{ id: string; component: ComponentType }>) => void;
+	removeHooks: (...ids: Array<string>) => void;
 	registerHooks: (...items: Array<{ id: string; hook: AnyFunction }>) => void;
+	removeFunctions: (...ids: Array<string>) => void;
 	registerFunctions: (...items: Array<{ id: string; fn: AnyFunction }>) => void;
 };
 

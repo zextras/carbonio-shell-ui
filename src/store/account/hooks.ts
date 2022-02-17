@@ -38,8 +38,8 @@ export const useUserSetting = <T = void>(...path: Array<string>): string | T =>
 	useAccountStore((s) => get(s.settings, join(path, '.')));
 export const useTags = (): Array<Tag> => useAccountStore((s) => s.tags);
 
-export const useNotify = (): NotifyObject => {
-	const notify = useAccountStore((s) => s.context.notify?.[0] ?? {});
+export const useNotify = (): NotifyObject[] => {
+	const notify = useAccountStore((s) => s.context.notify ?? []);
 	return notify;
 };
 export const useRefresh = (): NotifyObject => useAccountStore((s) => s.context.refresh ?? {});

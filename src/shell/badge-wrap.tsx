@@ -16,8 +16,8 @@ const MiniBadge = styled(Container)<{ badge: BadgeInfo }>`
 	background: ${({ badge, theme }): string => theme.palette[badge?.color ?? 'primary'].regular};
 	min-width: 12px;
 	min-height: 12px;
-	border-radius: 8px
-		/*${({ badge }): string => (badge.showCount && !!badge.count ? '2px 4px' : '6px')}*/;
+	line-height: 12px;
+	border-radius: 8px;
 `;
 
 // eslint-disable-next-line react/display-name
@@ -26,7 +26,7 @@ const BadgeWrap: FC<{ badge: BadgeInfo }> = forwardRef(({ badge, children }, ref
 		{badge.show && (
 			<MiniBadge badge={badge} height="fit" width="fit">
 				{badge.showCount ? (
-					<Text size="extrasmall" style={{ padding: '2px 4px' }}>
+					<Text size="extrasmall" style={{ padding: '2px 4px', fontSize: '10px' }}>
 						{badge.count ?? 0}
 					</Text>
 				) : null}

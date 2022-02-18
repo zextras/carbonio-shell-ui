@@ -174,7 +174,9 @@
         "turkish": "Turco",
         "chinese_china": "Cinese (Cina)",
         "label_italian": "Italiano - {{value}}",
-        "label_turkish": "Turco - {{value}}"
+        "label_turkish": "Turco - {{value}}",
+        "french": "Francese",
+        "label_french": "Francese - {{value}}"
     },
     "timezone": {
         "alaska": "{{value}} Alaska",

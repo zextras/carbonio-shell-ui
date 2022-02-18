@@ -22,6 +22,7 @@
         "English": "English",
         "chinese_china": "Chinese (China)",
         "dutch": "Dutch",
+        "french": "French",
         "german": "German",
         "hindi": "Hindi",
         "italian": "Italian",
@@ -29,6 +30,7 @@
         "label_chinese": "Chinese (China) - {{value}}",
         "label_dutch": "Dutch - {{value}}",
         "label_english": "English - {{value}}",
+        "label_french": "French - {{value}}",
         "label_german": "German - {{value}}",
         "label_hindi": "Hindi - {{value}}",
         "label_italian": "Italian - {{value}}",
@@ -118,6 +120,13 @@
             "send_auto_replies": "Send auto-replies",
             "status": {
                 "busy": "Busy"
+            }
+        },
+        "search_settings": {
+            "labels": {
+                "include_search_in_shared_folder": "Include Shared Folder in Searches",
+                "include_search_in_spam_folder": "Include Spam Folder in Searches",
+                "include_search_in_trash_folder": "Include Trash Folder in Searches"
             }
         },
         "timezone_and_language": "Time Zone and Language"

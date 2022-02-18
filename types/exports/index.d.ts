@@ -196,7 +196,6 @@ export const removePrimaryAccessoryView: (id: string) => void;
 export const addSecondaryAccessoryView: (data: Partial<SecondaryAccessoryView>) => string;
 // remove secondaryAccessory
 export const removeSecondaryAccessoryView: (id: string) => void;
-export const setAppContext: (app: string) => (context: unknown) => void;
 export const usePushHistoryCallback: () => (params: HistoryParams) => void;
 export const useReplaceHistoryCallback: () => (params: HistoryParams) => void;
 export const useGoBackHistoryCallback: () => () => void;

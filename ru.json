@@ -66,7 +66,14 @@
                 "out_of_office": "Вне офиса"
             }
         },
-        "timezone_and_language": "Часовой пояс и язык"
+        "timezone_and_language": "Часовой пояс и язык",
+        "search_settings": {
+            "labels": {
+                "include_search_in_shared_folder": "Включить в поиск общую папку",
+                "include_search_in_spam_folder": "Включить в поиск папку «Спам»",
+                "include_search_in_trash_folder": "Включить в поиск папку «Корзина»"
+            }
+        }
     },
     "new-tab": "Новая вкладка",
     "new": "Новый",
@@ -191,7 +198,9 @@
         "romanian": "Румынский",
         "russian": "Русский",
         "thai": "Тайский",
-        "turkish": "Турецкий"
+        "turkish": "Турецкий",
+        "french": "Французский",
+        "label_french": "Французский - {{value}}"
     },
     "timezone": {
         "baja_california": "{{value}} Байа Калифорния",
@@ -248,7 +257,7 @@
         "cuiaba": "{{value}} Куйаба",
         "egypt": "{{value}} Египет",
         "greenland": "{{value}} Greenland",
-        "indiana_east": "{{value}} Indiana (East)",
+        "indiana_east": "{{value}} Индиана (Восток)",
         "iraq": "{{value}} Ирак",
         "irkutsk_rtz_7": "{{value}} Иркутск (RTZ 7)",
         "korea": "{{value}} Южная Корея",
@@ -275,9 +284,9 @@
         "west_central_africa": "{{value}} Западная Центральная Африка",
         "yangon": "{{value}} Янгон",
         "yerevan": "{{value}} Ереван",
-        "us_canada_eastern": "{{value}} US/Canada Eastern",
+        "us_canada_eastern": "{{value}} Восточная часть США/Канады",
         "alaska": "{{value}} Аляска",
-        "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}}  Анадырь, Петропавловск-Камчатский",
+        "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Анадырь, Петропавловск-Камчатский",
         "coordinated_universal_time": "{{value}} Всемирное координированное время",
         "moscow_st_petersburg_volgograd_rtz_2": "{{value}} Москва, Санкт-Петербург, Волгоград(RTZ 2)",
         "us_canada_central": "{{value}} US/Canada Central"

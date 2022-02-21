@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { findIndex, map, reduce } from 'lodash';
+import { filter, find, findIndex, forEach, map, reduce } from 'lodash';
 import { SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account/store';
-import { AccountState, Mods } from '../../types';
+import { AccountState, Mods, Account } from '../../types';
 
 export const editSettings = (mods: Mods, appId: string = SHELL_APP_ID): Promise<any> =>
 	useAccountStore
@@ -32,16 +32,20 @@ export const editSettings = (mods: Mods, appId: string = SHELL_APP_ID): Promise<
 			: ''
 	}
 	${
-		mods.identity?.action === 'modify'
-			? `<ModifyIdentityRequest xmlns="urn:zimbraAccount" requestId="0"><identity id="${
-					mods.identity.id
-			  }">${map(mods.identity, (pref, key) => `<a name="${key}">${pref}</a>`).join(
-					''
-			  )}<a name="zimbraPrefFromAddressType">sendAs</a></identity></ModifyIdentityRequest>`
+		mods.identity?.modifyList
+			? map(
+					mods.identity.modifyList,
+					(item) =>
+						`<ModifyIdentityRequest xmlns="urn:zimbraAccount" requestId="0"><identity id="${
+							item.id
+						}">${map(item.prefs, (value, key) => `<a name="${key}">${value}</a>`).join(
+							''
+						)}<a name="zimbraPrefFromAddressType">sendAs</a></identity></ModifyIdentityRequest>`
+			  ).join('')
 			: ''
 	}
 	${
-		mods.identity?.action === 'delete'
+		mods.identity?.deleteList
 			? map(
 					mods.identity.deleteList,
 					(item) =>
@@ -50,11 +54,11 @@ export const editSettings = (mods: Mods, appId: string = SHELL_APP_ID): Promise<
 			: ''
 	}
 	${
-		mods.identity?.action === 'create'
+		mods.identity?.createList
 			? map(
 					mods.identity.createList,
 					(item) =>
-						`<CreateIdentityRequest xmlns="urn:zimbraAccount" requestId="${item.prefs.requestId}"><identity name="${item.prefs.zimbraPrefIdentityName}"><a name="zimbraPrefIdentityName">${item.prefs.zimbraPrefIdentityName}</a><a name="zimbraPrefFromDisplay">${item.prefs.zimbraPrefFromDisplay}</a><a name="zimbraPrefFromAddress">${item.prefs.zimbraPrefFromAddress}</a><a name="zimbraPrefFromAddressType">sendAs</a><a name="zimbraPrefReplyToEnabled">FALSE</a><a name="zimbraPrefReplyToDisplay"></a><a name="zimbraPrefReplyToAddress"></a><a name="zimbraPrefDefaultSignatureId"></a><a name="zimbraPrefForwardReplySignatureId"></a><a name="zimbraPrefWhenSentToEnabled">FALSE</a><a name="zimbraPrefWhenInFoldersEnabled">FALSE</a></identity></CreateIdentityRequest>`
+						`<CreateIdentityRequest xmlns="urn:zimbraAccount" requestId="${item.prefs.requestId}"><identity name="${item.prefs.zimbraPrefIdentityName}"><a name="zimbraPrefIdentityName">${item.prefs.zimbraPrefIdentityName}</a><a name="zimbraPrefFromDisplay">${item.prefs.zimbraPrefFromDisplay}</a><a name="zimbraPrefFromAddress">${item.prefs.zimbraPrefFromAddress}</a><a name="zimbraPrefFromAddressType">sendAs</a><a name="zimbraPrefReplyToEnabled">${item.prefs.zimbraPrefReplyToEnabled}</a><a name="zimbraPrefReplyToDisplay">${item.prefs.zimbraPrefReplyToDisplay}</a><a name="zimbraPrefReplyToAddress">${item.prefs.zimbraPrefReplyToAddress}</a><a name="zimbraPrefDefaultSignatureId">${item.prefs.zimbraPrefDefaultSignatureId}</a><a name="zimbraPrefForwardReplySignatureId">${item.prefs.zimbraPrefForwardReplySignatureId}</a><a name="zimbraPrefWhenSentToEnabled">${item.prefs.zimbraPrefWhenSentToEnabled}</a><a name="zimbraPrefWhenInFoldersEnabled">${item.prefs.zimbraPrefWhenInFoldersEnabled}</a></identity></CreateIdentityRequest>`
 			  ).join('')
 			: ''
 	}
@@ -132,7 +136,7 @@ export const editSettings = (mods: Mods, appId: string = SHELL_APP_ID): Promise<
 			: ''
 	}</BatchRequest>`
 		)
-		.then((r) => {
+		.then((r: any) => {
 			useAccountStore.setState((s: AccountState) => ({
 				settings: {
 					...s.settings,
@@ -166,7 +170,57 @@ export const editSettings = (mods: Mods, appId: string = SHELL_APP_ID): Promise<
 						},
 						s.settings.props
 					)
-				}
+				},
+				account: {
+					...s.account,
+					displayName:
+						find(mods?.identity?.modifyList, (item) => item.id === s?.account?.id)?.prefs
+							.zimbraPrefIdentityName || s.account?.displayName,
+					name:
+						find(mods?.identity?.modifyList, (item) => item.id === s?.account?.id)?.prefs
+							.zimbraPrefFromAddress || s.account?.name,
+					identities: {
+						identity:
+							typeof s.account !== 'undefined'
+								? reduce(
+										mods?.identity?.modifyList,
+										(acc, { id, prefs }) => {
+											const tempResult = [];
+											const propIndex = findIndex(
+												acc,
+												(itemMods, indexAccount) => acc[indexAccount].id === id
+											);
+											if (propIndex > -1) {
+												forEach(Object.keys(prefs), (item, _index) => {
+													// eslint-disable-next-line no-param-reassign
+													acc[propIndex]._attrs[item] = Object.values(prefs)[_index];
+													if (
+														item === 'zimbraPrefIdentityName' &&
+														acc[propIndex].name !== 'DEFAULT'
+													) {
+														// eslint-disable-next-line no-param-reassign
+														acc[propIndex].name = Object.values(prefs)[_index];
+													}
+												});
+												tempResult.push(prefs);
+											}
+											return acc;
+										},
+										[
+											...filter(
+												s.account.identities.identity,
+												(item) => !mods?.identity?.deleteList?.includes(item.id)
+											).filter((i) => i.name !== 'DEFAULT'),
+											...map(r?.CreateIdentityResponse, (item) => item.identity[0]),
+											...filter(
+												s.account.identities.identity,
+												(item) => !mods?.identity?.deleteList?.includes(item.id)
+											).filter((i) => i.name === 'DEFAULT')
+										]
+								  )
+								: undefined
+					}
+				} as Account
 			}));
 			return r;
 		});

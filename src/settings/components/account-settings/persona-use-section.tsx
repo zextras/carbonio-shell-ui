@@ -7,21 +7,27 @@
 import React, { useMemo, useEffect, ReactElement, useState, useCallback } from 'react';
 import { Container, Text, Padding, Input, Row, Checkbox } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import { IdentityProps } from '../../../../types';
+import { IdentityProps, Mods } from '../../../../types';
 import { EMAIL_VALIDATION_REGEX } from '../../../constants';
 
 type PersonaUseSectionProps = {
 	t: TFunction;
 	items: IdentityProps;
-	setMods: (mods: { [key: string]: unknown }) => void;
-	updateIdentities: (id: string, key: string, prefs: string) => void;
+	updateIdentities: (modifyList: {
+		id: string | number;
+		key: string;
+		value: string | boolean;
+	}) => void;
+	setSaveIsDisabled: (isDisabled: boolean) => void;
+	mods: Mods;
 };
 
 const PersonaUseSection = ({
 	t,
 	items,
-	setMods,
-	updateIdentities
+	setSaveIsDisabled,
+	updateIdentities,
+	mods
 }: PersonaUseSectionProps): ReactElement => {
 	const title = useMemo(() => t('label.use_persona', 'Use this persona'), [t]);
 	const whenSentToLabel = useMemo(
@@ -42,38 +48,50 @@ const PersonaUseSection = ({
 		setWhenSentToEnabled(items.whenSentToEnabled === 'TRUE');
 		setWhenSentToAddresses(items.whenSentToAddresses);
 		setWhenInFoldersEnabled(items.whenInFoldersEnabled === 'TRUE');
-	}, [items.whenSentToAddresses, items.whenInFoldersEnabled, items.whenSentToEnabled]);
+	}, [
+		items.whenSentToAddresses,
+		items.whenInFoldersEnabled,
+		items.whenSentToEnabled,
+		whenSentToAddresses
+	]);
 
 	const whenSentToAddressesLabel = useMemo(
-		() => (whenSentToAddresses === (undefined || '') ? t('label.recipents', 'Recipients') : ''),
+		() => (typeof whenSentToAddresses === 'undefined' ? t('label.recipents', 'Recipients') : ''),
 		[t, whenSentToAddresses]
 	);
 	const onClickWhenSentToEnabled = useCallback(() => {
 		setWhenSentToEnabled(!whenSentToEnabled);
-		if (!whenSentToEnabled === (items.whenSentToEnabled === 'TRUE')) {
-			setMods({});
-		} else {
-			updateIdentities(
-				items.identityId,
-				'zimbraPrefWhenSentToEnabled',
-				items.whenSentToEnabled ? 'TRUE' : 'FALSE'
-			);
+		const modifyProp = {
+			id: items.identityId,
+			key: 'zimbraPrefWhenSentToEnabled',
+			value: items.whenSentToEnabled ? 'TRUE' : 'FALSE'
+		};
+		updateIdentities(modifyProp);
+	}, [whenSentToEnabled, items.identityId, items.whenSentToEnabled, updateIdentities]);
+
+	const isValidEmail = useMemo(
+		() => whenSentToEnabled && !EMAIL_VALIDATION_REGEX.test(whenSentToAddresses || ''),
+		[whenSentToAddresses, whenSentToEnabled]
+	);
+
+	useEffect(() => {
+		if (mods?.identity) {
+			setSaveIsDisabled(isValidEmail);
 		}
-	}, [items.whenSentToEnabled, whenSentToEnabled, setMods, updateIdentities, items.identityId]);
+	}, [isValidEmail, mods?.identity, setSaveIsDisabled]);
 
 	const onChangeWhenSentToAddresses = useCallback(
 		(ev) => {
 			setWhenSentToAddresses(ev.target.value);
-			if (
-				whenSentToAddresses === items.whenSentToAddresses ||
-				!EMAIL_VALIDATION_REGEX.test(ev.target.value)
-			) {
-				setMods({});
-			} else {
-				updateIdentities(items.identityId, 'zimbraPrefWhenSentToAddresses', ev.target.value);
-			}
+			const modifyProp = {
+				id: items.identityId,
+				key: 'zimbraPrefWhenSentToAddresses',
+				value: ev.target.value
+			};
+
+			updateIdentities(modifyProp);
 		},
-		[items.whenSentToAddresses, whenSentToAddresses, setMods, updateIdentities, items.identityId]
+		[updateIdentities, items.identityId]
 	);
 
 	// this function is work in progress for when the mails sync is implemented
@@ -144,6 +162,7 @@ const PersonaUseSection = ({
 						value={whenSentToAddresses}
 						background="gray5"
 						disabled={!whenSentToEnabled}
+						hasError={isValidEmail}
 						onChange={(
 							ev: MouseEvent & {
 								target: HTMLButtonElement;

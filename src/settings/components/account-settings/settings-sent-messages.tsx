@@ -18,64 +18,71 @@ import {
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
 import { filter, find } from 'lodash';
-import { IdentityProps } from '../../../../types';
+import { IdentityProps, Mods } from '../../../../types';
 import { EMAIL_VALIDATION_REGEX } from '../../../constants';
 
 type SettingsSentMessagesProps = {
 	t: TFunction;
 	items: IdentityProps;
 	isExternalAccount: boolean;
-	setMods: (mods: { [key: string]: unknown }) => void;
-	updateIdentities: (id: string, key: string, prefs: string) => void;
+	updateIdentities: (modifyList: {
+		id: string | number;
+		key: string;
+		value: string | boolean;
+	}) => void;
+	setSaveIsDisabled: (isDisabled: boolean) => void;
+	mods: Mods;
 };
 
 const SettingsSentMessages = ({
 	t,
 	items,
 	isExternalAccount,
-	setMods,
-	updateIdentities
+	updateIdentities,
+	setSaveIsDisabled,
+	mods
 }: SettingsSentMessagesProps): ReactElement => {
 	const title = useMemo(() => t('label.settings_sent_messages', 'Settings for Sent Messages'), [t]);
-
 	const [replyToEnabled, setReplyToEnabled] = useState(items.replyToEnabled === 'TRUE');
+	const [replyToAddress, setReplyToAddress] = useState(items.replyToAddress);
+	const [dropdownOpen, setDropdownOpen] = useState(false);
+	const [fromDisplayValue, setFromDisplayValue] = useState(items.fromDisplay);
+	const [replyToDisplay, setReplyToDisplay] = useState(items?.replyToDisplay);
+	const fromAddressArray = useMemo(
+		() => [{ value: items.fromAddress, label: items.fromAddress }],
+		[items]
+	);
+	const [fromAddress, setFromAddress] = useState(() =>
+		find(fromAddressArray, (item) => item.value === items.fromAddress)
+	);
 
 	useEffect(() => {
 		setReplyToEnabled(items.replyToEnabled === 'TRUE');
-	}, [items.replyToEnabled]);
-
-	const [replyToAddress, setReplyToAddress] = useState(items.replyToAddress);
-	const checkboxOnClick = useCallback(() => {
-		setReplyToEnabled(!replyToEnabled);
-		if (
-			!replyToEnabled === (items.replyToEnabled === 'TRUE') ||
-			!EMAIL_VALIDATION_REGEX.test(replyToAddress || '')
-		) {
-			setMods({});
-		} else {
-			updateIdentities(
-				items.identityId,
-				'zimbraPrefReplyToEnabled',
-				replyToEnabled ? 'FALSE' : 'TRUE'
-			);
-		}
+		setFromDisplayValue(items.fromDisplay);
+		setFromAddress(filter(fromAddressArray, (item) => item.value === items.fromAddress)[0]);
+		setReplyToDisplay(items?.replyToDisplay === undefined ? '' : items?.replyToDisplay);
+		setReplyToAddress(items.replyToAddress);
 	}, [
-		replyToEnabled,
-		items.replyToEnabled,
-		items.identityId,
-		replyToAddress,
-		setMods,
-		updateIdentities
+		fromAddressArray,
+		items.fromAddress,
+		items.fromDisplay,
+		items.replyToAddress,
+		items?.replyToDisplay,
+		items.replyToEnabled
 	]);
 
-	const [dropdownOpen, setDropdownOpen] = useState(false);
-	const [fromDisplayValue, setFromDisplayValue] = useState(items.fromDisplay || ' ');
-	useEffect(() => {
-		setFromDisplayValue(items.fromDisplay || ' ');
-	}, [items.fromDisplay]);
+	const checkboxOnClick = useCallback(() => {
+		setReplyToEnabled(!replyToEnabled);
+		const modifyProp = {
+			id: items.identityId,
+			key: 'zimbraPrefReplyToEnabled',
+			value: replyToEnabled ? 'FALSE' : 'TRUE'
+		};
+		updateIdentities(modifyProp);
+	}, [items.identityId, replyToEnabled, updateIdentities]);
 
 	const fromDisplayLabel = useMemo(
-		() => (fromDisplayValue === (undefined || '') ? t('label.from_name', 'From: "Name"') : ''),
+		() => (fromDisplayValue ? '' : t('label.from_name', 'From: "Name"')),
 		[t, fromDisplayValue]
 	);
 	const onChangeFromDisplayValue = (
@@ -84,51 +91,39 @@ const SettingsSentMessages = ({
 		}
 	): void => {
 		setFromDisplayValue(ev.target.value);
-		if (ev.target.value === items.fromDisplay) {
-			setMods({});
-		} else {
-			updateIdentities(items.identityId, 'zimbraPrefFromDisplay', ev.target.value);
-		}
+		const modifyProp = {
+			id: items.identityId,
+			key: 'zimbraPrefFromDisplay',
+			value: ev.target.value
+		};
+		updateIdentities(modifyProp);
 	};
 
-	const fromAddressLabel = useMemo(() => t('label.address', 'Address'), [t]);
-	const fromAddressArray = useMemo(
-		() => [{ value: items.fromAddress, label: items.fromAddress }],
-		[items]
-	);
-	const [fromAddress, setFromAddress] = useState(() =>
-		find(fromAddressArray, (item) => item.value === items.fromAddress)
-	);
-	useEffect(
-		() => setFromAddress(filter(fromAddressArray, (item) => item.value === items.fromAddress)[0]),
-		[items.fromAddress, fromAddressArray]
+	const fromAddressLabel = useMemo(
+		() => (replyToAddress ? '' : t('label.address', 'Address')),
+		[replyToAddress, t]
 	);
 
 	const onChangeFromAddress = useCallback(
 		(newVal) => {
 			setFromAddress(filter(fromAddressArray, (item) => item.value === newVal)[0]);
-			if (newVal === items.fromAddress) {
-				setMods({});
-			} else {
-				updateIdentities(items.identityId, 'zimbraPrefFromAddress', newVal);
-			}
+			const modifyProp = {
+				id: items.identityId,
+				key: 'zimbraPrefFromAddress',
+				value: newVal
+			};
+			updateIdentities(modifyProp);
 		},
-		[items?.fromAddress, items.identityId, updateIdentities, setMods, fromAddressArray]
+		[items.identityId, updateIdentities, fromAddressArray]
 	);
 
 	const checkboxLabel = useMemo(
 		() => t('label.set_reply_to_field', 'Set the "Reply-to" field of e-mail message to:'),
 		[t]
 	);
-	const [replyToDisplay, setReplyToDisplay] = useState(items?.replyToDisplay || ' ');
-	useEffect(() => {
-		setReplyToDisplay(items?.replyToDisplay === undefined ? '' : items?.replyToDisplay);
-	}, [items?.replyToDisplay]);
+
 	const replyToDisplayLabel = useMemo(
-		() =>
-			replyToDisplay === (undefined || '')
-				? t('label.reply_to_field_example', 'e.g. Bob Smith')
-				: ' ',
+		() => (replyToDisplay ? '' : t('label.reply_to_field_example', 'e.g. Bob Smith')),
 		[t, replyToDisplay]
 	);
 	const onChangePrefReplyToDisplay = useCallback(
@@ -138,27 +133,26 @@ const SettingsSentMessages = ({
 			}
 		): void => {
 			setReplyToDisplay(ev.target.value);
-			if (ev.target.value === items?.replyToDisplay) {
-				setMods({});
-			} else {
-				updateIdentities(items.identityId, 'zimbraPrefReplyToDisplay', ev.target.value);
-			}
+			const modifyProp = {
+				id: items.identityId,
+				key: 'zimbraPrefReplyToDisplay',
+				value: ev.target.value
+			};
+			updateIdentities(modifyProp);
 		},
-		[updateIdentities, items?.replyToDisplay, items.identityId, setMods]
+		[updateIdentities, items.identityId]
 	);
 
 	const replyToAddressLabel = useMemo(
-		() =>
-			replyToAddress === (undefined || '') ? t('label.choose_account', 'Choose an account') : ' ',
+		() => (replyToAddress ? '' : t('label.choose_account', 'Choose an account')),
 		[t, replyToAddress]
 	);
-	useEffect(() => setReplyToAddress(items.replyToAddress), [items.replyToAddress]);
 
 	const replyToAddressArray = useMemo(
 		() => [
 			{
 				id: '0',
-				label: items.fromAddress || ' ',
+				label: items.fromAddress,
 				click: (ev: MouseEvent & { target: string & { textContent: string } }): void =>
 					setReplyToAddress(ev.target.textContent)
 			}
@@ -169,17 +163,26 @@ const SettingsSentMessages = ({
 	const onChangeReplyToAddress = useCallback(
 		(ev) => {
 			setReplyToAddress(ev.target.value);
-			if (
-				ev.target.value === items.replyToAddress ||
-				!EMAIL_VALIDATION_REGEX.test(ev.target.value)
-			) {
-				setMods({});
-			} else {
-				updateIdentities(items.identityId, 'zimbraPrefReplyToAddress', ev.target.value);
-			}
+			const modifyProp = {
+				id: items.identityId,
+				key: 'zimbraPrefReplyToAddress',
+				value: ev.target.value
+			};
+			updateIdentities(modifyProp);
 		},
-		[items?.replyToAddress, updateIdentities, setMods, items.identityId]
+		[updateIdentities, items.identityId]
 	);
+
+	const isValidEmail = useMemo(
+		() => replyToEnabled && !EMAIL_VALIDATION_REGEX.test(replyToAddress || ''),
+		[replyToEnabled, replyToAddress]
+	);
+
+	useEffect(() => {
+		if (mods?.identity) {
+			setSaveIsDisabled(isValidEmail);
+		}
+	}, [mods, isValidEmail, setSaveIsDisabled]);
 
 	return (
 		<>
@@ -273,7 +276,7 @@ const SettingsSentMessages = ({
 					>
 						<Input
 							label={replyToAddressLabel}
-							value={replyToAddress || ' '}
+							value={replyToAddress}
 							items={replyToAddressArray}
 							onChange={(
 								ev: MouseEvent & {
@@ -281,6 +284,7 @@ const SettingsSentMessages = ({
 								}
 							): void => onChangeReplyToAddress(ev)}
 							background="gray5"
+							hasError={replyToEnabled && !EMAIL_VALIDATION_REGEX.test(replyToAddress || '')}
 							CustomIcon={(): ReactElement => (
 								<Icon icon={dropdownOpen ? 'ArrowUp' : 'ArrowDown'} />
 							)}

@@ -12,15 +12,17 @@ import { IdentityProps } from '../../../../types';
 interface PrimaryAccountSettingsProps {
 	t: TFunction;
 	items: IdentityProps;
-	updateIdentities: (id: string, key: string, prefs: string) => void;
-	setMods: (mods: { [key: string]: unknown }) => void;
+	updateIdentities: (modifyList: {
+		id: string | number;
+		key: string;
+		value: string | boolean;
+	}) => void;
 }
 
 const PrimaryAccountSettings = ({
 	t,
 	items,
-	updateIdentities,
-	setMods
+	updateIdentities
 }: PrimaryAccountSettingsProps): ReactElement => {
 	const emailLabel = useMemo(() => t('label.email_address', 'E-mail address'), [t]);
 	const emailValue = useMemo(() => items?.fromAddress, [items]);
@@ -37,13 +39,16 @@ const PrimaryAccountSettings = ({
 			}
 		): void => {
 			setAccountNameValue(ev.target.value);
-			if (ev.target.value === items?.identityName) {
-				setMods({});
-			} else {
-				updateIdentities(items.identityId, 'zimbraPrefIdentityName', ev.target.value);
-			}
+
+			const modifyProp = {
+				id: items.identityId,
+				key: 'zimbraPrefIdentityName',
+				value: ev.target.value
+			};
+
+			updateIdentities(modifyProp);
 		},
-		[items?.identityName, updateIdentities, setMods, items.identityId]
+		[updateIdentities, items.identityId]
 	);
 
 	return (

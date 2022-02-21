@@ -7,7 +7,6 @@
 import React, { FC, Suspense, useMemo, lazy } from 'react';
 import { Prompt, Route, Switch } from 'react-router-dom';
 import { map } from 'lodash';
-import { useTranslation } from 'react-i18next';
 import { useApps } from '../store/app/hooks';
 import { SETTINGS_APP_ID, ACCOUNTS_APP_ID } from '../constants';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -17,12 +16,13 @@ import { Spinner } from '../ui-extras/spinner';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
+
 const GeneralSettings = lazy(() => import('./general-settings'));
-const AccountsSettings = lazy(() => import('./accounts-settings'));
+const AccountWrapper = lazy(() => import('./account-wrapper'));
 
 export const SettingsAppView: FC = () => {
 	const apps = useApps();
-	const [t] = useTranslation();
+
 	const routes = useMemo(
 		() =>
 			map(apps, (app, appId) =>
@@ -54,7 +54,7 @@ export const SettingsAppView: FC = () => {
 				</Route>
 				<Route key={SETTINGS_APP_ID} exact path={`/${SETTINGS_APP_ID}/${ACCOUNTS_APP_ID}`}>
 					<Suspense fallback={<Spinner />}>
-						<AccountsSettings />
+						<AccountWrapper />
 					</Suspense>
 				</Route>
 				{routes}

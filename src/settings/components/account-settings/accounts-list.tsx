@@ -26,7 +26,6 @@ type AccountsListProps = {
 	setIdentities: (identities: IdentityProps[]) => void;
 	selectedIdentityId: number;
 	setSelectedIdentityId: (value: number) => void;
-	setMods: (mods: { [key: string]: unknown }) => void;
 	deleteIdentities: (deleteList: string[]) => void;
 	createIdentities: (createList: { prefs: CreateIdentityProps }[]) => void;
 };
@@ -47,16 +46,11 @@ const AccountsList = ({
 	identities,
 	setIdentities,
 	setSelectedIdentityId,
-	setMods,
 	deleteIdentities,
 	createIdentities
 }: AccountsListProps): ReactElement => {
-	const changeView = (value: number): void => {
-		if (Number(identities[selectedIdentityId]?.id) !== value) {
-			setSelectedIdentityId(value);
-			setMods({});
-		}
-	};
+	const changeView = (value: number): void => setSelectedIdentityId(value);
+
 	const ListItem = ({ item }: ListItemProps): ReactElement => (
 		<>
 			<Container
@@ -118,9 +112,9 @@ const AccountsList = ({
 			) + 1;
 		const newPersonaName = `New Persona ${newPersonaNextNumber || 1}`;
 		identities.push({
-			id: Object.keys(identities).length.toString(),
+			id: `${identities.length}`,
 			type: t('label.persona', 'Persona'),
-			identityId: '',
+			identityId: createListrequestId,
 			fromAddress: identities[0]?.fromAddress,
 			identityName: newPersonaName,
 			fromDisplay: identities[0]?.fromDisplay,
@@ -140,7 +134,15 @@ const AccountsList = ({
 					requestId: createListrequestId,
 					zimbraPrefIdentityName: newPersonaName,
 					zimbraPrefFromDisplay: identities[0]?.fromDisplay,
-					zimbraPrefFromAddress: identities[0]?.fromAddress
+					zimbraPrefFromAddress: identities[0]?.fromAddress,
+					zimbraPrefFromAddressType: 'sendAs',
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraPrefReplyToDisplay: '',
+					zimbraPrefReplyToAddress: '',
+					zimbraPrefDefaultSignatureId: '',
+					zimbraPrefForwardReplySignatureId: '',
+					zimbraPrefWhenSentToEnabled: 'FALSE',
+					zimbraPrefWhenInFoldersEnabled: 'FALSE'
 				}
 			});
 			return state;
@@ -157,8 +159,6 @@ const AccountsList = ({
 		setSelectedIdentityId
 	]);
 
-	const isDisabled = false;
-
 	const [deleteList, setDeleteList] = useState<string[]>([]);
 	const onConfirmDelete = useCallback((): void => {
 		const newIdentities = map(
@@ -169,12 +169,20 @@ const AccountsList = ({
 			(item: IdentityProps, index: number) => ({ ...item, id: index.toString() })
 		);
 		setDeleteList((state) => {
-			state.push(identities[selectedIdentityId]?.identityId);
+			state.push(identities[selectedIdentityId]?.identityId.toString());
 			return state;
 		});
 		setIdentities(newIdentities);
 		deleteIdentities(deleteList);
-	}, [identities, selectedIdentityId, setIdentities, deleteList, deleteIdentities]);
+		setSelectedIdentityId(selectedIdentityId - 1);
+	}, [
+		identities,
+		setIdentities,
+		deleteIdentities,
+		deleteList,
+		setSelectedIdentityId,
+		selectedIdentityId
+	]);
 	const onDelete = useCallback((): void => {
 		// I'm disabling lint as the DS is not defining the type
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -245,7 +253,6 @@ const AccountsList = ({
 						onClick={(): void => addNewPersona()}
 						color="primary"
 						type="outlined"
-						disabled={isDisabled}
 					/>
 				</Padding>
 				<Button

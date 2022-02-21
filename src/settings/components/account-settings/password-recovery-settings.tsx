@@ -15,24 +15,27 @@ import {
 	Divider
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import { map } from 'lodash';
 import { SHELL_APP_ID, EMAIL_VALIDATION_REGEX } from '../../../constants';
-import { IdentityProps, Mods } from '../../../../types';
+import { IdentityProps } from '../../../../types';
 import { useAccountStore } from '../../../store/account/store';
 
 interface PasswordRecoverySettingsProps {
 	t: TFunction;
 	items: IdentityProps;
-	identities: IdentityProps[];
-	setIdentities: (value: IdentityProps[]) => void;
+	createSnackbar: (arg: {
+		key: string;
+		replace: boolean;
+		type: string;
+		label: string;
+		autoHideTimeout: number;
+		hideButton: boolean;
+	}) => void;
 }
 const PasswordRecoverySettings = ({
 	t,
 	items,
-	identities,
-	setIdentities
+	createSnackbar
 }: PasswordRecoverySettingsProps): ReactElement => {
-	const [mods, setMods] = useState<Mods>({});
 	const title = useMemo(
 		() => t('label.passwords_recovery_settings', 'Password Recovery Account Settings'),
 		[t]
@@ -44,7 +47,10 @@ const PasswordRecoverySettings = ({
 	);
 	const [emailValue, setEmailValue] = useState('');
 	const [isValidEmail, setIsValidEmail] = useState(false);
-	const inputLabel = useMemo(() => t('label.add_new_email', 'Add new e-mail address'), [t]);
+	const inputLabel = useMemo(
+		() => (emailValue ? '' : t('label.add_new_email', 'Add new e-mail address')),
+		[emailValue, t]
+	);
 
 	const onChange = useCallback(
 		(
@@ -59,19 +65,23 @@ const PasswordRecoverySettings = ({
 	);
 
 	const onSubmit = useCallback(() => {
-		useAccountStore.getState().xmlSoapFetch(SHELL_APP_ID)(
-			'SetRecoveryAccount',
-			`<SetRecoveryAccountRequest xmlns="urn:zimbraMail" op="sendCode" recoveryAccount="${emailValue}"/>`
-		);
-		if (Object.keys(mods).length > 0 && mods.prefs?.zimbraPrefIdentityName !== undefined) {
-			const newValue = mods.prefs?.zimbraPrefIdentityName as string;
-			const result = map(identities, (item, index) =>
-				index === 0 ? { ...item, identityName: newValue } : item
-			);
-			setIdentities(result);
-		}
-		setMods({});
-	}, [mods, identities, setIdentities, emailValue]);
+		useAccountStore
+			.getState()
+			.xmlSoapFetch(SHELL_APP_ID)(
+				'SetRecoveryAccount',
+				`<SetRecoveryAccountRequest xmlns="urn:zimbraMail" op="sendCode" recoveryAccount="${emailValue}"/>`
+			)
+			.catch(() => {
+				createSnackbar({
+					key: `new`,
+					replace: true,
+					type: 'error',
+					label: t('snackbar.error', 'Something went wrong, please try again'),
+					autoHideTimeout: 3000,
+					hideButton: true
+				});
+			});
+	}, [createSnackbar, emailValue, t]);
 
 	return (
 		<>
@@ -109,7 +119,13 @@ const PasswordRecoverySettings = ({
 				mainAlignment="flex-start"
 			>
 				<Row takeAvailableSpace padding={{ right: 'small' }}>
-					<Input label={inputLabel} value={emailValue} background="gray5" onChange={onChange} />
+					<Input
+						label={inputLabel}
+						value={emailValue}
+						background="gray5"
+						onChange={onChange}
+						hasError={emailValue !== '' && !isValidEmail}
+					/>
 				</Row>
 				<Row width="fit">
 					<Button

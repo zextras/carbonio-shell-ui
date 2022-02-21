@@ -12,16 +12,14 @@ import { IdentityProps } from '../../../../types';
 interface PersonaSettingsProps {
 	t: TFunction;
 	items: IdentityProps;
-	updateIdentities: (id: string, key: string, prefs: string) => void;
-	setMods: (mods: { [key: string]: unknown }) => void;
+	updateIdentities: (modifyList: {
+		id: string | number;
+		key: string;
+		value: string | boolean;
+	}) => void;
 }
 
-const PersonaSettings = ({
-	t,
-	items,
-	updateIdentities,
-	setMods
-}: PersonaSettingsProps): ReactElement => {
+const PersonaSettings = ({ t, items, updateIdentities }: PersonaSettingsProps): ReactElement => {
 	const [personaLabel, setPersonaLabel] = useState(items.identityName);
 	useEffect(() => {
 		setPersonaLabel(items.identityName);
@@ -30,13 +28,15 @@ const PersonaSettings = ({
 	const onChange = useCallback(
 		(ev) => {
 			setPersonaLabel(ev.target.value);
-			if (ev.target.value === items?.identityName) {
-				setMods({});
-			} else {
-				updateIdentities(items.identityId, 'zimbraPrefIdentityName', ev.target.value);
-			}
+			const modifyProp = {
+				id: items.identityId,
+				key: 'zimbraPrefIdentityName',
+				value: ev.target.value
+			};
+
+			updateIdentities(modifyProp);
 		},
-		[items?.identityName, updateIdentities, setMods, items.identityId, setPersonaLabel]
+		[updateIdentities, items.identityId, setPersonaLabel]
 	);
 
 	return (

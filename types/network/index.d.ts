@@ -93,12 +93,19 @@ export type CreateIdentityProps = {
 	zimbraPrefIdentityName: string | undfined;
 	zimbraPrefFromDisplay: string | undfined;
 	zimbraPrefFromAddress: string | undfined;
+	zimbraPrefFromAddress: string | undfined;
+	zimbraPrefFromAddressType: string | undfined;
+	zimbraPrefReplyToEnabled: string | undfined;
+	zimbraPrefReplyToDisplay: string | undfined;
+	zimbraPrefReplyToAddress: string | undfined;
+	zimbraPrefDefaultSignatureId: string | undfined;
+	zimbraPrefForwardReplySignatureId: string | undfined;
+	zimbraPrefWhenSentToEnabled: string | undfined;
+	zimbraPrefWhenInFoldersEnabled: string | undfined;
 };
 
 export type IdentityMods = {
-	id: string;
-	prefs?: Record<string, string>;
-	action: string;
+	modifyList?: Record<string, { id: string; prefs: Record<string, string | boolean> }>;
 	deleteList?: string[];
 	createList?: { prefs: CreateIdentityProps }[];
 };

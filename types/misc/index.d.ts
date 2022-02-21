@@ -104,7 +104,7 @@ export type AccountProps = {
 export type IdentityProps = {
 	id: string;
 	type: string;
-	identityId: string;
+	identityId: string | number;
 	fromAddress?: string;
 	identityName?: string;
 	fromDisplay?: string;

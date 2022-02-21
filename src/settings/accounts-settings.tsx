@@ -13,21 +13,9 @@ import {
 	Row,
 	Text
 } from '@zextras/carbonio-design-system';
-import { useTranslation, TFunction } from 'react-i18next';
-import {
-	map,
-	filter,
-	includes,
-	findIndex,
-	reduce,
-	forEach,
-	find,
-	replace,
-	lowerFirst,
-	isUndefined,
-	isEmpty
-} from 'lodash';
-import { useUserAccount } from '../store/account/hooks';
+import { TFunction } from 'react-i18next';
+import { map, includes, findIndex, reduce, find, replace, lowerFirst } from 'lodash';
+import { useUserSettings } from '../store/account/hooks';
 import { editSettings } from '../network/edit-settings';
 import { SHELL_APP_ID } from '../constants';
 import { Mods, IdentityProps, CreateIdentityProps } from '../../types';
@@ -39,6 +27,7 @@ import PasswordRecoverySettings from './components/account-settings/password-rec
 import Delegates from './components/account-settings/delegates';
 import PersonaSettings from './components/account-settings/persona-settings';
 import PersonaUseSection from './components/account-settings/persona-use-section';
+
 // external accounts not yet activated, graphical part is complete
 // import ExternalAccount from './components/account-settings/external-account-settings';
 // import AdvancedSettings from './components/account-settings/advanced-settings';
@@ -48,7 +37,8 @@ export const DisplayerHeader: FC<{
 	onSave: (mods: Record<string, unknown>) => void;
 	mods: Record<string, unknown>;
 	t: TFunction;
-}> = ({ onSave, mods, t }) => {
+	saveIsDisabled: boolean;
+}> = ({ onSave, mods, t, saveIsDisabled }) => {
 	const accountLabel: string = useMemo(() => t('label.accounts', 'Accounts'), [t]);
 	const buttonLabel = useMemo(() => t('label.save', 'Save'), [t]);
 	return (
@@ -76,12 +66,7 @@ export const DisplayerHeader: FC<{
 					mainAlignment="flex-end"
 					crossAlignment="flex-end"
 				>
-					<Button
-						label={buttonLabel}
-						color="primary"
-						onClick={onSave}
-						disabled={Object.keys(mods).length === 0}
-					/>
+					<Button label={buttonLabel} color="primary" onClick={onSave} disabled={saveIsDisabled} />
 				</Row>
 			</Row>
 			<Divider />
@@ -89,63 +74,137 @@ export const DisplayerHeader: FC<{
 	);
 };
 
-const AccountsSettings = (): ReactElement => {
-	const [mods, setMods] = useState<Mods>({});
-	const [t] = useTranslation();
-	const accountSettings = useUserAccount();
+type ModifyProps = { id: string | number; key: string; value: string | boolean } | undefined;
+type AddModProps = {
+	type: string;
+	modifyProp?: ModifyProps;
+	deleteList?: string[];
+	createList?: { prefs: CreateIdentityProps }[];
+};
+type AccountSettingsProps = {
+	identitiesDefault: IdentityProps[];
+	t: TFunction;
+};
+
+type UserRightsProps = { email: string; right: string };
+
+type DelegateProps = {
+	id: string;
+	email: string;
+	right: string;
+};
+
+export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps): ReactElement => {
+	const [mods, setMods] = useState<Mods>({ identity: {} });
 	const [activeDelegateView, setActiveDelegateView] = useState('0');
+	const [selectedIdentityId, setSelectedIdentityId] = useState(0);
+	const [identities, setIdentities] = useState<IdentityProps[]>(identitiesDefault);
+	const [delegates, setDelegates] = useState<DelegateProps[]>([]);
+	const [saveIsDisabled, setSaveIsDisabled] = useState(true);
 
-	type AddModProps = {
-		type: 'identity' | 'props' | 'prefs';
-		id: string | undefined;
-		key: any;
-		value?: string;
-		action?: string;
-		deleteList?: string[];
-		createList?: { prefs: CreateIdentityProps }[];
-	};
-	const addMod = useCallback((arg: AddModProps) => {
-		const { type, id, key, value, action, deleteList, createList } = arg;
-		setMods((m) => ({
-			...m,
+	const maxIdentities = useUserSettings().attrs.zimbraIdentityMaxNumEntries;
+	const addMod = useCallback(
+		(arg: AddModProps) => {
+			setSaveIsDisabled(false);
+			const { type, modifyProp, deleteList, createList } = arg;
+			setMods((prevState) => {
+				const prevRecord = find(
+					prevState?.identity?.modifyList,
+					(item) => item.id === modifyProp?.id
+				)?.prefs;
+				const modifyList =
+					typeof modifyProp !== 'undefined'
+						? {
+								...prevState.identity?.modifyList,
+								[modifyProp.id]: {
+									id: modifyProp.id,
+									prefs: { ...prevRecord, [modifyProp.key]: modifyProp.value }
+								}
+						  }
+						: prevState.identity?.modifyList;
+				const newCreateList = prevState.identity?.createList || createList;
+				const newDeleteList = prevState.identity?.deleteList || deleteList;
+				return {
+					...prevState,
 
-			[type]: { id, action, deleteList, createList, ...m?.[type], [key]: value }
-		}));
+					[type]: {
+						deleteList: newDeleteList,
+						createList: newCreateList,
+						modifyList
+					}
+				};
+			});
+		},
+		[setMods]
+	);
+
+	const modifyCreateList = useCallback((arg: AddModProps) => {
+		const { type, modifyProp } = arg;
+		setMods((prevState) => {
+			const prevRecord = find(
+				prevState?.identity?.createList,
+				(item) => item.prefs.requestId === modifyProp?.id
+			)?.prefs;
+			const modifiedCreateList =
+				typeof modifyProp !== 'undefined'
+					? {
+							...prevState.identity?.createList,
+							[modifyProp.id]: {
+								prefs: { ...prevRecord, [modifyProp.key]: modifyProp.value }
+							}
+					  }
+					: undefined;
+			return {
+				...prevState,
+
+				[type]: {
+					createList: modifiedCreateList,
+					deleteList: prevState.identity?.deleteList,
+					modifyList: prevState.identity?.modifyList
+				}
+			};
+		});
 	}, []);
-
 	const createIdentities = useCallback(
 		(createList: { prefs: CreateIdentityProps }[]) => {
 			const arg = {
 				type: 'identity',
-				action: 'create',
 				createList
-			} as AddModProps;
+			};
 			addMod(arg);
 		},
 		[addMod]
 	);
 
 	const updateIdentities = useCallback(
-		(id, key, pref) => {
+		(modifyProp: { id: string | number; key: string; value: string | boolean }) => {
 			const arg = {
 				type: 'identity',
-				id,
-				key,
-				value: pref,
-				action: 'modify'
-			} as AddModProps;
-			addMod(arg);
+				modifyProp: { id: modifyProp.id, key: modifyProp.key, value: modifyProp.value }
+			};
+			if (typeof modifyProp.id === 'string') {
+				addMod(arg);
+			} else if (typeof modifyProp.id === 'number') {
+				modifyCreateList(arg);
+			}
+			const updatedIdentityKey = lowerFirst(replace(modifyProp.key, 'zimbraPref', ''));
+			setIdentities(
+				map(identities, (item) =>
+					item.identityId === modifyProp.id
+						? { ...item, [updatedIdentityKey]: modifyProp.value }
+						: item
+				)
+			);
 		},
-		[addMod]
+		[addMod, identities, modifyCreateList]
 	);
 
 	const deleteIdentities = useCallback(
 		(deleteList: string[]) => {
 			const arg = {
 				type: 'identity',
-				action: 'delete',
 				deleteList
-			} as AddModProps;
+			};
 			addMod(arg);
 		},
 		[addMod]
@@ -153,89 +212,70 @@ const AccountsSettings = (): ReactElement => {
 
 	const createSnackbar = useSnackbar();
 
-	type UserRightsProps = { email: string; right: string };
-
-	type DelegateProps = {
-		id: string;
-		email: string;
-		right: string;
-	};
-
-	const [delegates, setDelegates] = useState<DelegateProps[]>([]);
-
 	useEffect(() => {
-		if (accountSettings && Object.keys(accountSettings).length > 0) {
-			useAccountStore
-				.getState()
-				.xmlSoapFetch(SHELL_APP_ID)(
-					'GetRights',
-					`<GetRightsRequest xmlns="urn:zimbraAccount"></GetRightsRequest>`
-				)
-				.then((res: any) => {
-					if (res.ace) {
-						const tempResult: UserRightsProps[] = map(res.ace, (item) => ({
-							email: item.d,
-							right: item.right
-						}));
-						const resultReduced = reduce(
-							tempResult,
-							(result: UserRightsProps[], item) => {
-								const index = findIndex(result, { email: item.email });
-								if (index === -1) {
-									result.push({ email: item.email, right: item.right });
-								} else {
-									result.push({
-										email: item.email,
-										right: `${item.right} and ${result[index].right}`
-									});
-									result.splice(index, 1);
-								}
-								return result;
-							},
-							[]
-						);
-						const result = map(resultReduced, (item: UserRightsProps, index) => ({
-							...item,
-							id: index.toString()
-						}));
-						setDelegates(result);
-					}
-				});
-		}
-	}, [accountSettings]);
-
-	const identitiesDefault = useMemo(() => {
-		const temp = map(accountSettings?.identities.identity, (item, index) => ({
-			id: item.name === 'DEFAULT' ? '0' : (index + 1).toString(),
-			type: item.name === 'DEFAULT' ? t('label.primary', 'Primary') : t('label.persona', 'Persona'),
-			identityId: item._attrs.zimbraPrefIdentityId || ' ',
-			fromAddress: item._attrs.zimbraPrefFromAddress || ' ',
-			identityName: item._attrs.zimbraPrefIdentityName || ' ',
-			fromDisplay: item._attrs.zimbraPrefFromDisplay || ' ',
-			recoveryAccount: item._attrs.zimbraRecoveryAccount || ' ',
-			replyToDisplay: item._attrs.zimbraPrefReplyToDisplay || ' ',
-			replyToAddress: item._attrs.zimbraPrefReplyToAddress || ' ',
-			replyToEnabled: item._attrs.zimbraPrefReplyToEnabled || ' ',
-			saveToSent: item._attrs.zimbraPrefSaveToSent || ' ',
-			sentMailFolder: item._attrs.zimbraPrefSentMailFolder || ' ',
-			whenInFoldersEnabled: item._attrs.zimbraPrefWhenInFoldersEnabled || ' ',
-			whenSentToEnabled: item._attrs.zimbraPrefWhenSentToEnabled || ' ',
-			whenSentToAddresses: item._attrs.zimbraPrefWhenSentToAddresses || ' '
-		}));
-		const result = [temp[temp.length - 1], ...temp];
-		result.pop();
-		return result;
-	}, [accountSettings, t]);
-
-	const [identities, setIdentities] = useState<IdentityProps[]>(identitiesDefault);
+		useAccountStore
+			.getState()
+			.xmlSoapFetch(SHELL_APP_ID)(
+				'GetRights',
+				`<GetRightsRequest xmlns="urn:zimbraAccount"></GetRightsRequest>`
+			)
+			.then((res: any) => {
+				if (res.ace) {
+					const tempResult: UserRightsProps[] = map(res.ace, (item) => ({
+						email: item.d,
+						right: item.right
+					}));
+					const resultReduced = reduce(
+						tempResult,
+						(result: UserRightsProps[], item) => {
+							const index = findIndex(result, { email: item.email });
+							if (index === -1) {
+								result.push({ email: item.email, right: item.right });
+							} else {
+								result.push({
+									email: item.email,
+									right: `${item.right} and ${result[index].right}`
+								});
+								result.splice(index, 1);
+							}
+							return result;
+						},
+						[]
+					);
+					const result = map(resultReduced, (item: UserRightsProps, index) => ({
+						...item,
+						id: index.toString()
+					}));
+					setDelegates(result);
+				}
+			});
+	}, []);
 
 	useEffect(() => {
 		setIdentities(identitiesDefault);
-	}, [accountSettings, identitiesDefault]);
-
-	const [selectedIdentityId, setSelectedIdentityId] = useState(0);
+		setMods({});
+	}, [identitiesDefault]);
 
 	const onSave = useCallback(() => {
+		if (
+			identitiesDefault.length +
+				(mods.identity?.createList?.length || 0) -
+				(mods?.identity?.deleteList?.length || 0) >
+			maxIdentities
+		) {
+			createSnackbar({
+				key: `new`,
+				replace: true,
+				type: 'error',
+				label: t(
+					'message.snackbar.identities_quota_exceeded',
+					'The identitity could not be created because you have exceeded your identity quota'
+				),
+				autoHideTimeout: 5000,
+				hideButton: true
+			});
+			return;
+		}
 		editSettings(mods)
 			.then(() => {
 				createSnackbar({
@@ -257,37 +297,12 @@ const AccountsSettings = (): ReactElement => {
 					hideButton: true
 				});
 			});
-		const modsKeys = filter(Object.keys(Object.values(mods)[0]), (item) => item.includes('zimbra'));
-		forEach(modsKeys, (key, index) => {
-			const zimbraPrefKeyIndex = findIndex(
-				Object.keys(Object.values(mods)[0]),
-				(item) => item === modsKeys[index]
-			);
-			const modsValue = Object.values(Object.values(mods)[0])[zimbraPrefKeyIndex];
-			filter(
-				accountSettings.identities.identity,
-				(item) => item.id === mods.identity?.id
-			)[0]._attrs[key] = modsValue;
-			const result = map(identities, (item) => {
-				const keyToSet = find<keyof IdentityProps>(
-					Object.keys(item) as Array<keyof IdentityProps>,
-					(_item) => _item === lowerFirst(replace(modsKeys[index], 'zimbraPref', ''))
-				);
-
-				if (typeof keyToSet === 'string' && item.identityId === mods.identity?.id) {
-					// eslint-disable-next-line no-param-reassign
-					item[keyToSet] = modsValue;
-				}
-				return item;
-			});
-			setIdentities(result);
-		});
 		setMods({});
-	}, [mods, createSnackbar, t, identities, accountSettings]);
+	}, [identitiesDefault.length, mods, maxIdentities, createSnackbar, t]);
 
 	return (
 		<>
-			<DisplayerHeader mods={mods} onSave={onSave} t={t} />
+			<DisplayerHeader mods={mods} onSave={onSave} t={t} saveIsDisabled={saveIsDisabled} />
 			<Container
 				background="gray5"
 				mainAlignment="flex-start"
@@ -300,7 +315,6 @@ const AccountsSettings = (): ReactElement => {
 					setIdentities={setIdentities}
 					selectedIdentityId={selectedIdentityId}
 					setSelectedIdentityId={setSelectedIdentityId}
-					setMods={setMods}
 					deleteIdentities={deleteIdentities}
 					createIdentities={createIdentities}
 				/>
@@ -310,20 +324,19 @@ const AccountsSettings = (): ReactElement => {
 							t={t}
 							items={identities[0]}
 							updateIdentities={updateIdentities}
-							setMods={setMods}
 						/>
 						<SettingsSentMessages
 							t={t}
 							items={identities[selectedIdentityId]}
 							isExternalAccount={false}
 							updateIdentities={updateIdentities}
-							setMods={setMods}
+							mods={mods}
+							setSaveIsDisabled={setSaveIsDisabled}
 						/>
 						<PasswordRecoverySettings
 							t={t}
 							items={identities[selectedIdentityId]}
-							identities={identities}
-							setIdentities={setIdentities}
+							createSnackbar={createSnackbar}
 						/>
 						<Delegates
 							t={t}
@@ -339,20 +352,21 @@ const AccountsSettings = (): ReactElement => {
 							t={t}
 							items={identities[selectedIdentityId]}
 							updateIdentities={updateIdentities}
-							setMods={setMods}
 						/>
 						<SettingsSentMessages
 							t={t}
 							items={identities[selectedIdentityId]}
 							isExternalAccount={false}
 							updateIdentities={updateIdentities}
-							setMods={setMods}
+							mods={mods}
+							setSaveIsDisabled={setSaveIsDisabled}
 						/>
 						<PersonaUseSection
 							t={t}
 							items={identities[selectedIdentityId]}
 							updateIdentities={updateIdentities}
-							setMods={setMods}
+							setSaveIsDisabled={setSaveIsDisabled}
+							mods={mods}
 						/>
 					</>
 				)}
@@ -374,5 +388,3 @@ const AccountsSettings = (): ReactElement => {
 		</>
 	);
 };
-
-export default AccountsSettings;

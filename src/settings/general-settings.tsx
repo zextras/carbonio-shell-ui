@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, useState, FC } from 'react';
+import React, { useCallback, useState, FC, useEffect } from 'react';
 import {
 	Breadcrumbs,
 	Button,

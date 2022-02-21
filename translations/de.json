@@ -26,7 +26,9 @@
         "edit_to_start": "Bearbeiten Sie Ihre Suche, um eine neue zu starten",
         "idle_input_label": "Suchen in {{module}}",
         "results_for": "Ergebnisse für:",
-        "start": "Suche starten"
+        "start": "Suche starten",
+        "already_clear": "Sucheingabe ist bereits leer",
+        "type_to_start_search": "Geben Sie Schlüsselwörter ein, um die Suche zu starten"
     },
     "settings": {
         "app": "Einstellungen",
@@ -36,7 +38,7 @@
         },
         "general": {
             "account": "Konto",
-            "account_logout": "Logout",
+            "account_logout": "Ausloggen",
             "theme_disabled": "Deaktiviert",
             "theme_enabled": "Aktiviert",
             "general": "Allgemeine Einstellungen",
@@ -102,5 +104,12 @@
     "user_quota": {
         "limited": "{{quota}}% Speicherplatz genutzt",
         "unlimited": "Unbegrenzter Speicherplatz verfügbar"
+    },
+    "label": {
+        "cancel": "Abbrechen",
+        "edit_to_start_search": "Bearbeiten Sie Ihre Suche, um eine neue zu starten",
+        "out_of_office": "Nicht im Büro",
+        "language": "Sprache",
+        "no": "Nein"
     }
 }

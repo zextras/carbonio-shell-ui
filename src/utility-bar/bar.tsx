@@ -32,7 +32,7 @@ const UtilityBarItem: FC<{ view: UtilityView }> = ({ view }) => {
 			</Tooltip>
 		);
 	}
-	return <view.button />;
+	return <view.button mode={mode} setMode={setMode} />;
 };
 
 export const ShellUtilityBar: FC = () => {

@@ -9,11 +9,31 @@ import { ComponentType, FC } from 'react';
 import { LinkProps } from 'react-router-dom';
 import { Reducer, Store } from 'redux';
 import { TFunction } from 'react-i18next';
-import { CarbonioModule } from '../apps';
+import {
+	AppRoute,
+	AppRouteDescriptor,
+	BadgeInfo,
+	BoardView,
+	CarbonioModule,
+	PrimaryAccessoryView,
+	SearchView,
+	SecondaryAccessoryView,
+	SettingsView,
+	UtilityView
+} from '../apps';
 import { ActionFactory, AnyFunction, CombinedActionFactory, Action } from '../integrations';
-import { AccountSettings, Tag, Account, NotifyObject } from '../account';
-import { SoapFetch, Mods } from '../network';
-import { ShellModes } from '../misc';
+import {
+	AccountSettings,
+	Tag,
+	Account,
+	NotifyObject,
+	AccountRights,
+	AccountRightName,
+	AccountRightTarget,
+	SoapFetch
+} from '../account';
+import { Mods } from '../network';
+import { HistoryParams, ShellModes } from '../misc';
 
 export const getBridgedFunctions: () => {
 	addBoard: (path: string, context?: unknown | { app: string }) => void;
@@ -29,61 +49,17 @@ export const getBridgedFunctions: () => {
 	toggleMinimizedBoard: () => void;
 };
 export const editSettings: (mods: Mods) => Promise<any>;
-export const ZIMBRA_STANDARD_COLORS = [
-	{ zValue: 0, hex: '#000000', zLabel: 'black' },
-	{ zValue: 1, hex: '#2b73d2', zLabel: 'blue' },
-	{ zValue: 2, hex: '#2196d3', zLabel: 'cyan' },
-	{ zValue: 3, hex: '#639030', zLabel: 'green' },
-	{ zValue: 4, hex: '#1a75a7', zLabel: 'purple' },
-	{ zValue: 5, hex: '#d74942', zLabel: 'red' },
-	{ zValue: 6, hex: '#ffc107', zLabel: 'yellow' },
-	{ zValue: 7, hex: '#edaeab', zLabel: 'pink' },
-	{ zValue: 8, hex: '#828282', zLabel: 'gray' },
-	{ zValue: 9, hex: '#ba8b00', zLabel: 'orange' }
-];
-export const FOLDERS = {
-	USER_ROOT: '1',
-	INBOX: '2',
-	TRASH: '3',
-	SPAM: '4',
-	SENT: '5',
-	DRAFTS: '6',
-	CONTACTS: '7',
-	TAGS: '8',
-	CONVERSATIONS: '9',
-	CALENDAR: '10',
-	ROOT: '11',
-	NOTEBOOK: '12', // no longer created in new mailboxes since Helix (bug 39647).  old mailboxes may still contain a system folder with id 12
-	AUTO_CONTACTS: '13',
-	IM_LOGS: '14',
-	TASKS: '15',
-	BRIEFCASE: '16'
+export const ZIMBRA_STANDARD_COLORS: Array<{ zValue: number; hex: string; zLabel: string }>;
+export const FOLDERS: {
+	[name: string]: string;
 };
 export const SHELL_APP_ID = 'carbonio-shell-ui';
 export const SETTINGS_APP_ID = 'settings';
 export const SEARCH_APP_ID = 'search';
-export const ACTION_TYPES = {
-	CONVERSATION: 'conversation',
-	CONVERSATION_lIST: 'conversation_list',
-	MESSAGE: 'message',
-	MESSAGE_lIST: 'message_list',
-	CONTACT: 'contact',
-	CONTACT_lIST: 'contact_list',
-	INVITE: 'invite',
-	INVITE_lIST: 'invite_list',
-	APPOINTMENT: 'appointment',
-	APPOINTMENT_lIST: 'appointment_list',
-	FOLDER: 'folder',
-	FOLDER_lIST: 'folder_list',
-	CALENDAR: 'calendar',
-	CALENDAR_lIST: 'calendar_list',
-	NEW: 'new'
+export const ACTION_TYPES: {
+	[name: string]: string;
 };
-export const SHELL_MODES: Record<string, ShellModes> = {
-	CARBONIO: 'carbonio',
-	STANDALONE: 'carbonioStandalone',
-	ADMIN: 'carbonioAdmin'
-};
+export const SHELL_MODES: Record<string, ShellModes>;
 export const BASENAME: string;
 export const getIntegratedHook: (id: string) => [Function, boolean];
 export const getIntegratedFunction: (id: string) => [Function, boolean];

@@ -8,7 +8,7 @@ import { To } from 'history';
 import { find, startsWith, replace, trim } from 'lodash';
 import { useMemo, useCallback } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { AppRoute } from '../../types';
+import { AppRoute, HistoryParams } from '../../types';
 import { useRoutes, getRoutes } from '../store/app';
 import { useContextBridge } from '../store/context-bridge';
 
@@ -25,13 +25,6 @@ export const getCurrentRoute = (): AppRoute | undefined => {
 	const routes = getRoutes();
 	return find(routes, (r) => startsWith(trim(history.location.pathname, '/'), r.route));
 };
-
-type HistoryParams =
-	| {
-			path: To;
-			route?: string;
-	  }
-	| string;
 
 export const parseParams = (params: HistoryParams): To => {
 	if (typeof params === 'string') {

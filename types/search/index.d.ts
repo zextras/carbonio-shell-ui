@@ -5,16 +5,9 @@
  */
 
 import { AppRoute } from '../apps';
+import { QueryChip } from './items';
 
-export type QueryChip = {
-	label: string;
-	value?: string;
-	isGeneric?: boolean;
-	isQueryFilter?: boolean;
-	hasAvatar?: boolean;
-	app?: string;
-};
-
+export * from './items';
 export type SearchState = {
 	query: Array<QueryChip>;
 	module?: string;

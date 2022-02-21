@@ -4,12 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Reducer, Store } from '@reduxjs/toolkit';
+import { Store } from '@reduxjs/toolkit';
+import { To } from 'history';
 import { i18n } from 'i18next';
-import { FunctionComponent } from 'react';
-import { LinkProps } from 'react-router-dom';
-import { RuntimeAppData } from '../apps';
-import { CarbonioModule } from '../account';
+import { ComponentType } from 'react';
+import { CarbonioModule, PanelMode } from '../apps';
 
 export interface II18nFactory {
 	_cache: { [pkg: string]: i18n };
@@ -51,3 +50,18 @@ export type AppInjections = {
 };
 
 export type ShellModes = 'carbonio' | 'carbonioStandalone' | 'carbonioAdmin';
+
+export type HistoryParams =
+	| {
+			path: To;
+			route?: string;
+	  }
+	| string;
+export type UtilityBarStore = {
+	mode: PanelMode;
+	setMode: (mode: PanelMode) => void;
+	current?: string;
+	setCurrent: (current: string) => void;
+	secondaryBarState: boolean;
+	setSecondaryBarState: (state: boolean) => void;
+};

@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /*
  * SPDX-FileCopyrightText: 2021 Zextras <https://www.zextras.com>
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ComponentType } from 'react';
+import { ComponentType, FC } from 'react';
+import { QueryChip } from '../search/items';
 
 export type CarbonioModule = {
 	commit: string;
@@ -56,7 +58,21 @@ export type CarbonioAccessoryView<P> = {
 	position: number;
 	component: ComponentType<P>;
 };
+export type PrimaryBarComponentProps = { active: boolean };
+export type SecondaryBarComponentProps = { expanded: boolean };
+export type AppViewComponentProps = {};
+export type BoardViewComponentProps = {};
+export type SettingsViewProps = {};
+export type SearchViewProps = {
+	useQuery: () => [QueryChip[], Function];
+	ResultsHeader: FC<{ label: string }>;
+	useDisableSearch: () => [boolean, Function];
+};
+export type PrimaryAccessoryViewProps = {};
+export type SecondaryAccessoryViewProps = { expanded: boolean };
+export type PanelMode = 'closed' | 'overlap' | 'open';
 
+export type UtilityBarComponentProps = { mode: PanelMode; setMode: (mode: PanelMode) => void };
 export type PrimaryBarView = Omit<CarbonioView<PrimaryBarComponentProps>, 'component'> & {
 	component: string | ComponentType<PrimaryBarComponentProps>;
 	badge: BadgeInfo;
@@ -71,8 +87,9 @@ export type AppView = CarbonioView<AppViewComponentProps>;
 
 export type BoardView = CarbonioView<BoardViewComponentProps>;
 
-export type UtilityView = CarbonioAccessoryView<PrimaryBarComponentProps> & {
-	button: string | ComponentType<PrimaryBarComponentProps>;
+export type UtilityView = CarbonioAccessoryView<UtilityBarComponentProps> & {
+	button: string | ComponentType<UtilityBarComponentProps>;
+	component: ComponentType<UtilityBarComponentProps>;
 	badge: BadgeInfo;
 	label: string;
 };

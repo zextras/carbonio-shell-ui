@@ -7,23 +7,22 @@
 import React, { FC, Suspense, useMemo, lazy } from 'react';
 import { Prompt, Route, Switch } from 'react-router-dom';
 import { map } from 'lodash';
-import { createModal, Text } from '@zextras/carbonio-design-system';
-import { useTranslation } from 'react-i18next';
 import { useApps } from '../store/app/hooks';
-import { SETTINGS_APP_ID } from '../constants';
+import { SETTINGS_APP_ID, ACCOUNTS_APP_ID } from '../constants';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppContextProvider from '../boot/app/app-context-provider';
 import { Spinner } from '../ui-extras/spinner';
-import { RouteLeavingGuard } from '../ui-extras/nav-guard';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
+
 const GeneralSettings = lazy(() => import('./general-settings'));
+const AccountWrapper = lazy(() => import('./account-wrapper'));
 
 export const SettingsAppView: FC = () => {
 	const apps = useApps();
-	const [t] = useTranslation();
+
 	const routes = useMemo(
 		() =>
 			map(apps, (app, appId) =>
@@ -51,6 +50,11 @@ export const SettingsAppView: FC = () => {
 				<Route key={SETTINGS_APP_ID} exact path={`/${SETTINGS_APP_ID}`}>
 					<Suspense fallback={<Spinner />}>
 						<GeneralSettings />
+					</Suspense>
+				</Route>
+				<Route key={SETTINGS_APP_ID} exact path={`/${SETTINGS_APP_ID}/${ACCOUNTS_APP_ID}`}>
+					<Suspense fallback={<Spinner />}>
+						<AccountWrapper />
 					</Suspense>
 				</Route>
 				{routes}

@@ -61,7 +61,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 		() => [
 			{
 				id: account?.id,
-				label: account?.displayName ?? account?.name,
+				label: account?.displayName,
 				level: 0,
 				textProps: { weight: 'bold' },
 				open: true,
@@ -97,7 +97,7 @@ export default function ShellSecondaryBar({ sidebarIsOpen, onCollapserClick, act
 				]
 			}
 		],
-		[account?.displayName, account?.id, account?.name, apps, sidebarIsOpen, t]
+		[account?.displayName, account?.id, apps, sidebarIsOpen, t]
 	);
 
 	return disabled ? null : (

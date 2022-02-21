@@ -90,3 +90,81 @@ export type LoadedAppsCache = {
 export type AppInjections = {
 	store: Store<any>;
 };
+
+export type AccountProps = {
+	accountId?: string;
+	type?: string;
+	id?: number;
+	email?: string;
+	label?: string;
+	personaLabel?: string;
+	identityId?: string;
+};
+
+export type IdentityProps = {
+	id: string;
+	type: string;
+	identityId: string | number;
+	fromAddress?: string;
+	identityName?: string;
+	fromDisplay?: string;
+	recoveryAccount?: string;
+	replyToDisplay?: string;
+	replyToAddress?: string;
+	replyToEnabled?: string;
+	saveToSent?: string;
+	sentMailFolder?: string;
+	whenInFoldersEnabled?: string;
+	whenSentToEnabled?: string;
+	whenSentToAddresses?: string;
+};
+
+export type Folder = {
+	id: string;
+	uuid: string;
+	name: string;
+	path: string | undefined;
+	parent: string;
+	parentUuid: string;
+	unreadCount: number;
+	size: number;
+	itemsCount: number;
+	synced: boolean;
+	absParent: string;
+	items: Folder[];
+	level: number;
+	to: string;
+	color: string;
+	rgb: string;
+	rid?: string;
+	isSharedFolder?: boolean;
+	owner?: string;
+	zid?: string;
+	acl?: unknown;
+	perm?: string;
+	retentionPolicy?: unknown;
+};
+
+export type CreateModalProps = {
+	background: string;
+	centered: boolean;
+	children: React.ReactElement;
+	confirmColor: string;
+	confirmLabel: string;
+	copyLabel: string;
+	customFooter: React.ReactElement;
+	disablePortal: boolean;
+	dismissLabel: string;
+	hideFooter: boolean;
+	maxHeight: string;
+	onClose: () => void;
+	onConfirm: () => void;
+	onSecondaryAction: () => void;
+	optionalFooter: React.ReactElement;
+	secondaryActionLabel: string;
+	showCloseIcon: boolean;
+	size: string;
+	title: string;
+	type: string;
+	zIndex: number;
+};

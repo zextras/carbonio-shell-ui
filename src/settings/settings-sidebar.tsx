@@ -10,7 +10,7 @@ import { reduce } from 'lodash';
 import { Accordion } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { useAppList } from '../store/app/hooks';
-import { SETTINGS_APP_ID } from '../constants';
+import { SETTINGS_APP_ID, ACCOUNTS_APP_ID } from '../constants';
 
 export const SettingsSidebar: FC = () => {
 	const apps = useAppList();
@@ -43,6 +43,15 @@ export const SettingsSidebar: FC = () => {
 						onClick: (e: MouseEvent): void => {
 							e.stopPropagation();
 							history.push(`/${SETTINGS_APP_ID}`);
+						}
+					},
+					{
+						id: 'accounts',
+						label: t('label.accounts', 'Accounts'),
+						icon: 'PeopleOutline',
+						onClick: (e: MouseEvent): void => {
+							e.stopPropagation();
+							history.push(`/${SETTINGS_APP_ID}/${ACCOUNTS_APP_ID}`);
 						}
 					}
 				]

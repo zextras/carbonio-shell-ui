@@ -19,20 +19,18 @@ const useSecondaryActions = (
 ): Array<Action | { type: string; id: string }> => {
 	const apps = useAppList();
 
-	const byApp = useMemo(() => groupBy(actions, 'app'), [actions]);
+	const byApp = useMemo(() => groupBy(actions, 'group'), [actions]);
 	return useMemo(
 		() => [
 			...(byApp[activeRoute?.app ?? ''] ?? []),
 			...reduce(
 				apps,
-				(acc, app, i) =>
-					app.name === activeRoute?.app
-						? acc
-						: [
-								...acc,
-								{ type: 'divider', label: '', id: `divider-${i}` },
-								...(byApp[app.name] ?? [])
-						  ],
+				(acc, app, i) => {
+					if (app.name !== activeRoute?.app && byApp[app.name]?.length > 0) {
+						acc.push({ type: 'divider', label: '', id: `divider-${i}` }, ...byApp[app.name]);
+					}
+					return acc;
+				},
 				[] as Array<Action | { type: string; id: string }>
 			)
 		],

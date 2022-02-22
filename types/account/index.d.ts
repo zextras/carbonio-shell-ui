@@ -52,8 +52,13 @@ export type Account = {
 	displayName: string;
 	//	settings: AccountSettings;
 	signatures: { signature: Array<unknown> };
-	identities: { identity: Array<unknown> };
+	identities: any;
 	rights: AccountRights;
+};
+
+export type DelegateProps = {
+	email: string;
+	right: string;
 };
 
 export type Tag = {

@@ -4,42 +4,36 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, useState, FC, useMemo } from 'react';
+import React, { useCallback, useState, FC } from 'react';
 import {
 	Breadcrumbs,
 	Button,
 	Container,
 	Divider,
 	Padding,
-	useSnackbar,
-	Shimmer,
-	FormSubSection
+	useSnackbar
 } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { cloneDeep, isEqual, includes } from 'lodash';
-import Logout from './logout';
-import AppearanceSettings from './appearance-settings';
-import ModuleVersionSettings from './module-version-settings';
-import OutOfOfficeSettings from './out-of-office-view';
-import UserQuota from './user-quota';
+import { includes } from 'lodash';
 import { useUserSettings } from '../store/account';
+import Logout from './components/general-settings/logout';
+import AppearanceSettings from './components/general-settings/appearance-settings';
+import ModuleVersionSettings from './components/general-settings/module-version-settings';
+import OutOfOfficeSettings from './components/general-settings/out-of-office-view';
+import UserQuota from './components/general-settings/user-quota';
 import { SETTINGS_APP_ID } from '../constants';
 import { editSettings } from '../network/edit-settings';
 import { Mods } from '../../types';
 import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
 import SearchSettingsView from './search-settings-view';
-import Composer from '../store/integrations/composer';
 
 export const DisplayerHeader: FC<{
 	label: string;
 	onCancel: (mods: Record<string, unknown>) => void;
 	onSave: (mods: Record<string, unknown>) => void;
 	mods: Record<string, unknown>;
-	isDisabled: boolean;
-}> = ({ label, onCancel, onSave, mods, isDisabled }) => {
+}> = ({ label, onCancel, onSave, mods }) => {
 	const [t] = useTranslation();
 	const history = useHistory();
 	const onSaveCb = useCallback(() => {
@@ -71,17 +65,17 @@ export const DisplayerHeader: FC<{
 			<Container mainAlignment="flex-end" orientation="horizontal" padding={{ all: 'small' }}>
 				<Breadcrumbs crumbs={crumbs} />
 				<Button
-					label={t('label.discard_changes', 'DISCARD CHANGES')}
+					label={t('label.cancel', 'Cancel')}
 					color="secondary"
 					onClick={onCancelCb}
-					disabled={isDisabled}
+					disabled={!mods}
 				/>
 				<Padding horizontal="small" />
 				<Button
 					label={t('settings.button.primary', 'Save')}
 					color="primary"
 					onClick={onSaveCb}
-					disabled={isDisabled}
+					disabled={!mods}
 				/>
 			</Container>
 			<Divider color="gray1" />
@@ -92,10 +86,8 @@ export const DisplayerHeader: FC<{
 const GeneralSettings: FC = () => {
 	const [mods, setMods] = useState<Mods>({});
 	const [t] = useTranslation();
-	const [settings, setSettings] = useState(useUserSettings());
-	const [updatedSettings, setUpdatedSettings] = useState(settings);
-	const [loading, setLoading] = useState(false);
-	const [original] = useState(settings);
+	const settings = useUserSettings();
+	// const [original] = useState(settings);
 	const [open, setOpen] = useState(false);
 	const addMod = useCallback((type: 'props' | 'prefs', key, value) => {
 		setMods((m) => ({
@@ -107,41 +99,10 @@ const GeneralSettings: FC = () => {
 		}));
 	}, []);
 	const createSnackbar = useSnackbar();
-	const isDisabled = useMemo(() => {
-		const settingsToCompare = cloneDeep(settings);
-		if (mods.prefs) {
-			Object.assign(settingsToCompare.prefs, { ...mods.prefs });
-		}
-		if (mods.props) {
-			const propName: any = Object.keys(mods?.props)[0];
-			const propValue: any = Object.values(mods?.props)[0].value;
-			const appName: any = Object.values(mods?.props)[0].app;
-			if (settingsToCompare.props.length === 0) {
-				settingsToCompare.props.push({
-					zimlet: appName,
-					name: propName,
-					_content: propValue
-				});
-			} else {
-				const index = settingsToCompare.props.findIndex((item) => item.name === propName);
-				if (index !== -1) {
-					settingsToCompare.props[index]._content = propValue;
-				}
-			}
-		}
-		setUpdatedSettings(settingsToCompare);
-		return isEqual(settingsToCompare, settings);
-	}, [mods, settings]);
-	const callLoader = (): void => {
-		setLoading(true);
-		setTimeout(() => setLoading(false), 10);
-	};
+
 	const onSave = useCallback(() => {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
 		editSettings(mods)
 			.then(() => {
-				setSettings(updatedSettings);
 				if (mods.prefs && includes(Object.keys(mods.prefs), 'zimbraPrefLocale')) {
 					setOpen(true);
 				}
@@ -165,55 +126,39 @@ const GeneralSettings: FC = () => {
 				});
 			});
 		setMods({});
-	}, [createSnackbar, mods, t, updatedSettings]);
+	}, [createSnackbar, mods, t]);
 	const onCancel = useCallback(() => {
 		setMods({});
-		setSettings(settings);
-		callLoader();
-	}, [settings]);
+	}, []);
 
 	return (
 		<>
-			{loading ? (
-				<Container
-					orientation="horizontal"
-					mainAlignment="flex-start"
-					width="fill"
-					crossAlignment="flex-start"
-				>
-					<Shimmer.FormSection>
-						<Shimmer.FormSubSection />
-					</Shimmer.FormSection>
-				</Container>
-			) : (
-				<Container
-					background="gray5"
-					mainAlignment="flex-start"
-					padding={{ all: 'medium' }}
-					style={{ overflow: 'auto' }}
-				>
-					<DisplayerHeader
-						mods={mods}
-						label={t('settings.general.general', 'General Settings')}
-						onCancel={onCancel}
-						onSave={onSave}
-						isDisabled={isDisabled}
-					/>
-					<AppearanceSettings settings={settings} addMod={addMod} />
-					<LanguageAndTimeZoneSettings
-						settings={settings}
-						addMod={addMod}
-						open={open}
-						setOpen={setOpen}
-					/>
+			<Container
+				background="gray5"
+				mainAlignment="flex-start"
+				padding={{ all: 'medium' }}
+				style={{ overflow: 'auto' }}
+			>
+				<DisplayerHeader
+					mods={mods}
+					label={t('settings.general.general', 'General Settings')}
+					onCancel={onCancel}
+					onSave={onSave}
+				/>
+				<AppearanceSettings settings={settings} addMod={addMod} />
+				<LanguageAndTimeZoneSettings
+					settings={settings}
+					addMod={addMod}
+					open={open}
+					setOpen={setOpen}
+				/>
 
-					<OutOfOfficeSettings settings={settings} addMod={addMod} />
-					<SearchSettingsView settings={settings} addMod={addMod} />
-					<ModuleVersionSettings />
-					<UserQuota mobileView={false} />
-					<Logout />
-				</Container>
-			)}
+				<OutOfOfficeSettings settings={settings} addMod={addMod} />
+				<SearchSettingsView settings={settings} addMod={addMod} />
+				<ModuleVersionSettings />
+				<UserQuota mobileView={false} />
+				<Logout />
+			</Container>
 		</>
 	);
 };

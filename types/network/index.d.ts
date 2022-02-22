@@ -84,12 +84,36 @@ export type PermissionsMods = {
 	freeBusy: any;
 	inviteRight: any;
 };
+
+export type CreateIdentityProps = {
+	requestId: number;
+	zimbraPrefIdentityName: string | undfined;
+	zimbraPrefFromDisplay: string | undfined;
+	zimbraPrefFromAddress: string | undfined;
+	zimbraPrefFromAddress: string | undfined;
+	zimbraPrefFromAddressType: string | undfined;
+	zimbraPrefReplyToEnabled: string | undfined;
+	zimbraPrefReplyToDisplay: string | undfined;
+	zimbraPrefReplyToAddress: string | undfined;
+	zimbraPrefDefaultSignatureId: string | undfined;
+	zimbraPrefForwardReplySignatureId: string | undfined;
+	zimbraPrefWhenSentToEnabled: string | undfined;
+	zimbraPrefWhenInFoldersEnabled: string | undfined;
+};
+
+export type IdentityMods = {
+	modifyList?: Record<string, { id: string; prefs: Record<string, string | boolean> }>;
+	deleteList?: string[];
+	createList?: { prefs: CreateIdentityProps }[];
+};
+
 export type PrefsMods = Record<string, unknown>;
 
 export type Mods = {
 	props?: PropsMods;
 	prefs?: PrefsMods;
 	permissions?: PermissionsMods;
+	identity?: IdentityMods;
 };
 
 export type Locale = {

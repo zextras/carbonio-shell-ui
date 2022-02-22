@@ -11,13 +11,14 @@ import { useAppStore } from '../../store/app';
 import { SearchAppView } from '../../search/search-app-view';
 import { SettingsAppView } from '../../settings/settings-app-view';
 import { SettingsSidebar } from '../../settings/settings-sidebar';
-import { AppState, PrimaryBarView } from '../../../types';
+import { AppState, PrimaryBarView, SettingsView } from '../../../types';
 import GeneralSettings from '../../settings/general-settings';
 import { isAdmin, isClient } from '../../multimode';
 import Feedback from '../../reporting/feedback';
 import DevBoard from '../../dev/dev-board';
 import DevBoardTrigger from '../../dev/dev-board-trigger';
 import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
+import AccountWrapper from '../../settings/account-wrapper';
 
 const settingsRoute = {
 	route: SETTINGS_APP_ID,
@@ -49,15 +50,25 @@ const settingsAppView = {
 	route: SETTINGS_APP_ID,
 	component: SettingsAppView
 };
-const settingsGeneralView = {
+const settingsGeneralView = (t: TFunction): SettingsView => ({
 	id: 'general',
 	route: 'general',
 	app: SHELL_APP_ID,
 	component: GeneralSettings,
 	icon: 'SettingsModOutline',
-	label: 'General',
+	label: t('settings.general.general', 'General'),
 	position: 1
-};
+});
+
+const settingsAccountsView = (t: TFunction): SettingsView => ({
+	id: 'accounts',
+	route: 'accounts',
+	app: SHELL_APP_ID,
+	component: AccountWrapper,
+	icon: 'PersonOutline',
+	label: t('settings.accounts', 'Accounts'),
+	position: 1
+});
 
 const searchRoute = {
 	route: SEARCH_APP_ID,
@@ -121,7 +132,7 @@ export const registerDefaultViews = (t: TFunction): void => {
 				s.views.primaryBar = [searchPrimaryBar(t), settingsPrimaryBar(t)];
 				s.views.secondaryBar = [settingsSecondaryBar];
 				s.views.appView = [searchAppView, settingsAppView];
-				s.views.settings = [settingsGeneralView];
+				s.views.settings = [settingsGeneralView(t), settingsAccountsView(t)];
 			}
 			s.views.board = [feedbackBoardView];
 			if (__CARBONIO_DEV__) {

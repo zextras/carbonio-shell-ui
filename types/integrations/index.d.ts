@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ComponentType } from 'react';
+import { ComponentType, MouseEvent } from 'react';
 
 export type IntegrationsState = {
 	actions: ActionMap;
@@ -29,7 +29,7 @@ export type Action = {
 	id: string;
 	label: string;
 	icon: string;
-	click: (ev: unknown) => void;
+	click: (ev: MouseEvent) => void;
 	type: string;
 	primary?: boolean;
 	group?: string;

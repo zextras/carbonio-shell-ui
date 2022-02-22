@@ -8,6 +8,7 @@ import React, { FC, useMemo } from 'react';
 import { reduce, groupBy } from 'lodash';
 import { MultiButton } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import { useActions } from '../store/integrations/hooks';
 import { ACTION_TYPES } from '../constants';
 import { Action, AppRoute } from '../../types';
@@ -40,7 +41,8 @@ const useSecondaryActions = (
 
 export const CreationButton: FC<{ activeRoute?: AppRoute }> = ({ activeRoute }) => {
 	const [t] = useTranslation();
-	const actions = useActions(activeRoute, ACTION_TYPES.NEW);
+	const location = useLocation();
+	const actions = useActions({ activeRoute, location }, ACTION_TYPES.NEW);
 	const primaryAction = useMemo(
 		() =>
 			actions?.find?.(

@@ -7,6 +7,21 @@
         "reduce": "Reduce board",
         "show_tabs": "Show other tabs"
     },
+    "feedback": {
+        "behaviors": "Behaviors",
+        "error": "There was an error while sending your feedback",
+        "explanation": "Please send us your feedback about your new experience with Zextras Server. Your opinion is meaningful for us to improve our product. So tell us what’s on your mind.",
+        "hint": "Remember: define the topic using module and macro area selectors before write your feedback. Thanks for your help.",
+        "missing_features": "Missing features",
+        "other": "Other",
+        "report_something": "Do you want to report something?",
+        "select_a_module": "Select a module",
+        "select_a_topic": "Select a topic",
+        "send": "SEND",
+        "success": "Thank you for your feedback",
+        "user_interface": "User interface",
+        "write_here": "Write your feedback here"
+    },
     "label": {
         "account_menu": "Account menu",
         "account_name": "Account Name",

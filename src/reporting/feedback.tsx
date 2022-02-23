@@ -25,11 +25,11 @@ import {
 import { Severity, Event } from '@sentry/browser';
 import { filter, find, map } from 'lodash';
 import styled from 'styled-components';
+import { TFunction, useTranslation } from 'react-i18next';
 import { useUserAccount } from '../store/account';
-import { useRemoveCurrentBoard, useUpdateCurrentBoard } from '../shell/boards/board-hooks';
+import { useRemoveCurrentBoard } from '../shell/boards/board-hooks';
 import { feedback } from './functions';
 import { useAppList } from '../store/app';
-import { useReporter } from '.';
 
 const TextArea = styled.textarea<{ size?: string }>`
 	width: 100%;
@@ -119,11 +119,11 @@ function reducer(state: Event, { type, payload }: { type: string; payload: any }
 	}
 }
 
-const topics = [
-	{ label: 'User interface', value: 'UserInterface' },
-	{ label: 'Behaviors', value: 'Behaviors' },
-	{ label: 'Missing features', value: 'MissingFeatures' },
-	{ label: 'Other', value: 'Other' }
+const getTopics = (t: TFunction): Array<{ label: string; value: string }> => [
+	{ label: t('feedback.user_interface', 'User interface'), value: 'UserInterface' },
+	{ label: t('feedback.behaviors', 'Behaviors'), value: 'Behaviors' },
+	{ label: t('feedback.missing_features', 'Missing features'), value: 'MissingFeatures' },
+	{ label: t('feedback.other', 'Other'), value: 'Other' }
 ];
 
 const ModuleLabelFactory: FC<{
@@ -208,6 +208,8 @@ const _LabelFactory: FC<{
 );
 
 const Feedback: FC = () => {
+	const [t] = useTranslation();
+	const topics = useMemo(() => getTopics(t), [t]);
 	const allApps = useAppList();
 	const apps = useMemo(
 		() => filter(allApps, (app) => !!app.sentryDsn),
@@ -276,11 +278,14 @@ const Feedback: FC = () => {
 		const feedbackId = feedback(event);
 		createSnackbar(
 			feedbackId
-				? { type: 'success', label: 'Thank you for your feedback' }
-				: { type: 'error', label: 'There was an error while sending your feedback' }
+				? { type: 'success', label: t('feedback.success', 'Thank you for your feedback') }
+				: {
+						type: 'error',
+						label: t('feedback.error', 'There was an error while sending your feedback')
+				  }
 		);
 		closeBoard();
-	}, [event, createSnackbar, closeBoard]);
+	}, [event, createSnackbar, t, closeBoard]);
 
 	useEffect(() => {
 		dispatch({
@@ -305,20 +310,28 @@ const Feedback: FC = () => {
 			<Container orientation="horizontal" height="fit">
 				<TextContainer mainAlignment="flex-start" crossAlignment="flex-start">
 					<Text weight="bold" size="18px">
-						Do you want to report something?
+						{t('feedback.report_something', 'Do you want to report something?')}
 					</Text>
 					<SubHeadingText overflow="break-word" lineHeight="21px">
-						Please send us your feedback about your new experience with Zextras Server. Your opinion
-						is meaningful for us to improve our product. So tell us what&apos;s on your mind.
+						{t(
+							'feedback.explanation',
+							'Please send us your feedback about your new experience with Zextras Server. Your opinion is meaningful for us to improve our product. So tell us what’s on your mind.'
+						)}
 					</SubHeadingText>
 					<SubHeadingText overflow="break-word">
-						Remember: define the topic using module and macro area selectors before write your
-						feedback. Thanks for your help.
+						{t(
+							'feedback.hint',
+							'Remember: define the topic using module and macro area selectors before write your feedback. Thanks for your help.'
+						)}
 					</SubHeadingText>
 				</TextContainer>
 
 				<ButtonContainer crossAlignment="flex-end" mainAlignment="baseline">
-					<Button label="SEND" onClick={confirmHandler} disabled={disabledSend} />
+					<Button
+						label={t('feedback.send', 'SEND')}
+						onClick={confirmHandler}
+						disabled={disabledSend}
+					/>
 				</ButtonContainer>
 			</Container>
 			<Container
@@ -335,7 +348,7 @@ const Feedback: FC = () => {
 						</Text>
 					</Row>
 					<Select
-						label="Select a module"
+						label={t('feedback.select_a_module', 'Select a module')}
 						items={appItems}
 						onChange={onAppSelect}
 						LabelFactory={ModuleLabelFactory}
@@ -348,7 +361,7 @@ const Feedback: FC = () => {
 						</Text>
 					</Row>
 					<Select
-						label="Select a topic"
+						label={t('feedback.select_a_topic', 'Select a topic')}
 						selection={find(topics, ['value', event.extra?.topic])}
 						items={topics}
 						onChange={onTopicSelect}
@@ -362,7 +375,7 @@ const Feedback: FC = () => {
 					value={event.message}
 					onKeyUp={checkTopicSelect}
 					onChange={onInputChange}
-					placeholder="Write your feedback here"
+					placeholder={t('feedback.write_here', 'Write your feedback here')}
 				/>
 				<Text size="medium" color="secondary">
 					{limit}/500

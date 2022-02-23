@@ -111,7 +111,7 @@ const Board = styled(Container)`
 	left: 24px;
 	bottom: 0;
 	width: 700px;
-	height: 60vh;
+	height: 70vh;
 	min-height: 400px;
 	box-shadow: 0 2px 5px 0 rgba(125, 125, 125, 0.5);
 	pointer-events: auto;

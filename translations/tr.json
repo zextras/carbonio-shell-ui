@@ -96,7 +96,14 @@
                 "out_of_office": "Ofis Dışında"
             }
         },
-        "timezone_and_language": "Saat Dilimi ve Dil"
+        "timezone_and_language": "Saat Dilimi ve Dil",
+        "search_settings": {
+            "labels": {
+                "include_search_in_shared_folder": "Aramalara Paylaşılan Klasörü ekle",
+                "include_search_in_spam_folder": "Aramalara Spam Klasörü ekle",
+                "include_search_in_trash_folder": "Aramalara Çöp Kutusu Klasörü ekle"
+            }
+        }
     },
     "snackbar": {
         "error": "Bir hata oluştu, lütfen tekrar deneyin"
@@ -159,7 +166,9 @@
         "russian": "Russian",
         "spanish": "Spanish",
         "thai": "Thai",
-        "turkish": "Türkçe"
+        "turkish": "Türkçe",
+        "french": "Fransızca",
+        "label_french": "Fransızca - {{value}}"
     },
     "timezone": {
         "bangkok_hanoi_jakarta": "{{value}} Bangkok, Hanoi, Jakarta",

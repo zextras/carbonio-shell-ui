@@ -22,8 +22,8 @@
             "do_not_send_auto_replies": "อย่าส่งการตอบกลับอัตโนมัติ",
             "external_senders": {
                 "do_not_send_to_external": "อย่าส่งข้อความตอบกลับอัตโนมัติไปยังผู้ส่งภายนอก",
-                "send_custom_in_organisation": "ส่งข้อความที่กำหนดเองไปยังผู้ที่ไม่ได้อยู่ในองค์กรของฉัน",
-                "send_custom_not_in_organisation": "ส่งข้อความที่กำหนดเองไปยังผู้ที่ไม่ได้อยู่ในองค์กรและสมุดที่อยู่ของฉัน",
+                "send_custom_in_organisation": "ส่งข้อความที่กำหนดเองถึงผู้ที่ไม่ได้อยู่ในองค์กรของฉัน",
+                "send_custom_not_in_organisation": "ส่งข้อความที่กำหนดเองถึงผู้ที่ไม่ได้อยู่ในองค์กรและสมุดที่อยู่ของฉัน",
                 "send_standard_auto_reply": "ส่งข้อความตอบกลับอัตโนมัติแบบมาตรฐาน"
             },
             "headings": {
@@ -46,10 +46,12 @@
             "general": "การตั้งค่าทั่วไป",
             "theme_auto": "อัตโนมัติ",
             "theme_mode": "โหมดธีม",
-            "theme_options": "ตัวเลือกธีม"
+            "theme_options": "ตัวเลือกธีม",
+            "dark_mode": "โหมดมืด"
         },
         "general_tab": "ทั่วไป",
-        "app_description": "โมดูลการตั้งค่า"
+        "app_description": "โมดูลการตั้งค่า",
+        "timezone_and_language": "เขตเวลาและภาษา"
     },
     "changelog": {
         "cancel": "ยกเลิก",
@@ -72,7 +74,7 @@
     "search": {
         "app": "ค้นหา",
         "module": "โมดูล",
-        "active_input_label": "แยกคำหลักด้วยเครื่องหมายจุลภาคหรือ TAB",
+        "active_input_label": "แยกคำหลักด้วยเครื่องหมายจุลภาคหรือกด TAB",
         "app_description": "ค้นหาโมดูล",
         "clear": "ล้างข้อมูลการค้นหา",
         "edit_to_start": "แก้ไขการค้นหาของคุณเพื่อเริ่มต้นใหม่",
@@ -80,7 +82,9 @@
         "results_for": "ผลลัพธ์สำหรับ:",
         "start": "เริ่มค้นหา",
         "already_clear": "เคลียร์การค้นหาอินพุตแล้ว",
-        "type_to_start_search": "พิมพ์คำหลักเพื่อเริ่มการค้นหา"
+        "type_to_start_search": "พิมพ์คำหลักเพื่อเริ่มการค้นหา",
+        "type_or_choose_suggestion": "พิมพ์หรือเลือกคำหลักเพื่อเริ่มการค้นหา",
+        "unable_to_parse_query": "ไม่สามารถค้นหาให้เสร็จสิ้นได้ โปรดล้างข้อมูลแล้วลองใหม่อีกครั้ง"
     },
     "copyright": "ลิขสิทธิ์",
     "logout_modal": {
@@ -90,7 +94,8 @@
     "message": {
         "snackbar": {
             "settings_saved": "บันทึกการแก้ไขอย่างถูกต้อง"
-        }
+        },
+        "reload": "\tคุณต้องการโหลดแอปพลิเคชันใหม่ในตอนนี้เพื่อแสดงภาษาใหม่หรือไม่?\n(ไม่เช่นนั้น ภาษาใหม่จะปรากฏขึ้นในครั้งต่อไปที่คุณลงชื่อเข้าใช้)"
     },
     "module": {
         "app": {
@@ -99,8 +104,10 @@
     },
     "new_tab": "แท็บใหม่",
     "user_quota": {
-        "limited": "ใช้พื้นที่ไป {{quota}}%",
-        "unlimited": "มีพื้นที่แบบไม่จำกัด"
+        "limited": "คุณได้ใช้ {{quota}}% ของพื้นที่ว่างที่มีอยู่",
+        "unlimited": "คุณมีพื้นที่ว่างไม่จำกัด",
+        "space_full": "ดูเหมือนว่าพื้นที่ว่างทั้งหมดจะเต็มแล้ว",
+        "title": "โควต้าของผู้ใช้"
     },
     "snackbar": {
         "error": "เกิดข้อผิดพลาดบางอย่าง โปรดลองใหม่อีกครั้ง"
@@ -110,6 +117,137 @@
         "edit_to_start_search": "แก้ไขการค้นหาของคุณเพื่อเริ่มต้นใหม่",
         "language": "ภาษา",
         "no": "ไม่",
-        "out_of_office": "ไม่อยู่"
+        "out_of_office": "ไม่อยู่",
+        "clear_search_query": "ล้างการค้นหา",
+        "discard_changes": "ยกเลิกการเปลี่ยนแปลง",
+        "reload": "โหลดซ้ำ",
+        "time_zone": "โซนเวลา"
+    },
+    "board": {
+        "close_tab": "ปิดแท็บ",
+        "close_tabs": "ปิดแท็บทั้งหมดของคุณ",
+        "hide": "ซ่อนกระดาน",
+        "enlarge": "ขยายกระดาน",
+        "reduce": "ลดกระดาน",
+        "show_tabs": "แสดงแท็บอื่นๆ"
+    },
+    "locale": {
+        "English": "ภาษาอังกฤษ",
+        "chinese_china": "ภาษาจีน (จีน)",
+        "dutch": "ภาษาดัตช์",
+        "german": "ภาษาเยอรมัน",
+        "hindi": "ภาษาฮินดี",
+        "italian": "ภาษาอิตาลี",
+        "japanese": "ภาษาญี่ปุ่น",
+        "label_chinese": "ภาษาจีน (จีน) - {{value}}",
+        "label_english": "ภาษาอังกฤษ - {{value}}",
+        "label_german": "ภาษาเยอรมัน - {{value}}",
+        "label_hindi": "ภาษาฮินดี - {{value}}",
+        "label_japanese": "ภาษาญี่ปุ่น - {{value}}",
+        "label_portuguese": "ภาษาโปรตุเกส - {{value}}",
+        "label_romanian": "ภาษาโรมาเนีย - {{value}}",
+        "label_russian": "ภาษารัสเซีย - {{value}}",
+        "label_spanish": "ภาษาสเปน - {{value}}",
+        "label_thai": "ภาษาไทย - {{value}}",
+        "label_turkish": "ภาษาตุรกี - {{value}}",
+        "portuguese_brazil": "ภาษาโปรตุเกส (บราซิล)",
+        "romanian": "ภาษาโรมาเนีย",
+        "russian": "ภาษารัสเซีย",
+        "spanish": "ภาษาสเปน",
+        "thai": "ภาษาไทย",
+        "label_dutch": "ภาษาดัตช์ - {{value}}",
+        "label_italian": "ภาษาอิตาลี - {{value}}",
+        "label_portuguese_brazil": "ภาษาโปรตุเกส - {{value}}",
+        "portuguese": "ภาษาโปรตุเกส",
+        "turkish": "ภาษาตุรกี"
+    },
+    "timezone": {
+        "alaska": "{{value}} อลาสก้า",
+        "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Anadyr, Petropavlovsk-Kamchatsky (RTZ 11)",
+        "argentina": "{{value}} อาร์เจนตินา",
+        "arizona": "{{value}} แอริโซนา",
+        "asuncion": "{{value}} อาซุนซิออง",
+        "atlantic_time_canada": "{{value}} เวลาแอตแลนติก (แคนาดา)",
+        "azores": "{{value}} อะซอเรส",
+        "baja_california": "{{value}} บาจาแคลิฟอร์เนีย",
+        "baku": "{{value}} บากู",
+        "bangkok_hanoi_jakarta": "{{value}} กรุงเทพ, ฮานอย, จาการ์ตา",
+        "beirut": "{{value}} เบรุต",
+        "brasilia": "{{value}} บราซิเลีย",
+        "britain_ireland_portugal": "{{value}} สหราชอาณาจักร, ไอร์แลนด์, โปรตุเกส",
+        "brussels_copenhagen_madrid_paris ": "{{value}} บรัสเซลส์, โคเปนเฮเกน, มาดริด, ปารีส",
+        "cape_verde_is": "{{value}} เคปเวิร์ด",
+        "caracas": "{{value}} การากัส",
+        "casablanca": "{{value}} คาซาบลังกา",
+        "cayenne_fortaleza": "{{value}} กาแยน, ฟอร์ตาเลซา",
+        "chennai_kolkata_mumbai_new_delhi": "{{value}} เจนไน, โกลกาตา, มุมไบ, นิวเดลี",
+        "chita": "{{value}} ชิตา",
+        "christmas_island": "{{value}} เกาะคริสต์มาส",
+        "colombia": "{{value}} โคลอมเบีย",
+        "coordinated_universal_time": "{{value}} เวลาสากลเชิงพิกัด",
+        "cuiaba": "{{value}} กูยาบา",
+        "damascus": "{{value}} ดามัสกัส",
+        "darwin": "{{value}} ดาร์วิน",
+        "dhaka": "{{value}} ธากา",
+        "egypt": "{{value}} อียิปต์",
+        "eucla": "{{value}} ยูคลา",
+        "georgetown_la_paz_manaus_san_juan": "{{value}} จอร์จทาวน์, ลาปาซ, มาเนาส์, ซานฮวน",
+        "gmt_02": "{{value}} GMT-02",
+        "gmt_11": "{{value}} GMT-11",
+        "greenland": "{{value}} กรีนแลนด์",
+        "harare_pretoria": "{{value}} ฮาแรร์, พริทอเรีย",
+        "hawaii": "{{value}} ฮาวาย",
+        "indiana_east": "{{value}} อินดีแอนา (ตะวันออก)",
+        "iraq": "{{value}} อิรัก",
+        "irkutsk_rtz_7": "{{value}} อีร์คุตสค์ (RTZ 7)",
+        "istanbul": "{{value}} อิสตันบูล",
+        "jerusalem": "{{value}} เยรูซาเลม",
+        "jordan": "{{value}} จอร์แดน",
+        "kabul": "{{value}} คาบูล",
+        "kathmandu": "{{value}} กาฐมาณฑุ",
+        "korea": "{{value}} เกาหลี",
+        "krasnoyarsk_rtz_6": "{{value}} ครัสโนยาสค์ (RTZ 6)",
+        "kuwait_riyadh": "{{value}} คูเวต, ริยาด",
+        "la_paz": "{{value}} ลาปาซ",
+        "magadan": "{{value}} มากาดาน",
+        "mid_atlantic": "{{value}} กลางมหาสมุทรแอตแลนติก",
+        "minsk": "{{value}} มินสค์",
+        "monrovia": "{{value}} มอนโรเวีย",
+        "nairobi": "{{value}} ไนโรบี",
+        "namibia": "{{value}} นามิเบีย",
+        "newfoundland": "{{value}} นิวฟันด์แลนด์",
+        "nuku_alofa": "{{value}} นูกูอาโลฟา",
+        "pacific_south_america": "{{value}} แปซิฟิก อเมริกาใต้",
+        "port_louis": "{{value}} พอร์ตหลุยส์",
+        "pyongyang": "{{value}} เปียงยาง",
+        "samoa": "{{value}} ซามัว",
+        "sarajevo_skopje_warsaw_zagreb": "{{value}} ซาราเยโว, สโกเปีย, วอร์ซอ, ซาเกร็บ",
+        "saskatchewan": "{{value}} ซัสแคตเชวัน",
+        "sri_jayawardenepura_kotte": "{{value}} ศรีชยวรรธนปุระโกฏเฏ",
+        "tbilisi": "{{value}} ทบิลิซิ",
+        "tehran": "{{value}} เตหะราน",
+        "us_canada_central": "{{value}} สหรัฐฯ/แคนาดากลาง",
+        "us_canada_eastern": "{{value}} สหรัฐฯ/แคนาดาฝั่งตะวันออก",
+        "us_canada_mountain": "{{value}} ภูเขาในสหรัฐอเมริกา/แคนาดา",
+        "us_canada_pacific": "{{value}} สหรัฐอเมริกา/แคนาดา แปซิฟิก",
+        "vladivostok_magadan": "{{value}} วลาดิวอสต็อก_มากาดาน_rtz_9",
+        "west_central_africa": "{{value}} แอฟริกากลางตะวันตก",
+        "yangon": "{{value}} ย่างกุ้ง",
+        "yerevan": "{{value}} เยเรวาน",
+        "abu_dhabi_muscat": "{{value}} อาบูดาบี, มัสกัต",
+        "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}} อัมสเตอร์ดัม, เบอร์ลิน, เบิร์น, โรม, สตอกโฮล์ม, เวียนนา",
+        "athens_beirut_bucharest_istanbul": "{{value}} เอเธนส์, เบรุต, บูคาเรสต์, อิสตันบูล",
+        "beijing_chongqing_hong_kong_urumqi": "{{value}} ปักกิ่ง, ฉงชิ่ง, ฮ่องกง, อุรุมชี",
+        "belgrade_bratislava_budapest_ljubljana_prague": "{{value}} เบลเกรด, บราติสลาวา, บูดาเปสต์, ลูบลิยานา, ปราก",
+        "central_america": "{{value}} อเมริกากลาง",
+        "chihuahua_la_paz_mazatlan": "{{value}} ชิวาวา, ลาปาซ, มาซาตลัน",
+        "dateline": "{{value}} วันที่",
+        "ekaterinburg_rtz_4": "{{value}} เอคาเทอรินเบิร์ก (RTZ 4)",
+        "guadalajara_mexico_city_monterrey ": "{{value}} กวาดาลาฮารา, เม็กซิโกซิตี้, มอนเตร์เรย์",
+        "helsinki_kyiv_riga_sofia_tallinn_vilnius": "{{value}} เฮลซิงกิ, เคียฟ, ริกา, โซเฟีย, ทาลลินน์, วิลนีอุส",
+        "kaliningrad_rtz_1": "{{value}} คาลินินกราด (RTZ 1)",
+        "manaus": "{{value}} มาเนาส์",
+        "montevideo": "{{value}} มอนเตวิเดโอ",
+        "moscow_st_petersburg_volgograd_rtz_2": "{{value}} มอสโก, เซนต์ปีเตอร์สเบิร์ก, โวลโกกราด (RTZ 2)"
     }
 }

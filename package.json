@@ -1,6 +1,6 @@
 {
 	"name": "@zextras/carbonio-shell-ui",
-	"version": "0.3.0-rc.8",
+	"version": "0.4.0",
 	"description": "The Zextras Carbonio web client",
 	"main": "dist/zapp-shell.bundle.js",
 	"types": "./types/index.d.ts",
@@ -12,7 +12,7 @@
 		"build:clean": "rm -rf lib && rm -rf dist && rm -rf pkg",
 		"test": "echo jest",
 		"postinstall": "is-ci || husky install",
-		"prepublishOnly": "pinst --disable && npm run build:clean && npm run build",
+		"prepublishOnly": "pinst --disable && npm run build:clean && npm run build -- -d",
 		"postpublish": "pinst --enable && rm -rf lib",
 		"type-check": "tsc --noEmit",
 		"type-check:watch": "npm run type-check -- --watch",

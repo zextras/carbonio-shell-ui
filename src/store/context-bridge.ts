@@ -5,17 +5,15 @@
  */
 
 /* eslint-disable @typescript-eslint/ban-types */
-import create from 'zustand';
-import createStore from 'zustand/vanilla';
+import create, { UseBoundStore, StoreApi } from 'zustand';
 import { reduce } from 'lodash';
 import { useEffect } from 'react';
 import { ContextBridgeState } from '../../types';
 
-export const contextBridge = createStore<ContextBridgeState>((set, get) => ({
+export const useContextBridge = create<ContextBridgeState>((set) => ({
 	packageDependentFunctions: {},
-	routeDependentFunctions: {},
 	functions: {},
-	add: ({ packageDependentFunctions, routeDependentFunctions, functions }): void => {
+	add: ({ packageDependentFunctions, functions }): void => {
 		set((s) => ({
 			packageDependentFunctions: reduce(
 				packageDependentFunctions ?? {},
@@ -25,15 +23,6 @@ export const contextBridge = createStore<ContextBridgeState>((set, get) => ({
 					return acc;
 				},
 				s.packageDependentFunctions
-			),
-			routeDependentFunctions: reduce(
-				routeDependentFunctions ?? {},
-				(acc, f, key) => {
-					// eslint-disable-next-line no-param-reassign
-					acc[key] = f;
-					return acc;
-				},
-				s.routeDependentFunctions
 			),
 			functions: reduce(
 				functions ?? {},
@@ -46,12 +35,10 @@ export const contextBridge = createStore<ContextBridgeState>((set, get) => ({
 			)
 		}));
 	}
-}));
+})) as UseBoundStore<ContextBridgeState, StoreApi<ContextBridgeState>>;
 
-export const _useContextBridge = create(contextBridge);
-
-export const useContextBridge = (content: Omit<ContextBridgeState, 'add'>): void => {
-	const addFunctions = _useContextBridge(({ add }) => add);
+export const useBridge = (content: Partial<Omit<ContextBridgeState, 'add'>>): void => {
+	const addFunctions = useContextBridge(({ add }) => add);
 	useEffect(() => {
 		addFunctions(content);
 	}, [content, addFunctions]);

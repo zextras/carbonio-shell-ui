@@ -4,11 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-export type ZimletProp = {
-	name: string;
-	zimlet: string;
-	_content: string;
-};
+import { AccountRights, ZimletProp } from '../account';
+
 export type ZimletPkgDescription = {
 	zimlet: Array<{
 		name: string;
@@ -87,19 +84,37 @@ export type PermissionsMods = {
 	freeBusy: any;
 	inviteRight: any;
 };
+
+export type CreateIdentityProps = {
+	requestId: number;
+	zimbraPrefIdentityName: string | undfined;
+	zimbraPrefFromDisplay: string | undfined;
+	zimbraPrefFromAddress: string | undfined;
+	zimbraPrefFromAddress: string | undfined;
+	zimbraPrefFromAddressType: string | undfined;
+	zimbraPrefReplyToEnabled: string | undfined;
+	zimbraPrefReplyToDisplay: string | undfined;
+	zimbraPrefReplyToAddress: string | undfined;
+	zimbraPrefDefaultSignatureId: string | undfined;
+	zimbraPrefForwardReplySignatureId: string | undfined;
+	zimbraPrefWhenSentToEnabled: string | undfined;
+	zimbraPrefWhenInFoldersEnabled: string | undfined;
+};
+
+export type IdentityMods = {
+	modifyList?: Record<string, { id: string; prefs: Record<string, string | boolean> }>;
+	deleteList?: string[];
+	createList?: { prefs: CreateIdentityProps }[];
+};
+
 export type PrefsMods = Record<string, unknown>;
 
 export type Mods = {
 	props?: PropsMods;
 	prefs?: PrefsMods;
 	permissions?: PermissionsMods;
+	identity?: IdentityMods;
 };
-
-export type SoapFetch = <Request, Response>(
-	api: string,
-	body: Request,
-	account?: string
-) => Promise<Response>;
 
 export type Locale = {
 	id: string;

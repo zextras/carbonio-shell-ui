@@ -6,28 +6,30 @@
 
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
-import { filter, forEach, sortBy } from 'lodash';
+import { filter, map } from 'lodash';
 
 import StoreFactory from '../../redux/store-factory';
 
 import { loadApp, unloadApps } from './load-app';
-import { AppData } from '../../../types';
+import { CarbonioModule } from '../../../types';
 import { injectSharedLibraries } from './shared-libraries';
+import { getUserSetting } from '../../store/account';
+import { useReporter } from '../../reporting';
+import { SHELL_APP_ID } from '../../constants';
 
-export function loadApps(storeFactory: StoreFactory, apps: Array<AppData>): void {
+export function loadApps(storeFactory: StoreFactory, apps: Array<CarbonioModule>): void {
 	injectSharedLibraries();
-	const appsToLoad =
-		typeof cliSettings === 'undefined' || cliSettings.enableErrorReporter
-			? apps
-			: filter(apps, (app) => app.core.name !== 'carbonio-error-reporter-ui');
+	const appsToLoad = filter(apps, (app) => {
+		if (app.name === SHELL_APP_ID) return false;
+		if (app.attrKey && getUserSetting('attrs', app.attrKey) !== 'TRUE') return false;
+		return true;
+	});
 	console.log(
 		'%cLOADING APPS',
 		'color: white; background: #2b73d2;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
 	);
-	forEach(
-		sortBy(appsToLoad, (app) => app.core.priority),
-		(app) => loadApp(app.core, storeFactory)
-	);
+	useReporter.getState().setClients(appsToLoad);
+	Promise.allSettled(map(appsToLoad, (app) => loadApp(app, storeFactory)));
 }
 
 export function unloadAllApps(): Promise<void> {

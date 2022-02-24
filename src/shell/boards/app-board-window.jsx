@@ -22,7 +22,7 @@ import { useTranslation } from 'react-i18next';
 import AppBoardTab from './app-board-tab';
 import AppBoard from './app-board';
 import { BoardSetterContext, BoardValueContext } from './board-context';
-import { useApps } from '../../store/app/hooks';
+import { useApps } from '../../store/app';
 
 function TabsList({ tabs, currentBoard, setCurrentBoard, largeView, t }) {
 	const apps = useApps();
@@ -58,26 +58,26 @@ function TabsList({ tabs, currentBoard, setCurrentBoard, largeView, t }) {
 					<Container width="fit" padding={{ horizontal: 'extrasmall', vertical: 'extrasmall' }}>
 						<Container width="1px" heigth="fill" background="gray3" />
 					</Container>
-					<Dropdown
-						width="fit"
-						style={{ flexGrow: '1' }}
-						items={map(slice(tabs, -hiddenTabsCount), (tab) => ({
-							id: tab.key,
-							label: tab.title,
-							icon: tab.icon,
-							click: () => setCurrentBoard(tab.key),
-							selected: tab.key === currentBoard
-						}))}
-					>
-						<Tooltip label={t('board.show_tabs', 'Show other tabs')} placement="top">
+					<Tooltip label={t('board.show_tabs', 'Show other tabs')} placement="top">
+						<Dropdown
+							width="fit"
+							style={{ flexGrow: '1' }}
+							items={map(slice(tabs, -hiddenTabsCount), (tab) => ({
+								id: tab.key,
+								label: tab.title,
+								icon: tab.icon,
+								click: () => setCurrentBoard(tab.key),
+								selected: tab.key === currentBoard
+							}))}
+						>
 							<Button
 								type="ghost"
 								color="secondary"
 								label={`+${hiddenTabsCount}`}
 								padding={{ all: 'extrasmall' }}
 							/>
-						</Tooltip>
-					</Dropdown>
+						</Dropdown>
+					</Tooltip>
 				</>
 			)}
 		</Row>
@@ -111,7 +111,7 @@ const Board = styled(Container)`
 	left: 24px;
 	bottom: 0;
 	width: 700px;
-	height: 60vh;
+	height: 70vh;
 	min-height: 400px;
 	box-shadow: 0 2px 5px 0 rgba(125, 125, 125, 0.5);
 	pointer-events: auto;
@@ -124,7 +124,7 @@ const Board = styled(Container)`
 		`}
 `;
 const BoardHeader = styled(Row)``;
-const BoardDeatilContainer = styled(Row)`
+const BoardDetailContainer = styled(Row)`
 	min-height: 0;
 `;
 const BackButton = styled(IconButton)``;
@@ -140,17 +140,16 @@ export default function AppBoardWindow() {
 		() =>
 			reduce(
 				shellBoards,
-				(r, v, k) => {
-					const [_t, p] = r;
-					_t.push({ key: k, ...v });
-					p.push(<AppBoard key={k} idx={k} />);
-					return r;
+				(acc, board, boardId) => {
+					const [_tabs, _boards] = acc;
+					_tabs.push({ key: boardId, ...board });
+					_boards.push(<AppBoard key={boardId} idx={boardId} />);
+					return acc;
 				},
 				[[], []]
 			),
 		[shellBoards]
 	);
-
 	if (!tabs.length) return null;
 	return (
 		<BoardContainer largeView={largeView} minimized={minimized}>
@@ -203,7 +202,7 @@ export default function AppBoardWindow() {
 					</Actions>
 				</BoardHeader>
 				<Divider style={{ height: '2px' }} />
-				<BoardDeatilContainer takeAvailableSpace>{boards}</BoardDeatilContainer>
+				<BoardDetailContainer takeAvailableSpace>{boards}</BoardDetailContainer>
 			</Board>
 		</BoardContainer>
 	);

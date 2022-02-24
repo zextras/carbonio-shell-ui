@@ -6,13 +6,19 @@
 
 import produce from 'immer';
 import create from 'zustand';
-import { forEach } from 'lodash';
-import { Component } from 'react';
-import { ActionFactory, AnyFunction, IntegrationsState } from '../../../types';
+import { forEach, omit, reduce } from 'lodash';
+import { ComponentType } from 'react';
+import { ActionFactory, AnyFunction, IntegrationsState, SHELL_APP_ID } from '../../../types';
+import Composer from './composer';
 
 export const useIntegrationsStore = create<IntegrationsState>((set) => ({
 	actions: {},
-	components: {},
+	components: {
+		composer: {
+			item: Composer,
+			app: SHELL_APP_ID
+		}
+	},
 	hooks: {},
 	functions: {},
 	registerActions: <T>(
@@ -28,7 +34,7 @@ export const useIntegrationsStore = create<IntegrationsState>((set) => ({
 		),
 	registerComponents:
 		(app: string) =>
-		(...items: Array<{ id: string; component: Component }>): void =>
+		(...items: Array<{ id: string; component: ComponentType }>): void =>
 			set(
 				produce((state) => {
 					forEach(items, ({ id, component }) => {
@@ -51,5 +57,29 @@ export const useIntegrationsStore = create<IntegrationsState>((set) => ({
 					state.functions[id] = fn;
 				});
 			})
-		)
+		),
+	removeActions: (...ids: Array<string>): void =>
+		set((s) => ({
+			...s,
+			actions: reduce(
+				s.actions,
+				(acc, actions, type) => ({ ...acc, [type]: omit(actions, ids) }),
+				{}
+			)
+		})),
+	removeComponents: (...ids: Array<string>): void =>
+		set((s) => ({
+			...s,
+			actions: omit(s.components, ids)
+		})),
+	removeHooks: (...ids: Array<string>): void =>
+		set((s) => ({
+			...s,
+			actions: omit(s.hooks, ids)
+		})),
+	removeFunctions: (...ids: Array<string>): void =>
+		set((s) => ({
+			...s,
+			actions: omit(s.functions, ids)
+		}))
 }));

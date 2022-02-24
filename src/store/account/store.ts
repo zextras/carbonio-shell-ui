@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import create from 'zustand';
+import create, { StoreApi, UseBoundStore } from 'zustand';
 import { AccountContext, AccountState, SoapFetch } from '../../../types';
 import { getInfo } from '../../network/get-info';
 import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
@@ -27,4 +27,4 @@ export const useAccountStore = create<AccountState>((set, get) => ({
 	usedQuota: 0,
 	lastNotificationTime: Date.now(),
 	pollingInterval: 30000
-}));
+})) as UseBoundStore<AccountState, StoreApi<AccountState>>;

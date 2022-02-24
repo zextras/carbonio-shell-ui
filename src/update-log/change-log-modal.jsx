@@ -11,7 +11,7 @@ import { Modal, Text, Container, Divider } from '@zextras/carbonio-design-system
 import styled from 'styled-components';
 import moment from 'moment';
 import MarkdownContainer from './markdown-container';
-import { useApps } from '../store/app/hooks';
+import { useApps } from '../store/app';
 
 const Title = styled(Text)`
 	width: 100%;

@@ -16,7 +16,8 @@ module.exports = {
 	globals: {
 		WATCH_SERVER: 'readonly',
 		BASE_PATH: 'readonly',
-		FLAVOR: 'readonly',
+		__SHELL_ENV__: 'readonly',
+		__CARBONIO_DEV__: 'readonly',
 		PACKAGE_NAME: 'readonly',
 		PACKAGE_VERSION: 'readonly',
 		cliSettings: 'readonly'

@@ -85,7 +85,7 @@ export const getAction = <T,>(
 	return [action, !!action];
 };
 
-export const getFactory = <T,>(
+export const getActionFactory = <T,>(
 	type: string,
 	id: string
 ): [ActionFactory<T> | undefined, boolean] => {

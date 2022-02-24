@@ -3,15 +3,17 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+// The 'useXXX' functions actually return hooks
+/* eslint-disable react-hooks/rules-of-hooks */
 
 import { reduce } from 'lodash';
-import { getApp, getAppContext, useApp, useAppContext } from '../../store/app/hooks';
-import { contextBridge } from '../../store/context-bridge';
+import { getApp, getAppContext, useApp, useAppContext } from '../../store/app';
+import { useContextBridge } from '../../store/context-bridge';
 import {
 	getAction,
 	getActions,
 	getActionsFactory,
-	getFactory,
+	getActionFactory,
 	getIntegratedComponent,
 	getIntegratedFunction,
 	getIntegratedHook
@@ -30,18 +32,10 @@ import {
 	useUserRight,
 	useUserRights,
 	getUserRight,
-	getUserRights
-} from '../../store/account/hooks';
-import {
-	getUseAddBoardCallback,
-	useUpdateCurrentBoard,
-	useRemoveCurrentBoard,
-	useBoardConfig,
-	getUsePushHistoryCallback,
-	useGoBackHistoryCallback,
-	getUseReplaceHistoryCallback,
-	useIsMobile
-} from '../../shell/hooks';
+	getUserRights,
+	useAccountStore
+} from '../../store/account';
+import { useIsMobile } from '../../shell/hooks';
 import {
 	useAction,
 	useActions,
@@ -51,18 +45,37 @@ import {
 	useIntegratedFunction,
 	useIntegratedHook
 } from '../../store/integrations/hooks';
-import { ZextrasModule } from '../../../types';
+import { CarbonioModule } from '../../../types';
 import { getEditSettingsForApp } from '../../network/edit-settings';
+import {
+	usePushHistoryCallback,
+	useGoBackHistoryCallback,
+	useReplaceHistoryCallback,
+	getCurrentRoute,
+	useCurrentRoute,
+	replaceHistory,
+	goBackHistory,
+	pushHistory
+} from '../../history/hooks';
+import {
+	getUseAddBoardCallback,
+	useBoardConfig,
+	useRemoveCurrentBoard,
+	useUpdateCurrentBoard
+} from '../../shell/boards/board-hooks';
 
-export const getAppFunctions = (pkg: ZextrasModule): unknown => ({
-	// The returned function is a hook
-	// eslint-disable-next-line react-hooks/rules-of-hooks
+// eslint-disable-next-line @typescript-eslint/ban-types
+export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({
+	soapFetch: useAccountStore.getState().soapFetch(pkg.name),
+	xmlSoapFetch: useAccountStore.getState().xmlSoapFetch(pkg.name),
+
+	// APP STORE FUNCTIONS
 	useAppContext: useAppContext(pkg.name),
 	getAppContext: getAppContext(pkg.name),
-	// The returned function is a hook
-	// eslint-disable-next-line react-hooks/rules-of-hooks
 	useApp: useApp(pkg.name),
 	getApp: getApp(pkg.name),
+
+	// INTEGRATIONS
 	useIntegratedHook,
 	getIntegratedHook,
 	useIntegratedFunction,
@@ -76,8 +89,8 @@ export const getAppFunctions = (pkg: ZextrasModule): unknown => ({
 	useActionsFactory,
 	getActionsFactory,
 	useActionFactory,
-	getFactory,
-	useIsMobile,
+	getActionFactory,
+	// ACCOUNTS
 	useUserAccount,
 	getUserAccount,
 	useUserAccounts,
@@ -92,21 +105,27 @@ export const getAppFunctions = (pkg: ZextrasModule): unknown => ({
 	getTags,
 	useNotify,
 	useRefresh,
+	// BOARDS
 	useAddBoardCallback: getUseAddBoardCallback(pkg.name),
 	useUpdateCurrentBoard,
 	useRemoveCurrentBoard,
 	useBoardConfig,
-	usePushHistoryCallback: getUsePushHistoryCallback(pkg.route),
+	// HISTORY
+	usePushHistoryCallback,
 	useGoBackHistoryCallback,
-	useReplaceHistoryCallback: getUseReplaceHistoryCallback(pkg.route),
+	useReplaceHistoryCallback,
+	useCurrentRoute,
+	getCurrentRoute,
+	pushHistory,
+	goBackHistory,
+	replaceHistory,
+	// STUFF
+	useIsMobile,
 	getBridgedFunctions: (): unknown => {
-		const { packageDependentFunctions, routeDependentFunctions, functions } =
-			contextBridge.getState();
+		const { packageDependentFunctions, functions } = useContextBridge.getState();
 		return {
 			...functions,
-			...reduce(packageDependentFunctions, (acc, f, name) => ({ ...acc, [name]: f(pkg.name) }), {}),
-			...reduce(routeDependentFunctions, (acc, f, name) => ({ ...acc, [name]: f(pkg.route) }), {})
+			...reduce(packageDependentFunctions, (acc, f, name) => ({ ...acc, [name]: f(pkg.name) }), {})
 		};
-	},
-	editSettings: getEditSettingsForApp(pkg.name)
+	}
 });

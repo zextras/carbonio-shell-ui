@@ -27,16 +27,11 @@ import * as ZappUI from '@zextras/carbonio-design-system';
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
 
-import { IShellWindow, SharedLibrariesAppsMap } from '../../../types';
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { RichTextEditor } from './rte-wrap';
+import { IShellWindow } from '../../../types';
 
 export function injectSharedLibraries(): void {
 	// eslint-disable-next-line max-len
-	const wnd: IShellWindow<SharedLibrariesAppsMap, ComponentClass> =
-		window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>;
+	const wnd: IShellWindow = window as unknown as IShellWindow;
 	if (wnd.__ZAPP_SHARED_LIBRARIES__) {
 		return;
 	}
@@ -60,13 +55,7 @@ export function injectSharedLibraries(): void {
 			}
 		},
 		'@zextras/carbonio-shell-ui': {},
-		'@zextras/carbonio-design-system': { ...ZappUI, RichTextEditor }
+		'@zextras/carbonio-design-system': ZappUI
 	};
 	wnd.__ZAPP_HMR_EXPORT__ = {};
-	switch (FLAVOR) {
-		case 'NPM':
-			// wnd.__ZAPP_HMR_HANDLERS__ = {};
-			break;
-		default:
-	}
 }

@@ -25,7 +25,7 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useLocalStorage } from '../shell/hooks';
 import { SEARCH_APP_ID } from '../constants';
-import { useApps } from '../store/app/hooks';
+import { useApps, useAppStore } from '../store/app';
 import { useSearchStore } from './search-store';
 import { QueryChip, SearchBarProps, SelectLabelFactoryProps } from '../../types';
 import { handleKeyboardShortcuts } from '../keyboard-shortcuts/keyboard-shortcuts';
@@ -49,7 +49,7 @@ const StyledChipInput = styled(ChipInput)`
 `;
 
 const StyledContainer = styled(Container)`
-	height: 44px;
+	height: 42px;
 	overflow-y: hidden;
 	&:first-child {
 		transform: translateY(-2px);
@@ -68,7 +68,7 @@ const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus
 		<Container
 			orientation="horizontal"
 			background={disabled ? 'gray5' : 'gray6'}
-			height={44}
+			height={42}
 			width="fit"
 			minWidth="150px"
 			crossAlignment="center"
@@ -94,15 +94,21 @@ const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus
 	);
 };
 
-export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secondaryActions }) => {
+export const SearchBar: FC<SearchBarProps> = ({
+	activeRoute
+	// primaryAction,
+	// secondaryActions
+}) => {
+	const searchViews = useAppStore((s) => s.views.search);
+
 	const [searchIsEnabled, setSearchIsEnabled] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
 	const [t] = useTranslation();
 	const [storedValue, setStoredValue] = useLocalStorage('search_suggestions', []);
-	const apps = useApps();
 	const [inputTyped, setInputTyped] = useState('');
 	const history = useHistory();
-	const { updateQuery, updateModule, query, searchDisabled, setSearchDisabled } = useSearchStore();
+	const { updateQuery, module, updateModule, query, searchDisabled, setSearchDisabled } =
+		useSearchStore();
 	const [moduleSelection, setModuleSelection] = useState<{
 		value: string;
 		label: string;
@@ -114,35 +120,40 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 		Array<{ label: string; value: string; customComponent: JSX.Element }>
 	>(
 		() =>
-			filter(apps, (app) => !!app.views?.search).map((app) => ({
+			map(searchViews, (view) => ({
 				customComponent: (
 					<Container mainAlignment="flex-start" orientation="horizontal">
 						<Padding horizontal="extrasmall">
-							<Icon icon={app.icon} />
+							<Icon icon={view.icon} />
 						</Padding>
-						<Text>{app.core.display}</Text>
+						<Text>{view.label}</Text>
 					</Container>
 				),
-				label: app.core.display,
-				value: app.core.route
+				label: view.label,
+				value: view.route
 			})),
-		[apps]
+		[searchViews]
 	);
 
 	const [options, setOptions] = useState<Array<{ label: string; hasAvatar: false }>>([]);
 
+	// 1 - update moduleSelection when route changes
 	useEffect(() => {
-		setModuleSelection((current) =>
-			currentApp && currentApp !== SEARCH_APP_ID
-				? find(moduleSelectorItems, (mod) => mod.value === currentApp) ?? moduleSelectorItems[0]
-				: current ?? moduleSelectorItems[0]
-		);
-	}, [currentApp, moduleSelectorItems]);
-
+		if (activeRoute) {
+			setModuleSelection((selection) =>
+				activeRoute.route !== selection?.value
+					? find(moduleSelectorItems, (i) => i.value === activeRoute.route) ??
+					  moduleSelectorItems?.[0]
+					: moduleSelectorItems?.[0]
+			);
+		} else {
+			setModuleSelection(moduleSelectorItems?.[0]);
+		}
+	}, [activeRoute, moduleSelectorItems]);
+	// 2 - update module when moduleSelection changes
 	useEffect(() => {
-		updateModule(moduleSelection?.value ?? moduleSelectorItems[0]?.value);
-	}, [moduleSelection?.value, moduleSelectorItems, updateModule]);
-
+		if (moduleSelection && module !== moduleSelection.value) updateModule(moduleSelection.value);
+	}, [module, moduleSelection, updateModule]);
 	const [inputHasFocus, setInputHasFocus] = useState(false);
 
 	const [inputState, setInputState] = useState(query);
@@ -209,12 +220,12 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 				)
 			);
 		});
-		if (currentApp !== SEARCH_APP_ID) {
+		if (activeRoute?.app !== SEARCH_APP_ID) {
 			history.push(`/${SEARCH_APP_ID}/${moduleSelection?.value}`);
 		}
 		setSearchIsEnabled(false);
 		// setChangedBySearchBar(true);
-	}, [currentApp, history, inputState, moduleSelection?.value, updateQuery, inputTyped]);
+	}, [updateQuery, activeRoute?.app, inputTyped, inputState, history, moduleSelection?.value]);
 
 	const appSuggestions = useMemo<Array<QueryChip & { hasAvatar: false }>>(
 		() =>
@@ -295,6 +306,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 		},
 		[query, updateOptions, isTyping]
 	);
+
 	useEffect(() => {
 		if (moduleSelection?.value) {
 			const suggestions = filter(
@@ -311,11 +323,11 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 			setModuleSelection(find(moduleSelectorItems, (item) => item.value === newVal));
 			// setInputState([]);
 			// updateQuery([]);
-			if (currentApp === SEARCH_APP_ID) {
+			if (activeRoute?.app === SEARCH_APP_ID) {
 				history.push(`/${SEARCH_APP_ID}/${newVal}`);
 			}
 		},
-		[currentApp, history, moduleSelectorItems]
+		[activeRoute?.app, history, moduleSelectorItems]
 	);
 	const [triggerSearch, setTriggerSearch] = useState(false);
 	const containerRef = useRef<HTMLDivElement>();
@@ -339,7 +351,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 		const ref = inputRef.current;
 		const searchCb = (ev: any): void => {
 			if (ev.key === 'Enter') {
-				setTriggerSearch(true);
+				setTimeout(() => setTriggerSearch(true), 0);
 			}
 		};
 		if (ref) {
@@ -351,6 +363,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 			}
 		};
 	}, [onSearch]);
+
 	useEffect(() => {
 		if (triggerSearch) {
 			onSearch();
@@ -477,6 +490,7 @@ export const SearchBar: FC<SearchBarProps> = ({ currentApp, primaryAction, secon
 									}}
 									onChange={onQueryChange}
 									onInputType={onInputType}
+									onInputTypeDebounce={0}
 									onBlur={removeFocus}
 									onFocus={addFocus}
 									disableOptions={disableOptions}

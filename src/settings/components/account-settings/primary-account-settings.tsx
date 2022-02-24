@@ -24,12 +24,18 @@ const PrimaryAccountSettings = ({
 	items,
 	updateIdentities
 }: PrimaryAccountSettingsProps): ReactElement => {
-	const emailLabel = useMemo(() => t('label.email_address', 'E-mail address'), [t]);
 	const emailValue = useMemo(() => items?.fromAddress, [items]);
-	const accountLabel = useMemo(() => t('label.account_name', 'Account Name'), [t]);
+	const emailLabel = useMemo(
+		() => (emailValue ? '' : t('label.email_address', 'E-mail address')),
+		[emailValue, t]
+	);
 	const [accountNameValue, setAccountNameValue] = useState(items?.identityName);
 
 	useEffect(() => setAccountNameValue(items.identityName), [items.identityName]);
+	const accountLabel = useMemo(
+		() => (accountNameValue ? '' : t('label.account_name', 'Account Name')),
+		[accountNameValue, t]
+	);
 
 	const onChangeDisabled = useCallback(() => null, []);
 	const onChange = useCallback(

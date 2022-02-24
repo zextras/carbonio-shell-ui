@@ -17,19 +17,19 @@ const AccountWrapper = (): React.ReactElement | null => {
 		const temp = map(accountSettings?.identities.identity, (item, index) => ({
 			id: item.name === 'DEFAULT' ? '0' : (index + 1).toString(),
 			type: item.name === 'DEFAULT' ? t('label.primary', 'Primary') : t('label.persona', 'Persona'),
-			identityId: item._attrs.zimbraPrefIdentityId,
-			fromAddress: item._attrs.zimbraPrefFromAddress,
-			identityName: item._attrs.zimbraPrefIdentityName,
-			fromDisplay: item._attrs.zimbraPrefFromDisplay,
-			recoveryAccount: item._attrs.zimbraRecoveryAccount,
-			replyToDisplay: item._attrs.zimbraPrefReplyToDisplay,
-			replyToAddress: item._attrs.zimbraPrefReplyToAddress,
-			replyToEnabled: item._attrs.zimbraPrefReplyToEnabled,
-			saveToSent: item._attrs.zimbraPrefSaveToSent,
-			sentMailFolder: item._attrs.zimbraPrefSentMailFolder,
-			whenInFoldersEnabled: item._attrs.zimbraPrefWhenInFoldersEnabled,
-			whenSentToEnabled: item._attrs.zimbraPrefWhenSentToEnabled,
-			whenSentToAddresses: item._attrs.zimbraPrefWhenSentToAddresses
+			identityId: item._attrs.zimbraPrefIdentityId || '',
+			fromAddress: item._attrs.zimbraPrefFromAddress || '',
+			identityName: item._attrs.zimbraPrefIdentityName || '',
+			fromDisplay: item._attrs.zimbraPrefFromDisplay || '',
+			recoveryAccount: item._attrs.zimbraRecoveryAccount || '',
+			replyToDisplay: item._attrs.zimbraPrefReplyToDisplay || '',
+			replyToAddress: item._attrs.zimbraPrefReplyToAddress || '',
+			replyToEnabled: item._attrs.zimbraPrefReplyToEnabled || '',
+			saveToSent: item._attrs.zimbraPrefSaveToSent || '',
+			sentMailFolder: item._attrs.zimbraPrefSentMailFolder || '',
+			whenInFoldersEnabled: item._attrs.zimbraPrefWhenInFoldersEnabled || '',
+			whenSentToEnabled: item._attrs.zimbraPrefWhenSentToEnabled || '',
+			whenSentToAddresses: item._attrs.zimbraPrefWhenSentToAddresses || ''
 		}));
 		const result = [temp[temp.length - 1], ...temp];
 		result.pop();

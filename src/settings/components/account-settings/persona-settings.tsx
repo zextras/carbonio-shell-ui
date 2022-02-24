@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useState, useCallback, ReactElement, useEffect } from 'react';
+import React, { useState, useCallback, ReactElement, useEffect, useMemo } from 'react';
 import { Container, Text, Padding, Input, Row } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
 import { IdentityProps } from '../../../../types';
@@ -20,14 +20,18 @@ interface PersonaSettingsProps {
 }
 
 const PersonaSettings = ({ t, items, updateIdentities }: PersonaSettingsProps): ReactElement => {
-	const [personaLabel, setPersonaLabel] = useState(items.identityName);
+	const [personaValue, setPersonaValue] = useState(items.identityName);
+	const personaLabel = useMemo(
+		() => (personaValue ? '' : t('label.persona_name', 'Persona Name')),
+		[personaValue, t]
+	);
 	useEffect(() => {
-		setPersonaLabel(items.identityName);
+		setPersonaValue(items.identityName);
 	}, [items.identityName]);
 
 	const onChange = useCallback(
 		(ev) => {
-			setPersonaLabel(ev.target.value);
+			setPersonaValue(ev.target.value);
 			const modifyProp = {
 				id: items.identityId,
 				key: 'zimbraPrefIdentityName',
@@ -36,7 +40,7 @@ const PersonaSettings = ({ t, items, updateIdentities }: PersonaSettingsProps): 
 
 			updateIdentities(modifyProp);
 		},
-		[updateIdentities, items.identityId, setPersonaLabel]
+		[updateIdentities, items.identityId, setPersonaValue]
 	);
 
 	return (
@@ -87,12 +91,7 @@ const PersonaSettings = ({ t, items, updateIdentities }: PersonaSettingsProps): 
 				mainAlignment="flex-start"
 			>
 				<Row takeAvailableSpace>
-					<Input
-						label={t('label.persona_name', 'Persona Name')}
-						value={personaLabel}
-						background="gray5"
-						onChange={onChange}
-					/>
+					<Input label={personaLabel} value={personaValue} background="gray5" onChange={onChange} />
 				</Row>
 			</Row>
 

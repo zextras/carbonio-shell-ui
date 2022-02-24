@@ -43,7 +43,7 @@ module.exports = (_, pkg, options, mode) => {
 		devtool: 'source-map',
 		output: {
 			path: path.resolve(process.cwd(), 'dist'),
-			filename: '[name].[chunkhash:8].js',
+			filename: mode === 'development' ? 'zapp-shell.bundle.js' : '[name].[chunkhash:8].js',
 			chunkFilename: '[name].[chunkhash:8].chunk.js',
 			publicPath: baseStaticPath
 		},

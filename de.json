@@ -28,7 +28,9 @@
         "results_for": "Ergebnisse für:",
         "start": "Suche starten",
         "already_clear": "Sucheingabe ist bereits leer",
-        "type_to_start_search": "Geben Sie Schlüsselwörter ein, um die Suche zu starten"
+        "type_to_start_search": "Geben Sie Schlüsselwörter ein, um die Suche zu starten",
+        "type_or_choose_suggestion": "Geben Sie einige Schlüsselwörter ein oder wählen Sie sie aus, um eine Suche zu starten",
+        "unable_to_parse_query": "Die Suche kann nicht abgeschlossen werden, löschen Sie sie und versuchen Sie es erneut"
     },
     "settings": {
         "app": "Einstellungen",
@@ -44,7 +46,8 @@
             "general": "Allgemeine Einstellungen",
             "theme_auto": "Auto",
             "theme_mode": "Themenmodus",
-            "theme_options": "Themenoptionen"
+            "theme_options": "Themenoptionen",
+            "dark_mode": "Dunkler Modus"
         },
         "general_tab": "Allgemein",
         "out_of_office": {
@@ -66,11 +69,11 @@
                 "busy": "Beschäftigt",
                 "out_of_office": "Nicht im Büro"
             },
-            "do_not_send_auto_replies": "Keine automatischen Antworten versenden",
+            "do_not_send_auto_replies": "Keine automatischen Antworten senden",
             "external_senders": {
-                "do_not_send_to_external": "Keine automatische Antwort an externe Absender senden",
-                "send_custom_in_organisation": "Benutzerdefinierte Nachricht an diejenigen schicken, die nicht meiner Organisation angehören",
-                "send_custom_not_in_organisation": "Benutzerdefinierte Nachricht an diejenigen schicken, die nicht meiner Organisation angehören und nicht in meinem Adressbuch sind",
+                "do_not_send_to_external": "Keine automatische Antwortnachricht an externen Absender senden",
+                "send_custom_in_organisation": "Benutzerdefinierte Nachricht an Personen senden, die nicht zu meiner Organisation gehören",
+                "send_custom_not_in_organisation": "Senden einer benutzerdefinierten Nachricht an Personen, die nicht in meiner Organisation und meinem Adressbuch sind",
                 "send_standard_auto_reply": "automatische Standardnachricht senden"
             },
             "headings": {
@@ -80,7 +83,8 @@
             },
             "send_auto_replies": "Automatische Antworten senden"
         },
-        "app_description": "Modul Einstellungen"
+        "app_description": "Modul Einstellungen",
+        "timezone_and_language": "Zeitzone und Sprache"
     },
     "copyright": "Urheberrecht",
     "logout_modal": {
@@ -90,7 +94,8 @@
     "message": {
         "snackbar": {
             "settings_saved": "Änderungen korrekt gespeichert"
-        }
+        },
+        "reload": "\tMöchten Sie die Anwendung jetzt neu laden, damit die neue Sprache angezeigt wird?\n(Andernfalls wird die neue Sprache angezeigt, wenn Sie sich das nächste Mal anmelden)"
     },
     "module": {
         "app": {
@@ -102,14 +107,147 @@
         "error": "Etwas ist schiefgegangen, bitte versuchen Sie es erneut"
     },
     "user_quota": {
-        "limited": "{{quota}}% Speicherplatz genutzt",
-        "unlimited": "Unbegrenzter Speicherplatz verfügbar"
+        "limited": "Sie haben {{quota}}% des verfügbaren Platzes belegt",
+        "unlimited": "Sie haben unbegrenzt Platz zur Verfügung",
+        "space_full": "Es scheint, dass der gesamte verfügbare Platz belegt ist",
+        "title": "Kontingent des Benutzers"
     },
     "label": {
         "cancel": "Abbrechen",
         "edit_to_start_search": "Bearbeiten Sie Ihre Suche, um eine neue zu starten",
         "out_of_office": "Nicht im Büro",
         "language": "Sprache",
-        "no": "Nein"
+        "no": "Nein",
+        "clear_search_query": "SUCHE LÖSCHEN",
+        "discard_changes": "ÄNDERUNGEN VERWERFEN",
+        "reload": "Neu laden",
+        "time_zone": "Zeitzonen"
+    },
+    "timezone": {
+        "abu_dhabi_muscat": "{{value}} Abu Dhabi, Muscat",
+        "athens_beirut_bucharest_istanbul": "{{value}} Athen, Beirut, Bukarest, Istanbul",
+        "belgrade_bratislava_budapest_ljubljana_prague": "{{value}} Belgrad, Bratislava, Budapest, Ljubljana, Prag",
+        "chihuahua_la_paz_mazatlan": "{{value}} Chihuahua, La Paz, Mazatlan",
+        "egypt": "{{value}} Ägypten",
+        "georgetown_la_paz_manaus_san_juan": "{{value}} Georgetown, La Paz, Manaus, San Juan",
+        "jordan": "{{value}} Jordanien",
+        "kuwait_riyadh": "{{value}} Kuwait, Riyadh",
+        "moscow_st_petersburg_volgograd_rtz_2": "{{value}} Moskau, St. Petersburg, Wolgograd (RTZ 2)",
+        "sarajevo_skopje_warsaw_zagreb": "{{value}} Sarajevo, Skopje, Warschau, Zagreb",
+        "alaska": "{{value}} Alaska",
+        "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}} Amsterdam, Berlin, Bern, Rom, Stockholm, Wien",
+        "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Anadyr, Petropavlovsk-Kamchatsky (RTZ 11)",
+        "argentina": "{{value}} Argentinien",
+        "arizona": "{{value}} Arizona",
+        "asuncion": "{{value}} Asuncion",
+        "atlantic_time_canada": "{{value}} Atlantische Zeit (Kanada)",
+        "azores": "{{value}} Azoren",
+        "baja_california": "{{value}} Baja California",
+        "baku": "{{value}} Baku",
+        "bangkok_hanoi_jakarta": "{{value}} Bangkok, Hanoi, Jakarta",
+        "beijing_chongqing_hong_kong_urumqi": "{{value}} Peking, Chongqing, Hongkong, Urumqi",
+        "beirut": "{{value}} Beirut",
+        "brasilia": "{{value}} Brasilia",
+        "britain_ireland_portugal": "{{value}} Großbritannien, Irland, Portugal",
+        "cape_verde_is": "{{value}} Kap Verde",
+        "caracas": "{{value}} Caracas",
+        "casablanca": "{{value}} Casablanca",
+        "cayenne_fortaleza": "{{value}} Cayenne, Fortaleza",
+        "central_america": "{{value}} Mittelamerika",
+        "chennai_kolkata_mumbai_new_delhi": "{{value}} Chennai, Kolkata, Mumbai, Neu-Delhi",
+        "chita": "{{value}} Tschita",
+        "christmas_island": "{{value}} Weihnachtsinsel",
+        "colombia": "{{value}} Kolumbien",
+        "coordinated_universal_time": "{{value}} Koordinierte Weltzeit",
+        "cuiaba": "{{value}} Cuiaba",
+        "damascus": "{{value}} Damaskus",
+        "darwin": "{{value}} Darwin",
+        "dateline": "{{value}} Datumsgrenze",
+        "dhaka": "{{value}} Dhaka",
+        "ekaterinburg_rtz_4": "{{value}} Jekaterinburg (RTZ 4)",
+        "eucla": "{{value}} Eucla",
+        "gmt_02": "{{value}} GMT-02",
+        "gmt_11": "{{value}} GMT-11",
+        "greenland": "{{value}} Grönland",
+        "harare_pretoria": "{{value}} Harare, Pretoria",
+        "hawaii": "{{value}} Hawaii",
+        "helsinki_kyiv_riga_sofia_tallinn_vilnius": "{{value}} Helsinki, Kiew, Riga, Sofia, Tallinn, Vilnius",
+        "indiana_east": "{{value}} Indiana (Osten)",
+        "iraq": "{{value}} Irak",
+        "irkutsk_rtz_7": "{{value}} Irkutsk (RTZ 7)",
+        "istanbul": "{{value}} Istanbul",
+        "jerusalem": "{{value}} Jerusalem",
+        "kabul": "{{value}} Kabul",
+        "kaliningrad_rtz_1": "{{value}} Kaliningrad (RTZ 1)",
+        "kathmandu": "{{value}} Katmandu",
+        "korea": "{{value}} Korea",
+        "krasnoyarsk_rtz_6": "{{value}} Krasnojarsk (RTZ 6)",
+        "la_paz": "{{value}} La Paz",
+        "magadan": "{{value}} Magadan",
+        "manaus": "{{value}} Manaus",
+        "mid_atlantic": "{{value}} Mittelatlantik",
+        "minsk": "{{value}} Minsk",
+        "monrovia": "{{value}} Monrovia",
+        "montevideo": "{{value}} Montevideo",
+        "nairobi": "{{value}} Nairobi",
+        "namibia": "{{value}} Namibia",
+        "newfoundland": "{{value}} Neufundland",
+        "nuku_alofa": "{{value}} Nuku'alofa",
+        "pacific_south_america": "{{value}} Pazifisches Südamerika",
+        "port_louis": "{{value}} Port Louis",
+        "pyongyang": "{{value}} Pjöngjang",
+        "samoa": "{{value}} Samoa",
+        "saskatchewan": "{{value}} Saskatchewan",
+        "sri_jayawardenepura_kotte": "{{value}} Sri Jayawardenepura Kotte",
+        "tbilisi": "{{value}} Tiflis",
+        "tehran": "{{value}} Teheran",
+        "us_canada_central": "{{value}} US/Kanada Zentral",
+        "us_canada_eastern": "{{value}} US/Kanada Ost",
+        "us_canada_mountain": "{{value}} US/Kanada Mountain",
+        "us_canada_pacific": "{{value}} US/Kanada Pazifik",
+        "vladivostok_magadan": "{{value}} vladivostok_magadan_rtz_9",
+        "west_central_africa": "{{value}} Westliches Zentralafrika",
+        "yangon": "{{value}} Yangon",
+        "yerevan": "{{value}} Eriwan",
+        "brussels_copenhagen_madrid_paris ": "{{value}} Brüssel, Kopenhagen, Madrid, Paris",
+        "guadalajara_mexico_city_monterrey ": "{{value}} Guadalajara, Mexiko-Stadt, Monterrey"
+    },
+    "board": {
+        "close_tab": "Reiter schließen",
+        "close_tabs": "Schließen Sie alle Ihre Tabs",
+        "enlarge": "Tafel vergrößern",
+        "hide": "Ausblenden",
+        "reduce": "Verkleinern",
+        "show_tabs": "Andere Tabs anzeigen"
+    },
+    "locale": {
+        "English": "Englisch",
+        "chinese_china": "Chinesisch (China)",
+        "dutch": "Niederländisch",
+        "german": "Deutsch",
+        "hindi": "Hindi",
+        "italian": "Italienisch",
+        "japanese": "Japanisch",
+        "label_dutch": "Niederländisch - {{value}}",
+        "label_english": "Englisch - {{value}}",
+        "label_german": "Deutsch - {{value}}",
+        "label_hindi": "Hindi - {{value}}",
+        "label_italian": "Italienisch - {{value}}",
+        "label_portuguese": "Portugiesisch - {{value}}",
+        "label_portuguese_brazil": "Portugiesisch - {{value}}",
+        "label_romanian": "Rumänisch - {{value}}",
+        "label_russian": "Russisch - {{value}}",
+        "label_spanish": "Spanisch - {{value}}",
+        "label_thai": "Thailändisch - {{value}}",
+        "portuguese": "Portugiesisch",
+        "portuguese_brazil": "Portugiesisch (Brasilien)",
+        "romanian": "Rumänisch",
+        "russian": "Russisch",
+        "spanish": "Spanisch",
+        "thai": "Thailändisch",
+        "turkish": "Türkisch",
+        "label_chinese": "Chinesisch (China) - {{value}}",
+        "label_japanese": "Japanisch - {{value}}",
+        "label_turkish": "Türkisch - {{value}}"
     }
 }

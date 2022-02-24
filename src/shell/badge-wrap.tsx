@@ -18,6 +18,9 @@ const MiniBadge = styled(Container)<{ badge: BadgeInfo }>`
 	min-height: 12px;
 	line-height: 12px;
 	border-radius: 8px;
+	color: ${({ theme }): string => theme.palette.gray6.regular};
+	user-select: none;
+	cursor: default;
 `;
 
 // eslint-disable-next-line react/display-name

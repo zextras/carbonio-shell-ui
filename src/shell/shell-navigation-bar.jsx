@@ -4,20 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import React from 'react';
 import { Container, Responsive } from '@zextras/carbonio-design-system';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
 import ShellMobileNav from './shell-mobile-nav';
 
-export default function ShellNavigationBar({
-	navigationBarIsOpen,
-	mobileNavIsOpen,
-	onCollapserClick
-}) {
-	const location = useLocation();
-	const activeApp = useMemo(() => location.pathname.split('/')[1], [location.pathname]);
+export default function ShellNavigationBar({ mobileNavIsOpen, activeRoute }) {
 	return (
 		<Container
 			orientation="horizontal"
@@ -28,15 +21,11 @@ export default function ShellNavigationBar({
 			crossAlignment="flex-start"
 		>
 			<Responsive mode="desktop">
-				<ShellPrimaryBar activeApp={activeApp} />
-				<ShellSecondaryBar
-					sidebarIsOpen={navigationBarIsOpen}
-					onCollapserClick={onCollapserClick}
-					activeApp={activeApp}
-				/>
+				<ShellPrimaryBar activeRoute={activeRoute} />
+				<ShellSecondaryBar activeRoute={activeRoute} />
 			</Responsive>
 			<Responsive mode="mobile">
-				<ShellMobileNav mobileNavIsOpen={mobileNavIsOpen} activeApp={activeApp} />
+				<ShellMobileNav mobileNavIsOpen={mobileNavIsOpen} activeRoute={activeRoute} />
 			</Responsive>
 		</Container>
 	);

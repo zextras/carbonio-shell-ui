@@ -7,34 +7,29 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* THIS FILE CONTAINS HOOKS, BUT ESLINT IS DUMB */
 
-import { reduce, sortBy } from 'lodash';
+import { sortBy } from 'lodash';
 import { useMemo } from 'react';
-import { useAppStore, appStore } from './store';
-import { AppData, AppsMap, ZextrasModule } from '../../../types';
+import { useAppStore } from './store';
+import { AppRoute, CarbonioModule } from '../../../types';
 
-export const useApp = (id: string) => (): AppData => useAppStore((s) => s.apps[id]);
-
-export const useApps = (): AppsMap => useAppStore((s) => s.apps);
-export const useAppCores = (): { [appId: string]: ZextrasModule } => {
-	const apps = useAppStore((s) => s.apps);
-	return useMemo(() => reduce(apps, (acc, app, id) => ({ ...acc, [id]: app.core }), {}), [apps]);
+export const useApp = (appId: string) => (): CarbonioModule => useAppStore((s) => s.apps[appId]);
+export const useApps = (): Record<string, CarbonioModule> => useAppStore((s) => s.apps);
+export const useAppList = (): Array<CarbonioModule> => {
+	const apps = useApps();
+	return useMemo(() => sortBy(apps, (a) => a.priority), [apps]);
 };
+export const getAppList = (): Array<CarbonioModule> =>
+	sortBy(useAppStore.getState().apps, (a) => a.priority);
 
-export const useAppList = (): Array<AppData> => {
-	const apps = useAppStore((s) => s.apps);
-	return useMemo(() => sortBy(apps, (a) => a.core.priority), [apps]);
-};
+export const getApp = (appId: string) => (): CarbonioModule => useAppStore.getState().apps[appId];
+export const getApps = (): Record<string, CarbonioModule> => useAppStore.getState().apps;
 
-export const useAppContext = (id: string) => (): unknown => useAppStore((s) => s.apps[id]?.context);
-
-/* eslint-disable react-hooks/rules-of-hooks */
-
-export const getApp = (id: string) => (): AppData => appStore.getState().apps[id];
-
-export const getApps = (): AppsMap => appStore.getState().apps;
-
-export const getAppList = (): Array<AppData> =>
-	sortBy(appStore.getState().apps, (a) => a.core.priority);
-
-export const getAppContext = (id: string) => (): unknown => appStore.getState().apps[id]?.context;
-export const getShell = (): ZextrasModule | undefined => appStore.getState().shell;
+export const useAppContext = (appId: string) => (): unknown =>
+	useAppStore((s) => s.appContexts[appId]);
+export const getAppContext = (appId: string) => (): unknown =>
+	useAppStore.getState().appContexts[appId];
+export const getShell = (): CarbonioModule => useAppStore.getState().shell;
+export const getRoutes = (): Record<string, AppRoute> => useAppStore.getState().routes;
+export const useRoutes = (): Record<string, AppRoute> => useAppStore((s) => s.routes);
+export const getRoute = (id: string): AppRoute => useAppStore.getState().routes[id];
+export const useRoute = (id: string): AppRoute => useAppStore((s) => s.routes[id]);

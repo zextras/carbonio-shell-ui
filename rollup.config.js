@@ -16,12 +16,12 @@ export default {
 	},
 	plugins: [
 		nodeResolve({
-			extensions: ['.js', '.jsx', '.ts', '.tsx']
+			extensions: ['.js', '.jsx', '.ts', '.tsx', '.d.ts']
 		}),
 		commonjs(),
 		babel({
 			babelHelpers: 'runtime',
-			extensions: ['.js', '.jsx', '.ts', '.tsx'],
+			extensions: ['.js', '.jsx', '.ts', '.tsx', '.d.ts'],
 			presets: ['@babel/preset-react', '@babel/preset-typescript'],
 			plugins: ['@babel/plugin-proposal-class-properties', 'babel-plugin-styled-components'],
 			ignore: ['node_modules']

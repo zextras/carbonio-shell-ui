@@ -59,7 +59,7 @@ export const useActions = <T,>(target: T, type: string): Array<Action> => {
 						return undefined;
 					}
 				})
-			),
+			) ?? [],
 		[factories, target]
 	);
 	return actions;

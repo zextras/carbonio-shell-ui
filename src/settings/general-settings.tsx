@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, useState, FC, useEffect } from 'react';
+import React, { useCallback, useState, FC } from 'react';
 import {
 	Breadcrumbs,
 	Button,
@@ -16,14 +16,12 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { includes } from 'lodash';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+import { useUserSettings } from '../store/account';
 import Logout from './components/general-settings/logout';
 import AppearanceSettings from './components/general-settings/appearance-settings';
 import ModuleVersionSettings from './components/general-settings/module-version-settings';
 import OutOfOfficeSettings from './components/general-settings/out-of-office-view';
 import UserQuota from './components/general-settings/user-quota';
-import { useUserSettings } from '../store/account/hooks';
 import { SETTINGS_APP_ID } from '../constants';
 import { editSettings } from '../network/edit-settings';
 import { Mods } from '../../types';

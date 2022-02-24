@@ -6,7 +6,7 @@
 
 import { Store, configureStore, createSlice } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
-import { ZextrasModule } from '../../types';
+import { CarbonioModule } from '../../types';
 
 const _uselessSlice = createSlice({
 	name: '_useless',
@@ -17,21 +17,19 @@ const _uselessSlice = createSlice({
 export default class StoreFactory {
 	private _cache: { [pkgName: string]: Store<any> } = {};
 
-	getStoreForApp(pkg: ZextrasModule): Store<any> {
+	getStoreForApp(pkg: CarbonioModule): Store<any> {
 		if (this._cache[pkg.name]) return this._cache[pkg?.name];
 		const store = configureStore({
-			devTools:
-				FLAVOR === 'NPM'
-					? {
-							name: pkg.name
-					  }
-					: false,
-			middleware:
-				FLAVOR === 'NPM'
-					? // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-					  (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
-					: // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-					  (getDefaultMiddleware) => getDefaultMiddleware(),
+			devTools: __CARBONIO_DEV__
+				? {
+						name: pkg.name
+				  }
+				: false,
+			middleware: __CARBONIO_DEV__
+				? // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+				  (getDefaultMiddleware) => getDefaultMiddleware().concat(logger)
+				: // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+				  (getDefaultMiddleware) => getDefaultMiddleware(),
 			reducer: {
 				_useless: _uselessSlice.reducer
 			}

@@ -30,56 +30,54 @@ type SettingsSentMessagesProps = {
 		key: string;
 		value: string | boolean;
 	}) => void;
-	setSaveIsDisabled: (isDisabled: boolean) => void;
-	mods: Mods;
 };
 
 const SettingsSentMessages = ({
 	t,
 	items,
 	isExternalAccount,
-	updateIdentities,
-	setSaveIsDisabled,
-	mods
+	updateIdentities
 }: SettingsSentMessagesProps): ReactElement => {
 	const title = useMemo(() => t('label.settings_sent_messages', 'Settings for Sent Messages'), [t]);
-	const [replyToEnabled, setReplyToEnabled] = useState(items.replyToEnabled === 'TRUE');
+	const [replyToEnabledValue, setReplyToEnabledValue] = useState(items.replyToEnabled === 'TRUE');
 	const [replyToAddress, setReplyToAddress] = useState(items.replyToAddress);
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [fromDisplayValue, setFromDisplayValue] = useState(items.fromDisplay);
 	const [replyToDisplay, setReplyToDisplay] = useState(items?.replyToDisplay);
 	const fromAddressArray = useMemo(
 		() => [{ value: items.fromAddress, label: items.fromAddress }],
-		[items]
+		[items?.fromAddress]
 	);
 	const [fromAddress, setFromAddress] = useState(() =>
 		find(fromAddressArray, (item) => item.value === items.fromAddress)
 	);
 
 	useEffect(() => {
-		setReplyToEnabled(items.replyToEnabled === 'TRUE');
+		setReplyToEnabledValue(items.replyToEnabled === 'TRUE');
+	}, [items.replyToEnabled]);
+	useEffect(() => {
 		setFromDisplayValue(items.fromDisplay);
-		setFromAddress(filter(fromAddressArray, (item) => item.value === items.fromAddress)[0]);
+	}, [items.fromDisplay]);
+	useEffect(() => {
+		const k = find(fromAddressArray, (item) => item.value === items.fromAddress);
+		setFromAddress(k);
+	}, [fromAddressArray, items.fromAddress]);
+	useEffect(() => {
 		setReplyToDisplay(items?.replyToDisplay === undefined ? '' : items?.replyToDisplay);
+	}, [items?.replyToDisplay]);
+	useEffect(() => {
 		setReplyToAddress(items.replyToAddress);
-	}, [
-		fromAddressArray,
-		items.fromAddress,
-		items.fromDisplay,
-		items.replyToAddress,
-		items?.replyToDisplay,
-		items.replyToEnabled
-	]);
+	}, [items.replyToAddress]);
 
-	const checkboxOnClick = useCallback(() => {
-		setReplyToEnabled(!replyToEnabled);
+	const onClickReplyToEnabled = useCallback(() => {
+		setReplyToEnabledValue(!replyToEnabledValue);
 		const modifyProp = {
 			id: items.identityId,
 			key: 'zimbraPrefReplyToEnabled',
-			value: replyToEnabled ? 'FALSE' : 'TRUE'
+			value: replyToEnabledValue ? 'FALSE' : 'TRUE'
 		};
 		updateIdentities(modifyProp);
-	}, [items.identityId, replyToEnabled, updateIdentities]);
+	}, [items.identityId, replyToEnabledValue, updateIdentities]);
 
 	const fromDisplayLabel = useMemo(
 		() => (fromDisplayValue ? '' : t('label.from_name', 'From: "Name"')),
@@ -100,8 +98,8 @@ const SettingsSentMessages = ({
 	};
 
 	const fromAddressLabel = useMemo(
-		() => (replyToAddress ? '' : t('label.address', 'Address')),
-		[replyToAddress, t]
+		() => (fromAddress ? '' : t('label.address', 'Address')),
+		[fromAddress, t]
 	);
 
 	const onChangeFromAddress = useCallback(
@@ -117,7 +115,7 @@ const SettingsSentMessages = ({
 		[items.identityId, updateIdentities, fromAddressArray]
 	);
 
-	const checkboxLabel = useMemo(
+	const replyToEnabledLabel = useMemo(
 		() => t('label.set_reply_to_field', 'Set the "Reply-to" field of e-mail message to:'),
 		[t]
 	);
@@ -153,11 +151,18 @@ const SettingsSentMessages = ({
 			{
 				id: '0',
 				label: items.fromAddress,
-				click: (ev: MouseEvent & { target: string & { textContent: string } }): void =>
-					setReplyToAddress(ev.target.textContent)
+				click: (ev: MouseEvent & { target: string & { textContent: string } }): void => {
+					setReplyToAddress(ev.target.textContent);
+					const modifyProp = {
+						id: items.identityId,
+						key: 'zimbraPrefReplyToAddress',
+						value: ev.target.textContent
+					};
+					updateIdentities(modifyProp);
+				}
 			}
 		],
-		[items]
+		[items.fromAddress, items.identityId, updateIdentities]
 	);
 
 	const onChangeReplyToAddress = useCallback(
@@ -174,15 +179,9 @@ const SettingsSentMessages = ({
 	);
 
 	const isValidEmail = useMemo(
-		() => replyToEnabled && !EMAIL_VALIDATION_REGEX.test(replyToAddress || ''),
-		[replyToEnabled, replyToAddress]
+		() => replyToEnabledValue && !EMAIL_VALIDATION_REGEX.test(replyToAddress || ''),
+		[replyToEnabledValue, replyToAddress]
 	);
-
-	useEffect(() => {
-		if (mods?.identity) {
-			setSaveIsDisabled(isValidEmail);
-		}
-	}, [mods, isValidEmail, setSaveIsDisabled]);
 
 	return (
 		<>
@@ -240,9 +239,9 @@ const SettingsSentMessages = ({
 				padding={{ horizontal: 'large', bottom: 'large' }}
 			>
 				<Checkbox
-					label={checkboxLabel}
-					value={replyToEnabled}
-					onClick={(): void => checkboxOnClick()}
+					label={replyToEnabledLabel}
+					value={replyToEnabledValue}
+					onClick={(): void => onClickReplyToEnabled()}
 				/>
 			</Row>
 			<Row
@@ -257,7 +256,7 @@ const SettingsSentMessages = ({
 						label={replyToDisplayLabel}
 						value={replyToDisplay}
 						background="gray5"
-						disabled={!replyToEnabled}
+						disabled={!replyToEnabledValue}
 						onChange={(
 							ev: MouseEvent & {
 								target: HTMLButtonElement;
@@ -272,23 +271,22 @@ const SettingsSentMessages = ({
 						style={{ flexGrow: '1' }}
 						onClose={(): void => setDropdownOpen(false)}
 						onOpen={(): void => setDropdownOpen(true)}
-						disabled={!replyToEnabled}
+						disabled={!replyToEnabledValue}
 					>
 						<Input
 							label={replyToAddressLabel}
 							value={replyToAddress}
-							items={replyToAddressArray}
 							onChange={(
 								ev: MouseEvent & {
 									target: HTMLButtonElement;
 								}
 							): void => onChangeReplyToAddress(ev)}
 							background="gray5"
-							hasError={replyToEnabled && !EMAIL_VALIDATION_REGEX.test(replyToAddress || '')}
+							hasError={isValidEmail}
 							CustomIcon={(): ReactElement => (
 								<Icon icon={dropdownOpen ? 'ArrowUp' : 'ArrowDown'} />
 							)}
-							disabled={!replyToEnabled}
+							disabled={!replyToEnabledValue}
 						/>
 					</Dropdown>
 				</Row>

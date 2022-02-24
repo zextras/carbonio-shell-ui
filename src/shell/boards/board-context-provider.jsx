@@ -5,10 +5,10 @@
  */
 
 import React, { useCallback, useMemo, useReducer } from 'react';
-import { pickBy } from 'lodash';
+import { pickBy, trim } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { BoardValueContext, BoardSetterContext } from './board-context';
-import { useContextBridge } from '../../store/context-bridge';
+import { useBridge } from '../../store/context-bridge';
 
 function getRandomKey() {
 	return String(Date.now() * (Math.floor(Math.random() * 1000) + 1));
@@ -111,7 +111,13 @@ export default function BoardContextProvider({ children }) {
 			const boardKey = getRandomKey();
 			dispatch({
 				type: 'ADD_BOARD',
-				payload: { url, title: context?.title ?? t('new_tab', 'New Tab'), context, boardKey, app }
+				payload: {
+					url: `/${trim(url, '/')}`,
+					title: context?.title ?? t('new_tab', 'New Tab'),
+					context,
+					boardKey,
+					app
+				}
 			});
 			return boardKey;
 		},
@@ -171,7 +177,7 @@ export default function BoardContextProvider({ children }) {
 		() => ({
 			packageDependentFunctions: {
 				addBoard: (pkg) => (path, context) => {
-					addBoard(`/${context?.app ?? pkg}${path}`, context, pkg);
+					addBoard(path, context, context?.app ?? pkg);
 				}
 			},
 			functions: {
@@ -193,7 +199,7 @@ export default function BoardContextProvider({ children }) {
 			updateCurrentBoard
 		]
 	);
-	useContextBridge(cbFunctions);
+	useBridge(cbFunctions);
 
 	return (
 		<BoardValueContext.Provider value={boardState}>

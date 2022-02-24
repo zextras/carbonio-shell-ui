@@ -4,15 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-export type QueryChip = {
-	label: string;
-	value?: string;
-	isGeneric?: boolean;
-	isQueryFilter?: boolean;
-	hasAvatar?: boolean;
-	app?: string;
-};
+import { AppRoute } from '../apps';
+import { QueryChip } from './items';
 
+export * from './items';
 export type SearchState = {
 	query: Array<QueryChip>;
 	module?: string;
@@ -23,9 +18,9 @@ export type SearchState = {
 };
 
 export type SearchBarProps = {
-	currentApp: string;
-	primaryAction: unknown;
-	secondaryActions: unknown;
+	activeRoute: AppRoute;
+	primaryAction?: unknown;
+	secondaryActions?: unknown;
 };
 
 export type SelectLabelFactoryProps = {

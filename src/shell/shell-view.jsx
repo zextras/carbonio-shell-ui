@@ -4,24 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useEffect, useMemo, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Row, Responsive, ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
-import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import { find, filter } from 'lodash';
+import { find } from 'lodash';
 import AppViewContainer from './app-view-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
-import ShellMenuPanel from './shell-menu-panel';
 import AppBoardWindow from './boards/app-board-window';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
-
-import { useAppList } from '../store/app/hooks';
-import { useAppStore } from '../store/app/store';
-import AppContextProvider from '../boot/app/app-context-provider';
-import { useUserAccount, useUserSettings } from '../store/account/hooks';
-import { CHATS_APP_ID } from '../constants';
+import { useUserSettings } from '../store/account';
+import { ShellUtilityBar, ShellUtilityPanel } from '../utility-bar';
+import { useCurrentRoute } from '../history/hooks';
 
 const Background = styled.div`
 	background: ${({ theme }) => theme.palette.gray6.regular};
@@ -46,46 +41,25 @@ function DarkReaderListener() {
 	return null;
 }
 
-const MainAppRerouter = () => {
-	const account = useUserAccount();
-	const apps = useAppList();
-	const first = useMemo(() => filter(apps, (app) => !!app.views?.app)[0], [apps]);
-	return account && first ? <Redirect from="/" to={`/${first?.core?.route}`} /> : null;
-};
-
 export function Shell() {
-	const [chatPanelMode, setChatPanelMode] = useState('closed'); // values: 'closed', 'overlap', 'open'
-	const [navOpen, setNavOpen] = useState(true);
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
-	const ChatsViews = useAppStore((state) => state.apps[CHATS_APP_ID]?.views?.chatbar);
+	const activeRoute = useCurrentRoute();
 
-	useEffect(() => {
-		setNavOpen((n) => !(n && chatPanelMode === 'open'));
-	}, [chatPanelMode]);
 	return (
 		<Background>
 			<DarkReaderListener />
 			{/* <MainAppRerouter /> */}
 			<ShellHeader
+				activeRoute={activeRoute}
 				mobileNavIsOpen={mobileNavOpen}
 				onMobileMenuClick={() => setMobileNavOpen(!mobileNavOpen)}
 			>
-				{ChatsViews && <ChatsViews.icon mode={chatPanelMode} setMode={setChatPanelMode} />}
+				<ShellUtilityBar />
 			</ShellHeader>
 			<Row crossAlignment="unset" style={{ position: 'relative', flexGrow: '1' }}>
-				<ShellNavigationBar
-					navigationBarIsOpen={navOpen}
-					mobileNavIsOpen={mobileNavOpen}
-					onCollapserClick={() => setNavOpen(!navOpen)}
-				/>
-				<AppViewContainer />
-				{ChatsViews && (
-					<AppContextProvider pkg={CHATS_APP_ID}>
-						<ShellMenuPanel mode={chatPanelMode} setMode={setChatPanelMode}>
-							<ChatsViews.sidebar mode={chatPanelMode} setMode={setChatPanelMode} />
-						</ShellMenuPanel>
-					</AppContextProvider>
-				)}
+				<ShellNavigationBar activeRoute={activeRoute} mobileNavIsOpen={mobileNavOpen} />
+				<AppViewContainer activeRoute={activeRoute} />
+				<ShellUtilityPanel />
 			</Row>
 			<Responsive mode="desktop">
 				<AppBoardWindow />

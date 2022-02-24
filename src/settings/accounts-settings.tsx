@@ -37,8 +37,7 @@ export const DisplayerHeader: FC<{
 	onSave: (mods: Record<string, unknown>) => void;
 	mods: Record<string, unknown>;
 	t: TFunction;
-	saveIsDisabled: boolean;
-}> = ({ onSave, mods, t, saveIsDisabled }) => {
+}> = ({ onSave, t }) => {
 	const accountLabel: string = useMemo(() => t('label.accounts', 'Accounts'), [t]);
 	const buttonLabel = useMemo(() => t('label.save', 'Save'), [t]);
 	return (
@@ -66,7 +65,7 @@ export const DisplayerHeader: FC<{
 					mainAlignment="flex-end"
 					crossAlignment="flex-end"
 				>
-					<Button label={buttonLabel} color="primary" onClick={onSave} disabled={saveIsDisabled} />
+					<Button label={buttonLabel} color="primary" onClick={onSave} />
 				</Row>
 			</Row>
 			<Divider />
@@ -100,12 +99,10 @@ export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps)
 	const [selectedIdentityId, setSelectedIdentityId] = useState(0);
 	const [identities, setIdentities] = useState<IdentityProps[]>(identitiesDefault);
 	const [delegates, setDelegates] = useState<DelegateProps[]>([]);
-	const [saveIsDisabled, setSaveIsDisabled] = useState(true);
 
 	const maxIdentities = useUserSettings().attrs.zimbraIdentityMaxNumEntries;
 	const addMod = useCallback(
 		(arg: AddModProps) => {
-			setSaveIsDisabled(false);
 			const { type, modifyProp, deleteList, createList } = arg;
 			setMods((prevState) => {
 				const prevRecord = find(
@@ -302,7 +299,7 @@ export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps)
 
 	return (
 		<>
-			<DisplayerHeader mods={mods} onSave={onSave} t={t} saveIsDisabled={saveIsDisabled} />
+			<DisplayerHeader mods={mods} onSave={onSave} t={t} />
 			<Container
 				background="gray5"
 				mainAlignment="flex-start"
@@ -330,8 +327,6 @@ export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps)
 							items={identities[selectedIdentityId]}
 							isExternalAccount={false}
 							updateIdentities={updateIdentities}
-							mods={mods}
-							setSaveIsDisabled={setSaveIsDisabled}
 						/>
 						<PasswordRecoverySettings
 							t={t}
@@ -358,15 +353,11 @@ export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps)
 							items={identities[selectedIdentityId]}
 							isExternalAccount={false}
 							updateIdentities={updateIdentities}
-							mods={mods}
-							setSaveIsDisabled={setSaveIsDisabled}
 						/>
 						<PersonaUseSection
 							t={t}
 							items={identities[selectedIdentityId]}
 							updateIdentities={updateIdentities}
-							setSaveIsDisabled={setSaveIsDisabled}
-							mods={mods}
 						/>
 					</>
 				)}

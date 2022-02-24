@@ -47,20 +47,20 @@ const AppearanceSettings: FC<{
 		(v) => {
 			if (v !== drMode) {
 				setDrMode((old) => (v !== old ? v : old));
-				setDarkReaderState(v);
+				// setDarkReaderState(v);
 				addMod('props', 'zappDarkreaderMode', { app: SHELL_APP_ID, value: v });
 			}
 		},
-		[addMod, drMode, setDarkReaderState]
+		[addMod, drMode]
 	);
-	useEffect(
-		() => (): void =>
-			setDarkReaderState(
-				(find(settings.props, ['name', 'zappDarkreaderMode'])
-					?._content as unknown as DRPropValues) ?? 'auto'
-			),
-		[setDarkReaderState, settings.props]
-	);
+	// useEffect(
+	// 	() => (): void =>
+	// 		setDarkReaderState(
+	// 			(find(settings.props, ['name', 'zappDarkreaderMode'])
+	// 				?._content as unknown as DRPropValues) ?? 'auto'
+	// 		),
+	// 	[setDarkReaderState, settings.props]
+	// );
 	return (
 		<FormSubSection
 			label={t('settings.general.theme_options', 'Theme Options')}

@@ -29,7 +29,6 @@ export default function (ctxt: unknown /* DevUtilsContext */): Promise<void> {
 	return Promise.resolve().then(() => installOnWindow(window, ctxt));
 }
 
-export function setCliSettings(cliSettings: cliSettingsNamespace): cliSettingsNamespace {
+export function setCliSettings(cliSettings: cliSettingsNamespace): void {
 	(window as unknown as IDevUtilsInstrumentedWindow).cliSettings = cliSettings;
-	return cliSettings;
 }

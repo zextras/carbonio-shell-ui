@@ -6,41 +6,26 @@
 
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
-import { forEach, forOwn } from 'lodash';
-// import { RequestHandlersList } from 'msw/lib/types/setupWorker/glossary';
-// import { SetupWorkerApi } from 'msw/lib/types/setupWorker/setupWorker';
-
-import { ComponentClass } from 'react';
-import { Store } from '@reduxjs/toolkit';
+import { forOwn } from 'lodash';
+import { ComponentType } from 'react';
+import { Reducer, Store } from '@reduxjs/toolkit';
 import StoreFactory from '../../redux/store-factory';
 
-import { appStore } from '../../store/app/store';
+import { useAppStore } from '../../store/app';
 import { getAppFunctions } from './app-loader-functions';
-import { getAppLink } from './app-link';
 import { Spinner } from '../../ui-extras/spinner';
-import {
-	ZIMBRA_STANDARD_COLORS,
-	FOLDERS,
-	SHELL_APP_ID,
-	SETTINGS_APP_ID,
-	SEARCH_APP_ID,
-	ACTION_TYPES
-} from '../../constants';
-import { useIntegrationsStore } from '../../store/integrations/store';
-import { report } from '../../network/report';
-import { useAccountStore } from '../../store/account/store';
-import {
-	IShellWindow,
-	LoadedAppRuntime,
-	SharedLibrariesAppsMap,
-	ZextrasModule
-} from '../../../types';
+import { AppLink } from '../../ui-extras/app-link';
+import * as CONSTANTS from '../../constants';
+import { useAccountStore } from '../../store/account';
+import { IShellWindow, CarbonioModule } from '../../../types';
+import { getAppSetters } from './app-loader-setters';
+import { report } from '../../reporting';
 
 export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
 // const _revertableActions: { [pkgName: string]: RevertableActionCollection } = {};
 
-// export function updateAppHandlers(appPkg: ZextrasModule, handlers: RequestHandlersList): void {
+// export function updateAppHandlers(appPkg: CarbonioModule, handlers: RequestHandlersList): void {
 // 	if (FLAVOR === 'NPM' && typeof devUtils !== 'undefined') {
 // 		const worker = devUtils.getMSWorker<SetupWorkerApi>();
 // 		if (worker) {
@@ -50,17 +35,13 @@ let _scriptId = 0;
 // 	}
 // }
 
-function loadAppModule(
-	appPkg: ZextrasModule,
-	store: Store<any>,
-	setAppClass: (id: string, appClass: ComponentClass) => void
-): Promise<void> {
+function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<CarbonioModule> {
 	return new Promise((_resolve, _reject) => {
 		let resolved = false;
 		const resolve: (...args: any[]) => void = (...args) => {
 			if (!resolved) {
 				resolved = true;
-				_resolve(...args);
+				_resolve(appPkg);
 			}
 		};
 		const reject: (e: Error) => void = (e) => {
@@ -70,51 +51,44 @@ function loadAppModule(
 			}
 		};
 		try {
-			// eslint-disable-next-line max-len
-			(
-				window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>
-			).__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-shell-ui'][appPkg.name] = {
+			(window as unknown as IShellWindow).__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-shell-ui'][
+				appPkg.name
+			] = {
 				store: {
 					store,
-					setReducer: (reducer): void => store.replaceReducer(reducer)
+					setReducer: (reducer: Reducer): void => store.replaceReducer(reducer)
 				},
-				report: report(appPkg),
-				soapFetch: useAccountStore.getState().soapFetch(appPkg.name),
-				xmlSoapFetch: useAccountStore.getState().xmlSoapFetch(appPkg.name),
-				registerAppData: appStore.getState().setters.registerAppData(appPkg.name),
-				setAppContext: appStore.getState().setters.setAppContext(appPkg.name),
-				registerHooks: useIntegrationsStore.getState().registerHooks,
-				registerFunctions: useIntegrationsStore.getState().registerFunctions,
-				registerActions: useIntegrationsStore.getState().registerActions,
-				registerComponents: useIntegrationsStore.getState().registerComponents(appPkg.name),
-				AppLink: getAppLink(appPkg.route),
+				report: report(appPkg.name),
+				AppLink,
 				Spinner,
-				FOLDERS,
-				ZIMBRA_STANDARD_COLORS,
-				SHELL_APP_ID,
-				SETTINGS_APP_ID,
-				SEARCH_APP_ID,
-				ACTION_TYPES,
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				...getAppFunctions(appPkg)
+				...getAppSetters(appPkg),
+				...getAppFunctions(appPkg),
+				...CONSTANTS
 			};
 
+			(window as unknown as IShellWindow).__ZAPP_HMR_EXPORT__[appPkg.name] = (
+				appComponent: ComponentType
+			): void => {
+				useAppStore.setState((state) => ({
+					entryPoints: {
+						...state.entryPoints,
+						[appPkg.name]: appComponent
+					}
+				}));
+				console.info(
+					`%c loaded ${appPkg.name}`,
+					'color: white; background: #539507;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
+				);
+				resolve(appPkg);
+			};
+
+			// if (FLAVOR === 'NPM' && typeof cliSettings !== 'undefined' && cliSettings.hasHandlers) {
 			// eslint-disable-next-line max-len
-			(
-				window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>
-			).__ZAPP_HMR_EXPORT__[appPkg.name] = (appClass: ComponentClass): void => {
-				setAppClass(appPkg.name, appClass);
-				resolve();
-			};
-
-			if (FLAVOR === 'NPM' && typeof cliSettings !== 'undefined' && cliSettings.hasHandlers) {
-				// eslint-disable-next-line max-len
-				// (
-				// 	window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>
-				// ).__ZAPP_HMR_HANDLERS__[appPkg.name] = (handlers: RequestHandlersList): void =>
-				// 	updateAppHandlers(appPkg, handlers);
-			}
+			// (
+			// 	window as unknown as IShellWindow<SharedLibrariesAppsMap, ComponentClass>
+			// ).__ZAPP_HMR_HANDLERS__[appPkg.name] = (handlers: RequestHandlersList): void =>
+			// 	updateAppHandlers(appPkg, handlers);
+			// }
 			const script: HTMLScriptElement = document.createElement('script');
 			script.setAttribute('type', 'text/javascript');
 			script.setAttribute('data-pkg_name', appPkg.name);
@@ -132,22 +106,9 @@ function loadAppModule(
 	});
 }
 
-export function loadApp(
-	pkg: ZextrasModule,
-	storeFactory: StoreFactory
-): Promise<LoadedAppRuntime | undefined> {
+export function loadApp(pkg: CarbonioModule, storeFactory: StoreFactory): Promise<CarbonioModule> {
 	const store = storeFactory.getStoreForApp(pkg);
-	const { setAppClass } = appStore.getState().setters;
-	return loadAppModule(pkg, store, setAppClass)
-		.then(() => true)
-		.then((loaded) =>
-			loaded
-				? {
-						pkg,
-						store
-				  }
-				: undefined
-		);
+	return loadAppModule(pkg, store);
 }
 
 export function unloadApps(): Promise<void> {

@@ -5,58 +5,43 @@
  */
 
 import React, { FC, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
-import { reduce } from 'lodash';
-import { Accordion } from '@zextras/carbonio-design-system';
-import { useTranslation } from 'react-i18next';
-import { useAppList } from '../store/app/hooks';
-import { SETTINGS_APP_ID, ACCOUNTS_APP_ID } from '../constants';
+import { useHistory, useLocation } from 'react-router-dom';
+import { Accordion, Tooltip, IconButton } from '@zextras/carbonio-design-system';
+import { startsWith } from 'lodash';
+import { SETTINGS_APP_ID } from '../constants';
+import { useAppStore } from '../store/app';
 
-export const SettingsSidebar: FC = () => {
-	const apps = useAppList();
+export const SettingsSidebar: FC<{ expanded: boolean }> = ({ expanded }) => {
+	const settingsViews = useAppStore((s) => s.views.settings);
 	const history = useHistory();
-	const [t] = useTranslation();
+	const location = useLocation();
 	const items = useMemo(
 		() =>
-			reduce(
-				apps,
-				// TODO: add type when the DS is converted to ts
-				(acc: Array<unknown>, app) => {
-					if (app.views?.settings) {
-						acc.push({
-							id: app.core.name,
-							label: app.core.display,
-							icon: app.icon,
-							onClick: (e: MouseEvent): void => {
-								e.stopPropagation();
-								history.push(`/${SETTINGS_APP_ID}/${app.core.route}`);
-							}
-						});
-					}
-					return acc;
-				},
-				[
-					{
-						id: 'general',
-						label: t('settings.general_tab', 'General'),
-						icon: 'Settings2Outline',
-						onClick: (e: MouseEvent): void => {
-							e.stopPropagation();
-							history.push(`/${SETTINGS_APP_ID}`);
-						}
-					},
-					{
-						id: 'accounts',
-						label: t('label.accounts', 'Accounts'),
-						icon: 'PeopleOutline',
-						onClick: (e: MouseEvent): void => {
-							e.stopPropagation();
-							history.push(`/${SETTINGS_APP_ID}/${ACCOUNTS_APP_ID}`);
-						}
-					}
-				]
-			),
-		[apps, history, t]
+			settingsViews.map((view) => ({
+				id: view.route,
+				label: view.label,
+				icon: view.icon,
+				active: startsWith(location.pathname, `/${SETTINGS_APP_ID}/${view.route}`),
+				onClick: (e: MouseEvent): void => {
+					e.stopPropagation();
+					history.push(`/${SETTINGS_APP_ID}/${view.route}`);
+				}
+			})),
+		[history, location.pathname, settingsViews]
 	);
-	return <Accordion items={items} />;
+	const collapsedItems = useMemo(
+		() =>
+			settingsViews.map((v) => (
+				<Tooltip label={v.label} placement="right" key={v.id}>
+					<IconButton
+						icon={v.icon}
+						onClick={(): void => history.push(`/${SETTINGS_APP_ID}/${v.route}`)}
+						size="large"
+						iconColor={startsWith(location.pathname, `/${SETTINGS_APP_ID}/${v.route}`)}
+					/>
+				</Tooltip>
+			)),
+		[history, location.pathname, settingsViews]
+	);
+	return expanded ? <Accordion items={items} /> : <>{collapsedItems}</>;
 };

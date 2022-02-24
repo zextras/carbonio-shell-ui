@@ -5,11 +5,13 @@
  */
 
 import { GetState, SetState } from 'zustand';
-import { SHELL_APP_ID } from '../constants';
-import { useAppStore } from '../store/app/store';
+import { filter } from 'lodash';
+import { SHELL_APP_ID, SHELL_MODES } from '../constants';
+import { useAppStore } from '../store/app';
 import { normalizeAccount } from '../store/account/normalization';
-import { AccountSettings, AccountState, GetInfoResponse, Tag, ZextrasModule } from '../../types';
+import { AccountSettings, AccountState, GetInfoResponse, Tag, CarbonioModule } from '../../types';
 import { goToLogin } from './go-to-login';
+import { isAdmin, isFullClient, isStandalone } from '../multimode';
 
 const parsePollingInterval = (settings: AccountSettings): number => {
 	const pollingPref = (settings.prefs?.zimbraPrefMailPollingInterval ?? '') as string;
@@ -41,9 +43,16 @@ export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>
 		})
 		.then(() => fetch('/static/iris/components.json'))
 		.then((r: any) => r.json())
-		.then(({ components }: { components: Array<ZextrasModule> }) => {
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			useAppStore.getState().setters.addApps(components);
+		.then(({ components }: { components: Array<CarbonioModule> }) => {
+			useAppStore.getState().setters.addApps(
+				filter(components, ({ type, name }) => {
+					if (type === 'shell') return true;
+					if (isAdmin()) return type === SHELL_MODES.ADMIN;
+					if (isFullClient()) return type === SHELL_MODES.CARBONIO;
+					if (isStandalone()) return name === window.location.pathname.split('/')[2];
+					return false;
+				})
+			);
 		})
 		.catch((err: unknown) => {
 			console.log('there was an error checking user data');

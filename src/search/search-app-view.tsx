@@ -4,21 +4,23 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { map, filter } from 'lodash';
+import { map } from 'lodash';
 import React, { FC, useCallback, useMemo } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container, Chip, Padding, Divider, Text, Button } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
-import { useApps } from '../store/app/hooks';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppContextProvider from '../boot/app/app-context-provider';
 import { useSearchStore } from './search-store';
 import { SEARCH_APP_ID } from '../constants';
+import { useAppStore } from '../store/app';
+import { QueryChip } from '../../types';
 // import { RouteLeavingGuard } from '../ui-extras/nav-guard';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-const useQuery = (): [Array<any>, Function] => useSearchStore((s) => [s.query, s.updateQuery]);
+const useQuery = (): [Array<QueryChip>, Function] =>
+	useSearchStore((s) => [s.query, s.updateQuery]);
 // eslint-disable-next-line @typescript-eslint/ban-types
 const useDisableSearch = (): [boolean, Function] =>
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -73,27 +75,21 @@ const ResultsHeader: FC<{ label: string }> = ({ label }) => {
 };
 
 export const SearchAppView: FC = () => {
-	const [t] = useTranslation();
-	const apps = useApps();
+	const searchViews = useAppStore((s) => s.views.search);
 	const routes = useMemo(
 		() =>
-			map(
-				filter(apps, (app): boolean => !!app.views?.search),
-				(app) => (
-					<Route key={`/${app.core.route}`} path={`/${SEARCH_APP_ID}/${app.core.route}`}>
-						<AppContextProvider pkg={app.core.name}>
-							{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-							{/* @ts-ignore */}
-							<app.views.search
-								useQuery={useQuery}
-								ResultsHeader={ResultsHeader}
-								useDisableSearch={useDisableSearch}
-							/>
-						</AppContextProvider>
-					</Route>
-				)
-			),
-		[apps]
+			map(searchViews, (view) => (
+				<Route key={`/${view.route}`} path={`/${SEARCH_APP_ID}/${view.route}`}>
+					<AppContextProvider pkg={view.app}>
+						<view.component
+							useQuery={useQuery}
+							ResultsHeader={ResultsHeader}
+							useDisableSearch={useDisableSearch}
+						/>
+					</AppContextProvider>
+				</Route>
+			)),
+		[searchViews]
 	);
 	return (
 		<>
@@ -103,7 +99,15 @@ export const SearchAppView: FC = () => {
 			>
 				<Text>{t('search.leave.warning', 'The current search results will be lost')}</Text>
 			</RouteLeavingGuard> */}
-			<Switch>{routes}</Switch>
+			<Switch>
+				{routes}
+				<Redirect
+					exact
+					strict
+					from={`/${SEARCH_APP_ID}`}
+					to={`/${SEARCH_APP_ID}/${searchViews[0]?.route}`}
+				/>
+			</Switch>
 		</>
 	);
 };

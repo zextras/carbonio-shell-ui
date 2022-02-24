@@ -4,7 +4,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { SoapFetch, ZimletProp, AccountRights } from '../network';
+export type ZimletProp = {
+	name: string;
+	zimlet: string;
+	_content: string;
+};
+
+export type SoapFetch = <Request, Response>(
+	api: string,
+	body: Request,
+	account?: string
+) => Promise<Response>;
 
 export type AccountState = {
 	noOpTimeout: unknown;
@@ -33,18 +43,6 @@ export type NotifyObject = {
 	version?: string;
 	mbx?: [{ s: number }];
 	folder?: Array<unknown>;
-};
-
-export type ZextrasModule = {
-	commit: string;
-	display: string;
-	description: string;
-	// eslint-disable-next-line camelcase
-	js_entrypoint: string;
-	name: string;
-	priority: number;
-	version: string;
-	route: string;
 };
 
 export type Account = {

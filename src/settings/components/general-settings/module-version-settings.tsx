@@ -21,6 +21,7 @@ import { map } from 'lodash';
 import { useAppList } from '../../../store/app/hooks';
 
 import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../../../constants/index';
+import { CarbonioModule } from '../../../../types';
 
 const ModuleVersionSettings: FC = () => {
 	const apps = useAppList();
@@ -33,8 +34,7 @@ const ModuleVersionSettings: FC = () => {
 	};
 
 	const filteredList = useMemo(
-		() =>
-			apps.filter((app) => app.core.name !== SEARCH_APP_ID && app.core.name !== SETTINGS_APP_ID),
+		() => apps.filter((app) => app.name !== SEARCH_APP_ID && app.name !== SETTINGS_APP_ID),
 		[apps]
 	);
 	return (
@@ -44,15 +44,15 @@ const ModuleVersionSettings: FC = () => {
 				minWidth="calc(min(100%, 512px))"
 				width="50%"
 			>
-				{map(filteredList, (app: any) => (
-					<Container key={app.core.name} padding={{ horizontal: 'large', vertical: 'small' }}>
+				{map(filteredList, (app: CarbonioModule) => (
+					<Container key={app.name} padding={{ horizontal: 'large', vertical: 'small' }}>
 						<Container orientation="horizontal" mainAlignment="space-between">
 							<Text>
-								{app.core.display} ({app.core.name})
+								{app.display} ({app.name})
 							</Text>
 							<Tooltip placement="top" label="Click to copy">
 								<Text style={{ cursor: 'pointer' }} onClick={(e: any): any => copyToClipboard(e)}>
-									Version: {app.core.version}
+									Version: {app.version}
 								</Text>
 							</Tooltip>
 						</Container>
@@ -61,7 +61,7 @@ const ModuleVersionSettings: FC = () => {
 							mainAlignment="space-between"
 							padding={{ top: 'extrasmall', bottom: 'medium' }}
 						>
-							<Text color="secondary">{app.core.description}</Text>
+							<Text color="secondary">{app.description}</Text>
 							<Badge
 								value="Active"
 								style={{

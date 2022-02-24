@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0-rc.8](https://github.com/zextras/carbonio-shell-ui/compare/v0.3.0-rc.7...v0.3.0-rc.8) (2022-02-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** there are significant changes to the api exported to the modules, a complete documentation will be available next sprint
+
+Co-authored-by: Giuliano Caregnato <giuliano.caregnato@zextras.com>
+
+### Features
+
+* added new identities section on account settings ([056912b](https://github.com/zextras/carbonio-shell-ui/commit/056912baf020d8a321aeefbbe13bfc723c377c7e))
+* **api:** app management refactor, admin panel entrypoint ([31b667c](https://github.com/zextras/carbonio-shell-ui/commit/31b667c90e7eecffa60bb85886b599f20efb3cf3))
+
+
+### Bug Fixes
+
+* cleared input debounce on search chip input to avoid race conditions ([4a9de94](https://github.com/zextras/carbonio-shell-ui/commit/4a9de94d5c4e486819b4808d568e11023aa39866))
+* update board height ([b080e95](https://github.com/zextras/carbonio-shell-ui/commit/b080e9521b22586b56f8442675167456a58cad45))
+
 ## [0.3.0-rc.7](https://github.com/zextras/carbonio-shell-ui/compare/v0.3.0-rc.6...v0.3.0-rc.7) (2022-02-10)
 
 

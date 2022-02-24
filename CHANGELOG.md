@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.1-rc.4](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.1-rc.1...v0.4.1-rc.4) (2022-02-24)
+
+
+### Bug Fixes
+
+* badge text color ([72addae](https://github.com/zextras/carbonio-shell-ui/commit/72addae73405a6d4fe2725d795887cadd955b7a9))
+
 ### [0.4.1-rc.1](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.1-rc.0...v0.4.1-rc.1) (2022-02-24)
 
 

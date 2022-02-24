@@ -18,7 +18,6 @@ const MiniBadge = styled(Container)<{ badge: BadgeInfo }>`
 	min-height: 12px;
 	line-height: 12px;
 	border-radius: 8px;
-	color: ${({ theme }): string => theme.palette.gray6.regular};
 	user-select: none;
 	cursor: default;
 `;
@@ -29,7 +28,7 @@ const BadgeWrap: FC<{ badge: BadgeInfo }> = forwardRef(({ badge, children }, ref
 		{badge.show && (
 			<MiniBadge badge={badge} height="fit" width="fit">
 				{badge.showCount ? (
-					<Text size="extrasmall" style={{ padding: '2px 4px', fontSize: '10px' }}>
+					<Text size="extrasmall" style={{ padding: '2px 4px', fontSize: '10px' }} color="gray6">
 						{badge.count ?? 0}
 					</Text>
 				) : null}

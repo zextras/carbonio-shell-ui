@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.1-rc.0](https://github.com/zextras/carbonio-shell-ui/compare/v0.3.0-rc.8...v0.4.1-rc.0) (2022-02-24)
+
+
+### Bug Fixes
+
+* dev build for the npm prepublish script ([5ea0a37](https://github.com/zextras/carbonio-shell-ui/commit/5ea0a37cf98a8c60d70137bab5c77b683a808cdb))
+
 ## [0.3.0-rc.8](https://github.com/zextras/carbonio-shell-ui/compare/v0.3.0-rc.7...v0.3.0-rc.8) (2022-02-24)
 
 

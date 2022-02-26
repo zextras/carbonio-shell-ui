@@ -1,1 +1,232 @@
-{}
+{
+    "message": {
+        "reload": "\tCzy chcesz uruchomić ponownie aplikację, aby wyświetlał się nowy język?\n(Jeśli nie, nowy język będzie wyświetlał się od momentu następnego zalogowania)",
+        "snackbar": {
+            "settings_saved": "Zmiany zostały zapisane pomyślnie"
+        }
+    },
+    "search": {
+        "unable_to_parse_query": "Nie udało się wyszukać, wyczyść pole wyszukiwania i spróbuj ponownie",
+        "app": "Wyszukaj",
+        "active_input_label": "Oddziel słowa kluczowe używając przecinka lub naciskając TAB",
+        "idle_input_label": "Wyszukaj w {{module}}",
+        "module": "Moduł",
+        "start": "Rozpocznij wyszukiwanie",
+        "type_or_choose_suggestion": "Wpisz lub wybierz słowa kluczowe aby rozpocząć wyszukiwanie",
+        "type_to_start_search": "Wpisz słowa kluczowe aby rozpocząć wyszukiwanie",
+        "already_clear": "Pole wyszukiwania jest puste",
+        "clear": "Wyszyść pole wyszukiwania"
+    },
+    "settings": {
+        "search_settings": {
+            "labels": {
+                "include_search_in_shared_folder": "Zawrzyj Udostępniony folder w Wynikach wyszukiwań",
+                "include_search_in_spam_folder": "Zawrzyj folder Spamu w Wynikach wyszukiwań",
+                "include_search_in_trash_folder": "Zawrzyj Kosz w Wynikach wyszukiwań"
+            }
+        },
+        "out_of_office": {
+            "labels": {
+                "start_date": "Data rozpoczęcia",
+                "start_time": "Godzina rozpoczęcia:",
+                "all_day": "Cały dzień:",
+                "auto_reply_message": "Automatyczna odpowiedź:",
+                "create_appointment": "Stwórz Spotkanie:",
+                "end_date": "Data zakończenia",
+                "end_time": "Godzina zakończenia:",
+                "auto_reply_message_external": "Automatyczna odpowiedź dla nadawców spoza mojej domeny:",
+                "external_senders": "Nadawcy spoza mojej domeny",
+                "out_of_office_status": "Status Poza biurem:",
+                "send_auto_reply_period": "Wysyłaj automatyczne odpowiedzi w ciągu tego okresu:"
+            },
+            "do_not_send_auto_replies": "Nie wysyłaj automatycznych odpowiedzi",
+            "external_senders": {
+                "do_not_send_to_external": "Nie wysyłaj automatycznych odpowiedzi do nadawców spoza mojej domeny",
+                "send_custom_in_organisation": "Wyślij niestandardową wiadomość do użytkowników spoza mojej organizacji",
+                "send_custom_not_in_organisation": "Wyślij niestandardową wiadomość do użytkowników spoza mojej organizacji i książki adresowej",
+                "send_standard_auto_reply": "Wyślij domyślną automatyczną odpowiedź"
+            },
+            "headings": {
+                "create_appointment": "Spotkanie - Kalendarz",
+                "settings_label": "Poza biurem - Ustawienia",
+                "time_period": "Okres czasu"
+            },
+            "send_auto_replies": "Wysyłaj automatyczne odpowiedzi",
+            "status": {
+                "busy": "Zajęty"
+            }
+        },
+        "app": "Ustawienia",
+        "button": {
+            "primary": "Zapisz"
+        },
+        "general": {
+            "account": "Konto",
+            "account_logout": "Wyloguj się",
+            "dark_mode": "Tryb ciemny",
+            "general": "Ustawienia ogólne",
+            "theme_auto": "Automatycznie",
+            "theme_disabled": "Wyłączone",
+            "theme_enabled": "Włączone",
+            "theme_options": "Opcje stylu"
+        },
+        "general_tab": "Ogólne",
+        "timezone_and_language": "Strefa czasowa i Język"
+    },
+    "label": {
+        "discard_changes": "ODRZUĆ ZMIANY",
+        "cancel": "Anuluj",
+        "clear_search_query": "WYCZYŚĆ WYNIK WYSZUKIWANIA",
+        "language": "Język",
+        "no": "Nie",
+        "out_of_office": "Poza biurem",
+        "time_zone": "Strefa Czasowa",
+        "reload": "Uruchom ponownie",
+        "edit_to_start_search": "Edytuj swoje pole wyszukiwania, aby rozpocząć nowe"
+    },
+    "board": {
+        "close_tab": "Zamknij kartę",
+        "close_tabs": "Zamknij wszystkie karty",
+        "enlarge": "Powiększ tablicę",
+        "hide": "Ukryj tablicę",
+        "reduce": "Zmniejsz tablicę",
+        "show_tabs": "Pokaż inne karty"
+    },
+    "locale": {
+        "italian": "Włoski",
+        "English": "Angielski",
+        "chinese_china": "Chiński (Chiny)",
+        "dutch": "Niderlandzki",
+        "german": "Niemiecki",
+        "hindi": "Hindi",
+        "japanese": "Japoński",
+        "label_chinese": "Chiński (Chiny) - {{value}}",
+        "label_dutch": "Niderlandzki - {{value}}",
+        "label_romanian": "Rumuński - {{value}}",
+        "label_russian": "Rosyjski - {{value}}",
+        "label_spanish": "Hiszpański - {{value}}",
+        "turkish": "Turecki",
+        "label_thai": "Tajski - {{value}}",
+        "label_turkish": "Turecki - {{value}}",
+        "portuguese": "Portugalski",
+        "portuguese_brazil": "Portugalski (Brazylia)",
+        "romanian": "Rumuński",
+        "russian": "Rosyjski",
+        "spanish": "Hiszpański",
+        "thai": "Tajski",
+        "french": "Francuski",
+        "label_english": "Angielski - {{value}}",
+        "label_french": "Francuski - {{value}}",
+        "label_german": "Niemiecki - {{value}}",
+        "label_hindi": "Hindi - {{value}}",
+        "label_italian": "Włoski - {{value}}",
+        "label_japanese": "Japoński - {{value}}",
+        "label_portuguese": "Portugalski - {{value}}",
+        "label_portuguese_brazil": "Portugalski - {{value}}"
+    },
+    "new_tab": "Nowa karta",
+    "timezone": {
+        "argentina": "{{value}} Argentyna",
+        "arizona": "{{value}} Arizona",
+        "asuncion": "{{value}} Asuncion",
+        "athens_beirut_bucharest_istanbul": "{{value}} Ateny, Bejrut, Bukareszt, Istambuł",
+        "brasilia": "{{value}} Brazylia",
+        "britain_ireland_portugal": "{{value}} Wielka Brytania, Irlandia, Portugalia",
+        "brussels_copenhagen_madrid_paris ": "{{value}} Bruksela, Kopenhaga, Madryt, Paryż",
+        "cape_verde_is": "{{value}} wyspy Cape Verde",
+        "chita": "{{value}} Czyta",
+        "eucla": "{{value}} Eucla",
+        "georgetown_la_paz_manaus_san_juan": "{{value}} Georgetown, La Paz, Manaus, San Juan",
+        "gmt_02": "{{value}} GMT-02",
+        "gmt_11": "{{value}} GMT-11",
+        "greenland": "{{value}} Grenlandia",
+        "guadalajara_mexico_city_monterrey ": "{{value}} Guadalajara, Meksyk (miasto), Monterrey",
+        "harare_pretoria": "{{value}} Harare, Pretoria",
+        "hawaii": "{{value}} Hawaje",
+        "helsinki_kyiv_riga_sofia_tallinn_vilnius": "{{value}} Helsinki, Kijów, Ryga, Sofia, Tallinn, Wilno",
+        "indiana_east": "{{value}} Indiana (Wschód)",
+        "iraq": "{{value}} Irak",
+        "irkutsk_rtz_7": "{{value}} Irkuck (RTZ 7)",
+        "abu_dhabi_muscat": "{{value}} Abu Dabi, Maskat",
+        "alaska": "{{value}} Alaska",
+        "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}} Amsterdam, Berlin, Berno, Rzym, Sztokholm, Wiedeń",
+        "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Anadyr, Pietropawłowsk Kamczacki (RTZ 11)",
+        "atlantic_time_canada": "{{value}} Czas Atlantycki (Kanada)",
+        "azores": "{{value}} Azory",
+        "baja_california": "{{value}} Baja Kalifornia",
+        "baku": "{{value}} Baku",
+        "bangkok_hanoi_jakarta": "{{value}} Bangkok, Hanoi, Dżakarta",
+        "beijing_chongqing_hong_kong_urumqi": "{{value}} Pekin, Chongqing, Hong Kong, Urumczi",
+        "beirut": "{{value}} Bejrut",
+        "belgrade_bratislava_budapest_ljubljana_prague": "{{value}} Belgrad, Bratysława, Budapeszt, Ljubljana, Praga",
+        "caracas": "{{value}} Caracas",
+        "casablanca": "{{value}} Casablanca",
+        "cayenne_fortaleza": "{{value}} Cayenne, Fortaleza",
+        "central_america": "{{value}} Ameryka Środkowa",
+        "chennai_kolkata_mumbai_new_delhi": "{{value}} Ćennaj, Kalkuta, Mumbaj, Nowe Delhi",
+        "chihuahua_la_paz_mazatlan": "{{value}} Chihuahua, La Paz, Mazatlan",
+        "christmas_island": "{{value}} Wyspa Wielkanocna",
+        "colombia": "{{value}} Kolumbia",
+        "coordinated_universal_time": "{{value}} Uniwersalny Czas Koordynowany (UTC)",
+        "cuiaba": "{{value}} Cuiaba",
+        "damascus": "{{value}} Damaszek",
+        "darwin": "{{value}} Darwin",
+        "dateline": "{{value}} Linia zmiany daty",
+        "dhaka": "{{value}} Dhaka",
+        "egypt": "{{value}} Egipt",
+        "ekaterinburg_rtz_4": "{{value}} Jekaterynburg (RTZ 4)",
+        "istanbul": "{{value}} Istambuł",
+        "jerusalem": "{{value}} Jerozolima",
+        "jordan": "{{value}} Jordania",
+        "kabul": "{{value}} Kabul",
+        "kaliningrad_rtz_1": "{{value}} Kaliningrad (RTZ 1)",
+        "kathmandu": "{{value}} Katmandu",
+        "korea": "{{value}} Korea",
+        "krasnoyarsk_rtz_6": "{{value}} Krasnojarsk (RTZ 6)",
+        "kuwait_riyadh": "{{value}} Kuwejt, Rijad",
+        "la_paz": "{{value}} La Paz",
+        "magadan": "{{value}} Magadan",
+        "manaus": "{{value}} Manaus",
+        "mid_atlantic": "{{value}} Środkowy Atlantyk",
+        "minsk": "{{value}} Mińsk",
+        "monrovia": "{{value}} Monrovia",
+        "montevideo": "{{value}} Montevideo",
+        "moscow_st_petersburg_volgograd_rtz_2": "{{value}} Moskwa, St. Petersburg, Wołgograd (RTZ 2)",
+        "nairobi": "{{value}} Nairobi",
+        "namibia": "{{value}} Namibia",
+        "newfoundland": "{{value}} Nowa Fundlandia",
+        "nuku_alofa": "{{value}} Nuku'alofa",
+        "pacific_south_america": "{{value}} Pacyficzna Ameryka Południowa",
+        "port_louis": "{{value}} Port Louis",
+        "pyongyang": "{{value}} Pjongjang",
+        "samoa": "{{value}} Samoa",
+        "sarajevo_skopje_warsaw_zagreb": "{{value}} Sarajewo, Skopje, Warszawa, Zagrzeb",
+        "saskatchewan": "{{value}} Saskatchewan",
+        "sri_jayawardenepura_kotte": "{{value}} Sri Dźajawardanapura Kotte",
+        "tbilisi": "{{value}} Tbilisi",
+        "tehran": "{{value}} Teheran",
+        "us_canada_central": "{{value}} USA/Centralna Kanada",
+        "us_canada_eastern": "{{value}} USA/Wschodnia Kanada",
+        "us_canada_mountain": "{{value}} USA/Górska Kanada",
+        "us_canada_pacific": "{{value}} USA/Pacyficzna Kanada",
+        "vladivostok_magadan": "{{value}} Władywostok, Magadan (RTZ 9)",
+        "west_central_africa": "{{value}} Środkowo-Zachodnia Afryka",
+        "yangon": "{{value}} Rangun",
+        "yerevan": "{{value}} Erywań"
+    },
+    "user_quota": {
+        "limited": "{{quota}}% dostępnej przestrzeni zostało zapełnione",
+        "space_full": "Wygląda na to, że cała dostępna przestrzeń jest zapełniona",
+        "title": "Udział zapełnionej przestrzeni użytkownika",
+        "unlimited": "Masz nieograniczoną ilość dostępnej przestrzeni"
+    },
+    "module": {
+        "app": {
+            "version": "Wersje aplikacji"
+        }
+    },
+    "new": "Nowy",
+    "snackbar": {
+        "error": "Coś poszło nie tak, proszę spróbować ponownie"
+    }
+}

@@ -30,7 +30,7 @@
                 "start_date": "Data rozpoczęcia",
                 "start_time": "Godzina rozpoczęcia:",
                 "all_day": "Cały dzień:",
-                "auto_reply_message": "Automatyczna odpowiedź:",
+                "auto_reply_message": "Automatyczna Odpowiedź:",
                 "create_appointment": "Stwórz Spotkanie:",
                 "end_date": "Data zakończenia",
                 "end_time": "Godzina zakończenia:",
@@ -85,7 +85,7 @@
         "edit_to_start_search": "Edytuj swoje pole wyszukiwania, aby rozpocząć nowe"
     },
     "board": {
-        "close_tab": "Zamknij kartę",
+        "close_tab": "Zamknij Kartę",
         "close_tabs": "Zamknij wszystkie karty",
         "enlarge": "Powiększ tablicę",
         "hide": "Ukryj tablicę",
@@ -124,7 +124,7 @@
         "label_portuguese": "Portugalski - {{value}}",
         "label_portuguese_brazil": "Portugalski - {{value}}"
     },
-    "new_tab": "Nowa karta",
+    "new_tab": "Nowa Karta",
     "timezone": {
         "argentina": "{{value}} Argentyna",
         "arizona": "{{value}} Arizona",

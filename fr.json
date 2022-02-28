@@ -76,7 +76,14 @@
             },
             "send_auto_replies": "Envoyer des réponses automatiques"
         },
-        "timezone_and_language": "Fuseau horaire et langue"
+        "timezone_and_language": "Fuseau horaire et langue",
+        "search_settings": {
+            "labels": {
+                "include_search_in_shared_folder": "Inclure les dossiers partagés dans les recherches",
+                "include_search_in_spam_folder": "Inclure le dossier Spam dans les recherches",
+                "include_search_in_trash_folder": "Inclure la corbeille dans les recherches"
+            }
+        }
     },
     "snackbar": {
         "error": "Quelque chose s'est mal passé, veuillez recommencer"
@@ -206,7 +213,9 @@
         "russian": "Russe",
         "spanish": "Espagnol",
         "thai": "Thaïlandais",
-        "turkish": "Turc"
+        "turkish": "Turc",
+        "french": "Français",
+        "label_french": "Français - {{value}}"
     },
     "module": {
         "app": {

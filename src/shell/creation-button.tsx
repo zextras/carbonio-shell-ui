@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useMemo } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { reduce, groupBy } from 'lodash';
-import { MultiButton } from '@zextras/carbonio-design-system';
+import { MultiButton, Button, Dropdown } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { useActions } from '../store/integrations/hooks';
@@ -43,6 +43,7 @@ export const CreationButton: FC<{ activeRoute?: AppRoute }> = ({ activeRoute }) 
 	const [t] = useTranslation();
 	const location = useLocation();
 	const actions = useActions({ activeRoute, location }, ACTION_TYPES.NEW);
+	const [open, setOpen] = useState(false);
 	const primaryAction = useMemo(
 		() =>
 			actions?.find?.(
@@ -52,7 +53,23 @@ export const CreationButton: FC<{ activeRoute?: AppRoute }> = ({ activeRoute }) 
 	);
 	const secondaryActions = useSecondaryActions(actions, activeRoute);
 
-	return (
+	const onClose = useCallback(() => {
+		setOpen(false);
+	}, []);
+	const onOpen = useCallback(() => {
+		setOpen(true);
+	}, []);
+	return activeRoute?.app === 'search' || activeRoute?.app === 'settings' ? (
+		<Dropdown items={secondaryActions} onClose={onClose} onOpen={onOpen}>
+			<Button
+				style={{ height: '42px' }}
+				background="primary"
+				items={secondaryActions}
+				label={t('new', 'New')}
+				icon={open ? 'ChevronUp' : 'ChevronDown'}
+			/>
+		</Dropdown>
+	) : (
 		<MultiButton
 			style={{ height: '42px' }}
 			background="primary"

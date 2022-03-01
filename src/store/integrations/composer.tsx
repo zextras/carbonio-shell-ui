@@ -115,7 +115,7 @@ const Composer: FC<ComposerProps> = ({
 					toolbar: inline
 						? false
 						: // eslint-disable-next-line max-len
-						  'fontselect fontsizeselect formatselect print | bold italic underline strikethrough | removeformat code | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | ltr rtl',
+						  'fontselect fontsizeselect formatselect | bold italic underline strikethrough | removeformat code | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | ltr rtl',
 					quickbars_insert_toolbar: inline ? 'bullist numlist' : '',
 					quickbars_selection_toolbar: inline
 						? 'bold italic underline | forecolor backcolor | removeformat | quicklink'

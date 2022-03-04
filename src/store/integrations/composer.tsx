@@ -39,6 +39,7 @@ import 'tinymce/plugins/paste';
 import 'tinymce/plugins/help';
 import 'tinymce/plugins/wordcount';
 import 'tinymce/plugins/quickbars';
+import 'tinymce/plugins/directionality';
 
 import { Editor } from '@tinymce/tinymce-react';
 
@@ -108,17 +109,19 @@ const Composer: FC<ComposerProps> = ({
 						'paste',
 						'code',
 						'help',
-						'quickbars'
+						'quickbars',
+						'directionality'
 					],
 					toolbar: inline
 						? false
 						: // eslint-disable-next-line max-len
-						  'formatselect | bold italic underline | forecolor backcolor | bullist numlist outdent indent | removeformat',
+						  'fontselect fontsizeselect formatselect | bold italic underline strikethrough | removeformat code | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | ltr rtl',
 					quickbars_insert_toolbar: inline ? 'bullist numlist' : '',
 					quickbars_selection_toolbar: inline
 						? 'bold italic underline | forecolor backcolor | removeformat | quicklink'
 						: 'quicklink',
-					contextmenu: inline ? '' : ''
+					contextmenu: inline ? '' : '',
+					toolbar_mode: 'wrap'
 				}}
 				onEditorChange={_onEditorChange}
 				{...rest}

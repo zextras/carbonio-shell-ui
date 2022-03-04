@@ -48,7 +48,7 @@ export const CreationButton: FC<{ activeRoute?: AppRoute }> = ({ activeRoute }) 
 		() =>
 			actions?.find?.(
 				(a) => (a.group === activeRoute?.id || a.group === activeRoute?.app) && a.primary
-			) ?? actions?.find?.((a) => a.primary),
+			),
 		[actions, activeRoute?.app, activeRoute?.id]
 	);
 	const secondaryActions = useSecondaryActions(actions, activeRoute);
@@ -59,7 +59,16 @@ export const CreationButton: FC<{ activeRoute?: AppRoute }> = ({ activeRoute }) 
 	const onOpen = useCallback(() => {
 		setOpen(true);
 	}, []);
-	return activeRoute?.app === 'search' || activeRoute?.app === 'settings' ? (
+	return primaryAction ? (
+		<MultiButton
+			style={{ height: '42px' }}
+			background="primary"
+			label={primaryAction?.label ?? t('new', 'New')}
+			onClick={primaryAction?.click}
+			items={secondaryActions}
+			disabled={!primaryAction || primaryAction?.disabled}
+		/>
+	) : (
 		<Dropdown items={secondaryActions} onClose={onClose} onOpen={onOpen}>
 			<Button
 				style={{ height: '42px' }}
@@ -69,14 +78,5 @@ export const CreationButton: FC<{ activeRoute?: AppRoute }> = ({ activeRoute }) 
 				icon={open ? 'ChevronUp' : 'ChevronDown'}
 			/>
 		</Dropdown>
-	) : (
-		<MultiButton
-			style={{ height: '42px' }}
-			background="primary"
-			label={primaryAction?.label ?? t('new', 'New')}
-			onClick={primaryAction?.click}
-			items={secondaryActions}
-			disabled={!primaryAction || primaryAction?.disabled}
-		/>
 	);
 };

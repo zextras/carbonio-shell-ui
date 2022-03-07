@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.1-rc.5](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.1-rc.4...v0.4.1-rc.5) (2022-03-04)
+
+
+### Bug Fixes
+
+* fixed badge on primary bar and collapser postion ([3129236](https://github.com/zextras/carbonio-shell-ui/commit/3129236a973908533aa152982a1a6610c32a3632))
+
 ### [0.4.1-rc.4](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.1-rc.1...v0.4.1-rc.4) (2022-02-24)
 
 

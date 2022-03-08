@@ -40,6 +40,7 @@ import 'tinymce/plugins/help';
 import 'tinymce/plugins/wordcount';
 import 'tinymce/plugins/quickbars';
 import 'tinymce/plugins/directionality';
+import 'tinymce/plugins/autoresize';
 
 import { Editor } from '@tinymce/tinymce-react';
 
@@ -65,6 +66,7 @@ const Composer: FC<ComposerProps> = ({
 	...rest
 }) => {
 	const [content, setContent] = useState(initialValue);
+
 	const _onEditorChange = useCallback(
 		(newContent, editor) => {
 			setContent(newContent);
@@ -75,20 +77,26 @@ const Composer: FC<ComposerProps> = ({
 		},
 		[setContent, onEditorChange]
 	);
+
 	useEffect(() => setContent(value), [value]);
 
 	return (
-		<Container height="fit">
+		<Container
+			height="100%"
+			crossAlignment="baseline"
+			mainAlignment="flex-start "
+			style={{ overflowY: 'hidden' }}
+		>
 			<Editor
 				value={content}
 				init={{
 					skin_url: `${baseAssetsUrl}/tinymce/skins/ui/oxide`,
 					content_css: `${baseAssetsUrl}/tinymce/skins/content/default/content.css`,
-					height: 500,
+					min_height: 400,
 					menubar: false,
 					statusbar: false,
 					branding: false,
-					resize: false,
+					resize: true,
 					inline,
 					plugins: [
 						'advlist',
@@ -110,7 +118,8 @@ const Composer: FC<ComposerProps> = ({
 						'code',
 						'help',
 						'quickbars',
-						'directionality'
+						'directionality',
+						'autoresize'
 					],
 					toolbar: inline
 						? false

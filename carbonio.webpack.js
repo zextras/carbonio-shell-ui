@@ -34,7 +34,7 @@ const pathsToCopy = [
 ];
 
 module.exports = (_, pkg, options, mode) => {
-	const server = `https://${options.host ?? 'localhost:4443'}`;
+	const server = `https://${options.host}`;
 	return {
 		mode,
 		entry: {
@@ -58,12 +58,12 @@ module.exports = (_, pkg, options, mode) => {
 				index: `${baseStaticPath}/index.html`,
 				rewrites: [
 					// eslint-disable-next-line no-nested-ternary
-					options.watchType === 'carbonioAdmin'
+					options.type === 'carbonioAdmin'
 						? {
 								from: /\/carbonioAdmin\/*/,
 								to: `${baseStaticPath}/admin.html`
 						  }
-						: options.watchType === 'carbonioStandalone'
+						: options.type === 'carbonioStandalone'
 						? {
 								from: /\/carbonioStandalone\/*/,
 								to: `${baseStaticPath}/standalone.html`
@@ -75,7 +75,7 @@ module.exports = (_, pkg, options, mode) => {
 				]
 			},
 			https: true,
-			open: [`/${options.watchType || 'carbonio'}/`],
+			open: [`/${options.type || 'carbonio'}/`],
 			proxy: [
 				{
 					context: ['/static/login/**'],
@@ -191,23 +191,7 @@ module.exports = (_, pkg, options, mode) => {
 				template: path.resolve(process.cwd(), 'src', 'index.template.html'),
 				chunks: ['index'],
 				BASE_PATH: baseStaticPath,
-				SHELL_ENV: 'carbonio'
-			}),
-			new HtmlWebpackPlugin({
-				inject: true,
-				template: path.resolve(process.cwd(), 'src', 'index.template.html'),
-				chunks: ['index'],
-				filename: 'admin.html',
-				BASE_PATH: baseStaticPath,
-				SHELL_ENV: 'carbonioAdmin'
-			}),
-			new HtmlWebpackPlugin({
-				inject: true,
-				template: path.resolve(process.cwd(), 'src', 'index.template.html'),
-				chunks: ['index'],
-				filename: 'standalone.html',
-				BASE_PATH: baseStaticPath,
-				SHELL_ENV: 'carbonioStandalone'
+				SHELL_ENV: options.type
 			}),
 			new HtmlWebpackPlugin({
 				inject: false,
@@ -215,6 +199,24 @@ module.exports = (_, pkg, options, mode) => {
 				filename: 'commit',
 				COMMIT_ID: commitHash
 			}),
+			new HtmlWebpackPlugin({
+				inject: false,
+				template: path.resolve(
+					process.cwd(),
+					'node_modules/@zextras/carbonio-ui-sdk/scripts/configs/component.template'
+				),
+				filename: 'component.json',
+				name: pkg.carbonio.name,
+				description: pkg.description,
+				version: pkg.version,
+				commit: commitHash,
+				priority: pkg.carbonio.priority,
+				type: pkg.carbonio.type,
+				attrKey: pkg.carbonio.attrKey ?? '',
+				icon: pkg.carbonio.icon ?? 'CubeOutline',
+				display: pkg.carbonio.display
+			}),
+
 			new HtmlWebpackPlugin({
 				inject: false,
 				template: path.resolve(

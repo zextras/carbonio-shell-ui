@@ -92,7 +92,7 @@ const Composer: FC<ComposerProps> = ({
 				init={{
 					skin_url: `${baseAssetsUrl}/tinymce/skins/ui/oxide`,
 					content_css: `${baseAssetsUrl}/tinymce/skins/content/default/content.css`,
-					min_height: 400,
+					min_height: 350,
 					menubar: false,
 					statusbar: false,
 					branding: false,

@@ -139,8 +139,7 @@ export const getSoapFetch =
 			})
 		}) // TODO proper error handling
 			.then((res) => res?.json())
-			.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
-			.catch((e) => report(app)(e)) as Promise<Response>;
+			.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get));
 
 export const getXmlSoapFetch =
 	(app: string, set: SetState<AccountState>, get: GetState<AccountState>) =>

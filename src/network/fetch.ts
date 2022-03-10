@@ -139,7 +139,11 @@ export const getSoapFetch =
 			})
 		}) // TODO proper error handling
 			.then((res) => res?.json())
-			.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get));
+			.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
+			.catch((e) => {
+				report(app)(e);
+				throw e;
+			}) as Promise<Response>;
 
 export const getXmlSoapFetch =
 	(app: string, set: SetState<AccountState>, get: GetState<AccountState>) =>
@@ -161,4 +165,8 @@ export const getXmlSoapFetch =
 		</soap:Envelope>`
 		}) // TODO proper error handling
 			.then((res) => res?.json())
-			.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get));
+			.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
+			.catch((e) => {
+				report(app)(e);
+				throw e;
+			}) as Promise<Response>;

@@ -18,6 +18,9 @@
 		"type-check:watch": "npm run type-check -- --watch",
 		"lint": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to node_modules/@zextras/zapp-config src",
 		"build": "sdk build",
+		"start:admin": "sdk start -an carbonio-admin-shell-ui",
+		"build:admin": "sdk build -an carbonio-admin-shell-ui",
+		"deploy:admin": "sdk deploy -an carbonio-admin-shell-ui",
 		"deploy": "sdk deploy",
 		"start": "sdk watch"
 	},

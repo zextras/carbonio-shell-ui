@@ -5,6 +5,7 @@
  */
 
 /* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-param-reassign */
 
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -16,6 +17,7 @@ const baseStaticPath = `/static/iris/carbonio-shell-ui/${commitHash}/`;
 
 module.exports = (conf, pkg, options, mode) => {
 	const server = `https://${options.host}`;
+	const root = options.admin ? 'carbonioAdmin' : 'carbonio';
 	conf.entry = {
 		index: path.resolve(process.cwd(), 'src', 'index.tsx')
 	};
@@ -40,10 +42,9 @@ module.exports = (conf, pkg, options, mode) => {
 			]
 		}),
 		new DefinePlugin({
-			WATCH_SERVER: JSON.stringify(server),
 			COMMIT_ID: JSON.stringify(commitHash.toString().trim()),
 			PACKAGE_VERSION: JSON.stringify(pkg.version),
-			PACKAGE_NAME: JSON.stringify(pkg.carbonio.name),
+			PACKAGE_NAME: JSON.stringify(options.name),
 			BASE_PATH: JSON.stringify(baseStaticPath)
 		}),
 		new HtmlWebpackPlugin({
@@ -51,7 +52,7 @@ module.exports = (conf, pkg, options, mode) => {
 			template: path.resolve(process.cwd(), 'src', 'index.template.html'),
 			chunks: ['index'],
 			BASE_PATH: baseStaticPath,
-			SHELL_ENV: options.type
+			SHELL_ENV: root
 		}),
 		new HtmlWebpackPlugin({
 			inject: false,
@@ -65,25 +66,14 @@ module.exports = (conf, pkg, options, mode) => {
 		historyApiFallback: {
 			index: `${baseStaticPath}/index.html`,
 			rewrites: [
-				// eslint-disable-next-line no-nested-ternary
-				options.admin
-					? {
-							from: /\/carbonioAdmin\/*/,
-							to: `${baseStaticPath}/index.html`
-					  }
-					: options.standalone
-					? {
-							from: /\/carbonioStandalone\/*/,
-							to: `${baseStaticPath}/standalone.html`
-					  }
-					: {
-							from: /\/carbonio\/*/,
-							to: `${baseStaticPath}/index.html`
-					  }
+				{
+					from: new RegExp(`/${root}/*`),
+					to: `${baseStaticPath}/index.html`
+				}
 			]
 		},
 		server: 'https',
-		open: [`/${options.type || 'carbonio'}/`],
+		open: [`/${root}/`],
 		proxy: [
 			{
 				context: ['/static/login/**'],
@@ -95,22 +85,8 @@ module.exports = (conf, pkg, options, mode) => {
 				}
 			},
 			{
-				context: [
-					'!/static/iris/carbonio-shell-ui/**/*',
-					`!/${options.watchType || 'carbonio'}/`,
-					`!/${options.watchType || 'carbonio'}/**/*`
-				],
+				context: ['!/static/iris/carbonio-shell-ui/**/*', `!/${root}/`, `!/${root}/**/*`],
 				target: server,
-				secure: false,
-				logLevel: 'debug',
-				cookieDomainRewrite: {
-					'*': server,
-					[server]: 'localhost:9000'
-				}
-			},
-			{
-				context: ['/carbonioAdmin/**/*'],
-				target: `https://localhost:9000/${baseStaticPath}/admin.html`,
 				secure: false,
 				logLevel: 'debug',
 				cookieDomainRewrite: {

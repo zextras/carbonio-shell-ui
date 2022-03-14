@@ -15,6 +15,9 @@ import { isAdmin, isFullClient, isStandalone } from '../multimode';
 
 const parsePollingInterval = (settings: AccountSettings): number => {
 	const pollingPref = (settings.prefs?.zimbraPrefMailPollingInterval ?? '') as string;
+	if (pollingPref === '500') {
+		return 500;
+	}
 	const pollingValue = parseInt(pollingPref, 10);
 	if (Number.isNaN(pollingValue)) {
 		return 30000;

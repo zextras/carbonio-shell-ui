@@ -22,6 +22,8 @@ export const SettingsSidebar: FC<{ expanded: boolean }> = ({ expanded }) => {
 				label: view.label,
 				icon: view.icon,
 				active: location.pathname === `/${SETTINGS_APP_ID}/${view.route}` && location.search === '',
+				disableHover:
+					location.pathname === `/${SETTINGS_APP_ID}/${view.route}` && location.search === '',
 				onClick: (e: MouseEvent): void => {
 					e.stopPropagation();
 					history.push(`/${SETTINGS_APP_ID}/${view.route}`);
@@ -29,6 +31,7 @@ export const SettingsSidebar: FC<{ expanded: boolean }> = ({ expanded }) => {
 				items: map(view.subSections, (item) => ({
 					...item,
 					active: location.search === `?section=${item.id}`,
+					disableHover: location.search === `?section=${item.id}`,
 					onClick: (e: MouseEvent): void => {
 						e.stopPropagation();
 						history.replace(`/${SETTINGS_APP_ID}/${view.route}?section=${item.id}`);

@@ -8,23 +8,20 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormSubSection, Button } from '@zextras/carbonio-design-system';
 import { logout } from '../../../network/logout';
-import { settingsSubSections } from '../../../constants';
+import { accountSubSection } from '../../general-settings-sub-sections';
 
 const Logout: FC = () => {
 	const [t] = useTranslation();
 	const onClick = useCallback(() => {
 		logout();
 	}, []);
-	const sectionTitle = useMemo(
-		() => t(settingsSubSections[6].label, settingsSubSections[6].fallback),
-		[t]
-	);
+	const sectionTitle = useMemo(() => accountSubSection(t), [t]);
 	return (
 		<FormSubSection
-			label={sectionTitle}
+			label={sectionTitle.label}
 			minWidth="calc(min(100%, 512px))"
 			width="50%"
-			id={sectionTitle.replace(/\s/g, '')}
+			id={sectionTitle.id}
 		>
 			<Button label={t('settings.general.account_logout', 'Logout')} onClick={onClick} />
 		</FormSubSection>

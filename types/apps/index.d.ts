@@ -93,12 +93,12 @@ export type UtilityView = CarbonioAccessoryView<UtilityBarComponentProps> & {
 	badge: BadgeInfo;
 	label: string;
 };
-
+export type SettingsSubSection = { label: string; id: string };
 export type SettingsView = CarbonioView<SettingsViewProps> & {
 	icon: string;
 	label: string;
 	position: number;
-	subSections?: Array<{ label: string; id: string }>;
+	subSections?: Array<SettingsSubSection>;
 };
 
 export type SearchView = CarbonioView<SearchViewProps> & {

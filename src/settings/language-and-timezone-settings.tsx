@@ -20,7 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { find } from 'lodash';
 import { AccountSettings } from '../../types';
 import { localeList, timeZoneList } from './components/utils';
-import { settingsSubSections } from '../constants';
+import { timezoneAndLanguageSubSection } from './general-settings-sub-sections';
 
 momentLocalizer();
 
@@ -56,16 +56,13 @@ const LanguageAndTimeZone: FC<{
 				: timezones[39],
 		[timezones, settings.prefs.zimbraPrefTimeZoneId]
 	);
-	const sectionTitle = useMemo(
-		() => t(settingsSubSections[1].label, settingsSubSections[1].fallback),
-		[t]
-	);
+	const sectionTitle = useMemo(() => timezoneAndLanguageSubSection(t), [t]);
 	return (
 		<FormSubSection
-			label={sectionTitle}
+			label={sectionTitle.label}
 			minWidth="calc(min(100%, 512px))"
 			width="50%"
-			id={sectionTitle.replace(/\s/g, '')}
+			id={sectionTitle.id}
 		>
 			<Container crossAlignment="baseline" padding={{ all: 'small' }}>
 				{Object.keys(settings.prefs).length > 0 && (

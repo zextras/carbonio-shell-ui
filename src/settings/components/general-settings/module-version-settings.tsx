@@ -20,8 +20,9 @@ import {
 import { map } from 'lodash';
 import { useAppList } from '../../../store/app/hooks';
 
-import { SEARCH_APP_ID, settingsSubSections, SETTINGS_APP_ID } from '../../../constants/index';
+import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../../../constants/index';
 import { CarbonioModule } from '../../../../types';
+import { versionsSubSection } from '../../general-settings-sub-sections';
 
 const ModuleVersionSettings: FC = () => {
 	const apps = useAppList();
@@ -37,17 +38,14 @@ const ModuleVersionSettings: FC = () => {
 		() => apps.filter((app) => app.name !== SEARCH_APP_ID && app.name !== SETTINGS_APP_ID),
 		[apps]
 	);
-	const sectionTitle = useMemo(
-		() => t(settingsSubSections[5].label, settingsSubSections[5].fallback),
-		[t]
-	);
+	const sectionTitle = useMemo(() => versionsSubSection(t), [t]);
 	return (
 		<>
 			<FormSubSection
-				label={sectionTitle}
+				label={sectionTitle.label}
 				minWidth="calc(min(100%, 512px))"
 				width="50%"
-				id={sectionTitle.replace(/\s/g, '')}
+				id={sectionTitle.id}
 			>
 				{map(filteredList, (app: CarbonioModule) => (
 					<Container key={app.name} padding={{ horizontal: 'large', vertical: 'small' }}>

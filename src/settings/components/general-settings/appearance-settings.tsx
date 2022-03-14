@@ -10,7 +10,8 @@ import { FormSubSection, Select } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 import { ThemeCallbacksContext } from '../../../boot/theme-provider';
 import { AccountSettings, DRPropValues } from '../../../../types';
-import { settingsSubSections, SHELL_APP_ID } from '../../../constants';
+import { SHELL_APP_ID } from '../../../constants';
+import { themeSubSection } from '../../general-settings-sub-sections';
 
 const AppearanceSettings: FC<{
 	settings: AccountSettings;
@@ -61,16 +62,13 @@ const AppearanceSettings: FC<{
 	// 		),
 	// 	[setDarkReaderState, settings.props]
 	// );
-	const sectionTitle = useMemo(
-		() => t(settingsSubSections[0].label, settingsSubSections[0].fallback),
-		[t]
-	);
+	const subSection = useMemo(() => themeSubSection(t), [t]);
 	return (
 		<FormSubSection
-			label={sectionTitle}
+			label={subSection.label}
 			minWidth="calc(min(100%, 512px))"
 			width="50%"
-			id={sectionTitle.replace(/\s/g, '')}
+			id={subSection.id}
 		>
 			<Select
 				items={items}

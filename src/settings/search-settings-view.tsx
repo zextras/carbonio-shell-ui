@@ -8,7 +8,7 @@ import React, { useState, FC, useCallback, useEffect, useMemo } from 'react';
 import { Container, FormSubSection, Checkbox } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { AccountSettings } from '../../types';
-import { settingsSubSections } from '../constants';
+import { searchPrefsSubSection } from './general-settings-sub-sections';
 
 const SearchSettingsView: FC<{
 	settings: AccountSettings;
@@ -54,16 +54,13 @@ const SearchSettingsView: FC<{
 		setSearchInSharedFolder(!searchInSharedFolder);
 		setMode(!searchInSharedFolder, 'zimbraPrefIncludeSharedItemsInSearch');
 	}, [searchInSharedFolder, setMode]);
-	const sectionTitle = useMemo(
-		() => t(settingsSubSections[3].label, settingsSubSections[3].fallback),
-		[t]
-	);
+	const sectionTitle = useMemo(() => searchPrefsSubSection(t), [t]);
 	return (
 		<FormSubSection
-			label={sectionTitle}
+			label={sectionTitle.label}
 			minWidth="calc(min(100%, 512px))"
 			width="50%"
-			id={sectionTitle.replace(/\s/g, '')}
+			id={sectionTitle.id}
 		>
 			<Container crossAlignment="baseline" padding={{ all: 'small' }}>
 				<Checkbox

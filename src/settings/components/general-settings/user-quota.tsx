@@ -9,7 +9,7 @@ import { Quota, Container, FormSubSection, Text, Tooltip } from '@zextras/carbon
 import { useTranslation } from 'react-i18next';
 import { useUserSettings } from '../../../store/account/hooks';
 import { useAccountStore } from '../../../store/account/store';
-import { settingsSubSections } from '../../../constants';
+import { quotaSubSection } from '../../general-settings-sub-sections';
 
 interface UserQuotaProps {
 	mobileView: boolean;
@@ -54,10 +54,7 @@ const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 				return 'primary';
 		}
 	}, [quota]);
-	const sectionTitle = useMemo(
-		() => t(settingsSubSections[4].label, settingsSubSections[4].fallback),
-		[t]
-	);
+	const sectionTitle = useMemo(() => quotaSubSection(t), [t]);
 	return mobileView ? (
 		<Container width="fit" padding={{ right: 'medium' }}>
 			<Tooltip label={description} placement="bottom">
@@ -66,10 +63,10 @@ const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 		</Container>
 	) : (
 		<FormSubSection
-			label={sectionTitle}
+			label={sectionTitle.label}
 			minWidth="calc(min(100%, 512px))"
 			width="50%"
-			id={sectionTitle.replace(/\s/g, '')}
+			id={sectionTitle.id}
 		>
 			<Container width="fill" padding={{ vertical: 'medium' }}>
 				<Container

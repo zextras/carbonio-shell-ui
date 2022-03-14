@@ -39,6 +39,8 @@ import 'tinymce/plugins/paste';
 import 'tinymce/plugins/help';
 import 'tinymce/plugins/wordcount';
 import 'tinymce/plugins/quickbars';
+import 'tinymce/plugins/directionality';
+import 'tinymce/plugins/autoresize';
 
 import { Editor } from '@tinymce/tinymce-react';
 
@@ -64,6 +66,7 @@ const Composer: FC<ComposerProps> = ({
 	...rest
 }) => {
 	const [content, setContent] = useState(initialValue);
+
 	const _onEditorChange = useCallback(
 		(newContent, editor) => {
 			setContent(newContent);
@@ -74,20 +77,26 @@ const Composer: FC<ComposerProps> = ({
 		},
 		[setContent, onEditorChange]
 	);
+
 	useEffect(() => setContent(value), [value]);
 
 	return (
-		<Container height="fit">
+		<Container
+			height="100%"
+			crossAlignment="baseline"
+			mainAlignment="flex-start "
+			style={{ overflowY: 'hidden' }}
+		>
 			<Editor
 				value={content}
 				init={{
 					skin_url: `${baseAssetsUrl}/tinymce/skins/ui/oxide`,
 					content_css: `${baseAssetsUrl}/tinymce/skins/content/default/content.css`,
-					height: 500,
+					min_height: 350,
 					menubar: false,
 					statusbar: false,
 					branding: false,
-					resize: false,
+					resize: true,
 					inline,
 					plugins: [
 						'advlist',
@@ -108,17 +117,20 @@ const Composer: FC<ComposerProps> = ({
 						'paste',
 						'code',
 						'help',
-						'quickbars'
+						'quickbars',
+						'directionality',
+						'autoresize'
 					],
 					toolbar: inline
 						? false
 						: // eslint-disable-next-line max-len
-						  'formatselect | bold italic underline | forecolor backcolor | bullist numlist outdent indent | removeformat',
+						  'fontselect fontsizeselect formatselect | bold italic underline strikethrough | removeformat code | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | ltr rtl',
 					quickbars_insert_toolbar: inline ? 'bullist numlist' : '',
 					quickbars_selection_toolbar: inline
 						? 'bold italic underline | forecolor backcolor | removeformat | quicklink'
 						: 'quicklink',
-					contextmenu: inline ? '' : ''
+					contextmenu: inline ? '' : '',
+					toolbar_mode: 'wrap'
 				}}
 				onEditorChange={_onEditorChange}
 				{...rest}

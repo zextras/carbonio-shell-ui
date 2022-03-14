@@ -7,7 +7,7 @@
 import React, { FC, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Accordion, Tooltip, IconButton } from '@zextras/carbonio-design-system';
-import { startsWith } from 'lodash';
+import { map, startsWith } from 'lodash';
 import { SETTINGS_APP_ID } from '../constants';
 import { useAppStore } from '../store/app';
 
@@ -21,13 +21,22 @@ export const SettingsSidebar: FC<{ expanded: boolean }> = ({ expanded }) => {
 				id: view.route,
 				label: view.label,
 				icon: view.icon,
-				active: startsWith(location.pathname, `/${SETTINGS_APP_ID}/${view.route}`),
+				active: location.pathname === `/${SETTINGS_APP_ID}/${view.route}` && location.search === '',
 				onClick: (e: MouseEvent): void => {
 					e.stopPropagation();
 					history.push(`/${SETTINGS_APP_ID}/${view.route}`);
-				}
+				},
+				items: map(view.subSections, (item) => ({
+					...item,
+					active: location.search === `?section=${item.id}`,
+					onClick: (e: MouseEvent): void => {
+						e.stopPropagation();
+						history.replace(`/${SETTINGS_APP_ID}/${view.route}?section=${item.id}`);
+						setTimeout(() => document.querySelector(`#${item.id}`)?.scrollIntoView(), 1);
+					}
+				}))
 			})),
-		[history, location.pathname, settingsViews]
+		[history, location.pathname, location.search, settingsViews]
 	);
 	const collapsedItems = useMemo(
 		() =>

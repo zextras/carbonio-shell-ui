@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useState, useMemo, useContext, useCallback, useEffect } from 'react';
+import React, { FC, useState, useMemo, useContext, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormSubSection, Select } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 import { ThemeCallbacksContext } from '../../../boot/theme-provider';
 import { AccountSettings, DRPropValues } from '../../../../types';
-import { SHELL_APP_ID } from '../../../constants';
+import { settingsSubSections, SHELL_APP_ID } from '../../../constants';
 
 const AppearanceSettings: FC<{
 	settings: AccountSettings;
@@ -61,11 +61,16 @@ const AppearanceSettings: FC<{
 	// 		),
 	// 	[setDarkReaderState, settings.props]
 	// );
+	const sectionTitle = useMemo(
+		() => t(settingsSubSections[0].label, settingsSubSections[0].fallback),
+		[t]
+	);
 	return (
 		<FormSubSection
-			label={t('settings.general.theme_options', 'Theme Options')}
+			label={sectionTitle}
 			minWidth="calc(min(100%, 512px))"
 			width="50%"
+			id={sectionTitle.replace(/\s/g, '')}
 		>
 			<Select
 				items={items}

@@ -17,7 +17,7 @@ import { isAdmin, isClient } from '../../multimode';
 import Feedback from '../../reporting/feedback';
 import DevBoard from '../../dev/dev-board';
 import DevBoardTrigger from '../../dev/dev-board-trigger';
-import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
+import { SEARCH_APP_ID, settingsSubSections, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
 import AccountWrapper from '../../settings/account-wrapper';
 
 const settingsRoute = {
@@ -57,7 +57,11 @@ const settingsGeneralView = (t: TFunction): SettingsView => ({
 	component: GeneralSettings,
 	icon: 'SettingsModOutline',
 	label: t('settings.general.general', 'General'),
-	position: 1
+	position: 1,
+	subSections: settingsSubSections.map((item) => ({
+		id: t(item.label, item.fallback).replace(/\s/g, ''),
+		label: t(item.label, item.fallback)
+	}))
 });
 
 const settingsAccountsView = (t: TFunction): SettingsView => ({

@@ -31,6 +31,7 @@ import {
 	getOutOfOfficeStatusPrefsData,
 	ItemsSendAutoReplies
 } from '../utils';
+import { settingsSubSections } from '../../../constants';
 
 momentLocalizer();
 
@@ -108,12 +109,16 @@ const OutOfOfficeView: FC<{
 	const itemsSendAutoReplies = useMemo(() => ItemsSendAutoReplies(t), [t]);
 	const itemsExternalSenders = useMemo(() => ItemsExternalSenders(t), [t]);
 	const itemsOutOfOfficeStatus = useMemo(() => ItemsOutOfOfficeStatus(t), [t]);
-
+	const sectionTitle = useMemo(
+		() => t(settingsSubSections[2].label, settingsSubSections[2].fallback),
+		[t]
+	);
 	return (
 		<FormSubSection
-			label={t('settings.out_of_office.headings.settings_label', 'Out of Office Settings')}
+			label={sectionTitle}
 			minWidth="calc(min(100%, 512px))"
 			width="50%"
+			id={sectionTitle.replace(/\s/g, '')}
 		>
 			<Container crossAlignment="baseline" padding={{ all: 'small' }}>
 				<Select

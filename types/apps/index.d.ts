@@ -98,6 +98,7 @@ export type SettingsView = CarbonioView<SettingsViewProps> & {
 	icon: string;
 	label: string;
 	position: number;
+	subSections?: Array<{ label: string; id: string }>;
 };
 
 export type SearchView = CarbonioView<SearchViewProps> & {

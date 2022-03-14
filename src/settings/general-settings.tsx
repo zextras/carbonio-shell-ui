@@ -4,90 +4,26 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, useState, FC } from 'react';
-import {
-	Breadcrumbs,
-	Button,
-	Container,
-	Divider,
-	Padding,
-	useSnackbar
-} from '@zextras/carbonio-design-system';
+import React, { useCallback, useState, FC, useMemo } from 'react';
+import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
-import { includes } from 'lodash';
+import { includes, isEmpty } from 'lodash';
 import { useUserSettings } from '../store/account';
 import Logout from './components/general-settings/logout';
 import AppearanceSettings from './components/general-settings/appearance-settings';
 import ModuleVersionSettings from './components/general-settings/module-version-settings';
 import OutOfOfficeSettings from './components/general-settings/out-of-office-view';
 import UserQuota from './components/general-settings/user-quota';
-import { SETTINGS_APP_ID } from '../constants';
 import { editSettings } from '../network/edit-settings';
 import { Mods } from '../../types';
 import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
 import SearchSettingsView from './search-settings-view';
-
-export const DisplayerHeader: FC<{
-	label: string;
-	onCancel: (mods: Record<string, unknown>) => void;
-	onSave: (mods: Record<string, unknown>) => void;
-	mods: Record<string, unknown>;
-}> = ({ label, onCancel, onSave, mods }) => {
-	const [t] = useTranslation();
-	const history = useHistory();
-	const onSaveCb = useCallback(() => {
-		onSave(mods);
-	}, [mods, onSave]);
-	const onCancelCb = useCallback(() => {
-		onCancel(mods);
-	}, [mods, onCancel]);
-	const crumbs = [
-		{
-			id: 'settings',
-			label: t('settings.app', 'Settings'),
-			click: (): void => history.push(`/${SETTINGS_APP_ID}/`)
-		},
-		{
-			id: 'general',
-			label,
-			click: (): void => history.push(`/${SETTINGS_APP_ID}/`)
-		}
-	];
-
-	return (
-		<Container
-			orientation="vertical"
-			mainAlignment="flex-start"
-			height="fit"
-			padding={{ bottom: 'medium' }}
-		>
-			<Container mainAlignment="flex-end" orientation="horizontal" padding={{ all: 'small' }}>
-				<Breadcrumbs crumbs={crumbs} />
-				<Button
-					label={t('label.cancel', 'Cancel')}
-					color="secondary"
-					onClick={onCancelCb}
-					disabled={!mods}
-				/>
-				<Padding horizontal="small" />
-				<Button
-					label={t('settings.button.primary', 'Save')}
-					color="primary"
-					onClick={onSaveCb}
-					disabled={!mods}
-				/>
-			</Container>
-			<Divider color="gray1" />
-		</Container>
-	);
-};
+import SettingsHeader from './components/settings-header';
 
 const GeneralSettings: FC = () => {
 	const [mods, setMods] = useState<Mods>({});
 	const [t] = useTranslation();
 	const settings = useUserSettings();
-	// const [original] = useState(settings);
 	const [open, setOpen] = useState(false);
 	const addMod = useCallback((type: 'props' | 'prefs', key, value) => {
 		setMods((m) => ({
@@ -130,21 +66,18 @@ const GeneralSettings: FC = () => {
 	const onCancel = useCallback(() => {
 		setMods({});
 	}, []);
+	const isDirty = useMemo(() => !isEmpty(mods), [mods]);
+	const title = useMemo(() => t('settings.general.general', 'General Settings'), [t]);
 
 	return (
 		<>
+			<SettingsHeader title={title} onCancel={onCancel} onSave={onSave} isDirty={isDirty} />
 			<Container
 				background="gray5"
 				mainAlignment="flex-start"
 				padding={{ all: 'medium' }}
 				style={{ overflow: 'auto' }}
 			>
-				<DisplayerHeader
-					mods={mods}
-					label={t('settings.general.general', 'General Settings')}
-					onCancel={onCancel}
-					onSave={onSave}
-				/>
 				<AppearanceSettings settings={settings} addMod={addMod} />
 				<LanguageAndTimeZoneSettings
 					settings={settings}

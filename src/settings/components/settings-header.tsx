@@ -44,13 +44,15 @@ const SettingsHeader: FC<SettingsHeaderProps> = ({ onSave, onCancel, isDirty, ti
 	];
 	const search = history.location?.search;
 	useEffect(() => {
-		setTimeout(
-			() =>
-				document
-					.querySelector(`#${history.location.search}`.replace('?section=', ''))
-					?.scrollIntoView(),
-			1
-		);
+		if (search) {
+			setTimeout(
+				() =>
+					document
+						.querySelector(`#${history.location.search}`.replace('?section=', ''))
+						?.scrollIntoView(),
+				1
+			);
+		}
 	}, [history, history.location, history.location.search, search, useparam]);
 	return (
 		<>

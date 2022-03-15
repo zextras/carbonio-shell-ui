@@ -44,7 +44,7 @@ const SearchSettingsView: FC<{
 
 	const onClickSpam = useCallback(() => {
 		setSearchInSpamFolder(!searchInSpamFolder);
-		setMode(!searchInSpamFolder, 'zimbraPrefIncludeSpamItemsInSearch');
+		setMode(!searchInSpamFolder, 'zimbraPrefIncludeSpamInSearch');
 	}, [searchInSpamFolder, setMode]);
 	const onClickTrash = useCallback(() => {
 		setSearchInTrashFolder(!searchInTrashFolder);
@@ -69,7 +69,7 @@ const SearchSettingsView: FC<{
 						'Include Spam Folder in Searches'
 					)}
 					value={searchInSpamFolder}
-					onClick={(): void => onClickSpam()}
+					onClick={onClickSpam}
 				/>
 				<Checkbox
 					label={t(
@@ -77,7 +77,7 @@ const SearchSettingsView: FC<{
 						'Include Trash Folder in Searches'
 					)}
 					value={searchInTrashFolder}
-					onClick={(): void => onClickTrash()}
+					onClick={onClickTrash}
 				/>
 				<Checkbox
 					label={t(
@@ -85,7 +85,7 @@ const SearchSettingsView: FC<{
 						'Include Shared Folder in Searches'
 					)}
 					value={searchInSharedFolder}
-					onClick={(): void => onClickShared()}
+					onClick={onClickShared}
 				/>
 			</Container>
 		</FormSubSection>

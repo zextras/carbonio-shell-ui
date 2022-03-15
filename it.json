@@ -90,7 +90,12 @@
             }
         },
         "general_tab": "Generale",
-        "timezone_and_language": "Fuso Orario e Lingua"
+        "timezone_and_language": "Fuso Orario e Lingua",
+        "search_settings": {
+            "labels": {
+                "include_search_in_shared_folder": "Includi Cartelle Condivise nella ricerca"
+            }
+        }
     },
     "module": {
         "app": {

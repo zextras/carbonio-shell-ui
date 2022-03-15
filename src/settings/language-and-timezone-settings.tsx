@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { find } from 'lodash';
 import { AccountSettings } from '../../types';
 import { localeList, timeZoneList } from './components/utils';
+import { timezoneAndLanguageSubSection } from './general-settings-sub-sections';
 
 momentLocalizer();
 
@@ -55,12 +56,13 @@ const LanguageAndTimeZone: FC<{
 				: timezones[39],
 		[timezones, settings.prefs.zimbraPrefTimeZoneId]
 	);
-
+	const sectionTitle = useMemo(() => timezoneAndLanguageSubSection(t), [t]);
 	return (
 		<FormSubSection
-			label={t('settings.timezone_and_language', 'Time Zone and Language')}
+			label={sectionTitle.label}
 			minWidth="calc(min(100%, 512px))"
 			width="50%"
+			id={sectionTitle.id}
 		>
 			<Container crossAlignment="baseline" padding={{ all: 'small' }}>
 				{Object.keys(settings.prefs).length > 0 && (
@@ -105,7 +107,7 @@ const LanguageAndTimeZone: FC<{
 						{t(
 							'message.reload',
 							`	Would you like to reload the application now to show the new language?
-               (Otherwise, the new language will appear the next time you sign in.)`
+							(Otherwise, the new language will appear the next time you sign in.)`
 						)}
 					</Text>
 				</Modal>

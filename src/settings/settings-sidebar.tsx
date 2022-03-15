@@ -35,7 +35,6 @@ export const SettingsSidebar: FC<{ expanded: boolean }> = ({ expanded }) => {
 					onClick: (e: MouseEvent): void => {
 						e.stopPropagation();
 						history.replace(`/${SETTINGS_APP_ID}/${view.route}?section=${item.id}`);
-						setTimeout(() => document.querySelector(`#${item.id}`)?.scrollIntoView(), 1);
 					}
 				}))
 			})),

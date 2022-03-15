@@ -1,10 +1,10 @@
 /*
- * SPDX-FileCopyrightText: 2021 Zextras <https://www.zextras.com>
+ * SPDX-FileCopyrightText: 2022 Zextras <https://www.zextras.com>
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import {
 	Padding,
 	Row,
@@ -15,7 +15,7 @@ import {
 	Breadcrumbs
 } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { SETTINGS_APP_ID } from '../../constants';
 import { RouteLeavingGuard } from '../../ui-extras/nav-guard';
 
@@ -29,6 +29,7 @@ type SettingsHeaderProps = {
 const SettingsHeader: FC<SettingsHeaderProps> = ({ onSave, onCancel, isDirty, title }) => {
 	const [t] = useTranslation();
 	const history = useHistory();
+	const useparam = useParams();
 	const crumbs = [
 		{
 			id: 'settings',
@@ -41,6 +42,16 @@ const SettingsHeader: FC<SettingsHeaderProps> = ({ onSave, onCancel, isDirty, ti
 			click: (): void => history.push(`/${SETTINGS_APP_ID}/`)
 		}
 	];
+	const search = history.location?.search;
+	useEffect(() => {
+		setTimeout(
+			() =>
+				document
+					.querySelector(`#${history.location.search}`.replace('?section=', ''))
+					?.scrollIntoView(),
+			1
+		);
+	}, [history, history.location, history.location.search, search, useparam]);
 	return (
 		<>
 			<RouteLeavingGuard when={isDirty} onSave={onSave}>

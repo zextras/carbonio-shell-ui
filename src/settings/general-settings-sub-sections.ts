@@ -8,7 +8,7 @@ import { SettingsSubSection } from '../../types';
 
 export const themeSubSection = (t: TFunction): SettingsSubSection => ({
 	label: t('settings.general.theme_options', 'Theme Options'),
-	id: ''
+	id: 'theme_options'
 });
 export const timezoneAndLanguageSubSection = (t: TFunction): SettingsSubSection => ({
 	label: t('settings.timezone_and_language', 'Time Zone and Language'),
@@ -36,6 +36,7 @@ export const accountSubSection = (t: TFunction): SettingsSubSection => ({
 });
 
 export const settingsSubSections = (t: TFunction): Array<SettingsSubSection> => [
+	themeSubSection(t),
 	timezoneAndLanguageSubSection(t),
 	outOfOfficeSubSection(t),
 	searchPrefsSubSection(t),

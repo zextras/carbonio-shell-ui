@@ -17,32 +17,11 @@ export type SoapFetch = <Request, Response>(
 ) => Promise<Response>;
 
 export type AccountState = {
-	noOpTimeout: unknown;
 	account?: Account;
 	settings: AccountSettings;
 	zimbraVersion: string;
-	context: AccountContext;
-	init: () => Promise<void>;
-	setContext: (context: unknown) => void;
-	xmlSoapFetch: (app: string) => SoapFetch;
-	soapFetch: (app: string) => SoapFetch;
 	tags: Array<Tag>;
 	usedQuota: number;
-	pollingInterval: number;
-};
-
-export type AccountContext = {
-	refresh?: NotifyObject;
-	notify?: [NotifyObject];
-	change?: { token: number };
-	session?: { id: number; _content: number };
-};
-
-export type NotifyObject = {
-	seq?: number;
-	version?: string;
-	mbx?: [{ s: number }];
-	folder?: Array<unknown>;
 };
 
 export type Account = {

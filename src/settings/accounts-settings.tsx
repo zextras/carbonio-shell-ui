@@ -21,6 +21,7 @@ import Delegates from './components/account-settings/delegates';
 import PersonaSettings from './components/account-settings/persona-settings';
 import PersonaUseSection from './components/account-settings/persona-use-section';
 import SettingsHeader from './components/settings-header';
+import { getXmlSoapFetch } from '../network/fetch';
 
 // external accounts not yet activated, graphical part is complete
 // import ExternalAccount from './components/account-settings/external-account-settings';
@@ -164,42 +165,39 @@ export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps)
 	const createSnackbar = useSnackbar();
 
 	useEffect(() => {
-		useAccountStore
-			.getState()
-			.xmlSoapFetch(SHELL_APP_ID)(
-				'GetRights',
-				`<GetRightsRequest xmlns="urn:zimbraAccount"></GetRightsRequest>`
-			)
-			.then((res: any) => {
-				if (res.ace) {
-					const tempResult: UserRightsProps[] = map(res.ace, (item) => ({
-						email: item.d,
-						right: item.right
-					}));
-					const resultReduced = reduce(
-						tempResult,
-						(result: UserRightsProps[], item) => {
-							const index = findIndex(result, { email: item.email });
-							if (index === -1) {
-								result.push({ email: item.email, right: item.right });
-							} else {
-								result.push({
-									email: item.email,
-									right: `${item.right} and ${result[index].right}`
-								});
-								result.splice(index, 1);
-							}
-							return result;
-						},
-						[]
-					);
-					const result = map(resultReduced, (item: UserRightsProps, index) => ({
-						...item,
-						id: index.toString()
-					}));
-					setDelegates(result);
-				}
-			});
+		getXmlSoapFetch(SHELL_APP_ID)(
+			'GetRights',
+			`<GetRightsRequest xmlns="urn:zimbraAccount"></GetRightsRequest>`
+		).then((res: any) => {
+			if (res.ace) {
+				const tempResult: UserRightsProps[] = map(res.ace, (item) => ({
+					email: item.d,
+					right: item.right
+				}));
+				const resultReduced = reduce(
+					tempResult,
+					(result: UserRightsProps[], item) => {
+						const index = findIndex(result, { email: item.email });
+						if (index === -1) {
+							result.push({ email: item.email, right: item.right });
+						} else {
+							result.push({
+								email: item.email,
+								right: `${item.right} and ${result[index].right}`
+							});
+							result.splice(index, 1);
+						}
+						return result;
+					},
+					[]
+				);
+				const result = map(resultReduced, (item: UserRightsProps, index) => ({
+					...item,
+					id: index.toString()
+				}));
+				setDelegates(result);
+			}
+		});
 	}, []);
 
 	useEffect(() => {

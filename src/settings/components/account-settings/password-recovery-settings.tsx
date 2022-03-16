@@ -17,7 +17,7 @@ import {
 import { TFunction } from 'i18next';
 import { SHELL_APP_ID, EMAIL_VALIDATION_REGEX } from '../../../constants';
 import { IdentityProps } from '../../../../types';
-import { useAccountStore } from '../../../store/account/store';
+import { getXmlSoapFetch } from '../../../network/fetch';
 
 interface PasswordRecoverySettingsProps {
 	t: TFunction;
@@ -65,22 +65,19 @@ const PasswordRecoverySettings = ({
 	);
 
 	const onSubmit = useCallback(() => {
-		useAccountStore
-			.getState()
-			.xmlSoapFetch(SHELL_APP_ID)(
-				'SetRecoveryAccount',
-				`<SetRecoveryAccountRequest xmlns="urn:zimbraMail" op="sendCode" recoveryAccount="${emailValue}"/>`
-			)
-			.catch(() => {
-				createSnackbar({
-					key: `new`,
-					replace: true,
-					type: 'error',
-					label: t('snackbar.error', 'Something went wrong, please try again'),
-					autoHideTimeout: 3000,
-					hideButton: true
-				});
+		getXmlSoapFetch(SHELL_APP_ID)(
+			'SetRecoveryAccount',
+			`<SetRecoveryAccountRequest xmlns="urn:zimbraMail" op="sendCode" recoveryAccount="${emailValue}"/>`
+		).catch(() => {
+			createSnackbar({
+				key: `new`,
+				replace: true,
+				type: 'error',
+				label: t('snackbar.error', 'Something went wrong, please try again'),
+				autoHideTimeout: 3000,
+				hideButton: true
 			});
+		});
 	}, [createSnackbar, emailValue, t]);
 
 	return (

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useState, useCallback, FC, useEffect, useMemo } from 'react';
+import React, { useState, useCallback, FC, useEffect } from 'react';
 import { Container, Checkbox, Text, Icon, Padding } from '@zextras/carbonio-design-system';
 
 import moment from 'moment';

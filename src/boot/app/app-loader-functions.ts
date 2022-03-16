@@ -27,8 +27,6 @@ import {
 	useUserAccounts,
 	useUserSettings,
 	useTags,
-	useNotify,
-	useRefresh,
 	useUserRight,
 	useUserRights,
 	getUserRight,
@@ -45,8 +43,7 @@ import {
 	useIntegratedFunction,
 	useIntegratedHook
 } from '../../store/integrations/hooks';
-import { CarbonioModule } from '../../../types';
-import { getEditSettingsForApp } from '../../network/edit-settings';
+import { CarbonioModule, useNotify, useRefresh } from '../../../types';
 import {
 	usePushHistoryCallback,
 	useGoBackHistoryCallback,
@@ -63,11 +60,12 @@ import {
 	useRemoveCurrentBoard,
 	useUpdateCurrentBoard
 } from '../../shell/boards/board-hooks';
+import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({
-	soapFetch: useAccountStore.getState().soapFetch(pkg.name),
-	xmlSoapFetch: useAccountStore.getState().xmlSoapFetch(pkg.name),
+	soapFetch: getSoapFetch(pkg.name),
+	xmlSoapFetch: getXmlSoapFetch(pkg.name),
 
 	// APP STORE FUNCTIONS
 	useAppContext: useAppContext(pkg.name),

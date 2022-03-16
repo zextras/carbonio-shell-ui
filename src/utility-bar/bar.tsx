@@ -59,7 +59,7 @@ export const ShellUtilityBar: FC = () => {
 						_jsns: 'urn:zimbraMail'
 					});
 				},
-				icon: 'HistoryOutline'
+				icon: 'Refresh'
 			},
 			{
 				id: 'docs',

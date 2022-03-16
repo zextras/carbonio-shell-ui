@@ -9,7 +9,7 @@ import { filter } from 'lodash';
 import { SHELL_APP_ID, SHELL_MODES } from '../constants';
 import { useAppStore } from '../store/app';
 import { normalizeAccount } from '../store/account/normalization';
-import { AccountSettings, AccountState, GetInfoResponse, Tag, CarbonioModule } from '../../types';
+import { AccountSettings, AccountState, GetInfoResponse, CarbonioModule } from '../../types';
 import { goToLogin } from './go-to-login';
 import { isAdmin, isFullClient, isStandalone } from '../multimode';
 

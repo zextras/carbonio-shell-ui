@@ -12,12 +12,12 @@ import {
 	AccountState,
 	ErrorSoapResponse,
 	SoapResponse,
-	SuccessSoapResponse,
-	Tag
+	SuccessSoapResponse
 } from '../../types';
 import { userAgent } from './user-agent';
 import { noOp } from './noOp';
 import { report } from '../reporting';
+import { handleTagSync } from '../store/tags/sync';
 
 const getAccount = (
 	acc?: Account,
@@ -95,10 +95,10 @@ const handleResponse = <R>(
 	if (res?.Header?.context) {
 		const usedQuota =
 			res.Header.context?.refresh?.mbx?.[0]?.s ?? res.Header.context?.notify?.[0]?.mbx?.[0]?.s;
-		const tags = res.Header.context?.refresh?.tags?.tag as Array<Tag>;
+		handleTagSync(res.Header.context);
 		set({
 			noOpTimeout: setTimeout(() => noOp(get), get().pollingInterval),
-			tags: tags ?? get().tags,
+			// @@ tags: tags ?? get().tags,
 			usedQuota: usedQuota ?? get().usedQuota,
 			context: {
 				...get().context,

@@ -24,7 +24,7 @@ import {
 import { ActionFactory, AnyFunction, CombinedActionFactory, Action } from '../integrations';
 import {
 	AccountSettings,
-	Tag,
+	// @@ Tag,
 	Account,
 	NotifyObject,
 	AccountRights,
@@ -93,8 +93,8 @@ export const getUserAccount: () => Account;
 export const getUserAccounts: () => Array<Account>;
 export const getUserRights: () => AccountRights;
 export const getUserRight: (right: AccountRightName) => Array<AccountRightTarget>;
-export const useTags: () => Array<Tag>;
-export const getTags: () => Array<Tag>;
+// @@ export const useTags: () => Array<Tag>;
+// @@ export const getTags: () => Array<Tag>;
 export const useUserSettings: () => AccountSettings;
 export const useUserSetting: <T = void>(...path: Array<string>) => string | T;
 export const getUserSettings: () => AccountSettings;

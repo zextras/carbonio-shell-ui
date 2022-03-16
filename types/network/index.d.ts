@@ -5,6 +5,7 @@
  */
 
 import { AccountRights, ZimletProp } from '../account';
+import { Tag } from '../tags';
 
 export type ZimletPkgDescription = {
 	zimlet: Array<{
@@ -123,4 +124,28 @@ export type Locale = {
 };
 export type AvailableLocalesResponse = {
 	locale: Array<Locale>;
+};
+
+export type CreateTagRequest = {
+	tag: Omit<Tag, id>;
+	_jsns: string;
+};
+
+export type CreateTagResponse = {
+	tag: [Tag];
+};
+
+export type TagActionRequest = {
+	_jsns: string;
+	action: {
+		op: 'rename' | 'color' | 'delete' | 'update';
+		id: string;
+		name?: string;
+		color?: number;
+		rgb?: string;
+	};
+};
+export type TagActionResponse = {
+	action: { op: string; id: string };
+	_jsns: string;
 };

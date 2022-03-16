@@ -5,13 +5,11 @@
  */
 
 import create, { StoreApi, UseBoundStore } from 'zustand';
-import { AccountContext, AccountState, SoapFetch } from '../../../types';
-import { getInfo } from '../../network/get-info';
-import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
+import { AccountState } from '../../../types';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-export const useAccountStore = create<AccountState>((set, get) => ({
+export const useAccountStore = create<AccountState>(() => ({
 	account: undefined,
 	version: '',
 	settings: {
@@ -19,12 +17,6 @@ export const useAccountStore = create<AccountState>((set, get) => ({
 		attrs: {},
 		props: []
 	},
-	context: {},
-	setContext: (context: AccountContext): void => set({ context }),
-	init: (): Promise<void> => getInfo(set, get),
-	soapFetch: (app: string): SoapFetch => getSoapFetch(app, set, get),
-	xmlSoapFetch: (app: string): SoapFetch => getXmlSoapFetch(app, set, get),
 	usedQuota: 0,
-	lastNotificationTime: Date.now(),
-	pollingInterval: 30000
+	lastNotificationTime: Date.now()
 })) as UseBoundStore<AccountState, StoreApi<AccountState>>;

@@ -5,17 +5,14 @@
  */
 
 import { SHELL_APP_ID } from '../constants';
-import { useAccountStore } from '../store/account';
+import { getSoapFetch } from './fetch';
 import { goToLogin } from './go-to-login';
 
 export const logout = (): Promise<void> =>
-	useAccountStore
-		.getState()
-		.soapFetch(SHELL_APP_ID)('EndSession', {
-			_jsns: 'urn:zimbraAccount'
-		})
-		.then(() => {
-			fetch('/?loginOp=logout')
-				.then((res) => res)
-				.then(goToLogin);
-		});
+	getSoapFetch(SHELL_APP_ID)('EndSession', {
+		_jsns: 'urn:zimbraAccount'
+	}).then(() => {
+		fetch('/?loginOp=logout')
+			.then((res) => res)
+			.then(goToLogin);
+	});

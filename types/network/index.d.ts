@@ -88,18 +88,18 @@ export type PermissionsMods = {
 
 export type CreateIdentityProps = {
 	requestId: number;
-	zimbraPrefIdentityName: string | undfined;
-	zimbraPrefFromDisplay: string | undfined;
-	zimbraPrefFromAddress: string | undfined;
-	zimbraPrefFromAddress: string | undfined;
-	zimbraPrefFromAddressType: string | undfined;
-	zimbraPrefReplyToEnabled: string | undfined;
-	zimbraPrefReplyToDisplay: string | undfined;
-	zimbraPrefReplyToAddress: string | undfined;
-	zimbraPrefDefaultSignatureId: string | undfined;
-	zimbraPrefForwardReplySignatureId: string | undfined;
-	zimbraPrefWhenSentToEnabled: string | undfined;
-	zimbraPrefWhenInFoldersEnabled: string | undfined;
+	zimbraPrefIdentityName: string | undefined;
+	zimbraPrefFromDisplay: string | undefined;
+	zimbraPrefFromAddress: string | undefined;
+	zimbraPrefFromAddress: string | undefined;
+	zimbraPrefFromAddressType: string | undefined;
+	zimbraPrefReplyToEnabled: string | undefined;
+	zimbraPrefReplyToDisplay: string | undefined;
+	zimbraPrefReplyToAddress: string | undefined;
+	zimbraPrefDefaultSignatureId: string | undefined;
+	zimbraPrefForwardReplySignatureId: string | undefined;
+	zimbraPrefWhenSentToEnabled: string | undefined;
+	zimbraPrefWhenInFoldersEnabled: string | undefined;
 };
 
 export type IdentityMods = {
@@ -124,6 +124,26 @@ export type Locale = {
 };
 export type AvailableLocalesResponse = {
 	locale: Array<Locale>;
+};
+export type SoapContext = {
+	refresh?: NotifyObject;
+	notify?: [NotifyObject];
+	change?: { token: number };
+	session?: { id: number; _content: number };
+};
+
+export type NotifyObject = {
+	seq?: number;
+	version?: string;
+	mbx?: [{ s: number }];
+	folder?: Array<unknown>;
+	tags?: { tag: Array<Tag> };
+};
+
+export type NetworkState = {
+	noOpTimeout: unknown;
+	context: SoapContext;
+	pollingInterval: number;
 };
 
 export type CreateTagRequest = {

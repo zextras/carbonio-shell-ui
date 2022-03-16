@@ -83,8 +83,8 @@ export const useActionFactory: <T>(
 ) => [ActionFactory<T> | undefined, boolean];
 export const useApp: () => CarbonioModule;
 export const getApp: () => CarbonioModule;
-export const useAppContext: () => unknown;
-export const getAppContext: () => unknown;
+export const useAppContext: <T>() => T;
+export const getAppContext: <T>() => T;
 export const useUserAccount: () => Account;
 export const useUserAccounts: () => Array<Account>;
 export const useUserRights: () => AccountRights;
@@ -144,7 +144,7 @@ export const updatePrimaryBadge: (badge: Partial<BadgeInfo>, id: string) => void
 export const updateUtilityBadge: (badge: Partial<BadgeInfo>, id: string) => void;
 //
 // add board
-export const addBoardView: (data: Partial<BoardView>) => string;
+export const addBoardView: (data: Object & Partial<BoardView>) => string;
 // remove board
 export const removeBoardView: (id: string) => void;
 //

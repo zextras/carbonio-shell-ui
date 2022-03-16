@@ -5,10 +5,10 @@
  */
 
 import { reduce } from 'lodash';
-import { AccountContext, Tag, Tags } from '../../../types';
+import { SoapContext, Tag, Tags } from '../../../types';
 import { useTagStore } from './store';
 
-export const handleTagSync = (context: AccountContext): void => {
+export const handleTagSync = (context: SoapContext): void => {
 	if (context.refresh?.tags?.tag) {
 		useTagStore.setState({
 			tags: reduce(
@@ -23,5 +23,6 @@ export const handleTagSync = (context: AccountContext): void => {
 		});
 	}
 	if (context.notify) {
+		console.log(context.notify);
 	}
 };

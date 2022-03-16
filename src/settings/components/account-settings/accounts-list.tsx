@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, ReactElement, useMemo, useState, useContext } from 'react';
+import React, { useCallback, ReactElement, useState, useContext } from 'react';
 import {
 	Container,
 	Text,

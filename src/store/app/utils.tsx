@@ -73,7 +73,8 @@ export const normalizeSettingsView = (
 		component: data?.component ?? FallbackView,
 		label: data.label ?? app.display,
 		icon: data.icon ?? app.icon,
-		position: data.position ?? app.priority ?? 99
+		position: data.position ?? app.priority ?? 99,
+		subSections: data.subSections ?? []
 	};
 };
 export const normalizeSearchView = (data: Partial<SearchView>, app: CarbonioModule): SearchView => {

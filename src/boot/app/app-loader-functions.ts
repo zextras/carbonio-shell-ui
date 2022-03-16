@@ -22,16 +22,13 @@ import {
 	getUserAccount,
 	getUserAccounts,
 	getUserSettings,
-	getTags,
 	useUserAccount,
 	useUserAccounts,
 	useUserSettings,
-	useTags,
 	useUserRight,
 	useUserRights,
 	getUserRight,
-	getUserRights,
-	useAccountStore
+	getUserRights
 } from '../../store/account';
 import { useIsMobile } from '../../shell/hooks';
 import {
@@ -43,7 +40,7 @@ import {
 	useIntegratedFunction,
 	useIntegratedHook
 } from '../../store/integrations/hooks';
-import { CarbonioModule, useNotify, useRefresh } from '../../../types';
+import { CarbonioModule } from '../../../types';
 import {
 	usePushHistoryCallback,
 	useGoBackHistoryCallback,
@@ -61,6 +58,8 @@ import {
 	useUpdateCurrentBoard
 } from '../../shell/boards/board-hooks';
 import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
+import { getTag, getTags, useTag, useTags } from '../../store/tags';
+import { useNotify, useRefresh } from '../../store/network';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({
@@ -101,6 +100,8 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	getUserRights,
 	useTags,
 	getTags,
+	useTag,
+	getTag,
 	useNotify,
 	useRefresh,
 	// BOARDS

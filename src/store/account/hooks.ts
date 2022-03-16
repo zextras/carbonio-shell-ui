@@ -11,8 +11,7 @@ import {
 	AccountRightName,
 	AccountRights,
 	AccountRightTarget,
-	AccountSettings,
-	Tag
+	AccountSettings
 } from '../../../types';
 import { useAccountStore } from './store';
 
@@ -35,7 +34,7 @@ export const useUserRight = (right: AccountRightName): Array<AccountRightTarget>
 export const useUserSettings = (): AccountSettings => useAccountStore((s) => s.settings);
 export const useUserSetting = <T = void>(...path: Array<string>): string | T =>
 	useAccountStore((s) => get(s.settings, join(path, '.')));
-export const useTags = (): Array<Tag> => useAccountStore((s) => s.tags);
+// @@ export const useTags = (): Array<Tag> => useAccountStore((s) => s.tags);
 
 export const getUserAccount = (): Account => useAccountStore.getState().account as Account;
 export const getUserAccounts = (): Array<Account> => [
@@ -44,7 +43,7 @@ export const getUserAccounts = (): Array<Account> => [
 export const getUserSettings = (): AccountSettings => useAccountStore.getState().settings;
 export const getUserSetting = <T = void>(...path: Array<string>): string | T =>
 	get(useAccountStore.getState().settings, join(path, '.'));
-export const getTags = (): Array<Tag> => useAccountStore.getState().tags;
+// @@ export const getTags = (): Array<Tag> => useAccountStore.getState().tags;
 
 export const getUserRights = (): AccountRights =>
 	useAccountStore.getState().account?.rights ?? { targets: [] };

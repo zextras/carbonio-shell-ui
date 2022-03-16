@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import { Tag } from '../tags';
 
 export type ZimletProp = {
 	name: string;
@@ -20,7 +21,6 @@ export type AccountState = {
 	account?: Account;
 	settings: AccountSettings;
 	zimbraVersion: string;
-	tags: Array<Tag>;
 	usedQuota: number;
 };
 
@@ -38,13 +38,6 @@ export type Account = {
 export type DelegateProps = {
 	email: string;
 	right: string;
-};
-
-export type Tag = {
-	color?: string;
-	id: string;
-	name: string;
-	rgb?: string;
 };
 
 export type AccountSettings = {

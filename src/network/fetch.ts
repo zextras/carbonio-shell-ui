@@ -6,12 +6,13 @@
 
 import { find } from 'lodash';
 import { goToLogin } from './go-to-login';
-import { Account, ErrorSoapResponse, SoapResponse, SuccessSoapResponse, Tag } from '../../types';
+import { Account, ErrorSoapResponse, SoapResponse, SuccessSoapResponse } from '../../types';
 import { userAgent } from './user-agent';
 import { report } from '../reporting';
 import { useAccountStore } from '../store/account';
 import { SHELL_APP_ID } from '../constants';
 import { useNetworkStore } from '../store/network';
+import { handleTagSync } from '../store/tags';
 
 export const noOp = (): void => {
 	// eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -74,7 +75,7 @@ const getXmlSession = (context?: any): string => {
 
 const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 	const { pollingInterval, context } = useNetworkStore.getState();
-	const { tags, usedQuota } = useAccountStore.getState();
+	const { usedQuota } = useAccountStore.getState();
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	clearTimeout(get().noOpTimeout);
@@ -96,9 +97,8 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 	if (res?.Header?.context) {
 		const responseUsedQuota =
 			res.Header.context?.refresh?.mbx?.[0]?.s ?? res.Header.context?.notify?.[0]?.mbx?.[0]?.s;
-		const responseTags = res.Header.context?.refresh?.tags?.tag as Array<Tag>;
+		handleTagSync(res.Header.context);
 		useAccountStore.setState({
-			tags: responseTags ?? tags,
 			usedQuota: responseUsedQuota ?? usedQuota
 		});
 		useNetworkStore.setState({

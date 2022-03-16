@@ -4,5 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-export * from './store';
 export * from './hooks';
+export * from './store';
+export * from './sync';

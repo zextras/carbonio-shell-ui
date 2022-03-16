@@ -98,6 +98,7 @@
         "unsaved_changes": "You have unsaved changes",
         "unsaved_changes_line1": "Are you sure you want to leave this page without saving?",
         "unsaved_changes_line2": "All your unsaved changes will be lost",
+        "update_view": "Update view",
         "use_persona": "Use this persona",
         "use_personas_line1": "Use personas to quickly change many settings when sending e-mail messages.",
         "use_personas_line2": "For example, if you sometimes send e-mails in a particular role at work, create a persona for that.",

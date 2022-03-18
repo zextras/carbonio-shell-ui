@@ -4,9 +4,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { find } from 'lodash';
+import { find, forEach, map } from 'lodash';
 import { goToLogin } from './go-to-login';
-import { Account, ErrorSoapResponse, SoapResponse, SuccessSoapResponse } from '../../types';
+import {
+	Account,
+	ErrorSoapResponse,
+	SoapContext,
+	SoapResponse,
+	SuccessSoapResponse
+} from '../../types';
 import { userAgent } from './user-agent';
 import { report } from '../reporting';
 import { useAccountStore } from '../store/account';
@@ -73,12 +79,23 @@ const getXmlSession = (context?: any): string => {
 	return '';
 };
 
+const normalizeContext = (context: any): SoapContext => {
+	if (context.notify) {
+		// eslint-disable-next-line no-param-reassign
+		context.notify = map(context.notify, (notify) => ({
+			...notify,
+			deleted: notify.deleted?.id?.split(',')
+		}));
+	}
+	return context;
+};
+
 const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
-	const { pollingInterval, context } = useNetworkStore.getState();
+	const { pollingInterval, context, noOpTimeout } = useNetworkStore.getState();
 	const { usedQuota } = useAccountStore.getState();
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	clearTimeout(get().noOpTimeout);
+	clearTimeout(noOpTimeout);
 	if (res?.Body?.Fault) {
 		if (
 			find(
@@ -97,7 +114,8 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 	if (res?.Header?.context) {
 		const responseUsedQuota =
 			res.Header.context?.refresh?.mbx?.[0]?.s ?? res.Header.context?.notify?.[0]?.mbx?.[0]?.s;
-		handleTagSync(res.Header.context);
+		const _context = normalizeContext(res.Header.context);
+		handleTagSync(_context);
 		useAccountStore.setState({
 			usedQuota: responseUsedQuota ?? usedQuota
 		});

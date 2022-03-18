@@ -60,6 +60,7 @@ import {
 import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
 import { getTag, getTags, useTag, useTags } from '../../store/tags';
 import { useNotify, useRefresh } from '../../store/network';
+import { changeTagColor, createTag, deleteTag, renameTag } from '../../network/tags';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({
@@ -118,6 +119,11 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	pushHistory,
 	goBackHistory,
 	replaceHistory,
+	// TAGS
+	createTag,
+	renameTag,
+	changeTagColor,
+	deleteTag,
 	// STUFF
 	useIsMobile,
 	getBridgedFunctions: (): unknown => {

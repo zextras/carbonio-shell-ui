@@ -126,18 +126,35 @@ export type AvailableLocalesResponse = {
 	locale: Array<Locale>;
 };
 export type SoapContext = {
-	refresh?: NotifyObject;
-	notify?: [NotifyObject];
+	refresh?: SoapRefresh;
+	notify?: Array<SoapNotify>;
 	change?: { token: number };
 	session?: { id: number; _content: number };
 };
 
-export type NotifyObject = {
+export type SoapRefresh = {
 	seq?: number;
 	version?: string;
 	mbx?: [{ s: number }];
 	folder?: Array<unknown>;
 	tags?: { tag: Array<Tag> };
+};
+
+export type SoapNotify = {
+	seq?: number;
+	created?: {
+		m?: Array<unknown>;
+		c?: Array<unknown>;
+		folder?: Array<unknown>;
+		tag?: Array<Tag>;
+	};
+	modified?: {
+		m?: Array<unknown>;
+		c?: Array<unknown>;
+		folder?: Array<unknown>;
+		tag?: Array<Partial<Tag>>;
+	};
+	deleted: string[];
 };
 
 export type NetworkState = {

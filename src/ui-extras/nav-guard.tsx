@@ -4,35 +4,40 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useEffect, useState, FC } from 'react';
+import React, { useEffect, useState, FC, useMemo } from 'react';
 import { Location } from 'history';
 import { Prompt, useHistory } from 'react-router-dom';
 import { Modal } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 
-export const RouteLeavingGuard: FC<{ title: string; when?: boolean }> = ({
-	children,
-	title,
-	when
-}) => {
+export const RouteLeavingGuard: FC<{
+	when?: boolean;
+	onSave: () => void;
+}> = ({ children, when, onSave }) => {
 	const history = useHistory();
+	const lastLocationInitial = useMemo(() => history.location.pathname, [history]);
 	const [modalVisible, setModalVisible] = useState(false);
-	const [lastLocation, setLastLocation] = useState<Location | null>(null);
+	const [lastLocation, setLastLocation] = useState<Location>(lastLocationInitial);
 	const [confirmedNavigation, setConfirmedNavigation] = useState(false);
 	const [t] = useTranslation();
-	const closeModal = (): void => {
+	const onClose = (): void => {
 		setModalVisible(false);
+		setConfirmedNavigation(true);
 	};
 	const handleBlockedNavigation = (nextLocation: Location): boolean => {
-		if (!confirmedNavigation) {
+		if (
+			!confirmedNavigation &&
+			nextLocation.pathname !== (lastLocation?.pathname || lastLocationInitial)
+		) {
 			setModalVisible(true);
 			setLastLocation(nextLocation);
 			return false;
 		}
 		return true;
 	};
-	const handleConfirmNavigationClick = (): void => {
+	const onConfirm = (): void => {
 		setModalVisible(false);
+		onSave();
 		setConfirmedNavigation(true);
 	};
 	useEffect(() => {
@@ -47,11 +52,11 @@ export const RouteLeavingGuard: FC<{ title: string; when?: boolean }> = ({
 			{/* Your own alert/dialog/modal component */}
 			<Modal
 				open={modalVisible}
-				onClose={closeModal}
-				onConfirm={handleConfirmNavigationClick}
-				title={title}
-				dismissLabel={t('label.cancel', 'Cancel')}
-				confirmLabel={t('settings.button.confirm', 'Confirm')}
+				onClose={onClose}
+				onConfirm={onConfirm}
+				title={t('label.unsaved_changes', 'You have unsaved changes')}
+				dismissLabel={t('label.leave_anyway', 'Leave anyway')}
+				confirmLabel={t('label.save_and_leave', 'Save and leave')}
 			>
 				{children}
 			</Modal>

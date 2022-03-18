@@ -9,5 +9,10 @@ import { AccountState } from '../../types';
 import { SHELL_APP_ID } from '../constants';
 
 export const noOp = (get: GetState<AccountState>): void => {
-	get().soapFetch(SHELL_APP_ID)('NoOp', { _jsns: 'urn:zimbraMail' });
+	get().soapFetch(SHELL_APP_ID)(
+		'NoOp',
+		get().pollingInterval === 500
+			? { _jsns: 'urn:zimbraMail', limitToOneBlocked: 1, wait: 1 }
+			: { _jsns: 'urn:zimbraMail' }
+	);
 };

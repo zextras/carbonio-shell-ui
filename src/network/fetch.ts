@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { find, forEach, map } from 'lodash';
+import { find, map } from 'lodash';
 import { goToLogin } from './go-to-login';
 import {
 	Account,

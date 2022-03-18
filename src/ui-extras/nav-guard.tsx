@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useEffect, useState, FC } from 'react';
+import React, { useEffect, useState, FC, useMemo } from 'react';
 import { Location } from 'history';
 import { Prompt, useHistory } from 'react-router-dom';
 import { Modal } from '@zextras/carbonio-design-system';
@@ -15,8 +15,9 @@ export const RouteLeavingGuard: FC<{
 	onSave: () => void;
 }> = ({ children, when, onSave }) => {
 	const history = useHistory();
+	const lastLocationInitial = useMemo(() => history.location.pathname, [history]);
 	const [modalVisible, setModalVisible] = useState(false);
-	const [lastLocation, setLastLocation] = useState<Location | null>(null);
+	const [lastLocation, setLastLocation] = useState<Location>(lastLocationInitial);
 	const [confirmedNavigation, setConfirmedNavigation] = useState(false);
 	const [t] = useTranslation();
 	const onClose = (): void => {
@@ -24,7 +25,10 @@ export const RouteLeavingGuard: FC<{
 		setConfirmedNavigation(true);
 	};
 	const handleBlockedNavigation = (nextLocation: Location): boolean => {
-		if (!confirmedNavigation) {
+		if (
+			!confirmedNavigation &&
+			nextLocation.pathname !== (lastLocation?.pathname || lastLocationInitial)
+		) {
 			setModalVisible(true);
 			setLastLocation(nextLocation);
 			return false;

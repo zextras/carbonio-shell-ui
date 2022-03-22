@@ -44,7 +44,7 @@
                 "do_not_send_to_external": "Nie wysyłaj automatycznych odpowiedzi do nadawców spoza mojej domeny",
                 "send_custom_in_organisation": "Wyślij niestandardową wiadomość do użytkowników spoza mojej organizacji",
                 "send_custom_not_in_organisation": "Wyślij niestandardową wiadomość do użytkowników spoza mojej organizacji i książki adresowej",
-                "send_standard_auto_reply": "Wyślij domyślną automatyczną odpowiedź"
+                "send_standard_auto_reply": "Wysyłaj domyślną automatyczną odpowiedź"
             },
             "headings": {
                 "create_appointment": "Spotkanie - Kalendarz",

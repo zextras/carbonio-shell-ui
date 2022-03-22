@@ -4,20 +4,31 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { GetState, SetState } from 'zustand';
-import { find } from 'lodash';
+import { find, map } from 'lodash';
 import { goToLogin } from './go-to-login';
 import {
 	Account,
-	AccountState,
 	ErrorSoapResponse,
+	SoapContext,
 	SoapResponse,
-	SuccessSoapResponse,
-	Tag
+	SuccessSoapResponse
 } from '../../types';
 import { userAgent } from './user-agent';
-import { noOp } from './noOp';
 import { report } from '../reporting';
+import { useAccountStore } from '../store/account';
+import { SHELL_APP_ID } from '../constants';
+import { useNetworkStore } from '../store/network';
+import { handleTagSync } from '../store/tags';
+
+export const noOp = (): void => {
+	// eslint-disable-next-line @typescript-eslint/no-use-before-define
+	getSoapFetch(SHELL_APP_ID)(
+		'NoOp',
+		useNetworkStore.getState().pollingInterval === 500
+			? { _jsns: 'urn:zimbraMail', limitToOneBlocked: 1, wait: 1 }
+			: { _jsns: 'urn:zimbraMail' }
+	);
+};
 
 const getAccount = (
 	acc?: Account,
@@ -68,15 +79,23 @@ const getXmlSession = (context?: any): string => {
 	return '';
 };
 
-const handleResponse = <R>(
-	api: string,
-	res: SoapResponse<R>,
-	set: SetState<AccountState>,
-	get: GetState<AccountState>
-): R => {
+const normalizeContext = (context: any): SoapContext => {
+	if (context.notify) {
+		// eslint-disable-next-line no-param-reassign
+		context.notify = map(context.notify, (notify) => ({
+			...notify,
+			deleted: notify.deleted?.id?.split(',')
+		}));
+	}
+	return context;
+};
+
+const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
+	const { pollingInterval, context, noOpTimeout } = useNetworkStore.getState();
+	const { usedQuota } = useAccountStore.getState();
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	clearTimeout(get().noOpTimeout);
+	clearTimeout(noOpTimeout);
 	if (res?.Body?.Fault) {
 		if (
 			find(
@@ -93,15 +112,17 @@ const handleResponse = <R>(
 		);
 	}
 	if (res?.Header?.context) {
-		const usedQuota =
+		const responseUsedQuota =
 			res.Header.context?.refresh?.mbx?.[0]?.s ?? res.Header.context?.notify?.[0]?.mbx?.[0]?.s;
-		const tags = res.Header.context?.refresh?.tags?.tag as Array<Tag>;
-		set({
-			noOpTimeout: setTimeout(() => noOp(get), get().pollingInterval),
-			tags: tags ?? get().tags,
-			usedQuota: usedQuota ?? get().usedQuota,
+		const _context = normalizeContext(res.Header.context);
+		handleTagSync(_context);
+		useAccountStore.setState({
+			usedQuota: responseUsedQuota ?? usedQuota
+		});
+		useNetworkStore.setState({
+			noOpTimeout: setTimeout(() => noOp(), pollingInterval),
 			context: {
-				...get().context,
+				...context,
 				...res?.Header?.context
 			}
 		});
@@ -109,9 +130,11 @@ const handleResponse = <R>(
 	return (<SuccessSoapResponse<R>>res).Body[`${api}Response`] as R;
 };
 export const getSoapFetch =
-	(app: string, set: SetState<AccountState>, get: GetState<AccountState>) =>
-	<Request, Response>(api: string, body: Request, otherAccount?: string): Promise<Response> =>
-		fetch(`/service/soap/${api}Request`, {
+	(app: string) =>
+	<Request, Response>(api: string, body: Request, otherAccount?: string): Promise<Response> => {
+		const { zimbraVersion, account } = useAccountStore.getState();
+		const { context } = useNetworkStore.getState();
+		return fetch(`/service/soap/${api}Request`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -123,50 +146,51 @@ export const getSoapFetch =
 				Header: {
 					context: {
 						_jsns: 'urn:zimbra',
-						notify: get().context?.notify?.[0]?.seq
+						notify: context?.notify?.[0]?.seq
 							? {
-									seq: get().context?.notify?.[0]?.seq
+									seq: context?.notify?.[0]?.seq
 							  }
 							: undefined,
-						session: get().context?.session ?? {},
-						account: getAccount(get().account as Account, otherAccount),
+						session: context?.session ?? {},
+						account: getAccount(account as Account, otherAccount),
 						userAgent: {
 							name: userAgent,
-							version: get().zimbraVersion
+							version: zimbraVersion
 						}
 					}
 				}
 			})
 		}) // TODO proper error handling
 			.then((res) => res?.json())
-			.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
+			.then((res: SoapResponse<Response>) => handleResponse(api, res))
 			.catch((e) => {
 				report(app)(e);
 				throw e;
 			}) as Promise<Response>;
+	};
 
 export const getXmlSoapFetch =
-	(app: string, set: SetState<AccountState>, get: GetState<AccountState>) =>
-	<Request, Response>(api: string, body: Request, otherAccount?: string): Promise<Response> =>
-		fetch(`/service/soap/${api}Request`, {
+	(app: string) =>
+	<Request, Response>(api: string, body: Request, otherAccount?: string): Promise<Response> => {
+		const { zimbraVersion, account } = useAccountStore.getState();
+		const { context } = useNetworkStore.getState();
+		return fetch(`/service/soap/${api}Request`, {
 			method: 'POST',
 			headers: {
 				'content-type': 'application/soap+xml'
 			},
 			body: `<?xml version="1.0" encoding="utf-8"?>
 		<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
-			<soap:Header><context xmlns="urn:zimbra"><userAgent name="${userAgent}" version="${
-				get().zimbraVersion
-			}"/>${getXmlSession(get().context)}${getXmlAccount(
-				get().account,
-				otherAccount
-			)}<format type="js"/></context></soap:Header>
+			<soap:Header><context xmlns="urn:zimbra"><userAgent name="${userAgent}" version="${zimbraVersion}"/>${getXmlSession(
+				context
+			)}${getXmlAccount(account, otherAccount)}<format type="js"/></context></soap:Header>
 			<soap:Body>${body}</soap:Body>
 		</soap:Envelope>`
 		}) // TODO proper error handling
 			.then((res) => res?.json())
-			.then((res: SoapResponse<Response>) => handleResponse(api, res, set, get))
+			.then((res: SoapResponse<Response>) => handleResponse(api, res))
 			.catch((e) => {
 				report(app)(e);
 				throw e;
 			}) as Promise<Response>;
+	};

@@ -12,7 +12,7 @@ import { SHELL_APP_ID, UtilityView } from '../../types';
 import { useUtilityViews } from './utils';
 import { logout } from '../network/logout';
 import { useContextBridge } from '../store/context-bridge';
-import { useAccountStore } from '../store/account';
+import { noOp } from '../network/fetch';
 
 const UtilityBarItem: FC<{ view: UtilityView }> = ({ view }) => {
 	const { mode, setMode, current, setCurrent } = useUtilityBarStore();
@@ -54,11 +54,7 @@ export const ShellUtilityBar: FC = () => {
 			{
 				id: 'update',
 				label: t('label.update_view', 'Update view'),
-				click: (): void => {
-					useAccountStore.getState().soapFetch(SHELL_APP_ID)<{ _jsns: string }, any>('NoOp', {
-						_jsns: 'urn:zimbraMail'
-					});
-				},
+				click: (): void => noOp(),
 				icon: 'Refresh'
 			},
 			{

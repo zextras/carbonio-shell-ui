@@ -18,7 +18,7 @@ import {
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
 import { filter, find } from 'lodash';
-import { IdentityProps, Mods } from '../../../../types';
+import { IdentityProps } from '../../../../types';
 import { EMAIL_VALIDATION_REGEX } from '../../../constants';
 
 type SettingsSentMessagesProps = {

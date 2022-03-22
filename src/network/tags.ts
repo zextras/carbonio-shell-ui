@@ -33,6 +33,13 @@ export const renameTag = (id: string, name: string): Promise<TagActionResponse> 
 		_jsns: 'urn:zimbraMail',
 		action: { op: 'rename', id, name }
 	});
+
+export const updateTag = (tag: Partial<Tag> & { id: string }): Promise<TagActionResponse> =>
+	getSoapFetch(SHELL_APP_ID)<TagActionRequest, TagActionResponse>('TagAction', {
+		_jsns: 'urn:zimbraMail',
+		action: { op: 'update', ...tag }
+	});
+
 export const changeTagColor = (id: string, color: string | number): Promise<TagActionResponse> =>
 	getSoapFetch(SHELL_APP_ID)<TagActionRequest, TagActionResponse>('TagAction', {
 		_jsns: 'urn:zimbraMail',

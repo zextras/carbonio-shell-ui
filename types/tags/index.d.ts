@@ -6,7 +6,7 @@
  */
 
 export type Tag = {
-	color?: string;
+	color?: number;
 	id: string;
 	name: string;
 	rgb?: string;

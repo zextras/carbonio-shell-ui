@@ -6,12 +6,11 @@
 
 import { GetState, SetState } from 'zustand';
 import { filter } from 'lodash';
-import { SHELL_APP_ID, SHELL_MODES } from '../constants';
+import { SHELL_APP_ID } from '../constants';
 import { useAppStore } from '../store/app';
 import { normalizeAccount } from '../store/account/normalization';
-import { AccountSettings, AccountState, GetInfoResponse, Tag, CarbonioModule } from '../../types';
+import { AccountSettings, AccountState, GetInfoResponse, CarbonioModule } from '../../types';
 import { goToLogin } from './go-to-login';
-import { isAdmin, isFullClient, isStandalone } from '../multimode';
 
 const parsePollingInterval = (settings: AccountSettings): number => {
 	const pollingPref = (settings.prefs?.zimbraPrefMailPollingInterval ?? '') as string;
@@ -45,11 +44,8 @@ export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>
 		.then((r: any) => r.json())
 		.then(({ components }: { components: Array<CarbonioModule> }) => {
 			useAppStore.getState().setters.addApps(
-				filter(components, ({ type, name }) => {
-					if (type === 'shell') return true;
-					if (isAdmin()) return type === SHELL_MODES.ADMIN;
-					if (isFullClient()) return type === SHELL_MODES.CARBONIO;
-					if (isStandalone()) return name === window.location.pathname.split('/')[2];
+				filter(components, ({ type }) => {
+					if (type === 'shell' || type === 'carbonio') return true;
 					return false;
 				})
 			);

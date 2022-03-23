@@ -17,7 +17,7 @@ const baseStaticPath = `/static/iris/carbonio-shell-ui/${commitHash}/`;
 
 module.exports = (conf, pkg, options, mode) => {
 	const server = `https://${options.host}`;
-	const root = options.admin ? 'carbonioAdmin' : 'carbonio';
+	const root = 'carbonio';
 	conf.entry = {
 		index: path.resolve(process.cwd(), 'src', 'index.tsx')
 	};
@@ -43,8 +43,6 @@ module.exports = (conf, pkg, options, mode) => {
 		}),
 		new DefinePlugin({
 			COMMIT_ID: JSON.stringify(commitHash.toString().trim()),
-			PACKAGE_VERSION: JSON.stringify(pkg.version),
-			PACKAGE_NAME: JSON.stringify(options.name),
 			BASE_PATH: JSON.stringify(baseStaticPath)
 		}),
 		new HtmlWebpackPlugin({

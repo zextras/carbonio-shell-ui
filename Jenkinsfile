@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 library(
-    identifier: 'zapp-jenkins-lib@shell-pipeline',
+    identifier: 'zapp-jenkins-lib@modularization-test',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         remote: 'git@bitbucket.org:zextras/zapp-jenkins-lib.git',
@@ -11,4 +11,6 @@ library(
     ])
 )
 
-shellPipeline()
+zappPipeline(
+  publishOnNpm: true
+)

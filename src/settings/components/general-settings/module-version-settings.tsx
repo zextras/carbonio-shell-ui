@@ -22,6 +22,7 @@ import { useAppList } from '../../../store/app/hooks';
 
 import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../../../constants/index';
 import { CarbonioModule } from '../../../../types';
+import { versionsSubSection } from '../../general-settings-sub-sections';
 
 const ModuleVersionSettings: FC = () => {
 	const apps = useAppList();
@@ -37,12 +38,14 @@ const ModuleVersionSettings: FC = () => {
 		() => apps.filter((app) => app.name !== SEARCH_APP_ID && app.name !== SETTINGS_APP_ID),
 		[apps]
 	);
+	const sectionTitle = useMemo(() => versionsSubSection(t), [t]);
 	return (
 		<>
 			<FormSubSection
-				label={t('module.app.version', 'Application versions')}
+				label={sectionTitle.label}
 				minWidth="calc(min(100%, 512px))"
 				width="50%"
+				id={sectionTitle.id}
 			>
 				{map(filteredList, (app: CarbonioModule) => (
 					<Container key={app.name} padding={{ horizontal: 'large', vertical: 'small' }}>

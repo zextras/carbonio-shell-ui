@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import { Tag } from '../tags';
 
 export type ZimletProp = {
 	name: string;
@@ -17,32 +18,10 @@ export type SoapFetch = <Request, Response>(
 ) => Promise<Response>;
 
 export type AccountState = {
-	noOpTimeout: unknown;
 	account?: Account;
 	settings: AccountSettings;
 	zimbraVersion: string;
-	context: AccountContext;
-	init: () => Promise<void>;
-	setContext: (context: unknown) => void;
-	xmlSoapFetch: (app: string) => SoapFetch;
-	soapFetch: (app: string) => SoapFetch;
-	tags: Array<Tag>;
 	usedQuota: number;
-	pollingInterval: number;
-};
-
-export type AccountContext = {
-	refresh?: NotifyObject;
-	notify?: [NotifyObject];
-	change?: { token: number };
-	session?: { id: number; _content: number };
-};
-
-export type NotifyObject = {
-	seq?: number;
-	version?: string;
-	mbx?: [{ s: number }];
-	folder?: Array<unknown>;
 };
 
 export type Account = {
@@ -59,13 +38,6 @@ export type Account = {
 export type DelegateProps = {
 	email: string;
 	right: string;
-};
-
-export type Tag = {
-	color?: string;
-	id: string;
-	name: string;
-	rgb?: string;
 };
 
 export type AccountSettings = {

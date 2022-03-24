@@ -17,6 +17,8 @@ import { ThemeCallbacksContext } from '../boot/theme-provider';
 import { useUserSettings } from '../store/account';
 import { ShellUtilityBar, ShellUtilityPanel } from '../utility-bar';
 import { useCurrentRoute } from '../history/hooks';
+import { useTagStore } from '../store/tags/store';
+import { createTag } from '../network/tags';
 
 const Background = styled.div`
 	background: ${({ theme }) => theme.palette.gray6.regular};
@@ -44,7 +46,6 @@ function DarkReaderListener() {
 export function Shell() {
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
 	const activeRoute = useCurrentRoute();
-
 	return (
 		<Background>
 			<DarkReaderListener />

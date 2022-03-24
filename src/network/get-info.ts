@@ -4,16 +4,21 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { GetState, SetState } from 'zustand';
 import { filter } from 'lodash';
 import { SHELL_APP_ID } from '../constants';
 import { useAppStore } from '../store/app';
 import { normalizeAccount } from '../store/account/normalization';
-import { AccountSettings, AccountState, GetInfoResponse, CarbonioModule } from '../../types';
+import { AccountSettings, GetInfoResponse, CarbonioModule } from '../../types';
 import { goToLogin } from './go-to-login';
+import { getSoapFetch } from './fetch';
+import { useAccountStore } from '../store/account';
+import { useNetworkStore } from '../store/network';
 
 const parsePollingInterval = (settings: AccountSettings): number => {
 	const pollingPref = (settings.prefs?.zimbraPrefMailPollingInterval ?? '') as string;
+	if (pollingPref === '500') {
+		return 500;
+	}
 	const pollingValue = parseInt(pollingPref, 10);
 	if (Number.isNaN(pollingValue)) {
 		return 30000;
@@ -23,19 +28,20 @@ const parsePollingInterval = (settings: AccountSettings): number => {
 	}
 	return pollingValue * 1000;
 };
-export const getInfo = (set: SetState<AccountState>, get: GetState<AccountState>): Promise<void> =>
-	get()
-		.soapFetch(SHELL_APP_ID)<{ _jsns: string; rights: string }, GetInfoResponse>('GetInfo', {
-			_jsns: 'urn:zimbraAccount',
-			rights: 'sendAs,sendAsDistList,viewFreeBusy,sendOnBehalfOf,sendOnBehalfOfDistList'
-		})
+export const getInfo = (): Promise<void> =>
+	getSoapFetch(SHELL_APP_ID)<{ _jsns: string; rights: string }, GetInfoResponse>('GetInfo', {
+		_jsns: 'urn:zimbraAccount',
+		rights: 'sendAs,sendAsDistList,viewFreeBusy,sendOnBehalfOf,sendOnBehalfOfDistList'
+	})
 		.then((res: any): void => {
 			if (res) {
 				const { account, settings, version } = normalizeAccount(res);
-				set({
+				useNetworkStore.setState({
+					pollingInterval: parsePollingInterval(settings)
+				});
+				useAccountStore.setState({
 					account,
 					settings,
-					pollingInterval: parsePollingInterval(settings),
 					zimbraVersion: version
 				});
 			}

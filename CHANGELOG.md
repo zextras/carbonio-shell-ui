@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.1-rc.7](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.1-rc.6...v0.4.1-rc.7) (2022-03-18)
+
+
+### Features
+
+* added update view ([734d97c](https://github.com/zextras/carbonio-shell-ui/commit/734d97c436450320513a7b92411ce73d0903f99a))
+* enhancements to account settings ([e0549a1](https://github.com/zextras/carbonio-shell-ui/commit/e0549a1d80a45770c3066ab445263a4e9c000ad9))
+* few features added to tinymce ([7479a21](https://github.com/zextras/carbonio-shell-ui/commit/7479a2140200f292cbecde81329c945c954367ef))
+
+
+### Bug Fixes
+
+* added special '500' case to the polling interval handling ([e283a78](https://github.com/zextras/carbonio-shell-ui/commit/e283a78fb10c986ec78be03dc92b84ccf93fd72a))
+* catcher throw errors ([eafc584](https://github.com/zextras/carbonio-shell-ui/commit/eafc5847e99158968b3143a7766a5776db28ccf8))
+* composer occupying available space ([#30](https://github.com/zextras/carbonio-shell-ui/issues/30)) ([9d6e8bf](https://github.com/zextras/carbonio-shell-ui/commit/9d6e8bf827a60227f5f946d4bf2374c46f2be3ed))
+* fixed behaviour of subsections accordion ([fdffddf](https://github.com/zextras/carbonio-shell-ui/commit/fdffddfd88b98ff49b6fd04a0ce3916789794b34))
+* fixed nav-guard behaviour around settings subsection ([2205529](https://github.com/zextras/carbonio-shell-ui/commit/220552925999be7ad5100ca2d131b5884d66c7e5))
+* remove print button ([a0c3d9e](https://github.com/zextras/carbonio-shell-ui/commit/a0c3d9e2975a26c44e99ed01530c66031a0ec448))
+
+### [0.4.1-rc.6](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.1-rc.5...v0.4.1-rc.6) (2022-03-07)
+
+
+### Features
+
+* changed behaviour of new button for search and settings modules ([a49d589](https://github.com/zextras/carbonio-shell-ui/commit/a49d589781da33ae83389d26647ce9b8d91af60b))
+
 ### [0.4.1-rc.5](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.1-rc.4...v0.4.1-rc.5) (2022-03-04)
 
 

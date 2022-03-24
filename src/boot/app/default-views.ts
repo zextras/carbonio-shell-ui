@@ -18,6 +18,7 @@ import DevBoard from '../../dev/dev-board';
 import DevBoardTrigger from '../../dev/dev-board-trigger';
 import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
 import AccountWrapper from '../../settings/account-wrapper';
+import { settingsSubSections } from '../../settings/general-settings-sub-sections';
 
 const settingsRoute = {
 	route: SETTINGS_APP_ID,
@@ -56,7 +57,8 @@ const settingsGeneralView = (t: TFunction): SettingsView => ({
 	component: GeneralSettings,
 	icon: 'SettingsModOutline',
 	label: t('settings.general.general', 'General'),
-	position: 1
+	position: 1,
+	subSections: settingsSubSections(t)
 });
 
 const settingsAccountsView = (t: TFunction): SettingsView => ({

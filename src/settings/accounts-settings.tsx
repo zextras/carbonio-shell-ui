@@ -4,17 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, useMemo, useState, useEffect, FC, ReactElement } from 'react';
-import {
-	Button,
-	Container,
-	Divider,
-	useSnackbar,
-	Row,
-	Text
-} from '@zextras/carbonio-design-system';
+import React, { useCallback, useMemo, useState, useEffect, ReactElement } from 'react';
+import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import { TFunction } from 'react-i18next';
-import { map, includes, findIndex, reduce, find, replace, lowerFirst } from 'lodash';
+import { map, includes, findIndex, reduce, find, replace, lowerFirst, isEmpty } from 'lodash';
 import { useUserSettings } from '../store/account/hooks';
 import { editSettings } from '../network/edit-settings';
 import { SHELL_APP_ID } from '../constants';
@@ -27,51 +20,13 @@ import PasswordRecoverySettings from './components/account-settings/password-rec
 import Delegates from './components/account-settings/delegates';
 import PersonaSettings from './components/account-settings/persona-settings';
 import PersonaUseSection from './components/account-settings/persona-use-section';
+import SettingsHeader from './components/settings-header';
+import { getXmlSoapFetch } from '../network/fetch';
 
 // external accounts not yet activated, graphical part is complete
 // import ExternalAccount from './components/account-settings/external-account-settings';
 // import AdvancedSettings from './components/account-settings/advanced-settings';
 // import DownloadMessages from './components/account-settings/download-messages';
-
-export const DisplayerHeader: FC<{
-	onSave: (mods: Record<string, unknown>) => void;
-	mods: Record<string, unknown>;
-	t: TFunction;
-}> = ({ onSave, t }) => {
-	const accountLabel: string = useMemo(() => t('label.accounts', 'Accounts'), [t]);
-	const buttonLabel = useMemo(() => t('label.save', 'Save'), [t]);
-	return (
-		<Container
-			orientation="vertical"
-			mainAlignment="flex-start"
-			height="fit"
-			background="gray5"
-			padding={{ bottom: 'medium', right: 'medium' }}
-		>
-			<Row orientation="horizontal" width="100%">
-				<Row
-					padding={{ all: 'small' }}
-					mainAlignment="flex-start"
-					width="50%"
-					crossAlignment="flex-start"
-				>
-					<Text size="large" weight="regular">
-						{accountLabel}
-					</Text>
-				</Row>
-				<Row
-					padding={{ all: 'small' }}
-					width="50%"
-					mainAlignment="flex-end"
-					crossAlignment="flex-end"
-				>
-					<Button label={buttonLabel} color="primary" onClick={onSave} />
-				</Row>
-			</Row>
-			<Divider />
-		</Container>
-	);
-};
 
 type ModifyProps = { id: string | number; key: string; value: string | boolean } | undefined;
 type AddModProps = {
@@ -94,7 +49,7 @@ type DelegateProps = {
 };
 
 export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps): ReactElement => {
-	const [mods, setMods] = useState<Mods>({ identity: {} });
+	const [mods, setMods] = useState<Mods>({});
 	const [activeDelegateView, setActiveDelegateView] = useState('0');
 	const [selectedIdentityId, setSelectedIdentityId] = useState(0);
 	const [identities, setIdentities] = useState<IdentityProps[]>(identitiesDefault);
@@ -210,42 +165,39 @@ export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps)
 	const createSnackbar = useSnackbar();
 
 	useEffect(() => {
-		useAccountStore
-			.getState()
-			.xmlSoapFetch(SHELL_APP_ID)(
-				'GetRights',
-				`<GetRightsRequest xmlns="urn:zimbraAccount"></GetRightsRequest>`
-			)
-			.then((res: any) => {
-				if (res.ace) {
-					const tempResult: UserRightsProps[] = map(res.ace, (item) => ({
-						email: item.d,
-						right: item.right
-					}));
-					const resultReduced = reduce(
-						tempResult,
-						(result: UserRightsProps[], item) => {
-							const index = findIndex(result, { email: item.email });
-							if (index === -1) {
-								result.push({ email: item.email, right: item.right });
-							} else {
-								result.push({
-									email: item.email,
-									right: `${item.right} and ${result[index].right}`
-								});
-								result.splice(index, 1);
-							}
-							return result;
-						},
-						[]
-					);
-					const result = map(resultReduced, (item: UserRightsProps, index) => ({
-						...item,
-						id: index.toString()
-					}));
-					setDelegates(result);
-				}
-			});
+		getXmlSoapFetch(SHELL_APP_ID)(
+			'GetRights',
+			`<GetRightsRequest xmlns="urn:zimbraAccount"></GetRightsRequest>`
+		).then((res: any) => {
+			if (res.ace) {
+				const tempResult: UserRightsProps[] = map(res.ace, (item) => ({
+					email: item.d,
+					right: item.right
+				}));
+				const resultReduced = reduce(
+					tempResult,
+					(result: UserRightsProps[], item) => {
+						const index = findIndex(result, { email: item.email });
+						if (index === -1) {
+							result.push({ email: item.email, right: item.right });
+						} else {
+							result.push({
+								email: item.email,
+								right: `${item.right} and ${result[index].right}`
+							});
+							result.splice(index, 1);
+						}
+						return result;
+					},
+					[]
+				);
+				const result = map(resultReduced, (item: UserRightsProps, index) => ({
+					...item,
+					id: index.toString()
+				}));
+				setDelegates(result);
+			}
+		});
 	}, []);
 
 	useEffect(() => {
@@ -297,9 +249,13 @@ export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps)
 		setMods({});
 	}, [identitiesDefault.length, mods, maxIdentities, createSnackbar, t]);
 
+	const onCancel = useCallback(() => setMods({}), []);
+	const title: string = useMemo(() => t('label.accounts', 'Accounts'), [t]);
+	const isDirty = useMemo(() => !isEmpty(mods), [mods]);
 	return (
 		<>
-			<DisplayerHeader mods={mods} onSave={onSave} t={t} />
+			<SettingsHeader onSave={onSave} onCancel={onCancel} isDirty={isDirty} title={title} />
+			<Container background="gray5" padding={{ top: 'large' }} height="fit" />
 			<Container
 				background="gray5"
 				mainAlignment="flex-start"

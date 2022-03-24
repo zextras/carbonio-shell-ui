@@ -16,10 +16,10 @@ import { getAppFunctions } from './app-loader-functions';
 import { Spinner } from '../../ui-extras/spinner';
 import { AppLink } from '../../ui-extras/app-link';
 import * as CONSTANTS from '../../constants';
-import { useAccountStore } from '../../store/account';
 import { IShellWindow, CarbonioModule } from '../../../types';
 import { getAppSetters } from './app-loader-setters';
 import { report } from '../../reporting';
+import SettingsHeader from '../../settings/components/settings-header';
 
 export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
@@ -61,6 +61,7 @@ function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<Carbo
 				report: report(appPkg.name),
 				AppLink,
 				Spinner,
+				SettingsHeader,
 				...getAppSetters(appPkg),
 				...getAppFunctions(appPkg),
 				...CONSTANTS

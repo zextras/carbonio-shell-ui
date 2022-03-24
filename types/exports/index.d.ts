@@ -24,16 +24,15 @@ import {
 import { ActionFactory, AnyFunction, CombinedActionFactory, Action } from '../integrations';
 import {
 	AccountSettings,
-	Tag,
 	Account,
-	NotifyObject,
 	AccountRights,
 	AccountRightName,
 	AccountRightTarget,
 	SoapFetch
 } from '../account';
-import { Mods } from '../network';
+import { Mods, TagActionResponse, CreateTagResponse, SoapNotify, SoapRefresh } from '../network';
 import { HistoryParams, ShellModes } from '../misc';
+import { Tag, Tags } from '../tags';
 
 export const getBridgedFunctions: () => {
 	addBoard: (path: string, context?: unknown | { app: string }) => void;
@@ -83,8 +82,8 @@ export const useActionFactory: <T>(
 ) => [ActionFactory<T> | undefined, boolean];
 export const useApp: () => CarbonioModule;
 export const getApp: () => CarbonioModule;
-export const useAppContext: () => unknown;
-export const getAppContext: () => unknown;
+export const useAppContext: <T>() => T;
+export const getAppContext: <T>() => T;
 export const useUserAccount: () => Account;
 export const useUserAccounts: () => Array<Account>;
 export const useUserRights: () => AccountRights;
@@ -93,8 +92,14 @@ export const getUserAccount: () => Account;
 export const getUserAccounts: () => Array<Account>;
 export const getUserRights: () => AccountRights;
 export const getUserRight: (right: AccountRightName) => Array<AccountRightTarget>;
-export const useTags: () => Array<Tag>;
-export const getTags: () => Array<Tag>;
+export const useTags: () => Tags;
+export const getTags: () => Tags;
+export const useTag: (id: string) => Tag;
+export const getTag: (id: string) => Tag;
+export const createTag: (tag: Omit<Tag, 'id'>) => Promise<CreateTagResponse>;
+export const renameTag: (id: string, name: string) => Promise<TagActionResponse>;
+export const deleteTag: (id: string) => Promise<TagActionResponse>;
+export const changeTagColor: (id: string, color: number | string) => Promise<TagActionResponse>;
 export const useUserSettings: () => AccountSettings;
 export const useUserSetting: <T = void>(...path: Array<string>) => string | T;
 export const getUserSettings: () => AccountSettings;
@@ -103,8 +108,8 @@ export const store: {
 	store: Store<any>;
 	setReducer(nextReducer: Reducer): void;
 };
-export const useNotify: () => Array<NotifyObject>;
-export const useRefresh: () => NotifyObject;
+export const useNotify: () => Array<SoapNotify>;
+export const useRefresh: () => SoapRefresh;
 export const Applink: FC<LinkProps>;
 export const Spinner: FC;
 export const useAddBoardCallback: () => (
@@ -144,7 +149,7 @@ export const updatePrimaryBadge: (badge: Partial<BadgeInfo>, id: string) => void
 export const updateUtilityBadge: (badge: Partial<BadgeInfo>, id: string) => void;
 //
 // add board
-export const addBoardView: (data: Partial<BoardView>) => string;
+export const addBoardView: (data: Object & Partial<BoardView>) => string;
 // remove board
 export const removeBoardView: (id: string) => void;
 //

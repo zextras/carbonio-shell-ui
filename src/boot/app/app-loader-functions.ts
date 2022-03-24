@@ -22,18 +22,13 @@ import {
 	getUserAccount,
 	getUserAccounts,
 	getUserSettings,
-	getTags,
 	useUserAccount,
 	useUserAccounts,
 	useUserSettings,
-	useTags,
-	useNotify,
-	useRefresh,
 	useUserRight,
 	useUserRights,
 	getUserRight,
-	getUserRights,
-	useAccountStore
+	getUserRights
 } from '../../store/account';
 import { useIsMobile } from '../../shell/hooks';
 import {
@@ -46,7 +41,6 @@ import {
 	useIntegratedHook
 } from '../../store/integrations/hooks';
 import { CarbonioModule } from '../../../types';
-import { getEditSettingsForApp } from '../../network/edit-settings';
 import {
 	usePushHistoryCallback,
 	useGoBackHistoryCallback,
@@ -63,11 +57,15 @@ import {
 	useRemoveCurrentBoard,
 	useUpdateCurrentBoard
 } from '../../shell/boards/board-hooks';
+import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
+import { getTag, getTags, useTag, useTags } from '../../store/tags';
+import { useNotify, useRefresh } from '../../store/network';
+import { changeTagColor, createTag, deleteTag, renameTag, updateTag } from '../../network/tags';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({
-	soapFetch: useAccountStore.getState().soapFetch(pkg.name),
-	xmlSoapFetch: useAccountStore.getState().xmlSoapFetch(pkg.name),
+	soapFetch: getSoapFetch(pkg.name),
+	xmlSoapFetch: getXmlSoapFetch(pkg.name),
 
 	// APP STORE FUNCTIONS
 	useAppContext: useAppContext(pkg.name),
@@ -103,6 +101,8 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	getUserRights,
 	useTags,
 	getTags,
+	useTag,
+	getTag,
 	useNotify,
 	useRefresh,
 	// BOARDS
@@ -119,6 +119,12 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	pushHistory,
 	goBackHistory,
 	replaceHistory,
+	// TAGS
+	createTag,
+	renameTag,
+	changeTagColor,
+	deleteTag,
+	updateTag,
 	// STUFF
 	useIsMobile,
 	getBridgedFunctions: (): unknown => {

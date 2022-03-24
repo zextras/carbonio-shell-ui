@@ -93,7 +93,9 @@
         "timezone_and_language": "Fuso Orario e Lingua",
         "search_settings": {
             "labels": {
-                "include_search_in_shared_folder": "Includi Cartelle Condivise nella ricerca"
+                "include_search_in_shared_folder": "Includi Cartelle Condivise nella ricerca",
+                "include_search_in_spam_folder": "Includi la Cartella Spam nella Ricerca",
+                "include_search_in_trash_folder": "Includi Cartella del Cestino nella Ricerca"
             }
         }
     },

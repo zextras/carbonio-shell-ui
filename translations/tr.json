@@ -23,7 +23,8 @@
     },
     "message": {
         "snackbar": {
-            "settings_saved": "Değişiklikler başarıyla kaydedildi"
+            "settings_saved": "Değişiklikler başarıyla kaydedildi",
+            "identities_quota_exceeded": "Kimlik kotanızı aştığınız için kimlik oluşturulamadı"
         },
         "reload": "\tYeni dilde görüntülemek için uygulamayı şimdi yeniden başlatmak ister misiniz?\n(Yoksa, daha sonra giriş yaptığınızda yeni dilde görüntülenecek.)"
     },
@@ -49,7 +50,8 @@
         "app_description": "Ayarlar Modülü",
         "button": {
             "primary": "Kaydet",
-            "secondary": "İptal"
+            "secondary": "İptal",
+            "confirm": "Onayla"
         },
         "general": {
             "account": "Hesap",
@@ -103,7 +105,9 @@
                 "include_search_in_spam_folder": "Aramalara Spam Klasörü ekle",
                 "include_search_in_trash_folder": "Aramalara Çöp Kutusu Klasörü ekle"
             }
-        }
+        },
+        "accounts": "Hesaplar",
+        "choose": "Seç"
     },
     "snackbar": {
         "error": "Bir hata oluştu, lütfen tekrar deneyin"
@@ -136,7 +140,80 @@
         "no": "Hayır",
         "reload": "Yeniden yükle",
         "discard_changes": "DEĞİŞİKLİKLERİ UYGULAMA",
-        "time_zone": "Saat Dilimi"
+        "time_zone": "Saat Dilimi",
+        "no_results": "Sonuç bulunamadı",
+        "account_menu": "Hesap menüsü",
+        "account_name": "Hesap Adı",
+        "account_type": "Hesap Türü",
+        "account_username": "Hesap Kullanıcı Adı",
+        "accounts": "Hesaplar",
+        "accounts_list": "Hesap Listesi",
+        "add_external_account": "Dışarıdan hesap ekle",
+        "add_delegate": "Alt yetkili ekle",
+        "add_new_email": "Yeni e-posta adresi ekle",
+        "add_persona": "Kişilik ekle",
+        "address": "Adres",
+        "advanced_settings": "Gelişmiş Ayarlar",
+        "change_pop": "POP port değiştir",
+        "choose_account": "Hesap seç",
+        "choose_folder": "Klasör seç",
+        "default_from_name": "Varsayılan Gönderen Adı",
+        "delegates": "Temsilciler",
+        "delete": "Sil",
+        "delete_after_download": "İndirildikten sonra mesajları sunucudan sil",
+        "delete_permanently": "Kalıcı olarak sil",
+        "documentation": "Yardımcı belgeler",
+        "dont_save": "Gönderilen mesajların kopyasını kaydetme",
+        "download_messages": "Mesajları indirme yeri:",
+        "edit_permissions": "İzinleri düzenle",
+        "email_address": "E-posta adresi",
+        "external_account_settings": "Dış Hesap Ayarları",
+        "feedback": "Geri bildirim",
+        "filter_folders": "Klasörleri filtrele",
+        "folder": "Klasör: Yeni Dış Hesap 3",
+        "folders": "Klasörler",
+        "from_name": "Gönderen: \" Ad\"",
+        "go_back": "Geriye git",
+        "imap": "IMAP",
+        "inbox": "Gelen Kutusu",
+        "leave_anyway": "Evet çıkmak istiyorum",
+        "logout": "Oturumu kapat",
+        "new_folder": "Yeni Klasör",
+        "password": "Parola",
+        "passwords_recovery_settings": "Parola Kurtarma Hesap Ayarları",
+        "persona": "Kişilik",
+        "persona_name": "Kişilik Adı",
+        "persona_settings": "Kişilik Ayarları",
+        "pop3": "POP3",
+        "pop_port": "POP port",
+        "primary": "Birincil",
+        "recipents": "Alıcılar",
+        "recovery_email": "Kurtarma E-postası",
+        "remove": "kaldır",
+        "replyToFieldExample": "ör. Dilara Can",
+        "reply_to_field_example": "ör. Dilara Can",
+        "save": "Kaydet",
+        "save_and_leave": "Kaydet ve çık",
+        "save_delegate_folder": "Gönderilen mesajların bir kopyasını yardımcımın Gönderilenler klasörüne kaydet",
+        "save_to_my_sent_folder": "Gönderilen mesajların bir kopyasını Gönderilenler klasörüme kaydet",
+        "secondary": "İkincil",
+        "set_reply_to_field": "E-posta mesajı için \"yanıtlama adresi\" alanını belirle:",
+        "settings_sent_messages": "Gönderilen Mesajlar için Ayarlar",
+        "test_settings": "Ayarları test et",
+        "unsaved_changes": "Kaydedilmemiş değişiklikler var",
+        "unsaved_changes_line1": "Kaydetmeden bu sayfadan çıkmak istediğinize emin misiniz?",
+        "unsaved_changes_line2": "Değişiklikleriniz kaydedilmeden çıkılacak",
+        "update_view": "Görünümü güncelle",
+        "use_persona": "Bu kişiliği kullan",
+        "use_personas_line2": "Örneğin, işinizle ilgili farklı rollere ait e-posta gönderiyorsanız, bunun için kişilik profili hazırlayabilirsiniz.",
+        "use_ssl": "Bu sunucuya erişirken sifreli bağlantı (SSL) kullan",
+        "when_composing": "Klasör(ler)de mesajları hazırlarken, yanıtlarken veya iletirken:",
+        "when_replying": "Aşağıdaki alıcılara gönderilen mesajları yanıtlarken veya iletirken:",
+        "add_recovery_email": "Kurtarma e-posta adresi ekle",
+        "email_server": "E-posta sunucu adı (ör. \"posta.alanadi.com\")",
+        "permanent_delete_title": "Bu Kişiliği tamamen silmek istediğinizden emin misiniz?",
+        "save_both_folders": "Gönderilen mesajların bir kopyasını Gönderilenler klasörüme ve yardımcımın klasörüne kaydet",
+        "use_personas_line1": "E-posta mesajları gönderirken bir çok ayarı kolayca değiştirmek için kişilik özelliğini kullanabilirsiniz."
     },
     "locale": {
         "label_italian": "Italian - {{value}}",
@@ -258,5 +335,33 @@
         "west_central_africa": "{{value}} West Central Africa",
         "yangon": "{{value}} Yangon",
         "yerevan": "{{value}} Yerevan"
+    },
+    "feedback": {
+        "behaviors": "Davranışlar",
+        "error": "Geri bildiriminiz gönderilirken hata oluştu",
+        "hint": "Hatırlatma: Geri bildirimi yazmadan önce modülü ve alt bölümleri seçerek başlığı tanımlayın. Yardımlarınız için teşekkürler.",
+        "missing_features": "Eksik özellikler",
+        "other": "Diğer",
+        "report_something": "Rapor göndermek istiyor musunuz?",
+        "select_a_module": "Modül seçin",
+        "select_a_topic": "Başlık seçin",
+        "send": "GÖNDER",
+        "success": "Geri bildirim için teşekkürler",
+        "user_interface": "Kullanıcı arayüzü",
+        "write_here": "Geri bildiriminizi buraya yazın",
+        "explanation": "Zextras Sunucu ile yeni deneyiminiz hakkında lütfen bize geri bildirim gönderin. Ürünümüzü geliştirmek için görüşleriniz bizim için önemli, o nedenle düşüncelerinizi lütfen bizimle paylaşın."
+    },
+    "messages": {
+        "permanent_delete_body": "Bu Kişiliği kalıcı olarak silerseniz geri alamazsınız. Devam edilsin mi?",
+        "permanent_delete_title": "Bu öğeyi tamamen silmek istiyor musunuz?"
+    },
+    "passwords_recovery_settings": {
+        "title": "Parola Kurtarma Hesap Ayarları"
+    },
+    "primary_account": {
+        "title": "Birincil Hesap Ayarları"
+    },
+    "share": {
+        "is_contained_in": "Bulunduğu klasör"
     }
 }

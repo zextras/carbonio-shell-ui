@@ -14,7 +14,6 @@ module.exports = {
 		}
 	},
 	globals: {
-		WATCH_SERVER: 'readonly',
 		BASE_PATH: 'readonly',
 		__SHELL_ENV__: 'readonly',
 		__CARBONIO_DEV__: 'readonly',

@@ -13,13 +13,10 @@ import {
 	useScreenMode
 } from '@zextras/carbonio-design-system';
 import Logo from '../svg/carbonio-beta.svg';
-import LogoAdmin from '../svg/carbonio-admin-panel.svg';
 import { SearchBar } from '../search/search-bar';
 import { CreationButton } from './creation-button';
 import { useAppStore } from '../store/app';
 import { AppRoute } from '../../types';
-import { ShellMode } from '../multimode';
-import { SHELL_MODES } from '../constants';
 
 const ShellHeader: FC<{
 	activeRoute: AppRoute;
@@ -49,18 +46,11 @@ const ShellHeader: FC<{
 					</Padding>
 				</Responsive>
 				<Container width={320} height={32} crossAlignment="flex-start">
-					<ShellMode exclude={[SHELL_MODES.ADMIN]}>
-						<Logo height="32px" />
-					</ShellMode>
-					<ShellMode include={[SHELL_MODES.ADMIN]}>
-						<LogoAdmin height="32px" />
-					</ShellMode>
+					<Logo height="32px" />
 				</Container>
-				<ShellMode exclude={[SHELL_MODES.ADMIN]}>
-					<Padding horizontal="large">
-						<CreationButton activeRoute={activeRoute} />
-					</Padding>
-				</ShellMode>
+				<Padding horizontal="large">
+					<CreationButton activeRoute={activeRoute} />
+				</Padding>
 				<Responsive mode="desktop">
 					{searchEnabled && (
 						<SearchBar

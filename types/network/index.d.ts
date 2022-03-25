@@ -7,6 +7,13 @@
 import { AccountRights, ZimletProp } from '../account';
 import { Tag } from '../tags';
 
+export enum JSNS {
+	ACCOUNT = 'urn:zimbraAccount',
+	ADMIN = 'urn:zimbraAdmin',
+	MAIL = 'urn:zimbraMail',
+	ALL = 'urn:zimbra',
+	SYNC = 'urn:zimbraSync'
+}
 export type ZimletPkgDescription = {
 	zimlet: Array<{
 		name: string;

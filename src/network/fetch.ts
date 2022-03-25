@@ -119,8 +119,12 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 		useAccountStore.setState({
 			usedQuota: responseUsedQuota ?? usedQuota
 		});
+		const nextPollingInterval = (res?.Body as { waitDisallowed?: number })?.waitDisallowed
+			? 10000
+			: pollingInterval;
 		useNetworkStore.setState({
-			noOpTimeout: setTimeout(() => noOp(), pollingInterval),
+			noOpTimeout: setTimeout(() => noOp(), nextPollingInterval),
+			pollingInterval: nextPollingInterval,
 			context: {
 				...context,
 				...res?.Header?.context

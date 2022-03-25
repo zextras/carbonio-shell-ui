@@ -12,6 +12,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const commitHash = require('child_process').execSync('git rev-parse HEAD').toString().trim();
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 const baseStaticPath = `/static/iris/carbonio-shell-ui/${commitHash}/`;
 
@@ -57,6 +58,20 @@ module.exports = (conf, pkg, options, mode) => {
 			template: path.resolve(process.cwd(), 'commit.template'),
 			filename: 'commit',
 			COMMIT_ID: commitHash
+		}),
+		new WorkboxPlugin.GenerateSW({
+			runtimeCaching: [
+				{
+					urlPattern: /\.(?:png|jpg|jpeg|svg|css|js)$/,
+					handler: 'CacheFirst',
+					options: {
+						cacheName: 'cache',
+						expiration: {
+							maxEntries: 10
+						}
+					}
+				}
+			]
 		})
 	);
 	conf.devServer = {
@@ -94,5 +109,6 @@ module.exports = (conf, pkg, options, mode) => {
 			}
 		]
 	};
+	conf.externals = {};
 	return conf;
 };

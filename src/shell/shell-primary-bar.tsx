@@ -24,8 +24,6 @@ import { BoardValueContext, BoardSetterContext } from './boards/board-context';
 import { useAppStore } from '../store/app';
 import { AppRoute, PrimaryAccessoryView, PrimaryBarView } from '../../types';
 import BadgeWrap from './badge-wrap';
-import { isAdmin, ShellMode } from '../multimode';
-import { SHELL_MODES } from '../constants';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { checkRoute } from '../utility-bar/utils';
 
@@ -69,26 +67,26 @@ type PrimaryBarItemProps = {
 type PrimaryBarAccessoryItemProps = {
 	view: PrimaryAccessoryView;
 };
-
-const AdminPrimaryBarElement: FC<PrimaryBarItemProps> = ({ view, active, onClick }) => (
-	<PrimaryContainer
-		orientation="horizontal"
-		mainAlignment="flex-start"
-		height="48px"
-		onClick={onClick}
-	>
-		<BadgeWrap badge={view.badge}>
-			{typeof view.component === 'string' ? (
-				<Icon icon={view.component} color={active ? 'primary' : 'text'} size="large" />
-			) : (
-				<view.component active={active} />
-			)}
-		</BadgeWrap>
-		<Padding right="large">
-			<Text color={active ? 'primary' : 'text'}>{view.label}</Text>
-		</Padding>
-	</PrimaryContainer>
-);
+// @@ #admin-removal
+// const AdminPrimaryBarElement: FC<PrimaryBarItemProps> = ({ view, active, onClick }) => (
+// 	<PrimaryContainer
+// 		orientation="horizontal"
+// 		mainAlignment="flex-start"
+// 		height="48px"
+// 		onClick={onClick}
+// 	>
+// 		<BadgeWrap badge={view.badge}>
+// 			{typeof view.component === 'string' ? (
+// 				<Icon icon={view.component} color={active ? 'primary' : 'text'} size="large" />
+// 			) : (
+// 				<view.component active={active} />
+// 			)}
+// 		</BadgeWrap>
+// 		<Padding right="large">
+// 			<Text color={active ? 'primary' : 'text'}>{view.label}</Text>
+// 		</Padding>
+// 	</PrimaryContainer>
+// );
 
 const PrimaryBarElement: FC<PrimaryBarItemProps> = ({ view, active, onClick }) => (
 	<Tooltip label={view.label} placement="right" key={view.id}>
@@ -108,44 +106,43 @@ const PrimaryBarElement: FC<PrimaryBarItemProps> = ({ view, active, onClick }) =
 	</Tooltip>
 );
 
-const PrimaryBarAccessoryElement: FC<PrimaryBarAccessoryItemProps> = ({ view }) =>
-	isAdmin() ? (
+const PrimaryBarAccessoryElement: FC<PrimaryBarAccessoryItemProps> = ({ view }) => (
+	// @@ #admin-removal
+	// <AppContextProvider key={view.id} pkg={view.app}>
+	// 	<PrimaryContainer
+	// 		orientation="horizontal"
+	// 		mainAlignment="flex-start"
+	// 		height="48px"
+	// 		onClick={view.onClick}
+	// 	>
+	// 		<Container width={48} height={48} style={{ position: 'relative' }}>
+	// 			{typeof view.component === 'string' ? (
+	// 				<Icon icon={view.component} size="large" />
+	// 			) : (
+	// 				<view.component />
+	// 			)}
+	// 		</Container>
+	// 		<Padding right="large">
+	// 			<Text>{view.label}</Text>
+	// 		</Padding>
+	// 	</PrimaryContainer>
+	// </AppContextProvider>
+	<Tooltip label={view.label} placement="right" key={view.id}>
 		<AppContextProvider key={view.id} pkg={view.app}>
-			<PrimaryContainer
-				orientation="horizontal"
-				mainAlignment="flex-start"
-				height="48px"
-				onClick={view.onClick}
-			>
-				<Container width={48} height={48} style={{ position: 'relative' }}>
-					{typeof view.component === 'string' ? (
-						<Icon icon={view.component} size="large" />
-					) : (
-						<view.component />
-					)}
-				</Container>
-				<Padding right="large">
-					<Text>{view.label}</Text>
-				</Padding>
-			</PrimaryContainer>
+			{typeof view.component === 'string' ? (
+				<IconButton
+					icon={view.component}
+					backgroundColor="gray6"
+					iconColor="text"
+					onClick={view.onClick}
+					size="large"
+				/>
+			) : (
+				<view.component />
+			)}
 		</AppContextProvider>
-	) : (
-		<Tooltip label={view.label} placement="right" key={view.id}>
-			<AppContextProvider key={view.id} pkg={view.app}>
-				{typeof view.component === 'string' ? (
-					<IconButton
-						icon={view.component}
-						backgroundColor="gray6"
-						iconColor="text"
-						onClick={view.onClick}
-						size="large"
-					/>
-				) : (
-					<view.component />
-				)}
-			</AppContextProvider>
-		</Tooltip>
-	);
+	</Tooltip>
+);
 
 const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 	const primaryBarViews = useAppStore((s) => s.views.primaryBar);
@@ -178,7 +175,7 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 	);
 	return (
 		<ContainerWithDivider
-			width={isAdmin() ? 'fit' : 49}
+			width={49}
 			height="fill"
 			background="gray6"
 			orientation="vertical"
@@ -193,6 +190,7 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 				wrap="nowrap"
 				style={{ minHeight: '1px', overflowY: 'overlay' }}
 			>
+				{/*  @@ #admin-removal
 				<ShellMode include={[SHELL_MODES.ADMIN]}>
 					{map(primaryBarViews, (view) =>
 						// eslint-disable-next-line no-nested-ternary
@@ -205,20 +203,18 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 							/>
 						) : null
 					)}
-				</ShellMode>
-				<ShellMode exclude={[SHELL_MODES.ADMIN]}>
-					{map(primaryBarViews, (view) =>
-						// eslint-disable-next-line no-nested-ternary
-						view.visible ? (
-							<PrimaryBarElement
-								key={view.id}
-								onClick={(): void => history.push(`/${routes[view.id]}`)}
-								view={view}
-								active={activeRoute?.id === view.id}
-							/>
-						) : null
-					)}
-				</ShellMode>
+				</ShellMode> */}
+				{map(primaryBarViews, (view) =>
+					// eslint-disable-next-line no-nested-ternary
+					view.visible ? (
+						<PrimaryBarElement
+							key={view.id}
+							onClick={(): void => history.push(`/${routes[view.id]}`)}
+							view={view}
+							active={activeRoute?.id === view.id}
+						/>
+					) : null
+				)}
 			</Row>
 			<Row
 				mainAlignment="flex-end"

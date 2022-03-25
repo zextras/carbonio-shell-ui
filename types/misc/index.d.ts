@@ -49,8 +49,6 @@ export type AppInjections = {
 	store: Store<any>;
 };
 
-export type ShellModes = 'carbonio' | 'carbonioStandalone' | 'carbonioAdmin';
-
 export type HistoryParams =
 	| {
 			path: To;

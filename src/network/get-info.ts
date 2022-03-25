@@ -4,14 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { GetState, SetState } from 'zustand';
 import { filter } from 'lodash';
-import { SHELL_APP_ID, SHELL_MODES } from '../constants';
+import { SHELL_APP_ID } from '../constants';
 import { useAppStore } from '../store/app';
 import { normalizeAccount } from '../store/account/normalization';
-import { AccountSettings, AccountState, GetInfoResponse, CarbonioModule } from '../../types';
+import { AccountSettings, GetInfoResponse, CarbonioModule } from '../../types';
 import { goToLogin } from './go-to-login';
-import { isAdmin, isFullClient, isStandalone } from '../multimode';
 import { getSoapFetch } from './fetch';
 import { useAccountStore } from '../store/account';
 import { useNetworkStore } from '../store/network';
@@ -52,11 +50,8 @@ export const getInfo = (): Promise<void> =>
 		.then((r: any) => r.json())
 		.then(({ components }: { components: Array<CarbonioModule> }) => {
 			useAppStore.getState().setters.addApps(
-				filter(components, ({ type, name }) => {
-					if (type === 'shell') return true;
-					if (isAdmin()) return type === SHELL_MODES.ADMIN;
-					if (isFullClient()) return type === SHELL_MODES.CARBONIO;
-					if (isStandalone()) return name === window.location.pathname.split('/')[2];
+				filter(components, ({ type }) => {
+					if (type === 'shell' || type === 'carbonio') return true;
 					return false;
 				})
 			);

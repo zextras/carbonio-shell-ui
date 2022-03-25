@@ -13,7 +13,6 @@ import { SettingsAppView } from '../../settings/settings-app-view';
 import { SettingsSidebar } from '../../settings/settings-sidebar';
 import { AppState, PrimaryBarView, SettingsView } from '../../../types';
 import GeneralSettings from '../../settings/general-settings';
-import { isAdmin, isClient } from '../../multimode';
 import Feedback from '../../reporting/feedback';
 import DevBoard from '../../dev/dev-board';
 import DevBoardTrigger from '../../dev/dev-board-trigger';
@@ -118,24 +117,23 @@ const devModeTrigger = {
 export const registerDefaultViews = (t: TFunction): void => {
 	useAppStore.setState(
 		produce((s: AppState) => {
-			if (isAdmin()) {
-				s.routes = {
-					[SETTINGS_APP_ID]: settingsRoute
-				};
-				s.views.primaryBar = [settingsPrimaryBar(t)];
-				s.views.secondaryBar = [settingsSecondaryBar];
-				s.views.appView = [settingsAppView];
-			}
-			if (isClient()) {
-				s.routes = {
-					[SEARCH_APP_ID]: searchRoute,
-					[SETTINGS_APP_ID]: settingsRoute
-				};
-				s.views.primaryBar = [searchPrimaryBar(t), settingsPrimaryBar(t)];
-				s.views.secondaryBar = [settingsSecondaryBar];
-				s.views.appView = [searchAppView, settingsAppView];
-				s.views.settings = [settingsGeneralView(t), settingsAccountsView(t)];
-			}
+			// @@ #admin-removal
+			// if (isAdmin()) {
+			// 	s.routes = {
+			// 		[SETTINGS_APP_ID]: settingsRoute
+			// 	};
+			// 	s.views.primaryBar = [settingsPrimaryBar(t)];
+			// 	s.views.secondaryBar = [settingsSecondaryBar];
+			// 	s.views.appView = [settingsAppView];
+			// }
+			s.routes = {
+				[SEARCH_APP_ID]: searchRoute,
+				[SETTINGS_APP_ID]: settingsRoute
+			};
+			s.views.primaryBar = [searchPrimaryBar(t), settingsPrimaryBar(t)];
+			s.views.secondaryBar = [settingsSecondaryBar];
+			s.views.appView = [searchAppView, settingsAppView];
+			s.views.settings = [settingsGeneralView(t), settingsAccountsView(t)];
 			s.views.board = [feedbackBoardView];
 			if (__CARBONIO_DEV__) {
 				s.views.board.push(devModeBoardView);

@@ -7,16 +7,104 @@
         "reduce": "Reduce board",
         "show_tabs": "Show other tabs"
     },
+    "feedback": {
+        "behaviors": "Behaviors",
+        "error": "There was an error while sending your feedback",
+        "explanation": "Please send us your feedback about your new experience with Zextras Server. Your opinion is meaningful for us to improve our product. So tell us what’s on your mind.",
+        "hint": "Remember: define the topic using module and macro area selectors before write your feedback. Thanks for your help.",
+        "missing_features": "Missing features",
+        "other": "Other",
+        "report_something": "Do you want to report something?",
+        "select_a_module": "Select a module",
+        "select_a_topic": "Select a topic",
+        "send": "SEND",
+        "success": "Thank you for your feedback",
+        "user_interface": "User interface",
+        "write_here": "Write your feedback here"
+    },
     "label": {
+        "account_menu": "Account menu",
+        "account_name": "Account Name",
+        "account_type": "Account Type",
+        "account_username": "Account Username",
+        "accounts": "Accounts",
+        "accounts_list": "Accounts list",
+        "add_delegate": "Add delegate",
+        "add_external_account": "Add external account",
+        "add_new_email": "Add new e-mail address",
+        "add_persona": "Add persona",
+        "add_recovery_email": "Add recovery e-mail",
+        "address": "Address",
+        "advanced_settings": "Advanced Settings",
         "cancel": "Cancel",
+        "change_pop": "Change POP port",
+        "choose_account": "Choose an account",
+        "choose_folder": "Choose Folder",
         "clear_search_query": "CLEAR SEARCH",
+        "default_from_name": "Default From Name",
+        "delegates": "Delegates",
+        "delete": "Delete",
+        "delete_after_download": "Delete messages from the server after the download",
+        "delete_permanently": "Delete permanently",
         "discard_changes": "DISCARD CHANGES",
+        "documentation": "Documentation",
+        "dont_save": "Don’t save a copy of sent messages",
+        "download_messages": "Download messages to:",
+        "edit_permissions": "Edit permissions",
         "edit_to_start_search": "Edit your search to start a new one",
+        "email_address": "E-mail address",
+        "email_server": "E-mail server (e.g. “mail.example.com”)",
+        "external_account_settings": "External Account Settings",
+        "feedback": "Feedback",
+        "filter_folders": "Filter folders",
+        "folder": "Folder: New External Account 3",
+        "folders": "Folders",
+        "from_name": "From: \"Name\"",
+        "go_back": "Go Back",
+        "imap": "IMAP",
+        "inbox": "Inbox",
         "language": "Language",
+        "leave_anyway": "Leave anyway",
+        "logout": "Logout",
+        "new_folder": "New Folder",
         "no": "No",
+        "no_results": "No results found",
         "out_of_office": "Out of Office",
+        "password": "Password",
+        "passwords_recovery_settings": "Password Recovery Account Settings",
+        "permanent_delete_title": "Are you sure to permanently delete this Persona?",
+        "persona": "Persona",
+        "persona_name": "Persona Name",
+        "persona_settings": "Persona Settings",
+        "pop3": "POP3",
+        "pop_port": "POP port",
+        "primary": "Primary",
+        "recipents": "Recipients",
+        "recovery_email": "Recovery Email",
         "reload": "Reload",
-        "time_zone": "Time Zone"
+        "remove": "remove",
+        "replyToFieldExample": "e.g. Bob Smith",
+        "reply_to_field_example": "e.g. Bob Smith",
+        "save": "Save",
+        "save_and_leave": "Save and leave",
+        "save_both_folders": "Save a copy of sent messages to my Sent folder and delegate’s folder",
+        "save_delegate_folder": "Save a copy of sent messages to delegate’s Sent folder",
+        "save_to_my_sent_folder": "Save a copy of sent messages to my Sent folder",
+        "secondary": "Secondary",
+        "set_reply_to_field": "Set the \"Reply-to\" field of e-mail message to:",
+        "settings_sent_messages": "Settings for Sent Messages",
+        "test_settings": "Test Settings",
+        "time_zone": "Time Zone",
+        "unsaved_changes": "You have unsaved changes",
+        "unsaved_changes_line1": "Are you sure you want to leave this page without saving?",
+        "unsaved_changes_line2": "All your unsaved changes will be lost",
+        "update_view": "Update view",
+        "use_persona": "Use this persona",
+        "use_personas_line1": "Use personas to quickly change many settings when sending e-mail messages.",
+        "use_personas_line2": "For example, if you sometimes send e-mails in a particular role at work, create a persona for that.",
+        "use_ssl": "Use an encrypter connection (SSL) when accessing this server",
+        "when_composing": "When composing, replying to or forwarding messages in folder(s):",
+        "when_replying": "When replying or forwarding messages sent to:"
     },
     "locale": {
         "English": "English",
@@ -53,8 +141,13 @@
     "message": {
         "reload": "\tWould you like to reload the application now to show the new language?\n(Otherwise, the new language will appear the next time you sign in.)",
         "snackbar": {
+            "identities_quota_exceeded": "The identitity could not be created because you have exceeded your identity quota",
             "settings_saved": "Edits saved correctly"
         }
+    },
+    "messages": {
+        "permanent_delete_body": "If you permanently delete this Persona you will not be able to recover it. Continue?",
+        "permanent_delete_title": "Are you sure to permanently delete this element?"
     },
     "module": {
         "app": {
@@ -63,6 +156,12 @@
     },
     "new": "New",
     "new_tab": "New Tab",
+    "passwords_recovery_settings": {
+        "title": "Password Recovery Account Settings"
+    },
+    "primary_account": {
+        "title": "Primary Account Settings"
+    },
     "search": {
         "active_input_label": "Separate your keywords by a comma or pressing TAB",
         "already_clear": "Search input is already clear",
@@ -76,10 +175,13 @@
         "unable_to_parse_query": "Unable to complete the search, clear it and retry"
     },
     "settings": {
+        "accounts": "Accounts",
         "app": "Settings",
         "button": {
+            "confirm": "Confirm",
             "primary": "Save"
         },
+        "choose": "Choose",
         "general": {
             "account": "Account",
             "account_logout": "Logout",
@@ -130,6 +232,9 @@
             }
         },
         "timezone_and_language": "Time Zone and Language"
+    },
+    "share": {
+        "is_contained_in": "Is contained in"
     },
     "snackbar": {
         "error": "Something went wrong, please try again"

@@ -13,7 +13,6 @@ import {
 	useScreenMode
 } from '@zextras/carbonio-design-system';
 import Logo from '../svg/carbonio-beta.svg';
-import LogoAdmin from '../svg/carbonio-admin-panel.svg';
 import { SearchBar } from '../search/search-bar';
 import { CreationButton } from './creation-button';
 import { useAppStore } from '../store/app';
@@ -48,11 +47,6 @@ const ShellHeader: FC<{
 				</Responsive>
 				<Container width={320} height={32} crossAlignment="flex-start">
 					<Logo height="32px" />
-					{/*
-						// @@ #admin-removal
-					<ShellMode include={[SHELL_MODES.ADMIN]}>
-						<LogoAdmin height="32px" />
-					</ShellMode> */}
 				</Container>
 				<Padding horizontal="large">
 					<CreationButton activeRoute={activeRoute} />

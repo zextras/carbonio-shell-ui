@@ -6,7 +6,6 @@
 import '../splash.css';
 import React, { FC } from 'react';
 import Logo from '../svg/carbonio-beta.svg';
-// import LogoAdmin from '../svg/carbonio-admin-panel.svg';
 import Helmet from '../svg/carbonio-head.svg';
 
 const LoadingView: FC = () => (
@@ -15,7 +14,6 @@ const LoadingView: FC = () => (
 		<div className="loader">
 			<div className="bar"></div>
 		</div>
-		{/* <LogoAdmin fill="#A3AEBC" width="50%" /> */}
 		<Logo fill="#A3AEBC" width="50%" />
 	</div>
 );

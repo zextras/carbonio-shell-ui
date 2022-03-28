@@ -3,7 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-/* eslint-disable no-restricted-globals */
 
 import { SoapNotify, Tag, TagMessage, Tags } from '../../types';
 
@@ -43,7 +42,7 @@ export const handleTagNotify = (notify: SoapNotify, state: Tags): Tags =>
 		notify.deleted ?? []
 	);
 
-self.onmessage = ({ data }: TagMessage): void => {
-	if (data.op === 'refresh' && data.tags) self.postMessage({ tags: handleTagRefresh(data.tags) });
-	if (data.op === 'notify') self.postMessage({ tags: handleTagNotify(data.notify, data.state) });
+onmessage = ({ data }: TagMessage): void => {
+	if (data.op === 'refresh' && data.tags) postMessage({ tags: handleTagRefresh(data.tags) });
+	if (data.op === 'notify') postMessage({ tags: handleTagNotify(data.notify, data.state) });
 };

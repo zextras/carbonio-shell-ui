@@ -12,7 +12,7 @@ import { SoapContext } from '../../../types';
 // import { getSoapFetch } from '../../network/fetch';
 // import { useNetworkStore } from './store';
 
-import { tagWorker } from '../../workers';
+import { folderWorker, tagWorker } from '../../workers';
 import { useTagStore } from '../tags';
 import { useNetworkStore } from './store';
 
@@ -23,6 +23,10 @@ export const handleSync = ({ refresh, notify }: SoapContext): Promise<void> =>
 			tagWorker.postMessage({
 				op: 'refresh',
 				tags: refresh.tags?.tag ?? []
+			});
+			folderWorker.postMessage({
+				op: 'refresh',
+				folder: refresh.folder ?? []
 			});
 		}
 		if (notify?.length) {

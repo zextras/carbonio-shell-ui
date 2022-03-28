@@ -92,32 +92,6 @@ export type IdentityProps = {
 	whenSentToAddresses?: string;
 };
 
-export type Folder = {
-	id: string;
-	uuid: string;
-	name: string;
-	path: string | undefined;
-	parent: string;
-	parentUuid: string;
-	unreadCount: number;
-	size: number;
-	itemsCount: number;
-	synced: boolean;
-	absParent: string;
-	items: Folder[];
-	level: number;
-	to: string;
-	color: string;
-	rgb: string;
-	rid?: string;
-	isSharedFolder?: boolean;
-	owner?: string;
-	zid?: string;
-	acl?: unknown;
-	perm?: string;
-	retentionPolicy?: unknown;
-};
-
 export type CreateModalProps = {
 	background: string;
 	centered: boolean;

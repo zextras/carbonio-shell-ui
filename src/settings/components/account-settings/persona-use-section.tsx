@@ -184,7 +184,7 @@ const PersonaUseSection = ({
 			>
 				<Row width="50%" padding={{ right: 'small' }}>
 					<ChipInput
-						label="e.g. Bob Smith"
+						label={t('label.reply_to_field_example', "e.g. Bob Smith")}
 						value=""
 						placeholder={t('label.folders', 'Folders')}
 						background="gray5"

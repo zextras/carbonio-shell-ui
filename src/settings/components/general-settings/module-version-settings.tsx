@@ -53,7 +53,7 @@ const ModuleVersionSettings: FC = () => {
 							<Text>
 								{app.display} ({app.name})
 							</Text>
-							<Tooltip placement="top" label="Click to copy">
+							<Tooltip placement="top" label={t('label.click_to_copy', 'Click to copy')}>
 								<Text style={{ cursor: 'pointer' }} onClick={(e: any): any => copyToClipboard(e)}>
 									Version: {app.version}
 								</Text>

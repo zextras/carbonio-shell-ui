@@ -10,7 +10,8 @@ import {
 	IconButton,
 	Padding,
 	Responsive,
-	useScreenMode
+	useScreenMode,
+	Catcher
 } from '@zextras/carbonio-design-system';
 import Logo from '../svg/carbonio-beta.svg';
 import { SearchBar } from '../search/search-bar';
@@ -39,42 +40,49 @@ const ShellHeader: FC<{
 				vertical: 'small'
 			}}
 		>
-			<Container orientation="horizontal" width="75%" maxWidth="75%" mainAlignment="space-between">
-				<Responsive mode="mobile">
-					<Padding right="small">
-						<IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} />
+			<Catcher>
+				<Container
+					orientation="horizontal"
+					width="75%"
+					maxWidth="75%"
+					mainAlignment="space-between"
+				>
+					<Responsive mode="mobile">
+						<Padding right="small">
+							<IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} />
+						</Padding>
+					</Responsive>
+					<Container width={320} height={32} crossAlignment="flex-start">
+						<Logo height="32px" />
+					</Container>
+					<Padding horizontal="large">
+						<CreationButton activeRoute={activeRoute} />
 					</Padding>
-				</Responsive>
-				<Container width={320} height={32} crossAlignment="flex-start">
-					<Logo height="32px" />
+					<Responsive mode="desktop">
+						{searchEnabled && (
+							<SearchBar
+								activeRoute={activeRoute}
+								// primaryAction={primaryAction}
+								// secondaryActions={secondaryActions}
+							/>
+						)}
+					</Responsive>
 				</Container>
-				<Padding horizontal="large">
-					<CreationButton activeRoute={activeRoute} />
-				</Padding>
-				<Responsive mode="desktop">
-					{searchEnabled && (
-						<SearchBar
-							activeRoute={activeRoute}
-							// primaryAction={primaryAction}
-							// secondaryActions={secondaryActions}
-						/>
-					)}
-				</Responsive>
-			</Container>
-			<Container orientation="horizontal" width="25%" mainAlignment="flex-end">
-				<Responsive mode="desktop">{children}</Responsive>
-				<Responsive mode="mobile">
-					<Container
-						orientation="horizontal"
-						mainAlignment="flex-end"
-						padding={{ right: 'extrasmall' }}
-					>
-						{/* <Dropdown items={secondaryActions} placement="bottom-start">
+				<Container orientation="horizontal" width="25%" mainAlignment="flex-end">
+					<Responsive mode="desktop">{children}</Responsive>
+					<Responsive mode="mobile">
+						<Container
+							orientation="horizontal"
+							mainAlignment="flex-end"
+							padding={{ right: 'extrasmall' }}
+						>
+							{/* <Dropdown items={secondaryActions} placement="bottom-start">
 							<IconButton icon="Plus" />
 						</Dropdown> */}
-					</Container>
-				</Responsive>
-			</Container>
+						</Container>
+					</Responsive>
+				</Container>
+			</Catcher>
 		</Container>
 	);
 };

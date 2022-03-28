@@ -13,3 +13,4 @@ export * from './theme';
 export * from './search';
 export * from './misc';
 export * from './tags';
+export * from './workers';

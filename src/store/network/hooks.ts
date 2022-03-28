@@ -7,7 +7,7 @@ import { SoapNotify, SoapRefresh } from '../../../types';
 import { useNetworkStore } from './store';
 
 export const useNotify = (): SoapNotify[] => {
-	const notify = useNetworkStore((s) => s.context.notify ?? []);
+	const notify = useNetworkStore((s) => s.notify ?? []);
 	return notify;
 };
-export const useRefresh = (): SoapRefresh => useNetworkStore((s) => s.context.refresh ?? {});
+export const useRefresh = (): SoapRefresh => useNetworkStore((s) => s.refresh ?? {});

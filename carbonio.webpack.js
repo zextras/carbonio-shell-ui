@@ -94,5 +94,6 @@ module.exports = (conf, pkg, options, mode) => {
 			}
 		]
 	};
+	conf.externals = {};
 	return conf;
 };

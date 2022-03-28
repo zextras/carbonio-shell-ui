@@ -21,7 +21,7 @@ export const handleSync = ({ refresh, notify }: SoapContext): Promise<void> =>
 		const { seq } = useNetworkStore.getState();
 		if (refresh) {
 			tagWorker.postMessage({
-				type: 'refresh',
+				op: 'refresh',
 				tags: refresh.tags?.tag ?? []
 			});
 		}
@@ -29,9 +29,9 @@ export const handleSync = ({ refresh, notify }: SoapContext): Promise<void> =>
 			forEach(notify, (item) => {
 				if (item.seq > seq) {
 					tagWorker.postMessage({
-						type: 'notify',
+						op: 'notify',
 						notify: item,
-						state: useTagStore.getState()
+						state: useTagStore.getState().tags
 					});
 				}
 			});

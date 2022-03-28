@@ -34,7 +34,7 @@ export const handleTagDeleted = (tags: Tags, deleted: string[]): Tags =>
 		delete acc[val];
 		return acc;
 	}, tags);
-export const handleTagNotify = (notify: SoapNotify, state: Tags): void => {
+export const handleTagNotify = (notify: SoapNotify, state: Tags): Tags =>
 	handleTagDeleted(
 		handleTagModified(
 			handleTagCreated(state, notify.created?.tag ?? []),
@@ -42,9 +42,8 @@ export const handleTagNotify = (notify: SoapNotify, state: Tags): void => {
 		),
 		notify.deleted ?? []
 	);
-};
 
 self.onmessage = ({ data }: TagMessage): void => {
-	if (data.op === 'refresh' && data.tags) self.postMessage(handleTagRefresh(data.tags));
-	if (data.op === 'notify') self.postMessage(handleTagNotify(data.notify, data.state));
+	if (data.op === 'refresh' && data.tags) self.postMessage({ tags: handleTagRefresh(data.tags) });
+	if (data.op === 'notify') self.postMessage({ tags: handleTagNotify(data.notify, data.state) });
 };

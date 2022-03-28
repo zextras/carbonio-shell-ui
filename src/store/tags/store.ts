@@ -12,4 +12,6 @@ export const useTagStore = create<TagState>(() => ({
 	tags: {}
 })) as UseBoundStore<TagState, StoreApi<TagState>>;
 
-tagWorker.onmessage = ({ data }): void => useTagStore.setState(data);
+tagWorker.onmessage = ({ data }): void => {
+	useTagStore.setState(data);
+};

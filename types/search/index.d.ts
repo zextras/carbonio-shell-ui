@@ -23,9 +23,9 @@ export type SearchBarProps = {
 	secondaryActions?: unknown;
 };
 
-export type SelectLabelFactoryProps = {
-	selected: [{ label: string; value: string }];
-	open: boolean;
-	focus: boolean;
-	disabled: boolean;
-};
+// export type SelectLabelFactoryProps = {
+// 	selected: [{ label: string; value: string }];
+// 	open: boolean;
+// 	focus: boolean;
+// 	disabled: boolean;
+// };

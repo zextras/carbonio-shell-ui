@@ -12,7 +12,7 @@ export const Spinner: FC = () => {
 	const [t] = useTranslation();
 	return (
 		<Container width="fill" height="fill" mainAlignment="center" crossAlignment="center">
-			<Button type="ghost" label={t('button', 'Button')} color="primary" loading />
+			<Button type="ghost" label={t('label.button', 'Button')} color="primary" loading />
 		</Container>
 	);
 };

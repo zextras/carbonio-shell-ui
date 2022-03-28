@@ -6,9 +6,13 @@
 
 import React, { FC } from 'react';
 import { Button, Container } from '@zextras/carbonio-design-system';
+import { useTranslation } from 'react-i18next';
 
-export const Spinner: FC = () => (
-	<Container width="fill" height="fill" mainAlignment="center" crossAlignment="center">
-		<Button type="ghost" label="Button" color="primary" loading />
-	</Container>
-);
+export const Spinner: FC = () => {
+	const [t] = useTranslation();
+	return (
+		<Container width="fill" height="fill" mainAlignment="center" crossAlignment="center">
+			<Button type="ghost" label={t('button', 'Button')} color="primary" loading />
+		</Container>
+	);
+};

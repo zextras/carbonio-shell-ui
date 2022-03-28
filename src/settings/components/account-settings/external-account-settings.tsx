@@ -58,18 +58,10 @@ const ExternalAccount = ({ t }: ExternalAccountProps): ReactElement => {
 				mainAlignment="flex-start"
 			>
 				<Row width="50%" padding={{ right: 'small' }}>
-					<Input
-						label={t('label.email_address', 'E-mail address')}
-						value="name.surname@company.com"
-						background="gray5"
-					/>
+					<Input label="Email Address" value="name.surname@company.com" background="gray5" />
 				</Row>
 				<Row width="50%">
-					<Input
-						label={t('label.account_name', 'Account Name')}
-						value="New External Account 1"
-						background="gray5"
-					/>
+					<Input label="Account Name" value="New External Account 1" background="gray5" />
 				</Row>
 			</Row>
 			<Row

@@ -6,15 +6,12 @@
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import React, { useContext, useState, useCallback, useEffect, useMemo, FC, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useMemo, FC, useRef } from 'react';
 import {
 	ChipInput,
 	Container,
 	IconButton,
 	Tooltip,
-	ThemeContext,
-	Select,
-	Row,
 	Icon,
 	Text,
 	Padding
@@ -25,10 +22,10 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useLocalStorage } from '../shell/hooks';
 import { SEARCH_APP_ID } from '../constants';
-import { useApps, useAppStore } from '../store/app';
+import { useAppStore } from '../store/app';
 import { useSearchStore } from './search-store';
-import { QueryChip, SearchBarProps, SelectLabelFactoryProps } from '../../types';
-import { handleKeyboardShortcuts } from '../keyboard-shortcuts/keyboard-shortcuts';
+import { QueryChip, SearchBarProps } from '../../types';
+import { ModuleSelector } from './module-selector';
 
 const OutlinedIconButton = styled(IconButton)`
 	border: 1px solid
@@ -41,6 +38,7 @@ const OutlinedIconButton = styled(IconButton)`
 `;
 
 const StyledChipInput = styled(ChipInput)`
+	padding: 0 16px;
 	&:hover {
 		outline: none;
 		background: ${({ theme, disabled }): string =>
@@ -56,104 +54,27 @@ const StyledContainer = styled(Container)`
 	}
 `;
 
-const SelectLabelFactory: FC<SelectLabelFactoryProps> = ({ selected, open, focus, disabled }) => {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const theme: any = useContext(ThemeContext);
-	const color = useMemo(
-		// eslint-disable-next-line no-nested-ternary
-		() => (disabled ? '#CCCCCC' : open || focus ? 'primary' : 'text'),
-		[disabled, open, focus]
-	);
-	return (
-		<Container
-			orientation="horizontal"
-			background={disabled ? 'gray5' : 'gray6'}
-			height={42}
-			width="fit"
-			minWidth="150px"
-			crossAlignment="center"
-			mainAlignment="space-between"
-			borderRadius="half"
-			style={{
-				borderRight: `1px solid ${theme.palette.gray4.regular}`,
-				cursor: disabled ? 'default' : 'pointer'
-			}}
-		>
-			<Row takeAvailableSpace mainAlignment="unset" padding={{ left: 'small' }}>
-				<Text size="small" color={color}>
-					{selected[0]?.label}
-				</Text>
-			</Row>
-			<Icon
-				size="large"
-				icon={open ? 'ChevronUpOutline' : 'ChevronDownOutline'}
-				color={color}
-				style={{ alignSelf: 'center' }}
-			/>
-		</Container>
-	);
-};
-
 export const SearchBar: FC<SearchBarProps> = ({
 	activeRoute
 	// primaryAction,
 	// secondaryActions
 }) => {
-	const searchViews = useAppStore((s) => s.views.search);
-
 	const [searchIsEnabled, setSearchIsEnabled] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
 	const [t] = useTranslation();
 	const [storedValue, setStoredValue] = useLocalStorage('search_suggestions', []);
 	const [inputTyped, setInputTyped] = useState('');
 	const history = useHistory();
-	const { updateQuery, module, updateModule, query, searchDisabled, setSearchDisabled } =
-		useSearchStore();
-	const [moduleSelection, setModuleSelection] = useState<{
-		value: string;
-		label: string;
-	}>();
+	const { updateQuery, module, query, searchDisabled, setSearchDisabled } = useSearchStore();
+	// const [moduleSelection, setModuleSelection] = useState<{
+	// 	value: string;
+	// 	label: string;
+	// }>();
 	const [isTyping, setIsTyping] = useState(false);
 	// const [changedBySearchBar, setChangedBySearchBar] = useState(false);
 
-	const moduleSelectorItems = useMemo<
-		Array<{ label: string; value: string; customComponent: JSX.Element }>
-	>(
-		() =>
-			map(searchViews, (view) => ({
-				customComponent: (
-					<Container mainAlignment="flex-start" orientation="horizontal">
-						<Padding horizontal="extrasmall">
-							<Icon icon={view.icon} />
-						</Padding>
-						<Text>{view.label}</Text>
-					</Container>
-				),
-				label: view.label,
-				value: view.route
-			})),
-		[searchViews]
-	);
-
 	const [options, setOptions] = useState<Array<{ label: string; hasAvatar: false }>>([]);
 
-	// 1 - update moduleSelection when route changes
-	useEffect(() => {
-		if (activeRoute) {
-			setModuleSelection((selection) =>
-				activeRoute.route !== selection?.value
-					? find(moduleSelectorItems, (i) => i.value === activeRoute.route) ??
-					  moduleSelectorItems?.[0]
-					: moduleSelectorItems?.[0]
-			);
-		} else {
-			setModuleSelection(moduleSelectorItems?.[0]);
-		}
-	}, [activeRoute, moduleSelectorItems]);
-	// 2 - update module when moduleSelection changes
-	useEffect(() => {
-		if (moduleSelection && module !== moduleSelection.value) updateModule(moduleSelection.value);
-	}, [module, moduleSelection, updateModule]);
 	const [inputHasFocus, setInputHasFocus] = useState(false);
 
 	const [inputState, setInputState] = useState(query);
@@ -220,16 +141,16 @@ export const SearchBar: FC<SearchBarProps> = ({
 				)
 			);
 		});
-		if (activeRoute?.app !== SEARCH_APP_ID) {
-			history.push(`/${SEARCH_APP_ID}/${moduleSelection?.value}`);
-		}
+		// if (activeRoute?.app !== SEARCH_APP_ID) {
+		history.push(`/${SEARCH_APP_ID}/${module}`);
+		// }
 		setSearchIsEnabled(false);
 		// setChangedBySearchBar(true);
-	}, [updateQuery, activeRoute?.app, inputTyped, inputState, history, moduleSelection?.value]);
+	}, [updateQuery, inputTyped, inputState, history, module]);
 
 	const appSuggestions = useMemo<Array<QueryChip & { hasAvatar: false }>>(
 		() =>
-			filter(storedValue, (v) => v.app === moduleSelection?.value)
+			filter(storedValue, (v) => v.app === module)
 				.reverse()
 				.map((item: QueryChip) => ({
 					...item,
@@ -239,7 +160,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 						setInputState((q: Array<QueryChip>) => [...q, { ...item, hasAvatar: false }]);
 					}
 				})),
-		[moduleSelection?.value, storedValue, setInputState, searchDisabled]
+		[storedValue, module, searchDisabled]
 	);
 
 	const updateOptions = useCallback(
@@ -265,7 +186,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 		(newQuery) => {
 			if (
 				newQuery[newQuery.length - 1]?.label &&
-				moduleSelection?.value &&
+				module &&
 				!find(appSuggestions, (v) => v.label === newQuery[newQuery.length - 1]?.label)
 			) {
 				setStoredValue(
@@ -277,7 +198,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 							value: newQuery[newQuery.length - 1].label,
 							label: newQuery[newQuery.length - 1].label,
 							icon: 'ClockOutline',
-							app: moduleSelection.value,
+							app: module,
 							id: `${value.length}`,
 							hasAvatar: false
 						}
@@ -291,7 +212,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 			setInputState(newQuery);
 			setSearchIsEnabled(true);
 		},
-		[appSuggestions, moduleSelection?.value, setStoredValue]
+		[appSuggestions, module, setStoredValue]
 	);
 
 	const onInputType = useCallback(
@@ -308,27 +229,16 @@ export const SearchBar: FC<SearchBarProps> = ({
 	);
 
 	useEffect(() => {
-		if (moduleSelection?.value) {
-			const suggestions = filter(
-				appSuggestions,
-				(suggestion) => suggestion?.app === moduleSelection.value
-			).slice(0, 5);
+		if (module) {
+			const suggestions = filter(appSuggestions, (suggestion) => suggestion?.app === module).slice(
+				0,
+				5
+			);
 
 			setOptions(suggestions);
 		}
-	}, [appSuggestions, moduleSelection?.value]);
+	}, [appSuggestions, module]);
 
-	const onSelectionChange = useCallback(
-		(newVal) => {
-			setModuleSelection(find(moduleSelectorItems, (item) => item.value === newVal));
-			// setInputState([]);
-			// updateQuery([]);
-			if (activeRoute?.app === SEARCH_APP_ID) {
-				history.push(`/${SEARCH_APP_ID}/${newVal}`);
-			}
-		},
-		[activeRoute?.app, history, moduleSelectorItems]
-	);
 	const [triggerSearch, setTriggerSearch] = useState(false);
 	const containerRef = useRef<HTMLDivElement>();
 
@@ -384,12 +294,12 @@ export const SearchBar: FC<SearchBarProps> = ({
 
 	const placeholder = useMemo(
 		() =>
-			inputHasFocus && moduleSelection
+			inputHasFocus && module
 				? t('search.active_input_label', 'Separate your keywords by a comma or pressing TAB')
 				: t('search.idle_input_label', 'Search in {{module}}', {
-						module: moduleSelection?.label
+						module
 				  }),
-		[t, moduleSelection, inputHasFocus]
+		[inputHasFocus, module, t]
 	);
 
 	const clearButtonPlaceholder = useMemo(
@@ -419,10 +329,10 @@ export const SearchBar: FC<SearchBarProps> = ({
 		(newChip: string) => {
 			setIsTyping(false);
 			setInputTyped('');
-			if (moduleSelection?.value) {
+			if (module) {
 				const suggestions = filter(
 					appSuggestions,
-					(suggestion) => suggestion?.app === moduleSelection?.value
+					(suggestion) => suggestion?.app === module
 				).slice(0, 5);
 
 				setOptions(suggestions);
@@ -433,7 +343,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 				avatarLabel: ''
 			};
 		},
-		[appSuggestions, moduleSelection?.value]
+		[appSuggestions, module]
 	);
 
 	useEffect(() => {
@@ -458,19 +368,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 					<Container minWidth="512px" width="fill">
 						<Container orientation="horizontal" width="fill">
 							<Container width="fit">
-								<Select
-									disabled={searchDisabled}
-									items={moduleSelectorItems}
-									background="gray6"
-									selectedBackgroundColor="highlight"
-									label={t('search.module', 'Module')}
-									selection={moduleSelection}
-									onChange={onSelectionChange}
-									LabelFactory={SelectLabelFactory}
-									style={{ fontSize: '14px' }}
-									color="text"
-									fontSize="small"
-								/>
+								<ModuleSelector activeRoute={activeRoute} disabled={searchDisabled} />
 							</Container>
 							<StyledContainer orientation="horizontal">
 								<StyledChipInput

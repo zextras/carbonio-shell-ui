@@ -112,7 +112,9 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 			res.Header.context?.notify?.[0]?.modified?.mbx?.[0]?.s;
 		const _context = normalizeContext(res.Header.context);
 		const seq = maxBy(_context.notify, 'seq')?.seq ?? 0;
+		console.time('handler');
 		handleSync(_context);
+		console.timeEnd('handler');
 		useAccountStore.setState({
 			usedQuota: responseUsedQuota ?? usedQuota
 		});

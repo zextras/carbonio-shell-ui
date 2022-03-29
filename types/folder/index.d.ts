@@ -17,10 +17,15 @@ export type Folder = BaseFolder & FolderFields & { isLink: false };
 
 export type LinkFolder = BaseFolder & FolderFields & LinkFolderFields & { isLink: true };
 
-export type SearchFolder = Folder & SearchFolderFields;
+export type SearchFolder = BaseFolder &
+	Pick<FolderFields, 'parent' | 'isLink'> &
+	SearchFolderFields;
 
-type Folders = { [id: string]: Folder | LinkFolder };
-
+export type Folders = { [id: string]: Folder | LinkFolder };
+export type Roots = { [id: string]: Folder | LinkFolder };
+export type Searches = { [id: string]: SearchFolder };
 export type FolderState = {
 	folders?: Folders;
+	roots: Roots;
+	searches: Searches;
 };

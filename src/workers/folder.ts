@@ -10,11 +10,20 @@ import {
 	Folders,
 	LinkFolder,
 	LinkFolderFields,
+	Roots,
+	Searches,
+	SearchFolderFields,
 	SoapFolder,
-	SoapLink
+	SoapLink,
+	SoapSearchFolder
 } from '../../types';
 
+const ROOT_NAME = 'USER_ROOT';
+const DEFAULT_ROOT = 'USER';
+
 const folders: Folders = {};
+const roots: Roots = {};
+const searches: Searches = {};
 
 const normalize = (f: SoapFolder): BaseFolder => ({
 	id: f.id,
@@ -49,6 +58,13 @@ const normalize = (f: SoapFolder): BaseFolder => ({
 	retentionPolicy: f.retentionPolicy
 });
 
+const normalizeSearch = (s: SoapSearchFolder): BaseFolder & SearchFolderFields => ({
+	...normalize(s),
+	query: s.query,
+	sortBy: s.sortBy,
+	types: s.types
+});
+
 const normalizeLink = (l: SoapLink): BaseFolder & LinkFolderFields => ({
 	...normalize(l),
 	owner: l.owner,
@@ -59,6 +75,15 @@ const normalizeLink = (l: SoapLink): BaseFolder & LinkFolderFields => ({
 	reminder: !!l.reminder,
 	broken: !!l.broken
 });
+
+const processSearch = (soapSearch: SoapSearchFolder, parent: Folder | LinkFolder): void => {
+	const search = {
+		...normalizeSearch(soapSearch),
+		parent,
+		isLink: parent?.isLink
+	};
+	searches[search.id] = search;
+};
 
 const processLink = (
 	soapLink: SoapLink,
@@ -74,6 +99,9 @@ const processLink = (
 	} as LinkFolder;
 	// eslint-disable-next-line no-param-reassign
 	folders[soapLink.id] = link;
+	if (link.oname === ROOT_NAME) {
+		roots[link.owner ?? 'unknown'] = link;
+	}
 	soapLink?.folder?.forEach((f) => {
 		// eslint-disable-next-line @typescript-eslint/no-use-before-define
 		const child = processFolder(f, depth + 1, link);
@@ -83,6 +111,10 @@ const processLink = (
 		const child = processLink(l, depth + 1, link);
 		link.children.push(child);
 	});
+	soapLink?.search?.forEach((s) => {
+		processSearch(s, link);
+	});
+
 	return link;
 };
 
@@ -98,8 +130,10 @@ const processFolder = (
 		parent,
 		depth
 	};
-	// eslint-disable-next-line no-param-reassign
 	folders[soapFolder.id] = folder;
+	if (folder.name === ROOT_NAME) {
+		roots[DEFAULT_ROOT] = folder;
+	}
 	soapFolder?.folder?.forEach((f) => {
 		const child = processFolder(f, depth + 1, folder);
 		folder.children.push(child);
@@ -107,6 +141,9 @@ const processFolder = (
 	soapFolder?.link?.forEach((l) => {
 		const child = processLink(l, depth + 1, folder);
 		folder.children.push(child);
+	});
+	soapFolder?.search?.forEach((s) => {
+		processSearch(s, folder);
 	});
 	return folder;
 };
@@ -116,9 +153,13 @@ const handleFolderRefresh = (soapFolders: Array<SoapFolder>): Folder =>
 
 onmessage = ({ data }: any): void => {
 	if (data.op === 'refresh' && data.folder) {
-		console.log(handleFolderRefresh(data.folder));
-		console.log(folders);
+		console.time('worker');
+		console.log('@@ root', handleFolderRefresh(data.folder));
+		console.log('@@ folders', folders);
+		console.log('@@ roots', roots);
+		console.log('@@ searches', searches);
+		console.timeEnd('worker');
+		postMessage({ done: true });
 	}
-	// postMessage({ folders: handleFolderRefresh(data.folder) });
 	// if (data.op === 'notify') postMessage({ folders: handleTagNotify(data.notify, data.state) });
 };

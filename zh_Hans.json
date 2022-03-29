@@ -9,7 +9,8 @@
         "app": "设置",
         "button": {
             "primary": "保存",
-            "secondary": "取消"
+            "secondary": "取消",
+            "confirm": "确认"
         },
         "out_of_office": {
             "labels": {
@@ -57,7 +58,9 @@
         },
         "general_tab": "通用",
         "app_description": "设置模块",
-        "timezone_and_language": "时区和语言"
+        "timezone_and_language": "时区和语言",
+        "accounts": "账户",
+        "choose": "选择"
     },
     "login": {
         "help": "帮助",
@@ -121,7 +124,25 @@
         "time_zone": "时区",
         "clear_search_query": "清除搜索",
         "out_of_office": "不在办公室",
-        "discard_changes": "丢弃变更"
+        "discard_changes": "丢弃变更",
+        "accounts": "账户",
+        "address": "地址",
+        "advanced_settings": "高级设置",
+        "delete": "删除",
+        "folders": "文件夹",
+        "new_folder": "新文件夹",
+        "delete_permanently": "永久删除",
+        "email_address": "邮件地址",
+        "filter_folders": "筛选文件夹",
+        "go_back": "返回",
+        "inbox": "收件箱",
+        "logout": "注销",
+        "no_results": "未找到结果",
+        "password": "密码",
+        "primary": "主要",
+        "remove": "移除",
+        "save": "保存",
+        "secondary": "次要"
     },
     "locale": {
         "English": "英语",
@@ -249,5 +270,14 @@
         "hide": "隐藏看板",
         "reduce": "缩小看板",
         "show_tabs": "显示其他标签页"
+    },
+    "feedback": {
+        "other": "其他"
+    },
+    "messages": {
+        "permanent_delete_title": "确定要永久删除该元素吗？"
+    },
+    "share": {
+        "is_contained_in": "包含于"
     }
 }

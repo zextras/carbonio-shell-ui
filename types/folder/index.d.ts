@@ -3,33 +3,23 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-export type Folder = {
-	id: string;
-	uuid: string;
-	name: string;
-	path: string | undefined;
-	parent: Folder;
-	parentUuid: string;
-	unreadCount: number;
-	size: number;
-	itemsCount: number;
-	synced: boolean;
-	absParent: string;
-	children: Folder[];
-	level: number;
-	to: string;
-	color: string;
-	rgb: string;
-	rid?: string;
-	isSharedFolder?: boolean;
-	owner?: string;
-	zid?: string;
-	acl?: unknown;
-	perm?: string;
-	retentionPolicy?: unknown;
-};
 
-type Folders = { [id: string]: Folder };
+import { BaseFolder, LinkFolderFields, SearchFolderFields } from '../misc';
+
+export type FolderFields = {
+	// Additional Parameters
+	isLink: boolean;
+	depth: number;
+	parent?: Folder | LinkFolder;
+	children: Array<Folder | LinkFolder>;
+};
+export type Folder = BaseFolder & FolderFields & { isLink: false };
+
+export type LinkFolder = BaseFolder & FolderFields & LinkFolderFields & { isLink: true };
+
+export type SearchFolder = Folder & SearchFolderFields;
+
+type Folders = { [id: string]: Folder | LinkFolder };
 
 export type FolderState = {
 	folders?: Folders;

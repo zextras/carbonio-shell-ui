@@ -11,6 +11,6 @@ import { NetworkState } from '../../../types';
 // @ts-ignore
 export const useNetworkStore = create<NetworkState>(() => ({
 	noOpTimeout: undefined,
-	context: {},
-	pollingInterval: 30000
+	pollingInterval: 30000,
+	seq: 0
 })) as UseBoundStore<NetworkState, StoreApi<NetworkState>>;

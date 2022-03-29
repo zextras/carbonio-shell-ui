@@ -55,26 +55,29 @@ export type GetInfoResponse = {
 	rights: AccountRights;
 };
 
+export type SoapHeader = {
+	context: SoapContext;
+};
 export type SuccessSoapResponse<R> = {
 	Body: Record<string, R>;
-	Header: any;
+	Header: SoapHeader;
 };
-
-export type ErrorSoapResponse = {
-	Body: {
-		Fault: {
-			Detail: {
-				Error: {
-					Code: string;
-					Detail: string;
-				};
-			};
-			Reason: {
-				Text: string;
-			};
+export type SoapFault = {
+	Detail: {
+		Error: {
+			Code: string;
+			Detail: string;
 		};
 	};
-	Header: any;
+	Reason: {
+		Text: string;
+	};
+};
+export type ErrorSoapResponse = {
+	Body: {
+		Fault: SoapFault;
+	};
+	Header: SoapHeader;
 };
 
 export type SoapResponse<R> = SuccessSoapResponse<R> | ErrorSoapResponse;
@@ -141,7 +144,7 @@ export type SoapRefresh = {
 };
 
 export type SoapNotify = {
-	seq?: number;
+	seq: number;
 	created?: {
 		m?: Array<unknown>;
 		c?: Array<unknown>;
@@ -153,14 +156,15 @@ export type SoapNotify = {
 		c?: Array<unknown>;
 		folder?: Array<unknown>;
 		tag?: Array<Partial<Tag>>;
+		mbx: [{ s: number }];
 	};
 	deleted: string[];
 };
 
-export type NetworkState = {
+export type NetworkState = SoapContext & {
 	noOpTimeout: unknown;
-	context: SoapContext;
 	pollingInterval: number;
+	seq: number;
 };
 
 export type CreateTagRequest = {

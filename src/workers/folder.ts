@@ -4,10 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { cloneDeep, omit } from 'lodash';
 import {
 	BaseFolder,
 	Folder,
+	FolderMessage,
 	Folders,
+	FolderState,
 	LinkFolder,
 	LinkFolderFields,
 	Roots,
@@ -15,6 +18,7 @@ import {
 	SearchFolderFields,
 	SoapFolder,
 	SoapLink,
+	SoapNotify,
 	SoapSearchFolder
 } from '../../types';
 
@@ -151,15 +155,61 @@ const processFolder = (
 const handleFolderRefresh = (soapFolders: Array<SoapFolder>): Folder =>
 	processFolder(soapFolders[0], 0);
 
-onmessage = ({ data }: any): void => {
+export const handleFolderCreated = (created: Array<SoapFolder>): void =>
+	created.forEach((val: SoapFolder) => {
+		if (val.id && val.l) {
+			const parent = folders[val.l];
+			const folder: Folder = {
+				...normalize(val),
+				isLink: false,
+				children: [],
+				parent,
+				depth: parent?.depth ? parent.depth + 1 : 0
+			};
+			folders[val.id] = folder;
+			parent.children.push(folder);
+		}
+	});
+export const handleFolderModified = (modified: Array<Partial<Folder>>): void =>
+	modified.forEach((val: Partial<SoapFolder>): void => {
+		if (val.id) {
+			const folder = folders[val.id];
+			Object.assign(folder, omit(val, 'folder', 'link', 'search'));
+			if (val.l) {
+				const oldParent = folders[val.id].parent;
+				const newParent = folders[val.l];
+				if (oldParent) {
+					oldParent.children = oldParent.children.filter((f) => f.id !== val.id);
+					newParent.children.push(folder);
+				}
+				folder.parent = newParent;
+			}
+			folders[val.id] = folder;
+		}
+	});
+export const handleFolderDeleted = (deleted: string[]): void =>
+	deleted.forEach((val) => {
+		const folder = folders[val];
+		if (folder) {
+			if (folder.parent) {
+				folder.parent.children = folder.parent.children.filter((f) => f.id !== val);
+			}
+			delete folders[val];
+			delete roots[val];
+			delete searches[val];
+		}
+	});
+export const handleFolderNotify = (notify: SoapNotify): void => {
+	handleFolderCreated(notify.created?.folder ?? []);
+	handleFolderModified(notify.modified?.folder ?? []);
+	handleFolderDeleted(notify.deleted ?? []);
+};
+onmessage = ({ data }: FolderMessage): void => {
 	if (data.op === 'refresh' && data.folder) {
-		console.time('worker');
-		console.log('@@ root', handleFolderRefresh(data.folder));
-		console.log('@@ folders', folders);
-		console.log('@@ roots', roots);
-		console.log('@@ searches', searches);
-		console.timeEnd('worker');
-		postMessage({ done: true });
+		handleFolderRefresh(data.folder);
 	}
-	// if (data.op === 'notify') postMessage({ folders: handleTagNotify(data.notify, data.state) });
+	if (data.op === 'notify') {
+		handleFolderNotify(data.notify);
+	}
+	postMessage({ folders, roots, searches });
 };

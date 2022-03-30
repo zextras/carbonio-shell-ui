@@ -8,10 +8,11 @@ import create, { StoreApi, UseBoundStore } from 'zustand';
 import { FolderState } from '../../../types';
 import { folderWorker } from '../../workers';
 
-export const useFolderStore = create<FolderState>(() => ({})) as UseBoundStore<
-	FolderState,
-	StoreApi<FolderState>
->;
+export const useFolderStore = create<FolderState>(() => ({
+	folders: {},
+	roots: {},
+	searches: {}
+})) as UseBoundStore<FolderState, StoreApi<FolderState>>;
 
 folderWorker.onmessage = ({ data }): void => {
 	useFolderStore.setState(data);

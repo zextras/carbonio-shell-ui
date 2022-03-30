@@ -62,13 +62,13 @@ export type SoapNotify = {
 	created?: {
 		m?: Array<unknown>;
 		c?: Array<unknown>;
-		folder?: Array<unknown>;
+		folder?: Array<SoapFolder>;
 		tag?: Array<Tag>;
 	};
 	modified?: {
 		m?: Array<unknown>;
 		c?: Array<unknown>;
-		folder?: Array<unknown>;
+		folder?: Array<Partial<SoapFolder>>;
 		tag?: Array<Partial<Tag>>;
 		mbx: [{ s: number }];
 	};

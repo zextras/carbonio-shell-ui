@@ -13,6 +13,7 @@ import { SoapContext } from '../../../types';
 // import { useNetworkStore } from './store';
 
 import { folderWorker, tagWorker } from '../../workers';
+import { useFolderStore } from '../folder';
 import { useTagStore } from '../tags';
 import { useNetworkStore } from './store';
 
@@ -36,6 +37,11 @@ export const handleSync = ({ refresh, notify }: SoapContext): Promise<void> =>
 						op: 'notify',
 						notify: item,
 						state: useTagStore.getState().tags
+					});
+					folderWorker.postMessage({
+						op: 'notify',
+						notify: item,
+						state: useFolderStore.getState()
 					});
 				}
 			});

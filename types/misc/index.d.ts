@@ -237,7 +237,7 @@ export type BaseFolder = {
 	// whether this folder can be deleted
 	deletable: boolean;
 	// custom metadata
-	meta: Array<Meta>;
+	meta?: Array<Meta>;
 	// ACL for sharing
 	acl?: { grant: Array<Grant> };
 	retentionPolicy?: SoapRetentionPolicy;

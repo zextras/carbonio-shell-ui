@@ -43,6 +43,6 @@ export const handleTagNotify = (notify: SoapNotify, state: Tags): Tags =>
 	);
 
 onmessage = ({ data }: TagMessage): void => {
-	if (data.op === 'refresh' && data.tags) postMessage({ tags: handleTagRefresh(data.tags) });
+	if (data.op === 'refresh' && data.tags) postMessage({ tags: handleTagRefresh(data.tags.tag) });
 	if (data.op === 'notify') postMessage({ tags: handleTagNotify(data.notify, data.state) });
 };

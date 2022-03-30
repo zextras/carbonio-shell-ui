@@ -213,7 +213,9 @@
         "email_server": "E-posta sunucu adı (ör. \"posta.alanadi.com\")",
         "permanent_delete_title": "Bu Kişiliği tamamen silmek istediğinizden emin misiniz?",
         "save_both_folders": "Gönderilen mesajların bir kopyasını Gönderilenler klasörüme ve yardımcımın klasörüne kaydet",
-        "use_personas_line1": "E-posta mesajları gönderirken bir çok ayarı kolayca değiştirmek için kişilik özelliğini kullanabilirsiniz."
+        "use_personas_line1": "E-posta mesajları gönderirken bir çok ayarı kolayca değiştirmek için kişilik özelliğini kullanabilirsiniz.",
+        "button": "Buton",
+        "click_to_copy": "Kopyalamak için tıklayın"
     },
     "locale": {
         "label_italian": "Italian - {{value}}",

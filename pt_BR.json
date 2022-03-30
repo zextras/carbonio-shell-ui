@@ -9,7 +9,8 @@
         "app": "Configurações",
         "button": {
             "primary": "Salvar",
-            "secondary": "Cancelar"
+            "secondary": "Cancelar",
+            "confirm": "Confirmar"
         },
         "out_of_office": {
             "labels": {
@@ -57,7 +58,9 @@
         },
         "app_description": "Módulo de Configurações",
         "general_tab": "Geral",
-        "timezone_and_language": "Fuso Horário e Idioma"
+        "timezone_and_language": "Fuso Horário e Idioma",
+        "accounts": "Contas",
+        "choose": "Escolher"
     },
     "login": {
         "help": "Ajuda",
@@ -121,7 +124,25 @@
         "clear_search_query": "LIMPAR BUSCA",
         "discard_changes": "DESCARTAR MODIFICAÇÕES",
         "reload": "Recarregar",
-        "time_zone": "Fuso Horário"
+        "time_zone": "Fuso Horário",
+        "accounts": "Contas",
+        "address": "Endereço",
+        "email_address": "Endereço de e-mail",
+        "filter_folders": "Filtrar pastas",
+        "logout": "Terminar sessão",
+        "new_folder": "Nova pasta",
+        "save": "Salvar",
+        "secondary": "Secundário",
+        "advanced_settings": "Configurações avançadas",
+        "delete": "Apagar",
+        "delete_permanently": "Excluir permanentemente",
+        "folders": "Pastas",
+        "go_back": "Voltar",
+        "inbox": "Caixa de Entrada",
+        "no_results": "Nenhum resultado encontrado",
+        "password": "Senha",
+        "primary": "Primário",
+        "remove": "remover"
     },
     "timezone": {
         "us_canada_mountain": "{{value}} EUA/Canadá Montanhas",
@@ -249,5 +270,14 @@
         "hide": "Ocultar painel",
         "reduce": "Reduzir painel",
         "show_tabs": "Mostrar outras abas"
+    },
+    "feedback": {
+        "other": "Outro"
+    },
+    "messages": {
+        "permanent_delete_title": "Tem certeza que deseja excluir permanentemente este elemento?"
+    },
+    "share": {
+        "is_contained_in": "Está contido em"
     }
 }

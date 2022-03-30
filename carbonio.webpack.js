@@ -60,6 +60,8 @@ module.exports = (conf, pkg, options, mode) => {
 			COMMIT_ID: commitHash
 		}),
 		new WorkboxPlugin.GenerateSW({
+			clientsClaim: true,
+			skipWaiting: true,
 			runtimeCaching: [
 				{
 					urlPattern: /\.(?:png|jpg|jpeg|svg|css|js)$/,

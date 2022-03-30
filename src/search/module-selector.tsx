@@ -45,8 +45,8 @@ export const ModuleSelector: FC<{ activeRoute: AppRoute; disabled: boolean }> = 
 
 	useEffect(() => {
 		if (activeRoute?.app !== SEARCH_APP_ID) {
-			if (!fullModule || fullModule.app !== activeRoute.app) {
-				updateModule((modules.find((m) => m.app === activeRoute.app) ?? modules[0])?.route);
+			if (!fullModule || fullModule?.app !== activeRoute?.app) {
+				updateModule((modules.find((m) => m.app === activeRoute?.app) ?? modules[0])?.route);
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps

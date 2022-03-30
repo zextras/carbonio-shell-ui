@@ -36,7 +36,8 @@
         "app": "Einstellungen",
         "button": {
             "primary": "Speichern",
-            "secondary": "Abbrechen"
+            "secondary": "Abbrechen",
+            "confirm": "Bestätigen"
         },
         "general": {
             "account": "Konto",
@@ -84,7 +85,9 @@
             "send_auto_replies": "Automatische Antworten senden"
         },
         "app_description": "Modul Einstellungen",
-        "timezone_and_language": "Zeitzone und Sprache"
+        "timezone_and_language": "Zeitzone und Sprache",
+        "accounts": "Konten",
+        "choose": "Wählen Sie"
     },
     "copyright": "Urheberrecht",
     "logout_modal": {
@@ -121,7 +124,25 @@
         "clear_search_query": "SUCHE LÖSCHEN",
         "discard_changes": "ÄNDERUNGEN VERWERFEN",
         "reload": "Neu laden",
-        "time_zone": "Zeitzonen"
+        "time_zone": "Zeitzonen",
+        "accounts": "Konten",
+        "address": "Adresse",
+        "advanced_settings": "Erweiterte Einstellungen",
+        "delete": "Löschen",
+        "delete_permanently": "Endgültig löschen",
+        "email_address": "E-Mail Adresse",
+        "primary": "Primär",
+        "remove": "entfernen",
+        "save": "Speichern",
+        "filter_folders": "Ordner filtern",
+        "folders": "Ordner",
+        "go_back": "Zurück",
+        "inbox": "Posteingang",
+        "logout": "Ausloggen",
+        "new_folder": "Neuer Ordner",
+        "no_results": "Keine Ergebnisse gefunden",
+        "password": "Passwort",
+        "secondary": "Sekundär"
     },
     "timezone": {
         "abu_dhabi_muscat": "{{value}} Abu Dhabi, Muscat",
@@ -249,5 +270,14 @@
         "label_chinese": "Chinesisch (China) - {{value}}",
         "label_japanese": "Japanisch - {{value}}",
         "label_turkish": "Türkisch - {{value}}"
+    },
+    "feedback": {
+        "other": "Andere"
+    },
+    "messages": {
+        "permanent_delete_title": "Sind Sie sicher, dass Sie dieses Element dauerhaft löschen wollen?"
+    },
+    "share": {
+        "is_contained_in": "Ist enthalten in"
     }
 }

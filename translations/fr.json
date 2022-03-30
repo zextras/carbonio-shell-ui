@@ -8,7 +8,25 @@
         "clear_search_query": "EFFACER LA RECHERCHE",
         "out_of_office": "Hors du Bureau",
         "reload": "Recharger",
-        "time_zone": "Fuseau horaire"
+        "time_zone": "Fuseau horaire",
+        "accounts": "Comptes",
+        "address": "Adresse",
+        "go_back": "Retour",
+        "inbox": "Réception",
+        "logout": "Déconnexion",
+        "new_folder": "Nouveau Dossier",
+        "no_results": "Aucun résultat trouvé",
+        "password": "Mot de passe",
+        "primary": "Primaire",
+        "remove": "supression",
+        "advanced_settings": "Paramètres avancés",
+        "delete": "Effacer",
+        "delete_permanently": "Supprimer définitivement",
+        "email_address": "Adresse email",
+        "filter_folders": "Filtrer les dossiers",
+        "folders": "Dossiers",
+        "save": "Sauvegarder",
+        "secondary": "Secondaire"
     },
     "search": {
         "clear": "Effacer la saisie de recherche",
@@ -32,7 +50,8 @@
     "settings": {
         "app": "Paramètres",
         "button": {
-            "primary": "Sauvegarder"
+            "primary": "Sauvegarder",
+            "confirm": "Confirmer"
         },
         "general": {
             "account": "Compte",
@@ -83,7 +102,9 @@
                 "include_search_in_spam_folder": "Inclure le dossier Spam dans les recherches",
                 "include_search_in_trash_folder": "Inclure la corbeille dans les recherches"
             }
-        }
+        },
+        "accounts": "Comptes",
+        "choose": "Choisir"
     },
     "snackbar": {
         "error": "Quelque chose s'est mal passé, veuillez recommencer"
@@ -228,5 +249,14 @@
         "space_full": "Il semble que tout l'espace disponible soit plein",
         "title": "Quota de l'utilisateur",
         "unlimited": "Vous disposez d'un espace illimité"
+    },
+    "feedback": {
+        "other": "Autre"
+    },
+    "messages": {
+        "permanent_delete_title": "Êtes-vous sûr de vouloir supprimer définitivement cet élément ?"
+    },
+    "share": {
+        "is_contained_in": "Est contenu dans"
     }
 }

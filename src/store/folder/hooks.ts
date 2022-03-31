@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Folder, Folders, LinkFolder, Searches, SearchFolder } from '../../../types';
+import { BaseFolder, Folder, Folders, LinkFolder, Searches, SearchFolder } from '../../../types';
 import { useFolderStore } from './store';
 
 // FOLDERS
-export const useFolder = (id: string): Folder | LinkFolder | SearchFolder | undefined =>
+export const useFolder = (id: string): BaseFolder | Folder | LinkFolder | undefined =>
 	useFolderStore((s) => (s.folders ? s.folders[id] : undefined));
-export const getFolder = (id: string): Folder | LinkFolder | SearchFolder | undefined => {
+export const getFolder = (id: string): BaseFolder | Folder | LinkFolder | undefined => {
 	const folders = useFolderStore.getState();
 	return folders.folders ? folders.folders[id] : undefined;
 };
@@ -18,9 +18,9 @@ export const useFolders = (): Folders => useFolderStore((s) => s.folders) ?? {};
 export const getFolders = (): Folders => useFolderStore.getState().folders ?? {};
 
 // ROOTS
-export const useRoot = (id: string): Folder | LinkFolder | SearchFolder | Record<string, never> =>
+export const useRoot = (id: string): BaseFolder | Folder | LinkFolder | Record<string, never> =>
 	useFolderStore((s) => (s.roots ? s.roots[id] : {}));
-export const getRoot = (id: string): Folder | LinkFolder | SearchFolder | Record<string, never> => {
+export const getRoot = (id: string): BaseFolder | Folder | LinkFolder | Record<string, never> => {
 	const folders = useFolderStore.getState();
 	return folders.roots ? folders.roots[id] : {};
 };
@@ -38,8 +38,6 @@ export const getRootByView = (
 	const folders = useFolderStore.getState();
 	return folders.roots ? folders.roots[view] : {};
 };
-export const useRootsByView = (view: string): Folders => useFolderStore((s) => s.root) ?? {};
-export const getRootsByView = (view: string): Folders => useFolderStore.getState().folders ?? {};
 
 // SEARCHES
 

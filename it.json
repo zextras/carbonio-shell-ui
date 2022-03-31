@@ -227,7 +227,9 @@
         "unsaved_changes_line1": "Vuoi abbandonare questa pagina senza salvare?",
         "account_menu": "Menu account",
         "use_personas_line1": "Utilizza le personalità per cambiare velocemente le impostazioni quando componi il messaggio.",
-        "when_composing": "Durante la composizione, nella risposta o nell'inoltro di messaggi nelle cartella:"
+        "when_composing": "Durante la composizione, nella risposta o nell'inoltro di messaggi nelle cartella:",
+        "button": "Pulsante",
+        "click_to_copy": "Seleziona per copiare"
     },
     "locale": {
         "English": "Inglese",

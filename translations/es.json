@@ -57,7 +57,8 @@
         "app": "Configuraciones",
         "button": {
             "primary": "Guardar",
-            "secondary": "Cancelar"
+            "secondary": "Cancelar",
+            "confirm": "Confirmar"
         },
         "general": {
             "account": "Cuenta",
@@ -72,7 +73,9 @@
         },
         "app_description": "Módulo de ajustes",
         "general_tab": "General",
-        "timezone_and_language": "Huso horario e idioma"
+        "timezone_and_language": "Huso horario e idioma",
+        "accounts": "Cuentas",
+        "choose": "Elegir"
     },
     "login": {
         "help": "Ayuda",
@@ -121,7 +124,25 @@
         "clear_search_query": "LIMPIAR BÚSQUEDA",
         "discard_changes": "DESCARTAR CAMBIOS",
         "reload": "Recargar",
-        "time_zone": "Huso horario"
+        "time_zone": "Huso horario",
+        "accounts": "Cuentas",
+        "address": "Dirección",
+        "advanced_settings": "Configuración avanzada",
+        "delete": "Borrar",
+        "delete_permanently": "Eliminar permanentemente",
+        "email_address": "Dirección de correo electrónico",
+        "filter_folders": "Filtrar carpetas",
+        "folders": "Carpetas",
+        "go_back": "Regresar",
+        "inbox": "Bandeja de entrada",
+        "logout": "Cerrar sesión",
+        "new_folder": "Nueva carpeta",
+        "no_results": "No se han encontrado resultados",
+        "password": "Contraseña",
+        "primary": "Primario",
+        "remove": "quitar",
+        "save": "Guardar",
+        "secondary": "Secundario"
     },
     "timezone": {
         "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}} Ámsterdam, Berlín, Berna, Roma, Estocolmo, Viena",
@@ -249,5 +270,14 @@
         "hide": "Ocultar el tablero",
         "reduce": "Reducir el tablero",
         "show_tabs": "Mostrar las otras pestañas"
+    },
+    "feedback": {
+        "other": "Otro"
+    },
+    "messages": {
+        "permanent_delete_title": "¿Seguro que quieres borrar permanentemente este elemento?"
+    },
+    "share": {
+        "is_contained_in": "Está dentro de"
     }
 }

@@ -33,6 +33,7 @@ import {
 import { Mods, TagActionResponse, CreateTagResponse, SoapNotify, SoapRefresh } from '../network';
 import { HistoryParams, ShellModes } from '../misc';
 import { Tag, Tags } from '../tags';
+import { Folder, Folders } from '../folder';
 
 export const getBridgedFunctions: () => {
 	addBoard: (path: string, context?: unknown | { app: string }) => void;
@@ -96,6 +97,16 @@ export const useTags: () => Tags;
 export const getTags: () => Tags;
 export const useTag: (id: string) => Tag;
 export const getTag: (id: string) => Tag;
+export const useFolder: (id: string) => BaseFolder | Folder | LinkFolder;
+export const getFolder: (id: string) => BaseFolder | Folder | LinkFolder;
+export const useFolders: () => Folders;
+export const getFolders: () => Folders;
+export const useRoot: (name: string) => Folder;
+export const getRoot: (name: string) => Folder;
+export const useRoots: () => Roots;
+export const getRoots: () => Roots;
+export const useRootByView: (view: string) => Folder;
+export const getRootByView: (view: string) => Folder;
 export const createTag: (tag: Omit<Tag, 'id'>) => Promise<CreateTagResponse>;
 export const renameTag: (id: string, name: string) => Promise<TagActionResponse>;
 export const deleteTag: (id: string) => Promise<TagActionResponse>;

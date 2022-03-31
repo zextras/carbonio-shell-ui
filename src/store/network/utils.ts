@@ -41,7 +41,7 @@ export const handleSync = ({ refresh, notify }: SoapContext): Promise<void> =>
 					folderWorker.postMessage({
 						op: 'notify',
 						notify: item,
-						state: useFolderStore.getState()
+						state: useFolderStore.getState().folders
 					});
 				}
 			});

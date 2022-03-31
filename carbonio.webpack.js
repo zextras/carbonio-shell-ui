@@ -64,10 +64,20 @@ module.exports = (conf, pkg, options, mode) => {
 			skipWaiting: true,
 			runtimeCaching: [
 				{
-					urlPattern: /\.(?:png|jpg|jpeg|svg|css|js)$/,
+					urlPattern: /\.(?:css|js)$/,
 					handler: 'CacheFirst',
 					options: {
-						cacheName: 'cache',
+						cacheName: 'chunks',
+						expiration: {
+							maxEntries: 10
+						}
+					}
+				},
+				{
+					urlPattern: /\.(?:png|jpg|jpeg|svg|mp3)$/,
+					handler: 'CacheFirst',
+					options: {
+						cacheName: 'assets',
 						expiration: {
 							maxEntries: 10
 						}

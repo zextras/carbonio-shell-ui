@@ -28,13 +28,9 @@ export const useRoots = (): Folders => useFolderStore((s) => s.roots) ?? {};
 export const getRoots = (): Folders => useFolderStore.getState().roots ?? {};
 
 // ROOTS BY VIEW
-export const useRootByView = (
-	view: string
-): Folder | LinkFolder | SearchFolder | Record<string, never> =>
+export const useRootByView = (view: string): Folder | LinkFolder | Record<string, never> =>
 	useFolderStore((s) => (s.roots ? s.roots[view] : {}));
-export const getRootByView = (
-	view: string
-): Folder | LinkFolder | SearchFolder | Record<string, never> => {
+export const getRootByView = (view: string): Folder | LinkFolder | Record<string, never> => {
 	const folders = useFolderStore.getState();
 	return folders.roots ? folders.roots[view] : {};
 };

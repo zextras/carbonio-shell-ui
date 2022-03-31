@@ -291,3 +291,17 @@ export type SortBy =
 	| 'rcptDesc'
 	| 'readAsc'
 	| 'readDesc';
+
+export type AccordionFolder = {
+	id: string;
+	label: string;
+	folder: Folder;
+	customComponent: ComponentType<{ folder: Folder }>;
+	items: Array<AccordionFolder>;
+};
+
+export type TreeNode<T> = T & {
+	id: string;
+	children: TreeNode<T>[];
+	parent?: TreeNode<T>;
+};

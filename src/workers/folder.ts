@@ -7,7 +7,7 @@
 import { cloneDeep, omit } from 'lodash';
 import {
 	BaseFolder,
-	Folder,
+	UserFolder,
 	FolderMessage,
 	Folders,
 	FolderState,
@@ -19,7 +19,8 @@ import {
 	SoapFolder,
 	SoapLink,
 	SoapNotify,
-	SoapSearchFolder
+	SoapSearchFolder,
+	Folder
 } from '../../types';
 
 const ROOT_NAME = 'USER_ROOT';
@@ -80,7 +81,7 @@ const normalizeLink = (l: SoapLink): BaseFolder & LinkFolderFields => ({
 	broken: !!l.broken
 });
 
-const processSearch = (soapSearch: SoapSearchFolder, parent: Folder | LinkFolder): void => {
+const processSearch = (soapSearch: SoapSearchFolder, parent: Folder): void => {
 	const search = {
 		...normalizeSearch(soapSearch),
 		parent,
@@ -89,11 +90,7 @@ const processSearch = (soapSearch: SoapSearchFolder, parent: Folder | LinkFolder
 	searches[search.id] = search;
 };
 
-const processLink = (
-	soapLink: SoapLink,
-	depth: number,
-	parent?: Folder | LinkFolder
-): LinkFolder => {
+const processLink = (soapLink: SoapLink, depth: number, parent?: Folder): LinkFolder => {
 	const link = {
 		...normalizeLink(soapLink),
 		isLink: true,
@@ -122,12 +119,8 @@ const processLink = (
 	return link;
 };
 
-const processFolder = (
-	soapFolder: SoapFolder,
-	depth: number,
-	parent?: Folder | LinkFolder
-): Folder => {
-	const folder: Folder = {
+const processFolder = (soapFolder: SoapFolder, depth: number, parent?: Folder): UserFolder => {
+	const folder: UserFolder = {
 		...normalize(soapFolder),
 		isLink: false,
 		children: [],
@@ -152,14 +145,14 @@ const processFolder = (
 	return folder;
 };
 
-const handleFolderRefresh = (soapFolders: Array<SoapFolder>): Folder =>
+const handleFolderRefresh = (soapFolders: Array<SoapFolder>): UserFolder =>
 	processFolder(soapFolders[0], 0);
 
 export const handleFolderCreated = (created: Array<SoapFolder>): void =>
 	created.forEach((val: SoapFolder) => {
 		if (val.id && val.l) {
 			const parent = folders[val.l];
-			const folder: Folder = {
+			const folder: UserFolder = {
 				...normalize(val),
 				isLink: false,
 				children: [],
@@ -170,7 +163,7 @@ export const handleFolderCreated = (created: Array<SoapFolder>): void =>
 			parent.children.push(folder);
 		}
 	});
-export const handleFolderModified = (modified: Array<Partial<Folder>>): void =>
+export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void =>
 	modified.forEach((val: Partial<SoapFolder>): void => {
 		if (val.id) {
 			const folder = folders[val.id];

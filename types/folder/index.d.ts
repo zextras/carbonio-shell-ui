@@ -10,10 +10,11 @@ export type FolderFields = {
 	// Additional Parameters
 	isLink: boolean;
 	depth: number;
-	parent?: Folder | LinkFolder;
-	children: Array<Folder | LinkFolder>;
+	parent?: Folder;
+	children: Array<Folder>;
 };
-export type Folder = BaseFolder & FolderFields & { isLink: false };
+
+export type UserFolder = BaseFolder & FolderFields & { isLink: false };
 
 export type LinkFolder = BaseFolder & FolderFields & LinkFolderFields & { isLink: true };
 
@@ -21,11 +22,13 @@ export type SearchFolder = BaseFolder &
 	Pick<FolderFields, 'parent' | 'isLink'> &
 	SearchFolderFields;
 
-export type Folders = { [id: string]: Folder | LinkFolder };
-export type Roots = { [id: string]: Folder | LinkFolder };
+export type Folders = { [id: string]: Folder };
+export type Roots = { [id: string]: Folder };
 export type Searches = { [id: string]: SearchFolder };
 export type FolderState = {
 	folders?: Folders;
 	roots: Roots;
 	searches: Searches;
 };
+
+export type Folder = UserFolder | LinkFolder;

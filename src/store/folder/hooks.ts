@@ -95,7 +95,7 @@ export const useFoldersByView = (view: string): Folder => {
 };
 
 const isRoot = (f: Folder): boolean =>
-	f.id === FOLDERS.ROOT || (f as LinkFolder).oname === ROOT_NAME;
+	f.id === FOLDERS.USER_ROOT || (f as LinkFolder).oname === ROOT_NAME;
 
 export const useFoldersAccordionByView = (
 	view: string,

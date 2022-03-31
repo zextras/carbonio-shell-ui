@@ -42,7 +42,8 @@
         "app": "設定",
         "button": {
             "primary": "保存する",
-            "secondary": "キャンセル"
+            "secondary": "キャンセル",
+            "confirm": "確認"
         },
         "general": {
             "account": "アカウント",
@@ -64,7 +65,9 @@
                 "include_search_in_spam_folder": "検索にスパムフォルダを含める",
                 "include_search_in_trash_folder": "検索にごみ箱フォルダを含める"
             }
-        }
+        },
+        "accounts": "アカウント",
+        "choose": "選択してください"
     },
     "login": {
         "help": "ヘルプ",
@@ -185,7 +188,25 @@
         "use_personas_line1": "メールメッセージを送信する際に、ペルソナを使用して様々な設定を素早く変更します。",
         "use_personas_line2": "例えば、職場で特定の役割のメールを送信することがある場合は、そのためのペルソナを作成します。",
         "when_composing": "フォルダ内のメッセージを作成、返信、転送する場合:",
-        "when_replying": "送信されたメッセージに返信または転送する場合:"
+        "when_replying": "送信されたメッセージに返信または転送する場合:",
+        "advanced_settings": "詳細設定",
+        "delete": "削除する",
+        "delete_permanently": "完全に削除する",
+        "email_address": "メールアドレス",
+        "filter_folders": "フォルダをフィルタリングする",
+        "folders": "フォルダ",
+        "inbox": "受信トレイ",
+        "logout": "ログアウト",
+        "new_folder": "新規フォルダ",
+        "no_results": "該当なし",
+        "password": "パスワード",
+        "primary": "プライマリー",
+        "remove": "削除する",
+        "accounts": "アカウント",
+        "address": "住所",
+        "go_back": "戻る",
+        "save": "保存する",
+        "secondary": "セカンダリー"
     },
     "locale": {
         "label_turkish": "トルコ語- {{value}}",
@@ -328,15 +349,20 @@
         "write_here": "ここにフィードバックを書いてください",
         "hint": "留意事項: フィードバックを書く前に、モジュールとマクロ領域セレクターを使用してトピックを定義してください。 ご協力いただきありがとうございます。",
         "error": "フィードバックの送信中にエラーが発生しました",
-        "explanation": "Zextrasサーバーの新しい体験についてフィードバックをお寄せください。 あなたの意見は私達が製品の改善に役立ちます。 ご意見をお聞かせください。"
+        "explanation": "Zextrasサーバーの新しい体験についてフィードバックをお寄せください。 あなたの意見は私達が製品の改善に役立ちます。 ご意見をお聞かせください。",
+        "other": "その他"
     },
     "messages": {
-        "permanent_delete_body": "このペルソナを完全に削除すると、復元できなくなります。 継続しますか？"
+        "permanent_delete_body": "このペルソナを完全に削除すると、復元できなくなります。 継続しますか？",
+        "permanent_delete_title": "本当にこの要素を完全に削除しますか？"
     },
     "passwords_recovery_settings": {
         "title": "パスワード回復アカウントの設定"
     },
     "primary_account": {
         "title": "プライマリアカウント設定"
+    },
+    "share": {
+        "is_contained_in": "に含まれています"
     }
 }

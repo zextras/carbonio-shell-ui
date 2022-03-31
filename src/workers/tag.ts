@@ -6,12 +6,16 @@
 
 import { SoapNotify, Tag, TagMessage, Tags } from '../../types';
 
-export const handleTagRefresh = (tags: Array<Tag>): Tags =>
-	tags.reduce((acc: Tags, val: Tag): Tags => {
-		// eslint-disable-next-line no-param-reassign
-		acc[val.id] = val;
-		return acc;
-	}, {});
+export const handleTagRefresh = (tags: Array<Tag>): Tags => {
+	if (typeof tags !== 'undefined') {
+		return tags.reduce((acc: Tags, val: Tag): Tags => {
+			// eslint-disable-next-line no-param-reassign
+			acc[val.id] = val;
+			return acc;
+		}, {});
+	}
+	return {};
+};
 
 export const handleTagCreated = (tags: Tags, created: Array<Tag>): Tags =>
 	created.reduce((acc: Tags, val: Tag): Tags => {

@@ -58,7 +58,7 @@ import {
 	useUpdateCurrentBoard
 } from '../../shell/boards/board-hooks';
 import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
-import { getTag, getTags, useTag, useTags } from '../../store/tags';
+import { getTags, useTags } from '../../store/tags';
 import { useNotify, useRefresh } from '../../store/network';
 import { changeTagColor, createTag, deleteTag, renameTag, updateTag } from '../../network/tags';
 
@@ -101,8 +101,6 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	getUserRights,
 	useTags,
 	getTags,
-	useTag,
-	getTag,
 	useNotify,
 	useRefresh,
 	// BOARDS

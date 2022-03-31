@@ -36,7 +36,8 @@
         "app": "सेटिंग्स",
         "button": {
             "primary": "सेव करें",
-            "secondary": "कैंसल करें"
+            "secondary": "कैंसल करें",
+            "confirm": "कन्फ़र्म करें"
         },
         "general": {
             "account": "अकाउंट",
@@ -84,7 +85,9 @@
             "send_auto_replies": "ऑटो-रिप्लाई भेजें"
         },
         "app_description": "सेटिंग्स मॉड्यूल",
-        "timezone_and_language": "टाइम ज़ोन और भाषा"
+        "timezone_and_language": "टाइम ज़ोन और भाषा",
+        "accounts": "अकाउंट",
+        "choose": "चुनें"
     },
     "logout_modal": {
         "confirm": "मुझे लॉग आउट कर दें",
@@ -121,7 +124,25 @@
         "clear_search_query": "सर्च क्लीयर करें",
         "discard_changes": "बदलाव रद्द करें",
         "reload": "फिर से लोड करें",
-        "time_zone": "टाइम ज़ोन"
+        "time_zone": "टाइम ज़ोन",
+        "accounts": "अकाउंट",
+        "address": "पता",
+        "advanced_settings": "एड्वान्स्ड सेटिंग्स",
+        "folders": "फोल्डर",
+        "password": "पासवर्ड",
+        "primary": "प्राइमरी",
+        "remove": "हटाएँ",
+        "inbox": "इन्बॉक्स",
+        "delete": "डिलीट करें",
+        "delete_permanently": "हमेशा के लिए डिलीट करें",
+        "email_address": "ई-मेल पता",
+        "filter_folders": "फोल्डर फिल्टर करें",
+        "go_back": "वापस जाएँ",
+        "logout": "लॉगआउट करें",
+        "new_folder": "नया फोल्डर",
+        "no_results": "कोई रिज़ल्ट नहीं मिले",
+        "save": "सेव करें",
+        "secondary": "सेकंडरी"
     },
     "board": {
         "close_tab": "टैब बंद करने",
@@ -249,5 +270,14 @@
         "yangon": "{{value}} यांगोन",
         "yerevan": "{{value}} येरेवान",
         "damascus": "{{value}} दमश्क"
+    },
+    "feedback": {
+        "other": "अन्य"
+    },
+    "messages": {
+        "permanent_delete_title": "क्या आप वाकई में इस एलीमेंट को परमानेंट डिलीट करना चाहते हैं?"
+    },
+    "share": {
+        "is_contained_in": "यह इसमें है"
     }
 }

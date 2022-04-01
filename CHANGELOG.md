@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.5](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.3-rc.0...v0.4.5) (2022-04-01)
+
+
+### Features
+
+* added tag management ([a989935](https://github.com/zextras/carbonio-shell-ui/commit/a989935fe10954bbbb353ed5fce9c66e08aeb986))
+* added updateTag function ([7492c57](https://github.com/zextras/carbonio-shell-ui/commit/7492c57ad4cc4a7f0712a2abfda313383680683a))
+* network functions improvement ([99c93d3](https://github.com/zextras/carbonio-shell-ui/commit/99c93d35d6c5606a8357ea1d542b1f25c7537f0a))
+* tag webWorker ([a4a7944](https://github.com/zextras/carbonio-shell-ui/commit/a4a7944b113d7a4c329405c087172acfeffa44b8))
+
+
+### Bug Fixes
+
+* indentation ([631e023](https://github.com/zextras/carbonio-shell-ui/commit/631e023c6f0075c1232b7411bbdec50dac89d42f))
+* removed hardcoded labels ([b27113f](https://github.com/zextras/carbonio-shell-ui/commit/b27113f9d6a266ed379b43f7930291ebe482c906))
+* removed hardcoded labels ([1d03c2b](https://github.com/zextras/carbonio-shell-ui/commit/1d03c2b00bc81c19af5f68ec4aed3ef04eeae476))
+* reset externals in webpack config ([93812a0](https://github.com/zextras/carbonio-shell-ui/commit/93812a0e0bd3c5b97b32e48a90f14532ae2be95f))
+* undefined reading 'app' ([8d9069f](https://github.com/zextras/carbonio-shell-ui/commit/8d9069feba2b0cc23fe1a7d775c27626aa7a2ab8))
+
 ### [0.4.3-rc.0](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.1-rc.8...v0.4.3-rc.0) (2022-03-18)
 
 ### [0.4.1-rc.8](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.1-rc.7...v0.4.1-rc.8) (2022-03-18)

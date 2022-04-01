@@ -68,7 +68,8 @@
         "app": "Instellingen",
         "button": {
             "primary": "Opslaan",
-            "secondary": "Annuleren"
+            "secondary": "Annuleren",
+            "confirm": "Bevestigen"
         },
         "general": {
             "account": "Account",
@@ -83,7 +84,9 @@
         },
         "general_tab": "Algemeen",
         "app_description": "Instellingen Module",
-        "timezone_and_language": "Tijdzone en taal"
+        "timezone_and_language": "Tijdzone en taal",
+        "accounts": "Accounts",
+        "choose": "Kiezen"
     },
     "logout": "Uitloggen",
     "copyright": "Copyright",
@@ -121,7 +124,25 @@
         "clear_search_query": "ZOEKEN WISSEN",
         "discard_changes": "WIJZIGINGEN VERWIJDEREN",
         "reload": "Opnieuw laden",
-        "time_zone": "Tijdzone"
+        "time_zone": "Tijdzone",
+        "primary": "Primair",
+        "remove": "verwijderen",
+        "save": "Opslaan",
+        "secondary": "Secundair",
+        "accounts": "Accounts",
+        "address": "Adres",
+        "advanced_settings": "Geavanceerde instellingen",
+        "delete": "Verwijderen",
+        "delete_permanently": "Permanent verwijderen",
+        "email_address": "E-mailadres",
+        "filter_folders": "Mappen filteren",
+        "folders": "Mappen",
+        "go_back": "Teruggaan",
+        "inbox": "Inbox",
+        "logout": "Uitloggen",
+        "new_folder": "Nieuwe Map",
+        "no_results": "Geen resultaten gevonden",
+        "password": "Wachtwoord"
     },
     "locale": {
         "label_russian": "Russisch - {{value}}",
@@ -249,5 +270,14 @@
         "hide": "Board verbergen",
         "reduce": "Board verkleinen",
         "show_tabs": "Andere tabs tonen"
+    },
+    "feedback": {
+        "other": "Ander"
+    },
+    "messages": {
+        "permanent_delete_title": "Weet u zeker dat u dit element permanent wilt verwijderen?"
+    },
+    "share": {
+        "is_contained_in": "Is opgenomen in"
     }
 }

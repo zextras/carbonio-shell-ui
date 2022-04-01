@@ -41,7 +41,8 @@
     "settings": {
         "button": {
             "primary": "Salva",
-            "secondary": "Annulla"
+            "secondary": "Annulla",
+            "confirm": "Conferma"
         },
         "general": {
             "theme_options": "Opzioni Tema",
@@ -93,11 +94,13 @@
         "timezone_and_language": "Fuso Orario e Lingua",
         "search_settings": {
             "labels": {
-                "include_search_in_shared_folder": "Includi Cartelle Condivise nella ricerca",
-                "include_search_in_spam_folder": "Includi la Cartella Spam nella Ricerca",
-                "include_search_in_trash_folder": "Includi Cartella del Cestino nella Ricerca"
+                "include_search_in_shared_folder": "Includi Cartelle Condivise nelle ricerche",
+                "include_search_in_spam_folder": "Includi la Cartella Spam nelle ricerche",
+                "include_search_in_trash_folder": "Includi Cartella del Cestino nelle ricerche"
             }
-        }
+        },
+        "accounts": "Account",
+        "choose": "Scegli"
     },
     "module": {
         "app": {
@@ -121,7 +124,8 @@
     },
     "message": {
         "snackbar": {
-            "settings_saved": "Modifiche salvate correttamente"
+            "settings_saved": "Modifiche salvate correttamente",
+            "identities_quota_exceeded": "Impossibile creare questa identità in quanto hai raggiunto la quota massima per le identità"
         },
         "reload": "\tVuoi ricaricare l'applicazione per vedere la nuova lingua?\n(Altrimenti, la nuova lingua verrà applicata al prossimo accesso.)"
     },
@@ -151,7 +155,79 @@
         "time_zone": "Fuso Orario",
         "discard_changes": "ELIMINA MODIFICHE",
         "language": "Lingua",
-        "no": "No"
+        "no": "No",
+        "account_name": "Nome Account",
+        "account_type": "Tipo di Account",
+        "account_username": "Nome Utente Account",
+        "accounts_list": "Lista degli account",
+        "add_external_account": "Aggiungi account esterno",
+        "add_new_email": "Aggiungi nuovo indirizzo e-mail",
+        "add_delegate": "Aggiungi delegato",
+        "add_recovery_email": "Aggiungi e-mail di recupero",
+        "add_persona": "Aggiungi personalità",
+        "delete": "Elimina",
+        "choose_folder": "Scegli Cartella",
+        "change_pop": "Cambia la porta POP",
+        "delegates": "Delegati",
+        "delete_permanently": "Elimina definitivamente",
+        "delete_after_download": "Elimina il messaggio dal server dopo che è stato scaricato",
+        "documentation": "Documentazione",
+        "email_address": "Indirizzo e-mailInidirizzi e-mail {{count}}",
+        "filter_folders": "Filtra cartelle",
+        "folders": "Cartelle",
+        "go_back": "Indietro",
+        "inbox": "In arrivo",
+        "dont_save": "Non salvare una copia dei messaggi inviati",
+        "edit_permissions": "Modifica permessi",
+        "external_account_settings": "Impostazioni Account Esterno",
+        "feedback": "Feedback",
+        "from_name": "Da: \"Nome\"",
+        "imap": "IMAP",
+        "download_messages": "Scarica messaggi in:",
+        "email_server": "Server e-mail (es. “mail.example.com”)",
+        "folder": "Cartella: Nuovo Account Esterno 3",
+        "leave_anyway": "Esci comunque",
+        "logout": "Esci",
+        "new_folder": "Nuova Cartella",
+        "no_results": "Nessun risultato trovato",
+        "password": "Password",
+        "passwords_recovery_settings": "Impostazioni dell'Account per il recupero password",
+        "permanent_delete_title": "Vuoi eliminare definitivamente questa Personalità?",
+        "persona": "Personalità",
+        "persona_name": "Nome Personalità",
+        "primary": "Primario",
+        "remove": "rimuovi",
+        "save": "Salva",
+        "secondary": "Secondario",
+        "pop3": "POP3",
+        "pop_port": "porta POP",
+        "recipents": "Destinatari",
+        "replyToFieldExample": "es. Bob Smith",
+        "reply_to_field_example": "es. Bob Smith",
+        "save_to_my_sent_folder": "Salva una copia dei messaggi inviati nella mia cartella \"Inviato\"",
+        "settings_sent_messages": "Impostazioni di Messaggi Inviati",
+        "persona_settings": "Impostazioni Personalità",
+        "recovery_email": "E-mail di recupero",
+        "save_and_leave": "Salva e esci",
+        "save_both_folders": "Salva una copia dei messaggi inviati sia nella mia cartella dei messaggi inviati che in quella del delegato",
+        "save_delegate_folder": "Salva una copia dei messaggi inviati della cartella dei messaggi inviati del delegato",
+        "set_reply_to_field": "Imposta il campo e-mail \"Rispondi a\" come:",
+        "test_settings": "Test Impostazioni",
+        "unsaved_changes_line2": "Tutte le modifiche non salvate andranno perse",
+        "update_view": "Aggiorna vista",
+        "use_ssl": "Usa una connessione criptata (SSL) quando accedi a questo server",
+        "use_persona": "Usa questa personalità",
+        "use_personas_line2": "Ad esempio, se a volte mandi messaggi in un ruolo particolare al lavoro, puoi creare una personalità che corrisponda a quel ruolo.",
+        "when_replying": "Nella risposta o nell'inoltro di messaggi inviati a:",
+        "accounts": "Account",
+        "address": "Indirizzo",
+        "advanced_settings": "Impostazioni Avanzate",
+        "choose_account": "Scegli un account",
+        "unsaved_changes": "Alcune modifiche non sono salvate",
+        "unsaved_changes_line1": "Vuoi abbandonare questa pagina senza salvare?",
+        "account_menu": "Menu account",
+        "use_personas_line1": "Utilizza le personalità per cambiare velocemente le impostazioni quando componi il messaggio.",
+        "when_composing": "Durante la composizione, nella risposta o nell'inoltro di messaggi nelle cartella:"
     },
     "locale": {
         "English": "Inglese",
@@ -273,5 +349,33 @@
         "moscow_st_petersburg_volgograd_rtz_2": "{{value}} Mosca, San Pietroburgo, Volgograd (RTZ 2)",
         "sarajevo_skopje_warsaw_zagreb": "{{value}} Sarajevo, Skopje, Varsavia, Zagabria",
         "vladivostok_magadan": "{{value}} vladivostok_magadan_rtz_9"
+    },
+    "feedback": {
+        "missing_features": "Funzioni mancanti",
+        "report_something": "Vuoi segnalare qualcosa?",
+        "select_a_module": "Seleziona un modulo",
+        "select_a_topic": "Seleziona un argomento",
+        "send": "INVIA",
+        "success": "Grazie per il tuo feedback",
+        "user_interface": "Interfaccia utente",
+        "write_here": "Lascia il tuo feedback qui",
+        "hint": "Ricorda: definisci l'argomento utilizzando i moduli e le macro aree prima di scrivere il feedback. Ti ringraziamo per il tuo aiuto.",
+        "behaviors": "Comportamenti",
+        "other": "Altro",
+        "error": "Si è verificato un errore durante l'invio del feedback",
+        "explanation": "Ci piacerebbe ricevere il tuo feedback in merito all'esperienza con Zextras Server. La tua opinione è fondamentale per permetterci di migliorare il nostro prodotto. Facci sapere cosa ne pensi."
+    },
+    "primary_account": {
+        "title": "Impostazioni Account Primario"
+    },
+    "messages": {
+        "permanent_delete_body": "Se elimini definitivamente questa Personalità, non sarà più possibile ripristinarla. Continuare?",
+        "permanent_delete_title": "Vuoi eliminare definitivamente questo elemento?"
+    },
+    "passwords_recovery_settings": {
+        "title": "Impostazioni dell'Account per il recupero password"
+    },
+    "share": {
+        "is_contained_in": "È contenuto in"
     }
 }

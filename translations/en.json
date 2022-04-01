@@ -9,9 +9,9 @@
     },
     "feedback": {
         "behaviors": "Behaviors",
-        "error": "There was an error while sending your feedback",
-        "explanation": "Please send us your feedback about your new experience with Zextras Server. Your opinion is meaningful for us to improve our product. So tell us what’s on your mind.",
-        "hint": "Remember: define the topic using module and macro area selectors before write your feedback. Thanks for your help.",
+        "error": "There was an error while submitting your feedback",
+        "explanation": "Please give us your feedback about your new experience with Zextras Server. Your opinion is meaningful for us to improve our product. Let us know your thoughts.",
+        "hint": "Remember: define the topic using modules and macro area selectors before writing your feedback. Thanks for your help.",
         "missing_features": "Missing features",
         "other": "Other",
         "report_something": "Do you want to report something?",
@@ -81,7 +81,7 @@
         "pop_port": "POP port",
         "primary": "Primary",
         "recipents": "Recipients",
-        "recovery_email": "Recovery Email",
+        "recovery_email": "Recovery E-mail",
         "reload": "Reload",
         "remove": "remove",
         "reply_to_field_example": "e.g. Bob Smith",
@@ -141,7 +141,7 @@
     "message": {
         "reload": "\tWould you like to reload the application now to show the new language?\n(Otherwise, the new language will appear the next time you sign in.)",
         "snackbar": {
-            "identities_quota_exceeded": "The identitity could not be created because you have exceeded your identity quota",
+            "identities_quota_exceeded": "The identity could not be created because you have exceeded your identity quota",
             "settings_saved": "Edits saved correctly"
         }
     },

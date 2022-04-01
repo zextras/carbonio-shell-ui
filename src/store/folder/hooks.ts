@@ -5,108 +5,68 @@
  */
 
 import { ComponentType, useMemo } from 'react';
-import {
-	Folders,
-	LinkFolder,
-	Searches,
-	SearchFolder,
-	Folder,
-	AccordionFolder,
-	TreeNode
-} from '../../../types';
-import { FOLDERS, ROOT_NAME } from '../../constants';
+import { Folders, Searches, SearchFolder, Folder, AccordionFolder } from '../../../types';
+import { FOLDERS } from '../../constants';
 import { useFolderStore } from './store';
+import { filterNodes, isRoot, mapNodes } from './utils';
 
 // FOLDERS
-export const useFolder = (id: string): Folder | undefined =>
-	useFolderStore((s) => (s.folders ? s.folders[id] : undefined));
-export const getFolder = (id: string): Folder | undefined => {
-	const folders = useFolderStore.getState();
-	return folders.folders ? folders.folders[id] : undefined;
-};
-export const useFolders = (): Folders => useFolderStore((s) => s.folders) ?? {};
-export const getFolders = (): Folders => useFolderStore.getState().folders ?? {};
+export const useFolder = (id: string): Folder | undefined => useFolderStore((s) => s.folders?.[id]);
+export const getFolder = (id: string): Folder | undefined =>
+	useFolderStore.getState()?.folders?.[id];
+export const useFolders = (): Folders => useFolderStore((s) => s.folders);
+export const getFolders = (): Folders => useFolderStore.getState().folders;
 
 // ROOTS
-export const useRoot = (id: string): Folder | Record<string, never> =>
-	useFolderStore((s) => (s.roots ? s.roots[id] : {}));
-export const getRoot = (id: string): Folder | Record<string, never> => {
-	const folders = useFolderStore.getState();
-	return folders.roots ? folders.roots[id] : {};
-};
-export const useRoots = (): Folders => useFolderStore((s) => s.roots) ?? {};
-export const getRoots = (): Folders => useFolderStore.getState().roots ?? {};
+export const useRoot = (id: string): Folder | undefined => useFolderStore((s) => s.roots?.[id]);
+export const getRoot = (id: string): Folder | undefined => useFolderStore.getState().roots?.[id];
+export const useRoots = (): Folders => useFolderStore((s) => s.roots);
+export const getRoots = (): Folders => useFolderStore.getState().roots;
 
 // ROOTS BY VIEW
-export const useRootByView = (view: string): Folder | SearchFolder | Record<string, never> =>
-	useFolderStore((s) => (s.roots ? s.roots[view] : {}));
-export const getRootByView = (view: string): Folder | SearchFolder | Record<string, never> => {
+export const useRootByUser = (userId: string): Folder | SearchFolder | Record<string, never> =>
+	useFolderStore((s) => (s.roots ? s.roots[userId] : {}));
+export const getRootByUser = (userId: string): Folder | SearchFolder | Record<string, never> => {
 	const folders = useFolderStore.getState();
-	return folders.roots ? folders.roots[view] : {};
+	return folders.roots ? folders.roots[userId] : {};
 };
-export const useRootsByView = (view: string): Folders => useFolderStore((s) => s.roots) ?? {};
-export const getRootsByView = (view: string): Folders => useFolderStore.getState().folders ?? {};
 
 // SEARCHES
 
-export const useSearch = (id: string): SearchFolder | Record<string, never> =>
-	useFolderStore((s) => (s.searches ? s.searches[id] : {}));
-export const getSearch = (id: string): SearchFolder | Record<string, never> => {
-	const searches = useFolderStore.getState();
-	return searches.searches ? searches.searches[id] : {};
-};
-export const useSearches = (): Searches => useFolderStore((s) => s.searches) ?? {};
-export const getSearches = (): Searches => useFolderStore.getState().searches ?? {};
+export const useSearch = (id: string): SearchFolder | undefined =>
+	useFolderStore((s) => s.searches?.[id]);
+export const getSearch = (id: string): SearchFolder | undefined =>
+	useFolderStore.getState().searches[id];
+export const useSearches = (): Searches => useFolderStore((s) => s.searches);
+export const getSearches = (): Searches => useFolderStore.getState().searches;
 
 // Accordion-ize
 
-const filterNodes = <T>(children: TreeNode<T>[], f: (i: TreeNode<T>) => boolean): TreeNode<T>[] =>
-	children.filter(f).map((i) => ({ ...i, children: filterNodes<TreeNode<T>>(i.children, f) }));
-
-const mapNodes = <T, U>(
-	children: TreeNode<T>[],
-	mapFunction: (i: TreeNode<T>) => U,
-	filterFunction: (i: TreeNode<T>) => boolean,
-	recursionKey: keyof U
-): U[] =>
-	children.reduce((acc, folder) => {
-		if (filterFunction(folder)) {
-			acc.push({
-				...mapFunction(folder),
-				[recursionKey]: mapNodes<TreeNode<T>, U>(
-					folder.children,
-					mapFunction,
-					filterFunction,
-					recursionKey
-				)
-			});
-		}
-		return acc;
-	}, [] as U[]);
-
-export const useFoldersByView = (view: string): Folder => {
-	const root = useFolder(FOLDERS.USER_ROOT);
+export const useFoldersByView = (view: string): Array<Folder> => {
+	const roots = useRoots();
 	const filtered = useMemo(
 		() =>
-			root ? filterNodes<Folder>([root], (f) => f.view === view || f.id === FOLDERS.TRASH) : [],
-		[root, view]
+			roots
+				? filterNodes<Folder>(
+						Object.values(roots),
+						(f) => f.view === view || f.id === FOLDERS.TRASH
+				  )
+				: [],
+		[roots, view]
 	);
-	return filtered[0];
+	return filtered;
 };
-
-const isRoot = (f: Folder): boolean =>
-	f.id === FOLDERS.USER_ROOT || (f as LinkFolder).oname === ROOT_NAME;
 
 export const useFoldersAccordionByView = (
 	view: string,
 	customComponent: ComponentType<{ folder: Folder }>
-): AccordionFolder => {
-	const root = useFolder(FOLDERS.USER_ROOT);
+): Array<AccordionFolder> => {
+	const roots = useRoots();
 	const mapped = useMemo(
 		() =>
-			root
+			roots
 				? mapNodes<Folder, AccordionFolder>(
-						[root],
+						Object.values(roots),
 						(f) => ({
 							id: f.id,
 							label: f.name,
@@ -118,7 +78,7 @@ export const useFoldersAccordionByView = (
 						'items'
 				  )
 				: [],
-		[customComponent, root, view]
+		[customComponent, roots, view]
 	);
-	return mapped[0];
+	return mapped;
 };

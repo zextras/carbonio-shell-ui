@@ -68,10 +68,14 @@ import {
 	getRoot,
 	useRoots,
 	getRoots,
-	useRootByView,
-	getRootByView,
+	useSearch,
+	useSearches,
+	getSearch,
+	getSearches,
 	useFoldersAccordionByView,
-	useFoldersByView
+	useFoldersByView,
+	useRootByUser,
+	getRootByUser
 } from '../../store/folder';
 import { useNotify, useRefresh } from '../../store/network';
 import { changeTagColor, createTag, deleteTag, renameTag, updateTag } from '../../network/tags';
@@ -130,8 +134,12 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	getRoot,
 	useRoots,
 	getRoots,
-	useRootByView,
-	getRootByView,
+	useSearch,
+	useSearches,
+	getSearch,
+	getSearches,
+	useRootByUser,
+	getRootByUser,
 	// BOARDS
 	useAddBoardCallback: getUseAddBoardCallback(pkg.name),
 	useUpdateCurrentBoard,

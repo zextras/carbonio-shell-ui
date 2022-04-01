@@ -196,3 +196,35 @@ export const replaceHistory: (params: HistoryParams) => void;
 export const goBackHistory: () => void;
 export const useCurrentRoute: () => AppRoute | undefined;
 export const getCurrentRoute: () => AppRoute | undefined;
+
+// FOLDERS
+export const useFolder: (id: string) => Folder | undefined;
+export const getFolder: (id: string) => Folder | undefined;
+export const useFolders: () => Folders;
+export const getFolders: () => Folders;
+
+// ROOTS
+export const useRoot: (id: string) => Folder;
+export const getRoot: (id: string) => Folder;
+export const useRoots: () => Folders;
+export const getRoots: () => Folders;
+
+// ROOTS BY USER
+export const useRootByUser: (userId: string) => Folder | SearchFolder | Record<string, never>;
+export const getRootByUser: (userId: string) => Folder | SearchFolder | Record<string, never>;
+
+// SEARCHES
+
+export const useSearch: (id: string) => SearchFolder | undefined;
+export const getSearch: (id: string) => SearchFolder | undefined;
+export const useSearches: () => Searches;
+export const getSearches: () => Searches;
+
+// Accordion-ize
+
+export const useFoldersByView: (view: string) => Array<Folder>;
+
+export const useFoldersAccordionByView: (
+	view: string,
+	customComponent: ComponentType<{ folder: Folder }>
+) => Array<AccordionFolder>;

@@ -21,14 +21,13 @@ export type LinkFolder = BaseFolder & FolderFields & LinkFolderFields & { isLink
 export type SearchFolder = BaseFolder &
 	Pick<FolderFields, 'parent' | 'isLink'> &
 	SearchFolderFields;
+export type Folder = UserFolder | LinkFolder;
 
 export type Folders = { [id: string]: Folder };
 export type Roots = { [id: string]: Folder };
 export type Searches = { [id: string]: SearchFolder };
 export type FolderState = {
-	folders?: Folders;
+	folders: Folders;
 	roots: Roots;
 	searches: Searches;
 };
-
-export type Folder = UserFolder | LinkFolder;

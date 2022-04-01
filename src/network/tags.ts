@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import produce from 'immer';
 import {
 	CreateTagRequest,
 	CreateTagResponse,
@@ -13,10 +12,8 @@ import {
 } from '../../types';
 import { Tag } from '../../types/tags';
 import { SHELL_APP_ID } from '../constants';
-import { useTagStore } from '../store/tags';
 import { getSoapFetch } from './fetch';
 
-const set = useTagStore.setState;
 export const createTag = (tag: Omit<Tag, 'id'>): Promise<CreateTagResponse> =>
 	getSoapFetch(SHELL_APP_ID)<CreateTagRequest, CreateTagResponse>('CreateTag', {
 		_jsns: 'urn:zimbraMail',
@@ -32,12 +29,6 @@ export const renameTag = (id: string, name: string): Promise<TagActionResponse> 
 	getSoapFetch(SHELL_APP_ID)<TagActionRequest, TagActionResponse>('TagAction', {
 		_jsns: 'urn:zimbraMail',
 		action: { op: 'rename', id, name }
-	});
-
-export const updateTag = (tag: Partial<Tag> & { id: string }): Promise<TagActionResponse> =>
-	getSoapFetch(SHELL_APP_ID)<TagActionRequest, TagActionResponse>('TagAction', {
-		_jsns: 'urn:zimbraMail',
-		action: { op: 'update', ...tag }
 	});
 
 export const changeTagColor = (id: string, color: string | number): Promise<TagActionResponse> =>

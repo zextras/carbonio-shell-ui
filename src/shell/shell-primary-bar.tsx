@@ -78,6 +78,7 @@ const PrimaryBarElement: FC<PrimaryBarItemProps> = ({ view, active, onClick }) =
 					iconColor={active ? 'primary' : 'text'}
 					onClick={onClick}
 					size="large"
+					data-isselected={active}
 				/>
 			) : (
 				<view.component active={active} />

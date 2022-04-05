@@ -85,7 +85,14 @@
         "general_tab": "Umum",
         "timezone_and_language": "Zona Waktu dan Bahasa",
         "accounts": "Akun",
-        "choose": "Pilih"
+        "choose": "Pilih",
+        "search_settings": {
+            "labels": {
+                "include_search_in_spam_folder": "Sertakan Folder Spam dalam pencarian",
+                "include_search_in_shared_folder": "Sertakan Folder Bersama dalam pencarian",
+                "include_search_in_trash_folder": "Sertakan Folder Sampah dalam pencarian"
+            }
+        }
     },
     "logout": "Keluar",
     "new": "Baru",
@@ -96,7 +103,8 @@
     },
     "message": {
         "snackbar": {
-            "settings_saved": "Hasil edit disimpan dengan benar"
+            "settings_saved": "Hasil edit disimpan dengan benar",
+            "identities_quota_exceeded": "Identitas tidak dapat dibuat karena Anda melebihi batas kuota identitas"
         },
         "reload": "\tAnda ingin memuat ulang aplikasi sekarang agar menampilkan bahasa baru?\n(Jika tidak, bahasa baru akan muncul saat berikutnya Anda masuk.)"
     },
@@ -142,7 +150,63 @@
         "address": "Alamat",
         "advanced_settings": "Setelan Lanjutan",
         "delete": "Hapus",
-        "primary": "Utama"
+        "primary": "Utama",
+        "account_menu": "Menu akun",
+        "account_name": "Nama Akun",
+        "account_type": "Jenis Akun",
+        "account_username": "Nama Pengguna Akun",
+        "accounts_list": "Daftar akun",
+        "add_delegate": "Tambahkan delegasi",
+        "add_external_account": "Tambahkan akun eksternal",
+        "add_new_email": "Tambahkan alamat email baru",
+        "add_persona": "Tambahkan persona",
+        "add_recovery_email": "Tambahkan email pemulihan",
+        "change_pop": "Ubah port POP",
+        "feedback": "Masukan",
+        "leave_anyway": "Tetap keluar",
+        "pop_port": "Port POP",
+        "recipents": "Penerima",
+        "recovery_email": "Email Pemulihan",
+        "settings_sent_messages": "Pengaturan untuk Pesan Terkirim",
+        "when_composing": "Saat membuat pesan, balas atau teruskan pesan di folder:",
+        "button": "Tombol",
+        "choose_account": "Pilih akun",
+        "choose_folder": "Pilih Folder",
+        "click_to_copy": "Klik untuk menyalin",
+        "default_from_name": "Nama Dari Default",
+        "delegates": "Delegasi",
+        "delete_after_download": "Hapus pesan dari server setelah mengunduh",
+        "documentation": "Dokumentasi",
+        "dont_save": "Jangan simpan salinan pesan terkirim",
+        "download_messages": "Unduh pesan ke:",
+        "edit_permissions": "Edit izin",
+        "email_server": "Server email (mis. “mail.example.com”)",
+        "external_account_settings": "Pengaturan Akun Eksternal",
+        "folder": "Folder: Akun Eksternal Baru 3",
+        "from_name": "Dari: \"Nama\"",
+        "imap": "IMAP",
+        "passwords_recovery_settings": "Pengaturan Akun Pemulihan Kata Sandi",
+        "permanent_delete_title": "Yakin ingin menghapus permanen Persona ini?",
+        "persona": "Persona",
+        "persona_name": "Nama Persona",
+        "persona_settings": "Pengaturan Persona",
+        "pop3": "POP3",
+        "reply_to_field_example": "mis. Joko Widodo",
+        "save_and_leave": "Simpan dan keluar",
+        "save_both_folders": "Simpan salinan pesan tersimpan ke folder Terkirim dan folder delegasi",
+        "save_delegate_folder": "Simpan salinan pesan tersimpan ke folder Terkirim delegasi",
+        "save_to_my_sent_folder": "Simpan salinan pesan terkirim ke folder Terkirim",
+        "set_reply_to_field": "Tetapkan kolom pesan email \"Balas ke\" ke:",
+        "test_settings": "Pengaturan Pengujian",
+        "unsaved_changes": "Anda memiliki perubahan yang belum disimpan",
+        "unsaved_changes_line1": "Yakin ingin keluar dari halaman ini tanpa menyimpan?",
+        "unsaved_changes_line2": "Semua perubahan yang tidak disimpan akan hilang",
+        "update_view": "Perbarui tampilan",
+        "use_persona": "Gunakan persona ini",
+        "use_personas_line1": "Gunakan persona untuk dengan cepat mengubah banyak pengaturan saat mengirim pesan email.",
+        "use_personas_line2": "Misalnya, jika Anda terkadang mengirim email di peran tertentu di tempat kerja, buat persona untuk itu.",
+        "use_ssl": "Gunakan koneksi terenkripsi (SSL) saat mengakses server ini",
+        "when_replying": "Saat membalas atau meneruskan pesan yang dikirim ke:"
     },
     "locale": {
         "portuguese_brazil": "Portugis (Brasil)",
@@ -172,7 +236,9 @@
         "russian": "Rusia",
         "spanish": "Spanyol",
         "thai": "Thailand",
-        "turkish": "Turki"
+        "turkish": "Turki",
+        "french": "Prancis",
+        "label_french": "Prancis - {{value}}"
     },
     "timezone": {
         "atlantic_time_canada": "{{value}} Waktu Atlantik (Kanada)",
@@ -272,12 +338,31 @@
         "show_tabs": "Tampilkan tab lainnya"
     },
     "messages": {
-        "permanent_delete_title": "Anda yakin ingin menghapus elemen ini secara permanen?"
+        "permanent_delete_title": "Anda yakin ingin menghapus elemen ini secara permanen?",
+        "permanent_delete_body": "Jika menghapus permanen Persona ini, Anda tidak dapat memulihkannya. Lanjutkan?"
     },
     "share": {
         "is_contained_in": "Berada di"
     },
     "feedback": {
-        "other": "Lainnya"
+        "other": "Lainnya",
+        "behaviors": "Perilaku",
+        "hint": "Ingat: tentukan topik menggunakan modul dan pemilih area makro sebelum menulis masukan. Terima kasih atas bantuan Anda.",
+        "missing_features": "Fitur tidak ada",
+        "report_something": "Ingin melaporkan sesuatu?",
+        "select_a_module": "Pilih modul",
+        "select_a_topic": "Pilih topik",
+        "send": "KIRIM",
+        "success": "Terima kasih atas masukan Anda",
+        "user_interface": "Antarmuka pengguna",
+        "write_here": "Tulis masukan Anda di sini",
+        "error": "Ada kesalahan saat mengirimkan umpan balik",
+        "explanation": "Harap beri masukan tentang pengalaman barumu dengan Zextras Server. Pendapat Anda berarti bagi kami untuk menyempurnakan produk kami. Beri tahu kami pendapat Anda."
+    },
+    "primary_account": {
+        "title": "Pengaturan Akun Utama"
+    },
+    "passwords_recovery_settings": {
+        "title": "Pengaturan Akun Pemulihan Kata Sandi"
     }
 }

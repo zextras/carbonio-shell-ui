@@ -45,7 +45,8 @@ export const ShellUtilityBar: FC = () => {
 		() => [
 			{
 				id: 'account',
-				label: account?.displayName ?? account?.name
+				label: account?.displayName ?? account?.name,
+				disabled: true
 			},
 			{
 				type: 'divider',

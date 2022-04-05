@@ -198,16 +198,8 @@ export const useCurrentRoute: () => AppRoute | undefined;
 export const getCurrentRoute: () => AppRoute | undefined;
 
 // FOLDERS
-export const useFolder: (id: string) => Folder | undefined;
-export const getFolder: (id: string) => Folder | undefined;
-export const useFolders: () => Folders;
-export const getFolders: () => Folders;
 
 // ROOTS
-export const useRoot: (id: string) => Folder;
-export const getRoot: (id: string) => Folder;
-export const useRoots: () => Folders;
-export const getRoots: () => Folders;
 
 // ROOTS BY USER
 export const useRootByUser: (userId: string) => Folder | SearchFolder | Record<string, never>;

@@ -5,10 +5,16 @@
  */
 
 import { ComponentType, useMemo } from 'react';
-import { Folders, Searches, SearchFolder, Folder, AccordionFolder } from '../../../types';
-import { FOLDERS } from '../../constants';
+import {
+	Folders,
+	Searches,
+	SearchFolder,
+	Folder,
+	AccordionFolder,
+	FolderView
+} from '../../../types';
 import { useFolderStore } from './store';
-import { filterNodes, isRoot, mapNodes } from './utils';
+import { filterNodes, folderViewFilter, mapNodes, sortFolders } from './utils';
 
 // FOLDERS
 export const useFolder = (id: string): Folder | undefined => useFolderStore((s) => s.folders?.[id]);
@@ -42,41 +48,35 @@ export const getSearches = (): Searches => useFolderStore.getState().searches;
 
 // Accordion-ize
 
-export const useFoldersByView = (view: string): Array<Folder> => {
+export const useFoldersByView = (view: FolderView): Array<Folder> => {
 	const roots = useRoots();
 	const filtered = useMemo(
-		() =>
-			roots
-				? filterNodes<Folder>(
-						Object.values(roots),
-						(f) => f.view === view || f.id === FOLDERS.TRASH
-				  )
-				: [],
+		() => (roots ? filterNodes<Folder>(Object.values(roots), folderViewFilter(view)) : []),
 		[roots, view]
 	);
 	return filtered;
 };
 
 export const useFoldersAccordionByView = (
-	view: string,
+	view: FolderView,
 	customComponent: ComponentType<{ folder: Folder }>
 ): Array<AccordionFolder> => {
 	const roots = useRoots();
 	const mapped = useMemo(
 		() =>
 			roots
-				? mapNodes<Folder, AccordionFolder>(
-						Object.values(roots),
-						(f) => ({
+				? mapNodes<Folder, AccordionFolder>(Object.values(roots), {
+						mapFunction: (f) => ({
 							id: f.id,
 							label: f.name,
 							customComponent,
 							items: [],
 							folder: f
 						}),
-						(f) => f.view === view || f.id === FOLDERS.TRASH || isRoot(f),
-						'items'
-				  )
+						filterFunction: folderViewFilter(view),
+						recursionKey: 'items',
+						sortFunction: sortFolders
+				  })
 				: [],
 		[customComponent, roots, view]
 	);

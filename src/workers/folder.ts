@@ -4,13 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { cloneDeep, omit } from 'lodash';
+import { omit } from 'lodash';
 import {
 	BaseFolder,
 	UserFolder,
 	FolderMessage,
 	Folders,
-	FolderState,
 	LinkFolder,
 	LinkFolderFields,
 	Roots,
@@ -22,6 +21,7 @@ import {
 	SoapSearchFolder,
 	Folder
 } from '../../types';
+import { FOLDERS } from '../constants';
 
 const ROOT_NAME = 'USER_ROOT';
 const DEFAULT_ROOT = 'USER';
@@ -104,13 +104,17 @@ const processLink = (soapLink: SoapLink, depth: number, parent?: Folder): LinkFo
 		roots[link.owner ?? 'unknown'] = link;
 	}
 	soapLink?.folder?.forEach((f) => {
-		// eslint-disable-next-line @typescript-eslint/no-use-before-define
-		const child = processFolder(f, depth + 1, link);
-		link.children.push(child);
+		if (f.id !== FOLDERS.IM_LOGS) {
+			// eslint-disable-next-line @typescript-eslint/no-use-before-define
+			const child = processFolder(f, depth + 1, link);
+			link.children.push(child);
+		}
 	});
 	soapLink?.link?.forEach((l) => {
-		const child = processLink(l, depth + 1, link);
-		link.children.push(child);
+		if (l.id.split(':')[1] !== FOLDERS.IM_LOGS) {
+			const child = processLink(l, depth + 1, link);
+			link.children.push(child);
+		}
 	});
 	soapLink?.search?.forEach((s) => {
 		processSearch(s, link);
@@ -132,12 +136,16 @@ const processFolder = (soapFolder: SoapFolder, depth: number, parent?: Folder): 
 		roots[DEFAULT_ROOT] = folder;
 	}
 	soapFolder?.folder?.forEach((f) => {
-		const child = processFolder(f, depth + 1, folder);
-		folder.children.push(child);
+		if (f.id !== FOLDERS.IM_LOGS) {
+			const child = processFolder(f, depth + 1, folder);
+			folder.children.push(child);
+		}
 	});
 	soapFolder?.link?.forEach((l) => {
-		const child = processLink(l, depth + 1, folder);
-		folder.children.push(child);
+		if (l.id.split(':')[1] !== FOLDERS.IM_LOGS) {
+			const child = processLink(l, depth + 1, folder);
+			folder.children.push(child);
+		}
 	});
 	soapFolder?.search?.forEach((s) => {
 		processSearch(s, folder);

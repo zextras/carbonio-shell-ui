@@ -67,7 +67,8 @@
         "app": "Pengaturan",
         "button": {
             "primary": "Simpan",
-            "secondary": "Batal"
+            "secondary": "Batal",
+            "confirm": "Konfirmasi"
         },
         "general": {
             "account": "Akun",
@@ -82,7 +83,9 @@
         },
         "app_description": "Modul Pengaturan",
         "general_tab": "Umum",
-        "timezone_and_language": "Zona Waktu dan Bahasa"
+        "timezone_and_language": "Zona Waktu dan Bahasa",
+        "accounts": "Akun",
+        "choose": "Pilih"
     },
     "logout": "Keluar",
     "new": "Baru",
@@ -121,7 +124,25 @@
         "clear_search_query": "HAPUS PENCARIAN",
         "discard_changes": "HAPUS PERUBAHAN",
         "reload": "Muat ulang",
-        "time_zone": "Zona Waktu"
+        "time_zone": "Zona Waktu",
+        "delete_permanently": "Hapus secara permanen",
+        "email_address": "Alamat email",
+        "filter_folders": "Filter folder",
+        "folders": "Folder",
+        "go_back": "Kembali",
+        "inbox": "Kotak Masuk",
+        "logout": "Keluar",
+        "new_folder": "Folder Baru",
+        "no_results": "Tidak ditemukan hasil",
+        "password": "Kata sandi",
+        "remove": "hapus",
+        "save": "Simpan",
+        "secondary": "Sekunder",
+        "accounts": "Akun",
+        "address": "Alamat",
+        "advanced_settings": "Setelan Lanjutan",
+        "delete": "Hapus",
+        "primary": "Utama"
     },
     "locale": {
         "portuguese_brazil": "Portugis (Brasil)",
@@ -249,5 +270,14 @@
         "hide": "Sembunyikan papan",
         "reduce": "Persempit papan",
         "show_tabs": "Tampilkan tab lainnya"
+    },
+    "messages": {
+        "permanent_delete_title": "Anda yakin ingin menghapus elemen ini secara permanen?"
+    },
+    "share": {
+        "is_contained_in": "Berada di"
+    },
+    "feedback": {
+        "other": "Lainnya"
     }
 }

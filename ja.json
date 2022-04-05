@@ -42,7 +42,8 @@
         "app": "設定",
         "button": {
             "primary": "保存する",
-            "secondary": "キャンセル"
+            "secondary": "キャンセル",
+            "confirm": "確認"
         },
         "general": {
             "account": "アカウント",
@@ -57,7 +58,16 @@
         },
         "general_tab": "一般設定",
         "app_description": "設定モジュール",
-        "timezone_and_language": "タイムゾーンと言語"
+        "timezone_and_language": "タイムゾーンと言語",
+        "search_settings": {
+            "labels": {
+                "include_search_in_shared_folder": "検索に共有フォルダを含める",
+                "include_search_in_spam_folder": "検索にスパムフォルダを含める",
+                "include_search_in_trash_folder": "検索にごみ箱フォルダを含める"
+            }
+        },
+        "accounts": "アカウント",
+        "choose": "選択してください"
     },
     "login": {
         "help": "ヘルプ",
@@ -93,7 +103,8 @@
     },
     "message": {
         "snackbar": {
-            "settings_saved": "編集が保存されました"
+            "settings_saved": "編集が保存されました",
+            "identities_quota_exceeded": "IDクォータを超えたため、IDを作成できませんでした"
         },
         "reload": "\t新しい言語を表示するために、今すぐアプリケーションを再度読み込みますか？\n（それ以外の場合は、次回サインインした際に新しい言語が表示されます。）"
     },
@@ -121,7 +132,81 @@
         "clear_search_query": "検索履歴をクリアする",
         "discard_changes": "変更履歴を削除する",
         "reload": "再読み込み",
-        "time_zone": "タイムゾーン"
+        "time_zone": "タイムゾーン",
+        "account_menu": "アカウントメニュー",
+        "account_name": "アカウント名",
+        "account_type": "アカウントタイプ",
+        "account_username": "アカウントのユーザー名",
+        "accounts_list": "アカウントリスト",
+        "add_delegate": "代理人を追加する",
+        "add_external_account": "外部アカウントを追加する",
+        "add_new_email": "新しいメールアドレスを追加する",
+        "add_persona": "人を追加する",
+        "change_pop": "POPポートを変更する",
+        "reply_to_field_example": "例 ボブ・スミス",
+        "save_both_folders": "送信済みメッセージのコピーを送信済みフォルダと代表者のフォルダに保存します",
+        "save_delegate_folder": "送信済みメッセージのコピーを代表者の送信済みフォルダに保存します",
+        "save_and_leave": "保存して離れる",
+        "set_reply_to_field": "メールメッセージの「返信先」欄を次のように設定します:",
+        "settings_sent_messages": "送信メッセージの設定",
+        "test_settings": "テスト設定",
+        "unsaved_changes": "未保存の変更があります",
+        "unsaved_changes_line1": "本当に保存せずにこのページを離れますか？",
+        "unsaved_changes_line2": "保存されていない変更はすべて失われます",
+        "update_view": "ビューを更新する",
+        "save_to_my_sent_folder": "送信済みメッセージのコピーを送信済みフォルダに保存します",
+        "add_recovery_email": "リカバリメールを追加する",
+        "use_ssl": "このサーバーにアクセスする際は、暗号化された接続（SSL）を使用してください",
+        "recovery_email": "回復メール",
+        "button": "ボタン",
+        "choose_account": "アカウントを選択してください",
+        "choose_folder": "フォルダを選択してください",
+        "click_to_copy": "クリックしてコピーする",
+        "default_from_name": "デフォルトのFromName",
+        "delegates": "代表者",
+        "delete_after_download": "ダウンロード後にサーバーからメッセージを削除する",
+        "documentation": "ドキュメンテーション",
+        "dont_save": "送信されたメッセージのコピーを保存しない",
+        "download_messages": "メッセージのダウンロード先:",
+        "edit_permissions": "権限を編集する",
+        "email_server": "メールサーバー（例：「mail.example.com」）",
+        "external_account_settings": "外部アカウントの設定",
+        "feedback": "フィードバック",
+        "folder": "フォルダ: 新しい外部アカウント3",
+        "from_name": "送信者: 「名前」",
+        "imap": "IMAP",
+        "leave_anyway": "とにかく離れる",
+        "passwords_recovery_settings": "パスワード回復アカウントの設定",
+        "persona_name": "ペルソナ名",
+        "persona": "ペルソナ",
+        "permanent_delete_title": "本当にこのペルソナを完全に削除しますか？",
+        "persona_settings": "ペルソナ設定",
+        "pop3": "POP3",
+        "pop_port": "POPポート",
+        "recipents": "受信者",
+        "use_persona": "このペルソナを使用する",
+        "use_personas_line1": "メールメッセージを送信する際に、ペルソナを使用して様々な設定を素早く変更します。",
+        "use_personas_line2": "例えば、職場で特定の役割のメールを送信することがある場合は、そのためのペルソナを作成します。",
+        "when_composing": "フォルダ内のメッセージを作成、返信、転送する場合:",
+        "when_replying": "送信されたメッセージに返信または転送する場合:",
+        "advanced_settings": "詳細設定",
+        "delete": "削除する",
+        "delete_permanently": "完全に削除する",
+        "email_address": "メールアドレス",
+        "filter_folders": "フォルダをフィルタリングする",
+        "folders": "フォルダ",
+        "inbox": "受信トレイ",
+        "logout": "ログアウト",
+        "new_folder": "新規フォルダ",
+        "no_results": "該当なし",
+        "password": "パスワード",
+        "primary": "プライマリー",
+        "remove": "削除する",
+        "accounts": "アカウント",
+        "address": "住所",
+        "go_back": "戻る",
+        "save": "保存する",
+        "secondary": "セカンダリー"
     },
     "locale": {
         "label_turkish": "トルコ語- {{value}}",
@@ -151,7 +236,9 @@
         "russian": "ロシア語",
         "spanish": "スペイン語",
         "thai": "タイ語",
-        "turkish": "トルコ語"
+        "turkish": "トルコ語",
+        "french": "フランス語",
+        "label_french": "フランス語-{{value}}"
     },
     "timezone": {
         "egypt": "{{value}}エジプト",
@@ -249,5 +336,33 @@
         "hide": "ボードを隠す",
         "reduce": "ボードを減らす",
         "show_tabs": "他のタブを表示する"
+    },
+    "feedback": {
+        "behaviors": "行動",
+        "missing_features": "不足している機能",
+        "report_something": "何か報告しますか？",
+        "select_a_module": "モジュールを選択してください",
+        "select_a_topic": "トピックを選択してください",
+        "send": "送信する",
+        "success": "ご意見ありがとうございます",
+        "user_interface": "ユーザーインターフェース",
+        "write_here": "ここにフィードバックを書いてください",
+        "hint": "留意事項: フィードバックを書く前に、モジュールとマクロ領域セレクターを使用してトピックを定義してください。 ご協力いただきありがとうございます。",
+        "error": "フィードバックの送信中にエラーが発生しました",
+        "explanation": "Zextrasサーバーの新しい体験についてフィードバックをお寄せください。 あなたの意見は私達が製品の改善に役立ちます。 ご意見をお聞かせください。",
+        "other": "その他"
+    },
+    "messages": {
+        "permanent_delete_body": "このペルソナを完全に削除すると、復元できなくなります。 継続しますか？",
+        "permanent_delete_title": "本当にこの要素を完全に削除しますか？"
+    },
+    "passwords_recovery_settings": {
+        "title": "パスワード回復アカウントの設定"
+    },
+    "primary_account": {
+        "title": "プライマリアカウント設定"
+    },
+    "share": {
+        "is_contained_in": "に含まれています"
     }
 }

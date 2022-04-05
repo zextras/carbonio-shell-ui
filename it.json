@@ -229,7 +229,8 @@
         "use_personas_line1": "Utilizza le personalità per cambiare velocemente le impostazioni quando componi il messaggio.",
         "when_composing": "Durante la composizione, nella risposta o nell'inoltro di messaggi nelle cartella:",
         "button": "Pulsante",
-        "click_to_copy": "Seleziona per copiare"
+        "click_to_copy": "Seleziona per copiare",
+        "default_from_name": "Nome Mittente Predefinito"
     },
     "locale": {
         "English": "Inglese",

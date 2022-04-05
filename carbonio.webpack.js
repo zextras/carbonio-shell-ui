@@ -60,7 +60,7 @@ module.exports = (conf, pkg, options, mode) => {
 		})
 	);
 	conf.devServer = {
-		port: 9000,
+		port: options.port,
 		historyApiFallback: {
 			index: `${baseStaticPath}/index.html`,
 			rewrites: [
@@ -79,7 +79,7 @@ module.exports = (conf, pkg, options, mode) => {
 				secure: false,
 				cookieDomainRewrite: {
 					'*': server,
-					[server]: 'localhost:9000'
+					[server]: `localhost:${options.port}`
 				}
 			},
 			{
@@ -89,7 +89,7 @@ module.exports = (conf, pkg, options, mode) => {
 				logLevel: 'debug',
 				cookieDomainRewrite: {
 					'*': server,
-					[server]: 'localhost:9000'
+					[server]: `localhost:${options.port}`
 				}
 			}
 		]

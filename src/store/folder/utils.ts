@@ -26,8 +26,8 @@ export const isRoot = (f: Folder): boolean =>
 
 export const folderViewFilter =
 	(v: FolderView) =>
-	(f: Folder): boolean =>
-		f.view === v || isTrash(f) || isRoot(f);
+	(f: Folder, r?: boolean): boolean =>
+		f.view === v || isTrash(f) || (isRoot(f) && !r);
 
 export const filterNodes = <T>(
 	children: TreeNode<T>[],
@@ -37,16 +37,17 @@ export const filterNodes = <T>(
 
 type MapNodesOptions<T, U> = {
 	mapFunction: (i: TreeNode<T>) => U;
-	filterFunction: (i: TreeNode<T>) => boolean;
+	filterFunction: (i: TreeNode<T>, inRecursion?: boolean) => boolean;
 	recursionKey: keyof U;
 	sortFunction: (i: TreeNode<T>) => number | string;
 };
 export const mapNodes = <T, U>(
 	children: TreeNode<T>[],
-	{ mapFunction, filterFunction, recursionKey, sortFunction }: MapNodesOptions<T, U>
+	{ mapFunction, filterFunction, recursionKey, sortFunction }: MapNodesOptions<T, U>,
+	inRecursion?: boolean
 ): U[] =>
 	sortBy(children, sortFunction).reduce((acc, folder) => {
-		if (filterFunction(folder)) {
+		if (filterFunction(folder, inRecursion)) {
 			acc.push({
 				...mapFunction(folder),
 				[recursionKey]: mapNodes<TreeNode<T>, U>(folder.children, {

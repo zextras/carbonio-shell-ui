@@ -36,7 +36,8 @@
         "app": "การตั้งค่า",
         "button": {
             "primary": "บันทึก",
-            "secondary": "ยกเลิก"
+            "secondary": "ยกเลิก",
+            "confirm": "ยืนยัน"
         },
         "general": {
             "account": "บัญชีผู้ใช้",
@@ -51,7 +52,9 @@
         },
         "general_tab": "ทั่วไป",
         "app_description": "โมดูลการตั้งค่า",
-        "timezone_and_language": "เขตเวลาและภาษา"
+        "timezone_and_language": "เขตเวลาและภาษา",
+        "accounts": "บัญชีผู้ใช้",
+        "choose": "เลือก"
     },
     "changelog": {
         "cancel": "ยกเลิก",
@@ -121,7 +124,25 @@
         "clear_search_query": "ล้างการค้นหา",
         "discard_changes": "ยกเลิกการเปลี่ยนแปลง",
         "reload": "โหลดซ้ำ",
-        "time_zone": "โซนเวลา"
+        "time_zone": "โซนเวลา",
+        "email_address": "ที่อยู่อีเมล",
+        "filter_folders": "กรองโฟลเดอร์",
+        "folders": "โฟลเดอร์",
+        "go_back": "ย้อนกลับ",
+        "inbox": "กล่องจดหมาย",
+        "logout": "ออกจากระบบ",
+        "new_folder": "โฟลเดอร์ใหม่",
+        "no_results": "ไม่พบผลลัพธ์",
+        "password": "รหัสผ่าน",
+        "remove": "ลบออก",
+        "save": "บันทึก",
+        "secondary": "รอง",
+        "accounts": "บัญชีผู้ใช้",
+        "address": "ที่อยู่",
+        "advanced_settings": "การตั้งค่าขั้นสูง",
+        "delete": "ลบ",
+        "delete_permanently": "ลบอย่างถาวร",
+        "primary": "หลัก"
     },
     "board": {
         "close_tab": "ปิดแท็บ",
@@ -249,5 +270,14 @@
         "manaus": "{{value}} มาเนาส์",
         "montevideo": "{{value}} มอนเตวิเดโอ",
         "moscow_st_petersburg_volgograd_rtz_2": "{{value}} มอสโก, เซนต์ปีเตอร์สเบิร์ก, โวลโกกราด (RTZ 2)"
+    },
+    "messages": {
+        "permanent_delete_title": "คุณแน่ใจหรือไม่ว่าต้องการลบองค์ประกอบนี้อย่างถาวร?"
+    },
+    "share": {
+        "is_contained_in": "ประกอบอยู่ใน"
+    },
+    "feedback": {
+        "other": "อื่น ๆ"
     }
 }

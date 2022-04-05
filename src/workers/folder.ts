@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { omit } from 'lodash';
 import {
 	BaseFolder,
 	UserFolder,
@@ -21,8 +20,8 @@ import {
 	SoapSearchFolder,
 	Folder
 } from '../../types';
-import { FOLDERS } from '../constants';
 
+const IM_LOGS = '14';
 const ROOT_NAME = 'USER_ROOT';
 const DEFAULT_ROOT = 'USER';
 
@@ -30,6 +29,14 @@ const folders: Folders = {};
 const roots: Roots = {};
 const searches: Searches = {};
 
+const omit = ({
+	link: _1,
+	folder: _2,
+	search: _3,
+	...obj
+}: Partial<SoapFolder>): Partial<SoapFolder> => obj;
+
+const hasId = (f: SoapFolder, id: string): boolean => f.id.split(':').includes(id);
 const normalize = (f: SoapFolder): BaseFolder => ({
 	id: f.id,
 	uuid: f.uuid,
@@ -104,14 +111,14 @@ const processLink = (soapLink: SoapLink, depth: number, parent?: Folder): LinkFo
 		roots[link.owner ?? 'unknown'] = link;
 	}
 	soapLink?.folder?.forEach((f) => {
-		if (f.id !== FOLDERS.IM_LOGS) {
+		if (!hasId(f, IM_LOGS)) {
 			// eslint-disable-next-line @typescript-eslint/no-use-before-define
 			const child = processFolder(f, depth + 1, link);
 			link.children.push(child);
 		}
 	});
 	soapLink?.link?.forEach((l) => {
-		if (l.id.split(':')[1] !== FOLDERS.IM_LOGS) {
+		if (!hasId(l, IM_LOGS)) {
 			const child = processLink(l, depth + 1, link);
 			link.children.push(child);
 		}
@@ -136,13 +143,13 @@ const processFolder = (soapFolder: SoapFolder, depth: number, parent?: Folder): 
 		roots[DEFAULT_ROOT] = folder;
 	}
 	soapFolder?.folder?.forEach((f) => {
-		if (f.id !== FOLDERS.IM_LOGS) {
+		if (!hasId(f, IM_LOGS)) {
 			const child = processFolder(f, depth + 1, folder);
 			folder.children.push(child);
 		}
 	});
 	soapFolder?.link?.forEach((l) => {
-		if (l.id.split(':')[1] !== FOLDERS.IM_LOGS) {
+		if (!hasId(l, IM_LOGS)) {
 			const child = processLink(l, depth + 1, folder);
 			folder.children.push(child);
 		}
@@ -175,7 +182,7 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 	modified.forEach((val: Partial<SoapFolder>): void => {
 		if (val.id) {
 			const folder = folders[val.id];
-			Object.assign(folder, omit(val, 'folder', 'link', 'search'));
+			Object.assign(folder, omit(val));
 			if (val.l) {
 				const oldParent = folders[val.id].parent;
 				const newParent = folders[val.l];

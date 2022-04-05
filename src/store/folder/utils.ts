@@ -3,12 +3,17 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { endsWith, sortBy } from 'lodash';
+import { sortBy } from 'lodash';
 import { Folder, FolderView, LinkFolder, TreeNode } from '../../../types';
 import { FOLDERS, ROOT_NAME } from '../../constants';
 
+const hasId = (f: Folder, id: string): boolean => f.id.split(':').includes(id);
+const getOriginalId = (f: Folder): string => {
+	const parts = f.id.split(':');
+	return parts[1] ?? parts[0];
+};
 export const sortFolders = (f: Folder): string => {
-	const id = f.id.split(':')?.[f.isLink ? 1 : 0];
+	const id = getOriginalId(f);
 	if (id === FOLDERS.TRASH) {
 		return '~';
 	}
@@ -18,8 +23,7 @@ export const sortFolders = (f: Folder): string => {
 	return id < 17 ? id : f.name.toLowerCase();
 };
 
-export const isTrash = (f: Folder): boolean =>
-	f.id === FOLDERS.TRASH || endsWith(f.id, FOLDERS.TRASH);
+export const isTrash = (f: Folder): boolean => hasId(f, FOLDERS.TRASH);
 
 export const isRoot = (f: Folder): boolean =>
 	f.id === FOLDERS.USER_ROOT || (f as LinkFolder).oname === ROOT_NAME;
@@ -50,12 +54,16 @@ export const mapNodes = <T, U>(
 		if (filterFunction(folder, inRecursion)) {
 			acc.push({
 				...mapFunction(folder),
-				[recursionKey]: mapNodes<TreeNode<T>, U>(folder.children, {
-					mapFunction,
-					filterFunction,
-					recursionKey,
-					sortFunction
-				})
+				[recursionKey]: mapNodes<TreeNode<T>, U>(
+					folder.children,
+					{
+						mapFunction,
+						filterFunction,
+						recursionKey,
+						sortFunction
+					},
+					true
+				)
 			});
 		}
 		return acc;

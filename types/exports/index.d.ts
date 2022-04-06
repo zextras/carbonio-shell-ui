@@ -110,7 +110,7 @@ export const store: {
 };
 export const useNotify: () => Array<SoapNotify>;
 export const useRefresh: () => SoapRefresh;
-export const Applink: FC<LinkProps>;
+export const AppLink: FC<LinkProps>;
 export const Spinner: FC;
 export const useAddBoardCallback: () => (
 	path: string,

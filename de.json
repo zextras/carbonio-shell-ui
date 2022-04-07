@@ -87,7 +87,14 @@
         "app_description": "Modul Einstellungen",
         "timezone_and_language": "Zeitzone und Sprache",
         "accounts": "Konten",
-        "choose": "Wählen Sie"
+        "choose": "Wählen Sie",
+        "search_settings": {
+            "labels": {
+                "include_search_in_spam_folder": "Spam-Ordner in die Suche einbeziehen",
+                "include_search_in_shared_folder": "Gemeinsame Ordner in die Suche einbeziehen",
+                "include_search_in_trash_folder": "Papierkorbordner in die Suche einbeziehen"
+            }
+        }
     },
     "copyright": "Urheberrecht",
     "logout_modal": {
@@ -96,7 +103,8 @@
     },
     "message": {
         "snackbar": {
-            "settings_saved": "Änderungen korrekt gespeichert"
+            "settings_saved": "Änderungen korrekt gespeichert",
+            "identities_quota_exceeded": "Die Identität konnte nicht erstellt werden, weil Sie Ihr Identitätskontingent überschritten haben"
         },
         "reload": "\tMöchten Sie die Anwendung jetzt neu laden, damit die neue Sprache angezeigt wird?\n(Andernfalls wird die neue Sprache angezeigt, wenn Sie sich das nächste Mal anmelden)"
     },
@@ -142,7 +150,63 @@
         "new_folder": "Neuer Ordner",
         "no_results": "Keine Ergebnisse gefunden",
         "password": "Passwort",
-        "secondary": "Sekundär"
+        "secondary": "Sekundär",
+        "account_menu": "Menü Konto",
+        "account_name": "Name des Kontos",
+        "account_type": "Konto-Typ",
+        "account_username": "Konto-Benutzername",
+        "accounts_list": "Liste der Konten",
+        "add_delegate": "Delegierten hinzufügen",
+        "add_external_account": "Externes Konto hinzufügen",
+        "add_new_email": "Neue E-Mail Adresse hinzufügen",
+        "add_persona": "Persona hinzufügen",
+        "add_recovery_email": "Wiederherstellungs-E-Mail hinzufügen",
+        "choose_folder": "Ordner auswählen",
+        "default_from_name": "Standard von Name",
+        "delegates": "Delegierte",
+        "from_name": "Von: \"Name\"",
+        "imap": "IMAP",
+        "passwords_recovery_settings": "Passwortwiederherstellung Kontoeinstellungen",
+        "permanent_delete_title": "Sind Sie sicher, dass Sie diese Persona endgültig löschen wollen?",
+        "persona": "Person",
+        "save_delegate_folder": "Speichern einer Kopie der gesendeten Nachrichten im Ordner \"Gesendet\" des Delegierten",
+        "unsaved_changes_line2": "Alle nicht gespeicherten Änderungen gehen verloren.",
+        "update_view": "Ansicht aktualisieren",
+        "use_persona": "Verwenden Sie diese Persona",
+        "use_personas_line1": "Verwenden Sie Personas, um viele Einstellungen beim Senden von E-Mail-Nachrichten schnell zu ändern.",
+        "use_personas_line2": "Wenn Sie z. B. manchmal in einer bestimmten Rolle bei der Arbeit E-Mails versenden, erstellen Sie eine Persona für diese Rolle.",
+        "when_replying": "Beim Beantworten oder Weiterleiten von Nachrichten, die an:",
+        "button": "Schaltfläche",
+        "change_pop": "POP-Anschluss ändern",
+        "delete_after_download": "Löschen von Nachrichten vom Server nach dem Download",
+        "folder": "Ordner: Neues externes Konto 3",
+        "pop_port": "POP Port",
+        "save_and_leave": "Speichern und verlassen",
+        "save_both_folders": "Speichern einer Kopie der gesendeten Nachrichten in meinem Ordner \"Gesendet\" und im Ordner des Delegierten",
+        "save_to_my_sent_folder": "Eine Kopie der gesendeten Nachrichten im Ordner \"Gesendet\" speichern",
+        "test_settings": "Test-Einstellungen",
+        "unsaved_changes_line1": "Sind Sie sicher, dass Sie diese Seite verlassen wollen, ohne zu speichern?",
+        "use_ssl": "Verwenden Sie eine verschlüsselte Verbindung (SSL), wenn Sie auf diesen Server zugreifen",
+        "when_composing": "Beim Verfassen, Beantworten oder Weiterleiten von Nachrichten in Ordner(n):",
+        "choose_account": "Wählen Sie ein Konto",
+        "click_to_copy": "Zum Kopieren anklicken",
+        "documentation": "Dokumentation",
+        "dont_save": "Keine Kopie der gesendeten Nachrichten speichern",
+        "download_messages": "Download von Nachrichten an:",
+        "edit_permissions": "Berechtigungen bearbeiten",
+        "email_server": "E-Mail-Server (z. B. \"mail.example.com\")",
+        "external_account_settings": "Externe Kontoeinstellungen",
+        "feedback": "Rückmeldung",
+        "leave_anyway": "Trotzdem gehen",
+        "persona_name": "Name der Persona",
+        "persona_settings": "Persona-Einstellungen",
+        "pop3": "POP3",
+        "recipents": "Empfänger",
+        "recovery_email": "Wiederherstellung E-Mail",
+        "reply_to_field_example": "z.B. Bob Smith",
+        "set_reply_to_field": "Setzen Sie das Feld \"Antwort an\" der E-Mail-Nachricht auf:",
+        "settings_sent_messages": "Einstellungen für gesendete Nachrichten",
+        "unsaved_changes": "Sie haben ungespeicherte Änderungen"
     },
     "timezone": {
         "abu_dhabi_muscat": "{{value}} Abu Dhabi, Muscat",
@@ -269,15 +333,36 @@
         "turkish": "Türkisch",
         "label_chinese": "Chinesisch (China) - {{value}}",
         "label_japanese": "Japanisch - {{value}}",
-        "label_turkish": "Türkisch - {{value}}"
+        "label_turkish": "Türkisch - {{value}}",
+        "french": "Französisch",
+        "label_french": "Französisch - {{value}}"
     },
     "feedback": {
-        "other": "Andere"
+        "other": "Andere",
+        "behaviors": "Verhaltensweisen",
+        "hint": "Denken Sie daran: Definieren Sie das Thema mit Hilfe von Modulen und Makrobereichs-Selektoren, bevor Sie Ihr Feedback schreiben. Vielen Dank für Ihre Hilfe.",
+        "missing_features": "Fehlende Merkmale",
+        "report_something": "Möchten Sie etwas melden?",
+        "select_a_module": "Wählen Sie ein Modul",
+        "select_a_topic": "Wählen Sie ein Thema",
+        "send": "SENDEN",
+        "success": "Vielen Dank für Ihr Feedback",
+        "user_interface": "Benutzeroberfläche",
+        "write_here": "Schreiben Sie Ihr Feedback hier",
+        "error": "Beim Absenden Ihres Feedbacks ist ein Fehler aufgetreten",
+        "explanation": "Bitte geben Sie uns Ihr Feedback über Ihre neuen Erfahrungen mit Zextras Server. Ihre Meinung ist wichtig für uns, um unser Produkt zu verbessern. Teilen Sie uns Ihre Gedanken mit."
     },
     "messages": {
-        "permanent_delete_title": "Sind Sie sicher, dass Sie dieses Element dauerhaft löschen wollen?"
+        "permanent_delete_title": "Sind Sie sicher, dass Sie dieses Element dauerhaft löschen wollen?",
+        "permanent_delete_body": "Wenn Sie diese Persona dauerhaft löschen, können Sie sie nicht mehr wiederherstellen. Weiter?"
     },
     "share": {
         "is_contained_in": "Ist enthalten in"
+    },
+    "passwords_recovery_settings": {
+        "title": "Passwortwiederherstellung Kontoeinstellungen"
+    },
+    "primary_account": {
+        "title": "Primäre Kontoeinstellungen"
     }
 }

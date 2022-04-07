@@ -60,7 +60,14 @@
         "app_description": "设置模块",
         "timezone_and_language": "时区和语言",
         "accounts": "账户",
-        "choose": "选择"
+        "choose": "选择",
+        "search_settings": {
+            "labels": {
+                "include_search_in_shared_folder": "在搜索中包含共享文件夹",
+                "include_search_in_spam_folder": "在搜索中包含垃圾信息文件夹",
+                "include_search_in_trash_folder": "在搜索中包含垃圾箱文件夹"
+            }
+        }
     },
     "login": {
         "help": "帮助",
@@ -95,7 +102,8 @@
     },
     "message": {
         "snackbar": {
-            "settings_saved": "编辑保存正确"
+            "settings_saved": "编辑保存正确",
+            "identities_quota_exceeded": "身份无法创建，因为您已超出身份配额"
         },
         "reload": "\t是否立即重新加载应用程序以显示新的语言？\n（或者新语言将在下次登录时显示。）"
     },
@@ -142,7 +150,63 @@
         "primary": "主要",
         "remove": "移除",
         "save": "保存",
-        "secondary": "次要"
+        "secondary": "次要",
+        "account_menu": "账户菜单",
+        "account_name": "账户名称",
+        "account_type": "账户类型",
+        "account_username": "账户用户名",
+        "accounts_list": "账户列表",
+        "add_delegate": "添加委派",
+        "add_external_account": "添加外部账户",
+        "add_new_email": "添加新的邮件地址",
+        "add_persona": "添加角色",
+        "add_recovery_email": "添加恢复邮件",
+        "button": "按钮",
+        "change_pop": "更改 POP 端口",
+        "choose_account": "选择一个账户",
+        "choose_folder": "选择文件夹",
+        "click_to_copy": "点击复制",
+        "default_from_name": "默认发自名称",
+        "delete_after_download": "下载后从服务器删除消息",
+        "documentation": "文档",
+        "dont_save": "不要保存已发送消息副本",
+        "download_messages": "下载消息至：",
+        "edit_permissions": "编辑权限",
+        "email_server": "邮件服务器（如：“mail.example.com”）",
+        "external_account_settings": "外部账户设置",
+        "feedback": "反馈",
+        "folder": "文件夹：新外部账户 3",
+        "from_name": "发自：“名称”",
+        "imap": "IMAP",
+        "leave_anyway": "仍然离开",
+        "passwords_recovery_settings": "密码恢复账户设置",
+        "permanent_delete_title": "确定要永久删除该角色吗？",
+        "persona": "角色",
+        "persona_name": "角色名称",
+        "persona_settings": "角色设置",
+        "pop3": "POP3",
+        "pop_port": "POP 端口",
+        "recipents": "接收者",
+        "reply_to_field_example": "如：Bob Smith",
+        "save_and_leave": "保存并离开",
+        "save_both_folders": "将已发送消息副本保存至我的“已发送”文件夹与委派文件夹",
+        "save_delegate_folder": "将已发送消息副本保存至委派“已发送”文件夹",
+        "save_to_my_sent_folder": "将已发送消息副本保存至我的“已发送”文件夹",
+        "set_reply_to_field": "将邮件消息的“回复至”字段设置为：",
+        "settings_sent_messages": "已发送消息设置",
+        "test_settings": "测试设置",
+        "unsaved_changes": "您有未保存更改",
+        "unsaved_changes_line1": "确定要离开此页面且不保存吗？",
+        "unsaved_changes_line2": "您所有的未保存更改都将丢失",
+        "use_ssl": "在访问此服务器时使用加密器连接（SSL）",
+        "when_composing": "在文件夹中撰写、回复或转发消息时：",
+        "when_replying": "在回复或转发已发送至以下位置的消息时：",
+        "delegates": "委派",
+        "update_view": "更新视图",
+        "use_persona": "使用该角色",
+        "use_personas_line1": "使用角色以在发送邮件消息时快速变更多项设置。",
+        "use_personas_line2": "例如，如果您有时候会在工作中以特定角色发送邮件，可为其创建角色。",
+        "recovery_email": "恢复邮件"
     },
     "locale": {
         "English": "英语",
@@ -172,7 +236,9 @@
         "russian": "俄语",
         "spanish": "西班牙语",
         "thai": "泰语",
-        "turkish": "土耳其语"
+        "turkish": "土耳其语",
+        "label_french": "法语 - {{value}}",
+        "french": "法语"
     },
     "timezone": {
         "alaska": "{{value}} 阿拉斯加",
@@ -272,12 +338,31 @@
         "show_tabs": "显示其他标签页"
     },
     "feedback": {
-        "other": "其他"
+        "other": "其他",
+        "behaviors": "行为",
+        "hint": "请记住：在写下反馈前使用模块和宏区域选择器定义主题。感谢您的帮助。",
+        "missing_features": "缺失功能",
+        "report_something": "是否上报？",
+        "select_a_module": "选择模块",
+        "select_a_topic": "选择主题",
+        "send": "发送",
+        "success": "感谢您的反馈",
+        "user_interface": "用户界面",
+        "write_here": "在此写下您的反馈",
+        "error": "提交反馈时出错",
+        "explanation": "请提供有关 Zextras 服务器全新体验的反馈。您的观点对于产品改善有着重要意义。告诉我们您的想法。"
     },
     "messages": {
-        "permanent_delete_title": "确定要永久删除该元素吗？"
+        "permanent_delete_title": "确定要永久删除该元素吗？",
+        "permanent_delete_body": "永久性删除此角色将导致您无法再次将其恢复。是否继续？"
     },
     "share": {
         "is_contained_in": "包含于"
+    },
+    "passwords_recovery_settings": {
+        "title": "密码恢复账户设置"
+    },
+    "primary_account": {
+        "title": "主要账户设置"
     }
 }

@@ -44,7 +44,7 @@ const LanguageAndTimeZone: FC<{
 		() =>
 			settings.prefs.zimbraPrefLocale && find(locales, { id: settings.prefs.zimbraPrefLocale })
 				? find(locales, { id: settings.prefs.zimbraPrefLocale })
-				: locales[5],
+				: find(locales, { id: 'en' }),
 		[locales, settings.prefs.zimbraPrefLocale]
 	);
 

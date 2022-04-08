@@ -227,9 +227,9 @@
         },
         "search_settings": {
             "labels": {
-                "include_search_in_shared_folder": "Include Shared Folder in Searches",
-                "include_search_in_spam_folder": "Include Spam Folder in Searches",
-                "include_search_in_trash_folder": "Include Trash Folder in Searches"
+                "include_search_in_shared_folder": "Include Shared Folder in searches",
+                "include_search_in_spam_folder": "Include Spam Folder in searches",
+                "include_search_in_trash_folder": "Include Trash Folder in searches"
             }
         },
         "timezone_and_language": "Time Zone and Language"

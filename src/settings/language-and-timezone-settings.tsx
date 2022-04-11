@@ -53,7 +53,7 @@ const LanguageAndTimeZone: FC<{
 			settings.prefs.zimbraPrefTimeZoneId &&
 			find(timezones, { value: settings.prefs.zimbraPrefTimeZoneId })
 				? find(timezones, { value: settings.prefs.zimbraPrefTimeZoneId })
-				: timezones[39],
+				: find(timezones, { value: 'UTC' }),
 		[timezones, settings.prefs.zimbraPrefTimeZoneId]
 	);
 	const sectionTitle = useMemo(() => timezoneAndLanguageSubSection(t), [t]);

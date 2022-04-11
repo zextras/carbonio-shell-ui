@@ -13,6 +13,7 @@ import { useUtilityViews } from './utils';
 import { logout } from '../network/logout';
 import { useContextBridge } from '../store/context-bridge';
 import { noOp } from '../network/fetch';
+import { useUserAccount } from '../store/account';
 
 const UtilityBarItem: FC<{ view: UtilityView }> = ({ view }) => {
 	const { mode, setMode, current, setCurrent } = useUtilityBarStore();
@@ -39,8 +40,19 @@ const UtilityBarItem: FC<{ view: UtilityView }> = ({ view }) => {
 export const ShellUtilityBar: FC = () => {
 	const views = useUtilityViews();
 	const [t] = useTranslation();
+	const account = useUserAccount();
 	const accountItems = useMemo(
 		() => [
+			{
+				id: 'account',
+				label: account?.displayName ?? account?.name,
+				disabled: true
+			},
+			{
+				type: 'divider',
+				id: 'divider',
+				label: 'divider'
+			},
 			{
 				id: 'feedback',
 				label: t('label.feedback', 'Feedback'),
@@ -73,15 +85,15 @@ export const ShellUtilityBar: FC = () => {
 				icon: 'LogOut'
 			}
 		],
-		[t]
+		[account, t]
 	);
 	return (
 		<Container orientation="horizontal" width="fit">
 			{map(views, (view) => (
 				<UtilityBarItem view={view} key={view.id} />
 			))}
-			<Tooltip label={t('label.account_menu', 'Account menu')} placement="left-end">
-				<Dropdown items={accountItems}>
+			<Tooltip label={account?.displayName ?? account?.name} placement="bottom-end">
+				<Dropdown items={accountItems} maxWidth="200px" disableAutoFocus>
 					<IconButton icon="PersonOutline" size="large" />
 				</Dropdown>
 			</Tooltip>

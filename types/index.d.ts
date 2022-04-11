@@ -14,3 +14,4 @@ export * from './search';
 export * from './misc';
 export * from './tags';
 export * from './workers';
+export * from './folder';

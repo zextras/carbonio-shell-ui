@@ -6,20 +6,19 @@
 import { SoapNotify, SoapRefresh } from '../network';
 import { Tags } from '../tags';
 
-export type SyncNotifyMessage<T> = {
+export type SyncNotifyMessage = {
 	op: 'notify';
 	notify: SoapNotify;
-	state: T;
 };
 
-export type SyncRefreshMessage<T> = {
+export type SyncRefreshMessage = SoapRefresh & {
 	op: 'refresh';
-	tags: Tag[];
-	state?: T;
 };
 
-export type SyncMessage<T> = SyncNotifyMessage<T> | SyncRefreshMessage<T>;
+export type SyncMessage = SyncNotifyMessage | SyncRefreshMessage;
 
-export type WorkerMessage<T> = { data: SyncMessage<T> };
+export type WorkerMessage<T> = { data: SyncMessage & T };
 
-export type TagMessage = WorkerMessage<Tags>;
+export type TagMessage = WorkerMessage<{ state: Tags }>;
+
+export type FolderMessage = WorkerMessage<Record<string, never>>;

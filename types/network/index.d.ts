@@ -7,6 +7,8 @@
 import { AccountRights, ZimletProp } from '../account';
 import { Tag } from '../tags';
 
+export * from './soap';
+
 export type ZimletPkgDescription = {
 	zimlet: Array<{
 		name: string;
@@ -55,33 +57,6 @@ export type GetInfoResponse = {
 	rights: AccountRights;
 };
 
-export type SoapHeader = {
-	context: SoapContext;
-};
-export type SuccessSoapResponse<R> = {
-	Body: Record<string, R>;
-	Header: SoapHeader;
-};
-export type SoapFault = {
-	Detail: {
-		Error: {
-			Code: string;
-			Detail: string;
-		};
-	};
-	Reason: {
-		Text: string;
-	};
-};
-export type ErrorSoapResponse = {
-	Body: {
-		Fault: SoapFault;
-	};
-	Header: SoapHeader;
-};
-
-export type SoapResponse<R> = SuccessSoapResponse<R> | ErrorSoapResponse;
-
 export type PropsMods = Record<string, { app: string; value: unknown }>;
 
 export type PermissionsMods = {
@@ -127,38 +102,6 @@ export type Locale = {
 };
 export type AvailableLocalesResponse = {
 	locale: Array<Locale>;
-};
-export type SoapContext = {
-	refresh?: SoapRefresh;
-	notify?: Array<SoapNotify>;
-	change?: { token: number };
-	session?: { id: number; _content: number };
-};
-
-export type SoapRefresh = {
-	seq?: number;
-	version?: string;
-	mbx?: [{ s: number }];
-	folder?: Array<unknown>;
-	tags?: { tag: Array<Tag> };
-};
-
-export type SoapNotify = {
-	seq: number;
-	created?: {
-		m?: Array<unknown>;
-		c?: Array<unknown>;
-		folder?: Array<unknown>;
-		tag?: Array<Tag>;
-	};
-	modified?: {
-		m?: Array<unknown>;
-		c?: Array<unknown>;
-		folder?: Array<unknown>;
-		tag?: Array<Partial<Tag>>;
-		mbx: [{ s: number }];
-	};
-	deleted: string[];
 };
 
 export type NetworkState = SoapContext & {

@@ -33,6 +33,7 @@ import {
 import { Mods, TagActionResponse, CreateTagResponse, SoapNotify, SoapRefresh } from '../network';
 import { HistoryParams, ShellModes } from '../misc';
 import { Tag, Tags } from '../tags';
+import { Folder, Folders } from '../folder';
 
 export const getBridgedFunctions: () => {
 	addBoard: (path: string, context?: unknown | { app: string }) => void;
@@ -96,6 +97,16 @@ export const useTags: () => Tags;
 export const getTags: () => Tags;
 export const useTag: (id: string) => Tag;
 export const getTag: (id: string) => Tag;
+export const useFolder: (id: string) => BaseFolder | Folder | LinkFolder;
+export const getFolder: (id: string) => BaseFolder | Folder | LinkFolder;
+export const useFolders: () => Folders;
+export const getFolders: () => Folders;
+export const useRoot: (name: string) => Folder;
+export const getRoot: (name: string) => Folder;
+export const useRoots: () => Roots;
+export const getRoots: () => Roots;
+export const useRootByView: (view: string) => Folder;
+export const getRootByView: (view: string) => Folder;
 export const createTag: (tag: Omit<Tag, 'id'>) => Promise<CreateTagResponse>;
 export const renameTag: (id: string, name: string) => Promise<TagActionResponse>;
 export const deleteTag: (id: string) => Promise<TagActionResponse>;
@@ -185,3 +196,27 @@ export const replaceHistory: (params: HistoryParams) => void;
 export const goBackHistory: () => void;
 export const useCurrentRoute: () => AppRoute | undefined;
 export const getCurrentRoute: () => AppRoute | undefined;
+
+// FOLDERS
+
+// ROOTS
+
+// ROOTS BY USER
+export const useRootByUser: (userId: string) => Folder | SearchFolder | Record<string, never>;
+export const getRootByUser: (userId: string) => Folder | SearchFolder | Record<string, never>;
+
+// SEARCHES
+
+export const useSearch: (id: string) => SearchFolder | undefined;
+export const getSearch: (id: string) => SearchFolder | undefined;
+export const useSearches: () => Searches;
+export const getSearches: () => Searches;
+
+// Accordion-ize
+
+export const useFoldersByView: (view: string) => Array<Folder>;
+
+export const useFoldersAccordionByView: (
+	view: string,
+	customComponent: ComponentType<{ folder: Folder }>
+) => Array<AccordionFolder>;

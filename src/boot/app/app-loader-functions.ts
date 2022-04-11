@@ -58,6 +58,24 @@ import {
 	useUpdateCurrentBoard
 } from '../../shell/boards/board-hooks';
 import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
+import {
+	getFolder,
+	getFolders,
+	useFolder,
+	useFolders,
+	useRoot,
+	getRoot,
+	useRoots,
+	getRoots,
+	useSearch,
+	useSearches,
+	getSearch,
+	getSearches,
+	useFoldersAccordionByView,
+	useFoldersByView,
+	useRootByUser,
+	getRootByUser
+} from '../../store/folder';
 import { getTags, useTags } from '../../store/tags';
 import { useNotify, useRefresh } from '../../store/network';
 import { changeTagColor, createTag, deleteTag, renameTag } from '../../network/tags';
@@ -103,6 +121,23 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	getTags,
 	useNotify,
 	useRefresh,
+	// FOLDERS
+	useFoldersAccordionByView,
+	useFoldersByView,
+	useFolder,
+	getFolder,
+	useFolders,
+	getFolders,
+	useRoot,
+	getRoot,
+	useRoots,
+	getRoots,
+	useSearch,
+	useSearches,
+	getSearch,
+	getSearches,
+	useRootByUser,
+	getRootByUser,
 	// BOARDS
 	useAddBoardCallback: getUseAddBoardCallback(pkg.name),
 	useUpdateCurrentBoard,

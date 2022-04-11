@@ -12,7 +12,8 @@ import { SoapContext } from '../../../types';
 // import { getSoapFetch } from '../../network/fetch';
 // import { useNetworkStore } from './store';
 
-import { tagWorker } from '../../workers';
+import { folderWorker, tagWorker } from '../../workers';
+import { useFolderStore } from '../folder';
 import { useTagStore } from '../tags';
 import { useNetworkStore } from './store';
 
@@ -24,6 +25,10 @@ export const handleSync = ({ refresh, notify }: SoapContext): Promise<void> =>
 				op: 'refresh',
 				tags: refresh.tags?.tag ?? []
 			});
+			folderWorker.postMessage({
+				op: 'refresh',
+				folder: refresh.folder ?? []
+			});
 		}
 		if (notify?.length) {
 			forEach(notify, (item) => {
@@ -32,6 +37,11 @@ export const handleSync = ({ refresh, notify }: SoapContext): Promise<void> =>
 						op: 'notify',
 						notify: item,
 						state: useTagStore.getState().tags
+					});
+					folderWorker.postMessage({
+						op: 'notify',
+						notify: item,
+						state: useFolderStore.getState().folders
 					});
 				}
 			});

@@ -86,7 +86,14 @@
         "app_description": "Instellingen Module",
         "timezone_and_language": "Tijdzone en taal",
         "accounts": "Accounts",
-        "choose": "Kiezen"
+        "choose": "Kiezen",
+        "search_settings": {
+            "labels": {
+                "include_search_in_shared_folder": "Gedeelde map opnemen in zoekopdrachten",
+                "include_search_in_spam_folder": "Spamfolder opnemen in zoekopdrachten",
+                "include_search_in_trash_folder": "Prullenmand opnemen in zoekopdrachten"
+            }
+        }
     },
     "logout": "Uitloggen",
     "copyright": "Copyright",
@@ -96,7 +103,8 @@
     },
     "message": {
         "snackbar": {
-            "settings_saved": "Bewerkingen correct opgeslagen"
+            "settings_saved": "Bewerkingen correct opgeslagen",
+            "identities_quota_exceeded": "De identiteit kon niet worden aangemaakt omdat u uw identiteitsquota heeft overschreden"
         },
         "reload": "\tWilt u de applicatie nu opnieuw laden om de nieuwe taal te tonen?\n(Anders zal de nieuwe taal verschijnen wanneer u de volgende keer inlogt)."
     },
@@ -142,7 +150,63 @@
         "logout": "Uitloggen",
         "new_folder": "Nieuwe Map",
         "no_results": "Geen resultaten gevonden",
-        "password": "Wachtwoord"
+        "password": "Wachtwoord",
+        "account_menu": "Accountmenu",
+        "account_name": "Accountnaam",
+        "account_type": "Accounttype",
+        "account_username": "Accountgebruikersnaam",
+        "accounts_list": "Accountslijst",
+        "add_delegate": "Gedelegeerde toevoegen",
+        "add_new_email": "Nieuw e-mailadres toevoegen",
+        "add_persona": "Persona toevoegen",
+        "change_pop": "POP-poort wijzigen",
+        "choose_account": "Een account kiezen",
+        "choose_folder": "Map kiezen",
+        "default_from_name": "Standaard van naam",
+        "external_account_settings": "Externe accountinstellingen",
+        "feedback": "Feedback",
+        "folder": "Map: Nieuwe externe account 3",
+        "from_name": "Van: \"Name\"",
+        "imap": "IMAP",
+        "persona": "Persona",
+        "persona_name": "Naam Persona",
+        "persona_settings": "Instellingen Persona",
+        "reply_to_field_example": "bijv. Bob Smith",
+        "save_and_leave": "Opslaan en wegwezen",
+        "save_both_folders": "Een kopie van verzonden berichten opslaan in mijn map Verzonden en de map van de gedelegeerden",
+        "add_external_account": "Externe account toevoegen",
+        "add_recovery_email": "Herstel-e-mail toevoegen",
+        "button": "Knop",
+        "delete_after_download": "Verwijder berichten van de server na het downloaden",
+        "edit_permissions": "Machtigingen bewerken",
+        "email_server": "E-mail-server (bijv. “mail.voorbeeld.com”)",
+        "recovery_email": "E-mail herstel",
+        "save_delegate_folder": "Een kopie van verzonden berichten opslaan in de Verzonden map van de gedelegeerde",
+        "unsaved_changes": "U hebt niet opgeslagen wijzigingen",
+        "use_personas_line1": "Gebruik persona's om snel veel instellingen te wijzigen bij het versturen van e-mailberichten.",
+        "use_ssl": "Gebruik een versleutelde verbinding (SSL) bij de toegang tot deze server",
+        "click_to_copy": "Klik om te kopiëren",
+        "delegates": "Gedelegeerden",
+        "documentation": "Documentatie",
+        "dont_save": "Bewaar geen kopie van verzonden berichten",
+        "download_messages": "Download berichten naar:",
+        "leave_anyway": "Toch vertrekken",
+        "passwords_recovery_settings": "Wachtwoordherstel Accountinstellingen",
+        "permanent_delete_title": "Weet u zeker dat u deze Persona permanent wilt verwijderen?",
+        "pop3": "POP3",
+        "pop_port": "POP-poort",
+        "recipents": "Ontvangers",
+        "save_to_my_sent_folder": "Een kopie van verzonden berichten opslaan in mijn Verzonden map",
+        "set_reply_to_field": "Stel het \"Antwoorden aan\" veld van e-mail bericht in op:",
+        "settings_sent_messages": "Instellingen voor Verzonden berichten",
+        "test_settings": "Testinstellingen",
+        "unsaved_changes_line1": "Weet u zeker dat u deze pagina wilt verlaten zonder op te slaan?",
+        "unsaved_changes_line2": "Al uw niet opgeslagen wijzigingen zullen verloren gaan",
+        "update_view": "Weergave bijwerken",
+        "use_persona": "Deze persona gebruiken",
+        "use_personas_line2": "Als u bijvoorbeeld op het werk soms e-mails verstuurt in een bepaalde rol, maak daar dan een persona voor aan.",
+        "when_composing": "Bij het samenstellen, beantwoorden of doorsturen van berichten in map(pen):",
+        "when_replying": "Bij het beantwoorden of doorsturen van berichten die zijn verzonden naar:"
     },
     "locale": {
         "label_russian": "Russisch - {{value}}",
@@ -172,7 +236,9 @@
         "russian": "Russisch",
         "spanish": "Spaans",
         "thai": "Thai",
-        "turkish": "Turks"
+        "turkish": "Turks",
+        "label_french": "Frans - {{value}}",
+        "french": "Frans"
     },
     "timezone": {
         "abu_dhabi_muscat": "{{value}} Abu Dhabi, Muscat",
@@ -272,12 +338,31 @@
         "show_tabs": "Andere tabs tonen"
     },
     "feedback": {
-        "other": "Ander"
+        "other": "Ander",
+        "behaviors": "Gedragingen",
+        "missing_features": "Ontbrekende kenmerken",
+        "report_something": "Wilt u iets melden?",
+        "send": "VERSTUREN",
+        "user_interface": "Gebruikersinterface",
+        "hint": "Denk eraan: definieer het onderwerp met behulp van modules en macro gebied selectors voordat u uw feedback schrijft. Bedankt voor uw hulp.",
+        "select_a_module": "Selecteer een module",
+        "select_a_topic": "Selecteer een onderwerp",
+        "success": "Dank u voor uw feedback",
+        "write_here": "Schrijf hier uw feedback",
+        "error": "Er is een fout opgetreden bij het indienen van uw feedback",
+        "explanation": "Geef ons uw feedback over uw nieuwe ervaring met Zextras Server. Uw mening is zinvol voor ons om ons product te verbeteren. Laat ons weten wat u denkt."
     },
     "messages": {
-        "permanent_delete_title": "Weet u zeker dat u dit element permanent wilt verwijderen?"
+        "permanent_delete_title": "Weet u zeker dat u dit element permanent wilt verwijderen?",
+        "permanent_delete_body": "Als u deze Persona permanent verwijdert, zult u deze niet meer kunnen herstellen. Doorgaan?"
     },
     "share": {
         "is_contained_in": "Is opgenomen in"
+    },
+    "passwords_recovery_settings": {
+        "title": "Wachtwoordherstel Accountinstellingen"
+    },
+    "primary_account": {
+        "title": "Primaire accountinstellingen"
     }
 }

@@ -75,7 +75,14 @@
         "general_tab": "General",
         "timezone_and_language": "Huso horario e idioma",
         "accounts": "Cuentas",
-        "choose": "Elegir"
+        "choose": "Elegir",
+        "search_settings": {
+            "labels": {
+                "include_search_in_shared_folder": "Incluir carpeta de compartidos en las búsquedas",
+                "include_search_in_spam_folder": "Incluir carpeta de Spam en las búsquedas",
+                "include_search_in_trash_folder": "Incluir carpeta de la papelera en las búsquedas"
+            }
+        }
     },
     "login": {
         "help": "Ayuda",
@@ -91,7 +98,8 @@
     "new": "Nuevo",
     "message": {
         "snackbar": {
-            "settings_saved": "Ediciones guardadas correctamente"
+            "settings_saved": "Ediciones guardadas correctamente",
+            "identities_quota_exceeded": "La identidad no pudo crearse porque has superado tu cuota de tu identidad"
         },
         "reload": "\t¿Te gustaría volver a cargar la aplicación ahora para mostrar el nuevo idioma?\n(De lo contrario, el nuevo lenguaje se aplicará la próxima vez que inicies sesión)."
     },
@@ -142,7 +150,63 @@
         "primary": "Primario",
         "remove": "quitar",
         "save": "Guardar",
-        "secondary": "Secundario"
+        "secondary": "Secundario",
+        "account_menu": "Menú de cuenta",
+        "account_name": "Nombre de cuenta",
+        "account_type": "Tipo de cuenta",
+        "account_username": "Nombre de usuario de la cuenta",
+        "accounts_list": "Lista de cuentas",
+        "add_delegate": "Añadir delegado",
+        "add_external_account": "Añadir cuenta externa",
+        "add_new_email": "Añadir nueva dirección de correo electrónico",
+        "add_persona": "Añadir persona",
+        "delegates": "Delegados",
+        "add_recovery_email": "Añadir e-mail de recuperación",
+        "change_pop": "Cambiar puerto POP",
+        "choose_account": "Elegir una cuenta",
+        "choose_folder": "Elegir carpeta",
+        "default_from_name": "Nombre del remitente por defecto",
+        "download_messages": "Descargar mensajes a:",
+        "edit_permissions": "Editar permisos",
+        "email_server": "Servidor de e-mail (ej. \"mail.example.com\")",
+        "external_account_settings": "Ajustes externos de la cuenta",
+        "feedback": "Feedback",
+        "folder": "Carpeta: Nueva Cuenta Externa 3",
+        "recipents": "Destinatarios",
+        "recovery_email": "E-mail de recuperación",
+        "reply_to_field_example": "ej.: Nikola Tesla",
+        "use_ssl": "Utiliza una conexión encriptada (SSL) cuando accedas a este servidor",
+        "when_composing": "Cuando redactes, respondas o reenvíes mensajes en la(s) carpeta(s):",
+        "when_replying": "Cuando respondas o reenvíes mensajes enviados a:",
+        "button": "Botón",
+        "delete_after_download": "Borrar mensajes del servidor después de descargar",
+        "permanent_delete_title": "¿Seguro que quieres borrar esta persona para siempre?",
+        "save_delegate_folder": "Guardar una copia de los mensajes enviados en la carpeta Enviados del delegado",
+        "unsaved_changes_line1": "¿Seguro que quieres salir de esta página sin guardar?",
+        "use_persona": "Usar esta persona",
+        "use_personas_line1": "Usa las personas para cambiar muchos ajustes rápidamente cuando envías mensajes e-mail.",
+        "use_personas_line2": "Por ejemplo, si sueles enviar e-mails en el trabajo con un determinado rol, crea una persona para ello.",
+        "click_to_copy": "Clic para copiar",
+        "documentation": "Documentación",
+        "dont_save": "No guardar una copia de los mensajes enviados",
+        "from_name": "De: \"Nombre\"",
+        "imap": "IMAP",
+        "leave_anyway": "Abandonar igualmente",
+        "passwords_recovery_settings": "Ajustes de la cuenta para recuperar la contraseña",
+        "persona": "Persona",
+        "persona_name": "Nombre de la persona",
+        "persona_settings": "Ajustes de la persona",
+        "pop3": "POP3",
+        "pop_port": "Puerto POP",
+        "save_and_leave": "Guardar y salir",
+        "save_both_folders": "Guardar una copia de los mensajes enviados a mi carpeta de Enviados y a la carpeta del delegado",
+        "save_to_my_sent_folder": "Guardar una copia de los mensajes enviados a mi carpeta de Enviados",
+        "set_reply_to_field": "Guardar el campo \"Responder-a\" de mi e-mail a:",
+        "settings_sent_messages": "Ajustes para los mensajes enviados",
+        "test_settings": "Probar ajustes",
+        "unsaved_changes": "Tienes cambios no guardados",
+        "unsaved_changes_line2": "Todos tus cambios no guardados se perderán",
+        "update_view": "Actualizar vista"
     },
     "timezone": {
         "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}} Ámsterdam, Berlín, Berna, Roma, Estocolmo, Viena",
@@ -261,7 +325,9 @@
         "romanian": "Rumano",
         "russian": "Ruso",
         "spanish": "Español",
-        "turkish": "Turco"
+        "turkish": "Turco",
+        "french": "Francés",
+        "label_french": "Francés - {{value}}"
     },
     "board": {
         "close_tab": "Cerrar pestaña",
@@ -272,12 +338,31 @@
         "show_tabs": "Mostrar las otras pestañas"
     },
     "feedback": {
-        "other": "Otro"
+        "other": "Otro",
+        "behaviors": "Comportamientos",
+        "error": "Ocurrió un error mientras se enviaba tu feedback",
+        "hint": "Recuerda: define el asunto utilizando los módulos y los selectores de área macro antes de escribir tu feedback. Gracias por tu ayuda.",
+        "missing_features": "Características faltantes",
+        "report_something": "¿Quieres informar de algo?",
+        "select_a_module": "Elige un módulo",
+        "select_a_topic": "Elige un asunto",
+        "send": "ENVIAR",
+        "success": "Gracias por tu feedback",
+        "user_interface": "Interfaz de usuario",
+        "write_here": "Escribe aquí tu feedback",
+        "explanation": "Por favor, envíanos tu feedback sobre tu nueva experiencia con Zextras Server. Tu opinion es importante para que podamos mejorar nuestro producto. Permítenos saber lo que piensas."
     },
     "messages": {
-        "permanent_delete_title": "¿Seguro que quieres borrar permanentemente este elemento?"
+        "permanent_delete_title": "¿Seguro que quieres borrar permanentemente este elemento?",
+        "permanent_delete_body": "Si borras permanentemente esta Persona ya no podrás recuperarla. ¿Continuar?"
     },
     "share": {
         "is_contained_in": "Está dentro de"
+    },
+    "passwords_recovery_settings": {
+        "title": "Ajustes de la cuenta para la recuperación de la contraseña"
+    },
+    "primary_account": {
+        "title": "Ajustes primarios de la cuenta"
     }
 }

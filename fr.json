@@ -18,7 +18,7 @@
         "no_results": "Aucun résultat trouvé",
         "password": "Mot de passe",
         "primary": "Primaire",
-        "remove": "supression",
+        "remove": "supprimer",
         "advanced_settings": "Paramètres avancés",
         "delete": "Effacer",
         "delete_permanently": "Supprimer définitivement",
@@ -26,7 +26,63 @@
         "filter_folders": "Filtrer les dossiers",
         "folders": "Dossiers",
         "save": "Sauvegarder",
-        "secondary": "Secondaire"
+        "secondary": "Secondaire",
+        "account_menu": "Menu du compte",
+        "account_name": "Nom du compte",
+        "account_type": "Type de compte",
+        "account_username": "Nom d'utilisateur du compte",
+        "accounts_list": "Liste des comptes",
+        "add_delegate": "Ajouter une délégation",
+        "add_external_account": "Ajouter un compte externe",
+        "add_new_email": "Ajouter une nouvelle adresse e-mail",
+        "add_recovery_email": "Ajouter un e-mail de récupération",
+        "change_pop": "Changer le port POP",
+        "choose_account": "Choisissez un compte",
+        "choose_folder": "Choisissez un dossier",
+        "default_from_name": "Nom d'origine par défaut",
+        "delegates": "Délégués",
+        "delete_after_download": "Supprimer les messages depuis le serveur après le téléchargement",
+        "documentation": "Documentation",
+        "add_persona": "Ajouter une identité",
+        "imap": "IMAP",
+        "leave_anyway": "Quitter malgré tout",
+        "pop3": "POP3",
+        "pop_port": "Port POP",
+        "recipents": "Bénéficiaires",
+        "persona_settings": "Paramètres de l'identité",
+        "click_to_copy": "Cliquez pour copier",
+        "email_server": "Serveur e-mail (e.g. \"mail.exemple.com\")",
+        "folder": "Dossier : Nouveau compte externe 3",
+        "permanent_delete_title": "Êtes-vous sûr de supprimer définitivement cette identité ?",
+        "save_both_folders": "Conserver une copie des messages envoyés dans mon dossier Envoyé et dans le dossier du compte délégué",
+        "unsaved_changes_line1": "Êtes-vous sûr de vouloir quitter cette page sans sauvegarder ?",
+        "use_personas_line1": "Utilisez les identités pour modifier rapidement de nombreux paramètres lors de l'envoi de-mails.",
+        "use_personas_line2": "Par exemple, si vous envoyez parfois des e-mails dans un rôle particulier au travail, créez une identité pour cela.",
+        "button": "Bouton",
+        "dont_save": "Ne pas conserver de copie des messages envoyés",
+        "download_messages": "Télécharger les messages vers :",
+        "edit_permissions": "Droits de modification",
+        "external_account_settings": "Paramètres du compte externe",
+        "feedback": "Commentaires",
+        "from_name": "De : \"Nom\"",
+        "passwords_recovery_settings": "Paramètres de compte de récupération du mot de passe",
+        "recovery_email": "E-mail bénéficiaire",
+        "reply_to_field_example": "e.g. Bob Smith",
+        "save_and_leave": "Enregistrer et quitter",
+        "save_delegate_folder": "Conserver une copie des messages envoyés dans le dossier Envoyé du compte délégué",
+        "save_to_my_sent_folder": "Conserver une copie des messages envoyés dans mon dossier Envoyé",
+        "set_reply_to_field": "Définir le champ \"Répondre à\" du message à :",
+        "settings_sent_messages": "Paramètres des messages envoyés",
+        "test_settings": "Paramètres de test",
+        "unsaved_changes": "Vous avez des modifications non sauvegardées",
+        "unsaved_changes_line2": "Tous vos changements non sauvegardés seront perdus",
+        "update_view": "Vue actualisée",
+        "use_persona": "Utiliser cette identité",
+        "use_ssl": "Utilisez une connexion cryptée (SSL) lorsque vous accédez à ce serveur",
+        "when_composing": "Lorsque vous composez, répondez ou transférez des messages dans un ou plusieurs dossiers :",
+        "when_replying": "Lorsque vous répondez ou transférez des messages envoyés à :",
+        "persona": "Identité",
+        "persona_name": "Nom de l'identité"
     },
     "search": {
         "clear": "Effacer la saisie de recherche",
@@ -42,7 +98,8 @@
     },
     "message": {
         "snackbar": {
-            "settings_saved": "Modifications enregistrées correctement"
+            "settings_saved": "Modifications enregistrées correctement",
+            "identities_quota_exceeded": "L'identité n'a pas pu être créée car vous avez dépassé votre quota d'identité"
         },
         "reload": "\tVoulez-vous recharger l'application maintenant pour afficher la nouvelle langue ?\n(Sinon, la nouvelle langue apparaîtra la prochaine fois que vous vous connecterez.)"
     },
@@ -251,12 +308,31 @@
         "unlimited": "Vous disposez d'un espace illimité"
     },
     "feedback": {
-        "other": "Autre"
+        "other": "Autre",
+        "behaviors": "Comportements",
+        "error": "Une erreur s'est produite lors de la soumissions de votre commentaire",
+        "explanation": "Veuillez nous donner votre avis sur votre nouvelle expérience avec Zextras Server. Votre opinion est importante pour nous permettre d'améliorer notre produit. Faites-nous part de vos réflexions.",
+        "hint": "N'oubliez pas : définissez le sujet à l'aide de modules et de sélecteurs de zone macro avant de rédiger vos commentaires. Merci pour votre aide.",
+        "missing_features": "Fonctionnalités manquantes",
+        "report_something": "Souhaitez-vous signaler quelque chose ?",
+        "select_a_module": "Sélectionnez un module",
+        "select_a_topic": "Sélectionnez un sujet",
+        "send": "ENVOYER",
+        "success": "Merci pour votre commentaire",
+        "user_interface": "Interface utilisateur",
+        "write_here": "Saisissez votre commentaire ici"
     },
     "messages": {
-        "permanent_delete_title": "Êtes-vous sûr de vouloir supprimer définitivement cet élément ?"
+        "permanent_delete_title": "Êtes-vous sûr de vouloir supprimer définitivement cet élément ?",
+        "permanent_delete_body": "Si vous supprimez définitivement cette identité, vous ne pourrez pas la récupérer. Continuer ?"
     },
     "share": {
         "is_contained_in": "Est contenu dans"
+    },
+    "passwords_recovery_settings": {
+        "title": "Paramètres du compte de récupération de mot de passe"
+    },
+    "primary_account": {
+        "title": "Paramètres du compte principal"
     }
 }

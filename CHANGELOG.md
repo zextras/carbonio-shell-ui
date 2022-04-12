@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.7](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.6...v0.4.7) (2022-04-12)
+
+
+### Bug Fixes
+
+* tag worker sync, accordion folder hook syntax ([e462b9b](https://github.com/zextras/carbonio-shell-ui/commit/e462b9bb60f7c688b2031a198b8ecfdfb7bfa392))
+
 ### [0.4.6](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.5...v0.4.6) (2022-04-12)
 
 

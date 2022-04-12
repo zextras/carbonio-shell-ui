@@ -218,5 +218,5 @@ export const useFoldersByView: (view: string) => Array<Folder>;
 
 export const useFoldersAccordionByView: (
 	view: string,
-	customComponent: ComponentType<{ folder: Folder }>
+	CustomComponent: ComponentType<{ folder: Folder }>
 ) => Array<AccordionFolder>;

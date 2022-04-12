@@ -23,7 +23,7 @@ export const handleSync = ({ refresh, notify }: SoapContext): Promise<void> =>
 		if (refresh) {
 			tagWorker.postMessage({
 				op: 'refresh',
-				tags: refresh.tags?.tag ?? []
+				tags: refresh.tags
 			});
 			folderWorker.postMessage({
 				op: 'refresh',

@@ -59,7 +59,7 @@ export const useFoldersByView = (view: FolderView): Array<Folder> => {
 
 export const useFoldersAccordionByView = (
 	view: FolderView,
-	customComponent: ComponentType<{ folder: Folder }>
+	CustomComponent: ComponentType<{ folder: Folder }>
 ): Array<AccordionFolder> => {
 	const roots = useRoots();
 	const mapped = useMemo(
@@ -69,7 +69,7 @@ export const useFoldersAccordionByView = (
 						mapFunction: (f) => ({
 							id: f.id,
 							label: f.name,
-							customComponent,
+							CustomComponent,
 							items: [],
 							folder: f
 						}),
@@ -78,7 +78,7 @@ export const useFoldersAccordionByView = (
 						sortFunction: sortFolders
 				  })
 				: [],
-		[customComponent, roots, view]
+		[CustomComponent, roots, view]
 	);
 	return mapped;
 };

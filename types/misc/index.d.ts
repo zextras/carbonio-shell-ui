@@ -296,7 +296,7 @@ export type AccordionFolder = {
 	id: string;
 	label: string;
 	folder: Folder;
-	customComponent: ComponentType<{ folder: Folder }>;
+	CustomComponent: ComponentType<{ folder: Folder }>;
 	items: Array<AccordionFolder>;
 };
 

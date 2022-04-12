@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.6](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.5...v0.4.6) (2022-04-12)
+
+
+### Features
+
+* account name in  topbar dropdown ([dea2584](https://github.com/zextras/carbonio-shell-ui/commit/dea2584b6aee8bd0fadc8b7cbc83a10aea606854))
+* adding data-testid to icons ([31d6857](https://github.com/zextras/carbonio-shell-ui/commit/31d6857e9758850c53e6c2c9526837ed359d7424))
+
+
+### Bug Fixes
+
+* timezone list replaced with  zimbra timezone enum ([#60](https://github.com/zextras/carbonio-shell-ui/issues/60)) ([ae547bb](https://github.com/zextras/carbonio-shell-ui/commit/ae547bbcaa79589429e154a8db1c955e8d9cba0d))
+* updated ds dep ([cb181db](https://github.com/zextras/carbonio-shell-ui/commit/cb181dbe8875d998489227b97a6dc755f70702a2))
+
 ### [0.4.5](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.3-rc.0...v0.4.5) (2022-04-01)
 
 

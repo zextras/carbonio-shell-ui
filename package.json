@@ -100,7 +100,7 @@
 		"@sentry/browser": "^6.17.7",
 		"@tinymce/tinymce-react": "^3.13.0",
 		"@zextras/carbonio-design-system": "^0.2.2",
-		"@zextras/carbonio-ui-preview": "^0.1.2",
+		"@zextras/carbonio-ui-preview": "^0.1.3",
 		"darkreader": "4.9.44",
 		"history": "^5.2.0",
 		"i18next": "21.6.10",

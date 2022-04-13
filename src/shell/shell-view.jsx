@@ -8,6 +8,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Row, Responsive, ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 import { find } from 'lodash';
+import { PreviewManager } from '@zextras/carbonio-ui-preview';
 import AppViewContainer from './app-view-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
@@ -74,7 +75,9 @@ export default function ShellView() {
 		<ShellContextProvider>
 			<ModalManager>
 				<SnackbarManager>
-					<Shell />
+					<PreviewManager>
+						<Shell />
+					</PreviewManager>
 				</SnackbarManager>
 			</ModalManager>
 		</ShellContextProvider>

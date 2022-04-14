@@ -25,10 +25,10 @@ import * as ReduxJSToolkit from '@reduxjs/toolkit';
 import * as ZappUI from '@zextras/carbonio-design-system';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import * as Preview from '@zextras/carbonio-ui-preview';
+import * as StyledComponents from 'styled-components';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import * as StyledComponents from 'styled-components';
+import * as Preview from '../../preview';
 
 import { IShellWindow } from '../../../types';
 

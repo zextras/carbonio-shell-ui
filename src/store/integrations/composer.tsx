@@ -84,7 +84,7 @@ const Composer: FC<ComposerProps> = ({
 		<Container
 			height="100%"
 			crossAlignment="baseline"
-			mainAlignment="flex-start "
+			mainAlignment="flex-start"
 			style={{ overflowY: 'hidden' }}
 		>
 			<Editor

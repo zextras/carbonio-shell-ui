@@ -39,12 +39,12 @@ export const getRootByUser = (userId: string): Folder | SearchFolder | Record<st
 
 // SEARCHES
 
-export const useSearch = (id: string): SearchFolder | undefined =>
+export const useSearchFolder = (id: string): SearchFolder | undefined =>
 	useFolderStore((s) => s.searches?.[id]);
-export const getSearch = (id: string): SearchFolder | undefined =>
+export const getSearchFolder = (id: string): SearchFolder | undefined =>
 	useFolderStore.getState().searches[id];
-export const useSearches = (): Searches => useFolderStore((s) => s.searches);
-export const getSearches = (): Searches => useFolderStore.getState().searches;
+export const useSearchFolders = (): Searches => useFolderStore((s) => s.searches);
+export const getSearchFolders = (): Searches => useFolderStore.getState().searches;
 
 // Accordion-ize
 

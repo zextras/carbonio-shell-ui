@@ -67,10 +67,10 @@ import {
 	getRoot,
 	useRoots,
 	getRoots,
-	useSearch,
-	useSearches,
-	getSearch,
-	getSearches,
+	useSearchFolder,
+	useSearchFolders,
+	getSearchFolder,
+	getSearchFolders,
 	useFoldersAccordionByView,
 	useFoldersByView,
 	useRootByUser,
@@ -79,6 +79,7 @@ import {
 import { getTags, useTags } from '../../store/tags';
 import { useNotify, useRefresh } from '../../store/network';
 import { changeTagColor, createTag, deleteTag, renameTag } from '../../network/tags';
+import { runSearch } from '../../search/run-search';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({
@@ -132,10 +133,10 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	getRoot,
 	useRoots,
 	getRoots,
-	useSearch,
-	useSearches,
-	getSearch,
-	getSearches,
+	useSearchFolder,
+	useSearchFolders,
+	getSearchFolder,
+	getSearchFolders,
 	useRootByUser,
 	getRootByUser,
 	// BOARDS
@@ -158,6 +159,7 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	changeTagColor,
 	deleteTag,
 	// STUFF
+	runSearch,
 	useIsMobile,
 	getBridgedFunctions: (): unknown => {
 		const { packageDependentFunctions, functions } = useContextBridge.getState();

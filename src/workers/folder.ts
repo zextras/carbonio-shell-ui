@@ -182,17 +182,19 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 	modified.forEach((val: Partial<SoapFolder>): void => {
 		if (val.id) {
 			const folder = folders[val.id];
-			Object.assign(folder, omit(val));
-			if (val.l) {
-				const oldParent = folders[val.id].parent;
-				const newParent = folders[val.l];
-				if (oldParent) {
-					oldParent.children = oldParent.children.filter((f) => f.id !== val.id);
-					newParent.children.push(folder);
+			if (folder) {
+				Object.assign(folder, omit(val));
+				if (val.l) {
+					const oldParent = folders[val.id].parent;
+					const newParent = folders[val.l];
+					if (oldParent) {
+						oldParent.children = oldParent.children.filter((f) => f.id !== val.id);
+						newParent.children.push(folder);
+					}
+					folder.parent = newParent;
 				}
-				folder.parent = newParent;
+				folders[val.id] = folder;
 			}
-			folders[val.id] = folder;
 		}
 	});
 export const handleFolderDeleted = (deleted: string[]): void =>

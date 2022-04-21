@@ -284,11 +284,11 @@ export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps)
 							isExternalAccount={false}
 							updateIdentities={updateIdentities}
 						/>
-						<PasswordRecoverySettings
+						{/* <PasswordRecoverySettings
 							t={t}
 							items={identities[selectedIdentityId]}
 							createSnackbar={createSnackbar}
-						/>
+						/> */}
 						<Delegates
 							t={t}
 							items={delegates}

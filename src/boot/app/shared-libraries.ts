@@ -26,6 +26,9 @@ import * as ZappUI from '@zextras/carbonio-design-system';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import * as StyledComponents from 'styled-components';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import * as Preview from '../../preview';
 
 import { IShellWindow } from '../../../types';
 
@@ -55,7 +58,8 @@ export function injectSharedLibraries(): void {
 			}
 		},
 		'@zextras/carbonio-shell-ui': {},
-		'@zextras/carbonio-design-system': ZappUI
+		'@zextras/carbonio-design-system': ZappUI,
+		'@zextras/carbonio-ui-preview': Preview
 	};
 	wnd.__ZAPP_HMR_EXPORT__ = {};
 }

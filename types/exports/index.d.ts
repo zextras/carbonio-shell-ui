@@ -207,10 +207,10 @@ export const getRootByUser: (userId: string) => Folder | SearchFolder | Record<s
 
 // SEARCHES
 
-export const useSearch: (id: string) => SearchFolder | undefined;
-export const getSearch: (id: string) => SearchFolder | undefined;
-export const useSearches: () => Searches;
-export const getSearches: () => Searches;
+export const useSearchFolder: (id: string) => SearchFolder | undefined;
+export const useSearchFolders: (id: string) => SearchFolder | undefined;
+export const getSearchFolder: () => Searches;
+export const getSearchFolders: () => Searches;
 
 // Accordion-ize
 

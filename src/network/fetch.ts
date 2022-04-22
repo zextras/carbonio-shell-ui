@@ -195,3 +195,5 @@ export const getXmlSoapFetch =
 				throw e;
 			}) as Promise<Response>;
 	};
+
+export const shellSoap = getSoapFetch(SHELL_APP_ID);

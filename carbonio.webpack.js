@@ -32,10 +32,6 @@ module.exports = (conf, pkg, options, mode) => {
 		new CopyPlugin({
 			patterns: [
 				{
-					from: 'node_modules/@zextras/carbonio-design-system/dist/tinymce/skins',
-					to: 'tinymce/skins/'
-				},
-				{
 					from: 'assets/',
 					to: ''
 				}

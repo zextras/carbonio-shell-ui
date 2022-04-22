@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.11](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.10...v0.4.11) (2022-04-22)
+
+
+### Features
+
+* added runSearch function, renamed search folder hooks ([16ca9b9](https://github.com/zextras/carbonio-shell-ui/commit/16ca9b987ba458a463cc1a2ca4422b954a697e3e))
+
+
+### Bug Fixes
+
+* container alignment in composer ([f97a61f](https://github.com/zextras/carbonio-shell-ui/commit/f97a61f9ff1a1790adce3146cf0c02eb0c7cfa4e))
+* disabled password recovery settings ([08898f1](https://github.com/zextras/carbonio-shell-ui/commit/08898f14a9107c77513a2855e0eb60d98bf92b6b))
+* missing rte files ([3762d8b](https://github.com/zextras/carbonio-shell-ui/commit/3762d8b36e54bf81f2b3e73fa2e5d5847328068e))
+* object assignation on folder notify ([c61287c](https://github.com/zextras/carbonio-shell-ui/commit/c61287cb6fe22cd6e68436ab0ba746d0fede3359))
+
 ### [0.4.10](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.9...v0.4.10) (2022-04-14)
 
 ### [0.4.9](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.8...v0.4.9) (2022-04-12)

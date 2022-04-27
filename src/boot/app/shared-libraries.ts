@@ -28,7 +28,8 @@ import * as ZappUI from '@zextras/carbonio-design-system';
 import * as StyledComponents from 'styled-components';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import * as Preview from '../../preview';
+// import * as Preview from '../../preview';
+import * as Preview from '@zextras/carbonio-ui-preview';
 
 import { IShellWindow } from '../../../types';
 

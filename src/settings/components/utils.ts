@@ -67,7 +67,7 @@ export const getExternalSendersPrefsData = (
 	settings: AccountSettings,
 	ret: string,
 	t: TFunction
-): string => {
+): { label: string; value: string } => {
 	let item;
 	const itemsExternalSenders = ItemsExternalSenders(t);
 	if (
@@ -88,14 +88,14 @@ export const getExternalSendersPrefsData = (
 	} else {
 		item = { ...itemsExternalSenders[3] };
 	}
-	return String(item[ret]);
+
+	return item;
 };
 
 export const getOutOfOfficeStatusPrefsData = (
 	settings: AccountSettings,
-	ret: string,
 	t: TFunction
-): string => {
+): { label: string; value: string } => {
 	let item;
 	const itemsOutOfOfficeStatus = ItemsOutOfOfficeStatus(t);
 	if (settings.prefs.zimbraPrefOutOfOfficeFreeBusyStatus === 'BUSY') {
@@ -104,7 +104,7 @@ export const getOutOfOfficeStatusPrefsData = (
 		item = { ...itemsOutOfOfficeStatus[0] };
 	}
 
-	return String(item[ret]);
+	return item;
 };
 
 export const changeDateEvent = (date: string | Date): string =>

@@ -98,10 +98,13 @@ export const SearchBar: FC<SearchBarProps> = ({
 
 	const onSearch = useCallback(() => {
 		updateQuery((currentQuery) => {
+			console.log('vvv currentQuery:', currentQuery);
+			console.log('vvv query:', query);
 			const ref = inputRef?.current;
 
 			if (ref) ref.innerText = '';
 			if (inputTyped.length > 0) {
+				console.log('vvv if-0');
 				const newInputState = [
 					...inputState,
 					...map(inputTyped?.split(' '), (item) => ({ label: item, hasAvatar: false }))
@@ -124,19 +127,27 @@ export const SearchBar: FC<SearchBarProps> = ({
 					)
 				);
 			}
+			console.log('vvv else');
+			console.log('vvv inputState:', inputState);
 			setInputTyped('');
+			//	return inputState;
 			return reduce(
 				inputState,
 				(acc, chip) => {
+					console.log('mmm inputState:', inputState);
+					console.log('mmm chip:', chip);
+					console.log('mmm acc:', acc);
+					console.log('mmm currentQuery:', currentQuery);
 					if (!find(currentQuery, (c: QueryChip): boolean => c.label === chip.label)) {
 						acc.push(chip);
 					}
 					return acc;
 				},
+				//	[]
 				filter(
 					currentQuery,
 					(qchip: QueryChip): boolean =>
-						qchip.isQueryFilter ||
+						// qchip.isQueryFilter ||
 						!!find(inputState, (c: QueryChip): boolean => c.label === qchip.label)
 				)
 			);
@@ -146,7 +157,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 		// }
 		setSearchIsEnabled(false);
 		// setChangedBySearchBar(true);
-	}, [updateQuery, inputTyped, inputState, history, module]);
+	}, [updateQuery, history, module, query, inputTyped, inputState]);
 
 	const appSuggestions = useMemo<Array<QueryChip & { hasAvatar: false }>>(
 		() =>
@@ -184,6 +195,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 
 	const onQueryChange = useCallback(
 		(newQuery) => {
+			console.log('vv query:', newQuery);
 			if (
 				newQuery[newQuery.length - 1]?.label &&
 				module &&
@@ -214,7 +226,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 		},
 		[appSuggestions, module, setStoredValue]
 	);
-
+	console.log('vvv nreQuery:', inputState);
 	const onInputType = useCallback(
 		(ev) => {
 			if (ev.target.textContent === '') {

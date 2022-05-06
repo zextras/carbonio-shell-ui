@@ -12,8 +12,6 @@ import {
 	Container,
 	IconButton,
 	Tooltip,
-	Icon,
-	Text,
 	Padding
 } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +20,7 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useLocalStorage } from '../shell/hooks';
 import { SEARCH_APP_ID } from '../constants';
-import { useAppStore } from '../store/app';
+
 import { useSearchStore } from './search-store';
 import { QueryChip, SearchBarProps } from '../../types';
 import { ModuleSelector } from './module-selector';
@@ -98,13 +96,9 @@ export const SearchBar: FC<SearchBarProps> = ({
 
 	const onSearch = useCallback(() => {
 		updateQuery((currentQuery) => {
-			console.log('vvv currentQuery:', currentQuery);
-			console.log('vvv query:', query);
 			const ref = inputRef?.current;
-
 			if (ref) ref.innerText = '';
 			if (inputTyped.length > 0) {
-				console.log('vvv if-0');
 				const newInputState = [
 					...inputState,
 					...map(inputTyped?.split(' '), (item) => ({ label: item, hasAvatar: false }))
@@ -122,32 +116,25 @@ export const SearchBar: FC<SearchBarProps> = ({
 					filter(
 						currentQuery,
 						(qchip: QueryChip): boolean =>
-							qchip.isQueryFilter ||
 							!!find(inputState, (c: QueryChip): boolean => c.label === qchip.label)
 					)
 				);
 			}
-			console.log('vvv else');
-			console.log('vvv inputState:', inputState);
+
 			setInputTyped('');
-			//	return inputState;
+
 			return reduce(
 				inputState,
 				(acc, chip) => {
-					console.log('mmm inputState:', inputState);
-					console.log('mmm chip:', chip);
-					console.log('mmm acc:', acc);
-					console.log('mmm currentQuery:', currentQuery);
 					if (!find(currentQuery, (c: QueryChip): boolean => c.label === chip.label)) {
 						acc.push(chip);
 					}
 					return acc;
 				},
-				//	[]
+
 				filter(
 					currentQuery,
 					(qchip: QueryChip): boolean =>
-						// qchip.isQueryFilter ||
 						!!find(inputState, (c: QueryChip): boolean => c.label === qchip.label)
 				)
 			);
@@ -157,7 +144,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 		// }
 		setSearchIsEnabled(false);
 		// setChangedBySearchBar(true);
-	}, [updateQuery, history, module, query, inputTyped, inputState]);
+	}, [updateQuery, history, module, inputTyped, inputState]);
 
 	const appSuggestions = useMemo<Array<QueryChip & { hasAvatar: false }>>(
 		() =>
@@ -195,7 +182,6 @@ export const SearchBar: FC<SearchBarProps> = ({
 
 	const onQueryChange = useCallback(
 		(newQuery) => {
-			console.log('vv query:', newQuery);
 			if (
 				newQuery[newQuery.length - 1]?.label &&
 				module &&
@@ -226,7 +212,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 		},
 		[appSuggestions, module, setStoredValue]
 	);
-	console.log('vvv nreQuery:', inputState);
+
 	const onInputType = useCallback(
 		(ev) => {
 			if (ev.target.textContent === '') {

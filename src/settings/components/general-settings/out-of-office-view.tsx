@@ -131,7 +131,11 @@ const OutOfOfficeView: FC<{
 					background="gray5"
 					label={t('label.out_of_office', 'Out of Office')}
 					onChange={(value: any): void => {
-						if (value && value !== settings.prefs.zimbraPrefOutOfOfficeReplyEnabled) {
+						if (
+							value &&
+							settings.prefs.zimbraPrefOutOfOfficeReplyEnabled &&
+							value !== settings.prefs.zimbraPrefOutOfOfficeReplyEnabled
+						) {
 							updatePrefs(value, 'zimbraPrefOutOfOfficeReplyEnabled');
 							setSendAutoReply(!sendAutoReply);
 						}

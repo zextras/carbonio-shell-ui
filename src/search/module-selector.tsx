@@ -10,6 +10,7 @@ import { AppRoute } from '../../types';
 import { useAppStore } from '../store/app';
 import { useSearchStore } from './search-store';
 import { SEARCH_APP_ID } from '../constants';
+import { pushHistory } from '../history/hooks';
 
 const SelectorContainer = styled(Container)<{ open: boolean }>`
 	border-right: 1px solid ${({ theme }): string => theme.palette.gray4.regular};
@@ -29,6 +30,7 @@ export const ModuleSelector: FC<{ activeRoute: AppRoute; disabled: boolean }> = 
 		() => modules.find((m) => m.route === module) ?? modules[0],
 		[module, modules]
 	);
+
 	const [open, setOpen] = useState(false);
 
 	const dropdownItems = useMemo(
@@ -38,7 +40,10 @@ export const ModuleSelector: FC<{ activeRoute: AppRoute; disabled: boolean }> = 
 				label,
 				icon,
 				active: id === module,
-				click: () => updateModule(route)
+				click: (): void => {
+					updateModule(route);
+					pushHistory({ route: SEARCH_APP_ID, path: `/${route}` });
+				}
 			})),
 		[module, modules, updateModule]
 	);

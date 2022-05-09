@@ -12,8 +12,6 @@ import {
 	Container,
 	IconButton,
 	Tooltip,
-	Icon,
-	Text,
 	Padding
 } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +20,7 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useLocalStorage } from '../shell/hooks';
 import { SEARCH_APP_ID } from '../constants';
-import { useAppStore } from '../store/app';
+
 import { useSearchStore } from './search-store';
 import { QueryChip, SearchBarProps } from '../../types';
 import { ModuleSelector } from './module-selector';
@@ -99,7 +97,6 @@ export const SearchBar: FC<SearchBarProps> = ({
 	const onSearch = useCallback(() => {
 		updateQuery((currentQuery) => {
 			const ref = inputRef?.current;
-
 			if (ref) ref.innerText = '';
 			if (inputTyped.length > 0) {
 				const newInputState = [
@@ -119,12 +116,13 @@ export const SearchBar: FC<SearchBarProps> = ({
 					filter(
 						currentQuery,
 						(qchip: QueryChip): boolean =>
-							qchip.isQueryFilter ||
 							!!find(inputState, (c: QueryChip): boolean => c.label === qchip.label)
 					)
 				);
 			}
+
 			setInputTyped('');
+
 			return reduce(
 				inputState,
 				(acc, chip) => {
@@ -133,10 +131,10 @@ export const SearchBar: FC<SearchBarProps> = ({
 					}
 					return acc;
 				},
+
 				filter(
 					currentQuery,
 					(qchip: QueryChip): boolean =>
-						qchip.isQueryFilter ||
 						!!find(inputState, (c: QueryChip): boolean => c.label === qchip.label)
 				)
 			);
@@ -146,7 +144,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 		// }
 		setSearchIsEnabled(false);
 		// setChangedBySearchBar(true);
-	}, [updateQuery, inputTyped, inputState, history, module]);
+	}, [updateQuery, history, module, inputTyped, inputState]);
 
 	const appSuggestions = useMemo<Array<QueryChip & { hasAvatar: false }>>(
 		() =>

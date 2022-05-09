@@ -164,10 +164,10 @@ export type SoapPolicy = {
 	lifetime?: string;
 };
 
-export type SoapRetentionPolicy = {
+export type SoapRetentionPolicy = Array<{
 	keep: Array<SoapPolicy>;
 	purge: Array<SoapPolicy>;
-};
+}>;
 
 export type FolderView =
 	| 'search folder'

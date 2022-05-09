@@ -30,7 +30,7 @@ import {
 	getUserRight,
 	getUserRights
 } from '../../store/account';
-import { useIsMobile } from '../../shell/hooks';
+import { useIsMobile, useLocalStorage } from '../../shell/hooks';
 import {
 	useAction,
 	useActions,
@@ -161,6 +161,7 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	// STUFF
 	runSearch,
 	useIsMobile,
+	useLocalStorage,
 	getBridgedFunctions: (): unknown => {
 		const { packageDependentFunctions, functions } = useContextBridge.getState();
 		return {

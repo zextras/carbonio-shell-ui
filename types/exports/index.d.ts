@@ -34,6 +34,7 @@ import { Mods, TagActionResponse, CreateTagResponse, SoapNotify, SoapRefresh } f
 import { HistoryParams, ShellModes } from '../misc';
 import { Tag, Tags } from '../tags';
 import { Folder, Folders } from '../folder';
+import { QueryChip } from '../search';
 
 export const getBridgedFunctions: () => {
 	addBoard: (path: string, context?: unknown | { app: string }) => void;
@@ -220,3 +221,6 @@ export const useFoldersAccordionByView: (
 	view: string,
 	CustomComponent: ComponentType<{ folder: Folder }>
 ) => Array<AccordionFolder>;
+
+// Run Search
+export const runSearch: (query: Array<QueryChip>, module: string) => void;

@@ -122,9 +122,12 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 	}, [primaryBarViews]);
 	useEffect(() => {
 		if (activeRoute) {
-			setRoutes((r) => ({ ...r, [activeRoute.id]: trim(history.location.pathname, '/') }));
+			setRoutes((r) => ({
+				...r,
+				[activeRoute.id]: `${trim(history.location.pathname, '/')}${history.location.search}`
+			}));
 		}
-	}, [activeRoute, history.location.pathname, primaryBarViews]);
+	}, [activeRoute, history.location, primaryBarViews]);
 	const primaryBarAccessoryViews = useAppStore((s) => s.views.primaryBarAccessories);
 	const accessories = useMemo(
 		() =>

@@ -17,6 +17,7 @@ import {
 // eslint-disable-next-line import/no-extraneous-dependencies
 import momentLocalizer from 'react-widgets-moment';
 import { useTranslation } from 'react-i18next';
+import { find } from 'lodash';
 import { AccountSettings } from '../../../../types';
 import Heading from '../settings-heading';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -118,6 +119,11 @@ const OutOfOfficeView: FC<{
 		() => getOutOfOfficeStatusPrefsData(settings, t),
 		[settings, t]
 	);
+	const selectedItemSendAutoReplies = useMemo(
+		() => find(itemsSendAutoReplies, (item) => item && (item.value === 'TRUE') === sendAutoReply),
+		[sendAutoReply, itemsSendAutoReplies]
+	);
+
 	return (
 		<FormSubSection
 			label={sectionTitle.label}
@@ -131,20 +137,12 @@ const OutOfOfficeView: FC<{
 					background="gray5"
 					label={t('label.out_of_office', 'Out of Office')}
 					onChange={(value: any): void => {
-						if (
-							value &&
-							settings.prefs.zimbraPrefOutOfOfficeReplyEnabled &&
-							value !== settings.prefs.zimbraPrefOutOfOfficeReplyEnabled
-						) {
+						if (value && (value === 'TRUE') !== sendAutoReply) {
 							updatePrefs(value, 'zimbraPrefOutOfOfficeReplyEnabled');
-							setSendAutoReply(!sendAutoReply);
+							setSendAutoReply(value === 'TRUE');
 						}
 					}}
-					selection={
-						settings.prefs.zimbraPrefOutOfOfficeReplyEnabled === 'TRUE'
-							? itemsSendAutoReplies[0]
-							: itemsSendAutoReplies[1]
-					}
+					selection={selectedItemSendAutoReplies}
 				/>
 				<Padding top="small" width="100%">
 					<Input

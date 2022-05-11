@@ -14,7 +14,7 @@ import {
 	FolderView
 } from '../../../types';
 import { useFolderStore } from './store';
-import { filterNodes, folderViewFilter, mapNodes, sortFolders } from './utils';
+import { filterNodes, folderViewFilter, isRoot, mapNodes, sortFolders } from './utils';
 
 // FOLDERS
 export const useFolder = (id: string): Folder | undefined => useFolderStore((s) => s.folders?.[id]);
@@ -70,7 +70,8 @@ export const useFoldersAccordionByView = (
 							label: f.name,
 							CustomComponent,
 							items: [],
-							folder: f
+							folder: f,
+							disableHover: isRoot(f)
 						}),
 						filterFunction: folderViewFilter(view),
 						recursionKey: 'items',

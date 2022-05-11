@@ -50,11 +50,10 @@ export const getSearchFolders = (): Searches => useFolderStore.getState().search
 
 export const useFoldersByView = (view: FolderView): Array<Folder> => {
 	const roots = useRoots();
-	const filtered = useMemo(
+	return useMemo(
 		() => (roots ? filterNodes<Folder>(Object.values(roots), folderViewFilter(view)) : []),
 		[roots, view]
 	);
-	return filtered;
 };
 
 export const useFoldersAccordionByView = (
@@ -62,7 +61,7 @@ export const useFoldersAccordionByView = (
 	CustomComponent: ComponentType<{ folder: Folder }>
 ): Array<AccordionFolder> => {
 	const roots = useRoots();
-	const mapped = useMemo(
+	return useMemo(
 		() =>
 			roots
 				? mapNodes<Folder, AccordionFolder>(Object.values(roots), {
@@ -75,10 +74,10 @@ export const useFoldersAccordionByView = (
 						}),
 						filterFunction: folderViewFilter(view),
 						recursionKey: 'items',
-						sortFunction: sortFolders
+						sortFunction: sortFolders,
+						deep: false
 				  })
 				: [],
 		[CustomComponent, roots, view]
 	);
-	return mapped;
 };

@@ -7,7 +7,7 @@ import { sortBy } from 'lodash';
 import { Folder, FolderView, LinkFolder, TreeNode } from '../../../types';
 import { FOLDERS, ROOT_NAME } from '../../constants';
 
-const hasId = (f: Folder, id: string): boolean => f.id.split(':').includes(id);
+const hasId = (f: Folder | TreeNode<unknown>, id: string): boolean => f.id.split(':').includes(id);
 const getOriginalId = (f: Folder): string => {
 	const parts = f.id.split(':');
 	return parts[1] ?? parts[0];
@@ -17,10 +17,7 @@ export const sortFolders = (f: Folder): string => {
 	if (id === FOLDERS.TRASH) {
 		return '~';
 	}
-	// should work fine
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	return id < 17 ? id : f.name.toLowerCase();
+	return parseInt(id, 10) < 17 ? `   ${id}` : f.name.toLowerCase();
 };
 
 export const isTrash = (f: Folder): boolean => hasId(f, FOLDERS.TRASH);
@@ -30,40 +27,41 @@ export const isRoot = (f: Folder): boolean =>
 
 export const folderViewFilter =
 	(v: FolderView) =>
-	(f: Folder, r?: boolean): boolean =>
-		f.view === v || isTrash(f) || (isRoot(f) && !r);
+	(deep?: boolean) =>
+	(f: Folder): boolean =>
+		f.view === v || !deep || (typeof f.view === 'undefined' && !isRoot(f));
 
 export const filterNodes = <T>(
 	children: TreeNode<T>[],
-	f: (i: TreeNode<T>) => boolean
+	f: (deep?: boolean) => (i: TreeNode<T>) => boolean,
+	deep?: boolean
 ): TreeNode<T>[] =>
-	children.filter(f).map((i) => ({ ...i, children: filterNodes<TreeNode<T>>(i.children, f) }));
+	children
+		.filter(f(deep))
+		.map((i) => ({ ...i, children: filterNodes<TreeNode<T>>(i.children, f, true) }));
 
 type MapNodesOptions<T, U> = {
 	mapFunction: (i: TreeNode<T>) => U;
-	filterFunction: (i: TreeNode<T>, inRecursion?: boolean) => boolean;
+	filterFunction: (deep?: boolean) => (i: TreeNode<T>) => boolean;
 	recursionKey: keyof U;
 	sortFunction: (i: TreeNode<T>) => number | string;
+	deep: boolean;
 };
 export const mapNodes = <T, U>(
 	children: TreeNode<T>[],
-	{ mapFunction, filterFunction, recursionKey, sortFunction }: MapNodesOptions<T, U>,
-	inRecursion?: boolean
+	{ mapFunction, filterFunction, recursionKey, sortFunction, deep }: MapNodesOptions<T, U>
 ): U[] =>
 	sortBy(children, sortFunction).reduce((acc, folder) => {
-		if (filterFunction(folder, inRecursion)) {
+		if (filterFunction(deep)(folder)) {
 			acc.push({
 				...mapFunction(folder),
-				[recursionKey]: mapNodes<TreeNode<T>, U>(
-					folder.children,
-					{
-						mapFunction,
-						filterFunction,
-						recursionKey,
-						sortFunction
-					},
-					true
-				)
+				[recursionKey]: mapNodes<TreeNode<T>, U>(folder.children, {
+					mapFunction,
+					filterFunction,
+					recursionKey,
+					sortFunction,
+					deep: true
+				})
 			});
 		}
 		return acc;

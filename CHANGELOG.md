@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.15](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.14...v0.4.15) (2022-05-11)
+
+
+### Features
+
+* preserve pathname on route change ([a2c3252](https://github.com/zextras/carbonio-shell-ui/commit/a2c32527e80c720ce4f3fc2701112c50a78e31a5))
+
+
+### Bug Fixes
+
+* "out of office" options behaviour ([3d839f0](https://github.com/zextras/carbonio-shell-ui/commit/3d839f083612a2a1cd7a926043bd5a532e062d5a))
+* added condition to skip undefined rendering ([7202394](https://github.com/zextras/carbonio-shell-ui/commit/72023946577d09b3e592e29411cef233f0230569))
+* change search route when search module is change ([9edc83d](https://github.com/zextras/carbonio-shell-ui/commit/9edc83d7d3235fe88d46adaaddf46da911af6c9e))
+* folder hooks and sorting ([c7b3879](https://github.com/zextras/carbonio-shell-ui/commit/c7b38792c299956cab418e59b16c9eb7e04e05bd))
+* runSearch hook pushHistory arguments corrected ([4574af4](https://github.com/zextras/carbonio-shell-ui/commit/4574af47db43ab4d440a37471a5a723b27e65bc8))
+* saveChanges modal trigger on switching settings apps ([2a874be](https://github.com/zextras/carbonio-shell-ui/commit/2a874be9dde4a5537ed8d142bf3a7e3a99cd7c21))
+* searchbar queryFilter query fix onSearch ([7f5196f](https://github.com/zextras/carbonio-shell-ui/commit/7f5196feb915e8ea10c0ef98b94c55df807a382d))
+
 ### [0.4.14](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.13...v0.4.14) (2022-05-02)
 
 

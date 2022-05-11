@@ -31,7 +31,7 @@ import {
 	SoapFetch
 } from '../account';
 import { Mods, TagActionResponse, CreateTagResponse, SoapNotify, SoapRefresh } from '../network';
-import { HistoryParams, ShellModes } from '../misc';
+import { HistoryParams, ShellModes, AccordionFolder } from '../misc';
 import { Tag, Tags } from '../tags';
 import { Folder, Folders } from '../folder';
 import { QueryChip } from '../search';
@@ -219,7 +219,8 @@ export const useFoldersByView: (view: string) => Array<Folder>;
 
 export const useFoldersAccordionByView: (
 	view: string,
-	CustomComponent: ComponentType<{ folder: Folder }>
+	CustomComponent: ComponentType<{ folder: Folder }>,
+	itemProps?: (item: AccordionFolder) => Record<string, any>
 ) => Array<AccordionFolder>;
 
 // Run Search

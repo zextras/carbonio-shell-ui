@@ -10,6 +10,7 @@ import { i18n } from 'i18next';
 import { ComponentType } from 'react';
 import { CarbonioModule, PanelMode } from '../apps';
 
+// eslint-disable-next-line no-shadow
 export enum JSNS {
 	ACCOUNT = 'urn:zimbraAccount',
 	ADMIN = 'urn:zimbraAdmin',

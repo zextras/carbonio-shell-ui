@@ -58,27 +58,32 @@ export const useFoldersByView = (view: FolderView): Array<Folder> => {
 
 export const useFoldersAccordionByView = (
 	view: FolderView,
-	CustomComponent: ComponentType<{ folder: Folder }>
+	CustomComponent: ComponentType<{ folder: Folder }>,
+	itemProps?: (item: AccordionFolder) => Record<string, any>
 ): Array<AccordionFolder> => {
 	const roots = useRoots();
 	return useMemo(
 		() =>
 			roots
 				? mapNodes<Folder, AccordionFolder>(Object.values(roots), {
-						mapFunction: (f) => ({
-							id: f.id,
-							label: f.name,
-							CustomComponent,
-							items: [],
-							folder: f,
-							disableHover: isRoot(f)
-						}),
+						mapFunction: (f) => {
+							const item = {
+								id: f.id,
+								label: f.name,
+								CustomComponent,
+								items: [],
+								folder: f,
+								disableHover: isRoot(f)
+							};
+							const props = itemProps?.(item) ?? {};
+							return { ...item, ...props };
+						},
 						filterFunction: folderViewFilter(view),
 						recursionKey: 'items',
 						sortFunction: sortFolders,
 						deep: false
 				  })
 				: [],
-		[CustomComponent, roots, view]
+		[CustomComponent, itemProps, roots, view]
 	);
 };

@@ -5,7 +5,7 @@
  */
 /* eslint-disable @typescript-eslint/ban-types */
 
-import { ComponentType, FC } from 'react';
+import { ComponentType, Dispatch, FC, SetStateAction } from 'react';
 import { LinkProps } from 'react-router-dom';
 import { Reducer, Store } from 'redux';
 import { TFunction } from 'react-i18next';
@@ -225,3 +225,5 @@ export const useFoldersAccordionByView: (
 
 // Run Search
 export const runSearch: (query: Array<QueryChip>, module: string) => void;
+
+export const useLocalStorage: <T>(key: string, initialValue: T) => [T, Dispatch<SetStateAction<T>>];

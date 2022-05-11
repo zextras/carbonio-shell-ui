@@ -52,6 +52,13 @@ const StyledContainer = styled(Container)`
 	}
 `;
 
+type SearchLocalStorage = Array<{
+	value: string;
+	label: string;
+	icon: string;
+	app: string;
+	id: string;
+}>;
 export const SearchBar: FC<SearchBarProps> = ({
 	activeRoute
 	// primaryAction,
@@ -60,7 +67,10 @@ export const SearchBar: FC<SearchBarProps> = ({
 	const [searchIsEnabled, setSearchIsEnabled] = useState(false);
 	const inputRef = useRef<HTMLInputElement>();
 	const [t] = useTranslation();
-	const [storedValue, setStoredValue] = useLocalStorage('search_suggestions', []);
+	const [storedValue, setStoredValue] = useLocalStorage<SearchLocalStorage>(
+		'search_suggestions',
+		[]
+	);
 	const [inputTyped, setInputTyped] = useState('');
 	const history = useHistory();
 	const { updateQuery, module, query, searchDisabled, setSearchDisabled } = useSearchStore();
@@ -187,21 +197,17 @@ export const SearchBar: FC<SearchBarProps> = ({
 				module &&
 				!find(appSuggestions, (v) => v.label === newQuery[newQuery.length - 1]?.label)
 			) {
-				setStoredValue(
-					(
-						value: Array<{ value: string; label: string; icon: string; app: string; id: string }>
-					) => [
-						...value,
-						{
-							value: newQuery[newQuery.length - 1].label,
-							label: newQuery[newQuery.length - 1].label,
-							icon: 'ClockOutline',
-							app: module,
-							id: `${value.length}`,
-							hasAvatar: false
-						}
-					]
-				);
+				setStoredValue((value) => [
+					...value,
+					{
+						value: newQuery[newQuery.length - 1].label,
+						label: newQuery[newQuery.length - 1].label,
+						icon: 'ClockOutline',
+						app: module,
+						id: `${value.length}`,
+						hasAvatar: false
+					}
+				]);
 			}
 			/** Commented for future reference */
 			// if (inputRef.current) {

@@ -13,7 +13,7 @@ import {
 	useScreenMode,
 	Catcher
 } from '@zextras/carbonio-design-system';
-import Logo from '../svg/carbonio-beta.svg';
+import Logo from '../svg/carbonio.svg';
 import { SearchBar } from '../search/search-bar';
 import { CreationButton } from './creation-button';
 import { useAppStore } from '../store/app';

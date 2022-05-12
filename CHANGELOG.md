@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.16](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.15...v0.4.16) (2022-05-12)
+
+
+### Features
+
+* added item customization callback to folder accordion hook ([94c0e03](https://github.com/zextras/carbonio-shell-ui/commit/94c0e039d897fcbf65da5778c39e5f474a3fd71c))
+
+
+### Bug Fixes
+
+* added exports to useUserSetting and getUserSetting ([1eb46cf](https://github.com/zextras/carbonio-shell-ui/commit/1eb46cfb8562273295835c13911e64744acc13a6))
+* disableHover flag on root accordion items ([dff2ee0](https://github.com/zextras/carbonio-shell-ui/commit/dff2ee0dac9d2e5a2783289b65299222cc75dc98))
+* useLocalStorage ([03bbc8e](https://github.com/zextras/carbonio-shell-ui/commit/03bbc8e1f9076094623258861bd011bb7f336558))
+
 ### [0.4.15](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.14...v0.4.15) (2022-05-11)
 
 

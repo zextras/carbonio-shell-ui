@@ -79,6 +79,7 @@ export type PrimaryBarView = Omit<CarbonioView<PrimaryBarComponentProps>, 'compo
 	position: number;
 	visible: boolean;
 	label: string;
+	hiddenWhenStandalone?: boolean;
 };
 
 export type SecondaryBarView = CarbonioView<SecondaryBarComponentProps>;
@@ -126,6 +127,9 @@ export type AppRouteDescriptor = {
 	label: string;
 	secondaryBar?: ComponentType<SecondaryBarComponentProps>;
 	appView: ComponentType<AppViewComponentProps>;
+	standalone?: {
+		hidePrimaryBar?: boolean;
+	};
 };
 export type AppSetters = {
 	addApps: (apps: Array<Partial<CarbonioModule>>) => void;
@@ -171,6 +175,7 @@ export type AppSetters = {
 	setAppContext: (app: string) => (context: unknown) => void;
 };
 export type AppState = {
+	standalone: false | string;
 	apps: Record<string, CarbonioModule>;
 	appContexts: Record<string, unknown>;
 	entryPoints: Record<string, ComponentType>;

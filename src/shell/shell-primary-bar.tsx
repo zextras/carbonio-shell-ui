@@ -4,15 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import {
-	Container,
-	IconButton,
-	Row,
-	Tooltip,
-	Text,
-	Padding,
-	Icon
-} from '@zextras/carbonio-design-system';
+import { Container, IconButton, Row, Tooltip } from '@zextras/carbonio-design-system';
 import { map, isEmpty, trim, filter, sortBy } from 'lodash';
 import React, { useContext, FC, useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
@@ -26,18 +18,6 @@ import { AppRoute, PrimaryAccessoryView, PrimaryBarView } from '../../types';
 import BadgeWrap from './badge-wrap';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { checkRoute } from '../utility-bar/utils';
-
-const PrimaryContainer = styled(Container)<{ active: boolean }>`
-	background: ${({ theme, active }): string => theme.palette[active ? 'gray4' : 'gray6'].regular};
-	cursor: pointer;
-	transition: background 0.2s ease-out;
-	&:hover {
-		background: ${({ theme, active }): string => theme.palette[active ? 'gray4' : 'gray6'].hover};
-	}
-	&:focus {
-		background: ${({ theme, active }): string => theme.palette[active ? 'gray4' : 'gray6'].focus};
-	}
-`;
 
 const ContainerWithDivider = styled(Container)`
 	border-right: 1px solid ${({ theme }): string => theme.palette.gray3.regular};
@@ -107,7 +87,7 @@ const PrimaryBarAccessoryElement: FC<PrimaryBarAccessoryItemProps> = ({ view }) 
 
 const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 	const primaryBarViews = useAppStore((s) => s.views.primaryBar);
-
+	const standalone = useAppStore((s) => s.standalone);
 	const [routes, setRoutes] = useState<Record<string, string>>({});
 	const history = useHistory();
 
@@ -137,6 +117,9 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 			),
 		[activeRoute, primaryBarAccessoryViews]
 	);
+	if (standalone && primaryBarViews.find((v) => v.route === standalone)?.hiddenWhenStandalone) {
+		return null;
+	}
 	return (
 		<ContainerWithDivider
 			width={49}

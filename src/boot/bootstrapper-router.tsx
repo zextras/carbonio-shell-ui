@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useContext } from 'react';
-import { BrowserRouter, useHistory } from 'react-router-dom';
+import React, { FC, useContext, useEffect, useMemo } from 'react';
+import { BrowserRouter, Route, Switch, useHistory, useParams } from 'react-router-dom';
 import { SnackbarManagerContext, ModalManagerContext } from '@zextras/carbonio-design-system';
 import AppLoaderMounter from './app/app-loader-mounter';
 import { useBridge } from '../store/context-bridge';
@@ -13,6 +13,7 @@ import { useBridge } from '../store/context-bridge';
 // @ts-ignore
 import ShellView from '../shell/shell-view';
 import { BASENAME } from '../constants';
+import { useAppStore } from '../store/app';
 
 const ContextBridge: FC = () => {
 	const history = useHistory();
@@ -30,12 +31,29 @@ const ContextBridge: FC = () => {
 	return null;
 };
 
+const StandaloneListener: FC = () => {
+	const { route } = useParams<{ route?: string }>();
+	useEffect(() => {
+		console.log('standalone', route);
+		if (route) useAppStore.setState({ standalone: route });
+	}, [route]);
+	return null;
+};
+
+const basename = window.location.pathname.startsWith(`${BASENAME}standalone`)
+	? `${BASENAME}standalone`
+	: BASENAME;
+
 const BootstrapperRouter: FC = () => (
-	<BrowserRouter basename={BASENAME}>
+	<BrowserRouter basename={basename}>
+		<Switch>
+			<Route path={'/:route'}>
+				<StandaloneListener />
+			</Route>
+		</Switch>
 		<ContextBridge />
 		<AppLoaderMounter />
 		<ShellView />
 	</BrowserRouter>
 );
-
 export default BootstrapperRouter;

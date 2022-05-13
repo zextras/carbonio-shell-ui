@@ -57,7 +57,10 @@ export const normalizeRoute = (
 		label: data?.label ?? '',
 		primaryBar: data.primaryBar ?? app.icon ?? 'CubeOutline',
 		secondaryBar: data.secondaryBar,
-		appView: data.appView ?? FallbackView
+		appView: data.appView ?? FallbackView,
+		standalone: {
+			hidePrimaryBar: data?.standalone?.hidePrimaryBar
+		}
 	};
 };
 

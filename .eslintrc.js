@@ -15,7 +15,6 @@ module.exports = {
 	},
 	globals: {
 		BASE_PATH: 'readonly',
-		__SHELL_ENV__: 'readonly',
 		__CARBONIO_DEV__: 'readonly',
 		PACKAGE_NAME: 'readonly',
 		PACKAGE_VERSION: 'readonly',

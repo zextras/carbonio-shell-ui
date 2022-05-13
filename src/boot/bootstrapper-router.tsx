@@ -34,7 +34,6 @@ const ContextBridge: FC = () => {
 const StandaloneListener: FC = () => {
 	const { route } = useParams<{ route?: string }>();
 	useEffect(() => {
-		console.log('standalone', route);
 		if (route) useAppStore.setState({ standalone: route });
 	}, [route]);
 	return null;

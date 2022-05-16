@@ -23,11 +23,17 @@ export type CarbonioModule = {
 	sentryDsn?: string;
 };
 
+export type StandaloneFlags = {
+	hidePrimaryBar?: boolean;
+	hideShellHeader?: boolean;
+};
+
 export type AppRoute = {
 	// persist?: boolean;
 	id: string;
 	route: string;
 	app: string;
+	standalone?: StandaloneFlags;
 };
 
 export type AppRouteData = AppRoute & {
@@ -79,7 +85,6 @@ export type PrimaryBarView = Omit<CarbonioView<PrimaryBarComponentProps>, 'compo
 	position: number;
 	visible: boolean;
 	label: string;
-	hiddenWhenStandalone?: boolean;
 };
 
 export type SecondaryBarView = CarbonioView<SecondaryBarComponentProps>;
@@ -127,9 +132,7 @@ export type AppRouteDescriptor = {
 	label: string;
 	secondaryBar?: ComponentType<SecondaryBarComponentProps>;
 	appView: ComponentType<AppViewComponentProps>;
-	standalone?: {
-		hidePrimaryBar?: boolean;
-	};
+	standalone?: StandaloneFlags;
 };
 export type AppSetters = {
 	addApps: (apps: Array<Partial<CarbonioModule>>) => void;

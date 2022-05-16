@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useContext, useEffect, useMemo } from 'react';
+import React, { FC, useContext, useEffect } from 'react';
 import { BrowserRouter, Route, Switch, useHistory, useParams } from 'react-router-dom';
 import { SnackbarManagerContext, ModalManagerContext } from '@zextras/carbonio-design-system';
 import AppLoaderMounter from './app/app-loader-mounter';
@@ -39,12 +39,8 @@ const StandaloneListener: FC = () => {
 	return null;
 };
 
-const basename = window.location.pathname.startsWith(`${BASENAME}standalone`)
-	? `${BASENAME}standalone`
-	: BASENAME;
-
 const BootstrapperRouter: FC = () => (
-	<BrowserRouter basename={basename}>
+	<BrowserRouter basename={BASENAME}>
 		<Switch>
 			<Route path={'/:route'}>
 				<StandaloneListener />

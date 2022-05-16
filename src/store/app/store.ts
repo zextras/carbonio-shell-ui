@@ -110,7 +110,6 @@ export const useAppStore = create<AppState>((set, get) => ({
 										badge: routeData.badge,
 										position: routeData.position,
 										visible: routeData.visible,
-										hiddenWhenStandalone: routeData.standalone?.hidePrimaryBar,
 										label: routeData.label
 									}
 								],

@@ -105,7 +105,7 @@ export type AvailableLocalesResponse = {
 };
 
 export type NetworkState = SoapContext & {
-	noOpTimeout: unknown;
+	noOpTimeout?: Timeout;
 	pollingInterval: number;
 	seq: number;
 };

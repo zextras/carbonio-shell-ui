@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { filter, intersection } from 'lodash';
+import { filter, intersection, omit } from 'lodash';
 import { useMemo } from 'react';
 import { AppRoute, PrimaryAccessoryView, SecondaryAccessoryView, UtilityView } from '../../types';
 import { useCurrentRoute } from '../history/hooks';
@@ -17,7 +17,7 @@ export const checkRoute = (
 	view: UtilityView | PrimaryAccessoryView | SecondaryAccessoryView,
 	activeRoute?: AppRoute
 ): boolean => {
-	const activeRouteValues = Object.values(activeRoute ?? {});
+	const activeRouteValues = Object.values(omit(activeRoute, 'standalone') ?? {});
 	if (view.blacklistRoutes) return !checkList(activeRouteValues, view.blacklistRoutes);
 	if (view.whitelistRoutes) return checkList(activeRouteValues, view.whitelistRoutes);
 	return true;

@@ -28,12 +28,25 @@ const parsePollingInterval = (settings: AccountSettings): number => {
 	}
 	return pollingValue * 1000;
 };
+
 export const getInfo = (): Promise<void> =>
-	getSoapFetch(SHELL_APP_ID)<{ _jsns: string; rights: string }, GetInfoResponse>('GetInfo', {
-		_jsns: 'urn:zimbraAccount',
-		rights: 'sendAs,sendAsDistList,viewFreeBusy,sendOnBehalfOf,sendOnBehalfOfDistList'
-	})
-		.then((res: any): void => {
+	fetch('/static/iris/components.json')
+		.then((r) => r.json())
+		.then(({ components }: { components: Array<CarbonioModule> }) => {
+			useAppStore.getState().setters.addApps(
+				filter(components, ({ type }) => {
+					if (type === 'shell' || type === 'carbonio') return true;
+					return false;
+				})
+			);
+		})
+		.then(() =>
+			getSoapFetch(SHELL_APP_ID)<{ _jsns: string; rights: string }, GetInfoResponse>('GetInfo', {
+				_jsns: 'urn:zimbraAccount',
+				rights: 'sendAs,sendAsDistList,viewFreeBusy,sendOnBehalfOf,sendOnBehalfOfDistList'
+			})
+		)
+		.then((res: GetInfoResponse): void => {
 			if (res) {
 				const { account, settings, version } = normalizeAccount(res);
 				useNetworkStore.setState({
@@ -46,18 +59,6 @@ export const getInfo = (): Promise<void> =>
 				});
 			}
 		})
-		.then(() => fetch('/static/iris/components.json'))
-		.then((r: any) => r.json())
-		.then(({ components }: { components: Array<CarbonioModule> }) => {
-			useAppStore.getState().setters.addApps(
-				filter(components, ({ type }) => {
-					if (type === 'shell' || type === 'carbonio') return true;
-					return false;
-				})
-			);
-		})
-		.catch((err: unknown) => {
-			console.log('there was an error checking user data');
+		.catch((err: Error) => {
 			console.error(err);
-			goToLogin();
 		});

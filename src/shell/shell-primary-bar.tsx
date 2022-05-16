@@ -18,6 +18,7 @@ import { AppRoute, PrimaryAccessoryView, PrimaryBarView } from '../../types';
 import BadgeWrap from './badge-wrap';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { checkRoute } from '../utility-bar/utils';
+import { IS_STANDALONE } from '../constants';
 
 const ContainerWithDivider = styled(Container)`
 	border-right: 1px solid ${({ theme }): string => theme.palette.gray3.regular};
@@ -87,7 +88,6 @@ const PrimaryBarAccessoryElement: FC<PrimaryBarAccessoryItemProps> = ({ view }) 
 
 const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 	const primaryBarViews = useAppStore((s) => s.views.primaryBar);
-	const standalone = useAppStore((s) => s.standalone);
 	const [routes, setRoutes] = useState<Record<string, string>>({});
 	const history = useHistory();
 
@@ -117,7 +117,7 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 			),
 		[activeRoute, primaryBarAccessoryViews]
 	);
-	if (standalone && primaryBarViews.find((v) => v.route === standalone)?.hiddenWhenStandalone) {
+	if (IS_STANDALONE && activeRoute.standalone?.hidePrimaryBar) {
 		return null;
 	}
 	return (

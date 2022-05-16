@@ -19,6 +19,7 @@ import { ThemeCallbacksContext } from '../boot/theme-provider';
 import { useUserSettings } from '../store/account';
 import { ShellUtilityBar, ShellUtilityPanel } from '../utility-bar';
 import { useCurrentRoute } from '../history/hooks';
+import { IS_STANDALONE } from '../constants';
 
 const Background = styled.div`
 	background: ${({ theme }) => theme.palette.gray6.regular};
@@ -50,13 +51,15 @@ export function Shell() {
 		<Background>
 			<DarkReaderListener />
 			{/* <MainAppRerouter /> */}
-			<ShellHeader
-				activeRoute={activeRoute}
-				mobileNavIsOpen={mobileNavOpen}
-				onMobileMenuClick={() => setMobileNavOpen(!mobileNavOpen)}
-			>
-				<ShellUtilityBar />
-			</ShellHeader>
+			{!(IS_STANDALONE && activeRoute?.standalone?.hideShellHeader) && (
+				<ShellHeader
+					activeRoute={activeRoute}
+					mobileNavIsOpen={mobileNavOpen}
+					onMobileMenuClick={() => setMobileNavOpen(!mobileNavOpen)}
+				>
+					<ShellUtilityBar />
+				</ShellHeader>
+			)}
 			<Row crossAlignment="unset" style={{ position: 'relative', flexGrow: '1' }}>
 				<ShellNavigationBar activeRoute={activeRoute} mobileNavIsOpen={mobileNavOpen} />
 				<AppViewContainer activeRoute={activeRoute} />

@@ -44,7 +44,7 @@ function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<Carbo
 				_resolve(appPkg);
 			}
 		};
-		const reject: (e: Error) => void = (e) => {
+		const reject: (e: unknown) => void = (e) => {
 			if (!resolved) {
 				resolved = true;
 				_reject(e);
@@ -98,10 +98,8 @@ function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<Carbo
 			script.setAttribute('src', `${appPkg.js_entrypoint}`);
 			document.body.appendChild(script);
 			_scripts[`${appPkg.name}-loader-${(_scriptId += 1)}`] = script;
-		} catch (err) {
+		} catch (err: unknown) {
 			console.error(err);
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore
 			reject(err);
 		}
 	});

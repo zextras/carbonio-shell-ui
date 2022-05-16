@@ -59,7 +59,8 @@ export const normalizeRoute = (
 		secondaryBar: data.secondaryBar,
 		appView: data.appView ?? FallbackView,
 		standalone: {
-			hidePrimaryBar: data?.standalone?.hidePrimaryBar
+			hidePrimaryBar: data?.standalone?.hidePrimaryBar,
+			hideShellHeader: data?.standalone?.hideShellHeader
 		}
 	};
 };

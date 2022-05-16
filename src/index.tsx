@@ -31,7 +31,6 @@ window.addEventListener('contextmenu', (ev) => {
 // @ts-ignore works as intended, but it's tampering with the window
 window.__CARBONIO_DEV__ = !!new URL(window.location).searchParams.get('dev');
 const Bootstrapper = lazy(() => import('./boot/bootstrapper'));
-
 if (module.hot) module.hot.accept();
 render(
 	<Suspense fallback={<LoadingView />}>

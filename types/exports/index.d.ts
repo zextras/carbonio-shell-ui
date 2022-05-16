@@ -62,6 +62,9 @@ export const ACTION_TYPES: {
 };
 export const SHELL_MODES: Record<string, ShellModes>;
 export const BASENAME: string;
+
+export const IS_STANDALONE: boolean;
+
 export const getIntegratedHook: (id: string) => [Function, boolean];
 export const getIntegratedFunction: (id: string) => [Function, boolean];
 export const getIntegratedComponent: (id: string) => [ComponentType<unknown>, boolean];

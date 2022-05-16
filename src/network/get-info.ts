@@ -28,26 +28,10 @@ const parsePollingInterval = (settings: AccountSettings): number => {
 	}
 	return pollingValue * 1000;
 };
+
 export const getInfo = (): Promise<void> =>
-	getSoapFetch(SHELL_APP_ID)<{ _jsns: string; rights: string }, GetInfoResponse>('GetInfo', {
-		_jsns: 'urn:zimbraAccount',
-		rights: 'sendAs,sendAsDistList,viewFreeBusy,sendOnBehalfOf,sendOnBehalfOfDistList'
-	})
-		.then((res: any): void => {
-			if (res) {
-				const { account, settings, version } = normalizeAccount(res);
-				useNetworkStore.setState({
-					pollingInterval: parsePollingInterval(settings)
-				});
-				useAccountStore.setState({
-					account,
-					settings,
-					zimbraVersion: version
-				});
-			}
-		})
-		.then(() => fetch('/static/iris/components.json'))
-		.then((r: any) => r.json())
+	fetch('/static/iris/components.json')
+		.then((r) => r.json())
 		.then(({ components }: { components: Array<CarbonioModule> }) => {
 			useAppStore.getState().setters.addApps(
 				filter(components, ({ type }) => {
@@ -56,8 +40,26 @@ export const getInfo = (): Promise<void> =>
 				})
 			);
 		})
-		.catch((err: unknown) => {
-			console.log('there was an error checking user data');
+		.then(() =>
+			getSoapFetch(SHELL_APP_ID)<{ _jsns: string; rights: string }, GetInfoResponse>('GetInfo', {
+				_jsns: 'urn:zimbraAccount',
+				rights: 'sendAs,sendAsDistList,viewFreeBusy,sendOnBehalfOf,sendOnBehalfOfDistList'
+			})
+		)
+		.then((res: GetInfoResponse): void => {
+			if (res) {
+				const { account, settings, version } = normalizeAccount(res);
+				useNetworkStore.setState({
+					pollingInterval: parsePollingInterval(settings)
+				});
+				useAccountStore.setState({
+					authenticated: true,
+					account,
+					settings,
+					zimbraVersion: version
+				});
+			}
+		})
+		.catch((err: Error) => {
 			console.error(err);
-			goToLogin();
 		});

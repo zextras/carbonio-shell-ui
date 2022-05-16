@@ -21,7 +21,7 @@ export function loadApps(storeFactory: StoreFactory, apps: Array<CarbonioModule>
 	injectSharedLibraries();
 	const appsToLoad = filter(apps, (app) => {
 		if (app.name === SHELL_APP_ID) return false;
-		if (app.attrKey && getUserSetting('attrs', app.attrKey) !== 'TRUE') return false;
+		if (app.attrKey && getUserSetting('attrs', app.attrKey) === 'FALSE') return false;
 		return true;
 	});
 	console.log(

@@ -45,8 +45,7 @@ module.exports = (conf, pkg, options, mode) => {
 			inject: true,
 			template: path.resolve(process.cwd(), 'src', 'index.template.html'),
 			chunks: ['index'],
-			BASE_PATH: baseStaticPath,
-			SHELL_ENV: root
+			BASE_PATH: baseStaticPath
 		}),
 		new HtmlWebpackPlugin({
 			inject: false,

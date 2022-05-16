@@ -16,10 +16,11 @@ import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
 import AppBoardWindow from './boards/app-board-window';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
-import { useUserSettings } from '../store/account';
+import { useAccountStore, useUserSettings } from '../store/account';
 import { ShellUtilityBar, ShellUtilityPanel } from '../utility-bar';
 import { useCurrentRoute } from '../history/hooks';
 import { IS_STANDALONE } from '../constants';
+import { goToLogin } from '../network/go-to-login';
 
 const Background = styled.div`
 	background: ${({ theme }) => theme.palette.gray6.regular};
@@ -44,9 +45,20 @@ function DarkReaderListener() {
 	return null;
 }
 
+const useLoginRedirection = (activeRoute) => {
+	const auth = useAccountStore((s) => s.authenticated);
+	console.log({ auth, activeRoute });
+	useEffect(() => {
+		if (IS_STANDALONE && !auth && activeRoute && !activeRoute.standalone?.allowUnauthenticated) {
+			goToLogin();
+		}
+	}, [activeRoute, auth]);
+};
+
 export function Shell() {
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
 	const activeRoute = useCurrentRoute();
+	useLoginRedirection(activeRoute);
 	return (
 		<Background>
 			<DarkReaderListener />

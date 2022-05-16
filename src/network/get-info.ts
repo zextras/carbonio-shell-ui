@@ -53,6 +53,7 @@ export const getInfo = (): Promise<void> =>
 					pollingInterval: parsePollingInterval(settings)
 				});
 				useAccountStore.setState({
+					authenticated: true,
 					account,
 					settings,
 					zimbraVersion: version

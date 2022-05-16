@@ -26,6 +26,7 @@ export type CarbonioModule = {
 export type StandaloneFlags = {
 	hidePrimaryBar?: boolean;
 	hideShellHeader?: boolean;
+	allowUnauthenticated?: boolean;
 };
 
 export type AppRoute = {

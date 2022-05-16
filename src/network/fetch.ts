@@ -97,10 +97,13 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 			find(
 				['service.AUTH_REQUIRED', 'service.AUTH_EXPIRED'],
 				(code) => code === (<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Code
-			) &&
-			!IS_STANDALONE
+			)
 		) {
-			goToLogin();
+			if (IS_STANDALONE) {
+				useAccountStore.setState({ authenticated: false });
+			} else {
+				goToLogin();
+			}
 		}
 		console.error(
 			new Error(

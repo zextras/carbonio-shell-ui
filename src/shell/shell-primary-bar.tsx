@@ -117,7 +117,7 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 			),
 		[activeRoute, primaryBarAccessoryViews]
 	);
-	if (IS_STANDALONE && activeRoute.standalone?.hidePrimaryBar) {
+	if (IS_STANDALONE && activeRoute?.standalone?.hidePrimaryBar) {
 		return null;
 	}
 	return (

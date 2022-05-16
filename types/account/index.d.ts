@@ -18,6 +18,7 @@ export type SoapFetch = <Request, Response>(
 ) => Promise<Response>;
 
 export type AccountState = {
+	authenticated: boolean;
 	account?: Account;
 	settings: AccountSettings;
 	zimbraVersion: string;

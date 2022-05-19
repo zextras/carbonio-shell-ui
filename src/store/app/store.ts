@@ -7,7 +7,6 @@
 import produce from 'immer';
 import { filter, find, findIndex, merge, omit, reduce, sortBy, unionBy, unionWith } from 'lodash';
 import create, { StoreApi, UseBoundStore } from 'zustand';
-import { persist } from 'zustand/middleware';
 import {
 	AppRouteDescriptor,
 	AppState,

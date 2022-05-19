@@ -12,7 +12,7 @@ import { useBridge } from '../store/context-bridge';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import ShellView from '../shell/shell-view';
-import { BASENAME } from '../constants';
+import { BASENAME, IS_STANDALONE } from '../constants';
 import { useAppStore } from '../store/app';
 
 const ContextBridge: FC = () => {
@@ -41,11 +41,13 @@ const StandaloneListener: FC = () => {
 
 const BootstrapperRouter: FC = () => (
 	<BrowserRouter basename={BASENAME}>
-		<Switch>
-			<Route path={'/:route'}>
-				<StandaloneListener />
-			</Route>
-		</Switch>
+		{IS_STANDALONE && (
+			<Switch>
+				<Route path={'/:route'}>
+					<StandaloneListener />
+				</Route>
+			</Switch>
+		)}
 		<ContextBridge />
 		<AppLoaderMounter />
 		<ShellView />

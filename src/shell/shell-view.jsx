@@ -47,7 +47,6 @@ function DarkReaderListener() {
 
 const useLoginRedirection = (activeRoute) => {
 	const auth = useAccountStore((s) => s.authenticated);
-	console.log({ auth, activeRoute });
 	useEffect(() => {
 		if (IS_STANDALONE && !auth && activeRoute && !activeRoute.standalone?.allowUnauthenticated) {
 			goToLogin();

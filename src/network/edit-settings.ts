@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { filter, find, findIndex, forEach, map, reduce } from 'lodash';
+import { filter, find, findIndex, forEach, map, reduce, isArray } from 'lodash';
 import { SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account/store';
 import { AccountState, Mods, Account } from '../../types';
@@ -22,9 +22,10 @@ export const editSettings = (mods: Mods, appId: string = SHELL_APP_ID): Promise<
 				: ''
 		}${
 			mods.prefs
-				? `<ModifyPrefsRequest xmlns="urn:zimbraAccount">${map(
-						mods.prefs,
-						(pref, key) => `<pref name="${key}">${pref}</pref>`
+				? `<ModifyPrefsRequest xmlns="urn:zimbraAccount">${map(mods.prefs, (pref, key) =>
+						isArray(pref)
+							? map(pref, (p) => `<pref name="${key}">${p}</pref>`).join('')
+							: `<pref name="${key}">${pref}</pref>`
 				  ).join('')}</ModifyPrefsRequest>`
 				: ''
 		}${

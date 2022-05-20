@@ -9,19 +9,19 @@ import { ThemeProvider as UIThemeProvider } from '@zextras/carbonio-design-syste
 import { enable, disable, auto, setFetchMethod } from 'darkreader';
 import { reduce } from 'lodash';
 import { useAccountStore } from '../store/account';
-import { ThemeExtension, ThemeExtensionMap } from '../../types';
+import { DRPropValues, ThemeExtension, ThemeExtensionMap } from '../../types';
 import { darkReaderDynamicThemeFixes } from '../constants';
 
 setFetchMethod(window.fetch);
 
 export const ThemeCallbacksContext = createContext<{
 	addExtension: (newExtension: ThemeExtension, id: string) => void;
-	setDarkReaderState: (newState: 'auto' | 'enabled' | 'disabled') => void;
+	setDarkReaderState: (newState: DRPropValues) => void;
 }>({
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	addExtension: (newExtension: ThemeExtension, id: string) => {},
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	setDarkReaderState: (newState: 'auto' | 'enabled' | 'disabled') => {}
+	setDarkReaderState: (newState: DRPropValues) => {}
 });
 
 const themeSizes = (

@@ -1,6 +1,6 @@
 {
 	"name": "@zextras/carbonio-shell-ui",
-	"version": "0.4.17",
+	"version": "0.4.19",
 	"description": "The Zextras Carbonio web client",
 	"main": "dist/zapp-shell.bundle.js",
 	"types": "./types/index.d.ts",
@@ -99,9 +99,9 @@
 	"dependencies": {
 		"@sentry/browser": "^6.17.7",
 		"@tinymce/tinymce-react": "^3.13.0",
-		"@zextras/carbonio-design-system": "0.3.2",
+		"@zextras/carbonio-design-system": "0.3.3",
 		"@zextras/carbonio-ui-preview": "^0.1.5",
-		"darkreader": "4.9.44",
+		"darkreader": "4.9.46",
 		"history": "^5.2.0",
 		"i18next": "21.6.10",
 		"immer": "^9.0.12",

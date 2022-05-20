@@ -50,6 +50,7 @@ export default class I18nFactory implements II18nFactory {
 			// init i18next
 			// for all options read: https://www.i18next.com/overview/configuration-options
 			.init({
+				returnEmptyString: true,
 				lng: this.locale,
 				fallbackLng: 'en',
 				debug: false,

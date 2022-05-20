@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, FC, useMemo } from 'react';
 import { Row, Responsive, ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 import { find } from 'lodash';
@@ -14,16 +14,19 @@ import AppViewContainer from './app-view-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import AppBoardWindow from './boards/app-board-window';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 import { useAccountStore, useUserSettings } from '../store/account';
 import { ShellUtilityBar, ShellUtilityPanel } from '../utility-bar';
 import { useCurrentRoute } from '../history/hooks';
-import { IS_STANDALONE } from '../constants';
+import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
 import { goToLogin } from '../network/go-to-login';
+import { AppRoute, DRPropValues } from '../../types';
 
 const Background = styled.div`
-	background: ${({ theme }) => theme.palette.gray6.regular};
+	background: ${({ theme }): string => theme.palette.gray6.regular};
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -34,18 +37,25 @@ const Background = styled.div`
 	max-width: 100%;
 `;
 
-function DarkReaderListener() {
+function DarkReaderListener(): null {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
 	const settings = useUserSettings();
+	const currentDRMSetting = useMemo(
+		() =>
+			find(settings?.props ?? [], {
+				name: 'zappDarkreaderMode',
+				zimlet: SHELL_APP_ID
+			})?._content as DRPropValues,
+		[settings]
+	);
+
 	useEffect(() => {
-		const darkreaderState =
-			find(settings?.props ?? [], ['name', 'zappDarkreaderMode'])?._content ?? 'auto';
-		setDarkReaderState(darkreaderState);
-	}, [setDarkReaderState, settings]);
+		setDarkReaderState(currentDRMSetting);
+	}, [currentDRMSetting, setDarkReaderState]);
 	return null;
 }
 
-const useLoginRedirection = (activeRoute) => {
+const useLoginRedirection = (activeRoute: AppRoute): void => {
 	const auth = useAccountStore((s) => s.authenticated);
 	useEffect(() => {
 		if (IS_STANDALONE && !auth && activeRoute && !activeRoute.standalone?.allowUnauthenticated) {
@@ -54,9 +64,9 @@ const useLoginRedirection = (activeRoute) => {
 	}, [activeRoute, auth]);
 };
 
-export function Shell() {
+const Shell: FC = () => {
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
-	const activeRoute = useCurrentRoute();
+	const activeRoute = useCurrentRoute() as AppRoute;
 	useLoginRedirection(activeRoute);
 	return (
 		<Background>
@@ -66,14 +76,14 @@ export function Shell() {
 				<ShellHeader
 					activeRoute={activeRoute}
 					mobileNavIsOpen={mobileNavOpen}
-					onMobileMenuClick={() => setMobileNavOpen(!mobileNavOpen)}
+					onMobileMenuClick={(): void => setMobileNavOpen(!mobileNavOpen)}
 				>
 					<ShellUtilityBar />
 				</ShellHeader>
 			)}
 			<Row crossAlignment="unset" style={{ position: 'relative', flexGrow: '1' }}>
 				<ShellNavigationBar activeRoute={activeRoute} mobileNavIsOpen={mobileNavOpen} />
-				<AppViewContainer activeRoute={activeRoute} />
+				<AppViewContainer />
 				<ShellUtilityPanel />
 			</Row>
 			<Responsive mode="desktop">
@@ -81,18 +91,18 @@ export function Shell() {
 			</Responsive>
 		</Background>
 	);
-}
+};
 
-export default function ShellView() {
-	return (
-		<ShellContextProvider>
-			<ModalManager>
-				<SnackbarManager>
-					<PreviewManager>
-						<Shell />
-					</PreviewManager>
-				</SnackbarManager>
-			</ModalManager>
-		</ShellContextProvider>
-	);
-}
+const ShellView: FC = () => (
+	<ShellContextProvider>
+		<ModalManager>
+			<SnackbarManager>
+				<PreviewManager>
+					<Shell />
+				</PreviewManager>
+			</SnackbarManager>
+		</ModalManager>
+	</ShellContextProvider>
+);
+
+export default ShellView;

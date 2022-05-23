@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { map, find } from 'lodash';
@@ -20,7 +20,7 @@ const _BoardsRouterContainer = styled(Container)`
 	overflow-y: auto;
 `;
 
-const FirstAppRedirect = () => {
+const FirstAppRedirect: FC = () => {
 	const apps = useAppList();
 	const routes = useRoutes();
 	const location = useLocation();
@@ -33,7 +33,7 @@ const FirstAppRedirect = () => {
 	) : null;
 };
 
-export default function AppViewContainer() {
+const AppViewContainer: FC = () => {
 	const appViews = useAppStore((s) => s.views.appView);
 	const routes = useMemo(
 		() => [
@@ -56,4 +56,6 @@ export default function AppViewContainer() {
 			</Container>
 		</_BoardsRouterContainer>
 	);
-}
+};
+
+export default AppViewContainer;

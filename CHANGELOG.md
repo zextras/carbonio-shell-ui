@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.20](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.19...v0.4.20) (2022-05-23)
+
+
+### Bug Fixes
+
+* theme is saving correctly ([5a5dc83](https://github.com/zextras/carbonio-shell-ui/commit/5a5dc83c12f1617bf66d6ca7b05f0c711f8f1cc3))
+
 ### [0.4.19](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.18...v0.4.19) (2022-05-20)
 
 ### [0.4.18](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.17...v0.4.18) (2022-05-20)

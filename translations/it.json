@@ -47,8 +47,8 @@
         "general": {
             "theme_options": "Opzioni Tema",
             "theme_mode": "Modalità Tema",
-            "theme_enabled": "Tema Scuro",
-            "theme_disabled": "Tema Chiaro",
+            "theme_enabled": "Abilitato",
+            "theme_disabled": "Disabilitato",
             "theme_auto": "Auto",
             "general": "Impostazioni Generali",
             "account": "Account",

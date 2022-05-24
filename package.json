@@ -1,6 +1,6 @@
 {
 	"name": "@zextras/carbonio-shell-ui",
-	"version": "0.4.20",
+	"version": "0.4.25",
 	"description": "The Zextras Carbonio web client",
 	"main": "dist/zapp-shell.bundle.js",
 	"types": "./types/index.d.ts",
@@ -64,7 +64,7 @@
 		"@types/ua-parser-js": "^0.7.36",
 		"@types/webpack-env": "1.16.3",
 		"@zextras/carbonio-ui-configs": "^0.1.11",
-		"@zextras/carbonio-ui-sdk": "github:Zextras/carbonio-ui-sdk#v1.2.1",
+		"@zextras/carbonio-ui-sdk": "github:Zextras/carbonio-ui-sdk#v1.2.3",
 		"autoprefixer": "10.4.2",
 		"babel-jest": "27.3.1",
 		"babel-loader": "8.2.3",
@@ -99,7 +99,7 @@
 	"dependencies": {
 		"@sentry/browser": "^6.17.7",
 		"@tinymce/tinymce-react": "^3.13.0",
-		"@zextras/carbonio-design-system": "0.3.3",
+		"@zextras/carbonio-design-system": "0.3.4",
 		"@zextras/carbonio-ui-preview": "^0.1.5",
 		"darkreader": "4.9.46",
 		"history": "^5.2.0",
@@ -135,6 +135,9 @@
 		"react-i18next": "^11.13.0",
 		"react-redux": "^7.2.6",
 		"styled-components": "^5.3.3"
+	},
+	"sdk": {
+		"svgr": true
 	},
 	"carbonio": {
 		"name": "carbonio-shell-ui",

@@ -136,6 +136,9 @@
 		"react-redux": "^7.2.6",
 		"styled-components": "^5.3.3"
 	},
+	"sdk": {
+		"svgr": true
+	},
 	"carbonio": {
 		"name": "carbonio-shell-ui",
 		"translations_repository": "git@bitbucket.org:zextras/com_zextras_zapp_shell.git",

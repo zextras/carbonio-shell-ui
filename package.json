@@ -64,7 +64,7 @@
 		"@types/ua-parser-js": "^0.7.36",
 		"@types/webpack-env": "1.16.3",
 		"@zextras/carbonio-ui-configs": "^0.1.11",
-		"@zextras/carbonio-ui-sdk": "github:Zextras/carbonio-ui-sdk#v1.2.1",
+		"@zextras/carbonio-ui-sdk": "github:Zextras/carbonio-ui-sdk#v1.2.3",
 		"autoprefixer": "10.4.2",
 		"babel-jest": "27.3.1",
 		"babel-loader": "8.2.3",

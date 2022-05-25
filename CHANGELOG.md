@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.26](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.25...v0.4.26) (2022-05-25)
+
+
+### Bug Fixes
+
+* sdk 1.2.4 ([122eadb](https://github.com/zextras/carbonio-shell-ui/commit/122eadba9d661374668a1efb8498301a3910b259))
+
 ### [0.4.25](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.24...v0.4.25) (2022-05-24)
 
 ### [0.4.24](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.23...v0.4.24) (2022-05-24)

@@ -25,7 +25,8 @@ module.exports = {
 			{
 				outputPath: 'translations/{{ns}}.json',
 				defaultNS: 'en',
-				jsonSpace: 4
+				jsonSpace: 4,
+				compatibilityJSON: 'v3'
 			}
 		]
 	]

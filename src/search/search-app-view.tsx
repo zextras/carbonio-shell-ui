@@ -91,6 +91,7 @@ export const SearchAppView: FC = () => {
 			)),
 		[searchViews]
 	);
+
 	return (
 		<>
 			{/* <RouteLeavingGuard

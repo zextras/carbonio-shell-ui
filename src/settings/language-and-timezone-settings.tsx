@@ -33,6 +33,7 @@ const LanguageAndTimeZone: FC<{
 	const { t } = useTranslation();
 	const locales = useMemo(() => localeList(t), [t]);
 	const timezones = useMemo(() => timeZoneList(t), [t]);
+
 	const updatePrefs = useCallback(
 		(v, p) => {
 			addMod('prefs', p, v);
@@ -44,18 +45,17 @@ const LanguageAndTimeZone: FC<{
 		() =>
 			settings.prefs.zimbraPrefLocale && find(locales, { id: settings.prefs.zimbraPrefLocale })
 				? find(locales, { id: settings.prefs.zimbraPrefLocale })
-				: locales[5],
+				: find(locales, { id: 'en' }),
 		[locales, settings.prefs.zimbraPrefLocale]
 	);
 
 	const defaultTimeZone = useMemo(
 		() =>
-			settings.prefs.zimbraPrefTimeZoneId &&
-			find(timezones, { value: settings.prefs.zimbraPrefTimeZoneId })
-				? find(timezones, { value: settings.prefs.zimbraPrefTimeZoneId })
-				: timezones[39],
+			find(timezones, { value: settings.prefs.zimbraPrefTimeZoneId }) ??
+			find(timezones, { value: 'UTC' }),
 		[timezones, settings.prefs.zimbraPrefTimeZoneId]
 	);
+
 	const sectionTitle = useMemo(() => timezoneAndLanguageSubSection(t), [t]);
 	return (
 		<FormSubSection
@@ -71,24 +71,26 @@ const LanguageAndTimeZone: FC<{
 						background="gray5"
 						label={t('label.language', 'Language')}
 						onChange={(value: any): void => {
-							updatePrefs(value, 'zimbraPrefLocale');
+							if (value && value !== settings.prefs.zimbraPrefLocale)
+								updatePrefs(value, 'zimbraPrefLocale');
 						}}
-						defaultSelection={defaultSelection}
+						selection={defaultSelection}
 						showCheckbox={false}
 						dropdownMaxHeight="200px"
 						selectedBackgroundColor="highlight"
 					/>
 				)}
 				<Padding top="small" width="100%">
-					{Object.keys(settings.prefs).length > 0 && (
+					{Object.keys(settings.prefs).length > 0 && timezones && (
 						<Select
 							items={timezones}
 							background="gray5"
 							label={t('label.time_zone', 'Time Zone')}
 							onChange={(value: any): void => {
-								updatePrefs(value, 'zimbraPrefTimeZoneId');
+								if (value && value !== settings.prefs.zimbraPrefTimeZoneId)
+									updatePrefs(value, 'zimbraPrefTimeZoneId');
 							}}
-							defaultSelection={defaultTimeZone}
+							selection={defaultTimeZone}
 							showCheckbox={false}
 							dropdownMaxHeight="200px"
 							selectedBackgroundColor="highlight"

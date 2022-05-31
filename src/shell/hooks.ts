@@ -6,7 +6,7 @@
 
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { useContext, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useState } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -17,7 +17,7 @@ export function useIsMobile(): boolean {
 	return isMobile;
 }
 
-export function useLocalStorage<T>(key: string, initialValue: T): any {
+export function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] {
 	const [storedValue, setStoredValue] = useState<T>(() => {
 		try {
 			const item = window.localStorage.getItem(key);
@@ -36,5 +36,5 @@ export function useLocalStorage<T>(key: string, initialValue: T): any {
 			console.error(error);
 		}
 	};
-	return [storedValue, setValue] as const;
+	return [storedValue, setValue];
 }

@@ -10,9 +10,10 @@ import { Account, ErrorSoapResponse, SoapContext, SoapResponse } from '../../typ
 import { userAgent } from './user-agent';
 import { report } from '../reporting';
 import { useAccountStore } from '../store/account';
-import { SHELL_APP_ID } from '../constants';
+import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
 import { useNetworkStore } from '../store/network';
 import { handleSync } from '../store/network/utils';
+import { useAppStore } from '../store/app';
 
 export const noOp = (): void => {
 	// eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -98,12 +99,18 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 				(code) => code === (<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Code
 			)
 		) {
-			goToLogin();
+			if (IS_STANDALONE) {
+				useAccountStore.setState({ authenticated: false });
+			} else {
+				goToLogin();
+			}
 		}
-		throw new Error(
-			`${(<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Detail}: ${
-				(<ErrorSoapResponse>res).Body.Fault.Reason?.Text
-			}`
+		console.error(
+			new Error(
+				`${(<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Detail}: ${
+					(<ErrorSoapResponse>res).Body.Fault.Reason?.Text
+				}`
+			)
 		);
 	}
 	if (res.Header?.context) {
@@ -116,8 +123,12 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 		useAccountStore.setState({
 			usedQuota: responseUsedQuota ?? usedQuota
 		});
+		const nextPollingInterval = (res?.Body as { waitDisallowed?: number })?.waitDisallowed
+			? 10000
+			: pollingInterval;
 		useNetworkStore.setState({
-			noOpTimeout: setTimeout(() => noOp(), pollingInterval),
+			noOpTimeout: setTimeout(() => noOp(), nextPollingInterval),
+			pollingInterval: nextPollingInterval,
 			seq,
 			..._context
 		});
@@ -191,3 +202,5 @@ export const getXmlSoapFetch =
 				throw e;
 			}) as Promise<Response>;
 	};
+
+export const shellSoap = getSoapFetch(SHELL_APP_ID);

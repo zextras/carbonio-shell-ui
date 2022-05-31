@@ -5,7 +5,7 @@
  */
 import '../splash.css';
 import React, { FC } from 'react';
-import Logo from '../svg/carbonio-beta.svg';
+import Logo from '../svg/carbonio.svg';
 import Helmet from '../svg/carbonio-head.svg';
 
 const LoadingView: FC = () => (

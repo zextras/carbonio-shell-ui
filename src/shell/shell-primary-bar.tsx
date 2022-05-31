@@ -4,15 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import {
-	Container,
-	IconButton,
-	Row,
-	Tooltip,
-	Text,
-	Padding,
-	Icon
-} from '@zextras/carbonio-design-system';
+import { Container, IconButton, Row, Tooltip } from '@zextras/carbonio-design-system';
 import { map, isEmpty, trim, filter, sortBy } from 'lodash';
 import React, { useContext, FC, useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
@@ -26,18 +18,7 @@ import { AppRoute, PrimaryAccessoryView, PrimaryBarView } from '../../types';
 import BadgeWrap from './badge-wrap';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { checkRoute } from '../utility-bar/utils';
-
-const PrimaryContainer = styled(Container)<{ active: boolean }>`
-	background: ${({ theme, active }): string => theme.palette[active ? 'gray4' : 'gray6'].regular};
-	cursor: pointer;
-	transition: background 0.2s ease-out;
-	&:hover {
-		background: ${({ theme, active }): string => theme.palette[active ? 'gray4' : 'gray6'].hover};
-	}
-	&:focus {
-		background: ${({ theme, active }): string => theme.palette[active ? 'gray4' : 'gray6'].focus};
-	}
-`;
+import { IS_STANDALONE } from '../constants';
 
 const ContainerWithDivider = styled(Container)`
 	border-right: 1px solid ${({ theme }): string => theme.palette.gray3.regular};
@@ -78,6 +59,7 @@ const PrimaryBarElement: FC<PrimaryBarItemProps> = ({ view, active, onClick }) =
 					iconColor={active ? 'primary' : 'text'}
 					onClick={onClick}
 					size="large"
+					data-isselected={active}
 				/>
 			) : (
 				<view.component active={active} />
@@ -106,7 +88,6 @@ const PrimaryBarAccessoryElement: FC<PrimaryBarAccessoryItemProps> = ({ view }) 
 
 const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 	const primaryBarViews = useAppStore((s) => s.views.primaryBar);
-
 	const [routes, setRoutes] = useState<Record<string, string>>({});
 	const history = useHistory();
 
@@ -121,9 +102,12 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 	}, [primaryBarViews]);
 	useEffect(() => {
 		if (activeRoute) {
-			setRoutes((r) => ({ ...r, [activeRoute.id]: trim(history.location.pathname, '/') }));
+			setRoutes((r) => ({
+				...r,
+				[activeRoute.id]: `${trim(history.location.pathname, '/')}${history.location.search}`
+			}));
 		}
-	}, [activeRoute, history.location.pathname, primaryBarViews]);
+	}, [activeRoute, history.location, primaryBarViews]);
 	const primaryBarAccessoryViews = useAppStore((s) => s.views.primaryBarAccessories);
 	const accessories = useMemo(
 		() =>
@@ -133,6 +117,9 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 			),
 		[activeRoute, primaryBarAccessoryViews]
 	);
+	if (IS_STANDALONE && activeRoute?.standalone?.hidePrimaryBar) {
+		return null;
+	}
 	return (
 		<ContainerWithDivider
 			width={49}

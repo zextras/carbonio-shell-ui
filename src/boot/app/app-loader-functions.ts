@@ -21,16 +21,18 @@ import {
 import {
 	getUserAccount,
 	getUserAccounts,
+	getUserSetting,
 	getUserSettings,
 	useUserAccount,
 	useUserAccounts,
+	useUserSetting,
 	useUserSettings,
 	useUserRight,
 	useUserRights,
 	getUserRight,
 	getUserRights
 } from '../../store/account';
-import { useIsMobile } from '../../shell/hooks';
+import { useIsMobile, useLocalStorage } from '../../shell/hooks';
 import {
 	useAction,
 	useActions,
@@ -58,9 +60,28 @@ import {
 	useUpdateCurrentBoard
 } from '../../shell/boards/board-hooks';
 import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
-import { getTag, getTags, useTag, useTags } from '../../store/tags';
+import {
+	getFolder,
+	getFolders,
+	useFolder,
+	useFolders,
+	useRoot,
+	getRoot,
+	useRoots,
+	getRoots,
+	useSearchFolder,
+	useSearchFolders,
+	getSearchFolder,
+	getSearchFolders,
+	useFoldersAccordionByView,
+	useFoldersByView,
+	useRootByUser,
+	getRootByUser
+} from '../../store/folder';
+import { getTags, useTags } from '../../store/tags';
 import { useNotify, useRefresh } from '../../store/network';
-import { changeTagColor, createTag, deleteTag, renameTag, updateTag } from '../../network/tags';
+import { changeTagColor, createTag, deleteTag, renameTag } from '../../network/tags';
+import { runSearch } from '../../search/run-search';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({
@@ -95,16 +116,33 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	getUserAccounts,
 	useUserSettings,
 	getUserSettings,
+	getUserSetting,
+	useUserSetting,
 	useUserRight,
 	useUserRights,
 	getUserRight,
 	getUserRights,
 	useTags,
 	getTags,
-	useTag,
-	getTag,
 	useNotify,
 	useRefresh,
+	// FOLDERS
+	useFoldersAccordionByView,
+	useFoldersByView,
+	useFolder,
+	getFolder,
+	useFolders,
+	getFolders,
+	useRoot,
+	getRoot,
+	useRoots,
+	getRoots,
+	useSearchFolder,
+	useSearchFolders,
+	getSearchFolder,
+	getSearchFolders,
+	useRootByUser,
+	getRootByUser,
 	// BOARDS
 	useAddBoardCallback: getUseAddBoardCallback(pkg.name),
 	useUpdateCurrentBoard,
@@ -124,9 +162,10 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	renameTag,
 	changeTagColor,
 	deleteTag,
-	updateTag,
 	// STUFF
+	runSearch,
 	useIsMobile,
+	useLocalStorage,
 	getBridgedFunctions: (): unknown => {
 		const { packageDependentFunctions, functions } = useContextBridge.getState();
 		return {

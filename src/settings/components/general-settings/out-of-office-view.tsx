@@ -17,6 +17,7 @@ import {
 // eslint-disable-next-line import/no-extraneous-dependencies
 import momentLocalizer from 'react-widgets-moment';
 import { useTranslation } from 'react-i18next';
+import { find } from 'lodash';
 import { AccountSettings } from '../../../../types';
 import Heading from '../settings-heading';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -110,6 +111,19 @@ const OutOfOfficeView: FC<{
 	const itemsExternalSenders = useMemo(() => ItemsExternalSenders(t), [t]);
 	const itemsOutOfOfficeStatus = useMemo(() => ItemsOutOfOfficeStatus(t), [t]);
 	const sectionTitle = useMemo(() => outOfOfficeSubSection(t), [t]);
+	const defaultSendAutoreply = useMemo(
+		() => getExternalSendersPrefsData(settings, 'label', t),
+		[settings, t]
+	);
+	const defaultOutOfOfficeStatus = useMemo(
+		() => getOutOfOfficeStatusPrefsData(settings, t),
+		[settings, t]
+	);
+	const selectedItemSendAutoReplies = useMemo(
+		() => find(itemsSendAutoReplies, (item) => item && (item.value === 'TRUE') === sendAutoReply),
+		[sendAutoReply, itemsSendAutoReplies]
+	);
+
 	return (
 		<FormSubSection
 			label={sectionTitle.label}
@@ -123,14 +137,12 @@ const OutOfOfficeView: FC<{
 					background="gray5"
 					label={t('label.out_of_office', 'Out of Office')}
 					onChange={(value: any): void => {
-						updatePrefs(value, 'zimbraPrefOutOfOfficeReplyEnabled');
-						setSendAutoReply(!sendAutoReply);
+						if (value && (value === 'TRUE') !== sendAutoReply) {
+							updatePrefs(value, 'zimbraPrefOutOfOfficeReplyEnabled');
+							setSendAutoReply(value === 'TRUE');
+						}
 					}}
-					defaultSelection={
-						settings.prefs.zimbraPrefOutOfOfficeReplyEnabled === 'TRUE'
-							? itemsSendAutoReplies[0]
-							: itemsSendAutoReplies[1]
-					}
+					selection={selectedItemSendAutoReplies}
 				/>
 				<Padding top="small" width="100%">
 					<Input
@@ -152,16 +164,9 @@ const OutOfOfficeView: FC<{
 						background="gray5"
 						label={t('settings.out_of_office.labels.external_senders', 'External Senders')}
 						onChange={(value: unknown): void => {
-							externalSendersHandler(value);
+							if (value && value !== defaultSendAutoreply?.value) externalSendersHandler(value);
 						}}
-						defaultSelection={{
-							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-							// @ts-ignore
-							label: getExternalSendersPrefsData(settings, 'label', t),
-							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-							// @ts-ignore
-							value: getExternalSendersPrefsData(settings, 'value', t)
-						}}
+						selection={defaultSendAutoreply}
 					/>
 				</Padding>
 				{externalReplyInput && (
@@ -209,16 +214,10 @@ const OutOfOfficeView: FC<{
 								'Out Of Office Status:'
 							)}
 							onChange={(value: unknown): void => {
-								createAppointmentAsHandler(value);
+								if (value && value !== defaultOutOfOfficeStatus?.value)
+									createAppointmentAsHandler(value);
 							}}
-							defaultSelection={{
-								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-								// @ts-ignore
-								label: getOutOfOfficeStatusPrefsData(settings, 'label', t),
-								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-								// @ts-ignore
-								value: getOutOfOfficeStatusPrefsData(settings, 'value', t)
-							}}
+							selection={defaultOutOfOfficeStatus}
 						/>
 					</Padding>
 				</Container>

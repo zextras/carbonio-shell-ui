@@ -5,7 +5,7 @@
  */
 /* eslint-disable @typescript-eslint/ban-types */
 
-import { ComponentType, FC } from 'react';
+import { ComponentType, Dispatch, FC, SetStateAction } from 'react';
 import { LinkProps } from 'react-router-dom';
 import { Reducer, Store } from 'redux';
 import { TFunction } from 'react-i18next';
@@ -31,8 +31,10 @@ import {
 	SoapFetch
 } from '../account';
 import { Mods, TagActionResponse, CreateTagResponse, SoapNotify, SoapRefresh } from '../network';
-import { HistoryParams, ShellModes } from '../misc';
+import { HistoryParams, ShellModes, AccordionFolder } from '../misc';
 import { Tag, Tags } from '../tags';
+import { Folder, Folders } from '../folder';
+import { QueryChip } from '../search';
 
 export const getBridgedFunctions: () => {
 	addBoard: (path: string, context?: unknown | { app: string }) => void;
@@ -60,6 +62,9 @@ export const ACTION_TYPES: {
 };
 export const SHELL_MODES: Record<string, ShellModes>;
 export const BASENAME: string;
+
+export const IS_STANDALONE: boolean;
+
 export const getIntegratedHook: (id: string) => [Function, boolean];
 export const getIntegratedFunction: (id: string) => [Function, boolean];
 export const getIntegratedComponent: (id: string) => [ComponentType<unknown>, boolean];
@@ -96,6 +101,16 @@ export const useTags: () => Tags;
 export const getTags: () => Tags;
 export const useTag: (id: string) => Tag;
 export const getTag: (id: string) => Tag;
+export const useFolder: (id: string) => BaseFolder | Folder | LinkFolder;
+export const getFolder: (id: string) => BaseFolder | Folder | LinkFolder;
+export const useFolders: () => Folders;
+export const getFolders: () => Folders;
+export const useRoot: (name: string) => Folder;
+export const getRoot: (name: string) => Folder;
+export const useRoots: () => Roots;
+export const getRoots: () => Roots;
+export const useRootByView: (view: string) => Folder;
+export const getRootByView: (view: string) => Folder;
 export const createTag: (tag: Omit<Tag, 'id'>) => Promise<CreateTagResponse>;
 export const renameTag: (id: string, name: string) => Promise<TagActionResponse>;
 export const deleteTag: (id: string) => Promise<TagActionResponse>;
@@ -110,7 +125,7 @@ export const store: {
 };
 export const useNotify: () => Array<SoapNotify>;
 export const useRefresh: () => SoapRefresh;
-export const Applink: FC<LinkProps>;
+export const AppLink: FC<LinkProps>;
 export const Spinner: FC;
 export const useAddBoardCallback: () => (
 	path: string,
@@ -185,3 +200,33 @@ export const replaceHistory: (params: HistoryParams) => void;
 export const goBackHistory: () => void;
 export const useCurrentRoute: () => AppRoute | undefined;
 export const getCurrentRoute: () => AppRoute | undefined;
+
+// FOLDERS
+
+// ROOTS
+
+// ROOTS BY USER
+export const useRootByUser: (userId: string) => Folder | SearchFolder | Record<string, never>;
+export const getRootByUser: (userId: string) => Folder | SearchFolder | Record<string, never>;
+
+// SEARCHES
+
+export const useSearchFolder: (id: string) => SearchFolder | undefined;
+export const useSearchFolders: (id: string) => SearchFolder | undefined;
+export const getSearchFolder: () => Searches;
+export const getSearchFolders: () => Searches;
+
+// Accordion-ize
+
+export const useFoldersByView: (view: string) => Array<Folder>;
+
+export const useFoldersAccordionByView: (
+	view: string,
+	CustomComponent: ComponentType<{ folder: Folder }>,
+	itemProps?: (item: AccordionFolder) => Record<string, any>
+) => Array<AccordionFolder>;
+
+// Run Search
+export const runSearch: (query: Array<QueryChip>, module: string) => void;
+
+export const useLocalStorage: <T>(key: string, initialValue: T) => [T, Dispatch<SetStateAction<T>>];

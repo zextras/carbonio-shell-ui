@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useScreenMode } from '@zextras/carbonio-design-system';
 import ShellContext from './shell-context';
 
-export default function ShellContextProvider({ children }) {
+const ShellContextProvider: FC<{ children: unknown }> = ({ children }) => {
 	const screenMode = useScreenMode();
 
 	const value = useMemo(
@@ -19,4 +19,6 @@ export default function ShellContextProvider({ children }) {
 	);
 
 	return <ShellContext.Provider value={value}>{children}</ShellContext.Provider>;
-}
+};
+
+export default ShellContextProvider;

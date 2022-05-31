@@ -13,7 +13,7 @@ import StoreFactory from '../redux/store-factory';
 import { getInfo } from '../network/get-info';
 
 export const init = (_i18nFactory: I18nFactory, _storeFactory: StoreFactory): void => {
-	getInfo().then(() => {
+	getInfo().finally(() => {
 		_i18nFactory.setLocale(
 			(
 				(useAccountStore.getState().settings?.prefs?.zimbraPrefLocale as string) ??

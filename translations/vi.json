@@ -20,7 +20,7 @@
         "permanent_delete_title": "Bạn có chắc chắn xóa vĩnh viễn người này không?",
         "pop_port": "Cổng POP",
         "primary": "Đầu tiên",
-        "recovery_email": "Thư khôi phục(Recovery E-mail)",
+        "recovery_email": "Thư điện tử dùng để khôi phục",
         "reload": "Tải lại",
         "remove": "xoá",
         "save": "Lưu",
@@ -70,8 +70,8 @@
         "documentation": "Tài liệu",
         "edit_permissions": "Chỉnh sửa quyền",
         "edit_to_start_search": "Chỉnh sửa tìm kiếm của bạn để bắt đầu một cái mới",
-        "email_address": "Địa chỉ email",
-        "email_server": "Máy chủ e-mail",
+        "email_address": "Địa chỉ thư điện tử",
+        "email_server": "Máy chủ thư điện tử",
         "delete_after_download": "Xoá tin nhắn từ máy chủ sau khi tải về",
         "dont_save": "Không lưu bản sao tin nhắn gửi đi",
         "download_messages": "Tải tin nhắn về:",
@@ -141,7 +141,7 @@
         "app": "Tìm kiếm",
         "clear": "Xoá dữ liệu nhập vào tìm kiếm",
         "type_or_choose_suggestion": "Nhập hoặc chọn một số từ khóa để bắt đầu tìm kiếm",
-        "module": "Module",
+        "module": "Mô-đun",
         "start": "Bắt đầu tìm kiếm",
         "type_to_start_search": "Nhập một số từ khóa để bắt đầu tìm kiếm",
         "unable_to_parse_query": "Không thể hoàn tất tìm kiếm, hãy xóa nó và thử lại",
@@ -158,7 +158,7 @@
         "general": {
             "account": "Tài khoản",
             "account_logout": "Đăng xuất",
-            "dark_mode": "Chế độ dark mode",
+            "dark_mode": "Chế độ tối",
             "general": "Cài đặt chung",
             "theme_auto": "Tự động",
             "theme_enabled": "Cho phép",
@@ -167,8 +167,8 @@
         },
         "out_of_office": {
             "labels": {
-                "out_of_office_status": "Trạng thái \"Không ở văn phòng\"(Out Of Office):",
-                "send_auto_reply_period": "Gửi trả lời tự động(auto-replies) trong khoảng thời gian sau:",
+                "out_of_office_status": "Trạng thái \"Không ở văn phòng\":",
+                "send_auto_reply_period": "Gửi trả lời tự động trong khoảng thời gian sau:",
                 "start_date": "Ngày bắt đầu",
                 "start_time": "Thời gian bắt đầu:",
                 "all_day": "Tất cả các ngày:",
@@ -176,16 +176,16 @@
                 "end_date": "Ngày kết thúc",
                 "end_time": "Thời gian kết thúc:",
                 "external_senders": "Người gửi bên ngoài",
-                "auto_reply_message": "Tin nhắn trả lời tự động(Auto-Reply Message):",
-                "auto_reply_message_external": "Tin nhắn trả lời tự động(Auto-Reply Message) gửi cho người gửi bên ngoài:"
+                "auto_reply_message": "Tin nhắn trả lời tự động:",
+                "auto_reply_message_external": "Tin nhắn trả lời tự động gửi cho người gửi bên ngoài:"
             },
-            "send_auto_replies": "Gửi trả lời tự động(auto-replies)",
+            "send_auto_replies": "Gửi trả lời tự động",
             "status": {
                 "busy": "Bận"
             },
             "external_senders": {
                 "send_custom_not_in_organisation": "Gửi tin nhắn tuỳ chỉnh đến những người không nằm trong tổ chức và trong danh bạ",
-                "do_not_send_to_external": "Không gửi trả lời tự động (auto-replies) cho người gửi bên ngoài",
+                "do_not_send_to_external": "Không gửi trả lời tự động cho người gửi bên ngoài",
                 "send_standard_auto_reply": "Gửi thư trả lời tự động (auto-reply) chuẩn",
                 "send_custom_in_organisation": "Gửi thông điệp tuỳ chỉnh đến những người không nằm trong tổ chức"
             },
@@ -194,13 +194,13 @@
                 "settings_label": "Đang không ở văn phòng",
                 "time_period": "Khoảng thời gian"
             },
-            "do_not_send_auto_replies": "Không gửi trả lời tự động (auto-replies)"
+            "do_not_send_auto_replies": "Không gửi trả lời tự động"
         },
         "search_settings": {
             "labels": {
                 "include_search_in_shared_folder": "Bao gồm thư mục chia sẻ trong tìm kiếm",
                 "include_search_in_spam_folder": "Bao gồm thư mục chứa Spam trong tìm kiếm",
-                "include_search_in_trash_folder": "Bao gồm thùng rác(Trash Folder) trong tìm kiếm"
+                "include_search_in_trash_folder": "Bao gồm thùng rác trong tìm kiếm"
             }
         },
         "timezone_and_language": "Múi giờ và ngôn ngữ",
@@ -370,7 +370,7 @@
         "hint": "Hãy nhớ: xác định chủ đề bằng cách sử dụng mô-đun và bộ chọn vùng macro trước khi viết phản hồi của bạn. Cảm ơn bạn đã giúp đỡ.",
         "missing_features": "Các tính năng bị thiếu",
         "report_something": "Bạn có muốn báo cáo điều gì đó không?",
-        "select_a_module": "Chọn một Module",
+        "select_a_module": "Chọn một Mô-đun",
         "send": "GỬI",
         "success": "Cảm ơn phản hồi của bạn",
         "user_interface": "Giao diện người dùng",
@@ -382,6 +382,6 @@
     },
     "new": "Mới",
     "primary_account": {
-        "title": "Cài đặt tài khoản cá nhân"
+        "title": "Cài đặt tài khoản chính"
     }
 }

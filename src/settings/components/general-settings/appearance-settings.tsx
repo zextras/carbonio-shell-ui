@@ -10,7 +10,7 @@ import { FormSubSection, Select } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 import { ThemeCallbacksContext } from '../../../boot/theme-provider';
 import { AccountSettings, DRPropValues } from '../../../../types';
-import { SHELL_APP_ID } from '../../../constants';
+import { DR_VALUES, SHELL_APP_ID } from '../../../constants';
 import { themeSubSection } from '../../general-settings-sub-sections';
 
 const AppearanceSettings: FC<{
@@ -48,10 +48,12 @@ const AppearanceSettings: FC<{
 	);
 	const onSelectionChange = useCallback(
 		(v) => {
-			setDarkReaderState(v);
-			addMod('props', 'zappDarkreaderMode', { app: SHELL_APP_ID, value: v });
+			if (DR_VALUES.includes(v) && v !== currentDRMSetting) {
+				setDarkReaderState(v);
+				addMod('props', 'zappDarkreaderMode', { app: SHELL_APP_ID, value: v });
+			}
 		},
-		[addMod, setDarkReaderState]
+		[addMod, currentDRMSetting, setDarkReaderState]
 	);
 	const subSection = useMemo(() => themeSubSection(t), [t]);
 	return (

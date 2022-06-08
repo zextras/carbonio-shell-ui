@@ -18,14 +18,13 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<meta http-equiv="Cache-Control" content="no-cache" />
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta http-equiv="Expires" content="0" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 </head>
 <script>
 	// Check that service workers are supported
 	if ('serviceWorker' in navigator) {
 		// Use the window load event to keep the page load performant
 		window.addEventListener('load', () => {
-			navigator.serviceWorker.register('<%- htmlWebpackPlugin.options.BASE_PATH %>service-worker.js');
+			navigator.serviceWorker.register('<%- htmlWebpackPlugin.options.SW_PATH %>');
 		});
 	}
 </script>

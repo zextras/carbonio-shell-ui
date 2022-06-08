@@ -15,6 +15,8 @@ const commitHash = require('child_process').execSync('git rev-parse HEAD').toStr
 const WorkboxPlugin = require('workbox-webpack-plugin');
 
 const baseStaticPath = `/static/iris/carbonio-shell-ui/${commitHash}/`;
+const SWName = `shell-sw-${commitHash}.js`;
+const SWPath = `/static/iris/${SWName}`;
 
 module.exports = (conf, pkg, options, mode) => {
 	const server = `https://${options.host}`;
@@ -42,7 +44,8 @@ module.exports = (conf, pkg, options, mode) => {
 			inject: true,
 			template: path.resolve(process.cwd(), 'src', 'index.template.html'),
 			chunks: ['index'],
-			BASE_PATH: baseStaticPath
+			BASE_PATH: baseStaticPath,
+			SW_PATH: SWPath
 		}),
 		new HtmlWebpackPlugin({
 			inject: false,
@@ -53,25 +56,22 @@ module.exports = (conf, pkg, options, mode) => {
 		new WorkboxPlugin.GenerateSW({
 			clientsClaim: true,
 			skipWaiting: true,
+			inlineWorkboxRuntime: true,
+			swDest: SWName,
+			maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
 			runtimeCaching: [
 				{
-					urlPattern: /\.(?:css|js)$/,
+					urlPattern: /\.(?:css|js|map)$/,
 					handler: 'CacheFirst',
 					options: {
-						cacheName: 'chunks',
-						expiration: {
-							maxEntries: 10
-						}
+						cacheName: 'chunks'
 					}
 				},
 				{
 					urlPattern: /\.(?:png|jpg|jpeg|svg|mp3)$/,
 					handler: 'CacheFirst',
 					options: {
-						cacheName: 'assets',
-						expiration: {
-							maxEntries: 10
-						}
+						cacheName: 'assets'
 					}
 				}
 			]

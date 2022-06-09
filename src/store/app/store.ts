@@ -28,7 +28,9 @@ import { normalizeApp } from './utils';
 const filterById = <T extends { id: string }>(items: Array<T>, id: string): Array<T> =>
 	filter(items, (item) => item.id !== id);
 
-export const useAppStore = create<AppState>((set) => ({
+const STANDALONE_RESPONSE = 'standalone';
+export const useAppStore = create<AppState>((set, get) => ({
+	standalone: false,
 	apps: {},
 	appContexts: {},
 	shell: {
@@ -88,6 +90,10 @@ export const useAppStore = create<AppState>((set) => ({
 			},
 		// add route (id route primaryBar secondaryBar app)
 		addRoute: (routeData: AppRouteDescriptor): string => {
+			const { standalone } = get();
+			if (standalone && routeData.route !== standalone) {
+				return STANDALONE_RESPONSE;
+			}
 			set(
 				produce((state: AppState) => {
 					state.routes[routeData.id] = routeData;
@@ -187,6 +193,10 @@ export const useAppStore = create<AppState>((set) => ({
 
 		// add settings
 		addSettingsView: (data: SettingsView): string => {
+			const { standalone } = get();
+			if (standalone && data.route !== standalone) {
+				return STANDALONE_RESPONSE;
+			}
 			set(
 				produce((state: AppState) => {
 					state.views.settings = sortBy(unionBy([data], state.views.settings, 'id'), 'position');
@@ -206,6 +216,10 @@ export const useAppStore = create<AppState>((set) => ({
 		//
 		// add search
 		addSearchView: (data: SearchView): string => {
+			const { standalone } = get();
+			if (standalone && data.route !== standalone) {
+				return STANDALONE_RESPONSE;
+			}
 			set(
 				produce((state: AppState) => {
 					state.views.search = sortBy(unionBy([data], state.views.search, 'id'), 'position');

@@ -18,10 +18,11 @@ import ShellNavigationBar from './shell-navigation-bar';
 // @ts-ignore
 import AppBoardWindow from './boards/app-board-window';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
-import { useUserSettings } from '../store/account';
+import { useAccountStore, useUserSettings } from '../store/account';
 import { ShellUtilityBar, ShellUtilityPanel } from '../utility-bar';
 import { useCurrentRoute } from '../history/hooks';
-import { SHELL_APP_ID } from '../constants';
+import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
+import { goToLogin } from '../network/go-to-login';
 import { AppRoute, DRPropValues } from '../../types';
 
 const Background = styled.div`
@@ -54,20 +55,32 @@ function DarkReaderListener(): null {
 	return null;
 }
 
+const useLoginRedirection = (activeRoute?: AppRoute): void => {
+	const auth = useAccountStore((s) => s.authenticated);
+	useEffect(() => {
+		if (IS_STANDALONE && !auth && activeRoute && !activeRoute.standalone?.allowUnauthenticated) {
+			goToLogin();
+		}
+	}, [activeRoute, auth]);
+};
+
 export const Shell: FC = () => {
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
 	const activeRoute = useCurrentRoute() as AppRoute;
+	useLoginRedirection(activeRoute);
 	return (
 		<Background>
 			<DarkReaderListener />
 			{/* <MainAppRerouter /> */}
-			<ShellHeader
-				activeRoute={activeRoute}
-				mobileNavIsOpen={mobileNavOpen}
-				onMobileMenuClick={(): void => setMobileNavOpen(!mobileNavOpen)}
-			>
-				<ShellUtilityBar />
-			</ShellHeader>
+			{!(IS_STANDALONE && activeRoute?.standalone?.hideShellHeader) && (
+				<ShellHeader
+					activeRoute={activeRoute}
+					mobileNavIsOpen={mobileNavOpen}
+					onMobileMenuClick={(): void => setMobileNavOpen(!mobileNavOpen)}
+				>
+					<ShellUtilityBar />
+				</ShellHeader>
+			)}
 			<Row crossAlignment="unset" style={{ position: 'relative', flexGrow: '1' }}>
 				<ShellNavigationBar activeRoute={activeRoute} mobileNavIsOpen={mobileNavOpen} />
 				<AppViewContainer />

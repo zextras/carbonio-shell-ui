@@ -99,7 +99,7 @@
     "message": {
         "snackbar": {
             "settings_saved": "Ediciones guardadas correctamente",
-            "identities_quota_exceeded": "La identidad no pudo crearse porque has superado tu cuota de tu identidad"
+            "identities_quota_exceeded": "La identidad no pudo crearse porque has superado la cuota de identidades"
         },
         "reload": "\t¿Te gustaría volver a cargar la aplicación ahora para mostrar el nuevo idioma?\n(De lo contrario, el cambio se aplicará la próxima vez que inicies sesión)"
     },
@@ -121,7 +121,7 @@
         "limited": "Has ocupado {{quota}}% del espacio disponible",
         "unlimited": "Tienes espacio ilimitado disponible",
         "space_full": "Parece que todo el espacio disponible está ocupado",
-        "title": "Cuota del usuario"
+        "title": "Cuota de correo"
     },
     "label": {
         "cancel": "Cancelar",

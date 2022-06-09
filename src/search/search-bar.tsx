@@ -245,6 +245,8 @@ export const SearchBar: FC<SearchBarProps> = ({
 
 	const [triggerSearch, setTriggerSearch] = useState(false);
 	const containerRef = useRef<HTMLDivElement>();
+	const addFocus = useCallback(() => setInputHasFocus(true), []);
+	const removeFocus = useCallback(() => setInputHasFocus(false), []);
 
 	// useEffect(() => {
 	// 	const handler = (event: KeyboardEvent): unknown =>
@@ -265,7 +267,10 @@ export const SearchBar: FC<SearchBarProps> = ({
 		const ref = inputRef.current;
 		const searchCb = (ev: any): void => {
 			if (ev.key === 'Enter') {
-				setTimeout(() => setTriggerSearch(true), 0);
+				setTimeout(() => {
+					setTriggerSearch(true);
+					removeFocus();
+				}, 0);
 			}
 		};
 		if (ref) {
@@ -276,7 +281,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 				ref.removeEventListener('keyup', searchCb);
 			}
 		};
-	}, [onSearch]);
+	}, [onSearch, removeFocus]);
 
 	useEffect(() => {
 		if (triggerSearch) {
@@ -354,8 +359,6 @@ export const SearchBar: FC<SearchBarProps> = ({
 		setInputState(map(query, (q) => ({ ...q, disabled: searchDisabled })));
 	}, [searchDisabled, query]);
 
-	const addFocus = useCallback(() => setInputHasFocus(true), []);
-	const removeFocus = useCallback(() => setInputHasFocus(false), []);
 	const disableClearButton = useMemo(() => (isTyping ? false : !showClear), [showClear, isTyping]);
 
 	return (

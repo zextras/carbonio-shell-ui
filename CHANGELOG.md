@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.27](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.26...v0.4.27) (2022-06-09)
+
+
+### Features
+
+* standalone mode ([#79](https://github.com/zextras/carbonio-shell-ui/issues/79)) ([b904928](https://github.com/zextras/carbonio-shell-ui/commit/b904928220ff995311234a5d96745c6ad3443916))
+
+
+### Bug Fixes
+
+* app loading in non-standalone mode ([a64a024](https://github.com/zextras/carbonio-shell-ui/commit/a64a024615ce97ed405b84ddecf72254f7daf6f0))
+* close suggestions in search on enter key ([b42c8c4](https://github.com/zextras/carbonio-shell-ui/commit/b42c8c4a052f22a25df50fa1319b33cd83136e7a))
+* fixed unwanted trigger of navguard in settings ([65d7c1f](https://github.com/zextras/carbonio-shell-ui/commit/65d7c1f39cd9e7ccccaac8072932596793861de1))
+* i18next json compatibility ([4d9816e](https://github.com/zextras/carbonio-shell-ui/commit/4d9816eddef95d0f2ecd6bbc5d50c053d41a165a))
+* sdk 1.2.4 ([c8fd921](https://github.com/zextras/carbonio-shell-ui/commit/c8fd921f59d19dd0333ddec78759f8af5b6c0c3d))
+
 ### [0.4.26](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.25...v0.4.26) (2022-05-25)
 
 

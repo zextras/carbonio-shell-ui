@@ -14,7 +14,7 @@
         "logout": "Đăng xuất",
         "no": "Không",
         "no_results": "Không tìm thấy kết quả",
-        "out_of_office": "Không ở văn phòng",
+        "out_of_office": "Ra ngoài văn phòng",
         "password": "Mật khẩu",
         "passwords_recovery_settings": "Cài đặt mật khẩu khôi phục tài khoản",
         "permanent_delete_title": "Bạn có chắc chắn xóa vĩnh viễn người này không?",
@@ -43,7 +43,7 @@
         "account_menu": "Menu tài khoản",
         "account_name": "Tên tài khoản",
         "account_type": "Kiểu tài khoản",
-        "accounts": "Tài khoản",
+        "accounts": "Các Tài khoản",
         "cancel": "Huỷ",
         "accounts_list": "Danh sách tài khoản",
         "add_delegate": "Thêm quyền",
@@ -148,7 +148,7 @@
         "idle_input_label": "Tìm kiếm trong {{module}}"
     },
     "settings": {
-        "accounts": "Tài khoản",
+        "accounts": "Các Tài khoản",
         "choose": "Chọn",
         "app": "Cài đặt",
         "button": {
@@ -161,13 +161,13 @@
             "dark_mode": "Chế độ tối",
             "general": "Cài đặt chung",
             "theme_auto": "Tự động",
-            "theme_enabled": "Cho phép",
+            "theme_enabled": "Đã bật",
             "theme_options": "Tuỳ chọn mẫu",
-            "theme_disabled": "Vô hiệu hoá"
+            "theme_disabled": "Đã tắt"
         },
         "out_of_office": {
             "labels": {
-                "out_of_office_status": "Trạng thái \"Không ở văn phòng\":",
+                "out_of_office_status": "Trạng thái Ở ngoài văn phòng:",
                 "send_auto_reply_period": "Gửi trả lời tự động trong khoảng thời gian sau:",
                 "start_date": "Ngày bắt đầu",
                 "start_time": "Thời gian bắt đầu:",
@@ -176,8 +176,8 @@
                 "end_date": "Ngày kết thúc",
                 "end_time": "Thời gian kết thúc:",
                 "external_senders": "Người gửi bên ngoài",
-                "auto_reply_message": "Tin nhắn trả lời tự động:",
-                "auto_reply_message_external": "Tin nhắn trả lời tự động gửi cho người gửi bên ngoài:"
+                "auto_reply_message": "Thư trả lời tự động:",
+                "auto_reply_message_external": "Thư trả lời tự động gửi cho người gửi bên ngoài:"
             },
             "send_auto_replies": "Gửi trả lời tự động",
             "status": {
@@ -186,12 +186,12 @@
             "external_senders": {
                 "send_custom_not_in_organisation": "Gửi tin nhắn tuỳ chỉnh đến những người không nằm trong tổ chức và trong danh bạ",
                 "do_not_send_to_external": "Không gửi trả lời tự động cho người gửi bên ngoài",
-                "send_standard_auto_reply": "Gửi thư trả lời tự động (auto-reply) chuẩn",
+                "send_standard_auto_reply": "Gửi thư trả lời tự động chuẩn",
                 "send_custom_in_organisation": "Gửi thông điệp tuỳ chỉnh đến những người không nằm trong tổ chức"
             },
             "headings": {
                 "create_appointment": "Lịch hẹn",
-                "settings_label": "Đang không ở văn phòng",
+                "settings_label": "Các cài đặt Ở ngoài văn phòng",
                 "time_period": "Khoảng thời gian"
             },
             "do_not_send_auto_replies": "Không gửi trả lời tự động"

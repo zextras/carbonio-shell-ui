@@ -81,6 +81,38 @@ const themeSizes = (
 	}
 };
 
+const paletteExtension =
+	(): ThemeExtension =>
+	(t: any): any => {
+		// eslint-disable-next-line no-param-reassign
+		t.palette.shared = {
+			regular: '#FFB74D',
+			hover: '#FFA21A',
+			active: '#FFA21A',
+			focus: '#FF9800',
+			disabled: '#FFD699'
+		};
+		// eslint-disable-next-line no-param-reassign
+		t.palette.linked = {
+			regular: '#AB47BC',
+			hover: '#8B3899',
+			active: '#8B3899',
+			focus: '#7A3187',
+			disabled: '#DDB4E4'
+		};
+		return t;
+	};
+
+const iconExtension =
+	(): ThemeExtension =>
+	(t: any): any => {
+		// eslint-disable-next-line no-param-reassign
+		t.icons.Shared = t.icons.ArrowCircleRight;
+		// eslint-disable-next-line no-param-reassign
+		t.icons.Linked = t.icons.ArrowCircleLeft;
+		return t;
+	};
+
 export const ThemeProvider: FC = ({ children }) => {
 	const zimbraPrefFontSize = useAccountStore((s) => s.settings.prefs?.zimbraPrefFontSize as string);
 	// TODO: update when the DS is fully typed :D
@@ -99,7 +131,9 @@ export const ThemeProvider: FC = ({ children }) => {
 	useEffect(() => {
 		setExtensions((e) => ({
 			...e,
-			fonts: themeSizes(zimbraPrefFontSize)
+			fonts: themeSizes(zimbraPrefFontSize),
+			palette: paletteExtension(),
+			icons: iconExtension()
 		}));
 	}, [zimbraPrefFontSize]);
 	const [darkReaderState, setDarkReaderState] = useState<'auto' | 'disabled' | 'enabled'>('auto');
@@ -134,6 +168,7 @@ export const ThemeProvider: FC = ({ children }) => {
 	const addExtension = useCallback((newExtension: ThemeExtension, id: string) => {
 		setExtensions((ext) => ({ ...ext, [id]: newExtension }));
 	}, []);
+
 	return (
 		<UIThemeProvider extension={aggregatedExtensions}>
 			<ThemeCallbacksContext.Provider value={{ addExtension, setDarkReaderState }}>

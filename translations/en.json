@@ -136,7 +136,8 @@
         "russian": "Russian",
         "spanish": "Spanish",
         "thai": "Thai",
-        "turkish": "Turkish"
+        "turkish": "Turkish",
+        "vietnamese": "Vietnamese"
     },
     "message": {
         "reload": "\tWould you like to reload the application now to show the new language?\n(Otherwise, the new language will appear the next time you sign in.)",

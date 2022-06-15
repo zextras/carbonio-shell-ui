@@ -11,7 +11,7 @@ import AppContextProvider from '../boot/app/app-context-provider';
 import { useUtilityViews } from './utils';
 import { useUtilityBarStore } from './store';
 
-const Panel = styled(Container)`
+const Panel = styled(Container)<{ mode: string }>`
 	width: ${({ mode }): number => (mode !== 'closed' ? 256 : 48)}px;
 	border-radius: 0;
 	height: 100%;

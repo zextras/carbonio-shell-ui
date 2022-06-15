@@ -29,7 +29,7 @@ const OutlinedIconButton = styled(IconButton)`
 	border: 1px solid
 		${({ theme, disabled }): string =>
 			disabled ? theme.palette.primary.disabled : theme.palette.primary.regular};
-	display: 'block';
+	display: block;
 	& svg {
 		border: none;
 	}
@@ -65,7 +65,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 	// secondaryActions
 }) => {
 	const [searchIsEnabled, setSearchIsEnabled] = useState(false);
-	const inputRef = useRef<HTMLInputElement>();
+	const inputRef = useRef<HTMLInputElement>(null);
 	const [t] = useTranslation();
 	const [storedValue, setStoredValue] = useLocalStorage<SearchLocalStorage>(
 		'search_suggestions',
@@ -81,7 +81,9 @@ export const SearchBar: FC<SearchBarProps> = ({
 	const [isTyping, setIsTyping] = useState(false);
 	// const [changedBySearchBar, setChangedBySearchBar] = useState(false);
 
-	const [options, setOptions] = useState<Array<{ label: string; hasAvatar: false }>>([]);
+	const [options, setOptions] = useState<Array<{ id: string; label: string; hasAvatar: false }>>(
+		[]
+	);
 
 	const [inputHasFocus, setInputHasFocus] = useState(false);
 
@@ -111,7 +113,11 @@ export const SearchBar: FC<SearchBarProps> = ({
 			if (inputTyped.length > 0) {
 				const newInputState = [
 					...inputState,
-					...map(inputTyped?.split(' '), (item) => ({ label: item, hasAvatar: false }))
+					...map(inputTyped?.split(' '), (item: string, id: number) => ({
+						id: `${id}`,
+						label: item,
+						hasAvatar: false
+					}))
 				];
 				setInputState(newInputState);
 				setInputTyped('');
@@ -244,7 +250,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 	}, [appSuggestions, module]);
 
 	const [triggerSearch, setTriggerSearch] = useState(false);
-	const containerRef = useRef<HTMLDivElement>();
+	const containerRef = useRef<HTMLDivElement>(null);
 	const addFocus = useCallback(() => setInputHasFocus(true), []);
 	const removeFocus = useCallback(() => setInputHasFocus(false), []);
 
@@ -335,7 +341,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 	}, [t, searchIsEnabled, inputState.length, inputHasFocus, query.length]);
 
 	const onChipAdd = useCallback(
-		(newChip: string) => {
+		(newChip: string | unknown) => {
 			setIsTyping(false);
 			setInputTyped('');
 			if (module) {
@@ -347,7 +353,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 				setOptions(suggestions);
 			}
 			return {
-				label: newChip.trim(),
+				label: typeof newChip === 'string' ? newChip.trim() : '',
 				hasAvatar: false,
 				avatarLabel: ''
 			};
@@ -362,7 +368,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 	const disableClearButton = useMemo(() => (isTyping ? false : !showClear), [showClear, isTyping]);
 
 	return (
-		<Container orientation="horizontal" minWidth="0" ref={containerRef}>
+		<Container width="fit" flexGrow="1" orientation="horizontal" minWidth="0" ref={containerRef}>
 			<Tooltip
 				disabled={!searchDisabled}
 				maxWidth="100%"
@@ -426,6 +432,11 @@ export const SearchBar: FC<SearchBarProps> = ({
 							placement="bottom"
 						>
 							<IconButton
+								size="large"
+								customSize={{
+									iconSize: 'large',
+									paddingSize: 'small'
+								}}
 								icon="Search"
 								disabled={!(searchIsEnabled && inputState.length > 0)}
 								backgroundColor="primary"

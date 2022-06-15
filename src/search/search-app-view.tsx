@@ -7,7 +7,14 @@
 import { map } from 'lodash';
 import React, { FC, useCallback, useMemo } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { Container, Chip, Padding, Divider, Text, Button } from '@zextras/carbonio-design-system';
+import {
+	Container,
+	Chip,
+	Padding,
+	Divider,
+	Text,
+	ButtonOld as Button
+} from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -62,7 +69,7 @@ const ResultsHeader: FC<{ label: string }> = ({ label }) => {
 							label={t('label.clear_search_query', 'CLEAR SEARCH')}
 							icon="CloseOutline"
 							color="primary"
-							size="large"
+							size="fill"
 							type="ghost"
 							onClick={resetQuery}
 						/>

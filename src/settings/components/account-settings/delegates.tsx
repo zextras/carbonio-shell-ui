@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, SyntheticEvent, useCallback, useState } from 'react';
 import {
 	Container,
 	Text,
@@ -12,27 +12,26 @@ import {
 	Divider,
 	Row,
 	Padding,
-	Button,
+	ButtonOld as Button,
 	Radio,
-	RadioGroup
+	RadioGroup,
+	ItemType,
+	ItemComponentProps
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
+import { emptyFunction } from '../../../utils';
+
+export interface DelegateType extends ItemType {
+	email: string;
+	right: string;
+	label?: string;
+}
 
 type DelegatesProps = {
 	t: TFunction;
-	items: { email: string; right: string; id: string }[];
+	items: Array<DelegateType>;
 	activeDelegateView: string;
 	setActiveDelegateView: (value: string) => void;
-};
-
-type ListItemProps = {
-	active: string;
-	item: { id: string; label: string; email: string; right: string };
-	selected: boolean;
-	setSelected: () => void;
-	background: string;
-	selectedBackground: string;
-	activeBackground: string;
 };
 
 const Delegates = ({
@@ -45,7 +44,7 @@ const Delegates = ({
 
 	const changeView = (value: string): void => setActiveDelegateView(value);
 
-	const ListItem = ({ item }: ListItemProps): ReactElement => (
+	const ListItem = ({ item }: ItemComponentProps<DelegateType>): ReactElement => (
 		<>
 			<Container
 				onClick={(): void => changeView(item.id)}
@@ -92,14 +91,7 @@ const Delegates = ({
 				<Padding horizontal="medium" bottom="large" width="100%">
 					<Text weight="bold">{t('label.delegates', 'Delegates')}</Text>
 				</Padding>
-				<List
-					items={items}
-					ItemComponent={ListItem}
-					active={activeDelegateView}
-					height="fit"
-					activeView={activeDelegateView}
-					setActiveView={setActiveDelegateView}
-				/>
+				<List items={items} ItemComponent={ListItem} active={activeDelegateView} height="fit" />
 			</Container>
 			<Row
 				padding={{ horizontal: 'large' }}
@@ -113,6 +105,7 @@ const Delegates = ({
 						color="primary"
 						type="outlined"
 						disabled
+						onClick={emptyFunction}
 					/>
 				</Padding>
 				<Padding right="small">
@@ -121,9 +114,16 @@ const Delegates = ({
 						color="primary"
 						type="outlined"
 						disabled
+						onClick={emptyFunction}
 					/>
 				</Padding>
-				<Button label={t('label.remove', 'remove')} color="error" type="outlined" disabled />
+				<Button
+					label={t('label.remove', 'remove')}
+					color="error"
+					type="outlined"
+					disabled
+					onClick={emptyFunction}
+				/>
 			</Row>
 			<Container
 				minWidth="calc(min(100%, 512px))"
@@ -134,9 +134,8 @@ const Delegates = ({
 				mainAlignment="flex-start"
 			>
 				<RadioGroup
-					style={{ width: '100%' }}
+					style={{ width: '100%', justifyContent: 'flex-start' }}
 					value={activeValue}
-					mainAlignment="flex-start"
 					onChange={(newValue: string): void => setActiveValue(newValue)}
 				>
 					<Radio

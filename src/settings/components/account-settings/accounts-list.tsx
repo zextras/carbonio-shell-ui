@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, ReactElement, useState, useContext } from 'react';
+import React, { useCallback, ReactElement, useState, useContext, FC } from 'react';
 import {
 	Container,
 	Text,
@@ -12,13 +12,15 @@ import {
 	Divider,
 	Row,
 	Padding,
-	Button,
+	ButtonOld as Button,
 	Icon,
-	ModalManagerContext
+	ModalManagerContext,
+	ItemComponentProps
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
 import { map, filter, max } from 'lodash';
 import { IdentityProps, CreateIdentityProps } from '../../../../types';
+import { emptyFunction } from '../../../utils';
 
 type AccountsListProps = {
 	t: TFunction;
@@ -34,7 +36,6 @@ type ListItemProps = {
 	active: boolean;
 	item: IdentityProps;
 	selected: boolean;
-	setSelected: () => void;
 	background: string;
 	selectedBackground: string;
 	activeBackground: string;
@@ -51,7 +52,7 @@ const AccountsList = ({
 }: AccountsListProps): ReactElement => {
 	const changeView = (value: number): void => setSelectedIdentityId(value);
 
-	const ListItem = ({ item }: ListItemProps): ReactElement => (
+	const ListItem = ({ item }: ItemComponentProps<IdentityProps>): ReactElement => (
 		<>
 			<Container
 				onClick={(): void => {
@@ -228,8 +229,6 @@ const AccountsList = ({
 					ItemComponent={ListItem}
 					active={identities[selectedIdentityId]?.id}
 					height="fit"
-					selectedIdentityId={selectedIdentityId}
-					setSelectedIdentityId={setSelectedIdentityId}
 				/>
 			</Container>
 			<Row
@@ -241,7 +240,7 @@ const AccountsList = ({
 				<Padding right="small">
 					<Button
 						label={t('label.add_external_account', 'Add external account')}
-						// onClick={(): void => setSelectedIdentity({ type: 'POP' })}
+						onClick={emptyFunction}
 						color="primary"
 						type="outlined"
 						disabled

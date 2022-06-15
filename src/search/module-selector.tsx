@@ -12,10 +12,11 @@ import { useSearchStore } from './search-store';
 import { SEARCH_APP_ID } from '../constants';
 import { pushHistory } from '../history/hooks';
 
-const SelectorContainer = styled(Container)<{ open: boolean }>`
+const SelectorContainer = styled(Container)<{ open?: boolean }>`
 	border-right: 1px solid ${({ theme }): string => theme.palette.gray4.regular};
-	cursor: 'pointer';
+	cursor: pointer;
 	background: ${({ theme, open }): string => theme.palette[open ? 'gray5' : 'gray6'].regular};
+
 	&:hover {
 		background: ${({ theme, open }): string => theme.palette[open ? 'gray5' : 'gray6'].hover};
 	}
@@ -70,7 +71,7 @@ export const ModuleSelector: FC<{ activeRoute: AppRoute; disabled: boolean }> = 
 				orientation="horizontal"
 				height={42}
 				width="fit"
-				minWidth="150px"
+				minWidth={150}
 				crossAlignment="center"
 				mainAlignment="space-between"
 				borderRadius="half"

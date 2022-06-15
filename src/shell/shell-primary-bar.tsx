@@ -19,6 +19,7 @@ import BadgeWrap from './badge-wrap';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { checkRoute } from '../utility-bar/utils';
 import { IS_STANDALONE } from '../constants';
+import { emptyFunction } from '../utils';
 
 const ContainerWithDivider = styled(Container)`
 	border-right: 1px solid ${({ theme }): string => theme.palette.gray3.regular};
@@ -76,7 +77,7 @@ const PrimaryBarAccessoryElement: FC<PrimaryBarAccessoryItemProps> = ({ view }) 
 					icon={view.component}
 					backgroundColor="gray6"
 					iconColor="text"
-					onClick={view.onClick}
+					onClick={view.onClick ?? emptyFunction}
 					size="large"
 				/>
 			) : (
@@ -135,7 +136,13 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 				orientation="vertical"
 				takeAvailableSpace
 				wrap="nowrap"
-				style={{ minHeight: '1px', overflowY: 'overlay' }}
+				style={{
+					minHeight: '1px',
+					// TODO: fix overlay usage
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					overflowY: 'overlay'
+				}}
 			>
 				{map(primaryBarViews, (view) =>
 					view.visible ? (
@@ -152,6 +159,9 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 				mainAlignment="flex-end"
 				orientation="vertical"
 				wrap="nowrap"
+				// TODO: fix overlay usage
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
 				style={{ minHeight: '1px', overflowY: 'overlay' }}
 			>
 				{accessories.map((v) => (

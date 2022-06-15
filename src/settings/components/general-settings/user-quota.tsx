@@ -72,10 +72,9 @@ const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 				<Container
 					orientation="horizontal"
 					mainAlignment="flex-start"
-					takeAvailableSpace
 					padding={{ bottom: 'medium' }}
 				>
-					<Text orientation="left">{description}</Text>
+					<Text>{description}</Text>
 				</Container>
 				<Quota fill={quota === -1 ? 100 : quota} fillBackground={fillBackground} />
 			</Container>

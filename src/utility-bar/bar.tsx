@@ -4,7 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React, { FC, useCallback, useMemo } from 'react';
-import { Container, Tooltip, IconButton, Dropdown } from '@zextras/carbonio-design-system';
+import {
+	Container,
+	Tooltip,
+	IconButton,
+	Dropdown,
+	Icon,
+	DropdownItem
+} from '@zextras/carbonio-design-system';
 import { map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { useUtilityBarStore } from './store';
@@ -42,49 +49,50 @@ export const ShellUtilityBar: FC = () => {
 	const [t] = useTranslation();
 	const account = useUserAccount();
 	const accountItems = useMemo(
-		() => [
-			{
-				id: 'account',
-				label: account?.displayName ?? account?.name ?? '',
-				disabled: true
-			},
-			{
-				type: 'divider',
-				id: 'divider',
-				label: 'divider'
-			},
-			{
-				id: 'feedback',
-				label: t('label.feedback', 'Feedback'),
-				click: () =>
-					useContextBridge.getState().packageDependentFunctions?.addBoard(SHELL_APP_ID)(
-						'/feedback/',
-						{ title: t('label.feedback', 'Feedback') }
-					),
-				icon: 'MessageSquareOutline'
-			},
-			{
-				id: 'update',
-				label: t('label.update_view', 'Update view'),
-				click: (): void => noOp(),
-				icon: 'Refresh'
-			},
-			{
-				id: 'docs',
-				label: t('label.documentation', 'Documentation'),
-				// TODO: Replace when the correct link is available
-				// eslint-disable-next-line @typescript-eslint/no-empty-function
-				click: (): void => {},
-				disabled: true,
-				icon: 'InfoOutline'
-			},
-			{
-				id: 'logout',
-				label: t('label.logout', 'Logout'),
-				click: logout,
-				icon: 'LogOut'
-			}
-		],
+		() =>
+			[
+				{
+					id: 'account',
+					label: account?.displayName ?? account?.name ?? '',
+					disabled: true
+				},
+				{
+					type: 'divider',
+					id: 'divider',
+					label: 'divider'
+				},
+				{
+					id: 'feedback',
+					label: t('label.feedback', 'Feedback'),
+					click: () =>
+						useContextBridge.getState().packageDependentFunctions?.addBoard(SHELL_APP_ID)(
+							'/feedback/',
+							{ title: t('label.feedback', 'Feedback') }
+						),
+					icon: 'MessageSquareOutline'
+				},
+				{
+					id: 'update',
+					label: t('label.update_view', 'Update view'),
+					click: (): void => noOp(),
+					icon: 'Refresh'
+				},
+				{
+					id: 'docs',
+					label: t('label.documentation', 'Documentation'),
+					// TODO: Replace when the correct link is available
+					// eslint-disable-next-line @typescript-eslint/no-empty-function
+					click: (): void => {},
+					disabled: true,
+					icon: 'InfoOutline'
+				},
+				{
+					id: 'logout',
+					label: t('label.logout', 'Logout'),
+					click: logout,
+					icon: 'LogOut'
+				}
+			] as DropdownItem[],
 		[account, t]
 	);
 	return (
@@ -94,7 +102,7 @@ export const ShellUtilityBar: FC = () => {
 			))}
 			<Tooltip label={account?.displayName ?? account?.name} placement="bottom-end">
 				<Dropdown items={accountItems} maxWidth="200px" disableAutoFocus>
-					<IconButton icon="PersonOutline" size="large" />
+					<Icon icon="PersonOutline" size="large" />
 				</Dropdown>
 			</Tooltip>
 		</Container>

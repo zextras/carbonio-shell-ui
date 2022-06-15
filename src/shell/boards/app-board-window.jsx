@@ -14,7 +14,7 @@ import {
 	Row,
 	Padding,
 	Dropdown,
-	Button,
+	ButtonOld as Button,
 	useHiddenCount,
 	Tooltip
 } from '@zextras/carbonio-design-system';

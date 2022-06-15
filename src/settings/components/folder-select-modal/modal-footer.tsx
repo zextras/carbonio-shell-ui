@@ -4,14 +4,22 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, ReactElement } from 'react';
-import { Container, Button, Padding, Divider, Tooltip } from '@zextras/carbonio-design-system';
+import React, { FC, ReactElement, SyntheticEvent } from 'react';
+import {
+	Container,
+	ButtonOld as Button,
+	Padding,
+	Divider,
+	Tooltip,
+	ContainerProps,
+	ButtonOldProps as ButtonProps
+} from '@zextras/carbonio-design-system';
 
 type ModalFooterProps = {
-	mainAlignment?: string | undefined;
-	crossAlignment?: string | undefined;
+	mainAlignment?: ContainerProps['mainAlignment'];
+	crossAlignment?: ContainerProps['crossAlignment'];
 	padding?: Record<string, string> | undefined;
-	onConfirm: (a: string) => void;
+	onConfirm: (e?: SyntheticEvent<Element, Event> | KeyboardEvent) => void;
 	secondaryAction?: () => void | undefined;
 	label: string;
 	secondaryLabel?: string | undefined;
@@ -21,9 +29,9 @@ type ModalFooterProps = {
 	secondarybackground?: string | undefined;
 	color?: string | undefined;
 	secondaryColor?: string | undefined;
-	size?: string | undefined;
-	primaryBtnType?: string | undefined;
-	secondaryBtnType?: string | undefined;
+	size?: ButtonProps['size'];
+	primaryBtnType?: ButtonProps['type'];
+	secondaryBtnType?: ButtonProps['type'];
 	showDivider?: boolean;
 	tooltip?: string;
 	secondaryTooltip?: string;

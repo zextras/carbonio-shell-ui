@@ -15,12 +15,14 @@ import React, {
 } from 'react';
 import {
 	Text,
-	Button,
+	ButtonOld as Button,
 	Select,
 	Container,
 	Row,
 	Icon,
-	SnackbarManagerContext
+	SnackbarManagerContext,
+	ContainerProps,
+	SelectItem
 } from '@zextras/carbonio-design-system';
 import { Severity, Event } from '@sentry/browser';
 import { filter, find, map } from 'lodash';
@@ -51,7 +53,7 @@ const TextArea = styled.textarea<{ size?: string }>`
 
 const TextContainer = styled(Container)`
 	text-align: justify;
-	align-items: left;
+	align-items: flex-start;
 	width: 80%;
 `;
 
@@ -74,17 +76,21 @@ const TAContainer = styled(Container)`
 	}
 `;
 
-const SubHeadingText = styled(Text)`
+const SubHeadingText = styled(Text)<{ lineHeight?: string }>`
 	border-radius: 2px 2px 0 0;
 	line-height: 21px;
 	font-size: 14px;
 	font-weight: 300;
 	margin-top: 10px;
-	line-height: ${(props): string => props.lineHeight};
+	line-height: ${({ lineHeight }): string => lineHeight ?? 'normal'};
 `;
 
-const LabelContainer = styled(Container)`
-	border-bottom: 1px solid ${(props): string => (props.disabled ? 'red' : '#cfd5dc')};
+interface LabelContainerProps extends ContainerProps {
+	disabled: boolean;
+}
+
+const LabelContainer = styled(Container)<LabelContainerProps>`
+	border-bottom: 1px solid ${({ disabled }): string => (disabled ? 'red' : '#cfd5dc')};
 `;
 
 const emptyEvent: Event = {
@@ -128,10 +134,11 @@ const getTopics = (t: TFunction): Array<{ label: string; value: string }> => [
 
 const ModuleLabelFactory: FC<{
 	selected: Array<{ label: string; value: string }>;
-	label: string;
+	label?: string;
 	open: boolean;
 	focus: boolean;
-}> = ({ selected, label, open, focus }) => (
+	disabled: boolean;
+}> = ({ selected, label, open, focus, disabled }) => (
 	<LabelContainer
 		orientation="horizontal"
 		width="fill"
@@ -142,6 +149,7 @@ const ModuleLabelFactory: FC<{
 		padding={{
 			all: 'small'
 		}}
+		disabled={disabled}
 	>
 		<Row takeAvailableSpace mainAlignment="unset">
 			<Text size="medium" color={open || focus ? 'primary' : 'secondary'}>
@@ -309,7 +317,7 @@ const Feedback: FC = () => {
 		<Container padding={{ all: 'large' }} mainAlignment="space-around">
 			<Container orientation="horizontal" height="fit">
 				<TextContainer mainAlignment="flex-start" crossAlignment="flex-start">
-					<Text weight="bold" size="18px">
+					<Text weight="bold" size="large">
 						{t('feedback.report_something', 'Do you want to report something?')}
 					</Text>
 					<SubHeadingText overflow="break-word" lineHeight="21px">
@@ -343,27 +351,30 @@ const Feedback: FC = () => {
 			>
 				<Container mainAlignment="space-between" crossAlignment="flex-start" maxWidth="305px">
 					<Row padding={{ vertical: 'large' }}>
-						<Text weight="bold" size="14px">
+						<Text weight="bold" size="small">
 							Module
 						</Text>
 					</Row>
 					<Select
 						label={t('feedback.select_a_module', 'Select a module')}
 						items={appItems}
+						defaultSelection={{ label: '', value: '' }}
 						onChange={onAppSelect}
 						LabelFactory={ModuleLabelFactory}
 					/>
 				</Container>
 				<Container mainAlignment="space-between" crossAlignment="flex-start" maxWidth="305px">
 					<Row padding={{ vertical: 'large' }}>
-						<Text weight="bold" size="14px">
+						<Text weight="bold" size="small">
 							Topic
 						</Text>
 					</Row>
 					<Select
 						label={t('feedback.select_a_topic', 'Select a topic')}
-						selection={find(topics, ['value', event.extra?.topic])}
 						items={topics}
+						defaultSelection={
+							find(topics, ['value', event.extra?.topic]) ?? { label: '', value: '' }
+						}
 						onChange={onTopicSelect}
 						LabelFactory={LabelFactory}
 						multiple={false}

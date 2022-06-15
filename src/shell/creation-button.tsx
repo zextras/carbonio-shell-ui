@@ -13,11 +13,12 @@ import { useActions } from '../store/integrations/hooks';
 import { ACTION_TYPES } from '../constants';
 import { Action, AppRoute } from '../../types';
 import { useAppList } from '../store/app';
+import { emptyFunction } from '../utils';
 
 const useSecondaryActions = (
 	actions: Array<Action>,
 	activeRoute?: AppRoute
-): Array<Action | { type: string; id: string }> => {
+): Array<Action | { type: 'divider'; id: string; label: string }> => {
 	const apps = useAppList();
 
 	const byApp = useMemo(() => groupBy(actions, 'group'), [actions]);
@@ -32,7 +33,7 @@ const useSecondaryActions = (
 					}
 					return acc;
 				},
-				[] as Array<Action | { type: string; id: string }>
+				[] as Array<Action | { type: 'divider'; id: string; label: string }>
 			)
 		],
 		[activeRoute?.app, apps, byApp]
@@ -61,21 +62,22 @@ export const CreationButton: FC<{ activeRoute?: AppRoute }> = ({ activeRoute }) 
 	}, []);
 	return primaryAction ? (
 		<MultiButton
-			style={{ height: '42px' }}
+			size="extralarge"
 			background="primary"
 			label={primaryAction?.label ?? t('new', 'New')}
 			onClick={primaryAction?.click}
 			items={secondaryActions}
-			disabled={!primaryAction || primaryAction?.disabled}
+			disabledPrimary={!primaryAction || primaryAction?.disabled}
+			disabledSecondary={!secondaryActions?.length}
 		/>
 	) : (
 		<Dropdown items={secondaryActions} onClose={onClose} onOpen={onOpen}>
 			<Button
-				style={{ height: '42px' }}
-				background="primary"
-				items={secondaryActions}
+				size="extralarge"
+				backgroundColor="primary"
 				label={t('new', 'New')}
 				icon={open ? 'ChevronUp' : 'ChevronDown'}
+				onClick={emptyFunction}
 			/>
 		</Dropdown>
 	);

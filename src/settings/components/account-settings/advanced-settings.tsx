@@ -13,10 +13,11 @@ import {
 	Padding,
 	Input,
 	Row,
-	Button,
+	ButtonOld as Button,
 	Checkbox
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
+import { emptyFunction } from '../../../utils';
 
 interface AdvancedSettingsProps {
 	t: TFunction;
@@ -54,10 +55,7 @@ const AdvancedSettings = ({ t }: AdvancedSettingsProps): ReactElement => (
 				width="100px"
 				label={t('label.pop_port', 'POP port')}
 				value="110"
-				onChange={(): void => {
-					null;
-				}}
-				background="gray5"
+				onChange={emptyFunction}
 			/>
 		</Row>
 		<Row

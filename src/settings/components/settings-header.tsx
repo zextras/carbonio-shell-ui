@@ -10,7 +10,7 @@ import {
 	Row,
 	Text,
 	Container,
-	Button,
+	ButtonOld as Button,
 	Divider,
 	Breadcrumbs
 } from '@zextras/carbonio-design-system';

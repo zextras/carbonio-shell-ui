@@ -29,53 +29,53 @@ const themeSizes = (
 ): ThemeExtension => {
 	switch (size) {
 		case 'small': {
-			return (t: any): any => {
+			return (theme: any): any => {
 				// eslint-disable-next-line no-param-reassign
-				t.sizes.font = {
+				theme.sizes.font = {
 					extrasmall: '10px',
 					small: '12px',
 					medium: '14px',
 					large: '16px'
 				};
-				return t;
+				return theme;
 			};
 		}
 		case 'large': {
-			return (t: any): any => {
+			return (theme: any): any => {
 				// eslint-disable-next-line no-param-reassign
-				t.sizes.font = {
+				theme.sizes.font = {
 					extrasmall: '14px',
 					small: '16px',
 					medium: '18px',
 					large: '20px'
 				};
-				return t;
+				return theme;
 			};
 		}
 		case 'larger': {
-			return (t: any): any => {
+			return (theme: any): any => {
 				// eslint-disable-next-line no-param-reassign
-				t.sizes.font = {
+				theme.sizes.font = {
 					extrasmall: '16px',
 					small: '18px',
 					medium: '20px',
 					large: '22px'
 				};
-				return t;
+				return theme;
 			};
 		}
 		case 'default':
 		case 'normal':
 		default: {
-			return (t: any): any => {
+			return (theme: any): any => {
 				// eslint-disable-next-line no-param-reassign
-				t.sizes.font = {
+				theme.sizes.font = {
 					extrasmall: '12px',
 					small: '14px',
 					medium: '16px',
 					large: '18px'
 				};
-				return t;
+				return theme;
 			};
 		}
 	}
@@ -83,9 +83,9 @@ const themeSizes = (
 
 const paletteExtension =
 	(): ThemeExtension =>
-	(t: any): any => {
+	(theme: any): any => {
 		// eslint-disable-next-line no-param-reassign
-		t.palette.shared = {
+		theme.palette.shared = {
 			regular: '#FFB74D',
 			hover: '#FFA21A',
 			active: '#FFA21A',
@@ -93,24 +93,24 @@ const paletteExtension =
 			disabled: '#FFD699'
 		};
 		// eslint-disable-next-line no-param-reassign
-		t.palette.linked = {
+		theme.palette.linked = {
 			regular: '#AB47BC',
 			hover: '#8B3899',
 			active: '#8B3899',
 			focus: '#7A3187',
 			disabled: '#DDB4E4'
 		};
-		return t;
+		return theme;
 	};
 
 const iconExtension =
 	(): ThemeExtension =>
-	(t: any): any => {
+	(theme: any): any => {
 		// eslint-disable-next-line no-param-reassign
-		t.icons.Shared = t.icons.ArrowCircleRight;
+		theme.icons.Shared = theme.icons.ArrowCircleRight;
 		// eslint-disable-next-line no-param-reassign
-		t.icons.Linked = t.icons.ArrowCircleLeft;
-		return t;
+		theme.icons.Linked = theme.icons.ArrowCircleLeft;
+		return theme;
 	};
 
 export const ThemeProvider: FC = ({ children }) => {

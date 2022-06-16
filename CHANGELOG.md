@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.28](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.27...v0.4.28) (2022-06-14)
+
+
+### Features
+
+* enable vietname language support ([f3f4845](https://github.com/zextras/carbonio-shell-ui/commit/f3f48454d188b08e292e3a108bffd2ac6359c697))
+
 ### [0.4.27](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.26...v0.4.27) (2022-06-09)
 
 

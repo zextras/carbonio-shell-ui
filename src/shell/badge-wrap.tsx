@@ -21,6 +21,7 @@ const MiniBadge = styled(Container)<{ badge: BadgeInfo }>`
 	user-select: none;
 	cursor: pointer;
 	pointer-events: none;
+	z-index: 99;
 `;
 
 // eslint-disable-next-line react/display-name

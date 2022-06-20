@@ -48,7 +48,7 @@
             },
             "do_not_send_auto_replies": "No enviar respuestas automáticas",
             "headings": {
-                "create_appointment": "Cita en el calendario",
+                "create_appointment": "Cita del calendario",
                 "settings_label": "Ajustes fuera de la oficina",
                 "time_period": "Periodo de tiempo"
             },
@@ -79,7 +79,7 @@
         "search_settings": {
             "labels": {
                 "include_search_in_shared_folder": "Incluir carpeta de compartidos en las búsquedas",
-                "include_search_in_spam_folder": "Incluir carpeta de Spam en las búsquedas",
+                "include_search_in_spam_folder": "Incluir carpeta Spam en las búsquedas",
                 "include_search_in_trash_folder": "Incluir carpeta de la papelera en las búsquedas"
             }
         }

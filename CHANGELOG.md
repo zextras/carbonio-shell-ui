@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.29](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.28...v0.4.29) (2022-06-20)
+
 ### [0.4.28](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.27...v0.4.28) (2022-06-14)
 
 

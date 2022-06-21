@@ -19,7 +19,7 @@ const BoardContainer = styled.div`
 	width: 100%;
 	overflow-y: auto;
 	&::-webkit-scrollbar {
-		width: 12px;
+		width: 8px;
 	}
 
 	&::-webkit-scrollbar-track {
@@ -28,8 +28,8 @@ const BoardContainer = styled.div`
 
 	&::-webkit-scrollbar-thumb {
 		background-color: ${({ theme }) => theme.palette.gray3.regular};
-		border-radius: 6px;
-	}	
+		border-radius: 4px;
+	}
 `;
 
 export default function AppBoard({ idx }) {

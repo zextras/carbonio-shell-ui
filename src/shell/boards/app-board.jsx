@@ -18,6 +18,18 @@ const BoardContainer = styled.div`
 	height: 100%;
 	width: 100%;
 	overflow-y: auto;
+	&::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background-color: transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: ${({ theme }) => theme.palette.gray3.regular};
+		border-radius: 4px;
+	}
 `;
 
 export default function AppBoard({ idx }) {

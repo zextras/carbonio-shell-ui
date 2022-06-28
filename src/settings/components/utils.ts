@@ -245,6 +245,13 @@ export const localeList = (t: TFunction): Array<LocaleDescriptor> => [
 		localName: t('locale.french', 'French'),
 		label: t('locale.label_french', { value: 'français', defaultValue: 'French - {{value}}' }),
 		value: 'fr'
+	},
+	{
+		id: 'vi',
+		name: 'Tiếng Việt',
+		localName: t('locale.vietnamese', 'Vietnamese'),
+		label: 'Vietnamese - Tiếng Việt',
+		value: 'vi'
 	}
 ];
 // TODO: For future languages
@@ -465,13 +472,7 @@ export const localeList = (t: TFunction): Array<LocaleDescriptor> => [
 // 		label: 'Ukrainian - українська',
 // 		value: 'uk'
 // 	},
-// 	{
-// 		id: 'vi',
-// 		name: 'Tiếng Việt',
-// 		localName: t('locale.vietnamese', 'Vietnamese'),
-// 		label: 'Vietnamese - Tiếng Việt',
-// 		value: 'vi'
-// 	}
+
 // ];
 
 export type TimeZoneDescriptor = {

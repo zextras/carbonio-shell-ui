@@ -6,34 +6,30 @@
 
 import { Container, IconButton, Row, Tooltip } from '@zextras/carbonio-design-system';
 import { map, isEmpty, trim, filter, sortBy } from 'lodash';
-import React, { useContext, FC, useState, useEffect, useMemo } from 'react';
+import React, { FC, useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-// TODO: convert boards management to ts (and maybe a zustand store)
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { BoardValueContext, BoardSetterContext } from './boards/board-context';
 import { useAppStore } from '../store/app';
 import { AppRoute, PrimaryAccessoryView, PrimaryBarView } from '../../types';
 import BadgeWrap from './badge-wrap';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { checkRoute } from '../utility-bar/utils';
 import { IS_STANDALONE } from '../constants';
+import { minimizeBoards, reopenBoards, useBoardStore } from '../store/boards';
 
 const ContainerWithDivider = styled(Container)`
+	grid-area: primary-bar;
 	border-right: 1px solid ${({ theme }): string => theme.palette.gray3.regular};
 `;
 
 const ToggleBoardIcon: FC = () => {
-	const { boards, minimized } = useContext(BoardValueContext);
-	const { toggleMinimized } = useContext(BoardSetterContext);
-
+	const { minimized, boards } = useBoardStore();
 	if (isEmpty(boards)) return null;
 	return (
 		<IconButton
 			iconColor="primary"
 			icon={minimized ? 'BoardOpen' : 'BoardCollapse'}
-			onClick={toggleMinimized}
+			onClick={minimized ? reopenBoards : minimizeBoards}
 			size="large"
 		/>
 	);

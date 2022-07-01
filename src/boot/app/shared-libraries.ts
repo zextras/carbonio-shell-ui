@@ -49,15 +49,7 @@ export function injectSharedLibraries(): void {
 		'react-router-dom': ReactRouterDom,
 		moment: Moment,
 		'styled-components': StyledComponents,
-		'@reduxjs/toolkit': {
-			...ReduxJSToolkit,
-			configureStore: (): void => {
-				throw new Error('Apps must use the store given by the Shell.');
-			},
-			createStore: (): void => {
-				throw new Error('Apps must use the store given by the Shell.');
-			}
-		},
+		'@reduxjs/toolkit': ReduxJSToolkit,
 		'@zextras/carbonio-shell-ui': {},
 		'@zextras/carbonio-design-system': ZappUI,
 		'@zextras/carbonio-ui-preview': Preview

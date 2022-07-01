@@ -27,9 +27,9 @@ import { filter, find, map } from 'lodash';
 import styled from 'styled-components';
 import { TFunction, useTranslation } from 'react-i18next';
 import { useUserAccount } from '../store/account';
-import { useRemoveCurrentBoard } from '../shell/boards/board-hooks';
 import { feedback } from './functions';
 import { useAppList } from '../store/app';
+import { closeBoard } from '../store/boards';
 
 const TextArea = styled.textarea<{ size?: string }>`
 	width: 100%;
@@ -270,8 +270,6 @@ const Feedback: FC = () => {
 		[setShowErr, event]
 	);
 
-	const closeBoard = useRemoveCurrentBoard();
-
 	const createSnackbar = useContext(SnackbarManagerContext) as (snackbar: any) => void;
 
 	const confirmHandler = useCallback(() => {
@@ -284,8 +282,8 @@ const Feedback: FC = () => {
 						label: t('feedback.error', 'There was an error while sending your feedback')
 				  }
 		);
-		closeBoard();
-	}, [event, createSnackbar, t, closeBoard]);
+		closeBoard('feedback');
+	}, [event, createSnackbar, t]);
 
 	useEffect(() => {
 		dispatch({

@@ -30,8 +30,11 @@ const roots: Roots = {};
 const searches: Searches = {};
 
 const omit = ({
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	link: _1,
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	folder: _2,
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	search: _3,
 	...obj
 }: Partial<SoapFolder>): Partial<SoapFolder> => obj;

@@ -7,7 +7,6 @@
 
 import { ComponentType, Dispatch, FC, SetStateAction } from 'react';
 import { LinkProps } from 'react-router-dom';
-import { Reducer, Store } from 'redux';
 import { TFunction } from 'react-i18next';
 import {
 	AppRoute,
@@ -46,7 +45,6 @@ export const getBridgedFunctions: () => {
 	setCurrentBoard: (key: string) => void;
 	updateBoard: (key: string, url: string, title: string) => void;
 	updateCurrentBoard: (url: string, title: string) => void;
-	t: TFunction;
 	toggleMinimizedBoard: () => void;
 };
 export const editSettings: (mods: Mods) => Promise<any>;
@@ -119,10 +117,6 @@ export const useUserSettings: () => AccountSettings;
 export const useUserSetting: <T = void>(...path: Array<string>) => string | T;
 export const getUserSettings: () => AccountSettings;
 export const getUserSetting: <T = void>(...path: Array<string>) => string | T;
-export const store: {
-	store: Store<any>;
-	setReducer(nextReducer: Reducer): void;
-};
 export const useNotify: () => Array<SoapNotify>;
 export const useRefresh: () => SoapRefresh;
 export const AppLink: FC<LinkProps>;

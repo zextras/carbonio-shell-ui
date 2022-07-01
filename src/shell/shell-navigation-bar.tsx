@@ -5,7 +5,7 @@
  */
 
 import React, { FC } from 'react';
-import { Container, Responsive } from '@zextras/carbonio-design-system';
+import { Responsive } from '@zextras/carbonio-design-system';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -19,14 +19,15 @@ type ShellNavigationBarProps = {
 };
 
 const ShellNavigationBar: FC<ShellNavigationBarProps> = ({ mobileNavIsOpen, activeRoute }) => (
-	<Container
-		orientation="horizontal"
-		background="gray5"
-		width="fit"
-		height="fill"
-		mainAlignment="flex-start"
-		crossAlignment="flex-start"
-	>
+	// <Container
+	// 	orientation="horizontal"
+	// 	background="gray5"
+	// 	width="fit"
+	// 	height="fill"
+	// 	mainAlignment="flex-start"
+	// 	crossAlignment="flex-start"
+	// >
+	<>
 		<Responsive mode="desktop">
 			<ShellPrimaryBar activeRoute={activeRoute} />
 			<ShellSecondaryBar activeRoute={activeRoute} />
@@ -34,7 +35,8 @@ const ShellNavigationBar: FC<ShellNavigationBarProps> = ({ mobileNavIsOpen, acti
 		<Responsive mode="mobile">
 			<ShellMobileNav mobileNavIsOpen={mobileNavIsOpen} menuTree={activeRoute} />
 		</Responsive>
-	</Container>
+	</>
+	// </Container>
 );
 
 export default ShellNavigationBar;

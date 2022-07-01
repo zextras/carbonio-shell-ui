@@ -11,9 +11,9 @@ import { useUtilityBarStore } from './store';
 import { SHELL_APP_ID, UtilityView } from '../../types';
 import { useUtilityViews } from './utils';
 import { logout } from '../network/logout';
-import { useContextBridge } from '../store/context-bridge';
 import { noOp } from '../network/fetch';
 import { useUserAccount } from '../store/account';
+import { addBoard } from '../store/boards';
 
 const UtilityBarItem: FC<{ view: UtilityView }> = ({ view }) => {
 	const { mode, setMode, current, setCurrent } = useUtilityBarStore();
@@ -57,10 +57,11 @@ export const ShellUtilityBar: FC = () => {
 				id: 'feedback',
 				label: t('label.feedback', 'Feedback'),
 				click: () =>
-					useContextBridge.getState().packageDependentFunctions?.addBoard(SHELL_APP_ID)(
-						'/feedback/',
-						{ title: t('label.feedback', 'Feedback') }
-					),
+					addBoard(SHELL_APP_ID)({
+						url: '/feedback/',
+						title: t('label.feedback', 'Feedback'),
+						id: 'feedback'
+					}),
 				icon: 'MessageSquareOutline'
 			},
 			{

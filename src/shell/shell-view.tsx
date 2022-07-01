@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect, useState, useContext, FC, useMemo } from 'react';
-import { Row, Responsive, ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
+import { Responsive, ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 import { find } from 'lodash';
 // import { PreviewManager } from '../preview';
@@ -16,7 +16,7 @@ import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import AppBoardWindow from './boards/app-board-window';
+import AppBoardWindow from './boards/board-container';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 import { useAccountStore, useUserSettings } from '../store/account';
 import { ShellUtilityBar, ShellUtilityPanel } from '../utility-bar';
@@ -27,8 +27,10 @@ import { AppRoute, DRPropValues } from '../../types';
 
 const Background = styled.div`
 	background: ${({ theme }): string => theme.palette.gray6.regular};
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-rows: 60px 1fr;
+	grid-template-columns: 48px 1fr 1fr;
+	grid-template-areas: 'header header header' 'primary-bar secondary-bar app';
 	height: 100%;
 	min-height: 100%;
 	max-height: 100%;
@@ -81,11 +83,11 @@ export const Shell: FC = () => {
 					<ShellUtilityBar />
 				</ShellHeader>
 			)}
-			<Row crossAlignment="unset" style={{ position: 'relative', flexGrow: '1' }}>
-				<ShellNavigationBar activeRoute={activeRoute} mobileNavIsOpen={mobileNavOpen} />
-				<AppViewContainer />
-				<ShellUtilityPanel />
-			</Row>
+			{/* <Row crossAlignment="unset" style={{ position: 'relative', flexGrow: '1' }}> */}
+			<ShellNavigationBar activeRoute={activeRoute} mobileNavIsOpen={mobileNavOpen} />
+			<AppViewContainer />
+			<ShellUtilityPanel />
+			{/* </Row> */}
 			<Responsive mode="desktop">
 				<AppBoardWindow />
 			</Responsive>

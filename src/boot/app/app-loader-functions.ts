@@ -53,12 +53,6 @@ import {
 	goBackHistory,
 	pushHistory
 } from '../../history/hooks';
-import {
-	getUseAddBoardCallback,
-	useBoardConfig,
-	useRemoveCurrentBoard,
-	useUpdateCurrentBoard
-} from '../../shell/boards/board-hooks';
 import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
 import {
 	getFolder,
@@ -82,9 +76,28 @@ import { getTags, useTags } from '../../store/tags';
 import { useNotify, useRefresh } from '../../store/network';
 import { changeTagColor, createTag, deleteTag, renameTag } from '../../network/tags';
 import { runSearch } from '../../search/run-search';
+import { getI18n, useI18n } from '../../store/i18n';
+import {
+	addBoard,
+	closeBoard,
+	updateBoard,
+	updateBoardContext,
+	getBoard,
+	getBoardContext,
+	useBoardContext,
+	useBoard,
+	minimizeBoards,
+	reopenBoards,
+	setCurrentBoard
+} from '../../store/boards';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({
+	// I18N
+	useI18n: useI18n(pkg.name),
+	getI18n: getI18n(pkg.name),
+
+	// FETCH
 	soapFetch: getSoapFetch(pkg.name),
 	xmlSoapFetch: getXmlSoapFetch(pkg.name),
 
@@ -144,10 +157,17 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	useRootByUser,
 	getRootByUser,
 	// BOARDS
-	useAddBoardCallback: getUseAddBoardCallback(pkg.name),
-	useUpdateCurrentBoard,
-	useRemoveCurrentBoard,
-	useBoardConfig,
+	addBoard,
+	closeBoard,
+	updateBoard,
+	updateBoardContext,
+	getBoard,
+	getBoardContext,
+	useBoard,
+	useBoardContext,
+	minimizeBoards,
+	reopenBoards,
+	setCurrentBoard,
 	// HISTORY
 	usePushHistoryCallback,
 	useGoBackHistoryCallback,

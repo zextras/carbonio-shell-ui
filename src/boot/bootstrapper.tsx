@@ -11,11 +11,10 @@ import { init } from './init';
 import { ThemeProvider } from './theme-provider';
 import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-provider';
-import I18nFactory from '../i18n/i18n-factory';
-import StoreFactory from '../redux/store-factory';
 import { unloadAllApps } from './app/load-apps';
 import { registerDefaultViews } from './app/default-views';
 import { useBridge } from '../store/context-bridge';
+import { getI18n } from '../store/i18n';
 
 const DefaultViewsRegister: FC = () => {
 	const [t] = useTranslation();
@@ -25,31 +24,18 @@ const DefaultViewsRegister: FC = () => {
 	return null;
 };
 
-const TBridge: FC<{ i18nFactory: I18nFactory }> = ({ i18nFactory }) => {
-	useBridge({
-		functions: {},
-		packageDependentFunctions: {
-			t: (app) => i18nFactory.getAppI18n({ name: app }).t
-		}
-	});
-	return null;
-};
-
 const Bootstrapper: FC = () => {
-	const i18nFactory = useMemo(() => new I18nFactory(), []);
-	const storeFactory = useMemo(() => new StoreFactory(), []);
 	useEffect(() => {
-		init(i18nFactory, storeFactory);
+		init();
 		return () => {
 			unloadAllApps();
 		};
-	}, [i18nFactory, storeFactory]);
+	}, []);
 	return (
 		<ThemeProvider>
 			<SnackbarManager>
 				<ModalManager>
-					<BootstrapperContextProvider i18nFactory={i18nFactory} storeFactory={storeFactory}>
-						<TBridge i18nFactory={i18nFactory} />
+					<BootstrapperContextProvider>
 						<DefaultViewsRegister />
 						<BootstrapperRouter />
 					</BootstrapperContextProvider>

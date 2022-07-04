@@ -13,16 +13,11 @@ import {
 	useScreenMode,
 	Catcher
 } from '@zextras/carbonio-design-system';
-import styled from 'styled-components';
 import Logo from '../svg/carbonio.svg';
 import { SearchBar } from '../search/search-bar';
 import { CreationButton } from './creation-button';
 import { useAppStore } from '../store/app';
 import { AppRoute } from '../../types';
-
-const GridHeader = styled(Container)`
-	grid-area: header;
-`;
 
 const ShellHeader: FC<{
 	activeRoute: AppRoute;
@@ -32,10 +27,13 @@ const ShellHeader: FC<{
 	const screenMode = useScreenMode();
 	const searchEnabled = useAppStore((s) => s.views.search.length > 0);
 	return (
-		<GridHeader
+		<Container
 			orientation="horizontal"
 			background="gray3"
 			width="fill"
+			height="60px"
+			minHeight="60px"
+			maxHeight="60px"
 			mainAlignment="space-between"
 			padding={{
 				horizontal: screenMode === 'desktop' ? 'large' : 'extrasmall',
@@ -85,7 +83,7 @@ const ShellHeader: FC<{
 					</Responsive>
 				</Container>
 			</Catcher>
-		</GridHeader>
+		</Container>
 	);
 };
 export default ShellHeader;

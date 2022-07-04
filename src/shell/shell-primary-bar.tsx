@@ -18,7 +18,6 @@ import { IS_STANDALONE } from '../constants';
 import { minimizeBoards, reopenBoards, useBoardStore } from '../store/boards';
 
 const ContainerWithDivider = styled(Container)`
-	grid-area: primary-bar;
 	border-right: 1px solid ${({ theme }): string => theme.palette.gray3.regular};
 `;
 

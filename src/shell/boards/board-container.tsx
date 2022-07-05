@@ -75,20 +75,6 @@ const Actions = styled(Row)``;
 export const AppBoardWindow: FC = () => {
 	const [t] = useTranslation();
 	const { boards, minimized, expanded, current } = useBoardStore();
-
-	// const [tabs, aboards] = useMemo(
-	// 	() =>
-	// 		reduce(
-	// 			allBoards,
-	// 			(acc, board, boardId) => {
-	// 				const [_tabs, _boards] = acc;
-	// 				_tabs.push({ key: boardId, ...board });
-	// 				return acc;
-	// 			},
-	// 			[[], []]
-	// 		),
-	// 	[allBoards]
-	// );
 	if (isEmpty(boards) || !current) return null;
 	return (
 		<BoardContainer expanded={expanded} minimized={minimized}>
@@ -103,14 +89,11 @@ export const AppBoardWindow: FC = () => {
 					<Actions padding={{ all: 'extrasmall' }}>
 						{boards[current]?.context?.onReturnToApp && (
 							<Padding right="extrasmall">
-								<IconButton icon={'DiagonalArrowRightUp'} onClick={onGoToPanel} />
+								<Tooltip label={t('board.open_app', 'Open in app')} placement="top">
+									<IconButton icon={'DiagonalArrowRightUp'} onClick={onGoToPanel} />
+								</Tooltip>
 							</Padding>
 						)}
-						{/* <Padding right="extrasmall">
-							<Tooltip label={t('board.open_app', 'Open in app')} placement="top">
-								<IconButton icon="DiagonalArrowRightUpOutline" onClick={toggleexpanded} />
-							</Tooltip>
-						</Padding> */}
 						<Padding right="extrasmall">
 							<Tooltip
 								label={

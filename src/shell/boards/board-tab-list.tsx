@@ -15,14 +15,12 @@ import {
 	Tooltip
 } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
-import { useApps } from '../../store/app';
 import { setCurrentBoard, useBoardStore } from '../../store/boards';
 import { AppBoardTab } from './board-tab';
 
 export const TabsList: FC = () => {
 	const [t] = useTranslation();
 	const { boards, current, expanded } = useBoardStore();
-	const apps = useApps();
 	const tabContainerRef = useRef();
 	const [hiddenTabsCount, recalculateHiddenTabs] = useHiddenCount(tabContainerRef, expanded);
 

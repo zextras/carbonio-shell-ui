@@ -7,24 +7,7 @@
 import produce from 'immer';
 import { forEach } from 'lodash';
 import create from 'zustand';
-
-export type Board<T = unknown> = {
-	id: string;
-	url: string;
-	app: string;
-	icon?: string;
-	title: string;
-	context?: T;
-	onClose?: (board: Board<T>) => void;
-	onGoToPanel?: (board: Board<T>) => void;
-};
-
-export type BoardState = {
-	boards: Record<string, Board<any>>;
-	expanded: boolean;
-	minimized: boolean;
-	current?: string;
-};
+import { BoardState, Board } from '../../../types';
 
 export const useBoardStore = create<BoardState>(() => ({
 	boards: {},

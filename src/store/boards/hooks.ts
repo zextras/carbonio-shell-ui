@@ -3,7 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { Board, useBoardStore } from './store';
+import { Board } from '../../../types';
+import { useBoardStore } from './store';
 
 export const useBoard = <T>(id: string): Board<T> => useBoardStore((s) => s.boards[id]);
 export const getBoard = <T>(id: string): Board<T> => useBoardStore.getState().boards[id];

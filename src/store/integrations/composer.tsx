@@ -78,7 +78,11 @@ const Composer: FC<ComposerProps> = ({
 		[setContent, onEditorChange]
 	);
 
-	useEffect(() => setContent(value), [value]);
+	useEffect(() => {
+		if (value) {
+			setContent(value);
+		}
+	}, [value]);
 
 	return (
 		<Container

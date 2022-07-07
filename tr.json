@@ -247,7 +247,8 @@
         "thai": "Thai",
         "turkish": "Türkçe",
         "french": "Fransızca",
-        "label_french": "Fransızca - {{value}}"
+        "label_french": "Fransızca - {{value}}",
+        "vietnamese": "Vietnamese"
     },
     "timezone": {
         "bangkok_hanoi_jakarta": "{{value}} Bangkok, Hanoi, Jakarta",

@@ -32,7 +32,7 @@
                 "end_time": "Hora de finalización:",
                 "external_senders": "Remitentes externos",
                 "out_of_office": "Fuera de la oficina",
-                "out_of_office_status": "Estado fuera de la oficina:",
+                "out_of_office_status": "Estado de respuesta automática:",
                 "send_auto_reply_period": "Enviar respuestas automáticas durante el siguiente periodo:",
                 "start_time": "Hora de inicio:"
             },
@@ -41,7 +41,7 @@
                 "out_of_office": "Fuera de la oficina"
             },
             "external_senders": {
-                "do_not_send_to_external": "No enviar un mensaje de respuesta automática al remitente externo",
+                "do_not_send_to_external": "No enviar respuesta automática al remitente externo",
                 "send_custom_in_organisation": "Enviar un mensaje personalizado a aquellos que no trabajan en mi organización",
                 "send_custom_not_in_organisation": "Enviar un mensaje personalizado a aquellos que no trabajan en mi organización y no están en mi libreta de direcciones",
                 "send_standard_auto_reply": "Enviar mensaje de respuesta automática estándar"
@@ -49,7 +49,7 @@
             "do_not_send_auto_replies": "No enviar respuestas automáticas",
             "headings": {
                 "create_appointment": "Cita del calendario",
-                "settings_label": "Ajustes fuera de la oficina",
+                "settings_label": "Respuesta automática",
                 "time_period": "Periodo de tiempo"
             },
             "send_auto_replies": "Enviar respuestas automáticas"
@@ -73,7 +73,7 @@
         },
         "app_description": "Módulo de ajustes",
         "general_tab": "General",
-        "timezone_and_language": "Huso horario e idioma",
+        "timezone_and_language": "Zona horaria e idioma",
         "accounts": "Cuentas",
         "choose": "Seleccionar",
         "search_settings": {
@@ -185,7 +185,7 @@
         "unsaved_changes_line1": "¿Seguro que quieres salir de esta página sin guardar?",
         "use_persona": "Usar esta Persona",
         "use_personas_line1": "Usa las Personas para cambiar rápidamente las configuraciones cuando envías mensajes e-mail.",
-        "use_personas_line2": "Por ejemplo, si sueles enviar e-mails en el trabajo con un determinado rol, crea una Persona para ello.",
+        "use_personas_line2": "Por ejemplo, si envías e-mails en el trabajo con un determinado rol, crea una Persona para ello.",
         "click_to_copy": "Clic para copiar",
         "documentation": "Documentación",
         "dont_save": "No guardar una copia de los mensajes enviados",
@@ -464,7 +464,8 @@
         "spanish": "Español",
         "turkish": "Turco",
         "french": "Francés",
-        "label_french": "Francés - {{value}}"
+        "label_french": "Francés - {{value}}",
+        "vietnamese": "Vietnamita"
     },
     "board": {
         "close_tab": "Cerrar pestaña",

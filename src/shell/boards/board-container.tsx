@@ -6,7 +6,7 @@
 
 import React, { FC } from 'react';
 import styled, { css } from 'styled-components';
-import { isEmpty } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import {
 	Container,
 	Divider,
@@ -25,8 +25,9 @@ import {
 	useBoardStore
 } from '../../store/boards';
 import { TabsList } from './board-tab-list';
+import { AppBoard } from './board';
 
-const BoardContainer = styled.div<{ expanded: boolean; minimized: boolean }>`
+const BoardContainerComp = styled.div<{ expanded: boolean; minimized: boolean }>`
 	position: fixed;
 	top: 60px;
 	bottom: 0;
@@ -72,12 +73,12 @@ const BoardDetailContainer = styled(Row)`
 const BackButton = styled(IconButton)``;
 const Actions = styled(Row)``;
 
-export const AppBoardWindow: FC = () => {
+export const BoardContainer: FC = () => {
 	const [t] = useTranslation();
 	const { boards, minimized, expanded, current } = useBoardStore();
 	if (isEmpty(boards) || !current) return null;
 	return (
-		<BoardContainer expanded={expanded} minimized={minimized}>
+		<BoardContainerComp expanded={expanded} minimized={minimized}>
 			<Board background="gray6" crossAlignment="unset" expanded={expanded}>
 				<BoardHeader background="gray5">
 					<Padding all="extrasmall">
@@ -113,8 +114,12 @@ export const AppBoardWindow: FC = () => {
 					</Actions>
 				</BoardHeader>
 				<Divider style={{ height: '2px' }} />
-				<BoardDetailContainer takeAvailableSpace>{boards}</BoardDetailContainer>
+				<BoardDetailContainer takeAvailableSpace>
+					{map(boards, (b) => (
+						<AppBoard key={b.id} board={b} />
+					))}
+				</BoardDetailContainer>
 			</Board>
-		</BoardContainer>
+		</BoardContainerComp>
 	);
 };

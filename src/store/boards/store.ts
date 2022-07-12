@@ -5,9 +5,10 @@
  */
 
 import produce from 'immer';
-import { forEach } from 'lodash';
+import { forEach, trimStart, uniqueId } from 'lodash';
 import create from 'zustand';
 import { BoardState, Board } from '../../../types';
+import { getApp } from '../app';
 
 export const useBoardStore = create<BoardState>(() => ({
 	boards: {},
@@ -17,17 +18,27 @@ export const useBoardStore = create<BoardState>(() => ({
 
 export const addBoard =
 	(app: string) =>
-	<T = any>(board: Omit<Board<T>, 'app'>): void => {
+	<T = any>(
+		board: Omit<Board<T>, 'app' | 'icon' | 'id'> & { id?: string; icon?: string }
+	): Board => {
+		const id = board.id ?? uniqueId('board-');
 		useBoardStore.setState(
 			produce((s: BoardState) => {
 				// eslint-disable-next-line no-param-reassign
-				s.boards[board.id] = { ...board, app };
+				s.boards[id] = {
+					...board,
+					app,
+					id,
+					icon: board.icon ?? getApp(app)()?.icon ?? 'CubeOutline',
+					url: trimStart(board.url, '/')
+				};
 				// eslint-disable-next-line no-param-reassign
-				s.current = board.id;
+				s.current = id;
 				// eslint-disable-next-line no-param-reassign
 				s.minimized = false;
 			})
 		);
+		return useBoardStore.getState().boards[id];
 	};
 export const closeBoard = (id: string): void => {
 	useBoardStore.setState(

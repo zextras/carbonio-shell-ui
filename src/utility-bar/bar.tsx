@@ -58,9 +58,9 @@ export const ShellUtilityBar: FC = () => {
 				label: t('label.feedback', 'Feedback'),
 				click: () =>
 					addBoard(SHELL_APP_ID)({
-						url: '/feedback/',
+						url: 'feedback',
 						title: t('label.feedback', 'Feedback'),
-						id: 'feedback'
+						icon: 'MessageSquareOutline'
 					}),
 				icon: 'MessageSquareOutline'
 			},

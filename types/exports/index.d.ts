@@ -35,7 +35,7 @@ import { HistoryParams, ShellModes, AccordionFolder } from '../misc';
 import { Tag, Tags } from '../tags';
 import { Folder, Folders } from '../folder';
 import { QueryChip } from '../search';
-import { Board } from '../boards';
+import { Board, BoardHooksContext } from '../boards';
 
 export const getBridgedFunctions: () => {
 	createModal: (...params: any[]) => void;
@@ -217,7 +217,9 @@ export const getI18n: () => i18n;
 export const useI18n: () => i18n;
 export const getTFunction: () => TFunction;
 
-export const addBoard: <T = any>(board: Omit<Board<T>, 'app'>) => void;
+export const addBoard: <T = any>(
+	board: Omit<Board<T>, 'app' | 'icon' | 'id'> & { id?: string; icon?: string }
+) => Board;
 export const closeBoard: (id: string) => void;
 export const updateBoard: <T = any>(id: string, board: Partial<Board<T>>) => void;
 export const updateBoardContext: <T = any>(id: string, context: T) => void;
@@ -228,3 +230,5 @@ export const useBoard: <T>(id: string) => Board<T>;
 export const minimizeBoards: () => void;
 export const reopenBoards: () => void;
 export const setCurrentBoard: (id: string) => void;
+
+export const useBoardHooks: () => BoardHooksContext;

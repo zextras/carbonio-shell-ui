@@ -7,11 +7,12 @@
 import React, { FC, useEffect, useMemo } from 'react';
 import { Route, Router, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { find } from 'lodash';
+import { find, startsWith } from 'lodash';
 import { createMemoryHistory } from 'history';
 import AppContextProvider from '../../boot/app/app-context-provider';
 import { useAppStore } from '../../store/app';
-import { updateBoard, useBoard, useBoardStore } from '../../store/boards';
+import { BoardProvider, updateBoard, useBoardStore } from '../../store/boards';
+import { Board } from '../../../types';
 
 const BoardContainer = styled.div<{ show: boolean }>`
 	display: ${(props): string => (props.show ? 'block' : 'none')};
@@ -32,46 +33,51 @@ const BoardContainer = styled.div<{ show: boolean }>`
 	}
 `;
 
-export const AppBoard: FC<{ id: string }> = ({ id }) => {
-	const board = useBoard(id);
+export const AppBoard: FC<{ board: Board }> = ({ board }) => {
 	const current = useBoardStore((s) => s.current);
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const history = useMemo(() => createMemoryHistory({ initialEntries: [board.url] }), []);
 	const boardViews = useAppStore((s) => s.views.board);
 	const windowHistory = useHistory();
 	const route = useMemo(() => {
-		const view = find(boardViews, (v) => v.route.startsWith(board.url));
+		const view = find(boardViews, (v) => {
+			console.log(v.id, v.route, board.url);
+			return v.id === board.url || startsWith(board.url, v.route);
+		});
+		console.log(view);
 		if (view)
 			return (
-				<Route key={view.id} path={`/${view.route}`}>
+				<Route key={view.id} path={view.route}>
 					<AppContextProvider key={view.id} pkg={view.app}>
-						<view.component windowHistory={windowHistory} />
+						<BoardProvider id={board.id}>
+							<view.component windowHistory={windowHistory} board={board} />
+						</BoardProvider>
 					</AppContextProvider>
 				</Route>
 			);
 		return null;
-	}, [board.url, boardViews, windowHistory]);
-
+	}, [board, boardViews, windowHistory]);
 	useEffect(() => {
 		const unlisten = history.listen(({ location }) => {
 			if (`${location.pathname}${location.search}${location.hash}` !== board.url) {
-				updateBoard(id, { url: `${location.pathname}${location.search}${location.hash}` });
+				updateBoard(board.id, { url: `${location.pathname}${location.search}${location.hash}` });
 			}
 		});
 		return () => {
 			unlisten();
 		};
-	}, [board, history, id]);
+	}, [board, history]);
 
 	useEffect(() => {
 		const l = history.location;
 		if (`${l.pathname}${l.search}${l.hash}` !== board.url) {
 			history.push(board.url);
 		}
-	}, [id, board, history]);
+	}, [board, history]);
+	console.log(board, !!route, history.location);
 
 	return (
-		<BoardContainer show={current === id}>
+		<BoardContainer show={current === board.id}>
 			<Router history={history}>{route}</Router>
 		</BoardContainer>
 	);

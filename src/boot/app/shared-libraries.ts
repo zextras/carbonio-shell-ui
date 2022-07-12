@@ -7,7 +7,7 @@
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
 
-import React, { ComponentClass } from 'react';
+import React from 'react';
 import * as PropTypes from 'prop-types';
 import * as ReactDOM from 'react-dom';
 import * as Lodash from 'lodash';

@@ -5,18 +5,16 @@
  */
 import React, { FC } from 'react';
 import { IconButton } from '@zextras/carbonio-design-system';
-import { useContextBridge } from '../store/context-bridge';
-import { SHELL_APP_ID } from '../../types';
+import { addBoard } from '../store/boards';
+import { SHELL_APP_ID } from '../constants';
 
 const DevBoardTrigger: FC = () => (
 	<IconButton
 		icon="Code"
 		size="large"
-		onClick={(): void =>
-			useContextBridge.getState().packageDependentFunctions?.addBoard(SHELL_APP_ID)('/devtools/', {
-				title: 'Dev Tools'
-			})
-		}
+		onClick={(): void => {
+			addBoard(SHELL_APP_ID)({ url: '/devtools/', title: 'Dev Tools' });
+		}}
 	/>
 );
 

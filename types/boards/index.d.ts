@@ -7,7 +7,7 @@ export type Board<T = unknown> = {
 	id: string;
 	url: string;
 	app: string;
-	icon?: string;
+	icon: string;
 	title: string;
 	context?: T;
 	onClose?: (board: Board<T>) => void;
@@ -19,4 +19,12 @@ export type BoardState = {
 	expanded: boolean;
 	minimized: boolean;
 	current?: string;
+};
+
+export type BoardHooksContext = {
+	board: Board;
+	boardId: string;
+	closeBoard: () => void;
+	updateBoard: (b: Partial<Board>) => void;
+	setCurrentBoard: () => void;
 };

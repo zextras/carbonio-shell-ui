@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useCallback, useContext } from 'react';
+import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import {
@@ -36,7 +36,7 @@ const VerticalDivider = styled(Container)`
 	margin: ${({ theme }): string => theme.sizes.padding.extrasmall};
 `;
 
-export const AppBoardTab: FC<{ id: string; icon?: string; title: string }> = ({
+export const AppBoardTab: FC<{ id: string; icon: string; title: string }> = ({
 	id,
 	icon,
 	title

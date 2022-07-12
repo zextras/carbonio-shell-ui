@@ -38,7 +38,10 @@ export const TabsList: FC = () => {
 				style={{ overflow: 'hidden' }}
 				width="calc(100% - 8px)"
 			>
-				{boards && map(boards, (tab) => <AppBoardTab key={tab.id} id={tab.id} title={tab.title} />)}
+				{boards &&
+					map(boards, (tab) => (
+						<AppBoardTab key={tab.id} id={tab.id} title={tab.title} icon={tab.icon} />
+					))}
 			</Row>
 			{hiddenTabsCount > 0 && (
 				<>

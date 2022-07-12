@@ -6,7 +6,6 @@
 
 import { useAccountStore } from '../store/account';
 import { useAppStore } from '../store/app';
-import { registerDefaultViews } from './app/default-views';
 import { loadApps } from './app/load-apps';
 import { getInfo } from '../network/get-info';
 import { setLocale } from '../store/i18n';

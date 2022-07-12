@@ -88,7 +88,8 @@ import {
 	useBoard,
 	minimizeBoards,
 	reopenBoards,
-	setCurrentBoard
+	setCurrentBoard,
+	useBoardHooks
 } from '../../store/boards';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -157,7 +158,7 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	useRootByUser,
 	getRootByUser,
 	// BOARDS
-	addBoard,
+	addBoard: addBoard(pkg.name),
 	closeBoard,
 	updateBoard,
 	updateBoardContext,
@@ -168,6 +169,7 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	minimizeBoards,
 	reopenBoards,
 	setCurrentBoard,
+	useBoardHooks,
 	// HISTORY
 	usePushHistoryCallback,
 	useGoBackHistoryCallback,

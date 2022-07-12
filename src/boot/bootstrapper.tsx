@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useEffect } from 'react';
 import { SnackbarManager, ModalManager } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { init } from './init';
@@ -13,8 +13,6 @@ import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-provider';
 import { unloadAllApps } from './app/load-apps';
 import { registerDefaultViews } from './app/default-views';
-import { useBridge } from '../store/context-bridge';
-import { getI18n } from '../store/i18n';
 
 const DefaultViewsRegister: FC = () => {
 	const [t] = useTranslation();

@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect, useState, useContext, FC, useMemo } from 'react';
-import { Row, Responsive, ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
+import { Row, Responsive } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 import { find } from 'lodash';
 import { PreviewManager } from '@zextras/carbonio-ui-preview';
@@ -13,7 +13,7 @@ import AppViewContainer from './app-view-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
-import { AppBoardWindow } from './boards/board-container';
+import { BoardContainer } from './boards/board-container';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 import { useAccountStore, useUserSettings } from '../store/account';
 import { ShellUtilityBar, ShellUtilityPanel } from '../utility-bar';
@@ -84,7 +84,7 @@ export const Shell: FC = () => {
 				<ShellUtilityPanel />
 			</Row>
 			<Responsive mode="desktop">
-				<AppBoardWindow />
+				<BoardContainer />
 			</Responsive>
 		</Background>
 	);
@@ -92,13 +92,9 @@ export const Shell: FC = () => {
 
 const ShellView: FC = () => (
 	<ShellContextProvider>
-		<ModalManager>
-			<SnackbarManager>
-				<PreviewManager>
-					<Shell />
-				</PreviewManager>
-			</SnackbarManager>
-		</ModalManager>
+		<PreviewManager>
+			<Shell />
+		</PreviewManager>
 	</ShellContextProvider>
 );
 

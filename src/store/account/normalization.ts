@@ -23,7 +23,10 @@ export const normalizeAccount = ({
 	signatures,
 	props,
 	version,
-	rights
+	rights,
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
+	dataSources
 }: GetInfoResponse): {
 	account: Account;
 	settings: AccountSettings;
@@ -37,7 +40,10 @@ export const normalizeAccount = ({
 			displayName: attrs._attrs.displayName,
 			identities,
 			signatures,
-			rights
+			rights,
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-ignore
+			dataSources
 		},
 		settings,
 		version

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import create, { StoreApi, UseBoundStore } from 'zustand';
+import create from 'zustand';
 import { NetworkState } from '../../../types';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -12,4 +12,4 @@ import { NetworkState } from '../../../types';
 export const useNetworkStore = create<NetworkState>(() => ({
 	pollingInterval: 30000,
 	seq: 0
-})) as UseBoundStore<NetworkState, StoreApi<NetworkState>>;
+}));

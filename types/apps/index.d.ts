@@ -71,7 +71,6 @@ export type SecondaryBarComponentProps = { expanded: boolean };
 export type AppViewComponentProps = {};
 export type BoardViewComponentProps = {
 	windowHistory: History;
-	board: Board;
 };
 export type SettingsViewProps = {};
 export type SearchViewProps = {

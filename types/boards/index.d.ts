@@ -22,9 +22,9 @@ export type BoardState = {
 };
 
 export type BoardHooksContext = {
-	board: Board;
-	boardId: string;
 	closeBoard: () => void;
 	updateBoard: (b: Partial<Board>) => void;
 	setCurrentBoard: () => void;
+	getBoardContext: <T>() => T;
+	getBoard: <T>() => Board<T>;
 };

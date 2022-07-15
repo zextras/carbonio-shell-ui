@@ -19,7 +19,8 @@ export const useBoardStore = create<BoardState>(() => ({
 export const addBoard =
 	(app: string) =>
 	<T = any>(
-		board: Omit<Board<T>, 'app' | 'icon' | 'id'> & { id?: string; icon?: string }
+		board: Omit<Board<T>, 'app' | 'icon' | 'id'> & { id?: string; icon?: string },
+		expanded?: BoardState['expanded']
 	): Board => {
 		const id = board.id ?? uniqueId('board-');
 		useBoardStore.setState(
@@ -36,6 +37,8 @@ export const addBoard =
 				s.current = id;
 				// eslint-disable-next-line no-param-reassign
 				s.minimized = false;
+				// eslint-disable-next-line no-param-reassign
+				s.expanded = expanded ?? s.expanded;
 			})
 		);
 		return useBoardStore.getState().boards[id];

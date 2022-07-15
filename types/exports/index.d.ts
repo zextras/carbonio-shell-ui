@@ -218,17 +218,18 @@ export const useI18n: () => i18n;
 export const getTFunction: () => TFunction;
 
 export const addBoard: <T = any>(
-	board: Omit<Board<T>, 'app' | 'icon' | 'id'> & { id?: string; icon?: string }
+	board: Omit<Board<T>, 'app' | 'icon' | 'id'> & { id?: string; icon?: string },
+	expanded?: boolean
 ) => Board;
 export const closeBoard: (id: string) => void;
 export const updateBoard: <T = any>(id: string, board: Partial<Board<T>>) => void;
 export const updateBoardContext: <T = any>(id: string, context: T) => void;
-export const getBoard: <T>(id: string) => Board<T>;
-export const getBoardContext: <T>(id: string) => T;
-export const useBoardContext: <T>(id: string) => T;
-export const useBoard: <T>(id: string) => Board<T>;
+export const getBoardById: <T>(id: string) => Board<T>;
+export const getBoardContextById: <T>(id: string) => T;
+export const useBoardContextById: <T>(id: string) => T;
+export const useBoardById: <T>(id: string) => Board<T>;
 export const minimizeBoards: () => void;
 export const reopenBoards: () => void;
 export const setCurrentBoard: (id: string) => void;
-
 export const useBoardHooks: () => BoardHooksContext;
+export const useBoard: <T>() => Board<T>;

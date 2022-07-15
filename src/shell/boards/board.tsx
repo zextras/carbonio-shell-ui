@@ -40,23 +40,19 @@ export const AppBoard: FC<{ board: Board }> = ({ board }) => {
 	const boardViews = useAppStore((s) => s.views.board);
 	const windowHistory = useHistory();
 	const route = useMemo(() => {
-		const view = find(boardViews, (v) => {
-			console.log(v.id, v.route, board.url);
-			return v.id === board.url || startsWith(board.url, v.route);
-		});
-		console.log(view);
+		const view = find(boardViews, (v) => v.id === board.url || startsWith(board.url, v.route));
 		if (view)
 			return (
 				<Route key={view.id} path={view.route}>
 					<AppContextProvider key={view.id} pkg={view.app}>
 						<BoardProvider id={board.id}>
-							<view.component windowHistory={windowHistory} board={board} />
+							<view.component windowHistory={windowHistory} />
 						</BoardProvider>
 					</AppContextProvider>
 				</Route>
 			);
 		return null;
-	}, [board, boardViews, windowHistory]);
+	}, [board.id, board.url, boardViews, windowHistory]);
 	useEffect(() => {
 		const unlisten = history.listen(({ location }) => {
 			if (`${location.pathname}${location.search}${location.hash}` !== board.url) {
@@ -66,15 +62,14 @@ export const AppBoard: FC<{ board: Board }> = ({ board }) => {
 		return () => {
 			unlisten();
 		};
-	}, [board, history]);
+	}, [board.url, board.id, history]);
 
 	useEffect(() => {
 		const l = history.location;
 		if (`${l.pathname}${l.search}${l.hash}` !== board.url) {
 			history.push(board.url);
 		}
-	}, [board, history]);
-	console.log(board, !!route, history.location);
+	}, [board.url, history]);
 
 	return (
 		<BoardContainer show={current === board.id}>

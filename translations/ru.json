@@ -279,7 +279,8 @@
         "thai": "Тайский",
         "turkish": "Турецкий",
         "french": "Французский",
-        "label_french": "Французский - {{value}}"
+        "label_french": "Французский - {{value}}",
+        "vietnamese": "Вьетнамский"
     },
     "timezone": {
         "baja_california": "{{value}} Байа Калифорния",

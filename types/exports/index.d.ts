@@ -215,7 +215,7 @@ export const useLocalStorage: <T>(key: string, initialValue: T) => [T, Dispatch<
 
 export const getI18n: () => i18n;
 export const useI18n: () => i18n;
-export const getTFunction: () => TFunction;
+export const t: TFunction;
 
 export const addBoard: <T = any>(
 	board: Omit<Board<T>, 'app' | 'icon' | 'id'> & { id?: string; icon?: string },

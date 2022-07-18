@@ -98,7 +98,7 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	// I18N
 	useI18n: useI18n(pkg.name),
 	getI18n: getI18n(pkg.name),
-	getTFunction: getTFunction(pkg.name),
+	t: getTFunction(pkg.name),
 	// FETCH
 	soapFetch: getSoapFetch(pkg.name),
 	xmlSoapFetch: getXmlSoapFetch(pkg.name),

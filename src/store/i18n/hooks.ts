@@ -17,7 +17,7 @@ export const getI18n = (app: string) => (): i18n => {
 	return instances[app] ?? defaultI18n;
 };
 
-export const getTFunction = (app: string) => (): TFunction => {
+export const getTFunction = (app: string): TFunction => {
 	const { instances, defaultI18n } = useI18nStore.getState();
 	return instances[app]?.t ?? defaultI18n.t;
 };

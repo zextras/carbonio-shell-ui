@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { FC, useContext, useMemo } from 'react';
+import React, { FC, useContext, useMemo, createContext } from 'react';
 import { Board, BoardHooksContext } from '../../../types';
 import { closeBoard, setCurrentBoard, updateBoard, useBoardStore } from './store';
 

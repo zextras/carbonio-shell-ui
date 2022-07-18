@@ -41,6 +41,7 @@ export const AppBoard: FC<{ board: Board }> = ({ board }) => {
 	const windowHistory = useHistory();
 	const route = useMemo(() => {
 		const view = find(boardViews, (v) => v.id === board.url || startsWith(board.url, v.route));
+		console.log(view, board.url);
 		if (view)
 			return (
 				<Route key={view.id} path={view.route}>

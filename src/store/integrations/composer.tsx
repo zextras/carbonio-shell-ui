@@ -135,7 +135,8 @@ const Composer: FC<ComposerProps> = ({
 						? 'bold italic underline | forecolor backcolor | removeformat | quicklink'
 						: 'quicklink',
 					contextmenu: inline ? '' : '',
-					toolbar_mode: 'wrap'
+					toolbar_mode: 'wrap',
+					forced_root_block: 'pre'
 				}}
 				onEditorChange={_onEditorChange}
 				{...rest}

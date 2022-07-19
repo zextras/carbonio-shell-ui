@@ -78,7 +78,11 @@ const Composer: FC<ComposerProps> = ({
 		[setContent, onEditorChange]
 	);
 
-	useEffect(() => setContent(value), [value]);
+	useEffect(() => {
+		if (value) {
+			setContent(value);
+		}
+	}, [value]);
 
 	return (
 		<Container
@@ -130,7 +134,8 @@ const Composer: FC<ComposerProps> = ({
 						? 'bold italic underline | forecolor backcolor | removeformat | quicklink'
 						: 'quicklink',
 					contextmenu: inline ? '' : '',
-					toolbar_mode: 'wrap'
+					toolbar_mode: 'wrap',
+					forced_root_block: 'pre'
 				}}
 				onEditorChange={_onEditorChange}
 				{...rest}

@@ -430,7 +430,8 @@
         "thai": "Thaïlandais",
         "turkish": "Turc",
         "french": "Français",
-        "label_french": "Français - {{value}}"
+        "label_french": "Français - {{value}}",
+        "vietnamese": "Vietnamienne"
     },
     "module": {
         "app": {

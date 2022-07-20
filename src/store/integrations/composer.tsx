@@ -53,15 +53,13 @@ type ComposerProps = {
 	initialValue?: string;
 	/** The content of the editor (controlled mode) */
 	value?: string;
-	/** The base url to append to the resource urls */
-	baseAssetsUrl?: string;
 };
 
 const Composer: FC<ComposerProps> = ({
 	onEditorChange,
 	inline = false,
 	value,
-	baseAssetsUrl,
+
 	initialValue,
 	...rest
 }) => {
@@ -94,9 +92,9 @@ const Composer: FC<ComposerProps> = ({
 			<Editor
 				value={content}
 				init={{
-					skin_url: `${baseAssetsUrl}/tinymce/skins/ui/oxide`,
-					content_css: `${baseAssetsUrl}/tinymce/skins/content/default/content.css`,
+					selector: 'textarea',
 					min_height: 350,
+					content_css: false,
 					menubar: false,
 					statusbar: false,
 					branding: false,
@@ -114,9 +112,10 @@ const Composer: FC<ComposerProps> = ({
 						'anchor',
 						'searchreplace',
 						'code',
+						'edit',
+						'file',
 						'fullscreen',
 						'insertdatetime',
-						'media',
 						'table',
 						'paste',
 						'code',
@@ -125,10 +124,11 @@ const Composer: FC<ComposerProps> = ({
 						'directionality',
 						'autoresize'
 					],
+					object_resizing: 'img',
 					toolbar: inline
 						? false
 						: // eslint-disable-next-line max-len
-						  'fontselect fontsizeselect formatselect | bold italic underline strikethrough | removeformat code | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | ltr rtl',
+						  'fontselect fontsizeselect formatselect | bold italic underline strikethrough | removeformat code | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | ltr rtl | insertfile image ',
 					quickbars_insert_toolbar: inline ? 'bullist numlist' : '',
 					quickbars_selection_toolbar: inline
 						? 'bold italic underline | forecolor backcolor | removeformat | quicklink'

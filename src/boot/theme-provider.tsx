@@ -29,57 +29,89 @@ const themeSizes = (
 ): ThemeExtension => {
 	switch (size) {
 		case 'small': {
-			return (t: any): any => {
+			return (theme: any): any => {
 				// eslint-disable-next-line no-param-reassign
-				t.sizes.font = {
+				theme.sizes.font = {
 					extrasmall: '10px',
 					small: '12px',
 					medium: '14px',
 					large: '16px'
 				};
-				return t;
+				return theme;
 			};
 		}
 		case 'large': {
-			return (t: any): any => {
+			return (theme: any): any => {
 				// eslint-disable-next-line no-param-reassign
-				t.sizes.font = {
+				theme.sizes.font = {
 					extrasmall: '14px',
 					small: '16px',
 					medium: '18px',
 					large: '20px'
 				};
-				return t;
+				return theme;
 			};
 		}
 		case 'larger': {
-			return (t: any): any => {
+			return (theme: any): any => {
 				// eslint-disable-next-line no-param-reassign
-				t.sizes.font = {
+				theme.sizes.font = {
 					extrasmall: '16px',
 					small: '18px',
 					medium: '20px',
 					large: '22px'
 				};
-				return t;
+				return theme;
 			};
 		}
 		case 'default':
 		case 'normal':
 		default: {
-			return (t: any): any => {
+			return (theme: any): any => {
 				// eslint-disable-next-line no-param-reassign
-				t.sizes.font = {
+				theme.sizes.font = {
 					extrasmall: '12px',
 					small: '14px',
 					medium: '16px',
 					large: '18px'
 				};
-				return t;
+				return theme;
 			};
 		}
 	}
 };
+
+const paletteExtension =
+	(): ThemeExtension =>
+	(theme: any): any => {
+		// eslint-disable-next-line no-param-reassign
+		theme.palette.shared = {
+			regular: '#FFB74D',
+			hover: '#FFA21A',
+			active: '#FFA21A',
+			focus: '#FF9800',
+			disabled: '#FFD699'
+		};
+		// eslint-disable-next-line no-param-reassign
+		theme.palette.linked = {
+			regular: '#AB47BC',
+			hover: '#8B3899',
+			active: '#8B3899',
+			focus: '#7A3187',
+			disabled: '#DDB4E4'
+		};
+		return theme;
+	};
+
+const iconExtension =
+	(): ThemeExtension =>
+	(theme: any): any => {
+		// eslint-disable-next-line no-param-reassign
+		theme.icons.Shared = theme.icons.ArrowCircleRight;
+		// eslint-disable-next-line no-param-reassign
+		theme.icons.Linked = theme.icons.ArrowCircleLeft;
+		return theme;
+	};
 
 export const ThemeProvider: FC = ({ children }) => {
 	const zimbraPrefFontSize = useAccountStore((s) => s.settings.prefs?.zimbraPrefFontSize as string);
@@ -99,7 +131,9 @@ export const ThemeProvider: FC = ({ children }) => {
 	useEffect(() => {
 		setExtensions((e) => ({
 			...e,
-			fonts: themeSizes(zimbraPrefFontSize)
+			fonts: themeSizes(zimbraPrefFontSize),
+			palette: paletteExtension(),
+			icons: iconExtension()
 		}));
 	}, [zimbraPrefFontSize]);
 	const [darkReaderState, setDarkReaderState] = useState<'auto' | 'disabled' | 'enabled'>('auto');
@@ -134,6 +168,7 @@ export const ThemeProvider: FC = ({ children }) => {
 	const addExtension = useCallback((newExtension: ThemeExtension, id: string) => {
 		setExtensions((ext) => ({ ...ext, [id]: newExtension }));
 	}, []);
+
 	return (
 		<UIThemeProvider extension={aggregatedExtensions}>
 			<ThemeCallbacksContext.Provider value={{ addExtension, setDarkReaderState }}>

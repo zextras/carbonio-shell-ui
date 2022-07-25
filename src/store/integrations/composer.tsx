@@ -135,7 +135,8 @@ const Composer: FC<ComposerProps> = ({
 						: 'quicklink',
 					contextmenu: inline ? '' : '',
 					toolbar_mode: 'wrap',
-					forced_root_block: 'pre'
+					block_formats:
+						'Paragraph=p;Header 1=h1;Header 2=h2;Header 3=h3;Header 4=h4;Header 5=h5;Header 6=h6;Div=div;Preformatted=pre'
 				}}
 				onEditorChange={_onEditorChange}
 				{...rest}

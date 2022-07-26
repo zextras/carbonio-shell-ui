@@ -65,24 +65,15 @@ const Composer: FC<ComposerProps> = ({
 	initialValue,
 	...rest
 }) => {
-	const [content, setContent] = useState(initialValue);
-
 	const _onEditorChange = useCallback(
 		(newContent, editor) => {
-			setContent(newContent);
 			onEditorChange?.([
 				editor.getContent({ format: 'text' }),
 				editor.getContent({ format: 'html' })
 			]);
 		},
-		[setContent, onEditorChange]
+		[onEditorChange]
 	);
-
-	useEffect(() => {
-		if (value) {
-			setContent(value);
-		}
-	}, [value]);
 
 	return (
 		<Container
@@ -92,7 +83,8 @@ const Composer: FC<ComposerProps> = ({
 			style={{ overflowY: 'hidden' }}
 		>
 			<Editor
-				value={content}
+				initialValue={initialValue}
+				value={value}
 				init={{
 					skin_url: `${baseAssetsUrl}/tinymce/skins/ui/oxide`,
 					content_css: `${baseAssetsUrl}/tinymce/skins/content/default/content.css`,

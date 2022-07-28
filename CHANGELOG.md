@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.31](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.30...v0.4.31) (2022-07-28)
+
+
+### Bug Fixes
+
+* changing editor block formats options ([06de72e](https://github.com/zextras/carbonio-shell-ui/commit/06de72e18b7c32a9af45bedd7a853a9026f67d99))
+* using br instead of p in editor composer ([55cb801](https://github.com/zextras/carbonio-shell-ui/commit/55cb801b944178d5bae191214bfc3f97ef7c082a))
+
 ### [0.4.30](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.29...v0.4.30) (2022-07-21)
 
 

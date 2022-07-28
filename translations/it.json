@@ -262,7 +262,8 @@
         "label_italian": "Italiano - {{value}}",
         "label_turkish": "Turco - {{value}}",
         "french": "Francese",
-        "label_french": "Francese - {{value}}"
+        "label_french": "Francese - {{value}}",
+        "vietnamese": "Vietnamita"
     },
     "timezone": {
         "alaska": "{{value}} Alaska",

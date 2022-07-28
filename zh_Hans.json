@@ -238,7 +238,8 @@
         "thai": "泰语",
         "turkish": "土耳其语",
         "label_french": "法语 - {{value}}",
-        "french": "法语"
+        "french": "法语",
+        "vietnamese": "越南语"
     },
     "timezone": {
         "alaska": "{{value}} 阿拉斯加",

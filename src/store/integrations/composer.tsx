@@ -53,13 +53,15 @@ type ComposerProps = {
 	initialValue?: string;
 	/** The content of the editor (controlled mode) */
 	value?: string;
+	/** The base url to append to the resource urls */
+	baseAssetsUrl?: string;
 };
 
 const Composer: FC<ComposerProps> = ({
 	onEditorChange,
 	inline = false,
 	value,
-
+	baseAssetsUrl,
 	initialValue,
 	...rest
 }) => {
@@ -81,7 +83,7 @@ const Composer: FC<ComposerProps> = ({
 			setContent(value);
 		}
 	}, [value]);
-
+	console.log('xxx:', { baseAssetsUrl: `${baseAssetsUrl}/tinymce/skins/ui/oxide` });
 	return (
 		<Container
 			height="100%"
@@ -92,30 +94,32 @@ const Composer: FC<ComposerProps> = ({
 			<Editor
 				value={content}
 				init={{
-					selector: 'textarea',
+					// skin_url: `${baseAssetsUrl}/tinymce/skins/ui/oxide`,
+					content_css: `${baseAssetsUrl}/tinymce/skins/content/default/content.css`,
 					min_height: 350,
-					content_css: false,
 					menubar: false,
 					statusbar: false,
 					branding: false,
 					resize: true,
 					inline,
+					object_resizing: 'img',
 					plugins: [
 						'advlist',
 						'autolink',
 						'lists',
 						'link',
 						'image',
+						'edit',
+						'file',
 						'charmap',
 						'print',
 						'preview',
 						'anchor',
 						'searchreplace',
 						'code',
-						'edit',
-						'file',
 						'fullscreen',
 						'insertdatetime',
+						'media',
 						'table',
 						'paste',
 						'code',
@@ -124,7 +128,6 @@ const Composer: FC<ComposerProps> = ({
 						'directionality',
 						'autoresize'
 					],
-					object_resizing: 'img',
 					toolbar: inline
 						? false
 						: // eslint-disable-next-line max-len
@@ -134,7 +137,8 @@ const Composer: FC<ComposerProps> = ({
 						? 'bold italic underline | forecolor backcolor | removeformat | quicklink'
 						: 'quicklink',
 					contextmenu: inline ? '' : '',
-					toolbar_mode: 'wrap'
+					toolbar_mode: 'wrap',
+					forced_root_block: 'pre'
 				}}
 				onEditorChange={_onEditorChange}
 				{...rest}

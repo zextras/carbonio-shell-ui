@@ -83,7 +83,7 @@ const Composer: FC<ComposerProps> = ({
 			setContent(value);
 		}
 	}, [value]);
-	console.log('xxx:', { baseAssetsUrl: `${baseAssetsUrl}/tinymce/skins/ui/oxide` });
+
 	return (
 		<Container
 			height="100%"
@@ -94,7 +94,6 @@ const Composer: FC<ComposerProps> = ({
 			<Editor
 				value={content}
 				init={{
-					// skin_url: `${baseAssetsUrl}/tinymce/skins/ui/oxide`,
 					content_css: `${baseAssetsUrl}/tinymce/skins/content/default/content.css`,
 					min_height: 350,
 					menubar: false,
@@ -138,7 +137,10 @@ const Composer: FC<ComposerProps> = ({
 						: 'quicklink',
 					contextmenu: inline ? '' : '',
 					toolbar_mode: 'wrap',
-					forced_root_block: 'pre'
+					valid_elements: 'br',
+					force_br_newlines: true,
+					force_p_newlines: false,
+					forced_root_block: ''
 				}}
 				onEditorChange={_onEditorChange}
 				{...rest}

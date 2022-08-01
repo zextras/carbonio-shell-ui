@@ -238,7 +238,8 @@
         "thai": "タイ語",
         "turkish": "トルコ語",
         "french": "フランス語",
-        "label_french": "フランス語-{{value}}"
+        "label_french": "フランス語-{{value}}",
+        "vietnamese": "ベトナム語"
     },
     "timezone": {
         "egypt": "{{value}}エジプト",

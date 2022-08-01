@@ -246,7 +246,8 @@
         "portuguese": "ภาษาโปรตุเกส",
         "turkish": "ภาษาตุรกี",
         "label_french": "ฝรั่งเศส - {{value}}",
-        "french": "ภาษาฝรั่งเศส"
+        "french": "ภาษาฝรั่งเศส",
+        "vietnamese": "ภาษาเวียดนาม"
     },
     "timezone": {
         "alaska": "{{value}} อลาสก้า",

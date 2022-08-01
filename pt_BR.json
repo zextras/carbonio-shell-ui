@@ -464,7 +464,8 @@
         "thai": "Tailandês",
         "turkish": "Turco",
         "french": "Francês",
-        "label_french": "Francês - {{value}}"
+        "label_french": "Francês - {{value}}",
+        "vietnamese": "Vietnamita"
     },
     "board": {
         "close_tab": "Fechar Aba",

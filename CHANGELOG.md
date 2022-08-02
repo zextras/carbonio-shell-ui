@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.33](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.32...v0.4.33) (2022-08-02)
+
+
+### Bug Fixes
+
+* keep html format when replying to an email ([4920c37](https://github.com/zextras/carbonio-shell-ui/commit/4920c372d0179b16b4f8850813d7d935ae6bd980))
+
 ### [0.4.32](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.31...v0.4.32) (2022-08-01)
 
 ### [0.4.31](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.30...v0.4.31) (2022-07-28)

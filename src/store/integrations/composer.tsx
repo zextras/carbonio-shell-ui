@@ -86,7 +86,6 @@ const Composer: FC<ComposerProps> = ({
 				initialValue={initialValue}
 				value={value}
 				init={{
-					skin_url: `${baseAssetsUrl}/tinymce/skins/ui/oxide`,
 					content_css: `${baseAssetsUrl}/tinymce/skins/content/default/content.css`,
 					min_height: 350,
 					menubar: false,
@@ -94,12 +93,15 @@ const Composer: FC<ComposerProps> = ({
 					branding: false,
 					resize: true,
 					inline,
+					object_resizing: 'img',
 					plugins: [
 						'advlist',
 						'autolink',
 						'lists',
 						'link',
 						'image',
+						'edit',
+						'file',
 						'charmap',
 						'print',
 						'preview',
@@ -120,7 +122,7 @@ const Composer: FC<ComposerProps> = ({
 					toolbar: inline
 						? false
 						: // eslint-disable-next-line max-len
-						  'fontselect fontsizeselect formatselect | bold italic underline strikethrough | removeformat code | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | ltr rtl',
+						  'fontselect fontsizeselect formatselect | bold italic underline strikethrough | removeformat code | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | ltr rtl | insertfile image ',
 					quickbars_insert_toolbar: inline ? 'bullist numlist' : '',
 					quickbars_selection_toolbar: inline
 						? 'bold italic underline | forecolor backcolor | removeformat | quicklink'

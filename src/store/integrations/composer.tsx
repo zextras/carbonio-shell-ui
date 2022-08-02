@@ -135,10 +135,7 @@ const Composer: FC<ComposerProps> = ({
 						: 'quicklink',
 					contextmenu: inline ? '' : '',
 					toolbar_mode: 'wrap',
-					valid_elements: 'br',
-					force_br_newlines: true,
-					force_p_newlines: false,
-					forced_root_block: ''
+					forced_root_block: false
 				}}
 				onEditorChange={_onEditorChange}
 				{...rest}

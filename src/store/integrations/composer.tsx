@@ -65,24 +65,15 @@ const Composer: FC<ComposerProps> = ({
 	initialValue,
 	...rest
 }) => {
-	const [content, setContent] = useState(initialValue);
-
 	const _onEditorChange = useCallback(
 		(newContent, editor) => {
-			setContent(newContent);
 			onEditorChange?.([
 				editor.getContent({ format: 'text' }),
 				editor.getContent({ format: 'html' })
 			]);
 		},
-		[setContent, onEditorChange]
+		[onEditorChange]
 	);
-
-	useEffect(() => {
-		if (value) {
-			setContent(value);
-		}
-	}, [value]);
 
 	return (
 		<Container
@@ -92,9 +83,9 @@ const Composer: FC<ComposerProps> = ({
 			style={{ overflowY: 'hidden' }}
 		>
 			<Editor
-				value={content}
+				initialValue={initialValue}
+				value={value}
 				init={{
-					skin_url: `${baseAssetsUrl}/tinymce/skins/ui/oxide`,
 					content_css: `${baseAssetsUrl}/tinymce/skins/content/default/content.css`,
 					min_height: 350,
 					menubar: false,
@@ -102,12 +93,15 @@ const Composer: FC<ComposerProps> = ({
 					branding: false,
 					resize: true,
 					inline,
+					object_resizing: 'img',
 					plugins: [
 						'advlist',
 						'autolink',
 						'lists',
 						'link',
 						'image',
+						'edit',
+						'file',
 						'charmap',
 						'print',
 						'preview',
@@ -128,14 +122,14 @@ const Composer: FC<ComposerProps> = ({
 					toolbar: inline
 						? false
 						: // eslint-disable-next-line max-len
-						  'fontselect fontsizeselect formatselect | bold italic underline strikethrough | removeformat code | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | ltr rtl',
+						  'fontselect fontsizeselect formatselect | bold italic underline strikethrough | removeformat code | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | ltr rtl | insertfile image ',
 					quickbars_insert_toolbar: inline ? 'bullist numlist' : '',
 					quickbars_selection_toolbar: inline
 						? 'bold italic underline | forecolor backcolor | removeformat | quicklink'
 						: 'quicklink',
 					contextmenu: inline ? '' : '',
 					toolbar_mode: 'wrap',
-					forced_root_block: 'pre'
+					forced_root_block: false
 				}}
 				onEditorChange={_onEditorChange}
 				{...rest}

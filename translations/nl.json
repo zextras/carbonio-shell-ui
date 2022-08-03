@@ -238,7 +238,8 @@
         "thai": "Thai",
         "turkish": "Turks",
         "label_french": "Frans - {{value}}",
-        "french": "Frans"
+        "french": "Frans",
+        "vietnamese": "Vietnamees"
     },
     "timezone": {
         "abu_dhabi_muscat": "{{value}} Abu Dhabi, Muscat",

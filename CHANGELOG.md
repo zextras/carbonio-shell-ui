@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.33](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.32...v0.4.33) (2022-08-02)
+
+
+### Bug Fixes
+
+* keep html format when replying to an email ([4920c37](https://github.com/zextras/carbonio-shell-ui/commit/4920c372d0179b16b4f8850813d7d935ae6bd980))
+
+### [0.4.32](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.31...v0.4.32) (2022-08-01)
+
+### [0.4.31](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.30...v0.4.31) (2022-07-28)
+
+
+### Bug Fixes
+
+* changing editor block formats options ([06de72e](https://github.com/zextras/carbonio-shell-ui/commit/06de72e18b7c32a9af45bedd7a853a9026f67d99))
+* using br instead of p in editor composer ([55cb801](https://github.com/zextras/carbonio-shell-ui/commit/55cb801b944178d5bae191214bfc3f97ef7c082a))
+
+### [0.4.30](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.29...v0.4.30) (2022-07-21)
+
+
+### Features
+
+* palette and icons for shared and linked content ([#92](https://github.com/zextras/carbonio-shell-ui/issues/92)) ([8098e01](https://github.com/zextras/carbonio-shell-ui/commit/8098e01557c49fe419a41423a6ef9dfbd498ae00))
+
+
+### Bug Fixes
+
+* composer controlled mode ([d1cb3eb](https://github.com/zextras/carbonio-shell-ui/commit/d1cb3eb3bc994b2e467f5223ecc1c4de1344ad5a))
+* using pre as editor block format ([1e2c5c9](https://github.com/zextras/carbonio-shell-ui/commit/1e2c5c933dcacb66e033de74fe62bc8d1329a6ac))
+
 ### [0.4.29](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.28...v0.4.29) (2022-06-20)
 
 ### [0.4.28](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.27...v0.4.28) (2022-06-14)

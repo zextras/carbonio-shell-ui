@@ -238,7 +238,8 @@
         "thai": "Thailand",
         "turkish": "Turki",
         "french": "Prancis",
-        "label_french": "Prancis - {{value}}"
+        "label_french": "Prancis - {{value}}",
+        "vietnamese": "Vietnam"
     },
     "timezone": {
         "atlantic_time_canada": "{{value}} Waktu Atlantik (Kanada)",

@@ -246,7 +246,8 @@
         "thai": "थाई",
         "turkish": "तुर्की",
         "french": "फ्रेंच",
-        "label_french": "फ्रेंच - {{value}}"
+        "label_french": "फ्रेंच - {{value}}",
+        "vietnamese": "वियतनामी"
     },
     "timezone": {
         "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}} एम्स्टर्डैम, बर्लिन, बर्न, रॉम, स्टॉकहोम, विएना",

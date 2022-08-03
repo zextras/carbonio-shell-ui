@@ -472,7 +472,8 @@
         "label_japanese": "Japanisch - {{value}}",
         "label_turkish": "Türkisch - {{value}}",
         "french": "Französisch",
-        "label_french": "Französisch - {{value}}"
+        "label_french": "Französisch - {{value}}",
+        "vietnamese": "Vietnamesisch"
     },
     "feedback": {
         "other": "Andere",

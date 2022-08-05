@@ -7,12 +7,12 @@
 import React, { FC, ReactElement, SyntheticEvent } from 'react';
 import {
 	Container,
-	ButtonOld as Button,
+	Button,
 	Padding,
 	Divider,
 	Tooltip,
 	ContainerProps,
-	ButtonOldProps as ButtonProps
+	ButtonProps
 } from '@zextras/carbonio-design-system';
 
 type ModalFooterProps = {
@@ -53,7 +53,7 @@ const ModalFooter: FC<ModalFooterProps> = ({
 	secondarybackground,
 	color = 'primary',
 	secondaryColor = 'secondary',
-	size = 'fit',
+	size = 'medium',
 	showDivider = true,
 	tooltip,
 	secondaryTooltip,

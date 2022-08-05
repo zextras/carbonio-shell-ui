@@ -9,10 +9,9 @@ import {
 	Tooltip,
 	IconButton,
 	Dropdown,
-	Icon,
 	DropdownItem
 } from '@zextras/carbonio-design-system';
-import { map } from 'lodash';
+import { map, noop } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { useUtilityBarStore } from './store';
 import { SHELL_APP_ID, UtilityView } from '../../types';
@@ -102,7 +101,7 @@ export const ShellUtilityBar: FC = () => {
 			))}
 			<Tooltip label={account?.displayName ?? account?.name} placement="bottom-end">
 				<Dropdown items={accountItems} maxWidth="200px" disableAutoFocus>
-					<Icon icon="PersonOutline" size="large" />
+					<IconButton icon="PersonOutline" size="large" onClick={noop} />
 				</Dropdown>
 			</Tooltip>
 		</Container>

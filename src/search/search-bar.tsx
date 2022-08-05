@@ -12,7 +12,8 @@ import {
 	Container,
 	IconButton,
 	Tooltip,
-	Padding
+	Padding,
+	ChipItem
 } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { filter, find, map, reduce } from 'lodash';
@@ -341,7 +342,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 	}, [t, searchIsEnabled, inputState.length, inputHasFocus, query.length]);
 
 	const onChipAdd = useCallback(
-		(newChip: string | unknown) => {
+		(newChip: string | unknown): ChipItem => {
 			setIsTyping(false);
 			setInputTyped('');
 			if (module) {
@@ -354,8 +355,8 @@ export const SearchBar: FC<SearchBarProps> = ({
 			}
 			return {
 				label: typeof newChip === 'string' ? newChip.trim() : '',
-				hasAvatar: false,
-				avatarLabel: ''
+				value: typeof newChip === 'string' ? newChip.trim() : '',
+				hasAvatar: false
 			};
 		},
 		[appSuggestions, module]
@@ -393,7 +394,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 									placeholder={placeholder}
 									confirmChipOnBlur={false}
 									confirmChipOnSpace={false}
-									separators={['Comma']}
+									separators={['Enter', 'NumpadEnter', 'Comma']}
 									background={searchDisabled ? 'gray5' : 'gray6'}
 									style={{
 										cursor: 'pointer',
@@ -415,6 +416,11 @@ export const SearchBar: FC<SearchBarProps> = ({
 						<Padding left="small">
 							<Tooltip label={clearButtonPlaceholder} placement="bottom">
 								<OutlinedIconButton
+									size="large"
+									customSize={{
+										iconSize: 'large',
+										paddingSize: 'small'
+									}}
 									disabled={disableClearButton}
 									icon="BackspaceOutline"
 									iconColor="primary"

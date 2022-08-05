@@ -5,7 +5,7 @@
  */
 
 import React, { FC, useCallback, useMemo, useState } from 'react';
-import { reduce, groupBy } from 'lodash';
+import { reduce, groupBy, noop } from 'lodash';
 import { MultiButton, Button, Dropdown } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
@@ -13,7 +13,6 @@ import { useActions } from '../store/integrations/hooks';
 import { ACTION_TYPES } from '../constants';
 import { Action, AppRoute } from '../../types';
 import { useAppList } from '../store/app';
-import { emptyFunction } from '../utils';
 
 const useSecondaryActions = (
 	actions: Array<Action>,
@@ -77,7 +76,7 @@ export const CreationButton: FC<{ activeRoute?: AppRoute }> = ({ activeRoute }) 
 				backgroundColor="primary"
 				label={t('new', 'New')}
 				icon={open ? 'ChevronUp' : 'ChevronDown'}
-				onClick={emptyFunction}
+				onClick={noop}
 			/>
 		</Dropdown>
 	);

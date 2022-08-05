@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { ReactElement, SyntheticEvent, useCallback, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import {
 	Container,
 	Text,
@@ -12,14 +12,14 @@ import {
 	Divider,
 	Row,
 	Padding,
-	ButtonOld as Button,
+	Button,
 	Radio,
 	RadioGroup,
 	ItemType,
 	ItemComponentProps
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import { emptyFunction } from '../../../utils';
+import { noop } from 'lodash';
 
 export interface DelegateType extends ItemType {
 	email: string;
@@ -105,7 +105,7 @@ const Delegates = ({
 						color="primary"
 						type="outlined"
 						disabled
-						onClick={emptyFunction}
+						onClick={noop}
 					/>
 				</Padding>
 				<Padding right="small">
@@ -114,7 +114,7 @@ const Delegates = ({
 						color="primary"
 						type="outlined"
 						disabled
-						onClick={emptyFunction}
+						onClick={noop}
 					/>
 				</Padding>
 				<Button
@@ -122,7 +122,7 @@ const Delegates = ({
 					color="error"
 					type="outlined"
 					disabled
-					onClick={emptyFunction}
+					onClick={noop}
 				/>
 			</Row>
 			<Container

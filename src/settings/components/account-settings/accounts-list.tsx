@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, ReactElement, useState, useContext, FC } from 'react';
+import React, { useCallback, ReactElement, useState, useContext } from 'react';
 import {
 	Container,
 	Text,
@@ -18,9 +18,8 @@ import {
 	ItemComponentProps
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import { map, filter, max } from 'lodash';
+import { map, filter, max, noop } from 'lodash';
 import { IdentityProps, CreateIdentityProps } from '../../../../types';
-import { emptyFunction } from '../../../utils';
 
 type AccountsListProps = {
 	t: TFunction;
@@ -30,15 +29,6 @@ type AccountsListProps = {
 	setSelectedIdentityId: (value: number) => void;
 	deleteIdentities: (deleteList: string[]) => void;
 	createIdentities: (createList: { prefs: CreateIdentityProps }[]) => void;
-};
-
-type ListItemProps = {
-	active: boolean;
-	item: IdentityProps;
-	selected: boolean;
-	background: string;
-	selectedBackground: string;
-	activeBackground: string;
 };
 
 const AccountsList = ({
@@ -240,7 +230,7 @@ const AccountsList = ({
 				<Padding right="small">
 					<Button
 						label={t('label.add_external_account', 'Add external account')}
-						onClick={emptyFunction}
+						onClick={noop}
 						color="primary"
 						type="outlined"
 						disabled

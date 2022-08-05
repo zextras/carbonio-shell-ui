@@ -5,7 +5,7 @@
  */
 
 import { Container, IconButton, Row, Tooltip } from '@zextras/carbonio-design-system';
-import { map, isEmpty, trim, filter, sortBy } from 'lodash';
+import { map, isEmpty, trim, filter, sortBy, noop } from 'lodash';
 import React, { useContext, FC, useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
@@ -19,7 +19,6 @@ import BadgeWrap from './badge-wrap';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { checkRoute } from '../utility-bar/utils';
 import { IS_STANDALONE } from '../constants';
-import { emptyFunction } from '../utils';
 
 const ContainerWithDivider = styled(Container)`
 	border-right: 1px solid ${({ theme }): string => theme.palette.gray3.regular};
@@ -77,7 +76,7 @@ const PrimaryBarAccessoryElement: FC<PrimaryBarAccessoryItemProps> = ({ view }) 
 					icon={view.component}
 					backgroundColor="gray6"
 					iconColor="text"
-					onClick={view.onClick ?? emptyFunction}
+					onClick={view.onClick ?? noop}
 					size="large"
 				/>
 			) : (

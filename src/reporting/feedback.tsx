@@ -90,7 +90,9 @@ interface LabelContainerProps extends ContainerProps {
 }
 
 const LabelContainer = styled(Container)<LabelContainerProps>`
-	border-bottom: 1px solid ${({ disabled }): string => (disabled ? 'red' : '#cfd5dc')};
+	border-bottom: 1px solid
+		${({ theme, disabled }): string =>
+			disabled ? theme.palette.error.regular : theme.palette.gray2.regular};
 `;
 
 const emptyEvent: Event = {

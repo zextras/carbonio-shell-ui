@@ -114,9 +114,9 @@ export const SearchBar: FC<SearchBarProps> = ({
 			if (inputTyped.length > 0) {
 				const newInputState = [
 					...inputState,
-					...map(inputTyped?.split(' '), (item: string, id: number) => ({
+					...map(inputTyped?.split(' '), (label: string, id: number) => ({
 						id: `${id}`,
-						label: item,
+						label,
 						hasAvatar: false
 					}))
 				];
@@ -354,8 +354,8 @@ export const SearchBar: FC<SearchBarProps> = ({
 				setOptions(suggestions);
 			}
 			return {
-				label: typeof newChip === 'string' ? newChip.trim() : '',
-				value: typeof newChip === 'string' ? newChip.trim() : '',
+				label: typeof newChip === 'string' ? newChip : '',
+				value: newChip,
 				hasAvatar: false
 			};
 		},

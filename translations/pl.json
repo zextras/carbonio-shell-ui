@@ -201,7 +201,8 @@
         "label_italian": "Włoski - {{value}}",
         "label_japanese": "Japoński - {{value}}",
         "label_portuguese": "Portugalski - {{value}}",
-        "label_portuguese_brazil": "Portugalski - {{value}}"
+        "label_portuguese_brazil": "Portugalski - {{value}}",
+        "vietnamese": "Wietnamski"
     },
     "new_tab": "Nowa Karta",
     "timezone": {

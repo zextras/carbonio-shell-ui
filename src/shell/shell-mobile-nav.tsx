@@ -4,26 +4,51 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React from 'react';
+import React, { ComponentType, FC, FunctionComponent } from 'react';
 import { reduce, find } from 'lodash';
 import { Accordion, Collapse, Container, Padding } from '@zextras/carbonio-design-system';
 import { useHistory } from 'react-router-dom';
+import { AppRoute, SecondaryBarComponentProps } from '../../types';
 import { useAppStore } from '../store/app';
 import AppContextProvider from '../boot/app/app-context-provider';
+import { getCurrentRoute } from '../history/hooks';
 
-const SidebarComponent = ({ item }) =>
+type SidebarComponentProps = {
+	item: ShellMobileNavComponent;
+};
+
+const SidebarComponent: FC<SidebarComponentProps> = ({ item }) =>
 	item.secondary ? (
 		<AppContextProvider pkg={item.id}>
-			<item.secondary />
+			<item.secondary expanded={!!item.expanded} />
 		</AppContextProvider>
 	) : null;
 
-export default function ShellMobileNav({ mobileNavIsOpen, menuTree }) {
+type ShellMobileNavComponentProps = {
+	mobileNavIsOpen: boolean;
+	menuTree: AppRoute;
+};
+
+type ShellMobileNavComponent = {
+	id: string;
+	label: string;
+	icon: string;
+	secondary?: ComponentType<SecondaryBarComponentProps>;
+	onClick?: () => void;
+	CustomComponent?: FunctionComponent<SidebarComponentProps> | null;
+	items?: Array<ShellMobileNavComponent> | [];
+	expanded?: boolean;
+};
+
+const ShellMobileNavComponent: FC<ShellMobileNavComponentProps> = ({
+	mobileNavIsOpen,
+	menuTree
+}) => {
 	const history = useHistory();
 	const views = useAppStore((s) =>
 		reduce(
 			s.routes,
-			(acc, val) => {
+			(acc: Array<ShellMobileNavComponent>, val) => {
 				const primary = find(s.views.primaryBar, (item) => item.id === val.id);
 				const secondary = find(s.views.secondaryBar, (item) => item.id === val.id);
 				if (primary && primary.visible) {
@@ -85,4 +110,17 @@ export default function ShellMobileNav({ mobileNavIsOpen, menuTree }) {
 			</Collapse>
 		</Container>
 	);
-}
+};
+
+const ShellMobileNavMemo = React.memo(ShellMobileNavComponent);
+
+type ShellMobileNavProps = {
+	mobileNavIsOpen: boolean;
+};
+
+const ShellMobileNav: FC<ShellMobileNavProps> = ({ mobileNavIsOpen }) => {
+	const menuTree = getCurrentRoute() as AppRoute;
+	return <ShellMobileNavMemo menuTree={menuTree} mobileNavIsOpen={mobileNavIsOpen} />;
+};
+
+export default ShellMobileNav;

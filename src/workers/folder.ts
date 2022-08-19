@@ -37,7 +37,7 @@ const omit = ({
 }: Partial<SoapFolder>): Partial<SoapFolder> => obj;
 
 const hasId = (f: SoapFolder, id: string): boolean => f.id.split(':').includes(id);
-const normalize = (f: SoapFolder): BaseFolder => ({
+const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
 	id: f.id,
 	uuid: f.uuid,
 	name: f.name,
@@ -45,7 +45,7 @@ const normalize = (f: SoapFolder): BaseFolder => ({
 	l: f.l,
 	luuid: f.luuid,
 	f: f.f,
-	color: f.color,
+	color: f.color || p?.color,
 	rgb: f.rgb,
 	u: f.u,
 	i4u: f.i4u,
@@ -77,8 +77,8 @@ const normalizeSearch = (s: SoapSearchFolder): BaseFolder & SearchFolderFields =
 	types: s.types
 });
 
-const normalizeLink = (l: SoapLink): BaseFolder & LinkFolderFields => ({
-	...normalize(l),
+const normalizeLink = (l: SoapLink, p?: Folder): BaseFolder & LinkFolderFields => ({
+	...normalize(l, p),
 	owner: l.owner,
 	zid: l.zid,
 	rid: l.rid,
@@ -99,7 +99,7 @@ const processSearch = (soapSearch: SoapSearchFolder, parent: Folder): void => {
 
 const processLink = (soapLink: SoapLink, depth: number, parent?: Folder): LinkFolder => {
 	const link = {
-		...normalizeLink(soapLink),
+		...normalizeLink(soapLink, parent),
 		isLink: true,
 		children: [],
 		parent,
@@ -132,7 +132,7 @@ const processLink = (soapLink: SoapLink, depth: number, parent?: Folder): LinkFo
 
 const processFolder = (soapFolder: SoapFolder, depth: number, parent?: Folder): UserFolder => {
 	const folder: UserFolder = {
-		...normalize(soapFolder),
+		...normalize(soapFolder, parent),
 		isLink: false,
 		children: [],
 		parent,
@@ -168,7 +168,7 @@ export const handleFolderCreated = (created: Array<SoapFolder>): void =>
 		if (val.id && val.l) {
 			const parent = folders[val.l];
 			const folder: UserFolder = {
-				...normalize(val),
+				...normalize(val, parent),
 				isLink: false,
 				children: [],
 				parent,

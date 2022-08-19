@@ -19,7 +19,8 @@
 		"lint": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to node_modules/@zextras/zapp-config src",
 		"build": "sdk build",
 		"deploy": "sdk deploy",
-		"start": "sdk watch"
+		"start": "sdk watch",
+		"deploy-on-module": "npm pack && rm -rf $PKG_PATH/node_modules/@zextras/carbonio-shell-ui/* && tar -xf zextras-carbonio-shell-ui-$npm_package_version.tgz -C $PKG_PATH/node_modules/@zextras/carbonio-shell-ui/ --strip-components 1"
 	},
 	"files": [
 		"dist/",

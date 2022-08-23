@@ -86,7 +86,6 @@ const Composer: FC<ComposerProps> = ({
 				initialValue={initialValue}
 				value={value}
 				init={{
-					selector: 'textarea#format-html5',
 					content_css: `${baseAssetsUrl}/tinymce/skins/content/default/content.css`,
 					min_height: 350,
 					menubar: false,

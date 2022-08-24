@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { Container } from '@zextras/carbonio-design-system';
 // TinyMCE so the global var exists
 // eslint-disable-next-line no-unused-vars
@@ -43,6 +43,7 @@ import 'tinymce/plugins/directionality';
 import 'tinymce/plugins/autoresize';
 
 import { Editor } from '@tinymce/tinymce-react';
+import { useUserSettings } from '../account';
 
 type ComposerProps = {
 	/** The callback invoked when an edit is performed into the editor. `([text, html]) => {}` */
@@ -74,6 +75,15 @@ const Composer: FC<ComposerProps> = ({
 		},
 		[onEditorChange]
 	);
+	const { prefs } = useUserSettings();
+	const defaultStyle = useMemo(
+		() => ({
+			font: prefs?.zimbraPrefHtmlEditorDefaultFontFamily,
+			fontSize: prefs?.zimbraPrefHtmlEditorDefaultFontSize,
+			color: prefs?.zimbraPrefHtmlEditorDefaultFontColor
+		}),
+		[prefs]
+	);
 
 	return (
 		<Container
@@ -93,6 +103,8 @@ const Composer: FC<ComposerProps> = ({
 					branding: false,
 					resize: true,
 					inline,
+					fontsize_formats:
+						'8pt 9pt 10pt 11pt 12pt 13pt 14pt 16pt 18pt 24pt 30pt 36pt 48pt 60pt 72pt 96pt',
 					object_resizing: 'img',
 					plugins: [
 						'advlist',
@@ -129,7 +141,8 @@ const Composer: FC<ComposerProps> = ({
 						: 'quicklink',
 					contextmenu: inline ? '' : '',
 					toolbar_mode: 'wrap',
-					forced_root_block: false
+					forced_root_block: false,
+					content_style: `body {  color: ${defaultStyle?.color}; font-size: ${defaultStyle?.fontSize}; font-family: ${defaultStyle?.font}; }`
 				}}
 				onEditorChange={_onEditorChange}
 				{...rest}

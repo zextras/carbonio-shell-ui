@@ -4,15 +4,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import {
 	Container,
 	IconButton,
 	Padding,
 	Responsive,
 	useScreenMode,
-	Catcher
+	Catcher,
+	Button
 } from '@zextras/carbonio-design-system';
+import { times } from 'lodash';
 import Logo from '../svg/carbonio.svg';
 import { SearchBar } from '../search/search-bar';
 import { CreationButton } from './creation-button';

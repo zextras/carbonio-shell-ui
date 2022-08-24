@@ -82,6 +82,7 @@ import { getTags, useTags } from '../../store/tags';
 import { useNotify, useRefresh } from '../../store/network';
 import { changeTagColor, createTag, deleteTag, renameTag } from '../../network/tags';
 import { runSearch } from '../../search/run-search';
+import { getNotificationManager } from '../../notification/NotificationManager';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({
@@ -162,6 +163,9 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	renameTag,
 	changeTagColor,
 	deleteTag,
+	// NOTIFICATION
+	getNotificationManager,
+
 	// STUFF
 	runSearch,
 	useIsMobile,

@@ -16,6 +16,7 @@ import StoreFactory from '../redux/store-factory';
 import { unloadAllApps } from './app/load-apps';
 import { registerDefaultViews } from './app/default-views';
 import { useBridge } from '../store/context-bridge';
+import { NotificationPermissionChecker } from '../notification/NotificationPermissionChecker';
 
 const DefaultViewsRegister: FC = () => {
 	const [t] = useTranslation();
@@ -51,6 +52,7 @@ const Bootstrapper: FC = () => {
 					<BootstrapperContextProvider i18nFactory={i18nFactory} storeFactory={storeFactory}>
 						<TBridge i18nFactory={i18nFactory} />
 						<DefaultViewsRegister />
+						<NotificationPermissionChecker />
 						<BootstrapperRouter />
 					</BootstrapperContextProvider>
 				</ModalManager>

@@ -106,6 +106,39 @@ const Composer: FC<ComposerProps> = ({
 					fontsize_formats:
 						'8pt 9pt 10pt 11pt 12pt 13pt 14pt 16pt 18pt 24pt 30pt 36pt 48pt 60pt 72pt 96pt',
 					object_resizing: 'img',
+					style_formats: [
+						{
+							title: 'Headers',
+							items: [
+								{ title: 'h1', block: 'h1' },
+								{ title: 'h2', block: 'h2' },
+								{ title: 'h3', block: 'h3' },
+								{ title: 'h4', block: 'h4' },
+								{ title: 'h5', block: 'h5' },
+								{ title: 'h6', block: 'h6' }
+							]
+						},
+						{
+							title: 'Blocks',
+							items: [
+								{ title: 'p', block: 'p' },
+								{ title: 'div', block: 'div' },
+								{ title: 'pre', block: 'pre' }
+							]
+						},
+
+						{
+							title: 'Containers',
+							items: [
+								{ title: 'section', block: 'section', wrapper: true, merge_siblings: false },
+								{ title: 'article', block: 'article', wrapper: true, merge_siblings: false },
+								{ title: 'blockquote', block: 'blockquote', wrapper: true },
+								{ title: 'hgroup', block: 'hgroup', wrapper: true },
+								{ title: 'aside', block: 'aside', wrapper: true },
+								{ title: 'figure', block: 'figure', wrapper: true }
+							]
+						}
+					],
 					plugins: [
 						'advlist',
 						'autolink',
@@ -129,12 +162,14 @@ const Composer: FC<ComposerProps> = ({
 						'help',
 						'quickbars',
 						'directionality',
-						'autoresize'
+						'autoresize',
+						'visualblocks'
 					],
+
 					toolbar: inline
 						? false
 						: // eslint-disable-next-line max-len
-						  'fontselect fontsizeselect formatselect | bold italic underline strikethrough | removeformat code | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | ltr rtl | insertfile image ',
+						  'fontselect fontsizeselect styleselect visualblocks| bold italic underline strikethrough | removeformat code | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | ltr rtl | insertfile image ',
 					quickbars_insert_toolbar: inline ? 'bullist numlist' : '',
 					quickbars_selection_toolbar: inline
 						? 'bold italic underline | forecolor backcolor | removeformat | quicklink'
@@ -142,7 +177,9 @@ const Composer: FC<ComposerProps> = ({
 					contextmenu: inline ? '' : '',
 					toolbar_mode: 'wrap',
 					forced_root_block: false,
-					content_style: `body {  color: ${defaultStyle?.color}; font-size: ${defaultStyle?.fontSize}; font-family: ${defaultStyle?.font}; }`
+					content_style: `body {  color: ${defaultStyle?.color}; font-size: ${defaultStyle?.fontSize}; font-family: ${defaultStyle?.font}; }`,
+					visualblocks_default_state: true,
+					end_container_on_empty_block: true
 				}}
 				onEditorChange={_onEditorChange}
 				{...rest}

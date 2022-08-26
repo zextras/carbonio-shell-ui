@@ -166,8 +166,8 @@ export type SoapPolicy = {
 };
 
 export type SoapRetentionPolicy = Array<{
-	keep: Array<SoapPolicy>;
-	purge: Array<SoapPolicy>;
+	keep: Array<{ policy: SoapPolicy }>;
+	purge: Array<{ policy: SoapPolicy }>;
 }>;
 
 export type FolderView =

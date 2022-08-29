@@ -41,12 +41,19 @@ export const ShellUtilityBar: FC = () => {
 	const views = useUtilityViews();
 	const [t] = useTranslation();
 	const account = useUserAccount();
+	console.log('account', account);
 	const accountItems = useMemo(
 		() => [
 			{
 				id: 'account',
-				label: account?.displayName ?? account?.name ?? '',
+				label: account?.displayName ?? 'Account',
 				disabled: true
+			},
+			{
+				id: 'email',
+				label: account?.name ?? '',
+				disabled: true,
+				itemTextSize: 'small'
 			},
 			{
 				type: 'divider',
@@ -93,7 +100,7 @@ export const ShellUtilityBar: FC = () => {
 				<UtilityBarItem view={view} key={view.id} />
 			))}
 			<Tooltip label={account?.displayName ?? account?.name} placement="bottom-end">
-				<Dropdown items={accountItems} maxWidth="200px" disableAutoFocus>
+				<Dropdown items={accountItems} maxWidth="300px" disableAutoFocus>
 					<IconButton icon="PersonOutline" size="large" />
 				</Dropdown>
 			</Tooltip>

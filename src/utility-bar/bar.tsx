@@ -41,7 +41,6 @@ export const ShellUtilityBar: FC = () => {
 	const views = useUtilityViews();
 	const [t] = useTranslation();
 	const account = useUserAccount();
-	console.log('account', account);
 	const accountItems = useMemo(
 		() => [
 			{

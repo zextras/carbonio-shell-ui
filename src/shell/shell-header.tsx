@@ -19,13 +19,11 @@ import Logo from '../svg/carbonio.svg';
 import { SearchBar } from '../search/search-bar';
 import { CreationButton } from './creation-button';
 import { useAppStore } from '../store/app';
-import { AppRoute } from '../../types';
 
 const ShellHeader: FC<{
-	activeRoute: AppRoute;
 	mobileNavIsOpen: boolean;
 	onMobileMenuClick: () => void;
-}> = ({ activeRoute, mobileNavIsOpen, onMobileMenuClick, children }) => {
+}> = ({ mobileNavIsOpen, onMobileMenuClick, children }) => {
 	const screenMode = useScreenMode();
 	const searchEnabled = useAppStore((s) => s.views.search.length > 0);
 	return (
@@ -58,17 +56,9 @@ const ShellHeader: FC<{
 						<Logo height="32px" />
 					</Container>
 					<Padding horizontal="large">
-						<CreationButton activeRoute={activeRoute} />
+						<CreationButton />
 					</Padding>
-					<Responsive mode="desktop">
-						{searchEnabled && (
-							<SearchBar
-								activeRoute={activeRoute}
-								// primaryAction={primaryAction}
-								// secondaryActions={secondaryActions}
-							/>
-						)}
-					</Responsive>
+					<Responsive mode="desktop">{searchEnabled && <SearchBar />}</Responsive>
 				</Container>
 				<Container orientation="horizontal" width="25%" mainAlignment="flex-end">
 					<Responsive mode="desktop">{children}</Responsive>

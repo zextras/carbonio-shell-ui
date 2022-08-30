@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { AppRoute } from '../apps';
 import { QueryChip } from './items';
 
 export * from './items';
@@ -15,12 +14,6 @@ export type SearchState = {
 	setSearchDisabled: (searchDisabled: boolean) => void;
 	updateQuery: (query: Array<QueryChip> | ((q: Array<QueryChip>) => Array<QueryChip>)) => void;
 	updateModule: (module: string) => void;
-};
-
-export type SearchBarProps = {
-	activeRoute: AppRoute;
-	primaryAction?: unknown;
-	secondaryActions?: unknown;
 };
 
 // export type SelectLabelFactoryProps = {

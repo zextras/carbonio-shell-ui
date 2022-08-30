@@ -13,6 +13,7 @@ import {
 	AccordionFolder,
 	FolderView
 } from '../../../types';
+import { FOLDER_VIEW } from '../../constants';
 import { useFolderStore } from './store';
 import { filterNodes, folderViewFilter, isRoot, mapNodes, sortFolders } from './utils';
 
@@ -50,9 +51,14 @@ export const getSearchFolders = (): Searches => useFolderStore.getState().search
 
 export const useFoldersByView = (view: FolderView): Array<Folder> => {
 	const roots = useRoots();
+	const sortFunction = useMemo(
+		() => (view === FOLDER_VIEW.message ? sortFolders : undefined),
+		[view]
+	);
 	return useMemo(
-		() => (roots ? filterNodes<Folder>(Object.values(roots), folderViewFilter(view)) : []),
-		[roots, view]
+		() =>
+			roots ? filterNodes<Folder>(Object.values(roots), folderViewFilter(view), sortFunction) : [],
+		[roots, sortFunction, view]
 	);
 };
 

@@ -1,6 +1,5 @@
 {
     "changelog": {
-        "close": "閉じる",
         "title": "変更ログ"
     },
     "settings": {
@@ -63,9 +62,7 @@
         "choose": "選択してください"
     },
     "login": {
-        "login": "ログイン",
         "username": "ユーザー名",
-        "remember_me": "リマインドする",
         "verify_caps_lock": "Caps Lockが有効になっていないことを確認してから、現在のユーザー名とパスワードを再入力してください"
     },
     "new": "新規",
@@ -80,9 +77,6 @@
         "type_to_start_search": "検索を開始するには、キーワードをいくつか入力してください",
         "type_or_choose_suggestion": "検索を開始するには、いくつかのキーワードを入力または選択します",
         "unable_to_parse_query": "検索を完了できません。クリアして再びお試しください"
-    },
-    "logout_modal": {
-        "confirm": "ログアウトする"
     },
     "message": {
         "snackbar": {
@@ -224,49 +218,27 @@
         "vietnamese": "ベトナム語"
     },
     "timezone": {
-        "georgetown_la_paz_manaus_san_juan": "{{value}}ジョージタウン、ラパス、マナウス、サンファン",
         "magadan": "{{value}}マガダン",
-        "monrovia": "{{value}}モンロビア",
         "sri_jayawardenepura_kotte": "{{value}}スリ・ジャヤワルダナプラ・コッテ",
-        "abu_dhabi_muscat": "{{value}}アブダビ、マスカット",
         "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}}アムステルダム、ベルリン、ベルン、ローマ、ストックホルム、ウィーン",
-        "argentina": "{{value}}アルゼンチン",
         "asuncion": "{{value}}アスンシオン",
-        "atlantic_time_canada": "{{value}}大西洋標準時（カナダ）",
         "baja_california": "{{value}}バハ・カリフォルニア",
-        "bangkok_hanoi_jakarta": "{{value}}バンコク、ハノイ、ジャカルタ",
         "beirut": "{{value}}ベイルート",
-        "brasilia": "{{value}}ブラジリア",
         "cape_verde_is": "{{value}}カーボベルデ",
-        "casablanca": "{{value}}カサブランカ",
         "central_america": "{{value}}中央アメリカ",
-        "chihuahua_la_paz_mazatlan": "{{value}}チワワ、ラパス、マサトラン",
         "christmas_island": "{{value}}クリスマス島",
-        "coordinated_universal_time": "{{value}}協定世界時",
         "damascus": "{{value}}ダマスカス",
-        "dateline": "{{value}}デートライン",
         "ekaterinburg_rtz_4": "{{value}}エカテリンブルク（RTZ 4）",
-        "gmt_02": "{{value}} GMT-02",
         "greenland": "{{value}}グリーンランド",
-        "hawaii": "{{value}}ハワイ",
         "iraq": "{{value}}イラク",
-        "istanbul": "{{value}}イスタンブール",
         "jordan": "{{value}}ヨルダン",
-        "kaliningrad_rtz_1": "{{value}}カリーニングラード（RTZ 1）",
         "korea": "{{value}}韓国",
-        "kuwait_riyadh": "{{value}}クウェート、リヤド",
         "manaus": "{{value}}マナウス",
-        "montevideo": "{{value}}モンテビデオ",
         "namibia": "{{value}}ナミビア",
-        "nuku_alofa": "{{value}}ヌクアロファ",
         "port_louis": "{{value}}ポートルイス",
-        "samoa": "{{value}}サモア",
         "saskatchewan": "{{value}}サスカチュワン",
-        "tehran": "{{value}}テヘラン",
         "us_canada_eastern": "{{value}}アメリカ/カナダ東部",
-        "vladivostok_magadan": "{{value}} vladivostok_magadan_rtz_9",
         "yangon": "{{value}}ヤンゴン",
-        "brussels_copenhagen_madrid_paris ": "{{value}}ブリュッセル、コペンハーゲン、マドリード、パリ",
         "africa_algiers": "{{value}}西中央アフリカ",
         "africa_cairo": "{{value}}エジプト",
         "africa_casablanca": "{{value}}カサブランカ",

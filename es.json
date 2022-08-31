@@ -1,6 +1,5 @@
 {
     "changelog": {
-        "close": "Cerrar",
         "title": "Registro de cambios"
     },
     "search": {
@@ -75,9 +74,7 @@
         }
     },
     "login": {
-        "login": "Iniciar sesión",
         "username": "Nombre de usuario",
-        "remember_me": "Recordarme",
         "verify_caps_lock": "Comprueba que BLOQUEAR MAYÚSCULAS no esté activado, luego vuelve a introducir el nombre de usuario y la contraseña actuales"
     },
     "new": "Nuevo",
@@ -90,9 +87,6 @@
     },
     "snackbar": {
         "error": "Algo fue mal, por favor, prueba de nuevo"
-    },
-    "logout_modal": {
-        "confirm": "Desconectarme"
     },
     "module": {
         "app": {
@@ -191,49 +185,27 @@
         "update_view": "Actualizar vista"
     },
     "timezone": {
-        "gmt_02": "{{value}} GMT-02",
         "abu_dhabi_muscat": "{{value}} Abu Dabi, Mascate",
-        "beijing_chongqing_hong_kong_urumqi": "{{value}} Pekín, Chongqing, Hong Kong, Urumqi",
         "coordinated_universal_time": "{{value}} Tiempo universal coordinado",
-        "monrovia": "{{value}} Monrovia",
         "sarajevo_skopje_warsaw_zagreb": "{{value}} Sarajevo, Skopje, Varsovia, Zagreb",
-        "alaska": "{{value}} Alaska",
         "argentina": "{{value}} Argentina",
-        "asuncion": "{{value}} Asunción",
         "azores": "{{value}} Azores",
-        "baku": "{{value}} Bakú",
         "beirut": "{{value}} Beirut",
-        "brasilia": "{{value}} Brasilia",
         "brussels_copenhagen_madrid_paris ": "{{value}} Bruselas, Copenhague, Madrid, París",
-        "caracas": "{{value}} Caracas",
         "central_america": "{{value}} América Central",
-        "chihuahua_la_paz_mazatlan": "{{value}} Chihuahua, La Paz, Mazatlán",
         "christmas_island": "{{value}} Isla de Navidad",
-        "cuiaba": "{{value}} Cuiabá",
         "darwin": "{{value}} Darwin",
-        "dhaka": "{{value}} Dhaka",
         "ekaterinburg_rtz_4": "{{value}} Ekaterimburgo (RTZ 4)",
-        "georgetown_la_paz_manaus_san_juan": "{{value}} Georgetown, La Paz, Manaos, San Juan",
         "harare_pretoria": "{{value}} Harare, Pretoria",
-        "indiana_east": "{{value}} Indiana (Este)",
         "irkutsk_rtz_7": "{{value}} Irkutsk (RTZ 7)",
-        "jerusalem": "{{value}} Jerusalén",
         "kabul": "{{value}} Kabul",
-        "kathmandu": "{{value}} Katmandú",
         "krasnoyarsk_rtz_6": "{{value}} Krasnoyarsk (RTZ 6)",
-        "la_paz": "{{value}} La Paz",
         "manaus": "{{value}} Manaos",
-        "minsk": "{{value}} Minsk",
         "moscow_st_petersburg_volgograd_rtz_2": "{{value}} Moscú, San Petersburgo, Volgogrado (RTZ 2)",
-        "namibia": "{{value}} Namibia",
         "pacific_south_america": "{{value}} Pacífico América del Sur",
-        "pyongyang": "{{value}} Pyongyang",
         "saskatchewan": "{{value}} Saskatchewan",
-        "tbilisi": "{{value}} Tiflis",
         "us_canada_central": "{{value}} US/Canada Central",
-        "us_canada_mountain": "{{value}} US/Canada Mountain",
         "west_central_africa": "{{value}} África Centro-Occidental",
-        "yerevan": "{{value}} Everán",
         "africa_cairo": "{{value}} Egipto",
         "africa_casablanca": "{{value}} Casablanca",
         "africa_harare": "{{value}} Harare, Pretoria",

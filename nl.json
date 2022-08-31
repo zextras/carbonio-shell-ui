@@ -1,12 +1,9 @@
 {
     "changelog": {
-        "close": "Sluiten",
         "title": "Log wijzigen"
     },
     "login": {
-        "login": "Inloggen",
         "username": "Gebruikersnaam",
-        "remember_me": "Herinner mij",
         "verify_caps_lock": "Controleer of CAPS LOCK niet aan staat, en typ dan de huidige gebruikersnaam en wachtwoord opnieuw"
     },
     "new": "Nieuw",
@@ -81,7 +78,6 @@
             }
         }
     },
-    "copyright": "Copyright",
     "logout_modal": {
         "warning": "Je zult uitgelogd worden"
     },
@@ -225,49 +221,27 @@
         "vietnamese": "Vietnamees"
     },
     "timezone": {
-        "athens_beirut_bucharest_istanbul": "{{value}} Athene, Beiroet, Boekarest, Istanbul",
         "chennai_kolkata_mumbai_new_delhi": "{{value}} Chennai, Kolkata, Mumbai, New Delhi",
-        "guadalajara_mexico_city_monterrey ": "{{value}} Guadalajara, Mexico City, Monterrey",
         "kabul": "{{value}} Kaboel",
-        "moscow_st_petersburg_volgograd_rtz_2": "{{value}} Moskou, St. Petersburg, Volgograd (RTZ 2)",
         "vladivostok_magadan": "{{value}} vladivostok_magadan_rtz_9",
-        "alaska": "{{value}} Alaska",
         "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Anadyr, Petropavlovsk-Kamchatsky (RTZ 11)",
-        "arizona": "{{value}} Arizona",
         "atlantic_time_canada": "{{value}} Atlantische Tijd (Canada)",
-        "baja_california": "{{value}} Baja California",
         "beijing_chongqing_hong_kong_urumqi": "{{value}} Beijing, Chongqing, Hong Kong, Urumqi",
-        "brasilia": "{{value}} Brasilia",
         "cape_verde_is": "{{value}} Kaapverdische Eilanden.",
-        "casablanca": "{{value}} Casablanca",
         "central_america": "{{value}} Midden-Amerika",
-        "chita": "{{value}} Chita",
         "christmas_island": "{{value}} Christmas Island",
-        "cuiaba": "{{value}} Cuiaba",
         "darwin": "{{value}} Darwin",
-        "dhaka": "{{value}} Dhaka",
         "eucla": "{{value}} Eucla",
-        "gmt_02": "{{value}} GMT-02",
         "greenland": "{{value}} Groenland",
-        "hawaii": "{{value}} Hawaii",
         "iraq": "{{value}} Irak",
-        "istanbul": "{{value}} Istanbul",
         "jordan": "{{value}} Jordanië",
-        "kathmandu": "{{value}} Kathmandu",
         "krasnoyarsk_rtz_6": "{{value}} Krasnoyarsk (RTZ 6)",
-        "la_paz": "{{value}} La Paz",
         "mid_atlantic": "{{value}} Mid-Atlantic",
-        "monrovia": "{{value}} Monrovia",
         "nairobi": "{{value}} Nairobi",
-        "newfoundland": "{{value}} Newfoundland",
         "pacific_south_america": "{{value}} Stille Oceaan Zuid-Amerika",
-        "pyongyang": "{{value}} Pyongyang",
         "sarajevo_skopje_warsaw_zagreb": "{{value}} Sarajevo, Skopje, Warschau, Zagreb",
-        "tbilisi": "{{value}} Tbilisi",
         "us_canada_central": "{{value}} VS/Centraal Canada",
-        "us_canada_mountain": "{{value}} VS/Canadese bergen",
         "west_central_africa": "{{value}} West Centraal Afrika",
-        "yerevan": "{{value}} Yerevan",
         "africa_algiers": "{{value}} West Centraal Afrika",
         "africa_cairo": "{{value}} Egypte",
         "africa_casablanca": "{{value}} Casablanca",

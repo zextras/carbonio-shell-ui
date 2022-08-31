@@ -6,24 +6,21 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Container, Row, Text, Icon, Dropdown } from '@zextras/carbonio-design-system';
-import { AppRoute } from '../../types';
 import { useAppStore } from '../store/app';
 import { useSearchStore } from './search-store';
 import { SEARCH_APP_ID } from '../constants';
-import { pushHistory } from '../history/hooks';
+import { useCurrentRoute, pushHistory } from '../history/hooks';
 
 const SelectorContainer = styled(Container)<{ open: boolean }>`
 	border-right: 1px solid ${({ theme }): string => theme.palette.gray4.regular};
-	cursor: 'pointer';
+	cursor: pointer;
 	background: ${({ theme, open }): string => theme.palette[open ? 'gray5' : 'gray6'].regular};
 	&:hover {
 		background: ${({ theme, open }): string => theme.palette[open ? 'gray5' : 'gray6'].hover};
 	}
 `;
 
-export const ModuleSelector: FC<{ activeRoute: AppRoute; disabled: boolean }> = ({
-	activeRoute
-}) => {
+const ModuleSelectorComponent: FC<{ app: string | undefined }> = ({ app }) => {
 	const modules = useAppStore((s) => s.views.search);
 	const { module, updateModule } = useSearchStore();
 	const fullModule = useMemo(
@@ -49,13 +46,13 @@ export const ModuleSelector: FC<{ activeRoute: AppRoute; disabled: boolean }> = 
 	);
 
 	useEffect(() => {
-		if (activeRoute?.app !== SEARCH_APP_ID) {
-			if (!fullModule || fullModule?.app !== activeRoute?.app) {
-				updateModule((modules.find((m) => m.app === activeRoute?.app) ?? modules[0])?.route);
+		if (app !== SEARCH_APP_ID) {
+			if (!fullModule || fullModule?.app !== app) {
+				updateModule((modules.find((m) => m.app === app) ?? modules[0])?.route);
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [activeRoute, modules, updateModule]);
+	}, [app, modules, updateModule]);
 
 	if (!fullModule) {
 		return null;
@@ -89,4 +86,11 @@ export const ModuleSelector: FC<{ activeRoute: AppRoute; disabled: boolean }> = 
 			</SelectorContainer>
 		</Dropdown>
 	);
+};
+
+const MemoModuleSelector = React.memo(ModuleSelectorComponent);
+
+export const ModuleSelector = (): JSX.Element => {
+	const activeRoute = useCurrentRoute();
+	return <MemoModuleSelector app={activeRoute?.app} />;
 };

@@ -8,12 +8,11 @@ import React, { useState, useCallback, FC, useEffect, useMemo } from 'react';
 import {
 	Container,
 	FormSubSection,
-	Input,
 	Checkbox,
 	Select,
 	Padding
 } from '@zextras/carbonio-design-system';
-
+import styled from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import momentLocalizer from 'react-widgets-moment';
 import { useTranslation } from 'react-i18next';
@@ -33,6 +32,23 @@ import {
 	ItemsSendAutoReplies
 } from '../utils';
 import { outOfOfficeSubSection } from '../../general-settings-sub-sections';
+
+const TextArea = styled.textarea`
+	box-sizing: border-box;
+	padding: 10px;
+	min-height: 150px;
+	background: ${({ theme }): string => theme.palette.gray5.regular};
+	flex-grow: 1;
+	width: 100%;
+	border: none;
+	resize: vertical;
+	& :focus,
+	:active {
+		box-shadow: none;
+		border: none;
+		outline: none;
+	}
+`;
 
 momentLocalizer();
 
@@ -145,16 +161,17 @@ const OutOfOfficeView: FC<{
 					selection={selectedItemSendAutoReplies}
 				/>
 				<Padding top="small" width="100%">
-					<Input
-						onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-							setInputZimbraPrefOutOfOfficeReply(e.target.value);
-							updatePrefs(e.target.value, 'zimbraPrefOutOfOfficeReply');
-						}}
-						autoComplete="on"
-						label={t('settings.out_of_office.labels.auto_reply_message', 'Auto-Reply Message:')}
-						backgroundColor="gray5"
+					<TextArea
 						value={inputZimbraPrefOutOfOfficeReply || ''}
 						disabled={!sendAutoReply}
+						placeholder={t(
+							'settings.out_of_office.labels.auto_reply_message',
+							'Auto-Reply Message:'
+						)}
+						onChange={(ev): void => {
+							setInputZimbraPrefOutOfOfficeReply(ev.target.value);
+							updatePrefs(ev.target.value, 'zimbraPrefOutOfOfficeReply');
+						}}
 					/>
 				</Padding>
 				<Padding top="small" width="100%">
@@ -171,19 +188,17 @@ const OutOfOfficeView: FC<{
 				</Padding>
 				{externalReplyInput && (
 					<Padding top="small" width="100%">
-						<Input
-							onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
-								setInputZimbraPrefOutOfOfficeExternalReply(e.target.value);
-								updatePrefs(e.target.value, 'zimbraPrefOutOfOfficeExternalReply');
-							}}
-							autoComplete="on"
-							label={t(
+						<TextArea
+							value={inputZimbraPrefOutOfOfficeExternalReply || ''}
+							disabled={!sendAutoReply}
+							placeholder={t(
 								'settings.out_of_office.labels.auto_reply_message_external',
 								'Auto-Reply Message for External senders:'
 							)}
-							backgroundColor="gray5"
-							value={inputZimbraPrefOutOfOfficeExternalReply || ''}
-							disabled={!sendAutoReply}
+							onChange={(ev): void => {
+								setInputZimbraPrefOutOfOfficeExternalReply(ev.target.value);
+								updatePrefs(ev.target.value, 'zimbraPrefOutOfOfficeExternalReply');
+							}}
 						/>
 					</Padding>
 				)}

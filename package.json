@@ -19,7 +19,8 @@
 		"lint": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to node_modules/@zextras/zapp-config src",
 		"build": "sdk build",
 		"deploy": "sdk deploy",
-		"start": "sdk watch"
+		"start": "sdk watch",
+		"deploy-on-module": "npm pack && rm -rf $PKG_PATH/node_modules/@zextras/carbonio-shell-ui/* && tar -xf zextras-carbonio-shell-ui-$npm_package_version.tgz -C $PKG_PATH/node_modules/@zextras/carbonio-shell-ui/ --strip-components 1"
 	},
 	"files": [
 		"dist/",
@@ -29,13 +30,14 @@
 	"keywords": [
 		"zextras"
 	],
-	"author": "Zextras DL Team <https://www.zextras.com/carbonio/>",
+	"author": "Zextras Crab Onions Team <https://www.zextras.com/carbonio/>",
 	"maintainers": [
-		"Matteo Dal Zovo <matteo.dalzovo@zextras.com>",
 		"Gabriele Marino <gabriele.marino@zextras.com>",
 		"Abhishek Kumar <abhishek.kumar@zextras.com>",
 		"Giuliano Caregnato <giuliano.caregnato@zextras.com>",
-		"Dhaval Dodiya <dhaval.dodiya@zextras.com>"
+		"Dhaval Dodiya <dhaval.dodiya@zextras.com>",
+		"Francesco Gottardi <francesco.gottardi@zextras.com>",
+		"Luca Stauble <luca.stauble@zextras.com>"
 	],
 	"license": "AGPL-3.0-only",
 	"devDependencies": {
@@ -99,7 +101,7 @@
 		"@fontsource/roboto": "^4.5.7",
 		"@sentry/browser": "^6.17.7",
 		"@tinymce/tinymce-react": "^3.13.0",
-		"@zextras/carbonio-design-system": "^0.3.7",
+		"@zextras/carbonio-design-system": "^0.3.10",
 		"@zextras/carbonio-ui-preview": "^0.1.5",
 		"darkreader": "4.9.46",
 		"history": "^5.2.0",

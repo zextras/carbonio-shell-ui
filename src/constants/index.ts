@@ -88,3 +88,18 @@ export const EMAIL_VALIDATION_REGEX =
 export const ROOT_NAME = 'USER_ROOT';
 
 export const DR_VALUES = ['auto', 'enabled', 'disabled'];
+
+export const FOLDER_VIEW = {
+	search_folder: 'search folder',
+	tag: 'tag',
+	conversation: 'conversation',
+	message: 'message',
+	contact: 'contact',
+	document: 'document',
+	appointment: 'appointment',
+	virtual_conversation: 'virtual conversation',
+	remote_folder: 'remote folder',
+	wiki: 'wiki',
+	task: 'task',
+	chat: 'chat'
+};

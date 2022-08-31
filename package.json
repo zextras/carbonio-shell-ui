@@ -101,7 +101,7 @@
 		"@fontsource/roboto": "^4.5.7",
 		"@sentry/browser": "^6.17.7",
 		"@tinymce/tinymce-react": "^3.13.0",
-		"@zextras/carbonio-design-system": "^0.3.9",
+		"@zextras/carbonio-design-system": "^0.3.10",
 		"@zextras/carbonio-ui-preview": "^0.1.5",
 		"darkreader": "4.9.46",
 		"history": "^5.2.0",

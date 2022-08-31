@@ -1,18 +1,12 @@
 {
-    "copyright": "Авторские права",
     "theme-switch": {
-        "light": "Перейти в светлый режим",
-        "dark": "Перейти в темный режим"
+        "light": "Перейти в светлый режим"
     },
     "supported_browsers": {
         "yandex": "Yandex",
-        "uc": "UC",
         "safari": "Safari",
-        "opera": "Opera",
         "ie_11_up": "Internet Explorer 11+",
-        "firefox": "Firefox",
-        "edge": "Edge",
-        "chrome": "Chrome"
+        "edge": "Edge"
     },
     "settings": {
         "button": {
@@ -22,7 +16,6 @@
         },
         "general": {
             "theme_enabled": "Включено",
-            "theme_mode": "Режим Темы",
             "account": "Учетная запись",
             "account_logout": "Выйти",
             "general": "Общие настройки",
@@ -32,7 +25,6 @@
             "dark_mode": "Темный Режим"
         },
         "app": "Настройки",
-        "app_description": "Настройки Модуля",
         "general_tab": "Основные настройки",
         "out_of_office": {
             "do_not_send_auto_replies": "Не отправлять автоответы",
@@ -52,7 +44,6 @@
                 "auto_reply_message": "Авто ответ:",
                 "auto_reply_message_external": "Авто ответ для внешних отправителей:",
                 "create_appointment": "Создать встречу:",
-                "out_of_office": "Вне офиса",
                 "out_of_office_status": "Статус Вне офиса:",
                 "send_auto_reply_period": "Отправлять автоответы в течение следующего периода:",
                 "start_date": "Дата начала",
@@ -63,8 +54,7 @@
             },
             "send_auto_replies": "Отправить автоответы",
             "status": {
-                "busy": "Занят",
-                "out_of_office": "Вне офиса"
+                "busy": "Занят"
             }
         },
         "timezone_and_language": "Часовой пояс и язык",
@@ -78,39 +68,26 @@
         "accounts": "Учетные записи",
         "choose": "Выбрать"
     },
-    "new-tab": "Новая вкладка",
     "new": "Новый",
     "logout-modal": {
-        "warning": "Вы собираетесь выйти из системы",
         "confirm": "Выйти из системы"
     },
-    "logout": "Выйти",
     "login": {
         "verify-caps-lock": "Убедитесь, что CAPS LOCK не включен, а затем повторно введите имя пользователя и пароль",
-        "username": "Имя пользователя",
         "supported-browsers": "Поддерживаемые браузеры",
-        "remember-me": "Напомнить мне",
         "password": "Пароль",
-        "login": "Логин",
         "incorrect": "Имя пользователя или пароль неверны",
-        "help": "Помощь",
         "remember_me": "Запомнить меня",
-        "supported_browsers": "Поддерживаемые браузеры",
         "verify_caps_lock": "Убедитесь, что CAPS LOCK не включен, а затем повторно введите текущее имя пользователя и пароль"
     },
     "changelog": {
-        "title": "Журнал изменений",
         "remind-later": "Напомнить позже",
-        "close": "Закрыть",
         "cancel": "Отменить"
     },
     "settins": {
         "general": {
-            "general": "Общие Настройки",
             "theme_mode": "Выбор Темы",
-            "theme_options": "Параметры Темы",
             "theme_enabled": "Темный режим",
-            "theme_disabled": "Светлый режим",
             "theme_auto": "Автоматический"
         }
     },
@@ -119,9 +96,7 @@
         "idle_input_label": "Искать в {{module}}",
         "module": "Модуль",
         "app": "Поиск",
-        "app_description": "Модуль поиска",
         "start": "Начать поиск",
-        "results_for": "Результаты по запросу:",
         "edit_to_start": "Измените параметры поиска, чтобы начать новый",
         "active_input_label": "Разделяйте ключевые слова запятой или TAB",
         "type_or_choose_suggestion": "Чтобы начать поиск, введите или выберите ключевые слова",
@@ -130,7 +105,6 @@
         "type_to_start_search": "Введите несколько ключевых слов, чтобы начать поиск"
     },
     "logout_modal": {
-        "confirm": "Выйти из системы",
         "warning": "Вы собираетесь выйти из системы"
     },
     "module": {
@@ -182,7 +156,6 @@
         "change_pop": "Изменить POP-порт",
         "choose_account": "Выбрать учетную запись",
         "choose_folder": "Выбрать папку",
-        "default_from_name": "По умолчанию от имени",
         "delete": "Удалить",
         "delete_after_download": "Удалить сообщения с сервера после загрузки",
         "delete_permanently": "Удалить навсегда",
@@ -224,7 +197,6 @@
         "secondary": "Вторичный",
         "settings_sent_messages": "Настройки отправленных сообщений",
         "save_both_folders": "Сохранять копии отправленных сообщений в папке «Отправленные» и в папке делегата",
-        "replyToFieldExample": "например Дмитрий Иванов",
         "test_settings": "Тестовые настройки",
         "unsaved_changes": "У вас есть несохраненные изменения",
         "unsaved_changes_line1": "Вы уверены, что хотите покинуть эту страницу без сохранения?",
@@ -283,93 +255,49 @@
         "vietnamese": "Вьетнамский"
     },
     "timezone": {
-        "baja_california": "{{value}} Байа Калифорния",
         "belgrade_bratislava_budapest_ljubljana_prague": "{{value}} Белград, Братислава, Будапешт, Любляна, Прага",
-        "casablanca": "{{value}} Касабланка",
         "chennai_kolkata_mumbai_new_delhi": "{{value}} Ченнаи, Калькутта, Мумбаи, Нью-Дели",
-        "dateline": "{{value}} Линия перемены дат",
         "georgetown_la_paz_manaus_san_juan": "{{value}} Джорджтаун, Ла-Пас, Манаус, Сан-Хуан",
-        "helsinki_kyiv_riga_sofia_tallinn_vilnius": "{{value}} Хельсинки, Киев, Рига, София, Таллинн, Вильнюс",
         "kaliningrad_rtz_1": "{{value}} Калининград (RTZ 1)",
-        "montevideo": "{{value}} Монтевидео",
         "newfoundland": "{{value}} Ньюфаундленд",
-        "sarajevo_skopje_warsaw_zagreb": "{{value}} Сараево, Скопье, Варшава, Загреб",
         "vladivostok_magadan": "{{value}} Владивосток, Магадан",
-        "abu_dhabi_muscat": "{{value}} Абу-Даби, Маскат",
         "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}} Амстердам, Берлин, Берн, Рим, Стокгольм, Вена",
-        "arizona": "{{value}} Аризона",
         "athens_beirut_bucharest_istanbul": "{{value}} Афины, Бейрут, Бухарест, Стамбул",
-        "atlantic_time_canada": "{{value}} Атлантическое время (Канада)",
         "bangkok_hanoi_jakarta": "{{value}} Бангкок, Ханой, Джакарта",
-        "beijing_chongqing_hong_kong_urumqi": "{{value}} Пекин, Чунцин, Гонконг, Урумчи",
         "beirut": "{{value}} Бейрут",
-        "brasilia": "{{value}} Бразилия",
         "britain_ireland_portugal": "{{value}} Великобритания, Ирландия, Португалия",
-        "brussels_copenhagen_madrid_paris ": "{{value}} Брюссель, Копенгаген, Мадрид, Париж",
         "argentina": "{{value}} Аргентина",
-        "asuncion": "{{value}} Аризона",
         "azores": "{{value}} Азорские острова",
-        "baku": "{{value}} Баку",
         "caracas": "{{value}} Каракас",
-        "chihuahua_la_paz_mazatlan": "{{value}} Чиуауа, Ла-Пас, Масатлан",
         "colombia": "{{value}} Колумбия",
-        "damascus": "{{value}} Дамаск",
         "darwin": "{{value}} Дарвин",
-        "dhaka": "{{value}} Дакка",
         "ekaterinburg_rtz_4": "{{value}} Екатеринбург (RTZ 4)",
-        "eucla": "{{value}} Эвкла",
         "gmt_02": "{{value}} GMT-02",
-        "gmt_11": "{{value}} GMT-11",
         "guadalajara_mexico_city_monterrey ": "{{value}} Гвадалахара, Мехико, Монтеррей",
-        "harare_pretoria": "{{value}} Хараре, Претория",
         "hawaii": "{{value}} Гавайи",
-        "istanbul": "{{value}} Стамбул",
         "jerusalem": "{{value}} Иерусалим",
-        "jordan": "{{value}} Иордания",
         "kabul": "{{value}} Кабул",
-        "kathmandu": "{{value}} Катманду",
         "krasnoyarsk_rtz_6": "{{value}} Красноярск (RTZ 6)",
-        "cape_verde_is": "{{value}} Острова Кабо-Верде",
         "cayenne_fortaleza": "{{value}} Кайенна, Форталеза",
-        "central_america": "{{value}}Центральная Америка",
         "chita": "{{value}}Чита",
-        "christmas_island": "{{value}} Остров Рождества",
         "cuiaba": "{{value}} Куйаба",
-        "egypt": "{{value}} Египет",
         "greenland": "{{value}} Greenland",
-        "indiana_east": "{{value}} Индиана (Восток)",
         "iraq": "{{value}} Ирак",
-        "irkutsk_rtz_7": "{{value}} Иркутск (RTZ 7)",
         "korea": "{{value}} Южная Корея",
-        "kuwait_riyadh": "{{value}} Кувейт, Эр-Рияд",
         "la_paz": "{{value}} Ла-Пас",
-        "magadan": "{{value}} Магадан",
         "manaus": "{{value}} Манаус",
-        "mid_atlantic": "{{value}} Среднеатлантический регион",
         "minsk": "{{value}} Минск",
-        "monrovia": "{{value}} Монровия",
         "nairobi": "{{value}} Найроби",
-        "namibia": "{{value}} Намибия",
         "nuku_alofa": "{{value}} Нукуалофа",
-        "pacific_south_america": "{{value}} Тихоокеанский регион Южная Америка",
         "port_louis": "{{value}} Порт-Луи",
-        "pyongyang": "{{value}} Пхеньян",
         "samoa": "{{value}} Самоа",
-        "saskatchewan": "{{value}} Саскачеван",
         "sri_jayawardenepura_kotte": "{{value}} Шри-Джаяварденепура Котте",
-        "tbilisi": "{{value}} Тбилиси",
         "tehran": "{{value}} Тегеран",
-        "us_canada_mountain": "{{value}} US/Canada Mountain",
         "us_canada_pacific": "{{value}} США/Канада, Тихоокеанский регион",
-        "west_central_africa": "{{value}} Западная Центральная Африка",
         "yangon": "{{value}} Янгон",
-        "yerevan": "{{value}} Ереван",
         "us_canada_eastern": "{{value}} Восточная часть США/Канады",
-        "alaska": "{{value}} Аляска",
         "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Анадырь, Петропавловск-Камчатский",
-        "coordinated_universal_time": "{{value}} Всемирное координированное время",
         "moscow_st_petersburg_volgograd_rtz_2": "{{value}} Москва, Санкт-Петербург, Волгоград(RTZ 2)",
-        "us_canada_central": "{{value}} US/Canada Central",
         "africa_algiers": "{{value}} Западная Центральная Африка",
         "africa_cairo": "{{value}} Египет",
         "africa_harare": "{{value}} Хараре, Претория",

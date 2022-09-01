@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.34](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.33...v0.4.34) (2022-08-31)
+
+
+### Features
+
+* add sorting to mails folders ([4e8d9da](https://github.com/zextras/carbonio-shell-ui/commit/4e8d9daa46260b1a5385ec36b0040e4ee3f6902b))
+* added inline support in composer ([fff3b3e](https://github.com/zextras/carbonio-shell-ui/commit/fff3b3e30f9cc70d1d2175bdf8e032b78b625681))
+* composer prefilled with styles as per user settings ([#120](https://github.com/zextras/carbonio-shell-ui/issues/120)) ([cee27aa](https://github.com/zextras/carbonio-shell-ui/commit/cee27aa05819af49bf2eb4e8111395a6c8191eff))
+* second row with account email ([75e80a9](https://github.com/zextras/carbonio-shell-ui/commit/75e80a9dc43978aa44b89163808a91caf92133a1))
+* used multiline editor for out of office message ([9480c19](https://github.com/zextras/carbonio-shell-ui/commit/9480c199b139c6091bab0dc7fc0ffe1586d56e07))
+
+
+### Bug Fixes
+
+* apply the color to folder as per the parent folder color ([4303518](https://github.com/zextras/carbonio-shell-ui/commit/43035183a0abb1c41e469ebf3c625cbe61a9bc87))
+* fix type SoapRetentionPolicy ([#119](https://github.com/zextras/carbonio-shell-ui/issues/119)) ([e12f3a3](https://github.com/zextras/carbonio-shell-ui/commit/e12f3a31ee9fecd8ebed490df3991f3767506463))
+* integration composer ([ed0ad0f](https://github.com/zextras/carbonio-shell-ui/commit/ed0ad0f7765b25c6dbe98fc2963f955cf1e33aef))
+
 ### [0.4.33](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.32...v0.4.33) (2022-08-02)
 
 

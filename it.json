@@ -1,14 +1,10 @@
 {
     "changelog": {
-        "close": "Chiudi",
         "title": "Novità"
     },
-    "copyright": "Copyright",
     "login": {
         "incorrect": "Nome utente o password sono errati",
-        "password": "Password",
-        "supported_browsers": "Browser supportati",
-        "verify_caps_lock": "Verifica che il CAPS LOCK non sia attivo, e ridigita nome utente e password"
+        "supported_browsers": "Browser supportati"
     },
     "logout_modal": {
         "confirm": "Disconnettimi"
@@ -16,13 +12,8 @@
     "new": "Nuovo",
     "new_tab": "Nuova tab",
     "supported_browsers": {
-        "edge": "Edge",
         "ie_11_up": "Internet Explorer 11+",
-        "safari": "Safari",
         "yandex": "Yandex"
-    },
-    "theme_switch": {
-        "light": "Passa al tema chiaro"
     },
     "settings": {
         "button": {
@@ -91,7 +82,6 @@
     "search": {
         "active_input_label": "Separa le parole chiave usando una virgola oppure il tasto TAB",
         "app": "Cerca",
-        "edit_to_start": "Modifica la ricerca per iniziarne una nuova",
         "idle_input_label": "Cerca in {{module}}",
         "module": "Modulo",
         "start": "Inizia ricerca",
@@ -243,49 +233,27 @@
         "vietnamese": "Vietnamita"
     },
     "timezone": {
-        "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Anadyr, Petropavlovsk-Kamchatsky (RTZ 11)",
         "arizona": "{{value}} Arizona",
-        "athens_beirut_bucharest_istanbul": "{{value}} Atene, Beirut, Bucarest, Istanbul",
         "azores": "{{value}} Azzoree",
-        "baku": "{{value}} Baku",
         "beirut": "{{value}} Beirut",
-        "brasilia": "{{value}} Brasilia",
         "cape_verde_is": "{{value}} Capo Verde.",
-        "casablanca": "{{value}} Casablanca",
         "chihuahua_la_paz_mazatlan": "{{value}} Chihuahua, La Paz, Mazatlan",
-        "christmas_island": "{{value}} Isola di Natale",
         "coordinated_universal_time": "{{value}} Tempo Coordinato Universale",
-        "damascus": "{{value}} Damasco",
         "dateline": "{{value}} Linea di cambio data",
-        "ekaterinburg_rtz_4": "{{value}} Ekaterinburg (RTZ 4)",
         "gmt_02": "{{value}} GMT-02",
-        "greenland": "{{value}} Groenlandia",
         "harare_pretoria": "{{value}} Harare, Pretoria",
-        "helsinki_kyiv_riga_sofia_tallinn_vilnius": "{{value}} Helsinki, Kiev, Riga, Sofia, Tallin, Vilnius",
         "iraq": "{{value}} Iraq",
-        "istanbul": "{{value}} Istanbul",
         "kabul": "{{value}} Kabul",
-        "korea": "{{value}} Corea",
         "la_paz": "{{value}} La Paz",
-        "manaus": "{{value}} Manaus",
         "minsk": "{{value}} Minsk",
-        "montevideo": "{{value}} Montevideo",
         "namibia": "{{value}} Namibia",
-        "nuku_alofa": "{{value}} Nuku’alofa",
         "port_louis": "{{value}} Port Louis",
-        "samoa": "{{value}} Samoa",
         "sri_jayawardenepura_kotte": "{{value}} Sri Jayawardenepura Kotte",
-        "tehran": "{{value}} Tehran",
         "us_canada_eastern": "{{value}} US/Canada Orientale",
-        "us_canada_pacific": "{{value}} US/Canada Pacific",
         "yangon": "{{value}} Yangon",
-        "abu_dhabi_muscat": "{{value}} Abu Dhabi, Mascate",
         "beijing_chongqing_hong_kong_urumqi": "{{value}} Pechino, Chongqing, Hong Kong, Urumqi",
-        "central_america": "{{value}} America Centrale",
         "egypt": "{{value}} Egitto",
-        "jerusalem": "{{value}} Gerusalemme",
         "krasnoyarsk_rtz_6": "{{value}} Krasnoyarsk (RTZ 6)",
-        "sarajevo_skopje_warsaw_zagreb": "{{value}} Sarajevo, Skopje, Varsavia, Zagabria",
         "africa_juba": "{{value}} Juba",
         "africa_khartoum": "{{value}} Khartoum",
         "africa_windhoek": "{{value}} Namibia",

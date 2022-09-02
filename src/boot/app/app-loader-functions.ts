@@ -92,6 +92,7 @@ import {
 	setCurrentBoard,
 	useBoardHooks
 } from '../../store/boards';
+import { getNotificationManager } from '../../notification/NotificationManager';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({
@@ -186,6 +187,9 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	renameTag,
 	changeTagColor,
 	deleteTag,
+	// NOTIFICATION
+	getNotificationManager,
+
 	// STUFF
 	runSearch,
 	useIsMobile,

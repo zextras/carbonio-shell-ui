@@ -8,6 +8,7 @@ export * from './network';
 export * from './exports';
 export * from './account';
 export * from './apps';
+export * from './notification';
 export * from './integrations';
 export * from './theme';
 export * from './search';

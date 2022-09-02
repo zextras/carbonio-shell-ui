@@ -13,6 +13,7 @@ import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-provider';
 import { unloadAllApps } from './app/load-apps';
 import { registerDefaultViews } from './app/default-views';
+import { NotificationPermissionChecker } from '../notification/NotificationPermissionChecker';
 
 const DefaultViewsRegister: FC = () => {
 	const [t] = useTranslation();
@@ -35,6 +36,7 @@ const Bootstrapper: FC = () => {
 				<ModalManager>
 					<BootstrapperContextProvider>
 						<DefaultViewsRegister />
+						<NotificationPermissionChecker />
 						<BootstrapperRouter />
 					</BootstrapperContextProvider>
 				</ModalManager>

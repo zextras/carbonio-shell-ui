@@ -5,8 +5,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ComponentType, FC } from 'react';
-import { Board } from '../boards';
+import React, { ComponentType, FC } from 'react';
 import { QueryChip } from '../search/items';
 
 export type CarbonioModule = {
@@ -119,7 +118,7 @@ export type SearchView = CarbonioView<SearchViewProps> & {
 
 export type PrimaryAccessoryView = CarbonioAccessoryView<PrimaryAccessoryViewProps> & {
 	component: string | ComponentType;
-	onClick?: (ev: any) => void;
+	onClick?: (ev: KeyboardEvent | React.MouseEvent<HTMLButtonElement> | undefined) => void;
 	label: string;
 };
 

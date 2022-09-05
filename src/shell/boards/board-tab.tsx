@@ -14,11 +14,12 @@ import {
 	Padding,
 	Icon,
 	Container,
-	Tooltip
+	Tooltip,
+	RowProps
 } from '@zextras/carbonio-design-system';
 import { closeBoard, setCurrentBoard, useBoardStore } from '../../store/boards';
 
-const TabContainer = styled(Row)`
+const TabContainer = styled(Row)<RowProps & { active: boolean }>`
 	cursor: pointer;
 	height: 28px;
 	width: fit-content;
@@ -54,7 +55,7 @@ export const AppBoardTab: FC<{ id: string; icon: string; title: string }> = ({
 
 	return (
 		<Container orientation="row" width="fit" maxWidth="100%">
-			{current !== id ? <VerticalDivider /> : null}
+			{current !== id && <VerticalDivider />}
 			<TabContainer active={current === id} padding={{ all: 'extrasmall' }}>
 				<Row
 					height="100%"
@@ -70,7 +71,6 @@ export const AppBoardTab: FC<{ id: string; icon: string; title: string }> = ({
 							size="medium"
 							weight="regular"
 							color={current === id ? 'text' : 'secondary'}
-							padding={{ right: 'small' }}
 							overflow="ellipsis"
 						>
 							{title}

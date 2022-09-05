@@ -45,7 +45,7 @@ const ShellMobileNavComponent: FC<ShellMobileNavComponentProps> = ({
 	menuTree
 }) => {
 	const history = useHistory();
-	const views = useAppStore((s) =>
+	const views = useAppStore<any>((s) =>
 		reduce(
 			s.routes,
 			(acc: Array<ShellMobileNavComponent>, val) => {
@@ -103,7 +103,7 @@ const ShellMobileNavComponent: FC<ShellMobileNavComponentProps> = ({
 						<Accordion items={views} />
 					</Container>
 					<Container width="fill" height="fit" orientation="vertical" mainAlignment="flex-end">
-						<Accordion items={menuTree} />
+						<Accordion items={[menuTree]} />
 						<Padding vertical="medium">{/* <UserQuota mobileView={true}/> */}</Padding>
 					</Container>
 				</Container>

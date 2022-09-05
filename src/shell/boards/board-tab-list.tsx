@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { map, slice } from 'lodash';
+import { map, noop, slice } from 'lodash';
 import React, { useRef, useLayoutEffect, FC } from 'react';
 import {
 	Container,
@@ -21,7 +21,7 @@ import { AppBoardTab } from './board-tab';
 export const TabsList: FC = () => {
 	const [t] = useTranslation();
 	const { boards, current, expanded } = useBoardStore();
-	const tabContainerRef = useRef();
+	const tabContainerRef = useRef(null);
 	const [hiddenTabsCount, recalculateHiddenTabs] = useHiddenCount(tabContainerRef, expanded);
 
 	useLayoutEffect(() => {
@@ -60,12 +60,7 @@ export const TabsList: FC = () => {
 								selected: tab.id === current
 							}))}
 						>
-							<Button
-								type="ghost"
-								color="secondary"
-								label={`+${hiddenTabsCount}`}
-								padding={{ all: 'extrasmall' }}
-							/>
+							<Button type="ghost" color="secondary" label={`+${hiddenTabsCount}`} onClick={noop} />
 						</Dropdown>
 					</Tooltip>
 				</>

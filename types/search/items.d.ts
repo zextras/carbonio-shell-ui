@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 export type QueryChip = {
+	id: string;
 	label: string;
 	value?: string;
 	isGeneric?: boolean;

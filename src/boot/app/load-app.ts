@@ -8,9 +8,6 @@
 /* eslint-disable import/no-named-default */
 import { forOwn } from 'lodash';
 import { ComponentType } from 'react';
-import { Reducer, Store } from '@reduxjs/toolkit';
-import StoreFactory from '../../redux/store-factory';
-
 import { useAppStore } from '../../store/app';
 import { getAppFunctions } from './app-loader-functions';
 import { Spinner } from '../../ui-extras/spinner';
@@ -35,7 +32,7 @@ let _scriptId = 0;
 // 	}
 // }
 
-function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<CarbonioModule> {
+export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 	return new Promise((_resolve, _reject) => {
 		let resolved = false;
 		const resolve: (...args: any[]) => void = (...args) => {
@@ -54,10 +51,6 @@ function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<Carbo
 			(window as unknown as IShellWindow).__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-shell-ui'][
 				appPkg.name
 			] = {
-				store: {
-					store,
-					setReducer: (reducer: Reducer): void => store.replaceReducer(reducer)
-				},
 				report: report(appPkg.name),
 				AppLink,
 				Spinner,
@@ -103,11 +96,6 @@ function loadAppModule(appPkg: CarbonioModule, store: Store<any>): Promise<Carbo
 			reject(err);
 		}
 	});
-}
-
-export function loadApp(pkg: CarbonioModule, storeFactory: StoreFactory): Promise<CarbonioModule> {
-	const store = storeFactory.getStoreForApp(pkg);
-	return loadAppModule(pkg, store);
 }
 
 export function unloadApps(): Promise<void> {

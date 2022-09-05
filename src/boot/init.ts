@@ -6,20 +6,17 @@
 
 import { useAccountStore } from '../store/account';
 import { useAppStore } from '../store/app';
-import { registerDefaultViews } from './app/default-views';
 import { loadApps } from './app/load-apps';
-import I18nFactory from '../i18n/i18n-factory';
-import StoreFactory from '../redux/store-factory';
 import { getInfo } from '../network/get-info';
+import { setLocale } from '../store/i18n';
 
-export const init = (_i18nFactory: I18nFactory, _storeFactory: StoreFactory): void => {
+export const init = (): void => {
 	getInfo().finally(() => {
-		_i18nFactory.setLocale(
-			(
-				(useAccountStore.getState().settings?.prefs?.zimbraPrefLocale as string) ??
-				(useAccountStore.getState().settings?.attrs?.zimbraLocale as string)
-			)?.split?.('_')?.[0] ?? 'en'
+		setLocale(
+			(useAccountStore.getState().settings?.prefs?.zimbraPrefLocale as string) ??
+				(useAccountStore.getState().settings?.attrs?.zimbraLocale as string) ??
+				'en'
 		);
-		loadApps(_storeFactory, Object.values(useAppStore.getState().apps));
+		loadApps(Object.values(useAppStore.getState().apps));
 	});
 };

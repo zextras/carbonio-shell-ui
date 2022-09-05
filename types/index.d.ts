@@ -16,3 +16,5 @@ export * from './misc';
 export * from './tags';
 export * from './workers';
 export * from './folder';
+export * from './i18n';
+export * from './boards';

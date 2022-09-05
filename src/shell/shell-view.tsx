@@ -5,18 +5,15 @@
  */
 
 import React, { useEffect, useState, useContext, FC, useMemo } from 'react';
-import { Row, Responsive, ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
+import { Row, Responsive, SnackbarManager, ModalManager } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 import { find } from 'lodash';
-// import { PreviewManager } from '../preview';
 import { PreviewManager } from '@zextras/carbonio-ui-preview';
 import AppViewContainer from './app-view-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import AppBoardWindow from './boards/app-board-window';
+import { BoardContainer } from './boards/board-container';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 import { useAccountStore, useUserSettings } from '../store/account';
 import { ShellUtilityBar, ShellUtilityPanel } from '../utility-bar';
@@ -88,7 +85,7 @@ const ShellComponent: FC<{ allowUnauthenticated?: string; hideShellHeader?: stri
 				<ShellUtilityPanel />
 			</Row>
 			<Responsive mode="desktop">
-				<AppBoardWindow />
+				<BoardContainer />
 			</Responsive>
 		</Background>
 	);

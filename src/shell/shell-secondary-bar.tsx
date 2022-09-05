@@ -15,6 +15,7 @@ import { useAppStore } from '../store/app';
 import { AppRoute } from '../../types';
 import { useUtilityBarStore } from '../utility-bar';
 import { checkRoute } from '../utility-bar/utils';
+import { useCurrentRoute } from '../history/hooks';
 
 const SidebarContainer = styled(Container)<ContainerProps & { sidebarIsOpen?: boolean }>`
 	min-width: 48px;
@@ -24,11 +25,7 @@ const SidebarContainer = styled(Container)<ContainerProps & { sidebarIsOpen?: bo
 	overflow-x: hidden;
 `;
 
-type SecondaryBarProps = {
-	activeRoute: AppRoute;
-};
-
-const ShellSecondaryBar: FC<SecondaryBarProps> = ({ activeRoute }) => {
+const ShellSecondaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 	const isOpen = useUtilityBarStore((s) => s.secondaryBarState);
 	const setIsOpen = useUtilityBarStore((s) => s.setSecondaryBarState);
 	const onCollapserClick = useCallback(() => setIsOpen(!isOpen), [isOpen, setIsOpen]);
@@ -82,6 +79,13 @@ const ShellSecondaryBar: FC<SecondaryBarProps> = ({ activeRoute }) => {
 			<Collapser onClick={onCollapserClick} open={isOpen} />
 		</>
 	);
+};
+
+const MemoShellSecondaryBar = React.memo(ShellSecondaryBarComponent);
+
+const ShellSecondaryBar: FC = () => {
+	const activeRoute = useCurrentRoute() as AppRoute;
+	return <MemoShellSecondaryBar activeRoute={activeRoute} />;
 };
 
 export default ShellSecondaryBar;

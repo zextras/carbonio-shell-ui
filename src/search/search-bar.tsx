@@ -23,7 +23,7 @@ import { useLocalStorage } from '../shell/hooks';
 import { SEARCH_APP_ID } from '../constants';
 
 import { useSearchStore } from './search-store';
-import { QueryChip, SearchBarProps } from '../../types';
+import { QueryChip } from '../../types';
 import { ModuleSelector } from './module-selector';
 
 const OutlinedIconButton = styled(IconButton)`
@@ -60,11 +60,7 @@ type SearchLocalStorage = Array<{
 	app: string;
 	id: string;
 }>;
-export const SearchBar: FC<SearchBarProps> = ({
-	activeRoute
-	// primaryAction,
-	// secondaryActions
-}) => {
+export const SearchBar: FC = () => {
 	const [searchIsEnabled, setSearchIsEnabled] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const [t] = useTranslation();
@@ -382,7 +378,7 @@ export const SearchBar: FC<SearchBarProps> = ({
 					<Container minWidth="512px" width="fill">
 						<Container orientation="horizontal" width="fill">
 							<Container width="fit">
-								<ModuleSelector activeRoute={activeRoute} disabled={searchDisabled} />
+								<ModuleSelector />
 							</Container>
 							<StyledContainer orientation="horizontal">
 								<StyledChipInput

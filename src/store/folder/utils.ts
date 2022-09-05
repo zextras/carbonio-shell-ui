@@ -34,11 +34,14 @@ export const folderViewFilter =
 export const filterNodes = <T>(
 	children: TreeNode<T>[],
 	f: (deep?: boolean) => (i: TreeNode<T>) => boolean,
+	sortFunction?: (i: TreeNode<T>) => number | string,
 	deep?: boolean
-): TreeNode<T>[] =>
-	children
+): TreeNode<T>[] => {
+	const childrenSorted = sortFunction ? sortBy(children, sortFunction) : children;
+	return childrenSorted
 		.filter(f(deep))
-		.map((i) => ({ ...i, children: filterNodes<TreeNode<T>>(i.children, f, true) }));
+		.map((i) => ({ ...i, children: filterNodes<TreeNode<T>>(i.children, f, sortFunction, true) }));
+};
 
 type MapNodesOptions<T, U> = {
 	mapFunction: (i: TreeNode<T>) => U;

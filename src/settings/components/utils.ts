@@ -192,6 +192,13 @@ export const localeList = (t: TFunction): Array<LocaleDescriptor> => [
 		value: 'pt'
 	},
 	{
+		id: 'pl',
+		name: 'polski',
+		localName: t('locale.polish', 'Polish'),
+		label: 'Polish - polski',
+		value: 'pl'
+	},
+	{
 		id: 'pt_BR',
 		name: 'português (Brasil)',
 		localName: t('locale.portuguese_brazil', 'Portuguese (Brazil)'),
@@ -425,13 +432,6 @@ export const localeList = (t: TFunction): Array<LocaleDescriptor> => [
 // 		localName: t('locale.norwegian', 'Norwegian'),
 // 		label: 'Norwegian - norsk',
 // 		value: 'no'
-// 	},
-// 	{
-// 		id: 'pl',
-// 		name: 'polski',
-// 		localName: t('locale.polish', 'Polish'),
-// 		label: 'Polish - polski',
-// 		value: 'pl'
 // 	},
 
 // 	{

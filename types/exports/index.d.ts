@@ -35,6 +35,7 @@ import { HistoryParams, ShellModes, AccordionFolder } from '../misc';
 import { Tag, Tags } from '../tags';
 import { Folder, Folders } from '../folder';
 import { QueryChip } from '../search';
+import { INotificationManager } from '../notification';
 
 export const getBridgedFunctions: () => {
 	addBoard: (path: string, context?: unknown | { app: string }) => void;
@@ -225,6 +226,9 @@ export const useFoldersAccordionByView: (
 	CustomComponent: ComponentType<{ folder: Folder }>,
 	itemProps?: (item: AccordionFolder) => Record<string, any>
 ) => Array<AccordionFolder>;
+
+// NOTIFICATION
+export const getNotificationManager: () => INotificationManager;
 
 // Run Search
 export const runSearch: (query: Array<QueryChip>, module: string) => void;

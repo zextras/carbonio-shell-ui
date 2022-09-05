@@ -19,6 +19,7 @@ import BadgeWrap from './badge-wrap';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { checkRoute } from '../utility-bar/utils';
 import { IS_STANDALONE } from '../constants';
+import { useCurrentRoute } from '../history/hooks';
 
 const ContainerWithDivider = styled(Container)`
 	border-right: 1px solid ${({ theme }): string => theme.palette.gray3.regular};
@@ -86,7 +87,7 @@ const PrimaryBarAccessoryElement: FC<PrimaryBarAccessoryItemProps> = ({ view }) 
 	</Tooltip>
 );
 
-const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
+const ShellPrimaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 	const primaryBarViews = useAppStore((s) => s.views.primaryBar);
 	const [routes, setRoutes] = useState<Record<string, string>>({});
 	const history = useHistory();
@@ -170,6 +171,13 @@ const ShellPrimaryBar: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
 			</Row>
 		</ContainerWithDivider>
 	);
+};
+
+const MemoShellPrimaryBarComponent = React.memo(ShellPrimaryBarComponent);
+
+const ShellPrimaryBar: FC = () => {
+	const activeRoute = useCurrentRoute() as AppRoute;
+	return <MemoShellPrimaryBarComponent activeRoute={activeRoute} />;
 };
 
 export default ShellPrimaryBar;

@@ -11,14 +11,12 @@ import ShellSecondaryBar from './shell-secondary-bar';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import ShellMobileNav from './shell-mobile-nav';
-import { AppRoute } from '../../types';
 
 type ShellNavigationBarProps = {
 	mobileNavIsOpen: boolean;
-	activeRoute: AppRoute;
 };
 
-const ShellNavigationBar: FC<ShellNavigationBarProps> = ({ mobileNavIsOpen, activeRoute }) => (
+const ShellNavigationBar: FC<ShellNavigationBarProps> = ({ mobileNavIsOpen }) => (
 	<Container
 		orientation="horizontal"
 		background="gray5"
@@ -28,11 +26,11 @@ const ShellNavigationBar: FC<ShellNavigationBarProps> = ({ mobileNavIsOpen, acti
 		crossAlignment="flex-start"
 	>
 		<Responsive mode="desktop">
-			<ShellPrimaryBar activeRoute={activeRoute} />
-			<ShellSecondaryBar activeRoute={activeRoute} />
+			<ShellPrimaryBar />
+			<ShellSecondaryBar />
 		</Responsive>
 		<Responsive mode="mobile">
-			<ShellMobileNav mobileNavIsOpen={mobileNavIsOpen} menuTree={activeRoute} />
+			<ShellMobileNav mobileNavIsOpen={mobileNavIsOpen} />
 		</Responsive>
 	</Container>
 );

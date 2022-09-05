@@ -6,10 +6,10 @@
 import React, { FC, useCallback, useMemo } from 'react';
 import {
 	Container,
-	Tooltip,
-	IconButton,
 	Dropdown,
-	DropdownItem
+	DropdownItem,
+	IconButton,
+	Tooltip
 } from '@zextras/carbonio-design-system';
 import { map, noop } from 'lodash';
 import { useTranslation } from 'react-i18next';
@@ -52,8 +52,14 @@ export const ShellUtilityBar: FC = () => {
 			[
 				{
 					id: 'account',
-					label: account?.displayName ?? account?.name ?? '',
+					label: account?.displayName ?? 'Account',
 					disabled: true
+				},
+				{
+					id: 'email',
+					label: account?.name ?? '',
+					disabled: true,
+					itemTextSize: 'small'
 				},
 				{
 					type: 'divider',
@@ -100,7 +106,7 @@ export const ShellUtilityBar: FC = () => {
 				<UtilityBarItem view={view} key={view.id} />
 			))}
 			<Tooltip label={account?.displayName ?? account?.name} placement="bottom-end">
-				<Dropdown items={accountItems} maxWidth="200px" disableAutoFocus>
+				<Dropdown items={accountItems} maxWidth="300px" disableAutoFocus>
 					<IconButton icon="PersonOutline" size="large" onClick={noop} />
 				</Dropdown>
 			</Tooltip>

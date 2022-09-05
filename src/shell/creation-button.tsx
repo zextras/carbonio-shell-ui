@@ -9,39 +9,18 @@ import { reduce, groupBy, noop } from 'lodash';
 import { MultiButton, Button, Dropdown } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
+import { Location } from 'history';
 import { useActions } from '../store/integrations/hooks';
 import { ACTION_TYPES } from '../constants';
 import { Action, AppRoute } from '../../types';
 import { useAppList } from '../store/app';
+import { useCurrentRoute } from '../history/hooks';
 
-const useSecondaryActions = (
-	actions: Array<Action>,
-	activeRoute?: AppRoute
-): Array<Action | { type: 'divider'; id: string; label: string }> => {
-	const apps = useAppList();
-
-	const byApp = useMemo(() => groupBy(actions, 'group'), [actions]);
-	return useMemo(
-		() => [
-			...(byApp[activeRoute?.app ?? ''] ?? []),
-			...reduce(
-				apps,
-				(acc, app, i) => {
-					if (app.name !== activeRoute?.app && byApp[app.name]?.length > 0) {
-						acc.push({ type: 'divider', label: '', id: `divider-${i}` }, ...byApp[app.name]);
-					}
-					return acc;
-				},
-				[] as Array<Action | { type: 'divider'; id: string; label: string }>
-			)
-		],
-		[activeRoute?.app, apps, byApp]
-	);
-};
-
-export const CreationButton: FC<{ activeRoute?: AppRoute }> = ({ activeRoute }) => {
+export const CreationButtonComponent: FC<{ activeRoute: AppRoute; location: Location }> = ({
+	activeRoute,
+	location
+}) => {
 	const [t] = useTranslation();
-	const location = useLocation();
 	const actions = useActions({ activeRoute, location }, ACTION_TYPES.NEW);
 	const [open, setOpen] = useState(false);
 	const primaryAction = useMemo(
@@ -51,7 +30,22 @@ export const CreationButton: FC<{ activeRoute?: AppRoute }> = ({ activeRoute }) 
 			),
 		[actions, activeRoute?.app, activeRoute?.id]
 	);
-	const secondaryActions = useSecondaryActions(actions, activeRoute);
+	const apps = useAppList();
+	const byApp = useMemo(() => groupBy(actions, 'group'), [actions]);
+
+	const secondaryActions = [
+		...(byApp[activeRoute?.app ?? ''] ?? []),
+		...reduce(
+			apps,
+			(acc, app, i) => {
+				if (app.name !== activeRoute?.app && byApp[app.name]?.length > 0) {
+					acc.push({ type: 'divider', label: '', id: `divider-${i}` }, ...byApp[app.name]);
+				}
+				return acc;
+			},
+			[] as Array<Action | { type: 'divider'; id: string; label: string }>
+		)
+	];
 
 	const onClose = useCallback(() => {
 		setOpen(false);
@@ -80,4 +74,20 @@ export const CreationButton: FC<{ activeRoute?: AppRoute }> = ({ activeRoute }) 
 			/>
 		</Dropdown>
 	);
+};
+
+const MemoCreationButton = React.memo(CreationButtonComponent);
+
+export const CreationButton: FC = () => {
+	const locationFull = useLocation() as Location;
+	const activeRoute = useCurrentRoute() as AppRoute;
+
+	const truncateLocation = (location: Location): Location => ({
+		...location,
+		pathname: location?.pathname?.split('/').slice(0, 2).join('/'),
+		key: ''
+	});
+
+	const location = useMemo(() => truncateLocation(locationFull), [locationFull]);
+	return <MemoCreationButton activeRoute={activeRoute} location={location} />;
 };

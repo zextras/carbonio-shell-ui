@@ -55,26 +55,27 @@ function DarkReaderListener(): null {
 	return null;
 }
 
-const useLoginRedirection = (activeRoute?: AppRoute): void => {
+const useLoginRedirection = (allowUnauthenticated?: string): void => {
 	const auth = useAccountStore((s) => s.authenticated);
 	useEffect(() => {
-		if (IS_STANDALONE && !auth && activeRoute && !activeRoute.standalone?.allowUnauthenticated) {
+		if (IS_STANDALONE && !auth && !allowUnauthenticated) {
 			goToLogin();
 		}
-	}, [activeRoute, auth]);
+	}, [allowUnauthenticated, auth]);
 };
 
-export const Shell: FC = () => {
+const ShellComponent: FC<{ allowUnauthenticated?: string; hideShellHeader?: string }> = ({
+	allowUnauthenticated,
+	hideShellHeader
+}) => {
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
-	const activeRoute = useCurrentRoute() as AppRoute;
-	useLoginRedirection(activeRoute);
+	useLoginRedirection(allowUnauthenticated);
 	return (
 		<Background>
 			<DarkReaderListener />
 			{/* <MainAppRerouter /> */}
-			{!(IS_STANDALONE && activeRoute?.standalone?.hideShellHeader) && (
+			{!(IS_STANDALONE && hideShellHeader) && (
 				<ShellHeader
-					activeRoute={activeRoute}
 					mobileNavIsOpen={mobileNavOpen}
 					onMobileMenuClick={(): void => setMobileNavOpen(!mobileNavOpen)}
 				>
@@ -82,7 +83,7 @@ export const Shell: FC = () => {
 				</ShellHeader>
 			)}
 			<Row crossAlignment="unset" style={{ position: 'relative', flexGrow: '1' }}>
-				<ShellNavigationBar activeRoute={activeRoute} mobileNavIsOpen={mobileNavOpen} />
+				<ShellNavigationBar mobileNavIsOpen={mobileNavOpen} />
 				<AppViewContainer />
 				<ShellUtilityPanel />
 			</Row>
@@ -93,16 +94,26 @@ export const Shell: FC = () => {
 	);
 };
 
-const ShellView: FC = () => (
-	<ShellContextProvider>
-		<ModalManager>
-			<SnackbarManager>
-				<PreviewManager>
-					<Shell />
-				</PreviewManager>
-			</SnackbarManager>
-		</ModalManager>
-	</ShellContextProvider>
-);
+const MemoShell = React.memo(ShellComponent);
+
+const ShellView: FC = () => {
+	const activeRoute = useCurrentRoute() as AppRoute;
+	const allowUnauthenticated = activeRoute?.standalone?.allowUnauthenticated as string | undefined;
+	const hideShellHeader = activeRoute?.standalone?.hideShellHeader as string | undefined;
+	return (
+		<ShellContextProvider>
+			<ModalManager>
+				<SnackbarManager>
+					<PreviewManager>
+						<MemoShell
+							allowUnauthenticated={allowUnauthenticated}
+							hideShellHeader={hideShellHeader}
+						/>
+					</PreviewManager>
+				</SnackbarManager>
+			</ModalManager>
+		</ShellContextProvider>
+	);
+};
 
 export default ShellView;

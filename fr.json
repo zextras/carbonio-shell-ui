@@ -166,27 +166,16 @@
         "error": "Quelque chose s'est mal passé, veuillez recommencer"
     },
     "timezone": {
-        "argentina": "{{value}} Argentina",
         "atlantic_time_canada": "{{value}} Heure de l'Atlantique (Canada)",
-        "bangkok_hanoi_jakarta": "{{value}} Bangkok, Hanoï, Jakarta",
         "britain_ireland_portugal": "{{value}} Grande-Bretagne, Irlande, Portugal",
-        "casablanca": "{{value}} Casablanca",
         "chita": "{{value}} Tchita",
-        "damascus": "{{value}} Damas",
         "egypt": "{{value}} Egypte",
-        "gmt_11": "{{value}} GMT-11",
         "hawaii": "{{value}} Hawaii",
-        "irkutsk_rtz_7": "{{value}} Irkutsk (RTZ 7)",
         "kabul": "{{value}} Kabul",
-        "krasnoyarsk_rtz_6": "{{value}} Krasnoïarsk (RTZ 6)",
         "manaus": "{{value}} Manaus",
-        "nairobi": "{{value}} Nairobi",
         "pacific_south_america": "{{value}} Pacifique Amérique du Sud",
-        "sarajevo_skopje_warsaw_zagreb": "{{value}} Sarajevo, Skopje, Varsovie, Zagreb",
         "tehran": "{{value}} Téhéran",
-        "west_central_africa": "{{value}} Afrique du Centre-Ouest",
         "beijing_chongqing_hong_kong_urumqi": "{{value}} Pékin, Chongqing, Hong Kong, Urumqi",
-        "mid_atlantic": "{{value}} Mid-Atlantique",
         "africa_cairo": "{{value}} Égypte",
         "africa_harare": "{{value}} Harare, Pretoria",
         "africa_juba": "{{value}} Juba",
@@ -364,7 +353,8 @@
         "turkish": "Turc",
         "french": "Français",
         "label_french": "Français - {{value}}",
-        "vietnamese": "Vietnamienne"
+        "vietnamese": "Vietnamienne",
+        "polish": "Polonais"
     },
     "module": {
         "app": {
@@ -398,7 +388,7 @@
         "permanent_delete_body": "Si vous supprimez définitivement cette identité, vous ne pourrez pas la récupérer. Continuer ?"
     },
     "share": {
-        "is_contained_in": "Est contenu dans"
+        "is_contained_in": "Dans le dossier"
     },
     "passwords_recovery_settings": {
         "title": "Paramètres du compte de récupération de mot de passe"

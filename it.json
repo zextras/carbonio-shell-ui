@@ -1,10 +1,6 @@
 {
-    "changelog": {
-        "title": "Novità"
-    },
     "login": {
-        "incorrect": "Nome utente o password sono errati",
-        "supported_browsers": "Browser supportati"
+        "incorrect": "Nome utente o password sono errati"
     },
     "logout_modal": {
         "confirm": "Disconnettimi"
@@ -12,7 +8,6 @@
     "new": "Nuovo",
     "new_tab": "Nuova tab",
     "supported_browsers": {
-        "ie_11_up": "Internet Explorer 11+",
         "yandex": "Yandex"
     },
     "settings": {
@@ -230,30 +225,20 @@
         "label_turkish": "Turco - {{value}}",
         "french": "Francese",
         "label_french": "Francese - {{value}}",
-        "vietnamese": "Vietnamita"
+        "vietnamese": "Vietnamita",
+        "polish": "Polacco"
     },
     "timezone": {
-        "arizona": "{{value}} Arizona",
         "azores": "{{value}} Azzoree",
-        "beirut": "{{value}} Beirut",
         "cape_verde_is": "{{value}} Capo Verde.",
-        "chihuahua_la_paz_mazatlan": "{{value}} Chihuahua, La Paz, Mazatlan",
         "coordinated_universal_time": "{{value}} Tempo Coordinato Universale",
-        "dateline": "{{value}} Linea di cambio data",
         "gmt_02": "{{value}} GMT-02",
-        "harare_pretoria": "{{value}} Harare, Pretoria",
         "iraq": "{{value}} Iraq",
-        "kabul": "{{value}} Kabul",
         "la_paz": "{{value}} La Paz",
-        "minsk": "{{value}} Minsk",
         "namibia": "{{value}} Namibia",
-        "port_louis": "{{value}} Port Louis",
         "sri_jayawardenepura_kotte": "{{value}} Sri Jayawardenepura Kotte",
-        "us_canada_eastern": "{{value}} US/Canada Orientale",
         "yangon": "{{value}} Yangon",
-        "beijing_chongqing_hong_kong_urumqi": "{{value}} Pechino, Chongqing, Hong Kong, Urumqi",
         "egypt": "{{value}} Egitto",
-        "krasnoyarsk_rtz_6": "{{value}} Krasnoyarsk (RTZ 6)",
         "africa_juba": "{{value}} Juba",
         "africa_khartoum": "{{value}} Khartoum",
         "africa_windhoek": "{{value}} Namibia",

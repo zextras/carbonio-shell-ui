@@ -1,11 +1,9 @@
 {
     "supported_browsers": {
-        "yandex": "Yandex",
         "ie_11_up": "Internet Explorer 11+"
     },
     "settings": {
         "button": {
-            "secondary": "Отменить",
             "primary": "Сохранить",
             "confirm": "Подтвердить"
         },
@@ -65,16 +63,13 @@
     },
     "new": "Новый",
     "login": {
-        "verify-caps-lock": "Убедитесь, что CAPS LOCK не включен, а затем повторно введите имя пользователя и пароль",
-        "password": "Пароль",
-        "remember_me": "Запомнить меня"
+        "password": "Пароль"
     },
     "changelog": {
         "remind-later": "Напомнить позже"
     },
     "settins": {
         "general": {
-            "theme_mode": "Выбор Темы",
             "theme_auto": "Автоматический"
         }
     },
@@ -235,30 +230,20 @@
         "turkish": "Турецкий",
         "french": "Французский",
         "label_french": "Французский - {{value}}",
-        "vietnamese": "Вьетнамский"
+        "vietnamese": "Вьетнамский",
+        "polish": "Польский"
     },
     "timezone": {
-        "chennai_kolkata_mumbai_new_delhi": "{{value}} Ченнаи, Калькутта, Мумбаи, Нью-Дели",
         "kaliningrad_rtz_1": "{{value}} Калининград (RTZ 1)",
-        "vladivostok_magadan": "{{value}} Владивосток, Магадан",
         "athens_beirut_bucharest_istanbul": "{{value}} Афины, Бейрут, Бухарест, Стамбул",
-        "beirut": "{{value}} Бейрут",
         "argentina": "{{value}} Аргентина",
-        "caracas": "{{value}} Каракас",
         "darwin": "{{value}} Дарвин",
-        "gmt_02": "{{value}} GMT-02",
         "hawaii": "{{value}} Гавайи",
-        "kabul": "{{value}} Кабул",
         "cayenne_fortaleza": "{{value}} Кайенна, Форталеза",
-        "cuiaba": "{{value}} Куйаба",
         "iraq": "{{value}} Ирак",
-        "la_paz": "{{value}} Ла-Пас",
         "minsk": "{{value}} Минск",
-        "nuku_alofa": "{{value}} Нукуалофа",
         "samoa": "{{value}} Самоа",
-        "tehran": "{{value}} Тегеран",
         "yangon": "{{value}} Янгон",
-        "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Анадырь, Петропавловск-Камчатский",
         "africa_algiers": "{{value}} Западная Центральная Африка",
         "africa_cairo": "{{value}} Египет",
         "africa_harare": "{{value}} Хараре, Претория",

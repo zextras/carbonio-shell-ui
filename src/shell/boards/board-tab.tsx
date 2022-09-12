@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, useContext } from 'react';
+import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import {
@@ -14,16 +14,17 @@ import {
 	Padding,
 	Icon,
 	Container,
-	Tooltip
+	Tooltip,
+	RowProps
 } from '@zextras/carbonio-design-system';
-import { BoardValueContext, BoardSetterContext } from './board-context';
+import { closeBoard, setCurrentBoard, useBoardStore } from '../../store/boards';
 
-const TabContainer = styled(Row)`
+const TabContainer = styled(Row)<RowProps & { active: boolean }>`
 	cursor: pointer;
 	height: 28px;
 	width: fit-content;
 	user-select: none;
-	background-color: ${({ theme, active }) =>
+	background-color: ${({ theme, active }): string =>
 		active ? theme.palette.gray3.regular : theme.palette.gray5.regular};
 	border-radius: 2px;
 	padding: 2px 4px;
@@ -32,27 +33,30 @@ const TabContainer = styled(Row)`
 const VerticalDivider = styled(Container)`
 	width: 1px;
 	height: 100%;
-	background: ${({ theme }) => theme.palette.gray3.regular};
-	margin: ${({ theme }) => theme.sizes.padding.extrasmall};
+	background: ${({ theme }): string => theme.palette.gray3.regular};
+	margin: ${({ theme }): string => theme.sizes.padding.extrasmall};
 `;
 
-export default function AppBoardTab({ idx, icon, iconSize }) {
-	const { boards, currentBoard } = useContext(BoardValueContext);
-	const { removeBoard, setCurrentBoard } = useContext(BoardSetterContext);
+export const AppBoardTab: FC<{ id: string; icon: string; title: string }> = ({
+	id,
+	icon,
+	title
+}) => {
+	const current = useBoardStore((s) => s.current);
 	const [t] = useTranslation();
-	const onClick = useCallback(() => setCurrentBoard(idx), [idx, setCurrentBoard]);
+	const onClick = useCallback(() => setCurrentBoard(id), [id]);
 	const onRemove = useCallback(
 		(ev) => {
 			ev.stopPropagation();
-			removeBoard(idx);
+			closeBoard(id);
 		},
-		[idx, removeBoard]
+		[id]
 	);
 
 	return (
 		<Container orientation="row" width="fit" maxWidth="100%">
-			{currentBoard !== idx ? <VerticalDivider /> : null}
-			<TabContainer active={currentBoard === idx} padding={{ all: 'extrasmall' }}>
+			{current !== id && <VerticalDivider />}
+			<TabContainer active={current === id} padding={{ all: 'extrasmall' }}>
 				<Row
 					height="100%"
 					onClick={onClick}
@@ -60,17 +64,16 @@ export default function AppBoardTab({ idx, icon, iconSize }) {
 					mainAlignment="flex-start"
 					wrap="nowrap"
 				>
-					<Icon icon={icon} size={iconSize} />
+					<Icon icon={icon} size="large" />
 					<Padding right="small" />
-					<Tooltip label={boards[idx].title} placement="top" maxWidth="700px">
+					<Tooltip label={title} placement="top" maxWidth="700px">
 						<Text
 							size="medium"
 							weight="regular"
-							color={currentBoard === idx ? 'text' : 'secondary'}
-							padding={{ right: 'small' }}
+							color={current === id ? 'text' : 'secondary'}
 							overflow="ellipsis"
 						>
-							{boards[idx].title}
+							{title}
 						</Text>
 					</Tooltip>
 				</Row>
@@ -86,4 +89,4 @@ export default function AppBoardTab({ idx, icon, iconSize }) {
 			</TabContainer>
 		</Container>
 	);
-}
+};

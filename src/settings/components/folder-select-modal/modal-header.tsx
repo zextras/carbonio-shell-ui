@@ -5,6 +5,12 @@
  */
 import { Divider, Text, Row, IconButton, Padding } from '@zextras/carbonio-design-system';
 import React from 'react';
+import styled from 'styled-components';
+
+const CloseButton = styled(IconButton)`
+	padding: 0;
+	margin: 0;
+`;
 
 type ModalHeaderProps = {
 	title: string;
@@ -19,12 +25,7 @@ const ModalHeader = ({
 		<Text weight="bold" size="large">
 			{title}
 		</Text>
-		<IconButton
-			size="medium"
-			style={{ padding: 0, margin: 0 }}
-			onClick={onClose}
-			icon="CloseOutline"
-		/>
+		<CloseButton size="medium" onClick={onClose} icon="CloseOutline" />
 		<Divider />
 		<Padding bottom="medium" />
 	</Row>

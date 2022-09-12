@@ -24,7 +24,7 @@ export const SettingsSidebar: FC<{ expanded: boolean }> = ({ expanded }) => {
 				active: location.pathname === `/${SETTINGS_APP_ID}/${view.route}` && location.search === '',
 				disableHover:
 					location.pathname === `/${SETTINGS_APP_ID}/${view.route}` && location.search === '',
-				onClick: (e: MouseEvent): void => {
+				onClick: (e: KeyboardEvent | React.SyntheticEvent): void => {
 					e.stopPropagation();
 					history.push(`/${SETTINGS_APP_ID}/${view.route}`);
 				},
@@ -32,7 +32,7 @@ export const SettingsSidebar: FC<{ expanded: boolean }> = ({ expanded }) => {
 					...item,
 					active: location.search === `?section=${item.id}`,
 					disableHover: location.search === `?section=${item.id}`,
-					onClick: (e: MouseEvent): void => {
+					onClick: (e: KeyboardEvent | React.SyntheticEvent): void => {
 						e.stopPropagation();
 						history.replace(`/${SETTINGS_APP_ID}/${view.route}?section=${item.id}`);
 					}
@@ -44,15 +44,16 @@ export const SettingsSidebar: FC<{ expanded: boolean }> = ({ expanded }) => {
 		() =>
 			settingsViews.map((v) => (
 				<Tooltip label={v.label} placement="right" key={v.id}>
-					<IconButton
-						icon={v.icon}
-						onClick={(): void => history.push(`/${SETTINGS_APP_ID}/${v.route}`)}
-						size="large"
-						iconColor={startsWith(location.pathname, `/${SETTINGS_APP_ID}/${v.route}`)}
-					/>
+					<div>
+						<IconButton
+							icon={v.icon}
+							onClick={(): void => history.push(`/${SETTINGS_APP_ID}/${v.route}`)}
+							size="large"
+						/>
+					</div>
 				</Tooltip>
 			)),
-		[history, location.pathname, settingsViews]
+		[history, settingsViews]
 	);
 	return expanded ? <Accordion items={items} /> : <>{collapsedItems}</>;
 };

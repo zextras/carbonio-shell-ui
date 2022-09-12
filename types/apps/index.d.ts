@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ComponentType, FC } from 'react';
+import React, { ComponentType, FC } from 'react';
 import { QueryChip } from '../search/items';
 
 export type CarbonioModule = {
@@ -68,7 +68,9 @@ export type CarbonioAccessoryView<P> = {
 export type PrimaryBarComponentProps = { active: boolean };
 export type SecondaryBarComponentProps = { expanded: boolean };
 export type AppViewComponentProps = {};
-export type BoardViewComponentProps = {};
+export type BoardViewComponentProps = {
+	windowHistory: History;
+};
 export type SettingsViewProps = {};
 export type SearchViewProps = {
 	useQuery: () => [QueryChip[], Function];
@@ -116,7 +118,7 @@ export type SearchView = CarbonioView<SearchViewProps> & {
 
 export type PrimaryAccessoryView = CarbonioAccessoryView<PrimaryAccessoryViewProps> & {
 	component: string | ComponentType;
-	onClick?: (ev: any) => void;
+	onClick?: (ev: KeyboardEvent | React.MouseEvent<HTMLButtonElement> | undefined) => void;
 	label: string;
 };
 

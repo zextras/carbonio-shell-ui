@@ -9,6 +9,7 @@ import { Container } from '@zextras/carbonio-design-system';
 // eslint-disable-next-line no-unused-vars
 import tinymce from 'tinymce/tinymce';
 // this 'expression' prevents webpack from stripping it, maybe there's a better way
+// eslint-disable-next-line no-unused-expressions
 tinymce;
 
 // Theme

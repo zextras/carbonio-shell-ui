@@ -8,7 +8,7 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { filter, findIndex, map, sortBy } from 'lodash';
 import styled from 'styled-components';
 import { Route, Switch } from 'react-router-dom';
-import { Container } from '@zextras/carbonio-design-system';
+import { Container, ContainerProps } from '@zextras/carbonio-design-system';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { Collapser } from './collapser';
 import { useAppStore } from '../store/app';
@@ -17,7 +17,7 @@ import { useUtilityBarStore } from '../utility-bar';
 import { checkRoute } from '../utility-bar/utils';
 import { useCurrentRoute } from '../history/hooks';
 
-const SidebarContainer = styled(Container)`
+const SidebarContainer = styled(Container)<ContainerProps & { sidebarIsOpen?: boolean }>`
 	min-width: 48px;
 	max-width: 314px;
 	width: ${({ sidebarIsOpen }): number => (sidebarIsOpen ? 314 : 48)}px;

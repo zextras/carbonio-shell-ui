@@ -1,6 +1,5 @@
 {
     "changelog": {
-        "close": "关闭",
         "title": "更改日志"
     },
     "settings": {
@@ -63,9 +62,7 @@
         }
     },
     "login": {
-        "login": "登录",
         "username": "用户名",
-        "remember_me": "记住我",
         "verify_caps_lock": "检查大写锁定处于关闭状态，然后重新键入当前的用户名和密码"
     },
     "new": "新建",
@@ -80,9 +77,6 @@
         "type_to_start_search": "输入一些关键词以开始搜索",
         "type_or_choose_suggestion": "输入或选择一些关键词以开始搜索",
         "unable_to_parse_query": "无法完成搜索，清除并重试"
-    },
-    "logout_modal": {
-        "warning": "您即将登出"
     },
     "message": {
         "snackbar": {
@@ -224,49 +218,27 @@
         "vietnamese": "越南语"
     },
     "timezone": {
-        "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}} 阿姆斯特丹、柏林、伯尔尼、罗马、斯德哥尔摩、维也纳",
         "argentina": "{{value}} 阿根廷",
-        "asuncion": "{{value}} 亚松森",
         "atlantic_time_canada": "{{value}} 大西洋时间（加拿大）",
-        "baja_california": "{{value}} 下加利福尼亚",
         "bangkok_hanoi_jakarta": "{{value}} 曼谷、河内、雅加达",
-        "beijing_chongqing_hong_kong_urumqi": "{{value}} 北京、重庆、香港、乌鲁木齐",
         "brasilia": "{{value}} 巴西利亚",
-        "brussels_copenhagen_madrid_paris ": "{{value}} 布鲁塞尔、哥本哈根、马德里、巴黎",
         "caracas": "{{value}} 加拉加斯",
-        "cayenne_fortaleza": "{{value}} 卡宴、福塔莱萨",
         "chennai_kolkata_mumbai_new_delhi": "{{value}} 金奈、加尔各答、孟买、新德里",
-        "chita": "{{value}} 赤塔",
         "colombia": "{{value}} 哥伦比亚",
-        "cuiaba": "{{value}} 库亚巴",
         "dateline": "{{value}} 日期线",
-        "eucla": "{{value}} 尤克拉",
         "ekaterinburg_rtz_4": "{{value}} 叶卡捷琳堡（RTZ 4）",
-        "gmt_02": "{{value}} GMT-02",
         "greenland": "{{value}} 格陵兰",
-        "hawaii": "{{value}} 夏威夷",
         "indiana_east": "{{value}} 印第安纳（东）",
-        "irkutsk_rtz_7": "{{value}} 伊尔库茨克（RTZ 7）",
         "jerusalem": "{{value}} 耶路撒冷",
-        "kabul": "{{value}} 喀布尔",
         "kathmandu": "{{value}} 加德满都",
-        "kuwait_riyadh": "{{value}} 科威特、利雅得",
         "la_paz": "{{value}} 拉巴斯",
-        "manaus": "{{value}} 马瑙斯",
         "minsk": "{{value}} 明斯克",
-        "montevideo": "{{value}} 蒙得维的亚",
         "nairobi": "{{value}} 内罗毕",
-        "newfoundland": "{{value}} 纽芬兰",
         "pacific_south_america": "{{value}} 太平洋南美洲",
-        "pyongyang": "{{value}} 平壤",
         "vladivostok_magadan": "{{value}} 海参崴、马加丹（RTZ 9）",
-        "yangon": "{{value}} 仰光",
         "abu_dhabi_muscat": "{{value}} 阿布扎比、马斯喀特",
-        "samoa": "{{value}} 萨摩亚",
         "saskatchewan": "{{value}} 萨斯喀彻温",
-        "tbilisi": "{{value}} 第比利斯",
         "us_canada_central": "{{value}} 美国/加拿大中部",
-        "us_canada_mountain": "{{value}} 美国/加拿大山地",
         "pacific_honolulu": "{{value}} 夏威夷",
         "pacific_midway": "{{value}} 萨摩亚",
         "pacific_tongatapu": "{{value}} 努库阿洛法",

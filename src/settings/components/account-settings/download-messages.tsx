@@ -20,7 +20,7 @@ interface DownloadMessagesProps {
 }
 
 const DownloadMessages = ({ t }: DownloadMessagesProps): ReactElement => {
-	const [activeValue, setActiveValue] = useState(1);
+	const [activeValue, setActiveValue] = useState('1');
 
 	return (
 		<>
@@ -43,16 +43,15 @@ const DownloadMessages = ({ t }: DownloadMessagesProps): ReactElement => {
 				padding={{ horizontal: 'large', bottom: 'large' }}
 			>
 				<RadioGroup
-					style={{ width: '100%' }}
+					style={{ width: '100%', justifyContent: 'flex-start' }}
 					value={activeValue}
-					mainAlignment="flex-start"
-					onChange={(newValue: number): void => setActiveValue(newValue)}
+					onChange={(newValue: string): void => setActiveValue(newValue)}
 				>
-					<Radio width="100%" label={t('label.inbox', 'Inbox')} value={1} />
+					<Radio width="100%" label={t('label.inbox', 'Inbox')} value="1" />
 					<Padding bottom="medium" />
 					<Radio
 						label={t('label.folder_external_account', 'Folder: New External Account')}
-						value={2}
+						value="2"
 					/>
 				</RadioGroup>
 			</Row>

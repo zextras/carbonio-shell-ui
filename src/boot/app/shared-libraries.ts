@@ -7,7 +7,7 @@
 /* eslint-disable import/no-duplicates */
 /* eslint-disable import/no-named-default */
 
-import React, { ComponentClass } from 'react';
+import React from 'react';
 import * as PropTypes from 'prop-types';
 import * as ReactDOM from 'react-dom';
 import * as Lodash from 'lodash';
@@ -49,15 +49,7 @@ export function injectSharedLibraries(): void {
 		'react-router-dom': ReactRouterDom,
 		moment: Moment,
 		'styled-components': StyledComponents,
-		'@reduxjs/toolkit': {
-			...ReduxJSToolkit,
-			configureStore: (): void => {
-				throw new Error('Apps must use the store given by the Shell.');
-			},
-			createStore: (): void => {
-				throw new Error('Apps must use the store given by the Shell.');
-			}
-		},
+		'@reduxjs/toolkit': ReduxJSToolkit,
 		'@zextras/carbonio-shell-ui': {},
 		'@zextras/carbonio-design-system': ZappUI,
 		'@zextras/carbonio-ui-preview': Preview

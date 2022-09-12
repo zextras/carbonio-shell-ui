@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useMemo, useCallback, ReactElement, useState, useEffect } from 'react';
+import React, { useMemo, useCallback, ReactElement, useState, useEffect, ChangeEvent } from 'react';
 import {
 	Container,
 	Text,
@@ -14,7 +14,8 @@ import {
 	Select,
 	Checkbox,
 	Dropdown,
-	Icon
+	Icon,
+	DropdownItem
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
 import { filter, find } from 'lodash';
@@ -32,6 +33,8 @@ type SettingsSentMessagesProps = {
 	}) => void;
 };
 
+const blankItem = { label: '', value: '' };
+
 const SettingsSentMessages = ({
 	t,
 	items,
@@ -45,11 +48,11 @@ const SettingsSentMessages = ({
 	const [fromDisplayValue, setFromDisplayValue] = useState(items.fromDisplay);
 	const [replyToDisplay, setReplyToDisplay] = useState(items?.replyToDisplay);
 	const fromAddressArray = useMemo(
-		() => [{ value: items.fromAddress, label: items.fromAddress }],
+		() => [{ value: items.fromAddress ?? '', label: items.fromAddress ?? '' }],
 		[items?.fromAddress]
 	);
-	const [fromAddress, setFromAddress] = useState(() =>
-		find(fromAddressArray, (item) => item.value === items.fromAddress)
+	const [fromAddress, setFromAddress] = useState(
+		() => find(fromAddressArray, (item) => item.value === items.fromAddress) ?? blankItem
 	);
 
 	useEffect(() => {
@@ -59,7 +62,7 @@ const SettingsSentMessages = ({
 		setFromDisplayValue(items.fromDisplay);
 	}, [items.fromDisplay]);
 	useEffect(() => {
-		const k = find(fromAddressArray, (item) => item.value === items.fromAddress);
+		const k = find(fromAddressArray, (item) => item.value === items.fromAddress) ?? blankItem;
 		setFromAddress(k);
 	}, [fromAddressArray, items.fromAddress]);
 	useEffect(() => {
@@ -83,16 +86,12 @@ const SettingsSentMessages = ({
 		() => (fromDisplayValue ? '' : t('label.from_name', 'From: "Name"')),
 		[t, fromDisplayValue]
 	);
-	const onChangeFromDisplayValue = (
-		ev: MouseEvent & {
-			target: HTMLButtonElement;
-		}
-	): void => {
-		setFromDisplayValue(ev.target.value);
+	const onChangeFromDisplayValue = (value: string): void => {
+		setFromDisplayValue(value);
 		const modifyProp = {
 			id: items.identityId,
 			key: 'zimbraPrefFromDisplay',
-			value: ev.target.value
+			value
 		};
 		updateIdentities(modifyProp);
 	};
@@ -125,16 +124,12 @@ const SettingsSentMessages = ({
 		[t, replyToDisplay]
 	);
 	const onChangePrefReplyToDisplay = useCallback(
-		(
-			ev: MouseEvent & {
-				target: HTMLButtonElement;
-			}
-		): void => {
-			setReplyToDisplay(ev.target.value);
+		(value: string): void => {
+			setReplyToDisplay(value);
 			const modifyProp = {
 				id: items.identityId,
 				key: 'zimbraPrefReplyToDisplay',
-				value: ev.target.value
+				value
 			};
 			updateIdentities(modifyProp);
 		},
@@ -150,28 +145,19 @@ const SettingsSentMessages = ({
 		() => [
 			{
 				id: '0',
-				label: items.fromAddress,
-				click: (ev: MouseEvent & { target: string & { textContent: string } }): void => {
-					setReplyToAddress(ev.target.textContent);
-					const modifyProp = {
-						id: items.identityId,
-						key: 'zimbraPrefReplyToAddress',
-						value: ev.target.textContent
-					};
-					updateIdentities(modifyProp);
-				}
+				label: items.fromAddress ?? ''
 			}
 		],
-		[items.fromAddress, items.identityId, updateIdentities]
+		[items.fromAddress]
 	);
 
 	const onChangeReplyToAddress = useCallback(
-		(ev) => {
-			setReplyToAddress(ev.target.value);
+		(value: string) => {
+			setReplyToAddress(value);
 			const modifyProp = {
 				id: items.identityId,
 				key: 'zimbraPrefReplyToAddress',
-				value: ev.target.value
+				value
 			};
 			updateIdentities(modifyProp);
 		},
@@ -211,12 +197,7 @@ const SettingsSentMessages = ({
 					<Input
 						label={fromDisplayLabel}
 						value={fromDisplayValue}
-						onChange={(
-							ev: MouseEvent & {
-								target: HTMLButtonElement;
-							}
-						): void => onChangeFromDisplayValue(ev)}
-						background="gray5"
+						onChange={(ev): void => onChangeFromDisplayValue(ev.target.value)}
 					/>
 				</Row>
 				{!isExternalAccount && (
@@ -255,13 +236,8 @@ const SettingsSentMessages = ({
 					<Input
 						label={replyToDisplayLabel}
 						value={replyToDisplay}
-						background="gray5"
 						disabled={!replyToEnabledValue}
-						onChange={(
-							ev: MouseEvent & {
-								target: HTMLButtonElement;
-							}
-						): void => onChangePrefReplyToDisplay(ev)}
+						onChange={(ev): void => onChangePrefReplyToDisplay(ev.target.value)}
 					/>
 				</Row>
 				<Row width="50%">
@@ -276,12 +252,7 @@ const SettingsSentMessages = ({
 						<Input
 							label={replyToAddressLabel}
 							value={replyToAddress}
-							onChange={(
-								ev: MouseEvent & {
-									target: HTMLButtonElement;
-								}
-							): void => onChangeReplyToAddress(ev)}
-							background="gray5"
+							onChange={(ev): void => onChangeReplyToAddress(ev.target.value)}
 							hasError={isValidEmail}
 							CustomIcon={(): ReactElement => (
 								<Icon icon={dropdownOpen ? 'ArrowUp' : 'ArrowDown'} />

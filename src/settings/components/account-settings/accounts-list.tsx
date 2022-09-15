@@ -227,7 +227,7 @@ const AccountsList = ({
 				mainAlignment="flex-start"
 				background="gray6"
 			>
-				<Padding right="small">
+				{/* <Padding right="small">
 					<Button
 						label={t('label.add_external_account', 'Add external account')}
 						onClick={noop}
@@ -235,7 +235,7 @@ const AccountsList = ({
 						type="outlined"
 						disabled
 					/>
-				</Padding>
+				</Padding> */}
 				<Padding right="small">
 					<Button
 						label={t('label.add_persona', 'Add persona')}

@@ -179,7 +179,7 @@ const Composer: FC<ComposerProps> = ({
 					toolbar_mode: 'wrap',
 					forced_root_block: false,
 					content_style: `body {  color: ${defaultStyle?.color}; font-size: ${defaultStyle?.fontSize}; font-family: ${defaultStyle?.font}; }`,
-					visualblocks_default_state: true,
+					visualblocks_default_state: false,
 					end_container_on_empty_block: true
 				}}
 				onEditorChange={_onEditorChange}

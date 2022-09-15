@@ -1,12 +1,9 @@
 {
     "changelog": {
-        "close": "बंद करें",
         "title": "लॉग बदलें"
     },
     "login": {
-        "login": "लॉगिन करें",
         "username": "यूज़रनेम",
-        "supported_browsers": "सपोर्ट किए गए ब्राऊज़र",
         "verify_caps_lock": "जांच कर लें कि CAPS LOCK चालू नहीं है, इसके बाद वर्तमान यूज़रनेम और पासवर्ड दोबारा टाइप करें"
     },
     "new": "नया",
@@ -14,7 +11,6 @@
         "app": "सर्च करें",
         "module": "मॉड्यूल",
         "clear": "सर्च इनपुट साफ करें",
-        "results_for": "इसके नतीजे:",
         "start": "सर्च शुरू करें",
         "active_input_label": "कॉमा या टैब दबाकर अपने कीवर्ड अलग-अलग करें",
         "idle_input_label": "{{module}} में सर्च करें",
@@ -81,9 +77,6 @@
                 "include_search_in_spam_folder": "सर्चों में स्पैम शामिल करें"
             }
         }
-    },
-    "logout_modal": {
-        "warning": "आप लॉग आउट होने जा रहे हैं"
     },
     "message": {
         "snackbar": {
@@ -233,49 +226,27 @@
         "vietnamese": "वियतनामी"
     },
     "timezone": {
-        "athens_beirut_bucharest_istanbul": "{{value}} एथेंस, बेरूत, बुखारेस्ट, इस्तांबुल",
         "belgrade_bratislava_budapest_ljubljana_prague": "{{value}} बेलग्रेड, ब्रातीस्लावा, बुडापेस्ट, ल्यूब्याना, प्राग",
-        "chennai_kolkata_mumbai_new_delhi": "{{value}} चेन्नई, कोलकाता, मुंबई, नई दिल्ली",
         "ekaterinburg_rtz_4": "{{value}} इकाटेरिनबर्ग (RTZ 4)",
-        "harare_pretoria": "{{value}} हरारे, प्रिटोरिया",
         "moscow_st_petersburg_volgograd_rtz_2": "{{value}} मॉस्को, सेंट पीटर्सबर्ग, वोल्गोग्राद (RTZ 2)",
-        "sarajevo_skopje_warsaw_zagreb": "{{value}} साराएवो, स्कोप्ये, वारसॉ, ज़ाग्रेब",
         "vladivostok_magadan": "{{value}} व्लादिवोस्तोक_मागादान_rtz_9",
-        "alaska": "{{value}} अलास्का",
         "argentina": "{{value}} अर्जेंटीना",
-        "asuncion": "{{value}} असंशियन",
         "azores": "{{value}} अज़ोरेस",
-        "baku": "{{value}} बाकू",
         "beirut": "{{value}} बेरूत",
-        "britain_ireland_portugal": "{{value}} बर्लिन, आयरलैंड, पुर्तगाल",
         "caracas": "{{value}} काराकास",
-        "cayenne_fortaleza": "{{value}} केन, फ़ोर्टालेज़ा",
         "chihuahua_la_paz_mazatlan": "{{value}} चुआऊआ, ला पाज़, मज़ाटलन",
-        "christmas_island": "{{value}} क्रिसमस आईलैंड",
         "cuiaba": "{{value}} कुयाबा",
-        "dateline": "{{value}} डेटलाइन",
         "egypt": "{{value}} मिस्र",
-        "georgetown_la_paz_manaus_san_juan": "{{value}} जॉर्जटाउन, ला पाज़, मानाउस, सान हुआन",
         "gmt_11": "{{value}} जीएमटी -11",
-        "hawaii": "{{value}} हवाई",
         "indiana_east": "{{value}} इंडियाना (ईस्ट)",
-        "jerusalem": "{{value}} येरूसलम",
         "kabul": "{{value}} काबुल",
-        "kaliningrad_rtz_1": "{{value}} कालीनीनग्राद (RTZ 1)",
         "korea": "{{value}} कोरिया",
-        "kuwait_riyadh": "{{value}} कुवैत, रियाध",
         "magadan": "{{value}} मागाडान",
-        "mid_atlantic": "{{value}} मध्य-एटलांटिक",
         "monrovia": "{{value}} मोनरोविया",
-        "nairobi": "{{value}} नैरोबी",
         "newfoundland": "{{value}} न्यूफाउंडलैंड",
-        "port_louis": "{{value}} पोर्ट लूई",
         "samoa": "{{value}} सामोआ",
-        "sri_jayawardenepura_kotte": "{{value}} श्री जयवर्दनेपुरा कोटे",
         "tehran": "{{value}} तेहरान",
-        "us_canada_mountain": "{{value}} यूएस/कनाडा माउंटेन",
         "west_central_africa": "{{value}} पश्चिमी मध्य अफ्रीका",
-        "yerevan": "{{value}} येरेवान",
         "africa_algiers": "{{value}} पश्चिमी मध्य अफ्रीका",
         "africa_monrovia": "{{value}} मोनरोविया",
         "america_anchorage": "{{value}} अलास्का",

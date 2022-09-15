@@ -1,12 +1,9 @@
 {
     "changelog": {
-        "close": "Tutup",
         "title": "Ubah Log"
     },
     "login": {
-        "login": "Masuk",
         "username": "Nama Pengguna",
-        "remember_me": "Ingat saya",
         "verify_caps_lock": "Pastikan CAPS LOCK mati, lalu ketik ulang nama pengguna dan kata sandi"
     },
     "search": {
@@ -81,9 +78,6 @@
         }
     },
     "new": "Baru",
-    "logout_modal": {
-        "confirm": "Keluarkan saya"
-    },
     "message": {
         "snackbar": {
             "settings_saved": "Hasil edit disimpan dengan benar",
@@ -224,49 +218,27 @@
         "vietnamese": "Vietnam"
     },
     "timezone": {
-        "belgrade_bratislava_budapest_ljubljana_prague": "{{value}} Belgrade, Bratislava, Budapest, Ljubljana, Praha",
         "georgetown_la_paz_manaus_san_juan": "{{value}} Georgetown, La Paz, Manaus, San Juan",
-        "pacific_south_america": "{{value}} Amerika Selatan Pasifik",
         "west_central_africa": "{{value}} Afrika Tengah Barat",
-        "alaska": "{{value}} Alaska",
         "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Anadyr, Petropavlovsk-Kamchatsky (RTZ 11)",
-        "arizona": "{{value}} Arizona",
         "athens_beirut_bucharest_istanbul": "{{value}} Athena, Beirut, Bukares, Istanbul",
-        "baja_california": "{{value}} Baja California",
         "bangkok_hanoi_jakarta": "{{value}} Bangkok, Hanoi, Jakarta",
-        "beirut": "{{value}} Beirut",
         "britain_ireland_portugal": "{{value}} Britain, Ireland, Portugal",
-        "caracas": "{{value}} Caracas",
         "cayenne_fortaleza": "{{value}} Cayenne, Fortaleza",
-        "chennai_kolkata_mumbai_new_delhi": "{{value}} Chennai, Kolkata, Mumbai, New Delhi",
         "chita": "{{value}} Chita",
-        "colombia": "{{value}} Kolombia",
         "damascus": "{{value}} Damaskus",
-        "dateline": "{{value}} Dateline",
         "egypt": "{{value}} Mesir",
-        "eucla": "{{value}} Eucla",
         "gmt_11": "{{value}} GMT-11",
-        "guadalajara_mexico_city_monterrey ": "{{value}} Guadalajara, Mexico City, Monterrey",
         "hawaii": "{{value}} Hawaii",
-        "iraq": "{{value}} Irak",
         "istanbul": "{{value}} Istanbul",
-        "jordan": "{{value}} Yordania",
         "kaliningrad_rtz_1": "{{value}} Kaliningrad (RTZ 1)",
-        "korea": "{{value}} Korea",
         "kuwait_riyadh": "{{value}} Kuwait, Riyadh",
-        "magadan": "{{value}} Magadan",
         "mid_atlantic": "{{value}} Atlantik Tengah",
-        "monrovia": "{{value}} Monrovia",
         "nairobi": "{{value}} Nairobi",
-        "newfoundland": "{{value}} Newfoundland",
         "port_louis": "{{value}} Port Louis",
-        "samoa": "{{value}} Samoa",
         "sri_jayawardenepura_kotte": "{{value}} Sri Jayawardenepura Kotte",
-        "tehran": "{{value}} Teheran",
         "us_canada_mountain": "{{value}} AS/Kanada Pegunungan",
-        "vladivostok_magadan": "{{value}} vladivostok_magadan_rtz_9",
         "yerevan": "{{value}} Yerevan",
-        "sarajevo_skopje_warsaw_zagreb": "{{value}} Sarajevo, Skopje, Warsawa, Zagreb",
         "america_cayenne": "{{value}} Cayenne, Fortaleza",
         "america_regina": "{{value}} Saskatchewan",
         "america_santiago": "{{value}} Amerika Selatan Pasifik",

@@ -1,16 +1,9 @@
 {
-    "theme-switch": {
-        "light": "Перейти в светлый режим"
-    },
     "supported_browsers": {
-        "yandex": "Yandex",
-        "safari": "Safari",
-        "ie_11_up": "Internet Explorer 11+",
-        "edge": "Edge"
+        "ie_11_up": "Internet Explorer 11+"
     },
     "settings": {
         "button": {
-            "secondary": "Отменить",
             "primary": "Сохранить",
             "confirm": "Подтвердить"
         },
@@ -69,25 +62,14 @@
         "choose": "Выбрать"
     },
     "new": "Новый",
-    "logout-modal": {
-        "confirm": "Выйти из системы"
-    },
     "login": {
-        "verify-caps-lock": "Убедитесь, что CAPS LOCK не включен, а затем повторно введите имя пользователя и пароль",
-        "supported-browsers": "Поддерживаемые браузеры",
-        "password": "Пароль",
-        "incorrect": "Имя пользователя или пароль неверны",
-        "remember_me": "Запомнить меня",
-        "verify_caps_lock": "Убедитесь, что CAPS LOCK не включен, а затем повторно введите текущее имя пользователя и пароль"
+        "password": "Пароль"
     },
     "changelog": {
-        "remind-later": "Напомнить позже",
-        "cancel": "Отменить"
+        "remind-later": "Напомнить позже"
     },
     "settins": {
         "general": {
-            "theme_mode": "Выбор Темы",
-            "theme_enabled": "Темный режим",
             "theme_auto": "Автоматический"
         }
     },
@@ -97,15 +79,11 @@
         "module": "Модуль",
         "app": "Поиск",
         "start": "Начать поиск",
-        "edit_to_start": "Измените параметры поиска, чтобы начать новый",
         "active_input_label": "Разделяйте ключевые слова запятой или TAB",
         "type_or_choose_suggestion": "Чтобы начать поиск, введите или выберите ключевые слова",
         "unable_to_parse_query": "Не удалось завершить поиск, очистите его и повторите попытку",
         "already_clear": "Поле поиска очищено",
         "type_to_start_search": "Введите несколько ключевых слов, чтобы начать поиск"
-    },
-    "logout_modal": {
-        "warning": "Вы собираетесь выйти из системы"
     },
     "module": {
         "app": {
@@ -252,52 +230,20 @@
         "turkish": "Турецкий",
         "french": "Французский",
         "label_french": "Французский - {{value}}",
-        "vietnamese": "Вьетнамский"
+        "vietnamese": "Вьетнамский",
+        "polish": "Польский"
     },
     "timezone": {
-        "belgrade_bratislava_budapest_ljubljana_prague": "{{value}} Белград, Братислава, Будапешт, Любляна, Прага",
-        "chennai_kolkata_mumbai_new_delhi": "{{value}} Ченнаи, Калькутта, Мумбаи, Нью-Дели",
-        "georgetown_la_paz_manaus_san_juan": "{{value}} Джорджтаун, Ла-Пас, Манаус, Сан-Хуан",
         "kaliningrad_rtz_1": "{{value}} Калининград (RTZ 1)",
-        "newfoundland": "{{value}} Ньюфаундленд",
-        "vladivostok_magadan": "{{value}} Владивосток, Магадан",
-        "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}} Амстердам, Берлин, Берн, Рим, Стокгольм, Вена",
         "athens_beirut_bucharest_istanbul": "{{value}} Афины, Бейрут, Бухарест, Стамбул",
-        "bangkok_hanoi_jakarta": "{{value}} Бангкок, Ханой, Джакарта",
-        "beirut": "{{value}} Бейрут",
-        "britain_ireland_portugal": "{{value}} Великобритания, Ирландия, Португалия",
         "argentina": "{{value}} Аргентина",
-        "azores": "{{value}} Азорские острова",
-        "caracas": "{{value}} Каракас",
-        "colombia": "{{value}} Колумбия",
         "darwin": "{{value}} Дарвин",
-        "ekaterinburg_rtz_4": "{{value}} Екатеринбург (RTZ 4)",
-        "gmt_02": "{{value}} GMT-02",
-        "guadalajara_mexico_city_monterrey ": "{{value}} Гвадалахара, Мехико, Монтеррей",
         "hawaii": "{{value}} Гавайи",
-        "jerusalem": "{{value}} Иерусалим",
-        "kabul": "{{value}} Кабул",
-        "krasnoyarsk_rtz_6": "{{value}} Красноярск (RTZ 6)",
         "cayenne_fortaleza": "{{value}} Кайенна, Форталеза",
-        "chita": "{{value}}Чита",
-        "cuiaba": "{{value}} Куйаба",
-        "greenland": "{{value}} Greenland",
         "iraq": "{{value}} Ирак",
-        "korea": "{{value}} Южная Корея",
-        "la_paz": "{{value}} Ла-Пас",
-        "manaus": "{{value}} Манаус",
         "minsk": "{{value}} Минск",
-        "nairobi": "{{value}} Найроби",
-        "nuku_alofa": "{{value}} Нукуалофа",
-        "port_louis": "{{value}} Порт-Луи",
         "samoa": "{{value}} Самоа",
-        "sri_jayawardenepura_kotte": "{{value}} Шри-Джаяварденепура Котте",
-        "tehran": "{{value}} Тегеран",
-        "us_canada_pacific": "{{value}} США/Канада, Тихоокеанский регион",
         "yangon": "{{value}} Янгон",
-        "us_canada_eastern": "{{value}} Восточная часть США/Канады",
-        "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Анадырь, Петропавловск-Камчатский",
-        "moscow_st_petersburg_volgograd_rtz_2": "{{value}} Москва, Санкт-Петербург, Волгоград(RTZ 2)",
         "africa_algiers": "{{value}} Западная Центральная Африка",
         "africa_cairo": "{{value}} Египет",
         "africa_harare": "{{value}} Хараре, Претория",

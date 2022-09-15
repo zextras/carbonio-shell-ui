@@ -59,13 +59,10 @@
         }
     },
     "changelog": {
-        "close": "ปิด",
         "title": "เปลี่ยนบันทึก"
     },
     "login": {
-        "login": "เข้าสู่ระบบ",
         "username": "ชื่อผู้ใช้",
-        "remember_me": "จดจำฉัน",
         "verify_caps_lock": "ตรวจสอบว่า CAPS LOCK ไม่ได้เปิดอยู่ จากนั้นพิมพ์ชื่อผู้ใช้และรหัสผ่านปัจจุบันอีกครั้ง"
     },
     "new": "ใหม่",
@@ -80,9 +77,6 @@
         "type_to_start_search": "พิมพ์คำหลักเพื่อเริ่มการค้นหา",
         "type_or_choose_suggestion": "พิมพ์หรือเลือกคำหลักเพื่อเริ่มการค้นหา",
         "unable_to_parse_query": "ไม่สามารถค้นหาให้เสร็จสิ้นได้ โปรดล้างข้อมูลแล้วลองใหม่อีกครั้ง"
-    },
-    "logout_modal": {
-        "confirm": "ออกจากระบบ"
     },
     "message": {
         "snackbar": {
@@ -232,49 +226,27 @@
         "vietnamese": "ภาษาเวียดนาม"
     },
     "timezone": {
-        "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Anadyr, Petropavlovsk-Kamchatsky (RTZ 11)",
         "arizona": "{{value}} แอริโซนา",
-        "atlantic_time_canada": "{{value}} เวลาแอตแลนติก (แคนาดา)",
         "baja_california": "{{value}} บาจาแคลิฟอร์เนีย",
-        "bangkok_hanoi_jakarta": "{{value}} กรุงเทพ, ฮานอย, จาการ์ตา",
         "brasilia": "{{value}} บราซิเลีย",
-        "brussels_copenhagen_madrid_paris ": "{{value}} บรัสเซลส์, โคเปนเฮเกน, มาดริด, ปารีส",
         "caracas": "{{value}} การากัส",
-        "cayenne_fortaleza": "{{value}} กาแยน, ฟอร์ตาเลซา",
         "chita": "{{value}} ชิตา",
-        "colombia": "{{value}} โคลอมเบีย",
         "cuiaba": "{{value}} กูยาบา",
-        "darwin": "{{value}} ดาร์วิน",
         "egypt": "{{value}} อียิปต์",
-        "georgetown_la_paz_manaus_san_juan": "{{value}} จอร์จทาวน์, ลาปาซ, มาเนาส์, ซานฮวน",
         "gmt_11": "{{value}} GMT-11",
-        "harare_pretoria": "{{value}} ฮาแรร์, พริทอเรีย",
         "indiana_east": "{{value}} อินดีแอนา (ตะวันออก)",
-        "irkutsk_rtz_7": "{{value}} อีร์คุตสค์ (RTZ 7)",
         "jerusalem": "{{value}} เยรูซาเลม",
-        "kabul": "{{value}} คาบูล",
         "korea": "{{value}} เกาหลี",
-        "kuwait_riyadh": "{{value}} คูเวต, ริยาด",
         "magadan": "{{value}} มากาดาน",
-        "minsk": "{{value}} มินสค์",
         "nairobi": "{{value}} ไนโรบี",
-        "newfoundland": "{{value}} นิวฟันด์แลนด์",
         "pacific_south_america": "{{value}} แปซิฟิก อเมริกาใต้",
-        "pyongyang": "{{value}} เปียงยาง",
         "sarajevo_skopje_warsaw_zagreb": "{{value}} ซาราเยโว, สโกเปีย, วอร์ซอ, ซาเกร็บ",
-        "sri_jayawardenepura_kotte": "{{value}} ศรีชยวรรธนปุระโกฏเฏ",
         "tehran": "{{value}} เตหะราน",
-        "us_canada_eastern": "{{value}} สหรัฐฯ/แคนาดาฝั่งตะวันออก",
         "us_canada_pacific": "{{value}} สหรัฐอเมริกา/แคนาดา แปซิฟิก",
-        "west_central_africa": "{{value}} แอฟริกากลางตะวันตก",
         "yerevan": "{{value}} เยเรวาน",
-        "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}} อัมสเตอร์ดัม, เบอร์ลิน, เบิร์น, โรม, สตอกโฮล์ม, เวียนนา",
         "beijing_chongqing_hong_kong_urumqi": "{{value}} ปักกิ่ง, ฉงชิ่ง, ฮ่องกง, อุรุมชี",
-        "central_america": "{{value}} อเมริกากลาง",
         "dateline": "{{value}} วันที่",
-        "guadalajara_mexico_city_monterrey ": "{{value}} กวาดาลาฮารา, เม็กซิโกซิตี้, มอนเตร์เรย์",
         "kaliningrad_rtz_1": "{{value}} คาลินินกราด (RTZ 1)",
-        "montevideo": "{{value}} มอนเตวิเดโอ",
         "africa_algiers": "{{value}} แอฟริกากลางตะวันตก",
         "africa_cairo": "{{value}} อียิปต์",
         "america_asuncion": "{{value}} อาซุนซิออง",

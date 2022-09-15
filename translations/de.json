@@ -1,12 +1,9 @@
 {
     "changelog": {
-        "close": "Schließen",
         "title": "Änderungsprotokoll"
     },
     "login": {
-        "login": "Login",
         "username": "Benutzername",
-        "remember_me": "Login merken",
         "verify_caps_lock": "Überprüfen Sie, dass die FESTSTELLTASTE nicht eingestellt ist, und geben Sie den aktuellen Benutzernamen und das Passwort erneut ein"
     },
     "new": "Neu",
@@ -80,9 +77,6 @@
                 "include_search_in_trash_folder": "Papierkorbordner in die Suche einbeziehen"
             }
         }
-    },
-    "logout_modal": {
-        "warning": "Sie werden abgemeldet"
     },
     "message": {
         "snackbar": {
@@ -191,49 +185,27 @@
         "unsaved_changes": "Sie haben ungespeicherte Änderungen"
     },
     "timezone": {
-        "athens_beirut_bucharest_istanbul": "{{value}} Athen, Beirut, Bukarest, Istanbul",
         "chihuahua_la_paz_mazatlan": "{{value}} Chihuahua, La Paz, Mazatlan",
-        "georgetown_la_paz_manaus_san_juan": "{{value}} Georgetown, La Paz, Manaus, San Juan",
         "kuwait_riyadh": "{{value}} Kuwait, Riyadh",
-        "sarajevo_skopje_warsaw_zagreb": "{{value}} Sarajevo, Skopje, Warschau, Zagreb",
         "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}} Amsterdam, Berlin, Bern, Rom, Stockholm, Wien",
-        "argentina": "{{value}} Argentinien",
         "asuncion": "{{value}} Asuncion",
-        "azores": "{{value}} Azoren",
         "baku": "{{value}} Baku",
-        "beijing_chongqing_hong_kong_urumqi": "{{value}} Peking, Chongqing, Hongkong, Urumqi",
         "brasilia": "{{value}} Brasilia",
-        "cape_verde_is": "{{value}} Kap Verde",
         "casablanca": "{{value}} Casablanca",
-        "central_america": "{{value}} Mittelamerika",
         "chita": "{{value}} Tschita",
-        "colombia": "{{value}} Kolumbien",
         "cuiaba": "{{value}} Cuiaba",
-        "darwin": "{{value}} Darwin",
         "dhaka": "{{value}} Dhaka",
-        "eucla": "{{value}} Eucla",
         "gmt_11": "{{value}} GMT-11",
-        "harare_pretoria": "{{value}} Harare, Pretoria",
         "helsinki_kyiv_riga_sofia_tallinn_vilnius": "{{value}} Helsinki, Kiew, Riga, Sofia, Tallinn, Vilnius",
-        "iraq": "{{value}} Irak",
         "istanbul": "{{value}} Istanbul",
-        "kabul": "{{value}} Kabul",
         "kathmandu": "{{value}} Katmandu",
-        "krasnoyarsk_rtz_6": "{{value}} Krasnojarsk (RTZ 6)",
         "magadan": "{{value}} Magadan",
-        "mid_atlantic": "{{value}} Mittelatlantik",
         "monrovia": "{{value}} Monrovia",
-        "nairobi": "{{value}} Nairobi",
         "newfoundland": "{{value}} Neufundland",
-        "pacific_south_america": "{{value}} Pazifisches Südamerika",
         "pyongyang": "{{value}} Pjöngjang",
-        "saskatchewan": "{{value}} Saskatchewan",
         "tbilisi": "{{value}} Tiflis",
-        "us_canada_central": "{{value}} US/Kanada Zentral",
         "us_canada_mountain": "{{value}} US/Kanada Mountain",
-        "vladivostok_magadan": "{{value}} vladivostok_magadan_rtz_9",
         "yangon": "{{value}} Yangon",
-        "brussels_copenhagen_madrid_paris ": "{{value}} Brüssel, Kopenhagen, Madrid, Paris",
         "america_anchorage": "{{value}} Alaska",
         "america_argentina_buenos_aires": "{{value}} Argentinien",
         "america_bogota": "{{value}} Kolumbien",

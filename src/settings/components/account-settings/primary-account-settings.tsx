@@ -39,17 +39,13 @@ const PrimaryAccountSettings = ({
 
 	const onChangeDisabled = useCallback(() => null, []);
 	const onChange = useCallback(
-		(
-			ev: MouseEvent & {
-				target: HTMLButtonElement;
-			}
-		): void => {
-			setAccountNameValue(ev.target.value);
+		(value: string): void => {
+			setAccountNameValue(value);
 
 			const modifyProp = {
 				id: items.identityId,
 				key: 'zimbraPrefIdentityName',
-				value: ev.target.value
+				value
 			};
 
 			updateIdentities(modifyProp);
@@ -79,23 +75,13 @@ const PrimaryAccountSettings = ({
 				mainAlignment="flex-start"
 			>
 				<Row width="50%" padding={{ right: 'small' }}>
-					<Input
-						label={emailLabel}
-						value={emailValue || ' '}
-						background="gray5"
-						onChange={onChangeDisabled}
-					/>
+					<Input label={emailLabel} value={emailValue || ' '} onChange={onChangeDisabled} />
 				</Row>
 				<Row width="50%">
 					<Input
 						label={accountLabel}
 						value={accountNameValue || ' '}
-						background="gray5"
-						onChange={(
-							ev: MouseEvent & {
-								target: HTMLButtonElement;
-							}
-						): void => onChange(ev)}
+						onChange={(ev): void => onChange(ev.target.value)}
 					/>
 				</Row>
 			</Row>

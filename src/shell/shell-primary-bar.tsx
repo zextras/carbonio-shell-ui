@@ -5,20 +5,17 @@
  */
 
 import { Container, IconButton, Row, Tooltip } from '@zextras/carbonio-design-system';
-import { map, isEmpty, trim, filter, sortBy } from 'lodash';
-import React, { useContext, FC, useState, useEffect, useMemo } from 'react';
+import { map, isEmpty, trim, filter, sortBy, noop } from 'lodash';
+import React, { FC, useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-// TODO: convert boards management to ts (and maybe a zustand store)
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { BoardValueContext, BoardSetterContext } from './boards/board-context';
 import { useAppStore } from '../store/app';
 import { AppRoute, PrimaryAccessoryView, PrimaryBarView } from '../../types';
 import BadgeWrap from './badge-wrap';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { checkRoute } from '../utility-bar/utils';
 import { IS_STANDALONE } from '../constants';
+import { minimizeBoards, reopenBoards, useBoardStore } from '../store/boards';
 import { useCurrentRoute } from '../history/hooks';
 
 const ContainerWithDivider = styled(Container)`
@@ -26,15 +23,13 @@ const ContainerWithDivider = styled(Container)`
 `;
 
 const ToggleBoardIcon: FC = () => {
-	const { boards, minimized } = useContext(BoardValueContext);
-	const { toggleMinimized } = useContext(BoardSetterContext);
-
+	const { minimized, boards } = useBoardStore();
 	if (isEmpty(boards)) return null;
 	return (
 		<IconButton
 			iconColor="primary"
 			icon={minimized ? 'BoardOpen' : 'BoardCollapse'}
-			onClick={toggleMinimized}
+			onClick={minimized ? reopenBoards : minimizeBoards}
 			size="large"
 		/>
 	);
@@ -77,7 +72,7 @@ const PrimaryBarAccessoryElement: FC<PrimaryBarAccessoryItemProps> = ({ view }) 
 					icon={view.component}
 					backgroundColor="gray6"
 					iconColor="text"
-					onClick={view.onClick}
+					onClick={view.onClick ?? noop}
 					size="large"
 				/>
 			) : (
@@ -136,7 +131,13 @@ const ShellPrimaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute }
 				orientation="vertical"
 				takeAvailableSpace
 				wrap="nowrap"
-				style={{ minHeight: '1px', overflowY: 'overlay' }}
+				style={{
+					minHeight: '1px',
+					// TODO: fix overlay usage
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					overflowY: 'overlay'
+				}}
 			>
 				{map(primaryBarViews, (view) =>
 					view.visible ? (
@@ -153,6 +154,9 @@ const ShellPrimaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute }
 				mainAlignment="flex-end"
 				orientation="vertical"
 				wrap="nowrap"
+				// TODO: fix overlay usage
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
 				style={{ minHeight: '1px', overflowY: 'overlay' }}
 			>
 				{accessories.map((v) => (

@@ -70,12 +70,12 @@ const PersonaUseSection = ({
 	);
 
 	const onChangeWhenSentToAddresses = useCallback(
-		(ev) => {
-			setWhenSentToAddresses(ev.target.value);
+		(value: string) => {
+			setWhenSentToAddresses(value);
 			const modifyProp = {
 				id: items.identityId,
 				key: 'zimbraPrefWhenSentToAddresses',
-				value: ev.target.value
+				value
 			};
 
 			updateIdentities(modifyProp);
@@ -149,14 +149,9 @@ const PersonaUseSection = ({
 					<Input
 						label={whenSentToAddressesLabel}
 						value={whenSentToAddresses}
-						background="gray5"
 						disabled={!whenSentToEnabled}
 						hasError={isValidEmail}
-						onChange={(
-							ev: MouseEvent & {
-								target: HTMLButtonElement;
-							}
-						): void => onChangeWhenSentToAddresses(ev)}
+						onChange={(ev): void => onChangeWhenSentToAddresses(ev.target.value)}
 					/>
 				</Row>
 			</Row>

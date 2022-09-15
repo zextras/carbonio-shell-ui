@@ -11,7 +11,7 @@ import {
 	Padding,
 	Input,
 	Row,
-	Button,
+	ButtonOld as Button,
 	Divider
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
@@ -53,13 +53,9 @@ const PasswordRecoverySettings = ({
 	);
 
 	const onChange = useCallback(
-		(
-			ev: MouseEvent & {
-				target: HTMLButtonElement;
-			}
-		): void => {
-			setEmailValue(ev.target.value);
-			setIsValidEmail(EMAIL_VALIDATION_REGEX.test(ev.target.value));
+		(value: string): void => {
+			setEmailValue(value);
+			setIsValidEmail(EMAIL_VALIDATION_REGEX.test(value));
 		},
 		[setEmailValue, setIsValidEmail]
 	);
@@ -102,9 +98,7 @@ const PasswordRecoverySettings = ({
 				mainAlignment="flex-start"
 			>
 				<Row width="fill" padding={{ bottom: 'medium' }}>
-					<Text background="gray6" color="secondary">
-						{recoveryEmail}
-					</Text>
+					<Text color="secondary">{recoveryEmail}</Text>
 				</Row>
 				<Divider />
 			</Row>
@@ -119,8 +113,7 @@ const PasswordRecoverySettings = ({
 					<Input
 						label={inputLabel}
 						value={emailValue}
-						background="gray5"
-						onChange={onChange}
+						onChange={(ev): void => onChange(ev.target.value)}
 						hasError={emailValue !== '' && !isValidEmail}
 					/>
 				</Row>

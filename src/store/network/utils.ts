@@ -6,12 +6,6 @@
 
 import { forEach } from 'lodash';
 import { SoapContext } from '../../../types';
-
-// import { map, maxBy } from 'lodash';
-// import { SoapContext } from '../../../types';
-// import { getSoapFetch } from '../../network/fetch';
-// import { useNetworkStore } from './store';
-
 import { folderWorker, tagWorker } from '../../workers';
 import { useFolderStore } from '../folder';
 import { useTagStore } from '../tags';

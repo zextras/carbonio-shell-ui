@@ -7,8 +7,8 @@
 
 import { ComponentType, Dispatch, FC, SetStateAction } from 'react';
 import { LinkProps } from 'react-router-dom';
-import { Reducer, Store } from 'redux';
 import { TFunction } from 'react-i18next';
+import { i18n } from 'i18next';
 import {
 	AppRoute,
 	AppRouteDescriptor,
@@ -35,20 +35,13 @@ import { HistoryParams, ShellModes, AccordionFolder } from '../misc';
 import { Tag, Tags } from '../tags';
 import { Folder, Folders } from '../folder';
 import { QueryChip } from '../search';
+import { Board, BoardHooksContext } from '../boards';
 import { INotificationManager } from '../notification';
 
 export const getBridgedFunctions: () => {
-	addBoard: (path: string, context?: unknown | { app: string }) => void;
 	createModal: (...params: any[]) => void;
 	createSnackbar: (...params: any[]) => void;
 	getHistory: () => History;
-	removeBoard: (key: string) => void;
-	removeCurrentBoard: () => void;
-	setCurrentBoard: (key: string) => void;
-	updateBoard: (key: string, url: string, title: string) => void;
-	updateCurrentBoard: (url: string, title: string) => void;
-	t: TFunction;
-	toggleMinimizedBoard: () => void;
 };
 export const editSettings: (mods: Mods) => Promise<any>;
 export const ZIMBRA_STANDARD_COLORS: Array<{ zValue: number; hex: string; zLabel: string }>;
@@ -120,21 +113,10 @@ export const useUserSettings: () => AccountSettings;
 export const useUserSetting: <T = void>(...path: Array<string>) => string | T;
 export const getUserSettings: () => AccountSettings;
 export const getUserSetting: <T = void>(...path: Array<string>) => string | T;
-export const store: {
-	store: Store<any>;
-	setReducer(nextReducer: Reducer): void;
-};
 export const useNotify: () => Array<SoapNotify>;
 export const useRefresh: () => SoapRefresh;
 export const AppLink: FC<LinkProps>;
 export const Spinner: FC;
-export const useAddBoardCallback: () => (
-	path: string,
-	context?: { app?: string; title?: string }
-) => void;
-export const useUpdateCurrentBoard: () => (url: string, title: string) => void;
-export const useRemoveCurrentBoard: () => () => void;
-export const useBoardConfig: <T>() => T;
 
 export const useIsMobile: () => boolean;
 export const soapFetch: SoapFetch;
@@ -234,3 +216,24 @@ export const getNotificationManager: () => INotificationManager;
 export const runSearch: (query: Array<QueryChip>, module: string) => void;
 
 export const useLocalStorage: <T>(key: string, initialValue: T) => [T, Dispatch<SetStateAction<T>>];
+
+export const getI18n: () => i18n;
+export const useI18n: () => i18n;
+export const t: TFunction;
+
+export const addBoard: <T = any>(
+	board: Omit<Board<T>, 'app' | 'icon' | 'id'> & { id?: string; icon?: string },
+	expanded?: boolean
+) => Board;
+export const closeBoard: (id: string) => void;
+export const updateBoard: <T = any>(id: string, board: Partial<Board<T>>) => void;
+export const updateBoardContext: <T = any>(id: string, context: T) => void;
+export const getBoardById: <T>(id: string) => Board<T>;
+export const getBoardContextById: <T>(id: string) => T;
+export const useBoardContextById: <T>(id: string) => T;
+export const useBoardById: <T>(id: string) => Board<T>;
+export const minimizeBoards: () => void;
+export const reopenBoards: () => void;
+export const setCurrentBoard: (id: string) => void;
+export const useBoardHooks: () => BoardHooksContext;
+export const useBoard: <T>() => Board<T>;

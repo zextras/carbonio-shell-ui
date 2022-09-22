@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect, useState, useContext, FC, useMemo } from 'react';
-import { Row, Responsive, SnackbarManager, ModalManager } from '@zextras/carbonio-design-system';
+import { Row, Responsive } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 import { find } from 'lodash';
 import { PreviewManager } from '@zextras/carbonio-ui-preview';
@@ -99,16 +99,9 @@ const ShellView: FC = () => {
 	const hideShellHeader = activeRoute?.standalone?.hideShellHeader as string | undefined;
 	return (
 		<ShellContextProvider>
-			<ModalManager>
-				<SnackbarManager>
-					<PreviewManager>
-						<MemoShell
-							allowUnauthenticated={allowUnauthenticated}
-							hideShellHeader={hideShellHeader}
-						/>
-					</PreviewManager>
-				</SnackbarManager>
-			</ModalManager>
+			<PreviewManager>
+				<MemoShell allowUnauthenticated={allowUnauthenticated} hideShellHeader={hideShellHeader} />
+			</PreviewManager>
 		</ShellContextProvider>
 	);
 };

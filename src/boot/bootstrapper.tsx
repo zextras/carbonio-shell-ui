@@ -21,13 +21,9 @@ const Bootstrapper: FC = () => {
 	}, []);
 	return (
 		<ThemeProvider>
-			<SnackbarManager>
-				<ModalManager>
-					<BootstrapperContextProvider>
-						<BootstrapperRouter />
-					</BootstrapperContextProvider>
-				</ModalManager>
-			</SnackbarManager>
+			<BootstrapperContextProvider>
+				<BootstrapperRouter />
+			</BootstrapperContextProvider>
 		</ThemeProvider>
 	);
 };

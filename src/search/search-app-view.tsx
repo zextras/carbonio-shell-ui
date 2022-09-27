@@ -36,12 +36,10 @@ const getIconAndColor = (labelType: ResultLabelType): Array<string> => {
 	if (labelType === ResultLabelType.WARNING) {
 		return ['AlertTriangle', 'warning'];
 	}
-
 	if (labelType === ResultLabelType.ERROR) {
 		return ['CloseSquare', 'error'];
 	}
-
-	return [];
+	return ['', ''];
 };
 
 const ResultsHeader: FC<{ label: string; labelType?: ResultLabelType }> = ({

@@ -1,6 +1,5 @@
 {
     "changelog": {
-        "close": "Fechar",
         "title": "Registro de Alterações"
     },
     "settings": {
@@ -63,9 +62,7 @@
         }
     },
     "login": {
-        "login": "Iniciar sessão",
         "username": "Nome de usuário",
-        "remember_me": "Lembrar de mim",
         "verify_caps_lock": "Verifique se o CAPS LOCK não está ativado e digite novamente o nome do usuário e a senha"
     },
     "new": "Nova",
@@ -80,9 +77,6 @@
         "type_to_start_search": "Digite algumas palavras-chave para fazer uma pesquisa",
         "type_or_choose_suggestion": "Digite ou escolhe algumas palavras-chave para iniciar uma busca",
         "unable_to_parse_query": "Não foi possível completar a busca, limpe-a e tente novamente"
-    },
-    "logout_modal": {
-        "confirm": "Desconectar-me"
     },
     "message": {
         "snackbar": {
@@ -191,49 +185,27 @@
         "when_replying": "Ao responder ou encaminhar mensagens enviadas para:"
     },
     "timezone": {
-        "abu_dhabi_muscat": "{{value}} Abu Dhabi, Mascate",
         "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}} Amsterdã, Berlim, Berna, Roma, Estocolmo, Viena",
-        "arizona": "{{value}} Arizona",
         "athens_beirut_bucharest_istanbul": "{{value}} Atenas, Beirute, Bucareste, Istambul",
-        "azores": "{{value}} Açores",
         "baku": "{{value}} Bacu",
-        "beirut": "{{value}} Beirute",
         "brasilia": "{{value}} Brasília",
-        "brussels_copenhagen_madrid_paris ": "{{value}} Bruxelas, Copenhague, Madri, Paris",
         "caracas": "{{value}} Caracas",
-        "chennai_kolkata_mumbai_new_delhi": "{{value}} Chennai, Calcutá, Mumbai, Nova Deli",
         "chita": "{{value}} Tchita",
-        "colombia": "{{value}} Colômbia",
         "damascus": "{{value}} Damasco",
-        "dateline": "{{value}} Linha de data",
         "egypt": "{{value}} Egito",
-        "eucla": "{{value}} Eucla",
         "gmt_11": "{{value}} GMT-11",
-        "guadalajara_mexico_city_monterrey ": "{{value}} Guadalajara, Cidade do México, Monterrey",
         "hawaii": "{{value}} Havaí",
-        "iraq": "{{value}} Iraque",
         "istanbul": "{{value}} Istambul",
-        "jordan": "{{value}} Jordânia",
         "kaliningrad_rtz_1": "{{value}} Kaliningrado (RTZ 1)",
-        "kuwait_riyadh": "{{value}} Kuwait, Riad",
         "magadan": "{{value}} Magadan",
-        "mid_atlantic": "{{value}} Médio Atlântico",
         "monrovia": "{{value}} Monróvia",
-        "nairobi": "{{value}} Nairóbi",
         "newfoundland": "{{value}} Terra Nova",
-        "pacific_south_america": "{{value}} Pacífico América do Sul",
         "pyongyang": "{{value}} Pyongyang",
-        "saskatchewan": "{{value}} Saskatchewan",
         "tbilisi": "{{value}} Tbilisi",
-        "us_canada_central": "{{value}} EUA/Canadá Central",
         "us_canada_pacific": "{{value}} EUA/Canadá Pacífico",
-        "west_central_africa": "{{value}} África Central Ocidental",
         "yerevan": "{{value}} Erevã",
-        "beijing_chongqing_hong_kong_urumqi": "{{value}} Pequim, Chongqing, Hong Kong, Urumqi",
         "cayenne_fortaleza": "{{value}} Caiena, Fortaleza",
-        "georgetown_la_paz_manaus_san_juan": "{{value}} Georgetown, La Paz, Manaus, San Juan",
         "korea": "{{value}} Coréia",
-        "moscow_st_petersburg_volgograd_rtz_2": "{{value}} Moscou, São Petersburgo, Volgogrado (RTZ 2)",
         "africa_algiers": "{{value}} África Central Ocidental",
         "africa_cairo": "{{value}} Egito",
         "africa_casablanca": "{{value}} Casablanca",

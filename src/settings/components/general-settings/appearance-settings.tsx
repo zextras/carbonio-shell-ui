@@ -66,6 +66,7 @@ const AppearanceSettings: FC<{
 			<Select
 				items={items}
 				selection={defaultSelection}
+				defaultSelection={defaultSelection}
 				label={t('settings.general.dark_mode', 'Dark Mode')}
 				onChange={onSelectionChange}
 			/>

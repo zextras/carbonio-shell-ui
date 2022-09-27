@@ -17,7 +17,7 @@ import AccountsList from './components/account-settings/accounts-list';
 import PrimaryAccountSettings from './components/account-settings/primary-account-settings';
 import SettingsSentMessages from './components/account-settings/settings-sent-messages';
 import PasswordRecoverySettings from './components/account-settings/password-recovery-settings';
-import Delegates from './components/account-settings/delegates';
+import Delegates, { DelegateType } from './components/account-settings/delegates';
 import PersonaSettings from './components/account-settings/persona-settings';
 import PersonaUseSection from './components/account-settings/persona-use-section';
 import SettingsHeader from './components/settings-header';
@@ -41,19 +41,12 @@ type AccountSettingsProps = {
 };
 
 type UserRightsProps = { email: string; right: string };
-
-type DelegateProps = {
-	id: string;
-	email: string;
-	right: string;
-};
-
 export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps): ReactElement => {
 	const [mods, setMods] = useState<Mods>({});
 	const [activeDelegateView, setActiveDelegateView] = useState('0');
 	const [selectedIdentityId, setSelectedIdentityId] = useState(0);
 	const [identities, setIdentities] = useState<IdentityProps[]>(identitiesDefault);
-	const [delegates, setDelegates] = useState<DelegateProps[]>([]);
+	const [delegates, setDelegates] = useState<DelegateType[]>([]);
 
 	const maxIdentities = useUserSettings().attrs.zimbraIdentityMaxNumEntries;
 	const addMod = useCallback(

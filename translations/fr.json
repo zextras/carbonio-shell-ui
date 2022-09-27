@@ -166,49 +166,16 @@
         "error": "Quelque chose s'est mal passé, veuillez recommencer"
     },
     "timezone": {
-        "alaska": "{{value}} Alaska",
-        "argentina": "{{value}} Argentina",
-        "asuncion": "{{value}} Asunción",
         "atlantic_time_canada": "{{value}} Heure de l'Atlantique (Canada)",
-        "baja_california": "{{value}} Basse-Californie",
-        "bangkok_hanoi_jakarta": "{{value}} Bangkok, Hanoï, Jakarta",
-        "belgrade_bratislava_budapest_ljubljana_prague": "{{value}} Belgrade, Bratislava, Budapest, Ljubljana, Prague",
         "britain_ireland_portugal": "{{value}} Grande-Bretagne, Irlande, Portugal",
-        "cape_verde_is": "{{value}} Cap-Vert Est.",
-        "casablanca": "{{value}} Casablanca",
-        "chennai_kolkata_mumbai_new_delhi": "{{value}} Chennai, Calcutta, Bombay, New Delhi",
         "chita": "{{value}} Tchita",
-        "colombia": "{{value}} Colombie",
-        "damascus": "{{value}} Damas",
-        "dateline": "{{value}} Ligne de date",
         "egypt": "{{value}} Egypte",
-        "eucla": "{{value}} Eucla",
-        "gmt_11": "{{value}} GMT-11",
-        "guadalajara_mexico_city_monterrey ": "{{value}} Guadalajara, Mexico, Monterrey",
         "hawaii": "{{value}} Hawaii",
-        "indiana_east": "{{value}} Indiana (Est)",
-        "irkutsk_rtz_7": "{{value}} Irkutsk (RTZ 7)",
-        "jerusalem": "{{value}} Jerusalem",
         "kabul": "{{value}} Kabul",
-        "kathmandu": "{{value}} Katmandou",
-        "krasnoyarsk_rtz_6": "{{value}} Krasnoïarsk (RTZ 6)",
-        "la_paz": "{{value}} La Paz",
         "manaus": "{{value}} Manaus",
-        "monrovia": "{{value}} Monrovia",
-        "nairobi": "{{value}} Nairobi",
-        "newfoundland": "{{value}} Terre-Neuve",
         "pacific_south_america": "{{value}} Pacifique Amérique du Sud",
-        "pyongyang": "{{value}} Pjongjang",
-        "sarajevo_skopje_warsaw_zagreb": "{{value}} Sarajevo, Skopje, Varsovie, Zagreb",
-        "sri_jayawardenepura_kotte": "{{value}} Sri Jayawardenepura Kotte",
         "tehran": "{{value}} Téhéran",
-        "us_canada_mountain": "{{value}} États-Unis/Montagnes Canadiennes",
-        "west_central_africa": "{{value}} Afrique du Centre-Ouest",
-        "yerevan": "{{value}} Erevan",
         "beijing_chongqing_hong_kong_urumqi": "{{value}} Pékin, Chongqing, Hong Kong, Urumqi",
-        "coordinated_universal_time": "{{value}} Temps universel coordonné",
-        "mid_atlantic": "{{value}} Mid-Atlantique",
-        "us_canada_central": "{{value}} US/Canada Central",
         "africa_cairo": "{{value}} Égypte",
         "africa_harare": "{{value}} Harare, Pretoria",
         "africa_juba": "{{value}} Juba",
@@ -386,7 +353,8 @@
         "turkish": "Turc",
         "french": "Français",
         "label_french": "Français - {{value}}",
-        "vietnamese": "Vietnamienne"
+        "vietnamese": "Vietnamienne",
+        "polish": "Polonais"
     },
     "module": {
         "app": {
@@ -420,7 +388,7 @@
         "permanent_delete_body": "Si vous supprimez définitivement cette identité, vous ne pourrez pas la récupérer. Continuer ?"
     },
     "share": {
-        "is_contained_in": "Est contenu dans"
+        "is_contained_in": "Dans le dossier"
     },
     "passwords_recovery_settings": {
         "title": "Paramètres du compte de récupération de mot de passe"

@@ -28,7 +28,7 @@ const useDisableSearch = (): [boolean, Function] =>
 const ResultsHeader: FC<{ label: string }> = ({ label }) => {
 	const [t] = useTranslation();
 	const [query, updateQuery] = useQuery();
-	const [disabled, setDisabled] = useDisableSearch();
+	const [, setDisabled] = useDisableSearch();
 
 	const resetQuery = useCallback(() => {
 		updateQuery([]);
@@ -62,7 +62,7 @@ const ResultsHeader: FC<{ label: string }> = ({ label }) => {
 							label={t('label.clear_search_query', 'CLEAR SEARCH')}
 							icon="CloseOutline"
 							color="primary"
-							size="large"
+							width="fill"
 							type="ghost"
 							onClick={resetQuery}
 						/>

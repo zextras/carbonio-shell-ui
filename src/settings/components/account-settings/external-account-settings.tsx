@@ -32,7 +32,7 @@ type ListItemProps = {
 };
 
 const ExternalAccount = ({ t }: ExternalAccountProps): ReactElement => {
-	const [activeValue, setActiveValue] = useState(1);
+	const [activeValue, setActiveValue] = useState('1');
 
 	return (
 		<>
@@ -61,15 +61,10 @@ const ExternalAccount = ({ t }: ExternalAccountProps): ReactElement => {
 					<Input
 						label={t('label.email_address', 'E-mail address')}
 						value="name.surname@company.com"
-						background="gray5"
 					/>
 				</Row>
 				<Row width="50%">
-					<Input
-						label={t('label.account_name', 'Account Name')}
-						value="New External Account 1"
-						background="gray5"
-					/>
+					<Input label={t('label.account_name', 'Account Name')} value="New External Account 1" />
 				</Row>
 			</Row>
 			<Row
@@ -78,7 +73,7 @@ const ExternalAccount = ({ t }: ExternalAccountProps): ReactElement => {
 				mainAlignment="flex-start"
 				background="gray6"
 			>
-				<Padding width="100%">
+				<Padding left="small" width="100%">
 					<Text weight="bold">{t('label.account_type', 'Account Type')}</Text>
 				</Padding>
 			</Row>
@@ -90,10 +85,10 @@ const ExternalAccount = ({ t }: ExternalAccountProps): ReactElement => {
 				background="gray6"
 				mainAlignment="flex-start"
 			>
-				<RadioGroup style={{ width: '100%' }} value={activeValue} mainAlignment="flex-start">
-					<Radio width="100%" label={t('label.pop3', 'POP3')} value={1} />
+				<RadioGroup style={{ width: '100%' }} value={activeValue}>
+					<Radio width="100%" label={t('label.pop3', 'POP3')} value="1" />
 					<Padding bottom="medium" />
-					<Radio label={t('label.imap', 'IMAP')} value={2} />
+					<Radio label={t('label.imap', 'IMAP')} value="2" />
 				</RadioGroup>
 			</Container>
 			<Row
@@ -104,27 +99,16 @@ const ExternalAccount = ({ t }: ExternalAccountProps): ReactElement => {
 				mainAlignment="flex-start"
 			>
 				<Row width="70%" padding={{ bottom: 'small' }}>
-					<Input
-						label={t('label.account_username', 'Account Username')}
-						value=""
-						onChange="name.surname@company.com"
-						background="gray5"
-					/>
+					<Input label={t('label.account_username', 'Account Username')} value="" />
 				</Row>
 				<Row width="70%" padding={{ bottom: 'small' }}>
 					<Input
 						label={t('label.email_server', 'E-mail server (e.g. “mail.example.com”)')}
 						value=""
-						background="gray5"
 					/>
 				</Row>
 				<Row width="70%">
-					<PasswordInput
-						label={t('label.password', 'Password')}
-						value=""
-						background="gray5"
-						icon="EyeOffOutline"
-					/>
+					<PasswordInput label={t('label.password', 'Password')} value="" />
 				</Row>
 			</Row>
 			<Padding bottom="large" />

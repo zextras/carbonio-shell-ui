@@ -12,12 +12,13 @@ import {
 	Divider,
 	Row,
 	Padding,
-	Button,
+	ButtonOld as Button,
 	Icon,
-	ModalManagerContext
+	ModalManagerContext,
+	ItemComponentProps
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import { map, filter, max } from 'lodash';
+import { map, filter, max, noop } from 'lodash';
 import { IdentityProps, CreateIdentityProps } from '../../../../types';
 
 type AccountsListProps = {
@@ -28,16 +29,6 @@ type AccountsListProps = {
 	setSelectedIdentityId: (value: number) => void;
 	deleteIdentities: (deleteList: string[]) => void;
 	createIdentities: (createList: { prefs: CreateIdentityProps }[]) => void;
-};
-
-type ListItemProps = {
-	active: boolean;
-	item: IdentityProps;
-	selected: boolean;
-	setSelected: () => void;
-	background: string;
-	selectedBackground: string;
-	activeBackground: string;
 };
 
 const AccountsList = ({
@@ -51,7 +42,7 @@ const AccountsList = ({
 }: AccountsListProps): ReactElement => {
 	const changeView = (value: number): void => setSelectedIdentityId(value);
 
-	const ListItem = ({ item }: ListItemProps): ReactElement => (
+	const ListItem = ({ item }: ItemComponentProps<IdentityProps>): ReactElement => (
 		<>
 			<Container
 				onClick={(): void => {
@@ -228,8 +219,6 @@ const AccountsList = ({
 					ItemComponent={ListItem}
 					active={identities[selectedIdentityId]?.id}
 					height="fit"
-					selectedIdentityId={selectedIdentityId}
-					setSelectedIdentityId={setSelectedIdentityId}
 				/>
 			</Container>
 			<Row
@@ -241,7 +230,7 @@ const AccountsList = ({
 				{/* <Padding right="small">
 					<Button
 						label={t('label.add_external_account', 'Add external account')}
-						// onClick={(): void => setSelectedIdentity({ type: 'POP' })}
+						onClick={noop}
 						color="primary"
 						type="outlined"
 						disabled

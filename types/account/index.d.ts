@@ -21,7 +21,7 @@ export type AccountState = {
 	authenticated: boolean;
 	account?: Account;
 	settings: AccountSettings;
-	zimbraVersion: string;
+	zimbraVersion?: string;
 	usedQuota: number;
 };
 

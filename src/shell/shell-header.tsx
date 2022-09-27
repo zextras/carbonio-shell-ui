@@ -34,25 +34,20 @@ const ShellHeader: FC<{
 			height="60px"
 			minHeight="60px"
 			maxHeight="60px"
-			mainAlignment="space-between"
+			mainAlignment="flex-start"
 			padding={{
 				horizontal: screenMode === 'desktop' ? 'large' : 'extrasmall',
 				vertical: 'small'
 			}}
 		>
 			<Catcher>
-				<Container
-					orientation="horizontal"
-					width="75%"
-					maxWidth="75%"
-					mainAlignment="space-between"
-				>
+				<Container orientation="horizontal" width="75%" maxWidth="75%" mainAlignment="flex-start">
 					<Responsive mode="mobile">
 						<Padding right="small">
 							<IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} />
 						</Padding>
 					</Responsive>
-					<Container width={320} height={32} crossAlignment="flex-start">
+					<Container width={250} height={32} crossAlignment="flex-start">
 						<Logo height="32px" />
 					</Container>
 					<Padding horizontal="large">

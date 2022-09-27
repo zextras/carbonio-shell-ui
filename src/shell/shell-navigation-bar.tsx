@@ -5,7 +5,7 @@
  */
 
 import React, { FC } from 'react';
-import { Container, Responsive } from '@zextras/carbonio-design-system';
+import { Responsive, Container } from '@zextras/carbonio-design-system';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

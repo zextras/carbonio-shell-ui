@@ -119,9 +119,15 @@ export const startOfDate = (date: string): string =>
 export const endOfDate = (date: string): string =>
 	moment.utc(date, 'YYYYMMDDHHmmss[Z]').local().endOf('day').utc().format('YYYYMMDDHHmmss[Z]');
 
-export const localeList = (
-	t: TFunction
-): Array<{ id: string; name: string; localName: string; value: string; label: string }> => [
+export type LocaleDescriptor = {
+	id: string;
+	name: string;
+	localName: string;
+	value: string;
+	label: string;
+};
+
+export const localeList = (t: TFunction): Array<LocaleDescriptor> => [
 	{
 		id: 'zh_CN',
 		name: '中文 (中国)',
@@ -469,9 +475,13 @@ export const localeList = (
 
 // ];
 
-export const timeZoneList = (
-	t: TFunction
-): Array<{ value?: string; label: string; offSet?: string }> => [
+export type TimeZoneDescriptor = {
+	value: string;
+	label: string;
+	offSet?: string;
+};
+
+export const timeZoneList = (t: TFunction): Array<TimeZoneDescriptor> => [
 	{
 		value: 'Etc/GMT+12',
 		label: t('timezone.etc_gmt+12', { value: 'GMT -12:00', defaultValue: '{{value}} Dateline' })

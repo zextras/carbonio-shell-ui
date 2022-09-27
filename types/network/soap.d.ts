@@ -74,3 +74,11 @@ export type SoapNotify = {
 	};
 	deleted: string[];
 };
+
+export class SoapException extends Error {
+	constructor(response: ErrorSoapResponse) {
+		this.message = response.Body.Fault.Reason.Text;
+	}
+
+	response: ErrorSoapResponse;
+}

@@ -6,7 +6,7 @@
 
 import { find, map, maxBy } from 'lodash';
 import { goToLogin } from './go-to-login';
-import { Account, ErrorSoapResponse, SoapContext, SoapResponse } from '../../types';
+import { Account, ErrorSoapResponse, SoapContext, SoapException, SoapResponse } from '../../types';
 import { userAgent } from './user-agent';
 import { report } from '../reporting';
 import { useAccountStore } from '../store/account';
@@ -111,6 +111,8 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 				}`
 			)
 		);
+
+		throw new SoapException(<ErrorSoapResponse>res);
 	}
 	if (res.Header?.context) {
 		const responseUsedQuota =

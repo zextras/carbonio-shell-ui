@@ -77,7 +77,7 @@ export type SoapNotify = {
 
 export class SoapException extends Error {
 	constructor(response: ErrorSoapResponse) {
-		this.message = response.Body.Fault.Reason.Text;
+		super(response?.Body.Fault.Reason.Text);
 	}
 
 	response: ErrorSoapResponse;

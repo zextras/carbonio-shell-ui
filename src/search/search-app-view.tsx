@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { map, noop } from 'lodash';
+import { map } from 'lodash';
 import React, { FC, ReactElement, useCallback, useMemo } from 'react';
 import {
 	Button,
@@ -31,6 +31,19 @@ const useQuery = (): [Array<QueryChip>, Function] =>
 const useDisableSearch = (): [boolean, Function] =>
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	useSearchStore((s) => [s.searchDisabled, s.setSearchDisabled]);
+
+const getIconAndColor = (labelType: ResultLabelType): Array<string> => {
+	if (labelType === ResultLabelType.WARNING) {
+		return ['AlertTriangle', 'warning'];
+	}
+
+	if (labelType === ResultLabelType.ERROR) {
+		return ['CloseSquare', 'error'];
+	}
+
+	return [];
+};
+
 const ResultsHeader: FC<{ label: string; labelType?: ResultLabelType }> = ({
 	label,
 	labelType = ResultLabelType.NORMAL
@@ -44,24 +57,37 @@ const ResultsHeader: FC<{ label: string; labelType?: ResultLabelType }> = ({
 		setDisabled(false);
 	}, [updateQuery, setDisabled]);
 
-	let labelTypeElem: ReactElement | undefined;
-	if (labelType !== ResultLabelType.NORMAL) {
-		let icon = '';
-		let color = '';
-		if (labelType === ResultLabelType.WARNING) {
-			icon = 'AlertTriangle';
-			color = 'warning';
-		} else if (labelType === ResultLabelType.ERROR) {
-			icon = 'CloseSquare';
-			color = 'error';
+	const labelTypeElem = useMemo<ReactElement | undefined>(() => {
+		if (labelType === ResultLabelType.NORMAL) {
+			return <></>;
 		}
 
-		labelTypeElem = (
+		const [icon, color] = getIconAndColor(labelType);
+		return (
 			<Padding right="small">
 				<Icon icon={icon} size="large" color={color} />
 			</Padding>
 		);
-	}
+	}, [labelType]);
+
+	// let labelTypeElem: ReactElement | undefined;
+	// if (labelType !== ResultLabelType.NORMAL) {
+	// 	let icon = '';
+	// 	let color = '';
+	// 	if (labelType === ResultLabelType.WARNING) {
+	// 		icon = 'AlertTriangle';
+	// 		color = 'warning';
+	// 	} else if (labelType === ResultLabelType.ERROR) {
+	// 		icon = 'CloseSquare';
+	// 		color = 'error';
+	// 	}
+	//
+	// 	labelTypeElem = (
+	// 		<Padding right="small">
+	// 			<Icon icon={icon} size="large" color={color} />
+	// 		</Padding>
+	// 	);
+	// }
 
 	return (
 		<>

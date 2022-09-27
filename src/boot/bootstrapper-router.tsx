@@ -6,7 +6,13 @@
 
 import React, { FC, useContext, useEffect } from 'react';
 import { BrowserRouter, Route, Switch, useHistory, useParams } from 'react-router-dom';
-import { SnackbarManagerContext, ModalManagerContext } from '@zextras/carbonio-design-system';
+import {
+	SnackbarManagerContext,
+	ModalManagerContext,
+	ModalManager,
+	SnackbarManager
+} from '@zextras/carbonio-design-system';
+import { useTranslation } from 'react-i18next';
 import AppLoaderMounter from './app/app-loader-mounter';
 import { useBridge } from '../store/context-bridge';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -14,6 +20,8 @@ import { useBridge } from '../store/context-bridge';
 import ShellView from '../shell/shell-view';
 import { BASENAME, IS_STANDALONE } from '../constants';
 import { useAppStore } from '../store/app';
+import { NotificationPermissionChecker } from '../notification/NotificationPermissionChecker';
+import { registerDefaultViews } from './app/default-views';
 
 const ContextBridge: FC = () => {
 	const history = useHistory();
@@ -39,18 +47,32 @@ const StandaloneListener: FC = () => {
 	return null;
 };
 
+const DefaultViewsRegister: FC = () => {
+	const [t] = useTranslation();
+	useEffect(() => {
+		registerDefaultViews(t);
+	}, [t]);
+	return null;
+};
+
 const BootstrapperRouter: FC = () => (
 	<BrowserRouter basename={BASENAME}>
-		{IS_STANDALONE && (
-			<Switch>
-				<Route path={'/:route'}>
-					<StandaloneListener />
-				</Route>
-			</Switch>
-		)}
-		<ContextBridge />
-		<AppLoaderMounter />
-		<ShellView />
+		<SnackbarManager>
+			<ModalManager>
+				{IS_STANDALONE && (
+					<Switch>
+						<Route path={'/:route'}>
+							<StandaloneListener />
+						</Route>
+					</Switch>
+				)}
+				<DefaultViewsRegister />
+				<NotificationPermissionChecker />
+				<ContextBridge />
+				<AppLoaderMounter />
+				<ShellView />
+			</ModalManager>
+		</SnackbarManager>
 	</BrowserRouter>
 );
 export default BootstrapperRouter;

@@ -6,22 +6,11 @@
 
 import React, { FC, useEffect } from 'react';
 import { SnackbarManager, ModalManager } from '@zextras/carbonio-design-system';
-import { useTranslation } from 'react-i18next';
 import { init } from './init';
 import { ThemeProvider } from './theme-provider';
 import BootstrapperRouter from './bootstrapper-router';
 import BootstrapperContextProvider from './bootstrapper-provider';
 import { unloadAllApps } from './app/load-apps';
-import { registerDefaultViews } from './app/default-views';
-import { NotificationPermissionChecker } from '../notification/NotificationPermissionChecker';
-
-const DefaultViewsRegister: FC = () => {
-	const [t] = useTranslation();
-	useEffect(() => {
-		registerDefaultViews(t);
-	}, [t]);
-	return null;
-};
 
 const Bootstrapper: FC = () => {
 	useEffect(() => {
@@ -32,15 +21,9 @@ const Bootstrapper: FC = () => {
 	}, []);
 	return (
 		<ThemeProvider>
-			<SnackbarManager>
-				<ModalManager>
-					<BootstrapperContextProvider>
-						<DefaultViewsRegister />
-						<NotificationPermissionChecker />
-						<BootstrapperRouter />
-					</BootstrapperContextProvider>
-				</ModalManager>
-			</SnackbarManager>
+			<BootstrapperContextProvider>
+				<BootstrapperRouter />
+			</BootstrapperContextProvider>
 		</ThemeProvider>
 	);
 };

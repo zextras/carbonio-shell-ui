@@ -68,25 +68,6 @@ const ResultsHeader: FC<{ label: string; labelType?: ResultLabelType }> = ({
 		);
 	}, [labelType]);
 
-	// let labelTypeElem: ReactElement | undefined;
-	// if (labelType !== ResultLabelType.NORMAL) {
-	// 	let icon = '';
-	// 	let color = '';
-	// 	if (labelType === ResultLabelType.WARNING) {
-	// 		icon = 'AlertTriangle';
-	// 		color = 'warning';
-	// 	} else if (labelType === ResultLabelType.ERROR) {
-	// 		icon = 'CloseSquare';
-	// 		color = 'error';
-	// 	}
-	//
-	// 	labelTypeElem = (
-	// 		<Padding right="small">
-	// 			<Icon icon={icon} size="large" color={color} />
-	// 		</Padding>
-	// 	);
-	// }
-
 	return (
 		<>
 			<Container

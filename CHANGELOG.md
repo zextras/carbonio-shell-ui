@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.37](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.36...v0.4.37) (2022-09-28)
+
+
+### Features
+
+* code and UI alignment to the design system's new version ([#94](https://github.com/zextras/carbonio-shell-ui/issues/94)) ([da1e62d](https://github.com/zextras/carbonio-shell-ui/commit/da1e62d29f8d4149baf56e31371425143e24e046))
+
+
+### Bug Fixes
+
+* providing modal manager and snackbar manager to shell routes ([46be7f6](https://github.com/zextras/carbonio-shell-ui/commit/46be7f64432f00f83e03df62a8c4a514a82b9503))
+* using same modal and snackbar manager for apps and boards ([#132](https://github.com/zextras/carbonio-shell-ui/issues/132)) ([4715f80](https://github.com/zextras/carbonio-shell-ui/commit/4715f800f8ac6cf85ff6ff6bb1e198e6179a9f4d))
+
 ### [0.4.36](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.35...v0.4.36) (2022-09-15)
 
 ### [0.4.35](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.34...v0.4.35) (2022-09-14)

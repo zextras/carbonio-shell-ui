@@ -1,10 +1,6 @@
 {
-    "changelog": {
-        "title": "Log wijzigen"
-    },
     "login": {
-        "username": "Gebruikersnaam",
-        "verify_caps_lock": "Controleer of CAPS LOCK niet aan staat, en typ dan de huidige gebruikersnaam en wachtwoord opnieuw"
+        "username": "Gebruikersnaam"
     },
     "new": "Nieuw",
     "search": {
@@ -77,9 +73,6 @@
                 "include_search_in_trash_folder": "Prullenmand opnemen in zoekopdrachten"
             }
         }
-    },
-    "logout_modal": {
-        "warning": "Je zult uitgelogd worden"
     },
     "message": {
         "snackbar": {
@@ -218,30 +211,20 @@
         "turkish": "Turks",
         "label_french": "Frans - {{value}}",
         "french": "Frans",
-        "vietnamese": "Vietnamees"
+        "vietnamese": "Vietnamees",
+        "polish": "Pools"
     },
     "timezone": {
-        "chennai_kolkata_mumbai_new_delhi": "{{value}} Chennai, Kolkata, Mumbai, New Delhi",
         "kabul": "{{value}} Kaboel",
-        "vladivostok_magadan": "{{value}} vladivostok_magadan_rtz_9",
         "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Anadyr, Petropavlovsk-Kamchatsky (RTZ 11)",
-        "atlantic_time_canada": "{{value}} Atlantische Tijd (Canada)",
         "beijing_chongqing_hong_kong_urumqi": "{{value}} Beijing, Chongqing, Hong Kong, Urumqi",
-        "cape_verde_is": "{{value}} Kaapverdische Eilanden.",
         "central_america": "{{value}} Midden-Amerika",
-        "christmas_island": "{{value}} Christmas Island",
         "darwin": "{{value}} Darwin",
-        "eucla": "{{value}} Eucla",
         "greenland": "{{value}} Groenland",
-        "iraq": "{{value}} Irak",
         "jordan": "{{value}} Jordanië",
-        "krasnoyarsk_rtz_6": "{{value}} Krasnoyarsk (RTZ 6)",
         "mid_atlantic": "{{value}} Mid-Atlantic",
-        "nairobi": "{{value}} Nairobi",
         "pacific_south_america": "{{value}} Stille Oceaan Zuid-Amerika",
-        "sarajevo_skopje_warsaw_zagreb": "{{value}} Sarajevo, Skopje, Warschau, Zagreb",
         "us_canada_central": "{{value}} VS/Centraal Canada",
-        "west_central_africa": "{{value}} West Centraal Afrika",
         "africa_algiers": "{{value}} West Centraal Afrika",
         "africa_cairo": "{{value}} Egypte",
         "africa_casablanca": "{{value}} Casablanca",

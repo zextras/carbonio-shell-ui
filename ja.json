@@ -58,9 +58,6 @@
         "accounts": "アカウント",
         "choose": "選択してください"
     },
-    "login": {
-        "verify_caps_lock": "Caps Lockが有効になっていないことを確認してから、現在のユーザー名とパスワードを再入力してください"
-    },
     "new": "新規",
     "search": {
         "app": "検索する",
@@ -215,15 +212,10 @@
         "polish": "ポーランド語"
     },
     "timezone": {
-        "sri_jayawardenepura_kotte": "{{value}}スリ・ジャヤワルダナプラ・コッテ",
         "asuncion": "{{value}}アスンシオン",
-        "beirut": "{{value}}ベイルート",
         "central_america": "{{value}}中央アメリカ",
-        "damascus": "{{value}}ダマスカス",
         "greenland": "{{value}}グリーンランド",
-        "jordan": "{{value}}ヨルダン",
         "manaus": "{{value}}マナウス",
-        "port_louis": "{{value}}ポートルイス",
         "us_canada_eastern": "{{value}}アメリカ/カナダ東部",
         "africa_algiers": "{{value}}西中央アフリカ",
         "africa_cairo": "{{value}}エジプト",

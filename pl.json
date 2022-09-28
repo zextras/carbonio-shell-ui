@@ -205,11 +205,8 @@
     },
     "new_tab": "Nowa Karta",
     "timezone": {
-        "harare_pretoria": "{{value}} Harare, Pretoria",
         "beirut": "{{value}} Bejrut",
-        "egypt": "{{value}} Egipt",
         "monrovia": "{{value}} Monrovia",
-        "us_canada_central": "{{value}} USA/Centralna Kanada",
         "africa_algiers": "{{value}} Zachodnio-środkowa Afryka",
         "africa_cairo": "{{value}} Egipt",
         "africa_casablanca": "{{value}} Casablanca",

@@ -1,7 +1,4 @@
 {
-    "login": {
-        "password": "Parola"
-    },
     "logout_modal": {
         "warning": "Oturumunuz kapatılacak"
     },
@@ -226,15 +223,10 @@
         "polish": "Polish"
     },
     "timezone": {
-        "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Anadyr, Petropavlovsk-Kamchatsky (RTZ 11)",
         "baku": "{{value}} Baku",
-        "casablanca": "{{value}} Casablanca",
         "coordinated_universal_time": "{{value}} Coordinated Universal Time",
-        "eucla": "{{value}} Eucla",
         "helsinki_kyiv_riga_sofia_tallinn_vilnius": "{{value}} Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius",
-        "kaliningrad_rtz_1": "{{value}} Kaliningrad (RTZ 1)",
         "mid_atlantic": "{{value}} Mid-Atlantic",
-        "nuku_alofa": "{{value}} Nuku’alofa",
         "tehran": "{{value}} Tehran",
         "africa_cairo": "{{value}} Egypt",
         "africa_casablanca": "{{value}} Casablanca",

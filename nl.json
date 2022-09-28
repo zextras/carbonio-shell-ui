@@ -1,7 +1,4 @@
 {
-    "login": {
-        "username": "Gebruikersnaam"
-    },
     "new": "Nieuw",
     "search": {
         "app": "Zoeken",
@@ -215,15 +212,10 @@
         "polish": "Pools"
     },
     "timezone": {
-        "kabul": "{{value}} Kaboel",
         "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Anadyr, Petropavlovsk-Kamchatsky (RTZ 11)",
-        "beijing_chongqing_hong_kong_urumqi": "{{value}} Beijing, Chongqing, Hong Kong, Urumqi",
         "central_america": "{{value}} Midden-Amerika",
-        "darwin": "{{value}} Darwin",
         "greenland": "{{value}} Groenland",
-        "jordan": "{{value}} Jordanië",
         "mid_atlantic": "{{value}} Mid-Atlantic",
-        "pacific_south_america": "{{value}} Stille Oceaan Zuid-Amerika",
         "us_canada_central": "{{value}} VS/Centraal Canada",
         "africa_algiers": "{{value}} West Centraal Afrika",
         "africa_cairo": "{{value}} Egypte",

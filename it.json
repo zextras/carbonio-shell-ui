@@ -1,15 +1,9 @@
 {
-    "login": {
-        "incorrect": "Nome utente o password sono errati"
-    },
     "logout_modal": {
         "confirm": "Disconnettimi"
     },
     "new": "Nuovo",
     "new_tab": "Nuova tab",
-    "supported_browsers": {
-        "yandex": "Yandex"
-    },
     "settings": {
         "button": {
             "primary": "Salva",
@@ -229,15 +223,10 @@
         "polish": "Polacco"
     },
     "timezone": {
-        "azores": "{{value}} Azzoree",
         "cape_verde_is": "{{value}} Capo Verde.",
-        "coordinated_universal_time": "{{value}} Tempo Coordinato Universale",
         "gmt_02": "{{value}} GMT-02",
-        "iraq": "{{value}} Iraq",
         "la_paz": "{{value}} La Paz",
-        "namibia": "{{value}} Namibia",
         "sri_jayawardenepura_kotte": "{{value}} Sri Jayawardenepura Kotte",
-        "yangon": "{{value}} Yangon",
         "egypt": "{{value}} Egitto",
         "africa_juba": "{{value}} Juba",
         "africa_khartoum": "{{value}} Khartoum",

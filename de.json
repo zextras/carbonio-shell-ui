@@ -1,7 +1,4 @@
 {
-    "login": {
-        "username": "Benutzername"
-    },
     "new": "Neu",
     "search": {
         "app": "Suchen",
@@ -181,15 +178,10 @@
         "unsaved_changes": "Sie haben ungespeicherte Änderungen"
     },
     "timezone": {
-        "kuwait_riyadh": "{{value}} Kuwait, Riyadh",
         "asuncion": "{{value}} Asuncion",
-        "brasilia": "{{value}} Brasilia",
         "chita": "{{value}} Tschita",
-        "dhaka": "{{value}} Dhaka",
         "helsinki_kyiv_riga_sofia_tallinn_vilnius": "{{value}} Helsinki, Kiew, Riga, Sofia, Tallinn, Vilnius",
-        "kathmandu": "{{value}} Katmandu",
         "monrovia": "{{value}} Monrovia",
-        "pyongyang": "{{value}} Pjöngjang",
         "us_canada_mountain": "{{value}} US/Kanada Mountain",
         "america_anchorage": "{{value}} Alaska",
         "america_argentina_buenos_aires": "{{value}} Argentinien",

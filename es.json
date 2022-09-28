@@ -1,7 +1,4 @@
 {
-    "changelog": {
-        "title": "Registro de cambios"
-    },
     "search": {
         "module": "Módulo",
         "app": "Búsqueda",
@@ -74,7 +71,6 @@
         }
     },
     "login": {
-        "username": "Nombre de usuario",
         "verify_caps_lock": "Comprueba que BLOQUEAR MAYÚSCULAS no esté activado, luego vuelve a introducir el nombre de usuario y la contraseña actuales"
     },
     "new": "Nuevo",
@@ -185,27 +181,16 @@
         "update_view": "Actualizar vista"
     },
     "timezone": {
-        "abu_dhabi_muscat": "{{value}} Abu Dabi, Mascate",
         "coordinated_universal_time": "{{value}} Tiempo universal coordinado",
-        "sarajevo_skopje_warsaw_zagreb": "{{value}} Sarajevo, Skopje, Varsovia, Zagreb",
         "argentina": "{{value}} Argentina",
-        "azores": "{{value}} Azores",
         "beirut": "{{value}} Beirut",
-        "brussels_copenhagen_madrid_paris ": "{{value}} Bruselas, Copenhague, Madrid, París",
         "central_america": "{{value}} América Central",
-        "christmas_island": "{{value}} Isla de Navidad",
         "darwin": "{{value}} Darwin",
-        "ekaterinburg_rtz_4": "{{value}} Ekaterimburgo (RTZ 4)",
         "harare_pretoria": "{{value}} Harare, Pretoria",
-        "irkutsk_rtz_7": "{{value}} Irkutsk (RTZ 7)",
         "kabul": "{{value}} Kabul",
-        "krasnoyarsk_rtz_6": "{{value}} Krasnoyarsk (RTZ 6)",
         "manaus": "{{value}} Manaos",
-        "moscow_st_petersburg_volgograd_rtz_2": "{{value}} Moscú, San Petersburgo, Volgogrado (RTZ 2)",
         "pacific_south_america": "{{value}} Pacífico América del Sur",
-        "saskatchewan": "{{value}} Saskatchewan",
         "us_canada_central": "{{value}} US/Canada Central",
-        "west_central_africa": "{{value}} África Centro-Occidental",
         "africa_cairo": "{{value}} Egipto",
         "africa_casablanca": "{{value}} Casablanca",
         "africa_harare": "{{value}} Harare, Pretoria",

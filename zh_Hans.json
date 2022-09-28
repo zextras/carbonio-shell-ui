@@ -58,9 +58,6 @@
             }
         }
     },
-    "login": {
-        "verify_caps_lock": "检查大写锁定处于关闭状态，然后重新键入当前的用户名和密码"
-    },
     "new": "新建",
     "search": {
         "app": "搜索",
@@ -215,15 +212,10 @@
         "polish": "波兰语"
     },
     "timezone": {
-        "atlantic_time_canada": "{{value}} 大西洋时间（加拿大）",
         "brasilia": "{{value}} 巴西利亚",
-        "chennai_kolkata_mumbai_new_delhi": "{{value}} 金奈、加尔各答、孟买、新德里",
         "dateline": "{{value}} 日期线",
-        "greenland": "{{value}} 格陵兰",
         "jerusalem": "{{value}} 耶路撒冷",
-        "la_paz": "{{value}} 拉巴斯",
         "nairobi": "{{value}} 内罗毕",
-        "vladivostok_magadan": "{{value}} 海参崴、马加丹（RTZ 9）",
         "saskatchewan": "{{value}} 萨斯喀彻温",
         "pacific_honolulu": "{{value}} 夏威夷",
         "pacific_midway": "{{value}} 萨摩亚",

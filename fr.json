@@ -166,15 +166,10 @@
         "error": "Quelque chose s'est mal passé, veuillez recommencer"
     },
     "timezone": {
-        "atlantic_time_canada": "{{value}} Heure de l'Atlantique (Canada)",
         "britain_ireland_portugal": "{{value}} Grande-Bretagne, Irlande, Portugal",
-        "chita": "{{value}} Tchita",
         "egypt": "{{value}} Egypte",
-        "hawaii": "{{value}} Hawaii",
         "kabul": "{{value}} Kabul",
-        "manaus": "{{value}} Manaus",
         "pacific_south_america": "{{value}} Pacifique Amérique du Sud",
-        "tehran": "{{value}} Téhéran",
         "beijing_chongqing_hong_kong_urumqi": "{{value}} Pékin, Chongqing, Hong Kong, Urumqi",
         "africa_cairo": "{{value}} Égypte",
         "africa_harare": "{{value}} Harare, Pretoria",

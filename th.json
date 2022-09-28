@@ -58,12 +58,8 @@
             }
         }
     },
-    "changelog": {
-        "title": "เปลี่ยนบันทึก"
-    },
     "login": {
-        "username": "ชื่อผู้ใช้",
-        "verify_caps_lock": "ตรวจสอบว่า CAPS LOCK ไม่ได้เปิดอยู่ จากนั้นพิมพ์ชื่อผู้ใช้และรหัสผ่านปัจจุบันอีกครั้ง"
+        "username": "ชื่อผู้ใช้"
     },
     "new": "ใหม่",
     "search": {
@@ -226,27 +222,16 @@
         "vietnamese": "ภาษาเวียดนาม"
     },
     "timezone": {
-        "arizona": "{{value}} แอริโซนา",
         "baja_california": "{{value}} บาจาแคลิฟอร์เนีย",
-        "brasilia": "{{value}} บราซิเลีย",
         "caracas": "{{value}} การากัส",
-        "chita": "{{value}} ชิตา",
         "cuiaba": "{{value}} กูยาบา",
-        "egypt": "{{value}} อียิปต์",
         "gmt_11": "{{value}} GMT-11",
-        "indiana_east": "{{value}} อินดีแอนา (ตะวันออก)",
         "jerusalem": "{{value}} เยรูซาเลม",
-        "korea": "{{value}} เกาหลี",
         "magadan": "{{value}} มากาดาน",
-        "nairobi": "{{value}} ไนโรบี",
         "pacific_south_america": "{{value}} แปซิฟิก อเมริกาใต้",
-        "sarajevo_skopje_warsaw_zagreb": "{{value}} ซาราเยโว, สโกเปีย, วอร์ซอ, ซาเกร็บ",
         "tehran": "{{value}} เตหะราน",
-        "us_canada_pacific": "{{value}} สหรัฐอเมริกา/แคนาดา แปซิฟิก",
         "yerevan": "{{value}} เยเรวาน",
-        "beijing_chongqing_hong_kong_urumqi": "{{value}} ปักกิ่ง, ฉงชิ่ง, ฮ่องกง, อุรุมชี",
         "dateline": "{{value}} วันที่",
-        "kaliningrad_rtz_1": "{{value}} คาลินินกราด (RTZ 1)",
         "africa_algiers": "{{value}} แอฟริกากลางตะวันตก",
         "africa_cairo": "{{value}} อียิปต์",
         "america_asuncion": "{{value}} อาซุนซิออง",

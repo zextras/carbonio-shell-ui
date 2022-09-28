@@ -1,7 +1,4 @@
 {
-    "login": {
-        "username": "यूज़रनेम"
-    },
     "new": "नया",
     "search": {
         "app": "सर्च करें",
@@ -223,15 +220,10 @@
         "polish": "पोलिश"
     },
     "timezone": {
-        "ekaterinburg_rtz_4": "{{value}} इकाटेरिनबर्ग (RTZ 4)",
         "vladivostok_magadan": "{{value}} व्लादिवोस्तोक_मागादान_rtz_9",
-        "azores": "{{value}} अज़ोरेस",
         "caracas": "{{value}} काराकास",
-        "cuiaba": "{{value}} कुयाबा",
         "gmt_11": "{{value}} जीएमटी -11",
-        "kabul": "{{value}} काबुल",
         "magadan": "{{value}} मागाडान",
-        "newfoundland": "{{value}} न्यूफाउंडलैंड",
         "tehran": "{{value}} तेहरान",
         "africa_algiers": "{{value}} पश्चिमी मध्य अफ्रीका",
         "africa_monrovia": "{{value}} मोनरोविया",

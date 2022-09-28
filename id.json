@@ -1,10 +1,6 @@
 {
-    "changelog": {
-        "title": "Ubah Log"
-    },
     "login": {
-        "username": "Nama Pengguna",
-        "verify_caps_lock": "Pastikan CAPS LOCK mati, lalu ketik ulang nama pengguna dan kata sandi"
+        "username": "Nama Pengguna"
     },
     "search": {
         "module": "Modul",
@@ -218,27 +214,16 @@
         "vietnamese": "Vietnam"
     },
     "timezone": {
-        "georgetown_la_paz_manaus_san_juan": "{{value}} Georgetown, La Paz, Manaus, San Juan",
         "west_central_africa": "{{value}} Afrika Tengah Barat",
-        "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Anadyr, Petropavlovsk-Kamchatsky (RTZ 11)",
         "athens_beirut_bucharest_istanbul": "{{value}} Athena, Beirut, Bukares, Istanbul",
-        "bangkok_hanoi_jakarta": "{{value}} Bangkok, Hanoi, Jakarta",
         "britain_ireland_portugal": "{{value}} Britain, Ireland, Portugal",
-        "cayenne_fortaleza": "{{value}} Cayenne, Fortaleza",
         "chita": "{{value}} Chita",
-        "damascus": "{{value}} Damaskus",
         "egypt": "{{value}} Mesir",
-        "gmt_11": "{{value}} GMT-11",
         "hawaii": "{{value}} Hawaii",
-        "istanbul": "{{value}} Istanbul",
         "kaliningrad_rtz_1": "{{value}} Kaliningrad (RTZ 1)",
-        "kuwait_riyadh": "{{value}} Kuwait, Riyadh",
         "mid_atlantic": "{{value}} Atlantik Tengah",
-        "nairobi": "{{value}} Nairobi",
         "port_louis": "{{value}} Port Louis",
-        "sri_jayawardenepura_kotte": "{{value}} Sri Jayawardenepura Kotte",
         "us_canada_mountain": "{{value}} AS/Kanada Pegunungan",
-        "yerevan": "{{value}} Yerevan",
         "america_cayenne": "{{value}} Cayenne, Fortaleza",
         "america_regina": "{{value}} Saskatchewan",
         "america_santiago": "{{value}} Amerika Selatan Pasifik",

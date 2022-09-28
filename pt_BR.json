@@ -1,7 +1,4 @@
 {
-    "changelog": {
-        "title": "Registro de Alterações"
-    },
     "settings": {
         "app": "Configurações",
         "button": {
@@ -62,7 +59,6 @@
         }
     },
     "login": {
-        "username": "Nome de usuário",
         "verify_caps_lock": "Verifique se o CAPS LOCK não está ativado e digite novamente o nome do usuário e a senha"
     },
     "new": "Nova",
@@ -185,27 +181,16 @@
         "when_replying": "Ao responder ou encaminhar mensagens enviadas para:"
     },
     "timezone": {
-        "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}} Amsterdã, Berlim, Berna, Roma, Estocolmo, Viena",
         "athens_beirut_bucharest_istanbul": "{{value}} Atenas, Beirute, Bucareste, Istambul",
-        "baku": "{{value}} Bacu",
         "brasilia": "{{value}} Brasília",
-        "caracas": "{{value}} Caracas",
         "chita": "{{value}} Tchita",
-        "damascus": "{{value}} Damasco",
         "egypt": "{{value}} Egito",
-        "gmt_11": "{{value}} GMT-11",
         "hawaii": "{{value}} Havaí",
-        "istanbul": "{{value}} Istambul",
         "kaliningrad_rtz_1": "{{value}} Kaliningrado (RTZ 1)",
-        "magadan": "{{value}} Magadan",
         "monrovia": "{{value}} Monróvia",
-        "newfoundland": "{{value}} Terra Nova",
         "pyongyang": "{{value}} Pyongyang",
-        "tbilisi": "{{value}} Tbilisi",
         "us_canada_pacific": "{{value}} EUA/Canadá Pacífico",
-        "yerevan": "{{value}} Erevã",
         "cayenne_fortaleza": "{{value}} Caiena, Fortaleza",
-        "korea": "{{value}} Coréia",
         "africa_algiers": "{{value}} África Central Ocidental",
         "africa_cairo": "{{value}} Egito",
         "africa_casablanca": "{{value}} Casablanca",

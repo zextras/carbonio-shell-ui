@@ -1,10 +1,6 @@
 {
-    "changelog": {
-        "title": "Änderungsprotokoll"
-    },
     "login": {
-        "username": "Benutzername",
-        "verify_caps_lock": "Überprüfen Sie, dass die FESTSTELLTASTE nicht eingestellt ist, und geben Sie den aktuellen Benutzernamen und das Passwort erneut ein"
+        "username": "Benutzername"
     },
     "new": "Neu",
     "search": {
@@ -185,27 +181,16 @@
         "unsaved_changes": "Sie haben ungespeicherte Änderungen"
     },
     "timezone": {
-        "chihuahua_la_paz_mazatlan": "{{value}} Chihuahua, La Paz, Mazatlan",
         "kuwait_riyadh": "{{value}} Kuwait, Riyadh",
-        "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}} Amsterdam, Berlin, Bern, Rom, Stockholm, Wien",
         "asuncion": "{{value}} Asuncion",
-        "baku": "{{value}} Baku",
         "brasilia": "{{value}} Brasilia",
-        "casablanca": "{{value}} Casablanca",
         "chita": "{{value}} Tschita",
-        "cuiaba": "{{value}} Cuiaba",
         "dhaka": "{{value}} Dhaka",
-        "gmt_11": "{{value}} GMT-11",
         "helsinki_kyiv_riga_sofia_tallinn_vilnius": "{{value}} Helsinki, Kiew, Riga, Sofia, Tallinn, Vilnius",
-        "istanbul": "{{value}} Istanbul",
         "kathmandu": "{{value}} Katmandu",
-        "magadan": "{{value}} Magadan",
         "monrovia": "{{value}} Monrovia",
-        "newfoundland": "{{value}} Neufundland",
         "pyongyang": "{{value}} Pjöngjang",
-        "tbilisi": "{{value}} Tiflis",
         "us_canada_mountain": "{{value}} US/Kanada Mountain",
-        "yangon": "{{value}} Yangon",
         "america_anchorage": "{{value}} Alaska",
         "america_argentina_buenos_aires": "{{value}} Argentinien",
         "america_bogota": "{{value}} Kolumbien",
@@ -383,7 +368,8 @@
         "label_turkish": "Türkisch - {{value}}",
         "french": "Französisch",
         "label_french": "Französisch - {{value}}",
-        "vietnamese": "Vietnamesisch"
+        "vietnamese": "Vietnamesisch",
+        "polish": "Polnisch"
     },
     "feedback": {
         "other": "Andere",

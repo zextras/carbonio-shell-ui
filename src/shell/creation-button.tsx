@@ -5,7 +5,7 @@
  */
 
 import React, { FC, useCallback, useMemo, useState } from 'react';
-import { reduce, groupBy } from 'lodash';
+import { reduce, groupBy, noop } from 'lodash';
 import { MultiButton, Button, Dropdown } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
@@ -43,7 +43,7 @@ export const CreationButtonComponent: FC<{ activeRoute: AppRoute; location: Loca
 				}
 				return acc;
 			},
-			[] as Array<Action | { type: string; id: string }>
+			[] as Array<Action | { type: 'divider'; id: string; label: string }>
 		)
 	];
 
@@ -55,21 +55,22 @@ export const CreationButtonComponent: FC<{ activeRoute: AppRoute; location: Loca
 	}, []);
 	return primaryAction ? (
 		<MultiButton
-			style={{ height: '42px' }}
+			size="extralarge"
 			background="primary"
 			label={primaryAction?.label ?? t('new', 'New')}
 			onClick={primaryAction?.click}
 			items={secondaryActions}
-			disabled={!primaryAction || primaryAction?.disabled}
+			disabledPrimary={!primaryAction || primaryAction?.disabled}
+			disabledSecondary={!secondaryActions?.length}
 		/>
 	) : (
 		<Dropdown items={secondaryActions} onClose={onClose} onOpen={onOpen}>
 			<Button
-				style={{ height: '42px' }}
-				background="primary"
-				items={secondaryActions}
+				size="extralarge"
+				backgroundColor="primary"
 				label={t('new', 'New')}
 				icon={open ? 'ChevronUp' : 'ChevronDown'}
+				onClick={noop}
 			/>
 		</Dropdown>
 	);

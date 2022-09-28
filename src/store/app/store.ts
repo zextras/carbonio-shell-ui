@@ -6,7 +6,7 @@
 
 import produce from 'immer';
 import { filter, find, findIndex, merge, omit, reduce, sortBy, unionBy, unionWith } from 'lodash';
-import create, { StoreApi, UseBoundStore } from 'zustand';
+import create from 'zustand';
 import {
 	AppRouteDescriptor,
 	AppState,
@@ -327,4 +327,4 @@ export const useAppStore = create<AppState>((set, get) => ({
 			);
 		}
 	}
-})) as UseBoundStore<AppState, StoreApi<AppState>>;
+}));

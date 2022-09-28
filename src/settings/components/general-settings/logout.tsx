@@ -6,7 +6,7 @@
 
 import React, { FC, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormSubSection, Button } from '@zextras/carbonio-design-system';
+import { FormSubSection, ButtonOld as Button } from '@zextras/carbonio-design-system';
 import { logout } from '../../../network/logout';
 import { accountSubSection } from '../../general-settings-sub-sections';
 

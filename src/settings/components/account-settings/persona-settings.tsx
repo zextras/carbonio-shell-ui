@@ -66,7 +66,7 @@ const PersonaSettings = ({ t, items, updateIdentities }: PersonaSettingsProps): 
 			>
 				<Row orientation="vertical" mainAlignment="flex-start" width="fill">
 					<Row orientation="horizontal" width="100%" mainAlignment="flex-start">
-						<Text background="gray6" color="secondary" width="fill">
+						<Text color="secondary">
 							{t(
 								'label.use_personas_line1',
 								'Use personas to quickly change many settings when sending e-mail messages.'
@@ -74,7 +74,7 @@ const PersonaSettings = ({ t, items, updateIdentities }: PersonaSettingsProps): 
 						</Text>
 					</Row>
 					<Row orientation="horizontal" width="100%" mainAlignment="flex-start">
-						<Text background="gray6" color="secondary">
+						<Text color="secondary">
 							{t(
 								'label.use_personas_line2',
 								'For example, if you sometimes send e-mails in a particular role at work, create a persona for that.'
@@ -91,7 +91,7 @@ const PersonaSettings = ({ t, items, updateIdentities }: PersonaSettingsProps): 
 				mainAlignment="flex-start"
 			>
 				<Row takeAvailableSpace>
-					<Input label={personaLabel} value={personaValue} background="gray5" onChange={onChange} />
+					<Input label={personaLabel} value={personaValue} onChange={onChange} />
 				</Row>
 			</Row>
 

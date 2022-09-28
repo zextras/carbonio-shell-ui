@@ -4,11 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable import/no-duplicates */
-/* eslint-disable import/no-named-default */
 import { filter, map } from 'lodash';
-
-import StoreFactory from '../../redux/store-factory';
 
 import { loadApp, unloadApps } from './load-app';
 import { CarbonioModule } from '../../../types';
@@ -16,8 +12,9 @@ import { injectSharedLibraries } from './shared-libraries';
 import { getUserSetting } from '../../store/account';
 import { useReporter } from '../../reporting';
 import { SHELL_APP_ID } from '../../constants';
+import { addI18n } from '../../store/i18n';
 
-export function loadApps(storeFactory: StoreFactory, apps: Array<CarbonioModule>): void {
+export function loadApps(apps: Array<CarbonioModule>): void {
 	injectSharedLibraries();
 	const appsToLoad = filter(apps, (app) => {
 		if (app.name === SHELL_APP_ID) return false;
@@ -29,7 +26,8 @@ export function loadApps(storeFactory: StoreFactory, apps: Array<CarbonioModule>
 		'color: white; background: #2b73d2;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
 	);
 	useReporter.getState().setClients(appsToLoad);
-	Promise.allSettled(map(appsToLoad, (app) => loadApp(app, storeFactory)));
+	addI18n(appsToLoad);
+	Promise.allSettled(map(appsToLoad, (app) => loadApp(app)));
 }
 
 export function unloadAllApps(): Promise<void> {

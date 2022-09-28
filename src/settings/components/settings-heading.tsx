@@ -14,7 +14,7 @@ const Heading: FC<{ title: string }> = ({ title }) => (
 				{title}
 			</Text>
 		</Row>
-		<Padding veritcal="small" />
+		<Padding vertical="small" />
 	</>
 );
 

@@ -5,17 +5,23 @@
  */
 
 import { map } from 'lodash';
-import React, { FC, useCallback, useMemo } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { Container, Chip, Padding, Divider, Text, Button } from '@zextras/carbonio-design-system';
+import React, { FC, ReactElement, useCallback, useMemo } from 'react';
+import {
+	Button,
+	Chip,
+	Container,
+	Divider,
+	Icon,
+	Padding,
+	Text
+} from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+import { Redirect, Route, Switch } from 'react-router-dom';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { useSearchStore } from './search-store';
-import { SEARCH_APP_ID } from '../constants';
+import { QueryChip, ResultLabelType } from '../../types';
 import { useAppStore } from '../store/app';
-import { QueryChip } from '../../types';
+import { SEARCH_APP_ID } from '../constants';
 // import { RouteLeavingGuard } from '../ui-extras/nav-guard';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -25,15 +31,43 @@ const useQuery = (): [Array<QueryChip>, Function] =>
 const useDisableSearch = (): [boolean, Function] =>
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	useSearchStore((s) => [s.searchDisabled, s.setSearchDisabled]);
-const ResultsHeader: FC<{ label: string }> = ({ label }) => {
+
+const getIconAndColor = (labelType: ResultLabelType): Array<string> => {
+	if (labelType === ResultLabelType.WARNING) {
+		return ['AlertTriangle', 'warning'];
+	}
+	if (labelType === ResultLabelType.ERROR) {
+		return ['CloseSquare', 'error'];
+	}
+	return ['', ''];
+};
+
+const ResultsHeader: FC<{ label: string; labelType?: ResultLabelType }> = ({
+	label,
+	labelType = ResultLabelType.NORMAL
+}) => {
 	const [t] = useTranslation();
 	const [query, updateQuery] = useQuery();
-	const [disabled, setDisabled] = useDisableSearch();
+	const [, setDisabled] = useDisableSearch();
 
 	const resetQuery = useCallback(() => {
 		updateQuery([]);
 		setDisabled(false);
 	}, [updateQuery, setDisabled]);
+
+	const labelTypeElem = useMemo<ReactElement | undefined>(() => {
+		if (labelType === ResultLabelType.NORMAL) {
+			return <></>;
+		}
+
+		const [icon, color] = getIconAndColor(labelType);
+		return (
+			<Padding right="small">
+				<Icon icon={icon} size="large" color={color} />
+			</Padding>
+		);
+	}, [labelType]);
+
 	return (
 		<>
 			<Container
@@ -48,6 +82,7 @@ const ResultsHeader: FC<{ label: string }> = ({ label }) => {
 				padding={{ horizontal: 'large', vertical: 'medium' }}
 			>
 				<Container width="85%" orientation="horizontal" wrap="wrap" mainAlignment="flex-start">
+					{labelTypeElem}
 					<Text color="secondary">{label}</Text>
 
 					{map(query, (q, i) => (
@@ -62,7 +97,7 @@ const ResultsHeader: FC<{ label: string }> = ({ label }) => {
 							label={t('label.clear_search_query', 'CLEAR SEARCH')}
 							icon="CloseOutline"
 							color="primary"
-							size="large"
+							width="fill"
 							type="ghost"
 							onClick={resetQuery}
 						/>

@@ -4,11 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import create, { StoreApi, UseBoundStore } from 'zustand';
+import create from 'zustand';
 import { AccountState } from '../../../types';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 export const useAccountStore = create<AccountState>(() => ({
 	authenticated: false,
 	account: undefined,
@@ -20,4 +18,4 @@ export const useAccountStore = create<AccountState>(() => ({
 	},
 	usedQuota: 0,
 	lastNotificationTime: Date.now()
-})) as UseBoundStore<AccountState, StoreApi<AccountState>>;
+}));

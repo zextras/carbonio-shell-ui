@@ -11,7 +11,8 @@ import {
 	Modal,
 	Select,
 	Text,
-	Padding
+	Padding,
+	SelectItem
 } from '@zextras/carbonio-design-system';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -19,7 +20,7 @@ import momentLocalizer from 'react-widgets-moment';
 import { useTranslation } from 'react-i18next';
 import { find } from 'lodash';
 import { AccountSettings } from '../../types';
-import { localeList, timeZoneList } from './components/utils';
+import { LocaleDescriptor, localeList, timeZoneList } from './components/utils';
 import { timezoneAndLanguageSubSection } from './general-settings-sub-sections';
 
 momentLocalizer();
@@ -41,20 +42,17 @@ const LanguageAndTimeZone: FC<{
 		[addMod]
 	);
 
-	const defaultSelection = useMemo(
-		() =>
-			settings.prefs.zimbraPrefLocale && find(locales, { id: settings.prefs.zimbraPrefLocale })
-				? find(locales, { id: settings.prefs.zimbraPrefLocale })
-				: find(locales, { id: 'en' }),
-		[locales, settings.prefs.zimbraPrefLocale]
-	);
+	const defaultLocale = useMemo(() => {
+		const localeId = (settings.prefs.zimbraPrefLocale as string) ?? 'en';
+		const locale = find(locales, { id: localeId });
+		return locale ?? find(locales, { id: 'en' });
+	}, [locales, settings.prefs.zimbraPrefLocale]);
 
-	const defaultTimeZone = useMemo(
-		() =>
-			find(timezones, { value: settings.prefs.zimbraPrefTimeZoneId }) ??
-			find(timezones, { value: 'UTC' }),
-		[timezones, settings.prefs.zimbraPrefTimeZoneId]
-	);
+	const defaultTimeZone = useMemo(() => {
+		const timeZoneId = (settings.prefs.zimbraPrefTimeZoneId as string) ?? 'UTC';
+		const timezone = find(timezones, { value: timeZoneId });
+		return timezone ?? find(timezones, { value: 'UTC' });
+	}, [timezones, settings.prefs.zimbraPrefTimeZoneId]);
 
 	const sectionTitle = useMemo(() => timezoneAndLanguageSubSection(t), [t]);
 	return (
@@ -74,7 +72,7 @@ const LanguageAndTimeZone: FC<{
 							if (value && value !== settings.prefs.zimbraPrefLocale)
 								updatePrefs(value, 'zimbraPrefLocale');
 						}}
-						selection={defaultSelection}
+						defaultSelection={defaultLocale}
 						showCheckbox={false}
 						dropdownMaxHeight="200px"
 						selectedBackgroundColor="highlight"

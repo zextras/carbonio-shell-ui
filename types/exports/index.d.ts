@@ -123,6 +123,7 @@ export const soapFetch: SoapFetch;
 export const xmlSoapFetch: SoapFetch;
 export const report: (error: Error, hint?: unknown) => void;
 export const setAppContext: <T>(obj: T) => void;
+export class SoapException {}
 
 export const removeActions: (...ids: Array<string>) => void;
 export const registerActions: (

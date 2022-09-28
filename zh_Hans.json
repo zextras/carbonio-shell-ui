@@ -1,7 +1,4 @@
 {
-    "changelog": {
-        "title": "更改日志"
-    },
     "settings": {
         "app": "设置",
         "button": {
@@ -62,7 +59,6 @@
         }
     },
     "login": {
-        "username": "用户名",
         "verify_caps_lock": "检查大写锁定处于关闭状态，然后重新键入当前的用户名和密码"
     },
     "new": "新建",
@@ -215,30 +211,20 @@
         "turkish": "土耳其语",
         "label_french": "法语 - {{value}}",
         "french": "法语",
-        "vietnamese": "越南语"
+        "vietnamese": "越南语",
+        "polish": "波兰语"
     },
     "timezone": {
-        "argentina": "{{value}} 阿根廷",
         "atlantic_time_canada": "{{value}} 大西洋时间（加拿大）",
-        "bangkok_hanoi_jakarta": "{{value}} 曼谷、河内、雅加达",
         "brasilia": "{{value}} 巴西利亚",
-        "caracas": "{{value}} 加拉加斯",
         "chennai_kolkata_mumbai_new_delhi": "{{value}} 金奈、加尔各答、孟买、新德里",
-        "colombia": "{{value}} 哥伦比亚",
         "dateline": "{{value}} 日期线",
-        "ekaterinburg_rtz_4": "{{value}} 叶卡捷琳堡（RTZ 4）",
         "greenland": "{{value}} 格陵兰",
-        "indiana_east": "{{value}} 印第安纳（东）",
         "jerusalem": "{{value}} 耶路撒冷",
-        "kathmandu": "{{value}} 加德满都",
         "la_paz": "{{value}} 拉巴斯",
-        "minsk": "{{value}} 明斯克",
         "nairobi": "{{value}} 内罗毕",
-        "pacific_south_america": "{{value}} 太平洋南美洲",
         "vladivostok_magadan": "{{value}} 海参崴、马加丹（RTZ 9）",
-        "abu_dhabi_muscat": "{{value}} 阿布扎比、马斯喀特",
         "saskatchewan": "{{value}} 萨斯喀彻温",
-        "us_canada_central": "{{value}} 美国/加拿大中部",
         "pacific_honolulu": "{{value}} 夏威夷",
         "pacific_midway": "{{value}} 萨摩亚",
         "pacific_tongatapu": "{{value}} 努库阿洛法",

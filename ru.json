@@ -59,9 +59,6 @@
         "choose": "Выбрать"
     },
     "new": "Новый",
-    "changelog": {
-        "remind-later": "Напомнить позже"
-    },
     "search": {
         "clear": "Очистить условия поиска",
         "idle_input_label": "Искать в {{module}}",
@@ -178,7 +175,8 @@
         "when_composing": "При создании, ответе или пересылке сообщения в папке (папках):",
         "when_replying": "При ответе или пересылке сообщений, отправленных по адресу:",
         "button": "Кнопка",
-        "click_to_copy": "Нажмите чтобы скопировать"
+        "click_to_copy": "Нажмите чтобы скопировать",
+        "folder_external_account": "Папка: Новая внешняя учетная запись"
     },
     "board": {
         "close_tab": "Закрыть вкладку",
@@ -186,7 +184,8 @@
         "enlarge": "Увеличить окно",
         "hide": "Спрятать окно",
         "reduce": "Уменьшить окно",
-        "show_tabs": "Показать другие вкладки"
+        "show_tabs": "Показать другие вкладки",
+        "open_app": "Открыть в приложении"
     },
     "locale": {
         "label_chinese": "Китайский-{{value}}",
@@ -223,11 +222,8 @@
         "polish": "Польский"
     },
     "timezone": {
-        "athens_beirut_bucharest_istanbul": "{{value}} Афины, Бейрут, Бухарест, Стамбул",
         "darwin": "{{value}} Дарвин",
-        "cayenne_fortaleza": "{{value}} Кайенна, Форталеза",
         "minsk": "{{value}} Минск",
-        "yangon": "{{value}} Янгон",
         "africa_algiers": "{{value}} Западная Центральная Африка",
         "africa_cairo": "{{value}} Египет",
         "africa_harare": "{{value}} Хараре, Претория",

@@ -81,7 +81,8 @@
         "when_composing": "Lorsque vous composez, répondez ou transférez des messages dans un ou plusieurs dossiers :",
         "when_replying": "Lorsque vous répondez ou transférez des messages envoyés à :",
         "persona": "Identité",
-        "persona_name": "Nom de l'identité"
+        "persona_name": "Nom de l'identité",
+        "folder_external_account": "Dossier : Nouveau Compte Externe"
     },
     "search": {
         "clear": "Effacer la saisie de recherche",
@@ -166,11 +167,8 @@
         "error": "Quelque chose s'est mal passé, veuillez recommencer"
     },
     "timezone": {
-        "britain_ireland_portugal": "{{value}} Grande-Bretagne, Irlande, Portugal",
         "egypt": "{{value}} Egypte",
-        "kabul": "{{value}} Kabul",
         "pacific_south_america": "{{value}} Pacifique Amérique du Sud",
-        "beijing_chongqing_hong_kong_urumqi": "{{value}} Pékin, Chongqing, Hong Kong, Urumqi",
         "africa_cairo": "{{value}} Égypte",
         "africa_harare": "{{value}} Harare, Pretoria",
         "africa_juba": "{{value}} Juba",
@@ -315,7 +313,8 @@
         "enlarge": "Agrandir le panneau",
         "hide": "Cacher le panneau",
         "reduce": "Réduire le panneau",
-        "show_tabs": "Montrer les autres onglets"
+        "show_tabs": "Montrer les autres onglets",
+        "open_app": "Ouvrir dans l'application"
     },
     "locale": {
         "English": "Anglais",

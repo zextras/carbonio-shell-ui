@@ -159,7 +159,8 @@
         "use_personas_line2": "Na przykład, jeśli wysyłasz e-maile pełniąc określoną rolę w pracy, stwórz pod to personę.",
         "when_composing": "Podczas tworzenia, odpowiadania na i przekazywania dalej wiadomości w folderze (folderach):",
         "button": "Przycisk",
-        "click_to_copy": "Kliknij, aby skopiować"
+        "click_to_copy": "Kliknij, aby skopiować",
+        "folder_external_account": "Folder: Nowe Konto spoza mojej domeny"
     },
     "board": {
         "close_tab": "Zamknij Kartę",
@@ -167,7 +168,8 @@
         "enlarge": "Powiększ tablicę",
         "hide": "Ukryj tablicę",
         "reduce": "Zmniejsz tablicę",
-        "show_tabs": "Pokaż inne karty"
+        "show_tabs": "Pokaż inne karty",
+        "open_app": "Otwórz w aplikacji"
     },
     "locale": {
         "italian": "Włoski",
@@ -205,7 +207,6 @@
     },
     "new_tab": "Nowa Karta",
     "timezone": {
-        "beirut": "{{value}} Bejrut",
         "monrovia": "{{value}} Monrovia",
         "africa_algiers": "{{value}} Zachodnio-środkowa Afryka",
         "africa_cairo": "{{value}} Egipt",

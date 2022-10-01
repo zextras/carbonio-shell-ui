@@ -175,7 +175,8 @@
         "address": "住所",
         "go_back": "戻る",
         "save": "保存する",
-        "secondary": "セカンダリー"
+        "secondary": "セカンダリー",
+        "folder_external_account": "フォルダ: 新しい外部アカウント"
     },
     "locale": {
         "label_turkish": "トルコ語- {{value}}",
@@ -212,11 +213,8 @@
         "polish": "ポーランド語"
     },
     "timezone": {
-        "asuncion": "{{value}}アスンシオン",
         "central_america": "{{value}}中央アメリカ",
-        "greenland": "{{value}}グリーンランド",
         "manaus": "{{value}}マナウス",
-        "us_canada_eastern": "{{value}}アメリカ/カナダ東部",
         "africa_algiers": "{{value}}西中央アフリカ",
         "africa_cairo": "{{value}}エジプト",
         "africa_casablanca": "{{value}}カサブランカ",
@@ -361,7 +359,8 @@
         "enlarge": "ボードを拡大する",
         "hide": "ボードを隠す",
         "reduce": "ボードを減らす",
-        "show_tabs": "他のタブを表示する"
+        "show_tabs": "他のタブを表示する",
+        "open_app": "アプリで開く"
     },
     "feedback": {
         "behaviors": "行動",

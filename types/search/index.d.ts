@@ -11,6 +11,7 @@ export type SearchState = {
 	query: Array<QueryChip>;
 	module?: string;
 	searchDisabled: boolean;
+	tooltip?: string;
 	setSearchDisabled: (searchDisabled: boolean) => void;
 	updateQuery: (query: Array<QueryChip> | ((q: Array<QueryChip>) => Array<QueryChip>)) => void;
 	updateModule: (module: string) => void;

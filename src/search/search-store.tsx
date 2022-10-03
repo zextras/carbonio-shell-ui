@@ -11,7 +11,9 @@ import { QueryChip, SearchState } from '../../types';
 export const useSearchStore = create<SearchState>((set, get) => ({
 	query: [],
 	searchDisabled: false,
-	setSearchDisabled: (searchDisabled: boolean): void => set({ searchDisabled }),
+	tooltip: undefined,
+	setSearchDisabled: (searchDisabled: boolean, tooltip?: string): void =>
+		set({ searchDisabled, tooltip }),
 	updateQuery: (query: Array<QueryChip> | ((q: Array<QueryChip>) => Array<QueryChip>)): void =>
 		set({ query: isFunction(query) ? query(get().query) : query }),
 	updateModule: (module: string): void => set({ module })

@@ -70,9 +70,6 @@
             }
         }
     },
-    "login": {
-        "verify_caps_lock": "Comprueba que BLOQUEAR MAYÚSCULAS no esté activado, luego vuelve a introducir el nombre de usuario y la contraseña actuales"
-    },
     "new": "Nuevo",
     "message": {
         "snackbar": {
@@ -178,18 +175,14 @@
         "test_settings": "Probar ajustes",
         "unsaved_changes": "Tienes cambios no guardados",
         "unsaved_changes_line2": "Todos tus cambios no guardados se perderán",
-        "update_view": "Actualizar vista"
+        "update_view": "Actualizar vista",
+        "folder_external_account": "Carpeta: Nueva cuenta externa"
     },
     "timezone": {
-        "coordinated_universal_time": "{{value}} Tiempo universal coordinado",
         "argentina": "{{value}} Argentina",
-        "beirut": "{{value}} Beirut",
         "central_america": "{{value}} América Central",
-        "darwin": "{{value}} Darwin",
         "harare_pretoria": "{{value}} Harare, Pretoria",
-        "kabul": "{{value}} Kabul",
         "manaus": "{{value}} Manaos",
-        "pacific_south_america": "{{value}} Pacífico América del Sur",
         "us_canada_central": "{{value}} US/Canada Central",
         "africa_cairo": "{{value}} Egipto",
         "africa_casablanca": "{{value}} Casablanca",
@@ -360,7 +353,8 @@
         "turkish": "Turco",
         "french": "Francés",
         "label_french": "Francés - {{value}}",
-        "vietnamese": "Vietnamita"
+        "vietnamese": "Vietnamita",
+        "polish": "Polaco"
     },
     "board": {
         "close_tab": "Cerrar pestaña",
@@ -368,7 +362,8 @@
         "enlarge": "Agrandar ventana",
         "hide": "Minimizar ventana",
         "reduce": "Reducir ventana",
-        "show_tabs": "Mostrar las otras ventanas de composición"
+        "show_tabs": "Mostrar las otras ventanas de composición",
+        "open_app": "Abrir en la aplicación"
     },
     "feedback": {
         "other": "Otro",

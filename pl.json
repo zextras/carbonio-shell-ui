@@ -166,8 +166,8 @@
         "close_tab": "Zamknij Kartę",
         "close_tabs": "Zamknij wszystkie karty",
         "enlarge": "Powiększ tablicę",
-        "hide": "Ukryj tablicę",
-        "reduce": "Zmniejsz tablicę",
+        "hide": "Ukryj okienko",
+        "reduce": "Zmniejsz okienko",
         "show_tabs": "Pokaż inne karty",
         "open_app": "Otwórz w aplikacji"
     },
@@ -207,7 +207,6 @@
     },
     "new_tab": "Nowa Karta",
     "timezone": {
-        "monrovia": "{{value}} Monrovia",
         "africa_algiers": "{{value}} Zachodnio-środkowa Afryka",
         "africa_cairo": "{{value}} Egipt",
         "africa_casablanca": "{{value}} Casablanca",

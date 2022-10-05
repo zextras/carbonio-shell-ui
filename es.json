@@ -2,11 +2,11 @@
     "search": {
         "module": "Módulo",
         "app": "Búsqueda",
-        "active_input_label": "Separa tus palabras clave con una coma o presionando el tabulador",
+        "active_input_label": "Separa las palabras clave con una coma o presionando el tabulador",
         "clear": "Limpiar entrada de búsqueda",
         "idle_input_label": "Buscar en {{module}}",
         "start": "Iniciar búsqueda",
-        "already_clear": "La entrada de búsqueda ya está borrada",
+        "already_clear": "La entrada de la búsqueda ya ha sido borrada",
         "type_to_start_search": "Introduce algunas palabras clave para iniciar una búsqueda",
         "type_or_choose_suggestion": "Introduce o elige algunas palabras clave para iniciar una búsqueda",
         "unable_to_parse_query": "No se puede completar la búsqueda, límpiala y vuelve a intentarlo"
@@ -179,11 +179,8 @@
         "folder_external_account": "Carpeta: Nueva cuenta externa"
     },
     "timezone": {
-        "argentina": "{{value}} Argentina",
         "central_america": "{{value}} América Central",
-        "harare_pretoria": "{{value}} Harare, Pretoria",
         "manaus": "{{value}} Manaos",
-        "us_canada_central": "{{value}} US/Canada Central",
         "africa_cairo": "{{value}} Egipto",
         "africa_casablanca": "{{value}} Casablanca",
         "africa_harare": "{{value}} Harare, Pretoria",

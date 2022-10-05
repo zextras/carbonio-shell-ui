@@ -6,13 +6,22 @@
 
 import { find, map, maxBy } from 'lodash';
 import { goToLogin } from './go-to-login';
-import { Account, ErrorSoapResponse, SoapContext, SoapException, SoapResponse } from '../../types';
+import { Account, ErrorSoapResponse, SoapContext, SoapResponse } from '../../types';
 import { userAgent } from './user-agent';
 import { report } from '../reporting';
 import { useAccountStore } from '../store/account';
 import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
 import { useNetworkStore } from '../store/network';
 import { handleSync } from '../store/network/utils';
+
+class SoapException extends Error {
+	constructor(response: ErrorSoapResponse) {
+		super(response?.Body.Fault.Reason.Text);
+		this.response = response;
+	}
+
+	response: ErrorSoapResponse;
+}
 
 export const noOp = (): void => {
 	// eslint-disable-next-line @typescript-eslint/no-use-before-define

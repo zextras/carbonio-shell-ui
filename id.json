@@ -1,7 +1,4 @@
 {
-    "login": {
-        "username": "Nama Pengguna"
-    },
     "search": {
         "module": "Modul",
         "app": "Cari",
@@ -178,7 +175,8 @@
         "use_personas_line1": "Gunakan persona untuk dengan cepat mengubah banyak pengaturan saat mengirim pesan email.",
         "use_personas_line2": "Misalnya, jika Anda terkadang mengirim email di peran tertentu di tempat kerja, buat persona untuk itu.",
         "use_ssl": "Gunakan koneksi terenkripsi (SSL) saat mengakses server ini",
-        "when_replying": "Saat membalas atau meneruskan pesan yang dikirim ke:"
+        "when_replying": "Saat membalas atau meneruskan pesan yang dikirim ke:",
+        "folder_external_account": "Folder: Akun Eksternal Baru"
     },
     "locale": {
         "portuguese_brazil": "Portugis (Brasil)",
@@ -211,18 +209,14 @@
         "turkish": "Turki",
         "french": "Prancis",
         "label_french": "Prancis - {{value}}",
-        "vietnamese": "Vietnam"
+        "vietnamese": "Vietnam",
+        "polish": "Polandia"
     },
     "timezone": {
-        "west_central_africa": "{{value}} Afrika Tengah Barat",
         "athens_beirut_bucharest_istanbul": "{{value}} Athena, Beirut, Bukares, Istanbul",
-        "britain_ireland_portugal": "{{value}} Britain, Ireland, Portugal",
         "chita": "{{value}} Chita",
-        "egypt": "{{value}} Mesir",
         "hawaii": "{{value}} Hawaii",
-        "kaliningrad_rtz_1": "{{value}} Kaliningrad (RTZ 1)",
         "mid_atlantic": "{{value}} Atlantik Tengah",
-        "port_louis": "{{value}} Port Louis",
         "us_canada_mountain": "{{value}} AS/Kanada Pegunungan",
         "america_cayenne": "{{value}} Cayenne, Fortaleza",
         "america_regina": "{{value}} Saskatchewan",
@@ -368,7 +362,8 @@
         "enlarge": "Perluas papan",
         "hide": "Sembunyikan papan",
         "reduce": "Persempit papan",
-        "show_tabs": "Tampilkan tab lainnya"
+        "show_tabs": "Tampilkan tab lainnya",
+        "open_app": "Buka di aplikasi"
     },
     "messages": {
         "permanent_delete_title": "Anda yakin ingin menghapus elemen ini secara permanen?",

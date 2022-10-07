@@ -94,7 +94,7 @@ const normalizeContext = (context: any): SoapContext => {
 	return context;
 };
 
-const handleResponse = async <R>(api: string, res: SoapResponse<R>): Promise<R> => {
+const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 	const { pollingInterval, noOpTimeout } = useNetworkStore.getState();
 	const { usedQuota } = useAccountStore.getState();
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment

@@ -94,7 +94,7 @@ const normalizeContext = (context: any): SoapContext => {
 	return context;
 };
 
-const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
+const handleResponse = async <R>(api: string, res: SoapResponse<R>): Promise<R> => {
 	const { pollingInterval, noOpTimeout } = useNetworkStore.getState();
 	const { usedQuota } = useAccountStore.getState();
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -120,8 +120,6 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 				}`
 			)
 		);
-
-		throw new SoapException(<ErrorSoapResponse>res);
 	}
 	if (res.Header?.context) {
 		const responseUsedQuota =
@@ -143,9 +141,10 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 			..._context
 		});
 	}
+
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	return res.Body[`${api}Response`] as R;
+	return res?.Body?.Fault ? (res.Body as R) : (res.Body[`${api}Response`] as R);
 };
 export const getSoapFetch =
 	(app: string) =>

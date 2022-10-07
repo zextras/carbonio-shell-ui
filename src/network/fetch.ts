@@ -14,15 +14,6 @@ import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
 import { useNetworkStore } from '../store/network';
 import { handleSync } from '../store/network/utils';
 
-class SoapException extends Error {
-	constructor(response: ErrorSoapResponse) {
-		super(response?.Body.Fault.Reason.Text);
-		this.response = response;
-	}
-
-	response: ErrorSoapResponse;
-}
-
 export const noOp = (): void => {
 	// eslint-disable-next-line @typescript-eslint/no-use-before-define
 	getSoapFetch(SHELL_APP_ID)(

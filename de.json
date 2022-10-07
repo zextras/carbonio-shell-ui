@@ -178,11 +178,8 @@
         "unsaved_changes": "Sie haben ungespeicherte Änderungen"
     },
     "timezone": {
-        "asuncion": "{{value}} Asuncion",
         "chita": "{{value}} Tschita",
-        "helsinki_kyiv_riga_sofia_tallinn_vilnius": "{{value}} Helsinki, Kiew, Riga, Sofia, Tallinn, Vilnius",
         "monrovia": "{{value}} Monrovia",
-        "us_canada_mountain": "{{value}} US/Kanada Mountain",
         "america_anchorage": "{{value}} Alaska",
         "america_argentina_buenos_aires": "{{value}} Argentinien",
         "america_bogota": "{{value}} Kolumbien",
@@ -327,7 +324,8 @@
         "enlarge": "Tafel vergrößern",
         "hide": "Ausblenden",
         "reduce": "Verkleinern",
-        "show_tabs": "Andere Tabs anzeigen"
+        "show_tabs": "Andere Tabs anzeigen",
+        "open_app": "In der App öffnen"
     },
     "locale": {
         "English": "Englisch",

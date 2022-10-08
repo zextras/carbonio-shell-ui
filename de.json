@@ -175,10 +175,10 @@
         "reply_to_field_example": "z.B. Bob Smith",
         "set_reply_to_field": "Setzen Sie das Feld \"Antwort an\" der E-Mail-Nachricht auf:",
         "settings_sent_messages": "Einstellungen für gesendete Nachrichten",
-        "unsaved_changes": "Sie haben ungespeicherte Änderungen"
+        "unsaved_changes": "Sie haben ungespeicherte Änderungen",
+        "folder_external_account": "Ordner: Neues externes Konto"
     },
     "timezone": {
-        "chita": "{{value}} Tschita",
         "monrovia": "{{value}} Monrovia",
         "america_anchorage": "{{value}} Alaska",
         "america_argentina_buenos_aires": "{{value}} Argentinien",

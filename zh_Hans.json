@@ -175,7 +175,8 @@
         "use_persona": "使用该角色",
         "use_personas_line1": "使用角色以在发送邮件消息时快速变更多项设置。",
         "use_personas_line2": "例如，如果您有时候会在工作中以特定角色发送邮件，可为其创建角色。",
-        "recovery_email": "恢复邮件"
+        "recovery_email": "恢复邮件",
+        "folder_external_account": "文件夹：新外部账户"
     },
     "locale": {
         "English": "英语",
@@ -212,11 +213,8 @@
         "polish": "波兰语"
     },
     "timezone": {
-        "brasilia": "{{value}} 巴西利亚",
         "dateline": "{{value}} 日期线",
-        "jerusalem": "{{value}} 耶路撒冷",
         "nairobi": "{{value}} 内罗毕",
-        "saskatchewan": "{{value}} 萨斯喀彻温",
         "pacific_honolulu": "{{value}} 夏威夷",
         "pacific_midway": "{{value}} 萨摩亚",
         "pacific_tongatapu": "{{value}} 努库阿洛法",
@@ -361,7 +359,8 @@
         "enlarge": "放大看板",
         "hide": "隐藏看板",
         "reduce": "缩小看板",
-        "show_tabs": "显示其他标签页"
+        "show_tabs": "显示其他标签页",
+        "open_app": "在应用中打开"
     },
     "feedback": {
         "other": "其他",

@@ -6,22 +6,19 @@
 
 import { find, map, maxBy } from 'lodash';
 import { goToLogin } from './go-to-login';
-import { Account, ErrorSoapResponse, SoapContext, SoapResponse } from '../../types';
+import {
+	Account,
+	ErrorSoapBodyResponse,
+	ErrorSoapResponse,
+	SoapContext,
+	SoapResponse
+} from '../../types';
 import { userAgent } from './user-agent';
 import { report } from '../reporting';
 import { useAccountStore } from '../store/account';
 import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
 import { useNetworkStore } from '../store/network';
 import { handleSync } from '../store/network/utils';
-
-class SoapException extends Error {
-	constructor(response: ErrorSoapResponse) {
-		super(response?.Body.Fault.Reason.Text);
-		this.response = response;
-	}
-
-	response: ErrorSoapResponse;
-}
 
 export const noOp = (): void => {
 	// eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -94,7 +91,7 @@ const normalizeContext = (context: any): SoapContext => {
 	return context;
 };
 
-const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
+const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBodyResponse => {
 	const { pollingInterval, noOpTimeout } = useNetworkStore.getState();
 	const { usedQuota } = useAccountStore.getState();
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -120,8 +117,6 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 				}`
 			)
 		);
-
-		throw new SoapException(<ErrorSoapResponse>res);
 	}
 	if (res.Header?.context) {
 		const responseUsedQuota =
@@ -143,9 +138,10 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 			..._context
 		});
 	}
+
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	return res.Body[`${api}Response`] as R;
+	return res?.Body?.Fault ? (res.Body as ErrorSoapBodyResponse) : (res.Body[`${api}Response`] as R);
 };
 export const getSoapFetch =
 	(app: string) =>

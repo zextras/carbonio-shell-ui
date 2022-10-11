@@ -139,6 +139,7 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBody
 		});
 	}
 
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	return res?.Body?.Fault ? (res.Body as ErrorSoapBodyResponse) : (res.Body[`${api}Response`] as R);
 };

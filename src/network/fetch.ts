@@ -6,7 +6,13 @@
 
 import { find, map, maxBy } from 'lodash';
 import { goToLogin } from './go-to-login';
-import { Account, ErrorSoapResponse, SoapContext, SoapResponse } from '../../types';
+import {
+	Account,
+	ErrorSoapBodyResponse,
+	ErrorSoapResponse,
+	SoapContext,
+	SoapResponse
+} from '../../types';
 import { userAgent } from './user-agent';
 import { report } from '../reporting';
 import { useAccountStore } from '../store/account';
@@ -85,7 +91,7 @@ const normalizeContext = (context: any): SoapContext => {
 	return context;
 };
 
-const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
+const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBodyResponse => {
 	const { pollingInterval, noOpTimeout } = useNetworkStore.getState();
 	const { usedQuota } = useAccountStore.getState();
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -133,9 +139,8 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 		});
 	}
 
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	return res?.Body?.Fault ? (res.Body as R) : (res.Body[`${api}Response`] as R);
+	return res?.Body?.Fault ? (res.Body as ErrorSoapBodyResponse) : (res.Body[`${api}Response`] as R);
 };
 export const getSoapFetch =
 	(app: string) =>

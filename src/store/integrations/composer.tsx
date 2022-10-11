@@ -45,8 +45,8 @@ import 'tinymce/plugins/directionality';
 import 'tinymce/plugins/autoresize';
 
 import { Editor } from '@tinymce/tinymce-react';
+import { useTranslation } from 'react-i18next';
 import { useUserSettings } from '../account';
-import { uploadAttachments } from './upload-attachments';
 
 type ComposerProps = {
 	/** The callback invoked when an edit is performed into the editor. `([text, html]) => {}` */
@@ -59,6 +59,7 @@ type ComposerProps = {
 	value?: string;
 	/** The base url to append to the resource urls */
 	baseAssetsUrl?: string;
+	onFileSelect?: (arg: any) => void;
 };
 
 export const FileInput = styled.input`
@@ -72,11 +73,11 @@ const Composer: FC<ComposerProps> = ({
 	value,
 	baseAssetsUrl,
 	initialValue,
+
 	...rest
 }) => {
 	const _onEditorChange = useCallback(
 		(newContent, editor) => {
-			console.log('mnop:', { html: editor.getContent({ format: 'html' }) });
 			onEditorChange?.([
 				editor.getContent({ format: 'text' }),
 				editor.getContent({ format: 'html' })
@@ -100,6 +101,8 @@ const Composer: FC<ComposerProps> = ({
 			inputRef.current.click();
 		}
 	}, []);
+	const { t } = useTranslation();
+	const inlineLabel = useMemo(() => t('label.add_inline_image', 'Add inline image'), [t]);
 	return (
 		<Container
 			height="100%"
@@ -110,95 +113,36 @@ const Composer: FC<ComposerProps> = ({
 			<FileInput
 				type="file"
 				ref={inputRef}
-				onChange={(): any => {
-					console.log('mnop:', { files: inputRef?.current?.files });
-					//	onFileSelect({ files: inputRef?.current?.files });
-					uploadAttachments({ files: inputRef?.current?.files }).then((resp) => {
-						console.log('mnop:', { resp });
-						tinymce.activeEditor.insertContent('<p>Hello world!</p>');
-					});
+				accept="image/*"
+				onChange={(): void => {
+					onFileSelect && onFileSelect({ editor: tinymce, files: inputRef?.current?.files });
 				}}
 				multiple
 			/>
+
 			<Editor
 				initialValue={initialValue}
 				value={value}
 				init={{
 					content_css: `${baseAssetsUrl}/tinymce/skins/content/default/content.css`,
-					// setup: (editor: any): void => {
-					// 	editor.ui.registry.addButton('inlineImage', {
-					// 		icon: 'gallery',
-					// 		tooltip: 'Select Image',
-					// 		onAction() {
-					// 			onFileSelect && onFileSelect();
-					// 			alert('Button clicked!');
-					// 		}
-					// 	});
-					// },
 					setup: (editor: any): void => {
-						/* Menu items are recreated when the menu is closed and opened, so we need
-						   a variable to store the toggle menu item state. */
-						const toggleState = false;
-
-						/* example, adding a toolbar menu button */
-						editor.ui.registry.addMenuButton('imageSelector', {
-							icon: 'gallery',
-							tooltip: 'Select Image',
-							fetch: (callback: any) => {
-								const items = [
-									{
-										type: 'menuitem',
-										icon: '',
-										text: 'Add From Local',
-										onAction: (): void => {
-											// onFileClick();
-											onFileSelect && onFileSelect(editor);
-											// editor.insertContent(
-											// 	'&nbsp;wdwdw <img src="cid:2bd28b55-2d45-478f-86ab-704c7823adef:31619f77-9455-41de-93c6-5b5f7a08d044" />'
-											// );
+						if (onFileSelect)
+							editor.ui.registry.addMenuButton('imageSelector', {
+								icon: 'gallery',
+								tooltip: 'Select Image',
+								fetch: (callback: any) => {
+									const items = [
+										{
+											type: 'menuitem',
+											text: inlineLabel,
+											onAction: (): void => {
+												onFileClick();
+											}
 										}
-									}
-									// {
-									// 	type: 'nestedmenuitem',
-									// 	text: 'Menu item 2',
-									// 	icon: 'user',
-									// 	getSubmenuItems: () => [
-									// 		{
-									// 			type: 'menuitem',
-									// 			text: 'Sub menu item 1',
-									// 			icon: 'unlock',
-									// 			onAction: (): void => {
-									// 				editor.insertContent('&nbsp;<em>You clicked Sub menu item 1!</em>');
-									// 			}
-									// 		},
-									// 		{
-									// 			type: 'menuitem',
-									// 			text: 'Sub menu item 2',
-									// 			icon: 'lock',
-									// 			onAction: (): void => {
-									// 				editor.insertContent('&nbsp;<em>You clicked Sub menu item 2!</em>');
-									// 			}
-									// 		}
-									// 	]
-									// },
-									// {
-									// 	type: 'togglemenuitem',
-									// 	text: 'Toggle menu item',
-									// 	onAction: (): void => {
-									// 		toggleState = !toggleState;
-									// 		editor.insertContent(
-									// 			`&nbsp;<em>You toggled a menuitem ${toggleState ? 'on' : 'off'}</em>`
-									// 		);
-									// 	},
-									// 	onSetup: (api): void => {
-									// 		api.setActive(toggleState);
-									// 		return function () {};
-									// 	}
-									// }
-								];
-								callback(items);
-							}
-						});
+									];
+									callback(items);
+								}
+							});
 					},
 					min_height: 350,
 					auto_focus: true,
@@ -280,8 +224,7 @@ const Composer: FC<ComposerProps> = ({
 						: 'quicklink',
 					contextmenu: inline ? '' : '',
 					toolbar_mode: 'wrap',
-					// forced_root_block: false,
-					// forced_root_block: '',
+					forced_root_block: false,
 					content_style: `body  {  color: ${defaultStyle?.color}; font-size: ${defaultStyle?.fontSize}; font-family: ${defaultStyle?.font}; }`,
 					visualblocks_default_state: false,
 					end_container_on_empty_block: true

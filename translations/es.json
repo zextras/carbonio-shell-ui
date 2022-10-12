@@ -1,15 +1,12 @@
 {
-    "changelog": {
-        "title": "Registro de cambios"
-    },
     "search": {
         "module": "Módulo",
         "app": "Búsqueda",
-        "active_input_label": "Separa tus palabras clave con una coma o presionando el tabulador",
+        "active_input_label": "Separa las palabras clave con una coma o presionando el tabulador",
         "clear": "Limpiar entrada de búsqueda",
         "idle_input_label": "Buscar en {{module}}",
         "start": "Iniciar búsqueda",
-        "already_clear": "La entrada de búsqueda ya está borrada",
+        "already_clear": "La entrada de la búsqueda ya ha sido borrada",
         "type_to_start_search": "Introduce algunas palabras clave para iniciar una búsqueda",
         "type_or_choose_suggestion": "Introduce o elige algunas palabras clave para iniciar una búsqueda",
         "unable_to_parse_query": "No se puede completar la búsqueda, límpiala y vuelve a intentarlo"
@@ -72,10 +69,6 @@
                 "include_search_in_trash_folder": "Incluir carpeta de la papelera en las búsquedas"
             }
         }
-    },
-    "login": {
-        "username": "Nombre de usuario",
-        "verify_caps_lock": "Comprueba que BLOQUEAR MAYÚSCULAS no esté activado, luego vuelve a introducir el nombre de usuario y la contraseña actuales"
     },
     "new": "Nuevo",
     "message": {
@@ -182,30 +175,12 @@
         "test_settings": "Probar ajustes",
         "unsaved_changes": "Tienes cambios no guardados",
         "unsaved_changes_line2": "Todos tus cambios no guardados se perderán",
-        "update_view": "Actualizar vista"
+        "update_view": "Actualizar vista",
+        "folder_external_account": "Carpeta: Nueva cuenta externa"
     },
     "timezone": {
-        "abu_dhabi_muscat": "{{value}} Abu Dabi, Mascate",
-        "coordinated_universal_time": "{{value}} Tiempo universal coordinado",
-        "sarajevo_skopje_warsaw_zagreb": "{{value}} Sarajevo, Skopje, Varsovia, Zagreb",
-        "argentina": "{{value}} Argentina",
-        "azores": "{{value}} Azores",
-        "beirut": "{{value}} Beirut",
-        "brussels_copenhagen_madrid_paris ": "{{value}} Bruselas, Copenhague, Madrid, París",
         "central_america": "{{value}} América Central",
-        "christmas_island": "{{value}} Isla de Navidad",
-        "darwin": "{{value}} Darwin",
-        "ekaterinburg_rtz_4": "{{value}} Ekaterimburgo (RTZ 4)",
-        "harare_pretoria": "{{value}} Harare, Pretoria",
-        "irkutsk_rtz_7": "{{value}} Irkutsk (RTZ 7)",
-        "kabul": "{{value}} Kabul",
-        "krasnoyarsk_rtz_6": "{{value}} Krasnoyarsk (RTZ 6)",
         "manaus": "{{value}} Manaos",
-        "moscow_st_petersburg_volgograd_rtz_2": "{{value}} Moscú, San Petersburgo, Volgogrado (RTZ 2)",
-        "pacific_south_america": "{{value}} Pacífico América del Sur",
-        "saskatchewan": "{{value}} Saskatchewan",
-        "us_canada_central": "{{value}} US/Canada Central",
-        "west_central_africa": "{{value}} África Centro-Occidental",
         "africa_cairo": "{{value}} Egipto",
         "africa_casablanca": "{{value}} Casablanca",
         "africa_harare": "{{value}} Harare, Pretoria",
@@ -375,7 +350,8 @@
         "turkish": "Turco",
         "french": "Francés",
         "label_french": "Francés - {{value}}",
-        "vietnamese": "Vietnamita"
+        "vietnamese": "Vietnamita",
+        "polish": "Polaco"
     },
     "board": {
         "close_tab": "Cerrar pestaña",
@@ -383,7 +359,8 @@
         "enlarge": "Agrandar ventana",
         "hide": "Minimizar ventana",
         "reduce": "Reducir ventana",
-        "show_tabs": "Mostrar las otras ventanas de composición"
+        "show_tabs": "Mostrar las otras ventanas de composición",
+        "open_app": "Abrir en la aplicación"
     },
     "feedback": {
         "other": "Otro",

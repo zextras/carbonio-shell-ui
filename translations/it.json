@@ -1,15 +1,6 @@
 {
-    "login": {
-        "incorrect": "Nome utente o password sono errati"
-    },
-    "logout_modal": {
-        "confirm": "Disconnettimi"
-    },
     "new": "Nuovo",
     "new_tab": "Nuova tab",
-    "supported_browsers": {
-        "yandex": "Yandex"
-    },
     "settings": {
         "button": {
             "primary": "Salva",
@@ -108,7 +99,8 @@
         "enlarge": "Ingrandisci finestra",
         "show_tabs": "Mostra altre schede",
         "hide": "Nascondi finestra",
-        "reduce": "Riduci finestra"
+        "reduce": "Riduci finestra",
+        "open_app": "Apri nell'applicazione"
     },
     "label": {
         "cancel": "Elimina",
@@ -192,7 +184,8 @@
         "use_personas_line1": "Utilizza le personalità per cambiare velocemente le impostazioni quando componi il messaggio.",
         "when_composing": "Durante la composizione, nella risposta o nell'inoltro di messaggi nelle cartella:",
         "button": "Pulsante",
-        "click_to_copy": "Seleziona per copiare"
+        "click_to_copy": "Seleziona per copiare",
+        "folder_external_account": "Cartella: Nuovo Account Esterno"
     },
     "locale": {
         "English": "Inglese",
@@ -229,16 +222,8 @@
         "polish": "Polacco"
     },
     "timezone": {
-        "azores": "{{value}} Azzoree",
-        "cape_verde_is": "{{value}} Capo Verde.",
-        "coordinated_universal_time": "{{value}} Tempo Coordinato Universale",
         "gmt_02": "{{value}} GMT-02",
-        "iraq": "{{value}} Iraq",
-        "la_paz": "{{value}} La Paz",
-        "namibia": "{{value}} Namibia",
         "sri_jayawardenepura_kotte": "{{value}} Sri Jayawardenepura Kotte",
-        "yangon": "{{value}} Yangon",
-        "egypt": "{{value}} Egitto",
         "africa_juba": "{{value}} Juba",
         "africa_khartoum": "{{value}} Khartoum",
         "africa_windhoek": "{{value}} Namibia",

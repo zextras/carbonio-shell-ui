@@ -1,7 +1,4 @@
 {
-    "login": {
-        "username": "Gebruikersnaam"
-    },
     "new": "Nieuw",
     "search": {
         "app": "Zoeken",
@@ -178,7 +175,8 @@
         "use_persona": "Deze persona gebruiken",
         "use_personas_line2": "Als u bijvoorbeeld op het werk soms e-mails verstuurt in een bepaalde rol, maak daar dan een persona voor aan.",
         "when_composing": "Bij het samenstellen, beantwoorden of doorsturen van berichten in map(pen):",
-        "when_replying": "Bij het beantwoorden of doorsturen van berichten die zijn verzonden naar:"
+        "when_replying": "Bij het beantwoorden of doorsturen van berichten die zijn verzonden naar:",
+        "folder_external_account": "Map: Nieuwe externe account"
     },
     "locale": {
         "label_russian": "Russisch - {{value}}",
@@ -215,16 +213,8 @@
         "polish": "Pools"
     },
     "timezone": {
-        "kabul": "{{value}} Kaboel",
-        "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Anadyr, Petropavlovsk-Kamchatsky (RTZ 11)",
-        "beijing_chongqing_hong_kong_urumqi": "{{value}} Beijing, Chongqing, Hong Kong, Urumqi",
         "central_america": "{{value}} Midden-Amerika",
-        "darwin": "{{value}} Darwin",
-        "greenland": "{{value}} Groenland",
-        "jordan": "{{value}} Jordanië",
         "mid_atlantic": "{{value}} Mid-Atlantic",
-        "pacific_south_america": "{{value}} Stille Oceaan Zuid-Amerika",
-        "us_canada_central": "{{value}} VS/Centraal Canada",
         "africa_algiers": "{{value}} West Centraal Afrika",
         "africa_cairo": "{{value}} Egypte",
         "africa_casablanca": "{{value}} Casablanca",
@@ -369,7 +359,8 @@
         "enlarge": "Board uitbreiden",
         "hide": "Board verbergen",
         "reduce": "Board verkleinen",
-        "show_tabs": "Andere tabs tonen"
+        "show_tabs": "Andere tabs tonen",
+        "open_app": "In app openen"
     },
     "feedback": {
         "other": "Ander",

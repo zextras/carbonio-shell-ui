@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { filter, find, findIndex, forEach, map, reduce, isArray } from 'lodash';
+import { filter, find, findIndex, forEach, isArray, map, reduce } from 'lodash';
+import { Account, AccountState, Mods } from '../../types';
 import { SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account/store';
-import { AccountState, Mods, Account } from '../../types';
 import { getXmlSoapFetch } from './fetch';
 
 export const editSettings = (mods: Mods, appId: string = SHELL_APP_ID): Promise<any> =>
@@ -93,8 +93,6 @@ export const editSettings = (mods: Mods, appId: string = SHELL_APP_ID): Promise<
 										return `<ace right="viewFreeBusy" gt="${mods.permissions.freeBusy.new.gt}" deny="1"/>`;
 									}
 									if (mods.permissions.freeBusy.new.gt === 'usr') {
-										// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-										// @ts-ignore
 										return map(
 											mods.permissions.freeBusy.new.d,
 											(u) =>
@@ -114,8 +112,6 @@ export const editSettings = (mods: Mods, appId: string = SHELL_APP_ID): Promise<
 										return `<ace right="invite" gt="${mods.permissions.inviteRight.new.gt}" deny="1"/>`;
 									}
 									if (mods.permissions.inviteRight.new.gt === 'usr') {
-										// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-										// @ts-ignore
 										return map(
 											mods.permissions.inviteRight.new.d,
 											(u) =>

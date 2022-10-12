@@ -5,14 +5,14 @@
  */
 
 import { find, map, maxBy } from 'lodash';
-import { goToLogin } from './go-to-login';
 import { Account, ErrorSoapResponse, SoapContext, SoapResponse } from '../../types';
-import { userAgent } from './user-agent';
+import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
 import { report } from '../reporting';
 import { useAccountStore } from '../store/account';
-import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
 import { useNetworkStore } from '../store/network';
 import { handleSync } from '../store/network/utils';
+import { goToLogin } from './go-to-login';
+import { userAgent } from './user-agent';
 
 export const noOp = (): void => {
 	// eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -88,8 +88,6 @@ const normalizeContext = (context: any): SoapContext => {
 const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 	const { pollingInterval, noOpTimeout } = useNetworkStore.getState();
 	const { usedQuota } = useAccountStore.getState();
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
 	clearTimeout(noOpTimeout);
 	if (res.Body.Fault) {
 		if (

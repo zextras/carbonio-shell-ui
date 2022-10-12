@@ -6,12 +6,12 @@
 
 import { ComponentType, useMemo } from 'react';
 import {
-	Folders,
-	Searches,
-	SearchFolder,
-	Folder,
 	AccordionFolder,
-	FolderView
+	Folder,
+	Folders,
+	FolderView,
+	Searches,
+	SearchFolder
 } from '../../../types';
 import { FOLDER_VIEW } from '../../constants';
 import { useFolderStore } from './store';
@@ -93,3 +93,6 @@ export const useFoldersAccordionByView = (
 		[CustomComponent, itemProps, roots, view]
 	);
 };
+
+// SETTERS
+export const setFolders = (folders: Folders): void => useFolderStore.setState({ folders });

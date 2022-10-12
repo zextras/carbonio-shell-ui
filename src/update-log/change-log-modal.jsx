@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, useEffect, useState } from 'react';
+import { Container, Divider, Modal, Text } from '@zextras/carbonio-design-system';
 import { forEach } from 'lodash';
-import { useTranslation } from 'react-i18next';
-import { Modal, Text, Container, Divider } from '@zextras/carbonio-design-system';
-import styled from 'styled-components';
 import moment from 'moment';
-import MarkdownContainer from './markdown-container';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
 import { useApps } from '../store/app';
+import MarkdownContainer from './markdown-container';
 
 const Title = styled(Text)`
 	width: 100%;
@@ -25,7 +25,7 @@ const CHANGELOG_VERSION_REGEX = /([0-9]\.[0-9]\.[0-9][0-9]-beta\.[0-9])/;
 export default function ChangeLogModal() {
 	const [mdpackage, setMdPackage] = useState({});
 	const [showUpdate, setShowUpdate] = useState(false);
-	const { t } = useTranslation();
+	const [t] = useTranslation();
 	const apps = useApps();
 
 	useEffect(() => {

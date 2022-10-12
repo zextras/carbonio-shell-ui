@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useMemo } from 'react';
 import { useScreenMode } from '@zextras/carbonio-design-system';
+import React, { FC, useMemo } from 'react';
 import ShellContext from './shell-context';
 
 const ShellContextProvider: FC<{ children: unknown }> = ({ children }) => {

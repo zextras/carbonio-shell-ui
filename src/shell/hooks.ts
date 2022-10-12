@@ -7,9 +7,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import ShellContext from './shell-context';
 
 export function useIsMobile(): boolean {

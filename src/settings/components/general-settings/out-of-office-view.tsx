@@ -4,34 +4,29 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useState, useCallback, FC, useEffect, useMemo } from 'react';
 import {
+	Checkbox,
 	Container,
 	FormSubSection,
-	Checkbox,
-	Select,
-	Padding
+	Padding,
+	Select
 } from '@zextras/carbonio-design-system';
-import styled from 'styled-components';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import momentLocalizer from 'react-widgets-moment';
-import { useTranslation } from 'react-i18next';
 import { find } from 'lodash';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import momentLocalizer from 'react-widgets-moment';
+import styled from 'styled-components';
 import { AccountSettings } from '../../../../types';
-import Heading from '../settings-heading';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+import { outOfOfficeSubSection } from '../../general-settings-sub-sections';
 import DateTimeSelect from '../date-time-select-view';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+import Heading from '../settings-heading';
 import {
-	ItemsExternalSenders,
 	getExternalSendersPrefsData,
-	ItemsOutOfOfficeStatus,
 	getOutOfOfficeStatusPrefsData,
+	ItemsExternalSenders,
+	ItemsOutOfOfficeStatus,
 	ItemsSendAutoReplies
 } from '../utils';
-import { outOfOfficeSubSection } from '../../general-settings-sub-sections';
 
 const TextArea = styled.textarea`
 	box-sizing: border-box;
@@ -56,7 +51,7 @@ const OutOfOfficeView: FC<{
 	settings: AccountSettings;
 	addMod: (type: 'prefs' | 'props', key: string, value: { value: any; app: string }) => void;
 }> = ({ settings, addMod }) => {
-	const { t } = useTranslation();
+	const [t] = useTranslation();
 	const [sendAutoReply, setSendAutoReply] = useState<boolean>(
 		settings.prefs.zimbraPrefOutOfOfficeReplyEnabled === 'TRUE'
 	);

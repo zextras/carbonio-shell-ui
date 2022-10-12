@@ -4,23 +4,25 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useEffect, useState, useContext, FC, useMemo } from 'react';
-import { Row, Responsive, SnackbarManager, ModalManager } from '@zextras/carbonio-design-system';
-import styled from 'styled-components';
-import { find } from 'lodash';
+import { Grid } from '@mui/material';
+import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import { PreviewManager } from '@zextras/carbonio-ui-preview';
+import { find } from 'lodash';
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
+import styled from 'styled-components';
+import { AppRoute, DRPropValues } from '../../types';
+import { ThemeCallbacksContext } from '../boot/theme-provider';
+import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
+import { useCurrentRoute } from '../history/hooks';
+import { goToLogin } from '../network/go-to-login';
+import { useAccountStore, useUserSettings } from '../store/account';
+import { ShellUtilityBar, ShellUtilityPanel } from '../utility-bar';
+import { BREAKPOINT_SIZE, useMobileView } from '../utils/utils';
 import AppViewContainer from './app-view-container';
+import { BoardContainer } from './boards/board-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
-import { BoardContainer } from './boards/board-container';
-import { ThemeCallbacksContext } from '../boot/theme-provider';
-import { useAccountStore, useUserSettings } from '../store/account';
-import { ShellUtilityBar, ShellUtilityPanel } from '../utility-bar';
-import { useCurrentRoute } from '../history/hooks';
-import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
-import { goToLogin } from '../network/go-to-login';
-import { AppRoute, DRPropValues } from '../../types';
 
 const Background = styled.div`
 	background: ${({ theme }): string => theme.palette.gray6.regular};
@@ -61,12 +63,15 @@ const useLoginRedirection = (allowUnauthenticated?: string): void => {
 	}, [allowUnauthenticated, auth]);
 };
 
-const ShellComponent: FC<{ allowUnauthenticated?: string; hideShellHeader?: string }> = ({
-	allowUnauthenticated,
-	hideShellHeader
-}) => {
+const ShellComponent: FC<{
+	allowUnauthenticated?: string;
+	hideShellHeader?: string;
+	activeRoute: AppRoute;
+}> = ({ allowUnauthenticated, hideShellHeader, activeRoute }) => {
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
 	useLoginRedirection(allowUnauthenticated);
+	const isMobileView = useMobileView();
+	const isSearchView = activeRoute?.app === 'search';
 	return (
 		<Background>
 			<DarkReaderListener />
@@ -79,14 +84,23 @@ const ShellComponent: FC<{ allowUnauthenticated?: string; hideShellHeader?: stri
 					<ShellUtilityBar />
 				</ShellHeader>
 			)}
-			<Row crossAlignment="unset" style={{ position: 'relative', flexGrow: '1' }}>
-				<ShellNavigationBar mobileNavIsOpen={mobileNavOpen} />
+			<Grid container sx={{ display: 'flex', height: '100%' }}>
+				<Grid
+					item
+					xxs={isSearchView ? 0 : BREAKPOINT_SIZE.XXS}
+					xs={isSearchView ? 0 : BREAKPOINT_SIZE.XS}
+					sm={isSearchView ? 0 : BREAKPOINT_SIZE.SM}
+					md={isSearchView ? 0 : BREAKPOINT_SIZE.MD}
+					lg={isSearchView ? 0 : BREAKPOINT_SIZE.LG}
+					xl={isSearchView ? 0 : BREAKPOINT_SIZE.XL}
+					sx={{ height: '100%', display: isMobileView && !mobileNavOpen ? 'none' : 'block' }}
+				>
+					<ShellNavigationBar mobileNavIsOpen={mobileNavOpen} activeRoute={activeRoute} />
+				</Grid>
 				<AppViewContainer />
 				<ShellUtilityPanel />
-			</Row>
-			<Responsive mode="desktop">
-				<BoardContainer />
-			</Responsive>
+			</Grid>
+			{isMobileView && <BoardContainer />}
 		</Background>
 	);
 };
@@ -103,6 +117,7 @@ const ShellView: FC = () => {
 				<SnackbarManager>
 					<PreviewManager>
 						<MemoShell
+							activeRoute={activeRoute}
 							allowUnauthenticated={allowUnauthenticated}
 							hideShellHeader={hideShellHeader}
 						/>

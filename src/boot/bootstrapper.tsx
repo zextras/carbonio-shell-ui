@@ -4,16 +4,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { ThemeProvider as ThemeProviderMui } from '@mui/material';
+import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import React, { FC, useEffect } from 'react';
-import { SnackbarManager, ModalManager } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
-import { init } from './init';
-import { ThemeProvider } from './theme-provider';
-import BootstrapperRouter from './bootstrapper-router';
-import BootstrapperContextProvider from './bootstrapper-provider';
-import { unloadAllApps } from './app/load-apps';
+import { themeMui } from '../theme-mui/theme';
 import { registerDefaultViews } from './app/default-views';
-import { NotificationPermissionChecker } from '../notification/NotificationPermissionChecker';
+import { unloadAllApps } from './app/load-apps';
+import BootstrapperContextProvider from './bootstrapper-provider';
+import BootstrapperRouter from './bootstrapper-router';
+import { init } from './init';
+import { ThemeProvider as ThemeProviderDS } from './theme-provider';
 
 const DefaultViewsRegister: FC = () => {
 	const [t] = useTranslation();
@@ -31,17 +32,18 @@ const Bootstrapper: FC = () => {
 		};
 	}, []);
 	return (
-		<ThemeProvider>
-			<SnackbarManager>
-				<ModalManager>
-					<BootstrapperContextProvider>
-						<DefaultViewsRegister />
-						<NotificationPermissionChecker />
-						<BootstrapperRouter />
-					</BootstrapperContextProvider>
-				</ModalManager>
-			</SnackbarManager>
-		</ThemeProvider>
+		<ThemeProviderDS>
+			<ThemeProviderMui theme={themeMui}>
+				<SnackbarManager>
+					<ModalManager>
+						<BootstrapperContextProvider>
+							<DefaultViewsRegister />
+							<BootstrapperRouter />
+						</BootstrapperContextProvider>
+					</ModalManager>
+				</SnackbarManager>
+			</ThemeProviderMui>
+		</ThemeProviderDS>
 	);
 };
 

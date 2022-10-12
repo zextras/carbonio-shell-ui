@@ -6,25 +6,25 @@
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import React, { useState, useCallback, useEffect, useMemo, FC, useRef } from 'react';
 import {
 	ChipInput,
+	ChipItem,
 	Container,
 	IconButton,
-	Tooltip,
 	Padding,
-	ChipItem
+	Tooltip
 } from '@zextras/carbonio-design-system';
-import { useTranslation } from 'react-i18next';
 import { filter, find, map, reduce } from 'lodash';
-import styled from 'styled-components';
+import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useLocalStorage } from '../shell/hooks';
+import styled from 'styled-components';
 import { SEARCH_APP_ID } from '../constants';
+import { useLocalStorage } from '../shell/hooks';
 
-import { useSearchStore } from './search-store';
 import { QueryChip } from '../../types';
 import { ModuleSelector } from './module-selector';
+import { useSearchStore } from './search-store';
 
 const OutlinedIconButton = styled(IconButton)`
 	border: 1px solid
@@ -363,9 +363,8 @@ export const SearchBar: FC = () => {
 	}, [searchDisabled, query]);
 
 	const disableClearButton = useMemo(() => (isTyping ? false : !showClear), [showClear, isTyping]);
-
 	return (
-		<Container width="fit" flexGrow="1" orientation="horizontal" minWidth="0" ref={containerRef}>
+		<Container width="fit" minWidth="75%" orientation="horizontal" ref={containerRef}>
 			<Tooltip
 				disabled={!searchDisabled}
 				maxWidth="100%"
@@ -375,8 +374,9 @@ export const SearchBar: FC = () => {
 				)}
 			>
 				<Container orientation="horizontal" width="fill">
-					<Container minWidth="512px" width="fill">
+					<Container width="fill">
 						<Container orientation="horizontal" width="fill">
+							<Padding right="large" />
 							<Container width="fit">
 								<ModuleSelector />
 							</Container>

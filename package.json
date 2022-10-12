@@ -96,11 +96,14 @@
 		"webpack-merge": "5.8.0"
 	},
 	"dependencies": {
+		"@emotion/react": "^11.9.3",
+		"@emotion/styled": "^11.9.3",
 		"@fontsource/roboto": "^4.5.7",
+		"@mui/material": "^5.9.0",
 		"@sentry/browser": "^6.17.7",
 		"@tinymce/tinymce-react": "^3.13.0",
-		"@zextras/carbonio-design-system": "^0.4.0",
-		"@zextras/carbonio-ui-preview": "^0.2.0",
+		"@zextras/carbonio-design-system": "^0.4.1",
+		"@zextras/carbonio-ui-preview": "^0.2.1",
 		"darkreader": "4.9.46",
 		"history": "^5.2.0",
 		"i18next": "21.6.10",
@@ -126,7 +129,7 @@
 	},
 	"peerDependencies": {
 		"@reduxjs/toolkit": "^1.6.2",
-		"@zextras/carbonio-design-system": "^0.3.0",
+		"@zextras/carbonio-design-system": "^0.4.0",
 		"core-js": "^3.19.1",
 		"moment": "^2.29.1",
 		"node-fetch": "^2.6.6",

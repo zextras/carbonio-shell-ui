@@ -6,13 +6,13 @@
 
 import { filter, map } from 'lodash';
 
-import { loadApp, unloadApps } from './load-app';
 import { CarbonioModule } from '../../../types';
-import { injectSharedLibraries } from './shared-libraries';
-import { getUserSetting } from '../../store/account';
-import { useReporter } from '../../reporting';
 import { SHELL_APP_ID } from '../../constants';
+import { useReporter } from '../../reporting';
+import { getUserSetting } from '../../store/account';
 import { addI18n } from '../../store/i18n';
+import { loadApp, unloadApps } from './load-app';
+import { injectSharedLibraries } from './shared-libraries';
 
 export function loadApps(apps: Array<CarbonioModule>): void {
 	injectSharedLibraries();

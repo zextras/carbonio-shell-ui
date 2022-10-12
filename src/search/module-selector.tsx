@@ -3,13 +3,13 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import { Container, Dropdown, Icon, Row, Text } from '@zextras/carbonio-design-system';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { Container, Row, Text, Icon, Dropdown } from '@zextras/carbonio-design-system';
+import { SEARCH_APP_ID } from '../constants';
+import { pushHistory, useCurrentRoute } from '../history/hooks';
 import { useAppStore } from '../store/app';
 import { useSearchStore } from './search-store';
-import { SEARCH_APP_ID } from '../constants';
-import { useCurrentRoute, pushHistory } from '../history/hooks';
 
 const SelectorContainer = styled(Container)<{ open?: boolean }>`
 	border-right: 1px solid ${({ theme }): string => theme.palette.gray4.regular};

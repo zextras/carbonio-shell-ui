@@ -7,92 +7,93 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { reduce } from 'lodash';
+import { CarbonioModule } from '../../../types';
+import {
+	getCurrentRoute,
+	goBackHistory,
+	pushHistory,
+	replaceHistory,
+	useCurrentRoute,
+	useGoBackHistoryCallback,
+	usePushHistoryCallback,
+	useReplaceHistoryCallback
+} from '../../history/hooks';
+import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
+import { changeTagColor, createTag, deleteTag, renameTag } from '../../network/tags';
+import { getNotificationManager } from '../../notification/NotificationManager';
+import { runSearch } from '../../search/run-search';
+import { useIsMobile, useLocalStorage } from '../../shell/hooks';
+import {
+	getUserAccount,
+	getUserAccounts,
+	getUserRight,
+	getUserRights,
+	getUserSetting,
+	getUserSettings,
+	useUserAccount,
+	useUserAccounts,
+	useUserRight,
+	useUserRights,
+	useUserSetting,
+	useUserSettings
+} from '../../store/account';
 import { getApp, getAppContext, useApp, useAppContext } from '../../store/app';
+import {
+	addBoard,
+	closeBoard,
+	getBoardById,
+	getBoardContextById,
+	minimizeBoards,
+	reopenBoards,
+	setCurrentBoard,
+	updateBoard,
+	updateBoardContext,
+	useBoard,
+	useBoardById,
+	useBoardContextById,
+	useBoardHooks
+} from '../../store/boards';
 import { useContextBridge } from '../../store/context-bridge';
 import {
+	getFolder,
+	getFolders,
+	getRoot,
+	getRootByUser,
+	getRoots,
+	getSearchFolder,
+	getSearchFolders,
+	setFolders,
+	useFolder,
+	useFolders,
+	useFoldersAccordionByView,
+	useFoldersByView,
+	useRoot,
+	useRootByUser,
+	useRoots,
+	useSearchFolder,
+	useSearchFolders
+} from '../../store/folder';
+import { getI18n, getTFunction, useI18n } from '../../store/i18n';
+import {
 	getAction,
+	getActionFactory,
 	getActions,
 	getActionsFactory,
-	getActionFactory,
 	getIntegratedComponent,
 	getIntegratedFunction,
 	getIntegratedHook
 } from '../../store/integrations/getters';
 import {
-	getUserAccount,
-	getUserAccounts,
-	getUserSetting,
-	getUserSettings,
-	useUserAccount,
-	useUserAccounts,
-	useUserSetting,
-	useUserSettings,
-	useUserRight,
-	useUserRights,
-	getUserRight,
-	getUserRights
-} from '../../store/account';
-import { useIsMobile, useLocalStorage } from '../../shell/hooks';
-import {
 	useAction,
+	useActionFactory,
 	useActions,
 	useActionsFactory,
-	useActionFactory,
 	useIntegratedComponent,
 	useIntegratedFunction,
 	useIntegratedHook
 } from '../../store/integrations/hooks';
-import { CarbonioModule } from '../../../types';
-import {
-	usePushHistoryCallback,
-	useGoBackHistoryCallback,
-	useReplaceHistoryCallback,
-	getCurrentRoute,
-	useCurrentRoute,
-	replaceHistory,
-	goBackHistory,
-	pushHistory
-} from '../../history/hooks';
-import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
-import {
-	getFolder,
-	getFolders,
-	useFolder,
-	useFolders,
-	useRoot,
-	getRoot,
-	useRoots,
-	getRoots,
-	useSearchFolder,
-	useSearchFolders,
-	getSearchFolder,
-	getSearchFolders,
-	useFoldersAccordionByView,
-	useFoldersByView,
-	useRootByUser,
-	getRootByUser
-} from '../../store/folder';
-import { getTags, useTags } from '../../store/tags';
 import { useNotify, useRefresh } from '../../store/network';
-import { changeTagColor, createTag, deleteTag, renameTag } from '../../network/tags';
-import { runSearch } from '../../search/run-search';
-import { getI18n, useI18n, getTFunction } from '../../store/i18n';
-import {
-	addBoard,
-	closeBoard,
-	updateBoard,
-	updateBoardContext,
-	getBoardById,
-	getBoardContextById,
-	useBoardContextById,
-	useBoardById,
-	useBoard,
-	minimizeBoards,
-	reopenBoards,
-	setCurrentBoard,
-	useBoardHooks
-} from '../../store/boards';
-import { getNotificationManager } from '../../notification/NotificationManager';
+import { getTags, useTags } from '../../store/tags';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({
@@ -159,6 +160,7 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	getSearchFolders,
 	useRootByUser,
 	getRootByUser,
+	setFolders,
 	// BOARDS
 	addBoard: addBoard(pkg.name),
 	closeBoard,

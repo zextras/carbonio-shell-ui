@@ -8,12 +8,10 @@
 /* THIS FILE CONTAINS HOOKS, BUT ESLINT IS DUMB */
 
 import { compact, map } from 'lodash';
-import React, { useMemo, FC, FunctionComponent, useCallback } from 'react';
-import { useIntegrationsStore } from './store';
+import React, { FC, FunctionComponent, useCallback, useMemo } from 'react';
 import { Action, ActionFactory, CombinedActionFactory } from '../../../types';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import AppContextProvider from '../../boot/app/app-context-provider';
+import { useIntegrationsStore } from './store';
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const useIntegratedHook = (id: string): [Function, boolean] => {
 	const integration = useIntegrationsStore((s) => s.hooks?.[id]);

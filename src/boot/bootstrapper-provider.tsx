@@ -6,8 +6,6 @@
 
 import React, { FC } from 'react';
 import { I18nextProvider } from 'react-i18next';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { useI18nStore } from '../store/i18n';
 
 const BootstrapperContextProvider: FC = ({ children }) => (

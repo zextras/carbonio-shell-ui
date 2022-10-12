@@ -4,16 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { ModalManagerContext, SnackbarManagerContext } from '@zextras/carbonio-design-system';
 import React, { FC, useContext, useEffect } from 'react';
 import { BrowserRouter, Route, Switch, useHistory, useParams } from 'react-router-dom';
-import { SnackbarManagerContext, ModalManagerContext } from '@zextras/carbonio-design-system';
-import AppLoaderMounter from './app/app-loader-mounter';
-import { useBridge } from '../store/context-bridge';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import ShellView from '../shell/shell-view';
 import { BASENAME, IS_STANDALONE } from '../constants';
+import ShellView from '../shell/shell-view';
 import { useAppStore } from '../store/app';
+import { useBridge } from '../store/context-bridge';
+import AppLoaderMounter from './app/app-loader-mounter';
 
 const ContextBridge: FC = () => {
 	const history = useHistory();

@@ -7,8 +7,6 @@
 import create from 'zustand';
 import { NetworkState } from '../../../types';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 export const useNetworkStore = create<NetworkState>(() => ({
 	pollingInterval: 30000,
 	seq: 0

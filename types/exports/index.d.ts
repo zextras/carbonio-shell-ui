@@ -5,10 +5,18 @@
  */
 /* eslint-disable @typescript-eslint/ban-types */
 
-import { ComponentType, Dispatch, FC, SetStateAction } from 'react';
-import { LinkProps } from 'react-router-dom';
-import { TFunction } from 'react-i18next';
 import { i18n } from 'i18next';
+import { ComponentType, Dispatch, FC, SetStateAction } from 'react';
+import { TFunction } from 'react-i18next';
+import { LinkProps } from 'react-router-dom';
+import {
+	Account,
+	AccountRightName,
+	AccountRights,
+	AccountRightTarget,
+	AccountSettings,
+	SoapFetch
+} from '../account';
 import {
 	AppRoute,
 	AppRouteDescriptor,
@@ -21,22 +29,14 @@ import {
 	SettingsView,
 	UtilityView
 } from '../apps';
-import { ActionFactory, AnyFunction, CombinedActionFactory, Action } from '../integrations';
-import {
-	AccountSettings,
-	Account,
-	AccountRights,
-	AccountRightName,
-	AccountRightTarget,
-	SoapFetch
-} from '../account';
-import { Mods, TagActionResponse, CreateTagResponse, SoapNotify, SoapRefresh } from '../network';
-import { HistoryParams, ShellModes, AccordionFolder } from '../misc';
-import { Tag, Tags } from '../tags';
-import { Folder, Folders } from '../folder';
-import { QueryChip } from '../search';
 import { Board, BoardHooksContext } from '../boards';
+import { Folder, Folders } from '../folder';
+import { Action, ActionFactory, AnyFunction, CombinedActionFactory } from '../integrations';
+import { AccordionFolder, HistoryParams, ShellModes } from '../misc';
+import { CreateTagResponse, Mods, SoapNotify, SoapRefresh, TagActionResponse } from '../network';
 import { INotificationManager } from '../notification';
+import { QueryChip } from '../search';
+import { Tag, Tags } from '../tags';
 
 export const getBridgedFunctions: () => {
 	createModal: (...params: any[]) => void;
@@ -185,6 +185,7 @@ export const useCurrentRoute: () => AppRoute | undefined;
 export const getCurrentRoute: () => AppRoute | undefined;
 
 // FOLDERS
+export const setFolders: (folders: Folders) => void;
 
 // ROOTS
 

@@ -4,35 +4,35 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { Container } from '@zextras/carbonio-design-system';
 import React, { FC } from 'react';
-import { Responsive, Container } from '@zextras/carbonio-design-system';
+import { AppRoute } from '../../types';
+import { useMobileView } from '../utils/utils';
+import ShellMobileNav from './shell-mobile-nav';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import ShellMobileNav from './shell-mobile-nav';
 
 type ShellNavigationBarProps = {
 	mobileNavIsOpen: boolean;
+	activeRoute: AppRoute;
 };
+const ShellNavigationBar: FC<ShellNavigationBarProps> = ({ mobileNavIsOpen, activeRoute }) => {
+	const isMobileView = useMobileView();
+	const isSearchView = activeRoute?.app === 'search';
+	return (
+		<Container
+			orientation="horizontal"
+			background="gray5"
+			width="fill"
+			height="fill"
+			mainAlignment="flex-start"
+			crossAlignment="flex-start"
+		>
+			{!isMobileView && <ShellPrimaryBar />}
+			{!isSearchView && <ShellSecondaryBar />}
 
-const ShellNavigationBar: FC<ShellNavigationBarProps> = ({ mobileNavIsOpen }) => (
-	<Container
-		orientation="horizontal"
-		background="gray5"
-		width="fit"
-		height="fill"
-		mainAlignment="flex-start"
-		crossAlignment="flex-start"
-	>
-		<Responsive mode="desktop">
-			<ShellPrimaryBar />
-			<ShellSecondaryBar />
-		</Responsive>
-		<Responsive mode="mobile">
-			<ShellMobileNav mobileNavIsOpen={mobileNavIsOpen} />
-		</Responsive>
-	</Container>
-);
-
+			{isMobileView && <ShellMobileNav mobileNavIsOpen={mobileNavIsOpen} />}
+		</Container>
+	);
+};
 export default ShellNavigationBar;

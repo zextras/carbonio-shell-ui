@@ -4,22 +4,22 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, ReactElement, useState, useContext } from 'react';
 import {
-	Container,
-	Text,
-	List,
-	Divider,
-	Row,
-	Padding,
 	ButtonOld as Button,
+	Container,
+	Divider,
 	Icon,
+	ItemComponentProps,
+	List,
 	ModalManagerContext,
-	ItemComponentProps
+	Padding,
+	Row,
+	Text
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import { map, filter, max, noop } from 'lodash';
-import { IdentityProps, CreateIdentityProps } from '../../../../types';
+import { filter, map, max } from 'lodash';
+import React, { ReactElement, useCallback, useContext, useState } from 'react';
+import { CreateIdentityProps, IdentityProps } from '../../../../types';
 
 type AccountsListProps = {
 	t: TFunction;
@@ -175,9 +175,6 @@ const AccountsList = ({
 		selectedIdentityId
 	]);
 	const onDelete = useCallback((): void => {
-		// I'm disabling lint as the DS is not defining the type
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
 		const closeModal = createModal({
 			title: t('label.permanent_delete_title', 'Are you sure to permanently delete this Persona?'),
 			onConfirm: () => {

@@ -70,7 +70,8 @@ export const SearchBar: FC = () => {
 	);
 	const [inputTyped, setInputTyped] = useState('');
 	const history = useHistory();
-	const { updateQuery, module, query, searchDisabled, setSearchDisabled } = useSearchStore();
+	const { updateQuery, module, query, searchDisabled, setSearchDisabled, tooltip } =
+		useSearchStore();
 	// const [moduleSelection, setModuleSelection] = useState<{
 	// 	value: string;
 	// 	label: string;
@@ -368,10 +369,10 @@ export const SearchBar: FC = () => {
 			<Tooltip
 				disabled={!searchDisabled}
 				maxWidth="100%"
-				label={t(
-					'search.unable_to_parse_query',
-					'Unable to complete the search, clear it and retry'
-				)}
+				label={
+					tooltip ??
+					t('search.unable_to_parse_query', 'Unable to complete the search, clear it and retry')
+				}
 			>
 				<Container orientation="horizontal" width="fill">
 					<Container width="fill">

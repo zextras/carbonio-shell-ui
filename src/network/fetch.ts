@@ -5,7 +5,13 @@
  */
 
 import { find, map, maxBy } from 'lodash';
-import { Account, ErrorSoapResponse, SoapContext, SoapResponse } from '../../types';
+import {
+	Account,
+	ErrorSoapBodyResponse,
+	ErrorSoapResponse,
+	SoapContext,
+	SoapResponse
+} from '../../types';
 import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
 import { report } from '../reporting';
 import { useAccountStore } from '../store/account';
@@ -85,7 +91,7 @@ const normalizeContext = (context: any): SoapContext => {
 	return context;
 };
 
-const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapResponse => {
+const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBodyResponse => {
 	const { pollingInterval, noOpTimeout } = useNetworkStore.getState();
 	const { usedQuota } = useAccountStore.getState();
 	clearTimeout(noOpTimeout);

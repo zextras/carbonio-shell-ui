@@ -23,14 +23,12 @@ const ShellHeader: FC<{
 	return (
 		<Grid
 			container
-			// direction="row"
 			sx={{
 				backgroundColor: theme.palette.gray3.regular,
 				minWidth: '100%',
 				maxHeight: '60px',
 				minHeight: '60px',
 				display: 'flex-start',
-				// flex: '0 0 auto',
 				alignItems: 'center'
 			}}
 		>
@@ -103,15 +101,6 @@ const ShellHeader: FC<{
 						<Padding right="large" width="fill">
 							{!isMobileView && children}
 						</Padding>
-						{/* {isMobile &&  ( */}
-						{/* <Container */}
-						{/*	orientation="horizontal" */}
-						{/*	mainAlignment="flex-end" */}
-						{/*	padding={{ right: 'extrasmall' }} */}
-						{/* > */}
-						{/* <Dropdown items={secondaryActions} placement="bottom-start">
-							<IconButton icon="Plus" />
-						</Dropdown> )} */}
 					</ContainerMUI>
 				</Grid>
 			</Catcher>

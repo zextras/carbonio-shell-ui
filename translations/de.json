@@ -1,7 +1,4 @@
 {
-    "login": {
-        "username": "Benutzername"
-    },
     "new": "Neu",
     "search": {
         "app": "Suchen",
@@ -178,19 +175,11 @@
         "reply_to_field_example": "z.B. Bob Smith",
         "set_reply_to_field": "Setzen Sie das Feld \"Antwort an\" der E-Mail-Nachricht auf:",
         "settings_sent_messages": "Einstellungen für gesendete Nachrichten",
-        "unsaved_changes": "Sie haben ungespeicherte Änderungen"
+        "unsaved_changes": "Sie haben ungespeicherte Änderungen",
+        "folder_external_account": "Ordner: Neues externes Konto"
     },
     "timezone": {
-        "kuwait_riyadh": "{{value}} Kuwait, Riyadh",
-        "asuncion": "{{value}} Asuncion",
-        "brasilia": "{{value}} Brasilia",
-        "chita": "{{value}} Tschita",
-        "dhaka": "{{value}} Dhaka",
-        "helsinki_kyiv_riga_sofia_tallinn_vilnius": "{{value}} Helsinki, Kiew, Riga, Sofia, Tallinn, Vilnius",
-        "kathmandu": "{{value}} Katmandu",
         "monrovia": "{{value}} Monrovia",
-        "pyongyang": "{{value}} Pjöngjang",
-        "us_canada_mountain": "{{value}} US/Kanada Mountain",
         "america_anchorage": "{{value}} Alaska",
         "america_argentina_buenos_aires": "{{value}} Argentinien",
         "america_bogota": "{{value}} Kolumbien",
@@ -335,7 +324,8 @@
         "enlarge": "Tafel vergrößern",
         "hide": "Ausblenden",
         "reduce": "Verkleinern",
-        "show_tabs": "Andere Tabs anzeigen"
+        "show_tabs": "Andere Tabs anzeigen",
+        "open_app": "In der App öffnen"
     },
     "locale": {
         "English": "Englisch",

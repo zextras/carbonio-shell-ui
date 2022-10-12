@@ -22,7 +22,7 @@
         "search_settings": {
             "labels": {
                 "include_search_in_shared_folder": "Uwzględnij udostępniony folder w wynikach wyszukiwań",
-                "include_search_in_spam_folder": "Uwzględnij folder Spamu w wynikach wyszukiwań",
+                "include_search_in_spam_folder": "Uwzględnij folder spamu w wynikach wyszukiwań",
                 "include_search_in_trash_folder": "Uwzględnij Kosz w wynikach wyszukiwań"
             }
         },
@@ -43,7 +43,7 @@
             "do_not_send_auto_replies": "Nie wysyłaj automatycznych odpowiedzi",
             "external_senders": {
                 "do_not_send_to_external": "Nie wysyłaj automatycznych odpowiedzi do nadawców spoza mojej domeny",
-                "send_custom_in_organisation": "Wyślij niestandardową wiadomość do użytkowników spoza mojej domeny",
+                "send_custom_in_organisation": "Wyślij niestandardową wiadomość do użytkowników spoza mojej organizacji",
                 "send_custom_not_in_organisation": "Wyślij niestandardową wiadomość do użytkowników spoza mojej organizacji i książki adresowej",
                 "send_standard_auto_reply": "Wysyłaj domyślną automatyczną odpowiedź"
             },
@@ -73,7 +73,7 @@
             "theme_options": "Opcje stylu"
         },
         "general_tab": "Ogólne",
-        "timezone_and_language": "Strefa czasowa i Język",
+        "timezone_and_language": "Strefa czasowa i język",
         "choose": "Wybierz",
         "accounts": "Konta"
     },
@@ -84,7 +84,7 @@
         "language": "Język",
         "no": "Nie",
         "out_of_office": "Poza biurem",
-        "time_zone": "Strefa Czasowa",
+        "time_zone": "Strefa czasowa",
         "reload": "Uruchom ponownie",
         "edit_to_start_search": "Edytuj pole wyszukiwania, aby rozpocząć nowe",
         "account_menu": "Menu konta",
@@ -93,7 +93,7 @@
         "account_username": "Nazwa użytkownika konta",
         "accounts": "Konta",
         "accounts_list": "Lista kont",
-        "add_delegate": "Dodaj delegację",
+        "add_delegate": "Dodaj pełnomocnika",
         "add_new_email": "Dodaj nowy adres e-mail",
         "add_persona": "Dodaj personę",
         "add_recovery_email": "Dodaj zapasowy adres e-mail",
@@ -101,7 +101,7 @@
         "advanced_settings": "Ustawienia zaawansowane",
         "choose_account": "Wybierz konto",
         "choose_folder": "Wybierz Folder",
-        "delegates": "Delegacje",
+        "delegates": "Pełnomocnicy",
         "delete": "Usuń",
         "delete_permanently": "Trwale usuń",
         "filter_folders": "Filtruj foldery",
@@ -125,11 +125,11 @@
         "recovery_email": "E-mail zapasowy",
         "save": "Zapisz",
         "save_and_leave": "Zapisz i opuść",
-        "save_delegate_folder": "Zapisuj kopie wysłanych wiadomości do folderu Wysłane delegacji",
-        "save_to_my_sent_folder": "Zapisuj kopie wysłanych wiadomości do mojego folderu Wysłane",
+        "save_delegate_folder": "Zapisuj kopię wysyłanych wiadomości do folderu Wysłane pełnomocnika",
+        "save_to_my_sent_folder": "Zapisuj kopię wysyłanych wiadomości do mojego folderu Wysłane",
         "secondary": "Drugorzędny",
-        "set_reply_to_field": "Ustaw pole \"Odpowiedz\" w wiadomości e-mail na:",
-        "settings_sent_messages": "Ustawienia wysłanych wiadomości",
+        "set_reply_to_field": "Pole \"Odpowiedz na ten adres\" w wiadomości e-mail",
+        "settings_sent_messages": "Ustawienia wysyłanych wiadomości",
         "test_settings": "Ustawienia testowe",
         "update_view": "Zaktualizuj widok",
         "use_persona": "Użyj tej persony",
@@ -145,29 +145,31 @@
         "email_address": "Adres e-mail",
         "email_server": "Serwer e-mail (np. \"mail.przykład.com\")",
         "external_account_settings": "Ustawienia Kont spoza mojej domeny",
-        "feedback": "Opinia",
+        "feedback": "Podziel się opinią",
         "inbox": "Skrzynka odbiorcza",
         "no_results": "Nie znaleziono wyników",
         "password": "Hasło",
         "passwords_recovery_settings": "Ustawienia odzyskiwania hasła",
         "reply_to_field_example": "np. Jan Kowalski",
         "unsaved_changes_line1": "Czy na pewno chcesz opuścić tą stronę bez zapisywania?",
-        "save_both_folders": "Zapisuj kopie wysłanych wiadomości do mojego folderu Wysłane i folderu Wysłane delegacji",
+        "save_both_folders": "Zapisuj kopię wysyłanych wiadomości do mojego folderu Wysłane i folderu Wysłane pełnomocnika",
         "unsaved_changes": "Masz niezapisane zmiany",
         "unsaved_changes_line2": "Wszystkie niezapisane zmiany zostaną utracone",
         "use_personas_line1": "Używaj person, aby szybko zmieniać duże ilości ustawień podczas wysyłania e-maili.",
         "use_personas_line2": "Na przykład, jeśli wysyłasz e-maile pełniąc określoną rolę w pracy, stwórz pod to personę.",
         "when_composing": "Podczas tworzenia, odpowiadania na i przekazywania dalej wiadomości w folderze (folderach):",
         "button": "Przycisk",
-        "click_to_copy": "Kliknij, aby skopiować"
+        "click_to_copy": "Kliknij, aby skopiować",
+        "folder_external_account": "Folder: Nowe Konto spoza mojej domeny"
     },
     "board": {
         "close_tab": "Zamknij Kartę",
         "close_tabs": "Zamknij wszystkie karty",
         "enlarge": "Powiększ tablicę",
-        "hide": "Ukryj tablicę",
-        "reduce": "Zmniejsz tablicę",
-        "show_tabs": "Pokaż inne karty"
+        "hide": "Ukryj okienko",
+        "reduce": "Zmniejsz okienko",
+        "show_tabs": "Pokaż inne karty",
+        "open_app": "Otwórz w aplikacji"
     },
     "locale": {
         "italian": "Włoski",
@@ -205,11 +207,6 @@
     },
     "new_tab": "Nowa Karta",
     "timezone": {
-        "harare_pretoria": "{{value}} Harare, Pretoria",
-        "beirut": "{{value}} Bejrut",
-        "egypt": "{{value}} Egipt",
-        "monrovia": "{{value}} Monrovia",
-        "us_canada_central": "{{value}} USA/Centralna Kanada",
         "africa_algiers": "{{value}} Zachodnio-środkowa Afryka",
         "africa_cairo": "{{value}} Egipt",
         "africa_casablanca": "{{value}} Casablanca",
@@ -375,11 +372,11 @@
         "report_something": "Chcesz coś zgłosić?",
         "write_here": "Tutaj napisz swoją opinię",
         "behaviors": "Zachowania programu",
-        "explanation": "Podziel się z nami swoją opinią o nowym doświadczeniu z serwerem Zextras. Twoje zdanie wiele dla nas znaczy i pozwala nam rozwijać produkt.",
-        "hint": "Pamiętaj: zdefiniuj temat używając modułów i wybierając obszar macro przed napisaniem oceny. Dziękujemy za pomoc."
+        "explanation": "Podziel się z nami swoją opinią o Twoim nowym doświadczeniu z serwerem Zextras. Twoje zdanie wiele dla nas znaczy i pozwala nam rozwijać produkt.",
+        "hint": "Pamiętaj: określ moduł i temat. Dziękujemy za pomoc."
     },
     "messages": {
-        "permanent_delete_body": "Jeśli trwale usuniesz tą Personę, nie będziesz w stanie jej już odzyskać. Kontynuować?",
+        "permanent_delete_body": "Jeśli trwale usuniesz tę personę, nie będziesz w stanie jej już odzyskać. Kontynuować?",
         "permanent_delete_title": "Czy na pewno chcesz trwale usunąć ten element?"
     },
     "passwords_recovery_settings": {

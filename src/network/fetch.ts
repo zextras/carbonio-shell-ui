@@ -85,7 +85,7 @@ const normalizeContext = (context: any): SoapContext => {
 	return context;
 };
 
-const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
+const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapResponse => {
 	const { pollingInterval, noOpTimeout } = useNetworkStore.getState();
 	const { usedQuota } = useAccountStore.getState();
 	clearTimeout(noOpTimeout);
@@ -130,9 +130,10 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R => {
 			..._context
 		});
 	}
+
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
-	return res.Body[`${api}Response`] as R;
+	return res?.Body?.Fault ? (res.Body as ErrorSoapBodyResponse) : (res.Body[`${api}Response`] as R);
 };
 export const getSoapFetch =
 	(app: string) =>

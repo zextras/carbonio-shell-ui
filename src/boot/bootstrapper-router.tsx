@@ -4,14 +4,22 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ModalManagerContext, SnackbarManagerContext } from '@zextras/carbonio-design-system';
+import {
+	ModalManager,
+	ModalManagerContext,
+	SnackbarManager,
+	SnackbarManagerContext
+} from '@zextras/carbonio-design-system';
 import React, { FC, useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Route, Switch, useHistory, useParams } from 'react-router-dom';
 import { BASENAME, IS_STANDALONE } from '../constants';
+import { NotificationPermissionChecker } from '../notification/NotificationPermissionChecker';
 import ShellView from '../shell/shell-view';
 import { useAppStore } from '../store/app';
 import { useBridge } from '../store/context-bridge';
 import AppLoaderMounter from './app/app-loader-mounter';
+import { registerDefaultViews } from './app/default-views';
 
 const ContextBridge: FC = () => {
 	const history = useHistory();
@@ -37,18 +45,32 @@ const StandaloneListener: FC = () => {
 	return null;
 };
 
+const DefaultViewsRegister: FC = () => {
+	const [t] = useTranslation();
+	useEffect(() => {
+		registerDefaultViews(t);
+	}, [t]);
+	return null;
+};
+
 const BootstrapperRouter: FC = () => (
 	<BrowserRouter basename={BASENAME}>
-		{IS_STANDALONE && (
-			<Switch>
-				<Route path={'/:route'}>
-					<StandaloneListener />
-				</Route>
-			</Switch>
-		)}
-		<ContextBridge />
-		<AppLoaderMounter />
-		<ShellView />
+		<SnackbarManager>
+			<ModalManager>
+				{IS_STANDALONE && (
+					<Switch>
+						<Route path={'/:route'}>
+							<StandaloneListener />
+						</Route>
+					</Switch>
+				)}
+				<DefaultViewsRegister />
+				<NotificationPermissionChecker />
+				<ContextBridge />
+				<AppLoaderMounter />
+				<ShellView />
+			</ModalManager>
+		</SnackbarManager>
 	</BrowserRouter>
 );
 export default BootstrapperRouter;

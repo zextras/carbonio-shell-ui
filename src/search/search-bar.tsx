@@ -375,6 +375,7 @@ export const SearchBar: FC = () => {
 			>
 				<Container orientation="horizontal" width="fill">
 					<Container width="fill">
+						{/* <Container minWidth={searchbarMinWidth} width="fill"> */}
 						<Container orientation="horizontal" width="fill">
 							<Padding right="large" />
 							<Container width="fit">

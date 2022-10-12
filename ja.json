@@ -1,7 +1,4 @@
 {
-    "changelog": {
-        "title": "変更ログ"
-    },
     "settings": {
         "out_of_office": {
             "labels": {
@@ -60,10 +57,6 @@
         },
         "accounts": "アカウント",
         "choose": "選択してください"
-    },
-    "login": {
-        "username": "ユーザー名",
-        "verify_caps_lock": "Caps Lockが有効になっていないことを確認してから、現在のユーザー名とパスワードを再入力してください"
     },
     "new": "新規",
     "search": {
@@ -182,7 +175,8 @@
         "address": "住所",
         "go_back": "戻る",
         "save": "保存する",
-        "secondary": "セカンダリー"
+        "secondary": "セカンダリー",
+        "folder_external_account": "フォルダ: 新しい外部アカウント"
     },
     "locale": {
         "label_turkish": "トルコ語- {{value}}",
@@ -215,30 +209,12 @@
         "turkish": "トルコ語",
         "french": "フランス語",
         "label_french": "フランス語-{{value}}",
-        "vietnamese": "ベトナム語"
+        "vietnamese": "ベトナム語",
+        "polish": "ポーランド語"
     },
     "timezone": {
-        "magadan": "{{value}}マガダン",
-        "sri_jayawardenepura_kotte": "{{value}}スリ・ジャヤワルダナプラ・コッテ",
-        "amsterdam_berlin_bern_rome_stockholm_vienna": "{{value}}アムステルダム、ベルリン、ベルン、ローマ、ストックホルム、ウィーン",
-        "asuncion": "{{value}}アスンシオン",
-        "baja_california": "{{value}}バハ・カリフォルニア",
-        "beirut": "{{value}}ベイルート",
-        "cape_verde_is": "{{value}}カーボベルデ",
         "central_america": "{{value}}中央アメリカ",
-        "christmas_island": "{{value}}クリスマス島",
-        "damascus": "{{value}}ダマスカス",
-        "ekaterinburg_rtz_4": "{{value}}エカテリンブルク（RTZ 4）",
-        "greenland": "{{value}}グリーンランド",
-        "iraq": "{{value}}イラク",
-        "jordan": "{{value}}ヨルダン",
-        "korea": "{{value}}韓国",
         "manaus": "{{value}}マナウス",
-        "namibia": "{{value}}ナミビア",
-        "port_louis": "{{value}}ポートルイス",
-        "saskatchewan": "{{value}}サスカチュワン",
-        "us_canada_eastern": "{{value}}アメリカ/カナダ東部",
-        "yangon": "{{value}}ヤンゴン",
         "africa_algiers": "{{value}}西中央アフリカ",
         "africa_cairo": "{{value}}エジプト",
         "africa_casablanca": "{{value}}カサブランカ",
@@ -383,7 +359,8 @@
         "enlarge": "ボードを拡大する",
         "hide": "ボードを隠す",
         "reduce": "ボードを減らす",
-        "show_tabs": "他のタブを表示する"
+        "show_tabs": "他のタブを表示する",
+        "open_app": "アプリで開く"
     },
     "feedback": {
         "behaviors": "行動",

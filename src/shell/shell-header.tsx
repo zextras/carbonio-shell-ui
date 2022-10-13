@@ -47,8 +47,8 @@ const ShellHeader: FC<{
 							<IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} />
 						</Padding>
 					</Responsive>
-					<Container width={250} height={32} crossAlignment="flex-start">
-						<Logo height="32px" />
+					<Container width="15.625rem" height="2rem" crossAlignment="flex-start">
+						<Logo height="2rem" />
 					</Container>
 					<Padding horizontal="large">
 						<CreationButton />

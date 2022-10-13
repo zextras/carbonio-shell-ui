@@ -29,9 +29,9 @@ import { AppBoard } from './board';
 
 const BoardContainerComp = styled.div<{ expanded: boolean; minimized: boolean }>`
 	position: fixed;
-	top: 60px;
+	top: 3.75rem;
 	bottom: 0;
-	left: 48px;
+	left: 3rem;
 	right: 0;
 	background-color: rgba(0, 0, 0, 0);
 	pointer-events: none;
@@ -51,18 +51,18 @@ const BoardContainerComp = styled.div<{ expanded: boolean; minimized: boolean }>
 const Board = styled(Container)<{ expanded: boolean }>`
 	z-index: 5;
 	position: absolute;
-	left: 24px;
+	left: 1.5rem;
 	bottom: 0;
 	width: 700px;
 	height: 70vh;
 	min-height: 400px;
-	box-shadow: 0 2px 5px 0 rgba(125, 125, 125, 0.5);
+	box-shadow: 0 0.125rem 0.3125rem 0 rgba(125, 125, 125, 0.5);
 	pointer-events: auto;
 	${({ expanded }): any =>
 		expanded &&
 		css`
-			height: calc(100% - 24px);
-			width: calc(100% - 24px * 2);
+			height: calc(100% - 1.5rem);
+			width: calc(100% - 1.5rem * 2);
 			min-height: auto;
 		`}
 `;

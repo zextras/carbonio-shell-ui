@@ -26,7 +26,7 @@ interface AdvancedSettingsProps {
 const AdvancedSettings = ({ t }: AdvancedSettingsProps): ReactElement => (
 	<>
 		<Container
-			minWidth="calc(min(100%, 512px))"
+			minWidth="calc(min(100%, 32rem))"
 			width="fill"
 			padding={{ all: 'large' }}
 			height="fit"
@@ -45,7 +45,7 @@ const AdvancedSettings = ({ t }: AdvancedSettingsProps): ReactElement => (
 		>
 			<Checkbox label={t('label.change_pop', 'Change POP port')} width="fit" />
 			<Padding right="large" />
-			<Input width="100px" label={t('label.pop_port', 'POP port')} value="110" onChange={noop} />
+			<Input width="6.25rem" label={t('label.pop_port', 'POP port')} value="110" onChange={noop} />
 		</Row>
 		<Row
 			width="fill"

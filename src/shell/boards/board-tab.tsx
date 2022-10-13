@@ -21,17 +21,17 @@ import { closeBoard, setCurrentBoard, useBoardStore } from '../../store/boards';
 
 const TabContainer = styled(Row)<RowProps & { active: boolean }>`
 	cursor: pointer;
-	height: 28px;
+	height: 1.75rem;
 	width: fit-content;
 	user-select: none;
 	background-color: ${({ theme, active }): string =>
 		active ? theme.palette.gray3.regular : theme.palette.gray5.regular};
-	border-radius: 2px;
-	padding: 2px 4px;
+	border-radius: 0.125rem;
+	padding: 0.125rem 0.25rem;
 `;
 
 const VerticalDivider = styled(Container)`
-	width: 1px;
+	width: 0.0625rem;
 	height: 100%;
 	background: ${({ theme }): string => theme.palette.gray3.regular};
 	margin: ${({ theme }): string => theme.sizes.padding.extrasmall};
@@ -83,7 +83,7 @@ export const AppBoardTab: FC<{ id: string; icon: string; title: string }> = ({
 						iconColor="secondary"
 						icon="Close"
 						onClick={onRemove}
-						style={{ padding: '2px', width: '24px', height: '24px' }}
+						style={{ padding: '0.125rem', width: '1.5rem', height: '1.5rem' }}
 					/>
 				</Tooltip>
 			</TabContainer>

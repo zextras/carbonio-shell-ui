@@ -20,7 +20,7 @@ const Panel = styled(Container)<{ mode: string }>`
 	top: 0;
 	bottom: 0;
 	transition: width 0.2s;
-	border-left: 1px solid ${({ theme }): string => theme.palette.gray2.regular};
+	border-left: 0.0625rem solid ${({ theme }): string => theme.palette.gray2.regular};
 `;
 const Spacer = styled.div<{ mode: string }>`
 	position: relative;

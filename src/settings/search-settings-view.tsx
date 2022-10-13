@@ -58,7 +58,7 @@ const SearchSettingsView: FC<{
 	return (
 		<FormSubSection
 			label={sectionTitle.label}
-			minWidth="calc(min(100%, 512px))"
+			minWidth="calc(min(100%, 32rem))"
 			width="50%"
 			id={sectionTitle.id}
 		>

@@ -33,10 +33,10 @@ export const TabsList: FC = () => {
 		<Row wrap="nowrap" height="100%" mainAlignment="flex-start" takeAvailableSpace>
 			<Row
 				ref={tabContainerRef}
-				height="48px"
+				height="3rem"
 				mainAlignment="flex-start"
 				style={{ overflow: 'hidden' }}
-				width="calc(100% - 8px)"
+				width="calc(100% - 0.5rem)"
 			>
 				{boards &&
 					map(boards, (tab) => (
@@ -46,7 +46,7 @@ export const TabsList: FC = () => {
 			{hiddenTabsCount > 0 && (
 				<>
 					<Container width="fit" padding={{ horizontal: 'extrasmall', vertical: 'extrasmall' }}>
-						<Container width="1px" height="fill" background="gray3" />
+						<Container width="0.0625rem" height="fill" background="gray3" />
 					</Container>
 					<Tooltip label={t('board.show_tabs', 'Show other tabs')} placement="top">
 						<Dropdown

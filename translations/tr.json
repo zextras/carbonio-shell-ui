@@ -1,10 +1,4 @@
 {
-    "login": {
-        "password": "Parola"
-    },
-    "logout_modal": {
-        "warning": "Oturumunuz kapatılacak"
-    },
     "message": {
         "snackbar": {
             "settings_saved": "Değişiklikler başarıyla kaydedildi",
@@ -105,7 +99,8 @@
         "enlarge": "Panoyu büyüt",
         "hide": "Panoyu gizle",
         "reduce": "Panoyu küçült",
-        "show_tabs": "Diğer sekmeleri göster"
+        "show_tabs": "Diğer sekmeleri göster",
+        "open_app": "Uygulamada aç"
     },
     "label": {
         "cancel": "İptal",
@@ -189,7 +184,8 @@
         "save_both_folders": "Gönderilen mesajların bir kopyasını Gönderilenler klasörüme ve yardımcımın klasörüne kaydet",
         "use_personas_line1": "E-posta mesajları gönderirken bir çok ayarı kolayca değiştirmek için kişilik özelliğini kullanabilirsiniz.",
         "button": "Buton",
-        "click_to_copy": "Kopyalamak için tıklayın"
+        "click_to_copy": "Kopyalamak için tıklayın",
+        "folder_external_account": "Klasör: Yeni Dış Hesap"
     },
     "locale": {
         "label_italian": "Italian - {{value}}",
@@ -226,16 +222,8 @@
         "polish": "Polish"
     },
     "timezone": {
-        "anadyr_petropavlovsk_kamchatsky_rtz11": "{{value}} Anadyr, Petropavlovsk-Kamchatsky (RTZ 11)",
-        "baku": "{{value}} Baku",
-        "casablanca": "{{value}} Casablanca",
         "coordinated_universal_time": "{{value}} Coordinated Universal Time",
-        "eucla": "{{value}} Eucla",
-        "helsinki_kyiv_riga_sofia_tallinn_vilnius": "{{value}} Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius",
-        "kaliningrad_rtz_1": "{{value}} Kaliningrad (RTZ 1)",
         "mid_atlantic": "{{value}} Mid-Atlantic",
-        "nuku_alofa": "{{value}} Nuku’alofa",
-        "tehran": "{{value}} Tehran",
         "africa_cairo": "{{value}} Egypt",
         "africa_casablanca": "{{value}} Casablanca",
         "africa_harare": "{{value}} Harare, Pretoria",

@@ -3,8 +3,9 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useMemo, useRef } from 'react';
 import { Container } from '@zextras/carbonio-design-system';
+import styled from 'styled-components';
 // TinyMCE so the global var exists
 // eslint-disable-next-line no-unused-vars
 import tinymce from 'tinymce/tinymce';
@@ -44,6 +45,7 @@ import 'tinymce/plugins/directionality';
 import 'tinymce/plugins/autoresize';
 
 import { Editor } from '@tinymce/tinymce-react';
+import { useTranslation } from 'react-i18next';
 import { useUserSettings } from '../account';
 
 type ComposerProps = {
@@ -57,14 +59,21 @@ type ComposerProps = {
 	value?: string;
 	/** The base url to append to the resource urls */
 	baseAssetsUrl?: string;
+	onFileSelect?: (arg: any) => void;
 };
+
+export const FileInput = styled.input`
+	display: none;
+`;
 
 const Composer: FC<ComposerProps> = ({
 	onEditorChange,
+	onFileSelect,
 	inline = false,
 	value,
 	baseAssetsUrl,
 	initialValue,
+
 	...rest
 }) => {
 	const _onEditorChange = useCallback(
@@ -85,7 +94,15 @@ const Composer: FC<ComposerProps> = ({
 		}),
 		[prefs]
 	);
-
+	const inputRef = useRef<any>();
+	const onFileClick = useCallback(() => {
+		if (inputRef.current) {
+			inputRef.current.value = null;
+			inputRef.current.click();
+		}
+	}, []);
+	const { t } = useTranslation();
+	const inlineLabel = useMemo(() => t('label.add_inline_image', 'Add inline image'), [t]);
 	return (
 		<Container
 			height="100%"
@@ -93,12 +110,42 @@ const Composer: FC<ComposerProps> = ({
 			mainAlignment="flex-start"
 			style={{ overflowY: 'hidden' }}
 		>
+			<FileInput
+				type="file"
+				ref={inputRef}
+				accept="image/*"
+				onChange={(): void => {
+					onFileSelect && onFileSelect({ editor: tinymce, files: inputRef?.current?.files });
+				}}
+				multiple
+			/>
+
 			<Editor
 				initialValue={initialValue}
 				value={value}
 				init={{
 					content_css: `${baseAssetsUrl}/tinymce/skins/content/default/content.css`,
+					setup: (editor: any): void => {
+						if (onFileSelect)
+							editor.ui.registry.addMenuButton('imageSelector', {
+								icon: 'gallery',
+								tooltip: 'Select Image',
+								fetch: (callback: any) => {
+									const items = [
+										{
+											type: 'menuitem',
+											text: inlineLabel,
+											onAction: (): void => {
+												onFileClick();
+											}
+										}
+									];
+									callback(items);
+								}
+							});
+					},
 					min_height: 350,
+					auto_focus: true,
 					menubar: false,
 					statusbar: false,
 					branding: false,
@@ -170,7 +217,7 @@ const Composer: FC<ComposerProps> = ({
 					toolbar: inline
 						? false
 						: // eslint-disable-next-line max-len
-						  'fontselect fontsizeselect styleselect visualblocks| bold italic underline strikethrough | removeformat code | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | ltr rtl | insertfile image ',
+						  'fontselect fontsizeselect styleselect visualblocks| bold italic underline strikethrough | removeformat code | alignleft aligncenter alignright alignjustify | forecolor backcolor | bullist numlist outdent indent | ltr rtl | insertfile image | imageSelector ',
 					quickbars_insert_toolbar: inline ? 'bullist numlist' : '',
 					quickbars_selection_toolbar: inline
 						? 'bold italic underline | forecolor backcolor | removeformat | quicklink'
@@ -178,7 +225,7 @@ const Composer: FC<ComposerProps> = ({
 					contextmenu: inline ? '' : '',
 					toolbar_mode: 'wrap',
 					forced_root_block: false,
-					content_style: `body {  color: ${defaultStyle?.color}; font-size: ${defaultStyle?.fontSize}; font-family: ${defaultStyle?.font}; }`,
+					content_style: `body  {  color: ${defaultStyle?.color}; font-size: ${defaultStyle?.fontSize}; font-family: ${defaultStyle?.font}; }`,
 					visualblocks_default_state: false,
 					end_container_on_empty_block: true
 				}}

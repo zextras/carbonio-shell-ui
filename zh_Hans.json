@@ -58,9 +58,6 @@
             }
         }
     },
-    "login": {
-        "verify_caps_lock": "检查大写锁定处于关闭状态，然后重新键入当前的用户名和密码"
-    },
     "new": "新建",
     "search": {
         "app": "搜索",
@@ -178,7 +175,8 @@
         "use_persona": "使用该角色",
         "use_personas_line1": "使用角色以在发送邮件消息时快速变更多项设置。",
         "use_personas_line2": "例如，如果您有时候会在工作中以特定角色发送邮件，可为其创建角色。",
-        "recovery_email": "恢复邮件"
+        "recovery_email": "恢复邮件",
+        "folder_external_account": "文件夹：新外部账户"
     },
     "locale": {
         "English": "英语",
@@ -215,16 +213,8 @@
         "polish": "波兰语"
     },
     "timezone": {
-        "atlantic_time_canada": "{{value}} 大西洋时间（加拿大）",
-        "brasilia": "{{value}} 巴西利亚",
-        "chennai_kolkata_mumbai_new_delhi": "{{value}} 金奈、加尔各答、孟买、新德里",
         "dateline": "{{value}} 日期线",
-        "greenland": "{{value}} 格陵兰",
-        "jerusalem": "{{value}} 耶路撒冷",
-        "la_paz": "{{value}} 拉巴斯",
         "nairobi": "{{value}} 内罗毕",
-        "vladivostok_magadan": "{{value}} 海参崴、马加丹（RTZ 9）",
-        "saskatchewan": "{{value}} 萨斯喀彻温",
         "pacific_honolulu": "{{value}} 夏威夷",
         "pacific_midway": "{{value}} 萨摩亚",
         "pacific_tongatapu": "{{value}} 努库阿洛法",
@@ -369,7 +359,8 @@
         "enlarge": "放大看板",
         "hide": "隐藏看板",
         "reduce": "缩小看板",
-        "show_tabs": "显示其他标签页"
+        "show_tabs": "显示其他标签页",
+        "open_app": "在应用中打开"
     },
     "feedback": {
         "other": "其他",

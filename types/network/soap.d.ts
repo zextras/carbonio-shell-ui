@@ -10,10 +10,12 @@ import { BaseFolder, LinkFolderFields, SearchFolderFields } from '../misc';
 export type SoapHeader = {
 	context: SoapContext;
 };
+
 export type SuccessSoapResponse<R> = {
 	Body: Record<string, R>;
 	Header: SoapHeader;
 };
+
 export type SoapFault = {
 	Detail: {
 		Error: {
@@ -25,10 +27,13 @@ export type SoapFault = {
 		Text: string;
 	};
 };
+
+export type ErrorSoapBodyResponse = {
+	Fault: SoapFault;
+};
+
 export type ErrorSoapResponse = {
-	Body: {
-		Fault: SoapFault;
-	};
+	Body: ErrorSoapBodyResponse;
 	Header: SoapHeader;
 };
 
@@ -74,12 +79,3 @@ export type SoapNotify = {
 	};
 	deleted: string[];
 };
-
-export class SoapException extends Error {
-	constructor(response: ErrorSoapResponse) {
-		super(response?.Body.Fault.Reason.Text);
-		this.response = response;
-	}
-
-	response: ErrorSoapResponse;
-}

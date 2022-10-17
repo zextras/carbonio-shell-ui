@@ -348,7 +348,7 @@
     "user_quota": {
         "limited": "{{quota}}% dostępnej przestrzeni zostało zapełnione",
         "space_full": "Wygląda na to, że cała dostępna przestrzeń jest zapełniona",
-        "title": "Przydział przestrzeni dla użytkownika",
+        "title": "Limit przestrzeni dla użytkownika",
         "unlimited": "Masz nieograniczoną ilość dostępnej przestrzeni"
     },
     "module": {

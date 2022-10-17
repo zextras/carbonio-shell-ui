@@ -30,7 +30,14 @@ import {
 	AccountRightTarget,
 	SoapFetch
 } from '../account';
-import { Mods, TagActionResponse, CreateTagResponse, SoapNotify, SoapRefresh } from '../network';
+import {
+	Mods,
+	TagActionResponse,
+	CreateTagResponse,
+	SoapNotify,
+	SoapRefresh,
+	ErrorSoapResponse
+} from '../network';
 import { HistoryParams, ShellModes, AccordionFolder } from '../misc';
 import { Tag, Tags } from '../tags';
 import { Folder, Folders } from '../folder';
@@ -123,7 +130,6 @@ export const soapFetch: SoapFetch;
 export const xmlSoapFetch: SoapFetch;
 export const report: (error: Error, hint?: unknown) => void;
 export const setAppContext: <T>(obj: T) => void;
-export class SoapException {}
 
 export const removeActions: (...ids: Array<string>) => void;
 export const registerActions: (

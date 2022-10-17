@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.39](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.38...v0.4.39) (2022-10-17)
+
+
+### Bug Fixes
+
+* exports fix ([#137](https://github.com/zextras/carbonio-shell-ui/issues/137)) ([cf4ca25](https://github.com/zextras/carbonio-shell-ui/commit/cf4ca2568599f7041741d3ef6a69c7e3dd1ded68))
+* manage soap errors ([#138](https://github.com/zextras/carbonio-shell-ui/issues/138)) ([b26ed75](https://github.com/zextras/carbonio-shell-ui/commit/b26ed75a061a7b01e2e2c1205e5e8a33efa8904f))
+
 ### [0.4.38](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.37...v0.4.38) (2022-10-12)
 
 ### [0.4.37](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.36...v0.4.37) (2022-09-28)

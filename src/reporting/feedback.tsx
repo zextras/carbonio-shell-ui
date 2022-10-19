@@ -4,34 +4,34 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Event, Severity } from '@sentry/browser';
-import {
-	ButtonOld as Button,
-	Container,
-	ContainerProps,
-	Icon,
-	Row,
-	Select,
-	SnackbarManagerContext,
-	Text
-} from '@zextras/carbonio-design-system';
-import { filter, find, map } from 'lodash';
 import React, {
-	FC,
-	useCallback,
-	useContext,
 	useEffect,
-	useMemo,
+	useState,
+	useCallback,
 	useReducer,
-	useState
+	useMemo,
+	FC,
+	useContext
 } from 'react';
-import { TFunction } from 'react-i18next';
+import {
+	Text,
+	ButtonOld as Button,
+	Select,
+	Container,
+	Row,
+	Icon,
+	SnackbarManagerContext,
+	ContainerProps,
+	SelectItem
+} from '@zextras/carbonio-design-system';
+import { Severity, Event } from '@sentry/browser';
+import { filter, find, map } from 'lodash';
 import styled from 'styled-components';
+import { TFunction, useTranslation } from 'react-i18next';
 import { useUserAccount } from '../store/account';
+import { feedback } from './functions';
 import { useAppList } from '../store/app';
 import { closeBoard } from '../store/boards';
-import { getT } from '../store/i18n';
-import { feedback } from './functions';
 
 const TextArea = styled.textarea<{ size?: string }>`
 	width: 100%;
@@ -218,7 +218,8 @@ const _LabelFactory: FC<{
 );
 
 const Feedback: FC = () => {
-	const t = getT();
+	const [t] = useTranslation();
+	const topics = useMemo(() => getTopics(t), [t]);
 	const allApps = useAppList();
 	const apps = useMemo(
 		() => filter(allApps, (app) => !!app.sentryDsn),
@@ -370,9 +371,9 @@ const Feedback: FC = () => {
 					</Row>
 					<Select
 						label={t('feedback.select_a_topic', 'Select a topic')}
-						items={getTopics(t)}
+						items={topics}
 						defaultSelection={
-							find(getTopics(t), ['value', event.extra?.topic]) ?? { label: '', value: '' }
+							find(topics, ['value', event.extra?.topic]) ?? { label: '', value: '' }
 						}
 						onChange={onTopicSelect}
 						LabelFactory={LabelFactory}

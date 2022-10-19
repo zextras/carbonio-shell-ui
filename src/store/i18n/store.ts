@@ -5,104 +5,26 @@
  */
 
 import i18next, { i18n } from 'i18next';
-import Backend from 'i18next-http-backend';
-import produce from 'immer';
-import { dropRight, forEach, reduce } from 'lodash';
+import { dropRight, forEach, map, reduce } from 'lodash';
 import create from 'zustand';
+import Backend from 'i18next-http-backend';
 import { CarbonioModule, I18nState } from '../../../types';
-import { SHELL_APP_ID } from '../../constants';
-import { useAccountStore } from '../account';
 
-const addShell = (apps: Array<CarbonioModule>): Array<CarbonioModule> => [
-	...apps,
-	{
-		commit: '',
-		description: '',
-		js_entrypoint: '',
-		name: SHELL_APP_ID,
-		priority: -1,
-		version: '',
-		type: 'shell',
-		attrKey: '',
-		icon: '',
-		display: 'Shell'
-	}
-];
+const defaultI18n = i18next.createInstance();
 
-const { settings } = useAccountStore.getState();
-
-const defaultLng =
-	(settings?.prefs?.zimbraPrefLocale as string) ??
-	(settings?.attrs?.zimbraLocale as string) ??
-	'en';
-
-const defaultI18n = i18next.createInstance({ lng: defaultLng });
-
-export const useI18nStore = create<I18nState>((set) => ({
+export const useI18nStore = create<I18nState>(() => ({
 	instances: {},
 	defaultI18n,
-	locale: 'en',
-	setters: {
-		setLocale: (locale: string): void => {
-			set(
-				produce((state: I18nState) => {
-					state.locale = locale;
-					forEach(state.instances, (i18nInst) => i18nInst.changeLanguage(locale));
-				})
-			);
-		}
-	},
-	getters: {
-		getLocale: (state: I18nState): string => state.locale
-	},
-	actions: {
-		addI18n: (apps: Array<CarbonioModule>, locale: string): void => {
-			const appsWithShell = addShell(apps);
-			set(
-				produce((state: I18nState) => {
-					state.instances = reduce(
-						appsWithShell,
-						(acc, app) => {
-							const newI18n = i18next.createInstance();
-							newI18n
-								// load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
-								// learn more: https://github.com/i18next/i18next-http-backend
-								.use(Backend)
-								// init i18next
-								// for all options read: https://www.i18next.com/overview/configuration-options
-								.init({
-									returnEmptyString: true,
-									compatibilityJSON: 'v3',
-									fallbackLng: 'en',
-									lng: locale,
-									debug: false,
-									interpolation: {
-										escapeValue: false // not needed for react as it escapes by default
-									},
-									missingKeyHandler: (_, __, key) => {
-										// eslint-disable-next-line no-console
-										console.warn(`Missing translation with key '${key}'`);
-									},
-									backend: {
-										loadPath:
-											app.name === SHELL_APP_ID
-												? `${BASE_PATH}/i18n/{{lng}}.json`
-												: `${dropRight(app.js_entrypoint.split('/')).join('/')}/i18n/{{lng}}.json`
-									}
-								});
-							// eslint-disable-next-line no-param-reassign
-							acc[app.name] = newI18n;
-							return acc;
-						},
-						{} as Record<string, i18n>
-					);
-					state.defaultI18n.t = state.instances[SHELL_APP_ID].t;
-					state.locale = locale;
-				})
-			);
-		}
-	}
+	locale: 'en'
 }));
+
+export const setLocale = (locale: string): void => {
+	const { instances } = useI18nStore.getState();
+	forEach(instances, (i18nInst) => i18nInst.changeLanguage(locale));
+	useI18nStore.setState(() => ({
+		locale
+	}));
+};
 
 defaultI18n
 	.use(Backend)
@@ -111,7 +33,7 @@ defaultI18n
 	.init({
 		returnEmptyString: true,
 		compatibilityJSON: 'v3',
-		lng: defaultLng,
+		lng: useI18nStore.getState().locale,
 		fallbackLng: 'en',
 		debug: false,
 		interpolation: {
@@ -125,3 +47,41 @@ defaultI18n
 			loadPath: `${BASE_PATH}/i18n/{{lng}}.json`
 		}
 	});
+
+export const addI18n = (apps: CarbonioModule[]): void => {
+	useI18nStore.setState({
+		instances: reduce(
+			apps,
+			(acc, app) => {
+				const newI18n = i18next.createInstance();
+				newI18n
+					// load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
+					// learn more: https://github.com/i18next/i18next-http-backend
+					.use(Backend)
+					// init i18next
+					// for all options read: https://www.i18next.com/overview/configuration-options
+					.init({
+						returnEmptyString: true,
+						compatibilityJSON: 'v3',
+						lng: useI18nStore.getState().locale,
+						fallbackLng: 'en',
+						debug: false,
+						interpolation: {
+							escapeValue: false // not needed for react as it escapes by default
+						},
+						missingKeyHandler: (_, __, key) => {
+							// eslint-disable-next-line no-console
+							console.warn(`Missing translation with key '${key}'`);
+						},
+						backend: {
+							loadPath: `${dropRight(app.js_entrypoint.split('/')).join('/')}/i18n/{{lng}}.json`
+						}
+					});
+				// eslint-disable-next-line no-param-reassign
+				acc[app.name] = newI18n;
+				return acc;
+			},
+			{} as Record<string, i18n>
+		)
+	});
+};

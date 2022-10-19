@@ -6,27 +6,25 @@
 /* eslint-disable no-param-reassign */
 
 import produce from 'immer';
-import { TFunction } from 'react-i18next';
-import { AppState, PrimaryBarView, SettingsView } from '../../../types';
-import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
-import DevBoard from '../../dev/dev-board';
-import DevBoardTrigger from '../../dev/dev-board-trigger';
-import Feedback from '../../reporting/feedback';
+import { TFunction } from 'i18next';
+import { useAppStore } from '../../store/app';
 import { SearchAppView } from '../../search/search-app-view';
-import AccountWrapper from '../../settings/account-wrapper';
-import GeneralSettings from '../../settings/general-settings';
-import { settingsSubSections } from '../../settings/general-settings-sub-sections';
 import { SettingsAppView } from '../../settings/settings-app-view';
 import { SettingsSidebar } from '../../settings/settings-sidebar';
-import { useAppStore } from '../../store/app';
-import { useI18nStore } from '../../store/i18n';
+import { AppState, PrimaryBarView, SettingsView } from '../../../types';
+import GeneralSettings from '../../settings/general-settings';
+import Feedback from '../../reporting/feedback';
+import DevBoard from '../../dev/dev-board';
+import DevBoardTrigger from '../../dev/dev-board-trigger';
+import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
+import AccountWrapper from '../../settings/account-wrapper';
+import { settingsSubSections } from '../../settings/general-settings-sub-sections';
 
 const settingsRoute = {
 	route: SETTINGS_APP_ID,
 	id: SETTINGS_APP_ID,
 	app: SETTINGS_APP_ID
 };
-
 const settingsPrimaryBar = (t: TFunction): PrimaryBarView => ({
 	id: SETTINGS_APP_ID,
 	app: SETTINGS_APP_ID,
@@ -58,7 +56,7 @@ const settingsGeneralView = (t: TFunction): SettingsView => ({
 	app: SHELL_APP_ID,
 	component: GeneralSettings,
 	icon: 'SettingsModOutline',
-	label: t('settings.general.general', 'General Settings'),
+	label: t('settings.general.general', 'General'),
 	position: 1,
 	subSections: settingsSubSections(t)
 });

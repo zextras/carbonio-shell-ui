@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { map } from 'lodash';
+import React, { FC, ReactElement, useCallback, useMemo } from 'react';
 import {
 	Button,
 	Chip,
@@ -13,15 +15,13 @@ import {
 	Padding,
 	Text
 } from '@zextras/carbonio-design-system';
-import { map } from 'lodash';
-import React, { FC, ReactElement, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { QueryChip, ResultLabelType } from '../../types';
 import AppContextProvider from '../boot/app/app-context-provider';
-import { SEARCH_APP_ID } from '../constants';
-import { useAppStore } from '../store/app';
-import { getT } from '../store/i18n';
 import { useSearchStore } from './search-store';
+import { QueryChip, ResultLabelType } from '../../types';
+import { useAppStore } from '../store/app';
+import { SEARCH_APP_ID } from '../constants';
 // import { RouteLeavingGuard } from '../ui-extras/nav-guard';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -46,7 +46,7 @@ const ResultsHeader: FC<{ label: string; labelType?: ResultLabelType }> = ({
 	label,
 	labelType = ResultLabelType.NORMAL
 }) => {
-	const t = getT();
+	const [t] = useTranslation();
 	const [query, updateQuery] = useQuery();
 	const [, setDisabled] = useDisableSearch();
 

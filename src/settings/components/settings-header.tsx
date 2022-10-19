@@ -4,19 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { FC, useEffect } from 'react';
 import {
-	Breadcrumbs,
-	ButtonOld as Button,
-	Container,
-	Divider,
 	Padding,
 	Row,
-	Text
+	Text,
+	Container,
+	ButtonOld as Button,
+	Divider,
+	Breadcrumbs
 } from '@zextras/carbonio-design-system';
-import React, { FC, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory, useParams } from 'react-router-dom';
 import { SETTINGS_APP_ID } from '../../constants';
-import { getT } from '../../store/i18n';
 import { RouteLeavingGuard } from '../../ui-extras/nav-guard';
 
 type SettingsHeaderProps = {
@@ -27,7 +27,7 @@ type SettingsHeaderProps = {
 };
 
 const SettingsHeader: FC<SettingsHeaderProps> = ({ onSave, onCancel, isDirty, title }) => {
-	const t = getT();
+	const [t] = useTranslation();
 	const history = useHistory();
 	const useparam = useParams();
 	const crumbs = [

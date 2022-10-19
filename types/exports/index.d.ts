@@ -5,18 +5,10 @@
  */
 /* eslint-disable @typescript-eslint/ban-types */
 
-import { i18n } from 'i18next';
 import { ComponentType, Dispatch, FC, SetStateAction } from 'react';
-import { TFunction } from 'react-i18next';
 import { LinkProps } from 'react-router-dom';
-import {
-	Account,
-	AccountRightName,
-	AccountRights,
-	AccountRightTarget,
-	AccountSettings,
-	SoapFetch
-} from '../account';
+import { TFunction } from 'react-i18next';
+import { i18n } from 'i18next';
 import {
 	AppRoute,
 	AppRouteDescriptor,
@@ -29,14 +21,29 @@ import {
 	SettingsView,
 	UtilityView
 } from '../apps';
-import { Board, BoardHooksContext } from '../boards';
-import { Folder, Folders } from '../folder';
-import { Action, ActionFactory, AnyFunction, CombinedActionFactory } from '../integrations';
-import { AccordionFolder, HistoryParams, ShellModes } from '../misc';
-import { CreateTagResponse, Mods, SoapNotify, SoapRefresh, TagActionResponse } from '../network';
-import { INotificationManager } from '../notification';
-import { QueryChip } from '../search';
+import { ActionFactory, AnyFunction, CombinedActionFactory, Action } from '../integrations';
+import {
+	AccountSettings,
+	Account,
+	AccountRights,
+	AccountRightName,
+	AccountRightTarget,
+	SoapFetch
+} from '../account';
+import {
+	Mods,
+	TagActionResponse,
+	CreateTagResponse,
+	SoapNotify,
+	SoapRefresh,
+	ErrorSoapResponse
+} from '../network';
+import { HistoryParams, ShellModes, AccordionFolder } from '../misc';
 import { Tag, Tags } from '../tags';
+import { Folder, Folders } from '../folder';
+import { QueryChip } from '../search';
+import { Board, BoardHooksContext } from '../boards';
+import { INotificationManager } from '../notification';
 
 export const getBridgedFunctions: () => {
 	createModal: (...params: any[]) => void;
@@ -217,7 +224,6 @@ export const runSearch: (query: Array<QueryChip>, module: string) => void;
 
 export const useLocalStorage: <T>(key: string, initialValue: T) => [T, Dispatch<SetStateAction<T>>];
 
-// TRANSLATIONS
 export const getI18n: () => i18n;
 export const useI18n: () => i18n;
 export const t: TFunction;

@@ -4,20 +4,21 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { useMemo, useCallback, ReactElement, useState, useEffect, ChangeEvent } from 'react';
 import {
-	Checkbox,
 	Container,
-	Dropdown,
-	Icon,
-	Input,
+	Text,
 	Padding,
+	Input,
 	Row,
 	Select,
-	Text
+	Checkbox,
+	Dropdown,
+	Icon,
+	DropdownItem
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
 import { filter, find } from 'lodash';
-import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { IdentityProps } from '../../../../types';
 import { EMAIL_VALIDATION_REGEX } from '../../../constants';
 
@@ -113,9 +114,9 @@ const SettingsSentMessages = ({
 		[items.identityId, updateIdentities, fromAddressArray]
 	);
 
-	const replyToEnabledLabel = t(
-		'label.set_reply_to_field',
-		'Set the "Reply-to" field of e-mail message to:'
+	const replyToEnabledLabel = useMemo(
+		() => t('label.set_reply_to_field', 'Set the "Reply-to" field of e-mail message to:'),
+		[t]
 	);
 
 	const replyToDisplayLabel = useMemo(

@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ButtonOld as Button, FormSubSection } from '@zextras/carbonio-design-system';
 import React, { FC, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { FormSubSection, ButtonOld as Button } from '@zextras/carbonio-design-system';
 import { logout } from '../../../network/logout';
-import { getT } from '../../../store/i18n';
 import { accountSubSection } from '../../general-settings-sub-sections';
 
 const Logout: FC = () => {
-	const t = getT();
+	const [t] = useTranslation();
 	const onClick = useCallback(() => {
 		logout();
 	}, []);

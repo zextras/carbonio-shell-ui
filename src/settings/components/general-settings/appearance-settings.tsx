@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { FC, useMemo, useContext, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FormSubSection, Select } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
-import React, { FC, useCallback, useContext, useMemo } from 'react';
-import { AccountSettings, DRPropValues } from '../../../../types';
 import { ThemeCallbacksContext } from '../../../boot/theme-provider';
+import { AccountSettings, DRPropValues } from '../../../../types';
 import { DR_VALUES, SHELL_APP_ID } from '../../../constants';
-import { getT } from '../../../store/i18n';
 import { themeSubSection } from '../../general-settings-sub-sections';
 
 const AppearanceSettings: FC<{
@@ -24,7 +24,7 @@ const AppearanceSettings: FC<{
 				?._content as DRPropValues,
 		[settings]
 	);
-	const t = getT();
+	const [t] = useTranslation();
 	const items = useMemo(
 		() => [
 			{

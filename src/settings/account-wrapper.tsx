@@ -4,15 +4,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { map } from 'lodash';
 import React, { useMemo } from 'react';
-import { useUserAccount } from '../store/account';
-import { getT } from '../store/i18n';
+import { map } from 'lodash';
+import { useTranslation } from 'react-i18next';
 import { AccountsSettings } from './accounts-settings';
+import { useUserAccount } from '../store/account';
 
 const AccountWrapper = (): React.ReactElement | null => {
 	const accountSettings = useUserAccount();
-	const t = getT();
+	const [t] = useTranslation();
 	const identitiesDefault = useMemo(() => {
 		const temp = map(accountSettings?.identities.identity, (item, index) => ({
 			id: item.name === 'DEFAULT' ? '0' : (index + 1).toString(),

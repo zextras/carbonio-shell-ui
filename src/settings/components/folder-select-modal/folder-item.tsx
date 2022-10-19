@@ -17,7 +17,7 @@
 // `;
 
 // const FolderItem = ({ folders }: any): ReactElement => {
-// 	const t = getT();
+// 	const [t] = useTranslation();
 // 	return folders.length ? (
 // 		<ContainerEl
 // 			orientation="vertical"

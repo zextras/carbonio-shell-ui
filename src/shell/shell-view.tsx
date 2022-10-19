@@ -4,23 +4,23 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Responsive, Row } from '@zextras/carbonio-design-system';
-import { PreviewManager } from '@zextras/carbonio-ui-preview';
-import { find } from 'lodash';
-import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState, useContext, FC, useMemo } from 'react';
+import { Row, Responsive } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
-import { AppRoute, DRPropValues } from '../../types';
-import { ThemeCallbacksContext } from '../boot/theme-provider';
-import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
-import { useCurrentRoute } from '../history/hooks';
-import { goToLogin } from '../network/go-to-login';
-import { useAccountStore, useUserSettings } from '../store/account';
-import { ShellUtilityBar, ShellUtilityPanel } from '../utility-bar';
+import { find } from 'lodash';
+import { PreviewManager } from '@zextras/carbonio-ui-preview';
 import AppViewContainer from './app-view-container';
-import { BoardContainer } from './boards/board-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
+import { BoardContainer } from './boards/board-container';
+import { ThemeCallbacksContext } from '../boot/theme-provider';
+import { useAccountStore, useUserSettings } from '../store/account';
+import { ShellUtilityBar, ShellUtilityPanel } from '../utility-bar';
+import { useCurrentRoute } from '../history/hooks';
+import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
+import { goToLogin } from '../network/go-to-login';
+import { AppRoute, DRPropValues } from '../../types';
 
 const Background = styled.div`
 	background: ${({ theme }): string => theme.palette.gray6.regular};

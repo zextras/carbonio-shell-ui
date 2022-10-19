@@ -4,22 +4,23 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { useCallback, FC, useMemo } from 'react';
 import {
 	Container,
 	FormSubSection,
 	Modal,
-	Padding,
 	Select,
-	Text
+	Text,
+	Padding,
+	SelectItem
 } from '@zextras/carbonio-design-system';
-import React, { FC, useCallback, useMemo } from 'react';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { find } from 'lodash';
 import momentLocalizer from 'react-widgets-moment';
+import { useTranslation } from 'react-i18next';
+import { find } from 'lodash';
 import { AccountSettings } from '../../types';
-import { getT } from '../store/i18n';
-import { localeList, timeZoneList } from './components/utils';
+import { LocaleDescriptor, localeList, timeZoneList } from './components/utils';
 import { timezoneAndLanguageSubSection } from './general-settings-sub-sections';
 
 momentLocalizer();
@@ -30,9 +31,9 @@ const LanguageAndTimeZone: FC<{
 	setOpen: (arg: boolean) => any;
 	addMod: (type: 'prefs' | 'props', key: string, value: { value: any; app: string }) => void;
 }> = ({ settings, addMod, open, setOpen }) => {
-	const t = getT();
-	const locales = localeList(t);
-	const timezones = timeZoneList(t);
+	const { t } = useTranslation();
+	const locales = useMemo(() => localeList(t), [t]);
+	const timezones = useMemo(() => timeZoneList(t), [t]);
 
 	const updatePrefs = useCallback(
 		(v, p) => {
@@ -53,7 +54,7 @@ const LanguageAndTimeZone: FC<{
 		return timezone ?? find(timezones, { value: 'UTC' });
 	}, [timezones, settings.prefs.zimbraPrefTimeZoneId]);
 
-	const sectionTitle = timezoneAndLanguageSubSection(t);
+	const sectionTitle = useMemo(() => timezoneAndLanguageSubSection(t), [t]);
 	return (
 		<FormSubSection
 			label={sectionTitle.label}

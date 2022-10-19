@@ -4,23 +4,23 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Button, Dropdown, MultiButton } from '@zextras/carbonio-design-system';
-import { Location } from 'history';
-import { groupBy, noop, reduce } from 'lodash';
 import React, { FC, useCallback, useMemo, useState } from 'react';
+import { reduce, groupBy, noop } from 'lodash';
+import { MultiButton, Button, Dropdown } from '@zextras/carbonio-design-system';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { Action, AppRoute } from '../../types';
-import { ACTION_TYPES } from '../constants';
-import { useCurrentRoute } from '../history/hooks';
-import { useAppList } from '../store/app';
-import { getT } from '../store/i18n';
+import { Location } from 'history';
 import { useActions } from '../store/integrations/hooks';
+import { ACTION_TYPES } from '../constants';
+import { Action, AppRoute } from '../../types';
+import { useAppList } from '../store/app';
+import { useCurrentRoute } from '../history/hooks';
 
 export const CreationButtonComponent: FC<{ activeRoute: AppRoute; location: Location }> = ({
 	activeRoute,
 	location
 }) => {
-	const t = getT();
+	const [t] = useTranslation();
 	const actions = useActions({ activeRoute, location }, ACTION_TYPES.NEW);
 	const [open, setOpen] = useState(false);
 	const primaryAction = useMemo(

@@ -5,11 +5,12 @@
  */
 
 import React, { FC, useEffect } from 'react';
-import { unloadAllApps } from './app/load-apps';
-import BootstrapperContextProvider from './bootstrapper-provider';
-import BootstrapperRouter from './bootstrapper-router';
+import { SnackbarManager, ModalManager } from '@zextras/carbonio-design-system';
 import { init } from './init';
 import { ThemeProvider } from './theme-provider';
+import BootstrapperRouter from './bootstrapper-router';
+import BootstrapperContextProvider from './bootstrapper-provider';
+import { unloadAllApps } from './app/load-apps';
 
 const Bootstrapper: FC = () => {
 	useEffect(() => {

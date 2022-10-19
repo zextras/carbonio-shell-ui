@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Checkbox, Container, Input, Padding, Row, Text } from '@zextras/carbonio-design-system';
+import React, { useMemo, useEffect, ReactElement, useState, useCallback } from 'react';
+import { Container, Text, Padding, Input, Row, Checkbox } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { IdentityProps } from '../../../../types';
 import { EMAIL_VALIDATION_REGEX } from '../../../constants';
 
@@ -26,8 +26,10 @@ const PersonaUseSection = ({
 	updateIdentities
 }: PersonaUseSectionProps): ReactElement => {
 	const title = useMemo(() => t('label.use_persona', 'Use this persona'), [t]);
-	const whenSentToLabel = t('label.when_replying', 'When replying or forwarding messages sent to:');
-
+	const whenSentToLabel = useMemo(
+		() => t('label.when_replying', 'When replying or forwarding messages sent to:'),
+		[t]
+	);
 	// this code is work in progress for when the mails sync is implemented
 	// const [open, setOpen] = useState(false);
 	// const onClose = useCallback(() => setOpen(false), []);

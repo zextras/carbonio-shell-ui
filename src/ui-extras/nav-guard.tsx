@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Modal } from '@zextras/carbonio-design-system';
+import React, { useEffect, useState, FC, useMemo } from 'react';
 import { Location } from 'history';
-import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Prompt, useHistory } from 'react-router-dom';
-import { getT } from '../store/i18n';
+import { Modal } from '@zextras/carbonio-design-system';
+import { useTranslation } from 'react-i18next';
 
 export const RouteLeavingGuard: FC<{
 	when?: boolean;
@@ -19,7 +19,7 @@ export const RouteLeavingGuard: FC<{
 	const [modalVisible, setModalVisible] = useState(false);
 	const [lastLocation, setLastLocation] = useState<Location>(lastLocationInitial);
 	const [confirmedNavigation, setConfirmedNavigation] = useState(false);
-	const t = getT();
+	const [t] = useTranslation();
 	const onClose = (): void => {
 		setModalVisible(false);
 		setConfirmedNavigation(true);

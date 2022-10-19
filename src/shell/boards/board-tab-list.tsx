@@ -4,22 +4,22 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import {
-	Button,
-	Container,
-	Dropdown,
-	Row,
-	Tooltip,
-	useHiddenCount
-} from '@zextras/carbonio-design-system';
 import { map, noop, slice } from 'lodash';
-import React, { FC, useLayoutEffect, useRef } from 'react';
+import React, { useRef, useLayoutEffect, FC } from 'react';
+import {
+	Container,
+	Row,
+	Dropdown,
+	Button,
+	useHiddenCount,
+	Tooltip
+} from '@zextras/carbonio-design-system';
+import { useTranslation } from 'react-i18next';
 import { setCurrentBoard, useBoardStore } from '../../store/boards';
-import { getT } from '../../store/i18n';
 import { AppBoardTab } from './board-tab';
 
 export const TabsList: FC = () => {
-	const t = getT();
+	const [t] = useTranslation();
 	const { boards, current, expanded } = useBoardStore();
 	const tabContainerRef = useRef(null);
 	const [hiddenTabsCount, recalculateHiddenTabs] = useHiddenCount(tabContainerRef, expanded);

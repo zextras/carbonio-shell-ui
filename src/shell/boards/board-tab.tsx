@@ -4,20 +4,20 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import {
-	Container,
-	Icon,
-	IconButton,
-	Padding,
-	Row,
-	RowProps,
-	Text,
-	Tooltip
-} from '@zextras/carbonio-design-system';
 import React, { FC, useCallback } from 'react';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
+import {
+	IconButton,
+	Text,
+	Row,
+	Padding,
+	Icon,
+	Container,
+	Tooltip,
+	RowProps
+} from '@zextras/carbonio-design-system';
 import { closeBoard, setCurrentBoard, useBoardStore } from '../../store/boards';
-import { getT } from '../../store/i18n';
 
 const TabContainer = styled(Row)<RowProps & { active: boolean }>`
 	cursor: pointer;
@@ -43,7 +43,7 @@ export const AppBoardTab: FC<{ id: string; icon: string; title: string }> = ({
 	title
 }) => {
 	const current = useBoardStore((s) => s.current);
-	const t = getT();
+	const [t] = useTranslation();
 	const onClick = useCallback(() => setCurrentBoard(id), [id]);
 	const onRemove = useCallback(
 		(ev) => {

@@ -4,17 +4,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useState, FC, useCallback, useEffect, useMemo } from 'react';
-import { Container, FormSubSection, Checkbox } from '@zextras/carbonio-design-system';
-import { useTranslation } from 'react-i18next';
+import { Checkbox, Container, FormSubSection } from '@zextras/carbonio-design-system';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { AccountSettings } from '../../types';
+import { getT } from '../store/i18n';
 import { searchPrefsSubSection } from './general-settings-sub-sections';
 
 const SearchSettingsView: FC<{
 	settings: AccountSettings;
 	addMod: (type: 'prefs' | 'props', key: string, value: { value: any; app: string }) => void;
 }> = ({ settings, addMod }) => {
-	const { t } = useTranslation();
+	const t = getT();
 	const [searchInSpamFolder, setSearchInSpamFolder] = useState<boolean>(
 		settings.prefs.zimbraPrefIncludeSpamInSearch === 'TRUE'
 	);
@@ -54,7 +54,7 @@ const SearchSettingsView: FC<{
 		setSearchInSharedFolder(!searchInSharedFolder);
 		setMode(!searchInSharedFolder, 'zimbraPrefIncludeSharedItemsInSearch');
 	}, [searchInSharedFolder, setMode]);
-	const sectionTitle = useMemo(() => searchPrefsSubSection(t), [t]);
+	const sectionTitle = searchPrefsSubSection(t);
 	return (
 		<FormSubSection
 			label={sectionTitle.label}

@@ -3,8 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { FC, useCallback, useMemo, useRef } from 'react';
 import { Container } from '@zextras/carbonio-design-system';
+import React, { FC, useCallback, useMemo, useRef } from 'react';
 import styled from 'styled-components';
 // TinyMCE so the global var exists
 // eslint-disable-next-line no-unused-vars
@@ -22,31 +22,31 @@ import 'tinymce/skins/ui/oxide/skin.min.css';
 
 // importing the plugin js.
 import 'tinymce/plugins/advlist';
+import 'tinymce/plugins/anchor';
 import 'tinymce/plugins/autolink';
-import 'tinymce/plugins/lists';
-import 'tinymce/plugins/link';
-import 'tinymce/plugins/image';
+import 'tinymce/plugins/autoresize';
 import 'tinymce/plugins/charmap';
 import 'tinymce/plugins/code';
-import 'tinymce/plugins/print';
-import 'tinymce/plugins/preview';
-import 'tinymce/plugins/anchor';
-import 'tinymce/plugins/searchreplace';
-import 'tinymce/plugins/visualblocks';
-import 'tinymce/plugins/fullscreen';
-import 'tinymce/plugins/insertdatetime';
-import 'tinymce/plugins/media';
-import 'tinymce/plugins/table';
-import 'tinymce/plugins/paste';
-import 'tinymce/plugins/help';
-import 'tinymce/plugins/wordcount';
-import 'tinymce/plugins/quickbars';
 import 'tinymce/plugins/directionality';
-import 'tinymce/plugins/autoresize';
+import 'tinymce/plugins/fullscreen';
+import 'tinymce/plugins/help';
+import 'tinymce/plugins/image';
+import 'tinymce/plugins/insertdatetime';
+import 'tinymce/plugins/link';
+import 'tinymce/plugins/lists';
+import 'tinymce/plugins/media';
+import 'tinymce/plugins/paste';
+import 'tinymce/plugins/preview';
+import 'tinymce/plugins/print';
+import 'tinymce/plugins/quickbars';
+import 'tinymce/plugins/searchreplace';
+import 'tinymce/plugins/table';
+import 'tinymce/plugins/visualblocks';
+import 'tinymce/plugins/wordcount';
 
 import { Editor } from '@tinymce/tinymce-react';
-import { useTranslation } from 'react-i18next';
 import { useUserSettings } from '../account';
+import { getT } from '../i18n';
 
 type ComposerProps = {
 	/** The callback invoked when an edit is performed into the editor. `([text, html]) => {}` */
@@ -101,7 +101,7 @@ const Composer: FC<ComposerProps> = ({
 			inputRef.current.click();
 		}
 	}, []);
-	const { t } = useTranslation();
+	const t = getT();
 	const inlineLabel = useMemo(() => t('label.add_inline_image', 'Add inline image'), [t]);
 	return (
 		<Container

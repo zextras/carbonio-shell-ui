@@ -4,19 +4,18 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useState, useCallback, FC, useEffect, useMemo } from 'react';
 import {
+	Checkbox,
 	Container,
 	FormSubSection,
-	Checkbox,
-	Select,
-	Padding
+	Padding,
+	Select
 } from '@zextras/carbonio-design-system';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import momentLocalizer from 'react-widgets-moment';
-import { useTranslation } from 'react-i18next';
 import { find } from 'lodash';
+import momentLocalizer from 'react-widgets-moment';
 import { AccountSettings } from '../../../../types';
 import Heading from '../settings-heading';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -24,14 +23,15 @@ import Heading from '../settings-heading';
 import DateTimeSelect from '../date-time-select-view';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
+import { getT } from '../../../store/i18n';
+import { outOfOfficeSubSection } from '../../general-settings-sub-sections';
 import {
-	ItemsExternalSenders,
 	getExternalSendersPrefsData,
-	ItemsOutOfOfficeStatus,
 	getOutOfOfficeStatusPrefsData,
+	ItemsExternalSenders,
+	ItemsOutOfOfficeStatus,
 	ItemsSendAutoReplies
 } from '../utils';
-import { outOfOfficeSubSection } from '../../general-settings-sub-sections';
 
 const TextArea = styled.textarea`
 	box-sizing: border-box;
@@ -56,7 +56,7 @@ const OutOfOfficeView: FC<{
 	settings: AccountSettings;
 	addMod: (type: 'prefs' | 'props', key: string, value: { value: any; app: string }) => void;
 }> = ({ settings, addMod }) => {
-	const { t } = useTranslation();
+	const t = getT();
 	const [sendAutoReply, setSendAutoReply] = useState<boolean>(
 		settings.prefs.zimbraPrefOutOfOfficeReplyEnabled === 'TRUE'
 	);
@@ -123,10 +123,6 @@ const OutOfOfficeView: FC<{
 		updatePrefs(v, 'zimbraPrefOutOfOfficeFreeBusyStatus');
 	};
 
-	const itemsSendAutoReplies = useMemo(() => ItemsSendAutoReplies(t), [t]);
-	const itemsExternalSenders = useMemo(() => ItemsExternalSenders(t), [t]);
-	const itemsOutOfOfficeStatus = useMemo(() => ItemsOutOfOfficeStatus(t), [t]);
-	const sectionTitle = useMemo(() => outOfOfficeSubSection(t), [t]);
 	const defaultSendAutoreply = useMemo(
 		() => getExternalSendersPrefsData(settings, 'label', t),
 		[settings, t]
@@ -136,20 +132,21 @@ const OutOfOfficeView: FC<{
 		[settings, t]
 	);
 	const selectedItemSendAutoReplies = useMemo(
-		() => find(itemsSendAutoReplies, (item) => item && (item.value === 'TRUE') === sendAutoReply),
-		[sendAutoReply, itemsSendAutoReplies]
+		() =>
+			find(ItemsSendAutoReplies(t), (item) => item && (item.value === 'TRUE') === sendAutoReply),
+		[sendAutoReply, t]
 	);
 
 	return (
 		<FormSubSection
-			label={sectionTitle.label}
+			label={outOfOfficeSubSection(t).label}
 			minWidth="calc(min(100%, 512px))"
 			width="50%"
-			id={sectionTitle.id}
+			id={outOfOfficeSubSection(t).id}
 		>
 			<Container crossAlignment="baseline" padding={{ all: 'small' }}>
 				<Select
-					items={itemsSendAutoReplies}
+					items={ItemsSendAutoReplies(t)}
 					background="gray5"
 					label={t('label.out_of_office', 'Out of Office')}
 					onChange={(value: any): void => {
@@ -177,7 +174,7 @@ const OutOfOfficeView: FC<{
 				<Padding top="small" width="100%">
 					<Select
 						disabled={!sendAutoReply}
-						items={itemsExternalSenders}
+						items={ItemsExternalSenders(t)}
 						background="gray5"
 						label={t('settings.out_of_office.labels.external_senders', 'External Senders')}
 						onChange={(value: unknown): void => {
@@ -222,7 +219,7 @@ const OutOfOfficeView: FC<{
 					<Padding top="small" width="50%">
 						<Select
 							disabled={createAppointmentDisabled}
-							items={itemsOutOfOfficeStatus}
+							items={ItemsOutOfOfficeStatus(t)}
 							background="gray5"
 							label={t(
 								'settings.out_of_office.labels.out_of_office_status',

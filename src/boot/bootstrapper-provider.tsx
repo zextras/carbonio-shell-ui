@@ -6,11 +6,11 @@
 
 import React, { FC } from 'react';
 import { I18nextProvider } from 'react-i18next';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+import { SHELL_APP_ID } from '../constants';
 import { useI18nStore } from '../store/i18n';
 
-const BootstrapperContextProvider: FC = ({ children }) => (
-	<I18nextProvider i18n={useI18nStore.getState().defaultI18n}>{children}</I18nextProvider>
-);
+const BootstrapperContextProvider: FC = ({ children }) => {
+	const i18n = useI18nStore((s) => s.instances[SHELL_APP_ID]);
+	return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
+};
 export default BootstrapperContextProvider;

@@ -348,7 +348,7 @@ const Feedback: FC = () => {
 				crossAlignment="flex-start"
 				orientation="horizontal"
 			>
-				<Container mainAlignment="space-between" crossAlignment="flex-start" maxWidth="305px">
+				<Container mainAlignment="space-between" crossAlignment="flex-start" maxWidth="19.0625rem">
 					<Row padding={{ vertical: 'large' }}>
 						<Text weight="bold" size="small">
 							Module
@@ -362,7 +362,7 @@ const Feedback: FC = () => {
 						LabelFactory={ModuleLabelFactory}
 					/>
 				</Container>
-				<Container mainAlignment="space-between" crossAlignment="flex-start" maxWidth="305px">
+				<Container mainAlignment="space-between" crossAlignment="flex-start" maxWidth="19.0625rem">
 					<Row padding={{ vertical: 'large' }}>
 						<Text weight="bold" size="small">
 							Topic

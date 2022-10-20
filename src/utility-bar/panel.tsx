@@ -12,7 +12,7 @@ import { useUtilityViews } from './utils';
 import { useUtilityBarStore } from './store';
 
 const Panel = styled(Container)<{ mode: string }>`
-	width: ${({ mode }): number => (mode !== 'closed' ? 256 : 48)}px;
+	width: ${({ mode }): number => (mode !== 'closed' ? 16 : 3)}rem;
 	border-radius: 0;
 	height: 100%;
 	position: absolute;

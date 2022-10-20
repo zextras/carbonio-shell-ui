@@ -31,9 +31,9 @@ const ShellHeader: FC<{
 			orientation="horizontal"
 			background="gray3"
 			width="fill"
-			height="60px"
-			minHeight="60px"
-			maxHeight="60px"
+			height="3.75rem"
+			minHeight="3.75rem"
+			maxHeight="3.75rem"
 			mainAlignment="flex-start"
 			padding={{
 				horizontal: screenMode === 'desktop' ? 'large' : 'extrasmall',

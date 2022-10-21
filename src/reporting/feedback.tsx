@@ -312,6 +312,8 @@ const Feedback: FC = () => {
 		[showErr]
 	);
 
+	const topics = useMemo(() => getTopics(t), [t]);
+
 	return (
 		<Container padding={{ all: 'large' }} mainAlignment="space-around">
 			<Container orientation="horizontal" height="fit">
@@ -370,9 +372,9 @@ const Feedback: FC = () => {
 					</Row>
 					<Select
 						label={t('feedback.select_a_topic', 'Select a topic')}
-						items={getTopics(t)}
+						items={topics}
 						defaultSelection={
-							find(getTopics(t), ['value', event.extra?.topic]) ?? { label: '', value: '' }
+							find(topics, ['value', event.extra?.topic]) ?? { label: '', value: '' }
 						}
 						onChange={onTopicSelect}
 						LabelFactory={LabelFactory}

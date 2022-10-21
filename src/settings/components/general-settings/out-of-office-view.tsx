@@ -123,6 +123,7 @@ const OutOfOfficeView: FC<{
 		updatePrefs(v, 'zimbraPrefOutOfOfficeFreeBusyStatus');
 	};
 
+	const itemsSendAutoReplies = useMemo(() => ItemsSendAutoReplies(t), [t]);
 	const defaultSendAutoreply = useMemo(
 		() => getExternalSendersPrefsData(settings, 'label', t),
 		[settings, t]
@@ -132,21 +133,22 @@ const OutOfOfficeView: FC<{
 		[settings, t]
 	);
 	const selectedItemSendAutoReplies = useMemo(
-		() =>
-			find(ItemsSendAutoReplies(t), (item) => item && (item.value === 'TRUE') === sendAutoReply),
-		[sendAutoReply, t]
+		() => find(itemsSendAutoReplies, (item) => item && (item.value === 'TRUE') === sendAutoReply),
+		[itemsSendAutoReplies, sendAutoReply]
 	);
+
+	const outOfOfficeSection = useMemo(() => outOfOfficeSubSection(t), [t]);
 
 	return (
 		<FormSubSection
-			label={outOfOfficeSubSection(t).label}
+			label={outOfOfficeSection.label}
 			minWidth="calc(min(100%, 512px))"
 			width="50%"
-			id={outOfOfficeSubSection(t).id}
+			id={outOfOfficeSection.id}
 		>
 			<Container crossAlignment="baseline" padding={{ all: 'small' }}>
 				<Select
-					items={ItemsSendAutoReplies(t)}
+					items={itemsSendAutoReplies}
 					background="gray5"
 					label={t('label.out_of_office', 'Out of Office')}
 					onChange={(value: any): void => {

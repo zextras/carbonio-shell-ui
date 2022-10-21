@@ -5,7 +5,7 @@
  */
 
 import { Checkbox, Container, FormSubSection } from '@zextras/carbonio-design-system';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { AccountSettings } from '../../types';
 import { getT } from '../store/i18n';
 import { searchPrefsSubSection } from './general-settings-sub-sections';
@@ -54,7 +54,7 @@ const SearchSettingsView: FC<{
 		setSearchInSharedFolder(!searchInSharedFolder);
 		setMode(!searchInSharedFolder, 'zimbraPrefIncludeSharedItemsInSearch');
 	}, [searchInSharedFolder, setMode]);
-	const sectionTitle = searchPrefsSubSection(t);
+	const sectionTitle = useMemo(() => searchPrefsSubSection(t), [t]);
 	return (
 		<FormSubSection
 			label={sectionTitle.label}

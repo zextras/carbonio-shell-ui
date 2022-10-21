@@ -31,8 +31,9 @@ const LanguageAndTimeZone: FC<{
 	addMod: (type: 'prefs' | 'props', key: string, value: { value: any; app: string }) => void;
 }> = ({ settings, addMod, open, setOpen }) => {
 	const t = getT();
-	const locales = localeList(t);
-	const timezones = timeZoneList(t);
+	const locales = useMemo(() => localeList(t), [t]);
+	const timezones = useMemo(() => timeZoneList(t), [t]);
+	const sectionTitle = useMemo(() => timezoneAndLanguageSubSection(t), [t]);
 
 	const updatePrefs = useCallback(
 		(v, p) => {
@@ -53,7 +54,6 @@ const LanguageAndTimeZone: FC<{
 		return timezone ?? find(timezones, { value: 'UTC' });
 	}, [timezones, settings.prefs.zimbraPrefTimeZoneId]);
 
-	const sectionTitle = timezoneAndLanguageSubSection(t);
 	return (
 		<FormSubSection
 			label={sectionTitle.label}

@@ -4,18 +4,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC } from 'react';
-import styled, { css } from 'styled-components';
-import { isEmpty, map } from 'lodash';
 import {
 	Container,
 	Divider,
 	IconButton,
-	Row,
 	Padding,
+	Row,
 	Tooltip
 } from '@zextras/carbonio-design-system';
-import { useTranslation } from 'react-i18next';
+import { isEmpty, map } from 'lodash';
+import React, { FC } from 'react';
+import styled, { css } from 'styled-components';
 import {
 	closeAllBoards,
 	expandBoards,
@@ -24,8 +23,9 @@ import {
 	reduceBoards,
 	useBoardStore
 } from '../../store/boards';
-import { TabsList } from './board-tab-list';
+import { getT } from '../../store/i18n';
 import { AppBoard } from './board';
+import { TabsList } from './board-tab-list';
 
 const BoardContainerComp = styled.div<{ expanded: boolean; minimized: boolean }>`
 	position: fixed;
@@ -74,7 +74,7 @@ const BackButton = styled(IconButton)``;
 const Actions = styled(Row)``;
 
 export const BoardContainer: FC = () => {
-	const [t] = useTranslation();
+	const t = getT();
 	const { boards, minimized, expanded, current } = useBoardStore();
 	if (isEmpty(boards) || !current) return null;
 	return (

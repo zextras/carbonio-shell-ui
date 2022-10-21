@@ -5,10 +5,8 @@
  */
 
 import moment from 'moment';
-import { TFunction } from 'i18next';
+import { TFunction } from 'react-i18next';
 import { AccountSettings } from '../../../types';
-
-// const [t] = useTranslation();
 
 export const ItemsSendAutoReplies = (t: TFunction): any => [
 	{
@@ -95,7 +93,7 @@ export const getExternalSendersPrefsData = (
 export const getOutOfOfficeStatusPrefsData = (
 	settings: AccountSettings,
 	t: TFunction
-): { label: string; value: string } => {
+): { label: string; value: string; t: TFunction } => {
 	let item;
 	const itemsOutOfOfficeStatus = ItemsOutOfOfficeStatus(t);
 	if (settings.prefs.zimbraPrefOutOfOfficeFreeBusyStatus === 'BUSY') {

@@ -4,19 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useMemo, useCallback, ReactElement, useState } from 'react';
 import {
-	Container,
-	Text,
-	Padding,
-	Input,
-	Row,
 	ButtonOld as Button,
-	Divider
+	Container,
+	Divider,
+	Input,
+	Padding,
+	Row,
+	Text
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import { SHELL_APP_ID, EMAIL_VALIDATION_REGEX } from '../../../constants';
+import React, { ReactElement, useCallback, useMemo, useState } from 'react';
 import { IdentityProps } from '../../../../types';
+import { EMAIL_VALIDATION_REGEX, SHELL_APP_ID } from '../../../constants';
 import { getXmlSoapFetch } from '../../../network/fetch';
 
 interface PasswordRecoverySettingsProps {
@@ -36,10 +36,7 @@ const PasswordRecoverySettings = ({
 	items,
 	createSnackbar
 }: PasswordRecoverySettingsProps): ReactElement => {
-	const title = useMemo(
-		() => t('label.passwords_recovery_settings', 'Password Recovery Account Settings'),
-		[t]
-	);
+	const title = t('label.passwords_recovery_settings', 'Password Recovery Account Settings');
 
 	const recoveryEmail = useMemo(
 		() => items.recoveryAccount || t('label.no_results', 'No results found'),

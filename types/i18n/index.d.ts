@@ -10,4 +10,10 @@ export type I18nState = {
 	instances: Record<string, i18n>;
 	defaultI18n: i18n;
 	locale: string;
+	setters: {
+		setLocale: (locale: string) => void;
+	};
+	actions: {
+		addI18n: (apps: Array<CarbonioModule>, locale: string) => void;
+	};
 };

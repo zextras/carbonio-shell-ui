@@ -4,14 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useState, useCallback, FC, useEffect } from 'react';
-import { Container, Checkbox, Text, Icon, Padding } from '@zextras/carbonio-design-system';
+import { Checkbox, Container, Icon, Padding, Text } from '@zextras/carbonio-design-system';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
 import moment from 'moment';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import momentLocalizer from 'react-widgets-moment';
-import { useTranslation } from 'react-i18next';
 import { AccountSettings } from '../../../types';
 import Heading from './settings-heading';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -19,7 +18,8 @@ import Heading from './settings-heading';
 import Styler from './date-picker-style';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { changeDateEvent, getDateEvent, startOfDate, endOfDate } from './utils';
+import { getT } from '../../store/i18n';
+import { changeDateEvent, endOfDate, getDateEvent, startOfDate } from './utils';
 
 momentLocalizer();
 
@@ -28,7 +28,7 @@ const DateTimeSelect: FC<{
 	addMod: (type: 'prefs' | 'props', key: string, value: { value: any; app: string }) => void;
 	sendAutoReply: boolean;
 }> = ({ settings, addMod, sendAutoReply }) => {
-	const { t } = useTranslation();
+	const t = getT();
 	const [dateDisabled, setDateDisabled] = useState<boolean>(false);
 	const [sendAutoReplyTimePeriod, setSendAutoReplyTimePeriod] = useState<boolean>(
 		!!(

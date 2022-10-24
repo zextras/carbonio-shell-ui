@@ -6,27 +6,27 @@
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import React, { FC, useContext, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
-	FormSubSection,
-	Container,
-	Text,
 	Badge,
+	Container,
 	Divider,
-	Tooltip,
-	ThemeContext
+	FormSubSection,
+	Text,
+	ThemeContext,
+	Tooltip
 } from '@zextras/carbonio-design-system';
 import { map } from 'lodash';
+import React, { FC, useContext, useMemo } from 'react';
 import { useAppList } from '../../../store/app/hooks';
 
-import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../../../constants/index';
 import { CarbonioModule } from '../../../../types';
+import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../../../constants/index';
+import { getT } from '../../../store/i18n';
 import { versionsSubSection } from '../../general-settings-sub-sections';
 
 const ModuleVersionSettings: FC = () => {
 	const apps = useAppList();
-	const [t] = useTranslation();
+	const t = getT();
 	const theme = useContext(ThemeContext);
 
 	const copyToClipboard: any = (e: any) => {
@@ -68,9 +68,7 @@ const ModuleVersionSettings: FC = () => {
 							<Badge
 								value="Active"
 								style={{
-									// @ts-ignore
 									backgroundColor: theme.palette.success.regular,
-									// @ts-ignore
 									color: theme.palette.gray6.regular
 								}}
 							></Badge>

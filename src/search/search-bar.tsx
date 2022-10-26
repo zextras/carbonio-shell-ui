@@ -382,7 +382,7 @@ export const SearchBar: FC = () => {
 								<ModuleSelector />
 							</Container>
 							<StyledContainer orientation="horizontal">
-								<ChipInput
+								<StyledChipInput
 									disabled={searchDisabled}
 									inputRef={inputRef}
 									value={inputState}

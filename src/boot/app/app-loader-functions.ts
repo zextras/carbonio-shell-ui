@@ -76,7 +76,7 @@ import { getTags, useTags } from '../../store/tags';
 import { useNotify, useRefresh } from '../../store/network';
 import { changeTagColor, createTag, deleteTag, renameTag } from '../../network/tags';
 import { runSearch } from '../../search/run-search';
-import { getI18n, useI18n, getTFunction } from '../../store/i18n';
+import { getI18n, getTFunction } from '../../store/i18n';
 import {
 	addBoard,
 	closeBoard,
@@ -97,7 +97,6 @@ import { getNotificationManager } from '../../notification/NotificationManager';
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({
 	// I18N
-	useI18n: useI18n(pkg.name),
 	getI18n: getI18n(pkg.name),
 	t: getTFunction(pkg.name),
 	// FETCH

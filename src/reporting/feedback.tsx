@@ -4,34 +4,34 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, {
-	useEffect,
-	useState,
-	useCallback,
-	useReducer,
-	useMemo,
-	FC,
-	useContext
-} from 'react';
+import { Event, Severity } from '@sentry/browser';
 import {
-	Text,
 	ButtonOld as Button,
-	Select,
 	Container,
-	Row,
-	Icon,
-	SnackbarManagerContext,
 	ContainerProps,
-	SelectItem
+	Icon,
+	Row,
+	Select,
+	SnackbarManagerContext,
+	Text
 } from '@zextras/carbonio-design-system';
-import { Severity, Event } from '@sentry/browser';
 import { filter, find, map } from 'lodash';
+import React, {
+	FC,
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useReducer,
+	useState
+} from 'react';
+import { TFunction } from 'react-i18next';
 import styled from 'styled-components';
-import { TFunction, useTranslation } from 'react-i18next';
 import { useUserAccount } from '../store/account';
-import { feedback } from './functions';
 import { useAppList } from '../store/app';
 import { closeBoard } from '../store/boards';
+import { getT } from '../store/i18n';
+import { feedback } from './functions';
 
 const TextArea = styled.textarea<{ size?: string }>`
 	width: 100%;
@@ -218,8 +218,7 @@ const _LabelFactory: FC<{
 );
 
 const Feedback: FC = () => {
-	const [t] = useTranslation();
-	const topics = useMemo(() => getTopics(t), [t]);
+	const t = getT();
 	const allApps = useAppList();
 	const apps = useMemo(
 		() => filter(allApps, (app) => !!app.sentryDsn),
@@ -312,6 +311,8 @@ const Feedback: FC = () => {
 		(props) => <_LabelFactory {...props} showErr={showErr} />,
 		[showErr]
 	);
+
+	const topics = useMemo(() => getTopics(t), [t]);
 
 	return (
 		<Container padding={{ all: 'large' }} mainAlignment="space-around">

@@ -6,25 +6,25 @@
 
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
-import React, { useState, useCallback, useEffect, useMemo, FC, useRef } from 'react';
 import {
 	ChipInput,
+	ChipItem,
 	Container,
 	IconButton,
-	Tooltip,
 	Padding,
-	ChipItem
+	Tooltip
 } from '@zextras/carbonio-design-system';
-import { useTranslation } from 'react-i18next';
 import { filter, find, map, reduce } from 'lodash';
-import styled from 'styled-components';
+import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useLocalStorage } from '../shell/hooks';
+import styled from 'styled-components';
 import { SEARCH_APP_ID } from '../constants';
+import { useLocalStorage } from '../shell/hooks';
 
-import { useSearchStore } from './search-store';
 import { QueryChip } from '../../types';
+import { getT } from '../store/i18n';
 import { ModuleSelector } from './module-selector';
+import { useSearchStore } from './search-store';
 
 const OutlinedIconButton = styled(IconButton)`
 	border: 1px solid
@@ -63,7 +63,7 @@ type SearchLocalStorage = Array<{
 export const SearchBar: FC = () => {
 	const [searchIsEnabled, setSearchIsEnabled] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
-	const [t] = useTranslation();
+	const t = getT();
 	const [storedValue, setStoredValue] = useLocalStorage<SearchLocalStorage>(
 		'search_suggestions',
 		[]

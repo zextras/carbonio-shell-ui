@@ -243,7 +243,7 @@ export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps)
 	}, [identitiesDefault.length, mods, maxIdentities, createSnackbar, t]);
 
 	const onCancel = useCallback(() => setMods({}), []);
-	const title: string = useMemo(() => t('label.accounts', 'Accounts'), [t]);
+	const title: string = t('label.accounts', 'Accounts');
 	const isDirty = useMemo(() => !isEmpty(mods), [mods]);
 	return (
 		<>

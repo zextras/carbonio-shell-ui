@@ -6,13 +6,14 @@
 
 import { filter, map } from 'lodash';
 
-import { loadApp, unloadApps } from './load-app';
 import { CarbonioModule } from '../../../types';
-import { injectSharedLibraries } from './shared-libraries';
-import { getUserSetting } from '../../store/account';
-import { useReporter } from '../../reporting';
 import { SHELL_APP_ID } from '../../constants';
-import { addI18n } from '../../store/i18n';
+import { useReporter } from '../../reporting';
+import { useAccountStore } from '../../store/account';
+import { getUserSetting } from '../../store/account/hooks';
+import { useI18nStore } from '../../store/i18n';
+import { loadApp, unloadApps } from './load-app';
+import { injectSharedLibraries } from './shared-libraries';
 
 export function loadApps(apps: Array<CarbonioModule>): void {
 	injectSharedLibraries();
@@ -25,8 +26,13 @@ export function loadApps(apps: Array<CarbonioModule>): void {
 		'%cLOADING APPS',
 		'color: white; background: #2b73d2;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
 	);
+	const { settings } = useAccountStore.getState();
+	const locale =
+		(settings?.prefs?.zimbraPrefLocale as string) ??
+		(settings?.attrs?.zimbraLocale as string) ??
+		'en';
+	useI18nStore.getState().actions.addI18n(appsToLoad, locale);
 	useReporter.getState().setClients(appsToLoad);
-	addI18n(appsToLoad);
 	Promise.allSettled(map(appsToLoad, (app) => loadApp(app)));
 }
 

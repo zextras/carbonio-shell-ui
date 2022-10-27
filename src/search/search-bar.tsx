@@ -390,8 +390,7 @@ export const SearchBar: FC = () => {
 									options={options}
 									placeholder={placeholder}
 									confirmChipOnBlur={false}
-									confirmChipOnSpace={false}
-									separators={['Enter', 'NumpadEnter', 'Comma']}
+									separators={['Enter', 'NumpadEnter', 'Comma', 'Space']}
 									background={searchDisabled ? 'gray5' : 'gray6'}
 									style={{
 										cursor: 'pointer',

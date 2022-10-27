@@ -113,7 +113,7 @@ export const BoardContainer: FC = () => {
 						</Tooltip>
 					</Actions>
 				</BoardHeader>
-				<Divider style={{ height: '2px' }} />
+				<Divider style={{ height: '0.125rem' }} />
 				<BoardDetailContainer takeAvailableSpace>
 					{map(boards, (b) => (
 						<AppBoard key={b.id} board={b} />

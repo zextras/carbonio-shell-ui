@@ -24,7 +24,7 @@ const Panel = styled(Container)<{ mode: string }>`
 `;
 const Spacer = styled.div<{ mode: string }>`
 	position: relative;
-	width: ${({ mode }): number => (mode === 'open' ? 256 : 48)}px;
+	width: ${({ mode }): number => (mode === 'open' ? 16 : 3)}rem;
 	height: 100%;
 	transition: width 0.2s;
 `;

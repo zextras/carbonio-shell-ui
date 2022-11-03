@@ -81,7 +81,8 @@
         "recipents": "Người nhận",
         "save_both_folders": "Lưu bản sao của các tin nhắn đã gửi vào thư mục Đã gửi của tôi và thư mục chỉ định",
         "unsaved_changes_line2": "Tất cả các thay đổi chưa được lưu của bạn sẽ bị mất",
-        "use_personas_line1": "Sử dụng cá nhân hoá để nhanh chóng thay đổi nhiều cài đặt khi gửi thư."
+        "use_personas_line1": "Sử dụng cá nhân hoá để nhanh chóng thay đổi nhiều cài đặt khi gửi thư.",
+        "folder_external_account": "Thư mục: Tài khoản mới bên ngoài"
     },
     "locale": {
         "English": "Tiếng Anh",
@@ -113,7 +114,9 @@
         "thai": "Thái",
         "label_portuguese_brazil": "Tiếng Bồ - {{value}}",
         "label_japanese": "Tiếng Nhật - {{value}}",
-        "label_turkish": "Tiếng Thổ - {{value}}"
+        "label_turkish": "Tiếng Thổ - {{value}}",
+        "vietnamese": "Việt Nam",
+        "polish": "Ba lan"
     },
     "message": {
         "snackbar": {
@@ -327,7 +330,7 @@
         "indian_mauritius": "{{value}} Port Louis",
         "pacific_apia": "{{value}} Samoa",
         "pacific_auckland": "{{value}} New Zealand",
-        "pacific_bougainville": "{{value}} Bougainville Standard Time",
+        "pacific_bougainville": "{{value}} Múi giờ chuẩn Bougainville",
         "pacific_chatham": "{{value}} Chatham",
         "pacific_easter": "{{value}} Easter",
         "pacific_fiji": "{{value}} Fiji",
@@ -339,7 +342,7 @@
         "pacific_midway": "{{value}} Samoa",
         "pacific_norfolk": "{{value}} Norfolk",
         "pacific_tongatapu": "{{value}} Nuku’alofa",
-        "utc": "{{value}} Coordinated Universal Time",
+        "utc": "{{value}} Giờ phối hợp quốc tế",
         "asia_baku": "{{value}} Baku",
         "asia_jerusalem": "{{value}} Jerusalem",
         "asia_kuwait": "{{value}} Kuwait, Riyadh",
@@ -357,7 +360,8 @@
         "enlarge": "Phóng to bảng",
         "hide": "Ẩn bảng",
         "reduce": "Thu nhỏ bảng",
-        "show_tabs": "Hiện các thẻ khác"
+        "show_tabs": "Hiện các thẻ khác",
+        "open_app": "Mở trong ứng dụng"
     },
     "user_quota": {
         "limited": "Bạn đã sử dụng hết {{quota}}% không gian có sẵn",

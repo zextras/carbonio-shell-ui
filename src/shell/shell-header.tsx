@@ -4,21 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useState } from 'react';
 import {
+	Catcher,
 	Container,
 	IconButton,
 	Padding,
 	Responsive,
-	useScreenMode,
-	Catcher,
-	Button
+	useScreenMode
 } from '@zextras/carbonio-design-system';
-import { times } from 'lodash';
-import Logo from '../svg/carbonio.svg';
+import React, { FC } from 'react';
 import { SearchBar } from '../search/search-bar';
-import { CreationButton } from './creation-button';
 import { useAppStore } from '../store/app';
+import Logo from '../svg/carbonio.svg';
+import { CreationButton } from './creation-button';
 
 const ShellHeader: FC<{
 	mobileNavIsOpen: boolean;
@@ -29,7 +27,7 @@ const ShellHeader: FC<{
 	return (
 		<Container
 			orientation="horizontal"
-			background="gray3"
+			background="gray1"
 			width="fill"
 			height="60px"
 			minHeight="60px"
@@ -47,7 +45,8 @@ const ShellHeader: FC<{
 							<IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} />
 						</Padding>
 					</Responsive>
-					<Container width={250} height={32} crossAlignment="flex-start">
+					<Container width={150} height={32} crossAlignment="flex-start">
+						<Padding right="large" />
 						<Logo height="32px" />
 					</Container>
 					<Padding horizontal="large">

@@ -6,23 +6,27 @@ SPDX-License-Identifier: AGPL-3.0-only
 
 <!DOCTYPE html>
 <html lang="">
+	<head>
+		<title>Carbonio Client</title>
+		<link
+			rel="icon"
+			type="image/svg+xml"
+			href="<%- htmlWebpackPlugin.options.BASE_PATH %>favicon.svg"
+		/>
+		<link rel="alternate icon" href="<%- htmlWebpackPlugin.options.BASE_PATH %>favicon.png" />
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta
+			name="viewport"
+			content="minimum-scale=1.0, initial-scale=1.0, width=device-width, shrink-to-fit=no"
+		/>
+		<base href="/carbonio/" />
+		<meta http-equiv="Cache-Control" content="no-cache" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
+	</head>
 
-<head>
-	<title>Carbonio Client</title>
-	<link rel="icon" type="image/svg+xml" href="<%- htmlWebpackPlugin.options.BASE_PATH %>favicon.svg">
-	<link rel="alternate icon" href="<%- htmlWebpackPlugin.options.BASE_PATH %>favicon.png">
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="minimum-scale=1.0, initial-scale=1.0, width=device-width, shrink-to-fit=no">
-	<base href="/carbonio/" />
-	<meta http-equiv="Cache-Control" content="no-cache" />
-	<meta http-equiv="Pragma" content="no-cache" />
-	<meta http-equiv="Expires" content="0" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-</head>
-
-<body>
-	<div id="app"></div>
-</body>
-
+	<body>
+		<div id="app"></div>
+	</body>
 </html>

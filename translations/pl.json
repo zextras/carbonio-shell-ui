@@ -80,7 +80,7 @@
     "label": {
         "discard_changes": "ODRZUĆ ZMIANY",
         "cancel": "Anuluj",
-        "clear_search_query": "WYCZYŚĆ WYNIK WYSZUKIWANIA",
+        "clear_search_query": "WYCZYŚĆ SŁOWA KLUCZOWE",
         "language": "Język",
         "no": "Nie",
         "out_of_office": "Poza biurem",
@@ -386,6 +386,6 @@
         "title": "Ustawienia głównego konta"
     },
     "share": {
-        "is_contained_in": "Jest zawarty w"
+        "is_contained_in": "Znajduje się w"
     }
 }

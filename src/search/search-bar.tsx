@@ -366,7 +366,13 @@ export const SearchBar: FC = () => {
 	const disableClearButton = useMemo(() => (isTyping ? false : !showClear), [showClear, isTyping]);
 
 	return (
-		<Container width="fit" flexGrow="1" orientation="horizontal" minWidth="0" ref={containerRef}>
+		<Container
+			minWidth="fit-content"
+			width="fit"
+			flexGrow="1"
+			orientation="horizontal"
+			ref={containerRef}
+		>
 			<Tooltip
 				disabled={!searchDisabled}
 				maxWidth="100%"

@@ -34,14 +34,19 @@ const ShellHeader: FC<{
 			height="3.75rem"
 			minHeight="3.75rem"
 			maxHeight="3.75rem"
-			mainAlignment="flex-start"
+			mainAlignment="space-between"
 			padding={{
 				horizontal: screenMode === 'desktop' ? 'large' : 'extrasmall',
 				vertical: 'small'
 			}}
 		>
 			<Catcher>
-				<Container orientation="horizontal" width="75%" maxWidth="75%" mainAlignment="flex-start">
+				<Container
+					orientation="horizontal"
+					maxWidth="75%"
+					mainAlignment="flex-start"
+					minWidth="fit-content"
+				>
 					<Responsive mode="mobile">
 						<Padding right="small">
 							<IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} />
@@ -55,7 +60,7 @@ const ShellHeader: FC<{
 					</Padding>
 					<Responsive mode="desktop">{searchEnabled && <SearchBar />}</Responsive>
 				</Container>
-				<Container orientation="horizontal" width="25%" mainAlignment="flex-end">
+				<Container orientation="horizontal" width="auto" mainAlignment="flex-end">
 					<Responsive mode="desktop">{children}</Responsive>
 					<Responsive mode="mobile">
 						<Container

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Button, Dropdown, MultiButton } from '@zextras/carbonio-design-system';
+import { Button, Container, Dropdown, MultiButton } from '@zextras/carbonio-design-system';
 import { Location } from 'history';
 import { groupBy, noop, reduce } from 'lodash';
 import React, { FC, useCallback, useMemo, useState } from 'react';
@@ -54,15 +54,17 @@ export const CreationButtonComponent: FC<{ activeRoute: AppRoute; location: Loca
 		setOpen(true);
 	}, []);
 	return primaryAction ? (
-		<MultiButton
-			size="extralarge"
-			background="primary"
-			label={primaryAction?.label ?? t('new', 'New')}
-			onClick={primaryAction?.click}
-			items={secondaryActions}
-			disabledPrimary={!primaryAction || primaryAction?.disabled}
-			disabledSecondary={!secondaryActions?.length}
-		/>
+		<Container minWidth="80px">
+			<MultiButton
+				size="extralarge"
+				background="primary"
+				label={primaryAction?.label ?? t('new', 'New')}
+				onClick={primaryAction?.click}
+				items={secondaryActions}
+				disabledPrimary={!primaryAction || primaryAction?.disabled}
+				disabledSecondary={!secondaryActions?.length}
+			/>
+		</Container>
 	) : (
 		<Dropdown items={secondaryActions} onClose={onClose} onOpen={onOpen}>
 			<Button

@@ -222,7 +222,6 @@
         "polish": "Polish"
     },
     "timezone": {
-        "coordinated_universal_time": "{{value}} Coordinated Universal Time",
         "mid_atlantic": "{{value}} Mid-Atlantic",
         "africa_cairo": "{{value}} Egypt",
         "africa_casablanca": "{{value}} Casablanca",

@@ -222,7 +222,6 @@
         "polish": "Польский"
     },
     "timezone": {
-        "minsk": "{{value}} Минск",
         "africa_algiers": "{{value}} Западная Центральная Африка",
         "africa_cairo": "{{value}} Египет",
         "africa_harare": "{{value}} Хараре, Претория",

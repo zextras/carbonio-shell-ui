@@ -179,11 +179,8 @@
         "folder_external_account": "Pasta: Nova Conta Externa"
     },
     "timezone": {
-        "brasilia": "{{value}} Brasília",
         "egypt": "{{value}} Egito",
-        "kaliningrad_rtz_1": "{{value}} Kaliningrado (RTZ 1)",
         "pyongyang": "{{value}} Pyongyang",
-        "cayenne_fortaleza": "{{value}} Caiena, Fortaleza",
         "africa_algiers": "{{value}} África Central Ocidental",
         "africa_cairo": "{{value}} Egito",
         "africa_casablanca": "{{value}} Casablanca",

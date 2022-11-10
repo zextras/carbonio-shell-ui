@@ -179,7 +179,6 @@
         "folder_external_account": "Ordner: Neues externes Konto"
     },
     "timezone": {
-        "monrovia": "{{value}} Monrovia",
         "america_anchorage": "{{value}} Alaska",
         "america_argentina_buenos_aires": "{{value}} Argentinien",
         "america_bogota": "{{value}} Kolumbien",

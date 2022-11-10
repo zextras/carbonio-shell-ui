@@ -185,7 +185,8 @@
         "use_personas_line1": "E-posta mesajları gönderirken bir çok ayarı kolayca değiştirmek için kişilik özelliğini kullanabilirsiniz.",
         "button": "Buton",
         "click_to_copy": "Kopyalamak için tıklayın",
-        "folder_external_account": "Klasör: Yeni Dış Hesap"
+        "folder_external_account": "Klasör: Yeni Dış Hesap",
+        "add_inline_image": "Resim ekle"
     },
     "locale": {
         "label_italian": "Italian - {{value}}",
@@ -222,7 +223,6 @@
         "polish": "Polish"
     },
     "timezone": {
-        "mid_atlantic": "{{value}} Mid-Atlantic",
         "africa_cairo": "{{value}} Egypt",
         "africa_casablanca": "{{value}} Casablanca",
         "africa_harare": "{{value}} Harare, Pretoria",

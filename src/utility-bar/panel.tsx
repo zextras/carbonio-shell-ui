@@ -12,7 +12,7 @@ import { useUtilityViews } from './utils';
 import { useUtilityBarStore } from './store';
 
 const Panel = styled(Container)<{ mode: string }>`
-	width: ${({ mode }): number => (mode !== 'closed' ? 256 : 48)}px;
+	width: ${({ mode }): number => (mode !== 'closed' ? 16 : 3)}rem;
 	border-radius: 0;
 	height: 100%;
 	position: absolute;
@@ -20,11 +20,11 @@ const Panel = styled(Container)<{ mode: string }>`
 	top: 0;
 	bottom: 0;
 	transition: width 0.2s;
-	border-left: 1px solid ${({ theme }): string => theme.palette.gray2.regular};
+	border-left: 0.0625rem solid ${({ theme }): string => theme.palette.gray2.regular};
 `;
 const Spacer = styled.div<{ mode: string }>`
 	position: relative;
-	width: ${({ mode }): number => (mode === 'open' ? 256 : 48)}px;
+	width: ${({ mode }): number => (mode === 'open' ? 16 : 3)}rem;
 	height: 100%;
 	transition: width 0.2s;
 `;

@@ -31,9 +31,9 @@ const ShellHeader: FC<{
 			orientation="horizontal"
 			background="gray3"
 			width="fill"
-			height="60px"
-			minHeight="60px"
-			maxHeight="60px"
+			height="3.75rem"
+			minHeight="3.75rem"
+			maxHeight="3.75rem"
 			mainAlignment="space-between"
 			padding={{
 				horizontal: screenMode === 'desktop' ? 'large' : 'extrasmall',
@@ -52,8 +52,8 @@ const ShellHeader: FC<{
 							<IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} />
 						</Padding>
 					</Responsive>
-					<Container width={250} height={32} crossAlignment="flex-start">
-						<Logo height="32px" />
+					<Container width="15.625rem" height="2rem" crossAlignment="flex-start">
+						<Logo height="2rem" />
 					</Container>
 					<Padding horizontal="large">
 						<CreationButton />

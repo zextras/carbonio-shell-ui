@@ -12,7 +12,7 @@ import { SEARCH_APP_ID } from '../constants';
 import { useCurrentRoute, pushHistory } from '../history/hooks';
 
 const SelectorContainer = styled(Container)<{ open?: boolean }>`
-	border-right: 1px solid ${({ theme }): string => theme.palette.gray4.regular};
+	border-right: 0.0625rem solid ${({ theme }): string => theme.palette.gray4.regular};
 	cursor: pointer;
 	background: ${({ theme, open }): string => theme.palette[open ? 'gray5' : 'gray6'].regular};
 
@@ -66,9 +66,9 @@ const ModuleSelectorComponent: FC<{ app: string | undefined }> = ({ app }) => {
 		>
 			<SelectorContainer
 				orientation="horizontal"
-				height={42}
+				height="2.625rem"
 				width="fit"
-				minWidth={150}
+				minWidth="9.375rem"
 				crossAlignment="center"
 				mainAlignment="space-between"
 				borderRadius="half"

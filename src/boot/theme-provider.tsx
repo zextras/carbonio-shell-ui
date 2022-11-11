@@ -32,10 +32,10 @@ const themeSizes = (
 			return (theme: any): any => {
 				// eslint-disable-next-line no-param-reassign
 				theme.sizes.font = {
-					extrasmall: '10px',
-					small: '12px',
-					medium: '14px',
-					large: '16px'
+					extrasmall: '0.625rem',
+					small: '0.75rem',
+					medium: '0.875rem',
+					large: '1rem'
 				};
 				return theme;
 			};
@@ -44,10 +44,10 @@ const themeSizes = (
 			return (theme: any): any => {
 				// eslint-disable-next-line no-param-reassign
 				theme.sizes.font = {
-					extrasmall: '14px',
-					small: '16px',
-					medium: '18px',
-					large: '20px'
+					extrasmall: '0.875rem',
+					small: '1rem',
+					medium: '1.125rem',
+					large: '1.25rem'
 				};
 				return theme;
 			};
@@ -56,10 +56,10 @@ const themeSizes = (
 			return (theme: any): any => {
 				// eslint-disable-next-line no-param-reassign
 				theme.sizes.font = {
-					extrasmall: '16px',
-					small: '18px',
-					medium: '20px',
-					large: '22px'
+					extrasmall: '1rem',
+					small: '1.125rem',
+					medium: '1.25rem',
+					large: '1.375rem'
 				};
 				return theme;
 			};
@@ -70,10 +70,10 @@ const themeSizes = (
 			return (theme: any): any => {
 				// eslint-disable-next-line no-param-reassign
 				theme.sizes.font = {
-					extrasmall: '12px',
-					small: '14px',
-					medium: '16px',
-					large: '18px'
+					extrasmall: '0.75rem',
+					small: '0.875rem',
+					medium: '1rem',
+					large: '1.125rem'
 				};
 				return theme;
 			};
@@ -120,10 +120,10 @@ export const ThemeProvider: FC = ({ children }) => {
 		fonts: (theme) => {
 			// eslint-disable-next-line no-param-reassign
 			theme.sizes.font = {
-				extrasmall: '12px',
-				small: '14px',
-				medium: '16px',
-				large: '18px'
+				extrasmall: '0.75rem',
+				small: '0.875rem',
+				medium: '1rem',
+				large: '1.125rem'
 			};
 			return theme;
 		}

@@ -35,8 +35,8 @@ import {
 
 const TextArea = styled.textarea`
 	box-sizing: border-box;
-	padding: 10px;
-	min-height: 150px;
+	padding: 0.625rem;
+	min-height: 9.375rem;
 	background: ${({ theme }): string => theme.palette.gray5.regular};
 	flex-grow: 1;
 	width: 100%;
@@ -142,7 +142,7 @@ const OutOfOfficeView: FC<{
 	return (
 		<FormSubSection
 			label={outOfOfficeSection.label}
-			minWidth="calc(min(100%, 512px))"
+			minWidth="calc(min(100%, 32rem))"
 			width="50%"
 			id={outOfOfficeSection.id}
 		>

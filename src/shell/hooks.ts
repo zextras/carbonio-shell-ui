@@ -6,7 +6,7 @@
 
 /* eslint-disable react-hooks/rules-of-hooks */
 
-import { Dispatch, SetStateAction, useContext, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -18,7 +18,7 @@ export function useIsMobile(): boolean {
 }
 
 export function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] {
-	const [storedValue, setStoredValue] = useState<T>(() => {
+	const readValue = useCallback(() => {
 		try {
 			const item = window.localStorage.getItem(key);
 			return item ? JSON.parse(item) : initialValue;
@@ -26,15 +26,30 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<S
 			console.error(error);
 			return initialValue;
 		}
-	});
+	}, [initialValue, key]);
+
+	const [storedValue, setStoredValue] = useState<T>(readValue());
 	const setValue = (value: T | ((val: T) => T)): any => {
 		try {
 			const valueToStore = value instanceof Function ? value(storedValue) : value;
 			setStoredValue(valueToStore);
 			localStorage.setItem(key, JSON.stringify(valueToStore));
+			window.dispatchEvent(new Event('storage'));
 		} catch (error) {
 			console.error(error);
 		}
 	};
+
+	const updateValue = useCallback(() => {
+		setStoredValue(readValue());
+	}, [readValue]);
+
+	useEffect(() => {
+		window.addEventListener('storage', updateValue);
+		return () => {
+			window.removeEventListener('storage', updateValue);
+		};
+	}, [readValue, updateValue]);
+
 	return [storedValue, setValue];
 }

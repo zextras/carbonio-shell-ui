@@ -22,6 +22,11 @@
     },
     "settings": {
         "app": "Ayarlar",
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "Pijamalı hasta, yağız şoföre çabucak güvendi."
+            }
+        },
         "button": {
             "primary": "Kaydet",
             "confirm": "Onayla"

@@ -103,3 +103,13 @@ export const FOLDER_VIEW = {
 	task: 'task',
 	chat: 'chat'
 };
+export const LOCAL_STORAGE_SETTINGS_KEY = 'settings';
+export const LOCAL_STORAGE_SEARCH_KEY = 'search_suggestions';
+export const SCALING_OPTIONS = [
+	{ value: 75, label: 'xs' },
+	{ value: 87.5, label: 's' },
+	{ value: 100, label: 'm' },
+	{ value: 112.5, label: 'l' },
+	{ value: 125, label: 'xl' }
+] as const;
+export const BASE_FONT_SIZE = 100;

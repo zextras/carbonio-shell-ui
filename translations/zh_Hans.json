@@ -1,6 +1,11 @@
 {
     "settings": {
         "app": "设置",
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "視野無限廣，窗外有藍天"
+            }
+        },
         "button": {
             "primary": "保存",
             "confirm": "确认"

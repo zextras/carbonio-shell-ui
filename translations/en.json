@@ -182,6 +182,19 @@
     "settings": {
         "accounts": "Accounts",
         "app": "Settings",
+        "appearance": {
+            "labels": {
+                "a": "A",
+                "choose_size_auto": "Automatically resize the text size depending on the device",
+                "choose_size_description": "Choose Type Size and Styles for Carbonio Environment",
+                "choose_size_pangram": "The quick brown fox jumps over the lazy dog."
+            },
+            "option_l": "large",
+            "option_m": "medium",
+            "option_s": "small",
+            "option_xl": "extralarge",
+            "option_xs": "extrasmall"
+        },
         "button": {
             "confirm": "Confirm",
             "primary": "Save"
@@ -190,6 +203,7 @@
         "general": {
             "account": "Account",
             "account_logout": "Logout",
+            "appearance": "Appearance",
             "dark_mode": "Dark Mode",
             "general": "General Settings",
             "theme_auto": "Auto",

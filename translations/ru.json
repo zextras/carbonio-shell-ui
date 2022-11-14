@@ -1,5 +1,10 @@
 {
     "settings": {
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "Съешь ещё этих мягких французских булок да выпей же чаю."
+            }
+        },
         "button": {
             "primary": "Сохранить",
             "confirm": "Подтвердить"

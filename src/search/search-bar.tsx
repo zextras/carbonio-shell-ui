@@ -18,7 +18,7 @@ import { filter, find, map, reduce } from 'lodash';
 import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { SEARCH_APP_ID } from '../constants';
+import { LOCAL_STORAGE_SEARCH_KEY, SEARCH_APP_ID } from '../constants';
 import { useLocalStorage } from '../shell/hooks';
 
 import { QueryChip } from '../../types';
@@ -65,7 +65,7 @@ export const SearchBar: FC = () => {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const t = getT();
 	const [storedValue, setStoredValue] = useLocalStorage<SearchLocalStorage>(
-		'search_suggestions',
+		LOCAL_STORAGE_SEARCH_KEY,
 		[]
 	);
 	const [inputTyped, setInputTyped] = useState('');

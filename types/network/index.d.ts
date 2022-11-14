@@ -6,6 +6,7 @@
 
 import { AccountRights, ZimletProp } from '../account';
 import { Tag } from '../tags';
+import { AccountACEInfo, Identity } from './entities';
 
 export * from './soap';
 
@@ -60,24 +61,55 @@ export type GetInfoResponse = {
 export type PropsMods = Record<string, { app: string; value: unknown }>;
 
 export type PermissionsMods = {
-	freeBusy: any;
-	inviteRight: any;
+	freeBusy: {
+		current: AccountACEInfo[];
+		new: AccountACEInfo;
+	};
+	inviteRight: {
+		current: AccountACEInfo[];
+		new: AccountACEInfo;
+	};
 };
 
 export type CreateIdentityProps = {
 	requestId: number;
+	/** name of the identity */
 	zimbraPrefIdentityName: string | undefined;
+	/** personal part of email address put in from header */
 	zimbraPrefFromDisplay: string | undefined;
+	/** email address to put in from header.  Deprecated on data source as of bug 67068. */
 	zimbraPrefFromAddress: string | undefined;
-	zimbraPrefFromAddress: string | undefined;
-	zimbraPrefFromAddressType: string | undefined;
-	zimbraPrefReplyToEnabled: string | undefined;
+	/** Type of the email address from header. (sendAs or sendOnBehalfOf)  */
+	zimbraPrefFromAddressType: 'sendAs' | 'sendOnBehalfOf';
+	/** TRUE if we should set a reply-to header */
+	// TODO: update to boolean?
+	zimbraPrefReplyToEnabled: 'TRUE' | 'FALSE' | undefined;
+	/** personal part of email address put in reply-to header */
 	zimbraPrefReplyToDisplay: string | undefined;
+	/** address to put in reply-to header */
 	zimbraPrefReplyToAddress: string | undefined;
+	/** default mail signature for account/identity/dataSource */
 	zimbraPrefDefaultSignatureId: string | undefined;
+	/** forward/reply signature id for account/identity/dataSource */
 	zimbraPrefForwardReplySignatureId: string | undefined;
+	/** TRUE if we should look at zimbraPrefWhenSentToAddresses (deprecatedSince 5.0 in account) */
 	zimbraPrefWhenSentToEnabled: string | undefined;
+	/** TRUE if we should look at zimbraPrefWhenInFolderIds (deprecatedSince 5.0 in account) */
 	zimbraPrefWhenInFoldersEnabled: string | undefined;
+};
+
+export type CreateIdentityResponse = {
+	identity: [Identity];
+};
+export type ModifyIdentityResponse = Record<string, never>;
+export type DeleteIdentityResponse = Record<string, never>;
+export type ModifyPropertiesResponse = Record<string, never>;
+export type ModifyPrefsResponse = Record<string, never>;
+export type RevokeRightsResponse = {
+	ace?: AccountACEInfo[];
+};
+export type GrantRightsResponse = {
+	ace?: AccountACEInfo[];
 };
 
 export type IdentityMods = {
@@ -86,7 +118,7 @@ export type IdentityMods = {
 	createList?: { prefs: CreateIdentityProps }[];
 };
 
-export type PrefsMods = Record<string, unknown>;
+export type PrefsMods = Record<string, string | number | boolean>;
 
 export type Mods = {
 	props?: PropsMods;
@@ -94,6 +126,12 @@ export type Mods = {
 	permissions?: PermissionsMods;
 	identity?: IdentityMods;
 };
+
+export type AddMod = (
+	type: keyof Mods,
+	key: keyof NonNullable<Mods[type]>,
+	value: NonNullable<Mods[keyof Mods]>[typeof key]
+) => void;
 
 export type Locale = {
 	id: string;

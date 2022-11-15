@@ -11,11 +11,9 @@ import {
 	Padding,
 	Responsive,
 	useScreenMode,
-	Catcher,
-	Button
+	Catcher
 } from '@zextras/carbonio-design-system';
-import { find } from 'lodash';
-import { isEnabled as isDarkReaderEnabled } from 'darkreader';
+import { find, size } from 'lodash';
 import styled from 'styled-components';
 import Logo from '../svg/carbonio.svg';
 import { SearchBar } from '../search/search-bar';
@@ -34,34 +32,54 @@ const ShellHeader: FC<{
 	mobileNavIsOpen: boolean;
 	onMobileMenuClick: () => void;
 }> = ({ mobileNavIsOpen, onMobileMenuClick, children }) => {
-	const [darkMediaEnabled, setDarkMediaEnabled] = useState(isDarkReaderEnabled());
-
+	const { carbonioWebUiAppLogo, carbonioWebUiDarkAppLogo, carbonioWebUiDarkMode } =
+		useLoginConfigStore();
 	const settings = useUserSettings();
-	const currentDRMSetting = useMemo(
-		() =>
-			find(settings.props, { name: 'zappDarkreaderMode', zimlet: SHELL_APP_ID })
-				?._content as DRPropValues,
+	const settingReceived = useMemo(
+		() => size(settings.prefs) > 0 || size(settings.attrs) > 0 || size(settings.props) > 0,
 		[settings]
 	);
+	const [darkModeEnabled, setDarkModeEnabled] = useState(false);
 
 	useEffect(() => {
-		if (currentDRMSetting !== 'auto') {
-			setDarkMediaEnabled(currentDRMSetting === 'enabled');
+		if (settingReceived) {
+			const result = find(settings?.props ?? [], {
+				name: 'zappDarkreaderMode',
+				zimlet: SHELL_APP_ID
+			})?._content as DRPropValues;
+			if (result) {
+				setDarkModeEnabled(
+					(result === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
+						result === 'enabled'
+				);
+			} else {
+				setDarkModeEnabled(
+					(carbonioWebUiDarkMode === undefined &&
+						window.matchMedia('(prefers-color-scheme: dark)').matches) ||
+						(carbonioWebUiDarkMode !== undefined && carbonioWebUiDarkMode)
+				);
+			}
 		}
-	}, [currentDRMSetting]);
+	}, [settings, carbonioWebUiDarkMode, settingReceived]);
 
-	const { carbonioWebUiAppLogo, carbonioWebUiDarkAppLogo } = useLoginConfigStore();
-
-	window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-		setDarkMediaEnabled(event.matches);
-	});
+	useEffect(() => {
+		const setCallback = (event: MediaQueryListEvent): void => {
+			if (event.matches) {
+				setDarkModeEnabled(event.matches);
+			}
+		};
+		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setCallback);
+		return (): void => {
+			window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', setCallback);
+		};
+	}, []);
 
 	const logoSrc = useMemo(() => {
-		if (darkMediaEnabled) {
+		if (darkModeEnabled) {
 			return carbonioWebUiDarkAppLogo || carbonioWebUiAppLogo;
 		}
 		return carbonioWebUiAppLogo || carbonioWebUiDarkAppLogo;
-	}, [carbonioWebUiDarkAppLogo, carbonioWebUiAppLogo, darkMediaEnabled]);
+	}, [carbonioWebUiDarkAppLogo, carbonioWebUiAppLogo, darkModeEnabled]);
 
 	const screenMode = useScreenMode();
 	const searchEnabled = useAppStore((s) => s.views.search.length > 0);
@@ -92,7 +110,9 @@ const ShellHeader: FC<{
 						</Padding>
 					</Responsive>
 					<Container width="15.625rem" height="2rem" crossAlignment="flex-start">
-						{logoSrc ? <CustomImg src={logoSrc} /> : <Logo height="2rem" />}
+						{settingReceived && (
+							<>{logoSrc ? <CustomImg src={logoSrc} /> : <Logo height="2rem" />}</>
+						)}
 					</Container>
 					<Padding horizontal="large">
 						<CreationButton />

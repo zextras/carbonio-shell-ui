@@ -9,4 +9,5 @@ export type LoginConfigStore = {
 	carbonioWebUiAppLogo?: string;
 	carbonioWebUiDarkAppLogo?: string;
 	carbonioWebUiTitle?: string;
+	carbonioWebUiFavicon?: string;
 };

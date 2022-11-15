@@ -12,6 +12,15 @@ export const loginConfig = (): Promise<void> =>
 		.then((response) => response.json())
 		.then((data: LoginConfigStore) => {
 			useLoginConfigStore.setState(data);
+			const favicon = document.getElementById('favicon');
+			if (favicon && favicon instanceof HTMLLinkElement) {
+				favicon.href = data.carbonioWebUiFavicon
+					? data.carbonioWebUiFavicon
+					: `${BASE_PATH}favicon.svg`;
+			}
+			if (data.carbonioWebUiTitle) {
+				document.title = data.carbonioWebUiTitle;
+			}
 		})
 		.catch((reason) => {
 			console.warn(reason);

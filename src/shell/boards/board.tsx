@@ -20,7 +20,7 @@ const BoardContainer = styled.div<{ show: boolean }>`
 	width: 100%;
 	overflow-y: auto;
 	&::-webkit-scrollbar {
-		width: 8px;
+		width: 0.5rem;
 	}
 
 	&::-webkit-scrollbar-track {
@@ -29,7 +29,7 @@ const BoardContainer = styled.div<{ show: boolean }>`
 
 	&::-webkit-scrollbar-thumb {
 		background-color: ${({ theme }): string => theme.palette.gray3.regular};
-		border-radius: 4px;
+		border-radius: 0.25rem;
 	}
 `;
 

@@ -213,11 +213,8 @@
         "polish": "Polandia"
     },
     "timezone": {
-        "athens_beirut_bucharest_istanbul": "{{value}} Athena, Beirut, Bukares, Istanbul",
         "chita": "{{value}} Chita",
-        "hawaii": "{{value}} Hawaii",
         "mid_atlantic": "{{value}} Atlantik Tengah",
-        "us_canada_mountain": "{{value}} AS/Kanada Pegunungan",
         "america_cayenne": "{{value}} Cayenne, Fortaleza",
         "america_regina": "{{value}} Saskatchewan",
         "america_santiago": "{{value}} Amerika Selatan Pasifik",

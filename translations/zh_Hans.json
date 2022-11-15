@@ -213,7 +213,6 @@
         "polish": "波兰语"
     },
     "timezone": {
-        "dateline": "{{value}} 日期线",
         "nairobi": "{{value}} 内罗毕",
         "pacific_honolulu": "{{value}} 夏威夷",
         "pacific_midway": "{{value}} 萨摩亚",

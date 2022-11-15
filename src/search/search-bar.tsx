@@ -27,7 +27,7 @@ import { ModuleSelector } from './module-selector';
 import { useSearchStore } from './search-store';
 
 const OutlinedIconButton = styled(IconButton)`
-	border: 1px solid
+	border: 0.0625rem solid
 		${({ theme, disabled }): string =>
 			disabled ? theme.palette.primary.disabled : theme.palette.primary.regular};
 	display: block;
@@ -37,7 +37,7 @@ const OutlinedIconButton = styled(IconButton)`
 `;
 
 const StyledChipInput = styled(ChipInput)`
-	padding: 0 16px;
+	padding: 0 1rem;
 	&:hover {
 		outline: none;
 		background: ${({ theme, disabled }): string =>
@@ -46,10 +46,10 @@ const StyledChipInput = styled(ChipInput)`
 `;
 
 const StyledContainer = styled(Container)`
-	height: 42px;
+	height: 2.625rem;
 	overflow-y: hidden;
 	&:first-child {
-		transform: translateY(-2px);
+		transform: translateY(-0.125rem);
 	}
 `;
 
@@ -382,7 +382,7 @@ export const SearchBar: FC = () => {
 				}
 			>
 				<Container orientation="horizontal" width="fill">
-					<Container minWidth="512px" width="fill">
+					<Container minWidth="32rem" width="fill">
 						<Container orientation="horizontal" width="fill">
 							<Container width="fit">
 								<ModuleSelector />

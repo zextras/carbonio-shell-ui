@@ -16,7 +16,7 @@ import { useApps } from '../store/app';
 const Title = styled(Text)`
 	width: 100%;
 	font-family: ${({ theme }) => theme.fonts.default};
-	font-size: 15px;
+	font-size: 0.9375rem;
 	background: ${({ theme }) => theme.palette.gray5.regular};
 `;
 

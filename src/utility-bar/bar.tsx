@@ -107,7 +107,7 @@ export const ShellUtilityBar: FC = () => {
 				<UtilityBarItem view={view} key={view.id} />
 			))}
 			<Tooltip label={account?.displayName ?? account?.name} placement="bottom-end">
-				<Dropdown items={accountItems} maxWidth="300px" disableAutoFocus>
+				<Dropdown items={accountItems} maxWidth="18.75rem" disableAutoFocus>
 					<IconButton icon="PersonOutline" size="large" onClick={noop} />
 				</Dropdown>
 			</Tooltip>

@@ -12,9 +12,9 @@ const VerticalDivider = styled.div`
 	position: relative;
 	overflow: visible;
 	height: 100%;
-	width: 1px;
-	max-width: 1px;
-	min-width: 1px;
+	width: 0.0625rem;
+	max-width: 0.0625rem;
+	min-width: 0.0625rem;
 	background-color: ${({ theme }): string => theme.palette.gray2.regular};
 	transition: background 0.2s;
 	&:hover {
@@ -30,9 +30,9 @@ const Bubble = styled.div<{ open: boolean }>`
 	justify-content: center;
 	position: absolute;
 	top: 50%;
-	left: -12px;
-	width: 24px;
-	height: 24px;
+	left: -0.75rem;
+	width: 1.5rem;
+	height: 1.5rem;
 	border-radius: 50%;
 	background-color: ${({ theme }): string => theme.palette.gray2.regular};
 	transition: background-color 0.2s, transform 0.2s;

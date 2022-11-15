@@ -76,7 +76,7 @@ const PasswordRecoverySettings = ({
 	return (
 		<>
 			<Container
-				minWidth="calc(min(100%, 512px))"
+				minWidth="calc(min(100%, 32rem))"
 				width="fill"
 				padding={{ all: 'large' }}
 				height="fit"

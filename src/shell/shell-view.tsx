@@ -6,12 +6,12 @@
 
 import { Responsive, Row } from '@zextras/carbonio-design-system';
 import { PreviewManager } from '@zextras/carbonio-ui-preview';
-import {find, size} from 'lodash';
+import { find, size } from 'lodash';
 import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { AppRoute, DRPropValues } from '../../types';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
-import {IS_STANDALONE, SHELL_APP_ID} from '../constants';
+import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
 import { goToLogin } from '../network/go-to-login';
 import { useAccountStore, useUserSettings } from '../store/account';
@@ -21,7 +21,7 @@ import { BoardContainer } from './boards/board-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
-import {useLoginConfigStore} from "../store/login";
+import { useLoginConfigStore } from '../store/login';
 
 const Background = styled.div`
 	background: ${({ theme }): string => theme.palette.gray6.regular};
@@ -40,23 +40,26 @@ function DarkReaderListener(): null {
 	const settings = useUserSettings();
 	const { carbonioWebUiDarkMode } = useLoginConfigStore();
 
-	const settingReceived = useMemo(() => {
-		return size(settings.prefs) > 0 || size(settings.attrs) > 0 || size(settings.props) > 0;
-	}, [settings]);
-
-	const currentDRMSetting = useMemo(
-		() =>{
-			const result = find(settings?.props ?? [], {
-				name: 'zappDarkreaderMode',
-				zimlet: SHELL_APP_ID
-			})?._content as DRPropValues;
-			if (result) {
-				return result;
-			}
-			return carbonioWebUiDarkMode !== undefined ? carbonioWebUiDarkMode ? 'enabled' : 'disabled' : 'auto'
-
-		}, [settings, carbonioWebUiDarkMode]
+	const settingReceived = useMemo(
+		() => size(settings.prefs) > 0 || size(settings.attrs) > 0 || size(settings.props) > 0,
+		[settings]
 	);
+
+	const currentDRMSetting = useMemo(() => {
+		const result = find(settings?.props ?? [], {
+			name: 'zappDarkreaderMode',
+			zimlet: SHELL_APP_ID
+		})?._content as DRPropValues;
+		if (result) {
+			return result;
+		}
+
+		return (
+			(carbonioWebUiDarkMode === undefined && 'auto') ||
+			(carbonioWebUiDarkMode && 'enabled') ||
+			'disabled'
+		);
+	}, [settings, carbonioWebUiDarkMode]);
 
 	useEffect(() => {
 		if (currentDRMSetting && settingReceived) {

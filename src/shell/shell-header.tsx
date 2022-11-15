@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, {FC, useEffect, useMemo, useState} from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import {
 	Container,
 	IconButton,
@@ -14,27 +14,26 @@ import {
 	Catcher,
 	Button
 } from '@zextras/carbonio-design-system';
-import {find} from 'lodash';
+import { find } from 'lodash';
+import { isEnabled as isDarkReaderEnabled } from 'darkreader';
+import styled from 'styled-components';
 import Logo from '../svg/carbonio.svg';
 import { SearchBar } from '../search/search-bar';
 import { CreationButton } from './creation-button';
 import { useAppStore } from '../store/app';
-import {useLoginConfigStore} from "../store/login";
-import {useUserSettings} from "../store/account";
-import {SHELL_APP_ID} from "../constants";
-import {DRPropValues} from "../../types";
-import {isEnabled as isDarkReaderEnabled} from 'darkreader';
-import styled from "styled-components";
+import { useLoginConfigStore } from '../store/login';
+import { useUserSettings } from '../store/account';
+import { SHELL_APP_ID } from '../constants';
+import { DRPropValues } from '../../types';
 
 const CustomImg = styled.img`
-	height: 2rem
+	height: 2rem;
 `;
 
 const ShellHeader: FC<{
 	mobileNavIsOpen: boolean;
 	onMobileMenuClick: () => void;
 }> = ({ mobileNavIsOpen, onMobileMenuClick, children }) => {
-
 	const [darkMediaEnabled, setDarkMediaEnabled] = useState(isDarkReaderEnabled());
 
 	const settings = useUserSettings();
@@ -46,23 +45,22 @@ const ShellHeader: FC<{
 	);
 
 	useEffect(() => {
-		if (currentDRMSetting !== "auto") {
+		if (currentDRMSetting !== 'auto') {
 			setDarkMediaEnabled(currentDRMSetting === 'enabled');
 		}
-	},[currentDRMSetting])
+	}, [currentDRMSetting]);
 
 	const { carbonioWebUiAppLogo, carbonioWebUiDarkAppLogo } = useLoginConfigStore();
 
-	window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+	window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
 		setDarkMediaEnabled(event.matches);
 	});
 
 	const logoSrc = useMemo(() => {
 		if (darkMediaEnabled) {
 			return carbonioWebUiDarkAppLogo || carbonioWebUiAppLogo;
-		} else {
-			return carbonioWebUiAppLogo || carbonioWebUiDarkAppLogo;
 		}
+		return carbonioWebUiAppLogo || carbonioWebUiDarkAppLogo;
 	}, [carbonioWebUiDarkAppLogo, carbonioWebUiAppLogo, darkMediaEnabled]);
 
 	const screenMode = useScreenMode();

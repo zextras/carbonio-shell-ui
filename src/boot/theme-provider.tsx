@@ -148,7 +148,7 @@ export const ThemeProvider: FC = ({ children }) => {
 		if (
 			window.screen.width <= SCALING_LIMIT.WIDTH &&
 			window.screen.height <= SCALING_LIMIT.HEIGHT &&
-			window.devicePixelRatio > SCALING_LIMIT.DPR
+			window.devicePixelRatio >= SCALING_LIMIT.DPR
 		) {
 			const baseFontIndex = SCALING_OPTIONS.findIndex((option) => option.value === BASE_FONT_SIZE);
 			if (baseFontIndex > 0) {

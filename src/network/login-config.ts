@@ -7,11 +7,12 @@
 import { LoginConfigStore } from '../../types/loginConfig';
 import { useLoginConfigStore } from '../store/login';
 
-export const loginConfig = (): void => {
-	fetch('/zx/login/v3/config').then((response) => {
-		response.json().then((data: LoginConfigStore) => {
-			useLoginConfigStore.setState(data);
-			console.log('@@', useLoginConfigStore());
-		});
+export const loginConfig = (): Promise<void> => {
+	return fetch('/zx/login/v3/config').then((response) => {
+		return response.json();
+	}).then((data: LoginConfigStore) => {
+		useLoginConfigStore.setState(data);
+	}).catch((reason) => {
+		console.warn(reason);
 	});
 };

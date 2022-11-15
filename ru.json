@@ -61,7 +61,7 @@
     "new": "Новый",
     "search": {
         "clear": "Очистить условия поиска",
-        "idle_input_label": "Искать в {{module}}",
+        "idle_input_label": "Поиск в {{module}}",
         "module": "Модуль",
         "app": "Поиск",
         "start": "Начать поиск",
@@ -176,7 +176,8 @@
         "when_replying": "При ответе или пересылке сообщений, отправленных по адресу:",
         "button": "Кнопка",
         "click_to_copy": "Нажмите чтобы скопировать",
-        "folder_external_account": "Папка: Новая внешняя учетная запись"
+        "folder_external_account": "Папка: Новая внешняя учетная запись",
+        "add_inline_image": "Добавить встроенное изображение"
     },
     "board": {
         "close_tab": "Закрыть вкладку",
@@ -222,8 +223,6 @@
         "polish": "Польский"
     },
     "timezone": {
-        "darwin": "{{value}} Дарвин",
-        "minsk": "{{value}} Минск",
         "africa_algiers": "{{value}} Западная Центральная Африка",
         "africa_cairo": "{{value}} Египет",
         "africa_harare": "{{value}} Хараре, Претория",

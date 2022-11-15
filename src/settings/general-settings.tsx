@@ -50,12 +50,9 @@ const GeneralSettings: FC = () => {
 
 	const cleanLocalStoreChange = useCallback<(key: keyof ScalingSettings) => void>((key) => {
 		setLocalStorageUnAppliedChanges((prevState) => {
-			if (prevState[key]) {
-				const nextState = { ...prevState };
-				delete nextState[key];
-				return nextState;
-			}
-			return prevState;
+			const nextState = { ...prevState };
+			delete nextState[key];
+			return nextState;
 		});
 	}, []);
 

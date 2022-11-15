@@ -16,6 +16,7 @@ import {
 import styled, { SimpleInterpolation } from 'styled-components';
 import { ScalingSettings } from '../../../../types/settings';
 import { BASE_FONT_SIZE, SCALING_OPTIONS } from '../../../constants';
+import { getAutoScalingFontSize } from '../utils';
 
 const ScalingSliderContainer = styled(Container)`
 	box-shadow: 0px 0px 4px rgba(166, 166, 166, 0.5);
@@ -45,6 +46,11 @@ const BASE_FONT_OPTION_INDEX = SCALING_OPTIONS.findIndex(
 	(option) => option.value === BASE_FONT_SIZE
 );
 
+const AUTOSCALING_FONT_SIZE = getAutoScalingFontSize();
+const AUTOSCALING_FONT_OPTION_INDEX = SCALING_OPTIONS.findIndex(
+	(option) => option.value === AUTOSCALING_FONT_SIZE
+);
+
 export const ScalingSettingSection = React.forwardRef<
 	ScalingSettingSectionRef,
 	ScalingSettingSectionProps
@@ -67,24 +73,17 @@ export const ScalingSettingSection = React.forwardRef<
 		[t]
 	);
 
-	const savedOptionIndex = useMemo(() => {
+	const savedOptionIndex = useMemo<number>(() => {
 		const savedScalingValueSetting = scalingSettings['settings.appearance_setting.scaling'];
-		if (savedScalingValueSetting) {
+		if (savedScalingValueSetting !== undefined) {
 			const optionIndex = scalingOptionValues.findIndex(
 				(option) => option === savedScalingValueSetting
 			);
 			if (optionIndex >= 0) {
 				return optionIndex;
 			}
-		} else {
-			const baseFontOptionIndex = scalingOptionValues.findIndex(
-				(option) => option === BASE_FONT_SIZE
-			);
-			if (baseFontOptionIndex >= 0) {
-				return baseFontOptionIndex;
-			}
 		}
-		return 0;
+		return AUTOSCALING_FONT_OPTION_INDEX;
 	}, [scalingOptionValues, scalingSettings]);
 
 	const [autoScaling, setAutoScaling] = useState(
@@ -108,6 +107,7 @@ export const ScalingSettingSection = React.forwardRef<
 		cleanLocalStoreChange,
 		savedOptionIndex,
 		scalingOptionValues,
+		scalingSettings,
 		scalingValue
 	]);
 
@@ -118,6 +118,9 @@ export const ScalingSettingSection = React.forwardRef<
 			(scalingSettings['settings.appearance_setting.auto'] === undefined && !autoScaling)
 		) {
 			addLocalStoreChange('settings.appearance_setting.auto', autoScaling);
+			if (autoScaling) {
+				addLocalStoreChange('settings.appearance_setting.scaling', undefined);
+			}
 		} else {
 			cleanLocalStoreChange('settings.appearance_setting.auto');
 		}

@@ -13,14 +13,10 @@ import { auto, disable, enable, setFetchMethod } from 'darkreader';
 import { reduce } from 'lodash';
 import { createGlobalStyle, DefaultTheme } from 'styled-components';
 import { DRPropValues, ThemeExtension } from '../../types';
-import {
-	BASE_FONT_SIZE,
-	darkReaderDynamicThemeFixes,
-	LOCAL_STORAGE_SETTINGS_KEY,
-	SCALING_OPTIONS
-} from '../constants';
+import { darkReaderDynamicThemeFixes, LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
 import { useLocalStorage } from '../shell/hooks';
 import { ScalingSettings } from '../../types/settings';
+import { getAutoScalingFontSize } from '../settings/components/utils';
 
 setFetchMethod(window.fetch);
 
@@ -78,11 +74,6 @@ const GlobalStyle = createGlobalStyle<GlobalStyledProps>`
   }
 `;
 
-const SCALING_LIMIT = {
-	WIDTH: 1400,
-	HEIGHT: 900,
-	DPR: 2 // device pixel ratio
-} as const;
 export const ThemeProvider: FC = ({ children }) => {
 	const [localStorageSettings] = useLocalStorage<ScalingSettings>(LOCAL_STORAGE_SETTINGS_KEY, {});
 
@@ -144,28 +135,13 @@ export const ThemeProvider: FC = ({ children }) => {
 		setExtensions((ext) => ({ ...ext, [id]: newExtension }));
 	}, []);
 
-	const getAutoScalingFontSize = useCallback<() => GlobalStyledProps['baseFontSize']>(() => {
-		if (
-			window.screen.width <= SCALING_LIMIT.WIDTH &&
-			window.screen.height <= SCALING_LIMIT.HEIGHT &&
-			window.devicePixelRatio >= SCALING_LIMIT.DPR
-		) {
-			const baseFontIndex = SCALING_OPTIONS.findIndex((option) => option.value === BASE_FONT_SIZE);
-			if (baseFontIndex > 0) {
-				return SCALING_OPTIONS[baseFontIndex - 1].value;
-			}
-		}
-		return BASE_FONT_SIZE;
-	}, []);
-
 	const baseFontSize = useMemo<GlobalStyledProps['baseFontSize']>(() => {
 		const savedScalingValueSetting = localStorageSettings['settings.appearance_setting.scaling'];
-		const savedScalingAutoSetting = localStorageSettings['settings.appearance_setting.auto'];
-		if (savedScalingAutoSetting === false && savedScalingValueSetting !== undefined) {
+		if (savedScalingValueSetting !== undefined) {
 			return savedScalingValueSetting;
 		}
 		return getAutoScalingFontSize();
-	}, [getAutoScalingFontSize, localStorageSettings]);
+	}, [localStorageSettings]);
 
 	return (
 		<UIThemeProvider extension={aggregatedExtensions} loadDefaultFont>

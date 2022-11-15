@@ -113,3 +113,8 @@ export const SCALING_OPTIONS = [
 	{ value: 125, label: 'xl' }
 ] as const;
 export const BASE_FONT_SIZE = 100;
+export const SCALING_LIMIT = {
+	WIDTH: 1400,
+	HEIGHT: 900,
+	DPR: 2 // device pixel ratio
+} as const;

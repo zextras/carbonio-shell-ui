@@ -35,7 +35,7 @@ import { feedback } from './functions';
 
 const TextArea = styled.textarea<{ size?: string }>`
 	width: 100%;
-	min-height: 128px;
+	min-height: 8rem;
 	box-sizing: border-box;
 	outline: none;
 	border: none;
@@ -64,24 +64,23 @@ const ButtonContainer = styled(Container)`
 
 const TAContainer = styled(Container)`
 	background: ${({ theme }): string => theme.palette.gray5.regular};
-	border-radius: 2px 2px 0 0;
-	padding: 8px;
+	border-radius: 0.125rem 0.125rem 0 0;
+	padding: 0.5rem;
 	transition: height 0.4s ease;
 	height: auto;
 	max-height: 50%;
 	&:focus-within {
 		background: ${({ theme }): string => theme.palette.gray4.regular};
 		outline: none;
-		border-bottom: 1px solid ${({ theme }): string => theme.palette.primary.regular};
+		border-bottom: 0.0625rem solid ${({ theme }): string => theme.palette.primary.regular};
 	}
 `;
 
 const SubHeadingText = styled(Text)<{ lineHeight?: string }>`
-	border-radius: 2px 2px 0 0;
-	line-height: 21px;
-	font-size: 14px;
+	border-radius: 0.125rem 0.125rem 0 0;
+	font-size: 0.875rem;
 	font-weight: 300;
-	margin-top: 10px;
+	margin-top: 0.625rem;
 	line-height: ${({ lineHeight }): string => lineHeight ?? 'normal'};
 `;
 
@@ -90,7 +89,7 @@ interface LabelContainerProps extends ContainerProps {
 }
 
 const LabelContainer = styled(Container)<LabelContainerProps>`
-	border-bottom: 1px solid
+	border-bottom: 0.0625rem solid
 		${({ theme, disabled }): string =>
 			disabled ? theme.palette.error.regular : theme.palette.gray2.regular};
 `;
@@ -321,7 +320,7 @@ const Feedback: FC = () => {
 					<Text weight="bold" size="large">
 						{t('feedback.report_something', 'Do you want to report something?')}
 					</Text>
-					<SubHeadingText overflow="break-word" lineHeight="21px">
+					<SubHeadingText overflow="break-word" lineHeight="1.5">
 						{t(
 							'feedback.explanation',
 							'Please send us your feedback about your new experience with Zextras Server. Your opinion is meaningful for us to improve our product. So tell us what’s on your mind.'
@@ -350,7 +349,7 @@ const Feedback: FC = () => {
 				crossAlignment="flex-start"
 				orientation="horizontal"
 			>
-				<Container mainAlignment="space-between" crossAlignment="flex-start" maxWidth="305px">
+				<Container mainAlignment="space-between" crossAlignment="flex-start" maxWidth="19.0625rem">
 					<Row padding={{ vertical: 'large' }}>
 						<Text weight="bold" size="small">
 							Module
@@ -364,7 +363,7 @@ const Feedback: FC = () => {
 						LabelFactory={ModuleLabelFactory}
 					/>
 				</Container>
-				<Container mainAlignment="space-between" crossAlignment="flex-start" maxWidth="305px">
+				<Container mainAlignment="space-between" crossAlignment="flex-start" maxWidth="19.0625rem">
 					<Row padding={{ vertical: 'large' }}>
 						<Text weight="bold" size="small">
 							Topic

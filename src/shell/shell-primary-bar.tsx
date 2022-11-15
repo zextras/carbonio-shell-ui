@@ -19,7 +19,7 @@ import { minimizeBoards, reopenBoards, useBoardStore } from '../store/boards';
 import { useCurrentRoute } from '../history/hooks';
 
 const ContainerWithDivider = styled(Container)`
-	border-right: 1px solid ${({ theme }): string => theme.palette.gray3.regular};
+	border-right: 0.0625rem solid ${({ theme }): string => theme.palette.gray3.regular};
 `;
 
 const ToggleBoardIcon: FC = () => {
@@ -118,7 +118,7 @@ const ShellPrimaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute }
 	}
 	return (
 		<ContainerWithDivider
-			width={49}
+			width="3.0625rem"
 			height="fill"
 			background="gray6"
 			orientation="vertical"
@@ -132,7 +132,7 @@ const ShellPrimaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute }
 				takeAvailableSpace
 				wrap="nowrap"
 				style={{
-					minHeight: '1px',
+					minHeight: '0.0625rem',
 					// TODO: fix overlay usage
 					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 					// @ts-ignore
@@ -157,7 +157,7 @@ const ShellPrimaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute }
 				// TODO: fix overlay usage
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
-				style={{ minHeight: '1px', overflowY: 'overlay' }}
+				style={{ minHeight: '0.0625rem', overflowY: 'overlay' }}
 			>
 				{accessories.map((v) => (
 					<PrimaryBarAccessoryElement view={v} key={v.id} />

@@ -59,7 +59,7 @@ const AppearanceSettings: FC<{
 	return (
 		<FormSubSection
 			label={subSection.label}
-			minWidth="calc(min(100%, 512px))"
+			minWidth="calc(min(100%, 32rem))"
 			width="50%"
 			id={subSection.id}
 		>

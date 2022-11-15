@@ -15,8 +15,8 @@ import { useAppList, useAppStore, useRoutes } from '../store/app';
 const _BoardsRouterContainer = styled(Container)`
 	flex-grow: 1;
 	flex-basis: 0;
-	min-width: 1px;
-	max-height: calc(100vh - 60px);
+	min-width: 0.0625rem;
+	max-height: calc(100vh - 3.75rem);
 	overflow-y: auto;
 `;
 

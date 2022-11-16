@@ -24,6 +24,7 @@ const AppearanceSettings = ({ children }: AppearanceSettingsProps): JSX.Element 
 			padding={'large'}
 			minWidth="calc(min(100%, 32rem))"
 			width="50%"
+			height={'fit'}
 			id={subSection.id}
 			background={'gray6'}
 		>

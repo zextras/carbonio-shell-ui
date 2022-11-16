@@ -222,7 +222,6 @@
         "polish": "กำจัดทิ้งอย่างรวดเร็ว"
     },
     "timezone": {
-        "gmt_11": "{{value}} GMT-11",
         "tehran": "{{value}} เตหะราน",
         "africa_algiers": "{{value}} แอฟริกากลางตะวันตก",
         "africa_cairo": "{{value}} อียิปต์",

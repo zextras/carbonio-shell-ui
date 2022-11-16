@@ -213,7 +213,6 @@
         "polish": "Pools"
     },
     "timezone": {
-        "mid_atlantic": "{{value}} Mid-Atlantic",
         "africa_algiers": "{{value}} West Centraal Afrika",
         "africa_cairo": "{{value}} Egypte",
         "africa_casablanca": "{{value}} Casablanca",

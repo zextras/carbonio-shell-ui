@@ -179,7 +179,6 @@
         "folder_external_account": "Pasta: Nova Conta Externa"
     },
     "timezone": {
-        "egypt": "{{value}} Egito",
         "pyongyang": "{{value}} Pyongyang",
         "africa_algiers": "{{value}} África Central Ocidental",
         "africa_cairo": "{{value}} Egito",

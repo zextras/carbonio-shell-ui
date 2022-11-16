@@ -179,7 +179,6 @@
         "folder_external_account": "Carpeta: Nueva cuenta externa"
     },
     "timezone": {
-        "manaus": "{{value}} Manaos",
         "africa_cairo": "{{value}} Egipto",
         "africa_casablanca": "{{value}} Casablanca",
         "africa_harare": "{{value}} Harare, Pretoria",

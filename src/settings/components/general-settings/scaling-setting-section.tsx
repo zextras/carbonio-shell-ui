@@ -11,7 +11,8 @@ import {
 	Container,
 	Slider,
 	SliderProps,
-	Text
+	Text,
+	Tooltip
 } from '@zextras/carbonio-design-system';
 import styled, { SimpleInterpolation } from 'styled-components';
 import { ScalingSettings } from '../../../../types/settings';
@@ -214,15 +215,17 @@ export const ScalingSettingSection = React.forwardRef<
 					gap={'0.5rem'}
 					flexGrow={1}
 				>
-					<Button
-						disabled={autoScaling}
-						label={t('settings.appearance.labels.a', 'A')}
-						type={'ghost'}
-						size={'extrasmall'}
-						color={'text'}
-						onClick={decreaseScalingByStep}
-						minWidth={'fit-content'}
-					/>
+					<Tooltip label={t('settings.appearance.labels.decrease', 'Decrease')}>
+						<Button
+							disabled={autoScaling}
+							label={t('settings.appearance.labels.a', 'A')}
+							type={'ghost'}
+							size={'extrasmall'}
+							color={'text'}
+							onClick={decreaseScalingByStep}
+							minWidth={'fit-content'}
+						/>
+					</Tooltip>
 					<Slider
 						disabled={autoScaling}
 						options={scalingOptionLabels}
@@ -231,15 +234,17 @@ export const ScalingSettingSection = React.forwardRef<
 							autoScaling && BASE_FONT_OPTION_INDEX >= 0 ? BASE_FONT_OPTION_INDEX : scalingValue
 						}
 					/>
-					<Button
-						disabled={autoScaling}
-						label={t('settings.appearance.labels.a', 'A')}
-						type={'ghost'}
-						size={'extralarge'}
-						onClick={increaseScalingByStep}
-						color={'text'}
-						minWidth={'fit-content'}
-					/>
+					<Tooltip label={t('settings.appearance.labels.increase', 'Increase')}>
+						<Button
+							disabled={autoScaling}
+							label={t('settings.appearance.labels.a', 'A')}
+							type={'ghost'}
+							size={'extralarge'}
+							onClick={increaseScalingByStep}
+							color={'text'}
+							minWidth={'fit-content'}
+						/>
+					</Tooltip>
 				</ScalingSliderContainer>
 				<Checkbox
 					value={autoScaling}

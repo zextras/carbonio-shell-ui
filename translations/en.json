@@ -187,13 +187,15 @@
                 "a": "A",
                 "choose_size_auto": "Automatically resize the text size depending on the device",
                 "choose_size_description": "Choose Type Size and Styles for Carbonio Environment",
-                "choose_size_pangram": "The quick brown fox jumps over the lazy dog."
+                "choose_size_pangram": "The quick brown fox jumps over the lazy dog.",
+                "decrease": "Decrease size",
+                "increase": "Increase size"
             },
-            "option_l": "large",
-            "option_m": "medium",
-            "option_s": "small",
-            "option_xl": "extralarge",
-            "option_xs": "extrasmall"
+            "option_l": "Large",
+            "option_m": "Medium",
+            "option_s": "Small",
+            "option_xl": "Extralarge",
+            "option_xs": "Extrasmall"
         },
         "button": {
             "confirm": "Confirm",

@@ -64,9 +64,7 @@ const ShellHeader: FC<{
 
 	useEffect(() => {
 		const setCallback = (event: MediaQueryListEvent): void => {
-			if (event.matches) {
-				setDarkModeEnabled(event.matches);
-			}
+			setDarkModeEnabled(event.matches);
 		};
 		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setCallback);
 		return (): void => {

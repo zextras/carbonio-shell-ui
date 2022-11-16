@@ -181,7 +181,8 @@
         "when_replying": "При ответе или пересылке сообщений, отправленных по адресу:",
         "button": "Кнопка",
         "click_to_copy": "Нажмите чтобы скопировать",
-        "folder_external_account": "Папка: Новая внешняя учетная запись"
+        "folder_external_account": "Папка: Новая внешняя учетная запись",
+        "add_inline_image": "Добавить встроенное изображение"
     },
     "board": {
         "close_tab": "Закрыть вкладку",
@@ -227,7 +228,6 @@
         "polish": "Польский"
     },
     "timezone": {
-        "minsk": "{{value}} Минск",
         "africa_algiers": "{{value}} Западная Центральная Африка",
         "africa_cairo": "{{value}} Египет",
         "africa_harare": "{{value}} Хараре, Претория",

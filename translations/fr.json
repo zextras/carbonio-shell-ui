@@ -172,7 +172,6 @@
         "error": "Quelque chose s'est mal passé, veuillez recommencer"
     },
     "timezone": {
-        "egypt": "{{value}} Egypte",
         "pacific_south_america": "{{value}} Pacifique Amérique du Sud",
         "africa_cairo": "{{value}} Égypte",
         "africa_harare": "{{value}} Harare, Pretoria",

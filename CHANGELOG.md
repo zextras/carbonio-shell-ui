@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.43](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.42...v0.4.43) (2022-11-15)
+
+
+### Features
+
+* convert px to rem ([#145](https://github.com/zextras/carbonio-shell-ui/issues/145)) ([79240e9](https://github.com/zextras/carbonio-shell-ui/commit/79240e98ea7195b13e20d467f116e20dfcd939d3))
+
+### [0.4.42](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.41...v0.4.42) (2022-11-10)
+
+
+### Bug Fixes
+
+* chips in search are splitted if typed ([#148](https://github.com/zextras/carbonio-shell-ui/issues/148)) ([81485a1](https://github.com/zextras/carbonio-shell-ui/commit/81485a138a577c0f8c45df069fbedd80db359fc2))
+
 ### [0.4.41](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.40...v0.4.41) (2022-11-10)
 
 ### [0.4.40](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.39...v0.4.40) (2022-10-26)

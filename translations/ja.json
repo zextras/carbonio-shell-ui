@@ -218,7 +218,6 @@
         "polish": "ポーランド語"
     },
     "timezone": {
-        "central_america": "{{value}}中央アメリカ",
         "manaus": "{{value}}マナウス",
         "africa_algiers": "{{value}}西中央アフリカ",
         "africa_cairo": "{{value}}エジプト",

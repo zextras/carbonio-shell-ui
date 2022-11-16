@@ -227,11 +227,8 @@
         "polish": "กำจัดทิ้งอย่างรวดเร็ว"
     },
     "timezone": {
-        "caracas": "{{value}} การากัส",
         "gmt_11": "{{value}} GMT-11",
-        "magadan": "{{value}} มากาดาน",
         "tehran": "{{value}} เตหะราน",
-        "dateline": "{{value}} วันที่",
         "africa_algiers": "{{value}} แอฟริกากลางตะวันตก",
         "africa_cairo": "{{value}} อียิปต์",
         "america_asuncion": "{{value}} อาซุนซิออง",

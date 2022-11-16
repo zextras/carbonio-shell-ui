@@ -55,7 +55,7 @@ function DarkReaderListener(): null {
 		}
 
 		return (
-			(carbonioWebUiDarkMode === undefined && 'auto') ||
+			(carbonioWebUiDarkMode === undefined && 'disabled') ||
 			(carbonioWebUiDarkMode && 'enabled') ||
 			'disabled'
 		);

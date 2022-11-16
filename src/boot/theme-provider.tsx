@@ -136,7 +136,9 @@ export const ThemeProvider: FC = ({ children }) => {
 			icons: iconExtension()
 		}));
 	}, [zimbraPrefFontSize]);
-	const [darkReaderState, setDarkReaderState] = useState<'auto' | 'disabled' | 'enabled'>('auto');
+	const [darkReaderState, setDarkReaderState] = useState<'auto' | 'disabled' | 'enabled'>(
+		'disabled'
+	);
 	useEffect(() => {
 		switch (darkReaderState) {
 			case 'disabled':

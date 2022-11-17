@@ -31,10 +31,8 @@ export function useDarkReaderResultValue(): undefined | DarkReaderPropValues {
 				settings.props,
 				(value): value is ZappDarkreaderModeZimletProp => isZappDarkreaderModeZimletProp(value)
 			)?._content;
-			if (result) {
-				return result;
-			}
-			return (carbonioWebUiDarkMode && 'enabled') || 'disabled';
+
+			return result || (carbonioWebUiDarkMode && 'enabled') || 'disabled';
 		}
 		return undefined;
 	}, [settingReceived, settings, carbonioWebUiDarkMode]);

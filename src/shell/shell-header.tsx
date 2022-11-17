@@ -20,6 +20,7 @@ import { CreationButton } from './creation-button';
 import { useAppStore } from '../store/app';
 import { useLoginConfigStore } from '../store/login/store';
 import { useDarkReaderResultValue } from '../custom-hooks/useDarkReaderResultValue';
+import { getPrefersColorSchemeDarkMedia } from '../utils/utils';
 
 const CustomImg = styled.img`
 	height: 2rem;
@@ -38,8 +39,7 @@ const ShellHeader: FC<{
 	useEffect(() => {
 		if (darkReaderResultValue) {
 			setDarkModeEnabled(
-				(darkReaderResultValue === 'auto' &&
-					window.matchMedia('(prefers-color-scheme: dark)').matches) ||
+				(darkReaderResultValue === 'auto' && getPrefersColorSchemeDarkMedia().matches) ||
 					darkReaderResultValue === 'enabled'
 			);
 		}
@@ -49,9 +49,9 @@ const ShellHeader: FC<{
 		const setCallback = (event: MediaQueryListEvent): void => {
 			setDarkModeEnabled(event.matches);
 		};
-		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setCallback);
+		getPrefersColorSchemeDarkMedia().addEventListener('change', setCallback);
 		return (): void => {
-			window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', setCallback);
+			getPrefersColorSchemeDarkMedia().removeEventListener('change', setCallback);
 		};
 	}, []);
 

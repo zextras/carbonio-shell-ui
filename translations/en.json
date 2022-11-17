@@ -189,7 +189,9 @@
                 "choose_size_description": "Choose Type Size and Styles for Carbonio Environment",
                 "choose_size_pangram": "The quick brown fox jumps over the lazy dog.",
                 "decrease": "Decrease size",
-                "increase": "Increase size"
+                "decrease_disabled": "Minimum size reached",
+                "increase": "Increase size",
+                "increase_disabled": "Maximum size reached"
             },
             "option_l": "Large",
             "option_m": "Medium",

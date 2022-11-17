@@ -129,9 +129,9 @@ export const ScalingSettingSection = React.forwardRef<
 
 	const increaseScalingByStep = useCallback(() => {
 		setScalingValue((prevState) =>
-			prevState < scalingOptionValues.length ? prevState + 1 : prevState
+			prevState < SCALING_OPTIONS.length - 1 ? prevState + 1 : prevState
 		);
-	}, [scalingOptionValues.length]);
+	}, []);
 
 	const decreaseScalingByStep = useCallback(() => {
 		setScalingValue((prevState) => (prevState > 0 ? prevState - 1 : prevState));
@@ -183,12 +183,22 @@ export const ScalingSettingSection = React.forwardRef<
 		[savedOptionIndex, scalingOptionValues, scalingValue]
 	);
 
+	const isIncreaseDisabled = useMemo(
+		() => autoScaling || scalingValue === SCALING_OPTIONS.length - 1,
+		[autoScaling, scalingValue]
+	);
+
+	const isDecreaseDisabled = useMemo(
+		() => autoScaling || scalingValue === 0,
+		[autoScaling, scalingValue]
+	);
+
 	return (
 		<Container
 			orientation={'vertical'}
 			mainAlignment={'flex-start'}
 			crossAlignment={'flex-start'}
-			gap={'2rem'}
+			gap={'1rem'}
 			height={'fit'}
 			width={'fill'}
 		>
@@ -215,9 +225,13 @@ export const ScalingSettingSection = React.forwardRef<
 					gap={'0.5rem'}
 					flexGrow={1}
 				>
-					<Tooltip label={t('settings.appearance.labels.decrease', 'Decrease')}>
+					<Tooltip
+						label={t('settings.appearance.labels.decrease', 'Decrease', {
+							context: isDecreaseDisabled ? 'disabled' : ''
+						})}
+					>
 						<Button
-							disabled={autoScaling}
+							disabled={isDecreaseDisabled}
 							label={t('settings.appearance.labels.a', 'A')}
 							type={'ghost'}
 							size={'extrasmall'}
@@ -234,9 +248,13 @@ export const ScalingSettingSection = React.forwardRef<
 							autoScaling && BASE_FONT_OPTION_INDEX >= 0 ? BASE_FONT_OPTION_INDEX : scalingValue
 						}
 					/>
-					<Tooltip label={t('settings.appearance.labels.increase', 'Increase')}>
+					<Tooltip
+						label={t('settings.appearance.labels.increase', 'Increase', {
+							context: isIncreaseDisabled ? 'disabled' : ''
+						})}
+					>
 						<Button
-							disabled={autoScaling}
+							disabled={isIncreaseDisabled}
 							label={t('settings.appearance.labels.a', 'A')}
 							type={'ghost'}
 							size={'extralarge'}

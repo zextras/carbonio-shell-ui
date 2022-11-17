@@ -19,10 +19,13 @@ import Logo from '../svg/carbonio.svg';
 import { SearchBar } from '../search/search-bar';
 import { CreationButton } from './creation-button';
 import { useAppStore } from '../store/app';
-import { useLoginConfigStore } from '../store/login';
+import { useLoginConfigStore } from '../store/login/store';
 import { useUserSettings } from '../store/account';
-import { SHELL_APP_ID } from '../constants';
-import { DRPropValues } from '../../types';
+import {
+	isZappDarkreaderModeZimletProp,
+	ZappDarkreaderModeZimletProp,
+	ZimletProp
+} from '../../types';
 
 const CustomImg = styled.img`
 	height: 2rem;
@@ -43,10 +46,10 @@ const ShellHeader: FC<{
 
 	useEffect(() => {
 		if (settingReceived) {
-			const result = find(settings?.props ?? [], {
-				name: 'zappDarkreaderMode',
-				zimlet: SHELL_APP_ID
-			})?._content as DRPropValues;
+			const result = find<ZimletProp, ZappDarkreaderModeZimletProp>(
+				settings.props,
+				(value): value is ZappDarkreaderModeZimletProp => isZappDarkreaderModeZimletProp(value)
+			)?._content;
 			if (result) {
 				setDarkModeEnabled(
 					(result === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
@@ -54,9 +57,7 @@ const ShellHeader: FC<{
 				);
 			} else {
 				setDarkModeEnabled(
-					(carbonioWebUiDarkMode === undefined &&
-						window.matchMedia('(prefers-color-scheme: dark)').matches) ||
-						(carbonioWebUiDarkMode !== undefined && carbonioWebUiDarkMode)
+					carbonioWebUiDarkMode ?? window.matchMedia('(prefers-color-scheme: dark)').matches
 				);
 			}
 		}

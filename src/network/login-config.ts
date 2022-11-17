@@ -5,10 +5,11 @@
  */
 
 import { LoginConfigStore } from '../../types/loginConfig';
-import { useLoginConfigStore } from '../store/login';
+import { useLoginConfigStore } from '../store/login/store';
+import { LOGIN_V3_CONFIG_PATH } from '../constants';
 
 export const loginConfig = (): Promise<void> =>
-	fetch('/zx/login/v3/config')
+	fetch(LOGIN_V3_CONFIG_PATH)
 		.then((response) => response.json())
 		.then((data: LoginConfigStore) => {
 			useLoginConfigStore.setState(data);

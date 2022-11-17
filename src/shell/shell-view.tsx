@@ -9,9 +9,14 @@ import { PreviewManager } from '@zextras/carbonio-ui-preview';
 import { find, size } from 'lodash';
 import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { AppRoute, DRPropValues } from '../../types';
+import {
+	AppRoute,
+	isZappDarkreaderModeZimletProp,
+	ZappDarkreaderModeZimletProp,
+	ZimletProp
+} from '../../types';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
-import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
+import { IS_STANDALONE } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
 import { goToLogin } from '../network/go-to-login';
 import { useAccountStore, useUserSettings } from '../store/account';
@@ -21,7 +26,7 @@ import { BoardContainer } from './boards/board-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
-import { useLoginConfigStore } from '../store/login';
+import { useLoginConfigStore } from '../store/login/store';
 
 const Background = styled.div`
 	background: ${({ theme }): string => theme.palette.gray6.regular};
@@ -46,19 +51,14 @@ function DarkReaderListener(): null {
 	);
 
 	const currentDRMSetting = useMemo(() => {
-		const result = find(settings?.props ?? [], {
-			name: 'zappDarkreaderMode',
-			zimlet: SHELL_APP_ID
-		})?._content as DRPropValues;
+		const result = find<ZimletProp, ZappDarkreaderModeZimletProp>(
+			settings.props,
+			(value): value is ZappDarkreaderModeZimletProp => isZappDarkreaderModeZimletProp(value)
+		)?._content;
 		if (result) {
 			return result;
 		}
-
-		return (
-			(carbonioWebUiDarkMode === undefined && 'disabled') ||
-			(carbonioWebUiDarkMode && 'enabled') ||
-			'disabled'
-		);
+		return (carbonioWebUiDarkMode && 'enabled') || 'disabled';
 	}, [settings, carbonioWebUiDarkMode]);
 
 	useEffect(() => {

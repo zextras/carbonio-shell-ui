@@ -140,9 +140,11 @@ export const ThemeProvider: FC = ({ children }) => {
 	useEffect(() => {
 		switch (darkReaderState) {
 			case 'disabled':
+				auto(false);
 				disable();
 				break;
 			case 'enabled':
+				auto(false);
 				enable(
 					{
 						sepia: -50

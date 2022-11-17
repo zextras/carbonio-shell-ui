@@ -7,7 +7,7 @@
 import { FormSubSection, Select } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 import React, { FC, useCallback, useContext, useMemo } from 'react';
-import { AccountSettings, DRPropValues } from '../../../../types';
+import { AccountSettings, DarkReaderPropValues } from '../../../../types';
 import { ThemeCallbacksContext } from '../../../boot/theme-provider';
 import { DR_VALUES, SHELL_APP_ID } from '../../../constants';
 import { getT } from '../../../store/i18n';
@@ -21,7 +21,7 @@ const AppearanceSettings: FC<{
 	const currentDRMSetting = useMemo(
 		() =>
 			find(settings.props, { name: 'zappDarkreaderMode', zimlet: SHELL_APP_ID })
-				?._content as DRPropValues,
+				?._content as DarkReaderPropValues,
 		[settings]
 	);
 	const t = getT();

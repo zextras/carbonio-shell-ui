@@ -13,19 +13,13 @@ import {
 	useScreenMode,
 	Catcher
 } from '@zextras/carbonio-design-system';
-import { find, size } from 'lodash';
 import styled from 'styled-components';
 import Logo from '../svg/carbonio.svg';
 import { SearchBar } from '../search/search-bar';
 import { CreationButton } from './creation-button';
 import { useAppStore } from '../store/app';
 import { useLoginConfigStore } from '../store/login/store';
-import { useUserSettings } from '../store/account';
-import {
-	isZappDarkreaderModeZimletProp,
-	ZappDarkreaderModeZimletProp,
-	ZimletProp
-} from '../../types';
+import { useDarkReaderResultValue } from '../custom-hooks/useDarkReaderResultValue';
 
 const CustomImg = styled.img`
 	height: 2rem;
@@ -35,33 +29,21 @@ const ShellHeader: FC<{
 	mobileNavIsOpen: boolean;
 	onMobileMenuClick: () => void;
 }> = ({ mobileNavIsOpen, onMobileMenuClick, children }) => {
-	const { carbonioWebUiAppLogo, carbonioWebUiDarkAppLogo, carbonioWebUiDarkMode } =
-		useLoginConfigStore();
-	const settings = useUserSettings();
-	const settingReceived = useMemo(
-		() => size(settings.prefs) > 0 || size(settings.attrs) > 0 || size(settings.props) > 0,
-		[settings]
-	);
+	const { carbonioWebUiAppLogo, carbonioWebUiDarkAppLogo } = useLoginConfigStore();
+
+	const darkReaderResultValue = useDarkReaderResultValue();
+
 	const [darkModeEnabled, setDarkModeEnabled] = useState(false);
 
 	useEffect(() => {
-		if (settingReceived) {
-			const result = find<ZimletProp, ZappDarkreaderModeZimletProp>(
-				settings.props,
-				(value): value is ZappDarkreaderModeZimletProp => isZappDarkreaderModeZimletProp(value)
-			)?._content;
-			if (result) {
-				setDarkModeEnabled(
-					(result === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
-						result === 'enabled'
-				);
-			} else {
-				setDarkModeEnabled(
-					carbonioWebUiDarkMode ?? window.matchMedia('(prefers-color-scheme: dark)').matches
-				);
-			}
+		if (darkReaderResultValue) {
+			setDarkModeEnabled(
+				(darkReaderResultValue === 'auto' &&
+					window.matchMedia('(prefers-color-scheme: dark)').matches) ||
+					darkReaderResultValue === 'enabled'
+			);
 		}
-	}, [settings, carbonioWebUiDarkMode, settingReceived]);
+	}, [darkReaderResultValue]);
 
 	useEffect(() => {
 		const setCallback = (event: MediaQueryListEvent): void => {
@@ -109,7 +91,7 @@ const ShellHeader: FC<{
 						</Padding>
 					</Responsive>
 					<Container width="15.625rem" height="2rem" crossAlignment="flex-start">
-						{settingReceived && (
+						{darkReaderResultValue && (
 							<>{logoSrc ? <CustomImg src={logoSrc} /> : <Logo height="2rem" />}</>
 						)}
 					</Container>

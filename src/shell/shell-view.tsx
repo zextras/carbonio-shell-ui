@@ -19,14 +19,14 @@ import { ThemeCallbacksContext } from '../boot/theme-provider';
 import { IS_STANDALONE } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
 import { goToLogin } from '../network/go-to-login';
-import { useAccountStore, useUserSettings } from '../store/account';
+import { useAccountStore } from '../store/account';
 import { ShellUtilityBar, ShellUtilityPanel } from '../utility-bar';
 import AppViewContainer from './app-view-container';
 import { BoardContainer } from './boards/board-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
-import { useLoginConfigStore } from '../store/login/store';
+import { useDarkReaderResultValue } from '../custom-hooks/useDarkReaderResultValue';
 
 const Background = styled.div`
 	background: ${({ theme }): string => theme.palette.gray6.regular};
@@ -42,30 +42,12 @@ const Background = styled.div`
 
 function DarkReaderListener(): null {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
-	const settings = useUserSettings();
-	const { carbonioWebUiDarkMode } = useLoginConfigStore();
-
-	const settingReceived = useMemo(
-		() => size(settings.prefs) > 0 || size(settings.attrs) > 0 || size(settings.props) > 0,
-		[settings]
-	);
-
-	const currentDRMSetting = useMemo(() => {
-		const result = find<ZimletProp, ZappDarkreaderModeZimletProp>(
-			settings.props,
-			(value): value is ZappDarkreaderModeZimletProp => isZappDarkreaderModeZimletProp(value)
-		)?._content;
-		if (result) {
-			return result;
-		}
-		return (carbonioWebUiDarkMode && 'enabled') || 'disabled';
-	}, [settings, carbonioWebUiDarkMode]);
-
+	const darkReaderResultValue = useDarkReaderResultValue();
 	useEffect(() => {
-		if (currentDRMSetting && settingReceived) {
-			setDarkReaderState(currentDRMSetting);
+		if (darkReaderResultValue) {
+			setDarkReaderState(darkReaderResultValue);
 		}
-	}, [currentDRMSetting, setDarkReaderState, settingReceived]);
+	}, [darkReaderResultValue, setDarkReaderState]);
 	return null;
 }
 

@@ -5,7 +5,7 @@
  */
 
 import { SHELL_APP_ID } from '../../src/constants';
-import { DRPropValues } from '../misc';
+import { DarkReaderPropValues } from '../misc';
 
 export interface ZimletProp {
 	name: string;
@@ -16,7 +16,7 @@ export interface ZimletProp {
 export interface ZappDarkreaderModeZimletProp extends ZimletProp {
 	name: 'zappDarkreaderMode';
 	zimlet: SHELL_APP_ID;
-	_content: DRPropValues;
+	_content: DarkReaderPropValues;
 }
 
 export function isZappDarkreaderModeZimletProp(

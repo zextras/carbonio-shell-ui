@@ -183,16 +183,6 @@ export const ScalingSettingSection = React.forwardRef<
 		[savedOptionIndex, scalingOptionValues, scalingValue]
 	);
 
-	const isIncreaseDisabled = useMemo(
-		() => autoScaling || scalingValue === SCALING_OPTIONS.length - 1,
-		[autoScaling, scalingValue]
-	);
-
-	const isDecreaseDisabled = useMemo(
-		() => autoScaling || scalingValue === 0,
-		[autoScaling, scalingValue]
-	);
-
 	return (
 		<Container
 			orientation={'vertical'}
@@ -227,18 +217,20 @@ export const ScalingSettingSection = React.forwardRef<
 				>
 					<Tooltip
 						label={t('settings.appearance.labels.decrease', 'Decrease', {
-							context: isDecreaseDisabled ? 'disabled' : ''
+							context: scalingValue === 0 ? 'disabled' : ''
 						})}
 					>
-						<Button
-							disabled={isDecreaseDisabled}
-							label={t('settings.appearance.labels.a', 'A')}
-							type={'ghost'}
-							size={'extrasmall'}
-							color={'text'}
-							onClick={decreaseScalingByStep}
-							minWidth={'fit-content'}
-						/>
+						<Container width="fit" height="fit" minWidth={'fit-content'}>
+							<Button
+								disabled={autoScaling || scalingValue === 0}
+								label={t('settings.appearance.labels.a', 'A')}
+								type={'ghost'}
+								size={'extrasmall'}
+								color={'text'}
+								onClick={decreaseScalingByStep}
+								minWidth={'fit-content'}
+							/>
+						</Container>
 					</Tooltip>
 					<Slider
 						disabled={autoScaling}
@@ -250,18 +242,20 @@ export const ScalingSettingSection = React.forwardRef<
 					/>
 					<Tooltip
 						label={t('settings.appearance.labels.increase', 'Increase', {
-							context: isIncreaseDisabled ? 'disabled' : ''
+							context: scalingValue === SCALING_OPTIONS.length - 1 ? 'disabled' : ''
 						})}
 					>
-						<Button
-							disabled={isIncreaseDisabled}
-							label={t('settings.appearance.labels.a', 'A')}
-							type={'ghost'}
-							size={'extralarge'}
-							onClick={increaseScalingByStep}
-							color={'text'}
-							minWidth={'fit-content'}
-						/>
+						<Container width="fit" height="fit" minWidth={'fit-content'}>
+							<Button
+								disabled={autoScaling || scalingValue === SCALING_OPTIONS.length - 1}
+								label={t('settings.appearance.labels.a', 'A')}
+								type={'ghost'}
+								size={'extralarge'}
+								onClick={increaseScalingByStep}
+								color={'text'}
+								minWidth={'fit-content'}
+							/>
+						</Container>
 					</Tooltip>
 				</ScalingSliderContainer>
 				<Checkbox

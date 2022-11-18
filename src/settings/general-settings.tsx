@@ -78,7 +78,7 @@ const GeneralSettings: FC = () => {
 				padding={{ all: 'medium' }}
 				style={{ overflow: 'auto' }}
 			>
-				<AppearanceSettings settings={settings} addMod={addMod} />
+				<AppearanceSettings addMod={addMod} />
 				<LanguageAndTimeZoneSettings
 					settings={settings}
 					addMod={addMod}

@@ -103,3 +103,5 @@ export const FOLDER_VIEW = {
 	task: 'task',
 	chat: 'chat'
 };
+
+export const LOGIN_V3_CONFIG_PATH = '/zx/login/v3/config';

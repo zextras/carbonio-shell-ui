@@ -9,19 +9,19 @@ import { ThemeProvider as UIThemeProvider } from '@zextras/carbonio-design-syste
 import { enable, disable, auto, setFetchMethod } from 'darkreader';
 import { reduce } from 'lodash';
 import { useAccountStore } from '../store/account';
-import { DRPropValues, ThemeExtension, ThemeExtensionMap } from '../../types';
+import { DarkReaderPropValues, ThemeExtension, ThemeExtensionMap } from '../../types';
 import { darkReaderDynamicThemeFixes } from '../constants';
 
 setFetchMethod(window.fetch);
 
 export const ThemeCallbacksContext = createContext<{
 	addExtension: (newExtension: ThemeExtension, id: string) => void;
-	setDarkReaderState: (newState: DRPropValues) => void;
+	setDarkReaderState: (newState: DarkReaderPropValues) => void;
 }>({
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	addExtension: (newExtension: ThemeExtension, id: string) => {},
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	setDarkReaderState: (newState: DRPropValues) => {}
+	setDarkReaderState: (newState: DarkReaderPropValues) => {}
 });
 
 const themeSizes = (
@@ -136,7 +136,7 @@ export const ThemeProvider: FC = ({ children }) => {
 			icons: iconExtension()
 		}));
 	}, [zimbraPrefFontSize]);
-	const [darkReaderState, setDarkReaderState] = useState<'auto' | 'disabled' | 'enabled'>('auto');
+	const [darkReaderState, setDarkReaderState] = useState<DarkReaderPropValues>('disabled');
 	useEffect(() => {
 		switch (darkReaderState) {
 			case 'disabled':

@@ -18,7 +18,7 @@ export enum JSNS {
 	SYNC = 'urn:zimbraSync'
 }
 
-export type DRPropValues = 'auto' | 'enabled' | 'disabled';
+export type DarkReaderPropValues = 'auto' | 'enabled' | 'disabled';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type PackageDependentFunction = (app: string) => Function;

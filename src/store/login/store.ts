@@ -11,5 +11,6 @@ export const useLoginConfigStore = create<LoginConfigStore>(() => ({
 	carbonioWebUIDarkMode: undefined,
 	carbonioWebUiAppLogo: undefined,
 	carbonioWebUiDarkAppLogo: undefined,
-	carbonioWebUiTitle: undefined
+	carbonioWebUiTitle: undefined,
+	carbonioWebUiFavicon: undefined
 }));

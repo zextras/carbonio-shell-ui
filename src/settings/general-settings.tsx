@@ -5,7 +5,7 @@
  */
 
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
-import { includes, isEmpty } from 'lodash';
+import { includes, isEmpty, size } from 'lodash';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { Mods } from '../../types';
 import { editSettings } from '../network/edit-settings';
@@ -33,6 +33,23 @@ const GeneralSettings: FC = () => {
 				[key]: value
 			}
 		}));
+	}, []);
+	const removeMod = useCallback((type: 'props' | 'prefs', key) => {
+		setMods((prevState) => {
+			const prevType = prevState[type];
+			if (prevType && prevType[key]) {
+				const nextState = { ...prevState, [type]: { ...prevState[type] } };
+				const nextType = nextState[type];
+				if (nextType && nextType[key]) {
+					delete nextType[key];
+				}
+				if (size(nextState[type]) === 0) {
+					delete nextState[type];
+				}
+				return nextState;
+			}
+			return prevState;
+		});
 	}, []);
 	const createSnackbar = useSnackbar();
 
@@ -78,7 +95,7 @@ const GeneralSettings: FC = () => {
 				padding={{ all: 'medium' }}
 				style={{ overflow: 'auto' }}
 			>
-				<AppearanceSettings addMod={addMod} />
+				<AppearanceSettings addMod={addMod} removeMod={removeMod} />
 				<LanguageAndTimeZoneSettings
 					settings={settings}
 					addMod={addMod}

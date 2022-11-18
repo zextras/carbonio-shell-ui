@@ -7,30 +7,19 @@
 import { FormSubSection, Select } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 import React, { FC, useCallback, useContext, useMemo } from 'react';
-import {
-	AccountSettings,
-	isZappDarkreaderModeZimletProp,
-	ZappDarkreaderModeZimletProp,
-	ZimletProp
-} from '../../../../types';
 import { ThemeCallbacksContext } from '../../../boot/theme-provider';
 import { DR_VALUES, SHELL_APP_ID } from '../../../constants';
 import { getT } from '../../../store/i18n';
 import { themeSubSection } from '../../general-settings-sub-sections';
+import { useDarkReaderResultValue } from '../../../custom-hooks/useDarkReaderResultValue';
 
 const AppearanceSettings: FC<{
-	settings: AccountSettings;
 	addMod: (type: 'prefs' | 'props', key: string, value: { value: any; app: string }) => void;
-}> = ({ settings, addMod }) => {
+}> = ({ addMod }) => {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
-	const currentDRMSetting = useMemo(
-		() =>
-			find<ZimletProp, ZappDarkreaderModeZimletProp>(
-				settings.props,
-				(value): value is ZappDarkreaderModeZimletProp => isZappDarkreaderModeZimletProp(value)
-			)?._content,
-		[settings]
-	);
+
+	const darkReaderResultValue = useDarkReaderResultValue();
+
 	const t = getT();
 	const items = useMemo(
 		() => [
@@ -50,17 +39,17 @@ const AppearanceSettings: FC<{
 		[t]
 	);
 	const defaultSelection = useMemo(
-		() => find(items, { value: currentDRMSetting }),
-		[currentDRMSetting, items]
+		() => find(items, { value: darkReaderResultValue }),
+		[darkReaderResultValue, items]
 	);
 	const onSelectionChange = useCallback(
 		(v) => {
-			if (DR_VALUES.includes(v) && v !== currentDRMSetting) {
+			if (DR_VALUES.includes(v) && v !== darkReaderResultValue) {
 				setDarkReaderState(v);
 				addMod('props', 'zappDarkreaderMode', { app: SHELL_APP_ID, value: v });
 			}
 		},
-		[addMod, currentDRMSetting, setDarkReaderState]
+		[addMod, darkReaderResultValue, setDarkReaderState]
 	);
 	const subSection = useMemo(() => themeSubSection(t), [t]);
 	return (

@@ -120,7 +120,7 @@ export type IdentityMods = {
 
 export type PrefsMods = Record<string, string | number | boolean>;
 
-export type Mods = {
+export type Mods = Record<string, Record<string, unknown>> & {
 	props?: PropsMods;
 	prefs?: PrefsMods;
 	permissions?: PermissionsMods;
@@ -129,9 +129,11 @@ export type Mods = {
 
 export type AddMod = (
 	type: keyof Mods,
-	key: keyof NonNullable<Mods[type]>,
+	key: keyof NonNullable<Mods[typeof type]>,
 	value: NonNullable<Mods[keyof Mods]>[typeof key]
 ) => void;
+
+export type RemoveMod = (type: keyof Mods, key: keyof NonNullable<Mods[typeof type]>) => void;
 
 export type Locale = {
 	id: string;

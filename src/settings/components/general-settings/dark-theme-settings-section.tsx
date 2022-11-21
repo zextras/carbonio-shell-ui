@@ -4,24 +4,25 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Select, Text } from '@zextras/carbonio-design-system';
+import { Select, SelectProps, Text } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 import React, { FC, useCallback, useContext, useMemo } from 'react';
-import { AddMod } from '../../../../types';
+import { AddMod, DarkReaderPropValues, isDarkReaderPropValues, RemoveMod } from '../../../../types';
 import { ThemeCallbacksContext } from '../../../boot/theme-provider';
-import { DR_VALUES, SHELL_APP_ID } from '../../../constants';
+import { DARK_READER_PROP_KEY, SHELL_APP_ID } from '../../../constants';
 import { getT } from '../../../store/i18n';
 import { useDarkReaderResultValue } from '../../../custom-hooks/useDarkReaderResultValue';
 
 const DarkThemeSettingSection: FC<{
 	addMod: AddMod;
-}> = ({ addMod }) => {
+	removeMod: RemoveMod;
+}> = ({ addMod, removeMod }) => {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
 
 	const darkReaderResultValue = useDarkReaderResultValue();
 
 	const t = getT();
-	const items = useMemo(
+	const items = useMemo<Array<{ label: string; value: DarkReaderPropValues }>>(
 		() => [
 			{
 				label: t('settings.general.theme_auto', 'Auto'),
@@ -38,20 +39,22 @@ const DarkThemeSettingSection: FC<{
 		],
 		[t]
 	);
-
 	const defaultSelection = useMemo(
 		() => find(items, { value: darkReaderResultValue }),
 		[darkReaderResultValue, items]
 	);
-
-	const onSelectionChange = useCallback(
-		(v) => {
-			if (DR_VALUES.includes(v) && v !== darkReaderResultValue) {
-				setDarkReaderState(v);
-				addMod('props', 'zappDarkreaderMode', { app: SHELL_APP_ID, value: v });
+	const onSelectionChange = useCallback<NonNullable<SelectProps['onChange']>>(
+		(value) => {
+			if (isDarkReaderPropValues(value)) {
+				setDarkReaderState(value);
+				if (value !== darkReaderResultValue) {
+					addMod('props', DARK_READER_PROP_KEY, { app: SHELL_APP_ID, value });
+				} else {
+					removeMod('props', DARK_READER_PROP_KEY);
+				}
 			}
 		},
-		[addMod, darkReaderResultValue, setDarkReaderState]
+		[addMod, darkReaderResultValue, removeMod, setDarkReaderState]
 	);
 
 	return (

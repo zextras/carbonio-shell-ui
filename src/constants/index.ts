@@ -87,7 +87,7 @@ export const EMAIL_VALIDATION_REGEX =
 
 export const ROOT_NAME = 'USER_ROOT';
 
-export const DR_VALUES = ['auto', 'enabled', 'disabled'];
+export const DARK_READER_VALUES = ['auto', 'enabled', 'disabled'] as const;
 
 export const FOLDER_VIEW = {
 	search_folder: 'search folder',
@@ -120,3 +120,4 @@ export const SCALING_LIMIT = {
 } as const;
 
 export const LOGIN_V3_CONFIG_PATH = '/zx/login/v3/config';
+export const DARK_READER_PROP_KEY = 'zappDarkreaderMode';

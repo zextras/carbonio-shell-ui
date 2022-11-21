@@ -8,6 +8,7 @@ import { Store } from '@reduxjs/toolkit';
 import { To } from 'history';
 import { ComponentType } from 'react';
 import { CarbonioModule, PanelMode } from '../apps';
+import { DARK_READER_VALUES } from '../../src/constants';
 
 // eslint-disable-next-line no-shadow
 export enum JSNS {
@@ -18,7 +19,16 @@ export enum JSNS {
 	SYNC = 'urn:zimbraSync'
 }
 
-export type DarkReaderPropValues = 'auto' | 'enabled' | 'disabled';
+export type DarkReaderPropValues = typeof DARK_READER_VALUES[number];
+
+export function isDarkReaderPropValues(
+	maybeDarkReaderPropValue: unknown
+): maybeDarkReaderPropValue is DarkReaderPropValues {
+	return (
+		typeof maybeDarkReaderPropValue === 'string' &&
+		DARK_READER_VALUES.includes(maybeDarkReaderPropValue)
+	);
+}
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type PackageDependentFunction = (app: string) => Function;

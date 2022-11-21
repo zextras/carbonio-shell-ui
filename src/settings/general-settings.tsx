@@ -7,7 +7,7 @@
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import { includes, isEmpty, size } from 'lodash';
 import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
-import { AddMod, Mods } from '../../types';
+import { AddMod, Mods, RemoveMod } from '../../types';
 import { editSettings } from '../network/edit-settings';
 import { useUserSettings } from '../store/account';
 import { getT } from '../store/i18n';
@@ -64,6 +64,24 @@ const GeneralSettings: FC = () => {
 				[key]: value
 			}
 		}));
+	}, []);
+
+	const removeMod = useCallback<RemoveMod>((type, key) => {
+		setMods((prevState) => {
+			const prevType = prevState[type];
+			if (prevType && prevType[key] !== undefined) {
+				const nextState = { ...prevState, [type]: { ...prevState[type] } };
+				const nextType = nextState[type];
+				if (nextType && nextType[key] !== undefined) {
+					delete nextType[key];
+				}
+				if (size(nextState[type]) === 0) {
+					delete nextState[type];
+				}
+				return nextState;
+			}
+			return prevState;
+		});
 	}, []);
 	const createSnackbar = useSnackbar();
 
@@ -131,7 +149,7 @@ const GeneralSettings: FC = () => {
 		<>
 			<SettingsHeader title={title} onCancel={onCancel} onSave={onSave} isDirty={isDirty} />
 			<Container
-				background="gray5"
+				background={'gray5'}
 				mainAlignment="flex-start"
 				crossAlignment={'flex-start'}
 				gap="0.5rem"
@@ -145,7 +163,7 @@ const GeneralSettings: FC = () => {
 						addLocalStoreChange={addLocalStoreChange}
 						cleanLocalStoreChange={cleanLocalStoreChange}
 					/>
-					<DarkThemeSettingSection addMod={addMod} />
+					<DarkThemeSettingSection addMod={addMod} removeMod={removeMod} />
 				</AppearanceSettings>
 				<LanguageAndTimeZoneSettings
 					settings={userSettings}

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { SHELL_APP_ID } from '../../src/constants';
+import { DARK_READER_PROP_KEY, SHELL_APP_ID } from '../../src/constants';
 import { DarkReaderPropValues } from '../misc';
 
 export interface ZimletProp {
@@ -14,7 +14,7 @@ export interface ZimletProp {
 }
 
 export interface ZappDarkreaderModeZimletProp extends ZimletProp {
-	name: 'zappDarkreaderMode';
+	name: typeof DARK_READER_PROP_KEY;
 	zimlet: SHELL_APP_ID;
 	_content: DarkReaderPropValues;
 }
@@ -22,7 +22,7 @@ export interface ZappDarkreaderModeZimletProp extends ZimletProp {
 export function isZappDarkreaderModeZimletProp(
 	prop: ZimletProp
 ): ZimletProp is ZappDarkreaderModeZimletProp {
-	return prop.name === 'zappDarkreaderMode' && prop.zimlet === SHELL_APP_ID;
+	return prop.name === DARK_READER_PROP_KEY && prop.zimlet === SHELL_APP_ID;
 }
 
 export type SoapFetch = <Request, Response>(

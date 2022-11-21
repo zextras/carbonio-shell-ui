@@ -86,13 +86,16 @@ const GeneralSettings: FC = () => {
 	const createSnackbar = useSnackbar();
 
 	const onSave = useCallback(() => {
-		if (size(localStorageUnAppliedChanges) > 0) {
-			setLocalStorageSettings({
-				...localStorageSettings,
-				...localStorageUnAppliedChanges
-			});
-			setLocalStorageUnAppliedChanges({});
-		}
+		setLocalStorageUnAppliedChanges((unAppliedPrevState) => {
+			if (size(unAppliedPrevState) > 0) {
+				setLocalStorageSettings((localStorageSettingsPrevState) => ({
+					...localStorageSettingsPrevState,
+					...unAppliedPrevState
+				}));
+				return {};
+			}
+			return unAppliedPrevState;
+		});
 		if (size(mods) > 0) {
 			editSettings(mods)
 				.then(() => {
@@ -120,14 +123,7 @@ const GeneralSettings: FC = () => {
 				});
 			setMods({});
 		}
-	}, [
-		localStorageUnAppliedChanges,
-		mods,
-		setLocalStorageSettings,
-		localStorageSettings,
-		createSnackbar,
-		t
-	]);
+	}, [mods, setLocalStorageSettings, createSnackbar, t]);
 
 	const scalingSettingSectionRef = useRef<ScalingSettingSectionRef>(null);
 

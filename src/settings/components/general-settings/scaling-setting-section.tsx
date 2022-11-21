@@ -93,6 +93,11 @@ export const ScalingSettingSection = React.forwardRef<
 	const [scalingValue, setScalingValue] = useState<number>(savedOptionIndex);
 
 	useEffect(() => {
+		// update input value when setting is updated
+		setScalingValue(savedOptionIndex);
+	}, [savedOptionIndex]);
+
+	useEffect(() => {
 		if (scalingOptionValues[scalingValue]) {
 			if (scalingValue !== savedOptionIndex) {
 				addLocalStoreChange(

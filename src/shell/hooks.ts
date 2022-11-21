@@ -4,12 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable react-hooks/rules-of-hooks */
-
 import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import ShellContext from './shell-context';
 
 export function useIsMobile(): boolean {
@@ -18,7 +14,7 @@ export function useIsMobile(): boolean {
 }
 
 export function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] {
-	const readValue = useCallback(() => {
+	const readValue = useCallback<() => T>(() => {
 		try {
 			const item = window.localStorage.getItem(key);
 			return item ? JSON.parse(item) : initialValue;
@@ -29,7 +25,7 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<S
 	}, [initialValue, key]);
 
 	const [storedValue, setStoredValue] = useState<T>(readValue());
-	const setValue = (value: T | ((val: T) => T)): any => {
+	const setValue = (value: T | ((val: T) => T)): void => {
 		try {
 			const valueToStore = value instanceof Function ? value(storedValue) : value;
 			setStoredValue(valueToStore);

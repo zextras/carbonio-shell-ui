@@ -145,7 +145,7 @@ const GeneralSettings: FC = () => {
 						addLocalStoreChange={addLocalStoreChange}
 						cleanLocalStoreChange={cleanLocalStoreChange}
 					/>
-					<DarkThemeSettingSection accountSettings={userSettings} addMod={addMod} />
+					<DarkThemeSettingSection addMod={addMod} />
 				</AppearanceSettings>
 				<LanguageAndTimeZoneSettings
 					settings={userSettings}

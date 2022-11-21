@@ -118,3 +118,5 @@ export const SCALING_LIMIT = {
 	HEIGHT: 900,
 	DPR: 2 // device pixel ratio
 } as const;
+
+export const LOGIN_V3_CONFIG_PATH = '/zx/login/v3/config';

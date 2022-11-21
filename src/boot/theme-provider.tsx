@@ -12,7 +12,7 @@ import {
 import { auto, disable, enable, setFetchMethod } from 'darkreader';
 import { reduce } from 'lodash';
 import { createGlobalStyle, DefaultTheme } from 'styled-components';
-import { DRPropValues, ThemeExtension } from '../../types';
+import { DarkReaderPropValues, ThemeExtension } from '../../types';
 import { darkReaderDynamicThemeFixes, LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
 import { useLocalStorage } from '../shell/hooks';
 import { ScalingSettings } from '../../types/settings';
@@ -22,7 +22,7 @@ setFetchMethod(window.fetch);
 
 interface ThemeCallbacks {
 	addExtension: (newExtension: ThemeExtension, id: string) => void;
-	setDarkReaderState: (newState: DRPropValues) => void;
+	setDarkReaderState: (newState: DarkReaderPropValues) => void;
 }
 
 export const ThemeCallbacksContext = createContext<ThemeCallbacks>({
@@ -89,14 +89,15 @@ export const ThemeProvider: FC = ({ children }) => {
 		}));
 	}, []);
 
-	const [darkReaderState, setDarkReaderState] = useState<'auto' | 'disabled' | 'enabled'>('auto');
-
+	const [darkReaderState, setDarkReaderState] = useState<DarkReaderPropValues>('disabled');
 	useEffect(() => {
 		switch (darkReaderState) {
 			case 'disabled':
+				auto(false);
 				disable();
 				break;
 			case 'enabled':
+				auto(false);
 				enable(
 					{
 						sepia: -50

@@ -7,22 +7,19 @@
 import { Select, Text } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 import React, { FC, useCallback, useContext, useMemo } from 'react';
-import { AccountSettings, AddMod, DRPropValues } from '../../../../types';
+import { AddMod } from '../../../../types';
 import { ThemeCallbacksContext } from '../../../boot/theme-provider';
 import { DR_VALUES, SHELL_APP_ID } from '../../../constants';
 import { getT } from '../../../store/i18n';
+import { useDarkReaderResultValue } from '../../../custom-hooks/useDarkReaderResultValue';
 
 const DarkThemeSettingSection: FC<{
-	accountSettings: AccountSettings;
 	addMod: AddMod;
-}> = ({ accountSettings, addMod }) => {
+}> = ({ addMod }) => {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
-	const currentDRMSetting = useMemo(
-		() =>
-			find(accountSettings.props, { name: 'zappDarkreaderMode', zimlet: SHELL_APP_ID })
-				?._content as DRPropValues,
-		[accountSettings]
-	);
+
+	const darkReaderResultValue = useDarkReaderResultValue();
+
 	const t = getT();
 	const items = useMemo(
 		() => [
@@ -41,19 +38,22 @@ const DarkThemeSettingSection: FC<{
 		],
 		[t]
 	);
+
 	const defaultSelection = useMemo(
-		() => find(items, { value: currentDRMSetting }),
-		[currentDRMSetting, items]
+		() => find(items, { value: darkReaderResultValue }),
+		[darkReaderResultValue, items]
 	);
+
 	const onSelectionChange = useCallback(
 		(v) => {
-			if (DR_VALUES.includes(v) && v !== currentDRMSetting) {
+			if (DR_VALUES.includes(v) && v !== darkReaderResultValue) {
 				setDarkReaderState(v);
 				addMod('props', 'zappDarkreaderMode', { app: SHELL_APP_ID, value: v });
 			}
 		},
-		[addMod, currentDRMSetting, setDarkReaderState]
+		[addMod, darkReaderResultValue, setDarkReaderState]
 	);
+
 	return (
 		<>
 			<Text size="medium" weight="bold">

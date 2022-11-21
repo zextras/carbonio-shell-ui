@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { FormSubSection, Select } from '@zextras/carbonio-design-system';
+import { FormSubSection, Select, SelectProps } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 import React, { FC, useCallback, useContext, useMemo } from 'react';
 import { ThemeCallbacksContext } from '../../../boot/theme-provider';
@@ -44,14 +44,13 @@ const AppearanceSettings: FC<{
 		() => find(items, { value: darkReaderResultValue }),
 		[darkReaderResultValue, items]
 	);
-	const onSelectionChange = useCallback(
+	const onSelectionChange = useCallback<NonNullable<SelectProps['onChange']>>(
 		(value) => {
 			if (isDarkReaderPropValues(value)) {
+				setDarkReaderState(value);
 				if (value !== darkReaderResultValue) {
-					setDarkReaderState(value);
 					addMod('props', 'zappDarkreaderMode', { app: SHELL_APP_ID, value });
 				} else {
-					setDarkReaderState(value);
 					removeMod('props', 'zappDarkreaderMode');
 				}
 			}

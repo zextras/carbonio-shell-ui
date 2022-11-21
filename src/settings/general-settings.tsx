@@ -37,10 +37,10 @@ const GeneralSettings: FC = () => {
 	const removeMod = useCallback((type: 'props' | 'prefs', key) => {
 		setMods((prevState) => {
 			const prevType = prevState[type];
-			if (prevType && prevType[key]) {
+			if (prevType && prevType[key] !== undefined) {
 				const nextState = { ...prevState, [type]: { ...prevState[type] } };
 				const nextType = nextState[type];
-				if (nextType && nextType[key]) {
+				if (nextType && nextType[key] !== undefined) {
 					delete nextType[key];
 				}
 				if (size(nextState[type]) === 0) {

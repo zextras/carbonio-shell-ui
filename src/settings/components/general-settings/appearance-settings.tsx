@@ -4,24 +4,26 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { FormSubSection, Select } from '@zextras/carbonio-design-system';
+import { FormSubSection, Select, SelectProps } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 import React, { FC, useCallback, useContext, useMemo } from 'react';
 import { ThemeCallbacksContext } from '../../../boot/theme-provider';
-import { DR_VALUES, SHELL_APP_ID } from '../../../constants';
+import { SHELL_APP_ID } from '../../../constants';
 import { getT } from '../../../store/i18n';
 import { themeSubSection } from '../../general-settings-sub-sections';
 import { useDarkReaderResultValue } from '../../../custom-hooks/useDarkReaderResultValue';
+import { DarkReaderPropValues, isDarkReaderPropValues } from '../../../../types';
 
 const AppearanceSettings: FC<{
 	addMod: (type: 'prefs' | 'props', key: string, value: { value: any; app: string }) => void;
-}> = ({ addMod }) => {
+	removeMod: (type: 'prefs' | 'props', key: string) => void;
+}> = ({ addMod, removeMod }) => {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
 
 	const darkReaderResultValue = useDarkReaderResultValue();
 
 	const t = getT();
-	const items = useMemo(
+	const items = useMemo<Array<{ label: string; value: DarkReaderPropValues }>>(
 		() => [
 			{
 				label: t('settings.general.theme_auto', 'Auto'),
@@ -42,14 +44,18 @@ const AppearanceSettings: FC<{
 		() => find(items, { value: darkReaderResultValue }),
 		[darkReaderResultValue, items]
 	);
-	const onSelectionChange = useCallback(
-		(v) => {
-			if (DR_VALUES.includes(v) && v !== darkReaderResultValue) {
-				setDarkReaderState(v);
-				addMod('props', 'zappDarkreaderMode', { app: SHELL_APP_ID, value: v });
+	const onSelectionChange = useCallback<NonNullable<SelectProps['onChange']>>(
+		(value) => {
+			if (isDarkReaderPropValues(value)) {
+				setDarkReaderState(value);
+				if (value !== darkReaderResultValue) {
+					addMod('props', 'zappDarkreaderMode', { app: SHELL_APP_ID, value });
+				} else {
+					removeMod('props', 'zappDarkreaderMode');
+				}
 			}
 		},
-		[addMod, darkReaderResultValue, setDarkReaderState]
+		[addMod, darkReaderResultValue, removeMod, setDarkReaderState]
 	);
 	const subSection = useMemo(() => themeSubSection(t), [t]);
 	return (
@@ -62,7 +68,6 @@ const AppearanceSettings: FC<{
 			<Select
 				items={items}
 				selection={defaultSelection}
-				defaultSelection={defaultSelection}
 				label={t('settings.general.dark_mode', 'Dark Mode')}
 				onChange={onSelectionChange}
 			/>

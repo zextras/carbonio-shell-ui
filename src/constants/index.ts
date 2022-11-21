@@ -87,7 +87,7 @@ export const EMAIL_VALIDATION_REGEX =
 
 export const ROOT_NAME = 'USER_ROOT';
 
-export const DR_VALUES = ['auto', 'enabled', 'disabled'];
+export const DARK_READER_VALUES = ['auto', 'enabled', 'disabled'] as const;
 
 export const FOLDER_VIEW = {
 	search_folder: 'search folder',

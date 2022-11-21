@@ -10,7 +10,8 @@ import { goToLogin } from './go-to-login';
 
 export const logout = (): Promise<void> =>
 	getSoapFetch(SHELL_APP_ID)('EndSession', {
-		_jsns: 'urn:zimbraAccount'
+		_jsns: 'urn:zimbraAccount',
+		logoff: true
 	}).then(() => {
 		fetch('/?loginOp=logout')
 			.then((res) => res)

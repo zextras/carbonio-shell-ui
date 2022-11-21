@@ -160,7 +160,8 @@
         "when_composing": "Podczas tworzenia, odpowiadania na i przekazywania dalej wiadomości w folderze (folderach):",
         "button": "Przycisk",
         "click_to_copy": "Kliknij, aby skopiować",
-        "folder_external_account": "Folder: Nowe Konto spoza mojej domeny"
+        "folder_external_account": "Folder: Nowe Konto spoza mojej domeny",
+        "add_inline_image": "Dodaj obrazek w tekście"
     },
     "board": {
         "close_tab": "Zamknij Kartę",

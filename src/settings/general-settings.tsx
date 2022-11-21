@@ -34,7 +34,8 @@ const GeneralSettings: FC = () => {
 			}
 		}));
 	}, []);
-	const removeMod = useCallback((type: 'props' | 'prefs', key) => {
+	// TODO update type
+	const removeMod = useCallback((type: 'props' | 'prefs', key: string) => {
 		setMods((prevState) => {
 			const prevType = prevState[type];
 			if (prevType && prevType[key] !== undefined) {

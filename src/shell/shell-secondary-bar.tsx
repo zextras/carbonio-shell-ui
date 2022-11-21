@@ -45,37 +45,39 @@ const ShellSecondaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute
 	);
 	return disabled ? null : (
 		<>
-			<SidebarContainer
-				sidebarIsOpen={isOpen}
-				role="menu"
-				height="fill"
-				orientation="vertical"
-				mainAlignment="space-between"
-				onClick={isOpen ? undefined : onCollapserClick}
-				style={{
-					maxHeight: 'calc(100vh - 3rem)',
-					overflowY: 'auto'
-				}}
-			>
-				<Container mainAlignment="flex-start">
-					<Switch>
-						{map(secondaryBarViews, (view) => (
-							<Route key={view.id} path={`/${view.route}`}>
-								<AppContextProvider pkg={view.app}>
-									<view.component expanded={isOpen} />
-								</AppContextProvider>
-							</Route>
+			<Container background="gray5" height="fill" mainAlignment="flex-start">
+				<SidebarContainer
+					sidebarIsOpen={isOpen}
+					role="menu"
+					height="fill"
+					orientation="vertical"
+					mainAlignment="space-between"
+					onClick={isOpen ? undefined : onCollapserClick}
+					style={{
+						maxHeight: 'calc(100vh - 5rem)',
+						overflowY: 'auto'
+					}}
+				>
+					<Container mainAlignment="flex-start">
+						<Switch>
+							{map(secondaryBarViews, (view) => (
+								<Route key={view.id} path={`/${view.route}`}>
+									<AppContextProvider pkg={view.app}>
+										<view.component expanded={isOpen} />
+									</AppContextProvider>
+								</Route>
+							))}
+						</Switch>
+					</Container>
+					<Container mainAlignment="flex-end" height="fit">
+						{accessories.map((view) => (
+							<AppContextProvider key={view.id} pkg={view.app}>
+								<view.component expanded={isOpen} />
+							</AppContextProvider>
 						))}
-					</Switch>
-				</Container>
-				<Container mainAlignment="flex-end" height="fit">
-					{accessories.map((view) => (
-						<AppContextProvider key={view.id} pkg={view.app}>
-							<view.component expanded={isOpen} />
-						</AppContextProvider>
-					))}
-				</Container>
-			</SidebarContainer>
+					</Container>
+				</SidebarContainer>
+			</Container>
 			<Collapser onClick={onCollapserClick} open={isOpen} />
 		</>
 	);

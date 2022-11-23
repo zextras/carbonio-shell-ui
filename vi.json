@@ -152,6 +152,11 @@
     },
     "settings": {
         "accounts": "Các Tài khoản",
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "Con cáo nâu nhanh nhẹn nhảy qua con chó lười biếng."
+            }
+        },
         "choose": "Chọn",
         "app": "Cài đặt",
         "button": {

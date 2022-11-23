@@ -46,6 +46,7 @@ const ShellSecondaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute
 	return disabled ? null : (
 		<>
 			<SidebarContainer
+				data-testid="SideSecondaryBarContainer"
 				sidebarIsOpen={isOpen}
 				role="menu"
 				height="fill"

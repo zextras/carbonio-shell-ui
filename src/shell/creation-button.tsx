@@ -56,6 +56,7 @@ export const CreationButtonComponent: FC<{ activeRoute: AppRoute; location: Loca
 	return primaryAction ? (
 		<Container minWidth="80px">
 			<MultiButton
+				data-testid="NewItemButton"
 				size="extralarge"
 				background="primary"
 				label={primaryAction?.label ?? t('new', 'New')}
@@ -68,6 +69,7 @@ export const CreationButtonComponent: FC<{ activeRoute: AppRoute; location: Loca
 	) : (
 		<Dropdown items={secondaryActions} onClose={onClose} onOpen={onOpen}>
 			<Button
+				data-testid="NewItemButton"
 				size="extralarge"
 				backgroundColor="primary"
 				label={t('new', 'New')}

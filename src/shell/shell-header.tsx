@@ -66,6 +66,7 @@ const ShellHeader: FC<{
 	const searchEnabled = useAppStore((s) => s.views.search.length > 0);
 	return (
 		<Container
+			data-testid="MainHeaderContainer"
 			orientation="horizontal"
 			background="gray3"
 			width="fill"
@@ -84,6 +85,7 @@ const ShellHeader: FC<{
 					maxWidth="75%"
 					mainAlignment="flex-start"
 					minWidth="fit-content"
+					data-testid="HeaderMainLogoContainer"
 				>
 					<Responsive mode="mobile">
 						<Padding right="small">

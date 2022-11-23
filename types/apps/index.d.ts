@@ -6,7 +6,8 @@
  */
 
 import React, { ComponentType, FC } from 'react';
-import { QueryChip } from '../search/items';
+import { DefaultTheme } from 'styled-components';
+import { QueryChip } from '../search';
 
 export type CarbonioModule = {
 	commit: string;
@@ -47,7 +48,7 @@ export type BadgeInfo = {
 	show: boolean;
 	count?: number;
 	showCount?: boolean;
-	color?: string;
+	color?: keyof DefaultTheme['palette'];
 };
 
 export type CarbonioView<P> = {

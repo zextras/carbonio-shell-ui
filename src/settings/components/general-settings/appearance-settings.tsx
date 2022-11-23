@@ -4,74 +4,35 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { FormSubSection, Select, SelectProps } from '@zextras/carbonio-design-system';
-import { find } from 'lodash';
-import React, { FC, useCallback, useContext, useMemo } from 'react';
-import { ThemeCallbacksContext } from '../../../boot/theme-provider';
-import { SHELL_APP_ID } from '../../../constants';
+import { Container, Text } from '@zextras/carbonio-design-system';
+import React, { useMemo } from 'react';
 import { getT } from '../../../store/i18n';
-import { themeSubSection } from '../../general-settings-sub-sections';
-import { useDarkReaderResultValue } from '../../../custom-hooks/useDarkReaderResultValue';
-import { DarkReaderPropValues, isDarkReaderPropValues } from '../../../../types';
+import { appearanceSubSection } from '../../general-settings-sub-sections';
 
-const AppearanceSettings: FC<{
-	addMod: (type: 'prefs' | 'props', key: string, value: { value: any; app: string }) => void;
-	removeMod: (type: 'prefs' | 'props', key: string) => void;
-}> = ({ addMod, removeMod }) => {
-	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
+interface AppearanceSettingsProps {
+	children: React.ReactElement | React.ReactElement[];
+}
 
-	const darkReaderResultValue = useDarkReaderResultValue();
-
+const AppearanceSettings = ({ children }: AppearanceSettingsProps): JSX.Element => {
 	const t = getT();
-	const items = useMemo<Array<{ label: string; value: DarkReaderPropValues }>>(
-		() => [
-			{
-				label: t('settings.general.theme_auto', 'Auto'),
-				value: 'auto'
-			},
-			{
-				label: t('settings.general.theme_enabled', 'Enabled'),
-				value: 'enabled'
-			},
-			{
-				label: t('settings.general.theme_disabled', 'Disabled'),
-				value: 'disabled'
-			}
-		],
-		[t]
-	);
-	const defaultSelection = useMemo(
-		() => find(items, { value: darkReaderResultValue }),
-		[darkReaderResultValue, items]
-	);
-	const onSelectionChange = useCallback<NonNullable<SelectProps['onChange']>>(
-		(value) => {
-			if (isDarkReaderPropValues(value)) {
-				setDarkReaderState(value);
-				if (value !== darkReaderResultValue) {
-					addMod('props', 'zappDarkreaderMode', { app: SHELL_APP_ID, value });
-				} else {
-					removeMod('props', 'zappDarkreaderMode');
-				}
-			}
-		},
-		[addMod, darkReaderResultValue, removeMod, setDarkReaderState]
-	);
-	const subSection = useMemo(() => themeSubSection(t), [t]);
+	const subSection = useMemo(() => appearanceSubSection(t), [t]);
 	return (
-		<FormSubSection
-			label={subSection.label}
+		<Container
+			mainAlignment="flex-start"
+			crossAlignment="flex-start"
+			gap="1rem"
+			padding={'large'}
 			minWidth="calc(min(100%, 32rem))"
 			width="50%"
+			height={'fit'}
 			id={subSection.id}
+			background={'gray6'}
 		>
-			<Select
-				items={items}
-				selection={defaultSelection}
-				label={t('settings.general.dark_mode', 'Dark Mode')}
-				onChange={onSelectionChange}
-			/>
-		</FormSubSection>
+			<Text weight={'bold'} size={'medium'}>
+				{subSection.label}
+			</Text>
+			{children}
+		</Container>
 	);
 };
 

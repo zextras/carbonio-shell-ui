@@ -6,13 +6,13 @@
 
 import { Checkbox, Container, FormSubSection } from '@zextras/carbonio-design-system';
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { AccountSettings } from '../../types';
+import { AccountSettings, AddMod, PrefsMods } from '../../types';
 import { getT } from '../store/i18n';
 import { searchPrefsSubSection } from './general-settings-sub-sections';
 
 const SearchSettingsView: FC<{
 	settings: AccountSettings;
-	addMod: (type: 'prefs' | 'props', key: string, value: { value: any; app: string }) => void;
+	addMod: AddMod;
 }> = ({ settings, addMod }) => {
 	const t = getT();
 	const [searchInSpamFolder, setSearchInSpamFolder] = useState<boolean>(
@@ -25,9 +25,8 @@ const SearchSettingsView: FC<{
 		settings.prefs.zimbraPrefIncludeSharedItemsInSearch === 'TRUE'
 	);
 	const setMode = useCallback(
-		(v, p) => {
-			const value: any = v ? 'TRUE' : 'FALSE';
-			addMod('prefs', p, value);
+		(prefValue: PrefsMods[keyof PrefsMods], prefKey: keyof PrefsMods) => {
+			addMod('prefs', prefKey, prefValue);
 		},
 		[addMod]
 	);

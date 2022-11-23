@@ -6,12 +6,36 @@
 
 import { filter, find, findIndex, forEach, map, reduce, isArray } from 'lodash';
 import { SHELL_APP_ID } from '../constants';
-import { useAccountStore } from '../store/account/store';
-import { AccountState, Mods, Account } from '../../types';
+import { useAccountStore } from '../store/account';
+import {
+	AccountState,
+	Mods,
+	Account,
+	CreateIdentityResponse,
+	ModifyPropertiesResponse,
+	ModifyPrefsResponse,
+	ModifyIdentityResponse,
+	RevokeRightsResponse,
+	DeleteIdentityResponse,
+	GrantRightsResponse
+} from '../../types';
 import { getXmlSoapFetch } from './fetch';
 
-export const editSettings = (mods: Mods, appId: string = SHELL_APP_ID): Promise<any> =>
-	getXmlSoapFetch(SHELL_APP_ID)(
+type EditSettingsBatchResponse = {
+	ModifyPropertiesResponse?: ModifyPropertiesResponse[];
+	ModifyPrefsResponse?: ModifyPrefsResponse[];
+	ModifyIdentityResponse?: ModifyIdentityResponse[];
+	DeleteIdentityResponse?: DeleteIdentityResponse[];
+	CreateIdentityResponse?: CreateIdentityResponse[];
+	RevokeRightsResponse?: RevokeRightsResponse[];
+	GrantRightsResponse?: GrantRightsResponse[];
+};
+
+export const editSettings = (
+	mods: Partial<Mods>,
+	appId: string = SHELL_APP_ID
+): Promise<EditSettingsBatchResponse> =>
+	getXmlSoapFetch(SHELL_APP_ID)<string, EditSettingsBatchResponse>(
 		'Batch',
 		`<BatchRequest xmlns="urn:zimbra" onerror="stop">${
 			mods.props
@@ -93,11 +117,12 @@ export const editSettings = (mods: Mods, appId: string = SHELL_APP_ID): Promise<
 										return `<ace right="viewFreeBusy" gt="${mods.permissions.freeBusy.new.gt}" deny="1"/>`;
 									}
 									if (mods.permissions.freeBusy.new.gt === 'usr') {
-										// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-										// @ts-ignore
 										return map(
 											mods.permissions.freeBusy.new.d,
 											(u) =>
+												// FIXME: usage differs from the declaration of the AccountACE
+												// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+												// @ts-ignore
 												`<ace right="viewFreeBusy" gt="${mods.permissions?.freeBusy.new.gt}" d="${u.email}"/>`
 										).join('');
 									}
@@ -114,11 +139,12 @@ export const editSettings = (mods: Mods, appId: string = SHELL_APP_ID): Promise<
 										return `<ace right="invite" gt="${mods.permissions.inviteRight.new.gt}" deny="1"/>`;
 									}
 									if (mods.permissions.inviteRight.new.gt === 'usr') {
-										// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-										// @ts-ignore
 										return map(
 											mods.permissions.inviteRight.new.d,
 											(u) =>
+												// FIXME: usage differs from the declaration of the AccountACE
+												// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+												// @ts-ignore
 												`<ace right="invite" gt="${mods.permissions?.inviteRight.new.gt}" d="${u.email}"/>`
 										).join('');
 									}
@@ -129,7 +155,7 @@ export const editSettings = (mods: Mods, appId: string = SHELL_APP_ID): Promise<
 	</GrantRightsRequest>`
 				: ''
 		}</BatchRequest>`
-	).then((r: any) => {
+	).then((r) => {
 		useAccountStore.setState((s: AccountState) => ({
 			settings: {
 				...s.settings,
@@ -220,8 +246,8 @@ export const editSettings = (mods: Mods, appId: string = SHELL_APP_ID): Promise<
 
 export const getEditSettingsForApp =
 	(app: string) =>
-	(mods: Mods): Promise<any> =>
-		editSettings(mods, app).then((r) => {
-			r.type = 'fulfilled';
-			return r;
-		});
+	(mods: Mods): Promise<EditSettingsBatchResponse & { type?: 'fulfilled' }> =>
+		editSettings(mods, app).then((r) => ({
+			...r,
+			type: 'fulfilled'
+		}));

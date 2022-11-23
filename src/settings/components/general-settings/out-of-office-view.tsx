@@ -13,16 +13,11 @@ import {
 } from '@zextras/carbonio-design-system';
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { find } from 'lodash';
 import momentLocalizer from 'react-widgets-moment';
-import { AccountSettings } from '../../../../types';
+import { AccountSettings, AddMod, PrefsMods } from '../../../../types';
 import Heading from '../settings-heading';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import DateTimeSelect from '../date-time-select-view';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { getT } from '../../../store/i18n';
 import { outOfOfficeSubSection } from '../../general-settings-sub-sections';
 import {
@@ -54,7 +49,7 @@ momentLocalizer();
 
 const OutOfOfficeView: FC<{
 	settings: AccountSettings;
-	addMod: (type: 'prefs' | 'props', key: string, value: { value: any; app: string }) => void;
+	addMod: AddMod;
 }> = ({ settings, addMod }) => {
 	const t = getT();
 	const [sendAutoReply, setSendAutoReply] = useState<boolean>(
@@ -75,8 +70,8 @@ const OutOfOfficeView: FC<{
 	const [createAppointment, setCreateAppointment] = useState<boolean>(true);
 
 	const updatePrefs = useCallback(
-		(v, p) => {
-			addMod('prefs', p, v);
+		(prefValue: PrefsMods[keyof PrefsMods], prefKey: keyof PrefsMods) => {
+			addMod('prefs', prefKey, prefValue);
 		},
 		[addMod]
 	);

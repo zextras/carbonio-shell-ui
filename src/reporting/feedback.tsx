@@ -26,14 +26,14 @@ import React, {
 	useState
 } from 'react';
 import { TFunction } from 'react-i18next';
-import styled from 'styled-components';
+import styled, { DefaultTheme } from 'styled-components';
 import { useUserAccount } from '../store/account';
 import { useAppList } from '../store/app';
 import { closeBoard } from '../store/boards';
 import { getT } from '../store/i18n';
 import { feedback } from './functions';
 
-const TextArea = styled.textarea<{ size?: string }>`
+const TextArea = styled.textarea<{ size?: keyof DefaultTheme['sizes']['font'] }>`
 	width: 100%;
 	min-height: 8rem;
 	box-sizing: border-box;

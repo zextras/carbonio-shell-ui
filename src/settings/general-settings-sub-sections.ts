@@ -6,9 +6,9 @@
 import { TFunction } from 'react-i18next';
 import { SettingsSubSection } from '../../types';
 
-export const themeSubSection = (t: TFunction): SettingsSubSection => ({
-	label: t('settings.general.theme_options', 'Theme Options'),
-	id: 'theme_options'
+export const appearanceSubSection = (t: TFunction): SettingsSubSection => ({
+	label: t('settings.general.appearance', 'Appearance'),
+	id: 'appearance'
 });
 export const timezoneAndLanguageSubSection = (t: TFunction): SettingsSubSection => ({
 	label: t('settings.timezone_and_language', 'Time Zone and Language'),
@@ -36,7 +36,7 @@ export const accountSubSection = (t: TFunction): SettingsSubSection => ({
 });
 
 export const settingsSubSections = (t: TFunction): Array<SettingsSubSection> => [
-	themeSubSection(t),
+	appearanceSubSection(t),
 	timezoneAndLanguageSubSection(t),
 	outOfOfficeSubSection(t),
 	searchPrefsSubSection(t),

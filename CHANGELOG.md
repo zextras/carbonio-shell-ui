@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.44](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.43...v0.4.44) (2022-11-24)
+
+
+### Features
+
+* add setting to change base font size for scaling ([caff759](https://github.com/zextras/carbonio-shell-ui/commit/caff7594716655dff84c437753e175dd29a19092)), closes [#156](https://github.com/zextras/carbonio-shell-ui/issues/156)
+* added abort signal to getsoapfetch ([#166](https://github.com/zextras/carbonio-shell-ui/issues/166)) ([3c039e1](https://github.com/zextras/carbonio-shell-ui/commit/3c039e1fa124d4efeec2f4f251193bbf27f8c8d5))
+* added bottom padding to secondary bar ([#165](https://github.com/zextras/carbonio-shell-ui/issues/165)) ([58b07d4](https://github.com/zextras/carbonio-shell-ui/commit/58b07d40189bb74a23044c6a5d26ed0a76fbf361))
+* added data-testid for E2E tests ([#155](https://github.com/zextras/carbonio-shell-ui/issues/155)) ([3042aa6](https://github.com/zextras/carbonio-shell-ui/commit/3042aa697c3ed7e55342d698e2d111451f5d1527))
+* **whitelabel:** use configs to set logo, title, favicon and dark mode default ([9b1a235](https://github.com/zextras/carbonio-shell-ui/commit/9b1a235fb61a7ebf75eb760fe7aab4120a04a374)), closes [#162](https://github.com/zextras/carbonio-shell-ui/issues/162)
+
+
+### Bug Fixes
+
+* apply dark mode preview when changed to initial value ([e99e80f](https://github.com/zextras/carbonio-shell-ui/commit/e99e80ff4c9b64675062c8aff8e5d9da3ac2ba16)), closes [#163](https://github.com/zextras/carbonio-shell-ui/issues/163)
+* fixed logout ([#164](https://github.com/zextras/carbonio-shell-ui/issues/164)) ([e75dca6](https://github.com/zextras/carbonio-shell-ui/commit/e75dca6d0d676237358d4276a1b037fad95e4fc2))
+* remember to stop watching for the system color scheme ([#161](https://github.com/zextras/carbonio-shell-ui/issues/161)) ([a0c61ae](https://github.com/zextras/carbonio-shell-ui/commit/a0c61ae9d289b2be00ce05797bf4c42eca1c12b8))
+
 ### [0.4.43](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.42...v0.4.43) (2022-11-15)
 
 

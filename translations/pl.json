@@ -36,7 +36,7 @@
                 "start_date": "Data rozpoczęcia",
                 "start_time": "Czas rozpoczęcia:",
                 "all_day": "Cały dzień",
-                "auto_reply_message": "Automatyczna Odpowiedź:",
+                "auto_reply_message": "Automatyczna odpowiedź:",
                 "create_appointment": "Utwórz termin i wyświetlaj jako:",
                 "end_date": "Data zakończenia",
                 "end_time": "Czas zakończenia:",
@@ -130,8 +130,8 @@
         "recovery_email": "E-mail zapasowy",
         "save": "Zapisz",
         "save_and_leave": "Zapisz i opuść",
-        "save_delegate_folder": "Zapisuj kopię wysyłanych wiadomości do folderu Wysłane pełnomocnika",
-        "save_to_my_sent_folder": "Zapisuj kopię wysyłanych wiadomości do mojego folderu Wysłane",
+        "save_delegate_folder": "Zapisuj kopię wysyłanych wiadomości do folderu wysłane pełnomocnika",
+        "save_to_my_sent_folder": "Zapisuj kopię wysyłanych wiadomości do mojego folderu wysłane",
         "secondary": "Drugorzędny",
         "set_reply_to_field": "Pole \"Odpowiedz na ten adres\" w wiadomości e-mail",
         "settings_sent_messages": "Ustawienia wysyłanych wiadomości",
@@ -157,7 +157,7 @@
         "passwords_recovery_settings": "Ustawienia odzyskiwania hasła",
         "reply_to_field_example": "np. Jan Kowalski",
         "unsaved_changes_line1": "Czy na pewno chcesz opuścić tą stronę bez zapisywania?",
-        "save_both_folders": "Zapisuj kopię wysyłanych wiadomości do mojego folderu Wysłane i folderu Wysłane pełnomocnika",
+        "save_both_folders": "Zapisuj kopię wysyłanych wiadomości do mojego folderu wysłane i folderu wysłane pełnomocnika",
         "unsaved_changes": "Masz niezapisane zmiany",
         "unsaved_changes_line2": "Wszystkie niezapisane zmiany zostaną utracone",
         "use_personas_line1": "Używaj person, aby szybko zmieniać duże ilości ustawień podczas wysyłania e-maili.",
@@ -165,7 +165,8 @@
         "when_composing": "Podczas tworzenia, odpowiadania na i przekazywania dalej wiadomości w folderze (folderach):",
         "button": "Przycisk",
         "click_to_copy": "Kliknij, aby skopiować",
-        "folder_external_account": "Folder: Nowe Konto spoza mojej domeny"
+        "folder_external_account": "Folder: Nowe Konto spoza mojej domeny",
+        "add_inline_image": "Dodaj obrazek w tekście"
     },
     "board": {
         "close_tab": "Zamknij Kartę",

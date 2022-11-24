@@ -1,6 +1,11 @@
 {
     "settings": {
         "app": "Configurações",
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "A ligeira raposa marrom ataca o cão preguiçoso."
+            }
+        },
         "button": {
             "primary": "Salvar",
             "confirm": "Confirmar"

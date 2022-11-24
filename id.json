@@ -12,6 +12,11 @@
         "unable_to_parse_query": "Tidak dapat menyelesaikan pencarian. Hapus dan coba lagi"
     },
     "settings": {
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "Saya lihat foto Hamengkubuwono XV bersama enam zebra purba cantik yang jatuh dari Al Quranmu."
+            }
+        },
         "out_of_office": {
             "labels": {
                 "end_date": "Tanggal Selesai",

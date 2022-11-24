@@ -9,15 +9,10 @@ import React, { FC, useCallback, useEffect, useState } from 'react';
 
 import moment from 'moment';
 import DateTimePicker from 'react-widgets/lib/DateTimePicker';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import momentLocalizer from 'react-widgets-moment';
-import { AccountSettings } from '../../../types';
+import { AccountSettings, AddMod, PrefsMods } from '../../../types';
 import Heading from './settings-heading';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import Styler from './date-picker-style';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { getT } from '../../store/i18n';
 import { changeDateEvent, endOfDate, getDateEvent, startOfDate } from './utils';
 
@@ -25,7 +20,7 @@ momentLocalizer();
 
 const DateTimeSelect: FC<{
 	settings: AccountSettings;
-	addMod: (type: 'prefs' | 'props', key: string, value: { value: any; app: string }) => void;
+	addMod: AddMod;
 	sendAutoReply: boolean;
 }> = ({ settings, addMod, sendAutoReply }) => {
 	const t = getT();
@@ -47,8 +42,8 @@ const DateTimeSelect: FC<{
 	const [allDayDisabled, setAllDayDisabled] = useState<boolean>(false);
 	const [timeDisabled, setTimeDisabled] = useState<boolean>(false);
 	const updatePrefs = useCallback(
-		(v, p) => {
-			addMod('prefs', p, v);
+		(prefValue: PrefsMods[keyof PrefsMods], prefKey: keyof PrefsMods) => {
+			addMod('prefs', prefKey, prefValue);
 		},
 		[addMod]
 	);

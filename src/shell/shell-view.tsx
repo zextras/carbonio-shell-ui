@@ -6,21 +6,27 @@
 
 import { Responsive, Row } from '@zextras/carbonio-design-system';
 import { PreviewManager } from '@zextras/carbonio-ui-preview';
-import { find } from 'lodash';
+import { find, size } from 'lodash';
 import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { AppRoute, DRPropValues } from '../../types';
+import {
+	AppRoute,
+	isZappDarkreaderModeZimletProp,
+	ZappDarkreaderModeZimletProp,
+	ZimletProp
+} from '../../types';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
-import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
+import { IS_STANDALONE } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
 import { goToLogin } from '../network/go-to-login';
-import { useAccountStore, useUserSettings } from '../store/account';
+import { useAccountStore } from '../store/account';
 import { ShellUtilityBar, ShellUtilityPanel } from '../utility-bar';
 import AppViewContainer from './app-view-container';
 import { BoardContainer } from './boards/board-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
+import { useDarkReaderResultValue } from '../custom-hooks/useDarkReaderResultValue';
 
 const Background = styled.div`
 	background: ${({ theme }): string => theme.palette.gray6.regular};
@@ -36,19 +42,12 @@ const Background = styled.div`
 
 function DarkReaderListener(): null {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
-	const settings = useUserSettings();
-	const currentDRMSetting = useMemo(
-		() =>
-			find(settings?.props ?? [], {
-				name: 'zappDarkreaderMode',
-				zimlet: SHELL_APP_ID
-			})?._content as DRPropValues,
-		[settings]
-	);
-
+	const darkReaderResultValue = useDarkReaderResultValue();
 	useEffect(() => {
-		setDarkReaderState(currentDRMSetting);
-	}, [currentDRMSetting, setDarkReaderState]);
+		if (darkReaderResultValue) {
+			setDarkReaderState(darkReaderResultValue);
+		}
+	}, [darkReaderResultValue, setDarkReaderState]);
 	return null;
 }
 

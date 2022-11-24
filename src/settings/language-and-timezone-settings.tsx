@@ -14,10 +14,9 @@ import {
 } from '@zextras/carbonio-design-system';
 import React, { FC, useCallback, useMemo } from 'react';
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { find } from 'lodash';
 import momentLocalizer from 'react-widgets-moment';
-import { AccountSettings } from '../../types';
+import { AccountSettings, AddMod, PrefsMods } from '../../types';
 import { getT } from '../store/i18n';
 import { localeList, timeZoneList } from './components/utils';
 import { timezoneAndLanguageSubSection } from './general-settings-sub-sections';
@@ -27,8 +26,8 @@ momentLocalizer();
 const LanguageAndTimeZone: FC<{
 	settings: AccountSettings;
 	open: boolean;
-	setOpen: (arg: boolean) => any;
-	addMod: (type: 'prefs' | 'props', key: string, value: { value: any; app: string }) => void;
+	setOpen: (arg: boolean) => void;
+	addMod: AddMod;
 }> = ({ settings, addMod, open, setOpen }) => {
 	const t = getT();
 	const locales = useMemo(() => localeList(t), [t]);
@@ -36,8 +35,8 @@ const LanguageAndTimeZone: FC<{
 	const sectionTitle = useMemo(() => timezoneAndLanguageSubSection(t), [t]);
 
 	const updatePrefs = useCallback(
-		(v, p) => {
-			addMod('prefs', p, v);
+		(prefValue: PrefsMods[keyof PrefsMods], prefKey: keyof PrefsMods) => {
+			addMod('prefs', prefKey, prefValue);
 		},
 		[addMod]
 	);

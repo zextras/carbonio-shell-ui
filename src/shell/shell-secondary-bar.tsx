@@ -4,18 +4,18 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useCallback, useMemo } from 'react';
-import { filter, findIndex, map, sortBy } from 'lodash';
-import styled from 'styled-components';
-import { Route, Switch } from 'react-router-dom';
 import { Container, ContainerProps } from '@zextras/carbonio-design-system';
-import AppContextProvider from '../boot/app/app-context-provider';
-import { Collapser } from './collapser';
-import { useAppStore } from '../store/app';
+import { filter, findIndex, map, sortBy } from 'lodash';
+import React, { FC, useCallback, useMemo } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import styled from 'styled-components';
 import { AppRoute } from '../../types';
+import AppContextProvider from '../boot/app/app-context-provider';
+import { useCurrentRoute } from '../history/hooks';
+import { useAppStore } from '../store/app';
 import { useUtilityBarStore } from '../utility-bar';
 import { checkRoute } from '../utility-bar/utils';
-import { useCurrentRoute } from '../history/hooks';
+import { Collapser } from './collapser';
 
 const SidebarContainer = styled(Container)<ContainerProps & { sidebarIsOpen?: boolean }>`
 	min-width: 3rem;
@@ -46,6 +46,7 @@ const ShellSecondaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute
 	return disabled ? null : (
 		<>
 			<SidebarContainer
+				data-testid="SideSecondaryBarContainer"
 				sidebarIsOpen={isOpen}
 				role="menu"
 				height="fill"
@@ -53,7 +54,7 @@ const ShellSecondaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute
 				mainAlignment="space-between"
 				onClick={isOpen ? undefined : onCollapserClick}
 				style={{
-					maxHeight: 'calc(100vh - 3rem)',
+					maxHeight: 'calc(100vh - 3.75rem)',
 					overflowY: 'auto'
 				}}
 			>

@@ -124,6 +124,7 @@ const ShellPrimaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute }
 			orientation="vertical"
 			mainAlignment="flex-start"
 			crossAlignment="flex-start"
+			data-testid="SideMenuContainer"
 		>
 			<Row
 				mainAlignment="flex-start"

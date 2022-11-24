@@ -2,6 +2,11 @@
     "new": "Nuovo",
     "new_tab": "Nuova tab",
     "settings": {
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "Ma la volpe, col suo balzo, ha raggiunto il quieto Fido."
+            }
+        },
         "button": {
             "primary": "Salva",
             "confirm": "Conferma"

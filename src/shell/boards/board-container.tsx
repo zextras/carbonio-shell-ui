@@ -79,7 +79,12 @@ export const BoardContainer: FC = () => {
 	if (isEmpty(boards) || !current) return null;
 	return (
 		<BoardContainerComp expanded={expanded} minimized={minimized}>
-			<Board background="gray6" crossAlignment="unset" expanded={expanded}>
+			<Board
+				data-testid="NewItemContainer"
+				background="gray6"
+				crossAlignment="unset"
+				expanded={expanded}
+			>
 				<BoardHeader background="gray5">
 					<Padding all="extrasmall">
 						<Tooltip label={t('board.hide', 'Hide board')} placement="top">

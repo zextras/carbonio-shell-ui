@@ -5,9 +5,9 @@
  */
 
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
-import { includes, isEmpty } from 'lodash';
-import React, { FC, useCallback, useMemo, useState } from 'react';
-import { Mods } from '../../types';
+import { includes, isEmpty, size } from 'lodash';
+import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
+import { AddMod, Mods, RemoveMod } from '../../types';
 import { editSettings } from '../network/edit-settings';
 import { useUserSettings } from '../store/account';
 import { getT } from '../store/i18n';
@@ -19,75 +19,157 @@ import UserQuota from './components/general-settings/user-quota';
 import SettingsHeader from './components/settings-header';
 import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
 import SearchSettingsView from './search-settings-view';
+import { useLocalStorage } from '../shell/hooks';
+import {
+	ScalingSettingSection,
+	ScalingSettingSectionRef
+} from './components/general-settings/scaling-setting-section';
+import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
+import { LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
+import { ScalingSettings } from '../../types/settings';
 
 const GeneralSettings: FC = () => {
 	const [mods, setMods] = useState<Mods>({});
 	const t = getT();
-	const settings = useUserSettings();
+	const userSettings = useUserSettings();
+	const [localStorageUnAppliedChanges, setLocalStorageUnAppliedChanges] = useState<ScalingSettings>(
+		{}
+	);
+	const [localStorageSettings, setLocalStorageSettings] = useLocalStorage<ScalingSettings>(
+		LOCAL_STORAGE_SETTINGS_KEY,
+		{}
+	);
 	const [open, setOpen] = useState(false);
-	const addMod = useCallback((type: 'props' | 'prefs', key, value) => {
-		setMods((m) => ({
-			...m,
+
+	const addLocalStoreChange = useCallback((key, value) => {
+		setLocalStorageUnAppliedChanges((prevState) => ({
+			...prevState,
+			[key]: value
+		}));
+	}, []);
+
+	const cleanLocalStoreChange = useCallback<(key: keyof ScalingSettings) => void>((key) => {
+		setLocalStorageUnAppliedChanges((prevState) => {
+			const nextState = { ...prevState };
+			delete nextState[key];
+			return nextState;
+		});
+	}, []);
+
+	const addMod = useCallback<AddMod>((type, key, value) => {
+		setMods((prevState) => ({
+			...prevState,
 			[type]: {
-				...m?.[type],
+				...prevState?.[type],
 				[key]: value
 			}
 		}));
 	}, []);
+
+	const removeMod = useCallback<RemoveMod>((type, key) => {
+		setMods((prevState) => {
+			const prevType = prevState[type];
+			if (prevType && prevType[key] !== undefined) {
+				const nextState = { ...prevState, [type]: { ...prevState[type] } };
+				const nextType = nextState[type];
+				if (nextType && nextType[key] !== undefined) {
+					delete nextType[key];
+				}
+				if (size(nextState[type]) === 0) {
+					delete nextState[type];
+				}
+				return nextState;
+			}
+			return prevState;
+		});
+	}, []);
 	const createSnackbar = useSnackbar();
 
 	const onSave = useCallback(() => {
-		editSettings(mods)
-			.then(() => {
-				if (mods.prefs && includes(Object.keys(mods.prefs), 'zimbraPrefLocale')) {
-					setOpen(true);
-				}
-				createSnackbar({
-					key: `new`,
-					replace: true,
-					type: 'info',
-					label: t('message.snackbar.settings_saved', 'Edits saved correctly'),
-					autoHideTimeout: 3000,
-					hideButton: true
+		setLocalStorageUnAppliedChanges((unAppliedPrevState) => {
+			if (size(unAppliedPrevState) > 0) {
+				setLocalStorageSettings((localStorageSettingsPrevState) => ({
+					...localStorageSettingsPrevState,
+					...unAppliedPrevState
+				}));
+				return {};
+			}
+			return unAppliedPrevState;
+		});
+		if (size(mods) > 0) {
+			editSettings(mods)
+				.then(() => {
+					if (mods.prefs && includes(Object.keys(mods.prefs), 'zimbraPrefLocale')) {
+						setOpen(true);
+					}
+					createSnackbar({
+						key: `new`,
+						replace: true,
+						type: 'info',
+						label: t('message.snackbar.settings_saved', 'Edits saved correctly'),
+						autoHideTimeout: 3000,
+						hideButton: true
+					});
+				})
+				.catch(() => {
+					createSnackbar({
+						key: `new`,
+						replace: true,
+						type: 'error',
+						label: t('snackbar.error', 'Something went wrong, please try again'),
+						autoHideTimeout: 3000,
+						hideButton: true
+					});
 				});
-			})
-			.catch(() => {
-				createSnackbar({
-					key: `new`,
-					replace: true,
-					type: 'error',
-					label: t('snackbar.error', 'Something went wrong, please try again'),
-					autoHideTimeout: 3000,
-					hideButton: true
-				});
-			});
-		setMods({});
-	}, [createSnackbar, mods, t]);
+			setMods({});
+		}
+	}, [mods, setLocalStorageSettings, createSnackbar, t]);
+
+	const scalingSettingSectionRef = useRef<ScalingSettingSectionRef>(null);
+
 	const onCancel = useCallback(() => {
 		setMods({});
-	}, []);
-	const isDirty = useMemo(() => !isEmpty(mods), [mods]);
+		if (size(localStorageUnAppliedChanges) > 0) {
+			scalingSettingSectionRef.current?.reset();
+		}
+	}, [localStorageUnAppliedChanges]);
+
+	const isDirty = useMemo(
+		() => !isEmpty(mods) || !isEmpty(localStorageUnAppliedChanges),
+		[mods, localStorageUnAppliedChanges]
+	);
+
 	const title = useMemo(() => t('settings.general.general', 'General Settings'), [t]);
 
 	return (
 		<>
 			<SettingsHeader title={title} onCancel={onCancel} onSave={onSave} isDirty={isDirty} />
 			<Container
-				background="gray5"
+				background={'gray5'}
 				mainAlignment="flex-start"
+				crossAlignment={'flex-start'}
+				gap="0.5rem"
 				padding={{ all: 'medium' }}
 				style={{ overflow: 'auto' }}
 			>
-				<AppearanceSettings settings={settings} addMod={addMod} />
+				<AppearanceSettings>
+					<ScalingSettingSection
+						ref={scalingSettingSectionRef}
+						scalingSettings={localStorageSettings}
+						addLocalStoreChange={addLocalStoreChange}
+						cleanLocalStoreChange={cleanLocalStoreChange}
+					/>
+					<DarkThemeSettingSection addMod={addMod} removeMod={removeMod} />
+				</AppearanceSettings>
 				<LanguageAndTimeZoneSettings
-					settings={settings}
+					settings={userSettings}
 					addMod={addMod}
 					open={open}
 					setOpen={setOpen}
 				/>
 
-				<OutOfOfficeSettings settings={settings} addMod={addMod} />
-				<SearchSettingsView settings={settings} addMod={addMod} />
+				<OutOfOfficeSettings settings={userSettings} addMod={addMod} />
+				<SearchSettingsView settings={userSettings} addMod={addMod} />
 				<ModuleVersionSettings />
 				<UserQuota mobileView={false} />
 				<Logout />

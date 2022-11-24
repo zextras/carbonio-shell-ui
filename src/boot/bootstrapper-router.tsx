@@ -53,7 +53,7 @@ const DefaultViewsRegister: FC<{ t: TFunction }> = ({ t }) => {
 };
 
 const BootstrapperRouter: FC = () => {
-	const { t } = useTranslation();
+	const [t] = useTranslation();
 	return (
 		<BrowserRouter basename={BASENAME}>
 			<SnackbarManager>

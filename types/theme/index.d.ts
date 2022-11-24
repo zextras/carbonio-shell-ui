@@ -4,5 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-export type ThemeExtension = (theme: any) => any;
-export type ThemeExtensionMap = Record<string, ThemeExtension>;
+import { DefaultTheme } from 'styled-components';
+
+export type ThemeExtension = (theme: DefaultTheme) => DefaultTheme;

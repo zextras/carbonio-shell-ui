@@ -145,10 +145,16 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBody
 };
 export const getSoapFetch =
 	(app: string) =>
-	<Request, Response>(api: string, body: Request, otherAccount?: string): Promise<Response> => {
+	<Request, Response>(
+		api: string,
+		body: Request,
+		otherAccount?: string,
+		signal?: AbortSignal
+	): Promise<Response> => {
 		const { zimbraVersion, account } = useAccountStore.getState();
 		const { notify, session } = useNetworkStore.getState();
 		return fetch(`/service/soap/${api}Request`, {
+			signal,
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'

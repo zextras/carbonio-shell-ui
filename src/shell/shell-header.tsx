@@ -4,30 +4,69 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import {
 	Container,
 	IconButton,
 	Padding,
 	Responsive,
 	useScreenMode,
-	Catcher,
-	Button
+	Catcher
 } from '@zextras/carbonio-design-system';
-import { times } from 'lodash';
+import styled from 'styled-components';
 import Logo from '../svg/carbonio.svg';
 import { SearchBar } from '../search/search-bar';
 import { CreationButton } from './creation-button';
 import { useAppStore } from '../store/app';
+import { useLoginConfigStore } from '../store/login/store';
+import { useDarkReaderResultValue } from '../custom-hooks/useDarkReaderResultValue';
+import { getPrefersColorSchemeDarkMedia } from '../utils/utils';
+
+const CustomImg = styled.img`
+	height: 2rem;
+`;
 
 const ShellHeader: FC<{
 	mobileNavIsOpen: boolean;
 	onMobileMenuClick: () => void;
 }> = ({ mobileNavIsOpen, onMobileMenuClick, children }) => {
+	const { carbonioWebUiAppLogo, carbonioWebUiDarkAppLogo } = useLoginConfigStore();
+
+	const darkReaderResultValue = useDarkReaderResultValue();
+
+	const [darkModeEnabled, setDarkModeEnabled] = useState(false);
+
+	useEffect(() => {
+		if (darkReaderResultValue) {
+			setDarkModeEnabled(
+				(darkReaderResultValue === 'auto' && getPrefersColorSchemeDarkMedia().matches) ||
+					darkReaderResultValue === 'enabled'
+			);
+		}
+	}, [darkReaderResultValue]);
+
+	useEffect(() => {
+		const setCallback = (event: MediaQueryListEvent): void => {
+			setDarkModeEnabled(event.matches);
+		};
+		getPrefersColorSchemeDarkMedia().addEventListener('change', setCallback);
+		return (): void => {
+			getPrefersColorSchemeDarkMedia().removeEventListener('change', setCallback);
+		};
+	}, []);
+
+	const logoSrc = useMemo(() => {
+		if (darkModeEnabled) {
+			return carbonioWebUiDarkAppLogo || carbonioWebUiAppLogo;
+		}
+		return carbonioWebUiAppLogo || carbonioWebUiDarkAppLogo;
+	}, [carbonioWebUiDarkAppLogo, carbonioWebUiAppLogo, darkModeEnabled]);
+
 	const screenMode = useScreenMode();
 	const searchEnabled = useAppStore((s) => s.views.search.length > 0);
 	return (
 		<Container
+			data-testid="MainHeaderContainer"
 			orientation="horizontal"
 			background="gray3"
 			width="fill"
@@ -46,6 +85,7 @@ const ShellHeader: FC<{
 					maxWidth="75%"
 					mainAlignment="flex-start"
 					minWidth="fit-content"
+					data-testid="HeaderMainLogoContainer"
 				>
 					<Responsive mode="mobile">
 						<Padding right="small">
@@ -53,7 +93,9 @@ const ShellHeader: FC<{
 						</Padding>
 					</Responsive>
 					<Container width="15.625rem" height="2rem" crossAlignment="flex-start">
-						<Logo height="2rem" />
+						{darkReaderResultValue && (
+							<>{logoSrc ? <CustomImg src={logoSrc} /> : <Logo height="2rem" />}</>
+						)}
 					</Container>
 					<Padding horizontal="large">
 						<CreationButton />

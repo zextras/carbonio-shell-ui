@@ -176,10 +176,10 @@
         "use_ssl": "Use uma conexão criptografada (SSL) ao acessar este servidor",
         "when_composing": "Ao escrever, responder ou encaminhar mensagens na(s) pasta(s):",
         "when_replying": "Ao responder ou encaminhar mensagens enviadas para:",
-        "folder_external_account": "Pasta: Nova Conta Externa"
+        "folder_external_account": "Pasta: Nova Conta Externa",
+        "add_inline_image": "Adicionar imagem no corpo do texto"
     },
     "timezone": {
-        "pyongyang": "{{value}} Pyongyang",
         "africa_algiers": "{{value}} África Central Ocidental",
         "africa_cairo": "{{value}} Egito",
         "africa_casablanca": "{{value}} Casablanca",

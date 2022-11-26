@@ -176,7 +176,8 @@
         "go_back": "戻る",
         "save": "保存する",
         "secondary": "セカンダリー",
-        "folder_external_account": "フォルダ: 新しい外部アカウント"
+        "folder_external_account": "フォルダ: 新しい外部アカウント",
+        "add_inline_image": "インライン画像を追加する"
     },
     "locale": {
         "label_turkish": "トルコ語- {{value}}",

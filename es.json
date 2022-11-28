@@ -176,7 +176,8 @@
         "unsaved_changes": "Tienes cambios no guardados",
         "unsaved_changes_line2": "Todos tus cambios no guardados se perderán",
         "update_view": "Actualizar vista",
-        "folder_external_account": "Carpeta: Nueva cuenta externa"
+        "folder_external_account": "Carpeta: Nueva cuenta externa",
+        "add_inline_image": "Añadir imagen inline"
     },
     "timezone": {
         "africa_cairo": "{{value}} Egipto",

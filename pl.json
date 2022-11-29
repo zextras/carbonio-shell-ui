@@ -164,7 +164,7 @@
         "add_inline_image": "Dodaj obrazek w tekście"
     },
     "board": {
-        "close_tab": "Zamknij Kartę",
+        "close_tab": "Zamknij kartę",
         "close_tabs": "Zamknij wszystkie karty",
         "enlarge": "Powiększ tablicę",
         "hide": "Ukryj okienko",
@@ -292,7 +292,7 @@
         "asia_yekaterinburg": "{{value}} Jekaterynburg (RTZ 4)",
         "asia_yerevan": "{{value}} Erywań",
         "atlantic_azores": "{{value}} Azory",
-        "atlantic_cape_verde": "{{value}} wyspy Cape Verde",
+        "atlantic_cape_verde": "{{value}} Wyspy Cape Verde",
         "atlantic_south_georgia": "{{value}} Środkowy Atlantyk",
         "australia_adelaide": "{{value}} Adelaide",
         "australia_brisbane": "{{value}} Brisbane",

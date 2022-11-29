@@ -176,7 +176,8 @@
         "set_reply_to_field": "Setzen Sie das Feld \"Antwort an\" der E-Mail-Nachricht auf:",
         "settings_sent_messages": "Einstellungen für gesendete Nachrichten",
         "unsaved_changes": "Sie haben ungespeicherte Änderungen",
-        "folder_external_account": "Ordner: Neues externes Konto"
+        "folder_external_account": "Ordner: Neues externes Konto",
+        "add_inline_image": "Eingebundenes Bild hinzufügen"
     },
     "timezone": {
         "america_anchorage": "{{value}} Alaska",

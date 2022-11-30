@@ -176,7 +176,8 @@
         "use_personas_line2": "Als u bijvoorbeeld op het werk soms e-mails verstuurt in een bepaalde rol, maak daar dan een persona voor aan.",
         "when_composing": "Bij het samenstellen, beantwoorden of doorsturen van berichten in map(pen):",
         "when_replying": "Bij het beantwoorden of doorsturen van berichten die zijn verzonden naar:",
-        "folder_external_account": "Map: Nieuwe externe account"
+        "folder_external_account": "Map: Nieuwe externe account",
+        "add_inline_image": "Inline afbeelding toevoegen"
     },
     "locale": {
         "label_russian": "Russisch - {{value}}",

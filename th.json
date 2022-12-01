@@ -176,7 +176,8 @@
         "test_settings": "ตั้งค่าการทดสอบ",
         "unsaved_changes_line2": "การเปลี่ยนแปลงที่ไม่ได้บันทึกทั้งหมดของคุณจะสูญหายไป",
         "when_composing": "เมื่อเขียน, ตอบกลับ, หรือส่งต่อข้อความในโฟลเดอร์:",
-        "folder_external_account": "โฟลเดอร์: บัญชีภายนอกใหม่"
+        "folder_external_account": "โฟลเดอร์: บัญชีภายนอกใหม่",
+        "add_inline_image": "เพิ่มรูปภาพแบบอินไลน์"
     },
     "board": {
         "close_tab": "ปิดแท็บ",
@@ -222,7 +223,6 @@
         "polish": "กำจัดทิ้งอย่างรวดเร็ว"
     },
     "timezone": {
-        "tehran": "{{value}} เตหะราน",
         "africa_algiers": "{{value}} แอฟริกากลางตะวันตก",
         "africa_cairo": "{{value}} อียิปต์",
         "america_asuncion": "{{value}} อาซุนซิออง",

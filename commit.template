@@ -1,1 +1,0 @@
-<%- htmlWebpackPlugin.options.COMMIT_ID %>

@@ -181,7 +181,8 @@
         "use_personas_line1": "使用角色以在发送邮件消息时快速变更多项设置。",
         "use_personas_line2": "例如，如果您有时候会在工作中以特定角色发送邮件，可为其创建角色。",
         "recovery_email": "恢复邮件",
-        "folder_external_account": "文件夹：新外部账户"
+        "folder_external_account": "文件夹：新外部账户",
+        "add_inline_image": "添加内联图像"
     },
     "locale": {
         "English": "英语",
@@ -218,7 +219,6 @@
         "polish": "波兰语"
     },
     "timezone": {
-        "nairobi": "{{value}} 内罗毕",
         "pacific_honolulu": "{{value}} 夏威夷",
         "pacific_midway": "{{value}} 萨摩亚",
         "pacific_tongatapu": "{{value}} 努库阿洛法",

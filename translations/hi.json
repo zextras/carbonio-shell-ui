@@ -181,7 +181,8 @@
         "use_persona": "इस शख्सियत को इस्तेमाल करें",
         "use_ssl": "इस सर्वर को एक्सेस करते समय एक इंक्रीप्टर कनेक्शन (SSL) इस्तेमाल करें",
         "when_composing": "मैसेज लिखते समय, जबाब देते समय या फोल्डर (रों) के मैसेज फॉरवर्ड करते समय:",
-        "folder_external_account": "फोल्डर: नया बाहरी अकाउंट"
+        "folder_external_account": "फोल्डर: नया बाहरी अकाउंट",
+        "add_inline_image": "इनलाइन फोटो जोड़ें"
     },
     "board": {
         "close_tab": "टैब बंद करने",
@@ -227,7 +228,6 @@
         "polish": "पोलिश"
     },
     "timezone": {
-        "magadan": "{{value}} मागाडान",
         "africa_algiers": "{{value}} पश्चिमी मध्य अफ्रीका",
         "africa_monrovia": "{{value}} मोनरोविया",
         "america_anchorage": "{{value}} अलास्का",

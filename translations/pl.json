@@ -85,7 +85,7 @@
     "label": {
         "discard_changes": "ODRZUĆ ZMIANY",
         "cancel": "Anuluj",
-        "clear_search_query": "WYCZYŚĆ SŁOWA KLUCZOWE",
+        "clear_search_query": "WYCZYŚĆ WYSZUKIWANIE",
         "language": "Język",
         "no": "Nie",
         "out_of_office": "Poza biurem",
@@ -169,7 +169,7 @@
         "add_inline_image": "Dodaj obrazek w tekście"
     },
     "board": {
-        "close_tab": "Zamknij Kartę",
+        "close_tab": "Zamknij kartę",
         "close_tabs": "Zamknij wszystkie karty",
         "enlarge": "Powiększ tablicę",
         "hide": "Ukryj okienko",
@@ -297,7 +297,7 @@
         "asia_yekaterinburg": "{{value}} Jekaterynburg (RTZ 4)",
         "asia_yerevan": "{{value}} Erywań",
         "atlantic_azores": "{{value}} Azory",
-        "atlantic_cape_verde": "{{value}} wyspy Cape Verde",
+        "atlantic_cape_verde": "{{value}} Wyspy Cape Verde",
         "atlantic_south_georgia": "{{value}} Środkowy Atlantyk",
         "australia_adelaide": "{{value}} Adelaide",
         "australia_brisbane": "{{value}} Brisbane",

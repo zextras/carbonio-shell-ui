@@ -190,7 +190,8 @@
         "when_composing": "Durante la composizione, nella risposta o nell'inoltro di messaggi nelle cartella:",
         "button": "Pulsante",
         "click_to_copy": "Seleziona per copiare",
-        "folder_external_account": "Cartella: Nuovo Account Esterno"
+        "folder_external_account": "Cartella: Nuovo Account Esterno",
+        "add_inline_image": "Aggiungi immagine inline"
     },
     "locale": {
         "English": "Inglese",
@@ -227,7 +228,6 @@
         "polish": "Polacco"
     },
     "timezone": {
-        "sri_jayawardenepura_kotte": "{{value}} Sri Jayawardenepura Kotte",
         "africa_juba": "{{value}} Juba",
         "africa_khartoum": "{{value}} Khartoum",
         "africa_windhoek": "{{value}} Namibia",

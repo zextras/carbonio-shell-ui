@@ -183,11 +183,8 @@
         "when_replying": "Ao responder ou encaminhar mensagens enviadas para:"
     },
     "timezone": {
-        "brasilia": "{{value}} Brasília",
         "egypt": "{{value}} Egito",
-        "kaliningrad_rtz_1": "{{value}} Kaliningrado (RTZ 1)",
         "pyongyang": "{{value}} Pyongyang",
-        "cayenne_fortaleza": "{{value}} Caiena, Fortaleza",
         "africa_algiers": "{{value}} África Central Ocidental",
         "africa_cairo": "{{value}} Egito",
         "africa_casablanca": "{{value}} Casablanca",

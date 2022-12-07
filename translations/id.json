@@ -181,7 +181,8 @@
         "use_personas_line2": "Misalnya, jika Anda terkadang mengirim email di peran tertentu di tempat kerja, buat persona untuk itu.",
         "use_ssl": "Gunakan koneksi terenkripsi (SSL) saat mengakses server ini",
         "when_replying": "Saat membalas atau meneruskan pesan yang dikirim ke:",
-        "folder_external_account": "Folder: Akun Eksternal Baru"
+        "folder_external_account": "Folder: Akun Eksternal Baru",
+        "add_inline_image": "Tambahkan gambar sebaris"
     },
     "locale": {
         "portuguese_brazil": "Portugis (Brasil)",
@@ -218,8 +219,6 @@
         "polish": "Polandia"
     },
     "timezone": {
-        "chita": "{{value}} Chita",
-        "mid_atlantic": "{{value}} Atlantik Tengah",
         "america_cayenne": "{{value}} Cayenne, Fortaleza",
         "america_regina": "{{value}} Saskatchewan",
         "america_santiago": "{{value}} Amerika Selatan Pasifik",

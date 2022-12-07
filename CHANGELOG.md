@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.45](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.44...v0.4.45) (2022-12-06)
+
+
+### Bug Fixes
+
+* edit roboto resource link to be non blocking ([98622a8](https://github.com/zextras/carbonio-shell-ui/commit/98622a84dd5f77bbcce19e7cffa2cbc41cc192e1)), closes [#169](https://github.com/zextras/carbonio-shell-ui/issues/169)
+
 ### [0.4.44](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.43...v0.4.44) (2022-11-24)
 
 

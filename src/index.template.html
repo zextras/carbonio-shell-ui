@@ -16,7 +16,12 @@ SPDX-License-Identifier: AGPL-3.0-only
 	<meta http-equiv="Cache-Control" content="no-cache" />
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta http-equiv="Expires" content="0" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+	<!-- connect to domain of font files -->
+	<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+	<!-- optionally increase loading priority -->
+	<link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Roboto">
+	<!-- async CSS -->
+	<link rel="stylesheet" media="print" onload="this.onload=null;this.removeAttribute('media');" href="https://fonts.googleapis.com/css?family=Roboto">
 </head>
 
 <body>

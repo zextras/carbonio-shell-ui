@@ -124,6 +124,7 @@ export type LocaleDescriptor = {
 	localName: string;
 	value: string;
 	label: string;
+	dateFnsLocale?: string;
 };
 
 export const localeList = (t: TFunction): Array<LocaleDescriptor> => [
@@ -135,7 +136,8 @@ export const localeList = (t: TFunction): Array<LocaleDescriptor> => [
 			value: '中文 (中国)',
 			defaultValue: 'Chinese (China) - {{value}}'
 		}),
-		value: 'zh_CN'
+		value: 'zh_CN',
+		dateFnsLocale: 'zh-CN'
 	},
 	{
 		id: 'nl',
@@ -149,7 +151,8 @@ export const localeList = (t: TFunction): Array<LocaleDescriptor> => [
 		name: 'English',
 		localName: t('locale.English', 'English'),
 		label: t('locale.label_english', { value: 'English', defaultValue: 'English - {{value}}' }),
-		value: 'en'
+		value: 'en',
+		dateFnsLocale: 'en-US'
 	},
 	{
 		id: 'de',
@@ -205,7 +208,8 @@ export const localeList = (t: TFunction): Array<LocaleDescriptor> => [
 			value: 'português (Brasil)',
 			defaultValue: 'Portuguese - {{value}}'
 		}),
-		value: 'pt_BR'
+		value: 'pt_BR',
+		dateFnsLocale: 'pt-BR'
 	},
 
 	{

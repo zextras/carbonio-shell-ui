@@ -9,11 +9,35 @@
 
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { DefinePlugin } = require('webpack');
+const { DefinePlugin, ContextReplacementPlugin } = require('webpack');
 const CopyPlugin = require('copy-webpack-plugin');
 const commitHash = require('child_process').execSync('git rev-parse HEAD').toString().trim();
 
 const baseStaticPath = `/static/iris/carbonio-shell-ui/${commitHash}/`;
+
+// these have to match with the ones available in date-fns/locale
+const supportedLocalesDateFns = [
+	'de',
+	'en-US',
+	'es',
+	'fr',
+	'hi',
+	'it',
+	'ja',
+	'nl',
+	'pl',
+	'pt',
+	'pt-BR',
+	'ro',
+	'ru',
+	'th',
+	'tr',
+	'vi',
+	'zh-CN'
+	/* TODO: For future languages
+	 * 'ar','bg','ca','da','en-AU','en-GB','eu','fr-CA','hr','hu','ko','ms','sl','sv','ta','uk','zh-HK','zh-TW'
+	 */
+];
 
 module.exports = (conf, pkg, options, mode) => {
 	const server = `https://${options.host}`;
@@ -48,7 +72,11 @@ module.exports = (conf, pkg, options, mode) => {
 			template: path.resolve(process.cwd(), 'commit.template'),
 			filename: 'commit',
 			COMMIT_ID: commitHash
-		})
+		}),
+		new ContextReplacementPlugin(
+			/^date-fns[/\\]locale$/,
+			new RegExp(`\\.[/\\\\](${supportedLocalesDateFns.join('|')})[/\\\\]index\\.js$`)
+		)
 	);
 	conf.devServer = {
 		port: options.port,

@@ -10,6 +10,8 @@ export type Tag = {
 	id: string;
 	name: string;
 	rgb?: string;
+	u?: number;
+	n?: number;
 };
 
 export type Tags = Record<string, Tag>;

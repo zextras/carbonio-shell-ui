@@ -130,7 +130,7 @@ const Composer: FC<ComposerProps> = ({
 						if (onFileSelect)
 							editor.ui.registry.addMenuButton('imageSelector', {
 								icon: 'gallery',
-								tooltip: 'Select Image',
+								tooltip: t('label.select_image', 'Select image'),
 								fetch: (callback: any) => {
 									const items = [
 										{

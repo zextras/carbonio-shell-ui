@@ -18,7 +18,6 @@ import 'tinymce/themes/silver';
 import 'tinymce/icons/default';
 // Editor styles
 import 'tinymce/skins/ui/oxide/skin.min.css';
-// import '../../../assets/tinymce/langs/fr_FR';
 
 // importing the plugin js.
 import 'tinymce/plugins/advlist';

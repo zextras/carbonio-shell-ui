@@ -94,6 +94,7 @@
         "save_delegate_folder": "Save a copy of sent messages to delegate’s Sent folder",
         "save_to_my_sent_folder": "Save a copy of sent messages to my Sent folder",
         "secondary": "Secondary",
+        "select_image": "Select image",
         "set_reply_to_field": "Set the \"Reply-to\" field of e-mail message to:",
         "settings_sent_messages": "Settings for Sent Messages",
         "test_settings": "Test Settings",

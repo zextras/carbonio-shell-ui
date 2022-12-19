@@ -12,7 +12,6 @@ import tinymce from 'tinymce/tinymce';
 // this 'expression' prevents webpack from stripping it, maybe there's a better way
 // eslint-disable-next-line no-unused-expressions
 tinymce;
-
 // Theme
 import 'tinymce/themes/silver';
 // Toolbar icons
@@ -46,7 +45,7 @@ import 'tinymce/plugins/wordcount';
 
 import { Editor } from '@tinymce/tinymce-react';
 import { useUserSettings } from '../account';
-import { getT } from '../i18n';
+import { getT, useI18nStore } from '../i18n';
 
 type ComposerProps = {
 	/** The callback invoked when an edit is performed into the editor. `([text, html]) => {}` */
@@ -71,7 +70,6 @@ const Composer: FC<ComposerProps> = ({
 	onFileSelect,
 	inline = false,
 	value,
-	baseAssetsUrl,
 	initialValue,
 
 	...rest
@@ -102,6 +100,7 @@ const Composer: FC<ComposerProps> = ({
 		}
 	}, []);
 	const t = getT();
+	const { locale } = useI18nStore.getState();
 	const inlineLabel = useMemo(() => t('label.add_inline_image', 'Add inline image'), [t]);
 	return (
 		<Container
@@ -124,12 +123,14 @@ const Composer: FC<ComposerProps> = ({
 				initialValue={initialValue}
 				value={value}
 				init={{
-					content_css: `${baseAssetsUrl}/tinymce/skins/content/default/content.css`,
+					content_css: `${BASE_PATH}/tinymce/skins/content/default/content.css`,
+					language_url: `${BASE_PATH}tinymce/langs/${locale}.js`,
+					language: locale,
 					setup: (editor: any): void => {
 						if (onFileSelect)
 							editor.ui.registry.addMenuButton('imageSelector', {
 								icon: 'gallery',
-								tooltip: 'Select Image',
+								tooltip: t('label.select_image', 'Select image'),
 								fetch: (callback: any) => {
 									const items = [
 										{

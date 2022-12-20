@@ -61,7 +61,6 @@ type SearchLocalStorage = Array<{
 	id: string;
 }>;
 export const SearchBar: FC = () => {
-	const [searchIsEnabled, setSearchIsEnabled] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const t = getT();
 	const [storedValue, setStoredValue] = useLocalStorage<SearchLocalStorage>(
@@ -72,12 +71,8 @@ export const SearchBar: FC = () => {
 	const history = useHistory();
 	const { updateQuery, module, query, searchDisabled, setSearchDisabled, tooltip } =
 		useSearchStore();
-	// const [moduleSelection, setModuleSelection] = useState<{
-	// 	value: string;
-	// 	label: string;
-	// }>();
+
 	const [isTyping, setIsTyping] = useState(false);
-	// const [changedBySearchBar, setChangedBySearchBar] = useState(false);
 
 	const [options, setOptions] = useState<Array<{ id: string; label: string; hasAvatar: false }>>(
 		[]
@@ -87,14 +82,12 @@ export const SearchBar: FC = () => {
 
 	const [inputState, setInputState] = useState(query);
 	const showClear = useMemo(
-		() =>
-			inputState.length > 0 ||
-			(inputRef.current?.textContent && inputRef.current?.textContent?.length > 0),
+		() => inputState.length > 0 || (inputRef.current?.value && inputRef.current?.value?.length > 0),
 		[inputState.length]
 	);
 	const clearSearch = useCallback((): void => {
 		if (inputRef.current) {
-			inputRef.current.innerText = '';
+			inputRef.current.value = '';
 			inputRef.current?.focus();
 		}
 		setIsTyping(false);
@@ -107,7 +100,7 @@ export const SearchBar: FC = () => {
 	const onSearch = useCallback(() => {
 		updateQuery((currentQuery) => {
 			const ref = inputRef?.current;
-			if (ref) ref.innerText = '';
+			if (ref) ref.value = '';
 			if (inputTyped.length > 0) {
 				const newInputState = [
 					...inputState,
@@ -153,11 +146,7 @@ export const SearchBar: FC = () => {
 				)
 			);
 		});
-		// if (activeRoute?.app !== SEARCH_APP_ID) {
 		history.push(`/${SEARCH_APP_ID}/${module}`);
-		// }
-		setSearchIsEnabled(false);
-		// setChangedBySearchBar(true);
 	}, [updateQuery, history, module, inputTyped, inputState]);
 
 	const appSuggestions = useMemo<Array<QueryChip & { hasAvatar: false }>>(
@@ -218,22 +207,21 @@ export const SearchBar: FC = () => {
 			// 	updateOptions(inputRef.current, newQuery);
 			// }
 			setInputState(newQuery);
-			setSearchIsEnabled(true);
 		},
 		[appSuggestions, module, setStoredValue]
 	);
 
 	const onInputType = useCallback(
 		(ev) => {
-			if (ev.target.textContent === '') {
+			if (ev.textContent === '') {
 				setIsTyping(false);
-			} else if (!isTyping) {
+			} else {
 				setIsTyping(true);
 			}
-			setInputTyped(ev.target.textContent);
-			updateOptions(ev.target, query);
+			setInputTyped(ev.textContent);
+			updateOptions(ev, query);
 		},
-		[query, updateOptions, isTyping]
+		[query, updateOptions]
 	);
 
 	useEffect(() => {
@@ -252,6 +240,7 @@ export const SearchBar: FC = () => {
 	const addFocus = useCallback(() => setInputHasFocus(true), []);
 	const removeFocus = useCallback(() => setInputHasFocus(false), []);
 
+	// disabled for now, awaiting refactor of the search bar
 	// useEffect(() => {
 	// 	const handler = (event: KeyboardEvent): unknown =>
 	// 		handleKeyboardShortcuts({
@@ -294,15 +283,6 @@ export const SearchBar: FC = () => {
 		}
 	}, [onSearch, triggerSearch]);
 
-	// useEffect(() => {
-	// 	setChangedBySearchBar((value) => {
-	// 		if (!value) {
-	// 			setInputState(filter(query, (q) => !q.isQueryFilter));
-	// 		}
-	// 		return false;
-	// 	});
-	// }, [query]);
-
 	const disableOptions = useMemo(() => !(options.length > 0) || isTyping, [options, isTyping]);
 
 	const placeholder = useMemo(
@@ -322,8 +302,14 @@ export const SearchBar: FC = () => {
 				: t('search.already_clear', 'Search input is already clear'),
 		[showClear, t, isTyping]
 	);
+
+	const searchButtonsAreDisabled = useMemo(
+		() => (isTyping ? false : !showClear),
+		[showClear, isTyping]
+	);
+
 	const searchBtnTooltipLabel = useMemo(() => {
-		if (searchIsEnabled && inputState.length > 0) {
+		if (!searchButtonsAreDisabled && inputState.length > 0) {
 			return t('search.start', 'Start search');
 		}
 		if (inputHasFocus) {
@@ -336,7 +322,7 @@ export const SearchBar: FC = () => {
 			return t('label.edit_to_start_search', 'Edit your search to start a new one');
 		}
 		return t('search.type_to_start_search', 'Type some keywords to start a search');
-	}, [t, searchIsEnabled, inputState.length, inputHasFocus, query.length]);
+	}, [searchButtonsAreDisabled, inputState.length, inputHasFocus, query.length, t]);
 
 	const onChipAdd = useCallback(
 		(newChip: string | unknown): ChipItem => {
@@ -362,8 +348,6 @@ export const SearchBar: FC = () => {
 	useEffect(() => {
 		setInputState(map(query, (q) => ({ ...q, disabled: searchDisabled })));
 	}, [searchDisabled, query]);
-
-	const disableClearButton = useMemo(() => (isTyping ? false : !showClear), [showClear, isTyping]);
 
 	return (
 		<Container
@@ -414,7 +398,7 @@ export const SearchBar: FC = () => {
 						</Container>
 					</Container>
 
-					{!disableClearButton && (
+					{!searchButtonsAreDisabled && (
 						<Padding left="small">
 							<Tooltip label={clearButtonPlaceholder} placement="bottom">
 								<OutlinedIconButton
@@ -423,7 +407,7 @@ export const SearchBar: FC = () => {
 										iconSize: 'large',
 										paddingSize: 'small'
 									}}
-									disabled={disableClearButton}
+									disabled={searchButtonsAreDisabled}
 									icon="BackspaceOutline"
 									iconColor="primary"
 									onClick={clearSearch}
@@ -446,7 +430,7 @@ export const SearchBar: FC = () => {
 									paddingSize: 'small'
 								}}
 								icon="Search"
-								disabled={!(searchIsEnabled && inputState.length > 0)}
+								disabled={searchButtonsAreDisabled}
 								backgroundColor="primary"
 								iconColor="gray6"
 								onClick={onSearch}

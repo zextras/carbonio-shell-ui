@@ -12,7 +12,7 @@ import { EMAIL_VALIDATION_REGEX } from '../../../constants';
 
 type PersonaUseSectionProps = {
 	t: TFunction;
-	items: IdentityProps;
+	identity: IdentityProps;
 	updateIdentities: (modifyList: {
 		id: string | number;
 		key: string;
@@ -22,7 +22,7 @@ type PersonaUseSectionProps = {
 
 const PersonaUseSection = ({
 	t,
-	items,
+	identity,
 	updateIdentities
 }: PersonaUseSectionProps): ReactElement => {
 	const title = useMemo(() => t('label.use_persona', 'Use this persona'), [t]);
@@ -33,20 +33,20 @@ const PersonaUseSection = ({
 	// const onClose = useCallback(() => setOpen(false), []);
 
 	const [whenInFoldersEnabled, setWhenInFoldersEnabled] = useState(
-		items.whenInFoldersEnabled === 'TRUE'
+		identity.whenInFoldersEnabled === 'TRUE'
 	);
-	const [whenSentToEnabled, setWhenSentToEnabled] = useState(items.whenSentToEnabled === 'TRUE');
-	const [whenSentToAddresses, setWhenSentToAddresses] = useState(items.whenSentToAddresses);
+	const [whenSentToEnabled, setWhenSentToEnabled] = useState(identity.whenSentToEnabled === 'TRUE');
+	const [whenSentToAddresses, setWhenSentToAddresses] = useState(identity.whenSentToAddresses);
 
 	useEffect(() => {
-		setWhenSentToEnabled(items.whenSentToEnabled === 'TRUE');
-	}, [items.whenSentToEnabled]);
+		setWhenSentToEnabled(identity.whenSentToEnabled === 'TRUE');
+	}, [identity.whenSentToEnabled]);
 	useEffect(() => {
-		setWhenSentToAddresses(items.whenSentToAddresses);
-	}, [items.whenSentToAddresses]);
+		setWhenSentToAddresses(identity.whenSentToAddresses);
+	}, [identity.whenSentToAddresses]);
 	useEffect(() => {
-		setWhenInFoldersEnabled(items.whenInFoldersEnabled === 'TRUE');
-	}, [items.whenInFoldersEnabled]);
+		setWhenInFoldersEnabled(identity.whenInFoldersEnabled === 'TRUE');
+	}, [identity.whenInFoldersEnabled]);
 
 	const whenSentToAddressesLabel = useMemo(
 		() => (whenSentToAddresses ? '' : t('label.recipents', 'Recipients')),
@@ -55,12 +55,12 @@ const PersonaUseSection = ({
 	const onClickWhenSentToEnabled = useCallback(() => {
 		setWhenSentToEnabled(!whenSentToEnabled);
 		const modifyProp = {
-			id: items.identityId,
+			id: identity.identityId,
 			key: 'zimbraPrefWhenSentToEnabled',
 			value: whenSentToEnabled ? 'FALSE' : 'TRUE'
 		};
 		updateIdentities(modifyProp);
-	}, [items.identityId, updateIdentities, whenSentToEnabled]);
+	}, [identity.identityId, updateIdentities, whenSentToEnabled]);
 
 	const isValidEmail = useMemo(
 		() => whenSentToEnabled && !EMAIL_VALIDATION_REGEX.test(whenSentToAddresses || ''),
@@ -71,14 +71,14 @@ const PersonaUseSection = ({
 		(value: string) => {
 			setWhenSentToAddresses(value);
 			const modifyProp = {
-				id: items.identityId,
+				id: identity.identityId,
 				key: 'zimbraPrefWhenSentToAddresses',
 				value
 			};
 
 			updateIdentities(modifyProp);
 		},
-		[updateIdentities, items.identityId]
+		[updateIdentities, identity.identityId]
 	);
 
 	// this function is work in progress for when the mails sync is implemented

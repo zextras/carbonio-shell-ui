@@ -11,7 +11,7 @@ import { AddMod, DarkReaderPropValues, isDarkReaderPropValues, RemoveMod } from 
 import { ThemeCallbacksContext } from '../../../boot/theme-provider';
 import { DARK_READER_PROP_KEY, SHELL_APP_ID } from '../../../constants';
 import { getT } from '../../../store/i18n';
-import { useDarkReaderResultValue } from '../../../custom-hooks/useDarkReaderResultValue';
+import { useDarkReaderResultValue } from '../../../dark-mode/use-dark-reader-result-value';
 
 const DarkThemeSettingSection: FC<{
 	addMod: AddMod;

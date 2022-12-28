@@ -26,7 +26,7 @@ import { BoardContainer } from './boards/board-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
-import { useDarkReaderResultValue } from '../custom-hooks/useDarkReaderResultValue';
+import { useDarkReaderResultValue } from '../dark-mode/use-dark-reader-result-value';
 
 const Background = styled.div`
 	background: ${({ theme }): string => theme.palette.gray6.regular};

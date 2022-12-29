@@ -14,6 +14,7 @@ import {
 	Row,
 	Select,
 	SelectItem,
+	SelectProps,
 	Text
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
@@ -108,8 +109,12 @@ const SettingsSentMessages = ({
 		[fromAddress, t]
 	);
 
-	const onChangeFromAddress = useCallback(
-		(newAddress: string) => {
+	const onChangeFromAddress = useCallback<SelectProps['onChange']>(
+		(newAddress) => {
+			if (!newAddress || typeof newAddress !== 'string') {
+				return;
+			}
+
 			if (fromAddress?.value === newAddress) {
 				return;
 			}
@@ -218,13 +223,7 @@ const SettingsSentMessages = ({
 							items={fromAddressArray}
 							showCheckbox={false}
 							background="gray5"
-							onChange={(value): void => {
-								if (!value || typeof value !== 'string') {
-									return;
-								}
-
-								onChangeFromAddress(value);
-							}}
+							onChange={onChangeFromAddress}
 						/>
 					</Row>
 				)}

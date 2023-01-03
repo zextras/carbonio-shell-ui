@@ -21,15 +21,19 @@ export function useGetPrimaryColor(): string | undefined {
 
 	const primaryColor = useMemo(() => {
 		if (darkReaderStatus !== undefined) {
-			if (darkModeEnabled && carbonioWebUiDarkPrimaryColor) {
-				return carbonioWebUiDarkPrimaryColor;
-			}
-			if (carbonioWebUiPrimaryColor) {
-				return carbonioWebUiPrimaryColor;
+			if (carbonioWebUiPrimaryColor || carbonioWebUiDarkPrimaryColor) {
+				if (darkModeEnabled) {
+					return carbonioWebUiDarkPrimaryColor || carbonioWebUiPrimaryColor;
+				}
+				return carbonioWebUiPrimaryColor || carbonioWebUiDarkPrimaryColor;
 			}
 		}
 		if (localStorageLastPrimary && size(localStorageLastPrimary) > 0) {
-			return (darkModeEnabled && localStorageLastPrimary.dark) || localStorageLastPrimary.light;
+			return (
+				(darkModeEnabled && (localStorageLastPrimary.dark || localStorageLastPrimary.light)) ||
+				localStorageLastPrimary.light ||
+				localStorageLastPrimary.dark
+			);
 		}
 		if (theme) {
 			return theme.palette.primary.regular;

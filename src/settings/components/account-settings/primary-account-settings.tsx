@@ -7,11 +7,12 @@
 import React, { useMemo, useCallback, ReactElement, useState, useEffect } from 'react';
 import { Container, Text, Padding, Input, Row } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import { IdentityProps } from '../../../../types';
+import { Account, IdentityProps } from '../../../../types';
 
 interface PrimaryAccountSettingsProps {
 	t: TFunction;
-	items: IdentityProps;
+	account: Account;
+	identity: IdentityProps;
 	updateIdentities: (modifyList: {
 		id: string | number;
 		key: string;
@@ -21,17 +22,17 @@ interface PrimaryAccountSettingsProps {
 
 const PrimaryAccountSettings = ({
 	t,
-	items,
+	account,
+	identity,
 	updateIdentities
 }: PrimaryAccountSettingsProps): ReactElement => {
-	const emailValue = useMemo(() => items?.fromAddress, [items]);
 	const emailLabel = useMemo(
-		() => (emailValue ? '' : t('label.email_address', 'E-mail address')),
-		[emailValue, t]
+		() => (account.name ? '' : t('label.email_address', 'E-mail address')),
+		[account.name, t]
 	);
-	const [accountNameValue, setAccountNameValue] = useState(items?.identityName);
+	const [accountNameValue, setAccountNameValue] = useState(identity?.identityName);
 
-	useEffect(() => setAccountNameValue(items.identityName), [items.identityName]);
+	useEffect(() => setAccountNameValue(identity.identityName), [identity.identityName]);
 	const accountLabel = useMemo(
 		() => (accountNameValue ? '' : t('label.account_name', 'Account Name')),
 		[accountNameValue, t]
@@ -43,14 +44,14 @@ const PrimaryAccountSettings = ({
 			setAccountNameValue(value);
 
 			const modifyProp = {
-				id: items.identityId,
+				id: identity.identityId,
 				key: 'zimbraPrefIdentityName',
 				value
 			};
 
 			updateIdentities(modifyProp);
 		},
-		[updateIdentities, items.identityId]
+		[updateIdentities, identity.identityId]
 	);
 
 	return (
@@ -75,7 +76,7 @@ const PrimaryAccountSettings = ({
 				mainAlignment="flex-start"
 			>
 				<Row width="50%" padding={{ right: 'small' }}>
-					<Input label={emailLabel} value={emailValue || ' '} onChange={onChangeDisabled} />
+					<Input label={emailLabel} value={account.name || ' '} onChange={onChangeDisabled} />
 				</Row>
 				<Row width="50%">
 					<Input

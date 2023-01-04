@@ -19,10 +19,11 @@ import {
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
 import { map, filter, max, noop } from 'lodash';
-import { IdentityProps, CreateIdentityProps } from '../../../../types';
+import { IdentityProps, CreateIdentityProps, Account } from '../../../../types';
 
 type AccountsListProps = {
 	t: TFunction;
+	account: Account;
 	identities: IdentityProps[];
 	setIdentities: (identities: IdentityProps[]) => void;
 	selectedIdentityId: number;
@@ -33,6 +34,7 @@ type AccountsListProps = {
 
 const AccountsList = ({
 	t,
+	account,
 	selectedIdentityId,
 	identities,
 	setIdentities,
@@ -64,7 +66,7 @@ const AccountsList = ({
 						</Padding>
 						<Padding right="small">
 							<Text weight="regular" size="small" color="secondary">
-								({item.fromAddress})
+								({item.flgType === 'primary' ? account.name : item.fromAddress})
 							</Text>
 						</Padding>
 					</Container>
@@ -104,6 +106,7 @@ const AccountsList = ({
 		const newPersonaName = `New Persona ${newPersonaNextNumber || 1}`;
 		identities.push({
 			id: `${identities.length}`,
+			flgType: 'persona',
 			type: t('label.persona', 'Persona'),
 			identityId: createListrequestId,
 			fromAddress: identities[0]?.fromAddress,
@@ -249,7 +252,7 @@ const AccountsList = ({
 					onClick={(): void => onDelete()}
 					color="error"
 					type="outlined"
-					disabled={identities[selectedIdentityId]?.type === t('label.primary', 'Primary')}
+					disabled={identities[selectedIdentityId]?.flgType === 'primary'}
 				/>
 			</Row>
 			<Padding bottom="large" />

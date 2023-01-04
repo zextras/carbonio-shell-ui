@@ -7,12 +7,22 @@
 import React, { useCallback, useMemo, useState, useEffect, ReactElement } from 'react';
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import { TFunction } from 'react-i18next';
-import { map, includes, findIndex, reduce, find, replace, lowerFirst, isEmpty } from 'lodash';
+import {
+	map,
+	includes,
+	findIndex,
+	reduce,
+	find,
+	replace,
+	lowerFirst,
+	isEmpty,
+	uniq,
+	isArray
+} from 'lodash';
 import { useUserSettings } from '../store/account/hooks';
 import { editSettings } from '../network/edit-settings';
 import { SHELL_APP_ID } from '../constants';
-import { Mods, IdentityProps, CreateIdentityProps } from '../../types';
-import { useAccountStore } from '../store/account/store';
+import { Mods, IdentityProps, CreateIdentityProps, Account, AccountSettings } from '../../types';
 import AccountsList from './components/account-settings/accounts-list';
 import PrimaryAccountSettings from './components/account-settings/primary-account-settings';
 import SettingsSentMessages from './components/account-settings/settings-sent-messages';
@@ -36,19 +46,71 @@ type AddModProps = {
 	createList?: { prefs: CreateIdentityProps }[];
 };
 type AccountSettingsProps = {
+	account: Account;
 	identitiesDefault: IdentityProps[];
 	t: TFunction;
 };
 
 type UserRightsProps = { email: string; right: string };
-export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps): ReactElement => {
+
+/**
+ * Compose a unique list of all identities' email addresses
+ *
+ * The list is composed of:
+ * - the email address of the current account
+ * - the email addresses of all the shared accounts (taken from the rights infos)
+ * - all the aliases
+ *
+ * @param account
+ * @param settings
+ *
+ * @returns a list of unique email addresses
+ */
+const getAvailableEmailAddresses = (account: Account, settings: AccountSettings): string[] => {
+	const result: string[] = [];
+
+	// Adds the email address of the primary account
+	result.push(account.name);
+
+	// Adds the email addresses of all the shared accounts
+	if (account.rights?.targets) {
+		account.rights?.targets.forEach((target) => {
+			if (target.right === 'sendAs' && target.target) {
+				target.target.forEach((user) => {
+					if (user.type === 'account' && user.email) {
+						user.email.forEach((email) => {
+							result.push(email.addr);
+						});
+					}
+				});
+			}
+		});
+	}
+
+	// Adds all the aliases
+	if (settings.attrs.zimbraMailAlias) {
+		if (isArray(settings.attrs.zimbraMailAlias)) {
+			result.push(...settings.attrs.zimbraMailAlias);
+		} else {
+			result.push(String(settings.attrs.zimbraMailAlias));
+		}
+	}
+
+	return uniq(result);
+};
+
+export const AccountsSettings = ({
+	account,
+	identitiesDefault,
+	t
+}: AccountSettingsProps): ReactElement => {
 	const [mods, setMods] = useState<Mods>({});
 	const [activeDelegateView, setActiveDelegateView] = useState('0');
 	const [selectedIdentityId, setSelectedIdentityId] = useState(0);
 	const [identities, setIdentities] = useState<IdentityProps[]>(identitiesDefault);
 	const [delegates, setDelegates] = useState<DelegateType[]>([]);
-
-	const maxIdentities = useUserSettings().attrs.zimbraIdentityMaxNumEntries;
+	const settings = useUserSettings();
+	const maxIdentities = settings.attrs.zimbraIdentityMaxNumEntries;
 	const addMod = useCallback(
 		(arg: AddModProps) => {
 			const { type, modifyProp, deleteList, createList } = arg;
@@ -245,6 +307,11 @@ export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps)
 	const onCancel = useCallback(() => setMods({}), []);
 	const title: string = t('label.accounts', 'Accounts');
 	const isDirty = useMemo(() => !isEmpty(mods), [mods]);
+	const availableEmailAddresses = useMemo(
+		() => getAvailableEmailAddresses(account, settings),
+		[account, settings]
+	);
+
 	return (
 		<>
 			<SettingsHeader onSave={onSave} onCancel={onCancel} isDirty={isDirty} title={title} />
@@ -257,6 +324,7 @@ export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps)
 			>
 				<AccountsList
 					t={t}
+					account={account}
 					identities={identities}
 					setIdentities={setIdentities}
 					selectedIdentityId={selectedIdentityId}
@@ -264,18 +332,20 @@ export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps)
 					deleteIdentities={deleteIdentities}
 					createIdentities={createIdentities}
 				/>
-				{identities[selectedIdentityId]?.type === t('label.primary', 'Primary') && (
+				{identities[selectedIdentityId]?.flgType === 'primary' && (
 					<>
 						<PrimaryAccountSettings
 							t={t}
-							items={identities[0]}
+							account={account}
+							identity={identities[0]}
 							updateIdentities={updateIdentities}
 						/>
 						<SettingsSentMessages
 							t={t}
-							items={identities[selectedIdentityId]}
+							identity={identities[selectedIdentityId]}
 							isExternalAccount={false}
 							updateIdentities={updateIdentities}
+							availableEmailAddresses={availableEmailAddresses}
 						/>
 						{/* <PasswordRecoverySettings
 							t={t}
@@ -290,7 +360,7 @@ export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps)
 						/>
 					</>
 				)}
-				{identities[selectedIdentityId]?.type === t('label.persona', 'Persona') && (
+				{identities[selectedIdentityId]?.flgType === 'persona' && (
 					<>
 						<PersonaSettings
 							t={t}
@@ -299,18 +369,19 @@ export const AccountsSettings = ({ identitiesDefault, t }: AccountSettingsProps)
 						/>
 						<SettingsSentMessages
 							t={t}
-							items={identities[selectedIdentityId]}
+							identity={identities[selectedIdentityId]}
 							isExternalAccount={false}
 							updateIdentities={updateIdentities}
+							availableEmailAddresses={availableEmailAddresses}
 						/>
 						<PersonaUseSection
 							t={t}
-							items={identities[selectedIdentityId]}
+							identity={identities[selectedIdentityId]}
 							updateIdentities={updateIdentities}
 						/>
 					</>
 				)}
-				{includes(['IMAP', 'POP'], identities[selectedIdentityId]?.type) && (
+				{includes(['IMAP', 'POP'], identities[selectedIdentityId]?.flgType) && (
 					<>
 						{/* <ExternalAccount t={t} items={identities} />
 						<AdvancedSettings t={t} items={identities} />

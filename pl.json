@@ -19,6 +19,11 @@
         "clear": "Wyszyść pole wyszukiwania"
     },
     "settings": {
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "Pchnąć w tę łódź jeża lub ośm skrzyń fig."
+            }
+        },
         "search_settings": {
             "labels": {
                 "include_search_in_shared_folder": "Uwzględnij udostępniony folder w wynikach wyszukiwań",

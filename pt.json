@@ -1,6 +1,11 @@
 {
     "settings": {
         "app": "Configurações",
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "A rápida raposa castanha salta por cima do cão lento."
+            }
+        },
         "button": {
             "primary": "Salvar",
             "confirm": "Confirmar"

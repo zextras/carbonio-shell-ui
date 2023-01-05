@@ -12,6 +12,11 @@
         "unable_to_parse_query": "No se puede completar la búsqueda, límpiala y vuelve a intentarlo"
     },
     "settings": {
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "El veloz murciélago hindú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás del palenque de paja."
+            }
+        },
         "out_of_office": {
             "labels": {
                 "start_date": "Fecha de inicio",

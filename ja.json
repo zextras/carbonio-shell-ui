@@ -1,5 +1,10 @@
 {
     "settings": {
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "いろはにほへと ちりぬるを わかよたれそ つねならむ うゐのおくやま けふこえて あさきゆめみし ゑひもせす"
+            }
+        },
         "out_of_office": {
             "labels": {
                 "start_date": "開始日",

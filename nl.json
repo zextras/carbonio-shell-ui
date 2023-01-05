@@ -13,6 +13,11 @@
         "type_or_choose_suggestion": "Type of kies enkele trefwoorden om een zoekopdracht te starten"
     },
     "settings": {
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "Pa’s wijze lynx bezag vroom het fikse aquaduct."
+            }
+        },
         "out_of_office": {
             "labels": {
                 "end_date": "Einddatum",

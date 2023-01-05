@@ -14,6 +14,11 @@
     },
     "settings": {
         "app": "Einstellungen",
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "Zwölf Boxkämpfer jagen Victor quer über den großen Sylter Deich."
+            }
+        },
         "button": {
             "primary": "Speichern",
             "confirm": "Bestätigen"

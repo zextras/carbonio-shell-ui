@@ -94,6 +94,7 @@
         "save_delegate_folder": "Save a copy of sent messages to delegate’s Sent folder",
         "save_to_my_sent_folder": "Save a copy of sent messages to my Sent folder",
         "secondary": "Secondary",
+        "select_image": "Select image",
         "set_reply_to_field": "Set the \"Reply-to\" field of e-mail message to:",
         "settings_sent_messages": "Settings for Sent Messages",
         "test_settings": "Test Settings",
@@ -182,6 +183,23 @@
     "settings": {
         "accounts": "Accounts",
         "app": "Settings",
+        "appearance": {
+            "labels": {
+                "a": "A",
+                "choose_size_auto": "Automatically resize the text size depending on the device",
+                "choose_size_description": "Choose Type Size and Styles for Carbonio Environment",
+                "choose_size_pangram": "The quick brown fox jumps over the lazy dog.",
+                "decrease": "Decrease size",
+                "decrease_disabled": "Minimum size reached",
+                "increase": "Increase size",
+                "increase_disabled": "Maximum size reached"
+            },
+            "option_l": "Large",
+            "option_m": "Medium",
+            "option_s": "Small",
+            "option_xl": "Extralarge",
+            "option_xs": "Extrasmall"
+        },
         "button": {
             "confirm": "Confirm",
             "primary": "Save"
@@ -190,6 +208,7 @@
         "general": {
             "account": "Account",
             "account_logout": "Logout",
+            "appearance": "Appearance",
             "dark_mode": "Dark Mode",
             "general": "General Settings",
             "theme_auto": "Auto",

@@ -61,11 +61,16 @@ export type AccountSettings = {
 	props: Array<ZimletProp>;
 };
 
+export type AccountRightTargetEmail = {
+	addr: string;
+};
+
 export type AccountRightTarget = {
 	d: string;
 	id: string;
 	name: string;
 	type: string;
+	email: Array<AccountRightTargetEmail>;
 };
 
 export type AccountRightName =

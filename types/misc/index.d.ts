@@ -86,6 +86,13 @@ export type AccountProps = {
 
 export type IdentityProps = {
 	id: string;
+	/**
+	 * Type of the identity
+	 */
+	flgType: 'primary' | 'persona' | 'IMAP' | 'POP';
+	/**
+	 * Localized description of the type of identity
+	 */
 	type: string;
 	identityId: string | number;
 	fromAddress?: string;

@@ -12,17 +12,17 @@
         },
         "out_of_office": {
             "labels": {
-                "start_date": "Data de inicio",
-                "end_date": "Data Final",
-                "all_day": "Todo o Dia:",
-                "auto_reply_message": "Mensagem de Resposta Automática:",
-                "auto_reply_message_external": "Mensagem de Resposta Automática para Remetentes Externos:",
-                "create_appointment": "Criar Compromisso:",
-                "end_time": "Hota Final:",
-                "external_senders": "Remetentes Externos",
-                "out_of_office_status": "Status Fora do Escritório:",
+                "start_date": "Data de início",
+                "end_date": "Data de fim",
+                "all_day": "Todo o dia:",
+                "auto_reply_message": "Mensagem de resposta automática:",
+                "auto_reply_message_external": "Mensagem de resposta automática para remetentes externos:",
+                "create_appointment": "Criar compromisso:",
+                "end_time": "Hora de fim:",
+                "external_senders": "Remetentes externos",
+                "out_of_office_status": "Status da resposta automática:",
                 "send_auto_reply_period": "Enviar respostas automáticas durante o seguinte período:",
-                "start_time": "Hora de Início:"
+                "start_time": "Hora de início:"
             },
             "status": {
                 "busy": "Ocupado"
@@ -32,34 +32,34 @@
                 "do_not_send_to_external": "Não enviar mensagens de resposta automática a um remetente externo",
                 "send_standard_auto_reply": "Enviar mensagem de resposta automática padrão",
                 "send_custom_in_organisation": "Enviar mensagem personalizada a quem não faz parte da minha organização",
-                "send_custom_not_in_organisation": "Enviar mensagem personalizada a quem não faz parte da minha organização ou agenda de endereços"
+                "send_custom_not_in_organisation": "Enviar mensagem personalizada a quem não faz parte da minha organização ou não está no meu livro de endereços"
             },
             "headings": {
                 "create_appointment": "Compromisso do Calendário",
-                "settings_label": "Configurações para Fora do Escritório",
-                "time_period": "Período de Tempo"
+                "settings_label": "Resposta automática",
+                "time_period": "Período"
             },
             "send_auto_replies": "Enviar mensagens automáticas"
         },
         "general": {
             "account": "Conta",
-            "account_logout": "Terminar sessão",
+            "account_logout": "Encerrar sessão",
             "theme_disabled": "Desabilitado",
             "theme_enabled": "Habilitado",
-            "general": "Configurações Gerais",
+            "general": "Configurações gerais",
             "theme_auto": "Auto",
-            "theme_options": "Opções de Tema",
-            "dark_mode": "Modo Noturno"
+            "theme_options": "Opções de tema",
+            "dark_mode": "Modo escuro"
         },
         "general_tab": "Geral",
-        "timezone_and_language": "Fuso Horário e Idioma",
+        "timezone_and_language": "Fuso horário e idioma",
         "accounts": "Contas",
         "choose": "Escolher",
         "search_settings": {
             "labels": {
-                "include_search_in_shared_folder": "Incluir Pasta Compartilhada nas buscas",
-                "include_search_in_spam_folder": "Incluir Pasta de Spam nas buscas",
-                "include_search_in_trash_folder": "Incluir a Pasta de Lixeira nas buscas"
+                "include_search_in_shared_folder": "Incluir pastas compartilhadas nas buscas",
+                "include_search_in_spam_folder": "Incluir a pasta Spam nas buscas",
+                "include_search_in_trash_folder": "Incluir a pasta Lixeira nas buscas"
             }
         }
     },
@@ -67,13 +67,13 @@
     "search": {
         "app": "Buscar",
         "module": "Módulo",
-        "active_input_label": "Separe suas palavras-chave com um vírgula ou pressionando TAB",
+        "active_input_label": "Separe as palavras-chave com um vírgula ou pressionando TAB",
         "clear": "Limpar caixa de pesquisa",
         "idle_input_label": "Buscar em {{module}}",
         "start": "Iniciar busca",
-        "already_clear": "Caixa de pesquisa está vazia",
-        "type_to_start_search": "Digite algumas palavras-chave para fazer uma pesquisa",
-        "type_or_choose_suggestion": "Digite ou escolhe algumas palavras-chave para iniciar uma busca",
+        "already_clear": "A caixa de pesquisa está vazia",
+        "type_to_start_search": "Digite as palavras-chave para iniciar a busca",
+        "type_or_choose_suggestion": "Digite as palavras-chave para iniciar a busca",
         "unable_to_parse_query": "Não foi possível completar a busca, limpe-a e tente novamente"
     },
     "message": {
@@ -81,14 +81,14 @@
             "settings_saved": "Edições salvas corretamente",
             "identities_quota_exceeded": "A identidade não pode ser criada porque você excedeu sua cota de identidades"
         },
-        "reload": "\tGostaria de recarregar o aplicativo agora para exibir um novo idioma?\n(Caso contrário, o novo idioma aparecerá da próxima vez que você se conectar.)"
+        "reload": "\tGostaria de recarregar o aplicativo agora para exibir o novo idioma?\n(Caso contrário, o novo idioma aparecerá a próxima vez que você fizer login.)"
     },
     "module": {
         "app": {
             "version": "Versões do aplicativo"
         }
     },
-    "new_tab": "Nova Aba",
+    "new_tab": "Nova aba",
     "user_quota": {
         "limited": "Você utilizou {{quota}}% do espaço disponível",
         "unlimited": "Você possui espaço ilimitado disponível",
@@ -102,17 +102,17 @@
         "language": "Idioma",
         "cancel": "Cancelar",
         "edit_to_start_search": "Edite para fazer uma nova pesquisa",
-        "out_of_office": "Fora do Escritório",
+        "out_of_office": "Fora do escritório",
         "no": "Não",
         "clear_search_query": "LIMPAR BUSCA",
         "discard_changes": "DESCARTAR MODIFICAÇÕES",
         "reload": "Recarregar",
-        "time_zone": "Fuso Horário",
+        "time_zone": "Fuso horário",
         "accounts": "Contas",
         "address": "Endereço",
         "email_address": "Endereço de e-mail",
         "filter_folders": "Filtrar pastas",
-        "logout": "Terminar sessão",
+        "logout": "Encerrar sessão",
         "new_folder": "Nova pasta",
         "save": "Salvar",
         "secondary": "Secundário",
@@ -127,12 +127,12 @@
         "primary": "Primário",
         "remove": "remover",
         "account_menu": "Menu da conta",
-        "account_name": "Nome da Conta",
-        "account_type": "Tipo de Conta",
-        "choose_folder": "Escolher Pasta",
+        "account_name": "Nome da conta",
+        "account_type": "Tipo de conta",
+        "choose_folder": "Escolher pasta",
         "delegates": "Delegados",
         "add_persona": "Adicionar persona",
-        "account_username": "Nome do Usuário da Conta",
+        "account_username": "Nome de usuário da conta",
         "accounts_list": "Lista de contas",
         "add_delegate": "Adicionar delegado",
         "add_external_account": "Adicionar conta externa",
@@ -143,46 +143,46 @@
         "download_messages": "Baixar mensagens para:",
         "edit_permissions": "Editar permissões",
         "email_server": "Servidor de e-mail (ex. \"mail.example.com”)",
-        "passwords_recovery_settings": "Configurações da Conta para Recuperação de Senha",
+        "passwords_recovery_settings": "Configurações de recuperação de senha",
         "pop3": "POP3",
-        "persona_name": "Nome da Persona",
+        "persona_name": "Nome de Persona",
         "permanent_delete_title": "Tem certeza que deseja excluir permanentemente essa Persona?",
         "persona": "Persona",
         "reply_to_field_example": "ex. João da Silva",
         "button": "Botão",
         "click_to_copy": "Clique para copiar",
         "delete_after_download": "Excluir mensagens do servidor após o download",
-        "save_both_folders": "Salvar uma cópia das mensagens enviadas na pasta de Enviados e na pasta de delegados",
-        "settings_sent_messages": "Configurações das Mensagens Enviadas",
+        "save_both_folders": "Salvar uma cópia das mensagens enviadas na minha pasta de Enviados e a dos delegados",
+        "settings_sent_messages": "Configurações de mensagens enviadas",
         "unsaved_changes_line2": "Todas as suas alterações não salvas serão perdidas",
         "use_personas_line2": "Por exemplo, se você enviar e-mails em uma função específica no trabalho, crie uma Persona para isso.",
         "documentation": "Documentação",
         "dont_save": "Não salvar uma cópia das mensagens enviadas",
-        "external_account_settings": "Configurações de Conta Externa",
+        "external_account_settings": "Configurações de conta externa",
         "feedback": "Feedback",
         "folder": "Pasta: Nova Conta Externa 3",
         "from_name": "De: \"Nome\"",
         "imap": "IMAP",
-        "leave_anyway": "Sair assim mesmo",
+        "leave_anyway": "Sair sem salvar",
         "pop_port": "Porta POP",
         "recipents": "Destinatários",
-        "recovery_email": "E-mail de Recuperação",
-        "save_and_leave": "Salvar e Sair",
+        "recovery_email": "E-mail de recuperação",
+        "save_and_leave": "Salvar e sair",
         "save_delegate_folder": "Salvar uma cópia das mensagens enviadas na pasta de Enviados do delegado",
         "save_to_my_sent_folder": "Salvar uma cópia das mensagens enviadas na minha pasta de Enviados",
         "set_reply_to_field": "Definir o campo \"Responder a\" do e-mail para:",
-        "test_settings": "Configurações de Teste",
+        "test_settings": "Configurações de teste",
         "unsaved_changes": "Você tem alterações que não foram salvas",
         "unsaved_changes_line1": "Tem certeza que deseja sair desta página sem salvar?",
         "update_view": "Atualizar visualização",
         "use_persona": "Usar esta persona",
-        "persona_settings": "Configurações da Persona",
-        "use_personas_line1": "Use personas para alterar rapidamente diversas configurações ao enviar mensagens de e-mail.",
-        "use_ssl": "Use uma conexão criptografada (SSL) ao acessar este servidor",
+        "persona_settings": "Configurações de Persona",
+        "use_personas_line1": "Utilize as Personas para alterar rapidamente entre diversas configurações ao enviar mensagens de e-mail.",
+        "use_ssl": "Usar uma conexão criptografada (SSL) ao acessar este servidor",
         "when_composing": "Ao escrever, responder ou encaminhar mensagens na(s) pasta(s):",
         "when_replying": "Ao responder ou encaminhar mensagens enviadas para:",
         "folder_external_account": "Pasta: Nova Conta Externa",
-        "add_inline_image": "Adicionar imagem no corpo do texto"
+        "add_inline_image": "Adicionar imagem no corpo da mensagem"
     },
     "timezone": {
         "africa_algiers": "{{value}} África Central Ocidental",
@@ -358,19 +358,19 @@
         "polish": "Polonês"
     },
     "board": {
-        "close_tab": "Fechar Aba",
-        "close_tabs": "Fechar todas as suas abas",
-        "enlarge": "Ampliar painel",
-        "hide": "Ocultar painel",
-        "reduce": "Reduzir painel",
-        "show_tabs": "Mostrar outras abas",
+        "close_tab": "Fechar aba",
+        "close_tabs": "Fechar todas as abas",
+        "enlarge": "Maximizar janela",
+        "hide": "Ocultar janela",
+        "reduce": "Reduzir janela",
+        "show_tabs": "Mostrar mais abas",
         "open_app": "Abrir no app"
     },
     "feedback": {
         "other": "Outro",
         "behaviors": "Comportamentos",
-        "error": "Houve um erro ao enviar seu feedback",
-        "explanation": "Deixe seu feedback sobre a sua nova experiência com o Zextras Server. Sua opinião é importante para melhorarmos nosso produto. Conte pra gente o que você está achando.",
+        "error": "Houve um erro ao enviar o feedback",
+        "explanation": "Deixe seu feedback sobre a sua experiência com o Server Zextras. Sua opinião é importante para melhorarmos o produto. Conte pra gente o que você está achando.",
         "missing_features": "Recursos faltantes",
         "report_something": "Deseja reportar alguma coisa?",
         "select_a_module": "Selecione um módulo",
@@ -379,7 +379,7 @@
         "send": "ENVIAR",
         "success": "Agradecemos o seu feedback",
         "user_interface": "Interface do usuário",
-        "write_here": "Escreve seu feedback aqui"
+        "write_here": "Escreva seu feedback aqui"
     },
     "messages": {
         "permanent_delete_title": "Tem certeza que deseja excluir permanentemente este elemento?",
@@ -389,9 +389,9 @@
         "is_contained_in": "Está contido em"
     },
     "passwords_recovery_settings": {
-        "title": "Configurações da Conta para Recuperação de Senha"
+        "title": "Configurações da conta para recuperação de senha"
     },
     "primary_account": {
-        "title": "Configurações da Conta Primária"
+        "title": "Configurações da conta principal"
     }
 }

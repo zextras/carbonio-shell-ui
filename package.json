@@ -35,7 +35,6 @@
 	"author": "Zextras Crab Onions Team <https://www.zextras.com/carbonio/>",
 	"maintainers": [
 		"Gabriele Marino <gabriele.marino@zextras.com>",
-		"Abhishek Kumar <abhishek.kumar@zextras.com>",
 		"Giuliano Caregnato <giuliano.caregnato@zextras.com>",
 		"Dhaval Dodiya <dhaval.dodiya@zextras.com>",
 		"Francesco Gottardi <francesco.gottardi@zextras.com>",
@@ -101,8 +100,8 @@
 		"@fontsource/roboto": "^4.5.7",
 		"@sentry/browser": "^6.17.7",
 		"@tinymce/tinymce-react": "^3.13.0",
-		"@zextras/carbonio-design-system": "^0.5.2",
-		"@zextras/carbonio-ui-preview": "^0.2.4",
+		"@zextras/carbonio-design-system": "^1.0.0",
+		"@zextras/carbonio-ui-preview": "^1.0.0",
 		"darkreader": "4.9.46",
 		"history": "^5.2.0",
 		"i18next": "21.6.10",
@@ -128,7 +127,7 @@
 	},
 	"peerDependencies": {
 		"@reduxjs/toolkit": "^1.6.2",
-		"@zextras/carbonio-design-system": "^0.5.0",
+		"@zextras/carbonio-design-system": ">=1.0.0",
 		"core-js": "^3.19.1",
 		"moment": "^2.29.1",
 		"node-fetch": "^2.6.6",

@@ -195,9 +195,6 @@ export const editSettings = (
 				displayName:
 					find(mods?.identity?.modifyList, (item) => item.id === s?.account?.id)?.prefs
 						.zimbraPrefIdentityName || s.account?.displayName,
-				name:
-					find(mods?.identity?.modifyList, (item) => item.id === s?.account?.id)?.prefs
-						.zimbraPrefFromAddress || s.account?.name,
 				identities: {
 					identity:
 						typeof s.account !== 'undefined'

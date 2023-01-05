@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.46](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.45...v0.4.46) (2023-01-05)
+
+
+### Features
+
+* added localization to tinymce editor ([#175](https://github.com/zextras/carbonio-shell-ui/issues/175)) ([de461ed](https://github.com/zextras/carbonio-shell-ui/commit/de461edf8dc7313d45895b959e81b31c324e6a28))
+* register locales and set default for DateTimePickers ([349c9d6](https://github.com/zextras/carbonio-shell-ui/commit/349c9d64184912402784fdbf434e0ee901363fe1)), closes [#174](https://github.com/zextras/carbonio-shell-ui/issues/174)
+* **settings:** choose the "from" address within all the available addresses ([ce36e6d](https://github.com/zextras/carbonio-shell-ui/commit/ce36e6d81cb2c3716bc1859a9815efbdfd53fdeb)), closes [#177](https://github.com/zextras/carbonio-shell-ui/issues/177)
+
+
+### Bug Fixes
+
+* fixing tag type ([#173](https://github.com/zextras/carbonio-shell-ui/issues/173)) ([c1f2e57](https://github.com/zextras/carbonio-shell-ui/commit/c1f2e57b051892f1a2645fdad2e7aecbef49861a))
+* search button is enabled as soon as there is text in the search input ([#176](https://github.com/zextras/carbonio-shell-ui/issues/176)) ([0ada026](https://github.com/zextras/carbonio-shell-ui/commit/0ada0265e5c577db5f54e886cac06f9f8067cd72))
+
 ### [0.4.45](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.44...v0.4.45) (2022-12-06)
 
 

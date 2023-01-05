@@ -39,7 +39,7 @@
             "headings": {
                 "create_appointment": "Cita del calendario",
                 "settings_label": "Respuesta automática",
-                "time_period": "Periodo de tiempo"
+                "time_period": "Período"
             },
             "send_auto_replies": "Enviar respuestas automáticas"
         },
@@ -160,7 +160,7 @@
         "dont_save": "No guardar una copia de los mensajes enviados",
         "from_name": "De: \"Nombre\"",
         "imap": "IMAP",
-        "leave_anyway": "Abandonar de todos modos",
+        "leave_anyway": "Salir de todos modos",
         "passwords_recovery_settings": "Opciones de cuenta para recuperar la contraseña",
         "persona": "Persona",
         "persona_name": "Nombre de la Persona",

@@ -4,8 +4,17 @@
     "settings": {
         "appearance": {
             "labels": {
-                "choose_size_pangram": "Ma la volpe, col suo balzo, ha raggiunto il quieto Fido."
-            }
+                "choose_size_pangram": "Ma la volpe, col suo balzo, ha raggiunto il quieto Fido.",
+                "increase_disabled": "Dimensione massima raggiunta",
+                "increase": "Aumenta dimensione",
+                "decrease_disabled": "Dimensione minima raggiunta",
+                "decrease": "Riduci dimensione",
+                "choose_size_auto": "Ridimensiona automaticamente la dimensione del testo a seconda del dispositivo",
+                "a": "Ago"
+            },
+            "option_m": "Medio",
+            "option_s": "Piccolo",
+            "option_l": "Grande"
         },
         "button": {
             "primary": "Salva",
@@ -19,7 +28,8 @@
             "general": "Impostazioni Generali",
             "account": "Account",
             "account_logout": "Esci",
-            "dark_mode": "Tema Scuro"
+            "dark_mode": "Tema Scuro",
+            "appearance": "Aspetto"
         },
         "app": "Impostazioni",
         "out_of_office": {
@@ -191,7 +201,8 @@
         "button": "Pulsante",
         "click_to_copy": "Seleziona per copiare",
         "folder_external_account": "Cartella: Nuovo Account Esterno",
-        "add_inline_image": "Aggiungi immagine inline"
+        "add_inline_image": "Aggiungi immagine inline",
+        "select_image": "Seleziona immagine"
     },
     "locale": {
         "English": "Inglese",

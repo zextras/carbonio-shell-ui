@@ -3,8 +3,11 @@
         "app": "设置",
         "appearance": {
             "labels": {
-                "choose_size_pangram": "視野無限廣，窗外有藍天"
-            }
+                "choose_size_pangram": "視野無限廣，窗外有藍天",
+                "a": "8"
+            },
+            "option_s": "小",
+            "option_l": "大"
         },
         "button": {
             "primary": "保存",
@@ -49,7 +52,8 @@
             "general": "通用设置",
             "theme_auto": "自动",
             "theme_options": "主题选项",
-            "dark_mode": "深色模式"
+            "dark_mode": "深色模式",
+            "appearance": "外观"
         },
         "general_tab": "通用",
         "timezone_and_language": "时区和语言",

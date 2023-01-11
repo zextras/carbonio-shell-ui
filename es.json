@@ -14,8 +14,11 @@
     "settings": {
         "appearance": {
             "labels": {
-                "choose_size_pangram": "El veloz murciélago hindú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás del palenque de paja."
-            }
+                "choose_size_pangram": "El veloz murciélago hindú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás del palenque de paja.",
+                "a": "A"
+            },
+            "option_s": "Pequeño",
+            "option_l": "Grande"
         },
         "out_of_office": {
             "labels": {
@@ -61,7 +64,8 @@
             "general": "Ajustes generales",
             "theme_auto": "Auto",
             "theme_options": "Opciones del tema",
-            "dark_mode": "Modo oscuro"
+            "dark_mode": "Modo oscuro",
+            "appearance": "Apariencia"
         },
         "general_tab": "General",
         "timezone_and_language": "Zona horaria e idioma",

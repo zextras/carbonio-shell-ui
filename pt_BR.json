@@ -3,8 +3,11 @@
         "app": "Configurações",
         "appearance": {
             "labels": {
-                "choose_size_pangram": "A ligeira raposa marrom ataca o cão preguiçoso."
-            }
+                "choose_size_pangram": "A ligeira raposa marrom ataca o cão preguiçoso.",
+                "a": "A"
+            },
+            "option_s": "Pequeno",
+            "option_l": "Grande"
         },
         "button": {
             "primary": "Salvar",
@@ -49,7 +52,8 @@
             "general": "Configurações gerais",
             "theme_auto": "Auto",
             "theme_options": "Opções de tema",
-            "dark_mode": "Modo escuro"
+            "dark_mode": "Modo escuro",
+            "appearance": "Aparência"
         },
         "general_tab": "Geral",
         "timezone_and_language": "Fuso horário e idioma",

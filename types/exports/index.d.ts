@@ -38,11 +38,11 @@ import { QueryChip } from '../search';
 import { Tag, Tags } from '../tags';
 
 declare const getBridgedFunctions: () => {
-	createModal: (...params: unknown[]) => void;
-	createSnackbar: (...params: unknown[]) => void;
+	createModal: (...params: any[]) => void;
+	createSnackbar: (...params: any[]) => void;
 	getHistory: () => History;
 };
-declare const editSettings: (mods: Mods) => Promise<unknown>;
+declare const editSettings: (mods: Mods) => Promise<any>;
 declare const ZIMBRA_STANDARD_COLORS: Array<{ zValue: number; hex: string; zLabel: string }>;
 declare const FOLDERS: {
 	[name: string]: string;
@@ -58,8 +58,10 @@ declare const BASENAME: string;
 
 declare const IS_STANDALONE: boolean;
 
-declare const getIntegratedHook: (id: string) => [(...args: unknown[]) => unknown, boolean];
-declare const getIntegratedFunction: (id: string) => [(...args: unknown[]) => unknown, boolean];
+// eslint-disable-next-line @typescript-eslint/ban-types
+declare const getIntegratedHook: (id: string) => [Function, boolean];
+// eslint-disable-next-line @typescript-eslint/ban-types
+declare const getIntegratedFunction: (id: string) => [Function, boolean];
 declare const getIntegratedComponent: (id: string) => [ComponentType<unknown>, boolean];
 declare const getActions: <T>(target: T, type: string) => Array<Action>;
 declare const getActionsFactory: (type: string) => <T>(target: T) => Array<Action>;
@@ -68,8 +70,10 @@ declare const getActionFactory: <T>(
 	type: string,
 	id: string
 ) => [ActionFactory<T> | undefined, boolean];
-declare const useIntegratedHook: (id: string) => [(...args: unknown[]) => unknown, boolean];
-declare const useIntegratedFunction: (id: string) => [(...args: unknown[]) => unknown, boolean];
+// eslint-disable-next-line @typescript-eslint/ban-types
+declare const useIntegratedHook: (id: string) => [Function, boolean];
+// eslint-disable-next-line @typescript-eslint/ban-types
+declare const useIntegratedFunction: (id: string) => [Function, boolean];
 declare const useIntegratedComponent: (id: string) => [ComponentType<unknown>, boolean];
 declare const useActions: <T>(target: T, type: string) => Array<Action>;
 declare const useActionsFactory: <T>(type: string) => CombinedActionFactory<T>;

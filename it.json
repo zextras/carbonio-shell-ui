@@ -10,11 +10,14 @@
                 "decrease_disabled": "Dimensione minima raggiunta",
                 "decrease": "Riduci dimensione",
                 "choose_size_auto": "Ridimensiona automaticamente la dimensione del testo a seconda del dispositivo",
-                "a": "Ago"
+                "a": "Ago",
+                "choose_size_description": "Scegli la dimensione e lo stile del tuo ambiente Carbonio"
             },
             "option_m": "Medio",
             "option_s": "Piccolo",
-            "option_l": "Grande"
+            "option_l": "Grande",
+            "option_xs": "Piccolissimo",
+            "option_xl": "Grandissimo"
         },
         "button": {
             "primary": "Salva",

@@ -7,7 +7,8 @@
                 "a": "8"
             },
             "option_s": "小",
-            "option_l": "大"
+            "option_l": "大",
+            "option_xl": "超大"
         },
         "button": {
             "primary": "保存",

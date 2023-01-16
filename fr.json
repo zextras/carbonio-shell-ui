@@ -107,6 +107,11 @@
     "new": "Nouveau",
     "settings": {
         "app": "Paramètres",
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "Voix ambiguë d'un cœur qui au zéphyr préfère les jattes de kiwis."
+            }
+        },
         "button": {
             "primary": "Sauvegarder",
             "confirm": "Confirmer"

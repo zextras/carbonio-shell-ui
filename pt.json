@@ -1,6 +1,11 @@
 {
     "settings": {
         "app": "Configurações",
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "A rápida raposa castanha salta por cima do cão lento."
+            }
+        },
         "button": {
             "primary": "Salvar",
             "confirm": "Confirmar"
@@ -178,7 +183,6 @@
         "when_replying": "Ao responder ou encaminhar mensagens enviadas para:"
     },
     "timezone": {
-        "egypt": "{{value}} Egito",
         "pyongyang": "{{value}} Pyongyang",
         "africa_algiers": "{{value}} África Central Ocidental",
         "africa_cairo": "{{value}} Egito",

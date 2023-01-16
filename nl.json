@@ -13,6 +13,14 @@
         "type_or_choose_suggestion": "Type of kies enkele trefwoorden om een zoekopdracht te starten"
     },
     "settings": {
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "Pa’s wijze lynx bezag vroom het fikse aquaduct.",
+                "a": "A"
+            },
+            "option_s": "Klein",
+            "option_l": "Groot"
+        },
         "out_of_office": {
             "labels": {
                 "end_date": "Einddatum",
@@ -57,7 +65,8 @@
             "general": "Algemene instellingen",
             "theme_auto": "Auto",
             "theme_options": "Thema Opties",
-            "dark_mode": "Donkere modus"
+            "dark_mode": "Donkere modus",
+            "appearance": "Vormgeving"
         },
         "general_tab": "Algemeen",
         "timezone_and_language": "Tijdzone en taal",

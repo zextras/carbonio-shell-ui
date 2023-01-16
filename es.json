@@ -12,6 +12,15 @@
         "unable_to_parse_query": "No se puede completar la búsqueda, límpiala y vuelve a intentarlo"
     },
     "settings": {
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "El veloz murciélago hindú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás del palenque de paja.",
+                "a": "A"
+            },
+            "option_s": "Pequeño",
+            "option_l": "Grande",
+            "option_xl": "Muy grande"
+        },
         "out_of_office": {
             "labels": {
                 "start_date": "Fecha de inicio",
@@ -56,7 +65,8 @@
             "general": "Ajustes generales",
             "theme_auto": "Auto",
             "theme_options": "Opciones del tema",
-            "dark_mode": "Modo oscuro"
+            "dark_mode": "Modo oscuro",
+            "appearance": "Apariencia"
         },
         "general_tab": "General",
         "timezone_and_language": "Zona horaria e idioma",
@@ -177,7 +187,8 @@
         "unsaved_changes_line2": "Todos tus cambios no guardados se perderán",
         "update_view": "Actualizar vista",
         "folder_external_account": "Carpeta: Nueva cuenta externa",
-        "add_inline_image": "Añadir imagen inline"
+        "add_inline_image": "Añadir imagen inline",
+        "select_image": "Seleccionar imagen"
     },
     "timezone": {
         "africa_cairo": "{{value}} Egipto",

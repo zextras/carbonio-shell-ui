@@ -14,6 +14,14 @@
     },
     "settings": {
         "app": "Einstellungen",
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "Zwölf Boxkämpfer jagen Victor quer über den großen Sylter Deich.",
+                "a": "A"
+            },
+            "option_s": "Klein",
+            "option_l": "Groß"
+        },
         "button": {
             "primary": "Speichern",
             "confirm": "Bestätigen"
@@ -26,7 +34,8 @@
             "general": "Allgemeine Einstellungen",
             "theme_auto": "Auto",
             "theme_options": "Themenoptionen",
-            "dark_mode": "Dunkler Modus"
+            "dark_mode": "Dunkler Modus",
+            "appearance": "Aussehen"
         },
         "general_tab": "Allgemein",
         "out_of_office": {

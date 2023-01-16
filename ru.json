@@ -1,5 +1,22 @@
 {
     "settings": {
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "Съешь ещё этих мягких французских булок да выпей же чаю.",
+                "increase_disabled": "Достигнут максимальный размер",
+                "increase": "Увеличить размер",
+                "decrease_disabled": "Достигнут минимальный размер",
+                "decrease": "Уменьшить размер",
+                "choose_size_description": "Выберите размер шрифта и стили для Carbonio",
+                "choose_size_auto": "Автоматически изменять размер текста в зависимости от устройства",
+                "a": "Кому"
+            },
+            "option_xs": "Очень маленький",
+            "option_xl": "Очень большой",
+            "option_s": "Маленький",
+            "option_m": "Средний",
+            "option_l": "Большой"
+        },
         "button": {
             "primary": "Сохранить",
             "confirm": "Подтвердить"
@@ -12,7 +29,8 @@
             "theme_disabled": "Отключено",
             "theme_options": "Параметры Темы",
             "theme_auto": "Автоматически",
-            "dark_mode": "Темный Режим"
+            "dark_mode": "Темный Режим",
+            "appearance": "Вид"
         },
         "app": "Настройки",
         "general_tab": "Основные настройки",
@@ -177,7 +195,8 @@
         "button": "Кнопка",
         "click_to_copy": "Нажмите чтобы скопировать",
         "folder_external_account": "Папка: Новая внешняя учетная запись",
-        "add_inline_image": "Добавить встроенное изображение"
+        "add_inline_image": "Добавить встроенное изображение",
+        "select_image": "Выбрать изображение"
     },
     "board": {
         "close_tab": "Закрыть вкладку",

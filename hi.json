@@ -14,6 +14,14 @@
     },
     "settings": {
         "app": "सेटिंग्स",
+        "appearance": {
+            "labels": {
+                "choose_size_pangram": "ऋषियों को सताने वाले दुष्ट राक्षसों के राजा रावण का सर्वनाश करने वाले विष्णुवतार भगवान श्रीराम, अयोध्या के महाराज दशरथ के बड़े सपुत्र थे।",
+                "a": "A"
+            },
+            "option_s": "छोटा",
+            "option_l": "बड़ा"
+        },
         "button": {
             "primary": "सेव करें",
             "confirm": "कन्फ़र्म करें"
@@ -26,7 +34,8 @@
             "general": "जनरल सेटिंग्स",
             "theme_auto": "ऑटो",
             "theme_options": "थीम के ऑप्शन",
-            "dark_mode": "डार्क मोड"
+            "dark_mode": "डार्क मोड",
+            "appearance": "प्रकटन"
         },
         "general_tab": "सामान्य",
         "out_of_office": {

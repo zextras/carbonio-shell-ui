@@ -14,8 +14,11 @@
     "settings": {
         "appearance": {
             "labels": {
-                "choose_size_pangram": "Saya lihat foto Hamengkubuwono XV bersama enam zebra purba cantik yang jatuh dari Al Quranmu."
-            }
+                "choose_size_pangram": "Saya lihat foto Hamengkubuwono XV bersama enam zebra purba cantik yang jatuh dari Al Quranmu.",
+                "a": "A"
+            },
+            "option_s": "Kecil",
+            "option_l": "Besar"
         },
         "out_of_office": {
             "labels": {
@@ -61,7 +64,8 @@
             "general": "Pengaturan Umum",
             "theme_auto": "Otomatis",
             "theme_options": "Opsi Tema",
-            "dark_mode": "Mode Gelap"
+            "dark_mode": "Mode Gelap",
+            "appearance": "Tampilan"
         },
         "general_tab": "Umum",
         "timezone_and_language": "Zona Waktu dan Bahasa",

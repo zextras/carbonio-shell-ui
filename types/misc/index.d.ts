@@ -250,6 +250,8 @@ export type BaseFolder = {
 	// ACL for sharing
 	acl?: { grant: Array<Grant> };
 	retentionPolicy?: SoapRetentionPolicy;
+	// indicates whether this folder is displayed in Calendars
+	checked?: boolean;
 };
 
 export type LinkFolderFields = {

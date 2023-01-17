@@ -93,3 +93,13 @@ export const useFoldersAccordionByView = (
 		[CustomComponent, itemProps, roots, view]
 	);
 };
+
+// SETTERS
+
+// Set checked status for an array of folders
+export const setFoldersChecked = (foldersIDs: Array<string>, value: boolean): void =>
+	useFolderStore.setState((state) => {
+		foldersIDs.forEach((folderID) => {
+			state.folders[folderID].checked = value;
+		});
+	});

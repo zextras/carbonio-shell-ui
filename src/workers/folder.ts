@@ -71,7 +71,7 @@ const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
 	meta: f.meta,
 	acl: f.acl,
 	retentionPolicy: f.retentionPolicy,
-	checked: /#/.test(f.f ?? '')
+	checked: f.f === '#'
 });
 
 const normalizeSearch = (s: SoapSearchFolder): BaseFolder & SearchFolderFields => ({

@@ -2,8 +2,11 @@
     "settings": {
         "appearance": {
             "labels": {
-                "choose_size_pangram": "いろはにほへと ちりぬるを わかよたれそ つねならむ うゐのおくやま けふこえて あさきゆめみし ゑひもせす"
-            }
+                "choose_size_pangram": "いろはにほへと ちりぬるを わかよたれそ つねならむ うゐのおくやま けふこえて あさきゆめみし ゑひもせす",
+                "a": "8"
+            },
+            "option_s": "小",
+            "option_l": "大"
         },
         "out_of_office": {
             "labels": {
@@ -49,7 +52,8 @@
             "general": "一般設定",
             "theme_auto": "自動",
             "theme_options": "テーマのオプション",
-            "dark_mode": "ダークモード"
+            "dark_mode": "ダークモード",
+            "appearance": "デザイン"
         },
         "general_tab": "一般設定",
         "timezone_and_language": "タイムゾーンと言語",

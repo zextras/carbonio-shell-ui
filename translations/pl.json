@@ -21,8 +21,20 @@
     "settings": {
         "appearance": {
             "labels": {
-                "choose_size_pangram": "Pchnąć w tę łódź jeża lub ośm skrzyń fig."
-            }
+                "choose_size_pangram": "Pchnąć w tę łódź jeża lub ośm skrzyń fig.",
+                "increase_disabled": "Osiągnięto max. rozmiar",
+                "increase": "Powiększ rozmiar",
+                "decrease_disabled": "Osiągnięto min. rozmiar",
+                "decrease": "Zmniejsz rozmiar",
+                "choose_size_description": "Wybierz rozmiar i styl czcionki w środowisku Carbonio",
+                "choose_size_auto": "Automatycznie dostosuj rozmiar tekstu w zależności od urządzenia",
+                "a": "A"
+            },
+            "option_xs": "Bardzo małe",
+            "option_xl": "Bardzo duże",
+            "option_s": "Małe",
+            "option_m": "Średnie",
+            "option_l": "Duże"
         },
         "search_settings": {
             "labels": {
@@ -75,7 +87,8 @@
             "theme_auto": "Automatycznie",
             "theme_disabled": "Wyłączone",
             "theme_enabled": "Włączone",
-            "theme_options": "Opcje stylu"
+            "theme_options": "Opcje stylu",
+            "appearance": "Wygląd"
         },
         "general_tab": "Ogólne",
         "timezone_and_language": "Strefa czasowa i język",
@@ -110,7 +123,7 @@
         "delete": "Usuń",
         "delete_permanently": "Trwale usuń",
         "filter_folders": "Filtruj foldery",
-        "folder": "Folder: Nowe Konto spoza mojej domeny 3",
+        "folder": "Folder: Nowe konto spoza mojej domeny 3",
         "folders": "Foldery",
         "from_name": "Od: \"Imię\"",
         "go_back": "Powrót",
@@ -149,7 +162,7 @@
         "edit_permissions": "Edytuj uprawnienia",
         "email_address": "Adres e-mail",
         "email_server": "Serwer e-mail (np. \"mail.przykład.com\")",
-        "external_account_settings": "Ustawienia Kont spoza mojej domeny",
+        "external_account_settings": "Ustawienia kont spoza mojej domeny",
         "feedback": "Podziel się opinią",
         "inbox": "Skrzynka odbiorcza",
         "no_results": "Nie znaleziono wyników",
@@ -165,8 +178,9 @@
         "when_composing": "Podczas tworzenia, odpowiadania na i przekazywania dalej wiadomości w folderze (folderach):",
         "button": "Przycisk",
         "click_to_copy": "Kliknij, aby skopiować",
-        "folder_external_account": "Folder: Nowe Konto spoza mojej domeny",
-        "add_inline_image": "Dodaj obrazek w tekście"
+        "folder_external_account": "Folder: Nowe konto spoza mojej domeny",
+        "add_inline_image": "Dodaj obrazek w tekście",
+        "select_image": "Wybierz obraz"
     },
     "board": {
         "close_tab": "Zamknij kartę",
@@ -371,7 +385,7 @@
         "select_a_module": "Wybierz moduł",
         "select_a_topic": "Wybierz temat",
         "send": "WYŚLIJ",
-        "success": "Dziękujemy za udzielenie swojego zdania",
+        "success": "Dziękujemy, że podzieliłeś się z nami swoim zdaniem",
         "user_interface": "Interfejs użytkownika",
         "missing_features": "Brakujące funkcje",
         "other": "Inne",

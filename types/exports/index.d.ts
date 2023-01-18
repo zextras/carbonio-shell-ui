@@ -54,6 +54,7 @@ export const SEARCH_APP_ID = 'search';
 export const ACTION_TYPES: {
 	[name: string]: string;
 };
+export const ROOT_NAME: string;
 export const SHELL_MODES: Record<string, ShellModes>;
 export const BASENAME: string;
 

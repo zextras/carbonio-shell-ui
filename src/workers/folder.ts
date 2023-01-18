@@ -70,7 +70,8 @@ const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
 	deletable: !!f.deletable,
 	meta: f.meta,
 	acl: f.acl,
-	retentionPolicy: f.retentionPolicy
+	retentionPolicy: f.retentionPolicy,
+	checked: !!f.checked
 });
 
 const normalizeSearch = (s: SoapSearchFolder): BaseFolder & SearchFolderFields => ({

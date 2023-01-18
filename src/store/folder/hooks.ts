@@ -54,3 +54,13 @@ export const useFoldersByView = (view: FolderView): Array<Folder> => {
 		[roots, sortFunction, view]
 	);
 };
+
+// SETTERS
+
+// Set checked status for an array of folders
+export const setFoldersChecked = (foldersIDs: Array<string>, value: boolean): void =>
+	useFolderStore.setState((state) => {
+		foldersIDs.forEach((folderID) => {
+			state.folders[folderID].checked = value;
+		});
+	});

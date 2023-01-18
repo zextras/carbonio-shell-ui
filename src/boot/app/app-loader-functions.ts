@@ -69,7 +69,8 @@ import {
 	getSearchFolders,
 	useFoldersByView,
 	useRootByUser,
-	getRootByUser
+	getRootByUser,
+	setFoldersChecked
 } from '../../store/folder';
 import { getTags, useTags } from '../../store/tags';
 import { useNotify, useRefresh } from '../../store/network';
@@ -156,6 +157,7 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	getSearchFolders,
 	useRootByUser,
 	getRootByUser,
+	setFoldersChecked,
 	// BOARDS
 	addBoard: addBoard(pkg.name),
 	closeBoard,

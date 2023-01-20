@@ -15,7 +15,7 @@ const getOriginalId = (f: Folder): string => {
 export const sortFolders = (f: Folder): string => {
 	const id = getOriginalId(f);
 	if (id === FOLDERS.TRASH) {
-		return '~';
+		return '16.1';
 	}
 	return parseInt(id, 10) < 17 ? `   ${id}` : f.name.toLowerCase();
 };

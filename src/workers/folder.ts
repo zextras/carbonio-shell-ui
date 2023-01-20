@@ -47,6 +47,7 @@ const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
 	absFolderPath: f.absFolderPath,
 	l: f.l,
 	luuid: f.luuid,
+	checked: /#/.test(f.f || ''),
 	f: f.f,
 	color: f.color || p?.color,
 	rgb: f.rgb,
@@ -70,8 +71,7 @@ const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
 	deletable: !!f.deletable,
 	meta: f.meta,
 	acl: f.acl,
-	retentionPolicy: f.retentionPolicy,
-	checked: f.f === '#'
+	retentionPolicy: f.retentionPolicy
 });
 
 const normalizeSearch = (s: SoapSearchFolder): BaseFolder & SearchFolderFields => ({
@@ -188,6 +188,9 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 			const folder = folders[val.id];
 			if (folder) {
 				Object.assign(folder, omit(val));
+				if (typeof val.f !== 'undefined') {
+					folder.checked = /#/.test(val.f ?? '');
+				}
 				if (val.l) {
 					const oldParent = folders[val.id].parent;
 					const newParent = folders[val.l];

@@ -187,8 +187,6 @@ export const getCurrentRoute: () => AppRoute | undefined;
 
 // FOLDERS
 
-export const setFoldersChecked: (ids: Array<string>, value: boolean) => void;
-
 // ROOTS
 
 // ROOTS BY USER

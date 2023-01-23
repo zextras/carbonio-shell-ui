@@ -47,6 +47,7 @@ const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
 	absFolderPath: f.absFolderPath,
 	l: f.l,
 	luuid: f.luuid,
+	// the item is checked if f.f contains a hash
 	checked: /#/.test(f.f || ''),
 	f: f.f,
 	color: f.color || p?.color,
@@ -189,6 +190,7 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 			if (folder) {
 				Object.assign(folder, omit(val));
 				if (typeof val.f !== 'undefined') {
+					// the item is checked if f.f contains a hash
 					folder.checked = /#/.test(val.f ?? '');
 				}
 				if (val.l) {

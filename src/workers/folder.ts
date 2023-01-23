@@ -20,6 +20,7 @@ import {
 	SoapSearchFolder,
 	Folder
 } from '../../types';
+import { testFolderIsChecked } from '../utils/utils';
 
 const IM_LOGS = '14';
 const ROOT_NAME = 'USER_ROOT';
@@ -47,8 +48,7 @@ const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
 	absFolderPath: f.absFolderPath,
 	l: f.l,
 	luuid: f.luuid,
-	// the item is checked if f.f contains a hash
-	checked: /#/.test(f.f || ''),
+	checked: testFolderIsChecked({ string: f.f }),
 	f: f.f,
 	color: f.color || p?.color,
 	rgb: f.rgb,
@@ -190,8 +190,7 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 			if (folder) {
 				Object.assign(folder, omit(val));
 				if (typeof val.f !== 'undefined') {
-					// the item is checked if f.f contains a hash
-					folder.checked = /#/.test(val.f ?? '');
+					folder.checked = testFolderIsChecked({ string: val.f });
 				}
 				if (val.l) {
 					const oldParent = folders[val.id].parent;

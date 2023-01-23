@@ -6,3 +6,6 @@
 
 export const getPrefersColorSchemeDarkMedia = (): MediaQueryList =>
 	window.matchMedia('(prefers-color-scheme: dark)');
+
+export const testFolderIsChecked = ({ string }: { string: string | undefined }): boolean =>
+	/#/.test(string || '');

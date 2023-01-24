@@ -37,7 +37,8 @@ export const FOLDERS = {
 	AUTO_CONTACTS: '13',
 	IM_LOGS: '14',
 	TASKS: '15',
-	BRIEFCASE: '16'
+	BRIEFCASE: '16',
+	LAST_SYSTEM_FOLDER_POSITION: '16.1'
 };
 
 export const SHELL_APP_ID = 'carbonio-shell-ui';

@@ -120,13 +120,13 @@
 		"redux-logger": "3.0.6",
 		"redux-persist": "6.0.0",
 		"remark-gfm": "3.0.1",
-		"tinymce": "^5.10.2",
+		"tinymce": "^5.10.7",
 		"ua-parser-js": "^1.0.2",
 		"zustand": "^3.7.2"
 	},
 	"peerDependencies": {
 		"@reduxjs/toolkit": "^1.6.2",
-		"@zextras/carbonio-design-system": ">=1.0.0",
+		"@zextras/carbonio-design-system": "^1.0.0",
 		"core-js": "^3.19.1",
 		"moment": "^2.29.1",
 		"node-fetch": "^2.6.6",

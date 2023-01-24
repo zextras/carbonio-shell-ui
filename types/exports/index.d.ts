@@ -36,6 +36,7 @@ import { CreateTagResponse, Mods, SoapNotify, SoapRefresh, TagActionResponse } f
 import { INotificationManager } from '../notification';
 import { QueryChip } from '../search';
 import { Tag, Tags } from '../tags';
+import {ROOT_NAME} from "../../src/constants";
 
 declare const getBridgedFunctions: () => {
 	createModal: (...params: any[]) => void;
@@ -53,6 +54,7 @@ declare const SEARCH_APP_ID = 'search';
 declare const ACTION_TYPES: {
 	[name: string]: string;
 };
+declare const ROOT_NAME: string;
 declare const SHELL_MODES: Record<string, ShellModes>;
 declare const BASENAME: string;
 

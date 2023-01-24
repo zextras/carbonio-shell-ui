@@ -68,6 +68,7 @@ import {
 	getSearchFolder,
 	getSearchFolders,
 	useFoldersByView,
+	useFoldersAccordionByView,
 	useRootByUser,
 	getRootByUser
 } from '../../store/folder';
@@ -142,6 +143,7 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	useRefresh,
 	// FOLDERS
 	useFoldersByView,
+	useFoldersAccordionByView,
 	useFolder,
 	getFolder,
 	useFolders,

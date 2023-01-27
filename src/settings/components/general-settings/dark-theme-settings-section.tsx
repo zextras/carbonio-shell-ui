@@ -14,7 +14,7 @@ import { getT } from '../../../store/i18n';
 import {
 	isDarkReaderPropValues,
 	useDarkReaderResultValue
-} from '../../../custom-hooks/useDarkReaderResultValue';
+} from '../../../dark-mode/use-dark-reader-result-value';
 
 const DarkThemeSettingSection: FC<{
 	addMod: AddMod;

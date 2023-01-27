@@ -105,6 +105,7 @@ export const FOLDER_VIEW = {
 	chat: 'chat'
 };
 export const LOCAL_STORAGE_SETTINGS_KEY = 'settings';
+export const LOCAL_STORAGE_LAST_PRIMARY_KEY = 'config';
 export const LOCAL_STORAGE_SEARCH_KEY = 'search_suggestions';
 export const SCALING_OPTIONS = [
 	{ value: 75, label: 'xs' },

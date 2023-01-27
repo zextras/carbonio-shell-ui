@@ -4,10 +4,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { useMemo } from 'react';
-import { Folder, Folders, FolderView, Searches, SearchFolder } from '../../../types';
+import { ComponentType, useMemo } from 'react';
+import {
+	AccordionFolder,
+	Folder,
+	Folders,
+	FolderView,
+	Searches,
+	SearchFolder
+} from '../../../types';
 import { useFolderStore } from './store';
-import { filterNodes, folderViewFilter, sortFolders } from './utils';
+import { filterNodes, folderViewFilter, isRoot, mapNodes, sortFolders } from './utils';
 
 // FOLDERS
 export const useFolder = (id: string): Folder | undefined => useFolderStore((s) => s.folders?.[id]);
@@ -47,5 +54,37 @@ export const useFoldersByView = (view: FolderView): Array<Folder> => {
 		() =>
 			roots ? filterNodes<Folder>(Object.values(roots), folderViewFilter(view), sortFolders) : [],
 		[roots, view]
+	);
+};
+
+export const useFoldersAccordionByView = (
+	view: FolderView,
+	CustomComponent: ComponentType<{ folder: Folder }>,
+	itemProps?: (item: AccordionFolder) => Record<string, any>
+): Array<AccordionFolder> => {
+	const roots = useRoots();
+	return useMemo(
+		() =>
+			roots
+				? mapNodes<Folder, AccordionFolder>(Object.values(roots), {
+						mapFunction: (f) => {
+							const item = {
+								id: f.id,
+								label: f.name,
+								CustomComponent,
+								items: [],
+								folder: f,
+								disableHover: isRoot(f)
+							};
+							const props = itemProps?.(item) ?? {};
+							return { ...item, ...props };
+						},
+						filterFunction: folderViewFilter(view),
+						recursionKey: 'items',
+						sortFunction: sortFolders,
+						deep: false
+				  })
+				: [],
+		[CustomComponent, itemProps, roots, view]
 	);
 };

@@ -77,7 +77,7 @@ const LanguageAndTimeZone: FC<{
 					/>
 				)}
 				<Padding top="small" width="100%">
-					{Object.keys(settings.prefs).length > 0 && timezones && (
+					{Object.keys(settings.prefs).length > 0 && timezones && defaultTimeZone && (
 						<Select
 							items={timezones}
 							background="gray5"

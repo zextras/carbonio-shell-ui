@@ -73,6 +73,9 @@ const DarkThemeSettingSection: FC<{
 		}
 	}, [darkReaderResultValue, items, setSelectNewValue]);
 
+	if (!selection) {
+		return null;
+	}
 	return (
 		<>
 			<Text size="medium" weight="bold">

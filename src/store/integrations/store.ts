@@ -8,8 +8,9 @@ import produce from 'immer';
 import create from 'zustand';
 import { forEach, omit, reduce } from 'lodash';
 import { ComponentType } from 'react';
-import { ActionFactory, AnyFunction, IntegrationsState, SHELL_APP_ID } from '../../../types';
+import type { ActionFactory, AnyFunction, IntegrationsState } from '../../../types';
 import Composer from './composer';
+import { SHELL_APP_ID } from '../../constants';
 
 export const useIntegrationsStore = create<IntegrationsState>((set) => ({
 	actions: {},

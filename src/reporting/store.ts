@@ -7,7 +7,8 @@
 import create, { StoreApi, UseBoundStore } from 'zustand';
 import { BrowserClient, Hub } from '@sentry/browser';
 import { reduce } from 'lodash';
-import { CarbonioModule, SHELL_APP_ID } from '../../types';
+import type { CarbonioModule } from '../../types';
+import { SHELL_APP_ID } from '../constants';
 
 type ReporterState = {
 	clients: Record<string, Hub>;

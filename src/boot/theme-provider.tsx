@@ -145,7 +145,7 @@ export const ThemeProvider: FC = ({ children }) => {
 	}, [localStorageSettings]);
 
 	return (
-		<UIThemeProvider extension={aggregatedExtensions}>
+		<UIThemeProvider extension={aggregatedExtensions} loadDefaultFont>
 			<ThemeCallbacksContext.Provider value={{ addExtension, setDarkReaderState }}>
 				<GlobalStyle baseFontSize={baseFontSize} />
 				{children}

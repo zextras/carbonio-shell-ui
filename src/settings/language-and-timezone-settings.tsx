@@ -42,11 +42,13 @@ const LanguageAndTimeZone: FC<{
 		[addMod]
 	);
 
-	const defaultLocale = useMemo(() => {
-		const localeId = (settings.prefs.zimbraPrefLocale as string) ?? 'en';
-		const locale = find(locales, { id: localeId });
-		return locale ?? find(locales, { id: 'en' });
-	}, [locales, settings.prefs.zimbraPrefLocale]);
+	const defaultLocale = useMemo(
+		() =>
+			(settings.prefs.zimbraPrefLocale &&
+				find(locales, { id: `${settings.prefs.zimbraPrefLocale}` })) ||
+			find(locales, { id: 'en' }),
+		[locales, settings.prefs.zimbraPrefLocale]
+	);
 
 	const onLocaleChange = useCallback<SingleSelectionOnChange>(
 		(value) => {
@@ -56,11 +58,13 @@ const LanguageAndTimeZone: FC<{
 		[settings.prefs.zimbraPrefLocale, updatePrefs]
 	);
 
-	const defaultTimeZone = useMemo(() => {
-		const timeZoneId = (settings.prefs.zimbraPrefTimeZoneId as string) ?? 'UTC';
-		const timezone = find(timezones, { value: timeZoneId });
-		return timezone ?? find(timezones, { value: 'UTC' });
-	}, [timezones, settings.prefs.zimbraPrefTimeZoneId]);
+	const defaultTimeZone = useMemo(
+		() =>
+			(settings.prefs.zimbraPrefTimeZoneId &&
+				find(timezones, { value: `${settings.prefs.zimbraPrefTimeZoneId}` })) ||
+			find(timezones, { value: 'UTC' }),
+		[timezones, settings.prefs.zimbraPrefTimeZoneId]
+	);
 
 	const onTimeZoneChange = useCallback<SingleSelectionOnChange>(
 		(value) => {

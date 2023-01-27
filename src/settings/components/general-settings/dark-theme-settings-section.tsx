@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Select, SelectProps, Text } from '@zextras/carbonio-design-system';
+import { Select, SelectItem, SingleSelectionOnChange, Text } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
-import React, { FC, useCallback, useContext, useMemo } from 'react';
+import React, { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { AddMod, DarkReaderPropValues, RemoveMod } from '../../../../types';
 import { ThemeCallbacksContext } from '../../../boot/theme-provider';
 import { DARK_READER_PROP_KEY, SHELL_APP_ID } from '../../../constants';
@@ -21,8 +21,8 @@ const DarkThemeSettingSection: FC<{
 	removeMod: RemoveMod;
 }> = ({ addMod, removeMod }) => {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
-
 	const darkReaderResultValue = useDarkReaderResultValue();
+	const [selection, setSelection] = useState<SelectItem>();
 
 	const t = getT();
 	const items = useMemo<Array<{ label: string; value: DarkReaderPropValues }>>(
@@ -42,14 +42,24 @@ const DarkThemeSettingSection: FC<{
 		],
 		[t]
 	);
-	const defaultSelection = useMemo(
-		() => find(items, { value: darkReaderResultValue }),
-		[darkReaderResultValue, items]
+
+	const setSelectNewValue = useCallback(
+		(value: DarkReaderPropValues) => {
+			const item = find(items, { value });
+			if (item) {
+				setSelection(item);
+			}
+			setDarkReaderState(value);
+		},
+		[items, setDarkReaderState]
 	);
-	const onSelectionChange = useCallback<NonNullable<SelectProps['onChange']>>(
+
+	const onSelectionChange = useCallback<SingleSelectionOnChange>(
 		(value) => {
 			if (isDarkReaderPropValues(value)) {
-				setDarkReaderState(value);
+				if (value) {
+					setSelectNewValue(value);
+				}
 				if (value !== darkReaderResultValue) {
 					addMod('props', DARK_READER_PROP_KEY, { app: SHELL_APP_ID, value });
 				} else {
@@ -57,9 +67,18 @@ const DarkThemeSettingSection: FC<{
 				}
 			}
 		},
-		[addMod, darkReaderResultValue, removeMod, setDarkReaderState]
+		[addMod, darkReaderResultValue, removeMod, setSelectNewValue]
 	);
 
+	useEffect(() => {
+		if (darkReaderResultValue) {
+			setSelectNewValue(darkReaderResultValue);
+		}
+	}, [darkReaderResultValue, items, setSelectNewValue]);
+
+	if (!selection) {
+		return null;
+	}
 	return (
 		<>
 			<Text size="medium" weight="bold">
@@ -67,7 +86,7 @@ const DarkThemeSettingSection: FC<{
 			</Text>
 			<Select
 				items={items}
-				selection={defaultSelection}
+				selection={selection}
 				label={t('settings.general.dark_mode', 'Dark Mode')}
 				onChange={onSelectionChange}
 			/>

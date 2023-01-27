@@ -10,6 +10,7 @@ import {
 	Modal,
 	Padding,
 	Select,
+	SingleSelectionOnChange,
 	Text
 } from '@zextras/carbonio-design-system';
 import React, { FC, useCallback, useMemo } from 'react';
@@ -41,17 +42,37 @@ const LanguageAndTimeZone: FC<{
 		[addMod]
 	);
 
-	const defaultLocale = useMemo(() => {
-		const localeId = (settings.prefs.zimbraPrefLocale as string) ?? 'en';
-		const locale = find(locales, { id: localeId });
-		return locale ?? find(locales, { id: 'en' });
-	}, [locales, settings.prefs.zimbraPrefLocale]);
+	const defaultLocale = useMemo(
+		() =>
+			(settings.prefs.zimbraPrefLocale &&
+				find(locales, { id: `${settings.prefs.zimbraPrefLocale}` })) ||
+			find(locales, { id: 'en' }),
+		[locales, settings.prefs.zimbraPrefLocale]
+	);
 
-	const defaultTimeZone = useMemo(() => {
-		const timeZoneId = (settings.prefs.zimbraPrefTimeZoneId as string) ?? 'UTC';
-		const timezone = find(timezones, { value: timeZoneId });
-		return timezone ?? find(timezones, { value: 'UTC' });
-	}, [timezones, settings.prefs.zimbraPrefTimeZoneId]);
+	const onLocaleChange = useCallback<SingleSelectionOnChange>(
+		(value) => {
+			if (value && value !== settings.prefs.zimbraPrefLocale)
+				updatePrefs(value, 'zimbraPrefLocale');
+		},
+		[settings.prefs.zimbraPrefLocale, updatePrefs]
+	);
+
+	const defaultTimeZone = useMemo(
+		() =>
+			(settings.prefs.zimbraPrefTimeZoneId &&
+				find(timezones, { value: `${settings.prefs.zimbraPrefTimeZoneId}` })) ||
+			find(timezones, { value: 'UTC' }),
+		[timezones, settings.prefs.zimbraPrefTimeZoneId]
+	);
+
+	const onTimeZoneChange = useCallback<SingleSelectionOnChange>(
+		(value) => {
+			if (value && value !== settings.prefs.zimbraPrefTimeZoneId)
+				updatePrefs(value, 'zimbraPrefTimeZoneId');
+		},
+		[settings.prefs.zimbraPrefTimeZoneId, updatePrefs]
+	);
 
 	return (
 		<FormSubSection
@@ -64,12 +85,9 @@ const LanguageAndTimeZone: FC<{
 				{Object.keys(settings.prefs).length > 0 && (
 					<Select
 						items={locales}
-						background="gray5"
+						background={'gray5'}
 						label={t('label.language', 'Language')}
-						onChange={(value: any): void => {
-							if (value && value !== settings.prefs.zimbraPrefLocale)
-								updatePrefs(value, 'zimbraPrefLocale');
-						}}
+						onChange={onLocaleChange}
 						defaultSelection={defaultLocale}
 						showCheckbox={false}
 						dropdownMaxHeight="12.5rem"
@@ -77,15 +95,12 @@ const LanguageAndTimeZone: FC<{
 					/>
 				)}
 				<Padding top="small" width="100%">
-					{Object.keys(settings.prefs).length > 0 && timezones && (
+					{Object.keys(settings.prefs).length > 0 && timezones && defaultTimeZone && (
 						<Select
 							items={timezones}
-							background="gray5"
+							background={'gray5'}
 							label={t('label.time_zone', 'Time Zone')}
-							onChange={(value: any): void => {
-								if (value && value !== settings.prefs.zimbraPrefTimeZoneId)
-									updatePrefs(value, 'zimbraPrefTimeZoneId');
-							}}
+							onChange={onTimeZoneChange}
 							selection={defaultTimeZone}
 							showCheckbox={false}
 							dropdownMaxHeight="12.5rem"

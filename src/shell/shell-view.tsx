@@ -6,15 +6,9 @@
 
 import { Responsive, Row } from '@zextras/carbonio-design-system';
 import { PreviewManager } from '@zextras/carbonio-ui-preview';
-import { find, size } from 'lodash';
-import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import {
-	AppRoute,
-	isZappDarkreaderModeZimletProp,
-	ZappDarkreaderModeZimletProp,
-	ZimletProp
-} from '../../types';
+import type { AppRoute } from '../../types';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 import { IS_STANDALONE } from '../constants';
 import { useCurrentRoute } from '../history/hooks';

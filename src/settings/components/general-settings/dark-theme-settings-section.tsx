@@ -7,11 +7,14 @@
 import { Select, SelectItem, SingleSelectionOnChange, Text } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 import React, { FC, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { AddMod, DarkReaderPropValues, isDarkReaderPropValues, RemoveMod } from '../../../../types';
+import type { AddMod, DarkReaderPropValues, RemoveMod } from '../../../../types';
 import { ThemeCallbacksContext } from '../../../boot/theme-provider';
 import { DARK_READER_PROP_KEY, SHELL_APP_ID } from '../../../constants';
 import { getT } from '../../../store/i18n';
-import { useDarkReaderResultValue } from '../../../dark-mode/use-dark-reader-result-value';
+import {
+	isDarkReaderPropValues,
+	useDarkReaderResultValue
+} from '../../../dark-mode/use-dark-reader-result-value';
 
 const DarkThemeSettingSection: FC<{
 	addMod: AddMod;

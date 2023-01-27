@@ -21,15 +21,6 @@ export enum JSNS {
 
 export type DarkReaderPropValues = typeof DARK_READER_VALUES[number];
 
-export function isDarkReaderPropValues(
-	maybeDarkReaderPropValue: unknown
-): maybeDarkReaderPropValue is DarkReaderPropValues {
-	return (
-		typeof maybeDarkReaderPropValue === 'string' &&
-		DARK_READER_VALUES.includes(maybeDarkReaderPropValue)
-	);
-}
-
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type PackageDependentFunction = (app: string) => Function;
 // eslint-disable-next-line @typescript-eslint/ban-types

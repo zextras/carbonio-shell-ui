@@ -36,7 +36,6 @@ import { CreateTagResponse, Mods, SoapNotify, SoapRefresh, TagActionResponse } f
 import { INotificationManager } from '../notification';
 import { QueryChip } from '../search';
 import { Tag, Tags } from '../tags';
-import {ROOT_NAME} from "../../src/constants";
 
 declare const getBridgedFunctions: () => {
 	createModal: (...params: any[]) => void;

@@ -41,7 +41,7 @@ const DarkThemeSettingSection: FC<{
 	);
 
 	const setSelectNewValue = useCallback(
-		(value) => {
+		(value: DarkReaderPropValues) => {
 			const item = find(items, { value });
 			if (item) {
 				setSelection(item);

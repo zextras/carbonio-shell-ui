@@ -14,7 +14,7 @@ import {
 	Row,
 	Select,
 	SelectItem,
-	SelectProps,
+	SingleSelectionOnChange,
 	Text
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
@@ -109,9 +109,9 @@ const SettingsSentMessages = ({
 		[fromAddress, t]
 	);
 
-	const onChangeFromAddress = useCallback<SelectProps['onChange']>(
+	const onChangeFromAddress = useCallback<SingleSelectionOnChange>(
 		(newAddress) => {
-			if (!newAddress || typeof newAddress !== 'string') {
+			if (!newAddress) {
 				return;
 			}
 

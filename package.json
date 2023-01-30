@@ -97,6 +97,7 @@
 		"webpack-merge": "5.8.0"
 	},
 	"dependencies": {
+		"@fontsource/roboto": "^4.5.7",
 		"@sentry/browser": "^6.17.7",
 		"@tinymce/tinymce-react": "^3.13.0",
 		"@zextras/carbonio-design-system": "^1.0.1",

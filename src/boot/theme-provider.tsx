@@ -173,7 +173,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps): JSX.Element => 
 	}, [localStorageSettings]);
 
 	return (
-		<UIThemeProvider extension={aggregatedExtensions} loadDefaultFont>
+		<UIThemeProvider extension={aggregatedExtensions}>
 			<ThemeCallbacksContext.Provider value={{ addExtension, setDarkReaderState }}>
 				<GlobalStyle baseFontSize={baseFontSize} />
 				{children}

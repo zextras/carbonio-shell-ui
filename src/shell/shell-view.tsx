@@ -6,15 +6,9 @@
 
 import { Responsive, Row } from '@zextras/carbonio-design-system';
 import { PreviewManager } from '@zextras/carbonio-ui-preview';
-import { find, size } from 'lodash';
-import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import {
-	AppRoute,
-	isZappDarkreaderModeZimletProp,
-	ZappDarkreaderModeZimletProp,
-	ZimletProp
-} from '../../types';
+import type { AppRoute } from '../../types';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 import { IS_STANDALONE } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
@@ -26,7 +20,7 @@ import { BoardContainer } from './boards/board-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
-import { useDarkReaderResultValue } from '../custom-hooks/useDarkReaderResultValue';
+import { useDarkReaderResultValue } from '../dark-mode/use-dark-reader-result-value';
 
 const Background = styled.div`
 	background: ${({ theme }): string => theme.palette.gray6.regular};

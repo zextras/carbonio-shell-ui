@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useMemo } from 'react';
 import {
+	Catcher,
 	Container,
 	IconButton,
 	Padding,
 	Responsive,
-	useScreenMode,
-	Catcher
+	useScreenMode
 } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 import Logo from '../svg/carbonio.svg';
@@ -19,8 +19,7 @@ import { SearchBar } from '../search/search-bar';
 import { CreationButton } from './creation-button';
 import { useAppStore } from '../store/app';
 import { useLoginConfigStore } from '../store/login/store';
-import { useDarkReaderResultValue } from '../custom-hooks/useDarkReaderResultValue';
-import { getPrefersColorSchemeDarkMedia } from '../utils/utils';
+import { useDarkMode } from '../dark-mode/use-dark-mode';
 
 const CustomImg = styled.img`
 	height: 2rem;
@@ -32,28 +31,7 @@ const ShellHeader: FC<{
 }> = ({ mobileNavIsOpen, onMobileMenuClick, children }) => {
 	const { carbonioWebUiAppLogo, carbonioWebUiDarkAppLogo } = useLoginConfigStore();
 
-	const darkReaderResultValue = useDarkReaderResultValue();
-
-	const [darkModeEnabled, setDarkModeEnabled] = useState(false);
-
-	useEffect(() => {
-		if (darkReaderResultValue) {
-			setDarkModeEnabled(
-				(darkReaderResultValue === 'auto' && getPrefersColorSchemeDarkMedia().matches) ||
-					darkReaderResultValue === 'enabled'
-			);
-		}
-	}, [darkReaderResultValue]);
-
-	useEffect(() => {
-		const setCallback = (event: MediaQueryListEvent): void => {
-			setDarkModeEnabled(event.matches);
-		};
-		getPrefersColorSchemeDarkMedia().addEventListener('change', setCallback);
-		return (): void => {
-			getPrefersColorSchemeDarkMedia().removeEventListener('change', setCallback);
-		};
-	}, []);
+	const { darkModeEnabled, darkReaderStatus } = useDarkMode();
 
 	const logoSrc = useMemo(() => {
 		if (darkModeEnabled) {
@@ -93,7 +71,7 @@ const ShellHeader: FC<{
 						</Padding>
 					</Responsive>
 					<Container width="15.625rem" height="2rem" crossAlignment="flex-start">
-						{darkReaderResultValue && (
+						{darkReaderStatus && (
 							<>{logoSrc ? <CustomImg src={logoSrc} /> : <Logo height="2rem" />}</>
 						)}
 					</Container>

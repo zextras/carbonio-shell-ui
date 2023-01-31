@@ -28,9 +28,16 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<S
 	const setValue = (value: T | ((val: T) => T)): void => {
 		try {
 			const valueToStore = value instanceof Function ? value(storedValue) : value;
-			setStoredValue(valueToStore);
-			localStorage.setItem(key, JSON.stringify(valueToStore));
-			window.dispatchEvent(new Event('storage'));
+			const valueToStoreJSON = JSON.stringify(valueToStore);
+			setStoredValue((prevState) => {
+				const prevValueJSON = JSON.stringify(prevState);
+				if (prevValueJSON !== valueToStoreJSON) {
+					localStorage.setItem(key, valueToStoreJSON);
+					window.dispatchEvent(new Event('storage'));
+					return valueToStore;
+				}
+				return prevState;
+			});
 		} catch (error) {
 			console.error(error);
 		}

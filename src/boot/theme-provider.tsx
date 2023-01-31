@@ -4,10 +4,18 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { createContext, FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+	createContext,
+	useCallback,
+	useEffect,
+	useLayoutEffect,
+	useMemo,
+	useState
+} from 'react';
 import {
+	generateColorSet,
 	ThemeProvider as UIThemeProvider,
-	ThemeProviderProps
+	ThemeProviderProps as UIThemeProviderProps
 } from '@zextras/carbonio-design-system';
 import { auto, disable, enable, setFetchMethod } from 'darkreader';
 import { reduce } from 'lodash';
@@ -17,6 +25,7 @@ import { darkReaderDynamicThemeFixes, LOCAL_STORAGE_SETTINGS_KEY } from '../cons
 import { useLocalStorage } from '../shell/hooks';
 import { ScalingSettings } from '../../types/settings';
 import { getAutoScalingFontSize } from '../settings/components/utils';
+import { useGetPrimaryColor } from './use-get-primary-color';
 
 setFetchMethod(window.fetch);
 
@@ -34,26 +43,34 @@ export const ThemeCallbacksContext = createContext<ThemeCallbacks>({
 	}
 });
 
-const paletteExtension = (theme: DefaultTheme): DefaultTheme => ({
-	...theme,
-	palette: {
-		...theme.palette,
-		shared: {
-			regular: '#FFB74D',
-			hover: '#FFA21A',
-			active: '#FFA21A',
-			focus: '#FF9800',
-			disabled: '#FFD699'
-		},
-		linked: {
-			regular: '#AB47BC',
-			hover: '#8B3899',
-			active: '#8B3899',
-			focus: '#7A3187',
-			disabled: '#DDB4E4'
+type CustomTheme = Partial<Omit<DefaultTheme, 'palette'>> & {
+	palette?: Partial<DefaultTheme['palette']>;
+};
+
+const paletteExtension =
+	(customTheme: CustomTheme = {}) =>
+	(theme: DefaultTheme): DefaultTheme => ({
+		...theme,
+		...customTheme,
+		palette: {
+			...theme.palette,
+			...customTheme.palette,
+			shared: {
+				regular: '#FFB74D',
+				hover: '#FFA21A',
+				active: '#FFA21A',
+				focus: '#FF9800',
+				disabled: '#FFD699'
+			},
+			linked: {
+				regular: '#AB47BC',
+				hover: '#8B3899',
+				active: '#8B3899',
+				focus: '#7A3187',
+				disabled: '#DDB4E4'
+			}
 		}
-	}
-});
+	});
 
 const iconExtension: ThemeExtension = (theme) => ({
 	...theme,
@@ -70,26 +87,37 @@ interface GlobalStyledProps {
 
 const GlobalStyle = createGlobalStyle<GlobalStyledProps>`
   html {
-	  font-size: ${({ baseFontSize }): string => `${baseFontSize}%`};
+    font-size: ${({ baseFontSize }): string => `${baseFontSize}%`};
   }
 `;
 
-export const ThemeProvider: FC = ({ children }) => {
+interface ThemeProviderProps {
+	children?: React.ReactNode | React.ReactNode[];
+}
+export const ThemeProvider = ({ children }: ThemeProviderProps): JSX.Element => {
 	const [localStorageSettings] = useLocalStorage<ScalingSettings>(LOCAL_STORAGE_SETTINGS_KEY, {});
 
 	const [extensions, setExtensions] = useState<Partial<Record<keyof DefaultTheme, ThemeExtension>>>(
 		{}
 	);
 
-	useEffect(() => {
+	const primaryColor = useGetPrimaryColor();
+
+	useLayoutEffect(() => {
+		const customThemePalette: Partial<DefaultTheme['palette']> = primaryColor
+			? { primary: generateColorSet({ regular: primaryColor }) }
+			: {};
 		setExtensions((extension) => ({
 			...extension,
-			palette: paletteExtension,
+			palette: paletteExtension({
+				palette: customThemePalette
+			}),
 			icons: iconExtension
 		}));
-	}, []);
+	}, [primaryColor]);
 
 	const [darkReaderState, setDarkReaderState] = useState<DarkReaderPropValues>('disabled');
+
 	useEffect(() => {
 		switch (darkReaderState) {
 			case 'disabled':
@@ -117,7 +145,7 @@ export const ThemeProvider: FC = ({ children }) => {
 		}
 	}, [darkReaderState]);
 
-	const aggregatedExtensions = useCallback<NonNullable<ThemeProviderProps['extension']>>(
+	const aggregatedExtensions = useCallback<NonNullable<UIThemeProviderProps['extension']>>(
 		(theme) =>
 			reduce(
 				extensions,
@@ -145,7 +173,7 @@ export const ThemeProvider: FC = ({ children }) => {
 	}, [localStorageSettings]);
 
 	return (
-		<UIThemeProvider extension={aggregatedExtensions}>
+		<UIThemeProvider extension={aggregatedExtensions} loadDefaultFont>
 			<ThemeCallbacksContext.Provider value={{ addExtension, setDarkReaderState }}>
 				<GlobalStyle baseFontSize={baseFontSize} />
 				{children}

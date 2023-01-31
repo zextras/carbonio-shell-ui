@@ -219,7 +219,7 @@ export const handleFolderDeleted = (deleted: string[]): void =>
 	});
 export const handleFolderNotify = (notify: SoapNotify): void => {
 	handleFolderCreated(notify.created?.folder ?? []);
-	handleFolderModified(notify.modified?.folder ?? []);
+	handleFolderModified(notify.modified?.folder ?? notify.modified?.link ?? []);
 	handleFolderDeleted(notify.deleted ?? []);
 };
 onmessage = ({ data }: FolderMessage): void => {

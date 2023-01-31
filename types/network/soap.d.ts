@@ -74,7 +74,7 @@ export type SoapNotify = {
 		m?: Array<unknown>;
 		c?: Array<unknown>;
 		folder?: Array<Partial<SoapFolder>>;
-		link?: Array<Partial<SoapFolder>>;
+		link?: Array<Partial<SoapLink>>;
 		tag?: Array<Partial<Tag>>;
 		mbx: [{ s: number }];
 	};

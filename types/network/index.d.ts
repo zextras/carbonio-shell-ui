@@ -118,7 +118,7 @@ export type IdentityMods = {
 	createList?: { prefs: CreateIdentityProps }[];
 };
 
-export type PrefsMods = Record<string, string | number | boolean>;
+export type PrefsMods = Record<string, unknown>;
 
 export type Mods = Record<string, Record<string, unknown>> & {
 	props?: PropsMods;

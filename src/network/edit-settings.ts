@@ -61,7 +61,7 @@ export const editSettings = (
 								item.id
 							}">${map(item.prefs, (value, key) => `<a name="${key}">${value}</a>`).join(
 								''
-							)}<a name="zimbraPrefFromAddressType">sendAs</a></identity></ModifyIdentityRequest>`
+							)}</identity></ModifyIdentityRequest>`
 				  ).join('')
 				: ''
 		}${

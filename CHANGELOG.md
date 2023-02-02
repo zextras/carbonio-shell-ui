@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/zextras/carbonio-shell-ui/compare/v1.0.0...v1.1.0) (2023-02-02)
+
+
+### Features
+
+* change the shell header multibutton to always display new ([29ceeea](https://github.com/zextras/carbonio-shell-ui/commit/29ceeea0c41420c620e722fa581f58e72ae19455)), closes [#197](https://github.com/zextras/carbonio-shell-ui/issues/197)
+* **whitelabel:** set primary color on theme based on login config ([2ef5645](https://github.com/zextras/carbonio-shell-ui/commit/2ef564533dbfdbc235b415f7bdf2b94c067be76a)), closes [#178](https://github.com/zextras/carbonio-shell-ui/issues/178)
+
+
+### Bug Fixes
+
+* avoid loading fonts from ds to prevent slow loading of module ([e0621c3](https://github.com/zextras/carbonio-shell-ui/commit/e0621c34410fd2bb96223c5441616d695252df5e)), closes [#193](https://github.com/zextras/carbonio-shell-ui/issues/193)
+* **Composer:** avoid transformation of links to relative urls ([da63bf9](https://github.com/zextras/carbonio-shell-ui/commit/da63bf9d731477e309db437996821c969df43b1f)), closes [#187](https://github.com/zextras/carbonio-shell-ui/issues/187)
+* handle management of links when received from notify ([6eef7e7](https://github.com/zextras/carbonio-shell-ui/commit/6eef7e7be4bdb94b65e1e38d1434362c0adfda0c)), closes [#191](https://github.com/zextras/carbonio-shell-ui/issues/191)
+* reinstated hook ([48763f9](https://github.com/zextras/carbonio-shell-ui/commit/48763f9cc2013754b88f36bc7f875e5d69e672cb)), closes [#190](https://github.com/zextras/carbonio-shell-ui/issues/190)
+* **types:** fixup types ([#195](https://github.com/zextras/carbonio-shell-ui/issues/195)) ([ae3f2ca](https://github.com/zextras/carbonio-shell-ui/commit/ae3f2ca0c960065fb49bc611192f02e41ec5296e))
+* updated standard colors ([#189](https://github.com/zextras/carbonio-shell-ui/issues/189)) ([dc9aef1](https://github.com/zextras/carbonio-shell-ui/commit/dc9aef11fd7c22d5b0c3d6692f94711b4d0a4b7a))
+* use controlled mode select ([e8bacf4](https://github.com/zextras/carbonio-shell-ui/commit/e8bacf4596b97c00e4271b70813a757e808c51f1)), closes [#192](https://github.com/zextras/carbonio-shell-ui/issues/192)
+* use DS local fonts instead of downloading them from third-party source ([4933726](https://github.com/zextras/carbonio-shell-ui/commit/493372668dc89caeaf88303ebe94250fb2731e2d)), closes [#184](https://github.com/zextras/carbonio-shell-ui/issues/184)
+
 ## [1.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.46...v1.0.0) (2023-01-16)
 
 ### [0.4.46](https://github.com/zextras/carbonio-shell-ui/compare/v0.4.45...v0.4.46) (2023-01-05)

@@ -59,7 +59,7 @@ export const CreationButtonComponent: FC<{ activeRoute: AppRoute; location: Loca
 				data-testid="NewItemButton"
 				size="extralarge"
 				background="primary"
-				label={primaryAction?.label ?? t('new', 'New')}
+				label={t('new', 'New')}
 				onClick={primaryAction?.click}
 				items={secondaryActions}
 				disabledPrimary={!primaryAction || primaryAction?.disabled}

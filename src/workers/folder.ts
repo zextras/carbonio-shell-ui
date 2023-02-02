@@ -20,6 +20,7 @@ import {
 	SoapSearchFolder,
 	Folder
 } from '../../types';
+import { testFolderIsChecked } from '../utils/utils';
 
 const IM_LOGS = '14';
 const ROOT_NAME = 'USER_ROOT';
@@ -47,6 +48,7 @@ const normalize = (f: SoapFolder, p?: Folder): BaseFolder => ({
 	absFolderPath: f.absFolderPath,
 	l: f.l,
 	luuid: f.luuid,
+	checked: testFolderIsChecked({ string: f.f }),
 	f: f.f,
 	color: f.color || p?.color,
 	rgb: f.rgb,
@@ -187,6 +189,9 @@ export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void
 			const folder = folders[val.id];
 			if (folder) {
 				Object.assign(folder, omit(val));
+				if (typeof val.f !== 'undefined') {
+					folder.checked = testFolderIsChecked({ string: val.f });
+				}
 				if (val.l) {
 					const oldParent = folders[val.id].parent;
 					const newParent = folders[val.l];
@@ -214,7 +219,7 @@ export const handleFolderDeleted = (deleted: string[]): void =>
 	});
 export const handleFolderNotify = (notify: SoapNotify): void => {
 	handleFolderCreated(notify.created?.folder ?? []);
-	handleFolderModified(notify.modified?.folder ?? []);
+	handleFolderModified(notify.modified?.folder ?? notify.modified?.link ?? []);
 	handleFolderDeleted(notify.deleted ?? []);
 };
 onmessage = ({ data }: FolderMessage): void => {

@@ -12,7 +12,7 @@ import {
 } from '@zextras/carbonio-design-system';
 import { map, noop } from 'lodash';
 import React, { FC, useCallback, useMemo } from 'react';
-import { SHELL_APP_ID, UtilityView } from '../../types';
+import type { UtilityView } from '../../types';
 import { noOp } from '../network/fetch';
 import { logout } from '../network/logout';
 import { useUserAccount } from '../store/account';
@@ -20,6 +20,7 @@ import { addBoard } from '../store/boards';
 import { getT } from '../store/i18n';
 import { useUtilityBarStore } from './store';
 import { useUtilityViews } from './utils';
+import { SHELL_APP_ID } from '../constants';
 
 const UtilityBarItem: FC<{ view: UtilityView }> = ({ view }) => {
 	const { mode, setMode, current, setCurrent } = useUtilityBarStore();

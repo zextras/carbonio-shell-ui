@@ -30,7 +30,7 @@ export type Action = {
 	label: string;
 	icon: string;
 	click: (ev: SyntheticEvent<HTMLElement> | KeyboardEvent) => void;
-	type: 'divider';
+	type?: 'divider';
 	primary?: boolean;
 	group?: string;
 	disabled?: boolean;

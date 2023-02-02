@@ -3,7 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-/* eslint-disable @typescript-eslint/ban-types */
 
 import { i18n } from 'i18next';
 import { ComponentType, Dispatch, FC, SetStateAction } from 'react';
@@ -38,203 +37,211 @@ import { INotificationManager } from '../notification';
 import { QueryChip } from '../search';
 import { Tag, Tags } from '../tags';
 
-export const getBridgedFunctions: () => {
+declare const getBridgedFunctions: () => {
 	createModal: (...params: any[]) => void;
 	createSnackbar: (...params: any[]) => void;
 	getHistory: () => History;
 };
-export const editSettings: (mods: Mods) => Promise<any>;
-export const ZIMBRA_STANDARD_COLORS: Array<{ zValue: number; hex: string; zLabel: string }>;
-export const FOLDERS: {
+declare const editSettings: (mods: Mods) => Promise<any>;
+declare const ZIMBRA_STANDARD_COLORS: Array<{ zValue: number; hex: string; zLabel: string }>;
+declare const FOLDERS: {
 	[name: string]: string;
 };
-export const SHELL_APP_ID = 'carbonio-shell-ui';
-export const SETTINGS_APP_ID = 'settings';
-export const SEARCH_APP_ID = 'search';
-export const ACTION_TYPES: {
+declare const SHELL_APP_ID = 'carbonio-shell-ui';
+declare const SETTINGS_APP_ID = 'settings';
+declare const SEARCH_APP_ID = 'search';
+declare const ACTION_TYPES: {
 	[name: string]: string;
 };
-export const SHELL_MODES: Record<string, ShellModes>;
-export const BASENAME: string;
+declare const ROOT_NAME: string;
+declare const SHELL_MODES: Record<string, ShellModes>;
+declare const BASENAME: string;
 
-export const IS_STANDALONE: boolean;
+declare const IS_STANDALONE: boolean;
 
-export const getIntegratedHook: (id: string) => [Function, boolean];
-export const getIntegratedFunction: (id: string) => [Function, boolean];
-export const getIntegratedComponent: (id: string) => [ComponentType<unknown>, boolean];
-export const getActions: <T>(target: T, type: string) => Array<Action>;
-export const getActionsFactory: (type: string) => <T>(target: T) => Array<Action>;
-export const getAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];
-export const getActionFactory: <T>(
+// eslint-disable-next-line @typescript-eslint/ban-types
+declare const getIntegratedHook: (id: string) => [Function, boolean];
+// eslint-disable-next-line @typescript-eslint/ban-types
+declare const getIntegratedFunction: (id: string) => [Function, boolean];
+declare const getIntegratedComponent: (id: string) => [ComponentType<unknown>, boolean];
+declare const getActions: <T>(target: T, type: string) => Array<Action>;
+declare const getActionsFactory: (type: string) => <T>(target: T) => Array<Action>;
+declare const getAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];
+declare const getActionFactory: <T>(
 	type: string,
 	id: string
 ) => [ActionFactory<T> | undefined, boolean];
-export const useIntegratedHook: (id: string) => [Function, boolean];
-export const useIntegratedFunction: (id: string) => [Function, boolean];
-export const useIntegratedComponent: (id: string) => [ComponentType<unknown>, boolean];
-export const useActions: <T>(target: T, type: string) => Array<Action>;
-export const useActionsFactory: <T>(type: string) => CombinedActionFactory<T>;
-export const useAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];
-export const useActionFactory: <T>(
+// eslint-disable-next-line @typescript-eslint/ban-types
+declare const useIntegratedHook: (id: string) => [Function, boolean];
+// eslint-disable-next-line @typescript-eslint/ban-types
+declare const useIntegratedFunction: (id: string) => [Function, boolean];
+declare const useIntegratedComponent: (id: string) => [ComponentType<unknown>, boolean];
+declare const useActions: <T>(target: T, type: string) => Array<Action>;
+declare const useActionsFactory: <T>(type: string) => CombinedActionFactory<T>;
+declare const useAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];
+declare const useActionFactory: <T>(
 	type: string,
 	id: string
 ) => [ActionFactory<T> | undefined, boolean];
-export const useApp: () => CarbonioModule;
-export const getApp: () => CarbonioModule;
-export const useAppContext: <T>() => T;
-export const getAppContext: <T>() => T;
-export const useUserAccount: () => Account;
-export const useUserAccounts: () => Array<Account>;
-export const useUserRights: () => AccountRights;
-export const useUserRight: (right: AccountRightName) => Array<AccountRightTarget>;
-export const getUserAccount: () => Account;
-export const getUserAccounts: () => Array<Account>;
-export const getUserRights: () => AccountRights;
-export const getUserRight: (right: AccountRightName) => Array<AccountRightTarget>;
-export const useTags: () => Tags;
-export const getTags: () => Tags;
-export const useTag: (id: string) => Tag;
-export const getTag: (id: string) => Tag;
-export const useFolder: (id: string) => BaseFolder | Folder | LinkFolder;
-export const getFolder: (id: string) => BaseFolder | Folder | LinkFolder;
-export const useFolders: () => Folders;
-export const getFolders: () => Folders;
-export const useRoot: (name: string) => Folder;
-export const getRoot: (name: string) => Folder;
-export const useRoots: () => Roots;
-export const getRoots: () => Roots;
-export const useRootByView: (view: string) => Folder;
-export const getRootByView: (view: string) => Folder;
-export const createTag: (tag: Omit<Tag, 'id'>) => Promise<CreateTagResponse>;
-export const renameTag: (id: string, name: string) => Promise<TagActionResponse>;
-export const deleteTag: (id: string) => Promise<TagActionResponse>;
-export const changeTagColor: (id: string, color: number | string) => Promise<TagActionResponse>;
-export const useUserSettings: () => AccountSettings;
-export const useUserSetting: <T = void>(...path: Array<string>) => string | T;
-export const getUserSettings: () => AccountSettings;
-export const getUserSetting: <T = void>(...path: Array<string>) => string | T;
-export const useNotify: () => Array<SoapNotify>;
-export const useRefresh: () => SoapRefresh;
-export const AppLink: FC<LinkProps>;
-export const Spinner: FC;
+declare const useApp: () => CarbonioModule;
+declare const getApp: () => CarbonioModule;
+declare const useAppContext: <T>() => T;
+declare const getAppContext: <T>() => T;
+declare const useUserAccount: () => Account;
+declare const useUserAccounts: () => Array<Account>;
+declare const useUserRights: () => AccountRights;
+declare const useUserRight: (right: AccountRightName) => Array<AccountRightTarget>;
+declare const getUserAccount: () => Account;
+declare const getUserAccounts: () => Array<Account>;
+declare const getUserRights: () => AccountRights;
+declare const getUserRight: (right: AccountRightName) => Array<AccountRightTarget>;
+declare const useTags: () => Tags;
+declare const getTags: () => Tags;
+declare const useTag: (id: string) => Tag;
+declare const getTag: (id: string) => Tag;
+declare const useFolder: (id: string) => BaseFolder | Folder | LinkFolder;
+declare const getFolder: (id: string) => BaseFolder | Folder | LinkFolder;
+declare const useFolders: () => Folders;
+declare const getFolders: () => Folders;
+declare const useRoot: (name: string) => Folder;
+declare const getRoot: (name: string) => Folder;
+declare const useRoots: () => Roots;
+declare const getRoots: () => Roots;
+declare const useRootByView: (view: string) => Folder;
+declare const getRootByView: (view: string) => Folder;
+declare const createTag: (tag: Omit<Tag, 'id'>) => Promise<CreateTagResponse>;
+declare const renameTag: (id: string, name: string) => Promise<TagActionResponse>;
+declare const deleteTag: (id: string) => Promise<TagActionResponse>;
+declare const changeTagColor: (id: string, color: number | string) => Promise<TagActionResponse>;
+declare const useUserSettings: () => AccountSettings;
+declare const useUserSetting: <T = void>(...path: Array<string>) => string | T;
+declare const getUserSettings: () => AccountSettings;
+declare const getUserSetting: <T = void>(...path: Array<string>) => string | T;
+declare const useNotify: () => Array<SoapNotify>;
+declare const useRefresh: () => SoapRefresh;
+declare const AppLink: FC<LinkProps>;
+declare const Spinner: FC;
 
-export const useIsMobile: () => boolean;
-export const soapFetch: SoapFetch;
-export const xmlSoapFetch: SoapFetch;
-export const report: (error: Error, hint?: unknown) => void;
-export const setAppContext: <T>(obj: T) => void;
+declare const useIsMobile: () => boolean;
+declare const soapFetch: SoapFetch;
+declare const xmlSoapFetch: SoapFetch;
+declare const report: (error: Error, hint?: unknown) => void;
+declare const setAppContext: <T>(obj: T) => void;
 
-export const removeActions: (...ids: Array<string>) => void;
-export const registerActions: (
+declare const removeActions: (...ids: Array<string>) => void;
+declare const registerActions: (
 	...items: Array<{ id: string; action: ActionFactory<unknown>; type: string }>
 ) => void;
-export const removeComponents: (...ids: Array<string>) => void;
-export const registerComponents: (
+declare const removeComponents: (...ids: Array<string>) => void;
+declare const registerComponents: (
 	...items: Array<{ id: string; component: ComponentType }>
 ) => void;
-export const removeHooks: (...ids: Array<string>) => void;
-export const registerHooks: (...items: Array<{ id: string; hook: AnyFunction }>) => void;
-export const removeFunctions: (...ids: Array<string>) => void;
-export const registerFunctions: (...items: Array<{ id: string; fn: AnyFunction }>) => void;
+declare const removeHooks: (...ids: Array<string>) => void;
+declare const registerHooks: (...items: Array<{ id: string; hook: AnyFunction }>) => void;
+declare const removeFunctions: (...ids: Array<string>) => void;
+declare const registerFunctions: (...items: Array<{ id: string; fn: AnyFunction }>) => void;
 // add route (id route primaryBar secondaryBar app)
-export const addRoute: (routeData: Partial<AppRouteDescriptor>) => string;
-export const setRouteVisibility: (id: string, visible: boolean) => void;
+declare const addRoute: (routeData: Partial<AppRouteDescriptor>) => string;
+declare const setRouteVisibility: (id: string, visible: boolean) => void;
 // remove route (id | route)
-export const removeRoute: (id: string) => void;
+declare const removeRoute: (id: string) => void;
 //
 // update primaryBar
-export const updatePrimaryBadge: (badge: Partial<BadgeInfo>, id: string) => void;
-export const updateUtilityBadge: (badge: Partial<BadgeInfo>, id: string) => void;
+declare const updatePrimaryBadge: (badge: Partial<BadgeInfo>, id: string) => void;
+declare const updateUtilityBadge: (badge: Partial<BadgeInfo>, id: string) => void;
 //
 // add board
-export const addBoardView: (data: Object & Partial<BoardView>) => string;
+declare const addBoardView: (data: Record<string, unknown> & Partial<BoardView>) => string;
 // remove board
-export const removeBoardView: (id: string) => void;
+declare const removeBoardView: (id: string) => void;
 //
 // add settings
-export const addSettingsView: (data: Partial<SettingsView>) => string;
+declare const addSettingsView: (data: Partial<SettingsView>) => string;
 // remove settings
-export const removeSettingsView: (id: string) => void;
+declare const removeSettingsView: (id: string) => void;
 //
 // add search
-export const addSearchView: (data: Partial<SearchView>) => string;
+declare const addSearchView: (data: Partial<SearchView>) => string;
 // remove search
-export const removeSearchView: (id: string) => void;
+declare const removeSearchView: (id: string) => void;
 //
 // add utility
-export const addUtilityView: (data: Partial<UtilityView>) => string;
+declare const addUtilityView: (data: Partial<UtilityView>) => string;
 // remove utility
-export const removeUtilityView: (id: string) => void;
+declare const removeUtilityView: (id: string) => void;
 //
 // add primaryAccessory
-export const addPrimaryAccessoryView: (data: Partial<PrimaryAccessoryView>) => string;
+declare const addPrimaryAccessoryView: (data: Partial<PrimaryAccessoryView>) => string;
 // remove primaryAccessory
-export const removePrimaryAccessoryView: (id: string) => void;
+declare const removePrimaryAccessoryView: (id: string) => void;
 //
 // add secondaryAccessory
-export const addSecondaryAccessoryView: (data: Partial<SecondaryAccessoryView>) => string;
+declare const addSecondaryAccessoryView: (data: Partial<SecondaryAccessoryView>) => string;
 // remove secondaryAccessory
-export const removeSecondaryAccessoryView: (id: string) => void;
-export const usePushHistoryCallback: () => (params: HistoryParams) => void;
-export const useReplaceHistoryCallback: () => (params: HistoryParams) => void;
-export const useGoBackHistoryCallback: () => () => void;
-export const pushHistory: (params: HistoryParams) => void;
-export const replaceHistory: (params: HistoryParams) => void;
-export const goBackHistory: () => void;
-export const useCurrentRoute: () => AppRoute | undefined;
-export const getCurrentRoute: () => AppRoute | undefined;
+declare const removeSecondaryAccessoryView: (id: string) => void;
+declare const usePushHistoryCallback: () => (params: HistoryParams) => void;
+declare const useReplaceHistoryCallback: () => (params: HistoryParams) => void;
+declare const useGoBackHistoryCallback: () => () => void;
+declare const pushHistory: (params: HistoryParams) => void;
+declare const replaceHistory: (params: HistoryParams) => void;
+declare const goBackHistory: () => void;
+declare const useCurrentRoute: () => AppRoute | undefined;
+declare const getCurrentRoute: () => AppRoute | undefined;
 
 // FOLDERS
 
 // ROOTS
 
 // ROOTS BY USER
-export const useRootByUser: (userId: string) => Folder | SearchFolder | Record<string, never>;
-export const getRootByUser: (userId: string) => Folder | SearchFolder | Record<string, never>;
+declare const useRootByUser: (userId: string) => Folder | SearchFolder | Record<string, never>;
+declare const getRootByUser: (userId: string) => Folder | SearchFolder | Record<string, never>;
 
 // SEARCHES
 
-export const useSearchFolder: (id: string) => SearchFolder | undefined;
-export const useSearchFolders: (id: string) => SearchFolder | undefined;
-export const getSearchFolder: () => Searches;
-export const getSearchFolders: () => Searches;
+declare const useSearchFolder: (id: string) => SearchFolder | undefined;
+declare const useSearchFolders: (id: string) => SearchFolder | undefined;
+declare const getSearchFolder: () => Searches;
+declare const getSearchFolders: () => Searches;
 
 // Accordion-ize
 
-export const useFoldersByView: (view: string) => Array<Folder>;
+declare const useFoldersByView: (view: string) => Array<Folder>;
 
-export const useFoldersAccordionByView: (
+declare const useFoldersAccordionByView: (
 	view: string,
 	CustomComponent: ComponentType<{ folder: Folder }>,
 	itemProps?: (item: AccordionFolder) => Record<string, any>
 ) => Array<AccordionFolder>;
 
 // NOTIFICATION
-export const getNotificationManager: () => INotificationManager;
+declare const getNotificationManager: () => INotificationManager;
 
 // Run Search
-export const runSearch: (query: Array<QueryChip>, module: string) => void;
+declare const runSearch: (query: Array<QueryChip>, module: string) => void;
 
-export const useLocalStorage: <T>(key: string, initialValue: T) => [T, Dispatch<SetStateAction<T>>];
+declare const useLocalStorage: <T>(
+	key: string,
+	initialValue: T
+) => [T, Dispatch<SetStateAction<T>>];
 
 // TRANSLATIONS
-export const getI18n: () => i18n;
-export const useI18n: () => i18n;
-export const t: TFunction;
+declare const getI18n: () => i18n;
+declare const useI18n: () => i18n;
+declare const t: TFunction;
 
-export const addBoard: <T = any>(
+declare const addBoard: <T = any>(
 	board: Omit<Board<T>, 'app' | 'icon' | 'id'> & { id?: string; icon?: string },
 	expanded?: boolean
 ) => Board;
-export const closeBoard: (id: string) => void;
-export const updateBoard: <T = any>(id: string, board: Partial<Board<T>>) => void;
-export const updateBoardContext: <T = any>(id: string, context: T) => void;
-export const getBoardById: <T>(id: string) => Board<T>;
-export const getBoardContextById: <T>(id: string) => T;
-export const useBoardContextById: <T>(id: string) => T;
-export const useBoardById: <T>(id: string) => Board<T>;
-export const minimizeBoards: () => void;
-export const reopenBoards: () => void;
-export const setCurrentBoard: (id: string) => void;
-export const useBoardHooks: () => BoardHooksContext;
-export const useBoard: <T>() => Board<T>;
+declare const closeBoard: (id: string) => void;
+declare const updateBoard: <T = any>(id: string, board: Partial<Board<T>>) => void;
+declare const updateBoardContext: <T = any>(id: string, context: T) => void;
+declare const getBoardById: <T>(id: string) => Board<T>;
+declare const getBoardContextById: <T>(id: string) => T;
+declare const useBoardContextById: <T>(id: string) => T;
+declare const useBoardById: <T>(id: string) => Board<T>;
+declare const minimizeBoards: () => void;
+declare const reopenBoards: () => void;
+declare const setCurrentBoard: (id: string) => void;
+declare const useBoardHooks: () => BoardHooksContext;
+declare const useBoard: <T>() => Board<T>;

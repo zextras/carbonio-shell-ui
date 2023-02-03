@@ -19,7 +19,8 @@
                 "a": "A"
             },
             "option_s": "Klein",
-            "option_l": "Groot"
+            "option_l": "Groot",
+            "option_xl": "Extra groot"
         },
         "out_of_office": {
             "labels": {

@@ -6,7 +6,8 @@
                 "a": "A"
             },
             "option_s": "เล็ก",
-            "option_l": "ใหญ่"
+            "option_l": "ใหญ่",
+            "option_xl": "ใหญ่มาก"
         },
         "out_of_office": {
             "labels": {

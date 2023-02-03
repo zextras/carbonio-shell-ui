@@ -14,7 +14,8 @@
             "option_s": "小",
             "option_l": "大",
             "option_xs": "極小",
-            "option_m": "中間"
+            "option_m": "中間",
+            "option_xl": "特大"
         },
         "out_of_office": {
             "labels": {

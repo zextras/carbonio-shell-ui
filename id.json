@@ -18,7 +18,8 @@
                 "a": "A"
             },
             "option_s": "Kecil",
-            "option_l": "Besar"
+            "option_l": "Besar",
+            "option_xl": "Ekstra Besar"
         },
         "out_of_office": {
             "labels": {

@@ -3,10 +3,18 @@
         "appearance": {
             "labels": {
                 "choose_size_pangram": "いろはにほへと ちりぬるを わかよたれそ つねならむ うゐのおくやま けふこえて あさきゆめみし ゑひもせす",
-                "a": "8"
+                "a": "8",
+                "increase_disabled": "最大サイズに達しました",
+                "decrease": "縮小する",
+                "increase": "拡大する",
+                "decrease_disabled": "最大サイズに達しました",
+                "choose_size_description": "Carbonio 環境のサイズとスタイルを選択してください",
+                "choose_size_auto": "デバイスに応じてテキストのサイズを自動的に変更します"
             },
             "option_s": "小",
-            "option_l": "大"
+            "option_l": "大",
+            "option_xs": "極小",
+            "option_m": "中間"
         },
         "out_of_office": {
             "labels": {
@@ -186,7 +194,8 @@
         "save": "保存する",
         "secondary": "セカンダリー",
         "folder_external_account": "フォルダ: 新しい外部アカウント",
-        "add_inline_image": "インライン画像を追加する"
+        "add_inline_image": "インライン画像を追加する",
+        "select_image": "画像を選択する"
     },
     "locale": {
         "label_turkish": "トルコ語- {{value}}",

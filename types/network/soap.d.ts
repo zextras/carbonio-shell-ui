@@ -68,6 +68,7 @@ export type SoapNotify = {
 		m?: Array<unknown>;
 		c?: Array<unknown>;
 		folder?: Array<SoapFolder>;
+		link?: Array<SoapLink>;
 		tag?: Array<Tag>;
 	};
 	modified?: {

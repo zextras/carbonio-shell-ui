@@ -101,8 +101,6 @@
 		"react-router-dom": "^5.3.4",
 		"react-widgets": "^4.6.1",
 		"react-widgets-moment": "^4.0.30",
-		"redux-logger": "3.0.6",
-		"redux-persist": "6.0.0",
 		"remark-gfm": "3.0.1",
 		"tinymce": "^5.10.7",
 		"ua-parser-js": "^1.0.33",

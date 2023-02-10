@@ -134,9 +134,6 @@
 		"moment": {
 			"optional": true
 		},
-		"node-fetch": {
-			"optional": true
-		},
 		"react": {
 			"optional": true
 		},

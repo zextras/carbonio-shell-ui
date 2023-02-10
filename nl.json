@@ -16,11 +16,19 @@
         "appearance": {
             "labels": {
                 "choose_size_pangram": "Pa’s wijze lynx bezag vroom het fikse aquaduct.",
-                "a": "A"
+                "a": "A",
+                "increase_disabled": "Maximumgrootte bereikt",
+                "increase": "Grootte vergroten",
+                "decrease_disabled": "Minimumgrootte bereikt",
+                "decrease": "Grootte verminderen",
+                "choose_size_description": "Kies maat en stijl voor de Carbonio-omgeving",
+                "choose_size_auto": "De tekstgrootte automatisch aanpassen aan het apparaat"
             },
             "option_s": "Klein",
             "option_l": "Groot",
-            "option_xl": "Extra groot"
+            "option_xl": "Extra groot",
+            "option_xs": "Extra klein",
+            "option_m": "Medium"
         },
         "out_of_office": {
             "labels": {
@@ -187,7 +195,8 @@
         "when_composing": "Bij het samenstellen, beantwoorden of doorsturen van berichten in map(pen):",
         "when_replying": "Bij het beantwoorden of doorsturen van berichten die zijn verzonden naar:",
         "folder_external_account": "Map: Nieuwe externe account",
-        "add_inline_image": "Inline afbeelding toevoegen"
+        "add_inline_image": "Inline afbeelding toevoegen",
+        "select_image": "Afbeelding selecteren"
     },
     "locale": {
         "label_russian": "Russisch - {{value}}",

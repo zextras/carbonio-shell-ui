@@ -8,8 +8,8 @@ import i18next, { i18n } from 'i18next';
 import Backend from 'i18next-http-backend';
 import produce from 'immer';
 import { dropRight, forEach, reduce } from 'lodash';
-import create from 'zustand';
-import { CarbonioModule, I18nState } from '../../../types';
+import { create } from 'zustand';
+import type { CarbonioModule, I18nState } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
 import { useAccountStore } from '../account';
 
@@ -38,7 +38,7 @@ const defaultLng =
 
 const defaultI18n = i18next.createInstance({ lng: defaultLng });
 
-export const useI18nStore = create<I18nState>((set) => ({
+export const useI18nStore = create<I18nState>()((set) => ({
 	instances: {},
 	defaultI18n,
 	locale: 'en',

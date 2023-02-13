@@ -102,7 +102,7 @@
 		"remark-gfm": "3.0.1",
 		"tinymce": "^6.3.1",
 		"ua-parser-js": "^1.0.33",
-		"zustand": "^3.7.2"
+		"zustand": "^4.3.3"
 	},
 	"peerDependencies": {
 		"@reduxjs/toolkit": "~1.7.2",

@@ -15,11 +15,19 @@
         "appearance": {
             "labels": {
                 "choose_size_pangram": "El veloz murciélago hindú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás del palenque de paja.",
-                "a": "A"
+                "a": "A",
+                "increase_disabled": "Tamaño máximo alcanzado",
+                "increase": "Aumentar tamaño",
+                "decrease_disabled": "Tamaño mínimo alcanzado",
+                "decrease": "Reducir tamaño",
+                "choose_size_description": "Elegir tamaño y estilo para el entorno Carbonio",
+                "choose_size_auto": "Redimensionar el tamaño del texto automáticamente según el dispositivo"
             },
             "option_s": "Pequeño",
             "option_l": "Grande",
-            "option_xl": "Muy grande"
+            "option_xl": "Muy grande",
+            "option_xs": "Extrapequeño",
+            "option_m": "Medio"
         },
         "out_of_office": {
             "labels": {

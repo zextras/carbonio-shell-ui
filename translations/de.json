@@ -20,7 +20,8 @@
                 "a": "A"
             },
             "option_s": "Klein",
-            "option_l": "Groß"
+            "option_l": "Groß",
+            "option_xl": "Sehr groß"
         },
         "button": {
             "primary": "Speichern",

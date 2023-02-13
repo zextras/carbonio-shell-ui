@@ -4,11 +4,19 @@
         "appearance": {
             "labels": {
                 "choose_size_pangram": "A ligeira raposa marrom ataca o cão preguiçoso.",
-                "a": "A"
+                "a": "A",
+                "increase_disabled": "Tamanho máximo alcançado",
+                "increase": "Aumentar o tamanho",
+                "decrease_disabled": "Tamanho mínimo alcançado",
+                "decrease": "Diminuir o tamanho",
+                "choose_size_description": "Escolha o tamanho e o estilo para o ambiente Carbonio",
+                "choose_size_auto": "Redimensionar automaticamente o tamanho do texto dependendo do dispositivo"
             },
             "option_s": "Pequeno",
             "option_l": "Grande",
-            "option_xl": "Extra grande"
+            "option_xl": "Extra grande",
+            "option_xs": "Super pequeno",
+            "option_m": "Médio"
         },
         "button": {
             "primary": "Salvar",
@@ -68,7 +76,7 @@
             }
         }
     },
-    "new": "Nova",
+    "new": "Novo",
     "search": {
         "app": "Buscar",
         "module": "Módulo",
@@ -165,7 +173,7 @@
         "dont_save": "Não salvar uma cópia das mensagens enviadas",
         "external_account_settings": "Configurações de conta externa",
         "feedback": "Feedback",
-        "folder": "Pasta: Nova Conta Externa 3",
+        "folder": "Pasta: Nova conta externa 3",
         "from_name": "De: \"Nome\"",
         "imap": "IMAP",
         "leave_anyway": "Sair sem salvar",
@@ -186,7 +194,7 @@
         "use_ssl": "Usar uma conexão criptografada (SSL) ao acessar este servidor",
         "when_composing": "Ao escrever, responder ou encaminhar mensagens na(s) pasta(s):",
         "when_replying": "Ao responder ou encaminhar mensagens enviadas para:",
-        "folder_external_account": "Pasta: Nova Conta Externa",
+        "folder_external_account": "Pasta: Nova conta externa",
         "add_inline_image": "Adicionar imagem no corpo da mensagem",
         "select_image": "Selecionar imagem"
     },
@@ -388,7 +396,7 @@
         "write_here": "Escreva seu feedback aqui"
     },
     "messages": {
-        "permanent_delete_title": "Tem certeza que deseja excluir permanentemente este elemento?",
+        "permanent_delete_title": "Tem certeza que deseja excluir este elemento?",
         "permanent_delete_body": "Se você excluir permanentemente esta Persona, não poderá recuperá-la. Continuar?"
     },
     "share": {

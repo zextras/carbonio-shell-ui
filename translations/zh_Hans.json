@@ -3,12 +3,20 @@
         "app": "设置",
         "appearance": {
             "labels": {
-                "choose_size_pangram": "視野無限廣，窗外有藍天",
-                "a": "8"
+                "choose_size_pangram": "The quick brown fox jumps over the lazy dog.",
+                "a": "8",
+                "increase_disabled": "已达到最大尺寸",
+                "increase": "增大尺寸",
+                "decrease_disabled": "已达到最小尺寸",
+                "decrease": "缩小尺寸",
+                "choose_size_description": "为Carbonio环境选择尺寸和样式",
+                "choose_size_auto": "根据设备自动调整文本大小"
             },
             "option_s": "小",
             "option_l": "大",
-            "option_xl": "超大"
+            "option_xl": "超大",
+            "option_xs": "超小",
+            "option_m": "中等"
         },
         "button": {
             "primary": "保存",
@@ -187,7 +195,8 @@
         "use_personas_line2": "例如，如果您有时候会在工作中以特定角色发送邮件，可为其创建角色。",
         "recovery_email": "恢复邮件",
         "folder_external_account": "文件夹：新外部账户",
-        "add_inline_image": "添加内联图像"
+        "add_inline_image": "添加内联图像",
+        "select_image": "选择图像"
     },
     "locale": {
         "English": "英语",

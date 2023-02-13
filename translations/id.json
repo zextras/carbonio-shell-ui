@@ -15,10 +15,19 @@
         "appearance": {
             "labels": {
                 "choose_size_pangram": "Saya lihat foto Hamengkubuwono XV bersama enam zebra purba cantik yang jatuh dari Al Quranmu.",
-                "a": "A"
+                "a": "A",
+                "increase_disabled": "Ukuran maksimum tercapai",
+                "increase": "Perbesar ukuran",
+                "decrease_disabled": "Ukuran minimum tercapai",
+                "decrease": "Perkecil ukuran",
+                "choose_size_description": "Pilih ukuran dan gaya untuk lingkungan Carbonio",
+                "choose_size_auto": "Otomatis ubah ukuran teks tergantung pada perangkat"
             },
             "option_s": "Kecil",
-            "option_l": "Besar"
+            "option_l": "Besar",
+            "option_xl": "Ekstra Besar",
+            "option_xs": "Ekstra kecil",
+            "option_m": "Medium"
         },
         "out_of_office": {
             "labels": {
@@ -186,7 +195,8 @@
         "use_ssl": "Gunakan koneksi terenkripsi (SSL) saat mengakses server ini",
         "when_replying": "Saat membalas atau meneruskan pesan yang dikirim ke:",
         "folder_external_account": "Folder: Akun Eksternal Baru",
-        "add_inline_image": "Tambahkan gambar sebaris"
+        "add_inline_image": "Tambahkan gambar sebaris",
+        "select_image": "Pilih gambar"
     },
     "locale": {
         "portuguese_brazil": "Portugis (Brasil)",

@@ -81,7 +81,7 @@
 	"dependencies": {
 		"@fontsource/roboto": "^4.5.7",
 		"@reduxjs/toolkit": "^1.9.2",
-		"@sentry/browser": "^7.37.1",
+		"@sentry/browser": "^7.37.2",
 		"@tinymce/tinymce-react": "^4.3.0",
 		"@zextras/carbonio-design-system": "^1.1.0",
 		"@zextras/carbonio-ui-preview": "^1.0.0",

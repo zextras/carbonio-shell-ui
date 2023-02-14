@@ -71,16 +71,16 @@ export const useIntegrationsStore = create<IntegrationsState>((set) => ({
 	removeComponents: (...ids: Array<string>): void =>
 		set((s) => ({
 			...s,
-			actions: omit(s.components, ids)
+			components: omit(s.components, ids)
 		})),
 	removeHooks: (...ids: Array<string>): void =>
 		set((s) => ({
 			...s,
-			actions: omit(s.hooks, ids)
+			hooks: omit(s.hooks, ids)
 		})),
 	removeFunctions: (...ids: Array<string>): void =>
 		set((s) => ({
 			...s,
-			actions: omit(s.functions, ids)
+			functions: omit(s.functions, ids)
 		}))
 }));

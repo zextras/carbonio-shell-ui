@@ -15,8 +15,7 @@ import {
 	getActionsFactory,
 	getActionFactory,
 	getIntegratedComponent,
-	getIntegratedFunction,
-	getIntegratedHook
+	getIntegratedFunction
 } from '../../store/integrations/getters';
 import {
 	getUserAccount,
@@ -39,8 +38,7 @@ import {
 	useActionsFactory,
 	useActionFactory,
 	useIntegratedComponent,
-	useIntegratedFunction,
-	useIntegratedHook
+	useIntegratedFunction
 } from '../../store/integrations/hooks';
 import { CarbonioModule } from '../../../types';
 import {
@@ -110,8 +108,6 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	getApp: getApp(pkg.name),
 
 	// INTEGRATIONS
-	useIntegratedHook,
-	getIntegratedHook,
 	useIntegratedFunction,
 	getIntegratedFunction,
 	useIntegratedComponent,

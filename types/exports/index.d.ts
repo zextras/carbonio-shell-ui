@@ -60,8 +60,6 @@ declare const BASENAME: string;
 declare const IS_STANDALONE: boolean;
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-declare const getIntegratedHook: (id: string) => [Function, boolean];
-// eslint-disable-next-line @typescript-eslint/ban-types
 declare const getIntegratedFunction: (id: string) => [Function, boolean];
 declare const getIntegratedComponent: (id: string) => [ComponentType<unknown>, boolean];
 declare const getActions: <T>(target: T, type: string) => Array<Action>;
@@ -71,8 +69,6 @@ declare const getActionFactory: <T>(
 	type: string,
 	id: string
 ) => [ActionFactory<T> | undefined, boolean];
-// eslint-disable-next-line @typescript-eslint/ban-types
-declare const useIntegratedHook: (id: string) => [Function, boolean];
 // eslint-disable-next-line @typescript-eslint/ban-types
 declare const useIntegratedFunction: (id: string) => [Function, boolean];
 declare const useIntegratedComponent: (id: string) => [ComponentType<unknown>, boolean];
@@ -136,8 +132,6 @@ declare const removeComponents: (...ids: Array<string>) => void;
 declare const registerComponents: (
 	...items: Array<{ id: string; component: ComponentType }>
 ) => void;
-declare const removeHooks: (...ids: Array<string>) => void;
-declare const registerHooks: (...items: Array<{ id: string; hook: AnyFunction }>) => void;
 declare const removeFunctions: (...ids: Array<string>) => void;
 declare const registerFunctions: (...items: Array<{ id: string; fn: AnyFunction }>) => void;
 // add route (id route primaryBar secondaryBar app)

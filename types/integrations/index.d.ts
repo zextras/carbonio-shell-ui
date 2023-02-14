@@ -10,7 +10,6 @@ import { DropdownItem } from '@zextras/carbonio-design-system';
 export type IntegrationsState = {
 	actions: ActionMap;
 	components: ComponentMap;
-	hooks: HookMap;
 	functions: FunctionMap;
 	removeActions: (...ids: Array<string>) => void;
 	registerActions: (
@@ -20,8 +19,6 @@ export type IntegrationsState = {
 	registerComponents: (
 		app: string
 	) => (...items: Array<{ id: string; component: ComponentType }>) => void;
-	removeHooks: (...ids: Array<string>) => void;
-	registerHooks: (...items: Array<{ id: string; hook: AnyFunction }>) => void;
 	removeFunctions: (...ids: Array<string>) => void;
 	registerFunctions: (...items: Array<{ id: string; fn: AnyFunction }>) => void;
 };

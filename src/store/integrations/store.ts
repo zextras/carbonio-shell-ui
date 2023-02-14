@@ -20,7 +20,6 @@ export const useIntegrationsStore = create<IntegrationsState>((set) => ({
 			app: SHELL_APP_ID
 		}
 	},
-	hooks: {},
 	functions: {},
 	registerActions: <T>(
 		...items: Array<{ id: string; action: ActionFactory<T>; type: string }>
@@ -43,14 +42,6 @@ export const useIntegrationsStore = create<IntegrationsState>((set) => ({
 					});
 				})
 			),
-	registerHooks: (...items: Array<{ id: string; hook: AnyFunction }>): void =>
-		set(
-			produce((state) => {
-				forEach(items, ({ id, hook }) => {
-					state.hooks[id] = hook;
-				});
-			})
-		),
 	registerFunctions: (...items: Array<{ id: string; fn: AnyFunction }>): void =>
 		set(
 			produce((state) => {
@@ -75,11 +66,6 @@ export const useIntegrationsStore = create<IntegrationsState>((set) => ({
 		set((s) => ({
 			...s,
 			components: omit(s.components, ids)
-		})),
-	removeHooks: (...ids: Array<string>): void =>
-		set((s) => ({
-			...s,
-			hooks: omit(s.hooks, ids)
 		})),
 	removeFunctions: (...ids: Array<string>): void =>
 		set((s) => ({

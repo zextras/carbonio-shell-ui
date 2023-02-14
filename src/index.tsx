@@ -8,7 +8,7 @@
 
 import './index.css';
 import React, { lazy, Suspense } from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
 import LoadingView from './boot/splash';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -28,15 +28,18 @@ window.addEventListener('contextmenu', (ev) => {
 				element.classList?.find?.((cl: string) => cl === 'carbonio-bypass-context-menu')
 			)
 		)
-	)
+	) {
 		ev.preventDefault();
+	}
 });
 
-// @ts-ignore works as intended, but it's tampering with the window
-window.__CARBONIO_DEV__ = !!new URL(window.location).searchParams.get('dev');
 const Bootstrapper = lazy(() => import('./boot/bootstrapper'));
-if (module.hot) module.hot.accept();
-render(
+
+if (module.hot) {
+	module.hot.accept();
+}
+
+ReactDOM.render(
 	<Suspense fallback={<LoadingView />}>
 		<Bootstrapper key="boot" />
 	</Suspense>,

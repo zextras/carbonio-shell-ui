@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { Event, EventHint, Severity } from '@sentry/browser';
+import type { Event, EventHint } from '@sentry/browser';
 import { useReporter } from './store';
 
 export const report =
@@ -19,7 +19,7 @@ export const report =
 
 export const feedback = (message: Event): string => {
 	const reporter = useReporter.getState();
-	const eventId = reporter.clients.feedbacks.captureEvent({ ...message, level: Severity.Info });
+	const eventId = reporter.clients.feedbacks.captureEvent({ ...message, level: 'info' });
 	if (eventId) {
 		console.info('Feedback ', eventId, ' sent, Thank you');
 	}

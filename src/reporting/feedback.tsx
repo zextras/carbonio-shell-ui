@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Event, Severity } from '@sentry/browser';
+import type { Event } from '@sentry/browser';
 import {
 	ButtonOld as Button,
 	Container,
@@ -96,7 +96,7 @@ const LabelContainer = styled(Container)<LabelContainerProps>`
 
 const emptyEvent: Event = {
 	message: '',
-	level: Severity.Info,
+	level: 'info',
 	release: 'unknown',
 	extra: {
 		app: '0',

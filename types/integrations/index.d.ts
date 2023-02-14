@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ComponentType, MouseEvent, SyntheticEvent } from 'react';
+import { ComponentType } from 'react';
+import { DropdownItem } from '@zextras/carbonio-design-system';
 
 export type IntegrationsState = {
 	actions: ActionMap;
@@ -25,15 +26,9 @@ export type IntegrationsState = {
 	registerFunctions: (...items: Array<{ id: string; fn: AnyFunction }>) => void;
 };
 
-export type Action = {
-	id: string;
-	label: string;
-	icon: string;
-	click: (ev: SyntheticEvent<HTMLElement> | KeyboardEvent) => void;
-	type?: 'divider';
+export type Action = DropdownItem & {
 	primary?: boolean;
 	group?: string;
-	disabled?: boolean;
 	[key: string]: unknown;
 };
 

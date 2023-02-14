@@ -6,7 +6,7 @@
 
 import produce from 'immer';
 import create from 'zustand';
-import { forEach, omit, reduce } from 'lodash';
+import { forEach, includes, omit } from 'lodash';
 import { ComponentType } from 'react';
 import type { ActionFactory, AnyFunction, IntegrationsState } from '../../../types';
 import Composer from './composer';
@@ -60,14 +60,17 @@ export const useIntegrationsStore = create<IntegrationsState>((set) => ({
 			})
 		),
 	removeActions: (...ids: Array<string>): void =>
-		set((s) => ({
-			...s,
-			actions: reduce(
-				s.actions,
-				(acc, actions, type) => ({ ...acc, [type]: omit(actions, ids) }),
-				{}
-			)
-		})),
+		set(
+			produce((state) => {
+				forEach(state.actions, (actionTypeMap, type) => {
+					forEach(actionTypeMap, (actionFactory, actionFactoryId) => {
+						if (includes(ids, actionFactoryId)) {
+							delete state.actions[type][actionFactoryId];
+						}
+					});
+				});
+			})
+		),
 	removeComponents: (...ids: Array<string>): void =>
 		set((s) => ({
 			...s,

@@ -26,7 +26,8 @@ export type IntegrationsState = {
 export type Action = DropdownItem & {
 	primary?: boolean;
 	group?: string;
-	[key: string]: unknown;
+	/** @deprecated use onClick instead */
+	click?: DropdownItem['onClick'];
 };
 
 export type ActionFactory<T> = (target: T) => Action;
@@ -34,7 +35,6 @@ export type CombinedActionFactory<T> = (target: T) => Array<Action>;
 
 export type ActionMap = Record<string, Record<string, ActionFactory<unknown>>>;
 export type ComponentMap = Record<string, { app: string; item: ComponentType<any> }>;
-export type HookMap = Record<string, AnyFunction>;
 export type FunctionMap = Record<string, AnyFunction>;
 
 export type AnyFunction = (...args: unknown[]) => unknown;

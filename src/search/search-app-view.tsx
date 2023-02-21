@@ -19,6 +19,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { QueryChip, ResultLabelType } from '../../types';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { SEARCH_APP_ID } from '../constants';
+import { pushHistory } from '../history/hooks';
 import { useAppStore } from '../store/app';
 import { getT } from '../store/i18n';
 import { useSearchStore } from './search-store';
@@ -49,11 +50,13 @@ const ResultsHeader: FC<{ label: string; labelType?: ResultLabelType }> = ({
 	const t = getT();
 	const [query, updateQuery] = useQuery();
 	const [, setDisabled] = useDisableSearch();
+	const { module } = useSearchStore();
 
 	const resetQuery = useCallback(() => {
 		updateQuery([]);
 		setDisabled(false);
-	}, [updateQuery, setDisabled]);
+		pushHistory({ route: SEARCH_APP_ID, path: `/${module}` });
+	}, [updateQuery, setDisabled, module]);
 
 	const labelTypeElem = useMemo<ReactElement | undefined>(() => {
 		if (labelType === ResultLabelType.NORMAL) {

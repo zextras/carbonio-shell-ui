@@ -25,6 +25,7 @@ import { QueryChip } from '../../types';
 import { getT } from '../store/i18n';
 import { ModuleSelector } from './module-selector';
 import { useSearchStore } from './search-store';
+import { pushHistory } from '../history/hooks';
 
 const OutlinedIconButton = styled(IconButton)`
 	border: 0.0625rem solid
@@ -95,7 +96,8 @@ export const SearchBar: FC = () => {
 		setSearchDisabled(false);
 		updateQuery([]);
 		setInputTyped('');
-	}, [setSearchDisabled, updateQuery]);
+		pushHistory({ route: SEARCH_APP_ID, path: `/${module}` });
+	}, [module, setSearchDisabled, updateQuery]);
 
 	const onSearch = useCallback(() => {
 		updateQuery((currentQuery) => {

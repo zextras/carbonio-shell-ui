@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v1.1.1...v2.0.0) (2023-02-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove [key: string] index signature in Action type and add deprecated click key
+* remove registerHooks, removeHooks, getIntegratedHook and useIntegratedHook
+
+### Features
+
+* remove module package name from settings ([5f41cfa](https://github.com/zextras/carbonio-shell-ui/commit/5f41cfa8f2e200a87bfff81c84011122e0434078)), closes [#210](https://github.com/zextras/carbonio-shell-ui/issues/210)
+
+
+### Bug Fixes
+
+* clean integrations store ([29a8d4d](https://github.com/zextras/carbonio-shell-ui/commit/29a8d4df0fab854501c6379d90bdcbe400edf1d6)), closes [#207](https://github.com/zextras/carbonio-shell-ui/issues/207)
+* **folders:** handle creation of link folders ([8160dcd](https://github.com/zextras/carbonio-shell-ui/commit/8160dcdf749b74a3e2443f1781ab77b10f31c539)), closes [#203](https://github.com/zextras/carbonio-shell-ui/issues/203)
+
+
+* remove [key: string] index signature in Action type and add deprecated click key ([4706a54](https://github.com/zextras/carbonio-shell-ui/commit/4706a546370787f5b9433eb51f314a32c84345c4)), closes [#208](https://github.com/zextras/carbonio-shell-ui/issues/208)
+
 ### [1.1.1](https://github.com/zextras/carbonio-shell-ui/compare/v1.1.0...v1.1.1) (2023-02-13)
 
 ## [1.1.0](https://github.com/zextras/carbonio-shell-ui/compare/v1.0.0...v1.1.0) (2023-02-02)

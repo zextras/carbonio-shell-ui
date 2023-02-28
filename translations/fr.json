@@ -83,7 +83,8 @@
         "persona": "Identité",
         "persona_name": "Nom de l'identité",
         "folder_external_account": "Dossier : Nouveau Compte Externe",
-        "add_inline_image": "Ajouter une image dans le texte"
+        "add_inline_image": "Ajouter une image dans le texte",
+        "select_image": "Sélectionner un image"
     },
     "search": {
         "clear": "Effacer la saisie de recherche",
@@ -109,8 +110,20 @@
         "app": "Paramètres",
         "appearance": {
             "labels": {
-                "choose_size_pangram": "Voix ambiguë d'un cœur qui au zéphyr préfère les jattes de kiwis."
-            }
+                "choose_size_pangram": "Voix ambiguë d'un cœur qui au zéphyr préfère les jattes de kiwis.",
+                "a": "A",
+                "choose_size_description": "Choisissez la taille et le style pour l'environnement Carbonio",
+                "decrease_disabled": "Taille minimum atteinte",
+                "increase": "Augmenter la taille",
+                "choose_size_auto": "Modifier automatiquement la taille des caractères en fonction de l'appareil",
+                "decrease": "Diminuer la taille",
+                "increase_disabled": "Taille maximum atteinte"
+            },
+            "option_l": "Grande",
+            "option_m": "Moyenne",
+            "option_s": "Petite",
+            "option_xl": "Très grande",
+            "option_xs": "Très petite"
         },
         "button": {
             "primary": "Sauvegarder",
@@ -124,7 +137,8 @@
             "dark_mode": "Mode sombre",
             "general": "Paramètres généraux",
             "theme_auto": "Auto",
-            "theme_options": "Options du thème"
+            "theme_options": "Options du thème",
+            "appearance": "Apparence"
         },
         "general_tab": "Général",
         "out_of_office": {

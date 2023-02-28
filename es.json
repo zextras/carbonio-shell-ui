@@ -91,7 +91,7 @@
     "new": "Nuevo",
     "message": {
         "snackbar": {
-            "settings_saved": "Ediciones guardadas correctamente",
+            "settings_saved": "Se han guardado los cambios",
             "identities_quota_exceeded": "La identidad no pudo crearse porque has superado la cuota de identidades"
         },
         "reload": "\t¿Te gustaría volver a cargar la aplicación ahora para mostrar el nuevo idioma?\n(De lo contrario, el cambio se aplicará la próxima vez que inicies sesión)"

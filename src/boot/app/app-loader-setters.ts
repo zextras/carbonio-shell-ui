@@ -77,8 +77,6 @@ export const getAppSetters = (pkg: CarbonioModule): Record<string, Function> => 
 			appSetters.addSecondaryAccessoryView(normalizeSecondaryAccessoryView(data, pkg)),
 		// remove secondaryAccessory
 		removeSecondaryAccessoryView: appSetters.removeSecondaryAccessoryView,
-		registerHooks: integrations.registerHooks,
-		removeHooks: integrations.removeHooks,
 		registerFunctions: integrations.registerFunctions,
 		removeFunctions: integrations.removeFunctions,
 		registerActions: integrations.registerActions,

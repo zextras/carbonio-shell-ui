@@ -9,7 +9,7 @@ import { Location } from 'history';
 import { groupBy, noop, reduce } from 'lodash';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Action, AppRoute } from '../../types';
+import { Action, AppRoute, CarbonioModule } from '../../types';
 import { ACTION_TYPES } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppList } from '../store/app';
@@ -35,7 +35,7 @@ export const CreationButtonComponent: FC<{ activeRoute: AppRoute; location: Loca
 
 	const secondaryActions = [
 		...(byApp[activeRoute?.app ?? ''] ?? []),
-		...reduce(
+		...reduce<CarbonioModule, Array<Action>>(
 			apps,
 			(acc, app, i) => {
 				if (app.name !== activeRoute?.app && byApp[app.name]?.length > 0) {
@@ -43,7 +43,7 @@ export const CreationButtonComponent: FC<{ activeRoute: AppRoute; location: Loca
 				}
 				return acc;
 			},
-			[] as Array<Action | { type: 'divider'; id: string; label: string }>
+			[]
 		)
 	];
 
@@ -60,7 +60,7 @@ export const CreationButtonComponent: FC<{ activeRoute: AppRoute; location: Loca
 				size="extralarge"
 				background="primary"
 				label={t('new', 'New')}
-				onClick={primaryAction?.click}
+				onClick={primaryAction.onClick || primaryAction.click || noop}
 				items={secondaryActions}
 				disabledPrimary={!primaryAction || primaryAction?.disabled}
 				disabledSecondary={!secondaryActions?.length}

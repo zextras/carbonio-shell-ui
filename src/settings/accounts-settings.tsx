@@ -90,7 +90,7 @@ const getAvailableEmailAddresses = (account: Account, settings: AccountSettings)
 	// Adds all the aliases
 	if (settings.attrs.zimbraMailAlias) {
 		if (isArray(settings.attrs.zimbraMailAlias)) {
-			result.push(...settings.attrs.zimbraMailAlias as string[]);
+			result.push(...(settings.attrs.zimbraMailAlias as string[]));
 		} else {
 			result.push(String(settings.attrs.zimbraMailAlias));
 		}

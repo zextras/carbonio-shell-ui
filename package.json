@@ -1,6 +1,6 @@
 {
 	"name": "@zextras/carbonio-shell-ui",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "The Zextras Carbonio web client",
 	"main": "dist/zapp-shell.bundle.js",
 	"types": "./types/index.d.ts",

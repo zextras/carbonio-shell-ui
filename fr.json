@@ -92,7 +92,7 @@
         "app": "Recherche",
         "module": "Module",
         "type_to_start_search": "Tapez quelques mots-clés pour lancer une recherche",
-        "active_input_label": "Séparez vos mots-clés par une virgule ou en appuyant sur TAB",
+        "active_input_label": "Séparez vos mots-clés par une virgule ou en appuyant sur ESPACE",
         "idle_input_label": "Rechercher dans {{module}}",
         "start": "Démarrer la recherche",
         "type_or_choose_suggestion": "Tapez ou choisissez des mots-clés pour lancer une recherche",

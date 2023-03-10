@@ -26,12 +26,14 @@ const ToggleBoardIcon: FC = () => {
 	const { minimized, boards } = useBoardStore();
 	if (isEmpty(boards)) return null;
 	return (
-		<IconButton
-			iconColor="primary"
-			icon={minimized ? 'BoardOpen' : 'BoardCollapse'}
-			onClick={minimized ? reopenBoards : minimizeBoards}
-			size="large"
-		/>
+		<Container width={'3rem'} height={'3rem'}>
+			<IconButton
+				iconColor="primary"
+				icon={minimized ? 'BoardOpen' : 'BoardCollapse'}
+				onClick={minimized ? reopenBoards : minimizeBoards}
+				size="large"
+			/>
+		</Container>
 	);
 };
 
@@ -150,6 +152,7 @@ const ShellPrimaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute }
 						/>
 					) : null
 				)}
+				<ToggleBoardIcon />
 			</Row>
 			<Row
 				mainAlignment="flex-end"
@@ -163,7 +166,6 @@ const ShellPrimaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute }
 				{accessories.map((v) => (
 					<PrimaryBarAccessoryElement view={v} key={v.id} />
 				))}
-				<ToggleBoardIcon />
 			</Row>
 		</ContainerWithDivider>
 	);

@@ -2,7 +2,7 @@
     "search": {
         "module": "Modul",
         "app": "Cari",
-        "active_input_label": "Pisahkan kata kunci dengan koma atau tekan TAB",
+        "active_input_label": "Pisahkan kata kunci dengan koma atau tekan SPASI",
         "clear": "Bersihkan input pencarian",
         "idle_input_label": "Cari di {{module}}",
         "start": "Mulai pencarian",

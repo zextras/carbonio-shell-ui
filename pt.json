@@ -183,7 +183,6 @@
         "when_replying": "Ao responder ou encaminhar mensagens enviadas para:"
     },
     "timezone": {
-        "pyongyang": "{{value}} Pyongyang",
         "africa_algiers": "{{value}} África Central Ocidental",
         "africa_cairo": "{{value}} Egito",
         "africa_casablanca": "{{value}} Casablanca",

@@ -3,7 +3,7 @@
     "search": {
         "app": "Zoeken",
         "module": "Module",
-        "active_input_label": "Scheid uw trefwoorden door een komma of door op TAB te drukken",
+        "active_input_label": "Scheid uw trefwoorden door een komma of door op SPATIE te drukken",
         "clear": "Zoekingang wissen",
         "idle_input_label": "Zoeken in {{module}}",
         "start": "Start zoeken",

@@ -80,7 +80,7 @@
     "search": {
         "app": "ค้นหา",
         "module": "โมดูล",
-        "active_input_label": "แยกคำหลักด้วยเครื่องหมายจุลภาคหรือกด TAB",
+        "active_input_label": "คั่นคำหลักของคุณด้วยเครื่องหมายจุลภาคหรือกด SPACE",
         "clear": "ล้างข้อมูลการค้นหา",
         "idle_input_label": "ค้นหาใน {{module}}",
         "start": "เริ่มค้นหา",

@@ -9,7 +9,7 @@
     "search": {
         "unable_to_parse_query": "Nie udało się wyszukać, wyczyść pole wyszukiwania i spróbuj ponownie",
         "app": "Wyszukaj",
-        "active_input_label": "Oddziel słowa kluczowe używając przecinka lub naciskając TAB",
+        "active_input_label": "Oddziel słowa kluczowe używając przecinka lub naciskając spację",
         "idle_input_label": "Wyszukaj w {{module}}",
         "module": "Moduł",
         "start": "Rozpocznij wyszukiwanie",

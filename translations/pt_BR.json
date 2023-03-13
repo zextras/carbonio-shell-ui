@@ -80,7 +80,7 @@
     "search": {
         "app": "Buscar",
         "module": "Módulo",
-        "active_input_label": "Separe as palavras-chave com um vírgula ou pressionando TAB",
+        "active_input_label": "Separe as palavras-chave com uma vírgula ou pressionando ESPAÇO",
         "clear": "Limpar caixa de pesquisa",
         "idle_input_label": "Buscar em {{module}}",
         "start": "Iniciar busca",

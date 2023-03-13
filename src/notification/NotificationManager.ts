@@ -5,31 +5,14 @@
  */
 
 import { debounce, noop } from 'lodash';
-import {
-	NotificationConfig,
-	PopupNotificationConfig,
+import type {
 	AudioNotificationConfig,
-	INotificationManager
-} from '../../types/notification';
+	INotificationManager,
+	NotificationConfig,
+	PopupNotificationConfig
+} from '../../types';
 import defaultAudio from '../../assets/notification.mp3';
-import defaultIcon from '../../assets/carbonio-logo.png';
-
-const PopupNotificationDefaultConfig = {
-	title: 'Carbonio client',
-	icon: defaultIcon,
-	vibrate: [200, 100, 200]
-};
-
-const AudioNotificationDefaultConfig = {
-	sound: defaultAudio
-};
-
-const NotificationDefaultConfig: NotificationConfig = {
-	...PopupNotificationDefaultConfig,
-	...AudioNotificationDefaultConfig,
-	showPopup: true,
-	playSound: false
-};
+import { getFavicon } from '../store/login/getters';
 
 /**
  * The main goals of the NotificationManager are:
@@ -53,6 +36,35 @@ export class NotificationManager implements INotificationManager {
 	 * @private
 	 */
 	private static DEBOUNCE_TIME = 1000;
+
+	/**
+	 * Default configuration for the popup-only notification
+	 * @private
+	 */
+	private PopupNotificationDefaultConfig = {
+		title: '',
+		vibrate: [200, 100, 200],
+		icon: getFavicon()
+	};
+
+	/**
+	 * Default configuration for the audio-only notification
+	 * @private
+	 */
+	private AudioNotificationDefaultConfig: AudioNotificationConfig = {
+		sound: defaultAudio
+	};
+
+	/**
+	 * Default configuration for a notification with both popup and audio
+	 * @private
+	 */
+	private NotificationDefaultConfig: NotificationConfig = {
+		...this.PopupNotificationDefaultConfig,
+		...this.AudioNotificationDefaultConfig,
+		showPopup: true,
+		playSound: false
+	};
 
 	/**
 	 * Map of functions to play a specific audio file
@@ -85,7 +97,7 @@ export class NotificationManager implements INotificationManager {
 	 */
 	public playSound = (config: AudioNotificationConfig): void => {
 		const defConfig = {
-			...AudioNotificationDefaultConfig,
+			...this.AudioNotificationDefaultConfig,
 			...config
 		};
 		if (!defConfig.sound) {
@@ -102,7 +114,7 @@ export class NotificationManager implements INotificationManager {
 	 */
 	public showPopup = (config: PopupNotificationConfig): void => {
 		const defConfig = {
-			...PopupNotificationDefaultConfig,
+			...this.PopupNotificationDefaultConfig,
 			...config
 		};
 
@@ -125,7 +137,7 @@ export class NotificationManager implements INotificationManager {
 	 */
 	public notify = (config: NotificationConfig): void => {
 		const defConfig = {
-			...NotificationDefaultConfig,
+			...this.NotificationDefaultConfig,
 			...config
 		};
 

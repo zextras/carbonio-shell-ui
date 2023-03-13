@@ -4,17 +4,24 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import '../splash.css';
-import React, { FC } from 'react';
-import Logo from '../svg/carbonio.svg';
-import Helmet from '../svg/carbonio-head.svg';
+import React from 'react';
+import styled from 'styled-components';
+import Helmet from '../../assets/carbonio-head.svg';
+// TODO: change with import from logo component when ready
+import Logo from '../../assets/carbonio.svg';
+// import { Logo } from '../shell/logo';
 
-const LoadingView: FC = () => (
+const StyledLogo = styled(Logo)`
+	fill: #a3aebc;
+	width: 50%;
+`;
+const LoadingView = (): JSX.Element => (
 	<div className="splash">
 		<Helmet fill="#A3AEBC" />
 		<div className="loader">
 			<div className="bar"></div>
 		</div>
-		<Logo fill="#A3AEBC" width="50%" />
+		<StyledLogo />
 	</div>
 );
 export default LoadingView;

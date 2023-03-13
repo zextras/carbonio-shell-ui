@@ -9,7 +9,7 @@
     "new": "Yeni",
     "new_tab": "Yeni Sekme",
     "search": {
-        "active_input_label": "Anahtar kelimelerinizi virgül veya TAB tuşu ile ayırın",
+        "active_input_label": "Anahtar kelimelerinizi virgül veya BOŞLUK ile ayırın",
         "app": "Ara",
         "start": "Aramayı başlat",
         "clear": "Arama girişini sil",

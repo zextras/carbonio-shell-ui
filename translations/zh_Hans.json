@@ -80,7 +80,7 @@
     "search": {
         "app": "搜索",
         "module": "模块",
-        "active_input_label": "使用逗号或TAB分隔关键词",
+        "active_input_label": "使用逗号或空格分隔关键词",
         "clear": "清除搜索输入",
         "idle_input_label": "在{{module}}中搜索",
         "start": "开始搜索",

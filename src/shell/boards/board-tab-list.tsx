@@ -8,26 +8,43 @@ import {
 	Button,
 	Container,
 	Dropdown,
+	type DropdownItem,
 	Row,
 	Tooltip,
 	useHiddenCount
 } from '@zextras/carbonio-design-system';
 import { map, noop, slice } from 'lodash';
-import React, { FC, useLayoutEffect, useRef } from 'react';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { setCurrentBoard, useBoardStore } from '../../store/boards';
 import { getT } from '../../store/i18n';
 import { AppBoardTab } from './board-tab';
 
-export const TabsList: FC = () => {
+export const TabsList = (): JSX.Element => {
 	const t = getT();
 	const { boards, current, expanded } = useBoardStore();
 	const tabContainerRef = useRef(null);
+	// TODO: replace with useSplitVisibility?
 	const [hiddenTabsCount, recalculateHiddenTabs] = useHiddenCount(tabContainerRef, expanded);
 
 	useLayoutEffect(() => {
 		recalculateHiddenTabs();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [boards, expanded, tabContainerRef.current]);
+
+	const boardHiddenItems = useMemo(
+		(): DropdownItem[] =>
+			map(
+				slice(Object.values(boards), -hiddenTabsCount),
+				(tab): DropdownItem => ({
+					id: tab.id,
+					label: tab.title,
+					icon: tab.icon,
+					onClick: () => setCurrentBoard(tab.id),
+					selected: tab.id === current
+				})
+			),
+		[boards, current, hiddenTabsCount]
+	);
 
 	return (
 		<Row wrap="nowrap" height="100%" mainAlignment="flex-start" takeAvailableSpace>
@@ -46,20 +63,10 @@ export const TabsList: FC = () => {
 			{hiddenTabsCount > 0 && (
 				<>
 					<Container width="fit" padding={{ horizontal: 'extrasmall', vertical: 'extrasmall' }}>
-						<Container width="0.0625rem" height="fill" background="gray3" />
+						<Container width="0.0625rem" height="fill" background={'gray3'} />
 					</Container>
 					<Tooltip label={t('board.show_tabs', 'Show other tabs')} placement="top">
-						<Dropdown
-							width="fit"
-							style={{ flexGrow: '1' }}
-							items={map(slice(Object.values(boards), -hiddenTabsCount), (tab) => ({
-								id: tab.id,
-								label: tab.title,
-								icon: tab.icon,
-								click: () => setCurrentBoard(tab.id),
-								selected: tab.id === current
-							}))}
-						>
+						<Dropdown width="fit" style={{ flexGrow: '1' }} items={boardHiddenItems}>
 							<Button type="ghost" color="secondary" label={`+${hiddenTabsCount}`} onClick={noop} />
 						</Dropdown>
 					</Tooltip>

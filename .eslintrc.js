@@ -27,6 +27,8 @@ module.exports = {
 			{
 				templateFile: '.reuse/template.js'
 			}
-		]
+		],
+		'no-shadow': 'off',
+		'@typescript-eslint/no-shadow': 'error'
 	}
 };

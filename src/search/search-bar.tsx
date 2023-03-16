@@ -4,24 +4,22 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-
 import {
 	ChipInput,
-	ChipItem,
+	ChipInputProps,
 	Container,
 	IconButton,
 	Padding,
 	Tooltip
 } from '@zextras/carbonio-design-system';
-import { filter, find, map, reduce } from 'lodash';
+import { filter, find, map, reduce, some } from 'lodash';
 import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { LOCAL_STORAGE_SEARCH_KEY, SEARCH_APP_ID } from '../constants';
 import { useLocalStorage } from '../shell/hooks';
 
-import { QueryChip } from '../../types';
+import { QueryChip, QueryItem } from '../../types';
 import { getT } from '../store/i18n';
 import { ModuleSelector } from './module-selector';
 import { useSearchStore } from './search-store';
@@ -53,37 +51,33 @@ const StyledContainer = styled(Container)`
 	}
 `;
 
-type SearchLocalStorage = Array<{
-	value: string;
-	label: string;
-	icon: string;
-	app: string;
-	id: string;
-}>;
-export const SearchBar: FC = () => {
+type SearchOption = NonNullable<ChipInputProps['options']>[number] & QueryItem;
+
+export const SearchBar = (): JSX.Element => {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const t = getT();
-	const [storedValue, setStoredValue] = useLocalStorage<SearchLocalStorage>(
+	const [storedSuggestions, setStoredSuggestions] = useLocalStorage<SearchOption[]>(
 		LOCAL_STORAGE_SEARCH_KEY,
 		[]
 	);
-	const [inputTyped, setInputTyped] = useState('');
+	const [inputTyped, setInputTyped] = useState<string>('');
 	const history = useHistory();
 	const { updateQuery, module, query, searchDisabled, setSearchDisabled, tooltip } =
 		useSearchStore();
 
 	const [isTyping, setIsTyping] = useState(false);
 
-	const [options, setOptions] = useState<Array<{ id: string; label: string; hasAvatar: false }>>(
-		[]
-	);
+	const [options, setOptions] = useState<SearchOption[]>([]);
 
 	const [inputHasFocus, setInputHasFocus] = useState(false);
 
-	const [inputState, setInputState] = useState(query);
+	const [searchInputValue, setSearchInputValue] = useState<QueryChip[]>(query);
+
 	const showClear = useMemo(
-		() => inputState.length > 0 || (inputRef.current?.value && inputRef.current?.value?.length > 0),
-		[inputState.length]
+		() =>
+			searchInputValue.length > 0 ||
+			(inputRef.current?.value && inputRef.current?.value?.length > 0),
+		[searchInputValue.length]
 	);
 	const clearSearch = useCallback((): void => {
 		if (inputRef.current) {
@@ -91,7 +85,7 @@ export const SearchBar: FC = () => {
 			inputRef.current?.focus();
 		}
 		setIsTyping(false);
-		setInputState([]);
+		setSearchInputValue([]);
 		setSearchDisabled(false);
 		updateQuery([]);
 		setInputTyped('');
@@ -100,30 +94,41 @@ export const SearchBar: FC = () => {
 	const onSearch = useCallback(() => {
 		updateQuery((currentQuery) => {
 			const ref = inputRef?.current;
-			if (ref) ref.value = '';
+			if (ref) {
+				ref.value = '';
+			}
 			if (inputTyped.length > 0) {
-				const newInputState = [
-					...inputState,
-					...map(inputTyped?.split(' '), (label: string, id: number) => ({
-						id: `${id}`,
-						label,
-						hasAvatar: false
-					}))
+				const newInputValue: typeof searchInputValue = [
+					...searchInputValue,
+					...map(
+						inputTyped.split(' '),
+						(label, id): QueryChip => ({
+							id: `${id}`,
+							label,
+							hasAvatar: false
+						})
+					)
 				];
-				setInputState(newInputState);
+				setSearchInputValue(newInputValue);
 				setInputTyped('');
 				return reduce(
-					newInputState,
-					(acc, chip) => {
-						if (!find(currentQuery, (c: QueryChip): boolean => c.label === chip.label)) {
-							acc.push(chip);
+					newInputValue,
+					(acc, newInputChip) => {
+						if (
+							!some(
+								currentQuery,
+								(currentQueryChip) => currentQueryChip.label === newInputChip.label
+							)
+						) {
+							acc.push(newInputChip);
 						}
 						return acc;
 					},
-					filter(
-						currentQuery,
-						(qchip: QueryChip): boolean =>
-							!!find(inputState, (c: QueryChip): boolean => c.label === qchip.label)
+					filter(currentQuery, (currentQueryChip) =>
+						some(
+							searchInputValue,
+							(searchInputChip) => searchInputChip.label === currentQueryChip.label
+						)
 					)
 				);
 			}
@@ -131,48 +136,58 @@ export const SearchBar: FC = () => {
 			setInputTyped('');
 
 			return reduce(
-				inputState,
-				(acc, chip) => {
-					if (!find(currentQuery, (c: QueryChip): boolean => c.label === chip.label)) {
-						acc.push(chip);
+				searchInputValue,
+				(acc, searchInputChip) => {
+					if (
+						!some(
+							currentQuery,
+							(currentQueryChip) => currentQueryChip.label === searchInputChip.label
+						)
+					) {
+						acc.push(searchInputChip);
 					}
 					return acc;
 				},
 
-				filter(
-					currentQuery,
-					(qchip: QueryChip): boolean =>
-						!!find(inputState, (c: QueryChip): boolean => c.label === qchip.label)
+				filter(currentQuery, (currentQueryChip: QueryChip) =>
+					some(
+						searchInputValue,
+						(searchInputChip) => searchInputChip.label === currentQueryChip.label
+					)
 				)
 			);
 		});
+		// TODO: perform a navigation only when coming from a different module (not the search one)
 		history.push(`/${SEARCH_APP_ID}/${module}`);
-	}, [updateQuery, history, module, inputTyped, inputState]);
+	}, [updateQuery, history, module, inputTyped, searchInputValue]);
 
-	const appSuggestions = useMemo<Array<QueryChip & { hasAvatar: false }>>(
+	const appSuggestions = useMemo<SearchOption[]>(
 		() =>
-			filter(storedValue, (v) => v.app === module)
+			filter(storedSuggestions, (v) => v.app === module)
 				.reverse()
-				.map((item: QueryChip) => ({
-					...item,
-					hasAvatar: false,
-					disabled: searchDisabled,
-					click: (): void => {
-						setInputState((q: Array<QueryChip>) => [...q, { ...item, hasAvatar: false }]);
-					}
-				})),
-		[storedValue, module, searchDisabled]
+				.map(
+					(item): SearchOption => ({
+						...item,
+						disabled: searchDisabled,
+						onClick: (): void => {
+							const newInputChip: QueryChip = { ...item, hasAvatar: false, onClick: undefined };
+							setSearchInputValue((prevState) => [...prevState, newInputChip]);
+						}
+					})
+				),
+		[storedSuggestions, module, searchDisabled]
 	);
 
 	const updateOptions = useCallback(
-		(target: HTMLInputElement, q: Array<any>): void => {
-			if (target.textContent && target.textContent.length > 0) {
+		(textContent: string, queryChips: QueryChip[]): void => {
+			if (textContent.length > 0) {
 				setOptions(
 					appSuggestions
 						.filter(
-							(v: QueryChip): boolean =>
-								v.label?.indexOf(target.textContent as string) !== -1 &&
-								!find(q, (i) => i.value === v.label)
+							(suggestion) =>
+								textContent &&
+								suggestion.label.includes(textContent) &&
+								!some(queryChips, (queryChip) => queryChip.value === suggestion.label)
 						)
 						.slice(0, 5)
 				);
@@ -183,50 +198,52 @@ export const SearchBar: FC = () => {
 		[appSuggestions]
 	);
 
-	const onQueryChange = useCallback(
+	const onQueryChange = useCallback<NonNullable<ChipInputProps['onChange']>>(
 		(newQuery) => {
+			// FIXME: move the saving of suggestions after the search occurs.
+			// 	The saving logic should not be placed here because the onChange is called even when a chip is removed from the chipInput.
+			//  So, at the moment, keywords never searched for are saved too.
+			const lastChipLabel = newQuery[newQuery.length - 1]?.label;
 			if (
-				newQuery[newQuery.length - 1]?.label &&
+				lastChipLabel &&
+				typeof lastChipLabel === 'string' &&
 				module &&
-				!find(appSuggestions, (v) => v.label === newQuery[newQuery.length - 1]?.label)
+				!find(appSuggestions, (suggestion) => suggestion.label === lastChipLabel)
 			) {
-				setStoredValue((value) => [
-					...value,
-					{
-						value: newQuery[newQuery.length - 1].label,
-						label: newQuery[newQuery.length - 1].label,
+				setStoredSuggestions((prevState) => {
+					const newSuggestion: SearchOption = {
+						value: lastChipLabel,
+						label: lastChipLabel,
 						icon: 'ClockOutline',
 						app: module,
-						id: `${value.length}`,
-						hasAvatar: false
-					}
-				]);
+						id: lastChipLabel
+					};
+					return [...prevState, newSuggestion];
+				});
 			}
-			/** Commented for future reference */
-			// if (inputRef.current) {
-			// 	updateOptions(inputRef.current, newQuery);
-			// }
-			setInputState(newQuery);
+
+			// FIXME: remove the cast (by making ChipItem support generics?)
+			setSearchInputValue(newQuery as QueryChip[]);
 		},
-		[appSuggestions, module, setStoredValue]
+		[appSuggestions, module, setStoredSuggestions]
 	);
 
-	const onInputType = useCallback(
+	const onInputType = useCallback<NonNullable<ChipInputProps['onInputType']>>(
 		(ev) => {
-			if (ev.textContent === '') {
+			if (!ev.textContent) {
 				setIsTyping(false);
 			} else {
 				setIsTyping(true);
 			}
-			setInputTyped(ev.textContent);
-			updateOptions(ev, query);
+			setInputTyped(ev.textContent || '');
+			updateOptions(ev.textContent || '', query);
 		},
 		[query, updateOptions]
 	);
 
 	useEffect(() => {
 		if (module) {
-			const suggestions = filter(appSuggestions, (suggestion) => suggestion?.app === module).slice(
+			const suggestions = filter(appSuggestions, (suggestion) => suggestion.app === module).slice(
 				0,
 				5
 			);
@@ -235,7 +252,6 @@ export const SearchBar: FC = () => {
 		}
 	}, [appSuggestions, module]);
 
-	const [triggerSearch, setTriggerSearch] = useState(false);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const addFocus = useCallback(() => setInputHasFocus(true), []);
 	const removeFocus = useCallback(() => setInputHasFocus(false), []);
@@ -258,30 +274,22 @@ export const SearchBar: FC = () => {
 
 	useEffect(() => {
 		const ref = inputRef.current;
-		const searchCb = (ev: any): void => {
+		const runSearchOnKeyUp = (ev: KeyboardEvent): void => {
 			if (ev.key === 'Enter') {
-				setTimeout(() => {
-					setTriggerSearch(true);
-					removeFocus();
-				}, 0);
+				onSearch();
+				removeFocus();
 			}
 		};
 		if (ref) {
-			ref.addEventListener('keyup', searchCb);
+			ref.addEventListener('keyup', runSearchOnKeyUp);
 		}
+
 		return (): void => {
 			if (ref) {
-				ref.removeEventListener('keyup', searchCb);
+				ref.removeEventListener('keyup', runSearchOnKeyUp);
 			}
 		};
 	}, [onSearch, removeFocus]);
-
-	useEffect(() => {
-		if (triggerSearch) {
-			onSearch();
-			setTriggerSearch(false);
-		}
-	}, [onSearch, triggerSearch]);
 
 	const disableOptions = useMemo(() => !(options.length > 0) || isTyping, [options, isTyping]);
 
@@ -309,7 +317,7 @@ export const SearchBar: FC = () => {
 	);
 
 	const searchBtnTooltipLabel = useMemo(() => {
-		if (!searchButtonsAreDisabled && inputState.length > 0) {
+		if (!searchButtonsAreDisabled && searchInputValue.length > 0) {
 			return t('search.start', 'Start search');
 		}
 		if (inputHasFocus) {
@@ -322,10 +330,10 @@ export const SearchBar: FC = () => {
 			return t('label.edit_to_start_search', 'Edit your search to start a new one');
 		}
 		return t('search.type_to_start_search', 'Type some keywords to start a search');
-	}, [searchButtonsAreDisabled, inputState.length, inputHasFocus, query.length, t]);
+	}, [searchButtonsAreDisabled, searchInputValue.length, inputHasFocus, query.length, t]);
 
-	const onChipAdd = useCallback(
-		(newChip: string | unknown): ChipItem => {
+	const onChipAdd = useCallback<NonNullable<ChipInputProps['onAdd']>>(
+		(newChip) => {
 			setIsTyping(false);
 			setInputTyped('');
 			if (module) {
@@ -346,7 +354,7 @@ export const SearchBar: FC = () => {
 	);
 
 	useEffect(() => {
-		setInputState(map(query, (q) => ({ ...q, disabled: searchDisabled })));
+		setSearchInputValue(map(query, (queryChip) => ({ ...queryChip, disabled: searchDisabled })));
 	}, [searchDisabled, query]);
 
 	return (
@@ -375,7 +383,7 @@ export const SearchBar: FC = () => {
 								<StyledChipInput
 									disabled={searchDisabled}
 									inputRef={inputRef}
-									value={inputState}
+									value={searchInputValue}
 									onAdd={onChipAdd}
 									options={options}
 									placeholder={placeholder}

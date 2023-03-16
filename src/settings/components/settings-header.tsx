@@ -8,12 +8,13 @@ import {
 	Breadcrumbs,
 	ButtonOld as Button,
 	Container,
+	type Crumb,
 	Divider,
 	Padding,
 	Row,
 	Text
 } from '@zextras/carbonio-design-system';
-import React, { FC, useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { SETTINGS_APP_ID } from '../../constants';
 import { getT } from '../../store/i18n';
@@ -26,25 +27,31 @@ type SettingsHeaderProps = {
 	isDirty: boolean;
 };
 
-const SettingsHeader: FC<SettingsHeaderProps> = ({ onSave, onCancel, isDirty, title }) => {
+const SettingsHeader = ({ onSave, onCancel, isDirty, title }: SettingsHeaderProps): JSX.Element => {
 	const t = getT();
 	const history = useHistory();
-	const useparam = useParams();
-	const crumbs = [
-		{
-			id: 'settings',
-			label: t('settings.app', 'Settings'),
-			click: (): void => history.push(`/${SETTINGS_APP_ID}/`)
-		},
-		{
-			id: 'general',
-			label: title,
-			click: (): void => history.push(`/${SETTINGS_APP_ID}/`)
-		}
-	];
-	const search = history.location?.search;
+	const params = useParams();
+	const crumbs = useMemo(
+		(): Crumb[] => [
+			{
+				id: 'settings',
+				label: t('settings.app', 'Settings'),
+				onClick: (): void => history.push(`/${SETTINGS_APP_ID}/`)
+			},
+			{
+				id: 'general',
+				label: title,
+				onClick: (): void => history.push(`/${SETTINGS_APP_ID}/`)
+			}
+		],
+		[history, t, title]
+	);
+
+	const search: string | undefined = history.location?.search;
+
 	useEffect(() => {
 		if (search) {
+			// TODO: why not using anchor links instead of js?
 			setTimeout(
 				() =>
 					document
@@ -53,7 +60,7 @@ const SettingsHeader: FC<SettingsHeaderProps> = ({ onSave, onCancel, isDirty, ti
 				1
 			);
 		}
-	}, [history, history.location, history.location.search, search, useparam]);
+	}, [history, history.location, history.location.search, search, params]);
 	return (
 		<>
 			<RouteLeavingGuard when={isDirty} onSave={onSave}>
@@ -68,7 +75,7 @@ const SettingsHeader: FC<SettingsHeaderProps> = ({ onSave, onCancel, isDirty, ti
 			<Container
 				orientation="vertical"
 				mainAlignment="space-around"
-				background="gray5"
+				background={'gray5'}
 				height="fit"
 			>
 				<Row orientation="horizontal" width="100%">

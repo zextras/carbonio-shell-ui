@@ -14,7 +14,7 @@ import {
 } from '@zextras/carbonio-design-system';
 import { isEmpty, map } from 'lodash';
 import React, { FC } from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, SimpleInterpolation } from 'styled-components';
 import {
 	closeAllBoards,
 	expandBoards,
@@ -36,13 +36,13 @@ const BoardContainerComp = styled.div<{ expanded: boolean; minimized: boolean }>
 	background-color: rgba(0, 0, 0, 0);
 	pointer-events: none;
 	z-index: 10;
-	${({ expanded }): any =>
+	${({ expanded }): SimpleInterpolation =>
 		expanded &&
 		css`
 			background-color: rgba(0, 0, 0, 0.5);
 			pointer-events: auto;
 		`}
-	${({ minimized }): any =>
+	${({ minimized }): SimpleInterpolation =>
 		minimized &&
 		css`
 			display: none;
@@ -58,7 +58,7 @@ const Board = styled(Container)<{ expanded: boolean }>`
 	min-height: 400px;
 	box-shadow: 0 0.125rem 0.3125rem 0 rgba(125, 125, 125, 0.5);
 	pointer-events: auto;
-	${({ expanded }): any =>
+	${({ expanded }): SimpleInterpolation =>
 		expanded &&
 		css`
 			height: calc(100% - 1.5rem);

@@ -4,22 +4,23 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { Event } from '@sentry/browser';
+import type { Event as SentryEvent } from '@sentry/browser';
 import {
 	ButtonOld as Button,
 	Container,
 	ContainerProps,
 	Icon,
+	LabelFactoryProps,
 	Row,
 	Select,
-	SnackbarManagerContext,
-	Text
+	SelectItem,
+	Text,
+	useSnackbar
 } from '@zextras/carbonio-design-system';
 import { filter, find, map } from 'lodash';
 import React, {
-	FC,
+	TextareaHTMLAttributes,
 	useCallback,
-	useContext,
 	useEffect,
 	useMemo,
 	useReducer,
@@ -33,6 +34,7 @@ import { closeBoard } from '../store/boards';
 import { getT } from '../store/i18n';
 import { feedback } from './functions';
 
+// TODO: replace with DS TextArea?
 const TextArea = styled.textarea<{ size?: keyof DefaultTheme['sizes']['font'] }>`
 	width: 100%;
 	min-height: 8rem;
@@ -94,7 +96,7 @@ const LabelContainer = styled(Container)<LabelContainerProps>`
 			disabled ? theme.palette.error.regular : theme.palette.gray2.regular};
 `;
 
-const emptyEvent: Event = {
+const emptyEvent: SentryEvent = {
 	message: '',
 	level: 'info',
 	release: 'unknown',
@@ -105,7 +107,14 @@ const emptyEvent: Event = {
 	user: {}
 };
 
-function reducer(state: Event, { type, payload }: { type: string; payload: any }): Event {
+type SentryEventReducer =
+	| { type: 'set-user'; payload: SentryEvent['user'] }
+	| { type: 'reset'; payload: never }
+	| { type: 'set-message'; payload: SentryEvent['message'] }
+	| { type: 'select-app'; payload: { version: SentryEvent['release']; app: string } }
+	| { type: 'select-topic'; payload: string };
+
+function reducer(state: SentryEvent, { type, payload }: SentryEventReducer): SentryEvent {
 	switch (type) {
 		case 'set-user':
 			return { ...state, user: payload };
@@ -126,27 +135,37 @@ function reducer(state: Event, { type, payload }: { type: string; payload: any }
 	}
 }
 
-const getTopics = (t: TFunction): Array<{ label: string; value: string }> => [
+type Topic = { label: string; value: string };
+
+const getTopics = (t: TFunction): Array<Topic> => [
 	{ label: t('feedback.user_interface', 'User interface'), value: 'UserInterface' },
 	{ label: t('feedback.behaviors', 'Behaviors'), value: 'Behaviors' },
 	{ label: t('feedback.missing_features', 'Missing features'), value: 'MissingFeatures' },
 	{ label: t('feedback.other', 'Other'), value: 'Other' }
 ];
 
-const ModuleLabelFactory: FC<{
-	selected: Array<{ label: string; value: string }>;
+interface ModuleLabelFactory {
+	selected: SelectItem[];
 	label?: string;
 	open: boolean;
 	focus: boolean;
 	disabled: boolean;
-}> = ({ selected, label, open, focus, disabled }) => (
+}
+
+const ModuleLabelFactory = ({
+	selected,
+	label,
+	open,
+	focus,
+	disabled
+}: ModuleLabelFactory): JSX.Element => (
 	<LabelContainer
 		orientation="horizontal"
 		width="fill"
 		crossAlignment="center"
 		mainAlignment="space-between"
 		borderRadius="half"
-		background="gray5"
+		background={'gray5'}
 		padding={{
 			all: 'small'
 		}}
@@ -166,13 +185,17 @@ const ModuleLabelFactory: FC<{
 	</LabelContainer>
 );
 
-const _LabelFactory: FC<{
-	selected: Array<{ label: string; value: string }>;
-	label: string;
-	open: boolean;
-	focus: boolean;
+interface FeedbackLabelFactoryProps extends LabelFactoryProps {
 	showErr: boolean;
-}> = ({ selected, label, open, focus, showErr }) => (
+}
+
+const FeedbackLabelFactory = ({
+	selected,
+	label,
+	open,
+	focus,
+	showErr
+}: FeedbackLabelFactoryProps): JSX.Element => (
 	<LabelContainer
 		disabled={showErr}
 		orientation="horizontal"
@@ -180,7 +203,7 @@ const _LabelFactory: FC<{
 		crossAlignment="center"
 		mainAlignment="space-between"
 		borderRadius="half"
-		background="gray5"
+		background={'gray5'}
 		padding={{
 			all: 'small'
 		}}
@@ -188,7 +211,6 @@ const _LabelFactory: FC<{
 		<Row takeAvailableSpace mainAlignment="unset">
 			{showErr ? (
 				<Text size="medium" color={(open && showErr) || focus ? 'primary' : 'error'}>
-					{' '}
 					{selected.length > 0 ? selected[0].label : label}
 				</Text>
 			) : (
@@ -216,7 +238,7 @@ const _LabelFactory: FC<{
 	</LabelContainer>
 );
 
-const Feedback: FC = () => {
+const Feedback = (): JSX.Element => {
 	const t = getT();
 	const allApps = useAppList();
 	const apps = useMemo(
@@ -225,15 +247,18 @@ const Feedback: FC = () => {
 		[allApps]
 	);
 	const appItems = useMemo(
-		() =>
-			map(apps, (app) => ({
-				label: app.display,
-				value: app.name
-			})),
+		(): SelectItem[] =>
+			map(
+				apps,
+				(app): SelectItem => ({
+					label: app.display,
+					value: app.name
+				})
+			),
 		[apps]
 	);
-	const acct = useUserAccount();
-	const [event, dispatch] = useReducer(reducer, emptyEvent);
+	const account = useUserAccount();
+	const [sentryEvent, dispatch] = useReducer(reducer, emptyEvent);
 	const [showErr, setShowErr] = useState(false);
 	const [limit, setLimit] = useState(0);
 
@@ -254,34 +279,39 @@ const Feedback: FC = () => {
 		dispatch({ type: 'select-topic', payload: ev });
 	}, []);
 
-	const onInputChange = useCallback((ev) => {
+	const onInputChange = useCallback<
+		NonNullable<TextareaHTMLAttributes<HTMLTextAreaElement>['onChange']>
+	>((event) => {
 		// eslint-disable-next-line no-param-reassign
-		ev.target.style.height = 'auto';
+		event.target.style.height = 'auto';
 		// eslint-disable-next-line no-param-reassign
-		ev.target.style.height = `${25 + ev.target.scrollHeight}px`;
-		if (ev.target.value.length <= 500) {
-			setLimit(ev.target.value.length);
-			dispatch({ type: 'set-message', payload: ev.target.value });
+		event.target.style.height = `${25 + event.target.scrollHeight}px`;
+		if (event.target.value.length <= 500) {
+			setLimit(event.target.value.length);
+			dispatch({ type: 'set-message', payload: event.target.value });
 		}
 	}, []);
 
-	const checkTopicSelect = useCallback(
-		(ev) => {
-			if (event.extra?.topic === '0') setShowErr(true);
-			else setShowErr(false);
-			if (ev.keyCode === 8) {
-				if (event.message?.length === 0) {
-					setShowErr(false);
-				}
+	const checkTopicSelect = useCallback<
+		NonNullable<TextareaHTMLAttributes<HTMLTextAreaElement>['onKeyUp']>
+	>(
+		(event) => {
+			if (sentryEvent.extra?.topic === '0') {
+				setShowErr(true);
+			} else {
+				setShowErr(false);
+			}
+			if (event.key === 'Backspace' && sentryEvent.message?.length === 0) {
+				setShowErr(false);
 			}
 		},
-		[setShowErr, event]
+		[setShowErr, sentryEvent]
 	);
 
-	const createSnackbar = useContext(SnackbarManagerContext) as (snackbar: any) => void;
+	const createSnackbar = useSnackbar();
 
 	const confirmHandler = useCallback(() => {
-		const feedbackId = feedback(event);
+		const feedbackId = feedback(sentryEvent);
 		createSnackbar(
 			feedbackId
 				? { type: 'success', label: t('feedback.success', 'Thank you for your feedback') }
@@ -291,27 +321,35 @@ const Feedback: FC = () => {
 				  }
 		);
 		closeBoard('feedback');
-	}, [event, createSnackbar, t]);
+	}, [sentryEvent, createSnackbar, t]);
 
 	useEffect(() => {
 		dispatch({
 			type: 'set-user',
-			payload: { id: acct.id, name: acct.displayName ?? acct.name }
+			payload: { id: account.id, name: account.displayName ?? account.name }
 		});
-	}, [acct]);
+	}, [account]);
 
 	const disabledSend = useMemo(
 		() =>
-			(event?.message?.length ?? 0) <= 0 || event.extra?.topic === '0' || event.extra?.app === '0',
-		[event.message, event.extra?.topic, event.extra?.app]
+			(sentryEvent?.message?.length ?? 0) <= 0 ||
+			sentryEvent.extra?.topic === '0' ||
+			sentryEvent.extra?.app === '0',
+		[sentryEvent.message, sentryEvent.extra?.topic, sentryEvent.extra?.app]
 	);
 
 	const LabelFactory = useCallback(
-		(props) => <_LabelFactory {...props} showErr={showErr} />,
+		(props: LabelFactoryProps) => <FeedbackLabelFactory {...props} showErr={showErr} />,
 		[showErr]
 	);
 
 	const topics = useMemo(() => getTopics(t), [t]);
+
+	const defaultTopic = useMemo(
+		(): Topic =>
+			find(topics, (topic) => topic.value === sentryEvent.extra?.topic) ?? { label: '', value: '' },
+		[sentryEvent.extra?.topic, topics]
+	);
 
 	return (
 		<Container padding={{ all: 'large' }} mainAlignment="space-around">
@@ -372,9 +410,7 @@ const Feedback: FC = () => {
 					<Select
 						label={t('feedback.select_a_topic', 'Select a topic')}
 						items={topics}
-						defaultSelection={
-							find(topics, ['value', event.extra?.topic]) ?? { label: '', value: '' }
-						}
+						defaultSelection={defaultTopic}
 						onChange={onTopicSelect}
 						LabelFactory={LabelFactory}
 						multiple={false}
@@ -383,7 +419,7 @@ const Feedback: FC = () => {
 			</Container>
 			<TAContainer crossAlignment="flex-end">
 				<TextArea
-					value={event.message}
+					value={sentryEvent.message}
 					onKeyUp={checkTopicSelect}
 					onChange={onInputChange}
 					placeholder={t('feedback.write_here', 'Write your feedback here')}

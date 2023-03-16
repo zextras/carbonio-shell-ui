@@ -44,12 +44,12 @@ const UtilityBarItem: FC<{ view: UtilityView }> = ({ view }) => {
 	return <view.button mode={mode} setMode={setMode} />;
 };
 
-export const ShellUtilityBar: FC = () => {
+export const ShellUtilityBar = (): JSX.Element => {
 	const views = useUtilityViews();
 	const t = getT();
 	const account = useUserAccount();
 	const accountItems = useMemo(
-		() =>
+		(): DropdownItem[] =>
 			[
 				{
 					id: 'account',
@@ -70,7 +70,7 @@ export const ShellUtilityBar: FC = () => {
 				{
 					id: 'feedback',
 					label: t('label.feedback', 'Feedback'),
-					click: () =>
+					onClick: () =>
 						addBoard(SHELL_APP_ID)({
 							url: 'feedback',
 							title: t('label.feedback', 'Feedback'),
@@ -81,7 +81,7 @@ export const ShellUtilityBar: FC = () => {
 				{
 					id: 'update',
 					label: t('label.update_view', 'Update view'),
-					click: (): void => noOp(),
+					onClick: (): void => noOp(),
 					icon: 'Refresh'
 				},
 				{
@@ -89,24 +89,28 @@ export const ShellUtilityBar: FC = () => {
 					label: t('label.documentation', 'Documentation'),
 					// TODO: Replace when the correct link is available
 					// eslint-disable-next-line @typescript-eslint/no-empty-function
-					click: (): void => {},
+					onClick: (): void => {},
 					disabled: true,
 					icon: 'InfoOutline'
 				},
 				{
 					id: 'logout',
 					label: t('label.logout', 'Logout'),
-					click: logout,
+					onClick: logout,
 					icon: 'LogOut'
 				}
 			] as DropdownItem[],
 		[account, t]
 	);
+
+	const utilityBarItems = useMemo(
+		() => map(views, (view) => <UtilityBarItem view={view} key={view.id} />),
+		[views]
+	);
+
 	return (
 		<Container orientation="horizontal" width="fit">
-			{map(views, (view) => (
-				<UtilityBarItem view={view} key={view.id} />
-			))}
+			{utilityBarItems}
 			<Tooltip label={account?.displayName ?? account?.name} placement="bottom-end">
 				<Dropdown items={accountItems} maxWidth="18.75rem" disableAutoFocus>
 					<IconButton icon="PersonOutline" size="large" onClick={noop} />

@@ -5,10 +5,10 @@
  */
 
 import { Checkbox, Container, Icon, Padding, Text } from '@zextras/carbonio-design-system';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 
 import moment from 'moment';
-import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+import DateTimePicker, { DateTimePickerProps } from 'react-widgets/lib/DateTimePicker';
 import momentLocalizer from 'react-widgets-moment';
 import { AccountSettings, AddMod, PrefsMods } from '../../../types';
 import Heading from './settings-heading';
@@ -18,11 +18,25 @@ import { changeDateEvent, endOfDate, getDateEvent, startOfDate } from './utils';
 
 momentLocalizer();
 
-const DateTimeSelect: FC<{
+const DATE_ICON = (
+	<Padding all="small">
+		<Icon icon="CalendarOutline" />
+	</Padding>
+);
+
+const TIME_ICON = (
+	<Padding all="small">
+		<Icon icon="ClockOutline" />
+	</Padding>
+);
+
+interface DateTimeSelectProps {
 	settings: AccountSettings;
 	addMod: AddMod;
 	sendAutoReply: boolean;
-}> = ({ settings, addMod, sendAutoReply }) => {
+}
+
+const DateTimeSelect = ({ settings, addMod, sendAutoReply }: DateTimeSelectProps): JSX.Element => {
 	const t = getT();
 	const [dateDisabled, setDateDisabled] = useState<boolean>(false);
 	const [sendAutoReplyTimePeriod, setSendAutoReplyTimePeriod] = useState<boolean>(
@@ -92,6 +106,60 @@ const DateTimeSelect: FC<{
 		setSendAutoReplyTimePeriod(!sendAutoReplyTimePeriod);
 	};
 
+	const fromDate = useMemo(
+		() =>
+			dateZimbraPrefOutOfOfficeFromDate
+				? getDateEvent(dateZimbraPrefOutOfOfficeFromDate)
+				: new Date(),
+		[dateZimbraPrefOutOfOfficeFromDate]
+	);
+
+	const untilDate = useMemo(
+		() =>
+			dateZimbraPrefOutOfOfficeUntilDate
+				? getDateEvent(dateZimbraPrefOutOfOfficeUntilDate)
+				: new Date(),
+		[dateZimbraPrefOutOfOfficeUntilDate]
+	);
+
+	const outOfOfficeFromDateOnChange = useCallback<NonNullable<DateTimePickerProps['onChange']>>(
+		(value) => {
+			if (value) {
+				setZimbraPrefOutOfOfficeFromDate(changeDateEvent(value));
+				updatePrefs(changeDateEvent(value), 'zimbraPrefOutOfOfficeFromDate');
+				if (moment(value).diff(getDateEvent(dateZimbraPrefOutOfOfficeUntilDate), 'minutes') >= 0) {
+					setZimbraPrefOutOfOfficeUntilDate(
+						changeDateEvent(new Date(moment(value).add(1, 'd').valueOf()))
+					);
+					updatePrefs(
+						changeDateEvent(new Date(moment(value).add(1, 'd').valueOf())),
+						'zimbraPrefOutOfOfficeUntilDate'
+					);
+				}
+			}
+		},
+		[dateZimbraPrefOutOfOfficeUntilDate, updatePrefs]
+	);
+
+	const outOfOfficeUntilDateOnChange = useCallback<NonNullable<DateTimePickerProps['onChange']>>(
+		(value) => {
+			if (value) {
+				setZimbraPrefOutOfOfficeUntilDate(changeDateEvent(value));
+				updatePrefs(changeDateEvent(value), 'zimbraPrefOutOfOfficeUntilDate');
+				if (moment(value).diff(getDateEvent(dateZimbraPrefOutOfOfficeFromDate), 'minutes') <= 0) {
+					setZimbraPrefOutOfOfficeFromDate(
+						changeDateEvent(new Date(moment(value).subtract(1, 'd').valueOf()))
+					);
+					updatePrefs(
+						changeDateEvent(new Date(moment(value).subtract(1, 'd').valueOf())),
+						'zimbraPrefOutOfOfficeFromDate'
+					);
+				}
+			}
+		},
+		[dateZimbraPrefOutOfOfficeFromDate, updatePrefs]
+	);
+
 	return (
 		<>
 			<Heading title={t('settings.out_of_office.headings.time_period', 'Time Period')} />
@@ -115,37 +183,11 @@ const DateTimeSelect: FC<{
 					</Padding>
 					<DateTimePicker
 						disabled={dateDisabled}
-						value={
-							dateZimbraPrefOutOfOfficeFromDate
-								? getDateEvent(dateZimbraPrefOutOfOfficeFromDate)
-								: new Date()
-						}
+						value={fromDate}
 						time={false}
-						onChange={(value: any): void => {
-							setZimbraPrefOutOfOfficeFromDate(changeDateEvent(value));
-							updatePrefs(changeDateEvent(value), 'zimbraPrefOutOfOfficeFromDate');
-							if (
-								moment(value).diff(getDateEvent(dateZimbraPrefOutOfOfficeUntilDate), 'minutes') >= 0
-							) {
-								setZimbraPrefOutOfOfficeUntilDate(
-									changeDateEvent(new Date(moment(value).add(1, 'd').valueOf()))
-								);
-								updatePrefs(
-									changeDateEvent(new Date(moment(value).add(1, 'd').valueOf())),
-									'zimbraPrefOutOfOfficeUntilDate'
-								);
-							}
-						}}
-						dateIcon={
-							<Padding all="small">
-								<Icon icon="CalendarOutline" />
-							</Padding>
-						}
-						timeIcon={
-							<Padding all="small">
-								<Icon icon="ClockOutline" />
-							</Padding>
-						}
+						onChange={outOfOfficeFromDateOnChange}
+						dateIcon={DATE_ICON}
+						timeIcon={TIME_ICON}
 					/>
 				</Container>
 				<Container
@@ -159,37 +201,11 @@ const DateTimeSelect: FC<{
 					<DateTimePicker
 						disabled={dateDisabled}
 						inputProps={{ readOnly: true }}
-						value={
-							dateZimbraPrefOutOfOfficeUntilDate
-								? getDateEvent(dateZimbraPrefOutOfOfficeUntilDate)
-								: new Date()
-						}
+						value={untilDate}
 						time={false}
-						onChange={(value: any): void => {
-							setZimbraPrefOutOfOfficeUntilDate(changeDateEvent(value));
-							updatePrefs(changeDateEvent(value), 'zimbraPrefOutOfOfficeUntilDate');
-							if (
-								moment(value).diff(getDateEvent(dateZimbraPrefOutOfOfficeFromDate), 'minutes') <= 0
-							) {
-								setZimbraPrefOutOfOfficeFromDate(
-									changeDateEvent(new Date(moment(value).subtract(1, 'd').valueOf()))
-								);
-								updatePrefs(
-									changeDateEvent(new Date(moment(value).subtract(1, 'd').valueOf())),
-									'zimbraPrefOutOfOfficeFromDate'
-								);
-							}
-						}}
-						dateIcon={
-							<Padding all="small">
-								<Icon icon="CalendarOutline" />
-							</Padding>
-						}
-						timeIcon={
-							<Padding all="small">
-								<Icon icon="ClockOutline" />
-							</Padding>
-						}
+						onChange={outOfOfficeUntilDateOnChange}
+						dateIcon={DATE_ICON}
+						timeIcon={TIME_ICON}
 					/>
 				</Container>
 			</Styler>
@@ -216,37 +232,11 @@ const DateTimeSelect: FC<{
 					<DateTimePicker
 						disabled={timeDisabled}
 						date={false}
-						value={
-							dateZimbraPrefOutOfOfficeFromDate
-								? getDateEvent(dateZimbraPrefOutOfOfficeFromDate)
-								: new Date()
-						}
+						value={fromDate}
 						time
-						onChange={(value: any): void => {
-							setZimbraPrefOutOfOfficeFromDate(changeDateEvent(value));
-							updatePrefs(changeDateEvent(value), 'zimbraPrefOutOfOfficeFromDate');
-							if (
-								moment(value).diff(getDateEvent(dateZimbraPrefOutOfOfficeUntilDate), 'minutes') >= 0
-							) {
-								setZimbraPrefOutOfOfficeUntilDate(
-									changeDateEvent(new Date(moment(value).add(1, 'd').valueOf()))
-								);
-								updatePrefs(
-									changeDateEvent(new Date(moment(value).add(1, 'd').valueOf())),
-									'zimbraPrefOutOfOfficeUntilDate'
-								);
-							}
-						}}
-						dateIcon={
-							<Padding all="small">
-								<Icon icon="CalendarOutline" />
-							</Padding>
-						}
-						timeIcon={
-							<Padding all="small">
-								<Icon icon="ClockOutline" />
-							</Padding>
-						}
+						onChange={outOfOfficeFromDateOnChange}
+						dateIcon={DATE_ICON}
+						timeIcon={TIME_ICON}
 					/>
 				</Container>
 				<Container
@@ -260,32 +250,10 @@ const DateTimeSelect: FC<{
 					<DateTimePicker
 						disabled={timeDisabled}
 						date={false}
-						value={
-							dateZimbraPrefOutOfOfficeUntilDate
-								? getDateEvent(dateZimbraPrefOutOfOfficeUntilDate)
-								: new Date()
-						}
+						value={untilDate}
 						time
-						onChange={(value: any): void => {
-							setZimbraPrefOutOfOfficeUntilDate(changeDateEvent(value));
-							updatePrefs(changeDateEvent(value), 'zimbraPrefOutOfOfficeUntilDate');
-							if (
-								moment(value).diff(getDateEvent(dateZimbraPrefOutOfOfficeFromDate), 'minutes') <= 0
-							) {
-								setZimbraPrefOutOfOfficeFromDate(
-									changeDateEvent(new Date(moment(value).subtract(1, 'd').valueOf()))
-								);
-								updatePrefs(
-									changeDateEvent(new Date(moment(value).subtract(1, 'd').valueOf())),
-									'zimbraPrefOutOfOfficeFromDate'
-								);
-							}
-						}}
-						timeIcon={
-							<Padding all="small">
-								<Icon icon="ClockOutline" />
-							</Padding>
-						}
+						onChange={outOfOfficeUntilDateOnChange}
+						timeIcon={TIME_ICON}
 					/>
 				</Container>
 			</Styler>

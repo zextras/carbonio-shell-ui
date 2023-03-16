@@ -8,8 +8,6 @@ import React, { FC } from 'react';
 import { Responsive, Container } from '@zextras/carbonio-design-system';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import ShellMobileNav from './shell-mobile-nav';
 
 type ShellNavigationBarProps = {

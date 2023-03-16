@@ -14,25 +14,24 @@ import {
 	Text
 } from '@zextras/carbonio-design-system';
 import { map } from 'lodash';
-import React, { FC, ReactElement, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { QueryChip, ResultLabelType } from '../../types';
+import { type SearchState } from '../../types';
 import AppContextProvider from '../boot/app/app-context-provider';
-import { SEARCH_APP_ID } from '../constants';
+import { ResultLabelType, SEARCH_APP_ID } from '../constants';
 import { useAppStore } from '../store/app';
 import { getT } from '../store/i18n';
 import { useSearchStore } from './search-store';
-// import { RouteLeavingGuard } from '../ui-extras/nav-guard';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-const useQuery = (): [Array<QueryChip>, Function] =>
+const useQuery = (): [query: SearchState['query'], updateQuery: SearchState['updateQuery']] =>
 	useSearchStore((s) => [s.query, s.updateQuery]);
-// eslint-disable-next-line @typescript-eslint/ban-types
-const useDisableSearch = (): [boolean, Function] =>
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	useSearchStore((s) => [s.searchDisabled, s.setSearchDisabled]);
 
-const getIconAndColor = (labelType: ResultLabelType): Array<string> => {
+const useDisableSearch = (): [
+	isDisabled: SearchState['searchDisabled'],
+	setDisabled: SearchState['setSearchDisabled']
+] => useSearchStore((s) => [s.searchDisabled, s.setSearchDisabled]);
+
+const getIconAndColor = (labelType: ResultLabelType): [icon: string, color: string] => {
 	if (labelType === ResultLabelType.WARNING) {
 		return ['AlertTriangle', 'warning'];
 	}
@@ -42,10 +41,15 @@ const getIconAndColor = (labelType: ResultLabelType): Array<string> => {
 	return ['', ''];
 };
 
-const ResultsHeader: FC<{ label: string; labelType?: ResultLabelType }> = ({
+interface ResultsHeaderProps {
+	label: string;
+	labelType?: ResultLabelType;
+}
+
+const ResultsHeader = ({
 	label,
 	labelType = ResultLabelType.NORMAL
-}) => {
+}: ResultsHeaderProps): JSX.Element => {
 	const t = getT();
 	const [query, updateQuery] = useQuery();
 	const [, setDisabled] = useDisableSearch();
@@ -55,7 +59,7 @@ const ResultsHeader: FC<{ label: string; labelType?: ResultLabelType }> = ({
 		setDisabled(false);
 	}, [updateQuery, setDisabled]);
 
-	const labelTypeElem = useMemo<ReactElement | undefined>(() => {
+	const labelTypeElem = useMemo<JSX.Element>(() => {
 		if (labelType === ResultLabelType.NORMAL) {
 			return <></>;
 		}
@@ -68,13 +72,23 @@ const ResultsHeader: FC<{ label: string; labelType?: ResultLabelType }> = ({
 		);
 	}, [labelType]);
 
+	const chipItems = useMemo(
+		() =>
+			map(query, (queryChip, index) => (
+				<Padding key={`${index}${queryChip.label}`} all="extrasmall">
+					<Chip {...queryChip} background={'gray2'} />
+				</Padding>
+			)),
+		[query]
+	);
+
 	return (
 		<>
 			<Container
 				orientation="horizontal"
 				mainAlignment="flex-start"
 				width="100%"
-				background="gray5"
+				background={'gray5'}
 				height="fit"
 				minHeight="3rem"
 				maxHeight="7.5rem"
@@ -84,12 +98,7 @@ const ResultsHeader: FC<{ label: string; labelType?: ResultLabelType }> = ({
 				<Container width="85%" orientation="horizontal" wrap="wrap" mainAlignment="flex-start">
 					{labelTypeElem}
 					<Text color="secondary">{label}</Text>
-
-					{map(query, (q, i) => (
-						<Padding key={`${i}${q.label}`} all="extrasmall">
-							<Chip {...q} background="gray2" />
-						</Padding>
-					))}
+					{chipItems}
 				</Container>
 				{query?.length > 0 && (
 					<Container width="15%" mainAlignment="flex-start" crossAlignment="flex-start">
@@ -109,8 +118,9 @@ const ResultsHeader: FC<{ label: string; labelType?: ResultLabelType }> = ({
 	);
 };
 
-export const SearchAppView: FC = () => {
+export const SearchAppView = (): JSX.Element => {
 	const searchViews = useAppStore((s) => s.views.search);
+
 	const routes = useMemo(
 		() =>
 			map(searchViews, (view) => (
@@ -128,22 +138,21 @@ export const SearchAppView: FC = () => {
 	);
 
 	return (
-		<>
-			{/* <RouteLeavingGuard
-				when
-				title={t('search.leave.title', 'Are you sure you want to leave this module?')}
-			>
-				<Text>{t('search.leave.warning', 'The current search results will be lost')}</Text>
-			</RouteLeavingGuard> */}
-			<Switch>
-				{routes}
-				<Redirect
-					exact
-					strict
-					from={`/${SEARCH_APP_ID}`}
-					to={`/${SEARCH_APP_ID}/${searchViews[0]?.route}`}
-				/>
-			</Switch>
-		</>
+		<Switch>
+			{routes}
+			{/*
+			 * FIXME: this is part of the cause of SHELL-46
+			 *    Every time the user clicks on the search module to navigate directly inside it,
+			 *	  a redirect is made to go to the fixed path /search/<first module>. But first module
+			 *    does not match the module written inside the module selector, which is not updated
+			 *    accordingly.
+			 */}
+			<Redirect
+				exact
+				strict
+				from={`/${SEARCH_APP_ID}`}
+				to={`/${SEARCH_APP_ID}/${searchViews[0]?.route}`}
+			/>
+		</Switch>
 	);
 };

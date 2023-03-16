@@ -123,3 +123,9 @@ export const SCALING_LIMIT = {
 
 export const LOGIN_V3_CONFIG_PATH = '/zx/login/v3/config';
 export const DARK_READER_PROP_KEY = 'zappDarkreaderMode';
+
+export enum ResultLabelType {
+	NORMAL = 'normal',
+	WARNING = 'warning',
+	ERROR = 'error'
+}

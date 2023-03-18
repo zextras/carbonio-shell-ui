@@ -97,7 +97,7 @@
         "reload": "\t¿Recargar Carbonio ahora para mostrar el nuevo idioma?\nDe lo contrario el cambio se aplicará con el próximo inicio de sesión"
     },
     "snackbar": {
-        "error": "Algo ha salido mal. Intenta nuevamente"
+        "error": "Algo salió mal. Intenta nuevamente"
     },
     "module": {
         "app": {
@@ -144,7 +144,7 @@
         "account_type": "Tipo de cuenta",
         "account_username": "Nombre de usuario",
         "accounts_list": "Cuentas",
-        "add_delegate": "Nuevo delegado",
+        "add_delegate": "Nuevo Delegado",
         "add_external_account": "Añadir cuenta externa",
         "add_new_email": "Agregar dirección de e-mail",
         "add_persona": "Nueva Persona",
@@ -168,7 +168,7 @@
         "button": "Botón",
         "delete_after_download": "Eliminar mensajes del servidor después de descargar",
         "permanent_delete_title": "¿Estás seguro que quieres eliminar esta Persona?",
-        "save_delegate_folder": "Guardar una copia de los mensajes enviados en la carpeta Enviados del delegado",
+        "save_delegate_folder": "Guardar una copia de los mensajes enviados en la carpeta Enviados del Delegado",
         "unsaved_changes_line1": "¿Seguro que quieres salir de esta página sin guardar?",
         "use_persona": "Usar esta Persona",
         "use_personas_line1": "Las Personas sirven para cambiar rápidamente entre diferentes perfiles al enviar e-mails.",
@@ -186,7 +186,7 @@
         "pop3": "POP3",
         "pop_port": "Puerto POP",
         "save_and_leave": "Guardar",
-        "save_both_folders": "Guardar una copia de los mensajes enviados en mi carpeta Enviados y en la del delegado",
+        "save_both_folders": "Guardar una copia de los mensajes enviados en mi carpeta Enviados y en la del Delegado",
         "save_to_my_sent_folder": "Guardar una copia de los mensajes enviados solo en mi carpeta Enviados",
         "set_reply_to_field": "Habilitar el campo \"Responder a:\" en los mensajes",
         "settings_sent_messages": "Ajustes de mensajes enviados",

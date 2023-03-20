@@ -2,31 +2,31 @@
     "search": {
         "module": "Módulo",
         "app": "Búsqueda",
-        "active_input_label": "Separa las palabras clave con una coma o presionando el tabulador",
-        "clear": "Limpiar entrada de búsqueda",
+        "active_input_label": "Separa las palabras clave presionando coma o espacio",
+        "clear": "Borrar términos de búsqueda",
         "idle_input_label": "Buscar en {{module}}",
-        "start": "Iniciar búsqueda",
-        "already_clear": "La entrada de la búsqueda ya ha sido borrada",
-        "type_to_start_search": "Introduce algunas palabras clave para iniciar una búsqueda",
-        "type_or_choose_suggestion": "Introduce o elige algunas palabras clave para iniciar una búsqueda",
-        "unable_to_parse_query": "No se puede completar la búsqueda, límpiala y vuelve a intentarlo"
+        "start": "Buscar",
+        "already_clear": "Los términos de la búsqueda ya han sido borrados",
+        "type_to_start_search": "Escribe las palabras clave para iniciar la búsqueda",
+        "type_or_choose_suggestion": "Escribe las palabras clave para iniciar la búsqueda",
+        "unable_to_parse_query": "No se ha podido completar la búsqueda. Bórrala e intenta nuevamente"
     },
     "settings": {
         "appearance": {
             "labels": {
-                "choose_size_pangram": "El veloz murciélago hindú comía feliz cardillo y kiwi. La cigüeña tocaba el saxofón detrás del palenque de paja.",
+                "choose_size_pangram": "La cigüeña tocaba el saxofón detrás del palenque de paja.",
                 "a": "A",
                 "increase_disabled": "Tamaño máximo alcanzado",
                 "increase": "Aumentar tamaño",
                 "decrease_disabled": "Tamaño mínimo alcanzado",
                 "decrease": "Reducir tamaño",
-                "choose_size_description": "Elegir tamaño y estilo para el entorno Carbonio",
-                "choose_size_auto": "Redimensionar el tamaño del texto automáticamente según el dispositivo"
+                "choose_size_description": "Seleccionar manualmente el tamaño para el entorno de Carbonio",
+                "choose_size_auto": "Adaptar el tamaño del texto automáticamente según el dispositivo"
             },
             "option_s": "Pequeño",
             "option_l": "Grande",
             "option_xl": "Muy grande",
-            "option_xs": "Extrapequeño",
+            "option_xs": "Muy pequeño",
             "option_m": "Medio"
         },
         "out_of_office": {
@@ -36,31 +36,31 @@
                 "all_day": "Todo el día:",
                 "auto_reply_message": "Mensaje de respuesta automática:",
                 "auto_reply_message_external": "Mensaje de respuesta automática para remitentes externos:",
-                "create_appointment": "Crear cita:",
+                "create_appointment": "Crear evento:",
                 "end_time": "Hora de finalización:",
                 "external_senders": "Remitentes externos",
-                "out_of_office_status": "Estado de respuesta automática:",
-                "send_auto_reply_period": "Enviar respuestas automáticas durante el siguiente periodo:",
+                "out_of_office_status": "Mostrar como:",
+                "send_auto_reply_period": "Enviar respuestas automáticas durante el siguiente intervalo:",
                 "start_time": "Hora de inicio:"
             },
             "status": {
                 "busy": "Ocupado"
             },
             "external_senders": {
-                "do_not_send_to_external": "No enviar respuesta automática al remitente externo",
-                "send_custom_in_organisation": "Enviar un mensaje personalizado a aquellos que no trabajan en mi organización",
-                "send_custom_not_in_organisation": "Enviar un mensaje personalizado a aquellos que no trabajan en mi organización y no están en mi libreta de direcciones",
+                "do_not_send_to_external": "No enviar respuestas automáticas a remitentes externos",
+                "send_custom_in_organisation": "Enviar un mensaje personalizado a quienes no trabajan en mi organización",
+                "send_custom_not_in_organisation": "Enviar un mensaje personalizado a quienes no trabajan en mi organización ni están en mi libreta de direcciones",
                 "send_standard_auto_reply": "Enviar mensaje de respuesta automática estándar"
             },
             "do_not_send_auto_replies": "No enviar respuestas automáticas",
             "headings": {
-                "create_appointment": "Cita del calendario",
-                "settings_label": "Respuesta automática",
-                "time_period": "Período"
+                "create_appointment": "Evento del calendario",
+                "settings_label": "Respuestas automáticas",
+                "time_period": "Intervalo"
             },
             "send_auto_replies": "Enviar respuestas automáticas"
         },
-        "app": "Configuraciones",
+        "app": "Ajustes",
         "button": {
             "primary": "Guardar",
             "confirm": "Confirmar"
@@ -82,34 +82,34 @@
         "choose": "Seleccionar",
         "search_settings": {
             "labels": {
-                "include_search_in_shared_folder": "Incluir carpeta de compartidos en las búsquedas",
-                "include_search_in_spam_folder": "Incluir carpeta Spam en las búsquedas",
-                "include_search_in_trash_folder": "Incluir carpeta de la papelera en las búsquedas"
+                "include_search_in_shared_folder": "Incluir las carpetas compartidas en las búsquedas",
+                "include_search_in_spam_folder": "Incluir la carpeta Spam en las búsquedas",
+                "include_search_in_trash_folder": "Incluir elementos de la Papelera en las búsquedas"
             }
         }
     },
     "new": "Nuevo",
     "message": {
         "snackbar": {
-            "settings_saved": "Ediciones guardadas correctamente",
-            "identities_quota_exceeded": "La identidad no pudo crearse porque has superado la cuota de identidades"
+            "settings_saved": "Se han guardado los cambios",
+            "identities_quota_exceeded": "La identidad no pudo ser creada porque has superado el máximo de identidades permitido"
         },
-        "reload": "\t¿Te gustaría volver a cargar la aplicación ahora para mostrar el nuevo idioma?\n(De lo contrario, el cambio se aplicará la próxima vez que inicies sesión)"
+        "reload": "\t¿Recargar Carbonio ahora para mostrar el nuevo idioma?\nDe lo contrario el cambio se aplicará con el próximo inicio de sesión"
     },
     "snackbar": {
-        "error": "Algo fue mal, por favor, prueba de nuevo"
+        "error": "Algo ha salido mal. Intenta nuevamente"
     },
     "module": {
         "app": {
-            "version": "Versiones de la aplicación"
+            "version": "Versión de las aplicaciones"
         }
     },
     "new_tab": "Nueva pestaña",
     "user_quota": {
-        "limited": "Has ocupado {{quota}}% del espacio disponible",
-        "unlimited": "Tienes espacio ilimitado disponible",
-        "space_full": "Parece que todo el espacio disponible está ocupado",
-        "title": "Cuota de correo"
+        "limited": "Ocupado {{quota}}% del espacio disponible",
+        "unlimited": "No hay límite de cuota",
+        "space_full": "Todo el espacio asignado está ocupado",
+        "title": "Cuota de espacio"
     },
     "label": {
         "cancel": "Cancelar",
@@ -120,14 +120,14 @@
         "clear_search_query": "BORRAR BÚSQUEDA",
         "discard_changes": "DESCARTAR CAMBIOS",
         "reload": "Recargar",
-        "time_zone": "Huso horario",
+        "time_zone": "Zona horaria",
         "accounts": "Cuentas",
         "address": "Dirección",
-        "advanced_settings": "Configuración avanzada",
+        "advanced_settings": "Ajustes avanzados",
         "delete": "Eliminar",
         "delete_permanently": "Eliminar permanentemente",
-        "email_address": "Dirección de correo electrónico",
-        "filter_folders": "Filtrar carpetas",
+        "email_address": "Dirección de e-mail",
+        "filter_folders": "Buscar carpeta",
         "folders": "Carpetas",
         "go_back": "Volver",
         "inbox": "Bandeja de entrada",
@@ -136,66 +136,66 @@
         "no_results": "No se han encontrado resultados",
         "password": "Contraseña",
         "primary": "Primario",
-        "remove": "remover",
+        "remove": "Eliminar",
         "save": "Guardar",
         "secondary": "Secundario",
         "account_menu": "Menú de la cuenta",
         "account_name": "Nombre de la cuenta",
         "account_type": "Tipo de cuenta",
         "account_username": "Nombre de usuario",
-        "accounts_list": "Lista de cuentas",
-        "add_delegate": "Añadir delegado",
+        "accounts_list": "Cuentas",
+        "add_delegate": "Nuevo delegado",
         "add_external_account": "Añadir cuenta externa",
-        "add_new_email": "Añadir nueva dirección de correo electrónico",
-        "add_persona": "Añadir Persona",
+        "add_new_email": "Agregar dirección de e-mail",
+        "add_persona": "Nueva Persona",
         "delegates": "Delegados",
         "add_recovery_email": "Añadir e-mail de recuperación",
         "change_pop": "Cambiar puerto POP",
-        "choose_account": "Elegir una cuenta",
+        "choose_account": "Elije una cuenta",
         "choose_folder": "Seleccionar carpeta",
         "download_messages": "Descargar mensajes en:",
         "edit_permissions": "Editar permisos",
         "email_server": "Servidor de e-mail (ej. \"mail.example.com\")",
-        "external_account_settings": "Ajustes externos de la cuenta",
+        "external_account_settings": "Ajustes de cuenta externa",
         "feedback": "Comentarios",
-        "folder": "Carpeta: Nueva Cuenta Externa 3",
+        "folder": "Carpeta: Nueva cuenta externa 3",
         "recipents": "Destinatarios",
         "recovery_email": "E-mail de recuperación",
-        "reply_to_field_example": "ej.: Juan Pérez",
-        "use_ssl": "Utiliza una conexión encriptada (SSL) cuando accedas a este servidor",
-        "when_composing": "Cuando redactes, respondas o reenvíes mensajes en la(s) carpeta(s):",
-        "when_replying": "Cuando respondas o reenvíes mensajes enviados a:",
+        "reply_to_field_example": "Ej.: Juan Pérez",
+        "use_ssl": "Usar conexión encriptada (SSL) al acceder a este servidor",
+        "when_composing": "Al redactar, responder o reenviar mensajes en la(s) carpeta(s):",
+        "when_replying": "Al responder o reenviar mensajes a:",
         "button": "Botón",
         "delete_after_download": "Eliminar mensajes del servidor después de descargar",
         "permanent_delete_title": "¿Estás seguro que quieres eliminar esta Persona?",
         "save_delegate_folder": "Guardar una copia de los mensajes enviados en la carpeta Enviados del delegado",
         "unsaved_changes_line1": "¿Seguro que quieres salir de esta página sin guardar?",
         "use_persona": "Usar esta Persona",
-        "use_personas_line1": "Usa las Personas para cambiar rápidamente las configuraciones cuando envías mensajes e-mail.",
-        "use_personas_line2": "Por ejemplo, si envías e-mails en el trabajo con un determinado rol, crea una Persona para ello.",
+        "use_personas_line1": "Las Personas sirven para cambiar rápidamente entre diferentes perfiles al enviar e-mails.",
+        "use_personas_line2": "Por ejemplo, si envías e-mails con diferentes perfiles, crea una Persona para cambiar facilmente entre ellos.",
         "click_to_copy": "Clic para copiar",
         "documentation": "Documentación",
-        "dont_save": "No guardar una copia de los mensajes enviados",
+        "dont_save": "No guardar copia de los mensajes enviados",
         "from_name": "De: \"Nombre\"",
         "imap": "IMAP",
-        "leave_anyway": "Salir de todos modos",
-        "passwords_recovery_settings": "Opciones de cuenta para recuperar la contraseña",
+        "leave_anyway": "Salir sin guardar",
+        "passwords_recovery_settings": "Ajustes de recuperación de contraseña",
         "persona": "Persona",
-        "persona_name": "Nombre de la Persona",
-        "persona_settings": "Configuración de Persona",
+        "persona_name": "Nombre asignado a la Persona",
+        "persona_settings": "Ajustes de Persona",
         "pop3": "POP3",
         "pop_port": "Puerto POP",
-        "save_and_leave": "Guardar y salir",
-        "save_both_folders": "Guardar una copia de los mensajes enviados a mi carpeta de Enviados y a la carpeta del delegado",
-        "save_to_my_sent_folder": "Guardar una copia de los mensajes enviados a mi carpeta de Enviados",
-        "set_reply_to_field": "Guardar el campo \"Responder-a\" de mi e-mail a:",
-        "settings_sent_messages": "Ajustes para los mensajes enviados",
+        "save_and_leave": "Guardar",
+        "save_both_folders": "Guardar una copia de los mensajes enviados en mi carpeta Enviados y en la del delegado",
+        "save_to_my_sent_folder": "Guardar una copia de los mensajes enviados solo en mi carpeta Enviados",
+        "set_reply_to_field": "Habilitar el campo \"Responder a:\" en los mensajes",
+        "settings_sent_messages": "Ajustes de mensajes enviados",
         "test_settings": "Probar ajustes",
-        "unsaved_changes": "Tienes cambios no guardados",
-        "unsaved_changes_line2": "Todos tus cambios no guardados se perderán",
+        "unsaved_changes": "No se han guardado los cambios",
+        "unsaved_changes_line2": "Los cambios no guardados se perderán",
         "update_view": "Actualizar vista",
         "folder_external_account": "Carpeta: Nueva cuenta externa",
-        "add_inline_image": "Añadir imagen inline",
+        "add_inline_image": "Insertar imagen",
         "select_image": "Seleccionar imagen"
     },
     "timezone": {
@@ -250,7 +250,7 @@
         "asia_kuwait": "{{value}} Kuwait, Riad",
         "asia_magadan": "{{value}} Magadán",
         "asia_omsk": "{{value}} Omsk",
-        "asia_pyongyang": "{{value}} Pyongyang",
+        "asia_pyongyang": "{{value}} Pionyang",
         "asia_qyzylorda": "{{value}} Qyzylorda",
         "asia_sakhalin": "{{value}} Sajalín",
         "asia_seoul": "{{value}} Corea",
@@ -271,7 +271,7 @@
         "australia_hobart": "{{value}} Hobart",
         "australia_perth": "{{value}} Perth",
         "australia_sydney": "{{value}} Canberra, Melbourne, Sídney",
-        "etc_gmt+12": "{{value}} Dateline",
+        "etc_gmt+12": "{{value}} Fecha",
         "europe_astrakhan": "{{value}} Astracán",
         "europe_berlin": "{{value}} Ámsterdam, Berlín, Berna, Roma, Estocolmo, Viena",
         "europe_brussels": "{{value}} Bruselas, Copenhague, Madrid, París",
@@ -298,7 +298,7 @@
         "america_anchorage": "{{value}} Alaska",
         "america_argentina_buenos_aires": "{{value}} Argentina",
         "america_cayenne": "{{value}} Cayena, Fortaleza",
-        "america_chihuahua": "{{value}} Chihuahua, La Paz, Mazatlan",
+        "america_chihuahua": "{{value}} Chihuahua, La Paz, Mazatlán",
         "america_guyana": "{{value}} Georgetown, La Paz, Manaos, San Juan",
         "america_havana": "{{value}} La Havana",
         "america_mexico_city": "{{value}} Guadalajara, Ciudad de México, Monterrey",
@@ -312,8 +312,8 @@
         "asia_hovd": "{{value}} Hovd",
         "asia_kabul": "{{value}} Kabul",
         "asia_kathmandu": "{{value}} Katmandú",
-        "asia_kolkata": "{{value}} Chennai, Kolkata, Bombay, Nueva Delhi",
-        "asia_muscat": "{{value}} Abu Dhabi, Mascate",
+        "asia_kolkata": "{{value}} Madrás, Calcuta, Bombay, Nueva Delhi",
+        "asia_muscat": "{{value}} Abu Dabi, Mascate",
         "asia_novosibirsk": "{{value}} Novosibirsk (RTZ 5)",
         "asia_taipei": "{{value}} Taipéi",
         "asia_tehran": "{{value}} Teherán",
@@ -322,7 +322,7 @@
         "asia_yekaterinburg": "{{value}} Ekaterimburgo (RTZ 4)",
         "australia_adelaide": "{{value}} Adelaida",
         "australia_brisbane": "{{value}} Brisbane",
-        "australia_lord_howe": "{{value}} Lord_Howe",
+        "australia_lord_howe": "{{value}} Lord Howe",
         "europe_athens": "{{value}} Atenas, Beirut, Bucarest, Estambul",
         "europe_belgrade": "{{value}} Belgrado, Bratislava, Budapest, Liubliana, Praga",
         "europe_bucharest": "{{value}} Bucarest",
@@ -338,7 +338,7 @@
         "pacific_norfolk": "{{value}} Norfolk"
     },
     "locale": {
-        "label_chinese": "Chino (China) - {{value}}",
+        "label_chinese": "Chino simplificado - {{value}}",
         "label_portuguese_brazil": "Portugués - {{value}}",
         "thai": "Tailandés",
         "English": "Inglés",
@@ -373,39 +373,39 @@
     },
     "board": {
         "close_tab": "Cerrar pestaña",
-        "close_tabs": "Cerrar todas las pestañas",
+        "close_tabs": "Cerrar todo",
         "enlarge": "Agrandar ventana",
         "hide": "Minimizar ventana",
-        "reduce": "Reducir ventana",
-        "show_tabs": "Mostrar las otras ventanas de composición",
+        "reduce": "Restablecer ventana",
+        "show_tabs": "Mostrar todo",
         "open_app": "Abrir en la aplicación"
     },
     "feedback": {
         "other": "Otro",
-        "behaviors": "Comportamientos",
+        "behaviors": "Funcionamiento",
         "error": "Ocurrió un error mientras se enviaba el comentario",
-        "hint": "Recuerda: debes definir el asunto utilizando los módulos y los selectores de área macro antes de escribir tus comentarios. Gracias por la colaboración.",
+        "hint": "Recuerda definir el asunto utilizando los módulos y los selectores de área macro antes de escribir los comentarios. Gracias por la colaboración.",
         "missing_features": "Funcionalidades faltantes",
-        "report_something": "¿Quieres informar algo?",
-        "select_a_module": "Elige un módulo",
-        "select_a_topic": "Elige el asunto",
+        "report_something": "¿Quieres reportar algo?",
+        "select_a_module": "Selecciona un módulo",
+        "select_a_topic": "Selecciona el asunto",
         "send": "ENVIAR",
         "success": "Gracias por tus comentarios",
         "user_interface": "Interfaz de usuario",
         "write_here": "Escribe aquí tus comentarios",
-        "explanation": "Por favor, envíanos tus comentarios sobre la experiencia con Zextras Server. Tu opinion es importante para que podamos mejorar el producto."
+        "explanation": "Envíanos tus comentarios sobre la experiencia con Zextras Carbonio. Tu opinión es importante para que podamos mejorar el producto."
     },
     "messages": {
-        "permanent_delete_title": "¿Seguro que quieres eliminar permanentemente este elemento?",
-        "permanent_delete_body": "Si eliminas permanentemente esta Persona ya no podrás recuperarla. ¿Quieres continuar?"
+        "permanent_delete_title": "¿Seguro que quieres eliminarlo definitivamente?",
+        "permanent_delete_body": "Al eliminar esta Persona ya no se podrá recuperar. ¿Continuar?"
     },
     "share": {
-        "is_contained_in": "Está dentro de"
+        "is_contained_in": "En carpeta"
     },
     "passwords_recovery_settings": {
-        "title": "Ajustes de la cuenta para la recuperación de la contraseña"
+        "title": "Ajustes de recuperación de contraseña"
     },
     "primary_account": {
-        "title": "Ajustes primarios de la cuenta"
+        "title": "Cuenta principal"
     }
 }

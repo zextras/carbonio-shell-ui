@@ -80,7 +80,7 @@
     "search": {
         "app": "検索する",
         "module": "モジュール",
-        "active_input_label": "キーワードをカンマで区切るか、Tabキーを押します",
+        "active_input_label": "キーワードをカンマで区切るか、SPACEキーを押します",
         "clear": "検索入力をクリアする",
         "idle_input_label": "{{module}}で検索する",
         "start": "検索を開始する",

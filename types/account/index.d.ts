@@ -51,8 +51,8 @@ export type DelegateProps = {
 };
 
 export type AccountSettings = {
-	attrs: Record<string, string | number>;
-	prefs: Record<string, string | number>;
+	attrs: Record<string, string | number | Array<string | number>>;
+	prefs: Record<string, string | number | Array<string | number>>;
 	props: Array<ZimletProp>;
 };
 

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.3](https://github.com/zextras/carbonio-shell-ui/compare/v2.0.2...v2.0.3) (2023-03-17)
+
+
+### Bug Fixes
+
+* handle linkfolder created ([9ed09d3](https://github.com/zextras/carbonio-shell-ui/commit/9ed09d3978287661b080adf9af7ce3181bd3360c))
+
 ### [2.0.2](https://github.com/zextras/carbonio-shell-ui/compare/v2.0.1...v2.0.2) (2023-03-13)
 
 ### [2.0.1](https://github.com/zextras/carbonio-shell-ui/compare/v2.0.0...v2.0.1) (2023-03-02)

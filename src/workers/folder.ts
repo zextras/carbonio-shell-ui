@@ -183,6 +183,21 @@ export const handleFolderCreated = (created: Array<SoapFolder>): void =>
 			parent.children.push(folder);
 		}
 	});
+export const handleLinkCreated = (created: Array<SoapLink>): void =>
+	created.forEach((val: SoapLink) => {
+		if (val.id && val.l) {
+			const parent = folders[val.l];
+			const folder: LinkFolder = {
+				...normalizeLink(val, parent),
+				isLink: true,
+				children: [],
+				parent,
+				depth: parent?.depth ? parent.depth + 1 : 0
+			};
+			folders[val.id] = folder;
+			parent.children.push(folder);
+		}
+	});
 export const handleFolderModified = (modified: Array<Partial<UserFolder>>): void =>
 	modified.forEach((val: Partial<SoapFolder>): void => {
 		if (val.id) {
@@ -218,7 +233,8 @@ export const handleFolderDeleted = (deleted: string[]): void =>
 		}
 	});
 export const handleFolderNotify = (notify: SoapNotify): void => {
-	handleFolderCreated(notify.created?.folder ?? notify.created?.link ?? []);
+	handleFolderCreated(notify.created?.folder ?? []);
+	handleLinkCreated(notify.created?.link ?? []);
 	handleFolderModified(notify.modified?.folder ?? notify.modified?.link ?? []);
 	handleFolderDeleted(notify.deleted ?? []);
 };

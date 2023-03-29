@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useMemo } from 'react';
+import React from 'react';
 import {
 	Catcher,
 	Container,
@@ -14,31 +14,28 @@ import {
 	useScreenMode
 } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
-import Logo from '../svg/carbonio.svg';
 import { SearchBar } from '../search/search-bar';
 import { CreationButton } from './creation-button';
 import { useAppStore } from '../store/app';
-import { useLoginConfigStore } from '../store/login/store';
 import { useDarkMode } from '../dark-mode/use-dark-mode';
+import { Logo } from './logo';
 
-const CustomImg = styled.img`
+const StyledLogo = styled(Logo)`
 	height: 2rem;
 `;
 
-const ShellHeader: FC<{
+interface ShellHeaderProps {
 	mobileNavIsOpen: boolean;
 	onMobileMenuClick: () => void;
-}> = ({ mobileNavIsOpen, onMobileMenuClick, children }) => {
-	const { carbonioWebUiAppLogo, carbonioWebUiDarkAppLogo } = useLoginConfigStore();
+	children: React.ReactNode | React.ReactNode[];
+}
 
-	const { darkModeEnabled, darkReaderStatus } = useDarkMode();
-
-	const logoSrc = useMemo(() => {
-		if (darkModeEnabled) {
-			return carbonioWebUiDarkAppLogo || carbonioWebUiAppLogo;
-		}
-		return carbonioWebUiAppLogo || carbonioWebUiDarkAppLogo;
-	}, [carbonioWebUiDarkAppLogo, carbonioWebUiAppLogo, darkModeEnabled]);
+const ShellHeader = ({
+	mobileNavIsOpen,
+	onMobileMenuClick,
+	children
+}: ShellHeaderProps): JSX.Element => {
+	const { darkReaderStatus } = useDarkMode();
 
 	const screenMode = useScreenMode();
 	const searchEnabled = useAppStore((s) => s.views.search.length > 0);
@@ -46,7 +43,7 @@ const ShellHeader: FC<{
 		<Container
 			data-testid="MainHeaderContainer"
 			orientation="horizontal"
-			background="gray3"
+			background={'gray3'}
 			width="fill"
 			height="3.75rem"
 			minHeight="3.75rem"
@@ -71,9 +68,7 @@ const ShellHeader: FC<{
 						</Padding>
 					</Responsive>
 					<Container width="15.625rem" height="2rem" crossAlignment="flex-start">
-						{darkReaderStatus && (
-							<>{logoSrc ? <CustomImg src={logoSrc} /> : <Logo height="2rem" />}</>
-						)}
+						{darkReaderStatus && <StyledLogo />}
 					</Container>
 					<Padding horizontal="large">
 						<CreationButton />
@@ -82,17 +77,6 @@ const ShellHeader: FC<{
 				</Container>
 				<Container orientation="horizontal" width="auto" mainAlignment="flex-end">
 					<Responsive mode="desktop">{children}</Responsive>
-					<Responsive mode="mobile">
-						<Container
-							orientation="horizontal"
-							mainAlignment="flex-end"
-							padding={{ right: 'extrasmall' }}
-						>
-							{/* <Dropdown items={secondaryActions} placement="bottom-start">
-							<IconButton icon="Plus" />
-						</Dropdown> */}
-						</Container>
-					</Responsive>
 				</Container>
 			</Catcher>
 		</Container>

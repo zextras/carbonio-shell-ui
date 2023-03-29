@@ -7,22 +7,22 @@
 import { LoginConfigStore } from '../../types/loginConfig';
 import { useLoginConfigStore } from '../store/login/store';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
+import { getClientTitle, getFavicon } from '../store/login/getters';
 
 export const loginConfig = (): Promise<void> =>
 	fetch(LOGIN_V3_CONFIG_PATH)
 		.then((response) => response.json())
 		.then((data: LoginConfigStore) => {
 			useLoginConfigStore.setState(data);
-			const favicon = document.getElementById('favicon');
-			if (favicon && favicon instanceof HTMLLinkElement) {
-				favicon.href = data.carbonioWebUiFavicon
-					? data.carbonioWebUiFavicon
-					: `${BASE_PATH}favicon.svg`;
-			}
-			if (data.carbonioWebUiTitle) {
-				document.title = data.carbonioWebUiTitle;
-			}
 		})
 		.catch((reason) => {
 			console.warn(reason);
+		})
+		.finally(() => {
+			useLoginConfigStore.setState({ loaded: true });
+			const favicon = document.getElementById('favicon');
+			if (favicon && favicon instanceof HTMLLinkElement) {
+				favicon.href = getFavicon();
+			}
+			document.title = getClientTitle();
 		});

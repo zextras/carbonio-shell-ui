@@ -75,7 +75,7 @@ const getAvailableEmailAddresses = (account: Account, settings: AccountSettings)
 	// Adds the email addresses of all the shared accounts
 	if (account.rights?.targets) {
 		account.rights?.targets.forEach((target) => {
-			if (target.right === 'sendAs' && target.target) {
+			if (target.target && (target.right === 'sendAs' || target.right === 'sendOnBehalfOf')) {
 				target.target.forEach((user) => {
 					if (user.type === 'account' && user.email) {
 						user.email.forEach((email) => {

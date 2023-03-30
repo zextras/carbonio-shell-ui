@@ -44,7 +44,7 @@
                 "do_not_send_to_external": "Não enviar mensagens de resposta automática a um remetente externo",
                 "send_standard_auto_reply": "Enviar mensagem de resposta automática padrão",
                 "send_custom_in_organisation": "Enviar mensagem personalizada a quem não faz parte da minha organização",
-                "send_custom_not_in_organisation": "Enviar mensagem personalizada a quem não faz parte da minha organização ou não está no meu livro de endereços"
+                "send_custom_not_in_organisation": "Enviar mensagem personalizada a quem não faz parte da minha organização ou não está na minha agenda de contatos"
             },
             "headings": {
                 "create_appointment": "Compromisso do Calendário",
@@ -130,7 +130,7 @@
         "save": "Salvar",
         "secondary": "Secundário",
         "advanced_settings": "Configurações avançadas",
-        "delete": "Apagar",
+        "delete": "Excluir",
         "delete_permanently": "Excluir permanentemente",
         "folders": "Pastas",
         "go_back": "Voltar",

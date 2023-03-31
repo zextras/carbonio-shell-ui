@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import i18next, { i18n } from 'i18next';
+import i18next, { i18n, InitOptions } from 'i18next';
 import Backend from 'i18next-http-backend';
 import produce from 'immer';
 import { dropRight, forEach, reduce } from 'lodash';
-import create from 'zustand';
-import { CarbonioModule, I18nState } from '../../../types';
+import { create } from 'zustand';
+import type { CarbonioModule, I18nState } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
 import { useAccountStore } from '../account';
 
@@ -38,7 +38,26 @@ const defaultLng =
 
 const defaultI18n = i18next.createInstance({ lng: defaultLng });
 
-export const useI18nStore = create<I18nState>((set) => ({
+const defaultI18nInitOptions: InitOptions = {
+	returnEmptyString: true,
+	returnNull: false,
+	compatibilityJSON: 'v3',
+	lng: defaultLng,
+	fallbackLng: 'en',
+	debug: false,
+	interpolation: {
+		escapeValue: false // not needed for react as it escapes by default
+	},
+	missingKeyHandler: (_, __, key) => {
+		// eslint-disable-next-line no-console
+		console.warn(`Missing translation with key '${key}'`);
+	},
+	backend: {
+		loadPath: `${BASE_PATH}/i18n/{{lng}}.json`
+	}
+};
+
+export const useI18nStore = create<I18nState>()((set) => ({
 	instances: {},
 	defaultI18n,
 	locale: 'en',
@@ -60,9 +79,9 @@ export const useI18nStore = create<I18nState>((set) => ({
 			const appsWithShell = addShell(apps);
 			set(
 				produce((state: I18nState) => {
-					state.instances = reduce(
+					state.instances = reduce<CarbonioModule, Record<string, i18n>>(
 						appsWithShell,
-						(acc, app) => {
+						(acc, app): Record<string, i18n> => {
 							const newI18n = i18next.createInstance();
 							newI18n
 								// load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
@@ -71,18 +90,8 @@ export const useI18nStore = create<I18nState>((set) => ({
 								// init i18next
 								// for all options read: https://www.i18next.com/overview/configuration-options
 								.init({
-									returnEmptyString: true,
-									compatibilityJSON: 'v3',
-									fallbackLng: 'en',
+									...defaultI18nInitOptions,
 									lng: locale,
-									debug: false,
-									interpolation: {
-										escapeValue: false // not needed for react as it escapes by default
-									},
-									missingKeyHandler: (_, __, key) => {
-										// eslint-disable-next-line no-console
-										console.warn(`Missing translation with key '${key}'`);
-									},
 									backend: {
 										loadPath:
 											app.name === SHELL_APP_ID
@@ -94,7 +103,7 @@ export const useI18nStore = create<I18nState>((set) => ({
 							acc[app.name] = newI18n;
 							return acc;
 						},
-						{} as Record<string, i18n>
+						{}
 					);
 					state.defaultI18n.t = state.instances[SHELL_APP_ID].t;
 					state.locale = locale;
@@ -108,20 +117,4 @@ defaultI18n
 	.use(Backend)
 	// init i18next
 	// for all options read: https://www.i18next.com/overview/configuration-options
-	.init({
-		returnEmptyString: true,
-		compatibilityJSON: 'v3',
-		lng: defaultLng,
-		fallbackLng: 'en',
-		debug: false,
-		interpolation: {
-			escapeValue: false // not needed for react as it escapes by default
-		},
-		missingKeyHandler: (_, __, key) => {
-			// eslint-disable-next-line no-console
-			console.warn(`Missing translation with key '${key}'`);
-		},
-		backend: {
-			loadPath: `${BASE_PATH}/i18n/{{lng}}.json`
-		}
-	});
+	.init(defaultI18nInitOptions);

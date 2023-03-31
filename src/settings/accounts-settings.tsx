@@ -6,7 +6,7 @@
 
 import React, { useCallback, useMemo, useState, useEffect, ReactElement } from 'react';
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from 'i18next';
 import {
 	map,
 	includes,
@@ -19,14 +19,19 @@ import {
 	uniq,
 	isArray
 } from 'lodash';
-import { useUserSettings } from '../store/account/hooks';
+import { useUserSettings } from '../store/account';
 import { editSettings } from '../network/edit-settings';
 import { SHELL_APP_ID } from '../constants';
-import { Mods, IdentityProps, CreateIdentityProps, Account, AccountSettings } from '../../types';
+import type {
+	Mods,
+	IdentityProps,
+	CreateIdentityProps,
+	Account,
+	AccountSettings
+} from '../../types';
 import AccountsList from './components/account-settings/accounts-list';
 import PrimaryAccountSettings from './components/account-settings/primary-account-settings';
 import SettingsSentMessages from './components/account-settings/settings-sent-messages';
-import PasswordRecoverySettings from './components/account-settings/password-recovery-settings';
 import Delegates, { DelegateType } from './components/account-settings/delegates';
 import PersonaSettings from './components/account-settings/persona-settings';
 import PersonaUseSection from './components/account-settings/persona-use-section';
@@ -75,7 +80,7 @@ const getAvailableEmailAddresses = (account: Account, settings: AccountSettings)
 	// Adds the email addresses of all the shared accounts
 	if (account.rights?.targets) {
 		account.rights?.targets.forEach((target) => {
-			if (target.right === 'sendAs' && target.target) {
+			if (target.target && (target.right === 'sendAs' || target.right === 'sendOnBehalfOf')) {
 				target.target.forEach((user) => {
 					if (user.type === 'account' && user.email) {
 						user.email.forEach((email) => {

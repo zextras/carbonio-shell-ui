@@ -146,7 +146,7 @@
         "delete_permanently": "Elimina definitivamente",
         "delete_after_download": "Elimina il messaggio dal server dopo che è stato scaricato",
         "documentation": "Documentazione",
-        "email_address": "Indirizzo e-mailInidirizzi e-mail {{count}}",
+        "email_address": "Indirizzo e-mail",
         "filter_folders": "Filtra cartelle",
         "folders": "Cartelle",
         "go_back": "Indietro",

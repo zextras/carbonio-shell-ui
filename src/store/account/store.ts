@@ -4,10 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import create from 'zustand';
-import { AccountState } from '../../../types';
+import { create } from 'zustand';
+import type { AccountState } from '../../../types';
 
-export const useAccountStore = create<AccountState>(() => ({
+// extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
+export const useAccountStore = create<AccountState>()(() => ({
 	authenticated: false,
 	account: undefined,
 	version: '',

@@ -4,12 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import create from 'zustand';
-import { NetworkState } from '../../../types';
+import { create } from 'zustand';
+import type { NetworkState } from '../../../types';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export const useNetworkStore = create<NetworkState>(() => ({
+// extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
+export const useNetworkStore = create<NetworkState>()(() => ({
 	pollingInterval: 30000,
 	seq: 0
 }));

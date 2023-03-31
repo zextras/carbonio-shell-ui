@@ -5,14 +5,15 @@
  */
 
 import produce from 'immer';
-import create from 'zustand';
+import { create } from 'zustand';
 import { forEach, includes, omit } from 'lodash';
 import { ComponentType } from 'react';
 import type { ActionFactory, AnyFunction, IntegrationsState } from '../../../types';
 import Composer from './composer';
 import { SHELL_APP_ID } from '../../constants';
 
-export const useIntegrationsStore = create<IntegrationsState>((set) => ({
+// extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
+export const useIntegrationsStore = create<IntegrationsState>()((set) => ({
 	actions: {},
 	components: {
 		composer: {

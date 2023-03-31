@@ -6,8 +6,8 @@
 /* eslint-disable no-param-reassign */
 
 import produce from 'immer';
-import { TFunction } from 'react-i18next';
-import { AppState, PrimaryBarView, SettingsView } from '../../../types';
+import type { TFunction } from 'i18next';
+import type { AppState, PrimaryBarView, SettingsView } from '../../../types';
 import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
 import Feedback from '../../reporting/feedback';
 import { SearchAppView } from '../../search/search-app-view';

@@ -6,11 +6,12 @@
 
 import produce from 'immer';
 import { forEach, trimStart, uniqueId } from 'lodash';
-import create from 'zustand';
-import { BoardState, Board } from '../../../types';
+import { create } from 'zustand';
+import type { BoardState, Board } from '../../../types';
 import { getApp } from '../app';
 
-export const useBoardStore = create<BoardState>(() => ({
+// extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
+export const useBoardStore = create<BoardState>()(() => ({
 	boards: {},
 	expanded: false,
 	minimized: false
@@ -18,7 +19,7 @@ export const useBoardStore = create<BoardState>(() => ({
 
 export const addBoard =
 	(app: string) =>
-	<T = any>(
+	<T = unknown>(
 		board: Omit<Board<T>, 'app' | 'icon' | 'id'> & { id?: string; icon?: string },
 		expanded?: BoardState['expanded']
 	): Board => {
@@ -100,7 +101,7 @@ export const setCurrentBoard = (id: string): void => {
 		current: id
 	});
 };
-export const updateBoard = <T = any>(id: string, board: Partial<Board<T>>): void => {
+export const updateBoard = <T = unknown>(id: string, board: Partial<Board<T>>): void => {
 	useBoardStore.setState(
 		produce((s: BoardState) => {
 			if (s.boards[id])
@@ -112,7 +113,7 @@ export const updateBoard = <T = any>(id: string, board: Partial<Board<T>>): void
 		})
 	);
 };
-export const updateBoardContext = <T = any>(id: string, context: T): void => {
+export const updateBoardContext = <T = unknown>(id: string, context: T): void => {
 	useBoardStore.setState(
 		produce((s: BoardState) => {
 			if (s.boards[id])

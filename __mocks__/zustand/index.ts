@@ -5,18 +5,16 @@
  */
 import { StateCreator, StoreApi, UseBoundStore } from 'zustand';
 import { act } from '@testing-library/react';
-// TODO: for last version of zustand use this version
-// const { create: actualCreate } = jest.requireActual<typeof import('zustand')>('zustand');
-const { default: actualCreate } = jest.requireActual<typeof import('zustand')>('zustand');
+
+const { create: actualCreate } = jest.requireActual<typeof import('zustand')>('zustand');
 
 // a variable to hold reset functions for all stores declared in the app
 const storeResetFns = new Set<() => void>();
 
 // when creating a store, we get its initial state, create a reset function and add it in the set
 export const create =
-	// TODO: for last version of zustand use this version
-	// <S>() => (createState: StateCreator<S>): UseBoundStore<StoreApi<S>> => {
-	<S extends object>(createState: StateCreator<S>): UseBoundStore<S, StoreApi<S>> => {
+	<S>() =>
+	(createState: StateCreator<S>): UseBoundStore<StoreApi<S>> => {
 		const store = actualCreate(createState);
 		const initialState = store.getState();
 		storeResetFns.add(() => store.setState(initialState, true));

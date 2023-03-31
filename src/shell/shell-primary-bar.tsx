@@ -6,7 +6,7 @@
 
 import { Container, IconButton, Row, Tooltip } from '@zextras/carbonio-design-system';
 import { map, isEmpty, trim, filter, sortBy, noop } from 'lodash';
-import React, { FC, useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useAppStore } from '../store/app';
@@ -22,10 +22,10 @@ const ContainerWithDivider = styled(Container)`
 	border-right: 0.0625rem solid ${({ theme }): string => theme.palette.gray3.regular};
 `;
 
-const ToggleBoardIcon: FC = () => {
+const ToggleBoardIcon = (): JSX.Element | null => {
 	const { minimized, boards } = useBoardStore();
-	if (isEmpty(boards)) return null;
-	return (
+
+	return isEmpty(boards) ? null : (
 		<Container width={'3rem'} height={'3rem'}>
 			<IconButton
 				iconColor="primary"
@@ -47,7 +47,7 @@ type PrimaryBarAccessoryItemProps = {
 	view: PrimaryAccessoryView;
 };
 
-const PrimaryBarElement: FC<PrimaryBarItemProps> = ({ view, active, onClick }) => (
+const PrimaryBarElement = ({ view, active, onClick }: PrimaryBarItemProps): JSX.Element => (
 	<Tooltip label={view.label} placement="right" key={view.id}>
 		<BadgeWrap badge={view.badge}>
 			{typeof view.component === 'string' ? (
@@ -66,7 +66,7 @@ const PrimaryBarElement: FC<PrimaryBarItemProps> = ({ view, active, onClick }) =
 	</Tooltip>
 );
 
-const PrimaryBarAccessoryElement: FC<PrimaryBarAccessoryItemProps> = ({ view }) => (
+const PrimaryBarAccessoryElement = ({ view }: PrimaryBarAccessoryItemProps): JSX.Element => (
 	<Tooltip label={view.label} placement="right" key={view.id}>
 		<AppContextProvider key={view.id} pkg={view.app}>
 			{typeof view.component === 'string' ? (
@@ -84,30 +84,45 @@ const PrimaryBarAccessoryElement: FC<PrimaryBarAccessoryItemProps> = ({ view }) 
 	</Tooltip>
 );
 
-const ShellPrimaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
+const OverlayRow = styled(Row)`
+	min-height: 0.0625rem;
+	overflow-y: auto;
+	overflow-y: overlay;
+`;
+
+interface ShellPrimaryBarComponentProps {
+	activeRoute: AppRoute | undefined;
+}
+const ShellPrimaryBarComponent = ({
+	activeRoute
+}: ShellPrimaryBarComponentProps): JSX.Element | null => {
 	const primaryBarViews = useAppStore((s) => s.views.primaryBar);
 	const [routes, setRoutes] = useState<Record<string, string>>({});
 	const history = useHistory();
 
 	useEffect(() => {
-		setRoutes((r) =>
-			primaryBarViews.reduce((acc, v) => {
-				// eslint-disable-next-line no-param-reassign
-				if (!acc[v.id]) acc[v.id] = v.route;
-				return acc;
-			}, r)
+		setRoutes((prevState) =>
+			primaryBarViews.reduce((accumulator, view) => {
+				if (!accumulator[view.id]) {
+					accumulator[view.id] = view.route;
+				}
+				return accumulator;
+			}, prevState)
 		);
 	}, [primaryBarViews]);
+
 	useEffect(() => {
 		if (activeRoute) {
-			setRoutes((r) => ({
-				...r,
+			setRoutes((prevRoutes) => ({
+				...prevRoutes,
 				[activeRoute.id]: `${trim(history.location.pathname, '/')}${history.location.search}`
 			}));
 		}
 	}, [activeRoute, history.location, primaryBarViews]);
+
 	const primaryBarAccessoryViews = useAppStore((s) => s.views.primaryBarAccessories);
-	const accessories = useMemo(
+
+	const accessoryViews = useMemo(
 		() =>
 			sortBy(
 				filter(primaryBarAccessoryViews, (v) => checkRoute(v, activeRoute)),
@@ -115,66 +130,62 @@ const ShellPrimaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute }
 			),
 		[activeRoute, primaryBarAccessoryViews]
 	);
+
+	const primaryBarItems = useMemo(
+		() =>
+			map(primaryBarViews, (view) =>
+				view.visible ? (
+					<PrimaryBarElement
+						key={view.id}
+						onClick={(): void => history.push(`/${routes[view.id]}`)}
+						view={view}
+						active={activeRoute?.id === view.id}
+					/>
+				) : null
+			),
+		[activeRoute?.id, history, primaryBarViews, routes]
+	);
+
+	const accessoryItems = useMemo(
+		() => accessoryViews.map((view) => <PrimaryBarAccessoryElement view={view} key={view.id} />),
+		[accessoryViews]
+	);
+
 	if (IS_STANDALONE && activeRoute?.standalone?.hidePrimaryBar) {
 		return null;
 	}
+
 	return (
 		<ContainerWithDivider
 			width="3.0625rem"
 			height="fill"
-			background="gray6"
+			background={'gray6'}
 			orientation="vertical"
 			mainAlignment="flex-start"
 			crossAlignment="flex-start"
 			data-testid="SideMenuContainer"
 		>
-			<Row
+			<OverlayRow
 				mainAlignment="flex-start"
 				crossAlignment="flex-start"
 				orientation="vertical"
 				takeAvailableSpace
 				wrap="nowrap"
-				style={{
-					minHeight: '0.0625rem',
-					// TODO: fix overlay usage
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					overflowY: 'overlay'
-				}}
 			>
-				{map(primaryBarViews, (view) =>
-					view.visible ? (
-						<PrimaryBarElement
-							key={view.id}
-							onClick={(): void => history.push(`/${routes[view.id]}`)}
-							view={view}
-							active={activeRoute?.id === view.id}
-						/>
-					) : null
-				)}
+				{primaryBarItems}
 				<ToggleBoardIcon />
-			</Row>
-			<Row
-				mainAlignment="flex-end"
-				orientation="vertical"
-				wrap="nowrap"
-				// TODO: fix overlay usage
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
-				style={{ minHeight: '0.0625rem', overflowY: 'overlay' }}
-			>
-				{accessories.map((v) => (
-					<PrimaryBarAccessoryElement view={v} key={v.id} />
-				))}
-			</Row>
+			</OverlayRow>
+			<OverlayRow mainAlignment="flex-end" orientation="vertical" wrap="nowrap">
+				{accessoryItems}
+			</OverlayRow>
 		</ContainerWithDivider>
 	);
 };
 
 const MemoShellPrimaryBarComponent = React.memo(ShellPrimaryBarComponent);
 
-const ShellPrimaryBar: FC = () => {
-	const activeRoute = useCurrentRoute() as AppRoute;
+const ShellPrimaryBar = (): JSX.Element => {
+	const activeRoute = useCurrentRoute();
 	return <MemoShellPrimaryBarComponent activeRoute={activeRoute} />;
 };
 

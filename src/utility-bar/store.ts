@@ -3,10 +3,11 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import create from 'zustand';
-import { UtilityBarStore } from '../../types';
+import { create } from 'zustand';
+import type { UtilityBarStore } from '../../types';
 
-export const useUtilityBarStore = create<UtilityBarStore>((set) => ({
+// extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
+export const useUtilityBarStore = create<UtilityBarStore>()((set) => ({
 	mode: 'closed',
 	current: undefined,
 	secondaryBarState: true,

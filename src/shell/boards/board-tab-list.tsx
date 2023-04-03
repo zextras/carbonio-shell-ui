@@ -39,9 +39,23 @@ export const TabsList: FC = () => {
 				width="calc(100% - 0.5rem)"
 			>
 				{boards &&
-					map(boards, (tab) => (
-						<AppBoardTab key={tab.id} id={tab.id} title={tab.title} icon={tab.icon} />
-					))}
+					map(
+						map(boards, (board) => board),
+						(tab, index, array) => (
+							<AppBoardTab
+								key={tab.id}
+								id={tab.id}
+								title={tab.title}
+								icon={tab.icon}
+								fallbackId={
+									current !== tab.id
+										? undefined
+										: (array[index + 1] && array[index + 1].id) ||
+										  (array[index - 1] && array[index - 1].id)
+								}
+							/>
+						)
+					)}
 			</Row>
 			{hiddenTabsCount > 0 && (
 				<>

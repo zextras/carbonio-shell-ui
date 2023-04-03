@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0-beta.0](https://github.com/zextras/carbonio-shell-ui/compare/v2.1.0...v3.0.0-beta.0) (2023-04-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** bump tinymce to v6
+* **deps:** major bump of i18next and related deps (external dependency)
+* **deps:** bump react-redux to v8 (external dependency)
+
+### build
+
+* **deps:** update dependencies ([a7554b5](https://github.com/zextras/carbonio-shell-ui/commit/a7554b530b34cf5c71606b69fdd8e39d16c6ae8d)), closes [#209](https://github.com/zextras/carbonio-shell-ui/issues/209)
+
 ## [2.1.0](https://github.com/zextras/carbonio-shell-ui/compare/v2.0.3...v2.1.0) (2023-03-29)
 
 

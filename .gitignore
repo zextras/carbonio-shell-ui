@@ -13,3 +13,5 @@
 /.idea/
 .dev.json
 zextras-carbonio-*.tgz
+shell.iml
+.env

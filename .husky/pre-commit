@@ -4,4 +4,4 @@
 npm run type-check
 npm run lint -- --quiet
 # reuse lint
-# npm test
+npm test

@@ -25,7 +25,7 @@ import React, {
 	useReducer,
 	useState
 } from 'react';
-import { TFunction } from 'react-i18next';
+import type { TFunction } from 'i18next';
 import styled, { DefaultTheme } from 'styled-components';
 import { useUserAccount } from '../store/account';
 import { useAppList } from '../store/app';

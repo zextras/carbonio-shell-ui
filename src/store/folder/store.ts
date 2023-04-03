@@ -4,11 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import create from 'zustand';
-import { FolderState } from '../../../types';
+import { create } from 'zustand';
+import type { FolderState } from '../../../types';
 import { folderWorker } from '../../workers';
 
-export const useFolderStore = create<FolderState>(() => ({
+// extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
+export const useFolderStore = create<FolderState>()(() => ({
 	folders: {},
 	roots: {},
 	searches: {}

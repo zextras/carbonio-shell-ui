@@ -18,7 +18,7 @@ export const useCurrentRoute = (): AppRoute | undefined => {
 	const location = useLocation();
 	const routes = useRoutes();
 	return useMemo(
-		() => find(routes, (r) => startsWith(trim(location.pathname, '/'), r.route)),
+		() => find(routes, ({ route }) => startsWith(trim(location.pathname, '/'), route)),
 		[location.pathname, routes]
 	);
 };

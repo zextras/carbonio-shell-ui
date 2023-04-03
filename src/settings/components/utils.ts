@@ -5,8 +5,8 @@
  */
 
 import moment from 'moment';
-import { TFunction } from 'react-i18next';
-import { AccountSettings } from '../../../types';
+import type { TFunction } from 'i18next';
+import type { AccountSettings } from '../../../types';
 import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
 
 export const ItemsSendAutoReplies = (t: TFunction): any => [

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import create, { StoreApi, UseBoundStore } from 'zustand';
+import { create } from 'zustand';
 import {
 	BrowserClient,
 	defaultIntegrations,
@@ -14,21 +14,21 @@ import {
 } from '@sentry/browser';
 import { reduce } from 'lodash';
 import type { CarbonioModule } from '../../types';
-import { SHELL_APP_ID } from '../constants';
+import { SENTRY_FEEDBACK_DNS, SENTRY_SHELL_DSN, SHELL_APP_ID } from '../constants';
 
 type ReporterState = {
 	clients: Record<string, Hub>;
 	setClients: (apps: Array<CarbonioModule>) => void;
 };
 
-export const useReporter = create<ReporterState>((set) => ({
+export const useReporter = create<ReporterState>()((set) => ({
 	clients: {
 		[SHELL_APP_ID]: new Hub(
 			new BrowserClient({
 				transport: makeFetchTransport,
 				stackParser: defaultStackParser,
 				integrations: defaultIntegrations,
-				dsn: 'https://0ce2448c05b94f0182c47ae52c7ff52c@feedback.zextras.tools/6',
+				dsn: SENTRY_SHELL_DSN,
 				release: '0',
 				maxValueLength: 500
 			})
@@ -38,7 +38,7 @@ export const useReporter = create<ReporterState>((set) => ({
 				transport: makeFetchTransport,
 				stackParser: defaultStackParser,
 				integrations: defaultIntegrations,
-				dsn: 'https://1b6b3e2bbdc64a73bf45c72b725c56b4@feedback.zextras.tools/8',
+				dsn: SENTRY_FEEDBACK_DNS,
 				release: '0',
 				maxValueLength: 500
 			})
@@ -68,4 +68,4 @@ export const useReporter = create<ReporterState>((set) => ({
 			)
 		}));
 	}
-})) as UseBoundStore<ReporterState, StoreApi<ReporterState>>;
+}));

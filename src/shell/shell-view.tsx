@@ -54,10 +54,15 @@ const useLoginRedirection = (allowUnauthenticated?: string): void => {
 	}, [allowUnauthenticated, auth]);
 };
 
-const ShellComponent: FC<{ allowUnauthenticated?: string; hideShellHeader?: string }> = ({
+interface ShellComponentProps {
+	allowUnauthenticated?: string;
+	hideShellHeader?: string;
+}
+
+const ShellComponent = ({
 	allowUnauthenticated,
 	hideShellHeader
-}) => {
+}: ShellComponentProps): JSX.Element => {
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
 	useLoginRedirection(allowUnauthenticated);
 	return (
@@ -86,7 +91,7 @@ const ShellComponent: FC<{ allowUnauthenticated?: string; hideShellHeader?: stri
 
 const MemoShell = React.memo(ShellComponent);
 
-const ShellView: FC = () => {
+const ShellView = (): JSX.Element => {
 	const activeRoute = useCurrentRoute() as AppRoute;
 	const allowUnauthenticated = activeRoute?.standalone?.allowUnauthenticated as string | undefined;
 	const hideShellHeader = activeRoute?.standalone?.hideShellHeader as string | undefined;

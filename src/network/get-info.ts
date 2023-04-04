@@ -9,7 +9,6 @@ import { SHELL_APP_ID } from '../constants';
 import { useAppStore } from '../store/app';
 import { normalizeAccount } from '../store/account/normalization';
 import { AccountSettings, GetInfoResponse, CarbonioModule } from '../../types';
-import { goToLogin } from './go-to-login';
 import { getSoapFetch } from './fetch';
 import { useAccountStore } from '../store/account';
 import { useNetworkStore } from '../store/network';
@@ -33,12 +32,9 @@ export const getInfo = (): Promise<void> =>
 	fetch('/static/iris/components.json')
 		.then((r) => r.json())
 		.then(({ components }: { components: Array<CarbonioModule> }) => {
-			useAppStore.getState().setters.addApps(
-				filter(components, ({ type }) => {
-					if (type === 'shell' || type === 'carbonio') return true;
-					return false;
-				})
-			);
+			useAppStore
+				.getState()
+				.setters.addApps(filter(components, ({ type }) => type === 'shell' || type === 'carbonio'));
 		})
 		.then(() =>
 			getSoapFetch(SHELL_APP_ID)<{ _jsns: string; rights: string }, GetInfoResponse>('GetInfo', {

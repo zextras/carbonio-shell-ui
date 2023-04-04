@@ -28,6 +28,13 @@ module.exports = {
 				templateFile: '.reuse/template.js'
 			}
 		],
+		'no-param-reassign': [
+			'error',
+			{
+				props: true,
+				ignorePropertyModificationsFor: ['accumulator', 'state', 'event']
+			}
+		],
 		'no-shadow': 'off',
 		'@typescript-eslint/no-shadow': 'error'
 	}

@@ -60,7 +60,11 @@ export const AppBoardTab: FC<{ id: string; icon: string; title: string; fallback
 	return (
 		<Container orientation="row" width="fit" maxWidth="100%">
 			{current !== id && <VerticalDivider />}
-			<TabContainer active={current === id} padding={{ all: 'extrasmall' }}>
+			<TabContainer
+				data-testid={`board-tab-${id}`}
+				active={current === id}
+				padding={{ all: 'extrasmall' }}
+			>
 				<Row
 					height="100%"
 					onClick={onClick}

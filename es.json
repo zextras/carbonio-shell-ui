@@ -36,7 +36,7 @@
                 "all_day": "Todo el día:",
                 "auto_reply_message": "Mensaje de respuesta automática:",
                 "auto_reply_message_external": "Mensaje de respuesta automática para remitentes externos:",
-                "create_appointment": "Crear evento:",
+                "create_appointment": "Crear evento del calendario:",
                 "end_time": "Hora de finalización:",
                 "external_senders": "Remitentes externos",
                 "out_of_office_status": "Mostrar como:",
@@ -56,7 +56,7 @@
             "headings": {
                 "create_appointment": "Evento del calendario",
                 "settings_label": "Respuestas automáticas",
-                "time_period": "Intervalo"
+                "time_period": "Período"
             },
             "send_auto_replies": "Enviar respuestas automáticas"
         },
@@ -190,7 +190,7 @@
         "save_to_my_sent_folder": "Guardar una copia de los mensajes enviados solo en mi carpeta Enviados",
         "set_reply_to_field": "Habilitar el campo \"Responder a:\" en los mensajes",
         "settings_sent_messages": "Ajustes de mensajes enviados",
-        "test_settings": "Probar ajustes",
+        "test_settings": "Ajustes de prueba",
         "unsaved_changes": "No se han guardado los cambios",
         "unsaved_changes_line2": "Los cambios no guardados se perderán",
         "update_view": "Actualizar vista",

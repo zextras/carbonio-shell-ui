@@ -41,8 +41,8 @@
             },
             "do_not_send_auto_replies": "Não enviar respostas automáticas",
             "external_senders": {
-                "do_not_send_to_external": "Não enviar mensagens de resposta automática a um remetente externo",
-                "send_standard_auto_reply": "Enviar mensagem de resposta automática padrão",
+                "do_not_send_to_external": "Não enviar a remetentes externos",
+                "send_standard_auto_reply": "Enviar mensagem padrão",
                 "send_custom_in_organisation": "Enviar mensagem personalizada a quem não faz parte da minha organização",
                 "send_custom_not_in_organisation": "Enviar mensagem personalizada a quem não faz parte da minha organização ou não está na minha agenda de contatos"
             },
@@ -165,7 +165,7 @@
         "button": "Botão",
         "click_to_copy": "Clique para copiar",
         "delete_after_download": "Excluir mensagens do servidor após o download",
-        "save_both_folders": "Salvar uma cópia das mensagens enviadas na minha pasta de Enviados e a dos delegados",
+        "save_both_folders": "Salvar uma cópia das mensagens na minha pasta Enviadas e na dos delegados",
         "settings_sent_messages": "Configurações de mensagens enviadas",
         "unsaved_changes_line2": "Alterações não salvas serão perdidas",
         "use_personas_line2": "Por exemplo, se você enviar e-mails em uma função específica no trabalho, crie uma Persona para isso.",
@@ -182,7 +182,7 @@
         "recovery_email": "E-mail de recuperação",
         "save_and_leave": "Salvar",
         "save_delegate_folder": "Salvar uma cópia das mensagens enviadas na pasta de Enviados do delegado",
-        "save_to_my_sent_folder": "Salvar uma cópia das mensagens enviadas na minha pasta de Enviados",
+        "save_to_my_sent_folder": "Salvar uma cópia das mensagens na minha pasta Enviadas",
         "set_reply_to_field": "Habilitar o campo \"Responder a\" nas mensagens:",
         "test_settings": "Configurações de teste",
         "unsaved_changes": "As alterações não foram salvas",

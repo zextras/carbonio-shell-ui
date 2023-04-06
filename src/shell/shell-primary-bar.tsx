@@ -6,9 +6,9 @@
 
 import { Container, IconButton, Row, Tooltip } from '@zextras/carbonio-design-system';
 import { map, isEmpty, trim, filter, sortBy, noop } from 'lodash';
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useAppStore } from '../store/app';
 import { AppRoute, PrimaryAccessoryView, PrimaryBarView } from '../../types';
 import BadgeWrap from './badge-wrap';
@@ -97,29 +97,28 @@ const ShellPrimaryBarComponent = ({
 	activeRoute
 }: ShellPrimaryBarComponentProps): JSX.Element | null => {
 	const primaryBarViews = useAppStore((s) => s.views.primaryBar);
-	const [routes, setRoutes] = useState<Record<string, string>>({});
-	const history = useHistory();
+	const { push } = useHistory();
+
+	const { pathname, search } = useLocation();
+	const routesRef = useRef<Record<string, string>>({});
 
 	useEffect(() => {
-		setRoutes((prevState) =>
-			primaryBarViews.reduce((accumulator, view) => {
-				if (!accumulator[view.id]) {
-					accumulator[view.id] = view.route;
-				}
-				return accumulator;
-			}, prevState)
-		);
+		routesRef.current = primaryBarViews.reduce((accumulator, view) => {
+			if (!accumulator[view.id]) {
+				accumulator[view.id] = view.route;
+			}
+			return accumulator;
+		}, routesRef.current);
 	}, [primaryBarViews]);
 
 	useEffect(() => {
 		if (activeRoute) {
-			setRoutes((prevRoutes) => ({
-				...prevRoutes,
-				[activeRoute.id]: `${trim(history.location.pathname, '/')}${history.location.search}`
-			}));
+			routesRef.current = {
+				...routesRef.current,
+				[activeRoute.id]: `${trim(pathname, '/')}${search}`
+			};
 		}
-	}, [activeRoute, history.location, primaryBarViews]);
-
+	}, [activeRoute, pathname, search, primaryBarViews]);
 	const primaryBarAccessoryViews = useAppStore((s) => s.views.primaryBarAccessories);
 
 	const accessoryViews = useMemo(
@@ -137,13 +136,13 @@ const ShellPrimaryBarComponent = ({
 				view.visible ? (
 					<PrimaryBarElement
 						key={view.id}
-						onClick={(): void => history.push(`/${routes[view.id]}`)}
+						onClick={(): void => push(`/${routesRef.current[view.id]}`)}
 						view={view}
 						active={activeRoute?.id === view.id}
 					/>
 				) : null
 			),
-		[activeRoute?.id, history, primaryBarViews, routes]
+		[activeRoute?.id, push, primaryBarViews]
 	);
 
 	const accessoryItems = useMemo(

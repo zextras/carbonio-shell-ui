@@ -5,7 +5,7 @@
  */
 
 import { forOwn } from 'lodash';
-import { ComponentType } from 'react';
+import { ComponentType, memo } from 'react';
 import { useAppStore } from '../../store/app';
 import { getAppFunctions } from './app-loader-functions';
 import { Spinner } from '../../ui-extras/spinner';
@@ -54,7 +54,7 @@ export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 				useAppStore.setState((state) => ({
 					entryPoints: {
 						...state.entryPoints,
-						[appPkg.name]: appComponent
+						[appPkg.name]: memo(appComponent)
 					}
 				}));
 				console.info(

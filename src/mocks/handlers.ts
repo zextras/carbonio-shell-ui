@@ -10,7 +10,8 @@ import { getInfoRequest } from './handlers/getInfoRequest';
 
 const handlers: RequestHandler[] = [
 	rest.get('/static/iris/components.json', getComponentsJson),
-	rest.post('/service/soap/GetInfoRequest', getInfoRequest)
+	rest.post('/service/soap/GetInfoRequest', getInfoRequest),
+	rest.get('/i18n/en.json', (request, response, context) => response(context.json({})))
 ];
 
 export default handlers;

@@ -13,7 +13,7 @@ import {
 	Tooltip,
 	useHiddenCount
 } from '@zextras/carbonio-design-system';
-import { map, noop, slice } from 'lodash';
+import { isEmpty, map, noop, slice } from 'lodash';
 import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { setCurrentBoard, useBoardStore } from '../../store/boards';
 import { getT } from '../../store/i18n';
@@ -21,7 +21,7 @@ import { AppBoardTab } from './board-tab';
 
 export const TabsList = (): JSX.Element => {
 	const t = getT();
-	const { boards, current, expanded } = useBoardStore();
+	const { boards, current, expanded, orderedBoards } = useBoardStore();
 	const tabContainerRef = useRef(null);
 	// TODO: replace with useSplitVisibility?
 	const [hiddenTabsCount, recalculateHiddenTabs] = useHiddenCount(tabContainerRef, expanded);
@@ -33,17 +33,14 @@ export const TabsList = (): JSX.Element => {
 
 	const boardHiddenItems = useMemo(
 		(): DropdownItem[] =>
-			map(
-				slice(Object.values(boards), -hiddenTabsCount),
-				(tab): DropdownItem => ({
-					id: tab.id,
-					label: tab.title,
-					icon: tab.icon,
-					onClick: () => setCurrentBoard(tab.id),
-					selected: tab.id === current
-				})
-			),
-		[boards, current, hiddenTabsCount]
+			map(slice(orderedBoards, -hiddenTabsCount), (boardId) => ({
+				id: boardId,
+				label: boards[boardId].title,
+				icon: boards[boardId].icon,
+				onClick: () => setCurrentBoard(boardId),
+				selected: boardId === current
+			})),
+		[boards, current, hiddenTabsCount, orderedBoards]
 	);
 
 	return (
@@ -56,8 +53,15 @@ export const TabsList = (): JSX.Element => {
 				width="calc(100% - 0.5rem)"
 			>
 				{boards &&
-					map(boards, (tab) => (
-						<AppBoardTab key={tab.id} id={tab.id} title={tab.title} icon={tab.icon} />
+					!isEmpty(orderedBoards) &&
+					map(orderedBoards, (boardId, index, array) => (
+						<AppBoardTab
+							key={boardId}
+							id={boardId}
+							title={boards[boardId].title}
+							icon={boards[boardId].icon}
+							fallbackId={current !== boardId ? undefined : array[index + 1] || array[index - 1]}
+						/>
 					))}
 			</Row>
 			{hiddenTabsCount > 0 && (

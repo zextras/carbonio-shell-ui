@@ -12,7 +12,7 @@ import {
 	Tooltip,
 	useHiddenCount
 } from '@zextras/carbonio-design-system';
-import { map, noop, slice } from 'lodash';
+import { isEmpty, map, noop, slice } from 'lodash';
 import React, { FC, useLayoutEffect, useRef } from 'react';
 import { setCurrentBoard, useBoardStore } from '../../store/boards';
 import { getT } from '../../store/i18n';
@@ -20,7 +20,7 @@ import { AppBoardTab } from './board-tab';
 
 export const TabsList: FC = () => {
 	const t = getT();
-	const { boards, current, expanded } = useBoardStore();
+	const { boards, current, expanded, orderedBoards } = useBoardStore();
 	const tabContainerRef = useRef(null);
 	const [hiddenTabsCount, recalculateHiddenTabs] = useHiddenCount(tabContainerRef, expanded);
 
@@ -39,8 +39,15 @@ export const TabsList: FC = () => {
 				width="calc(100% - 0.5rem)"
 			>
 				{boards &&
-					map(boards, (tab) => (
-						<AppBoardTab key={tab.id} id={tab.id} title={tab.title} icon={tab.icon} />
+					!isEmpty(orderedBoards) &&
+					map(orderedBoards, (boardId, index, array) => (
+						<AppBoardTab
+							key={boardId}
+							id={boardId}
+							title={boards[boardId].title}
+							icon={boards[boardId].icon}
+							fallbackId={current !== boardId ? undefined : array[index + 1] || array[index - 1]}
+						/>
 					))}
 			</Row>
 			{hiddenTabsCount > 0 && (
@@ -52,12 +59,12 @@ export const TabsList: FC = () => {
 						<Dropdown
 							width="fit"
 							style={{ flexGrow: '1' }}
-							items={map(slice(Object.values(boards), -hiddenTabsCount), (tab) => ({
-								id: tab.id,
-								label: tab.title,
-								icon: tab.icon,
-								click: () => setCurrentBoard(tab.id),
-								selected: tab.id === current
+							items={map(slice(orderedBoards, -hiddenTabsCount), (boardId) => ({
+								id: boardId,
+								label: boards[boardId].title,
+								icon: boards[boardId].icon,
+								click: () => setCurrentBoard(boardId),
+								selected: boardId === current
 							}))}
 						>
 							<Button type="ghost" color="secondary" label={`+${hiddenTabsCount}`} onClick={noop} />

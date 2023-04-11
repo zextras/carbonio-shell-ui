@@ -5,7 +5,7 @@
  */
 
 import React, { FC, Suspense, useMemo } from 'react';
-import { isEmpty, map } from 'lodash';
+import { map } from 'lodash';
 import { useAppStore } from '../../store/app';
 import AppContextProvider from './app-context-provider';
 
@@ -36,7 +36,7 @@ const AppLoaderMounter: FC = () => {
 			hidden
 			style={{ height: 0, overflow: 'hidden' }}
 		>
-			{!isEmpty(entries) && entries}
+			{entries}
 		</div>
 	);
 };

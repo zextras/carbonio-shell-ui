@@ -20,7 +20,7 @@ import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
 import { useNetworkStore } from '../store/network';
 import { handleSync } from '../store/network/utils';
 
-export const noOp = (): void => {
+export const fetchNoOp = (): void => {
 	// eslint-disable-next-line @typescript-eslint/no-use-before-define
 	getSoapFetch(SHELL_APP_ID)(
 		'NoOp',
@@ -130,7 +130,7 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBody
 			? 10000
 			: pollingInterval;
 		useNetworkStore.setState({
-			noOpTimeout: setTimeout(() => noOp(), nextPollingInterval),
+			noOpTimeout: setTimeout(() => fetchNoOp(), nextPollingInterval),
 			pollingInterval: nextPollingInterval,
 			seq,
 			..._context

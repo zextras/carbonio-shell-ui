@@ -20,6 +20,7 @@ import { getT } from '../store/i18n';
 import { useUtilityBarStore } from './store';
 import { useUtilityViews } from './utils';
 import { SHELL_APP_ID } from '../constants';
+import { fetchNoOp } from '../network/fetch';
 
 const UtilityBarItem: FC<{ view: UtilityView }> = ({ view }) => {
 	const { mode, setMode, current, setCurrent } = useUtilityBarStore();
@@ -79,7 +80,7 @@ export const ShellUtilityBar = (): JSX.Element => {
 			{
 				id: 'update',
 				label: t('label.update_view', 'Update view'),
-				onClick: noop,
+				onClick: fetchNoOp,
 				icon: 'Refresh'
 			},
 			{

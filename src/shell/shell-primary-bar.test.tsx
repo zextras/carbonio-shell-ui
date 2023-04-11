@@ -4,10 +4,57 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
+import { screen } from '@testing-library/react';
+import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
+import { Button, Text } from '@zextras/carbonio-design-system';
 import { setup } from '../test/utils';
 import ShellPrimaryBar from './shell-primary-bar';
 import { useAppStore } from '../store/app';
 import { PrimaryBarView } from '../../types';
+import { usePushHistoryCallback } from '../history/hooks';
+import AppViewContainer from './app-view-container';
+
+const ShellWrapper = (): JSX.Element => (
+	<>
+		<ShellPrimaryBar />
+		<AppViewContainer />
+	</>
+);
+
+const AboutView = (): JSX.Element | null => {
+	const { view } = useParams<{ view: string }>();
+	return (
+		<div>
+			<Text>{view}</Text>
+		</div>
+	);
+};
+
+const MailsView = (): JSX.Element => {
+	const { path } = useRouteMatch();
+	const push = usePushHistoryCallback();
+
+	return (
+		<Switch>
+			<Route path={`${path}/:view`}>
+				<AboutView />
+			</Route>
+			<Route path={`${path}/`}>
+				<Text>default mails view</Text>
+				<Button
+					label={'navigate to about'}
+					onClick={(): void => push({ route: 'mails', path: 'about' })}
+				/>
+			</Route>
+		</Switch>
+	);
+};
+
+const FilesView = (): JSX.Element => (
+	<div>
+		<Text>files view</Text>
+	</div>
+);
 
 describe('Shell primary bar', () => {
 	test('Show a component for each primary bar view registered in the store', () => {
@@ -73,5 +120,82 @@ describe('Shell primary bar', () => {
 		expect(getByRoleWithIcon('button', { icon: 'People' })).toBeVisible();
 		expect(getByRoleWithIcon('button', { icon: 'People' })).toBeEnabled();
 		expect(queryByRoleWithIcon('button', { icon: 'Activity' })).not.toBeInTheDocument();
+	});
+
+	test('When return to a visited module, the last visited view is preserved', async () => {
+		useAppStore.getState().setters.addApps([
+			{
+				commit: '',
+				description: 'Mails module',
+				display: 'Mails',
+				icon: 'MailModOutline',
+				js_entrypoint: '',
+				name: 'carbonio-mails-ui',
+				priority: 1,
+				type: 'carbonio',
+				version: '0.0.1'
+			},
+			{
+				commit: '',
+				description: 'Files module',
+				display: 'Files',
+				icon: 'DriveOutline',
+				js_entrypoint: '',
+				name: 'carbonio-files-ui',
+				priority: 2,
+				type: 'carbonio',
+				version: '0.0.1'
+			}
+		]);
+		useAppStore.getState().setters.addRoute({
+			id: 'mails',
+			route: 'mails',
+			position: 1,
+			visible: true,
+			label: 'Mails',
+			primaryBar: 'MailModOutline',
+			appView: MailsView,
+			badge: { show: false },
+			app: 'carbonio-mails-ui'
+		});
+
+		useAppStore.getState().setters.addRoute({
+			id: 'files',
+			route: 'files',
+			position: 2,
+			visible: true,
+			label: 'Files',
+			primaryBar: 'DriveOutline',
+			appView: FilesView,
+			badge: { show: false },
+			app: 'carbonio-files-ui'
+		});
+
+		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
+		const mailsIcon = getByRoleWithIcon('button', { icon: 'MailModOutline' });
+		expect(mailsIcon).toBeVisible();
+		expect(mailsIcon).toBeEnabled();
+		const filesIcon = getByRoleWithIcon('button', { icon: 'DriveOutline' });
+		expect(filesIcon).toBeVisible();
+		expect(filesIcon).toBeEnabled();
+
+		expect(screen.getByText('default mails view')).toBeVisible();
+		expect(screen.queryByText('about')).not.toBeInTheDocument();
+		expect(screen.queryByText('files view')).not.toBeInTheDocument();
+
+		await user.click(screen.getByRole('button', { name: 'navigate to about' }));
+		expect(screen.getByText('about')).toBeVisible();
+		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
+		expect(screen.queryByText('files view')).not.toBeInTheDocument();
+
+		await user.click(filesIcon);
+		expect(screen.getByText('files view')).toBeVisible();
+		expect(screen.queryByText('about')).not.toBeInTheDocument();
+		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
+
+		await user.click(mailsIcon);
+		expect(screen.getByText('about')).toBeVisible();
+		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
+		expect(screen.queryByText('files view')).not.toBeInTheDocument();
 	});
 });

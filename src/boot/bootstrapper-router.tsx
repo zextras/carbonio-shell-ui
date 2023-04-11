@@ -11,7 +11,8 @@ import {
 	SnackbarManagerContext
 } from '@zextras/carbonio-design-system';
 import React, { FC, useContext, useEffect } from 'react';
-import { TFunction, useTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
+import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Route, Switch, useHistory, useParams } from 'react-router-dom';
 import { useBridge } from '../store/context-bridge';
 import AppLoaderMounter from './app/app-loader-mounter';

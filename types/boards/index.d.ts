@@ -15,6 +15,7 @@ export type Board<T = unknown> = {
 };
 
 export type BoardState = {
+	orderedBoards: Array<string>;
 	boards: Record<string, Board<any>>;
 	expanded: boolean;
 	minimized: boolean;

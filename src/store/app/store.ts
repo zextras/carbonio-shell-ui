@@ -6,8 +6,8 @@
 
 import produce from 'immer';
 import { filter, find, findIndex, merge, omit, reduce, sortBy, unionBy, unionWith } from 'lodash';
-import create from 'zustand';
-import {
+import { create } from 'zustand';
+import type {
 	AppRouteDescriptor,
 	AppState,
 	AppView,
@@ -29,7 +29,9 @@ const filterById = <T extends { id: string }>(items: Array<T>, id: string): Arra
 	filter(items, (item) => item.id !== id);
 
 const STANDALONE_RESPONSE = 'standalone';
-export const useAppStore = create<AppState>((set, get) => ({
+
+// extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
+export const useAppStore = create<AppState>()((set, get) => ({
 	standalone: false,
 	apps: {},
 	appContexts: {},

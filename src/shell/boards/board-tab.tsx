@@ -37,10 +37,11 @@ const VerticalDivider = styled(Container)`
 	margin: ${({ theme }): string => theme.sizes.padding.extrasmall};
 `;
 
-export const AppBoardTab: FC<{ id: string; icon: string; title: string }> = ({
+export const AppBoardTab: FC<{ id: string; icon: string; title: string; fallbackId?: string }> = ({
 	id,
 	icon,
-	title
+	title,
+	fallbackId
 }) => {
 	const current = useBoardStore((s) => s.current);
 	const t = getT();
@@ -49,14 +50,21 @@ export const AppBoardTab: FC<{ id: string; icon: string; title: string }> = ({
 		(ev) => {
 			ev.stopPropagation();
 			closeBoard(id);
+			if (fallbackId) {
+				setCurrentBoard(fallbackId);
+			}
 		},
-		[id]
+		[fallbackId, id]
 	);
 
 	return (
 		<Container orientation="row" width="fit" maxWidth="100%">
 			{current !== id && <VerticalDivider />}
-			<TabContainer active={current === id} padding={{ all: 'extrasmall' }}>
+			<TabContainer
+				data-testid={`board-tab-${id}`}
+				active={current === id}
+				padding={{ all: 'extrasmall' }}
+			>
 				<Row
 					height="100%"
 					onClick={onClick}

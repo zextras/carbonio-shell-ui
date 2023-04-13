@@ -72,7 +72,7 @@
             "labels": {
                 "include_search_in_shared_folder": "Incluir pastas compartilhadas nas buscas",
                 "include_search_in_spam_folder": "Incluir a pasta Spam nas buscas",
-                "include_search_in_trash_folder": "Incluir a pasta Lixeira nas buscas"
+                "include_search_in_trash_folder": "Incluir itens excluídos nas buscas"
             }
         }
     },

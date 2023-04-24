@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v2.1.1...v3.0.0) (2023-04-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** bump tinymce to v6
+* **deps:** major bump of i18next and related deps (external dependency)
+* **deps:** bump react-redux to v8 (external dependency)
+
+### Bug Fixes
+
+* call noOp request on update view action ([b698224](https://github.com/zextras/carbonio-shell-ui/commit/b698224c4a16e7e53f9839850a114ba227eb9297)), closes [#234](https://github.com/zextras/carbonio-shell-ui/issues/234)
+* preserve location changing module ([29cf18a](https://github.com/zextras/carbonio-shell-ui/commit/29cf18a77a36d3b3abadfee0b0273c1411fe23ac)), closes [#235](https://github.com/zextras/carbonio-shell-ui/issues/235)
+* remove click in favor of onClick ([72decaa](https://github.com/zextras/carbonio-shell-ui/commit/72decaadc1a50aaeaaa004eaa97e85f367d7ba28)), closes [#226](https://github.com/zextras/carbonio-shell-ui/issues/226)
+* use fallback closing board tab ([e0357c3](https://github.com/zextras/carbonio-shell-ui/commit/e0357c3d83072746b4afa9fb0e69b86695a762d8)), closes [#232](https://github.com/zextras/carbonio-shell-ui/issues/232)
+
+
+### build
+
+* **deps:** update dependencies ([a7554b5](https://github.com/zextras/carbonio-shell-ui/commit/a7554b530b34cf5c71606b69fdd8e39d16c6ae8d)), closes [#209](https://github.com/zextras/carbonio-shell-ui/issues/209)
+
 ### [2.1.1](https://github.com/zextras/carbonio-shell-ui/compare/v2.1.0...v2.1.1) (2023-04-11)
 
 ## [2.1.0](https://github.com/zextras/carbonio-shell-ui/compare/v2.0.3...v2.1.0) (2023-03-29)

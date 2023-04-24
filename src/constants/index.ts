@@ -126,3 +126,9 @@ export const DARK_READER_PROP_KEY = 'zappDarkreaderMode';
 export const SENTRY_SHELL_DSN = 'https://0ce2448c05b94f0182c47ae52c7ff52c@feedback.zextras.tools/6';
 export const SENTRY_FEEDBACK_DNS =
 	'https://1b6b3e2bbdc64a73bf45c72b725c56b4@feedback.zextras.tools/8';
+
+export enum ResultLabelType {
+	NORMAL = 'normal',
+	WARNING = 'warning',
+	ERROR = 'error'
+}

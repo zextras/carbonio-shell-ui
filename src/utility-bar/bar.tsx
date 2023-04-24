@@ -48,8 +48,8 @@ export const ShellUtilityBar = (): JSX.Element => {
 	const views = useUtilityViews();
 	const t = getT();
 	const account = useUserAccount();
-	const accountItems = useMemo<DropdownItem[]>(
-		() => [
+	const accountItems = useMemo(
+		(): DropdownItem[] => [
 			{
 				id: 'account',
 				label: account?.displayName ?? 'Account',
@@ -58,8 +58,7 @@ export const ShellUtilityBar = (): JSX.Element => {
 			{
 				id: 'email',
 				label: account?.name ?? '',
-				disabled: true,
-				itemTextSize: 'small'
+				disabled: true
 			},
 			{
 				type: 'divider',

@@ -8,6 +8,7 @@ import {
 	Checkbox,
 	Container,
 	Dropdown,
+	DropdownItem,
 	Icon,
 	Input,
 	Padding,
@@ -53,9 +54,9 @@ const SettingsSentMessages = ({
 	const [fromDisplayValue, setFromDisplayValue] = useState(identity.fromDisplay);
 	const [replyToDisplay, setReplyToDisplay] = useState(identity?.replyToDisplay);
 	const fromAddressArray = useMemo(
-		() =>
+		(): SelectItem[] =>
 			availableEmailAddresses
-				? availableEmailAddresses.map((address) => ({ value: address, label: address }))
+				? availableEmailAddresses.map((address): SelectItem => ({ value: address, label: address }))
 				: [blankItem],
 		[availableEmailAddresses]
 	);
@@ -157,7 +158,7 @@ const SettingsSentMessages = ({
 	);
 
 	const replyToAddressArray = useMemo(
-		() => [
+		(): DropdownItem[] => [
 			{
 				id: '0',
 				label: identity.fromAddress ?? ''
@@ -191,7 +192,7 @@ const SettingsSentMessages = ({
 				width="fill"
 				padding={{ all: 'large' }}
 				height="fit"
-				background="gray6"
+				background={'gray6'}
 				mainAlignment="flex-start"
 			>
 				<Padding horizontal="medium" width="100%">
@@ -202,7 +203,7 @@ const SettingsSentMessages = ({
 				width="fill"
 				padding={{ horizontal: 'large', bottom: 'large' }}
 				height="fit"
-				background="gray6"
+				background={'gray6'}
 				mainAlignment="flex-start"
 			>
 				<Row
@@ -222,7 +223,7 @@ const SettingsSentMessages = ({
 							selection={fromAddress}
 							items={fromAddressArray}
 							showCheckbox={false}
-							background="gray5"
+							background={'gray5'}
 							onChange={onChangeFromAddress}
 						/>
 					</Row>
@@ -230,7 +231,7 @@ const SettingsSentMessages = ({
 			</Row>
 			<Row
 				width="fill"
-				background="gray6"
+				background={'gray6'}
 				mainAlignment="flex-start"
 				padding={{ horizontal: 'large', bottom: 'large' }}
 			>
@@ -244,7 +245,7 @@ const SettingsSentMessages = ({
 				width="fill"
 				padding={{ horizontal: 'large', bottom: 'large' }}
 				height="fit"
-				background="gray6"
+				background={'gray6'}
 				mainAlignment="flex-start"
 			>
 				<Row width="50%" padding={{ right: 'small' }}>

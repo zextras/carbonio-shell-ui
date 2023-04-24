@@ -4,48 +4,65 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Button, Container, Dropdown, MultiButton } from '@zextras/carbonio-design-system';
+import {
+	Button,
+	Container,
+	Dropdown,
+	type DropdownItem,
+	MultiButton
+} from '@zextras/carbonio-design-system';
 import { Location } from 'history';
-import { groupBy, noop, reduce } from 'lodash';
+import { find, groupBy, noop, reduce } from 'lodash';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Action, AppRoute, CarbonioModule } from '../../types';
+import { AppRoute, CarbonioModule } from '../../types';
 import { ACTION_TYPES } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppList } from '../store/app';
 import { getT } from '../store/i18n';
 import { useActions } from '../store/integrations/hooks';
 
-export const CreationButtonComponent: FC<{ activeRoute: AppRoute; location: Location }> = ({
+interface CreationButtonProps {
+	activeRoute: AppRoute;
+	location: Location;
+}
+
+export const CreationButtonComponent = ({
 	activeRoute,
 	location
-}) => {
+}: CreationButtonProps): JSX.Element => {
 	const t = getT();
 	const actions = useActions({ activeRoute, location }, ACTION_TYPES.NEW);
 	const [open, setOpen] = useState(false);
 	const primaryAction = useMemo(
 		() =>
-			actions?.find?.(
-				(a) => (a.group === activeRoute?.id || a.group === activeRoute?.app) && a.primary
+			find(
+				actions,
+				(action) =>
+					(action.group === activeRoute?.id || action.group === activeRoute?.app) &&
+					action.primary === true
 			),
 		[actions, activeRoute?.app, activeRoute?.id]
 	);
 	const apps = useAppList();
 	const byApp = useMemo(() => groupBy(actions, 'group'), [actions]);
 
-	const secondaryActions = [
-		...(byApp[activeRoute?.app ?? ''] ?? []),
-		...reduce<CarbonioModule, Array<Action>>(
-			apps,
-			(acc, app, i) => {
-				if (app.name !== activeRoute?.app && byApp[app.name]?.length > 0) {
-					acc.push({ type: 'divider', label: '', id: `divider-${i}` }, ...byApp[app.name]);
-				}
-				return acc;
-			},
-			[]
-		)
-	];
+	const secondaryActions = useMemo<DropdownItem[]>(
+		(): DropdownItem[] => [
+			...(byApp[activeRoute?.app ?? ''] ?? []),
+			...reduce<CarbonioModule, DropdownItem[]>(
+				apps,
+				(acc, app, i): DropdownItem[] => {
+					if (app.name !== activeRoute?.app && byApp[app.name]?.length > 0) {
+						acc.push({ type: 'divider', label: '', id: `divider-${i}` }, ...byApp[app.name]);
+					}
+					return acc;
+				},
+				[]
+			)
+		],
+		[activeRoute?.app, apps, byApp]
+	);
 
 	const onClose = useCallback(() => {
 		setOpen(false);
@@ -53,12 +70,13 @@ export const CreationButtonComponent: FC<{ activeRoute: AppRoute; location: Loca
 	const onOpen = useCallback(() => {
 		setOpen(true);
 	}, []);
+
 	return primaryAction ? (
 		<Container minWidth="80px">
 			<MultiButton
 				data-testid="NewItemButton"
 				size="extralarge"
-				background="primary"
+				background={'primary'}
 				label={t('new', 'New')}
 				onClick={primaryAction.onClick || primaryAction.click || noop}
 				items={secondaryActions}

@@ -6,9 +6,10 @@
 import { Container } from '@zextras/carbonio-design-system';
 import React, { FC, useCallback, useMemo, useRef } from 'react';
 import styled from 'styled-components';
-import type { EditorSettings, TinyMCE, Ui } from 'tinymce/tinymce';
+import type { EditorOptions, TinyMCE, Ui } from 'tinymce/tinymce';
 // TinyMCE so the global var exists
 import tinymce from 'tinymce/tinymce';
+import 'tinymce/models/dom';
 // Theme
 import 'tinymce/themes/silver';
 // Toolbar icons
@@ -31,9 +32,7 @@ import 'tinymce/plugins/insertdatetime';
 import 'tinymce/plugins/link';
 import 'tinymce/plugins/lists';
 import 'tinymce/plugins/media';
-import 'tinymce/plugins/paste';
 import 'tinymce/plugins/preview';
-import 'tinymce/plugins/print';
 import 'tinymce/plugins/quickbars';
 import 'tinymce/plugins/searchreplace';
 import 'tinymce/plugins/table';
@@ -101,7 +100,7 @@ const Composer: FC<ComposerProps> = ({
 	const { locale } = useI18nStore.getState();
 	const inlineLabel = useMemo(() => t('label.add_inline_image', 'Add inline image'), [t]);
 
-	const setupCallback = useCallback<NonNullable<EditorSettings['setup']>>(
+	const setupCallback = useCallback<NonNullable<EditorOptions['setup']>>(
 		(editor) => {
 			if (onFileSelect)
 				editor.ui.registry.addMenuButton('imageSelector', {
@@ -137,7 +136,7 @@ const Composer: FC<ComposerProps> = ({
 			branding: false,
 			resize: true,
 			inline,
-			fontsize_formats:
+			font_size_formats:
 				'8pt 9pt 10pt 11pt 12pt 13pt 14pt 16pt 18pt 24pt 30pt 36pt 48pt 60pt 72pt 96pt',
 			object_resizing: 'img',
 			style_formats: [
@@ -178,10 +177,7 @@ const Composer: FC<ComposerProps> = ({
 				'lists',
 				'link',
 				'image',
-				'edit',
-				'file',
 				'charmap',
-				'print',
 				'preview',
 				'anchor',
 				'searchreplace',
@@ -190,7 +186,6 @@ const Composer: FC<ComposerProps> = ({
 				'insertdatetime',
 				'media',
 				'table',
-				'paste',
 				'code',
 				'help',
 				'quickbars',
@@ -201,7 +196,7 @@ const Composer: FC<ComposerProps> = ({
 			toolbar: inline
 				? false
 				: [
-						'fontselect fontsizeselect styleselect visualblocks',
+						'fontfamily fontsize styles visualblocks',
 						'bold italic underline strikethrough',
 						'removeformat code',
 						'alignleft aligncenter alignright alignjustify',
@@ -217,12 +212,12 @@ const Composer: FC<ComposerProps> = ({
 				: 'quicklink',
 			contextmenu: inline ? '' : '',
 			toolbar_mode: 'wrap',
-			forced_root_block: false,
 			content_style: `body  {  color: ${defaultStyle?.color}; font-size: ${defaultStyle?.fontSize}; font-family: ${defaultStyle?.font}; }`,
 			visualblocks_default_state: false,
 			end_container_on_empty_block: true,
 			relative_urls: false,
-			remove_script_host: false
+			remove_script_host: false,
+			newline_behavior: 'invert'
 		}),
 		[defaultStyle?.color, defaultStyle?.font, defaultStyle?.fontSize, inline, locale, setupCallback]
 	);

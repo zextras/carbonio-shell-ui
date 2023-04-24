@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable @typescript-eslint/ban-types */
-import create from 'zustand';
+import { create } from 'zustand';
 import { reduce } from 'lodash';
 import { useEffect } from 'react';
-import { ContextBridgeState } from '../../types';
+import type { ContextBridgeState } from '../../types';
 
-export const useContextBridge = create<ContextBridgeState>((set) => ({
+// extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
+export const useContextBridge = create<ContextBridgeState>()((set) => ({
 	packageDependentFunctions: {},
 	functions: {},
 	add: ({ packageDependentFunctions, functions }): void => {

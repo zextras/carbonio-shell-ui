@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, memo, Suspense, useMemo } from 'react';
-import { isEmpty, map } from 'lodash';
+import React, { FC, Suspense, useMemo } from 'react';
+import { map } from 'lodash';
 import { useAppStore } from '../../store/app';
 import AppContextProvider from './app-context-provider';
 
@@ -21,16 +21,11 @@ const AppLoaderMounter: FC = () => {
 	const entryPoints = useAppStore((s) => s.entryPoints);
 	const entries = useMemo(
 		() =>
-			isEmpty(entryPoints)
-				? null
-				: map(entryPoints, (Comp, appId) => {
-						const MemoComp = memo(Comp);
-						return (
-							<Mounter key={appId} appId={appId}>
-								<MemoComp />
-							</Mounter>
-						);
-				  }),
+			map(entryPoints, (Comp, appId) => (
+				<Mounter key={appId} appId={appId}>
+					<Comp />
+				</Mounter>
+			)),
 		[entryPoints]
 	);
 

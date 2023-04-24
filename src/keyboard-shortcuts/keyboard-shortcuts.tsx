@@ -4,11 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React from 'react';
+import { type Action } from '../../types';
+
 type handleKeyboardShortcutsProps = {
-	primaryAction: any;
-	secondaryActions: any;
-	event: any;
-	inputRef: any;
+	primaryAction: Action;
+	secondaryActions: Action[];
+	event: KeyboardEvent;
+	inputRef: React.RefObject<HTMLInputElement | HTMLTextAreaElement>;
 	currentApp: string;
 };
 
@@ -18,17 +21,16 @@ const modifierKeysSecondTier = ['p'];
 let keySequence = '';
 
 export const handleKeyboardShortcuts = (props: handleKeyboardShortcutsProps): void => {
-	const createEmail = props.secondaryActions?.filter((item: any) => item.id === 'create-mail')[0]
-		?.click;
+	const createEmail = props.secondaryActions?.filter((item) => item.id === 'create-mail')[0]
+		?.onClick;
 	const createAppointment = props.secondaryActions?.filter(
-		(item: any) => item.id === 'new-appointment'
-	)[0]?.click;
-	const createContact = props.secondaryActions?.filter(
-		(item: any) => item.id === 'create-contact'
-	)[0]?.click;
+		(item) => item.id === 'new-appointment'
+	)[0]?.onClick;
+	const createContact = props.secondaryActions?.filter((item) => item.id === 'create-contact')[0]
+		?.onClick;
 
 	// will be used in future implementations
-	const ctrlModifierIsActive = props.event.ctrlKey || props.event.metaKey;
+	// const ctrlModifierIsActive = props.event.ctrlKey || props.event.metaKey;
 
 	const consoleLogKeyCombination = (): void => {
 		// console.log(
@@ -41,45 +43,47 @@ export const handleKeyboardShortcuts = (props: handleKeyboardShortcutsProps): vo
 		props.event.stopImmediatePropagation();
 	};
 
+	const eventTargetElement = props.event.target instanceof HTMLElement ? props.event.target : null;
 	const isGlobalContext =
-		props.event?.target?.isContentEditable === false &&
-		props.event?.target?.nodeName !== 'INPUT' &&
-		props.event.target.nodeName !== 'TEXTAREA';
+		eventTargetElement &&
+		!eventTargetElement.isContentEditable &&
+		eventTargetElement.nodeName !== 'INPUT' &&
+		eventTargetElement.nodeName !== 'TEXTAREA';
 
 	const callKeyboardShortcutAction = (): void => {
 		switch (keySequence) {
 			case 'n':
 				if (props.primaryAction && isGlobalContext) {
 					consoleLogKeyCombination();
-					props.primaryAction.click();
+					props.primaryAction.onClick?.(props.event);
 				}
 				break;
 
 			case 'nm':
 				if (isGlobalContext) {
 					consoleLogKeyCombination();
-					createEmail();
+					createEmail?.(props.event);
 				}
 				break;
 
 			case 'na':
 				if (isGlobalContext) {
 					consoleLogKeyCombination();
-					createAppointment();
+					createAppointment?.(props.event);
 				}
 				break;
 
 			case 'nc':
 				if (isGlobalContext) {
 					consoleLogKeyCombination();
-					createContact();
+					createContact?.(props.event);
 				}
 				break;
 
 			case 'c':
 				if (isGlobalContext) {
 					consoleLogKeyCombination();
-					createContact();
+					createContact?.(props.event);
 				}
 				break;
 
@@ -87,12 +91,12 @@ export const handleKeyboardShortcuts = (props: handleKeyboardShortcutsProps): vo
 				if (isGlobalContext) {
 					props.event.preventDefault();
 					consoleLogKeyCombination();
-					props.inputRef ? props.inputRef.current?.focus() : null;
+					props.inputRef.current?.focus();
 				}
 				break;
 
 			default:
-				null;
+				break;
 		}
 		keySequence = '';
 	};
@@ -115,6 +119,6 @@ export const handleKeyboardShortcuts = (props: handleKeyboardShortcutsProps): vo
 			break;
 
 		default:
-			null;
+			break;
 	}
 };

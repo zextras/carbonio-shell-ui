@@ -3,9 +3,16 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { Container, Row, Text, Icon, Dropdown } from '@zextras/carbonio-design-system';
+import {
+	Container,
+	Row,
+	Text,
+	Icon,
+	Dropdown,
+	DropdownItem
+} from '@zextras/carbonio-design-system';
 import { useAppStore } from '../store/app';
 import { useSearchStore } from './search-store';
 import { SEARCH_APP_ID } from '../constants';
@@ -21,9 +28,14 @@ const SelectorContainer = styled(Container)<{ open?: boolean }>`
 	}
 `;
 
-const ModuleSelectorComponent: FC<{ app: string | undefined }> = ({ app }) => {
+interface ModuleSelectorProps {
+	app: string | undefined;
+}
+
+const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): JSX.Element | null => {
 	const modules = useAppStore((s) => s.views.search);
 	const { module, updateModule } = useSearchStore();
+
 	const fullModule = useMemo(
 		() => modules.find((m) => m.route === module) ?? modules[0],
 		[module, modules]
@@ -32,38 +44,50 @@ const ModuleSelectorComponent: FC<{ app: string | undefined }> = ({ app }) => {
 	const [open, setOpen] = useState(false);
 
 	const dropdownItems = useMemo(
-		() =>
-			modules.map(({ id, label, icon, route }) => ({
-				id,
-				label,
-				icon,
-				active: id === module,
-				click: (): void => {
-					updateModule(route);
-					pushHistory({ route: SEARCH_APP_ID, path: `/${route}` });
-				}
-			})),
-		[module, modules, updateModule]
+		(): DropdownItem[] =>
+			modules.map(
+				({ id, label, icon, route }): DropdownItem => ({
+					id,
+					label,
+					icon,
+					onClick: (): void => {
+						updateModule(route);
+						pushHistory({ route: SEARCH_APP_ID, path: `/${route}` });
+					}
+				})
+			),
+		[modules, updateModule]
 	);
 
 	useEffect(() => {
+		// FIXME: this is part of the cause of SHELL-46
+		//    When the user click on the search module directly, the app results to be the search one,
+		//    and so the selected module, which is kept to the last one selected, does not match the module
+		//    written inside the path (/search/<module>), causing a misalignment between what is rendered (which
+		//    follow the path) and what is written inside the module selector (which updates its value based on the
+		//    module where the user is coming from)
 		if (app !== SEARCH_APP_ID) {
 			if (!fullModule || fullModule?.app !== app) {
 				updateModule((modules.find((m) => m.app === app) ?? modules[0])?.route);
 			}
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [app, modules, updateModule]);
+	}, [app, fullModule, modules, updateModule]);
+
+	const openDropdown = useCallback(() => {
+		setOpen(true);
+	}, []);
+
+	const closeDropdown = useCallback(() => {
+		setOpen(false);
+	}, []);
 
 	if (!fullModule) {
 		return null;
 	}
+
+	// TODO: replace the Dropdown with a Select with the customLabelFactory
 	return (
-		<Dropdown
-			items={dropdownItems}
-			onOpen={(): void => setOpen(true)}
-			onClose={(): void => setOpen(false)}
-		>
+		<Dropdown items={dropdownItems} onOpen={openDropdown} onClose={closeDropdown}>
 			<SelectorContainer
 				orientation="horizontal"
 				height="2.625rem"

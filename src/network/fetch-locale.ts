@@ -6,7 +6,6 @@
 
 import { AvailableLocalesResponse } from '../../types';
 import { SHELL_APP_ID } from '../constants';
-import { useAccountStore } from '../store/account';
 import { getSoapFetch } from './fetch';
 
 export const fetchLocales = (): Promise<any> =>

@@ -3,12 +3,11 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-export type QueryChip = {
-	id: string;
-	label: string;
+import { ChipItem } from '@zextras/carbonio-design-system';
+
+export type QueryItem = {
 	value?: string;
-	isGeneric?: boolean;
-	isQueryFilter?: boolean;
-	hasAvatar?: boolean;
 	app?: string;
 };
+
+export type QueryChip = ChipItem & QueryItem;

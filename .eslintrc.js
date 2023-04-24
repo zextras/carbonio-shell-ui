@@ -34,6 +34,8 @@ module.exports = {
 				props: true,
 				ignorePropertyModificationsFor: ['accumulator', 'state', 'event']
 			}
-		]
+		],
+		'no-shadow': 'off',
+		'@typescript-eslint/no-shadow': 'error'
 	}
 };

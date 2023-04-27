@@ -84,7 +84,7 @@
             "labels": {
                 "include_search_in_shared_folder": "Incluir las carpetas compartidas en las búsquedas",
                 "include_search_in_spam_folder": "Incluir la carpeta Spam en las búsquedas",
-                "include_search_in_trash_folder": "Incluir elementos de la Papelera en las búsquedas"
+                "include_search_in_trash_folder": "Incluir elementos eliminados en las búsquedas"
             }
         }
     },

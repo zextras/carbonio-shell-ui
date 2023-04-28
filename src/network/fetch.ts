@@ -20,6 +20,18 @@ import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
 import { useNetworkStore } from '../store/network';
 import { handleSync } from '../store/network/utils';
 
+/**
+ * Polling interval to use if the long polling delay
+ * is not allowed for the user
+ */
+const POLLING_NOWAIT_INTERVAL = 10_000;
+
+/**
+ * Polling interval to use if a previous request failed
+ * with a 500 error
+ */
+const POLLING_RETRY_INTERVAL = 60_000;
+
 export const fetchNoOp = (): void => {
 	// eslint-disable-next-line @typescript-eslint/no-use-before-define
 	getSoapFetch(SHELL_APP_ID)(
@@ -91,8 +103,28 @@ const normalizeContext = (context: any): SoapContext => {
 	return context;
 };
 
+/**
+ * Return the polling interval for the next NoOp request.
+ * The interval length depends on the user settings, but it can be
+ * overridden by the server response/errors
+ * @param res
+ */
+const getPollingInterval = <R>(res: SoapResponse<R>): number => {
+	const { pollingInterval } = useNetworkStore.getState();
+	const waitDisallowed = (res?.Body as { waitDisallowed?: number })?.waitDisallowed;
+	const fault = res?.Body?.Fault;
+	if (fault) {
+		return POLLING_RETRY_INTERVAL;
+	}
+	if (waitDisallowed) {
+		return POLLING_NOWAIT_INTERVAL;
+	}
+
+	return pollingInterval;
+};
+
 const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBodyResponse => {
-	const { pollingInterval, noOpTimeout } = useNetworkStore.getState();
+	const { noOpTimeout } = useNetworkStore.getState();
 	const { usedQuota } = useAccountStore.getState();
 	clearTimeout(noOpTimeout);
 	if (res.Body.Fault) {
@@ -126,9 +158,8 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBody
 		useAccountStore.setState({
 			usedQuota: responseUsedQuota ?? usedQuota
 		});
-		const nextPollingInterval = (res?.Body as { waitDisallowed?: number })?.waitDisallowed
-			? 10000
-			: pollingInterval;
+
+		const nextPollingInterval = getPollingInterval(res);
 		useNetworkStore.setState({
 			noOpTimeout: setTimeout(() => fetchNoOp(), nextPollingInterval),
 			pollingInterval: nextPollingInterval,

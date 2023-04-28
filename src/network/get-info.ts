@@ -8,25 +8,11 @@ import { filter } from 'lodash';
 import { SHELL_APP_ID } from '../constants';
 import { useAppStore } from '../store/app';
 import { normalizeAccount } from '../store/account/normalization';
-import { AccountSettings, GetInfoResponse, CarbonioModule } from '../../types';
+import { GetInfoResponse, CarbonioModule } from '../../types';
 import { getSoapFetch } from './fetch';
 import { useAccountStore } from '../store/account';
 import { useNetworkStore } from '../store/network';
-
-const parsePollingInterval = (settings: AccountSettings): number => {
-	const pollingPref = (settings.prefs?.zimbraPrefMailPollingInterval ?? '') as string;
-	if (pollingPref === '500') {
-		return 500;
-	}
-	const pollingValue = parseInt(pollingPref, 10);
-	if (Number.isNaN(pollingValue)) {
-		return 30000;
-	}
-	if (pollingPref.includes('m')) {
-		return pollingValue * 60 * 1000;
-	}
-	return pollingValue * 1000;
-};
+import { parsePollingInterval } from '../store/network/utils';
 
 export const getInfo = (): Promise<void> =>
 	fetch('/static/iris/components.json')

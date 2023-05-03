@@ -18,7 +18,7 @@ import { report } from '../reporting';
 import { useAccountStore } from '../store/account';
 import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
 import { useNetworkStore } from '../store/network';
-import { handleSync } from '../store/network/utils';
+import { getPollingInterval, handleSync } from '../store/network/utils';
 
 export const fetchNoOp = (): void => {
 	// eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -92,7 +92,7 @@ const normalizeContext = (context: any): SoapContext => {
 };
 
 const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBodyResponse => {
-	const { pollingInterval, noOpTimeout } = useNetworkStore.getState();
+	const { noOpTimeout } = useNetworkStore.getState();
 	const { usedQuota } = useAccountStore.getState();
 	clearTimeout(noOpTimeout);
 	if (res.Body.Fault) {
@@ -126,9 +126,8 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBody
 		useAccountStore.setState({
 			usedQuota: responseUsedQuota ?? usedQuota
 		});
-		const nextPollingInterval = (res?.Body as { waitDisallowed?: number })?.waitDisallowed
-			? 10000
-			: pollingInterval;
+
+		const nextPollingInterval = getPollingInterval(res);
 		useNetworkStore.setState({
 			noOpTimeout: setTimeout(() => fetchNoOp(), nextPollingInterval),
 			pollingInterval: nextPollingInterval,

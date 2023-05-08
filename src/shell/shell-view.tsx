@@ -14,13 +14,14 @@ import { IS_STANDALONE } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
 import { goToLogin } from '../network/go-to-login';
 import { useAccountStore } from '../store/account';
-import { ShellUtilityBar, ShellUtilityPanel } from '../utility-bar';
+import { ShellUtilityBar } from '../utility-bar/bar';
 import AppViewContainer from './app-view-container';
 import { BoardContainer } from './boards/board-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
 import { useDarkReaderResultValue } from '../dark-mode/use-dark-reader-result-value';
+import { ShellUtilityPanel } from '../utility-bar/panel';
 
 const Background = styled.div`
 	background: ${({ theme }): string => theme.palette.gray6.regular};
@@ -82,9 +83,7 @@ const ShellComponent = ({
 				<AppViewContainer />
 				<ShellUtilityPanel />
 			</Row>
-			<Responsive mode="desktop">
-				<BoardContainer />
-			</Responsive>
+			<BoardContainer />
 		</Background>
 	);
 };

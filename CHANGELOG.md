@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.2](https://github.com/zextras/carbonio-shell-ui/compare/v3.0.1...v3.0.2) (2023-05-03)
+
+
+### Bug Fixes
+
+* reset polling interval to the user default setting when a request does not fail ([ea81c89](https://github.com/zextras/carbonio-shell-ui/commit/ea81c899491555452fc8b682cd553309e0380174))
+* set a longer interval between failing NoOp requests ([846fe18](https://github.com/zextras/carbonio-shell-ui/commit/846fe18d04b2c59a95f19a1d51ac631d6da7f9a8))
+* update noop interval management ([819376c](https://github.com/zextras/carbonio-shell-ui/commit/819376c61fe493590d46f7552c0a4e2a20684422))
+
 ### [3.0.1](https://github.com/zextras/carbonio-shell-ui/compare/v3.0.0...v3.0.1) (2023-04-27)
 
 ## [3.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v2.1.1...v3.0.0) (2023-04-24)

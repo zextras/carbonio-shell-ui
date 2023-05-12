@@ -1,17 +1,9 @@
 /*
- * SPDX-FileCopyrightText: 2021 Zextras <https://www.zextras.com>
+ * SPDX-FileCopyrightText: 2023 Zextras <https://www.zextras.com>
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-
-import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react';
-
-import ShellContext from './shell-context';
-
-export function useIsMobile(): boolean {
-	const { isMobile } = useContext(ShellContext);
-	return isMobile;
-}
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 
 export function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] {
 	const readValue = useCallback<() => T>(() => {

@@ -7,25 +7,32 @@
 import {
 	Container,
 	Divider,
+	Dropdown,
+	DropdownItem,
+	Icon,
 	IconButton,
 	Padding,
 	Row,
+	Text,
 	Tooltip
 } from '@zextras/carbonio-design-system';
-import { isEmpty, map } from 'lodash';
-import React, { FC } from 'react';
+import { isEmpty, map, noop } from 'lodash';
+import React, { FC, useCallback, useMemo } from 'react';
 import styled, { css, SimpleInterpolation } from 'styled-components';
 import {
 	closeAllBoards,
+	closeBoard,
 	expandBoards,
 	minimizeBoards,
 	onGoToPanel,
 	reduceBoards,
+	setCurrentBoard,
 	useBoardStore
 } from '../../store/boards';
 import { getT } from '../../store/i18n';
 import { AppBoard } from './board';
 import { TabsList } from './board-tab-list';
+import { getApp } from '../../store/app';
 
 const BoardContainerComp = styled.div<{ expanded: boolean; minimized: boolean }>`
 	position: fixed;
@@ -73,9 +80,78 @@ const BoardDetailContainer = styled(Row)`
 const BackButton = styled(IconButton)``;
 const Actions = styled(Row)``;
 
+interface ListItemContentProps {
+	icon?: string;
+	label: string;
+	selected?: boolean;
+	app: string;
+	boardId: string;
+}
+
+function ListItemContent({
+	icon,
+	label,
+	selected,
+	app,
+	boardId
+}: ListItemContentProps): JSX.Element {
+	const onClose = useCallback(
+		(ev) => {
+			ev.stopPropagation();
+			closeBoard(boardId);
+		},
+		[boardId]
+	);
+	return (
+		<Container orientation="horizontal" mainAlignment="flex-start">
+			{icon && (
+				<Padding right={'small'}>
+					<Icon icon={icon} size={'large'} color={'text'} style={{ pointerEvents: 'none' }} />
+				</Padding>
+			)}
+			<Container crossAlignment={'flex-start'}>
+				<Text size={'medium'} weight={selected ? 'bold' : 'regular'} color={'gray0'}>
+					{label}
+				</Text>
+				<Text size={'small'} weight={selected ? 'bold' : 'regular'} color={'secondary'}>
+					{`From ${app}`}
+				</Text>
+			</Container>
+			<Padding left={'small'}>
+				<IconButton icon={'CloseOutline'} size={'large'} onClick={onClose} />
+			</Padding>
+		</Container>
+	);
+}
+
 export const BoardContainer: FC = () => {
 	const t = getT();
-	const { boards, minimized, expanded, current } = useBoardStore();
+	const { boards, minimized, expanded, current, orderedBoards } = useBoardStore();
+
+	const boardDropdownItems = useMemo(
+		(): DropdownItem[] =>
+			map(
+				orderedBoards,
+				(boardId): DropdownItem => ({
+					id: boardId,
+					label: boards[boardId].title,
+					icon: boards[boardId].icon,
+					onClick: () => setCurrentBoard(boardId),
+					selected: boardId === current,
+					customComponent: (
+						<ListItemContent
+							label={boards[boardId].title}
+							icon={boards[boardId].icon}
+							selected={boardId === current}
+							app={getApp(boards[boardId].app)().display}
+							boardId={boardId}
+						/>
+					)
+				})
+			),
+		[boards, current, orderedBoards]
+	);
+
 	if (isEmpty(boards) || !current) return null;
 	return (
 		<BoardContainerComp expanded={expanded} minimized={minimized}>
@@ -100,6 +176,13 @@ export const BoardContainer: FC = () => {
 								</Tooltip>
 							</Padding>
 						)}
+						<Padding right="extrasmall">
+							<Tooltip label={t('board.show_tabs', 'Show other tabs')} placement="top">
+								<Dropdown items={boardDropdownItems}>
+									<IconButton icon={'ChevronDown'} onClick={noop} />
+								</Dropdown>
+							</Tooltip>
+						</Padding>
 						<Padding right="extrasmall">
 							<Tooltip
 								label={

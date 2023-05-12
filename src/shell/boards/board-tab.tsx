@@ -8,40 +8,65 @@ import {
 	Container,
 	Icon,
 	IconButton,
-	Padding,
 	Row,
 	RowProps,
 	Text,
 	Tooltip
 } from '@zextras/carbonio-design-system';
-import React, { FC, useCallback } from 'react';
-import styled from 'styled-components';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import styled, { css, SimpleInterpolation } from 'styled-components';
 import { closeBoard, setCurrentBoard, useBoardStore } from '../../store/boards';
 import { getT } from '../../store/i18n';
+import './board-tab.css';
 
 const TabContainer = styled(Row)<RowProps & { active: boolean }>`
+	container-type: inline-size;
+	container-name: tab;
+	max-width: calc(3rem + 15ch);
+	min-width: 1rem;
+	flex-grow: 1;
+	flex-basis: 0;
 	cursor: pointer;
 	height: 1.75rem;
-	width: fit-content;
 	user-select: none;
 	background-color: ${({ theme, active }): string =>
 		active ? theme.palette.gray3.regular : theme.palette.gray5.regular};
-	border-radius: 0.125rem;
-	padding: 0.125rem 0.25rem;
+	gap: 0.25rem;
+	border-radius: 0.25rem;
+	margin-left: 0.25rem;
+	margin-right: 0.25rem;
+	overflow: hidden;
+`;
+
+const CloseContainer = styled(Container)`
+	margin-left: auto;
+`;
+
+const TabIcon = styled(Icon)`
+	min-width: 1.5rem;
+`;
+
+const CustomText = styled(Text)<{ overflowing: boolean }>`
+	${({ overflowing }): SimpleInterpolation =>
+		overflowing &&
+		css`
+			mask-image: linear-gradient(90deg, #000 60%, transparent);
+		`}
+	text-overflow: unset;
 `;
 
 const VerticalDivider = styled(Container)`
 	width: 0.0625rem;
-	height: 100%;
+	min-width: 0.0625rem;
+	height: 2.25rem;
 	background: ${({ theme }): string => theme.palette.gray3.regular};
-	margin: ${({ theme }): string => theme.sizes.padding.extrasmall};
 `;
 
-export const AppBoardTab: FC<{ id: string; icon: string; title: string; fallbackId?: string }> = ({
+export const AppBoardTab: FC<{ id: string; icon: string; title: string; firstTab: boolean }> = ({
 	id,
 	icon,
 	title,
-	fallbackId
+	firstTab
 }) => {
 	const current = useBoardStore((s) => s.current);
 	const t = getT();
@@ -50,51 +75,67 @@ export const AppBoardTab: FC<{ id: string; icon: string; title: string; fallback
 		(ev) => {
 			ev.stopPropagation();
 			closeBoard(id);
-			if (fallbackId) {
-				setCurrentBoard(fallbackId);
-			}
 		},
-		[fallbackId, id]
+		[id]
 	);
 
+	const textRef = useRef<HTMLDivElement>(null);
+	const [textOverflowing, setTextOverflowing] = useState(false);
+	const resizeObserverRef = useRef<ResizeObserver>();
+	useEffect(() => {
+		if (textRef.current && !resizeObserverRef.current) {
+			resizeObserverRef.current = new ResizeObserver((entries) => {
+				requestAnimationFrame(() => {
+					if (textRef.current) {
+						setTextOverflowing(textRef.current.offsetWidth < textRef.current.scrollWidth);
+					}
+				});
+			});
+			resizeObserverRef.current.observe(textRef.current);
+		}
+
+		return (): void => {
+			resizeObserverRef.current?.disconnect();
+		};
+	}, [textRef]);
+
 	return (
-		<Container orientation="row" width="fit" maxWidth="100%">
-			{current !== id && <VerticalDivider />}
+		<>
+			{!firstTab && <VerticalDivider />}
 			<TabContainer
+				wrap={'nowrap'}
+				orientation="row"
+				mainAlignment={'flex-start'}
+				onClick={onClick}
 				data-testid={`board-tab-${id}`}
+				padding={{ horizontal: 'extrasmall' }}
 				active={current === id}
-				padding={{ all: 'extrasmall' }}
 			>
-				<Row
-					height="100%"
-					onClick={onClick}
-					takeAvailableSpace
-					mainAlignment="flex-start"
-					wrap="nowrap"
+				<TabIcon icon={icon} size="large" />
+				{/* <Tooltip label={title} placement="top" maxWidth="700px"> */}
+				<CustomText
+					ref={textRef}
+					size="medium"
+					weight="regular"
+					color={current === id ? 'text' : 'secondary'}
+					overflowing={textOverflowing}
+					className="TabText"
 				>
-					<Icon icon={icon} size="large" />
-					<Padding right="small" />
-					<Tooltip label={title} placement="top" maxWidth="700px">
-						<Text
-							size="medium"
-							weight="regular"
-							color={current === id ? 'text' : 'secondary'}
-							overflow="ellipsis"
-						>
-							{title}
-						</Text>
+					{title}
+				</CustomText>
+				{/* </Tooltip> */}
+				<CloseContainer orientation={'row'} width={'fit'}>
+					<Tooltip label={t('board.close_tab', 'Close Tab')} placement="top">
+						<IconButton
+							className="TabCloseIconButton"
+							iconColor="secondary"
+							icon="Close"
+							onClick={onRemove}
+							style={{ padding: '0.125rem', width: '1.5rem', height: '1.5rem' }}
+						/>
 					</Tooltip>
-				</Row>
-				<Padding right="small" />
-				<Tooltip label={t('board.close_tab', 'Close Tab')} placement="top">
-					<IconButton
-						iconColor="secondary"
-						icon="Close"
-						onClick={onRemove}
-						style={{ padding: '0.125rem', width: '1.5rem', height: '1.5rem' }}
-					/>
-				</Tooltip>
+				</CloseContainer>
 			</TabContainer>
-		</Container>
+		</>
 	);
 };

@@ -13,7 +13,7 @@ import {
 	Tooltip
 } from '@zextras/carbonio-design-system';
 import { isEmpty, map } from 'lodash';
-import React, { FC } from 'react';
+import React, { useRef } from 'react';
 import styled, { css, SimpleInterpolation } from 'styled-components';
 import {
 	closeAllBoards,
@@ -26,6 +26,7 @@ import {
 import { getT } from '../../store/i18n';
 import { AppBoard } from './board';
 import { TabsList } from './board-tab-list';
+import { ResizableContainer } from './resizable-container';
 
 const BoardContainerComp = styled.div<{ expanded: boolean; minimized: boolean }>`
 	position: fixed;
@@ -48,6 +49,7 @@ const BoardContainerComp = styled.div<{ expanded: boolean; minimized: boolean }>
 			display: none;
 		`}
 `;
+
 const Board = styled(Container)<{ expanded: boolean }>`
 	z-index: 5;
 	position: absolute;
@@ -58,6 +60,8 @@ const Board = styled(Container)<{ expanded: boolean }>`
 	min-height: 400px;
 	box-shadow: 0 0.125rem 0.3125rem 0 rgba(125, 125, 125, 0.5);
 	pointer-events: auto;
+	max-height: 100%;
+	max-width: 100%;
 	${({ expanded }): SimpleInterpolation =>
 		expanded &&
 		css`
@@ -66,64 +70,79 @@ const Board = styled(Container)<{ expanded: boolean }>`
 			min-height: auto;
 		`}
 `;
-const BoardHeader = styled(Row)``;
+
+const BoardHeader = styled(Row)`
+	position: relative;
+`;
+
 const BoardDetailContainer = styled(Row)`
 	min-height: 0;
 `;
 const BackButton = styled(IconButton)``;
 const Actions = styled(Row)``;
 
-export const BoardContainer: FC = () => {
+export const BoardContainer = (): JSX.Element | null => {
 	const t = getT();
 	const { boards, minimized, expanded, current } = useBoardStore();
-	if (isEmpty(boards) || !current) return null;
+	const boardRef = useRef<HTMLDivElement>(null);
+	const boardContainerRef = useRef<HTMLDivElement>(null);
+
+	if (isEmpty(boards) || !current) {
+		return null;
+	}
+
 	return (
-		<BoardContainerComp expanded={expanded} minimized={minimized}>
+		<BoardContainerComp expanded={expanded} minimized={minimized} ref={boardContainerRef}>
 			<Board
 				data-testid="NewItemContainer"
-				background="gray6"
+				background={'gray6'}
 				crossAlignment="unset"
 				expanded={expanded}
+				ref={boardRef}
 			>
-				<BoardHeader background="gray5">
-					<Padding all="extrasmall">
-						<Tooltip label={t('board.hide', 'Hide board')} placement="top">
-							<BackButton icon="BoardCollapseOutline" onClick={minimizeBoards} />
-						</Tooltip>
-					</Padding>
-					<TabsList />
-					<Actions padding={{ all: 'extrasmall' }}>
-						{boards[current]?.context?.onReturnToApp && (
-							<Padding right="extrasmall">
-								<Tooltip label={t('board.open_app', 'Open in app')} placement="top">
-									<IconButton icon={'DiagonalArrowRightUp'} onClick={onGoToPanel} />
-								</Tooltip>
-							</Padding>
-						)}
-						<Padding right="extrasmall">
-							<Tooltip
-								label={
-									expanded ? t('board.reduce', 'Reduce board') : t('board.enlarge', 'Enlarge board')
-								}
-								placement="top"
-							>
-								<IconButton
-									icon={expanded ? 'CollapseOutline' : 'ExpandOutline'}
-									onClick={expanded ? reduceBoards : expandBoards}
-								/>
+				<ResizableContainer crossAlignment={'unset'} elementToResize={boardRef}>
+					<BoardHeader background={'gray5'}>
+						<Padding all="extrasmall">
+							<Tooltip label={t('board.hide', 'Hide board')} placement="top">
+								<BackButton icon="BoardCollapseOutline" onClick={minimizeBoards} />
 							</Tooltip>
 						</Padding>
-						<Tooltip label={t('board.close_tabs', 'Close all your tabs')} placement="top">
-							<IconButton icon="CloseOutline" onClick={closeAllBoards} />
-						</Tooltip>
-					</Actions>
-				</BoardHeader>
-				<Divider style={{ height: '0.125rem' }} />
-				<BoardDetailContainer takeAvailableSpace>
-					{map(boards, (b) => (
-						<AppBoard key={b.id} board={b} />
-					))}
-				</BoardDetailContainer>
+						<TabsList />
+						<Actions padding={{ all: 'extrasmall' }}>
+							{boards[current]?.context?.onReturnToApp && (
+								<Padding right="extrasmall">
+									<Tooltip label={t('board.open_app', 'Open in app')} placement="top">
+										<IconButton icon={'DiagonalArrowRightUp'} onClick={onGoToPanel} />
+									</Tooltip>
+								</Padding>
+							)}
+							<Padding right="extrasmall">
+								<Tooltip
+									label={
+										expanded
+											? t('board.reduce', 'Reduce board')
+											: t('board.enlarge', 'Enlarge board')
+									}
+									placement="top"
+								>
+									<IconButton
+										icon={expanded ? 'CollapseOutline' : 'ExpandOutline'}
+										onClick={expanded ? reduceBoards : expandBoards}
+									/>
+								</Tooltip>
+							</Padding>
+							<Tooltip label={t('board.close_tabs', 'Close all your tabs')} placement="top">
+								<IconButton icon="CloseOutline" onClick={closeAllBoards} />
+							</Tooltip>
+						</Actions>
+					</BoardHeader>
+					<Divider style={{ height: '0.125rem' }} />
+					<BoardDetailContainer takeAvailableSpace>
+						{map(boards, (b) => (
+							<AppBoard key={b.id} board={b} />
+						))}
+					</BoardDetailContainer>
+				</ResizableContainer>
 			</Board>
 		</BoardContainerComp>
 	);

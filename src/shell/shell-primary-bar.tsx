@@ -14,7 +14,7 @@ import { AppRoute, PrimaryAccessoryView, PrimaryBarView } from '../../types';
 import BadgeWrap from './badge-wrap';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { checkRoute } from '../utility-bar/utils';
-import { IS_STANDALONE } from '../constants';
+import { IS_STANDALONE, PRIMARY_BAR_WIDTH } from '../constants';
 import { minimizeBoards, reopenBoards, useBoardStore } from '../store/boards';
 import { useCurrentRoute } from '../history/hooks';
 
@@ -156,7 +156,7 @@ const ShellPrimaryBarComponent = ({
 
 	return (
 		<ContainerWithDivider
-			width="3.0625rem"
+			width={PRIMARY_BAR_WIDTH}
 			height="fill"
 			background={'gray6'}
 			orientation="vertical"

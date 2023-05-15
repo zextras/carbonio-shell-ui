@@ -132,3 +132,7 @@ export enum ResultLabelType {
 	WARNING = 'warning',
 	ERROR = 'error'
 }
+
+export const HEADER_BAR_HEIGHT = '3.75rem';
+export const PRIMARY_BAR_WIDTH = '3.0625rem';
+export const BOARD_HEADER_HEIGHT = '3rem';

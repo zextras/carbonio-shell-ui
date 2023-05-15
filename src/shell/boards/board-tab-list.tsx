@@ -18,6 +18,7 @@ import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { setCurrentBoard, useBoardStore } from '../../store/boards';
 import { getT } from '../../store/i18n';
 import { AppBoardTab } from './board-tab';
+import { BOARD_HEADER_HEIGHT } from '../../constants';
 
 export const TabsList = (): JSX.Element => {
 	const t = getT();
@@ -47,7 +48,7 @@ export const TabsList = (): JSX.Element => {
 		<Row wrap="nowrap" height="100%" mainAlignment="flex-start" takeAvailableSpace>
 			<Row
 				ref={tabContainerRef}
-				height="3rem"
+				height={BOARD_HEADER_HEIGHT}
 				mainAlignment="flex-start"
 				style={{ overflow: 'hidden' }}
 				width="calc(100% - 0.5rem)"

@@ -27,12 +27,13 @@ import { getT } from '../../store/i18n';
 import { AppBoard } from './board';
 import { TabsList } from './board-tab-list';
 import { ResizableContainer } from './resizable-container';
+import { BOARD_HEADER_HEIGHT, HEADER_BAR_HEIGHT, PRIMARY_BAR_WIDTH } from '../../constants';
 
 const BoardContainerComp = styled.div<{ expanded: boolean; minimized: boolean }>`
 	position: fixed;
-	top: 3.75rem;
+	top: ${HEADER_BAR_HEIGHT};
 	bottom: 0;
-	left: 3rem;
+	left: ${PRIMARY_BAR_WIDTH};
 	right: 0;
 	background-color: rgba(0, 0, 0, 0);
 	pointer-events: none;
@@ -57,7 +58,8 @@ const Board = styled(Container)<{ expanded: boolean }>`
 	bottom: 0;
 	width: 700px;
 	height: 70vh;
-	min-height: 400px;
+	min-height: calc(${BOARD_HEADER_HEIGHT} * 3);
+	min-width: 19rem;
 	box-shadow: 0 0.125rem 0.3125rem 0 rgba(125, 125, 125, 0.5);
 	pointer-events: auto;
 	max-height: 100%;
@@ -65,8 +67,10 @@ const Board = styled(Container)<{ expanded: boolean }>`
 	${({ expanded }): SimpleInterpolation =>
 		expanded &&
 		css`
-			height: calc(100% - 1.5rem);
-			width: calc(100% - 1.5rem * 2);
+			height: calc(100% - 1.5rem) !important;
+			width: calc(100% - 3rem) !important;
+			top: 1.5rem !important;
+			left: 1.5rem !important;
 			min-height: auto;
 		`}
 `;

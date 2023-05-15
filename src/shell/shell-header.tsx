@@ -19,6 +19,7 @@ import { CreationButton } from './creation-button';
 import { useAppStore } from '../store/app';
 import { useDarkMode } from '../dark-mode/use-dark-mode';
 import { Logo } from './logo';
+import { HEADER_BAR_HEIGHT } from '../constants';
 
 const StyledLogo = styled(Logo)`
 	height: 2rem;
@@ -45,9 +46,9 @@ const ShellHeader = ({
 			orientation="horizontal"
 			background={'gray3'}
 			width="fill"
-			height="3.75rem"
-			minHeight="3.75rem"
-			maxHeight="3.75rem"
+			height={HEADER_BAR_HEIGHT}
+			minHeight={HEADER_BAR_HEIGHT}
+			maxHeight={HEADER_BAR_HEIGHT}
 			mainAlignment="space-between"
 			padding={{
 				horizontal: screenMode === 'desktop' ? 'large' : 'extrasmall',

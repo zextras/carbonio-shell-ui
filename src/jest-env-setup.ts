@@ -47,6 +47,18 @@ beforeEach(() => {
 			};
 		})
 	});
+
+	// mock a simplified Intersection Observer
+	Object.defineProperty(window, 'ResizeObserver', {
+		writable: true,
+		value: function ResizeObserverMock(callback: ResizeObserverCallback): ResizeObserver {
+			return {
+				observe: jest.fn(),
+				unobserve: jest.fn(),
+				disconnect: jest.fn()
+			};
+		}
+	});
 });
 
 beforeAll(() => {

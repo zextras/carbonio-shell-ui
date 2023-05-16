@@ -36,6 +36,11 @@ const TabContainer = styled(Row)<RowProps & { active: boolean }>`
 	margin-left: 0.25rem;
 	margin-right: 0.25rem;
 	overflow: hidden;
+	${({ active }): SimpleInterpolation =>
+		active &&
+		css`
+			min-width: calc(3rem + 15ch);
+		`}
 `;
 
 const CloseContainer = styled(Container)`

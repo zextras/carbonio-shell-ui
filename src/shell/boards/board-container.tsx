@@ -55,6 +55,11 @@ const BoardContainerComp = styled.div<{ expanded: boolean; minimized: boolean }>
 			display: none;
 		`}
 `;
+
+const OverflowContainer = styled(Container)`
+	overflow: auto;
+`;
+
 const Board = styled(Container)<{ expanded: boolean }>`
 	z-index: 5;
 	position: absolute;
@@ -109,14 +114,14 @@ function ListItemContent({
 					<Icon icon={icon} size={'large'} color={'text'} style={{ pointerEvents: 'none' }} />
 				</Padding>
 			)}
-			<Container crossAlignment={'flex-start'}>
+			<OverflowContainer crossAlignment={'flex-start'}>
 				<Text size={'medium'} weight={selected ? 'bold' : 'regular'} color={'gray0'}>
 					{label}
 				</Text>
 				<Text size={'small'} weight={selected ? 'bold' : 'regular'} color={'secondary'}>
 					{`From ${app}`}
 				</Text>
-			</Container>
+			</OverflowContainer>
 			<Padding left={'small'}>
 				<IconButton icon={'CloseOutline'} size={'large'} onClick={onClose} />
 			</Padding>

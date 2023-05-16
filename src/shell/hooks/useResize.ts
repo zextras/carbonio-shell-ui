@@ -3,7 +3,9 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { useCallback, useRef } from 'react';
+import React, { CSSProperties, useCallback, useRef } from 'react';
+import { find } from 'lodash';
+import { setGlobalCursor } from '../../utils/utils';
 
 type SizeAndPosition = {
 	width: number;
@@ -23,6 +25,19 @@ type OffsetSizeAndPosition = {
 type Border = 'n' | 's' | 'e' | 'w' | 'ne' | 'sw' | 'nw' | 'se';
 
 type UseResizableReturnType = React.MouseEventHandler;
+
+function getCursorFromBorder(border: Border): NonNullable<CSSProperties['cursor']> {
+	const direction = find(
+		[
+			['n', 's'],
+			['e', 'w'],
+			['ne', 'sw'],
+			['nw', 'se']
+		],
+		(borders) => borders.includes(border)
+	)?.join('');
+	return (direction && direction.concat('-resize')) || '';
+}
 
 function calcNewSizeAndPosition(
 	border: Border,
@@ -93,6 +108,7 @@ export const useResize = (
 	);
 
 	const onMouseUp = useCallback(() => {
+		setGlobalCursor(undefined);
 		document.body.removeEventListener('mousemove', onMouseMove);
 		document.body.removeEventListener('mouseup', onMouseUp);
 	}, [onMouseMove]);
@@ -112,10 +128,11 @@ export const useResize = (
 					top: clientRect.top,
 					left: clientRect.left
 				};
+				setGlobalCursor(getCursorFromBorder(border));
 				document.body.addEventListener('mousemove', onMouseMove);
 				document.body.addEventListener('mouseup', onMouseUp);
 			}
 		},
-		[elementToResizeRef, onMouseMove, onMouseUp]
+		[border, elementToResizeRef, onMouseMove, onMouseUp]
 	);
 };

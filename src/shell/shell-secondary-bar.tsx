@@ -13,7 +13,7 @@ import { AppRoute } from '../../types';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppStore } from '../store/app';
-import { useUtilityBarStore } from '../utility-bar';
+import { useUtilityBarStore } from '../utility-bar/store';
 import { checkRoute } from '../utility-bar/utils';
 import { Collapser } from './collapser';
 

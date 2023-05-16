@@ -6,8 +6,8 @@ library(
     identifier: 'zapp-jenkins-lib@github-pipeline-v4',
     retriever: modernSCM([
         $class: 'GitSCMSource',
-        remote: 'git@bitbucket.org:zextras/zapp-jenkins-lib.git',
-        credentialsId: 'tarsier_bot-ssh-key'
+        remote: 'git@github.com:zextras/jenkins-zapp-lib.git',
+        credentialsId: 'jenkins-integration-with-github-account'
     ])
 )
 

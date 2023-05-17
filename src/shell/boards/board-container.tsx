@@ -27,7 +27,15 @@ import { getT } from '../../store/i18n';
 import { AppBoard } from './board';
 import { TabsList } from './board-tab-list';
 import { ResizableContainer } from './resizable-container';
-import { BOARD_HEADER_HEIGHT, HEADER_BAR_HEIGHT, PRIMARY_BAR_WIDTH } from '../../constants';
+import {
+	BOARD_HEADER_HEIGHT,
+	BOARD_TAB_WIDTH,
+	HEADER_BAR_HEIGHT,
+	LOCAL_STORAGE_BOARD_SIZE,
+	PRIMARY_BAR_WIDTH
+} from '../../constants';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import { SizeAndPosition } from '../hooks/useResize';
 
 const BoardContainerComp = styled.div<{ expanded: boolean; minimized: boolean }>`
 	position: fixed;
@@ -56,10 +64,27 @@ const Board = styled(Container)<{ expanded: boolean }>`
 	position: absolute;
 	left: 1.5rem;
 	bottom: 0;
-	width: 700px;
-	height: 70vh;
+
+	/* height and width set by the user */
+	${({ width, height }): SimpleInterpolation =>
+		!width &&
+		!height &&
+		css`
+			/* default height and aspect ratio */
+			aspect-ratio: 4 / 3;
+			width: auto;
+			height: 70vh;
+			/* on higher screen, reduce the default height */
+			@media (min-height: 800px) {
+				height: 60vh;
+			}
+			@media (min-height: 1000px) {
+				height: 50vh;
+			}
+		`}
+
 	min-height: calc(${BOARD_HEADER_HEIGHT} * 3);
-	min-width: 19rem;
+	min-width: calc(${BOARD_TAB_WIDTH} * 2);
 	box-shadow: 0 0.125rem 0.3125rem 0 rgba(125, 125, 125, 0.5);
 	pointer-events: auto;
 	max-height: 100%;
@@ -72,7 +97,7 @@ const Board = styled(Container)<{ expanded: boolean }>`
 			top: 1.5rem !important;
 			left: 1.5rem !important;
 			min-height: auto;
-		`}
+		`};
 `;
 
 const BoardHeader = styled(Row)`
@@ -90,6 +115,10 @@ export const BoardContainer = (): JSX.Element | null => {
 	const { boards, minimized, expanded, current } = useBoardStore();
 	const boardRef = useRef<HTMLDivElement>(null);
 	const boardContainerRef = useRef<HTMLDivElement>(null);
+	const [lastBoardSize] = useLocalStorage<SizeAndPosition | undefined>(
+		LOCAL_STORAGE_BOARD_SIZE,
+		undefined
+	);
 
 	if (isEmpty(boards) || !current) {
 		return null;
@@ -103,8 +132,15 @@ export const BoardContainer = (): JSX.Element | null => {
 				crossAlignment="unset"
 				expanded={expanded}
 				ref={boardRef}
+				width={lastBoardSize?.width}
+				height={lastBoardSize?.height}
 			>
-				<ResizableContainer crossAlignment={'unset'} elementToResize={boardRef}>
+				<ResizableContainer
+					crossAlignment={'unset'}
+					elementToResize={boardRef}
+					localStorageKey={LOCAL_STORAGE_BOARD_SIZE}
+					disabled={expanded}
+				>
 					<BoardHeader background={'gray5'}>
 						<Padding all="extrasmall">
 							<Tooltip label={t('board.hide', 'Hide board')} placement="top">

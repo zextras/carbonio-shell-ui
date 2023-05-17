@@ -6,8 +6,9 @@
 import React, { CSSProperties, useCallback, useRef } from 'react';
 import { find } from 'lodash';
 import { setGlobalCursor } from '../../utils/utils';
+import { useLocalStorage } from './useLocalStorage';
 
-type SizeAndPosition = {
+export type SizeAndPosition = {
 	width: number;
 	height: number;
 	top: number;
@@ -22,11 +23,17 @@ type OffsetSizeAndPosition = {
  * Define the border following the cardinal points (north, south, west, east).
  * Similar to the definition of the cursor for the pointer
  */
-type Border = 'n' | 's' | 'e' | 'w' | 'ne' | 'sw' | 'nw' | 'se';
+export type Border = 'n' | 's' | 'e' | 'w' | 'ne' | 'sw' | 'nw' | 'se';
 
 type UseResizableReturnType = React.MouseEventHandler;
 
-function getCursorFromBorder(border: Border): NonNullable<CSSProperties['cursor']> {
+type ResizeOptions = {
+	localStorageKey?: string;
+};
+
+export const BORDERS: Border[] = ['n', 's', 'e', 'w', 'ne', 'se', 'sw', 'nw'];
+
+export function getCursorFromBorder(border: Border): NonNullable<CSSProperties['cursor']> {
 	const direction = find(
 		[
 			['n', 's'],
@@ -71,9 +78,15 @@ function calcNewSizeAndPosition(
 
 export const useResize = (
 	elementToResizeRef: React.RefObject<HTMLElement>,
-	border: Border
+	border: Border,
+	options?: ResizeOptions
 ): UseResizableReturnType => {
 	const initialSizeAndPositionRef = useRef<Parameters<typeof calcNewSizeAndPosition>[1]>();
+	const lastSizeAndPositionRef = useRef<SizeAndPosition>();
+	const [, setLastSizeAndPosition] = useLocalStorage<SizeAndPosition | undefined>(
+		options?.localStorageKey || 'use-resize-data',
+		undefined
+	);
 
 	const resizeElement = useCallback(
 		({ width, height, top, left }: SizeAndPosition) => {
@@ -99,9 +112,13 @@ export const useResize = (
 	const onMouseMove = useCallback(
 		(mouseMoveEvent: MouseEvent) => {
 			if (initialSizeAndPositionRef.current) {
-				resizeElement(
-					calcNewSizeAndPosition(border, initialSizeAndPositionRef.current, mouseMoveEvent)
+				const newSizeAndPosition = calcNewSizeAndPosition(
+					border,
+					initialSizeAndPositionRef.current,
+					mouseMoveEvent
 				);
+				resizeElement(newSizeAndPosition);
+				lastSizeAndPositionRef.current = newSizeAndPosition;
 			}
 		},
 		[border, resizeElement]
@@ -111,7 +128,10 @@ export const useResize = (
 		setGlobalCursor(undefined);
 		document.body.removeEventListener('mousemove', onMouseMove);
 		document.body.removeEventListener('mouseup', onMouseUp);
-	}, [onMouseMove]);
+		if (options?.localStorageKey) {
+			setLastSizeAndPosition(lastSizeAndPositionRef.current);
+		}
+	}, [onMouseMove, options?.localStorageKey, setLastSizeAndPosition]);
 
 	return useCallback(
 		(mouseDownEvent: React.MouseEvent | MouseEvent) => {

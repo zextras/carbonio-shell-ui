@@ -3,18 +3,24 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { CSSProperties, useRef } from 'react';
+import React, { CSSProperties, useMemo, useRef } from 'react';
 import styled, { SimpleInterpolation } from 'styled-components';
 import { Container, ContainerProps } from '@zextras/carbonio-design-system';
-import { useResize } from '../hooks/useResize';
+import { Border, BORDERS, getCursorFromBorder, useResize } from '../hooks/useResize';
 
-const MainContainer = styled(Container)`
-	position: relative;
-	width: 100%;
-	height: 100%;
-`;
+interface ResizableBorderProps {
+	border: Border;
+	elementToResize: React.RefObject<HTMLElement>;
+	localStorageKey?: string;
+}
 
-const ResizeContainer = styled.div<{
+interface ResizableContainerProps extends ContainerProps {
+	elementToResize: React.RefObject<HTMLElement>;
+	localStorageKey?: string;
+	disabled?: boolean;
+}
+
+interface BorderWithResizeProps {
 	$cursor: CSSProperties['cursor'];
 	$width: string;
 	$height: string;
@@ -24,9 +30,20 @@ const ResizeContainer = styled.div<{
 		left?: number;
 		right?: number;
 	};
-	height?: never;
-	width?: never;
-}>`
+}
+
+const MainContainer = styled(Container)`
+	position: relative;
+	width: 100%;
+	height: 100%;
+`;
+
+const BorderWithResize = styled.div<
+	BorderWithResizeProps & {
+		height?: never;
+		width?: never;
+	}
+>`
 	position: absolute;
 	cursor: ${({ $cursor }): CSSProperties['cursor'] => $cursor};
 	width: ${({ $width }): string => $width};
@@ -35,100 +52,91 @@ const ResizeContainer = styled.div<{
 	z-index: 2;
 `;
 
-interface ResizableContainerProps extends ContainerProps {
-	elementToResize: React.RefObject<HTMLElement>;
-}
+const ResizableBorder = ({
+	border,
+	elementToResize,
+	localStorageKey
+}: ResizableBorderProps): JSX.Element => {
+	const borderRef = useRef<HTMLDivElement>(null);
+	const resizeHandler = useResize(elementToResize, border, { localStorageKey });
+
+	const sizes = useMemo<Pick<BorderWithResizeProps, '$width' | '$height'>>(() => {
+		switch (border) {
+			case 'n':
+			case 's':
+				return {
+					$width: '100%',
+					$height: '1px'
+				};
+			case 'e':
+			case 'w':
+				return {
+					$width: '1px',
+					$height: '100%'
+				};
+			case 'ne':
+			case 'nw':
+			case 'se':
+			case 'sw':
+			default:
+				return {
+					$width: '1px',
+					$height: '1px'
+				};
+		}
+	}, [border]);
+
+	const position = useMemo<BorderWithResizeProps['$position']>(() => {
+		const _position: BorderWithResizeProps['$position'] = {};
+		if (border.includes('n')) {
+			_position.top = 0;
+		}
+		if (border.includes('s')) {
+			_position.bottom = 0;
+		}
+		if (border.includes('e')) {
+			_position.right = 0;
+		}
+		if (border.includes('w')) {
+			_position.left = 0;
+		}
+		return _position;
+	}, [border]);
+
+	return (
+		<BorderWithResize
+			ref={borderRef}
+			{...sizes}
+			$position={position}
+			$cursor={getCursorFromBorder(border)}
+			onMouseDown={resizeHandler}
+		/>
+	);
+};
 
 export const ResizableContainer = ({
 	elementToResize,
 	children,
+	localStorageKey,
+	disabled = false,
 	...rest
 }: ResizableContainerProps): JSX.Element => {
-	const mainContainerRef = useRef<HTMLDivElement>(null);
-	const verticalTopRef = useRef<HTMLDivElement>(null);
-	const verticalBottomRef = useRef<HTMLDivElement>(null);
-	const horizontalLeftRef = useRef<HTMLDivElement>(null);
-	const horizontalRightRef = useRef<HTMLDivElement>(null);
-	const diagonalTopRightRef = useRef<HTMLDivElement>(null);
-	const diagonalBottomRightRef = useRef<HTMLDivElement>(null);
-	const diagonalBottomLeftRef = useRef<HTMLDivElement>(null);
-	const diagonalTopLeftRef = useRef<HTMLDivElement>(null);
-
-	const resizeVerticalTopHandler = useResize(elementToResize, 'n');
-	const resizeVerticalBottomHandler = useResize(elementToResize, 's');
-	const resizeHorizontalRightHandler = useResize(elementToResize, 'e');
-	const resizeHorizontalLeftHandler = useResize(elementToResize, 'w');
-	const resizeDiagonalTopRight = useResize(elementToResize, 'ne');
-	const resizeDiagonalBottomRight = useResize(elementToResize, 'se');
-	const resizeDiagonalBottomLeft = useResize(elementToResize, 'sw');
-	const resizeDiagonalTopLeft = useResize(elementToResize, 'nw');
+	const borders = useMemo(
+		() =>
+			BORDERS.map((border) => (
+				<ResizableBorder
+					key={`border-${border}`}
+					border={border}
+					elementToResize={elementToResize}
+					localStorageKey={localStorageKey}
+				/>
+			)),
+		[elementToResize, localStorageKey]
+	);
 
 	return (
-		<MainContainer {...rest} ref={mainContainerRef}>
-			<ResizeContainer
-				ref={verticalTopRef}
-				$cursor={'ns-resize'}
-				$position={{ top: 0 }}
-				$width={'100%'}
-				$height={'1px'}
-				onMouseDown={resizeVerticalTopHandler}
-			/>
-			<ResizeContainer
-				ref={verticalBottomRef}
-				$cursor={'ns-resize'}
-				$position={{ bottom: 0 }}
-				$width={'100%'}
-				$height={'1px'}
-				onMouseDown={resizeVerticalBottomHandler}
-			/>
-			<ResizeContainer
-				ref={horizontalLeftRef}
-				$cursor={'ew-resize'}
-				$position={{ left: 0 }}
-				$width={'1px'}
-				$height={'100%'}
-				onMouseDown={resizeHorizontalLeftHandler}
-			/>
-			<ResizeContainer
-				ref={horizontalRightRef}
-				$cursor={'ew-resize'}
-				$position={{ right: 0 }}
-				$width={'1px'}
-				$height={'100%'}
-				onMouseDown={resizeHorizontalRightHandler}
-			/>
-			<ResizeContainer
-				ref={diagonalTopRightRef}
-				$cursor={'nesw-resize'}
-				$position={{ top: 0, right: 0 }}
-				$width={'1px'}
-				$height={'1px'}
-				onMouseDown={resizeDiagonalTopRight}
-			/>
-			<ResizeContainer
-				ref={diagonalBottomRightRef}
-				$cursor={'nwse-resize'}
-				$position={{ bottom: 0, right: 0 }}
-				$width={'1px'}
-				$height={'1px'}
-				onMouseDown={resizeDiagonalBottomRight}
-			/>
-			<ResizeContainer
-				ref={diagonalBottomLeftRef}
-				$cursor={'nesw-resize'}
-				$position={{ bottom: 0, left: 0 }}
-				$width={'1px'}
-				$height={'1px'}
-				onMouseDown={resizeDiagonalBottomLeft}
-			/>
-			<ResizeContainer
-				ref={diagonalTopLeftRef}
-				$cursor={'nwse-resize'}
-				$position={{ top: 0, left: 0 }}
-				$width={'1px'}
-				$height={'1px'}
-				onMouseDown={resizeDiagonalTopLeft}
-			/>
+		<MainContainer {...rest}>
+			{!disabled && borders}
 			{children}
 		</MainContainer>
 	);

@@ -30,7 +30,6 @@ failOnConsole({
 });
 
 beforeEach(() => {
-	// mock a simplified Intersection Observer
 	Object.defineProperty(window, 'IntersectionObserver', {
 		writable: true,
 		value: jest.fn(function intersectionObserverMock(
@@ -48,7 +47,6 @@ beforeEach(() => {
 		})
 	});
 
-	// mock a simplified Intersection Observer
 	Object.defineProperty(window, 'ResizeObserver', {
 		writable: true,
 		value: function ResizeObserverMock(callback: ResizeObserverCallback): ResizeObserver {

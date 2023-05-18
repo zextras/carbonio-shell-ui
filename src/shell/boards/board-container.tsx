@@ -11,6 +11,7 @@ import {
 	DropdownItem,
 	Icon,
 	IconButton,
+	IconButtonProps,
 	Padding,
 	Row,
 	Text,
@@ -100,7 +101,8 @@ function ListItemContent({
 	app,
 	boardId
 }: ListItemContentProps): JSX.Element {
-	const onClose = useCallback(
+	const t = getT();
+	const onClose = useCallback<IconButtonProps['onClick']>(
 		(ev) => {
 			ev.stopPropagation();
 			closeBoard(boardId);
@@ -119,7 +121,9 @@ function ListItemContent({
 					{label}
 				</Text>
 				<Text size={'small'} weight={selected ? 'bold' : 'regular'} color={'secondary'}>
-					{`From ${app}`}
+					{t('board.from_app', 'From {{app}}', {
+						app
+					})}
 				</Text>
 			</OverflowContainer>
 			<Padding left={'small'}>

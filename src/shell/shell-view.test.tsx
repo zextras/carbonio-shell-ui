@@ -33,7 +33,13 @@ jest.mock('./shell-header', () => Dummy);
 
 test('When resizing under mobile breakpoint, board does not disappear', () => {
 	const boards: Record<string, Board> = {
-		'board-1': { id: 'board-1', url: '/url', app: 'app', title: 'title1', icon: 'CubeOutline' }
+		'board-1': {
+			id: 'board-1',
+			url: '/url',
+			app: 'carbonio-mails-ui',
+			title: 'title1',
+			icon: 'CubeOutline'
+		}
 	};
 
 	useBoardStore.setState(() => ({

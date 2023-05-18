@@ -1,11 +1,11 @@
 @container tab (width < calc(3rem + 3ch)) {
-    .TabCloseIconButton {
+    .tab-close-icon-button {
         display: none !important;
     }
 }
 
 @container tab (width < calc(2rem)) {
-    .TabText {
+    .tab-text {
         display: none !important;
     }
 }

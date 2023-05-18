@@ -124,7 +124,7 @@ export const AppBoardTab: FC<{ id: string; icon: string; title: string; firstTab
 					weight="regular"
 					color={current === id ? 'text' : 'secondary'}
 					overflowing={textOverflowing}
-					className="TabText"
+					className="tab-text"
 				>
 					{title}
 				</CustomText>
@@ -132,7 +132,7 @@ export const AppBoardTab: FC<{ id: string; icon: string; title: string; firstTab
 				<CloseContainer orientation={'row'} width={'fit'}>
 					<Tooltip label={t('board.close_tab', 'Close Tab')} placement="top">
 						<IconButton
-							className="TabCloseIconButton"
+							className="tab-close-icon-button"
 							iconColor="secondary"
 							icon="Close"
 							onClick={onRemove}

@@ -15,10 +15,6 @@ export type SizeAndPosition = {
 	left: number;
 };
 
-type OffsetSizeAndPosition = {
-	[K in keyof SizeAndPosition as `offset${Capitalize<K>}`]: SizeAndPosition[K];
-};
-
 /**
  * Define the border following the cardinal points (north, south, west, east).
  * Similar to the definition of the cursor for the pointer
@@ -48,30 +44,30 @@ export function getCursorFromBorder(border: Border): NonNullable<CSSProperties['
 
 function calcNewSizeAndPosition(
 	border: Border,
-	from: SizeAndPosition & OffsetSizeAndPosition,
+	from: { clientTop: number; clientLeft: number } & SizeAndPosition,
 	mouseEvent: MouseEvent
 ): SizeAndPosition {
 	const newSizeAndPosition = {
-		top: from.offsetTop,
-		left: from.offsetLeft,
-		height: from.offsetHeight,
-		width: from.offsetWidth
+		top: from.top,
+		left: from.left,
+		height: from.height,
+		width: from.width
 	};
 	if (border.includes('n')) {
-		const heightDifference = from.top - mouseEvent.clientY;
-		newSizeAndPosition.height = from.offsetHeight + heightDifference;
-		newSizeAndPosition.top = from.offsetTop - heightDifference;
+		const heightDifference = from.clientTop - mouseEvent.clientY;
+		newSizeAndPosition.height = from.height + heightDifference;
+		newSizeAndPosition.top = from.top - heightDifference;
 	}
 	if (border.includes('s')) {
-		newSizeAndPosition.height = mouseEvent.clientY - from.top;
+		newSizeAndPosition.height = mouseEvent.clientY - from.clientTop;
 	}
 	if (border.includes('e')) {
-		newSizeAndPosition.width = mouseEvent.clientX - from.left;
+		newSizeAndPosition.width = mouseEvent.clientX - from.clientLeft;
 	}
 	if (border.includes('w')) {
-		const widthDifference = from.left - mouseEvent.clientX;
-		newSizeAndPosition.width = from.offsetWidth + widthDifference;
-		newSizeAndPosition.left = from.offsetLeft - widthDifference;
+		const widthDifference = from.clientLeft - mouseEvent.clientX;
+		newSizeAndPosition.width = from.width + widthDifference;
+		newSizeAndPosition.left = from.left - widthDifference;
 	}
 	return newSizeAndPosition;
 }
@@ -139,14 +135,12 @@ export const useResize = (
 				mouseDownEvent.preventDefault();
 				const clientRect = elementToResizeRef.current.getBoundingClientRect();
 				initialSizeAndPositionRef.current = {
-					offsetWidth: elementToResizeRef.current.offsetWidth,
-					offsetHeight: elementToResizeRef.current.offsetHeight,
-					offsetTop: elementToResizeRef.current.offsetTop,
-					offsetLeft: elementToResizeRef.current.offsetLeft,
-					width: clientRect.width,
-					height: clientRect.height,
-					top: clientRect.top,
-					left: clientRect.left
+					width: elementToResizeRef.current.offsetWidth,
+					height: elementToResizeRef.current.offsetHeight,
+					top: elementToResizeRef.current.offsetTop,
+					left: elementToResizeRef.current.offsetLeft,
+					clientTop: clientRect.top,
+					clientLeft: clientRect.left
 				};
 				setGlobalCursor(getCursorFromBorder(border));
 				document.body.addEventListener('mousemove', onMouseMove);
@@ -156,3 +150,5 @@ export const useResize = (
 		[border, elementToResizeRef, onMouseMove, onMouseUp]
 	);
 };
+
+export const exportForTest = process.env.NODE_ENV === 'test' ? { calcNewSizeAndPosition } : {};

@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { CSSProperties, useCallback, useRef } from 'react';
+import React, { CSSProperties, useCallback, useEffect, useRef } from 'react';
 import { find, forEach } from 'lodash';
 import { setGlobalCursor } from '../../utils/utils';
 import { useLocalStorage } from './useLocalStorage';
@@ -72,6 +72,15 @@ function calcNewSizeAndPosition(
 	return newSizeAndPosition;
 }
 
+function setElementStyle(
+	element: HTMLElement,
+	key: keyof SizeAndPosition,
+	value: number | undefined
+): void {
+	// eslint-disable-next-line no-param-reassign
+	element.style[key] = value !== undefined ? `${value}px` : '';
+}
+
 export const useResize = (
 	elementToResizeRef: React.RefObject<HTMLElement>,
 	border: Border,
@@ -79,10 +88,22 @@ export const useResize = (
 ): UseResizableReturnType => {
 	const initialSizeAndPositionRef = useRef<Parameters<typeof calcNewSizeAndPosition>[1]>();
 	const lastSizeAndPositionRef = useRef<Partial<SizeAndPosition>>({});
-	const [, setLastSizeAndPosition] = useLocalStorage<Partial<SizeAndPosition> | undefined>(
-		options?.localStorageKey || 'use-resize-data',
-		undefined
-	);
+	const [lastSavedSizeAndPosition, setLastSavedSizeAndPosition] = useLocalStorage<
+		Partial<SizeAndPosition>
+	>(options?.localStorageKey || 'use-resize-data', {});
+
+	useEffect(() => {
+		if (elementToResizeRef.current) {
+			const elementToResize = elementToResizeRef.current;
+			if (elementToResize) {
+				setElementStyle(elementToResize, 'width', lastSavedSizeAndPosition.width);
+				setElementStyle(elementToResize, 'height', lastSavedSizeAndPosition.height);
+				setElementStyle(elementToResize, 'top', lastSavedSizeAndPosition.top);
+				setElementStyle(elementToResize, 'left', lastSavedSizeAndPosition.left);
+			}
+			lastSizeAndPositionRef.current = { ...lastSavedSizeAndPosition };
+		}
+	}, [elementToResizeRef, lastSavedSizeAndPosition]);
 
 	const resizeElement = useCallback(
 		({ width, height, top, left }: SizeAndPosition) => {
@@ -98,7 +119,7 @@ export const useResize = (
 					sizeAndPositionToApply.left = left;
 				}
 				forEach(sizeAndPositionToApply, (value, key) => {
-					elementToResize.style[key as keyof SizeAndPosition] = `${value}px`;
+					setElementStyle(elementToResize, key as keyof SizeAndPosition, value);
 				});
 				// reset bottom in favor of top
 				elementToResize.style.bottom = '';
@@ -129,9 +150,9 @@ export const useResize = (
 		document.body.removeEventListener('mousemove', onMouseMove);
 		document.body.removeEventListener('mouseup', onMouseUp);
 		if (options?.localStorageKey) {
-			setLastSizeAndPosition(lastSizeAndPositionRef.current);
+			setLastSavedSizeAndPosition(lastSizeAndPositionRef.current);
 		}
-	}, [onMouseMove, options?.localStorageKey, setLastSizeAndPosition]);
+	}, [onMouseMove, options?.localStorageKey, setLastSavedSizeAndPosition]);
 
 	return useCallback(
 		(mouseDownEvent: React.MouseEvent | MouseEvent) => {

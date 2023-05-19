@@ -7,7 +7,7 @@ import React from 'react';
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import 'jest-styled-components';
 import { setup } from '../../test/utils';
-import { BoardContainer } from './board-container';
+import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
 import { ICONS, TESTID_SELECTORS } from '../../test/constants';
 import { Border, SizeAndPosition } from '../hooks/useResize';
 import { LOCAL_STORAGE_BOARD_SIZE } from '../../constants';
@@ -204,7 +204,23 @@ describe('Board container', () => {
 		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		setupBoardSizes(board, buildBoardSizeAndPosition());
-		expect(board).toHaveStyleRule('height', '70vh');
+		const border: Border = 'n';
+		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
+		const deltaY = -50;
+		setupBoardSizes(board, boardInitialSizeAndPos);
+		const topBorder = screen.getByTestId(TESTID_SELECTORS.resizableBorder(border));
+		fireEvent.mouseDown(topBorder);
+		fireEvent.mouseMove(document.body, { clientX: 0, clientY: mouseInitialPos.clientY + deltaY });
+		fireEvent.mouseUp(document.body);
+		const boardNewSizeAndPos: SizeAndPosition = {
+			height: boardInitialSizeAndPos.height - deltaY,
+			width: boardInitialSizeAndPos.width,
+			top: boardInitialSizeAndPos.top + deltaY,
+			left: boardInitialSizeAndPos.left
+		};
+		const localStorageSavedData = window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '';
+		await waitFor(() => expect(JSON.parse(localStorageSavedData)).toEqual(boardNewSizeAndPos));
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
 		expect(board).toHaveStyleRule('height', 'calc(100% - 1.5rem) !important');
 		expect(board).toHaveStyleRule('width', 'calc(100% - 3rem) !important');
@@ -276,15 +292,101 @@ describe('Board container', () => {
 		fireEvent.mouseDown(topBorder);
 		fireEvent.mouseMove(document.body, { clientX: 0, clientY: mouseInitialPos.clientY + deltaY });
 		fireEvent.mouseUp(document.body);
+		const boardNewSizeAndPos: SizeAndPosition = {
+			height: boardInitialSizeAndPos.height - deltaY,
+			width: boardInitialSizeAndPos.width,
+			top: boardInitialSizeAndPos.top + deltaY,
+			left: boardInitialSizeAndPos.left
+		};
+		const localStorageSavedData = window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '';
+		await waitFor(() => expect(JSON.parse(localStorageSavedData)).toEqual(boardNewSizeAndPos));
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.reduceBoard }));
 		expect(board).toHaveStyle({
-			height: `${boardInitialSizeAndPos.height - deltaY}px`,
-			width: `${boardInitialSizeAndPos.width}px`,
-			top: `${boardInitialSizeAndPos.top + deltaY}px`,
-			left: `${boardInitialSizeAndPos.left}px`
+			height: `${boardNewSizeAndPos.height}px`,
+			width: `${boardNewSizeAndPos.width}px`,
+			top: `${boardNewSizeAndPos.top}px`,
+			left: `${boardNewSizeAndPos.left}px`
 		});
 		expect(board).not.toHaveStyleRule('height', '70vh');
 		expect(board).not.toHaveStyleRule('width', 'auto');
+	});
+
+	test('Reset size action is disabled if board is at default size', async () => {
+		setupBoardStore();
+		const { getByRoleWithIcon } = setup(
+			<>
+				<ShellPrimaryBar />
+				<BoardContainer />
+			</>
+		);
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		setupBoardSizes(board, boardInitialSizeAndPos);
+		expect(getByRoleWithIcon('button', { icon: ICONS.resetBoardSize })).toBeDisabled();
+	});
+
+	test('Reset size action is enabled if board is not at default size', async () => {
+		setupBoardStore();
+		const { getByRoleWithIcon } = setup(
+			<>
+				<ShellPrimaryBar />
+				<BoardContainer />
+			</>
+		);
+		const border: Border = 'n';
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
+		const deltaY = -50;
+		setupBoardSizes(board, boardInitialSizeAndPos);
+		const topBorder = screen.getByTestId(TESTID_SELECTORS.resizableBorder(border));
+		fireEvent.mouseDown(topBorder);
+		fireEvent.mouseMove(document.body, { clientX: 0, clientY: mouseInitialPos.clientY + deltaY });
+		fireEvent.mouseUp(document.body);
+		const boardNewSizeAndPos: SizeAndPosition = {
+			height: boardInitialSizeAndPos.height - deltaY,
+			width: boardInitialSizeAndPos.width,
+			top: boardInitialSizeAndPos.top + deltaY,
+			left: boardInitialSizeAndPos.left
+		};
+		const localStorageSavedData = window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '';
+		await waitFor(() => expect(JSON.parse(localStorageSavedData)).toEqual(boardNewSizeAndPos));
+		expect(getByRoleWithIcon('button', { icon: ICONS.resetBoardSize })).toBeEnabled();
+	});
+
+	test('Reset size action reset board sizes to default', async () => {
+		setupBoardStore();
+		const { getByRoleWithIcon, user } = setup(
+			<>
+				<ShellPrimaryBar />
+				<BoardContainer />
+			</>
+		);
+		const border: Border = 'n';
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
+		const deltaY = -50;
+		setupBoardSizes(board, boardInitialSizeAndPos);
+		const topBorder = screen.getByTestId(TESTID_SELECTORS.resizableBorder(border));
+		fireEvent.mouseDown(topBorder);
+		fireEvent.mouseMove(document.body, { clientX: 0, clientY: mouseInitialPos.clientY + deltaY });
+		fireEvent.mouseUp(document.body);
+		const boardNewSizeAndPos: SizeAndPosition = {
+			height: boardInitialSizeAndPos.height - deltaY,
+			width: boardInitialSizeAndPos.width,
+			top: boardInitialSizeAndPos.top + deltaY,
+			left: boardInitialSizeAndPos.left
+		};
+		const localStorageSavedData = window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '';
+		await waitFor(() => expect(JSON.parse(localStorageSavedData)).toEqual(boardNewSizeAndPos));
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.resetBoardSize }));
+		expect(board).toHaveStyle({
+			height: '70vh',
+			width: 'auto',
+			left: BOARD_DEFAULT_POSITION.left,
+			bottom: BOARD_DEFAULT_POSITION.bottom
+		});
 	});
 });

@@ -131,6 +131,7 @@ export const ICONS = {
 	collapseBoard: 'BoardCollapse',
 	enlargeBoard: 'ExpandOutline',
 	reduceBoard: 'CollapseOutline',
+	resetBoardSize: 'DiagonalArrowLeftDown',
 	unCollapseBoard: 'BoardOpen'
 };
 

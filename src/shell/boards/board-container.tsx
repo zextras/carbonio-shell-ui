@@ -12,8 +12,15 @@ import {
 	Row,
 	Tooltip
 } from '@zextras/carbonio-design-system';
-import { isEmpty, map } from 'lodash';
-import React, { CSSProperties, useRef } from 'react';
+import { isEmpty, map, size } from 'lodash';
+import React, {
+	CSSProperties,
+	useCallback,
+	useEffect,
+	useLayoutEffect,
+	useMemo,
+	useRef
+} from 'react';
 import styled, { css, SimpleInterpolation } from 'styled-components';
 import {
 	closeAllBoards,
@@ -123,10 +130,23 @@ export const BoardContainer = (): JSX.Element | null => {
 	const { boards, minimized, expanded, current } = useBoardStore();
 	const boardRef = useRef<HTMLDivElement>(null);
 	const boardContainerRef = useRef<HTMLDivElement>(null);
-	const [lastBoardSize] = useLocalStorage<Partial<SizeAndPosition> | undefined>(
+	const [lastSavedBoardSize, setLastSavedBoardSize] = useLocalStorage<Partial<SizeAndPosition>>(
 		LOCAL_STORAGE_BOARD_SIZE,
-		undefined
+		{}
 	);
+
+	const isDefaultSizeAndPos = useMemo(() => size(lastSavedBoardSize) === 0, [lastSavedBoardSize]);
+
+	const resetSizeAndPosition = useCallback(() => {
+		setLastSavedBoardSize({});
+	}, [setLastSavedBoardSize]);
+
+	useEffect(() => {
+		// reset position when the board is closed
+		if (isEmpty(boards)) {
+			setLastSavedBoardSize({ ...lastSavedBoardSize, left: undefined, top: undefined });
+		}
+	}, [boards, lastSavedBoardSize, setLastSavedBoardSize]);
 
 	if (isEmpty(boards) || !current) {
 		return null;
@@ -140,8 +160,8 @@ export const BoardContainer = (): JSX.Element | null => {
 				crossAlignment="unset"
 				expanded={expanded}
 				ref={boardRef}
-				width={lastBoardSize?.width}
-				height={lastBoardSize?.height}
+				width={lastSavedBoardSize.width}
+				height={lastSavedBoardSize.height}
 			>
 				<ResizableContainer
 					crossAlignment={'unset'}
@@ -164,7 +184,21 @@ export const BoardContainer = (): JSX.Element | null => {
 									</Tooltip>
 								</Padding>
 							)}
-							<Padding right="extrasmall">
+							<Container gap={'0.25rem'} orientation={'horizontal'} width={'fit'} height={'fit'}>
+								<Tooltip
+									label={
+										isDefaultSizeAndPos
+											? t('board.reset_size.disabled', 'Board still at the default position')
+											: t('board.reset_size.enabled', 'Return to default position and size')
+									}
+									placement="top"
+								>
+									<IconButton
+										icon={'DiagonalArrowLeftDown'}
+										onClick={resetSizeAndPosition}
+										disabled={isDefaultSizeAndPos}
+									/>
+								</Tooltip>
 								<Tooltip
 									label={
 										expanded
@@ -178,7 +212,7 @@ export const BoardContainer = (): JSX.Element | null => {
 										onClick={expanded ? reduceBoards : expandBoards}
 									/>
 								</Tooltip>
-							</Padding>
+							</Container>
 							<Tooltip label={t('board.close_tabs', 'Close all your tabs')} placement="top">
 								<IconButton icon="CloseOutline" onClick={closeAllBoards} />
 							</Tooltip>

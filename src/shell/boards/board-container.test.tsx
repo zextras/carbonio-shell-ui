@@ -8,68 +8,19 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import 'jest-styled-components';
 import { setup } from '../../test/utils';
 import { BoardContainer } from './board-container';
-import { Board } from '../../../types';
-import { useBoardStore } from '../../store/boards';
 import { ICONS, TESTID_SELECTORS } from '../../test/constants';
 import { Border, SizeAndPosition } from '../hooks/useResize';
 import { LOCAL_STORAGE_BOARD_SIZE } from '../../constants';
-
-type InitialSizeAndPosition = SizeAndPosition & { clientLeft: number; clientTop: number };
+import ShellPrimaryBar from '../shell-primary-bar';
+import {
+	buildBoardSizeAndPosition,
+	buildMousePosition,
+	INITIAL_SIZE_AND_POS,
+	setupBoardStore,
+	setupBoardSizes
+} from '../../test/test-board-utils';
 
 describe('Board container', () => {
-	const boards: Record<string, Board> = {
-		'board-1': { id: 'board-1', url: '/url', app: 'app', title: 'title1', icon: 'CubeOutline' },
-		'board-2': { id: 'board-2', url: '/url', app: 'app', title: 'title2', icon: 'CubeOutline' },
-		'board-3': { id: 'board-3', url: '/url', app: 'app', title: 'title3', icon: 'CubeOutline' }
-	};
-
-	function setupState(): void {
-		useBoardStore.setState(() => ({
-			boards,
-			orderedBoards: ['board-1', 'board-2', 'board-3'],
-			current: 'board-1'
-		}));
-	}
-
-	const INITIAL_SIZE_AND_POS: SizeAndPosition = { width: 200, height: 100, top: 75, left: 25 };
-	function buildBoardSizeAndPosition(
-		sizeAndPos = INITIAL_SIZE_AND_POS,
-		offset = 0
-	): InitialSizeAndPosition {
-		return {
-			...sizeAndPos,
-			clientTop: sizeAndPos.top + offset,
-			clientLeft: sizeAndPos.left + offset
-		};
-	}
-
-	function buildMousePosition(
-		border: Border,
-		boardInitialSizeAndPos: InitialSizeAndPosition
-	): { clientX: number; clientY: number } {
-		const mousePosition = {
-			clientX: boardInitialSizeAndPos.clientLeft,
-			clientY: boardInitialSizeAndPos.clientTop
-		};
-		if (border.includes('s')) {
-			mousePosition.clientY += boardInitialSizeAndPos.height;
-		}
-		if (border.includes('e')) {
-			mousePosition.clientX += boardInitialSizeAndPos.width;
-		}
-		return mousePosition;
-	}
-	function setupBoardSizes(board: HTMLElement, initialSizeAndPos: InitialSizeAndPosition): void {
-		jest.spyOn(board, 'offsetWidth', 'get').mockReturnValue(initialSizeAndPos.width);
-		jest.spyOn(board, 'offsetHeight', 'get').mockReturnValue(initialSizeAndPos.height);
-		jest.spyOn(board, 'offsetTop', 'get').mockReturnValue(initialSizeAndPos.top);
-		jest.spyOn(board, 'offsetLeft', 'get').mockReturnValue(initialSizeAndPos.left);
-		jest.spyOn(board, 'getBoundingClientRect').mockReturnValue({
-			top: initialSizeAndPos.clientTop,
-			left: initialSizeAndPos.clientLeft
-		} as DOMRect);
-	}
-
 	describe('Resize a board', () => {
 		describe('within the resizable area of the document', () => {
 			describe.each([-10, 0, 10])('with offset %d', (offset) => {
@@ -135,9 +86,9 @@ describe('Board container', () => {
 								}
 							}
 						])(
-							'through the border $border, updates the size and position of the board',
+							'with the border $border, updates the size and position of the board',
 							async ({ border, expectedUpdates }) => {
-								setupState();
+								setupBoardStore();
 								setup(<BoardContainer />);
 								const boardInitialSizeAndPos = buildBoardSizeAndPosition(
 									INITIAL_SIZE_AND_POS,
@@ -180,7 +131,7 @@ describe('Board container', () => {
 		});
 
 		test('outside the resizable area of the document, does not update sizes', async () => {
-			setupState();
+			setupBoardStore();
 			setup(<BoardContainer />);
 			const border: Border = 'nw';
 			const board = screen.getByTestId(TESTID_SELECTORS.board);
@@ -236,7 +187,7 @@ describe('Board container', () => {
 	});
 
 	test('Enlarge default board set board to fill board area', async () => {
-		setupState();
+		setupBoardStore();
 		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		setupBoardSizes(board, buildBoardSizeAndPosition());
@@ -249,7 +200,7 @@ describe('Board container', () => {
 	});
 
 	test('Enlarge resized board set board to fill board area', async () => {
-		setupState();
+		setupBoardStore();
 		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		setupBoardSizes(board, buildBoardSizeAndPosition());
@@ -262,7 +213,7 @@ describe('Board container', () => {
 	});
 
 	test('Reduce default board set board to default size', async () => {
-		setupState();
+		setupBoardStore();
 		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		setupBoardSizes(board, buildBoardSizeAndPosition());
@@ -275,8 +226,46 @@ describe('Board container', () => {
 	});
 
 	test('Reduce resized board set board to resized size', async () => {
-		setupState();
+		setupBoardStore();
 		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
+		const border: Border = 'n';
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
+		const deltaY = -50;
+		setupBoardSizes(board, boardInitialSizeAndPos);
+		const topBorder = screen.getByTestId(TESTID_SELECTORS.resizableBorder(border));
+		fireEvent.mouseDown(topBorder);
+		fireEvent.mouseMove(document.body, { clientX: 0, clientY: mouseInitialPos.clientY + deltaY });
+		fireEvent.mouseUp(document.body);
+		const boardNewSizeAndPos: SizeAndPosition = {
+			height: boardInitialSizeAndPos.height - deltaY,
+			width: boardInitialSizeAndPos.width,
+			top: boardInitialSizeAndPos.top + deltaY,
+			left: boardInitialSizeAndPos.left
+		};
+		const localStorageSavedData = window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '';
+		await waitFor(() => expect(JSON.parse(localStorageSavedData)).toEqual(boardNewSizeAndPos));
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.reduceBoard }));
+		expect(board).toHaveStyle({
+			height: `${boardNewSizeAndPos.height}px`,
+			width: `${boardNewSizeAndPos.width}px`,
+			top: `${boardNewSizeAndPos.top}px`,
+			left: `${boardNewSizeAndPos.left}px`
+		});
+		expect(board).not.toHaveStyleRule('height', '70vh');
+		expect(board).not.toHaveStyleRule('width', 'auto');
+	});
+
+	test('Collapse and un-collapse of a resized board set board to resized size', async () => {
+		setupBoardStore();
+		const { getByRoleWithIcon, user } = setup(
+			<>
+				<ShellPrimaryBar />
+				<BoardContainer />
+			</>
+		);
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();

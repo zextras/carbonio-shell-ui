@@ -13,7 +13,7 @@ import {
 	Tooltip
 } from '@zextras/carbonio-design-system';
 import { isEmpty, map } from 'lodash';
-import React, { useRef } from 'react';
+import React, { CSSProperties, useRef } from 'react';
 import styled, { css, SimpleInterpolation } from 'styled-components';
 import {
 	closeAllBoards,
@@ -36,6 +36,11 @@ import {
 } from '../../constants';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { SizeAndPosition } from '../hooks/useResize';
+
+export const BOARD_DEFAULT_POSITION: Pick<CSSProperties, 'top' | 'left' | 'right' | 'bottom'> = {
+	left: '1.5rem',
+	bottom: '0'
+};
 
 const BoardContainerComp = styled.div<{ expanded: boolean; minimized: boolean }>`
 	position: fixed;
@@ -62,8 +67,7 @@ const BoardContainerComp = styled.div<{ expanded: boolean; minimized: boolean }>
 const Board = styled(Container)<{ expanded: boolean }>`
 	z-index: 5;
 	position: absolute;
-	left: 1.5rem;
-	bottom: 0;
+	${BOARD_DEFAULT_POSITION};
 
 	${({ width }): SimpleInterpolation =>
 		!width &&

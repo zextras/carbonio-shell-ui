@@ -127,8 +127,11 @@ export const PALETTE = {
 };
 
 export const ICONS = {
+	close: 'Close',
+	collapseBoard: 'BoardCollapse',
 	enlargeBoard: 'ExpandOutline',
-	reduceBoard: 'CollapseOutline'
+	reduceBoard: 'CollapseOutline',
+	unCollapseBoard: 'BoardOpen'
 };
 
 export const TESTID_SELECTORS = {

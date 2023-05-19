@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { Border } from '../shell/hooks/useResize';
+
 const DEFAULT_ID = 'logged-user-id';
 export const LOGGED_USER = {
 	id: DEFAULT_ID,
@@ -121,5 +123,17 @@ export const PALETTE = {
 		active: '#0d0d0d',
 		focus: '#1a1a1a',
 		disabled: '#cccccc'
+	}
+};
+
+export const ICONS = {
+	enlargeBoard: 'ExpandOutline',
+	reduceBoard: 'CollapseOutline'
+};
+
+export const TESTID_SELECTORS = {
+	board: 'NewItemContainer',
+	resizableBorder(border: Border): string {
+		return `resizable-border-${border}`;
 	}
 };

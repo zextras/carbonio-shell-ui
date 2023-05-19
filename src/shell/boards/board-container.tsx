@@ -65,14 +65,18 @@ const Board = styled(Container)<{ expanded: boolean }>`
 	left: 1.5rem;
 	bottom: 0;
 
-	/* height and width set by the user */
-	${({ width, height }): SimpleInterpolation =>
+	${({ width }): SimpleInterpolation =>
 		!width &&
-		!height &&
 		css`
-			/* default height and aspect ratio */
+			/* default width and aspect ratio */
 			aspect-ratio: 4 / 3;
 			width: auto;
+		`}
+
+	${({ height }): SimpleInterpolation =>
+		!height &&
+		css`
+			/* default height */
 			height: 70vh;
 			/* on higher screen, reduce the default height */
 			@media (min-height: 800px) {
@@ -115,7 +119,7 @@ export const BoardContainer = (): JSX.Element | null => {
 	const { boards, minimized, expanded, current } = useBoardStore();
 	const boardRef = useRef<HTMLDivElement>(null);
 	const boardContainerRef = useRef<HTMLDivElement>(null);
-	const [lastBoardSize] = useLocalStorage<SizeAndPosition | undefined>(
+	const [lastBoardSize] = useLocalStorage<Partial<SizeAndPosition> | undefined>(
 		LOCAL_STORAGE_BOARD_SIZE,
 		undefined
 	);

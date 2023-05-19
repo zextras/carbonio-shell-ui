@@ -61,12 +61,10 @@ describe('Use resize', () => {
 				describe.each([25, -25, 0])('moving mouse on y-axis of %d', (deltaY) => {
 					it.each<{
 						border: Border;
-						mouseMovement: { x: number; y: number };
 						expectedUpdates: Partial<SizeAndPosition>;
 					}>([
 						{
 							border: 'n',
-							mouseMovement: { x: deltaX, y: deltaY },
 							expectedUpdates: {
 								height: -deltaY,
 								top: deltaY
@@ -74,21 +72,18 @@ describe('Use resize', () => {
 						},
 						{
 							border: 's',
-							mouseMovement: { x: deltaX, y: deltaY },
 							expectedUpdates: {
 								height: deltaY
 							}
 						},
 						{
 							border: 'e',
-							mouseMovement: { x: deltaX, y: deltaY },
 							expectedUpdates: {
 								width: deltaX
 							}
 						},
 						{
 							border: 'w',
-							mouseMovement: { x: deltaX, y: deltaY },
 							expectedUpdates: {
 								width: -deltaX,
 								left: deltaX
@@ -96,7 +91,6 @@ describe('Use resize', () => {
 						},
 						{
 							border: 'sw',
-							mouseMovement: { x: deltaX, y: deltaY },
 							expectedUpdates: {
 								height: deltaY,
 								width: -deltaX,
@@ -105,7 +99,6 @@ describe('Use resize', () => {
 						},
 						{
 							border: 'se',
-							mouseMovement: { x: deltaX, y: deltaY },
 							expectedUpdates: {
 								height: deltaY,
 								width: deltaX
@@ -113,7 +106,6 @@ describe('Use resize', () => {
 						},
 						{
 							border: 'nw',
-							mouseMovement: { x: deltaX, y: deltaY },
 							expectedUpdates: {
 								height: -deltaY,
 								top: deltaY,
@@ -123,7 +115,6 @@ describe('Use resize', () => {
 						},
 						{
 							border: 'ne',
-							mouseMovement: { x: deltaX, y: deltaY },
 							expectedUpdates: {
 								height: -deltaY,
 								top: deltaY,
@@ -132,12 +123,12 @@ describe('Use resize', () => {
 						}
 					])(
 						`should updates size and position of $expectedUpdates`,
-						({ border, mouseMovement, expectedUpdates }) => {
+						({ border, expectedUpdates }) => {
 							const initial = buildInitialSizeAndPosition(offset);
 							const initialMousePosition = buildInitialMousePosition(border, initial);
 							const mouseEvent = buildMouseEventWithMovement(
 								border,
-								mouseMovement,
+								{ x: deltaX, y: deltaY },
 								initialMousePosition
 							);
 							const result = calcNewSizeAndPosition(border, initial, mouseEvent);

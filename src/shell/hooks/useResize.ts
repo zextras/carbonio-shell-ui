@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React, { CSSProperties, useCallback, useRef } from 'react';
-import { find } from 'lodash';
+import { find, forEach } from 'lodash';
 import { setGlobalCursor } from '../../utils/utils';
 import { useLocalStorage } from './useLocalStorage';
 
@@ -78,8 +78,8 @@ export const useResize = (
 	options?: ResizeOptions
 ): UseResizableReturnType => {
 	const initialSizeAndPositionRef = useRef<Parameters<typeof calcNewSizeAndPosition>[1]>();
-	const lastSizeAndPositionRef = useRef<SizeAndPosition>();
-	const [, setLastSizeAndPosition] = useLocalStorage<SizeAndPosition | undefined>(
+	const lastSizeAndPositionRef = useRef<Partial<SizeAndPosition>>({});
+	const [, setLastSizeAndPosition] = useLocalStorage<Partial<SizeAndPosition> | undefined>(
 		options?.localStorageKey || 'use-resize-data',
 		undefined
 	);
@@ -88,18 +88,23 @@ export const useResize = (
 		({ width, height, top, left }: SizeAndPosition) => {
 			if (elementToResizeRef.current) {
 				const elementToResize = elementToResizeRef.current;
+				const sizeAndPositionToApply: Partial<SizeAndPosition> = lastSizeAndPositionRef.current;
 				if (top >= 0) {
-					elementToResize.style.height = `${height}px`;
-					elementToResize.style.top = `${top}px`;
+					sizeAndPositionToApply.height = height;
+					sizeAndPositionToApply.top = top;
 				}
 				if (left >= 0) {
-					elementToResize.style.width = `${width}px`;
-					elementToResize.style.left = `${left}px`;
+					sizeAndPositionToApply.width = width;
+					sizeAndPositionToApply.left = left;
 				}
+				forEach(sizeAndPositionToApply, (value, key) => {
+					elementToResize.style[key as keyof SizeAndPosition] = `${value}px`;
+				});
 				// reset bottom in favor of top
 				elementToResize.style.bottom = '';
 				// reset right in favor of left
 				elementToResize.style.right = '';
+				lastSizeAndPositionRef.current = sizeAndPositionToApply;
 			}
 		},
 		[elementToResizeRef]
@@ -114,7 +119,6 @@ export const useResize = (
 					mouseMoveEvent
 				);
 				resizeElement(newSizeAndPosition);
-				lastSizeAndPositionRef.current = newSizeAndPosition;
 			}
 		},
 		[border, resizeElement]

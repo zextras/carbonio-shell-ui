@@ -47,6 +47,9 @@ beforeEach(() => {
 			};
 		})
 	});
+
+	// cleanup local storage
+	window.localStorage.clear();
 });
 
 beforeAll(() => {

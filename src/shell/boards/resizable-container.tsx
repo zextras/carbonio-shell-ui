@@ -123,6 +123,7 @@ const ResizableBorder = ({
 			{...positions}
 			$cursor={getCursorFromBorder(border)}
 			onMouseDown={resizeHandler}
+			data-testid={`resizable-border-${border}`}
 		/>
 	);
 };
@@ -138,7 +139,7 @@ export const ResizableContainer = ({
 		() =>
 			BORDERS.map((border) => (
 				<ResizableBorder
-					key={`border-${border}`}
+					key={`resizable-border-${border}`}
 					border={border}
 					elementToResize={elementToResize}
 					localStorageKey={localStorageKey}

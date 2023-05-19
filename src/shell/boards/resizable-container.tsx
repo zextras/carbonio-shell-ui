@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React, { CSSProperties, useMemo, useRef } from 'react';
-import styled, { SimpleInterpolation } from 'styled-components';
+import styled, { css, SimpleInterpolation } from 'styled-components';
 import { Container, ContainerProps } from '@zextras/carbonio-design-system';
 import { Border, BORDERS, getCursorFromBorder, useResize } from '../hooks/useResize';
 
@@ -30,6 +30,7 @@ interface BorderWithResizeProps {
 		left?: number;
 		right?: number;
 	};
+	$translateTransform?: { x?: string; y?: string };
 }
 
 const MainContainer = styled(Container)`
@@ -45,11 +46,16 @@ const BorderWithResize = styled.div<
 	}
 >`
 	position: absolute;
+	z-index: 2;
 	cursor: ${({ $cursor }): CSSProperties['cursor'] => $cursor};
 	width: ${({ $width }): string => $width};
 	height: ${({ $height }): string => $height};
 	${({ $position }): SimpleInterpolation => $position};
-	z-index: 2;
+	${({ $translateTransform }): SimpleInterpolation =>
+		($translateTransform?.x || $translateTransform?.y) &&
+		css`
+			transform: translate(${$translateTransform?.x || 0}, ${$translateTransform?.y || 0});
+		`}
 `;
 
 const ResizableBorder = ({
@@ -66,12 +72,12 @@ const ResizableBorder = ({
 			case 's':
 				return {
 					$width: '100%',
-					$height: '1px'
+					$height: '0.25rem'
 				};
 			case 'e':
 			case 'w':
 				return {
-					$width: '1px',
+					$width: '0.25rem',
 					$height: '100%'
 				};
 			case 'ne':
@@ -80,34 +86,41 @@ const ResizableBorder = ({
 			case 'sw':
 			default:
 				return {
-					$width: '1px',
-					$height: '1px'
+					$width: '0.25rem',
+					$height: '0.25rem'
 				};
 		}
 	}, [border]);
 
-	const position = useMemo<BorderWithResizeProps['$position']>(() => {
-		const _position: BorderWithResizeProps['$position'] = {};
+	const positions = useMemo<
+		Pick<BorderWithResizeProps, '$position' | '$translateTransform'>
+	>(() => {
+		const $position: BorderWithResizeProps['$position'] = {};
+		const $translateTransform: BorderWithResizeProps['$translateTransform'] = {};
 		if (border.includes('n')) {
-			_position.top = 0;
+			$position.top = 0;
+			$translateTransform.y = '-50%';
 		}
 		if (border.includes('s')) {
-			_position.bottom = 0;
+			$position.bottom = 0;
+			$translateTransform.y = '50%';
 		}
 		if (border.includes('e')) {
-			_position.right = 0;
+			$position.right = 0;
+			$translateTransform.x = '50%';
 		}
 		if (border.includes('w')) {
-			_position.left = 0;
+			$position.left = 0;
+			$translateTransform.x = '-50%';
 		}
-		return _position;
+		return { $position, $translateTransform };
 	}, [border]);
 
 	return (
 		<BorderWithResize
 			ref={borderRef}
 			{...sizes}
-			$position={position}
+			{...positions}
 			$cursor={getCursorFromBorder(border)}
 			onMouseDown={resizeHandler}
 		/>

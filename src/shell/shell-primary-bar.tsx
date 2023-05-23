@@ -14,12 +14,13 @@ import { AppRoute, PrimaryAccessoryView, PrimaryBarView } from '../../types';
 import BadgeWrap from './badge-wrap';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { checkRoute } from '../utility-bar/utils';
-import { IS_STANDALONE, PRIMARY_BAR_WIDTH } from '../constants';
+import { BOARD_CONTAINER_ZINDEX, IS_STANDALONE, PRIMARY_BAR_WIDTH } from '../constants';
 import { minimizeBoards, reopenBoards, useBoardStore } from '../store/boards';
 import { useCurrentRoute } from '../history/hooks';
 
-const ContainerWithDivider = styled(Container)`
+const PrimaryBarContainer = styled(Container)`
 	border-right: 0.0625rem solid ${({ theme }): string => theme.palette.gray3.regular};
+	z-index: ${BOARD_CONTAINER_ZINDEX + 1};
 `;
 
 const ToggleBoardIcon = (): JSX.Element | null => {
@@ -155,7 +156,7 @@ const ShellPrimaryBarComponent = ({
 	}
 
 	return (
-		<ContainerWithDivider
+		<PrimaryBarContainer
 			width={PRIMARY_BAR_WIDTH}
 			height="fill"
 			background={'gray6'}
@@ -177,7 +178,7 @@ const ShellPrimaryBarComponent = ({
 			<OverlayRow mainAlignment="flex-end" orientation="vertical" wrap="nowrap">
 				{accessoryItems}
 			</OverlayRow>
-		</ContainerWithDivider>
+		</PrimaryBarContainer>
 	);
 };
 

@@ -19,10 +19,14 @@ import { CreationButton } from './creation-button';
 import { useAppStore } from '../store/app';
 import { useDarkMode } from '../dark-mode/use-dark-mode';
 import { Logo } from './logo';
-import { HEADER_BAR_HEIGHT } from '../constants';
+import { BOARD_CONTAINER_ZINDEX, HEADER_BAR_HEIGHT } from '../constants';
 
 const StyledLogo = styled(Logo)`
 	height: 2rem;
+`;
+
+const ShellHeaderContainer = styled(Container)`
+	z-index: ${BOARD_CONTAINER_ZINDEX + 1};
 `;
 
 interface ShellHeaderProps {
@@ -41,7 +45,7 @@ const ShellHeader = ({
 	const screenMode = useScreenMode();
 	const searchEnabled = useAppStore((s) => s.views.search.length > 0);
 	return (
-		<Container
+		<ShellHeaderContainer
 			data-testid="MainHeaderContainer"
 			orientation="horizontal"
 			background={'gray3'}
@@ -80,7 +84,7 @@ const ShellHeader = ({
 					<Responsive mode="desktop">{children}</Responsive>
 				</Container>
 			</Catcher>
-		</Container>
+		</ShellHeaderContainer>
 	);
 };
 export default ShellHeader;

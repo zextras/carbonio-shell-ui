@@ -4,9 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { first, keys } from 'lodash';
-import { Border, SizeAndPosition } from '../shell/hooks/useResize';
+import { Border } from '../shell/hooks/useResize';
 import { Board } from '../../types';
 import { useBoardStore } from '../store/boards';
+import { SizeAndPosition } from '../utils/utils';
 
 export type InitialSizeAndPosition = SizeAndPosition & { clientLeft: number; clientTop: number };
 
@@ -25,7 +26,8 @@ export function setupBoardStore(current?: string, boardState?: Record<string, Bo
 	}));
 }
 
-export const INITIAL_SIZE_AND_POS: SizeAndPosition = { width: 200, height: 100, top: 75, left: 25 };
+// initial size and pos must be greater than the min width and height of the board
+export const INITIAL_SIZE_AND_POS: SizeAndPosition = { width: 800, height: 600, top: 75, left: 25 };
 export function buildBoardSizeAndPosition(
 	sizeAndPos = INITIAL_SIZE_AND_POS,
 	offset = 0
@@ -58,6 +60,11 @@ export function setupBoardSizes(
 	board: HTMLElement,
 	initialSizeAndPos: InitialSizeAndPosition
 ): void {
+	const boardContainer = board.parentElement;
+	if (boardContainer) {
+		jest.spyOn(boardContainer, 'clientWidth', 'get').mockReturnValue(1024);
+		jest.spyOn(boardContainer, 'clientHeight', 'get').mockReturnValue(800);
+	}
 	jest.spyOn(board, 'offsetWidth', 'get').mockReturnValue(initialSizeAndPos.width);
 	jest.spyOn(board, 'offsetHeight', 'get').mockReturnValue(initialSizeAndPos.height);
 	jest.spyOn(board, 'offsetTop', 'get').mockReturnValue(initialSizeAndPos.top);

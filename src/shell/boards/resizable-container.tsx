@@ -18,6 +18,7 @@ interface ResizableContainerProps extends ContainerProps {
 	elementToResize: React.RefObject<HTMLElement>;
 	localStorageKey?: string;
 	disabled?: boolean;
+	minSize?: { width: number; height: number };
 }
 
 interface BorderWithResizeProps {

@@ -3,17 +3,10 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { CSSProperties, useCallback, useEffect, useRef } from 'react';
+import React, { CSSProperties, useCallback, useEffect, useMemo, useRef } from 'react';
 import { find, forEach } from 'lodash';
-import { setGlobalCursor } from '../../utils/utils';
+import { setElementSizeAndPosition, setGlobalCursor, SizeAndPosition } from '../../utils/utils';
 import { useLocalStorage } from './useLocalStorage';
-
-export type SizeAndPosition = {
-	width: number;
-	height: number;
-	top: number;
-	left: number;
-};
 
 /**
  * Define the border following the cardinal points (north, south, west, east).
@@ -72,15 +65,6 @@ function calcNewSizeAndPosition(
 	return newSizeAndPosition;
 }
 
-function setElementStyle(
-	element: HTMLElement,
-	key: keyof SizeAndPosition,
-	value: number | undefined
-): void {
-	// eslint-disable-next-line no-param-reassign
-	element.style[key] = value !== undefined ? `${value}px` : '';
-}
-
 export const useResize = (
 	elementToResizeRef: React.RefObject<HTMLElement>,
 	border: Border,
@@ -96,10 +80,10 @@ export const useResize = (
 		if (elementToResizeRef.current) {
 			const elementToResize = elementToResizeRef.current;
 			if (elementToResize) {
-				setElementStyle(elementToResize, 'width', lastSavedSizeAndPosition.width);
-				setElementStyle(elementToResize, 'height', lastSavedSizeAndPosition.height);
-				setElementStyle(elementToResize, 'top', lastSavedSizeAndPosition.top);
-				setElementStyle(elementToResize, 'left', lastSavedSizeAndPosition.left);
+				setElementSizeAndPosition(elementToResize, 'width', lastSavedSizeAndPosition.width);
+				setElementSizeAndPosition(elementToResize, 'height', lastSavedSizeAndPosition.height);
+				setElementSizeAndPosition(elementToResize, 'top', lastSavedSizeAndPosition.top);
+				setElementSizeAndPosition(elementToResize, 'left', lastSavedSizeAndPosition.left);
 			}
 			lastSizeAndPositionRef.current = { ...lastSavedSizeAndPosition };
 		}
@@ -110,16 +94,19 @@ export const useResize = (
 			if (elementToResizeRef.current) {
 				const elementToResize = elementToResizeRef.current;
 				const sizeAndPositionToApply: Partial<SizeAndPosition> = lastSizeAndPositionRef.current;
-				if (top >= 0) {
+				const computedStyle = getComputedStyle(elementToResizeRef.current);
+				const minHeight = parseFloat(computedStyle.minHeight) || 0;
+				const minWidth = parseFloat(computedStyle.minWidth) || 0;
+				if (top >= 0 && height >= minHeight) {
 					sizeAndPositionToApply.height = height;
 					sizeAndPositionToApply.top = top;
 				}
-				if (left >= 0) {
+				if (left >= 0 && width >= minWidth) {
 					sizeAndPositionToApply.width = width;
 					sizeAndPositionToApply.left = left;
 				}
 				forEach(sizeAndPositionToApply, (value, key) => {
-					setElementStyle(elementToResize, key as keyof SizeAndPosition, value);
+					setElementSizeAndPosition(elementToResize, key as keyof SizeAndPosition, value);
 				});
 				// reset bottom in favor of top
 				elementToResize.style.bottom = '';

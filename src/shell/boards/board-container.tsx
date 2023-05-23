@@ -12,15 +12,8 @@ import {
 	Row,
 	Tooltip
 } from '@zextras/carbonio-design-system';
-import { isEmpty, map, size } from 'lodash';
-import React, {
-	CSSProperties,
-	useCallback,
-	useEffect,
-	useLayoutEffect,
-	useMemo,
-	useRef
-} from 'react';
+import { debounce, isEmpty, map, size } from 'lodash';
+import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled, { css, SimpleInterpolation } from 'styled-components';
 import {
 	closeAllBoards,
@@ -35,6 +28,7 @@ import { AppBoard } from './board';
 import { TabsList } from './board-tab-list';
 import { ResizableContainer } from './resizable-container';
 import {
+	BOARD_CONTAINER_ZINDEX,
 	BOARD_HEADER_HEIGHT,
 	BOARD_TAB_WIDTH,
 	HEADER_BAR_HEIGHT,
@@ -42,7 +36,7 @@ import {
 	PRIMARY_BAR_WIDTH
 } from '../../constants';
 import { useLocalStorage } from '../hooks/useLocalStorage';
-import { SizeAndPosition } from '../hooks/useResize';
+import { setElementSizeAndPosition, SizeAndPosition } from '../../utils/utils';
 
 export const BOARD_DEFAULT_POSITION: Pick<CSSProperties, 'top' | 'left' | 'right' | 'bottom'> = {
 	left: '1.5rem',
@@ -51,13 +45,13 @@ export const BOARD_DEFAULT_POSITION: Pick<CSSProperties, 'top' | 'left' | 'right
 
 const BoardContainerComp = styled.div<{ expanded: boolean; minimized: boolean }>`
 	position: fixed;
+	width: calc(100vw - ${PRIMARY_BAR_WIDTH});
+	height: calc(100vh - ${HEADER_BAR_HEIGHT});
 	top: ${HEADER_BAR_HEIGHT};
-	bottom: 0;
 	left: ${PRIMARY_BAR_WIDTH};
-	right: 0;
 	background-color: rgba(0, 0, 0, 0);
 	pointer-events: none;
-	z-index: 10;
+	z-index: ${BOARD_CONTAINER_ZINDEX};
 	${({ expanded }): SimpleInterpolation =>
 		expanded &&
 		css`
@@ -103,7 +97,7 @@ const Board = styled(Container)<{ expanded: boolean }>`
 	box-shadow: 0 0.125rem 0.3125rem 0 rgba(125, 125, 125, 0.5);
 	pointer-events: auto;
 	max-height: 100%;
-	max-width: 100%;
+	max-width: calc(100% - ${BOARD_DEFAULT_POSITION.left});
 	${({ expanded }): SimpleInterpolation =>
 		expanded &&
 		css`
@@ -134,8 +128,15 @@ export const BoardContainer = (): JSX.Element | null => {
 		LOCAL_STORAGE_BOARD_SIZE,
 		{}
 	);
+	const [currentBoardSize, setCurrentBoardSize] = useState(lastSavedBoardSize);
+	const lastSavedBoardSizeRef = useRef(lastSavedBoardSize);
 
-	const isDefaultSizeAndPos = useMemo(() => size(lastSavedBoardSize) === 0, [lastSavedBoardSize]);
+	useEffect(() => {
+		setCurrentBoardSize(lastSavedBoardSize);
+		lastSavedBoardSizeRef.current = lastSavedBoardSize;
+	}, [lastSavedBoardSize]);
+
+	const isDefaultSizeAndPos = useMemo(() => size(currentBoardSize) === 0, [currentBoardSize]);
 
 	const resetSizeAndPosition = useCallback(() => {
 		setLastSavedBoardSize({});
@@ -144,88 +145,140 @@ export const BoardContainer = (): JSX.Element | null => {
 	useEffect(() => {
 		// reset position when the board is closed
 		if (isEmpty(boards)) {
-			setLastSavedBoardSize({ ...lastSavedBoardSize, left: undefined, top: undefined });
+			setLastSavedBoardSize((prevState) => ({
+				...prevState,
+				left: undefined,
+				top: undefined
+			}));
 		}
-	}, [boards, lastSavedBoardSize, setLastSavedBoardSize]);
+	}, [boards, setLastSavedBoardSize]);
 
-	if (isEmpty(boards) || !current) {
-		return null;
-	}
+	useEffect(() => {
+		if (boardRef.current) {
+			const boardElement = boardRef.current;
+			setElementSizeAndPosition(boardElement, 'width', currentBoardSize.width);
+			setElementSizeAndPosition(boardElement, 'height', currentBoardSize.height);
+			setElementSizeAndPosition(boardElement, 'top', currentBoardSize.top);
+			setElementSizeAndPosition(boardElement, 'left', currentBoardSize.left);
+		}
+	}, [currentBoardSize]);
+
+	const updateBoardPosition = useMemo(
+		() =>
+			debounce(
+				() => {
+					if (boardContainerRef.current) {
+						const boardContainer = boardContainerRef.current;
+						const newSizeAndPosition: Partial<SizeAndPosition> = {};
+						const topLimit = boardContainer.clientHeight - 50;
+						if (lastSavedBoardSizeRef.current.top && lastSavedBoardSizeRef.current.top > topLimit) {
+							newSizeAndPosition.top = topLimit > 0 ? topLimit : 0;
+						}
+						const leftLimit = boardContainer.clientWidth - 30;
+						if (
+							lastSavedBoardSizeRef.current.left &&
+							lastSavedBoardSizeRef.current.left > leftLimit
+						) {
+							newSizeAndPosition.left = leftLimit > 0 ? leftLimit : 0;
+						}
+						if (size(newSizeAndPosition) > 0) {
+							setCurrentBoardSize({ ...lastSavedBoardSizeRef.current, ...newSizeAndPosition });
+						}
+					}
+				},
+				0,
+				{ leading: false, trailing: true }
+			),
+		[]
+	);
+
+	useEffect(() => {
+		updateBoardPosition();
+		window.addEventListener('resize', updateBoardPosition);
+		return (): void => {
+			window.removeEventListener('resize', updateBoardPosition);
+		};
+	}, [updateBoardPosition]);
 
 	return (
-		<BoardContainerComp expanded={expanded} minimized={minimized} ref={boardContainerRef}>
-			<Board
-				data-testid="NewItemContainer"
-				background={'gray6'}
-				crossAlignment="unset"
-				expanded={expanded}
-				ref={boardRef}
-				width={lastSavedBoardSize.width}
-				height={lastSavedBoardSize.height}
-			>
-				<ResizableContainer
-					crossAlignment={'unset'}
-					elementToResize={boardRef}
-					localStorageKey={LOCAL_STORAGE_BOARD_SIZE}
-					disabled={expanded}
+		(!isEmpty(boards) && current && (
+			<BoardContainerComp expanded={expanded} minimized={minimized} ref={boardContainerRef}>
+				<Board
+					data-testid="NewItemContainer"
+					background={'gray6'}
+					crossAlignment="unset"
+					expanded={expanded}
+					ref={boardRef}
+					width={currentBoardSize.width}
+					height={currentBoardSize.height}
+					maxWidth={(isDefaultSizeAndPos && '100%') || undefined}
+					maxHeight={(isDefaultSizeAndPos && '100%') || undefined}
 				>
-					<BoardHeader background={'gray5'}>
-						<Padding all="extrasmall">
-							<Tooltip label={t('board.hide', 'Hide board')} placement="top">
-								<BackButton icon="BoardCollapseOutline" onClick={minimizeBoards} />
-							</Tooltip>
-						</Padding>
-						<TabsList />
-						<Actions padding={{ all: 'extrasmall' }}>
-							{boards[current]?.context?.onReturnToApp && (
-								<Padding right="extrasmall">
-									<Tooltip label={t('board.open_app', 'Open in app')} placement="top">
-										<IconButton icon={'DiagonalArrowRightUp'} onClick={onGoToPanel} />
+					<ResizableContainer
+						crossAlignment={'unset'}
+						elementToResize={boardRef}
+						localStorageKey={LOCAL_STORAGE_BOARD_SIZE}
+						disabled={expanded}
+					>
+						<BoardHeader background={'gray5'}>
+							<Padding all="extrasmall">
+								<Tooltip label={t('board.hide', 'Hide board')} placement="top">
+									<BackButton icon="BoardCollapseOutline" onClick={minimizeBoards} />
+								</Tooltip>
+							</Padding>
+							<TabsList />
+							<Actions padding={{ all: 'extrasmall' }}>
+								{boards[current]?.context?.onReturnToApp && (
+									<Padding right="extrasmall">
+										<Tooltip label={t('board.open_app', 'Open in app')} placement="top">
+											<IconButton icon={'DiagonalArrowRightUp'} onClick={onGoToPanel} />
+										</Tooltip>
+									</Padding>
+								)}
+								<Container gap={'0.25rem'} orientation={'horizontal'} width={'fit'} height={'fit'}>
+									<Tooltip
+										label={
+											isDefaultSizeAndPos
+												? t('board.reset_size.disabled', 'Board still at the default position')
+												: t('board.reset_size.enabled', 'Return to default position and size')
+										}
+										placement="top"
+									>
+										<IconButton
+											icon={'DiagonalArrowLeftDown'}
+											onClick={resetSizeAndPosition}
+											disabled={isDefaultSizeAndPos}
+										/>
 									</Tooltip>
-								</Padding>
-							)}
-							<Container gap={'0.25rem'} orientation={'horizontal'} width={'fit'} height={'fit'}>
-								<Tooltip
-									label={
-										isDefaultSizeAndPos
-											? t('board.reset_size.disabled', 'Board still at the default position')
-											: t('board.reset_size.enabled', 'Return to default position and size')
-									}
-									placement="top"
-								>
-									<IconButton
-										icon={'DiagonalArrowLeftDown'}
-										onClick={resetSizeAndPosition}
-										disabled={isDefaultSizeAndPos}
-									/>
+									<Tooltip
+										label={
+											expanded
+												? t('board.reduce', 'Reduce board')
+												: t('board.enlarge', 'Enlarge board')
+										}
+										placement="top"
+									>
+										<IconButton
+											icon={expanded ? 'CollapseOutline' : 'ExpandOutline'}
+											onClick={expanded ? reduceBoards : expandBoards}
+										/>
+									</Tooltip>
+								</Container>
+								<Tooltip label={t('board.close_tabs', 'Close all your tabs')} placement="top">
+									<IconButton icon="CloseOutline" onClick={closeAllBoards} />
 								</Tooltip>
-								<Tooltip
-									label={
-										expanded
-											? t('board.reduce', 'Reduce board')
-											: t('board.enlarge', 'Enlarge board')
-									}
-									placement="top"
-								>
-									<IconButton
-										icon={expanded ? 'CollapseOutline' : 'ExpandOutline'}
-										onClick={expanded ? reduceBoards : expandBoards}
-									/>
-								</Tooltip>
-							</Container>
-							<Tooltip label={t('board.close_tabs', 'Close all your tabs')} placement="top">
-								<IconButton icon="CloseOutline" onClick={closeAllBoards} />
-							</Tooltip>
-						</Actions>
-					</BoardHeader>
-					<Divider style={{ height: '0.125rem' }} />
-					<BoardDetailContainer takeAvailableSpace>
-						{map(boards, (b) => (
-							<AppBoard key={b.id} board={b} />
-						))}
-					</BoardDetailContainer>
-				</ResizableContainer>
-			</Board>
-		</BoardContainerComp>
+							</Actions>
+						</BoardHeader>
+						<Divider style={{ height: '0.125rem' }} />
+						<BoardDetailContainer takeAvailableSpace crossAlignment={'flex-start'}>
+							{map(boards, (b) => (
+								<AppBoard key={b.id} board={b} />
+							))}
+						</BoardDetailContainer>
+					</ResizableContainer>
+				</Board>
+			</BoardContainerComp>
+		)) ||
+		null
 	);
 };

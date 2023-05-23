@@ -12,7 +12,7 @@ import ShellView from './shell-view';
 import { Board } from '../../types';
 import { useAppStore } from '../store/app';
 import { useBridge } from '../store/context-bridge';
-import { Border, SizeAndPosition } from './hooks/useResize';
+import { Border } from './hooks/useResize';
 import { ICONS, TESTID_SELECTORS } from '../test/constants';
 import {
 	buildBoardSizeAndPosition,
@@ -22,6 +22,7 @@ import {
 } from '../test/test-board-utils';
 import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
 import { BOARD_DEFAULT_POSITION } from './boards/board-container';
+import { SizeAndPosition } from '../utils/utils';
 
 const ContextBridge: FC = () => {
 	const history = useHistory();
@@ -162,7 +163,7 @@ describe('Shell view', () => {
 		};
 		setupBoardStore('board-1', boards);
 
-		const { getAllByRoleWithIcon, findByRoleWithIcon, user } = setup(
+		const { getAllByRoleWithIcon, user } = setup(
 			<>
 				<ContextBridge />
 				<ShellView />

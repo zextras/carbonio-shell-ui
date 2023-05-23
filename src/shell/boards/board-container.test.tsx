@@ -9,7 +9,7 @@ import 'jest-styled-components';
 import { setup } from '../../test/utils';
 import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
 import { ICONS, TESTID_SELECTORS } from '../../test/constants';
-import { Border, SizeAndPosition } from '../hooks/useResize';
+import { Border } from '../hooks/useResize';
 import { LOCAL_STORAGE_BOARD_SIZE } from '../../constants';
 import ShellPrimaryBar from '../shell-primary-bar';
 import {
@@ -19,6 +19,7 @@ import {
 	setupBoardStore,
 	setupBoardSizes
 } from '../../test/test-board-utils';
+import { SizeAndPosition } from '../../utils/utils';
 
 describe('Board container', () => {
 	describe('Resize a board', () => {
@@ -113,7 +114,7 @@ describe('Board container', () => {
 									left: boardInitialSizeAndPos.left + (expectedUpdates.left ?? 0)
 								};
 								const localStorageSavedData =
-									window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '';
+									window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '{}';
 								await waitFor(() =>
 									expect(JSON.parse(localStorageSavedData)).toEqual(expectedSizeAndPos)
 								);

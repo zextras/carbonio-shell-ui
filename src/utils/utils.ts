@@ -5,6 +5,13 @@
  */
 import { CSSProperties } from 'react';
 
+export type SizeAndPosition = {
+	width: number;
+	height: number;
+	top: number;
+	left: number;
+};
+
 export const testFolderIsChecked = ({ string }: { string: string | undefined }): boolean =>
 	/#/.test(string || '');
 
@@ -20,4 +27,13 @@ export function setGlobalCursor(cursor: CSSProperties['cursor']): void {
 	if (cursor) {
 		document.body.classList.add(`global-cursor-${cursor}`);
 	}
+}
+
+export function setElementSizeAndPosition(
+	element: HTMLElement,
+	key: keyof SizeAndPosition,
+	value: number | undefined
+): void {
+	// eslint-disable-next-line no-param-reassign
+	element.style[key] = value !== undefined ? `${value}px` : '';
 }

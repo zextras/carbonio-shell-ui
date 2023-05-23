@@ -37,7 +37,7 @@ export const addBoard =
 				state.current = id;
 				state.minimized = false;
 				state.expanded = expanded ?? state.expanded;
-				state.orderedBoards.push(id);
+				state.orderedBoards.unshift(id);
 			})
 		);
 		return useBoardStore.getState().boards[id];
@@ -48,6 +48,9 @@ export const closeBoard = (id: string): void => {
 			state.boards[id]?.onClose?.(state.boards[id]);
 			delete state.boards[id];
 			const index = state.orderedBoards.findIndex((boardId) => boardId === id);
+			if (state.current === id) {
+				state.current = state.orderedBoards[index + 1] || state.orderedBoards[index - 1];
+			}
 			if (index !== -1) {
 				state.orderedBoards.splice(index, 1);
 			}

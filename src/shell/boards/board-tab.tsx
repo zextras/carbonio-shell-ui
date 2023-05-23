@@ -117,18 +117,17 @@ export const AppBoardTab: FC<{ id: string; icon: string; title: string; firstTab
 				active={current === id}
 			>
 				<TabIcon icon={icon} size="large" />
-				{/* <Tooltip label={title} placement="top" maxWidth="700px"> */}
-				<CustomText
-					ref={textRef}
-					size="medium"
-					weight="regular"
-					color={current === id ? 'text' : 'secondary'}
-					overflowing={textOverflowing}
-					className="tab-text"
-				>
-					{title}
-				</CustomText>
-				{/* </Tooltip> */}
+				<Tooltip label={title} placement="top" maxWidth="700px" triggerRef={textRef}>
+					<CustomText
+						size="medium"
+						weight="regular"
+						color={current === id ? 'text' : 'secondary'}
+						overflowing={textOverflowing}
+						className="tab-text"
+					>
+						{title}
+					</CustomText>
+				</Tooltip>
 				<CloseContainer orientation={'row'} width={'fit'}>
 					<Tooltip label={t('board.close_tab', 'Close Tab')} placement="top">
 						<IconButton

@@ -61,7 +61,7 @@ describe('Board container', () => {
 		]);
 	}
 
-	test('If a lot of tabs are opened, them are all visible and available in the dropdown', async () => {
+	test('If a lot of tabs are opened, they are all visible and available in the dropdown', async () => {
 		setupState('board-1');
 		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
 		const title1 = screen.getByText('title1');

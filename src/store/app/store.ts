@@ -148,6 +148,9 @@ export const useAppStore = create<AppState>()((set, get) => ({
 							(a, b): boolean => a.id === b.id
 						);
 					}
+					if (routeData.app) {
+						state.apps[routeData.app].display = routeData.label;
+					}
 				})
 			);
 			return routeData.id;

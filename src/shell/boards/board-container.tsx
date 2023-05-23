@@ -110,12 +110,8 @@ function ListItemContent({
 		[boardId]
 	);
 	return (
-		<Container orientation="horizontal" mainAlignment="flex-start">
-			{icon && (
-				<Padding right={'small'}>
-					<Icon icon={icon} size={'large'} color={'text'} style={{ pointerEvents: 'none' }} />
-				</Padding>
-			)}
+		<Container orientation="horizontal" mainAlignment="flex-start" gap={'0.5rem'}>
+			{icon && <Icon icon={icon} size={'large'} color={'text'} style={{ pointerEvents: 'none' }} />}
 			<OverflowContainer crossAlignment={'flex-start'}>
 				<Text size={'medium'} weight={selected ? 'bold' : 'regular'} color={'gray0'}>
 					{label}
@@ -126,9 +122,7 @@ function ListItemContent({
 					})}
 				</Text>
 			</OverflowContainer>
-			<Padding left={'small'}>
-				<IconButton icon={'CloseOutline'} size={'large'} onClick={onClose} />
-			</Padding>
+			<IconButton icon={'CloseOutline'} size={'large'} onClick={onClose} />
 		</Container>
 	);
 }

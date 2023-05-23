@@ -10,7 +10,6 @@ import { useHistory } from 'react-router-dom';
 import { setup } from '../test/utils';
 import ShellView from './shell-view';
 import { Board } from '../../types';
-import { useAppStore } from '../store/app';
 import { useBridge } from '../store/context-bridge';
 import { Border } from './hooks/useResize';
 import { ICONS, TESTID_SELECTORS } from '../test/constants';
@@ -23,6 +22,7 @@ import {
 import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
 import { BOARD_DEFAULT_POSITION } from './boards/board-container';
 import { SizeAndPosition } from '../utils/utils';
+import { mockedApps, setupAppStore } from '../test/test-app-utils';
 
 const ContextBridge: FC = () => {
 	const history = useHistory();
@@ -42,38 +42,20 @@ jest.mock('../utility-bar/bar', () => ({
 
 jest.mock('./shell-header', () => Dummy);
 
-function setupAppStore(): void {
-	useAppStore.getState().setters.addApps([
-		{
-			commit: '',
-			description: 'Mails module',
-			display: 'Mails',
-			icon: 'MailModOutline',
-			js_entrypoint: '',
-			name: 'carbonio-mails-ui',
-			priority: 1,
-			type: 'carbonio',
-			version: '0.0.1'
-		}
-	]);
-	useAppStore.getState().setters.addRoute({
-		id: 'mails',
-		route: 'mails',
-		position: 1,
-		visible: true,
-		label: 'Mails',
-		primaryBar: 'MailModOutline',
-		appView: () => <div></div>,
-		badge: { show: false },
-		app: 'carbonio-mails-ui'
-	});
-}
+beforeEach(() => {
+	setupAppStore();
+});
 
 describe('Shell view', () => {
 	test('When resizing under mobile breakpoint, board does not disappear', () => {
-		setupAppStore();
 		const boards: Record<string, Board> = {
-			'board-1': { id: 'board-1', url: '/url', app: 'app', title: 'title1', icon: 'CubeOutline' }
+			'board-1': {
+				id: 'board-1',
+				url: '/url',
+				app: mockedApps[0].name,
+				title: 'title1',
+				icon: 'CubeOutline'
+			}
 		};
 		setupBoardStore('board-1', boards);
 
@@ -92,9 +74,14 @@ describe('Shell view', () => {
 	});
 
 	test('Collapse board toggler toggle visibility of the board', async () => {
-		setupAppStore();
 		const boards: Record<string, Board> = {
-			'board-1': { id: 'board-1', url: '/url', app: 'app', title: 'title1', icon: 'CubeOutline' }
+			'board-1': {
+				id: 'board-1',
+				url: '/url',
+				app: mockedApps[0].name,
+				title: 'title1',
+				icon: 'CubeOutline'
+			}
 		};
 		setupBoardStore('board-1', boards);
 
@@ -113,9 +100,14 @@ describe('Shell view', () => {
 	});
 
 	test('Board keeps resized size and position when re-opened after being collapsed', async () => {
-		setupAppStore();
 		const boards: Record<string, Board> = {
-			'board-1': { id: 'board-1', url: '/url', app: 'app', title: 'title1', icon: 'CubeOutline' }
+			'board-1': {
+				id: 'board-1',
+				url: '/url',
+				app: mockedApps[0].name,
+				title: 'title1',
+				icon: 'CubeOutline'
+			}
 		};
 		setupBoardStore('board-1', boards);
 
@@ -157,9 +149,14 @@ describe('Shell view', () => {
 	});
 
 	test('Board keeps resized size but reset position when re-opened after being close definitively', async () => {
-		setupAppStore();
 		const boards: Record<string, Board> = {
-			'board-1': { id: 'board-1', url: '/url', app: 'app', title: 'title1', icon: 'CubeOutline' }
+			'board-1': {
+				id: 'board-1',
+				url: '/url',
+				app: mockedApps[0].name,
+				title: 'title1',
+				icon: 'CubeOutline'
+			}
 		};
 		setupBoardStore('board-1', boards);
 
@@ -191,7 +188,13 @@ describe('Shell view', () => {
 		await user.click(getAllByRoleWithIcon('button', { icon: ICONS.close })[0]);
 		// update state to open a new board
 		const boards2: Record<string, Board> = {
-			'board-2': { id: 'board-2', url: '/url', app: 'app', title: 'title2', icon: 'CubeOutline' }
+			'board-2': {
+				id: 'board-2',
+				url: '/url',
+				app: mockedApps[0].name,
+				title: 'title2',
+				icon: 'CubeOutline'
+			}
 		};
 		act(() => {
 			setupBoardStore('board-2', boards2);

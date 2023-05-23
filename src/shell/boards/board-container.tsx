@@ -7,25 +7,33 @@
 import {
 	Container,
 	Divider,
+	Dropdown,
+	DropdownItem,
+	Icon,
 	IconButton,
+	IconButtonProps,
 	Padding,
 	Row,
+	Text,
 	Tooltip
 } from '@zextras/carbonio-design-system';
-import { debounce, isEmpty, map, size } from 'lodash';
+import { debounce, isEmpty, map, size, noop } from 'lodash';
 import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled, { css, SimpleInterpolation } from 'styled-components';
 import {
 	closeAllBoards,
+	closeBoard,
 	expandBoards,
 	minimizeBoards,
 	onGoToPanel,
 	reduceBoards,
+	setCurrentBoard,
 	useBoardStore
 } from '../../store/boards';
 import { getT } from '../../store/i18n';
 import { AppBoard } from './board';
 import { TabsList } from './board-tab-list';
+import { getApp } from '../../store/app';
 import { ResizableContainer } from './resizable-container';
 import {
 	BOARD_CONTAINER_ZINDEX,
@@ -63,6 +71,10 @@ const BoardContainerComp = styled.div<{ expanded: boolean; minimized: boolean }>
 		css`
 			display: none;
 		`}
+`;
+
+const OverflowContainer = styled(Container)`
+	overflow: auto;
 `;
 
 const Board = styled(Container)<{ expanded: boolean }>`
@@ -119,9 +131,75 @@ const BoardDetailContainer = styled(Row)`
 const BackButton = styled(IconButton)``;
 const Actions = styled(Row)``;
 
+interface ListItemContentProps {
+	icon?: string;
+	label: string;
+	selected?: boolean;
+	app: string;
+	boardId: string;
+}
+
+function ListItemContent({
+	icon,
+	label,
+	selected,
+	app,
+	boardId
+}: ListItemContentProps): JSX.Element {
+	const t = getT();
+	const onClose = useCallback<IconButtonProps['onClick']>(
+		(ev) => {
+			ev.stopPropagation();
+			closeBoard(boardId);
+		},
+		[boardId]
+	);
+	return (
+		<Container orientation="horizontal" mainAlignment="flex-start" gap={'0.5rem'}>
+			{icon && <Icon icon={icon} size={'large'} color={'text'} style={{ pointerEvents: 'none' }} />}
+			<OverflowContainer crossAlignment={'flex-start'}>
+				<Text size={'medium'} weight={selected ? 'bold' : 'regular'} color={'gray0'}>
+					{label}
+				</Text>
+				<Text size={'small'} weight={selected ? 'bold' : 'regular'} color={'secondary'}>
+					{t('board.from_app', 'From {{app}}', {
+						app
+					})}
+				</Text>
+			</OverflowContainer>
+			<IconButton icon={'CloseOutline'} size={'large'} onClick={onClose} />
+		</Container>
+	);
+}
+
 export const BoardContainer = (): JSX.Element | null => {
 	const t = getT();
-	const { boards, minimized, expanded, current } = useBoardStore();
+	const { boards, minimized, expanded, current, orderedBoards } = useBoardStore();
+
+	const boardDropdownItems = useMemo(
+		(): DropdownItem[] =>
+			map(
+				orderedBoards,
+				(boardId): DropdownItem => ({
+					id: boardId,
+					label: boards[boardId].title,
+					icon: boards[boardId].icon,
+					onClick: () => setCurrentBoard(boardId),
+					selected: boardId === current,
+					customComponent: (
+						<ListItemContent
+							label={boards[boardId].title}
+							icon={boards[boardId].icon}
+							selected={boardId === current}
+							app={getApp(boards[boardId].app)().display}
+							boardId={boardId}
+						/>
+					)
+				})
+			),
+		[boards, current, orderedBoards]
+	);
+
 	const boardRef = useRef<HTMLDivElement>(null);
 	const boardContainerRef = useRef<HTMLDivElement>(null);
 	const [lastSavedBoardSize, setLastSavedBoardSize] = useLocalStorage<Partial<SizeAndPosition>>(
@@ -202,7 +280,7 @@ export const BoardContainer = (): JSX.Element | null => {
 
 	return (
 		(!isEmpty(boards) && current && (
-			<BoardContainerComp expanded={expanded} minimized={minimized} ref={boardContainerRef}>
+			<BoardContainerComp expanded={expanded} minimized={minimized}>
 				<Board
 					data-testid="NewItemContainer"
 					background={'gray6'}
@@ -220,7 +298,7 @@ export const BoardContainer = (): JSX.Element | null => {
 						localStorageKey={LOCAL_STORAGE_BOARD_SIZE}
 						disabled={expanded}
 					>
-						<BoardHeader background={'gray5'}>
+						<BoardHeader background="gray5">
 							<Padding all="extrasmall">
 								<Tooltip label={t('board.hide', 'Hide board')} placement="top">
 									<BackButton icon="BoardCollapseOutline" onClick={minimizeBoards} />
@@ -236,6 +314,11 @@ export const BoardContainer = (): JSX.Element | null => {
 									</Padding>
 								)}
 								<Container gap={'0.25rem'} orientation={'horizontal'} width={'fit'} height={'fit'}>
+									<Tooltip label={t('board.show_tabs', 'Show other tabs')} placement="top">
+										<Dropdown items={boardDropdownItems}>
+											<IconButton icon={'ChevronDown'} onClick={noop} />
+										</Dropdown>
+									</Tooltip>
 									<Tooltip
 										label={
 											isDefaultSizeAndPos
@@ -270,7 +353,7 @@ export const BoardContainer = (): JSX.Element | null => {
 							</Actions>
 						</BoardHeader>
 						<Divider style={{ height: '0.125rem' }} />
-						<BoardDetailContainer takeAvailableSpace crossAlignment={'flex-start'}>
+						<BoardDetailContainer takeAvailableSpace>
 							{map(boards, (b) => (
 								<AppBoard key={b.id} board={b} />
 							))}

@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor, within } from '@testing-library/react';
+import { reduce, size } from 'lodash';
 import 'jest-styled-components';
 import { setup } from '../../test/utils';
 import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
@@ -20,8 +21,84 @@ import {
 	setupBoardSizes
 } from '../../test/test-board-utils';
 import { SizeAndPosition } from '../../utils/utils';
+import { Board } from '../../../types';
+import { useBoardStore } from '../../store/boards';
+import { mockedApps, setupAppStore } from '../../test/test-app-utils';
+
+beforeEach(() => {
+	setupAppStore();
+});
 
 describe('Board container', () => {
+	describe('Tabs', () => {
+		const boards = reduce<unknown, Record<string, Board>>(
+			Array<never>(10),
+			(accumulator, value, index) => {
+				const boardId = `board-${index + 1}`;
+				accumulator[boardId] = {
+					id: boardId,
+					url: '/url',
+					app: mockedApps[0].name,
+					title: `title${index + 1}`,
+					icon: 'CubeOutline'
+				};
+				return accumulator;
+			},
+			{}
+		);
+
+		test('If a lot of tabs are opened, they are all visible and available in the dropdown', async () => {
+			setupBoardStore('board-1', boards);
+			const { getByRoleWithIcon, user } = setup(<BoardContainer />);
+			const title1 = screen.getByText('title1');
+			expect(title1).toBeVisible();
+			const title2 = screen.getByText('title2');
+			expect(title2).toBeVisible();
+			const title3 = screen.getByText('title3');
+			expect(title3).toBeVisible();
+			const title4 = screen.getByText('title4');
+			expect(title4).toBeVisible();
+			const title5 = screen.getByText('title5');
+			expect(title5).toBeVisible();
+			const title6 = screen.getByText('title6');
+			expect(title6).toBeVisible();
+			const title7 = screen.getByText('title7');
+			expect(title7).toBeVisible();
+			const title8 = screen.getByText('title8');
+			expect(title8).toBeVisible();
+			const title9 = screen.getByText('title9');
+			expect(title9).toBeVisible();
+			const title10 = screen.getByText('title10');
+			expect(title10).toBeVisible();
+
+			const chevronDownIcon = getByRoleWithIcon('button', { icon: 'ChevronDown' });
+			expect(chevronDownIcon).toBeVisible();
+
+			await user.click(chevronDownIcon);
+
+			expect(screen.getAllByText('From Mails')).toHaveLength(10);
+		});
+
+		test('If close a tab from the dropdown, it will be removed', async () => {
+			setupBoardStore('board-1', boards);
+			const { getByRoleWithIcon, user } = setup(<BoardContainer />);
+
+			const chevronDownIcon = getByRoleWithIcon('button', { icon: 'ChevronDown' });
+
+			await user.click(chevronDownIcon);
+
+			expect(screen.getAllByText('From Mails')).toHaveLength(10);
+
+			const firstCloseIcon = within(screen.getByTestId('dropdown-popper-list')).getAllByTestId(
+				'icon: CloseOutline'
+			)[0];
+			await user.click(firstCloseIcon);
+			expect(screen.getAllByText('From Mails')).toHaveLength(9);
+			expect(useBoardStore.getState().orderedBoards).toHaveLength(9);
+			expect(size(useBoardStore.getState().boards)).toBe(9);
+		});
+	});
+
 	describe('Resize a board', () => {
 		describe('within the resizable area of the document', () => {
 			describe.each([-10, 0, 10])('with offset %d', (offset) => {

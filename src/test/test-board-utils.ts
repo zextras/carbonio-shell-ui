@@ -8,13 +8,32 @@ import { Border } from '../shell/hooks/useResize';
 import { Board } from '../../types';
 import { useBoardStore } from '../store/boards';
 import { SizeAndPosition } from '../utils/utils';
+import { mockedApps } from './test-app-utils';
 
 export type InitialSizeAndPosition = SizeAndPosition & { clientLeft: number; clientTop: number };
 
 export const mockedBoardState: Record<string, Board> = {
-	'board-1': { id: 'board-1', url: '/url', app: 'app', title: 'title1', icon: 'CubeOutline' },
-	'board-2': { id: 'board-2', url: '/url', app: 'app', title: 'title2', icon: 'CubeOutline' },
-	'board-3': { id: 'board-3', url: '/url', app: 'app', title: 'title3', icon: 'CubeOutline' }
+	'board-1': {
+		id: 'board-1',
+		url: '/url',
+		app: mockedApps[0].name,
+		title: 'title1',
+		icon: 'CubeOutline'
+	},
+	'board-2': {
+		id: 'board-2',
+		url: '/url',
+		app: mockedApps[0].name,
+		title: 'title2',
+		icon: 'CubeOutline'
+	},
+	'board-3': {
+		id: 'board-3',
+		url: '/url',
+		app: mockedApps[0].name,
+		title: 'title3',
+		icon: 'CubeOutline'
+	}
 };
 
 export function setupBoardStore(current?: string, boardState?: Record<string, Board>): void {

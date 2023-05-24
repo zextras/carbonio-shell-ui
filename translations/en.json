@@ -3,6 +3,7 @@
         "close_tab": "Close Tab",
         "close_tabs": "Close all your tabs",
         "enlarge": "Enlarge board",
+        "from_app": "From {{app}}",
         "hide": "Hide board",
         "open_app": "Open in app",
         "reduce": "Reduce board",

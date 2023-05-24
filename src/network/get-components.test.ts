@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { rest } from 'msw';
-import { getInfo } from './get-info';
 import server from '../mocks/server';
 import { CarbonioModule } from '../../types';
 import { GetComponentsJsonResponseBody } from '../mocks/handlers/components';
 import { useAppStore } from '../store/app';
+import { getComponents } from './get-components';
 
 jest.mock('../workers');
-describe('Get info', () => {
+describe('Get components', () => {
 	test('Setup apps and request data for the logged account', async () => {
 		const shellModule: CarbonioModule = {
 			commit: '',
@@ -52,7 +52,7 @@ describe('Get info', () => {
 					)
 			)
 		);
-		await getInfo();
+		await getComponents();
 		expect(useAppStore.getState().apps[carbonioModule.name]).toEqual(carbonioModule);
 		expect(useAppStore.getState().shell).toEqual(shellModule);
 	});

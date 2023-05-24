@@ -1,0 +1,12 @@
+{
+  "settings": {
+    "appearance": {
+      "labels": {
+        "choose_size_pangram": "Viekas kettu punaturkki laiskan koiran takaa kurkki."
+      }
+    }
+  },
+  "label": {
+    "remove": "poista"
+  }
+}

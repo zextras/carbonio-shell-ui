@@ -16,10 +16,9 @@ import { ICONS, TESTID_SELECTORS } from '../test/constants';
 import {
 	buildBoardSizeAndPosition,
 	buildMousePosition,
-	setupBoardSizes,
+	resizeBoard,
 	setupBoardStore
 } from '../test/test-board-utils';
-import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
 import { BOARD_DEFAULT_POSITION } from './boards/board-container';
 import { SizeAndPosition } from '../utils/utils';
 import { mockedApps, setupAppStore } from '../test/test-app-utils';
@@ -44,21 +43,20 @@ jest.mock('./shell-header', () => Dummy);
 
 beforeEach(() => {
 	setupAppStore();
+	const boards: Record<string, Board> = {
+		'board-1': {
+			id: 'board-1',
+			url: '/url',
+			app: mockedApps[0].name,
+			title: 'title1',
+			icon: 'CubeOutline'
+		}
+	};
+	setupBoardStore('board-1', boards);
 });
 
 describe('Shell view', () => {
 	test('When resizing under mobile breakpoint, board does not disappear', () => {
-		const boards: Record<string, Board> = {
-			'board-1': {
-				id: 'board-1',
-				url: '/url',
-				app: mockedApps[0].name,
-				title: 'title1',
-				icon: 'CubeOutline'
-			}
-		};
-		setupBoardStore('board-1', boards);
-
 		setup(
 			<>
 				<ContextBridge />
@@ -74,17 +72,6 @@ describe('Shell view', () => {
 	});
 
 	test('Collapse board toggler toggle visibility of the board', async () => {
-		const boards: Record<string, Board> = {
-			'board-1': {
-				id: 'board-1',
-				url: '/url',
-				app: mockedApps[0].name,
-				title: 'title1',
-				icon: 'CubeOutline'
-			}
-		};
-		setupBoardStore('board-1', boards);
-
 		const { getByRoleWithIcon, user } = setup(
 			<>
 				<ContextBridge />
@@ -100,42 +87,34 @@ describe('Shell view', () => {
 	});
 
 	test('Board keeps resized size and position when re-opened after being collapsed', async () => {
-		const boards: Record<string, Board> = {
-			'board-1': {
-				id: 'board-1',
-				url: '/url',
-				app: mockedApps[0].name,
-				title: 'title1',
-				icon: 'CubeOutline'
-			}
-		};
-		setupBoardStore('board-1', boards);
-
 		const { getByRoleWithIcon, user } = setup(
 			<>
 				<ContextBridge />
 				<ShellView />
 			</>
 		);
-
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
 		const deltaY = -50;
-		setupBoardSizes(board, boardInitialSizeAndPos);
-		const topBorder = screen.getByTestId(TESTID_SELECTORS.resizableBorder(border));
-		fireEvent.mouseDown(topBorder);
-		fireEvent.mouseMove(document.body, { clientX: 0, clientY: mouseInitialPos.clientY + deltaY });
-		fireEvent.mouseUp(document.body);
 		const boardNewSizeAndPos: SizeAndPosition = {
 			height: boardInitialSizeAndPos.height - deltaY,
 			width: boardInitialSizeAndPos.width,
 			top: boardInitialSizeAndPos.top + deltaY,
 			left: boardInitialSizeAndPos.left
 		};
-		const localStorageSavedData = window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '';
-		await waitFor(() => expect(JSON.parse(localStorageSavedData)).toEqual(boardNewSizeAndPos));
+		await resizeBoard(
+			board,
+			boardInitialSizeAndPos,
+			border,
+			{ clientX: 0, clientY: mouseInitialPos.clientY + deltaY },
+			boardNewSizeAndPos
+		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.collapseBoard }));
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.unCollapseBoard }));
 		expect(board).toHaveStyle({
@@ -149,42 +128,34 @@ describe('Shell view', () => {
 	});
 
 	test('Board keeps resized size but reset position when re-opened after being close definitively', async () => {
-		const boards: Record<string, Board> = {
-			'board-1': {
-				id: 'board-1',
-				url: '/url',
-				app: mockedApps[0].name,
-				title: 'title1',
-				icon: 'CubeOutline'
-			}
-		};
-		setupBoardStore('board-1', boards);
-
 		const { getAllByRoleWithIcon, user } = setup(
 			<>
 				<ContextBridge />
 				<ShellView />
 			</>
 		);
-
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
 		const border: Border = 'n';
-		const boardElement = screen.getByTestId(TESTID_SELECTORS.board);
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
 		const deltaY = -50;
-		setupBoardSizes(boardElement, boardInitialSizeAndPos);
-		const topBorder = screen.getByTestId(TESTID_SELECTORS.resizableBorder(border));
-		fireEvent.mouseDown(topBorder);
-		fireEvent.mouseMove(document.body, { clientX: 0, clientY: mouseInitialPos.clientY + deltaY });
-		fireEvent.mouseUp(document.body);
 		const boardNewSizeAndPos: SizeAndPosition = {
 			height: boardInitialSizeAndPos.height - deltaY,
 			width: boardInitialSizeAndPos.width,
 			top: boardInitialSizeAndPos.top + deltaY,
 			left: boardInitialSizeAndPos.left
 		};
-		const localStorageSavedData = window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '';
-		await waitFor(() => expect(JSON.parse(localStorageSavedData)).toEqual(boardNewSizeAndPos));
+		await resizeBoard(
+			board,
+			boardInitialSizeAndPos,
+			border,
+			{ clientX: 0, clientY: mouseInitialPos.clientY + deltaY },
+			boardNewSizeAndPos
+		);
 		await user.click(getAllByRoleWithIcon('button', { icon: ICONS.close })[0]);
 		// update state to open a new board
 		const boards2: Record<string, Board> = {

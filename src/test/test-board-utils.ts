@@ -4,11 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { first, keys } from 'lodash';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { Border } from '../shell/hooks/useResize';
 import { Board } from '../../types';
 import { useBoardStore } from '../store/boards';
 import { SizeAndPosition } from '../utils/utils';
 import { mockedApps } from './test-app-utils';
+import { TESTID_SELECTORS } from './constants';
+import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
 
 export type InitialSizeAndPosition = SizeAndPosition & { clientLeft: number; clientTop: number };
 
@@ -81,8 +84,8 @@ export function setupBoardSizes(
 ): void {
 	const boardContainer = board.parentElement;
 	if (boardContainer) {
-		jest.spyOn(boardContainer, 'clientWidth', 'get').mockReturnValue(1024);
-		jest.spyOn(boardContainer, 'clientHeight', 'get').mockReturnValue(800);
+		jest.spyOn(boardContainer, 'clientWidth', 'get').mockImplementation(() => window.innerWidth);
+		jest.spyOn(boardContainer, 'clientHeight', 'get').mockImplementation(() => window.innerHeight);
 	}
 	jest.spyOn(board, 'offsetWidth', 'get').mockReturnValue(initialSizeAndPos.width);
 	jest.spyOn(board, 'offsetHeight', 'get').mockReturnValue(initialSizeAndPos.height);
@@ -92,4 +95,23 @@ export function setupBoardSizes(
 		top: initialSizeAndPos.clientTop,
 		left: initialSizeAndPos.clientLeft
 	} as DOMRect);
+}
+
+export async function resizeBoard(
+	board: HTMLElement,
+	sizeAndPos: InitialSizeAndPosition,
+	border: Border,
+	mouseNewPosition: { clientX: number; clientY: number },
+	boardNewPosition: SizeAndPosition
+): Promise<void> {
+	setupBoardSizes(board, sizeAndPos);
+	const borderElement = screen.getByTestId(TESTID_SELECTORS.resizableBorder(border));
+	fireEvent.mouseDown(borderElement);
+	fireEvent.mouseMove(document.body, mouseNewPosition);
+	fireEvent.mouseUp(document.body);
+	await waitFor(() =>
+		expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '')).toEqual(
+			boardNewPosition
+		)
+	);
 }

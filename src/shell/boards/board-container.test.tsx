@@ -4,29 +4,31 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
-import { fireEvent, screen, waitFor, within } from '@testing-library/react';
+import { act, screen, waitFor, within } from '@testing-library/react';
 import { reduce, size } from 'lodash';
 import 'jest-styled-components';
 import { setup } from '../../test/utils';
 import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
 import { ICONS, TESTID_SELECTORS } from '../../test/constants';
 import { Border } from '../hooks/useResize';
-import { LOCAL_STORAGE_BOARD_SIZE } from '../../constants';
 import ShellPrimaryBar from '../shell-primary-bar';
 import {
 	buildBoardSizeAndPosition,
 	buildMousePosition,
 	INITIAL_SIZE_AND_POS,
 	setupBoardStore,
-	setupBoardSizes
+	setupBoardSizes,
+	resizeBoard
 } from '../../test/test-board-utils';
 import { SizeAndPosition } from '../../utils/utils';
 import { Board } from '../../../types';
 import { useBoardStore } from '../../store/boards';
 import { mockedApps, setupAppStore } from '../../test/test-app-utils';
+import { BOARD_MIN_VISIBILITY } from '../../constants';
 
 beforeEach(() => {
 	setupAppStore();
+	setupBoardStore();
 });
 
 describe('Board container', () => {
@@ -50,6 +52,10 @@ describe('Board container', () => {
 		test('If a lot of tabs are opened, they are all visible and available in the dropdown', async () => {
 			setupBoardStore('board-1', boards);
 			const { getByRoleWithIcon, user } = setup(<BoardContainer />);
+			act(() => {
+				// run updateBoardPosition debounced fn
+				jest.advanceTimersToNextTimer();
+			});
 			const title1 = screen.getByText('title1');
 			expect(title1).toBeVisible();
 			const title2 = screen.getByText('title2');
@@ -82,6 +88,10 @@ describe('Board container', () => {
 		test('If close a tab from the dropdown, it will be removed', async () => {
 			setupBoardStore('board-1', boards);
 			const { getByRoleWithIcon, user } = setup(<BoardContainer />);
+			act(() => {
+				// run updateBoardPosition debounced fn
+				jest.advanceTimersToNextTimer();
+			});
 
 			const chevronDownIcon = getByRoleWithIcon('button', { icon: 'ChevronDown' });
 
@@ -166,34 +176,32 @@ describe('Board container', () => {
 						])(
 							'with the border $border, updates the size and position of the board',
 							async ({ border, expectedUpdates }) => {
-								setupBoardStore();
 								setup(<BoardContainer />);
+								act(() => {
+									// run updateBoardPosition debounced fn
+									jest.advanceTimersToNextTimer();
+								});
+								const board = screen.getByTestId(TESTID_SELECTORS.board);
 								const boardInitialSizeAndPos = buildBoardSizeAndPosition(
 									INITIAL_SIZE_AND_POS,
 									offset
 								);
 								const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
-								const board = screen.getByTestId(TESTID_SELECTORS.board);
-								const resizableBorder = screen.getByTestId(
-									TESTID_SELECTORS.resizableBorder(border)
-								);
-								setupBoardSizes(board, boardInitialSizeAndPos);
-								fireEvent.mouseDown(resizableBorder);
-								fireEvent.mouseMove(document.body, {
-									clientX: mouseInitialPos.clientX + deltaX,
-									clientY: mouseInitialPos.clientY + deltaY
-								});
-								fireEvent.mouseUp(document.body);
 								const expectedSizeAndPos: SizeAndPosition = {
 									width: boardInitialSizeAndPos.width + (expectedUpdates.width ?? 0),
 									height: boardInitialSizeAndPos.height + (expectedUpdates.height ?? 0),
 									top: boardInitialSizeAndPos.top + (expectedUpdates.top ?? 0),
 									left: boardInitialSizeAndPos.left + (expectedUpdates.left ?? 0)
 								};
-								const localStorageSavedData =
-									window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '{}';
-								await waitFor(() =>
-									expect(JSON.parse(localStorageSavedData)).toEqual(expectedSizeAndPos)
+								await resizeBoard(
+									board,
+									boardInitialSizeAndPos,
+									border,
+									{
+										clientX: mouseInitialPos.clientX + deltaX,
+										clientY: mouseInitialPos.clientY + deltaY
+									},
+									expectedSizeAndPos
 								);
 								expect(board).toHaveStyle({
 									width: `${expectedSizeAndPos.width}px`,
@@ -209,8 +217,11 @@ describe('Board container', () => {
 		});
 
 		test('outside the resizable area of the document, does not update sizes', async () => {
-			setupBoardStore();
 			setup(<BoardContainer />);
+			act(() => {
+				// run updateBoardPosition debounced fn
+				jest.advanceTimersToNextTimer();
+			});
 			const border: Border = 'nw';
 			const board = screen.getByTestId(TESTID_SELECTORS.board);
 			const boardInitialSizeAndPos = buildBoardSizeAndPosition();
@@ -218,14 +229,6 @@ describe('Board container', () => {
 			// last accepted resize, should set offsetLeft and offsetTop of the element to 0
 			const deltaY = boardInitialSizeAndPos.top * -1;
 			const deltaX = boardInitialSizeAndPos.left * -1;
-			setupBoardSizes(board, boardInitialSizeAndPos);
-			const resizableBorder = screen.getByTestId(TESTID_SELECTORS.resizableBorder(border));
-			fireEvent.mouseDown(resizableBorder);
-			fireEvent.mouseMove(document.body, {
-				clientX: mouseInitialPos.clientX + deltaX,
-				clientY: mouseInitialPos.clientY + deltaY
-			});
-			fireEvent.mouseUp(document.body);
 			const boardNewSizeAndPos: SizeAndPosition = {
 				height: boardInitialSizeAndPos.height - deltaY,
 				width: boardInitialSizeAndPos.width - deltaX,
@@ -236,8 +239,7 @@ describe('Board container', () => {
 				clientX: mouseInitialPos.clientX + deltaX,
 				clientY: mouseInitialPos.clientY + deltaY
 			};
-			let localStorageSavedData = window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '';
-			await waitFor(() => expect(JSON.parse(localStorageSavedData)).toEqual(boardNewSizeAndPos));
+			await resizeBoard(board, boardInitialSizeAndPos, border, mouseNewPos, boardNewSizeAndPos);
 			expect(board).toHaveStyle({
 				height: `${boardNewSizeAndPos.height}px`,
 				width: `${boardNewSizeAndPos.width}px`,
@@ -245,13 +247,16 @@ describe('Board container', () => {
 				left: `${boardNewSizeAndPos.left}px`
 			});
 			// do another resize moving the mouse outside the area where the resize is accepted
-			setupBoardSizes(board, buildBoardSizeAndPosition(boardNewSizeAndPos));
-			fireEvent.mouseDown(resizableBorder);
-			fireEvent.mouseMove(document.body, {
-				clientX: mouseNewPos.clientX - 1,
-				clientY: mouseNewPos.clientY - 1
-			});
-			fireEvent.mouseUp(document.body);
+			await resizeBoard(
+				board,
+				buildBoardSizeAndPosition(boardNewSizeAndPos),
+				border,
+				{
+					clientX: mouseNewPos.clientX - 1,
+					clientY: mouseNewPos.clientY - 1
+				},
+				boardNewSizeAndPos
+			);
 			// board keeps last sizes
 			expect(board).toHaveStyle({
 				height: `${boardNewSizeAndPos.height}px`,
@@ -259,14 +264,15 @@ describe('Board container', () => {
 				top: `${boardNewSizeAndPos.top}px`,
 				left: `${boardNewSizeAndPos.left}px`
 			});
-			localStorageSavedData = window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '';
-			await waitFor(() => expect(JSON.parse(localStorageSavedData)).toEqual(boardNewSizeAndPos));
 		});
 	});
 
 	test('Enlarge default board set board to fill board area', async () => {
-		setupBoardStore();
 		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		setupBoardSizes(board, buildBoardSizeAndPosition());
 		expect(board).toHaveStyleRule('height', '70vh');
@@ -278,27 +284,29 @@ describe('Board container', () => {
 	});
 
 	test('Enlarge resized board set board to fill board area', async () => {
-		setupBoardStore();
 		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
-		const board = screen.getByTestId(TESTID_SELECTORS.board);
-		setupBoardSizes(board, buildBoardSizeAndPosition());
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
 		const border: Border = 'n';
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
 		const deltaY = -50;
-		setupBoardSizes(board, boardInitialSizeAndPos);
-		const topBorder = screen.getByTestId(TESTID_SELECTORS.resizableBorder(border));
-		fireEvent.mouseDown(topBorder);
-		fireEvent.mouseMove(document.body, { clientX: 0, clientY: mouseInitialPos.clientY + deltaY });
-		fireEvent.mouseUp(document.body);
 		const boardNewSizeAndPos: SizeAndPosition = {
 			height: boardInitialSizeAndPos.height - deltaY,
 			width: boardInitialSizeAndPos.width,
 			top: boardInitialSizeAndPos.top + deltaY,
 			left: boardInitialSizeAndPos.left
 		};
-		const localStorageSavedData = window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '';
-		await waitFor(() => expect(JSON.parse(localStorageSavedData)).toEqual(boardNewSizeAndPos));
+		await resizeBoard(
+			board,
+			boardInitialSizeAndPos,
+			border,
+			{ clientX: 0, clientY: mouseInitialPos.clientY + deltaY },
+			boardNewSizeAndPos
+		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
 		expect(board).toHaveStyleRule('height', 'calc(100% - 1.5rem) !important');
 		expect(board).toHaveStyleRule('width', 'calc(100% - 3rem) !important');
@@ -307,8 +315,11 @@ describe('Board container', () => {
 	});
 
 	test('Reduce default board set board to default size', async () => {
-		setupBoardStore();
 		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		setupBoardSizes(board, buildBoardSizeAndPosition());
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
@@ -320,26 +331,29 @@ describe('Board container', () => {
 	});
 
 	test('Reduce resized board set board to resized size', async () => {
-		setupBoardStore();
 		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
 		const deltaY = -50;
-		setupBoardSizes(board, boardInitialSizeAndPos);
-		const topBorder = screen.getByTestId(TESTID_SELECTORS.resizableBorder(border));
-		fireEvent.mouseDown(topBorder);
-		fireEvent.mouseMove(document.body, { clientX: 0, clientY: mouseInitialPos.clientY + deltaY });
-		fireEvent.mouseUp(document.body);
 		const boardNewSizeAndPos: SizeAndPosition = {
 			height: boardInitialSizeAndPos.height - deltaY,
 			width: boardInitialSizeAndPos.width,
 			top: boardInitialSizeAndPos.top + deltaY,
 			left: boardInitialSizeAndPos.left
 		};
-		const localStorageSavedData = window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '';
-		await waitFor(() => expect(JSON.parse(localStorageSavedData)).toEqual(boardNewSizeAndPos));
+		await resizeBoard(
+			board,
+			boardInitialSizeAndPos,
+			border,
+			{ clientX: 0, clientY: mouseInitialPos.clientY + deltaY },
+			boardNewSizeAndPos
+		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.reduceBoard }));
 		expect(board).toHaveStyle({
@@ -353,31 +367,34 @@ describe('Board container', () => {
 	});
 
 	test('Collapse and un-collapse of a resized board set board to resized size', async () => {
-		setupBoardStore();
 		const { getByRoleWithIcon, user } = setup(
 			<>
 				<ShellPrimaryBar />
 				<BoardContainer />
 			</>
 		);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
 		const deltaY = -50;
-		setupBoardSizes(board, boardInitialSizeAndPos);
-		const topBorder = screen.getByTestId(TESTID_SELECTORS.resizableBorder(border));
-		fireEvent.mouseDown(topBorder);
-		fireEvent.mouseMove(document.body, { clientX: 0, clientY: mouseInitialPos.clientY + deltaY });
-		fireEvent.mouseUp(document.body);
 		const boardNewSizeAndPos: SizeAndPosition = {
 			height: boardInitialSizeAndPos.height - deltaY,
 			width: boardInitialSizeAndPos.width,
 			top: boardInitialSizeAndPos.top + deltaY,
 			left: boardInitialSizeAndPos.left
 		};
-		const localStorageSavedData = window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '';
-		await waitFor(() => expect(JSON.parse(localStorageSavedData)).toEqual(boardNewSizeAndPos));
+		await resizeBoard(
+			board,
+			boardInitialSizeAndPos,
+			border,
+			{ clientX: 0, clientY: mouseInitialPos.clientY + deltaY },
+			boardNewSizeAndPos
+		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.reduceBoard }));
 		expect(board).toHaveStyle({
@@ -391,13 +408,16 @@ describe('Board container', () => {
 	});
 
 	test('Reset size action is disabled if board is at default size', async () => {
-		setupBoardStore();
 		const { getByRoleWithIcon } = setup(
 			<>
 				<ShellPrimaryBar />
 				<BoardContainer />
 			</>
 		);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		setupBoardSizes(board, boardInitialSizeAndPos);
@@ -405,66 +425,234 @@ describe('Board container', () => {
 	});
 
 	test('Reset size action is enabled if board is not at default size', async () => {
-		setupBoardStore();
 		const { getByRoleWithIcon } = setup(
 			<>
 				<ShellPrimaryBar />
 				<BoardContainer />
 			</>
 		);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
 		const deltaY = -50;
-		setupBoardSizes(board, boardInitialSizeAndPos);
-		const topBorder = screen.getByTestId(TESTID_SELECTORS.resizableBorder(border));
-		fireEvent.mouseDown(topBorder);
-		fireEvent.mouseMove(document.body, { clientX: 0, clientY: mouseInitialPos.clientY + deltaY });
-		fireEvent.mouseUp(document.body);
 		const boardNewSizeAndPos: SizeAndPosition = {
 			height: boardInitialSizeAndPos.height - deltaY,
 			width: boardInitialSizeAndPos.width,
 			top: boardInitialSizeAndPos.top + deltaY,
 			left: boardInitialSizeAndPos.left
 		};
-		const localStorageSavedData = window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '';
-		await waitFor(() => expect(JSON.parse(localStorageSavedData)).toEqual(boardNewSizeAndPos));
+		await resizeBoard(
+			board,
+			boardInitialSizeAndPos,
+			border,
+			{ clientX: 0, clientY: mouseInitialPos.clientY + deltaY },
+			boardNewSizeAndPos
+		);
 		expect(getByRoleWithIcon('button', { icon: ICONS.resetBoardSize })).toBeEnabled();
 	});
 
 	test('Reset size action reset board sizes to default', async () => {
-		setupBoardStore();
 		const { getByRoleWithIcon, user } = setup(
 			<>
 				<ShellPrimaryBar />
 				<BoardContainer />
 			</>
 		);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
 		const deltaY = -50;
-		setupBoardSizes(board, boardInitialSizeAndPos);
-		const topBorder = screen.getByTestId(TESTID_SELECTORS.resizableBorder(border));
-		fireEvent.mouseDown(topBorder);
-		fireEvent.mouseMove(document.body, { clientX: 0, clientY: mouseInitialPos.clientY + deltaY });
-		fireEvent.mouseUp(document.body);
 		const boardNewSizeAndPos: SizeAndPosition = {
 			height: boardInitialSizeAndPos.height - deltaY,
 			width: boardInitialSizeAndPos.width,
 			top: boardInitialSizeAndPos.top + deltaY,
 			left: boardInitialSizeAndPos.left
 		};
-		const localStorageSavedData = window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '';
-		await waitFor(() => expect(JSON.parse(localStorageSavedData)).toEqual(boardNewSizeAndPos));
+		await resizeBoard(
+			board,
+			boardInitialSizeAndPos,
+			border,
+			{ clientX: 0, clientY: mouseInitialPos.clientY + deltaY },
+			boardNewSizeAndPos
+		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.resetBoardSize }));
 		expect(board).toHaveStyle({
 			height: '70vh',
 			width: 'auto',
 			left: BOARD_DEFAULT_POSITION.left,
 			bottom: BOARD_DEFAULT_POSITION.bottom
+		});
+	});
+
+	test('Resize of the window keeps the board top-left corner visible inside the window', async () => {
+		setup(
+			<>
+				<ShellPrimaryBar />
+				<BoardContainer />
+			</>
+		);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
+		const rightBorder: Border = 'e';
+		const leftBorder: Border = 'w';
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		// move right border to the extreme right
+		const mouseMoveInitialPosition = buildMousePosition(rightBorder, boardInitialSizeAndPos);
+		let mouseFinalPosition = {
+			clientX: window.innerWidth,
+			clientY: mouseMoveInitialPosition.clientY
+		};
+		let boardNewSizeAndPos: SizeAndPosition = {
+			height: boardInitialSizeAndPos.height,
+			width: window.innerWidth - boardInitialSizeAndPos.left,
+			top: boardInitialSizeAndPos.top,
+			left: boardInitialSizeAndPos.left
+		};
+		await resizeBoard(
+			board,
+			boardInitialSizeAndPos,
+			rightBorder,
+			mouseFinalPosition,
+			boardNewSizeAndPos
+		);
+		// move left border to the right to get the initial width of the board
+		const mouseInitialPosition = buildMousePosition(
+			leftBorder,
+			buildBoardSizeAndPosition(boardNewSizeAndPos)
+		);
+		mouseFinalPosition = {
+			clientX: window.innerWidth - boardInitialSizeAndPos.width,
+			clientY: mouseInitialPosition.clientY
+		};
+		boardNewSizeAndPos = {
+			width: boardInitialSizeAndPos.width,
+			height: boardInitialSizeAndPos.height,
+			left: window.innerWidth - boardInitialSizeAndPos.width,
+			top: boardInitialSizeAndPos.top
+		};
+		await resizeBoard(
+			board,
+			buildBoardSizeAndPosition(boardNewSizeAndPos),
+			leftBorder,
+			mouseFinalPosition,
+			boardNewSizeAndPos
+		);
+
+		const newWindowSize = {
+			height: 100,
+			width: 100
+		};
+		act(() => {
+			window.resizeTo(newWindowSize.width, newWindowSize.height);
+			jest.advanceTimersToNextTimer();
+		});
+		expect(board).toHaveStyle({
+			height: `${boardNewSizeAndPos.height}px`,
+			width: `${boardNewSizeAndPos.width}px`,
+			top: `${newWindowSize.height - BOARD_MIN_VISIBILITY.top}px`,
+			left: `${newWindowSize.width - BOARD_MIN_VISIBILITY.left}px`
+		});
+	});
+
+	test('Resizing down the window and then resizing it up reset board position to the last manually set', async () => {
+		setup(
+			<>
+				<ShellPrimaryBar />
+				<BoardContainer />
+			</>
+		);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
+		const rightBorder: Border = 'e';
+		const leftBorder: Border = 'w';
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		// move right border to the extreme right
+		const mouseMoveInitialPosition = buildMousePosition(rightBorder, boardInitialSizeAndPos);
+		let mouseFinalPosition = {
+			clientX: window.innerWidth,
+			clientY: mouseMoveInitialPosition.clientY
+		};
+		let boardNewSizeAndPos: SizeAndPosition = {
+			height: boardInitialSizeAndPos.height,
+			width: window.innerWidth - boardInitialSizeAndPos.left,
+			top: boardInitialSizeAndPos.top,
+			left: boardInitialSizeAndPos.left
+		};
+		await resizeBoard(
+			board,
+			boardInitialSizeAndPos,
+			rightBorder,
+			mouseFinalPosition,
+			boardNewSizeAndPos
+		);
+		// move left border to the right to get the initial width of the board
+		const mouseInitialPosition = buildMousePosition(
+			leftBorder,
+			buildBoardSizeAndPosition(boardNewSizeAndPos)
+		);
+		mouseFinalPosition = {
+			clientX: window.innerWidth - boardInitialSizeAndPos.width,
+			clientY: mouseInitialPosition.clientY
+		};
+		boardNewSizeAndPos = {
+			width: boardInitialSizeAndPos.width,
+			height: boardInitialSizeAndPos.height,
+			left: window.innerWidth - boardInitialSizeAndPos.width,
+			top: boardInitialSizeAndPos.top
+		};
+		await resizeBoard(
+			board,
+			buildBoardSizeAndPosition(boardNewSizeAndPos),
+			leftBorder,
+			mouseFinalPosition,
+			boardNewSizeAndPos
+		);
+
+		const initialWindowSize = {
+			height: window.innerHeight,
+			width: window.innerWidth
+		};
+		const newWindowSize = {
+			height: 100,
+			width: 100
+		};
+		act(() => {
+			window.resizeTo(newWindowSize.width, newWindowSize.height);
+		});
+
+		await waitFor(() =>
+			expect(board).toHaveStyle({
+				top: `${newWindowSize.height - BOARD_MIN_VISIBILITY.top}px`,
+				left: `${newWindowSize.width - BOARD_MIN_VISIBILITY.left}px`
+			})
+		);
+
+		act(() => {
+			window.resizeTo(initialWindowSize.width, initialWindowSize.height);
+			jest.advanceTimersToNextTimer();
+		});
+
+		expect(board).toHaveStyle({
+			height: `${boardNewSizeAndPos.height}px`,
+			width: `${boardNewSizeAndPos.width}px`,
+			top: `${boardNewSizeAndPos.top}px`,
+			left: `${boardNewSizeAndPos.left}px`
 		});
 	});
 });

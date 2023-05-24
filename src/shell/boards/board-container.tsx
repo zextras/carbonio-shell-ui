@@ -17,7 +17,7 @@ import {
 	Text,
 	Tooltip
 } from '@zextras/carbonio-design-system';
-import { debounce, isEmpty, map, size, noop } from 'lodash';
+import { debounce, isEmpty, map, noop, size } from 'lodash';
 import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled, { css, SimpleInterpolation } from 'styled-components';
 import {
@@ -38,6 +38,7 @@ import { ResizableContainer } from './resizable-container';
 import {
 	BOARD_CONTAINER_ZINDEX,
 	BOARD_HEADER_HEIGHT,
+	BOARD_MIN_VISIBILITY,
 	BOARD_TAB_WIDTH,
 	HEADER_BAR_HEIGHT,
 	LOCAL_STORAGE_BOARD_SIZE,
@@ -248,16 +249,21 @@ export const BoardContainer = (): JSX.Element | null => {
 					if (boardContainerRef.current) {
 						const boardContainer = boardContainerRef.current;
 						const newSizeAndPosition: Partial<SizeAndPosition> = {};
-						const topLimit = boardContainer.clientHeight - 50;
-						if (lastSavedBoardSizeRef.current.top && lastSavedBoardSizeRef.current.top > topLimit) {
-							newSizeAndPosition.top = topLimit > 0 ? topLimit : 0;
+						const topLimit = boardContainer.clientHeight - BOARD_MIN_VISIBILITY.top;
+						if (lastSavedBoardSizeRef.current.top !== undefined) {
+							if (lastSavedBoardSizeRef.current.top > topLimit) {
+								newSizeAndPosition.top = topLimit > 0 ? topLimit : 0;
+							} else {
+								newSizeAndPosition.top = lastSavedBoardSizeRef.current.top;
+							}
 						}
 						const leftLimit = boardContainer.clientWidth - 30;
-						if (
-							lastSavedBoardSizeRef.current.left &&
-							lastSavedBoardSizeRef.current.left > leftLimit
-						) {
-							newSizeAndPosition.left = leftLimit > 0 ? leftLimit : 0;
+						if (lastSavedBoardSizeRef.current.left !== undefined) {
+							if (lastSavedBoardSizeRef.current.left > leftLimit) {
+								newSizeAndPosition.left = leftLimit > 0 ? leftLimit : 0;
+							} else {
+								newSizeAndPosition.left = lastSavedBoardSizeRef.current.left;
+							}
 						}
 						if (size(newSizeAndPosition) > 0) {
 							setCurrentBoardSize({ ...lastSavedBoardSizeRef.current, ...newSizeAndPosition });
@@ -280,7 +286,7 @@ export const BoardContainer = (): JSX.Element | null => {
 
 	return (
 		(!isEmpty(boards) && current && (
-			<BoardContainerComp expanded={expanded} minimized={minimized}>
+			<BoardContainerComp expanded={expanded} minimized={minimized} ref={boardContainerRef}>
 				<Board
 					data-testid="NewItemContainer"
 					background={'gray6'}

@@ -139,3 +139,7 @@ export const PRIMARY_BAR_WIDTH = '3.0625rem';
 export const BOARD_HEADER_HEIGHT = '3rem';
 export const BOARD_TAB_WIDTH = 'calc(3rem + 15ch)';
 export const BOARD_CONTAINER_ZINDEX = 10;
+export const BOARD_MIN_VISIBILITY = {
+	top: 50,
+	left: 30
+};

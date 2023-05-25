@@ -23,8 +23,8 @@
 		"packTo": "npm pack --pack-destination $PKG_PATH && cd $PKG_PATH && npm i zextras-carbonio-shell-ui-$npm_package_version.tgz",
 		"packTo:noBuild": "cp zextras-carbonio-shell-ui-$npm_package_version.tgz $PKG_PATH/ && cd $PKG_PATH && npm i zextras-carbonio-shell-ui-$npm_package_version.tgz",
 		"deploy-on-module": "npm pack && rm -rf $PKG_PATH/node_modules/@zextras/carbonio-shell-ui/* && tar -xf zextras-carbonio-shell-ui-$npm_package_version.tgz -C $PKG_PATH/node_modules/@zextras/carbonio-shell-ui/ --strip-components 1",
-		"pull-translations": "git subtree pull -P translations git@bitbucket.org:zextras/com_zextras_zapp_shell.git master --squash",
-		"push-translations": "git subtree push -P translations git@bitbucket.org:zextras/com_zextras_zapp_shell.git"
+		"translations:push": "git subtree push --prefix translations $npm_package_config_translations_repository translations-updater/$(date '+%Y-%m-%d')",
+		"translations:pull": "git subtree pull --squash --prefix translations $npm_package_config_translations_repository master"
 	},
 	"files": [
 		"dist/",
@@ -72,6 +72,7 @@
 		"eslint-plugin-notice": "^0.9.10",
 		"html-webpack-plugin": "^5.5.0",
 		"husky": "^8.0.3",
+		"identity-obj-proxy": "^3.0.0",
 		"is-ci": "^3.0.1",
 		"jest": "^29.5.0",
 		"jest-environment-jsdom": "^29.5.0",
@@ -94,7 +95,7 @@
 		"@reduxjs/toolkit": "^1.9.2",
 		"@sentry/browser": "^7.43.0",
 		"@tinymce/tinymce-react": "^4.3.0",
-		"@zextras/carbonio-design-system": "^2.0.0",
+		"@zextras/carbonio-design-system": "^2.1.0",
 		"@zextras/carbonio-ui-preview": "^1.1.0",
 		"darkreader": "^4.9.58",
 		"history": "^5.3.0",
@@ -115,7 +116,7 @@
 	},
 	"peerDependencies": {
 		"@reduxjs/toolkit": "^1 >=1.9",
-		"@zextras/carbonio-design-system": "^2",
+		"@zextras/carbonio-design-system": "^2.1.0",
 		"@zextras/carbonio-ui-preview": "^1",
 		"core-js": "^3.27.2",
 		"lodash": "^4.17.21",
@@ -167,10 +168,13 @@
 	},
 	"carbonio": {
 		"name": "carbonio-shell-ui",
-		"translations_repository": "git@bitbucket.org:zextras/com_zextras_zapp_shell.git",
+		"translations_repository": "git@github.com:Zextras/carbonio-shell-ui-i18n.git",
 		"type": "shell",
 		"priority": -1,
 		"display": "Shell",
 		"icon": "CubeOutline"
+	},
+	"config": {
+		"translations_repository": "git@github.com:Zextras/carbonio-shell-ui-i18n.git"
 	}
 }

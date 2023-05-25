@@ -2,7 +2,7 @@
     "message": {
         "reload": "\tCzy chcesz uruchomić ponownie aplikację, aby wyświetlał się nowy język?\n(Jeśli nie, nowy język będzie wyświetlał się od momentu następnego zalogowania)",
         "snackbar": {
-            "settings_saved": "Zmiany zostały zapisane pomyślnie",
+            "settings_saved": "Zmiany zostały zapisane",
             "identities_quota_exceeded": "Nie udało się utworzyć tej tożsamości, ponieważ przekroczono ich limit"
         }
     },

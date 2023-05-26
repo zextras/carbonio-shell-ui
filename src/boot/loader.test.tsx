@@ -7,44 +7,17 @@ import { rest } from 'msw';
 import { act, screen } from '@testing-library/react';
 import React from 'react';
 import server from '../mocks/server';
-import { CarbonioModule } from '../../types';
 import { GetComponentsJsonResponseBody } from '../mocks/handlers/components';
 import { setup } from '../test/utils';
 import { Loader } from './loader';
-import { report } from '../reporting';
+import { LOGIN_V3_CONFIG_PATH } from '../constants';
 
 jest.mock('../workers');
 jest.mock('../reporting/functions');
-describe('Loader', () => {
-	test.skip('Setup ', async () => {
-		const shellModule: CarbonioModule = {
-			commit: '',
-			description: 'Description for the shell module',
-			js_entrypoint: '',
-			version: '',
-			name: 'carbonio-shell-ui',
-			type: 'shell',
-			priority: -1,
-			display: 'Shell',
-			icon: 'CubeOutline',
-			attrKey: '',
-			sentryDsn: ''
-		};
-		const carbonioModule: CarbonioModule = {
-			commit: '',
-			description: 'Description for the other module',
-			js_entrypoint: '',
-			version: '',
-			name: 'carbonio-module-ui',
-			type: 'carbonio',
-			priority: 1,
-			display: 'Module',
-			icon: 'People',
-			attrKey: '',
-			sentryDsn: ''
-		};
-		const apps: CarbonioModule[] = [shellModule, carbonioModule];
 
+describe('Loader', () => {
+	test('If only getComponents request fails, the LoaderFailureModal appears', async () => {
+		// using getInfo and loginConfig default handlers
 		server.use(
 			rest.get<never, never, GetComponentsJsonResponseBody>(
 				'/static/iris/components.json',
@@ -61,43 +34,33 @@ describe('Loader', () => {
 		expect(title).toBeVisible();
 	});
 
-	test.skip('getInfo ', async () => {
-		const shellModule: CarbonioModule = {
-			commit: '',
-			description: 'Description for the shell module',
-			js_entrypoint: '',
-			version: '',
-			name: 'carbonio-shell-ui',
-			type: 'shell',
-			priority: -1,
-			display: 'Shell',
-			icon: 'CubeOutline',
-			attrKey: '',
-			sentryDsn: ''
-		};
-		const carbonioModule: CarbonioModule = {
-			commit: '',
-			description: 'Description for the other module',
-			js_entrypoint: '',
-			version: '',
-			name: 'carbonio-module-ui',
-			type: 'carbonio',
-			priority: 1,
-			display: 'Module',
-			icon: 'People',
-			attrKey: '',
-			sentryDsn: ''
-		};
-		const apps: CarbonioModule[] = [shellModule, carbonioModule];
-
+	test('If only getInfo request fails, the LoaderFailureModal appears', async () => {
+		// using getComponents and loginConfig default handlers
 		server.use(rest.post('/service/soap/GetInfoRequest', (req, res, ctx) => res(ctx.status(503))));
 
 		setup(<Loader />);
 
 		const title = await screen.findByText('Something went wrong...');
 		act(() => {
-			jest.advanceTimersByTime(100);
+			jest.runOnlyPendingTimers();
 		});
 		expect(title).toBeVisible();
+	});
+
+	test('If only loginConfig request fails, the LoaderFailureModal does not appears', async () => {
+		// using getComponents and getInfo default handlers
+		server.use(rest.post(LOGIN_V3_CONFIG_PATH, (req, res, ctx) => res(ctx.status(503))));
+
+		setup(<Loader />);
+
+		expect(screen.queryByText('Something went wrong...')).not.toBeInTheDocument();
+	});
+
+	test('If Loader requests do not fail, the LoaderFailureModal does not appears', async () => {
+		// using getComponents, loginConfig and getInfo default handlers
+
+		setup(<Loader />);
+
+		expect(screen.queryByText('Something went wrong...')).not.toBeInTheDocument();
 	});
 });

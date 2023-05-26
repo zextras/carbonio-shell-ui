@@ -21,6 +21,12 @@ export function isPromiseRejectedResult<T>(
 	return promiseSettledResult.status === 'rejected';
 }
 
+export function isPromiseFulfilledResult<T>(
+	promiseSettledResult: PromiseSettledResult<T>
+): promiseSettledResult is PromiseFulfilledResult<T> {
+	return promiseSettledResult.status === 'fulfilled';
+}
+
 type LoaderFailureModalProps = { open: boolean; closeHandler: () => void };
 
 export const LoaderFailureModal = ({
@@ -57,9 +63,15 @@ export const Loader: FC = () => {
 	const closeHandler = useCallback(() => setOpen(false), []);
 
 	useEffect(() => {
-		Promise.allSettled([loginConfig(), getComponents(), getInfo()])
-			.then((promiseSettledResultArray) => {
-				const promiseRejectedResult = find(promiseSettledResultArray, isPromiseRejectedResult);
+		Promise.allSettled([loginConfig(), getComponents(), getInfo()]).then(
+			(promiseSettledResultArray) => {
+				const [, getComponentsPromiseSettledResult, getInfoPromiseSettledResult] =
+					promiseSettledResultArray;
+
+				const promiseRejectedResult = find(
+					[getComponentsPromiseSettledResult, getInfoPromiseSettledResult],
+					isPromiseRejectedResult
+				);
 				if (promiseRejectedResult) {
 					if (typeof promiseRejectedResult.reason === 'string') {
 						console.error(promiseRejectedResult.reason);
@@ -68,10 +80,11 @@ export const Loader: FC = () => {
 					}
 					setOpen(true);
 				}
-			})
-			.finally(() => {
-				loadApps(Object.values(useAppStore.getState().apps));
-			});
+				if (isPromiseFulfilledResult(getComponentsPromiseSettledResult)) {
+					loadApps(Object.values(useAppStore.getState().apps));
+				}
+			}
+		);
 		return () => {
 			unloadAllApps();
 		};

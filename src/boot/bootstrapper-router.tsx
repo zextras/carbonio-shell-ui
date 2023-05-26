@@ -5,7 +5,7 @@
  */
 
 import { ModalManagerContext, SnackbarManagerContext } from '@zextras/carbonio-design-system';
-import React, { FC, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import type { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { Route, Switch, useHistory, useParams } from 'react-router-dom';
@@ -18,7 +18,7 @@ import { useAppStore } from '../store/app';
 import { registerDefaultViews } from './app/default-views';
 import { Loader } from './loader';
 
-const ContextBridge: FC = () => {
+const ContextBridge = (): null => {
 	const history = useHistory();
 	const createSnackbar = useContext(SnackbarManagerContext);
 	const createModal = useContext(ModalManagerContext);
@@ -32,7 +32,7 @@ const ContextBridge: FC = () => {
 	return null;
 };
 
-const StandaloneListener: FC = () => {
+const StandaloneListener = (): null => {
 	const { route } = useParams<{ route?: string }>();
 	useEffect(() => {
 		if (route) useAppStore.setState({ standalone: route });
@@ -40,14 +40,16 @@ const StandaloneListener: FC = () => {
 	return null;
 };
 
-const DefaultViewsRegister: FC<{ t: TFunction }> = ({ t }) => {
+type DefaultViewsRegisterProps = { t: TFunction };
+
+const DefaultViewsRegister = ({ t }: DefaultViewsRegisterProps): null => {
 	useEffect(() => {
 		registerDefaultViews(t);
 	}, [t]);
 	return null;
 };
 
-const BootstrapperRouter: FC = () => {
+const BootstrapperRouter = (): JSX.Element => {
 	const [t] = useTranslation();
 
 	return (

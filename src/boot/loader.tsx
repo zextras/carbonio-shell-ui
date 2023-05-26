@@ -58,7 +58,7 @@ export const LoaderFailureModal = ({
 	);
 };
 
-export const Loader: FC = () => {
+export const Loader = (): JSX.Element => {
 	const [open, setOpen] = useState(false);
 	const closeHandler = useCallback(() => setOpen(false), []);
 

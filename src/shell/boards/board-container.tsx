@@ -46,6 +46,7 @@ import {
 } from '../../constants';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { setElementSizeAndPosition, SizeAndPosition } from '../../utils/utils';
+import { useMove } from '../hooks/useMove';
 
 export const BOARD_DEFAULT_POSITION: Pick<CSSProperties, 'top' | 'left' | 'right' | 'bottom'> = {
 	left: '1.5rem',
@@ -173,6 +174,18 @@ function ListItemContent({
 	);
 }
 
+function calcPositionToRemainVisible(
+	lastSavedPosition: number,
+	containerSize: number,
+	minVisibility: number
+): number {
+	const limit = containerSize - minVisibility;
+	if (lastSavedPosition > limit) {
+		return limit > 0 ? limit : 0;
+	}
+	return lastSavedPosition;
+}
+
 export const BoardContainer = (): JSX.Element | null => {
 	const t = getT();
 	const { boards, minimized, expanded, current, orderedBoards } = useBoardStore();
@@ -203,72 +216,77 @@ export const BoardContainer = (): JSX.Element | null => {
 
 	const boardRef = useRef<HTMLDivElement>(null);
 	const boardContainerRef = useRef<HTMLDivElement>(null);
-	const [lastSavedBoardSize, setLastSavedBoardSize] = useLocalStorage<Partial<SizeAndPosition>>(
-		LOCAL_STORAGE_BOARD_SIZE,
-		{}
+	const [lastSavedBoardSizeAndPosition, setLastSavedBoardSizeAndPosition] = useLocalStorage<
+		Partial<SizeAndPosition>
+	>(LOCAL_STORAGE_BOARD_SIZE, {});
+	const [currentBoardSizeAndPosition, setCurrentBoardSizeAndPosition] = useState(
+		lastSavedBoardSizeAndPosition
 	);
-	const [currentBoardSize, setCurrentBoardSize] = useState(lastSavedBoardSize);
-	const lastSavedBoardSizeRef = useRef(lastSavedBoardSize);
+	const lastSavedBoardSizeAndPositionRef = useRef(lastSavedBoardSizeAndPosition);
+	const moveElementHandler = useMove(boardRef, {
+		localStorageKey: LOCAL_STORAGE_BOARD_SIZE
+	});
 
-	useEffect(() => {
-		setCurrentBoardSize(lastSavedBoardSize);
-		lastSavedBoardSizeRef.current = lastSavedBoardSize;
-	}, [lastSavedBoardSize]);
-
-	const isDefaultSizeAndPos = useMemo(() => size(currentBoardSize) === 0, [currentBoardSize]);
+	const isDefaultSizeAndPosition = useMemo(
+		() => size(currentBoardSizeAndPosition) === 0,
+		[currentBoardSizeAndPosition]
+	);
 
 	const resetSizeAndPosition = useCallback(() => {
-		setLastSavedBoardSize({});
-	}, [setLastSavedBoardSize]);
+		setLastSavedBoardSizeAndPosition({});
+	}, [setLastSavedBoardSizeAndPosition]);
 
 	useEffect(() => {
 		// reset position when the board is closed
 		if (isEmpty(boards)) {
-			setLastSavedBoardSize((prevState) => ({
+			setLastSavedBoardSizeAndPosition((prevState) => ({
 				...prevState,
 				left: undefined,
 				top: undefined
 			}));
 		}
-	}, [boards, setLastSavedBoardSize]);
+	}, [boards, setLastSavedBoardSizeAndPosition]);
 
 	useEffect(() => {
 		if (boardRef.current) {
 			const boardElement = boardRef.current;
-			setElementSizeAndPosition(boardElement, 'width', currentBoardSize.width);
-			setElementSizeAndPosition(boardElement, 'height', currentBoardSize.height);
-			setElementSizeAndPosition(boardElement, 'top', currentBoardSize.top);
-			setElementSizeAndPosition(boardElement, 'left', currentBoardSize.left);
+			setElementSizeAndPosition(boardElement, 'width', currentBoardSizeAndPosition.width);
+			setElementSizeAndPosition(boardElement, 'height', currentBoardSizeAndPosition.height);
+			setElementSizeAndPosition(boardElement, 'top', currentBoardSizeAndPosition.top);
+			setElementSizeAndPosition(boardElement, 'left', currentBoardSizeAndPosition.left);
 		}
-	}, [currentBoardSize]);
+	}, [currentBoardSizeAndPosition]);
 
 	const updateBoardPosition = useMemo(
 		() =>
 			debounce(
 				() => {
+					const newSizeAndPosition: Partial<SizeAndPosition> = {};
+					if (lastSavedBoardSizeAndPositionRef.current.width !== undefined) {
+						newSizeAndPosition.width = lastSavedBoardSizeAndPositionRef.current.width;
+					}
+					if (lastSavedBoardSizeAndPositionRef.current.height !== undefined) {
+						newSizeAndPosition.height = lastSavedBoardSizeAndPositionRef.current.height;
+					}
+
 					if (boardContainerRef.current) {
 						const boardContainer = boardContainerRef.current;
-						const newSizeAndPosition: Partial<SizeAndPosition> = {};
-						const topLimit = boardContainer.clientHeight - BOARD_MIN_VISIBILITY.top;
-						if (lastSavedBoardSizeRef.current.top !== undefined) {
-							if (lastSavedBoardSizeRef.current.top > topLimit) {
-								newSizeAndPosition.top = topLimit > 0 ? topLimit : 0;
-							} else {
-								newSizeAndPosition.top = lastSavedBoardSizeRef.current.top;
-							}
+						if (lastSavedBoardSizeAndPositionRef.current.top !== undefined) {
+							newSizeAndPosition.top = calcPositionToRemainVisible(
+								lastSavedBoardSizeAndPositionRef.current.top,
+								boardContainer.clientHeight,
+								BOARD_MIN_VISIBILITY.top
+							);
 						}
-						const leftLimit = boardContainer.clientWidth - 30;
-						if (lastSavedBoardSizeRef.current.left !== undefined) {
-							if (lastSavedBoardSizeRef.current.left > leftLimit) {
-								newSizeAndPosition.left = leftLimit > 0 ? leftLimit : 0;
-							} else {
-								newSizeAndPosition.left = lastSavedBoardSizeRef.current.left;
-							}
-						}
-						if (size(newSizeAndPosition) > 0) {
-							setCurrentBoardSize({ ...lastSavedBoardSizeRef.current, ...newSizeAndPosition });
+						if (lastSavedBoardSizeAndPositionRef.current.left !== undefined) {
+							newSizeAndPosition.left = calcPositionToRemainVisible(
+								lastSavedBoardSizeAndPositionRef.current.left,
+								boardContainer.clientWidth,
+								BOARD_MIN_VISIBILITY.left
+							);
 						}
 					}
+					setCurrentBoardSizeAndPosition(newSizeAndPosition);
 				},
 				0,
 				{ leading: false, trailing: true }
@@ -277,12 +295,35 @@ export const BoardContainer = (): JSX.Element | null => {
 	);
 
 	useEffect(() => {
-		updateBoardPosition();
 		window.addEventListener('resize', updateBoardPosition);
 		return (): void => {
 			window.removeEventListener('resize', updateBoardPosition);
 		};
 	}, [updateBoardPosition]);
+
+	useEffect(() => {
+		lastSavedBoardSizeAndPositionRef.current = { ...lastSavedBoardSizeAndPosition };
+		if (size(lastSavedBoardSizeAndPosition) > 0) {
+			updateBoardPosition();
+		} else {
+			setCurrentBoardSizeAndPosition({});
+		}
+
+		return (): void => {
+			updateBoardPosition.cancel();
+		};
+	}, [lastSavedBoardSizeAndPosition, updateBoardPosition]);
+
+	const clickHandler = useCallback<
+		(onClickFn: IconButtonProps['onClick']) => IconButtonProps['onClick']
+	>(
+		(clickFn) => (event) => {
+			if (!event.defaultPrevented) {
+				clickFn(event);
+			}
+		},
+		[]
+	);
 
 	return (
 		(!isEmpty(boards) && current && (
@@ -293,10 +334,11 @@ export const BoardContainer = (): JSX.Element | null => {
 					crossAlignment="unset"
 					expanded={expanded}
 					ref={boardRef}
-					width={currentBoardSize.width}
-					height={currentBoardSize.height}
-					maxWidth={(isDefaultSizeAndPos && '100%') || undefined}
-					maxHeight={(isDefaultSizeAndPos && '100%') || undefined}
+					width={currentBoardSizeAndPosition.width}
+					height={currentBoardSizeAndPosition.height}
+					maxWidth={(isDefaultSizeAndPosition && '100%') || undefined}
+					maxHeight={(isDefaultSizeAndPosition && '100%') || undefined}
+					onMouseDown={moveElementHandler}
 				>
 					<ResizableContainer
 						crossAlignment={'unset'}
@@ -304,10 +346,10 @@ export const BoardContainer = (): JSX.Element | null => {
 						localStorageKey={LOCAL_STORAGE_BOARD_SIZE}
 						disabled={expanded}
 					>
-						<BoardHeader background="gray5">
+						<BoardHeader background={'gray5'}>
 							<Padding all="extrasmall">
 								<Tooltip label={t('board.hide', 'Hide board')} placement="top">
-									<BackButton icon="BoardCollapseOutline" onClick={minimizeBoards} />
+									<BackButton icon="BoardCollapseOutline" onClick={clickHandler(minimizeBoards)} />
 								</Tooltip>
 							</Padding>
 							<TabsList />
@@ -315,19 +357,22 @@ export const BoardContainer = (): JSX.Element | null => {
 								{boards[current]?.context?.onReturnToApp && (
 									<Padding right="extrasmall">
 										<Tooltip label={t('board.open_app', 'Open in app')} placement="top">
-											<IconButton icon={'DiagonalArrowRightUp'} onClick={onGoToPanel} />
+											<IconButton
+												icon={'DiagonalArrowRightUp'}
+												onClick={clickHandler(onGoToPanel)}
+											/>
 										</Tooltip>
 									</Padding>
 								)}
 								<Container gap={'0.25rem'} orientation={'horizontal'} width={'fit'} height={'fit'}>
 									<Tooltip label={t('board.show_tabs', 'Show other tabs')} placement="top">
 										<Dropdown items={boardDropdownItems}>
-											<IconButton icon={'ChevronDown'} onClick={noop} />
+											<IconButton icon={'ChevronDown'} onClick={clickHandler(noop)} />
 										</Dropdown>
 									</Tooltip>
 									<Tooltip
 										label={
-											isDefaultSizeAndPos
+											isDefaultSizeAndPosition
 												? t('board.reset_size.disabled', 'Board already at the default position')
 												: t('board.reset_size.enabled', 'Return to default position and size')
 										}
@@ -335,8 +380,8 @@ export const BoardContainer = (): JSX.Element | null => {
 									>
 										<IconButton
 											icon={'DiagonalArrowLeftDown'}
-											onClick={resetSizeAndPosition}
-											disabled={isDefaultSizeAndPos}
+											onClick={clickHandler(resetSizeAndPosition)}
+											disabled={isDefaultSizeAndPosition}
 										/>
 									</Tooltip>
 									<Tooltip
@@ -349,12 +394,12 @@ export const BoardContainer = (): JSX.Element | null => {
 									>
 										<IconButton
 											icon={expanded ? 'CollapseOutline' : 'ExpandOutline'}
-											onClick={expanded ? reduceBoards : expandBoards}
+											onClick={clickHandler(expanded ? reduceBoards : expandBoards)}
 										/>
 									</Tooltip>
 								</Container>
 								<Tooltip label={t('board.close_tabs', 'Close all your tabs')} placement="top">
-									<IconButton icon="CloseOutline" onClick={closeAllBoards} />
+									<IconButton icon="CloseOutline" onClick={clickHandler(closeAllBoards)} />
 								</Tooltip>
 							</Actions>
 						</BoardHeader>

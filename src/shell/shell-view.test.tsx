@@ -171,6 +171,10 @@ describe('Shell view', () => {
 			setupBoardStore('board-2', boards2);
 		});
 		await screen.findByText('title2');
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
 		const board2Element = screen.getByTestId(TESTID_SELECTORS.board);
 		expect(board2Element).toHaveStyle({
 			...BOARD_DEFAULT_POSITION,

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { first, keys } from 'lodash';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import { Border } from '../shell/hooks/useResize';
 import { Board } from '../../types';
 import { useBoardStore } from '../store/boards';
@@ -13,7 +13,10 @@ import { mockedApps } from './test-app-utils';
 import { TESTID_SELECTORS } from './constants';
 import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
 
-export type InitialSizeAndPosition = SizeAndPosition & { clientLeft: number; clientTop: number };
+export type InitialSizeAndPosition = SizeAndPosition & {
+	clientLeft: number;
+	clientTop: number;
+};
 
 export const mockedBoardState: Record<string, Board> = {
 	'board-1': {
@@ -49,7 +52,12 @@ export function setupBoardStore(current?: string, boardState?: Record<string, Bo
 }
 
 // initial size and pos must be greater than the min width and height of the board
-export const INITIAL_SIZE_AND_POS: SizeAndPosition = { width: 800, height: 600, top: 75, left: 25 };
+export const INITIAL_SIZE_AND_POS: SizeAndPosition = {
+	width: 800,
+	height: 600,
+	top: 75,
+	left: 25
+};
 export function buildBoardSizeAndPosition(
 	sizeAndPos = INITIAL_SIZE_AND_POS,
 	offset = 0
@@ -114,4 +122,34 @@ export async function resizeBoard(
 			boardNewPosition
 		)
 	);
+	act(() => {
+		// run updateBoardPosition debounced fn
+		jest.advanceTimersToNextTimer();
+	});
+}
+
+export async function moveBoard(
+	board: HTMLElement,
+	sizeAndPos: InitialSizeAndPosition,
+	mouseInitialPosition: { clientX: number; clientY: number },
+	mouseNewPosition: { clientX: number; clientY: number },
+	boardNewPosition: Partial<SizeAndPosition>
+): Promise<void> {
+	setupBoardSizes(board, sizeAndPos);
+	fireEvent.mouseDown(board, mouseInitialPosition);
+	act(() => {
+		// run move timer
+		jest.advanceTimersToNextTimer();
+	});
+	fireEvent.mouseMove(document.body, mouseNewPosition);
+	fireEvent.mouseUp(document.body);
+	await waitFor(() =>
+		expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '')).toEqual(
+			boardNewPosition
+		)
+	);
+	act(() => {
+		// run updateBoardPosition debounced fn
+		jest.advanceTimersToNextTimer();
+	});
 }

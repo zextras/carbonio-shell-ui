@@ -18,13 +18,14 @@ import {
 	INITIAL_SIZE_AND_POS,
 	setupBoardStore,
 	setupBoardSizes,
-	resizeBoard
+	resizeBoard,
+	moveBoard
 } from '../../test/test-board-utils';
 import { SizeAndPosition } from '../../utils/utils';
 import { Board } from '../../../types';
 import { useBoardStore } from '../../store/boards';
 import { mockedApps, setupAppStore } from '../../test/test-app-utils';
-import { BOARD_MIN_VISIBILITY } from '../../constants';
+import { BOARD_MIN_VISIBILITY, LOCAL_STORAGE_BOARD_SIZE } from '../../constants';
 
 beforeEach(() => {
 	setupAppStore();
@@ -356,6 +357,9 @@ describe('Board container', () => {
 		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.reduceBoard }));
+		act(() => {
+			jest.advanceTimersToNextTimer();
+		});
 		expect(board).toHaveStyle({
 			height: `${boardNewSizeAndPos.height}px`,
 			width: `${boardNewSizeAndPos.width}px`,
@@ -397,6 +401,9 @@ describe('Board container', () => {
 		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.reduceBoard }));
+		act(() => {
+			jest.advanceTimersToNextTimer();
+		});
 		expect(board).toHaveStyle({
 			height: `${boardNewSizeAndPos.height}px`,
 			width: `${boardNewSizeAndPos.width}px`,
@@ -486,6 +493,13 @@ describe('Board container', () => {
 			boardNewSizeAndPos
 		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.resetBoardSize }));
+		act(() => {
+			// run move timer
+			jest.advanceTimersToNextTimer();
+		});
+		await waitFor(() =>
+			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '')).toEqual({})
+		);
 		expect(board).toHaveStyle({
 			height: '70vh',
 			width: 'auto',
@@ -653,6 +667,65 @@ describe('Board container', () => {
 			width: `${boardNewSizeAndPos.width}px`,
 			top: `${boardNewSizeAndPos.top}px`,
 			left: `${boardNewSizeAndPos.left}px`
+		});
+	});
+
+	test('Resizing a tab, resetting to default size and position and then moving it to a different position set the new position, but keep the default size', async () => {
+		const { getByRoleWithIcon, user } = setup(
+			<>
+				<ShellPrimaryBar />
+				<BoardContainer />
+			</>
+		);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
+		const border: Border = 'n';
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
+		const deltaY = -50;
+		const boardNewSizeAndPos: SizeAndPosition = {
+			height: boardInitialSizeAndPos.height - deltaY,
+			width: boardInitialSizeAndPos.width,
+			top: boardInitialSizeAndPos.top + deltaY,
+			left: boardInitialSizeAndPos.left
+		};
+		await resizeBoard(
+			board,
+			boardInitialSizeAndPos,
+			border,
+			{ clientX: 0, clientY: mouseInitialPos.clientY + deltaY },
+			boardNewSizeAndPos
+		);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.resetBoardSize }));
+		act(() => {
+			// run move timer
+			jest.advanceTimersToNextTimer();
+		});
+		await waitFor(() =>
+			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '')).toEqual({})
+		);
+		const boardNewPos = {
+			top: 0,
+			left: 0
+		};
+		await waitFor(() =>
+			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '')).toEqual({})
+		);
+		await moveBoard(
+			board,
+			boardInitialSizeAndPos,
+			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
+			{ clientX: 0, clientY: 0 },
+			boardNewPos
+		);
+		expect(board).toHaveStyle({
+			height: '70vh',
+			width: 'auto',
+			left: 0,
+			bottom: 0
 		});
 	});
 });

@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { CSSProperties, useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { CSSProperties, useCallback, useEffect, useRef } from 'react';
 import { find, forEach } from 'lodash';
 import { setElementSizeAndPosition, setGlobalCursor, SizeAndPosition } from '../../utils/utils';
 import { useLocalStorage } from './useLocalStorage';
@@ -18,6 +18,7 @@ type UseResizableReturnType = React.MouseEventHandler;
 
 type ResizeOptions = {
 	localStorageKey?: string;
+	keepSynchedWithStorage?: boolean;
 };
 
 export const BORDERS: Border[] = ['n', 's', 'e', 'w', 'ne', 'se', 'sw', 'nw'];
@@ -74,17 +75,19 @@ export const useResize = (
 	const lastSizeAndPositionRef = useRef<Partial<SizeAndPosition>>({});
 	const [lastSavedSizeAndPosition, setLastSavedSizeAndPosition] = useLocalStorage<
 		Partial<SizeAndPosition>
-	>(options?.localStorageKey || 'use-resize-data', {});
+	>(
+		options?.localStorageKey || 'use-resize-data',
+		{},
+		{ keepSynchedWithStorage: options?.keepSynchedWithStorage }
+	);
 
 	useEffect(() => {
 		if (elementToResizeRef.current) {
 			const elementToResize = elementToResizeRef.current;
-			if (elementToResize) {
-				setElementSizeAndPosition(elementToResize, 'width', lastSavedSizeAndPosition.width);
-				setElementSizeAndPosition(elementToResize, 'height', lastSavedSizeAndPosition.height);
-				setElementSizeAndPosition(elementToResize, 'top', lastSavedSizeAndPosition.top);
-				setElementSizeAndPosition(elementToResize, 'left', lastSavedSizeAndPosition.left);
-			}
+			setElementSizeAndPosition(elementToResize, 'width', lastSavedSizeAndPosition.width);
+			setElementSizeAndPosition(elementToResize, 'height', lastSavedSizeAndPosition.height);
+			setElementSizeAndPosition(elementToResize, 'top', lastSavedSizeAndPosition.top);
+			setElementSizeAndPosition(elementToResize, 'left', lastSavedSizeAndPosition.left);
 			lastSizeAndPositionRef.current = { ...lastSavedSizeAndPosition };
 		}
 	}, [elementToResizeRef, lastSavedSizeAndPosition]);

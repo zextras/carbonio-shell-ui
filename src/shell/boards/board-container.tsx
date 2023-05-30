@@ -328,7 +328,7 @@ export const BoardContainer = (): JSX.Element | null => {
 									<Tooltip
 										label={
 											isDefaultSizeAndPos
-												? t('board.reset_size.disabled', 'Board still at the default position')
+												? t('board.reset_size.disabled', 'Board already at the default position')
 												: t('board.reset_size.enabled', 'Return to default position and size')
 										}
 										placement="top"

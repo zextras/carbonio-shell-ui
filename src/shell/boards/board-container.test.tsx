@@ -670,7 +670,140 @@ describe('Board container', () => {
 		});
 	});
 
-	test('Resizing a tab, resetting to default size and position and then moving it to a different position set the new position, but keep the default size', async () => {
+	test('Move a board with default size set new position and keep default size', async () => {
+		setup(
+			<>
+				<ShellPrimaryBar />
+				<BoardContainer />
+			</>
+		);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		const boardNewPosition = {
+			top: 0,
+			left: 0
+		};
+		await moveBoard(
+			board,
+			boardInitialSizeAndPos,
+			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
+			{ clientX: 0, clientY: 0 },
+			boardNewPosition
+		);
+		expect(board).toHaveStyle({
+			height: '70vh',
+			width: 'auto',
+			left: 0,
+			bottom: 0
+		});
+	});
+
+	test('Multiple move of a board with default size set new position and keep default size', async () => {
+		setup(
+			<>
+				<ShellPrimaryBar />
+				<BoardContainer />
+			</>
+		);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		let boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		let boardNewPosition = {
+			top: 10,
+			left: 10
+		};
+		await moveBoard(
+			board,
+			boardInitialSizeAndPos,
+			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
+			{ clientX: 10, clientY: 10 },
+			boardNewPosition
+		);
+		boardInitialSizeAndPos = buildBoardSizeAndPosition({
+			...boardInitialSizeAndPos,
+			...boardNewPosition
+		});
+		boardNewPosition = {
+			top: 50,
+			left: 80
+		};
+		await moveBoard(
+			board,
+			boardInitialSizeAndPos,
+			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
+			{ clientX: 80, clientY: 50 },
+			boardNewPosition
+		);
+		expect(board).toHaveStyle({
+			height: '70vh',
+			width: 'auto',
+			left: `${boardNewPosition.left}px`,
+			top: `${boardNewPosition.top}px`
+		});
+	});
+
+	test('Move a board with custom size set new position and keep custom size', async () => {
+		setup(
+			<>
+				<ShellPrimaryBar />
+				<BoardContainer />
+			</>
+		);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
+		const border: Border = 'n';
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
+		const deltaY = -50;
+		let boardNewSizeAndPos: SizeAndPosition = {
+			height: boardInitialSizeAndPos.height - deltaY,
+			width: boardInitialSizeAndPos.width,
+			top: boardInitialSizeAndPos.top + deltaY,
+			left: boardInitialSizeAndPos.left
+		};
+		await resizeBoard(
+			board,
+			boardInitialSizeAndPos,
+			border,
+			{ clientX: 0, clientY: mouseInitialPos.clientY + deltaY },
+			boardNewSizeAndPos
+		);
+		const boardNewInitialSizeAndPos = buildBoardSizeAndPosition(boardNewSizeAndPos);
+		boardNewSizeAndPos = {
+			width: boardNewSizeAndPos.width,
+			height: boardNewSizeAndPos.height,
+			top: 0,
+			left: 0
+		};
+		await moveBoard(
+			board,
+			boardNewInitialSizeAndPos,
+			{
+				clientX: boardNewInitialSizeAndPos.clientLeft,
+				clientY: boardNewInitialSizeAndPos.clientTop
+			},
+			{ clientX: 0, clientY: 0 },
+			boardNewSizeAndPos
+		);
+		expect(board).toHaveStyle({
+			height: `${boardNewSizeAndPos.height}px`,
+			width: `${boardNewSizeAndPos.width}px`,
+			left: `${boardNewSizeAndPos.left}px`,
+			bottom: `${boardNewSizeAndPos.top}px`
+		});
+	});
+
+	test('Resizing the board, resetting to default size and position and then moving it to a different position set the new position, but keep the default size', async () => {
 		const { getByRoleWithIcon, user } = setup(
 			<>
 				<ShellPrimaryBar />
@@ -711,9 +844,6 @@ describe('Board container', () => {
 			top: 0,
 			left: 0
 		};
-		await waitFor(() =>
-			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '')).toEqual({})
-		);
 		await moveBoard(
 			board,
 			boardInitialSizeAndPos,

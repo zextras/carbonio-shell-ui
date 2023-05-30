@@ -46,7 +46,7 @@ function DarkReaderListener(): null {
 	return null;
 }
 
-const useLoginRedirection = (allowUnauthenticated?: string): void => {
+const useLoginRedirection = (allowUnauthenticated?: boolean): void => {
 	const auth = useAccountStore((s) => s.authenticated);
 	useEffect(() => {
 		if (IS_STANDALONE && !auth && !allowUnauthenticated) {
@@ -56,8 +56,8 @@ const useLoginRedirection = (allowUnauthenticated?: string): void => {
 };
 
 interface ShellComponentProps {
-	allowUnauthenticated?: string;
-	hideShellHeader?: string;
+	allowUnauthenticated?: boolean;
+	hideShellHeader?: boolean;
 }
 
 const ShellComponent = ({
@@ -91,9 +91,9 @@ const ShellComponent = ({
 const MemoShell = React.memo(ShellComponent);
 
 const ShellView = (): JSX.Element => {
-	const activeRoute = useCurrentRoute() as AppRoute;
-	const allowUnauthenticated = activeRoute?.standalone?.allowUnauthenticated as string | undefined;
-	const hideShellHeader = activeRoute?.standalone?.hideShellHeader as string | undefined;
+	const activeRoute = useCurrentRoute();
+	const allowUnauthenticated = activeRoute?.standalone?.allowUnauthenticated;
+	const hideShellHeader = activeRoute?.standalone?.hideShellHeader;
 	return (
 		<ShellContextProvider>
 			<PreviewManager>

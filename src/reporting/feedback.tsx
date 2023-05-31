@@ -6,7 +6,7 @@
 
 import type { Event as SentryEvent } from '@sentry/browser';
 import {
-	ButtonOld as Button,
+	Button,
 	Container,
 	ContainerProps,
 	Icon,

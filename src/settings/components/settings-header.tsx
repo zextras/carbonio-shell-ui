@@ -6,7 +6,7 @@
 
 import {
 	Breadcrumbs,
-	ButtonOld as Button,
+	Button,
 	Container,
 	type Crumb,
 	Divider,

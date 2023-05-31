@@ -143,8 +143,8 @@ export async function moveBoard(
 		jest.advanceTimersToNextTimer();
 	});
 	fireEvent.mouseMove(document.body, mouseNewPosition);
-	fireEvent.click(elementForMove);
 	fireEvent.mouseUp(document.body);
+	fireEvent.click(elementForMove);
 	await waitFor(() =>
 		expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '')).toEqual(
 			boardNewPosition

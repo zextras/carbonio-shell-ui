@@ -125,12 +125,11 @@ export const useMove = (
 		setGlobalCursor(undefined);
 		document.body.removeEventListener('mousemove', onMouseMove);
 		document.body.removeEventListener('mouseup', onMouseUp);
-		document.body.removeEventListener('click', preventClick, { capture: true });
 		if (options?.localStorageKey && shouldUpdateLocalStorageRef.current) {
 			setLastSavedPosition(lastPositionRef.current);
 			shouldUpdateLocalStorageRef.current = false;
 		}
-	}, [onMouseMove, options?.localStorageKey, preventClick, setLastSavedPosition]);
+	}, [onMouseMove, options?.localStorageKey, setLastSavedPosition]);
 
 	return useCallback(
 		(mouseDownEvent: React.MouseEvent) => {

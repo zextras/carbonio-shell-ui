@@ -5,7 +5,7 @@
  */
 import React from 'react';
 import { act, screen, waitFor, within } from '@testing-library/react';
-import { reduce, size } from 'lodash';
+import { reduce, sample, size } from 'lodash';
 import 'jest-styled-components';
 import { setup } from '../../test/utils';
 import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
@@ -18,7 +18,8 @@ import {
 	setupBoardStore,
 	setupBoardSizes,
 	resizeBoard,
-	moveBoard
+	moveBoard,
+	mockedBoardState
 } from '../../test/test-board-utils';
 import { SizeAndPosition } from '../../utils/utils';
 import { Board } from '../../../types';
@@ -484,8 +485,7 @@ describe('Board container', () => {
 		expect(board).toHaveStyle({
 			height: '70vh',
 			width: 'auto',
-			left: BOARD_DEFAULT_POSITION.left,
-			bottom: BOARD_DEFAULT_POSITION.bottom
+			...BOARD_DEFAULT_POSITION
 		});
 	});
 
@@ -664,7 +664,7 @@ describe('Board container', () => {
 			height: '70vh',
 			width: 'auto',
 			left: 0,
-			bottom: 0
+			top: 0
 		});
 	});
 
@@ -755,7 +755,7 @@ describe('Board container', () => {
 			height: `${boardNewSizeAndPos.height}px`,
 			width: `${boardNewSizeAndPos.width}px`,
 			left: `${boardNewSizeAndPos.left}px`,
-			bottom: `${boardNewSizeAndPos.top}px`
+			top: `${boardNewSizeAndPos.top}px`
 		});
 	});
 
@@ -806,7 +806,60 @@ describe('Board container', () => {
 			height: '70vh',
 			width: 'auto',
 			left: 0,
-			bottom: 0
+			top: 0
+		});
+	});
+
+	test.each<[action: string, icon: string]>([
+		['collapse board', `${ICONS.collapseBoard}Outline`],
+		['close tab', ICONS.close],
+		['close board', ICONS.closeBoard],
+		['reset board', ICONS.resetBoardSize],
+		['enlarge board', ICONS.enlargeBoard]
+	])('Action %s is not fired if a move is performed on it', async (actionName, icon) => {
+		const boardItem = sample(mockedBoardState) as Board;
+		setupBoardStore(boardItem.id, { [boardItem.id]: boardItem });
+		const { getAllByRoleWithIcon } = setup(<BoardContainer />);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const actionElement = getAllByRoleWithIcon('button', { icon })[0];
+		let boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		let boardNewPosition = {
+			top: 0,
+			left: 0
+		};
+		await moveBoard(
+			board,
+			boardInitialSizeAndPos,
+			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
+			{ clientX: 0, clientY: 0 },
+			boardNewPosition
+		);
+		boardInitialSizeAndPos = buildBoardSizeAndPosition({
+			...boardInitialSizeAndPos,
+			...boardNewPosition
+		});
+		boardNewPosition = {
+			top: 30,
+			left: 30
+		};
+		await moveBoard(
+			board,
+			boardInitialSizeAndPos,
+			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
+			{ clientX: 30, clientY: 30 },
+			boardNewPosition,
+			actionElement
+		);
+		expect(board).toBeVisible();
+		expect(board).toHaveStyle({
+			height: '70vh',
+			width: 'auto',
+			left: `${boardNewPosition.left}px`,
+			top: `${boardNewPosition.top}px`
 		});
 	});
 });

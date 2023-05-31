@@ -133,15 +133,17 @@ export async function moveBoard(
 	sizeAndPos: InitialSizeAndPosition,
 	mouseInitialPosition: { clientX: number; clientY: number },
 	mouseNewPosition: { clientX: number; clientY: number },
-	boardNewPosition: Partial<SizeAndPosition>
+	boardNewPosition: Partial<SizeAndPosition>,
+	elementForMove: HTMLElement = board
 ): Promise<void> {
 	setupBoardSizes(board, sizeAndPos);
-	fireEvent.mouseDown(board, mouseInitialPosition);
+	fireEvent.mouseDown(elementForMove, mouseInitialPosition);
 	act(() => {
 		// run move timer
 		jest.advanceTimersToNextTimer();
 	});
 	fireEvent.mouseMove(document.body, mouseNewPosition);
+	fireEvent.click(elementForMove);
 	fireEvent.mouseUp(document.body);
 	await waitFor(() =>
 		expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '')).toEqual(

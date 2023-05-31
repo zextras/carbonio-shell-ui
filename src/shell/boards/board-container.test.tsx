@@ -11,7 +11,6 @@ import { setup } from '../../test/utils';
 import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
 import { ICONS, TESTID_SELECTORS } from '../../test/constants';
 import { Border } from '../hooks/useResize';
-import ShellPrimaryBar from '../shell-primary-bar';
 import {
 	buildBoardSizeAndPosition,
 	buildMousePosition,
@@ -23,7 +22,7 @@ import {
 } from '../../test/test-board-utils';
 import { SizeAndPosition } from '../../utils/utils';
 import { Board } from '../../../types';
-import { useBoardStore } from '../../store/boards';
+import { reopenBoards, useBoardStore } from '../../store/boards';
 import { mockedApps, setupAppStore } from '../../test/test-app-utils';
 import { BOARD_MIN_VISIBILITY, LOCAL_STORAGE_BOARD_SIZE } from '../../constants';
 
@@ -371,12 +370,7 @@ describe('Board container', () => {
 	});
 
 	test('Collapse and un-collapse of a resized board set board to resized size', async () => {
-		const { getByRoleWithIcon, user } = setup(
-			<>
-				<ShellPrimaryBar />
-				<BoardContainer />
-			</>
-		);
+		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
 		act(() => {
 			// run updateBoardPosition debounced fn
 			jest.advanceTimersToNextTimer();
@@ -399,8 +393,10 @@ describe('Board container', () => {
 			{ clientX: 0, clientY: mouseInitialPos.clientY + deltaY },
 			boardNewSizeAndPos
 		);
-		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
-		await user.click(getByRoleWithIcon('button', { icon: ICONS.reduceBoard }));
+		await user.click(getByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` }));
+		act(() => {
+			reopenBoards();
+		});
 		act(() => {
 			jest.advanceTimersToNextTimer();
 		});
@@ -415,12 +411,7 @@ describe('Board container', () => {
 	});
 
 	test('Reset size action is disabled if board is at default size', async () => {
-		const { getByRoleWithIcon } = setup(
-			<>
-				<ShellPrimaryBar />
-				<BoardContainer />
-			</>
-		);
+		const { getByRoleWithIcon } = setup(<BoardContainer />);
 		act(() => {
 			// run updateBoardPosition debounced fn
 			jest.advanceTimersToNextTimer();
@@ -432,12 +423,7 @@ describe('Board container', () => {
 	});
 
 	test('Reset size action is enabled if board is not at default size', async () => {
-		const { getByRoleWithIcon } = setup(
-			<>
-				<ShellPrimaryBar />
-				<BoardContainer />
-			</>
-		);
+		const { getByRoleWithIcon } = setup(<BoardContainer />);
 		act(() => {
 			// run updateBoardPosition debounced fn
 			jest.advanceTimersToNextTimer();
@@ -464,12 +450,7 @@ describe('Board container', () => {
 	});
 
 	test('Reset size action reset board sizes to default', async () => {
-		const { getByRoleWithIcon, user } = setup(
-			<>
-				<ShellPrimaryBar />
-				<BoardContainer />
-			</>
-		);
+		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
 		act(() => {
 			// run updateBoardPosition debounced fn
 			jest.advanceTimersToNextTimer();
@@ -509,12 +490,7 @@ describe('Board container', () => {
 	});
 
 	test('Resize of the window keeps the board top-left corner visible inside the window', async () => {
-		setup(
-			<>
-				<ShellPrimaryBar />
-				<BoardContainer />
-			</>
-		);
+		setup(<BoardContainer />);
 		act(() => {
 			// run updateBoardPosition debounced fn
 			jest.advanceTimersToNextTimer();
@@ -582,12 +558,7 @@ describe('Board container', () => {
 	});
 
 	test('Resizing down the window and then resizing it up reset board position to the last manually set', async () => {
-		setup(
-			<>
-				<ShellPrimaryBar />
-				<BoardContainer />
-			</>
-		);
+		setup(<BoardContainer />);
 		act(() => {
 			// run updateBoardPosition debounced fn
 			jest.advanceTimersToNextTimer();
@@ -671,12 +642,7 @@ describe('Board container', () => {
 	});
 
 	test('Move a board with default size set new position and keep default size', async () => {
-		setup(
-			<>
-				<ShellPrimaryBar />
-				<BoardContainer />
-			</>
-		);
+		setup(<BoardContainer />);
 		act(() => {
 			// run updateBoardPosition debounced fn
 			jest.advanceTimersToNextTimer();
@@ -703,12 +669,7 @@ describe('Board container', () => {
 	});
 
 	test('Multiple move of a board with default size set new position and keep default size', async () => {
-		setup(
-			<>
-				<ShellPrimaryBar />
-				<BoardContainer />
-			</>
-		);
+		setup(<BoardContainer />);
 		act(() => {
 			// run updateBoardPosition debounced fn
 			jest.advanceTimersToNextTimer();
@@ -750,12 +711,7 @@ describe('Board container', () => {
 	});
 
 	test('Move a board with custom size set new position and keep custom size', async () => {
-		setup(
-			<>
-				<ShellPrimaryBar />
-				<BoardContainer />
-			</>
-		);
+		setup(<BoardContainer />);
 		act(() => {
 			// run updateBoardPosition debounced fn
 			jest.advanceTimersToNextTimer();
@@ -804,12 +760,7 @@ describe('Board container', () => {
 	});
 
 	test('Resizing the board, resetting to default size and position and then moving it to a different position set the new position, but keep the default size', async () => {
-		const { getByRoleWithIcon, user } = setup(
-			<>
-				<ShellPrimaryBar />
-				<BoardContainer />
-			</>
-		);
+		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
 		act(() => {
 			// run updateBoardPosition debounced fn
 			jest.advanceTimersToNextTimer();

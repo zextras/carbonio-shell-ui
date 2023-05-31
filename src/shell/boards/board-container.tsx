@@ -261,15 +261,19 @@ export const BoardContainer = (): JSX.Element | null => {
 		() =>
 			debounce(
 				() => {
-					const newSizeAndPosition: Partial<SizeAndPosition> = {};
-					if (lastSavedBoardSizeAndPositionRef.current.width !== undefined) {
-						newSizeAndPosition.width = lastSavedBoardSizeAndPositionRef.current.width;
-					}
-					if (lastSavedBoardSizeAndPositionRef.current.height !== undefined) {
-						newSizeAndPosition.height = lastSavedBoardSizeAndPositionRef.current.height;
-					}
+					if (
+						boardContainerRef.current &&
+						boardContainerRef.current.clientHeight > 0 &&
+						boardContainerRef.current.clientWidth > 0
+					) {
+						const newSizeAndPosition: Partial<SizeAndPosition> = {};
+						if (lastSavedBoardSizeAndPositionRef.current.width !== undefined) {
+							newSizeAndPosition.width = lastSavedBoardSizeAndPositionRef.current.width;
+						}
+						if (lastSavedBoardSizeAndPositionRef.current.height !== undefined) {
+							newSizeAndPosition.height = lastSavedBoardSizeAndPositionRef.current.height;
+						}
 
-					if (boardContainerRef.current) {
 						const boardContainer = boardContainerRef.current;
 						if (lastSavedBoardSizeAndPositionRef.current.top !== undefined) {
 							newSizeAndPosition.top = calcPositionToRemainVisible(
@@ -285,8 +289,8 @@ export const BoardContainer = (): JSX.Element | null => {
 								BOARD_MIN_VISIBILITY.left
 							);
 						}
+						setCurrentBoardSizeAndPosition(newSizeAndPosition);
 					}
-					setCurrentBoardSizeAndPosition(newSizeAndPosition);
 				},
 				0,
 				{ leading: false, trailing: true }

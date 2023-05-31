@@ -24,6 +24,7 @@ import {
 import { BOARD_DEFAULT_POSITION } from './boards/board-container';
 import { SizeAndPosition } from '../utils/utils';
 import { mockedApps, setupAppStore } from '../test/test-app-utils';
+import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
 
 const ContextBridge: FC = () => {
 	const history = useHistory();
@@ -107,7 +108,6 @@ describe('Shell view', () => {
 			{ clientX: 0, clientY: mouseInitialPos.clientY + deltaY },
 			boardNewSizeAndPos
 		);
-		// FIXME: move makes collapse click not work
 		boardInitialSizeAndPos = buildBoardSizeAndPosition(boardNewSizeAndPos);
 		boardNewSizeAndPos = {
 			width: boardNewSizeAndPos.width,
@@ -133,7 +133,7 @@ describe('Shell view', () => {
 	});
 
 	test('Board keeps resized size but reset position when re-opened after being close definitively', async () => {
-		const { getAllByRoleWithIcon, user } = setup(<ShellView />);
+		const { getByRoleWithIcon, user } = setup(<ShellView />);
 		act(() => {
 			// run updateBoardPosition debounced fn
 			jest.advanceTimersToNextTimer();
@@ -156,7 +156,16 @@ describe('Shell view', () => {
 			{ clientX: 0, clientY: mouseInitialPos.clientY + deltaY },
 			boardNewSizeAndPos
 		);
-		await user.click(getAllByRoleWithIcon('button', { icon: ICONS.close })[0]);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		act(() => {
+			jest.advanceTimersToNextTimer();
+		});
+		await waitFor(() =>
+			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '')).toEqual({
+				height: boardNewSizeAndPos.height,
+				width: boardNewSizeAndPos.width
+			})
+		);
 		// update state to open a new board
 		const boards2: Record<string, Board> = {
 			'board-2': {
@@ -178,11 +187,9 @@ describe('Shell view', () => {
 		const board2Element = screen.getByTestId(TESTID_SELECTORS.board);
 		expect(board2Element).toHaveStyle({
 			...BOARD_DEFAULT_POSITION,
-			height: `${boardInitialSizeAndPos.height - deltaY}px`,
-			width: `${boardInitialSizeAndPos.width}px`
+			height: `${boardNewSizeAndPos.height}px`,
+			width: `${boardNewSizeAndPos.width}px`
 		});
-		expect(board2Element).not.toHaveStyleRule('height', '70vh');
-		expect(board2Element).not.toHaveStyleRule('width', 'auto');
 	});
 
 	test('Resizing the board, closing it, opening a new board and then moving it to a different position set the new position and keep the custom size', async () => {

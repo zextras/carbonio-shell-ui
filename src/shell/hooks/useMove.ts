@@ -51,12 +51,12 @@ export const useMove = (
 	options?: MoveOptions
 ): UseMoveReturnType => {
 	const initialSizeAndPositionRef = useRef<Parameters<typeof calcNewPosition>[0]>();
-	const lastPositionRef = useRef<Partial<ElementPosition>>({});
 	const [lastSavedPosition, setLastSavedPosition] = useLocalStorage<Partial<SizeAndPosition>>(
 		options?.localStorageKey || 'use-move-data',
 		{},
 		{ keepSynchedWithStorage: options?.keepSynchedWithStorage }
 	);
+	const lastPositionRef = useRef<Partial<ElementPosition>>(lastSavedPosition);
 	const globalCursorSetterTimerRef = useRef<ReturnType<typeof setTimeout>>();
 	const shouldUpdateLocalStorageRef = useRef(false);
 
@@ -84,8 +84,8 @@ export const useMove = (
 		if (elementToMoveRef.current) {
 			setElementSizeAndPosition(elementToMoveRef.current, 'top', lastSavedPosition.top);
 			setElementSizeAndPosition(elementToMoveRef.current, 'left', lastSavedPosition.left);
-			lastPositionRef.current = { ...lastSavedPosition };
 		}
+		lastPositionRef.current = { ...lastSavedPosition };
 	}, [elementToMoveRef, lastSavedPosition]);
 
 	const preventClick = useCallback((event: MouseEvent) => {
@@ -125,11 +125,12 @@ export const useMove = (
 		setGlobalCursor(undefined);
 		document.body.removeEventListener('mousemove', onMouseMove);
 		document.body.removeEventListener('mouseup', onMouseUp);
+		document.body.removeEventListener('click', preventClick, { capture: true });
 		if (options?.localStorageKey && shouldUpdateLocalStorageRef.current) {
 			setLastSavedPosition(lastPositionRef.current);
 			shouldUpdateLocalStorageRef.current = false;
 		}
-	}, [onMouseMove, options?.localStorageKey, setLastSavedPosition]);
+	}, [onMouseMove, options?.localStorageKey, preventClick, setLastSavedPosition]);
 
 	return useCallback(
 		(mouseDownEvent: React.MouseEvent) => {

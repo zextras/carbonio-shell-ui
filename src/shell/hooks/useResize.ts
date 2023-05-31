@@ -72,7 +72,6 @@ export const useResize = (
 	options?: ResizeOptions
 ): UseResizableReturnType => {
 	const initialSizeAndPositionRef = useRef<Parameters<typeof calcNewSizeAndPosition>[1]>();
-	const lastSizeAndPositionRef = useRef<Partial<SizeAndPosition>>({});
 	const [lastSavedSizeAndPosition, setLastSavedSizeAndPosition] = useLocalStorage<
 		Partial<SizeAndPosition>
 	>(
@@ -80,6 +79,7 @@ export const useResize = (
 		{},
 		{ keepSynchedWithStorage: options?.keepSynchedWithStorage }
 	);
+	const lastSizeAndPositionRef = useRef<Partial<SizeAndPosition>>(lastSavedSizeAndPosition);
 
 	useEffect(() => {
 		if (elementToResizeRef.current) {
@@ -88,8 +88,8 @@ export const useResize = (
 			setElementSizeAndPosition(elementToResize, 'height', lastSavedSizeAndPosition.height);
 			setElementSizeAndPosition(elementToResize, 'top', lastSavedSizeAndPosition.top);
 			setElementSizeAndPosition(elementToResize, 'left', lastSavedSizeAndPosition.left);
-			lastSizeAndPositionRef.current = { ...lastSavedSizeAndPosition };
 		}
+		lastSizeAndPositionRef.current = { ...lastSavedSizeAndPosition };
 	}, [elementToResizeRef, lastSavedSizeAndPosition]);
 
 	const resizeElement = useCallback(

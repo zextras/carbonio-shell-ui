@@ -50,11 +50,27 @@ export type DelegateProps = {
 	right: string;
 };
 
-export type AccountSettings = {
+export type BooleanString = 'TRUE' | 'FALSE';
+
+export interface AccountSettingsPrefs {
+	zimbraPrefOutOfOfficeExternalReply?: string;
+	zimbraPrefOutOfOfficeReply?: string;
+	zimbraPrefOutOfOfficeReplyEnabled?: BooleanString;
+	zimbraPrefOutOfOfficeExternalReplyEnabled?: BooleanString;
+	zimbraPrefExternalSendersType?: 'ALL' | 'ALLNOTINAB' | 'INAB' | 'INSD';
+	zimbraPrefOutOfOfficeSuppressExternalReply?: BooleanString;
+	zimbraPrefOutOfOfficeFreeBusyStatus?: 'BUSY' | 'OUTOFOFFICE';
+	zimbraPrefOutOfOfficeFromDate?: string;
+	zimbraPrefOutOfOfficeStatusAlertOnLogin?: BooleanString;
+	zimbraPrefOutOfOfficeUntilDate?: string;
+	[key: string]: string | number | Array<string | number>;
+}
+
+export interface AccountSettings {
 	attrs: Record<string, string | number | Array<string | number>>;
-	prefs: Record<string, string | number | Array<string | number>>;
+	prefs: AccountSettingsPrefs;
 	props: Array<ZimletProp>;
-};
+}
 
 export type AccountRightTargetEmail = {
 	addr: string;

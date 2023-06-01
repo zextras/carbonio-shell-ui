@@ -17,7 +17,7 @@ import {
 import styled, { SimpleInterpolation } from 'styled-components';
 import { ScalingSettings } from '../../../../types/settings';
 import { BASE_FONT_SIZE, SCALING_OPTIONS } from '../../../constants';
-import { getAutoScalingFontSize } from '../utils';
+import { getAutoScalingFontSize, ResetComponentImperativeHandler } from '../utils';
 
 const ScalingSliderContainer = styled(Container)`
 	box-shadow: 0px 0px 4px rgba(166, 166, 166, 0.5);
@@ -39,9 +39,8 @@ interface ScalingSettingSectionProps {
 		value: ScalingSettings[keyof ScalingSettings]
 	) => void;
 	cleanLocalStoreChange: (key: keyof ScalingSettings) => void;
+	resetRef: React.RefObject<ResetComponentImperativeHandler>;
 }
-
-export type ScalingSettingSectionRef = { reset: () => void };
 
 const BASE_FONT_OPTION_INDEX = SCALING_OPTIONS.findIndex(
 	(option) => option.value === BASE_FONT_SIZE
@@ -52,13 +51,12 @@ const AUTOSCALING_FONT_OPTION_INDEX = SCALING_OPTIONS.findIndex(
 	(option) => option.value === AUTOSCALING_FONT_SIZE
 );
 
-export const ScalingSettingSection = React.forwardRef<
-	ScalingSettingSectionRef,
-	ScalingSettingSectionProps
->(function ScalingSettingSectionFn(
-	{ scalingSettings, addLocalStoreChange, cleanLocalStoreChange }: ScalingSettingSectionProps,
-	ref
-) {
+export const ScalingSettingSection = ({
+	scalingSettings,
+	addLocalStoreChange,
+	cleanLocalStoreChange,
+	resetRef
+}: ScalingSettingSectionProps): JSX.Element => {
 	const [t] = useTranslation();
 
 	const [scalingOptionValues, scalingOptionLabels] = useMemo<[number[], string[]]>(
@@ -154,7 +152,7 @@ export const ScalingSettingSection = React.forwardRef<
 		[]
 	);
 
-	useImperativeHandle(ref, () => ({
+	useImperativeHandle(resetRef, () => ({
 		reset: (): void => {
 			setScalingValue(savedOptionIndex);
 			setAutoScaling(scalingSettings['settings.appearance_setting.auto'] ?? true);
@@ -295,4 +293,4 @@ export const ScalingSettingSection = React.forwardRef<
 			</ExampleContainer>
 		</Container>
 	);
-});
+};

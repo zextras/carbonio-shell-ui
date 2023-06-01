@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { AccountRights, ZimletProp } from '../account';
+import { AccountRights, AccountSettings, ZimletProp } from '../account';
 import { Tag } from '../tags';
 import { AccountACEInfo, Identity } from './entities';
 
@@ -120,12 +120,12 @@ export type IdentityMods = {
 
 export type PrefsMods = Record<string, unknown>;
 
-export type Mods = Record<string, Record<string, unknown>> & {
+export interface Mods extends Record<string, Record<string, unknown>>, Partial<AccountSettings> {
 	props?: PropsMods;
 	prefs?: PrefsMods;
 	permissions?: PermissionsMods;
 	identity?: IdentityMods;
-};
+}
 
 export type AddMod = (
 	type: keyof Mods,

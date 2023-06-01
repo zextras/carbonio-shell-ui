@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/zextras/carbonio-shell-ui/compare/v3.0.2...v3.1.0) (2023-05-25)
+
+
+### Features
+
+* improve board tabs behavior ([a60331c](https://github.com/zextras/carbonio-shell-ui/commit/a60331ce3e91ece0c2f1c96b66b9bad5a080b943)), closes [#248](https://github.com/zextras/carbonio-shell-ui/issues/248)
+
+
+### Bug Fixes
+
+* do not unmount boards in mobile responsive mode ([697e1e0](https://github.com/zextras/carbonio-shell-ui/commit/697e1e08e210b24ce144145c336c7f084c4aeb4b)), closes [#239](https://github.com/zextras/carbonio-shell-ui/issues/239)
+
 ### [3.0.2](https://github.com/zextras/carbonio-shell-ui/compare/v3.0.1...v3.0.2) (2023-05-03)
 
 

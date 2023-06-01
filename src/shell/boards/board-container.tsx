@@ -90,7 +90,7 @@ interface ListItemContentProps {
 	icon?: string;
 	label: string;
 	selected?: boolean;
-	app: string;
+	app?: string;
 	boardId: string;
 }
 
@@ -146,7 +146,7 @@ export const BoardContainer: FC = () => {
 							label={boards[boardId].title}
 							icon={boards[boardId].icon}
 							selected={boardId === current}
-							app={getApp(boards[boardId].app)().display}
+							app={getApp(boards[boardId].app)()?.display}
 							boardId={boardId}
 						/>
 					)

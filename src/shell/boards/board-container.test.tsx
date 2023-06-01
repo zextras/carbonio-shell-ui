@@ -3,10 +3,11 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React from 'react';
+import React, { ComponentType } from 'react';
 import { act, screen, waitFor, within } from '@testing-library/react';
 import { reduce, sample, size } from 'lodash';
 import 'jest-styled-components';
+import { Input } from '@zextras/carbonio-design-system';
 import { setup } from '../../test/utils';
 import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
 import { ICONS, TESTID_SELECTORS } from '../../test/constants';
@@ -22,10 +23,11 @@ import {
 	mockedBoardState
 } from '../../test/test-board-utils';
 import { SizeAndPosition } from '../../utils/utils';
-import { Board } from '../../../types';
 import { reopenBoards, useBoardStore } from '../../store/boards';
 import { mockedApps, setupAppStore } from '../../test/test-app-utils';
 import { BOARD_MIN_VISIBILITY, LOCAL_STORAGE_BOARD_SIZE } from '../../constants';
+import { Board, BoardView } from '../../../types';
+import { useAppStore } from '../../store/app';
 
 beforeEach(() => {
 	setupAppStore();
@@ -861,5 +863,29 @@ describe('Board container', () => {
 			left: `${boardNewPosition.left}px`,
 			top: `${boardNewPosition.top}px`
 		});
+	});
+
+	test('Double click inside a focused input select the text', async () => {
+		const boardObj = sample(mockedBoardState) as Board;
+		setupBoardStore(boardObj.id, { [boardObj.id]: boardObj });
+		const boardView: BoardView = {
+			id: boardObj.id,
+			app: boardObj.app,
+			route: boardObj.url,
+			component: (): JSX.Element => <Input label={'Board input'} />
+		};
+		useAppStore.getState().setters.addBoardView(boardView);
+		const { user } = setup(<BoardContainer />);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
+		const inputElement = screen.getByRole<HTMLInputElement>('textbox', { name: /board input/i });
+		expect(inputElement).toBeVisible();
+		const typedText = 'wonderful';
+		await user.type(inputElement, typedText);
+		await user.dblClick(screen.getByDisplayValue(typedText));
+		expect(inputElement.selectionStart).toBe(0);
+		expect(inputElement.selectionEnd).toBe(typedText.length);
 	});
 });

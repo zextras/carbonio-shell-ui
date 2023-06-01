@@ -134,7 +134,6 @@ export const useMove = (
 	return useCallback(
 		(mouseDownEvent: React.MouseEvent) => {
 			if (!mouseDownEvent.defaultPrevented && elementToMoveRef.current) {
-				mouseDownEvent.preventDefault();
 				const clientRect = elementToMoveRef.current.getBoundingClientRect();
 				initialSizeAndPositionRef.current = {
 					width: elementToMoveRef.current.offsetWidth,

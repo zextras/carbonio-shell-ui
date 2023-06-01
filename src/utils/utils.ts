@@ -43,6 +43,6 @@ export function setElementSizeAndPosition(
 	element.style[key] = value !== undefined ? `${value}px` : '';
 }
 
-export function preventDefault(event: Event | React.SyntheticEvent): void {
-	event.preventDefault();
+export function stopPropagation(event: Event | React.SyntheticEvent): void {
+	event.stopPropagation();
 }

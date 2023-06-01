@@ -117,9 +117,10 @@ function ListItemContent({
 					{label}
 				</Text>
 				<Text size={'small'} weight={selected ? 'bold' : 'regular'} color={'secondary'}>
-					{t('board.from_app', 'From {{app}}', {
-						app
-					})}
+					{app &&
+						t('board.from_app', 'From {{app}}', {
+							app
+						})}
 				</Text>
 			</OverflowContainer>
 			<IconButton icon={'CloseOutline'} size={'large'} onClick={onClose} />

@@ -219,6 +219,7 @@ export const BoardContainer = (): JSX.Element | null => {
 
 	const resetSizeAndPosition = useCallback(() => {
 		setLastSavedBoardSize({});
+		reduceBoards();
 	}, [setLastSavedBoardSize]);
 
 	useEffect(() => {

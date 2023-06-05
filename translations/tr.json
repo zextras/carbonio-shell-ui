@@ -118,7 +118,8 @@
         "hide": "Panoyu gizle",
         "reduce": "Panoyu küçült",
         "show_tabs": "Diğer sekmeleri göster",
-        "open_app": "Uygulamada aç"
+        "open_app": "Uygulamada aç",
+        "from_app": "Nereden: {{app}}"
     },
     "label": {
         "cancel": "İptal",

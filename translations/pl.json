@@ -189,7 +189,8 @@
         "hide": "Ukryj okienko",
         "reduce": "Zmniejsz okienko",
         "show_tabs": "Pokaż inne karty",
-        "open_app": "Otwórz w aplikacji"
+        "open_app": "Otwórz w aplikacji",
+        "from_app": "Z aplikacji {{app}}"
     },
     "locale": {
         "italian": "Włoski",

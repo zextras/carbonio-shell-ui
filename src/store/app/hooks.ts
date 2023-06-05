@@ -21,7 +21,8 @@ export const useAppList = (): Array<CarbonioModule> => {
 export const getAppList = (): Array<CarbonioModule> =>
 	sortBy(useAppStore.getState().apps, (a) => a.priority);
 
-export const getApp = (appId: string) => (): CarbonioModule => useAppStore.getState().apps[appId];
+export const getApp = (appId: string) => (): CarbonioModule | undefined =>
+	useAppStore.getState().apps[appId];
 export const getApps = (): Record<string, CarbonioModule> => useAppStore.getState().apps;
 
 export const useAppContext = (appId: string) => (): unknown =>

@@ -118,7 +118,7 @@ export async function resizeBoard(
 	fireEvent.mouseMove(document.body, mouseNewPosition);
 	fireEvent.mouseUp(document.body);
 	await waitFor(() =>
-		expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '')).toEqual(
+		expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '{}')).toEqual(
 			boardNewPosition
 		)
 	);

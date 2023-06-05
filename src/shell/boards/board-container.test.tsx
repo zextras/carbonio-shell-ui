@@ -84,7 +84,6 @@ describe('Board container', () => {
 			expect(chevronDownIcon).toBeVisible();
 
 			await user.click(chevronDownIcon);
-
 			expect(screen.getAllByText('From Mails')).toHaveLength(10);
 		});
 
@@ -669,6 +668,9 @@ describe('Board container', () => {
 		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.resetBoardSize }));
+		await waitFor(() =>
+			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '{}')).toEqual({})
+		);
 		expect(board).toHaveStyle({
 			height: '70vh',
 			width: 'auto',

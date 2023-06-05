@@ -110,7 +110,7 @@ const Board = styled(Container)<{ expanded: boolean }>`
 	box-shadow: 0 0.125rem 0.3125rem 0 rgba(125, 125, 125, 0.5);
 	pointer-events: auto;
 	max-height: 100%;
-	max-width: calc(100% - ${BOARD_DEFAULT_POSITION.left});
+	max-width: 100%;
 	${({ expanded }): SimpleInterpolation =>
 		expanded &&
 		css`

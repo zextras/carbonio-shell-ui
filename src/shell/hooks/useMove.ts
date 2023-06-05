@@ -147,8 +147,8 @@ export const useMove = (
 				};
 				globalCursorSetterTimerRef.current = setTimeout(() => {
 					setGlobalCursor('move');
+					document.body.addEventListener('mousemove', onMouseMove);
 				}, BOARD_CURSOR_TIMEOUT);
-				document.body.addEventListener('mousemove', onMouseMove);
 				document.body.addEventListener('mouseup', onMouseUp);
 			}
 		},

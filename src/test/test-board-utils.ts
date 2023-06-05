@@ -140,7 +140,7 @@ export async function moveBoard(
 	fireEvent.mouseDown(elementForMove, mouseInitialPosition);
 	act(() => {
 		// run move timer
-		jest.advanceTimersToNextTimer();
+		jest.runOnlyPendingTimers();
 	});
 	fireEvent.mouseMove(document.body, mouseNewPosition);
 	fireEvent.mouseUp(document.body);

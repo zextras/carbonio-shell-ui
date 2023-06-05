@@ -4,11 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Responsive, Row } from '@zextras/carbonio-design-system';
+import { Row } from '@zextras/carbonio-design-system';
 import { PreviewManager } from '@zextras/carbonio-ui-preview';
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import type { AppRoute } from '../../types';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 import { IS_STANDALONE } from '../constants';
 import { useCurrentRoute } from '../history/hooks';

@@ -6,7 +6,6 @@
 
 import React, {
 	createContext,
-	CSSProperties,
 	useCallback,
 	useEffect,
 	useLayoutEffect,

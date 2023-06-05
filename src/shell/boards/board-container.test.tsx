@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { ComponentType } from 'react';
+import React from 'react';
 import { act, screen, waitFor, within } from '@testing-library/react';
 import { reduce, sample, size } from 'lodash';
 import 'jest-styled-components';

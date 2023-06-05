@@ -9,7 +9,6 @@ import { isEmpty, map } from 'lodash';
 import React from 'react';
 import styled from 'styled-components';
 import { useBoardStore } from '../../store/boards';
-import { getT } from '../../store/i18n';
 import { AppBoardTab } from './board-tab';
 
 const CustomRow = styled(Row)`

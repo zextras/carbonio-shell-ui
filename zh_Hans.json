@@ -378,7 +378,8 @@
         "hide": "隐藏看板",
         "reduce": "缩小看板",
         "show_tabs": "显示其他标签页",
-        "open_app": "在应用中打开"
+        "open_app": "在应用中打开",
+        "from_app": "来自{{app}}"
     },
     "feedback": {
         "other": "其他",

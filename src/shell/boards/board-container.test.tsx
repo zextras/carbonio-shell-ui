@@ -643,6 +643,39 @@ describe('Board container', () => {
 		});
 	});
 
+	test('Reset size action reduce board if enlarged', async () => {
+		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
+		const border: Border = 'n';
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
+		const deltaY = -50;
+		const boardNewSizeAndPos: SizeAndPosition = {
+			height: boardInitialSizeAndPos.height - deltaY,
+			width: boardInitialSizeAndPos.width,
+			top: boardInitialSizeAndPos.top + deltaY,
+			left: boardInitialSizeAndPos.left
+		};
+		await resizeBoard(
+			board,
+			boardInitialSizeAndPos,
+			border,
+			{ clientX: 0, clientY: mouseInitialPos.clientY + deltaY },
+			boardNewSizeAndPos
+		);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.resetBoardSize }));
+		expect(board).toHaveStyle({
+			height: '70vh',
+			width: 'auto',
+			...BOARD_DEFAULT_POSITION
+		});
+	});
+
 	test('Move a board with default size set new position and keep default size', async () => {
 		setup(<BoardContainer />);
 		act(() => {

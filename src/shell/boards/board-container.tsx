@@ -341,8 +341,6 @@ export const BoardContainer = (): JSX.Element | null => {
 					ref={boardRef}
 					width={currentBoardSizeAndPosition.width}
 					height={currentBoardSizeAndPosition.height}
-					maxWidth={(isDefaultSizeAndPosition && '100%') || undefined}
-					maxHeight={(isDefaultSizeAndPosition && '100%') || undefined}
 					onMouseDown={(!expanded && moveElementHandler) || undefined}
 				>
 					<ResizableContainer

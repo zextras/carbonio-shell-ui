@@ -111,6 +111,9 @@ const GlobalStyle = createGlobalStyle<GlobalStyledProps>`
 				}
 			`
 		)}
+  .no-active-background:active {
+	  background-color: inherit;
+  }
 `;
 
 interface ThemeProviderProps {

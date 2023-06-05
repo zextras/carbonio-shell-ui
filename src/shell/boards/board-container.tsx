@@ -223,7 +223,7 @@ export const BoardContainer = (): JSX.Element | null => {
 		lastSavedBoardSizeAndPosition
 	);
 	const lastSavedBoardSizeAndPositionRef = useRef(lastSavedBoardSizeAndPosition);
-	const moveElementHandler = useMove(boardRef, {
+	const [isMoving, moveElementHandler] = useMove(boardRef, {
 		localStorageKey: LOCAL_STORAGE_BOARD_SIZE
 	});
 
@@ -353,7 +353,7 @@ export const BoardContainer = (): JSX.Element | null => {
 					>
 						<BoardHeader background={'gray5'}>
 							<Padding all="extrasmall">
-								<Tooltip label={t('board.hide', 'Hide board')} placement="top">
+								<Tooltip label={t('board.hide', 'Hide board')} placement="top" disabled={isMoving}>
 									<BackButton icon="BoardCollapseOutline" onClick={clickHandler(minimizeBoards)} />
 								</Tooltip>
 							</Padding>
@@ -361,7 +361,11 @@ export const BoardContainer = (): JSX.Element | null => {
 							<Actions padding={{ all: 'extrasmall' }}>
 								{boards[current]?.context?.onReturnToApp && (
 									<Padding right="extrasmall">
-										<Tooltip label={t('board.open_app', 'Open in app')} placement="top">
+										<Tooltip
+											label={t('board.open_app', 'Open in app')}
+											placement="top"
+											disabled={isMoving}
+										>
 											<IconButton
 												icon={'DiagonalArrowRightUp'}
 												onClick={clickHandler(onGoToPanel)}
@@ -370,7 +374,11 @@ export const BoardContainer = (): JSX.Element | null => {
 									</Padding>
 								)}
 								<Container gap={'0.25rem'} orientation={'horizontal'} width={'fit'} height={'fit'}>
-									<Tooltip label={t('board.show_tabs', 'Show other tabs')} placement="top">
+									<Tooltip
+										label={t('board.show_tabs', 'Show other tabs')}
+										placement="top"
+										disabled={isMoving}
+									>
 										<Dropdown items={boardDropdownItems}>
 											<IconButton icon={'ChevronDown'} onClick={clickHandler(noop)} />
 										</Dropdown>
@@ -382,6 +390,7 @@ export const BoardContainer = (): JSX.Element | null => {
 												: t('board.reset_size.enabled', 'Return to default position and size')
 										}
 										placement="top"
+										disabled={isMoving}
 									>
 										<IconButton
 											icon={'DiagonalArrowLeftDown'}
@@ -396,6 +405,7 @@ export const BoardContainer = (): JSX.Element | null => {
 												: t('board.enlarge', 'Enlarge board')
 										}
 										placement="top"
+										disabled={isMoving}
 									>
 										<IconButton
 											icon={expanded ? 'CollapseOutline' : 'ExpandOutline'}
@@ -403,7 +413,11 @@ export const BoardContainer = (): JSX.Element | null => {
 										/>
 									</Tooltip>
 								</Container>
-								<Tooltip label={t('board.close_tabs', 'Close all your tabs')} placement="top">
+								<Tooltip
+									label={t('board.close_tabs', 'Close all your tabs')}
+									placement="top"
+									disabled={isMoving}
+								>
 									<IconButton icon="CloseOutline" onClick={clickHandler(closeAllBoards)} />
 								</Tooltip>
 							</Actions>

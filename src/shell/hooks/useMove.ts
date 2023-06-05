@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { forEach } from 'lodash';
 import {
 	ElementPosition,
@@ -13,7 +13,7 @@ import {
 } from '../../utils/utils';
 import { useLocalStorage } from './useLocalStorage';
 
-type UseMoveReturnType = React.MouseEventHandler;
+type UseMoveReturnType = [isMoving: boolean, moveHandler: React.MouseEventHandler];
 type MoveOptions = {
 	localStorageKey?: string;
 	keepSynchedWithStorage?: boolean;
@@ -50,6 +50,8 @@ export const useMove = (
 	elementToMoveRef: React.RefObject<HTMLElement>,
 	options?: MoveOptions
 ): UseMoveReturnType => {
+	const [isMoving, setIsMoving] = useState(false);
+
 	const initialSizeAndPositionRef = useRef<Parameters<typeof calcNewPosition>[0]>();
 	const [lastSavedPosition, setLastSavedPosition] = useLocalStorage<Partial<SizeAndPosition>>(
 		options?.localStorageKey || 'use-move-data',
@@ -110,28 +112,30 @@ export const useMove = (
 					left: newPosition.left,
 					top: newPosition.top
 				});
-				// prevent clickable elements from being clicked if a move has been made
-				document.body.addEventListener('click', preventClick, { capture: true });
 				shouldUpdateLocalStorageRef.current = true;
 			}
 		},
-		[elementToMoveRef, moveElement, preventClick]
+		[elementToMoveRef, moveElement]
 	);
 
 	const onMouseUp = useCallback(() => {
 		if (globalCursorSetterTimerRef.current) {
 			clearTimeout(globalCursorSetterTimerRef.current);
 		}
+		setIsMoving(false);
 		setGlobalCursor(undefined);
 		document.body.removeEventListener('mousemove', onMouseMove);
 		document.body.removeEventListener('mouseup', onMouseUp);
+		if (document.activeElement && document.activeElement instanceof HTMLElement) {
+			document.activeElement.classList.remove('no-active-background');
+		}
 		if (options?.localStorageKey && shouldUpdateLocalStorageRef.current) {
 			setLastSavedPosition(lastPositionRef.current);
 			shouldUpdateLocalStorageRef.current = false;
 		}
 	}, [onMouseMove, options?.localStorageKey, setLastSavedPosition]);
 
-	return useCallback(
+	const moveHandler = useCallback(
 		(mouseDownEvent: React.MouseEvent) => {
 			if (!mouseDownEvent.defaultPrevented && elementToMoveRef.current) {
 				const clientRect = elementToMoveRef.current.getBoundingClientRect();
@@ -146,12 +150,20 @@ export const useMove = (
 					mouseClientX: mouseDownEvent.clientX
 				};
 				globalCursorSetterTimerRef.current = setTimeout(() => {
+					if (document.activeElement && document.activeElement instanceof HTMLElement) {
+						document.activeElement.classList.add('no-active-background');
+					}
 					setGlobalCursor('move');
 					document.body.addEventListener('mousemove', onMouseMove);
+					// prevent clickable elements from being clicked if a move has been made
+					document.body.addEventListener('click', preventClick, { capture: true });
+					setIsMoving(true);
 				}, BOARD_CURSOR_TIMEOUT);
 				document.body.addEventListener('mouseup', onMouseUp);
 			}
 		},
-		[elementToMoveRef, onMouseMove, onMouseUp]
+		[elementToMoveRef, onMouseMove, onMouseUp, preventClick]
 	);
+
+	return [isMoving, moveHandler];
 };

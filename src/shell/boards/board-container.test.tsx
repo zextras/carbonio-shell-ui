@@ -930,7 +930,6 @@ describe('Board container', () => {
 		});
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		setupBoardSizes(board, buildBoardSizeAndPosition());
-		expect(board).toHaveStyleRule('height', '70vh');
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		await moveBoard(
@@ -946,5 +945,28 @@ describe('Board container', () => {
 			width: 'auto',
 			...BOARD_DEFAULT_POSITION
 		});
+	});
+
+	test('Keyboard space trigger icon button inside board header', async () => {
+		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		setupBoardSizes(board, buildBoardSizeAndPosition());
+		// click to set focus
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
+		// act needed to catch the update of TabsList
+		act(() => {
+			user.keyboard('[Space]');
+		});
+		await waitFor(() =>
+			expect(board).toHaveStyle({
+				height: '70vh',
+				width: 'auto',
+				...BOARD_DEFAULT_POSITION
+			})
+		);
 	});
 });

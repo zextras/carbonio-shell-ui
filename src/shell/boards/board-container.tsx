@@ -307,11 +307,13 @@ export const BoardContainer = (): JSX.Element | null => {
 	}, [updateBoardPosition]);
 
 	useEffect(() => {
-		lastSavedBoardSizeAndPositionRef.current = { ...lastSavedBoardSizeAndPosition };
-		if (size(lastSavedBoardSizeAndPosition) > 0) {
-			updateBoardPosition();
-		} else {
-			setCurrentBoardSizeAndPosition({});
+		if (boardRef.current) {
+			lastSavedBoardSizeAndPositionRef.current = { ...lastSavedBoardSizeAndPosition };
+			if (size(lastSavedBoardSizeAndPosition) > 0) {
+				updateBoardPosition();
+			} else {
+				setCurrentBoardSizeAndPosition({});
+			}
 		}
 
 		return (): void => {
@@ -323,7 +325,7 @@ export const BoardContainer = (): JSX.Element | null => {
 		(onClickFn: IconButtonProps['onClick']) => IconButtonProps['onClick']
 	>(
 		(clickFn) => (event) => {
-			if (!event.defaultPrevented) {
+			if (event.type !== 'click' || !event.defaultPrevented) {
 				clickFn(event);
 			}
 		},

@@ -378,7 +378,8 @@
         "hide": "Sembunyikan papan",
         "reduce": "Persempit papan",
         "show_tabs": "Tampilkan tab lainnya",
-        "open_app": "Buka di aplikasi"
+        "open_app": "Buka di aplikasi",
+        "from_app": "Dari {{app}}"
     },
     "messages": {
         "permanent_delete_title": "Anda yakin ingin menghapus elemen ini secara permanen?",

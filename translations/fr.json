@@ -332,7 +332,8 @@
         "hide": "Cacher le panneau",
         "reduce": "Réduire le panneau",
         "show_tabs": "Montrer les autres onglets",
-        "open_app": "Ouvrir dans l'application"
+        "open_app": "Ouvrir dans l'application",
+        "from_app": "De {{app}}"
     },
     "locale": {
         "English": "Anglais",

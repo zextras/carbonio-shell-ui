@@ -107,6 +107,7 @@ export const FOLDER_VIEW = {
 export const LOCAL_STORAGE_SETTINGS_KEY = 'settings';
 export const LOCAL_STORAGE_LAST_PRIMARY_KEY = 'config';
 export const LOCAL_STORAGE_SEARCH_KEY = 'search_suggestions';
+export const LOCAL_STORAGE_BOARD_SIZE = 'board_size';
 export const SCALING_OPTIONS = [
 	{ value: 75, label: 'xs' },
 	{ value: 87.5, label: 's' },
@@ -132,3 +133,13 @@ export enum ResultLabelType {
 	WARNING = 'warning',
 	ERROR = 'error'
 }
+
+export const HEADER_BAR_HEIGHT = '3.75rem';
+export const PRIMARY_BAR_WIDTH = '3.0625rem';
+export const BOARD_HEADER_HEIGHT = '3rem';
+export const BOARD_TAB_WIDTH = 'calc(3rem + 15ch)';
+export const BOARD_CONTAINER_ZINDEX = 10;
+export const BOARD_MIN_VISIBILITY = {
+	top: 50,
+	left: 30
+};

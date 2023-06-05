@@ -6,6 +6,7 @@
 
 import React, {
 	createContext,
+	CSSProperties,
 	useCallback,
 	useEffect,
 	useLayoutEffect,
@@ -19,13 +20,13 @@ import {
 } from '@zextras/carbonio-design-system';
 import { auto, disable, enable, setFetchMethod } from 'darkreader';
 import { reduce } from 'lodash';
-import { createGlobalStyle, DefaultTheme } from 'styled-components';
+import { createGlobalStyle, css, DefaultTheme, SimpleInterpolation } from 'styled-components';
 import { DarkReaderPropValues, ThemeExtension } from '../../types';
 import { darkReaderDynamicThemeFixes, LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
-import { useLocalStorage } from '../shell/hooks';
 import { ScalingSettings } from '../../types/settings';
 import { getAutoScalingFontSize } from '../settings/components/utils';
 import { useGetPrimaryColor } from './use-get-primary-color';
+import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 
 setFetchMethod(window.fetch);
 
@@ -89,6 +90,21 @@ const GlobalStyle = createGlobalStyle<GlobalStyledProps>`
   html {
     font-size: ${({ baseFontSize }): string => `${baseFontSize}%`};
   }
+  ${(): SimpleInterpolation => {
+		const resizeCursors: Array<CSSProperties['cursor']> = [
+			'ns-resize',
+			'ew-resize',
+			'nesw-resize',
+			'nwse-resize'
+		];
+		return resizeCursors.map(
+			(cursor) => css`
+				.global-cursor-${cursor} * {
+					cursor: ${cursor};
+				}
+			`
+		);
+	}}
 `;
 
 interface ThemeProviderProps {
@@ -172,9 +188,14 @@ export const ThemeProvider = ({ children }: ThemeProviderProps): JSX.Element => 
 		return getAutoScalingFontSize();
 	}, [localStorageSettings]);
 
+	const themeCallbacksContextValue = useMemo<ThemeCallbacks>(
+		() => ({ addExtension, setDarkReaderState }),
+		[addExtension]
+	);
+
 	return (
 		<UIThemeProvider extension={aggregatedExtensions}>
-			<ThemeCallbacksContext.Provider value={{ addExtension, setDarkReaderState }}>
+			<ThemeCallbacksContext.Provider value={themeCallbacksContextValue}>
 				<GlobalStyle baseFontSize={baseFontSize} />
 				{children}
 			</ThemeCallbacksContext.Provider>

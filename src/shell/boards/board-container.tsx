@@ -343,7 +343,7 @@ export const BoardContainer = (): JSX.Element | null => {
 					height={currentBoardSizeAndPosition.height}
 					maxWidth={(isDefaultSizeAndPosition && '100%') || undefined}
 					maxHeight={(isDefaultSizeAndPosition && '100%') || undefined}
-					onMouseDown={moveElementHandler}
+					onMouseDown={(!expanded && moveElementHandler) || undefined}
 				>
 					<ResizableContainer
 						crossAlignment={'unset'}

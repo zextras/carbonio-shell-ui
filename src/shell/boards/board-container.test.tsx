@@ -888,4 +888,30 @@ describe('Board container', () => {
 		expect(inputElement.selectionStart).toBe(0);
 		expect(inputElement.selectionEnd).toBe(typedText.length);
 	});
+
+	test('Move board is disabled on enlarged board', async () => {
+		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		setupBoardSizes(board, buildBoardSizeAndPosition());
+		expect(board).toHaveStyleRule('height', '70vh');
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
+		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		await moveBoard(
+			board,
+			boardInitialSizeAndPos,
+			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
+			{ clientX: 0, clientY: 0 },
+			{}
+		);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.reduceBoard }));
+		expect(board).toHaveStyle({
+			height: '70vh',
+			width: 'auto',
+			...BOARD_DEFAULT_POSITION
+		});
+	});
 });

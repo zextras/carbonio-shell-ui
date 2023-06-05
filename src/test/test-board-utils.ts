@@ -146,7 +146,7 @@ export async function moveBoard(
 	fireEvent.mouseUp(document.body);
 	fireEvent.click(elementForMove);
 	await waitFor(() =>
-		expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '')).toEqual(
+		expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '{}')).toEqual(
 			boardNewPosition
 		)
 	);

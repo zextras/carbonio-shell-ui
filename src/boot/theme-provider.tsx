@@ -107,7 +107,7 @@ const GlobalStyle = createGlobalStyle<GlobalStyledProps>`
 			theme.globalCursors,
 			(cursor) => css`
 				.global-cursor-${cursor} * {
-					cursor: ${cursor};
+					cursor: ${cursor} !important;
 				}
 			`
 		)}

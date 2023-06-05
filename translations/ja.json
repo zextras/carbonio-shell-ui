@@ -378,7 +378,8 @@
         "hide": "ボードを隠す",
         "reduce": "ボードを減らす",
         "show_tabs": "他のタブを表示する",
-        "open_app": "アプリで開く"
+        "open_app": "アプリで開く",
+        "from_app": "{{app}}から"
     },
     "feedback": {
         "behaviors": "行動",

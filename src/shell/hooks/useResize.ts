@@ -82,15 +82,8 @@ export const useResize = (
 	const lastSizeAndPositionRef = useRef<Partial<SizeAndPosition>>(lastSavedSizeAndPosition);
 
 	useEffect(() => {
-		if (elementToResizeRef.current) {
-			const elementToResize = elementToResizeRef.current;
-			setElementSizeAndPosition(elementToResize, 'width', lastSavedSizeAndPosition.width);
-			setElementSizeAndPosition(elementToResize, 'height', lastSavedSizeAndPosition.height);
-			setElementSizeAndPosition(elementToResize, 'top', lastSavedSizeAndPosition.top);
-			setElementSizeAndPosition(elementToResize, 'left', lastSavedSizeAndPosition.left);
-		}
 		lastSizeAndPositionRef.current = { ...lastSavedSizeAndPosition };
-	}, [elementToResizeRef, lastSavedSizeAndPosition]);
+	}, [lastSavedSizeAndPosition]);
 
 	const resizeElement = useCallback(
 		({ width, height, top, left }: SizeAndPosition) => {

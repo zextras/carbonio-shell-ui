@@ -83,10 +83,6 @@ export const useMove = (
 	);
 
 	useEffect(() => {
-		if (elementToMoveRef.current) {
-			setElementSizeAndPosition(elementToMoveRef.current, 'top', lastSavedPosition.top);
-			setElementSizeAndPosition(elementToMoveRef.current, 'left', lastSavedPosition.left);
-		}
 		lastPositionRef.current = { ...lastSavedPosition };
 	}, [elementToMoveRef, lastSavedPosition]);
 

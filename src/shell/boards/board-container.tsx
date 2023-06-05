@@ -231,6 +231,7 @@ export const BoardContainer = (): JSX.Element | null => {
 		() => size(currentBoardSizeAndPosition) === 0,
 		[currentBoardSizeAndPosition]
 	);
+	const isBoardEmpty = useMemo(() => isEmpty(boards), [boards]);
 
 	const resetSizeAndPosition = useCallback(() => {
 		setLastSavedBoardSizeAndPosition({});
@@ -239,14 +240,14 @@ export const BoardContainer = (): JSX.Element | null => {
 
 	useEffect(() => {
 		// reset position when the board is closed
-		if (isEmpty(boards)) {
+		if (isBoardEmpty) {
 			setLastSavedBoardSizeAndPosition((prevState) => ({
 				...prevState,
 				left: undefined,
 				top: undefined
 			}));
 		}
-	}, [boards, setLastSavedBoardSizeAndPosition]);
+	}, [isBoardEmpty, setLastSavedBoardSizeAndPosition]);
 
 	useEffect(() => {
 		if (boardRef.current) {
@@ -333,7 +334,7 @@ export const BoardContainer = (): JSX.Element | null => {
 	);
 
 	return (
-		(!isEmpty(boards) && current && (
+		(!isBoardEmpty && current && (
 			<BoardContainerComp expanded={expanded} minimized={minimized} ref={boardContainerRef}>
 				<Board
 					data-testid="NewItemContainer"

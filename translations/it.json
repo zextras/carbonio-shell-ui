@@ -118,7 +118,8 @@
         "show_tabs": "Mostra altre schede",
         "hide": "Nascondi finestra",
         "reduce": "Riduci finestra",
-        "open_app": "Apri nell'applicazione"
+        "open_app": "Apri nell'applicazione",
+        "from_app": "Da {{app}}"
     },
     "label": {
         "cancel": "Elimina",

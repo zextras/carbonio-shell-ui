@@ -20,7 +20,7 @@ import { Loader } from './loader';
 
 const ContextBridge = (): null => {
 	const history = useHistory();
-	const createSnackbar = useContext(SnackbarManagerContext);
+	const createSnackbar = useSnackbar();
 	const createModal = useContext(ModalManagerContext);
 	useBridge({
 		functions: {

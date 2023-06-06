@@ -21,7 +21,7 @@ import { Loader } from './loader';
 const ContextBridge = (): null => {
 	const history = useHistory();
 	const createSnackbar = useSnackbar();
-	const createModal = useContext(ModalManagerContext);
+	const createModal = useModal();
 	useBridge({
 		functions: {
 			getHistory: () => history,

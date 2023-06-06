@@ -308,13 +308,17 @@ export const BoardContainer = (): JSX.Element | null => {
 	}, [updateBoardPosition]);
 
 	useEffect(() => {
+		lastSavedBoardSizeAndPositionRef.current = { ...lastSavedBoardSizeAndPosition };
+		// if there is a board open, then update the size and position based on the window
 		if (boardRef.current) {
-			lastSavedBoardSizeAndPositionRef.current = { ...lastSavedBoardSizeAndPosition };
 			if (size(lastSavedBoardSizeAndPosition) > 0) {
 				updateBoardPosition();
 			} else {
 				setCurrentBoardSizeAndPosition({});
 			}
+		} else {
+			// otherwise just align the current with the local storage data (refresh case, board is closed)
+			setCurrentBoardSizeAndPosition({ ...lastSavedBoardSizeAndPosition });
 		}
 
 		return (): void => {

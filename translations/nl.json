@@ -378,7 +378,8 @@
         "hide": "Board verbergen",
         "reduce": "Board verkleinen",
         "show_tabs": "Andere tabs tonen",
-        "open_app": "In app openen"
+        "open_app": "In app openen",
+        "from_app": "Van {{app}}"
     },
     "feedback": {
         "other": "Ander",

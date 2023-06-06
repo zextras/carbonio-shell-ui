@@ -137,7 +137,7 @@ interface ListItemContentProps {
 	icon?: string;
 	label: string;
 	selected?: boolean;
-	app: string;
+	app?: string;
 	boardId: string;
 }
 
@@ -164,9 +164,10 @@ function ListItemContent({
 					{label}
 				</Text>
 				<Text size={'small'} weight={selected ? 'bold' : 'regular'} color={'secondary'}>
-					{t('board.from_app', 'From {{app}}', {
-						app
-					})}
+					{app &&
+						t('board.from_app', 'From {{app}}', {
+							app
+						})}
 				</Text>
 			</OverflowContainer>
 			<IconButton icon={'CloseOutline'} size={'large'} onClick={onClose} />
@@ -205,7 +206,7 @@ export const BoardContainer = (): JSX.Element | null => {
 							label={boards[boardId].title}
 							icon={boards[boardId].icon}
 							selected={boardId === current}
-							app={getApp(boards[boardId].app)().display}
+							app={getApp(boards[boardId].app)()?.display}
 							boardId={boardId}
 						/>
 					)

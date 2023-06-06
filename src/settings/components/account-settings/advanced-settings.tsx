@@ -13,7 +13,7 @@ import {
 	Padding,
 	Input,
 	Row,
-	ButtonOld as Button,
+	Button,
 	Checkbox
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';

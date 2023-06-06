@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.1](https://github.com/zextras/carbonio-shell-ui/compare/v3.1.0...v3.1.1) (2023-06-05)
+
+
+### Bug Fixes
+
+* fix feedback board that shows blank page ([ef69922](https://github.com/zextras/carbonio-shell-ui/commit/ef69922f48bf38cc2705aec97aefc74ef17ce551)), closes [#258](https://github.com/zextras/carbonio-shell-ui/issues/258)
+
 ## [3.1.0](https://github.com/zextras/carbonio-shell-ui/compare/v3.0.2...v3.1.0) (2023-05-25)
 
 

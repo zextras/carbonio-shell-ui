@@ -5,7 +5,7 @@
  */
 
 import {
-	ButtonOld as Button,
+	Button,
 	Container,
 	Divider,
 	Input,

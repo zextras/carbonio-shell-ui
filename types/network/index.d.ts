@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { AccountRights, AccountSettings, ZimletProp } from '../account';
+import { AccountRights, AccountSettings, AccountSettingsPrefs, ZimletProp } from '../account';
 import { Tag } from '../tags';
 import { AccountACEInfo, Identity } from './entities';
 
@@ -118,7 +118,7 @@ export type IdentityMods = {
 	createList?: { prefs: CreateIdentityProps }[];
 };
 
-export type PrefsMods = Record<string, unknown>;
+export type PrefsMods = Record<string, unknown> & AccountSettingsPrefs;
 
 export interface Mods extends Record<string, Record<string, unknown>>, Partial<AccountSettings> {
 	props?: PropsMods;
@@ -127,10 +127,13 @@ export interface Mods extends Record<string, Record<string, unknown>>, Partial<A
 	identity?: IdentityMods;
 }
 
-export type AddMod = (
-	type: keyof Mods,
-	key: keyof NonNullable<Mods[typeof type]>,
-	value: NonNullable<Mods[keyof Mods]>[typeof key]
+export type AddMod = <
+	ModsType extends keyof Mods = keyof Mods,
+	TypeKey extends keyof NonNullable<Mods[ModsType]> = keyof NonNullable<Mods[ModsType]>
+>(
+	type: ModsType,
+	key: TypeKey,
+	value: NonNullable<Mods[ModsType]>[TypeKey]
 ) => void;
 
 export type RemoveMod = (type: keyof Mods, key: keyof NonNullable<Mods[typeof type]>) => void;

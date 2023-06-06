@@ -80,7 +80,7 @@ export const buildItemsExternalSenders = (
 	SUPPRESS_EXTERNAL: {
 		label: t(
 			'settings.out_of_office.external_senders.do_not_send_to_external',
-			'Don’t send an auto-reply message to external sender'
+			"Don't send an auto-reply message to external sender"
 		),
 		value: 'SUPPRESS_EXTERNAL'
 	}
@@ -142,7 +142,7 @@ export const getPrefOutOfOfficeFreeBusyStatus = (
 interface OutOfOfficeViewProps {
 	settings: AccountSettings;
 	addMod: AddMod;
-	resetRef: React.Ref<ResetComponentImperativeHandler>;
+	resetRef?: React.Ref<ResetComponentImperativeHandler>;
 }
 
 export const OutOfOfficeView = ({
@@ -196,7 +196,7 @@ export const OutOfOfficeView = ({
 	const [createAppointmentIsChecked, setCreateAppointmentIsChecked] = useState<boolean>(true);
 
 	const updatePrefs = useCallback(
-		(prefValue: PrefsMods[keyof PrefsMods], prefKey: keyof PrefsMods) => {
+		<K extends keyof PrefsMods>(prefKey: K, prefValue: PrefsMods[K]) => {
 			addMod('prefs', prefKey, prefValue);
 		},
 		[addMod]
@@ -221,7 +221,7 @@ export const OutOfOfficeView = ({
 	>(
 		(value): void => {
 			if (value !== null) {
-				updatePrefs(value, 'zimbraPrefOutOfOfficeReplyEnabled');
+				updatePrefs('zimbraPrefOutOfOfficeReplyEnabled', value);
 				setPrefOutOfOfficeReplyEnabled(value);
 			}
 		},
@@ -236,24 +236,24 @@ export const OutOfOfficeView = ({
 	const externalSendersHandler = useCallback(
 		(value: ExternalSenders) => {
 			if (value === 'SEND_AUTO_REPLY') {
-				updatePrefs('FALSE', 'zimbraPrefOutOfOfficeSuppressExternalReply');
-				updatePrefs('FALSE', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
-				updatePrefs('INSD', 'zimbraPrefExternalSendersType');
+				updatePrefs('zimbraPrefExternalSendersType', 'INSD');
+				updatePrefs('zimbraPrefOutOfOfficeExternalReplyEnabled', 'FALSE');
+				updatePrefs('zimbraPrefOutOfOfficeSuppressExternalReply', 'FALSE');
 				setPrefOutOfOfficeExternalReplyEnabled('FALSE');
-			} else if (value === 'SEND_NOT_IN_ORG') {
-				updatePrefs('ALLNOTINAB', 'zimbraPrefExternalSendersType');
-				updatePrefs('TRUE', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
-				updatePrefs('FALSE', 'zimbraPrefOutOfOfficeSuppressExternalReply');
-				setPrefOutOfOfficeExternalReplyEnabled('TRUE');
 			} else if (value === 'SHOW_EXTERNAL_INPUT') {
-				updatePrefs('ALL', 'zimbraPrefExternalSendersType');
-				updatePrefs('FALSE', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
-				updatePrefs('INSD', 'zimbraPrefOutOfOfficeSuppressExternalReply');
+				updatePrefs('zimbraPrefExternalSendersType', 'ALL');
+				updatePrefs('zimbraPrefOutOfOfficeExternalReplyEnabled', 'TRUE');
+				updatePrefs('zimbraPrefOutOfOfficeSuppressExternalReply', 'FALSE');
+				setPrefOutOfOfficeExternalReplyEnabled('TRUE');
+			} else if (value === 'SEND_NOT_IN_ORG') {
+				updatePrefs('zimbraPrefExternalSendersType', 'ALLNOTINAB');
+				updatePrefs('zimbraPrefOutOfOfficeExternalReplyEnabled', 'TRUE');
+				updatePrefs('zimbraPrefOutOfOfficeSuppressExternalReply', 'FALSE');
 				setPrefOutOfOfficeExternalReplyEnabled('TRUE');
 			} else if (value === 'SUPPRESS_EXTERNAL') {
-				updatePrefs('TRUE', 'zimbraPrefOutOfOfficeSuppressExternalReply');
-				updatePrefs('INAB', 'zimbraPrefExternalSendersType');
-				updatePrefs('FALSE', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
+				updatePrefs('zimbraPrefExternalSendersType', 'INAB');
+				updatePrefs('zimbraPrefOutOfOfficeExternalReplyEnabled', 'FALSE');
+				updatePrefs('zimbraPrefOutOfOfficeSuppressExternalReply', 'TRUE');
 				setPrefOutOfOfficeExternalReplyEnabled('FALSE');
 			}
 		},
@@ -274,7 +274,7 @@ export const OutOfOfficeView = ({
 	const prefOutOfOfficeReplyOnChange = useCallback<NonNullable<TextAreaProps['onChange']>>(
 		(ev) => {
 			setPrefOutOfOfficeReply(ev.target.value);
-			updatePrefs(ev.target.value, 'zimbraPrefOutOfOfficeReply');
+			updatePrefs('zimbraPrefOutOfOfficeReply', ev.target.value);
 		},
 		[updatePrefs]
 	);
@@ -282,7 +282,7 @@ export const OutOfOfficeView = ({
 	const prefOutOfOfficeExternalReplyOnChange = useCallback<NonNullable<TextAreaProps['onChange']>>(
 		(ev) => {
 			setPrefOutOfOfficeExternalReply(ev.target.value);
-			updatePrefs(ev.target.value, 'zimbraPrefOutOfOfficeExternalReply');
+			updatePrefs('zimbraPrefOutOfOfficeExternalReply', ev.target.value);
 		},
 		[updatePrefs]
 	);
@@ -313,7 +313,7 @@ export const OutOfOfficeView = ({
 	>(
 		(value) => {
 			if (value !== null) {
-				updatePrefs(value, 'zimbraPrefOutOfOfficeFreeBusyStatus');
+				updatePrefs('zimbraPrefOutOfOfficeFreeBusyStatus', value);
 			}
 		},
 		[updatePrefs]

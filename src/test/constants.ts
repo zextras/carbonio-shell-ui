@@ -123,3 +123,20 @@ export const PALETTE = {
 		disabled: '#cccccc'
 	}
 };
+
+export const ICONS = {
+	checkboxChecked: 'icon: CheckmarkSquare',
+	checkboxUnchecked: 'icon: Square',
+	close: 'Close',
+	closeBoard: 'CloseOutline',
+	collapseBoard: 'BoardCollapse',
+	enlargeBoard: 'ExpandOutline',
+	reduceBoard: 'CollapseOutline',
+	resetBoardSize: 'DiagonalArrowLeftDown',
+	unCollapseBoard: 'BoardOpen'
+};
+
+export const TESTID_SELECTORS = {
+	checkbox: 'checkbox',
+	dropdown: 'dropdown-popper-list'
+};

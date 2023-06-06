@@ -63,6 +63,9 @@ export interface AccountSettingsPrefs {
 	zimbraPrefOutOfOfficeFromDate?: string;
 	zimbraPrefOutOfOfficeStatusAlertOnLogin?: BooleanString;
 	zimbraPrefOutOfOfficeUntilDate?: string;
+	zimbraPrefIncludeSharedItemsInSearch?: BooleanString;
+	zimbraPrefIncludeSpamInSearch?: BooleanString;
+	zimbraPrefIncludeTrashInSearch?: BooleanString;
 	[key: string]: string | number | Array<string | number>;
 }
 

@@ -128,6 +128,7 @@ export const PALETTE = {
 
 export const ICONS = {
 	close: 'Close',
+	closeBoard: 'CloseOutline',
 	collapseBoard: 'BoardCollapse',
 	enlargeBoard: 'ExpandOutline',
 	reduceBoard: 'CollapseOutline',

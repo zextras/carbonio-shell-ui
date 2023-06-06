@@ -13,6 +13,7 @@ import AppContextProvider from '../../boot/app/app-context-provider';
 import { useAppStore } from '../../store/app';
 import { BoardProvider, updateBoard, useBoardStore } from '../../store/boards';
 import { Board } from '../../../types';
+import { stopPropagation } from '../../utils/utils';
 
 const BoardContainer = styled.div<{ show: boolean }>`
 	display: ${(props): string => (props.show ? 'block' : 'none')};
@@ -72,7 +73,7 @@ export const AppBoard: FC<{ board: Board }> = ({ board }) => {
 	}, [board.url, history]);
 
 	return (
-		<BoardContainer show={current === board.id}>
+		<BoardContainer show={current === board.id} onMouseDown={stopPropagation}>
 			<Router history={history}>{route}</Router>
 		</BoardContainer>
 	);

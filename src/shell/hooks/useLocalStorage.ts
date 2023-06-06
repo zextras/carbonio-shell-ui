@@ -3,61 +3,96 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import { create } from 'zustand';
 
 function isSameLocalStorageValue(valueA: unknown, valueB: unknown): boolean {
 	return JSON.stringify(valueA) === JSON.stringify(valueB);
 }
 
-export function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] {
-	const readValue = useCallback<() => T>(() => {
+type LocalStorageOptions = { keepSynchedWithStorage?: boolean };
+
+type LocalStorageState = {
+	storage: Record<string, any>;
+	readValue: <T>(key: string, fallback: T) => void;
+	setValue: <T>(key: string, value: React.SetStateAction<T>) => void;
+};
+
+const useLocalStorageStore = create<LocalStorageState>()((setState) => ({
+	storage: {},
+	readValue<T>(key: string, fallback: T): void {
 		try {
-			const item = window.localStorage.getItem(key);
-			return item ? JSON.parse(item) : initialValue;
+			const localStorageItem = window.localStorage.getItem(key);
+			const item = localStorageItem !== null ? JSON.parse(localStorageItem) : fallback;
+			setState((state) => {
+				if (!isSameLocalStorageValue(item, state.storage[key])) {
+					const newState = { ...state };
+					newState.storage[key] = item;
+					return newState;
+				}
+				return state;
+			});
 		} catch (error) {
 			console.error(error);
-			return initialValue;
+			setState((state) => {
+				const newState = { ...state };
+				newState.storage[key] = fallback;
+				return newState;
+			});
 		}
-	}, [initialValue, key]);
-
-	const [storedValue, setStoredValue] = useState<T>(readValue());
-	const shouldDispatchStorageEventRef = useRef(false);
-
-	const setValue = useCallback(
-		(value: T | ((val: T) => T)): void => {
-			try {
-				setStoredValue((prevState) => {
-					const valueToStore = value instanceof Function ? value(prevState) : value;
-					if (!isSameLocalStorageValue(valueToStore, prevState)) {
-						window.localStorage.setItem(key, JSON.stringify(valueToStore));
-						shouldDispatchStorageEventRef.current = true;
-						return valueToStore;
-					}
-					return prevState;
-				});
-			} catch (error) {
-				console.error(error);
+	},
+	setValue<T>(key: string, value: React.SetStateAction<T>): void {
+		setState((state) => {
+			const valueToStore = value instanceof Function ? value(state.storage[key]) : value;
+			const newState = { ...state };
+			if (!isSameLocalStorageValue(valueToStore, state.storage[key])) {
+				window.localStorage.setItem(key, JSON.stringify(valueToStore));
+				newState.storage[key] = value;
+				return newState;
 			}
+			return state;
+		});
+	}
+}));
+
+const DEFAULT_OPTIONS: LocalStorageOptions = {
+	keepSynchedWithStorage: true
+};
+
+export function useLocalStorage<T>(
+	key: string,
+	initialValue: T,
+	options = DEFAULT_OPTIONS
+): [T, React.Dispatch<React.SetStateAction<T>>] {
+	const storedValue = useLocalStorageStore((state) => state.storage[key] || initialValue);
+	const shouldDispatchStorageEventRef = useRef(false);
+	const localStorageOptions = useMemo(() => ({ ...DEFAULT_OPTIONS, ...options }), [options]);
+
+	const readValueForKey = useCallback(() => {
+		useLocalStorageStore.getState().readValue(key, initialValue);
+	}, [key, initialValue]);
+
+	useEffect(() => {
+		readValueForKey();
+	}, [readValueForKey]);
+
+	const setValueForKey = useCallback<React.Dispatch<React.SetStateAction<T>>>(
+		(value) => {
+			useLocalStorageStore.getState().setValue(key, value);
+			shouldDispatchStorageEventRef.current = true;
 		},
 		[key]
 	);
 
-	const updateValue = useCallback(() => {
-		setStoredValue((prevState) => {
-			const newValue = readValue();
-			if (!isSameLocalStorageValue(prevState, newValue)) {
-				return newValue;
-			}
-			return prevState;
-		});
-	}, [readValue]);
-
 	useEffect(() => {
-		window.addEventListener('storage', updateValue);
-		return () => {
-			window.removeEventListener('storage', updateValue);
+		if (localStorageOptions?.keepSynchedWithStorage) {
+			window.addEventListener('storage', readValueForKey);
+		}
+
+		return (): void => {
+			window.removeEventListener('storage', readValueForKey);
 		};
-	}, [updateValue]);
+	}, [localStorageOptions?.keepSynchedWithStorage, readValueForKey]);
 
 	useEffect(() => {
 		if (shouldDispatchStorageEventRef.current) {
@@ -68,5 +103,5 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<S
 		}
 	}, [storedValue]);
 
-	return [storedValue, setValue];
+	return [storedValue, setValueForKey];
 }

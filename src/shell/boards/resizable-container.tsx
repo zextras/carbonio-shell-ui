@@ -12,11 +12,13 @@ interface ResizableBorderProps {
 	border: Border;
 	elementToResize: React.RefObject<HTMLElement>;
 	localStorageKey?: string;
+	keepSynchedWithStorage?: boolean;
 }
 
 interface ResizableContainerProps extends ContainerProps {
 	elementToResize: React.RefObject<HTMLElement>;
 	localStorageKey?: string;
+	keepSynchedWithStorage?: boolean;
 	disabled?: boolean;
 	minSize?: { width: number; height: number };
 }
@@ -62,10 +64,14 @@ const BorderWithResize = styled.div<
 const ResizableBorder = ({
 	border,
 	elementToResize,
-	localStorageKey
+	localStorageKey,
+	keepSynchedWithStorage
 }: ResizableBorderProps): JSX.Element => {
 	const borderRef = useRef<HTMLDivElement>(null);
-	const resizeHandler = useResize(elementToResize, border, { localStorageKey });
+	const resizeHandler = useResize(elementToResize, border, {
+		localStorageKey,
+		keepSynchedWithStorage
+	});
 
 	const sizes = useMemo<Pick<BorderWithResizeProps, '$width' | '$height'>>(() => {
 		switch (border) {
@@ -134,6 +140,7 @@ export const ResizableContainer = ({
 	children,
 	localStorageKey,
 	disabled = false,
+	keepSynchedWithStorage,
 	...rest
 }: ResizableContainerProps): JSX.Element => {
 	const borders = useMemo(
@@ -144,9 +151,10 @@ export const ResizableContainer = ({
 					border={border}
 					elementToResize={elementToResize}
 					localStorageKey={localStorageKey}
+					keepSynchedWithStorage={keepSynchedWithStorage}
 				/>
 			)),
-		[elementToResize, localStorageKey]
+		[elementToResize, keepSynchedWithStorage, localStorageKey]
 	);
 
 	return (

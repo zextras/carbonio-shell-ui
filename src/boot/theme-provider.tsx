@@ -6,7 +6,6 @@
 
 import React, {
 	createContext,
-	CSSProperties,
 	useCallback,
 	useEffect,
 	useLayoutEffect,
@@ -19,7 +18,7 @@ import {
 	ThemeProviderProps as UIThemeProviderProps
 } from '@zextras/carbonio-design-system';
 import { auto, disable, enable, setFetchMethod } from 'darkreader';
-import { reduce } from 'lodash';
+import { map, reduce } from 'lodash';
 import { createGlobalStyle, css, DefaultTheme, SimpleInterpolation } from 'styled-components';
 import { DarkReaderPropValues, ThemeExtension } from '../../types';
 import { darkReaderDynamicThemeFixes, LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
@@ -82,6 +81,18 @@ const iconExtension: ThemeExtension = (theme) => ({
 	}
 });
 
+const globalCursorsExtension: ThemeExtension = (theme) => ({
+	...theme,
+	globalCursors: [
+		...(theme.globalCursors || []),
+		'ns-resize',
+		'ew-resize',
+		'nesw-resize',
+		'nwse-resize',
+		'move'
+	]
+});
+
 interface GlobalStyledProps {
 	baseFontSize: number;
 }
@@ -90,21 +101,18 @@ const GlobalStyle = createGlobalStyle<GlobalStyledProps>`
   html {
     font-size: ${({ baseFontSize }): string => `${baseFontSize}%`};
   }
-  ${(): SimpleInterpolation => {
-		const resizeCursors: Array<CSSProperties['cursor']> = [
-			'ns-resize',
-			'ew-resize',
-			'nesw-resize',
-			'nwse-resize'
-		];
-		return resizeCursors.map(
+  ${({ theme }): SimpleInterpolation =>
+		map(
+			theme.globalCursors,
 			(cursor) => css`
 				.global-cursor-${cursor} * {
-					cursor: ${cursor};
+					cursor: ${cursor} !important;
 				}
 			`
-		);
-	}}
+		)}
+  .no-active-background:active {
+	  background-color: inherit;
+  }
 `;
 
 interface ThemeProviderProps {
@@ -128,7 +136,8 @@ export const ThemeProvider = ({ children }: ThemeProviderProps): JSX.Element => 
 			palette: paletteExtension({
 				palette: customThemePalette
 			}),
-			icons: iconExtension
+			icons: iconExtension,
+			globalCursors: globalCursorsExtension
 		}));
 	}, [primaryColor]);
 

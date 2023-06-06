@@ -3,14 +3,19 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { CSSProperties } from 'react';
+import React, { CSSProperties } from 'react';
 
-export type SizeAndPosition = {
-	width: number;
-	height: number;
+export type ElementPosition = {
 	top: number;
 	left: number;
 };
+
+export type ElementSize = {
+	width: number;
+	height: number;
+};
+
+export type SizeAndPosition = ElementPosition & ElementSize;
 
 export const testFolderIsChecked = ({ string }: { string: string | undefined }): boolean =>
 	/#/.test(string || '');
@@ -36,4 +41,8 @@ export function setElementSizeAndPosition(
 ): void {
 	// eslint-disable-next-line no-param-reassign
 	element.style[key] = value !== undefined ? `${value}px` : '';
+}
+
+export function stopPropagation(event: Event | React.SyntheticEvent): void {
+	event.stopPropagation();
 }

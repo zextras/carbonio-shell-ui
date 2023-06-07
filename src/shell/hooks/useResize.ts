@@ -5,7 +5,12 @@
  */
 import React, { CSSProperties, useCallback, useEffect, useRef } from 'react';
 import { find, forEach } from 'lodash';
-import { setElementSizeAndPosition, setGlobalCursor, SizeAndPosition } from '../../utils/utils';
+import {
+	createExportForTestOnly,
+	setElementSizeAndPosition,
+	setGlobalCursor,
+	SizeAndPosition
+} from '../../utils/utils';
 import { useLocalStorage } from './useLocalStorage';
 
 /**
@@ -159,4 +164,4 @@ export const useResize = (
 	);
 };
 
-export const exportForTest = process.env.NODE_ENV === 'test' ? { calcNewSizeAndPosition } : {};
+export const exportForTest = createExportForTestOnly({ calcNewSizeAndPosition });

@@ -5,6 +5,7 @@
  */
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { create } from 'zustand';
+import { createExportForTestOnly } from '../../utils/utils';
 
 function isSameLocalStorageValue(valueA: unknown, valueB: unknown): boolean {
 	return JSON.stringify(valueA) === JSON.stringify(valueB);
@@ -25,7 +26,7 @@ const useLocalStorageStore = create<LocalStorageState>()((setState) => ({
 			const localStorageItem = window.localStorage.getItem(key);
 			const item = localStorageItem !== null ? JSON.parse(localStorageItem) : fallback;
 			setState((state) => {
-				if (!isSameLocalStorageValue(item, state.storage[key])) {
+				if (state.storage[key] === undefined) {
 					const newState = { ...state };
 					newState.storage[key] = item;
 					return newState;
@@ -47,7 +48,7 @@ const useLocalStorageStore = create<LocalStorageState>()((setState) => ({
 			const newState = { ...state };
 			if (!isSameLocalStorageValue(valueToStore, state.storage[key])) {
 				window.localStorage.setItem(key, JSON.stringify(valueToStore));
-				newState.storage[key] = value;
+				newState.storage[key] = valueToStore;
 				return newState;
 			}
 			return state;
@@ -105,3 +106,5 @@ export function useLocalStorage<T>(
 
 	return [storedValue, setValueForKey];
 }
+
+export const exportForTest = createExportForTestOnly({ useLocalStorageStore });

@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React, { CSSProperties } from 'react';
+import { reduce } from 'lodash';
 
 export type ElementPosition = {
 	top: number;
@@ -45,4 +46,19 @@ export function setElementSizeAndPosition(
 
 export function stopPropagation(event: Event | React.SyntheticEvent): void {
 	event.stopPropagation();
+}
+
+export function createExportForTestOnly<TObj extends Record<string, unknown>>(
+	objToExport: TObj
+): { [K in keyof TObj]: TObj[K] | undefined } {
+	return process.env.NODE_ENV === 'test'
+		? objToExport
+		: reduce(
+				objToExport,
+				(accumulator, value, key) => {
+					accumulator[key as keyof TObj] = undefined;
+					return accumulator;
+				},
+				{} as Record<keyof TObj, undefined>
+		  );
 }

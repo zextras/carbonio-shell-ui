@@ -14,11 +14,13 @@ const storeResetFns = new Set<() => void>();
 // when creating a store, we get its initial state, create a reset function and add it in the set
 export const create =
 	<S>() =>
-	(createState: StateCreator<S>): UseBoundStore<StoreApi<S>> => {
-		const store = actualCreate(createState);
-		const initialState = store.getState();
-		storeResetFns.add(() => store.setState(initialState, true));
-		return store;
+	(actualCreateState: StateCreator<S>): UseBoundStore<StoreApi<S>> => {
+		const createState: StateCreator<S> = (setState, getState, store) => {
+			const state = actualCreateState(setState, getState, store);
+			storeResetFns.add(() => store.setState(actualCreateState(setState, getState, store), true));
+			return state;
+		};
+		return actualCreate(createState);
 	};
 
 // Reset all stores after each test run

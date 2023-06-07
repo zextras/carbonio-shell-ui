@@ -19,9 +19,10 @@ describe('Loader', () => {
 	test('If only getComponents request fails, the LoaderFailureModal appears', async () => {
 		// using getInfo and loginConfig default handlers
 		server.use(
-			rest.get<never, never, GetComponentsJsonResponseBody>(
+			rest.get<never, never, Partial<GetComponentsJsonResponseBody>>(
 				'/static/iris/components.json',
-				(req, res, ctx) => res(ctx.status(503))
+				(req, res, ctx) =>
+					res(ctx.status(503, 'Controlled error: fail components.json request'), ctx.json({}))
 			)
 		);
 
@@ -36,7 +37,12 @@ describe('Loader', () => {
 
 	test('If only getInfo request fails, the LoaderFailureModal appears', async () => {
 		// using getComponents and loginConfig default handlers
-		server.use(rest.post('/service/soap/GetInfoRequest', (req, res, ctx) => res(ctx.status(503))));
+		// TODO update when SHELL-117 will be implemented
+		server.use(
+			rest.post('/service/soap/GetInfoRequest', (req, res, ctx) =>
+				res(ctx.status(503, 'Controlled error: fail getInfo request'))
+			)
+		);
 
 		setup(<Loader />);
 

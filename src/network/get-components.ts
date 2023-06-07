@@ -10,7 +10,12 @@ import { CarbonioModule } from '../../types';
 
 export const getComponents = (): Promise<void> =>
 	fetch('/static/iris/components.json')
-		.then((r) => r.json())
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			}
+			throw Error(response.statusText);
+		})
 		.then(({ components }: { components: Array<CarbonioModule> }) => {
 			useAppStore
 				.getState()

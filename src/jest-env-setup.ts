@@ -27,6 +27,7 @@ failOnConsole({
 		/Invalid prop `\w+`(\sof type `\w+`)? supplied to `(\w+(\(\w+\))?)`/.test(errorMessage) ||
 		// errors forced from the tests
 		/Controlled error/gi.test(errorMessage) ||
+		// TODO remove when SHELL-117 will be implemented
 		/Unexpected end of JSON input/gi.test(errorMessage)
 });
 

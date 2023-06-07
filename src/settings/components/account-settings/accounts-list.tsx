@@ -12,7 +12,7 @@ import {
 	Divider,
 	Row,
 	Padding,
-	ButtonOld as Button,
+	Button,
 	Icon,
 	ModalManagerContext,
 	ItemComponentProps
@@ -242,14 +242,14 @@ const AccountsList = ({
 				<Padding right="small">
 					<Button
 						label={t('label.add_persona', 'Add persona')}
-						onClick={(): void => addNewPersona()}
+						onClick={addNewPersona}
 						color="primary"
 						type="outlined"
 					/>
 				</Padding>
 				<Button
 					label={t('label.delete', 'Delete')}
-					onClick={(): void => onDelete()}
+					onClick={onDelete}
 					color="error"
 					type="outlined"
 					disabled={identities[selectedIdentityId]?.flgType === 'primary'}

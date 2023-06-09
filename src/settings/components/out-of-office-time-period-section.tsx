@@ -4,13 +4,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Checkbox, Container, Icon, Padding, Text } from '@zextras/carbonio-design-system';
+import {
+	Checkbox,
+	Container,
+	DateTimePicker,
+	DateTimePickerProps
+} from '@zextras/carbonio-design-system';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import DateTimePicker, { DateTimePickerProps } from 'react-widgets/lib/DateTimePicker';
-import momentLocalizer from 'react-widgets-moment';
 import { AddMod, GeneralizedTime } from '../../../types';
-import Styler from './date-picker-style';
 import { getT } from '../../store/i18n';
 import {
 	dateToGenTime,
@@ -21,20 +23,6 @@ import {
 	upsertPrefOnUnsavedChanges
 } from './utils';
 import { useReset } from '../hooks/use-reset';
-
-momentLocalizer();
-
-const DATE_ICON = (
-	<Padding all="small">
-		<Icon icon="CalendarOutline" />
-	</Padding>
-);
-
-const TIME_ICON = (
-	<Padding all="small">
-		<Icon icon="ClockOutline" />
-	</Padding>
-);
 
 interface OutOfOfficeTimePeriodSectionProps extends SettingsSectionProps {
 	addMod: AddMod;
@@ -137,87 +125,58 @@ export const OutOfOfficeTimePeriodSection = ({
 	}, [updatePref]);
 
 	return (
-		<>
-			<Styler orientation="horizontal" allDay height="fit" mainAlignment="space-between">
-				<Container
-					crossAlignment="flex-start"
-					maxWidth={'50%'}
-					padding={{ all: 'small' }}
-					gap={'0.25rem'}
-				>
-					<Text size="small">{t('settings.out_of_office.labels.start_date', 'Start Date')}</Text>
-					<DateTimePicker
-						disabled={disabled}
-						value={fromDate}
-						time={false}
-						onChange={outOfOfficeFromDateOnChange}
-						dateIcon={DATE_ICON}
-						timeIcon={TIME_ICON}
-					/>
-				</Container>
-				<Container
-					crossAlignment="flex-start"
-					maxWidth={'50%'}
-					padding={{ all: 'small' }}
-					gap={'0.25rem'}
-				>
-					<Text size="small">{t('settings.out_of_office.labels.end_date', 'End Date')}</Text>
-					<DateTimePicker
-						disabled={disabled}
-						value={untilDate}
-						time={false}
-						onChange={outOfOfficeUntilDateOnChange}
-						dateIcon={DATE_ICON}
-						timeIcon={TIME_ICON}
-					/>
-				</Container>
-			</Styler>
-
-			<Container crossAlignment="flex-start">
-				<Checkbox
+		<Container padding={{ vertical: 'small' }} gap={'0.5rem'} crossAlignment={'flex-start'}>
+			<Container orientation={'horizontal'} gap={'0.5rem'}>
+				<DateTimePicker
+					label={t('settings.out_of_office.labels.start_date', 'Start Date')}
+					dateFormat={'P'}
 					disabled={disabled}
-					label={t('settings.out_of_office.labels.all_day', 'All Day:')}
-					value={allDayEnabled}
-					onClick={toggleAllDay}
+					defaultValue={fromDate}
+					onChange={outOfOfficeFromDateOnChange}
+					includeTime={false}
+					width={'fill'}
+				/>
+				<DateTimePicker
+					label={t('settings.out_of_office.labels.end_date', 'End Date')}
+					dateFormat={'P'}
+					disabled={disabled}
+					timeLabel={''}
+					defaultValue={untilDate}
+					onChange={outOfOfficeUntilDateOnChange}
+					includeTime={false}
+					width={'fill'}
 				/>
 			</Container>
-			<Styler orientation="horizontal" allDay height="fit" mainAlignment="space-between">
-				<Container
-					crossAlignment="flex-start"
-					style={{ maxWidth: '50%' }}
-					padding={{ all: 'small' }}
-				>
-					<Padding bottom="extrasmall">
-						<Text size="small">{t('settings.out_of_office.labels.start_time', 'Start Time:')}</Text>
-					</Padding>
-					<DateTimePicker
-						disabled={editTimeIsDisabled}
-						date={false}
-						value={fromDate}
-						time
-						onChange={outOfOfficeFromDateOnChange}
-						dateIcon={DATE_ICON}
-						timeIcon={TIME_ICON}
-					/>
-				</Container>
-				<Container
-					crossAlignment="flex-start"
-					style={{ maxWidth: '50%' }}
-					padding={{ all: 'small' }}
-				>
-					<Padding bottom="extrasmall">
-						<Text size="small">{t('settings.out_of_office.labels.end_time', 'End Time:')}</Text>
-					</Padding>
-					<DateTimePicker
-						disabled={editTimeIsDisabled}
-						date={false}
-						value={untilDate}
-						time
-						onChange={outOfOfficeUntilDateOnChange}
-						timeIcon={TIME_ICON}
-					/>
-				</Container>
-			</Styler>
-		</>
+			<Checkbox
+				disabled={disabled}
+				label={t('settings.out_of_office.labels.all_day', 'All Day:')}
+				value={allDayEnabled}
+				onClick={toggleAllDay}
+			/>
+			<Container orientation={'horizontal'} gap={'0.5rem'}>
+				<DateTimePicker
+					label={t('settings.out_of_office.labels.start_time', 'Start Time')}
+					showTimeSelect
+					showTimeSelectOnly
+					timeLabel=""
+					dateFormat="p"
+					selected={fromDate}
+					onChange={outOfOfficeFromDateOnChange}
+					disabled={editTimeIsDisabled}
+					width={'fill'}
+				/>
+				<DateTimePicker
+					label={t('settings.out_of_office.labels.end_time', 'End Time')}
+					showTimeSelect
+					showTimeSelectOnly
+					timeLabel=""
+					dateFormat="p"
+					selected={untilDate}
+					onChange={outOfOfficeUntilDateOnChange}
+					disabled={editTimeIsDisabled}
+					width={'fill'}
+				/>
+			</Container>
+		</Container>
 	);
 };

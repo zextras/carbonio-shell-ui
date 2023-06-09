@@ -16,7 +16,6 @@ import {
 } from '@zextras/carbonio-design-system';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { find } from 'lodash';
-import momentLocalizer from 'react-widgets-moment';
 import { type TFunction } from 'i18next';
 import { AccountSettings, AccountSettingsPrefs, AddMod, BooleanString } from '../../../../types';
 import Heading from '../settings-heading';
@@ -29,8 +28,6 @@ import {
 	upsertPrefOnUnsavedChanges
 } from '../utils';
 import { useReset } from '../../hooks/use-reset';
-
-momentLocalizer();
 
 type CoercedPrefType<T> = T extends BooleanString | undefined ? boolean | undefined : T;
 

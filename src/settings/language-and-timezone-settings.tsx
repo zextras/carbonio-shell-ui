@@ -16,13 +16,10 @@ import {
 import React, { FC, useCallback, useMemo } from 'react';
 
 import { find } from 'lodash';
-import momentLocalizer from 'react-widgets-moment';
 import { AccountSettings, AddMod, PrefsMods } from '../../types';
 import { getT } from '../store/i18n';
 import { localeList, timeZoneList } from './components/utils';
 import { timezoneAndLanguageSubSection } from './general-settings-sub-sections';
-
-momentLocalizer();
 
 const LanguageAndTimeZone: FC<{
 	settings: AccountSettings;

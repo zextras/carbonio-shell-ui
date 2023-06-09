@@ -10,6 +10,7 @@ import { setup } from '../../../test/utils';
 import { OutOfOfficeView } from './out-of-office-view';
 import { AccountSettings, AccountSettingsPrefs } from '../../../../types';
 import { ICONS, TESTID_SELECTORS } from '../../../test/constants';
+import { dateToGenTime } from '../utils';
 
 describe('Out of office view', () => {
 	test('render section with defaults', () => {
@@ -17,10 +18,7 @@ describe('Out of office view', () => {
 		const addModFn = jest.fn();
 		setup(<OutOfOfficeView settings={settings} addMod={addModFn} />);
 		expect(screen.getByText('Out of Office Settings')).toBeVisible();
-		const outOfOfficeStrings = screen.getAllByText('Out of Office');
-		expect(outOfOfficeStrings).toHaveLength(2);
-		expect(outOfOfficeStrings[0]).toBeVisible();
-		expect(outOfOfficeStrings[1]).toBeVisible();
+		expect(screen.getByText('Out of Office')).toBeVisible();
 		expect(screen.getByText('Do not send auto-replies')).toBeVisible();
 		expect(screen.getByText('External Senders')).toBeVisible();
 		expect(screen.getByRole('textbox', { name: 'Auto-Reply Message:' })).toBeVisible();
@@ -31,10 +29,6 @@ describe('Out of office view', () => {
 		expect(screen.getAllByTestId(ICONS.checkboxUnchecked)).toHaveLength(2);
 		expect(screen.getAllByTestId(ICONS.checkboxUnchecked)[0]).toBeVisible();
 		expect(screen.getAllByTestId(ICONS.checkboxUnchecked)[1]).toBeVisible();
-		expect(screen.getByText('Calendar Appointment')).toBeVisible();
-		expect(screen.getByText('Create Appointment:')).toBeVisible();
-		expect(screen.getByTestId(ICONS.checkboxChecked)).toBeVisible();
-		expect(screen.getByText('Out Of Office Status:')).toBeVisible();
 	});
 
 	test('by default is set to not send auto-replies', () => {
@@ -66,7 +60,7 @@ describe('Out of office view', () => {
 		expect(addModFn).toHaveBeenCalledWith('prefs', 'zimbraPrefOutOfOfficeReplyEnabled', 'FALSE');
 	});
 
-	test('send auto-replies option enables both inputs for reply message and checks for time period and appointment', async () => {
+	test('send auto-replies option enables both inputs for reply message and check for time period', async () => {
 		const settings: AccountSettings = {
 			prefs: {
 				zimbraPrefExternalSendersType: 'ALL',
@@ -87,15 +81,16 @@ describe('Out of office view', () => {
 		expect(screen.getByText('Send auto-replies during the following period:')).not.toHaveAttribute(
 			'disabled'
 		);
-		expect(screen.getByText('Create Appointment:')).not.toHaveAttribute('disabled');
 	});
 
-	test('do not send auto-replies option disables both inputs for reply message and checks for time period and appointment', async () => {
+	test('do not send auto-replies option disables both inputs for reply message and checks of time period section', async () => {
 		const settings: AccountSettings = {
 			prefs: {
 				zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
 				zimbraPrefExternalSendersType: 'ALL',
-				zimbraPrefOutOfOfficeExternalReplyEnabled: 'TRUE'
+				zimbraPrefOutOfOfficeExternalReplyEnabled: 'TRUE',
+				zimbraPrefOutOfOfficeFromDate: dateToGenTime(new Date()),
+				zimbraPrefOutOfOfficeUntilDate: dateToGenTime(new Date())
 			},
 			attrs: {},
 			props: []
@@ -112,7 +107,23 @@ describe('Out of office view', () => {
 		expect(screen.getByText('Send auto-replies during the following period:')).toHaveAttribute(
 			'disabled'
 		);
-		expect(screen.getByText('Create Appointment:')).toHaveAttribute('disabled');
+		expect(screen.getByText('All Day:')).toHaveAttribute('disabled');
+	});
+
+	test('all day check does not become enabled is user select "send auto-replies", but the time period check is not checked', async () => {
+		const settings: AccountSettings = {
+			prefs: {},
+			attrs: {},
+			props: []
+		};
+		const addModFn = jest.fn();
+		const { user } = setup(<OutOfOfficeView settings={settings} addMod={addModFn} />);
+		await user.click(screen.getByText('Do not send auto-replies'));
+		await user.click(screen.getByText('Send auto-replies'));
+		expect(screen.getByText('Send auto-replies during the following period:')).not.toHaveAttribute(
+			'disabled'
+		);
+		expect(screen.getByText('All Day:')).toHaveAttribute('disabled');
 	});
 
 	test.each([

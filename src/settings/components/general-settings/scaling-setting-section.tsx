@@ -18,6 +18,7 @@ import styled, { SimpleInterpolation } from 'styled-components';
 import { ScalingSettings } from '../../../../types/settings';
 import { BASE_FONT_SIZE, SCALING_OPTIONS } from '../../../constants';
 import { getAutoScalingFontSize, ResetComponentImperativeHandler } from '../utils';
+import { useReset } from '../../hooks/use-reset';
 
 const ScalingSliderContainer = styled(Container)`
 	box-shadow: 0px 0px 4px rgba(166, 166, 166, 0.5);
@@ -152,12 +153,12 @@ export const ScalingSettingSection = ({
 		[]
 	);
 
-	useImperativeHandle(resetRef, () => ({
-		reset: (): void => {
-			setScalingValue(savedOptionIndex);
-			setAutoScaling(scalingSettings['settings.appearance_setting.auto'] ?? true);
-		}
-	}));
+	const resetHandler = useCallback((): void => {
+		setScalingValue(savedOptionIndex);
+		setAutoScaling(scalingSettings['settings.appearance_setting.auto'] ?? true);
+	}, [savedOptionIndex, scalingSettings]);
+
+	useReset(resetRef, resetHandler);
 
 	const exampleText = useMemo(
 		() =>

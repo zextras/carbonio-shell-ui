@@ -4,21 +4,30 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import type { TFunction } from 'i18next';
+import { isBoolean } from 'lodash';
+import React from 'react';
 import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
+import { AddMod, BooleanString, GeneralizedTime, PrefsMods } from '../../../types';
 
-export const changeDateEvent = (date: string | Date): string =>
-	moment(moment(date, 'YYYYMMDDHHmmss[Z]').utc()).format('YYYYMMDDHHmmss[Z]');
+export const GEN_TIME_FORMAT = 'YYYYMMDDHHmmss[Z]';
 
-export const getDateEvent = (date: string): Date =>
-	new Date(moment.utc(date, 'YYYYMMDDHHmmss[Z]').local().valueOf());
+function getGenTimeMoment(date: Date | string | Moment): Moment {
+	return moment.utc(date, GEN_TIME_FORMAT);
+}
 
-export const startOfDate = (date: string): string =>
-	moment.utc(date, 'YYYYMMDDHHmmss[Z]').local().startOf('day').utc().format('YYYYMMDDHHmmss[Z]');
+export function dateToGenTime(date: Date | Moment): GeneralizedTime {
+	return getGenTimeMoment(date).format(GEN_TIME_FORMAT) as GeneralizedTime;
+}
 
-export const endOfDate = (date: string): string =>
-	moment.utc(date, 'YYYYMMDDHHmmss[Z]').local().endOf('day').utc().format('YYYYMMDDHHmmss[Z]');
+export function genTimeToDate(genTime: string): Date {
+	return getGenTimeMoment(genTime).local().toDate();
+}
+
+export const startOfDay = (date: Date): Date => new Date(new Date(date).setHours(0, 0, 0, 0));
+
+export const endOfDay = (date: Date): Date => new Date(new Date(date).setHours(23, 59, 59, 0));
 
 export type LocaleDescriptor = {
 	id: string;
@@ -1210,3 +1219,24 @@ export const getAutoScalingFontSize = (): number => {
 };
 
 export type ResetComponentImperativeHandler = { reset: () => void };
+
+type UpsertPrefOnUnsavedChangesFn = <K extends keyof PrefsMods>(
+	prefKey: K,
+	prefValue: PrefsMods[K] extends BooleanString | undefined ? boolean | undefined : PrefsMods[K]
+) => void;
+
+export function upsertPrefOnUnsavedChanges(
+	addModifiedValueCallback: AddMod
+): UpsertPrefOnUnsavedChangesFn {
+	return (prefKey, prefValue) => {
+		if (isBoolean(prefValue)) {
+			addModifiedValueCallback('prefs', prefKey, (prefValue && 'TRUE') || 'FALSE');
+		} else {
+			addModifiedValueCallback('prefs', prefKey, prefValue as PrefsMods[typeof prefKey]);
+		}
+	};
+}
+
+export type SettingsSectionProps = {
+	resetRef?: React.Ref<ResetComponentImperativeHandler>;
+};

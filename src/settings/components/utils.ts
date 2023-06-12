@@ -1229,7 +1229,9 @@ export function upsertPrefOnUnsavedChanges(
 	addModifiedValueCallback: AddMod
 ): UpsertPrefOnUnsavedChangesFn {
 	return (prefKey, prefValue) => {
-		if (isBoolean(prefValue)) {
+		if (prefValue === undefined) {
+			addModifiedValueCallback('prefs', prefKey, '');
+		} else if (isBoolean(prefValue)) {
 			addModifiedValueCallback('prefs', prefKey, (prefValue && 'TRUE') || 'FALSE');
 		} else {
 			addModifiedValueCallback('prefs', prefKey, prefValue as PrefsMods[typeof prefKey]);

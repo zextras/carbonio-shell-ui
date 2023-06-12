@@ -4,11 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
-import { screen, within } from '@testing-library/react';
+import { act, screen, within } from '@testing-library/react';
 import { forEach } from 'lodash';
+import { faker } from '@faker-js/faker';
 import { setup } from '../../../test/utils';
 import { OutOfOfficeView } from './out-of-office-view';
-import { AccountSettings, AccountSettingsPrefs } from '../../../../types';
+import { AccountSettings, AccountSettingsPrefs, AddMod } from '../../../../types';
 import { ICONS, TESTID_SELECTORS } from '../../../test/constants';
 import { dateToGenTime } from '../utils';
 
@@ -44,7 +45,11 @@ describe('Out of office view', () => {
 		const { user } = setup(<OutOfOfficeView settings={settings} addMod={addModFn} />);
 		await user.click(screen.getByText('Do not send auto-replies'));
 		await user.click(screen.getByText('Send auto-replies'));
-		expect(addModFn).toHaveBeenCalledWith('prefs', 'zimbraPrefOutOfOfficeReplyEnabled', 'TRUE');
+		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
+			'prefs',
+			'zimbraPrefOutOfOfficeReplyEnabled',
+			'TRUE'
+		);
 	});
 
 	test('select of send auto-replies option updates the pref outOfOfficeReplyEnabled to FALSE', async () => {
@@ -57,7 +62,11 @@ describe('Out of office view', () => {
 		const { user } = setup(<OutOfOfficeView settings={settings} addMod={addModFn} />);
 		await user.click(screen.getByText('Send auto-replies'));
 		await user.click(screen.getByText('Do not send auto-replies'));
-		expect(addModFn).toHaveBeenCalledWith('prefs', 'zimbraPrefOutOfOfficeReplyEnabled', 'FALSE');
+		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
+			'prefs',
+			'zimbraPrefOutOfOfficeReplyEnabled',
+			'FALSE'
+		);
 	});
 
 	test('send auto-replies option enables both inputs for reply message and check for time period', async () => {
@@ -83,7 +92,7 @@ describe('Out of office view', () => {
 		);
 	});
 
-	test('do not send auto-replies option disables both inputs for reply message and checks of time period section', async () => {
+	test('do not send auto-replies option disables all fields', async () => {
 		const settings: AccountSettings = {
 			prefs: {
 				zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
@@ -99,18 +108,16 @@ describe('Out of office view', () => {
 		const { user } = setup(<OutOfOfficeView settings={settings} addMod={addModFn} />);
 		await user.click(screen.getByText('Send auto-replies'));
 		await user.click(screen.getByText('Do not send auto-replies'));
-		expect(screen.getByRole('textbox', { name: 'Auto-Reply Message:' })).toBeDisabled();
-		expect(
-			screen.getByRole('textbox', { name: 'Auto-Reply Message for External senders:' })
-		).toBeDisabled();
-
 		expect(screen.getByText('Send auto-replies during the following period:')).toHaveAttribute(
 			'disabled'
 		);
 		expect(screen.getByText('All Day:')).toHaveAttribute('disabled');
+		const inputFields = screen.getAllByRole('textbox');
+		expect(inputFields).toHaveLength(6);
+		inputFields.forEach((field) => expect(field).toBeDisabled());
 	});
 
-	test('all day check does not become enabled is user select "send auto-replies", but the time period check is not checked', async () => {
+	test('all day check and datetime inputs do not become enabled if user select "send auto-replies", but the time period check is not checked', async () => {
 		const settings: AccountSettings = {
 			prefs: {},
 			attrs: {},
@@ -124,6 +131,48 @@ describe('Out of office view', () => {
 			'disabled'
 		);
 		expect(screen.getByText('All Day:')).toHaveAttribute('disabled');
+		const dateTimeInputs = screen.getAllByRole('textbox', { name: /(start|end) (date|time)/i });
+		expect(dateTimeInputs).toHaveLength(4);
+		dateTimeInputs.forEach((input) => expect(input).toBeDisabled());
+	});
+
+	test.each<[string, AccountSettingsPrefs]>([
+		[
+			'Send standard auto-reply message',
+			{
+				zimbraPrefOutOfOfficeSuppressExternalReply: 'FALSE',
+				zimbraPrefOutOfOfficeExternalReplyEnabled: 'FALSE'
+			}
+		],
+		[
+			'Send custom message to those who are not in my organization',
+			{
+				zimbraPrefExternalSendersType: 'ALL',
+				zimbraPrefOutOfOfficeExternalReplyEnabled: 'TRUE'
+			}
+		],
+		[
+			'Send custom message to those who are not in my organization or address book',
+			{
+				zimbraPrefExternalSendersType: 'ALLNOTINAB',
+				zimbraPrefOutOfOfficeExternalReplyEnabled: 'TRUE'
+			}
+		],
+		[
+			"Don't send an auto-reply message to external sender",
+			{
+				zimbraPrefOutOfOfficeSuppressExternalReply: 'TRUE'
+			}
+		]
+	])('external reply initial value is %s', (expected, initialPrefs) => {
+		const settings: AccountSettings = {
+			prefs: initialPrefs,
+			attrs: {},
+			props: []
+		};
+		const addModFn = jest.fn();
+		setup(<OutOfOfficeView settings={settings} addMod={addModFn} />);
+		expect(screen.getByText(expected)).toBeVisible();
 	});
 
 	test.each([
@@ -239,8 +288,78 @@ describe('Out of office view', () => {
 				within(screen.getByTestId(TESTID_SELECTORS.dropdown)).getByText(optionLabel)
 			);
 			forEach(updatedPrefs, (value, key) =>
-				expect(addModFn).toHaveBeenCalledWith('prefs', key, value)
+				expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>('prefs', key, value)
 			);
 		}
 	);
+
+	test('should update zimbraPrefOutOfOfficeReply when reply message change', async () => {
+		const settings: AccountSettings = {
+			prefs: {
+				zimbraPrefOutOfOfficeReplyEnabled: 'TRUE'
+			},
+			attrs: {},
+			props: []
+		};
+		const addModFn = jest.fn();
+		const { user } = setup(<OutOfOfficeView settings={settings} addMod={addModFn} />);
+		const message = faker.lorem.paragraph();
+		await user.type(screen.getByRole('textbox', { name: 'Auto-Reply Message:' }), message);
+		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
+			'prefs',
+			'zimbraPrefOutOfOfficeReply',
+			message
+		);
+	});
+
+	test('should update zimbraPrefOutOfOfficeExternalReply when external reply message change', async () => {
+		const settings: AccountSettings = {
+			prefs: {
+				zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
+				zimbraPrefExternalSendersType: 'ALL',
+				zimbraPrefOutOfOfficeExternalReplyEnabled: 'TRUE'
+			},
+			attrs: {},
+			props: []
+		};
+		const addModFn = jest.fn();
+		const { user } = setup(<OutOfOfficeView settings={settings} addMod={addModFn} />);
+		const message = faker.lorem.paragraph();
+		await user.type(
+			screen.getByRole('textbox', { name: 'Auto-Reply Message for External senders:' }),
+			message
+		);
+		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
+			'prefs',
+			'zimbraPrefOutOfOfficeExternalReply',
+			message
+		);
+	});
+
+	test('should reset zimbraPrefOutOfOfficeFromDate and zimbraPrefOutOfOfficeUntilDate when user unchecks time period setting', async () => {
+		const settings: AccountSettings = {
+			prefs: {
+				zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
+				zimbraPrefOutOfOfficeFromDate: dateToGenTime(faker.date.recent()),
+				zimbraPrefOutOfOfficeUntilDate: dateToGenTime(faker.date.soon())
+			},
+			attrs: {},
+			props: []
+		};
+		const addModFn = jest.fn();
+		const { user } = setup(<OutOfOfficeView settings={settings} addMod={addModFn} />);
+		await act(async () => {
+			await user.click(screen.getByText(/Send auto-replies during the following period/i));
+		});
+		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
+			'prefs',
+			'zimbraPrefOutOfOfficeFromDate',
+			''
+		);
+		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
+			'prefs',
+			'zimbraPrefOutOfOfficeUntilDate',
+			''
+		);
+	});
 });

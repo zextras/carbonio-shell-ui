@@ -19,7 +19,7 @@ import { find } from 'lodash';
 import { type TFunction } from 'i18next';
 import { AccountSettings, AccountSettingsPrefs, AddMod, BooleanString } from '../../../../types';
 import Heading from '../settings-heading';
-import { OutOfOfficeTimePeriodSection } from '../out-of-office-time-period-section';
+import { OutOfOfficeTimePeriodSection } from './out-of-office-time-period-section';
 import { getT } from '../../../store/i18n';
 import { outOfOfficeSubSection } from '../../general-settings-sub-sections';
 import {
@@ -257,8 +257,15 @@ export const OutOfOfficeView = ({
 	);
 
 	const toggleSendAutoReplyTimePeriod = useCallback(() => {
-		setSendAutoReplyTimePeriodEnabled((prevState) => !prevState);
-	}, []);
+		setSendAutoReplyTimePeriodEnabled((prevState) => {
+			const nextState = !prevState;
+			if (!nextState) {
+				updatePref('zimbraPrefOutOfOfficeFromDate', undefined);
+				updatePref('zimbraPrefOutOfOfficeUntilDate', undefined);
+			}
+			return nextState;
+		});
+	}, [updatePref]);
 
 	return (
 		<FormSubSection

@@ -60,11 +60,12 @@ type GenTimeObj = {
 	hour: `${number}` & StringOfLength<2>;
 	min: `${number}` & StringOfLength<2>;
 	sec: `${number}` & StringOfLength<2>;
+	ms: (`.${number}` & StringOfLength<4>) | '';
 	timezone: 'Z' | '';
 };
 
 export type GeneralizedTime =
-	`${GenTimeObj['year']}${GenTimeObj['month']}${GenTimeObj['date']}${GenTimeObj['hour']}${GenTimeObj['min']}${GenTimeObj['sec']}${GenTimeObj['timezone']}`;
+	`${GenTimeObj['year']}${GenTimeObj['month']}${GenTimeObj['date']}${GenTimeObj['hour']}${GenTimeObj['min']}${GenTimeObj['sec']}${GenTimeObj['ms']}${GenTimeObj['timezone']}`;
 
 export interface AccountSettingsPrefs {
 	zimbraPrefOutOfOfficeExternalReply?: string;

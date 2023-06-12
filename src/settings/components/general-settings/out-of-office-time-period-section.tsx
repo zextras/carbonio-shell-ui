@@ -12,8 +12,8 @@ import {
 } from '@zextras/carbonio-design-system';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { AddMod, GeneralizedTime } from '../../../types';
-import { getT } from '../../store/i18n';
+import { AddMod, GeneralizedTime } from '../../../../types';
+import { getT } from '../../../store/i18n';
 import {
 	dateToGenTime,
 	endOfDay,
@@ -21,8 +21,8 @@ import {
 	SettingsSectionProps,
 	startOfDay,
 	upsertPrefOnUnsavedChanges
-} from './utils';
-import { useReset } from '../hooks/use-reset';
+} from '../utils';
+import { useReset } from '../../hooks/use-reset';
 
 interface OutOfOfficeTimePeriodSectionProps extends SettingsSectionProps {
 	addMod: AddMod;
@@ -74,13 +74,20 @@ export const OutOfOfficeTimePeriodSection = ({
 	const outOfOfficeFromDateOnChange = useCallback<NonNullable<DateTimePickerProps['onChange']>>(
 		(newFromDate) => {
 			if (newFromDate) {
-				setFromDate(newFromDate);
-				updatePref('zimbraPrefOutOfOfficeFromDate', dateToGenTime(newFromDate));
+				setFromDate((prevState) => {
+					if (newFromDate.getTime() !== prevState.getTime()) {
+						updatePref('zimbraPrefOutOfOfficeFromDate', dateToGenTime(newFromDate));
+					}
+					return newFromDate;
+				});
 				if (newFromDate.getTime() > untilDate.getTime()) {
 					const newUntilDate = new Date(newFromDate);
 					setUntilDate(newUntilDate);
 					updatePref('zimbraPrefOutOfOfficeUntilDate', dateToGenTime(newUntilDate));
 				}
+			} else {
+				// force an update by cloning the date, so that the input is not left empty
+				setFromDate((prevState) => new Date(prevState));
 			}
 		},
 		[untilDate, updatePref]
@@ -89,13 +96,20 @@ export const OutOfOfficeTimePeriodSection = ({
 	const outOfOfficeUntilDateOnChange = useCallback<NonNullable<DateTimePickerProps['onChange']>>(
 		(newUntilDate) => {
 			if (newUntilDate) {
-				setUntilDate(newUntilDate);
-				updatePref('zimbraPrefOutOfOfficeUntilDate', dateToGenTime(newUntilDate));
+				setUntilDate((prevState) => {
+					if (newUntilDate.getTime() !== prevState.getTime()) {
+						updatePref('zimbraPrefOutOfOfficeUntilDate', dateToGenTime(newUntilDate));
+					}
+					return newUntilDate;
+				});
 				if (newUntilDate.getTime() < fromDate.getTime()) {
 					const newFromDate = new Date(newUntilDate);
 					setFromDate(newFromDate);
 					updatePref('zimbraPrefOutOfOfficeFromDate', dateToGenTime(newFromDate));
 				}
+			} else {
+				// force an update by cloning the date, so that the input is not left empty
+				setUntilDate((prevState) => new Date(prevState));
 			}
 		},
 		[fromDate, updatePref]
@@ -160,7 +174,7 @@ export const OutOfOfficeTimePeriodSection = ({
 					showTimeSelectOnly
 					timeLabel=""
 					dateFormat="p"
-					selected={fromDate}
+					defaultValue={fromDate}
 					onChange={outOfOfficeFromDateOnChange}
 					disabled={editTimeIsDisabled}
 					width={'fill'}
@@ -171,7 +185,7 @@ export const OutOfOfficeTimePeriodSection = ({
 					showTimeSelectOnly
 					timeLabel=""
 					dateFormat="p"
-					selected={untilDate}
+					defaultValue={untilDate}
 					onChange={outOfOfficeUntilDateOnChange}
 					disabled={editTimeIsDisabled}
 					width={'fill'}

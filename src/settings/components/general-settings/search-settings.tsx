@@ -6,18 +6,18 @@
 
 import { Checkbox, Container, FormSubSection } from '@zextras/carbonio-design-system';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { AccountSettings, AddMod, BooleanString, PrefsMods } from '../../types';
-import { getT } from '../store/i18n';
-import { searchPrefsSubSection } from './general-settings-sub-sections';
-import { useReset } from './hooks/use-reset';
-import { SettingsSectionProps, upsertPrefOnUnsavedChanges } from './components/utils';
+import { AccountSettings, AddMod } from '../../../../types';
+import { getT } from '../../../store/i18n';
+import { searchPrefsSubSection } from '../../general-settings-sub-sections';
+import { useReset } from '../../hooks/use-reset';
+import { SettingsSectionProps, upsertPrefOnUnsavedChanges } from '../utils';
 
 type SearchSettingsViewProps = SettingsSectionProps & {
 	settings: AccountSettings;
 	addMod: AddMod;
 };
 
-export const SearchSettingsView = ({
+export const SearchSettings = ({
 	settings,
 	addMod,
 	resetRef

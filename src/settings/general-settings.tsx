@@ -14,11 +14,11 @@ import { getT } from '../store/i18n';
 import AppearanceSettings from './components/general-settings/appearance-settings';
 import Logout from './components/general-settings/logout';
 import ModuleVersionSettings from './components/general-settings/module-version-settings';
-import { OutOfOfficeView } from './components/general-settings/out-of-office-view';
+import { OutOfOfficeSettings } from './components/general-settings/out-of-office-settings';
 import UserQuota from './components/general-settings/user-quota';
 import SettingsHeader from './components/settings-header';
 import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
-import { SearchSettingsView } from './search-settings-view';
+import { SearchSettings } from './components/general-settings/search-settings';
 import { useLocalStorage } from '../shell/hooks';
 import { ScalingSettingSection } from './components/general-settings/scaling-setting-section';
 import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
@@ -170,12 +170,12 @@ const GeneralSettings = (): JSX.Element => {
 					setOpen={setOpen}
 				/>
 
-				<OutOfOfficeView
+				<OutOfOfficeSettings
 					settings={userSettings}
 					addMod={addMod}
 					resetRef={outOfOfficeSettingsSectionRef}
 				/>
-				<SearchSettingsView
+				<SearchSettings
 					settings={userSettings}
 					addMod={addMod}
 					resetRef={searchSettingsSectionRef}

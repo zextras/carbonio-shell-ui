@@ -119,7 +119,7 @@ interface OutOfOfficeViewProps extends SettingsSectionProps {
 	addMod: AddMod;
 }
 
-export const OutOfOfficeView = ({
+export const OutOfOfficeSettings = ({
 	settings,
 	addMod,
 	resetRef

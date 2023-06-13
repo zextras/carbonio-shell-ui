@@ -125,6 +125,7 @@ const GeneralSettings = (): JSX.Element => {
 
 	const scalingSettingSectionRef = useRef<ResetComponentImperativeHandler>(null);
 	const outOfOfficeSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
+	const searchSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
 
 	const onCancel = useCallback(() => {
 		setMods({});
@@ -132,6 +133,7 @@ const GeneralSettings = (): JSX.Element => {
 			scalingSettingSectionRef.current?.reset();
 		}
 		outOfOfficeSettingsSectionRef.current?.reset();
+		searchSettingsSectionRef?.current?.reset();
 	}, [localStorageUnAppliedChanges]);
 
 	const isDirty = useMemo(
@@ -173,7 +175,11 @@ const GeneralSettings = (): JSX.Element => {
 					addMod={addMod}
 					resetRef={outOfOfficeSettingsSectionRef}
 				/>
-				<SearchSettingsView settings={userSettings} addMod={addMod} />
+				<SearchSettingsView
+					settings={userSettings}
+					addMod={addMod}
+					resetRef={searchSettingsSectionRef}
+				/>
 				<ModuleVersionSettings />
 				<UserQuota mobileView={false} />
 				<Logout />

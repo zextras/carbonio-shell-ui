@@ -9,45 +9,50 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { AccountSettings, AddMod, BooleanString, PrefsMods } from '../../types';
 import { getT } from '../store/i18n';
 import { searchPrefsSubSection } from './general-settings-sub-sections';
+import { useReset } from './hooks/use-reset';
+import { SettingsSectionProps, upsertPrefOnUnsavedChanges } from './components/utils';
 
-type SearchSettingsViewProps = {
+type SearchSettingsViewProps = SettingsSectionProps & {
 	settings: AccountSettings;
 	addMod: AddMod;
 };
 
-export const SearchSettingsView = ({ settings, addMod }: SearchSettingsViewProps): JSX.Element => {
+export const SearchSettingsView = ({
+	settings,
+	addMod,
+	resetRef
+}: SearchSettingsViewProps): JSX.Element => {
 	const t = getT();
-	const [searchInSpamFolder, setSearchInSpamFolder] = useState<BooleanString>(
-		settings.prefs.zimbraPrefIncludeSpamInSearch ?? 'FALSE'
+	const [searchInSpamFolder, setSearchInSpamFolder] = useState<boolean>(
+		settings.prefs.zimbraPrefIncludeSpamInSearch === 'TRUE'
 	);
-	const [searchInTrashFolder, setSearchInTrashFolder] = useState<BooleanString>(
-		settings.prefs.zimbraPrefIncludeTrashInSearch ?? 'FALSE'
+	const [searchInTrashFolder, setSearchInTrashFolder] = useState<boolean>(
+		settings.prefs.zimbraPrefIncludeTrashInSearch === 'TRUE'
 	);
-	const [searchInSharedFolder, setSearchInSharedFolder] = useState<BooleanString>(
-		settings.prefs.zimbraPrefIncludeSharedItemsInSearch ?? 'FALSE'
+	const [searchInSharedFolder, setSearchInSharedFolder] = useState<boolean>(
+		settings.prefs.zimbraPrefIncludeSharedItemsInSearch === 'TRUE'
 	);
-	const setMode = useCallback(
-		<K extends keyof PrefsMods>(prefKey: K, prefValue: PrefsMods[K]) => {
-			addMod('prefs', prefKey, prefValue);
-		},
-		[addMod]
-	);
+	const setMode = useMemo(() => upsertPrefOnUnsavedChanges(addMod), [addMod]);
+
+	const init = useCallback(() => {
+		setSearchInSpamFolder(settings.prefs.zimbraPrefIncludeSpamInSearch === 'TRUE');
+		setSearchInTrashFolder(settings.prefs.zimbraPrefIncludeTrashInSearch === 'TRUE');
+		setSearchInSharedFolder(settings.prefs.zimbraPrefIncludeSharedItemsInSearch === 'TRUE');
+	}, [
+		settings.prefs.zimbraPrefIncludeSharedItemsInSearch,
+		settings.prefs.zimbraPrefIncludeSpamInSearch,
+		settings.prefs.zimbraPrefIncludeTrashInSearch
+	]);
+
+	useReset(resetRef, init);
 
 	useEffect(() => {
-		setSearchInSpamFolder(settings.prefs.zimbraPrefIncludeSpamInSearch ?? 'FALSE');
-	}, [settings.prefs.zimbraPrefIncludeSpamInSearch]);
-
-	useEffect(() => {
-		setSearchInTrashFolder(settings.prefs.zimbraPrefIncludeTrashInSearch ?? 'FALSE');
-	}, [settings.prefs.zimbraPrefIncludeTrashInSearch]);
-
-	useEffect(() => {
-		setSearchInSharedFolder(settings.prefs.zimbraPrefIncludeSharedItemsInSearch ?? 'FALSE');
-	}, [settings.prefs.zimbraPrefIncludeSharedItemsInSearch]);
+		init();
+	}, [init]);
 
 	const onClickSpam = useCallback(() => {
 		setSearchInSpamFolder((prevState) => {
-			const newValue = prevState === 'TRUE' ? 'FALSE' : 'TRUE';
+			const newValue = !prevState;
 			setMode('zimbraPrefIncludeSpamInSearch', newValue);
 			return newValue;
 		});
@@ -55,7 +60,7 @@ export const SearchSettingsView = ({ settings, addMod }: SearchSettingsViewProps
 
 	const onClickTrash = useCallback(() => {
 		setSearchInTrashFolder((prevState) => {
-			const newValue = prevState === 'TRUE' ? 'FALSE' : 'TRUE';
+			const newValue = !prevState;
 			setMode('zimbraPrefIncludeTrashInSearch', newValue);
 			return newValue;
 		});
@@ -63,7 +68,7 @@ export const SearchSettingsView = ({ settings, addMod }: SearchSettingsViewProps
 
 	const onClickShared = useCallback(() => {
 		setSearchInSharedFolder((prevState) => {
-			const newValue = prevState === 'TRUE' ? 'FALSE' : 'TRUE';
+			const newValue = !prevState;
 			setMode('zimbraPrefIncludeSharedItemsInSearch', newValue);
 			return newValue;
 		});
@@ -84,7 +89,7 @@ export const SearchSettingsView = ({ settings, addMod }: SearchSettingsViewProps
 						'settings.search_settings.labels.include_search_in_spam_folder',
 						'Include Spam Folder in Searches'
 					)}
-					value={searchInSpamFolder === 'TRUE'}
+					value={searchInSpamFolder}
 					onClick={onClickSpam}
 				/>
 				<Checkbox
@@ -92,7 +97,7 @@ export const SearchSettingsView = ({ settings, addMod }: SearchSettingsViewProps
 						'settings.search_settings.labels.include_search_in_trash_folder',
 						'Include Trash Folder in Searches'
 					)}
-					value={searchInTrashFolder === 'TRUE'}
+					value={searchInTrashFolder}
 					onClick={onClickTrash}
 				/>
 				<Checkbox
@@ -100,7 +105,7 @@ export const SearchSettingsView = ({ settings, addMod }: SearchSettingsViewProps
 						'settings.search_settings.labels.include_search_in_shared_folder',
 						'Include Shared Folder in Searches'
 					)}
-					value={searchInSharedFolder === 'TRUE'}
+					value={searchInSharedFolder}
 					onClick={onClickShared}
 				/>
 			</Container>

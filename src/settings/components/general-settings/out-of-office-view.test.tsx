@@ -336,7 +336,7 @@ describe('Out of office view', () => {
 		);
 	});
 
-	test('should reset zimbraPrefOutOfOfficeFromDate and zimbraPrefOutOfOfficeUntilDate when user unchecks time period setting', async () => {
+	test('should set zimbraPrefOutOfOfficeFromDate and zimbraPrefOutOfOfficeUntilDate to empty value when user unchecks time period setting', async () => {
 		const settings: AccountSettings = {
 			prefs: {
 				zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
@@ -360,6 +360,55 @@ describe('Out of office view', () => {
 			'prefs',
 			'zimbraPrefOutOfOfficeUntilDate',
 			''
+		);
+	});
+
+	test('should set zimbraPrefOutOfOfficeFromDate and zimbraPrefOutOfOfficeUntilDate if not already valued when user unchecks time period setting', async () => {
+		const settings: AccountSettings = {
+			prefs: {
+				zimbraPrefOutOfOfficeReplyEnabled: 'TRUE'
+			},
+			attrs: {},
+			props: []
+		};
+		const addModFn = jest.fn();
+		const { user } = setup(<OutOfOfficeView settings={settings} addMod={addModFn} />);
+		await act(async () => {
+			await user.click(screen.getByText(/Send auto-replies during the following period/i));
+		});
+		const now = dateToGenTime(new Date());
+		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
+			'prefs',
+			'zimbraPrefOutOfOfficeFromDate',
+			now
+		);
+		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
+			'prefs',
+			'zimbraPrefOutOfOfficeUntilDate',
+			now
+		);
+	});
+
+	test('should not set zimbraPrefOutOfOfficeFromDate and zimbraPrefOutOfOfficeUntilDate if already valued when user unchecks time period setting', async () => {
+		const settings: AccountSettings = {
+			prefs: {
+				zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
+				zimbraPrefOutOfOfficeFromDate: dateToGenTime(faker.date.recent())
+			},
+			attrs: {},
+			props: []
+		};
+		const addModFn = jest.fn();
+		const { user } = setup(<OutOfOfficeView settings={settings} addMod={addModFn} />);
+		await act(async () => {
+			await user.click(screen.getByText(/Send auto-replies during the following period/i));
+		});
+		const now = dateToGenTime(new Date());
+		expect(addModFn).toHaveBeenCalledTimes(1);
+		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
+			'prefs',
+			'zimbraPrefOutOfOfficeUntilDate',
+			now
 		);
 	});
 });

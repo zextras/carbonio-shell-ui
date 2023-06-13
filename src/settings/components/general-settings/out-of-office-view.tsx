@@ -23,6 +23,7 @@ import { OutOfOfficeTimePeriodSection } from './out-of-office-time-period-sectio
 import { getT } from '../../../store/i18n';
 import { outOfOfficeSubSection } from '../../general-settings-sub-sections';
 import {
+	dateToGenTime,
 	ResetComponentImperativeHandler,
 	SettingsSectionProps,
 	upsertPrefOnUnsavedChanges
@@ -262,10 +263,21 @@ export const OutOfOfficeView = ({
 			if (!nextState) {
 				updatePref('zimbraPrefOutOfOfficeFromDate', undefined);
 				updatePref('zimbraPrefOutOfOfficeUntilDate', undefined);
+			} else {
+				if (!settings.prefs.zimbraPrefOutOfOfficeFromDate) {
+					updatePref('zimbraPrefOutOfOfficeFromDate', dateToGenTime(new Date()));
+				}
+				if (!settings.prefs.zimbraPrefOutOfOfficeUntilDate) {
+					updatePref('zimbraPrefOutOfOfficeUntilDate', dateToGenTime(new Date()));
+				}
 			}
 			return nextState;
 		});
-	}, [updatePref]);
+	}, [
+		settings.prefs.zimbraPrefOutOfOfficeFromDate,
+		settings.prefs.zimbraPrefOutOfOfficeUntilDate,
+		updatePref
+	]);
 
 	return (
 		<FormSubSection

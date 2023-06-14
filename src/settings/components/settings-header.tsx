@@ -18,11 +18,11 @@ import React, { useEffect, useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { SETTINGS_APP_ID } from '../../constants';
 import { getT } from '../../store/i18n';
-import { RouteLeavingGuard } from '../../ui-extras/nav-guard';
+import { RouteLeavingGuard, RouteLeavingGuardProps } from '../../ui-extras/nav-guard';
 
-type SettingsHeaderProps = {
+export type SettingsHeaderProps = {
 	title: string;
-	onSave: () => void;
+	onSave: RouteLeavingGuardProps['onSave'];
 	onCancel: () => void;
 	isDirty: boolean;
 };

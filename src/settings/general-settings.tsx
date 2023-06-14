@@ -16,7 +16,7 @@ import Logout from './components/general-settings/logout';
 import ModuleVersionSettings from './components/general-settings/module-version-settings';
 import OutOfOfficeSettings from './components/general-settings/out-of-office-view';
 import UserQuota from './components/general-settings/user-quota';
-import SettingsHeader from './components/settings-header';
+import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
 import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
 import SearchSettingsView from './search-settings-view';
 import { useLocalStorage } from '../shell/hooks';
@@ -85,7 +85,7 @@ const GeneralSettings: FC = () => {
 	}, []);
 	const createSnackbar = useSnackbar();
 
-	const onSave = useCallback(() => {
+	const onSave = useCallback<SettingsHeaderProps['onSave']>(() => {
 		setLocalStorageUnAppliedChanges((unAppliedPrevState) => {
 			if (size(unAppliedPrevState) > 0) {
 				setLocalStorageSettings((localStorageSettingsPrevState) => ({
@@ -97,7 +97,7 @@ const GeneralSettings: FC = () => {
 			return unAppliedPrevState;
 		});
 		if (size(mods) > 0) {
-			editSettings(mods)
+			const promise = editSettings(mods)
 				.then(() => {
 					if (mods.prefs && includes(Object.keys(mods.prefs), 'zimbraPrefLocale')) {
 						setOpen(true);
@@ -110,8 +110,9 @@ const GeneralSettings: FC = () => {
 						autoHideTimeout: 3000,
 						hideButton: true
 					});
+					setMods({});
 				})
-				.catch(() => {
+				.catch((error: unknown) => {
 					createSnackbar({
 						key: `new`,
 						replace: true,
@@ -120,9 +121,14 @@ const GeneralSettings: FC = () => {
 						autoHideTimeout: 3000,
 						hideButton: true
 					});
+					if (error instanceof Error) {
+						throw error;
+					}
+					throw new Error(typeof error === 'string' ? error : 'edit setting error');
 				});
-			setMods({});
+			return Promise.allSettled([promise]);
 		}
+		return Promise.allSettled([Promise.resolve()]);
 	}, [mods, setLocalStorageSettings, createSnackbar, t]);
 
 	const scalingSettingSectionRef = useRef<ScalingSettingSectionRef>(null);

@@ -50,8 +50,13 @@ export type DelegateProps = {
 	right: string;
 };
 
+export type AccountSettingsAttrs = {
+	zimbraIdentityMaxNumEntries?: number;
+	[key: string]: string | number | Array<string | number>;
+};
+
 export type AccountSettings = {
-	attrs: Record<string, string | number | Array<string | number>>;
+	attrs: AccountSettingsAttrs;
 	prefs: Record<string, string | number | Array<string | number>>;
 	props: Array<ZimletProp>;
 };

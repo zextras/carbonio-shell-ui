@@ -26,9 +26,7 @@ failOnConsole({
 		// and it's an object instead of a Window class instance, so the check on the prop type fail for the target prop
 		/Invalid prop `\w+`(\sof type `\w+`)? supplied to `(\w+(\(\w+\))?)`/.test(errorMessage) ||
 		// errors forced from the tests
-		/Controlled error/gi.test(errorMessage) ||
-		// TODO remove when SHELL-117 will be implemented
-		/Unexpected end of JSON input/gi.test(errorMessage)
+		/Controlled error/gi.test(errorMessage)
 });
 
 beforeEach(() => {

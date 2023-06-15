@@ -36,8 +36,18 @@ describe('Loader', () => {
 	});
 
 	test('If only getInfo request fails, the LoaderFailureModal appears', async () => {
+		// TODO remove when SHELL-117 will be implemented
+		const actualConsoleError = console.error;
+		console.error = jest.fn<ReturnType<typeof console.error>, Parameters<typeof console.error>>(
+			(error, ...restParameter) => {
+				if (error === 'Unexpected end of JSON input') {
+					console.log('Controlled error', error, ...restParameter);
+				} else {
+					actualConsoleError(error, ...restParameter);
+				}
+			}
+		);
 		// using getComponents and loginConfig default handlers
-		// TODO update when SHELL-117 will be implemented
 		server.use(
 			rest.post('/service/soap/GetInfoRequest', (req, res, ctx) =>
 				res(ctx.status(503, 'Controlled error: fail getInfo request'))

@@ -13,7 +13,7 @@ import {
 	useSnackbar
 } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
-import ShellI18nextProvider from './bootstrapper-provider';
+import ShellI18nextProvider from './shell-i18n-provider';
 import { ThemeProvider } from './theme-provider';
 import { BASENAME, IS_STANDALONE } from '../constants';
 import { Loader } from './loader';

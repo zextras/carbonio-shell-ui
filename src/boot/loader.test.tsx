@@ -62,7 +62,7 @@ describe('Loader', () => {
 		expect(screen.queryByText('Something went wrong...')).not.toBeInTheDocument();
 	});
 
-	test('If Loader requests do not fail, the LoaderFailureModal does not appears', async () => {
+	test('If Loader requests do not fail, the LoaderFailureModal does not appear', async () => {
 		// using getComponents, loginConfig and getInfo default handlers
 
 		setup(<Loader />);

@@ -53,7 +53,7 @@ describe('Loader', () => {
 		expect(title).toBeVisible();
 	});
 
-	test('If only loginConfig request fails, the LoaderFailureModal does not appears', async () => {
+	test('If only loginConfig request fails, the LoaderFailureModal does not appear', async () => {
 		// using getComponents and getInfo default handlers
 		server.use(rest.post(LOGIN_V3_CONFIG_PATH, (req, res, ctx) => res(ctx.status(503))));
 

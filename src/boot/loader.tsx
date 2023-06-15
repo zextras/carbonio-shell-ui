@@ -5,7 +5,7 @@
  */
 
 import { Modal, Padding, Text } from '@zextras/carbonio-design-system';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { find } from 'lodash';
 import { useAppStore } from '../store/app';

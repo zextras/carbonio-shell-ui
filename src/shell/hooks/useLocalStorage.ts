@@ -27,29 +27,21 @@ const useLocalStorageStore = create<LocalStorageState>()((setState) => ({
 			const item = localStorageItem !== null ? JSON.parse(localStorageItem) : fallback;
 			setState((state) => {
 				if (state.storage[key] === undefined) {
-					const newState = { ...state };
-					newState.storage[key] = item;
-					return newState;
+					return { storage: { ...state.storage, [key]: item } };
 				}
 				return state;
 			});
 		} catch (error) {
 			console.error(error);
-			setState((state) => {
-				const newState = { ...state };
-				newState.storage[key] = fallback;
-				return newState;
-			});
+			setState((state) => ({ storage: { ...state.storage, [key]: fallback } }));
 		}
 	},
 	setValue<T>(key: string, value: React.SetStateAction<T>): void {
 		setState((state) => {
 			const valueToStore = value instanceof Function ? value(state.storage[key]) : value;
-			const newState = { ...state };
 			if (!isSameLocalStorageValue(valueToStore, state.storage[key])) {
 				window.localStorage.setItem(key, JSON.stringify(valueToStore));
-				newState.storage[key] = valueToStore;
-				return newState;
+				return { storage: { ...state.storage, [key]: valueToStore } };
 			}
 			return state;
 		});

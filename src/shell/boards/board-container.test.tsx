@@ -971,4 +971,33 @@ describe('Board container', () => {
 			})
 		);
 	});
+
+	test('Reset is disabled when opening a new board which had custom position but default sizes', async () => {
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		const boardNewPosition = {
+			top: 0,
+			left: 0
+		};
+		await moveBoard(
+			board,
+			boardInitialSizeAndPos,
+			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
+			{ clientX: 0, clientY: 0 },
+			boardNewPosition
+		);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		act(() => {
+			setupBoardStore();
+		});
+		await waitFor(() =>
+			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '{}')).toEqual({})
+		);
+		expect(getByRoleWithIcon('button', { icon: ICONS.resetBoardSize })).toBeDisabled();
+	});
 });

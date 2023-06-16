@@ -242,11 +242,12 @@ export const BoardContainer = (): JSX.Element | null => {
 	useEffect(() => {
 		// reset position when the board is closed
 		if (isBoardEmpty) {
-			setLastSavedBoardSizeAndPosition((prevState) => ({
-				...prevState,
-				left: undefined,
-				top: undefined
-			}));
+			setLastSavedBoardSizeAndPosition((prevState) => {
+				const newState = { ...prevState };
+				delete newState.left;
+				delete newState.top;
+				return newState;
+			});
 		}
 	}, [isBoardEmpty, setLastSavedBoardSizeAndPosition]);
 

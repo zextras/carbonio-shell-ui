@@ -9,6 +9,16 @@
         "reduce": "Reduce board",
         "show_tabs": "Show other tabs"
     },
+    "bootstrap": {
+        "failure": {
+            "modal": {
+                "body": "Some technical issues occurred while processing your request. Please try to refresh the page or go back to the login page.",
+                "confirmButtonLabel": "refresh",
+                "secondaryButtonLabel": "login page",
+                "title": "Something went wrong..."
+            }
+        }
+    },
     "feedback": {
         "behaviors": "Behaviors",
         "error": "There was an error while submitting your feedback",

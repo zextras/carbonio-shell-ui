@@ -15,9 +15,6 @@ export const loginConfig = (): Promise<void> =>
 		.then((data: LoginConfigStore) => {
 			useLoginConfigStore.setState(data);
 		})
-		.catch((reason) => {
-			console.warn(reason);
-		})
 		.finally(() => {
 			useLoginConfigStore.setState({ loaded: true });
 			const favicon = document.getElementById('favicon');

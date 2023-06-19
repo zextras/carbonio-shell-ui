@@ -130,7 +130,6 @@ const Composer: FC<ComposerProps> = ({
 			language: locale,
 			setup: setupCallback,
 			min_height: 350,
-			auto_focus: true,
 			menubar: false,
 			statusbar: false,
 			branding: false,

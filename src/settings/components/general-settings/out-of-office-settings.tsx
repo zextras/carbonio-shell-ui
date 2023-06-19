@@ -305,6 +305,9 @@ export const OutOfOfficeSettings = ({
 					label={t('settings.out_of_office.labels.external_senders', 'External Senders')}
 					onChange={externalSendersOnChange}
 					selection={externalSendersSelectedItem}
+					dropdownWidth={'auto'}
+					dropdownMaxWidth={'unset'}
+					placement={'bottom-start'}
 				/>
 				{prefOutOfOfficeExternalReplyEnabled && (
 					<TextArea

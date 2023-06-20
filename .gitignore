@@ -8,11 +8,10 @@
 /lib/
 /deploy/
 /junit.xml
-/coverage/cobertura-coverage.xml
+/coverage/
 /.vscode/
 /.idea/
 .dev.json
 zextras-carbonio-*.tgz
 shell.iml
 .env
-/coverage

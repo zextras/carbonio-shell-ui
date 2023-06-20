@@ -127,6 +127,8 @@ export const PALETTE = {
 };
 
 export const ICONS = {
+	checkboxChecked: 'icon: CheckmarkSquare',
+	checkboxUnchecked: 'icon: Square',
 	close: 'Close',
 	closeBoard: 'CloseOutline',
 	collapseBoard: 'BoardCollapse',
@@ -138,6 +140,8 @@ export const ICONS = {
 
 export const TESTID_SELECTORS = {
 	board: 'NewItemContainer',
+	checkbox: 'checkbox',
+	dropdown: 'dropdown-popper-list',
 	resizableBorder(border: Border): string {
 		return `resizable-border-${border}`;
 	}

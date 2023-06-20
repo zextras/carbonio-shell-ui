@@ -6,7 +6,7 @@
 
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import { includes, isEmpty, size } from 'lodash';
-import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { AddMod, Mods, RemoveMod } from '../../types';
 import { editSettings } from '../network/edit-settings';
 import { useUserSettings } from '../store/account';
@@ -14,21 +14,19 @@ import { getT } from '../store/i18n';
 import AppearanceSettings from './components/general-settings/appearance-settings';
 import Logout from './components/general-settings/logout';
 import ModuleVersionSettings from './components/general-settings/module-version-settings';
-import OutOfOfficeSettings from './components/general-settings/out-of-office-view';
+import { OutOfOfficeSettings } from './components/general-settings/out-of-office-settings';
 import UserQuota from './components/general-settings/user-quota';
 import SettingsHeader from './components/settings-header';
 import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
-import SearchSettingsView from './search-settings-view';
-import {
-	ScalingSettingSection,
-	ScalingSettingSectionRef
-} from './components/general-settings/scaling-setting-section';
+import { SearchSettings } from './components/general-settings/search-settings';
+import { ScalingSettingSection } from './components/general-settings/scaling-setting-section';
 import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
 import { LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
 import { ScalingSettings } from '../../types/settings';
+import { ResetComponentImperativeHandler } from './components/utils';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 
-const GeneralSettings: FC = () => {
+const GeneralSettings = (): JSX.Element => {
 	const [mods, setMods] = useState<Mods>({});
 	const t = getT();
 	const userSettings = useUserSettings();
@@ -125,13 +123,17 @@ const GeneralSettings: FC = () => {
 		}
 	}, [mods, setLocalStorageSettings, createSnackbar, t]);
 
-	const scalingSettingSectionRef = useRef<ScalingSettingSectionRef>(null);
+	const scalingSettingSectionRef = useRef<ResetComponentImperativeHandler>(null);
+	const outOfOfficeSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
+	const searchSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
 
 	const onCancel = useCallback(() => {
 		setMods({});
 		if (size(localStorageUnAppliedChanges) > 0) {
 			scalingSettingSectionRef.current?.reset();
 		}
+		outOfOfficeSettingsSectionRef.current?.reset();
+		searchSettingsSectionRef?.current?.reset();
 	}, [localStorageUnAppliedChanges]);
 
 	const isDirty = useMemo(
@@ -154,7 +156,7 @@ const GeneralSettings: FC = () => {
 			>
 				<AppearanceSettings>
 					<ScalingSettingSection
-						ref={scalingSettingSectionRef}
+						resetRef={scalingSettingSectionRef}
 						scalingSettings={localStorageSettings}
 						addLocalStoreChange={addLocalStoreChange}
 						cleanLocalStoreChange={cleanLocalStoreChange}
@@ -168,8 +170,16 @@ const GeneralSettings: FC = () => {
 					setOpen={setOpen}
 				/>
 
-				<OutOfOfficeSettings settings={userSettings} addMod={addMod} />
-				<SearchSettingsView settings={userSettings} addMod={addMod} />
+				<OutOfOfficeSettings
+					settings={userSettings}
+					addMod={addMod}
+					resetRef={outOfOfficeSettingsSectionRef}
+				/>
+				<SearchSettings
+					settings={userSettings}
+					addMod={addMod}
+					resetRef={searchSettingsSectionRef}
+				/>
 				<ModuleVersionSettings />
 				<UserQuota mobileView={false} />
 				<Logout />

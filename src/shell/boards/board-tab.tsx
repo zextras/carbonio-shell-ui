@@ -75,11 +75,20 @@ export const AppBoardTab: FC<{ id: string; icon: string; title: string; firstTab
 }) => {
 	const current = useBoardStore((s) => s.current);
 	const t = getT();
-	const onClick = useCallback(() => setCurrentBoard(id), [id]);
+	const onClick = useCallback(
+		(event: React.SyntheticEvent<HTMLDivElement>) => {
+			if (!event.defaultPrevented) {
+				setCurrentBoard(id);
+			}
+		},
+		[id]
+	);
 	const onRemove = useCallback(
-		(ev) => {
-			ev.stopPropagation();
-			closeBoard(id);
+		(ev: React.SyntheticEvent | Event) => {
+			if (!ev.defaultPrevented) {
+				ev.stopPropagation();
+				closeBoard(id);
+			}
 		},
 		[id]
 	);

@@ -3,14 +3,17 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { rest } from 'msw';
-import { act, screen } from '@testing-library/react';
+import { ResponseResolver, rest, RestContext, RestRequest } from 'msw';
+import { act, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 import server from '../mocks/server';
-import { GetComponentsJsonResponseBody } from '../mocks/handlers/components';
+import { getComponentsJson, GetComponentsJsonResponseBody } from '../mocks/handlers/components';
 import { setup } from '../test/utils';
 import { Loader } from './loader';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
+import { LoginConfigStore } from '../../types/loginConfig';
+import { getLoginConfig } from '../mocks/handlers/login-config';
+import { getInfoRequest } from '../mocks/handlers/getInfoRequest';
 
 jest.mock('../workers');
 jest.mock('../reporting/functions');
@@ -64,18 +67,47 @@ describe('Loader', () => {
 	});
 
 	test('If only loginConfig request fails, the LoaderFailureModal does not appear', async () => {
-		// using getComponents and getInfo default handlers
-		server.use(rest.post(LOGIN_V3_CONFIG_PATH, (req, res, ctx) => res(ctx.status(503))));
+		const getComponentsJsonHandler = jest.fn(getComponentsJson);
+		const getInfoHandler = jest.fn(getInfoRequest);
+		type LoginConfigHandler = ResponseResolver<
+			RestRequest<never, never>,
+			RestContext,
+			Partial<Omit<LoginConfigStore, 'loaded'>>
+		>;
+		const loginConfigHandler = jest.fn<
+			ReturnType<LoginConfigHandler>,
+			Parameters<LoginConfigHandler>
+		>((req, res, ctx) => res(ctx.status(503)));
+		server.use(
+			rest.get('/static/iris/components.json', getComponentsJsonHandler),
+			rest.post('/service/soap/GetInfoRequest', getInfoHandler),
+			rest.get(LOGIN_V3_CONFIG_PATH, loginConfigHandler)
+		);
 
 		setup(<Loader />);
+
+		await waitFor(() => expect(loginConfigHandler).toHaveBeenCalled());
+		await waitFor(() => expect(getComponentsJsonHandler).toHaveBeenCalled());
+		await waitFor(() => expect(getInfoHandler).toHaveBeenCalled());
 
 		expect(screen.queryByText('Something went wrong...')).not.toBeInTheDocument();
 	});
 
 	test('If Loader requests do not fail, the LoaderFailureModal does not appear', async () => {
-		// using getComponents, loginConfig and getInfo default handlers
+		const loginConfigHandler = jest.fn(getLoginConfig);
+		const getComponentsJsonHandler = jest.fn(getComponentsJson);
+		const getInfoHandler = jest.fn(getInfoRequest);
 
+		server.use(
+			rest.get('/static/iris/components.json', getComponentsJsonHandler),
+			rest.post('/service/soap/GetInfoRequest', getInfoHandler),
+			rest.get(LOGIN_V3_CONFIG_PATH, loginConfigHandler)
+		);
 		setup(<Loader />);
+
+		await waitFor(() => expect(loginConfigHandler).toHaveBeenCalled());
+		await waitFor(() => expect(getComponentsJsonHandler).toHaveBeenCalled());
+		await waitFor(() => expect(getInfoHandler).toHaveBeenCalled());
 
 		expect(screen.queryByText('Something went wrong...')).not.toBeInTheDocument();
 	});

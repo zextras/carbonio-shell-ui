@@ -17,12 +17,12 @@ import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 're
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { LOCAL_STORAGE_SEARCH_KEY, SEARCH_APP_ID } from '../constants';
-import { useLocalStorage } from '../shell/hooks';
 
 import { QueryChip, QueryItem } from '../../types';
 import { getT } from '../store/i18n';
 import { ModuleSelector } from './module-selector';
 import { useSearchStore } from './search-store';
+import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 
 const OutlinedIconButton = styled(IconButton)`
 	border: 0.0625rem solid

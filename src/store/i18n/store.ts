@@ -9,6 +9,7 @@ import Backend from 'i18next-http-backend';
 import produce from 'immer';
 import { dropRight, forEach, reduce } from 'lodash';
 import { create } from 'zustand';
+import { initReactI18next } from 'react-i18next';
 import type { CarbonioModule, I18nState } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
 import { useAccountStore } from '../account';
@@ -115,6 +116,8 @@ export const useI18nStore = create<I18nState>()((set) => ({
 
 defaultI18n
 	.use(Backend)
+	// pass the i18n instance to react-i18next.
+	.use(initReactI18next)
 	// init i18next
 	// for all options read: https://www.i18next.com/overview/configuration-options
 	.init(defaultI18nInitOptions);

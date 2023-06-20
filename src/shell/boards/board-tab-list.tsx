@@ -4,12 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Container, Row } from '@zextras/carbonio-design-system';
+import { Row } from '@zextras/carbonio-design-system';
 import { isEmpty, map } from 'lodash';
 import React from 'react';
 import styled from 'styled-components';
 import { useBoardStore } from '../../store/boards';
-import { getT } from '../../store/i18n';
 import { AppBoardTab } from './board-tab';
 
 const CustomRow = styled(Row)`
@@ -20,7 +19,6 @@ const CustomRow = styled(Row)`
 `;
 
 export const TabsList = (): JSX.Element => {
-	const t = getT();
 	const { boards, orderedBoards } = useBoardStore();
 	return (
 		<CustomRow wrap="nowrap" height="100%" mainAlignment="flex-start" takeAvailableSpace>

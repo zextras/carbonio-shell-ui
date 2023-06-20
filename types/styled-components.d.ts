@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { Theme as DSTheme } from '@zextras/carbonio-design-system';
+import { CSSProperties } from 'react';
 
 declare module 'styled-components' {
 	interface DefaultTheme extends DSTheme {
@@ -11,5 +12,6 @@ declare module 'styled-components' {
 			shared: DSTheme['palette'][string];
 			linked: DSTheme['palette'][string];
 		};
+		globalCursors: CSSProperties['cursor'][];
 	}
 }

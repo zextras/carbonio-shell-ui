@@ -19,12 +19,12 @@ import UserQuota from './components/general-settings/user-quota';
 import SettingsHeader from './components/settings-header';
 import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
 import { SearchSettings } from './components/general-settings/search-settings';
-import { useLocalStorage } from '../shell/hooks';
 import { ScalingSettingSection } from './components/general-settings/scaling-setting-section';
 import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
 import { LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
 import { ScalingSettings } from '../../types/settings';
 import { ResetComponentImperativeHandler } from './components/utils';
+import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 
 const GeneralSettings = (): JSX.Element => {
 	const [mods, setMods] = useState<Mods>({});

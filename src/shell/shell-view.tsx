@@ -4,11 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Responsive, Row } from '@zextras/carbonio-design-system';
+import { Row } from '@zextras/carbonio-design-system';
 import { PreviewManager } from '@zextras/carbonio-ui-preview';
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import type { AppRoute } from '../../types';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 import { IS_STANDALONE } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
@@ -46,7 +45,7 @@ function DarkReaderListener(): null {
 	return null;
 }
 
-const useLoginRedirection = (allowUnauthenticated?: string): void => {
+const useLoginRedirection = (allowUnauthenticated?: boolean): void => {
 	const auth = useAccountStore((s) => s.authenticated);
 	useEffect(() => {
 		if (IS_STANDALONE && !auth && !allowUnauthenticated) {
@@ -56,8 +55,8 @@ const useLoginRedirection = (allowUnauthenticated?: string): void => {
 };
 
 interface ShellComponentProps {
-	allowUnauthenticated?: string;
-	hideShellHeader?: string;
+	allowUnauthenticated?: boolean;
+	hideShellHeader?: boolean;
 }
 
 const ShellComponent = ({
@@ -91,9 +90,9 @@ const ShellComponent = ({
 const MemoShell = React.memo(ShellComponent);
 
 const ShellView = (): JSX.Element => {
-	const activeRoute = useCurrentRoute() as AppRoute;
-	const allowUnauthenticated = activeRoute?.standalone?.allowUnauthenticated as string | undefined;
-	const hideShellHeader = activeRoute?.standalone?.hideShellHeader as string | undefined;
+	const activeRoute = useCurrentRoute();
+	const allowUnauthenticated = activeRoute?.standalone?.allowUnauthenticated;
+	const hideShellHeader = activeRoute?.standalone?.hideShellHeader;
 	return (
 		<ShellContextProvider>
 			<PreviewManager>

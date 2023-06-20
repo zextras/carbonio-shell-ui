@@ -18,14 +18,14 @@ import {
 	ThemeProviderProps as UIThemeProviderProps
 } from '@zextras/carbonio-design-system';
 import { auto, disable, enable, setFetchMethod } from 'darkreader';
-import { reduce } from 'lodash';
-import { createGlobalStyle, DefaultTheme } from 'styled-components';
+import { map, reduce } from 'lodash';
+import { createGlobalStyle, css, DefaultTheme, SimpleInterpolation } from 'styled-components';
 import { DarkReaderPropValues, ThemeExtension } from '../../types';
 import { darkReaderDynamicThemeFixes, LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
-import { useLocalStorage } from '../shell/hooks';
 import { ScalingSettings } from '../../types/settings';
 import { getAutoScalingFontSize } from '../settings/components/utils';
 import { useGetPrimaryColor } from './use-get-primary-color';
+import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 
 setFetchMethod(window.fetch);
 
@@ -81,6 +81,18 @@ const iconExtension: ThemeExtension = (theme) => ({
 	}
 });
 
+const globalCursorsExtension: ThemeExtension = (theme) => ({
+	...theme,
+	globalCursors: [
+		...(theme.globalCursors || []),
+		'ns-resize',
+		'ew-resize',
+		'nesw-resize',
+		'nwse-resize',
+		'move'
+	]
+});
+
 interface GlobalStyledProps {
 	baseFontSize: number;
 }
@@ -88,6 +100,18 @@ interface GlobalStyledProps {
 const GlobalStyle = createGlobalStyle<GlobalStyledProps>`
   html {
     font-size: ${({ baseFontSize }): string => `${baseFontSize}%`};
+  }
+  ${({ theme }): SimpleInterpolation =>
+		map(
+			theme.globalCursors,
+			(cursor) => css`
+				.global-cursor-${cursor} * {
+					cursor: ${cursor} !important;
+				}
+			`
+		)}
+  .no-active-background:active {
+	  background-color: inherit;
   }
 `;
 
@@ -112,7 +136,8 @@ export const ThemeProvider = ({ children }: ThemeProviderProps): JSX.Element => 
 			palette: paletteExtension({
 				palette: customThemePalette
 			}),
-			icons: iconExtension
+			icons: iconExtension,
+			globalCursors: globalCursorsExtension
 		}));
 	}, [primaryColor]);
 
@@ -172,9 +197,14 @@ export const ThemeProvider = ({ children }: ThemeProviderProps): JSX.Element => 
 		return getAutoScalingFontSize();
 	}, [localStorageSettings]);
 
+	const themeCallbacksContextValue = useMemo<ThemeCallbacks>(
+		() => ({ addExtension, setDarkReaderState }),
+		[addExtension]
+	);
+
 	return (
 		<UIThemeProvider extension={aggregatedExtensions}>
-			<ThemeCallbacksContext.Provider value={{ addExtension, setDarkReaderState }}>
+			<ThemeCallbacksContext.Provider value={themeCallbacksContextValue}>
 				<GlobalStyle baseFontSize={baseFontSize} />
 				{children}
 			</ThemeCallbacksContext.Provider>

@@ -19,7 +19,6 @@ import UserQuota from './components/general-settings/user-quota';
 import SettingsHeader from './components/settings-header';
 import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
 import SearchSettingsView from './search-settings-view';
-import { useLocalStorage } from '../shell/hooks';
 import {
 	ScalingSettingSection,
 	ScalingSettingSectionRef
@@ -27,6 +26,7 @@ import {
 import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
 import { LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
 import { ScalingSettings } from '../../types/settings';
+import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 
 const GeneralSettings: FC = () => {
 	const [mods, setMods] = useState<Mods>({});

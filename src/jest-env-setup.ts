@@ -49,7 +49,7 @@ beforeEach(() => {
 
 	Object.defineProperty(window, 'ResizeObserver', {
 		writable: true,
-		value: function ResizeObserverMock(callback: ResizeObserverCallback): ResizeObserver {
+		value: function ResizeObserverMock(): ResizeObserver {
 			return {
 				observe: jest.fn(),
 				unobserve: jest.fn(),
@@ -57,6 +57,9 @@ beforeEach(() => {
 			};
 		}
 	});
+
+	// cleanup local storage
+	window.localStorage.clear();
 });
 
 beforeAll(() => {

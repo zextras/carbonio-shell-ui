@@ -60,6 +60,9 @@ beforeEach(() => {
 
 	// cleanup local storage
 	window.localStorage.clear();
+
+	jest.spyOn(document.documentElement, 'clientWidth', 'get').mockReturnValue(1024);
+	jest.spyOn(document.documentElement, 'clientHeight', 'get').mockReturnValue(768);
 });
 
 beforeAll(() => {

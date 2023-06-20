@@ -7,6 +7,7 @@
 import type { DarkReaderPropValues } from '../misc';
 import { DARK_READER_PROP_KEY } from '../../src/constants';
 import type { SHELL_APP_ID } from '../exports';
+import { StringOfLength } from '../../src/utils/typeUtils';
 
 export interface ZimletProp {
 	name: string;
@@ -50,6 +51,39 @@ export type DelegateProps = {
 	right: string;
 };
 
+export type BooleanString = 'TRUE' | 'FALSE';
+
+type GenTimeObj = {
+	year: `${number}` & StringOfLength<4>;
+	month: `${number}` & StringOfLength<2>;
+	date: `${number}` & StringOfLength<2>;
+	hour: `${number}` & StringOfLength<2>;
+	min: `${number}` & StringOfLength<2>;
+	sec: `${number}` & StringOfLength<2>;
+	ms: (`.${number}` & StringOfLength<4>) | '';
+	timezone: 'Z' | '';
+};
+
+export type GeneralizedTime =
+	`${GenTimeObj['year']}${GenTimeObj['month']}${GenTimeObj['date']}${GenTimeObj['hour']}${GenTimeObj['min']}${GenTimeObj['sec']}${GenTimeObj['ms']}${GenTimeObj['timezone']}`;
+
+export interface AccountSettingsPrefs {
+	zimbraPrefOutOfOfficeExternalReply?: string;
+	zimbraPrefOutOfOfficeReply?: string;
+	zimbraPrefOutOfOfficeReplyEnabled?: BooleanString;
+	zimbraPrefOutOfOfficeExternalReplyEnabled?: BooleanString;
+	zimbraPrefExternalSendersType?: 'ALL' | 'ALLNOTINAB' | 'INAB' | 'INSD';
+	zimbraPrefOutOfOfficeSuppressExternalReply?: BooleanString;
+	zimbraPrefOutOfOfficeFreeBusyStatus?: 'BUSY' | 'OUTOFOFFICE';
+	zimbraPrefOutOfOfficeStatusAlertOnLogin?: BooleanString;
+	zimbraPrefIncludeSharedItemsInSearch?: BooleanString;
+	zimbraPrefIncludeSpamInSearch?: BooleanString;
+	zimbraPrefIncludeTrashInSearch?: BooleanString;
+	zimbraPrefOutOfOfficeFromDate?: GeneralizedTime;
+	zimbraPrefOutOfOfficeUntilDate?: GeneralizedTime;
+	[key: string]: string | number | Array<string | number>;
+}
+
 export type AccountSettingsAttrs = {
 	zimbraIdentityMaxNumEntries?: number;
 	[key: string]: string | number | Array<string | number>;
@@ -57,7 +91,7 @@ export type AccountSettingsAttrs = {
 
 export type AccountSettings = {
 	attrs: AccountSettingsAttrs;
-	prefs: Record<string, string | number | Array<string | number>>;
+	prefs: AccountSettingsPrefs;
 	props: Array<ZimletProp>;
 };
 

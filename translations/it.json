@@ -49,7 +49,7 @@
                 "auto_reply_message": "Messaggio risposta automatica:",
                 "auto_reply_message_external": "Messaggio di risposta automatica per mittenti esterni:",
                 "create_appointment": "Crea Appuntamento:",
-                "end_time": "Data di Fine:",
+                "end_time": "Ora di Fine:",
                 "external_senders": "Mittenti Esterni",
                 "send_auto_reply_period": "Invia riposta automatica durante questo periodo:",
                 "start_date": "Data di inizio",

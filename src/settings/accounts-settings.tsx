@@ -279,7 +279,7 @@ export const AccountsSettings = ({
 				type: 'error',
 				label: t(
 					'message.snackbar.identities_quota_exceeded',
-					'The identitity could not be created because you have exceeded your identity quota'
+					'The identity could not be created because you have exceeded your identity quota'
 				),
 				autoHideTimeout: 5000,
 				hideButton: true
@@ -287,7 +287,7 @@ export const AccountsSettings = ({
 			return Promise.allSettled([
 				Promise.reject(
 					new Error(
-						'The identitity could not be created because you have exceeded your identity quota'
+						'The identity could not be created because you have exceeded your identity quota'
 					)
 				)
 			]);

@@ -84,11 +84,16 @@ export interface AccountSettingsPrefs {
 	[key: string]: string | number | Array<string | number>;
 }
 
-export interface AccountSettings {
-	attrs: Record<string, string | number | Array<string | number>>;
+export type AccountSettingsAttrs = {
+	zimbraIdentityMaxNumEntries?: number;
+	[key: string]: string | number | Array<string | number>;
+};
+
+export type AccountSettings = {
+	attrs: AccountSettingsAttrs;
 	prefs: AccountSettingsPrefs;
 	props: Array<ZimletProp>;
-}
+};
 
 export type AccountRightTargetEmail = {
 	addr: string;

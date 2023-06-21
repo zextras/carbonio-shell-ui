@@ -35,7 +35,7 @@ import SettingsSentMessages from './components/account-settings/settings-sent-me
 import Delegates, { DelegateType } from './components/account-settings/delegates';
 import PersonaSettings from './components/account-settings/persona-settings';
 import PersonaUseSection from './components/account-settings/persona-use-section';
-import SettingsHeader from './components/settings-header';
+import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
 import { getXmlSoapFetch } from '../network/fetch';
 
 // external accounts not yet activated, graphical part is complete
@@ -265,12 +265,13 @@ export const AccountsSettings = ({
 		setMods({});
 	}, [identitiesDefault]);
 
-	const onSave = useCallback(() => {
+	const onSave = useCallback<SettingsHeaderProps['onSave']>(() => {
 		if (
+			maxIdentities !== undefined &&
 			identitiesDefault.length +
 				(mods.identity?.createList?.length || 0) -
 				(mods?.identity?.deleteList?.length || 0) >
-			maxIdentities
+				maxIdentities
 		) {
 			createSnackbar({
 				key: `new`,
@@ -278,14 +279,20 @@ export const AccountsSettings = ({
 				type: 'error',
 				label: t(
 					'message.snackbar.identities_quota_exceeded',
-					'The identitity could not be created because you have exceeded your identity quota'
+					'The identity could not be created because you have exceeded your identity quota'
 				),
 				autoHideTimeout: 5000,
 				hideButton: true
 			});
-			return;
+			return Promise.allSettled([
+				Promise.reject(
+					new Error(
+						'The identity could not be created because you have exceeded your identity quota'
+					)
+				)
+			]);
 		}
-		editSettings(mods)
+		const promise = editSettings(mods)
 			.then(() => {
 				createSnackbar({
 					key: `new`,
@@ -295,8 +302,9 @@ export const AccountsSettings = ({
 					autoHideTimeout: 3000,
 					hideButton: true
 				});
+				setMods({});
 			})
-			.catch(() => {
+			.catch((error: unknown) => {
 				createSnackbar({
 					key: `new`,
 					replace: true,
@@ -305,8 +313,12 @@ export const AccountsSettings = ({
 					autoHideTimeout: 3000,
 					hideButton: true
 				});
+				if (error instanceof Error) {
+					throw error;
+				}
+				throw new Error(typeof error === 'string' ? error : 'edit setting error');
 			});
-		setMods({});
+		return Promise.allSettled([promise]);
 	}, [identitiesDefault.length, mods, maxIdentities, createSnackbar, t]);
 
 	const onCancel = useCallback(() => setMods({}), []);

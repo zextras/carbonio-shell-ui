@@ -103,7 +103,7 @@ export type AccountSettings = {
 export interface IdentityAttrs {
 	/** default mail signature for account/identity/dataSource */
 	zimbraPrefDefaultSignatureId?: string;
-	zimbraPrefForwardReplyFormat?: string;
+	zimbraPrefForwardReplyFormat?: `'text' | 'html' | 'same'`;
 	/** forward/reply signature id for account/identity/dataSource */
 	zimbraPrefForwardReplySignatureId?: string;
 	/** email address to put in from header.  Deprecated on data source as of bug 67068. */

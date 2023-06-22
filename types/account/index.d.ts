@@ -115,7 +115,7 @@ export interface IdentityAttrs {
 	zimbraPrefIdentityId?: string;
 	/** name of the identity */
 	zimbraPrefIdentityName?: string;
-	zimbraPrefMailSignatureStyle?: string;
+	zimbraPrefMailSignatureStyle?: 'outlook' | 'internet';
 	/** address to put in reply-to header */
 	zimbraPrefReplyToAddress?: string;
 	/** personal part of email address put in reply-to header */

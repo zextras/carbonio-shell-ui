@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import {
 	Container,
 	Text,
@@ -22,7 +22,14 @@ import { findIndex, noop, reduce } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { getSoapFetch } from '../../../network/fetch';
 import { SHELL_APP_ID } from '../../../constants';
-import { GetRightsRequest, GetRightsResponse, NameSpace } from '../../../../types';
+import {
+	AccountSettingsPrefs,
+	GetRightsRequest,
+	GetRightsResponse,
+	NameSpace
+} from '../../../../types';
+import { SettingsSectionProps } from '../utils';
+import { useReset } from '../../hooks/use-reset';
 
 export interface DelegateType extends ItemType {
 	email: string;
@@ -30,7 +37,17 @@ export interface DelegateType extends ItemType {
 	label?: string;
 }
 
-const Delegates = (): JSX.Element => {
+export type DelegatesProps = {
+	delegatedSendSaveTarget: AccountSettingsPrefs['zimbraPrefDelegatedSendSaveTarget'];
+	updateDelegatedSendSaveTarget: (
+		updatedValue: AccountSettingsPrefs['zimbraPrefDelegatedSendSaveTarget']
+	) => void;
+} & SettingsSectionProps;
+const Delegates = ({
+	delegatedSendSaveTarget,
+	updateDelegatedSendSaveTarget,
+	resetRef
+}: DelegatesProps): JSX.Element => {
 	const [t] = useTranslation();
 
 	const [delegates, setDelegates] = useState<DelegateType[]>([]);
@@ -66,7 +83,32 @@ const Delegates = (): JSX.Element => {
 		});
 	}, []);
 
-	const [activeValue, setActiveValue] = useState('1');
+	const [activeValue, setActiveValue] =
+		useState<AccountSettingsPrefs['zimbraPrefDelegatedSendSaveTarget']>(delegatedSendSaveTarget);
+
+	const radioGroupOnChange = useCallback<(newValue: string) => void>(
+		(newValue) => {
+			function isZimbraPrefDelegatedSendSaveTarget(
+				arg: string
+			): arg is NonNullable<AccountSettingsPrefs['zimbraPrefDelegatedSendSaveTarget']> {
+				return ['owner', 'sender', 'both', 'none'].includes(arg);
+			}
+			if (isZimbraPrefDelegatedSendSaveTarget(newValue)) {
+				setActiveValue(newValue);
+				updateDelegatedSendSaveTarget(newValue);
+			} else {
+				throw new Error('invalid zimbraPrefDelegatedSendSaveTarget value');
+			}
+		},
+		[updateDelegatedSendSaveTarget]
+	);
+
+	const resetHandler = useCallback((): void => {
+		setActiveValue(delegatedSendSaveTarget);
+		updateDelegatedSendSaveTarget(delegatedSendSaveTarget);
+	}, [delegatedSendSaveTarget, updateDelegatedSendSaveTarget]);
+
+	useReset(resetRef, resetHandler);
 
 	const ListItem = ({ item }: ItemComponentProps<DelegateType>): ReactElement => (
 		<>
@@ -160,7 +202,7 @@ const Delegates = (): JSX.Element => {
 				<RadioGroup
 					style={{ width: '100%', justifyContent: 'flex-start' }}
 					value={activeValue}
-					onChange={(newValue: string): void => setActiveValue(newValue)}
+					onChange={radioGroupOnChange}
 				>
 					<Radio
 						width="100%"
@@ -168,23 +210,26 @@ const Delegates = (): JSX.Element => {
 							'label.save_to_my_sent_folder',
 							'Save a copy of sent messages to my Sent folder'
 						)}
-						value="1"
+						value={'owner'}
 					/>
 					<Radio
 						label={t(
 							'label.save_delegate_folder',
 							'Save a copy of sent messages to delegate’s Sent folder'
 						)}
-						value="2"
+						value={'sender'}
 					/>
 					<Radio
 						label={t(
 							'label.save_both_folders',
 							'Save a copy of sent messages to my Sent folder and delegate’s folder'
 						)}
-						value="3"
+						value={'both'}
 					/>
-					<Radio label={t('label.dont_save', 'Don’t save a copy of sent messages')} value="4" />
+					<Radio
+						label={t('label.dont_save', 'Don’t save a copy of sent messages')}
+						value={'none'}
+					/>
 				</RadioGroup>
 				<Padding bottom="large" />
 			</Container>

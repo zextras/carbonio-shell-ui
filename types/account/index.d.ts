@@ -86,6 +86,7 @@ export interface AccountSettingsPrefs {
 	zimbraPrefMailPollingInterval?: string;
 	zimbraPrefMailTrustedSenderList?: Array<string> | string;
 	zimbraPrefTimeZoneId?: string;
+	zimbraPrefDelegatedSendSaveTarget?: 'owner' | 'sender' | 'both' | 'none';
 	[key: string]: string | number | Array<string | number>;
 }
 

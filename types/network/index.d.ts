@@ -4,7 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { AccountRights, AccountSettings, AccountSettingsPrefs, ZimletProp } from '../account';
+import {
+	AccountRights,
+	AccountSettings,
+	AccountSettingsPrefs,
+	IdentityAttrs,
+	ZimletProp
+} from '../account';
 import { Tag } from '../tags';
 import { AccountACEInfo, Identity } from './entities';
 
@@ -40,7 +46,7 @@ export type GetInfoResponse = {
 		};
 	};
 	prefs: {
-		_attrs: Record<string, string>;
+		_attrs: AccountSettingsPrefs;
 	};
 	signatures: {
 		signature: Array<any>;
@@ -70,7 +76,10 @@ export type PermissionsMods = {
 		new: AccountACEInfo;
 	};
 };
-
+// TODO remove
+/**
+ * @deprecated
+ */
 export type CreateIdentityProps = {
 	requestId: number;
 	/** name of the identity */
@@ -113,9 +122,9 @@ export type GrantRightsResponse = {
 };
 
 export type IdentityMods = {
-	modifyList?: Record<string, { id: string; prefs: Record<string, string | boolean> }>;
+	modifyList?: Record<string, { id: string; prefs: Partial<IdentityAttrs> }>;
 	deleteList?: string[];
-	createList?: { prefs: CreateIdentityProps }[];
+	createList?: { prefs: Partial<IdentityAttrs> }[];
 };
 
 export type PrefsMods = Record<string, unknown> & AccountSettingsPrefs;
@@ -176,3 +185,135 @@ export type TagActionResponse = {
 	action: { op: string; id: string };
 	_jsns: string;
 };
+
+type NameOrIdRequired =
+	| {
+			name?: never;
+			id: string;
+	  }
+	| {
+			name: string;
+			id?: never;
+	  }
+	| {
+			name: string;
+			id: string;
+	  };
+
+export type ModifyPrefsRequest = {
+	_jsns: NameSpace.ZimbraAccount;
+	_attrs: AccountSettingsPrefs;
+};
+
+export type CreateIdentityRequest = {
+	_jsns: NameSpace.ZimbraAccount;
+	identity: {
+		name?: string;
+		_attrs: IdentityAttrs;
+	};
+};
+
+export type ModifyIdentityRequest = {
+	_jsns: NameSpace.ZimbraAccount;
+	identity: {
+		_attrs?: Partial<IdentityAttrs>;
+	} & NameOrIdRequired;
+};
+
+export type DeleteIdentityRequest = {
+	identity: { name?: string; id?: string };
+	_jsns: NameSpace.ZimbraAccount;
+	requestId?: string;
+};
+
+export type ModifyPropertiesRequest = {
+	_jsns: NameSpace.ZimbraAccount;
+	prop: Array<{ name: string; zimlet: string; _content: unknown }>;
+};
+
+export type BatchRequest = {
+	ModifyIdentityRequest?: Array<ModifyIdentityRequest>;
+	CreateIdentityRequest?: Array<CreateIdentityRequest>;
+	DeleteIdentityRequest?: Array<DeleteIdentityRequest>;
+	ModifyPrefsRequest?: ModifyPrefsRequest;
+	ModifyPropertiesRequest?: ModifyPropertiesRequest;
+	_jsns: NameSpace.Zimbra;
+};
+
+export type GetRightsRequest = {
+	ace?: Array<{ right: Right }>;
+	_jsns: NameSpace.ZimbraAccount;
+};
+
+export type GetRightsResponse = {
+	ace?: Array<{
+		// Name or email address of the grantee.
+		// Not present if {grantee-type} is "all" or "pub"
+		d?: string;
+		// The type of grantee
+		gt: GranteeType;
+		right: Right;
+		// Type:String
+		// Zimbra ID of the grantee
+		zid?: string;
+	}>;
+};
+
+export type Right =
+	// Following rights are partial, they are the result of
+	// zmprov gar -v  -t account -c USER
+	// description: automatically add meeting invites from grantee to the target's calendar
+	// right type: preset
+	// target type(s): account
+	// grant target type: (default)
+	// right class: USER
+	| 'invite'
+	// description: login as another user.  Currently this is only honored for imap/pop3 login.
+	// right type: preset
+	// target type(s): account
+	// grant target type: (default)
+	// right class: USER
+	| 'loginAs'
+	// description: reply to messages in a shared folder as the owner of the folder
+	// right type: preset
+	// target type(s): account
+	// grant target type: account
+	// right class: USER
+	| 'sendAs'
+	// description: send messages on behalf of the grantor
+	// right type: preset
+	// target type(s): account
+	// grant target type: account
+	// right class: USER
+	| 'sendOnBehalfOf'
+	// description: view free/busy
+	// right type: preset
+	// target type(s): account
+	// grant target type: (default)
+	// right class: USER
+	| 'viewFreeBusy';
+
+export enum NameSpace {
+	ZimbraMail = 'urn:zimbraMail',
+	ZimbraAccount = 'urn:zimbraAccount',
+	Zimbra = 'urn:zimbra'
+}
+
+// The type of grantee:
+// usr - Zimbra user
+// grp - Zimbra group(distribution list)
+// all - all authenticated users
+// gst - non-Zimbra email address and password (not yet supported)
+// key - external user with an accesskey
+// pub - public authenticated and unauthenticated access
+export type GranteeType =
+	| 'usr'
+	| 'grp'
+	| 'egp'
+	| 'all'
+	| 'dom'
+	| 'edom'
+	| 'gst'
+	| 'key'
+	| 'pub'
+	| 'email';

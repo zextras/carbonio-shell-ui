@@ -7,17 +7,17 @@
 import { Checkbox, Container, Input, Padding, Row, Text } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
 import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
-import { IdentityProps } from '../../../../types';
+import { IdentityAttrs, IdentityProps } from '../../../../types';
 import { EMAIL_VALIDATION_REGEX } from '../../../constants';
 
 type PersonaUseSectionProps = {
 	t: TFunction;
 	identity: IdentityProps;
-	updateIdentities: (modifyList: {
-		id: string | number;
-		key: string;
-		value: string | boolean;
-	}) => void;
+	updateIdentities: <K extends keyof IdentityAttrs>(
+		id: string | number,
+		key: K,
+		value: IdentityAttrs[K]
+	) => void;
 };
 
 const PersonaUseSection = ({
@@ -54,12 +54,11 @@ const PersonaUseSection = ({
 	);
 	const onClickWhenSentToEnabled = useCallback(() => {
 		setWhenSentToEnabled(!whenSentToEnabled);
-		const modifyProp = {
-			id: identity.identityId,
-			key: 'zimbraPrefWhenSentToEnabled',
-			value: whenSentToEnabled ? 'FALSE' : 'TRUE'
-		};
-		updateIdentities(modifyProp);
+		updateIdentities(
+			identity.identityId,
+			'zimbraPrefWhenSentToEnabled',
+			whenSentToEnabled ? 'FALSE' : 'TRUE'
+		);
 	}, [identity.identityId, updateIdentities, whenSentToEnabled]);
 
 	const isValidEmail = useMemo(
@@ -70,13 +69,14 @@ const PersonaUseSection = ({
 	const onChangeWhenSentToAddresses = useCallback(
 		(value: string) => {
 			setWhenSentToAddresses(value);
-			const modifyProp = {
-				id: identity.identityId,
-				key: 'zimbraPrefWhenSentToAddresses',
-				value
-			};
-
-			updateIdentities(modifyProp);
+			// TODO improve array usage or type
+			// Server accepts '' and [] considering following scenarios.
+			// 1. 'Single email / folder id' for single item. - Legacy follow this.
+			// 2. Array [email, ...] for 1 or more items.
+			// 3. '' to set value to empty. (Refer following cases)
+			// > [] - No changes to reflect on server.
+			// > '' - Set value to empty for given field.
+			updateIdentities(identity.identityId, 'zimbraPrefWhenSentToAddresses', [value]);
 		},
 		[updateIdentities, identity.identityId]
 	);

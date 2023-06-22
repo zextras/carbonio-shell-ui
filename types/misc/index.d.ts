@@ -79,6 +79,9 @@ export type IdentityProps = {
 	 * Localized description of the type of identity
 	 */
 	type: string;
+	/**
+	 * is a number while you are creating a new one
+	 */
 	identityId: string | number;
 	fromAddress?: string;
 	identityName?: string;

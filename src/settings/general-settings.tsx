@@ -5,11 +5,21 @@
  */
 
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
-import { includes, isEmpty, size } from 'lodash';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { AddMod, Mods, RemoveMod } from '../../types';
-import { editSettings } from '../network/edit-settings';
-import { useUserSettings } from '../store/account';
+import { findIndex, includes, isEmpty, map, reduce, size } from 'lodash';
+import {
+	AccountState,
+	AddMod,
+	BatchRequest,
+	ModifyPrefsRequest,
+	ModifyPrefsResponse,
+	ModifyPropertiesRequest,
+	ModifyPropertiesResponse,
+	Mods,
+	NameSpace,
+	RemoveMod
+} from '../../types';
+import { useAccountStore, useUserSettings } from '../store/account';
 import { getT } from '../store/i18n';
 import AppearanceSettings from './components/general-settings/appearance-settings';
 import Logout from './components/general-settings/logout';
@@ -21,9 +31,10 @@ import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
 import { SearchSettings } from './components/general-settings/search-settings';
 import { ScalingSettingSection } from './components/general-settings/scaling-setting-section';
 import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
-import { LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
+import { LOCAL_STORAGE_SETTINGS_KEY, SHELL_APP_ID } from '../constants';
 import { ScalingSettings } from '../../types/settings';
 import { ResetComponentImperativeHandler } from './components/utils';
+import { getSoapFetch } from '../network/fetch';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 
 const GeneralSettings = (): JSX.Element => {
@@ -95,8 +106,81 @@ const GeneralSettings = (): JSX.Element => {
 			return unAppliedPrevState;
 		});
 		if (size(mods) > 0) {
-			const promise = editSettings(mods)
-				.then(() => {
+			let modifyPropertiesRequest: ModifyPropertiesRequest | undefined;
+			if (mods.props) {
+				const mappedProperties = map(
+					mods.props,
+					(prop, key): ModifyPropertiesRequest['prop'][0] => ({
+						name: key,
+						zimlet: prop.app,
+						_content: prop.value
+					})
+				);
+				modifyPropertiesRequest = { _jsns: NameSpace.ZimbraAccount, prop: mappedProperties };
+			}
+
+			let modifyPrefsRequest: ModifyPrefsRequest | undefined;
+
+			if (mods.prefs) {
+				const attrs = mods.prefs;
+				if ('zimbraPrefMailTrustedSenderList' in attrs) {
+					attrs.zimbraPrefMailTrustedSenderList =
+						attrs.zimbraPrefMailTrustedSenderList instanceof Array &&
+						attrs.zimbraPrefMailTrustedSenderList.length === 0
+							? ''
+							: attrs.zimbraPrefMailTrustedSenderList;
+				}
+				modifyPrefsRequest = { _jsns: NameSpace.ZimbraAccount, _attrs: attrs };
+			}
+
+			const promise = getSoapFetch(SHELL_APP_ID)<
+				BatchRequest,
+				{
+					ModifyPropertiesResponse?: ModifyPropertiesResponse;
+					ModifyPrefsResponse?: ModifyPrefsResponse;
+				}
+			>('Batch', {
+				_jsns: NameSpace.Zimbra,
+				ModifyPropertiesRequest: modifyPropertiesRequest,
+				ModifyPrefsRequest: modifyPrefsRequest
+			})
+				.then((res) => {
+					useAccountStore.setState((s: AccountState) => ({
+						settings: {
+							...s.settings,
+							prefs: reduce(
+								mods.prefs,
+								(acc, pref, key) => ({
+									...acc,
+									[key]: pref as string
+								}),
+								s.settings.prefs
+							),
+							props: reduce(
+								mods.props,
+								(acc, { app, value }, key) => {
+									const propIndex = findIndex(acc, (p) => p.name === key && p.zimlet === app);
+									if (propIndex >= 0) {
+										// eslint-disable-next-line no-param-reassign
+										acc[propIndex] = {
+											name: key,
+											zimlet: app,
+											_content: value as string
+										};
+									} else {
+										acc.push({
+											name: key,
+											zimlet: app,
+											_content: value as string
+										});
+									}
+									return acc;
+								},
+								s.settings.props
+							)
+						}
+					}));
+
 					if (mods.prefs && includes(Object.keys(mods.prefs), 'zimbraPrefLocale')) {
 						setOpen(true);
 					}

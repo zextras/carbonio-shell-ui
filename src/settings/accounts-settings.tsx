@@ -9,54 +9,45 @@ import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import type { TFunction } from 'i18next';
 import {
 	map,
-	includes,
-	findIndex,
-	reduce,
 	find,
 	replace,
 	lowerFirst,
 	isEmpty,
 	uniq,
-	isArray
+	isArray,
+	reduce,
+	findIndex,
+	forEach,
+	filter,
+	size
 } from 'lodash';
-import { useUserSettings } from '../store/account';
-import { editSettings } from '../network/edit-settings';
-import { SHELL_APP_ID } from '../constants';
-import type {
-	Mods,
-	IdentityProps,
-	CreateIdentityProps,
-	Account,
-	AccountSettings
-} from '../../types';
+import { useAccountStore, useUserSettings } from '../store/account';
+import type { Account, AccountSettings, ModifyIdentityRequest, IdentityProps } from '../../types';
 import AccountsList from './components/account-settings/accounts-list';
 import PrimaryAccountSettings from './components/account-settings/primary-account-settings';
 import SettingsSentMessages from './components/account-settings/settings-sent-messages';
-import Delegates, { DelegateType } from './components/account-settings/delegates';
+import Delegates from './components/account-settings/delegates';
 import PersonaSettings from './components/account-settings/persona-settings';
-import PersonaUseSection from './components/account-settings/persona-use-section';
+import {
+	BatchRequest,
+	CreateIdentityResponse,
+	DeleteIdentityResponse,
+	ModifyIdentityResponse,
+	CreateIdentityRequest,
+	DeleteIdentityRequest,
+	NameSpace,
+	AccountState,
+	IdentityAttrs
+} from '../../types';
+import { getSoapFetch } from '../network/fetch';
+import { SHELL_APP_ID } from '../constants';
 import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
-import { getXmlSoapFetch } from '../network/fetch';
 
-// external accounts not yet activated, graphical part is complete
-// import ExternalAccount from './components/account-settings/external-account-settings';
-// import AdvancedSettings from './components/account-settings/advanced-settings';
-// import DownloadMessages from './components/account-settings/download-messages';
-
-type ModifyProps = { id: string | number; key: string; value: string | boolean } | undefined;
-type AddModProps = {
-	type: string;
-	modifyProp?: ModifyProps;
-	deleteList?: string[];
-	createList?: { prefs: CreateIdentityProps }[];
-};
 type AccountSettingsProps = {
 	account: Account;
 	identitiesDefault: IdentityProps[];
 	t: TFunction;
 };
-
-type UserRightsProps = { email: string; right: string };
 
 /**
  * Compose a unique list of all identities' email addresses
@@ -104,174 +95,126 @@ const getAvailableEmailAddresses = (account: Account, settings: AccountSettings)
 	return uniq(result);
 };
 
+type IdentityAttrsRecord<T extends string | number> = Record<T, Partial<IdentityAttrs>>;
+
 export const AccountsSettings = ({
 	account,
 	identitiesDefault,
 	t
 }: AccountSettingsProps): ReactElement => {
-	const [mods, setMods] = useState<Mods>({});
-	const [activeDelegateView, setActiveDelegateView] = useState('0');
+	const [createList, setCreateList] = useState<NonNullable<IdentityAttrsRecord<number>>>({});
+	const [deleteList, setDeleteList] = useState<Array<string>>([]);
+	const [modifyList, setModifyList] = useState<NonNullable<IdentityAttrsRecord<string>>>({});
+
+	const resetLists = useCallback(() => {
+		setCreateList({});
+		setDeleteList([]);
+		setModifyList({});
+	}, []);
+
 	const [selectedIdentityId, setSelectedIdentityId] = useState(0);
 	const [identities, setIdentities] = useState<IdentityProps[]>(identitiesDefault);
-	const [delegates, setDelegates] = useState<DelegateType[]>([]);
 	const settings = useUserSettings();
 	const maxIdentities = settings.attrs.zimbraIdentityMaxNumEntries;
-	const addMod = useCallback(
-		(arg: AddModProps) => {
-			const { type, modifyProp, deleteList, createList } = arg;
-			setMods((prevState) => {
-				const prevRecord = find(
-					prevState?.identity?.modifyList,
-					(item) => item.id === modifyProp?.id
-				)?.prefs;
-				const modifyList =
-					typeof modifyProp !== 'undefined'
-						? {
-								...prevState.identity?.modifyList,
-								[modifyProp.id]: {
-									id: modifyProp.id,
-									prefs: { ...prevRecord, [modifyProp.key]: modifyProp.value }
-								}
-						  }
-						: prevState.identity?.modifyList;
-				const newCreateList = prevState.identity?.createList || createList;
-				const newDeleteList = prevState.identity?.deleteList || deleteList;
-				return {
-					...prevState,
 
-					[type]: {
-						deleteList: newDeleteList,
-						createList: newCreateList,
-						modifyList
-					}
-				};
-			});
-		},
-		[setMods]
-	);
+	const onCancel = useCallback(() => {
+		resetLists();
+		setIdentities(identitiesDefault);
+	}, [identitiesDefault, resetLists]);
 
-	const modifyCreateList = useCallback((arg: AddModProps) => {
-		const { type, modifyProp } = arg;
-		setMods((prevState) => {
-			const prevRecord = find(
-				prevState?.identity?.createList,
-				(item) => item.prefs.requestId === modifyProp?.id
-			)?.prefs;
-			const modifiedCreateList =
-				typeof modifyProp !== 'undefined'
-					? {
-							...prevState.identity?.createList,
-							[modifyProp.id]: {
-								prefs: { ...prevRecord, [modifyProp.key]: modifyProp.value }
-							}
-					  }
-					: undefined;
-			return {
-				...prevState,
+	const updateModifyList = useCallback<
+		<K extends keyof IdentityAttrs>(id: string, key: K, value: IdentityAttrs[K]) => void
+	>(
+		(id, key, value) => {
+			const updatedIdentityKey = lowerFirst(replace(key, 'zimbraPref', '')) as keyof IdentityProps;
 
-				[type]: {
-					createList: modifiedCreateList,
-					deleteList: prevState.identity?.deleteList,
-					modifyList: prevState.identity?.modifyList
+			const prevRecordPrefs = modifyList[id] || {};
+
+			const actualIdentity = find(identitiesDefault, (item) => item.identityId === id);
+
+			const newModifyList = {
+				...modifyList,
+				[id]: {
+					...prevRecordPrefs,
+					[key]: value
 				}
 			};
-		});
-	}, []);
-	const createIdentities = useCallback(
-		(createList: { prefs: CreateIdentityProps }[]) => {
-			const arg = {
-				type: 'identity',
-				createList
-			};
-			addMod(arg);
+
+			if (actualIdentity && actualIdentity[updatedIdentityKey] === value) {
+				delete newModifyList[id][key];
+			}
+			if (size(newModifyList[id]) === 0) {
+				delete newModifyList[id];
+			}
+			setModifyList(newModifyList);
 		},
-		[addMod]
+		[identitiesDefault, modifyList]
 	);
 
-	const updateIdentities = useCallback(
-		(modifyProp: { id: string | number; key: string; value: string | boolean }) => {
-			const arg = {
-				type: 'identity',
-				modifyProp: { id: modifyProp.id, key: modifyProp.key, value: modifyProp.value }
-			};
-			if (typeof modifyProp.id === 'string') {
-				addMod(arg);
-			} else if (typeof modifyProp.id === 'number') {
-				modifyCreateList(arg);
+	const modifyCreateList = useCallback<
+		<K extends keyof IdentityAttrs>(id: number, key: K, value: IdentityAttrs[K]) => void
+	>((id, key, value) => {
+		setCreateList((prevState) => {
+			const newCreateList = { ...prevState };
+			newCreateList[id][key] = value;
+			return newCreateList;
+		});
+	}, []);
+	const addIdentity = useCallback<(id: number, identityAttrs: IdentityAttrs) => void>(
+		(id, identityAttrs) => {
+			setCreateList((prevState) => ({ ...prevState, [id]: identityAttrs }));
+		},
+		[]
+	);
+
+	const updateIdentities = useCallback<
+		<K extends keyof IdentityAttrs>(id: string | number, key: K, value: IdentityAttrs[K]) => void
+	>(
+		(id, key, value) => {
+			if (typeof id === 'string') {
+				updateModifyList(id, key, value);
+			} else {
+				modifyCreateList(id, key, value);
 			}
-			const updatedIdentityKey = lowerFirst(replace(modifyProp.key, 'zimbraPref', ''));
+			const updatedIdentityKey = lowerFirst(replace(key, 'zimbraPref', ''));
 			setIdentities(
 				map(identities, (item) =>
-					item.identityId === modifyProp.id
-						? { ...item, [updatedIdentityKey]: modifyProp.value }
-						: item
+					item.identityId === id ? { ...item, [updatedIdentityKey]: value } : item
 				)
 			);
 		},
-		[addMod, identities, modifyCreateList]
+		[updateModifyList, identities, modifyCreateList]
 	);
 
-	const deleteIdentities = useCallback(
-		(deleteList: string[]) => {
-			const arg = {
-				type: 'identity',
-				deleteList
-			};
-			addMod(arg);
+	const removeIdentity = useCallback(
+		(identityId: string | number) => {
+			if (typeof identityId === 'string') {
+				setDeleteList((prevState) => [...prevState, identityId]);
+				if (modifyList[identityId]) {
+					const newModifyList = { ...modifyList };
+					delete newModifyList[identityId];
+					setModifyList(newModifyList);
+				}
+			} else if (createList[identityId]) {
+				const newCreateList = { ...createList };
+				delete createList[identityId];
+				setCreateList(newCreateList);
+			}
 		},
-		[addMod]
+		[createList, modifyList]
 	);
 
 	const createSnackbar = useSnackbar();
 
 	useEffect(() => {
-		getXmlSoapFetch(SHELL_APP_ID)(
-			'GetRights',
-			`<GetRightsRequest xmlns="urn:zimbraAccount"></GetRightsRequest>`
-		).then((res: any) => {
-			if (res.ace) {
-				const tempResult: UserRightsProps[] = map(res.ace, (item) => ({
-					email: item.d,
-					right: item.right
-				}));
-				const resultReduced = reduce(
-					tempResult,
-					(result: UserRightsProps[], item) => {
-						const index = findIndex(result, { email: item.email });
-						if (index === -1) {
-							result.push({ email: item.email, right: item.right });
-						} else {
-							result.push({
-								email: item.email,
-								right: `${item.right} and ${result[index].right}`
-							});
-							result.splice(index, 1);
-						}
-						return result;
-					},
-					[]
-				);
-				const result = map(resultReduced, (item: UserRightsProps, index) => ({
-					...item,
-					id: index.toString()
-				}));
-				setDelegates(result);
-			}
-		});
-	}, []);
-
-	useEffect(() => {
 		setIdentities(identitiesDefault);
-		setMods({});
-	}, [identitiesDefault]);
+		resetLists();
+	}, [identitiesDefault, resetLists]);
 
 	const onSave = useCallback<SettingsHeaderProps['onSave']>(() => {
 		if (
 			maxIdentities !== undefined &&
-			identitiesDefault.length +
-				(mods.identity?.createList?.length || 0) -
-				(mods?.identity?.deleteList?.length || 0) >
-				maxIdentities
+			identitiesDefault.length + (size(createList) || 0) - (deleteList?.length || 0) > maxIdentities
 		) {
 			createSnackbar({
 				key: `new`,
@@ -292,8 +235,136 @@ export const AccountsSettings = ({
 				)
 			]);
 		}
-		const promise = editSettings(mods)
-			.then(() => {
+
+		let createIdentityRequests: Array<CreateIdentityRequest> = [];
+		if (createList) {
+			createIdentityRequests = map(
+				createList,
+				(item): CreateIdentityRequest => ({
+					_jsns: NameSpace.ZimbraAccount,
+					identity: {
+						name: item.zimbraPrefIdentityName,
+						_attrs: {
+							zimbraPrefReplyToAddress: item.zimbraPrefReplyToAddress,
+							zimbraPrefForwardReplySignatureId: item.zimbraPrefForwardReplySignatureId,
+							zimbraPrefFromAddress: item.zimbraPrefFromAddress,
+							zimbraPrefFromAddressType: item.zimbraPrefFromAddressType || 'sendAs',
+							zimbraPrefFromDisplay: item.zimbraPrefFromDisplay,
+							zimbraPrefIdentityName: item.zimbraPrefIdentityName,
+							zimbraPrefReplyToDisplay: item.zimbraPrefReplyToDisplay,
+							zimbraPrefDefaultSignatureId: item.zimbraPrefDefaultSignatureId,
+							zimbraPrefReplyToEnabled: item.zimbraPrefReplyToEnabled,
+							zimbraPrefWhenInFoldersEnabled: item.zimbraPrefWhenInFoldersEnabled,
+							zimbraPrefWhenSentToEnabled: item.zimbraPrefWhenSentToEnabled,
+							zimbraPrefWhenSentToAddresses: item.zimbraPrefWhenSentToAddresses
+						}
+					}
+				})
+			);
+		}
+		let deleteRequests: Array<DeleteIdentityRequest> = [];
+		if (deleteList) {
+			deleteRequests = map(
+				deleteList,
+				(identityId, index): DeleteIdentityRequest => ({
+					_jsns: NameSpace.ZimbraAccount,
+					identity: { id: identityId },
+					requestId: index.toString()
+				})
+			);
+		}
+
+		let modifyIdentityRequests: Array<ModifyIdentityRequest> = [];
+		if (modifyList) {
+			modifyIdentityRequests = map(
+				modifyList,
+				(item, index): ModifyIdentityRequest => ({
+					_jsns: NameSpace.ZimbraAccount,
+					identity: {
+						id: index,
+						_attrs: {
+							zimbraPrefReplyToAddress: item.zimbraPrefReplyToAddress,
+							zimbraPrefForwardReplySignatureId: item.zimbraPrefForwardReplySignatureId,
+							zimbraPrefFromAddress: item.zimbraPrefFromAddress,
+							zimbraPrefFromDisplay: item.zimbraPrefFromDisplay,
+							zimbraPrefIdentityName: item.zimbraPrefIdentityName,
+							zimbraPrefReplyToDisplay: item.zimbraPrefReplyToDisplay,
+							zimbraPrefDefaultSignatureId: item.zimbraPrefDefaultSignatureId,
+							zimbraPrefReplyToEnabled: item.zimbraPrefReplyToEnabled,
+							zimbraPrefWhenInFoldersEnabled: item.zimbraPrefWhenInFoldersEnabled,
+							zimbraPrefWhenSentToEnabled: item.zimbraPrefWhenSentToEnabled,
+							zimbraPrefWhenSentToAddresses: item.zimbraPrefWhenSentToAddresses
+						}
+					}
+				})
+			);
+		}
+
+		const promise = getSoapFetch(SHELL_APP_ID)<
+			BatchRequest,
+			{
+				ModifyIdentityResponse?: ModifyIdentityResponse[];
+				DeleteIdentityResponse?: DeleteIdentityResponse[];
+				CreateIdentityResponse?: CreateIdentityResponse[];
+			}
+		>('Batch', {
+			_jsns: NameSpace.Zimbra,
+			DeleteIdentityRequest: deleteRequests.length > 0 ? deleteRequests : undefined,
+			CreateIdentityRequest: createIdentityRequests.length > 0 ? createIdentityRequests : undefined,
+			ModifyIdentityRequest: modifyIdentityRequests.length > 0 ? modifyIdentityRequests : undefined
+		})
+			.then((res) => {
+				useAccountStore.setState((s: AccountState) => ({
+					...s,
+					account: {
+						...s.account,
+						displayName:
+							find(modifyList, (item) => item.zimbraPrefIdentityId === s?.account?.id)
+								?.zimbraPrefIdentityName || s.account?.displayName,
+						identities: {
+							identity:
+								typeof s.account !== 'undefined'
+									? reduce(
+											modifyList,
+											(acc, prefs, id) => {
+												const tempResult = [];
+												const propIndex = findIndex(
+													acc,
+													(itemMods, indexAccount) => acc[indexAccount].id === id
+												);
+												if (propIndex > -1) {
+													forEach(Object.keys(prefs), (item, _index) => {
+														// eslint-disable-next-line no-param-reassign
+														acc[propIndex]._attrs[item] = Object.values(prefs)[_index];
+														if (
+															item === 'zimbraPrefIdentityName' &&
+															acc[propIndex].name !== 'DEFAULT'
+														) {
+															// eslint-disable-next-line no-param-reassign
+															acc[propIndex].name = Object.values(prefs)[_index];
+														}
+													});
+													tempResult.push(prefs);
+												}
+												return acc;
+											},
+											[
+												...filter(
+													s.account.identities.identity,
+													(item) => !deleteList?.includes(item.id)
+												).filter((i) => i.name !== 'DEFAULT'),
+												...map(res?.CreateIdentityResponse, (item) => item.identity[0]),
+												...filter(
+													s.account.identities.identity,
+													(item) => !deleteList?.includes(item.id)
+												).filter((i) => i.name === 'DEFAULT')
+											]
+									  )
+									: undefined
+						}
+					} as Account
+				}));
+
 				createSnackbar({
 					key: `new`,
 					replace: true,
@@ -302,7 +373,6 @@ export const AccountsSettings = ({
 					autoHideTimeout: 3000,
 					hideButton: true
 				});
-				setMods({});
 			})
 			.catch((error: unknown) => {
 				createSnackbar({
@@ -318,17 +388,28 @@ export const AccountsSettings = ({
 				}
 				throw new Error(typeof error === 'string' ? error : 'edit setting error');
 			});
+		resetLists();
 		return Promise.allSettled([promise]);
-	}, [identitiesDefault.length, mods, maxIdentities, createSnackbar, t]);
+	}, [
+		identitiesDefault.length,
+		createList,
+		deleteList,
+		maxIdentities,
+		modifyList,
+		resetLists,
+		createSnackbar,
+		t
+	]);
 
-	const onCancel = useCallback(() => setMods({}), []);
 	const title: string = t('label.accounts', 'Accounts');
-	const isDirty = useMemo(() => !isEmpty(mods), [mods]);
+	const isDirty = useMemo(
+		() => !isEmpty(createList) || !isEmpty(deleteList) || !isEmpty(modifyList),
+		[createList, deleteList, modifyList]
+	);
 	const availableEmailAddresses = useMemo(
 		() => getAvailableEmailAddresses(account, settings),
 		[account, settings]
 	);
-
 	return (
 		<>
 			<SettingsHeader onSave={onSave} onCancel={onCancel} isDirty={isDirty} title={title} />
@@ -341,13 +422,13 @@ export const AccountsSettings = ({
 			>
 				<AccountsList
 					t={t}
-					account={account}
+					accountName={account.name}
 					identities={identities}
 					setIdentities={setIdentities}
 					selectedIdentityId={selectedIdentityId}
 					setSelectedIdentityId={setSelectedIdentityId}
-					deleteIdentities={deleteIdentities}
-					createIdentities={createIdentities}
+					removeIdentity={removeIdentity}
+					addIdentity={addIdentity}
 				/>
 				{identities[selectedIdentityId]?.flgType === 'primary' && (
 					<>
@@ -364,17 +445,7 @@ export const AccountsSettings = ({
 							updateIdentities={updateIdentities}
 							availableEmailAddresses={availableEmailAddresses}
 						/>
-						{/* <PasswordRecoverySettings
-							t={t}
-							items={identities[selectedIdentityId]}
-							createSnackbar={createSnackbar}
-						/> */}
-						<Delegates
-							t={t}
-							items={delegates}
-							activeDelegateView={activeDelegateView}
-							setActiveDelegateView={setActiveDelegateView}
-						/>
+						<Delegates />
 					</>
 				)}
 				{identities[selectedIdentityId]?.flgType === 'persona' && (
@@ -391,25 +462,6 @@ export const AccountsSettings = ({
 							updateIdentities={updateIdentities}
 							availableEmailAddresses={availableEmailAddresses}
 						/>
-						<PersonaUseSection
-							t={t}
-							identity={identities[selectedIdentityId]}
-							updateIdentities={updateIdentities}
-						/>
-					</>
-				)}
-				{includes(['IMAP', 'POP'], identities[selectedIdentityId]?.flgType) && (
-					<>
-						{/* <ExternalAccount t={t} items={identities} />
-						<AdvancedSettings t={t} items={identities} />
-						<DownloadMessages t={t} items={identities} />
-						<SettingsSentMessages
-							t={t}
-							items={identities[selectedIdentityId]}
-							isExternalAccount
-							updateIdentities={updateIdentities}
-							setMods={setMods}
-						/> */}
 					</>
 				)}
 			</Container>

@@ -7,16 +7,16 @@
 import React, { useState, useCallback, ReactElement, useEffect, useMemo } from 'react';
 import { Container, Text, Padding, Input, Row } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import { IdentityProps } from '../../../../types';
+import { IdentityAttrs, IdentityProps } from '../../../../types';
 
 interface PersonaSettingsProps {
 	t: TFunction;
 	items: IdentityProps;
-	updateIdentities: (modifyList: {
-		id: string | number;
-		key: string;
-		value: string | boolean;
-	}) => void;
+	updateIdentities: <K extends keyof IdentityAttrs>(
+		id: string | number,
+		key: K,
+		value: IdentityAttrs[K]
+	) => void;
 }
 
 const PersonaSettings = ({ t, items, updateIdentities }: PersonaSettingsProps): ReactElement => {
@@ -32,13 +32,7 @@ const PersonaSettings = ({ t, items, updateIdentities }: PersonaSettingsProps): 
 	const onChange = useCallback(
 		(ev) => {
 			setPersonaValue(ev.target.value);
-			const modifyProp = {
-				id: items.identityId,
-				key: 'zimbraPrefIdentityName',
-				value: ev.target.value
-			};
-
-			updateIdentities(modifyProp);
+			updateIdentities(items.identityId, 'zimbraPrefIdentityName', ev.target.value);
 		},
 		[updateIdentities, items.identityId, setPersonaValue]
 	);

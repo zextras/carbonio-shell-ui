@@ -18,29 +18,29 @@ import {
 	ItemComponentProps
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import { map, filter, max, noop } from 'lodash';
-import { IdentityProps, CreateIdentityProps, Account } from '../../../../types';
+import { map, filter, max } from 'lodash';
+import { IdentityProps, IdentityAttrs } from '../../../../types';
 
-type AccountsListProps = {
+export type AccountsListProps = {
 	t: TFunction;
-	account: Account;
+	accountName: string;
 	identities: IdentityProps[];
 	setIdentities: (identities: IdentityProps[]) => void;
 	selectedIdentityId: number;
 	setSelectedIdentityId: (value: number) => void;
-	deleteIdentities: (deleteList: string[]) => void;
-	createIdentities: (createList: { prefs: CreateIdentityProps }[]) => void;
+	removeIdentity: (identityId: string | number) => void;
+	addIdentity: (id: number, identityAttrs: IdentityAttrs) => void;
 };
 
 const AccountsList = ({
 	t,
-	account,
+	accountName,
 	selectedIdentityId,
 	identities,
 	setIdentities,
 	setSelectedIdentityId,
-	deleteIdentities,
-	createIdentities
+	removeIdentity,
+	addIdentity
 }: AccountsListProps): ReactElement => {
 	const changeView = (value: number): void => setSelectedIdentityId(value);
 
@@ -66,7 +66,7 @@ const AccountsList = ({
 						</Padding>
 						<Padding right="small">
 							<Text weight="regular" size="small" color="secondary">
-								({item.flgType === 'primary' ? account.name : item.fromAddress})
+								({item.flgType === 'primary' ? accountName : item.fromAddress})
 							</Text>
 						</Padding>
 					</Container>
@@ -86,7 +86,6 @@ const AccountsList = ({
 	const createModal = useContext(ModalManagerContext);
 
 	const [createListrequestId, setCreateListrequestId] = useState(0);
-	const [createList, setCreateList] = useState<{ prefs: CreateIdentityProps }[]>([]);
 	const addNewPersona = useCallback(() => {
 		const newPersonaNextNumber =
 			Number(
@@ -104,56 +103,30 @@ const AccountsList = ({
 				])
 			) + 1;
 		const newPersonaName = `New Persona ${newPersonaNextNumber || 1}`;
-		identities.push({
-			id: `${identities.length}`,
-			flgType: 'persona',
-			type: t('label.persona', 'Persona'),
-			identityId: createListrequestId,
-			fromAddress: identities[0]?.fromAddress,
-			identityName: newPersonaName,
-			fromDisplay: identities[0]?.fromDisplay,
-			replyToDisplay: '',
-			replyToAddress: '',
-			replyToEnabled: 'FALSE',
-			saveToSent: '',
-			sentMailFolder: '',
-			whenInFoldersEnabled: '',
-			whenSentToEnabled: ''
-		});
-		setIdentities(identities);
+		setIdentities([
+			...identities,
+			{
+				id: `${identities.length}`,
+				flgType: 'persona',
+				type: t('label.persona', 'Persona'),
+				identityId: createListrequestId,
+				fromAddress: identities[0]?.fromAddress,
+				identityName: newPersonaName,
+				fromDisplay: identities[0]?.fromDisplay,
+				replyToEnabled: 'FALSE'
+			}
+		]);
 		setCreateListrequestId(createListrequestId + 1);
-		setCreateList((state) => {
-			state.push({
-				prefs: {
-					requestId: createListrequestId,
-					zimbraPrefIdentityName: newPersonaName,
-					zimbraPrefFromDisplay: identities[0]?.fromDisplay,
-					zimbraPrefFromAddress: identities[0]?.fromAddress,
-					zimbraPrefFromAddressType: 'sendAs',
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefReplyToDisplay: '',
-					zimbraPrefReplyToAddress: '',
-					zimbraPrefDefaultSignatureId: '',
-					zimbraPrefForwardReplySignatureId: '',
-					zimbraPrefWhenSentToEnabled: 'FALSE',
-					zimbraPrefWhenInFoldersEnabled: 'FALSE'
-				}
-			});
-			return state;
+		addIdentity(createListrequestId, {
+			zimbraPrefIdentityName: newPersonaName,
+			zimbraPrefFromDisplay: identities[0]?.fromDisplay,
+			zimbraPrefFromAddress: identities[0]?.fromAddress,
+			zimbraPrefFromAddressType: 'sendAs',
+			zimbraPrefReplyToEnabled: 'FALSE'
 		});
-		createIdentities(createList);
-		setSelectedIdentityId(identities.length - 1);
-	}, [
-		identities,
-		setIdentities,
-		t,
-		createIdentities,
-		createListrequestId,
-		createList,
-		setSelectedIdentityId
-	]);
+		setSelectedIdentityId(identities.length);
+	}, [identities, setIdentities, t, createListrequestId, addIdentity, setSelectedIdentityId]);
 
-	const [deleteList, setDeleteList] = useState<string[]>([]);
 	const onConfirmDelete = useCallback((): void => {
 		const newIdentities = map(
 			filter(
@@ -162,25 +135,11 @@ const AccountsList = ({
 			),
 			(item: IdentityProps, index: number) => ({ ...item, id: index.toString() })
 		);
-		setDeleteList((state) => {
-			state.push(identities[selectedIdentityId]?.identityId.toString());
-			return state;
-		});
 		setIdentities(newIdentities);
-		deleteIdentities(deleteList);
+		removeIdentity(identities[selectedIdentityId].identityId);
 		setSelectedIdentityId(selectedIdentityId - 1);
-	}, [
-		identities,
-		setIdentities,
-		deleteIdentities,
-		deleteList,
-		setSelectedIdentityId,
-		selectedIdentityId
-	]);
+	}, [identities, setIdentities, removeIdentity, selectedIdentityId, setSelectedIdentityId]);
 	const onDelete = useCallback((): void => {
-		// I'm disabling lint as the DS is not defining the type
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
 		const closeModal = createModal({
 			title: t('label.permanent_delete_title', 'Are you sure to permanently delete this Persona?'),
 			onConfirm: () => {
@@ -230,15 +189,6 @@ const AccountsList = ({
 				mainAlignment="flex-start"
 				background="gray6"
 			>
-				{/* <Padding right="small">
-					<Button
-						label={t('label.add_external_account', 'Add external account')}
-						onClick={noop}
-						color="primary"
-						type="outlined"
-						disabled
-					/>
-				</Padding> */}
 				<Padding right="small">
 					<Button
 						label={t('label.add_persona', 'Add persona')}

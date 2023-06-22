@@ -7,17 +7,17 @@
 import React, { useMemo, useCallback, ReactElement, useState, useEffect } from 'react';
 import { Container, Text, Padding, Input, Row } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import { Account, IdentityProps } from '../../../../types';
+import { Account, IdentityAttrs, IdentityProps } from '../../../../types';
 
 interface PrimaryAccountSettingsProps {
 	t: TFunction;
 	account: Account;
 	identity: IdentityProps;
-	updateIdentities: (modifyList: {
-		id: string | number;
-		key: string;
-		value: string | boolean;
-	}) => void;
+	updateIdentities: <K extends keyof IdentityAttrs>(
+		id: string | number,
+		key: K,
+		value: IdentityAttrs[K]
+	) => void;
 }
 
 const PrimaryAccountSettings = ({
@@ -42,14 +42,7 @@ const PrimaryAccountSettings = ({
 	const onChange = useCallback(
 		(value: string): void => {
 			setAccountNameValue(value);
-
-			const modifyProp = {
-				id: identity.identityId,
-				key: 'zimbraPrefIdentityName',
-				value
-			};
-
-			updateIdentities(modifyProp);
+			updateIdentities(identity.identityId, 'zimbraPrefIdentityName', value);
 		},
 		[updateIdentities, identity.identityId]
 	);

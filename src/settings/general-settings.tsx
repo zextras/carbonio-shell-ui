@@ -4,24 +4,26 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import { includes, isEmpty, size } from 'lodash';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { AddMod, Mods, RemoveMod } from '../../types';
-import { editSettings } from '../network/edit-settings';
-import { useUserSettings } from '../store/account';
-import { getT } from '../store/i18n';
+
 import AppearanceSettings from './components/general-settings/appearance-settings';
+import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
 import Logout from './components/general-settings/logout';
 import ModuleVersionSettings from './components/general-settings/module-version-settings';
 import { OutOfOfficeSettings } from './components/general-settings/out-of-office-settings';
+import { ScalingSettingSection } from './components/general-settings/scaling-setting-section';
+import { SearchSettings } from './components/general-settings/search-settings';
 import UserQuota from './components/general-settings/user-quota';
 import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
-import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
-import { SearchSettings } from './components/general-settings/search-settings';
-import { ScalingSettingSection } from './components/general-settings/scaling-setting-section';
-import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
+import { AddMod, Mods, RemoveMod } from '../../types';
 import { LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
+import { editSettings } from '../network/edit-settings';
+import { useUserSettings } from '../store/account';
+import { getT } from '../store/i18n';
+import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
 import { ScalingSettings } from '../../types/settings';
 import { ResetComponentImperativeHandler } from './components/utils';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';

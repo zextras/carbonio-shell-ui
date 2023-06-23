@@ -3,13 +3,15 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { useTheme } from '@zextras/carbonio-design-system';
 import { useEffect, useMemo } from 'react';
+
+import { useTheme } from '@zextras/carbonio-design-system';
 import { size } from 'lodash';
+
 import { LOCAL_STORAGE_LAST_PRIMARY_KEY } from '../constants';
-import { useLoginConfigStore } from '../store/login/store';
 import { useDarkMode } from '../dark-mode/use-dark-mode';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
+import { useLoginConfigStore } from '../store/login/store';
 
 export function useGetPrimaryColor(): string | undefined {
 	const [localStorageLastPrimary, setLocalStorageLastPrimary] = useLocalStorage<

@@ -4,15 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React, { FC } from 'react';
+
 import { act, screen, waitFor } from '@testing-library/react';
 import 'jest-styled-components';
 import { useHistory } from 'react-router-dom';
-import { setup } from '../test/utils';
+
+import { BOARD_DEFAULT_POSITION } from './boards/board-container';
+import { Border } from './hooks/useResize';
 import ShellView from './shell-view';
 import { Board } from '../../types';
+import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
 import { useBridge } from '../store/context-bridge';
-import { Border } from './hooks/useResize';
 import { ICONS, TESTID_SELECTORS } from '../test/constants';
+import { mockedApps, setupAppStore } from '../test/test-app-utils';
 import {
 	buildBoardSizeAndPosition,
 	buildMousePosition,
@@ -21,10 +25,8 @@ import {
 	resizeBoard,
 	setupBoardStore
 } from '../test/test-board-utils';
-import { BOARD_DEFAULT_POSITION } from './boards/board-container';
+import { setup } from '../test/utils';
 import { SizeAndPosition } from '../utils/utils';
-import { mockedApps, setupAppStore } from '../test/test-app-utils';
-import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
 
 const ContextBridge: FC = () => {
 	const history = useHistory();

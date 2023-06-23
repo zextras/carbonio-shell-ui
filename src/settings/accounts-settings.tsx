@@ -5,6 +5,7 @@
  */
 
 import React, { useCallback, useMemo, useState, useEffect, ReactElement } from 'react';
+
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import type { TFunction } from 'i18next';
 import {
@@ -19,9 +20,14 @@ import {
 	uniq,
 	isArray
 } from 'lodash';
-import { useUserSettings } from '../store/account';
-import { editSettings } from '../network/edit-settings';
-import { SHELL_APP_ID } from '../constants';
+
+import AccountsList from './components/account-settings/accounts-list';
+import Delegates, { DelegateType } from './components/account-settings/delegates';
+import PersonaSettings from './components/account-settings/persona-settings';
+import PersonaUseSection from './components/account-settings/persona-use-section';
+import PrimaryAccountSettings from './components/account-settings/primary-account-settings';
+import SettingsSentMessages from './components/account-settings/settings-sent-messages';
+import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
 import type {
 	Mods,
 	IdentityProps,
@@ -29,14 +35,10 @@ import type {
 	Account,
 	AccountSettings
 } from '../../types';
-import AccountsList from './components/account-settings/accounts-list';
-import PrimaryAccountSettings from './components/account-settings/primary-account-settings';
-import SettingsSentMessages from './components/account-settings/settings-sent-messages';
-import Delegates, { DelegateType } from './components/account-settings/delegates';
-import PersonaSettings from './components/account-settings/persona-settings';
-import PersonaUseSection from './components/account-settings/persona-use-section';
-import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
+import { SHELL_APP_ID } from '../constants';
+import { editSettings } from '../network/edit-settings';
 import { getXmlSoapFetch } from '../network/fetch';
+import { useUserSettings } from '../store/account';
 
 // external accounts not yet activated, graphical part is complete
 // import ExternalAccount from './components/account-settings/external-account-settings';

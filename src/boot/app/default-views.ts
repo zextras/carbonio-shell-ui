@@ -5,8 +5,9 @@
  */
 /* eslint-disable no-param-reassign */
 
-import produce from 'immer';
 import type { TFunction } from 'i18next';
+import produce from 'immer';
+
 import type { AppState, PrimaryBarView, SettingsView } from '../../../types';
 import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
 import Feedback from '../../reporting/feedback';

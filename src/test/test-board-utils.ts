@@ -3,15 +3,16 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { first, keys } from 'lodash';
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
-import { Border } from '../shell/hooks/useResize';
+import { first, keys } from 'lodash';
+
+import { TESTID_SELECTORS } from './constants';
+import { mockedApps } from './test-app-utils';
 import { Board } from '../../types';
+import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
+import { Border } from '../shell/hooks/useResize';
 import { useBoardStore } from '../store/boards';
 import { SizeAndPosition } from '../utils/utils';
-import { mockedApps } from './test-app-utils';
-import { TESTID_SELECTORS } from './constants';
-import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
 
 export type InitialSizeAndPosition = SizeAndPosition & {
 	clientLeft: number;

@@ -5,13 +5,15 @@
  */
 
 import React, { ComponentType, FC, FunctionComponent } from 'react';
-import { reduce, find } from 'lodash';
+
 import { Accordion, Collapse, Container, Padding } from '@zextras/carbonio-design-system';
+import { reduce, find } from 'lodash';
 import { useHistory } from 'react-router-dom';
+
 import { AppRoute, SecondaryBarComponentProps } from '../../types';
-import { useAppStore } from '../store/app';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { getCurrentRoute } from '../history/hooks';
+import { useAppStore } from '../store/app';
 
 type SidebarComponentProps = {
 	item: ShellMobileNavComponent;

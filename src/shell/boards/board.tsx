@@ -5,14 +5,16 @@
  */
 
 import React, { FC, useEffect, useMemo } from 'react';
+
+import { createMemoryHistory } from 'history';
+import { find, startsWith } from 'lodash';
 import { Route, Router, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { find, startsWith } from 'lodash';
-import { createMemoryHistory } from 'history';
+
+import { Board } from '../../../types';
 import AppContextProvider from '../../boot/app/app-context-provider';
 import { useAppStore } from '../../store/app';
 import { BoardProvider, updateBoard, useBoardStore } from '../../store/boards';
-import { Board } from '../../../types';
 import { stopPropagation } from '../../utils/utils';
 
 const BoardContainer = styled.div<{ show: boolean }>`

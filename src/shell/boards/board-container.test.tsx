@@ -4,14 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
+
 import { act, screen, waitFor, within } from '@testing-library/react';
 import { reduce, sample, size } from 'lodash';
 import 'jest-styled-components';
 import { Input } from '@zextras/carbonio-design-system';
-import { setup } from '../../test/utils';
+
 import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
+import { Board, BoardView } from '../../../types';
+import { BOARD_MIN_VISIBILITY, LOCAL_STORAGE_BOARD_SIZE } from '../../constants';
+import { useAppStore } from '../../store/app';
+import { reopenBoards, useBoardStore } from '../../store/boards';
 import { ICONS, TESTID_SELECTORS } from '../../test/constants';
-import { Border } from '../hooks/useResize';
+import { mockedApps, setupAppStore } from '../../test/test-app-utils';
 import {
 	buildBoardSizeAndPosition,
 	buildMousePosition,
@@ -22,12 +27,9 @@ import {
 	moveBoard,
 	mockedBoardState
 } from '../../test/test-board-utils';
+import { setup } from '../../test/utils';
 import { SizeAndPosition } from '../../utils/utils';
-import { reopenBoards, useBoardStore } from '../../store/boards';
-import { mockedApps, setupAppStore } from '../../test/test-app-utils';
-import { BOARD_MIN_VISIBILITY, LOCAL_STORAGE_BOARD_SIZE } from '../../constants';
-import { Board, BoardView } from '../../../types';
-import { useAppStore } from '../../store/app';
+import { Border } from '../hooks/useResize';
 
 beforeEach(() => {
 	setupAppStore();

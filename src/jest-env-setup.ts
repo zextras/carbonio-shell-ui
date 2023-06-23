@@ -9,6 +9,7 @@ import { act, configure } from '@testing-library/react';
 import dotenv from 'dotenv';
 import failOnConsole from 'jest-fail-on-console';
 import { noop } from 'lodash';
+
 import server from './mocks/server';
 
 dotenv.config();

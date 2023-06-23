@@ -5,13 +5,14 @@
  */
 
 import { debounce, noop } from 'lodash';
+
+import defaultAudio from '../../assets/notification.mp3';
 import type {
 	AudioNotificationConfig,
 	INotificationManager,
 	NotificationConfig,
 	PopupNotificationConfig
 } from '../../types';
-import defaultAudio from '../../assets/notification.mp3';
 import { getFavicon } from '../store/login/getters';
 
 /**

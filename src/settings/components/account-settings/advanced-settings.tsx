@@ -7,6 +7,7 @@
 // this component is work in progress for when the mails sync is implemented
 
 import React, { ReactElement } from 'react';
+
 import {
 	Container,
 	Text,

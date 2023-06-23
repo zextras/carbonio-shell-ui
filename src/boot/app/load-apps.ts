@@ -4,18 +4,18 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { filter, map } from 'lodash';
-
 import { registerLocale, setDefaultLocale } from '@zextras/carbonio-design-system';
 import type { Locale as DateFnsLocale } from 'date-fns';
+import { filter, map } from 'lodash';
+
+import { loadApp, unloadApps } from './load-app';
+import { injectSharedLibraries } from './shared-libraries';
 import { CarbonioModule } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
 import { useReporter } from '../../reporting';
+import { localeList } from '../../settings/components/utils';
 import { getUserSetting, useAccountStore } from '../../store/account';
 import { getT, useI18nStore } from '../../store/i18n';
-import { loadApp, unloadApps } from './load-app';
-import { injectSharedLibraries } from './shared-libraries';
-import { localeList } from '../../settings/components/utils';
 
 const getDateFnsLocale = (locale: string): Promise<DateFnsLocale> =>
 	import(`date-fns/locale/${locale}/index.js`);

@@ -4,12 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
+
+import { faker } from '@faker-js/faker';
 import { act, screen } from '@testing-library/react';
 import { format, addDays, subDays, startOfDay, endOfDay, addHours, subHours } from 'date-fns';
-import { faker } from '@faker-js/faker';
-import { setup } from '../../../test/utils';
+
 import { OutOfOfficeTimePeriodSection } from './out-of-office-time-period-section';
 import { ICONS } from '../../../test/constants';
+import { setup } from '../../../test/utils';
 import { dateToGenTime } from '../utils';
 
 describe('out of office time period section', () => {

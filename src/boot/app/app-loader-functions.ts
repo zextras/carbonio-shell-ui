@@ -7,16 +7,39 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { reduce } from 'lodash';
-import { getApp, getAppContext, useApp, useAppContext } from '../../store/app';
-import { useContextBridge } from '../../store/context-bridge';
+
+import { CarbonioModule } from '../../../types';
 import {
-	getAction,
-	getActions,
-	getActionsFactory,
-	getActionFactory,
-	getIntegratedComponent,
-	getIntegratedFunction
-} from '../../store/integrations/getters';
+	usePushHistoryCallback,
+	useGoBackHistoryCallback,
+	useReplaceHistoryCallback,
+	getCurrentRoute,
+	useCurrentRoute,
+	replaceHistory,
+	goBackHistory,
+	pushHistory
+} from '../../history/hooks';
+import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
+import { changeTagColor, createTag, deleteTag, renameTag } from '../../network/tags';
+import {
+	addBoard,
+	closeBoard,
+	updateBoard,
+	updateBoardContext,
+	getBoardById,
+	getBoardContextById,
+	useBoardContextById,
+	useBoardById,
+	useBoard,
+	minimizeBoards,
+	reopenBoards,
+	setCurrentBoard,
+	useBoardHooks
+} from '../../store/boards';
+import { getNotificationManager } from '../../notification/NotificationManager';
+import { runSearch } from '../../search/run-search';
+import { useLocalStorage } from '../../shell/hooks/useLocalStorage';
+import { useIsMobile } from '../../shell/hooks/useIsMobile';
 import {
 	getUserAccount,
 	getUserAccounts,
@@ -31,26 +54,8 @@ import {
 	getUserRight,
 	getUserRights
 } from '../../store/account';
-import {
-	useAction,
-	useActions,
-	useActionsFactory,
-	useActionFactory,
-	useIntegratedComponent,
-	useIntegratedFunction
-} from '../../store/integrations/hooks';
-import { CarbonioModule } from '../../../types';
-import {
-	usePushHistoryCallback,
-	useGoBackHistoryCallback,
-	useReplaceHistoryCallback,
-	getCurrentRoute,
-	useCurrentRoute,
-	replaceHistory,
-	goBackHistory,
-	pushHistory
-} from '../../history/hooks';
-import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
+import { getApp, getAppContext, useApp, useAppContext } from '../../store/app';
+import { useContextBridge } from '../../store/context-bridge';
 import {
 	getFolder,
 	getFolders,
@@ -69,29 +74,25 @@ import {
 	useRootByUser,
 	getRootByUser
 } from '../../store/folder';
-import { getTags, useTags } from '../../store/tags';
-import { useNotify, useRefresh } from '../../store/network';
-import { changeTagColor, createTag, deleteTag, renameTag } from '../../network/tags';
-import { runSearch } from '../../search/run-search';
 import { getI18n, getTFunction } from '../../store/i18n';
 import {
-	addBoard,
-	closeBoard,
-	updateBoard,
-	updateBoardContext,
-	getBoardById,
-	getBoardContextById,
-	useBoardContextById,
-	useBoardById,
-	useBoard,
-	minimizeBoards,
-	reopenBoards,
-	setCurrentBoard,
-	useBoardHooks
-} from '../../store/boards';
-import { getNotificationManager } from '../../notification/NotificationManager';
-import { useLocalStorage } from '../../shell/hooks/useLocalStorage';
-import { useIsMobile } from '../../shell/hooks/useIsMobile';
+	getAction,
+	getActions,
+	getActionsFactory,
+	getActionFactory,
+	getIntegratedComponent,
+	getIntegratedFunction
+} from '../../store/integrations/getters';
+import {
+	useAction,
+	useActions,
+	useActionsFactory,
+	useActionFactory,
+	useIntegratedComponent,
+	useIntegratedFunction
+} from '../../store/integrations/hooks';
+import { useNotify, useRefresh } from '../../store/network';
+import { getTags, useTags } from '../../store/tags';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({

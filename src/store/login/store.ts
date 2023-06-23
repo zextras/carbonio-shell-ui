@@ -5,6 +5,7 @@
  */
 
 import { create } from 'zustand';
+
 import type { LoginConfigStore } from '../../../types/loginConfig';
 
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage

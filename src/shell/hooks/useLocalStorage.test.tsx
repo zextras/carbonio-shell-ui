@@ -4,7 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React, { useCallback, useEffect, useState } from 'react';
+
 import { screen, within } from '@testing-library/react';
+
 import { exportForTest, useLocalStorage } from './useLocalStorage';
 import { setup } from '../../test/utils';
 

@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
 import {
 	ChipInput,
 	ChipInputProps,
@@ -13,16 +15,15 @@ import {
 	Tooltip
 } from '@zextras/carbonio-design-system';
 import { filter, find, map, reduce, some } from 'lodash';
-import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { LOCAL_STORAGE_SEARCH_KEY, SEARCH_APP_ID } from '../constants';
 
-import { QueryChip, QueryItem } from '../../types';
-import { getT } from '../store/i18n';
 import { ModuleSelector } from './module-selector';
 import { useSearchStore } from './search-store';
+import { QueryChip, QueryItem } from '../../types';
+import { LOCAL_STORAGE_SEARCH_KEY, SEARCH_APP_ID } from '../constants';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
+import { getT } from '../store/i18n';
 
 const OutlinedIconButton = styled(IconButton)`
 	border: 0.0625rem solid

@@ -4,11 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { rest } from 'msw';
-import server from '../mocks/server';
+
+import { getComponents } from './get-components';
 import { CarbonioModule } from '../../types';
 import { GetComponentsJsonResponseBody } from '../mocks/handlers/components';
+import server from '../mocks/server';
 import { useAppStore } from '../store/app';
-import { getComponents } from './get-components';
 
 jest.mock('../workers');
 describe('Get components', () => {

@@ -4,12 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { map } from 'lodash';
 import React, { useMemo } from 'react';
-import { useUserAccount } from '../store/account';
-import { getT } from '../store/i18n';
+
+import { map } from 'lodash';
+
 import { AccountsSettings } from './accounts-settings';
 import { IdentityProps } from '../../types';
+import { useUserAccount } from '../store/account';
+import { getT } from '../store/i18n';
 
 const AccountWrapper = (): React.ReactElement | null => {
 	const accountSettings = useUserAccount();

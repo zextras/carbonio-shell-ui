@@ -5,8 +5,10 @@
  */
 
 import React, { useState, useCallback, ReactElement, useEffect, useMemo } from 'react';
+
 import { Container, Text, Padding, Input, Row } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
+
 import { IdentityProps } from '../../../../types';
 
 interface PersonaSettingsProps {

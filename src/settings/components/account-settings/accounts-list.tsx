@@ -5,6 +5,7 @@
  */
 
 import React, { useCallback, ReactElement, useState, useContext } from 'react';
+
 import {
 	Container,
 	Text,
@@ -18,7 +19,8 @@ import {
 	ItemComponentProps
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import { map, filter, max, noop } from 'lodash';
+import { map, filter, max } from 'lodash';
+
 import { IdentityProps, CreateIdentityProps, Account } from '../../../../types';
 
 type AccountsListProps = {

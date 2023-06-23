@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { SHELL_APP_ID } from '../constants';
 import { getSoapFetch } from './fetch';
 import { goToLogin } from './go-to-login';
+import { SHELL_APP_ID } from '../constants';
 
 export const logout = (): Promise<void> =>
 	getSoapFetch(SHELL_APP_ID)('EndSession', {

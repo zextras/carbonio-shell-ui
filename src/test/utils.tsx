@@ -23,9 +23,10 @@ import i18next, { type i18n } from 'i18next';
 import { filter } from 'lodash';
 import { I18nextProvider } from 'react-i18next';
 import { MemoryRouter } from 'react-router-dom';
+
 import { ThemeProvider } from '../boot/theme-provider';
 
-export type UserEvent = ReturnType<typeof userEvent['setup']> & {
+export type UserEvent = ReturnType<(typeof userEvent)['setup']> & {
 	readonly rightClick: (target: Element) => Promise<void>;
 };
 
@@ -136,7 +137,7 @@ function customRender(
 
 type SetupOptions = Pick<WrapperProps, 'initialRouterEntries'> & {
 	renderOptions?: Omit<RenderOptions, 'queries'>;
-	setupOptions?: Parameters<typeof userEvent['setup']>[0];
+	setupOptions?: Parameters<(typeof userEvent)['setup']>[0];
 };
 
 const setupUserEvent = (options: SetupOptions['setupOptions']): UserEvent => {

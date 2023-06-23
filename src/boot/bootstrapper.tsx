@@ -5,7 +5,7 @@
  */
 
 import React, { FC, useEffect } from 'react';
-import { BrowserRouter, Route, Switch, useHistory, useParams } from 'react-router-dom';
+
 import {
 	ModalManager,
 	SnackbarManager,
@@ -13,16 +13,18 @@ import {
 	useSnackbar
 } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
+import { BrowserRouter, Route, Switch, useHistory, useParams } from 'react-router-dom';
+
+import AppLoaderMounter from './app/app-loader-mounter';
+import { registerDefaultViews } from './app/default-views';
+import { Loader } from './loader';
 import ShellI18nextProvider from './shell-i18n-provider';
 import { ThemeProvider } from './theme-provider';
 import { BASENAME, IS_STANDALONE } from '../constants';
-import { Loader } from './loader';
 import { NotificationPermissionChecker } from '../notification/NotificationPermissionChecker';
-import AppLoaderMounter from './app/app-loader-mounter';
 import ShellView from '../shell/shell-view';
-import { useBridge } from '../store/context-bridge';
 import { useAppStore } from '../store/app';
-import { registerDefaultViews } from './app/default-views';
+import { useBridge } from '../store/context-bridge';
 
 const ContextBridge = (): null => {
 	const history = useHistory();

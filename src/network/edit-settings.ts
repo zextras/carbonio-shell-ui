@@ -5,8 +5,8 @@
  */
 
 import { filter, find, findIndex, forEach, map, reduce, isArray } from 'lodash';
-import { SHELL_APP_ID } from '../constants';
-import { useAccountStore } from '../store/account';
+
+import { getXmlSoapFetch } from './fetch';
 import {
 	AccountState,
 	Mods,
@@ -19,7 +19,8 @@ import {
 	DeleteIdentityResponse,
 	GrantRightsResponse
 } from '../../types';
-import { getXmlSoapFetch } from './fetch';
+import { SHELL_APP_ID } from '../constants';
+import { useAccountStore } from '../store/account';
 
 type EditSettingsBatchResponse = {
 	ModifyPropertiesResponse?: ModifyPropertiesResponse[];

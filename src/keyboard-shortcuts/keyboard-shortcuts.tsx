@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+
 import { type Action } from '../../types';
 
 type handleKeyboardShortcutsProps = {

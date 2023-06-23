@@ -5,6 +5,7 @@
  */
 
 import React, { FC, useCallback } from 'react';
+
 import { Catcher } from '@zextras/carbonio-design-system';
 
 const AppErrorCatcher: FC = ({ children }) => {

@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { create } from 'zustand';
 import {
 	BrowserClient,
 	defaultIntegrations,
@@ -13,6 +12,8 @@ import {
 	makeFetchTransport
 } from '@sentry/browser';
 import { reduce } from 'lodash';
+import { create } from 'zustand';
+
 import type { CarbonioModule } from '../../types';
 import { SENTRY_FEEDBACK_DNS, SENTRY_SHELL_DSN, SHELL_APP_ID } from '../constants';
 

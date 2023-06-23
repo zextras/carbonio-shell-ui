@@ -5,7 +5,9 @@
  */
 
 import React from 'react';
+
 import { screen, within } from '@testing-library/react';
+
 import { setup } from '../../test/utils';
 import { TabsList } from './board-tab-list';
 import { useBoardStore } from '../../store/boards';

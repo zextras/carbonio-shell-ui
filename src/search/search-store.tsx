@@ -6,6 +6,7 @@
 
 import { isFunction } from 'lodash';
 import { create } from 'zustand';
+
 import type { QueryChip, SearchState } from '../../types';
 
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage

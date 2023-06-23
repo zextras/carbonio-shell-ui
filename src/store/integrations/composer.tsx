@@ -3,8 +3,9 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { Container } from '@zextras/carbonio-design-system';
 import React, { FC, useCallback, useMemo, useRef } from 'react';
+
+import { Container } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 import type { EditorOptions, TinyMCE, Ui } from 'tinymce/tinymce';
 // TinyMCE so the global var exists
@@ -40,6 +41,7 @@ import 'tinymce/plugins/visualblocks';
 import 'tinymce/plugins/wordcount';
 
 import { Editor, IAllProps as EditorProps } from '@tinymce/tinymce-react';
+
 import { useUserSettings } from '../account';
 import { getT, useI18nStore } from '../i18n';
 

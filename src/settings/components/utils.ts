@@ -4,12 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import moment, { Moment } from 'moment';
+import React from 'react';
+
 import type { TFunction } from 'i18next';
 import { isBoolean } from 'lodash';
-import React from 'react';
-import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
+import moment, { Moment } from 'moment';
+
 import { AddMod, BooleanString, GeneralizedTime, PrefsMods } from '../../../types';
+import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
 
 export const GEN_TIME_FORMAT = 'YYYYMMDDHHmmss[Z]';
 

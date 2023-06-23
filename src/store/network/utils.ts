@@ -5,12 +5,13 @@
  */
 
 import { forEach } from 'lodash';
+
+import { useNetworkStore } from './store';
 import { AccountSettings, SoapContext, SoapResponse } from '../../../types';
 import { folderWorker, tagWorker } from '../../workers';
+import { useAccountStore } from '../account';
 import { useFolderStore } from '../folder';
 import { useTagStore } from '../tags';
-import { useNetworkStore } from './store';
-import { useAccountStore } from '../account';
 
 /**
  * Polling interval to use if the long polling delay

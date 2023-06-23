@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+
 import {
 	Catcher,
 	Container,
@@ -14,12 +15,13 @@ import {
 	useScreenMode
 } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
-import { SearchBar } from '../search/search-bar';
+
 import { CreationButton } from './creation-button';
-import { useAppStore } from '../store/app';
-import { useDarkMode } from '../dark-mode/use-dark-mode';
 import { Logo } from './logo';
 import { BOARD_CONTAINER_ZINDEX, HEADER_BAR_HEIGHT } from '../constants';
+import { useDarkMode } from '../dark-mode/use-dark-mode';
+import { SearchBar } from '../search/search-bar';
+import { useAppStore } from '../store/app';
 
 const StyledLogo = styled(Logo)`
 	height: 2rem;

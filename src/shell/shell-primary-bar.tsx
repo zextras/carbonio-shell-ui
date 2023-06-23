@@ -4,19 +4,21 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { useEffect, useMemo, useRef } from 'react';
+
 import { Container, IconButton, Row, Tooltip } from '@zextras/carbonio-design-system';
 import { map, isEmpty, trim, filter, sortBy, noop } from 'lodash';
-import React, { useEffect, useMemo, useRef } from 'react';
-import styled from 'styled-components';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useAppStore } from '../store/app';
-import { AppRoute, PrimaryAccessoryView, PrimaryBarView } from '../../types';
+import styled from 'styled-components';
+
 import BadgeWrap from './badge-wrap';
+import { AppRoute, PrimaryAccessoryView, PrimaryBarView } from '../../types';
 import AppContextProvider from '../boot/app/app-context-provider';
-import { checkRoute } from '../utility-bar/utils';
 import { BOARD_CONTAINER_ZINDEX, IS_STANDALONE, PRIMARY_BAR_WIDTH } from '../constants';
-import { minimizeBoards, reopenBoards, useBoardStore } from '../store/boards';
 import { useCurrentRoute } from '../history/hooks';
+import { useAppStore } from '../store/app';
+import { minimizeBoards, reopenBoards, useBoardStore } from '../store/boards';
+import { checkRoute } from '../utility-bar/utils';
 
 const PrimaryBarContainer = styled(Container)`
 	border-right: 0.0625rem solid ${({ theme }): string => theme.palette.gray3.regular};

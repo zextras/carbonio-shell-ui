@@ -3,17 +3,19 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { ResponseResolver, rest, RestContext, RestRequest } from 'msw';
-import { act, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import server from '../mocks/server';
-import { getComponentsJson, GetComponentsJsonResponseBody } from '../mocks/handlers/components';
-import { setup } from '../test/utils';
+
+import { act, screen, waitFor } from '@testing-library/react';
+import { ResponseResolver, rest, RestContext, RestRequest } from 'msw';
+
 import { Loader } from './loader';
-import { LOGIN_V3_CONFIG_PATH } from '../constants';
 import { LoginConfigStore } from '../../types/loginConfig';
-import { getLoginConfig } from '../mocks/handlers/login-config';
+import { LOGIN_V3_CONFIG_PATH } from '../constants';
+import { getComponentsJson, GetComponentsJsonResponseBody } from '../mocks/handlers/components';
 import { getInfoRequest } from '../mocks/handlers/getInfoRequest';
+import { getLoginConfig } from '../mocks/handlers/login-config';
+import server from '../mocks/server';
+import { setup } from '../test/utils';
 
 jest.mock('../workers');
 jest.mock('../reporting/functions');

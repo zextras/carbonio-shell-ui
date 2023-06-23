@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { useEffect, useMemo } from 'react';
+
 import {
 	Breadcrumbs,
 	Button,
@@ -14,8 +16,8 @@ import {
 	Row,
 	Text
 } from '@zextras/carbonio-design-system';
-import React, { useEffect, useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+
 import { SETTINGS_APP_ID } from '../../constants';
 import { getT } from '../../store/i18n';
 import { RouteLeavingGuard, RouteLeavingGuardProps } from '../../ui-extras/nav-guard';

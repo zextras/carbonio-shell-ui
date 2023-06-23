@@ -91,6 +91,7 @@ export function setupBoardSizes(
 	board: HTMLElement,
 	initialSizeAndPos: InitialSizeAndPosition
 ): void {
+	// eslint-disable-next-line testing-library/no-node-access
 	const boardContainer = board.parentElement;
 	if (boardContainer) {
 		jest.spyOn(boardContainer, 'clientWidth', 'get').mockImplementation(() => window.innerWidth);
@@ -115,8 +116,11 @@ export async function resizeBoard(
 ): Promise<void> {
 	setupBoardSizes(board, sizeAndPos);
 	const borderElement = screen.getByTestId(TESTID_SELECTORS.resizableBorder(border));
+	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseDown(borderElement);
+	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseMove(document.body, mouseNewPosition);
+	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseUp(document.body);
 	await waitFor(() =>
 		expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '{}')).toEqual(
@@ -138,13 +142,17 @@ export async function moveBoard(
 	elementForMove: HTMLElement = board
 ): Promise<void> {
 	setupBoardSizes(board, sizeAndPos);
+	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseDown(elementForMove, mouseInitialPosition);
 	act(() => {
 		// run move timer
 		jest.runOnlyPendingTimers();
 	});
+	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseMove(document.body, mouseNewPosition);
+	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseUp(document.body);
+	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.click(elementForMove);
 	await waitFor(() =>
 		expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '{}')).toEqual(

@@ -202,7 +202,6 @@ export const editSettings = (
 							? reduce(
 									mods?.identity?.modifyList,
 									(acc, { id, prefs }) => {
-										const tempResult = [];
 										const propIndex = findIndex(
 											acc,
 											(itemMods, indexAccount) => acc[indexAccount].id === id
@@ -219,7 +218,6 @@ export const editSettings = (
 													acc[propIndex].name = Object.values(prefs)[_index];
 												}
 											});
-											tempResult.push(prefs);
 										}
 										return acc;
 									},

@@ -46,6 +46,7 @@ describe('Loader', () => {
 		console.error = jest.fn<ReturnType<typeof console.error>, Parameters<typeof console.error>>(
 			(error, ...restParameter) => {
 				if (error === 'Unexpected end of JSON input') {
+					// eslint-disable-next-line no-console
 					console.log('Controlled error', error, ...restParameter);
 				} else {
 					actualConsoleError(error, ...restParameter);

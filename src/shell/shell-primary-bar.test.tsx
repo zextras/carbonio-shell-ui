@@ -181,23 +181,26 @@ describe('Shell primary bar', () => {
 		expect(filesIcon).toBeVisible();
 		expect(filesIcon).toBeEnabled();
 
-		expect(screen.getByText('default mails view')).toBeVisible();
-		expect(screen.queryByText('about')).not.toBeInTheDocument();
-		expect(screen.queryByText('files view')).not.toBeInTheDocument();
+		const mailsView = 'default mails view';
+		const filesView = 'files view';
+		const about = 'about';
+		expect(screen.getByText(mailsView)).toBeVisible();
+		expect(screen.queryByText(about)).not.toBeInTheDocument();
+		expect(screen.queryByText(filesView)).not.toBeInTheDocument();
 
 		await user.click(screen.getByRole('button', { name: 'navigate to about' }));
-		expect(screen.getByText('about')).toBeVisible();
-		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
-		expect(screen.queryByText('files view')).not.toBeInTheDocument();
+		expect(screen.getByText(about)).toBeVisible();
+		expect(screen.queryByText(mailsView)).not.toBeInTheDocument();
+		expect(screen.queryByText(filesView)).not.toBeInTheDocument();
 
 		await user.click(filesIcon);
-		expect(screen.getByText('files view')).toBeVisible();
-		expect(screen.queryByText('about')).not.toBeInTheDocument();
-		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
+		expect(screen.getByText(filesView)).toBeVisible();
+		expect(screen.queryByText(about)).not.toBeInTheDocument();
+		expect(screen.queryByText(mailsView)).not.toBeInTheDocument();
 
 		await user.click(mailsIcon);
-		expect(screen.getByText('about')).toBeVisible();
-		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
-		expect(screen.queryByText('files view')).not.toBeInTheDocument();
+		expect(screen.getByText(about)).toBeVisible();
+		expect(screen.queryByText(mailsView)).not.toBeInTheDocument();
+		expect(screen.queryByText(filesView)).not.toBeInTheDocument();
 	});
 });

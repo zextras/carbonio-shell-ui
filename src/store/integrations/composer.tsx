@@ -5,6 +5,7 @@
  */
 import React, { FC, useCallback, useMemo, useRef } from 'react';
 
+import { Editor, IAllProps as EditorProps } from '@tinymce/tinymce-react';
 import { Container } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 import type { EditorOptions, TinyMCE, Ui } from 'tinymce/tinymce';
@@ -17,7 +18,6 @@ import 'tinymce/themes/silver';
 import 'tinymce/icons/default';
 // Editor styles
 import 'tinymce/skins/ui/oxide/skin.min.css';
-
 // importing the plugin js.
 import 'tinymce/plugins/advlist';
 import 'tinymce/plugins/anchor';
@@ -39,8 +39,6 @@ import 'tinymce/plugins/searchreplace';
 import 'tinymce/plugins/table';
 import 'tinymce/plugins/visualblocks';
 import 'tinymce/plugins/wordcount';
-
-import { Editor, IAllProps as EditorProps } from '@tinymce/tinymce-react';
 
 import { useUserSettings } from '../account';
 import { getT, useI18nStore } from '../i18n';
@@ -212,7 +210,7 @@ const Composer: FC<ComposerProps> = ({
 			quickbars_selection_toolbar: inline
 				? 'bold italic underline | forecolor backcolor | removeformat | quicklink'
 				: 'quicklink',
-			contextmenu: inline ? '' : '',
+			contextmenu: '',
 			toolbar_mode: 'wrap',
 			content_style: `body  {  color: ${defaultStyle?.color}; font-size: ${defaultStyle?.fontSize}; font-family: ${defaultStyle?.font}; }`,
 			visualblocks_default_state: false,

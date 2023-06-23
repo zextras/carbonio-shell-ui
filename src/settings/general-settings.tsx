@@ -18,15 +18,15 @@ import { ScalingSettingSection } from './components/general-settings/scaling-set
 import { SearchSettings } from './components/general-settings/search-settings';
 import UserQuota from './components/general-settings/user-quota';
 import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
+import { ResetComponentImperativeHandler } from './components/utils';
+import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
 import { AddMod, Mods, RemoveMod } from '../../types';
+import { ScalingSettings } from '../../types/settings';
 import { LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
 import { editSettings } from '../network/edit-settings';
+import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 import { useUserSettings } from '../store/account';
 import { getT } from '../store/i18n';
-import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
-import { ScalingSettings } from '../../types/settings';
-import { ResetComponentImperativeHandler } from './components/utils';
-import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 
 const GeneralSettings = (): JSX.Element => {
 	const [mods, setMods] = useState<Mods>({});

@@ -7,13 +7,13 @@
 import React from 'react';
 
 import { screen, within } from '@testing-library/react';
+import 'jest-styled-components';
 
-import { setup } from '../../test/utils';
 import { TabsList } from './board-tab-list';
 import { useBoardStore } from '../../store/boards';
-import 'jest-styled-components';
-import { PALETTE } from '../../test/constants';
+import { ICONS, PALETTE } from '../../test/constants';
 import { setupBoardStore } from '../../test/test-board-utils';
+import { setup } from '../../test/utils';
 
 describe('Shell boards', () => {
 	test('If I close the first tab that is open, the tab on its right should be seen correctly', async () => {
@@ -27,7 +27,7 @@ describe('Shell boards', () => {
 		expect(title3).toHaveStyleRule('color', PALETTE.secondary.regular);
 
 		const tab1 = screen.getByTestId(`board-tab-board-1`);
-		const board1closeIcon = within(tab1).getByTestId('icon: Close');
+		const board1closeIcon = within(tab1).getByTestId(`icon: ${ICONS.close}`);
 		await user.click(board1closeIcon);
 		expect(tab1).not.toBeInTheDocument();
 		expect(title1).not.toBeInTheDocument();
@@ -47,7 +47,7 @@ describe('Shell boards', () => {
 		expect(title3).toHaveStyleRule('color', PALETTE.secondary.regular);
 
 		const tab1 = screen.getByTestId(`board-tab-board-1`);
-		const board1closeIcon = within(tab1).getByTestId('icon: Close');
+		const board1closeIcon = within(tab1).getByTestId(`icon: ${ICONS.close}`);
 		await user.click(board1closeIcon);
 		expect(tab1).not.toBeInTheDocument();
 		expect(title1).not.toBeInTheDocument();
@@ -67,7 +67,7 @@ describe('Shell boards', () => {
 		expect(title3).toHaveStyleRule('color', PALETTE.text.regular);
 
 		const tab3 = screen.getByTestId(`board-tab-board-3`);
-		const board3closeIcon = within(tab3).getByTestId('icon: Close');
+		const board3closeIcon = within(tab3).getByTestId(`icon: ${ICONS.close}`);
 		await user.click(board3closeIcon);
 		expect(tab3).not.toBeInTheDocument();
 		expect(title3).not.toBeInTheDocument();
@@ -87,7 +87,7 @@ describe('Shell boards', () => {
 		expect(title3).toHaveStyleRule('color', PALETTE.secondary.regular);
 
 		const tab3 = screen.getByTestId(`board-tab-board-3`);
-		const board3closeIcon = within(tab3).getByTestId('icon: Close');
+		const board3closeIcon = within(tab3).getByTestId(`icon: ${ICONS.close}`);
 		await user.click(board3closeIcon);
 		expect(tab3).not.toBeInTheDocument();
 		expect(title3).not.toBeInTheDocument();
@@ -107,7 +107,7 @@ describe('Shell boards', () => {
 		expect(title3).toHaveStyleRule('color', PALETTE.secondary.regular);
 
 		const tab2 = screen.getByTestId(`board-tab-board-2`);
-		const board2closeIcon = within(tab2).getByTestId('icon: Close');
+		const board2closeIcon = within(tab2).getByTestId(`icon: ${ICONS.close}`);
 		await user.click(board2closeIcon);
 		expect(tab2).not.toBeInTheDocument();
 		expect(title2).not.toBeInTheDocument();
@@ -127,7 +127,7 @@ describe('Shell boards', () => {
 		expect(title3).toHaveStyleRule('color', PALETTE.secondary.regular);
 
 		const tab2 = screen.getByTestId(`board-tab-board-2`);
-		const board2closeIcon = within(tab2).getByTestId('icon: Close');
+		const board2closeIcon = within(tab2).getByTestId(`icon: ${ICONS.close}`);
 		await user.click(board2closeIcon);
 		expect(tab2).not.toBeInTheDocument();
 		expect(title2).not.toBeInTheDocument();

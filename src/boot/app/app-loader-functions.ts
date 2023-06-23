@@ -21,25 +21,10 @@ import {
 } from '../../history/hooks';
 import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
 import { changeTagColor, createTag, deleteTag, renameTag } from '../../network/tags';
-import {
-	addBoard,
-	closeBoard,
-	updateBoard,
-	updateBoardContext,
-	getBoardById,
-	getBoardContextById,
-	useBoardContextById,
-	useBoardById,
-	useBoard,
-	minimizeBoards,
-	reopenBoards,
-	setCurrentBoard,
-	useBoardHooks
-} from '../../store/boards';
 import { getNotificationManager } from '../../notification/NotificationManager';
 import { runSearch } from '../../search/run-search';
-import { useLocalStorage } from '../../shell/hooks/useLocalStorage';
 import { useIsMobile } from '../../shell/hooks/useIsMobile';
+import { useLocalStorage } from '../../shell/hooks/useLocalStorage';
 import {
 	getUserAccount,
 	getUserAccounts,
@@ -55,6 +40,21 @@ import {
 	getUserRights
 } from '../../store/account';
 import { getApp, getAppContext, useApp, useAppContext } from '../../store/app';
+import {
+	addBoard,
+	closeBoard,
+	updateBoard,
+	updateBoardContext,
+	getBoardById,
+	getBoardContextById,
+	useBoardContextById,
+	useBoardById,
+	useBoard,
+	minimizeBoards,
+	reopenBoards,
+	setCurrentBoard,
+	useBoardHooks
+} from '../../store/boards';
 import { useContextBridge } from '../../store/context-bridge';
 import {
 	getFolder,

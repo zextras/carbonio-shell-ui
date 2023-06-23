@@ -22,13 +22,14 @@ export function useGetPrimaryColor(): string | undefined {
 	const theme = useTheme();
 
 	const primaryColor = useMemo(() => {
-		if (darkReaderStatus !== undefined) {
-			if (carbonioWebUiPrimaryColor || carbonioWebUiDarkPrimaryColor) {
-				if (darkModeEnabled) {
-					return carbonioWebUiDarkPrimaryColor || carbonioWebUiPrimaryColor;
-				}
-				return carbonioWebUiPrimaryColor || carbonioWebUiDarkPrimaryColor;
+		if (
+			darkReaderStatus !== undefined &&
+			(carbonioWebUiPrimaryColor || carbonioWebUiDarkPrimaryColor)
+		) {
+			if (darkModeEnabled) {
+				return carbonioWebUiDarkPrimaryColor || carbonioWebUiPrimaryColor;
 			}
+			return carbonioWebUiPrimaryColor || carbonioWebUiDarkPrimaryColor;
 		}
 		if (localStorageLastPrimary && size(localStorageLastPrimary) > 0) {
 			return (

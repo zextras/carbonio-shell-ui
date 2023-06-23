@@ -100,7 +100,7 @@ export const AppBoardTab: FC<{ id: string; icon: string; title: string; firstTab
 	const resizeObserverRef = useRef<ResizeObserver>();
 	useEffect(() => {
 		if (textRef.current && !resizeObserverRef.current) {
-			resizeObserverRef.current = new ResizeObserver((entries) => {
+			resizeObserverRef.current = new ResizeObserver(() => {
 				requestAnimationFrame(() => {
 					if (textRef.current) {
 						setTextOverflowing(textRef.current.offsetWidth < textRef.current.scrollWidth);

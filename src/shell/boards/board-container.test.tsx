@@ -6,9 +6,9 @@
 import React from 'react';
 
 import { act, screen, waitFor, within } from '@testing-library/react';
+import { Input } from '@zextras/carbonio-design-system';
 import { reduce, sample, size } from 'lodash';
 import 'jest-styled-components';
-import { Input } from '@zextras/carbonio-design-system';
 
 import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
 import { Board, BoardView } from '../../../types';
@@ -35,6 +35,11 @@ beforeEach(() => {
 	setupAppStore();
 	setupBoardStore();
 });
+
+const ENLARGED_BOARD_POSITION = {
+	top: '1.5rem !important',
+	left: '1.5rem !important'
+};
 
 describe('Board container', () => {
 	describe('Tabs', () => {
@@ -86,7 +91,7 @@ describe('Board container', () => {
 			expect(chevronDownIcon).toBeVisible();
 
 			await user.click(chevronDownIcon);
-			expect(screen.getAllByText('From Mails')).toHaveLength(10);
+			expect(screen.getAllByText(/from mails/i)).toHaveLength(10);
 		});
 
 		test('If close a tab from the dropdown, it will be removed', async () => {
@@ -101,13 +106,13 @@ describe('Board container', () => {
 
 			await user.click(chevronDownIcon);
 
-			expect(screen.getAllByText('From Mails')).toHaveLength(10);
+			expect(screen.getAllByText(/from mails/i)).toHaveLength(10);
 
 			const firstCloseIcon = within(screen.getByTestId('dropdown-popper-list')).getAllByTestId(
 				'icon: CloseOutline'
 			)[0];
 			await user.click(firstCloseIcon);
-			expect(screen.getAllByText('From Mails')).toHaveLength(9);
+			expect(screen.getAllByText(/from mails/i)).toHaveLength(9);
 			expect(useBoardStore.getState().orderedBoards).toHaveLength(9);
 			expect(size(useBoardStore.getState().boards)).toBe(9);
 		});
@@ -283,8 +288,8 @@ describe('Board container', () => {
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
 		expect(board).toHaveStyleRule('height', 'calc(100% - 1.5rem) !important');
 		expect(board).toHaveStyleRule('width', 'calc(100% - 3rem) !important');
-		expect(board).toHaveStyleRule('top', '1.5rem !important');
-		expect(board).toHaveStyleRule('left', '1.5rem !important');
+		expect(board).toHaveStyleRule('top', ENLARGED_BOARD_POSITION.top);
+		expect(board).toHaveStyleRule('left', ENLARGED_BOARD_POSITION.left);
 	});
 
 	test('Enlarge resized board set board to fill board area', async () => {
@@ -314,8 +319,8 @@ describe('Board container', () => {
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
 		expect(board).toHaveStyleRule('height', 'calc(100% - 1.5rem) !important');
 		expect(board).toHaveStyleRule('width', 'calc(100% - 3rem) !important');
-		expect(board).toHaveStyleRule('top', '1.5rem !important');
-		expect(board).toHaveStyleRule('left', '1.5rem !important');
+		expect(board).toHaveStyleRule('top', ENLARGED_BOARD_POSITION.top);
+		expect(board).toHaveStyleRule('left', ENLARGED_BOARD_POSITION.left);
 	});
 
 	test('Reduce default board set board to default size', async () => {

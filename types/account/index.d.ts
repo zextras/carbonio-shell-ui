@@ -65,6 +65,10 @@ type GenTimeObj = {
 export type GeneralizedTime =
 	`${GenTimeObj['year']}${GenTimeObj['month']}${GenTimeObj['date']}${GenTimeObj['hour']}${GenTimeObj['min']}${GenTimeObj['sec']}${GenTimeObj['ms']}${GenTimeObj['timezone']}`;
 
+export type DurationUnit = 'd' | 'h' | 'm' | 's' | 'ms';
+
+export type Duration = `${number}${DurationUnit | ''}`;
+
 export interface AccountSettingsPrefs {
 	zimbraPrefOutOfOfficeExternalReply?: string;
 	zimbraPrefOutOfOfficeReply?: string;
@@ -83,9 +87,9 @@ export interface AccountSettingsPrefs {
 	zimbraPrefHtmlEditorDefaultFontFamily?: string;
 	zimbraPrefHtmlEditorDefaultFontSize?: string;
 	zimbraPrefLocale?: string;
-	zimbraPrefMailPollingInterval?: string;
+	zimbraPrefMailPollingInterval?: Duration;
 	zimbraPrefMailTrustedSenderList?: Array<string> | string;
-	zimbraPrefTimeZoneId?: string;
+	zimbraPrefTimeZoneId?: Array<string> | string;
 	[key: string]: string | number | Array<string | number>;
 }
 

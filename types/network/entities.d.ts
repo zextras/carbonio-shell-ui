@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { IdentityAttrs } from '../account';
+
 /** Specify Access Control Entries */
 export interface AccountACEInfo {
 	/** Zimbra ID of the grantee */
@@ -56,18 +58,5 @@ export interface Identity {
 	/** Identity ID */
 	id?: string;
 	/** Attributes */
-	attributes?: Attribute[];
-}
-
-export interface Attribute {
-	/** Name of attribute */
-	name: string;
-	/**
-	 * Flags whether permission has been denied (optional).
-	 * If 1 (true), flags that the real value of this attribute has not been provided.
-	 * The value is set to ""
-	 */
-	pd?: boolean;
-	/** Value of attribute */
-	value?: string;
+	_attrs?: Partial<IdentityAttrs>;
 }

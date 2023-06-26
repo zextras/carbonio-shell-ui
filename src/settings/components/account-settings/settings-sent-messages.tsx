@@ -83,13 +83,16 @@ const SettingsSentMessages = ({
 	}, [identity.replyToAddress]);
 
 	const onClickReplyToEnabled = useCallback(() => {
-		setReplyToEnabledValue(!replyToEnabledValue);
-		updateIdentities(
-			identity.identityId,
-			'zimbraPrefReplyToEnabled',
-			replyToEnabledValue ? 'FALSE' : 'TRUE'
-		);
-	}, [identity.identityId, replyToEnabledValue, updateIdentities]);
+		setReplyToEnabledValue((prevState) => {
+			const newState = !prevState;
+			updateIdentities(
+				identity.identityId,
+				'zimbraPrefReplyToEnabled',
+				prevState ? 'FALSE' : 'TRUE'
+			);
+			return newState;
+		});
+	}, [identity.identityId, updateIdentities]);
 
 	const fromDisplayLabel = useMemo(
 		() => (fromDisplayValue ? '' : t('label.from_name', 'From: "Name"')),

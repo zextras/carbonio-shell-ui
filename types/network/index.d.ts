@@ -201,12 +201,12 @@ type NameOrIdRequired =
 	  };
 
 export type ModifyPrefsRequest = {
-	_jsns: NameSpace.ZimbraAccount;
+	_jsns: NameSpace;
 	_attrs: AccountSettingsPrefs;
 };
 
 export type CreateIdentityRequest = {
-	_jsns: NameSpace.ZimbraAccount;
+	_jsns: NameSpace;
 	identity: {
 		name?: string;
 		_attrs: IdentityAttrs;
@@ -214,20 +214,20 @@ export type CreateIdentityRequest = {
 };
 
 export type ModifyIdentityRequest = {
-	_jsns: NameSpace.ZimbraAccount;
+	_jsns: NameSpace;
 	identity: {
 		_attrs?: Partial<IdentityAttrs>;
-	} & NameOrIdRequired;
+	} & RequireAtLeastOne<Pick<Identity, 'id' | 'name'>>;
 };
 
 export type DeleteIdentityRequest = {
 	identity: { name?: string; id?: string };
-	_jsns: NameSpace.ZimbraAccount;
+	_jsns: NameSpace;
 	requestId?: string;
 };
 
 export type ModifyPropertiesRequest = {
-	_jsns: NameSpace.ZimbraAccount;
+	_jsns: NameSpace;
 	prop: Array<{ name: string; zimlet: string; _content: unknown }>;
 };
 
@@ -237,12 +237,12 @@ export type BatchRequest = {
 	DeleteIdentityRequest?: Array<DeleteIdentityRequest>;
 	ModifyPrefsRequest?: ModifyPrefsRequest;
 	ModifyPropertiesRequest?: ModifyPropertiesRequest;
-	_jsns: NameSpace.Zimbra;
+	_jsns: NameSpace;
 };
 
 export type GetRightsRequest = {
 	ace?: Array<{ right: Right }>;
-	_jsns: NameSpace.ZimbraAccount;
+	_jsns: NameSpace;
 };
 
 export type GetRightsResponse = {
@@ -261,7 +261,6 @@ export type GetRightsResponse = {
 
 export type Right =
 	// Following rights are partial, they are the result of
-	// zmprov gar -v  -t account -c USER
 	// description: automatically add meeting invites from grantee to the target's calendar
 	// right type: preset
 	// target type(s): account
@@ -293,27 +292,27 @@ export type Right =
 	// right class: USER
 	| 'viewFreeBusy';
 
-export enum NameSpace {
-	ZimbraMail = 'urn:zimbraMail',
-	ZimbraAccount = 'urn:zimbraAccount',
-	Zimbra = 'urn:zimbra'
-}
+export type NameSpace = 'urn:zimbraMail' | 'urn:zimbraAccount' | 'urn:zimbra';
 
 // The type of grantee:
-// usr - Zimbra user
-// grp - Zimbra group(distribution list)
-// all - all authenticated users
-// gst - non-Zimbra email address and password (not yet supported)
-// key - external user with an accesskey
-// pub - public authenticated and unauthenticated access
 export type GranteeType =
+	// usr - Zimbra user
 	| 'usr'
+	// grp - Zimbra group(distribution list)
 	| 'grp'
+	// an external AD group
 	| 'egp'
+	// all - all authenticated users
 	| 'all'
+	// Zimbra Domain
 	| 'dom'
+	// non-Zimbra domain (used with sendToDistList right)
 	| 'edom'
+	// gst - non-Zimbra email address and password (not yet supported)
 	| 'gst'
+	// key - external user with an accesskey
 	| 'key'
+	// pub - public authenticated and unauthenticated access
 	| 'pub'
+	// Pseudo grantee type.  Granting code will map to usr/grp/egp or gst
 	| 'email';

@@ -50,10 +50,10 @@ const SettingsSentMessages = ({
 	const [replyToEnabledValue, setReplyToEnabledValue] = useState(
 		identity.replyToEnabled === 'TRUE'
 	);
-	const [replyToAddress, setReplyToAddress] = useState(identity.replyToAddress);
+	const [replyToAddress, setReplyToAddress] = useState<string>(identity.replyToAddress || '');
 	const [dropdownOpen, setDropdownOpen] = useState(false);
-	const [fromDisplayValue, setFromDisplayValue] = useState(identity.fromDisplay);
-	const [replyToDisplay, setReplyToDisplay] = useState(identity?.replyToDisplay);
+	const [fromDisplayValue, setFromDisplayValue] = useState<string>(identity.fromDisplay || '');
+	const [replyToDisplay, setReplyToDisplay] = useState<string>(identity?.replyToDisplay || '');
 	const fromAddressArray = useMemo(
 		(): SelectItem[] =>
 			availableEmailAddresses
@@ -69,7 +69,7 @@ const SettingsSentMessages = ({
 		setReplyToEnabledValue(identity.replyToEnabled === 'TRUE');
 	}, [identity.replyToEnabled]);
 	useEffect(() => {
-		setFromDisplayValue(identity.fromDisplay);
+		setFromDisplayValue(identity.fromDisplay || '');
 	}, [identity.fromDisplay]);
 	useEffect(() => {
 		const k = find(fromAddressArray, (item) => item.value === identity.fromAddress) ?? blankItem;
@@ -79,7 +79,7 @@ const SettingsSentMessages = ({
 		setReplyToDisplay(identity?.replyToDisplay === undefined ? '' : identity?.replyToDisplay);
 	}, [identity?.replyToDisplay]);
 	useEffect(() => {
-		setReplyToAddress(identity.replyToAddress);
+		setReplyToAddress(identity.replyToAddress || '');
 	}, [identity.replyToAddress]);
 
 	const onClickReplyToEnabled = useCallback(() => {
@@ -94,19 +94,13 @@ const SettingsSentMessages = ({
 		});
 	}, [identity.identityId, updateIdentities]);
 
-	const fromDisplayLabel = useMemo(
-		() => (fromDisplayValue ? '' : t('label.from_name', 'From: "Name"')),
-		[t, fromDisplayValue]
-	);
+	const fromDisplayLabel = useMemo(() => t('label.from_name', 'From: "Name"'), [t]);
 	const onChangeFromDisplayValue: InputProps['onChange'] = (e) => {
 		setFromDisplayValue(e.target.value);
 		updateIdentities(identity.identityId, 'zimbraPrefFromDisplay', e.target.value);
 	};
 
-	const fromAddressLabel = useMemo(
-		() => (fromAddress ? '' : t('label.address', 'Address')),
-		[fromAddress, t]
-	);
+	const fromAddressLabel = useMemo(() => t('label.address', 'Address'), [t]);
 
 	const onChangeFromAddress = useCallback<SingleSelectionOnChange>(
 		(newAddress) => {
@@ -129,8 +123,8 @@ const SettingsSentMessages = ({
 	);
 
 	const replyToDisplayLabel = useMemo(
-		() => (replyToDisplay ? '' : t('label.reply_to_field_example', 'e.g. Bob Smith')),
-		[t, replyToDisplay]
+		() => t('label.reply_to_field_example', 'e.g. Bob Smith'),
+		[t]
 	);
 	const onChangePrefReplyToDisplay = useCallback<NonNullable<InputProps['onChange']>>(
 		(e) => {
@@ -140,10 +134,7 @@ const SettingsSentMessages = ({
 		[updateIdentities, identity.identityId]
 	);
 
-	const replyToAddressLabel = useMemo(
-		() => (replyToAddress ? '' : t('label.choose_account', 'Choose an account')),
-		[t, replyToAddress]
-	);
+	const replyToAddressLabel = useMemo(() => t('label.choose_account', 'Choose an account'), [t]);
 
 	const onChangeReplyToAddress = useCallback(
 		(value: string) => {

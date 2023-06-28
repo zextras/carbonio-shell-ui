@@ -201,24 +201,20 @@ export const editSettings = (
 							? reduce(
 									mods?.identity?.modifyList,
 									(acc, { id, prefs }) => {
-										const tempResult = [];
 										const propIndex = findIndex(
 											acc,
 											(itemMods, indexAccount) => acc[indexAccount].id === id
 										);
 										if (propIndex > -1) {
-											forEach(Object.keys(prefs), (item, _index) => {
+											// eslint-disable-next-line no-param-reassign
+											acc[propIndex]._attrs = {
+												...acc[propIndex]._attrs,
+												...prefs
+											};
+											if (prefs.zimbraPrefIdentityName && acc[propIndex].name !== 'DEFAULT') {
 												// eslint-disable-next-line no-param-reassign
-												acc[propIndex]._attrs[item] = Object.values(prefs)[_index];
-												if (
-													item === 'zimbraPrefIdentityName' &&
-													acc[propIndex].name !== 'DEFAULT'
-												) {
-													// eslint-disable-next-line no-param-reassign
-													acc[propIndex].name = Object.values(prefs)[_index];
-												}
-											});
-											tempResult.push(prefs);
+												acc[propIndex].name = prefs.zimbraPrefIdentityName;
+											}
 										}
 										return acc;
 									},

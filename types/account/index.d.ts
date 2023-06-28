@@ -40,7 +40,7 @@ export type Account = {
 	name: string;
 	displayName: string;
 	signatures: { signature: Array<unknown> };
-	identities: any;
+	identities: { identity: Array<{ id: string; name?: string; _attrs?: Partial<IdentityAttrs> }> };
 	rights: AccountRights;
 };
 

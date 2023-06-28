@@ -47,6 +47,7 @@ const AccountsList = ({
 	const ListItem = ({ item }: ItemComponentProps<IdentityProps>): ReactElement => (
 		<>
 			<Container
+				data-testid={`account-list-item-${item.identityId}`}
 				onClick={(): void => {
 					changeView(Number(item.id));
 				}}

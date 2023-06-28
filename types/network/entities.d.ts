@@ -56,7 +56,7 @@ export interface Identity {
 	/** Identity name */
 	name?: string;
 	/** Identity ID */
-	id?: string;
+	id: string;
 	/** Attributes */
 	_attrs?: Partial<IdentityAttrs>;
 }

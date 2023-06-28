@@ -20,6 +20,7 @@ import {
 	filter,
 	size
 } from 'lodash';
+import { useTranslation } from 'react-i18next';
 import { useAccountStore, useUserSettings } from '../store/account';
 import type { Account, AccountSettings, ModifyIdentityRequest, IdentityProps } from '../../types';
 import AccountsList from './components/account-settings/accounts-list';
@@ -44,7 +45,6 @@ import SettingsHeader, { SettingsHeaderProps } from './components/settings-heade
 type AccountSettingsProps = {
 	account: Account;
 	identitiesDefault: IdentityProps[];
-	t: TFunction;
 };
 
 /**
@@ -97,9 +97,10 @@ type IdentityAttrsRecord<T extends string | number> = Record<T, Partial<Identity
 
 export const AccountsSettings = ({
 	account,
-	identitiesDefault,
-	t
+	identitiesDefault
 }: AccountSettingsProps): ReactElement => {
+	const [t] = useTranslation();
+
 	const [createList, setCreateList] = useState<NonNullable<IdentityAttrsRecord<number>>>({});
 	const [deleteList, setDeleteList] = useState<Array<string>>([]);
 	const [modifyList, setModifyList] = useState<NonNullable<IdentityAttrsRecord<string>>>({});

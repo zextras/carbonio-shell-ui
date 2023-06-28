@@ -186,20 +186,6 @@ export type TagActionResponse = {
 	_jsns: string;
 };
 
-type NameOrIdRequired =
-	| {
-			name?: never;
-			id: string;
-	  }
-	| {
-			name: string;
-			id?: never;
-	  }
-	| {
-			name: string;
-			id: string;
-	  };
-
 export type ModifyPrefsRequest = {
 	_jsns: NameSpace;
 	_attrs: AccountSettingsPrefs;

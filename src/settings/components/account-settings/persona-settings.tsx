@@ -21,10 +21,7 @@ interface PersonaSettingsProps {
 
 const PersonaSettings = ({ t, items, updateIdentities }: PersonaSettingsProps): ReactElement => {
 	const [personaValue, setPersonaValue] = useState(items.identityName);
-	const personaLabel = useMemo(
-		() => (personaValue ? '' : t('label.persona_name', 'Persona Name')),
-		[personaValue, t]
-	);
+	const personaLabel = useMemo(() => t('label.persona_name', 'Persona Name'), [t]);
 	useEffect(() => {
 		setPersonaValue(items.identityName);
 	}, [items.identityName]);

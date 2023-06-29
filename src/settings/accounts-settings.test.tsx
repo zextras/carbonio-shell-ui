@@ -495,6 +495,7 @@ describe('Account setting', () => {
 		expect(persona1Row).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
+        await screen.findByText('sendAs');
 		expect(persona1Row).not.toBeInTheDocument();
 	});
 

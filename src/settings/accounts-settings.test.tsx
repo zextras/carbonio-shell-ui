@@ -14,6 +14,7 @@ import { Account, BatchRequest, IdentityProps } from '../../types';
 import { AccountsSettings } from './accounts-settings';
 import { identityToIdentityProps } from './account-wrapper';
 import server, { waitForRequest } from '../mocks/server';
+import { useAccountStore } from '../store/account';
 
 jest.mock('../workers');
 
@@ -752,5 +753,233 @@ describe('Account setting', () => {
 		expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
 
 		expect(emailAddressInput).toHaveDisplayValue(defaultEmail);
+	});
+
+	describe('Delegates', () => {
+		// TODO waiting for radio component refactor to better find active radio
+		test.skip('The value received in the pref is the one checked in the UI', async () => {
+			useAccountStore.setState((previousState) => ({
+				...previousState,
+				settings: {
+					...previousState.settings,
+					prefs: { zimbraPrefDelegatedSendSaveTarget: 'owner' }
+				}
+			}));
+
+			const defaultFirstName = faker.person.firstName();
+			const defaultLastName = faker.person.lastName();
+			const defaultFullName = faker.person.fullName({
+				firstName: defaultFirstName,
+				lastName: defaultLastName
+			});
+			const defaultEmail = faker.internet.email({
+				firstName: defaultFirstName,
+				lastName: defaultLastName
+			});
+			const defaultId = faker.string.uuid();
+
+			const identitiesArray: Account['identities']['identity'] = [
+				{
+					id: defaultId,
+					name: 'DEFAULT',
+					_attrs: {
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefReplyToEnabled: 'FALSE',
+						zimbraPrefFromDisplay: defaultFirstName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefIdentityId: defaultId
+					}
+				}
+			];
+
+			const account: Account = {
+				name: defaultEmail,
+				rights: { targets: [] },
+				signatures: { signature: [] },
+				id: defaultId,
+				displayName: '',
+				identities: {
+					identity: identitiesArray
+				}
+			};
+
+			const identitiesDefault = map(identitiesArray, (item, index) =>
+				identityToIdentityProps(item, index)
+			);
+
+			identitiesDefault.unshift(identitiesDefault.pop() as IdentityProps);
+
+			const { user } = setup(
+				<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
+			);
+			await screen.findByText('sendAs');
+		});
+
+		test('When the value change, the save button and discard button becomes enabled', async () => {
+			useAccountStore.setState((previousState) => ({
+				...previousState,
+				settings: {
+					...previousState.settings,
+					prefs: { zimbraPrefDelegatedSendSaveTarget: 'owner' }
+				}
+			}));
+
+			const defaultFirstName = faker.person.firstName();
+			const defaultLastName = faker.person.lastName();
+			const defaultFullName = faker.person.fullName({
+				firstName: defaultFirstName,
+				lastName: defaultLastName
+			});
+			const defaultEmail = faker.internet.email({
+				firstName: defaultFirstName,
+				lastName: defaultLastName
+			});
+			const defaultId = faker.string.uuid();
+
+			const identitiesArray: Account['identities']['identity'] = [
+				{
+					id: defaultId,
+					name: 'DEFAULT',
+					_attrs: {
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefReplyToEnabled: 'FALSE',
+						zimbraPrefFromDisplay: defaultFirstName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefIdentityId: defaultId
+					}
+				}
+			];
+
+			const account: Account = {
+				name: defaultEmail,
+				rights: { targets: [] },
+				signatures: { signature: [] },
+				id: defaultId,
+				displayName: '',
+				identities: {
+					identity: identitiesArray
+				}
+			};
+
+			const identitiesDefault = map(identitiesArray, (item, index) =>
+				identityToIdentityProps(item, index)
+			);
+
+			identitiesDefault.unshift(identitiesDefault.pop() as IdentityProps);
+
+			const { user } = setup(
+				<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
+			);
+			await screen.findByText('sendAs');
+
+			expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+			expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
+
+			const senderOptionRow = screen.getByText(
+				'Save a copy of sent messages to delegate’s Sent folder'
+			);
+			await user.click(senderOptionRow);
+
+			expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+			expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
+		});
+
+		test('When the user change the value and click on save, the network request contains the new value', async () => {
+			useAccountStore.setState((previousState) => ({
+				...previousState,
+				settings: {
+					...previousState.settings,
+					prefs: { zimbraPrefDelegatedSendSaveTarget: 'owner' }
+				}
+			}));
+
+			const defaultFirstName = faker.person.firstName();
+			const defaultLastName = faker.person.lastName();
+			const defaultFullName = faker.person.fullName({
+				firstName: defaultFirstName,
+				lastName: defaultLastName
+			});
+			const defaultEmail = faker.internet.email({
+				firstName: defaultFirstName,
+				lastName: defaultLastName
+			});
+			const defaultId = faker.string.uuid();
+
+			const identitiesArray: Account['identities']['identity'] = [
+				{
+					id: defaultId,
+					name: 'DEFAULT',
+					_attrs: {
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefReplyToEnabled: 'FALSE',
+						zimbraPrefFromDisplay: defaultFirstName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefIdentityId: defaultId
+					}
+				}
+			];
+
+			const account: Account = {
+				name: defaultEmail,
+				rights: { targets: [] },
+				signatures: { signature: [] },
+				id: defaultId,
+				displayName: '',
+				identities: {
+					identity: identitiesArray
+				}
+			};
+
+			const identitiesDefault = map(identitiesArray, (item, index) =>
+				identityToIdentityProps(item, index)
+			);
+
+			identitiesDefault.unshift(identitiesDefault.pop() as IdentityProps);
+			server.use(
+				rest.post('/service/soap/BatchRequest', (req, res, ctx) =>
+					res(
+						ctx.json({
+							Body: {
+								BatchResponse: {
+									ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
+								}
+							}
+						})
+					)
+				)
+			);
+			const pendingBatchRequest = waitForRequest('POST', '/service/soap/BatchRequest');
+
+			const { user } = setup(
+				<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
+			);
+			await screen.findByText('sendAs');
+
+			expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+			expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
+
+			const senderOptionRow = screen.getByText(
+				'Save a copy of sent messages to delegate’s Sent folder'
+			);
+			await user.click(senderOptionRow);
+
+			expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+			expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
+
+			await user.click(screen.getByRole('button', { name: /save/i }));
+
+			const request = await pendingBatchRequest;
+			const requestBody = (request?.body as { Body: { BatchRequest: BatchRequest } }).Body;
+			expect(requestBody.BatchRequest.CreateIdentityRequest).toBeUndefined();
+			expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
+			expect(requestBody.BatchRequest.ModifyIdentityRequest).toBeUndefined();
+
+			expect(
+				requestBody.BatchRequest.ModifyPrefsRequest?._attrs.zimbraPrefDelegatedSendSaveTarget
+			).toBe('sender');
+
+			const successSnackbar = await screen.findByText('Edits saved correctly');
+			expect(successSnackbar).toBeVisible();
+		});
 	});
 });

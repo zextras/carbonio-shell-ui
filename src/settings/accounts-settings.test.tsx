@@ -311,6 +311,7 @@ describe('Account setting', () => {
 		await user.click(screen.getByRole('button', { name: /delete/i }));
 		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
 		await user.click(confirmButton);
+        await screen.findBytext('sendAs');
 		expect(persona1Row).not.toBeInTheDocument();
 	});
 

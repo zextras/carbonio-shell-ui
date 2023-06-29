@@ -144,13 +144,6 @@ export const SearchAppView = (): JSX.Element => {
 	return (
 		<Switch>
 			{routes}
-			{/*
-			 * FIXME: this is part of the cause of SHELL-46
-			 *    Every time the user clicks on the search module to navigate directly inside it,
-			 *	  a redirect is made to go to the fixed path /search/<first module>. But first module
-			 *    does not match the module written inside the module selector, which is not updated
-			 *    accordingly.
-			 */}
 			<Redirect
 				exact
 				strict

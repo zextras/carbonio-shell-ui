@@ -25,7 +25,7 @@ import type { Account, AccountSettings, ModifyIdentityRequest, IdentityProps } f
 import AccountsList from './components/account-settings/accounts-list';
 import PrimaryAccountSettings from './components/account-settings/primary-account-settings';
 import SettingsSentMessages from './components/account-settings/settings-sent-messages';
-import Delegates, { DelegatesProps } from './components/account-settings/delegates';
+import Delegates, { DelegateType, DelegatesProps } from './components/account-settings/delegates';
 import PersonaSettings from './components/account-settings/persona-settings';
 import {
 	BatchRequest,
@@ -38,7 +38,9 @@ import {
 	AccountState,
 	IdentityAttrs,
 	AccountSettingsPrefs,
-	ModifyPrefsRequest
+	ModifyPrefsRequest,
+	GetRightsRequest,
+	GetRightsResponse
 } from '../../types';
 import { getSoapFetch } from '../network/fetch';
 import { SHELL_APP_ID } from '../constants';
@@ -445,6 +447,39 @@ export const AccountsSettings = ({
 		delegatesSettingsSectionRef.current?.reset();
 		setSelectedIdentityId(size(identitiesDefault) - 1);
 	}, [identitiesDefault, resetLists]);
+
+	const [delegates, setDelegates] = useState<DelegateType[]>([]);
+
+	useEffect(() => {
+		getSoapFetch(SHELL_APP_ID)<GetRightsRequest, GetRightsResponse>('GetRights', {
+			_jsns: 'urn:zimbraAccount',
+			ace: [{ right: 'sendAs' }, { right: 'sendOnBehalfOf' }]
+		}).then((value) => {
+			if (value.ace) {
+				const { ace } = value;
+				const result = reduce(
+					ace,
+					(accumulator: Array<DelegateType>, item, idx) => {
+						const index = findIndex(accumulator, { email: item.d });
+						if (index === -1) {
+							accumulator.push({ email: item.d || '', right: item.right, id: idx.toString() });
+						} else {
+							accumulator.push({
+								email: item.d || '',
+								right: `${item.right} and ${accumulator[index].right}`,
+								id: idx.toString()
+							});
+							accumulator.splice(index, 1);
+						}
+						return accumulator;
+					},
+					[]
+				);
+				setDelegates(result);
+			}
+		});
+	}, []);
+
 	return (
 		<>
 			<SettingsHeader onSave={onSave} onCancel={onCancel} isDirty={isDirty} title={title} />
@@ -484,6 +519,7 @@ export const AccountsSettings = ({
 							updateDelegatedSendSaveTarget={updateDelegatedSendSaveTarget}
 							delegatedSendSaveTarget={settings.prefs.zimbraPrefDelegatedSendSaveTarget}
 							resetRef={delegatesSettingsSectionRef}
+							delegates={delegates}
 						/>
 					</>
 				)}

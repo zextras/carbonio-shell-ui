@@ -7,7 +7,7 @@ import React from 'react';
 import 'jest-styled-components';
 import { faker } from '@faker-js/faker';
 import { map } from 'lodash';
-import { screen, within } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import { rest } from 'msw';
 import { setup } from '../test/utils';
 import { Account, BatchRequest, IdentityProps } from '../../types';
@@ -20,10 +20,8 @@ jest.mock('../workers');
 
 describe('Account setting', () => {
 	test('Show primary identity inside the list', async () => {
-		const firstName = faker.person.firstName();
-		const lastName = faker.person.lastName();
-		const fullName = faker.person.fullName({ firstName, lastName });
-		const email = faker.internet.email({ firstName, lastName });
+		const fullName = faker.person.fullName();
+		const email = faker.internet.email();
 		const id = faker.string.uuid();
 
 		const identitiesArray = [
@@ -47,7 +45,7 @@ describe('Account setting', () => {
 			}
 		};
 
-		const { getAllByRoleWithIcon, user } = setup(
+		setup(
 			<AccountsSettings
 				account={account}
 				identitiesDefault={map(identitiesArray, (item, index) =>
@@ -381,28 +379,50 @@ describe('Account setting', () => {
 		await screen.findByText('sendAs');
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		const persona1Row = screen.getByText('New Persona 1');
-		expect(persona1Row).toBeVisible();
+		await waitFor(() =>
+			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
+				/new persona 1/i
+			)
+		);
+
+		const persona1 = 'New Persona 1';
+		const persona2 = 'New Persona 2';
+		const persona3 = 'New Persona 3';
+		expect(screen.getByText(persona1)).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		const persona2Row = screen.getByText('New Persona 2');
-		expect(persona2Row).toBeVisible();
+		await waitFor(() =>
+			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(persona2)
+		);
+		expect(screen.getByText(persona2)).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		const persona3Row = screen.getByText('New Persona 3');
-		expect(persona3Row).toBeVisible();
+		await waitFor(() =>
+			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(persona3)
+		);
+		expect(screen.getByText(persona3)).toBeVisible();
 
-		await user.click(persona1Row);
+		await user.click(screen.getByText(persona1));
+		await waitFor(() =>
+			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(persona1)
+		);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
 		let confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
 		await user.click(confirmButton);
-		expect(persona1Row).not.toBeInTheDocument();
+		await screen.findByText(/primary account settings/i);
+		expect(screen.queryByText(persona1)).not.toBeInTheDocument();
 
-		await user.click(persona2Row);
+		await user.click(screen.getByText(persona2));
+		await waitFor(() =>
+			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(persona2)
+		);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
 		confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
 		await user.click(confirmButton);
-		expect(persona2Row).not.toBeInTheDocument();
+		await screen.findByText(/primary account settings/i);
+		expect(screen.queryByText(persona2)).not.toBeInTheDocument();
+
+		await user.click(screen.getByRole('button', { name: /save/i }));
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 

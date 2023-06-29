@@ -16,7 +16,6 @@ import {
 	ModifyPropertiesRequest,
 	ModifyPropertiesResponse,
 	Mods,
-	NameSpace,
 	RemoveMod
 } from '../../types';
 import { useAccountStore, useUserSettings } from '../store/account';
@@ -144,7 +143,7 @@ const GeneralSettings = (): JSX.Element => {
 				ModifyPropertiesRequest: modifyPropertiesRequest,
 				ModifyPrefsRequest: modifyPrefsRequest
 			})
-				.then((res) => {
+				.then(() => {
 					useAccountStore.setState((s: AccountState) => ({
 						settings: {
 							...s.settings,

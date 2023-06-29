@@ -7,7 +7,7 @@ import React from 'react';
 import 'jest-styled-components';
 import { faker } from '@faker-js/faker';
 import { map } from 'lodash';
-import { screen, within } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import { rest } from 'msw';
 import { setup } from '../test/utils';
 import { Account, BatchRequest, IdentityProps } from '../../types';
@@ -19,10 +19,8 @@ jest.mock('../workers');
 
 describe('Account setting', () => {
 	test('Show primary identity inside the list', async () => {
-		const firstName = faker.person.firstName();
-		const lastName = faker.person.lastName();
-		const fullName = faker.person.fullName({ firstName, lastName });
-		const email = faker.internet.email({ firstName, lastName });
+		const fullName = faker.person.fullName();
+		const email = faker.internet.email();
 		const id = faker.string.uuid();
 
 		const identitiesArray = [
@@ -46,7 +44,7 @@ describe('Account setting', () => {
 			}
 		};
 
-		const { getAllByRoleWithIcon, user } = setup(
+		setup(
 			<AccountsSettings
 				account={account}
 				identitiesDefault={map(identitiesArray, (item, index) =>
@@ -311,7 +309,7 @@ describe('Account setting', () => {
 		await user.click(screen.getByRole('button', { name: /delete/i }));
 		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
 		await user.click(confirmButton);
-        await screen.findBytext('sendAs');
+		await screen.findByText('sendAs');
 		expect(persona1Row).not.toBeInTheDocument();
 	});
 
@@ -495,7 +493,7 @@ describe('Account setting', () => {
 		expect(persona1Row).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
-        await screen.findByText('sendAs');
+		await screen.findByText('sendAs');
 		expect(persona1Row).not.toBeInTheDocument();
 	});
 

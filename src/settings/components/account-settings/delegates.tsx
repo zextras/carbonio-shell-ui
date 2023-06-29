@@ -22,7 +22,7 @@ import { findIndex, noop, reduce } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { getSoapFetch } from '../../../network/fetch';
 import { SHELL_APP_ID } from '../../../constants';
-import { GetRightsRequest, GetRightsResponse, NameSpace } from '../../../../types';
+import { GetRightsRequest, GetRightsResponse } from '../../../../types';
 
 export interface DelegateType extends ItemType {
 	email: string;

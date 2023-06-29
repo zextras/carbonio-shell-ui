@@ -6,7 +6,6 @@
 
 import React, { useCallback, useMemo, useState, useEffect, ReactElement } from 'react';
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
-import type { TFunction } from 'i18next';
 import {
 	map,
 	find,

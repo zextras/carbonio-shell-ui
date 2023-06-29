@@ -309,7 +309,6 @@ describe('Account setting', () => {
 		await user.click(screen.getByRole('button', { name: /delete/i }));
 		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
 		await user.click(confirmButton);
-		await screen.findByText('sendAs');
 		expect(persona1Row).not.toBeInTheDocument();
 	});
 
@@ -410,7 +409,6 @@ describe('Account setting', () => {
 		let confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
 		await user.click(confirmButton);
 		await screen.findByText(/primary account settings/i);
-		await screen.findByText('sendAs');
 		expect(screen.queryByText(persona1)).not.toBeInTheDocument();
 
 		await user.click(screen.getByText(persona2));
@@ -421,7 +419,6 @@ describe('Account setting', () => {
 		confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
 		await user.click(confirmButton);
 		await screen.findByText(/primary account settings/i);
-		await screen.findByText('sendAs');
 		expect(screen.queryByText(persona2)).not.toBeInTheDocument();
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
@@ -493,7 +490,6 @@ describe('Account setting', () => {
 		expect(persona1Row).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
-		await screen.findByText('sendAs');
 		expect(persona1Row).not.toBeInTheDocument();
 	});
 

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
+import React, { ReactElement, useCallback, useState } from 'react';
 import {
 	Container,
 	Text,
@@ -18,11 +18,8 @@ import {
 	ItemType,
 	ItemComponentProps
 } from '@zextras/carbonio-design-system';
-import { findIndex, noop, reduce } from 'lodash';
+import { noop } from 'lodash';
 import { useTranslation } from 'react-i18next';
-import { getSoapFetch } from '../../../network/fetch';
-import { SHELL_APP_ID } from '../../../constants';
-import { GetRightsRequest, GetRightsResponse } from '../../../../types';
 
 export interface DelegateType extends ItemType {
 	email: string;
@@ -30,41 +27,14 @@ export interface DelegateType extends ItemType {
 	label?: string;
 }
 
-const Delegates = (): JSX.Element => {
+type DelegatesProps = {
+	delegates: DelegateType[];
+};
+
+const Delegates = ({ delegates }: DelegatesProps): JSX.Element => {
 	const [t] = useTranslation();
 
-	const [delegates, setDelegates] = useState<DelegateType[]>([]);
 	const [activeDelegate, setActiveDelegate] = useState<string>('0');
-
-	useEffect(() => {
-		getSoapFetch(SHELL_APP_ID)<GetRightsRequest, GetRightsResponse>('GetRights', {
-			_jsns: 'urn:zimbraAccount',
-			ace: [{ right: 'sendAs' }, { right: 'sendOnBehalfOf' }]
-		}).then((value) => {
-			if (value.ace) {
-				const { ace } = value;
-				const result = reduce(
-					ace,
-					(accumulator: Array<DelegateType>, item, idx) => {
-						const index = findIndex(accumulator, { email: item.d });
-						if (index === -1) {
-							accumulator.push({ email: item.d || '', right: item.right, id: idx.toString() });
-						} else {
-							accumulator.push({
-								email: item.d || '',
-								right: `${item.right} and ${accumulator[index].right}`,
-								id: idx.toString()
-							});
-							accumulator.splice(index, 1);
-						}
-						return accumulator;
-					},
-					[]
-				);
-				setDelegates(result);
-			}
-		});
-	}, []);
 
 	const [activeValue, setActiveValue] = useState('1');
 

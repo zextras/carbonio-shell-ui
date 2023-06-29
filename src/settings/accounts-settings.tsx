@@ -25,7 +25,7 @@ import type { Account, AccountSettings, ModifyIdentityRequest, IdentityProps } f
 import AccountsList from './components/account-settings/accounts-list';
 import PrimaryAccountSettings from './components/account-settings/primary-account-settings';
 import SettingsSentMessages from './components/account-settings/settings-sent-messages';
-import Delegates from './components/account-settings/delegates';
+import Delegates, { DelegateType } from './components/account-settings/delegates';
 import PersonaSettings from './components/account-settings/persona-settings';
 import {
 	BatchRequest,
@@ -35,7 +35,9 @@ import {
 	CreateIdentityRequest,
 	DeleteIdentityRequest,
 	AccountState,
-	IdentityAttrs
+	IdentityAttrs,
+	GetRightsRequest,
+	GetRightsResponse
 } from '../../types';
 import { getSoapFetch } from '../network/fetch';
 import { SHELL_APP_ID } from '../constants';
@@ -392,6 +394,39 @@ export const AccountsSettings = ({
 		() => getAvailableEmailAddresses(account, settings),
 		[account, settings]
 	);
+
+	const [delegates, setDelegates] = useState<DelegateType[]>([]);
+
+	useEffect(() => {
+		getSoapFetch(SHELL_APP_ID)<GetRightsRequest, GetRightsResponse>('GetRights', {
+			_jsns: 'urn:zimbraAccount',
+			ace: [{ right: 'sendAs' }, { right: 'sendOnBehalfOf' }]
+		}).then((value) => {
+			if (value.ace) {
+				const { ace } = value;
+				const result = reduce(
+					ace,
+					(accumulator: Array<DelegateType>, item, idx) => {
+						const index = findIndex(accumulator, { email: item.d });
+						if (index === -1) {
+							accumulator.push({ email: item.d || '', right: item.right, id: idx.toString() });
+						} else {
+							accumulator.push({
+								email: item.d || '',
+								right: `${item.right} and ${accumulator[index].right}`,
+								id: idx.toString()
+							});
+							accumulator.splice(index, 1);
+						}
+						return accumulator;
+					},
+					[]
+				);
+				setDelegates(result);
+			}
+		});
+	}, []);
+
 	return (
 		<>
 			<SettingsHeader onSave={onSave} onCancel={onCancel} isDirty={isDirty} title={title} />
@@ -427,7 +462,7 @@ export const AccountsSettings = ({
 							updateIdentities={updateIdentities}
 							availableEmailAddresses={availableEmailAddresses}
 						/>
-						<Delegates />
+						<Delegates delegates={delegates} />
 					</>
 				)}
 				{identities[selectedIdentityId]?.flgType === 'persona' && (

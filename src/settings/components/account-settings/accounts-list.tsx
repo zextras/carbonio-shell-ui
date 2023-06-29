@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, ReactElement, useState, useContext } from 'react';
+import React, { useCallback, ReactElement, useContext, useRef } from 'react';
 import {
 	Container,
 	Text,
@@ -47,6 +47,7 @@ const AccountsList = ({
 	const ListItem = ({ item }: ItemComponentProps<IdentityProps>): ReactElement => (
 		<>
 			<Container
+				data-testid={`account-list-item-${item.identityId}`}
 				onClick={(): void => {
 					changeView(Number(item.id));
 				}}
@@ -85,7 +86,7 @@ const AccountsList = ({
 
 	const createModal = useContext(ModalManagerContext);
 
-	const [createListrequestId, setCreateListrequestId] = useState(0);
+	const createListRequestIdRef = useRef(0);
 	const addNewPersona = useCallback(() => {
 		const newPersonaNextNumber =
 			Number(
@@ -109,23 +110,23 @@ const AccountsList = ({
 				id: `${identities.length}`,
 				flgType: 'persona',
 				type: t('label.persona', 'Persona'),
-				identityId: createListrequestId,
+				identityId: createListRequestIdRef.current,
 				fromAddress: identities[0]?.fromAddress,
 				identityName: newPersonaName,
 				fromDisplay: identities[0]?.fromDisplay,
 				replyToEnabled: 'FALSE'
 			}
 		]);
-		setCreateListrequestId(createListrequestId + 1);
-		addIdentity(createListrequestId, {
+		addIdentity(createListRequestIdRef.current, {
 			zimbraPrefIdentityName: newPersonaName,
 			zimbraPrefFromDisplay: identities[0]?.fromDisplay,
 			zimbraPrefFromAddress: identities[0]?.fromAddress,
 			zimbraPrefFromAddressType: 'sendAs',
 			zimbraPrefReplyToEnabled: 'FALSE'
 		});
+		createListRequestIdRef.current += 1;
 		setSelectedIdentityId(identities.length);
-	}, [identities, setIdentities, t, createListrequestId, addIdentity, setSelectedIdentityId]);
+	}, [identities, setIdentities, t, addIdentity, setSelectedIdentityId]);
 
 	const onConfirmDelete = useCallback((): void => {
 		const newIdentities = map(

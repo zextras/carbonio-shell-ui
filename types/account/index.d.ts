@@ -40,7 +40,7 @@ export type Account = {
 	name: string;
 	displayName: string;
 	signatures: { signature: Array<unknown> };
-	identities: any;
+	identities: { identity: Array<{ id: string; name?: string; _attrs?: Partial<IdentityAttrs> }> };
 	rights: AccountRights;
 };
 
@@ -65,6 +65,10 @@ type GenTimeObj = {
 export type GeneralizedTime =
 	`${GenTimeObj['year']}${GenTimeObj['month']}${GenTimeObj['date']}${GenTimeObj['hour']}${GenTimeObj['min']}${GenTimeObj['sec']}${GenTimeObj['ms']}${GenTimeObj['timezone']}`;
 
+export type DurationUnit = 'd' | 'h' | 'm' | 's' | 'ms';
+
+export type Duration = `${number}${DurationUnit | ''}`;
+
 export interface AccountSettingsPrefs {
 	zimbraPrefOutOfOfficeExternalReply?: string;
 	zimbraPrefOutOfOfficeReply?: string;
@@ -83,10 +87,10 @@ export interface AccountSettingsPrefs {
 	zimbraPrefHtmlEditorDefaultFontFamily?: string;
 	zimbraPrefHtmlEditorDefaultFontSize?: string;
 	zimbraPrefLocale?: string;
-	zimbraPrefMailPollingInterval?: string;
+	zimbraPrefMailPollingInterval?: Duration;
 	zimbraPrefMailTrustedSenderList?: Array<string> | string;
-	zimbraPrefTimeZoneId?: string;
 	zimbraPrefDelegatedSendSaveTarget?: 'owner' | 'sender' | 'both' | 'none';
+	zimbraPrefTimeZoneId?: Array<string> | string;
 	[key: string]: string | number | Array<string | number>;
 }
 
@@ -104,7 +108,7 @@ export type AccountSettings = {
 export interface IdentityAttrs {
 	/** default mail signature for account/identity/dataSource */
 	zimbraPrefDefaultSignatureId?: string;
-	zimbraPrefForwardReplyFormat?: string;
+	zimbraPrefForwardReplyFormat?: `'text' | 'html' | 'same'`;
 	/** forward/reply signature id for account/identity/dataSource */
 	zimbraPrefForwardReplySignatureId?: string;
 	/** email address to put in from header.  Deprecated on data source as of bug 67068. */
@@ -116,7 +120,7 @@ export interface IdentityAttrs {
 	zimbraPrefIdentityId?: string;
 	/** name of the identity */
 	zimbraPrefIdentityName?: string;
-	zimbraPrefMailSignatureStyle?: string;
+	zimbraPrefMailSignatureStyle?: 'outlook' | 'internet';
 	/** address to put in reply-to header */
 	zimbraPrefReplyToAddress?: string;
 	/** personal part of email address put in reply-to header */

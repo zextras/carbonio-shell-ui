@@ -53,13 +53,16 @@ const PersonaUseSection = ({
 		[t, whenSentToAddresses]
 	);
 	const onClickWhenSentToEnabled = useCallback(() => {
-		setWhenSentToEnabled(!whenSentToEnabled);
-		updateIdentities(
-			identity.identityId,
-			'zimbraPrefWhenSentToEnabled',
-			whenSentToEnabled ? 'FALSE' : 'TRUE'
-		);
-	}, [identity.identityId, updateIdentities, whenSentToEnabled]);
+		setWhenSentToEnabled((prevState) => {
+			const newState = !prevState;
+			updateIdentities(
+				identity.identityId,
+				'zimbraPrefWhenSentToEnabled',
+				newState ? 'TRUE' : 'FALSE'
+			);
+			return newState;
+		});
+	}, [identity.identityId, updateIdentities]);
 
 	const isValidEmail = useMemo(
 		() => whenSentToEnabled && !EMAIL_VALIDATION_REGEX.test(whenSentToAddresses || ''),

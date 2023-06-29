@@ -55,7 +55,7 @@ const Delegates = ({
 
 	useEffect(() => {
 		getSoapFetch(SHELL_APP_ID)<GetRightsRequest, GetRightsResponse>('GetRights', {
-			_jsns: NameSpace.ZimbraAccount,
+			_jsns: 'urn:zimbraAccount',
 			ace: [{ right: 'sendAs' }, { right: 'sendOnBehalfOf' }]
 		}).then((value) => {
 			if (value.ace) {
@@ -110,39 +110,42 @@ const Delegates = ({
 
 	useReset(resetRef, resetHandler);
 
-	const ListItem = ({ item }: ItemComponentProps<DelegateType>): ReactElement => (
-		<>
-			<Container
-				onClick={(): void => setActiveDelegate(item.id)}
-				orientation="horizontal"
-				mainAlignment="flex-start"
-				padding={{ all: 'small' }}
-			>
-				<Row width="fill" mainAlignment="space-between">
-					<Container orientation="horizontal" mainAlignment="flex-start" width="fit">
-						<Padding right="small">
+	const ListItem = ({ item }: ItemComponentProps<DelegateType>): ReactElement => {
+		const setActiveDelegateCallback = useCallback(() => setActiveDelegate(item.id), [item.id]);
+		return (
+			<>
+				<Container
+					onClick={setActiveDelegateCallback}
+					orientation="horizontal"
+					mainAlignment="flex-start"
+					padding={{ all: 'small' }}
+				>
+					<Row width="fill" mainAlignment="space-between">
+						<Container orientation="horizontal" mainAlignment="flex-start" width="fit">
+							<Padding right="small">
+								<Text weight="regular" size="small">
+									{item.label}
+								</Text>
+							</Padding>
+							<Padding right="small">
+								<Text weight="regular" size="small" color="secondary">
+									{item.email}
+								</Text>
+							</Padding>
+						</Container>
+						<Container width="fit" mainAlignment="flex-end">
 							<Text weight="regular" size="small">
-								{item.label}
+								{item.right}
 							</Text>
-						</Padding>
-						<Padding right="small">
-							<Text weight="regular" size="small" color="secondary">
-								{item.email}
-							</Text>
-						</Padding>
-					</Container>
-					<Container width="fit" mainAlignment="flex-end">
-						<Text weight="regular" size="small">
-							{item.right}
-						</Text>
-					</Container>
-				</Row>
+						</Container>
+					</Row>
 
-				<Row width="fit"></Row>
-			</Container>
-			<Divider />
-		</>
-	);
+					<Row width="fit"></Row>
+				</Container>
+				<Divider />
+			</>
+		);
+	};
 
 	return (
 		<>

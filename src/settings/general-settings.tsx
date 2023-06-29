@@ -116,7 +116,7 @@ const GeneralSettings = (): JSX.Element => {
 						_content: prop.value
 					})
 				);
-				modifyPropertiesRequest = { _jsns: NameSpace.ZimbraAccount, prop: mappedProperties };
+				modifyPropertiesRequest = { _jsns: 'urn:zimbraAccount', prop: mappedProperties };
 			}
 
 			let modifyPrefsRequest: ModifyPrefsRequest | undefined;
@@ -130,7 +130,7 @@ const GeneralSettings = (): JSX.Element => {
 							? ''
 							: attrs.zimbraPrefMailTrustedSenderList;
 				}
-				modifyPrefsRequest = { _jsns: NameSpace.ZimbraAccount, _attrs: attrs };
+				modifyPrefsRequest = { _jsns: 'urn:zimbraAccount', _attrs: attrs };
 			}
 
 			const promise = getSoapFetch(SHELL_APP_ID)<
@@ -140,7 +140,7 @@ const GeneralSettings = (): JSX.Element => {
 					ModifyPrefsResponse?: ModifyPrefsResponse;
 				}
 			>('Batch', {
-				_jsns: NameSpace.Zimbra,
+				_jsns: 'urn:zimbra',
 				ModifyPropertiesRequest: modifyPropertiesRequest,
 				ModifyPrefsRequest: modifyPrefsRequest
 			})

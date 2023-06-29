@@ -10,7 +10,7 @@ import { Accordion, Collapse, Container, Padding } from '@zextras/carbonio-desig
 import { useHistory } from 'react-router-dom';
 import { AppRoute, SecondaryBarComponentProps } from '../../types';
 import { useAppStore } from '../store/app';
-import AppContextProvider from '../boot/app/app-context-provider';
+import { AppContextProvider } from '../boot/app/app-context-provider';
 import { getCurrentRoute } from '../history/hooks';
 
 type SidebarComponentProps = {

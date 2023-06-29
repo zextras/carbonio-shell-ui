@@ -12,7 +12,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useAppStore } from '../store/app';
 import { AppRoute, PrimaryAccessoryView, PrimaryBarView } from '../../types';
 import BadgeWrap from './badge-wrap';
-import AppContextProvider from '../boot/app/app-context-provider';
+import { AppContextProvider } from '../boot/app/app-context-provider';
 import { checkRoute } from '../utility-bar/utils';
 import { BOARD_CONTAINER_ZINDEX, IS_STANDALONE, PRIMARY_BAR_WIDTH } from '../constants';
 import { minimizeBoards, reopenBoards, useBoardStore } from '../store/boards';

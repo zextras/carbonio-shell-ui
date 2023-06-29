@@ -15,7 +15,7 @@ const StyledLogo = styled(Logo)`
 	fill: #a3aebc;
 	width: 50%;
 `;
-const LoadingView = (): JSX.Element => (
+export const LoadingView = (): JSX.Element => (
 	<div className="splash">
 		<Helmet fill="#A3AEBC" />
 		<div className="loader">
@@ -24,4 +24,3 @@ const LoadingView = (): JSX.Element => (
 		<StyledLogo />
 	</div>
 );
-export default LoadingView;

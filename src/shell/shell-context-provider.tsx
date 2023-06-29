@@ -12,7 +12,7 @@ interface ShellContextProviderProps {
 	children: React.ReactNode;
 }
 
-const ShellContextProvider = ({ children }: ShellContextProviderProps): JSX.Element => {
+export const ShellContextProvider = ({ children }: ShellContextProviderProps): JSX.Element => {
 	const screenMode = useScreenMode();
 
 	const value = useMemo(
@@ -24,5 +24,3 @@ const ShellContextProvider = ({ children }: ShellContextProviderProps): JSX.Elem
 
 	return <ShellContext.Provider value={value}>{children}</ShellContext.Provider>;
 };
-
-export default ShellContextProvider;

@@ -9,7 +9,7 @@
 import './index.css';
 import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom';
-import LoadingView from './boot/splash';
+import { LoadingView } from './boot/splash';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';

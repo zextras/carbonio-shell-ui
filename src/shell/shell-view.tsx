@@ -6,7 +6,7 @@
 
 import { Row } from '@zextras/carbonio-design-system';
 import { PreviewManager } from '@zextras/carbonio-ui-preview';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 import { IS_STANDALONE } from '../constants';
@@ -16,11 +16,14 @@ import { useAccountStore } from '../store/account';
 import { ShellUtilityBar } from '../utility-bar/bar';
 import AppViewContainer from './app-view-container';
 import { BoardContainer } from './boards/board-container';
-import ShellContextProvider from './shell-context-provider';
+import { ShellContextProvider } from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
 import { useDarkReaderResultValue } from '../dark-mode/use-dark-reader-result-value';
 import { ShellUtilityPanel } from '../utility-bar/panel';
+import { useNotificationPermissionChecker } from '../notification/use-notification-permission-checker';
+import { useContextBridge } from '../boot/use-context-bridge';
+import { useDefaultViews } from '../boot/use-default-views';
 
 const Background = styled.div`
 	background: ${({ theme }): string => theme.palette.gray6.regular};
@@ -34,7 +37,7 @@ const Background = styled.div`
 	max-width: 100%;
 `;
 
-function DarkReaderListener(): null {
+const useDarkReaderListener = (): void => {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
 	const darkReaderResultValue = useDarkReaderResultValue();
 	useEffect(() => {
@@ -42,8 +45,7 @@ function DarkReaderListener(): null {
 			setDarkReaderState(darkReaderResultValue);
 		}
 	}, [darkReaderResultValue, setDarkReaderState]);
-	return null;
-}
+};
 
 const useLoginRedirection = (allowUnauthenticated?: boolean): void => {
 	const auth = useAccountStore((s) => s.authenticated);
@@ -65,9 +67,9 @@ const ShellComponent = ({
 }: ShellComponentProps): JSX.Element => {
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
 	useLoginRedirection(allowUnauthenticated);
+
 	return (
 		<Background>
-			<DarkReaderListener />
 			{/* <MainAppRerouter /> */}
 			{!(IS_STANDALONE && hideShellHeader) && (
 				<ShellHeader
@@ -89,10 +91,22 @@ const ShellComponent = ({
 
 const MemoShell = React.memo(ShellComponent);
 
-const ShellView = (): JSX.Element => {
+export const ShellView = (): JSX.Element => {
 	const activeRoute = useCurrentRoute();
-	const allowUnauthenticated = activeRoute?.standalone?.allowUnauthenticated;
-	const hideShellHeader = activeRoute?.standalone?.hideShellHeader;
+	const allowUnauthenticated = useMemo(
+		() => activeRoute?.standalone?.allowUnauthenticated,
+		[activeRoute?.standalone?.allowUnauthenticated]
+	);
+	const hideShellHeader = useMemo(
+		() => activeRoute?.standalone?.hideShellHeader,
+		[activeRoute?.standalone?.hideShellHeader]
+	);
+
+	useNotificationPermissionChecker();
+	useContextBridge();
+	useDefaultViews();
+	useDarkReaderListener();
+
 	return (
 		<ShellContextProvider>
 			<PreviewManager>
@@ -101,5 +115,3 @@ const ShellView = (): JSX.Element => {
 		</ShellContextProvider>
 	);
 };
-
-export default ShellView;

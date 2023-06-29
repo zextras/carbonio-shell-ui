@@ -33,7 +33,8 @@ const supportedLocalesDateFns = [
 	'th',
 	'tr',
 	'vi',
-	'zh-CN'
+	'zh-CN',
+	'ar'
 	/* TODO: For future languages
 	 * 'ar','bg','ca','da','en-AU','en-GB','eu','fr-CA','hr','hu','ko','ms','sl','sv','ta','uk','zh-HK','zh-TW'
 	 */

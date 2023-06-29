@@ -4,20 +4,22 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, Suspense, useMemo } from 'react';
+import React, { Suspense, useMemo } from 'react';
 import { map } from 'lodash';
 import { useAppStore } from '../../store/app';
-import AppContextProvider from './app-context-provider';
+import { AppContextProvider } from './app-context-provider';
+import { LoadingView } from '../splash';
 
-const Mounter: FC<{ appId: string }> = ({ children, appId }) => (
+type MounterProps = { appId: string; children?: React.ReactNode | undefined };
+const Mounter = ({ children, appId }: MounterProps): JSX.Element => (
 	<div key={appId} id={appId}>
-		<AppContextProvider key={appId} pkg={appId}>
-			<Suspense fallback={''}>{children}</Suspense>
+		<AppContextProvider pkg={appId}>
+			<Suspense fallback={<LoadingView />}>{children}</Suspense>
 		</AppContextProvider>
 	</div>
 );
 
-const AppLoaderMounter: FC = () => {
+export const AppLoaderMounter = (): JSX.Element => {
 	const entryPoints = useAppStore((s) => s.entryPoints);
 	const entries = useMemo(
 		() =>
@@ -40,5 +42,3 @@ const AppLoaderMounter: FC = () => {
 		</div>
 	);
 };
-
-export default AppLoaderMounter;

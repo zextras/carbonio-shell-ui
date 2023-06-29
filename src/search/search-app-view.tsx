@@ -17,7 +17,7 @@ import { map } from 'lodash';
 import React, { useCallback, useMemo } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { type SearchState } from '../../types';
-import AppContextProvider from '../boot/app/app-context-provider';
+import { AppContextProvider } from '../boot/app/app-context-provider';
 import { ResultLabelType, SEARCH_APP_ID } from '../constants';
 import { useAppStore } from '../store/app';
 import { getT } from '../store/i18n';

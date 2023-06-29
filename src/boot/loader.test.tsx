@@ -9,11 +9,11 @@ import React from 'react';
 import server from '../mocks/server';
 import { getComponentsJson, GetComponentsJsonResponseBody } from '../mocks/handlers/components';
 import { setup } from '../test/utils';
-import { Loader } from './loader';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
 import { LoginConfigStore } from '../../types/loginConfig';
 import { getLoginConfig } from '../mocks/handlers/login-config';
 import { getInfoRequest } from '../mocks/handlers/getInfoRequest';
+import { Loader } from './loader';
 
 jest.mock('../workers');
 jest.mock('../reporting/functions');

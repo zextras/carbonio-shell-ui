@@ -4,80 +4,72 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useEffect } from 'react';
-import { BrowserRouter, Route, Switch, useHistory, useParams } from 'react-router-dom';
-import {
-	ModalManager,
-	SnackbarManager,
-	useModal,
-	useSnackbar
-} from '@zextras/carbonio-design-system';
-import { useTranslation } from 'react-i18next';
-import ShellI18nextProvider from './shell-i18n-provider';
-import { ThemeProvider } from './theme-provider';
-import { BASENAME, IS_STANDALONE } from '../constants';
-import { Loader } from './loader';
-import { NotificationPermissionChecker } from '../notification/NotificationPermissionChecker';
-import AppLoaderMounter from './app/app-loader-mounter';
-import ShellView from '../shell/shell-view';
-import { useBridge } from '../store/context-bridge';
+import React, { useCallback, useEffect, useState } from 'react';
+import { find } from 'lodash';
+import { IS_STANDALONE } from '../constants';
+import { AppLoaderMounter } from './app/app-loader-mounter';
+import { ShellView } from '../shell/shell-view';
 import { useAppStore } from '../store/app';
-import { registerDefaultViews } from './app/default-views';
+import { loginConfig } from '../network/login-config';
+import { getComponents } from '../network/get-components';
+import { getInfo } from '../network/get-info';
+import { loadApps, unloadAllApps } from './app/load-apps';
+import { GlobalProvidersWrapper } from './global-providers-wrapper';
+import { Standalone } from './standalone';
+import { LoaderFailureModal } from './loader';
 
-const ContextBridge = (): null => {
-	const history = useHistory();
-	const createSnackbar = useSnackbar();
-	const createModal = useModal();
-	useBridge({
-		functions: {
-			getHistory: () => history,
-			createSnackbar,
-			createModal
-		}
-	});
-	return null;
-};
+export function isPromiseRejectedResult<T>(
+	promiseSettledResult: PromiseSettledResult<T>
+): promiseSettledResult is PromiseRejectedResult {
+	return promiseSettledResult.status === 'rejected';
+}
 
-const StandaloneListener = (): null => {
-	const { route } = useParams<{ route?: string }>();
+export function isPromiseFulfilledResult<T>(
+	promiseSettledResult: PromiseSettledResult<T>
+): promiseSettledResult is PromiseFulfilledResult<T> {
+	return promiseSettledResult.status === 'fulfilled';
+}
+
+const Bootstrapper = (): JSX.Element => {
+	const [open, setOpen] = useState(false);
+	const closeHandler = useCallback(() => setOpen(false), []);
+
 	useEffect(() => {
-		if (route) useAppStore.setState({ standalone: route });
-	}, [route]);
-	return null;
-};
+		Promise.allSettled([loginConfig(), getComponents(), getInfo()]).then(
+			(promiseSettledResultArray) => {
+				const [, getComponentsPromiseSettledResult, getInfoPromiseSettledResult] =
+					promiseSettledResultArray;
 
-const DefaultViewsRegister = (): null => {
-	const [t] = useTranslation();
-	useEffect(() => {
-		registerDefaultViews(t);
-	}, [t]);
-	return null;
-};
+				const promiseRejectedResult = find(
+					[getComponentsPromiseSettledResult, getInfoPromiseSettledResult],
+					isPromiseRejectedResult
+				);
+				if (promiseRejectedResult) {
+					if (typeof promiseRejectedResult.reason === 'string') {
+						console.error(promiseRejectedResult.reason);
+					} else if ('message' in promiseRejectedResult.reason) {
+						console.error(promiseRejectedResult.reason.message);
+					}
+					setOpen(true);
+				}
+				if (isPromiseFulfilledResult(getComponentsPromiseSettledResult)) {
+					loadApps(Object.values(useAppStore.getState().apps));
+				}
+			}
+		);
+		return (): void => {
+			unloadAllApps();
+		};
+	}, []);
 
-const Bootstrapper: FC = () => (
-	<ThemeProvider>
-		<ShellI18nextProvider>
-			<BrowserRouter basename={BASENAME}>
-				<SnackbarManager>
-					<ModalManager>
-						<Loader />
-						{IS_STANDALONE && (
-							<Switch>
-								<Route path={'/:route'}>
-									<StandaloneListener />
-								</Route>
-							</Switch>
-						)}
-						<DefaultViewsRegister />
-						<NotificationPermissionChecker />
-						<ContextBridge />
-						<AppLoaderMounter />
-						<ShellView />
-					</ModalManager>
-				</SnackbarManager>
-			</BrowserRouter>
-		</ShellI18nextProvider>
-	</ThemeProvider>
-);
+	return (
+		<GlobalProvidersWrapper>
+			<LoaderFailureModal open={open} closeHandler={closeHandler} />
+			{IS_STANDALONE && <Standalone />}
+			<AppLoaderMounter />
+			<ShellView />
+		</GlobalProvidersWrapper>
+	);
+};
 
 export default Bootstrapper;

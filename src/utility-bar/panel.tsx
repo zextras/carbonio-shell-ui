@@ -7,7 +7,7 @@ import React, { FC, useEffect, useMemo } from 'react';
 import { Container, Responsive } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 import styled from 'styled-components';
-import AppContextProvider from '../boot/app/app-context-provider';
+import { AppContextProvider } from '../boot/app/app-context-provider';
 import { useUtilityViews } from './utils';
 import { useUtilityBarStore } from './store';
 

@@ -8,7 +8,7 @@ import React, { FC, useMemo } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { map } from 'lodash';
 import { SETTINGS_APP_ID } from '../constants';
-import AppContextProvider from '../boot/app/app-context-provider';
+import { AppContextProvider } from '../boot/app/app-context-provider';
 import { useAppStore } from '../store/app';
 
 export const SettingsAppView: FC = () => {

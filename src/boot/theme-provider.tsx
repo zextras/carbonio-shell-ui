@@ -20,6 +20,7 @@ import {
 import { auto, disable, enable, setFetchMethod } from 'darkreader';
 import { map, reduce } from 'lodash';
 import { createGlobalStyle, css, DefaultTheme, SimpleInterpolation } from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import { DarkReaderPropValues, ThemeExtension } from '../../types';
 import { darkReaderDynamicThemeFixes, LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
 import { ScalingSettings } from '../../types/settings';
@@ -119,6 +120,7 @@ interface ThemeProviderProps {
 	children?: React.ReactNode | React.ReactNode[];
 }
 export const ThemeProvider = ({ children }: ThemeProviderProps): JSX.Element => {
+	const { i18n } = useTranslation();
 	const [localStorageSettings] = useLocalStorage<ScalingSettings>(LOCAL_STORAGE_SETTINGS_KEY, {});
 
 	const [extensions, setExtensions] = useState<Partial<Record<keyof DefaultTheme, ThemeExtension>>>(
@@ -203,7 +205,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps): JSX.Element => 
 	);
 
 	return (
-		<UIThemeProvider extension={aggregatedExtensions}>
+		<UIThemeProvider extension={aggregatedExtensions} direction={i18n.dir(i18n.language)}>
 			<ThemeCallbacksContext.Provider value={themeCallbacksContextValue}>
 				<GlobalStyle baseFontSize={baseFontSize} />
 				{children}

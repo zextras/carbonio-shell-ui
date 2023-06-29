@@ -129,6 +129,7 @@
     },
     "locale": {
         "English": "English",
+        "arabic": "Arabic",
         "chinese_china": "Chinese (China)",
         "dutch": "Dutch",
         "french": "French",
@@ -136,6 +137,7 @@
         "hindi": "Hindi",
         "italian": "Italian",
         "japanese": "Japanese",
+        "label_arabic": "Arabic - {{value}}",
         "label_chinese": "Chinese (China) - {{value}}",
         "label_dutch": "Dutch - {{value}}",
         "label_english": "English - {{value}}",

@@ -9,7 +9,7 @@ import { Route, Router, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { find, startsWith } from 'lodash';
 import { createMemoryHistory } from 'history';
-import AppContextProvider from '../../boot/app/app-context-provider';
+import { AppContextProvider } from '../../boot/app/app-context-provider';
 import { useAppStore } from '../../store/app';
 import { BoardProvider, updateBoard, useBoardStore } from '../../store/boards';
 import { Board } from '../../../types';

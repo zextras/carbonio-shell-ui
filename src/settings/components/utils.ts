@@ -173,6 +173,13 @@ export const localeList = (t: TFunction): Array<LocaleDescriptor> => [
 		localName: t('locale.vietnamese', 'Vietnamese'),
 		label: 'Vietnamese - Tiếng Việt',
 		value: 'vi'
+	},
+	{
+		id: 'ar',
+		name: 'العربية',
+		localName: t('locale.arabic', 'Arabic'),
+		label: t('locale.label_arabic', { value: 'لعربية', defaultValue: 'Arabic - {{value}}' }),
+		value: 'ar'
 	}
 ];
 // TODO: For future languages

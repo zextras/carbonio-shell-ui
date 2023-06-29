@@ -4,13 +4,26 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC } from 'react';
+import React, { useEffect } from 'react';
+
 import { I18nextProvider } from 'react-i18next';
+
 import { SHELL_APP_ID } from '../constants';
 import { useI18nStore } from '../store/i18n';
 
-const ShellI18nextProvider: FC = ({ children }) => {
+export const ShellI18nextProvider = ({
+	children
+}: {
+	children?: React.ReactNode | undefined;
+}): JSX.Element => {
 	const i18n = useI18nStore((s) => s.instances[SHELL_APP_ID]);
+	const locale = useI18nStore((s) => s.locale);
+
+	useEffect(() => {
+		if (i18n && locale) {
+			document.dir = i18n.dir(locale);
+		}
+	}, [i18n, locale]);
+
 	return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
 };
-export default ShellI18nextProvider;

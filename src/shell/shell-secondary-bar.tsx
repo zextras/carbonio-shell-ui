@@ -10,7 +10,7 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 import { AppRoute } from '../../types';
-import AppContextProvider from '../boot/app/app-context-provider';
+import { AppContextProvider } from '../boot/app/app-context-provider';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppStore } from '../store/app';
 import { useUtilityBarStore } from '../utility-bar/store';

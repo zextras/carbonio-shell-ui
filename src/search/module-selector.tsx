@@ -89,6 +89,7 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): JSX.Element | nu
 	return (
 		<Dropdown items={dropdownItems} onOpen={openDropdown} onClose={closeDropdown}>
 			<SelectorContainer
+				data-testid="HeaderModuleSelector"
 				orientation="horizontal"
 				height="2.625rem"
 				width="fit"

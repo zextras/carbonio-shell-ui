@@ -60,12 +60,6 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): JSX.Element | nu
 	);
 
 	useEffect(() => {
-		// FIXME: this is part of the cause of SHELL-46
-		//    When the user click on the search module directly, the app results to be the search one,
-		//    and so the selected module, which is kept to the last one selected, does not match the module
-		//    written inside the path (/search/<module>), causing a misalignment between what is rendered (which
-		//    follow the path) and what is written inside the module selector (which updates its value based on the
-		//    module where the user is coming from)
 		if (app !== SEARCH_APP_ID) {
 			if (!fullModule || fullModule?.app !== app) {
 				updateModule((modules.find((m) => m.app === app) ?? modules[0])?.route);

@@ -208,9 +208,9 @@ describe('out of office time period section', () => {
 			/>
 		);
 		const untilDateInput = screen.getByRole('textbox', { name: /end date/i });
-		const firstOfNextMonth = new Date(fromDate);
+		const firstOfNextMonth = new Date(untilDate);
 		firstOfNextMonth.setDate(1);
-		firstOfNextMonth.setMonth(fromDate.getMonth() + 1);
+		firstOfNextMonth.setMonth(untilDate.getMonth() + 1);
 		await user.click(untilDateInput);
 		await user.click(screen.getByRole('button', { name: /next month/i }));
 		await user.click(
@@ -238,9 +238,9 @@ describe('out of office time period section', () => {
 			</>
 		);
 		const untilDateInput = screen.getByRole('textbox', { name: /end date/i });
-		const firstOfNextMonth = new Date(fromDate);
+		const firstOfNextMonth = new Date(untilDate);
 		firstOfNextMonth.setDate(1);
-		firstOfNextMonth.setMonth(fromDate.getMonth() + 1);
+		firstOfNextMonth.setMonth(untilDate.getMonth() + 1);
 		await user.clear(untilDateInput);
 		await user.type(untilDateInput, format(firstOfNextMonth, 'P'));
 		await user.click(screen.getByText(/click to blur/i));

@@ -21,7 +21,7 @@ import {
 import { useAccountStore, useUserSettings } from '../store/account';
 import { getT } from '../store/i18n';
 import AppearanceSettings from './components/general-settings/appearance-settings';
-import Logout from './components/general-settings/logout';
+import { Logout } from './components/general-settings/logout';
 import ModuleVersionSettings from './components/general-settings/module-version-settings';
 import { OutOfOfficeSettings } from './components/general-settings/out-of-office-settings';
 import UserQuota from './components/general-settings/user-quota';

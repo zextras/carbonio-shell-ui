@@ -12,7 +12,7 @@ import { useAppStore } from '../store/app';
 import { getInfo } from '../network/get-info';
 import { loadApps, unloadAllApps } from './app/load-apps';
 import { loginConfig } from '../network/login-config';
-import { goToLogin } from '../network/go-to-login';
+import { goToLogin } from '../network/utils';
 import { getComponents } from '../network/get-components';
 
 export function isPromiseRejectedResult<T>(

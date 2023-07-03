@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 import { IS_STANDALONE } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
-import { goToLogin } from '../network/go-to-login';
+import { goToLogin } from '../network/utils';
 import { useAccountStore } from '../store/account';
 import { ShellUtilityBar } from '../utility-bar/bar';
 import AppViewContainer from './app-view-container';

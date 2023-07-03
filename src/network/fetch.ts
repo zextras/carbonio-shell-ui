@@ -5,7 +5,7 @@
  */
 
 import { find, map, maxBy } from 'lodash';
-import { goToLogin } from './go-to-login';
+import { goToLogin } from './utils';
 import {
 	Account,
 	ErrorSoapBodyResponse,

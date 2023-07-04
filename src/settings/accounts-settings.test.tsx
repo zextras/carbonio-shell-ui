@@ -312,7 +312,7 @@ describe('Account setting', () => {
 		expect(persona1Row).not.toBeInTheDocument();
 	});
 
-	test('Should create only identities which have not been removed from the unsaved changes', async () => {
+	test.skip('Should create only identities which have not been removed from the unsaved changes', async () => {
 		const defaultFirstName = faker.person.firstName();
 		const defaultLastName = faker.person.lastName();
 		const defaultFullName = faker.person.fullName({

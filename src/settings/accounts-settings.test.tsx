@@ -13,7 +13,7 @@ import { setup } from '../test/utils';
 import { Account, BatchRequest, IdentityProps } from '../../types';
 import { AccountsSettings } from './accounts-settings';
 import { identityToIdentityProps } from './account-wrapper';
-import server, { waitForRequest } from '../mocks/server';
+import server, { waitForRequest, waitForResponse } from '../mocks/server';
 
 jest.mock('../workers');
 
@@ -371,6 +371,7 @@ describe('Account setting', () => {
 		);
 
 		const pendingBatchRequest = waitForRequest('POST', '/service/soap/BatchRequest');
+		const pendingBatchResponse = waitForResponse('POST', '/service/soap/BatchRequest');
 
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
@@ -423,9 +424,8 @@ describe('Account setting', () => {
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
-		await user.click(screen.getByRole('button', { name: /save/i }));
-
 		const request = await pendingBatchRequest;
+		await pendingBatchResponse;
 
 		const requestBody = (request?.body as { Body: { BatchRequest: BatchRequest } }).Body;
 		expect(requestBody.BatchRequest.CreateIdentityRequest).toHaveLength(1);

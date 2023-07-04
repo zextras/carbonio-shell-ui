@@ -14,7 +14,12 @@ import { AppRoute, PrimaryAccessoryView, PrimaryBarView } from '../../types';
 import BadgeWrap from './badge-wrap';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { checkRoute } from '../utility-bar/utils';
-import { BOARD_CONTAINER_ZINDEX, IS_STANDALONE, PRIMARY_BAR_WIDTH } from '../constants';
+import {
+	BOARD_CONTAINER_ZINDEX,
+	IS_STANDALONE,
+	PRIMARY_BAR_WIDTH,
+	SEARCH_APP_ID
+} from '../constants';
 import { minimizeBoards, reopenBoards, useBoardStore } from '../store/boards';
 import { useCurrentRoute } from '../history/hooks';
 
@@ -113,7 +118,7 @@ const ShellPrimaryBarComponent = ({
 	}, [primaryBarViews]);
 
 	useEffect(() => {
-		if (activeRoute) {
+		if (activeRoute && activeRoute.id !== SEARCH_APP_ID) {
 			routesRef.current = {
 				...routesRef.current,
 				[activeRoute.id]: `${trim(pathname, '/')}${search}`

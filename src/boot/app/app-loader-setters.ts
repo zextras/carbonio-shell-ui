@@ -83,6 +83,7 @@ export const getAppSetters = (pkg: CarbonioModule): Record<string, Function> => 
 		removeActions: integrations.removeActions,
 		registerComponents: integrations.registerComponents(pkg.name),
 		removeComponents: integrations.removeComponents,
+		/** @deprecated */
 		editSettings: getEditSettingsForApp(pkg.name)
 	};
 };

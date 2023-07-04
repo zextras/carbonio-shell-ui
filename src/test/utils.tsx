@@ -23,10 +23,10 @@ import i18next, { type i18n } from 'i18next';
 import { filter } from 'lodash';
 import { I18nextProvider } from 'react-i18next';
 import { MemoryRouter } from 'react-router-dom';
-
+import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import { ThemeProvider } from '../boot/theme-provider';
 
-export type UserEvent = ReturnType<(typeof userEvent)['setup']> & {
+export type UserEvent = ReturnType<typeof userEvent['setup']> & {
 	readonly rightClick: (target: Element) => Promise<void>;
 };
 
@@ -112,7 +112,11 @@ const Wrapper = ({ initialRouterEntries, children }: WrapperProps): JSX.Element 
 		initialIndex={(initialRouterEntries?.length || 1) - 1}
 	>
 		<I18NextTestProvider>
-			<ThemeProvider>{children}</ThemeProvider>
+			<ThemeProvider>
+				<SnackbarManager>
+					<ModalManager>{children}</ModalManager>
+				</SnackbarManager>
+			</ThemeProvider>
 		</I18NextTestProvider>
 	</MemoryRouter>
 );
@@ -137,7 +141,7 @@ function customRender(
 
 type SetupOptions = Pick<WrapperProps, 'initialRouterEntries'> & {
 	renderOptions?: Omit<RenderOptions, 'queries'>;
-	setupOptions?: Parameters<(typeof userEvent)['setup']>[0];
+	setupOptions?: Parameters<typeof userEvent['setup']>[0];
 };
 
 const setupUserEvent = (options: SetupOptions['setupOptions']): UserEvent => {

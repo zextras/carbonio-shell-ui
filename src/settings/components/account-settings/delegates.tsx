@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { ReactElement, useState } from 'react';
-
+import React, { ReactElement, useCallback, useState } from 'react';
 import {
 	Container,
 	Text,
@@ -19,8 +18,8 @@ import {
 	ItemType,
 	ItemComponentProps
 } from '@zextras/carbonio-design-system';
-import { TFunction } from 'i18next';
 import { noop } from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 export interface DelegateType extends ItemType {
 	email: string;
@@ -29,55 +28,52 @@ export interface DelegateType extends ItemType {
 }
 
 type DelegatesProps = {
-	t: TFunction;
-	items: Array<DelegateType>;
-	activeDelegateView: string;
-	setActiveDelegateView: (value: string) => void;
+	delegates: DelegateType[];
 };
 
-const Delegates = ({
-	t,
-	items,
-	activeDelegateView,
-	setActiveDelegateView
-}: DelegatesProps): ReactElement => {
+const Delegates = ({ delegates }: DelegatesProps): JSX.Element => {
+	const [t] = useTranslation();
+
+	const [activeDelegate, setActiveDelegate] = useState<string>('0');
+
 	const [activeValue, setActiveValue] = useState('1');
 
-	const changeView = (value: string): void => setActiveDelegateView(value);
-
-	const ListItem = ({ item }: ItemComponentProps<DelegateType>): ReactElement => (
-		<>
-			<Container
-				onClick={(): void => changeView(item.id)}
-				orientation="horizontal"
-				mainAlignment="flex-start"
-				padding={{ all: 'small' }}
-			>
-				<Row width="fill" mainAlignment="space-between">
-					<Container orientation="horizontal" mainAlignment="flex-start" width="fit">
-						<Padding right="small">
+	const ListItem = ({ item }: ItemComponentProps<DelegateType>): ReactElement => {
+		const setActiveDelegateCallback = useCallback(() => setActiveDelegate(item.id), [item.id]);
+		return (
+			<>
+				<Container
+					onClick={setActiveDelegateCallback}
+					orientation="horizontal"
+					mainAlignment="flex-start"
+					padding={{ all: 'small' }}
+				>
+					<Row width="fill" mainAlignment="space-between">
+						<Container orientation="horizontal" mainAlignment="flex-start" width="fit">
+							<Padding right="small">
+								<Text weight="regular" size="small">
+									{item.label}
+								</Text>
+							</Padding>
+							<Padding right="small">
+								<Text weight="regular" size="small" color="secondary">
+									{item.email}
+								</Text>
+							</Padding>
+						</Container>
+						<Container width="fit" mainAlignment="flex-end">
 							<Text weight="regular" size="small">
-								{item.label}
+								{item.right}
 							</Text>
-						</Padding>
-						<Padding right="small">
-							<Text weight="regular" size="small" color="secondary">
-								{item.email}
-							</Text>
-						</Padding>
-					</Container>
-					<Container width="fit" mainAlignment="flex-end">
-						<Text weight="regular" size="small">
-							{item.right}
-						</Text>
-					</Container>
-				</Row>
+						</Container>
+					</Row>
 
-				<Row width="fit"></Row>
-			</Container>
-			<Divider />
-		</>
-	);
+					<Row width="fit"></Row>
+				</Container>
+				<Divider />
+			</>
+		);
+	};
 
 	return (
 		<>
@@ -92,7 +88,7 @@ const Delegates = ({
 				<Padding horizontal="medium" bottom="large" width="100%">
 					<Text weight="bold">{t('label.delegates', 'Delegates')}</Text>
 				</Padding>
-				<List items={items} ItemComponent={ListItem} active={activeDelegateView} height="fit" />
+				<List items={delegates} ItemComponent={ListItem} active={activeDelegate} height="fit" />
 			</Container>
 			<Row
 				padding={{ horizontal: 'large' }}

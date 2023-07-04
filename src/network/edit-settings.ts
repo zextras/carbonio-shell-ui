@@ -5,8 +5,8 @@
  */
 
 import { filter, find, findIndex, forEach, map, reduce, isArray } from 'lodash';
-
-import { getXmlSoapFetch } from './fetch';
+import { SHELL_APP_ID } from '../constants';
+import { useAccountStore } from '../store/account';
 import {
 	AccountState,
 	Mods,
@@ -19,8 +19,7 @@ import {
 	DeleteIdentityResponse,
 	GrantRightsResponse
 } from '../../types';
-import { SHELL_APP_ID } from '../constants';
-import { useAccountStore } from '../store/account';
+import { getXmlSoapFetch } from './fetch';
 
 type EditSettingsBatchResponse = {
 	ModifyPropertiesResponse?: ModifyPropertiesResponse[];
@@ -77,8 +76,8 @@ export const editSettings = (
 			mods.identity?.createList
 				? map(
 						mods.identity.createList,
-						(item) =>
-							`<CreateIdentityRequest xmlns="urn:zimbraAccount" requestId="${item.prefs.requestId}"><identity name="${item.prefs.zimbraPrefIdentityName}"><a name="zimbraPrefIdentityName">${item.prefs.zimbraPrefIdentityName}</a><a name="zimbraPrefFromDisplay">${item.prefs.zimbraPrefFromDisplay}</a><a name="zimbraPrefFromAddress">${item.prefs.zimbraPrefFromAddress}</a><a name="zimbraPrefFromAddressType">sendAs</a><a name="zimbraPrefReplyToEnabled">${item.prefs.zimbraPrefReplyToEnabled}</a><a name="zimbraPrefReplyToDisplay">${item.prefs.zimbraPrefReplyToDisplay}</a><a name="zimbraPrefReplyToAddress">${item.prefs.zimbraPrefReplyToAddress}</a><a name="zimbraPrefDefaultSignatureId">${item.prefs.zimbraPrefDefaultSignatureId}</a><a name="zimbraPrefForwardReplySignatureId">${item.prefs.zimbraPrefForwardReplySignatureId}</a><a name="zimbraPrefWhenSentToEnabled">${item.prefs.zimbraPrefWhenSentToEnabled}</a><a name="zimbraPrefWhenInFoldersEnabled">${item.prefs.zimbraPrefWhenInFoldersEnabled}</a></identity></CreateIdentityRequest>`
+						(item, index) =>
+							`<CreateIdentityRequest xmlns="urn:zimbraAccount" requestId="${index}"><identity name="${item.prefs.zimbraPrefIdentityName}"><a name="zimbraPrefIdentityName">${item.prefs.zimbraPrefIdentityName}</a><a name="zimbraPrefFromDisplay">${item.prefs.zimbraPrefFromDisplay}</a><a name="zimbraPrefFromAddress">${item.prefs.zimbraPrefFromAddress}</a><a name="zimbraPrefFromAddressType">sendAs</a><a name="zimbraPrefReplyToEnabled">${item.prefs.zimbraPrefReplyToEnabled}</a><a name="zimbraPrefReplyToDisplay">${item.prefs.zimbraPrefReplyToDisplay}</a><a name="zimbraPrefReplyToAddress">${item.prefs.zimbraPrefReplyToAddress}</a><a name="zimbraPrefDefaultSignatureId">${item.prefs.zimbraPrefDefaultSignatureId}</a><a name="zimbraPrefForwardReplySignatureId">${item.prefs.zimbraPrefForwardReplySignatureId}</a><a name="zimbraPrefWhenSentToEnabled">${item.prefs.zimbraPrefWhenSentToEnabled}</a><a name="zimbraPrefWhenInFoldersEnabled">${item.prefs.zimbraPrefWhenInFoldersEnabled}</a></identity></CreateIdentityRequest>`
 				  ).join('')
 				: ''
 		}${
@@ -207,17 +206,15 @@ export const editSettings = (
 											(itemMods, indexAccount) => acc[indexAccount].id === id
 										);
 										if (propIndex > -1) {
-											forEach(Object.keys(prefs), (item, _index) => {
+											// eslint-disable-next-line no-param-reassign
+											acc[propIndex]._attrs = {
+												...acc[propIndex]._attrs,
+												...prefs
+											};
+											if (prefs.zimbraPrefIdentityName && acc[propIndex].name !== 'DEFAULT') {
 												// eslint-disable-next-line no-param-reassign
-												acc[propIndex]._attrs[item] = Object.values(prefs)[_index];
-												if (
-													item === 'zimbraPrefIdentityName' &&
-													acc[propIndex].name !== 'DEFAULT'
-												) {
-													// eslint-disable-next-line no-param-reassign
-													acc[propIndex].name = Object.values(prefs)[_index];
-												}
-											});
+												acc[propIndex].name = prefs.zimbraPrefIdentityName;
+											}
 										}
 										return acc;
 									},

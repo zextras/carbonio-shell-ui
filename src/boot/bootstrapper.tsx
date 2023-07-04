@@ -48,7 +48,7 @@ const StandaloneListener = (): null => {
 	return null;
 };
 
-const DefaultViewsRegister = (): null => {
+export const DefaultViewsRegister = (): null => {
 	const [t] = useTranslation();
 	useEffect(() => {
 		registerDefaultViews(t);

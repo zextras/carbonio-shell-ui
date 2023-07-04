@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-
+import styled from 'styled-components';
 import {
 	Container,
 	Row,
@@ -13,12 +13,10 @@ import {
 	Dropdown,
 	DropdownItem
 } from '@zextras/carbonio-design-system';
-import styled from 'styled-components';
-
+import { useAppStore } from '../store/app';
 import { useSearchStore } from './search-store';
 import { SEARCH_APP_ID } from '../constants';
 import { useCurrentRoute, pushHistory } from '../history/hooks';
-import { useAppStore } from '../store/app';
 
 const SelectorContainer = styled(Container)<{ open?: boolean }>`
 	border-right: 0.0625rem solid ${({ theme }): string => theme.palette.gray4.regular};
@@ -62,14 +60,10 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): JSX.Element | nu
 	);
 
 	useEffect(() => {
-		// FIXME: this is part of the cause of SHELL-46
-		//    When the user click on the search module directly, the app results to be the search one,
-		//    and so the selected module, which is kept to the last one selected, does not match the module
-		//    written inside the path (/search/<module>), causing a misalignment between what is rendered (which
-		//    follow the path) and what is written inside the module selector (which updates its value based on the
-		//    module where the user is coming from)
-		if (app !== SEARCH_APP_ID && (!fullModule || fullModule?.app !== app)) {
-			updateModule((modules.find((m) => m.app === app) ?? modules[0])?.route);
+		if (app !== SEARCH_APP_ID) {
+			if (!fullModule || fullModule?.app !== app) {
+				updateModule((modules.find((m) => m.app === app) ?? modules[0])?.route);
+			}
 		}
 	}, [app, fullModule, modules, updateModule]);
 
@@ -89,6 +83,7 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): JSX.Element | nu
 	return (
 		<Dropdown items={dropdownItems} onOpen={openDropdown} onClose={closeDropdown}>
 			<SelectorContainer
+				data-testid="HeaderModuleSelector"
 				orientation="horizontal"
 				height="2.625rem"
 				width="fit"

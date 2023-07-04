@@ -122,6 +122,10 @@ const ResultsHeader = ({
 
 export const SearchAppView = (): JSX.Element => {
 	const searchViews = useAppStore((s) => s.views.search);
+	const { module } = useSearchStore();
+	const modules = useAppStore((s) => s.views.search);
+
+	const fullModule = useMemo(() => modules.find((m) => m.route === module), [module, modules]);
 
 	const routes = useMemo(
 		() =>
@@ -142,18 +146,11 @@ export const SearchAppView = (): JSX.Element => {
 	return (
 		<Switch>
 			{routes}
-			{/*
-			 * FIXME: this is part of the cause of SHELL-46
-			 *    Every time the user clicks on the search module to navigate directly inside it,
-			 *	  a redirect is made to go to the fixed path /search/<first module>. But first module
-			 *    does not match the module written inside the module selector, which is not updated
-			 *    accordingly.
-			 */}
 			<Redirect
 				exact
 				strict
 				from={`/${SEARCH_APP_ID}`}
-				to={`/${SEARCH_APP_ID}/${searchViews[0]?.route}`}
+				to={`/${SEARCH_APP_ID}/${fullModule ? fullModule.route : searchViews[0]?.route}`}
 			/>
 		</Switch>
 	);

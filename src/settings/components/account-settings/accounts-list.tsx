@@ -25,7 +25,7 @@ export type AccountsListProps = {
 	t: TFunction;
 	accountName: string;
 	identities: IdentityProps[];
-	setIdentities: (identities: IdentityProps[]) => void;
+	setIdentities: React.Dispatch<React.SetStateAction<IdentityProps[]>>;
 	selectedIdentityId: number;
 	setSelectedIdentityId: (value: number) => void;
 	removeIdentity: (identityId: string | number) => void;
@@ -88,58 +88,63 @@ const AccountsList = ({
 
 	const createListRequestIdRef = useRef(0);
 	const addNewPersona = useCallback(() => {
-		const newPersonaNextNumber =
-			Number(
-				max([
-					...filter(
-						map(
+		setIdentities((prevState) => {
+			const newPersonaNextNumber =
+				Number(
+					max([
+						...filter(
 							map(
-								filter(identities, (item) => item.identityName?.includes('New Persona')),
-								(item: IdentityProps) => item.identityName
+								map(
+									filter(prevState, (item) => item.identityName?.includes('New Persona')),
+									(item: IdentityProps) => item.identityName
+								),
+								(item: string) => parseFloat(item.replace('New Persona ', ''))
 							),
-							(item: string) => parseFloat(item.replace('New Persona ', ''))
-						),
-						(item) => Number(item)
-					)
-				])
-			) + 1;
-		const newPersonaName = `New Persona ${newPersonaNextNumber || 1}`;
-		setIdentities([
-			...identities,
-			{
-				id: `${identities.length}`,
-				flgType: 'persona',
-				type: t('label.persona', 'Persona'),
-				identityId: createListRequestIdRef.current,
-				fromAddress: identities[0]?.fromAddress,
-				identityName: newPersonaName,
-				fromDisplay: identities[0]?.fromDisplay,
-				replyToEnabled: 'FALSE'
-			}
-		]);
-		addIdentity(createListRequestIdRef.current, {
-			zimbraPrefIdentityName: newPersonaName,
-			zimbraPrefFromDisplay: identities[0]?.fromDisplay,
-			zimbraPrefFromAddress: identities[0]?.fromAddress,
-			zimbraPrefFromAddressType: 'sendAs',
-			zimbraPrefReplyToEnabled: 'FALSE'
+							(item) => Number(item)
+						)
+					])
+				) + 1;
+			const newPersonaName = `New Persona ${newPersonaNextNumber || 1}`;
+			addIdentity(createListRequestIdRef.current, {
+				zimbraPrefIdentityName: newPersonaName,
+				zimbraPrefFromDisplay: prevState[0]?.fromDisplay,
+				zimbraPrefFromAddress: prevState[0]?.fromAddress,
+				zimbraPrefFromAddressType: 'sendAs',
+				zimbraPrefReplyToEnabled: 'FALSE'
+			});
+			createListRequestIdRef.current += 1;
+			setSelectedIdentityId(prevState.length);
+			return [
+				...prevState,
+				{
+					id: `${prevState.length}`,
+					flgType: 'persona',
+					type: t('label.persona', 'Persona'),
+					identityId: createListRequestIdRef.current,
+					fromAddress: prevState[0]?.fromAddress,
+					identityName: newPersonaName,
+					fromDisplay: prevState[0]?.fromDisplay,
+					replyToEnabled: 'FALSE'
+				}
+			];
 		});
-		createListRequestIdRef.current += 1;
-		setSelectedIdentityId(identities.length);
-	}, [identities, setIdentities, t, addIdentity, setSelectedIdentityId]);
+	}, [setIdentities, t, addIdentity, setSelectedIdentityId]);
 
 	const onConfirmDelete = useCallback((): void => {
-		const newIdentities = map(
-			filter(
-				identities,
-				(identity) => identity?.identityId !== identities[selectedIdentityId]?.identityId
-			),
-			(item: IdentityProps, index: number) => ({ ...item, id: index.toString() })
-		);
-		setIdentities(newIdentities);
-		removeIdentity(identities[selectedIdentityId].identityId);
-		setSelectedIdentityId(selectedIdentityId - 1);
-	}, [identities, setIdentities, removeIdentity, selectedIdentityId, setSelectedIdentityId]);
+		setIdentities((prevState) => {
+			const newIdentities = map(
+				filter(
+					prevState,
+					(identity) => identity?.identityId !== prevState[selectedIdentityId]?.identityId
+				),
+				(item: IdentityProps, index: number) => ({ ...item, id: index.toString() })
+			);
+			removeIdentity(prevState[selectedIdentityId].identityId);
+			setSelectedIdentityId(selectedIdentityId - 1);
+			return newIdentities;
+		});
+	}, [setIdentities, removeIdentity, selectedIdentityId, setSelectedIdentityId]);
+
 	const onDelete = useCallback((): void => {
 		const closeModal = createModal({
 			title: t('label.permanent_delete_title', 'Are you sure to permanently delete this Persona?'),

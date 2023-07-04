@@ -4,16 +4,18 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
+
 import 'jest-styled-components';
 import { faker } from '@faker-js/faker';
-import { map } from 'lodash';
 import { screen, waitFor, within } from '@testing-library/react';
+import { map } from 'lodash';
 import { rest } from 'msw';
-import { setup } from '../test/utils';
-import { Account, BatchRequest, IdentityProps } from '../../types';
-import { AccountsSettings } from './accounts-settings';
+
 import { identityToIdentityProps } from './account-wrapper';
+import { AccountsSettings } from './accounts-settings';
+import { Account, BatchRequest, IdentityProps } from '../../types';
 import server, { waitForRequest } from '../mocks/server';
+import { setup } from '../test/utils';
 
 jest.mock('../workers');
 

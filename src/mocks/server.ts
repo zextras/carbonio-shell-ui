@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { matchRequestUrl, MockedRequest } from 'msw';
 import { setupServer } from 'msw/node';
 
-import { matchRequestUrl, MockedRequest } from 'msw';
 import handlers from './handlers';
 
 const server = setupServer(...handlers);

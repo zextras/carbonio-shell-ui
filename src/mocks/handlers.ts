@@ -5,11 +5,12 @@
  */
 
 import { type RequestHandler, rest } from 'msw';
+
 import { getComponentsJson } from './handlers/components';
 import { getInfoRequest } from './handlers/getInfoRequest';
-import { LOGIN_V3_CONFIG_PATH } from '../constants';
-import { getLoginConfig } from './handlers/login-config';
 import { getRightsRequest } from './handlers/getRightsRequest';
+import { getLoginConfig } from './handlers/login-config';
+import { LOGIN_V3_CONFIG_PATH } from '../constants';
 
 const handlers: RequestHandler[] = [
 	rest.get('/static/iris/components.json', getComponentsJson),

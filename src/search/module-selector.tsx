@@ -62,10 +62,8 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): JSX.Element | nu
 	);
 
 	useEffect(() => {
-		if (app !== SEARCH_APP_ID) {
-			if (!fullModule || fullModule?.app !== app) {
-				updateModule((modules.find((m) => m.app === app) ?? modules[0])?.route);
-			}
+		if (app !== SEARCH_APP_ID && (!fullModule || fullModule?.app !== app)) {
+			updateModule((modules.find((m) => m.app === app) ?? modules[0])?.route);
 		}
 	}, [app, fullModule, modules, updateModule]);
 

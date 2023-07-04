@@ -59,6 +59,7 @@ export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 						[appPkg.name]: memo(appComponent)
 					}
 				}));
+				// eslint-disable-next-line no-console
 				console.info(
 					`%c loaded ${appPkg.name}`,
 					'color: white; background: #539507;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'

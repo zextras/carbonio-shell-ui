@@ -26,6 +26,7 @@ export function loadApps(apps: Array<CarbonioModule>): void {
 		if (app.name === SHELL_APP_ID) return false;
 		return !(app.attrKey && getUserSetting('attrs', app.attrKey) === 'FALSE');
 	});
+	// eslint-disable-next-line no-console
 	console.log(
 		'%cLOADING APPS',
 		'color: white; background: #2b73d2;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'

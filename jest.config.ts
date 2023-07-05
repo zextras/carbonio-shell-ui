@@ -29,6 +29,7 @@ export default {
 		'!src/**/types/*', // exclude types
 		'!src/**/*.d.ts', // exclude declarations
 		'!src/test/*', // exclude test folder
+		'!**/__mocks__/**/*', // exclude manual mocks
 		'!src/workers/*' // FIXME: exclude worker folder which throws error because of the esm syntax
 	],
 
@@ -106,7 +107,7 @@ export default {
 	},
 
 	// An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
-	// modulePathIgnorePatterns: [],
+	modulePathIgnorePatterns: ['<rootDir>/.*/__mocks__'],
 
 	// Activates notifications for test results
 	// notify: false,

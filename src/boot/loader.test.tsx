@@ -3,20 +3,22 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { ResponseResolver, rest, RestContext, RestRequest } from 'msw';
-import { act, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import server from '../mocks/server';
-import { getComponentsJson, GetComponentsJsonResponseBody } from '../mocks/handlers/components';
-import { setup } from '../test/utils';
-import { Loader } from './loader';
-import { LOGIN_V3_CONFIG_PATH } from '../constants';
-import { LoginConfigStore } from '../../types/loginConfig';
-import { getLoginConfig } from '../mocks/handlers/login-config';
-import { getInfoRequest } from '../mocks/handlers/getInfoRequest';
 
-jest.mock('../workers');
-jest.mock('../reporting/functions');
+import { act, screen, waitFor } from '@testing-library/react';
+import { ResponseResolver, rest, RestContext, RestRequest } from 'msw';
+
+import { Loader } from './loader';
+import { LoginConfigStore } from '../../types/loginConfig';
+import { LOGIN_V3_CONFIG_PATH } from '../constants';
+import { getComponentsJson, GetComponentsJsonResponseBody } from '../mocks/handlers/components';
+import { getInfoRequest } from '../mocks/handlers/getInfoRequest';
+import { getLoginConfig } from '../mocks/handlers/login-config';
+import server from '../mocks/server';
+import { controlConsoleError, setup } from '../test/utils';
+
+jest.mock<typeof import('../workers')>('../workers');
+jest.mock<typeof import('../reporting/functions')>('../reporting/functions');
 
 describe('Loader', () => {
 	test('If only getComponents request fails, the LoaderFailureModal appears', async () => {
@@ -40,16 +42,7 @@ describe('Loader', () => {
 
 	test('If only getInfo request fails, the LoaderFailureModal appears', async () => {
 		// TODO remove when SHELL-117 will be implemented
-		const actualConsoleError = console.error;
-		console.error = jest.fn<ReturnType<typeof console.error>, Parameters<typeof console.error>>(
-			(error, ...restParameter) => {
-				if (error === 'Unexpected end of JSON input') {
-					console.log('Controlled error', error, ...restParameter);
-				} else {
-					actualConsoleError(error, ...restParameter);
-				}
-			}
-		);
+		controlConsoleError('Unexpected end of JSON input');
 		// using getComponents and loginConfig default handlers
 		server.use(
 			rest.post('/service/soap/GetInfoRequest', (req, res, ctx) =>

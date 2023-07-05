@@ -175,7 +175,7 @@ describe('use local storage', () => {
 					error.message === 'Unexpected token o in JSON at position 1'
 				) {
 					// eslint-disable-next-line no-console
-					console.log('Controlled error', error, ...rest);
+					console.log('Controlled error', error.message);
 				} else {
 					actualConsoleError(error, ...rest);
 				}

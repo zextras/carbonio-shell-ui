@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.0](https://github.com/zextras/carbonio-shell-ui/compare/v3.1.1...v3.2.0) (2023-07-06)
+
+
+### Features
+
+* allow the user to resize and move the board ([e266ca8](https://github.com/zextras/carbonio-shell-ui/commit/e266ca8b3f7333cf3ee504dc7bb00ee81797de5d)), closes [#262](https://github.com/zextras/carbonio-shell-ui/issues/262)
+* enable cancel action when click outside the confirmation modal ([42e7fae](https://github.com/zextras/carbonio-shell-ui/commit/42e7fae277bbf9a701d31a2a0dab2d7febc19ebf)), closes [#264](https://github.com/zextras/carbonio-shell-ui/issues/264)
+
+
+### Bug Fixes
+
+* improve general and account settings ([42e757e](https://github.com/zextras/carbonio-shell-ui/commit/42e757e511d3a6cbf8a308bc3fdcb7c2893994e6)), closes [#268](https://github.com/zextras/carbonio-shell-ui/issues/268)
+* open search module based on the module you come from ([2b12ec2](https://github.com/zextras/carbonio-shell-ui/commit/2b12ec2b717fb4cda73d9bd009c5b4de209d0a00)), closes [#270](https://github.com/zextras/carbonio-shell-ui/issues/270)
+* **settings:** fix UI of out of office section ([2d5d44d](https://github.com/zextras/carbonio-shell-ui/commit/2d5d44d22fec460f4695c7cd2521fe163ad9fe00)), closes [#263](https://github.com/zextras/carbonio-shell-ui/issues/263)
+* show a modal on failure of getInfo and getComponents ([2df0658](https://github.com/zextras/carbonio-shell-ui/commit/2df0658f5b4170f6302b764df5085595276a6360)), closes [#251](https://github.com/zextras/carbonio-shell-ui/issues/251)
+* **types:** add the signal parameter to the SoapFetch exported type ([0192409](https://github.com/zextras/carbonio-shell-ui/commit/0192409da33cb0bc131f884f3b17ffb497ad7b63)), closes [#273](https://github.com/zextras/carbonio-shell-ui/issues/273)
+
 ### [3.1.1](https://github.com/zextras/carbonio-shell-ui/compare/v3.1.0...v3.1.1) (2023-06-05)
 
 

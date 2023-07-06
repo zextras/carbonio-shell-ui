@@ -20,12 +20,13 @@ import { localeList } from '../../settings/components/utils';
 const getDateFnsLocale = (locale: string): Promise<DateFnsLocale> =>
 	import(`date-fns/locale/${locale}/index.js`);
 
-export function loadApps(apps: Array<CarbonioModule>): void {
+export function loadApps(
+	apps: Array<CarbonioModule>
+): Promise<PromiseSettledResult<CarbonioModule>[]> {
 	injectSharedLibraries();
 	const appsToLoad = filter(apps, (app) => {
 		if (app.name === SHELL_APP_ID) return false;
-		if (app.attrKey && getUserSetting('attrs', app.attrKey) === 'FALSE') return false;
-		return true;
+		return !(app.attrKey && getUserSetting('attrs', app.attrKey) === 'FALSE');
 	});
 	console.log(
 		'%cLOADING APPS',
@@ -46,7 +47,7 @@ export function loadApps(apps: Array<CarbonioModule>): void {
 		});
 	}
 	useReporter.getState().setClients(appsToLoad);
-	Promise.allSettled(map(appsToLoad, (app) => loadApp(app)));
+	return Promise.allSettled(map(appsToLoad, (app) => loadApp(app)));
 }
 
 export function unloadAllApps(): Promise<void> {

@@ -20,20 +20,7 @@ export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
 
 export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
-	return new Promise((_resolve, _reject) => {
-		let resolved = false;
-		const resolve = (): void => {
-			if (!resolved) {
-				resolved = true;
-				_resolve(appPkg);
-			}
-		};
-		const reject = (e: unknown): void => {
-			if (!resolved) {
-				resolved = true;
-				_reject(e);
-			}
-		};
+	return new Promise((resolve, reject) => {
 		try {
 			if (
 				window.__ZAPP_SHARED_LIBRARIES__ &&
@@ -61,7 +48,7 @@ export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 					`%c loaded ${appPkg.name}`,
 					'color: white; background: #539507;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
 				);
-				resolve();
+				resolve(appPkg);
 			};
 
 			const script = document.createElement('script');
@@ -71,7 +58,8 @@ export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 			script.setAttribute('data-is_app', 'true');
 			script.setAttribute('src', `${appPkg.js_entrypoint}`);
 			document.body.appendChild(script);
-			_scripts[`${appPkg.name}-loader-${(_scriptId += 1)}`] = script;
+			_scriptId += 1;
+			_scripts[`${appPkg.name}-loader-${_scriptId}`] = script;
 		} catch (err: unknown) {
 			console.error(err);
 			reject(err);
@@ -80,9 +68,12 @@ export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 }
 
 export function unloadApps(): Promise<void> {
-	return Promise.resolve().then(() => {
+	return new Promise((resolve) => {
 		forOwn(_scripts, (script) => {
-			if (script.parentNode) script.parentNode.removeChild(script);
+			if (script.parentNode) {
+				script.parentNode.removeChild(script);
+			}
 		});
+		resolve();
 	});
 }

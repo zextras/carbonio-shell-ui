@@ -66,6 +66,32 @@ beforeEach(() => {
 	jest.spyOn(document.documentElement, 'clientHeight', 'get').mockReturnValue(768);
 });
 
+/**
+ * Mocks the Worker class
+ */
+
+type MessageHandler = (msg: string) => void;
+
+class Worker {
+	url: string;
+
+	onmessage: MessageHandler;
+
+	constructor(stringUrl: string) {
+		this.url = stringUrl;
+		this.onmessage = noop;
+	}
+
+	postMessage(msg: string): void {
+		this.onmessage(msg);
+	}
+}
+
+Object.defineProperty(window, 'Worker', {
+	writable: true,
+	value: Worker
+});
+
 beforeAll(() => {
 	server.listen({ onUnhandledRequest: 'warn' });
 

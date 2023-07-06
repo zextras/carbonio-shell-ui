@@ -17,8 +17,6 @@ import { Account, BatchRequest, IdentityProps } from '../../types';
 import server, { waitForRequest } from '../mocks/server';
 import { setup } from '../test/utils';
 
-jest.mock('../workers');
-
 describe('Account setting', () => {
 	test('Show primary identity inside the list', async () => {
 		const fullName = faker.person.fullName();

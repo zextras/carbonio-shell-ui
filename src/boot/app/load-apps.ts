@@ -10,7 +10,7 @@ import { registerLocale, setDefaultLocale } from '@zextras/carbonio-design-syste
 import type { Locale as DateFnsLocale } from 'date-fns';
 import { CarbonioModule } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
-import { useReporter } from '../../reporting';
+import { useReporter } from '../../reporting/store';
 import { getUserSetting, useAccountStore } from '../../store/account';
 import { getT, useI18nStore } from '../../store/i18n';
 import { loadApp, unloadApps } from './load-app';

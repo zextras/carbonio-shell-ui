@@ -18,7 +18,7 @@ import server, { waitForRequest } from '../mocks/server';
 import { setup } from '../test/utils';
 
 jest.mock<typeof import('../workers')>('../workers');
-jest.mock<typeof import('../reporting')>('../reporting');
+jest.mock<typeof import('../reporting/functions')>('../reporting/functions');
 
 describe('Account setting', () => {
 	async function waitForGetRightsRequest(): Promise<void> {
@@ -28,6 +28,7 @@ describe('Account setting', () => {
 		});
 		await screen.findByText('sendAs');
 	}
+
 	test('Show primary identity inside the list', async () => {
 		const fullName = faker.person.fullName();
 		const email = faker.internet.email();

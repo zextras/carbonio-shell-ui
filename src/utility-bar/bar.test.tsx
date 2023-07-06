@@ -17,7 +17,7 @@ import { Logout } from '../settings/components/general-settings/logout';
 import { waitForRequest } from '../mocks/server';
 
 jest.mock<typeof import('../workers')>('../workers');
-jest.mock<typeof import('../reporting')>('../reporting');
+jest.mock<typeof import('../reporting/functions')>('../reporting/functions');
 
 describe('Shell utility bar', () => {
 	test('should render the utility menu for the account', async () => {

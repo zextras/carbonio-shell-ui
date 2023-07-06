@@ -19,6 +19,8 @@ import { controlConsoleError, setup } from '../test/utils';
 
 jest.mock<typeof import('../workers')>('../workers');
 jest.mock<typeof import('../reporting/functions')>('../reporting/functions');
+// FIXME: understand why reporting store is required here
+// jest.mock<typeof import('../reporting/store')>('../reporting/store');
 
 describe('Loader', () => {
 	test('If only getComponents request fails, the LoaderFailureModal appears', async () => {

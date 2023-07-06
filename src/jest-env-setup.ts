@@ -79,6 +79,7 @@ afterAll(() => {
 
 afterEach(() => {
 	jest.runOnlyPendingTimers();
+	server.events.removeAllListeners();
 	server.resetHandlers();
 	act(() => {
 		window.resizeTo(1024, 768);

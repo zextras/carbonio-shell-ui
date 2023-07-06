@@ -144,7 +144,7 @@
         "download_messages": "Загрузить сообщения в:",
         "dont_save": "Не сохранять копии отправленных сообщений",
         "edit_permissions": "Изменить разрешения",
-        "email_address": "Электронный адрес",
+        "email_address": "Адрес электронной почты",
         "email_server": "Почтовый сервер (например, «mail.example.com»)",
         "external_account_settings": "Настройки внешней учетной записи",
         "documentation": "Документация",
@@ -205,7 +205,8 @@
         "hide": "Спрятать окно",
         "reduce": "Уменьшить окно",
         "show_tabs": "Показать другие вкладки",
-        "open_app": "Открыть в приложении"
+        "open_app": "Открыть в приложении",
+        "from_app": "От {{app}}"
     },
     "locale": {
         "label_chinese": "Китайский-{{value}}",

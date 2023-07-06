@@ -25,7 +25,7 @@ const POLLING_NOWAIT_INTERVAL = 10_000;
 const POLLING_RETRY_INTERVAL = 60_000;
 
 export const parsePollingInterval = (settings: AccountSettings): number => {
-	const pollingPref = (settings.prefs?.zimbraPrefMailPollingInterval ?? '') as string;
+	const pollingPref = settings.prefs?.zimbraPrefMailPollingInterval ?? '';
 	if (pollingPref === '500') {
 		return 500;
 	}

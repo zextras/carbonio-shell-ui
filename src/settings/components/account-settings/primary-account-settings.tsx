@@ -5,19 +5,19 @@
  */
 
 import React, { useMemo, useCallback, ReactElement, useState, useEffect } from 'react';
-import { Container, Text, Padding, Input, Row } from '@zextras/carbonio-design-system';
+import { Container, Text, Padding, Input, Row, InputProps } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import { Account, IdentityProps } from '../../../../types';
+import { Account, IdentityAttrs, IdentityProps } from '../../../../types';
 
 interface PrimaryAccountSettingsProps {
 	t: TFunction;
 	account: Account;
 	identity: IdentityProps;
-	updateIdentities: (modifyList: {
-		id: string | number;
-		key: string;
-		value: string | boolean;
-	}) => void;
+	updateIdentities: <K extends keyof IdentityAttrs>(
+		id: string | number,
+		key: K,
+		value: IdentityAttrs[K]
+	) => void;
 }
 
 const PrimaryAccountSettings = ({
@@ -26,30 +26,17 @@ const PrimaryAccountSettings = ({
 	identity,
 	updateIdentities
 }: PrimaryAccountSettingsProps): ReactElement => {
-	const emailLabel = useMemo(
-		() => (account.name ? '' : t('label.email_address', 'E-mail address')),
-		[account.name, t]
-	);
+	const emailLabel = useMemo(() => t('label.email_address', 'E-mail address'), [t]);
 	const [accountNameValue, setAccountNameValue] = useState(identity?.identityName);
 
 	useEffect(() => setAccountNameValue(identity.identityName), [identity.identityName]);
-	const accountLabel = useMemo(
-		() => (accountNameValue ? '' : t('label.account_name', 'Account Name')),
-		[accountNameValue, t]
-	);
+	const accountLabel = useMemo(() => t('label.account_name', 'Account Name'), [t]);
 
 	const onChangeDisabled = useCallback(() => null, []);
-	const onChange = useCallback(
-		(value: string): void => {
-			setAccountNameValue(value);
-
-			const modifyProp = {
-				id: identity.identityId,
-				key: 'zimbraPrefIdentityName',
-				value
-			};
-
-			updateIdentities(modifyProp);
+	const onChange = useCallback<NonNullable<InputProps['onChange']>>(
+		(ev): void => {
+			setAccountNameValue(ev.target.value);
+			updateIdentities(identity.identityId, 'zimbraPrefIdentityName', ev.target.value);
 		},
 		[updateIdentities, identity.identityId]
 	);
@@ -79,11 +66,7 @@ const PrimaryAccountSettings = ({
 					<Input label={emailLabel} value={account.name || ' '} onChange={onChangeDisabled} />
 				</Row>
 				<Row width="50%">
-					<Input
-						label={accountLabel}
-						value={accountNameValue || ' '}
-						onChange={(ev): void => onChange(ev.target.value)}
-					/>
+					<Input label={accountLabel} value={accountNameValue} onChange={onChange} />
 				</Row>
 			</Row>
 			<Padding bottom="large" />

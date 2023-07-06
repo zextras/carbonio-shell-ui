@@ -5,15 +5,23 @@
  */
 
 import { Checkbox, Container, FormSubSection } from '@zextras/carbonio-design-system';
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { AccountSettings, AddMod, PrefsMods } from '../../types';
-import { getT } from '../store/i18n';
-import { searchPrefsSubSection } from './general-settings-sub-sections';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { AccountSettings, AddMod } from '../../../../types';
+import { getT } from '../../../store/i18n';
+import { searchPrefsSubSection } from '../../general-settings-sub-sections';
+import { useReset } from '../../hooks/use-reset';
+import { SettingsSectionProps, upsertPrefOnUnsavedChanges } from '../utils';
 
-const SearchSettingsView: FC<{
+type SearchSettingsViewProps = SettingsSectionProps & {
 	settings: AccountSettings;
 	addMod: AddMod;
-}> = ({ settings, addMod }) => {
+};
+
+export const SearchSettings = ({
+	settings,
+	addMod,
+	resetRef
+}: SearchSettingsViewProps): JSX.Element => {
 	const t = getT();
 	const [searchInSpamFolder, setSearchInSpamFolder] = useState<boolean>(
 		settings.prefs.zimbraPrefIncludeSpamInSearch === 'TRUE'
@@ -24,36 +32,50 @@ const SearchSettingsView: FC<{
 	const [searchInSharedFolder, setSearchInSharedFolder] = useState<boolean>(
 		settings.prefs.zimbraPrefIncludeSharedItemsInSearch === 'TRUE'
 	);
-	const setMode = useCallback(
-		(prefValue: PrefsMods[keyof PrefsMods], prefKey: keyof PrefsMods) => {
-			addMod('prefs', prefKey, prefValue);
-		},
-		[addMod]
-	);
+	const setMode = useMemo(() => upsertPrefOnUnsavedChanges(addMod), [addMod]);
+
+	const init = useCallback(() => {
+		setSearchInSpamFolder(settings.prefs.zimbraPrefIncludeSpamInSearch === 'TRUE');
+		setSearchInTrashFolder(settings.prefs.zimbraPrefIncludeTrashInSearch === 'TRUE');
+		setSearchInSharedFolder(settings.prefs.zimbraPrefIncludeSharedItemsInSearch === 'TRUE');
+	}, [
+		settings.prefs.zimbraPrefIncludeSharedItemsInSearch,
+		settings.prefs.zimbraPrefIncludeSpamInSearch,
+		settings.prefs.zimbraPrefIncludeTrashInSearch
+	]);
+
+	useReset(resetRef, init);
 
 	useEffect(() => {
-		setSearchInSpamFolder(settings.prefs.zimbraPrefIncludeSpamInSearch === 'TRUE');
-	}, [settings.prefs.zimbraPrefIncludeSpamInSearch]);
-	useEffect(() => {
-		setSearchInTrashFolder(settings.prefs.zimbraPrefIncludeTrashInSearch === 'TRUE');
-	}, [settings.prefs.zimbraPrefIncludeTrashInSearch]);
-	useEffect(() => {
-		setSearchInSharedFolder(settings.prefs.zimbraPrefIncludeSharedItemsInSearch === 'TRUE');
-	}, [settings.prefs.zimbraPrefIncludeSharedItemsInSearch]);
+		init();
+	}, [init]);
 
 	const onClickSpam = useCallback(() => {
-		setSearchInSpamFolder(!searchInSpamFolder);
-		setMode(!searchInSpamFolder, 'zimbraPrefIncludeSpamInSearch');
-	}, [searchInSpamFolder, setMode]);
+		setSearchInSpamFolder((prevState) => {
+			const newValue = !prevState;
+			setMode('zimbraPrefIncludeSpamInSearch', newValue);
+			return newValue;
+		});
+	}, [setMode]);
+
 	const onClickTrash = useCallback(() => {
-		setSearchInTrashFolder(!searchInTrashFolder);
-		setMode(!searchInTrashFolder, 'zimbraPrefIncludeTrashInSearch');
-	}, [searchInTrashFolder, setMode]);
+		setSearchInTrashFolder((prevState) => {
+			const newValue = !prevState;
+			setMode('zimbraPrefIncludeTrashInSearch', newValue);
+			return newValue;
+		});
+	}, [setMode]);
+
 	const onClickShared = useCallback(() => {
-		setSearchInSharedFolder(!searchInSharedFolder);
-		setMode(!searchInSharedFolder, 'zimbraPrefIncludeSharedItemsInSearch');
-	}, [searchInSharedFolder, setMode]);
+		setSearchInSharedFolder((prevState) => {
+			const newValue = !prevState;
+			setMode('zimbraPrefIncludeSharedItemsInSearch', newValue);
+			return newValue;
+		});
+	}, [setMode]);
+
 	const sectionTitle = useMemo(() => searchPrefsSubSection(t), [t]);
+
 	return (
 		<FormSubSection
 			label={sectionTitle.label}
@@ -90,5 +112,3 @@ const SearchSettingsView: FC<{
 		</FormSubSection>
 	);
 };
-
-export default SearchSettingsView;

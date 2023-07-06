@@ -6,10 +6,10 @@
 import { useTheme } from '@zextras/carbonio-design-system';
 import { useEffect, useMemo } from 'react';
 import { size } from 'lodash';
-import { useLocalStorage } from '../shell/hooks';
 import { LOCAL_STORAGE_LAST_PRIMARY_KEY } from '../constants';
 import { useLoginConfigStore } from '../store/login/store';
 import { useDarkMode } from '../dark-mode/use-dark-mode';
+import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 
 export function useGetPrimaryColor(): string | undefined {
 	const [localStorageLastPrimary, setLocalStorageLastPrimary] = useLocalStorage<

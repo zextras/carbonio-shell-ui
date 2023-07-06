@@ -17,7 +17,9 @@ export const create =
 	(createState: StateCreator<S>): UseBoundStore<StoreApi<S>> => {
 		const store = actualCreate(createState);
 		const initialState = store.getState();
-		storeResetFns.add(() => store.setState(initialState, true));
+		storeResetFns.add(() => {
+			store.setState(initialState, true);
+		});
 		return store;
 	};
 

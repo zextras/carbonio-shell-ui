@@ -4,14 +4,27 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React, { FC } from 'react';
-import { act, screen } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
+import 'jest-styled-components';
 import { useHistory } from 'react-router-dom';
 import { setup } from '../test/utils';
 import ShellView from './shell-view';
-import { useBoardStore } from '../store/boards';
 import { Board } from '../../types';
-import { useAppStore } from '../store/app';
 import { useBridge } from '../store/context-bridge';
+import { Border } from './hooks/useResize';
+import { ICONS, TESTID_SELECTORS } from '../test/constants';
+import {
+	buildBoardSizeAndPosition,
+	buildMousePosition,
+	INITIAL_SIZE_AND_POS,
+	moveBoard,
+	resizeBoard,
+	setupBoardStore
+} from '../test/test-board-utils';
+import { BOARD_DEFAULT_POSITION } from './boards/board-container';
+import { SizeAndPosition } from '../utils/utils';
+import { mockedApps, setupAppStore } from '../test/test-app-utils';
+import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
 
 const ContextBridge: FC = () => {
 	const history = useHistory();
@@ -31,57 +44,225 @@ jest.mock('../utility-bar/bar', () => ({
 
 jest.mock('./shell-header', () => Dummy);
 
-test('When resizing under mobile breakpoint, board does not disappear', () => {
+beforeEach(() => {
+	setupAppStore();
 	const boards: Record<string, Board> = {
 		'board-1': {
 			id: 'board-1',
 			url: '/url',
-			app: 'carbonio-mails-ui',
+			app: mockedApps[0].name,
 			title: 'title1',
 			icon: 'CubeOutline'
 		}
 	};
+	setupBoardStore('board-1', boards);
+});
 
-	useBoardStore.setState(() => ({
-		boards,
-		orderedBoards: ['board-1'],
-		current: 'board-1'
-	}));
+describe('Shell view', () => {
+	test('When resizing under mobile breakpoint, board does not disappear', () => {
+		setup(
+			<>
+				<ContextBridge />
+				<ShellView />
+			</>
+		);
 
-	useAppStore.getState().setters.addApps([
-		{
-			commit: '',
-			description: 'Mails module',
-			display: 'Mails',
-			icon: 'MailModOutline',
-			js_entrypoint: '',
-			name: 'carbonio-mails-ui',
-			priority: 1,
-			type: 'carbonio',
-			version: '0.0.1'
-		}
-	]);
-	useAppStore.getState().setters.addRoute({
-		id: 'mails',
-		route: 'mails',
-		position: 1,
-		visible: true,
-		label: 'Mails',
-		primaryBar: 'MailModOutline',
-		appView: () => <div></div>,
-		badge: { show: false },
-		app: 'carbonio-mails-ui'
+		expect(screen.getByText('title1')).toBeVisible();
+		act(() => {
+			window.resizeTo(500, 300);
+		});
+		expect(screen.getByText('title1')).toBeVisible();
 	});
 
-	setup(
-		<>
-			<ContextBridge /> <ShellView />
-		</>
-	);
-
-	expect(screen.getByText('title1')).toBeVisible();
-	act(() => {
-		window.resizeTo(500, 300);
+	test('Collapse board toggler toggle visibility of the board', async () => {
+		const { getByRoleWithIcon, user } = setup(<ShellView />);
+		expect(screen.getByText('title1')).toBeVisible();
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.collapseBoard }));
+		expect(screen.getByText('title1')).toBeInTheDocument();
+		expect(screen.queryByText('title1')).not.toBeVisible();
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.unCollapseBoard }));
+		expect(screen.getByText('title1')).toBeVisible();
 	});
-	expect(screen.getByText('title1')).toBeVisible();
+
+	test('Board keeps custom size and position when re-opened after being collapsed', async () => {
+		const { getByRoleWithIcon, user } = setup(<ShellView />);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
+		const border: Border = 'n';
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		let boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
+		const deltaY = -50;
+		let boardNewSizeAndPos: SizeAndPosition = {
+			height: boardInitialSizeAndPos.height - deltaY,
+			width: boardInitialSizeAndPos.width,
+			top: boardInitialSizeAndPos.top + deltaY,
+			left: boardInitialSizeAndPos.left
+		};
+		await resizeBoard(
+			board,
+			boardInitialSizeAndPos,
+			border,
+			{ clientX: 0, clientY: mouseInitialPos.clientY + deltaY },
+			boardNewSizeAndPos
+		);
+		boardInitialSizeAndPos = buildBoardSizeAndPosition(boardNewSizeAndPos);
+		boardNewSizeAndPos = {
+			width: boardNewSizeAndPos.width,
+			height: boardNewSizeAndPos.height,
+			top: 500,
+			left: 500
+		};
+		await moveBoard(
+			board,
+			boardInitialSizeAndPos,
+			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
+			{ clientX: 500, clientY: 500 },
+			boardNewSizeAndPos
+		);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.collapseBoard }));
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.unCollapseBoard }));
+		expect(board).toHaveStyle({
+			height: `${boardNewSizeAndPos.height}px`,
+			width: `${boardNewSizeAndPos.width}px`,
+			top: `${boardNewSizeAndPos.top}px`,
+			left: `${boardNewSizeAndPos.left}px`
+		});
+	});
+
+	test('Board keeps resized size but reset position when re-opened after being close definitively', async () => {
+		const { getByRoleWithIcon, user } = setup(<ShellView />);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
+		const border: Border = 'n';
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
+		const deltaY = -50;
+		const boardNewSizeAndPos: SizeAndPosition = {
+			height: boardInitialSizeAndPos.height - deltaY,
+			width: boardInitialSizeAndPos.width,
+			top: boardInitialSizeAndPos.top + deltaY,
+			left: boardInitialSizeAndPos.left
+		};
+		await resizeBoard(
+			board,
+			boardInitialSizeAndPos,
+			border,
+			{ clientX: 0, clientY: mouseInitialPos.clientY + deltaY },
+			boardNewSizeAndPos
+		);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		act(() => {
+			jest.advanceTimersToNextTimer();
+		});
+		await waitFor(() =>
+			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '')).toEqual({
+				height: boardNewSizeAndPos.height,
+				width: boardNewSizeAndPos.width
+			})
+		);
+		// update state to open a new board
+		const boards2: Record<string, Board> = {
+			'board-2': {
+				id: 'board-2',
+				url: '/url',
+				app: mockedApps[0].name,
+				title: 'title2',
+				icon: 'CubeOutline'
+			}
+		};
+		act(() => {
+			setupBoardStore('board-2', boards2);
+		});
+		await screen.findByText('title2');
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
+		const board2Element = screen.getByTestId(TESTID_SELECTORS.board);
+		expect(board2Element).toHaveStyle({
+			...BOARD_DEFAULT_POSITION,
+			height: `${boardNewSizeAndPos.height}px`,
+			width: `${boardNewSizeAndPos.width}px`
+		});
+	});
+
+	test('Resizing the board, closing it, opening a new board and then moving it to a different position set the new position and keep the custom size', async () => {
+		const { getAllByRoleWithIcon, user } = setup(<ShellView />);
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
+		const border: Border = 'n';
+		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		let boardInitialSizeAndPos = buildBoardSizeAndPosition();
+		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
+		const deltaY = -50;
+		let boardNewSizeAndPos: SizeAndPosition = {
+			height: boardInitialSizeAndPos.height - deltaY,
+			width: boardInitialSizeAndPos.width,
+			top: boardInitialSizeAndPos.top + deltaY,
+			left: boardInitialSizeAndPos.left
+		};
+		await resizeBoard(
+			board,
+			boardInitialSizeAndPos,
+			border,
+			{ clientX: 0, clientY: mouseInitialPos.clientY + deltaY },
+			boardNewSizeAndPos
+		);
+		boardInitialSizeAndPos = buildBoardSizeAndPosition(boardNewSizeAndPos);
+		boardNewSizeAndPos = { ...boardNewSizeAndPos, top: 0, left: 0 };
+		await moveBoard(
+			board,
+			boardInitialSizeAndPos,
+			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
+			{ clientX: 0, clientY: 0 },
+			boardNewSizeAndPos
+		);
+		await user.click(getAllByRoleWithIcon('button', { icon: ICONS.close })[0]);
+		// update state to open a new board
+		const boards2: Record<string, Board> = {
+			'board-2': {
+				id: 'board-2',
+				url: '/url',
+				app: mockedApps[0].name,
+				title: 'title2',
+				icon: 'CubeOutline'
+			}
+		};
+		act(() => {
+			setupBoardStore('board-2', boards2);
+		});
+		await screen.findByText('title2');
+		act(() => {
+			// run updateBoardPosition debounced fn
+			jest.advanceTimersToNextTimer();
+		});
+		const board2Element = screen.getByTestId(TESTID_SELECTORS.board);
+		boardInitialSizeAndPos = buildBoardSizeAndPosition({
+			...INITIAL_SIZE_AND_POS,
+			width: boardNewSizeAndPos.width,
+			height: boardNewSizeAndPos.height
+		});
+		boardNewSizeAndPos = { ...boardNewSizeAndPos, top: 55, left: 80 };
+		await moveBoard(
+			board2Element,
+			boardInitialSizeAndPos,
+			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
+			{ clientX: 80, clientY: 55 },
+			boardNewSizeAndPos
+		);
+		expect(board2Element).toHaveStyle({
+			height: `${boardNewSizeAndPos.height}px`,
+			width: `${boardNewSizeAndPos.width}px`,
+			left: `${boardNewSizeAndPos.left}px`,
+			top: `${boardNewSizeAndPos.top}px`
+		});
+	});
 });

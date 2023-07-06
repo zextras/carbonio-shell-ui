@@ -31,7 +31,6 @@ import {
 	getUserRight,
 	getUserRights
 } from '../../store/account';
-import { useIsMobile, useLocalStorage } from '../../shell/hooks';
 import {
 	useAction,
 	useActions,
@@ -91,6 +90,8 @@ import {
 	useBoardHooks
 } from '../../store/boards';
 import { getNotificationManager } from '../../notification/NotificationManager';
+import { useLocalStorage } from '../../shell/hooks/useLocalStorage';
+import { useIsMobile } from '../../shell/hooks/useIsMobile';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({

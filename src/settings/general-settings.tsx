@@ -5,30 +5,38 @@
  */
 
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
-import { includes, isEmpty, size } from 'lodash';
-import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
-import { AddMod, Mods, RemoveMod } from '../../types';
-import { editSettings } from '../network/edit-settings';
-import { useUserSettings } from '../store/account';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { findIndex, includes, isEmpty, map, reduce, size } from 'lodash';
+import {
+	AccountState,
+	AddMod,
+	BatchRequest,
+	ModifyPrefsRequest,
+	ModifyPrefsResponse,
+	ModifyPropertiesRequest,
+	ModifyPropertiesResponse,
+	Mods,
+	RemoveMod
+} from '../../types';
+import { useAccountStore, useUserSettings } from '../store/account';
 import { getT } from '../store/i18n';
 import AppearanceSettings from './components/general-settings/appearance-settings';
 import Logout from './components/general-settings/logout';
 import ModuleVersionSettings from './components/general-settings/module-version-settings';
-import OutOfOfficeSettings from './components/general-settings/out-of-office-view';
+import { OutOfOfficeSettings } from './components/general-settings/out-of-office-settings';
 import UserQuota from './components/general-settings/user-quota';
-import SettingsHeader from './components/settings-header';
+import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
 import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
-import SearchSettingsView from './search-settings-view';
-import { useLocalStorage } from '../shell/hooks';
-import {
-	ScalingSettingSection,
-	ScalingSettingSectionRef
-} from './components/general-settings/scaling-setting-section';
+import { SearchSettings } from './components/general-settings/search-settings';
+import { ScalingSettingSection } from './components/general-settings/scaling-setting-section';
 import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
-import { LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
+import { LOCAL_STORAGE_SETTINGS_KEY, SHELL_APP_ID } from '../constants';
 import { ScalingSettings } from '../../types/settings';
+import { ResetComponentImperativeHandler } from './components/utils';
+import { getSoapFetch } from '../network/fetch';
+import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 
-const GeneralSettings: FC = () => {
+const GeneralSettings = (): JSX.Element => {
 	const [mods, setMods] = useState<Mods>({});
 	const t = getT();
 	const userSettings = useUserSettings();
@@ -85,7 +93,7 @@ const GeneralSettings: FC = () => {
 	}, []);
 	const createSnackbar = useSnackbar();
 
-	const onSave = useCallback(() => {
+	const onSave = useCallback<SettingsHeaderProps['onSave']>(() => {
 		setLocalStorageUnAppliedChanges((unAppliedPrevState) => {
 			if (size(unAppliedPrevState) > 0) {
 				setLocalStorageSettings((localStorageSettingsPrevState) => ({
@@ -97,8 +105,81 @@ const GeneralSettings: FC = () => {
 			return unAppliedPrevState;
 		});
 		if (size(mods) > 0) {
-			editSettings(mods)
+			let modifyPropertiesRequest: ModifyPropertiesRequest | undefined;
+			if (mods.props) {
+				const mappedProperties = map(
+					mods.props,
+					(prop, key): ModifyPropertiesRequest['prop'][0] => ({
+						name: key,
+						zimlet: prop.app,
+						_content: prop.value
+					})
+				);
+				modifyPropertiesRequest = { _jsns: 'urn:zimbraAccount', prop: mappedProperties };
+			}
+
+			let modifyPrefsRequest: ModifyPrefsRequest | undefined;
+
+			if (mods.prefs) {
+				const attrs = mods.prefs;
+				if ('zimbraPrefMailTrustedSenderList' in attrs) {
+					attrs.zimbraPrefMailTrustedSenderList =
+						attrs.zimbraPrefMailTrustedSenderList instanceof Array &&
+						attrs.zimbraPrefMailTrustedSenderList.length === 0
+							? ''
+							: attrs.zimbraPrefMailTrustedSenderList;
+				}
+				modifyPrefsRequest = { _jsns: 'urn:zimbraAccount', _attrs: attrs };
+			}
+
+			const promise = getSoapFetch(SHELL_APP_ID)<
+				BatchRequest,
+				{
+					ModifyPropertiesResponse?: ModifyPropertiesResponse;
+					ModifyPrefsResponse?: ModifyPrefsResponse;
+				}
+			>('Batch', {
+				_jsns: 'urn:zimbra',
+				ModifyPropertiesRequest: modifyPropertiesRequest,
+				ModifyPrefsRequest: modifyPrefsRequest
+			})
 				.then(() => {
+					useAccountStore.setState((s: AccountState) => ({
+						settings: {
+							...s.settings,
+							prefs: reduce(
+								mods.prefs,
+								(acc, pref, key) => ({
+									...acc,
+									[key]: pref as string
+								}),
+								s.settings.prefs
+							),
+							props: reduce(
+								mods.props,
+								(acc, { app, value }, key) => {
+									const propIndex = findIndex(acc, (p) => p.name === key && p.zimlet === app);
+									if (propIndex >= 0) {
+										// eslint-disable-next-line no-param-reassign
+										acc[propIndex] = {
+											name: key,
+											zimlet: app,
+											_content: value as string
+										};
+									} else {
+										acc.push({
+											name: key,
+											zimlet: app,
+											_content: value as string
+										});
+									}
+									return acc;
+								},
+								s.settings.props
+							)
+						}
+					}));
+
 					if (mods.prefs && includes(Object.keys(mods.prefs), 'zimbraPrefLocale')) {
 						setOpen(true);
 					}
@@ -110,8 +191,9 @@ const GeneralSettings: FC = () => {
 						autoHideTimeout: 3000,
 						hideButton: true
 					});
+					setMods({});
 				})
-				.catch(() => {
+				.catch((error: unknown) => {
 					createSnackbar({
 						key: `new`,
 						replace: true,
@@ -120,18 +202,27 @@ const GeneralSettings: FC = () => {
 						autoHideTimeout: 3000,
 						hideButton: true
 					});
+					if (error instanceof Error) {
+						throw error;
+					}
+					throw new Error(typeof error === 'string' ? error : 'edit setting error');
 				});
-			setMods({});
+			return Promise.allSettled([promise]);
 		}
+		return Promise.allSettled([Promise.resolve()]);
 	}, [mods, setLocalStorageSettings, createSnackbar, t]);
 
-	const scalingSettingSectionRef = useRef<ScalingSettingSectionRef>(null);
+	const scalingSettingSectionRef = useRef<ResetComponentImperativeHandler>(null);
+	const outOfOfficeSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
+	const searchSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
 
 	const onCancel = useCallback(() => {
 		setMods({});
 		if (size(localStorageUnAppliedChanges) > 0) {
 			scalingSettingSectionRef.current?.reset();
 		}
+		outOfOfficeSettingsSectionRef.current?.reset();
+		searchSettingsSectionRef?.current?.reset();
 	}, [localStorageUnAppliedChanges]);
 
 	const isDirty = useMemo(
@@ -154,7 +245,7 @@ const GeneralSettings: FC = () => {
 			>
 				<AppearanceSettings>
 					<ScalingSettingSection
-						ref={scalingSettingSectionRef}
+						resetRef={scalingSettingSectionRef}
 						scalingSettings={localStorageSettings}
 						addLocalStoreChange={addLocalStoreChange}
 						cleanLocalStoreChange={cleanLocalStoreChange}
@@ -168,8 +259,16 @@ const GeneralSettings: FC = () => {
 					setOpen={setOpen}
 				/>
 
-				<OutOfOfficeSettings settings={userSettings} addMod={addMod} />
-				<SearchSettingsView settings={userSettings} addMod={addMod} />
+				<OutOfOfficeSettings
+					settings={userSettings}
+					addMod={addMod}
+					resetRef={outOfOfficeSettingsSectionRef}
+				/>
+				<SearchSettings
+					settings={userSettings}
+					addMod={addMod}
+					resetRef={searchSettingsSectionRef}
+				/>
 				<ModuleVersionSettings />
 				<UserQuota mobileView={false} />
 				<Logout />

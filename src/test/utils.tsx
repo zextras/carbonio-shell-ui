@@ -23,6 +23,7 @@ import i18next, { type i18n } from 'i18next';
 import { filter } from 'lodash';
 import { I18nextProvider } from 'react-i18next';
 import { MemoryRouter } from 'react-router-dom';
+import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import { ThemeProvider } from '../boot/theme-provider';
 
 export type UserEvent = ReturnType<typeof userEvent['setup']> & {
@@ -111,7 +112,11 @@ const Wrapper = ({ initialRouterEntries, children }: WrapperProps): JSX.Element 
 		initialIndex={(initialRouterEntries?.length || 1) - 1}
 	>
 		<I18NextTestProvider>
-			<ThemeProvider>{children}</ThemeProvider>
+			<ThemeProvider>
+				<SnackbarManager>
+					<ModalManager>{children}</ModalManager>
+				</SnackbarManager>
+			</ThemeProvider>
 		</I18NextTestProvider>
 	</MemoryRouter>
 );

@@ -4,16 +4,18 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
+
 import 'jest-styled-components';
 import { faker } from '@faker-js/faker';
+import { act, screen, waitFor, within } from '@testing-library/react';
 import { map } from 'lodash';
-import { screen, waitFor, within } from '@testing-library/react';
 import { rest } from 'msw';
-import { setup } from '../test/utils';
-import { Account, BatchRequest, IdentityProps } from '../../types';
-import { AccountsSettings } from './accounts-settings';
+
 import { identityToIdentityProps } from './account-wrapper';
+import { AccountsSettings } from './accounts-settings';
+import { Account, BatchRequest, IdentityProps } from '../../types';
 import server, { waitForRequest } from '../mocks/server';
+import { setup } from '../test/utils';
 
 jest.mock('../workers');
 
@@ -52,6 +54,9 @@ describe('Account setting', () => {
 				)}
 			/>
 		);
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
 		await screen.findByText('sendAs');
 		expect(screen.getByText(fullName)).toBeVisible();
 		expect(screen.getByText(`(${email})`)).toBeVisible();
@@ -96,7 +101,9 @@ describe('Account setting', () => {
 				)}
 			/>
 		);
-
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
 		await screen.findByText('sendAs');
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		expect(screen.getByText('New Persona 1')).toBeVisible();
@@ -164,6 +171,9 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
 		await screen.findByText('sendAs');
 		expect(screen.getByText('New Persona 1')).toBeVisible();
 
@@ -233,6 +243,9 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
 		await screen.findByText('sendAs');
 		expect(screen.getByText(persona1FullName)).toBeVisible();
 
@@ -302,12 +315,19 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
 		await screen.findByText('sendAs');
 		const persona1Row = screen.getByText(persona1FullName);
 		expect(persona1Row).toBeVisible();
 		await user.click(persona1Row);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
 		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
+		act(() => {
+			// run modal timers
+			jest.runOnlyPendingTimers();
+		});
 		await user.click(confirmButton);
 		expect(persona1Row).not.toBeInTheDocument();
 	});
@@ -356,8 +376,9 @@ describe('Account setting', () => {
 
 		identitiesDefault.unshift(identitiesDefault.pop() as IdentityProps);
 
+		const batchRequestUrl = '/service/soap/BatchRequest';
 		server.use(
-			rest.post('/service/soap/BatchRequest', (req, res, ctx) =>
+			rest.post(batchRequestUrl, (req, res, ctx) =>
 				res(
 					ctx.json({
 						Body: {
@@ -370,11 +391,15 @@ describe('Account setting', () => {
 			)
 		);
 
-		const pendingBatchRequest = waitForRequest('POST', '/service/soap/BatchRequest');
+		const pendingBatchRequest = waitForRequest('POST', batchRequestUrl);
 
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
+
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
 		await screen.findByText('sendAs');
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
@@ -407,6 +432,10 @@ describe('Account setting', () => {
 		);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
 		let confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
+		act(() => {
+			// run modal timers
+			jest.runOnlyPendingTimers();
+		});
 		await user.click(confirmButton);
 		await screen.findByText(/primary account settings/i);
 		expect(screen.queryByText(persona1)).not.toBeInTheDocument();
@@ -417,15 +446,21 @@ describe('Account setting', () => {
 		);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
 		confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
+		act(() => {
+			// run modal timers
+			jest.runOnlyPendingTimers();
+		});
 		await user.click(confirmButton);
 		await screen.findByText(/primary account settings/i);
 		expect(screen.queryByText(persona2)).not.toBeInTheDocument();
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
-		await user.click(screen.getByRole('button', { name: /save/i }));
-
 		const request = await pendingBatchRequest;
+
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
 
 		const requestBody = (request?.body as { Body: { BatchRequest: BatchRequest } }).Body;
 		expect(requestBody.BatchRequest.CreateIdentityRequest).toHaveLength(1);
@@ -434,6 +469,10 @@ describe('Account setting', () => {
 
 		const successSnackbar = await screen.findByText('Edits saved correctly');
 		expect(successSnackbar).toBeVisible();
+		act(() => {
+			// close snackbar before exiting test
+			jest.runOnlyPendingTimers();
+		});
 	});
 
 	test('Should remove from the list added identities not saved on discard changes', async () => {
@@ -483,14 +522,18 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
+
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
 		await screen.findByText('sendAs');
 
+		const persona1 = 'New Persona 1';
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		const persona1Row = screen.getByText('New Persona 1');
-		expect(persona1Row).toBeVisible();
+		expect(screen.getByText(persona1)).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
-		expect(persona1Row).not.toBeInTheDocument();
+		expect(screen.queryByText(persona1)).not.toBeInTheDocument();
 	});
 
 	test('Should add in the list removed identities not saved on discard changes', async () => {
@@ -555,18 +598,25 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
 		await screen.findByText('sendAs');
 
-		const persona1Row = screen.getByText('New Persona 1');
-		expect(persona1Row).toBeVisible();
+		expect(screen.getByText(persona1FullName)).toBeVisible();
 
-		await user.click(persona1Row);
+		await user.click(screen.getByText(persona1FullName));
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		expect(persona1Row).not.toBeInTheDocument();
+		const confirmButton = screen.getByRole('button', { name: /delete permanently/i });
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
+		await user.click(confirmButton);
+		expect(screen.queryByText(persona1FullName)).not.toBeInTheDocument();
 
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
 
-		expect(screen.getByText('New Persona 1')).toBeVisible();
+		expect(screen.getByText(persona1FullName)).toBeVisible();
 	});
 
 	test('Should update name of the identity in the list if the user change it from the input(default case)', async () => {
@@ -616,6 +666,9 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
 		await screen.findByText('sendAs');
 
 		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
@@ -682,6 +735,9 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
 		await screen.findByText('sendAs');
 
 		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
@@ -755,6 +811,9 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
 		await screen.findByText('sendAs');
 
 		const emailAddressInput = screen.getByRole('textbox', { name: /E-mail address/i });

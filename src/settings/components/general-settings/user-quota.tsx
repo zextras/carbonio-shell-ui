@@ -58,7 +58,7 @@ const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 	return mobileView ? (
 		<Container width="fit" padding={{ right: 'medium' }}>
 			<Tooltip label={description} placement="bottom">
-				<Quota fill={quota > 0 ? quota : 0} fillBackground={fillBackground} />
+				<Quota fill={quota >= 100 ? 100 : quota} fillBackground={fillBackground} />
 			</Tooltip>
 		</Container>
 	) : (
@@ -76,7 +76,7 @@ const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 				>
 					<Text>{description}</Text>
 				</Container>
-				<Quota fill={quota === -1 ? 100 : quota} fillBackground={fillBackground} />
+				<Quota fill={quota === -1 || quota >= 100 ? 100 : quota} fillBackground={fillBackground} />
 			</Container>
 		</FormSubSection>
 	);

@@ -11,8 +11,6 @@ import { GetComponentsJsonResponseBody } from '../mocks/handlers/components';
 import server from '../mocks/server';
 import { useAppStore } from '../store/app';
 
-jest.mock<typeof import('../workers')>('../workers');
-
 describe('Get components', () => {
 	test('Setup apps and request data for the logged account', async () => {
 		const shellModule: CarbonioModule = {

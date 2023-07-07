@@ -17,15 +17,9 @@ import { Account, BatchRequest, IdentityProps } from '../../types';
 import server, { waitForRequest } from '../mocks/server';
 import { setup } from '../test/utils';
 
-jest.mock<typeof import('../workers')>('../workers');
-jest.mock<typeof import('../reporting/functions')>('../reporting/functions');
-
 describe('Account setting', () => {
 	async function waitForGetRightsRequest(): Promise<void> {
 		await waitForRequest('post', '/service/soap/GetRightsRequest');
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
 		await screen.findByText('sendAs');
 	}
 
@@ -450,10 +444,6 @@ describe('Account setting', () => {
 
 		const request = await pendingBatchRequest;
 
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-
 		const requestBody = (request?.body as { Body: { BatchRequest: BatchRequest } }).Body;
 		expect(requestBody.BatchRequest.CreateIdentityRequest).toHaveLength(1);
 		expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
@@ -461,10 +451,6 @@ describe('Account setting', () => {
 
 		const successSnackbar = await screen.findByText('Edits saved correctly');
 		expect(successSnackbar).toBeVisible();
-		act(() => {
-			// close snackbar before exiting test
-			jest.runOnlyPendingTimers();
-		});
 	});
 
 	test('Should remove from the list added identities not saved on discard changes', async () => {
@@ -595,6 +581,7 @@ describe('Account setting', () => {
 		await user.click(screen.getByRole('button', { name: /delete/i }));
 		const confirmButton = screen.getByRole('button', { name: /delete permanently/i });
 		act(() => {
+			// run modal timers
 			jest.runOnlyPendingTimers();
 		});
 		await user.click(confirmButton);

@@ -13,9 +13,6 @@ import * as networkUtils from '../../../network/utils';
 import { useLoginConfigStore } from '../../../store/login/store';
 import { setup } from '../../../test/utils';
 
-jest.mock<typeof import('../../../workers')>('../../../workers');
-jest.mock<typeof import('../../../reporting/functions')>('../../../reporting/functions');
-
 describe('Logout', () => {
 	test('should redirect to custom logout url on manual logout', async () => {
 		const customLogout = 'custom.logout.url';

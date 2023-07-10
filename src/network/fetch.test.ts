@@ -13,8 +13,6 @@ import { type ErrorSoapResponse } from '../../types';
 import { SHELL_APP_ID } from '../constants';
 import server from '../mocks/server';
 
-jest.mock<typeof import('../workers')>('../workers');
-
 describe('Fetch', () => {
 	test('should redirect to login if user is not authenticated', async () => {
 		server.use(

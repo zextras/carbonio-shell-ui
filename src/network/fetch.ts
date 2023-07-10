@@ -14,7 +14,7 @@ import {
 	SoapResponse
 } from '../../types';
 import { userAgent } from './user-agent';
-import { report } from '../reporting';
+import { report } from '../reporting/functions';
 import { useAccountStore } from '../store/account';
 import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
 import { useNetworkStore } from '../store/network';

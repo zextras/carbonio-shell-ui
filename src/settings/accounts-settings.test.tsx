@@ -97,7 +97,6 @@ describe('Account setting', () => {
 				)}
 			/>
 		);
-
 		await screen.findByText('sendAs');
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		expect(screen.getByText('New Persona 1')).toBeVisible();
@@ -357,8 +356,9 @@ describe('Account setting', () => {
 
 		identitiesDefault.unshift(identitiesDefault.pop() as IdentityProps);
 
+		const batchRequestUrl = '/service/soap/BatchRequest';
 		server.use(
-			rest.post('/service/soap/BatchRequest', (req, res, ctx) =>
+			rest.post(batchRequestUrl, (req, res, ctx) =>
 				res(
 					ctx.json({
 						Body: {
@@ -371,7 +371,7 @@ describe('Account setting', () => {
 			)
 		);
 
-		const pendingBatchRequest = waitForRequest('POST', '/service/soap/BatchRequest');
+		const pendingBatchRequest = waitForRequest('POST', batchRequestUrl);
 
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
@@ -421,8 +421,6 @@ describe('Account setting', () => {
 		await user.click(confirmButton);
 		await screen.findByText(/primary account settings/i);
 		expect(screen.queryByText(persona2)).not.toBeInTheDocument();
-
-		await user.click(screen.getByRole('button', { name: /save/i }));
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
@@ -486,12 +484,12 @@ describe('Account setting', () => {
 		);
 		await screen.findByText('sendAs');
 
+		const persona1 = 'New Persona 1';
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		const persona1Row = screen.getByText('New Persona 1');
-		expect(persona1Row).toBeVisible();
+		expect(screen.getByText(persona1)).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
-		expect(persona1Row).not.toBeInTheDocument();
+		expect(screen.queryByText(persona1)).not.toBeInTheDocument();
 	});
 
 	test('Should add in the list removed identities not saved on discard changes', async () => {
@@ -558,16 +556,17 @@ describe('Account setting', () => {
 		);
 		await screen.findByText('sendAs');
 
-		const persona1Row = screen.getByText('New Persona 1');
-		expect(persona1Row).toBeVisible();
+		expect(screen.getByText(persona1FullName)).toBeVisible();
 
-		await user.click(persona1Row);
+		await user.click(screen.getByText(persona1FullName));
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		expect(persona1Row).not.toBeInTheDocument();
+		const confirmButton = screen.getByRole('button', { name: /delete permanently/i });
+		await user.click(confirmButton);
+		expect(screen.queryByText(persona1FullName)).not.toBeInTheDocument();
 
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
 
-		expect(screen.getByText('New Persona 1')).toBeVisible();
+		expect(screen.getByText(persona1FullName)).toBeVisible();
 	});
 
 	test('Should update name of the identity in the list if the user change it from the input(default case)', async () => {

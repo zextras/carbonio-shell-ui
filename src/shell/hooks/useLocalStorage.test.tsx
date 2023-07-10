@@ -172,7 +172,7 @@ describe('use local storage', () => {
 					error instanceof Error &&
 					error.message === 'Unexpected token o in JSON at position 1'
 				) {
-					console.log('Controlled error', error, ...rest);
+					console.log('Controlled error', error.message);
 				} else {
 					actualConsoleError(error, ...rest);
 				}

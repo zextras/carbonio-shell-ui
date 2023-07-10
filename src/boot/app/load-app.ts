@@ -13,7 +13,7 @@ import { AppLink } from '../../ui-extras/app-link';
 import * as CONSTANTS from '../../constants';
 import type { CarbonioModule } from '../../../types';
 import { getAppSetters } from './app-loader-setters';
-import { report } from '../../reporting';
+import { report } from '../../reporting/functions';
 import SettingsHeader from '../../settings/components/settings-header';
 
 export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};

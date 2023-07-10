@@ -17,9 +17,12 @@ import { Account, BatchRequest, IdentityProps } from '../../types';
 import server, { waitForRequest } from '../mocks/server';
 import { setup } from '../test/utils';
 
-jest.mock('../workers');
-
 describe('Account setting', () => {
+	async function waitForGetRightsRequest(): Promise<void> {
+		await waitForRequest('post', '/service/soap/GetRightsRequest');
+		await screen.findByText('sendAs');
+	}
+
 	test('Show primary identity inside the list', async () => {
 		const fullName = faker.person.fullName();
 		const email = faker.internet.email();
@@ -54,10 +57,8 @@ describe('Account setting', () => {
 				)}
 			/>
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+
+		await waitForGetRightsRequest();
 		expect(screen.getByText(fullName)).toBeVisible();
 		expect(screen.getByText(`(${email})`)).toBeVisible();
 		expect(screen.getByText('Primary')).toBeVisible();
@@ -101,10 +102,7 @@ describe('Account setting', () => {
 				)}
 			/>
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		expect(screen.getByText('New Persona 1')).toBeVisible();
 	});
@@ -171,10 +169,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 		expect(screen.getByText('New Persona 1')).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
@@ -243,10 +238,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 		expect(screen.getByText(persona1FullName)).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
@@ -315,10 +307,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 		const persona1Row = screen.getByText(persona1FullName);
 		expect(persona1Row).toBeVisible();
 		await user.click(persona1Row);
@@ -397,10 +386,7 @@ describe('Account setting', () => {
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
 
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await waitFor(() =>
@@ -458,10 +444,6 @@ describe('Account setting', () => {
 
 		const request = await pendingBatchRequest;
 
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-
 		const requestBody = (request?.body as { Body: { BatchRequest: BatchRequest } }).Body;
 		expect(requestBody.BatchRequest.CreateIdentityRequest).toHaveLength(1);
 		expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
@@ -469,10 +451,6 @@ describe('Account setting', () => {
 
 		const successSnackbar = await screen.findByText('Edits saved correctly');
 		expect(successSnackbar).toBeVisible();
-		act(() => {
-			// close snackbar before exiting test
-			jest.runOnlyPendingTimers();
-		});
 	});
 
 	test('Should remove from the list added identities not saved on discard changes', async () => {
@@ -523,10 +501,7 @@ describe('Account setting', () => {
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
 
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 
 		const persona1 = 'New Persona 1';
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
@@ -598,10 +573,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 
 		expect(screen.getByText(persona1FullName)).toBeVisible();
 
@@ -609,6 +581,7 @@ describe('Account setting', () => {
 		await user.click(screen.getByRole('button', { name: /delete/i }));
 		const confirmButton = screen.getByRole('button', { name: /delete permanently/i });
 		act(() => {
+			// run modal timers
 			jest.runOnlyPendingTimers();
 		});
 		await user.click(confirmButton);
@@ -666,10 +639,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 
 		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
 		expect(accountNameInput).toHaveDisplayValue(defaultFullName);
@@ -735,10 +705,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 
 		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
 		expect(accountNameInput).toHaveDisplayValue(defaultFullName);
@@ -811,10 +778,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 
 		const emailAddressInput = screen.getByRole('textbox', { name: /E-mail address/i });
 		expect(emailAddressInput).toHaveDisplayValue(defaultEmail);

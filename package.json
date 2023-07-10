@@ -10,7 +10,9 @@
 	},
 	"scripts": {
 		"build:clean": "rm -rf lib && rm -rf dist && rm -rf pkg",
-		"test": "jest",
+		"test:ci": "jest --testTimeout=10000 --maxWorkers=50%",
+		"test:dev": "jest",
+		"test": "is-ci && npm run test:ci || npm run test:dev",
 		"prepare": "is-ci || husky install",
 		"prepack": "npm run build:clean && npm run build -- -d",
 		"postpublish": "rm -rf lib",

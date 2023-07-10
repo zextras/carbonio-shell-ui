@@ -16,8 +16,6 @@ import AppViewContainer from './app-view-container';
 import { DefaultViewsRegister } from '../boot/bootstrapper';
 import { ModuleSelector } from '../search/module-selector';
 
-jest.mock('../workers');
-
 const ShellWrapper = (): JSX.Element => (
 	<>
 		<DefaultViewsRegister />

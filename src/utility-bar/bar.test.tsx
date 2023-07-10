@@ -33,7 +33,7 @@ describe('Shell utility bar', () => {
 
 	test.each(['Feedback', 'Update view', 'Documentation', 'Logout'])(
 		'should show the entry "%s" inside the account utility menu',
-		async () => {
+		async (item) => {
 			setupAccountStore();
 			const { getByRoleWithIcon, user } = setup(<ShellUtilityBar />);
 
@@ -41,7 +41,7 @@ describe('Shell utility bar', () => {
 			expect(accountUtilityMenu).toBeVisible();
 			await user.click(accountUtilityMenu);
 			await screen.findByText(mockedAccount.displayName);
-			expect(screen.getByText(/feedback/i)).toBeVisible();
+			expect(screen.getByText(item)).toBeVisible();
 		}
 	);
 

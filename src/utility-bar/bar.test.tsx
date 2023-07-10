@@ -45,7 +45,7 @@ describe('Shell utility bar', () => {
 		}
 	);
 
-	test('should redirect to logout if user clicks on logout', async () => {
+	test('should redirect to custom logout url when user clicks on logout', async () => {
 		const customLogout = 'custom.logout.url';
 		const goToFn = jest.spyOn(networkUtils, 'goTo').mockImplementation();
 		const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation();
@@ -62,5 +62,22 @@ describe('Shell utility bar', () => {
 		expect(goToFn).toHaveBeenCalledTimes(1);
 		expect(goToFn).toHaveBeenCalledWith(customLogout);
 		expect(goToLoginFn).not.toHaveBeenCalled();
+	});
+
+	test('should redirect to login if no custom logout url is set when user clicks on logout', async () => {
+		const goToFn = jest.spyOn(networkUtils, 'goTo').mockImplementation();
+		const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation();
+		useLoginConfigStore.setState((s) => ({ ...s, carbonioWebUiLogoutURL: '' }));
+		const { user, getByRoleWithIcon } = setup(<ShellUtilityBar />);
+		const logout = waitForRequest('get', '/?loginOp=logout');
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.accountUtilityMenu }));
+		await user.click(screen.getByText(/logout/i));
+		await logout;
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
+		await waitFor(() => expect(goToLoginFn).toHaveBeenCalled());
+		expect(goToLoginFn).toHaveBeenCalledTimes(1);
+		expect(goToFn).not.toHaveBeenCalled();
 	});
 });

@@ -17,6 +17,7 @@ import { settingsSubSections } from '../../settings/general-settings-sub-section
 import { SettingsAppView } from '../../settings/settings-app-view';
 import { SettingsSidebar } from '../../settings/settings-sidebar';
 import { useAppStore } from '../../store/app';
+import { useAccountStore } from '../../store/account';
 
 const settingsRoute = {
 	route: SETTINGS_APP_ID,
@@ -103,14 +104,22 @@ const feedbackBoardView = {
 export const registerDefaultViews = (t: TFunction): void => {
 	useAppStore.setState(
 		produce((s: AppState) => {
-			s.routes = {
-				[SEARCH_APP_ID]: searchRoute,
-				[SETTINGS_APP_ID]: settingsRoute
-			};
-			s.views.primaryBar = [searchPrimaryBar(t), settingsPrimaryBar(t)];
-			s.views.secondaryBar = [settingsSecondaryBar];
-			s.views.appView = [searchAppView, settingsAppView];
-			s.views.settings = [settingsGeneralView(t), settingsAccountsView(t)];
+			if (useAccountStore.getState().settings.attrs.zimbraFeatureOptionsEnabled === 'FALSE') {
+				s.routes = {
+					[SEARCH_APP_ID]: searchRoute
+				};
+				s.views.primaryBar = [searchPrimaryBar(t)];
+				s.views.appView = [searchAppView];
+			} else {
+				s.routes = {
+					[SEARCH_APP_ID]: searchRoute,
+					[SETTINGS_APP_ID]: settingsRoute
+				};
+				s.views.primaryBar = [searchPrimaryBar(t), settingsPrimaryBar(t)];
+				s.views.secondaryBar = [settingsSecondaryBar];
+				s.views.appView = [searchAppView, settingsAppView];
+				s.views.settings = [settingsGeneralView(t), settingsAccountsView(t)];
+			}
 			s.views.board = [feedbackBoardView];
 		})
 	);

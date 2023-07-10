@@ -37,3 +37,14 @@ window.resizeTo = function resizeTo(width, height): void {
 		outerHeight: height
 	}).dispatchEvent(new this.Event('resize'));
 };
+
+Object.defineProperty(window, 'ResizeObserver', {
+	writable: true,
+	value: function ResizeObserverMock(): ResizeObserver {
+		return {
+			observe: noop,
+			unobserve: noop,
+			disconnect: noop
+		};
+	}
+});

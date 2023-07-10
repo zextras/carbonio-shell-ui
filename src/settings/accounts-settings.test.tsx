@@ -7,7 +7,7 @@ import React from 'react';
 import 'jest-styled-components';
 import { faker } from '@faker-js/faker';
 import { map } from 'lodash';
-import { screen, waitFor, within } from '@testing-library/react';
+import { act, screen, waitFor, within } from '@testing-library/react';
 import { rest } from 'msw';
 import { setup } from '../test/utils';
 import { Account, BatchRequest, IdentityProps } from '../../types';
@@ -16,9 +16,12 @@ import { identityToIdentityProps } from './account-wrapper';
 import server, { waitForRequest } from '../mocks/server';
 import { useAccountStore } from '../store/account';
 
-jest.mock('../workers');
-
 describe('Account setting', () => {
+	async function waitForGetRightsRequest(): Promise<void> {
+		await waitForRequest('post', '/service/soap/GetRightsRequest');
+		await screen.findByText('sendAs');
+	}
+
 	test('Show primary identity inside the list', async () => {
 		const fullName = faker.person.fullName();
 		const email = faker.internet.email();
@@ -53,7 +56,8 @@ describe('Account setting', () => {
 				)}
 			/>
 		);
-		await screen.findByText('sendAs');
+
+		await waitForGetRightsRequest();
 		expect(screen.getByText(fullName)).toBeVisible();
 		expect(screen.getByText(`(${email})`)).toBeVisible();
 		expect(screen.getByText('Primary')).toBeVisible();
@@ -97,7 +101,7 @@ describe('Account setting', () => {
 				)}
 			/>
 		);
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		expect(screen.getByText('New Persona 1')).toBeVisible();
 	});
@@ -164,7 +168,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 		expect(screen.getByText('New Persona 1')).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
@@ -233,7 +237,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 		expect(screen.getByText(persona1FullName)).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
@@ -302,7 +306,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 		const persona1Row = screen.getByText(persona1FullName);
 		expect(persona1Row).toBeVisible();
 		await user.click(persona1Row);
@@ -376,7 +380,8 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		await screen.findByText('sendAs');
+
+		await waitForGetRightsRequest();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await waitFor(() =>
@@ -482,7 +487,8 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		await screen.findByText('sendAs');
+
+		await waitForGetRightsRequest();
 
 		const persona1 = 'New Persona 1';
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
@@ -554,13 +560,17 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 
 		expect(screen.getByText(persona1FullName)).toBeVisible();
 
 		await user.click(screen.getByText(persona1FullName));
 		await user.click(screen.getByRole('button', { name: /delete/i }));
 		const confirmButton = screen.getByRole('button', { name: /delete permanently/i });
+		act(() => {
+			// run modal timers
+			jest.runOnlyPendingTimers();
+		});
 		await user.click(confirmButton);
 		expect(screen.queryByText(persona1FullName)).not.toBeInTheDocument();
 
@@ -616,7 +626,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 
 		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
 		expect(accountNameInput).toHaveDisplayValue(defaultFullName);
@@ -682,7 +692,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 
 		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
 		expect(accountNameInput).toHaveDisplayValue(defaultFullName);
@@ -755,7 +765,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 
 		const emailAddressInput = screen.getByRole('textbox', { name: /E-mail address/i });
 		expect(emailAddressInput).toHaveDisplayValue(defaultEmail);

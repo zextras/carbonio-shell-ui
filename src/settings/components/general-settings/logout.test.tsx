@@ -33,10 +33,9 @@ describe('Logout', () => {
 	});
 
 	test('should redirect to login if no custom logout url is set', async () => {
-		const customLogout = 'custom.logout.url';
 		const goToFn = jest.spyOn(networkUtils, 'goTo').mockImplementation();
 		const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation();
-		useLoginConfigStore.setState((s) => ({ ...s, carbonioWebUiLogoutURL: customLogout }));
+		useLoginConfigStore.setState((s) => ({ ...s, carbonioWebUiLogoutURL: '' }));
 		const { user } = setup(<Logout />);
 		const logout = waitForRequest('get', '/?loginOp=logout');
 		await user.click(screen.getByRole('button', { name: /logout/i }));
@@ -44,9 +43,8 @@ describe('Logout', () => {
 		act(() => {
 			jest.runOnlyPendingTimers();
 		});
-		await waitFor(() => expect(goToFn).toHaveBeenCalled());
-		expect(goToFn).toHaveBeenCalledTimes(1);
-		expect(goToFn).toHaveBeenCalledWith(customLogout);
-		expect(goToLoginFn).not.toHaveBeenCalled();
+		await waitFor(() => expect(goToLoginFn).toHaveBeenCalled());
+		expect(goToLoginFn).toHaveBeenCalledTimes(1);
+		expect(goToFn).not.toHaveBeenCalled();
 	});
 });

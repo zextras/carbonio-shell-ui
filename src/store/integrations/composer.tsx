@@ -57,6 +57,7 @@ type ComposerProps = EditorProps & {
 	 * If defined, a menu item to add inline images is added to the composer.
 	 */
 	onFileSelect?: (arg: { editor: TinyMCE; files: HTMLInputElement['files'] | undefined }) => void;
+	customInitOptions?: EditorProps['init']
 };
 
 export const FileInput = styled.input`
@@ -69,6 +70,7 @@ const Composer: FC<ComposerProps> = ({
 	inline = false,
 	value,
 	initialValue,
+	customInitOptions,
 	...rest
 }) => {
 	const _onEditorChange = useCallback<NonNullable<EditorProps['onEditorChange']>>(
@@ -217,9 +219,10 @@ const Composer: FC<ComposerProps> = ({
 			end_container_on_empty_block: true,
 			relative_urls: false,
 			remove_script_host: false,
-			newline_behavior: 'invert'
+			newline_behavior: 'invert',
+			...customInitOptions
 		}),
-		[defaultStyle?.color, defaultStyle?.font, defaultStyle?.fontSize, inline, locale, setupCallback]
+		[defaultStyle?.color, defaultStyle?.font, defaultStyle?.fontSize, inline, locale, setupCallback, customInitOptions]
 	);
 
 	const fileInputOnChange = useCallback((): void => {

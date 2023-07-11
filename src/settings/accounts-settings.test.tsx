@@ -899,7 +899,7 @@ describe('Account setting', () => {
 			const { user } = setup(
 				<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 			);
-			await screen.findByText('sendAs');
+			await waitForGetRightsRequest();
 
 			expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
 			expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
@@ -982,7 +982,7 @@ describe('Account setting', () => {
 			const { user } = setup(
 				<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 			);
-			await screen.findByText('sendAs');
+			await waitForGetRightsRequest();
 
 			expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
 			expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();

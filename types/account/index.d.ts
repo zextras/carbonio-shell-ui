@@ -95,6 +95,7 @@ export interface AccountSettingsPrefs {
 }
 
 export type AccountSettingsAttrs = {
+	zimbraFeatureOptionsEnabled?: BooleanString;
 	zimbraIdentityMaxNumEntries?: number;
 	[key: string]: string | number | Array<string | number>;
 };

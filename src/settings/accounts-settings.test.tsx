@@ -312,6 +312,10 @@ describe('Account setting', () => {
 		await user.click(persona1Row);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
 		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
+		act(() => {
+			// run modal timers
+			jest.runOnlyPendingTimers();
+		});
 		await user.click(confirmButton);
 		expect(persona1Row).not.toBeInTheDocument();
 	});
@@ -413,6 +417,10 @@ describe('Account setting', () => {
 		);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
 		let confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
+		act(() => {
+			// run modal timers
+			jest.runOnlyPendingTimers();
+		});
 		await user.click(confirmButton);
 		await screen.findByText(/primary account settings/i);
 		expect(screen.queryByText(persona1)).not.toBeInTheDocument();
@@ -423,6 +431,10 @@ describe('Account setting', () => {
 		);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
 		confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
+		act(() => {
+			// run modal timers
+			jest.runOnlyPendingTimers();
+		});
 		await user.click(confirmButton);
 		await screen.findByText(/primary account settings/i);
 		expect(screen.queryByText(persona2)).not.toBeInTheDocument();

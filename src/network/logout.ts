@@ -5,15 +5,21 @@
  */
 
 import { getSoapFetch } from './fetch';
-import { goToLogin } from './go-to-login';
+import { goTo, goToLogin } from './utils';
 import { SHELL_APP_ID } from '../constants';
+import { useLoginConfigStore } from '../store/login/store';
 
-export const logout = (): Promise<void> =>
-	getSoapFetch(SHELL_APP_ID)('EndSession', {
+export function logout(): Promise<void> {
+	return getSoapFetch(SHELL_APP_ID)('EndSession', {
 		_jsns: 'urn:zimbraAccount',
 		logoff: true
-	}).then(() => {
-		fetch('/?loginOp=logout')
-			.then((res) => res)
-			.then(goToLogin);
-	});
+	})
+		.then(() => fetch('/?loginOp=logout', { redirect: 'manual' }))
+		.then(() => {
+			const customLogoutUrl = useLoginConfigStore.getState().carbonioWebUiLogoutURL;
+			customLogoutUrl ? goTo(customLogoutUrl) : goToLogin();
+		})
+		.catch((error) => {
+			console.error(error);
+		});
+}

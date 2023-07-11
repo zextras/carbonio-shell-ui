@@ -166,3 +166,22 @@ export const setup = (
 		...options?.renderOptions
 	})
 });
+
+export function controlConsoleError(expectedMessage: string): void {
+	// eslint-disable-next-line no-console
+	const actualConsoleError = console.error;
+	// eslint-disable-next-line no-console
+	console.error = jest.fn<ReturnType<typeof console.error>, Parameters<typeof console.error>>(
+		(error, ...restParameter) => {
+			if (
+				(typeof error === 'string' && error === expectedMessage) ||
+				(error instanceof Error && error.message === expectedMessage)
+			) {
+				// eslint-disable-next-line no-console
+				console.error('Controlled error', error, ...restParameter);
+			} else {
+				actualConsoleError(error, ...restParameter);
+			}
+		}
+	);
+}

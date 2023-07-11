@@ -11,7 +11,7 @@ import { findIndex, includes, isEmpty, map, reduce, size } from 'lodash';
 
 import AppearanceSettings from './components/general-settings/appearance-settings';
 import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
-import Logout from './components/general-settings/logout';
+import { Logout } from './components/general-settings/logout';
 import ModuleVersionSettings from './components/general-settings/module-version-settings';
 import { OutOfOfficeSettings } from './components/general-settings/out-of-office-settings';
 import { ScalingSettingSection } from './components/general-settings/scaling-setting-section';

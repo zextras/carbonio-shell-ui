@@ -6,8 +6,8 @@
 
 import { find, map, maxBy } from 'lodash';
 
-import { goToLogin } from './go-to-login';
 import { userAgent } from './user-agent';
+import { goToLogin } from './utils';
 import {
 	Account,
 	ErrorSoapBodyResponse,
@@ -16,7 +16,7 @@ import {
 	SoapResponse
 } from '../../types';
 import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
-import { report } from '../reporting';
+import { report } from '../reporting/functions';
 import { useAccountStore } from '../store/account';
 import { useNetworkStore } from '../store/network';
 import { getPollingInterval, handleSync } from '../store/network/utils';

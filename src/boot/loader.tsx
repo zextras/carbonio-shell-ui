@@ -13,8 +13,8 @@ import { useTranslation } from 'react-i18next';
 import { loadApps, unloadAllApps } from './app/load-apps';
 import { getComponents } from '../network/get-components';
 import { getInfo } from '../network/get-info';
-import { goToLogin } from '../network/go-to-login';
 import { loginConfig } from '../network/login-config';
+import { goToLogin } from '../network/utils';
 import { useAppStore } from '../store/app';
 
 export function isPromiseRejectedResult<T>(

@@ -12,7 +12,7 @@ import { loadApp, unloadApps } from './load-app';
 import { injectSharedLibraries } from './shared-libraries';
 import { CarbonioModule } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
-import { useReporter } from '../../reporting';
+import { useReporter } from '../../reporting/store';
 import { localeList } from '../../settings/components/utils';
 import { getUserSetting, useAccountStore } from '../../store/account';
 import { getT, useI18nStore } from '../../store/i18n';
@@ -20,7 +20,9 @@ import { getT, useI18nStore } from '../../store/i18n';
 const getDateFnsLocale = (locale: string): Promise<DateFnsLocale> =>
 	import(`date-fns/locale/${locale}/index.js`);
 
-export function loadApps(apps: Array<CarbonioModule>): void {
+export function loadApps(
+	apps: Array<CarbonioModule>
+): Promise<PromiseSettledResult<CarbonioModule>[]> {
 	injectSharedLibraries();
 	const appsToLoad = filter(apps, (app) => {
 		if (app.name === SHELL_APP_ID) return false;
@@ -46,7 +48,7 @@ export function loadApps(apps: Array<CarbonioModule>): void {
 		});
 	}
 	useReporter.getState().setClients(appsToLoad);
-	Promise.allSettled(map(appsToLoad, (app) => loadApp(app)));
+	return Promise.allSettled(map(appsToLoad, (app) => loadApp(app)));
 }
 
 export function unloadAllApps(): Promise<void> {

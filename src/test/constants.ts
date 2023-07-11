@@ -9,7 +9,7 @@ import { Border } from '../shell/hooks/useResize';
 const DEFAULT_ID = 'logged-user-id';
 export const LOGGED_USER = {
 	id: DEFAULT_ID,
-	name: 'Logged User',
+	name: 'LoggedUser',
 	prefs: {},
 	attrs: {
 		displayName: 'Logged User'
@@ -127,6 +127,7 @@ export const PALETTE = {
 };
 
 export const ICONS = {
+	accountUtilityMenu: 'PersonOutline',
 	checkboxChecked: 'icon: CheckmarkSquare',
 	checkboxUnchecked: 'icon: Square',
 	close: 'Close',

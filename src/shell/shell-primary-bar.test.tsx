@@ -18,8 +18,6 @@ import { ModuleSelector } from '../search/module-selector';
 import { useAppStore } from '../store/app';
 import { setup } from '../test/utils';
 
-jest.mock('../workers');
-
 const ShellWrapper = (): JSX.Element => (
 	<>
 		<DefaultViewsRegister />

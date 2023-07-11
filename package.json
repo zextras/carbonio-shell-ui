@@ -1,6 +1,6 @@
 {
 	"name": "@zextras/carbonio-shell-ui",
-	"version": "3.1.1",
+	"version": "3.2.0",
 	"description": "The Zextras Carbonio web client",
 	"main": "dist/zapp-shell.bundle.js",
 	"types": "./types/index.d.ts",
@@ -10,7 +10,9 @@
 	},
 	"scripts": {
 		"build:clean": "rm -rf lib && rm -rf dist && rm -rf pkg",
-		"test": "jest",
+		"test:ci": "jest --testTimeout=10000 --maxWorkers=50%",
+		"test:dev": "jest",
+		"test": "is-ci && npm run test:ci || npm run test:dev",
 		"prepare": "is-ci || husky install",
 		"prepack": "npm run build:clean && npm run build -- -d",
 		"postpublish": "rm -rf lib",
@@ -107,7 +109,7 @@
 	},
 	"peerDependencies": {
 		"@reduxjs/toolkit": "^1 >=1.9",
-		"@zextras/carbonio-design-system": "^2.1.1",
+		"@zextras/carbonio-design-system": "^2.2.0",
 		"@zextras/carbonio-ui-preview": "^1",
 		"core-js": "^3.27.2",
 		"lodash": "^4.17.21",

@@ -7,6 +7,7 @@
 
 import type { TFunction } from 'i18next';
 import produce from 'immer';
+import { size } from 'lodash';
 
 import type { AppState, PrimaryBarView, SettingsView } from '../../../types';
 import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
@@ -17,6 +18,7 @@ import GeneralSettings from '../../settings/general-settings';
 import { settingsSubSections } from '../../settings/general-settings-sub-sections';
 import { SettingsAppView } from '../../settings/settings-app-view';
 import { SettingsSidebar } from '../../settings/settings-sidebar';
+import { useAccountStore } from '../../store/account';
 import { useAppStore } from '../../store/app';
 
 const settingsRoute = {
@@ -104,14 +106,23 @@ const feedbackBoardView = {
 export const registerDefaultViews = (t: TFunction): void => {
 	useAppStore.setState(
 		produce((s: AppState) => {
-			s.routes = {
-				[SEARCH_APP_ID]: searchRoute,
-				[SETTINGS_APP_ID]: settingsRoute
-			};
-			s.views.primaryBar = [searchPrimaryBar(t), settingsPrimaryBar(t)];
-			s.views.secondaryBar = [settingsSecondaryBar];
-			s.views.appView = [searchAppView, settingsAppView];
-			s.views.settings = [settingsGeneralView(t), settingsAccountsView(t)];
+			const { attrs } = useAccountStore.getState().settings;
+			if (size(attrs) === 0 || attrs.zimbraFeatureOptionsEnabled === 'FALSE') {
+				s.routes = {
+					[SEARCH_APP_ID]: searchRoute
+				};
+				s.views.primaryBar = [searchPrimaryBar(t)];
+				s.views.appView = [searchAppView];
+			} else {
+				s.routes = {
+					[SEARCH_APP_ID]: searchRoute,
+					[SETTINGS_APP_ID]: settingsRoute
+				};
+				s.views.primaryBar = [searchPrimaryBar(t), settingsPrimaryBar(t)];
+				s.views.secondaryBar = [settingsSecondaryBar];
+				s.views.appView = [searchAppView, settingsAppView];
+				s.views.settings = [settingsGeneralView(t), settingsAccountsView(t)];
+			}
 			s.views.board = [feedbackBoardView];
 		})
 	);

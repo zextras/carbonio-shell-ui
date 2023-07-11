@@ -24,7 +24,8 @@ export interface ZappDarkreaderModeZimletProp extends ZimletProp {
 export type SoapFetch = <Request, Response>(
 	api: string,
 	body: Request,
-	account?: string
+	account?: string,
+	signal?: AbortSignal
 ) => Promise<Response>;
 
 export type AccountState = {

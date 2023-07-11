@@ -30,7 +30,7 @@
                 "auto_reply_message": "Mensagem de resposta automática:",
                 "auto_reply_message_external": "Mensagem de resposta automática para remetentes externos:",
                 "create_appointment": "Criar evento do calendário:",
-                "end_time": "Hora de fim:",
+                "end_time": "Hora final:",
                 "external_senders": "Remetentes externos",
                 "out_of_office_status": "Status da resposta automática:",
                 "send_auto_reply_period": "Enviar respostas automáticas durante o seguinte período:",
@@ -55,7 +55,7 @@
         },
         "general": {
             "account": "Conta",
-            "account_logout": "Encerrar sessão",
+            "account_logout": "Sair",
             "theme_disabled": "Desabilitado",
             "theme_enabled": "Habilitado",
             "general": "Configurações gerais",
@@ -78,7 +78,7 @@
     },
     "new": "Novo",
     "search": {
-        "app": "Buscar",
+        "app": "Busca",
         "module": "Módulo",
         "active_input_label": "Separe as palavras-chave pressionando vírgula ou espaço",
         "clear": "Limpar caixa de pesquisa",
@@ -92,9 +92,9 @@
     "message": {
         "snackbar": {
             "settings_saved": "Edições salvas corretamente",
-            "identities_quota_exceeded": "A identidade não pôde ser criada porque você atingiu o máximo de identidades permitido"
+            "identities_quota_exceeded": "A identidade não pôde ser criada porque você excedeu o máximo de identidades permitidas"
         },
-        "reload": "\tGostaria de recarregar o aplicativo agora para exibir o novo idioma?\nCaso contrário, o novo idioma aparecerá a próxima vez que você fizer login."
+        "reload": "\tQuer recarregar o aplicativo agora para exibir o novo idioma?\nCaso contrário, o novo idioma aparecerá a próxima vez que você fizer login."
     },
     "module": {
         "app": {
@@ -125,7 +125,7 @@
         "address": "Endereço",
         "email_address": "Endereço de e-mail",
         "filter_folders": "Filtrar pastas",
-        "logout": "Encerrar sessão",
+        "logout": "Sair",
         "new_folder": "Nova pasta",
         "save": "Salvar",
         "secondary": "Secundário",
@@ -146,7 +146,7 @@
         "delegates": "Delegados",
         "add_persona": "Adicionar Persona",
         "account_username": "Nome de usuário",
-        "accounts_list": "Contas",
+        "accounts_list": "Contas de email",
         "add_delegate": "Novo delegado",
         "add_external_account": "Adicionar conta externa",
         "add_new_email": "Adicionar endereço de e-mail",
@@ -378,7 +378,8 @@
         "hide": "Minimizar janela",
         "reduce": "Redefinir janela",
         "show_tabs": "Mostrar tudo",
-        "open_app": "Abrir no app"
+        "open_app": "Abrir no app",
+        "from_app": "De {{app}}"
     },
     "feedback": {
         "other": "Outro",

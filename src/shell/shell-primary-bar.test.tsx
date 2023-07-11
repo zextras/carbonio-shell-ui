@@ -4,19 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
-import { act, screen, within } from '@testing-library/react';
-import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
-import { Button, Text } from '@zextras/carbonio-design-system';
-import { setup } from '../test/utils';
-import ShellPrimaryBar from './shell-primary-bar';
-import { useAppStore } from '../store/app';
-import { PrimaryBarView } from '../../types';
-import { usePushHistoryCallback } from '../history/hooks';
-import AppViewContainer from './app-view-container';
-import { DefaultViewsRegister } from '../boot/bootstrapper';
-import { ModuleSelector } from '../search/module-selector';
 
-jest.mock('../workers');
+import { act, screen, within } from '@testing-library/react';
+import { Button, Text } from '@zextras/carbonio-design-system';
+import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
+
+import AppViewContainer from './app-view-container';
+import ShellPrimaryBar from './shell-primary-bar';
+import { PrimaryBarView } from '../../types';
+import { DefaultViewsRegister } from '../boot/bootstrapper';
+import { usePushHistoryCallback } from '../history/hooks';
+import { ModuleSelector } from '../search/module-selector';
+import { useAppStore } from '../store/app';
+import { setup } from '../test/utils';
 
 const ShellWrapper = (): JSX.Element => (
 	<>

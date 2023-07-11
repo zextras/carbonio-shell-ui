@@ -57,7 +57,7 @@ type ComposerProps = EditorProps & {
 	 * If defined, a menu item to add inline images is added to the composer.
 	 */
 	onFileSelect?: (arg: { editor: TinyMCE; files: HTMLInputElement['files'] | undefined }) => void;
-	customInitOptions?: EditorProps['init'];
+	customInitOptions?: Partial<EditorProps['init']>;
 };
 
 export const FileInput = styled.input`

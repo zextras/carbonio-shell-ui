@@ -786,63 +786,7 @@ describe('Account setting', () => {
 
 	describe('Delegates', () => {
 		// TODO waiting for radio component refactor to better find active radio
-		test.skip('The value received in the pref is the one checked in the UI', async () => {
-			useAccountStore.setState((previousState) => ({
-				...previousState,
-				settings: {
-					...previousState.settings,
-					prefs: { zimbraPrefDelegatedSendSaveTarget: 'owner' }
-				}
-			}));
-
-			const defaultFirstName = faker.person.firstName();
-			const defaultLastName = faker.person.lastName();
-			const defaultFullName = faker.person.fullName({
-				firstName: defaultFirstName,
-				lastName: defaultLastName
-			});
-			const defaultEmail = faker.internet.email({
-				firstName: defaultFirstName,
-				lastName: defaultLastName
-			});
-			const defaultId = faker.string.uuid();
-
-			const identitiesArray: Account['identities']['identity'] = [
-				{
-					id: defaultId,
-					name: 'DEFAULT',
-					_attrs: {
-						zimbraPrefIdentityName: defaultFullName,
-						zimbraPrefReplyToEnabled: 'FALSE',
-						zimbraPrefFromDisplay: defaultFirstName,
-						zimbraPrefFromAddress: defaultEmail,
-						zimbraPrefIdentityId: defaultId
-					}
-				}
-			];
-
-			const account: Account = {
-				name: defaultEmail,
-				rights: { targets: [] },
-				signatures: { signature: [] },
-				id: defaultId,
-				displayName: '',
-				identities: {
-					identity: identitiesArray
-				}
-			};
-
-			const identitiesDefault = map(identitiesArray, (item, index) =>
-				identityToIdentityProps(item, index)
-			);
-
-			identitiesDefault.unshift(identitiesDefault.pop() as IdentityProps);
-
-			const { user } = setup(
-				<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
-			);
-			await screen.findByText('sendAs');
-		});
+		test.todo('The value received in the pref is the one checked in the UI');
 
 		test('When the value change, the save button and discard button becomes enabled', async () => {
 			useAccountStore.setState((previousState) => ({

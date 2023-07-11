@@ -365,9 +365,7 @@ export const AccountsSettings = ({
 							...s.settings,
 							prefs: {
 								...s.settings.prefs,
-								zimbraPrefDelegatedSendSaveTarget: delegatedSendSaveTarget as NonNullable<
-									AccountSettingsPrefs['zimbraPrefDelegatedSendSaveTarget']
-								>
+								zimbraPrefDelegatedSendSaveTarget: delegatedSendSaveTarget || ''
 							}
 						},
 						account: {

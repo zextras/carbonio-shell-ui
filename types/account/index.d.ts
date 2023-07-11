@@ -5,7 +5,7 @@
  */
 
 import type { DarkReaderPropValues } from '../misc';
-import { DARK_READER_PROP_KEY } from '../../src/constants';
+import { DARK_READER_PROP_KEY, DELEGATED_SEND_SAVE_TARGET } from '../../src/constants';
 import type { SHELL_APP_ID } from '../exports';
 import { StringOfLength } from '../../src/utils/typeUtils';
 
@@ -90,7 +90,7 @@ export interface AccountSettingsPrefs {
 	zimbraPrefLocale?: string;
 	zimbraPrefMailPollingInterval?: Duration;
 	zimbraPrefMailTrustedSenderList?: Array<string> | string;
-	zimbraPrefDelegatedSendSaveTarget?: 'owner' | 'sender' | 'both' | 'none';
+	zimbraPrefDelegatedSendSaveTarget?: typeof DELEGATED_SEND_SAVE_TARGET[number];
 	zimbraPrefTimeZoneId?: Array<string> | string;
 	[key: string]: string | number | Array<string | number>;
 }

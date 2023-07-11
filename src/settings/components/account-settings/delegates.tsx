@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next';
 import { AccountSettingsPrefs } from '../../../../types';
 import { SettingsSectionProps } from '../utils';
 import { useReset } from '../../hooks/use-reset';
+import { DELEGATED_SEND_SAVE_TARGET } from '../../../constants';
 
 export interface DelegateType extends ItemType {
 	email: string;
@@ -55,7 +56,7 @@ const Delegates = ({
 			function isZimbraPrefDelegatedSendSaveTarget(
 				arg: string
 			): arg is NonNullable<AccountSettingsPrefs['zimbraPrefDelegatedSendSaveTarget']> {
-				return ['owner', 'sender', 'both', 'none'].includes(arg);
+				return DELEGATED_SEND_SAVE_TARGET.includes(arg);
 			}
 			if (isZimbraPrefDelegatedSendSaveTarget(newValue)) {
 				setActiveValue(newValue);

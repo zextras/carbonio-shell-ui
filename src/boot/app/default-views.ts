@@ -7,6 +7,7 @@
 
 import produce from 'immer';
 import type { TFunction } from 'i18next';
+import { size } from 'lodash';
 import type { AppState, PrimaryBarView, SettingsView } from '../../../types';
 import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
 import Feedback from '../../reporting/feedback';
@@ -104,7 +105,8 @@ const feedbackBoardView = {
 export const registerDefaultViews = (t: TFunction): void => {
 	useAppStore.setState(
 		produce((s: AppState) => {
-			if (useAccountStore.getState().settings.attrs.zimbraFeatureOptionsEnabled === 'FALSE') {
+			const { attrs } = useAccountStore.getState().settings;
+			if (size(attrs) === 0 || attrs.zimbraFeatureOptionsEnabled === 'FALSE') {
 				s.routes = {
 					[SEARCH_APP_ID]: searchRoute
 				};

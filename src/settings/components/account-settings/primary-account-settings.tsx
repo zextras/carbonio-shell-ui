@@ -5,8 +5,10 @@
  */
 
 import React, { useMemo, useCallback, ReactElement, useState, useEffect } from 'react';
+
 import { Container, Text, Padding, Input, Row, InputProps } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
+
 import { Account, IdentityAttrs, IdentityProps } from '../../../../types';
 
 interface PrimaryAccountSettingsProps {

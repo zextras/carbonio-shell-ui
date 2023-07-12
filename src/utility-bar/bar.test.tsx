@@ -8,13 +8,12 @@ import React from 'react';
 import { act, screen, waitFor } from '@testing-library/react';
 
 import { ShellUtilityBar } from './bar';
+import { waitForRequest } from '../mocks/server';
+import * as networkUtils from '../network/utils';
+import { useLoginConfigStore } from '../store/login/store';
 import { mockedAccount, setupAccountStore } from '../test/account-utils';
 import { ICONS } from '../test/constants';
 import { setup } from '../test/utils';
-import * as networkUtils from '../network/utils';
-import { useLoginConfigStore } from '../store/login/store';
-import { Logout } from '../settings/components/general-settings/logout';
-import { waitForRequest } from '../mocks/server';
 
 describe('Shell utility bar', () => {
 	test('should render the utility menu for the account', async () => {

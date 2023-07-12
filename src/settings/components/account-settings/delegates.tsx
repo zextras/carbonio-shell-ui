@@ -5,6 +5,7 @@
  */
 
 import React, { ReactElement, useCallback, useState } from 'react';
+
 import {
 	Container,
 	Text,
@@ -20,10 +21,11 @@ import {
 } from '@zextras/carbonio-design-system';
 import { noop } from 'lodash';
 import { useTranslation } from 'react-i18next';
+
 import { AccountSettingsPrefs } from '../../../../types';
-import { SettingsSectionProps } from '../utils';
-import { useReset } from '../../hooks/use-reset';
 import { DELEGATED_SEND_SAVE_TARGET } from '../../../constants';
+import { useReset } from '../../hooks/use-reset';
+import { SettingsSectionProps } from '../utils';
 
 export interface DelegateType extends ItemType {
 	email: string;

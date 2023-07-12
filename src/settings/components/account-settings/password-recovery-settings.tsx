@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { ReactElement, useCallback, useMemo, useState } from 'react';
+
 import {
 	Button,
 	Container,
@@ -14,7 +16,7 @@ import {
 	Text
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import React, { ReactElement, useCallback, useMemo, useState } from 'react';
+
 import { IdentityProps } from '../../../../types';
 import { EMAIL_VALIDATION_REGEX, SHELL_APP_ID } from '../../../constants';
 import { getXmlSoapFetch } from '../../../network/fetch';

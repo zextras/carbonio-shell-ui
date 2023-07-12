@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
+
 import { useLogo } from '../store/login/hooks';
 import { useLoginConfigStore } from '../store/login/store';
 

@@ -4,8 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { trim } from 'lodash';
 import React, { FC } from 'react';
+
+import { trim } from 'lodash';
+
 import {
 	AppRouteDescriptor,
 	BadgeInfo,

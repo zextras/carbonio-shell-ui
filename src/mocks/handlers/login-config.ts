@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { ResponseResolver, RestContext, RestRequest } from 'msw';
+
 import { LoginConfigStore } from '../../../types/loginConfig';
 
 export const getLoginConfig: ResponseResolver<

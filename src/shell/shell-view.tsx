@@ -4,22 +4,24 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { useContext, useEffect, useState } from 'react';
+
 import { Row } from '@zextras/carbonio-design-system';
 import { PreviewManager } from '@zextras/carbonio-ui-preview';
-import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ThemeCallbacksContext } from '../boot/theme-provider';
-import { IS_STANDALONE } from '../constants';
-import { useCurrentRoute } from '../history/hooks';
-import { goToLogin } from '../network/utils';
-import { useAccountStore } from '../store/account';
-import { ShellUtilityBar } from '../utility-bar/bar';
+
 import AppViewContainer from './app-view-container';
 import { BoardContainer } from './boards/board-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
+import { ThemeCallbacksContext } from '../boot/theme-provider';
+import { IS_STANDALONE } from '../constants';
 import { useDarkReaderResultValue } from '../dark-mode/use-dark-reader-result-value';
+import { useCurrentRoute } from '../history/hooks';
+import { goToLogin } from '../network/utils';
+import { useAccountStore } from '../store/account';
+import { ShellUtilityBar } from '../utility-bar/bar';
 import { ShellUtilityPanel } from '../utility-bar/panel';
 
 const Background = styled.div`

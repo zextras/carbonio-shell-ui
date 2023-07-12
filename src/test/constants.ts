@@ -136,7 +136,8 @@ export const ICONS = {
 	enlargeBoard: 'ExpandOutline',
 	reduceBoard: 'CollapseOutline',
 	resetBoardSize: 'DiagonalArrowLeftDown',
-	unCollapseBoard: 'BoardOpen'
+	unCollapseBoard: 'BoardOpen',
+	settings: 'SettingsModOutline'
 };
 
 export const TESTID_SELECTORS = {

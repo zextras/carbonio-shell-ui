@@ -5,6 +5,7 @@
  */
 
 import React, { useCallback, useMemo, useState, useEffect, ReactElement, useRef } from 'react';
+
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import {
 	map,
@@ -20,13 +21,14 @@ import {
 	size
 } from 'lodash';
 import { useTranslation } from 'react-i18next';
-import { useAccountStore, useUserSettings } from '../store/account';
-import type { Account, AccountSettings, ModifyIdentityRequest, IdentityProps } from '../../types';
+
 import AccountsList from './components/account-settings/accounts-list';
+import Delegates, { DelegatesProps, DelegateType } from './components/account-settings/delegates';
+import PersonaSettings from './components/account-settings/persona-settings';
 import PrimaryAccountSettings from './components/account-settings/primary-account-settings';
 import SettingsSentMessages from './components/account-settings/settings-sent-messages';
-import Delegates, { DelegateType, DelegatesProps } from './components/account-settings/delegates';
-import PersonaSettings from './components/account-settings/persona-settings';
+import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
+import { ResetComponentImperativeHandler } from './components/utils';
 import {
 	BatchRequest,
 	CreateIdentityResponse,
@@ -42,10 +44,10 @@ import {
 	GetRightsRequest,
 	GetRightsResponse
 } from '../../types';
-import { getSoapFetch } from '../network/fetch';
+import type { Account, AccountSettings, ModifyIdentityRequest, IdentityProps } from '../../types';
 import { SHELL_APP_ID } from '../constants';
-import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
-import { ResetComponentImperativeHandler } from './components/utils';
+import { getSoapFetch } from '../network/fetch';
+import { useAccountStore, useUserSettings } from '../store/account';
 
 type AccountSettingsProps = {
 	account: Account;
@@ -497,6 +499,7 @@ export const AccountsSettings = ({
 					setSelectedIdentityId={setSelectedIdentityId}
 					removeIdentity={removeIdentity}
 					addIdentity={addIdentity}
+					identitiesDefault={identitiesDefault}
 				/>
 				{identities[selectedIdentityId]?.flgType === 'primary' && (
 					<>

@@ -4,8 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { i18n, TFunction } from 'i18next';
-import { SHELL_APP_ID } from '../../constants';
+
 import { useI18nStore } from './store';
+import { SHELL_APP_ID } from '../../constants';
 
 export const getI18n = (app: string) => (): i18n => {
 	const { instances, defaultI18n } = useI18nStore.getState();

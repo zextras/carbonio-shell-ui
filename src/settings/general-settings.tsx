@@ -4,9 +4,22 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
+
+import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import { findIndex, includes, isEmpty, map, reduce, size } from 'lodash';
+
+import AppearanceSettings from './components/general-settings/appearance-settings';
+import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
+import { Logout } from './components/general-settings/logout';
+import ModuleVersionSettings from './components/general-settings/module-version-settings';
+import { OutOfOfficeSettings } from './components/general-settings/out-of-office-settings';
+import { ScalingSettingSection } from './components/general-settings/scaling-setting-section';
+import { SearchSettings } from './components/general-settings/search-settings';
+import UserQuota from './components/general-settings/user-quota';
+import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
+import { ResetComponentImperativeHandler } from './components/utils';
+import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
 import {
 	AccountState,
 	AddMod,
@@ -18,23 +31,12 @@ import {
 	Mods,
 	RemoveMod
 } from '../../types';
-import { useAccountStore, useUserSettings } from '../store/account';
-import { getT } from '../store/i18n';
-import AppearanceSettings from './components/general-settings/appearance-settings';
-import { Logout } from './components/general-settings/logout';
-import ModuleVersionSettings from './components/general-settings/module-version-settings';
-import { OutOfOfficeSettings } from './components/general-settings/out-of-office-settings';
-import UserQuota from './components/general-settings/user-quota';
-import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
-import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
-import { SearchSettings } from './components/general-settings/search-settings';
-import { ScalingSettingSection } from './components/general-settings/scaling-setting-section';
-import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
-import { LOCAL_STORAGE_SETTINGS_KEY, SHELL_APP_ID } from '../constants';
 import { ScalingSettings } from '../../types/settings';
-import { ResetComponentImperativeHandler } from './components/utils';
+import { LOCAL_STORAGE_SETTINGS_KEY, SHELL_APP_ID } from '../constants';
 import { getSoapFetch } from '../network/fetch';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
+import { useAccountStore, useUserSettings } from '../store/account';
+import { getT } from '../store/i18n';
 
 const GeneralSettings = (): JSX.Element => {
 	const [mods, setMods] = useState<Mods>({});

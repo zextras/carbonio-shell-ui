@@ -18,9 +18,6 @@ import ShellNavigationBar from './shell-navigation-bar';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 import { IS_STANDALONE } from '../constants';
 import { useDarkReaderResultValue } from '../dark-mode/use-dark-reader-result-value';
-import { useCurrentRoute } from '../history/hooks';
-import { goToLogin } from '../network/utils';
-import { useAccountStore } from '../store/account';
 import { ShellUtilityBar } from '../utility-bar/bar';
 import { ShellUtilityPanel } from '../utility-bar/panel';
 
@@ -47,31 +44,12 @@ function DarkReaderListener(): null {
 	return null;
 }
 
-const useLoginRedirection = (allowUnauthenticated?: boolean): void => {
-	const auth = useAccountStore((s) => s.authenticated);
-	useEffect(() => {
-		if (IS_STANDALONE && !auth && !allowUnauthenticated) {
-			goToLogin();
-		}
-	}, [allowUnauthenticated, auth]);
-};
-
-interface ShellComponentProps {
-	allowUnauthenticated?: boolean;
-	hideShellHeader?: boolean;
-}
-
-const ShellComponent = ({
-	allowUnauthenticated,
-	hideShellHeader
-}: ShellComponentProps): JSX.Element => {
+const ShellComponent = (): JSX.Element => {
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
-	useLoginRedirection(allowUnauthenticated);
 	return (
 		<Background>
 			<DarkReaderListener />
-			{/* <MainAppRerouter /> */}
-			{!(IS_STANDALONE && hideShellHeader) && (
+			{!IS_STANDALONE && (
 				<ShellHeader
 					mobileNavIsOpen={mobileNavOpen}
 					onMobileMenuClick={(): void => setMobileNavOpen(!mobileNavOpen)}
@@ -89,19 +67,12 @@ const ShellComponent = ({
 	);
 };
 
-const MemoShell = React.memo(ShellComponent);
-
-const ShellView = (): JSX.Element => {
-	const activeRoute = useCurrentRoute();
-	const allowUnauthenticated = activeRoute?.standalone?.allowUnauthenticated;
-	const hideShellHeader = activeRoute?.standalone?.hideShellHeader;
-	return (
-		<ShellContextProvider>
-			<PreviewManager>
-				<MemoShell allowUnauthenticated={allowUnauthenticated} hideShellHeader={hideShellHeader} />
-			</PreviewManager>
-		</ShellContextProvider>
-	);
-};
+const ShellView = (): JSX.Element => (
+	<ShellContextProvider>
+		<PreviewManager>
+			<ShellComponent />
+		</PreviewManager>
+	</ShellContextProvider>
+);
 
 export default ShellView;

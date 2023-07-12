@@ -11,6 +11,7 @@ import { Responsive, Container } from '@zextras/carbonio-design-system';
 import ShellMobileNav from './shell-mobile-nav';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
+import { IS_STANDALONE } from '../constants';
 
 type ShellNavigationBarProps = {
 	mobileNavIsOpen: boolean;
@@ -26,7 +27,7 @@ const ShellNavigationBar: FC<ShellNavigationBarProps> = ({ mobileNavIsOpen }) =>
 		crossAlignment="flex-start"
 	>
 		<Responsive mode="desktop">
-			<ShellPrimaryBar />
+			{!IS_STANDALONE && <ShellPrimaryBar />}
 			<ShellSecondaryBar />
 		</Responsive>
 		<Responsive mode="mobile">

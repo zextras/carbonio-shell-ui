@@ -4,10 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { i18n } from 'i18next';
 import { ComponentType, Dispatch, FC, SetStateAction } from 'react';
+
+import { i18n } from 'i18next';
 import { TFunction } from 'react-i18next';
 import { LinkProps } from 'react-router-dom';
+
 import {
 	Account,
 	AccountRightName,
@@ -87,7 +89,7 @@ declare const useUserAccount: () => Account;
 declare const useUserAccounts: () => Array<Account>;
 declare const useUserRights: () => AccountRights;
 declare const useUserRight: (right: AccountRightName) => Array<AccountRightTarget>;
-declare const getUserAccount: () => Account;
+declare const getUserAccount: () => Account | undefined;
 declare const getUserAccounts: () => Array<Account>;
 declare const getUserRights: () => AccountRights;
 declare const getUserRight: (right: AccountRightName) => Array<AccountRightTarget>;

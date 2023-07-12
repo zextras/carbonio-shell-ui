@@ -4,16 +4,18 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Modal, Padding, Text } from '@zextras/carbonio-design-system';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+
+import { Modal, Padding, Text } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
-import { useAppStore } from '../store/app';
-import { getInfo } from '../network/get-info';
+import { useTranslation } from 'react-i18next';
+
 import { loadApps, unloadAllApps } from './app/load-apps';
+import { getComponents } from '../network/get-components';
+import { getInfo } from '../network/get-info';
 import { loginConfig } from '../network/login-config';
 import { goToLogin } from '../network/utils';
-import { getComponents } from '../network/get-components';
+import { useAppStore } from '../store/app';
 
 export function isPromiseRejectedResult<T>(
 	promiseSettledResult: PromiseSettledResult<T>

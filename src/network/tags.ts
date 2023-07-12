@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { getSoapFetch } from './fetch';
 import {
 	CreateTagRequest,
 	CreateTagResponse,
@@ -12,7 +13,6 @@ import {
 } from '../../types';
 import { Tag } from '../../types/tags';
 import { SHELL_APP_ID } from '../constants';
-import { getSoapFetch } from './fetch';
 
 export const createTag = (tag: Omit<Tag, 'id'>): Promise<CreateTagResponse> =>
 	getSoapFetch(SHELL_APP_ID)<CreateTagRequest, CreateTagResponse>('CreateTag', {

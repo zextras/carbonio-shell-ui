@@ -5,6 +5,7 @@
  */
 
 import React, { FC } from 'react';
+
 import { Padding, Row, Text } from '@zextras/carbonio-design-system';
 
 const Heading: FC<{ title: string }> = ({ title }) => (

@@ -5,6 +5,7 @@
  */
 
 import React, { useCallback, useMemo, useState, useEffect, ReactElement } from 'react';
+
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import {
 	map,
@@ -20,13 +21,13 @@ import {
 	size
 } from 'lodash';
 import { useTranslation } from 'react-i18next';
-import { useAccountStore, useUserSettings } from '../store/account';
-import type { Account, AccountSettings, ModifyIdentityRequest, IdentityProps } from '../../types';
+
 import AccountsList from './components/account-settings/accounts-list';
-import PrimaryAccountSettings from './components/account-settings/primary-account-settings';
-import SettingsSentMessages from './components/account-settings/settings-sent-messages';
 import Delegates, { DelegateType } from './components/account-settings/delegates';
 import PersonaSettings from './components/account-settings/persona-settings';
+import PrimaryAccountSettings from './components/account-settings/primary-account-settings';
+import SettingsSentMessages from './components/account-settings/settings-sent-messages';
+import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
 import {
 	BatchRequest,
 	CreateIdentityResponse,
@@ -39,9 +40,10 @@ import {
 	GetRightsRequest,
 	GetRightsResponse
 } from '../../types';
-import { getSoapFetch } from '../network/fetch';
+import type { Account, AccountSettings, ModifyIdentityRequest, IdentityProps } from '../../types';
 import { SHELL_APP_ID } from '../constants';
-import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
+import { getSoapFetch } from '../network/fetch';
+import { useAccountStore, useUserSettings } from '../store/account';
 
 type AccountSettingsProps = {
 	account: Account;

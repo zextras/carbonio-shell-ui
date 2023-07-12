@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
 import {
 	Checkbox,
 	Container,
@@ -14,21 +16,21 @@ import {
 	TextArea,
 	TextAreaProps
 } from '@zextras/carbonio-design-system';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { find } from 'lodash';
 import { type TFunction } from 'i18next';
-import { AccountSettings, AccountSettingsPrefs, AddMod, BooleanString } from '../../../../types';
-import Heading from '../settings-heading';
+import { find } from 'lodash';
+
 import { OutOfOfficeTimePeriodSection } from './out-of-office-time-period-section';
+import { AccountSettings, AccountSettingsPrefs, AddMod, BooleanString } from '../../../../types';
 import { getT } from '../../../store/i18n';
 import { outOfOfficeSubSection } from '../../general-settings-sub-sections';
+import { useReset } from '../../hooks/use-reset';
+import Heading from '../settings-heading';
 import {
 	dateToGenTime,
 	ResetComponentImperativeHandler,
 	SettingsSectionProps,
 	upsertPrefOnUnsavedChanges
 } from '../utils';
-import { useReset } from '../../hooks/use-reset';
 
 type CoercedPrefType<T> = T extends BooleanString | undefined ? boolean | undefined : T;
 

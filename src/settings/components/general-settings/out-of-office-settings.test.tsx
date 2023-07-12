@@ -4,13 +4,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
+
+import { faker } from '@faker-js/faker';
 import { act, screen, within } from '@testing-library/react';
 import { forEach } from 'lodash';
-import { faker } from '@faker-js/faker';
-import { setup } from '../../../test/utils';
+
 import { OutOfOfficeSettings } from './out-of-office-settings';
 import { AccountSettings, AccountSettingsPrefs, AddMod } from '../../../../types';
 import { ICONS, TESTID_SELECTORS } from '../../../test/constants';
+import { setup } from '../../../test/utils';
 import { dateToGenTime } from '../utils';
 
 describe('Out of office settings', () => {

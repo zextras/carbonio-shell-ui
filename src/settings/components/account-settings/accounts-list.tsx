@@ -5,6 +5,7 @@
  */
 
 import React, { useCallback, ReactElement, useContext, useRef } from 'react';
+
 import {
 	Container,
 	Text,
@@ -19,6 +20,7 @@ import {
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
 import { map, filter, max } from 'lodash';
+
 import { IdentityProps, IdentityAttrs } from '../../../../types';
 
 export type AccountsListProps = {

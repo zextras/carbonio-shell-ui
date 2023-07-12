@@ -7,6 +7,8 @@
 import produce from 'immer';
 import { filter, find, findIndex, merge, omit, reduce, sortBy, unionBy, unionWith } from 'lodash';
 import { create } from 'zustand';
+
+import { normalizeApp } from './utils';
 import type {
 	AppRouteDescriptor,
 	AppState,
@@ -23,7 +25,6 @@ import type {
 	UtilityView
 } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
-import { normalizeApp } from './utils';
 
 const filterById = <T extends { id: string }>(items: Array<T>, id: string): Array<T> =>
 	filter(items, (item) => item.id !== id);

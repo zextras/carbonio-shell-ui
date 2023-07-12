@@ -7,19 +7,19 @@ import React from 'react';
 
 import { act, screen, within } from '@testing-library/react';
 import { Button, Text } from '@zextras/carbonio-design-system';
+import produce from 'immer';
 import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
 
-import produce from 'immer';
 import AppViewContainer from './app-view-container';
 import ShellPrimaryBar from './shell-primary-bar';
 import { AccountState, PrimaryBarView } from '../../types';
 import { DefaultViewsRegister } from '../boot/bootstrapper';
 import { usePushHistoryCallback } from '../history/hooks';
 import { ModuleSelector } from '../search/module-selector';
-import { useAppStore } from '../store/app';
-import { setup } from '../test/utils';
 import { useAccountStore } from '../store/account';
+import { useAppStore } from '../store/app';
 import { ICONS } from '../test/constants';
+import { setup } from '../test/utils';
 
 const ShellWrapper = (): JSX.Element => (
 	<>

@@ -4,14 +4,16 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+
 import { forEach } from 'lodash';
+
+import { useLocalStorage } from './useLocalStorage';
 import {
 	ElementPosition,
 	setElementSizeAndPosition,
 	setGlobalCursor,
 	SizeAndPosition
 } from '../../utils/utils';
-import { useLocalStorage } from './useLocalStorage';
 
 type UseMoveReturnType = [isMoving: boolean, moveHandler: React.MouseEventHandler];
 type MoveOptions = {

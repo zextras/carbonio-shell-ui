@@ -4,17 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { forOwn } from 'lodash';
 import { ComponentType, memo } from 'react';
-import { useAppStore } from '../../store/app';
+
+import { forOwn } from 'lodash';
+
 import { getAppFunctions } from './app-loader-functions';
-import { Spinner } from '../../ui-extras/spinner';
-import { AppLink } from '../../ui-extras/app-link';
-import * as CONSTANTS from '../../constants';
-import type { CarbonioModule } from '../../../types';
 import { getAppSetters } from './app-loader-setters';
+import type { CarbonioModule } from '../../../types';
+import * as CONSTANTS from '../../constants';
 import { report } from '../../reporting/functions';
 import SettingsHeader from '../../settings/components/settings-header';
+import { useAppStore } from '../../store/app';
+import { AppLink } from '../../ui-extras/app-link';
+import { Spinner } from '../../ui-extras/spinner';
 
 export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
@@ -44,6 +46,7 @@ export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 						[appPkg.name]: memo(appComponent)
 					}
 				}));
+				// eslint-disable-next-line no-console
 				console.info(
 					`%c loaded ${appPkg.name}`,
 					'color: white; background: #539507;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'

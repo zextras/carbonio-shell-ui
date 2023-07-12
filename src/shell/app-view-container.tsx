@@ -5,10 +5,12 @@
  */
 
 import React, { FC, useMemo } from 'react';
+
+import { Container } from '@zextras/carbonio-design-system';
+import { map, find } from 'lodash';
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { map, find } from 'lodash';
-import { Container } from '@zextras/carbonio-design-system';
+
 import AppContextProvider from '../boot/app/app-context-provider';
 import { useAppList, useAppStore, useRoutes } from '../store/app';
 

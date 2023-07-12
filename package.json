@@ -63,7 +63,7 @@
 		"@types/styled-components": "^5.1.26",
 		"@types/ua-parser-js": "^0.7.36",
 		"@types/webpack-env": "^1.18.0",
-		"@zextras/carbonio-ui-configs": "^0.1.11",
+		"@zextras/carbonio-ui-configs": "^0.1.12",
 		"@zextras/carbonio-ui-sdk": "^1.5.1",
 		"autoprefixer": "^10.4.14",
 		"babel-loader": "^9.1.2",

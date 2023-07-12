@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import type { TFunction } from 'i18next';
+
 import type { SettingsSubSection } from '../../types';
 
 export const appearanceSubSection = (t: TFunction): SettingsSubSection => ({

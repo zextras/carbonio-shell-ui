@@ -143,3 +143,5 @@ export const BOARD_MIN_VISIBILITY = {
 	top: 50,
 	left: 30
 };
+
+export const DELEGATED_SEND_SAVE_TARGET = ['owner', 'sender', 'both', 'none'];

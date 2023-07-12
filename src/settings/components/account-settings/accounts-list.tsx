@@ -19,7 +19,7 @@ import {
 	ItemComponentProps
 } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import { map, filter, max } from 'lodash';
+import { map, filter } from 'lodash';
 
 import { IdentityProps, IdentityAttrs } from '../../../../types';
 

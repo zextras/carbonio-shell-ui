@@ -176,6 +176,328 @@ describe('Account setting', () => {
 		expect(screen.getByText('New Persona 2')).toBeVisible();
 	});
 
+	test('When existing persona identityName is updated but not yet saved, the old (but current) identityName should not be used as default one for a new persona', async () => {
+		const defaultFirstName = faker.person.firstName();
+		const defaultLastName = faker.person.lastName();
+		const defaultFullName = faker.person.fullName({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultEmail = faker.internet.email({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultId = faker.string.uuid();
+
+		const persona1FullName = 'New Persona 1';
+		const persona1Email = faker.internet.email();
+		const persona1Id = faker.string.uuid();
+
+		const identitiesArray: Account['identities']['identity'] = [
+			{
+				id: persona1Id,
+				name: persona1FullName,
+				_attrs: {
+					zimbraPrefIdentityName: persona1FullName,
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraPrefFromDisplay: '',
+					zimbraPrefFromAddress: persona1Email,
+					zimbraPrefIdentityId: persona1Id
+				}
+			},
+			{
+				id: defaultId,
+				name: 'DEFAULT',
+				_attrs: {
+					zimbraPrefIdentityName: defaultFullName,
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraPrefFromDisplay: defaultFirstName,
+					zimbraPrefFromAddress: defaultEmail,
+					zimbraPrefIdentityId: defaultId
+				}
+			}
+		];
+
+		const account: Account = {
+			name: defaultEmail,
+			rights: { targets: [] },
+			signatures: { signature: [] },
+			id: defaultId,
+			displayName: '',
+			identities: {
+				identity: identitiesArray
+			}
+		};
+
+		const identitiesDefault = map(identitiesArray, (item, index) =>
+			identityToIdentityProps(item, index)
+		);
+
+		identitiesDefault.unshift(identitiesDefault.pop() as IdentityProps);
+
+		const { user } = setup(
+			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
+		);
+		await waitForGetRightsRequest();
+
+		const persona1Row = screen.getByText('New Persona 1');
+		expect(persona1Row).toBeVisible();
+		await user.click(persona1Row);
+
+		const accountNameInput = screen.getByRole('textbox', { name: /persona name/i });
+		expect(accountNameInput).toHaveDisplayValue('New Persona 1');
+
+		expect(
+			within(screen.getByTestId(`account-list-item-${persona1Id}`)).getByText('New Persona 1')
+		).toBeVisible();
+
+		const newName = 'Updated Name';
+		await user.clear(accountNameInput);
+		await user.type(accountNameInput, newName);
+
+		expect(accountNameInput).toHaveDisplayValue(newName);
+		expect(
+			within(screen.getByTestId(`account-list-item-${persona1Id}`)).getByText(newName)
+		).toBeVisible();
+
+		await user.click(screen.getByRole('button', { name: /add persona/i }));
+		expect(
+			within(screen.getByTestId(`account-list-item-0`)).getByText('New Persona 2')
+		).toBeVisible();
+	});
+
+	test('When create a new persona and modify the proposed identityName before saving and than create another persona the proposed identityName should be the same', async () => {
+		const defaultFirstName = faker.person.firstName();
+		const defaultLastName = faker.person.lastName();
+		const defaultFullName = faker.person.fullName({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultEmail = faker.internet.email({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultId = faker.string.uuid();
+
+		const identitiesArray: Account['identities']['identity'] = [
+			{
+				id: defaultId,
+				name: 'DEFAULT',
+				_attrs: {
+					zimbraPrefIdentityName: defaultFullName,
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraPrefFromDisplay: defaultFirstName,
+					zimbraPrefFromAddress: defaultEmail,
+					zimbraPrefIdentityId: defaultId
+				}
+			}
+		];
+
+		const account: Account = {
+			name: defaultEmail,
+			rights: { targets: [] },
+			signatures: { signature: [] },
+			id: defaultId,
+			displayName: '',
+			identities: {
+				identity: identitiesArray
+			}
+		};
+
+		const identitiesDefault = map(identitiesArray, (item, index) =>
+			identityToIdentityProps(item, index)
+		);
+
+		identitiesDefault.unshift(identitiesDefault.pop() as IdentityProps);
+
+		const { user } = setup(
+			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
+		);
+		await waitForGetRightsRequest();
+
+		await user.click(screen.getByRole('button', { name: /add persona/i }));
+
+		const persona1Row = screen.getByText('New Persona 1');
+		expect(persona1Row).toBeVisible();
+		await user.click(persona1Row);
+
+		const accountNameInput = screen.getByRole('textbox', { name: /persona name/i });
+		expect(accountNameInput).toHaveDisplayValue('New Persona 1');
+
+		expect(
+			within(screen.getByTestId(`account-list-item-0`)).getByText('New Persona 1')
+		).toBeVisible();
+
+		const newName = 'Updated Name';
+		await user.clear(accountNameInput);
+		await user.type(accountNameInput, newName);
+
+		expect(accountNameInput).toHaveDisplayValue(newName);
+		expect(within(screen.getByTestId(`account-list-item-0`)).getByText(newName)).toBeVisible();
+
+		await user.click(screen.getByRole('button', { name: /add persona/i }));
+		expect(screen.getByText('New Persona 1')).toBeVisible();
+		expect(
+			within(screen.getByTestId(`account-list-item-1`)).getByText('New Persona 1')
+		).toBeVisible();
+		expect(screen.queryByText('New Persona 2')).not.toBeInTheDocument();
+	});
+
+	test('When existing persona is deleted but not yet saved, the old (but current) identityName should not be used as default one for a new persona', async () => {
+		const defaultFirstName = faker.person.firstName();
+		const defaultLastName = faker.person.lastName();
+		const defaultFullName = faker.person.fullName({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultEmail = faker.internet.email({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultId = faker.string.uuid();
+
+		const persona1FullName = 'New Persona 1';
+		const persona1Email = faker.internet.email();
+		const persona1Id = faker.string.uuid();
+
+		const identitiesArray: Account['identities']['identity'] = [
+			{
+				id: persona1Id,
+				name: persona1FullName,
+				_attrs: {
+					zimbraPrefIdentityName: persona1FullName,
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraPrefFromDisplay: '',
+					zimbraPrefFromAddress: persona1Email,
+					zimbraPrefIdentityId: persona1Id
+				}
+			},
+			{
+				id: defaultId,
+				name: 'DEFAULT',
+				_attrs: {
+					zimbraPrefIdentityName: defaultFullName,
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraPrefFromDisplay: defaultFirstName,
+					zimbraPrefFromAddress: defaultEmail,
+					zimbraPrefIdentityId: defaultId
+				}
+			}
+		];
+
+		const account: Account = {
+			name: defaultEmail,
+			rights: { targets: [] },
+			signatures: { signature: [] },
+			id: defaultId,
+			displayName: '',
+			identities: {
+				identity: identitiesArray
+			}
+		};
+
+		const identitiesDefault = map(identitiesArray, (item, index) =>
+			identityToIdentityProps(item, index)
+		);
+
+		identitiesDefault.unshift(identitiesDefault.pop() as IdentityProps);
+
+		const { user } = setup(
+			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
+		);
+		await waitForGetRightsRequest();
+
+		const persona1Row = screen.getByText('New Persona 1');
+		expect(persona1Row).toBeVisible();
+		await user.click(persona1Row);
+
+		await user.click(screen.getByRole('button', { name: /delete/i }));
+		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
+		act(() => {
+			// run modal timers
+			jest.runOnlyPendingTimers();
+		});
+		await user.click(confirmButton);
+		expect(persona1Row).not.toBeInTheDocument();
+
+		await user.click(screen.getByRole('button', { name: /add persona/i }));
+		expect(
+			within(screen.getByTestId(`account-list-item-0`)).getByText('New Persona 2')
+		).toBeVisible();
+	});
+
+	test('When create a new persona and delete it before saving and than create another persona the proposed identityName should be the same', async () => {
+		const defaultFirstName = faker.person.firstName();
+		const defaultLastName = faker.person.lastName();
+		const defaultFullName = faker.person.fullName({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultEmail = faker.internet.email({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultId = faker.string.uuid();
+
+		const identitiesArray: Account['identities']['identity'] = [
+			{
+				id: defaultId,
+				name: 'DEFAULT',
+				_attrs: {
+					zimbraPrefIdentityName: defaultFullName,
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraPrefFromDisplay: defaultFirstName,
+					zimbraPrefFromAddress: defaultEmail,
+					zimbraPrefIdentityId: defaultId
+				}
+			}
+		];
+
+		const account: Account = {
+			name: defaultEmail,
+			rights: { targets: [] },
+			signatures: { signature: [] },
+			id: defaultId,
+			displayName: '',
+			identities: {
+				identity: identitiesArray
+			}
+		};
+
+		const identitiesDefault = map(identitiesArray, (item, index) =>
+			identityToIdentityProps(item, index)
+		);
+
+		identitiesDefault.unshift(identitiesDefault.pop() as IdentityProps);
+
+		const { user } = setup(
+			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
+		);
+		await waitForGetRightsRequest();
+
+		await user.click(screen.getByRole('button', { name: /add persona/i }));
+
+		const persona1Row = screen.getByText('New Persona 1');
+		expect(persona1Row).toBeVisible();
+		await user.click(persona1Row);
+
+		await user.click(screen.getByRole('button', { name: /delete/i }));
+		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
+		act(() => {
+			// run modal timers
+			jest.runOnlyPendingTimers();
+		});
+		await user.click(confirmButton);
+		expect(persona1Row).not.toBeInTheDocument();
+
+		await user.click(screen.getByRole('button', { name: /add persona/i }));
+		expect(screen.getByText('New Persona 1')).toBeVisible();
+		expect(
+			within(screen.getByTestId(`account-list-item-1`)).getByText('New Persona 1')
+		).toBeVisible();
+		expect(screen.queryByText('New Persona 2')).not.toBeInTheDocument();
+	});
+
 	test('Should not increase the counter if the identities have a name different from the default', async () => {
 		const defaultFirstName = faker.person.firstName();
 		const defaultLastName = faker.person.lastName();

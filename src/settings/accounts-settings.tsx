@@ -448,6 +448,7 @@ export const AccountsSettings = ({
 					setSelectedIdentityId={setSelectedIdentityId}
 					removeIdentity={removeIdentity}
 					addIdentity={addIdentity}
+					identitiesDefault={identitiesDefault}
 				/>
 				{identities[selectedIdentityId]?.flgType === 'primary' && (
 					<>

@@ -23,10 +23,22 @@ import { map, filter, max } from 'lodash';
 
 import { IdentityProps, IdentityAttrs } from '../../../../types';
 
+function getNewPersonaNextIdentityName(
+	numberToCheck: number,
+	unavailableIdentityNames: Array<string>
+): string {
+	const newPersonaNextIdentityName = `New Persona ${numberToCheck}`;
+	if (unavailableIdentityNames.includes(newPersonaNextIdentityName)) {
+		return getNewPersonaNextIdentityName(numberToCheck + 1, unavailableIdentityNames);
+	}
+	return newPersonaNextIdentityName;
+}
+
 export type AccountsListProps = {
 	t: TFunction;
 	accountName: string;
 	identities: IdentityProps[];
+	identitiesDefault: IdentityProps[];
 	setIdentities: (identities: IdentityProps[]) => void;
 	selectedIdentityId: number;
 	setSelectedIdentityId: (value: number) => void;
@@ -39,6 +51,7 @@ const AccountsList = ({
 	accountName,
 	selectedIdentityId,
 	identities,
+	identitiesDefault,
 	setIdentities,
 	setSelectedIdentityId,
 	removeIdentity,
@@ -90,22 +103,12 @@ const AccountsList = ({
 
 	const createListRequestIdRef = useRef(0);
 	const addNewPersona = useCallback(() => {
-		const newPersonaNextNumber =
-			Number(
-				max([
-					...filter(
-						map(
-							map(
-								filter(identities, (item) => item.identityName?.includes('New Persona')),
-								(item: IdentityProps) => item.identityName
-							),
-							(item: string) => parseFloat(item.replace('New Persona ', ''))
-						),
-						(item) => Number(item)
-					)
-				])
-			) + 1;
-		const newPersonaName = `New Persona ${newPersonaNextNumber || 1}`;
+		const unavailableIdentityNames = map<IdentityProps, string>(
+			[...identitiesDefault, ...identities],
+			(item) => item.identityName || ''
+		);
+		const newPersonaName = getNewPersonaNextIdentityName(1, unavailableIdentityNames);
+
 		setIdentities([
 			...identities,
 			{
@@ -128,7 +131,7 @@ const AccountsList = ({
 		});
 		createListRequestIdRef.current += 1;
 		setSelectedIdentityId(identities.length);
-	}, [identities, setIdentities, t, addIdentity, setSelectedIdentityId]);
+	}, [identitiesDefault, identities, setIdentities, t, addIdentity, setSelectedIdentityId]);
 
 	const onConfirmDelete = useCallback((): void => {
 		const newIdentities = map(

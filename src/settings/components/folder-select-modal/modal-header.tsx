@@ -3,8 +3,9 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { Divider, Text, Row, IconButton, Padding } from '@zextras/carbonio-design-system';
 import React from 'react';
+
+import { Divider, Text, Row, IconButton, Padding } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 
 const CloseButton = styled(IconButton)`

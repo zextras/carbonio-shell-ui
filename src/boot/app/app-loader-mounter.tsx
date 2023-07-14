@@ -5,9 +5,11 @@
  */
 
 import React, { FC, Suspense, useMemo } from 'react';
+
 import { map } from 'lodash';
-import { useAppStore } from '../../store/app';
+
 import AppContextProvider from './app-context-provider';
+import { useAppStore } from '../../store/app';
 
 const Mounter: FC<{ appId: string }> = ({ children, appId }) => (
 	<div key={appId} id={appId}>

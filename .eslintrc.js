@@ -35,7 +35,21 @@ module.exports = {
 				ignorePropertyModificationsFor: ['accumulator', 'state', 'event']
 			}
 		],
-		'no-shadow': 'off',
-		'@typescript-eslint/no-shadow': 'error'
-	}
+		'sonarjs/cognitive-complexity': 'warn',
+		// TODO: enable when this will be released https://github.com/SonarSource/eslint-plugin-sonarjs/pull/405
+		'sonarjs/no-duplicate-string': 'off'
+	},
+	overrides: [
+		{
+			// enable eslint-plugin-testing-library rules or preset only for test files
+			files: ['**/test/**/*.[jt]s?(x)', '**/mocks/**/*.[jt]s?(x)', '**/jest-*.ts?(x)'],
+			extends: ['plugin:jest-dom/recommended', 'plugin:testing-library/react'],
+			rules: {
+				'testing-library/no-unnecessary-act': 'warn',
+				'testing-library/no-global-regexp-flag-in-query': 'error',
+				'testing-library/prefer-user-event': 'warn',
+				'import/no-extraneous-dependencies': 'off'
+			}
+		}
+	]
 };

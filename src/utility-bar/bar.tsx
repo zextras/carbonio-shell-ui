@@ -3,6 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import React, { FC, useCallback, useMemo } from 'react';
+
 import {
 	Container,
 	Dropdown,
@@ -11,16 +13,16 @@ import {
 	Tooltip
 } from '@zextras/carbonio-design-system';
 import { map, noop } from 'lodash';
-import React, { FC, useCallback, useMemo } from 'react';
+
+import { useUtilityBarStore } from './store';
+import { useUtilityViews } from './utils';
 import type { UtilityView } from '../../types';
+import { SHELL_APP_ID } from '../constants';
+import { fetchNoOp } from '../network/fetch';
 import { logout } from '../network/logout';
 import { useUserAccount } from '../store/account';
 import { addBoard } from '../store/boards';
 import { getT } from '../store/i18n';
-import { useUtilityBarStore } from './store';
-import { useUtilityViews } from './utils';
-import { SHELL_APP_ID } from '../constants';
-import { fetchNoOp } from '../network/fetch';
 
 const UtilityBarItem: FC<{ view: UtilityView }> = ({ view }) => {
 	const { mode, setMode, current, setCurrent } = useUtilityBarStore();

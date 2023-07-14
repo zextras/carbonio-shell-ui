@@ -5,6 +5,7 @@
  */
 
 import React, { FC } from 'react';
+
 import { Button, Container } from '@zextras/carbonio-design-system';
 import { noop } from 'lodash';
 

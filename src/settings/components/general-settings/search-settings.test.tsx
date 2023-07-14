@@ -4,11 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
+
 import { act, screen } from '@testing-library/react';
-import { AccountSettings, AccountSettingsPrefs, AddMod } from '../../../../types';
-import { setup } from '../../../test/utils';
+
 import { SearchSettings } from './search-settings';
+import { AccountSettings, AccountSettingsPrefs, AddMod } from '../../../../types';
 import { ICONS } from '../../../test/constants';
+import { setup } from '../../../test/utils';
 
 describe('Search settings', () => {
 	test('should render with default values', () => {

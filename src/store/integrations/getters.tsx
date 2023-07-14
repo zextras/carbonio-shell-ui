@@ -6,8 +6,10 @@
 
 /* THIS FILE CONTAINS HOOKS, BUT ESLINT IS DUMB */
 
-import { compact, map } from 'lodash';
 import React, { FC, FunctionComponent } from 'react';
+
+import { compact, map } from 'lodash';
+
 import { useIntegrationsStore } from './store';
 import { Action, ActionFactory } from '../../../types';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -40,8 +42,7 @@ export const getActions = <T,>(target: T, type: string): Array<Action> => {
 	return compact(
 		map(factories, (f) => {
 			try {
-				const action = f(target);
-				return action;
+				return f(target);
 			} catch (e) {
 				// eslint-disable-next-line no-console
 				console.error(e);
@@ -57,8 +58,7 @@ export const getActionsFactory = (type: string): (<T>(target: T) => Array<Action
 		compact(
 			map(factories, (f) => {
 				try {
-					const action = f(target);
-					return action;
+					return f(target);
 				} catch (e) {
 					// eslint-disable-next-line no-console
 					console.error(e);

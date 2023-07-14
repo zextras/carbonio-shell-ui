@@ -19,14 +19,15 @@ import {
 	within
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import i18next, { type i18n } from 'i18next';
 import { filter } from 'lodash';
 import { I18nextProvider } from 'react-i18next';
 import { MemoryRouter } from 'react-router-dom';
-import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
+
 import { ThemeProvider } from '../boot/theme-provider';
 
-export type UserEvent = ReturnType<typeof userEvent['setup']> & {
+export type UserEvent = ReturnType<(typeof userEvent)['setup']> & {
 	readonly rightClick: (target: Element) => Promise<void>;
 };
 
@@ -141,7 +142,7 @@ function customRender(
 
 type SetupOptions = Pick<WrapperProps, 'initialRouterEntries'> & {
 	renderOptions?: Omit<RenderOptions, 'queries'>;
-	setupOptions?: Parameters<typeof userEvent['setup']>[0];
+	setupOptions?: Parameters<(typeof userEvent)['setup']>[0];
 };
 
 const setupUserEvent = (options: SetupOptions['setupOptions']): UserEvent => {
@@ -165,3 +166,22 @@ export const setup = (
 		...options?.renderOptions
 	})
 });
+
+export function controlConsoleError(expectedMessage: string): void {
+	// eslint-disable-next-line no-console
+	const actualConsoleError = console.error;
+	// eslint-disable-next-line no-console
+	console.error = jest.fn<ReturnType<typeof console.error>, Parameters<typeof console.error>>(
+		(error, ...restParameter) => {
+			if (
+				(typeof error === 'string' && error === expectedMessage) ||
+				(error instanceof Error && error.message === expectedMessage)
+			) {
+				// eslint-disable-next-line no-console
+				console.error('Controlled error', error, ...restParameter);
+			} else {
+				actualConsoleError(error, ...restParameter);
+			}
+		}
+	);
+}

@@ -4,8 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Container, Text } from '@zextras/carbonio-design-system';
 import React, { useMemo } from 'react';
+
+import { Container, Text } from '@zextras/carbonio-design-system';
+
 import { getT } from '../../../store/i18n';
 import { appearanceSubSection } from '../../general-settings-sub-sections';
 

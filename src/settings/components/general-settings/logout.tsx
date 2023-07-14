@@ -4,18 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { useMemo } from 'react';
+
 import { Button, FormSubSection } from '@zextras/carbonio-design-system';
-import React, { FC, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { logout } from '../../../network/logout';
-import { getT } from '../../../store/i18n';
 import { accountSubSection } from '../../general-settings-sub-sections';
 
-const Logout: FC = () => {
-	const t = getT();
-	const onClick = useCallback(() => {
-		logout();
-	}, []);
+export const Logout = (): JSX.Element => {
+	const [t] = useTranslation();
+
 	const sectionTitle = useMemo(() => accountSubSection(t), [t]);
+
 	return (
 		<FormSubSection
 			label={sectionTitle.label}
@@ -23,9 +24,7 @@ const Logout: FC = () => {
 			width="50%"
 			id={sectionTitle.id}
 		>
-			<Button label={t('settings.general.account_logout', 'Logout')} onClick={onClick} />
+			<Button label={t('settings.general.account_logout', 'Logout')} onClick={logout} />
 		</FormSubSection>
 	);
 };
-
-export default Logout;

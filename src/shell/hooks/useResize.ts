@@ -4,14 +4,16 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React, { CSSProperties, useCallback, useEffect, useRef } from 'react';
+
 import { find, forEach } from 'lodash';
+
+import { useLocalStorage } from './useLocalStorage';
 import {
 	createExportForTestOnly,
 	setElementSizeAndPosition,
 	setGlobalCursor,
 	SizeAndPosition
 } from '../../utils/utils';
-import { useLocalStorage } from './useLocalStorage';
 
 /**
  * Define the border following the cardinal points (north, south, west, east).

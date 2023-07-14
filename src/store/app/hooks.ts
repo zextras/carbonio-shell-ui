@@ -7,8 +7,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* THIS FILE CONTAINS HOOKS, BUT ESLINT IS DUMB */
 
-import { sortBy } from 'lodash';
 import { useMemo } from 'react';
+
+import { sortBy } from 'lodash';
+
 import { useAppStore } from './store';
 import { AppRoute, CarbonioModule } from '../../../types';
 

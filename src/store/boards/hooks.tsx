@@ -4,8 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React, { FC, useContext, useMemo, createContext } from 'react';
-import { Board, BoardHooksContext } from '../../../types';
+
 import { closeBoard, setCurrentBoard, updateBoard, useBoardStore } from './store';
+import { Board, BoardHooksContext } from '../../../types';
 
 export const useBoardById = <T,>(id: string): Board<T> => useBoardStore((s) => s.boards[id]);
 export const getBoardById = <T,>(id: string): Board<T> => useBoardStore.getState().boards[id];

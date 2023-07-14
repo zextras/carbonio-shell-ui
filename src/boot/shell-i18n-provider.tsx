@@ -5,7 +5,9 @@
  */
 
 import React, { FC } from 'react';
+
 import { I18nextProvider } from 'react-i18next';
+
 import { SHELL_APP_ID } from '../constants';
 import { useI18nStore } from '../store/i18n';
 

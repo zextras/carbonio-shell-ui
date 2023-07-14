@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { FC, useCallback, useMemo } from 'react';
+
 import {
 	Container,
 	FormSubSection,
@@ -13,13 +15,12 @@ import {
 	SingleSelectionOnChange,
 	Text
 } from '@zextras/carbonio-design-system';
-import React, { FC, useCallback, useMemo } from 'react';
-
 import { find } from 'lodash';
-import { AccountSettings, AddMod, PrefsMods } from '../../types';
-import { getT } from '../store/i18n';
+
 import { localeList, timeZoneList } from './components/utils';
 import { timezoneAndLanguageSubSection } from './general-settings-sub-sections';
+import { AccountSettings, AddMod, PrefsMods } from '../../types';
+import { getT } from '../store/i18n';
 
 const LanguageAndTimeZone: FC<{
 	settings: AccountSettings;

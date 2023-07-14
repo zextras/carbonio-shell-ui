@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { useCallback, useMemo } from 'react';
+
 import {
 	Badge,
 	Container,
@@ -15,11 +17,10 @@ import {
 	useTheme
 } from '@zextras/carbonio-design-system';
 import { map } from 'lodash';
-import React, { useCallback, useMemo } from 'react';
-import { useAppList } from '../../../store/app';
 
 import { CarbonioModule } from '../../../../types';
 import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../../../constants';
+import { useAppList } from '../../../store/app';
 import { getT } from '../../../store/i18n';
 import { versionsSubSection } from '../../general-settings-sub-sections';
 

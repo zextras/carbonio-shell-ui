@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.1](https://github.com/zextras/carbonio-shell-ui/compare/v3.2.0...v3.2.1) (2023-07-14)
+
+
+### Bug Fixes
+
+* prevent click on board header only if a move occurs ([9aa05b4](https://github.com/zextras/carbonio-shell-ui/commit/9aa05b421ef6ce323ce7f2780204de6a8e7ec393))
+
 ## [3.2.0](https://github.com/zextras/carbonio-shell-ui/compare/v3.1.1...v3.2.0) (2023-07-06)
 
 

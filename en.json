@@ -7,7 +7,21 @@
         "hide": "Hide board",
         "open_app": "Open in app",
         "reduce": "Reduce board",
+        "reset_size": {
+            "disabled": "Board already at the default position",
+            "enabled": "Return to default position and size"
+        },
         "show_tabs": "Show other tabs"
+    },
+    "bootstrap": {
+        "failure": {
+            "modal": {
+                "body": "Some technical issues occurred while processing your request. Please try to refresh the page or go back to the login page.",
+                "confirmButtonLabel": "refresh",
+                "secondaryButtonLabel": "login page",
+                "title": "Something went wrong..."
+            }
+        }
     },
     "feedback": {
         "behaviors": "Behaviors",
@@ -41,11 +55,13 @@
         "advanced_settings": "Advanced Settings",
         "button": "Button",
         "cancel": "Cancel",
+        "cannot_save_changes": "Some changes cannot be saved",
         "change_pop": "Change POP port",
         "choose_account": "Choose an account",
         "choose_folder": "Choose Folder",
         "clear_search_query": "CLEAR SEARCH",
         "click_to_copy": "Click to copy",
+        "close": "Close",
         "delegates": "Delegates",
         "delete": "Delete",
         "delete_after_download": "Delete messages from the server after the download",

@@ -49,7 +49,7 @@
                 "auto_reply_message": "Messaggio risposta automatica:",
                 "auto_reply_message_external": "Messaggio di risposta automatica per mittenti esterni:",
                 "create_appointment": "Crea Appuntamento:",
-                "end_time": "Data di Fine:",
+                "end_time": "Ora di Fine:",
                 "external_senders": "Mittenti Esterni",
                 "send_auto_reply_period": "Invia riposta automatica durante questo periodo:",
                 "start_date": "Data di inizio",
@@ -122,7 +122,7 @@
         "from_app": "Da {{app}}"
     },
     "label": {
-        "cancel": "Elimina",
+        "cancel": "Annulla",
         "clear_search_query": "PULISCI RICERCA",
         "edit_to_start_search": "Modifica la ricerca per iniziarne una nuova",
         "out_of_office": "Fuori Ufficio",
@@ -408,5 +408,15 @@
     },
     "share": {
         "is_contained_in": "È contenuto in"
+    },
+    "bootstrap": {
+        "failure": {
+            "modal": {
+                "confirmButtonLabel": "ricarica",
+                "secondaryButtonLabel": "pagina di login",
+                "body": "Si sono verificati alcuni problemi tecnici durante l'elaborazione della tua richiesta. Ricarica la pagina o torna alla pagina di login.",
+                "title": "Qualcosa è andato storto..."
+            }
+        }
     }
 }

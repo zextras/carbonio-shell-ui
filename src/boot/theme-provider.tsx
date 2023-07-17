@@ -153,21 +153,11 @@ export const ThemeProvider = ({ children }: ThemeProviderProps): JSX.Element => 
 				break;
 			case 'enabled':
 				auto(false);
-				enable(
-					{
-						sepia: -50
-					},
-					darkReaderDynamicThemeFixes
-				);
+				enable({}, darkReaderDynamicThemeFixes);
 				break;
 			case 'auto':
 			default:
-				auto(
-					{
-						sepia: -50
-					},
-					darkReaderDynamicThemeFixes
-				);
+				auto({}, darkReaderDynamicThemeFixes);
 				break;
 		}
 	}, [darkReaderState]);

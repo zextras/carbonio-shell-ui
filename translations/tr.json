@@ -119,7 +119,11 @@
         "reduce": "Panoyu küçült",
         "show_tabs": "Diğer sekmeleri göster",
         "open_app": "Uygulamada aç",
-        "from_app": "Nereden: {{app}}"
+        "from_app": "Nereden: {{app}}",
+        "reset_size": {
+            "disabled": "Pano zaten varsayılan konumda",
+            "enabled": "Varsayılan konuma ve boyuta dön"
+        }
     },
     "label": {
         "cancel": "İptal",
@@ -206,7 +210,9 @@
         "click_to_copy": "Kopyalamak için tıklayın",
         "folder_external_account": "Klasör: Yeni Dış Hesap",
         "add_inline_image": "Resim ekle",
-        "select_image": "Resim seçin"
+        "select_image": "Resim seçin",
+        "cannot_save_changes": "Bazı değişiklikler kaydedilemedi",
+        "close": "Kapat"
     },
     "locale": {
         "label_italian": "Italian - {{value}}",
@@ -408,5 +414,15 @@
     },
     "share": {
         "is_contained_in": "Bulunduğu klasör"
+    },
+    "bootstrap": {
+        "failure": {
+            "modal": {
+                "confirmButtonLabel": "yenile",
+                "secondaryButtonLabel": "giriş sayfası",
+                "title": "Bir hata oluştu...",
+                "body": "İsteğiniz işlenirken bazı teknik sorunlar oluştu. Lütfen sayfayı yeniden yüklemeyi deneyin veya kullanıcı giriş sayfasına geri gidin."
+            }
+        }
     }
 }

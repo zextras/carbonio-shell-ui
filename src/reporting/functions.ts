@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import type { Event, EventHint } from '@sentry/browser';
+
 import { useReporter } from './store';
 
 export const report =

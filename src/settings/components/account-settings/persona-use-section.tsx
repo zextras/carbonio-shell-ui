@@ -4,9 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
+
 import { Checkbox, Container, Input, Padding, Row, Text } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
-import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
+
 import { IdentityAttrs, IdentityProps } from '../../../../types';
 import { EMAIL_VALIDATION_REGEX } from '../../../constants';
 

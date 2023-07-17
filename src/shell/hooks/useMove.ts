@@ -4,14 +4,16 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+
 import { forEach } from 'lodash';
+
+import { useLocalStorage } from './useLocalStorage';
 import {
 	ElementPosition,
 	setElementSizeAndPosition,
 	setGlobalCursor,
 	SizeAndPosition
 } from '../../utils/utils';
-import { useLocalStorage } from './useLocalStorage';
 
 type UseMoveReturnType = [isMoving: boolean, moveHandler: React.MouseEventHandler];
 type MoveOptions = {
@@ -19,7 +21,7 @@ type MoveOptions = {
 	keepSynchedWithStorage?: boolean;
 };
 
-export const BOARD_CURSOR_TIMEOUT = 100;
+export const BOARD_CURSOR_TIMEOUT = 250;
 
 function calcNewPosition(
 	from: SizeAndPosition & {
@@ -93,6 +95,8 @@ export const useMove = (
 
 	const onMouseMove = useCallback(
 		(mouseMoveEvent: MouseEvent) => {
+			// prevent clickable elements from being clicked if a move has been made
+			document.body.addEventListener('click', preventClick, { capture: true });
 			if (initialSizeAndPositionRef.current && elementToMoveRef.current) {
 				const offsetParent =
 					(elementToMoveRef.current.offsetParent instanceof HTMLElement &&
@@ -111,7 +115,7 @@ export const useMove = (
 				shouldUpdateLocalStorageRef.current = true;
 			}
 		},
-		[elementToMoveRef, moveElement]
+		[elementToMoveRef, moveElement, preventClick]
 	);
 
 	const enableMove = useCallback(() => {
@@ -119,12 +123,10 @@ export const useMove = (
 			document.activeElement.classList.add('no-active-background');
 		}
 		document.body.addEventListener('mousemove', onMouseMove);
-		// prevent clickable elements from being clicked if a move has been made
-		document.body.addEventListener('click', preventClick, { capture: true });
 		setGlobalCursor('move');
 		isMoveEnabledRef.current = true;
 		setIsMoving(true);
-	}, [onMouseMove, preventClick]);
+	}, [onMouseMove]);
 
 	const disableMove = useCallback(() => {
 		if (document.activeElement && document.activeElement instanceof HTMLElement) {

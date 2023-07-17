@@ -4,6 +4,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, {
+	TextareaHTMLAttributes,
+	useCallback,
+	useEffect,
+	useMemo,
+	useReducer,
+	useState
+} from 'react';
+
 import type { Event as SentryEvent } from '@sentry/browser';
 import {
 	Button,
@@ -17,22 +26,15 @@ import {
 	Text,
 	useSnackbar
 } from '@zextras/carbonio-design-system';
-import { filter, find, map } from 'lodash';
-import React, {
-	TextareaHTMLAttributes,
-	useCallback,
-	useEffect,
-	useMemo,
-	useReducer,
-	useState
-} from 'react';
 import type { TFunction } from 'i18next';
+import { filter, find, map } from 'lodash';
 import styled, { DefaultTheme } from 'styled-components';
+
+import { feedback } from './functions';
 import { useUserAccount } from '../store/account';
 import { useAppList } from '../store/app';
 import { closeBoard } from '../store/boards';
 import { getT } from '../store/i18n';
-import { feedback } from './functions';
 
 // TODO: replace with DS TextArea?
 const TextArea = styled.textarea<{ size?: keyof DefaultTheme['sizes']['font'] }>`

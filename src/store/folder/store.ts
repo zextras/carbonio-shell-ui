@@ -5,6 +5,7 @@
  */
 
 import { create } from 'zustand';
+
 import type { FolderState } from '../../../types';
 import { folderWorker } from '../../workers';
 

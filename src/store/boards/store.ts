@@ -7,6 +7,7 @@
 import produce from 'immer';
 import { forEach, trimStart, uniqueId } from 'lodash';
 import { create } from 'zustand';
+
 import type { BoardState, Board } from '../../../types';
 import { getApp } from '../app';
 

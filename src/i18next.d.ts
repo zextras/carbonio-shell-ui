@@ -5,6 +5,7 @@
  */
 // import the original type declarations
 import * as i18next from 'i18next';
+
 // import all namespaces (for the default language, only)
 import en from '../translations/en.json';
 

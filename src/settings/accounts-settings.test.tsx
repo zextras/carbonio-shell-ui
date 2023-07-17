@@ -15,11 +15,15 @@ import { identityToIdentityProps } from './account-wrapper';
 import { AccountsSettings } from './accounts-settings';
 import { Account, BatchRequest, IdentityProps } from '../../types';
 import server, { waitForRequest } from '../mocks/server';
+import { useAccountStore } from '../store/account';
 import { setup } from '../test/utils';
 
-jest.mock('../workers');
-
 describe('Account setting', () => {
+	async function waitForGetRightsRequest(): Promise<void> {
+		await waitForRequest('post', '/service/soap/GetRightsRequest');
+		await screen.findByText('sendAs');
+	}
+
 	test('Show primary identity inside the list', async () => {
 		const fullName = faker.person.fullName();
 		const email = faker.internet.email();
@@ -54,10 +58,8 @@ describe('Account setting', () => {
 				)}
 			/>
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+
+		await waitForGetRightsRequest();
 		expect(screen.getByText(fullName)).toBeVisible();
 		expect(screen.getByText(`(${email})`)).toBeVisible();
 		expect(screen.getByText('Primary')).toBeVisible();
@@ -101,10 +103,7 @@ describe('Account setting', () => {
 				)}
 			/>
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		expect(screen.getByText('New Persona 1')).toBeVisible();
 	});
@@ -171,14 +170,333 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 		expect(screen.getByText('New Persona 1')).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		expect(screen.getByText('New Persona 2')).toBeVisible();
+	});
+
+	test('When existing persona identityName is updated but not yet saved, the old (but current) identityName should not be used as default one for a new persona', async () => {
+		const defaultFirstName = faker.person.firstName();
+		const defaultLastName = faker.person.lastName();
+		const defaultFullName = faker.person.fullName({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultEmail = faker.internet.email({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultId = faker.string.uuid();
+
+		const persona1FullName = 'New Persona 1';
+		const persona1Email = faker.internet.email();
+		const persona1Id = faker.string.uuid();
+
+		const identitiesArray: Account['identities']['identity'] = [
+			{
+				id: persona1Id,
+				name: persona1FullName,
+				_attrs: {
+					zimbraPrefIdentityName: persona1FullName,
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraPrefFromDisplay: '',
+					zimbraPrefFromAddress: persona1Email,
+					zimbraPrefIdentityId: persona1Id
+				}
+			},
+			{
+				id: defaultId,
+				name: 'DEFAULT',
+				_attrs: {
+					zimbraPrefIdentityName: defaultFullName,
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraPrefFromDisplay: defaultFirstName,
+					zimbraPrefFromAddress: defaultEmail,
+					zimbraPrefIdentityId: defaultId
+				}
+			}
+		];
+
+		const account: Account = {
+			name: defaultEmail,
+			rights: { targets: [] },
+			signatures: { signature: [] },
+			id: defaultId,
+			displayName: '',
+			identities: {
+				identity: identitiesArray
+			}
+		};
+
+		const identitiesDefault = map(identitiesArray, (item, index) =>
+			identityToIdentityProps(item, index)
+		);
+
+		identitiesDefault.unshift(identitiesDefault.pop() as IdentityProps);
+
+		const { user } = setup(
+			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
+		);
+		await waitForGetRightsRequest();
+
+		const persona1Row = screen.getByText('New Persona 1');
+		expect(persona1Row).toBeVisible();
+		await user.click(persona1Row);
+
+		const accountNameInput = screen.getByRole('textbox', { name: /persona name/i });
+		expect(accountNameInput).toHaveDisplayValue('New Persona 1');
+
+		expect(
+			within(screen.getByTestId(`account-list-item-${persona1Id}`)).getByText('New Persona 1')
+		).toBeVisible();
+
+		const newName = 'Updated Name';
+		await user.clear(accountNameInput);
+		await user.type(accountNameInput, newName);
+
+		expect(accountNameInput).toHaveDisplayValue(newName);
+		expect(
+			within(screen.getByTestId(`account-list-item-${persona1Id}`)).getByText(newName)
+		).toBeVisible();
+
+		await user.click(screen.getByRole('button', { name: /add persona/i }));
+		expect(
+			within(screen.getByTestId(`account-list-item-0`)).getByText('New Persona 2')
+		).toBeVisible();
+	});
+
+	test('When create a new persona and modify the proposed identityName before saving and than create another persona the proposed identityName should be the same', async () => {
+		const defaultFirstName = faker.person.firstName();
+		const defaultLastName = faker.person.lastName();
+		const defaultFullName = faker.person.fullName({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultEmail = faker.internet.email({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultId = faker.string.uuid();
+
+		const identitiesArray: Account['identities']['identity'] = [
+			{
+				id: defaultId,
+				name: 'DEFAULT',
+				_attrs: {
+					zimbraPrefIdentityName: defaultFullName,
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraPrefFromDisplay: defaultFirstName,
+					zimbraPrefFromAddress: defaultEmail,
+					zimbraPrefIdentityId: defaultId
+				}
+			}
+		];
+
+		const account: Account = {
+			name: defaultEmail,
+			rights: { targets: [] },
+			signatures: { signature: [] },
+			id: defaultId,
+			displayName: '',
+			identities: {
+				identity: identitiesArray
+			}
+		};
+
+		const identitiesDefault = map(identitiesArray, (item, index) =>
+			identityToIdentityProps(item, index)
+		);
+
+		identitiesDefault.unshift(identitiesDefault.pop() as IdentityProps);
+
+		const { user } = setup(
+			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
+		);
+		await waitForGetRightsRequest();
+
+		await user.click(screen.getByRole('button', { name: /add persona/i }));
+
+		const persona1Row = screen.getByText('New Persona 1');
+		expect(persona1Row).toBeVisible();
+		await user.click(persona1Row);
+
+		const accountNameInput = screen.getByRole('textbox', { name: /persona name/i });
+		expect(accountNameInput).toHaveDisplayValue('New Persona 1');
+
+		expect(
+			within(screen.getByTestId(`account-list-item-0`)).getByText('New Persona 1')
+		).toBeVisible();
+
+		const newName = 'Updated Name';
+		await user.clear(accountNameInput);
+		await user.type(accountNameInput, newName);
+
+		expect(accountNameInput).toHaveDisplayValue(newName);
+		expect(within(screen.getByTestId(`account-list-item-0`)).getByText(newName)).toBeVisible();
+
+		await user.click(screen.getByRole('button', { name: /add persona/i }));
+		expect(screen.getByText('New Persona 1')).toBeVisible();
+		expect(
+			within(screen.getByTestId(`account-list-item-1`)).getByText('New Persona 1')
+		).toBeVisible();
+		expect(screen.queryByText('New Persona 2')).not.toBeInTheDocument();
+	});
+
+	test('When existing persona is deleted but not yet saved, the old (but current) identityName should not be used as default one for a new persona', async () => {
+		const defaultFirstName = faker.person.firstName();
+		const defaultLastName = faker.person.lastName();
+		const defaultFullName = faker.person.fullName({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultEmail = faker.internet.email({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultId = faker.string.uuid();
+
+		const persona1FullName = 'New Persona 1';
+		const persona1Email = faker.internet.email();
+		const persona1Id = faker.string.uuid();
+
+		const identitiesArray: Account['identities']['identity'] = [
+			{
+				id: persona1Id,
+				name: persona1FullName,
+				_attrs: {
+					zimbraPrefIdentityName: persona1FullName,
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraPrefFromDisplay: '',
+					zimbraPrefFromAddress: persona1Email,
+					zimbraPrefIdentityId: persona1Id
+				}
+			},
+			{
+				id: defaultId,
+				name: 'DEFAULT',
+				_attrs: {
+					zimbraPrefIdentityName: defaultFullName,
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraPrefFromDisplay: defaultFirstName,
+					zimbraPrefFromAddress: defaultEmail,
+					zimbraPrefIdentityId: defaultId
+				}
+			}
+		];
+
+		const account: Account = {
+			name: defaultEmail,
+			rights: { targets: [] },
+			signatures: { signature: [] },
+			id: defaultId,
+			displayName: '',
+			identities: {
+				identity: identitiesArray
+			}
+		};
+
+		const identitiesDefault = map(identitiesArray, (item, index) =>
+			identityToIdentityProps(item, index)
+		);
+
+		identitiesDefault.unshift(identitiesDefault.pop() as IdentityProps);
+
+		const { user } = setup(
+			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
+		);
+		await waitForGetRightsRequest();
+
+		const persona1Row = screen.getByText('New Persona 1');
+		expect(persona1Row).toBeVisible();
+		await user.click(persona1Row);
+
+		await user.click(screen.getByRole('button', { name: /delete/i }));
+		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
+		act(() => {
+			// run modal timers
+			jest.runOnlyPendingTimers();
+		});
+		await user.click(confirmButton);
+		expect(persona1Row).not.toBeInTheDocument();
+
+		await user.click(screen.getByRole('button', { name: /add persona/i }));
+		expect(
+			within(screen.getByTestId(`account-list-item-0`)).getByText('New Persona 2')
+		).toBeVisible();
+	});
+
+	test('When create a new persona and delete it before saving and than create another persona the proposed identityName should be the same', async () => {
+		const defaultFirstName = faker.person.firstName();
+		const defaultLastName = faker.person.lastName();
+		const defaultFullName = faker.person.fullName({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultEmail = faker.internet.email({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultId = faker.string.uuid();
+
+		const identitiesArray: Account['identities']['identity'] = [
+			{
+				id: defaultId,
+				name: 'DEFAULT',
+				_attrs: {
+					zimbraPrefIdentityName: defaultFullName,
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraPrefFromDisplay: defaultFirstName,
+					zimbraPrefFromAddress: defaultEmail,
+					zimbraPrefIdentityId: defaultId
+				}
+			}
+		];
+
+		const account: Account = {
+			name: defaultEmail,
+			rights: { targets: [] },
+			signatures: { signature: [] },
+			id: defaultId,
+			displayName: '',
+			identities: {
+				identity: identitiesArray
+			}
+		};
+
+		const identitiesDefault = map(identitiesArray, (item, index) =>
+			identityToIdentityProps(item, index)
+		);
+
+		identitiesDefault.unshift(identitiesDefault.pop() as IdentityProps);
+
+		const { user } = setup(
+			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
+		);
+		await waitForGetRightsRequest();
+
+		await user.click(screen.getByRole('button', { name: /add persona/i }));
+
+		const persona1Row = screen.getByText('New Persona 1');
+		expect(persona1Row).toBeVisible();
+		await user.click(persona1Row);
+
+		await user.click(screen.getByRole('button', { name: /delete/i }));
+		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
+		act(() => {
+			// run modal timers
+			jest.runOnlyPendingTimers();
+		});
+		await user.click(confirmButton);
+		expect(persona1Row).not.toBeInTheDocument();
+
+		await user.click(screen.getByRole('button', { name: /add persona/i }));
+		expect(screen.getByText('New Persona 1')).toBeVisible();
+		expect(
+			within(screen.getByTestId(`account-list-item-1`)).getByText('New Persona 1')
+		).toBeVisible();
+		expect(screen.queryByText('New Persona 2')).not.toBeInTheDocument();
 	});
 
 	test('Should not increase the counter if the identities have a name different from the default', async () => {
@@ -243,10 +561,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 		expect(screen.getByText(persona1FullName)).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
@@ -315,10 +630,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 		const persona1Row = screen.getByText(persona1FullName);
 		expect(persona1Row).toBeVisible();
 		await user.click(persona1Row);
@@ -397,10 +709,7 @@ describe('Account setting', () => {
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
 
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await waitFor(() =>
@@ -458,10 +767,6 @@ describe('Account setting', () => {
 
 		const request = await pendingBatchRequest;
 
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-
 		const requestBody = (request?.body as { Body: { BatchRequest: BatchRequest } }).Body;
 		expect(requestBody.BatchRequest.CreateIdentityRequest).toHaveLength(1);
 		expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
@@ -469,10 +774,6 @@ describe('Account setting', () => {
 
 		const successSnackbar = await screen.findByText('Edits saved correctly');
 		expect(successSnackbar).toBeVisible();
-		act(() => {
-			// close snackbar before exiting test
-			jest.runOnlyPendingTimers();
-		});
 	});
 
 	test('Should remove from the list added identities not saved on discard changes', async () => {
@@ -523,10 +824,7 @@ describe('Account setting', () => {
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
 
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 
 		const persona1 = 'New Persona 1';
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
@@ -598,10 +896,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 
 		expect(screen.getByText(persona1FullName)).toBeVisible();
 
@@ -609,6 +904,7 @@ describe('Account setting', () => {
 		await user.click(screen.getByRole('button', { name: /delete/i }));
 		const confirmButton = screen.getByRole('button', { name: /delete permanently/i });
 		act(() => {
+			// run modal timers
 			jest.runOnlyPendingTimers();
 		});
 		await user.click(confirmButton);
@@ -666,10 +962,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 
 		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
 		expect(accountNameInput).toHaveDisplayValue(defaultFullName);
@@ -735,10 +1028,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 
 		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
 		expect(accountNameInput).toHaveDisplayValue(defaultFullName);
@@ -811,10 +1101,7 @@ describe('Account setting', () => {
 		const { user } = setup(
 			<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
 		);
-		act(() => {
-			jest.runOnlyPendingTimers();
-		});
-		await screen.findByText('sendAs');
+		await waitForGetRightsRequest();
 
 		const emailAddressInput = screen.getByRole('textbox', { name: /E-mail address/i });
 		expect(emailAddressInput).toHaveDisplayValue(defaultEmail);
@@ -831,5 +1118,177 @@ describe('Account setting', () => {
 		expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
 
 		expect(emailAddressInput).toHaveDisplayValue(defaultEmail);
+	});
+
+	describe('Delegates', () => {
+		// TODO waiting for radio component refactor to better find active radio
+		test.todo('The value received in the pref is the one checked in the UI');
+
+		test('When the value change, the save button and discard button becomes enabled', async () => {
+			useAccountStore.setState((previousState) => ({
+				...previousState,
+				settings: {
+					...previousState.settings,
+					prefs: { zimbraPrefDelegatedSendSaveTarget: 'owner' }
+				}
+			}));
+
+			const defaultFirstName = faker.person.firstName();
+			const defaultLastName = faker.person.lastName();
+			const defaultFullName = faker.person.fullName({
+				firstName: defaultFirstName,
+				lastName: defaultLastName
+			});
+			const defaultEmail = faker.internet.email({
+				firstName: defaultFirstName,
+				lastName: defaultLastName
+			});
+			const defaultId = faker.string.uuid();
+
+			const identitiesArray: Account['identities']['identity'] = [
+				{
+					id: defaultId,
+					name: 'DEFAULT',
+					_attrs: {
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefReplyToEnabled: 'FALSE',
+						zimbraPrefFromDisplay: defaultFirstName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefIdentityId: defaultId
+					}
+				}
+			];
+
+			const account: Account = {
+				name: defaultEmail,
+				rights: { targets: [] },
+				signatures: { signature: [] },
+				id: defaultId,
+				displayName: '',
+				identities: {
+					identity: identitiesArray
+				}
+			};
+
+			const identitiesDefault = map(identitiesArray, (item, index) =>
+				identityToIdentityProps(item, index)
+			);
+
+			identitiesDefault.unshift(identitiesDefault.pop() as IdentityProps);
+
+			const { user } = setup(
+				<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
+			);
+			await waitForGetRightsRequest();
+
+			expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+			expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
+
+			const senderOptionRow = screen.getByText(
+				'Save a copy of sent messages to delegate’s Sent folder'
+			);
+			await user.click(senderOptionRow);
+
+			expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+			expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
+		});
+
+		test('When the user change the value and click on save, the network request contains the new value', async () => {
+			useAccountStore.setState((previousState) => ({
+				...previousState,
+				settings: {
+					...previousState.settings,
+					prefs: { zimbraPrefDelegatedSendSaveTarget: 'owner' }
+				}
+			}));
+
+			const defaultFirstName = faker.person.firstName();
+			const defaultLastName = faker.person.lastName();
+			const defaultFullName = faker.person.fullName({
+				firstName: defaultFirstName,
+				lastName: defaultLastName
+			});
+			const defaultEmail = faker.internet.email({
+				firstName: defaultFirstName,
+				lastName: defaultLastName
+			});
+			const defaultId = faker.string.uuid();
+
+			const identitiesArray: Account['identities']['identity'] = [
+				{
+					id: defaultId,
+					name: 'DEFAULT',
+					_attrs: {
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefReplyToEnabled: 'FALSE',
+						zimbraPrefFromDisplay: defaultFirstName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefIdentityId: defaultId
+					}
+				}
+			];
+
+			const account: Account = {
+				name: defaultEmail,
+				rights: { targets: [] },
+				signatures: { signature: [] },
+				id: defaultId,
+				displayName: '',
+				identities: {
+					identity: identitiesArray
+				}
+			};
+
+			const identitiesDefault = map(identitiesArray, (item, index) =>
+				identityToIdentityProps(item, index)
+			);
+
+			identitiesDefault.unshift(identitiesDefault.pop() as IdentityProps);
+			server.use(
+				rest.post('/service/soap/BatchRequest', (req, res, ctx) =>
+					res(
+						ctx.json({
+							Body: {
+								BatchResponse: {
+									ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
+								}
+							}
+						})
+					)
+				)
+			);
+			const pendingBatchRequest = waitForRequest('POST', '/service/soap/BatchRequest');
+
+			const { user } = setup(
+				<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
+			);
+			await waitForGetRightsRequest();
+
+			expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+			expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
+
+			const senderOptionRow = screen.getByText(
+				'Save a copy of sent messages to delegate’s Sent folder'
+			);
+			await user.click(senderOptionRow);
+
+			expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+			expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
+
+			await user.click(screen.getByRole('button', { name: /save/i }));
+
+			const request = await pendingBatchRequest;
+			const requestBody = (request?.body as { Body: { BatchRequest: BatchRequest } }).Body;
+			expect(requestBody.BatchRequest.CreateIdentityRequest).toBeUndefined();
+			expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
+			expect(requestBody.BatchRequest.ModifyIdentityRequest).toBeUndefined();
+
+			expect(
+				requestBody.BatchRequest.ModifyPrefsRequest?._attrs.zimbraPrefDelegatedSendSaveTarget
+			).toBe('sender');
+
+			const successSnackbar = await screen.findByText('Edits saved correctly');
+			expect(successSnackbar).toBeVisible();
+		});
 	});
 });

@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { sortBy } from 'lodash';
+
 import { Folder, FolderView, LinkFolder, TreeNode } from '../../../types';
 import { FOLDERS, ROOT_NAME } from '../../constants';
 

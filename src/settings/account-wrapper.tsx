@@ -4,13 +4,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { map } from 'lodash';
 import React, { useMemo } from 'react';
+
 import { TFunction, TOptions } from 'i18next';
-import { useUserAccount } from '../store/account';
-import { getT } from '../store/i18n';
+import { map } from 'lodash';
+
 import { AccountsSettings } from './accounts-settings';
 import { Account, IdentityProps } from '../../types';
+import { useUserAccount } from '../store/account';
+import { getT } from '../store/i18n';
 
 const tDefault = (key: string, defaultValue?: string | TOptions): string => {
 	if (typeof defaultValue === 'string') {

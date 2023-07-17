@@ -12,6 +12,7 @@ import React, {
 	useMemo,
 	useState
 } from 'react';
+
 import {
 	generateColorSet,
 	ThemeProvider as UIThemeProvider,
@@ -20,11 +21,12 @@ import {
 import { auto, disable, enable, setFetchMethod } from 'darkreader';
 import { map, reduce } from 'lodash';
 import { createGlobalStyle, css, DefaultTheme, SimpleInterpolation } from 'styled-components';
-import { DarkReaderPropValues, ThemeExtension } from '../../types';
-import { darkReaderDynamicThemeFixes, LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
-import { ScalingSettings } from '../../types/settings';
-import { getAutoScalingFontSize } from '../settings/components/utils';
+
 import { useGetPrimaryColor } from './use-get-primary-color';
+import { DarkReaderPropValues, ThemeExtension } from '../../types';
+import { ScalingSettings } from '../../types/settings';
+import { darkReaderDynamicThemeFixes, LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
+import { getAutoScalingFontSize } from '../settings/components/utils';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 
 setFetchMethod(window.fetch);

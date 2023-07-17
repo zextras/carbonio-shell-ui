@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useEffect, useState, FC, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
 import { Modal, Button, ModalProps } from '@zextras/carbonio-design-system';
 import { Location } from 'history';

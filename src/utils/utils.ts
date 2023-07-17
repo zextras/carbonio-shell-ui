@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React, { CSSProperties } from 'react';
+
 import { reduce } from 'lodash';
 
 export type ElementPosition = {

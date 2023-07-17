@@ -28,6 +28,13 @@ const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 		return -1;
 	}, [settings?.attrs?.zimbraMailQuota, used]);
 
+	const filledQuota = useMemo(() => {
+		if (quota === -1 || quota >= 100) {
+			return 100;
+		}
+		return quota;
+	}, [quota]);
+
 	const description = useMemo(() => {
 		switch (true) {
 			case !quota || quota < 0:
@@ -58,7 +65,7 @@ const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 	return mobileView ? (
 		<Container width="fit" padding={{ right: 'medium' }}>
 			<Tooltip label={description} placement="bottom">
-				<Quota fill={quota >= 100 ? 100 : quota} fillBackground={fillBackground} />
+				<Quota fill={filledQuota} fillBackground={fillBackground} />
 			</Tooltip>
 		</Container>
 	) : (
@@ -76,7 +83,7 @@ const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 				>
 					<Text>{description}</Text>
 				</Container>
-				<Quota fill={quota === -1 || quota >= 100 ? 100 : quota} fillBackground={fillBackground} />
+				<Quota fill={filledQuota} fillBackground={fillBackground} />
 			</Container>
 		</FormSubSection>
 	);

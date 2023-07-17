@@ -180,17 +180,23 @@
         "click_to_copy": "Kliknij, aby skopiować",
         "folder_external_account": "Folder: Nowe konto spoza mojej domeny",
         "add_inline_image": "Dodaj obrazek w tekście",
-        "select_image": "Wybierz obraz"
+        "select_image": "Wybierz obraz",
+        "cannot_save_changes": "Nie udało się zapisać niektórych zmian",
+        "close": "Zamknij"
     },
     "board": {
         "close_tab": "Zamknij kartę",
         "close_tabs": "Zamknij wszystkie karty",
-        "enlarge": "Powiększ tablicę",
+        "enlarge": "Powiększ okienko",
         "hide": "Ukryj okienko",
         "reduce": "Zmniejsz okienko",
         "show_tabs": "Pokaż inne karty",
         "open_app": "Otwórz w aplikacji",
-        "from_app": "Z aplikacji {{app}}"
+        "from_app": "Z aplikacji {{app}}",
+        "reset_size": {
+            "enabled": "Przywróć do domyślnej pozycji i rozmiaru",
+            "disabled": "Okienko znajduje się już w domyślnej pozycji"
+        }
     },
     "locale": {
         "italian": "Włoski",
@@ -408,5 +414,15 @@
     },
     "share": {
         "is_contained_in": "Znajduje się w"
+    },
+    "bootstrap": {
+        "failure": {
+            "modal": {
+                "confirmButtonLabel": "odśwież",
+                "secondaryButtonLabel": "strona logowania",
+                "title": "Coś poszło nie tak...",
+                "body": "Wystąpiły problemy techniczne podczas przetwarzania Twojego żądania. Spróbuj odświeżyć stronę lub powróć do strony logowania."
+            }
+        }
     }
 }

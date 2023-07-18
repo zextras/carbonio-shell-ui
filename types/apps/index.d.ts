@@ -6,7 +6,9 @@
  */
 
 import React, { ComponentType, FC } from 'react';
+
 import { DefaultTheme } from 'styled-components';
+
 import { QueryChip } from '../search';
 
 export type CarbonioModule = {

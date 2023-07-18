@@ -4,12 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { Store } from '@reduxjs/toolkit';
-import type { To } from 'history';
 import React from 'react';
 import type { ComponentType } from 'react';
-import type { CarbonioModule, PanelMode } from '../apps';
+
+import type { Store } from '@reduxjs/toolkit';
+import type { To } from 'history';
+
 import { DARK_READER_VALUES } from '../../src/constants';
+import type { CarbonioModule, PanelMode } from '../apps';
 
 // eslint-disable-next-line no-shadow
 export enum JSNS {
@@ -20,7 +22,7 @@ export enum JSNS {
 	SYNC = 'urn:zimbraSync'
 }
 
-export type DarkReaderPropValues = typeof DARK_READER_VALUES[number];
+export type DarkReaderPropValues = (typeof DARK_READER_VALUES)[number];
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type PackageDependentFunction = (app: string) => Function;

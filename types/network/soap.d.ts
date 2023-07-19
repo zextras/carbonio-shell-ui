@@ -1,4 +1,3 @@
-import { MetaProperty } from '@babel/types';
 import { BaseFolder, LinkFolderFields, SearchFolderFields } from '../misc';
 
 /*

@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { AccountACEInfo, Identity } from './entities';
 import {
 	AccountRights,
 	AccountSettings,
@@ -12,7 +13,6 @@ import {
 	ZimletProp
 } from '../account';
 import { Tag } from '../tags';
-import { AccountACEInfo, Identity } from './entities';
 
 export * from './soap';
 

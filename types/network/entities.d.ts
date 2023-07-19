@@ -58,5 +58,5 @@ export interface Identity {
 	/** Identity ID */
 	id: string;
 	/** Attributes */
-	_attrs?: Partial<IdentityAttrs>;
+	_attrs: IdentityAttrs;
 }

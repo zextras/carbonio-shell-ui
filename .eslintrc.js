@@ -32,7 +32,7 @@ module.exports = {
 			'error',
 			{
 				props: true,
-				ignorePropertyModificationsFor: ['accumulator', 'state', 'event']
+				ignorePropertyModificationsFor: ['accumulator', 'state', 'event', 'prevState']
 			}
 		],
 		'sonarjs/cognitive-complexity': 'warn',

@@ -7,10 +7,19 @@
 import React from 'react';
 
 import type { TFunction } from 'i18next';
-import { isBoolean } from 'lodash';
+import { cloneDeep, filter, findIndex, isArray, isBoolean, reduce, uniq } from 'lodash';
 import moment, { Moment } from 'moment';
 
-import { AddMod, BooleanString, GeneralizedTime, PrefsMods } from '../../../types';
+import {
+	Account,
+	AccountSettings,
+	AddMod,
+	BooleanString,
+	GeneralizedTime,
+	IdentityAttrs,
+	PrefsMods
+} from '../../../types';
+import { Identity } from '../../../types/network/entities';
 import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
 
 export const GEN_TIME_FORMAT = 'YYYYMMDDHHmmss[Z]';
@@ -1244,3 +1253,97 @@ export function upsertPrefOnUnsavedChanges(
 export type SettingsSectionProps = {
 	resetRef?: React.Ref<ResetComponentImperativeHandler>;
 };
+
+export function isPrimary(identity: Identity): boolean {
+	return identity.name === 'DEFAULT';
+}
+
+export function defaultAsFirstOrderIdentities(identities: Array<Identity>): Array<Identity> {
+	const defaultIdx = identities.findIndex(isPrimary);
+	const result = cloneDeep(identities);
+	const defaultIdentity = result.splice(defaultIdx, 1);
+	result.unshift(defaultIdentity[0]);
+	return result;
+}
+
+/**
+ * Compose a unique list of all identities' email addresses
+ *
+ * The list is composed of:
+ * - the email address of the current account
+ * - the email addresses of all the shared accounts (taken from the rights infos)
+ * - all the aliases
+ *
+ * @param account
+ * @param settings
+ *
+ * @returns a list of unique email addresses
+ */
+export const getAvailableEmailAddresses = (
+	account: Account,
+	settings: AccountSettings
+): string[] => {
+	const result: string[] = [];
+
+	// Adds the email address of the primary account
+	result.push(account.name);
+
+	// Adds the email addresses of all the shared accounts
+	if (account.rights?.targets) {
+		account.rights?.targets.forEach((target) => {
+			if (target.target && (target.right === 'sendAs' || target.right === 'sendOnBehalfOf')) {
+				target.target.forEach((user) => {
+					if (user.type === 'account' && user.email) {
+						user.email.forEach((email) => {
+							result.push(email.addr);
+						});
+					}
+				});
+			}
+		});
+	}
+
+	// Adds all the aliases
+	if (settings.attrs.zimbraMailAlias) {
+		if (isArray(settings.attrs.zimbraMailAlias)) {
+			result.push(...(settings.attrs.zimbraMailAlias as string[]));
+		} else {
+			result.push(String(settings.attrs.zimbraMailAlias));
+		}
+	}
+
+	return uniq(result);
+};
+
+export function calculateNewIdentitiesState(
+	currentIdentities: Array<Identity>,
+	deletedIdentities: Array<string>,
+	addedIdentities: Array<Identity>,
+	modifiedIdentitiesAttrs: Record<string, Partial<IdentityAttrs>>
+): Array<Identity> {
+	const filteredIdentities = filter(
+		currentIdentities,
+		(item) => !deletedIdentities.includes(item.id)
+	);
+
+	const filteredAndModified = reduce(
+		modifiedIdentitiesAttrs,
+		(accumulator, attrs, id) => {
+			const propIndex = findIndex(accumulator, (identity) => identity.id === id);
+			if (propIndex > -1) {
+				accumulator[propIndex]._attrs = {
+					...accumulator[propIndex]._attrs,
+					...attrs
+				};
+				if (attrs.zimbraPrefIdentityName && accumulator[propIndex].name !== 'DEFAULT') {
+					accumulator[propIndex].name = attrs.zimbraPrefIdentityName;
+				}
+			}
+			return accumulator;
+		},
+		filteredIdentities
+	);
+
+	filteredAndModified.splice(-1, 0, ...addedIdentities);
+	return filteredAndModified;
+}

@@ -4,10 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { DarkReaderPropValues } from '../misc';
 import { DARK_READER_PROP_KEY, DELEGATED_SEND_SAVE_TARGET } from '../../src/constants';
-import type { SHELL_APP_ID } from '../exports';
 import { StringOfLength } from '../../src/utils/typeUtils';
+import type { SHELL_APP_ID } from '../exports';
+import type { DarkReaderPropValues } from '../misc';
+import { Identity } from '../network/entities';
 
 export interface ZimletProp {
 	name: string;
@@ -41,7 +42,7 @@ export type Account = {
 	name: string;
 	displayName: string;
 	signatures: { signature: Array<unknown> };
-	identities: { identity: Array<{ id: string; name?: string; _attrs?: Partial<IdentityAttrs> }> };
+	identities: { identity: Array<Identity> };
 	rights: AccountRights;
 };
 
@@ -90,7 +91,7 @@ export interface AccountSettingsPrefs {
 	zimbraPrefLocale?: string;
 	zimbraPrefMailPollingInterval?: Duration;
 	zimbraPrefMailTrustedSenderList?: Array<string> | string;
-	zimbraPrefDelegatedSendSaveTarget?: typeof DELEGATED_SEND_SAVE_TARGET[number];
+	zimbraPrefDelegatedSendSaveTarget?: (typeof DELEGATED_SEND_SAVE_TARGET)[number];
 	zimbraPrefTimeZoneId?: Array<string> | string;
 	[key: string]: string | number | Array<string | number>;
 }

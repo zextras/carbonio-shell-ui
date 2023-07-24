@@ -92,8 +92,6 @@ export const AccountsSettings = (): JSX.Element => {
 	const [t] = useTranslation();
 	const createSnackbar = useSnackbar();
 
-	const [a, setA] = useState();
-
 	const account = useUserAccount();
 	const settings = useUserSettings();
 

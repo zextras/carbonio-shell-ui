@@ -46,7 +46,7 @@
 		"@babel/preset-react": "^7.18.6",
 		"@babel/preset-typescript": "^7.21.0",
 		"@commitlint/cli": "^17.6.7",
-		"@commitlint/config-conventional": "^17.4.3",
+		"@commitlint/config-conventional": "^17.6.7",
 		"@faker-js/faker": "^8.0.2",
 		"@svgr/webpack": "^6.5.1",
 		"@testing-library/jest-dom": "^5.16.5",

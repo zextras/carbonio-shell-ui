@@ -16,10 +16,10 @@ import {
 	AddMod,
 	BooleanString,
 	GeneralizedTime,
+	Identity,
 	IdentityAttrs,
 	PrefsMods
 } from '../../../types';
-import { Identity } from '../../../types/network/entities';
 import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
 
 export const GEN_TIME_FORMAT = 'YYYYMMDDHHmmss[Z]';

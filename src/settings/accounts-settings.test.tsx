@@ -12,8 +12,7 @@ import { head, shuffle, tail } from 'lodash';
 import { rest } from 'msw';
 
 import { AccountsSettings } from './accounts-settings';
-import { Account, BatchRequest, CreateIdentityResponse } from '../../types';
-import { Identity } from '../../types/network/entities';
+import { Account, BatchRequest, CreateIdentityResponse, Identity } from '../../types';
 import server, { waitForRequest } from '../mocks/server';
 import { useAccountStore } from '../store/account';
 import { setup } from '../test/utils';

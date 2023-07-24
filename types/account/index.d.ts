@@ -8,7 +8,6 @@ import { DARK_READER_PROP_KEY, DELEGATED_SEND_SAVE_TARGET } from '../../src/cons
 import { StringOfLength } from '../../src/utils/typeUtils';
 import type { SHELL_APP_ID } from '../exports';
 import type { DarkReaderPropValues } from '../misc';
-import { Identity } from '../network/entities';
 
 export interface ZimletProp {
 	name: string;
@@ -36,6 +35,15 @@ export type AccountState = {
 	zimbraVersion?: string;
 	usedQuota: number;
 };
+
+export interface Identity {
+	/** Identity name */
+	name?: string;
+	/** Identity ID */
+	id: string;
+	/** Attributes */
+	_attrs: IdentityAttrs;
+}
 
 export type Account = {
 	id: string;

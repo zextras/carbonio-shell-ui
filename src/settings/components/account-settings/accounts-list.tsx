@@ -21,8 +21,7 @@ import {
 import { map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
-import { IdentityAttrs } from '../../../../types';
-import { Identity } from '../../../../types/network/entities';
+import { Identity, IdentityAttrs } from '../../../../types';
 import { isPrimary } from '../utils';
 
 function getNewPersonaNextIdentityName(

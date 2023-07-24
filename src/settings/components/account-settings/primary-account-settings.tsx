@@ -9,8 +9,7 @@ import React, { useMemo, useCallback, ReactElement, useState, useEffect } from '
 import { Container, Text, Padding, Input, Row, InputProps } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 
-import { Account, IdentityAttrs } from '../../../../types';
-import { Identity } from '../../../../types/network/entities';
+import { Account, Identity, IdentityAttrs } from '../../../../types';
 
 interface PrimaryAccountSettingsProps {
 	account: Account;

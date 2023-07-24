@@ -4,11 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { AccountACEInfo, Identity } from './entities';
+import { AccountACEInfo } from './entities';
 import {
 	AccountRights,
 	AccountSettings,
 	AccountSettingsPrefs,
+	Identity,
 	IdentityAttrs,
 	ZimletProp
 } from '../account';

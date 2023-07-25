@@ -4,9 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-// eslint-disable-next-line import/no-cycle
-import { IdentityAttrs } from '../account';
-
 /** Specify Access Control Entries */
 export interface AccountACEInfo {
 	/** Zimbra ID of the grantee */
@@ -51,13 +48,4 @@ export interface AccountACEInfo {
 	deny?: boolean;
 	/** "1 (true)" if check grantee type or "0 (false)" (default) */
 	chkgt?: boolean;
-}
-
-export interface Identity {
-	/** Identity name */
-	name?: string;
-	/** Identity ID */
-	id: string;
-	/** Attributes */
-	_attrs?: Partial<IdentityAttrs>;
 }

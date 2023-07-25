@@ -4,8 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* eslint-disable import/no-cycle */
-import { AccountACEInfo, Identity } from './entities';
+import { AccountACEInfo } from './entities';
 import {
 	AccountRights,
 	AccountSettings,
@@ -232,20 +231,6 @@ export type GetRightsRequest = {
 	_jsns: NameSpace;
 };
 
-export type GetRightsResponse = {
-	ace?: Array<{
-		// Name or email address of the grantee.
-		// Not present if {grantee-type} is "all" or "pub"
-		d?: string;
-		// The type of grantee
-		gt: GranteeType;
-		right: Right;
-		// Type:String
-		// Zimbra ID of the grantee
-		zid?: string;
-	}>;
-};
-
 export type Right =
 	// Following rights are partial, they are the result of
 	// description: automatically add meeting invites from grantee to the target's calendar
@@ -303,3 +288,12 @@ export type GranteeType =
 	| 'pub'
 	// Pseudo grantee type.  Granting code will map to usr/grp/egp or gst
 	| 'email';
+
+export interface Identity {
+	/** Identity name */
+	name?: string;
+	/** Identity ID */
+	id: string;
+	/** Attributes */
+	_attrs?: Partial<IdentityAttrs>;
+}

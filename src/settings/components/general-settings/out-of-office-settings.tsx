@@ -10,9 +10,12 @@ import {
 	Checkbox,
 	Container,
 	FormSubSection,
+	Padding,
+	Row,
 	Select,
 	SelectItem,
 	SingleSelectionOnChange,
+	Text,
 	TextArea,
 	TextAreaProps
 } from '@zextras/carbonio-design-system';
@@ -24,7 +27,6 @@ import { AccountSettings, AccountSettingsPrefs, AddMod, BooleanString } from '..
 import { getT } from '../../../store/i18n';
 import { outOfOfficeSubSection } from '../../general-settings-sub-sections';
 import { useReset } from '../../hooks/use-reset';
-import Heading from '../settings-heading';
 import {
 	dateToGenTime,
 	ResetComponentImperativeHandler,
@@ -324,7 +326,17 @@ export const OutOfOfficeSettings = ({
 				)}
 			</Container>
 			<Container crossAlignment="baseline" padding={{ all: 'small' }}>
-				<Heading title={t('settings.out_of_office.headings.time_period', 'Time Period')} />
+				<Row
+					padding={{ all: 'small' }}
+					mainAlignment="baseline"
+					crossAlignment="baseline"
+					width="100%"
+				>
+					<Text size="large" weight="bold">
+						{t('settings.out_of_office.headings.time_period', 'Time Period')}
+					</Text>
+				</Row>
+				<Padding vertical="small" />
 				<Checkbox
 					label={t(
 						'settings.out_of_office.labels.send_auto_reply_period',

@@ -450,35 +450,43 @@ export const AccountsSettings = ({
 
 	const [delegates, setDelegates] = useState<DelegateType[]>([]);
 
+	const { rights } = useAccountStore.getState();
+
 	useEffect(() => {
-		getSoapFetch(SHELL_APP_ID)<GetRightsRequest, GetRightsResponse>('GetRights', {
-			_jsns: 'urn:zimbraAccount',
-			ace: [{ right: 'sendAs' }, { right: 'sendOnBehalfOf' }]
-		}).then((value) => {
-			if (value.ace) {
-				const { ace } = value;
-				const result = reduce(
-					ace,
-					(accumulator: Array<DelegateType>, item, idx) => {
-						const index = findIndex(accumulator, { email: item.d });
-						if (index === -1) {
-							accumulator.push({ email: item.d || '', right: item.right, id: idx.toString() });
-						} else {
-							accumulator.push({
-								email: item.d || '',
-								right: `${item.right} and ${accumulator[index].right}`,
-								id: idx.toString()
-							});
-							accumulator.splice(index, 1);
-						}
-						return accumulator;
-					},
-					[]
-				);
-				setDelegates(result);
-			}
-		});
-	}, []);
+		if (!rights) {
+			getSoapFetch(SHELL_APP_ID)<GetRightsRequest, GetRightsResponse>('GetRights', {
+				_jsns: 'urn:zimbraAccount',
+				ace: [{ right: 'sendAs' }, { right: 'sendOnBehalfOf' }]
+			}).then((value) => {
+				if (value.ace) {
+					const { ace } = value;
+					const result = reduce(
+						ace,
+						(accumulator: Array<DelegateType>, item, idx) => {
+							const index = findIndex(accumulator, { email: item.d });
+							if (index === -1) {
+								accumulator.push({ email: item.d || '', right: item.right, id: idx.toString() });
+							} else {
+								accumulator.push({
+									email: item.d || '',
+									right: `${item.right} and ${accumulator[index].right}`,
+									id: idx.toString()
+								});
+								accumulator.splice(index, 1);
+							}
+							return accumulator;
+						},
+						[]
+					);
+					setDelegates(result);
+				}
+				useAccountStore.setState((state) => ({
+					...state,
+					rights: value
+				}));
+			});
+		}
+	}, [rights]);
 
 	return (
 		<>

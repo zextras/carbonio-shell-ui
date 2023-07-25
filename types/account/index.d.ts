@@ -8,6 +8,8 @@ import { DARK_READER_PROP_KEY, DELEGATED_SEND_SAVE_TARGET } from '../../src/cons
 import { StringOfLength } from '../../src/utils/typeUtils';
 import type { SHELL_APP_ID } from '../exports';
 import type { DarkReaderPropValues } from '../misc';
+// eslint-disable-next-line import/no-cycle
+import { GetRightsResponse } from '../network';
 
 export interface ZimletProp {
 	name: string;
@@ -31,6 +33,7 @@ export type SoapFetch = <Request, Response>(
 export type AccountState = {
 	authenticated: boolean;
 	account?: Account;
+	rights: GetRightsResponse | undefined;
 	settings: AccountSettings;
 	zimbraVersion?: string;
 	usedQuota: number;

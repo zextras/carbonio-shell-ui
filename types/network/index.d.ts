@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+/* eslint-disable import/no-cycle */
 import { AccountACEInfo, Identity } from './entities';
 import {
 	AccountRights,

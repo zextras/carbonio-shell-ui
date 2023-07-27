@@ -95,21 +95,21 @@ export const AccountsSettings = (): JSX.Element => {
 	const account = useUserAccount();
 	const settings = useUserSettings();
 
-	const createRecord = useRef<Record<string, IdentityAttrs>>({});
-	const deleteArray = useRef<Array<string>>([]);
-	const modifyRecord = useRef<Record<string, Partial<IdentityAttrs>>>({});
+	const createRecordRef = useRef<Record<string, IdentityAttrs>>({});
+	const deleteArrayRef = useRef<Array<string>>([]);
+	const modifyRecordRef = useRef<Record<string, Partial<IdentityAttrs>>>({});
 
-	const delegatedSendSaveTarget = useRef<AccountSettingsPrefs['zimbraPrefDelegatedSendSaveTarget']>(
-		settings.prefs.zimbraPrefDelegatedSendSaveTarget
-	);
+	const delegatedSendSaveTargetRef = useRef<
+		AccountSettingsPrefs['zimbraPrefDelegatedSendSaveTarget']
+	>(settings.prefs.zimbraPrefDelegatedSendSaveTarget);
 
 	const [isDirty, setIsDirty] = useState(false);
 	const calculateIsDirty = useCallback(() => {
 		setIsDirty(
-			!isEmpty(createRecord.current) ||
-				!isEmpty(deleteArray.current) ||
-				!isEmpty(modifyRecord.current) ||
-				settings.prefs.zimbraPrefDelegatedSendSaveTarget !== delegatedSendSaveTarget.current
+			!isEmpty(createRecordRef.current) ||
+				!isEmpty(deleteArrayRef.current) ||
+				!isEmpty(modifyRecordRef.current) ||
+				settings.prefs.zimbraPrefDelegatedSendSaveTarget !== delegatedSendSaveTargetRef.current
 		);
 	}, [settings.prefs.zimbraPrefDelegatedSendSaveTarget]);
 
@@ -117,16 +117,16 @@ export const AccountsSettings = (): JSX.Element => {
 		DelegatesProps['updateDelegatedSendSaveTarget']
 	>(
 		(updatedValue) => {
-			delegatedSendSaveTarget.current = updatedValue;
+			delegatedSendSaveTargetRef.current = updatedValue;
 			calculateIsDirty();
 		},
 		[calculateIsDirty]
 	);
 
 	const resetLists = useCallback(() => {
-		createRecord.current = {};
-		deleteArray.current = [];
-		modifyRecord.current = {};
+		createRecordRef.current = {};
+		deleteArrayRef.current = [];
+		modifyRecordRef.current = {};
 		calculateIsDirty();
 	}, [calculateIsDirty]);
 
@@ -142,7 +142,7 @@ export const AccountsSettings = (): JSX.Element => {
 
 	const addIdentity = useCallback<(id: string, identityAttrs: IdentityAttrs) => void>(
 		(id, identityAttrs) => {
-			createRecord.current[id] = identityAttrs;
+			createRecordRef.current[id] = identityAttrs;
 			calculateIsDirty();
 			setIdentities((prevState) => [
 				...prevState,
@@ -160,19 +160,19 @@ export const AccountsSettings = (): JSX.Element => {
 		<K extends keyof IdentityAttrs>(id: string, key: K, value: IdentityAttrs[K]) => void
 	>(
 		(id, key, value) => {
-			if (createRecord.current[id]) {
-				createRecord.current[id][key] = value;
-			} else if (modifyRecord.current[id]) {
+			if (createRecordRef.current[id]) {
+				createRecordRef.current[id][key] = value;
+			} else if (modifyRecordRef.current[id]) {
 				const actualIdentity = find(identitiesDefault, (item) => item.id === id);
-				modifyRecord.current[id][key] = value;
+				modifyRecordRef.current[id][key] = value;
 				if (actualIdentity && actualIdentity._attrs[key] === value) {
-					delete modifyRecord.current[id][key];
+					delete modifyRecordRef.current[id][key];
 				}
-				if (size(modifyRecord.current[id]) === 0) {
-					delete modifyRecord.current[id];
+				if (size(modifyRecordRef.current[id]) === 0) {
+					delete modifyRecordRef.current[id];
 				}
 			} else {
-				modifyRecord.current[id] = {
+				modifyRecordRef.current[id] = {
 					[key]: value
 				};
 			}
@@ -196,11 +196,11 @@ export const AccountsSettings = (): JSX.Element => {
 
 	const removeIdentity = useCallback(
 		(identityId: string) => {
-			if (createRecord.current[identityId]) {
-				delete createRecord.current[identityId];
+			if (createRecordRef.current[identityId]) {
+				delete createRecordRef.current[identityId];
 			} else {
-				deleteArray.current = [...deleteArray.current, identityId];
-				delete modifyRecord.current[identityId];
+				deleteArrayRef.current = [...deleteArrayRef.current, identityId];
+				delete modifyRecordRef.current[identityId];
 			}
 			calculateIsDirty();
 			setIdentities((prevState) => filter(prevState, (identity) => identity.id !== identityId));
@@ -215,7 +215,7 @@ export const AccountsSettings = (): JSX.Element => {
 
 	const onSave = useCallback<SettingsHeaderProps['onSave']>(() => {
 		if (
-			identitiesDefault.length + size(createRecord.current) - deleteArray.current.length >
+			identitiesDefault.length + size(createRecordRef.current) - deleteArrayRef.current.length >
 			maxIdentities
 		) {
 			createSnackbar({
@@ -241,24 +241,24 @@ export const AccountsSettings = (): JSX.Element => {
 		let modifyPrefsRequest: ModifyPrefsRequest | undefined;
 
 		if (
-			delegatedSendSaveTarget.current &&
-			settings.prefs.zimbraPrefDelegatedSendSaveTarget !== delegatedSendSaveTarget.current
+			delegatedSendSaveTargetRef.current &&
+			settings.prefs.zimbraPrefDelegatedSendSaveTarget !== delegatedSendSaveTargetRef.current
 		) {
 			modifyPrefsRequest = {
 				_jsns: 'urn:zimbraAccount',
-				_attrs: { zimbraPrefDelegatedSendSaveTarget: delegatedSendSaveTarget.current }
+				_attrs: { zimbraPrefDelegatedSendSaveTarget: delegatedSendSaveTargetRef.current }
 			};
 		}
 
 		const createIdentityRequests: Array<CreateIdentityRequest> = mapToCreateIdentityRequests(
-			createRecord.current
+			createRecordRef.current
 		);
 		const deleteRequests: Array<DeleteIdentityRequest> = mapToDeleteIdentityRequests(
-			deleteArray.current
+			deleteArrayRef.current
 		);
 
 		const modifyIdentityRequests: Array<ModifyIdentityRequest> = mapToModifyIdentityRequests(
-			modifyRecord.current
+			modifyRecordRef.current
 		);
 
 		const promise = getSoapFetch(SHELL_APP_ID)<
@@ -291,18 +291,18 @@ export const AccountsSettings = (): JSX.Element => {
 						if (prevState.account) {
 							prevState.account.identities.identity = calculateNewIdentitiesState(
 								prevState.account.identities.identity,
-								deleteArray.current,
+								deleteArrayRef.current,
 								map(res.CreateIdentityResponse, (item) => item.identity[0]),
-								modifyRecord.current
+								modifyRecordRef.current
 							);
 							prevState.account.displayName =
 								find(
-									modifyRecord.current,
+									modifyRecordRef.current,
 									(item) => item.zimbraPrefIdentityId === prevState?.account?.id
 								)?.zimbraPrefIdentityName || prevState.account?.displayName;
 						}
 						prevState.settings.prefs.zimbraPrefDelegatedSendSaveTarget =
-							delegatedSendSaveTarget.current || '';
+							delegatedSendSaveTargetRef.current || '';
 					})
 				);
 			})

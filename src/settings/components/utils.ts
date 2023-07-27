@@ -1335,7 +1335,7 @@ export function calculateNewIdentitiesState(
 					...accumulator[propIndex]._attrs,
 					...attrs
 				};
-				if (attrs.zimbraPrefIdentityName && accumulator[propIndex].name !== 'DEFAULT') {
+				if (attrs.zimbraPrefIdentityName && !isPrimary(accumulator[propIndex])) {
 					accumulator[propIndex].name = attrs.zimbraPrefIdentityName;
 				}
 			}

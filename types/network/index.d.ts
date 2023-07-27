@@ -4,11 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { AccountACEInfo, Identity } from './entities';
+import { AccountACEInfo } from './entities';
 import {
 	AccountRights,
 	AccountSettings,
 	AccountSettingsPrefs,
+	Identity,
 	IdentityAttrs,
 	ZimletProp
 } from '../account';
@@ -202,7 +203,7 @@ export type CreateIdentityRequest = {
 export type ModifyIdentityRequest = {
 	_jsns: NameSpace;
 	identity: {
-		_attrs?: Partial<IdentityAttrs>;
+		_attrs?: IdentityAttrs;
 	} & RequireAtLeastOne<Pick<Identity, 'id' | 'name'>>;
 };
 

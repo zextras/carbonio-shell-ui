@@ -71,6 +71,7 @@ export type AccountProps = {
 	identityId?: string;
 };
 
+/** @deprecated */
 export type IdentityProps = {
 	id: string;
 	/**

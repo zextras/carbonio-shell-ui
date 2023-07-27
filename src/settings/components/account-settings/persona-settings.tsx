@@ -6,7 +6,7 @@
 
 import React, { useState, useCallback, ReactElement, useEffect, useMemo } from 'react';
 
-import { Container, Text, Padding, Input, Row } from '@zextras/carbonio-design-system';
+import { Container, Text, Padding, Input, Row, InputProps } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 
 import { IdentityAttrs } from '../../../../types';
@@ -31,7 +31,7 @@ const PersonaSettings = ({
 		setPersonaValue(identityAttrs.zimbraPrefIdentityName);
 	}, [identityAttrs.zimbraPrefIdentityName]);
 
-	const onChange = useCallback(
+	const onChange = useCallback<NonNullable<InputProps['onChange']>>(
 		(ev) => {
 			setPersonaValue(ev.target.value);
 			if (identityAttrs.zimbraPrefIdentityId) {
@@ -52,7 +52,7 @@ const PersonaSettings = ({
 				width="fill"
 				padding={{ all: 'large' }}
 				height="fit"
-				background="gray6"
+				background={'gray6'}
 				mainAlignment="flex-start"
 			>
 				<Padding horizontal="medium" width="100%">
@@ -63,7 +63,7 @@ const PersonaSettings = ({
 				width="fill"
 				padding={{ horizontal: 'large', bottom: 'large' }}
 				height="fit"
-				background="gray6"
+				background={'gray6'}
 				mainAlignment="flex-start"
 			>
 				<Row orientation="vertical" mainAlignment="flex-start" width="fill">
@@ -89,7 +89,7 @@ const PersonaSettings = ({
 				width="fill"
 				padding={{ horizontal: 'large', bottom: 'large' }}
 				height="fit"
-				background="gray6"
+				background={'gray6'}
 				mainAlignment="flex-start"
 			>
 				<Row takeAvailableSpace>

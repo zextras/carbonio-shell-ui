@@ -20,9 +20,14 @@ import {
 } from '@zextras/carbonio-design-system';
 import { map } from 'lodash';
 import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
 
 import { Identity, IdentityAttrs } from '../../../../types';
 import { isPrimary } from '../utils';
+
+const List = styled(ListV2)`
+	flex-shrink: 0;
+`;
 
 function getNewPersonaNextIdentityName(
 	numberToCheck: number,
@@ -145,8 +150,6 @@ const AccountsList = ({
 										</Text>
 									</Container>
 								</Row>
-
-								<Row width="fit"></Row>
 							</Container>
 							<Divider />
 						</>
@@ -169,7 +172,7 @@ const AccountsList = ({
 				<Padding horizontal="medium" bottom="large" width="100%">
 					<Text weight="bold">{t('label.accounts_list', 'Accounts list')}</Text>
 				</Padding>
-				<ListV2>{items}</ListV2>
+				<List>{items}</List>
 			</Container>
 			<Row
 				padding={{ horizontal: 'large', bottom: 'large' }}

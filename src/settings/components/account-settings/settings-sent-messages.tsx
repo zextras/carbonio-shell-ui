@@ -85,11 +85,7 @@ const SettingsSentMessages = ({
 		);
 	}, [fromAddressArray, identityAttrs.zimbraPrefFromAddress]);
 	useEffect(() => {
-		setReplyToDisplay(
-			identityAttrs.zimbraPrefReplyToDisplay === undefined
-				? ''
-				: identityAttrs.zimbraPrefReplyToDisplay
-		);
+		setReplyToDisplay(identityAttrs.zimbraPrefReplyToDisplay ?? '');
 	}, [identityAttrs.zimbraPrefReplyToDisplay]);
 	useEffect(() => {
 		setReplyToAddress(identityAttrs.zimbraPrefReplyToAddress || '');

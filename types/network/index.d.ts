@@ -9,6 +9,7 @@ import {
 	AccountRights,
 	AccountSettings,
 	AccountSettingsPrefs,
+	Identity,
 	IdentityAttrs,
 	ZimletProp
 } from '../account';
@@ -202,7 +203,7 @@ export type CreateIdentityRequest = {
 export type ModifyIdentityRequest = {
 	_jsns: NameSpace;
 	identity: {
-		_attrs?: Partial<IdentityAttrs>;
+		_attrs?: IdentityAttrs;
 	} & RequireAtLeastOne<Pick<Identity, 'id' | 'name'>>;
 };
 
@@ -288,12 +289,3 @@ export type GranteeType =
 	| 'pub'
 	// Pseudo grantee type.  Granting code will map to usr/grp/egp or gst
 	| 'email';
-
-export interface Identity {
-	/** Identity name */
-	name?: string;
-	/** Identity ID */
-	id: string;
-	/** Attributes */
-	_attrs?: Partial<IdentityAttrs>;
-}

@@ -51,12 +51,21 @@ export type AccountState = {
 	usedQuota: number;
 };
 
+export interface Identity {
+	/** Identity name */
+	name?: string;
+	/** Identity ID */
+	id: string;
+	/** Attributes */
+	_attrs: IdentityAttrs;
+}
+
 export type Account = {
 	id: string;
 	name: string;
 	displayName: string;
 	signatures: { signature: Array<unknown> };
-	identities: { identity: Array<{ id: string; name?: string; _attrs?: Partial<IdentityAttrs> }> };
+	identities: { identity: Array<Identity> };
 	rights: AccountRights;
 };
 

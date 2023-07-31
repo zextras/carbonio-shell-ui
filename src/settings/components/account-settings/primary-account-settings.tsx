@@ -7,40 +7,44 @@
 import React, { useMemo, useCallback, ReactElement, useState, useEffect } from 'react';
 
 import { Container, Text, Padding, Input, Row, InputProps } from '@zextras/carbonio-design-system';
-import { TFunction } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
-import { Account, IdentityAttrs, IdentityProps } from '../../../../types';
+import { Account, Identity, IdentityAttrs } from '../../../../types';
 
 interface PrimaryAccountSettingsProps {
-	t: TFunction;
 	account: Account;
-	identity: IdentityProps;
+	identity: Identity;
 	updateIdentities: <K extends keyof IdentityAttrs>(
-		id: string | number,
+		id: string,
 		key: K,
 		value: IdentityAttrs[K]
 	) => void;
 }
 
 const PrimaryAccountSettings = ({
-	t,
 	account,
 	identity,
 	updateIdentities
 }: PrimaryAccountSettingsProps): ReactElement => {
+	const [t] = useTranslation();
 	const emailLabel = useMemo(() => t('label.email_address', 'E-mail address'), [t]);
-	const [accountNameValue, setAccountNameValue] = useState(identity?.identityName);
+	const [accountNameValue, setAccountNameValue] = useState(
+		identity?._attrs?.zimbraPrefIdentityName
+	);
 
-	useEffect(() => setAccountNameValue(identity.identityName), [identity.identityName]);
+	useEffect(
+		() => setAccountNameValue(identity._attrs?.zimbraPrefIdentityName),
+		[identity._attrs?.zimbraPrefIdentityName]
+	);
 	const accountLabel = useMemo(() => t('label.account_name', 'Account Name'), [t]);
 
 	const onChangeDisabled = useCallback(() => null, []);
 	const onChange = useCallback<NonNullable<InputProps['onChange']>>(
 		(ev): void => {
 			setAccountNameValue(ev.target.value);
-			updateIdentities(identity.identityId, 'zimbraPrefIdentityName', ev.target.value);
+			updateIdentities(identity.id, 'zimbraPrefIdentityName', ev.target.value);
 		},
-		[updateIdentities, identity.identityId]
+		[identity.id, updateIdentities]
 	);
 
 	return (

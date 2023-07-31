@@ -1351,14 +1351,16 @@ describe('Account setting', () => {
 
 			const TestComponent = (): JSX.Element => (
 				<>
-					<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
-					<Link to="/other">Go to Other page</Link>
 					<Switch>
 						<Route path="/other">
 							<div>
 								<span data-testid="text">Other page</span>
 								<Link to="/settings/accounts">Go to Account Settings</Link>
 							</div>
+						</Route>
+						<Route>
+							<AccountsSettings account={account} identitiesDefault={identitiesDefault} />
+							<Link to="/other">Go to Other page</Link>
 						</Route>
 					</Switch>
 				</>

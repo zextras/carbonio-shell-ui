@@ -8,26 +8,13 @@ import { DARK_READER_PROP_KEY, DELEGATED_SEND_SAVE_TARGET } from '../../src/cons
 import { StringOfLength } from '../../src/utils/typeUtils';
 import type { SHELL_APP_ID } from '../exports';
 import type { DarkReaderPropValues } from '../misc';
+import { AccountACEInfo } from '../network/entities';
 
 export interface ZimletProp {
 	name: string;
 	zimlet: string;
 	_content: string;
 }
-
-export type GetRightsResponse = {
-	ace?: Array<{
-		// Name or email address of the grantee.
-		// Not present if {grantee-type} is "all" or "pub"
-		d?: string;
-		// The type of grantee
-		gt: GranteeType;
-		right: Right;
-		// Type:String
-		// Zimbra ID of the grantee
-		zid?: string;
-	}>;
-};
 
 export interface ZappDarkreaderModeZimletProp extends ZimletProp {
 	name: typeof DARK_READER_PROP_KEY;
@@ -45,7 +32,7 @@ export type SoapFetch = <Request, Response>(
 export type AccountState = {
 	authenticated: boolean;
 	account?: Account;
-	rights: GetRightsResponse | undefined;
+	rights?: Array<AccountACEInfo>;
 	settings: AccountSettings;
 	zimbraVersion?: string;
 	usedQuota: number;

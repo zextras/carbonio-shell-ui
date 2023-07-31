@@ -378,7 +378,7 @@ export const AccountsSettings = (): JSX.Element => {
 				}
 				useAccountStore.setState((state) => ({
 					...state,
-					rights: value
+					rights: value.ace
 				}));
 			});
 		}

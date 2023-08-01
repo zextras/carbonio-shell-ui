@@ -40,6 +40,7 @@ import {
 	AccountState
 } from '../../types';
 import type { ModifyIdentityRequest } from '../../types';
+import { AccountACEInfo } from '../../types/network/entities';
 import { SHELL_APP_ID } from '../constants';
 import { getSoapFetch } from '../network/fetch';
 import { useAccountStore, useUserAccount, useUserSettings } from '../store/account';
@@ -85,6 +86,27 @@ function mapToModifyIdentityRequests(
 				_attrs: item
 			}
 		})
+	);
+}
+
+function getResult(ace: AccountACEInfo[] | undefined): DelegateType[] {
+	return reduce(
+		ace,
+		(accumulator: Array<DelegateType>, item, idx) => {
+			const index = findIndex(accumulator, { email: item.d });
+			if (index === -1) {
+				accumulator.push({ email: item.d || '', right: item.right, id: idx.toString() });
+			} else {
+				accumulator.push({
+					email: item.d || '',
+					right: `${item.right} and ${accumulator[index].right}`,
+					id: idx.toString()
+				});
+				accumulator.splice(index, 1);
+			}
+			return accumulator;
+		},
+		[]
 	);
 }
 
@@ -356,32 +378,15 @@ export const AccountsSettings = (): JSX.Element => {
 			}).then((value) => {
 				if (value.ace) {
 					const { ace } = value;
-					const result = reduce(
-						ace,
-						(accumulator: Array<DelegateType>, item, idx) => {
-							const index = findIndex(accumulator, { email: item.d });
-							if (index === -1) {
-								accumulator.push({ email: item.d || '', right: item.right, id: idx.toString() });
-							} else {
-								accumulator.push({
-									email: item.d || '',
-									right: `${item.right} and ${accumulator[index].right}`,
-									id: idx.toString()
-								});
-								accumulator.splice(index, 1);
-							}
-							return accumulator;
-						},
-						[]
-					);
-					setDelegates(result);
+					setDelegates(getResult(ace));
 				}
 				useAccountStore.setState((state) => ({
 					...state,
-					rights: value.ace
+					rights: value.ace ?? []
 				}));
 			});
 		}
+		setDelegates(getResult(rights));
 	}, [rights]);
 
 	const personaSettings = useMemo<JSX.Element | null>(() => {

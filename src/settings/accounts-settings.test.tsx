@@ -1679,7 +1679,7 @@ describe('Account setting', () => {
 								<Link to="/settings/accounts">Go to Account Settings</Link>
 							</div>
 						</Route>
-						<Route>
+						<Route path="/settings/accounts">
 							<AccountsSettings />
 							<Link to="/other">Go to Other page</Link>
 						</Route>
@@ -1690,13 +1690,13 @@ describe('Account setting', () => {
 			const { user } = setup(<TestComponent />);
 
 			await waitForGetRightsRequest();
-			await waitFor(() => {
-				expect(requestFn).toHaveBeenCalledTimes(1);
-			});
 			expect(screen.queryByTestId('text')).not.toBeInTheDocument();
 			expect(screen.getByText(/Accounts List/i)).toBeVisible();
 			await user.click(screen.getByRole('link', { name: 'Go to Other page' }));
+			expect(screen.queryByTestId('text')).toBeVisible();
+			expect(screen.queryByText('sendAs')).not.toBeInTheDocument();
 			await user.click(screen.getByRole('link', { name: 'Go to Account Settings' }));
+			expect(screen.getByText('sendAs')).toBeVisible();
 			await waitFor(() => {
 				expect(requestFn).toHaveBeenCalledTimes(1);
 			});

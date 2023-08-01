@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { AccountACEInfo } from './entities';
+import { AccountACEInfo, Right } from './entities';
 import {
 	AccountRights,
 	AccountSettings,

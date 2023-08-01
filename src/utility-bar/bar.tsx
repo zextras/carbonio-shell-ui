@@ -17,11 +17,9 @@ import { map, noop } from 'lodash';
 import { useUtilityBarStore } from './store';
 import { useUtilityViews } from './utils';
 import type { UtilityView } from '../../types';
-import { SHELL_APP_ID } from '../constants';
 import { fetchNoOp } from '../network/fetch';
 import { logout } from '../network/logout';
 import { useUserAccount } from '../store/account';
-import { addBoard } from '../store/boards';
 import { getT } from '../store/i18n';
 
 const UtilityBarItem: FC<{ view: UtilityView }> = ({ view }) => {
@@ -66,18 +64,6 @@ export const ShellUtilityBar = (): JSX.Element => {
 				type: 'divider',
 				id: 'divider',
 				label: 'divider'
-			},
-			{
-				id: 'feedback',
-				label: t('label.feedback', 'Feedback'),
-				onClick: (): void => {
-					addBoard(SHELL_APP_ID)({
-						url: 'feedback',
-						title: t('label.feedback', 'Feedback'),
-						icon: 'MessageSquareOutline'
-					});
-				},
-				icon: 'MessageSquareOutline'
 			},
 			{
 				id: 'update',

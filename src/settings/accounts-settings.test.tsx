@@ -1687,9 +1687,10 @@ describe('Account setting', () => {
 				</>
 			);
 
-			const { user } = setup(<TestComponent />);
+			const { user } = setup(<TestComponent />, { initialRouterEntries: [`/settings/accounts`] });
 
 			await waitForGetRightsRequest();
+			expect(requestFn).toHaveBeenCalledTimes(1);
 			expect(screen.queryByTestId('text')).not.toBeInTheDocument();
 			expect(screen.getByText(/Accounts List/i)).toBeVisible();
 			await user.click(screen.getByRole('link', { name: 'Go to Other page' }));
@@ -1697,9 +1698,80 @@ describe('Account setting', () => {
 			expect(screen.queryByText('sendAs')).not.toBeInTheDocument();
 			await user.click(screen.getByRole('link', { name: 'Go to Account Settings' }));
 			expect(screen.getByText('sendAs')).toBeVisible();
-			await waitFor(() => {
-				expect(requestFn).toHaveBeenCalledTimes(1);
-			});
+			expect(requestFn).toHaveBeenCalledTimes(1);
 		});
+
+		test.failing(
+			'When rights state is updated, the delegates list will be updated accordingly',
+			async () => {
+				const defaultFirstName = faker.person.firstName();
+				const defaultLastName = faker.person.lastName();
+				const defaultFullName = faker.person.fullName({
+					firstName: defaultFirstName,
+					lastName: defaultLastName
+				});
+				const defaultEmail = faker.internet.email({
+					firstName: defaultFirstName,
+					lastName: defaultLastName
+				});
+				const defaultId = faker.string.uuid();
+
+				const identitiesArray: Account['identities']['identity'] = [
+					{
+						id: defaultId,
+						name: 'DEFAULT',
+						_attrs: {
+							zimbraPrefIdentityName: defaultFullName,
+							zimbraPrefReplyToEnabled: 'FALSE',
+							zimbraPrefFromDisplay: defaultFirstName,
+							zimbraPrefFromAddress: defaultEmail,
+							zimbraPrefIdentityId: defaultId,
+							zimbraPrefFromAddressType: 'sendAs'
+						}
+					}
+				];
+
+				const account: Account = {
+					name: defaultEmail,
+					rights: { targets: [] },
+					signatures: { signature: [] },
+					id: defaultId,
+					displayName: '',
+					identities: {
+						identity: identitiesArray
+					}
+				};
+
+				useAccountStore.setState((previousState) => ({
+					...previousState,
+					account
+				}));
+
+				const requestFn = jest.fn();
+				server.use(
+					rest.post<GetRightsRequestBody, never, GetRightsResponseBody>(
+						'/service/soap/GetRightsRequest',
+						(req, res, context) => {
+							requestFn();
+							return getRightsRequest(req, res, context);
+						}
+					)
+				);
+
+				setup(<AccountsSettings />);
+
+				await waitForGetRightsRequest();
+				expect(requestFn).toHaveBeenCalledTimes(1);
+				expect(screen.getByText(/Accounts List/i)).toBeVisible();
+
+				act(() => {
+					useAccountStore.setState((previousState) => ({
+						...previousState,
+						rights: []
+					}));
+				});
+				expect(screen.queryByText('sendAs')).not.toBeInTheDocument();
+			}
+		);
 	});
 });

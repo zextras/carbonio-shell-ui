@@ -17,10 +17,16 @@ import {
 	Text
 } from '@zextras/carbonio-design-system';
 import { useHistory, useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { SETTINGS_APP_ID } from '../../constants';
 import { getT } from '../../store/i18n';
 import { RouteLeavingGuard, RouteLeavingGuardProps } from '../../ui-extras/nav-guard';
+
+const CustomBreadcrumbs = styled(Breadcrumbs)`
+	.breadcrumbCrumb {
+		cursor: default;
+	}
+`;
 
 export type SettingsHeaderProps = {
 	title: string;
@@ -38,15 +44,15 @@ const SettingsHeader = ({ onSave, onCancel, isDirty, title }: SettingsHeaderProp
 			{
 				id: 'settings',
 				label: t('settings.app', 'Settings'),
-				onClick: (): void => history.push(`/${SETTINGS_APP_ID}/`)
+				className: 'breadcrumbCrumb'
 			},
 			{
 				id: 'general',
 				label: title,
-				onClick: (): void => history.push(`/${SETTINGS_APP_ID}/`)
+				className: 'breadcrumbCrumb'
 			}
 		],
-		[history, t, title]
+		[t, title]
 	);
 
 	const search: string | undefined = history.location?.search;
@@ -87,7 +93,7 @@ const SettingsHeader = ({ onSave, onCancel, isDirty, title }: SettingsHeaderProp
 						width="50%"
 						crossAlignment="flex-start"
 					>
-						<Breadcrumbs crumbs={crumbs} />
+						<CustomBreadcrumbs crumbs={crumbs} />
 					</Row>
 					<Row
 						padding={{ all: 'small' }}

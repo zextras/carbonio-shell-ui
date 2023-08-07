@@ -21,18 +21,16 @@ import {
 	SingleSelectionOnChange,
 	Text
 } from '@zextras/carbonio-design-system';
-import { TFunction } from 'i18next';
 import { filter, find } from 'lodash';
+import { useTranslation } from 'react-i18next';
 
-import { IdentityAttrs, IdentityProps } from '../../../../types';
+import { IdentityAttrs } from '../../../../types';
 import { EMAIL_VALIDATION_REGEX } from '../../../constants';
 
 type SettingsSentMessagesProps = {
-	t: TFunction;
-	identity: IdentityProps;
-	isExternalAccount: boolean;
+	identityAttrs: IdentityAttrs;
 	updateIdentities: <K extends keyof IdentityAttrs>(
-		id: string | number,
+		id: string,
 		key: K,
 		value: IdentityAttrs[K]
 	) => void;
@@ -42,20 +40,25 @@ type SettingsSentMessagesProps = {
 const blankItem: SelectItem = { label: '', value: '' };
 
 const SettingsSentMessages = ({
-	t,
-	identity,
-	isExternalAccount,
+	identityAttrs,
 	updateIdentities,
 	availableEmailAddresses
 }: SettingsSentMessagesProps): ReactElement => {
+	const [t] = useTranslation();
 	const title = useMemo(() => t('label.settings_sent_messages', 'Settings for Sent Messages'), [t]);
 	const [replyToEnabledValue, setReplyToEnabledValue] = useState(
-		identity.replyToEnabled === 'TRUE'
+		identityAttrs.zimbraPrefReplyToEnabled === 'TRUE'
 	);
-	const [replyToAddress, setReplyToAddress] = useState<string>(identity.replyToAddress || '');
+	const [replyToAddress, setReplyToAddress] = useState<string>(
+		identityAttrs.zimbraPrefReplyToAddress || ''
+	);
 	const [dropdownOpen, setDropdownOpen] = useState(false);
-	const [fromDisplayValue, setFromDisplayValue] = useState<string>(identity.fromDisplay || '');
-	const [replyToDisplay, setReplyToDisplay] = useState<string>(identity?.replyToDisplay || '');
+	const [fromDisplayValue, setFromDisplayValue] = useState<string>(
+		identityAttrs.zimbraPrefFromDisplay || ''
+	);
+	const [replyToDisplay, setReplyToDisplay] = useState<string>(
+		identityAttrs.zimbraPrefReplyToDisplay || ''
+	);
 	const fromAddressArray = useMemo(
 		(): SelectItem[] =>
 			availableEmailAddresses
@@ -64,42 +67,50 @@ const SettingsSentMessages = ({
 		[availableEmailAddresses]
 	);
 	const [fromAddress, setFromAddress] = useState(
-		() => find(fromAddressArray, (item) => item.value === identity.fromAddress) ?? blankItem
+		() =>
+			find(fromAddressArray, (item) => item.value === identityAttrs.zimbraPrefFromAddress) ??
+			blankItem
 	);
 
 	useEffect(() => {
-		setReplyToEnabledValue(identity.replyToEnabled === 'TRUE');
-	}, [identity.replyToEnabled]);
+		setReplyToEnabledValue(identityAttrs.zimbraPrefReplyToEnabled === 'TRUE');
+	}, [identityAttrs.zimbraPrefReplyToEnabled]);
 	useEffect(() => {
-		setFromDisplayValue(identity.fromDisplay || '');
-	}, [identity.fromDisplay]);
+		setFromDisplayValue(identityAttrs.zimbraPrefFromDisplay || '');
+	}, [identityAttrs.zimbraPrefFromDisplay]);
 	useEffect(() => {
-		const k = find(fromAddressArray, (item) => item.value === identity.fromAddress) ?? blankItem;
-		setFromAddress(k);
-	}, [fromAddressArray, identity.fromAddress]);
+		setFromAddress(
+			find(fromAddressArray, (item) => item.value === identityAttrs.zimbraPrefFromAddress) ??
+				blankItem
+		);
+	}, [fromAddressArray, identityAttrs.zimbraPrefFromAddress]);
 	useEffect(() => {
-		setReplyToDisplay(identity?.replyToDisplay === undefined ? '' : identity?.replyToDisplay);
-	}, [identity?.replyToDisplay]);
+		setReplyToDisplay(identityAttrs.zimbraPrefReplyToDisplay ?? '');
+	}, [identityAttrs.zimbraPrefReplyToDisplay]);
 	useEffect(() => {
-		setReplyToAddress(identity.replyToAddress || '');
-	}, [identity.replyToAddress]);
+		setReplyToAddress(identityAttrs.zimbraPrefReplyToAddress || '');
+	}, [identityAttrs.zimbraPrefReplyToAddress]);
 
 	const onClickReplyToEnabled = useCallback(() => {
 		setReplyToEnabledValue((prevState) => {
 			const newState = !prevState;
-			updateIdentities(
-				identity.identityId,
-				'zimbraPrefReplyToEnabled',
-				prevState ? 'FALSE' : 'TRUE'
-			);
+			if (identityAttrs.zimbraPrefIdentityId) {
+				updateIdentities(
+					identityAttrs.zimbraPrefIdentityId,
+					'zimbraPrefReplyToEnabled',
+					prevState ? 'FALSE' : 'TRUE'
+				);
+			}
 			return newState;
 		});
-	}, [identity.identityId, updateIdentities]);
+	}, [identityAttrs.zimbraPrefIdentityId, updateIdentities]);
 
 	const fromDisplayLabel = useMemo(() => t('label.from_name', 'From: "Name"'), [t]);
 	const onChangeFromDisplayValue: InputProps['onChange'] = (e) => {
 		setFromDisplayValue(e.target.value);
-		updateIdentities(identity.identityId, 'zimbraPrefFromDisplay', e.target.value);
+		if (identityAttrs.zimbraPrefIdentityId) {
+			updateIdentities(identityAttrs.zimbraPrefIdentityId, 'zimbraPrefFromDisplay', e.target.value);
+		}
 	};
 
 	const fromAddressLabel = useMemo(() => t('label.address', 'Address'), [t]);
@@ -114,9 +125,11 @@ const SettingsSentMessages = ({
 				return;
 			}
 			setFromAddress(filter(fromAddressArray, (item) => item.value === newAddress)[0]);
-			updateIdentities(identity.identityId, 'zimbraPrefFromAddress', newAddress);
+			if (identityAttrs.zimbraPrefIdentityId) {
+				updateIdentities(identityAttrs.zimbraPrefIdentityId, 'zimbraPrefFromAddress', newAddress);
+			}
 		},
-		[identity.identityId, updateIdentities, fromAddressArray, fromAddress.value]
+		[fromAddress?.value, fromAddressArray, identityAttrs.zimbraPrefIdentityId, updateIdentities]
 	);
 
 	const replyToEnabledLabel = t(
@@ -131,9 +144,15 @@ const SettingsSentMessages = ({
 	const onChangePrefReplyToDisplay = useCallback<NonNullable<InputProps['onChange']>>(
 		(e) => {
 			setReplyToDisplay(e.target.value);
-			updateIdentities(identity.identityId, 'zimbraPrefReplyToDisplay', e.target.value);
+			if (identityAttrs.zimbraPrefIdentityId) {
+				updateIdentities(
+					identityAttrs.zimbraPrefIdentityId,
+					'zimbraPrefReplyToDisplay',
+					e.target.value
+				);
+			}
 		},
-		[updateIdentities, identity.identityId]
+		[identityAttrs.zimbraPrefIdentityId, updateIdentities]
 	);
 
 	const replyToAddressLabel = useMemo(() => t('label.choose_account', 'Choose an account'), [t]);
@@ -141,20 +160,22 @@ const SettingsSentMessages = ({
 	const onChangeReplyToAddress = useCallback(
 		(value: string) => {
 			setReplyToAddress(value);
-			updateIdentities(identity.identityId, 'zimbraPrefReplyToAddress', value);
+			if (identityAttrs.zimbraPrefIdentityId) {
+				updateIdentities(identityAttrs.zimbraPrefIdentityId, 'zimbraPrefReplyToAddress', value);
+			}
 		},
-		[updateIdentities, identity.identityId]
+		[updateIdentities, identityAttrs.zimbraPrefIdentityId]
 	);
 
 	const replyToAddressArray = useMemo(
 		(): DropdownItem[] => [
 			{
 				id: '0',
-				label: identity.fromAddress ?? '',
-				onClick: () => onChangeReplyToAddress(identity.fromAddress ?? '')
+				label: identityAttrs.zimbraPrefFromAddress ?? '',
+				onClick: () => onChangeReplyToAddress(identityAttrs.zimbraPrefFromAddress ?? '')
 			}
 		],
-		[identity.fromAddress, onChangeReplyToAddress]
+		[identityAttrs.zimbraPrefFromAddress, onChangeReplyToAddress]
 	);
 
 	const isValidEmail = useMemo(
@@ -183,10 +204,7 @@ const SettingsSentMessages = ({
 				background={'gray6'}
 				mainAlignment="flex-start"
 			>
-				<Row
-					width={isExternalAccount ? '100%' : '50%'}
-					padding={{ right: isExternalAccount ? '' : 'small' }}
-				>
+				<Row width={'50%'} padding={{ right: 'small' }}>
 					{/* zimbraPrefFromDisplay */}
 					<Input
 						label={fromDisplayLabel}
@@ -194,19 +212,17 @@ const SettingsSentMessages = ({
 						onChange={onChangeFromDisplayValue}
 					/>
 				</Row>
-				{!isExternalAccount && (
-					<Row width="50%">
-						{/* zimbraPrefFromAddress */}
-						<Select
-							label={fromAddressLabel}
-							selection={fromAddress}
-							items={fromAddressArray}
-							showCheckbox={false}
-							background={'gray5'}
-							onChange={onChangeFromAddress}
-						/>
-					</Row>
-				)}
+				<Row width="50%">
+					{/* zimbraPrefFromAddress */}
+					<Select
+						label={fromAddressLabel}
+						selection={fromAddress}
+						items={fromAddressArray}
+						showCheckbox={false}
+						background={'gray5'}
+						onChange={onChangeFromAddress}
+					/>
+				</Row>
 			</Row>
 			<Row
 				width="fill"

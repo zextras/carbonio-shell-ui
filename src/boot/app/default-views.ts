@@ -11,9 +11,8 @@ import { size } from 'lodash';
 
 import type { AppState, PrimaryBarView, SettingsView } from '../../../types';
 import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
-import Feedback from '../../reporting/feedback';
 import { SearchAppView } from '../../search/search-app-view';
-import AccountWrapper from '../../settings/account-wrapper';
+import { AccountsSettings } from '../../settings/accounts-settings';
 import GeneralSettings from '../../settings/general-settings';
 import { settingsSubSections } from '../../settings/general-settings-sub-sections';
 import { SettingsAppView } from '../../settings/settings-app-view';
@@ -67,7 +66,7 @@ const settingsAccountsView = (t: TFunction): SettingsView => ({
 	id: 'accounts',
 	route: 'accounts',
 	app: SHELL_APP_ID,
-	component: AccountWrapper,
+	component: AccountsSettings,
 	icon: 'PersonOutline',
 	label: t('settings.accounts', 'Accounts'),
 	position: 1
@@ -97,12 +96,6 @@ const searchAppView = {
 	component: SearchAppView
 };
 
-const feedbackBoardView = {
-	id: 'feedback',
-	app: SHELL_APP_ID,
-	component: Feedback,
-	route: 'feedback'
-};
 export const registerDefaultViews = (t: TFunction): void => {
 	useAppStore.setState(
 		produce((s: AppState) => {
@@ -123,7 +116,6 @@ export const registerDefaultViews = (t: TFunction): void => {
 				s.views.appView = [searchAppView, settingsAppView];
 				s.views.settings = [settingsGeneralView(t), settingsAccountsView(t)];
 			}
-			s.views.board = [feedbackBoardView];
 		})
 	);
 };

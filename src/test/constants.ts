@@ -19,7 +19,8 @@ export const LOGGED_USER = {
 		identity: [
 			{
 				name: 'DEFAULT',
-				id: DEFAULT_ID
+				id: DEFAULT_ID,
+				_attrs: { zimbraPrefIdentityId: DEFAULT_ID, zimbraPrefFromAddressType: 'sendAs' as const }
 			}
 		]
 	}

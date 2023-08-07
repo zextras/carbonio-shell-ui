@@ -26,11 +26,10 @@ describe('Shell utility bar', () => {
 		await screen.findByText(mockedAccount.displayName);
 		expect(screen.getByText(mockedAccount.displayName)).toBeVisible();
 		expect(screen.getByText(mockedAccount.name)).toBeVisible();
-		expect(screen.getByText(/feedback/i)).toBeVisible();
 		expect(screen.getByText(/update view/i)).toBeVisible();
 	});
 
-	test.each(['Feedback', 'Update view', 'Documentation', 'Logout'])(
+	test.each(['Update view', 'Documentation', 'Logout'])(
 		'should show the entry "%s" inside the account utility menu',
 		async (item) => {
 			setupAccountStore();

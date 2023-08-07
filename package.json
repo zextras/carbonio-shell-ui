@@ -110,7 +110,7 @@
 		"react-redux": "^8.0.5",
 		"react-router-dom": "^5.3.4",
 		"styled-components": "^5.3.9",
-		"tinymce": "^6.4.0",
+		"tinymce": "^6.6.1",
 		"ua-parser-js": "^1.0.34",
 		"zustand": "^4.3.8"
 	},

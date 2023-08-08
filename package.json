@@ -109,9 +109,9 @@
 		"react-i18next": "^12.1.5",
 		"react-redux": "^8.0.5",
 		"react-router-dom": "^5.3.4",
-		"styled-components": "^5.3.9",
+		"styled-components": "^5.3.11",
 		"tinymce": "^6.4.0",
-		"ua-parser-js": "^1.0.34",
+		"ua-parser-js": "^1.0.35",
 		"zustand": "^4.3.8"
 	},
 	"peerDependencies": {

@@ -30,7 +30,7 @@ const PrimaryBarContainer = styled(Container)`
 	z-index: ${BOARD_CONTAINER_ZINDEX + 1};
 `;
 
-const ToggleBoardIcon = (): JSX.Element | null => {
+const ToggleBoardIcon = (): React.JSX.Element | null => {
 	const { minimized, boards } = useBoardStore();
 
 	return isEmpty(boards) ? null : (
@@ -55,7 +55,7 @@ type PrimaryBarAccessoryItemProps = {
 	view: PrimaryAccessoryView;
 };
 
-const PrimaryBarElement = ({ view, active, onClick }: PrimaryBarItemProps): JSX.Element => (
+const PrimaryBarElement = ({ view, active, onClick }: PrimaryBarItemProps): React.JSX.Element => (
 	<Tooltip label={view.label} placement="right" key={view.id}>
 		<BadgeWrap badge={view.badge}>
 			{typeof view.component === 'string' ? (
@@ -74,7 +74,7 @@ const PrimaryBarElement = ({ view, active, onClick }: PrimaryBarItemProps): JSX.
 	</Tooltip>
 );
 
-const PrimaryBarAccessoryElement = ({ view }: PrimaryBarAccessoryItemProps): JSX.Element => (
+const PrimaryBarAccessoryElement = ({ view }: PrimaryBarAccessoryItemProps): React.JSX.Element => (
 	<Tooltip label={view.label} placement="right" key={view.id}>
 		<AppContextProvider key={view.id} pkg={view.app}>
 			{typeof view.component === 'string' ? (
@@ -103,7 +103,7 @@ interface ShellPrimaryBarComponentProps {
 }
 const ShellPrimaryBarComponent = ({
 	activeRoute
-}: ShellPrimaryBarComponentProps): JSX.Element | null => {
+}: ShellPrimaryBarComponentProps): React.JSX.Element | null => {
 	const primaryBarViews = useAppStore((s) => s.views.primaryBar);
 	const { push } = useHistory();
 
@@ -191,7 +191,7 @@ const ShellPrimaryBarComponent = ({
 
 const MemoShellPrimaryBarComponent = React.memo(ShellPrimaryBarComponent);
 
-const ShellPrimaryBar = (): JSX.Element => {
+const ShellPrimaryBar = (): React.JSX.Element => {
 	const activeRoute = useCurrentRoute();
 	return <MemoShellPrimaryBarComponent activeRoute={activeRoute} />;
 };

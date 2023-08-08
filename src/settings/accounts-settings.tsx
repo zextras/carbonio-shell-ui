@@ -88,7 +88,7 @@ function mapToModifyIdentityRequests(
 	);
 }
 
-export const AccountsSettings = (): JSX.Element => {
+export const AccountsSettings = (): React.JSX.Element => {
 	const [t] = useTranslation();
 	const createSnackbar = useSnackbar();
 
@@ -376,7 +376,7 @@ export const AccountsSettings = (): JSX.Element => {
 		});
 	}, []);
 
-	const personaSettings = useMemo<JSX.Element | null>(() => {
+	const personaSettings = useMemo<React.JSX.Element | null>(() => {
 		const identity = identities[selectedIdentityId];
 		if (identity) {
 			return (
@@ -386,7 +386,7 @@ export const AccountsSettings = (): JSX.Element => {
 		return null;
 	}, [identities, selectedIdentityId, updateIdentities]);
 
-	const settingsSentMessages = useMemo<JSX.Element | null>(() => {
+	const settingsSentMessages = useMemo<React.JSX.Element | null>(() => {
 		const identity = identities[selectedIdentityId];
 		if (identity) {
 			return (

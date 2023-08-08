@@ -17,7 +17,7 @@ const StyledLogo = styled(Logo)`
 	fill: #a3aebc;
 	width: 50%;
 `;
-const LoadingView = (): JSX.Element => (
+const LoadingView = (): React.JSX.Element => (
 	<div className="splash">
 		<Helmet fill="#A3AEBC" />
 		<div className="loader">

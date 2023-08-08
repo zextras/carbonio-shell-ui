@@ -914,7 +914,7 @@ describe('Board container', () => {
 			id: boardObj.id,
 			app: boardObj.app,
 			route: boardObj.url,
-			component: (): JSX.Element => <Input label={'Board input'} />
+			component: (): React.JSX.Element => <Input label={'Board input'} />
 		};
 		useAppStore.getState().setters.addBoardView(boardView);
 		const { user } = setup(<BoardContainer />);

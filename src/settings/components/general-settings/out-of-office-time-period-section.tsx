@@ -42,7 +42,7 @@ export const OutOfOfficeTimePeriodSection = ({
 	prefOutOfOfficeFromDate,
 	prefOutOfOfficeUntilDate,
 	resetRef
-}: OutOfOfficeTimePeriodSectionProps): JSX.Element => {
+}: OutOfOfficeTimePeriodSectionProps): React.JSX.Element => {
 	const t = getT();
 	const [fromDate, setFromDate] = useState<Date>(coerceGenTime(prefOutOfOfficeFromDate));
 	const [untilDate, setUntilDate] = useState<Date>(coerceGenTime(prefOutOfOfficeUntilDate));

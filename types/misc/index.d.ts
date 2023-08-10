@@ -198,7 +198,7 @@ export type BaseFolder = {
 	// Flags - checked in UI (#), exclude free/(b)usy info, IMAP subscribed (*), does not (i)nherit rights from parent, is a s(y)nc folder with external data source, sync is turned on(~), folder does n(o)t allow inferiors / children
 	f?: string;
 	// color numeric; range 0-127; defaults to 0 if not present; client can display only 0-7
-	color?: string;
+	color?: number;
 	// RGB color in format #rrggbb where r,g and b are hex digits
 	rgb?: string;
 	// Number of unread messages in folder

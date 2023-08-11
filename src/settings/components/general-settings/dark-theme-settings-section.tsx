@@ -28,7 +28,7 @@ interface DarkThemeSettingSectionProps {
 const DarkThemeSettingSection = ({
 	addMod,
 	removeMod
-}: DarkThemeSettingSectionProps): JSX.Element | null => {
+}: DarkThemeSettingSectionProps): React.JSX.Element | null => {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
 	const darkReaderResultValue = useDarkReaderResultValue();
 	const [selection, setSelection] = useState<SelectItem>();

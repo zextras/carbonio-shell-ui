@@ -114,7 +114,7 @@ const AccountsList = ({
 		() =>
 			map(identities, (item, index) => (
 				<ListItem key={item.id} active={selectedIdentityId === index}>
-					{(): JSX.Element => (
+					{(): React.JSX.Element => (
 						<>
 							<Container
 								role={'listitem'}

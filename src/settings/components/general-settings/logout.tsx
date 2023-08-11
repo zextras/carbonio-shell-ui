@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { logout } from '../../../network/logout';
 import { accountSubSection } from '../../general-settings-sub-sections';
 
-export const Logout = (): JSX.Element => {
+export const Logout = (): React.JSX.Element => {
 	const [t] = useTranslation();
 
 	const sectionTitle = useMemo(() => accountSubSection(t), [t]);

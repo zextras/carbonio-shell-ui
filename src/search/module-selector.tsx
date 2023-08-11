@@ -34,7 +34,7 @@ interface ModuleSelectorProps {
 	app: string | undefined;
 }
 
-const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): JSX.Element | null => {
+const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): React.JSX.Element | null => {
 	const modules = useAppStore((s) => s.views.search);
 	const { module, updateModule } = useSearchStore();
 
@@ -110,7 +110,7 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): JSX.Element | nu
 
 const MemoModuleSelector = React.memo(ModuleSelectorComponent);
 
-export const ModuleSelector = (): JSX.Element => {
+export const ModuleSelector = (): React.JSX.Element => {
 	const activeRoute = useCurrentRoute();
 	return <MemoModuleSelector app={activeRoute?.app} />;
 };

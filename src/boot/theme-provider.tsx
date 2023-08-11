@@ -120,7 +120,7 @@ const GlobalStyle = createGlobalStyle<GlobalStyledProps>`
 interface ThemeProviderProps {
 	children?: React.ReactNode | React.ReactNode[];
 }
-export const ThemeProvider = ({ children }: ThemeProviderProps): JSX.Element => {
+export const ThemeProvider = ({ children }: ThemeProviderProps): React.JSX.Element => {
 	const [localStorageSettings] = useLocalStorage<ScalingSettings>(LOCAL_STORAGE_SETTINGS_KEY, {});
 
 	const [extensions, setExtensions] = useState<Partial<Record<keyof DefaultTheme, ThemeExtension>>>(

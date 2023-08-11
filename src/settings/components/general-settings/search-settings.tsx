@@ -23,7 +23,7 @@ export const SearchSettings = ({
 	settings,
 	addMod,
 	resetRef
-}: SearchSettingsViewProps): JSX.Element => {
+}: SearchSettingsViewProps): React.JSX.Element => {
 	const t = getT();
 	const [searchInSpamFolder, setSearchInSpamFolder] = useState<boolean>(
 		settings.prefs.zimbraPrefIncludeSpamInSearch === 'TRUE'

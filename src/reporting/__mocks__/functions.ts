@@ -7,5 +7,3 @@
 import * as actualFunctions from '../functions';
 
 export const report: typeof actualFunctions.report = () => (): string => '';
-
-export const feedback: typeof actualFunctions.feedback = (): string => '';

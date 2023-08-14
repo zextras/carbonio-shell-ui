@@ -89,7 +89,7 @@ function mapToModifyIdentityRequests(
 	);
 }
 
-function getResult(ace: AccountACEInfo[] | undefined): DelegateType[] {
+function generateDelegateList(ace: AccountACEInfo[] | undefined): DelegateType[] {
 	return reduce(
 		ace,
 		(accumulator: Array<DelegateType>, item, idx) => {
@@ -97,12 +97,11 @@ function getResult(ace: AccountACEInfo[] | undefined): DelegateType[] {
 			if (index === -1) {
 				accumulator.push({ email: item.d || '', right: item.right, id: idx.toString() });
 			} else {
-				accumulator.push({
+				accumulator[index] = {
 					email: item.d || '',
 					right: `${item.right} and ${accumulator[index].right}`,
 					id: idx.toString()
-				});
-				accumulator.splice(index, 1);
+				};
 			}
 			return accumulator;
 		},
@@ -368,7 +367,7 @@ export const AccountsSettings = (): JSX.Element => {
 
 	const [delegates, setDelegates] = useState<DelegateType[]>([]);
 
-	const { rights } = useAccountStore.getState();
+	const rights = useAccountStore((state) => state.rights);
 
 	useEffect(() => {
 		if (!rights) {
@@ -378,15 +377,16 @@ export const AccountsSettings = (): JSX.Element => {
 			}).then((value) => {
 				if (value.ace) {
 					const { ace } = value;
-					setDelegates(getResult(ace));
+					setDelegates(generateDelegateList(ace));
 				}
 				useAccountStore.setState((state) => ({
 					...state,
 					rights: value.ace ?? []
 				}));
 			});
+		} else {
+			setDelegates(generateDelegateList(rights));
 		}
-		setDelegates(getResult(rights));
 	}, [rights]);
 
 	const personaSettings = useMemo<JSX.Element | null>(() => {

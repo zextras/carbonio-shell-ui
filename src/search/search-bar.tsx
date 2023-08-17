@@ -23,6 +23,7 @@ import { useSearchStore } from './search-store';
 import { QueryChip, QueryItem } from '../../types';
 import { LOCAL_STORAGE_SEARCH_KEY, SEARCH_APP_ID } from '../constants';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
+import { useAppStore } from '../store/app';
 import { getT } from '../store/i18n';
 
 const OutlinedIconButton = styled(IconButton)`
@@ -63,8 +64,19 @@ export const SearchBar = (): JSX.Element => {
 	);
 	const [inputTyped, setInputTyped] = useState<string>('');
 	const history = useHistory();
-	const { updateQuery, module, query, searchDisabled, setSearchDisabled, tooltip } =
-		useSearchStore();
+	const {
+		updateQuery,
+		module: currentSearchModuleRoute,
+		query,
+		searchDisabled,
+		setSearchDisabled,
+		tooltip
+	} = useSearchStore();
+	const modules = useAppStore((s) => s.views.search);
+	const module = useMemo(
+		() => modules.find(({ route }) => route === currentSearchModuleRoute),
+		[currentSearchModuleRoute, modules]
+	);
 
 	const [isTyping, setIsTyping] = useState(false);
 
@@ -93,78 +105,80 @@ export const SearchBar = (): JSX.Element => {
 	}, [setSearchDisabled, updateQuery]);
 
 	const onSearch = useCallback(() => {
-		updateQuery((currentQuery) => {
-			const ref = inputRef?.current;
-			if (ref) {
-				ref.value = '';
-			}
-			if (inputTyped.length > 0) {
-				const newInputValue: typeof searchInputValue = [
-					...searchInputValue,
-					...map(
-						inputTyped.split(' '),
-						(label, id): QueryChip => ({
-							id: `${id}`,
-							label,
-							hasAvatar: false
-						})
-					)
-				];
-				setSearchInputValue(newInputValue);
+		if (module?.app) {
+			updateQuery((currentQuery) => {
+				const ref = inputRef?.current;
+				if (ref) {
+					ref.value = '';
+				}
+				if (inputTyped.length > 0) {
+					const newInputValue: typeof searchInputValue = [
+						...searchInputValue,
+						...map(
+							inputTyped.split(' '),
+							(label, id): QueryChip => ({
+								id: `${id}`,
+								label,
+								hasAvatar: false
+							})
+						)
+					];
+					setSearchInputValue(newInputValue);
+					setInputTyped('');
+					return reduce(
+						newInputValue,
+						(acc, newInputChip) => {
+							if (
+								!some(
+									currentQuery,
+									(currentQueryChip) => currentQueryChip.label === newInputChip.label
+								)
+							) {
+								acc.push(newInputChip);
+							}
+							return acc;
+						},
+						filter(currentQuery, (currentQueryChip) =>
+							some(
+								searchInputValue,
+								(searchInputChip) => searchInputChip.label === currentQueryChip.label
+							)
+						)
+					);
+				}
+
 				setInputTyped('');
+
 				return reduce(
-					newInputValue,
-					(acc, newInputChip) => {
+					searchInputValue,
+					(acc, searchInputChip) => {
 						if (
 							!some(
 								currentQuery,
-								(currentQueryChip) => currentQueryChip.label === newInputChip.label
+								(currentQueryChip) => currentQueryChip.label === searchInputChip.label
 							)
 						) {
-							acc.push(newInputChip);
+							acc.push(searchInputChip);
 						}
 						return acc;
 					},
-					filter(currentQuery, (currentQueryChip) =>
+
+					filter(currentQuery, (currentQueryChip: QueryChip) =>
 						some(
 							searchInputValue,
 							(searchInputChip) => searchInputChip.label === currentQueryChip.label
 						)
 					)
 				);
-			}
-
-			setInputTyped('');
-
-			return reduce(
-				searchInputValue,
-				(acc, searchInputChip) => {
-					if (
-						!some(
-							currentQuery,
-							(currentQueryChip) => currentQueryChip.label === searchInputChip.label
-						)
-					) {
-						acc.push(searchInputChip);
-					}
-					return acc;
-				},
-
-				filter(currentQuery, (currentQueryChip: QueryChip) =>
-					some(
-						searchInputValue,
-						(searchInputChip) => searchInputChip.label === currentQueryChip.label
-					)
-				)
-			);
-		});
-		// TODO: perform a navigation only when coming from a different module (not the search one)
-		history.push(`/${SEARCH_APP_ID}/${module}`);
-	}, [updateQuery, history, module, inputTyped, searchInputValue]);
+			});
+			// TODO: perform a navigation only when coming from a different module (not the search one)
+			history.push(`/${SEARCH_APP_ID}/${module.app}`);
+		}
+	}, [updateQuery, history, module?.app, inputTyped, searchInputValue]);
 
 	const appSuggestions = useMemo<SearchOption[]>(
 		() =>
-			filter(storedSuggestions, (v) => v.app === module)
+			filter(storedSuggestions, (v) => v.app === module?.app)
 				.reverse()
 				.map(
 					(item): SearchOption => ({
@@ -176,7 +190,7 @@ export const SearchBar = (): JSX.Element => {
 						}
 					})
 				),
-		[storedSuggestions, module, searchDisabled]
+		[storedSuggestions, module?.app, searchDisabled]
 	);
 
 	const updateOptions = useCallback(
@@ -208,7 +222,7 @@ export const SearchBar = (): JSX.Element => {
 			if (
 				lastChipLabel &&
 				typeof lastChipLabel === 'string' &&
-				module &&
+				module?.app &&
 				!find(appSuggestions, (suggestion) => suggestion.label === lastChipLabel)
 			) {
 				setStoredSuggestions((prevState) => {
@@ -216,7 +230,7 @@ export const SearchBar = (): JSX.Element => {
 						value: lastChipLabel,
 						label: lastChipLabel,
 						icon: 'ClockOutline',
-						app: module,
+						app: module.app,
 						id: lastChipLabel
 					};
 					return [...prevState, newSuggestion];
@@ -226,7 +240,7 @@ export const SearchBar = (): JSX.Element => {
 			// FIXME: remove the cast (by making ChipItem support generics?)
 			setSearchInputValue(newQuery as QueryChip[]);
 		},
-		[appSuggestions, module, setStoredSuggestions]
+		[appSuggestions, module?.app, setStoredSuggestions]
 	);
 
 	const onInputType = useCallback<NonNullable<ChipInputProps['onInputType']>>(
@@ -243,35 +257,19 @@ export const SearchBar = (): JSX.Element => {
 	);
 
 	useEffect(() => {
-		if (module) {
-			const suggestions = filter(appSuggestions, (suggestion) => suggestion.app === module).slice(
-				0,
-				5
-			);
+		if (module?.app) {
+			const suggestions = filter(
+				appSuggestions,
+				(suggestion) => suggestion.app === module.app
+			).slice(0, 5);
 
 			setOptions(suggestions);
 		}
-	}, [appSuggestions, module]);
+	}, [appSuggestions, module?.app]);
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const addFocus = useCallback(() => setInputHasFocus(true), []);
 	const removeFocus = useCallback(() => setInputHasFocus(false), []);
-
-	// disabled for now, awaiting refactor of the search bar
-	// useEffect(() => {
-	// 	const handler = (event: KeyboardEvent): unknown =>
-	// 		handleKeyboardShortcuts({
-	// 			event,
-	// 			inputRef,
-	// 			primaryAction,
-	// 			secondaryActions,
-	// 			currentApp
-	// 		});
-	// 	document.addEventListener('keydown', handler);
-	// 	return (): void => {
-	// 		document.removeEventListener('keydown', handler);
-	// 	};
-	// }, [currentApp, inputRef, primaryAction, secondaryActions]);
 
 	useEffect(() => {
 		const ref = inputRef.current;
@@ -292,14 +290,14 @@ export const SearchBar = (): JSX.Element => {
 		};
 	}, [onSearch, removeFocus]);
 
-	const disableOptions = useMemo(() => !(options.length > 0) || isTyping, [options, isTyping]);
+	const disableOptions = useMemo(() => options.length <= 0 || isTyping, [options, isTyping]);
 
 	const placeholder = useMemo(
 		() =>
-			inputHasFocus && module
+			inputHasFocus && module?.app
 				? t('search.active_input_label', 'Separate your keywords by a comma or pressing TAB')
 				: t('search.idle_input_label', 'Search in {{module}}', {
-						module
+						module: module?.label
 				  }),
 		[inputHasFocus, module, t]
 	);
@@ -337,10 +335,10 @@ export const SearchBar = (): JSX.Element => {
 		(newChip) => {
 			setIsTyping(false);
 			setInputTyped('');
-			if (module) {
+			if (module?.app) {
 				const suggestions = filter(
 					appSuggestions,
-					(suggestion) => suggestion?.app === module
+					(suggestion) => suggestion?.app === module.app
 				).slice(0, 5);
 
 				setOptions(suggestions);
@@ -351,7 +349,7 @@ export const SearchBar = (): JSX.Element => {
 				hasAvatar: false
 			};
 		},
-		[appSuggestions, module]
+		[appSuggestions, module?.app]
 	);
 
 	useEffect(() => {

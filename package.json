@@ -89,7 +89,7 @@
 		"whatwg-fetch": "^3.6.17"
 	},
 	"dependencies": {
-		"@fontsource/roboto": "^4.5.7",
+		"@fontsource/roboto": "^5.0.8",
 		"@reduxjs/toolkit": "^1 >=1.9",
 		"@sentry/browser": "^7.63.0",
 		"@tinymce/tinymce-react": "^4.3.0",

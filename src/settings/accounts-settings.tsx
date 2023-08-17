@@ -357,12 +357,19 @@ export const AccountsSettings = (): JSX.Element => {
 					ace,
 					(accumulator: Array<DelegateType>, item, idx) => {
 						const index = findIndex(accumulator, { email: item.d });
+						const translatedRight = t('settings.account.delegates.right', {
+							context: item.right.toLowerCase(),
+							defaultValue: item.right
+						});
 						if (index === -1) {
-							accumulator.push({ email: item.d || '', right: item.right, id: idx.toString() });
+							accumulator.push({ email: item.d || '', right: translatedRight, id: idx.toString() });
 						} else {
 							accumulator.push({
 								email: item.d || '',
-								right: `${item.right} and ${accumulator[index].right}`,
+								right: t('settings.account.delegates.multiple_rights', {
+									defaultValue: `{{rights.0]}} and {{rights.1}}`,
+									rights: [translatedRight, accumulator[index].right]
+								}),
 								id: idx.toString()
 							});
 							accumulator.splice(index, 1);
@@ -374,7 +381,7 @@ export const AccountsSettings = (): JSX.Element => {
 				setDelegates(result);
 			}
 		});
-	}, []);
+	}, [t]);
 
 	const personaSettings = useMemo<JSX.Element | null>(() => {
 		const identity = identities[selectedIdentityId];

@@ -6,7 +6,7 @@
 /* eslint-disable no-param-reassign */
 
 import type { TFunction } from 'i18next';
-import produce from 'immer';
+import { produce } from 'immer';
 import { size } from 'lodash';
 
 import type { AppState, PrimaryBarView, SettingsView } from '../../../types';

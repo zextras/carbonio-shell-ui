@@ -6,7 +6,7 @@
 
 import { ComponentType } from 'react';
 
-import produce from 'immer';
+import { produce } from 'immer';
 import { forEach, includes, omit } from 'lodash';
 import { create } from 'zustand';
 

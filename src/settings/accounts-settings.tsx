@@ -7,7 +7,7 @@
 import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react';
 
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
-import produce from 'immer';
+import { produce } from 'immer';
 import { map, find, isEmpty, reduce, findIndex, filter, size } from 'lodash';
 import { useTranslation } from 'react-i18next';
 

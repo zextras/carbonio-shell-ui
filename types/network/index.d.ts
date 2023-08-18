@@ -226,6 +226,14 @@ export type BatchRequest = {
 	_jsns: NameSpace;
 };
 
+export type BatchResponse = {
+	CreateIdentityResponse?: CreateIdentityResponse[];
+	ModifyIdentityResponse?: ModifyIdentityResponse[];
+	DeleteIdentityResponse?: DeleteIdentityResponse[];
+	ModifyPrefsResponse?: ModifyPrefsResponse;
+	ModifyPropertiesResponse?: ModifyPropertiesResponse;
+};
+
 export type GetRightsRequest = {
 	ace?: Array<{ right: Right }>;
 	_jsns: NameSpace;

@@ -7,6 +7,7 @@
 import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react';
 
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
+import { TFunction } from 'i18next';
 import { produce } from 'immer';
 import { map, find, isEmpty, reduce, findIndex, filter, size } from 'lodash';
 import { useTranslation } from 'react-i18next';
@@ -89,17 +90,24 @@ function mapToModifyIdentityRequests(
 	);
 }
 
-function generateDelegateList(ace: AccountACEInfo[] | undefined): DelegateType[] {
+function generateDelegateList(ace: AccountACEInfo[] | undefined, t: TFunction): DelegateType[] {
 	return reduce(
 		ace,
 		(accumulator: Array<DelegateType>, item, idx) => {
 			const index = findIndex(accumulator, { email: item.d });
+			const translatedRight = t('settings.account.delegates.right', {
+				context: item.right.toLowerCase(),
+				defaultValue: item.right
+			});
 			if (index === -1) {
-				accumulator.push({ email: item.d || '', right: item.right, id: idx.toString() });
+				accumulator.push({ email: item.d || '', right: translatedRight, id: idx.toString() });
 			} else {
 				accumulator[index] = {
 					email: item.d || '',
-					right: `${item.right} and ${accumulator[index].right}`,
+					right: t('settings.account.delegates.multiple_rights', {
+						defaultValue: `{{rights.0]}} and {{rights.1}}`,
+						rights: [translatedRight, accumulator[index].right]
+					}),
 					id: idx.toString()
 				};
 			}
@@ -377,7 +385,7 @@ export const AccountsSettings = (): JSX.Element => {
 			}).then((value) => {
 				if (value.ace) {
 					const { ace } = value;
-					setDelegates(generateDelegateList(ace));
+					setDelegates(generateDelegateList(ace, t));
 				}
 				useAccountStore.setState((state) => ({
 					...state,
@@ -385,9 +393,9 @@ export const AccountsSettings = (): JSX.Element => {
 				}));
 			});
 		} else {
-			setDelegates(generateDelegateList(rights));
+			setDelegates(generateDelegateList(rights, t));
 		}
-	}, [rights]);
+	}, [t, rights]);
 
 	const personaSettings = useMemo<JSX.Element | null>(() => {
 		const identity = identities[selectedIdentityId];

@@ -21,6 +21,7 @@ import {
 	PrefsMods
 } from '../../../types';
 import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
+import { LocaleDescriptor, SUPPORTED_LOCALES } from '../../constants/locales';
 
 export const GEN_TIME_FORMAT = 'YYYYMMDDHHmmss[Z]';
 
@@ -40,150 +41,169 @@ export const startOfDay = (date: Date): Date => new Date(new Date(date).setHours
 
 export const endOfDay = (date: Date): Date => new Date(new Date(date).setHours(23, 59, 59, 0));
 
-export type LocaleDescriptor = {
+export type LocaleDescriptorWithLabels = LocaleDescriptor & {
 	id: string;
-	name: string;
-	localName: string;
-	value: string;
 	label: string;
-	dateFnsLocale?: string;
+	localName: string;
 };
 
-export const localeList = (t: TFunction): Array<LocaleDescriptor> => [
+export const localeList = (t: TFunction): Array<LocaleDescriptorWithLabels> => [
 	{
 		id: 'zh_CN',
-		name: '中文 (中国)',
+		...SUPPORTED_LOCALES.zh_CN,
 		localName: t('locale.chinese_china', 'Chinese (China)'),
 		label: t('locale.label_chinese', {
-			value: '中文 (中国)',
+			value: SUPPORTED_LOCALES.zh_CN.name,
 			defaultValue: 'Chinese (China) - {{value}}'
-		}),
-		value: 'zh_CN',
-		dateFnsLocale: 'zh-CN'
+		})
 	},
 	{
 		id: 'nl',
-		name: 'Nederlands',
+		...SUPPORTED_LOCALES.nl,
 		localName: t('locale.dutch', 'Dutch'),
-		label: t('locale.label_dutch', { value: 'Nederlands', defaultValue: 'Dutch - {{value}}' }),
-		value: 'nl'
+		label: t('locale.label_dutch', {
+			value: SUPPORTED_LOCALES.nl.name,
+			defaultValue: 'Dutch - {{value}}'
+		})
 	},
 	{
 		id: 'en',
-		name: 'English',
+		...SUPPORTED_LOCALES.en,
 		localName: t('locale.English', 'English'),
-		label: t('locale.label_english', { value: 'English', defaultValue: 'English - {{value}}' }),
-		value: 'en',
-		dateFnsLocale: 'en-US'
+		label: t('locale.label_english', {
+			value: SUPPORTED_LOCALES.en.name,
+			defaultValue: 'English - {{value}}'
+		})
 	},
 	{
 		id: 'de',
-		name: 'Deutsch',
+		...SUPPORTED_LOCALES.de,
 		localName: t('locale.german', 'German'),
-		label: t('locale.label_german', { value: 'Deutsch', defaultValue: 'German - {{value}}' }),
-		value: 'de'
+		label: t('locale.label_german', {
+			value: SUPPORTED_LOCALES.de.name,
+			defaultValue: 'German - {{value}}'
+		})
 	},
 	{
 		id: 'hi',
-		name: 'हिंदी',
+		...SUPPORTED_LOCALES.hi,
 		localName: t('locale.hindi', 'Hindi'),
-		label: t('locale.label_hindi', { value: 'हिंदी', defaultValue: 'Hindi - {{value}}' }),
-		value: 'hi'
+		label: t('locale.label_hindi', {
+			value: SUPPORTED_LOCALES.hi.name,
+			defaultValue: 'Hindi - {{value}}'
+		})
 	},
 	{
 		id: 'it',
-		name: 'italiano',
+		...SUPPORTED_LOCALES.it,
 		localName: t('locale.italian', 'Italian'),
-		label: t('locale.label_italian', { value: 'italiano', defaultValue: 'Italian - {{value}}' }),
-		value: 'it'
+		label: t('locale.label_italian', {
+			value: SUPPORTED_LOCALES.it.name,
+			defaultValue: 'Italian - {{value}}'
+		})
 	},
 	{
 		id: 'ja',
-		name: '日本語',
+		...SUPPORTED_LOCALES.ja,
 		localName: t('locale.japanese', 'Japanese'),
-		label: t('locale.label_japanese', { value: '日本語', defaultValue: 'Japanese - {{value}}' }),
-		value: 'ja'
+		label: t('locale.label_japanese', {
+			value: SUPPORTED_LOCALES.ja.name,
+			defaultValue: 'Japanese - {{value}}'
+		})
 	},
 
 	{
 		id: 'pt',
-		name: 'português',
+		...SUPPORTED_LOCALES.pt,
 		localName: t('locale.portuguese', 'Portuguese'),
 		label: t('locale.label_portuguese', {
-			value: 'português',
+			value: SUPPORTED_LOCALES.pt.name,
 			defaultValue: 'Portuguese - {{value}}'
-		}),
-		value: 'pt'
+		})
 	},
 	{
 		id: 'pl',
-		name: 'polski',
+		...SUPPORTED_LOCALES.pl,
 		localName: t('locale.polish', 'Polish'),
-		label: 'Polish - polski',
-		value: 'pl'
+		label: t('locale.label_polish', {
+			value: SUPPORTED_LOCALES.pl.name,
+			defaultValue: 'Polish - {{value}}'
+		})
 	},
 	{
 		id: 'pt_BR',
-		name: 'português (Brasil)',
+		...SUPPORTED_LOCALES.pt_BR,
 		localName: t('locale.portuguese_brazil', 'Portuguese (Brazil)'),
 		label: t('locale.label_portuguese_brazil', {
-			value: 'português (Brasil)',
+			value: SUPPORTED_LOCALES.pt_BR.name,
 			defaultValue: 'Portuguese - {{value}}'
-		}),
-		value: 'pt_BR',
-		dateFnsLocale: 'pt-BR'
+		})
 	},
 
 	{
 		id: 'ro',
-		name: 'română',
+		...SUPPORTED_LOCALES.ro,
 		localName: t('locale.romanian', 'Romanian'),
-		label: t('locale.label_romanian', { value: 'română', defaultValue: 'Romanian - {{value}}' }),
-		value: 'ro'
+		label: t('locale.label_romanian', {
+			value: SUPPORTED_LOCALES.ro.name,
+			defaultValue: 'Romanian - {{value}}'
+		})
 	},
 	{
 		id: 'ru',
-		name: 'русский',
+		...SUPPORTED_LOCALES.ru,
 		localName: t('locale.russian', 'Russian'),
-		label: t('locale.label_russian', { value: 'русский', defaultValue: 'Russian - {{value}}' }),
-		value: 'ru'
+		label: t('locale.label_russian', {
+			value: SUPPORTED_LOCALES.ru.name,
+			defaultValue: 'Russian - {{value}}'
+		})
 	},
 
 	{
 		id: 'es',
-		name: 'español',
+		...SUPPORTED_LOCALES.es,
 		localName: t('locale.spanish', 'Spanish'),
-		label: t('locale.label_spanish', { value: 'español', defaultValue: 'Spanish - {{value}}' }),
-		value: 'es'
+		label: t('locale.label_spanish', {
+			value: SUPPORTED_LOCALES.es.name,
+			defaultValue: 'Spanish - {{value}}'
+		})
 	},
 
 	{
 		id: 'th',
-		name: 'ไทย',
+		...SUPPORTED_LOCALES.th,
 		localName: t('locale.thai', 'Thai'),
-		label: t('locale.label_thai', { value: 'ไทย', defaultValue: 'Thai - {{value}}' }),
-		value: 'th'
+		label: t('locale.label_thai', {
+			value: SUPPORTED_LOCALES.th.name,
+			defaultValue: 'Thai - {{value}}'
+		})
 	},
 	{
 		id: 'tr',
-		name: 'Türkçe',
+		...SUPPORTED_LOCALES.tr,
 		localName: t('locale.turkish', 'Turkish'),
-		label: t('locale.label_turkish', { value: 'Türkçe', defaultValue: 'Turkish - {{value}}' }),
-		value: 'tr'
+		label: t('locale.label_turkish', {
+			value: SUPPORTED_LOCALES.tr.name,
+			defaultValue: 'Turkish - {{value}}'
+		})
 	},
 	{
 		id: 'fr',
-		name: 'français',
+		...SUPPORTED_LOCALES.fr,
 		localName: t('locale.french', 'French'),
-		label: t('locale.label_french', { value: 'français', defaultValue: 'French - {{value}}' }),
-		value: 'fr'
+		label: t('locale.label_french', {
+			value: SUPPORTED_LOCALES.fr.name,
+			defaultValue: 'French - {{value}}'
+		})
 	},
 	{
 		id: 'vi',
-		name: 'Tiếng Việt',
+		...SUPPORTED_LOCALES.vi,
 		localName: t('locale.vietnamese', 'Vietnamese'),
-		label: 'Vietnamese - Tiếng Việt',
-		value: 'vi'
+		label: t('locale.label_vietnamese', {
+			value: SUPPORTED_LOCALES.vi.name,
+			defaultValue: 'Vietnamese - {{value}}'
+		})
 	}
 ];
 // TODO: For future languages

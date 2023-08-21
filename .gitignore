@@ -15,3 +15,5 @@
 zextras-carbonio-*.tgz
 shell.iml
 .env
+carbonio.webpack.js
+src/constants/locales.js

@@ -10,9 +10,15 @@ import { faker } from '@faker-js/faker';
 import { act, screen, waitFor, within } from '@testing-library/react';
 import { head, shuffle, tail } from 'lodash';
 import { rest } from 'msw';
+import { Link, Route, Switch } from 'react-router-dom';
 
 import { AccountsSettings } from './accounts-settings';
 import { Account, BatchRequest, CreateIdentityResponse, Identity } from '../../types';
+import {
+	GetRightsRequestBody,
+	GetRightsResponseBody,
+	getRightsRequest
+} from '../mocks/handlers/getRightsRequest';
 import server, { waitForRequest } from '../mocks/server';
 import { useAccountStore } from '../store/account';
 import { setup } from '../test/utils';
@@ -1596,7 +1602,6 @@ describe('Account setting', () => {
 			expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
 
 			await user.click(screen.getByRole('button', { name: /save/i }));
-
 			const request = await pendingBatchRequest;
 			const requestBody = (request?.body as { Body: { BatchRequest: BatchRequest } }).Body;
 			expect(requestBody.BatchRequest.CreateIdentityRequest).toBeUndefined();
@@ -1609,6 +1614,161 @@ describe('Account setting', () => {
 
 			const successSnackbar = await screen.findByText('Edits saved correctly');
 			expect(successSnackbar).toBeVisible();
+		});
+		test('GetRightRequest is called only once when the user navigates inside account settings', async () => {
+			const defaultFirstName = faker.person.firstName();
+			const defaultLastName = faker.person.lastName();
+			const defaultFullName = faker.person.fullName({
+				firstName: defaultFirstName,
+				lastName: defaultLastName
+			});
+			const defaultEmail = faker.internet.email({
+				firstName: defaultFirstName,
+				lastName: defaultLastName
+			});
+			const defaultId = faker.string.uuid();
+
+			const identitiesArray: Account['identities']['identity'] = [
+				{
+					id: defaultId,
+					name: 'DEFAULT',
+					_attrs: {
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefReplyToEnabled: 'FALSE',
+						zimbraPrefFromDisplay: defaultFirstName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefFromAddressType: 'sendAs'
+					}
+				}
+			];
+
+			const account: Account = {
+				name: defaultEmail,
+				rights: { targets: [] },
+				signatures: { signature: [] },
+				id: defaultId,
+				displayName: '',
+				identities: {
+					identity: identitiesArray
+				}
+			};
+
+			useAccountStore.setState((previousState) => ({
+				...previousState,
+				account
+			}));
+
+			const requestFn = jest.fn();
+			server.use(
+				rest.post<GetRightsRequestBody, never, GetRightsResponseBody>(
+					'/service/soap/GetRightsRequest',
+					(req, res, context) => {
+						requestFn();
+						return getRightsRequest(req, res, context);
+					}
+				)
+			);
+
+			const TestComponent = (): JSX.Element => (
+				<>
+					<Switch>
+						<Route path="/other">
+							<div>
+								<span data-testid="text">Other page</span>
+								<Link to="/settings/accounts">Go to Account Settings</Link>
+							</div>
+						</Route>
+						<Route path="/settings/accounts">
+							<AccountsSettings />
+							<Link to="/other">Go to Other page</Link>
+						</Route>
+					</Switch>
+				</>
+			);
+
+			const { user } = setup(<TestComponent />, { initialRouterEntries: [`/settings/accounts`] });
+
+			await waitForGetRightsRequest();
+			expect(requestFn).toHaveBeenCalledTimes(1);
+			expect(screen.queryByTestId('text')).not.toBeInTheDocument();
+			expect(screen.getByText(/Accounts List/i)).toBeVisible();
+			await user.click(screen.getByRole('link', { name: 'Go to Other page' }));
+			expect(screen.queryByTestId('text')).toBeVisible();
+			expect(screen.queryByText('sendAs')).not.toBeInTheDocument();
+			await user.click(screen.getByRole('link', { name: 'Go to Account Settings' }));
+			expect(screen.getByText('sendAs')).toBeVisible();
+			expect(requestFn).toHaveBeenCalledTimes(1);
+		});
+
+		test('When rights state is updated, the delegates list will be updated accordingly', async () => {
+			const defaultFirstName = faker.person.firstName();
+			const defaultLastName = faker.person.lastName();
+			const defaultFullName = faker.person.fullName({
+				firstName: defaultFirstName,
+				lastName: defaultLastName
+			});
+			const defaultEmail = faker.internet.email({
+				firstName: defaultFirstName,
+				lastName: defaultLastName
+			});
+			const defaultId = faker.string.uuid();
+
+			const identitiesArray: Account['identities']['identity'] = [
+				{
+					id: defaultId,
+					name: 'DEFAULT',
+					_attrs: {
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefReplyToEnabled: 'FALSE',
+						zimbraPrefFromDisplay: defaultFirstName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefFromAddressType: 'sendAs'
+					}
+				}
+			];
+
+			const account: Account = {
+				name: defaultEmail,
+				rights: { targets: [] },
+				signatures: { signature: [] },
+				id: defaultId,
+				displayName: '',
+				identities: {
+					identity: identitiesArray
+				}
+			};
+
+			useAccountStore.setState((previousState) => ({
+				...previousState,
+				account
+			}));
+
+			const requestFn = jest.fn();
+			server.use(
+				rest.post<GetRightsRequestBody, never, GetRightsResponseBody>(
+					'/service/soap/GetRightsRequest',
+					(req, res, context) => {
+						requestFn();
+						return getRightsRequest(req, res, context);
+					}
+				)
+			);
+
+			setup(<AccountsSettings />);
+
+			await waitForGetRightsRequest();
+			expect(requestFn).toHaveBeenCalledTimes(1);
+			expect(screen.getByText(/Accounts List/i)).toBeVisible();
+
+			act(() => {
+				useAccountStore.setState((previousState) => ({
+					...previousState,
+					rights: []
+				}));
+			});
+			expect(screen.queryByText('sendAs')).not.toBeInTheDocument();
 		});
 	});
 });

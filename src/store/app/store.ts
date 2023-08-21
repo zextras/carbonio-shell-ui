@@ -71,13 +71,13 @@ export const useAppStore = create<AppState>()((set, get) => ({
 		secondaryBarAccessories: []
 	},
 	setters: {
-		addApps: (apps): void => {
-			set((state) => {
+		setApps: (apps): void => {
+			set(() => {
 				const { moduleApps, shellApp, appContexts } = reduce<
 					Partial<CarbonioModule>,
 					{
 						moduleApps: AppState['apps'];
-						shellApp: AppState['shell'] | Record<string, never>;
+						shellApp: AppState['shell'];
 						appContexts: AppState['appContexts'];
 					}
 				>(
@@ -94,14 +94,11 @@ export const useAppStore = create<AppState>()((set, get) => ({
 						}
 						return accumulator;
 					},
-					{ moduleApps: {}, shellApp: {}, appContexts: {} }
+					{ moduleApps: {}, shellApp: {} as CarbonioModule, appContexts: {} }
 				);
 				return {
 					apps: moduleApps,
-					shell: {
-						...state.shell,
-						...shellApp
-					},
+					shell: shellApp,
 					appContexts
 				};
 			});
@@ -208,9 +205,7 @@ export const useAppStore = create<AppState>()((set, get) => ({
 			}
 			set(
 				produce<AppState>((state) => {
-					if (!some(state.views.settings, (view) => view.id === data.id)) {
-						addAndSort(state.views.settings, data);
-					}
+					addAndSort(state.views.settings, data);
 				})
 			);
 			return data.id;

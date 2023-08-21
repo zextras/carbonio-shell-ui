@@ -4,12 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import produce from 'immer';
-import { create } from 'zustand';
-import { forEach, includes, omit } from 'lodash';
 import { ComponentType } from 'react';
-import type { ActionFactory, AnyFunction, IntegrationsState } from '../../../types';
+
+import { produce } from 'immer';
+import { forEach, includes, omit } from 'lodash';
+import { create } from 'zustand';
+
 import Composer from './composer';
+import type { ActionFactory, AnyFunction, IntegrationsState } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
 
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage

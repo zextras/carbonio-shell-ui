@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import styled from 'styled-components';
+
 import {
 	Container,
 	Row,
@@ -13,10 +13,12 @@ import {
 	Dropdown,
 	DropdownItem
 } from '@zextras/carbonio-design-system';
-import { useAppStore } from '../store/app';
+import styled from 'styled-components';
+
 import { useSearchStore } from './search-store';
 import { SEARCH_APP_ID } from '../constants';
 import { useCurrentRoute, pushHistory } from '../history/hooks';
+import { useAppStore } from '../store/app';
 
 const SelectorContainer = styled(Container)<{ open?: boolean }>`
 	border-right: 0.0625rem solid ${({ theme }): string => theme.palette.gray4.regular};
@@ -60,10 +62,8 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): JSX.Element | nu
 	);
 
 	useEffect(() => {
-		if (app !== SEARCH_APP_ID) {
-			if (!fullModule || fullModule?.app !== app) {
-				updateModule((modules.find((m) => m.app === app) ?? modules[0])?.route);
-			}
+		if (app !== SEARCH_APP_ID && (!fullModule || fullModule?.app !== app)) {
+			updateModule((modules.find((m) => m.app === app) ?? modules[0])?.route);
 		}
 	}, [app, fullModule, modules, updateModule]);
 

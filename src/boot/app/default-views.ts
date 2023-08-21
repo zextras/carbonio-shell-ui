@@ -6,16 +6,17 @@
 /* eslint-disable no-param-reassign */
 
 import type { TFunction } from 'i18next';
+import { size } from 'lodash';
 
 import type { AppRouteDescriptor, SettingsView } from '../../../types';
 import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
-import Feedback from '../../reporting/feedback';
 import { SearchAppView } from '../../search/search-app-view';
-import AccountWrapper from '../../settings/account-wrapper';
+import { AccountsSettings } from '../../settings/accounts-settings';
 import GeneralSettings from '../../settings/general-settings';
 import { settingsSubSections } from '../../settings/general-settings-sub-sections';
 import { SettingsAppView } from '../../settings/settings-app-view';
 import { SettingsSidebar } from '../../settings/settings-sidebar';
+import { useAccountStore } from '../../store/account';
 import { useAppStore } from '../../store/app';
 
 const settingsGeneralView = (t: TFunction): SettingsView => ({
@@ -33,7 +34,7 @@ const settingsAccountsView = (t: TFunction): SettingsView => ({
 	id: 'accounts',
 	route: 'accounts',
 	app: SHELL_APP_ID,
-	component: AccountWrapper,
+	component: AccountsSettings,
 	icon: 'PersonOutline',
 	label: t('settings.accounts', 'Accounts'),
 	position: 1
@@ -68,16 +69,12 @@ const settingsRouteDescriptor = (t: TFunction): AppRouteDescriptor => ({
 	secondaryBar: SettingsSidebar
 });
 
-const feedbackBoardView = {
-	id: 'feedback',
-	app: SHELL_APP_ID,
-	component: Feedback,
-	route: 'feedback'
-};
 export const registerDefaultViews = (t: TFunction): void => {
-	useAppStore.getState().setters.addRoute(settingsRouteDescriptor(t));
-	useAppStore.getState().setters.addSettingsView(settingsGeneralView(t));
-	useAppStore.getState().setters.addSettingsView(settingsAccountsView(t));
+	const { attrs } = useAccountStore.getState().settings;
+	if (size(attrs) > 0 && attrs.zimbraFeatureOptionsEnabled !== 'FALSE') {
+		useAppStore.getState().setters.addRoute(settingsRouteDescriptor(t));
+		useAppStore.getState().setters.addSettingsView(settingsGeneralView(t));
+		useAppStore.getState().setters.addSettingsView(settingsAccountsView(t));
+	}
 	useAppStore.getState().setters.addRoute(searchRouteDescriptor(t));
-	useAppStore.getState().setters.addBoardView(feedbackBoardView);
 };

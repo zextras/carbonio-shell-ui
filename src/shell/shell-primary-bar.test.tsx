@@ -4,17 +4,22 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
+
 import { act, screen, within } from '@testing-library/react';
-import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
 import { Button, Text } from '@zextras/carbonio-design-system';
-import { setup } from '../test/utils';
-import ShellPrimaryBar from './shell-primary-bar';
-import { useAppStore } from '../store/app';
-import { PrimaryBarView } from '../../types';
-import { usePushHistoryCallback } from '../history/hooks';
+import { produce } from 'immer';
+import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
+
 import AppViewContainer from './app-view-container';
+import ShellPrimaryBar from './shell-primary-bar';
+import { AccountState, PrimaryBarView } from '../../types';
 import { DefaultViewsRegister } from '../boot/bootstrapper';
+import { usePushHistoryCallback } from '../history/hooks';
 import { ModuleSelector } from '../search/module-selector';
+import { useAccountStore } from '../store/account';
+import { useAppStore } from '../store/app';
+import { ICONS } from '../test/constants';
+import { setup } from '../test/utils';
 
 const ShellWrapper = (): JSX.Element => (
 	<>
@@ -416,5 +421,29 @@ describe('Shell primary bar', () => {
 		expect(screen.queryByText('files search view')).not.toBeInTheDocument();
 		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
 		expect(screen.queryByText('files view')).not.toBeInTheDocument();
+	});
+
+	test('When zimbraFeatureOptionsEnabled is TRUE the setting icon is visible in primary bar', async () => {
+		useAccountStore.setState(
+			produce((state: AccountState) => {
+				state.settings.attrs.zimbraFeatureOptionsEnabled = 'TRUE';
+			})
+		);
+		const { getByRoleWithIcon } = setup(<ShellWrapper />);
+
+		const searchIcon = getByRoleWithIcon('button', { icon: ICONS.settings });
+		expect(searchIcon).toBeVisible();
+		expect(searchIcon).toBeEnabled();
+	});
+
+	test('When zimbraFeatureOptionsEnabled is FALSE the setting icon is missing in primary bar', async () => {
+		useAccountStore.setState(
+			produce((state: AccountState) => {
+				state.settings.attrs.zimbraFeatureOptionsEnabled = 'FALSE';
+			})
+		);
+		const { queryByRoleWithIcon } = setup(<ShellWrapper />);
+
+		expect(queryByRoleWithIcon('button', { icon: ICONS.settings })).not.toBeInTheDocument();
 	});
 });

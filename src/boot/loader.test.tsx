@@ -12,7 +12,7 @@ import { Loader } from './loader';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
 import { GetComponentsJsonResponseBody } from '../mocks/handlers/components';
 import server, { waitForResponse } from '../mocks/server';
-import { setup } from '../test/utils';
+import { controlConsoleError, setup } from '../test/utils';
 
 describe('Loader', () => {
 	test('If only getComponents request fails, the LoaderFailureModal appears', async () => {
@@ -47,16 +47,7 @@ describe('Loader', () => {
 
 	test('If only getInfo request fails, the LoaderFailureModal appears', async () => {
 		// TODO remove when SHELL-117 will be implemented
-		const actualConsoleError = console.error;
-		console.error = jest.fn<ReturnType<typeof console.error>, Parameters<typeof console.error>>(
-			(error, ...restParameter) => {
-				if (error === 'Unexpected end of JSON input') {
-					console.log('Controlled error', error, ...restParameter);
-				} else {
-					actualConsoleError(error, ...restParameter);
-				}
-			}
-		);
+		controlConsoleError('Unexpected end of JSON input');
 		// using getComponents and loginConfig default handlers
 		server.use(
 			rest.post('/service/soap/GetInfoRequest', (req, res, ctx) =>

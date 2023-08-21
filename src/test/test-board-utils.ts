@@ -3,15 +3,16 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { first, keys } from 'lodash';
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
-import { Border } from '../shell/hooks/useResize';
+import { first, keys } from 'lodash';
+
+import { TESTID_SELECTORS } from './constants';
+import { mockedApps } from './test-app-utils';
 import { Board } from '../../types';
+import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
+import { Border } from '../shell/hooks/useResize';
 import { useBoardStore } from '../store/boards';
 import { SizeAndPosition } from '../utils/utils';
-import { mockedApps } from './test-app-utils';
-import { TESTID_SELECTORS } from './constants';
-import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
 
 export type InitialSizeAndPosition = SizeAndPosition & {
 	clientLeft: number;
@@ -90,6 +91,7 @@ export function setupBoardSizes(
 	board: HTMLElement,
 	initialSizeAndPos: InitialSizeAndPosition
 ): void {
+	// eslint-disable-next-line testing-library/no-node-access
 	const boardContainer = board.parentElement;
 	if (boardContainer) {
 		jest.spyOn(boardContainer, 'clientWidth', 'get').mockImplementation(() => window.innerWidth);
@@ -114,8 +116,11 @@ export async function resizeBoard(
 ): Promise<void> {
 	setupBoardSizes(board, sizeAndPos);
 	const borderElement = screen.getByTestId(TESTID_SELECTORS.resizableBorder(border));
+	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseDown(borderElement);
+	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseMove(document.body, mouseNewPosition);
+	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseUp(document.body);
 	await waitFor(() =>
 		expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '{}')).toEqual(
@@ -137,13 +142,17 @@ export async function moveBoard(
 	elementForMove: HTMLElement = board
 ): Promise<void> {
 	setupBoardSizes(board, sizeAndPos);
+	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseDown(elementForMove, mouseInitialPosition);
 	act(() => {
 		// run move timer
 		jest.runOnlyPendingTimers();
 	});
+	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseMove(document.body, mouseNewPosition);
+	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseUp(document.body);
+	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.click(elementForMove);
 	await waitFor(() =>
 		expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '{}')).toEqual(

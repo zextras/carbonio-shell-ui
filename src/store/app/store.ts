@@ -4,12 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import produce from 'immer';
+import { produce } from 'immer';
 import { findIndex, merge, reduce, some } from 'lodash';
 import { create } from 'zustand';
+
+import { normalizeApp } from './utils';
 import type { AppState, CarbonioModule } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
-import { normalizeApp } from './utils';
 
 const STANDALONE_RESPONSE = 'standalone';
 

@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { SHELL_APP_ID } from '../constants';
-import { normalizeAccount } from '../store/account/normalization';
-import { GetInfoResponse } from '../../types';
 import { getSoapFetch } from './fetch';
+import { GetInfoResponse } from '../../types';
+import { SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account';
+import { normalizeAccount } from '../store/account/normalization';
 import { useNetworkStore } from '../store/network';
 import { parsePollingInterval } from '../store/network/utils';
 

@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+
 import {
 	Container,
 	Icon,
@@ -13,8 +15,8 @@ import {
 	Text,
 	Tooltip
 } from '@zextras/carbonio-design-system';
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import styled, { css, SimpleInterpolation } from 'styled-components';
+
 import { closeBoard, setCurrentBoard, useBoardStore } from '../../store/boards';
 import { getT } from '../../store/i18n';
 import './board-tab.css';
@@ -98,7 +100,7 @@ export const AppBoardTab: FC<{ id: string; icon: string; title: string; firstTab
 	const resizeObserverRef = useRef<ResizeObserver>();
 	useEffect(() => {
 		if (textRef.current && !resizeObserverRef.current) {
-			resizeObserverRef.current = new ResizeObserver((entries) => {
+			resizeObserverRef.current = new ResizeObserver(() => {
 				requestAnimationFrame(() => {
 					if (textRef.current) {
 						setTextOverflowing(textRef.current.offsetWidth < textRef.current.scrollWidth);

@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { ResponseResolver, RestContext, RestRequest } from 'msw';
+
 import { CarbonioModule } from '../../../types';
 
 export type GetComponentsJsonResponseBody = { components: Array<CarbonioModule> };

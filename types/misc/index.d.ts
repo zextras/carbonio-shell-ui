@@ -4,12 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { Store } from '@reduxjs/toolkit';
-import type { To } from 'history';
 import React from 'react';
 import type { ComponentType } from 'react';
-import type { CarbonioModule, PanelMode } from '../apps';
+
+import type { Store } from '@reduxjs/toolkit';
+import type { To } from 'history';
+
 import { DARK_READER_VALUES } from '../../src/constants';
+import type { CarbonioModule, PanelMode } from '../apps';
 
 // eslint-disable-next-line no-shadow
 export enum JSNS {
@@ -20,7 +22,7 @@ export enum JSNS {
 	SYNC = 'urn:zimbraSync'
 }
 
-export type DarkReaderPropValues = typeof DARK_READER_VALUES[number];
+export type DarkReaderPropValues = (typeof DARK_READER_VALUES)[number];
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type PackageDependentFunction = (app: string) => Function;
@@ -69,6 +71,7 @@ export type AccountProps = {
 	identityId?: string;
 };
 
+/** @deprecated */
 export type IdentityProps = {
 	id: string;
 	/**
@@ -195,7 +198,7 @@ export type BaseFolder = {
 	// Flags - checked in UI (#), exclude free/(b)usy info, IMAP subscribed (*), does not (i)nherit rights from parent, is a s(y)nc folder with external data source, sync is turned on(~), folder does n(o)t allow inferiors / children
 	f?: string;
 	// color numeric; range 0-127; defaults to 0 if not present; client can display only 0-7
-	color?: string;
+	color?: number;
 	// RGB color in format #rrggbb where r,g and b are hex digits
 	rgb?: string;
 	// Number of unread messages in folder

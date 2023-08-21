@@ -3,11 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import type { Event, EventHint } from '@sentry/browser';
 
-export const report =
-	(appId: string) =>
-	(error: Event, hint?: EventHint): string =>
-		'';
+import * as actualFunctions from '../functions';
 
-export const feedback = (message: Event): string => '';
+export const report: typeof actualFunctions.report = () => (): string => '';

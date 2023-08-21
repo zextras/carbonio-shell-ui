@@ -105,80 +105,78 @@ export const SearchBar = (): JSX.Element => {
 	}, [setSearchDisabled, updateQuery]);
 
 	const onSearch = useCallback(() => {
-		if (module?.app) {
-			updateQuery((currentQuery) => {
-				const ref = inputRef?.current;
-				if (ref) {
-					ref.value = '';
-				}
-				if (inputTyped.length > 0) {
-					const newInputValue: typeof searchInputValue = [
-						...searchInputValue,
-						...map(
-							inputTyped.split(' '),
-							(label, id): QueryChip => ({
-								id: `${id}`,
-								label,
-								hasAvatar: false
-							})
-						)
-					];
-					setSearchInputValue(newInputValue);
-					setInputTyped('');
-					return reduce(
-						newInputValue,
-						(acc, newInputChip) => {
-							if (
-								!some(
-									currentQuery,
-									(currentQueryChip) => currentQueryChip.label === newInputChip.label
-								)
-							) {
-								acc.push(newInputChip);
-							}
-							return acc;
-						},
-						filter(currentQuery, (currentQueryChip) =>
-							some(
-								searchInputValue,
-								(searchInputChip) => searchInputChip.label === currentQueryChip.label
-							)
-						)
-					);
-				}
-
+		updateQuery((currentQuery) => {
+			const ref = inputRef?.current;
+			if (ref) {
+				ref.value = '';
+			}
+			if (inputTyped.length > 0) {
+				const newInputValue: typeof searchInputValue = [
+					...searchInputValue,
+					...map(
+						inputTyped.split(' '),
+						(label, id): QueryChip => ({
+							id: `${id}`,
+							label,
+							hasAvatar: false
+						})
+					)
+				];
+				setSearchInputValue(newInputValue);
 				setInputTyped('');
-
 				return reduce(
-					searchInputValue,
-					(acc, searchInputChip) => {
+					newInputValue,
+					(acc, newInputChip) => {
 						if (
 							!some(
 								currentQuery,
-								(currentQueryChip) => currentQueryChip.label === searchInputChip.label
+								(currentQueryChip) => currentQueryChip.label === newInputChip.label
 							)
 						) {
-							acc.push(searchInputChip);
+							acc.push(newInputChip);
 						}
 						return acc;
 					},
-
-					filter(currentQuery, (currentQueryChip: QueryChip) =>
+					filter(currentQuery, (currentQueryChip) =>
 						some(
 							searchInputValue,
 							(searchInputChip) => searchInputChip.label === currentQueryChip.label
 						)
 					)
 				);
-			});
-			// TODO: perform a navigation only when coming from a different module (not the search one)
-			history.push(`/${SEARCH_APP_ID}/${module.app}`);
-		}
-	}, [updateQuery, history, module?.app, inputTyped, searchInputValue]);
+			}
+
+			setInputTyped('');
+
+			return reduce(
+				searchInputValue,
+				(acc, searchInputChip) => {
+					if (
+						!some(
+							currentQuery,
+							(currentQueryChip) => currentQueryChip.label === searchInputChip.label
+						)
+					) {
+						acc.push(searchInputChip);
+					}
+					return acc;
+				},
+
+				filter(currentQuery, (currentQueryChip: QueryChip) =>
+					some(
+						searchInputValue,
+						(searchInputChip) => searchInputChip.label === currentQueryChip.label
+					)
+				)
+			);
+		});
+		// TODO: perform a navigation only when coming from a different module (not the search one)
+		history.push(`/${SEARCH_APP_ID}/${currentSearchModuleRoute}`);
+	}, [updateQuery, history, currentSearchModuleRoute, inputTyped, searchInputValue]);
 
 	const appSuggestions = useMemo<SearchOption[]>(
 		() =>
-			filter(storedSuggestions, (v) => v.app === module?.app)
+			filter(storedSuggestions, (v) => v.app === currentSearchModuleRoute)
 				.reverse()
 				.map(
 					(item): SearchOption => ({
@@ -190,7 +188,7 @@ export const SearchBar = (): JSX.Element => {
 						}
 					})
 				),
-		[storedSuggestions, module?.app, searchDisabled]
+		[storedSuggestions, currentSearchModuleRoute, searchDisabled]
 	);
 
 	const updateOptions = useCallback(
@@ -222,7 +220,7 @@ export const SearchBar = (): JSX.Element => {
 			if (
 				lastChipLabel &&
 				typeof lastChipLabel === 'string' &&
-				module?.app &&
+				currentSearchModuleRoute &&
 				!find(appSuggestions, (suggestion) => suggestion.label === lastChipLabel)
 			) {
 				setStoredSuggestions((prevState) => {
@@ -230,7 +228,7 @@ export const SearchBar = (): JSX.Element => {
 						value: lastChipLabel,
 						label: lastChipLabel,
 						icon: 'ClockOutline',
-						app: module.app,
+						app: currentSearchModuleRoute,
 						id: lastChipLabel
 					};
 					return [...prevState, newSuggestion];
@@ -240,7 +238,7 @@ export const SearchBar = (): JSX.Element => {
 			// FIXME: remove the cast (by making ChipItem support generics?)
 			setSearchInputValue(newQuery as QueryChip[]);
 		},
-		[appSuggestions, module?.app, setStoredSuggestions]
+		[appSuggestions, currentSearchModuleRoute, setStoredSuggestions]
 	);
 
 	const onInputType = useCallback<NonNullable<ChipInputProps['onInputType']>>(
@@ -257,15 +255,15 @@ export const SearchBar = (): JSX.Element => {
 	);
 
 	useEffect(() => {
-		if (module?.app) {
+		if (currentSearchModuleRoute) {
 			const suggestions = filter(
 				appSuggestions,
-				(suggestion) => suggestion.app === module.app
+				(suggestion) => suggestion.app === currentSearchModuleRoute
 			).slice(0, 5);
 
 			setOptions(suggestions);
 		}
-	}, [appSuggestions, module?.app]);
+	}, [appSuggestions, currentSearchModuleRoute]);
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const addFocus = useCallback(() => setInputHasFocus(true), []);
@@ -294,12 +292,12 @@ export const SearchBar = (): JSX.Element => {
 
 	const placeholder = useMemo(
 		() =>
-			inputHasFocus && module?.app
+			inputHasFocus && currentSearchModuleRoute
 				? t('search.active_input_label', 'Separate your keywords by a comma or pressing TAB')
 				: t('search.idle_input_label', 'Search in {{module}}', {
-						module: module?.label
+						module: module?.label || currentSearchModuleRoute
 				  }),
-		[inputHasFocus, module, t]
+		[currentSearchModuleRoute, inputHasFocus, module?.label, t]
 	);
 
 	const clearButtonPlaceholder = useMemo(
@@ -335,10 +333,10 @@ export const SearchBar = (): JSX.Element => {
 		(newChip) => {
 			setIsTyping(false);
 			setInputTyped('');
-			if (module?.app) {
+			if (currentSearchModuleRoute) {
 				const suggestions = filter(
 					appSuggestions,
-					(suggestion) => suggestion?.app === module.app
+					(suggestion) => suggestion?.app === currentSearchModuleRoute
 				).slice(0, 5);
 
 				setOptions(suggestions);
@@ -349,7 +347,7 @@ export const SearchBar = (): JSX.Element => {
 				hasAvatar: false
 			};
 		},
-		[appSuggestions, module?.app]
+		[appSuggestions, currentSearchModuleRoute]
 	);
 
 	useEffect(() => {

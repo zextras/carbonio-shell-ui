@@ -13,10 +13,10 @@ import {
 	queries,
 	queryHelpers,
 	render,
+	screen as rtlScreen,
 	type RenderOptions,
 	type RenderResult,
-	screen,
-	within
+	within as rtlWithin
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
@@ -34,6 +34,8 @@ export type UserEvent = ReturnType<(typeof userEvent)['setup']> & {
 type ByRoleWithIconOptions = ByRoleOptions & {
 	icon: string | RegExp;
 };
+
+type ExtendedQueries = typeof queries & typeof customQueries;
 /**
  * Matcher function to search an icon button through the icon data-testid
  */
@@ -43,8 +45,9 @@ const queryAllByRoleWithIcon: GetAllBy<[ByRoleMatcher, ByRoleWithIconOptions]> =
 	{ icon, ...options }
 ) =>
 	filter(
-		screen.queryAllByRole('button', options),
-		(element) => within(element).queryByTestId(`icon: ${icon}`) !== null
+		// eslint-disable-next-line testing-library/prefer-screen-queries
+		rtlScreen.queryAllByRole('button', options),
+		(element) => rtlWithin(element).queryByTestId(`icon: ${icon}`) !== null
 	);
 const getByRoleWithIconMultipleError = (
 	container: Element | null,
@@ -77,6 +80,13 @@ const customQueries = {
 	findAllByRoleWithIcon,
 	findByRoleWithIcon
 };
+const extendedQueries: ExtendedQueries = { ...queries, ...customQueries };
+
+export const within = (
+	element: Parameters<typeof rtlWithin<ExtendedQueries>>[0]
+): ReturnType<typeof rtlWithin<ExtendedQueries>> => rtlWithin(element, extendedQueries);
+
+export const screen = within(document.body);
 
 const getAppI18n = (): i18n => {
 	const newI18n = i18next.createInstance();
@@ -97,7 +107,7 @@ const getAppI18n = (): i18n => {
 };
 
 interface WrapperProps {
-	children?: React.ReactNode | undefined;
+	children?: React.ReactNode;
 	initialRouterEntries?: string[];
 }
 
@@ -130,12 +140,12 @@ function customRender(
 	}: WrapperProps & {
 		options?: Omit<RenderOptions, 'queries' | 'wrapper'>;
 	} = {}
-): RenderResult<typeof queries & typeof customQueries> {
+): RenderResult<ExtendedQueries> {
 	return render(ui, {
 		wrapper: ({ children }: Pick<WrapperProps, 'children'>) => (
 			<Wrapper initialRouterEntries={initialRouterEntries}>{children}</Wrapper>
 		),
-		queries: { ...queries, ...customQueries },
+		queries: extendedQueries,
 		...options
 	});
 }

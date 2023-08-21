@@ -6,17 +6,13 @@
 
 import React, { FC, useEffect } from 'react';
 
-import {
-	ModalManager,
-	SnackbarManager,
-	useModal,
-	useSnackbar
-} from '@zextras/carbonio-design-system';
+import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
-import { BrowserRouter, Route, Switch, useHistory, useParams } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, useParams } from 'react-router-dom';
 
 import AppLoaderMounter from './app/app-loader-mounter';
 import { registerDefaultViews } from './app/default-views';
+import { ContextBridge } from './context-bridge';
 import { Loader } from './loader';
 import ShellI18nextProvider from './shell-i18n-provider';
 import { ThemeProvider } from './theme-provider';
@@ -24,21 +20,6 @@ import { BASENAME, IS_STANDALONE } from '../constants';
 import { NotificationPermissionChecker } from '../notification/NotificationPermissionChecker';
 import ShellView from '../shell/shell-view';
 import { useAppStore } from '../store/app';
-import { useBridge } from '../store/context-bridge';
-
-const ContextBridge = (): null => {
-	const history = useHistory();
-	const createSnackbar = useSnackbar();
-	const createModal = useModal();
-	useBridge({
-		functions: {
-			getHistory: () => history,
-			createSnackbar,
-			createModal
-		}
-	});
-	return null;
-};
 
 const StandaloneListener = (): null => {
 	const { route } = useParams<{ route?: string }>();

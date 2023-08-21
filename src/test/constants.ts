@@ -138,6 +138,7 @@ export const ICONS = {
 	reduceBoard: 'CollapseOutline',
 	resetBoardSize: 'DiagonalArrowLeftDown',
 	unCollapseBoard: 'BoardOpen',
+	search: 'Search',
 	settings: 'SettingsModOutline'
 };
 

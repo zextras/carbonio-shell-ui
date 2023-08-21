@@ -8,14 +8,14 @@ import { type ResponseResolver, type RestContext, type RestRequest } from 'msw';
 
 import { GetRightsResponse } from '../../../types';
 
-type GetRightsRequestBody = {
+export type GetRightsRequestBody = {
 	GetRightsRequest: {
 		_jsns: string;
 		ace: Array<{ right: string }>;
 	};
 };
 
-type GetRightsResponseBody = {
+export type GetRightsResponseBody = {
 	Body: {
 		GetRightsResponse: GetRightsResponse;
 		Fault?: { Detail?: { Error?: { Code?: string; Detail?: string } }; Reason?: { Text: string } };

@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import produce from 'immer';
+import { produce } from 'immer';
 
 import { LOGGED_USER } from './constants';
 import { Account } from '../../types';

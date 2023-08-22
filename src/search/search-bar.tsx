@@ -374,7 +374,7 @@ export const SearchBar = (): JSX.Element => {
 					t('search.unable_to_parse_query', 'Unable to complete the search, clear it and retry')
 				}
 			>
-				<Container orientation="horizontal" width="fill">
+				<Container orientation="horizontal" width="fill" maxWidth={'53vw'}>
 					<Container minWidth="32rem" width="fill">
 						<Container orientation="horizontal" width="fill">
 							<Container width="fit">
@@ -402,6 +402,7 @@ export const SearchBar = (): JSX.Element => {
 									onFocus={addFocus}
 									disableOptions={disableOptions}
 									requireUniqueChips={false}
+									wrap={'nowrap'}
 								/>
 							</StyledContainer>
 						</Container>

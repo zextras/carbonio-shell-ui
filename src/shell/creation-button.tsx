@@ -32,7 +32,7 @@ interface CreationButtonProps {
 export const CreationButtonComponent = ({
 	activeRoute,
 	location
-}: CreationButtonProps): JSX.Element => {
+}: CreationButtonProps): React.JSX.Element => {
 	const t = getT();
 	const actions = useActions({ activeRoute, location }, ACTION_TYPES.NEW);
 	const [open, setOpen] = useState(false);

@@ -45,7 +45,7 @@ const Delegates = ({
 	updateDelegatedSendSaveTarget,
 	resetRef,
 	delegates
-}: DelegatesProps): JSX.Element => {
+}: DelegatesProps): React.JSX.Element => {
 	const [t] = useTranslation();
 
 	const [activeDelegate, setActiveDelegate] = useState<string>('0');

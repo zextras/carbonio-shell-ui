@@ -38,7 +38,7 @@ import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 import { useAccountStore, useUserSettings } from '../store/account';
 import { getT } from '../store/i18n';
 
-const GeneralSettings = (): JSX.Element => {
+const GeneralSettings = (): React.JSX.Element => {
 	const [mods, setMods] = useState<Mods>({});
 	const t = getT();
 	const userSettings = useUserSettings();

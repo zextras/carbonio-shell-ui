@@ -24,7 +24,7 @@ export const RouteLeavingGuard = ({
 	when,
 	onSave,
 	dataHasError = false
-}: RouteLeavingGuardProps): JSX.Element => {
+}: RouteLeavingGuardProps): React.JSX.Element => {
 	const history = useHistory();
 	const lastLocationInitial = useMemo(() => history.location, [history]);
 	const [modalVisible, setModalVisible] = useState(false);

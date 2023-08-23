@@ -64,7 +64,6 @@ const ShellHeader = ({
 			<Catcher>
 				<Container
 					orientation="horizontal"
-					maxWidth="75%"
 					mainAlignment="flex-start"
 					minWidth="fit-content"
 					data-testid="HeaderMainLogoContainer"

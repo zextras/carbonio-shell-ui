@@ -34,7 +34,7 @@ type LoaderFailureModalProps = { open: boolean; closeHandler: () => void };
 export const LoaderFailureModal = ({
 	open,
 	closeHandler
-}: LoaderFailureModalProps): JSX.Element => {
+}: LoaderFailureModalProps): React.JSX.Element => {
 	const [t] = useTranslation();
 	const onConfirm = useCallback(() => window.location.reload(), []);
 	return (
@@ -60,7 +60,7 @@ export const LoaderFailureModal = ({
 	);
 };
 
-export const Loader = (): JSX.Element => {
+export const Loader = (): React.JSX.Element => {
 	const [open, setOpen] = useState(false);
 	const closeHandler = useCallback(() => setOpen(false), []);
 

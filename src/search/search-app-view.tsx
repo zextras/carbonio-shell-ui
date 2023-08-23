@@ -51,7 +51,7 @@ interface ResultsHeaderProps {
 const ResultsHeader = ({
 	label,
 	labelType = ResultLabelType.NORMAL
-}: ResultsHeaderProps): JSX.Element => {
+}: ResultsHeaderProps): React.JSX.Element => {
 	const t = getT();
 	const [query, updateQuery] = useQuery();
 	const [, setDisabled] = useDisableSearch();
@@ -61,7 +61,7 @@ const ResultsHeader = ({
 		setDisabled(false);
 	}, [updateQuery, setDisabled]);
 
-	const labelTypeElem = useMemo<JSX.Element>(() => {
+	const labelTypeElem = useMemo<React.JSX.Element>(() => {
 		if (labelType === ResultLabelType.NORMAL) {
 			return <></>;
 		}
@@ -120,7 +120,7 @@ const ResultsHeader = ({
 	);
 };
 
-export const SearchAppView = (): JSX.Element => {
+export const SearchAppView = (): React.JSX.Element => {
 	const searchViews = useAppStore((s) => s.views.search);
 	const { module } = useSearchStore();
 	const modules = useAppStore((s) => s.views.search);

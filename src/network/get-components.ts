@@ -20,5 +20,5 @@ export const getComponents = (): Promise<void> =>
 		.then(({ components }: { components: Array<CarbonioModule> }) => {
 			useAppStore
 				.getState()
-				.setters.addApps(filter(components, ({ type }) => type === 'shell' || type === 'carbonio'));
+				.setters.setApps(filter(components, ({ type }) => type === 'shell' || type === 'carbonio'));
 		});

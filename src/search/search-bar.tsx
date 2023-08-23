@@ -73,8 +73,10 @@ export const SearchBar = (): JSX.Element => {
 		tooltip
 	} = useSearchStore();
 	const modules = useAppStore((s) => s.views.search);
-	const module = useMemo(
-		() => modules.find(({ route }) => route === currentSearchModuleRoute),
+	const moduleLabel = useMemo(
+		() =>
+			modules.find(({ route }) => route === currentSearchModuleRoute)?.label ||
+			currentSearchModuleRoute,
 		[currentSearchModuleRoute, modules]
 	);
 
@@ -295,9 +297,9 @@ export const SearchBar = (): JSX.Element => {
 			inputHasFocus && currentSearchModuleRoute
 				? t('search.active_input_label', 'Separate your keywords by a comma or pressing TAB')
 				: t('search.idle_input_label', 'Search in {{module}}', {
-						module: module?.label || currentSearchModuleRoute
+						module: moduleLabel
 				  }),
-		[currentSearchModuleRoute, inputHasFocus, module?.label, t]
+		[currentSearchModuleRoute, inputHasFocus, moduleLabel, t]
 	);
 
 	const clearButtonPlaceholder = useMemo(

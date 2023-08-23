@@ -135,7 +135,7 @@ describe('Shell primary bar', () => {
 		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
 
 		act(() => {
-			useAppStore.getState().setters.addApps([
+			useAppStore.getState().setters.setApps([
 				{
 					commit: '',
 					description: 'Mails module',
@@ -215,7 +215,7 @@ describe('Shell primary bar', () => {
 		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
 
 		act(() => {
-			useAppStore.getState().setters.addApps([
+			useAppStore.getState().setters.setApps([
 				{
 					commit: '',
 					description: 'Mails module',
@@ -314,7 +314,7 @@ describe('Shell primary bar', () => {
 		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
 
 		act(() => {
-			useAppStore.getState().setters.addApps([
+			useAppStore.getState().setters.setApps([
 				{
 					commit: '',
 					description: 'Mails module',

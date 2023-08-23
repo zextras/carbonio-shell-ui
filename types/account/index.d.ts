@@ -8,6 +8,7 @@ import { DARK_READER_PROP_KEY, DELEGATED_SEND_SAVE_TARGET } from '../../src/cons
 import { StringOfLength } from '../../src/utils/typeUtils';
 import type { SHELL_APP_ID } from '../exports';
 import type { DarkReaderPropValues } from '../misc';
+import { AccountACEInfo } from '../network/entities';
 
 export interface ZimletProp {
 	name: string;
@@ -31,6 +32,7 @@ export type SoapFetch = <Request, Response>(
 export type AccountState = {
 	authenticated: boolean;
 	account?: Account;
+	rights?: Array<AccountACEInfo>;
 	settings: AccountSettings;
 	zimbraVersion?: string;
 	usedQuota: number;

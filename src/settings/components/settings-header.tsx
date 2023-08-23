@@ -35,7 +35,12 @@ export type SettingsHeaderProps = {
 	isDirty: boolean;
 };
 
-const SettingsHeader = ({ onSave, onCancel, isDirty, title }: SettingsHeaderProps): JSX.Element => {
+const SettingsHeader = ({
+	onSave,
+	onCancel,
+	isDirty,
+	title
+}: SettingsHeaderProps): React.JSX.Element => {
 	const t = getT();
 	const history = useHistory();
 	const params = useParams();

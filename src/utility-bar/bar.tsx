@@ -44,7 +44,7 @@ const UtilityBarItem: FC<{ view: UtilityView }> = ({ view }) => {
 	return <view.button mode={mode} setMode={setMode} />;
 };
 
-export const ShellUtilityBar = (): JSX.Element => {
+export const ShellUtilityBar = (): React.JSX.Element => {
 	const views = useUtilityViews();
 	const t = getT();
 	const account = useUserAccount();

@@ -127,7 +127,7 @@ export const OutOfOfficeSettings = ({
 	settings,
 	addMod,
 	resetRef
-}: OutOfOfficeViewProps): JSX.Element => {
+}: OutOfOfficeViewProps): React.JSX.Element => {
 	const t = getT();
 	const outOfOfficeSectionTitle = useMemo(() => outOfOfficeSubSection(t), [t]);
 	const [prefOutOfOfficeReplyEnabled, setPrefOutOfOfficeReplyEnabled] = useState<boolean>(

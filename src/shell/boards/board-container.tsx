@@ -149,7 +149,7 @@ function ListItemContent({
 	selected,
 	app,
 	boardId
-}: ListItemContentProps): JSX.Element {
+}: ListItemContentProps): React.JSX.Element {
 	const t = getT();
 	const onClose = useCallback<IconButtonProps['onClick']>(
 		(ev) => {
@@ -189,7 +189,7 @@ function calcPositionToRemainVisible(
 	return lastSavedPosition;
 }
 
-export const BoardContainer = (): JSX.Element | null => {
+export const BoardContainer = (): React.JSX.Element | null => {
 	const t = getT();
 	const { boards, minimized, expanded, current, orderedBoards } = useBoardStore();
 

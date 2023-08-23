@@ -7,7 +7,8 @@
 import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react';
 
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
-import produce from 'immer';
+import { TFunction } from 'i18next';
+import { produce } from 'immer';
 import { map, find, isEmpty, reduce, findIndex, filter, size } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
@@ -40,6 +41,7 @@ import {
 	AccountState
 } from '../../types';
 import type { ModifyIdentityRequest } from '../../types';
+import { AccountACEInfo } from '../../types/network/entities';
 import { SHELL_APP_ID } from '../constants';
 import { getSoapFetch } from '../network/fetch';
 import { useAccountStore, useUserAccount, useUserSettings } from '../store/account';
@@ -85,6 +87,33 @@ function mapToModifyIdentityRequests(
 				_attrs: item
 			}
 		})
+	);
+}
+
+function generateDelegateList(ace: AccountACEInfo[] | undefined, t: TFunction): DelegateType[] {
+	return reduce(
+		ace,
+		(accumulator: Array<DelegateType>, item, idx) => {
+			const index = findIndex(accumulator, { email: item.d });
+			const translatedRight = t('settings.account.delegates.right', {
+				context: item.right.toLowerCase(),
+				defaultValue: item.right
+			});
+			if (index === -1) {
+				accumulator.push({ email: item.d || '', right: translatedRight, id: idx.toString() });
+			} else {
+				accumulator[index] = {
+					email: item.d || '',
+					right: t('settings.account.delegates.multiple_rights', {
+						defaultValue: `{{rights.0]}} and {{rights.1}}`,
+						rights: [translatedRight, accumulator[index].right]
+					}),
+					id: idx.toString()
+				};
+			}
+			return accumulator;
+		},
+		[]
 	);
 }
 
@@ -346,35 +375,27 @@ export const AccountsSettings = (): React.JSX.Element => {
 
 	const [delegates, setDelegates] = useState<DelegateType[]>([]);
 
+	const rights = useAccountStore((state) => state.rights);
+
 	useEffect(() => {
-		getSoapFetch(SHELL_APP_ID)<GetRightsRequest, GetRightsResponse>('GetRights', {
-			_jsns: 'urn:zimbraAccount',
-			ace: [{ right: 'sendAs' }, { right: 'sendOnBehalfOf' }]
-		}).then((value) => {
-			if (value.ace) {
-				const { ace } = value;
-				const result = reduce(
-					ace,
-					(accumulator: Array<DelegateType>, item, idx) => {
-						const index = findIndex(accumulator, { email: item.d });
-						if (index === -1) {
-							accumulator.push({ email: item.d || '', right: item.right, id: idx.toString() });
-						} else {
-							accumulator.push({
-								email: item.d || '',
-								right: `${item.right} and ${accumulator[index].right}`,
-								id: idx.toString()
-							});
-							accumulator.splice(index, 1);
-						}
-						return accumulator;
-					},
-					[]
-				);
-				setDelegates(result);
-			}
-		});
-	}, []);
+		if (!rights) {
+			getSoapFetch(SHELL_APP_ID)<GetRightsRequest, GetRightsResponse>('GetRights', {
+				_jsns: 'urn:zimbraAccount',
+				ace: [{ right: 'sendAs' }, { right: 'sendOnBehalfOf' }]
+			}).then((value) => {
+				if (value.ace) {
+					const { ace } = value;
+					setDelegates(generateDelegateList(ace, t));
+				}
+				useAccountStore.setState((state) => ({
+					...state,
+					rights: value.ace ?? []
+				}));
+			});
+		} else {
+			setDelegates(generateDelegateList(rights, t));
+		}
+	}, [t, rights]);
 
 	const personaSettings = useMemo<React.JSX.Element | null>(() => {
 		const identity = identities[selectedIdentityId];

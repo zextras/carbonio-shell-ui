@@ -25,7 +25,8 @@ module.exports = {
 				defaultContexts: [],
 				defaultNS: 'en',
 				jsonSpace: 4,
-				compatibilityJSON: 'v3'
+				compatibilityJSON: 'v3',
+				discardOldKeys: false
 			}
 		]
 	]

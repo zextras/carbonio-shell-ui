@@ -7,7 +7,7 @@ import React from 'react';
 
 import { act, screen, within } from '@testing-library/react';
 import { Button, Text } from '@zextras/carbonio-design-system';
-import produce from 'immer';
+import { produce } from 'immer';
 import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
 
 import AppViewContainer from './app-view-container';
@@ -135,7 +135,7 @@ describe('Shell primary bar', () => {
 		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
 
 		act(() => {
-			useAppStore.getState().setters.addApps([
+			useAppStore.getState().setters.setApps([
 				{
 					commit: '',
 					description: 'Mails module',
@@ -215,7 +215,7 @@ describe('Shell primary bar', () => {
 		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
 
 		act(() => {
-			useAppStore.getState().setters.addApps([
+			useAppStore.getState().setters.setApps([
 				{
 					commit: '',
 					description: 'Mails module',
@@ -314,7 +314,7 @@ describe('Shell primary bar', () => {
 		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
 
 		act(() => {
-			useAppStore.getState().setters.addApps([
+			useAppStore.getState().setters.setApps([
 				{
 					commit: '',
 					description: 'Mails module',

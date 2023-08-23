@@ -198,6 +198,14 @@
         "unable_to_parse_query": "Unable to complete the search, clear it and retry"
     },
     "settings": {
+        "account": {
+            "delegates": {
+                "multiple_rights": "{{rights.0}} and {{rights.1}}",
+                "right_sendas": "SendAs",
+                "right_sendonbehalfof": "SendOnBehalfOf"
+            },
+            "new_identity": "New Persona {{number}}"
+        },
         "accounts": "Accounts",
         "app": "Settings",
         "appearance": {

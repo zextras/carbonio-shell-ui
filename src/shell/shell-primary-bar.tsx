@@ -12,7 +12,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import BadgeWrap from './badge-wrap';
-import { AppRoute, PrimaryAccessoryView, PrimaryBarView } from '../../types';
+import { PrimaryAccessoryView, PrimaryBarView } from '../../types';
 import AppContextProvider from '../boot/app/app-context-provider';
 import {
 	BOARD_CONTAINER_ZINDEX,
@@ -98,12 +98,8 @@ const OverlayRow = styled(Row)`
 	overflow-y: overlay;
 `;
 
-interface ShellPrimaryBarComponentProps {
-	activeRoute: AppRoute | undefined;
-}
-const ShellPrimaryBarComponent = ({
-	activeRoute
-}: ShellPrimaryBarComponentProps): React.JSX.Element | null => {
+const ShellPrimaryBar = (): React.JSX.Element | null => {
+	const activeRoute = useCurrentRoute();
 	const primaryBarViews = useAppStore((s) => s.views.primaryBar);
 	const { push } = useHistory();
 
@@ -126,7 +122,8 @@ const ShellPrimaryBarComponent = ({
 				[activeRoute.id]: `${trim(pathname, '/')}${search}`
 			};
 		}
-	}, [activeRoute, pathname, search, primaryBarViews]);
+	}, [activeRoute, pathname, search]);
+
 	const primaryBarAccessoryViews = useAppStore((s) => s.views.primaryBarAccessories);
 
 	const accessoryViews = useMemo(
@@ -187,13 +184,6 @@ const ShellPrimaryBarComponent = ({
 			</OverlayRow>
 		</PrimaryBarContainer>
 	);
-};
-
-const MemoShellPrimaryBarComponent = React.memo(ShellPrimaryBarComponent);
-
-const ShellPrimaryBar = (): React.JSX.Element => {
-	const activeRoute = useCurrentRoute();
-	return <MemoShellPrimaryBarComponent activeRoute={activeRoute} />;
 };
 
 export default ShellPrimaryBar;

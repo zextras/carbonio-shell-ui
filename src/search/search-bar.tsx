@@ -23,6 +23,7 @@ import { useSearchStore } from './search-store';
 import { QueryChip, QueryItem } from '../../types';
 import { LOCAL_STORAGE_SEARCH_KEY, SEARCH_APP_ID } from '../constants';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
+import { useAppStore } from '../store/app';
 import { getT } from '../store/i18n';
 
 const OutlinedIconButton = styled(IconButton)`
@@ -63,8 +64,21 @@ export const SearchBar = (): React.JSX.Element => {
 	);
 	const [inputTyped, setInputTyped] = useState<string>('');
 	const history = useHistory();
-	const { updateQuery, module, query, searchDisabled, setSearchDisabled, tooltip } =
-		useSearchStore();
+	const {
+		updateQuery,
+		module: currentSearchModuleRoute,
+		query,
+		searchDisabled,
+		setSearchDisabled,
+		tooltip
+	} = useSearchStore();
+	const modules = useAppStore((s) => s.views.search);
+	const moduleLabel = useMemo(
+		() =>
+			modules.find(({ route }) => route === currentSearchModuleRoute)?.label ||
+			currentSearchModuleRoute,
+		[currentSearchModuleRoute, modules]
+	);
 
 	const [isTyping, setIsTyping] = useState(false);
 
@@ -159,12 +173,12 @@ export const SearchBar = (): React.JSX.Element => {
 			);
 		});
 		// TODO: perform a navigation only when coming from a different module (not the search one)
-		history.push(`/${SEARCH_APP_ID}/${module}`);
-	}, [updateQuery, history, module, inputTyped, searchInputValue]);
+		history.push(`/${SEARCH_APP_ID}/${currentSearchModuleRoute}`);
+	}, [updateQuery, history, currentSearchModuleRoute, inputTyped, searchInputValue]);
 
 	const appSuggestions = useMemo<SearchOption[]>(
 		() =>
-			filter(storedSuggestions, (v) => v.app === module)
+			filter(storedSuggestions, (v) => v.app === currentSearchModuleRoute)
 				.reverse()
 				.map(
 					(item): SearchOption => ({
@@ -176,7 +190,7 @@ export const SearchBar = (): React.JSX.Element => {
 						}
 					})
 				),
-		[storedSuggestions, module, searchDisabled]
+		[storedSuggestions, currentSearchModuleRoute, searchDisabled]
 	);
 
 	const updateOptions = useCallback(
@@ -208,7 +222,7 @@ export const SearchBar = (): React.JSX.Element => {
 			if (
 				lastChipLabel &&
 				typeof lastChipLabel === 'string' &&
-				module &&
+				currentSearchModuleRoute &&
 				!find(appSuggestions, (suggestion) => suggestion.label === lastChipLabel)
 			) {
 				setStoredSuggestions((prevState) => {
@@ -216,7 +230,7 @@ export const SearchBar = (): React.JSX.Element => {
 						value: lastChipLabel,
 						label: lastChipLabel,
 						icon: 'ClockOutline',
-						app: module,
+						app: currentSearchModuleRoute,
 						id: lastChipLabel
 					};
 					return [...prevState, newSuggestion];
@@ -226,7 +240,7 @@ export const SearchBar = (): React.JSX.Element => {
 			// FIXME: remove the cast (by making ChipItem support generics?)
 			setSearchInputValue(newQuery as QueryChip[]);
 		},
-		[appSuggestions, module, setStoredSuggestions]
+		[appSuggestions, currentSearchModuleRoute, setStoredSuggestions]
 	);
 
 	const onInputType = useCallback<NonNullable<ChipInputProps['onInputType']>>(
@@ -243,35 +257,19 @@ export const SearchBar = (): React.JSX.Element => {
 	);
 
 	useEffect(() => {
-		if (module) {
-			const suggestions = filter(appSuggestions, (suggestion) => suggestion.app === module).slice(
-				0,
-				5
-			);
+		if (currentSearchModuleRoute) {
+			const suggestions = filter(
+				appSuggestions,
+				(suggestion) => suggestion.app === currentSearchModuleRoute
+			).slice(0, 5);
 
 			setOptions(suggestions);
 		}
-	}, [appSuggestions, module]);
+	}, [appSuggestions, currentSearchModuleRoute]);
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const addFocus = useCallback(() => setInputHasFocus(true), []);
 	const removeFocus = useCallback(() => setInputHasFocus(false), []);
-
-	// disabled for now, awaiting refactor of the search bar
-	// useEffect(() => {
-	// 	const handler = (event: KeyboardEvent): unknown =>
-	// 		handleKeyboardShortcuts({
-	// 			event,
-	// 			inputRef,
-	// 			primaryAction,
-	// 			secondaryActions,
-	// 			currentApp
-	// 		});
-	// 	document.addEventListener('keydown', handler);
-	// 	return (): void => {
-	// 		document.removeEventListener('keydown', handler);
-	// 	};
-	// }, [currentApp, inputRef, primaryAction, secondaryActions]);
 
 	useEffect(() => {
 		const ref = inputRef.current;
@@ -292,16 +290,16 @@ export const SearchBar = (): React.JSX.Element => {
 		};
 	}, [onSearch, removeFocus]);
 
-	const disableOptions = useMemo(() => !(options.length > 0) || isTyping, [options, isTyping]);
+	const disableOptions = useMemo(() => options.length <= 0 || isTyping, [options, isTyping]);
 
 	const placeholder = useMemo(
 		() =>
-			inputHasFocus && module
+			inputHasFocus && currentSearchModuleRoute
 				? t('search.active_input_label', 'Separate your keywords by a comma or pressing TAB')
 				: t('search.idle_input_label', 'Search in {{module}}', {
-						module
+						module: moduleLabel
 				  }),
-		[inputHasFocus, module, t]
+		[currentSearchModuleRoute, inputHasFocus, moduleLabel, t]
 	);
 
 	const clearButtonPlaceholder = useMemo(
@@ -337,10 +335,10 @@ export const SearchBar = (): React.JSX.Element => {
 		(newChip) => {
 			setIsTyping(false);
 			setInputTyped('');
-			if (module) {
+			if (currentSearchModuleRoute) {
 				const suggestions = filter(
 					appSuggestions,
-					(suggestion) => suggestion?.app === module
+					(suggestion) => suggestion?.app === currentSearchModuleRoute
 				).slice(0, 5);
 
 				setOptions(suggestions);
@@ -351,7 +349,7 @@ export const SearchBar = (): React.JSX.Element => {
 				hasAvatar: false
 			};
 		},
-		[appSuggestions, module]
+		[appSuggestions, currentSearchModuleRoute]
 	);
 
 	useEffect(() => {

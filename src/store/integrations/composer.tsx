@@ -40,6 +40,7 @@ import 'tinymce/plugins/table';
 import 'tinymce/plugins/visualblocks';
 import 'tinymce/plugins/wordcount';
 
+import { SUPPORTED_LOCALES } from '../../constants/locales';
 import { useUserSettings } from '../account';
 import { getT, useI18nStore } from '../i18n';
 
@@ -100,6 +101,15 @@ const Composer: FC<ComposerProps> = ({
 	}, []);
 	const t = getT();
 	const { locale } = useI18nStore.getState();
+	const language = useMemo(() => {
+		const localeObj =
+			locale in SUPPORTED_LOCALES && SUPPORTED_LOCALES[locale as keyof typeof SUPPORTED_LOCALES];
+		return (
+			(localeObj &&
+				(('tinymceLocale' in localeObj && localeObj?.tinymceLocale) || localeObj?.value)) ||
+			locale
+		);
+	}, [locale]);
 	const inlineLabel = useMemo(() => t('label.add_inline_image', 'Add inline image'), [t]);
 
 	const setupCallback = useCallback<NonNullable<EditorOptions['setup']>>(
@@ -128,8 +138,8 @@ const Composer: FC<ComposerProps> = ({
 	const editorInitConfig = useMemo<EditorProps['init']>(
 		() => ({
 			content_css: `${BASE_PATH}/tinymce/skins/content/default/content.css`,
-			language_url: `${BASE_PATH}tinymce/langs/${locale}.js`,
-			language: locale,
+			language_url: `${BASE_PATH}tinymce/langs/${language}.js`,
+			language,
 			setup: setupCallback,
 			min_height: 350,
 			auto_focus: true,
@@ -223,12 +233,12 @@ const Composer: FC<ComposerProps> = ({
 			...customInitOptions
 		}),
 		[
-			defaultStyle?.color,
-			defaultStyle?.font,
-			defaultStyle?.fontSize,
-			inline,
-			locale,
+			language,
 			setupCallback,
+			inline,
+			defaultStyle?.color,
+			defaultStyle?.fontSize,
+			defaultStyle?.font,
 			customInitOptions
 		]
 	);

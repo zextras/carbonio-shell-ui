@@ -51,5 +51,6 @@ module.exports = {
 				'import/no-extraneous-dependencies': 'off'
 			}
 		}
-	]
+	],
+	ignorePatterns: ['src/constants/locales.js']
 };

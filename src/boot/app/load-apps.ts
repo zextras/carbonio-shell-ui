@@ -12,10 +12,10 @@ import { loadApp, unloadApps } from './load-app';
 import { injectSharedLibraries } from './shared-libraries';
 import { CarbonioModule } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
+import { SUPPORTED_LOCALES } from '../../constants/locales';
 import { useReporter } from '../../reporting/store';
-import { localeList } from '../../settings/components/utils';
 import { getUserSetting, useAccountStore } from '../../store/account';
-import { getT, useI18nStore } from '../../store/i18n';
+import { useI18nStore } from '../../store/i18n';
 
 const getDateFnsLocale = (locale: string): Promise<DateFnsLocale> =>
 	import(`date-fns/locale/${locale}/index.js`);
@@ -39,9 +39,11 @@ export function loadApps(
 		(settings?.attrs?.zimbraLocale as string) ??
 		'en';
 	useI18nStore.getState().actions.addI18n(appsToLoad, locale);
-	const localeObj = localeList(getT()).find((item) => item.id === locale);
+	const localeObj =
+		locale in SUPPORTED_LOCALES && SUPPORTED_LOCALES[locale as keyof typeof SUPPORTED_LOCALES];
 	if (localeObj) {
-		const localeDateFnsKey = localeObj.dateFnsLocale || localeObj.value;
+		const localeDateFnsKey =
+			('dateFnsLocale' in localeObj && localeObj.dateFnsLocale) || localeObj.value;
 		getDateFnsLocale(localeDateFnsKey).then((localeDateFns) => {
 			registerLocale(localeDateFnsKey, localeDateFns);
 			setDefaultLocale(localeDateFnsKey);

@@ -22,7 +22,7 @@ import {
 import { setup, screen, within } from '../test/utils';
 
 describe('Search bar', () => {
-	const LocationDisplayer = (): JSX.Element => {
+	const LocationDisplayer = (): React.JSX.Element => {
 		const location = useLocation();
 
 		return (

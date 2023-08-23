@@ -55,7 +55,7 @@ const StyledContainer = styled(Container)`
 
 type SearchOption = NonNullable<ChipInputProps['options']>[number] & QueryItem;
 
-export const SearchBar = (): JSX.Element => {
+export const SearchBar = (): React.JSX.Element => {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const t = getT();
 	const [storedSuggestions, setStoredSuggestions] = useLocalStorage<SearchOption[]>(

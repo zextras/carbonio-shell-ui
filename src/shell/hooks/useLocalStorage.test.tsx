@@ -19,7 +19,7 @@ describe('use local storage', () => {
 		initialValue: T;
 		updatedValue: React.SetStateAction<T>;
 		localStorageKey?: string;
-	}): JSX.Element => {
+	}): React.JSX.Element => {
 		const [localStorageValue, setLocalStorageValue] = useLocalStorage(
 			localStorageKey,
 			initialValue

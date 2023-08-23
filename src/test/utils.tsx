@@ -111,13 +111,17 @@ interface WrapperProps {
 	initialRouterEntries?: string[];
 }
 
-export const I18NextTestProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
+export const I18NextTestProvider = ({
+	children
+}: {
+	children: React.ReactNode;
+}): React.JSX.Element => {
 	const i18nInstance = useMemo(() => getAppI18n(), []);
 
 	return <I18nextProvider i18n={i18nInstance}>{children}</I18nextProvider>;
 };
 
-const Wrapper = ({ initialRouterEntries, children }: WrapperProps): JSX.Element => (
+const Wrapper = ({ initialRouterEntries, children }: WrapperProps): React.JSX.Element => (
 	<MemoryRouter
 		initialEntries={initialRouterEntries}
 		initialIndex={(initialRouterEntries?.length || 1) - 1}

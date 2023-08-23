@@ -59,7 +59,7 @@ export const ScalingSettingSection = ({
 	addLocalStoreChange,
 	cleanLocalStoreChange,
 	resetRef
-}: ScalingSettingSectionProps): JSX.Element => {
+}: ScalingSettingSectionProps): React.JSX.Element => {
 	const [t] = useTranslation();
 
 	const [scalingOptionValues, scalingOptionLabels] = useMemo<[number[], string[]]>(

@@ -14,7 +14,7 @@ interface ShellContextProviderProps {
 	children: React.ReactNode;
 }
 
-const ShellContextProvider = ({ children }: ShellContextProviderProps): JSX.Element => {
+const ShellContextProvider = ({ children }: ShellContextProviderProps): React.JSX.Element => {
 	const screenMode = useScreenMode();
 
 	const value = useMemo(

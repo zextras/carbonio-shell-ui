@@ -68,7 +68,7 @@ const ResizableBorder = ({
 	elementToResize,
 	localStorageKey,
 	keepSynchedWithStorage
-}: ResizableBorderProps): JSX.Element => {
+}: ResizableBorderProps): React.JSX.Element => {
 	const borderRef = useRef<HTMLDivElement>(null);
 	const resizeHandler = useResize(elementToResize, border, {
 		localStorageKey,
@@ -144,7 +144,7 @@ export const ResizableContainer = ({
 	disabled = false,
 	keepSynchedWithStorage,
 	...rest
-}: ResizableContainerProps): JSX.Element => {
+}: ResizableContainerProps): React.JSX.Element => {
 	const borders = useMemo(
 		() =>
 			BORDERS.map((border) => (

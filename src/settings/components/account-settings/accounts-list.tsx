@@ -18,6 +18,7 @@ import {
 	ListV2,
 	ListItem
 } from '@zextras/carbonio-design-system';
+import type { TFunction } from 'i18next';
 import { map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
@@ -31,11 +32,15 @@ const List = styled(ListV2)`
 
 function getNewPersonaNextIdentityName(
 	numberToCheck: number,
-	unavailableIdentityNames: Array<string>
+	unavailableIdentityNames: Array<string>,
+	t: TFunction
 ): string {
-	const newPersonaNextIdentityName = `New Persona ${numberToCheck}`;
+	const newPersonaNextIdentityName = t('settings.account.new_identity', {
+		defaultValue: `New Persona {{number}}`,
+		number: numberToCheck
+	});
 	if (unavailableIdentityNames.includes(newPersonaNextIdentityName)) {
-		return getNewPersonaNextIdentityName(numberToCheck + 1, unavailableIdentityNames);
+		return getNewPersonaNextIdentityName(numberToCheck + 1, unavailableIdentityNames, t);
 	}
 	return newPersonaNextIdentityName;
 }
@@ -69,7 +74,7 @@ const AccountsList = ({
 			[...identitiesDefault, ...identities],
 			(item) => item._attrs?.zimbraPrefIdentityName || ''
 		);
-		const newPersonaName = getNewPersonaNextIdentityName(1, unavailableIdentityNames);
+		const newPersonaName = getNewPersonaNextIdentityName(1, unavailableIdentityNames, t);
 
 		addIdentity(`${createListRequestIdRef.current}`, {
 			zimbraPrefIdentityName: newPersonaName,
@@ -80,12 +85,13 @@ const AccountsList = ({
 		});
 		createListRequestIdRef.current += 1;
 		setSelectedIdentityId(identities.length);
-	}, [identitiesDefault, identities, addIdentity, setSelectedIdentityId]);
+	}, [identitiesDefault, identities, addIdentity, setSelectedIdentityId, t]);
 
 	const onConfirmDelete = useCallback((): void => {
 		removeIdentity(identities[selectedIdentityId].id);
 		setSelectedIdentityId(selectedIdentityId - 1);
 	}, [identities, removeIdentity, selectedIdentityId, setSelectedIdentityId]);
+
 	const onDelete = useCallback((): void => {
 		const closeModal = createModal({
 			title: t('label.permanent_delete_title', 'Are you sure to permanently delete this Persona?'),
@@ -114,7 +120,7 @@ const AccountsList = ({
 		() =>
 			map(identities, (item, index) => (
 				<ListItem key={item.id} active={selectedIdentityId === index}>
-					{(): JSX.Element => (
+					{(): React.JSX.Element => (
 						<>
 							<Container
 								role={'listitem'}

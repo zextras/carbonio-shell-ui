@@ -7,14 +7,13 @@ import React, { FC } from 'react';
 
 import { act, screen, waitFor } from '@testing-library/react';
 import 'jest-styled-components';
-import { useHistory } from 'react-router-dom';
 
 import { BOARD_DEFAULT_POSITION } from './boards/board-container';
 import { Border } from './hooks/useResize';
 import ShellView from './shell-view';
 import { Board } from '../../types';
+import { ContextBridge } from '../boot/context-bridge';
 import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
-import { useBridge } from '../store/context-bridge';
 import { ICONS, TESTID_SELECTORS } from '../test/constants';
 import { mockedApps, setupAppStore } from '../test/test-app-utils';
 import {
@@ -27,16 +26,6 @@ import {
 } from '../test/test-board-utils';
 import { setup } from '../test/utils';
 import { SizeAndPosition } from '../utils/utils';
-
-const ContextBridge: FC = () => {
-	const history = useHistory();
-	useBridge({
-		functions: {
-			getHistory: () => history
-		}
-	});
-	return null;
-};
 
 const Dummy: FC = () => null;
 

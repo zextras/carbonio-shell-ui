@@ -141,7 +141,7 @@ export type AppRouteDescriptor = {
 	standalone?: StandaloneFlags;
 };
 export type AppSetters = {
-	addApps: (apps: Array<Partial<CarbonioModule>>) => void;
+	setApps: (apps: Array<Partial<CarbonioModule>>) => void;
 	// add route (id route primaryBar secondaryBar app)
 	addRoute: (routeData: AppRouteDescriptor) => string;
 	setRouteVisibility: (id: string, visible: boolean) => void;

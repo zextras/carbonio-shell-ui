@@ -41,7 +41,7 @@ const ShellHeader = ({
 	mobileNavIsOpen,
 	onMobileMenuClick,
 	children
-}: ShellHeaderProps): JSX.Element => {
+}: ShellHeaderProps): React.JSX.Element => {
 	const { darkReaderStatus } = useDarkMode();
 
 	const screenMode = useScreenMode();

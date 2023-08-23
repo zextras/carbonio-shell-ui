@@ -64,7 +64,7 @@ interface ShellComponentProps {
 const ShellComponent = ({
 	allowUnauthenticated,
 	hideShellHeader
-}: ShellComponentProps): JSX.Element => {
+}: ShellComponentProps): React.JSX.Element => {
 	const [mobileNavOpen, setMobileNavOpen] = useState(false);
 	useLoginRedirection(allowUnauthenticated);
 	return (
@@ -91,7 +91,7 @@ const ShellComponent = ({
 
 const MemoShell = React.memo(ShellComponent);
 
-const ShellView = (): JSX.Element => {
+const ShellView = (): React.JSX.Element => {
 	const activeRoute = useCurrentRoute();
 	const allowUnauthenticated = activeRoute?.standalone?.allowUnauthenticated;
 	const hideShellHeader = activeRoute?.standalone?.hideShellHeader;

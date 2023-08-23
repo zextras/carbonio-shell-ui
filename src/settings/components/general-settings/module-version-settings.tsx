@@ -24,7 +24,7 @@ import { useAppList } from '../../../store/app';
 import { getT } from '../../../store/i18n';
 import { versionsSubSection } from '../../general-settings-sub-sections';
 
-const ModuleVersionSettings = (): JSX.Element => {
+const ModuleVersionSettings = (): React.JSX.Element => {
 	const apps = useAppList();
 	const t = getT();
 	const theme = useTheme();

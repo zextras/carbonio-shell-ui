@@ -7,7 +7,7 @@ import React from 'react';
 
 import { act, screen, within } from '@testing-library/react';
 import { Button, Text } from '@zextras/carbonio-design-system';
-import produce from 'immer';
+import { produce } from 'immer';
 import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
 
 import AppViewContainer from './app-view-container';
@@ -21,7 +21,7 @@ import { useAppStore } from '../store/app';
 import { ICONS } from '../test/constants';
 import { setup } from '../test/utils';
 
-const ShellWrapper = (): JSX.Element => (
+const ShellWrapper = (): React.JSX.Element => (
 	<>
 		<DefaultViewsRegister />
 		<ModuleSelector />
@@ -30,7 +30,7 @@ const ShellWrapper = (): JSX.Element => (
 	</>
 );
 
-const AboutView = (): JSX.Element | null => {
+const AboutView = (): React.JSX.Element | null => {
 	const { view } = useParams<{ view: string }>();
 	return (
 		<div>
@@ -39,7 +39,7 @@ const AboutView = (): JSX.Element | null => {
 	);
 };
 
-const MailsView = (): JSX.Element => {
+const MailsView = (): React.JSX.Element => {
 	const { path } = useRouteMatch();
 	const push = usePushHistoryCallback();
 
@@ -59,7 +59,7 @@ const MailsView = (): JSX.Element => {
 	);
 };
 
-const FilesView = (): JSX.Element => (
+const FilesView = (): React.JSX.Element => (
 	<div>
 		<Text>files view</Text>
 	</div>
@@ -135,7 +135,7 @@ describe('Shell primary bar', () => {
 		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
 
 		act(() => {
-			useAppStore.getState().setters.addApps([
+			useAppStore.getState().setters.setApps([
 				{
 					commit: '',
 					description: 'Mails module',
@@ -215,7 +215,7 @@ describe('Shell primary bar', () => {
 		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
 
 		act(() => {
-			useAppStore.getState().setters.addApps([
+			useAppStore.getState().setters.setApps([
 				{
 					commit: '',
 					description: 'Mails module',
@@ -265,7 +265,7 @@ describe('Shell primary bar', () => {
 
 			useAppStore.getState().setters.addSearchView({
 				route: 'files',
-				component: (): JSX.Element => <Text>files search view</Text>,
+				component: (): React.JSX.Element => <Text>files search view</Text>,
 				label: 'Files',
 				id: 'files',
 				app: 'carbonio-files-ui',
@@ -274,7 +274,7 @@ describe('Shell primary bar', () => {
 			});
 			useAppStore.getState().setters.addSearchView({
 				route: 'mails',
-				component: (): JSX.Element => <Text>mails search view</Text>,
+				component: (): React.JSX.Element => <Text>mails search view</Text>,
 				label: 'Mails',
 				id: 'mails',
 				app: 'carbonio-mails-ui',
@@ -314,7 +314,7 @@ describe('Shell primary bar', () => {
 		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
 
 		act(() => {
-			useAppStore.getState().setters.addApps([
+			useAppStore.getState().setters.setApps([
 				{
 					commit: '',
 					description: 'Mails module',
@@ -364,7 +364,7 @@ describe('Shell primary bar', () => {
 
 			useAppStore.getState().setters.addSearchView({
 				route: 'files',
-				component: (): JSX.Element => <Text>files search view</Text>,
+				component: (): React.JSX.Element => <Text>files search view</Text>,
 				label: 'Files',
 				id: 'files',
 				app: 'carbonio-files-ui',
@@ -373,7 +373,7 @@ describe('Shell primary bar', () => {
 			});
 			useAppStore.getState().setters.addSearchView({
 				route: 'mails',
-				component: (): JSX.Element => <Text>mails search view</Text>,
+				component: (): React.JSX.Element => <Text>mails search view</Text>,
 				label: 'Mails',
 				id: 'mails',
 				app: 'carbonio-mails-ui',

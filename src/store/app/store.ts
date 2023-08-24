@@ -115,13 +115,13 @@ export const useAppStore = create<AppState>()((set, get) => ({
 		// add route (id route primaryBar secondaryBar app)
 		addRoute: (routeData): string => {
 			const { standalone } = get();
-			if (standalone && routeData.route !== standalone) {
+			if (standalone && (routeData.route !== standalone || !routeData.standalone)) {
 				return STANDALONE_RESPONSE;
 			}
 			set(
 				produce<AppState>((state) => {
 					state.routes[routeData.id] = routeData;
-					if (routeData.primaryBar) {
+					if (routeData.primaryBar && !routeData.standalone) {
 						addAndSort(state.views.primaryBar, {
 							app: routeData.app,
 							id: routeData.id,

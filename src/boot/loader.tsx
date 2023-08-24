@@ -11,6 +11,7 @@ import { find } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import { loadApps, unloadAllApps } from './app/load-apps';
+import { IS_STANDALONE } from '../constants';
 import { getComponents } from '../network/get-components';
 import { getInfo } from '../network/get-info';
 import { loginConfig } from '../network/login-config';
@@ -80,7 +81,9 @@ export const Loader = (): React.JSX.Element => {
 					} else if ('message' in promiseRejectedResult.reason) {
 						console.error(promiseRejectedResult.reason.message);
 					}
-					setOpen(true);
+					if (!IS_STANDALONE) {
+						setOpen(true);
+					}
 				}
 				if (isPromiseFulfilledResult(getComponentsPromiseSettledResult)) {
 					loadApps(Object.values(useAppStore.getState().apps));

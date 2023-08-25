@@ -4,51 +4,45 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { ComponentType, FC, FunctionComponent } from 'react';
+import React, { ComponentType, FC } from 'react';
+
+import { Accordion, AccordionItemType, Collapse, Container } from '@zextras/carbonio-design-system';
 import { reduce, find } from 'lodash';
-import { Accordion, Collapse, Container, Padding } from '@zextras/carbonio-design-system';
 import { useHistory } from 'react-router-dom';
+
 import { AppRoute, SecondaryBarComponentProps } from '../../types';
-import { useAppStore } from '../store/app';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { getCurrentRoute } from '../history/hooks';
-
-type SidebarComponentProps = {
-	item: ShellMobileNavComponent;
-};
-
-const SidebarComponent: FC<SidebarComponentProps> = ({ item }) =>
-	item.secondary ? (
-		<AppContextProvider pkg={item.id}>
-			<item.secondary expanded={!!item.expanded} />
-		</AppContextProvider>
-	) : null;
+import { useAppStore } from '../store/app';
 
 type ShellMobileNavComponentProps = {
 	mobileNavIsOpen: boolean;
-	menuTree: AppRoute;
+	menuTree: AppRoute | undefined;
 };
 
-type ShellMobileNavComponent = {
-	id: string;
-	label: string;
-	icon: string;
-	secondary?: ComponentType<SecondaryBarComponentProps>;
-	onClick?: () => void;
-	CustomComponent?: FunctionComponent<SidebarComponentProps> | null;
-	items?: Array<ShellMobileNavComponent> | [];
-	expanded?: boolean;
-};
+function buildSecondaryCustomComponent(
+	SecondaryComponent: ComponentType<SecondaryBarComponentProps> | undefined
+): AccordionItemType['CustomComponent'] {
+	return (
+		(SecondaryComponent &&
+			(({ item }): JSX.Element => (
+				<AppContextProvider pkg={item.id}>
+					<SecondaryComponent expanded={false} />
+				</AppContextProvider>
+			))) ||
+		undefined
+	);
+}
 
-const ShellMobileNavComponent: FC<ShellMobileNavComponentProps> = ({
+const ShellMobileNavComponent = ({
 	mobileNavIsOpen,
 	menuTree
-}) => {
+}: ShellMobileNavComponentProps): JSX.Element => {
 	const history = useHistory();
-	const views = useAppStore<any>((s) =>
-		reduce(
+	const views = useAppStore((s) =>
+		reduce<typeof s.routes, AccordionItemType[]>(
 			s.routes,
-			(acc: Array<ShellMobileNavComponent>, val) => {
+			(acc, val) => {
 				const primary = find(s.views.primaryBar, (item) => item.id === val.id);
 				const secondary = find(s.views.secondaryBar, (item) => item.id === val.id);
 				if (primary && primary.visible) {
@@ -63,8 +57,7 @@ const ShellMobileNavComponent: FC<ShellMobileNavComponentProps> = ({
 										id: secondary.id,
 										label: secondary.id,
 										icon: 'Cube',
-										secondary: secondary.component,
-										CustomComponent: SidebarComponent
+										CustomComponent: buildSecondaryCustomComponent(secondary.component)
 									}
 							  ]
 							: []
@@ -103,8 +96,7 @@ const ShellMobileNavComponent: FC<ShellMobileNavComponentProps> = ({
 						<Accordion items={views} />
 					</Container>
 					<Container width="fill" height="fit" orientation="vertical" mainAlignment="flex-end">
-						<Accordion items={[menuTree]} />
-						<Padding vertical="medium">{/* <UserQuota mobileView={true}/> */}</Padding>
+						{menuTree && <Accordion items={[menuTree]} />}
 					</Container>
 				</Container>
 			</Collapse>
@@ -119,7 +111,7 @@ type ShellMobileNavProps = {
 };
 
 const ShellMobileNav: FC<ShellMobileNavProps> = ({ mobileNavIsOpen }) => {
-	const menuTree = getCurrentRoute() as AppRoute;
+	const menuTree = getCurrentRoute();
 	return <ShellMobileNavMemo menuTree={menuTree} mobileNavIsOpen={mobileNavIsOpen} />;
 };
 

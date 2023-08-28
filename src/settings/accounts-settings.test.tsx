@@ -164,9 +164,9 @@ describe('Account setting', () => {
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
-		const request = await pendingBatchRequest;
-
-		const requestBody = (request?.body as { Body: { BatchRequest: BatchRequest } }).Body;
+		const { Body: requestBody } = await pendingBatchRequest.then((req) =>
+			req.json<{ Body: { BatchRequest: BatchRequest } }>()
+		);
 		expect(requestBody.BatchRequest.CreateIdentityRequest).toHaveLength(3);
 		expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
 		expect(requestBody.BatchRequest.ModifyIdentityRequest).toBeUndefined();
@@ -1123,9 +1123,10 @@ describe('Account setting', () => {
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
-		const request = await pendingBatchRequest;
+		const { Body: requestBody } = await pendingBatchRequest.then((req) =>
+			req.json<{ Body: { BatchRequest: BatchRequest } }>()
+		);
 
-		const requestBody = (request?.body as { Body: { BatchRequest: BatchRequest } }).Body;
 		expect(requestBody.BatchRequest.CreateIdentityRequest).toHaveLength(1);
 		expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
 		expect(requestBody.BatchRequest.ModifyIdentityRequest).toBeUndefined();
@@ -1690,8 +1691,11 @@ describe('Account setting', () => {
 			expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
 
 			await user.click(screen.getByRole('button', { name: /save/i }));
-			const request = await pendingBatchRequest;
-			const requestBody = (request?.body as { Body: { BatchRequest: BatchRequest } }).Body;
+
+			const { Body: requestBody } = await pendingBatchRequest.then((req) =>
+				req.json<{ Body: { BatchRequest: BatchRequest } }>()
+			);
+
 			expect(requestBody.BatchRequest.CreateIdentityRequest).toBeUndefined();
 			expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
 			expect(requestBody.BatchRequest.ModifyIdentityRequest).toBeUndefined();

@@ -1405,9 +1405,9 @@ describe('Account setting', () => {
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
-		const request = await pendingBatchRequest;
-
-		const requestBody = (request?.body as { Body: { BatchRequest: BatchRequest } }).Body;
+		const { Body: requestBody } = await pendingBatchRequest.then((req) =>
+			req.json<{ Body: { BatchRequest: BatchRequest } }>()
+		);
 		expect(requestBody.BatchRequest.CreateIdentityRequest).toBeUndefined();
 		expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
 		expect(requestBody.BatchRequest.ModifyIdentityRequest).toHaveLength(1);

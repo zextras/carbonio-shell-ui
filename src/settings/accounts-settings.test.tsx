@@ -164,9 +164,9 @@ describe('Account setting', () => {
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
-		const request = await pendingBatchRequest;
-
-		const requestBody = (request?.body as { Body: { BatchRequest: BatchRequest } }).Body;
+		const { Body: requestBody } = await pendingBatchRequest.then((req) =>
+			req.json<{ Body: { BatchRequest: BatchRequest } }>()
+		);
 		expect(requestBody.BatchRequest.CreateIdentityRequest).toHaveLength(3);
 		expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
 		expect(requestBody.BatchRequest.ModifyIdentityRequest).toBeUndefined();
@@ -1123,9 +1123,10 @@ describe('Account setting', () => {
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
-		const request = await pendingBatchRequest;
+		const { Body: requestBody } = await pendingBatchRequest.then((req) =>
+			req.json<{ Body: { BatchRequest: BatchRequest } }>()
+		);
 
-		const requestBody = (request?.body as { Body: { BatchRequest: BatchRequest } }).Body;
 		expect(requestBody.BatchRequest.CreateIdentityRequest).toHaveLength(1);
 		expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
 		expect(requestBody.BatchRequest.ModifyIdentityRequest).toBeUndefined();
@@ -1326,6 +1327,94 @@ describe('Account setting', () => {
 		expect(
 			within(screen.getByTestId(`account-list-item-${defaultId}`)).getByText(newName)
 		).toBeVisible();
+	});
+
+	test('When modify an identity, should populate a ModifyIdentityRequest', async () => {
+		const defaultFirstName = faker.person.firstName();
+		const defaultLastName = faker.person.lastName();
+		const defaultFullName = faker.person.fullName({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultEmail = faker.internet.email({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultId = faker.string.uuid();
+
+		const identitiesArray: Array<Identity> = [
+			{
+				id: defaultId,
+				name: 'DEFAULT',
+				_attrs: {
+					zimbraPrefIdentityName: defaultFullName,
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraPrefFromDisplay: defaultFirstName,
+					zimbraPrefFromAddress: defaultEmail,
+					zimbraPrefIdentityId: defaultId,
+					zimbraPrefFromAddressType: 'sendAs'
+				}
+			}
+		];
+
+		const account: Account = {
+			name: defaultEmail,
+			rights: { targets: [] },
+			signatures: { signature: [] },
+			id: defaultId,
+			displayName: '',
+			identities: {
+				identity: identitiesArray
+			}
+		};
+		useAccountStore.setState((previousState) => ({
+			...previousState,
+			account,
+			settings: {
+				...previousState.settings,
+				attrs: {
+					...previousState.settings.attrs,
+					zimbraIdentityMaxNumEntries: 20
+				}
+			}
+		}));
+
+		server.use(
+			rest.post('/service/soap/BatchRequest', (req, res, ctx) =>
+				res(
+					ctx.json({
+						Body: {
+							BatchResponse: {
+								ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
+							}
+						}
+					})
+				)
+			)
+		);
+
+		const batchRequestUrl = '/service/soap/BatchRequest';
+		const pendingBatchRequest = waitForRequest('POST', batchRequestUrl);
+		const { user } = setup(<AccountsSettings />);
+		await waitForGetRightsRequest();
+
+		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
+
+		const newName = 'Updated Name';
+		await user.clear(accountNameInput);
+		await user.type(accountNameInput, newName);
+
+		await user.click(screen.getByRole('button', { name: /save/i }));
+
+		const { Body: requestBody } = await pendingBatchRequest.then((req) =>
+			req.json<{ Body: { BatchRequest: BatchRequest } }>()
+		);
+		expect(requestBody.BatchRequest.CreateIdentityRequest).toBeUndefined();
+		expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
+		expect(requestBody.BatchRequest.ModifyIdentityRequest).toHaveLength(1);
+
+		const successSnackbar = await screen.findByText('Edits saved correctly');
+		expect(successSnackbar).toBeVisible();
 	});
 
 	test('Should reset the updated identity name on discard changes(default case)', async () => {
@@ -1602,8 +1691,11 @@ describe('Account setting', () => {
 			expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
 
 			await user.click(screen.getByRole('button', { name: /save/i }));
-			const request = await pendingBatchRequest;
-			const requestBody = (request?.body as { Body: { BatchRequest: BatchRequest } }).Body;
+
+			const { Body: requestBody } = await pendingBatchRequest.then((req) =>
+				req.json<{ Body: { BatchRequest: BatchRequest } }>()
+			);
+
 			expect(requestBody.BatchRequest.CreateIdentityRequest).toBeUndefined();
 			expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
 			expect(requestBody.BatchRequest.ModifyIdentityRequest).toBeUndefined();

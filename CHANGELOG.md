@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.0](https://github.com/zextras/carbonio-shell-ui/compare/v3.2.2...v3.3.0) (2023-08-31)
+
+
+### Features
+
+* avoid to call getRightsRequest on every mount ([d9d881a](https://github.com/zextras/carbonio-shell-ui/commit/d9d881af6f0d8972cae6d5b098f613101001bb35)), closes [#296](https://github.com/zextras/carbonio-shell-ui/issues/296)
+* **composer:** add a new prop to set initialization custom options ([eb2c781](https://github.com/zextras/carbonio-shell-ui/commit/eb2c7817a90db1efd473b4ed67d328f7fce0ba1e)), closes [#284](https://github.com/zextras/carbonio-shell-ui/issues/284)
+* hide settings based on zimbraFeatureOptionsEnabled value ([0af1744](https://github.com/zextras/carbonio-shell-ui/commit/0af174489219d803487551b90510e097e9bc59ba)), closes [#283](https://github.com/zextras/carbonio-shell-ui/issues/283)
+* remove click navigation on crumbs ([5952ded](https://github.com/zextras/carbonio-shell-ui/commit/5952dedeb7add3ca5690b4e8134410eef850a869)), closes [#300](https://github.com/zextras/carbonio-shell-ui/issues/300)
+* remove feedback from UI ([e263431](https://github.com/zextras/carbonio-shell-ui/commit/e263431f6720c30b954764e6737dfdf1d5dda40b)), closes [#299](https://github.com/zextras/carbonio-shell-ui/issues/299)
+* **whitelabel:** redirect to custom logout url when user logout  ([f9d30b6](https://github.com/zextras/carbonio-shell-ui/commit/f9d30b6b646f052bf312d68dcf70f9e54156d46d)), closes [#280](https://github.com/zextras/carbonio-shell-ui/issues/280) [#281](https://github.com/zextras/carbonio-shell-ui/issues/281)
+
+
+### Bug Fixes
+
+* avoid routes to be overwritten when set in the store ([af5f0d8](https://github.com/zextras/carbonio-shell-ui/commit/af5f0d8a9e5853e6612b8dfc548ec84a7ba09f97)), closes [#314](https://github.com/zextras/carbonio-shell-ui/issues/314)
+* avoid to use potentially invalid identityName as new persona identity name default ([5c815c6](https://github.com/zextras/carbonio-shell-ui/commit/5c815c6f8eb3ac8896ec6abde03892dd2e4841ee)), closes [#285](https://github.com/zextras/carbonio-shell-ui/issues/285)
+* fix prop color type of BaseFolder ([983ccd7](https://github.com/zextras/carbonio-shell-ui/commit/983ccd73acfb80f09231e282b6f4891712d8b0e3)), closes [#304](https://github.com/zextras/carbonio-shell-ui/issues/304)
+* fix search bar bug that grows in width ([ed4194a](https://github.com/zextras/carbonio-shell-ui/commit/ed4194a2c4daffb131a13b7fa4bc6aa4e151836c)), closes [#315](https://github.com/zextras/carbonio-shell-ui/issues/315)
+* make zimbraPrefDelegatedSendSaveTarget setting working ([e956c1b](https://github.com/zextras/carbonio-shell-ui/commit/e956c1b08165f8975abb7289580e4e9f9c60ee5b)), closes [#271](https://github.com/zextras/carbonio-shell-ui/issues/271)
+* remove sepia param ([6598756](https://github.com/zextras/carbonio-shell-ui/commit/6598756b85c3d23ec92b70a94172ee5789288751)), closes [#290](https://github.com/zextras/carbonio-shell-ui/issues/290)
+* **search:** translate module inside search bar placeholder ([66653a1](https://github.com/zextras/carbonio-shell-ui/commit/66653a14cdbf7a135a858f109fc7fa6c9d9d794e)), closes [#312](https://github.com/zextras/carbonio-shell-ui/issues/312)
+* set max 100 as value in the quota component in general settings ([67854dd](https://github.com/zextras/carbonio-shell-ui/commit/67854dde98a9fab1f28059aa7df02739ac202bb0)), closes [#282](https://github.com/zextras/carbonio-shell-ui/issues/282)
+* **settings:** translate new persona and delegate rights labels ([115ac44](https://github.com/zextras/carbonio-shell-ui/commit/115ac44ec8bdf28bbea790d9a9728aa61df11860)), closes [#311](https://github.com/zextras/carbonio-shell-ui/issues/311)
+* update mapToModifyIdentityRequests function ([c373963](https://github.com/zextras/carbonio-shell-ui/commit/c3739632e30d05375caca8a254d68c06af3c709c)), closes [#318](https://github.com/zextras/carbonio-shell-ui/issues/318)
+* update tinymce and include translations of help plugin in bundle ([0cb0129](https://github.com/zextras/carbonio-shell-ui/commit/0cb01291c241ad41fd0abde31ce0a5c6c68f8cbe)), closes [#302](https://github.com/zextras/carbonio-shell-ui/issues/302)
+
 ### [3.2.2](https://github.com/zextras/carbonio-shell-ui/compare/v3.2.1...v3.2.2) (2023-07-17)
 
 ### [3.2.1](https://github.com/zextras/carbonio-shell-ui/compare/v3.2.0...v3.2.1) (2023-07-14)

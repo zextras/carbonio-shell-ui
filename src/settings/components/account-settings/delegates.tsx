@@ -17,7 +17,8 @@ import {
 	Radio,
 	RadioGroup,
 	ItemType,
-	ItemComponentProps
+	ItemComponentProps,
+	RadioGroupProps
 } from '@zextras/carbonio-design-system';
 import { noop } from 'lodash';
 import { useTranslation } from 'react-i18next';
@@ -53,14 +54,14 @@ const Delegates = ({
 	const [activeValue, setActiveValue] =
 		useState<AccountSettingsPrefs['zimbraPrefDelegatedSendSaveTarget']>(delegatedSendSaveTarget);
 
-	const radioGroupOnChange = useCallback<(newValue: string) => void>(
+	const radioGroupOnChange = useCallback<NonNullable<RadioGroupProps<string>['onChange']>>(
 		(newValue) => {
 			function isZimbraPrefDelegatedSendSaveTarget(
 				arg: string
 			): arg is NonNullable<AccountSettingsPrefs['zimbraPrefDelegatedSendSaveTarget']> {
 				return DELEGATED_SEND_SAVE_TARGET.includes(arg);
 			}
-			if (isZimbraPrefDelegatedSendSaveTarget(newValue)) {
+			if (newValue && isZimbraPrefDelegatedSendSaveTarget(newValue)) {
 				setActiveValue(newValue);
 				updateDelegatedSendSaveTarget(newValue);
 			} else {

@@ -4,21 +4,24 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
+
 import { act, screen, within } from '@testing-library/react';
-import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
 import { Button, Text } from '@zextras/carbonio-design-system';
-import { setup } from '../test/utils';
-import ShellPrimaryBar from './shell-primary-bar';
-import { useAppStore } from '../store/app';
-import { PrimaryBarView } from '../../types';
-import { usePushHistoryCallback } from '../history/hooks';
+import { produce } from 'immer';
+import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
+
 import AppViewContainer from './app-view-container';
+import ShellPrimaryBar from './shell-primary-bar';
+import { AccountState, PrimaryBarView } from '../../types';
 import { DefaultViewsRegister } from '../boot/bootstrapper';
+import { usePushHistoryCallback } from '../history/hooks';
 import { ModuleSelector } from '../search/module-selector';
+import { useAccountStore } from '../store/account';
+import { useAppStore } from '../store/app';
+import { ICONS } from '../test/constants';
+import { setup } from '../test/utils';
 
-jest.mock('../workers');
-
-const ShellWrapper = (): JSX.Element => (
+const ShellWrapper = (): React.JSX.Element => (
 	<>
 		<DefaultViewsRegister />
 		<ModuleSelector />
@@ -27,7 +30,7 @@ const ShellWrapper = (): JSX.Element => (
 	</>
 );
 
-const AboutView = (): JSX.Element | null => {
+const AboutView = (): React.JSX.Element | null => {
 	const { view } = useParams<{ view: string }>();
 	return (
 		<div>
@@ -36,7 +39,7 @@ const AboutView = (): JSX.Element | null => {
 	);
 };
 
-const MailsView = (): JSX.Element => {
+const MailsView = (): React.JSX.Element => {
 	const { path } = useRouteMatch();
 	const push = usePushHistoryCallback();
 
@@ -56,7 +59,7 @@ const MailsView = (): JSX.Element => {
 	);
 };
 
-const FilesView = (): JSX.Element => (
+const FilesView = (): React.JSX.Element => (
 	<div>
 		<Text>files view</Text>
 	</div>
@@ -132,7 +135,7 @@ describe('Shell primary bar', () => {
 		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
 
 		act(() => {
-			useAppStore.getState().setters.addApps([
+			useAppStore.getState().setters.setApps([
 				{
 					commit: '',
 					description: 'Mails module',
@@ -212,7 +215,7 @@ describe('Shell primary bar', () => {
 		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
 
 		act(() => {
-			useAppStore.getState().setters.addApps([
+			useAppStore.getState().setters.setApps([
 				{
 					commit: '',
 					description: 'Mails module',
@@ -262,7 +265,7 @@ describe('Shell primary bar', () => {
 
 			useAppStore.getState().setters.addSearchView({
 				route: 'files',
-				component: (): JSX.Element => <Text>files search view</Text>,
+				component: (): React.JSX.Element => <Text>files search view</Text>,
 				label: 'Files',
 				id: 'files',
 				app: 'carbonio-files-ui',
@@ -271,7 +274,7 @@ describe('Shell primary bar', () => {
 			});
 			useAppStore.getState().setters.addSearchView({
 				route: 'mails',
-				component: (): JSX.Element => <Text>mails search view</Text>,
+				component: (): React.JSX.Element => <Text>mails search view</Text>,
 				label: 'Mails',
 				id: 'mails',
 				app: 'carbonio-mails-ui',
@@ -311,7 +314,7 @@ describe('Shell primary bar', () => {
 		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
 
 		act(() => {
-			useAppStore.getState().setters.addApps([
+			useAppStore.getState().setters.setApps([
 				{
 					commit: '',
 					description: 'Mails module',
@@ -361,7 +364,7 @@ describe('Shell primary bar', () => {
 
 			useAppStore.getState().setters.addSearchView({
 				route: 'files',
-				component: (): JSX.Element => <Text>files search view</Text>,
+				component: (): React.JSX.Element => <Text>files search view</Text>,
 				label: 'Files',
 				id: 'files',
 				app: 'carbonio-files-ui',
@@ -370,7 +373,7 @@ describe('Shell primary bar', () => {
 			});
 			useAppStore.getState().setters.addSearchView({
 				route: 'mails',
-				component: (): JSX.Element => <Text>mails search view</Text>,
+				component: (): React.JSX.Element => <Text>mails search view</Text>,
 				label: 'Mails',
 				id: 'mails',
 				app: 'carbonio-mails-ui',
@@ -418,5 +421,29 @@ describe('Shell primary bar', () => {
 		expect(screen.queryByText('files search view')).not.toBeInTheDocument();
 		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
 		expect(screen.queryByText('files view')).not.toBeInTheDocument();
+	});
+
+	test('When zimbraFeatureOptionsEnabled is TRUE the setting icon is visible in primary bar', async () => {
+		useAccountStore.setState(
+			produce((state: AccountState) => {
+				state.settings.attrs.zimbraFeatureOptionsEnabled = 'TRUE';
+			})
+		);
+		const { getByRoleWithIcon } = setup(<ShellWrapper />);
+
+		const searchIcon = getByRoleWithIcon('button', { icon: ICONS.settings });
+		expect(searchIcon).toBeVisible();
+		expect(searchIcon).toBeEnabled();
+	});
+
+	test('When zimbraFeatureOptionsEnabled is FALSE the setting icon is missing in primary bar', async () => {
+		useAccountStore.setState(
+			produce((state: AccountState) => {
+				state.settings.attrs.zimbraFeatureOptionsEnabled = 'FALSE';
+			})
+		);
+		const { queryByRoleWithIcon } = setup(<ShellWrapper />);
+
+		expect(queryByRoleWithIcon('button', { icon: ICONS.settings })).not.toBeInTheDocument();
 	});
 });

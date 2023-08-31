@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { useContext } from 'react';
+
 import ShellContext from '../shell-context';
 
 export function useIsMobile(): boolean {

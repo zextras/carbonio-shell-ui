@@ -144,6 +144,7 @@
         "label_hindi": "Hindi - {{value}}",
         "label_italian": "Italian - {{value}}",
         "label_japanese": "Japanese - {{value}}",
+        "label_polish": "Polish - {{value}}",
         "label_portuguese": "Portuguese - {{value}}",
         "label_portuguese_brazil": "Portuguese - {{value}}",
         "label_romanian": "Romanian - {{value}}",
@@ -151,6 +152,7 @@
         "label_spanish": "Spanish - {{value}}",
         "label_thai": "Thai - {{value}}",
         "label_turkish": "Turkish - {{value}}",
+        "label_vietnamese": "Vietnamese - {{value}}",
         "polish": "Polish",
         "portuguese": "Portuguese",
         "portuguese_brazil": "Portuguese (Brazil)",
@@ -198,6 +200,14 @@
         "unable_to_parse_query": "Unable to complete the search, clear it and retry"
     },
     "settings": {
+        "account": {
+            "delegates": {
+                "multiple_rights": "{{rights.0}} and {{rights.1}}",
+                "right_sendas": "SendAs",
+                "right_sendonbehalfof": "SendOnBehalfOf"
+            },
+            "new_identity": "New Persona {{number}}"
+        },
         "accounts": "Accounts",
         "app": "Settings",
         "appearance": {

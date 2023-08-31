@@ -4,18 +4,20 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { FC, useCallback, useMemo } from 'react';
+
 import { Container, ContainerProps } from '@zextras/carbonio-design-system';
 import { filter, findIndex, map, sortBy } from 'lodash';
-import React, { FC, useCallback, useMemo } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { Collapser } from './collapser';
 import { AppRoute } from '../../types';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppStore } from '../store/app';
 import { useUtilityBarStore } from '../utility-bar/store';
 import { checkRoute } from '../utility-bar/utils';
-import { Collapser } from './collapser';
 
 const SidebarContainer = styled(Container)<ContainerProps & { sidebarIsOpen?: boolean }>`
 	min-width: 3rem;

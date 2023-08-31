@@ -4,31 +4,33 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { useEffect, useMemo, useRef } from 'react';
+
 import { Container, IconButton, Row, Tooltip } from '@zextras/carbonio-design-system';
 import { map, isEmpty, trim, filter, sortBy, noop } from 'lodash';
-import React, { useEffect, useMemo, useRef } from 'react';
-import styled from 'styled-components';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useAppStore } from '../store/app';
-import { AppRoute, PrimaryAccessoryView, PrimaryBarView } from '../../types';
+import styled from 'styled-components';
+
 import BadgeWrap from './badge-wrap';
+import { PrimaryAccessoryView, PrimaryBarView } from '../../types';
 import AppContextProvider from '../boot/app/app-context-provider';
-import { checkRoute } from '../utility-bar/utils';
 import {
 	BOARD_CONTAINER_ZINDEX,
 	IS_STANDALONE,
 	PRIMARY_BAR_WIDTH,
 	SEARCH_APP_ID
 } from '../constants';
-import { minimizeBoards, reopenBoards, useBoardStore } from '../store/boards';
 import { useCurrentRoute } from '../history/hooks';
+import { useAppStore } from '../store/app';
+import { minimizeBoards, reopenBoards, useBoardStore } from '../store/boards';
+import { checkRoute } from '../utility-bar/utils';
 
 const PrimaryBarContainer = styled(Container)`
 	border-right: 0.0625rem solid ${({ theme }): string => theme.palette.gray3.regular};
 	z-index: ${BOARD_CONTAINER_ZINDEX + 1};
 `;
 
-const ToggleBoardIcon = (): JSX.Element | null => {
+const ToggleBoardIcon = (): React.JSX.Element | null => {
 	const { minimized, boards } = useBoardStore();
 
 	return isEmpty(boards) ? null : (
@@ -53,7 +55,7 @@ type PrimaryBarAccessoryItemProps = {
 	view: PrimaryAccessoryView;
 };
 
-const PrimaryBarElement = ({ view, active, onClick }: PrimaryBarItemProps): JSX.Element => (
+const PrimaryBarElement = ({ view, active, onClick }: PrimaryBarItemProps): React.JSX.Element => (
 	<Tooltip label={view.label} placement="right" key={view.id}>
 		<BadgeWrap badge={view.badge}>
 			{typeof view.component === 'string' ? (
@@ -72,7 +74,7 @@ const PrimaryBarElement = ({ view, active, onClick }: PrimaryBarItemProps): JSX.
 	</Tooltip>
 );
 
-const PrimaryBarAccessoryElement = ({ view }: PrimaryBarAccessoryItemProps): JSX.Element => (
+const PrimaryBarAccessoryElement = ({ view }: PrimaryBarAccessoryItemProps): React.JSX.Element => (
 	<Tooltip label={view.label} placement="right" key={view.id}>
 		<AppContextProvider key={view.id} pkg={view.app}>
 			{typeof view.component === 'string' ? (
@@ -96,12 +98,8 @@ const OverlayRow = styled(Row)`
 	overflow-y: overlay;
 `;
 
-interface ShellPrimaryBarComponentProps {
-	activeRoute: AppRoute | undefined;
-}
-const ShellPrimaryBarComponent = ({
-	activeRoute
-}: ShellPrimaryBarComponentProps): JSX.Element | null => {
+const ShellPrimaryBar = (): React.JSX.Element | null => {
+	const activeRoute = useCurrentRoute();
 	const primaryBarViews = useAppStore((s) => s.views.primaryBar);
 	const { push } = useHistory();
 
@@ -124,7 +122,8 @@ const ShellPrimaryBarComponent = ({
 				[activeRoute.id]: `${trim(pathname, '/')}${search}`
 			};
 		}
-	}, [activeRoute, pathname, search, primaryBarViews]);
+	}, [activeRoute, pathname, search]);
+
 	const primaryBarAccessoryViews = useAppStore((s) => s.views.primaryBarAccessories);
 
 	const accessoryViews = useMemo(
@@ -185,13 +184,6 @@ const ShellPrimaryBarComponent = ({
 			</OverlayRow>
 		</PrimaryBarContainer>
 	);
-};
-
-const MemoShellPrimaryBarComponent = React.memo(ShellPrimaryBarComponent);
-
-const ShellPrimaryBar = (): JSX.Element => {
-	const activeRoute = useCurrentRoute();
-	return <MemoShellPrimaryBarComponent activeRoute={activeRoute} />;
 };
 
 export default ShellPrimaryBar;

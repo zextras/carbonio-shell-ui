@@ -4,8 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Container, Text } from '@zextras/carbonio-design-system';
 import React, { useMemo } from 'react';
+
+import { Container, Text } from '@zextras/carbonio-design-system';
+
 import { getT } from '../../../store/i18n';
 import { appearanceSubSection } from '../../general-settings-sub-sections';
 
@@ -13,7 +15,7 @@ interface AppearanceSettingsProps {
 	children: React.ReactElement | React.ReactElement[];
 }
 
-const AppearanceSettings = ({ children }: AppearanceSettingsProps): JSX.Element => {
+const AppearanceSettings = ({ children }: AppearanceSettingsProps): React.JSX.Element => {
 	const t = getT();
 	const subSection = useMemo(() => appearanceSubSection(t), [t]);
 	return (

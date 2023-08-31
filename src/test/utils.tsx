@@ -13,26 +13,29 @@ import {
 	queries,
 	queryHelpers,
 	render,
+	screen as rtlScreen,
 	type RenderOptions,
 	type RenderResult,
-	screen,
-	within
+	within as rtlWithin
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import i18next, { type i18n } from 'i18next';
 import { filter } from 'lodash';
 import { I18nextProvider } from 'react-i18next';
 import { MemoryRouter } from 'react-router-dom';
-import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
+
 import { ThemeProvider } from '../boot/theme-provider';
 
-export type UserEvent = ReturnType<typeof userEvent['setup']> & {
+export type UserEvent = ReturnType<(typeof userEvent)['setup']> & {
 	readonly rightClick: (target: Element) => Promise<void>;
 };
 
 type ByRoleWithIconOptions = ByRoleOptions & {
 	icon: string | RegExp;
 };
+
+type ExtendedQueries = typeof queries & typeof customQueries;
 /**
  * Matcher function to search an icon button through the icon data-testid
  */
@@ -42,8 +45,9 @@ const queryAllByRoleWithIcon: GetAllBy<[ByRoleMatcher, ByRoleWithIconOptions]> =
 	{ icon, ...options }
 ) =>
 	filter(
-		screen.queryAllByRole('button', options),
-		(element) => within(element).queryByTestId(`icon: ${icon}`) !== null
+		// eslint-disable-next-line testing-library/prefer-screen-queries
+		rtlScreen.queryAllByRole('button', options),
+		(element) => rtlWithin(element).queryByTestId(`icon: ${icon}`) !== null
 	);
 const getByRoleWithIconMultipleError = (
 	container: Element | null,
@@ -76,6 +80,13 @@ const customQueries = {
 	findAllByRoleWithIcon,
 	findByRoleWithIcon
 };
+const extendedQueries: ExtendedQueries = { ...queries, ...customQueries };
+
+export const within = (
+	element: Parameters<typeof rtlWithin<ExtendedQueries>>[0]
+): ReturnType<typeof rtlWithin<ExtendedQueries>> => rtlWithin(element, extendedQueries);
+
+export const screen = within(document.body);
 
 const getAppI18n = (): i18n => {
 	const newI18n = i18next.createInstance();
@@ -96,17 +107,21 @@ const getAppI18n = (): i18n => {
 };
 
 interface WrapperProps {
-	children?: React.ReactNode | undefined;
+	children?: React.ReactNode;
 	initialRouterEntries?: string[];
 }
 
-export const I18NextTestProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
+export const I18NextTestProvider = ({
+	children
+}: {
+	children: React.ReactNode;
+}): React.JSX.Element => {
 	const i18nInstance = useMemo(() => getAppI18n(), []);
 
 	return <I18nextProvider i18n={i18nInstance}>{children}</I18nextProvider>;
 };
 
-const Wrapper = ({ initialRouterEntries, children }: WrapperProps): JSX.Element => (
+const Wrapper = ({ initialRouterEntries, children }: WrapperProps): React.JSX.Element => (
 	<MemoryRouter
 		initialEntries={initialRouterEntries}
 		initialIndex={(initialRouterEntries?.length || 1) - 1}
@@ -129,19 +144,19 @@ function customRender(
 	}: WrapperProps & {
 		options?: Omit<RenderOptions, 'queries' | 'wrapper'>;
 	} = {}
-): RenderResult<typeof queries & typeof customQueries> {
+): RenderResult<ExtendedQueries> {
 	return render(ui, {
 		wrapper: ({ children }: Pick<WrapperProps, 'children'>) => (
 			<Wrapper initialRouterEntries={initialRouterEntries}>{children}</Wrapper>
 		),
-		queries: { ...queries, ...customQueries },
+		queries: extendedQueries,
 		...options
 	});
 }
 
 type SetupOptions = Pick<WrapperProps, 'initialRouterEntries'> & {
 	renderOptions?: Omit<RenderOptions, 'queries'>;
-	setupOptions?: Parameters<typeof userEvent['setup']>[0];
+	setupOptions?: Parameters<(typeof userEvent)['setup']>[0];
 };
 
 const setupUserEvent = (options: SetupOptions['setupOptions']): UserEvent => {
@@ -165,3 +180,22 @@ export const setup = (
 		...options?.renderOptions
 	})
 });
+
+export function controlConsoleError(expectedMessage: string): void {
+	// eslint-disable-next-line no-console
+	const actualConsoleError = console.error;
+	// eslint-disable-next-line no-console
+	console.error = jest.fn<ReturnType<typeof console.error>, Parameters<typeof console.error>>(
+		(error, ...restParameter) => {
+			if (
+				(typeof error === 'string' && error === expectedMessage) ||
+				(error instanceof Error && error.message === expectedMessage)
+			) {
+				// eslint-disable-next-line no-console
+				console.error('Controlled error', error, ...restParameter);
+			} else {
+				actualConsoleError(error, ...restParameter);
+			}
+		}
+	);
+}

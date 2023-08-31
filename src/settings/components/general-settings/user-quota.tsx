@@ -4,8 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Container, FormSubSection, Quota, Text, Tooltip } from '@zextras/carbonio-design-system';
 import React, { FC, useMemo } from 'react';
+
+import { Container, FormSubSection, Quota, Text, Tooltip } from '@zextras/carbonio-design-system';
+
 import { useUserSettings } from '../../../store/account/hooks';
 import { useAccountStore } from '../../../store/account/store';
 import { getT } from '../../../store/i18n';
@@ -27,6 +29,13 @@ const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 		}
 		return -1;
 	}, [settings?.attrs?.zimbraMailQuota, used]);
+
+	const filledQuota = useMemo(() => {
+		if (quota === -1 || quota >= 100) {
+			return 100;
+		}
+		return quota;
+	}, [quota]);
 
 	const description = useMemo(() => {
 		switch (true) {
@@ -58,7 +67,7 @@ const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 	return mobileView ? (
 		<Container width="fit" padding={{ right: 'medium' }}>
 			<Tooltip label={description} placement="bottom">
-				<Quota fill={quota > 0 ? quota : 0} fillBackground={fillBackground} />
+				<Quota fill={filledQuota} fillBackground={fillBackground} />
 			</Tooltip>
 		</Container>
 	) : (
@@ -76,7 +85,7 @@ const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 				>
 					<Text>{description}</Text>
 				</Container>
-				<Quota fill={quota === -1 ? 100 : quota} fillBackground={fillBackground} />
+				<Quota fill={filledQuota} fillBackground={fillBackground} />
 			</Container>
 		</FormSubSection>
 	);

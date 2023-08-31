@@ -5,14 +5,16 @@
  */
 
 import React, { useMemo } from 'react';
+
 import { useScreenMode } from '@zextras/carbonio-design-system';
+
 import ShellContext from './shell-context';
 
 interface ShellContextProviderProps {
 	children: React.ReactNode;
 }
 
-const ShellContextProvider = ({ children }: ShellContextProviderProps): JSX.Element => {
+const ShellContextProvider = ({ children }: ShellContextProviderProps): React.JSX.Element => {
 	const screenMode = useScreenMode();
 
 	const value = useMemo(

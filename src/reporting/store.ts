@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { create } from 'zustand';
 import {
 	BrowserClient,
 	defaultIntegrations,
@@ -13,8 +12,10 @@ import {
 	makeFetchTransport
 } from '@sentry/browser';
 import { reduce } from 'lodash';
+import { create } from 'zustand';
+
 import type { CarbonioModule } from '../../types';
-import { SENTRY_FEEDBACK_DNS, SENTRY_SHELL_DSN, SHELL_APP_ID } from '../constants';
+import { SENTRY_SHELL_DSN, SHELL_APP_ID } from '../constants';
 
 type ReporterState = {
 	clients: Record<string, Hub>;
@@ -29,16 +30,6 @@ export const useReporter = create<ReporterState>()((set) => ({
 				stackParser: defaultStackParser,
 				integrations: defaultIntegrations,
 				dsn: SENTRY_SHELL_DSN,
-				release: '0',
-				maxValueLength: 500
-			})
-		),
-		feedbacks: new Hub(
-			new BrowserClient({
-				transport: makeFetchTransport,
-				stackParser: defaultStackParser,
-				integrations: defaultIntegrations,
-				dsn: SENTRY_FEEDBACK_DNS,
 				release: '0',
 				maxValueLength: 500
 			})

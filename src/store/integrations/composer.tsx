@@ -3,8 +3,10 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { Container } from '@zextras/carbonio-design-system';
 import React, { FC, useCallback, useMemo, useRef } from 'react';
+
+import { Editor, IAllProps as EditorProps } from '@tinymce/tinymce-react';
+import { Container } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 import type { EditorOptions, TinyMCE, Ui } from 'tinymce/tinymce';
 // TinyMCE so the global var exists
@@ -16,7 +18,6 @@ import 'tinymce/themes/silver';
 import 'tinymce/icons/default';
 // Editor styles
 import 'tinymce/skins/ui/oxide/skin.min.css';
-
 // importing the plugin js.
 import 'tinymce/plugins/advlist';
 import 'tinymce/plugins/anchor';
@@ -39,7 +40,7 @@ import 'tinymce/plugins/table';
 import 'tinymce/plugins/visualblocks';
 import 'tinymce/plugins/wordcount';
 
-import { Editor, IAllProps as EditorProps } from '@tinymce/tinymce-react';
+import { SUPPORTED_LOCALES } from '../../constants/locales';
 import { useUserSettings } from '../account';
 import { getT, useI18nStore } from '../i18n';
 
@@ -57,6 +58,7 @@ type ComposerProps = EditorProps & {
 	 * If defined, a menu item to add inline images is added to the composer.
 	 */
 	onFileSelect?: (arg: { editor: TinyMCE; files: HTMLInputElement['files'] | undefined }) => void;
+	customInitOptions?: Partial<EditorProps['init']>;
 };
 
 export const FileInput = styled.input`
@@ -69,6 +71,7 @@ const Composer: FC<ComposerProps> = ({
 	inline = false,
 	value,
 	initialValue,
+	customInitOptions,
 	...rest
 }) => {
 	const _onEditorChange = useCallback<NonNullable<EditorProps['onEditorChange']>>(
@@ -98,6 +101,15 @@ const Composer: FC<ComposerProps> = ({
 	}, []);
 	const t = getT();
 	const { locale } = useI18nStore.getState();
+	const language = useMemo(() => {
+		const localeObj =
+			locale in SUPPORTED_LOCALES && SUPPORTED_LOCALES[locale as keyof typeof SUPPORTED_LOCALES];
+		return (
+			(localeObj &&
+				(('tinymceLocale' in localeObj && localeObj?.tinymceLocale) || localeObj?.value)) ||
+			locale
+		);
+	}, [locale]);
 	const inlineLabel = useMemo(() => t('label.add_inline_image', 'Add inline image'), [t]);
 
 	const setupCallback = useCallback<NonNullable<EditorOptions['setup']>>(
@@ -126,8 +138,8 @@ const Composer: FC<ComposerProps> = ({
 	const editorInitConfig = useMemo<EditorProps['init']>(
 		() => ({
 			content_css: `${BASE_PATH}/tinymce/skins/content/default/content.css`,
-			language_url: `${BASE_PATH}tinymce/langs/${locale}.js`,
-			language: locale,
+			language_url: `${BASE_PATH}tinymce/langs/${language}.js`,
+			language,
 			setup: setupCallback,
 			min_height: 350,
 			auto_focus: true,
@@ -210,16 +222,25 @@ const Composer: FC<ComposerProps> = ({
 			quickbars_selection_toolbar: inline
 				? 'bold italic underline | forecolor backcolor | removeformat | quicklink'
 				: 'quicklink',
-			contextmenu: inline ? '' : '',
+			contextmenu: '',
 			toolbar_mode: 'wrap',
 			content_style: `body  {  color: ${defaultStyle?.color}; font-size: ${defaultStyle?.fontSize}; font-family: ${defaultStyle?.font}; }`,
 			visualblocks_default_state: false,
 			end_container_on_empty_block: true,
 			relative_urls: false,
 			remove_script_host: false,
-			newline_behavior: 'invert'
+			newline_behavior: 'invert',
+			...customInitOptions
 		}),
-		[defaultStyle?.color, defaultStyle?.font, defaultStyle?.fontSize, inline, locale, setupCallback]
+		[
+			language,
+			setupCallback,
+			inline,
+			defaultStyle?.color,
+			defaultStyle?.fontSize,
+			defaultStyle?.font,
+			customInitOptions
+		]
 	);
 
 	const fileInputOnChange = useCallback((): void => {

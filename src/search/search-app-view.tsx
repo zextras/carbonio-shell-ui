@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { useCallback, useMemo } from 'react';
+
 import {
 	Button,
 	Chip,
@@ -14,14 +16,14 @@ import {
 	Text
 } from '@zextras/carbonio-design-system';
 import { map } from 'lodash';
-import React, { useCallback, useMemo } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+
+import { useSearchStore } from './search-store';
 import { type SearchState } from '../../types';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { ResultLabelType, SEARCH_APP_ID } from '../constants';
 import { useAppStore } from '../store/app';
 import { getT } from '../store/i18n';
-import { useSearchStore } from './search-store';
 
 const useQuery = (): [query: SearchState['query'], updateQuery: SearchState['updateQuery']] =>
 	useSearchStore((s) => [s.query, s.updateQuery]);
@@ -49,7 +51,7 @@ interface ResultsHeaderProps {
 const ResultsHeader = ({
 	label,
 	labelType = ResultLabelType.NORMAL
-}: ResultsHeaderProps): JSX.Element => {
+}: ResultsHeaderProps): React.JSX.Element => {
 	const t = getT();
 	const [query, updateQuery] = useQuery();
 	const [, setDisabled] = useDisableSearch();
@@ -59,7 +61,7 @@ const ResultsHeader = ({
 		setDisabled(false);
 	}, [updateQuery, setDisabled]);
 
-	const labelTypeElem = useMemo<JSX.Element>(() => {
+	const labelTypeElem = useMemo<React.JSX.Element>(() => {
 		if (labelType === ResultLabelType.NORMAL) {
 			return <></>;
 		}
@@ -118,7 +120,7 @@ const ResultsHeader = ({
 	);
 };
 
-export const SearchAppView = (): JSX.Element => {
+export const SearchAppView = (): React.JSX.Element => {
 	const searchViews = useAppStore((s) => s.views.search);
 	const { module } = useSearchStore();
 	const modules = useAppStore((s) => s.views.search);

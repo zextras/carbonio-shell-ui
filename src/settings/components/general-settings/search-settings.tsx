@@ -4,8 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Checkbox, Container, FormSubSection } from '@zextras/carbonio-design-system';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
+import { Checkbox, Container, FormSubSection } from '@zextras/carbonio-design-system';
+
 import { AccountSettings, AddMod } from '../../../../types';
 import { getT } from '../../../store/i18n';
 import { searchPrefsSubSection } from '../../general-settings-sub-sections';
@@ -21,7 +23,7 @@ export const SearchSettings = ({
 	settings,
 	addMod,
 	resetRef
-}: SearchSettingsViewProps): JSX.Element => {
+}: SearchSettingsViewProps): React.JSX.Element => {
 	const t = getT();
 	const [searchInSpamFolder, setSearchInSpamFolder] = useState<boolean>(
 		settings.prefs.zimbraPrefIncludeSpamInSearch === 'TRUE'

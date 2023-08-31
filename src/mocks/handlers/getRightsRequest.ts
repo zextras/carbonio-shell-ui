@@ -3,18 +3,19 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { type ResponseResolver, type RestContext, type RestRequest } from 'msw';
 import { faker } from '@faker-js/faker';
+import { type ResponseResolver, type RestContext, type RestRequest } from 'msw';
+
 import { GetRightsResponse } from '../../../types';
 
-type GetRightsRequestBody = {
+export type GetRightsRequestBody = {
 	GetRightsRequest: {
 		_jsns: string;
 		ace: Array<{ right: string }>;
 	};
 };
 
-type GetRightsResponseBody = {
+export type GetRightsResponseBody = {
 	Body: {
 		GetRightsResponse: GetRightsResponse;
 		Fault?: { Detail?: { Error?: { Code?: string; Detail?: string } }; Reason?: { Text: string } };

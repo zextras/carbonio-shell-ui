@@ -10,15 +10,13 @@ module.exports = {
 			{
 				modules: false,
 				useBuiltIns: 'usage',
-				corejs: 3
+				corejs: 3.31
 			}
 		],
 		'@babel/preset-react',
 		'@babel/preset-typescript'
 	],
 	plugins: [
-		'@babel/plugin-transform-runtime',
-		'@babel/plugin-proposal-class-properties',
 		'babel-plugin-styled-components',
 		[
 			'i18next-extract',
@@ -27,7 +25,8 @@ module.exports = {
 				defaultContexts: [],
 				defaultNS: 'en',
 				jsonSpace: 4,
-				compatibilityJSON: 'v3'
+				compatibilityJSON: 'v3',
+				discardOldKeys: false
 			}
 		]
 	]

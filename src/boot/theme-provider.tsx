@@ -12,6 +12,7 @@ import React, {
 	useMemo,
 	useState
 } from 'react';
+
 import {
 	generateColorSet,
 	ThemeProvider as UIThemeProvider,
@@ -20,11 +21,12 @@ import {
 import { auto, disable, enable, setFetchMethod } from 'darkreader';
 import { map, reduce } from 'lodash';
 import { createGlobalStyle, css, DefaultTheme, SimpleInterpolation } from 'styled-components';
-import { DarkReaderPropValues, ThemeExtension } from '../../types';
-import { darkReaderDynamicThemeFixes, LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
-import { ScalingSettings } from '../../types/settings';
-import { getAutoScalingFontSize } from '../settings/components/utils';
+
 import { useGetPrimaryColor } from './use-get-primary-color';
+import { DarkReaderPropValues, ThemeExtension } from '../../types';
+import { ScalingSettings } from '../../types/settings';
+import { darkReaderDynamicThemeFixes, LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
+import { getAutoScalingFontSize } from '../settings/components/utils';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 
 setFetchMethod(window.fetch);
@@ -118,7 +120,7 @@ const GlobalStyle = createGlobalStyle<GlobalStyledProps>`
 interface ThemeProviderProps {
 	children?: React.ReactNode | React.ReactNode[];
 }
-export const ThemeProvider = ({ children }: ThemeProviderProps): JSX.Element => {
+export const ThemeProvider = ({ children }: ThemeProviderProps): React.JSX.Element => {
 	const [localStorageSettings] = useLocalStorage<ScalingSettings>(LOCAL_STORAGE_SETTINGS_KEY, {});
 
 	const [extensions, setExtensions] = useState<Partial<Record<keyof DefaultTheme, ThemeExtension>>>(
@@ -151,21 +153,11 @@ export const ThemeProvider = ({ children }: ThemeProviderProps): JSX.Element => 
 				break;
 			case 'enabled':
 				auto(false);
-				enable(
-					{
-						sepia: -50
-					},
-					darkReaderDynamicThemeFixes
-				);
+				enable({}, darkReaderDynamicThemeFixes);
 				break;
 			case 'auto':
 			default:
-				auto(
-					{
-						sepia: -50
-					},
-					darkReaderDynamicThemeFixes
-				);
+				auto({}, darkReaderDynamicThemeFixes);
 				break;
 		}
 	}, [darkReaderState]);

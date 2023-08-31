@@ -4,142 +4,94 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, ReactElement, useContext, useRef } from 'react';
+import React, { useCallback, ReactElement, useContext, useRef, useMemo } from 'react';
+
 import {
 	Container,
 	Text,
-	List,
 	Divider,
 	Row,
 	Padding,
 	Button,
 	Icon,
 	ModalManagerContext,
-	ItemComponentProps
+	ListV2,
+	ListItem
 } from '@zextras/carbonio-design-system';
-import { TFunction } from 'i18next';
-import { map, filter, max } from 'lodash';
-import { IdentityProps, IdentityAttrs } from '../../../../types';
+import type { TFunction } from 'i18next';
+import { map } from 'lodash';
+import { useTranslation } from 'react-i18next';
+import styled from 'styled-components';
+
+import { Identity, IdentityAttrs } from '../../../../types';
+import { isPrimary } from '../utils';
+
+const List = styled(ListV2)`
+	flex-shrink: 0;
+`;
+
+function getNewPersonaNextIdentityName(
+	numberToCheck: number,
+	unavailableIdentityNames: Array<string>,
+	t: TFunction
+): string {
+	const newPersonaNextIdentityName = t('settings.account.new_identity', {
+		defaultValue: `New Persona {{number}}`,
+		number: numberToCheck
+	});
+	if (unavailableIdentityNames.includes(newPersonaNextIdentityName)) {
+		return getNewPersonaNextIdentityName(numberToCheck + 1, unavailableIdentityNames, t);
+	}
+	return newPersonaNextIdentityName;
+}
 
 export type AccountsListProps = {
-	t: TFunction;
 	accountName: string;
-	identities: IdentityProps[];
-	setIdentities: (identities: IdentityProps[]) => void;
+	identities: Array<Identity>;
+	identitiesDefault: Array<Identity>;
 	selectedIdentityId: number;
 	setSelectedIdentityId: (value: number) => void;
-	removeIdentity: (identityId: string | number) => void;
-	addIdentity: (id: number, identityAttrs: IdentityAttrs) => void;
+	removeIdentity: (identityId: string) => void;
+	addIdentity: (id: string, identityAttrs: IdentityAttrs) => void;
 };
 
 const AccountsList = ({
-	t,
 	accountName,
 	selectedIdentityId,
 	identities,
-	setIdentities,
+	identitiesDefault,
 	setSelectedIdentityId,
 	removeIdentity,
 	addIdentity
 }: AccountsListProps): ReactElement => {
-	const changeView = (value: number): void => setSelectedIdentityId(value);
-
-	const ListItem = ({ item }: ItemComponentProps<IdentityProps>): ReactElement => (
-		<>
-			<Container
-				data-testid={`account-list-item-${item.identityId}`}
-				onClick={(): void => {
-					changeView(Number(item.id));
-				}}
-				orientation="horizontal"
-				mainAlignment="flex-start"
-				padding={{ all: 'small' }}
-			>
-				<Row width="fill" mainAlignment="space-between">
-					<Container orientation="horizontal" mainAlignment="flex-start" width="fit">
-						<Padding right="small">
-							<Icon icon="CheckmarkCircle2Outline" size="large" color="primary" />
-						</Padding>
-						<Padding right="small">
-							<Text weight="regular" size="small">
-								{item.identityName}
-							</Text>
-						</Padding>
-						<Padding right="small">
-							<Text weight="regular" size="small" color="secondary">
-								({item.flgType === 'primary' ? accountName : item.fromAddress})
-							</Text>
-						</Padding>
-					</Container>
-					<Container width="fit" mainAlignment="flex-end">
-						<Text weight="regular" size="small">
-							{item.type}
-						</Text>
-					</Container>
-				</Row>
-
-				<Row width="fit"></Row>
-			</Container>
-			<Divider />
-		</>
-	);
+	const [t] = useTranslation();
 
 	const createModal = useContext(ModalManagerContext);
 
 	const createListRequestIdRef = useRef(0);
 	const addNewPersona = useCallback(() => {
-		const newPersonaNextNumber =
-			Number(
-				max([
-					...filter(
-						map(
-							map(
-								filter(identities, (item) => item.identityName?.includes('New Persona')),
-								(item: IdentityProps) => item.identityName
-							),
-							(item: string) => parseFloat(item.replace('New Persona ', ''))
-						),
-						(item) => Number(item)
-					)
-				])
-			) + 1;
-		const newPersonaName = `New Persona ${newPersonaNextNumber || 1}`;
-		setIdentities([
-			...identities,
-			{
-				id: `${identities.length}`,
-				flgType: 'persona',
-				type: t('label.persona', 'Persona'),
-				identityId: createListRequestIdRef.current,
-				fromAddress: identities[0]?.fromAddress,
-				identityName: newPersonaName,
-				fromDisplay: identities[0]?.fromDisplay,
-				replyToEnabled: 'FALSE'
-			}
-		]);
-		addIdentity(createListRequestIdRef.current, {
+		const unavailableIdentityNames = map<Identity, string>(
+			[...identitiesDefault, ...identities],
+			(item) => item._attrs?.zimbraPrefIdentityName || ''
+		);
+		const newPersonaName = getNewPersonaNextIdentityName(1, unavailableIdentityNames, t);
+
+		addIdentity(`${createListRequestIdRef.current}`, {
 			zimbraPrefIdentityName: newPersonaName,
-			zimbraPrefFromDisplay: identities[0]?.fromDisplay,
-			zimbraPrefFromAddress: identities[0]?.fromAddress,
+			zimbraPrefFromDisplay: identities[0]._attrs?.zimbraPrefFromDisplay,
+			zimbraPrefFromAddress: identities[0]._attrs?.zimbraPrefFromAddress,
 			zimbraPrefFromAddressType: 'sendAs',
 			zimbraPrefReplyToEnabled: 'FALSE'
 		});
 		createListRequestIdRef.current += 1;
 		setSelectedIdentityId(identities.length);
-	}, [identities, setIdentities, t, addIdentity, setSelectedIdentityId]);
+	}, [identitiesDefault, identities, addIdentity, setSelectedIdentityId, t]);
 
 	const onConfirmDelete = useCallback((): void => {
-		const newIdentities = map(
-			filter(
-				identities,
-				(identity) => identity?.identityId !== identities[selectedIdentityId]?.identityId
-			),
-			(item: IdentityProps, index: number) => ({ ...item, id: index.toString() })
-		);
-		setIdentities(newIdentities);
-		removeIdentity(identities[selectedIdentityId].identityId);
+		removeIdentity(identities[selectedIdentityId].id);
 		setSelectedIdentityId(selectedIdentityId - 1);
-	}, [identities, setIdentities, removeIdentity, selectedIdentityId, setSelectedIdentityId]);
+	}, [identities, removeIdentity, selectedIdentityId, setSelectedIdentityId]);
+
 	const onDelete = useCallback((): void => {
 		const closeModal = createModal({
 			title: t('label.permanent_delete_title', 'Are you sure to permanently delete this Persona?'),
@@ -164,6 +116,55 @@ const AccountsList = ({
 		});
 	}, [createModal, t, onConfirmDelete]);
 
+	const items = useMemo(
+		() =>
+			map(identities, (item, index) => (
+				<ListItem key={item.id} active={selectedIdentityId === index}>
+					{(): React.JSX.Element => (
+						<>
+							<Container
+								role={'listitem'}
+								data-testid={`account-list-item-${item._attrs?.zimbraPrefIdentityId}`}
+								onClick={(): void => {
+									setSelectedIdentityId(index);
+								}}
+								orientation="horizontal"
+								mainAlignment="flex-start"
+								padding={{ all: 'small' }}
+							>
+								<Row width="fill" mainAlignment="space-between">
+									<Container orientation="horizontal" mainAlignment="flex-start" width="fit">
+										<Padding right="small">
+											<Icon icon="CheckmarkCircle2Outline" size="large" color="primary" />
+										</Padding>
+										<Padding right="small">
+											<Text weight="regular" size="small">
+												{item._attrs?.zimbraPrefIdentityName}
+											</Text>
+										</Padding>
+										<Padding right="small">
+											<Text weight="regular" size="small" color="secondary">
+												({isPrimary(item) ? accountName : item._attrs?.zimbraPrefFromAddress})
+											</Text>
+										</Padding>
+									</Container>
+									<Container width="fit" mainAlignment="flex-end">
+										<Text weight="regular" size="small">
+											{isPrimary(item)
+												? t('label.primary', 'Primary')
+												: t('label.persona', 'Persona')}
+										</Text>
+									</Container>
+								</Row>
+							</Container>
+							<Divider />
+						</>
+					)}
+				</ListItem>
+			)),
+		[accountName, identities, selectedIdentityId, setSelectedIdentityId, t]
+	);
+
 	return (
 		<>
 			<Container
@@ -177,12 +178,7 @@ const AccountsList = ({
 				<Padding horizontal="medium" bottom="large" width="100%">
 					<Text weight="bold">{t('label.accounts_list', 'Accounts list')}</Text>
 				</Padding>
-				<List
-					items={identities}
-					ItemComponent={ListItem}
-					active={identities[selectedIdentityId]?.id}
-					height="fit"
-				/>
+				<List>{items}</List>
 			</Container>
 			<Row
 				padding={{ horizontal: 'large', bottom: 'large' }}
@@ -203,7 +199,7 @@ const AccountsList = ({
 					onClick={onDelete}
 					color="error"
 					type="outlined"
-					disabled={identities[selectedIdentityId]?.flgType === 'primary'}
+					disabled={isPrimary(identities[selectedIdentityId])}
 				/>
 			</Row>
 			<Padding bottom="large" />

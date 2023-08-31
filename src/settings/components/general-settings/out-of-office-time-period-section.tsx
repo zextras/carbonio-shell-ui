@@ -4,16 +4,18 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
 import {
 	Checkbox,
 	Container,
 	DateTimePicker,
 	DateTimePickerProps
 } from '@zextras/carbonio-design-system';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { AddMod, GeneralizedTime } from '../../../../types';
 import { getT } from '../../../store/i18n';
+import { useReset } from '../../hooks/use-reset';
 import {
 	dateToGenTime,
 	endOfDay,
@@ -22,7 +24,6 @@ import {
 	startOfDay,
 	upsertPrefOnUnsavedChanges
 } from '../utils';
-import { useReset } from '../../hooks/use-reset';
 
 interface OutOfOfficeTimePeriodSectionProps extends SettingsSectionProps {
 	addMod: AddMod;
@@ -41,7 +42,7 @@ export const OutOfOfficeTimePeriodSection = ({
 	prefOutOfOfficeFromDate,
 	prefOutOfOfficeUntilDate,
 	resetRef
-}: OutOfOfficeTimePeriodSectionProps): JSX.Element => {
+}: OutOfOfficeTimePeriodSectionProps): React.JSX.Element => {
 	const t = getT();
 	const [fromDate, setFromDate] = useState<Date>(coerceGenTime(prefOutOfOfficeFromDate));
 	const [untilDate, setUntilDate] = useState<Date>(coerceGenTime(prefOutOfOfficeUntilDate));

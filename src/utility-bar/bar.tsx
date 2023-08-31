@@ -3,6 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import React, { FC, useCallback, useMemo } from 'react';
+
 import {
 	Container,
 	Dropdown,
@@ -11,16 +13,14 @@ import {
 	Tooltip
 } from '@zextras/carbonio-design-system';
 import { map, noop } from 'lodash';
-import React, { FC, useCallback, useMemo } from 'react';
-import type { UtilityView } from '../../types';
-import { logout } from '../network/logout';
-import { useUserAccount } from '../store/account';
-import { addBoard } from '../store/boards';
-import { getT } from '../store/i18n';
+
 import { useUtilityBarStore } from './store';
 import { useUtilityViews } from './utils';
-import { SHELL_APP_ID } from '../constants';
+import type { UtilityView } from '../../types';
 import { fetchNoOp } from '../network/fetch';
+import { logout } from '../network/logout';
+import { useUserAccount } from '../store/account';
+import { getT } from '../store/i18n';
 
 const UtilityBarItem: FC<{ view: UtilityView }> = ({ view }) => {
 	const { mode, setMode, current, setCurrent } = useUtilityBarStore();
@@ -44,7 +44,7 @@ const UtilityBarItem: FC<{ view: UtilityView }> = ({ view }) => {
 	return <view.button mode={mode} setMode={setMode} />;
 };
 
-export const ShellUtilityBar = (): JSX.Element => {
+export const ShellUtilityBar = (): React.JSX.Element => {
 	const views = useUtilityViews();
 	const t = getT();
 	const account = useUserAccount();
@@ -64,18 +64,6 @@ export const ShellUtilityBar = (): JSX.Element => {
 				type: 'divider',
 				id: 'divider',
 				label: 'divider'
-			},
-			{
-				id: 'feedback',
-				label: t('label.feedback', 'Feedback'),
-				onClick: (): void => {
-					addBoard(SHELL_APP_ID)({
-						url: 'feedback',
-						title: t('label.feedback', 'Feedback'),
-						icon: 'MessageSquareOutline'
-					});
-				},
-				icon: 'MessageSquareOutline'
 			},
 			{
 				id: 'update',

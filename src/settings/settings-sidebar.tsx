@@ -4,10 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { FC, useMemo } from 'react';
+
 import { Accordion, IconButton, Tooltip } from '@zextras/carbonio-design-system';
 import { map } from 'lodash';
-import React, { FC, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+
 import { SETTINGS_APP_ID } from '../constants';
 import { useAppStore } from '../store/app';
 

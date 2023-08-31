@@ -4,31 +4,35 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
 import {
 	Checkbox,
 	Container,
 	FormSubSection,
+	Padding,
+	Row,
 	Select,
 	SelectItem,
 	SingleSelectionOnChange,
+	Text,
 	TextArea,
 	TextAreaProps
 } from '@zextras/carbonio-design-system';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { find } from 'lodash';
 import { type TFunction } from 'i18next';
-import { AccountSettings, AccountSettingsPrefs, AddMod, BooleanString } from '../../../../types';
-import Heading from '../settings-heading';
+import { find } from 'lodash';
+
 import { OutOfOfficeTimePeriodSection } from './out-of-office-time-period-section';
+import { AccountSettings, AccountSettingsPrefs, AddMod, BooleanString } from '../../../../types';
 import { getT } from '../../../store/i18n';
 import { outOfOfficeSubSection } from '../../general-settings-sub-sections';
+import { useReset } from '../../hooks/use-reset';
 import {
 	dateToGenTime,
 	ResetComponentImperativeHandler,
 	SettingsSectionProps,
 	upsertPrefOnUnsavedChanges
 } from '../utils';
-import { useReset } from '../../hooks/use-reset';
 
 type CoercedPrefType<T> = T extends BooleanString | undefined ? boolean | undefined : T;
 
@@ -123,7 +127,7 @@ export const OutOfOfficeSettings = ({
 	settings,
 	addMod,
 	resetRef
-}: OutOfOfficeViewProps): JSX.Element => {
+}: OutOfOfficeViewProps): React.JSX.Element => {
 	const t = getT();
 	const outOfOfficeSectionTitle = useMemo(() => outOfOfficeSubSection(t), [t]);
 	const [prefOutOfOfficeReplyEnabled, setPrefOutOfOfficeReplyEnabled] = useState<boolean>(
@@ -322,7 +326,17 @@ export const OutOfOfficeSettings = ({
 				)}
 			</Container>
 			<Container crossAlignment="baseline" padding={{ all: 'small' }}>
-				<Heading title={t('settings.out_of_office.headings.time_period', 'Time Period')} />
+				<Row
+					padding={{ all: 'small' }}
+					mainAlignment="baseline"
+					crossAlignment="baseline"
+					width="100%"
+				>
+					<Text size="large" weight="bold">
+						{t('settings.out_of_office.headings.time_period', 'Time Period')}
+					</Text>
+				</Row>
+				<Padding vertical="small" />
 				<Checkbox
 					label={t(
 						'settings.out_of_office.labels.send_auto_reply_period',

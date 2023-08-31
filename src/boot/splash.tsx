@@ -5,7 +5,9 @@
  */
 import '../splash.css';
 import React from 'react';
+
 import styled from 'styled-components';
+
 import Helmet from '../../assets/carbonio-head.svg';
 // TODO: change with import from logo component when ready
 import Logo from '../../assets/carbonio.svg';
@@ -15,7 +17,7 @@ const StyledLogo = styled(Logo)`
 	fill: #a3aebc;
 	width: 50%;
 `;
-const LoadingView = (): JSX.Element => (
+const LoadingView = (): React.JSX.Element => (
 	<div className="splash">
 		<Helmet fill="#A3AEBC" />
 		<div className="loader">

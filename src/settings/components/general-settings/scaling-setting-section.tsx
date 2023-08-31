@@ -3,8 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { useTranslation } from 'react-i18next';
-import React, { useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
 import {
 	Button,
 	Checkbox,
@@ -14,11 +14,13 @@ import {
 	Text,
 	Tooltip
 } from '@zextras/carbonio-design-system';
+import { useTranslation } from 'react-i18next';
 import styled, { SimpleInterpolation } from 'styled-components';
+
 import { ScalingSettings } from '../../../../types/settings';
 import { BASE_FONT_SIZE, SCALING_OPTIONS } from '../../../constants';
-import { getAutoScalingFontSize, ResetComponentImperativeHandler } from '../utils';
 import { useReset } from '../../hooks/use-reset';
+import { getAutoScalingFontSize, ResetComponentImperativeHandler } from '../utils';
 
 const ScalingSliderContainer = styled(Container)`
 	box-shadow: 0px 0px 4px rgba(166, 166, 166, 0.5);
@@ -57,7 +59,7 @@ export const ScalingSettingSection = ({
 	addLocalStoreChange,
 	cleanLocalStoreChange,
 	resetRef
-}: ScalingSettingSectionProps): JSX.Element => {
+}: ScalingSettingSectionProps): React.JSX.Element => {
 	const [t] = useTranslation();
 
 	const [scalingOptionValues, scalingOptionLabels] = useMemo<[number[], string[]]>(

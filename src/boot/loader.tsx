@@ -4,16 +4,18 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { Modal, Padding, Text } from '@zextras/carbonio-design-system';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+
+import { Modal, Padding, Text } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
-import { useAppStore } from '../store/app';
-import { getInfo } from '../network/get-info';
+import { useTranslation } from 'react-i18next';
+
 import { loadApps, unloadAllApps } from './app/load-apps';
-import { loginConfig } from '../network/login-config';
-import { goToLogin } from '../network/go-to-login';
 import { getComponents } from '../network/get-components';
+import { getInfo } from '../network/get-info';
+import { loginConfig } from '../network/login-config';
+import { goToLogin } from '../network/utils';
+import { useAppStore } from '../store/app';
 
 export function isPromiseRejectedResult<T>(
 	promiseSettledResult: PromiseSettledResult<T>
@@ -32,7 +34,7 @@ type LoaderFailureModalProps = { open: boolean; closeHandler: () => void };
 export const LoaderFailureModal = ({
 	open,
 	closeHandler
-}: LoaderFailureModalProps): JSX.Element => {
+}: LoaderFailureModalProps): React.JSX.Element => {
 	const [t] = useTranslation();
 	const onConfirm = useCallback(() => window.location.reload(), []);
 	return (
@@ -58,7 +60,7 @@ export const LoaderFailureModal = ({
 	);
 };
 
-export const Loader = (): JSX.Element => {
+export const Loader = (): React.JSX.Element => {
 	const [open, setOpen] = useState(false);
 	const closeHandler = useCallback(() => setOpen(false), []);
 

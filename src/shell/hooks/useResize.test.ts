@@ -3,8 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { SizeAndPosition } from '../../utils/utils';
 import { Border, exportForTest } from './useResize';
+import { SizeAndPosition } from '../../utils/utils';
 
 type InitialSizeAndPosition = NonNullable<Parameters<typeof calcNewSizeAndPosition>[1]>;
 

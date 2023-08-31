@@ -3,11 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { SoapNotify, SoapRefresh } from '../../../types';
 import { useNetworkStore } from './store';
+import { SoapNotify, SoapRefresh } from '../../../types';
 
-export const useNotify = (): SoapNotify[] => {
-	const notify = useNetworkStore((s) => s.notify ?? []);
-	return notify;
-};
+export const useNotify = (): SoapNotify[] => useNetworkStore((s) => s.notify ?? []);
 export const useRefresh = (): SoapRefresh => useNetworkStore((s) => s.refresh ?? {});

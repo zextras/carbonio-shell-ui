@@ -4,12 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React from 'react';
+
 import { Row } from '@zextras/carbonio-design-system';
 import { isEmpty, map } from 'lodash';
-import React from 'react';
 import styled from 'styled-components';
-import { useBoardStore } from '../../store/boards';
+
 import { AppBoardTab } from './board-tab';
+import { useBoardStore } from '../../store/boards';
 
 const CustomRow = styled(Row)`
 	overflow-x: auto;
@@ -18,7 +20,7 @@ const CustomRow = styled(Row)`
 	}
 `;
 
-export const TabsList = (): JSX.Element => {
+export const TabsList = (): React.JSX.Element => {
 	const { boards, orderedBoards } = useBoardStore();
 	return (
 		<CustomRow wrap="nowrap" height="100%" mainAlignment="flex-start" takeAvailableSpace>

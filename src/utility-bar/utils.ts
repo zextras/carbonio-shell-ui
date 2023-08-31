@@ -4,8 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { filter, intersection, omit } from 'lodash';
 import { useMemo } from 'react';
+
+import { filter, intersection, omit } from 'lodash';
+
 import { AppRoute, PrimaryAccessoryView, SecondaryAccessoryView, UtilityView } from '../../types';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppStore } from '../store/app';

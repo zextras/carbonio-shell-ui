@@ -5,16 +5,17 @@
  */
 
 import React from 'react';
-import * as ReactDOM from 'react-dom';
-import * as Lodash from 'lodash';
-import * as ReactRouterDom from 'react-router-dom';
-import * as Moment from 'moment';
-import * as ReactI18n from 'react-i18next';
-import * as ReactRedux from 'react-redux';
+
 import * as ReduxJSToolkit from '@reduxjs/toolkit';
 import * as ZappUI from '@zextras/carbonio-design-system';
-import * as StyledComponents from 'styled-components';
 import * as Preview from '@zextras/carbonio-ui-preview';
+import * as Lodash from 'lodash';
+import * as Moment from 'moment';
+import * as ReactDOM from 'react-dom';
+import * as ReactI18n from 'react-i18next';
+import * as ReactRedux from 'react-redux';
+import * as ReactRouterDom from 'react-router-dom';
+import * as StyledComponents from 'styled-components';
 
 export function injectSharedLibraries(): void {
 	if (!window.__ZAPP_SHARED_LIBRARIES__) {

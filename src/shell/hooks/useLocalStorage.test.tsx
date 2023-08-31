@@ -4,9 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React, { useCallback, useEffect, useState } from 'react';
+
 import { screen, within } from '@testing-library/react';
+
 import { exportForTest, useLocalStorage } from './useLocalStorage';
-import { setup } from '../../test/utils';
+import { controlConsoleError, setup } from '../../test/utils';
 
 describe('use local storage', () => {
 	const TestComponent = <T,>({
@@ -17,7 +19,7 @@ describe('use local storage', () => {
 		initialValue: T;
 		updatedValue: React.SetStateAction<T>;
 		localStorageKey?: string;
-	}): JSX.Element => {
+	}): React.JSX.Element => {
 		const [localStorageValue, setLocalStorageValue] = useLocalStorage(
 			localStorageKey,
 			initialValue
@@ -165,19 +167,7 @@ describe('use local storage', () => {
 		const initial = 'initial';
 		const updatesLocalStorage = [initial];
 		const updatesLocalStorageStore = [undefined, initial];
-		const actualConsoleError = console.error;
-		console.error = jest.fn<ReturnType<typeof console.error>, Parameters<typeof console.error>>(
-			(error, ...rest) => {
-				if (
-					error instanceof Error &&
-					error.message === 'Unexpected token o in JSON at position 1'
-				) {
-					console.log('Controlled error', error.message);
-				} else {
-					actualConsoleError(error, ...rest);
-				}
-			}
-		);
+		controlConsoleError('Unexpected token o in JSON at position 1');
 		setup(
 			<TestComponent initialValue={initial} updatedValue={'updated'} localStorageKey={lsKey} />
 		);

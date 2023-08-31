@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
 import {
 	Container,
 	Divider,
@@ -18,8 +20,21 @@ import {
 	Tooltip
 } from '@zextras/carbonio-design-system';
 import { debounce, isEmpty, map, noop, size } from 'lodash';
-import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled, { css, SimpleInterpolation } from 'styled-components';
+
+import { AppBoard } from './board';
+import { TabsList } from './board-tab-list';
+import { ResizableContainer } from './resizable-container';
+import {
+	BOARD_CONTAINER_ZINDEX,
+	BOARD_HEADER_HEIGHT,
+	BOARD_MIN_VISIBILITY,
+	BOARD_TAB_WIDTH,
+	HEADER_BAR_HEIGHT,
+	LOCAL_STORAGE_BOARD_SIZE,
+	PRIMARY_BAR_WIDTH
+} from '../../constants';
+import { getApp } from '../../store/app';
 import {
 	closeAllBoards,
 	closeBoard,
@@ -31,21 +46,8 @@ import {
 	useBoardStore
 } from '../../store/boards';
 import { getT } from '../../store/i18n';
-import { AppBoard } from './board';
-import { TabsList } from './board-tab-list';
-import { getApp } from '../../store/app';
-import { ResizableContainer } from './resizable-container';
-import {
-	BOARD_CONTAINER_ZINDEX,
-	BOARD_HEADER_HEIGHT,
-	BOARD_MIN_VISIBILITY,
-	BOARD_TAB_WIDTH,
-	HEADER_BAR_HEIGHT,
-	LOCAL_STORAGE_BOARD_SIZE,
-	PRIMARY_BAR_WIDTH
-} from '../../constants';
-import { useLocalStorage } from '../hooks/useLocalStorage';
 import { setElementSizeAndPosition, SizeAndPosition } from '../../utils/utils';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useMove } from '../hooks/useMove';
 
 export const BOARD_DEFAULT_POSITION: Pick<CSSProperties, 'top' | 'left' | 'right' | 'bottom'> = {
@@ -147,7 +149,7 @@ function ListItemContent({
 	selected,
 	app,
 	boardId
-}: ListItemContentProps): JSX.Element {
+}: ListItemContentProps): React.JSX.Element {
 	const t = getT();
 	const onClose = useCallback<IconButtonProps['onClick']>(
 		(ev) => {
@@ -187,7 +189,7 @@ function calcPositionToRemainVisible(
 	return lastSavedPosition;
 }
 
-export const BoardContainer = (): JSX.Element | null => {
+export const BoardContainer = (): React.JSX.Element | null => {
 	const t = getT();
 	const { boards, minimized, expanded, current, orderedBoards } = useBoardStore();
 

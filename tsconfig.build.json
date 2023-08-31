@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "declaration": false
+  },
+  "include": ["carbonio.webpack.ts"],
+  "ts-node": {
+      "compilerOptions": {
+        "module": "commonjs"
+    }
+  }
+}

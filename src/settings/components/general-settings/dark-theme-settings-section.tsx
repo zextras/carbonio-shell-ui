@@ -4,17 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+
 import { Select, SelectItem, SingleSelectionOnChange, Text } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+
 import type { AddMod, DarkReaderPropValues, RemoveMod } from '../../../../types';
 import { ThemeCallbacksContext } from '../../../boot/theme-provider';
 import { DARK_READER_PROP_KEY, SHELL_APP_ID } from '../../../constants';
-import { getT } from '../../../store/i18n';
 import {
 	isDarkReaderPropValues,
 	useDarkReaderResultValue
 } from '../../../dark-mode/use-dark-reader-result-value';
+import { getT } from '../../../store/i18n';
 
 type DarkReaderSelectItem = Array<SelectItem & { value: DarkReaderPropValues }>;
 
@@ -26,7 +28,7 @@ interface DarkThemeSettingSectionProps {
 const DarkThemeSettingSection = ({
 	addMod,
 	removeMod
-}: DarkThemeSettingSectionProps): JSX.Element | null => {
+}: DarkThemeSettingSectionProps): React.JSX.Element | null => {
 	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
 	const darkReaderResultValue = useDarkReaderResultValue();
 	const [selection, setSelection] = useState<SelectItem>();

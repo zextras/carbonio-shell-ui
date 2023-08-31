@@ -4,10 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
+
 import { useLogo } from '../store/login/hooks';
 import { useLoginConfigStore } from '../store/login/store';
 
-export const Logo = (props: Record<string, unknown>): JSX.Element => {
+export const Logo = (props: Record<string, unknown>): React.JSX.Element => {
 	const { loaded } = useLoginConfigStore();
 	const LogoElement = useLogo();
 

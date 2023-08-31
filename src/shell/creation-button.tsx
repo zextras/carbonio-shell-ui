@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { FC, useCallback, useMemo, useState } from 'react';
+
 import {
 	Button,
 	Container,
@@ -13,8 +15,8 @@ import {
 } from '@zextras/carbonio-design-system';
 import { Location } from 'history';
 import { find, groupBy, noop, reduce } from 'lodash';
-import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+
 import { AppRoute, CarbonioModule } from '../../types';
 import { ACTION_TYPES } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
@@ -30,7 +32,7 @@ interface CreationButtonProps {
 export const CreationButtonComponent = ({
 	activeRoute,
 	location
-}: CreationButtonProps): JSX.Element => {
+}: CreationButtonProps): React.JSX.Element => {
 	const t = getT();
 	const actions = useActions({ activeRoute, location }, ACTION_TYPES.NEW);
 	const [open, setOpen] = useState(false);

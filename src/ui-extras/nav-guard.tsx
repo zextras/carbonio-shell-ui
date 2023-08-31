@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useEffect, useState, FC, useMemo } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
 import { Modal, Button, ModalProps } from '@zextras/carbonio-design-system';
 import { Location } from 'history';
@@ -24,7 +24,7 @@ export const RouteLeavingGuard = ({
 	when,
 	onSave,
 	dataHasError = false
-}: RouteLeavingGuardProps): JSX.Element => {
+}: RouteLeavingGuardProps): React.JSX.Element => {
 	const history = useHistory();
 	const lastLocationInitial = useMemo(() => history.location, [history]);
 	const [modalVisible, setModalVisible] = useState(false);

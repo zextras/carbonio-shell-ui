@@ -5,33 +5,44 @@
  */
 
 import React, { useState, useCallback, ReactElement, useEffect, useMemo } from 'react';
-import { Container, Text, Padding, Input, Row } from '@zextras/carbonio-design-system';
-import { TFunction } from 'i18next';
-import { IdentityAttrs, IdentityProps } from '../../../../types';
+
+import { Container, Text, Padding, Input, Row, InputProps } from '@zextras/carbonio-design-system';
+import { useTranslation } from 'react-i18next';
+
+import { IdentityAttrs } from '../../../../types';
 
 interface PersonaSettingsProps {
-	t: TFunction;
-	items: IdentityProps;
+	identityAttrs: IdentityAttrs;
 	updateIdentities: <K extends keyof IdentityAttrs>(
-		id: string | number,
+		id: string,
 		key: K,
 		value: IdentityAttrs[K]
 	) => void;
 }
 
-const PersonaSettings = ({ t, items, updateIdentities }: PersonaSettingsProps): ReactElement => {
-	const [personaValue, setPersonaValue] = useState(items.identityName);
+const PersonaSettings = ({
+	identityAttrs,
+	updateIdentities
+}: PersonaSettingsProps): ReactElement => {
+	const [t] = useTranslation();
+	const [personaValue, setPersonaValue] = useState(identityAttrs.zimbraPrefIdentityName);
 	const personaLabel = useMemo(() => t('label.persona_name', 'Persona Name'), [t]);
 	useEffect(() => {
-		setPersonaValue(items.identityName);
-	}, [items.identityName]);
+		setPersonaValue(identityAttrs.zimbraPrefIdentityName);
+	}, [identityAttrs.zimbraPrefIdentityName]);
 
-	const onChange = useCallback(
+	const onChange = useCallback<NonNullable<InputProps['onChange']>>(
 		(ev) => {
 			setPersonaValue(ev.target.value);
-			updateIdentities(items.identityId, 'zimbraPrefIdentityName', ev.target.value);
+			if (identityAttrs.zimbraPrefIdentityId) {
+				updateIdentities(
+					identityAttrs.zimbraPrefIdentityId,
+					'zimbraPrefIdentityName',
+					ev.target.value
+				);
+			}
 		},
-		[updateIdentities, items.identityId, setPersonaValue]
+		[identityAttrs.zimbraPrefIdentityId, updateIdentities]
 	);
 
 	return (
@@ -41,7 +52,7 @@ const PersonaSettings = ({ t, items, updateIdentities }: PersonaSettingsProps): 
 				width="fill"
 				padding={{ all: 'large' }}
 				height="fit"
-				background="gray6"
+				background={'gray6'}
 				mainAlignment="flex-start"
 			>
 				<Padding horizontal="medium" width="100%">
@@ -52,7 +63,7 @@ const PersonaSettings = ({ t, items, updateIdentities }: PersonaSettingsProps): 
 				width="fill"
 				padding={{ horizontal: 'large', bottom: 'large' }}
 				height="fit"
-				background="gray6"
+				background={'gray6'}
 				mainAlignment="flex-start"
 			>
 				<Row orientation="vertical" mainAlignment="flex-start" width="fill">
@@ -78,7 +89,7 @@ const PersonaSettings = ({ t, items, updateIdentities }: PersonaSettingsProps): 
 				width="fill"
 				padding={{ horizontal: 'large', bottom: 'large' }}
 				height="fit"
-				background="gray6"
+				background={'gray6'}
 				mainAlignment="flex-start"
 			>
 				<Row takeAvailableSpace>

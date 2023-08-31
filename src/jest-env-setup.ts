@@ -9,6 +9,7 @@ import { act, configure } from '@testing-library/react';
 import dotenv from 'dotenv';
 import failOnConsole from 'jest-fail-on-console';
 import { noop } from 'lodash';
+
 import server from './mocks/server';
 
 dotenv.config();
@@ -47,17 +48,6 @@ beforeEach(() => {
 		})
 	});
 
-	Object.defineProperty(window, 'ResizeObserver', {
-		writable: true,
-		value: function ResizeObserverMock(): ResizeObserver {
-			return {
-				observe: jest.fn(),
-				unobserve: jest.fn(),
-				disconnect: jest.fn()
-			};
-		}
-	});
-
 	// cleanup local storage
 	window.localStorage.clear();
 
@@ -77,9 +67,16 @@ afterAll(() => {
 });
 
 afterEach(() => {
-	jest.runOnlyPendingTimers();
+	act(() => {
+		jest.runOnlyPendingTimers();
+	});
+	server.events.removeAllListeners();
 	server.resetHandlers();
 	act(() => {
 		window.resizeTo(1024, 768);
 	});
 });
+
+jest.mock<typeof import('./workers')>('./workers');
+jest.mock<typeof import('./reporting/functions')>('./reporting/functions');
+jest.mock<typeof import('./reporting/store')>('./reporting/store');

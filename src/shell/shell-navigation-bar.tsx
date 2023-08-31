@@ -5,10 +5,12 @@
  */
 
 import React, { FC } from 'react';
+
 import { Responsive, Container } from '@zextras/carbonio-design-system';
+
+import ShellMobileNav from './shell-mobile-nav';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
-import ShellMobileNav from './shell-mobile-nav';
 
 type ShellNavigationBarProps = {
 	mobileNavIsOpen: boolean;

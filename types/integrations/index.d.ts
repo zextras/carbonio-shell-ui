@@ -5,6 +5,7 @@
  */
 
 import { ComponentType } from 'react';
+
 import { DropdownItem } from '@zextras/carbonio-design-system';
 
 export type IntegrationsState = {

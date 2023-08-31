@@ -3,57 +3,66 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+/* eslint-disable import/no-import-module-exports */
 
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable no-param-reassign */
+import { execSync } from 'child_process';
+import path from 'path';
 
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { DefinePlugin, ContextReplacementPlugin } = require('webpack');
-const CopyPlugin = require('copy-webpack-plugin');
-const commitHash = require('child_process').execSync('git rev-parse HEAD').toString().trim();
+import CopyPlugin from 'copy-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { ContextReplacementPlugin, DefinePlugin } from 'webpack';
+import { WebpackConfiguration } from 'webpack-cli';
+
+import { SUPPORTED_LOCALES } from './src/constants/locales';
+
+const commitHash = execSync('git rev-parse HEAD').toString().trim();
 
 const baseStaticPath = `/static/iris/carbonio-shell-ui/${commitHash}/`;
 
-// these have to match with the ones available in date-fns/locale
-const supportedLocalesDateFns = [
-	'de',
-	'en-US',
-	'es',
-	'fr',
-	'hi',
-	'it',
-	'ja',
-	'nl',
-	'pl',
-	'pt',
-	'pt-BR',
-	'ro',
-	'ru',
-	'th',
-	'tr',
-	'vi',
-	'zh-CN'
-	/* TODO: For future languages
-	 * 'ar','bg','ca','da','en-AU','en-GB','eu','fr-CA','hr','hu','ko','ms','sl','sv','ta','uk','zh-HK','zh-TW'
-	 */
-];
+const supportedLocalesList = Object.values(SUPPORTED_LOCALES);
 
-module.exports = (conf, pkg, options, mode) => {
+// these have to match with the ones available in date-fns/locale
+const supportedLocalesDateFns = supportedLocalesList.map(
+	(locale) => ('dateFnsLocale' in locale && locale.dateFnsLocale) || locale.value
+);
+const tinymceLocales = supportedLocalesList.map(
+	(locale) => ('tinymceLocale' in locale && locale.tinymceLocale) || locale.value
+);
+
+const configFn = (
+	initialConf: WebpackConfiguration,
+	pkg: string,
+	options: { host: string; port: number },
+	mode: 'development' | 'production'
+): WebpackConfiguration => {
+	const conf = { ...initialConf };
 	const server = `https://${options.host}`;
 	const root = 'carbonio';
 	conf.entry = {
 		index: path.resolve(process.cwd(), 'src', 'index.tsx')
 	};
-	conf.output.filename =
-		mode === 'development' ? 'zapp-shell.bundle.js' : '[name].[chunkhash:8].js';
-	conf.resolve.extensions.push('.d.ts');
+	conf.output = {
+		...conf.output,
+		filename: mode === 'development' ? 'zapp-shell.bundle.js' : '[name].[chunkhash:8].js'
+	};
+	const extensions = conf.resolve?.extensions || [];
+	extensions.push('.d.ts');
+	conf.resolve = {
+		...conf.resolve,
+		extensions
+	};
+	conf.plugins = conf.plugins || [];
 	conf.plugins.push(
 		new CopyPlugin({
 			patterns: [
 				{
 					from: 'assets/',
 					to: ''
+				},
+				{
+					from: `plugins/help/js/i18n/**/(${tinymceLocales.join('|')}).js`,
+					to: '',
+					context: 'node_modules/tinymce/'
 				}
 			]
 		}),
@@ -114,15 +123,21 @@ module.exports = (conf, pkg, options, mode) => {
 		]
 	};
 	conf.externals = {};
-	conf.module.rules = [
-		...conf.module.rules,
-		{
-			test: /\.(woff(2)?|ttf|eot)$/,
-			type: 'asset/resource',
-			generator: {
-				filename: './files/[name][ext]'
-			}
+	const rules = conf.module?.rules || [];
+	rules.push({
+		test: /\.(woff(2)?|ttf|eot)$/,
+		type: 'asset/resource',
+		generator: {
+			filename: './files/[name][ext]'
 		}
-	];
+	});
+	conf.module = {
+		...conf.module,
+		rules
+	};
 	return conf;
 };
+
+export default configFn;
+// required to keep the compatibility with the sdk
+module.exports = configFn;

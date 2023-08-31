@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { useEffect, useState } from 'react';
+
 import { useDarkReaderResultValue } from './use-dark-reader-result-value';
 import { getPrefersColorSchemeDarkMedia } from './utils';
 import type { DarkReaderPropValues } from '../../types';

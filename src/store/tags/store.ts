@@ -5,6 +5,7 @@
  */
 
 import { create } from 'zustand';
+
 import type { TagState } from '../../../types';
 import { tagWorker } from '../../workers';
 

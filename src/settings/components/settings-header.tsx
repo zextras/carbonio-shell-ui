@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import React, { useEffect, useMemo } from 'react';
+
 import {
 	Breadcrumbs,
 	Button,
@@ -14,11 +16,17 @@ import {
 	Row,
 	Text
 } from '@zextras/carbonio-design-system';
-import React, { useEffect, useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { SETTINGS_APP_ID } from '../../constants';
+import styled from 'styled-components';
+
 import { getT } from '../../store/i18n';
 import { RouteLeavingGuard, RouteLeavingGuardProps } from '../../ui-extras/nav-guard';
+
+const CustomBreadcrumbs = styled(Breadcrumbs)`
+	.breadcrumbCrumb {
+		cursor: default;
+	}
+`;
 
 export type SettingsHeaderProps = {
 	title: string;
@@ -27,7 +35,12 @@ export type SettingsHeaderProps = {
 	isDirty: boolean;
 };
 
-const SettingsHeader = ({ onSave, onCancel, isDirty, title }: SettingsHeaderProps): JSX.Element => {
+const SettingsHeader = ({
+	onSave,
+	onCancel,
+	isDirty,
+	title
+}: SettingsHeaderProps): React.JSX.Element => {
 	const t = getT();
 	const history = useHistory();
 	const params = useParams();
@@ -36,15 +49,15 @@ const SettingsHeader = ({ onSave, onCancel, isDirty, title }: SettingsHeaderProp
 			{
 				id: 'settings',
 				label: t('settings.app', 'Settings'),
-				onClick: (): void => history.push(`/${SETTINGS_APP_ID}/`)
+				className: 'breadcrumbCrumb'
 			},
 			{
 				id: 'general',
 				label: title,
-				onClick: (): void => history.push(`/${SETTINGS_APP_ID}/`)
+				className: 'breadcrumbCrumb'
 			}
 		],
-		[history, t, title]
+		[t, title]
 	);
 
 	const search: string | undefined = history.location?.search;
@@ -85,7 +98,7 @@ const SettingsHeader = ({ onSave, onCancel, isDirty, title }: SettingsHeaderProp
 						width="50%"
 						crossAlignment="flex-start"
 					>
-						<Breadcrumbs crumbs={crumbs} />
+						<CustomBreadcrumbs crumbs={crumbs} />
 					</Row>
 					<Row
 						padding={{ all: 'small' }}

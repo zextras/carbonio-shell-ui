@@ -4,14 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
+
 import { act, screen, waitFor, within } from '@testing-library/react';
+import { Input } from '@zextras/carbonio-design-system';
 import { reduce, sample, size } from 'lodash';
 import 'jest-styled-components';
-import { Input } from '@zextras/carbonio-design-system';
-import { setup } from '../../test/utils';
+
 import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
+import { Board, BoardView } from '../../../types';
+import { BOARD_MIN_VISIBILITY, LOCAL_STORAGE_BOARD_SIZE } from '../../constants';
+import { useAppStore } from '../../store/app';
+import { reopenBoards, useBoardStore } from '../../store/boards';
 import { ICONS, TESTID_SELECTORS } from '../../test/constants';
-import { Border } from '../hooks/useResize';
+import { mockedApps, setupAppStore } from '../../test/test-app-utils';
 import {
 	buildBoardSizeAndPosition,
 	buildMousePosition,
@@ -22,17 +27,19 @@ import {
 	moveBoard,
 	mockedBoardState
 } from '../../test/test-board-utils';
+import { setup } from '../../test/utils';
 import { SizeAndPosition } from '../../utils/utils';
-import { reopenBoards, useBoardStore } from '../../store/boards';
-import { mockedApps, setupAppStore } from '../../test/test-app-utils';
-import { BOARD_MIN_VISIBILITY, LOCAL_STORAGE_BOARD_SIZE } from '../../constants';
-import { Board, BoardView } from '../../../types';
-import { useAppStore } from '../../store/app';
+import { Border } from '../hooks/useResize';
 
 beforeEach(() => {
 	setupAppStore();
 	setupBoardStore();
 });
+
+const ENLARGED_BOARD_POSITION = {
+	top: '1.5rem !important',
+	left: '1.5rem !important'
+};
 
 describe('Board container', () => {
 	describe('Tabs', () => {
@@ -84,7 +91,7 @@ describe('Board container', () => {
 			expect(chevronDownIcon).toBeVisible();
 
 			await user.click(chevronDownIcon);
-			expect(screen.getAllByText('From Mails')).toHaveLength(10);
+			expect(screen.getAllByText(/from mails/i)).toHaveLength(10);
 		});
 
 		test('If close a tab from the dropdown, it will be removed', async () => {
@@ -99,13 +106,13 @@ describe('Board container', () => {
 
 			await user.click(chevronDownIcon);
 
-			expect(screen.getAllByText('From Mails')).toHaveLength(10);
+			expect(screen.getAllByText(/from mails/i)).toHaveLength(10);
 
 			const firstCloseIcon = within(screen.getByTestId('dropdown-popper-list')).getAllByTestId(
 				'icon: CloseOutline'
 			)[0];
 			await user.click(firstCloseIcon);
-			expect(screen.getAllByText('From Mails')).toHaveLength(9);
+			expect(screen.getAllByText(/from mails/i)).toHaveLength(9);
 			expect(useBoardStore.getState().orderedBoards).toHaveLength(9);
 			expect(size(useBoardStore.getState().boards)).toBe(9);
 		});
@@ -281,8 +288,8 @@ describe('Board container', () => {
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
 		expect(board).toHaveStyleRule('height', 'calc(100% - 1.5rem) !important');
 		expect(board).toHaveStyleRule('width', 'calc(100% - 3rem) !important');
-		expect(board).toHaveStyleRule('top', '1.5rem !important');
-		expect(board).toHaveStyleRule('left', '1.5rem !important');
+		expect(board).toHaveStyleRule('top', ENLARGED_BOARD_POSITION.top);
+		expect(board).toHaveStyleRule('left', ENLARGED_BOARD_POSITION.left);
 	});
 
 	test('Enlarge resized board set board to fill board area', async () => {
@@ -312,8 +319,8 @@ describe('Board container', () => {
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
 		expect(board).toHaveStyleRule('height', 'calc(100% - 1.5rem) !important');
 		expect(board).toHaveStyleRule('width', 'calc(100% - 3rem) !important');
-		expect(board).toHaveStyleRule('top', '1.5rem !important');
-		expect(board).toHaveStyleRule('left', '1.5rem !important');
+		expect(board).toHaveStyleRule('top', ENLARGED_BOARD_POSITION.top);
+		expect(board).toHaveStyleRule('left', ENLARGED_BOARD_POSITION.left);
 	});
 
 	test('Reduce default board set board to default size', async () => {
@@ -907,7 +914,7 @@ describe('Board container', () => {
 			id: boardObj.id,
 			app: boardObj.app,
 			route: boardObj.url,
-			component: (): JSX.Element => <Input label={'Board input'} />
+			component: (): React.JSX.Element => <Input label={'Board input'} />
 		};
 		useAppStore.getState().setters.addBoardView(boardView);
 		const { user } = setup(<BoardContainer />);

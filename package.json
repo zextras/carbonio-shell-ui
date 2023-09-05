@@ -54,7 +54,7 @@
 		"@commitlint/config-conventional": "^17.6.7",
 		"@faker-js/faker": "^8.0.2",
 		"@svgr/webpack": "^8.0.1",
-		"@testing-library/jest-dom": "^5.17.0",
+		"@testing-library/jest-dom": "^6.1.2",
 		"@testing-library/react": "^12.1.5",
 		"@testing-library/user-event": "^14.4.3",
 		"@types/jest": "^29.5.3",

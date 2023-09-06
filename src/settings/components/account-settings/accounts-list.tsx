@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, ReactElement, useContext, useRef, useMemo } from 'react';
+import React, { useCallback, ReactElement, useRef, useMemo } from 'react';
 
 import {
 	Container,
@@ -14,9 +14,9 @@ import {
 	Padding,
 	Button,
 	Icon,
-	ModalManagerContext,
 	ListV2,
-	ListItem
+	ListItem,
+	useModal
 } from '@zextras/carbonio-design-system';
 import type { TFunction } from 'i18next';
 import { map } from 'lodash';
@@ -66,7 +66,7 @@ const AccountsList = ({
 }: AccountsListProps): ReactElement => {
 	const [t] = useTranslation();
 
-	const createModal = useContext(ModalManagerContext);
+	const createModal = useModal();
 
 	const createListRequestIdRef = useRef(0);
 	const addNewPersona = useCallback(() => {

@@ -6,7 +6,6 @@
 
 import { ComponentType, Dispatch, FC, SetStateAction } from 'react';
 
-import { CreateModalFn, CreateSnackbarFn } from '@zextras/carbonio-design-system';
 import { i18n } from 'i18next';
 import { TFunction } from 'react-i18next';
 import { LinkProps } from 'react-router-dom';
@@ -41,8 +40,6 @@ import { QueryChip } from '../search';
 import { Tag, Tags } from '../tags';
 
 declare const getBridgedFunctions: () => {
-	createModal: CreateModalFn;
-	createSnackbar: CreateSnackbarFn;
 	getHistory: () => History;
 };
 declare const editSettings: (mods: Mods) => Promise<any>;

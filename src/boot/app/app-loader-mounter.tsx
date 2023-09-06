@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, Suspense, useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 
 import { map } from 'lodash';
 
@@ -14,7 +14,7 @@ import { useAppStore } from '../../store/app';
 const Mounter: FC<{ appId: string }> = ({ children, appId }) => (
 	<div key={appId} id={appId}>
 		<AppContextProvider key={appId} pkg={appId}>
-			<Suspense fallback={''}>{children}</Suspense>
+			{children}
 		</AppContextProvider>
 	</div>
 );

@@ -6,7 +6,7 @@
 
 import React, { FC, useEffect } from 'react';
 
-import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
+import { SnackbarManager } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Route, Switch, useParams } from 'react-router-dom';
 
@@ -42,21 +42,19 @@ const Bootstrapper: FC = () => (
 		<ShellI18nextProvider>
 			<BrowserRouter basename={BASENAME}>
 				<SnackbarManager>
-					<ModalManager>
-						<Loader />
-						{IS_STANDALONE && (
-							<Switch>
-								<Route path={'/:route'}>
-									<StandaloneListener />
-								</Route>
-							</Switch>
-						)}
-						<DefaultViewsRegister />
-						<NotificationPermissionChecker />
-						<ContextBridge />
-						<AppLoaderMounter />
-						<ShellView />
-					</ModalManager>
+					<Loader />
+					{IS_STANDALONE && (
+						<Switch>
+							<Route path={'/:route'}>
+								<StandaloneListener />
+							</Route>
+						</Switch>
+					)}
+					<DefaultViewsRegister />
+					<NotificationPermissionChecker />
+					<ContextBridge />
+					<AppLoaderMounter />
+					<ShellView />
 				</SnackbarManager>
 			</BrowserRouter>
 		</ShellI18nextProvider>

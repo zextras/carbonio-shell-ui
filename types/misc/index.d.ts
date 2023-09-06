@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React from 'react';
 import type { ComponentType } from 'react';
 
 import type { Store } from '@reduxjs/toolkit';
@@ -98,30 +97,6 @@ export type IdentityProps = {
 	whenInFoldersEnabled?: string;
 	whenSentToEnabled?: string;
 	whenSentToAddresses?: string;
-};
-
-export type CreateModalProps = {
-	background: string;
-	centered: boolean;
-	children: React.ReactElement;
-	confirmColor: string;
-	confirmLabel: string;
-	copyLabel: string;
-	customFooter: React.ReactElement;
-	disablePortal: boolean;
-	dismissLabel: string;
-	hideFooter: boolean;
-	maxHeight: string;
-	onClose: () => void;
-	onConfirm: () => void;
-	onSecondaryAction: () => void;
-	optionalFooter: React.ReactElement;
-	secondaryActionLabel: string;
-	showCloseIcon: boolean;
-	size: string;
-	title: string;
-	type: string;
-	zIndex: number;
 };
 
 // Custom metadata

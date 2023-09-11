@@ -187,7 +187,7 @@
         "test_settings": "Configurações de teste",
         "unsaved_changes": "As alterações não foram salvas",
         "unsaved_changes_line1": "Tem certeza que deseja sair desta página sem salvar?",
-        "update_view": "Atualizar visualização",
+        "update_view": "Atualizar vista",
         "use_persona": "Usar esta Persona",
         "persona_settings": "Configurações de Persona",
         "use_personas_line1": "As personas são usadas para alternar rapidamente entre diferentes perfis ao enviar e-mails.",
@@ -196,7 +196,9 @@
         "when_replying": "Ao responder ou encaminhar mensagens enviadas para:",
         "folder_external_account": "Pasta: Nova conta externa",
         "add_inline_image": "Inserir imágem",
-        "select_image": "Selecionar imagem"
+        "select_image": "Selecionar imagem",
+        "cannot_save_changes": "Algumas mudanças não foram salvas",
+        "close": "Fechar"
     },
     "timezone": {
         "africa_algiers": "{{value}} África Central Ocidental",
@@ -379,7 +381,11 @@
         "reduce": "Redefinir janela",
         "show_tabs": "Mostrar tudo",
         "open_app": "Abrir no app",
-        "from_app": "De {{app}}"
+        "from_app": "De {{app}}",
+        "reset_size": {
+            "disabled": "A janela já está na posição original",
+            "enabled": "Voltar para a posição e tamanho original"
+        }
     },
     "feedback": {
         "other": "Outro",
@@ -408,5 +414,15 @@
     },
     "primary_account": {
         "title": "Conta principal"
+    },
+    "bootstrap": {
+        "failure": {
+            "modal": {
+                "body": "Ocorreu um problema durante o processamento de sua solicitação. Atualize a página ou volte para a página de login.",
+                "confirmButtonLabel": "Atualizar",
+                "secondaryButtonLabel": "Página de login",
+                "title": "Algo deu errado…"
+            }
+        }
     }
 }

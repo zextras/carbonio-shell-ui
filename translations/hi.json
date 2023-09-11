@@ -87,6 +87,12 @@
                 "include_search_in_shared_folder": "सर्चों में शेयर्ड फोल्डर शामिल करें",
                 "include_search_in_spam_folder": "सर्चों में स्पैम शामिल करें"
             }
+        },
+        "account": {
+            "delegates": {
+                "right_sendonbehalfof": "इनकी ओर से भेजें"
+            },
+            "new_identity": "नया व्यक्ति {{number}}"
         }
     },
     "message": {
@@ -196,7 +202,9 @@
         "when_composing": "मैसेज लिखते समय, जबाब देते समय या फोल्डर (रों) के मैसेज फॉरवर्ड करते समय:",
         "folder_external_account": "फोल्डर: नया बाहरी अकाउंट",
         "add_inline_image": "इनलाइन फोटो जोड़ें",
-        "select_image": "कोई फोटो सिलेक्ट करें"
+        "select_image": "कोई फोटो सिलेक्ट करें",
+        "cannot_save_changes": "कुछ बदलाव सेव नहीं किए जा सकते",
+        "close": "बंद करें"
     },
     "board": {
         "close_tab": "टैब बंद करने",
@@ -408,5 +416,13 @@
     },
     "primary_account": {
         "title": "प्राइमरी अकाउंट सेटिंग्स"
+    },
+    "bootstrap": {
+        "failure": {
+            "modal": {
+                "confirmButtonLabel": "ताज़ा करें",
+                "title": "कुछ गड़बड़ हुई।…"
+            }
+        }
     }
 }

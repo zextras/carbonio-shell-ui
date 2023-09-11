@@ -87,6 +87,11 @@
                 "include_search_in_spam_folder": "Spamfolder opnemen in zoekopdrachten",
                 "include_search_in_trash_folder": "Prullenmand opnemen in zoekopdrachten"
             }
+        },
+        "account": {
+            "delegates": {
+                "right_sendonbehalfof": "Versturen in naam van"
+            }
         }
     },
     "message": {
@@ -196,7 +201,8 @@
         "when_replying": "Bij het beantwoorden of doorsturen van berichten die zijn verzonden naar:",
         "folder_external_account": "Map: Nieuwe externe account",
         "add_inline_image": "Inline afbeelding toevoegen",
-        "select_image": "Afbeelding selecteren"
+        "select_image": "Afbeelding selecteren",
+        "cannot_save_changes": "Sommige wijzigingen kunnen niet worden opgeslagen"
     },
     "locale": {
         "label_russian": "Russisch - {{value}}",

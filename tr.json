@@ -95,7 +95,15 @@
             }
         },
         "accounts": "Hesaplar",
-        "choose": "Seç"
+        "choose": "Seç",
+        "account": {
+            "delegates": {
+                "right_sendonbehalfof": "Kişi adına gönder",
+                "multiple_rights": "{{rights.0}} ve {{rights.1}}",
+                "right_sendas": "Adresi Kullanarak gönder"
+            },
+            "new_identity": "Yeni Kişilik {{number}}"
+        }
     },
     "snackbar": {
         "error": "Bir hata oluştu, lütfen tekrar deneyin"
@@ -246,7 +254,9 @@
         "french": "Fransızca",
         "label_french": "Fransızca - {{value}}",
         "vietnamese": "Vietnamese",
-        "polish": "Polish"
+        "polish": "Polish",
+        "label_polish": "Polish - {{value}}",
+        "label_vietnamese": "Vietnamese - {{value}}"
     },
     "timezone": {
         "africa_cairo": "{{value}} Egypt",

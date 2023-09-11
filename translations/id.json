@@ -86,6 +86,11 @@
                 "include_search_in_shared_folder": "Sertakan Folder Bersama dalam pencarian",
                 "include_search_in_trash_folder": "Sertakan Folder Sampah dalam pencarian"
             }
+        },
+        "account": {
+            "delegates": {
+                "right_sendonbehalfof": "Kirim atas nama"
+            }
         }
     },
     "new": "Baru",
@@ -196,7 +201,9 @@
         "when_replying": "Saat membalas atau meneruskan pesan yang dikirim ke:",
         "folder_external_account": "Folder: Akun Eksternal Baru",
         "add_inline_image": "Tambahkan gambar sebaris",
-        "select_image": "Pilih gambar"
+        "select_image": "Pilih gambar",
+        "cannot_save_changes": "Beberapa perubahan tidak bisa disimpan",
+        "close": "Tutup"
     },
     "locale": {
         "portuguese_brazil": "Portugis (Brasil)",
@@ -408,5 +415,12 @@
     },
     "passwords_recovery_settings": {
         "title": "Pengaturan Akun Pemulihan Kata Sandi"
+    },
+    "bootstrap": {
+        "failure": {
+            "modal": {
+                "title": "Terjadi masalah…"
+            }
+        }
     }
 }

@@ -94,7 +94,7 @@
             "settings_saved": "Edições guardadas corretamente",
             "identities_quota_exceeded": "A identidade não foi criada porque atingiu o número máximo de identidades permitido"
         },
-        "reload": "\tPretende recarregar a aplicação agora para mostrar o novo idioma?\nCaso contrário, o novo idioma aparecerá da próxima vez que fizer login."
+        "reload": "\tPretende recarregar agora a aplicação para mostrar o novo idioma?\nCaso contrário, o novo idioma aparecerá da próxima vez que fizer login."
     },
     "module": {
         "app": {
@@ -138,7 +138,7 @@
         "no_results": "Não foram encontrados resultados",
         "password": "Senha",
         "primary": "Primário",
-        "remove": "Excluir",
+        "remove": "remover",
         "account_menu": "Menu da conta",
         "account_name": "Nome da conta",
         "account_type": "Tipo de conta",
@@ -196,7 +196,9 @@
         "when_replying": "Ao responder ou encaminhar mensagens enviadas para:",
         "folder_external_account": "Pasta: Nova conta externa",
         "add_inline_image": "Inserir imagem",
-        "select_image": "Selecionar imagem"
+        "select_image": "Selecionar imagem",
+        "cannot_save_changes": "Algumas mudanças não foram salvas",
+        "close": "Fechar"
     },
     "timezone": {
         "africa_algiers": "{{value}} África Central Ocidental",
@@ -379,7 +381,11 @@
         "reduce": "Redefinir janela",
         "show_tabs": "Mostrar tudo",
         "open_app": "Abrir na app",
-        "from_app": "De {{app}}"
+        "from_app": "De {{app}}",
+        "reset_size": {
+            "disabled": "A janela já está na posição original",
+            "enabled": "Voltar para a posição e tamanho originais"
+        }
     },
     "feedback": {
         "other": "Outro",
@@ -408,5 +414,15 @@
     },
     "primary_account": {
         "title": "Conta principal"
+    },
+    "bootstrap": {
+        "failure": {
+            "modal": {
+                "confirmButtonLabel": "Atualize",
+                "body": "Ocorreu um problema durante o processamento de sua solicitação. Actualize a página ou volte para a página de login.",
+                "secondaryButtonLabel": "Página de login",
+                "title": "Algo deu errado…"
+            }
+        }
     }
 }

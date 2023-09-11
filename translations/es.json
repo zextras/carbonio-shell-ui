@@ -196,7 +196,9 @@
         "update_view": "Actualizar vista",
         "folder_external_account": "Carpeta: Nueva cuenta externa",
         "add_inline_image": "Insertar imagen",
-        "select_image": "Seleccionar imagen"
+        "select_image": "Seleccionar imagen",
+        "cannot_save_changes": "Algunos cambios no se han guardado",
+        "close": "Cerrar"
     },
     "timezone": {
         "africa_cairo": "{{value}} Egipto",
@@ -379,7 +381,11 @@
         "reduce": "Restablecer ventana",
         "show_tabs": "Mostrar todo",
         "open_app": "Abrir en la aplicación",
-        "from_app": "De {{app}}"
+        "from_app": "De {{app}}",
+        "reset_size": {
+            "enabled": "Volver a la posición y tamaño iniciales",
+            "disabled": "La ventana ya está en la posición original"
+        }
     },
     "feedback": {
         "other": "Otro",
@@ -408,5 +414,15 @@
     },
     "primary_account": {
         "title": "Cuenta principal"
+    },
+    "bootstrap": {
+        "failure": {
+            "modal": {
+                "body": "Se han producido algunos problemas técnicos al procesar la solicitud. Actualiza la página o vuelve a la página de inicio de sesión.",
+                "secondaryButtonLabel": "Página de inicio de sesión",
+                "confirmButtonLabel": "Refrescar",
+                "title": "Algo salió mal…"
+            }
+        }
     }
 }

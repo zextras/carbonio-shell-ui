@@ -78,8 +78,8 @@ function mapToDeleteIdentityRequests(deleteArray: Array<string>): Array<DeleteId
 function mapToModifyIdentityRequests(
 	modifyRecord: Record<string, Partial<IdentityAttrs>>
 ): Array<ModifyIdentityRequest> {
-	return map(
-		modifyRecord.current,
+	return map<typeof modifyRecord, ModifyIdentityRequest>(
+		modifyRecord,
 		(item, index): ModifyIdentityRequest => ({
 			_jsns: 'urn:zimbraAccount',
 			identity: {

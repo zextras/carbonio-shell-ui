@@ -74,7 +74,7 @@ describe('Shell primary bar', () => {
 				label: 'App One',
 				route: 'app1',
 				position: 1,
-				badge: { show: false },
+				badge: { show: false, count: 0 },
 				visible: true,
 				component: 'People'
 			},
@@ -84,7 +84,7 @@ describe('Shell primary bar', () => {
 				label: 'App Two',
 				route: 'app2',
 				position: 2,
-				badge: { show: false },
+				badge: { show: false, count: 0 },
 				visible: true,
 				component: 'Activity'
 			}
@@ -107,7 +107,7 @@ describe('Shell primary bar', () => {
 				label: 'App One',
 				route: 'app1',
 				position: 1,
-				badge: { show: false },
+				badge: { show: false, count: 0 },
 				visible: true,
 				component: 'People'
 			},
@@ -117,7 +117,7 @@ describe('Shell primary bar', () => {
 				label: 'App Two',
 				route: 'app2',
 				position: 2,
-				badge: { show: false },
+				badge: { show: false, count: 0 },
 				visible: false,
 				component: 'Activity'
 			}
@@ -167,7 +167,7 @@ describe('Shell primary bar', () => {
 				label: 'Mails',
 				primaryBar: 'MailModOutline',
 				appView: MailsView,
-				badge: { show: false },
+				badge: { show: false, count: 0 },
 				app: 'carbonio-mails-ui'
 			});
 
@@ -179,7 +179,7 @@ describe('Shell primary bar', () => {
 				label: 'Files',
 				primaryBar: 'DriveOutline',
 				appView: FilesView,
-				badge: { show: false },
+				badge: { show: false, count: 0 },
 				app: 'carbonio-files-ui'
 			});
 		});
@@ -247,7 +247,7 @@ describe('Shell primary bar', () => {
 				label: 'Mails',
 				primaryBar: 'MailModOutline',
 				appView: MailsView,
-				badge: { show: false },
+				badge: { show: false, count: 0 },
 				app: 'carbonio-mails-ui'
 			});
 
@@ -259,7 +259,7 @@ describe('Shell primary bar', () => {
 				label: 'Files',
 				primaryBar: 'DriveOutline',
 				appView: FilesView,
-				badge: { show: false },
+				badge: { show: false, count: 0 },
 				app: 'carbonio-files-ui'
 			});
 
@@ -346,7 +346,7 @@ describe('Shell primary bar', () => {
 				label: 'Mails',
 				primaryBar: 'MailModOutline',
 				appView: MailsView,
-				badge: { show: false },
+				badge: { show: false, count: 0 },
 				app: 'carbonio-mails-ui'
 			});
 
@@ -358,7 +358,7 @@ describe('Shell primary bar', () => {
 				label: 'Files',
 				primaryBar: 'DriveOutline',
 				appView: FilesView,
-				badge: { show: false },
+				badge: { show: false, count: 0 },
 				app: 'carbonio-files-ui'
 			});
 

@@ -46,7 +46,8 @@ const searchRouteDescriptor = (t: TFunction): AppRouteDescriptor => ({
 	route: SEARCH_APP_ID,
 	appView: SearchAppView,
 	badge: {
-		show: false
+		show: false,
+		count: 0
 	},
 	label: t('search.app', 'Search'),
 	position: 15,
@@ -60,7 +61,8 @@ const settingsRouteDescriptor = (t: TFunction): AppRouteDescriptor => ({
 	route: SETTINGS_APP_ID,
 	appView: SettingsAppView,
 	badge: {
-		show: false
+		show: false,
+		count: 0
 	},
 	label: t('settings.app', 'Settings'),
 	position: 16,

@@ -48,7 +48,7 @@ export type AppRouteData = AppRoute & {
 
 export type BadgeInfo = {
 	show: boolean;
-	count?: number;
+	count: number | string;
 	showCount?: boolean;
 	color?: keyof DefaultTheme['palette'];
 };

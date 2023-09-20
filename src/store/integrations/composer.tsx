@@ -229,7 +229,8 @@ const Composer: FC<ComposerProps> = ({
 			end_container_on_empty_block: true,
 			relative_urls: false,
 			remove_script_host: false,
-			newline_behavior: 'invert',
+			newline_behavior: 'default',
+			browser_spellcheck: true,
 			...customInitOptions
 		}),
 		[

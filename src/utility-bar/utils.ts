@@ -19,7 +19,7 @@ export const checkRoute = (
 	view: UtilityView | PrimaryAccessoryView | SecondaryAccessoryView,
 	activeRoute?: AppRoute
 ): boolean => {
-	const activeRouteValues = Object.values(omit(activeRoute, 'standalone') ?? {});
+	const activeRouteValues = Object.values(omit(activeRoute, 'focusMode') ?? {});
 	if (view.blacklistRoutes) return !checkList(activeRouteValues, view.blacklistRoutes);
 	if (view.whitelistRoutes) return checkList(activeRouteValues, view.whitelistRoutes);
 	return true;

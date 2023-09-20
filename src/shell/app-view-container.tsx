@@ -12,14 +12,14 @@ import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import AppContextProvider from '../boot/app/app-context-provider';
-import { IS_STANDALONE } from '../constants';
+import { IS_FOCUS_MODE } from '../constants';
 import { useAppList, useAppStore, useRoutes } from '../store/app';
 
 const _BoardsRouterContainer = styled(Container)`
 	flex-grow: 1;
 	flex-basis: 0;
 	min-width: 0.0625rem;
-	max-height: ${IS_STANDALONE ? '100vh' : 'calc(100vh - 3.75rem)'};
+	max-height: ${IS_FOCUS_MODE ? '100vh' : 'calc(100vh - 3.75rem)'};
 	overflow-y: auto;
 `;
 

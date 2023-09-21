@@ -9,7 +9,6 @@ import React from 'react';
 import {
 	Catcher,
 	Container,
-	IconButton,
 	Padding,
 	Responsive,
 	useScreenMode
@@ -32,16 +31,10 @@ const ShellHeaderContainer = styled(Container)`
 `;
 
 interface ShellHeaderProps {
-	mobileNavIsOpen: boolean;
-	onMobileMenuClick: () => void;
 	children: React.ReactNode | React.ReactNode[];
 }
 
-const ShellHeader = ({
-	mobileNavIsOpen,
-	onMobileMenuClick,
-	children
-}: ShellHeaderProps): React.JSX.Element => {
+const ShellHeader = ({ children }: ShellHeaderProps): React.JSX.Element => {
 	const { darkReaderStatus } = useDarkMode();
 
 	const screenMode = useScreenMode();
@@ -68,11 +61,6 @@ const ShellHeader = ({
 					minWidth="fit-content"
 					data-testid="HeaderMainLogoContainer"
 				>
-					<Responsive mode="mobile">
-						<Padding right="small">
-							<IconButton icon={mobileNavIsOpen ? 'Close' : 'Menu'} onClick={onMobileMenuClick} />
-						</Padding>
-					</Responsive>
 					<Container width="15.625rem" height="2rem" crossAlignment="flex-start">
 						{darkReaderStatus && <StyledLogo />}
 					</Container>

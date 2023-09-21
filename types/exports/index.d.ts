@@ -60,7 +60,7 @@ declare const ROOT_NAME: string;
 declare const SHELL_MODES: Record<string, ShellModes>;
 declare const BASENAME: string;
 
-declare const IS_STANDALONE: boolean;
+declare const IS_FOCUS_MODE: boolean;
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 declare const getIntegratedFunction: (id: string) => [Function, boolean];

@@ -16,7 +16,7 @@ import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellNavigationBar from './shell-navigation-bar';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
-import { IS_STANDALONE } from '../constants';
+import { IS_FOCUS_MODE } from '../constants';
 import { useDarkReaderResultValue } from '../dark-mode/use-dark-reader-result-value';
 import { ShellUtilityBar } from '../utility-bar/bar';
 import { ShellUtilityPanel } from '../utility-bar/panel';
@@ -49,7 +49,7 @@ const ShellComponent = (): React.JSX.Element => {
 	return (
 		<Background>
 			<DarkReaderListener />
-			{!IS_STANDALONE && (
+			{!IS_FOCUS_MODE && (
 				<ShellHeader
 					mobileNavIsOpen={mobileNavOpen}
 					onMobileMenuClick={(): void => setMobileNavOpen(!mobileNavOpen)}
@@ -58,7 +58,7 @@ const ShellComponent = (): React.JSX.Element => {
 				</ShellHeader>
 			)}
 			<Row crossAlignment="unset" style={{ position: 'relative', flexGrow: '1' }}>
-				{!IS_STANDALONE && <ShellNavigationBar mobileNavIsOpen={mobileNavOpen} />}
+				{!IS_FOCUS_MODE && <ShellNavigationBar mobileNavIsOpen={mobileNavOpen} />}
 				<AppViewContainer />
 				<ShellUtilityPanel />
 			</Row>

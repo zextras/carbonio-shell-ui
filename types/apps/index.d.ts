@@ -30,7 +30,7 @@ export type AppRoute = {
 	id: string;
 	route: string;
 	app: string;
-	standalone?: boolean;
+	focusMode?: boolean;
 };
 
 export type AppRouteData = AppRoute & {
@@ -131,7 +131,7 @@ export type AppRouteDescriptor = {
 	label: string;
 	secondaryBar?: ComponentType<SecondaryBarComponentProps>;
 	appView: ComponentType<AppViewComponentProps>;
-	standalone?: boolean;
+	focusMode?: boolean;
 };
 export type AppSetters = {
 	setApps: (apps: Array<Partial<CarbonioModule>>) => void;
@@ -177,7 +177,7 @@ export type AppSetters = {
 	setAppContext: (app: string) => (context: unknown) => void;
 };
 export type AppState = {
-	standalone: false | string;
+	focusMode: false | string;
 	apps: Record<string, CarbonioModule>;
 	appContexts: Record<string, unknown>;
 	entryPoints: Record<string, ComponentType>;

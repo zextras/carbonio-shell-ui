@@ -134,7 +134,7 @@ const Wrapper = ({
 		<I18NextTestProvider>
 			<ThemeProvider>
 				<SnackbarManager>
-					{withoutModalManager === true ? children : <ModalManager>{children}</ModalManager>}
+					{withoutModalManager ? children : <ModalManager>{children}</ModalManager>}
 				</SnackbarManager>
 			</ThemeProvider>
 		</I18NextTestProvider>

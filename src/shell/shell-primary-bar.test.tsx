@@ -448,7 +448,7 @@ describe('Shell primary bar', () => {
 	});
 
 	describe('Primary Badge', () => {
-		test('should render the counter badge if show and showCount are true and count is greater than 0', () => {
+		test('should render the counter badge if show and showCount are true and count is greater than or equal to 0', () => {
 			const primaryBarViews: PrimaryBarView[] = [
 				{
 					id: 'pbv-1',
@@ -464,7 +464,8 @@ describe('Shell primary bar', () => {
 			useAppStore.setState((state) => ({
 				views: { ...state.views, primaryBar: primaryBarViews }
 			}));
-			const { getByRoleWithIcon } = setup(<ShellPrimaryBar />);
+			setup(<ShellPrimaryBar />);
+			expect(screen.getByTestId('badge-counter')).toBeVisible();
 			expect(screen.getByText(2)).toBeVisible();
 		});
 
@@ -484,8 +485,51 @@ describe('Shell primary bar', () => {
 			useAppStore.setState((state) => ({
 				views: { ...state.views, primaryBar: primaryBarViews }
 			}));
-			const { getByRoleWithIcon } = setup(<ShellPrimaryBar />);
+			setup(<ShellPrimaryBar />);
+			expect(screen.getByTestId('badge-counter')).toBeVisible();
 			expect(screen.getByText(0)).toBeVisible();
+		});
+
+		test('should not render the counter badge if show is false', () => {
+			const primaryBarViews: PrimaryBarView[] = [
+				{
+					id: 'pbv-1',
+					app: 'app1',
+					label: 'App One',
+					route: 'app1',
+					position: 1,
+					badge: { show: false },
+					visible: true,
+					component: 'People'
+				}
+			];
+			useAppStore.setState((state) => ({
+				views: { ...state.views, primaryBar: primaryBarViews }
+			}));
+			setup(<ShellPrimaryBar />);
+			expect(screen.queryByTestId('badge-counter')).not.toBeInTheDocument();
+		});
+
+		test('should render an empty badge if show is true and showCount is false', () => {
+			const primaryBarViews: PrimaryBarView[] = [
+				{
+					id: 'pbv-1',
+					app: 'app1',
+					label: 'App One',
+					route: 'app1',
+					position: 1,
+					badge: { show: true, showCount: false },
+					visible: true,
+					component: 'People'
+				}
+			];
+			useAppStore.setState((state) => ({
+				views: { ...state.views, primaryBar: primaryBarViews }
+			}));
+			setup(<ShellPrimaryBar />);
+			const counterBadge = screen.getByTestId('badge-counter');
+			expect(counterBadge).toBeVisible();
+			expect(counterBadge).toHaveTextContent('');
 		});
 	});
 });

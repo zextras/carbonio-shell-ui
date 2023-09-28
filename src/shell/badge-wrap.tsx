@@ -29,7 +29,12 @@ const BadgeWrap: FC<{ badge: BadgeInfo }> = forwardRef<HTMLDivElement, { badge: 
 	function BadgeWrapFn({ badge, children }, ref): JSX.Element {
 		return (
 			<Container width={'3rem'} height={'3rem'} style={{ position: 'relative' }} ref={ref}>
-				{badge.show && <MiniBadge value={badge.showCount ? badge.count ?? 0 : ''} />}
+				{badge.show && (
+					<MiniBadge
+						data-testid={'badge-counter'}
+						value={badge.showCount ? badge.count ?? 0 : ''}
+					/>
+				)}
 				{children}
 			</Container>
 		);

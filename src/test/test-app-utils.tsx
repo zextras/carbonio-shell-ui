@@ -32,7 +32,7 @@ export const mockedRoutes: AppRouteDescriptor = {
 	label: 'Mails',
 	primaryBar: 'MailModOutline',
 	appView: () => <div></div>,
-	badge: { show: false, count: 0 },
+	badge: { show: false },
 	app: 'carbonio-mails-ui'
 };
 
@@ -72,7 +72,7 @@ export function generateModuleRouteDescriptor(
 		label: faker.commerce.productName(),
 		primaryBar: 'PeopleOutline',
 		appView: () => <div>{id}</div>,
-		badge: { show: false, count: 0 },
+		badge: { show: false },
 		...data
 	};
 }

@@ -6,11 +6,11 @@
 import React, { FC, forwardRef } from 'react';
 
 import { Container, Badge } from '@zextras/carbonio-design-system';
-import styled from 'styled-components';
+import styled, { DefaultTheme } from 'styled-components';
 
 import { BadgeInfo } from '../../types';
 
-const MiniBadge = styled(Badge)`
+const MiniBadge = styled(Badge)<{ $color?: keyof DefaultTheme['palette'] }>`
 	position: absolute;
 	bottom: 25%;
 	right: 25%;
@@ -20,18 +20,19 @@ const MiniBadge = styled(Badge)`
 	pointer-events: none;
 	z-index: 99;
 	font-size: 0.625rem;
+	background: ${({ $color, theme }): string => theme.palette[$color ?? 'primary'].regular};
 	padding: 0.125rem;
 `;
 
 const BadgeWrap: FC<{ badge: BadgeInfo }> = forwardRef<HTMLDivElement, { badge: BadgeInfo }>(
-	({ badge, children }, ref) => (
-		<Container width={'3rem'} height={'3rem'} style={{ position: 'relative' }} ref={ref}>
-			{badge.show && <MiniBadge value={badge.count} type={'unread'} />}
-			{children}
-		</Container>
-	)
+	function BadgeWrapFn({ badge, children }, ref): JSX.Element {
+		return (
+			<Container width={'3rem'} height={'3rem'} style={{ position: 'relative' }} ref={ref}>
+				{badge.show && <MiniBadge value={badge.showCount && badge.count ? badge.count : 0} />}
+				{children}
+			</Container>
+		);
+	}
 );
-
-BadgeWrap.displayName = 'BadgeWrap';
 
 export default BadgeWrap;

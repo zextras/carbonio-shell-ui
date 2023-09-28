@@ -90,8 +90,11 @@
         },
         "account": {
             "delegates": {
-                "right_sendonbehalfof": "Versturen in naam van"
-            }
+                "right_sendonbehalfof": "Versturen in naam van",
+                "multiple_rights": "{{rights.0}} en {{rights.1}}",
+                "right_sendas": "Versturen als"
+            },
+            "new_identity": "Nieuw personage {{number}}"
         }
     },
     "message": {
@@ -202,7 +205,8 @@
         "folder_external_account": "Map: Nieuwe externe account",
         "add_inline_image": "Inline afbeelding toevoegen",
         "select_image": "Afbeelding selecteren",
-        "cannot_save_changes": "Sommige wijzigingen kunnen niet worden opgeslagen"
+        "cannot_save_changes": "Sommige wijzigingen kunnen niet worden opgeslagen",
+        "close": "Sluiten"
     },
     "locale": {
         "label_russian": "Russisch - {{value}}",
@@ -236,7 +240,9 @@
         "label_french": "Frans - {{value}}",
         "french": "Frans",
         "vietnamese": "Vietnamees",
-        "polish": "Pools"
+        "polish": "Pools",
+        "label_polish": "Pools - {{value}}",
+        "label_vietnamese": "Vietnamees - {{value}}"
     },
     "timezone": {
         "africa_algiers": "{{value}} West Centraal Afrika",
@@ -385,7 +391,11 @@
         "reduce": "Board verkleinen",
         "show_tabs": "Andere tabs tonen",
         "open_app": "In app openen",
-        "from_app": "Van {{app}}"
+        "from_app": "Van {{app}}",
+        "reset_size": {
+            "disabled": "Bord al op de standaardpositie",
+            "enabled": "Terugkeren naar standaardpositie en -grootte"
+        }
     },
     "feedback": {
         "other": "Ander",
@@ -414,5 +424,15 @@
     },
     "primary_account": {
         "title": "Primaire accountinstellingen"
+    },
+    "bootstrap": {
+        "failure": {
+            "modal": {
+                "body": "Er hebben zich technische problemen voorgedaan tijdens het verwerken van uw verzoek. Probeer de pagina te verversen of ga terug naar de aanmeldpagina.",
+                "confirmButtonLabel": "vernieuwen",
+                "secondaryButtonLabel": "inlogpagina",
+                "title": "Er is iets fout gegaan…"
+            }
+        }
     }
 }

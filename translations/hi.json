@@ -90,7 +90,9 @@
         },
         "account": {
             "delegates": {
-                "right_sendonbehalfof": "इनकी ओर से भेजें"
+                "right_sendonbehalfof": "इनकी ओर से भेजें",
+                "multiple_rights": "{{rights.0}} और {{rights.1}}",
+                "right_sendas": "इस रूप में भेजें"
             },
             "new_identity": "नया व्यक्ति {{number}}"
         }
@@ -214,7 +216,11 @@
         "show_tabs": "दूसरी टैब दिखाएँ",
         "enlarge": "बोर्ड बड़ा करें",
         "open_app": "एप में खोलें",
-        "from_app": "{{app}} से"
+        "from_app": "{{app}} से",
+        "reset_size": {
+            "disabled": "बोर्ड पहले से ही डिफ़ॉल्ट पोज़ीशन में है",
+            "enabled": "डिफ़ॉल्ट पोज़ीशन और साइज़ पर लौटें"
+        }
     },
     "locale": {
         "hindi": "हिन्दी",
@@ -248,7 +254,9 @@
         "french": "फ्रेंच",
         "label_french": "फ्रेंच - {{value}}",
         "vietnamese": "वियतनामी",
-        "polish": "पोलिश"
+        "polish": "पोलिश",
+        "label_polish": "पोलिश - {{value}}",
+        "label_vietnamese": "वियतनामी - {{value}}"
     },
     "timezone": {
         "africa_algiers": "{{value}} पश्चिमी मध्य अफ्रीका",
@@ -421,7 +429,9 @@
         "failure": {
             "modal": {
                 "confirmButtonLabel": "ताज़ा करें",
-                "title": "कुछ गड़बड़ हुई।…"
+                "title": "कुछ गड़बड़ हुई…",
+                "body": "आपके अनुरोध को प्रोसेस करते समय कुछ तकनीकी समस्याएँ हुईं। पेज को रिफ्रेश करने की कोशिश करें या वापस लॉगिन पेज पर जाएँ।",
+                "secondaryButtonLabel": "लॉगिन पेज़"
             }
         }
     }

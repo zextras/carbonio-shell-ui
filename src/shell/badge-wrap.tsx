@@ -22,13 +22,14 @@ const MiniBadge = styled(Badge)<{ $color?: keyof DefaultTheme['palette'] }>`
 	font-size: 0.625rem;
 	background: ${({ $color, theme }): string => theme.palette[$color ?? 'primary'].regular};
 	padding: 0.125rem;
+	color: ${({ theme }): string => theme.palette.gray6.regular};
 `;
 
 const BadgeWrap: FC<{ badge: BadgeInfo }> = forwardRef<HTMLDivElement, { badge: BadgeInfo }>(
 	function BadgeWrapFn({ badge, children }, ref): JSX.Element {
 		return (
 			<Container width={'3rem'} height={'3rem'} style={{ position: 'relative' }} ref={ref}>
-				{badge.show && <MiniBadge value={badge.showCount && badge.count ? badge.count : 0} />}
+				{badge.show && <MiniBadge value={badge.showCount ? badge.count ?? 0 : ''} />}
 				{children}
 			</Container>
 		);

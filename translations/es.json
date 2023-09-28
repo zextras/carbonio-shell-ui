@@ -86,6 +86,14 @@
                 "include_search_in_spam_folder": "Incluir la carpeta Spam en las búsquedas",
                 "include_search_in_trash_folder": "Incluir elementos eliminados en las búsquedas"
             }
+        },
+        "account": {
+            "delegates": {
+                "multiple_rights": "{{rights.0}} y {{rights.1}}",
+                "right_sendonbehalfof": "Enviar en lugar de",
+                "right_sendas": "Enviar como"
+            },
+            "new_identity": "Nueva Persona {{number}}"
         }
     },
     "new": "Nuevo",
@@ -371,7 +379,9 @@
         "french": "Francés",
         "label_french": "French - {{value}}",
         "vietnamese": "Vietnamita",
-        "polish": "Polaco"
+        "polish": "Polaco",
+        "label_polish": "Polish - {{value}}",
+        "label_vietnamese": "Vietnamese - {{value}}"
     },
     "board": {
         "close_tab": "Cerrar pestaña",

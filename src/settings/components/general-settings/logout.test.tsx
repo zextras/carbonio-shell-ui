@@ -20,7 +20,7 @@ describe('Logout', () => {
 		const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation();
 		useLoginConfigStore.setState((s) => ({ ...s, carbonioWebUiLogoutURL: customLogout }));
 		const { user } = setup(<Logout />);
-		const logout = waitForRequest('get', '/?loginOp=logout');
+		const logout = waitForRequest('get', '/logout');
 		await user.click(screen.getByRole('button', { name: /logout/i }));
 		await logout;
 		act(() => {
@@ -37,7 +37,7 @@ describe('Logout', () => {
 		const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation();
 		useLoginConfigStore.setState((s) => ({ ...s, carbonioWebUiLogoutURL: '' }));
 		const { user } = setup(<Logout />);
-		const logout = waitForRequest('get', '/?loginOp=logout');
+		const logout = waitForRequest('get', '/logout');
 		await user.click(screen.getByRole('button', { name: /logout/i }));
 		await logout;
 		act(() => {

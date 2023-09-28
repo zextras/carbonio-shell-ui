@@ -446,4 +446,46 @@ describe('Shell primary bar', () => {
 
 		expect(queryByRoleWithIcon('button', { icon: ICONS.settings })).not.toBeInTheDocument();
 	});
+
+	describe('Primary Badge', () => {
+		test('should render the counter badge if show and showCount are true and count is greater than 0', () => {
+			const primaryBarViews: PrimaryBarView[] = [
+				{
+					id: 'pbv-1',
+					app: 'app1',
+					label: 'App One',
+					route: 'app1',
+					position: 1,
+					badge: { show: true, showCount: true, count: 2 },
+					visible: true,
+					component: 'People'
+				}
+			];
+			useAppStore.setState((state) => ({
+				views: { ...state.views, primaryBar: primaryBarViews }
+			}));
+			const { getByRoleWithIcon } = setup(<ShellPrimaryBar />);
+			expect(screen.getByText(2)).toBeVisible();
+		});
+
+		test('should render the counter badge to 0 if count is not set', () => {
+			const primaryBarViews: PrimaryBarView[] = [
+				{
+					id: 'pbv-1',
+					app: 'app1',
+					label: 'App One',
+					route: 'app1',
+					position: 1,
+					badge: { show: true, showCount: true },
+					visible: true,
+					component: 'People'
+				}
+			];
+			useAppStore.setState((state) => ({
+				views: { ...state.views, primaryBar: primaryBarViews }
+			}));
+			const { getByRoleWithIcon } = setup(<ShellPrimaryBar />);
+			expect(screen.getByText(0)).toBeVisible();
+		});
+	});
 });

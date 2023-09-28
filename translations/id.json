@@ -89,8 +89,11 @@
         },
         "account": {
             "delegates": {
-                "right_sendonbehalfof": "Kirim atas nama"
-            }
+                "right_sendonbehalfof": "Kirim atas nama",
+                "multiple_rights": "{{rights.0}} dan {{rights.1}}",
+                "right_sendas": "SendAs"
+            },
+            "new_identity": "Persona Baru {{number}}"
         }
     },
     "new": "Baru",
@@ -237,7 +240,9 @@
         "french": "Prancis",
         "label_french": "Prancis - {{value}}",
         "vietnamese": "Vietnam",
-        "polish": "Polandia"
+        "polish": "Polandia",
+        "label_polish": "Polandia - {{value}}",
+        "label_vietnamese": "Vietnam - {{value}}"
     },
     "timezone": {
         "america_cayenne": "{{value}} Cayenne, Fortaleza",
@@ -386,7 +391,11 @@
         "reduce": "Persempit papan",
         "show_tabs": "Tampilkan tab lainnya",
         "open_app": "Buka di aplikasi",
-        "from_app": "Dari {{app}}"
+        "from_app": "Dari {{app}}",
+        "reset_size": {
+            "disabled": "Papan sudah di posisi default",
+            "enabled": "Kembali ke posisi dan ukuran default"
+        }
     },
     "messages": {
         "permanent_delete_title": "Anda yakin ingin menghapus elemen ini secara permanen?",
@@ -407,8 +416,8 @@
         "success": "Terima kasih atas masukan Anda",
         "user_interface": "Antarmuka pengguna",
         "write_here": "Tulis masukan Anda di sini",
-        "error": "Ada kesalahan saat mengirimkan umpan balik",
-        "explanation": "Harap beri masukan tentang pengalaman barumu dengan Zextras Server. Pendapat Anda berarti bagi kami untuk menyempurnakan produk kami. Beri tahu kami pendapat Anda."
+        "error": "Terjadi kesalahan saat mengirimkan umpan balik",
+        "explanation": "Harap beri masukan tentang pengalaman baru Anda dengan Zextras Server. Pendapat Anda sangat berarti untuk menyempurnakan produk kami. Beri tahu kami pendapat Anda."
     },
     "primary_account": {
         "title": "Pengaturan Akun Utama"
@@ -419,7 +428,10 @@
     "bootstrap": {
         "failure": {
             "modal": {
-                "title": "Terjadi masalah…"
+                "title": "Terjadi masalah…",
+                "body": "Terjadi masalah teknis saat memproses permintaan Anda. Segarkan halaman atau kembali ke halaman login.",
+                "confirmButtonLabel": "segarkan",
+                "secondaryButtonLabel": "halaman login"
             }
         }
     }

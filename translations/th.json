@@ -74,6 +74,14 @@
                 "include_search_in_spam_folder": "รวมโฟลเดอร์สแปมในการค้นหา",
                 "include_search_in_trash_folder": "รวมโฟลเดอร์ถังขยะในการค้นหา"
             }
+        },
+        "account": {
+            "delegates": {
+                "multiple_rights": "{{rights.0}} และ {{rights.1}}",
+                "right_sendas": "ส่งในฐานะ",
+                "right_sendonbehalfof": "ส่งในนามของ"
+            },
+            "new_identity": "บทบาทใหม่ {{number}}"
         }
     },
     "new": "ใหม่",
@@ -196,7 +204,9 @@
         "when_composing": "เมื่อเขียน, ตอบกลับ, หรือส่งต่อข้อความในโฟลเดอร์:",
         "folder_external_account": "โฟลเดอร์: บัญชีภายนอกใหม่",
         "add_inline_image": "เพิ่มรูปภาพแบบอินไลน์",
-        "select_image": "เลือกภาพ"
+        "select_image": "เลือกภาพ",
+        "close": "ปิด",
+        "cannot_save_changes": "ไม่สามารถบันทึกการเปลี่ยนแปลงบางอย่างได้"
     },
     "board": {
         "close_tab": "ปิดแท็บ",
@@ -206,7 +216,11 @@
         "reduce": "ลดกระดาน",
         "show_tabs": "แสดงแท็บอื่นๆ",
         "open_app": "เปิดในแอป",
-        "from_app": "จาก {{app}}"
+        "from_app": "จาก {{app}}",
+        "reset_size": {
+            "disabled": "บอร์ดอยู่ในตำแหน่งเริ่มต้นแล้ว",
+            "enabled": "กลับไปที่ตำแหน่งและขนาดเริ่มต้น"
+        }
     },
     "locale": {
         "English": "ภาษาอังกฤษ",
@@ -240,7 +254,9 @@
         "label_french": "ฝรั่งเศส - {{value}}",
         "french": "ภาษาฝรั่งเศส",
         "vietnamese": "ภาษาเวียดนาม",
-        "polish": "กำจัดทิ้งอย่างรวดเร็ว"
+        "polish": "โปแลนด์",
+        "label_vietnamese": "เวียดนาม - {{value}}",
+        "label_polish": "โปแลนด์ - {{value}}"
     },
     "timezone": {
         "africa_algiers": "{{value}} แอฟริกากลางตะวันตก",
@@ -408,5 +424,15 @@
     },
     "primary_account": {
         "title": "การตั้งค่าบัญชีหลัก"
+    },
+    "bootstrap": {
+        "failure": {
+            "modal": {
+                "body": "เกิดปัญหาทางเทคนิคบางอย่างขึ้นในขณะประมวลผลคำขอของคุณ โปรดลองรีเฟรชหน้าเพจหรือกลับไปที่หน้าเข้าสู่ระบบ",
+                "confirmButtonLabel": "รีเฟรช",
+                "secondaryButtonLabel": "หน้าเข้าสู่ระบบ",
+                "title": "มีบางอย่างผิดพลาด…"
+            }
+        }
     }
 }

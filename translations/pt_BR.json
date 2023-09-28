@@ -74,6 +74,14 @@
                 "include_search_in_spam_folder": "Incluir a pasta Spam nas buscas",
                 "include_search_in_trash_folder": "Incluir itens excluídos nas buscas"
             }
+        },
+        "account": {
+            "delegates": {
+                "multiple_rights": "{{rights.0}} e {{rights.1}}",
+                "right_sendas": "Enviar como",
+                "right_sendonbehalfof": "Enviar em nome de"
+            },
+            "new_identity": "Nova Persona {{number}}"
         }
     },
     "new": "Novo",
@@ -371,7 +379,9 @@
         "french": "Francês",
         "label_french": "French - {{value}}",
         "vietnamese": "Vietnamita",
-        "polish": "Polonês"
+        "polish": "Polonês",
+        "label_polish": "Polish - {{value}}",
+        "label_vietnamese": "Vietnamese - {{value}}"
     },
     "board": {
         "close_tab": "Fechar aba",
@@ -380,7 +390,7 @@
         "hide": "Minimizar janela",
         "reduce": "Redefinir janela",
         "show_tabs": "Mostrar tudo",
-        "open_app": "Abrir no app",
+        "open_app": "Abrir no aplicativo",
         "from_app": "De {{app}}",
         "reset_size": {
             "disabled": "A janela já está na posição original",

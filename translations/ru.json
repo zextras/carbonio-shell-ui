@@ -74,7 +74,15 @@
             }
         },
         "accounts": "Учетные записи",
-        "choose": "Выбрать"
+        "choose": "Выбрать",
+        "account": {
+            "delegates": {
+                "multiple_rights": "{{rights.0}} и {{rights.1}}",
+                "right_sendas": "Отправить как",
+                "right_sendonbehalfof": "Отправить от имени"
+            },
+            "new_identity": "Новая Персона {{number}}"
+        }
     },
     "new": "Создать",
     "search": {
@@ -246,7 +254,9 @@
         "french": "Французский",
         "label_french": "Французский - {{value}}",
         "vietnamese": "Вьетнамский",
-        "polish": "Польский"
+        "polish": "Польский",
+        "label_polish": "Польский - {{value}}",
+        "label_vietnamese": "Вьетнамский - {{value}}"
     },
     "timezone": {
         "africa_algiers": "{{value}} Западная Центральная Африка",
@@ -421,7 +431,7 @@
                 "body": "При обработке вашего запроса возникли технические проблемы. Пожалуйста, попробуйте обновить страницу или вернуться на страницу авторизации.",
                 "confirmButtonLabel": "Обновить страницу",
                 "secondaryButtonLabel": "страница входа",
-                "title": "Что-то пошло не так..."
+                "title": "Что-то пошло не так…"
             }
         }
     }

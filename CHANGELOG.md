@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.4.0](https://github.com/zextras/carbonio-shell-ui/compare/v3.3.1...v3.4.0) (2023-09-28)
+
+
+### Features
+
+* **composer:** enable spell check and update newline_behavior init config  ([4da0790](https://github.com/zextras/carbonio-shell-ui/commit/4da0790523f916cc975f6db268b614100029ab96)), closes [#331](https://github.com/zextras/carbonio-shell-ui/issues/331)
+
+
+### Bug Fixes
+
+* remove mobile responsive views and add min-width that enable scrolling ([2f3c311](https://github.com/zextras/carbonio-shell-ui/commit/2f3c311f7a1c010f772c91b10665d294a37c4b41)), closes [#329](https://github.com/zextras/carbonio-shell-ui/issues/329)
+
 ### [3.3.1](https://github.com/zextras/carbonio-shell-ui/compare/v3.3.0...v3.3.1) (2023-09-11)
 
 ## [3.3.0](https://github.com/zextras/carbonio-shell-ui/compare/v3.2.2...v3.3.0) (2023-08-31)

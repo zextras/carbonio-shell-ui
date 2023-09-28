@@ -11,6 +11,7 @@ import { endSessionRequest } from './handlers/endSessionRequest';
 import { getInfoRequest } from './handlers/getInfoRequest';
 import { getRightsRequest } from './handlers/getRightsRequest';
 import { getLoginConfig } from './handlers/login-config';
+import { logout } from './handlers/logout';
 import { rootHandler } from './handlers/rootHandler';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
 
@@ -21,7 +22,8 @@ const handlers: RequestHandler[] = [
 	rest.post('/service/soap/EndSessionRequest', endSessionRequest),
 	rest.get(LOGIN_V3_CONFIG_PATH, getLoginConfig),
 	rest.get('/', rootHandler),
-	rest.get('/i18n/en.json', (request, response, context) => response(context.json({})))
+	rest.get('/i18n/en.json', (request, response, context) => response(context.json({}))),
+	rest.get('/logout', logout)
 ];
 
 export default handlers;

@@ -14,7 +14,7 @@ export function logout(): Promise<void> {
 		_jsns: 'urn:zimbraAccount',
 		logoff: true
 	})
-		.then(() => fetch('/?loginOp=logout', { redirect: 'manual' }))
+		.then(() => fetch('/logout', { redirect: 'manual' }))
 		.then(() => {
 			const customLogoutUrl = useLoginConfigStore.getState().carbonioWebUiLogoutURL;
 			customLogoutUrl ? goTo(customLogoutUrl) : goToLogin();

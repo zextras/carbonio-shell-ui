@@ -8,7 +8,7 @@ import React from 'react';
 import 'jest-styled-components';
 import { faker } from '@faker-js/faker';
 import { act, screen, waitFor, within } from '@testing-library/react';
-import { head, shuffle, tail } from 'lodash';
+import { forEach, head, shuffle, tail } from 'lodash';
 import { rest } from 'msw';
 import { Link, Route, Switch } from 'react-router-dom';
 
@@ -1549,8 +1549,80 @@ describe('Account setting', () => {
 	});
 
 	describe('Delegates', () => {
-		// TODO waiting for radio component refactor to better find active radio
-		test.todo('The value received in the pref is the one checked in the UI');
+		const delegatedSendSaveTargetLabelsMap = {
+			owner: 'Save a copy of sent messages to my Sent folder',
+			sender: 'Save a copy of sent messages to delegate’s Sent folder',
+			both: 'Save a copy of sent messages to my Sent folder and delegate’s folder',
+			none: 'Don’t save a copy of sent messages'
+		};
+
+		test.each([
+			['owner', delegatedSendSaveTargetLabelsMap.owner],
+			['sender', delegatedSendSaveTargetLabelsMap.sender],
+			['both', delegatedSendSaveTargetLabelsMap.both],
+			['none', delegatedSendSaveTargetLabelsMap.none]
+		])(
+			'When zimbraPrefDelegatedSendSaveTarget is %s then %s radio is checked',
+			async (zimbraPrefDelegatedSendSaveTarget) => {
+				const defaultFirstName = faker.person.firstName();
+				const defaultLastName = faker.person.lastName();
+				const defaultFullName = faker.person.fullName({
+					firstName: defaultFirstName,
+					lastName: defaultLastName
+				});
+				const defaultEmail = faker.internet.email({
+					firstName: defaultFirstName,
+					lastName: defaultLastName
+				});
+				const defaultId = faker.string.uuid();
+
+				const identitiesArray: Account['identities']['identity'] = [
+					{
+						id: defaultId,
+						name: 'DEFAULT',
+						_attrs: {
+							zimbraPrefIdentityName: defaultFullName,
+							zimbraPrefReplyToEnabled: 'FALSE',
+							zimbraPrefFromDisplay: defaultFirstName,
+							zimbraPrefFromAddress: defaultEmail,
+							zimbraPrefIdentityId: defaultId,
+							zimbraPrefFromAddressType: 'sendAs'
+						}
+					}
+				];
+
+				const account: Account = {
+					name: defaultEmail,
+					rights: { targets: [] },
+					signatures: { signature: [] },
+					id: defaultId,
+					displayName: '',
+					identities: {
+						identity: identitiesArray
+					}
+				};
+
+				useAccountStore.setState((previousState) => ({
+					...previousState,
+					account,
+					settings: {
+						...previousState.settings,
+						prefs: { zimbraPrefDelegatedSendSaveTarget }
+					}
+				}));
+
+				setup(<AccountsSettings />);
+				await waitForGetRightsRequest();
+
+				forEach(delegatedSendSaveTargetLabelsMap, (label, pref) => {
+					if (pref === zimbraPrefDelegatedSendSaveTarget) {
+						expect(screen.getByRole('radio', { name: label })).toBeChecked();
+					} else {
+						expect(screen.getByRole('radio', { name: label })).not.toBeChecked();
+					}
+				});
+			}
+		);
 
 		test('When the value change, the save button and discard button becomes enabled', async () => {
 			const defaultFirstName = faker.person.firstName();

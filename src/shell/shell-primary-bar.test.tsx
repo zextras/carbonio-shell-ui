@@ -448,7 +448,7 @@ describe('Shell primary bar', () => {
 	});
 
 	describe('Primary Badge', () => {
-		test('the counter badge is shown if count is valued', () => {
+		test('should render the counter badge if show and showCount are true and count is valued', () => {
 			const primaryBarViews: PrimaryBarView[] = [
 				{
 					id: 'pbv-1',

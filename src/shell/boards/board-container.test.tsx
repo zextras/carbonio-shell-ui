@@ -967,8 +967,8 @@ describe('Board container', () => {
 		// click to set focus
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
 		// act needed to catch the update of TabsList
-		act(() => {
-			user.keyboard('[Space]');
+		await act(async () => {
+			await user.keyboard('[Space]');
 		});
 		await waitFor(() =>
 			expect(board).toHaveStyle({

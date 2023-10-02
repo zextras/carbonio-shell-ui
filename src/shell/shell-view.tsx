@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 
-import { Row } from '@zextras/carbonio-design-system';
+import { Container, Row } from '@zextras/carbonio-design-system';
 import { PreviewManager } from '@zextras/carbonio-ui-preview';
 import styled from 'styled-components';
 
@@ -14,7 +14,8 @@ import AppViewContainer from './app-view-container';
 import { BoardContainer } from './boards/board-container';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
-import ShellNavigationBar from './shell-navigation-bar';
+import ShellPrimaryBar from './shell-primary-bar';
+import ShellSecondaryBar from './shell-secondary-bar';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 import { IS_FOCUS_MODE } from '../constants';
 import { useDarkReaderResultValue } from '../dark-mode/use-dark-reader-result-value';
@@ -29,7 +30,7 @@ const Background = styled.div`
 	min-height: 100%;
 	max-height: 100%;
 	width: 100%;
-	min-width: 100%;
+	min-width: 60rem;
 	max-width: 100%;
 `;
 
@@ -44,28 +45,34 @@ function DarkReaderListener(): null {
 	return null;
 }
 
-const ShellComponent = (): React.JSX.Element => {
-	const [mobileNavOpen, setMobileNavOpen] = useState(false);
-	return (
-		<Background>
-			<DarkReaderListener />
+const ShellComponent = (): React.JSX.Element => (
+	<Background>
+		<DarkReaderListener />
+		{!IS_FOCUS_MODE && (
+			<ShellHeader>
+				<ShellUtilityBar />
+			</ShellHeader>
+		)}
+		<Row crossAlignment="unset" style={{ position: 'relative', flexGrow: '1' }}>
 			{!IS_FOCUS_MODE && (
-				<ShellHeader
-					mobileNavIsOpen={mobileNavOpen}
-					onMobileMenuClick={(): void => setMobileNavOpen(!mobileNavOpen)}
+				<Container
+					orientation="horizontal"
+					background={'gray5'}
+					width="fit"
+					height="fill"
+					mainAlignment="flex-start"
+					crossAlignment="flex-start"
 				>
-					<ShellUtilityBar />
-				</ShellHeader>
+					<ShellPrimaryBar />
+					<ShellSecondaryBar />
+				</Container>
 			)}
-			<Row crossAlignment="unset" style={{ position: 'relative', flexGrow: '1' }}>
-				{!IS_FOCUS_MODE && <ShellNavigationBar mobileNavIsOpen={mobileNavOpen} />}
-				<AppViewContainer />
-				<ShellUtilityPanel />
-			</Row>
-			<BoardContainer />
-		</Background>
-	);
-};
+			<AppViewContainer />
+			<ShellUtilityPanel />
+		</Row>
+		<BoardContainer />
+	</Background>
+);
 
 const ShellView = (): React.JSX.Element => (
 	<ShellContextProvider>

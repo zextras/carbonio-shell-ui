@@ -87,6 +87,14 @@
                 "include_search_in_shared_folder": "Gemeinsame Ordner in die Suche einbeziehen",
                 "include_search_in_trash_folder": "Papierkorbordner in die Suche einbeziehen"
             }
+        },
+        "account": {
+            "delegates": {
+                "multiple_rights": "{{rights.0}} und {{rights.1}}",
+                "right_sendas": "SendenAls",
+                "right_sendonbehalfof": "Im Namen von senden"
+            },
+            "new_identity": "Neue Persona {{number}}"
         }
     },
     "message": {
@@ -346,7 +354,7 @@
         "hide": "Ausblenden",
         "reduce": "Verkleinern",
         "show_tabs": "Andere Tabs anzeigen",
-        "open_app": "In der App öffnen",
+        "open_app": "In App öffnen",
         "from_app": "Von {{app}}",
         "reset_size": {
             "disabled": "Board bereits in der Standardposition",
@@ -385,7 +393,9 @@
         "french": "Französisch",
         "label_french": "Französisch - {{value}}",
         "vietnamese": "Vietnamesisch",
-        "polish": "Polnisch"
+        "polish": "Polnisch",
+        "label_polish": "Polnisch - {{value}}",
+        "label_vietnamese": "Vietnamesisch – {{value}}"
     },
     "feedback": {
         "other": "Andere",
@@ -420,7 +430,7 @@
             "modal": {
                 "confirmButtonLabel": "aktualisieren",
                 "secondaryButtonLabel": "Login-Seite",
-                "title": "Ein Fehler ist aufgetreten...",
+                "title": "Ein Fehler ist aufgetreten…",
                 "body": "Bei der Bearbeitung Ihrer Anfrage ist ein technisches Problem aufgetreten. Bitte aktualisieren Sie die Seite erneut oder kehren Sie zur Anmeldeseite zurück."
             }
         }

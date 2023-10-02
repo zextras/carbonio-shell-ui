@@ -74,7 +74,15 @@
             }
         },
         "accounts": "Учетные записи",
-        "choose": "Выбрать"
+        "choose": "Выбрать",
+        "account": {
+            "delegates": {
+                "multiple_rights": "{{rights.0}} и {{rights.1}}",
+                "right_sendas": "Отправить как",
+                "right_sendonbehalfof": "Отправить от имени"
+            },
+            "new_identity": "Новая Персона {{number}}"
+        }
     },
     "new": "Создать",
     "search": {
@@ -196,7 +204,9 @@
         "click_to_copy": "Нажмите чтобы скопировать",
         "folder_external_account": "Папка: Новая внешняя учетная запись",
         "add_inline_image": "Добавить встроенное изображение",
-        "select_image": "Выбрать изображение"
+        "select_image": "Выбрать изображение",
+        "cannot_save_changes": "Некоторые изменения не могут быть сохранены",
+        "close": "Закрыть"
     },
     "board": {
         "close_tab": "Закрыть вкладку",
@@ -206,7 +216,11 @@
         "reduce": "Уменьшить окно",
         "show_tabs": "Показать другие вкладки",
         "open_app": "Открыть в приложении",
-        "from_app": "От {{app}}"
+        "from_app": "От {{app}}",
+        "reset_size": {
+            "enabled": "Вернуть размер и расположение по умолчанию",
+            "disabled": "Значения по умолчанию уже установлены"
+        }
     },
     "locale": {
         "label_chinese": "Китайский-{{value}}",
@@ -240,7 +254,9 @@
         "french": "Французский",
         "label_french": "Французский - {{value}}",
         "vietnamese": "Вьетнамский",
-        "polish": "Польский"
+        "polish": "Польский",
+        "label_polish": "Польский - {{value}}",
+        "label_vietnamese": "Вьетнамский - {{value}}"
     },
     "timezone": {
         "africa_algiers": "{{value}} Западная Центральная Африка",
@@ -408,5 +424,15 @@
     },
     "share": {
         "is_contained_in": "Содержится в"
+    },
+    "bootstrap": {
+        "failure": {
+            "modal": {
+                "body": "При обработке вашего запроса возникли технические проблемы. Пожалуйста, попробуйте обновить страницу или вернуться на страницу авторизации.",
+                "confirmButtonLabel": "Обновить страницу",
+                "secondaryButtonLabel": "страница входа",
+                "title": "Что-то пошло не так…"
+            }
+        }
     }
 }

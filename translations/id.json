@@ -86,6 +86,14 @@
                 "include_search_in_shared_folder": "Sertakan Folder Bersama dalam pencarian",
                 "include_search_in_trash_folder": "Sertakan Folder Sampah dalam pencarian"
             }
+        },
+        "account": {
+            "delegates": {
+                "right_sendonbehalfof": "Kirim atas nama",
+                "multiple_rights": "{{rights.0}} dan {{rights.1}}",
+                "right_sendas": "SendAs"
+            },
+            "new_identity": "Persona Baru {{number}}"
         }
     },
     "new": "Baru",
@@ -196,7 +204,9 @@
         "when_replying": "Saat membalas atau meneruskan pesan yang dikirim ke:",
         "folder_external_account": "Folder: Akun Eksternal Baru",
         "add_inline_image": "Tambahkan gambar sebaris",
-        "select_image": "Pilih gambar"
+        "select_image": "Pilih gambar",
+        "cannot_save_changes": "Beberapa perubahan tidak bisa disimpan",
+        "close": "Tutup"
     },
     "locale": {
         "portuguese_brazil": "Portugis (Brasil)",
@@ -230,7 +240,9 @@
         "french": "Prancis",
         "label_french": "Prancis - {{value}}",
         "vietnamese": "Vietnam",
-        "polish": "Polandia"
+        "polish": "Polandia",
+        "label_polish": "Polandia - {{value}}",
+        "label_vietnamese": "Vietnam - {{value}}"
     },
     "timezone": {
         "america_cayenne": "{{value}} Cayenne, Fortaleza",
@@ -379,7 +391,11 @@
         "reduce": "Persempit papan",
         "show_tabs": "Tampilkan tab lainnya",
         "open_app": "Buka di aplikasi",
-        "from_app": "Dari {{app}}"
+        "from_app": "Dari {{app}}",
+        "reset_size": {
+            "disabled": "Papan sudah di posisi default",
+            "enabled": "Kembali ke posisi dan ukuran default"
+        }
     },
     "messages": {
         "permanent_delete_title": "Anda yakin ingin menghapus elemen ini secara permanen?",
@@ -400,13 +416,23 @@
         "success": "Terima kasih atas masukan Anda",
         "user_interface": "Antarmuka pengguna",
         "write_here": "Tulis masukan Anda di sini",
-        "error": "Ada kesalahan saat mengirimkan umpan balik",
-        "explanation": "Harap beri masukan tentang pengalaman barumu dengan Zextras Server. Pendapat Anda berarti bagi kami untuk menyempurnakan produk kami. Beri tahu kami pendapat Anda."
+        "error": "Terjadi kesalahan saat mengirimkan umpan balik",
+        "explanation": "Harap beri masukan tentang pengalaman baru Anda dengan Zextras Server. Pendapat Anda sangat berarti untuk menyempurnakan produk kami. Beri tahu kami pendapat Anda."
     },
     "primary_account": {
         "title": "Pengaturan Akun Utama"
     },
     "passwords_recovery_settings": {
         "title": "Pengaturan Akun Pemulihan Kata Sandi"
+    },
+    "bootstrap": {
+        "failure": {
+            "modal": {
+                "title": "Terjadi masalah…",
+                "body": "Terjadi masalah teknis saat memproses permintaan Anda. Segarkan halaman atau kembali ke halaman login.",
+                "confirmButtonLabel": "segarkan",
+                "secondaryButtonLabel": "halaman login"
+            }
+        }
     }
 }

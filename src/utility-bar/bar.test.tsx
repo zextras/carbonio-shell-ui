@@ -49,7 +49,7 @@ describe('Shell utility bar', () => {
 		const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation();
 		useLoginConfigStore.setState((s) => ({ ...s, carbonioWebUiLogoutURL: customLogout }));
 		const { user, getByRoleWithIcon } = setup(<ShellUtilityBar />);
-		const logout = waitForRequest('get', '/?loginOp=logout');
+		const logout = waitForRequest('get', '/logout');
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.accountUtilityMenu }));
 		await user.click(screen.getByText(/logout/i));
 		await logout;
@@ -67,7 +67,7 @@ describe('Shell utility bar', () => {
 		const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation();
 		useLoginConfigStore.setState((s) => ({ ...s, carbonioWebUiLogoutURL: '' }));
 		const { user, getByRoleWithIcon } = setup(<ShellUtilityBar />);
-		const logout = waitForRequest('get', '/?loginOp=logout');
+		const logout = waitForRequest('get', '/logout');
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.accountUtilityMenu }));
 		await user.click(screen.getByText(/logout/i));
 		await logout;

@@ -9,6 +9,7 @@ import React from 'react';
 import * as ReduxJSToolkit from '@reduxjs/toolkit';
 import * as ZappUI from '@zextras/carbonio-design-system';
 import * as Preview from '@zextras/carbonio-ui-preview';
+import * as Darkreader from 'darkreader';
 import * as Lodash from 'lodash';
 import * as Moment from 'moment';
 import * as ReactDOM from 'react-dom';
@@ -31,7 +32,8 @@ export function injectSharedLibraries(): void {
 			'@reduxjs/toolkit': ReduxJSToolkit,
 			'@zextras/carbonio-shell-ui': {},
 			'@zextras/carbonio-design-system': ZappUI,
-			'@zextras/carbonio-ui-preview': Preview
+			'@zextras/carbonio-ui-preview': Preview,
+			darkreader: Darkreader
 		};
 		window.__ZAPP_HMR_EXPORT__ = {};
 	}

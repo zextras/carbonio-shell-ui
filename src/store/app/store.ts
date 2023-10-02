@@ -12,7 +12,7 @@ import { normalizeApp } from './utils';
 import type { AppState, CarbonioModule } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
 
-const STANDALONE_RESPONSE = 'standalone';
+const FOCUS_MODE_RESPONSE = 'focus-mode';
 
 function addIfNotPresent<T extends { id: unknown }>(
 	items: T[],
@@ -42,7 +42,7 @@ function removeById<T extends { id: unknown }>(items: T[], id: unknown): void {
 
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
 export const useAppStore = create<AppState>()((set, get) => ({
-	standalone: false,
+	focusMode: false,
 	apps: {},
 	appContexts: {},
 	shell: {
@@ -114,14 +114,14 @@ export const useAppStore = create<AppState>()((set, get) => ({
 			},
 		// add route (id route primaryBar secondaryBar app)
 		addRoute: (routeData): string => {
-			const { standalone } = get();
-			if (standalone && routeData.route !== standalone) {
-				return STANDALONE_RESPONSE;
+			const { focusMode } = get();
+			if (focusMode && (routeData.route !== focusMode || !routeData.focusMode)) {
+				return FOCUS_MODE_RESPONSE;
 			}
 			set(
 				produce<AppState>((state) => {
 					state.routes[routeData.id] = routeData;
-					if (routeData.primaryBar) {
+					if (routeData.primaryBar && !routeData.focusMode) {
 						addAndSort(state.views.primaryBar, {
 							app: routeData.app,
 							id: routeData.id,
@@ -199,9 +199,9 @@ export const useAppStore = create<AppState>()((set, get) => ({
 
 		// add settings
 		addSettingsView: (data): string => {
-			const { standalone } = get();
-			if (standalone && data.route !== standalone) {
-				return STANDALONE_RESPONSE;
+			const { focusMode } = get();
+			if (focusMode && data.route !== focusMode) {
+				return FOCUS_MODE_RESPONSE;
 			}
 			set(
 				produce<AppState>((state) => {
@@ -222,9 +222,9 @@ export const useAppStore = create<AppState>()((set, get) => ({
 		//
 		// add search
 		addSearchView: (data): string => {
-			const { standalone } = get();
-			if (standalone && data.route !== standalone) {
-				return STANDALONE_RESPONSE;
+			const { focusMode } = get();
+			if (focusMode && data.route !== focusMode) {
+				return FOCUS_MODE_RESPONSE;
 			}
 			set(
 				produce<AppState>((state) => {

@@ -15,7 +15,7 @@ import {
 	SoapContext,
 	SoapResponse
 } from '../../types';
-import { IS_STANDALONE, SHELL_APP_ID } from '../constants';
+import { IS_FOCUS_MODE, SHELL_APP_ID } from '../constants';
 import { report } from '../reporting/functions';
 import { useAccountStore } from '../store/account';
 import { useNetworkStore } from '../store/network';
@@ -103,7 +103,7 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBody
 				(code) => code === (<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Code
 			)
 		) {
-			if (IS_STANDALONE) {
+			if (IS_FOCUS_MODE) {
 				useAccountStore.setState({ authenticated: false });
 			} else {
 				goToLogin();

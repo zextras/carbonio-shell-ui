@@ -26,18 +26,11 @@ export type CarbonioModule = {
 	sentryDsn?: string;
 };
 
-export type StandaloneFlags = {
-	hidePrimaryBar?: boolean;
-	hideShellHeader?: boolean;
-	allowUnauthenticated?: boolean;
-};
-
 export type AppRoute = {
-	// persist?: boolean;
 	id: string;
 	route: string;
 	app: string;
-	standalone?: StandaloneFlags;
+	focusMode?: boolean;
 };
 
 export type AppRouteData = AppRoute & {
@@ -138,7 +131,7 @@ export type AppRouteDescriptor = {
 	label: string;
 	secondaryBar?: ComponentType<SecondaryBarComponentProps>;
 	appView: ComponentType<AppViewComponentProps>;
-	standalone?: StandaloneFlags;
+	focusMode?: boolean;
 };
 export type AppSetters = {
 	setApps: (apps: Array<Partial<CarbonioModule>>) => void;
@@ -184,7 +177,7 @@ export type AppSetters = {
 	setAppContext: (app: string) => (context: unknown) => void;
 };
 export type AppState = {
-	standalone: false | string;
+	focusMode: false | string;
 	apps: Record<string, CarbonioModule>;
 	appContexts: Record<string, unknown>;
 	entryPoints: Record<string, ComponentType>;

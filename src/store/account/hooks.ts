@@ -17,6 +17,8 @@ import {
 	AccountSettings
 } from '../../../types';
 
+export const useAuthenticated = (): boolean => useAccountStore((s) => s.authenticated);
+
 export const useUserAccount = (): Account => useAccountStore((s) => s.account as Account);
 export const useUserAccounts = (): Array<Account> => {
 	const acct = useAccountStore((s) => s.account);
@@ -37,10 +39,15 @@ export const useUserSettings = (): AccountSettings => useAccountStore((s) => s.s
 export const useUserSetting = <T = void>(...path: Array<string>): string | T =>
 	useAccountStore((s) => get(s.settings, join(path, '.')));
 
-export const getUserAccount = (): Account => useAccountStore.getState().account as Account;
-export const getUserAccounts = (): Array<Account> => [
-	useAccountStore.getState().account as Account
-];
+export const getUserAccount = (): Account | undefined => useAccountStore.getState().account;
+export const getUserAccounts = (): Array<Account> => {
+	const { account } = useAccountStore.getState();
+	const accounts: Account[] = [];
+	if (account) {
+		accounts.push(account);
+	}
+	return accounts;
+};
 export const getUserSettings = (): AccountSettings => useAccountStore.getState().settings;
 export const getUserSetting = <T = void>(...path: Array<string>): string | T =>
 	get(useAccountStore.getState().settings, join(path, '.'));

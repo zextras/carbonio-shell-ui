@@ -14,12 +14,7 @@ import styled from 'styled-components';
 import BadgeWrap from './badge-wrap';
 import { PrimaryAccessoryView, PrimaryBarView } from '../../types';
 import AppContextProvider from '../boot/app/app-context-provider';
-import {
-	BOARD_CONTAINER_ZINDEX,
-	IS_STANDALONE,
-	PRIMARY_BAR_WIDTH,
-	SEARCH_APP_ID
-} from '../constants';
+import { BOARD_CONTAINER_ZINDEX, PRIMARY_BAR_WIDTH, SEARCH_APP_ID } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppStore } from '../store/app';
 import { minimizeBoards, reopenBoards, useBoardStore } from '../store/boards';
@@ -154,10 +149,6 @@ const ShellPrimaryBar = (): React.JSX.Element | null => {
 		() => accessoryViews.map((view) => <PrimaryBarAccessoryElement view={view} key={view.id} />),
 		[accessoryViews]
 	);
-
-	if (IS_STANDALONE && activeRoute?.standalone?.hidePrimaryBar) {
-		return null;
-	}
 
 	return (
 		<PrimaryBarContainer

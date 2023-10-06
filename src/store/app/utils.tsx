@@ -60,11 +60,7 @@ export const normalizeRoute = (
 		primaryBar: data.primaryBar ?? app.icon ?? 'CubeOutline',
 		secondaryBar: data.secondaryBar,
 		appView: data.appView ?? FallbackView,
-		standalone: {
-			hidePrimaryBar: data?.standalone?.hidePrimaryBar,
-			hideShellHeader: data?.standalone?.hideShellHeader,
-			allowUnauthenticated: data?.standalone?.allowUnauthenticated
-		}
+		focusMode: data.focusMode
 	};
 };
 

@@ -431,7 +431,7 @@
                 "confirmButtonLabel": "ricarica",
                 "secondaryButtonLabel": "pagina di login",
                 "body": "Si sono verificati alcuni problemi tecnici durante l'elaborazione della tua richiesta. Ricarica la pagina o torna alla pagina di login.",
-                "title": "Qualcosa è andato storto..."
+                "title": "Qualcosa è andato storto…"
             }
         }
     }

@@ -430,7 +430,7 @@
             "modal": {
                 "confirmButtonLabel": "yenile",
                 "secondaryButtonLabel": "giriş sayfası",
-                "title": "Bir hata oluştu...",
+                "title": "Bir hata oluştu…",
                 "body": "İsteğiniz işlenirken bazı teknik sorunlar oluştu. Lütfen sayfayı yeniden yüklemeyi deneyin veya kullanıcı giriş sayfasına geri gidin."
             }
         }

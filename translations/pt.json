@@ -74,6 +74,14 @@
                 "include_search_in_spam_folder": "Incluir a pasta Spam nas pesquisas",
                 "include_search_in_trash_folder": "Incluir itens excluídos nas pesquisas"
             }
+        },
+        "account": {
+            "delegates": {
+                "multiple_rights": "{{rights.0}} e {{rights.1}}",
+                "right_sendas": "Enviar como",
+                "right_sendonbehalfof": "Enviar em nome de"
+            },
+            "new_identity": "Nova Persona {{number}}"
         }
     },
     "new": "Novo",
@@ -125,20 +133,20 @@
         "address": "Endereço",
         "email_address": "Endereço de e-mail",
         "filter_folders": "Filtrar pastas",
-        "logout": "Encerrar a sessão",
+        "logout": "Sair",
         "new_folder": "Nova pasta",
         "save": "Guardar",
         "secondary": "Secundário",
         "advanced_settings": "Configurações avançadas",
-        "delete": "Excluir",
-        "delete_permanently": "Excluir permanentemente",
+        "delete": "Apagar",
+        "delete_permanently": "Apagar permanentemente",
         "folders": "Pastas",
         "go_back": "Voltar",
         "inbox": "Caixa de entrada",
         "no_results": "Não foram encontrados resultados",
-        "password": "Senha",
+        "password": "Senha de Acesso",
         "primary": "Primário",
-        "remove": "remover",
+        "remove": "Remover",
         "account_menu": "Menu da conta",
         "account_name": "Nome da conta",
         "account_type": "Tipo de conta",
@@ -156,15 +164,15 @@
         "download_messages": "Descarregar as mensagens para:",
         "edit_permissions": "Editar as permissões",
         "email_server": "Servidor de e-mail (ex. \"mail.example.com”)",
-        "passwords_recovery_settings": "Configurações de recuperação de senha",
+        "passwords_recovery_settings": "Configurações de recuperação da senha de acesso",
         "pop3": "POP3",
         "persona_name": "Nome da Identidade",
-        "permanent_delete_title": "Confirma que deseja excluir permanentemente esta Indentidade?",
+        "permanent_delete_title": "Confirma que deseja apagar permanentemente esta Indentidade?",
         "persona": "Identidade",
         "reply_to_field_example": "ex. João da Silva",
         "button": "Botão",
         "click_to_copy": "Clique para copiar",
-        "delete_after_download": "Excluir mensagens do servidor após o download",
+        "delete_after_download": "Apagar mensagens do servidor após o download",
         "save_both_folders": "Guardar uma cópia das mensagens na minha pasta de mensagens Enviadas e na dos delegados",
         "settings_sent_messages": "Configurações de mensagens enviadas",
         "unsaved_changes_line2": "As alterações não gravadas serão perdidas",
@@ -371,7 +379,9 @@
         "french": "Francês",
         "label_french": "French - {{value}}",
         "vietnamese": "Vietnamita",
-        "polish": "Polaco"
+        "polish": "Polaco",
+        "label_polish": "Polaco - {{value}}",
+        "label_vietnamese": "Vietnamita - {{value}}"
     },
     "board": {
         "close_tab": "Fechar separador",
@@ -380,7 +390,7 @@
         "hide": "Minimizar janela",
         "reduce": "Redefinir janela",
         "show_tabs": "Mostrar tudo",
-        "open_app": "Abrir na app",
+        "open_app": "Abrir na aplicação",
         "from_app": "De {{app}}",
         "reset_size": {
             "disabled": "A janela já está na posição original",
@@ -403,14 +413,14 @@
         "write_here": "Escreva o seu feedback aqui"
     },
     "messages": {
-        "permanent_delete_title": "Confirma que deseja excluir permanentemente este elemento?",
-        "permanent_delete_body": "Se excluir permanentemente esta Identidade, não poderá recuperá-la. Continuar?"
+        "permanent_delete_title": "Confirma que deseja apagar permanentemente este elemento?",
+        "permanent_delete_body": "Se apagar permanentemente esta Identidade, não poderá recuperá-la. Deseja continuar?"
     },
     "share": {
         "is_contained_in": "Na pasta"
     },
     "passwords_recovery_settings": {
-        "title": "Configurações de recuperação de senha"
+        "title": "Configurações de recuperação da senha de acesso"
     },
     "primary_account": {
         "title": "Conta principal"
@@ -421,7 +431,7 @@
                 "confirmButtonLabel": "Atualize",
                 "body": "Ocorreu um problema durante o processamento de sua solicitação. Actualize a página ou volte para a página de login.",
                 "secondaryButtonLabel": "Página de login",
-                "title": "Algo deu errado…"
+                "title": "Ocorreu um erro…"
             }
         }
     }

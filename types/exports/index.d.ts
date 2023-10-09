@@ -60,7 +60,7 @@ declare const ROOT_NAME: string;
 declare const SHELL_MODES: Record<string, ShellModes>;
 declare const BASENAME: string;
 
-declare const IS_STANDALONE: boolean;
+declare const IS_FOCUS_MODE: boolean;
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 declare const getIntegratedFunction: (id: string) => [Function, boolean];
@@ -87,10 +87,11 @@ declare const getApp: () => CarbonioModule;
 declare const useAppContext: <T>() => T;
 declare const getAppContext: <T>() => T;
 declare const useUserAccount: () => Account;
+declare const useAuthenticated: () => boolean;
 declare const useUserAccounts: () => Array<Account>;
 declare const useUserRights: () => AccountRights;
 declare const useUserRight: (right: AccountRightName) => Array<AccountRightTarget>;
-declare const getUserAccount: () => Account;
+declare const getUserAccount: () => Account | undefined;
 declare const getUserAccounts: () => Array<Account>;
 declare const getUserRights: () => AccountRights;
 declare const getUserRight: (right: AccountRightName) => Array<AccountRightTarget>;

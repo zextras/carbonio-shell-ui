@@ -17,11 +17,8 @@ import ShellHeader from './shell-header';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
-import { IS_STANDALONE } from '../constants';
+import { IS_FOCUS_MODE } from '../constants';
 import { useDarkReaderResultValue } from '../dark-mode/use-dark-reader-result-value';
-import { useCurrentRoute } from '../history/hooks';
-import { goToLogin } from '../network/utils';
-import { useAccountStore } from '../store/account';
 import { ShellUtilityBar } from '../utility-bar/bar';
 import { ShellUtilityPanel } from '../utility-bar/panel';
 
@@ -48,37 +45,19 @@ function DarkReaderListener(): null {
 	return null;
 }
 
-const useLoginRedirection = (allowUnauthenticated?: boolean): void => {
-	const auth = useAccountStore((s) => s.authenticated);
-	useEffect(() => {
-		if (IS_STANDALONE && !auth && !allowUnauthenticated) {
-			goToLogin();
-		}
-	}, [allowUnauthenticated, auth]);
-};
-
-interface ShellComponentProps {
-	allowUnauthenticated?: boolean;
-	hideShellHeader?: boolean;
-}
-
-const ShellComponent = ({
-	allowUnauthenticated,
-	hideShellHeader
-}: ShellComponentProps): React.JSX.Element => {
-	useLoginRedirection(allowUnauthenticated);
-	return (
-		<Background>
-			<DarkReaderListener />
-			{!(IS_STANDALONE && hideShellHeader) && (
-				<ShellHeader>
-					<ShellUtilityBar />
-				</ShellHeader>
-			)}
-			<Row crossAlignment="unset" style={{ position: 'relative', flexGrow: '1' }}>
+const ShellComponent = (): React.JSX.Element => (
+	<Background>
+		<DarkReaderListener />
+		{!IS_FOCUS_MODE && (
+			<ShellHeader>
+				<ShellUtilityBar />
+			</ShellHeader>
+		)}
+		<Row crossAlignment="unset" style={{ position: 'relative', flexGrow: '1' }}>
+			{!IS_FOCUS_MODE && (
 				<Container
 					orientation="horizontal"
-					background="gray5"
+					background={'gray5'}
 					width="fit"
 					height="fill"
 					mainAlignment="flex-start"
@@ -87,27 +66,20 @@ const ShellComponent = ({
 					<ShellPrimaryBar />
 					<ShellSecondaryBar />
 				</Container>
-				<AppViewContainer />
-				<ShellUtilityPanel />
-			</Row>
-			<BoardContainer />
-		</Background>
-	);
-};
+			)}
+			<AppViewContainer />
+			<ShellUtilityPanel />
+		</Row>
+		<BoardContainer />
+	</Background>
+);
 
-const MemoShell = React.memo(ShellComponent);
-
-const ShellView = (): React.JSX.Element => {
-	const activeRoute = useCurrentRoute();
-	const allowUnauthenticated = activeRoute?.standalone?.allowUnauthenticated;
-	const hideShellHeader = activeRoute?.standalone?.hideShellHeader;
-	return (
-		<ShellContextProvider>
-			<PreviewManager>
-				<MemoShell allowUnauthenticated={allowUnauthenticated} hideShellHeader={hideShellHeader} />
-			</PreviewManager>
-		</ShellContextProvider>
-	);
-};
+const ShellView = (): React.JSX.Element => (
+	<ShellContextProvider>
+		<PreviewManager>
+			<ShellComponent />
+		</PreviewManager>
+	</ShellContextProvider>
+);
 
 export default ShellView;

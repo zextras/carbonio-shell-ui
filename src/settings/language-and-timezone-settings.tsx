@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import {
 	Container,
@@ -12,65 +12,86 @@ import {
 	Modal,
 	Padding,
 	Select,
+	SelectItem,
 	SingleSelectionOnChange,
 	Text
 } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 
-import { localeList, timeZoneList } from './components/utils';
+import {
+	localeList,
+	SettingsSectionProps,
+	timeZoneList,
+	upsertPrefOnUnsavedChanges
+} from './components/utils';
 import { timezoneAndLanguageSubSection } from './general-settings-sub-sections';
-import { AccountSettings, AddMod, PrefsMods } from '../../types';
+import { useReset } from './hooks/use-reset';
+import { AccountSettings, AddMod } from '../../types';
 import { getT } from '../store/i18n';
 
-const LanguageAndTimeZone: FC<{
+interface LanguageAndTimeZoneSettingsProps extends SettingsSectionProps {
 	settings: AccountSettings;
+	addMod: AddMod;
 	open: boolean;
 	setOpen: (arg: boolean) => void;
-	addMod: AddMod;
-}> = ({ settings, addMod, open, setOpen }) => {
+}
+
+export const LanguageAndTimeZoneSettings = ({
+	settings,
+	addMod,
+	open,
+	setOpen,
+	resetRef
+}: LanguageAndTimeZoneSettingsProps): React.JSX.Element => {
 	const t = getT();
 	const locales = useMemo(() => localeList(t), [t]);
 	const timezones = useMemo(() => timeZoneList(t), [t]);
 	const sectionTitle = useMemo(() => timezoneAndLanguageSubSection(t), [t]);
 
-	const updatePrefs = useCallback(
-		(prefValue: PrefsMods[keyof PrefsMods], prefKey: keyof PrefsMods) => {
-			addMod('prefs', prefKey, prefValue);
-		},
-		[addMod]
-	);
+	const updatePref = useMemo(() => upsertPrefOnUnsavedChanges(addMod), [addMod]);
 
-	const defaultLocale = useMemo(
-		() =>
-			(settings.prefs.zimbraPrefLocale &&
-				find(locales, { id: `${settings.prefs.zimbraPrefLocale}` })) ||
-			find(locales, { id: 'en' }),
-		[locales, settings.prefs.zimbraPrefLocale]
+	const [prefLocale, setPrefLocale] = useState<string>(settings.prefs.zimbraPrefLocale ?? '');
+
+	const prefLocaleSelectedValue = useMemo<SelectItem>(
+		() => find(locales, (item) => item.value === prefLocale) as SelectItem,
+		[locales, prefLocale]
 	);
 
 	const onLocaleChange = useCallback<SingleSelectionOnChange>(
 		(value) => {
-			if (value && value !== settings.prefs.zimbraPrefLocale)
-				updatePrefs(value, 'zimbraPrefLocale');
+			if (value) {
+				updatePref('zimbraPrefLocale', value);
+				setPrefLocale(value);
+			}
 		},
-		[settings.prefs.zimbraPrefLocale, updatePrefs]
+		[updatePref]
 	);
 
-	const defaultTimeZone = useMemo(
-		() =>
-			(settings.prefs.zimbraPrefTimeZoneId &&
-				find(timezones, { value: `${settings.prefs.zimbraPrefTimeZoneId}` })) ||
-			find(timezones, { value: 'UTC' }),
-		[timezones, settings.prefs.zimbraPrefTimeZoneId]
+	const [prefTimeZoneId, setPrefTimeZoneId] = useState<string>(
+		settings.prefs.zimbraPrefTimeZoneId ?? ''
+	);
+
+	const prefTimeZoneIdSelectedValue = useMemo<SelectItem>(
+		() => find(timezones, (item) => item.value === prefTimeZoneId) as SelectItem,
+		[timezones, prefTimeZoneId]
 	);
 
 	const onTimeZoneChange = useCallback<SingleSelectionOnChange>(
 		(value) => {
-			if (value && value !== settings.prefs.zimbraPrefTimeZoneId)
-				updatePrefs(value, 'zimbraPrefTimeZoneId');
+			if (value) {
+				updatePref('zimbraPrefTimeZoneId', value);
+				setPrefTimeZoneId(value);
+			}
 		},
-		[settings.prefs.zimbraPrefTimeZoneId, updatePrefs]
+		[updatePref]
 	);
+
+	const init = useCallback(() => {
+		setPrefLocale(settings.prefs.zimbraPrefLocale ?? '');
+		setPrefTimeZoneId(settings.prefs.zimbraPrefTimeZoneId ?? '');
+	}, [settings.prefs.zimbraPrefLocale, settings.prefs.zimbraPrefTimeZoneId]);
+
+	useReset(resetRef, init);
 
 	return (
 		<FormSubSection
@@ -80,31 +101,28 @@ const LanguageAndTimeZone: FC<{
 			id={sectionTitle.id}
 		>
 			<Container crossAlignment="baseline" padding={{ all: 'small' }}>
-				{Object.keys(settings.prefs).length > 0 && (
+				<Select
+					items={locales}
+					background={'gray5'}
+					label={t('label.language', 'Language')}
+					onChange={onLocaleChange}
+					selection={prefLocaleSelectedValue}
+					showCheckbox={false}
+					dropdownMaxHeight="12.5rem"
+					selectedBackgroundColor="highlight"
+				/>
+
+				<Padding top="small" width="100%">
 					<Select
-						items={locales}
+						items={timezones}
 						background={'gray5'}
-						label={t('label.language', 'Language')}
-						onChange={onLocaleChange}
-						defaultSelection={defaultLocale}
+						label={t('label.time_zone', 'Time Zone')}
+						onChange={onTimeZoneChange}
+						selection={prefTimeZoneIdSelectedValue}
 						showCheckbox={false}
 						dropdownMaxHeight="12.5rem"
 						selectedBackgroundColor="highlight"
 					/>
-				)}
-				<Padding top="small" width="100%">
-					{Object.keys(settings.prefs).length > 0 && timezones && defaultTimeZone && (
-						<Select
-							items={timezones}
-							background={'gray5'}
-							label={t('label.time_zone', 'Time Zone')}
-							onChange={onTimeZoneChange}
-							selection={defaultTimeZone}
-							showCheckbox={false}
-							dropdownMaxHeight="12.5rem"
-							selectedBackgroundColor="highlight"
-						/>
-					)}
 				</Padding>
 				<Modal
 					title={t('label.reload', 'Reload')}
@@ -126,5 +144,3 @@ const LanguageAndTimeZone: FC<{
 		</FormSubSection>
 	);
 };
-
-export default LanguageAndTimeZone;

@@ -314,7 +314,6 @@ export const AccountsSettings = (): React.JSX.Element => {
 					autoHideTimeout: 3000,
 					hideButton: true
 				});
-				resetLists();
 				useAccountStore.setState(
 					produce((prevState: AccountState) => {
 						if (prevState.account) {
@@ -334,6 +333,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 							delegatedSendSaveTargetRef.current || '';
 					})
 				);
+				resetLists();
 			})
 			.catch((error: unknown) => {
 				createSnackbar({

@@ -1502,7 +1502,7 @@ describe('Account setting', () => {
 		expect(accountNameInput).toHaveDisplayValue(newName);
 	});
 
-	test('When delete an identity, must not be present after save', async () => {
+	test('When delete an identity, it must not be present after save', async () => {
 		const defaultFirstName = faker.person.firstName();
 		const defaultLastName = faker.person.lastName();
 		const defaultFullName = faker.person.fullName({

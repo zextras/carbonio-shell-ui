@@ -10,7 +10,6 @@ import {
 	Container,
 	FormSubSection,
 	Modal,
-	Padding,
 	Select,
 	SelectItem,
 	SingleSelectionOnChange,
@@ -52,6 +51,7 @@ export const LanguageAndTimeZoneSettings = ({
 
 	const [prefLocale, setPrefLocale] = useState<string>(settings.prefs.zimbraPrefLocale ?? '');
 
+	// TODO update with SHELL-181
 	const prefLocaleSelectedValue = useMemo<SelectItem>(
 		() => find(locales, (item) => item.value === prefLocale) as SelectItem,
 		[locales, prefLocale]
@@ -71,6 +71,7 @@ export const LanguageAndTimeZoneSettings = ({
 		settings.prefs.zimbraPrefTimeZoneId ?? ''
 	);
 
+	// TODO update with SHELL-181
 	const prefTimeZoneIdSelectedValue = useMemo<SelectItem>(
 		() => find(timezones, (item) => item.value === prefTimeZoneId) as SelectItem,
 		[timezones, prefTimeZoneId]
@@ -100,7 +101,7 @@ export const LanguageAndTimeZoneSettings = ({
 			width="50%"
 			id={sectionTitle.id}
 		>
-			<Container crossAlignment="baseline" padding={{ all: 'small' }}>
+			<Container crossAlignment="baseline" padding={{ all: 'small' }} gap={'0.5rem'}>
 				<Select
 					items={locales}
 					background={'gray5'}
@@ -111,19 +112,16 @@ export const LanguageAndTimeZoneSettings = ({
 					dropdownMaxHeight="12.5rem"
 					selectedBackgroundColor="highlight"
 				/>
-
-				<Padding top="small" width="100%">
-					<Select
-						items={timezones}
-						background={'gray5'}
-						label={t('label.time_zone', 'Time Zone')}
-						onChange={onTimeZoneChange}
-						selection={prefTimeZoneIdSelectedValue}
-						showCheckbox={false}
-						dropdownMaxHeight="12.5rem"
-						selectedBackgroundColor="highlight"
-					/>
-				</Padding>
+				<Select
+					items={timezones}
+					background={'gray5'}
+					label={t('label.time_zone', 'Time Zone')}
+					onChange={onTimeZoneChange}
+					selection={prefTimeZoneIdSelectedValue}
+					showCheckbox={false}
+					dropdownMaxHeight="12.5rem"
+					selectedBackgroundColor="highlight"
+				/>
 				<Modal
 					title={t('label.reload', 'Reload')}
 					open={open}

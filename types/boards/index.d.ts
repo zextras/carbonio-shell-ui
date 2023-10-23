@@ -10,6 +10,7 @@ export type Board<T = unknown> = {
 	icon: string;
 	title: string;
 	context?: T;
+	onCloseRequest?: (board: Board<T>, confirm: () => void) => void;
 	onClose?: (board: Board<T>) => void;
 	onGoToPanel?: (board: Board<T>) => void;
 };

@@ -43,7 +43,8 @@ export const addBoard =
 		);
 		return useBoardStore.getState().boards[id];
 	};
-export const closeBoard = (id: string): void => {
+
+const closeBoardSync = (id: string): void => {
 	useBoardStore.setState(
 		produce((state: BoardState) => {
 			state.boards[id]?.onClose?.(state.boards[id]);
@@ -58,17 +59,22 @@ export const closeBoard = (id: string): void => {
 		})
 	);
 };
-export const closeAllBoards = (): void => {
-	useBoardStore.setState(
-		produce((state: BoardState) => {
-			forEach(state.boards, (b) => {
-				b?.onClose?.(b);
-				delete state.boards[b.id];
-			});
-			state.orderedBoards = [];
-		})
-	);
+
+export const closeBoard = (id: string): void => {
+	const board = useBoardStore.getState().boards[id];
+	if (board?.onCloseRequest) {
+		board.onCloseRequest(board, () => {
+			closeBoardSync(id);
+		});
+	} else {
+		closeBoardSync(id);
+	}
 };
+
+export const closeAllBoards = (): void => {
+	forEach(useBoardStore.getState().boards, (board) => closeBoard(board.id));
+};
+
 export const onGoToPanel = (): void => {
 	useBoardStore.setState(
 		produce((state: BoardState) => {

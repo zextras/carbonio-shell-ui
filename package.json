@@ -11,7 +11,7 @@
 	"scripts": {
 		"build:clean": "rm -rf lib && rm -rf dist && rm -rf pkg",
 		"test:ci": "jest --testTimeout=10000 --maxWorkers=50%",
-		"test:dev": "jest",
+		"test:dev": "jest --testTimeout=10000",
 		"test": "is-ci && npm run test:ci || npm run test:dev",
 		"test:watch": "npm run test:dev -- --onlyChanged --watch",
 		"prepare": "is-ci || husky install",

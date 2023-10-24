@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v3.4.3...v4.0.0) (2023-10-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename standalone to focus-mode
+* replace standalone AppRoute field with focusMode field
+
+### Bug Fixes
+
+* discard changes of timezone, locale and dark mode reset initial values ([0b1abed](https://github.com/zextras/carbonio-shell-ui/commit/0b1abed0eca9fa8702878b57e973ca7ab01feee0)), closes [#346](https://github.com/zextras/carbonio-shell-ui/issues/346)
+* improve accountStore update inside account setting onSave ([be7fc1b](https://github.com/zextras/carbonio-shell-ui/commit/be7fc1b072c3c6cb1d5ead8afa0730c0319d2d6b)), closes [#349](https://github.com/zextras/carbonio-shell-ui/issues/349)
+
+
+* improve focus mode implementation ([c7d3132](https://github.com/zextras/carbonio-shell-ui/commit/c7d3132ef8ec4774ebcb3a7cc834492fe02deb07)), closes [#326](https://github.com/zextras/carbonio-shell-ui/issues/326)
+
 ### [3.4.3](https://github.com/zextras/carbonio-shell-ui/compare/v3.4.2...v3.4.3) (2023-10-09)
 
 ### [3.4.2](https://github.com/zextras/carbonio-shell-ui/compare/v3.4.1...v3.4.2) (2023-09-29)

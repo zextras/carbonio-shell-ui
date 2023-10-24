@@ -19,7 +19,7 @@ import { SearchSettings } from './components/general-settings/search-settings';
 import UserQuota from './components/general-settings/user-quota';
 import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
 import { ResetComponentImperativeHandler } from './components/utils';
-import LanguageAndTimeZoneSettings from './language-and-timezone-settings';
+import { LanguageAndTimeZoneSettings } from './language-and-timezone-settings';
 import {
 	AccountState,
 	AddMod,
@@ -215,6 +215,8 @@ const GeneralSettings = (): React.JSX.Element => {
 	}, [mods, setLocalStorageSettings, createSnackbar, t]);
 
 	const scalingSettingSectionRef = useRef<ResetComponentImperativeHandler>(null);
+	const darkThemeSettingSectionRef = useRef<ResetComponentImperativeHandler>(null);
+	const languageAndTimeZoneSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
 	const outOfOfficeSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
 	const searchSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
 
@@ -223,6 +225,8 @@ const GeneralSettings = (): React.JSX.Element => {
 		if (size(localStorageUnAppliedChanges) > 0) {
 			scalingSettingSectionRef.current?.reset();
 		}
+		darkThemeSettingSectionRef.current?.reset();
+		languageAndTimeZoneSettingsSectionRef.current?.reset();
 		outOfOfficeSettingsSectionRef.current?.reset();
 		searchSettingsSectionRef?.current?.reset();
 	}, [localStorageUnAppliedChanges]);
@@ -252,13 +256,18 @@ const GeneralSettings = (): React.JSX.Element => {
 						addLocalStoreChange={addLocalStoreChange}
 						cleanLocalStoreChange={cleanLocalStoreChange}
 					/>
-					<DarkThemeSettingSection addMod={addMod} removeMod={removeMod} />
+					<DarkThemeSettingSection
+						resetRef={darkThemeSettingSectionRef}
+						addMod={addMod}
+						removeMod={removeMod}
+					/>
 				</AppearanceSettings>
 				<LanguageAndTimeZoneSettings
 					settings={userSettings}
 					addMod={addMod}
 					open={open}
 					setOpen={setOpen}
+					resetRef={languageAndTimeZoneSettingsSectionRef}
 				/>
 
 				<OutOfOfficeSettings

@@ -50,12 +50,6 @@ npm run deploy -- -h <host>
 
 The host parameter is required to proxy requests and content from an existing Carbonio installation.
 
-To deploy to a specific module:
-
-```
-PKG_PATH=<path_to_module> npm run deploy-on-module -u --legacy-peer-deps
-```
-
 <h4>Build</h4>
 
 ```

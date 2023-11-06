@@ -81,7 +81,7 @@
         },
         "general": {
             "account": "Konto",
-            "account_logout": "Wyloguj się",
+            "account_logout": "Wylogowywanie się",
             "dark_mode": "Tryb ciemny",
             "general": "Ustawienia ogólne",
             "theme_auto": "Automatycznie",

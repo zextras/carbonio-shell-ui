@@ -63,9 +63,7 @@ export function createIdentityAttrs(
 }
 
 export function createDefaultIdentity(
-	zimbraPrefIdentityId: Required<
-		Pick<IdentityAttrs, 'zimbraPrefIdentityId'>
-	>['zimbraPrefIdentityId'],
+	zimbraPrefIdentityId: NonNullable<IdentityAttrs['zimbraPrefIdentityId']>,
 	zimbraPrefIdentityName: IdentityAttrs['zimbraPrefIdentityName'],
 	zimbraPrefFromAddress: IdentityAttrs['zimbraPrefFromAddress'],
 	zimbraPrefFromDisplay?: IdentityAttrs['zimbraPrefFromDisplay']

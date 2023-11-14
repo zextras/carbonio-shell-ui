@@ -21,12 +21,7 @@ import {
 } from '../mocks/handlers/getRightsRequest';
 import server, { waitForRequest } from '../mocks/server';
 import { useAccountStore } from '../store/account';
-import {
-	createAccount,
-	createDefaultIdentity,
-	createIdentity,
-	setupAccountStore
-} from '../test/account-utils';
+import { createAccount, createIdentity, setupAccountStore } from '../test/account-utils';
 import { setup } from '../test/utils';
 
 describe('Account setting', () => {
@@ -57,7 +52,14 @@ describe('Account setting', () => {
 	test('When saving the order should not change', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createDefaultIdentity(defaultId, 'defaultFullName', 'default@email.com')
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: 'defaultFullName',
+						zimbraPrefFromAddress: 'default@email.com'
+					},
+					true
+				)
 			])
 		);
 		const batchRequestUrl = '/service/soap/BatchRequest';
@@ -69,13 +71,40 @@ describe('Account setting', () => {
 							BatchResponse: {
 								CreateIdentityResponse: [
 									{
-										identity: [createIdentity(persona1Id, persona1FullName, defaultEmail)]
+										identity: [
+											createIdentity(
+												{
+													zimbraPrefIdentityId: persona1Id,
+													zimbraPrefIdentityName: persona1FullName,
+													zimbraPrefFromAddress: defaultEmail
+												},
+												false
+											)
+										]
 									},
 									{
-										identity: [createIdentity(persona2Id, persona2FullName, defaultEmail)]
+										identity: [
+											createIdentity(
+												{
+													zimbraPrefIdentityId: persona2Id,
+													zimbraPrefIdentityName: persona2FullName,
+													zimbraPrefFromAddress: defaultEmail
+												},
+												false
+											)
+										]
 									},
 									{
-										identity: [createIdentity(persona3Id, persona3FullName, defaultEmail)]
+										identity: [
+											createIdentity(
+												{
+													zimbraPrefIdentityId: persona3Id,
+													zimbraPrefIdentityName: persona3FullName,
+													zimbraPrefFromAddress: defaultEmail
+												},
+												false
+											)
+										]
 									}
 								] as CreateIdentityResponse[]
 							}
@@ -143,8 +172,22 @@ describe('Account setting', () => {
 	test('When discarding the order should be the same of the initial one', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createDefaultIdentity(defaultId, 'defaultFullName', 'default@email.com'),
-				createIdentity(persona1Id, persona1FullName, persona1Email)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: 'defaultFullName',
+						zimbraPrefFromAddress: 'default@email.com'
+					},
+					true
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				)
 			])
 		);
 
@@ -184,10 +227,38 @@ describe('Account setting', () => {
 				defaultEmail,
 				defaultId,
 				shuffle([
-					createIdentity(persona3Id, persona3FullName, persona3Email),
-					createIdentity(persona2Id, persona2FullName, persona2Email),
-					createIdentity(persona1Id, persona1FullName, persona1Email),
-					createDefaultIdentity(defaultId, 'defaultFullName', 'default@email.com')
+					createIdentity(
+						{
+							zimbraPrefIdentityId: persona3Id,
+							zimbraPrefIdentityName: persona3FullName,
+							zimbraPrefFromAddress: persona3Email
+						},
+						false
+					),
+					createIdentity(
+						{
+							zimbraPrefIdentityId: persona2Id,
+							zimbraPrefIdentityName: persona2FullName,
+							zimbraPrefFromAddress: persona2Email
+						},
+						false
+					),
+					createIdentity(
+						{
+							zimbraPrefIdentityId: persona1Id,
+							zimbraPrefIdentityName: persona1FullName,
+							zimbraPrefFromAddress: persona1Email
+						},
+						false
+					),
+					createIdentity(
+						{
+							zimbraPrefIdentityId: defaultId,
+							zimbraPrefIdentityName: 'defaultFullName',
+							zimbraPrefFromAddress: 'default@email.com'
+						},
+						true
+					)
 				])
 			)
 		);
@@ -205,7 +276,14 @@ describe('Account setting', () => {
 	test('When adding an item it is always placed as last', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail
+					},
+					true
+				)
 			])
 		);
 
@@ -225,7 +303,14 @@ describe('Account setting', () => {
 	test('Show primary identity inside the list', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail
+					},
+					true
+				)
 			])
 		);
 
@@ -240,7 +325,15 @@ describe('Account setting', () => {
 	test('Should show the new identity in the list when clicking on add', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
 			])
 		);
 
@@ -253,8 +346,23 @@ describe('Account setting', () => {
 	test('Should increase the number of the persona when there are already identities with the default name', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createIdentity(persona1Id, persona1FullName, persona1Email),
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
 			])
 		);
 
@@ -269,8 +377,23 @@ describe('Account setting', () => {
 	test('When existing persona identityName is updated but not yet saved, the old (but current) identityName should not be used as default one for a new persona', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createIdentity(persona1Id, persona1FullName, persona1Email),
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
 			])
 		);
 
@@ -306,7 +429,15 @@ describe('Account setting', () => {
 	test('When create a new persona and modify the proposed identityName before saving and than create another persona the proposed identityName should be the same', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
 			])
 		);
 
@@ -344,8 +475,23 @@ describe('Account setting', () => {
 	test('When existing persona is deleted but not yet saved, the old (but current) identityName should not be used as default one for a new persona', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createIdentity(persona1Id, persona1FullName, persona1Email),
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
 			])
 		);
 		const { user } = setup(<AccountsSettings />);
@@ -373,7 +519,15 @@ describe('Account setting', () => {
 	test('When create a new persona and delete it before saving and than create another persona the proposed identityName should be the same', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
 			])
 		);
 
@@ -406,8 +560,23 @@ describe('Account setting', () => {
 	test('Should not increase the counter if the identities have a name different from the default', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createIdentity(persona1Id, persona1FullName, persona1Email),
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
 			])
 		);
 		const { user } = setup(<AccountsSettings />);
@@ -421,8 +590,23 @@ describe('Account setting', () => {
 	test('Should remove the identity from the list on delete action', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createIdentity(persona1Id, persona1FullName, persona1Email),
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
 			])
 		);
 
@@ -444,7 +628,15 @@ describe('Account setting', () => {
 	test('Should create only identities which have not been removed from the unsaved changes', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
 			])
 		);
 
@@ -543,7 +735,15 @@ describe('Account setting', () => {
 	test('Should remove from the list added identities not saved on discard changes', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
 			])
 		);
 
@@ -561,8 +761,23 @@ describe('Account setting', () => {
 	test('Should add in the list removed identities not saved on discard changes', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createIdentity(persona1Id, persona1FullName, persona1Email),
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
 			])
 		);
 
@@ -589,7 +804,15 @@ describe('Account setting', () => {
 	test('Should update name of the identity in the list if the user change it from the input(default case)', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
 			])
 		);
 		const { user } = setup(<AccountsSettings />);
@@ -615,7 +838,15 @@ describe('Account setting', () => {
 	test('When modify an identity, should populate a ModifyIdentityRequest', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
 			])
 		);
 
@@ -660,7 +891,15 @@ describe('Account setting', () => {
 	test('When modify an identity, the new value must be shown after save', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
 			])
 		);
 
@@ -702,8 +941,23 @@ describe('Account setting', () => {
 	test('When delete an identity, it must not be present after save', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createIdentity(persona1Id, persona1FullName, persona1Email),
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
 			])
 		);
 
@@ -750,7 +1004,15 @@ describe('Account setting', () => {
 	test('Should reset the updated identity name on discard changes(default case)', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
 			])
 		);
 		const { user } = setup(<AccountsSettings />);
@@ -783,7 +1045,15 @@ describe('Account setting', () => {
 	test('Should not allow updating primary account email', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
-				createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
 			])
 		);
 		const { user } = setup(<AccountsSettings />);
@@ -824,7 +1094,15 @@ describe('Account setting', () => {
 			async (zimbraPrefDelegatedSendSaveTarget) => {
 				setupAccountStore(
 					createAccount(defaultEmail, defaultId, [
-						createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+						createIdentity(
+							{
+								zimbraPrefIdentityId: defaultId,
+								zimbraPrefIdentityName: defaultFullName,
+								zimbraPrefFromAddress: defaultEmail,
+								zimbraPrefFromDisplay: defaultFirstName
+							},
+							true
+						)
 					]),
 					{ zimbraPrefDelegatedSendSaveTarget }
 				);
@@ -845,7 +1123,15 @@ describe('Account setting', () => {
 		test('When the value change, the save button and discard button becomes enabled', async () => {
 			setupAccountStore(
 				createAccount(defaultEmail, defaultId, [
-					createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+					createIdentity(
+						{
+							zimbraPrefIdentityId: defaultId,
+							zimbraPrefIdentityName: defaultFullName,
+							zimbraPrefFromAddress: defaultEmail,
+							zimbraPrefFromDisplay: defaultFirstName
+						},
+						true
+					)
 				]),
 				{ zimbraPrefDelegatedSendSaveTarget: 'owner' }
 			);
@@ -868,7 +1154,15 @@ describe('Account setting', () => {
 		test('When the user change the value and click on save, the network request contains the new value', async () => {
 			setupAccountStore(
 				createAccount(defaultEmail, defaultId, [
-					createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+					createIdentity(
+						{
+							zimbraPrefIdentityId: defaultId,
+							zimbraPrefIdentityName: defaultFullName,
+							zimbraPrefFromAddress: defaultEmail,
+							zimbraPrefFromDisplay: defaultFirstName
+						},
+						true
+					)
 				]),
 				{ zimbraPrefDelegatedSendSaveTarget: 'owner' }
 			);
@@ -922,7 +1216,15 @@ describe('Account setting', () => {
 		test('GetRightRequest is called only once when the user navigates inside account settings', async () => {
 			setupAccountStore(
 				createAccount(defaultEmail, defaultId, [
-					createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+					createIdentity(
+						{
+							zimbraPrefIdentityId: defaultId,
+							zimbraPrefIdentityName: defaultFullName,
+							zimbraPrefFromAddress: defaultEmail,
+							zimbraPrefFromDisplay: defaultFirstName
+						},
+						true
+					)
 				])
 			);
 
@@ -971,7 +1273,15 @@ describe('Account setting', () => {
 		test('When rights state is updated, the delegates list will be updated accordingly', async () => {
 			setupAccountStore(
 				createAccount(defaultEmail, defaultId, [
-					createDefaultIdentity(defaultId, defaultFullName, defaultEmail, defaultFirstName)
+					createIdentity(
+						{
+							zimbraPrefIdentityId: defaultId,
+							zimbraPrefIdentityName: defaultFullName,
+							zimbraPrefFromAddress: defaultEmail,
+							zimbraPrefFromDisplay: defaultFirstName
+						},
+						true
+					)
 				])
 			);
 

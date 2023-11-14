@@ -62,40 +62,23 @@ export function createIdentityAttrs(
 	return _attrs;
 }
 
-export function createDefaultIdentity(
-	zimbraPrefIdentityId: NonNullable<IdentityAttrs['zimbraPrefIdentityId']>,
-	zimbraPrefIdentityName: IdentityAttrs['zimbraPrefIdentityName'],
-	zimbraPrefFromAddress: IdentityAttrs['zimbraPrefFromAddress'],
-	zimbraPrefFromDisplay?: IdentityAttrs['zimbraPrefFromDisplay']
-): Identity {
-	return {
-		id: zimbraPrefIdentityId,
-		_attrs: createIdentityAttrs(
-			zimbraPrefIdentityId,
-			zimbraPrefIdentityName,
-			zimbraPrefFromAddress,
-			zimbraPrefFromDisplay
-		),
-		name: 'DEFAULT'
-	};
-}
-
 export function createIdentity(
-	zimbraPrefIdentityId: Required<
-		Pick<IdentityAttrs, 'zimbraPrefIdentityId'>
-	>['zimbraPrefIdentityId'],
-	zimbraPrefIdentityName: IdentityAttrs['zimbraPrefIdentityName'],
-	zimbraPrefFromAddress: IdentityAttrs['zimbraPrefFromAddress'],
-	zimbraPrefFromDisplay?: IdentityAttrs['zimbraPrefFromDisplay']
+	prefs: {
+		zimbraPrefIdentityId: NonNullable<IdentityAttrs['zimbraPrefIdentityId']>;
+		zimbraPrefIdentityName: IdentityAttrs['zimbraPrefIdentityName'];
+		zimbraPrefFromAddress: IdentityAttrs['zimbraPrefFromAddress'];
+		zimbraPrefFromDisplay?: IdentityAttrs['zimbraPrefFromDisplay'];
+	},
+	isDefault: boolean
 ): Identity {
 	return {
-		id: zimbraPrefIdentityId,
+		id: prefs.zimbraPrefIdentityId,
 		_attrs: createIdentityAttrs(
-			zimbraPrefIdentityId,
-			zimbraPrefIdentityName,
-			zimbraPrefFromAddress,
-			zimbraPrefFromDisplay
+			prefs.zimbraPrefIdentityId,
+			prefs.zimbraPrefIdentityName,
+			prefs.zimbraPrefFromAddress,
+			prefs.zimbraPrefFromDisplay
 		),
-		name: zimbraPrefIdentityName
+		name: isDefault ? 'DEFAULT' : prefs.zimbraPrefIdentityName
 	};
 }

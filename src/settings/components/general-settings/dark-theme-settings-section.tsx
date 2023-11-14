@@ -4,32 +4,33 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Select, SelectItem, SingleSelectionOnChange, Text } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 
 import type { AddMod, DarkReaderPropValues, RemoveMod } from '../../../../types';
-import { ThemeCallbacksContext } from '../../../boot/theme-provider';
 import { DARK_READER_PROP_KEY, SHELL_APP_ID } from '../../../constants';
 import {
 	isDarkReaderPropValues,
 	useDarkReaderResultValue
 } from '../../../dark-mode/use-dark-reader-result-value';
 import { getT } from '../../../store/i18n';
+import { useReset } from '../../hooks/use-reset';
+import { SettingsSectionProps } from '../utils';
 
 type DarkReaderSelectItem = Array<SelectItem & { value: DarkReaderPropValues }>;
 
-interface DarkThemeSettingSectionProps {
+interface DarkThemeSettingSectionProps extends SettingsSectionProps {
 	addMod: AddMod;
 	removeMod: RemoveMod;
 }
 
 const DarkThemeSettingSection = ({
 	addMod,
-	removeMod
+	removeMod,
+	resetRef
 }: DarkThemeSettingSectionProps): React.JSX.Element | null => {
-	const { setDarkReaderState } = useContext(ThemeCallbacksContext);
 	const darkReaderResultValue = useDarkReaderResultValue();
 	const [selection, setSelection] = useState<SelectItem>();
 
@@ -58,9 +59,8 @@ const DarkThemeSettingSection = ({
 			if (item) {
 				setSelection(item);
 			}
-			setDarkReaderState(value);
 		},
-		[items, setDarkReaderState]
+		[items]
 	);
 
 	const onSelectionChange = useCallback<SingleSelectionOnChange>(
@@ -84,6 +84,14 @@ const DarkThemeSettingSection = ({
 			setSelectNewValue(darkReaderResultValue);
 		}
 	}, [darkReaderResultValue, items, setSelectNewValue]);
+
+	const init = useCallback(() => {
+		if (darkReaderResultValue) {
+			setSelectNewValue(darkReaderResultValue);
+		}
+	}, [darkReaderResultValue, setSelectNewValue]);
+
+	useReset(resetRef, init);
 
 	if (!selection) {
 		return null;

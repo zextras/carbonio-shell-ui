@@ -23,18 +23,29 @@ The main Carbonio Web Client interface
 
 <h4>Setup</h4>
 
-- clone this repo
+- clone the repo
 
 - install the dependencies:
+
 ```
+nvm use
 npm install
-npm run sdk-setup
 ```
 
 <h4>Watch Mode</h4>
 
 ```
 npm run start -- -h <host>
+```
+
+The host parameter is required to proxy requests and content from an existing Carbonio installation.
+
+<h4>Deploy</h4>
+
+To deploy to a host:
+
+```
+npm run deploy -- -h <host>
 ```
 
 The host parameter is required to proxy requests and content from an existing Carbonio installation.

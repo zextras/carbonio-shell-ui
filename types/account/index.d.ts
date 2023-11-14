@@ -102,7 +102,7 @@ export interface AccountSettingsPrefs {
 	zimbraPrefMailPollingInterval?: Duration;
 	zimbraPrefMailTrustedSenderList?: Array<string> | string;
 	zimbraPrefDelegatedSendSaveTarget?: (typeof DELEGATED_SEND_SAVE_TARGET)[number];
-	zimbraPrefTimeZoneId?: Array<string> | string;
+	zimbraPrefTimeZoneId?: string;
 	[key: string]: string | number | Array<string | number>;
 }
 

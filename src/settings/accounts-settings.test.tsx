@@ -1417,6 +1417,197 @@ describe('Account setting', () => {
 		expect(successSnackbar).toBeVisible();
 	});
 
+	test('When modify an identity, the new value must be shown after save', async () => {
+		const defaultFirstName = faker.person.firstName();
+		const defaultLastName = faker.person.lastName();
+		const defaultFullName = faker.person.fullName({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultEmail = faker.internet.email({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultId = faker.string.uuid();
+
+		const identitiesArray: Array<Identity> = [
+			{
+				id: defaultId,
+				name: 'DEFAULT',
+				_attrs: {
+					zimbraPrefIdentityName: defaultFullName,
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraPrefFromDisplay: defaultFirstName,
+					zimbraPrefFromAddress: defaultEmail,
+					zimbraPrefIdentityId: defaultId,
+					zimbraPrefFromAddressType: 'sendAs'
+				}
+			}
+		];
+
+		const account: Account = {
+			name: defaultEmail,
+			rights: { targets: [] },
+			signatures: { signature: [] },
+			id: defaultId,
+			displayName: '',
+			identities: {
+				identity: identitiesArray
+			}
+		};
+		useAccountStore.setState((previousState) => ({
+			...previousState,
+			account,
+			settings: {
+				...previousState.settings,
+				attrs: {
+					...previousState.settings.attrs,
+					zimbraIdentityMaxNumEntries: 20
+				}
+			}
+		}));
+
+		server.use(
+			rest.post('/service/soap/BatchRequest', (req, res, ctx) =>
+				res(
+					ctx.json({
+						Body: {
+							BatchResponse: {
+								ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
+							}
+						}
+					})
+				)
+			)
+		);
+
+		const batchRequestUrl = '/service/soap/BatchRequest';
+		const pendingBatchRequest = waitForRequest('POST', batchRequestUrl);
+		const { user } = setup(<AccountsSettings />);
+		await waitForGetRightsRequest();
+
+		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
+
+		const newName = 'Updated Name';
+		await user.clear(accountNameInput);
+		await user.type(accountNameInput, newName);
+
+		await user.click(screen.getByRole('button', { name: /save/i }));
+
+		await pendingBatchRequest;
+
+		const successSnackbar = await screen.findByText('Edits saved correctly');
+		expect(successSnackbar).toBeVisible();
+
+		expect(accountNameInput).toHaveDisplayValue(newName);
+	});
+
+	test('When delete an identity, it must not be present after save', async () => {
+		const defaultFirstName = faker.person.firstName();
+		const defaultLastName = faker.person.lastName();
+		const defaultFullName = faker.person.fullName({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultEmail = faker.internet.email({
+			firstName: defaultFirstName,
+			lastName: defaultLastName
+		});
+		const defaultId = faker.string.uuid();
+
+		const persona1FullName = faker.person.fullName();
+		const persona1Email = faker.internet.email();
+		const persona1Id = faker.string.uuid();
+
+		const identitiesArray: Array<Identity> = [
+			{
+				id: persona1Id,
+				name: persona1FullName,
+				_attrs: {
+					zimbraPrefIdentityName: persona1FullName,
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraPrefFromDisplay: '',
+					zimbraPrefFromAddress: persona1Email,
+					zimbraPrefIdentityId: persona1Id,
+					zimbraPrefFromAddressType: 'sendAs'
+				}
+			},
+			{
+				id: defaultId,
+				name: 'DEFAULT',
+				_attrs: {
+					zimbraPrefIdentityName: defaultFullName,
+					zimbraPrefReplyToEnabled: 'FALSE',
+					zimbraPrefFromDisplay: defaultFirstName,
+					zimbraPrefFromAddress: defaultEmail,
+					zimbraPrefIdentityId: defaultId,
+					zimbraPrefFromAddressType: 'sendAs'
+				}
+			}
+		];
+
+		const account: Account = {
+			name: defaultEmail,
+			rights: { targets: [] },
+			signatures: { signature: [] },
+			id: defaultId,
+			displayName: '',
+			identities: {
+				identity: identitiesArray
+			}
+		};
+		useAccountStore.setState((previousState) => ({
+			...previousState,
+			account,
+			settings: {
+				...previousState.settings,
+				attrs: {
+					...previousState.settings.attrs,
+					zimbraIdentityMaxNumEntries: 20
+				}
+			}
+		}));
+
+		server.use(
+			rest.post('/service/soap/BatchRequest', (req, res, ctx) =>
+				res(
+					ctx.json({
+						Body: {
+							BatchResponse: {
+								ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
+							}
+						}
+					})
+				)
+			)
+		);
+
+		const batchRequestUrl = '/service/soap/BatchRequest';
+		const pendingBatchRequest = waitForRequest('POST', batchRequestUrl);
+
+		const { user } = setup(<AccountsSettings />);
+		await waitForGetRightsRequest();
+		const persona1Row = screen.getByText(persona1FullName);
+		expect(persona1Row).toBeVisible();
+		await user.click(persona1Row);
+		await user.click(screen.getByRole('button', { name: /delete/i }));
+		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
+		act(() => {
+			// run modal timers
+			jest.runOnlyPendingTimers();
+		});
+		await user.click(confirmButton);
+
+		await user.click(screen.getByRole('button', { name: /save/i }));
+
+		await pendingBatchRequest;
+
+		const successSnackbar = await screen.findByText('Edits saved correctly');
+		expect(successSnackbar).toBeVisible();
+
+		expect(screen.queryByText(persona1FullName)).not.toBeInTheDocument();
+	});
+
 	test('Should reset the updated identity name on discard changes(default case)', async () => {
 		const defaultFirstName = faker.person.firstName();
 		const defaultLastName = faker.person.lastName();

@@ -4,13 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback, useRef } from 'react';
 
 import { Modal, Button, ModalProps } from '@zextras/carbonio-design-system';
 import { Location } from 'history';
 import { filter } from 'lodash';
-import { useTranslation } from 'react-i18next';
 import { Prompt, useHistory } from 'react-router-dom';
+
+import { getT } from '../store/i18n';
 
 export interface RouteLeavingGuardProps {
 	children: ModalProps['children'];
@@ -28,28 +29,39 @@ export const RouteLeavingGuard = ({
 	const history = useHistory();
 	const lastLocationInitial = useMemo(() => history.location, [history]);
 	const [modalVisible, setModalVisible] = useState(false);
-	const [lastLocation, setLastLocation] = useState<Location>(lastLocationInitial);
-	const [confirmedNavigation, setConfirmedNavigation] = useState(false);
-	const [t] = useTranslation();
-	const cancel = (): void => {
+	const lastLocationRef = useRef(lastLocationInitial);
+	const confirmedNavigationRef = useRef(false);
+	const t = getT();
+	const cancel = useCallback((): void => {
 		setModalVisible(false);
-		setConfirmedNavigation(false);
-	};
+		confirmedNavigationRef.current = false;
+	}, []);
 
-	const handleBlockedNavigation = (nextLocation: Location): boolean => {
-		if (
-			!confirmedNavigation &&
-			`${nextLocation.pathname}${nextLocation.search || ''}` !==
-				`${history.location.pathname}${history.location.search}`
-		) {
-			setModalVisible(true);
-			setLastLocation(nextLocation);
-			return false;
+	const confirmNavigation = useCallback(() => {
+		confirmedNavigationRef.current = true;
+		if (lastLocationRef.current) {
+			// Navigate to the previous blocked location with your navigate function
+			history.push(lastLocationRef.current);
 		}
-		return true;
-	};
+	}, [history]);
 
-	const onConfirm = (): void => {
+	const handleBlockedNavigation = useCallback(
+		(nextLocation: Location): boolean => {
+			if (
+				!confirmedNavigationRef.current &&
+				`${nextLocation.pathname}${nextLocation.search || ''}` !==
+					`${history.location.pathname}${history.location.search}`
+			) {
+				setModalVisible(true);
+				lastLocationRef.current = nextLocation;
+				return false;
+			}
+			return true;
+		},
+		[history.location.pathname, history.location.search]
+	);
+
+	const onConfirm = useCallback((): void => {
 		onSave()
 			.then((results) => {
 				const rejected = filter(
@@ -61,26 +73,19 @@ export const RouteLeavingGuard = ({
 					cancel();
 				} else {
 					setModalVisible(false);
-					setConfirmedNavigation(true);
+					confirmNavigation();
 				}
 			})
 			.catch((reason) => {
 				console.error(reason);
 				cancel();
 			});
-	};
+	}, [cancel, confirmNavigation, onSave]);
 
-	const onSecondaryAction = (): void => {
+	const onSecondaryAction = useCallback((): void => {
 		setModalVisible(false);
-		setConfirmedNavigation(true);
-	};
-
-	useEffect(() => {
-		if (confirmedNavigation && lastLocation) {
-			// Navigate to the previous blocked location with your navigate function
-			history.push(lastLocation);
-		}
-	}, [confirmedNavigation, history, lastLocation]);
+		confirmNavigation();
+	}, [confirmNavigation]);
 
 	return (
 		<>

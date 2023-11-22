@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v4.0.1...v5.0.0) (2023-11-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* bump @zextras/carbonio-design-system dep to 4.0.0
+Refs: SHELL-180
+
+### Bug Fixes
+
+* **RouteLeavingGuard:** translate modal labels with shell instance ([bcf59a0](https://github.com/zextras/carbonio-shell-ui/commit/bcf59a09c37c9dcbceaba64b0258a8bf7609a1ab)), closes [#359](https://github.com/zextras/carbonio-shell-ui/issues/359)
+
+
+* update ChipInput usages ([9366341](https://github.com/zextras/carbonio-shell-ui/commit/93663414f8b8312e826591f4667d8b470b0980e5))
+
 ### [4.0.1](https://github.com/zextras/carbonio-shell-ui/compare/v4.0.0...v4.0.1) (2023-11-06)
 
 ## [4.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v3.4.3...v4.0.0) (2023-10-24)

@@ -19,7 +19,7 @@ export type IntegrationsState = {
 	removeComponents: (...ids: Array<string>) => void;
 	registerComponents: (
 		app: string
-	) => (...items: Array<{ id: string; component: ComponentType }>) => void;
+	) => <P>(...items: Array<{ id: string; component: ComponentType<P> }>) => void;
 	removeFunctions: (...ids: Array<string>) => void;
 	registerFunctions: (...items: Array<{ id: string; fn: AnyFunction }>) => void;
 };

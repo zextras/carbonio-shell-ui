@@ -133,8 +133,8 @@ declare const registerActions: (
 	...items: Array<{ id: string; action: ActionFactory<unknown>; type: string }>
 ) => void;
 declare const removeComponents: (...ids: Array<string>) => void;
-declare const registerComponents: (
-	...items: Array<{ id: string; component: ComponentType }>
+declare const registerComponents: <P>(
+	...items: Array<{ id: string; component: ComponentType<P> }>
 ) => void;
 declare const removeFunctions: (...ids: Array<string>) => void;
 declare const registerFunctions: (...items: Array<{ id: string; fn: AnyFunction }>) => void;

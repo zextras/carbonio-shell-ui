@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.0.1](https://github.com/zextras/carbonio-shell-ui/compare/v5.0.0...v5.0.1) (2023-12-06)
+
+
+### Bug Fixes
+
+* tag worker is invoked only when notify relevant to tags ([b42ab41](https://github.com/zextras/carbonio-shell-ui/commit/b42ab41fd5a955d0d644c9833f652fbf1649c8cd))
+
 ## [5.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v4.0.1...v5.0.0) (2023-11-22)
 
 

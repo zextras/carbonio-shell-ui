@@ -17,36 +17,60 @@ export const handleTagRefresh = (tags: Array<Tag>): Tags => {
 	return {};
 };
 
-export const handleTagCreated = (tags: Tags, created: Array<Tag>): Tags =>
-	created.reduce((acc: Tags, val: Tag): Tags => {
+const handleTagCreated = (tags: Tags, created?: Array<Tag>): Tags => {
+	if (!created) return tags;
+	return created.reduce((acc: Tags, val: Tag): Tags => {
 		// eslint-disable-next-line no-param-reassign
 		acc[val.id] = val;
 		return acc;
 	}, tags);
-export const handleTagModified = (tags: Tags, modified: Array<Partial<Tag>>): Tags =>
-	modified.reduce((acc: Tags, val: Partial<Tag>): Tags => {
+};
+
+const handleTagModified = (tags: Tags, modified?: Array<Partial<Tag>>): Tags => {
+	if (!modified) return tags;
+	return modified.reduce((acc: Tags, val: Partial<Tag>): Tags => {
 		if (val.id) {
 			// eslint-disable-next-line no-param-reassign
 			acc[val.id] = { ...tags[val.id], ...val };
 		}
 		return acc;
 	}, tags);
-export const handleTagDeleted = (tags: Tags, deleted: string[]): Tags =>
-	deleted.reduce((acc, val) => {
+};
+
+const handleTagDeleted = (tags: Tags, deleted?: string[]): Tags => {
+	if (!deleted) return tags;
+	return deleted.reduce((acc, val) => {
 		// eslint-disable-next-line no-param-reassign
 		delete acc[val];
 		return acc;
 	}, tags);
+};
+
 export const handleTagNotify = (notify: SoapNotify, state: Tags): Tags =>
 	handleTagDeleted(
-		handleTagModified(
-			handleTagCreated(state, notify.created?.tag ?? []),
-			notify.modified?.tag ?? []
-		),
-		notify.deleted ?? []
+		handleTagModified(handleTagCreated(state, notify.created?.tag), notify.modified?.tag),
+		notify.deleted
 	);
+
+function deletedIdsContainTags({
+	deletedIds,
+	tagIds
+}: {
+	deletedIds: Array<string>;
+	tagIds?: Array<string>;
+}): boolean {
+	return deletedIds.some((deletedId) => tagIds?.includes(deletedId));
+}
 
 onmessage = ({ data }: TagMessage): void => {
 	if (data.op === 'refresh' && data.tags) postMessage({ tags: handleTagRefresh(data.tags.tag) });
-	if (data.op === 'notify') postMessage({ tags: handleTagNotify(data.notify, data.state) });
+
+	const tagIds = data.state && Object.keys(data.state);
+	if (
+		data.op === 'notify' &&
+		(data.notify.created?.tag ||
+			data.notify.modified?.tag ||
+			(data.notify.deleted && deletedIdsContainTags({ deletedIds: data.notify.deleted, tagIds })))
+	)
+		postMessage({ tags: handleTagNotify(data.notify, data.state) });
 };

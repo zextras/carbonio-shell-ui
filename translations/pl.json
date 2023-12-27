@@ -47,7 +47,7 @@
             "labels": {
                 "start_date": "Data rozpoczęcia",
                 "start_time": "Czas rozpoczęcia:",
-                "all_day": "Cały dzień",
+                "all_day": "Cały dzień:",
                 "auto_reply_message": "Automatyczna odpowiedź:",
                 "create_appointment": "Utwórz termin i wyświetlaj jako:",
                 "end_date": "Data zakończenia",
@@ -81,7 +81,7 @@
         },
         "general": {
             "account": "Konto",
-            "account_logout": "Wyloguj się",
+            "account_logout": "Wylogowywanie się",
             "dark_mode": "Tryb ciemny",
             "general": "Ustawienia ogólne",
             "theme_auto": "Automatycznie",
@@ -93,7 +93,15 @@
         "general_tab": "Ogólne",
         "timezone_and_language": "Strefa czasowa i język",
         "choose": "Wybierz",
-        "accounts": "Konta"
+        "accounts": "Konta",
+        "account": {
+            "delegates": {
+                "multiple_rights": "{{rights.0}} i {{rights.1}}",
+                "right_sendas": "Wyślij jako",
+                "right_sendonbehalfof": "Wyślij w imieniu"
+            },
+            "new_identity": "Nowa persona {{number}}"
+        }
     },
     "label": {
         "discard_changes": "ODRZUĆ ZMIANY",
@@ -157,7 +165,7 @@
         "change_pop": "Zmień port POP",
         "delete_after_download": "Usuń wiadomości z serwera po ich pobraniu",
         "documentation": "Dokumentacja",
-        "dont_save": "Nie zapisuj kopii wysłanych wiadomości",
+        "dont_save": "Nie zapisuj kopii wysyłanych wiadomości",
         "download_messages": "Pobieraj wiadomości do:",
         "edit_permissions": "Edytuj uprawnienia",
         "email_address": "Adres e-mail",
@@ -230,9 +238,11 @@
         "label_portuguese": "Portugalski - {{value}}",
         "label_portuguese_brazil": "Portugalski - {{value}}",
         "vietnamese": "Wietnamski",
-        "polish": "Polski"
+        "polish": "Polski",
+        "label_polish": "Polski - {{value}}",
+        "label_vietnamese": "Wietnamski - {{value}}"
     },
-    "new_tab": "Nowa Karta",
+    "new_tab": "Nowa karta",
     "timezone": {
         "africa_algiers": "{{value}} Zachodnio-środkowa Afryka",
         "africa_cairo": "{{value}} Egipt",
@@ -420,7 +430,7 @@
             "modal": {
                 "confirmButtonLabel": "odśwież",
                 "secondaryButtonLabel": "strona logowania",
-                "title": "Coś poszło nie tak...",
+                "title": "Coś poszło nie tak…",
                 "body": "Wystąpiły problemy techniczne podczas przetwarzania Twojego żądania. Spróbuj odświeżyć stronę lub powróć do strony logowania."
             }
         }

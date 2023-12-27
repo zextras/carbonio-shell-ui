@@ -16,15 +16,15 @@ import { ContextBridge } from './context-bridge';
 import { Loader } from './loader';
 import ShellI18nextProvider from './shell-i18n-provider';
 import { ThemeProvider } from './theme-provider';
-import { BASENAME, IS_STANDALONE } from '../constants';
+import { BASENAME, IS_FOCUS_MODE } from '../constants';
 import { NotificationPermissionChecker } from '../notification/NotificationPermissionChecker';
 import ShellView from '../shell/shell-view';
 import { useAppStore } from '../store/app';
 
-const StandaloneListener = (): null => {
+const FocusModeListener = (): null => {
 	const { route } = useParams<{ route?: string }>();
 	useEffect(() => {
-		if (route) useAppStore.setState({ standalone: route });
+		if (route) useAppStore.setState({ focusMode: route });
 	}, [route]);
 	return null;
 };
@@ -43,10 +43,10 @@ const Bootstrapper: FC = () => (
 			<BrowserRouter basename={BASENAME}>
 				<SnackbarManager>
 					<Loader />
-					{IS_STANDALONE && (
+					{IS_FOCUS_MODE && (
 						<Switch>
 							<Route path={'/:route'}>
-								<StandaloneListener />
+								<FocusModeListener />
 							</Route>
 						</Switch>
 					)}

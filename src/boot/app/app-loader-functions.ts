@@ -37,7 +37,8 @@ import {
 	useUserRight,
 	useUserRights,
 	getUserRight,
-	getUserRights
+	getUserRights,
+	useAuthenticated
 } from '../../store/account';
 import { getApp, getAppContext, useApp, useAppContext } from '../../store/app';
 import {
@@ -122,6 +123,8 @@ export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> =
 	getActionsFactory,
 	useActionFactory,
 	getActionFactory,
+	// AUTH
+	useAuthenticated,
 	// ACCOUNTS
 	useUserAccount,
 	getUserAccount,

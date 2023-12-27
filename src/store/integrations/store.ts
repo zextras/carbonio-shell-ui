@@ -37,7 +37,7 @@ export const useIntegrationsStore = create<IntegrationsState>()((set) => ({
 		),
 	registerComponents:
 		(app: string) =>
-		(...items: Array<{ id: string; component: ComponentType }>): void =>
+		<P>(...items: Array<{ id: string; component: ComponentType<P> }>): void =>
 			set(
 				produce((state) => {
 					forEach(items, ({ id, component }) => {

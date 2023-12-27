@@ -5,47 +5,40 @@
  */
 import React, { FC, forwardRef } from 'react';
 
-import { Container, Text } from '@zextras/carbonio-design-system';
-import styled from 'styled-components';
+import { Container, Badge } from '@zextras/carbonio-design-system';
+import styled, { DefaultTheme } from 'styled-components';
 
 import { BadgeInfo } from '../../types';
 
-const MiniBadge = styled(Container)<{ badge: BadgeInfo }>`
+const MiniBadge = styled(Badge)<{ $color?: keyof DefaultTheme['palette'] }>`
 	position: absolute;
 	bottom: 25%;
 	right: 25%;
 	transform: translate(30%, 30%);
-	background: ${({ badge, theme }): string => theme.palette[badge?.color ?? 'primary'].regular};
 	min-width: 0.75rem;
 	min-height: 0.75rem;
-	line-height: 0.75rem;
-	border-radius: 0.5rem;
-	user-select: none;
-	cursor: pointer;
 	pointer-events: none;
 	z-index: 99;
+	font-size: 0.625rem;
+	background: ${({ $color, theme }): string => theme.palette[$color ?? 'primary'].regular};
+	padding: 0.125rem;
+	color: ${({ theme }): string => theme.palette.gray6.regular};
 `;
 
-// eslint-disable-next-line react/display-name
 const BadgeWrap: FC<{ badge: BadgeInfo }> = forwardRef<HTMLDivElement, { badge: BadgeInfo }>(
-	({ badge, children }, ref) => (
-		<Container width={'3rem'} height={'3rem'} style={{ position: 'relative' }} ref={ref}>
-			{badge.show && (
-				<MiniBadge badge={badge} height="fit" width="fit">
-					{badge.showCount ? (
-						<Text
-							size="extrasmall"
-							style={{ padding: '0.125rem 0.25rem', fontSize: '0.625rem' }}
-							color="gray6"
-						>
-							{badge.count ?? 0}
-						</Text>
-					) : null}
-				</MiniBadge>
-			)}
-			{children}
-		</Container>
-	)
+	function BadgeWrapFn({ badge, children }, ref): JSX.Element {
+		return (
+			<Container width={'3rem'} height={'3rem'} style={{ position: 'relative' }} ref={ref}>
+				{badge.show && (
+					<MiniBadge
+						data-testid={'badge-counter'}
+						value={badge.showCount ? badge.count ?? 0 : ''}
+					/>
+				)}
+				{children}
+			</Container>
+		);
+	}
 );
 
 export default BadgeWrap;

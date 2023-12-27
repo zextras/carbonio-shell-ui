@@ -2,6 +2,68 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.0.2](https://github.com/zextras/carbonio-shell-ui/compare/v5.0.1...v5.0.2) (2023-12-11)
+
+### [5.0.1](https://github.com/zextras/carbonio-shell-ui/compare/v5.0.0...v5.0.1) (2023-12-06)
+
+
+### Bug Fixes
+
+* tag worker is invoked only when notify relevant to tags ([b42ab41](https://github.com/zextras/carbonio-shell-ui/commit/b42ab41fd5a955d0d644c9833f652fbf1649c8cd))
+
+## [5.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v4.0.1...v5.0.0) (2023-11-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* bump @zextras/carbonio-design-system dep to 4.0.0
+Refs: SHELL-180
+
+### Bug Fixes
+
+* **RouteLeavingGuard:** translate modal labels with shell instance ([bcf59a0](https://github.com/zextras/carbonio-shell-ui/commit/bcf59a09c37c9dcbceaba64b0258a8bf7609a1ab)), closes [#359](https://github.com/zextras/carbonio-shell-ui/issues/359)
+
+
+* update ChipInput usages ([9366341](https://github.com/zextras/carbonio-shell-ui/commit/93663414f8b8312e826591f4667d8b470b0980e5))
+
+### [4.0.1](https://github.com/zextras/carbonio-shell-ui/compare/v4.0.0...v4.0.1) (2023-11-06)
+
+## [4.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v3.4.3...v4.0.0) (2023-10-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename standalone to focus-mode
+* replace standalone AppRoute field with focusMode field
+
+### Bug Fixes
+
+* discard changes of timezone, locale and dark mode reset initial values ([0b1abed](https://github.com/zextras/carbonio-shell-ui/commit/0b1abed0eca9fa8702878b57e973ca7ab01feee0)), closes [#346](https://github.com/zextras/carbonio-shell-ui/issues/346)
+* improve accountStore update inside account setting onSave ([be7fc1b](https://github.com/zextras/carbonio-shell-ui/commit/be7fc1b072c3c6cb1d5ead8afa0730c0319d2d6b)), closes [#349](https://github.com/zextras/carbonio-shell-ui/issues/349)
+
+
+* improve focus mode implementation ([c7d3132](https://github.com/zextras/carbonio-shell-ui/commit/c7d3132ef8ec4774ebcb3a7cc834492fe02deb07)), closes [#326](https://github.com/zextras/carbonio-shell-ui/issues/326)
+
+### [3.4.3](https://github.com/zextras/carbonio-shell-ui/compare/v3.4.2...v3.4.3) (2023-10-09)
+
+### [3.4.2](https://github.com/zextras/carbonio-shell-ui/compare/v3.4.1...v3.4.2) (2023-09-29)
+
+### [3.4.1](https://github.com/zextras/carbonio-shell-ui/compare/v3.4.0...v3.4.1) (2023-09-28)
+
+## [3.4.0](https://github.com/zextras/carbonio-shell-ui/compare/v3.3.1...v3.4.0) (2023-09-28)
+
+
+### Features
+
+* **composer:** enable spell check and update newline_behavior init config  ([4da0790](https://github.com/zextras/carbonio-shell-ui/commit/4da0790523f916cc975f6db268b614100029ab96)), closes [#331](https://github.com/zextras/carbonio-shell-ui/issues/331)
+
+
+### Bug Fixes
+
+* remove mobile responsive views and add min-width that enable scrolling ([2f3c311](https://github.com/zextras/carbonio-shell-ui/commit/2f3c311f7a1c010f772c91b10665d294a37c4b41)), closes [#329](https://github.com/zextras/carbonio-shell-ui/issues/329)
+
+### [3.3.1](https://github.com/zextras/carbonio-shell-ui/compare/v3.3.0...v3.3.1) (2023-09-11)
+
 ## [3.3.0](https://github.com/zextras/carbonio-shell-ui/compare/v3.2.2...v3.3.0) (2023-08-31)
 
 

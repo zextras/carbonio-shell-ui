@@ -8,19 +8,20 @@ import React from 'react';
 import 'jest-styled-components';
 import { faker } from '@faker-js/faker';
 import { act, screen, waitFor, within } from '@testing-library/react';
-import { head, shuffle, tail } from 'lodash';
+import { forEach, head, shuffle, tail } from 'lodash';
 import { rest } from 'msw';
 import { Link, Route, Switch } from 'react-router-dom';
 
 import { AccountsSettings } from './accounts-settings';
-import { Account, BatchRequest, CreateIdentityResponse, Identity } from '../../types';
+import { BatchRequest, CreateIdentityResponse } from '../../types';
 import {
+	getRightsRequest,
 	GetRightsRequestBody,
-	GetRightsResponseBody,
-	getRightsRequest
+	GetRightsResponseBody
 } from '../mocks/handlers/getRightsRequest';
 import server, { waitForRequest } from '../mocks/server';
 import { useAccountStore } from '../store/account';
+import { createAccount, createIdentity, setupAccountStore } from '../test/account-utils';
 import { setup } from '../test/utils';
 
 describe('Account setting', () => {
@@ -28,52 +29,39 @@ describe('Account setting', () => {
 		await waitForRequest('post', '/service/soap/GetRightsRequest');
 		await screen.findByText('sendAs');
 	}
+	const defaultFirstName = faker.person.firstName();
+	const defaultLastName = faker.person.lastName();
+	const defaultFullName = faker.person.fullName({
+		firstName: defaultFirstName,
+		lastName: defaultLastName
+	});
+	const defaultEmail = 'default@email.com';
+	const defaultId = faker.string.uuid();
 
+	const persona1FullName = 'New Persona 1';
+	const persona1Email = 'persona1@email.com';
+	const persona1Id = faker.string.uuid();
+
+	const persona2FullName = 'New Persona 2';
+	const persona2Email = 'persona2@email.com';
+	const persona2Id = faker.string.uuid();
+
+	const persona3FullName = 'New Persona 3';
+	const persona3Email = 'persona3@email.com';
+	const persona3Id = faker.string.uuid();
 	test('When saving the order should not change', async () => {
-		const persona1 = 'New Persona 1';
-		const persona2 = 'New Persona 2';
-		const persona3 = 'New Persona 3';
-
-		const defaultFullName = 'defaultFullName';
-		const defaultEmail = 'default@email.com';
-		const defaultId = faker.string.uuid();
-
-		const identitiesArray: Array<Identity> = [
-			{
-				id: defaultId,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: defaultFullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromAddress: defaultEmail,
-					zimbraPrefIdentityId: defaultId,
-					zimbraPrefFromAddressType: 'sendAs',
-					zimbraPrefFromDisplay: ''
-				}
-			}
-		];
-
-		const account: Account = {
-			name: defaultEmail,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id: defaultId,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account,
-			settings: {
-				...previousState.settings,
-				attrs: {
-					...previousState.settings.attrs,
-					zimbraIdentityMaxNumEntries: 20
-				}
-			}
-		}));
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: 'defaultFullName',
+						zimbraPrefFromAddress: 'default@email.com'
+					},
+					true
+				)
+			])
+		);
 		const batchRequestUrl = '/service/soap/BatchRequest';
 		server.use(
 			rest.post(batchRequestUrl, (req, res, ctx) =>
@@ -84,41 +72,38 @@ describe('Account setting', () => {
 								CreateIdentityResponse: [
 									{
 										identity: [
-											{
-												id: faker.string.uuid(),
-												name: persona1,
-												_attrs: {
-													zimbraPrefIdentityName: persona1,
-													zimbraPrefFromAddressType: 'sendAs',
+											createIdentity(
+												{
+													zimbraPrefIdentityId: persona1Id,
+													zimbraPrefIdentityName: persona1FullName,
 													zimbraPrefFromAddress: defaultEmail
-												}
-											}
+												},
+												false
+											)
 										]
 									},
 									{
 										identity: [
-											{
-												id: faker.string.uuid(),
-												name: persona2,
-												_attrs: {
-													zimbraPrefIdentityName: persona2,
-													zimbraPrefFromAddressType: 'sendAs',
+											createIdentity(
+												{
+													zimbraPrefIdentityId: persona2Id,
+													zimbraPrefIdentityName: persona2FullName,
 													zimbraPrefFromAddress: defaultEmail
-												}
-											}
+												},
+												false
+											)
 										]
 									},
 									{
 										identity: [
-											{
-												id: faker.string.uuid(),
-												name: persona3,
-												_attrs: {
-													zimbraPrefIdentityName: persona3,
-													zimbraPrefFromAddressType: 'sendAs',
+											createIdentity(
+												{
+													zimbraPrefIdentityId: persona3Id,
+													zimbraPrefIdentityName: persona3FullName,
 													zimbraPrefFromAddress: defaultEmail
-												}
-											}
+												},
+												false
+											)
 										]
 									}
 								] as CreateIdentityResponse[]
@@ -137,17 +122,23 @@ describe('Account setting', () => {
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await waitFor(() =>
-			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(persona1)
+			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
+				persona1FullName
+			)
 		);
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await waitFor(() =>
-			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(persona2)
+			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
+				persona2FullName
+			)
 		);
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await waitFor(() =>
-			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(persona3)
+			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
+				persona3FullName
+			)
 		);
 
 		const snapShot = `
@@ -179,54 +170,26 @@ describe('Account setting', () => {
 	});
 
 	test('When discarding the order should be the same of the initial one', async () => {
-		const defaultFullName = 'defaultFullName';
-		const defaultEmail = 'default@email.com';
-		const defaultId = faker.string.uuid();
-
-		const persona1FullName = 'New Persona 1';
-		const persona1Email = 'persona1@email.com';
-		const persona1Id = faker.string.uuid();
-
-		const identitiesArray: Array<Identity> = [
-			{
-				id: persona1Id,
-				name: persona1FullName,
-				_attrs: {
-					zimbraPrefIdentityName: persona1FullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: '',
-					zimbraPrefFromAddress: persona1Email,
-					zimbraPrefIdentityId: persona1Id,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			},
-			{
-				id: defaultId,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: defaultFullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromAddress: defaultEmail,
-					zimbraPrefIdentityId: defaultId,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		];
-
-		const account: Account = {
-			name: defaultEmail,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id: defaultId,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account
-		}));
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: 'defaultFullName',
+						zimbraPrefFromAddress: 'default@email.com'
+					},
+					true
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				)
+			])
+		);
 
 		const snapShot = `
 		[
@@ -259,88 +222,46 @@ describe('Account setting', () => {
 	});
 
 	test('Check that the default is always the first item', async () => {
-		const defaultFullName = 'defaultFullName';
-		const defaultEmail = 'default@email.com';
-		const defaultId = faker.string.uuid();
-
-		const persona1FullName = 'New Persona 1';
-		const persona1Email = 'persona1@email.com';
-		const persona1Id = faker.string.uuid();
-
-		const persona2FullName = 'New Persona 2';
-		const persona2Email = 'persona2@email.com';
-		const persona2Id = faker.string.uuid();
-
-		const persona3FullName = 'New Persona 3';
-		const persona3Email = 'persona3@email.com';
-		const persona3Id = faker.string.uuid();
-
-		const identitiesArray: Array<Identity> = shuffle([
-			{
-				id: persona3Id,
-				name: persona3FullName,
-				_attrs: {
-					zimbraPrefIdentityName: persona3FullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: '',
-					zimbraPrefFromAddress: persona3Email,
-					zimbraPrefIdentityId: persona3Id,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			},
-			{
-				id: persona2Id,
-				name: persona2FullName,
-				_attrs: {
-					zimbraPrefIdentityName: persona2FullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: '',
-					zimbraPrefFromAddress: persona2Email,
-					zimbraPrefIdentityId: persona2Id,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			},
-			{
-				id: persona1Id,
-				name: persona1FullName,
-				_attrs: {
-					zimbraPrefIdentityName: persona1FullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: '',
-					zimbraPrefFromAddress: persona1Email,
-					zimbraPrefIdentityId: persona1Id,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			},
-			{
-				id: defaultId,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: defaultFullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: '',
-					zimbraPrefFromAddress: defaultEmail,
-					zimbraPrefIdentityId: defaultId,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		]);
-
-		const account: Account = {
-			name: defaultEmail,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id: defaultId,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account
-		}));
+		setupAccountStore(
+			createAccount(
+				defaultEmail,
+				defaultId,
+				shuffle([
+					createIdentity(
+						{
+							zimbraPrefIdentityId: persona3Id,
+							zimbraPrefIdentityName: persona3FullName,
+							zimbraPrefFromAddress: persona3Email
+						},
+						false
+					),
+					createIdentity(
+						{
+							zimbraPrefIdentityId: persona2Id,
+							zimbraPrefIdentityName: persona2FullName,
+							zimbraPrefFromAddress: persona2Email
+						},
+						false
+					),
+					createIdentity(
+						{
+							zimbraPrefIdentityId: persona1Id,
+							zimbraPrefIdentityName: persona1FullName,
+							zimbraPrefFromAddress: persona1Email
+						},
+						false
+					),
+					createIdentity(
+						{
+							zimbraPrefIdentityId: defaultId,
+							zimbraPrefIdentityName: 'defaultFullName',
+							zimbraPrefFromAddress: 'default@email.com'
+						},
+						true
+					)
+				])
+			)
+		);
 
 		setup(<AccountsSettings />);
 
@@ -353,41 +274,18 @@ describe('Account setting', () => {
 	});
 
 	test('When adding an item it is always placed as last', async () => {
-		const firstName = faker.person.firstName();
-		const lastName = faker.person.lastName();
-		const fullName = faker.person.fullName({ firstName, lastName });
-		const email = 'default@email.com';
-		const id = faker.string.uuid();
-
-		const identitiesArray: Array<Identity> = [
-			{
-				id,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: fullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: firstName,
-					zimbraPrefFromAddressType: 'sendAs',
-					zimbraPrefFromAddress: email
-				}
-			}
-		];
-
-		const account: Account = {
-			name: email,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account
-		}));
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail
+					},
+					true
+				)
+			])
+		);
 
 		const { user } = setup(<AccountsSettings />);
 		await waitForGetRightsRequest();
@@ -403,225 +301,114 @@ describe('Account setting', () => {
 	});
 
 	test('Show primary identity inside the list', async () => {
-		const fullName = faker.person.fullName();
-		const email = faker.internet.email();
-		const id = faker.string.uuid();
-
-		const identitiesArray: Array<Identity> = [
-			{
-				id,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: fullName,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		];
-
-		const account: Account = {
-			name: email,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account
-		}));
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail
+					},
+					true
+				)
+			])
+		);
 
 		setup(<AccountsSettings />);
 
 		await waitForGetRightsRequest();
-		expect(screen.getByText(fullName)).toBeVisible();
-		expect(screen.getByText(`(${email})`)).toBeVisible();
+		expect(screen.getByText(defaultFullName)).toBeVisible();
+		expect(screen.getByText(`(${defaultEmail})`)).toBeVisible();
 		expect(screen.getByText('Primary')).toBeVisible();
 	});
 
 	test('Should show the new identity in the list when clicking on add', async () => {
-		const firstName = faker.person.firstName();
-		const lastName = faker.person.lastName();
-		const fullName = faker.person.fullName({ firstName, lastName });
-		const email = faker.internet.email({ firstName, lastName });
-		const id = faker.string.uuid();
-
-		const identitiesArray: Array<Identity> = [
-			{
-				id,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: fullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: firstName,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		];
-
-		const account: Account = {
-			name: email,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account
-		}));
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		);
 
 		const { user } = setup(<AccountsSettings />);
 		await waitForGetRightsRequest();
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		expect(screen.getByText('New Persona 1')).toBeVisible();
+		expect(screen.getByText(persona1FullName)).toBeVisible();
 	});
 
 	test('Should increase the number of the persona when there are already identities with the default name', async () => {
-		const defaultFirstName = faker.person.firstName();
-		const defaultLastName = faker.person.lastName();
-		const defaultFullName = faker.person.fullName({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultEmail = faker.internet.email({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultId = faker.string.uuid();
-
-		const persona1FullName = 'New Persona 1';
-		const persona1Email = faker.internet.email();
-		const persona1Id = faker.string.uuid();
-
-		const identitiesArray: Array<Identity> = [
-			{
-				id: persona1Id,
-				name: persona1FullName,
-				_attrs: {
-					zimbraPrefIdentityName: persona1FullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: '',
-					zimbraPrefFromAddress: persona1Email,
-					zimbraPrefIdentityId: persona1Id,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			},
-			{
-				id: defaultId,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: defaultFullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: defaultFirstName,
-					zimbraPrefFromAddress: defaultEmail,
-					zimbraPrefIdentityId: defaultId,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		];
-
-		const account: Account = {
-			name: defaultEmail,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id: defaultId,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account
-		}));
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		);
 
 		const { user } = setup(<AccountsSettings />);
 		await waitForGetRightsRequest();
-		expect(screen.getByText('New Persona 1')).toBeVisible();
+		expect(screen.getByText(persona1FullName)).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		expect(screen.getByText('New Persona 2')).toBeVisible();
+		expect(screen.getByText(persona2FullName)).toBeVisible();
 	});
 
 	test('When existing persona identityName is updated but not yet saved, the old (but current) identityName should not be used as default one for a new persona', async () => {
-		const defaultFirstName = faker.person.firstName();
-		const defaultLastName = faker.person.lastName();
-		const defaultFullName = faker.person.fullName({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultEmail = faker.internet.email({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultId = faker.string.uuid();
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		);
 
-		const persona1FullName = 'New Persona 1';
-		const persona1Email = faker.internet.email();
-		const persona1Id = faker.string.uuid();
-
-		const identitiesArray: Array<Identity> = [
-			{
-				id: persona1Id,
-				name: persona1FullName,
-				_attrs: {
-					zimbraPrefIdentityName: persona1FullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: '',
-					zimbraPrefFromAddress: persona1Email,
-					zimbraPrefIdentityId: persona1Id,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			},
-			{
-				id: defaultId,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: defaultFullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: defaultFirstName,
-					zimbraPrefFromAddress: defaultEmail,
-					zimbraPrefIdentityId: defaultId,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		];
-
-		const account: Account = {
-			name: defaultEmail,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id: defaultId,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account
-		}));
 		const { user } = setup(<AccountsSettings />);
 		await waitForGetRightsRequest();
 
-		const persona1Row = screen.getByText('New Persona 1');
+		const persona1Row = screen.getByText(persona1FullName);
 		expect(persona1Row).toBeVisible();
 		await user.click(persona1Row);
 
 		const accountNameInput = screen.getByRole('textbox', { name: /persona name/i });
-		expect(accountNameInput).toHaveDisplayValue('New Persona 1');
+		expect(accountNameInput).toHaveDisplayValue(persona1FullName);
 
 		expect(
-			within(screen.getByTestId(`account-list-item-${persona1Id}`)).getByText('New Persona 1')
+			within(screen.getByTestId(`account-list-item-${persona1Id}`)).getByText(persona1FullName)
 		).toBeVisible();
 
 		const newName = 'Updated Name';
@@ -635,66 +422,39 @@ describe('Account setting', () => {
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		expect(
-			within(screen.getByTestId(`account-list-item-0`)).getByText('New Persona 2')
+			within(screen.getByTestId(`account-list-item-0`)).getByText(persona2FullName)
 		).toBeVisible();
 	});
 
 	test('When create a new persona and modify the proposed identityName before saving and than create another persona the proposed identityName should be the same', async () => {
-		const defaultFirstName = faker.person.firstName();
-		const defaultLastName = faker.person.lastName();
-		const defaultFullName = faker.person.fullName({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultEmail = faker.internet.email({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultId = faker.string.uuid();
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		);
 
-		const identitiesArray: Array<Identity> = [
-			{
-				id: defaultId,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: defaultFullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: defaultFirstName,
-					zimbraPrefFromAddress: defaultEmail,
-					zimbraPrefIdentityId: defaultId,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		];
-
-		const account: Account = {
-			name: defaultEmail,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id: defaultId,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account
-		}));
 		const { user } = setup(<AccountsSettings />);
 		await waitForGetRightsRequest();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 
-		const persona1Row = screen.getByText('New Persona 1');
+		const persona1Row = screen.getByText(persona1FullName);
 		expect(persona1Row).toBeVisible();
 		await user.click(persona1Row);
 
 		const accountNameInput = screen.getByRole('textbox', { name: /persona name/i });
-		expect(accountNameInput).toHaveDisplayValue('New Persona 1');
+		expect(accountNameInput).toHaveDisplayValue(persona1FullName);
 
 		expect(
-			within(screen.getByTestId(`account-list-item-0`)).getByText('New Persona 1')
+			within(screen.getByTestId(`account-list-item-0`)).getByText(persona1FullName)
 		).toBeVisible();
 
 		const newName = 'Updated Name';
@@ -705,75 +465,39 @@ describe('Account setting', () => {
 		expect(within(screen.getByTestId(`account-list-item-0`)).getByText(newName)).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		expect(screen.getByText('New Persona 1')).toBeVisible();
+		expect(screen.getByText(persona1FullName)).toBeVisible();
 		expect(
-			within(screen.getByTestId(`account-list-item-1`)).getByText('New Persona 1')
+			within(screen.getByTestId(`account-list-item-1`)).getByText(persona1FullName)
 		).toBeVisible();
-		expect(screen.queryByText('New Persona 2')).not.toBeInTheDocument();
+		expect(screen.queryByText(persona2FullName)).not.toBeInTheDocument();
 	});
 
 	test('When existing persona is deleted but not yet saved, the old (but current) identityName should not be used as default one for a new persona', async () => {
-		const defaultFirstName = faker.person.firstName();
-		const defaultLastName = faker.person.lastName();
-		const defaultFullName = faker.person.fullName({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultEmail = faker.internet.email({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultId = faker.string.uuid();
-
-		const persona1FullName = 'New Persona 1';
-		const persona1Email = faker.internet.email();
-		const persona1Id = faker.string.uuid();
-
-		const identitiesArray: Array<Identity> = [
-			{
-				id: persona1Id,
-				name: persona1FullName,
-				_attrs: {
-					zimbraPrefIdentityName: persona1FullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: '',
-					zimbraPrefFromAddress: persona1Email,
-					zimbraPrefIdentityId: persona1Id,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			},
-			{
-				id: defaultId,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: defaultFullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: defaultFirstName,
-					zimbraPrefFromAddress: defaultEmail,
-					zimbraPrefIdentityId: defaultId,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		];
-
-		const account: Account = {
-			name: defaultEmail,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id: defaultId,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account
-		}));
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		);
 		const { user } = setup(<AccountsSettings />);
 		await waitForGetRightsRequest();
 
-		const persona1Row = screen.getByText('New Persona 1');
+		const persona1Row = screen.getByText(persona1FullName);
 		expect(persona1Row).toBeVisible();
 		await user.click(persona1Row);
 
@@ -788,58 +512,31 @@ describe('Account setting', () => {
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		expect(
-			within(screen.getByTestId(`account-list-item-0`)).getByText('New Persona 2')
+			within(screen.getByTestId(`account-list-item-0`)).getByText(persona2FullName)
 		).toBeVisible();
 	});
 
 	test('When create a new persona and delete it before saving and than create another persona the proposed identityName should be the same', async () => {
-		const defaultFirstName = faker.person.firstName();
-		const defaultLastName = faker.person.lastName();
-		const defaultFullName = faker.person.fullName({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultEmail = faker.internet.email({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultId = faker.string.uuid();
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		);
 
-		const identitiesArray: Array<Identity> = [
-			{
-				id: defaultId,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: defaultFullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: defaultFirstName,
-					zimbraPrefFromAddress: defaultEmail,
-					zimbraPrefIdentityId: defaultId,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		];
-
-		const account: Account = {
-			name: defaultEmail,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id: defaultId,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account
-		}));
 		const { user } = setup(<AccountsSettings />);
 		await waitForGetRightsRequest();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 
-		const persona1Row = screen.getByText('New Persona 1');
+		const persona1Row = screen.getByText(persona1FullName);
 		expect(persona1Row).toBeVisible();
 		await user.click(persona1Row);
 
@@ -853,137 +550,66 @@ describe('Account setting', () => {
 		expect(persona1Row).not.toBeInTheDocument();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		expect(screen.getByText('New Persona 1')).toBeVisible();
+		expect(screen.getByText(persona1FullName)).toBeVisible();
 		expect(
-			within(screen.getByTestId(`account-list-item-1`)).getByText('New Persona 1')
+			within(screen.getByTestId(`account-list-item-1`)).getByText(persona1FullName)
 		).toBeVisible();
-		expect(screen.queryByText('New Persona 2')).not.toBeInTheDocument();
+		expect(screen.queryByText(persona2FullName)).not.toBeInTheDocument();
 	});
 
 	test('Should not increase the counter if the identities have a name different from the default', async () => {
-		const defaultFirstName = faker.person.firstName();
-		const defaultLastName = faker.person.lastName();
-		const defaultFullName = faker.person.fullName({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultEmail = faker.internet.email({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultId = faker.string.uuid();
-
-		const persona1FullName = faker.person.fullName();
-		const persona1Email = faker.internet.email();
-		const persona1Id = faker.string.uuid();
-
-		const identitiesArray: Array<Identity> = [
-			{
-				id: persona1Id,
-				name: persona1FullName,
-				_attrs: {
-					zimbraPrefIdentityName: persona1FullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: '',
-					zimbraPrefFromAddress: persona1Email,
-					zimbraPrefIdentityId: persona1Id,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			},
-			{
-				id: defaultId,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: defaultFullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: defaultFirstName,
-					zimbraPrefFromAddress: defaultEmail,
-					zimbraPrefIdentityId: defaultId,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		];
-
-		const account: Account = {
-			name: defaultEmail,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id: defaultId,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account
-		}));
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		);
 		const { user } = setup(<AccountsSettings />);
 		await waitForGetRightsRequest();
 		expect(screen.getByText(persona1FullName)).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		expect(screen.getByText('New Persona 1')).toBeVisible();
+		expect(screen.getByText(persona1FullName)).toBeVisible();
 	});
 
 	test('Should remove the identity from the list on delete action', async () => {
-		const defaultFirstName = faker.person.firstName();
-		const defaultLastName = faker.person.lastName();
-		const defaultFullName = faker.person.fullName({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultEmail = faker.internet.email({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultId = faker.string.uuid();
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		);
 
-		const persona1FullName = faker.person.fullName();
-		const persona1Email = faker.internet.email();
-		const persona1Id = faker.string.uuid();
-
-		const identitiesArray: Array<Identity> = [
-			{
-				id: persona1Id,
-				name: persona1FullName,
-				_attrs: {
-					zimbraPrefIdentityName: persona1FullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: '',
-					zimbraPrefFromAddress: persona1Email,
-					zimbraPrefIdentityId: persona1Id,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			},
-			{
-				id: defaultId,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: defaultFullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: defaultFirstName,
-					zimbraPrefFromAddress: defaultEmail,
-					zimbraPrefIdentityId: defaultId,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		];
-
-		const account: Account = {
-			name: defaultEmail,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id: defaultId,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account
-		}));
 		const { user } = setup(<AccountsSettings />);
 		await waitForGetRightsRequest();
 		const persona1Row = screen.getByText(persona1FullName);
@@ -1000,54 +626,20 @@ describe('Account setting', () => {
 	});
 
 	test('Should create only identities which have not been removed from the unsaved changes', async () => {
-		const defaultFirstName = faker.person.firstName();
-		const defaultLastName = faker.person.lastName();
-		const defaultFullName = faker.person.fullName({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultEmail = faker.internet.email({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultId = faker.string.uuid();
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		);
 
-		const identitiesArray: Array<Identity> = [
-			{
-				id: defaultId,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: defaultFullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: defaultFirstName,
-					zimbraPrefFromAddress: defaultEmail,
-					zimbraPrefIdentityId: defaultId,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		];
-
-		const account: Account = {
-			name: defaultEmail,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id: defaultId,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account,
-			settings: {
-				...previousState.settings,
-				attrs: {
-					...previousState.settings.attrs,
-					zimbraIdentityMaxNumEntries: 20
-				}
-			}
-		}));
 		const batchRequestUrl = '/service/soap/BatchRequest';
 		server.use(
 			rest.post(batchRequestUrl, (req, res, ctx) =>
@@ -1072,30 +664,33 @@ describe('Account setting', () => {
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await waitFor(() =>
 			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
-				/new persona 1/i
+				persona1FullName
 			)
 		);
 
-		const persona1 = 'New Persona 1';
-		const persona2 = 'New Persona 2';
-		const persona3 = 'New Persona 3';
-		expect(screen.getByText(persona1)).toBeVisible();
+		expect(screen.getByText(persona1FullName)).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await waitFor(() =>
-			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(persona2)
+			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
+				persona2FullName
+			)
 		);
-		expect(screen.getByText(persona2)).toBeVisible();
+		expect(screen.getByText(persona2FullName)).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await waitFor(() =>
-			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(persona3)
+			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
+				persona3FullName
+			)
 		);
-		expect(screen.getByText(persona3)).toBeVisible();
+		expect(screen.getByText(persona3FullName)).toBeVisible();
 
-		await user.click(screen.getByText(persona1));
+		await user.click(screen.getByText(persona1FullName));
 		await waitFor(() =>
-			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(persona1)
+			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
+				persona1FullName
+			)
 		);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
 		let confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
@@ -1105,11 +700,13 @@ describe('Account setting', () => {
 		});
 		await user.click(confirmButton);
 		await screen.findByText(/primary account settings/i);
-		expect(screen.queryByText(persona1)).not.toBeInTheDocument();
+		expect(screen.queryByText(persona1FullName)).not.toBeInTheDocument();
 
-		await user.click(screen.getByText(persona2));
+		await user.click(screen.getByText(persona2FullName));
 		await waitFor(() =>
-			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(persona2)
+			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
+				persona2FullName
+			)
 		);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
 		confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
@@ -1119,7 +716,7 @@ describe('Account setting', () => {
 		});
 		await user.click(confirmButton);
 		await screen.findByText(/primary account settings/i);
-		expect(screen.queryByText(persona2)).not.toBeInTheDocument();
+		expect(screen.queryByText(persona2FullName)).not.toBeInTheDocument();
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
@@ -1136,117 +733,54 @@ describe('Account setting', () => {
 	});
 
 	test('Should remove from the list added identities not saved on discard changes', async () => {
-		const defaultFirstName = faker.person.firstName();
-		const defaultLastName = faker.person.lastName();
-		const defaultFullName = faker.person.fullName({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultEmail = faker.internet.email({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultId = faker.string.uuid();
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		);
 
-		const identitiesArray: Array<Identity> = [
-			{
-				id: defaultId,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: defaultFullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: defaultFirstName,
-					zimbraPrefFromAddress: defaultEmail,
-					zimbraPrefIdentityId: defaultId,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		];
-
-		const account: Account = {
-			name: defaultEmail,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id: defaultId,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account
-		}));
 		const { user } = setup(<AccountsSettings />);
 
 		await waitForGetRightsRequest();
 
-		const persona1 = 'New Persona 1';
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		expect(screen.getByText(persona1)).toBeVisible();
+		expect(screen.getByText(persona1FullName)).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
-		expect(screen.queryByText(persona1)).not.toBeInTheDocument();
+		expect(screen.queryByText(persona1FullName)).not.toBeInTheDocument();
 	});
 
 	test('Should add in the list removed identities not saved on discard changes', async () => {
-		const defaultFirstName = faker.person.firstName();
-		const defaultLastName = faker.person.lastName();
-		const defaultFullName = faker.person.fullName({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultEmail = faker.internet.email({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultId = faker.string.uuid();
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		);
 
-		const persona1FullName = 'New Persona 1';
-		const persona1Email = faker.internet.email();
-		const persona1Id = faker.string.uuid();
-
-		const identitiesArray: Array<Identity> = [
-			{
-				id: persona1Id,
-				name: persona1FullName,
-				_attrs: {
-					zimbraPrefIdentityName: persona1FullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: '',
-					zimbraPrefFromAddress: persona1Email,
-					zimbraPrefIdentityId: persona1Id,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			},
-			{
-				id: defaultId,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: defaultFullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: defaultFirstName,
-					zimbraPrefFromAddress: defaultEmail,
-					zimbraPrefIdentityId: defaultId,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		];
-
-		const account: Account = {
-			name: defaultEmail,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id: defaultId,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account
-		}));
 		const { user } = setup(<AccountsSettings />);
 		await waitForGetRightsRequest();
 
@@ -1268,47 +802,19 @@ describe('Account setting', () => {
 	});
 
 	test('Should update name of the identity in the list if the user change it from the input(default case)', async () => {
-		const defaultFirstName = faker.person.firstName();
-		const defaultLastName = faker.person.lastName();
-		const defaultFullName = faker.person.fullName({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultEmail = faker.internet.email({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultId = faker.string.uuid();
-
-		const identitiesArray: Array<Identity> = [
-			{
-				id: defaultId,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: defaultFullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: defaultFirstName,
-					zimbraPrefFromAddress: defaultEmail,
-					zimbraPrefIdentityId: defaultId,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		];
-
-		const account: Account = {
-			name: defaultEmail,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id: defaultId,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account
-		}));
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		);
 		const { user } = setup(<AccountsSettings />);
 		await waitForGetRightsRequest();
 
@@ -1330,54 +836,19 @@ describe('Account setting', () => {
 	});
 
 	test('When modify an identity, should populate a ModifyIdentityRequest', async () => {
-		const defaultFirstName = faker.person.firstName();
-		const defaultLastName = faker.person.lastName();
-		const defaultFullName = faker.person.fullName({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultEmail = faker.internet.email({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultId = faker.string.uuid();
-
-		const identitiesArray: Array<Identity> = [
-			{
-				id: defaultId,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: defaultFullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: defaultFirstName,
-					zimbraPrefFromAddress: defaultEmail,
-					zimbraPrefIdentityId: defaultId,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		];
-
-		const account: Account = {
-			name: defaultEmail,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id: defaultId,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account,
-			settings: {
-				...previousState.settings,
-				attrs: {
-					...previousState.settings.attrs,
-					zimbraIdentityMaxNumEntries: 20
-				}
-			}
-		}));
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		);
 
 		server.use(
 			rest.post('/service/soap/BatchRequest', (req, res, ctx) =>
@@ -1417,48 +888,133 @@ describe('Account setting', () => {
 		expect(successSnackbar).toBeVisible();
 	});
 
+	test('When modify an identity, the new value must be shown after save', async () => {
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		);
+
+		server.use(
+			rest.post('/service/soap/BatchRequest', (req, res, ctx) =>
+				res(
+					ctx.json({
+						Body: {
+							BatchResponse: {
+								ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
+							}
+						}
+					})
+				)
+			)
+		);
+
+		const batchRequestUrl = '/service/soap/BatchRequest';
+		const pendingBatchRequest = waitForRequest('POST', batchRequestUrl);
+		const { user } = setup(<AccountsSettings />);
+		await waitForGetRightsRequest();
+
+		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
+
+		const newName = 'Updated Name';
+		await user.clear(accountNameInput);
+		await user.type(accountNameInput, newName);
+
+		await user.click(screen.getByRole('button', { name: /save/i }));
+
+		await pendingBatchRequest;
+
+		const successSnackbar = await screen.findByText('Edits saved correctly');
+		expect(successSnackbar).toBeVisible();
+
+		expect(accountNameInput).toHaveDisplayValue(newName);
+	});
+
+	test('When delete an identity, it must not be present after save', async () => {
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		);
+
+		server.use(
+			rest.post('/service/soap/BatchRequest', (req, res, ctx) =>
+				res(
+					ctx.json({
+						Body: {
+							BatchResponse: {
+								ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
+							}
+						}
+					})
+				)
+			)
+		);
+
+		const batchRequestUrl = '/service/soap/BatchRequest';
+		const pendingBatchRequest = waitForRequest('POST', batchRequestUrl);
+
+		const { user } = setup(<AccountsSettings />);
+		await waitForGetRightsRequest();
+		const persona1Row = screen.getByText(persona1FullName);
+		expect(persona1Row).toBeVisible();
+		await user.click(persona1Row);
+		await user.click(screen.getByRole('button', { name: /delete/i }));
+		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
+		act(() => {
+			// run modal timers
+			jest.runOnlyPendingTimers();
+		});
+		await user.click(confirmButton);
+
+		await user.click(screen.getByRole('button', { name: /save/i }));
+
+		await pendingBatchRequest;
+
+		const successSnackbar = await screen.findByText('Edits saved correctly');
+		expect(successSnackbar).toBeVisible();
+
+		expect(screen.queryByText(persona1FullName)).not.toBeInTheDocument();
+	});
+
 	test('Should reset the updated identity name on discard changes(default case)', async () => {
-		const defaultFirstName = faker.person.firstName();
-		const defaultLastName = faker.person.lastName();
-		const defaultFullName = faker.person.fullName({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultEmail = faker.internet.email({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultId = faker.string.uuid();
-
-		const identitiesArray: Array<Identity> = [
-			{
-				id: defaultId,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: defaultFullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: defaultFirstName,
-					zimbraPrefFromAddress: defaultEmail,
-					zimbraPrefIdentityId: defaultId,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		];
-
-		const account: Account = {
-			name: defaultEmail,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id: defaultId,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account
-		}));
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		);
 		const { user } = setup(<AccountsSettings />);
 		await waitForGetRightsRequest();
 
@@ -1487,47 +1043,19 @@ describe('Account setting', () => {
 	});
 
 	test('Should not allow updating primary account email', async () => {
-		const defaultFirstName = faker.person.firstName();
-		const defaultLastName = faker.person.lastName();
-		const defaultFullName = faker.person.fullName({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultEmail = faker.internet.email({
-			firstName: defaultFirstName,
-			lastName: defaultLastName
-		});
-		const defaultId = faker.string.uuid();
-
-		const identitiesArray: Array<Identity> = [
-			{
-				id: defaultId,
-				name: 'DEFAULT',
-				_attrs: {
-					zimbraPrefIdentityName: defaultFullName,
-					zimbraPrefReplyToEnabled: 'FALSE',
-					zimbraPrefFromDisplay: defaultFirstName,
-					zimbraPrefFromAddress: defaultEmail,
-					zimbraPrefIdentityId: defaultId,
-					zimbraPrefFromAddressType: 'sendAs'
-				}
-			}
-		];
-
-		const account: Account = {
-			name: defaultEmail,
-			rights: { targets: [] },
-			signatures: { signature: [] },
-			id: defaultId,
-			displayName: '',
-			identities: {
-				identity: identitiesArray
-			}
-		};
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			account
-		}));
+		setupAccountStore(
+			createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		);
 		const { user } = setup(<AccountsSettings />);
 		await waitForGetRightsRequest();
 
@@ -1549,55 +1077,65 @@ describe('Account setting', () => {
 	});
 
 	describe('Delegates', () => {
-		// TODO waiting for radio component refactor to better find active radio
-		test.todo('The value received in the pref is the one checked in the UI');
+		const delegatedSendSaveTargetLabelsMap = {
+			owner: 'Save a copy of sent messages to my Sent folder',
+			sender: 'Save a copy of sent messages to delegate’s Sent folder',
+			both: 'Save a copy of sent messages to my Sent folder and delegate’s folder',
+			none: 'Don’t save a copy of sent messages'
+		};
+
+		test.each([
+			['owner', delegatedSendSaveTargetLabelsMap.owner],
+			['sender', delegatedSendSaveTargetLabelsMap.sender],
+			['both', delegatedSendSaveTargetLabelsMap.both],
+			['none', delegatedSendSaveTargetLabelsMap.none]
+		])(
+			'When zimbraPrefDelegatedSendSaveTarget is %s then %s radio is checked',
+			async (zimbraPrefDelegatedSendSaveTarget) => {
+				setupAccountStore(
+					createAccount(defaultEmail, defaultId, [
+						createIdentity(
+							{
+								zimbraPrefIdentityId: defaultId,
+								zimbraPrefIdentityName: defaultFullName,
+								zimbraPrefFromAddress: defaultEmail,
+								zimbraPrefFromDisplay: defaultFirstName
+							},
+							true
+						)
+					]),
+					{ zimbraPrefDelegatedSendSaveTarget }
+				);
+
+				setup(<AccountsSettings />);
+				await waitForGetRightsRequest();
+
+				forEach(delegatedSendSaveTargetLabelsMap, (label, pref) => {
+					if (pref === zimbraPrefDelegatedSendSaveTarget) {
+						expect(screen.getByRole('radio', { name: label })).toBeChecked();
+					} else {
+						expect(screen.getByRole('radio', { name: label })).not.toBeChecked();
+					}
+				});
+			}
+		);
 
 		test('When the value change, the save button and discard button becomes enabled', async () => {
-			const defaultFirstName = faker.person.firstName();
-			const defaultLastName = faker.person.lastName();
-			const defaultFullName = faker.person.fullName({
-				firstName: defaultFirstName,
-				lastName: defaultLastName
-			});
-			const defaultEmail = faker.internet.email({
-				firstName: defaultFirstName,
-				lastName: defaultLastName
-			});
-			const defaultId = faker.string.uuid();
+			setupAccountStore(
+				createAccount(defaultEmail, defaultId, [
+					createIdentity(
+						{
+							zimbraPrefIdentityId: defaultId,
+							zimbraPrefIdentityName: defaultFullName,
+							zimbraPrefFromAddress: defaultEmail,
+							zimbraPrefFromDisplay: defaultFirstName
+						},
+						true
+					)
+				]),
+				{ zimbraPrefDelegatedSendSaveTarget: 'owner' }
+			);
 
-			const identitiesArray: Array<Identity> = [
-				{
-					id: defaultId,
-					name: 'DEFAULT',
-					_attrs: {
-						zimbraPrefIdentityName: defaultFullName,
-						zimbraPrefReplyToEnabled: 'FALSE',
-						zimbraPrefFromDisplay: defaultFirstName,
-						zimbraPrefFromAddress: defaultEmail,
-						zimbraPrefIdentityId: defaultId,
-						zimbraPrefFromAddressType: 'sendAs'
-					}
-				}
-			];
-
-			const account: Account = {
-				name: defaultEmail,
-				rights: { targets: [] },
-				signatures: { signature: [] },
-				id: defaultId,
-				displayName: '',
-				identities: {
-					identity: identitiesArray
-				}
-			};
-			useAccountStore.setState((previousState) => ({
-				...previousState,
-				account,
-				settings: {
-					...previousState.settings,
-					prefs: { zimbraPrefDelegatedSendSaveTarget: 'owner' }
-				}
-			}));
 			const { user } = setup(<AccountsSettings />);
 			await waitForGetRightsRequest();
 
@@ -1614,52 +1152,20 @@ describe('Account setting', () => {
 		});
 
 		test('When the user change the value and click on save, the network request contains the new value', async () => {
-			const defaultFirstName = faker.person.firstName();
-			const defaultLastName = faker.person.lastName();
-			const defaultFullName = faker.person.fullName({
-				firstName: defaultFirstName,
-				lastName: defaultLastName
-			});
-			const defaultEmail = faker.internet.email({
-				firstName: defaultFirstName,
-				lastName: defaultLastName
-			});
-			const defaultId = faker.string.uuid();
-
-			const identitiesArray: Array<Identity> = [
-				{
-					id: defaultId,
-					name: 'DEFAULT',
-					_attrs: {
-						zimbraPrefIdentityName: defaultFullName,
-						zimbraPrefReplyToEnabled: 'FALSE',
-						zimbraPrefFromDisplay: defaultFirstName,
-						zimbraPrefFromAddress: defaultEmail,
-						zimbraPrefIdentityId: defaultId,
-						zimbraPrefFromAddressType: 'sendAs'
-					}
-				}
-			];
-
-			const account: Account = {
-				name: defaultEmail,
-				rights: { targets: [] },
-				signatures: { signature: [] },
-				id: defaultId,
-				displayName: '',
-				identities: {
-					identity: identitiesArray
-				}
-			};
-			useAccountStore.setState((previousState) => ({
-				...previousState,
-				account,
-				settings: {
-					...previousState.settings,
-					prefs: { zimbraPrefDelegatedSendSaveTarget: 'owner' },
-					attrs: { zimbraIdentityMaxNumEntries: 20 }
-				}
-			}));
+			setupAccountStore(
+				createAccount(defaultEmail, defaultId, [
+					createIdentity(
+						{
+							zimbraPrefIdentityId: defaultId,
+							zimbraPrefIdentityName: defaultFullName,
+							zimbraPrefFromAddress: defaultEmail,
+							zimbraPrefFromDisplay: defaultFirstName
+						},
+						true
+					)
+				]),
+				{ zimbraPrefDelegatedSendSaveTarget: 'owner' }
+			);
 
 			server.use(
 				rest.post('/service/soap/BatchRequest', (req, res, ctx) =>
@@ -1708,48 +1214,19 @@ describe('Account setting', () => {
 			expect(successSnackbar).toBeVisible();
 		});
 		test('GetRightRequest is called only once when the user navigates inside account settings', async () => {
-			const defaultFirstName = faker.person.firstName();
-			const defaultLastName = faker.person.lastName();
-			const defaultFullName = faker.person.fullName({
-				firstName: defaultFirstName,
-				lastName: defaultLastName
-			});
-			const defaultEmail = faker.internet.email({
-				firstName: defaultFirstName,
-				lastName: defaultLastName
-			});
-			const defaultId = faker.string.uuid();
-
-			const identitiesArray: Account['identities']['identity'] = [
-				{
-					id: defaultId,
-					name: 'DEFAULT',
-					_attrs: {
-						zimbraPrefIdentityName: defaultFullName,
-						zimbraPrefReplyToEnabled: 'FALSE',
-						zimbraPrefFromDisplay: defaultFirstName,
-						zimbraPrefFromAddress: defaultEmail,
-						zimbraPrefIdentityId: defaultId,
-						zimbraPrefFromAddressType: 'sendAs'
-					}
-				}
-			];
-
-			const account: Account = {
-				name: defaultEmail,
-				rights: { targets: [] },
-				signatures: { signature: [] },
-				id: defaultId,
-				displayName: '',
-				identities: {
-					identity: identitiesArray
-				}
-			};
-
-			useAccountStore.setState((previousState) => ({
-				...previousState,
-				account
-			}));
+			setupAccountStore(
+				createAccount(defaultEmail, defaultId, [
+					createIdentity(
+						{
+							zimbraPrefIdentityId: defaultId,
+							zimbraPrefIdentityName: defaultFullName,
+							zimbraPrefFromAddress: defaultEmail,
+							zimbraPrefFromDisplay: defaultFirstName
+						},
+						true
+					)
+				])
+			);
 
 			const requestFn = jest.fn();
 			server.use(
@@ -1794,48 +1271,19 @@ describe('Account setting', () => {
 		});
 
 		test('When rights state is updated, the delegates list will be updated accordingly', async () => {
-			const defaultFirstName = faker.person.firstName();
-			const defaultLastName = faker.person.lastName();
-			const defaultFullName = faker.person.fullName({
-				firstName: defaultFirstName,
-				lastName: defaultLastName
-			});
-			const defaultEmail = faker.internet.email({
-				firstName: defaultFirstName,
-				lastName: defaultLastName
-			});
-			const defaultId = faker.string.uuid();
-
-			const identitiesArray: Account['identities']['identity'] = [
-				{
-					id: defaultId,
-					name: 'DEFAULT',
-					_attrs: {
-						zimbraPrefIdentityName: defaultFullName,
-						zimbraPrefReplyToEnabled: 'FALSE',
-						zimbraPrefFromDisplay: defaultFirstName,
-						zimbraPrefFromAddress: defaultEmail,
-						zimbraPrefIdentityId: defaultId,
-						zimbraPrefFromAddressType: 'sendAs'
-					}
-				}
-			];
-
-			const account: Account = {
-				name: defaultEmail,
-				rights: { targets: [] },
-				signatures: { signature: [] },
-				id: defaultId,
-				displayName: '',
-				identities: {
-					identity: identitiesArray
-				}
-			};
-
-			useAccountStore.setState((previousState) => ({
-				...previousState,
-				account
-			}));
+			setupAccountStore(
+				createAccount(defaultEmail, defaultId, [
+					createIdentity(
+						{
+							zimbraPrefIdentityId: defaultId,
+							zimbraPrefIdentityName: defaultFullName,
+							zimbraPrefFromAddress: defaultEmail,
+							zimbraPrefFromDisplay: defaultFirstName
+						},
+						true
+					)
+				])
+			);
 
 			const requestFn = jest.fn();
 			server.use(

@@ -74,9 +74,17 @@
             }
         },
         "accounts": "アカウント",
-        "choose": "選択してください"
+        "choose": "選択してください",
+        "account": {
+            "delegates": {
+                "multiple_rights": "{{rights.0}} と {{rights.1}}",
+                "right_sendas": "送信者",
+                "right_sendonbehalfof": "代理で送信する"
+            },
+            "new_identity": "新しい人 {{number}}"
+        }
     },
-    "new": "新規",
+    "new": "新規作成",
     "search": {
         "app": "検索する",
         "module": "モジュール",
@@ -196,7 +204,9 @@
         "secondary": "セカンダリー",
         "folder_external_account": "フォルダ: 新しい外部アカウント",
         "add_inline_image": "インライン画像を追加する",
-        "select_image": "画像を選択する"
+        "select_image": "画像を選択する",
+        "cannot_save_changes": "一部の変更は保存できません",
+        "close": "閉じる"
     },
     "locale": {
         "label_turkish": "トルコ語- {{value}}",
@@ -230,7 +240,9 @@
         "french": "フランス語",
         "label_french": "フランス語-{{value}}",
         "vietnamese": "ベトナム語",
-        "polish": "ポーランド語"
+        "polish": "ポーランド語",
+        "label_polish": "ポーランド語 - {{value}}",
+        "label_vietnamese": "ベトナム語- {{value}}"
     },
     "timezone": {
         "africa_algiers": "{{value}}西中央アフリカ",
@@ -379,7 +391,11 @@
         "reduce": "ボードを減らす",
         "show_tabs": "他のタブを表示する",
         "open_app": "アプリで開く",
-        "from_app": "{{app}}から"
+        "from_app": "{{app}}から",
+        "reset_size": {
+            "enabled": "デフォルトの位置とサイズに戻す",
+            "disabled": "ボードはすでにデフォルトの位置にあります"
+        }
     },
     "feedback": {
         "behaviors": "行動",
@@ -408,5 +424,15 @@
     },
     "share": {
         "is_contained_in": "に含まれています"
+    },
+    "bootstrap": {
+        "failure": {
+            "modal": {
+                "confirmButtonLabel": "リフレッシュする",
+                "secondaryButtonLabel": "ログインページ",
+                "title": "エラーが発生しました…",
+                "body": "リクエストの処理中に技術的な問題が発生しました。 ページを更新するか、ログインページに戻ってください。"
+            }
+        }
     }
 }

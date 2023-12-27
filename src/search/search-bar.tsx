@@ -37,6 +37,8 @@ const OutlinedIconButton = styled(IconButton)`
 `;
 
 const StyledChipInput = styled(ChipInput)`
+	cursor: pointer;
+	overflow-x: hidden;
 	padding: 0 1rem;
 	&:hover {
 		outline: none;
@@ -388,12 +390,12 @@ export const SearchBar = (): React.JSX.Element => {
 									options={options}
 									placeholder={placeholder}
 									confirmChipOnBlur={false}
-									separators={['Enter', 'NumpadEnter', 'Comma', 'Space']}
+									separators={[
+										{ key: 'Enter', ctrlKey: false },
+										{ key: ',', ctrlKey: false },
+										{ key: ' ', ctrlKey: false }
+									]}
 									background={searchDisabled ? 'gray5' : 'gray6'}
-									style={{
-										cursor: 'pointer',
-										overflowX: 'hidden'
-									}}
 									onChange={onQueryChange}
 									onInputType={onInputType}
 									onInputTypeDebounce={0}

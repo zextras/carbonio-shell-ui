@@ -49,7 +49,7 @@ const searchRouteDescriptor = (t: TFunction): AppRouteDescriptor => ({
 		show: false
 	},
 	label: t('search.app', 'Search'),
-	position: 15,
+	position: 1000,
 	visible: true,
 	primaryBar: 'SearchModOutline'
 });
@@ -63,7 +63,7 @@ const settingsRouteDescriptor = (t: TFunction): AppRouteDescriptor => ({
 		show: false
 	},
 	label: t('settings.app', 'Settings'),
-	position: 16,
+	position: 1100,
 	visible: true,
 	primaryBar: 'SettingsModOutline',
 	secondaryBar: SettingsSidebar

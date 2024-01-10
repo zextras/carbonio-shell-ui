@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.1.0](https://github.com/zextras/carbonio-shell-ui/compare/v5.0.3...v5.1.0) (2024-01-10)
+
+
+### Features
+
+* update position inside primary bar for search and settings ([b823bef](https://github.com/zextras/carbonio-shell-ui/commit/b823bef88374ea8fc9fdeb35e358ee83683736b7)), closes [#377](https://github.com/zextras/carbonio-shell-ui/issues/377)
+
 ### [5.0.3](https://github.com/zextras/carbonio-shell-ui/compare/v5.0.2...v5.0.3) (2023-12-29)
 
 ### [5.0.2](https://github.com/zextras/carbonio-shell-ui/compare/v5.0.1...v5.0.2) (2023-12-11)

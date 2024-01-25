@@ -1,21 +1,30 @@
-import { BaseFolder, LinkFolderFields, SearchFolderFields } from '../misc';
-
 /*
  * SPDX-FileCopyrightText: 2022 Zextras <https://www.zextras.com>
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-export type SoapHeader = {
-	context: SoapContext;
-};
+import type { BaseFolder, LinkFolderFields, SearchFolderFields } from '../misc';
+import type { Tag } from '../tags';
 
-export type SuccessSoapResponse<R> = {
+export interface RawSoapHeader {
+	context: RawSoapContext;
+}
+
+export interface SoapHeader {
+	context: SoapContext;
+}
+
+export interface RawSuccessSoapResponse<R> {
+	Body: R;
+	Header: RawSoapHeader;
+}
+export interface SuccessSoapResponse<R> {
 	Body: Record<string, R>;
 	Header: SoapHeader;
-};
+}
 
-export type SoapFault = {
+export interface SoapFault {
 	Detail: {
 		Error: {
 			Code: string;
@@ -25,25 +34,37 @@ export type SoapFault = {
 	Reason: {
 		Text: string;
 	};
-};
+}
 
 export type ErrorSoapBodyResponse = {
 	Fault: SoapFault;
 };
+
+export interface RawErrorSoapResponse {
+	Body: ErrorSoapBodyResponse;
+	Header: RawSoapHeader;
+}
 
 export type ErrorSoapResponse = {
 	Body: ErrorSoapBodyResponse;
 	Header: SoapHeader;
 };
 
+export type RawSoapResponse<R extends Record<string, unknown>> =
+	| RawSuccessSoapResponse<R>
+	| RawErrorSoapResponse;
 export type SoapResponse<R> = SuccessSoapResponse<R> | ErrorSoapResponse;
 
-export type SoapContext = {
+export interface RawSoapContext {
 	refresh?: SoapRefresh;
-	notify?: Array<SoapNotify>;
+	notify?: Array<RawSoapNotify>;
 	change?: { token: number };
 	session?: { id: number; _content: number };
-};
+}
+
+export interface SoapContext extends RawSoapContext {
+	notify: Array<SoapNotify>;
+}
 
 export type SoapFolder = BaseFolder & {
 	folder?: Array<SoapFolder>;
@@ -61,7 +82,7 @@ export type SoapRefresh = {
 	tags?: { tag: Array<Tag> };
 };
 
-export type SoapNotify = {
+export type RawSoapNotify = {
 	seq: number;
 	created?: {
 		m?: Array<unknown>;
@@ -78,5 +99,8 @@ export type SoapNotify = {
 		tag?: Array<Partial<Tag>>;
 		mbx: [{ s: number }];
 	};
+	deleted?: { id?: string };
+};
+export type SoapNotify = Omit<RawSoapNotify, 'deleted'> & {
 	deleted: string[];
 };

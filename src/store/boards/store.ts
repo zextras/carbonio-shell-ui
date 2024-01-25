@@ -34,7 +34,7 @@ export const addBoard =
 					id,
 					icon: board.icon ?? getApp(app)()?.icon ?? 'CubeOutline',
 					url: trimStart(board.url, '/')
-				};
+				} as Board;
 				state.current = id;
 				state.minimized = false;
 				state.expanded = expanded ?? state.expanded;
@@ -116,7 +116,7 @@ export const updateBoard = <T = unknown>(id: string, board: Partial<Board<T>>): 
 				state.boards[id] = {
 					...state.boards[id],
 					...board
-				};
+				} as Board;
 		})
 	);
 };

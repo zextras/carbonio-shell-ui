@@ -50,10 +50,10 @@ export type GetInfoResponse = {
 		_attrs: AccountSettingsPrefs;
 	};
 	signatures: {
-		signature: Array<any>;
+		signature: Array<unknown>;
 	};
 	identities: {
-		identity: Array<any>;
+		identity: Array<Identity>;
 	};
 	zimlets: {
 		zimlet: Array<ZimletPkgDescription>;

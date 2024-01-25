@@ -8,21 +8,19 @@ import React, { FC, useContext, useMemo, createContext } from 'react';
 import { closeBoard, setCurrentBoard, updateBoard, useBoardStore } from './store';
 import { Board, BoardHooksContext } from '../../../types';
 
-export const useBoardById = <T,>(id: string): Board<T> => useBoardStore((s) => s.boards[id]);
-export const getBoardById = <T,>(id: string): Board<T> => useBoardStore.getState().boards[id];
+export const useBoardById = <T,>(id: string): Board<T> =>
+	useBoardStore((s) => s.boards[id]) as Board<T>;
+export const getBoardById = <T,>(id: string): Board<T> =>
+	useBoardStore.getState().boards[id] as Board<T>;
 export const useBoardContextById = <T,>(id: string): T =>
-	useBoardStore((s) => s.boards[id].context);
+	useBoardStore((s) => s.boards[id].context) as T;
 export const getBoardContextById = <T,>(id: string): T =>
-	useBoardStore.getState().boards[id].context;
+	useBoardStore.getState().boards[id].context as T;
 
 // Must be empty if no board is available
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export const boardContext = createContext<Board>();
+export const boardContext = createContext<Board | undefined>(undefined);
 // Must be empty if no board is available
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export const boardHooksContext = createContext<BoardHooksContext>();
+export const boardHooksContext = createContext<BoardHooksContext | undefined>(undefined);
 
 export const BoardProvider: FC<{ id: string }> = ({ children, id }) => {
 	const board = useBoardById(id);
@@ -43,5 +41,5 @@ export const BoardProvider: FC<{ id: string }> = ({ children, id }) => {
 	);
 };
 
-export const useBoardHooks = (): BoardHooksContext => useContext(boardHooksContext);
-export const useBoard = (): Board => useContext(boardContext);
+export const useBoardHooks = (): BoardHooksContext | undefined => useContext(boardHooksContext);
+export const useBoard = (): Board | undefined => useContext(boardContext);

@@ -12,8 +12,11 @@ import {
 	Account,
 	ErrorSoapBodyResponse,
 	ErrorSoapResponse,
+	RawSoapContext,
+	RawSoapNotify,
+	RawSoapResponse,
 	SoapContext,
-	SoapResponse
+	SoapNotify
 } from '../../types';
 import { IS_FOCUS_MODE, SHELL_APP_ID } from '../constants';
 import { report } from '../reporting/functions';
@@ -81,18 +84,21 @@ const getXmlSession = (): string => {
 	return '';
 };
 
-const normalizeContext = (context: any): SoapContext => {
-	if (context.notify) {
-		// eslint-disable-next-line no-param-reassign
-		context.notify = map(context.notify, (notify) => ({
+const normalizeContext = ({ notify: rawNotify, ...context }: RawSoapContext): SoapContext => {
+	const normalizedContext: SoapContext = { ...context, notify: [] };
+	if (rawNotify) {
+		normalizedContext.notify = map<RawSoapNotify, SoapNotify>(rawNotify, (notify) => ({
 			...notify,
-			deleted: notify.deleted?.id?.split(',')
+			deleted: notify.deleted?.id?.split(',') ?? []
 		}));
 	}
-	return context;
+	return normalizedContext;
 };
 
-const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBodyResponse => {
+const handleResponse = <R extends Record<string, unknown>>(
+	api: string,
+	res: RawSoapResponse<R>
+): R | ErrorSoapBodyResponse => {
 	const { noOpTimeout } = useNetworkStore.getState();
 	const { usedQuota } = useAccountStore.getState();
 	clearTimeout(noOpTimeout);
@@ -143,7 +149,7 @@ const handleResponse = <R>(api: string, res: SoapResponse<R>): R | ErrorSoapBody
 };
 export const getSoapFetch =
 	(app: string) =>
-	<Request, Response>(
+	<Request, Response extends Record<string, unknown>>(
 		api: string,
 		body: Request,
 		otherAccount?: string,
@@ -167,7 +173,7 @@ export const getSoapFetch =
 						notify: notify?.[0]?.seq
 							? {
 									seq: notify?.[0]?.seq
-							  }
+								}
 							: undefined,
 						session: session ?? {},
 						account: getAccount(account as Account, otherAccount),
@@ -180,7 +186,7 @@ export const getSoapFetch =
 			})
 		}) // TODO proper error handling
 			.then((res) => res?.json())
-			.then((res: SoapResponse<Response>) => handleResponse(api, res))
+			.then((res: RawSoapResponse<Response>) => handleResponse(api, res))
 			.catch((e) => {
 				report(app)(e);
 				throw e;
@@ -189,7 +195,11 @@ export const getSoapFetch =
 
 export const getXmlSoapFetch =
 	(app: string) =>
-	<Request, Response>(api: string, body: Request, otherAccount?: string): Promise<Response> => {
+	<Request, Response extends Record<string, unknown>>(
+		api: string,
+		body: Request,
+		otherAccount?: string
+	): Promise<Response> => {
 		const { zimbraVersion, account } = useAccountStore.getState();
 		return fetch(`/service/soap/${api}Request`, {
 			method: 'POST',
@@ -206,7 +216,7 @@ export const getXmlSoapFetch =
 		</soap:Envelope>`
 		}) // TODO proper error handling
 			.then((res) => res?.json())
-			.then((res: SoapResponse<Response>) => handleResponse(api, res))
+			.then((res: RawSoapResponse<Response>) => handleResponse(api, res))
 			.catch((e) => {
 				report(app)(e);
 				throw e;

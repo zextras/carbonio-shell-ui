@@ -32,9 +32,9 @@ import {
 	UtilityView
 } from '../apps';
 import { Board, BoardHooksContext } from '../boards';
-import { Folder, Folders } from '../folder';
+import { Folder, Folders, LinkFolder, Roots, Searches, SearchFolder } from '../folder';
 import { Action, ActionFactory, AnyFunction, CombinedActionFactory } from '../integrations';
-import { AccordionFolder, HistoryParams, ShellModes } from '../misc';
+import { AccordionFolder, BaseFolder, HistoryParams, ShellModes } from '../misc';
 import { CreateTagResponse, Mods, SoapNotify, SoapRefresh, TagActionResponse } from '../network';
 import { INotificationManager } from '../notification';
 import { QueryChip } from '../search';
@@ -45,7 +45,7 @@ declare const getBridgedFunctions: () => {
 	createSnackbar: CreateSnackbarFn;
 	getHistory: () => History;
 };
-declare const editSettings: (mods: Mods) => Promise<any>;
+declare const editSettings: <Response = unknown>(mods: Mods) => Promise<Response>;
 declare const ZIMBRA_STANDARD_COLORS: Array<{ zValue: number; hex: string; zLabel: string }>;
 declare const FOLDERS: {
 	[name: string]: string;
@@ -208,7 +208,7 @@ declare const useFoldersByView: (view: string) => Array<Folder>;
 declare const useFoldersAccordionByView: (
 	view: string,
 	CustomComponent: ComponentType<{ folder: Folder }>,
-	itemProps?: (item: AccordionFolder) => Record<string, any>
+	itemProps?: (item: AccordionFolder) => Record<string, unknown>
 ) => Array<AccordionFolder>;
 
 // NOTIFICATION
@@ -227,13 +227,13 @@ declare const getI18n: () => i18n;
 declare const useI18n: () => i18n;
 declare const t: TFunction;
 
-declare const addBoard: <T = any>(
+declare const addBoard: <T = unknown>(
 	board: Omit<Board<T>, 'app' | 'icon' | 'id'> & { id?: string; icon?: string },
 	expanded?: boolean
 ) => Board;
 declare const closeBoard: (id: string) => void;
-declare const updateBoard: <T = any>(id: string, board: Partial<Board<T>>) => void;
-declare const updateBoardContext: <T = any>(id: string, context: T) => void;
+declare const updateBoard: <T = unknown>(id: string, board: Partial<Board<T>>) => void;
+declare const updateBoardContext: <T = unknown>(id: string, context: T) => void;
 declare const getBoardById: <T>(id: string) => Board<T>;
 declare const getBoardContextById: <T>(id: string) => T;
 declare const useBoardContextById: <T>(id: string) => T;

@@ -6,11 +6,10 @@
 import React from 'react';
 
 import { act, screen } from '@testing-library/react';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 import { Loader } from './loader';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
-import { GetComponentsJsonResponseBody } from '../mocks/handlers/components';
 import server, { waitForResponse } from '../mocks/server';
 import { controlConsoleError, setup } from '../test/utils';
 
@@ -18,10 +17,11 @@ describe('Loader', () => {
 	test('If only getComponents request fails, the LoaderFailureModal appears', async () => {
 		// using getInfo and loginConfig default handlers
 		server.use(
-			rest.get<never, never, Partial<GetComponentsJsonResponseBody>>(
-				'/static/iris/components.json',
-				(req, res, ctx) =>
-					res(ctx.status(503, 'Controlled error: fail components.json request'), ctx.json({}))
+			http.get<never, never, null>('/static/iris/components.json', () =>
+				HttpResponse.json(null, {
+					status: 503,
+					statusText: 'Controlled error: fail components.json request'
+				})
 			)
 		);
 
@@ -50,8 +50,11 @@ describe('Loader', () => {
 		controlConsoleError('Unexpected end of JSON input');
 		// using getComponents and loginConfig default handlers
 		server.use(
-			rest.post('/service/soap/GetInfoRequest', (req, res, ctx) =>
-				res(ctx.status(503, 'Controlled error: fail getInfo request'))
+			http.post('/service/soap/GetInfoRequest', () =>
+				HttpResponse.json(null, {
+					status: 503,
+					statusText: 'Controlled error: fail getInfo request'
+				})
 			)
 		);
 		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
@@ -75,7 +78,7 @@ describe('Loader', () => {
 	});
 
 	test('If only loginConfig request fails, the LoaderFailureModal does not appear', async () => {
-		server.use(rest.get(LOGIN_V3_CONFIG_PATH, (req, res, ctx) => res(ctx.status(503))));
+		server.use(http.get(LOGIN_V3_CONFIG_PATH, () => HttpResponse.json(null, { status: 503 })));
 		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
 		const componentsRes = waitForResponse('get', '/static/iris/components.json');
 		const getInfoRes = waitForResponse('post', '/service/soap/GetInfoRequest');

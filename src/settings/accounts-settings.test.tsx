@@ -9,7 +9,7 @@ import 'jest-styled-components';
 import { faker } from '@faker-js/faker';
 import { act, screen, waitFor, within } from '@testing-library/react';
 import { forEach, head, shuffle, tail } from 'lodash';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { Link, Route, Switch } from 'react-router-dom';
 
 import { AccountsSettings } from './accounts-settings';
@@ -64,53 +64,51 @@ describe('Account setting', () => {
 		);
 		const batchRequestUrl = '/service/soap/BatchRequest';
 		server.use(
-			rest.post(batchRequestUrl, (req, res, ctx) =>
-				res(
-					ctx.json({
-						Body: {
-							BatchResponse: {
-								CreateIdentityResponse: [
-									{
-										identity: [
-											createIdentity(
-												{
-													zimbraPrefIdentityId: persona1Id,
-													zimbraPrefIdentityName: persona1FullName,
-													zimbraPrefFromAddress: defaultEmail
-												},
-												false
-											)
-										]
-									},
-									{
-										identity: [
-											createIdentity(
-												{
-													zimbraPrefIdentityId: persona2Id,
-													zimbraPrefIdentityName: persona2FullName,
-													zimbraPrefFromAddress: defaultEmail
-												},
-												false
-											)
-										]
-									},
-									{
-										identity: [
-											createIdentity(
-												{
-													zimbraPrefIdentityId: persona3Id,
-													zimbraPrefIdentityName: persona3FullName,
-													zimbraPrefFromAddress: defaultEmail
-												},
-												false
-											)
-										]
-									}
-								] as CreateIdentityResponse[]
-							}
+			http.post(batchRequestUrl, () =>
+				HttpResponse.json({
+					Body: {
+						BatchResponse: {
+							CreateIdentityResponse: [
+								{
+									identity: [
+										createIdentity(
+											{
+												zimbraPrefIdentityId: persona1Id,
+												zimbraPrefIdentityName: persona1FullName,
+												zimbraPrefFromAddress: defaultEmail
+											},
+											false
+										)
+									]
+								},
+								{
+									identity: [
+										createIdentity(
+											{
+												zimbraPrefIdentityId: persona2Id,
+												zimbraPrefIdentityName: persona2FullName,
+												zimbraPrefFromAddress: defaultEmail
+											},
+											false
+										)
+									]
+								},
+								{
+									identity: [
+										createIdentity(
+											{
+												zimbraPrefIdentityId: persona3Id,
+												zimbraPrefIdentityName: persona3FullName,
+												zimbraPrefFromAddress: defaultEmail
+											},
+											false
+										)
+									]
+								}
+							] as CreateIdentityResponse[]
 						}
-					})
-				)
+					}
+				})
 			)
 		);
 
@@ -155,8 +153,8 @@ describe('Account setting', () => {
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
-		const { Body: requestBody } = await pendingBatchRequest.then((req) =>
-			req.json<{ Body: { BatchRequest: BatchRequest } }>()
+		const { Body: requestBody } = await pendingBatchRequest.then(
+			(req) => req.json() as Promise<{ Body: { BatchRequest: BatchRequest } }>
 		);
 		expect(requestBody.BatchRequest.CreateIdentityRequest).toHaveLength(3);
 		expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
@@ -642,16 +640,14 @@ describe('Account setting', () => {
 
 		const batchRequestUrl = '/service/soap/BatchRequest';
 		server.use(
-			rest.post(batchRequestUrl, (req, res, ctx) =>
-				res(
-					ctx.json({
-						Body: {
-							BatchResponse: {
-								CreateIdentityResponse: []
-							}
+			http.post(batchRequestUrl, () =>
+				HttpResponse.json({
+					Body: {
+						BatchResponse: {
+							CreateIdentityResponse: []
 						}
-					})
-				)
+					}
+				})
 			)
 		);
 
@@ -720,8 +716,8 @@ describe('Account setting', () => {
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
-		const { Body: requestBody } = await pendingBatchRequest.then((req) =>
-			req.json<{ Body: { BatchRequest: BatchRequest } }>()
+		const { Body: requestBody } = await pendingBatchRequest.then(
+			(req) => req.json() as Promise<{ Body: { BatchRequest: BatchRequest } }>
 		);
 
 		expect(requestBody.BatchRequest.CreateIdentityRequest).toHaveLength(1);
@@ -851,16 +847,14 @@ describe('Account setting', () => {
 		);
 
 		server.use(
-			rest.post('/service/soap/BatchRequest', (req, res, ctx) =>
-				res(
-					ctx.json({
-						Body: {
-							BatchResponse: {
-								ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
-							}
+			http.post('/service/soap/BatchRequest', () =>
+				HttpResponse.json({
+					Body: {
+						BatchResponse: {
+							ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
 						}
-					})
-				)
+					}
+				})
 			)
 		);
 
@@ -877,8 +871,8 @@ describe('Account setting', () => {
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
-		const { Body: requestBody } = await pendingBatchRequest.then((req) =>
-			req.json<{ Body: { BatchRequest: BatchRequest } }>()
+		const { Body: requestBody } = await pendingBatchRequest.then(
+			(req) => req.json() as Promise<{ Body: { BatchRequest: BatchRequest } }>
 		);
 		expect(requestBody.BatchRequest.CreateIdentityRequest).toBeUndefined();
 		expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
@@ -904,16 +898,14 @@ describe('Account setting', () => {
 		);
 
 		server.use(
-			rest.post('/service/soap/BatchRequest', (req, res, ctx) =>
-				res(
-					ctx.json({
-						Body: {
-							BatchResponse: {
-								ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
-							}
+			http.post('/service/soap/BatchRequest', () =>
+				HttpResponse.json({
+					Body: {
+						BatchResponse: {
+							ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
 						}
-					})
-				)
+					}
+				})
 			)
 		);
 
@@ -962,16 +954,14 @@ describe('Account setting', () => {
 		);
 
 		server.use(
-			rest.post('/service/soap/BatchRequest', (req, res, ctx) =>
-				res(
-					ctx.json({
-						Body: {
-							BatchResponse: {
-								ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
-							}
+			http.post('/service/soap/BatchRequest', () =>
+				HttpResponse.json({
+					Body: {
+						BatchResponse: {
+							ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
 						}
-					})
-				)
+					}
+				})
 			)
 		);
 
@@ -1168,16 +1158,14 @@ describe('Account setting', () => {
 			);
 
 			server.use(
-				rest.post('/service/soap/BatchRequest', (req, res, ctx) =>
-					res(
-						ctx.json({
-							Body: {
-								BatchResponse: {
-									ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
-								}
+				http.post('/service/soap/BatchRequest', () =>
+					HttpResponse.json({
+						Body: {
+							BatchResponse: {
+								ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
 							}
-						})
-					)
+						}
+					})
 				)
 			);
 			const pendingBatchRequest = waitForRequest('POST', '/service/soap/BatchRequest');
@@ -1198,8 +1186,8 @@ describe('Account setting', () => {
 
 			await user.click(screen.getByRole('button', { name: /save/i }));
 
-			const { Body: requestBody } = await pendingBatchRequest.then((req) =>
-				req.json<{ Body: { BatchRequest: BatchRequest } }>()
+			const { Body: requestBody } = await pendingBatchRequest.then(
+				(req) => req.json() as Promise<{ Body: { BatchRequest: BatchRequest } }>
 			);
 
 			expect(requestBody.BatchRequest.CreateIdentityRequest).toBeUndefined();
@@ -1230,11 +1218,11 @@ describe('Account setting', () => {
 
 			const requestFn = jest.fn();
 			server.use(
-				rest.post<GetRightsRequestBody, never, GetRightsResponseBody>(
+				http.post<never, GetRightsRequestBody, GetRightsResponseBody>(
 					'/service/soap/GetRightsRequest',
-					(req, res, context) => {
+					(info) => {
 						requestFn();
-						return getRightsRequest(req, res, context);
+						return getRightsRequest(info);
 					}
 				)
 			);
@@ -1287,11 +1275,11 @@ describe('Account setting', () => {
 
 			const requestFn = jest.fn();
 			server.use(
-				rest.post<GetRightsRequestBody, never, GetRightsResponseBody>(
+				http.post<never, GetRightsRequestBody, GetRightsResponseBody>(
 					'/service/soap/GetRightsRequest',
-					(req, res, context) => {
+					(info) => {
 						requestFn();
-						return getRightsRequest(req, res, context);
+						return getRightsRequest(info);
 					}
 				)
 			);

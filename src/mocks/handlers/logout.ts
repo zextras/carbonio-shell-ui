@@ -6,10 +6,13 @@
 import { HttpResponse, HttpResponseResolver } from 'msw';
 
 export const logout: HttpResponseResolver<never, never, never> = () =>
-	HttpResponse.json(null, {
-		status: 304,
-		statusText: 'Temporary Redirect',
-		headers: {
-			location: 'https://localhost/static/login/'
+	HttpResponse.json(
+		{},
+		{
+			status: 307,
+			statusText: 'Temporary Redirect',
+			headers: {
+				Location: 'https://localhost/static/login/'
+			}
 		}
-	});
+	);

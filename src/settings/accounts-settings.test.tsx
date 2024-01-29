@@ -26,7 +26,9 @@ import { setup } from '../test/utils';
 
 describe('Account setting', () => {
 	async function waitForGetRightsRequest(): Promise<void> {
-		await waitForRequest('post', '/service/soap/GetRightsRequest');
+		// wait for the main UI to render
+		await screen.findByText('Accounts');
+		// then wait for the delegates section to render
 		await screen.findByText('sendAs');
 	}
 	const defaultFirstName = faker.person.firstName();
@@ -49,6 +51,7 @@ describe('Account setting', () => {
 	const persona3FullName = 'New Persona 3';
 	const persona3Email = 'persona3@email.com';
 	const persona3Id = faker.string.uuid();
+
 	test('When saving the order should not change', async () => {
 		setupAccountStore(
 			createAccount(defaultEmail, defaultId, [
@@ -923,7 +926,9 @@ describe('Account setting', () => {
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
 		await pendingBatchRequest;
-
+		await act(async () => {
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		const successSnackbar = await screen.findByText('Edits saved correctly');
 		expect(successSnackbar).toBeVisible();
 
@@ -984,7 +989,9 @@ describe('Account setting', () => {
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
 		await pendingBatchRequest;
-
+		await act(async () => {
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		const successSnackbar = await screen.findByText('Edits saved correctly');
 		expect(successSnackbar).toBeVisible();
 

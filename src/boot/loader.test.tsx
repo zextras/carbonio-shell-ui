@@ -47,14 +47,17 @@ describe('Loader', () => {
 
 	test('If only getInfo request fails, the LoaderFailureModal appears', async () => {
 		// TODO remove when SHELL-117 will be implemented
-		controlConsoleError('Unexpected end of JSON input');
+		controlConsoleError("Cannot read properties of undefined (reading 'Fault')");
 		// using getComponents and loginConfig default handlers
 		server.use(
 			http.post('/service/soap/GetInfoRequest', () =>
-				HttpResponse.json(null, {
-					status: 503,
-					statusText: 'Controlled error: fail getInfo request'
-				})
+				HttpResponse.json(
+					{},
+					{
+						status: 503,
+						statusText: 'Controlled error: fail getInfo request'
+					}
+				)
 			)
 		);
 		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);

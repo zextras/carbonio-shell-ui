@@ -176,7 +176,7 @@ export const getSoapFetch =
 								}
 							: undefined,
 						session: session ?? {},
-						account: getAccount(account as Account, otherAccount),
+						account: getAccount(account, otherAccount),
 						userAgent: {
 							name: userAgent,
 							version: zimbraVersion

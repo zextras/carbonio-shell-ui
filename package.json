@@ -68,7 +68,7 @@
 		"@types/webpack": "^5.28.2",
 		"@types/webpack-env": "^1.18.1",
 		"@zextras/carbonio-ui-configs": "^1.0.0",
-		"@zextras/carbonio-ui-sdk": "file:zextras-carbonio-ui-sdk-1.7.0.tgz",
+		"@zextras/carbonio-ui-sdk": "git://github.com/zextras/carbonio-ui-sdk.git#SDKUI-6-Update-node-versione-from-16-to-18",
 		"autoprefixer": "^10.4.15",
 		"babel-loader": "^9.1.3",
 		"babel-plugin-i18next-extract": "^0.9.0",

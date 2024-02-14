@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ComponentType, Dispatch, FC, SetStateAction } from 'react';
+import React, { ComponentType, Dispatch, FC, SetStateAction } from 'react';
 
 import { CreateModalFn, CreateSnackbarFn } from '@zextras/carbonio-design-system';
 import { i18n } from 'i18next';
@@ -243,3 +243,11 @@ declare const reopenBoards: () => void;
 declare const setCurrentBoard: (id: string) => void;
 declare const useBoardHooks: () => BoardHooksContext;
 declare const useBoard: <T>() => Board<T>;
+declare class Matomo {
+	constructor(siteId: string);
+
+	trackEvent(category: string, action: string, name?: string, ...value: unknown[]): void;
+
+	trackPageView(): void;
+}
+declare const MatomoContext: React.Context<Matomo | undefined>;

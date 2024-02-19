@@ -24,7 +24,7 @@ const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 	const used = useAccountStore((s) => s.usedQuota);
 	const quota = useMemo(() => {
 		const userQuota = Number(settings?.attrs?.zimbraMailQuota);
-		if (used && userQuota && userQuota > 0) {
+		if ((used || used === 0) && userQuota && userQuota > 0) {
 			return Math.round((used / userQuota) * 100);
 		}
 		return -1;
@@ -39,7 +39,7 @@ const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 
 	const description = useMemo(() => {
 		switch (true) {
-			case !quota || quota < 0:
+			case quota < 0:
 				return t('user_quota.unlimited', 'You have unlimited space available');
 			case quota === 100:
 				return t('user_quota.space_full', 'It seems that all available space is full');

@@ -6,7 +6,6 @@
 
 import React from 'react';
 
-import { act } from '@testing-library/react';
 import { produce } from 'immer';
 
 import ModuleVersionSettings from './module-version-settings';
@@ -44,26 +43,24 @@ describe('Module Version Settings', () => {
 		const description = 'The Zextras Carbonio web client';
 		const display = 'Shell';
 		const version = '5.1.0';
-		act(() => {
-			useAppStore.getState().setters.setApps([
-				{
-					commit: '',
-					description,
-					display,
-					icon: 'CubeOutline',
-					js_entrypoint: '',
-					name: 'carbonio-shell-ui',
-					priority: -1,
-					type: 'shell',
-					version
-				}
-			]);
-			setup(<ModuleVersionSettings />);
-			expect(screen.getByText(/application versions/i)).toBeVisible();
-			expect(screen.queryByText(display)).not.toBeInTheDocument();
-			expect(screen.queryByText(description)).not.toBeInTheDocument();
-			expect(screen.queryByText(`Version: ${version}`)).not.toBeInTheDocument();
-		});
+		useAppStore.getState().setters.setApps([
+			{
+				commit: '',
+				description,
+				display,
+				icon: 'CubeOutline',
+				js_entrypoint: '',
+				name: 'carbonio-shell-ui',
+				priority: -1,
+				type: 'shell',
+				version
+			}
+		]);
+		setup(<ModuleVersionSettings />);
+		expect(screen.getByText(/application versions/i)).toBeVisible();
+		expect(screen.queryByText(display)).not.toBeInTheDocument();
+		expect(screen.queryByText(description)).not.toBeInTheDocument();
+		expect(screen.queryByText(`Version: ${version}`)).not.toBeInTheDocument();
 	});
 
 	it('should not overwrite display of "main" route if focus mode is true', () => {
@@ -73,63 +70,61 @@ describe('Module Version Settings', () => {
 		const display2 = 'Meetings';
 		const description2 = 'Chats Module for Zextras Carbonio';
 		const version2 = '0.9.1';
-		act(() => {
-			useAppStore.getState().setters.setApps([
-				{
-					commit: '',
-					description: description1,
-					display: 'Chats',
-					icon: 'TeamOutline',
-					js_entrypoint: '',
-					name: 'carbonio-chats-ui',
-					priority: 8,
-					type: 'carbonio',
-					version: version1
-				},
-				{
-					commit: '',
-					description: description2,
-					display: 'Chats',
-					icon: 'DriveOutline',
-					js_entrypoint: '',
-					name: 'carbonio-ws-collaboration-ui',
-					priority: 404,
-					type: 'carbonio',
-					version: version2
-				}
-			]);
+		useAppStore.getState().setters.setApps([
+			{
+				commit: '',
+				description: description1,
+				display: 'Chats',
+				icon: 'TeamOutline',
+				js_entrypoint: '',
+				name: 'carbonio-chats-ui',
+				priority: 8,
+				type: 'carbonio',
+				version: version1
+			},
+			{
+				commit: '',
+				description: description2,
+				display: 'Chats',
+				icon: 'DriveOutline',
+				js_entrypoint: '',
+				name: 'carbonio-ws-collaboration-ui',
+				priority: 404,
+				type: 'carbonio',
+				version: version2
+			}
+		]);
 
-			useAppStore.getState().setters.addRoute({
-				app: 'carbonio-ws-collaboration-ui',
-				appView: jest.fn(),
-				badge: {
-					show: false
-				},
-				focusMode: undefined,
-				id: 'chats',
-				label: display1,
-				position: 404,
-				primaryBar: '',
-				route: 'chats',
-				secondaryBar: jest.fn(),
-				visible: true
-			});
+		useAppStore.getState().setters.addRoute({
+			app: 'carbonio-ws-collaboration-ui',
+			appView: jest.fn(),
+			badge: {
+				show: false
+			},
+			focusMode: undefined,
+			id: 'chats',
+			label: display1,
+			position: 404,
+			primaryBar: '',
+			route: 'chats',
+			secondaryBar: jest.fn(),
+			visible: true
+		});
 
-			useAppStore.getState().setters.addRoute({
-				app: 'carbonio-ws-collaboration-ui',
-				appView: jest.fn(),
-				badge: {
-					show: false
-				},
-				focusMode: true,
-				id: 'meetings',
-				label: display2,
-				position: 404,
-				primaryBar: 'TeamOutline',
-				route: 'meetings',
-				secondaryBar: jest.fn(),
-				visible: false
-			});
+		useAppStore.getState().setters.addRoute({
+			app: 'carbonio-ws-collaboration-ui',
+			appView: jest.fn(),
+			badge: {
+				show: false
+			},
+			focusMode: true,
+			id: 'meetings',
+			label: display2,
+			position: 404,
+			primaryBar: 'TeamOutline',
+			route: 'meetings',
+			secondaryBar: jest.fn(),
+			visible: false
 		});
 		setup(<ModuleVersionSettings />);
 		expect(screen.getByText(/application versions/i)).toBeVisible();

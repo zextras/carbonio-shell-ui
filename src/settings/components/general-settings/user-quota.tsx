@@ -24,7 +24,7 @@ const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 	const used = useAccountStore((s) => s.usedQuota);
 	const quota = useMemo(() => {
 		const userQuota = Number(settings?.attrs?.zimbraMailQuota);
-		if ((used || used === 0) && userQuota && userQuota > 0) {
+		if (userQuota > 0) {
 			return Math.round((used / userQuota) * 100);
 		}
 		return -1;

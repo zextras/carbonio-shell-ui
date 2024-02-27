@@ -44,7 +44,6 @@ describe('Module Version Settings', () => {
 		const description = 'The Zextras Carbonio web client';
 		const display = 'Shell';
 		const version = '5.1.0';
-		setup(<ModuleVersionSettings />);
 		act(() => {
 			useAppStore.getState().setters.setApps([
 				{
@@ -59,6 +58,7 @@ describe('Module Version Settings', () => {
 					version
 				}
 			]);
+			setup(<ModuleVersionSettings />);
 			expect(screen.getByText(/application versions/i)).toBeVisible();
 			expect(screen.queryByText(display)).not.toBeInTheDocument();
 			expect(screen.queryByText(description)).not.toBeInTheDocument();
@@ -67,7 +67,6 @@ describe('Module Version Settings', () => {
 	});
 
 	it('should not overwrite display of "main" route if focus mode is true', () => {
-		setup(<ModuleVersionSettings />);
 		const display1 = 'Chats';
 		const version1 = '1.8.1';
 		const description1 = 'Chats module';
@@ -78,25 +77,25 @@ describe('Module Version Settings', () => {
 			useAppStore.getState().setters.setApps([
 				{
 					commit: '',
-					description: 'Chats module',
+					description: description1,
 					display: 'Chats',
 					icon: 'TeamOutline',
 					js_entrypoint: '',
 					name: 'carbonio-chats-ui',
 					priority: 8,
 					type: 'carbonio',
-					version: '1.8.1'
+					version: version1
 				},
 				{
 					commit: '',
-					description: 'Chats Module for Zextras Carbonio',
+					description: description2,
 					display: 'Chats',
 					icon: 'DriveOutline',
 					js_entrypoint: '',
 					name: 'carbonio-ws-collaboration-ui',
 					priority: 404,
 					type: 'carbonio',
-					version: '0.9.1'
+					version: version2
 				}
 			]);
 
@@ -108,7 +107,7 @@ describe('Module Version Settings', () => {
 				},
 				focusMode: undefined,
 				id: 'chats',
-				label: 'Chats',
+				label: display1,
 				position: 404,
 				primaryBar: '',
 				route: 'chats',
@@ -124,7 +123,7 @@ describe('Module Version Settings', () => {
 				},
 				focusMode: true,
 				id: 'meetings',
-				label: 'Meetings',
+				label: display2,
 				position: 404,
 				primaryBar: 'TeamOutline',
 				route: 'meetings',
@@ -132,6 +131,7 @@ describe('Module Version Settings', () => {
 				visible: false
 			});
 		});
+		setup(<ModuleVersionSettings />);
 		expect(screen.getByText(/application versions/i)).toBeVisible();
 		const labels = screen.getAllByText(display1);
 		expect(labels).toHaveLength(2);

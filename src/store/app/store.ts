@@ -149,7 +149,7 @@ export const useAppStore = create<AppState>()((set, get) => ({
 							component: routeData.appView
 						});
 					}
-					if (routeData.app && state.apps[routeData.app]) {
+					if (routeData.app && state.apps[routeData.app] && routeData.focusMode !== true) {
 						state.apps[routeData.app].display = routeData.label;
 					}
 				})

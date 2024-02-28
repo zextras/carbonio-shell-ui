@@ -162,7 +162,13 @@ const config: Config = {
 	// snapshotSerializers: [],
 
 	// The test environment that will be used for testing
-	testEnvironment: 'jsdom',
+	/**
+	 * @note Override test environment to set again Request, Response, TextEncoder and other
+	 * fields
+	 * @see https://mswjs.io/docs/migrations/1.x-to-2.x#requestresponsetextencoder-is-not-defined-jest
+	 * @see https://github.com/mswjs/msw/issues/1916#issuecomment-1919965699
+	 */
+	testEnvironment: '<rootDir>/src/test/jsdom-extended.ts',
 
 	// Options that will be passed to the testEnvironment
 	testEnvironmentOptions: {
@@ -175,6 +181,7 @@ const config: Config = {
 		 * Consider migrating to a more modern test runner if you
 		 * don't want to deal with this.
 		 * @see https://mswjs.io/docs/migrations/1.x-to-2.x#cannot-find-module-mswnode-jsdom
+		 * @see https://github.com/mswjs/msw/issues/1786#issuecomment-1782559851
 		 */
 		customExportConditions: ['']
 	},

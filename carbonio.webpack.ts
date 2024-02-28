@@ -3,13 +3,11 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-/* eslint-disable import/no-import-module-exports */
 
 import { execSync } from 'child_process';
-import path from 'path';
-
 import CopyPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import path from 'path';
 import { ContextReplacementPlugin, DefinePlugin } from 'webpack';
 import { WebpackConfiguration } from 'webpack-cli';
 
@@ -138,6 +136,4 @@ const configFn = (
 	return conf;
 };
 
-export default configFn;
-// required to keep the compatibility with the sdk
-module.exports = configFn;
+export = configFn;

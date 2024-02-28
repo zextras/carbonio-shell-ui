@@ -81,7 +81,7 @@ describe('Loader', () => {
 	});
 
 	test('If only loginConfig request fails, the LoaderFailureModal does not appear', async () => {
-		server.use(http.get(LOGIN_V3_CONFIG_PATH, () => HttpResponse.json(null, { status: 503 })));
+		server.use(http.get(LOGIN_V3_CONFIG_PATH, () => HttpResponse.json({}, { status: 503 })));
 		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
 		const componentsRes = waitForResponse('get', '/static/iris/components.json');
 		const getInfoRes = waitForResponse('post', '/service/soap/GetInfoRequest');

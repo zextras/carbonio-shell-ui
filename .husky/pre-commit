@@ -1,5 +1,5 @@
 npm run type-check
-npm run lint -- --quiet
+npm run lint
 if command -v pipx > /dev/null 2>&1; then
   pipx run reuse download --all && pipx run reuse lint
 else

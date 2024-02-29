@@ -11,6 +11,7 @@ import { i18n } from 'i18next';
 import { TFunction } from 'react-i18next';
 import { LinkProps } from 'react-router-dom';
 
+import { type EditSettingsBatchResponse } from '../../src/network/edit-settings';
 import {
 	Account,
 	AccountRightName,
@@ -45,7 +46,9 @@ declare const getBridgedFunctions: () => {
 	createSnackbar: CreateSnackbarFn;
 	getHistory: () => History;
 };
-declare const editSettings: <Response = unknown>(mods: Mods) => Promise<Response>;
+declare const editSettings: (
+	mods: Mods
+) => Promise<EditSettingsBatchResponse & { type?: 'fulfilled' }>;
 declare const ZIMBRA_STANDARD_COLORS: Array<{ zValue: number; hex: string; zLabel: string }>;
 declare const FOLDERS: {
 	[name: string]: string;

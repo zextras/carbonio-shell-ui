@@ -63,7 +63,7 @@ export interface RawSoapContext {
 }
 
 export interface SoapContext extends RawSoapContext {
-	notify: Array<SoapNotify>;
+	notify?: Array<SoapNotify>;
 }
 
 export type SoapFolder = BaseFolder & {

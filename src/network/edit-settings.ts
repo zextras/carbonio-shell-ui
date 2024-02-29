@@ -22,7 +22,7 @@ import {
 import { SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account';
 
-type EditSettingsBatchResponse = {
+export type EditSettingsBatchResponse = {
 	ModifyPropertiesResponse?: ModifyPropertiesResponse[];
 	ModifyPrefsResponse?: ModifyPrefsResponse[];
 	ModifyIdentityResponse?: ModifyIdentityResponse[];

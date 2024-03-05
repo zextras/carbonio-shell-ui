@@ -8,7 +8,7 @@ import React from 'react';
 import { act, screen } from '@testing-library/react';
 
 import { SearchSettings } from './search-settings';
-import { AccountSettings, AccountSettingsPrefs, AddMod } from '../../../../types';
+import type { AccountSettings, AccountSettingsPrefs, AddMod } from '../../../../types';
 import { ICONS } from '../../../test/constants';
 import { setup } from '../../../test/utils';
 

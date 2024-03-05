@@ -4,27 +4,30 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
+import type { ReactElement } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
+import type {
+	DropdownItem,
+	InputProps,
+	SelectItem,
+	SingleSelectionOnChange
+} from '@zextras/carbonio-design-system';
 import {
 	Checkbox,
 	Container,
 	Dropdown,
-	DropdownItem,
 	Icon,
 	Input,
-	InputProps,
 	Padding,
 	Row,
 	Select,
-	SelectItem,
-	SingleSelectionOnChange,
 	Text
 } from '@zextras/carbonio-design-system';
 import { filter, find } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
-import { IdentityAttrs } from '../../../../types';
+import type { IdentityAttrs } from '../../../../types';
 import { EMAIL_VALIDATION_REGEX } from '../../../constants';
 
 type SettingsSentMessagesProps = {

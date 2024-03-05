@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { DARK_READER_PROP_KEY, DELEGATED_SEND_SAVE_TARGET } from '../../src/constants';
-import { StringOfLength } from '../../src/utils/typeUtils';
+import type { DARK_READER_PROP_KEY, DELEGATED_SEND_SAVE_TARGET } from '../../src/constants';
+import type { StringOfLength } from '../../src/utils/typeUtils';
 import type { SHELL_APP_ID } from '../exports';
 import type { DarkReaderPropValues } from '../misc';
-import { AccountACEInfo } from '../network/entities';
+import type { AccountACEInfo } from '../network/entities';
 
 export interface ZimletProp {
 	name: string;

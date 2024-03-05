@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { QueryChip } from './items';
+import type { QueryChip } from './items';
 
 export * from './items';
 export type SearchState = {

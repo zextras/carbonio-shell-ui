@@ -7,7 +7,7 @@
 import { forEach } from 'lodash';
 
 import { useNetworkStore } from './store';
-import { AccountSettings, RawSoapResponse, SoapContext } from '../../../types';
+import type { AccountSettings, RawSoapResponse, SoapContext } from '../../../types';
 import { folderWorker, tagWorker } from '../../workers';
 import { useAccountStore } from '../account';
 import { useFolderStore } from '../folder';

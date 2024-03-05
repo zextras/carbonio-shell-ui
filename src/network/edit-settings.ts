@@ -7,7 +7,7 @@
 import { filter, find, findIndex, map, reduce, isArray } from 'lodash';
 
 import { getXmlSoapFetch } from './fetch';
-import {
+import type {
 	AccountState,
 	Mods,
 	Account,

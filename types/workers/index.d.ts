@@ -3,8 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { SoapNotify, SoapRefresh } from '../network';
-import { Tags } from '../tags';
+import type { SoapNotify, SoapRefresh } from '../network';
+import type { Tags } from '../tags';
 
 export type SyncNotifyMessage = {
 	op: 'notify';

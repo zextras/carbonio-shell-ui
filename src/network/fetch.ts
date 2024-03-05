@@ -8,7 +8,7 @@ import { find, map, maxBy } from 'lodash';
 
 import { userAgent } from './user-agent';
 import { goToLogin } from './utils';
-import {
+import type {
 	Account,
 	ErrorSoapBodyResponse,
 	ErrorSoapResponse,

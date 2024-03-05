@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { DynamicThemeFix } from 'darkreader';
+import type { DynamicThemeFix } from 'darkreader';
 
 /*
 	reference: https://zextras.atlassian.net/wiki/spaces/IRIS/pages/223215854/UI+Guidelines+and+theming

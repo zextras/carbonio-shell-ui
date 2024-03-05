@@ -8,7 +8,12 @@ import { useMemo } from 'react';
 
 import { filter, intersection, omit } from 'lodash';
 
-import { AppRoute, PrimaryAccessoryView, SecondaryAccessoryView, UtilityView } from '../../types';
+import type {
+	AppRoute,
+	PrimaryAccessoryView,
+	SecondaryAccessoryView,
+	UtilityView
+} from '../../types';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppStore } from '../store/app';
 

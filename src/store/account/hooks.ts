@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 import { find, get, join } from 'lodash';
 
 import { useAccountStore } from './store';
-import {
+import type {
 	Account,
 	AccountRightName,
 	AccountRights,

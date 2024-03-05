@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import {
+import type {
 	AppRouteDescriptor,
 	BoardView,
 	CarbonioModule,
@@ -15,7 +15,8 @@ import {
 	UtilityView
 } from '../../../types';
 import { getEditSettingsForApp } from '../../network/edit-settings';
-import { AppActions as StoreAppSetters, useAppStore } from '../../store/app';
+import type { AppActions as StoreAppSetters } from '../../store/app';
+import { useAppStore } from '../../store/app';
 import {
 	normalizeRoute,
 	normalizeSettingsView,
@@ -25,7 +26,8 @@ import {
 	normalizeSecondaryAccessoryView,
 	normalizeBoardView
 } from '../../store/app/utils';
-import { IntegrationActions, useIntegrationsStore } from '../../store/integrations/store';
+import type { IntegrationActions } from '../../store/integrations/store';
+import { useIntegrationsStore } from '../../store/integrations/store';
 
 export type AppDependantSetters = {
 	setAppContext: ReturnType<StoreAppSetters['setAppContext']>;

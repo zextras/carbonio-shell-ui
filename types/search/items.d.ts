@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { ChipItem } from '@zextras/carbonio-design-system';
+import type { ChipItem } from '@zextras/carbonio-design-system';
 
 export type QueryItem = {
 	value?: string;

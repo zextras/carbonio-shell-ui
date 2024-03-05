@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { BaseFolder, LinkFolderFields, SearchFolderFields } from '../misc';
+import type { BaseFolder, LinkFolderFields, SearchFolderFields } from '../misc';
 
 export type FolderFields = {
 	// Additional Parameters

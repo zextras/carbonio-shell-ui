@@ -4,23 +4,24 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import type { DropdownItem, IconButtonProps } from '@zextras/carbonio-design-system';
 import {
 	Container,
 	Divider,
 	Dropdown,
-	DropdownItem,
 	Icon,
 	IconButton,
-	IconButtonProps,
 	Padding,
 	Row,
 	Text,
 	Tooltip
 } from '@zextras/carbonio-design-system';
 import { debounce, isEmpty, map, noop, size } from 'lodash';
-import styled, { css, SimpleInterpolation } from 'styled-components';
+import type { SimpleInterpolation } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { AppBoard } from './board';
 import { TabsList } from './board-tab-list';
@@ -46,7 +47,8 @@ import {
 	useBoardStore
 } from '../../store/boards';
 import { getT } from '../../store/i18n';
-import { setElementSizeAndPosition, SizeAndPosition } from '../../utils/utils';
+import type { SizeAndPosition } from '../../utils/utils';
+import { setElementSizeAndPosition } from '../../utils/utils';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useMove } from '../hooks/useMove';
 

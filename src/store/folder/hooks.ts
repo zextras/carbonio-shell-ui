@@ -4,11 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ComponentType, useMemo } from 'react';
+import type { ComponentType } from 'react';
+import { useMemo } from 'react';
 
 import { useFolderStore } from './store';
 import { filterNodes, folderViewFilter, isRoot, mapNodes, sortFolders } from './utils';
-import {
+import type {
 	AccordionFolder,
 	Folder,
 	Folders,

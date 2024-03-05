@@ -4,9 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useMemo } from 'react';
+import type { FC } from 'react';
+import React, { useMemo } from 'react';
 
-import { Link as RRLink, LinkProps } from 'react-router-dom';
+import type { LinkProps } from 'react-router-dom';
+import { Link as RRLink } from 'react-router-dom';
 
 import { parseParams } from '../history/hooks';
 

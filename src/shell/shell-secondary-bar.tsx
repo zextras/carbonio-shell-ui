@@ -4,15 +4,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useCallback, useMemo } from 'react';
+import type { FC } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
-import { Container, ContainerProps } from '@zextras/carbonio-design-system';
+import type { ContainerProps } from '@zextras/carbonio-design-system';
+import { Container } from '@zextras/carbonio-design-system';
 import { filter, findIndex, map, sortBy } from 'lodash';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Collapser } from './collapser';
-import { AppRoute } from '../../types';
+import type { AppRoute } from '../../types';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppStore } from '../store/app';

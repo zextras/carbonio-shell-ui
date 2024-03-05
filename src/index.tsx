@@ -47,5 +47,5 @@ ReactDOM.render(
 	</Suspense>,
 	document.getElementById('app')
 );
-export { IntegrationsState } from './store/integrations/store';
-export { AnyFunction } from './utils/typeUtils';
+export type { IntegrationsState } from './store/integrations/store';
+export type { AnyFunction } from './utils/typeUtils';

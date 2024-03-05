@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useEffect } from 'react';
+import type { FC } from 'react';
+import React, { useEffect } from 'react';
 
 import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';

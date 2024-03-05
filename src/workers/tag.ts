@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { SoapNotify, Tag, TagMessage, Tags } from '../../types';
+import type { SoapNotify, Tag, TagMessage, Tags } from '../../types';
 
 export const handleTagRefresh = (tags: Array<Tag>): Tags => {
 	if (typeof tags !== 'undefined') {

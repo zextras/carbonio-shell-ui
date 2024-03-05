@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, ReactElement, useRef, useMemo } from 'react';
+import type { ReactElement } from 'react';
+import React, { useCallback, useRef, useMemo } from 'react';
 
 import {
 	Container,
@@ -23,7 +24,7 @@ import { map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
-import { Identity, IdentityAttrs } from '../../../../types';
+import type { Identity, IdentityAttrs } from '../../../../types';
 import { isPrimary } from '../utils';
 
 const List = styled(ListV2)`

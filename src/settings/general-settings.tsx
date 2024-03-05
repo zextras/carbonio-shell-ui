@@ -17,10 +17,11 @@ import { OutOfOfficeSettings } from './components/general-settings/out-of-office
 import { ScalingSettingSection } from './components/general-settings/scaling-setting-section';
 import { SearchSettings } from './components/general-settings/search-settings';
 import UserQuota from './components/general-settings/user-quota';
-import { SettingsHeader, SettingsHeaderProps } from './components/settings-header';
-import { ResetComponentImperativeHandler } from './components/utils';
+import type { SettingsHeaderProps } from './components/settings-header';
+import { SettingsHeader } from './components/settings-header';
+import type { ResetComponentImperativeHandler } from './components/utils';
 import { LanguageAndTimeZoneSettings } from './language-and-timezone-settings';
-import {
+import type {
 	AccountState,
 	AddMod,
 	BatchRequest,
@@ -31,7 +32,7 @@ import {
 	Mods,
 	RemoveMod
 } from '../../types';
-import { ScalingSettings } from '../../types/settings';
+import type { ScalingSettings } from '../../types/settings';
 import { LOCAL_STORAGE_SETTINGS_KEY, SHELL_APP_ID } from '../constants';
 import { getSoapFetch } from '../network/fetch';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';

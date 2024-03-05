@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { LoginConfigStore } from '../../types/loginConfig';
+import type { LoginConfigStore } from '../../types/loginConfig';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
 import { getClientTitle, getFavicon } from '../store/login/getters';
 import { useLoginConfigStore } from '../store/login/store';

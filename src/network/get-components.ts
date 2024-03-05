@@ -6,7 +6,7 @@
 
 import { filter } from 'lodash';
 
-import { CarbonioModule } from '../../types';
+import type { CarbonioModule } from '../../types';
 import { useAppStore } from '../store/app';
 
 export const getComponents = (): Promise<void> =>

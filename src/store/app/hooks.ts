@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 import { sortBy } from 'lodash';
 
 import { useAppStore } from './store';
-import { AppRoute, CarbonioModule } from '../../../types';
+import type { AppRoute, CarbonioModule } from '../../../types';
 
 export const getAppHook = (appId: string) => (): CarbonioModule =>
 	useAppStore((s) => s.apps[appId]);

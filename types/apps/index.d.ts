@@ -5,11 +5,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { ComponentType, FC } from 'react';
+import type { ComponentType, FC } from 'react';
+import type React from 'react';
 
-import { DefaultTheme } from 'styled-components';
+import type { DefaultTheme } from 'styled-components';
 
-import { QueryChip } from '../search';
+import type { QueryChip } from '../search';
 
 export type CarbonioModule = {
 	commit: string;

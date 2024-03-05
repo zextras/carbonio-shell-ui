@@ -6,8 +6,9 @@
 
 import React, { useState, useMemo, useCallback, useRef } from 'react';
 
-import { Modal, Button, ModalProps } from '@zextras/carbonio-design-system';
-import { Location } from 'history';
+import type { ModalProps } from '@zextras/carbonio-design-system';
+import { Modal, Button } from '@zextras/carbonio-design-system';
+import type { Location } from 'history';
 import { filter } from 'lodash';
 import { Prompt, useHistory } from 'react-router-dom';
 

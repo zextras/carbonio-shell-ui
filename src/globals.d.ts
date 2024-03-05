@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ComponentType } from 'react';
+import type { ComponentType } from 'react';
 
 declare global {
 	const BASE_PATH: string;

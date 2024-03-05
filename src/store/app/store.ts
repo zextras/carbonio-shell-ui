@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ComponentType } from 'react';
+import type { ComponentType } from 'react';
 
 import { produce } from 'immer';
 import { findIndex, merge, reduce, some } from 'lodash';
 import { create } from 'zustand';
 
 import { normalizeApp } from './utils';
-import {
+import type {
 	AppRoute,
 	AppRouteDescriptor,
 	AppView,

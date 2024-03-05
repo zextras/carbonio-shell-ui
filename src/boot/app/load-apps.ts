@@ -10,7 +10,7 @@ import { filter, map } from 'lodash';
 
 import { loadApp, unloadApps } from './load-app';
 import { injectSharedLibraries } from './shared-libraries';
-import { CarbonioModule } from '../../../types';
+import type { CarbonioModule } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
 import { SUPPORTED_LOCALES } from '../../constants/locales';
 import { useReporter } from '../../reporting/store';

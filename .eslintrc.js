@@ -13,6 +13,9 @@ module.exports = {
 			}
 		}
 	},
+	parserOptions: {
+		project: ['tsconfig.eslint.json']
+	},
 	globals: {
 		BASE_PATH: 'readonly',
 		__CARBONIO_DEV__: 'readonly',
@@ -37,7 +40,9 @@ module.exports = {
 		],
 		'sonarjs/cognitive-complexity': 'warn',
 		// TODO: enable when this will be released https://github.com/SonarSource/eslint-plugin-sonarjs/pull/405
-		'sonarjs/no-duplicate-string': 'off'
+		'sonarjs/no-duplicate-string': 'off',
+		'@typescript-eslint/consistent-type-exports': 'error',
+		'@typescript-eslint/consistent-type-imports': 'error'
 	},
 	overrides: [
 		{

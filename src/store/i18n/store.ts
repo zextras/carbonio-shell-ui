@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import i18next, { i18n, InitOptions } from 'i18next';
+import type { i18n, InitOptions } from 'i18next';
+import i18next from 'i18next';
 import Backend from 'i18next-http-backend';
 import { produce } from 'immer';
 import { dropRight, forEach, reduce } from 'lodash';

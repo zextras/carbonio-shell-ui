@@ -6,12 +6,13 @@
 
 /* THIS FILE CONTAINS HOOKS, BUT ESLINT IS DUMB */
 
-import React, { useMemo, FC, FunctionComponent, useCallback } from 'react';
+import type { FC, FunctionComponent } from 'react';
+import React, { useMemo, useCallback } from 'react';
 
 import { compact, map } from 'lodash';
 
 import { useIntegrationsStore } from './store';
-import { Action, ActionFactory, CombinedActionFactory } from '../../../types';
+import type { Action, ActionFactory, CombinedActionFactory } from '../../../types';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import AppContextProvider from '../../boot/app/app-context-provider';

@@ -4,12 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useState, useCallback, ReactElement, useEffect, useMemo } from 'react';
+import type { ReactElement } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 
-import { Container, Text, Padding, Input, Row, InputProps } from '@zextras/carbonio-design-system';
+import type { InputProps } from '@zextras/carbonio-design-system';
+import { Container, Text, Padding, Input, Row } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 
-import { IdentityAttrs } from '../../../../types';
+import type { IdentityAttrs } from '../../../../types';
 
 interface PersonaSettingsProps {
 	identityAttrs: IdentityAttrs;

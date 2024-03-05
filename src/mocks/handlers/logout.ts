@@ -3,7 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { HttpResponse, HttpResponseResolver } from 'msw';
+import type { HttpResponseResolver } from 'msw';
+import { HttpResponse } from 'msw';
 
 export const logout: HttpResponseResolver<never, never, never> = () =>
 	HttpResponse.json(

@@ -10,7 +10,8 @@ import type { CarbonioModule } from '../../../types';
 import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
 import { getApp, getAppContext, getAppHook, getAppContextHook } from '../../store/app';
 import { addBoard } from '../../store/boards';
-import { ContextBridgeState, useContextBridge } from '../../store/context-bridge';
+import type { ContextBridgeState } from '../../store/context-bridge';
+import { useContextBridge } from '../../store/context-bridge';
 import { getI18n, getTFunction } from '../../store/i18n';
 
 export type AppDependantFunctions = {

@@ -4,14 +4,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useEffect, useMemo } from 'react';
+import type { FC } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import { createMemoryHistory } from 'history';
 import { find, startsWith } from 'lodash';
 import { Route, Router, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Board } from '../../../types';
+import type { Board } from '../../../types';
 import AppContextProvider from '../../boot/app/app-context-provider';
 import { useAppStore } from '../../store/app';
 import { BoardProvider, updateBoard, useBoardStore } from '../../store/boards';

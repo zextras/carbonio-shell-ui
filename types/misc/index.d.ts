@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React from 'react';
+import type React from 'react';
 import type { ComponentType } from 'react';
 
 import type { Store } from '@reduxjs/toolkit';
 import type { To } from 'history';
 
-import { DARK_READER_VALUES } from '../../src/constants';
+import type { DARK_READER_VALUES } from '../../src/constants';
 import type { CarbonioModule, PanelMode } from '../apps';
 
 // eslint-disable-next-line no-shadow

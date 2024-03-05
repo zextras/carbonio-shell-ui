@@ -13,12 +13,12 @@ import { http, HttpResponse } from 'msw';
 import { Link, Route, Switch } from 'react-router-dom';
 
 import { AccountsSettings } from './accounts-settings';
-import { BatchRequest, CreateIdentityResponse } from '../../types';
-import {
-	getRightsRequest,
+import type { BatchRequest, CreateIdentityResponse } from '../../types';
+import type {
 	GetRightsRequestBody,
 	GetRightsResponseBody
 } from '../mocks/handlers/getRightsRequest';
+import { getRightsRequest } from '../mocks/handlers/getRightsRequest';
 import server, { waitForRequest } from '../mocks/server';
 import { useAccountStore } from '../store/account';
 import { createAccount, createIdentity, setupAccountStore } from '../test/account-utils';

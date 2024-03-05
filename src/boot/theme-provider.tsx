@@ -13,18 +13,19 @@ import React, {
 	useState
 } from 'react';
 
+import type { ThemeProviderProps as UIThemeProviderProps } from '@zextras/carbonio-design-system';
 import {
 	generateColorSet,
-	ThemeProvider as UIThemeProvider,
-	ThemeProviderProps as UIThemeProviderProps
+	ThemeProvider as UIThemeProvider
 } from '@zextras/carbonio-design-system';
 import { auto, disable, enable, setFetchMethod } from 'darkreader';
 import { map, reduce } from 'lodash';
-import { createGlobalStyle, css, DefaultTheme, SimpleInterpolation } from 'styled-components';
+import type { DefaultTheme, SimpleInterpolation } from 'styled-components';
+import { createGlobalStyle, css } from 'styled-components';
 
 import { useGetPrimaryColor } from './use-get-primary-color';
-import { DarkReaderPropValues, ThemeExtension } from '../../types';
-import { ScalingSettings } from '../../types/settings';
+import type { DarkReaderPropValues, ThemeExtension } from '../../types';
+import type { ScalingSettings } from '../../types/settings';
 import { darkReaderDynamicThemeFixes, LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
 import { getAutoScalingFontSize } from '../settings/components/utils';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';

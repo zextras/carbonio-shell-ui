@@ -8,11 +8,12 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Checkbox, Container, FormSubSection } from '@zextras/carbonio-design-system';
 
-import { AccountSettings, AddMod } from '../../../../types';
+import type { AccountSettings, AddMod } from '../../../../types';
 import { getT } from '../../../store/i18n';
 import { searchPrefsSubSection } from '../../general-settings-sub-sections';
 import { useReset } from '../../hooks/use-reset';
-import { SettingsSectionProps, upsertPrefOnUnsavedChanges } from '../utils';
+import type { SettingsSectionProps } from '../utils';
+import { upsertPrefOnUnsavedChanges } from '../utils';
 
 type SearchSettingsViewProps = SettingsSectionProps & {
 	settings: AccountSettings;

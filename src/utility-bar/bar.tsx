@@ -3,15 +3,11 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { FC, useCallback, useMemo } from 'react';
+import type { FC } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
-import {
-	Container,
-	Dropdown,
-	DropdownItem,
-	IconButton,
-	Tooltip
-} from '@zextras/carbonio-design-system';
+import type { DropdownItem } from '@zextras/carbonio-design-system';
+import { Container, Dropdown, IconButton, Tooltip } from '@zextras/carbonio-design-system';
 import { map, noop } from 'lodash';
 
 import { useUtilityBarStore } from './store';

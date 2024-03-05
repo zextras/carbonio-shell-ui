@@ -5,7 +5,7 @@
  */
 import type { AppDependantFunctions } from './boot/app/app-loader-functions';
 import type { AppDependantSetters } from './boot/app/app-loader-setters';
-import { report as reportApp } from './reporting/functions';
+import type { report as reportApp } from './reporting/functions';
 
 // TODO: export only what is useful and not internal constants
 export * from './constants/index';

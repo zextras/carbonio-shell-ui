@@ -4,9 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
-import { HttpResponse, HttpResponseResolver } from 'msw';
+import type { HttpResponseResolver } from 'msw';
+import { HttpResponse } from 'msw';
 
-import { GetRightsResponse } from '../../../types';
+import type { GetRightsResponse } from '../../../types';
 
 export type GetRightsRequestBody = {
 	GetRightsRequest: {

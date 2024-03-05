@@ -5,7 +5,7 @@
  */
 
 import { getSoapFetch } from './fetch';
-import { GetInfoResponse } from '../../types';
+import type { GetInfoResponse } from '../../types';
 import { SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account';
 import { normalizeAccount } from '../store/account/normalization';

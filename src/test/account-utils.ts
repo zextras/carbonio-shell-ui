@@ -6,7 +6,7 @@
 import { produce } from 'immer';
 
 import { LOGGED_USER } from './constants';
-import { Account, AccountSettingsPrefs, Identity, IdentityAttrs } from '../../types';
+import type { Account, AccountSettingsPrefs, Identity, IdentityAttrs } from '../../types';
 import { useAccountStore } from '../store/account';
 
 export const mockedAccount: Account = {

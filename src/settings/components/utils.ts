@@ -4,13 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React from 'react';
+import type React from 'react';
 
 import type { TFunction } from 'i18next';
 import { cloneDeep, filter, findIndex, isArray, isBoolean, reduce, uniq } from 'lodash';
-import moment, { Moment } from 'moment';
+import type { Moment } from 'moment';
+import moment from 'moment';
 
-import {
+import type {
 	Account,
 	AccountSettings,
 	AddMod,
@@ -21,7 +22,8 @@ import {
 	PrefsMods
 } from '../../../types';
 import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
-import { LocaleDescriptor, SUPPORTED_LOCALES } from '../../constants/locales';
+import type { LocaleDescriptor } from '../../constants/locales';
+import { SUPPORTED_LOCALES } from '../../constants/locales';
 
 export const GEN_TIME_FORMAT = 'YYYYMMDDHHmmss[Z]';
 

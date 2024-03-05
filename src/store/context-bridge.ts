@@ -7,7 +7,7 @@
 import { reduce } from 'lodash';
 import { create } from 'zustand';
 
-import { AnyFunction } from '../utils/typeUtils';
+import type { AnyFunction } from '../utils/typeUtils';
 
 export type PackageDependentFunction = (app: string) => AnyFunction;
 

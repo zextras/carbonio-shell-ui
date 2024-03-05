@@ -4,8 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { ReactElement, useCallback, useState } from 'react';
+import type { ReactElement } from 'react';
+import React, { useCallback, useState } from 'react';
 
+import type {
+	ItemType,
+	ItemComponentProps,
+	RadioGroupProps
+} from '@zextras/carbonio-design-system';
 import {
 	Container,
 	Text,
@@ -15,18 +21,15 @@ import {
 	Padding,
 	Button,
 	Radio,
-	RadioGroup,
-	ItemType,
-	ItemComponentProps,
-	RadioGroupProps
+	RadioGroup
 } from '@zextras/carbonio-design-system';
 import { noop } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
-import { AccountSettingsPrefs } from '../../../../types';
+import type { AccountSettingsPrefs } from '../../../../types';
 import { DELEGATED_SEND_SAVE_TARGET } from '../../../constants';
 import { useReset } from '../../hooks/use-reset';
-import { SettingsSectionProps } from '../utils';
+import type { SettingsSectionProps } from '../utils';
 
 export interface DelegateType extends ItemType {
 	email: string;

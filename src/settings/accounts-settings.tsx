@@ -7,25 +7,27 @@
 import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react';
 
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
-import { TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 import { produce } from 'immer';
 import { map, find, isEmpty, reduce, findIndex, filter, size } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import AccountsList from './components/account-settings/accounts-list';
-import Delegates, { DelegatesProps, DelegateType } from './components/account-settings/delegates';
+import type { DelegatesProps, DelegateType } from './components/account-settings/delegates';
+import Delegates from './components/account-settings/delegates';
 import PersonaSettings from './components/account-settings/persona-settings';
 import PrimaryAccountSettings from './components/account-settings/primary-account-settings';
 import SettingsSentMessages from './components/account-settings/settings-sent-messages';
-import { SettingsHeader, SettingsHeaderProps } from './components/settings-header';
+import type { SettingsHeaderProps } from './components/settings-header';
+import { SettingsHeader } from './components/settings-header';
+import type { ResetComponentImperativeHandler } from './components/utils';
 import {
 	calculateNewIdentitiesState,
 	defaultAsFirstOrderIdentities,
 	getAvailableEmailAddresses,
-	isPrimary,
-	ResetComponentImperativeHandler
+	isPrimary
 } from './components/utils';
-import {
+import type {
 	BatchRequest,
 	CreateIdentityResponse,
 	DeleteIdentityResponse,
@@ -38,10 +40,10 @@ import {
 	ModifyPrefsRequest,
 	GetRightsRequest,
 	GetRightsResponse,
-	AccountState
+	AccountState,
+	ModifyIdentityRequest
 } from '../../types';
-import type { ModifyIdentityRequest } from '../../types';
-import { AccountACEInfo } from '../../types/network/entities';
+import type { AccountACEInfo } from '../../types/network/entities';
 import { SHELL_APP_ID } from '../constants';
 import { getSoapFetch } from '../network/fetch';
 import { useAccountStore, useUserAccount, useUserSettings } from '../store/account';

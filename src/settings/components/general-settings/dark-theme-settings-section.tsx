@@ -6,7 +6,8 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { Select, SelectItem, SingleSelectionOnChange, Text } from '@zextras/carbonio-design-system';
+import type { SelectItem, SingleSelectionOnChange } from '@zextras/carbonio-design-system';
+import { Select, Text } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 
 import type { AddMod, DarkReaderPropValues, RemoveMod } from '../../../../types';
@@ -17,7 +18,7 @@ import {
 } from '../../../dark-mode/use-dark-reader-result-value';
 import { getT } from '../../../store/i18n';
 import { useReset } from '../../hooks/use-reset';
-import { SettingsSectionProps } from '../utils';
+import type { SettingsSectionProps } from '../utils';
 
 type DarkReaderSelectItem = Array<SelectItem & { value: DarkReaderPropValues }>;
 

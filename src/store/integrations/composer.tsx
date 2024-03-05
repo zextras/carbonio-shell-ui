@@ -3,9 +3,11 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { FC, useCallback, useMemo, useRef } from 'react';
+import type { FC } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 
-import { Editor, IAllProps as EditorProps } from '@tinymce/tinymce-react';
+import type { IAllProps as EditorProps } from '@tinymce/tinymce-react';
+import { Editor } from '@tinymce/tinymce-react';
 import { Container } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 import type { EditorOptions, TinyMCE, Ui } from 'tinymce/tinymce';

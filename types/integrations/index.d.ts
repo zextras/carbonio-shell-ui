@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { DropdownItem } from '@zextras/carbonio-design-system';
+import type { DropdownItem } from '@zextras/carbonio-design-system';
 
 export type Action = DropdownItem & {
 	primary?: boolean;

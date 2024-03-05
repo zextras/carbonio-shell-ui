@@ -6,26 +6,15 @@
 
 import React, { useCallback, useMemo, useState } from 'react';
 
-import {
-	Container,
-	FormSubSection,
-	Modal,
-	Select,
-	SelectItem,
-	SingleSelectionOnChange,
-	Text
-} from '@zextras/carbonio-design-system';
+import type { SelectItem, SingleSelectionOnChange } from '@zextras/carbonio-design-system';
+import { Container, FormSubSection, Modal, Select, Text } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 
-import {
-	localeList,
-	SettingsSectionProps,
-	timeZoneList,
-	upsertPrefOnUnsavedChanges
-} from './components/utils';
+import type { SettingsSectionProps } from './components/utils';
+import { localeList, timeZoneList, upsertPrefOnUnsavedChanges } from './components/utils';
 import { timezoneAndLanguageSubSection } from './general-settings-sub-sections';
 import { useReset } from './hooks/use-reset';
-import { AccountSettings, AddMod } from '../../types';
+import type { AccountSettings, AddMod } from '../../types';
 import { getT } from '../store/i18n';
 
 interface LanguageAndTimeZoneSettingsProps extends SettingsSectionProps {

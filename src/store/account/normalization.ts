@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { GetInfoResponse, Account, AccountSettings } from '../../../types';
+import type { GetInfoResponse, Account, AccountSettings } from '../../../types';
 
 const normalizeSettings = (
 	settings: Pick<GetInfoResponse, 'attrs' | 'prefs' | 'props'>

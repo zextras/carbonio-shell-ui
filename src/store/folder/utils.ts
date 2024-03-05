@@ -5,7 +5,7 @@
  */
 import { sortBy } from 'lodash';
 
-import { Folder, FolderView, LinkFolder, TreeNode } from '../../../types';
+import type { Folder, FolderView, LinkFolder, TreeNode } from '../../../types';
 import { FOLDERS, ROOT_NAME } from '../../constants';
 
 const hasId = (f: Folder | TreeNode<unknown>, id: string): boolean => f.id.split(':').includes(id);

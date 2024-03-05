@@ -3,9 +3,9 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { CSSProperties } from 'react';
+import type { CSSProperties } from 'react';
 
-import { Theme as DSTheme } from '@zextras/carbonio-design-system';
+import type { Theme as DSTheme } from '@zextras/carbonio-design-system';
 
 declare module 'styled-components' {
 	interface DefaultTheme extends DSTheme {

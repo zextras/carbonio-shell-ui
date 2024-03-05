@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { ComponentType } from 'react';
+import type { ComponentType } from 'react';
 
 import { produce } from 'immer';
 import { forEach, includes, omit } from 'lodash';
@@ -13,7 +13,7 @@ import { create } from 'zustand';
 import Composer from './composer';
 import type { ActionFactory } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
-import { AnyFunction } from '../../utils/typeUtils';
+import type { AnyFunction } from '../../utils/typeUtils';
 
 type Action = ActionFactory<unknown>;
 type Component = ComponentType<Record<string, unknown>>;

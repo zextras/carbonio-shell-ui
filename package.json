@@ -2,8 +2,8 @@
 	"name": "@zextras/carbonio-shell-ui",
 	"version": "5.1.0",
 	"description": "The Zextras Carbonio web client",
-	"main": "dist/zapp-shell.bundle.js",
-	"types": "./types/index.d.ts",
+	"main": "./lib/index.js",
+	"types": "./lib.index.d.ts",
 	"engines": {
 		"node": "v18",
 		"npm": "v10"
@@ -37,8 +37,8 @@
 		"build:dev": "sdk build --dev --pkgRel $(date +%s)"
 	},
 	"files": [
-		"dist/",
-		"types/",
+		"lib/",
+		"COPYING",
 		"README.md"
 	],
 	"keywords": [
@@ -54,13 +54,15 @@
 		"@commitlint/cli": "^19.0.3",
 		"@commitlint/config-conventional": "^19.0.3",
 		"@faker-js/faker": "^8.4.1",
+		"@microsoft/api-extractor": "^7.42.3",
 		"@svgr/webpack": "^8.1.0",
 		"@testing-library/jest-dom": "^6.4.2",
 		"@testing-library/react": "^12.1.5",
 		"@testing-library/user-event": "^14.5.2",
+		"@tsconfig/node18": "^18.2.2",
 		"@types/jest": "^29.5.12",
 		"@types/lodash": "^4.14.202",
-		"@types/node": "^18.19.19",
+		"@types/node": "^18.19.21",
 		"@types/react": "^17.0.76",
 		"@types/react-dom": "^17.0.25",
 		"@types/react-router-dom": "^5.3.3",
@@ -100,12 +102,12 @@
 	},
 	"dependencies": {
 		"@fontsource/roboto": "^5.0.8",
-		"@reduxjs/toolkit": "^1.9.7",
+		"@reduxjs/toolkit": "^1 >=1.9",
 		"@sentry/browser": "^7.103.0",
 		"@tinymce/tinymce-react": "^4.3.2",
-		"@zextras/carbonio-design-system": "^4.2.0",
-		"@zextras/carbonio-ui-preview": "^1.2.3",
-		"darkreader": "^4.9.79",
+        "@zextras/carbonio-design-system": "^4.2.0",
+        "@zextras/carbonio-ui-preview": "^1.2.3",
+        "darkreader": "^4.9.79",
 		"history": "^5.3.0",
 		"i18next": "^22.5.1",
 		"i18next-http-backend": "^2.5.0",

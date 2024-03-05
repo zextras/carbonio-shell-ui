@@ -19,7 +19,7 @@ import { ThemeProvider } from './theme-provider';
 import { BASENAME, IS_FOCUS_MODE } from '../constants';
 import { NotificationPermissionChecker } from '../notification/NotificationPermissionChecker';
 import ShellView from '../shell/shell-view';
-import { useAppStore } from '../store/app';
+import { useAppStore } from '../store/app/store';
 
 const FocusModeListener = (): null => {
 	const { route } = useParams<{ route?: string }>();

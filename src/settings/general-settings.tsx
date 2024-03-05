@@ -17,7 +17,7 @@ import { OutOfOfficeSettings } from './components/general-settings/out-of-office
 import { ScalingSettingSection } from './components/general-settings/scaling-setting-section';
 import { SearchSettings } from './components/general-settings/search-settings';
 import UserQuota from './components/general-settings/user-quota';
-import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
+import { SettingsHeader, SettingsHeaderProps } from './components/settings-header';
 import { ResetComponentImperativeHandler } from './components/utils';
 import { LanguageAndTimeZoneSettings } from './language-and-timezone-settings';
 import {

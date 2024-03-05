@@ -3,8 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-// The 'useXXX' functions actually return hooks
-/* eslint-disable react-hooks/rules-of-hooks */
 
 import {
 	AppRouteDescriptor,
@@ -17,7 +15,7 @@ import {
 	UtilityView
 } from '../../../types';
 import { getEditSettingsForApp } from '../../network/edit-settings';
-import { useAppStore } from '../../store/app';
+import { AppActions as StoreAppSetters, useAppStore } from '../../store/app';
 import {
 	normalizeRoute,
 	normalizeSettingsView,
@@ -27,63 +25,66 @@ import {
 	normalizeSecondaryAccessoryView,
 	normalizeBoardView
 } from '../../store/app/utils';
-import { useIntegrationsStore } from '../../store/integrations/store';
+import { IntegrationActions, useIntegrationsStore } from '../../store/integrations/store';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const getAppSetters = (pkg: CarbonioModule): Record<string, Function> => {
-	const appSetters = useAppStore.getState().setters;
+export type AppDependantSetters = {
+	setAppContext: ReturnType<StoreAppSetters['setAppContext']>;
+	addRoute: (data: Partial<AppRouteDescriptor>) => ReturnType<StoreAppSetters['addRoute']>;
+	addBoardView: (data: Partial<BoardView>) => ReturnType<StoreAppSetters['addBoardView']>;
+	addSettingsView: (data: Partial<SettingsView>) => ReturnType<StoreAppSetters['addSettingsView']>;
+	addSearchView: (data: Partial<SearchView>) => ReturnType<StoreAppSetters['addSearchView']>;
+	addUtilityView: (data: Partial<UtilityView>) => ReturnType<StoreAppSetters['addUtilityView']>;
+	addPrimaryAccessoryView: (
+		data: Partial<PrimaryAccessoryView>
+	) => ReturnType<StoreAppSetters['addPrimaryAccessoryView']>;
+	addSecondaryAccessoryView: (
+		data: Partial<SecondaryAccessoryView>
+	) => ReturnType<StoreAppSetters['addSecondaryAccessoryView']>;
+	registerComponents: ReturnType<IntegrationActions['registerComponents']>;
+	editSettings: ReturnType<typeof getEditSettingsForApp>;
+};
+
+export const getAppDependantSetters = (pkg: CarbonioModule): AppDependantSetters => {
+	const appStore = useAppStore.getState();
 	const integrations = useIntegrationsStore.getState();
 	return {
-		updatePrimaryBadge: appSetters.updatePrimaryBadge,
-		updateUtilityBadge: appSetters.updateUtilityBadge,
-		setAppContext: appSetters.setAppContext(pkg.name),
-		addRoute: (route: Partial<AppRouteDescriptor>) =>
-			appSetters.addRoute(normalizeRoute(route, pkg)),
-		setRouteVisibility: (routeId: string, visible: boolean) =>
-			appSetters.setRouteVisibility(routeId, visible),
-		removeRoute: (routeId: string) => appSetters.removeRoute(routeId),
-		// add board
+		setAppContext: appStore.setAppContext(pkg.name),
+		addRoute: (route: Partial<AppRouteDescriptor>) => appStore.addRoute(normalizeRoute(route, pkg)),
 		addBoardView: (data: Partial<BoardView>) =>
-			appSetters.addBoardView(normalizeBoardView(data, pkg)),
-		// remove board
-		removeBoardView: appSetters.removeBoardView,
-		//
-		// add settings
+			appStore.addBoardView(normalizeBoardView(data, pkg)),
 		addSettingsView: (data: Partial<SettingsView>) =>
-			appSetters.addSettingsView(normalizeSettingsView(data, pkg)),
-		// remove settings
-		removeSettingsView: appSetters.removeSettingsView,
-		//
-		// add search
+			appStore.addSettingsView(normalizeSettingsView(data, pkg)),
 		addSearchView: (data: Partial<SearchView>) =>
-			appSetters.addSearchView(normalizeSearchView(data, pkg)),
-		// remove search
-		removeSearchView: appSetters.removeSearchView,
-		//
-		// add utility
+			appStore.addSearchView(normalizeSearchView(data, pkg)),
 		addUtilityView: (data: Partial<UtilityView>) =>
-			appSetters.addUtilityView(normalizeUtilityView(data, pkg)),
-		// remove utility
-		removeUtilityView: appSetters.removeUtilityView,
-		//
-		// add primaryAccessory
+			appStore.addUtilityView(normalizeUtilityView(data, pkg)),
 		addPrimaryAccessoryView: (data: Partial<PrimaryAccessoryView>) =>
-			appSetters.addPrimaryAccessoryView(normalizePrimaryAccessoryView(data, pkg)),
-		// remove primaryAccessory
-		removePrimaryAccessoryView: appSetters.removePrimaryAccessoryView,
-		//
-		// add secondaryAccessory
+			appStore.addPrimaryAccessoryView(normalizePrimaryAccessoryView(data, pkg)),
 		addSecondaryAccessoryView: (data: Partial<SecondaryAccessoryView>) =>
-			appSetters.addSecondaryAccessoryView(normalizeSecondaryAccessoryView(data, pkg)),
-		// remove secondaryAccessory
-		removeSecondaryAccessoryView: appSetters.removeSecondaryAccessoryView,
-		registerFunctions: integrations.registerFunctions,
-		removeFunctions: integrations.removeFunctions,
-		registerActions: integrations.registerActions,
-		removeActions: integrations.removeActions,
+			appStore.addSecondaryAccessoryView(normalizeSecondaryAccessoryView(data, pkg)),
 		registerComponents: integrations.registerComponents(pkg.name),
-		removeComponents: integrations.removeComponents,
 		/** @deprecated */
 		editSettings: getEditSettingsForApp(pkg.name)
 	};
 };
+
+export const {
+	updatePrimaryBadge,
+	updateUtilityBadge,
+	setRouteVisibility,
+	removeRoute,
+	removeBoardView,
+	removeSettingsView,
+	removeSearchView,
+	removeUtilityView,
+	removePrimaryAccessoryView,
+	removeSecondaryAccessoryView
+} = useAppStore.getState();
+
+export const {
+	registerFunctions,
+	removeFunctions,
+	registerActions,
+	removeActions,
+	removeComponents
+} = useIntegrationsStore.getState();

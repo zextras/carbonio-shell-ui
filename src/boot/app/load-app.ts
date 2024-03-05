@@ -8,12 +8,12 @@ import { ComponentType, memo } from 'react';
 
 import { forOwn } from 'lodash';
 
-import { getAppFunctions } from './app-loader-functions';
-import { getAppSetters } from './app-loader-setters';
+import * as appFunctions from './app-loader-functions';
+import * as appSetters from './app-loader-setters';
 import type { CarbonioModule } from '../../../types';
 import * as CONSTANTS from '../../constants';
 import { report } from '../../reporting/functions';
-import SettingsHeader from '../../settings/components/settings-header';
+import { SettingsHeader } from '../../settings/components/settings-header';
 import { useAppStore } from '../../store/app';
 import { AppLink } from '../../ui-extras/app-link';
 import { Spinner } from '../../ui-extras/spinner';
@@ -22,20 +22,22 @@ import { Tracker } from '../tracker';
 export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
 
+const { getAppDependantSetters, ...otherSetters } = appSetters;
+const { getAppDependantFunctions, ...otherFunctions } = appFunctions;
+
 export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 	return new Promise((resolve, reject) => {
 		try {
-			if (
-				window.__ZAPP_SHARED_LIBRARIES__ &&
-				window.__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-shell-ui']
-			) {
+			if (window.__ZAPP_SHARED_LIBRARIES__?.['@zextras/carbonio-shell-ui']) {
 				window.__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-shell-ui'][appPkg.name] = {
 					report: report(appPkg.name),
 					AppLink,
 					Spinner,
 					SettingsHeader,
-					...getAppSetters(appPkg),
-					...getAppFunctions(appPkg),
+					...getAppDependantSetters(appPkg),
+					...otherSetters,
+					...getAppDependantFunctions(appPkg),
+					...otherFunctions,
 					...CONSTANTS,
 					Tracker
 				};

@@ -1,0 +1,15 @@
+{
+  "extends": "@tsconfig/node18/tsconfig.json",
+  "compilerOptions": {
+    "lib": ["DOM"],
+    "jsx": "react",
+    "declaration": true,
+    "sourceMap": true,
+    "declarationMap": false,
+    "outDir": "lib",
+    "declarationDir": "generated-types",
+    "types": ["@types"]
+  },
+  "files": ["src/lib.ts"],
+  "exclude": ["node_modules", "dist", "generated-types", "lib"]
+}

@@ -135,7 +135,7 @@ describe('Shell primary bar', () => {
 		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
 
 		act(() => {
-			useAppStore.getState().setters.setApps([
+			useAppStore.getState().setApps([
 				{
 					commit: '',
 					description: 'Mails module',
@@ -159,7 +159,7 @@ describe('Shell primary bar', () => {
 					version: '0.0.1'
 				}
 			]);
-			useAppStore.getState().setters.addRoute({
+			useAppStore.getState().addRoute({
 				id: 'mails',
 				route: 'mails',
 				position: 1,
@@ -171,7 +171,7 @@ describe('Shell primary bar', () => {
 				app: 'carbonio-mails-ui'
 			});
 
-			useAppStore.getState().setters.addRoute({
+			useAppStore.getState().addRoute({
 				id: 'files',
 				route: 'files',
 				position: 2,
@@ -215,7 +215,7 @@ describe('Shell primary bar', () => {
 		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
 
 		act(() => {
-			useAppStore.getState().setters.setApps([
+			useAppStore.getState().setApps([
 				{
 					commit: '',
 					description: 'Mails module',
@@ -239,7 +239,7 @@ describe('Shell primary bar', () => {
 					version: '0.0.1'
 				}
 			]);
-			useAppStore.getState().setters.addRoute({
+			useAppStore.getState().addRoute({
 				id: 'mails',
 				route: 'mails',
 				position: 1,
@@ -251,7 +251,7 @@ describe('Shell primary bar', () => {
 				app: 'carbonio-mails-ui'
 			});
 
-			useAppStore.getState().setters.addRoute({
+			useAppStore.getState().addRoute({
 				id: 'files',
 				route: 'files',
 				position: 2,
@@ -263,7 +263,7 @@ describe('Shell primary bar', () => {
 				app: 'carbonio-files-ui'
 			});
 
-			useAppStore.getState().setters.addSearchView({
+			useAppStore.getState().addSearchView({
 				route: 'files',
 				component: (): React.JSX.Element => <Text>files search view</Text>,
 				label: 'Files',
@@ -272,7 +272,7 @@ describe('Shell primary bar', () => {
 				icon: 'DriveOutline',
 				position: 2
 			});
-			useAppStore.getState().setters.addSearchView({
+			useAppStore.getState().addSearchView({
 				route: 'mails',
 				component: (): React.JSX.Element => <Text>mails search view</Text>,
 				label: 'Mails',
@@ -314,7 +314,7 @@ describe('Shell primary bar', () => {
 		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
 
 		act(() => {
-			useAppStore.getState().setters.setApps([
+			useAppStore.getState().setApps([
 				{
 					commit: '',
 					description: 'Mails module',
@@ -338,7 +338,7 @@ describe('Shell primary bar', () => {
 					version: '0.0.1'
 				}
 			]);
-			useAppStore.getState().setters.addRoute({
+			useAppStore.getState().addRoute({
 				id: 'mails',
 				route: 'mails',
 				position: 1,
@@ -350,7 +350,7 @@ describe('Shell primary bar', () => {
 				app: 'carbonio-mails-ui'
 			});
 
-			useAppStore.getState().setters.addRoute({
+			useAppStore.getState().addRoute({
 				id: 'files',
 				route: 'files',
 				position: 2,
@@ -362,7 +362,7 @@ describe('Shell primary bar', () => {
 				app: 'carbonio-files-ui'
 			});
 
-			useAppStore.getState().setters.addSearchView({
+			useAppStore.getState().addSearchView({
 				route: 'files',
 				component: (): React.JSX.Element => <Text>files search view</Text>,
 				label: 'Files',
@@ -371,7 +371,7 @@ describe('Shell primary bar', () => {
 				icon: 'DriveOutline',
 				position: 2
 			});
-			useAppStore.getState().setters.addSearchView({
+			useAppStore.getState().addSearchView({
 				route: 'mails',
 				component: (): React.JSX.Element => <Text>mails search view</Text>,
 				label: 'Mails',

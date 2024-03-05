@@ -35,7 +35,7 @@ export type SettingsHeaderProps = {
 	isDirty: boolean;
 };
 
-const SettingsHeader = ({
+export const SettingsHeader = ({
 	onSave,
 	onCancel,
 	isDirty,
@@ -127,5 +127,3 @@ const SettingsHeader = ({
 		</>
 	);
 };
-
-export default SettingsHeader;

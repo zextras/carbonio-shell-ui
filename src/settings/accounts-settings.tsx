@@ -17,7 +17,7 @@ import Delegates, { DelegatesProps, DelegateType } from './components/account-se
 import PersonaSettings from './components/account-settings/persona-settings';
 import PrimaryAccountSettings from './components/account-settings/primary-account-settings';
 import SettingsSentMessages from './components/account-settings/settings-sent-messages';
-import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
+import { SettingsHeader, SettingsHeaderProps } from './components/settings-header';
 import {
 	calculateNewIdentitiesState,
 	defaultAsFirstOrderIdentities,

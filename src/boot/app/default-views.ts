@@ -72,9 +72,9 @@ const settingsRouteDescriptor = (t: TFunction): AppRouteDescriptor => ({
 export const registerDefaultViews = (t: TFunction): void => {
 	const { attrs } = useAccountStore.getState().settings;
 	if (size(attrs) > 0 && attrs.zimbraFeatureOptionsEnabled !== 'FALSE') {
-		useAppStore.getState().setters.addRoute(settingsRouteDescriptor(t));
-		useAppStore.getState().setters.addSettingsView(settingsGeneralView(t));
-		useAppStore.getState().setters.addSettingsView(settingsAccountsView(t));
+		useAppStore.getState().addRoute(settingsRouteDescriptor(t));
+		useAppStore.getState().addSettingsView(settingsGeneralView(t));
+		useAppStore.getState().addSettingsView(settingsAccountsView(t));
 	}
-	useAppStore.getState().setters.addRoute(searchRouteDescriptor(t));
+	useAppStore.getState().addRoute(searchRouteDescriptor(t));
 };

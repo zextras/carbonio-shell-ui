@@ -3,29 +3,75 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-// The 'useXXX' functions actually return hooks
-/* eslint-disable react-hooks/rules-of-hooks */
 
 import { reduce } from 'lodash';
 
-import { CarbonioModule } from '../../../types';
-import {
-	usePushHistoryCallback,
-	useGoBackHistoryCallback,
-	useReplaceHistoryCallback,
-	getCurrentRoute,
-	useCurrentRoute,
-	replaceHistory,
-	goBackHistory,
-	pushHistory
-} from '../../history/hooks';
+import type { CarbonioModule } from '../../../types';
 import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
-import { changeTagColor, createTag, deleteTag, renameTag } from '../../network/tags';
-import { getNotificationManager } from '../../notification/NotificationManager';
-import { runSearch } from '../../search/run-search';
-import { useIsMobile } from '../../shell/hooks/useIsMobile';
-import { useLocalStorage } from '../../shell/hooks/useLocalStorage';
-import {
+import { getApp, getAppContext, getAppHook, getAppContextHook } from '../../store/app';
+import { addBoard } from '../../store/boards';
+import { ContextBridgeState, useContextBridge } from '../../store/context-bridge';
+import { getI18n, getTFunction } from '../../store/i18n';
+
+export type AppDependantFunctions = {
+	getI18n: ReturnType<typeof getI18n>;
+	t: ReturnType<typeof getTFunction>;
+	soapFetch: ReturnType<typeof getSoapFetch>;
+	xmlSoapFetch: ReturnType<typeof getXmlSoapFetch>;
+	useAppContext: ReturnType<typeof getAppContextHook>;
+	getAppContext: ReturnType<typeof getAppContext>;
+	useApp: ReturnType<typeof getAppHook>;
+	getApp: ReturnType<typeof getApp>;
+
+	addBoard: ReturnType<typeof addBoard>;
+	/**
+	 * @deprecated Use hooks to access to functions which require context
+	 */
+	getBridgedFunctions: () => ContextBridgeState['functions'] & {
+		[K in keyof ContextBridgeState['packageDependentFunctions']]: ReturnType<
+			ContextBridgeState['packageDependentFunctions'][K]
+		>;
+	};
+};
+
+export const getAppDependantFunctions = (pkg: CarbonioModule): AppDependantFunctions => ({
+	getI18n: getI18n(pkg.name),
+	t: getTFunction(pkg.name),
+	soapFetch: getSoapFetch(pkg.name),
+	xmlSoapFetch: getXmlSoapFetch(pkg.name),
+	useAppContext: getAppContextHook(pkg.name),
+	getAppContext: getAppContext(pkg.name),
+	useApp: getAppHook(pkg.name),
+	getApp: getApp(pkg.name),
+	addBoard: addBoard(pkg.name),
+	getBridgedFunctions: (): ReturnType<AppDependantFunctions['getBridgedFunctions']> => {
+		const { packageDependentFunctions, functions } = useContextBridge.getState();
+		return {
+			...functions,
+			...reduce(packageDependentFunctions, (acc, f, name) => ({ ...acc, [name]: f(pkg.name) }), {})
+		};
+	}
+});
+
+export {
+	useAction,
+	useActions,
+	useActionsFactory,
+	useActionFactory,
+	useIntegratedComponent,
+	useIntegratedFunction
+} from '../../store/integrations/hooks';
+
+export {
+	getAction,
+	getActions,
+	getActionsFactory,
+	getActionFactory,
+	getIntegratedComponent,
+	getIntegratedFunction
+} from '../../store/integrations/getters';
+
+export {
 	getUserAccount,
 	getUserAccounts,
 	getUserSetting,
@@ -40,24 +86,13 @@ import {
 	getUserRights,
 	useAuthenticated
 } from '../../store/account';
-import { getApp, getAppContext, useApp, useAppContext } from '../../store/app';
-import {
-	addBoard,
-	closeBoard,
-	updateBoard,
-	updateBoardContext,
-	getBoardById,
-	getBoardContextById,
-	useBoardContextById,
-	useBoardById,
-	useBoard,
-	minimizeBoards,
-	reopenBoards,
-	setCurrentBoard,
-	useBoardHooks
-} from '../../store/boards';
-import { useContextBridge } from '../../store/context-bridge';
-import {
+
+export { getTags, useTags } from '../../store/tags';
+export { changeTagColor, createTag, deleteTag, renameTag } from '../../network/tags';
+
+export { useNotify, useRefresh } from '../../store/network';
+
+export {
 	getFolder,
 	getFolders,
 	useFolder,
@@ -75,130 +110,37 @@ import {
 	useRootByUser,
 	getRootByUser
 } from '../../store/folder';
-import { getI18n, getTFunction } from '../../store/i18n';
-import {
-	getAction,
-	getActions,
-	getActionsFactory,
-	getActionFactory,
-	getIntegratedComponent,
-	getIntegratedFunction
-} from '../../store/integrations/getters';
-import {
-	useAction,
-	useActions,
-	useActionsFactory,
-	useActionFactory,
-	useIntegratedComponent,
-	useIntegratedFunction
-} from '../../store/integrations/hooks';
-import { useNotify, useRefresh } from '../../store/network';
-import { getTags, useTags } from '../../store/tags';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const getAppFunctions = (pkg: CarbonioModule): Record<string, Function> => ({
-	// I18N
-	getI18n: getI18n(pkg.name),
-	t: getTFunction(pkg.name),
-	// FETCH
-	soapFetch: getSoapFetch(pkg.name),
-	xmlSoapFetch: getXmlSoapFetch(pkg.name),
-
-	// APP STORE FUNCTIONS
-	useAppContext: useAppContext(pkg.name),
-	getAppContext: getAppContext(pkg.name),
-	useApp: useApp(pkg.name),
-	getApp: getApp(pkg.name),
-
-	// INTEGRATIONS
-	useIntegratedFunction,
-	getIntegratedFunction,
-	useIntegratedComponent,
-	getIntegratedComponent,
-	useAction,
-	getAction,
-	useActions,
-	getActions,
-	useActionsFactory,
-	getActionsFactory,
-	useActionFactory,
-	getActionFactory,
-	// AUTH
-	useAuthenticated,
-	// ACCOUNTS
-	useUserAccount,
-	getUserAccount,
-	useUserAccounts,
-	getUserAccounts,
-	useUserSettings,
-	getUserSettings,
-	getUserSetting,
-	useUserSetting,
-	useUserRight,
-	useUserRights,
-	getUserRight,
-	getUserRights,
-	useTags,
-	getTags,
-	useNotify,
-	useRefresh,
-	// FOLDERS
-	useFoldersByView,
-	useFoldersAccordionByView,
-	useFolder,
-	getFolder,
-	useFolders,
-	getFolders,
-	useRoot,
-	getRoot,
-	useRoots,
-	getRoots,
-	useSearchFolder,
-	useSearchFolders,
-	getSearchFolder,
-	getSearchFolders,
-	useRootByUser,
-	getRootByUser,
-	// BOARDS
-	addBoard: addBoard(pkg.name),
+export {
 	closeBoard,
 	updateBoard,
 	updateBoardContext,
 	getBoardById,
 	getBoardContextById,
-	useBoard,
-	useBoardById,
 	useBoardContextById,
+	useBoardById,
+	useBoard,
 	minimizeBoards,
 	reopenBoards,
 	setCurrentBoard,
-	useBoardHooks,
-	// HISTORY
+	useBoardHooks
+} from '../../store/boards';
+
+export {
 	usePushHistoryCallback,
 	useGoBackHistoryCallback,
 	useReplaceHistoryCallback,
-	useCurrentRoute,
 	getCurrentRoute,
-	pushHistory,
-	goBackHistory,
+	useCurrentRoute,
 	replaceHistory,
-	// TAGS
-	createTag,
-	renameTag,
-	changeTagColor,
-	deleteTag,
-	// NOTIFICATION
-	getNotificationManager,
+	goBackHistory,
+	pushHistory
+} from '../../history/hooks';
 
-	// STUFF
-	runSearch,
-	useIsMobile,
-	useLocalStorage,
-	getBridgedFunctions: (): unknown => {
-		const { packageDependentFunctions, functions } = useContextBridge.getState();
-		return {
-			...functions,
-			...reduce(packageDependentFunctions, (acc, f, name) => ({ ...acc, [name]: f(pkg.name) }), {})
-		};
-	}
-});
+export { getNotificationManager } from '../../notification/NotificationManager';
+
+export { runSearch } from '../../search/run-search';
+
+export { useIsMobile } from '../../shell/hooks/useIsMobile';
+
+export { useLocalStorage } from '../../shell/hooks/useLocalStorage';

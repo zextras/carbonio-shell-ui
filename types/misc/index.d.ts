@@ -24,16 +24,6 @@ export enum JSNS {
 
 export type DarkReaderPropValues = (typeof DARK_READER_VALUES)[number];
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type PackageDependentFunction = (app: string) => Function;
-
-export type ContextBridgeState = {
-	packageDependentFunctions: Record<string, PackageDependentFunction>;
-	// eslint-disable-next-line @typescript-eslint/ban-types
-	functions: Record<string, Function>;
-	add: (content: Partial<Omit<ContextBridgeState, 'add'>>) => void;
-};
-
 export type LoadedAppRuntime = AppInjections & {
 	pkg: CarbonioModule;
 };

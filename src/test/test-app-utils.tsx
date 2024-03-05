@@ -37,9 +37,9 @@ export const mockedRoutes: AppRouteDescriptor = {
 };
 
 export function setupAppStore(apps = mockedApps, routes = [mockedRoutes]): void {
-	useAppStore.getState().setters.setApps(apps);
+	useAppStore.getState().setApps(apps);
 	routes.forEach((route) => {
-		useAppStore.getState().setters.addRoute(route);
+		useAppStore.getState().addRoute(route);
 	});
 }
 

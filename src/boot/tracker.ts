@@ -51,6 +51,7 @@ export class Tracker {
 			try {
 				this.matomoTracker = getMatomoTracker(Tracker.URL, this.siteId);
 			} catch (e) {
+				// eslint-disable-next-line no-console
 				console.warn('Matomo is not initialized yet: ', e);
 			}
 		}

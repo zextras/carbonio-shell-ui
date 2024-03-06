@@ -3,8 +3,25 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import type { AppDependantFunctions } from './boot/app/app-loader-functions';
-import type { AppDependantSetters } from './boot/app/app-loader-setters';
+
+// noinspection JSUnusedGlobalSymbols
+
+/**
+ * The library to integrate in the Carbonio environment.
+ *
+ * @remarks
+ * The library includes all and only those utils exposed
+ * by the shell to the modules at runtime.
+ * This utils include all functions required to register the module,
+ * plus some other utils to manage the interaction with the both the shell
+ * and other modules.
+ * There are also some components exposed for creating a consistent UI
+ *
+ * @packageDocumentation
+ */
+
+import type { AppDependantFunctions as AppFunctions } from './boot/app/app-loader-functions';
+import type { AppDependantSetters as AppSetters } from './boot/app/app-loader-setters';
 import type { report as reportApp } from './reporting/functions';
 
 // TODO: export only what is useful and not internal constants
@@ -15,17 +32,16 @@ export * from './settings/components/settings-header';
 
 export declare const report: ReturnType<typeof reportApp>;
 
-export type { AppDependantSetters as AppSetters } from './boot/app/app-loader-setters';
-export declare const setAppContext: AppDependantSetters['setAppContext'];
-export declare const addRoute: AppDependantSetters['addRoute'];
-export declare const addBoardView: AppDependantSetters['addBoardView'];
-export declare const addSettingsView: AppDependantSetters['addSettingsView'];
-export declare const addSearchView: AppDependantSetters['addSearchView'];
-export declare const addUtilityView: AppDependantSetters['addUtilityView'];
-export declare const addPrimaryAccessoryView: AppDependantSetters['addPrimaryAccessoryView'];
-export declare const addSecondaryAccessoryView: AppDependantSetters['addSecondaryAccessoryView'];
-export declare const registerComponents: AppDependantSetters['registerComponents'];
-export declare const editSettings: AppDependantSetters['editSettings'];
+export declare const setAppContext: AppSetters['setAppContext'];
+export declare const addRoute: AppSetters['addRoute'];
+export declare const addBoardView: AppSetters['addBoardView'];
+export declare const addSettingsView: AppSetters['addSettingsView'];
+export declare const addSearchView: AppSetters['addSearchView'];
+export declare const addUtilityView: AppSetters['addUtilityView'];
+export declare const addPrimaryAccessoryView: AppSetters['addPrimaryAccessoryView'];
+export declare const addSecondaryAccessoryView: AppSetters['addSecondaryAccessoryView'];
+export declare const registerComponents: AppSetters['registerComponents'];
+export declare const editSettings: AppSetters['editSettings'];
 export {
 	registerActions,
 	removeActions,
@@ -44,20 +60,20 @@ export {
 	updatePrimaryBadge
 } from './boot/app/app-loader-setters';
 
-export type { AppDependantFunctions as AppFunctions } from './boot/app/app-loader-functions';
-export declare const getI18n: AppDependantFunctions['getI18n'];
-export declare const t: AppDependantFunctions['t'];
-export declare const soapFetch: AppDependantFunctions['soapFetch'];
-export declare const xmlSoapFetch: AppDependantFunctions['xmlSoapFetch'];
-export declare const useAppContext: AppDependantFunctions['useAppContext'];
-export declare const getAppContext: AppDependantFunctions['getAppContext'];
-export declare const useApp: AppDependantFunctions['useApp'];
-export declare const getApp: AppDependantFunctions['getApp'];
-export declare const addBoard: AppDependantFunctions['addBoard'];
+export declare const getI18n: AppFunctions['getI18n'];
+export declare const t: AppFunctions['t'];
+export declare const soapFetch: AppFunctions['soapFetch'];
+export declare const xmlSoapFetch: AppFunctions['xmlSoapFetch'];
+export declare const useAppContext: AppFunctions['useAppContext'];
+export declare const getAppContext: AppFunctions['getAppContext'];
+export declare const useApp: AppFunctions['useApp'];
+export declare const getApp: AppFunctions['getApp'];
+export declare const addBoard: AppFunctions['addBoard'];
 /**
  * @deprecated Use hooks to access to functions which require context
  */
-export declare const getBridgedFunctions: AppDependantFunctions['getBridgedFunctions'];
+export declare const getBridgedFunctions: AppFunctions['getBridgedFunctions'];
+
 export {
 	useAction,
 	useActions,
@@ -139,3 +155,35 @@ export { runSearch } from './boot/app/app-loader-functions';
 export { useIsMobile } from './boot/app/app-loader-functions';
 export { useLocalStorage } from './boot/app/app-loader-functions';
 export { Tracker } from './boot/tracker';
+
+export type {
+	PrimaryBarComponentProps,
+	SecondaryBarComponentProps,
+	UtilityBarComponentProps,
+	BoardViewComponentProps,
+	AppViewComponentProps,
+	SettingsViewProps,
+	SearchViewProps,
+	PrimaryAccessoryViewProps,
+	SecondaryAccessoryViewProps,
+	BadgeInfo
+} from './types/apps';
+
+export type {
+	BooleanString,
+	GeneralizedTime,
+	Duration,
+	Account,
+	AccountSettings,
+	Identity,
+	IdentityAttrs
+} from './types/account';
+
+export type { Board } from './types/boards';
+
+export type { CreateTagResponse } from './types/network';
+export type { Tag } from './types/tags';
+
+export type { INotificationManager } from './notification/NotificationManager';
+
+export type { QueryItem, QueryChip } from './types/search';

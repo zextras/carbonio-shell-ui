@@ -5,9 +5,9 @@
  */
 import type { ChipItem } from '@zextras/carbonio-design-system';
 
-export type QueryItem = {
+export interface QueryItem {
 	value?: string;
 	app?: string;
-};
+}
 
 export type QueryChip = ChipItem & QueryItem;

@@ -12,7 +12,7 @@ import { Link as RRLink } from 'react-router-dom';
 
 import { parseParams } from '../history/hooks';
 
-type AppLinkProps = LinkProps & {
+export type AppLinkProps = LinkProps & {
 	route?: string;
 };
 export const AppLink: FC<AppLinkProps> = ({ to, route, ...rest }) => {

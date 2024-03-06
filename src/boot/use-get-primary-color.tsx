@@ -5,7 +5,6 @@
  */
 import { useEffect, useMemo } from 'react';
 
-import { useTheme } from '@zextras/carbonio-design-system';
 import { size } from 'lodash';
 
 import { LOCAL_STORAGE_LAST_PRIMARY_KEY } from '../constants';
@@ -17,9 +16,9 @@ export function useGetPrimaryColor(): string | undefined {
 	const [localStorageLastPrimary, setLocalStorageLastPrimary] = useLocalStorage<
 		Partial<Record<'dark' | 'light', string>> | undefined
 	>(LOCAL_STORAGE_LAST_PRIMARY_KEY, undefined);
-	const { carbonioWebUiPrimaryColor, carbonioWebUiDarkPrimaryColor } = useLoginConfigStore();
+	const { carbonioWebUiPrimaryColor, carbonioWebUiDarkPrimaryColor, loaded } =
+		useLoginConfigStore();
 	const { darkModeEnabled, darkReaderStatus } = useDarkMode();
-	const theme = useTheme();
 
 	const primaryColor = useMemo(() => {
 		if (
@@ -31,15 +30,12 @@ export function useGetPrimaryColor(): string | undefined {
 			}
 			return carbonioWebUiPrimaryColor || carbonioWebUiDarkPrimaryColor;
 		}
-		if (localStorageLastPrimary && size(localStorageLastPrimary) > 0) {
+		if (localStorageLastPrimary && size(localStorageLastPrimary) > 0 && !loaded) {
 			return (
 				(darkModeEnabled && (localStorageLastPrimary.dark || localStorageLastPrimary.light)) ||
 				localStorageLastPrimary.light ||
 				localStorageLastPrimary.dark
 			);
-		}
-		if (theme) {
-			return theme.palette.primary.regular;
 		}
 		return undefined;
 	}, [
@@ -47,8 +43,8 @@ export function useGetPrimaryColor(): string | undefined {
 		carbonioWebUiPrimaryColor,
 		darkModeEnabled,
 		darkReaderStatus,
-		localStorageLastPrimary,
-		theme
+		loaded,
+		localStorageLastPrimary
 	]);
 
 	useEffect(() => {

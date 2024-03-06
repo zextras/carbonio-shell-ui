@@ -30,22 +30,20 @@ describe('Use get primary color', () => {
 
 		const carbonioWebUiPrimaryColorConfig = '#bbbbbb';
 		const carbonioWebUiDarkPrimaryColorConfig = '#cccccc';
-		act(() => {
-			useLoginConfigStore.setState((s) => ({
-				...s,
-				carbonioWebUiPrimaryColor: carbonioWebUiPrimaryColorConfig,
-				carbonioWebUiDarkPrimaryColor: carbonioWebUiDarkPrimaryColorConfig,
-				loaded: true
-			}));
+		useLoginConfigStore.setState((s) => ({
+			...s,
+			carbonioWebUiPrimaryColor: carbonioWebUiPrimaryColorConfig,
+			carbonioWebUiDarkPrimaryColor: carbonioWebUiDarkPrimaryColorConfig,
+			loaded: true
+		}));
 
-			useAccountStore.setState(
-				produce((state) => {
-					state.settings.props = [
-						{ name: DARK_READER_PROP_KEY, zimlet: SHELL_APP_ID, _content: 'disabled' }
-					];
-				})
-			);
-		});
+		useAccountStore.setState(
+			produce((state) => {
+				state.settings.props = [
+					{ name: DARK_READER_PROP_KEY, zimlet: SHELL_APP_ID, _content: 'disabled' }
+				];
+			})
+		);
 
 		setup(<PrimaryColorComponent />);
 
@@ -60,22 +58,20 @@ describe('Use get primary color', () => {
 
 		const carbonioWebUiPrimaryColorConfig = '#bbbbbb';
 		const carbonioWebUiDarkPrimaryColorConfig = '#cccccc';
-		act(() => {
-			useLoginConfigStore.setState((s) => ({
-				...s,
-				carbonioWebUiPrimaryColor: carbonioWebUiPrimaryColorConfig,
-				carbonioWebUiDarkPrimaryColor: carbonioWebUiDarkPrimaryColorConfig,
-				loaded: true
-			}));
+		useLoginConfigStore.setState((s) => ({
+			...s,
+			carbonioWebUiPrimaryColor: carbonioWebUiPrimaryColorConfig,
+			carbonioWebUiDarkPrimaryColor: carbonioWebUiDarkPrimaryColorConfig,
+			loaded: true
+		}));
 
-			useAccountStore.setState(
-				produce((state) => {
-					state.settings.props = [
-						{ name: DARK_READER_PROP_KEY, zimlet: SHELL_APP_ID, _content: 'enabled' }
-					];
-				})
-			);
-		});
+		useAccountStore.setState(
+			produce((state) => {
+				state.settings.props = [
+					{ name: DARK_READER_PROP_KEY, zimlet: SHELL_APP_ID, _content: 'enabled' }
+				];
+			})
+		);
 
 		setup(<PrimaryColorComponent />);
 
@@ -89,21 +85,19 @@ describe('Use get primary color', () => {
 		mockUseLocalStorage.mockReturnValue([{ light: localStorageColor }, jest.fn()]);
 
 		const carbonioWebUiPrimaryColorConfig = '#bbbbbb';
-		act(() => {
-			useLoginConfigStore.setState((s) => ({
-				...s,
-				carbonioWebUiPrimaryColor: carbonioWebUiPrimaryColorConfig,
-				loaded: true
-			}));
+		useLoginConfigStore.setState((s) => ({
+			...s,
+			carbonioWebUiPrimaryColor: carbonioWebUiPrimaryColorConfig,
+			loaded: true
+		}));
 
-			useAccountStore.setState(
-				produce((state) => {
-					state.settings.props = [
-						{ name: DARK_READER_PROP_KEY, zimlet: SHELL_APP_ID, _content: 'enabled' }
-					];
-				})
-			);
-		});
+		useAccountStore.setState(
+			produce((state) => {
+				state.settings.props = [
+					{ name: DARK_READER_PROP_KEY, zimlet: SHELL_APP_ID, _content: 'enabled' }
+				];
+			})
+		);
 
 		setup(<PrimaryColorComponent />);
 
@@ -117,21 +111,19 @@ describe('Use get primary color', () => {
 		mockUseLocalStorage.mockReturnValue([{ light: localStorageColor }, jest.fn()]);
 
 		const carbonioWebUiDarkPrimaryColorConfig = '#cccccc';
-		act(() => {
-			useLoginConfigStore.setState((s) => ({
-				...s,
-				carbonioWebUiDarkPrimaryColor: carbonioWebUiDarkPrimaryColorConfig,
-				loaded: true
-			}));
+		useLoginConfigStore.setState((s) => ({
+			...s,
+			carbonioWebUiDarkPrimaryColor: carbonioWebUiDarkPrimaryColorConfig,
+			loaded: true
+		}));
 
-			useAccountStore.setState(
-				produce((state) => {
-					state.settings.props = [
-						{ name: DARK_READER_PROP_KEY, zimlet: SHELL_APP_ID, _content: 'disabled' }
-					];
-				})
-			);
-		});
+		useAccountStore.setState(
+			produce((state) => {
+				state.settings.props = [
+					{ name: DARK_READER_PROP_KEY, zimlet: SHELL_APP_ID, _content: 'disabled' }
+				];
+			})
+		);
 
 		setup(<PrimaryColorComponent />);
 

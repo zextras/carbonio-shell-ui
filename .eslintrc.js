@@ -57,7 +57,7 @@ module.exports = {
 			}
 		},
 		{
-			files: ['carbonio.webpack.ts'],
+			files: ['carbonio.webpack.ts', '*.config.ts'],
 			rules: {
 				'import/no-extraneous-dependencies': 'off'
 			}

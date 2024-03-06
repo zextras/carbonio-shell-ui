@@ -8,10 +8,10 @@ import { first, keys } from 'lodash';
 
 import { TESTID_SELECTORS } from './constants';
 import { mockedApps } from './test-app-utils';
-import type { Board } from '../../types';
 import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
 import type { Border } from '../shell/hooks/useResize';
 import { useBoardStore } from '../store/boards';
+import type { Board } from '../types/boards';
 import type { SizeAndPosition } from '../utils/utils';
 
 export type InitialSizeAndPosition = SizeAndPosition & {

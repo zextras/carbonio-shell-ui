@@ -5,8 +5,8 @@
  */
 
 import { getSoapFetch } from './fetch';
-import type { AvailableLocalesResponse } from '../../types';
 import { SHELL_APP_ID } from '../constants';
+import type { AvailableLocalesResponse } from '../types/network';
 
 export const fetchLocales = (): Promise<AvailableLocalesResponse> =>
 	getSoapFetch(SHELL_APP_ID)<{ _jsns: string }, AvailableLocalesResponse>('GetAvailableLocales', {

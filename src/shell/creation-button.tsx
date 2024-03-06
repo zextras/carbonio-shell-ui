@@ -18,12 +18,12 @@ import type { Location } from 'history';
 import { find, groupBy, noop, reduce } from 'lodash';
 import { useLocation } from 'react-router-dom';
 
-import type { AppRoute, CarbonioModule } from '../../types';
 import { ACTION_TYPES } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppList } from '../store/app';
 import { getT } from '../store/i18n';
 import { useActions } from '../store/integrations/hooks';
+import type { AppRoute, CarbonioModule } from '../types/apps';
 
 interface CreationButtonProps {
 	activeRoute: AppRoute;

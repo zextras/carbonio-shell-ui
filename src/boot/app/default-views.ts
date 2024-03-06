@@ -8,7 +8,6 @@
 import type { TFunction } from 'i18next';
 import { size } from 'lodash';
 
-import type { AppRouteDescriptor, SettingsView } from '../../../types';
 import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
 import { SearchAppView } from '../../search/search-app-view';
 import { AccountsSettings } from '../../settings/accounts-settings';
@@ -18,6 +17,7 @@ import { SettingsAppView } from '../../settings/settings-app-view';
 import { SettingsSidebar } from '../../settings/settings-sidebar';
 import { useAccountStore } from '../../store/account';
 import { useAppStore } from '../../store/app';
+import type { AppRouteDescriptor, SettingsView } from '../../types/apps';
 
 const settingsGeneralView = (t: TFunction): SettingsView => ({
 	id: 'general',

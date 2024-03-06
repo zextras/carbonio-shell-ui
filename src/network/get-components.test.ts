@@ -7,10 +7,10 @@
 import { http, HttpResponse } from 'msw';
 
 import { getComponents } from './get-components';
-import type { CarbonioModule } from '../../types';
 import type { GetComponentsJsonResponseBody } from '../mocks/handlers/components';
 import server from '../mocks/server';
 import { useAppStore } from '../store/app';
+import type { CarbonioModule } from '../types/apps';
 
 describe('Get components', () => {
 	test('Setup apps and request data for the logged account', async () => {

@@ -7,7 +7,7 @@ import { faker } from '@faker-js/faker';
 import type { HttpResponseResolver } from 'msw';
 import { HttpResponse } from 'msw';
 
-import type { GetRightsResponse } from '../../../types';
+import type { GetRightsResponse } from '../../types/network';
 
 export type GetRightsRequestBody = {
 	GetRightsRequest: {

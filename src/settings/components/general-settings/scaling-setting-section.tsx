@@ -18,8 +18,8 @@ import { useTranslation } from 'react-i18next';
 import type { SimpleInterpolation } from 'styled-components';
 import styled from 'styled-components';
 
-import type { ScalingSettings } from '../../../../types/settings';
 import { BASE_FONT_SIZE, SCALING_OPTIONS } from '../../../constants';
+import type { ScalingSettings } from '../../../types/settings';
 import { useReset } from '../../hooks/use-reset';
 import type { ResetComponentImperativeHandler } from '../utils';
 import { getAutoScalingFontSize } from '../utils';

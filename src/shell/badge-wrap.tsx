@@ -10,7 +10,7 @@ import { Container, Badge } from '@zextras/carbonio-design-system';
 import type { DefaultTheme } from 'styled-components';
 import styled from 'styled-components';
 
-import type { BadgeInfo } from '../../types';
+import type { BadgeInfo } from '../types/apps';
 
 const MiniBadge = styled(Badge)<{ $color?: keyof DefaultTheme['palette'] }>`
 	position: absolute;

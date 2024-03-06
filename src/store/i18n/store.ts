@@ -12,8 +12,9 @@ import { dropRight, forEach, reduce } from 'lodash';
 import { initReactI18next } from 'react-i18next';
 import { create } from 'zustand';
 
-import type { CarbonioModule, I18nState } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
+import type { CarbonioModule } from '../../types/apps';
+import type { I18nState } from '../../types/i18n';
 import { useAccountStore } from '../account';
 
 const addShell = (apps: Array<CarbonioModule>): Array<CarbonioModule> => [

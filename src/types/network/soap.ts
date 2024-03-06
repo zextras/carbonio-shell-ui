@@ -62,7 +62,7 @@ export interface RawSoapContext {
 	session?: { id: number; _content: number };
 }
 
-export interface SoapContext extends RawSoapContext {
+export interface SoapContext extends Omit<RawSoapContext, 'notify'> {
 	notify?: Array<SoapNotify>;
 }
 

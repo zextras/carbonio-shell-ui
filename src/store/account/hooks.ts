@@ -15,7 +15,7 @@ import type {
 	AccountRights,
 	AccountRightTarget,
 	AccountSettings
-} from '../../../types';
+} from '../../types/account';
 
 export const useAuthenticated = (): boolean => useAccountStore((s) => s.authenticated);
 

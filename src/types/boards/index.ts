@@ -14,14 +14,6 @@ export type Board<T = unknown> = {
 	onGoToPanel?: (board: Board<T>) => void;
 };
 
-export type BoardState = {
-	orderedBoards: Array<string>;
-	boards: Record<string, Board>;
-	expanded: boolean;
-	minimized: boolean;
-	current?: string;
-};
-
 export type BoardHooksContext = {
 	closeBoard: () => void;
 	updateBoard: (b: Partial<Board>) => void;

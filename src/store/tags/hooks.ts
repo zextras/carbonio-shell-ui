@@ -7,7 +7,7 @@
 import { pick } from 'lodash';
 
 import { useTagStore } from './store';
-import type { Tags } from '../../../types';
+import type { Tags } from '../../types/tags';
 
 /* eslint-disable react-hooks/rules-of-hooks */
 /* THIS FILE CONTAINS HOOKS, BUT ESLINT IS DUMB */

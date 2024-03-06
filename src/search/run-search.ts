@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { useSearchStore } from './search-store';
-import type { QueryChip } from '../../types';
 import { SEARCH_APP_ID } from '../constants';
 import { pushHistory } from '../history/hooks';
+import type { QueryChip } from '../types/search';
 
 export const runSearch = (query: Array<QueryChip>, module: string): void => {
 	useSearchStore.setState({ query, module, searchDisabled: false });

@@ -7,7 +7,7 @@ import type { FC } from 'react';
 import React, { useContext, useMemo, createContext } from 'react';
 
 import { closeBoard, setCurrentBoard, updateBoard, useBoardStore } from './store';
-import type { Board, BoardHooksContext } from '../../../types';
+import type { Board, BoardHooksContext } from '../../types/boards';
 
 export const useBoardById = <T,>(id: string): Board<T> =>
 	useBoardStore((s) => s.boards[id]) as Board<T>;

@@ -5,14 +5,14 @@
  */
 
 import { getSoapFetch } from './fetch';
+import { SHELL_APP_ID } from '../constants';
 import type {
 	CreateTagRequest,
 	CreateTagResponse,
 	TagActionRequest,
 	TagActionResponse
-} from '../../types';
-import type { Tag } from '../../types/tags';
-import { SHELL_APP_ID } from '../constants';
+} from '../types/network';
+import type { Tag } from '../types/tags';
 
 export const createTag = (tag: Omit<Tag, 'id'>): Promise<CreateTagResponse> =>
 	getSoapFetch(SHELL_APP_ID)<CreateTagRequest, CreateTagResponse>('CreateTag', {

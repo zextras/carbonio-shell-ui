@@ -8,8 +8,13 @@ import { find, map, maxBy } from 'lodash';
 
 import { userAgent } from './user-agent';
 import { goToLogin } from './utils';
+import { IS_FOCUS_MODE, SHELL_APP_ID } from '../constants';
+import { report } from '../reporting/functions';
+import { useAccountStore } from '../store/account';
+import { useNetworkStore } from '../store/network';
+import { getPollingInterval, handleSync } from '../store/network/utils';
+import type { Account } from '../types/account';
 import type {
-	Account,
 	ErrorSoapBodyResponse,
 	ErrorSoapResponse,
 	RawSoapContext,
@@ -17,12 +22,7 @@ import type {
 	RawSoapResponse,
 	SoapContext,
 	SoapNotify
-} from '../../types';
-import { IS_FOCUS_MODE, SHELL_APP_ID } from '../constants';
-import { report } from '../reporting/functions';
-import { useAccountStore } from '../store/account';
-import { useNetworkStore } from '../store/network';
-import { getPollingInterval, handleSync } from '../store/network/utils';
+} from '../types/network';
 
 export const fetchNoOp = (): void => {
 	// eslint-disable-next-line @typescript-eslint/no-use-before-define

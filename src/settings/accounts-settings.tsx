@@ -27,26 +27,24 @@ import {
 	getAvailableEmailAddresses,
 	isPrimary
 } from './components/utils';
-import type {
-	BatchRequest,
-	CreateIdentityResponse,
-	DeleteIdentityResponse,
-	ModifyIdentityResponse,
-	ModifyPrefsResponse,
-	CreateIdentityRequest,
-	DeleteIdentityRequest,
-	IdentityAttrs,
-	AccountSettingsPrefs,
-	ModifyPrefsRequest,
-	GetRightsRequest,
-	GetRightsResponse,
-	AccountState,
-	ModifyIdentityRequest
-} from '../../types';
-import type { AccountACEInfo } from '../../types/network/entities';
 import { SHELL_APP_ID } from '../constants';
 import { getSoapFetch } from '../network/fetch';
 import { useAccountStore, useUserAccount, useUserSettings } from '../store/account';
+import type { AccountSettingsPrefs, AccountState, IdentityAttrs } from '../types/account';
+import type {
+	BatchRequest,
+	CreateIdentityRequest,
+	CreateIdentityResponse,
+	DeleteIdentityRequest,
+	DeleteIdentityResponse,
+	GetRightsRequest,
+	GetRightsResponse,
+	ModifyIdentityRequest,
+	ModifyIdentityResponse,
+	ModifyPrefsRequest,
+	ModifyPrefsResponse
+} from '../types/network';
+import type { AccountACEInfo } from '../types/network/entities';
 
 function mapToCreateIdentityRequests(
 	createRecord: Record<string, IdentityAttrs>

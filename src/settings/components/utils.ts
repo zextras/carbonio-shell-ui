@@ -11,19 +11,18 @@ import { cloneDeep, filter, findIndex, isArray, isBoolean, reduce, uniq } from '
 import type { Moment } from 'moment';
 import moment from 'moment';
 
-import type {
-	Account,
-	AccountSettings,
-	AddMod,
-	BooleanString,
-	GeneralizedTime,
-	Identity,
-	IdentityAttrs,
-	PrefsMods
-} from '../../../types';
 import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
 import type { LocaleDescriptor } from '../../constants/locales';
 import { SUPPORTED_LOCALES } from '../../constants/locales';
+import type {
+	Account,
+	AccountSettings,
+	BooleanString,
+	GeneralizedTime,
+	Identity,
+	IdentityAttrs
+} from '../../types/account';
+import type { AddMod, PrefsMods } from '../../types/network';
 
 export const GEN_TIME_FORMAT = 'YYYYMMDDHHmmss[Z]';
 

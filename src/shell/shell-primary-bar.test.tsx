@@ -12,7 +12,6 @@ import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
 
 import AppViewContainer from './app-view-container';
 import ShellPrimaryBar from './shell-primary-bar';
-import type { AccountState, PrimaryBarView } from '../../types';
 import { DefaultViewsRegister } from '../boot/bootstrapper';
 import { usePushHistoryCallback } from '../history/hooks';
 import { ModuleSelector } from '../search/module-selector';
@@ -20,6 +19,8 @@ import { useAccountStore } from '../store/account';
 import { useAppStore } from '../store/app';
 import { ICONS } from '../test/constants';
 import { setup } from '../test/utils';
+import type { AccountState } from '../types/account';
+import type { PrimaryBarView } from '../types/apps';
 
 const ShellWrapper = (): React.JSX.Element => (
 	<>

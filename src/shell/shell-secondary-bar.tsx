@@ -14,10 +14,10 @@ import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Collapser } from './collapser';
-import type { AppRoute } from '../../types';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppStore } from '../store/app';
+import type { AppRoute } from '../types/apps';
 import { useUtilityBarStore } from '../utility-bar/store';
 import { checkRoute } from '../utility-bar/utils';
 

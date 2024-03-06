@@ -6,13 +6,13 @@
 
 import { reduce } from 'lodash';
 
-import type { CarbonioModule } from '../../../types';
 import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
 import { getApp, getAppContext, getAppHook, getAppContextHook } from '../../store/app';
 import { addBoard } from '../../store/boards';
 import type { ContextBridgeState } from '../../store/context-bridge';
 import { useContextBridge } from '../../store/context-bridge';
 import { getI18n, getTFunction } from '../../store/i18n';
+import type { CarbonioModule } from '../../types/apps';
 
 export type AppDependantFunctions = {
 	getI18n: ReturnType<typeof getI18n>;

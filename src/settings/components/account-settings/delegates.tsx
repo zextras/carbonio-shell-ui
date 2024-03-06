@@ -26,8 +26,8 @@ import {
 import { noop } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
-import type { AccountSettingsPrefs } from '../../../../types';
 import { DELEGATED_SEND_SAVE_TARGET } from '../../../constants';
+import type { AccountSettingsPrefs } from '../../../types/account';
 import { useReset } from '../../hooks/use-reset';
 import type { SettingsSectionProps } from '../utils';
 

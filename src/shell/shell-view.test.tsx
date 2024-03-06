@@ -12,7 +12,6 @@ import 'jest-styled-components';
 import { BOARD_DEFAULT_POSITION } from './boards/board-container';
 import type { Border } from './hooks/useResize';
 import ShellView from './shell-view';
-import type { Board } from '../../types';
 import { ContextBridge } from '../boot/context-bridge';
 import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
 import { ICONS, TESTID_SELECTORS } from '../test/constants';
@@ -26,6 +25,7 @@ import {
 	setupBoardStore
 } from '../test/test-board-utils';
 import { setup } from '../test/utils';
+import type { Board } from '../types/boards';
 import type { SizeAndPosition } from '../utils/utils';
 
 const Dummy: FC = () => null;

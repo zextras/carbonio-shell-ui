@@ -19,7 +19,7 @@ import type {
 	SecondaryAccessoryView,
 	SettingsView,
 	UtilityView
-} from '../../../types';
+} from '../../types/apps';
 
 export const normalizeApp = (app: Partial<CarbonioModule>): CarbonioModule => ({
 	commit: app.commit ?? '',

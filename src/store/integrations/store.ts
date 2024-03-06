@@ -11,8 +11,8 @@ import { forEach, includes, omit } from 'lodash';
 import { create } from 'zustand';
 
 import Composer from './composer';
-import type { ActionFactory } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
+import type { ActionFactory } from '../../types/integrations';
 import type { AnyFunction } from '../../utils/typeUtils';
 
 type Action = ActionFactory<unknown>;
@@ -20,7 +20,7 @@ type Component = ComponentType<Record<string, unknown>>;
 
 export type IntegrationsState = {
 	actions: { [type: string]: { [id: string]: Action } };
-	components: { [id: string]: { app: string; item: Component } };
+	components: { [id: string]: { app: string; Item: Component } };
 	functions: { [id: string]: AnyFunction };
 };
 
@@ -39,7 +39,7 @@ const initialState: IntegrationsState = {
 	actions: {},
 	components: {
 		composer: {
-			item: Composer,
+			Item: Composer,
 			app: SHELL_APP_ID
 		}
 	},
@@ -63,7 +63,7 @@ export const useIntegrationsStore = create<IntegrationsState & IntegrationAction
 			set(
 				produce<IntegrationsState>((state) => {
 					forEach(items, ({ id, component }) => {
-						state.components[id] = { app, item: component };
+						state.components[id] = { app, Item: component };
 					});
 				})
 			),

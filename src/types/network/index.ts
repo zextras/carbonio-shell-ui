@@ -5,9 +5,10 @@
  */
 
 import type { AccountACEInfo, Right } from './entities';
+import type { SoapContext } from './soap';
+import type { RequireAtLeastOne } from '../../utils/typeUtils';
 import type {
 	AccountRights,
-	AccountSettings,
 	AccountSettingsPrefs,
 	Identity,
 	IdentityAttrs,
@@ -130,7 +131,7 @@ export type IdentityMods = {
 
 export type PrefsMods = Record<string, unknown> & AccountSettingsPrefs;
 
-export interface Mods extends Record<string, Record<string, unknown>>, Partial<AccountSettings> {
+export interface Mods extends Record<string, Record<string, unknown> | undefined> {
 	props?: PropsMods;
 	prefs?: PrefsMods;
 	permissions?: PermissionsMods;
@@ -158,13 +159,13 @@ export type AvailableLocalesResponse = {
 };
 
 export type NetworkState = SoapContext & {
-	noOpTimeout?: Timeout;
+	noOpTimeout?: NodeJS.Timeout;
 	pollingInterval: number;
 	seq: number;
 };
 
 export type CreateTagRequest = {
-	tag: Omit<Tag, id>;
+	tag: Omit<Tag, 'id'>;
 	_jsns: string;
 };
 

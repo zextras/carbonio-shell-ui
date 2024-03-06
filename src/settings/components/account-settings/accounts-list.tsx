@@ -24,7 +24,7 @@ import { map } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
-import type { Identity, IdentityAttrs } from '../../../../types';
+import type { Identity, IdentityAttrs } from '../../../types/account';
 import { isPrimary } from '../utils';
 
 const List = styled(ListV2)`

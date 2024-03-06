@@ -4,22 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { DARK_READER_PROP_KEY, DELEGATED_SEND_SAVE_TARGET } from '../../src/constants';
-import type { StringOfLength } from '../../src/utils/typeUtils';
-import type { SHELL_APP_ID } from '../exports';
-import type { DarkReaderPropValues } from '../misc';
+import type { DELEGATED_SEND_SAVE_TARGET } from '../../constants';
+import type { StringOfLength } from '../../utils/typeUtils';
 import type { AccountACEInfo } from '../network/entities';
 
 export interface ZimletProp {
 	name: string;
 	zimlet: string;
 	_content: string;
-}
-
-export interface ZappDarkreaderModeZimletProp extends ZimletProp {
-	name: typeof DARK_READER_PROP_KEY;
-	zimlet: SHELL_APP_ID;
-	_content: DarkReaderPropValues;
 }
 
 export type SoapFetch = <Request, Response>(
@@ -103,13 +95,13 @@ export interface AccountSettingsPrefs {
 	zimbraPrefMailTrustedSenderList?: Array<string> | string;
 	zimbraPrefDelegatedSendSaveTarget?: (typeof DELEGATED_SEND_SAVE_TARGET)[number];
 	zimbraPrefTimeZoneId?: string;
-	[key: string]: string | number | Array<string | number>;
+	[key: string]: string | number | Array<string | number> | undefined;
 }
 
 export type AccountSettingsAttrs = {
 	zimbraFeatureOptionsEnabled?: BooleanString;
 	zimbraIdentityMaxNumEntries?: number;
-	[key: string]: string | number | Array<string | number>;
+	[key: string]: string | number | Array<string | number> | undefined;
 };
 
 export type AccountSettings = {
@@ -127,7 +119,7 @@ export interface IdentityAttrs {
 	/** email address to put in from header.  Deprecated on data source as of bug 67068. */
 	zimbraPrefFromAddress?: string;
 	/** Type of the email address from header. (sendAs or sendOnBehalfOf)  */
-	zimbraPrefFromAddressType: 'sendAs' | 'sendOnBehalfOf';
+	zimbraPrefFromAddressType?: 'sendAs' | 'sendOnBehalfOf';
 	/** personal part of email address put in from header */
 	zimbraPrefFromDisplay?: string;
 	zimbraPrefIdentityId?: string;

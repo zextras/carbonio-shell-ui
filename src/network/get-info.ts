@@ -5,12 +5,12 @@
  */
 
 import { getSoapFetch } from './fetch';
-import type { GetInfoResponse } from '../../types';
 import { SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account';
 import { normalizeAccount } from '../store/account/normalization';
 import { useNetworkStore } from '../store/network';
 import { parsePollingInterval } from '../store/network/utils';
+import type { GetInfoResponse } from '../types/network';
 
 export const getInfo = (): Promise<void> =>
 	getSoapFetch(SHELL_APP_ID)<{ _jsns: string; rights: string }, GetInfoResponse>('GetInfo', {

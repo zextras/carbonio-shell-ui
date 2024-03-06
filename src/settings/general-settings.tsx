@@ -21,8 +21,13 @@ import type { SettingsHeaderProps } from './components/settings-header';
 import { SettingsHeader } from './components/settings-header';
 import type { ResetComponentImperativeHandler } from './components/utils';
 import { LanguageAndTimeZoneSettings } from './language-and-timezone-settings';
+import { LOCAL_STORAGE_SETTINGS_KEY, SHELL_APP_ID } from '../constants';
+import { getSoapFetch } from '../network/fetch';
+import { useLocalStorage } from '../shell/hooks/useLocalStorage';
+import { useAccountStore, useUserSettings } from '../store/account';
+import { getT } from '../store/i18n';
+import type { AccountState } from '../types/account';
 import type {
-	AccountState,
 	AddMod,
 	BatchRequest,
 	ModifyPrefsRequest,
@@ -31,13 +36,8 @@ import type {
 	ModifyPropertiesResponse,
 	Mods,
 	RemoveMod
-} from '../../types';
-import type { ScalingSettings } from '../../types/settings';
-import { LOCAL_STORAGE_SETTINGS_KEY, SHELL_APP_ID } from '../constants';
-import { getSoapFetch } from '../network/fetch';
-import { useLocalStorage } from '../shell/hooks/useLocalStorage';
-import { useAccountStore, useUserSettings } from '../store/account';
-import { getT } from '../store/i18n';
+} from '../types/network';
+import type { ScalingSettings } from '../types/settings';
 
 const GeneralSettings = (): React.JSX.Element => {
 	const [mods, setMods] = useState<Mods>({});

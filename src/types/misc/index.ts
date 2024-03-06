@@ -4,25 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+/*
+ * SPDX-FileCopyrightText: 2021 Zextras <https://www.zextras.com>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
 import type React from 'react';
 import type { ComponentType } from 'react';
 
 import type { Store } from '@reduxjs/toolkit';
 import type { To } from 'history';
 
-import type { DARK_READER_VALUES } from '../../src/constants';
 import type { CarbonioModule, PanelMode } from '../apps';
-
-// eslint-disable-next-line no-shadow
-export enum JSNS {
-	ACCOUNT = 'urn:zimbraAccount',
-	ADMIN = 'urn:zimbraAdmin',
-	MAIL = 'urn:zimbraMail',
-	ALL = 'urn:zimbra',
-	SYNC = 'urn:zimbraSync'
-}
-
-export type DarkReaderPropValues = (typeof DARK_READER_VALUES)[number];
+import type { Folder } from '../folder';
 
 export type LoadedAppRuntime = AppInjections & {
 	pkg: CarbonioModule;
@@ -139,11 +133,11 @@ type Grant = {
 	zid: string;
 	// Time when this grant expires. For internal/guest grant: If this attribute is not specified, the expiry of the grant is derived from internalGrantExpiry/guestGrantExpiry of the ACL it is part of. If this attribute is specified (overridden), the expiry value can not be greater than the corresponding expiry value in the ACL. For public grant: If this attribute is not specified, defaults to the maximum allowed expiry for a public grant. If not specified in the response, defaults to 0. Value of 0 indicates that this grant never expires.
 	expiry?: string;
-	// Name or email address of the principal being granted rights. optional if {grantee-type} is "all"/"guest"/"pub". When specified in a request, this can be just the username portion of the address in the default domain.
+	// Name or email address of the principal being granted rights. optional if \{grantee-type\} is "all"/"guest"/"pub". When specified in a request, this can be just the username portion of the address in the default domain.
 	d?: string;
-	// Optional argument. password when {grantee-type} is "guest"
+	// Optional argument. password when \{grantee-type\} is "guest"
 	pw?: string;
-	// Optional argument. Access key when {grantee-type} is "key"
+	// Optional argument. Access key when \{grantee-type\} is "key"
 	key?: string;
 };
 export type SoapPolicy = {
@@ -227,7 +221,7 @@ export type BaseFolder = {
 	// whether this folder can be deleted
 	deletable: boolean;
 	// custom metadata
-	meta?: Array<Meta>;
+	meta?: Array<Meta<Record<string, unknown>>>;
 	// ACL for sharing
 	acl?: { grant: Array<Grant> };
 	retentionPolicy?: SoapRetentionPolicy;

@@ -5,7 +5,7 @@
  */
 import type { TFunction } from 'i18next';
 
-import type { SettingsSubSection } from '../../types';
+import type { SettingsSubSection } from '../types/apps';
 
 export const appearanceSubSection = (t: TFunction): SettingsSubSection => ({
 	label: t('settings.general.appearance', 'Appearance'),

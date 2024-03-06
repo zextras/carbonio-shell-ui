@@ -8,13 +8,14 @@ import type { AppDependantSetters } from './boot/app/app-loader-setters';
 import type { report as reportApp } from './reporting/functions';
 
 // TODO: export only what is useful and not internal constants
-export * from './constants/index';
+export * from './constants';
 export * from './ui-extras/app-link';
 export * from './ui-extras/spinner';
 export * from './settings/components/settings-header';
 
 export declare const report: ReturnType<typeof reportApp>;
 
+export type { AppDependantSetters as AppSetters } from './boot/app/app-loader-setters';
 export declare const setAppContext: AppDependantSetters['setAppContext'];
 export declare const addRoute: AppDependantSetters['addRoute'];
 export declare const addBoardView: AppDependantSetters['addBoardView'];
@@ -43,6 +44,7 @@ export {
 	updatePrimaryBadge
 } from './boot/app/app-loader-setters';
 
+export type { AppDependantFunctions as AppFunctions } from './boot/app/app-loader-functions';
 export declare const getI18n: AppDependantFunctions['getI18n'];
 export declare const t: AppDependantFunctions['t'];
 export declare const soapFetch: AppDependantFunctions['soapFetch'];

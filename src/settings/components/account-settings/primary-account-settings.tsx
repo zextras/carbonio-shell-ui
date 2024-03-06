@@ -11,7 +11,7 @@ import type { InputProps } from '@zextras/carbonio-design-system';
 import { Container, Text, Padding, Input, Row } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 
-import type { Account, Identity, IdentityAttrs } from '../../../../types';
+import type { Account, Identity, IdentityAttrs } from '../../../types/account';
 
 interface PrimaryAccountSettingsProps {
 	account: Account;

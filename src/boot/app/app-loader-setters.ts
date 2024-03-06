@@ -4,16 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type {
-	AppRouteDescriptor,
-	BoardView,
-	CarbonioModule,
-	PrimaryAccessoryView,
-	SearchView,
-	SecondaryAccessoryView,
-	SettingsView,
-	UtilityView
-} from '../../../types';
 import { getEditSettingsForApp } from '../../network/edit-settings';
 import type { AppActions as StoreAppSetters } from '../../store/app';
 import { useAppStore } from '../../store/app';
@@ -28,6 +18,16 @@ import {
 } from '../../store/app/utils';
 import type { IntegrationActions } from '../../store/integrations/store';
 import { useIntegrationsStore } from '../../store/integrations/store';
+import type {
+	AppRouteDescriptor,
+	BoardView,
+	CarbonioModule,
+	PrimaryAccessoryView,
+	SearchView,
+	SecondaryAccessoryView,
+	SettingsView,
+	UtilityView
+} from '../../types/apps';
 
 export type AppDependantSetters = {
 	setAppContext: ReturnType<StoreAppSetters['setAppContext']>;

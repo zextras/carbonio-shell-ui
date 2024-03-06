@@ -4,8 +4,8 @@
 		"skipLibCheck": true,
 		"resolveJsonModule": true
 	},
-	"include": ["types/**/*.d.ts", "src/**/*.ts", "src/**/*.tsx", "types/workers/index.ts", "@types"],
-	"exclude": ["node_modules"],
+	"include": ["**/*.ts", "**/*.tsx", ".eslintrc.js"],
+	"exclude": ["node_modules", "temp"],
 	"ts-node": {
 		"transpileOnly": true
 	}

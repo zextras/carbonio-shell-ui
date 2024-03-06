@@ -6,7 +6,7 @@
 import type { HttpResponseResolver } from 'msw';
 import { HttpResponse } from 'msw';
 
-import type { LoginConfigStore } from '../../../types/loginConfig';
+import type { LoginConfigStore } from '../../store/login/store';
 
 export const getLoginConfig: HttpResponseResolver<
 	never,

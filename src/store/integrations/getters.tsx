@@ -4,33 +4,28 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/* THIS FILE CONTAINS HOOKS, BUT ESLINT IS DUMB */
-
-import type { FC, FunctionComponent } from 'react';
 import React from 'react';
 
 import { compact, map } from 'lodash';
 
 import { useIntegrationsStore } from './store';
-import type { Action, ActionFactory } from '../../../types';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import AppContextProvider from '../../boot/app/app-context-provider';
-// eslint-disable-next-line @typescript-eslint/ban-types
-export const getIntegratedFunction = (id: string): [Function, boolean] => {
+import type { Action, ActionFactory } from '../../types/integrations';
+import type { AnyFunction } from '../../utils/typeUtils';
+
+export const getIntegratedFunction = (id: string): [AnyFunction, boolean] => {
 	const integration = useIntegrationsStore.getState().functions?.[id];
-	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	return integration ? [integration, true] : [(): void => {}, false];
+	return integration ? [integration, true] : [(): void => undefined, false];
 };
 
-export const getIntegratedComponent = (id: string): [FunctionComponent<unknown>, boolean] => {
+export const getIntegratedComponent = (
+	id: string
+): [React.ComponentType<Record<string, unknown>>, boolean] => {
 	const Integration = useIntegrationsStore.getState().components?.[id];
 	if (Integration) {
-		const C: FC = (props: unknown) => (
+		const C = (props: Record<string, unknown>): React.JSX.Element => (
 			<AppContextProvider pkg={Integration.app}>
-				{/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-				{/* @ts-ignore */}
-				<Integration.item {...props} />
+				<Integration.Item {...props} />
 			</AppContextProvider>
 		);
 		return [C, true];

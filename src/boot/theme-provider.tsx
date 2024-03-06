@@ -24,11 +24,13 @@ import type { DefaultTheme, SimpleInterpolation } from 'styled-components';
 import { createGlobalStyle, css } from 'styled-components';
 
 import { useGetPrimaryColor } from './use-get-primary-color';
-import type { DarkReaderPropValues, ThemeExtension } from '../../types';
-import type { ScalingSettings } from '../../types/settings';
 import { darkReaderDynamicThemeFixes, LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
+import type { DarkReaderPropValues } from '../dark-mode/utils';
 import { getAutoScalingFontSize } from '../settings/components/utils';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
+import type { ScalingSettings } from '../types/settings';
+
+export type ThemeExtension = (theme: DefaultTheme) => DefaultTheme;
 
 setFetchMethod(window.fetch);
 

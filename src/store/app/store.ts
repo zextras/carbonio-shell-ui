@@ -11,6 +11,7 @@ import { findIndex, merge, reduce, some } from 'lodash';
 import { create } from 'zustand';
 
 import { normalizeApp } from './utils';
+import { SHELL_APP_ID } from '../../constants';
 import type {
 	AppRoute,
 	AppRouteDescriptor,
@@ -25,8 +26,7 @@ import type {
 	SecondaryBarView,
 	SettingsView,
 	UtilityView
-} from '../../../types';
-import { SHELL_APP_ID } from '../../constants';
+} from '../../types/apps';
 
 export type AppState = {
 	focusMode: false | string;

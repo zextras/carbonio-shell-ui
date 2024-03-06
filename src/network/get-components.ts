@@ -6,8 +6,8 @@
 
 import { filter } from 'lodash';
 
-import type { CarbonioModule } from '../../types';
 import { useAppStore } from '../store/app';
+import type { CarbonioModule } from '../types/apps';
 
 export const getComponents = (): Promise<void> =>
 	fetch('/static/iris/components.json')

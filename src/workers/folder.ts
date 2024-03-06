@@ -4,22 +4,10 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type {
-	BaseFolder,
-	UserFolder,
-	FolderMessage,
-	Folders,
-	LinkFolder,
-	LinkFolderFields,
-	Roots,
-	Searches,
-	SearchFolderFields,
-	SoapFolder,
-	SoapLink,
-	SoapNotify,
-	SoapSearchFolder,
-	Folder
-} from '../../types';
+import type { Folder, Folders, LinkFolder, Roots, Searches, UserFolder } from '../types/folder';
+import type { BaseFolder, LinkFolderFields, SearchFolderFields } from '../types/misc';
+import type { SoapFolder, SoapLink, SoapNotify, SoapSearchFolder } from '../types/network';
+import type { FolderMessage } from '../types/workers';
 import { testFolderIsChecked } from '../utils/utils';
 
 const IM_LOGS = '14';

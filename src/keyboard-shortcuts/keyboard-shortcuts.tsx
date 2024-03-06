@@ -6,7 +6,7 @@
 
 import type React from 'react';
 
-import { type Action } from '../../types';
+import type { Action } from '../types/integrations';
 
 type handleKeyboardShortcutsProps = {
 	primaryAction: Action;

@@ -6,8 +6,8 @@
 import type { HttpResponseResolver } from 'msw';
 import { HttpResponse } from 'msw';
 
-import { type GetInfoResponse } from '../../../types';
 import { LOGGED_USER } from '../../test/constants';
+import type { GetInfoResponse } from '../../types/network';
 
 type GetInfoRequestBody = {
 	GetInfoRequest: {

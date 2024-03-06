@@ -18,10 +18,10 @@ import {
 } from '@zextras/carbonio-design-system';
 import { map } from 'lodash';
 
-import type { CarbonioModule } from '../../../../types';
 import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../../../constants';
 import { useAppList } from '../../../store/app';
 import { getT } from '../../../store/i18n';
+import type { CarbonioModule } from '../../../types/apps';
 import { versionsSubSection } from '../../general-settings-sub-sections';
 
 const ModuleVersionSettings = (): React.JSX.Element => {

@@ -7,8 +7,8 @@ import React from 'react';
 
 import { faker } from '@faker-js/faker';
 
-import type { AppRouteDescriptor, CarbonioModule } from '../../types';
 import { useAppStore } from '../store/app';
+import type { AppRouteDescriptor, CarbonioModule } from '../types/apps';
 
 export const mockedApps: CarbonioModule[] = [
 	{

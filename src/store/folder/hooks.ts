@@ -9,14 +9,8 @@ import { useMemo } from 'react';
 
 import { useFolderStore } from './store';
 import { filterNodes, folderViewFilter, isRoot, mapNodes, sortFolders } from './utils';
-import type {
-	AccordionFolder,
-	Folder,
-	Folders,
-	FolderView,
-	Searches,
-	SearchFolder
-} from '../../../types';
+import type { Folder, Folders, Searches, SearchFolder } from '../../types/folder';
+import type { AccordionFolder, FolderView } from '../../types/misc';
 
 // FOLDERS
 export const useFolder = (id: string): Folder | undefined => useFolderStore((s) => s.folders?.[id]);

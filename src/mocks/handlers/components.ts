@@ -6,7 +6,7 @@
 import type { HttpResponseResolver } from 'msw';
 import { HttpResponse } from 'msw';
 
-import type { CarbonioModule } from '../../../types';
+import type { CarbonioModule } from '../../types/apps';
 
 export type GetComponentsJsonResponseBody = { components: Array<CarbonioModule> };
 export const getComponentsJson: HttpResponseResolver<

@@ -143,3 +143,11 @@ export const BOARD_MIN_VISIBILITY = {
 };
 
 export const DELEGATED_SEND_SAVE_TARGET = ['owner', 'sender', 'both', 'none'];
+
+export enum JSNS {
+	ACCOUNT = 'urn:zimbraAccount',
+	ADMIN = 'urn:zimbraAdmin',
+	MAIL = 'urn:zimbraMail',
+	ALL = 'urn:zimbra',
+	SYNC = 'urn:zimbraSync'
+}

@@ -4,7 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { i18n } from 'i18next';
+import type { i18n } from 'i18next';
+
+import type { CarbonioModule } from '../apps';
 
 export type I18nState = {
 	instances: Record<string, i18n>;

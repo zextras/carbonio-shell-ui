@@ -13,7 +13,6 @@ import { http, HttpResponse } from 'msw';
 import { Link, Route, Switch } from 'react-router-dom';
 
 import { AccountsSettings } from './accounts-settings';
-import type { BatchRequest, CreateIdentityResponse } from '../../types';
 import type {
 	GetRightsRequestBody,
 	GetRightsResponseBody
@@ -23,6 +22,7 @@ import server, { waitForRequest } from '../mocks/server';
 import { useAccountStore } from '../store/account';
 import { createAccount, createIdentity, setupAccountStore } from '../test/account-utils';
 import { setup } from '../test/utils';
+import type { BatchRequest, CreateIdentityResponse } from '../types/network';
 
 describe('Account setting', () => {
 	async function waitForGetRightsRequest(): Promise<void> {

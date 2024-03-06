@@ -27,8 +27,8 @@ import {
 import { filter, find } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
-import type { IdentityAttrs } from '../../../../types';
 import { EMAIL_VALIDATION_REGEX } from '../../../constants';
+import type { IdentityAttrs } from '../../../types/account';
 
 type SettingsSentMessagesProps = {
 	identityAttrs: IdentityAttrs;

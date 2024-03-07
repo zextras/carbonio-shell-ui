@@ -371,6 +371,9 @@ type BaseFolder = {
 export const BASENAME: string;
 
 // @public (undocumented)
+export type BatchRequest<T extends Record<`${string}Request`, unknown> = Record<string, unknown>> = SoapBody<T>;
+
+// @public (undocumented)
 export type Board<T = unknown> = {
     id: string;
     url: string;
@@ -549,7 +552,6 @@ export type ErrorSoapResponse = {
 };
 
 // Warning: (ae-forgotten-export) The symbol "UserFolder" needs to be exported by the entry point lib.d.ts
-// Warning: (ae-forgotten-export) The symbol "LinkFolder" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
 export type Folder = UserFolder | LinkFolder;
@@ -577,6 +579,11 @@ type FolderFields = {
     parent?: Folder;
     children: Array<Folder>;
 };
+
+// Warning: (ae-forgotten-export) The symbol "WorkerMessage" needs to be exported by the entry point lib.d.ts
+//
+// @public (undocumented)
+export type FolderMessage = WorkerMessage<Record<string, never>>;
 
 // @public (undocumented)
 export const FOLDERS: {
@@ -876,7 +883,7 @@ export enum JSNS {
 // Warning: (ae-forgotten-export) The symbol "LinkFolderFields" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
-type LinkFolder = BaseFolder & FolderFields & LinkFolderFields & {
+export type LinkFolder = BaseFolder & FolderFields & LinkFolderFields & {
     isLink: true;
 };
 
@@ -1295,7 +1302,7 @@ export type SettingsViewProps = {};
 export const SHELL_APP_ID = "carbonio-shell-ui";
 
 // @public (undocumented)
-type SoapBody<TBody = Record<string, unknown>> = TBody & {
+export type SoapBody<TBody = Record<string, unknown>> = TBody & {
     _jsns: NameSpace;
 };
 
@@ -1404,6 +1411,23 @@ export interface SuccessSoapResponse<R> {
     Header: SoapHeader;
 }
 
+// Warning: (ae-forgotten-export) The symbol "SyncNotifyMessage" needs to be exported by the entry point lib.d.ts
+// Warning: (ae-forgotten-export) The symbol "SyncRefreshMessage" needs to be exported by the entry point lib.d.ts
+//
+// @public (undocumented)
+type SyncMessage = SyncNotifyMessage | SyncRefreshMessage;
+
+// @public (undocumented)
+type SyncNotifyMessage = {
+    op: 'notify';
+    notify: SoapNotify;
+};
+
+// @public (undocumented)
+type SyncRefreshMessage = SoapRefresh & {
+    op: 'refresh';
+};
+
 // @public (undocumented)
 export const t: AppDependantFunctions['t'];
 
@@ -1417,8 +1441,6 @@ export type Tag = {
     n?: number;
 };
 
-// Warning: (ae-forgotten-export) The symbol "SoapBody" needs to be exported by the entry point lib.d.ts
-//
 // @public (undocumented)
 type TagActionResponse = SoapBody<{
     action: {
@@ -1583,6 +1605,11 @@ type UtilityView = CarbonioAccessoryView<UtilityBarComponentProps> & {
 };
 
 // @public (undocumented)
+type WorkerMessage<T> = {
+    data: SyncMessage & T;
+};
+
+// @public (undocumented)
 export const xmlSoapFetch: AppDependantFunctions['xmlSoapFetch'];
 
 // @public (undocumented)
@@ -1650,10 +1677,11 @@ interface ZimletProp {
 // lib/types/misc/index.d.ts:144:5 - (ae-forgotten-export) The symbol "Meta" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:148:5 - (ae-forgotten-export) The symbol "SoapRetentionPolicy" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:162:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
-// lib/types/network/index.d.ts:108:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
+// lib/types/network/index.d.ts:107:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:11:5 - (ae-forgotten-export) The symbol "NameSpace" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:33:5 - (ae-forgotten-export) The symbol "SoapFault" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:41:5 - (ae-forgotten-export) The symbol "SoapHeader" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:62:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
+// lib/types/workers/index.d.ts:12:5 - (ae-forgotten-export) The symbol "SyncMessage" needs to be exported by the entry point lib.d.ts
 
 ```

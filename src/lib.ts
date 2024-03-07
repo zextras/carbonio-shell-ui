@@ -183,7 +183,7 @@ export type {
 
 export type { Board } from './types/boards';
 
-export type { CreateTagResponse } from './types/network';
+export type { CreateTagResponse } from './network/tags';
 export type { Tag, Tags } from './types/tags';
 
 export type {
@@ -195,7 +195,7 @@ export type {
 
 export type { QueryItem, QueryChip } from './types/search';
 
-export type { Folder, Folders } from './types/folder';
+export type { Folder, Folders, LinkFolder } from './types/folder';
 export type { Grant } from './types/misc';
 
 export type {
@@ -206,9 +206,13 @@ export type {
 	SoapLink,
 	SoapFolder,
 	SoapNotify,
-	SoapContext
+	SoapContext,
+	SoapBody
 } from './types/network/soap';
+export type { BatchRequest } from './types/network';
 
 export type { Action } from './types/integrations';
 
 export type { HistoryParams } from './types/misc';
+
+export type { FolderMessage } from './types/workers';

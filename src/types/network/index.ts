@@ -15,7 +15,6 @@ import type {
 	IdentityAttrs,
 	ZimletProp
 } from '../account';
-import type { Tag } from '../tags';
 
 export * from './soap';
 
@@ -166,27 +165,6 @@ export type NetworkState = SoapContext & {
 	pollingInterval: number;
 	seq: number;
 };
-
-export type CreateTagRequest = SoapBody<{
-	tag: Omit<Tag, 'id'>;
-}>;
-
-export type CreateTagResponse = {
-	tag: [Tag];
-};
-
-export type TagActionRequest = SoapBody<{
-	action: {
-		op: 'rename' | 'color' | 'delete' | 'update';
-		id: string;
-		name?: string;
-		color?: number;
-		rgb?: string;
-	};
-}>;
-export type TagActionResponse = SoapBody<{
-	action: { op: string; id: string };
-}>;
 
 export type ModifyPrefsRequest = SoapBody<{
 	_attrs: AccountSettingsPrefs;

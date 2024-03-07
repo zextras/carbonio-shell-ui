@@ -8,7 +8,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Checkbox, Container, FormSubSection } from '@zextras/carbonio-design-system';
 
-import { getT } from '../../../store/i18n';
+import { getT } from '../../../store/i18n/hooks';
 import type { AccountSettings } from '../../../types/account';
 import type { AddMod } from '../../../types/network';
 import { searchPrefsSubSection } from '../../general-settings-sub-sections';

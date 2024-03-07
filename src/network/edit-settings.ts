@@ -239,7 +239,7 @@ export const editSettings = (
 
 export const getEditSettingsForApp =
 	(app: string) =>
-	(mods: Mods): Promise<EditSettingsBatchResponse & { type?: 'fulfilled' }> =>
+	(mods: Mods): Promise<EditSettingsBatchResponse & { type: 'fulfilled' }> =>
 		editSettings(mods, app).then((r) => ({
 			...r,
 			type: 'fulfilled'

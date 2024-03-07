@@ -15,7 +15,6 @@ import type { QueryChip } from '../search';
 export type CarbonioModule = {
 	commit: string;
 	description: string;
-	// eslint-disable-next-line camelcase
 	js_entrypoint: string;
 	name: string;
 	priority: number;
@@ -32,12 +31,6 @@ export type AppRoute = {
 	route: string;
 	app: string;
 	focusMode?: boolean;
-};
-
-export type AppRouteData = AppRoute & {
-	primaryBar: PrimaryBarView;
-	secondaryBar?: SecondaryBarView;
-	appView: AppView;
 };
 
 export type BadgeInfo = {

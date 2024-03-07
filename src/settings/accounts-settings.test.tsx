@@ -12,7 +12,9 @@ import { forEach, head, shuffle, tail } from 'lodash';
 import { http, HttpResponse } from 'msw';
 import { Link, Route, Switch } from 'react-router-dom';
 
+import type { AccountsSettingsBatchRequest } from './accounts-settings';
 import { AccountsSettings } from './accounts-settings';
+import { JSNS } from '../constants';
 import type {
 	GetRightsRequestBody,
 	GetRightsResponseBody
@@ -854,7 +856,7 @@ describe('Account setting', () => {
 				HttpResponse.json({
 					Body: {
 						BatchResponse: {
-							ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
+							ModifyPrefsResponse: [{ _jsns: JSNS.ACCOUNT }]
 						}
 					}
 				})
@@ -905,7 +907,7 @@ describe('Account setting', () => {
 				HttpResponse.json({
 					Body: {
 						BatchResponse: {
-							ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
+							ModifyPrefsResponse: [{ _jsns: JSNS.ACCOUNT }]
 						}
 					}
 				})
@@ -963,7 +965,7 @@ describe('Account setting', () => {
 				HttpResponse.json({
 					Body: {
 						BatchResponse: {
-							ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
+							ModifyPrefsResponse: [{ _jsns: JSNS.ACCOUNT }]
 						}
 					}
 				})
@@ -1169,7 +1171,7 @@ describe('Account setting', () => {
 					HttpResponse.json({
 						Body: {
 							BatchResponse: {
-								ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
+								ModifyPrefsResponse: [{ _jsns: JSNS.ACCOUNT }]
 							}
 						}
 					})
@@ -1194,7 +1196,10 @@ describe('Account setting', () => {
 			await user.click(screen.getByRole('button', { name: /save/i }));
 
 			const { Body: requestBody } = await pendingBatchRequest.then(
-				(req) => req.json() as Promise<{ Body: { BatchRequest: BatchRequest } }>
+				(req) =>
+					req.json() as Promise<{
+						Body: { BatchRequest: BatchRequest<AccountsSettingsBatchRequest> };
+					}>
 			);
 
 			expect(requestBody.BatchRequest.CreateIdentityRequest).toBeUndefined();

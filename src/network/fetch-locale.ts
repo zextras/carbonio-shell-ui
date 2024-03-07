@@ -5,10 +5,10 @@
  */
 
 import { getSoapFetch } from './fetch';
-import { SHELL_APP_ID } from '../constants';
-import type { AvailableLocalesResponse } from '../types/network';
+import { JSNS, SHELL_APP_ID } from '../constants';
+import type { AvailableLocalesResponse, SoapBody } from '../types/network';
 
 export const fetchLocales = (): Promise<AvailableLocalesResponse> =>
-	getSoapFetch(SHELL_APP_ID)<{ _jsns: string }, AvailableLocalesResponse>('GetAvailableLocales', {
-		_jsns: 'urn:zimbraAccount'
+	getSoapFetch(SHELL_APP_ID)<SoapBody, AvailableLocalesResponse>('GetAvailableLocales', {
+		_jsns: JSNS.ACCOUNT
 	});

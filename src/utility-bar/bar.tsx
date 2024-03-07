@@ -14,7 +14,7 @@ import { useUtilityViews } from './utils';
 import { fetchNoOp } from '../network/fetch';
 import { logout } from '../network/logout';
 import { useUserAccount } from '../store/account';
-import { getT } from '../store/i18n';
+import { getT } from '../store/i18n/hooks';
 import type { UtilityView } from '../types/apps';
 
 export interface UtilityBarItemProps {

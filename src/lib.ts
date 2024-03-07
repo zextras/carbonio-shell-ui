@@ -166,6 +166,7 @@ export type {
 	SearchViewProps,
 	PrimaryAccessoryViewProps,
 	SecondaryAccessoryViewProps,
+	SettingsSubSection,
 	BadgeInfo
 } from './types/apps';
 
@@ -175,6 +176,7 @@ export type {
 	Duration,
 	Account,
 	AccountSettings,
+	AccountSettingsPrefs,
 	Identity,
 	IdentityAttrs
 } from './types/account';
@@ -182,8 +184,31 @@ export type {
 export type { Board } from './types/boards';
 
 export type { CreateTagResponse } from './types/network';
-export type { Tag } from './types/tags';
+export type { Tag, Tags } from './types/tags';
 
-export type { INotificationManager } from './notification/NotificationManager';
+export type {
+	INotificationManager,
+	NotificationConfig,
+	AudioNotificationConfig,
+	PopupNotificationConfig
+} from './notification/NotificationManager';
 
 export type { QueryItem, QueryChip } from './types/search';
+
+export type { Folder, Folders } from './types/folder';
+export type { Grant } from './types/misc';
+
+export type {
+	SuccessSoapResponse,
+	ErrorSoapResponse,
+	ErrorSoapBodyResponse,
+	SoapResponse,
+	SoapLink,
+	SoapFolder,
+	SoapNotify,
+	SoapContext
+} from './types/network/soap';
+
+export type { Action } from './types/integrations';
+
+export type { HistoryParams } from './types/misc';

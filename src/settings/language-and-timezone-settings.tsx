@@ -14,7 +14,7 @@ import type { SettingsSectionProps } from './components/utils';
 import { localeList, timeZoneList, upsertPrefOnUnsavedChanges } from './components/utils';
 import { timezoneAndLanguageSubSection } from './general-settings-sub-sections';
 import { useReset } from './hooks/use-reset';
-import { getT } from '../store/i18n';
+import { getT } from '../store/i18n/hooks';
 import type { AccountSettings } from '../types/account';
 import type { AddMod } from '../types/network';
 

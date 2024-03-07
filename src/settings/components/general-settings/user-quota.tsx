@@ -11,7 +11,7 @@ import { Container, FormSubSection, Quota, Text, Tooltip } from '@zextras/carbon
 
 import { useUserSettings } from '../../../store/account/hooks';
 import { useAccountStore } from '../../../store/account/store';
-import { getT } from '../../../store/i18n';
+import { getT } from '../../../store/i18n/hooks';
 import { quotaSubSection } from '../../general-settings-sub-sections';
 
 interface UserQuotaProps {

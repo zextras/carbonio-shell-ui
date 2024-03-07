@@ -25,8 +25,10 @@ export const getApp = (appId: string) => (): CarbonioModule | undefined =>
 	useAppStore.getState().apps[appId];
 export const getApps = (): Record<string, CarbonioModule> => useAppStore.getState().apps;
 
-export const getAppContextHook = (appId: string) => (): unknown =>
-	useAppStore((s) => s.appContexts[appId]);
+export const getAppContextHook =
+	(appId: string) =>
+	<T>(): T =>
+		useAppStore((s) => s.appContexts[appId] as T);
 export const getAppContext = (appId: string) => (): unknown =>
 	useAppStore.getState().appContexts[appId];
 export const getShell = (): CarbonioModule => useAppStore.getState().shell;

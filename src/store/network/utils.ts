@@ -100,8 +100,8 @@ export const handleSync = ({ refresh, notify }: SoapContext): Promise<void> =>
 // 	getSoapFetch(SHELL_APP_ID)(
 // 		'NoOp',
 // 		useNetworkStore.getState().pollingInterval === 500
-// 			? { _jsns: 'urn:zimbraMail', limitToOneBlocked: 1, wait: 1 }
-// 			: { _jsns: 'urn:zimbraMail' }
+// 			? { _jsns: JSNS.MAIL, limitToOneBlocked: 1, wait: 1 }
+// 			: { _jsns: JSNS.MAIL }
 // 	);
 // };
 // export const handleSoapContext = ({ notify, refresh, session, change }: SoapContext): void =>

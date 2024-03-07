@@ -12,7 +12,7 @@ import type { Location } from 'history';
 import { filter } from 'lodash';
 import { Prompt, useHistory } from 'react-router-dom';
 
-import { getT } from '../store/i18n';
+import { getT } from '../store/i18n/hooks';
 
 export interface RouteLeavingGuardProps {
 	children: ModalProps['children'];

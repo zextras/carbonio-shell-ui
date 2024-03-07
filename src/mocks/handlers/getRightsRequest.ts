@@ -7,13 +7,12 @@ import { faker } from '@faker-js/faker';
 import type { HttpResponseResolver } from 'msw';
 import { HttpResponse } from 'msw';
 
-import type { GetRightsResponse } from '../../types/network';
+import type { GetRightsResponse, SoapBody } from '../../types/network';
 
 export type GetRightsRequestBody = {
-	GetRightsRequest: {
-		_jsns: string;
+	GetRightsRequest: SoapBody<{
 		ace: Array<{ right: string }>;
-	};
+	}>;
 };
 
 export type GetRightsResponseBody = {

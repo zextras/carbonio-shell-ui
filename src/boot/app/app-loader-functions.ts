@@ -11,7 +11,7 @@ import { getApp, getAppContext, getAppHook, getAppContextHook } from '../../stor
 import { addBoard } from '../../store/boards';
 import type { ContextBridgeState } from '../../store/context-bridge';
 import { useContextBridge } from '../../store/context-bridge';
-import { getI18n, getTFunction } from '../../store/i18n';
+import { getI18n, getTFunction } from '../../store/i18n/hooks';
 import type { CarbonioModule } from '../../types/apps';
 
 export type AppDependantFunctions = {

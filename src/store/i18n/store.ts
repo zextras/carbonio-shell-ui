@@ -14,8 +14,19 @@ import { create } from 'zustand';
 
 import { SHELL_APP_ID } from '../../constants';
 import type { CarbonioModule } from '../../types/apps';
-import type { I18nState } from '../../types/i18n';
 import { useAccountStore } from '../account';
+
+export type I18nState = {
+	instances: Record<string, i18n>;
+	defaultI18n: i18n;
+	locale: string;
+	setters: {
+		setLocale: (locale: string) => void;
+	};
+	actions: {
+		addI18n: (apps: Array<CarbonioModule>, locale: string) => void;
+	};
+};
 
 const addShell = (apps: Array<CarbonioModule>): Array<CarbonioModule> => [
 	...apps,

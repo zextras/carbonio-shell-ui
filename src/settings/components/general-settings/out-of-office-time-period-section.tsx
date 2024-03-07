@@ -9,7 +9,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { DateTimePickerProps } from '@zextras/carbonio-design-system';
 import { Checkbox, Container, DateTimePicker } from '@zextras/carbonio-design-system';
 
-import { getT } from '../../../store/i18n';
+import { getT } from '../../../store/i18n/hooks';
 import type { GeneralizedTime } from '../../../types/account';
 import type { AddMod } from '../../../types/network';
 import { useReset } from '../../hooks/use-reset';

@@ -6,6 +6,8 @@
 import type { FC } from 'react';
 import React, { useContext, useMemo, createContext } from 'react';
 
+import assert from 'node:assert';
+
 import { closeBoard, setCurrentBoard, updateBoard, useBoardStore } from './store';
 import type { Board, BoardHooksContext } from '../../types/boards';
 
@@ -42,5 +44,14 @@ export const BoardProvider: FC<{ id: string }> = ({ children, id }) => {
 	);
 };
 
-export const useBoardHooks = (): BoardHooksContext | undefined => useContext(boardHooksContext);
-export const useBoard = (): Board | undefined => useContext(boardContext);
+export const useBoardHooks = (): BoardHooksContext => {
+	const hooks = useContext(boardHooksContext);
+	assert(hooks !== undefined);
+	return hooks;
+};
+
+export const useBoard = <TBoardContext,>(): Board<TBoardContext> => {
+	const board = useContext(boardContext);
+	assert(board !== undefined);
+	return board as Board<TBoardContext>;
+};

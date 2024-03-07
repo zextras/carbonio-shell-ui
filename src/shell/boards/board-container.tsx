@@ -46,7 +46,7 @@ import {
 	setCurrentBoard,
 	useBoardStore
 } from '../../store/boards';
-import { getT } from '../../store/i18n';
+import { getT } from '../../store/i18n/hooks';
 import type { SizeAndPosition } from '../../utils/utils';
 import { setElementSizeAndPosition } from '../../utils/utils';
 import { useLocalStorage } from '../hooks/useLocalStorage';

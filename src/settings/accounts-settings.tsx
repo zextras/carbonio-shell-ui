@@ -27,7 +27,7 @@ import {
 	getAvailableEmailAddresses,
 	isPrimary
 } from './components/utils';
-import { SHELL_APP_ID } from '../constants';
+import { JSNS, SHELL_APP_ID } from '../constants';
 import { getSoapFetch } from '../network/fetch';
 import { useAccountStore, useUserAccount, useUserSettings } from '../store/account';
 import type { AccountSettingsPrefs, AccountState, IdentityAttrs } from '../types/account';
@@ -42,9 +42,18 @@ import type {
 	ModifyIdentityRequest,
 	ModifyIdentityResponse,
 	ModifyPrefsRequest,
-	ModifyPrefsResponse
+	ModifyPrefsResponse,
+	ModifyPropertiesRequest
 } from '../types/network';
 import type { AccountACEInfo } from '../types/network/entities';
+
+export type AccountsSettingsBatchRequest = BatchRequest<{
+	ModifyIdentityRequest?: Array<ModifyIdentityRequest>;
+	CreateIdentityRequest?: Array<CreateIdentityRequest>;
+	DeleteIdentityRequest?: Array<DeleteIdentityRequest>;
+	ModifyPrefsRequest?: ModifyPrefsRequest;
+	ModifyPropertiesRequest?: ModifyPropertiesRequest;
+}>;
 
 function mapToCreateIdentityRequests(
 	createRecord: Record<string, IdentityAttrs>
@@ -52,7 +61,7 @@ function mapToCreateIdentityRequests(
 	return map(
 		createRecord,
 		(item): CreateIdentityRequest => ({
-			_jsns: 'urn:zimbraAccount',
+			_jsns: JSNS.ACCOUNT,
 			identity: {
 				name: item.zimbraPrefIdentityName,
 				_attrs: {
@@ -68,7 +77,7 @@ function mapToDeleteIdentityRequests(deleteArray: Array<string>): Array<DeleteId
 	return map(
 		deleteArray,
 		(identityId, index): DeleteIdentityRequest => ({
-			_jsns: 'urn:zimbraAccount',
+			_jsns: JSNS.ACCOUNT,
 			identity: { id: identityId },
 			requestId: index.toString()
 		})
@@ -81,7 +90,7 @@ function mapToModifyIdentityRequests(
 	return map<typeof modifyRecord, ModifyIdentityRequest>(
 		modifyRecord,
 		(item, index): ModifyIdentityRequest => ({
-			_jsns: 'urn:zimbraAccount',
+			_jsns: JSNS.ACCOUNT,
 			identity: {
 				id: index,
 				_attrs: item
@@ -274,7 +283,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 			settings.prefs.zimbraPrefDelegatedSendSaveTarget !== delegatedSendSaveTargetRef.current
 		) {
 			modifyPrefsRequest = {
-				_jsns: 'urn:zimbraAccount',
+				_jsns: JSNS.ACCOUNT,
 				_attrs: { zimbraPrefDelegatedSendSaveTarget: delegatedSendSaveTargetRef.current }
 			};
 		}
@@ -299,7 +308,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 				ModifyPrefsResponse?: ModifyPrefsResponse;
 			}
 		>('Batch', {
-			_jsns: 'urn:zimbra',
+			_jsns: JSNS.ALL,
 			DeleteIdentityRequest: deleteRequests.length > 0 ? deleteRequests : undefined,
 			CreateIdentityRequest: createIdentityRequests.length > 0 ? createIdentityRequests : undefined,
 			ModifyIdentityRequest: modifyIdentityRequests.length > 0 ? modifyIdentityRequests : undefined,
@@ -380,7 +389,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 	useEffect(() => {
 		if (!rights) {
 			getSoapFetch(SHELL_APP_ID)<GetRightsRequest, GetRightsResponse>('GetRights', {
-				_jsns: 'urn:zimbraAccount',
+				_jsns: JSNS.ACCOUNT,
 				ace: [{ right: 'sendAs' }, { right: 'sendOnBehalfOf' }]
 			}).then((value) => {
 				if (value.ace) {

@@ -25,7 +25,7 @@ import { type TFunction } from 'i18next';
 import { find } from 'lodash';
 
 import { OutOfOfficeTimePeriodSection } from './out-of-office-time-period-section';
-import { getT } from '../../../store/i18n';
+import { getT } from '../../../store/i18n/hooks';
 import type { AccountSettings, AccountSettingsPrefs, BooleanString } from '../../../types/account';
 import type { AddMod } from '../../../types/network';
 import { outOfOfficeSubSection } from '../../general-settings-sub-sections';

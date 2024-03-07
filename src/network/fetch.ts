@@ -8,7 +8,7 @@ import { find, map, maxBy } from 'lodash';
 
 import { userAgent } from './user-agent';
 import { goToLogin } from './utils';
-import { IS_FOCUS_MODE, SHELL_APP_ID } from '../constants';
+import { IS_FOCUS_MODE, JSNS, SHELL_APP_ID } from '../constants';
 import { report } from '../reporting/functions';
 import { useAccountStore } from '../store/account';
 import { useNetworkStore } from '../store/network';
@@ -29,8 +29,8 @@ export const fetchNoOp = (): void => {
 	getSoapFetch(SHELL_APP_ID)(
 		'NoOp',
 		useNetworkStore.getState().pollingInterval === 500
-			? { _jsns: 'urn:zimbraMail', limitToOneBlocked: 1, wait: 1 }
-			: { _jsns: 'urn:zimbraMail' }
+			? { _jsns: JSNS.MAIL, limitToOneBlocked: 1, wait: 1 }
+			: { _jsns: JSNS.MAIL }
 	);
 };
 
@@ -169,7 +169,7 @@ export const getSoapFetch =
 				},
 				Header: {
 					context: {
-						_jsns: 'urn:zimbra',
+						_jsns: JSNS.ALL,
 						notify: notify?.[0]?.seq
 							? {
 									seq: notify?.[0]?.seq

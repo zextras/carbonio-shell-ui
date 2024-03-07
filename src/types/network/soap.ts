@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import type { NameSpace } from './index';
 import type { BaseFolder, LinkFolderFields, SearchFolderFields } from '../misc';
 import type { Tag } from '../tags';
 
@@ -15,10 +16,15 @@ export interface SoapHeader {
 	context: SoapContext;
 }
 
+export type SoapBody<TBody = Record<string, unknown>> = TBody & {
+	_jsns: NameSpace;
+};
+
 export interface RawSuccessSoapResponse<R> {
 	Body: R;
 	Header: RawSoapHeader;
 }
+
 export interface SuccessSoapResponse<R> {
 	Body: Record<string, R>;
 	Header: SoapHeader;

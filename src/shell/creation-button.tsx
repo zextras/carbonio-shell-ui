@@ -21,7 +21,7 @@ import { useLocation } from 'react-router-dom';
 import { ACTION_TYPES } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppList } from '../store/app';
-import { getT } from '../store/i18n';
+import { getT } from '../store/i18n/hooks';
 import { useActions } from '../store/integrations/hooks';
 import type { AppRoute, CarbonioModule } from '../types/apps';
 

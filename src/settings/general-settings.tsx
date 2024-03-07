@@ -21,11 +21,11 @@ import type { SettingsHeaderProps } from './components/settings-header';
 import { SettingsHeader } from './components/settings-header';
 import type { ResetComponentImperativeHandler } from './components/utils';
 import { LanguageAndTimeZoneSettings } from './language-and-timezone-settings';
-import { LOCAL_STORAGE_SETTINGS_KEY, SHELL_APP_ID } from '../constants';
+import { JSNS, LOCAL_STORAGE_SETTINGS_KEY, SHELL_APP_ID } from '../constants';
 import { getSoapFetch } from '../network/fetch';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 import { useAccountStore, useUserSettings } from '../store/account';
-import { getT } from '../store/i18n';
+import { getT } from '../store/i18n/hooks';
 import type { AccountState } from '../types/account';
 import type {
 	AddMod,
@@ -118,7 +118,7 @@ const GeneralSettings = (): React.JSX.Element => {
 						_content: prop.value
 					})
 				);
-				modifyPropertiesRequest = { _jsns: 'urn:zimbraAccount', prop: mappedProperties };
+				modifyPropertiesRequest = { _jsns: JSNS.ACCOUNT, prop: mappedProperties };
 			}
 
 			let modifyPrefsRequest: ModifyPrefsRequest | undefined;
@@ -132,7 +132,7 @@ const GeneralSettings = (): React.JSX.Element => {
 							? ''
 							: attrs.zimbraPrefMailTrustedSenderList;
 				}
-				modifyPrefsRequest = { _jsns: 'urn:zimbraAccount', _attrs: attrs };
+				modifyPrefsRequest = { _jsns: JSNS.ACCOUNT, _attrs: attrs };
 			}
 
 			const promise = getSoapFetch(SHELL_APP_ID)<
@@ -142,7 +142,7 @@ const GeneralSettings = (): React.JSX.Element => {
 					ModifyPrefsResponse?: ModifyPrefsResponse;
 				}
 			>('Batch', {
-				_jsns: 'urn:zimbra',
+				_jsns: JSNS.ALL,
 				ModifyPropertiesRequest: modifyPropertiesRequest,
 				ModifyPrefsRequest: modifyPrefsRequest
 			})

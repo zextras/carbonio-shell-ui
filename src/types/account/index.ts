@@ -14,13 +14,6 @@ export interface ZimletProp {
 	_content: string;
 }
 
-export type SoapFetch = <Request, Response>(
-	api: string,
-	body: Request,
-	account?: string,
-	signal?: AbortSignal
-) => Promise<Response>;
-
 export type AccountState = {
 	authenticated: boolean;
 	account?: Account;
@@ -46,11 +39,6 @@ export type Account = {
 	signatures: { signature: Array<unknown> };
 	identities: { identity: Array<Identity> };
 	rights: AccountRights;
-};
-
-export type DelegateProps = {
-	email: string;
-	right: string;
 };
 
 export type BooleanString = 'TRUE' | 'FALSE';

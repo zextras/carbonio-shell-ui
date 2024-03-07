@@ -16,7 +16,7 @@ import {
 	useDarkReaderResultValue
 } from '../../../dark-mode/use-dark-reader-result-value';
 import type { DarkReaderPropValues } from '../../../dark-mode/utils';
-import { getT } from '../../../store/i18n';
+import { getT } from '../../../store/i18n/hooks';
 import type { AddMod, RemoveMod } from '../../../types/network';
 import { useReset } from '../../hooks/use-reset';
 import type { SettingsSectionProps } from '../utils';

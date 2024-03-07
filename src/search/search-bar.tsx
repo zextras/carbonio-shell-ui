@@ -23,7 +23,7 @@ import { useSearchStore } from './search-store';
 import { LOCAL_STORAGE_SEARCH_KEY, SEARCH_APP_ID } from '../constants';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 import { useAppStore } from '../store/app';
-import { getT } from '../store/i18n';
+import { getT } from '../store/i18n/hooks';
 import type { QueryChip, QueryItem } from '../types/search';
 
 const OutlinedIconButton = styled(IconButton)`

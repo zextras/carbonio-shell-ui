@@ -5,7 +5,7 @@
  */
 
 import { getSoapFetch } from './fetch';
-import { SHELL_APP_ID } from '../constants';
+import { JSNS, SHELL_APP_ID } from '../constants';
 import type {
 	CreateTagRequest,
 	CreateTagResponse,
@@ -16,23 +16,23 @@ import type { Tag } from '../types/tags';
 
 export const createTag = (tag: Omit<Tag, 'id'>): Promise<CreateTagResponse> =>
 	getSoapFetch(SHELL_APP_ID)<CreateTagRequest, CreateTagResponse>('CreateTag', {
-		_jsns: 'urn:zimbraMail',
+		_jsns: JSNS.MAIL,
 		tag
 	});
 export const deleteTag = (id: string): Promise<TagActionResponse> =>
 	getSoapFetch(SHELL_APP_ID)<TagActionRequest, TagActionResponse>('TagAction', {
-		_jsns: 'urn:zimbraMail',
+		_jsns: JSNS.MAIL,
 		action: { op: 'delete', id }
 	});
 
 export const renameTag = (id: string, name: string): Promise<TagActionResponse> =>
 	getSoapFetch(SHELL_APP_ID)<TagActionRequest, TagActionResponse>('TagAction', {
-		_jsns: 'urn:zimbraMail',
+		_jsns: JSNS.MAIL,
 		action: { op: 'rename', id, name }
 	});
 
 export const changeTagColor = (id: string, color: string | number): Promise<TagActionResponse> =>
 	getSoapFetch(SHELL_APP_ID)<TagActionRequest, TagActionResponse>('TagAction', {
-		_jsns: 'urn:zimbraMail',
+		_jsns: JSNS.MAIL,
 		action: typeof color === 'number' ? { op: 'color', color, id } : { op: 'color', rgb: color, id }
 	});

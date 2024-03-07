@@ -6,10 +6,10 @@
 import type { HttpResponseResolver } from 'msw';
 import { HttpResponse } from 'msw';
 
+import type { SoapBody } from '../../types/network';
+
 type EndSessionRequestBody = {
-	EndSessionRequest: {
-		_jsns: string;
-	};
+	EndSessionRequest: SoapBody;
 };
 
 type EndSessionResponseBody = {

@@ -7,13 +7,12 @@ import type { HttpResponseResolver } from 'msw';
 import { HttpResponse } from 'msw';
 
 import { LOGGED_USER } from '../../test/constants';
-import type { GetInfoResponse } from '../../types/network';
+import type { GetInfoResponse, SoapBody } from '../../types/network';
 
 type GetInfoRequestBody = {
-	GetInfoRequest: {
-		_jsns: string;
+	GetInfoRequest: SoapBody<{
 		rights: string;
-	};
+	}>;
 };
 
 type GetInfoResponseBody = {

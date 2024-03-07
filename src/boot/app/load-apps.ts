@@ -14,7 +14,7 @@ import { SHELL_APP_ID } from '../../constants';
 import { SUPPORTED_LOCALES } from '../../constants/locales';
 import { useReporter } from '../../reporting/store';
 import { getUserSetting, useAccountStore } from '../../store/account';
-import { useI18nStore } from '../../store/i18n';
+import { useI18nStore } from '../../store/i18n/store';
 import type { CarbonioModule } from '../../types/apps';
 
 const getDateFnsLocale = (locale: string): Promise<DateFnsLocale> =>

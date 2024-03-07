@@ -22,7 +22,7 @@ import { useSearchStore } from './search-store';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { ResultLabelType, SEARCH_APP_ID } from '../constants';
 import { useAppStore } from '../store/app';
-import { getT } from '../store/i18n';
+import { getT } from '../store/i18n/hooks';
 import { type SearchState } from '../types/search';
 
 const useQuery = (): [query: SearchState['query'], updateQuery: SearchState['updateQuery']] =>

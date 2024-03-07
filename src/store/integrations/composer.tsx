@@ -44,7 +44,8 @@ import 'tinymce/plugins/wordcount';
 
 import { SUPPORTED_LOCALES } from '../../constants/locales';
 import { useUserSettings } from '../account';
-import { getT, useI18nStore } from '../i18n';
+import { getT } from '../i18n/hooks';
+import { useI18nStore } from '../i18n/store';
 
 type ComposerProps = EditorProps & {
 	/** The callback invoked when an edit is performed into the editor. `([text, html]) => {}` */

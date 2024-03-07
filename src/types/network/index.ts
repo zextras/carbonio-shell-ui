@@ -5,7 +5,8 @@
  */
 
 import type { AccountACEInfo, Right } from './entities';
-import type { SoapContext } from './soap';
+import type { SoapBody, SoapContext } from './soap';
+import type { JSNS } from '../../constants';
 import type { RequireAtLeastOne } from '../../utils/typeUtils';
 import type {
 	AccountRights,
@@ -116,9 +117,11 @@ export type ModifyIdentityResponse = Record<string, never>;
 export type DeleteIdentityResponse = Record<string, never>;
 export type ModifyPropertiesResponse = Record<string, never>;
 export type ModifyPrefsResponse = Record<string, never>;
+
 export type RevokeRightsResponse = {
 	ace?: AccountACEInfo[];
 };
+
 export type GrantRightsResponse = {
 	ace?: AccountACEInfo[];
 };
@@ -164,17 +167,15 @@ export type NetworkState = SoapContext & {
 	seq: number;
 };
 
-export type CreateTagRequest = {
+export type CreateTagRequest = SoapBody<{
 	tag: Omit<Tag, 'id'>;
-	_jsns: string;
-};
+}>;
 
 export type CreateTagResponse = {
 	tag: [Tag];
 };
 
-export type TagActionRequest = {
-	_jsns: string;
+export type TagActionRequest = SoapBody<{
 	action: {
 		op: 'rename' | 'color' | 'delete' | 'update';
 		id: string;
@@ -182,58 +183,45 @@ export type TagActionRequest = {
 		color?: number;
 		rgb?: string;
 	};
-};
-export type TagActionResponse = {
+}>;
+export type TagActionResponse = SoapBody<{
 	action: { op: string; id: string };
-	_jsns: string;
-};
+}>;
 
-export type ModifyPrefsRequest = {
-	_jsns: NameSpace;
+export type ModifyPrefsRequest = SoapBody<{
 	_attrs: AccountSettingsPrefs;
-};
+}>;
 
-export type CreateIdentityRequest = {
-	_jsns: NameSpace;
+export type CreateIdentityRequest = SoapBody<{
 	identity: {
 		name?: string;
 		_attrs: IdentityAttrs;
 	};
-};
+}>;
 
-export type ModifyIdentityRequest = {
-	_jsns: NameSpace;
+export type ModifyIdentityRequest = SoapBody<{
 	identity: {
 		_attrs?: IdentityAttrs;
 	} & RequireAtLeastOne<Pick<Identity, 'id' | 'name'>>;
-};
+}>;
 
-export type DeleteIdentityRequest = {
+export type DeleteIdentityRequest = SoapBody<{
 	identity: { name?: string; id?: string };
-	_jsns: NameSpace;
 	requestId?: string;
-};
+}>;
 
-export type ModifyPropertiesRequest = {
-	_jsns: NameSpace;
+export type ModifyPropertiesRequest = SoapBody<{
 	prop: Array<{ name: string; zimlet: string; _content: unknown }>;
-};
+}>;
 
-export type BatchRequest = {
-	ModifyIdentityRequest?: Array<ModifyIdentityRequest>;
-	CreateIdentityRequest?: Array<CreateIdentityRequest>;
-	DeleteIdentityRequest?: Array<DeleteIdentityRequest>;
-	ModifyPrefsRequest?: ModifyPrefsRequest;
-	ModifyPropertiesRequest?: ModifyPropertiesRequest;
-	_jsns: NameSpace;
-};
+export type BatchRequest<T extends Record<`${string}Request`, unknown> = Record<string, unknown>> =
+	SoapBody<T>;
 
-export type GetRightsRequest = {
+export type GetRightsRequest = SoapBody<{
 	ace?: Array<{ right: Right }>;
-	_jsns: NameSpace;
-};
+}>;
 
-export type NameSpace = 'urn:zimbraMail' | 'urn:zimbraAccount' | 'urn:zimbra';
+export type NameSpace = (typeof JSNS)[keyof typeof JSNS];
 
 export type GetRightsResponse = {
 	ace?: Array<AccountACEInfo>;

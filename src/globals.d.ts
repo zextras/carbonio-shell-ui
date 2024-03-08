@@ -6,14 +6,16 @@
 
 import type { ComponentType } from 'react';
 
+import type * as ExportsForApp from './lib';
+
 declare global {
 	const BASE_PATH: string;
 	interface Window {
 		__ZAPP_SHARED_LIBRARIES__?: {
 			'@zextras/carbonio-shell-ui': {
-				[appName: string]: unknown;
+				[appName: string]: typeof ExportsForApp;
 			};
-			[pkgName: string]: unknown;
+			[externalDepName: string]: unknown;
 		};
 		__ZAPP_HMR_EXPORT__: { [pkgName: string]: (appClass: ComponentType) => void };
 	}

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, useContext, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import { findIndex, includes, isEmpty, map, reduce, size } from 'lodash';
@@ -32,7 +32,6 @@ import {
 	RemoveMod
 } from '../../types';
 import { ScalingSettings } from '../../types/settings';
-import { MatomoContext } from '../boot/matomo-provider';
 import { LOCAL_STORAGE_SETTINGS_KEY, SHELL_APP_ID } from '../constants';
 import { getSoapFetch } from '../network/fetch';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
@@ -96,10 +95,7 @@ const GeneralSettings = (): React.JSX.Element => {
 	}, []);
 	const createSnackbar = useSnackbar();
 
-	const matomo = useContext(MatomoContext);
-
 	const onSave = useCallback<SettingsHeaderProps['onSave']>(() => {
-		matomo?.trackEvent('settings', 'save');
 		setLocalStorageUnAppliedChanges((unAppliedPrevState) => {
 			if (size(unAppliedPrevState) > 0) {
 				setLocalStorageSettings((localStorageSettingsPrevState) => ({

@@ -17,7 +17,7 @@ import SettingsHeader from '../../settings/components/settings-header';
 import { useAppStore } from '../../store/app';
 import { AppLink } from '../../ui-extras/app-link';
 import { Spinner } from '../../ui-extras/spinner';
-import { Matomo, MatomoContext } from '../matomo-provider';
+import { Tracker } from '../tracker';
 
 export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
@@ -37,8 +37,7 @@ export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 					...getAppSetters(appPkg),
 					...getAppFunctions(appPkg),
 					...CONSTANTS,
-					Matomo,
-					MatomoContext
+					Tracker
 				};
 			}
 

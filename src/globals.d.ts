@@ -6,8 +6,6 @@
 
 import { ComponentType } from 'react';
 
-import { MatomoWindowObj } from './boot/matomo-provider';
-
 declare global {
 	const BASE_PATH: string;
 	interface Window {
@@ -18,6 +16,5 @@ declare global {
 			[pkgName: string]: unknown;
 		};
 		__ZAPP_HMR_EXPORT__: { [pkgName: string]: (appClass: ComponentType) => void };
-		_paq?: MatomoWindowObj;
 	}
 }

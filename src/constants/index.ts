@@ -143,4 +143,3 @@ export const BOARD_MIN_VISIBILITY = {
 };
 
 export const DELEGATED_SEND_SAVE_TARGET = ['owner', 'sender', 'both', 'none'];
-export const MATOMO_SHELL_SITE_ID = '1';

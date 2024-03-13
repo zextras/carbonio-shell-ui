@@ -5,7 +5,7 @@
  */
 import { waitFor } from '@testing-library/react';
 import { noop } from 'lodash';
-import { DefaultBodyType, PathParams, rest } from 'msw';
+import { DefaultBodyType, http, HttpResponse, PathParams } from 'msw';
 
 import { getSoapFetch } from './fetch';
 import * as networkUtils from './utils';
@@ -16,24 +16,22 @@ import server from '../mocks/server';
 describe('Fetch', () => {
 	test('should redirect to login if user is not authenticated', async () => {
 		server.use(
-			rest.post<DefaultBodyType, PathParams, Pick<ErrorSoapResponse, 'Body'>>(
+			http.post<PathParams, DefaultBodyType, Pick<ErrorSoapResponse, 'Body'>>(
 				'/service/soap/SomeRequest',
-				(req, res, ctx) =>
-					res(
-						ctx.json({
-							Body: {
-								Fault: {
-									Reason: { Text: 'Controlled error: auth required' },
-									Detail: {
-										Error: {
-											Code: 'service.AUTH_REQUIRED',
-											Detail: ''
-										}
+				() =>
+					HttpResponse.json({
+						Body: {
+							Fault: {
+								Reason: { Text: 'Controlled error: auth required' },
+								Detail: {
+									Error: {
+										Code: 'service.AUTH_REQUIRED',
+										Detail: ''
 									}
 								}
 							}
-						})
-					)
+						}
+					})
 			)
 		);
 
@@ -45,24 +43,22 @@ describe('Fetch', () => {
 
 	test('should redirect to login if user session is expired', async () => {
 		server.use(
-			rest.post<DefaultBodyType, PathParams, Pick<ErrorSoapResponse, 'Body'>>(
+			http.post<PathParams, DefaultBodyType, Pick<ErrorSoapResponse, 'Body'>>(
 				'/service/soap/SomeRequest',
-				(req, res, ctx) =>
-					res(
-						ctx.json({
-							Body: {
-								Fault: {
-									Reason: { Text: 'Controlled error: auth expired' },
-									Detail: {
-										Error: {
-											Code: 'service.AUTH_EXPIRED',
-											Detail: ''
-										}
+				() =>
+					HttpResponse.json({
+						Body: {
+							Fault: {
+								Reason: { Text: 'Controlled error: auth expired' },
+								Detail: {
+									Error: {
+										Code: 'service.AUTH_EXPIRED',
+										Detail: ''
 									}
 								}
 							}
-						})
-					)
+						}
+					})
 			)
 		);
 

@@ -12,6 +12,7 @@ import { forOwn } from 'lodash';
 import * as appFunctions from './app-loader-functions';
 import * as appSetters from './app-loader-setters';
 import * as CONSTANTS from '../../constants';
+import type * as ExportsForApp from '../../lib';
 import { report } from '../../reporting/functions';
 import { SettingsHeader } from '../../settings/components/settings-header';
 import { useAppStore } from '../../store/app';
@@ -41,7 +42,7 @@ export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 					...otherFunctions,
 					...CONSTANTS,
 					Tracker
-				};
+				} satisfies typeof ExportsForApp;
 			}
 
 			window.__ZAPP_HMR_EXPORT__[appPkg.name] = (appComponent: ComponentType): void => {

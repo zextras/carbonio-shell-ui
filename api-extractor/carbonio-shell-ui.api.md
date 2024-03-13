@@ -662,10 +662,10 @@ const getAppContextHook: (appId: string) => <T>() => T;
 const getAppHook: (appId: string) => () => CarbonioModule;
 
 // @public (undocumented)
-export const getBoardById: <T>(id: string) => Board<T>;
+export const getBoardById: <T>(id: string) => Board<T> | undefined;
 
 // @public (undocumented)
-export const getBoardContextById: <T>(id: string) => T;
+export const getBoardContextById: <T>(id: string) => T | undefined;
 
 // @public @deprecated (undocumented)
 export const getBridgedFunctions: AppDependantFunctions['getBridgedFunctions'];
@@ -1453,6 +1453,17 @@ type TagActionResponse = SoapBody<{
 export type Tags = Record<string, Tag>;
 
 // @public (undocumented)
+export class Tracker {
+    constructor(siteId: number);
+    // (undocumented)
+    static enableTracker(isEnabled: boolean): void;
+    // (undocumented)
+    trackEvent(category: string, action: string, name?: string, value?: number): void;
+    // (undocumented)
+    trackPageView(customTitle?: string): void;
+}
+
+// @public (undocumented)
 export const updateBoard: <T = unknown>(id: string, board: Partial<Board<T>>) => void;
 
 // @public (undocumented)
@@ -1487,18 +1498,18 @@ export const useAppContext: AppDependantFunctions['useAppContext'];
 // @public (undocumented)
 export const useAuthenticated: () => boolean;
 
-// @public (undocumented)
+// @public
 export const useBoard: <TBoardContext>() => Board<TBoardContext>;
 
 // @public (undocumented)
-export const useBoardById: <T>(id: string) => Board<T>;
+export const useBoardById: <T>(id: string) => Board<T> | undefined;
 
 // @public (undocumented)
-export const useBoardContextById: <T>(id: string) => T;
+export const useBoardContextById: <T>(id: string) => T | undefined;
 
 // Warning: (ae-forgotten-export) The symbol "BoardHooksContext" needs to be exported by the entry point lib.d.ts
 //
-// @public (undocumented)
+// @public
 export const useBoardHooks: () => BoardHooksContext;
 
 // @public (undocumented)

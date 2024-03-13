@@ -321,7 +321,7 @@
      *
      * DEFAULT VALUE: true
      */
-    // "enabled": true,
+     "enabled": true,
     /**
      * Specifies where the TSDoc metadata file should be written.
      *

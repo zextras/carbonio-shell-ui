@@ -6,14 +6,12 @@
 
 import type { ComponentType } from 'react';
 
-import type * as ExportsForApp from './lib';
-
 declare global {
 	const BASE_PATH: string;
 	interface Window {
 		__ZAPP_SHARED_LIBRARIES__?: {
 			'@zextras/carbonio-shell-ui': {
-				[appName: string]: typeof ExportsForApp;
+				[appName: string]: unknown;
 			};
 			[externalDepName: string]: unknown;
 		};

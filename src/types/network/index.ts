@@ -7,7 +7,7 @@
 import type { AccountACEInfo, Right } from './entities';
 import type { SoapBody, SoapContext } from './soap';
 import type { JSNS } from '../../constants';
-import type { RequireAtLeastOne } from '../../utils/typeUtils';
+import type { RequireAtLeastOne, ValueOf } from '../../utils/typeUtils';
 import type {
 	AccountRights,
 	AccountSettingsPrefs,
@@ -199,7 +199,7 @@ export type GetRightsRequest = SoapBody<{
 	ace?: Array<{ right: Right }>;
 }>;
 
-export type NameSpace = (typeof JSNS)[keyof typeof JSNS];
+export type NameSpace = ValueOf<typeof JSNS>;
 
 export type GetRightsResponse = {
 	ace?: Array<AccountACEInfo>;

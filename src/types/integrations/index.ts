@@ -6,6 +6,7 @@
 
 import type { DropdownItem } from '@zextras/carbonio-design-system';
 
+export type ActionType = 'new';
 export type Action = DropdownItem & {
 	primary?: boolean;
 	group?: string;

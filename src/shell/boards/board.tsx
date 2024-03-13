@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { FC } from 'react';
 import React, { useEffect, useMemo } from 'react';
 
 import { createMemoryHistory } from 'history';
@@ -37,7 +36,7 @@ const BoardContainer = styled.div<{ show: boolean }>`
 	}
 `;
 
-export const AppBoard: FC<{ board: Board }> = ({ board }) => {
+export const AppBoard = ({ board }: { board: Board }): React.JSX.Element => {
 	const current = useBoardStore((s) => s.current);
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const history = useMemo(() => createMemoryHistory({ initialEntries: [board.url] }), []);

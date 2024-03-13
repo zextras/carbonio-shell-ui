@@ -118,7 +118,7 @@ const GeneralSettings = (): React.JSX.Element => {
 						_content: prop.value
 					})
 				);
-				modifyPropertiesRequest = { _jsns: JSNS.ACCOUNT, prop: mappedProperties };
+				modifyPropertiesRequest = { _jsns: JSNS.account, prop: mappedProperties };
 			}
 
 			let modifyPrefsRequest: ModifyPrefsRequest | undefined;
@@ -132,7 +132,7 @@ const GeneralSettings = (): React.JSX.Element => {
 							? ''
 							: attrs.zimbraPrefMailTrustedSenderList;
 				}
-				modifyPrefsRequest = { _jsns: JSNS.ACCOUNT, _attrs: attrs };
+				modifyPrefsRequest = { _jsns: JSNS.account, _attrs: attrs };
 			}
 
 			const promise = getSoapFetch(SHELL_APP_ID)<
@@ -142,7 +142,7 @@ const GeneralSettings = (): React.JSX.Element => {
 					ModifyPrefsResponse?: ModifyPrefsResponse;
 				}
 			>('Batch', {
-				_jsns: JSNS.ALL,
+				_jsns: JSNS.all,
 				ModifyPropertiesRequest: modifyPropertiesRequest,
 				ModifyPrefsRequest: modifyPrefsRequest
 			})

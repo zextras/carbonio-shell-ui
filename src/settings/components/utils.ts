@@ -1238,9 +1238,9 @@ export const timeZoneList = (t: TFunction): Array<TimeZoneDescriptor> => [
 
 export const getAutoScalingFontSize = (): number => {
 	if (
-		window.screen.width <= SCALING_LIMIT.WIDTH &&
-		window.screen.height <= SCALING_LIMIT.HEIGHT &&
-		window.devicePixelRatio >= SCALING_LIMIT.DPR
+		window.screen.width <= SCALING_LIMIT.width &&
+		window.screen.height <= SCALING_LIMIT.height &&
+		window.devicePixelRatio >= SCALING_LIMIT.dpr
 	) {
 		const baseFontIndex = SCALING_OPTIONS.findIndex((option) => option.value === BASE_FONT_SIZE);
 		if (baseFontIndex > 0) {

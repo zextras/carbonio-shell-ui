@@ -29,8 +29,8 @@ export const fetchNoOp = (): void => {
 	getSoapFetch(SHELL_APP_ID)(
 		'NoOp',
 		useNetworkStore.getState().pollingInterval === 500
-			? { _jsns: JSNS.MAIL, limitToOneBlocked: 1, wait: 1 }
-			: { _jsns: JSNS.MAIL }
+			? { _jsns: JSNS.mail, limitToOneBlocked: 1, wait: 1 }
+			: { _jsns: JSNS.mail }
 	);
 };
 
@@ -169,7 +169,7 @@ export const getSoapFetch =
 				},
 				Header: {
 					context: {
-						_jsns: JSNS.ALL,
+						_jsns: JSNS.all,
 						notify: notify?.[0]?.seq
 							? {
 									seq: notify?.[0]?.seq

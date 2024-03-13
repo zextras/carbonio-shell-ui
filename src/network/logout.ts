@@ -11,7 +11,7 @@ import { useLoginConfigStore } from '../store/login/store';
 
 export function logout(): Promise<void> {
 	return getSoapFetch(SHELL_APP_ID)('EndSession', {
-		_jsns: JSNS.ACCOUNT,
+		_jsns: JSNS.account,
 		logoff: true
 	})
 		.then(() => fetch('/logout', { redirect: 'manual' }))

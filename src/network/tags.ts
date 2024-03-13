@@ -30,23 +30,23 @@ export type TagActionResponse = SoapBody<{
 
 export const createTag = (tag: Omit<Tag, 'id'>): Promise<CreateTagResponse> =>
 	getSoapFetch(SHELL_APP_ID)<CreateTagRequest, CreateTagResponse>('CreateTag', {
-		_jsns: JSNS.MAIL,
+		_jsns: JSNS.mail,
 		tag
 	});
 export const deleteTag = (id: string): Promise<TagActionResponse> =>
 	getSoapFetch(SHELL_APP_ID)<TagActionRequest, TagActionResponse>('TagAction', {
-		_jsns: JSNS.MAIL,
+		_jsns: JSNS.mail,
 		action: { op: 'delete', id }
 	});
 
 export const renameTag = (id: string, name: string): Promise<TagActionResponse> =>
 	getSoapFetch(SHELL_APP_ID)<TagActionRequest, TagActionResponse>('TagAction', {
-		_jsns: JSNS.MAIL,
+		_jsns: JSNS.mail,
 		action: { op: 'rename', id, name }
 	});
 
 export const changeTagColor = (id: string, color: string | number): Promise<TagActionResponse> =>
 	getSoapFetch(SHELL_APP_ID)<TagActionRequest, TagActionResponse>('TagAction', {
-		_jsns: JSNS.MAIL,
+		_jsns: JSNS.mail,
 		action: typeof color === 'number' ? { op: 'color', color, id } : { op: 'color', rgb: color, id }
 	});

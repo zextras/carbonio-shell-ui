@@ -856,7 +856,7 @@ describe('Account setting', () => {
 				HttpResponse.json({
 					Body: {
 						BatchResponse: {
-							ModifyPrefsResponse: [{ _jsns: JSNS.ACCOUNT }]
+							ModifyPrefsResponse: [{ _jsns: JSNS.account }]
 						}
 					}
 				})
@@ -907,7 +907,7 @@ describe('Account setting', () => {
 				HttpResponse.json({
 					Body: {
 						BatchResponse: {
-							ModifyPrefsResponse: [{ _jsns: JSNS.ACCOUNT }]
+							ModifyPrefsResponse: [{ _jsns: JSNS.account }]
 						}
 					}
 				})
@@ -965,7 +965,7 @@ describe('Account setting', () => {
 				HttpResponse.json({
 					Body: {
 						BatchResponse: {
-							ModifyPrefsResponse: [{ _jsns: JSNS.ACCOUNT }]
+							ModifyPrefsResponse: [{ _jsns: JSNS.account }]
 						}
 					}
 				})
@@ -1171,7 +1171,7 @@ describe('Account setting', () => {
 					HttpResponse.json({
 						Body: {
 							BatchResponse: {
-								ModifyPrefsResponse: [{ _jsns: JSNS.ACCOUNT }]
+								ModifyPrefsResponse: [{ _jsns: JSNS.account }]
 							}
 						}
 					})

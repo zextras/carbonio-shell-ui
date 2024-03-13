@@ -10,5 +10,5 @@ import type { AvailableLocalesResponse, SoapBody } from '../types/network';
 
 export const fetchLocales = (): Promise<AvailableLocalesResponse> =>
 	getSoapFetch(SHELL_APP_ID)<SoapBody, AvailableLocalesResponse>('GetAvailableLocales', {
-		_jsns: JSNS.ACCOUNT
+		_jsns: JSNS.account
 	});

@@ -61,7 +61,7 @@ function mapToCreateIdentityRequests(
 	return map(
 		createRecord,
 		(item): CreateIdentityRequest => ({
-			_jsns: JSNS.ACCOUNT,
+			_jsns: JSNS.account,
 			identity: {
 				name: item.zimbraPrefIdentityName,
 				_attrs: {
@@ -77,7 +77,7 @@ function mapToDeleteIdentityRequests(deleteArray: Array<string>): Array<DeleteId
 	return map(
 		deleteArray,
 		(identityId, index): DeleteIdentityRequest => ({
-			_jsns: JSNS.ACCOUNT,
+			_jsns: JSNS.account,
 			identity: { id: identityId },
 			requestId: index.toString()
 		})
@@ -90,7 +90,7 @@ function mapToModifyIdentityRequests(
 	return map<typeof modifyRecord, ModifyIdentityRequest>(
 		modifyRecord,
 		(item, index): ModifyIdentityRequest => ({
-			_jsns: JSNS.ACCOUNT,
+			_jsns: JSNS.account,
 			identity: {
 				id: index,
 				_attrs: item
@@ -283,7 +283,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 			settings.prefs.zimbraPrefDelegatedSendSaveTarget !== delegatedSendSaveTargetRef.current
 		) {
 			modifyPrefsRequest = {
-				_jsns: JSNS.ACCOUNT,
+				_jsns: JSNS.account,
 				_attrs: { zimbraPrefDelegatedSendSaveTarget: delegatedSendSaveTargetRef.current }
 			};
 		}
@@ -308,7 +308,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 				ModifyPrefsResponse?: ModifyPrefsResponse;
 			}
 		>('Batch', {
-			_jsns: JSNS.ALL,
+			_jsns: JSNS.all,
 			DeleteIdentityRequest: deleteRequests.length > 0 ? deleteRequests : undefined,
 			CreateIdentityRequest: createIdentityRequests.length > 0 ? createIdentityRequests : undefined,
 			ModifyIdentityRequest: modifyIdentityRequests.length > 0 ? modifyIdentityRequests : undefined,
@@ -389,7 +389,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 	useEffect(() => {
 		if (!rights) {
 			getSoapFetch(SHELL_APP_ID)<GetRightsRequest, GetRightsResponse>('GetRights', {
-				_jsns: JSNS.ACCOUNT,
+				_jsns: JSNS.account,
 				ace: [{ right: 'sendAs' }, { right: 'sendOnBehalfOf' }]
 			}).then((value) => {
 				if (value.ace) {

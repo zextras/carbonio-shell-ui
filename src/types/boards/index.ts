@@ -13,11 +13,3 @@ export type Board<T = unknown> = {
 	onClose?: (board: Board<T>) => void;
 	onGoToPanel?: (board: Board<T>) => void;
 };
-
-export type BoardHooksContext = {
-	closeBoard: () => void;
-	updateBoard: (b: Partial<Board>) => void;
-	setCurrentBoard: () => void;
-	getBoardContext: <T>() => T;
-	getBoard: <T>() => Board<T>;
-};

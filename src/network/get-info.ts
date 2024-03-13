@@ -14,7 +14,7 @@ import type { GetInfoResponse, SoapBody } from '../types/network';
 
 export const getInfo = (): Promise<void> =>
 	getSoapFetch(SHELL_APP_ID)<SoapBody<{ rights: string }>, GetInfoResponse>('GetInfo', {
-		_jsns: JSNS.ACCOUNT,
+		_jsns: JSNS.account,
 		rights: 'sendAs,sendAsDistList,viewFreeBusy,sendOnBehalfOf,sendOnBehalfOfDistList'
 	}).then((res: GetInfoResponse): void => {
 		if (res) {

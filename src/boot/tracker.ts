@@ -4,17 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-interface MatomoTracker {
-	trackPageView(customTitle?: string): void;
-	trackEvent(category: string, action: string, name?: string, value?: number): void;
-	setCustomUrl(url: string): void;
-}
+import { getMatomoTracker, initMatomo, MatomoTracker } from './matomo';
 
-declare global {
-	const Matomo: {
-		getTracker(trackerUrl: string, siteId: number): MatomoTracker;
-	};
-}
 export class Tracker {
 	private static readonly URL = 'https://analytics.zextras.tools/';
 
@@ -24,34 +15,18 @@ export class Tracker {
 
 	private readonly siteId: number;
 
-	private static initMatomo(): void {
-		const matomoScriptId = 'matomo-script';
-
-		if (document.getElementById(matomoScriptId)) {
-			return;
-		}
-
-		const matomoScript = document.createElement('script');
-		const scriptElement = document.getElementsByTagName('script')[0];
-		matomoScript.type = 'text/javascript';
-		matomoScript.async = true;
-		matomoScript.src = `${Tracker.URL}matomo.js`;
-		matomoScript.id = matomoScriptId;
-		scriptElement.parentNode?.insertBefore(matomoScript, scriptElement);
-	}
-
 	constructor(siteId: number) {
 		this.siteId = siteId;
 		if (Tracker.isEnabled) {
-			this.matomoTracker = Matomo.getTracker(`${Tracker.URL}matomo.php`, siteId);
+			this.matomoTracker = getMatomoTracker(Tracker.URL, siteId);
 		} else {
 			this.matomoTracker = null;
 		}
 	}
 
-	public static setEnableTracker(isEnabled: boolean): void {
+	public static enableTracker(isEnabled: boolean): void {
 		if (isEnabled) {
-			Tracker.initMatomo();
+			initMatomo(Tracker.URL);
 		}
 		Tracker.isEnabled = isEnabled;
 	}
@@ -74,7 +49,7 @@ export class Tracker {
 		}
 		if (this.matomoTracker === null) {
 			try {
-				this.matomoTracker = Matomo.getTracker(`${Tracker.URL}matomo.php`, this.siteId);
+				this.matomoTracker = getMatomoTracker(Tracker.URL, this.siteId);
 			} catch (e) {
 				console.warn('Matomo is not initialized yet: ', e);
 			}

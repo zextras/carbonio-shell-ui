@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { getMatomoTracker, initMatomo, MatomoTracker } from './matomo';
+import { getMatomoTracker, initMatomo, type MatomoTracker } from './matomo';
 
 export class Tracker {
 	private static readonly URL = 'https://analytics.zextras.tools/';

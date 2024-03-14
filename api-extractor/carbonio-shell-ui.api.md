@@ -89,7 +89,7 @@ type AccountRightTargetEmail = {
     addr: string;
 };
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const ACCOUNTS_APP_ID = "accounts";
 
 // @public (undocumented)
@@ -166,27 +166,30 @@ export type Action = DropdownItem & {
 // @public (undocumented)
 type Action_2 = ActionFactory<unknown>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const ACTION_TYPES: {
-    CONVERSATION: string;
-    CONVERSATION_lIST: string;
-    MESSAGE: string;
-    MESSAGE_lIST: string;
-    CONTACT: string;
-    CONTACT_lIST: string;
-    INVITE: string;
-    INVITE_lIST: string;
-    APPOINTMENT: string;
-    APPOINTMENT_lIST: string;
-    FOLDER: string;
-    FOLDER_lIST: string;
-    CALENDAR: string;
-    CALENDAR_lIST: string;
-    NEW: string;
+    readonly CONVERSATION: "conversation";
+    readonly CONVERSATION_lIST: "conversation_list";
+    readonly MESSAGE: "message";
+    readonly MESSAGE_lIST: "message_list";
+    readonly CONTACT: "contact";
+    readonly CONTACT_lIST: "contact_list";
+    readonly INVITE: "invite";
+    readonly INVITE_lIST: "invite_list";
+    readonly APPOINTMENT: "appointment";
+    readonly APPOINTMENT_lIST: "appointment_list";
+    readonly FOLDER: "folder";
+    readonly FOLDER_lIST: "folder_list";
+    readonly CALENDAR: "calendar";
+    readonly CALENDAR_lIST: "calendar_list";
+    readonly NEW: "new";
 };
 
 // @public (undocumented)
 type ActionFactory<T> = (target: T) => Action;
+
+// @public (undocumented)
+export type ActionType = 'new';
 
 // Warning: (ae-forgotten-export) The symbol "AppDependantFunctions" needs to be exported by the entry point lib.d.ts
 //
@@ -401,7 +404,7 @@ export const BOARD_MIN_VISIBILITY: {
 export const BOARD_TAB_WIDTH = "calc(3rem + 15ch)";
 
 // @public (undocumented)
-type BoardHooksContext = {
+export type BoardHooksContext = {
     closeBoard: () => void;
     updateBoard: (b: Partial<Board>) => void;
     setCurrentBoard: () => void;
@@ -556,7 +559,7 @@ export type ErrorSoapResponse = {
 // @public (undocumented)
 export type Folder = UserFolder | LinkFolder;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const FOLDER_VIEW: {
     search_folder: string;
     tag: string;
@@ -585,25 +588,25 @@ type FolderFields = {
 // @public (undocumented)
 export type FolderMessage = WorkerMessage<Record<string, never>>;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const FOLDERS: {
-    USER_ROOT: string;
-    INBOX: string;
-    TRASH: string;
-    SPAM: string;
-    SENT: string;
-    DRAFTS: string;
-    CONTACTS: string;
-    TAGS: string;
-    CONVERSATIONS: string;
-    CALENDAR: string;
-    ROOT: string;
-    NOTEBOOK: string;
-    AUTO_CONTACTS: string;
-    IM_LOGS: string;
-    TASKS: string;
-    BRIEFCASE: string;
-    LAST_SYSTEM_FOLDER_POSITION: string;
+    readonly USER_ROOT: "1";
+    readonly INBOX: "2";
+    readonly TRASH: "3";
+    readonly SPAM: "4";
+    readonly SENT: "5";
+    readonly DRAFTS: "6";
+    readonly CONTACTS: "7";
+    readonly TAGS: "8";
+    readonly CONVERSATIONS: "9";
+    readonly CALENDAR: "10";
+    readonly ROOT: "11";
+    readonly NOTEBOOK: "12";
+    readonly AUTO_CONTACTS: "13";
+    readonly IM_LOGS: "14";
+    readonly TASKS: "15";
+    readonly BRIEFCASE: "16";
+    readonly LAST_SYSTEM_FOLDER_POSITION: "16.1";
 };
 
 // @public (undocumented)
@@ -865,18 +868,13 @@ type IntegrationActions = {
 export const IS_FOCUS_MODE: boolean;
 
 // @public (undocumented)
-export enum JSNS {
-    // (undocumented)
-    ACCOUNT = "urn:zimbraAccount",
-    // (undocumented)
-    ADMIN = "urn:zimbraAdmin",
-    // (undocumented)
-    ALL = "urn:zimbra",
-    // (undocumented)
-    MAIL = "urn:zimbraMail",
-    // (undocumented)
-    SYNC = "urn:zimbraSync"
-}
+export const JSNS: {
+    readonly account: "urn:zimbraAccount";
+    readonly admin: "urn:zimbraAdmin";
+    readonly mail: "urn:zimbraMail";
+    readonly all: "urn:zimbra";
+    readonly sync: "urn:zimbraSync";
+};
 
 // Warning: (ae-forgotten-export) The symbol "BaseFolder" needs to be exported by the entry point lib.d.ts
 // Warning: (ae-forgotten-export) The symbol "FolderFields" needs to be exported by the entry point lib.d.ts
@@ -956,8 +954,10 @@ interface Mods extends Record<string, Record<string, unknown> | undefined> {
     props?: PropsMods;
 }
 
+// Warning: (ae-forgotten-export) The symbol "ValueOf" needs to be exported by the entry point lib.d.ts
+//
 // @public (undocumented)
-type NameSpace = (typeof JSNS)[keyof typeof JSNS];
+type NameSpace = ValueOf<typeof JSNS>;
 
 // @public (undocumented)
 export type NotificationConfig = {
@@ -1146,14 +1146,11 @@ export const report: ReturnType<typeof report_2>;
 const report_2: (appId: string) => (error: Event_2, hint?: EventHint) => string;
 
 // @public (undocumented)
-export enum ResultLabelType {
-    // (undocumented)
-    ERROR = "error",
-    // (undocumented)
-    NORMAL = "normal",
-    // (undocumented)
-    WARNING = "warning"
-}
+export const RESULT_LABEL_TYPE: {
+    readonly normal: "normal";
+    readonly warning: "warning";
+    readonly error: "error";
+};
 
 // @public (undocumented)
 type RevokeRightsResponse = {
@@ -1163,7 +1160,7 @@ type RevokeRightsResponse = {
 // @public (undocumented)
 type Right = 'invite' | 'loginAs' | 'sendAs' | 'sendOnBehalfOf' | 'viewFreeBusy';
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const ROOT_NAME = "USER_ROOT";
 
 // @public (undocumented)
@@ -1183,9 +1180,9 @@ export const runSearch: (query: Array<QueryChip>, module: string) => void;
 
 // @public (undocumented)
 export const SCALING_LIMIT: {
-    readonly WIDTH: 1400;
-    readonly HEIGHT: 900;
-    readonly DPR: 2;
+    readonly width: 1400;
+    readonly height: 900;
+    readonly dpr: 2;
 };
 
 // @public (undocumented)
@@ -1482,7 +1479,7 @@ export const useAction: <T>(type: string, id: string, target?: T | undefined) =>
 export const useActionFactory: <T>(type: string, id: string) => [ActionFactory<T> | undefined, boolean];
 
 // @public (undocumented)
-export const useActions: <T>(target: T, type: string) => Array<Action>;
+export const useActions: <T>(target: T, type: ActionType) => Array<Action>;
 
 // Warning: (ae-forgotten-export) The symbol "CombinedActionFactory" needs to be exported by the entry point lib.d.ts
 //
@@ -1507,8 +1504,6 @@ export const useBoardById: <T>(id: string) => Board<T> | undefined;
 // @public (undocumented)
 export const useBoardContextById: <T>(id: string) => T | undefined;
 
-// Warning: (ae-forgotten-export) The symbol "BoardHooksContext" needs to be exported by the entry point lib.d.ts
-//
 // @public
 export const useBoardHooks: () => BoardHooksContext;
 
@@ -1616,6 +1611,9 @@ type UtilityView = CarbonioAccessoryView<UtilityBarComponentProps> & {
 };
 
 // @public (undocumented)
+type ValueOf<T extends Record<string, unknown>> = T[keyof T];
+
+// @public (undocumented)
 type WorkerMessage<T> = {
     data: SyncMessage & T;
 };
@@ -1623,7 +1621,7 @@ type WorkerMessage<T> = {
 // @public (undocumented)
 export const xmlSoapFetch: AppDependantFunctions['xmlSoapFetch'];
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const ZIMBRA_STANDARD_COLORS: {
     zValue: number;
     hex: string;

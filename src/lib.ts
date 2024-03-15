@@ -212,7 +212,7 @@ export type {
 } from './types/network/soap';
 export type { BatchRequest } from './types/network';
 
-export type { Action, ActionType } from './types/integrations';
+export type { Action } from './types/integrations';
 
 export type { HistoryParams } from './types/misc';
 

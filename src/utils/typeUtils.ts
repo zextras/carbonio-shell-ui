@@ -19,7 +19,8 @@ export type Override<
 	TOverride extends Partial<Record<keyof TObj, unknown>>
 > = Omit<TObj, keyof TOverride> & TOverride;
 
+// FIXME: check if there is a way to remove these any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type AnyFunction = (...args: any) => any;
+export type AnyFunction = (...args: any[]) => any;
 
 export type ValueOf<T extends Record<string, unknown>> = T[keyof T];

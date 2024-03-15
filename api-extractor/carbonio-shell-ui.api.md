@@ -164,9 +164,9 @@ export type Action = DropdownItem & {
 // Warning: (ae-forgotten-export) The symbol "ActionFactory" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
-type Action_2 = ActionFactory<unknown>;
+type Action_2<TTarget = unknown> = ActionFactory<TTarget>;
 
-// @public @deprecated (undocumented)
+// @public (undocumented)
 export const ACTION_TYPES: {
     readonly CONVERSATION: "conversation";
     readonly CONVERSATION_lIST: "conversation_list";
@@ -187,9 +187,6 @@ export const ACTION_TYPES: {
 
 // @public (undocumented)
 type ActionFactory<T> = (target: T) => Action;
-
-// @public (undocumented)
-export type ActionType = 'new';
 
 // Warning: (ae-forgotten-export) The symbol "AppDependantFunctions" needs to be exported by the entry point lib.d.ts
 //
@@ -228,7 +225,7 @@ export const addSettingsView: AppDependantSetters['addSettingsView'];
 export const addUtilityView: AppDependantSetters['addUtilityView'];
 
 // @public (undocumented)
-type AnyFunction = (...args: any) => any;
+type AnyFunction = (...args: any[]) => any;
 
 // @public (undocumented)
 type AppActions = {
@@ -479,7 +476,7 @@ export const closeBoard: (id: string) => void;
 type CombinedActionFactory<T> = (target: T) => Array<Action>;
 
 // @public (undocumented)
-type Component = ComponentType<Record<string, unknown>>;
+type Component<TProps extends Record<string, unknown> = Record<string, unknown>> = ComponentType<TProps>;
 
 // @public (undocumented)
 type ContextBridgeState = {
@@ -853,9 +850,9 @@ type IntegrationActions = {
         type: string;
     }>) => void;
     removeComponents: (...ids: Array<string>) => void;
-    registerComponents: (app: string) => (...items: Array<{
+    registerComponents: (app: string) => <TProps extends Record<string, unknown>>(...items: Array<{
         id: string;
-        component: Component;
+        component: Component<TProps>;
     }>) => void;
     removeFunctions: (...ids: Array<string>) => void;
     registerFunctions: (...items: Array<{
@@ -1479,7 +1476,7 @@ export const useAction: <T>(type: string, id: string, target?: T | undefined) =>
 export const useActionFactory: <T>(type: string, id: string) => [ActionFactory<T> | undefined, boolean];
 
 // @public (undocumented)
-export const useActions: <T>(target: T, type: ActionType) => Array<Action>;
+export const useActions: <T>(target: T, type: string) => Array<Action>;
 
 // Warning: (ae-forgotten-export) The symbol "CombinedActionFactory" needs to be exported by the entry point lib.d.ts
 //

@@ -18,6 +18,7 @@ import type { Location } from 'history';
 import { find, groupBy, noop, reduce } from 'lodash';
 import { useLocation } from 'react-router-dom';
 
+import { ACTION_TYPES } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppList } from '../store/app';
 import { getT } from '../store/i18n/hooks';
@@ -34,7 +35,7 @@ export const CreationButtonComponent = ({
 	location
 }: CreationButtonProps): React.JSX.Element => {
 	const t = getT();
-	const actions = useActions({ activeRoute, location }, 'new');
+	const actions = useActions({ activeRoute, location }, ACTION_TYPES.NEW);
 	const [open, setOpen] = useState(false);
 	const primaryAction = useMemo(
 		() =>

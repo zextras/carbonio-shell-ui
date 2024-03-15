@@ -52,32 +52,35 @@ export const SETTINGS_APP_ID = 'settings';
  */
 export const ACCOUNTS_APP_ID = 'accounts';
 export const SEARCH_APP_ID = 'search';
-/**
- * @deprecated Deprecated in favor of type ActionType.
- *
- * In order to support different types, augment the definition of ActionType as follows:
- *
- * ```ts
- * import type * as Shell from '@zextras/carbonio-shell-ui';
- * declare module '@zextras/carbonio-shell-ui' {
- * 	type ActionType = Shell.ActionType & 'customType';
- * }
- * ```
- */
+
 export const ACTION_TYPES = {
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	CONVERSATION: 'conversation',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	CONVERSATION_lIST: 'conversation_list',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	MESSAGE: 'message',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	MESSAGE_lIST: 'message_list',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	CONTACT: 'contact',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	CONTACT_lIST: 'contact_list',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	INVITE: 'invite',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	INVITE_lIST: 'invite_list',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	APPOINTMENT: 'appointment',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	APPOINTMENT_lIST: 'appointment_list',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	FOLDER: 'folder',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	FOLDER_lIST: 'folder_list',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	CALENDAR: 'calendar',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	CALENDAR_lIST: 'calendar_list',
 	NEW: 'new'
 } as const;

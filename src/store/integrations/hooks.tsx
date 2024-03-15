@@ -11,12 +11,7 @@ import { compact, map } from 'lodash';
 
 import { useIntegrationsStore } from './store';
 import AppContextProvider from '../../boot/app/app-context-provider';
-import type {
-	Action,
-	ActionFactory,
-	ActionType,
-	CombinedActionFactory
-} from '../../types/integrations';
+import type { Action, ActionFactory, CombinedActionFactory } from '../../types/integrations';
 import type { AnyFunction } from '../../utils/typeUtils';
 
 export const useIntegratedFunction = (id: string): [AnyFunction, boolean] => {
@@ -41,7 +36,7 @@ export const useIntegratedComponent = (
 	}, [Integration]);
 };
 
-export const useActions = <T,>(target: T, type: ActionType): Array<Action> => {
+export const useActions = <T,>(target: T, type: string): Array<Action> => {
 	const factories = useIntegrationsStore((s) => s.actions[type]);
 	return useMemo(
 		() =>

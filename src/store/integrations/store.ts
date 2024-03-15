@@ -15,8 +15,9 @@ import { SHELL_APP_ID } from '../../constants';
 import type { ActionFactory } from '../../types/integrations';
 import type { AnyFunction } from '../../utils/typeUtils';
 
-type Action = ActionFactory<unknown>;
-type Component = ComponentType<Record<string, unknown>>;
+type Action<TTarget = unknown> = ActionFactory<TTarget>;
+type Component<TProps extends Record<string, unknown> = Record<string, unknown>> =
+	ComponentType<TProps>;
 
 export type IntegrationsState = {
 	actions: { [type: string]: { [id: string]: Action } };
@@ -30,7 +31,9 @@ export type IntegrationActions = {
 	removeComponents: (...ids: Array<string>) => void;
 	registerComponents: (
 		app: string
-	) => (...items: Array<{ id: string; component: Component }>) => void;
+	) => <TProps extends Record<string, unknown>>(
+		...items: Array<{ id: string; component: Component<TProps> }>
+	) => void;
 	removeFunctions: (...ids: Array<string>) => void;
 	registerFunctions: (...items: Array<{ id: string; fn: AnyFunction }>) => void;
 };
@@ -63,7 +66,7 @@ export const useIntegrationsStore = create<IntegrationsState & IntegrationAction
 			set(
 				produce<IntegrationsState>((state) => {
 					forEach(items, ({ id, component }) => {
-						state.components[id] = { app, Item: component };
+						state.components[id] = { app, Item: component as Component };
 					});
 				})
 			),

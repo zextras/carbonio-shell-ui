@@ -6,9 +6,8 @@
 
 @keyframes loader-animation {
 	0% {
-			/* width: 15%; */
 			width: 20%;
-			left: 0%;
+			left: 0;
 	}
 	50% {
 			width: 50%;
@@ -16,7 +15,6 @@
 
 	100% {
 			left: 100%;
-			/* width: 15%; */
 			width: 20%;
 	}
 }

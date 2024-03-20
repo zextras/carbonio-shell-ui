@@ -19,6 +19,7 @@
 		"type-check:watch": "npm run type-check -- --watch",
 		"lint": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to node_modules/@zextras/carbonio-ui-configs src",
 		"build": "npm run build:pkg && npm run build:lib",
+		"build:dev": "npm run build:pkg -- --dev --pkgRel $(date +%s) && npm run build:lib",
 		"prebuild:pkg": "rm -rf dist pkg; tsc --project tsconfig.build.json",
 		"build:pkg": "sdk build",
 		"postbuild:pkg": "rm carbonio.webpack.js src/constants/locales.js",
@@ -34,8 +35,7 @@
 		"packTo:noBuild": "cp zextras-carbonio-shell-ui-$npm_package_version.tgz $PKG_PATH/ && cd $PKG_PATH && npm i zextras-carbonio-shell-ui-$npm_package_version.tgz",
 		"deploy-on-module": "npm pack && rm -rf $PKG_PATH/node_modules/@zextras/carbonio-shell-ui/* && tar -xf zextras-carbonio-shell-ui-$npm_package_version.tgz -C $PKG_PATH/node_modules/@zextras/carbonio-shell-ui/ --strip-components 1",
 		"translations:push": "git subtree push --prefix translations $npm_package_config_translations_repository translations-updater/$(date '+%Y-%m-%d')",
-		"translations:pull": "git subtree pull --squash --prefix translations $npm_package_config_translations_repository master",
-		"build:dev": "sdk build --dev --pkgRel $(date +%s)"
+		"translations:pull": "git subtree pull --squash --prefix translations $npm_package_config_translations_repository master"
 	},
 	"files": [
 		"lib/",

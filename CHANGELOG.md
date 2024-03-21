@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.2.0](https://github.com/zextras/carbonio-shell-ui/compare/v5.1.0...v5.2.0) (2024-03-21)
+
+
+### Features
+
+* implement matomo tracker ([8d0594b](https://github.com/zextras/carbonio-shell-ui/commit/8d0594be791580126dc340d433ac623ac78180ea)), closes [#388](https://github.com/zextras/carbonio-shell-ui/issues/388)
+
+
+### Bug Fixes
+
+* prevent overwriting display of main route if focus mode is true ([f0cb48f](https://github.com/zextras/carbonio-shell-ui/commit/f0cb48faa3013a40825cb42dab124ebb1164c848)), closes [#382](https://github.com/zextras/carbonio-shell-ui/issues/382)
+* reset primary color when is no more received in configs ([aecb64e](https://github.com/zextras/carbonio-shell-ui/commit/aecb64e6571e80761000c34beae62405531ab4d7)), closes [#384](https://github.com/zextras/carbonio-shell-ui/issues/384)
+* show quota when used quota is 0 ([06617d8](https://github.com/zextras/carbonio-shell-ui/commit/06617d8ecb2872b3dfcc2dd486694d1d80143a03)), closes [#381](https://github.com/zextras/carbonio-shell-ui/issues/381)
+
 ## [5.1.0](https://github.com/zextras/carbonio-shell-ui/compare/v5.0.3...v5.1.0) (2024-01-10)
 
 

@@ -243,3 +243,11 @@ declare const reopenBoards: () => void;
 declare const setCurrentBoard: (id: string) => void;
 declare const useBoardHooks: () => BoardHooksContext;
 declare const useBoard: <T>() => Board<T>;
+
+declare class Tracker {
+	constructor(siteId: number);
+
+	public trackPageView(customTitle?: string): void;
+
+	public trackEvent(category: string, action: string, name?: string, value?: number): void;
+}

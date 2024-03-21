@@ -77,6 +77,8 @@ afterEach(() => {
 	});
 });
 
+// https://jestjs.io/docs/manual-mocks#mocking-user-modules
 jest.mock<typeof import('./workers')>('./workers');
 jest.mock<typeof import('./reporting/functions')>('./reporting/functions');
 jest.mock<typeof import('./reporting/store')>('./reporting/store');
+jest.mock<typeof import('./boot/matomo')>('./boot/matomo');

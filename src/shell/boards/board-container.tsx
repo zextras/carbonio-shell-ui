@@ -341,6 +341,8 @@ export const BoardContainer = (): React.JSX.Element | null => {
 		[]
 	);
 
+	const boardContext = useMemo(() => current && boards[current]?.context, [boards, current]);
+
 	return (
 		(!isBoardEmpty && current && (
 			<BoardContainerComp expanded={expanded} minimized={minimized} ref={boardContainerRef}>
@@ -368,20 +370,23 @@ export const BoardContainer = (): React.JSX.Element | null => {
 							</Padding>
 							<TabsList />
 							<Actions padding={{ all: 'extrasmall' }}>
-								{boards[current]?.context?.onReturnToApp && (
-									<Padding right="extrasmall">
-										<Tooltip
-											label={t('board.open_app', 'Open in app')}
-											placement="top"
-											disabled={isMoving}
-										>
-											<IconButton
-												icon={'DiagonalArrowRightUp'}
-												onClick={clickHandler(onGoToPanel)}
-											/>
-										</Tooltip>
-									</Padding>
-								)}
+								{boardContext &&
+									typeof boardContext === 'object' &&
+									'onReturnToApp' in boardContext &&
+									boardContext.onReturnToApp && (
+										<Padding right="extrasmall">
+											<Tooltip
+												label={t('board.open_app', 'Open in app')}
+												placement="top"
+												disabled={isMoving}
+											>
+												<IconButton
+													icon={'DiagonalArrowRightUp'}
+													onClick={clickHandler(onGoToPanel)}
+												/>
+											</Tooltip>
+										</Padding>
+									)}
 								<Container gap={'0.25rem'} orientation={'horizontal'} width={'fit'} height={'fit'}>
 									<Tooltip
 										label={t('board.show_tabs', 'Show other tabs')}

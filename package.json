@@ -1,6 +1,6 @@
 {
 	"name": "@zextras/carbonio-shell-ui",
-	"version": "5.1.0",
+	"version": "5.2.0",
 	"description": "The Zextras Carbonio web client",
 	"main": "./lib/lib.js",
 	"types": "./lib/lib.d.ts",

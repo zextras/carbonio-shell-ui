@@ -13,7 +13,7 @@
 		"test:dev": "jest --testTimeout=10000 --maxWorkers=2",
 		"test": "is-ci && npm run test:ci || npm run test:dev",
 		"test:watch": "npm run test:dev -- --onlyChanged --watch",
-		"prepare": "is-ci || husky install",
+		"prepare": "is-ci || husky",
 		"prepack": "npm run build:lib",
 		"type-check": "tsc --noEmit",
 		"type-check:watch": "npm run type-check -- --watch",

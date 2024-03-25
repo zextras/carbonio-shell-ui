@@ -6,7 +6,7 @@
 
 import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react';
 
-import { Container, useSnackbar } from '@zextras/carbonio-design-system';
+import { Container, ModalManager, useSnackbar } from '@zextras/carbonio-design-system';
 import { TFunction } from 'i18next';
 import { produce } from 'immer';
 import { map, find, isEmpty, reduce, findIndex, filter, size } from 'lodash';
@@ -470,3 +470,9 @@ export const AccountsSettings = (): React.JSX.Element => {
 		</>
 	);
 };
+
+export const WrappedAccountsSettings = (): React.JSX.Element => (
+	<ModalManager>
+		<AccountsSettings />
+	</ModalManager>
+);

@@ -108,6 +108,7 @@ const getAppI18n = (): i18n => {
 
 interface WrapperProps {
 	children?: React.ReactNode;
+	withoutModalManager?: boolean;
 	initialRouterEntries?: string[];
 }
 
@@ -121,7 +122,11 @@ export const I18NextTestProvider = ({
 	return <I18nextProvider i18n={i18nInstance}>{children}</I18nextProvider>;
 };
 
-const Wrapper = ({ initialRouterEntries, children }: WrapperProps): React.JSX.Element => (
+const Wrapper = ({
+	initialRouterEntries,
+	withoutModalManager,
+	children
+}: WrapperProps): React.JSX.Element => (
 	<MemoryRouter
 		initialEntries={initialRouterEntries}
 		initialIndex={(initialRouterEntries?.length || 1) - 1}
@@ -129,7 +134,7 @@ const Wrapper = ({ initialRouterEntries, children }: WrapperProps): React.JSX.El
 		<I18NextTestProvider>
 			<ThemeProvider>
 				<SnackbarManager>
-					<ModalManager>{children}</ModalManager>
+					{withoutModalManager ? children : <ModalManager>{children}</ModalManager>}
 				</SnackbarManager>
 			</ThemeProvider>
 		</I18NextTestProvider>
@@ -140,6 +145,7 @@ function customRender(
 	ui: React.ReactElement,
 	{
 		initialRouterEntries = ['/'],
+		withoutModalManager = false,
 		...options
 	}: WrapperProps & {
 		options?: Omit<RenderOptions, 'queries' | 'wrapper'>;
@@ -147,14 +153,19 @@ function customRender(
 ): RenderResult<ExtendedQueries> {
 	return render(ui, {
 		wrapper: ({ children }: Pick<WrapperProps, 'children'>) => (
-			<Wrapper initialRouterEntries={initialRouterEntries}>{children}</Wrapper>
+			<Wrapper
+				initialRouterEntries={initialRouterEntries}
+				withoutModalManager={withoutModalManager}
+			>
+				{children}
+			</Wrapper>
 		),
 		queries: extendedQueries,
 		...options
 	});
 }
 
-type SetupOptions = Pick<WrapperProps, 'initialRouterEntries'> & {
+type SetupOptions = Pick<WrapperProps, 'initialRouterEntries' | 'withoutModalManager'> & {
 	renderOptions?: Omit<RenderOptions, 'queries'>;
 	setupOptions?: Parameters<(typeof userEvent)['setup']>[0];
 };
@@ -177,6 +188,7 @@ export const setup = (
 	user: setupUserEvent({ advanceTimers: jest.advanceTimersByTime, ...options?.setupOptions }),
 	...customRender(ui, {
 		initialRouterEntries: options?.initialRouterEntries,
+		withoutModalManager: options?.withoutModalManager,
 		...options?.renderOptions
 	})
 });

@@ -387,8 +387,7 @@ export const SearchBar = (): React.JSX.Element => {
 									confirmChipOnBlur={false}
 									separators={[
 										{ key: 'Enter', ctrlKey: false },
-										{ key: ',', ctrlKey: false },
-										{ key: ' ', ctrlKey: false }
+										{ key: ',', ctrlKey: false }
 									]}
 									background={searchDisabled ? 'gray5' : 'gray6'}
 									onChange={onQueryChange}

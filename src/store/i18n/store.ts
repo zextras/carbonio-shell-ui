@@ -4,16 +4,29 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import i18next, { i18n, InitOptions } from 'i18next';
+import type { i18n, InitOptions } from 'i18next';
+import i18next from 'i18next';
 import Backend from 'i18next-http-backend';
 import { produce } from 'immer';
 import { dropRight, forEach, reduce } from 'lodash';
 import { initReactI18next } from 'react-i18next';
 import { create } from 'zustand';
 
-import type { CarbonioModule, I18nState } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
+import type { CarbonioModule } from '../../types/apps';
 import { useAccountStore } from '../account';
+
+export type I18nState = {
+	instances: Record<string, i18n>;
+	defaultI18n: i18n;
+	locale: string;
+	setters: {
+		setLocale: (locale: string) => void;
+	};
+	actions: {
+		addI18n: (apps: Array<CarbonioModule>, locale: string) => void;
+	};
+};
 
 const addShell = (apps: Array<CarbonioModule>): Array<CarbonioModule> => [
 	...apps,

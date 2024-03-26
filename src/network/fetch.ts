@@ -8,8 +8,13 @@ import { find, map, maxBy } from 'lodash';
 
 import { userAgent } from './user-agent';
 import { goToLogin } from './utils';
-import {
-	Account,
+import { IS_FOCUS_MODE, JSNS, SHELL_APP_ID } from '../constants';
+import { report } from '../reporting/functions';
+import { useAccountStore } from '../store/account';
+import { useNetworkStore } from '../store/network';
+import { getPollingInterval, handleSync } from '../store/network/utils';
+import type { Account } from '../types/account';
+import type {
 	ErrorSoapBodyResponse,
 	ErrorSoapResponse,
 	RawSoapContext,
@@ -17,20 +22,15 @@ import {
 	RawSoapResponse,
 	SoapContext,
 	SoapNotify
-} from '../../types';
-import { IS_FOCUS_MODE, SHELL_APP_ID } from '../constants';
-import { report } from '../reporting/functions';
-import { useAccountStore } from '../store/account';
-import { useNetworkStore } from '../store/network';
-import { getPollingInterval, handleSync } from '../store/network/utils';
+} from '../types/network';
 
 export const fetchNoOp = (): void => {
 	// eslint-disable-next-line @typescript-eslint/no-use-before-define
 	getSoapFetch(SHELL_APP_ID)(
 		'NoOp',
 		useNetworkStore.getState().pollingInterval === 500
-			? { _jsns: 'urn:zimbraMail', limitToOneBlocked: 1, wait: 1 }
-			: { _jsns: 'urn:zimbraMail' }
+			? { _jsns: JSNS.mail, limitToOneBlocked: 1, wait: 1 }
+			: { _jsns: JSNS.mail }
 	);
 };
 
@@ -169,7 +169,7 @@ export const getSoapFetch =
 				},
 				Header: {
 					context: {
-						_jsns: 'urn:zimbra',
+						_jsns: JSNS.all,
 						notify: notify?.[0]?.seq
 							? {
 									seq: notify?.[0]?.seq

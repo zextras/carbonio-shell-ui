@@ -6,12 +6,12 @@
 
 import { getSoapFetch } from './fetch';
 import { goTo, goToLogin } from './utils';
-import { SHELL_APP_ID } from '../constants';
+import { JSNS, SHELL_APP_ID } from '../constants';
 import { useLoginConfigStore } from '../store/login/store';
 
 export function logout(): Promise<void> {
 	return getSoapFetch(SHELL_APP_ID)('EndSession', {
-		_jsns: 'urn:zimbraAccount',
+		_jsns: JSNS.account,
 		logoff: true
 	})
 		.then(() => fetch('/logout', { redirect: 'manual' }))

@@ -4,21 +4,16 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import type { FC } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import {
-	Container,
-	Icon,
-	IconButton,
-	Row,
-	RowProps,
-	Text,
-	Tooltip
-} from '@zextras/carbonio-design-system';
-import styled, { css, SimpleInterpolation } from 'styled-components';
+import type { RowProps } from '@zextras/carbonio-design-system';
+import { Container, Icon, IconButton, Row, Text, Tooltip } from '@zextras/carbonio-design-system';
+import type { SimpleInterpolation } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { closeBoard, setCurrentBoard, useBoardStore } from '../../store/boards';
-import { getT } from '../../store/i18n';
+import { getT } from '../../store/i18n/hooks';
 import './board-tab.css';
 
 const TabContainer = styled(Row)<RowProps & { active: boolean }>`

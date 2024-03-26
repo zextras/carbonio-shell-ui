@@ -7,10 +7,11 @@
 import { filter, find, findIndex, map, reduce, isArray } from 'lodash';
 
 import { getXmlSoapFetch } from './fetch';
-import {
-	AccountState,
+import { SHELL_APP_ID } from '../constants';
+import { useAccountStore } from '../store/account';
+import type { Account, AccountState } from '../types/account';
+import type {
 	Mods,
-	Account,
 	CreateIdentityResponse,
 	ModifyPropertiesResponse,
 	ModifyPrefsResponse,
@@ -18,9 +19,7 @@ import {
 	RevokeRightsResponse,
 	DeleteIdentityResponse,
 	GrantRightsResponse
-} from '../../types';
-import { SHELL_APP_ID } from '../constants';
-import { useAccountStore } from '../store/account';
+} from '../types/network';
 
 export type EditSettingsBatchResponse = {
 	ModifyPropertiesResponse?: ModifyPropertiesResponse[];
@@ -240,7 +239,7 @@ export const editSettings = (
 
 export const getEditSettingsForApp =
 	(app: string) =>
-	(mods: Mods): Promise<EditSettingsBatchResponse & { type?: 'fulfilled' }> =>
+	(mods: Mods): Promise<EditSettingsBatchResponse & { type: 'fulfilled' }> =>
 		editSettings(mods, app).then((r) => ({
 			...r,
 			type: 'fulfilled'

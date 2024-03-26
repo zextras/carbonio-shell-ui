@@ -6,9 +6,9 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import type { ChipInputProps } from '@zextras/carbonio-design-system';
 import {
 	ChipInput,
-	ChipInputProps,
 	Container,
 	IconButton,
 	Padding,
@@ -20,11 +20,11 @@ import styled from 'styled-components';
 
 import { ModuleSelector } from './module-selector';
 import { useSearchStore } from './search-store';
-import { QueryChip, QueryItem } from '../../types';
 import { LOCAL_STORAGE_SEARCH_KEY, SEARCH_APP_ID } from '../constants';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 import { useAppStore } from '../store/app';
-import { getT } from '../store/i18n';
+import { getT } from '../store/i18n/hooks';
+import type { QueryChip, QueryItem } from '../types/search';
 
 const OutlinedIconButton = styled(IconButton)`
 	border: 0.0625rem solid

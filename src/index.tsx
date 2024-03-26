@@ -3,7 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable import/no-import-module-exports */
 
 import './index.css';
@@ -21,14 +20,16 @@ window.addEventListener('contextmenu', (ev) => {
 	if (
 		!(
 			['IMG', 'A'].find(
-				// @ts-ignore
-				(name) => ev?.target?.tagName === name
+				(name) => ev?.target instanceof HTMLElement && ev.target.tagName === name
 			) ||
 			ev.view?.getSelection?.()?.type === 'Range' ||
-			// @ts-ignore
-			ev.path?.find((element) =>
-				element.classList?.find?.((cl: string) => cl === 'carbonio-bypass-context-menu')
-			)
+			ev
+				.composedPath()
+				.find(
+					(element) =>
+						element instanceof HTMLElement &&
+						element.classList.contains('carbonio-bypass-context-menu')
+				)
 		)
 	) {
 		ev.preventDefault();

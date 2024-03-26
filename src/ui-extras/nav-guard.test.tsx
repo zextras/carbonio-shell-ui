@@ -12,7 +12,7 @@ import { Link, Route, Switch } from 'react-router-dom';
 
 import { RouteLeavingGuard } from './nav-guard';
 import { SHELL_APP_ID } from '../constants';
-import { useI18nStore } from '../store/i18n';
+import { useI18nStore } from '../store/i18n/store';
 import { screen, setup } from '../test/utils';
 
 describe('RouteLeavingGuard', () => {

@@ -6,7 +6,7 @@
 
 import { create } from 'zustand';
 
-import type { AccountState } from '../../../types';
+import type { AccountState } from '../../types/account';
 
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
 export const useAccountStore = create<AccountState>()(() => ({

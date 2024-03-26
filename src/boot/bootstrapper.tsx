@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useEffect } from 'react';
+import type { FC } from 'react';
+import React, { useEffect } from 'react';
 
 import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +20,7 @@ import { ThemeProvider } from './theme-provider';
 import { BASENAME, IS_FOCUS_MODE } from '../constants';
 import { NotificationPermissionChecker } from '../notification/NotificationPermissionChecker';
 import ShellView from '../shell/shell-view';
-import { useAppStore } from '../store/app';
+import { useAppStore } from '../store/app/store';
 
 const FocusModeListener = (): null => {
 	const { route } = useParams<{ route?: string }>();

@@ -6,8 +6,8 @@
 
 import { filter } from 'lodash';
 
-import { CarbonioModule } from '../../types';
 import { useAppStore } from '../store/app';
+import type { CarbonioModule } from '../types/apps';
 
 export const getComponents = (): Promise<void> =>
 	fetch('/static/iris/components.json')
@@ -20,5 +20,5 @@ export const getComponents = (): Promise<void> =>
 		.then(({ components }: { components: Array<CarbonioModule> }) => {
 			useAppStore
 				.getState()
-				.setters.setApps(filter(components, ({ type }) => type === 'shell' || type === 'carbonio'));
+				.setApps(filter(components, ({ type }) => type === 'shell' || type === 'carbonio'));
 		});

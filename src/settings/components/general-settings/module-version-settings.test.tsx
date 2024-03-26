@@ -43,7 +43,7 @@ describe('Module Version Settings', () => {
 		const description = 'The Zextras Carbonio web client';
 		const display = 'Shell';
 		const version = '5.1.0';
-		useAppStore.getState().setters.setApps([
+		useAppStore.getState().setApps([
 			{
 				commit: '',
 				description,
@@ -70,7 +70,7 @@ describe('Module Version Settings', () => {
 		const display2 = 'Meetings';
 		const description2 = 'Chats Module for Zextras Carbonio';
 		const version2 = '0.9.1';
-		useAppStore.getState().setters.setApps([
+		useAppStore.getState().setApps([
 			{
 				commit: '',
 				description: description1,
@@ -95,7 +95,7 @@ describe('Module Version Settings', () => {
 			}
 		]);
 
-		useAppStore.getState().setters.addRoute({
+		useAppStore.getState().addRoute({
 			app: 'carbonio-ws-collaboration-ui',
 			appView: jest.fn(),
 			badge: {
@@ -111,7 +111,7 @@ describe('Module Version Settings', () => {
 			visible: true
 		});
 
-		useAppStore.getState().setters.addRoute({
+		useAppStore.getState().addRoute({
 			app: 'carbonio-ws-collaboration-ui',
 			appView: jest.fn(),
 			badge: {

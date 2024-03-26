@@ -4,13 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useMemo } from 'react';
+import type { FC } from 'react';
+import React, { useMemo } from 'react';
 
 import { Container, FormSubSection, Quota, Text, Tooltip } from '@zextras/carbonio-design-system';
 
 import { useUserSettings } from '../../../store/account/hooks';
 import { useAccountStore } from '../../../store/account/store';
-import { getT } from '../../../store/i18n';
+import { getT } from '../../../store/i18n/hooks';
 import { quotaSubSection } from '../../general-settings-sub-sections';
 
 interface UserQuotaProps {

@@ -3,7 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { useMemo } from 'react';
+import type React from 'react';
+import { useMemo } from 'react';
 
 import { useLoginConfigStore } from './store';
 import DefaultLogo from '../../../assets/carbonio.svg';

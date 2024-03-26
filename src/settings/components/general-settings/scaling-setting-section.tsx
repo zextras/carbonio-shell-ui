@@ -5,22 +5,24 @@
  */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
+import type { SliderProps } from '@zextras/carbonio-design-system';
 import {
 	Button,
 	Checkbox,
 	Container,
 	Slider,
-	SliderProps,
 	Text,
 	Tooltip
 } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
-import styled, { SimpleInterpolation } from 'styled-components';
+import type { SimpleInterpolation } from 'styled-components';
+import styled from 'styled-components';
 
-import { ScalingSettings } from '../../../../types/settings';
 import { BASE_FONT_SIZE, SCALING_OPTIONS } from '../../../constants';
+import type { ScalingSettings } from '../../../types/settings';
 import { useReset } from '../../hooks/use-reset';
-import { getAutoScalingFontSize, ResetComponentImperativeHandler } from '../utils';
+import type { ResetComponentImperativeHandler } from '../utils';
+import { getAutoScalingFontSize } from '../utils';
 
 const ScalingSliderContainer = styled(Container)`
 	box-shadow: 0px 0px 4px rgba(166, 166, 166, 0.5);

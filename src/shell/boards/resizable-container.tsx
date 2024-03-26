@@ -3,12 +3,16 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { CSSProperties, useMemo, useRef } from 'react';
+import type { CSSProperties } from 'react';
+import React, { useMemo, useRef } from 'react';
 
-import { Container, ContainerProps } from '@zextras/carbonio-design-system';
-import styled, { css, SimpleInterpolation } from 'styled-components';
+import type { ContainerProps } from '@zextras/carbonio-design-system';
+import { Container } from '@zextras/carbonio-design-system';
+import type { SimpleInterpolation } from 'styled-components';
+import styled, { css } from 'styled-components';
 
-import { Border, BORDERS, getCursorFromBorder, useResize } from '../hooks/useResize';
+import type { Border } from '../hooks/useResize';
+import { BORDERS, getCursorFromBorder, useResize } from '../hooks/useResize';
 
 interface ResizableBorderProps {
 	border: Border;

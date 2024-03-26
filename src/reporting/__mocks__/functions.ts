@@ -4,6 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import * as actualFunctions from '../functions';
+import type * as actualFunctions from '../functions';
 
 export const report: typeof actualFunctions.report = () => (): string => '';

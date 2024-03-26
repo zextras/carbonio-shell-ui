@@ -9,15 +9,11 @@ import 'jest-styled-components';
 import { screen, within } from '@testing-library/react';
 import { find } from 'lodash';
 
-import {
-	LocaleDescriptorWithLabels,
-	localeList,
-	TimeZoneDescriptor,
-	timeZoneList
-} from './components/utils';
+import type { LocaleDescriptorWithLabels, TimeZoneDescriptor } from './components/utils';
+import { localeList, timeZoneList } from './components/utils';
 import GeneralSettings from './general-settings';
 import { useAccountStore } from '../store/account';
-import { useI18nStore } from '../store/i18n';
+import { useI18nStore } from '../store/i18n/store';
 import { TESTID_SELECTORS } from '../test/constants';
 import { setup } from '../test/utils';
 

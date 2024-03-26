@@ -6,21 +6,18 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import {
-	Checkbox,
-	Container,
-	DateTimePicker,
-	DateTimePickerProps
-} from '@zextras/carbonio-design-system';
+import type { DateTimePickerProps } from '@zextras/carbonio-design-system';
+import { Checkbox, Container, DateTimePicker } from '@zextras/carbonio-design-system';
 
-import { AddMod, GeneralizedTime } from '../../../../types';
-import { getT } from '../../../store/i18n';
+import { getT } from '../../../store/i18n/hooks';
+import type { GeneralizedTime } from '../../../types/account';
+import type { AddMod } from '../../../types/network';
 import { useReset } from '../../hooks/use-reset';
+import type { SettingsSectionProps } from '../utils';
 import {
 	dateToGenTime,
 	endOfDay,
 	genTimeToDate,
-	SettingsSectionProps,
 	startOfDay,
 	upsertPrefOnUnsavedChanges
 } from '../utils';

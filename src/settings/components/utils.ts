@@ -4,24 +4,25 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React from 'react';
+import type React from 'react';
 
 import type { TFunction } from 'i18next';
 import { cloneDeep, filter, findIndex, isArray, isBoolean, reduce, uniq } from 'lodash';
-import moment, { Moment } from 'moment';
+import type { Moment } from 'moment';
+import moment from 'moment';
 
-import {
+import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
+import type { LocaleDescriptor } from '../../constants/locales';
+import { SUPPORTED_LOCALES } from '../../constants/locales';
+import type {
 	Account,
 	AccountSettings,
-	AddMod,
 	BooleanString,
 	GeneralizedTime,
 	Identity,
-	IdentityAttrs,
-	PrefsMods
-} from '../../../types';
-import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
-import { LocaleDescriptor, SUPPORTED_LOCALES } from '../../constants/locales';
+	IdentityAttrs
+} from '../../types/account';
+import type { AddMod, PrefsMods } from '../../types/network';
 
 export const GEN_TIME_FORMAT = 'YYYYMMDDHHmmss[Z]';
 
@@ -1237,9 +1238,9 @@ export const timeZoneList = (t: TFunction): Array<TimeZoneDescriptor> => [
 
 export const getAutoScalingFontSize = (): number => {
 	if (
-		window.screen.width <= SCALING_LIMIT.WIDTH &&
-		window.screen.height <= SCALING_LIMIT.HEIGHT &&
-		window.devicePixelRatio >= SCALING_LIMIT.DPR
+		window.screen.width <= SCALING_LIMIT.width &&
+		window.screen.height <= SCALING_LIMIT.height &&
+		window.devicePixelRatio >= SCALING_LIMIT.dpr
 	) {
 		const baseFontIndex = SCALING_OPTIONS.findIndex((option) => option.value === BASE_FONT_SIZE);
 		if (baseFontIndex > 0) {

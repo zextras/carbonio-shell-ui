@@ -3,12 +3,13 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { HttpResponse, HttpResponseResolver } from 'msw';
+import type { HttpResponseResolver } from 'msw';
+import { HttpResponse } from 'msw';
+
+import type { SoapBody } from '../../types/network';
 
 type EndSessionRequestBody = {
-	EndSessionRequest: {
-		_jsns: string;
-	};
+	EndSessionRequest: SoapBody;
 };
 
 type EndSessionResponseBody = {

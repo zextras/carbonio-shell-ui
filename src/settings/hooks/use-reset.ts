@@ -5,7 +5,7 @@
  */
 import { useImperativeHandle } from 'react';
 
-import { SettingsSectionProps } from '../components/utils';
+import type { SettingsSectionProps } from '../components/utils';
 
 export function useReset(ref: SettingsSectionProps['resetRef'], resetFn: () => void): void {
 	useImperativeHandle(

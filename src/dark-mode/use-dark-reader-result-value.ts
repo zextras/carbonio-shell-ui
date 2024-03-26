@@ -8,10 +8,17 @@ import { useMemo } from 'react';
 
 import { find, size } from 'lodash';
 
-import type { DarkReaderPropValues, ZappDarkreaderModeZimletProp, ZimletProp } from '../../types';
+import type { DarkReaderPropValues } from './utils';
 import { DARK_READER_PROP_KEY, DARK_READER_VALUES, SHELL_APP_ID } from '../constants';
 import { useUserSettings } from '../store/account';
 import { useLoginConfigStore } from '../store/login/store';
+import type { ZimletProp } from '../types/account';
+
+export interface ZappDarkreaderModeZimletProp extends ZimletProp {
+	name: typeof DARK_READER_PROP_KEY;
+	zimlet: typeof SHELL_APP_ID;
+	_content: DarkReaderPropValues;
+}
 
 export function isZappDarkreaderModeZimletProp(
 	prop: ZimletProp

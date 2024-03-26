@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { i18n, TFunction } from 'i18next';
+import type { i18n, TFunction } from 'i18next';
 
 import { useI18nStore } from './store';
 import { SHELL_APP_ID } from '../../constants';

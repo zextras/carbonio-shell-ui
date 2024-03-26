@@ -7,13 +7,33 @@
 import { debounce, noop } from 'lodash';
 
 import defaultAudio from '../../assets/notification.mp3';
-import type {
-	AudioNotificationConfig,
-	INotificationManager,
-	NotificationConfig,
-	PopupNotificationConfig
-} from '../../types';
 import { getFavicon } from '../store/login/getters';
+
+export type PopupNotificationConfig = {
+	title?: string;
+	message?: string;
+	icon?: string;
+	vibrate?: Array<number>;
+	tag?: string;
+	onClick?: (event: Event) => void;
+};
+
+export type AudioNotificationConfig = {
+	sound?: string;
+};
+
+export type NotificationConfig = {
+	showPopup?: boolean;
+	playSound?: boolean;
+} & PopupNotificationConfig &
+	AudioNotificationConfig;
+
+export interface INotificationManager {
+	playSound: (config: AudioNotificationConfig) => void;
+	showPopup: (config: PopupNotificationConfig) => void;
+	notify: (config: NotificationConfig) => void;
+	multipleNotify: (config: NotificationConfig[]) => void;
+}
 
 /**
  * The main goals of the NotificationManager are:
@@ -29,7 +49,7 @@ import { getFavicon } from '../store/login/getters';
  *
  * The class is provided as a singleton
  */
-export class NotificationManager implements INotificationManager {
+class NotificationManager implements INotificationManager {
 	private static instance: NotificationManager;
 
 	/**

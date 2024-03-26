@@ -6,8 +6,8 @@
 import { useEffect, useState } from 'react';
 
 import { useDarkReaderResultValue } from './use-dark-reader-result-value';
+import type { DarkReaderPropValues } from './utils';
 import { getPrefersColorSchemeDarkMedia } from './utils';
-import type { DarkReaderPropValues } from '../../types';
 
 export const useDarkMode = (): {
 	darkModeEnabled: boolean;

@@ -7,8 +7,8 @@ import React from 'react';
 
 import { faker } from '@faker-js/faker';
 
-import { AppRouteDescriptor, CarbonioModule } from '../../types';
 import { useAppStore } from '../store/app';
+import type { AppRouteDescriptor, CarbonioModule } from '../types/apps';
 
 export const mockedApps: CarbonioModule[] = [
 	{
@@ -37,9 +37,9 @@ export const mockedRoutes: AppRouteDescriptor = {
 };
 
 export function setupAppStore(apps = mockedApps, routes = [mockedRoutes]): void {
-	useAppStore.getState().setters.setApps(apps);
+	useAppStore.getState().setApps(apps);
 	routes.forEach((route) => {
-		useAppStore.getState().setters.addRoute(route);
+		useAppStore.getState().addRoute(route);
 	});
 }
 

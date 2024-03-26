@@ -3,9 +3,10 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { HttpResponse, HttpResponseResolver } from 'msw';
+import type { HttpResponseResolver } from 'msw';
+import { HttpResponse } from 'msw';
 
-import { LoginConfigStore } from '../../../types/loginConfig';
+import type { LoginConfigStore } from '../../store/login/store';
 
 export const getLoginConfig: HttpResponseResolver<
 	never,

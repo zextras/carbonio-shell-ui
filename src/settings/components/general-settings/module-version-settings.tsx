@@ -6,22 +6,22 @@
 
 import React, { useCallback, useMemo } from 'react';
 
+import type { TextProps } from '@zextras/carbonio-design-system';
 import {
 	Badge,
 	Container,
 	Divider,
 	FormSubSection,
 	Text,
-	TextProps,
 	Tooltip,
 	useTheme
 } from '@zextras/carbonio-design-system';
 import { map } from 'lodash';
 
-import { CarbonioModule } from '../../../../types';
 import { SEARCH_APP_ID, SETTINGS_APP_ID } from '../../../constants';
 import { useAppList } from '../../../store/app';
-import { getT } from '../../../store/i18n';
+import { getT } from '../../../store/i18n/hooks';
+import type { CarbonioModule } from '../../../types/apps';
 import { versionsSubSection } from '../../general-settings-sub-sections';
 
 const ModuleVersionSettings = (): React.JSX.Element => {

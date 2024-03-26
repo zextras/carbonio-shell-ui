@@ -6,15 +6,16 @@
 
 import { useMemo, useCallback } from 'react';
 
-import { To } from 'history';
+import type { To } from 'history';
 import { find, startsWith, replace, trim } from 'lodash';
 import { useLocation, useHistory } from 'react-router-dom';
 
-import { AppRoute, HistoryParams } from '../../types';
 import { SEARCH_APP_ID } from '../constants';
 import { useSearchStore } from '../search/search-store';
 import { useRoutes, getRoutes } from '../store/app';
 import { useContextBridge } from '../store/context-bridge';
+import type { AppRoute } from '../types/apps';
+import type { HistoryParams } from '../types/misc';
 
 export const useCurrentRoute = (): AppRoute | undefined => {
 	const location = useLocation();

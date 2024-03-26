@@ -3,7 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { FC, ReactElement, useEffect } from 'react';
+import type { FC, ReactElement } from 'react';
+import React, { useEffect } from 'react';
 
 export const NotificationPermissionChecker: FC = (): ReactElement => {
 	useEffect(() => {

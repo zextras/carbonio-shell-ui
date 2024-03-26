@@ -8,7 +8,7 @@ import React, { useMemo } from 'react';
 
 import { Container, Text } from '@zextras/carbonio-design-system';
 
-import { getT } from '../../../store/i18n';
+import { getT } from '../../../store/i18n/hooks';
 import { appearanceSubSection } from '../../general-settings-sub-sections';
 
 interface AppearanceSettingsProps {

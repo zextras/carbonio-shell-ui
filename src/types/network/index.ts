@@ -7,7 +7,7 @@
 import type { AccountACEInfo, Right } from './entities';
 import type { SoapBody, SoapContext } from './soap';
 import type { JSNS } from '../../constants';
-import type { RequireAtLeastOne, ValueOf } from '../../utils/typeUtils';
+import type { Exactify, RequireAtLeastOne, ValueOf } from '../../utils/typeUtils';
 import type {
 	AccountRights,
 	AccountSettingsPrefs,
@@ -192,8 +192,13 @@ export type ModifyPropertiesRequest = SoapBody<{
 	prop: Array<{ name: string; zimlet: string; _content: unknown }>;
 }>;
 
-export type BatchRequest<T extends Record<`${string}Request`, unknown> = Record<string, unknown>> =
-	SoapBody<T>;
+export type BatchRequest<
+	T extends Exactify<Record<`${string}Request`, unknown>, T> = Record<`${string}Request`, unknown>
+> = SoapBody<T>;
+
+export type BatchResponse<
+	T extends Exactify<Record<`${string}Response`, unknown>, T> = Record<`${string}Response`, unknown>
+> = SoapBody<T>;
 
 export type GetRightsRequest = SoapBody<{
 	ace?: Array<{ right: Right }>;

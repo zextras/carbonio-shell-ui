@@ -24,3 +24,7 @@ export type Override<
 export type AnyFunction = (...args: any[]) => any;
 
 export type ValueOf<T extends Record<string, unknown>> = T[keyof T];
+
+export type Exactify<T, X extends T> = T & {
+	[K in keyof X]: K extends keyof T ? X[K] : never;
+};

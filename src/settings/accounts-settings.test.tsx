@@ -1198,7 +1198,7 @@ describe('Account setting', () => {
 			const { Body: requestBody } = await pendingBatchRequest.then(
 				(req) =>
 					req.json() as Promise<{
-						Body: { BatchRequest: BatchRequest<AccountsSettingsBatchRequest> };
+						Body: { BatchRequest: AccountsSettingsBatchRequest };
 					}>
 			);
 

@@ -33,6 +33,7 @@ import { useAccountStore, useUserAccount, useUserSettings } from '../store/accou
 import type { AccountSettingsPrefs, AccountState, IdentityAttrs } from '../types/account';
 import type {
 	BatchRequest,
+	BatchResponse,
 	CreateIdentityRequest,
 	CreateIdentityResponse,
 	DeleteIdentityRequest,
@@ -42,8 +43,7 @@ import type {
 	ModifyIdentityRequest,
 	ModifyIdentityResponse,
 	ModifyPrefsRequest,
-	ModifyPrefsResponse,
-	ModifyPropertiesRequest
+	ModifyPrefsResponse
 } from '../types/network';
 import type { AccountACEInfo } from '../types/network/entities';
 
@@ -52,7 +52,13 @@ export type AccountsSettingsBatchRequest = BatchRequest<{
 	CreateIdentityRequest?: Array<CreateIdentityRequest>;
 	DeleteIdentityRequest?: Array<DeleteIdentityRequest>;
 	ModifyPrefsRequest?: ModifyPrefsRequest;
-	ModifyPropertiesRequest?: ModifyPropertiesRequest;
+}>;
+
+type AccountsSettingsBatchResponse = BatchResponse<{
+	ModifyIdentityResponse?: ModifyIdentityResponse[];
+	DeleteIdentityResponse?: DeleteIdentityResponse[];
+	CreateIdentityResponse?: CreateIdentityResponse[];
+	ModifyPrefsResponse?: ModifyPrefsResponse;
 }>;
 
 function mapToCreateIdentityRequests(
@@ -300,13 +306,8 @@ export const AccountsSettings = (): React.JSX.Element => {
 		);
 
 		const promise = getSoapFetch(SHELL_APP_ID)<
-			BatchRequest,
-			{
-				ModifyIdentityResponse?: ModifyIdentityResponse[];
-				DeleteIdentityResponse?: DeleteIdentityResponse[];
-				CreateIdentityResponse?: CreateIdentityResponse[];
-				ModifyPrefsResponse?: ModifyPrefsResponse;
-			}
+			AccountsSettingsBatchRequest,
+			AccountsSettingsBatchResponse
 		>('Batch', {
 			_jsns: JSNS.all,
 			DeleteIdentityRequest: deleteRequests.length > 0 ? deleteRequests : undefined,

@@ -38,7 +38,7 @@ export function loadApps(
 		(settings?.prefs?.zimbraPrefLocale as string) ??
 		(settings?.attrs?.zimbraLocale as string) ??
 		'en';
-	useI18nStore.getState().actions.addI18n(appsToLoad, locale);
+	useI18nStore.getState().addI18n(appsToLoad, locale);
 	const localeObj =
 		locale in SUPPORTED_LOCALES && SUPPORTED_LOCALES[locale as keyof typeof SUPPORTED_LOCALES];
 	if (localeObj) {

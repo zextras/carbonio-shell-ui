@@ -4,12 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React from 'react';
-
-import { compact, map } from 'lodash';
+import type React from 'react';
 
 import { useIntegrationsStore } from './store';
-import AppContextProvider from '../../boot/app/app-context-provider';
+import {
+	buildIntegrationAction,
+	buildIntegrationActions,
+	buildIntegrationComponent
+} from './utils';
 import type { Action, ActionFactory } from '../../types/integrations';
 import type { AnyFunction } from '../../utils/typeUtils';
 
@@ -20,48 +22,19 @@ export const getIntegratedFunction = (id: string): [AnyFunction, boolean] => {
 
 export const getIntegratedComponent = (
 	id: string
-): [React.ComponentType<Record<string, unknown>>, boolean] => {
-	const Integration = useIntegrationsStore.getState().components?.[id];
-	if (Integration) {
-		const C = (props: Record<string, unknown>): React.JSX.Element => (
-			<AppContextProvider pkg={Integration.app}>
-				<Integration.Item {...props} />
-			</AppContextProvider>
-		);
-		return [C, true];
-	}
-	return [(): null => null, false];
+): [React.FunctionComponent<Record<string, unknown>>, boolean] => {
+	const integration = useIntegrationsStore.getState().components?.[id];
+	return buildIntegrationComponent(integration);
 };
 
 export const getActions = <T,>(target: T, type: string): Array<Action> => {
 	const factories = useIntegrationsStore.getState().actions[type];
-	return compact(
-		map(factories, (f) => {
-			try {
-				return f(target);
-			} catch (e) {
-				// eslint-disable-next-line no-console
-				console.error(e);
-				return undefined;
-			}
-		})
-	);
+	return buildIntegrationActions(factories, target);
 };
 
 export const getActionsFactory = (type: string): (<T>(target: T) => Array<Action>) => {
 	const factories = useIntegrationsStore.getState().actions[type];
-	return <T,>(target: T): Array<Action> =>
-		compact(
-			map(factories, (f) => {
-				try {
-					return f(target);
-				} catch (e) {
-					// eslint-disable-next-line no-console
-					console.error(e);
-					return undefined;
-				}
-			})
-		);
+	return <T,>(target: T): Array<Action> => buildIntegrationActions(factories, target);
 };
 
 export const getAction = <T,>(
@@ -70,8 +43,7 @@ export const getAction = <T,>(
 	target?: T
 ): [Action | undefined, boolean] => {
 	const factory = useIntegrationsStore.getState().actions[type]?.[id];
-	const action = factory?.(target);
-	return [action, !!action];
+	return buildIntegrationAction(factory, target);
 };
 
 export const getActionFactory = <T,>(

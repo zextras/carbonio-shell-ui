@@ -17,7 +17,6 @@ import type { DynamicThemeFix } from 'darkreader';
 import type { Event as Event_2 } from '@sentry/browser';
 import type { EventHint } from '@sentry/browser';
 import type { FC } from 'react';
-import type { FunctionComponent } from 'react';
 import type { i18n } from 'i18next';
 import type { LinkProps } from 'react-router-dom';
 import type { ModalProps } from '@zextras/carbonio-design-system';
@@ -370,8 +369,10 @@ type BaseFolder = {
 // @public (undocumented)
 export const BASENAME: string;
 
+// Warning: (ae-forgotten-export) The symbol "Exactify" needs to be exported by the entry point lib.d.ts
+//
 // @public (undocumented)
-export type BatchRequest<T extends Record<`${string}Request`, unknown> = Record<string, unknown>> = SoapBody<T>;
+export type BatchRequest<T extends Exactify<Record<`${string}Request`, unknown>, T> = Record<`${string}Request`, unknown>> = SoapBody<T>;
 
 // @public (undocumented)
 export type Board<T = unknown> = {
@@ -473,9 +474,6 @@ export const changeTagColor: (id: string, color: string | number) => Promise<Tag
 export const closeBoard: (id: string) => void;
 
 // @public (undocumented)
-type CombinedActionFactory<T> = (target: T) => Array<Action>;
-
-// @public (undocumented)
 type Component<TProps extends Record<string, unknown> = Record<string, unknown>> = ComponentType<TProps>;
 
 // @public (undocumented)
@@ -549,6 +547,11 @@ export type ErrorSoapBodyResponse = {
 export type ErrorSoapResponse = {
     Body: ErrorSoapBodyResponse;
     Header: SoapHeader;
+};
+
+// @public (undocumented)
+type Exactify<T, X extends T> = T & {
+    [K in keyof X]: K extends keyof T ? X[K] : never;
 };
 
 // Warning: (ae-forgotten-export) The symbol "UserFolder" needs to be exported by the entry point lib.d.ts
@@ -696,7 +699,7 @@ export const getI18n: AppDependantFunctions['getI18n'];
 const getI18n_2: (app: string) => () => i18n;
 
 // @public (undocumented)
-export const getIntegratedComponent: (id: string) => [React_2.ComponentType<Record<string, unknown>>, boolean];
+export const getIntegratedComponent: (id: string) => [React_2.FunctionComponent<Record<string, unknown>>, boolean];
 
 // @public (undocumented)
 export const getIntegratedFunction: (id: string) => [AnyFunction, boolean];
@@ -1478,10 +1481,8 @@ export const useActionFactory: <T>(type: string, id: string) => [ActionFactory<T
 // @public (undocumented)
 export const useActions: <T>(target: T, type: string) => Array<Action>;
 
-// Warning: (ae-forgotten-export) The symbol "CombinedActionFactory" needs to be exported by the entry point lib.d.ts
-//
 // @public (undocumented)
-export const useActionsFactory: <T>(type: string) => CombinedActionFactory<T>;
+export const useActionsFactory: (type: string) => <T>(target: T) => Array<Action>;
 
 // @public (undocumented)
 export const useApp: AppDependantFunctions['useApp'];
@@ -1527,7 +1528,7 @@ export const useFoldersByView: (view: FolderView) => Array<Folder>;
 export function useGoBackHistoryCallback(): () => void;
 
 // @public (undocumented)
-export const useIntegratedComponent: (id: string) => [FunctionComponent<Record<string, unknown>>, boolean];
+export const useIntegratedComponent: (id: string) => [React_2.FunctionComponent<Record<string, unknown>>, boolean];
 
 // @public (undocumented)
 export const useIntegratedFunction: (id: string) => [AnyFunction, boolean];

@@ -14,4 +14,3 @@ export type Action = DropdownItem & {
 };
 
 export type ActionFactory<T> = (target: T) => Action;
-export type CombinedActionFactory<T> = (target: T) => Array<Action>;

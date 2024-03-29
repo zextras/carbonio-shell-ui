@@ -4,74 +4,39 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { FunctionComponent } from 'react';
-import React, { useMemo, useCallback } from 'react';
-
-import { compact, map } from 'lodash';
+import type React from 'react';
+import { useMemo, useCallback } from 'react';
 
 import { useIntegrationsStore } from './store';
-import AppContextProvider from '../../boot/app/app-context-provider';
-import type { Action, ActionFactory, CombinedActionFactory } from '../../types/integrations';
+import {
+	buildIntegrationAction,
+	buildIntegrationActions,
+	buildIntegrationComponent,
+	buildIntegrationFunction
+} from './utils';
+import type { Action, ActionFactory } from '../../types/integrations';
 import type { AnyFunction } from '../../utils/typeUtils';
 
 export const useIntegratedFunction = (id: string): [AnyFunction, boolean] => {
 	const integration = useIntegrationsStore((s) => s.functions?.[id]);
-	return integration ? [integration, true] : [(): void => undefined, false];
+	return buildIntegrationFunction(integration);
 };
 
 export const useIntegratedComponent = (
 	id: string
-): [FunctionComponent<Record<string, unknown>>, boolean] => {
-	const Integration = useIntegrationsStore((s) => s.components?.[id]);
-	return useMemo(() => {
-		if (Integration) {
-			const C = (props: Record<string, unknown>): React.JSX.Element => (
-				<AppContextProvider pkg={Integration.app}>
-					<Integration.Item {...props} />
-				</AppContextProvider>
-			);
-			return [C, true];
-		}
-		return [(): null => null, false];
-	}, [Integration]);
+): [React.FunctionComponent<Record<string, unknown>>, boolean] => {
+	const integration = useIntegrationsStore((s) => s.components?.[id]);
+	return useMemo(() => buildIntegrationComponent(integration), [integration]);
 };
 
 export const useActions = <T,>(target: T, type: string): Array<Action> => {
 	const factories = useIntegrationsStore((s) => s.actions[type]);
-	return useMemo(
-		() =>
-			compact(
-				map(factories, (f) => {
-					try {
-						return f(target);
-					} catch (e) {
-						// eslint-disable-next-line no-console
-						console.error(e);
-						return undefined;
-					}
-				})
-			) ?? [],
-		[factories, target]
-	);
+	return useMemo(() => buildIntegrationActions(factories, target), [factories, target]);
 };
 
-export const useActionsFactory = <T,>(type: string): CombinedActionFactory<T> => {
+export const useActionsFactory = (type: string): (<T>(target: T) => Array<Action>) => {
 	const factories = useIntegrationsStore((s) => s.actions[type]);
-	return useCallback(
-		(target: unknown) =>
-			compact(
-				map(factories, (f) => {
-					try {
-						return f(target);
-					} catch (e) {
-						// eslint-disable-next-line no-console
-						console.error(e);
-						return undefined;
-					}
-				})
-			),
-		[factories]
-	);
+	return useCallback((target) => buildIntegrationActions(factories, target), [factories]);
 };
 
 export const useAction = <T,>(
@@ -80,14 +45,7 @@ export const useAction = <T,>(
 	target?: T
 ): [Action | undefined, boolean] => {
 	const factory = useIntegrationsStore((s) => s.actions[type][id]);
-	const action = useMemo(() => {
-		try {
-			return factory?.(target);
-		} catch (e) {
-			return undefined;
-		}
-	}, [factory, target]);
-	return [action, !!action];
+	return useMemo(() => buildIntegrationAction(factory, target), [factory, target]);
 };
 
 export const useActionFactory = <T,>(

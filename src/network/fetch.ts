@@ -24,7 +24,6 @@ import { useAccountStore } from '../store/account';
 import { useNetworkStore } from '../store/network';
 import { getPollingInterval, handleSync } from '../store/network/utils';
 
-/** @deprecated */
 export const fetchNoOp = (): void => {
 	// eslint-disable-next-line @typescript-eslint/no-use-before-define
 	getSoapFetch(SHELL_APP_ID)(

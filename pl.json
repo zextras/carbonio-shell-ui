@@ -40,7 +40,7 @@
             "labels": {
                 "include_search_in_shared_folder": "Uwzględnij udostępniony folder w wynikach wyszukiwań",
                 "include_search_in_spam_folder": "Uwzględnij folder spamu w wynikach wyszukiwań",
-                "include_search_in_trash_folder": "Uwzględnij Kosz w wynikach wyszukiwań"
+                "include_search_in_trash_folder": "Uwzględnij kosz w wynikach wyszukiwań"
             }
         },
         "out_of_office": {
@@ -81,7 +81,7 @@
         },
         "general": {
             "account": "Konto",
-            "account_logout": "Wylogowywanie się",
+            "account_logout": "Wyloguj się",
             "dark_mode": "Tryb ciemny",
             "general": "Ustawienia ogólne",
             "theme_auto": "Automatycznie",
@@ -145,7 +145,7 @@
         "persona_settings": "Ustawienia persony",
         "pop3": "POP3",
         "pop_port": "port POP",
-        "primary": "Główny",
+        "primary": "Główne",
         "recipents": "Odbiorcy",
         "remove": "usuń",
         "recovery_email": "Pomocniczy adres e-mail",
@@ -155,7 +155,7 @@
         "save_to_my_sent_folder": "Zapisuj kopię wysyłanych wiadomości do mojego folderu wysłane",
         "secondary": "Drugorzędny",
         "set_reply_to_field": "Ustaw pole \"Odpowiedź na ten adres\" w wiadomości e-mail na:",
-        "settings_sent_messages": "Ustawienia wysłanych wiadomości",
+        "settings_sent_messages": "Ustawienia wysyłanych wiadomości",
         "test_settings": "Ustawienia testowe",
         "update_view": "Zaktualizuj widok",
         "use_persona": "Użyj tej persony",
@@ -187,7 +187,7 @@
         "button": "Przycisk",
         "click_to_copy": "Kliknij, aby skopiować",
         "folder_external_account": "Folder: Nowe konto spoza mojej domeny",
-        "add_inline_image": "Dodaj obrazek w tekście",
+        "add_inline_image": "Dodaj obraz w tekście",
         "select_image": "Wybierz obraz",
         "cannot_save_changes": "Nie udało się zapisać niektórych zmian",
         "close": "Zamknij"

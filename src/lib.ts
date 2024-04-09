@@ -208,7 +208,8 @@ export type {
 	SoapFolder,
 	SoapNotify,
 	SoapContext,
-	SoapBody
+	SoapBody,
+	SoapHeader
 } from './types/network/soap';
 export type { BatchRequest } from './types/network';
 

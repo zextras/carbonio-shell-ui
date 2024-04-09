@@ -17,6 +17,7 @@ import { map, noop } from 'lodash';
 import { useUtilityBarStore } from './store';
 import { useUtilityViews } from './utils';
 import type { UtilityView } from '../../types';
+import { CUSTOM_EVENTS } from '../constants';
 import { fetchNoOp } from '../network/fetch';
 import { logout } from '../network/logout';
 import { useUserAccount } from '../store/account';
@@ -50,7 +51,7 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 	const account = useUserAccount();
 
 	const updateViews = useCallback(() => {
-		const updateViewEvent = new CustomEvent('updateView');
+		const updateViewEvent = new CustomEvent(CUSTOM_EVENTS.updateView);
 		window.dispatchEvent(updateViewEvent);
 	}, []);
 

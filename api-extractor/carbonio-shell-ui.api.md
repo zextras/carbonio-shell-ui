@@ -496,6 +496,11 @@ export type CreateTagResponse = {
 };
 
 // @public (undocumented)
+export const CUSTOM_EVENTS: {
+    readonly updateView: "updateView";
+};
+
+// @public (undocumented)
 export const DARK_READER_PROP_KEY = "zappDarkreaderMode";
 
 // @public (undocumented)

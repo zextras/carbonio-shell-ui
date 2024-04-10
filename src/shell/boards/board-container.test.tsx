@@ -692,6 +692,7 @@ describe('Board container', () => {
 			jest.advanceTimersToNextTimer();
 		});
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const boardNewPosition = {
 			top: 0,
@@ -702,7 +703,8 @@ describe('Board container', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 0, clientY: 0 },
-			boardNewPosition
+			boardNewPosition,
+			elementForMove
 		);
 		expect(board).toHaveStyle({
 			height: '70vh',
@@ -719,6 +721,7 @@ describe('Board container', () => {
 			jest.advanceTimersToNextTimer();
 		});
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		let boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		let boardNewPosition = {
 			top: 10,
@@ -729,7 +732,8 @@ describe('Board container', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 10, clientY: 10 },
-			boardNewPosition
+			boardNewPosition,
+			elementForMove
 		);
 		boardInitialSizeAndPos = buildBoardSizeAndPosition({
 			...boardInitialSizeAndPos,
@@ -744,7 +748,8 @@ describe('Board container', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 80, clientY: 50 },
-			boardNewPosition
+			boardNewPosition,
+			elementForMove
 		);
 		expect(board).toHaveStyle({
 			height: '70vh',
@@ -762,6 +767,7 @@ describe('Board container', () => {
 		});
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
 		const deltaY = -50;
@@ -793,7 +799,8 @@ describe('Board container', () => {
 				clientY: boardNewInitialSizeAndPos.clientTop
 			},
 			{ clientX: 0, clientY: 0 },
-			boardNewSizeAndPos
+			boardNewSizeAndPos,
+			elementForMove
 		);
 		expect(board).toHaveStyle({
 			height: `${boardNewSizeAndPos.height}px`,
@@ -811,6 +818,7 @@ describe('Board container', () => {
 		});
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
 		const deltaY = -50;
@@ -844,7 +852,8 @@ describe('Board container', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 0, clientY: 0 },
-			boardNewPos
+			boardNewPos,
+			elementForMove
 		);
 		expect(board).toHaveStyle({
 			height: '70vh',
@@ -869,6 +878,7 @@ describe('Board container', () => {
 			jest.advanceTimersToNextTimer();
 		});
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		const actionElement = getAllByRoleWithIcon('button', { icon })[0];
 		let boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		let boardNewPosition = {
@@ -880,7 +890,8 @@ describe('Board container', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 0, clientY: 0 },
-			boardNewPosition
+			boardNewPosition,
+			elementForMove
 		);
 		boardInitialSizeAndPos = buildBoardSizeAndPosition({
 			...boardInitialSizeAndPos,
@@ -986,6 +997,7 @@ describe('Board container', () => {
 			jest.advanceTimersToNextTimer();
 		});
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const boardNewPosition = {
 			top: 0,
@@ -996,7 +1008,8 @@ describe('Board container', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 0, clientY: 0 },
-			boardNewPosition
+			boardNewPosition,
+			elementForMove
 		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
 		act(() => {

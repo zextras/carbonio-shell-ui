@@ -30,7 +30,7 @@ Files: package-lock.json
 Copyright: 2021 Zextras <https://www.zextras.com>
 License: AGPL-3.0-only
 
-Files: tsconfig.json
+Files: tsconfig*.json
 Copyright: 2021 Zextras <https://www.zextras.com>
 License: AGPL-3.0-only
 
@@ -49,3 +49,11 @@ License: AGPL-3.0-only
 Files: assets/*
 Copyright: 2021 Zextras <https://www.zextras.com>
 License: CC-BY-NC-SA-4.0
+
+Files: .github/*
+Copyright: 2024 Zextras <https://www.zextras.com>
+License: CC0-1.0
+
+Files: THIRDPARTIES
+Copyright: 2024 Zextras <https://www.zextras.com>
+License: CC0-1.0

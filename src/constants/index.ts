@@ -143,3 +143,4 @@ export const BOARD_MIN_VISIBILITY = {
 };
 
 export const DELEGATED_SEND_SAVE_TARGET = ['owner', 'sender', 'both', 'none'];
+export const CUSTOM_EVENTS = { updateView: 'updateView' } as const;

@@ -61,7 +61,7 @@ export const useFoldersByView = (view: FolderView): Array<Folder> => {
 export const useFoldersAccordionByView = (
 	view: FolderView,
 	CustomComponent: ComponentType<{ folder: Folder }>,
-	itemProps?: (item: AccordionFolder) => Record<string, any>
+	itemProps?: (item: AccordionFolder) => Record<string, unknown>
 ): Array<AccordionFolder> => {
 	const roots = useRoots();
 	return useMemo(
@@ -84,7 +84,7 @@ export const useFoldersAccordionByView = (
 						recursionKey: 'items',
 						sortFunction: sortFolders,
 						deep: false
-				  })
+					})
 				: [],
 		[CustomComponent, itemProps, roots, view]
 	);

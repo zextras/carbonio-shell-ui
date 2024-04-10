@@ -36,7 +36,9 @@ const Bubble = styled.div<{ open: boolean }>`
 	height: 1.5rem;
 	border-radius: 50%;
 	background-color: ${({ theme }): string => theme.palette.gray2.regular};
-	transition: background-color 0.2s, transform 0.2s;
+	transition:
+		background-color 0.2s,
+		transform 0.2s;
 	transform: scaleX(${({ open }): number => (open ? 1 : -1)});
 	&:hover {
 		background-color: ${({ theme }): string => theme.palette.gray2.hover};

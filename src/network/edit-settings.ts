@@ -22,7 +22,7 @@ import {
 import { SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account';
 
-type EditSettingsBatchResponse = {
+export type EditSettingsBatchResponse = {
 	ModifyPropertiesResponse?: ModifyPropertiesResponse[];
 	ModifyPrefsResponse?: ModifyPrefsResponse[];
 	ModifyIdentityResponse?: ModifyIdentityResponse[];
@@ -43,7 +43,7 @@ export const editSettings = (
 				? `<ModifyPropertiesRequest xmlns="urn:zimbraAccount">${map(
 						mods.props,
 						(prop, key) => `<prop name="${key}" zimlet="${prop.app ?? appId}">${prop.value}</prop>`
-				  )}</ModifyPropertiesRequest>`
+					)}</ModifyPropertiesRequest>`
 				: ''
 		}${
 			mods.prefs
@@ -51,7 +51,7 @@ export const editSettings = (
 						isArray(pref)
 							? map(pref, (p) => `<pref name="${key}">${p}</pref>`).join('')
 							: `<pref name="${key}">${pref}</pref>`
-				  ).join('')}</ModifyPrefsRequest>`
+					).join('')}</ModifyPrefsRequest>`
 				: ''
 		}${
 			mods.identity?.modifyList
@@ -63,7 +63,7 @@ export const editSettings = (
 							}">${map(item.prefs, (value, key) => `<a name="${key}">${value}</a>`).join(
 								''
 							)}</identity></ModifyIdentityRequest>`
-				  ).join('')
+					).join('')
 				: ''
 		}${
 			mods.identity?.deleteList
@@ -71,7 +71,7 @@ export const editSettings = (
 						mods.identity.deleteList,
 						(item) =>
 							`<DeleteIdentityRequest xmlns="urn:zimbraAccount" requestId="0"><identity id="${item}"/></DeleteIdentityRequest>`
-				  ).join('')
+					).join('')
 				: ''
 		}${
 			mods.identity?.createList
@@ -79,7 +79,7 @@ export const editSettings = (
 						mods.identity.createList,
 						(item, index) =>
 							`<CreateIdentityRequest xmlns="urn:zimbraAccount" requestId="${index}"><identity name="${item.prefs.zimbraPrefIdentityName}"><a name="zimbraPrefIdentityName">${item.prefs.zimbraPrefIdentityName}</a><a name="zimbraPrefFromDisplay">${item.prefs.zimbraPrefFromDisplay}</a><a name="zimbraPrefFromAddress">${item.prefs.zimbraPrefFromAddress}</a><a name="zimbraPrefFromAddressType">sendAs</a><a name="zimbraPrefReplyToEnabled">${item.prefs.zimbraPrefReplyToEnabled}</a><a name="zimbraPrefReplyToDisplay">${item.prefs.zimbraPrefReplyToDisplay}</a><a name="zimbraPrefReplyToAddress">${item.prefs.zimbraPrefReplyToAddress}</a><a name="zimbraPrefDefaultSignatureId">${item.prefs.zimbraPrefDefaultSignatureId}</a><a name="zimbraPrefForwardReplySignatureId">${item.prefs.zimbraPrefForwardReplySignatureId}</a><a name="zimbraPrefWhenSentToEnabled">${item.prefs.zimbraPrefWhenSentToEnabled}</a><a name="zimbraPrefWhenInFoldersEnabled">${item.prefs.zimbraPrefWhenInFoldersEnabled}</a></identity></CreateIdentityRequest>`
-				  ).join('')
+					).join('')
 				: ''
 		}${
 			mods.permissions
@@ -93,9 +93,9 @@ export const editSettings = (
 									if (right.gt === 'usr')
 										return `<ace right="viewFreeBusy" gt="${right.gt}" zid="${right.zid}" d="${right.d}"/>`;
 									return `<ace right="viewFreeBusy" gt="${right.gt}" zid="${right.zid}" />`;
-							  }).join('')
+								}).join('')
 							: ''
-				  }${
+					}${
 						mods.permissions.inviteRight
 							? map(mods.permissions.inviteRight.current, (right) => {
 									if (right.gt === 'all' && right.deny)
@@ -103,9 +103,9 @@ export const editSettings = (
 									if (right.gt === 'usr')
 										return `<ace right="invite" gt="${right.gt}" zid="${right.zid}" d="${right.d}"/>`;
 									return `<ace right="invite" gt="${right.gt}" zid="${right.zid}" />`;
-							  }).join('')
+								}).join('')
 							: ''
-				  }</RevokeRightsRequest><GrantRightsRequest xmlns="urn:zimbraAccount" requestId="1">${
+					}</RevokeRightsRequest><GrantRightsRequest xmlns="urn:zimbraAccount" requestId="1">${
 						mods.permissions.freeBusy
 							? `${((): string => {
 									if (mods.permissions.freeBusy.new.gt === 'dom') {
@@ -128,9 +128,9 @@ export const editSettings = (
 										).join('');
 									}
 									return `<ace right="viewFreeBusy" gt="${mods.permissions.freeBusy.new.gt}" />`;
-							  })()}`
+								})()}`
 							: ''
-				  }${
+					}${
 						mods.permissions.inviteRight
 							? `${((): string => {
 									if (
@@ -150,9 +150,9 @@ export const editSettings = (
 										).join('');
 									}
 									return `<ace right="invite" gt="${mods.permissions?.inviteRight.new.gt}" />`;
-							  })()}`
+								})()}`
 							: ''
-				  }
+					}
 	</GrantRightsRequest>`
 				: ''
 		}</BatchRequest>`
@@ -230,7 +230,7 @@ export const editSettings = (
 											(item) => !mods?.identity?.deleteList?.includes(item.id)
 										).filter((i) => i.name === 'DEFAULT')
 									]
-							  )
+								)
 							: undefined
 				}
 			} as Account

@@ -215,7 +215,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 									...item._attrs,
 									[key]: value
 								}
-						  }
+							}
 						: item
 				)
 			);

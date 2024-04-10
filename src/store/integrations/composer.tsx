@@ -217,7 +217,7 @@ const Composer: FC<ComposerProps> = ({
 						'ltr rtl',
 						'insertfile image',
 						'imageSelector'
-				  ].join(' | '),
+					].join(' | '),
 			quickbars_insert_toolbar: inline ? 'bullist numlist' : '',
 			quickbars_selection_toolbar: inline
 				? 'bold italic underline | forecolor backcolor | removeformat | quicklink'

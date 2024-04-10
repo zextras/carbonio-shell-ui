@@ -300,7 +300,7 @@ export const SearchBar = (): React.JSX.Element => {
 				? t('search.active_input_label', 'Separate your keywords by a comma or pressing TAB')
 				: t('search.idle_input_label', 'Search in {{module}}', {
 						module: moduleLabel
-				  }),
+					}),
 		[currentSearchModuleRoute, inputHasFocus, moduleLabel, t]
 	);
 

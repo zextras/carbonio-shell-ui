@@ -61,5 +61,5 @@ export function createExportForTestOnly<TObj extends Record<string, unknown>>(
 					return accumulator;
 				},
 				{} as Record<keyof TObj, undefined>
-		  );
+			);
 }

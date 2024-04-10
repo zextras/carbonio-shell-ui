@@ -8,11 +8,16 @@ import '@testing-library/jest-dom';
 import { act, configure } from '@testing-library/react';
 import dotenv from 'dotenv';
 import failOnConsole from 'jest-fail-on-console';
-import { noop } from 'lodash';
+import { forEach, noop } from 'lodash';
 
 import server from './mocks/server';
 
 dotenv.config();
+
+const map: Record<
+	Parameters<typeof window.addEventListener>[0],
+	Parameters<typeof window.addEventListener>[1]
+> = {};
 
 configure({
 	asyncUtilTimeout: 2000
@@ -60,6 +65,13 @@ beforeAll(() => {
 
 	const retryTimes = process.env.JEST_RETRY_TIMES ? parseInt(process.env.JEST_RETRY_TIMES, 10) : 2;
 	jest.retryTimes(retryTimes, { logErrorsBeforeRetry: true });
+
+	const originalAddEventListener = window.addEventListener;
+	window.addEventListener = (...args: Parameters<typeof window.addEventListener>): void => {
+		const [type, handler] = args;
+		originalAddEventListener(...args);
+		map[type] = handler;
+	};
 });
 
 afterAll(() => {
@@ -74,6 +86,10 @@ afterEach(() => {
 	server.resetHandlers();
 	act(() => {
 		window.resizeTo(1024, 768);
+	});
+
+	forEach(map, (listener, event) => {
+		window.removeEventListener(event, listener);
 	});
 });
 

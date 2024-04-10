@@ -3,7 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { rest } from 'msw';
+
+import { http, HttpResponse } from 'msw';
 
 import { getComponents } from './get-components';
 import { CarbonioModule } from '../../types';
@@ -42,14 +43,10 @@ describe('Get components', () => {
 		const apps: CarbonioModule[] = [shellModule, carbonioModule];
 
 		server.use(
-			rest.get<never, never, GetComponentsJsonResponseBody>(
-				'/static/iris/components.json',
-				(req, res, ctx) =>
-					res(
-						ctx.json({
-							components: apps
-						})
-					)
+			http.get<never, never, GetComponentsJsonResponseBody>('/static/iris/components.json', () =>
+				HttpResponse.json({
+					components: apps
+				})
 			)
 		);
 		await getComponents();

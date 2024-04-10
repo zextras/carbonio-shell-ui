@@ -50,7 +50,7 @@ export const parseParams = (params: HistoryParams): To => {
 				search: params.path.search,
 				hash: params.path.hash,
 				pathname: replace(`/${routeToApply?.route}/${params.path.pathname}`, '//', '/')
-		  };
+			};
 };
 
 export const usePushHistoryCallback = (): ((params: HistoryParams) => void) => {

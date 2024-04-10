@@ -50,6 +50,12 @@ module.exports = {
 				'testing-library/prefer-user-event': 'warn',
 				'import/no-extraneous-dependencies': 'off'
 			}
+		},
+		{
+			files: ['carbonio.webpack.ts'],
+			rules: {
+				'import/no-extraneous-dependencies': 'off'
+			}
 		}
 	],
 	ignorePatterns: ['src/constants/locales.js']

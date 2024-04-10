@@ -16,7 +16,7 @@ function isSameLocalStorageValue(valueA: unknown, valueB: unknown): boolean {
 type LocalStorageOptions = { keepSynchedWithStorage?: boolean };
 
 type LocalStorageState = {
-	storage: Record<string, any>;
+	storage: Record<string, unknown>;
 	readValue: <T>(key: string, fallback: T) => void;
 	setValue: <T>(key: string, value: React.SetStateAction<T>) => void;
 };
@@ -40,7 +40,7 @@ const useLocalStorageStore = create<LocalStorageState>()((setState) => ({
 	},
 	setValue<T>(key: string, value: React.SetStateAction<T>): void {
 		setState((state) => {
-			const valueToStore = value instanceof Function ? value(state.storage[key]) : value;
+			const valueToStore = value instanceof Function ? value(state.storage[key] as T) : value;
 			if (!isSameLocalStorageValue(valueToStore, state.storage[key])) {
 				window.localStorage.setItem(key, JSON.stringify(valueToStore));
 				return { storage: { ...state.storage, [key]: valueToStore } };
@@ -59,7 +59,7 @@ export function useLocalStorage<T>(
 	initialValue: T,
 	options = DEFAULT_OPTIONS
 ): [T, React.Dispatch<React.SetStateAction<T>>] {
-	const storedValue = useLocalStorageStore((state) => state.storage[key] || initialValue);
+	const storedValue = useLocalStorageStore((state) => (state.storage[key] as T) || initialValue);
 	const shouldDispatchStorageEventRef = useRef(false);
 	const localStorageOptions = useMemo(() => ({ ...DEFAULT_OPTIONS, ...options }), [options]);
 

@@ -35,7 +35,7 @@ export type ActionFactory<T> = (target: T) => Action;
 export type CombinedActionFactory<T> = (target: T) => Array<Action>;
 
 export type ActionMap = Record<string, Record<string, ActionFactory<unknown>>>;
-export type ComponentMap = Record<string, { app: string; item: ComponentType<any> }>;
+export type ComponentMap = Record<string, { app: string; item: ComponentType<unknown> }>;
 export type FunctionMap = Record<string, AnyFunction>;
 
 export type AnyFunction = (...args: unknown[]) => unknown;

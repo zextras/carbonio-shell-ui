@@ -46,7 +46,7 @@ const config: Config = {
 	coverageProvider: 'babel',
 
 	// A list of reporter names that Jest uses when writing coverage reports
-	coverageReporters: ['text', 'cobertura'],
+	coverageReporters: ['text', 'cobertura', 'lcov'],
 
 	// An object that configures minimum threshold enforcement for coverage results
 	// coverageThreshold: {

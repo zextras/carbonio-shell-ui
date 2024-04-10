@@ -11,6 +11,7 @@ import { map, noop } from 'lodash';
 
 import { useUtilityBarStore } from './store';
 import { useUtilityViews } from './utils';
+import { CUSTOM_EVENTS } from '../constants';
 import { fetchNoOp } from '../network/fetch';
 import { logout } from '../network/logout';
 import { useUserAccount } from '../store/account';
@@ -46,6 +47,12 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 	const views = useUtilityViews();
 	const t = getT();
 	const account = useUserAccount();
+
+	const updateViews = useCallback(() => {
+		const updateViewEvent = new CustomEvent(CUSTOM_EVENTS.updateView);
+		window.dispatchEvent(updateViewEvent);
+	}, []);
+
 	const accountItems = useMemo(
 		(): DropdownItem[] => [
 			{
@@ -66,7 +73,10 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 			{
 				id: 'update',
 				label: t('label.update_view', 'Update view'),
-				onClick: fetchNoOp,
+				onClick: (): void => {
+					fetchNoOp();
+					updateViews();
+				},
 				icon: 'Refresh'
 			},
 			{
@@ -83,7 +93,7 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 				icon: 'LogOut'
 			}
 		],
-		[account, t]
+		[account?.displayName, account?.name, t, updateViews]
 	);
 
 	const viewItems = useMemo(

@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v5.2.0...v6.0.0) (2024-04-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** set @zextras/carbonio-design-system v5 as peer dep
+* use node 18
+
+### Features
+
+* add custom event to update views ([04d1d84](https://github.com/zextras/carbonio-shell-ui/commit/04d1d8421eeda9890e7a21f2403d70784ff98f6f)), closes [#397](https://github.com/zextras/carbonio-shell-ui/issues/397)
+* **whitelabel:** remove carbonio logos from loader ([2a15962](https://github.com/zextras/carbonio-shell-ui/commit/2a15962645be134a54c2016bb4d6532faa83a203)), closes [#390](https://github.com/zextras/carbonio-shell-ui/issues/390)
+
+
+### build
+
+* **deps:** update @zextras/carbonio-design-system to 5.0.0 ([75c17e2](https://github.com/zextras/carbonio-shell-ui/commit/75c17e22fb5a2d4fc064cb62a01f5823f20551e3)), closes [#398](https://github.com/zextras/carbonio-shell-ui/issues/398)
+* use node 18 ([529260e](https://github.com/zextras/carbonio-shell-ui/commit/529260e704f6380ade03d7b21ddbedeb9d43c847)), closes [#383](https://github.com/zextras/carbonio-shell-ui/issues/383)
+
 ## [5.2.0](https://github.com/zextras/carbonio-shell-ui/compare/v5.1.0...v5.2.0) (2024-03-21)
 
 

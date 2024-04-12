@@ -43,7 +43,7 @@ const defaultI18n = i18next.createInstance({ lng: defaultLng });
 const defaultI18nInitOptions: InitOptions = {
 	returnEmptyString: true,
 	returnNull: false,
-	compatibilityJSON: 'v3',
+	compatibilityJSON: 'v4',
 	lng: defaultLng,
 	fallbackLng: 'en',
 	debug: false,

@@ -17,7 +17,7 @@ declare module 'i18next' {
 			[defaultNs: i18next.TypeOptions['defaultNS']]: typeof en;
 		};
 		returnNull: false;
-		jsonFormat: 'v3';
+		jsonFormat: 'v4';
 		allowObjectInHTMLChildren: true;
 	}
 }

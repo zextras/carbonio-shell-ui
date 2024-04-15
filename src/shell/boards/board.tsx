@@ -15,7 +15,6 @@ import AppContextProvider from '../../boot/app/app-context-provider';
 import { useAppStore } from '../../store/app';
 import { BoardProvider, updateBoard, useBoardStore } from '../../store/boards';
 import type { Board } from '../../types/boards';
-import { stopPropagation } from '../../utils/utils';
 
 const BoardContainer = styled.div<{ show: boolean }>`
 	display: ${(props): string => (props.show ? 'block' : 'none')};
@@ -75,7 +74,7 @@ export const AppBoard = ({ board }: { board: Board }): React.JSX.Element => {
 	}, [board.url, history]);
 
 	return (
-		<BoardContainer show={current === board.id} onMouseDown={stopPropagation}>
+		<BoardContainer show={current === board.id}>
 			<Router history={history}>{route}</Router>
 		</BoardContainer>
 	);

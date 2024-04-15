@@ -144,6 +144,7 @@ export const ICONS = {
 
 export const TESTID_SELECTORS = {
 	board: 'NewItemContainer',
+	boardHeader: 'BoardHeader',
 	checkbox: 'checkbox',
 	dropdown: 'dropdown-popper-list',
 	resizableBorder(border: Border): string {

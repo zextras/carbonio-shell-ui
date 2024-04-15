@@ -356,7 +356,6 @@ export const BoardContainer = (): React.JSX.Element | null => {
 					ref={boardRef}
 					width={currentBoardSizeAndPosition.width}
 					height={currentBoardSizeAndPosition.height}
-					onMouseDown={(!expanded && moveElementHandler) || undefined}
 				>
 					<ResizableContainer
 						crossAlignment={'unset'}
@@ -364,7 +363,11 @@ export const BoardContainer = (): React.JSX.Element | null => {
 						localStorageKey={LOCAL_STORAGE_BOARD_SIZE}
 						disabled={expanded}
 					>
-						<BoardHeader background={'gray5'}>
+						<BoardHeader
+							data-testid="BoardHeader"
+							background={'gray5'}
+							onMouseDown={(!expanded && moveElementHandler) || undefined}
+						>
 							<Padding all="extrasmall">
 								<Tooltip label={t('board.hide', 'Hide board')} placement="top" disabled={isMoving}>
 									<BackButton icon="BoardCollapseOutline" onClick={clickHandler(minimizeBoards)} />

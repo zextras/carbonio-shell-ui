@@ -83,6 +83,7 @@ describe('Shell view', () => {
 		});
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		let boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
 		const deltaY = -50;
@@ -111,7 +112,8 @@ describe('Shell view', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 500, clientY: 500 },
-			boardNewSizeAndPos
+			boardNewSizeAndPos,
+			elementForMove
 		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.collapseBoard }));
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.unCollapseBoard }));
@@ -191,6 +193,7 @@ describe('Shell view', () => {
 		});
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		let boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
 		const deltaY = -50;
@@ -214,7 +217,8 @@ describe('Shell view', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 0, clientY: 0 },
-			boardNewSizeAndPos
+			boardNewSizeAndPos,
+			elementForMove
 		);
 		await user.click(getAllByRoleWithIcon('button', { icon: ICONS.close })[0]);
 		// update state to open a new board
@@ -236,6 +240,7 @@ describe('Shell view', () => {
 			jest.advanceTimersToNextTimer();
 		});
 		const board2Element = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove2 = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		boardInitialSizeAndPos = buildBoardSizeAndPosition({
 			...INITIAL_SIZE_AND_POS,
 			width: boardNewSizeAndPos.width,
@@ -247,7 +252,8 @@ describe('Shell view', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 80, clientY: 55 },
-			boardNewSizeAndPos
+			boardNewSizeAndPos,
+			elementForMove2
 		);
 		expect(board2Element).toHaveStyle({
 			height: `${boardNewSizeAndPos.height}px`,

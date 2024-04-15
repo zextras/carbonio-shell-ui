@@ -1,0 +1,48 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    # Create a group of dependencies to be updated together in one pull request
+    groups:
+      # Name for the group, used in pull request titles and branch names
+      babel:
+        patterns:
+          - "@babel*"
+          - "babel-*"
+      jest:
+        patterns:
+          - "jest*"
+          - "@types/jest"
+      pre-commit:
+        patterns:
+          - "@commitlint/*"
+          - "husky"
+      testing-library:
+        patterns:
+          - "@testing-library/*"
+      styled-components:
+        patterns:
+          - "styled-components"
+          - "@types/styled-components"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      webpack:
+        patterns:
+          - "*webpack*"
+      i18next:
+        patterns:
+          - "i18next"
+          - "react-i18next"
+          - "i18next-http-backend"
+

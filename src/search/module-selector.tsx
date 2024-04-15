@@ -13,6 +13,7 @@ import {
 	Dropdown,
 	DropdownItem
 } from '@zextras/carbonio-design-system';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useSearchStore } from './search-store';
@@ -37,7 +38,8 @@ interface ModuleSelectorProps {
 const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): React.JSX.Element | null => {
 	const modules = useAppStore((s) => s.views.search);
 	const { module, updateModule } = useSearchStore();
-
+	const { pathname } = useLocation();
+	const pathModule = useMemo(() => pathname.replace(`/${SEARCH_APP_ID}/`, ''), [pathname]);
 	const fullModule = useMemo(
 		() => modules.find((m) => m.route === module) ?? modules[0],
 		[module, modules]
@@ -64,8 +66,10 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): React.JSX.Elemen
 	useEffect(() => {
 		if (app !== SEARCH_APP_ID && (!fullModule || fullModule?.app !== app)) {
 			updateModule((modules.find((m) => m.app === app) ?? modules[0])?.route);
+		} else if (module === undefined && app === SEARCH_APP_ID) {
+			updateModule(pathModule);
 		}
-	}, [app, fullModule, modules, updateModule]);
+	}, [app, fullModule, module, modules, pathModule, pathname, updateModule]);
 
 	const openDropdown = useCallback(() => {
 		setOpen(true);

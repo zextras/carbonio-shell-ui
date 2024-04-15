@@ -18,7 +18,7 @@ import { usePushHistoryCallback } from '../history/hooks';
 import { ModuleSelector } from '../search/module-selector';
 import { useAccountStore } from '../store/account';
 import { useAppStore } from '../store/app';
-import { ICONS } from '../test/constants';
+import { ICONS, TESTID_SELECTORS } from '../test/constants';
 import { setup } from '../test/utils';
 
 const ShellWrapper = (): React.JSX.Element => (
@@ -303,7 +303,9 @@ describe('Shell primary bar', () => {
 		await user.click(searchIcon);
 
 		expect(screen.getByText('files search view')).toBeVisible();
-		expect(within(screen.getByTestId('HeaderModuleSelector')).getByText('Files')).toBeVisible();
+		expect(
+			within(screen.getByTestId(TESTID_SELECTORS.headerModuleSelector)).getByText('Files')
+		).toBeVisible();
 
 		expect(screen.queryByText('mails search view')).not.toBeInTheDocument();
 		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
@@ -402,7 +404,9 @@ describe('Shell primary bar', () => {
 		await user.click(searchIcon);
 
 		expect(screen.getByText('files search view')).toBeVisible();
-		expect(within(screen.getByTestId('HeaderModuleSelector')).getByText('Files')).toBeVisible();
+		expect(
+			within(screen.getByTestId(TESTID_SELECTORS.headerModuleSelector)).getByText('Files')
+		).toBeVisible();
 
 		expect(screen.queryByText('mails search view')).not.toBeInTheDocument();
 		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
@@ -416,7 +420,9 @@ describe('Shell primary bar', () => {
 		await user.click(searchIcon);
 
 		expect(screen.getByText('mails search view')).toBeVisible();
-		expect(within(screen.getByTestId('HeaderModuleSelector')).getByText('Mails')).toBeVisible();
+		expect(
+			within(screen.getByTestId(TESTID_SELECTORS.headerModuleSelector)).getByText('Mails')
+		).toBeVisible();
 
 		expect(screen.queryByText('files search view')).not.toBeInTheDocument();
 		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();

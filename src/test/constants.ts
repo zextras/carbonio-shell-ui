@@ -148,5 +148,6 @@ export const TESTID_SELECTORS = {
 	dropdown: 'dropdown-popper-list',
 	resizableBorder(border: Border): string {
 		return `resizable-border-${border}`;
-	}
+	},
+	headerModuleSelector: 'HeaderModuleSelector'
 };

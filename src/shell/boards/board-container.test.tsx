@@ -11,7 +11,6 @@ import { reduce, sample, size } from 'lodash';
 import 'jest-styled-components';
 
 import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
-import { Board, BoardView } from '../../../types';
 import { BOARD_MIN_VISIBILITY, LOCAL_STORAGE_BOARD_SIZE } from '../../constants';
 import { useAppStore } from '../../store/app';
 import { reopenBoards, useBoardStore } from '../../store/boards';
@@ -28,8 +27,10 @@ import {
 	mockedBoardState
 } from '../../test/test-board-utils';
 import { setup } from '../../test/utils';
-import { SizeAndPosition } from '../../utils/utils';
-import { Border } from '../hooks/useResize';
+import type { BoardView } from '../../types/apps';
+import type { Board } from '../../types/boards';
+import type { SizeAndPosition } from '../../utils/utils';
+import type { Border } from '../hooks/useResize';
 
 beforeEach(() => {
 	setupAppStore();
@@ -927,7 +928,7 @@ describe('Board container', () => {
 			route: boardObj.url,
 			component: (): React.JSX.Element => <Input label={'Board input'} />
 		};
-		useAppStore.getState().setters.addBoardView(boardView);
+		useAppStore.getState().addBoardView(boardView);
 		const { user } = setup(<BoardContainer />);
 		act(() => {
 			// run updateBoardPosition debounced fn

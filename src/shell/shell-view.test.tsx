@@ -3,15 +3,15 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 import { act, screen, waitFor } from '@testing-library/react';
 import 'jest-styled-components';
 
 import { BOARD_DEFAULT_POSITION } from './boards/board-container';
-import { Border } from './hooks/useResize';
+import type { Border } from './hooks/useResize';
 import ShellView from './shell-view';
-import { Board } from '../../types';
 import { ContextBridge } from '../boot/context-bridge';
 import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
 import { ICONS, TESTID_SELECTORS } from '../test/constants';
@@ -25,7 +25,8 @@ import {
 	setupBoardStore
 } from '../test/test-board-utils';
 import { setup } from '../test/utils';
-import { SizeAndPosition } from '../utils/utils';
+import type { Board } from '../types/boards';
+import type { SizeAndPosition } from '../utils/utils';
 
 const Dummy: FC = () => null;
 

@@ -4,17 +4,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import { createMemoryHistory } from 'history';
 import { find, startsWith } from 'lodash';
 import { Route, Router, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Board } from '../../../types';
 import AppContextProvider from '../../boot/app/app-context-provider';
 import { useAppStore } from '../../store/app';
 import { BoardProvider, updateBoard, useBoardStore } from '../../store/boards';
+import type { Board } from '../../types/boards';
 
 const BoardContainer = styled.div<{ show: boolean }>`
 	display: ${(props): string => (props.show ? 'block' : 'none')};
@@ -35,7 +35,7 @@ const BoardContainer = styled.div<{ show: boolean }>`
 	}
 `;
 
-export const AppBoard: FC<{ board: Board }> = ({ board }) => {
+export const AppBoard = ({ board }: { board: Board }): React.JSX.Element => {
 	const current = useBoardStore((s) => s.current);
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const history = useMemo(() => createMemoryHistory({ initialEntries: [board.url] }), []);

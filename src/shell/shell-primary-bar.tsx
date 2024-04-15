@@ -12,12 +12,12 @@ import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import BadgeWrap from './badge-wrap';
-import { PrimaryAccessoryView, PrimaryBarView } from '../../types';
 import AppContextProvider from '../boot/app/app-context-provider';
 import { BOARD_CONTAINER_ZINDEX, PRIMARY_BAR_WIDTH, SEARCH_APP_ID } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppStore } from '../store/app';
 import { minimizeBoards, reopenBoards, useBoardStore } from '../store/boards';
+import type { PrimaryAccessoryView, PrimaryBarView } from '../types/apps';
 import { checkRoute } from '../utility-bar/utils';
 
 const PrimaryBarContainer = styled(Container)`

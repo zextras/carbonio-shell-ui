@@ -3,12 +3,14 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { FC, forwardRef } from 'react';
+import type { FC } from 'react';
+import React, { forwardRef } from 'react';
 
 import { Container, Badge } from '@zextras/carbonio-design-system';
-import styled, { DefaultTheme } from 'styled-components';
+import type { DefaultTheme } from 'styled-components';
+import styled from 'styled-components';
 
-import { BadgeInfo } from '../../types';
+import type { BadgeInfo } from '../types/apps';
 
 const MiniBadge = styled(Badge)<{ $color?: keyof DefaultTheme['palette'] }>`
 	position: absolute;

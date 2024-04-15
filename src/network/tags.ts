@@ -5,34 +5,48 @@
  */
 
 import { getSoapFetch } from './fetch';
-import {
-	CreateTagRequest,
-	CreateTagResponse,
-	TagActionRequest,
-	TagActionResponse
-} from '../../types';
-import { Tag } from '../../types/tags';
-import { SHELL_APP_ID } from '../constants';
+import { JSNS, SHELL_APP_ID } from '../constants';
+import type { SoapBody } from '../types/network';
+import type { Tag } from '../types/tags';
+
+export type CreateTagRequest = SoapBody<{
+	tag: Omit<Tag, 'id'>;
+}>;
+export type CreateTagResponse = {
+	tag: [Tag];
+};
+export type TagActionRequest = SoapBody<{
+	action: {
+		op: 'rename' | 'color' | 'delete' | 'update';
+		id: string;
+		name?: string;
+		color?: number;
+		rgb?: string;
+	};
+}>;
+export type TagActionResponse = SoapBody<{
+	action: { op: string; id: string };
+}>;
 
 export const createTag = (tag: Omit<Tag, 'id'>): Promise<CreateTagResponse> =>
 	getSoapFetch(SHELL_APP_ID)<CreateTagRequest, CreateTagResponse>('CreateTag', {
-		_jsns: 'urn:zimbraMail',
+		_jsns: JSNS.mail,
 		tag
 	});
 export const deleteTag = (id: string): Promise<TagActionResponse> =>
 	getSoapFetch(SHELL_APP_ID)<TagActionRequest, TagActionResponse>('TagAction', {
-		_jsns: 'urn:zimbraMail',
+		_jsns: JSNS.mail,
 		action: { op: 'delete', id }
 	});
 
 export const renameTag = (id: string, name: string): Promise<TagActionResponse> =>
 	getSoapFetch(SHELL_APP_ID)<TagActionRequest, TagActionResponse>('TagAction', {
-		_jsns: 'urn:zimbraMail',
+		_jsns: JSNS.mail,
 		action: { op: 'rename', id, name }
 	});
 
 export const changeTagColor = (id: string, color: string | number): Promise<TagActionResponse> =>
 	getSoapFetch(SHELL_APP_ID)<TagActionRequest, TagActionResponse>('TagAction', {
-		_jsns: 'urn:zimbraMail',
+		_jsns: JSNS.mail,
 		action: typeof color === 'number' ? { op: 'color', color, id } : { op: 'color', rgb: color, id }
 	});

@@ -8,9 +8,14 @@ import { useMemo } from 'react';
 
 import { filter, intersection, omit } from 'lodash';
 
-import { AppRoute, PrimaryAccessoryView, SecondaryAccessoryView, UtilityView } from '../../types';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppStore } from '../store/app';
+import type {
+	AppRoute,
+	PrimaryAccessoryView,
+	SecondaryAccessoryView,
+	UtilityView
+} from '../types/apps';
 
 export const checkList = (l1: Array<string>, l2?: Array<string>): boolean =>
 	intersection(l1, l2).length > 0;

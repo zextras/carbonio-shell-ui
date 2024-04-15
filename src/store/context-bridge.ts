@@ -4,17 +4,30 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { useEffect } from 'react';
-
 import { reduce } from 'lodash';
 import { create } from 'zustand';
 
-import type { ContextBridgeState } from '../../types';
+import type { AnyFunction } from '../utils/typeUtils';
+
+export type PackageDependentFunction = (app: string) => AnyFunction;
+
+export type ContextBridgeState = {
+	packageDependentFunctions: Record<string, PackageDependentFunction>;
+	functions: Record<string, AnyFunction>;
+};
+
+export type ContextBridgeActions = {
+	add: (content: Partial<ContextBridgeState>) => void;
+};
+
+const initialState: ContextBridgeState = {
+	packageDependentFunctions: {},
+	functions: {}
+};
 
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
-export const useContextBridge = create<ContextBridgeState>()((set) => ({
-	packageDependentFunctions: {},
-	functions: {},
+export const useContextBridge = create<ContextBridgeState & ContextBridgeActions>()((set) => ({
+	...initialState,
 	add: ({ packageDependentFunctions, functions }): void => {
 		set((s) => ({
 			packageDependentFunctions: reduce(
@@ -39,9 +52,4 @@ export const useContextBridge = create<ContextBridgeState>()((set) => ({
 	}
 }));
 
-export const useBridge = (content: Partial<Omit<ContextBridgeState, 'add'>>): void => {
-	const addFunctions = useContextBridge(({ add }) => add);
-	useEffect(() => {
-		addFunctions(content);
-	}, [content, addFunctions]);
-};
+export const useBridge = useContextBridge.getState().add;

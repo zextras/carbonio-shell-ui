@@ -5,16 +5,16 @@
  */
 
 import { getSoapFetch } from './fetch';
-import { GetInfoResponse } from '../../types';
-import { SHELL_APP_ID } from '../constants';
+import { JSNS, SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account';
 import { normalizeAccount } from '../store/account/normalization';
 import { useNetworkStore } from '../store/network';
 import { parsePollingInterval } from '../store/network/utils';
+import type { GetInfoResponse, SoapBody } from '../types/network';
 
 export const getInfo = (): Promise<void> =>
-	getSoapFetch(SHELL_APP_ID)<{ _jsns: string; rights: string }, GetInfoResponse>('GetInfo', {
-		_jsns: 'urn:zimbraAccount',
+	getSoapFetch(SHELL_APP_ID)<SoapBody<{ rights: string }>, GetInfoResponse>('GetInfo', {
+		_jsns: JSNS.account,
 		rights: 'sendAs,sendAsDistList,viewFreeBusy,sendOnBehalfOf,sendOnBehalfOfDistList'
 	}).then((res: GetInfoResponse): void => {
 		if (res) {

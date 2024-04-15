@@ -5,7 +5,7 @@
  */
 import { create } from 'zustand';
 
-import type { UtilityBarStore } from '../../types';
+import type { UtilityBarStore } from '../types/misc';
 
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
 export const useUtilityBarStore = create<UtilityBarStore>()((set) => ({

@@ -12,6 +12,7 @@ import { SearchBar } from './search-bar';
 import { useSearchStore } from './search-store';
 import { ContextBridge } from '../boot/context-bridge';
 import { SEARCH_APP_ID } from '../constants';
+import * as useLocalStorage from '../shell/hooks/useLocalStorage';
 import { useAppStore } from '../store/app';
 import { ICONS, TESTID_SELECTORS } from '../test/constants';
 import {
@@ -32,6 +33,240 @@ describe('Search bar', () => {
 			</div>
 		);
 	};
+
+	describe('Clear search', () => {
+		it('should hide the clear button, by default, when the search input is empty or not valued', () => {
+			setup(<SearchBar />);
+			const inputElement = screen.getByRole('textbox', { name: /search in/i });
+			expect(inputElement).toBeVisible();
+			expect(inputElement).toHaveValue('');
+			expect(
+				screen.queryByRoleWithIcon('button', { icon: ICONS.clearSearch })
+			).not.toBeInTheDocument();
+		});
+
+		it('should clear the input element when the user clicks on clear button', async () => {
+			const { user } = setup(<SearchBar />);
+			const inputElement = screen.getByRole('textbox', { name: /search in/i });
+			const textContent = 'test';
+			await act(async () => {
+				await user.type(inputElement, textContent);
+			});
+			await act(async () => {
+				await user.keyboard(',');
+			});
+			await act(async () => {
+				await user.type(inputElement, 'test2');
+			});
+			await act(async () => {
+				await user.click(screen.getByRoleWithIcon('button', { icon: ICONS.clearSearch }));
+			});
+			expect(inputElement).toHaveValue('');
+			expect(inputElement).toHaveFocus();
+			expect(screen.queryByText(textContent)).not.toBeInTheDocument();
+		});
+	});
+
+	describe('Search button', () => {
+		it('should disable the search button, by default, when the input element is empty and there are no chips', async () => {
+			setup(<SearchBar />);
+			const inputElement = screen.getByRole('textbox', { name: /search in/i });
+			expect(inputElement).toBeVisible();
+			expect(inputElement).toHaveValue('');
+			const searchButton = screen.getByRoleWithIcon('button', { icon: ICONS.search });
+			expect(searchButton).toBeVisible();
+			expect(searchButton).toBeDisabled();
+		});
+
+		it('should enable the search button when the user starts typing inside the input element', async () => {
+			const { user } = setup(<SearchBar />);
+			await act(async () => {
+				await user.type(screen.getByRole('textbox', { name: /search in/i }), 'test');
+			});
+			const searchButton = screen.getByRoleWithIcon('button', { icon: ICONS.search });
+			expect(searchButton).toBeEnabled();
+			jest.advanceTimersToNextTimer();
+			await user.hover(searchButton);
+			act(() => {
+				// run timers of tooltip
+				jest.advanceTimersToNextTimer();
+			});
+			expect(
+				await screen.findByText(/Type or choose some keywords to start a search/i)
+			).toBeVisible();
+		});
+
+		it('should enable the search button if there are chips', async () => {
+			const { user } = setup(<SearchBar />);
+			const textContent = 'test';
+			await act(async () => {
+				await user.type(screen.getByRole('textbox', { name: /search in/i }), textContent);
+			});
+			await act(async () => {
+				await user.keyboard(',');
+			});
+			expect(screen.getByText(textContent)).toBeVisible();
+			const searchButton = screen.getByRoleWithIcon('button', { icon: ICONS.search });
+			expect(searchButton).toBeEnabled();
+			jest.advanceTimersToNextTimer();
+			await user.hover(searchButton);
+			act(() => {
+				// run timers of tooltip
+				jest.advanceTimersToNextTimer();
+			});
+			expect(await screen.findByText(/Start search/i)).toBeVisible();
+		});
+
+		describe('On search', () => {
+			it('should render the chips when the user clicks on the search button', async () => {
+				const { user } = setup(<SearchBar />);
+				const inputElement = screen.getByRole('textbox', { name: /search in/i });
+				const searchButton = screen.getByRoleWithIcon('button', { icon: ICONS.search });
+				const chip1 = 'test';
+				const chip2 = 'test2';
+				await act(async () => {
+					await user.type(inputElement, chip1);
+				});
+				await act(async () => {
+					await user.click(searchButton);
+				});
+				await act(async () => {
+					await user.type(inputElement, 'test2');
+				});
+				await act(async () => {
+					await user.click(searchButton);
+				});
+				expect(screen.getByText(chip1)).toBeVisible();
+				expect(screen.getByText(chip2)).toBeVisible();
+				expect(inputElement).not.toHaveFocus();
+				expect(inputElement).toHaveValue('');
+			});
+
+			it('should render the chips when the user presses Enter', async () => {
+				const { user } = setup(<SearchBar />);
+				const inputElement = screen.getByRole('textbox', { name: /search in/i });
+				const chip1 = 'test';
+				await act(async () => {
+					await user.type(inputElement, chip1);
+				});
+				await act(async () => {
+					await user.keyboard('[Enter]');
+				});
+				expect(screen.getByText(chip1)).toBeVisible();
+				expect(inputElement).toHaveValue('');
+			});
+		});
+	});
+
+	describe('Dropdown suggestions', () => {
+		it('should render the last 5 words of the suggestion array when the user clicks on the input element', async () => {
+			const app = generateCarbonioModule();
+			const mockUseLocalStorage = jest.spyOn(useLocalStorage, 'useLocalStorage');
+			const route = 'mails';
+			useSearchStore.setState({
+				module: 'mails'
+			});
+			useAppStore.getState().setters.addSearchView({
+				app: app.name,
+				icon: app.icon,
+				route,
+				label: app.display,
+				position: app.priority,
+				id: app.name,
+				component: () => <div>{app.name}</div>
+			});
+			mockUseLocalStorage.mockReturnValue([
+				[
+					{ value: 'test1', label: 'test1', icon: 'ClockOutline', app: 'mails', id: 'test1' },
+					{ value: 'test2', label: 'test2', icon: 'ClockOutline', app: 'mails', id: 'test2' },
+					{ value: 'test3', label: 'test3', icon: 'ClockOutline', app: 'mails', id: 'test3' },
+					{ value: 'test4', label: 'test4', icon: 'ClockOutline', app: 'mails', id: 'test4' },
+					{ value: 'test5', label: 'test5', icon: 'ClockOutline', app: 'mails', id: 'test5' },
+					{ value: 'test6', label: 'test6', icon: 'ClockOutline', app: 'files', id: 'test6' },
+					{ value: 'release', label: 'release', icon: 'ClockOutline', app: 'mails', id: 'release' }
+				],
+				jest.fn()
+			]);
+			const { user } = setup(<SearchBar />, { initialRouterEntries: [`/search/${route}`] });
+			await user.click(screen.getByRole('textbox', { name: `Search in ${app.display}` }));
+			const dropdown = await screen.findByTestId(TESTID_SELECTORS.dropdown);
+			expect(within(dropdown).getByText('release')).toBeVisible();
+			expect(within(dropdown).queryByText('test6')).not.toBeInTheDocument();
+			expect(within(dropdown).getByText('test5')).toBeVisible();
+			expect(within(dropdown).getByText('test4')).toBeVisible();
+			expect(within(dropdown).getByText('test3')).toBeVisible();
+			expect(within(dropdown).getByText('test2')).toBeVisible();
+		});
+
+		it('should render the suggestions when the user starts typing in the input element', async () => {
+			const app = generateCarbonioModule();
+			const mockUseLocalStorage = jest.spyOn(useLocalStorage, 'useLocalStorage');
+			const route = 'mails';
+			useSearchStore.setState({
+				module: 'mails'
+			});
+			useAppStore.getState().setters.addSearchView({
+				app: app.name,
+				icon: app.icon,
+				route,
+				label: app.display,
+				position: app.priority,
+				id: app.name,
+				component: () => <div>{app.name}</div>
+			});
+			mockUseLocalStorage.mockReturnValue([
+				[
+					{ value: 'test', label: 'test', icon: 'ClockOutline', app: 'mails', id: 'test' },
+					{ value: 'test2', label: 'test2', icon: 'ClockOutline', app: 'mails', id: 'test2' },
+					{ value: 'test3', label: 'test3', icon: 'ClockOutline', app: 'files', id: 'test3' },
+					{ value: 'release', label: 'release', icon: 'ClockOutline', app: 'mails', id: 'release' }
+				],
+				jest.fn()
+			]);
+			const { user } = setup(<SearchBar />, { initialRouterEntries: [`/search/${route}`] });
+			await act(async () => {
+				await user.type(screen.getByRole('textbox', { name: `Search in ${app.display}` }), 't');
+			});
+			const dropdown = await screen.findByTestId(TESTID_SELECTORS.dropdown);
+			expect(within(dropdown).getByText('test')).toBeVisible();
+			expect(within(dropdown).getByText('test2')).toBeVisible();
+			expect(within(dropdown).queryByText('test3')).not.toBeInTheDocument();
+			expect(within(dropdown).queryByText('release')).not.toBeInTheDocument();
+		});
+
+		it('should create chip when the user clicks on the dropdown suggestion', async () => {
+			const app = generateCarbonioModule();
+			const mockUseLocalStorage = jest.spyOn(useLocalStorage, 'useLocalStorage');
+			const route = 'mails';
+			useSearchStore.setState({
+				module: 'mails'
+			});
+			useAppStore.getState().setters.addSearchView({
+				app: app.name,
+				icon: app.icon,
+				route,
+				label: app.display,
+				position: app.priority,
+				id: app.name,
+				component: () => <div>{app.name}</div>
+			});
+			mockUseLocalStorage.mockReturnValue([
+				[{ value: 'test', label: 'test', icon: 'ClockOutline', app: 'mails', id: 'test' }],
+				jest.fn()
+			]);
+			const { user } = setup(<SearchBar />, { initialRouterEntries: [`/search/${route}`] });
+			await act(async () => {
+				await user.type(screen.getByRole('textbox', { name: `Search in ${app.display}` }), 't');
+			});
+			const dropdown = await screen.findByTestId(TESTID_SELECTORS.dropdown);
+			await act(async () => {
+				await user.click(within(dropdown).getByText('test'));
+			});
+			expect(dropdown).not.toBeInTheDocument();
+			// chip is created
+			expect(screen.getByText('test')).toBeVisible();
+		});
+	});
 
 	test('should render the module selector and the input of the search bar', async () => {
 		const app = generateCarbonioModule();

@@ -431,4 +431,56 @@ describe('Search bar', () => {
 		expect(within(selector).getByText(app2.display)).toBeVisible();
 		expect(screen.getByRole('textbox', { name: `Search in ${app2.display}` })).toBeVisible();
 	});
+
+	it('should show the label of the module if the user is already inside that module', () => {
+		const app = generateCarbonioModule({ priority: 1 });
+		const searchRoute = generateModuleRouteDescriptor({
+			label: app.name,
+			position: 3,
+			id: app.name,
+			route: app.name
+		});
+		useSearchStore.setState({
+			module: undefined
+		});
+		setupAppStore([app], [searchRoute]);
+		useAppStore.getState().setters.addSearchView({
+			app: app.name,
+			icon: app.icon,
+			id: app.name,
+			label: app.display,
+			position: 6,
+			route: app.name,
+			component: () => <div>{app.name}</div>
+		});
+		setup(<SearchBar />, { initialRouterEntries: [`/${app.name}`] });
+		const selector = screen.getByTestId(TESTID_SELECTORS.headerModuleSelector);
+		expect(within(selector).getByText(app.display)).toBeVisible();
+		expect(screen.getByRole('textbox', { name: `Search in ${app.display}` })).toBeVisible();
+	});
+
+	it('should show the label of the first module (which has the search) if the user navigates to a module which does not have the search', () => {
+		const app1 = generateCarbonioModule({ priority: 1 });
+		const app2 = generateCarbonioModule({ priority: 2 });
+		const searchRoute = generateModuleRouteDescriptor({
+			label: app2.name,
+			position: 3,
+			id: app2.name,
+			route: app2.name
+		});
+		setupAppStore([app1, app2], [searchRoute]);
+		useAppStore.getState().setters.addSearchView({
+			app: app1.name,
+			icon: app1.icon,
+			id: app1.name,
+			label: app1.display,
+			position: 6,
+			route: app1.name,
+			component: () => <div>{app1.name}</div>
+		});
+		setup(<SearchBar />, { initialRouterEntries: [`/${app2.name}`] });
+		const selector = screen.getByTestId(TESTID_SELECTORS.headerModuleSelector);
+		expect(within(selector).getByText(app1.display)).toBeVisible();
+		expect(screen.getByRole('textbox', { name: `Search in ${app1.display}` })).toBeVisible();
+	});
 });

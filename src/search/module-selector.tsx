@@ -64,7 +64,10 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): React.JSX.Elemen
 	);
 
 	useEffect(() => {
-		if (app !== SEARCH_APP_ID && (!fullModule || fullModule?.app !== app)) {
+		if (
+			(app !== SEARCH_APP_ID && (!fullModule || fullModule?.app !== app)) ||
+			(fullModule?.app === app && module === undefined)
+		) {
 			updateModule((modules.find((m) => m.app === app) ?? modules[0])?.route);
 		} else if (module === undefined && app === SEARCH_APP_ID) {
 			updateModule(pathModule);

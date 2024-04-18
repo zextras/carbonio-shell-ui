@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, Suspense, useMemo } from 'react';
+import type { FC } from 'react';
+import React, { Suspense, useMemo } from 'react';
 
 import { map } from 'lodash';
 

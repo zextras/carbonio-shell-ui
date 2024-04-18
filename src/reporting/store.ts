@@ -14,8 +14,8 @@ import {
 import { reduce } from 'lodash';
 import { create } from 'zustand';
 
-import type { CarbonioModule } from '../../types';
 import { SENTRY_SHELL_DSN, SHELL_APP_ID } from '../constants';
+import type { CarbonioModule } from '../types/apps';
 
 type ReporterState = {
 	clients: Record<string, Hub>;

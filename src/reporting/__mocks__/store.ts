@@ -7,7 +7,7 @@
 import { type Hub } from '@sentry/browser';
 import { create } from 'zustand';
 
-import { CarbonioModule } from '../../../types';
+import type { CarbonioModule } from '../../types/apps';
 
 type ReporterState = {
 	clients: Record<string, Hub>;

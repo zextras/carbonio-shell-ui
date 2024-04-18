@@ -9,7 +9,7 @@ import CopyPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
 import { ContextReplacementPlugin, DefinePlugin } from 'webpack';
-import { WebpackConfiguration } from 'webpack-cli';
+import type { WebpackConfiguration } from 'webpack-cli';
 
 import { SUPPORTED_LOCALES } from './src/constants/locales';
 
@@ -33,7 +33,7 @@ const configFn = (
 	options: { host: string; port: number },
 	mode: 'development' | 'production'
 ): WebpackConfiguration => {
-	const conf = { ...initialConf };
+	const conf: WebpackConfiguration = { ...initialConf };
 	const server = `https://${options.host}`;
 	const root = 'carbonio';
 	conf.entry = {
@@ -43,13 +43,13 @@ const configFn = (
 		...conf.output,
 		filename: mode === 'development' ? 'zapp-shell.bundle.js' : '[name].[chunkhash:8].js'
 	};
-	const extensions = conf.resolve?.extensions || [];
+	const extensions = conf.resolve?.extensions ?? [];
 	extensions.push('.d.ts');
 	conf.resolve = {
 		...conf.resolve,
 		extensions
 	};
-	conf.plugins = conf.plugins || [];
+	conf.plugins = conf.plugins ?? [];
 	conf.plugins.push(
 		new CopyPlugin({
 			patterns: [
@@ -121,7 +121,7 @@ const configFn = (
 		]
 	};
 	conf.externals = {};
-	const rules = conf.module?.rules || [];
+	const rules: NonNullable<WebpackConfiguration['module']>['rules'] = conf.module?.rules ?? [];
 	rules.push({
 		test: /\.(woff(2)?|ttf|eot)$/,
 		type: 'asset/resource',

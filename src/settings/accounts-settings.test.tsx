@@ -12,17 +12,19 @@ import { forEach, head, shuffle, tail } from 'lodash';
 import { http, HttpResponse } from 'msw';
 import { Link, Route, Switch } from 'react-router-dom';
 
+import type { AccountsSettingsBatchRequest } from './accounts-settings';
 import { AccountsSettings } from './accounts-settings';
-import { BatchRequest, CreateIdentityResponse } from '../../types';
-import {
-	getRightsRequest,
+import { JSNS } from '../constants';
+import type {
 	GetRightsRequestBody,
 	GetRightsResponseBody
 } from '../mocks/handlers/getRightsRequest';
+import { getRightsRequest } from '../mocks/handlers/getRightsRequest';
 import server, { waitForRequest } from '../mocks/server';
 import { useAccountStore } from '../store/account';
 import { createAccount, createIdentity, setupAccountStore } from '../test/account-utils';
 import { setup } from '../test/utils';
+import type { BatchRequest, CreateIdentityResponse } from '../types/network';
 
 describe('Account setting', () => {
 	async function waitForGetRightsRequest(): Promise<void> {
@@ -854,7 +856,7 @@ describe('Account setting', () => {
 				HttpResponse.json({
 					Body: {
 						BatchResponse: {
-							ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
+							ModifyPrefsResponse: [{ _jsns: JSNS.account }]
 						}
 					}
 				})
@@ -905,7 +907,7 @@ describe('Account setting', () => {
 				HttpResponse.json({
 					Body: {
 						BatchResponse: {
-							ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
+							ModifyPrefsResponse: [{ _jsns: JSNS.account }]
 						}
 					}
 				})
@@ -963,7 +965,7 @@ describe('Account setting', () => {
 				HttpResponse.json({
 					Body: {
 						BatchResponse: {
-							ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
+							ModifyPrefsResponse: [{ _jsns: JSNS.account }]
 						}
 					}
 				})
@@ -1169,7 +1171,7 @@ describe('Account setting', () => {
 					HttpResponse.json({
 						Body: {
 							BatchResponse: {
-								ModifyPrefsResponse: [{ _jsns: 'urn:zimbraAccount' }]
+								ModifyPrefsResponse: [{ _jsns: JSNS.account }]
 							}
 						}
 					})
@@ -1194,7 +1196,10 @@ describe('Account setting', () => {
 			await user.click(screen.getByRole('button', { name: /save/i }));
 
 			const { Body: requestBody } = await pendingBatchRequest.then(
-				(req) => req.json() as Promise<{ Body: { BatchRequest: BatchRequest } }>
+				(req) =>
+					req.json() as Promise<{
+						Body: { BatchRequest: AccountsSettingsBatchRequest };
+					}>
 			);
 
 			expect(requestBody.BatchRequest.CreateIdentityRequest).toBeUndefined();

@@ -6,7 +6,7 @@
 
 import { create } from 'zustand';
 
-import type { TagState } from '../../../types';
+import type { TagState } from '../../types/tags';
 import { tagWorker } from '../../workers';
 
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage

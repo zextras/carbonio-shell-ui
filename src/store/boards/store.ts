@@ -8,8 +8,16 @@ import { produce } from 'immer';
 import { forEach, trimStart, uniqueId } from 'lodash';
 import { create } from 'zustand';
 
-import type { BoardState, Board } from '../../../types';
+import type { Board } from '../../types/boards';
 import { getApp } from '../app';
+
+export type BoardState = {
+	orderedBoards: Array<string>;
+	boards: Record<string, Board>;
+	expanded: boolean;
+	minimized: boolean;
+	current?: string;
+};
 
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
 export const useBoardStore = create<BoardState>()(() => ({

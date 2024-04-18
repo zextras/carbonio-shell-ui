@@ -166,7 +166,7 @@ describe('Search bar', () => {
 			useSearchStore.setState({
 				module: 'mails'
 			});
-			useAppStore.getState().setters.addSearchView({
+			useAppStore.getState().addSearchView({
 				app: app.name,
 				icon: app.icon,
 				route,
@@ -205,7 +205,7 @@ describe('Search bar', () => {
 			useSearchStore.setState({
 				module: 'mails'
 			});
-			useAppStore.getState().setters.addSearchView({
+			useAppStore.getState().addSearchView({
 				app: app.name,
 				icon: app.icon,
 				route,
@@ -241,7 +241,7 @@ describe('Search bar', () => {
 			useSearchStore.setState({
 				module: 'mails'
 			});
-			useAppStore.getState().setters.addSearchView({
+			useAppStore.getState().addSearchView({
 				app: app.name,
 				icon: app.icon,
 				route,
@@ -275,7 +275,7 @@ describe('Search bar', () => {
 		useSearchStore.setState({
 			module: 'route'
 		});
-		useAppStore.getState().setters.addSearchView({
+		useAppStore.getState().addSearchView({
 			app: app.name,
 			icon: app.icon,
 			route,
@@ -304,7 +304,7 @@ describe('Search bar', () => {
 			module: route1.route
 		});
 		setupAppStore([app1, app2, searchApp], [route1, route2, searchRoute]);
-		useAppStore.getState().setters.addSearchView({
+		useAppStore.getState().addSearchView({
 			app: app1.name,
 			icon: app1.icon,
 			route: route1.route,
@@ -313,7 +313,7 @@ describe('Search bar', () => {
 			id: app1.name,
 			component: () => <div>{app1.name}</div>
 		});
-		useAppStore.getState().setters.addSearchView({
+		useAppStore.getState().addSearchView({
 			app: app2.name,
 			icon: app2.icon,
 			route: route2.route,
@@ -357,7 +357,7 @@ describe('Search bar', () => {
 			module: route1.route
 		});
 		setupAppStore([app1, app2, searchApp], [route1, route2, searchRoute]);
-		useAppStore.getState().setters.addSearchView({
+		useAppStore.getState().addSearchView({
 			app: app1.name,
 			icon: app1.icon,
 			route: route1.route,
@@ -366,7 +366,7 @@ describe('Search bar', () => {
 			id: app1.name,
 			component: () => <div>{app1.name}</div>
 		});
-		useAppStore.getState().setters.addSearchView({
+		useAppStore.getState().addSearchView({
 			app: app2.name,
 			icon: app2.icon,
 			route: route2.route,
@@ -408,7 +408,7 @@ describe('Search bar', () => {
 			module: undefined
 		});
 		setupAppStore([app1, app2], [searchRoute]);
-		useAppStore.getState().setters.addSearchView({
+		useAppStore.getState().addSearchView({
 			app: app1.name,
 			icon: app1.icon,
 			id: app1.name,
@@ -417,7 +417,7 @@ describe('Search bar', () => {
 			route: app1.name,
 			component: () => <div>{app1.name}</div>
 		});
-		useAppStore.getState().setters.addSearchView({
+		useAppStore.getState().addSearchView({
 			app: app2.name,
 			icon: app2.icon,
 			id: app2.name,
@@ -444,7 +444,7 @@ describe('Search bar', () => {
 			module: undefined
 		});
 		setupAppStore([app], [searchRoute]);
-		useAppStore.getState().setters.addSearchView({
+		useAppStore.getState().addSearchView({
 			app: app.name,
 			icon: app.icon,
 			id: app.name,
@@ -469,7 +469,7 @@ describe('Search bar', () => {
 			route: app2.name
 		});
 		setupAppStore([app1, app2], [searchRoute]);
-		useAppStore.getState().setters.addSearchView({
+		useAppStore.getState().addSearchView({
 			app: app1.name,
 			icon: app1.icon,
 			id: app1.name,

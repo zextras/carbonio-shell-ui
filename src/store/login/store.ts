@@ -6,7 +6,17 @@
 
 import { create } from 'zustand';
 
-import type { LoginConfigStore } from '../../../types/loginConfig';
+export type LoginConfigStore = {
+	carbonioWebUiDarkMode?: boolean;
+	carbonioWebUiAppLogo?: string;
+	carbonioWebUiDarkAppLogo?: string;
+	carbonioWebUiTitle: string;
+	carbonioWebUiFavicon: string;
+	carbonioWebUiPrimaryColor?: string;
+	carbonioWebUiDarkPrimaryColor?: string;
+	carbonioWebUiLogoutURL?: string;
+	loaded: boolean;
+};
 
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
 export const useLoginConfigStore = create<LoginConfigStore>()(() => ({

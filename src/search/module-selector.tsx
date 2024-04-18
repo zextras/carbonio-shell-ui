@@ -5,14 +5,8 @@
  */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import {
-	Container,
-	Row,
-	Text,
-	Icon,
-	Dropdown,
-	DropdownItem
-} from '@zextras/carbonio-design-system';
+import type { DropdownItem } from '@zextras/carbonio-design-system';
+import { Container, Row, Text, Icon, Dropdown } from '@zextras/carbonio-design-system';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 

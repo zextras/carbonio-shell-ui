@@ -6,6 +6,11 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import type {
+	SelectItem,
+	SingleSelectionOnChange,
+	TextAreaProps
+} from '@zextras/carbonio-design-system';
 import {
 	Checkbox,
 	Container,
@@ -13,26 +18,20 @@ import {
 	Padding,
 	Row,
 	Select,
-	SelectItem,
-	SingleSelectionOnChange,
 	Text,
-	TextArea,
-	TextAreaProps
+	TextArea
 } from '@zextras/carbonio-design-system';
 import { type TFunction } from 'i18next';
 import { find } from 'lodash';
 
 import { OutOfOfficeTimePeriodSection } from './out-of-office-time-period-section';
-import { AccountSettings, AccountSettingsPrefs, AddMod, BooleanString } from '../../../../types';
-import { getT } from '../../../store/i18n';
+import { getT } from '../../../store/i18n/hooks';
+import type { AccountSettings, AccountSettingsPrefs, BooleanString } from '../../../types/account';
+import type { AddMod } from '../../../types/network';
 import { outOfOfficeSubSection } from '../../general-settings-sub-sections';
 import { useReset } from '../../hooks/use-reset';
-import {
-	dateToGenTime,
-	ResetComponentImperativeHandler,
-	SettingsSectionProps,
-	upsertPrefOnUnsavedChanges
-} from '../utils';
+import type { ResetComponentImperativeHandler, SettingsSectionProps } from '../utils';
+import { dateToGenTime, upsertPrefOnUnsavedChanges } from '../utils';
 
 type CoercedPrefType<T> = T extends BooleanString | undefined ? boolean | undefined : T;
 

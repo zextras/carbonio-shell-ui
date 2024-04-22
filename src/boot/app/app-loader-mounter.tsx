@@ -5,7 +5,7 @@
  */
 
 import type { FC } from 'react';
-import React, { Suspense, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import { map } from 'lodash';
 
@@ -15,7 +15,7 @@ import { useAppStore } from '../../store/app';
 const Mounter: FC<{ appId: string }> = ({ children, appId }) => (
 	<div key={appId} id={appId}>
 		<AppContextProvider key={appId} pkg={appId}>
-			<Suspense fallback={''}>{children}</Suspense>
+			{children}
 		</AppContextProvider>
 	</div>
 );

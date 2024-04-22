@@ -19,6 +19,6 @@ describe('Search module selector', () => {
 			views: { ...state.views, search: [] }
 		}));
 		setup(<ModuleSelector />);
-		expect(screen.queryByTestId(TESTID_SELECTORS.headerModuleSelector));
+		expect(screen.queryByTestId(TESTID_SELECTORS.headerModuleSelector)).not.toBeInTheDocument();
 	});
 });

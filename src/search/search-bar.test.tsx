@@ -187,7 +187,9 @@ describe('Search bar', () => {
 				],
 				jest.fn()
 			]);
-			const { user } = setup(<SearchBar />, { initialRouterEntries: [`/search/${route}`] });
+			const { user } = setup(<SearchBar />, {
+				initialRouterEntries: [`/${SEARCH_APP_ID}/${route}`]
+			});
 			await user.click(screen.getByRole('textbox', { name: `Search in ${app.display}` }));
 			const dropdown = await screen.findByTestId(TESTID_SELECTORS.dropdown);
 			expect(within(dropdown).getByText('release')).toBeVisible();
@@ -223,7 +225,9 @@ describe('Search bar', () => {
 				],
 				jest.fn()
 			]);
-			const { user } = setup(<SearchBar />, { initialRouterEntries: [`/search/${route}`] });
+			const { user } = setup(<SearchBar />, {
+				initialRouterEntries: [`/${SEARCH_APP_ID}/${route}`]
+			});
 			await act(async () => {
 				await user.type(screen.getByRole('textbox', { name: `Search in ${app.display}` }), 't');
 			});
@@ -254,7 +258,9 @@ describe('Search bar', () => {
 				[{ value: 'test', label: 'test', icon: 'ClockOutline', app: 'mails', id: 'test' }],
 				jest.fn()
 			]);
-			const { user } = setup(<SearchBar />, { initialRouterEntries: [`/search/${route}`] });
+			const { user } = setup(<SearchBar />, {
+				initialRouterEntries: [`/${SEARCH_APP_ID}/${route}`]
+			});
 			await act(async () => {
 				await user.type(screen.getByRole('textbox', { name: `Search in ${app.display}` }), 't');
 			});
@@ -284,7 +290,7 @@ describe('Search bar', () => {
 			id: app.name,
 			component: () => <div>{app.name}</div>
 		});
-		setup(<SearchBar />, { initialRouterEntries: [`/search/${route}`] });
+		setup(<SearchBar />, { initialRouterEntries: [`/${SEARCH_APP_ID}/${route}`] });
 		expect(screen.getByText(app.display)).toBeVisible();
 		expect(screen.getByRole('textbox', { name: `Search in ${app.display}` })).toBeVisible();
 	});
@@ -332,13 +338,13 @@ describe('Search bar', () => {
 			{ initialRouterEntries: [`/search/${route1.route}`] }
 		);
 		expect(
-			within(screen.getByTestId('location-display')).getByText(`/search/${route1.route}`)
+			within(screen.getByTestId('location-display')).getByText(`/${SEARCH_APP_ID}/${route1.route}`)
 		).toBeVisible();
 		await user.click(screen.getByText(app1.display));
 		expect(screen.getByText(app2.display)).toBeVisible();
 		await user.click(screen.getByText(app2.display));
 		expect(
-			within(screen.getByTestId('location-display')).getByText(`/search/${route2.route}`)
+			within(screen.getByTestId('location-display')).getByText(`/${SEARCH_APP_ID}/${route2.route}`)
 		).toBeVisible();
 	});
 
@@ -385,14 +391,14 @@ describe('Search bar', () => {
 			{ initialRouterEntries: [`/search/${route1.route}`] }
 		);
 		expect(
-			within(screen.getByTestId('location-display')).getByText(`/search/${route1.route}`)
+			within(screen.getByTestId('location-display')).getByText(`/${SEARCH_APP_ID}/${route1.route}`)
 		).toBeVisible();
 		await act(async () => {
 			await user.type(screen.getByRole('textbox'), 'key1');
 		});
 		await user.click(screen.getByRoleWithIcon('button', { icon: ICONS.search }));
 		expect(
-			within(screen.getByTestId('location-display')).getByText(`/search/${route1.route}`)
+			within(screen.getByTestId('location-display')).getByText(`/${SEARCH_APP_ID}/${route1.route}`)
 		).toBeVisible();
 	});
 

@@ -96,65 +96,54 @@ describe('Search bar', () => {
 			).toBeVisible();
 		});
 
-		it('should enable the search button if there are chips', async () => {
-			const { user } = setup(<SearchBar />);
-			const textContent = 'test';
-			await act(async () => {
-				await user.type(screen.getByRole('textbox', { name: /search in/i }), textContent);
-			});
-			await act(async () => {
-				await user.keyboard(',');
-			});
-			expect(screen.getByText(textContent)).toBeVisible();
-			const searchButton = screen.getByRoleWithIcon('button', { icon: ICONS.search });
-			expect(searchButton).toBeEnabled();
-			jest.advanceTimersToNextTimer();
-			await user.hover(searchButton);
-			act(() => {
-				// run timers of tooltip
-				jest.advanceTimersToNextTimer();
-			});
-			expect(await screen.findByText(/Start search/i)).toBeVisible();
-		});
-
-		describe('On search', () => {
-			it('should render the chips when the user clicks on the search button', async () => {
+		it.each(['[Enter]', ',', '[Space]'])(
+			'should enable the search button when the user presses keyboard key (%s) to add the chips',
+			async (key) => {
 				const { user } = setup(<SearchBar />);
 				const inputElement = screen.getByRole('textbox', { name: /search in/i });
+				const chip1 = 'test';
+				await act(async () => {
+					await user.type(inputElement, chip1);
+				});
+				await act(async () => {
+					await user.keyboard(key);
+				});
+				expect(screen.getByText(chip1)).toBeVisible();
+				expect(inputElement).toHaveValue('');
 				const searchButton = screen.getByRoleWithIcon('button', { icon: ICONS.search });
-				const chip1 = 'test';
-				const chip2 = 'test2';
-				await act(async () => {
-					await user.type(inputElement, chip1);
+				expect(searchButton).toBeEnabled();
+				jest.advanceTimersToNextTimer();
+				await user.hover(searchButton);
+				act(() => {
+					// run timers of tooltip
+					jest.advanceTimersToNextTimer();
 				});
-				await act(async () => {
-					await user.click(searchButton);
-				});
-				await act(async () => {
-					await user.type(inputElement, 'test2');
-				});
-				await act(async () => {
-					await user.click(searchButton);
-				});
-				expect(screen.getByText(chip1)).toBeVisible();
-				expect(screen.getByText(chip2)).toBeVisible();
-				expect(inputElement).not.toHaveFocus();
-				expect(inputElement).toHaveValue('');
-			});
+				expect(await screen.findByText(/Start search/i)).toBeVisible();
+			}
+		);
 
-			it('should render the chips when the user presses Enter', async () => {
-				const { user } = setup(<SearchBar />);
-				const inputElement = screen.getByRole('textbox', { name: /search in/i });
-				const chip1 = 'test';
-				await act(async () => {
-					await user.type(inputElement, chip1);
-				});
-				await act(async () => {
-					await user.keyboard('[Enter]');
-				});
-				expect(screen.getByText(chip1)).toBeVisible();
-				expect(inputElement).toHaveValue('');
+		it('should render the chips when the user clicks on the search button', async () => {
+			const { user } = setup(<SearchBar />);
+			const inputElement = screen.getByRole('textbox', { name: /search in/i });
+			const searchButton = screen.getByRoleWithIcon('button', { icon: ICONS.search });
+			const chip1 = 'test';
+			const chip2 = 'test2';
+			await act(async () => {
+				await user.type(inputElement, chip1);
 			});
+			await act(async () => {
+				await user.click(searchButton);
+			});
+			await act(async () => {
+				await user.type(inputElement, 'test2');
+			});
+			await act(async () => {
+				await user.click(searchButton);
+			});
+			expect(screen.getByText(chip1)).toBeVisible();
+			expect(screen.getByText(chip2)).toBeVisible();
+			expect(inputElement).not.toHaveFocus();
+			expect(inputElement).toHaveValue('');
 		});
 	});
 

@@ -478,4 +478,41 @@ describe('Search bar', () => {
 		expect(within(selector).getByText(app1.display)).toBeVisible();
 		expect(screen.getByRole('textbox', { name: `Search in ${app1.display}` })).toBeVisible();
 	});
+
+	it('should show the label of the first module if the user searches directly a module without the search', () => {
+		const app1 = generateCarbonioModule({ priority: 1 });
+		const app2 = generateCarbonioModule({ priority: 2 });
+		const searchRoute = generateModuleRouteDescriptor({
+			label: SEARCH_APP_ID,
+			position: 3,
+			id: SEARCH_APP_ID
+		});
+		useSearchStore.setState({
+			module: undefined
+		});
+		setupAppStore([app1, app2], [searchRoute]);
+		useAppStore.getState().addSearchView({
+			app: app1.name,
+			icon: app1.icon,
+			id: app1.name,
+			label: app1.display,
+			position: 6,
+			route: app1.name,
+			component: () => <div>{app1.name}</div>
+		});
+		setup(
+			<>
+				<ContextBridge />
+				<SearchBar />
+				<LocationDisplayer />
+			</>,
+			{ initialRouterEntries: [`/${SEARCH_APP_ID}/${app2.name}`] }
+		);
+		const selector = screen.getByTestId(TESTID_SELECTORS.headerModuleSelector);
+		expect(within(selector).getByText(app1.display)).toBeVisible();
+		expect(screen.getByRole('textbox', { name: `Search in ${app1.display}` })).toBeVisible();
+		expect(
+			within(screen.getByTestId('location-display')).getByText(`/${SEARCH_APP_ID}/${app1.name}`)
+		).toBeVisible();
+	});
 });

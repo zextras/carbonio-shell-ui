@@ -34,11 +34,15 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): React.JSX.Elemen
 	const { module, updateModule } = useSearchStore();
 	const { pathname } = useLocation();
 	const pathModule = useMemo(() => pathname.replace(`/${SEARCH_APP_ID}/`, ''), [pathname]);
+	const searchView = modules.find((m) => m.route === pathModule);
+	const pathModuleWithSearch = useMemo(
+		() => searchView?.route ?? modules[0]?.route,
+		[modules, searchView]
+	);
 	const fullModule = useMemo(
 		() => modules.find((m) => m.route === module) ?? modules[0],
 		[module, modules]
 	);
-
 	const [open, setOpen] = useState(false);
 
 	const dropdownItems = useMemo(
@@ -64,9 +68,10 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): React.JSX.Elemen
 		) {
 			updateModule((modules.find((m) => m.app === app) ?? modules[0])?.route);
 		} else if (module === undefined && app === SEARCH_APP_ID) {
-			updateModule(pathModule);
+			updateModule(pathModuleWithSearch);
+			pushHistory({ route: SEARCH_APP_ID, path: `/${pathModuleWithSearch}` });
 		}
-	}, [app, fullModule, module, modules, pathModule, pathname, updateModule]);
+	}, [app, fullModule, module, modules, pathModule, pathModuleWithSearch, pathname, updateModule]);
 
 	const openDropdown = useCallback(() => {
 		setOpen(true);

@@ -98,4 +98,4 @@ export const SUPPORTED_LOCALES = {
 		name: 'Tiếng Việt',
 		value: 'vi'
 	}
-} satisfies Record<string, LocaleDescriptor>;
+} as const satisfies Record<string, LocaleDescriptor>;

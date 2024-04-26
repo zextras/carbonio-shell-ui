@@ -7,10 +7,7 @@
 import { pick } from 'lodash';
 
 import { useTagStore } from './store';
-import { Tags } from '../../../types';
-
-/* eslint-disable react-hooks/rules-of-hooks */
-/* THIS FILE CONTAINS HOOKS, BUT ESLINT IS DUMB */
+import type { Tags } from '../../types/tags';
 
 export const useTags = (ids?: Array<string> | string): Tags =>
 	useTagStore((s) => (ids ? pick(s.tags, ids) : s.tags));

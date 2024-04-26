@@ -7,7 +7,8 @@
 import { forEach } from 'lodash';
 
 import { useNetworkStore } from './store';
-import { AccountSettings, RawSoapResponse, SoapContext } from '../../../types';
+import type { AccountSettings } from '../../types/account';
+import type { RawSoapResponse, SoapContext } from '../../types/network';
 import { folderWorker, tagWorker } from '../../workers';
 import { useAccountStore } from '../account';
 import { useFolderStore } from '../folder';
@@ -94,30 +95,3 @@ export const handleSync = ({ refresh, notify }: SoapContext): Promise<void> =>
 		}
 		r();
 	});
-// export const noOp = (): void => {
-// 	// eslint-disable-next-line @typescript-eslint/no-use-before-define
-// 	getSoapFetch(SHELL_APP_ID)(
-// 		'NoOp',
-// 		useNetworkStore.getState().pollingInterval === 500
-// 			? { _jsns: 'urn:zimbraMail', limitToOneBlocked: 1, wait: 1 }
-// 			: { _jsns: 'urn:zimbraMail' }
-// 	);
-// };
-// export const handleSoapContext = ({ notify, refresh, session, change }: SoapContext): void =>
-// 	useNetworkStore.setState({
-// 		session,
-// 		change,
-// 		refresh,
-// 		seq: maxBy(notify, 'seq'),
-// 		noOpTimeout: setTimeout(() => noOp(), pollingInterval),
-// 		notify: map(notify, (notifyItem) => ({
-// 			...notifyItem,
-// 			deleted: notifyItem.deleted?.id?.split(',')
-// 		}))
-// 	});
-// // handleTagSync(_context);
-// // useNetworkStore.setState({
-// // 	noOpTimeout: setTimeout(() => noOp(), pollingInterval),
-// // 	,
-// // 	...res?.Header?.context
-// // });

@@ -3,11 +3,12 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { DynamicThemeFix } from 'darkreader';
+import type { DynamicThemeFix } from 'darkreader';
 
-/*
-	reference: https://zextras.atlassian.net/wiki/spaces/IRIS/pages/223215854/UI+Guidelines+and+theming
-*/
+/**
+ * @deprecated This constant is not used inside shell, and therefore it does not belong to it
+ * reference: https://zextras.atlassian.net/wiki/spaces/IRIS/pages/223215854/UI+Guidelines+and+theming
+ */
 export const ZIMBRA_STANDARD_COLORS = [
 	{ zValue: 0, hex: '#000000', zLabel: 'black' },
 	{ zValue: 1, hex: '#2b73d2', zLabel: 'blue' },
@@ -21,6 +22,9 @@ export const ZIMBRA_STANDARD_COLORS = [
 	{ zValue: 9, hex: '#FF7043', zLabel: 'orange' }
 ];
 
+/**
+ * @deprecated Folders concept is something that does not belong to shell
+ */
 export const FOLDERS = {
 	USER_ROOT: '1',
 	INBOX: '2',
@@ -39,29 +43,47 @@ export const FOLDERS = {
 	TASKS: '15',
 	BRIEFCASE: '16',
 	LAST_SYSTEM_FOLDER_POSITION: '16.1'
-};
+} as const;
 
 export const SHELL_APP_ID = 'carbonio-shell-ui';
 export const SETTINGS_APP_ID = 'settings';
+/**
+ * @deprecated This constant is not used and will be deleted in next releases
+ */
 export const ACCOUNTS_APP_ID = 'accounts';
 export const SEARCH_APP_ID = 'search';
+
 export const ACTION_TYPES = {
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	CONVERSATION: 'conversation',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	CONVERSATION_lIST: 'conversation_list',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	MESSAGE: 'message',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	MESSAGE_lIST: 'message_list',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	CONTACT: 'contact',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	CONTACT_lIST: 'contact_list',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	INVITE: 'invite',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	INVITE_lIST: 'invite_list',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	APPOINTMENT: 'appointment',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	APPOINTMENT_lIST: 'appointment_list',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	FOLDER: 'folder',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	FOLDER_lIST: 'folder_list',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	CALENDAR: 'calendar',
+	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	CALENDAR_lIST: 'calendar_list',
 	NEW: 'new'
-};
+} as const;
 
 export const darkReaderDynamicThemeFixes: DynamicThemeFix = {
 	ignoreImageAnalysis: ['.no-dr-invert *'],
@@ -86,10 +108,12 @@ export const EMAIL_VALIDATION_REGEX =
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars, max-len, no-control-regex
 	/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
 
+/** @deprecated This user root concept does not belong to the shell, and therefore it will be removed asap */
 export const ROOT_NAME = 'USER_ROOT';
 
 export const DARK_READER_VALUES = ['auto', 'enabled', 'disabled'] as const;
 
+/** @deprecated this const is not used inside shell, and therefore it does not belong to it */
 export const FOLDER_VIEW = {
 	search_folder: 'search folder',
 	tag: 'tag',
@@ -117,20 +141,20 @@ export const SCALING_OPTIONS = [
 ] as const;
 export const BASE_FONT_SIZE = 100;
 export const SCALING_LIMIT = {
-	WIDTH: 1400,
-	HEIGHT: 900,
-	DPR: 2 // device pixel ratio
+	width: 1400,
+	height: 900,
+	dpr: 2 // device pixel ratio
 } as const;
 
 export const LOGIN_V3_CONFIG_PATH = '/zx/login/v3/config';
 export const DARK_READER_PROP_KEY = 'zappDarkreaderMode';
 export const SENTRY_SHELL_DSN = 'https://0ce2448c05b94f0182c47ae52c7ff52c@feedback.zextras.tools/6';
 
-export enum ResultLabelType {
-	NORMAL = 'normal',
-	WARNING = 'warning',
-	ERROR = 'error'
-}
+export const RESULT_LABEL_TYPE = {
+	normal: 'normal',
+	warning: 'warning',
+	error: 'error'
+} as const;
 
 export const HEADER_BAR_HEIGHT = '3.75rem';
 export const PRIMARY_BAR_WIDTH = '3.0625rem';
@@ -144,3 +168,11 @@ export const BOARD_MIN_VISIBILITY = {
 
 export const DELEGATED_SEND_SAVE_TARGET = ['owner', 'sender', 'both', 'none'];
 export const CUSTOM_EVENTS = { updateView: 'updateView' } as const;
+
+export const JSNS = {
+	account: 'urn:zimbraAccount',
+	admin: 'urn:zimbraAdmin',
+	mail: 'urn:zimbraMail',
+	all: 'urn:zimbra',
+	sync: 'urn:zimbraSync'
+} as const;

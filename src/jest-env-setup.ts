@@ -94,7 +94,12 @@ afterEach(() => {
 });
 
 // https://jestjs.io/docs/manual-mocks#mocking-user-modules
+// disable eslint since these imports are made only to have a direct evidence of the path
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 jest.mock<typeof import('./workers')>('./workers');
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 jest.mock<typeof import('./reporting/functions')>('./reporting/functions');
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 jest.mock<typeof import('./reporting/store')>('./reporting/store');
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 jest.mock<typeof import('./boot/matomo')>('./boot/matomo');

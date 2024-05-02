@@ -25,6 +25,7 @@
 		"postbuild:pkg": "rm carbonio.webpack.js src/constants/locales.js",
 		"prebuild:lib": "rm -rf lib",
 		"build:lib": "tsc -p tsconfig.lib.json && npx api-extractor run --verbose",
+		"build:lib:local": "tsc -p tsconfig.lib.json && npx api-extractor run --verbose --local",
 		"predeploy": "npm run prebuild:pkg",
 		"postdeploy": "npm run postbuild:pkg",
 		"deploy": "sdk deploy",

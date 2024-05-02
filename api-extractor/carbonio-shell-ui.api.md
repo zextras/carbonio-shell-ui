@@ -1684,11 +1684,11 @@ interface ZimletProp {
 // lib/types/account/index.d.ts:132:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:133:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
 // lib/types/apps/index.d.ts:68:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:109:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:128:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:144:5 - (ae-forgotten-export) The symbol "Meta" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:148:5 - (ae-forgotten-export) The symbol "SoapRetentionPolicy" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:162:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:85:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:104:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:120:5 - (ae-forgotten-export) The symbol "Meta" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:124:5 - (ae-forgotten-export) The symbol "SoapRetentionPolicy" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:138:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
 // lib/types/network/index.d.ts:107:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:11:5 - (ae-forgotten-export) The symbol "NameSpace" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:33:5 - (ae-forgotten-export) The symbol "SoapFault" needs to be exported by the entry point lib.d.ts

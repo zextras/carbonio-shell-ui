@@ -3,30 +3,29 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
-import {
-	Container,
-	Dropdown,
-	DropdownItem,
-	IconButton,
-	Tooltip
-} from '@zextras/carbonio-design-system';
+import type { DropdownItem } from '@zextras/carbonio-design-system';
+import { Container, Dropdown, IconButton, Tooltip } from '@zextras/carbonio-design-system';
 import { map, noop } from 'lodash';
 
 import { useUtilityBarStore } from './store';
 import { useUtilityViews } from './utils';
-import type { UtilityView } from '../../types';
+import { CUSTOM_EVENTS } from '../constants';
 import { fetchNoOp } from '../network/fetch';
 import { logout } from '../network/logout';
 import { useUserAccount } from '../store/account';
-import { getT } from '../store/i18n';
+import { getT } from '../store/i18n/hooks';
+import type { UtilityView } from '../types/apps';
 
-const UtilityBarItem: FC<{ view: UtilityView }> = ({ view }) => {
+export interface UtilityBarItemProps {
+	view: UtilityView;
+}
+
+const UtilityBarItem = ({ view }: UtilityBarItemProps): React.JSX.Element => {
 	const { mode, setMode, current, setCurrent } = useUtilityBarStore();
 	const onClick = useCallback((): void => {
-		// eslint-disable-next-line no-nested-ternary
-		setMode(current !== view.id ? 'open' : mode !== 'open' ? 'open' : 'closed');
+		setMode((current !== view.id && 'open') || (mode !== 'open' && 'open') || 'closed');
 		setCurrent(view.id);
 	}, [current, mode, setCurrent, setMode, view.id]);
 	if (typeof view.button === 'string') {
@@ -48,6 +47,12 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 	const views = useUtilityViews();
 	const t = getT();
 	const account = useUserAccount();
+
+	const updateViews = useCallback(() => {
+		const updateViewEvent = new CustomEvent(CUSTOM_EVENTS.updateView);
+		window.dispatchEvent(updateViewEvent);
+	}, []);
+
 	const accountItems = useMemo(
 		(): DropdownItem[] => [
 			{
@@ -68,7 +73,10 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 			{
 				id: 'update',
 				label: t('label.update_view', 'Update view'),
-				onClick: fetchNoOp,
+				onClick: (): void => {
+					fetchNoOp();
+					updateViews();
+				},
 				icon: 'Refresh'
 			},
 			{
@@ -85,7 +93,7 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 				icon: 'LogOut'
 			}
 		],
-		[account, t]
+		[account?.displayName, account?.name, t, updateViews]
 	);
 
 	const viewItems = useMemo(

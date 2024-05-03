@@ -3,16 +3,18 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { CSSProperties, useCallback, useEffect, useRef } from 'react';
+import type { CSSProperties } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { find, forEach } from 'lodash';
 
 import { useLocalStorage } from './useLocalStorage';
+import type { SizeAndPosition } from '../../utils/utils';
 import {
 	createExportForTestOnly,
 	setElementSizeAndPosition,
-	setGlobalCursor,
-	SizeAndPosition
+	setGlobalCursor
 } from '../../utils/utils';
 
 /**

@@ -8,16 +8,16 @@
 import type { TFunction } from 'i18next';
 import { size } from 'lodash';
 
-import type { AppRouteDescriptor, SettingsView } from '../../../types';
 import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
 import { SearchAppView } from '../../search/search-app-view';
-import { AccountsSettings } from '../../settings/accounts-settings';
+import { WrappedAccountsSettings } from '../../settings/accounts-settings';
 import GeneralSettings from '../../settings/general-settings';
 import { settingsSubSections } from '../../settings/general-settings-sub-sections';
 import { SettingsAppView } from '../../settings/settings-app-view';
 import { SettingsSidebar } from '../../settings/settings-sidebar';
 import { useAccountStore } from '../../store/account';
 import { useAppStore } from '../../store/app';
+import type { AppRouteDescriptor, SettingsView } from '../../types/apps';
 
 const settingsGeneralView = (t: TFunction): SettingsView => ({
 	id: 'general',
@@ -34,7 +34,7 @@ const settingsAccountsView = (t: TFunction): SettingsView => ({
 	id: 'accounts',
 	route: 'accounts',
 	app: SHELL_APP_ID,
-	component: AccountsSettings,
+	component: WrappedAccountsSettings,
 	icon: 'PersonOutline',
 	label: t('settings.accounts', 'Accounts'),
 	position: 1
@@ -72,9 +72,9 @@ const settingsRouteDescriptor = (t: TFunction): AppRouteDescriptor => ({
 export const registerDefaultViews = (t: TFunction): void => {
 	const { attrs } = useAccountStore.getState().settings;
 	if (size(attrs) > 0 && attrs.zimbraFeatureOptionsEnabled !== 'FALSE') {
-		useAppStore.getState().setters.addRoute(settingsRouteDescriptor(t));
-		useAppStore.getState().setters.addSettingsView(settingsGeneralView(t));
-		useAppStore.getState().setters.addSettingsView(settingsAccountsView(t));
+		useAppStore.getState().addRoute(settingsRouteDescriptor(t));
+		useAppStore.getState().addSettingsView(settingsGeneralView(t));
+		useAppStore.getState().addSettingsView(settingsAccountsView(t));
 	}
-	useAppStore.getState().setters.addRoute(searchRouteDescriptor(t));
+	useAppStore.getState().addRoute(searchRouteDescriptor(t));
 };

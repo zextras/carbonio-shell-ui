@@ -3,35 +3,28 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-export type OneOrMany<T> = T | T[];
-
 export type StringOfLength<Min, Max = Min> = string & {
 	min: Min;
 	max: Max;
 	readonly StringOfLength: unique symbol; // this is the phantom type
 };
 
-// This is a type guard function which can be used to assert that a string
-// is of type StringOfLength<Min,Max>
-export const isStringOfLength = <Min extends number, Max extends number>(
-	str: string,
-	min: Min,
-	max: Max
-): str is StringOfLength<Min, Max> => str.length >= min && str.length <= max;
+export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyof T, Keys>> &
+	{
+		[K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>;
+	}[Keys];
 
-// type constructor function
-export const stringOfLength = <Min extends number, Max extends number>(
-	input: unknown,
-	min: Min,
-	max: Max
-): StringOfLength<Min, Max> => {
-	if (typeof input !== 'string') {
-		throw new Error('invalid input');
-	}
+export type Override<
+	TObj extends Record<string, unknown>,
+	TOverride extends Partial<Record<keyof TObj, unknown>>
+> = Omit<TObj, keyof TOverride> & TOverride;
 
-	if (!isStringOfLength(input, min, max)) {
-		throw new Error('input is not between specified min and max');
-	}
+// FIXME: check if there is a way to remove these any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyFunction = (...args: any[]) => any;
 
-	return input; // the type of input here is now StringOfLength<Min,Max>
+export type ValueOf<T extends Record<string, unknown>> = T[keyof T];
+
+export type Exactify<T, X extends T> = T & {
+	[K in keyof X]: K extends keyof T ? X[K] : never;
 };

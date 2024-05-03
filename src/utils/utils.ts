@@ -3,7 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { CSSProperties } from 'react';
+import type { CSSProperties } from 'react';
+import type React from 'react';
 
 import { reduce } from 'lodash';
 

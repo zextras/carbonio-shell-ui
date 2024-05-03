@@ -17,11 +17,17 @@ import { OutOfOfficeSettings } from './components/general-settings/out-of-office
 import { ScalingSettingSection } from './components/general-settings/scaling-setting-section';
 import { SearchSettings } from './components/general-settings/search-settings';
 import UserQuota from './components/general-settings/user-quota';
-import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
-import { ResetComponentImperativeHandler } from './components/utils';
+import type { SettingsHeaderProps } from './components/settings-header';
+import { SettingsHeader } from './components/settings-header';
+import type { ResetComponentImperativeHandler } from './components/utils';
 import { LanguageAndTimeZoneSettings } from './language-and-timezone-settings';
-import {
-	AccountState,
+import { JSNS, LOCAL_STORAGE_SETTINGS_KEY, SHELL_APP_ID } from '../constants';
+import { getSoapFetch } from '../network/fetch';
+import { useLocalStorage } from '../shell/hooks/useLocalStorage';
+import { useAccountStore, useUserSettings } from '../store/account';
+import { getT } from '../store/i18n/hooks';
+import type { AccountState } from '../types/account';
+import type {
 	AddMod,
 	BatchRequest,
 	ModifyPrefsRequest,
@@ -30,13 +36,8 @@ import {
 	ModifyPropertiesResponse,
 	Mods,
 	RemoveMod
-} from '../../types';
-import { ScalingSettings } from '../../types/settings';
-import { LOCAL_STORAGE_SETTINGS_KEY, SHELL_APP_ID } from '../constants';
-import { getSoapFetch } from '../network/fetch';
-import { useLocalStorage } from '../shell/hooks/useLocalStorage';
-import { useAccountStore, useUserSettings } from '../store/account';
-import { getT } from '../store/i18n';
+} from '../types/network';
+import type { ScalingSettings } from '../types/settings';
 
 const GeneralSettings = (): React.JSX.Element => {
 	const [mods, setMods] = useState<Mods>({});
@@ -117,7 +118,7 @@ const GeneralSettings = (): React.JSX.Element => {
 						_content: prop.value
 					})
 				);
-				modifyPropertiesRequest = { _jsns: 'urn:zimbraAccount', prop: mappedProperties };
+				modifyPropertiesRequest = { _jsns: JSNS.account, prop: mappedProperties };
 			}
 
 			let modifyPrefsRequest: ModifyPrefsRequest | undefined;
@@ -131,7 +132,7 @@ const GeneralSettings = (): React.JSX.Element => {
 							? ''
 							: attrs.zimbraPrefMailTrustedSenderList;
 				}
-				modifyPrefsRequest = { _jsns: 'urn:zimbraAccount', _attrs: attrs };
+				modifyPrefsRequest = { _jsns: JSNS.account, _attrs: attrs };
 			}
 
 			const promise = getSoapFetch(SHELL_APP_ID)<
@@ -141,7 +142,7 @@ const GeneralSettings = (): React.JSX.Element => {
 					ModifyPrefsResponse?: ModifyPrefsResponse;
 				}
 			>('Batch', {
-				_jsns: 'urn:zimbra',
+				_jsns: JSNS.all,
 				ModifyPropertiesRequest: modifyPropertiesRequest,
 				ModifyPrefsRequest: modifyPrefsRequest
 			})

@@ -6,45 +6,60 @@
 
 import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react';
 
-import { Container, useSnackbar } from '@zextras/carbonio-design-system';
-import { TFunction } from 'i18next';
+import { Container, ModalManager, useSnackbar } from '@zextras/carbonio-design-system';
+import type { TFunction } from 'i18next';
 import { produce } from 'immer';
 import { map, find, isEmpty, reduce, findIndex, filter, size } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import AccountsList from './components/account-settings/accounts-list';
-import Delegates, { DelegatesProps, DelegateType } from './components/account-settings/delegates';
+import type { DelegatesProps, DelegateType } from './components/account-settings/delegates';
+import Delegates from './components/account-settings/delegates';
 import PersonaSettings from './components/account-settings/persona-settings';
 import PrimaryAccountSettings from './components/account-settings/primary-account-settings';
 import SettingsSentMessages from './components/account-settings/settings-sent-messages';
-import SettingsHeader, { SettingsHeaderProps } from './components/settings-header';
+import type { SettingsHeaderProps } from './components/settings-header';
+import { SettingsHeader } from './components/settings-header';
+import type { ResetComponentImperativeHandler } from './components/utils';
 import {
 	calculateNewIdentitiesState,
 	defaultAsFirstOrderIdentities,
 	getAvailableEmailAddresses,
-	isPrimary,
-	ResetComponentImperativeHandler
+	isPrimary
 } from './components/utils';
-import {
-	BatchRequest,
-	CreateIdentityResponse,
-	DeleteIdentityResponse,
-	ModifyIdentityResponse,
-	ModifyPrefsResponse,
-	CreateIdentityRequest,
-	DeleteIdentityRequest,
-	IdentityAttrs,
-	AccountSettingsPrefs,
-	ModifyPrefsRequest,
-	GetRightsRequest,
-	GetRightsResponse,
-	AccountState
-} from '../../types';
-import type { ModifyIdentityRequest } from '../../types';
-import { AccountACEInfo } from '../../types/network/entities';
-import { SHELL_APP_ID } from '../constants';
+import { JSNS, SHELL_APP_ID } from '../constants';
 import { getSoapFetch } from '../network/fetch';
 import { useAccountStore, useUserAccount, useUserSettings } from '../store/account';
+import type { AccountSettingsPrefs, AccountState, IdentityAttrs } from '../types/account';
+import type {
+	BatchRequest,
+	BatchResponse,
+	CreateIdentityRequest,
+	CreateIdentityResponse,
+	DeleteIdentityRequest,
+	DeleteIdentityResponse,
+	GetRightsRequest,
+	GetRightsResponse,
+	ModifyIdentityRequest,
+	ModifyIdentityResponse,
+	ModifyPrefsRequest,
+	ModifyPrefsResponse
+} from '../types/network';
+import type { AccountACEInfo } from '../types/network/entities';
+
+export type AccountsSettingsBatchRequest = BatchRequest<{
+	ModifyIdentityRequest?: Array<ModifyIdentityRequest>;
+	CreateIdentityRequest?: Array<CreateIdentityRequest>;
+	DeleteIdentityRequest?: Array<DeleteIdentityRequest>;
+	ModifyPrefsRequest?: ModifyPrefsRequest;
+}>;
+
+type AccountsSettingsBatchResponse = BatchResponse<{
+	ModifyIdentityResponse?: ModifyIdentityResponse[];
+	DeleteIdentityResponse?: DeleteIdentityResponse[];
+	CreateIdentityResponse?: CreateIdentityResponse[];
+	ModifyPrefsResponse?: ModifyPrefsResponse;
+}>;
 
 function mapToCreateIdentityRequests(
 	createRecord: Record<string, IdentityAttrs>
@@ -52,7 +67,7 @@ function mapToCreateIdentityRequests(
 	return map(
 		createRecord,
 		(item): CreateIdentityRequest => ({
-			_jsns: 'urn:zimbraAccount',
+			_jsns: JSNS.account,
 			identity: {
 				name: item.zimbraPrefIdentityName,
 				_attrs: {
@@ -68,7 +83,7 @@ function mapToDeleteIdentityRequests(deleteArray: Array<string>): Array<DeleteId
 	return map(
 		deleteArray,
 		(identityId, index): DeleteIdentityRequest => ({
-			_jsns: 'urn:zimbraAccount',
+			_jsns: JSNS.account,
 			identity: { id: identityId },
 			requestId: index.toString()
 		})
@@ -81,7 +96,7 @@ function mapToModifyIdentityRequests(
 	return map<typeof modifyRecord, ModifyIdentityRequest>(
 		modifyRecord,
 		(item, index): ModifyIdentityRequest => ({
-			_jsns: 'urn:zimbraAccount',
+			_jsns: JSNS.account,
 			identity: {
 				id: index,
 				_attrs: item
@@ -274,7 +289,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 			settings.prefs.zimbraPrefDelegatedSendSaveTarget !== delegatedSendSaveTargetRef.current
 		) {
 			modifyPrefsRequest = {
-				_jsns: 'urn:zimbraAccount',
+				_jsns: JSNS.account,
 				_attrs: { zimbraPrefDelegatedSendSaveTarget: delegatedSendSaveTargetRef.current }
 			};
 		}
@@ -291,15 +306,10 @@ export const AccountsSettings = (): React.JSX.Element => {
 		);
 
 		const promise = getSoapFetch(SHELL_APP_ID)<
-			BatchRequest,
-			{
-				ModifyIdentityResponse?: ModifyIdentityResponse[];
-				DeleteIdentityResponse?: DeleteIdentityResponse[];
-				CreateIdentityResponse?: CreateIdentityResponse[];
-				ModifyPrefsResponse?: ModifyPrefsResponse;
-			}
+			AccountsSettingsBatchRequest,
+			AccountsSettingsBatchResponse
 		>('Batch', {
-			_jsns: 'urn:zimbra',
+			_jsns: JSNS.all,
 			DeleteIdentityRequest: deleteRequests.length > 0 ? deleteRequests : undefined,
 			CreateIdentityRequest: createIdentityRequests.length > 0 ? createIdentityRequests : undefined,
 			ModifyIdentityRequest: modifyIdentityRequests.length > 0 ? modifyIdentityRequests : undefined,
@@ -380,7 +390,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 	useEffect(() => {
 		if (!rights) {
 			getSoapFetch(SHELL_APP_ID)<GetRightsRequest, GetRightsResponse>('GetRights', {
-				_jsns: 'urn:zimbraAccount',
+				_jsns: JSNS.account,
 				ace: [{ right: 'sendAs' }, { right: 'sendOnBehalfOf' }]
 			}).then((value) => {
 				if (value.ace) {
@@ -470,3 +480,9 @@ export const AccountsSettings = (): React.JSX.Element => {
 		</>
 	);
 };
+
+export const WrappedAccountsSettings = (): React.JSX.Element => (
+	<ModalManager>
+		<AccountsSettings />
+	</ModalManager>
+);

@@ -6,7 +6,7 @@
 
 import { create } from 'zustand';
 
-import type { NetworkState } from '../../../types';
+import type { NetworkState } from '../../types/network';
 
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
 export const useNetworkStore = create<NetworkState>()(() => ({

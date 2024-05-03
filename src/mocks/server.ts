@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { LifeCycleEventsMap, matchRequestUrl } from 'msw';
+import type { LifeCycleEventsMap } from 'msw';
+import { matchRequestUrl } from 'msw';
 import { setupServer } from 'msw/node';
 
 import handlers from './handlers';

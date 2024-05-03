@@ -57,3 +57,11 @@ License: CC0-1.0
 Files: THIRDPARTIES
 Copyright: 2024 Zextras <https://www.zextras.com>
 License: CC0-1.0
+
+Files: api-extractor/*
+Copyright: 2024 Zextras <https://www.zextras.com>
+License: CC0-1.0
+
+Files: api-extractor.json
+Copyright: 2024 Zextras <https://www.zextras.com>
+License: CC0-1.0

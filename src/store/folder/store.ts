@@ -6,7 +6,7 @@
 
 import { create } from 'zustand';
 
-import type { FolderState } from '../../../types';
+import type { FolderState } from '../../types/folder';
 import { folderWorker } from '../../workers';
 
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage

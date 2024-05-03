@@ -7,7 +7,7 @@
 import { isFunction } from 'lodash';
 import { create } from 'zustand';
 
-import type { QueryChip, SearchState } from '../../types';
+import type { QueryChip, SearchState } from '../types/search';
 
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
 export const useSearchStore = create<SearchState>()((set, get) => ({

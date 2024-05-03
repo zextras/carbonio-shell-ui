@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { MatomoTracker } from '../matomo';
+import type { MatomoTracker } from '../matomo';
 
 export function initMatomo(): void {
 	// do nothing

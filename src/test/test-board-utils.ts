@@ -48,7 +48,7 @@ export function setupBoardStore(current?: string, boardState?: Record<string, Bo
 	useBoardStore.setState(() => ({
 		boards,
 		orderedBoards: Object.keys(boards),
-		current: current || first(keys(boards))
+		current: current ?? first(keys(boards))
 	}));
 }
 
@@ -123,7 +123,7 @@ export async function resizeBoard(
 	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseUp(document.body);
 	await waitFor(() =>
-		expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '{}')).toEqual(
+		expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) ?? '{}')).toEqual(
 			boardNewPosition
 		)
 	);
@@ -155,7 +155,7 @@ export async function moveBoard(
 	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.click(elementForMove);
 	await waitFor(() =>
-		expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '{}')).toEqual(
+		expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) ?? '{}')).toEqual(
 			boardNewPosition
 		)
 	);

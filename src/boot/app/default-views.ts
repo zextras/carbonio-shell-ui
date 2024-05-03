@@ -10,7 +10,7 @@ import { size } from 'lodash';
 
 import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
 import { SearchAppView } from '../../search/search-app-view';
-import { AccountsSettings } from '../../settings/accounts-settings';
+import { WrappedAccountsSettings } from '../../settings/accounts-settings';
 import GeneralSettings from '../../settings/general-settings';
 import { settingsSubSections } from '../../settings/general-settings-sub-sections';
 import { SettingsAppView } from '../../settings/settings-app-view';
@@ -34,7 +34,7 @@ const settingsAccountsView = (t: TFunction): SettingsView => ({
 	id: 'accounts',
 	route: 'accounts',
 	app: SHELL_APP_ID,
-	component: AccountsSettings,
+	component: WrappedAccountsSettings,
 	icon: 'PersonOutline',
 	label: t('settings.accounts', 'Accounts'),
 	position: 1

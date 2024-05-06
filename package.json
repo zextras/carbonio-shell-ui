@@ -34,9 +34,7 @@
 		"poststart": "npm run postbuild:pkg",
 		"packTo": "npm pack --pack-destination $PKG_PATH && cd $PKG_PATH && npm i zextras-carbonio-shell-ui-$npm_package_version.tgz",
 		"packTo:noBuild": "cp zextras-carbonio-shell-ui-$npm_package_version.tgz $PKG_PATH/ && cd $PKG_PATH && npm i zextras-carbonio-shell-ui-$npm_package_version.tgz",
-		"deploy-on-module": "npm pack && rm -rf $PKG_PATH/node_modules/@zextras/carbonio-shell-ui/* && tar -xf zextras-carbonio-shell-ui-$npm_package_version.tgz -C $PKG_PATH/node_modules/@zextras/carbonio-shell-ui/ --strip-components 1",
-		"translations:push": "git subtree push --prefix translations $npm_package_config_translations_repository translations-updater/$(date '+%Y-%m-%d')",
-		"translations:pull": "git subtree pull --squash --prefix translations $npm_package_config_translations_repository master"
+		"deploy-on-module": "npm pack && rm -rf $PKG_PATH/node_modules/@zextras/carbonio-shell-ui/* && tar -xf zextras-carbonio-shell-ui-$npm_package_version.tgz -C $PKG_PATH/node_modules/@zextras/carbonio-shell-ui/ --strip-components 1"
 	},
 	"files": [
 		"lib/",

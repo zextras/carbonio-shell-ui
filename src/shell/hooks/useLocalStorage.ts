@@ -14,7 +14,7 @@ function isSameLocalStorageValue(valueA: unknown, valueB: unknown): boolean {
 	return JSON.stringify(valueA) === JSON.stringify(valueB);
 }
 
-type LocalStorageOptions = { keepSynchedWithStorage?: boolean };
+type LocalStorageOptions = { keepSyncedWithStorage?: boolean };
 
 type LocalStorageState = {
 	storage: Record<string, unknown>;
@@ -25,19 +25,20 @@ type LocalStorageState = {
 const useLocalStorageStore = create<LocalStorageState>()((setState) => ({
 	storage: {},
 	readValue<T>(key: string, fallback: T): void {
+		const localStorageItem = window.localStorage.getItem(key);
+		let item: T;
 		try {
-			const localStorageItem = window.localStorage.getItem(key);
-			const item = localStorageItem !== null ? JSON.parse(localStorageItem) : fallback;
-			setState((state) => {
-				if (state.storage[key] === undefined) {
-					return { storage: { ...state.storage, [key]: item } };
-				}
-				return state;
-			});
+			item = localStorageItem !== null ? JSON.parse(localStorageItem) : fallback;
 		} catch (error) {
-			console.error(error);
-			setState((state) => ({ storage: { ...state.storage, [key]: fallback } }));
+			console.error(`Cannot read local storage ${key} with value "${localStorageItem}":`, error);
+			item = fallback;
 		}
+		setState((state) => {
+			if (state.storage[key] === undefined) {
+				return { storage: { ...state.storage, [key]: item } };
+			}
+			return state;
+		});
 	},
 	setValue<T>(key: string, value: React.SetStateAction<T>): void {
 		setState((state) => {
@@ -52,7 +53,7 @@ const useLocalStorageStore = create<LocalStorageState>()((setState) => ({
 }));
 
 const DEFAULT_OPTIONS: LocalStorageOptions = {
-	keepSynchedWithStorage: true
+	keepSyncedWithStorage: true
 };
 
 export function useLocalStorage<T>(
@@ -60,7 +61,7 @@ export function useLocalStorage<T>(
 	initialValue: T,
 	options = DEFAULT_OPTIONS
 ): [T, React.Dispatch<React.SetStateAction<T>>] {
-	const storedValue = useLocalStorageStore((state) => (state.storage[key] as T) || initialValue);
+	const storedValue = useLocalStorageStore((state) => (state.storage[key] as T) ?? initialValue);
 	const shouldDispatchStorageEventRef = useRef(false);
 	const localStorageOptions = useMemo(() => ({ ...DEFAULT_OPTIONS, ...options }), [options]);
 
@@ -81,14 +82,14 @@ export function useLocalStorage<T>(
 	);
 
 	useEffect(() => {
-		if (localStorageOptions?.keepSynchedWithStorage) {
+		if (localStorageOptions?.keepSyncedWithStorage) {
 			window.addEventListener('storage', readValueForKey);
 		}
 
 		return (): void => {
 			window.removeEventListener('storage', readValueForKey);
 		};
-	}, [localStorageOptions?.keepSynchedWithStorage, readValueForKey]);
+	}, [localStorageOptions?.keepSyncedWithStorage, readValueForKey]);
 
 	useEffect(() => {
 		if (shouldDispatchStorageEventRef.current) {

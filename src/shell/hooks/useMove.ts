@@ -15,7 +15,7 @@ import { setElementSizeAndPosition, setGlobalCursor } from '../../utils/utils';
 type UseMoveReturnType = [isMoving: boolean, moveHandler: React.MouseEventHandler];
 type MoveOptions = {
 	localStorageKey?: string;
-	keepSynchedWithStorage?: boolean;
+	keepSyncedWithStorage?: boolean;
 };
 
 export const BOARD_CURSOR_TIMEOUT = 250;
@@ -55,7 +55,7 @@ export const useMove = (
 	const [lastSavedPosition, setLastSavedPosition] = useLocalStorage<Partial<SizeAndPosition>>(
 		options?.localStorageKey || 'use-move-data',
 		{},
-		{ keepSynchedWithStorage: options?.keepSynchedWithStorage }
+		{ keepSyncedWithStorage: options?.keepSyncedWithStorage }
 	);
 	const lastPositionRef = useRef<Partial<ElementPosition>>(lastSavedPosition);
 	const globalCursorSetterTimerRef = useRef<ReturnType<typeof setTimeout>>();

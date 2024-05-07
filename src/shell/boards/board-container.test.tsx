@@ -489,7 +489,7 @@ describe('Board container', () => {
 			jest.advanceTimersToNextTimer();
 		});
 		await waitFor(() =>
-			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '')).toEqual({})
+			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) ?? '')).toEqual({})
 		);
 		expect(board).toHaveStyle({
 			height: '70vh',
@@ -1017,7 +1017,7 @@ describe('Board container', () => {
 			setupBoardStore();
 		});
 		await waitFor(() =>
-			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '{}')).toEqual({})
+			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) ?? '{}')).toEqual({})
 		);
 		expect(getByRoleWithIcon('button', { icon: ICONS.resetBoardSize })).toBeDisabled();
 	});

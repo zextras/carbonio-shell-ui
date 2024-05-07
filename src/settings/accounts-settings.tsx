@@ -26,7 +26,7 @@ import {
 import { JSNS, SHELL_APP_ID } from '../constants';
 import { getSoapFetch } from '../network/fetch';
 import { useAccountStore, useUserAccount, useUserSettings } from '../store/account';
-import type { AccountSettingsPrefs, AccountState, IdentityAttrs } from '../types/account';
+import type { AccountState, IdentityAttrs } from '../types/account';
 import type {
 	BatchRequest,
 	BatchResponse,
@@ -109,19 +109,14 @@ export const AccountsSettings = (): React.JSX.Element => {
 	const deleteArrayRef = useRef<Array<string>>([]);
 	const modifyRecordRef = useRef<Record<string, Partial<IdentityAttrs>>>({});
 
-	const delegatedSendSaveTargetRef = useRef<
-		AccountSettingsPrefs['zimbraPrefDelegatedSendSaveTarget']
-	>(settings.prefs.zimbraPrefDelegatedSendSaveTarget);
-
 	const [isDirty, setIsDirty] = useState(false);
 	const calculateIsDirty = useCallback(() => {
 		setIsDirty(
 			!isEmpty(createRecordRef.current) ||
 				!isEmpty(deleteArrayRef.current) ||
-				!isEmpty(modifyRecordRef.current) ||
-				settings.prefs.zimbraPrefDelegatedSendSaveTarget !== delegatedSendSaveTargetRef.current
+				!isEmpty(modifyRecordRef.current)
 		);
-	}, [settings.prefs.zimbraPrefDelegatedSendSaveTarget]);
+	}, []);
 
 	const resetLists = useCallback(() => {
 		createRecordRef.current = {};
@@ -240,16 +235,6 @@ export const AccountsSettings = (): React.JSX.Element => {
 
 		let modifyPrefsRequest: ModifyPrefsRequest | undefined;
 
-		if (
-			delegatedSendSaveTargetRef.current &&
-			settings.prefs.zimbraPrefDelegatedSendSaveTarget !== delegatedSendSaveTargetRef.current
-		) {
-			modifyPrefsRequest = {
-				_jsns: JSNS.account,
-				_attrs: { zimbraPrefDelegatedSendSaveTarget: delegatedSendSaveTargetRef.current }
-			};
-		}
-
 		const createIdentityRequests: Array<CreateIdentityRequest> = mapToCreateIdentityRequests(
 			createRecordRef.current
 		);
@@ -295,8 +280,6 @@ export const AccountsSettings = (): React.JSX.Element => {
 									(item) => item.zimbraPrefIdentityId === prevState?.account?.id
 								)?.zimbraPrefIdentityName || prevState.account?.displayName;
 						}
-						prevState.settings.prefs.zimbraPrefDelegatedSendSaveTarget =
-							delegatedSendSaveTargetRef.current || '';
 					})
 				);
 				resetLists();
@@ -316,14 +299,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 				throw new Error(typeof error === 'string' ? error : 'edit setting error');
 			});
 		return Promise.allSettled([promise]);
-	}, [
-		maxIdentities,
-		identitiesDefault.length,
-		settings.prefs.zimbraPrefDelegatedSendSaveTarget,
-		createSnackbar,
-		t,
-		resetLists
-	]);
+	}, [maxIdentities, identitiesDefault.length, createSnackbar, t, resetLists]);
 
 	const availableEmailAddresses = useMemo(
 		() => getAvailableEmailAddresses(account, settings),

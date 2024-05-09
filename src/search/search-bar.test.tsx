@@ -8,6 +8,7 @@ import React from 'react';
 import { act } from '@testing-library/react';
 import { useLocation } from 'react-router-dom';
 
+import { SearchAppView } from './search-app-view';
 import { SearchBar } from './search-bar';
 import { useSearchStore } from './search-store';
 import { ContextBridge } from '../boot/context-bridge';
@@ -267,9 +268,6 @@ describe('Search bar', () => {
 		const app = generateCarbonioModule();
 		const route = 'appRoute';
 
-		useSearchStore.setState({
-			module: 'route'
-		});
 		useAppStore.getState().addSearchView({
 			app: app.name,
 			icon: app.icon,
@@ -279,6 +277,20 @@ describe('Search bar', () => {
 			id: app.name,
 			component: () => <div>{app.name}</div>
 		});
+		useAppStore.getState().addRoute({
+			id: SEARCH_APP_ID,
+			app: SEARCH_APP_ID,
+			route: SEARCH_APP_ID,
+			appView: SearchAppView,
+			badge: {
+				show: false
+			},
+			label: 'Search',
+			position: 1000,
+			visible: true,
+			primaryBar: 'SearchModOutline'
+		});
+
 		setup(<SearchBar />, { initialRouterEntries: [`/${SEARCH_APP_ID}/${route}`] });
 		expect(screen.getByText(app.display)).toBeVisible();
 		expect(screen.getByRole('textbox', { name: `Search in ${app.display}` })).toBeVisible();
@@ -391,7 +403,7 @@ describe('Search bar', () => {
 		).toBeVisible();
 	});
 
-	it('should show the label of the first module if the module in the store is undefined', () => {
+	it('should show the label of the relative module search path if the module in the store is undefined', () => {
 		const app1 = generateCarbonioModule({ priority: 1 });
 		const app2 = generateCarbonioModule({ priority: 2 });
 		const searchRoute = generateModuleRouteDescriptor({
@@ -423,8 +435,8 @@ describe('Search bar', () => {
 		});
 		setup(<SearchBar />, { initialRouterEntries: [`/${SEARCH_APP_ID}/${app2.name}`] });
 		const selector = screen.getByTestId(TESTID_SELECTORS.headerModuleSelector);
-		expect(within(selector).getByText(app1.display)).toBeVisible();
-		expect(screen.getByRole('textbox', { name: `Search in ${app1.display}` })).toBeVisible();
+		expect(within(selector).getByText(app2.display)).toBeVisible();
+		expect(screen.getByRole('textbox', { name: `Search in ${app2.display}` })).toBeVisible();
 	});
 
 	it('should show the label of the module if the user is already inside that module', () => {
@@ -477,42 +489,5 @@ describe('Search bar', () => {
 		const selector = screen.getByTestId(TESTID_SELECTORS.headerModuleSelector);
 		expect(within(selector).getByText(app1.display)).toBeVisible();
 		expect(screen.getByRole('textbox', { name: `Search in ${app1.display}` })).toBeVisible();
-	});
-
-	it('should show the label of the first module if the user searches directly a module without the search', () => {
-		const app1 = generateCarbonioModule({ priority: 1 });
-		const app2 = generateCarbonioModule({ priority: 2 });
-		const searchRoute = generateModuleRouteDescriptor({
-			label: SEARCH_APP_ID,
-			position: 3,
-			id: SEARCH_APP_ID
-		});
-		useSearchStore.setState({
-			module: undefined
-		});
-		setupAppStore([app1, app2], [searchRoute]);
-		useAppStore.getState().addSearchView({
-			app: app1.name,
-			icon: app1.icon,
-			id: app1.name,
-			label: app1.display,
-			position: 6,
-			route: app1.name,
-			component: () => <div>{app1.name}</div>
-		});
-		setup(
-			<>
-				<ContextBridge />
-				<SearchBar />
-				<LocationDisplayer />
-			</>,
-			{ initialRouterEntries: [`/${SEARCH_APP_ID}/${app2.name}`] }
-		);
-		const selector = screen.getByTestId(TESTID_SELECTORS.headerModuleSelector);
-		expect(within(selector).getByText(app1.display)).toBeVisible();
-		expect(screen.getByRole('textbox', { name: `Search in ${app1.display}` })).toBeVisible();
-		expect(
-			within(screen.getByTestId('location-display')).getByText(`/${SEARCH_APP_ID}/${app1.name}`)
-		).toBeVisible();
 	});
 });

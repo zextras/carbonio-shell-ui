@@ -7,12 +7,13 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { DropdownItem } from '@zextras/carbonio-design-system';
 import { Container, Row, Text, Icon, Dropdown } from '@zextras/carbonio-design-system';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useSearchStore } from './search-store';
 import { SEARCH_APP_ID } from '../constants';
 import { useCurrentRoute, pushHistory } from '../history/hooks';
-import { useAppStore } from '../store/app';
+import { getAppList, useAppStore } from '../store/app';
 
 const SelectorContainer = styled(Container)<{ open?: boolean }>`
 	border-right: 0.0625rem solid ${({ theme }): string => theme.palette.gray4.regular};
@@ -25,21 +26,28 @@ const SelectorContainer = styled(Container)<{ open?: boolean }>`
 `;
 
 interface ModuleSelectorProps {
-	app: string | undefined;
+	activeRoute: string | undefined;
 }
 
-const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): React.JSX.Element | null => {
-	const modules = useAppStore((s) => s.views.search);
+const ModuleSelectorComponent = ({
+	activeRoute
+}: ModuleSelectorProps): React.JSX.Element | null => {
+	const searchViews = useAppStore((s) => s.views.search);
 	const { module, updateModule } = useSearchStore();
-	const fullModule = useMemo(
-		() => modules.find((m) => m.route === module) ?? modules[0],
-		[module, modules]
+	const searchView = useMemo(
+		() => searchViews.find((m) => m.route === module),
+		[module, searchViews]
 	);
+
+	// TODO replace with useParams when available
+	const { pathname } = useLocation();
+	const searchModulePath = useMemo(() => pathname.replace(`/${SEARCH_APP_ID}/`, ''), [pathname]);
+
 	const [open, setOpen] = useState(false);
 
 	const dropdownItems = useMemo(
 		(): DropdownItem[] =>
-			modules.map(
+			searchViews.map(
 				({ id, label, icon, route }): DropdownItem => ({
 					id,
 					label,
@@ -50,20 +58,30 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): React.JSX.Elemen
 					}
 				})
 			),
-		[modules, updateModule]
+		[searchViews, updateModule]
 	);
 
 	useEffect(() => {
 		if (
-			(app !== SEARCH_APP_ID && (!fullModule || fullModule?.app !== app)) ||
-			(fullModule?.app === app && module === undefined)
+			activeRoute &&
+			activeRoute !== SEARCH_APP_ID &&
+			module !== activeRoute &&
+			searchViews.find((m) => m.route === activeRoute)
 		) {
-			updateModule((modules.find((m) => m.app === app) ?? modules[0])?.route);
-		} else if (module === undefined && app === SEARCH_APP_ID) {
-			updateModule(modules[0]?.route);
-			pushHistory({ route: SEARCH_APP_ID, path: `/${modules[0]?.route}` });
+			updateModule(activeRoute);
+		} else if (
+			activeRoute === SEARCH_APP_ID &&
+			module === undefined &&
+			searchViews.find((m) => m.route === searchModulePath)
+		) {
+			updateModule(searchModulePath);
+		} else if (module === undefined) {
+			const view = searchViews.find((m) => m.app === getAppList()[0].name);
+			if (view) {
+				updateModule(view.route);
+			}
 		}
-	}, [app, fullModule, module, modules, updateModule]);
+	}, [searchView, module, searchViews, updateModule, activeRoute, pathname, searchModulePath]);
 
 	const openDropdown = useCallback(() => {
 		setOpen(true);
@@ -73,7 +91,7 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): React.JSX.Elemen
 		setOpen(false);
 	}, []);
 
-	if (!fullModule) {
+	if (!searchView) {
 		return null;
 	}
 
@@ -92,7 +110,7 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): React.JSX.Elemen
 			>
 				<Row takeAvailableSpace mainAlignment="unset" padding={{ left: 'small' }}>
 					<Text size="small" color={open ? 'primary' : 'text'}>
-						{fullModule?.label}
+						{searchView?.label}
 					</Text>
 				</Row>
 				<Icon
@@ -110,5 +128,5 @@ const MemoModuleSelector = React.memo(ModuleSelectorComponent);
 
 export const ModuleSelector = (): React.JSX.Element => {
 	const activeRoute = useCurrentRoute();
-	return <MemoModuleSelector app={activeRoute?.app} />;
+	return <MemoModuleSelector activeRoute={activeRoute?.route} />;
 };

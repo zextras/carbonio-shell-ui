@@ -7,7 +7,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { DropdownItem } from '@zextras/carbonio-design-system';
 import { Container, Row, Text, Icon, Dropdown } from '@zextras/carbonio-design-system';
-import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { useSearchStore } from './search-store';
@@ -32,13 +31,6 @@ interface ModuleSelectorProps {
 const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): React.JSX.Element | null => {
 	const modules = useAppStore((s) => s.views.search);
 	const { module, updateModule } = useSearchStore();
-	const { pathname } = useLocation();
-	const pathModule = useMemo(() => pathname.replace(`/${SEARCH_APP_ID}/`, ''), [pathname]);
-	const searchView = modules.find((m) => m.route === pathModule);
-	const pathModuleWithSearch = useMemo(
-		() => searchView?.route ?? modules[0]?.route,
-		[modules, searchView]
-	);
 	const fullModule = useMemo(
 		() => modules.find((m) => m.route === module) ?? modules[0],
 		[module, modules]
@@ -68,10 +60,10 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): React.JSX.Elemen
 		) {
 			updateModule((modules.find((m) => m.app === app) ?? modules[0])?.route);
 		} else if (module === undefined && app === SEARCH_APP_ID) {
-			updateModule(pathModuleWithSearch);
-			pushHistory({ route: SEARCH_APP_ID, path: `/${pathModuleWithSearch}` });
+			updateModule(modules[0]?.route);
+			pushHistory({ route: SEARCH_APP_ID, path: `/${modules[0]?.route}` });
 		}
-	}, [app, fullModule, module, modules, pathModule, pathModuleWithSearch, pathname, updateModule]);
+	}, [app, fullModule, module, modules, updateModule]);
 
 	const openDropdown = useCallback(() => {
 		setOpen(true);

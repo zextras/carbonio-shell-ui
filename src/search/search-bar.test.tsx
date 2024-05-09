@@ -391,7 +391,7 @@ describe('Search bar', () => {
 		).toBeVisible();
 	});
 
-	it('should show the label of the module related to the route if the module in the store is undefined', () => {
+	it('should show the label of the first module if the module in the store is undefined', () => {
 		const app1 = generateCarbonioModule({ priority: 1 });
 		const app2 = generateCarbonioModule({ priority: 2 });
 		const searchRoute = generateModuleRouteDescriptor({
@@ -423,8 +423,8 @@ describe('Search bar', () => {
 		});
 		setup(<SearchBar />, { initialRouterEntries: [`/${SEARCH_APP_ID}/${app2.name}`] });
 		const selector = screen.getByTestId(TESTID_SELECTORS.headerModuleSelector);
-		expect(within(selector).getByText(app2.display)).toBeVisible();
-		expect(screen.getByRole('textbox', { name: `Search in ${app2.display}` })).toBeVisible();
+		expect(within(selector).getByText(app1.display)).toBeVisible();
+		expect(screen.getByRole('textbox', { name: `Search in ${app1.display}` })).toBeVisible();
 	});
 
 	it('should show the label of the module if the user is already inside that module', () => {

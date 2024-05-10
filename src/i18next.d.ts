@@ -6,15 +6,12 @@
 // import the original type declarations
 import type * as i18next from 'i18next';
 
-// import all namespaces (for the default language, only)
-import type en from '../translations/en.json';
-
 declare module 'i18next' {
 	// Extend CustomTypeOptions
 	interface CustomTypeOptions {
 		// custom resources type
 		resources: {
-			[defaultNs: i18next.TypeOptions['defaultNS']]: typeof en;
+			[defaultNs: i18next.TypeOptions['defaultNS']]: Record<string, string>;
 		};
 		returnNull: false;
 		jsonFormat: 'v4';

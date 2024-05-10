@@ -10,5 +10,5 @@ import type { QueryChip } from '../types/search';
 
 export const runSearch = (query: Array<QueryChip>, module: string): void => {
 	useSearchStore.setState({ query, module, searchDisabled: false });
-	pushHistory({ route: SEARCH_APP_ID, path: `/${module}` });
+	pushHistory({ route: SEARCH_APP_ID, path: '' });
 };

@@ -35,23 +35,19 @@ import type {
 	DeleteIdentityRequest,
 	DeleteIdentityResponse,
 	ModifyIdentityRequest,
-	ModifyIdentityResponse,
-	ModifyPrefsRequest,
-	ModifyPrefsResponse
+	ModifyIdentityResponse
 } from '../types/network';
 
 export type AccountsSettingsBatchRequest = BatchRequest<{
 	ModifyIdentityRequest?: Array<ModifyIdentityRequest>;
 	CreateIdentityRequest?: Array<CreateIdentityRequest>;
 	DeleteIdentityRequest?: Array<DeleteIdentityRequest>;
-	ModifyPrefsRequest?: ModifyPrefsRequest;
 }>;
 
 type AccountsSettingsBatchResponse = BatchResponse<{
 	ModifyIdentityResponse?: ModifyIdentityResponse[];
 	DeleteIdentityResponse?: DeleteIdentityResponse[];
 	CreateIdentityResponse?: CreateIdentityResponse[];
-	ModifyPrefsResponse?: ModifyPrefsResponse;
 }>;
 
 function mapToCreateIdentityRequests(
@@ -233,8 +229,6 @@ export const AccountsSettings = (): React.JSX.Element => {
 			]);
 		}
 
-		let modifyPrefsRequest: ModifyPrefsRequest | undefined;
-
 		const createIdentityRequests: Array<CreateIdentityRequest> = mapToCreateIdentityRequests(
 			createRecordRef.current
 		);
@@ -253,8 +247,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 			_jsns: JSNS.all,
 			DeleteIdentityRequest: deleteRequests.length > 0 ? deleteRequests : undefined,
 			CreateIdentityRequest: createIdentityRequests.length > 0 ? createIdentityRequests : undefined,
-			ModifyIdentityRequest: modifyIdentityRequests.length > 0 ? modifyIdentityRequests : undefined,
-			ModifyPrefsRequest: modifyPrefsRequest
+			ModifyIdentityRequest: modifyIdentityRequests.length > 0 ? modifyIdentityRequests : undefined
 		})
 			.then((res) => {
 				createSnackbar({

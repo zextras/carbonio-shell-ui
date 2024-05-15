@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { SearchAppView } from './search-app-view';
 import { SearchBar } from './search-bar';
 import { useSearchStore } from './search-store';
+import { SEARCH_MODULE_KEY } from './useSearchModule';
 import { SEARCH_APP_ID } from '../constants';
 import * as useLocalStorage from '../shell/hooks/useLocalStorage';
 import { useAppStore } from '../store/app';
@@ -351,17 +352,155 @@ describe('Search bar', () => {
 		expect(within(selector).getByText(app1SearchView.label)).toBeVisible();
 	});
 
-	it.todo(
-		'should show the module with lowest priority if both store and session storage are undefined'
-	);
+	it('should show the module with the lowest priority if both store and session storage are undefined', () => {
+		const app1 = generateCarbonioModule({ priority: 1 });
+		const app2 = generateCarbonioModule({ priority: 2 });
+		const app1Route = generateModuleRouteDescriptor({
+			label: app1.name,
+			position: 1,
+			id: app1.name,
+			route: app1.name
+		});
+		const app2Route = generateModuleRouteDescriptor({
+			label: app2.name,
+			position: 2,
+			id: app2.name,
+			route: app2.name
+		});
+		setupAppStore([app1, app2], [app1Route, app2Route]);
+		const app1SearchView = {
+			app: app1.name,
+			icon: app1.icon,
+			id: app1.name,
+			label: app1.display,
+			position: 6,
+			route: app1.name,
+			component: (): React.JSX.Element => <div>{app1.name}</div>
+		} satisfies SearchView;
+		const app2SearchView = {
+			app: app2.name,
+			icon: app2.icon,
+			id: app2.name,
+			label: app2.display,
+			position: 10,
+			route: app2.name,
+			component: (): React.JSX.Element => <div>{app2.name}</div>
+		} satisfies SearchView;
+		useAppStore.getState().addSearchView(app1SearchView);
+		useAppStore.getState().addSearchView(app2SearchView);
+		setup(<SearchBar />);
+		const selector = screen.getByTestId(TESTID_SELECTORS.headerModuleSelector);
+		expect(within(selector).getByText(app1.display)).toBeVisible();
+		expect(screen.getByRole('textbox', { name: `Search in ${app1.display}` })).toBeVisible();
+	});
 
-	it.todo(
-		'should show the module with lowest priority if session storage has an invalid value(sasso)'
-	);
+	it('should show the module with the lowest priority if the session storage has an invalid value(sasso)', () => {
+		const app1 = generateCarbonioModule({ priority: 1 });
+		const app2 = generateCarbonioModule({ priority: 2 });
+		const app1Route = generateModuleRouteDescriptor({
+			label: app1.name,
+			position: 1,
+			id: app1.name,
+			route: app1.name
+		});
+		const app2Route = generateModuleRouteDescriptor({
+			label: app2.name,
+			position: 2,
+			id: app2.name,
+			route: app2.name
+		});
+		setupAppStore([app1, app2], [app1Route, app2Route]);
+		const app1SearchView = {
+			app: app1.name,
+			icon: app1.icon,
+			id: app1.name,
+			label: app1.display,
+			position: 6,
+			route: app1.name,
+			component: (): React.JSX.Element => <div>{app1.name}</div>
+		} satisfies SearchView;
+		const app2SearchView = {
+			app: app2.name,
+			icon: app2.icon,
+			id: app2.name,
+			label: app2.display,
+			position: 10,
+			route: app2.name,
+			component: (): React.JSX.Element => <div>{app2.name}</div>
+		} satisfies SearchView;
+		useAppStore.getState().addSearchView(app1SearchView);
+		useAppStore.getState().addSearchView(app2SearchView);
+		sessionStorage.setItem(SEARCH_MODULE_KEY, 'sasso');
+		setup(<SearchBar />);
+		const selector = screen.getByTestId(TESTID_SELECTORS.headerModuleSelector);
+		expect(within(selector).getByText(app1.display)).toBeVisible();
+		expect(screen.getByRole('textbox', { name: `Search in ${app1.display}` })).toBeVisible();
+	});
 
-	it.todo('should show the module matching the session storage if the module has a serchView');
+	it('should show the module matching the session storage if the module has a searchView', () => {
+		const app1 = generateCarbonioModule({ priority: 1 });
+		const app2 = generateCarbonioModule({ priority: 2 });
+		const app1Route = generateModuleRouteDescriptor({
+			label: app1.name,
+			position: 1,
+			id: app1.name,
+			route: app1.name
+		});
+		const app2Route = generateModuleRouteDescriptor({
+			label: app2.name,
+			position: 2,
+			id: app2.name,
+			route: app2.name
+		});
+		setupAppStore([app1, app2], [app1Route, app2Route]);
+		const app1SearchView = {
+			app: app1.name,
+			icon: app1.icon,
+			id: app1.name,
+			label: app1.display,
+			position: 6,
+			route: app1.name,
+			component: (): React.JSX.Element => <div>{app1.name}</div>
+		} satisfies SearchView;
+		useAppStore.getState().addSearchView(app1SearchView);
+		sessionStorage.setItem(SEARCH_MODULE_KEY, app1.name);
+		setup(<SearchBar />);
+		const selector = screen.getByTestId(TESTID_SELECTORS.headerModuleSelector);
+		expect(within(selector).getByText(app1.display)).toBeVisible();
+		expect(screen.getByRole('textbox', { name: `Search in ${app1.display}` })).toBeVisible();
+	});
 
-	it.todo(
-		'should show the module with lowest priority if the session storage module has not a searchView(tasks/chats)'
-	);
+	it('should show the module with the lowest priority if the session storage module has not a searchView(tasks/chats)', () => {
+		const app1 = generateCarbonioModule({ priority: 1 });
+		const app2 = generateCarbonioModule({ priority: 2 });
+		const app1Route = generateModuleRouteDescriptor({
+			label: app1.name,
+			position: 1,
+			id: app1.name,
+			route: app1.name
+		});
+		const app2Route = generateModuleRouteDescriptor({
+			label: app2.name,
+			position: 2,
+			id: app2.name,
+			route: app2.name
+		});
+		setupAppStore([app1, app2], [app1Route, app2Route]);
+		const app1SearchView = {
+			app: app1.name,
+			icon: app1.icon,
+			id: app1.name,
+			label: app1.display,
+			position: 6,
+			route: app1.name,
+			component: (): React.JSX.Element => <div>{app1.name}</div>
+		} satisfies SearchView;
+		useAppStore.getState().addSearchView(app1SearchView);
+		jest.spyOn(sessionStorage, 'getItem');
+		sessionStorage.setItem(SEARCH_MODULE_KEY, app2.name);
+		setup(<SearchBar />);
+		const selector = screen.getByTestId(TESTID_SELECTORS.headerModuleSelector);
+		expect(within(selector).getByText(app1.display)).toBeVisible();
+		expect(screen.getByRole('textbox', { name: `Search in ${app1.display}` })).toBeVisible();
+	});
 });

@@ -55,7 +55,7 @@ export const ModuleSelector = (): React.JSX.Element | null => {
 
 	useEffect(() => {
 		// update the search module based on active route
-		// it handle also back navigation that cannot be handled using primary icon clicks
+		// it handles also back navigation that cannot be handled using primary icon clicks
 		if (
 			currentRoute?.route &&
 			module !== currentRoute.route &&

@@ -234,6 +234,7 @@ const Composer: FC<ComposerProps> = ({
 			remove_script_host: false,
 			newline_behavior: 'default',
 			browser_spellcheck: true,
+			convert_unsafe_embeds: true,
 			...customInitOptions
 		}),
 		[

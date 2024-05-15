@@ -167,7 +167,7 @@ describe('use local storage', () => {
 		const initial = 'initial';
 		const updatesLocalStorage = [initial];
 		const updatesLocalStorageStore = [undefined, initial];
-		controlConsoleError('Unexpected token o in JSON at position 1');
+		controlConsoleError('Cannot read local storage test-key with value "not a JSON":');
 		setup(
 			<TestComponent initialValue={initial} updatedValue={'updated'} localStorageKey={lsKey} />
 		);

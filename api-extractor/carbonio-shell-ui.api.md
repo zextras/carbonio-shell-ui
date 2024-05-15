@@ -915,7 +915,7 @@ export const LOCAL_STORAGE_SETTINGS_KEY = "settings";
 
 // @public (undocumented)
 type LocalStorageOptions = {
-    keepSynchedWithStorage?: boolean;
+    keepSyncedWithStorage?: boolean;
 };
 
 // @public (undocumented)

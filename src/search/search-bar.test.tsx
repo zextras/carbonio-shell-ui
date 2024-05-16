@@ -303,7 +303,7 @@ describe('Search bar', () => {
 			icon: app.icon,
 			id: app.name,
 			label: app.display,
-			position: 6,
+			position: app.priority,
 			route: app.name,
 			component: () => <div>{app.name}</div>
 		});
@@ -334,7 +334,7 @@ describe('Search bar', () => {
 			icon: app1.icon,
 			id: app1.name,
 			label: app1.display,
-			position: 6,
+			position: app1.priority,
 			route: app1.name,
 			component: (): React.JSX.Element => <div>{app1.name}</div>
 		} satisfies SearchView;
@@ -373,7 +373,7 @@ describe('Search bar', () => {
 			icon: app1.icon,
 			id: app1.name,
 			label: app1.display,
-			position: 6,
+			position: app1.priority,
 			route: app1.name,
 			component: (): React.JSX.Element => <div>{app1.name}</div>
 		} satisfies SearchView;
@@ -382,7 +382,7 @@ describe('Search bar', () => {
 			icon: app2.icon,
 			id: app2.name,
 			label: app2.display,
-			position: 10,
+			position: app2.priority,
 			route: app2.name,
 			component: (): React.JSX.Element => <div>{app2.name}</div>
 		} satisfies SearchView;
@@ -415,7 +415,7 @@ describe('Search bar', () => {
 			icon: app1.icon,
 			id: app1.name,
 			label: app1.display,
-			position: 6,
+			position: app1.priority,
 			route: app1.name,
 			component: (): React.JSX.Element => <div>{app1.name}</div>
 		} satisfies SearchView;
@@ -424,7 +424,7 @@ describe('Search bar', () => {
 			icon: app2.icon,
 			id: app2.name,
 			label: app2.display,
-			position: 10,
+			position: app2.priority,
 			route: app2.name,
 			component: (): React.JSX.Element => <div>{app2.name}</div>
 		} satisfies SearchView;
@@ -458,16 +458,27 @@ describe('Search bar', () => {
 			icon: app1.icon,
 			id: app1.name,
 			label: app1.display,
-			position: 6,
+			position: app1.priority,
 			route: app1.name,
 			component: (): React.JSX.Element => <div>{app1.name}</div>
 		} satisfies SearchView;
-		useAppStore.getState().addSearchView(app1SearchView);
-		sessionStorage.setItem(SEARCH_MODULE_KEY, app1.name);
+		const app2SearchView = {
+			app: app2.name,
+			icon: app2.icon,
+			id: app2.name,
+			label: app2.display,
+			position: app2.priority,
+			route: app2.name,
+			component: (): React.JSX.Element => <div>{app2.name}</div>
+		} satisfies SearchView;
+		useAppStore.setState((state) => ({
+			views: { ...state.views, search: [app1SearchView, app2SearchView] }
+		}));
+		sessionStorage.setItem(SEARCH_MODULE_KEY, app2.name);
 		setup(<SearchBar />);
 		const selector = screen.getByTestId(TESTID_SELECTORS.headerModuleSelector);
-		expect(within(selector).getByText(app1.display)).toBeVisible();
-		expect(screen.getByRole('textbox', { name: `Search in ${app1.display}` })).toBeVisible();
+		expect(within(selector).getByText(app2.display)).toBeVisible();
+		expect(screen.getByRole('textbox', { name: `Search in ${app2.display}` })).toBeVisible();
 	});
 
 	it('should show the module with the lowest priority if the session storage module has not a searchView(tasks/chats)', () => {
@@ -491,12 +502,11 @@ describe('Search bar', () => {
 			icon: app1.icon,
 			id: app1.name,
 			label: app1.display,
-			position: 6,
+			position: app1.priority,
 			route: app1.name,
 			component: (): React.JSX.Element => <div>{app1.name}</div>
 		} satisfies SearchView;
 		useAppStore.getState().addSearchView(app1SearchView);
-		jest.spyOn(sessionStorage, 'getItem');
 		sessionStorage.setItem(SEARCH_MODULE_KEY, app2.name);
 		setup(<SearchBar />);
 		const selector = screen.getByTestId(TESTID_SELECTORS.headerModuleSelector);

@@ -428,9 +428,9 @@ describe('Search bar', () => {
 			route: app2.name,
 			component: (): React.JSX.Element => <div>{app2.name}</div>
 		} satisfies SearchView;
+		sessionStorage.setItem(SEARCH_MODULE_KEY, 'sasso');
 		useAppStore.getState().addSearchView(app1SearchView);
 		useAppStore.getState().addSearchView(app2SearchView);
-		sessionStorage.setItem(SEARCH_MODULE_KEY, 'sasso');
 		setup(<SearchBar />);
 		const selector = screen.getByTestId(TESTID_SELECTORS.headerModuleSelector);
 		expect(within(selector).getByText(app1.display)).toBeVisible();
@@ -471,10 +471,9 @@ describe('Search bar', () => {
 			route: app2.name,
 			component: (): React.JSX.Element => <div>{app2.name}</div>
 		} satisfies SearchView;
-		useAppStore.setState((state) => ({
-			views: { ...state.views, search: [app1SearchView, app2SearchView] }
-		}));
 		sessionStorage.setItem(SEARCH_MODULE_KEY, app2.name);
+		useAppStore.getState().addSearchView(app1SearchView);
+		useAppStore.getState().addSearchView(app2SearchView);
 		setup(<SearchBar />);
 		const selector = screen.getByTestId(TESTID_SELECTORS.headerModuleSelector);
 		expect(within(selector).getByText(app2.display)).toBeVisible();
@@ -506,8 +505,8 @@ describe('Search bar', () => {
 			route: app1.name,
 			component: (): React.JSX.Element => <div>{app1.name}</div>
 		} satisfies SearchView;
-		useAppStore.getState().addSearchView(app1SearchView);
 		sessionStorage.setItem(SEARCH_MODULE_KEY, app2.name);
+		useAppStore.getState().addSearchView(app1SearchView);
 		setup(<SearchBar />);
 		const selector = screen.getByTestId(TESTID_SELECTORS.headerModuleSelector);
 		expect(within(selector).getByText(app1.display)).toBeVisible();

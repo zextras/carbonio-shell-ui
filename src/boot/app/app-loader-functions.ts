@@ -145,3 +145,5 @@ export { runSearch } from '../../search/run-search';
 export { useIsMobile } from '../../shell/hooks/useIsMobile';
 
 export { useLocalStorage } from '../../shell/hooks/useLocalStorage';
+
+export { useIsCarbonioCE } from '../../store/login/hooks';

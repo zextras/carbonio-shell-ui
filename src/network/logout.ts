@@ -14,7 +14,11 @@ export function logout(): Promise<void> {
 		_jsns: JSNS.account,
 		logoff: true
 	})
-		.then(() => fetch('/logout', { redirect: 'manual' }))
+		.then(() =>
+			fetch(useLoginConfigStore.getState().isCarbonioCE === true ? '/logout' : '/zx/auth/logout', {
+				redirect: 'manual'
+			})
+		)
 		.then(() => {
 			const customLogoutUrl = useLoginConfigStore.getState().carbonioWebUiLogoutURL;
 			customLogoutUrl ? goTo(customLogoutUrl) : goToLogin();

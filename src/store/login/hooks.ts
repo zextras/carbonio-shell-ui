@@ -22,3 +22,12 @@ export function useLogo(): string | React.ComponentType {
 		return carbonioWebUiAppLogo || carbonioWebUiDarkAppLogo || DefaultLogo;
 	}, [carbonioWebUiDarkAppLogo, carbonioWebUiAppLogo, darkModeEnabled]);
 }
+
+/**
+ * Hook useful to know if is Carbonio CE or not
+ */
+export function useIsCarbonioCE(): boolean | undefined {
+	const { isCarbonioCE } = useLoginConfigStore();
+
+	return useMemo(() => isCarbonioCE, [isCarbonioCE]);
+}

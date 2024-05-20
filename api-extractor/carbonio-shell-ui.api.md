@@ -1538,6 +1538,9 @@ export const useIntegratedComponent: (id: string) => [React_2.FunctionComponent<
 // @public (undocumented)
 export const useIntegratedFunction: (id: string) => [AnyFunction, boolean];
 
+// @public
+export function useIsCarbonioCE(): boolean | undefined;
+
 // @public (undocumented)
 export function useIsMobile(): boolean;
 

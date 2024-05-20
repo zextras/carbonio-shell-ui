@@ -154,6 +154,7 @@ export { getNotificationManager } from './boot/app/app-loader-functions';
 export { runSearch } from './boot/app/app-loader-functions';
 export { useIsMobile } from './boot/app/app-loader-functions';
 export { useLocalStorage } from './boot/app/app-loader-functions';
+export { useIsCarbonioCE } from './boot/app/app-loader-functions';
 export { Tracker } from './boot/tracker';
 
 export type {

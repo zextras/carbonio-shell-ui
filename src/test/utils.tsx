@@ -16,7 +16,8 @@ import {
 	screen as rtlScreen,
 	type RenderOptions,
 	type RenderResult,
-	within as rtlWithin
+	within as rtlWithin,
+	type Screen
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
@@ -86,7 +87,7 @@ export const within = (
 	element: Parameters<typeof rtlWithin<ExtendedQueries>>[0]
 ): ReturnType<typeof rtlWithin<ExtendedQueries>> => rtlWithin(element, extendedQueries);
 
-export const screen = within(document.body);
+export const screen: Screen<typeof extendedQueries> = { ...rtlScreen, ...within(document.body) };
 
 const getAppI18n = (): i18n => {
 	const newI18n = i18next.createInstance();

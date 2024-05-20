@@ -16,11 +16,11 @@ import {
 	Text
 } from '@zextras/carbonio-design-system';
 import { map } from 'lodash';
-import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { useSearchStore } from './search-store';
+import { useSearchModule } from './useSearchModule';
 import AppContextProvider from '../boot/app/app-context-provider';
-import { RESULT_LABEL_TYPE, SEARCH_APP_ID } from '../constants';
+import { RESULT_LABEL_TYPE } from '../constants';
 import { useAppStore } from '../store/app';
 import { getT } from '../store/i18n/hooks';
 import { type SearchState } from '../types/search';
@@ -125,36 +125,24 @@ const ResultsHeader = ({
 
 export const SearchAppView = (): React.JSX.Element => {
 	const searchViews = useAppStore((s) => s.views.search);
-	const { module } = useSearchStore();
-	const modules = useAppStore((s) => s.views.search);
+	const [module] = useSearchModule();
 
-	const fullModule = useMemo(() => modules.find((m) => m.route === module), [module, modules]);
-
-	const routes = useMemo(
-		() =>
-			map(searchViews, (view) => (
-				<Route key={`/${view.route}`} path={`/${SEARCH_APP_ID}/${view.route}`}>
-					<AppContextProvider pkg={view.app}>
-						<view.component
-							useQuery={useQuery}
-							ResultsHeader={ResultsHeader}
-							useDisableSearch={useDisableSearch}
-						/>
-					</AppContextProvider>
-				</Route>
-			)),
-		[searchViews]
+	const searchView = useMemo(
+		() => searchViews.find((m) => m.route === module),
+		[module, searchViews]
 	);
 
 	return (
-		<Switch>
-			{routes}
-			<Redirect
-				exact
-				strict
-				from={`/${SEARCH_APP_ID}`}
-				to={`/${SEARCH_APP_ID}/${fullModule ? fullModule.route : searchViews[0]?.route}`}
-			/>
-		</Switch>
+		<>
+			{searchView && (
+				<AppContextProvider pkg={searchView.app}>
+					<searchView.component
+						useQuery={useQuery}
+						ResultsHeader={ResultsHeader}
+						useDisableSearch={useDisableSearch}
+					/>
+				</AppContextProvider>
+			)}
+		</>
 	);
 };

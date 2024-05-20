@@ -139,7 +139,8 @@ export const ICONS = {
 	resetBoardSize: 'DiagonalArrowLeftDown',
 	unCollapseBoard: 'BoardOpen',
 	search: 'Search',
-	settings: 'SettingsModOutline'
+	settings: 'SettingsModOutline',
+	clearSearch: 'BackspaceOutline'
 };
 
 export const TESTID_SELECTORS = {
@@ -149,5 +150,6 @@ export const TESTID_SELECTORS = {
 	dropdown: 'dropdown-popper-list',
 	resizableBorder(border: Border): string {
 		return `resizable-border-${border}`;
-	}
+	},
+	headerModuleSelector: 'HeaderModuleSelector'
 };

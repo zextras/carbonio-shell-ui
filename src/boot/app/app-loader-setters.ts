@@ -80,7 +80,8 @@ export const {
 	removeSearchView,
 	removeUtilityView,
 	removePrimaryAccessoryView,
-	removeSecondaryAccessoryView
+	removeSecondaryAccessoryView,
+	upsertApp
 } = useAppStore.getState();
 
 export const {

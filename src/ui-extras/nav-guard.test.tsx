@@ -13,7 +13,7 @@ import { Link, Route, Switch } from 'react-router-dom';
 import { RouteLeavingGuard } from './nav-guard';
 import { SHELL_APP_ID } from '../constants';
 import { useI18nStore } from '../store/i18n/store';
-import { screen, setup } from '../test/utils';
+import { screen, setup } from '../tests/utils';
 
 describe('RouteLeavingGuard', () => {
 	test('should show the unsaved changes modal if "when" condition is true', async () => {

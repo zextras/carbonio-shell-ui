@@ -12,9 +12,9 @@ import { waitForRequest } from '../mocks/server';
 import * as network from '../network/fetch';
 import * as networkUtils from '../network/utils';
 import { useLoginConfigStore } from '../store/login/store';
-import { mockedAccount, setupAccountStore } from '../test/account-utils';
-import { ICONS } from '../test/constants';
-import { screen, setup } from '../test/utils';
+import { mockedAccount, setupAccountStore } from '../tests/account-utils';
+import { ICONS } from '../tests/constants';
+import { screen, setup } from '../tests/utils';
 
 describe('Shell utility bar', () => {
 	test('should render the utility menu for the account', async () => {

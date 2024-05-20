@@ -29,7 +29,7 @@ const config: Config = {
 		'!**/(test|mock)*.ts(x)?', // exclude file which name starts with test or mock
 		'!src/**/types/*', // exclude types
 		'!src/**/*.d.ts', // exclude declarations
-		'!src/test/*', // exclude test folder
+		'!src/tests/*', // exclude test folder
 		'!**/__mocks__/**/*', // exclude manual mocks
 		'!src/workers/*' // FIXME: exclude worker folder which throws error because of the esm syntax
 	],
@@ -168,7 +168,7 @@ const config: Config = {
 	 * @see https://mswjs.io/docs/migrations/1.x-to-2.x#requestresponsetextencoder-is-not-defined-jest
 	 * @see https://github.com/mswjs/msw/issues/1916#issuecomment-1919965699
 	 */
-	testEnvironment: '<rootDir>/src/test/jsdom-extended.ts',
+	testEnvironment: '<rootDir>/src/tests/jsdom-extended.ts',
 
 	// Options that will be passed to the testEnvironment
 	testEnvironmentOptions: {

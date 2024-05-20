@@ -15,13 +15,13 @@ import { SEARCH_MODULE_KEY } from './useSearchModule';
 import { SEARCH_APP_ID } from '../constants';
 import * as useLocalStorage from '../shell/hooks/useLocalStorage';
 import { useAppStore } from '../store/app';
-import { ICONS, TESTID_SELECTORS } from '../test/constants';
+import { ICONS, TESTID_SELECTORS } from '../tests/constants';
 import {
 	generateCarbonioModule,
 	generateModuleRouteDescriptor,
 	setupAppStore
-} from '../test/test-app-utils';
-import { setup, screen, within } from '../test/utils';
+} from '../tests/test-app-utils';
+import { setup, screen, within } from '../tests/utils';
 import type { SearchView } from '../types/apps';
 
 describe('Search bar', () => {

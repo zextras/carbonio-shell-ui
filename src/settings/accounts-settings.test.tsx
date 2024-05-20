@@ -22,8 +22,8 @@ import type {
 import { getRightsRequest } from '../mocks/handlers/getRightsRequest';
 import server, { waitForRequest } from '../mocks/server';
 import { useAccountStore } from '../store/account';
-import { createAccount, createIdentity, setupAccountStore } from '../test/account-utils';
-import { setup } from '../test/utils';
+import { createAccount, createIdentity, setupAccountStore } from '../tests/account-utils';
+import { setup } from '../tests/utils';
 import type { BatchRequest, CreateIdentityResponse } from '../types/network';
 
 describe('Account setting', () => {

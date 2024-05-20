@@ -17,8 +17,8 @@ import { usePushHistoryCallback } from '../history/hooks';
 import { ModuleSelector } from '../search/module-selector';
 import { useAccountStore } from '../store/account';
 import { useAppStore } from '../store/app';
-import { ICONS, TESTID_SELECTORS } from '../test/constants';
-import { setup } from '../test/utils';
+import { ICONS, TESTID_SELECTORS } from '../tests/constants';
+import { setup } from '../tests/utils';
 import type { AccountState } from '../types/account';
 import type { PrimaryBarView } from '../types/apps';
 

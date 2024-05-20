@@ -7,6 +7,9 @@ import { useContext } from 'react';
 
 import ShellContext from '../shell-context';
 
+/**
+ * @deprecated Use useScreenMode hook
+ */
 export function useIsMobile(): boolean {
 	const { isMobile } = useContext(ShellContext);
 	return isMobile;

@@ -31,7 +31,6 @@ babel-loader, Copyright (c) 2014-2019 Luís Couto <hello@luiscouto.pt>
 babel-plugin-styled-components, Copyright (c) 2016-present Vladimir Danchenkov and Maximilian Stoiber
 copy-webpack-plugin, Copyright JS Foundation and other contributors
 core-js, Copyright (c) 2014-2024 Denis Pushkarev
-cross-env, Copyright (c) 2017 Kent C. Dodds
 css-loader, Copyright JS Foundation and other contributors
 darkreader, Copyright (c) 2024 Dark Reader Ltd.
 eslint-plugin-notice, Copyright (c) 2017 Nick Deis

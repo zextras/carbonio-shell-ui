@@ -1538,7 +1538,7 @@ export const useIntegratedComponent: (id: string) => [React_2.FunctionComponent<
 // @public (undocumented)
 export const useIntegratedFunction: (id: string) => [AnyFunction, boolean];
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export function useIsMobile(): boolean;
 
 // Warning: (ae-forgotten-export) The symbol "LocalStorageOptions" needs to be exported by the entry point lib.d.ts

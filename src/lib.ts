@@ -57,7 +57,8 @@ export {
 	removePrimaryAccessoryView,
 	setRouteVisibility,
 	updateUtilityBadge,
-	updatePrimaryBadge
+	updatePrimaryBadge,
+	upsertApp
 } from './boot/app/app-loader-setters';
 
 export declare const getI18n: AppFunctions['getI18n'];

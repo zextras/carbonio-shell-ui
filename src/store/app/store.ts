@@ -52,6 +52,7 @@ export type AppState = {
 
 export type AppActions = {
 	setApps: (apps: Array<Partial<CarbonioModule>>) => void;
+	upsertApp: (app: Pick<CarbonioModule, 'name' | 'display' | 'description'>) => void;
 	addRoute: (routeData: AppRouteDescriptor) => string;
 	setRouteVisibility: (id: string, visible: boolean) => void;
 	removeRoute: (id: string) => void;
@@ -166,6 +167,13 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 			};
 		});
 	},
+	upsertApp: (app): void => {
+		set(
+			produce<AppState>((state) => {
+				state.apps[app.name] = { ...state.apps[app.name], ...app };
+			})
+		);
+	},
 	setAppContext:
 		(app) =>
 		(context): void => {
@@ -211,6 +219,7 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 						component: routeData.appView
 					});
 				}
+				// TODO remove with SHELL-212
 				if (routeData.app && state.apps[routeData.app] && routeData.focusMode !== true) {
 					state.apps[routeData.app].display = routeData.label;
 				}

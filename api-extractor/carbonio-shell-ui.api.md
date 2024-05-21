@@ -1478,7 +1478,7 @@ export const updatePrimaryBadge: (badge: Partial<BadgeInfo_2>, id: string) => vo
 // @public (undocumented)
 export const updateUtilityBadge: (badge: Partial<BadgeInfo_2>, id: string) => void;
 
-// @public (undocumented)
+// @public
 export const upsertApp: (app: Pick<CarbonioModule, "description" | "name" | "display">) => void;
 
 // @public (undocumented)

@@ -3,7 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import type { FC } from 'react';
 import React from 'react';
 
 import { act, screen, waitFor } from '@testing-library/react';
@@ -28,7 +27,7 @@ import { setup } from '../test/utils';
 import type { Board } from '../types/boards';
 import type { SizeAndPosition } from '../utils/utils';
 
-const Dummy: FC = () => null;
+const Dummy = (): null => null;
 
 jest.mock('../utility-bar/bar', () => ({
 	ShellUtilityBar: Dummy

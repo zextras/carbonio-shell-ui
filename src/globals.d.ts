@@ -17,4 +17,9 @@ declare global {
 		};
 		__ZAPP_HMR_EXPORT__: { [pkgName: string]: (appClass: ComponentType) => void };
 	}
+
+	interface NotificationOptions {
+		// experimental property https://developer.mozilla.org/en-US/docs/Web/API/Notification/vibrate
+		vibrate?: number[];
+	}
 }

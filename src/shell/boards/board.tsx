@@ -11,7 +11,7 @@ import { find, startsWith } from 'lodash';
 import { Route, Router, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-import AppContextProvider from '../../boot/app/app-context-provider';
+import { AppContextProvider } from '../../boot/app/app-context-provider';
 import { useAppStore } from '../../store/app';
 import { BoardProvider, updateBoard, useBoardStore } from '../../store/boards';
 import type { Board } from '../../types/boards';
@@ -55,6 +55,7 @@ export const AppBoard = ({ board }: { board: Board }): React.JSX.Element => {
 			);
 		return null;
 	}, [board.id, board.url, boardViews, windowHistory]);
+
 	useEffect(() => {
 		const unlisten = history.listen(({ location }) => {
 			if (`${location.pathname}${location.search}${location.hash}` !== board.url) {

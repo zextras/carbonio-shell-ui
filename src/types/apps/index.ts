@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { ComponentType, FC } from 'react';
+import type { ComponentType } from 'react';
 import type React from 'react';
 
 import type { DefaultTheme } from 'styled-components';
@@ -64,7 +64,7 @@ export type BoardViewComponentProps = {
 export type SettingsViewProps = {};
 export type SearchViewProps = {
 	useQuery: () => [QueryChip[], Function];
-	ResultsHeader: FC<{ label: string }>;
+	ResultsHeader: React.ComponentType<{ label: string }>;
 	useDisableSearch: () => [boolean, Function];
 };
 export type PrimaryAccessoryViewProps = {};

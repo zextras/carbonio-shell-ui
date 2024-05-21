@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { FC } from 'react';
 import React, { useCallback, useMemo, useState } from 'react';
 
 import {
@@ -26,8 +25,8 @@ import { useActions } from '../store/integrations/hooks';
 import type { AppRoute, CarbonioModule } from '../types/apps';
 
 interface CreationButtonProps {
-	activeRoute: AppRoute;
-	location: Location;
+	activeRoute?: AppRoute;
+	location?: Location;
 }
 
 export const CreationButtonComponent = ({
@@ -103,9 +102,9 @@ export const CreationButtonComponent = ({
 
 const MemoCreationButton = React.memo(CreationButtonComponent);
 
-export const CreationButton: FC = () => {
-	const locationFull = useLocation() as Location;
-	const activeRoute = useCurrentRoute() as AppRoute;
+export const CreationButton = (): React.JSX.Element => {
+	const locationFull = useLocation();
+	const activeRoute = useCurrentRoute();
 
 	const truncateLocation = (location: Location): Location => ({
 		...location,

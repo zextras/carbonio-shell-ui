@@ -16,7 +16,6 @@ import type { DropdownItem } from '@zextras/carbonio-design-system';
 import type { DynamicThemeFix } from 'darkreader';
 import type { Event as Event_2 } from '@sentry/browser';
 import type { EventHint } from '@sentry/browser';
-import type { FC } from 'react';
 import type { i18n } from 'i18next';
 import type { LinkProps } from 'react-router-dom';
 import type { ModalProps } from '@zextras/carbonio-design-system';
@@ -195,9 +194,9 @@ export const addBoard: AppDependantFunctions['addBoard'];
 // Warning: (ae-forgotten-export) The symbol "BoardState" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
-const addBoard_2: (app: string) => <T = unknown>(board: Omit<Board<T>, "id" | "app" | "icon"> & {
-    id?: string | undefined;
-    icon?: string | undefined;
+const addBoard_2: (app: string) => <T = unknown>(board: Omit<Board<T>, 'app' | 'icon' | 'id'> & {
+    id?: string;
+    icon?: string;
 }, expanded?: BoardState['expanded']) => Board;
 
 // Warning: (ae-forgotten-export) The symbol "AppDependantSetters" needs to be exported by the entry point lib.d.ts
@@ -281,7 +280,7 @@ type AppDependantSetters = {
 };
 
 // @public (undocumented)
-export const AppLink: FC<AppLinkProps>;
+export const AppLink: ({ to, route, ...rest }: AppLinkProps) => React_2.JSX.Element;
 
 // @public (undocumented)
 export type AppLinkProps = LinkProps & {
@@ -641,7 +640,7 @@ type GenTimeObj = {
 };
 
 // @public (undocumented)
-export const getAction: <T>(type: string, id: string, target?: T | undefined) => [Action | undefined, boolean];
+export const getAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];
 
 // @public (undocumented)
 export const getActionFactory: <T>(type: string, id: string) => [ActionFactory<T> | undefined, boolean];
@@ -733,7 +732,7 @@ export const getSearchFolder: (id: string) => SearchFolder | undefined;
 export const getSearchFolders: () => Searches;
 
 // @public (undocumented)
-const getSoapFetch: (app: string) => <Request_1, Response_1 extends Record<string, unknown>>(api: string, body: Request_1, otherAccount?: string, signal?: AbortSignal) => Promise<Response_1>;
+const getSoapFetch: (app: string) => <Request, Response extends Record<string, unknown>>(api: string, body: Request, otherAccount?: string, signal?: AbortSignal) => Promise<Response>;
 
 // @public (undocumented)
 export const getTags: (ids?: Array<string> | string) => Tags;
@@ -760,7 +759,7 @@ export const getUserSetting: <T = void>(...path: Array<string>) => string | T;
 export const getUserSettings: () => AccountSettings;
 
 // @public (undocumented)
-const getXmlSoapFetch: (app: string) => <Request_1, Response_1 extends Record<string, unknown>>(api: string, body: Request_1, otherAccount?: string) => Promise<Response_1>;
+const getXmlSoapFetch: (app: string) => <Request, Response extends Record<string, unknown>>(api: string, body: Request, otherAccount?: string) => Promise<Response>;
 
 // @public (undocumented)
 export const goBackHistory: () => void;
@@ -1239,7 +1238,7 @@ type SearchView = CarbonioView<SearchViewProps> & {
 // @public (undocumented)
 export type SearchViewProps = {
     useQuery: () => [QueryChip[], Function];
-    ResultsHeader: FC<{
+    ResultsHeader: React_2.ComponentType<{
         label: string;
     }>;
     useDisableSearch: () => [boolean, Function];
@@ -1482,7 +1481,7 @@ export const updateUtilityBadge: (badge: Partial<BadgeInfo_2>, id: string) => vo
 export const upsertApp: (app: Pick<CarbonioModule, "description" | "name" | "display">) => void;
 
 // @public (undocumented)
-export const useAction: <T>(type: string, id: string, target?: T | undefined) => [Action | undefined, boolean];
+export const useAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];
 
 // @public (undocumented)
 export const useActionFactory: <T>(type: string, id: string) => [ActionFactory<T> | undefined, boolean];
@@ -1528,7 +1527,7 @@ export const useFolders: () => Folders;
 // @public (undocumented)
 export const useFoldersAccordionByView: (view: FolderView, CustomComponent: ComponentType<{
     folder: Folder;
-}>, itemProps?: ((item: AccordionFolder) => Record<string, unknown>) | undefined) => Array<AccordionFolder>;
+}>, itemProps?: (item: AccordionFolder) => Record<string, unknown>) => Array<AccordionFolder>;
 
 // @public (undocumented)
 export const useFoldersByView: (view: FolderView) => Array<Folder>;
@@ -1554,13 +1553,13 @@ export function useLocalStorage<T>(key: string, initialValue: T, options?: Local
 export const useNotify: () => SoapNotify[];
 
 // @public (undocumented)
-export const usePushHistoryCallback: () => (params: HistoryParams) => void;
+export const usePushHistoryCallback: () => ((params: HistoryParams) => void);
 
 // @public (undocumented)
 export const useRefresh: () => SoapRefresh;
 
 // @public (undocumented)
-export const useReplaceHistoryCallback: () => (params: HistoryParams) => void;
+export const useReplaceHistoryCallback: () => ((params: HistoryParams) => void);
 
 // @public (undocumented)
 type UserFolder = BaseFolder & FolderFields & {
@@ -1618,7 +1617,7 @@ type UtilityView = CarbonioAccessoryView<UtilityBarComponentProps> & {
 };
 
 // @public (undocumented)
-type ValueOf<T extends Record<string, unknown>> = T[keyof T];
+type ValueOf<T> = T[keyof T];
 
 // @public (undocumented)
 type WorkerMessage<T> = {

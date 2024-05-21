@@ -8,7 +8,7 @@ import React from 'react';
 import { compact, map } from 'lodash';
 
 import type { IntegrationsState } from './store';
-import AppContextProvider from '../../boot/app/app-context-provider';
+import { AppContextProvider } from '../../boot/app/app-context-provider';
 import type { Action } from '../../types/integrations';
 import type { AnyFunction } from '../../utils/typeUtils';
 

@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { FC } from 'react';
 import React, { useEffect } from 'react';
 
 import { SnackbarManager } from '@zextras/carbonio-design-system';
@@ -15,7 +14,7 @@ import AppLoaderMounter from './app/app-loader-mounter';
 import { registerDefaultViews } from './app/default-views';
 import { ContextBridge } from './context-bridge';
 import { Loader } from './loader';
-import ShellI18nextProvider from './shell-i18n-provider';
+import { ShellI18nextProvider } from './shell-i18n-provider';
 import { ThemeProvider } from './theme-provider';
 import { BASENAME, IS_FOCUS_MODE } from '../constants';
 import { NotificationPermissionChecker } from '../notification/NotificationPermissionChecker';
@@ -38,7 +37,7 @@ export const DefaultViewsRegister = (): null => {
 	return null;
 };
 
-const Bootstrapper: FC = () => (
+const Bootstrapper = (): React.JSX.Element => (
 	<ThemeProvider>
 		<ShellI18nextProvider>
 			<BrowserRouter basename={BASENAME}>

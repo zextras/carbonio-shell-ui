@@ -6,7 +6,7 @@
 
 import React from 'react';
 
-import AppErrorCatcher from './app-error-catcher';
+import { AppErrorCatcher } from './app-error-catcher';
 import { ModuleI18nextProvider } from '../module-i18next-provider';
 
 interface AppContextProviderProps {
@@ -14,10 +14,11 @@ interface AppContextProviderProps {
 	children: React.ReactNode | React.ReactNode[];
 }
 
-const AppContextProvider = ({ pkg, children }: AppContextProviderProps): React.JSX.Element => (
+export const AppContextProvider = ({
+	pkg,
+	children
+}: AppContextProviderProps): React.JSX.Element => (
 	<ModuleI18nextProvider pkg={pkg}>
 		<AppErrorCatcher>{children}</AppErrorCatcher>
 	</ModuleI18nextProvider>
 );
-
-export default AppContextProvider;

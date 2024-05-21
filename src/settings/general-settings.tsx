@@ -38,6 +38,7 @@ import type {
 	RemoveMod
 } from '../types/network';
 import type { ScalingSettings } from '../types/settings';
+import type { ValueOf } from '../utils/typeUtils';
 
 const GeneralSettings = (): React.JSX.Element => {
 	const [mods, setMods] = useState<Mods>({});
@@ -52,12 +53,15 @@ const GeneralSettings = (): React.JSX.Element => {
 	);
 	const [open, setOpen] = useState(false);
 
-	const addLocalStoreChange = useCallback((key, value) => {
-		setLocalStorageUnAppliedChanges((prevState) => ({
-			...prevState,
-			[key]: value
-		}));
-	}, []);
+	const addLocalStoreChange = useCallback(
+		(key: keyof ScalingSettings, value: ValueOf<ScalingSettings>) => {
+			setLocalStorageUnAppliedChanges((prevState) => ({
+				...prevState,
+				[key]: value
+			}));
+		},
+		[]
+	);
 
 	const cleanLocalStoreChange = useCallback<(key: keyof ScalingSettings) => void>((key) => {
 		setLocalStorageUnAppliedChanges((prevState) => {

@@ -33,7 +33,7 @@ export function dateToGenTime(date: Date): GeneralizedTime {
 	}Z` as GeneralizedTime;
 }
 
-export function genTimeToDate(genTime: string): Date {
+export function genTimeToDate(genTime: GeneralizedTime): Date {
 	const date = new Date();
 	date.setUTCFullYear(Number(genTime.substring(0, 4)));
 	date.setUTCMonth(Number(genTime.substring(4, 6)) - 1);

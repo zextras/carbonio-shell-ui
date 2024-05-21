@@ -55,7 +55,7 @@ type GeneralizedTimeObj = {
 };
 
 /**
- * A GeneralizedTime is a string representing a date in UTC with the format YYYYMMDDHHmmss[Z]
+ * A GeneralizedTime is a string representing a date in UTC with the format YYYYMMDDHHmmss[.SSS][Z]
  */
 export type GeneralizedTime =
 	`${GeneralizedTimeObj['year']}${GeneralizedTimeObj['month']}${GeneralizedTimeObj['date']}${GeneralizedTimeObj['hour']}${GeneralizedTimeObj['min']}${GeneralizedTimeObj['sec']}${GeneralizedTimeObj['ms']}${GeneralizedTimeObj['timezone']}`;

@@ -101,11 +101,12 @@ describe('Shell utility bar', () => {
 		server.use(http.get('/zx/auth/logout', zxAuthLogoutHandlerMock));
 
 		useLoginConfigStore.setState((s) => ({ ...s, isCarbonioCE: true }));
+		const logout = waitForRequest('get', '/logout');
 		const { user } = setup(<ShellUtilityBar />);
 
 		await user.click(screen.getByRoleWithIcon('button', { icon: ICONS.accountUtilityMenu }));
 		await user.click(screen.getByText(/logout/i));
-		await waitForRequest('get', '/logout');
+		await logout;
 
 		await waitFor(() => expect(logoutHandlerMock).toHaveBeenCalled());
 		expect(zxAuthLogoutHandlerMock).not.toHaveBeenCalled();
@@ -121,11 +122,12 @@ describe('Shell utility bar', () => {
 		server.use(http.get('/zx/auth/logout', zxAuthLogoutHandlerMock));
 
 		useLoginConfigStore.setState((s) => ({ ...s, isCarbonioCE: false }));
+		const logout = waitForRequest('get', '/zx/auth/logout');
 		const { user } = setup(<ShellUtilityBar />);
 
 		await user.click(screen.getByRoleWithIcon('button', { icon: ICONS.accountUtilityMenu }));
 		await user.click(screen.getByText(/logout/i));
-		await waitForRequest('get', '/zx/auth/logout');
+		await logout;
 
 		await waitFor(() => expect(zxAuthLogoutHandlerMock).toHaveBeenCalled());
 		expect(logoutHandlerMock).not.toHaveBeenCalled();

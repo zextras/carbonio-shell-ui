@@ -10,8 +10,6 @@ import type { To } from 'history';
 import { find, startsWith, replace, trim } from 'lodash';
 import { useLocation, useHistory } from 'react-router-dom';
 
-import { SEARCH_APP_ID } from '../constants';
-import { useSearchStore } from '../search/search-store';
 import { useRoutes, getRoutes } from '../store/app';
 import { useContextBridge } from '../store/context-bridge';
 import type { AppRoute } from '../types/apps';
@@ -28,14 +26,7 @@ export const useCurrentRoute = (): AppRoute | undefined => {
 export const getCurrentRoute = (): AppRoute | undefined => {
 	const history = useContextBridge.getState().functions.getHistory?.();
 	const routes = getRoutes();
-	const route = find(routes, (r) => startsWith(trim(history.location.pathname, '/'), r.route));
-	if (route?.route === SEARCH_APP_ID) {
-		return {
-			...route,
-			route: `${route.route}/${useSearchStore.getState().module}`
-		};
-	}
-	return route;
+	return find(routes, (r) => startsWith(trim(history.location.pathname, '/'), r.route));
 };
 
 export const parseParams = (params: HistoryParams): To => {

@@ -12,6 +12,8 @@ import { create } from 'zustand';
 
 import { normalizeApp } from './utils';
 import { SHELL_APP_ID } from '../../constants';
+import { useSearchStore } from '../../search/search-store';
+import { SEARCH_MODULE_KEY } from '../../search/useSearchModule';
 import type {
 	AppRoute,
 	AppRouteDescriptor,
@@ -181,7 +183,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 				})
 			);
 		},
-	// add route (id route primaryBar secondaryBar app)
 	addRoute: (routeData): string => {
 		const { focusMode } = get();
 		if (focusMode && (routeData.route !== focusMode || !routeData.focusMode)) {
@@ -236,8 +237,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 			})
 		);
 	},
-
-	// remove route (id | route)
 	removeRoute: (id): void => {
 		set(
 			produce<AppState>((state) => {
@@ -248,7 +247,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 			})
 		);
 	},
-	// add board
 	addBoardView: (data): string => {
 		set(
 			produce<AppState>((state) => {
@@ -257,8 +255,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 		);
 		return data.id;
 	},
-
-	// remove board
 	removeBoardView: (id): void => {
 		set(
 			produce<AppState>((state) => {
@@ -266,8 +262,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 			})
 		);
 	},
-
-	// add settings
 	addSettingsView: (data): string => {
 		const { focusMode } = get();
 		if (focusMode && data.route !== focusMode) {
@@ -280,8 +274,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 		);
 		return data.id;
 	},
-
-	// remove settings
 	removeSettingsView: (id): void => {
 		set(
 			produce<AppState>((state) => {
@@ -289,10 +281,28 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 			})
 		);
 	},
-	//
-	// add search
 	addSearchView: (data): string => {
-		const { focusMode } = get();
+		const {
+			focusMode,
+			views: { search }
+		} = get();
+
+		const lastSearchModule = sessionStorage.getItem(SEARCH_MODULE_KEY) ?? undefined;
+		const currentSearchModule = useSearchStore.getState().module;
+
+		if (currentSearchModule !== lastSearchModule || currentSearchModule === undefined) {
+			const currentModuleSearchView = search.find(
+				(searchView) => searchView.route === currentSearchModule
+			);
+			if (
+				!currentModuleSearchView ||
+				data.position < currentModuleSearchView?.position ||
+				data.route === lastSearchModule
+			) {
+				useSearchStore.getState().updateModule(data.route);
+			}
+		}
+
 		if (focusMode && data.route !== focusMode) {
 			return FOCUS_MODE_RESPONSE;
 		}
@@ -303,7 +313,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 		);
 		return data.id;
 	},
-	// remove search
 	removeSearchView: (id): void => {
 		set(
 			produce<AppState>((state) => {
@@ -311,8 +320,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 			})
 		);
 	},
-	//
-	// add utility
 	addUtilityView: (data): string => {
 		set(
 			produce<AppState>((state) => {
@@ -321,7 +328,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 		);
 		return data.id;
 	},
-	// remove utility
 	removeUtilityView: (id): void => {
 		set(
 			produce<AppState>((state) => {
@@ -329,8 +335,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 			})
 		);
 	},
-	//
-	// add primaryAccessory
 	addPrimaryAccessoryView: (data): string => {
 		set(
 			produce<AppState>((state) => {
@@ -339,7 +343,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 		);
 		return data.id;
 	},
-	// remove primaryAccessory
 	removePrimaryAccessoryView: (id): void => {
 		set(
 			produce<AppState>((state) => {
@@ -347,8 +350,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 			})
 		);
 	},
-	//
-	// add secondaryAccessory
 	addSecondaryAccessoryView: (data): string => {
 		set(
 			produce<AppState>((state) => {
@@ -357,7 +358,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 		);
 		return data.id;
 	},
-	// remove secondaryAccessory
 	removeSecondaryAccessoryView: (id): void => {
 		set(
 			produce<AppState>((state) => {

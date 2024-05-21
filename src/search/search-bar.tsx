@@ -20,6 +20,7 @@ import styled from 'styled-components';
 
 import { ModuleSelector } from './module-selector';
 import { useSearchStore } from './search-store';
+import { useSearchModule } from './useSearchModule';
 import { LOCAL_STORAGE_SEARCH_KEY, SEARCH_APP_ID } from '../constants';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 import { useAppStore } from '../store/app';
@@ -66,14 +67,8 @@ export const SearchBar = (): React.JSX.Element => {
 	);
 	const [inputTyped, setInputTyped] = useState<string>('');
 	const history = useHistory();
-	const {
-		updateQuery,
-		module: currentSearchModuleRoute,
-		query,
-		searchDisabled,
-		setSearchDisabled,
-		tooltip
-	} = useSearchStore();
+	const [currentSearchModuleRoute] = useSearchModule();
+	const { updateQuery, query, searchDisabled, setSearchDisabled, tooltip } = useSearchStore();
 	const modules = useAppStore((s) => s.views.search);
 	const moduleLabel = useMemo(
 		() =>
@@ -175,8 +170,8 @@ export const SearchBar = (): React.JSX.Element => {
 			);
 		});
 		// TODO: perform a navigation only when coming from a different module (not the search one)
-		history.push(`/${SEARCH_APP_ID}/${currentSearchModuleRoute}`);
-	}, [updateQuery, history, currentSearchModuleRoute, inputTyped, searchInputValue]);
+		history.push(`/${SEARCH_APP_ID}`);
+	}, [updateQuery, history, inputTyped, searchInputValue]);
 
 	const appSuggestions = useMemo<SearchOption[]>(
 		() =>

@@ -10,8 +10,8 @@ import { act, screen } from '@testing-library/react';
 import { format, addDays, subDays, startOfDay, endOfDay, addHours, subHours } from 'date-fns';
 
 import { OutOfOfficeTimePeriodSection } from './out-of-office-time-period-section';
-import { ICONS } from '../../../test/constants';
-import { setup } from '../../../test/utils';
+import { ICONS } from '../../../tests/constants';
+import { setup } from '../../../tests/utils';
 import { dateToGenTime } from '../utils';
 
 describe('out of office time period section', () => {

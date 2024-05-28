@@ -10,8 +10,8 @@ import { screen } from '@testing-library/react';
 
 import { ModuleSelector } from './module-selector';
 import { useAppStore } from '../store/app';
-import { TESTID_SELECTORS } from '../test/constants';
-import { setup } from '../test/utils';
+import { TESTID_SELECTORS } from '../tests/constants';
+import { setup } from '../tests/utils';
 
 describe('Search module selector', () => {
 	it('should hide the component if there are no modules in the store', () => {

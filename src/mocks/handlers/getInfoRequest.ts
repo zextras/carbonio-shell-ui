@@ -6,7 +6,7 @@
 import type { HttpResponseResolver } from 'msw';
 import { HttpResponse } from 'msw';
 
-import { LOGGED_USER } from '../../test/constants';
+import { LOGGED_USER } from '../../tests/constants';
 import type { GetInfoResponse, SoapBody } from '../../types/network';
 
 type GetInfoRequestBody = {

@@ -43,7 +43,7 @@ export type Account = {
 
 export type BooleanString = 'TRUE' | 'FALSE';
 
-type GenTimeObj = {
+type GeneralizedTimeObj = {
 	year: `${number}` & StringOfLength<4>;
 	month: `${number}` & StringOfLength<2>;
 	date: `${number}` & StringOfLength<2>;
@@ -54,8 +54,11 @@ type GenTimeObj = {
 	timezone: 'Z' | '';
 };
 
+/**
+ * A GeneralizedTime is a string representing a date in UTC with the format YYYYMMDDHHmmss[.SSS][Z]
+ */
 export type GeneralizedTime =
-	`${GenTimeObj['year']}${GenTimeObj['month']}${GenTimeObj['date']}${GenTimeObj['hour']}${GenTimeObj['min']}${GenTimeObj['sec']}${GenTimeObj['ms']}${GenTimeObj['timezone']}`;
+	`${GeneralizedTimeObj['year']}${GeneralizedTimeObj['month']}${GeneralizedTimeObj['date']}${GeneralizedTimeObj['hour']}${GeneralizedTimeObj['min']}${GeneralizedTimeObj['sec']}${GeneralizedTimeObj['ms']}${GeneralizedTimeObj['timezone']}`;
 
 export type DurationUnit = 'd' | 'h' | 'm' | 's' | 'ms';
 

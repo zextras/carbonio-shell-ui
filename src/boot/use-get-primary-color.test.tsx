@@ -14,7 +14,7 @@ import { DARK_READER_PROP_KEY, SHELL_APP_ID } from '../constants';
 import * as useLocalStorage from '../shell/hooks/useLocalStorage';
 import { useAccountStore } from '../store/account';
 import { useLoginConfigStore } from '../store/login/store';
-import { setup } from '../test/utils';
+import { setup } from '../tests/utils';
 
 const PrimaryColorComponent = (): React.JSX.Element => {
 	const primary = useGetPrimaryColor();

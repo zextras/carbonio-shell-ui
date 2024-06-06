@@ -218,6 +218,7 @@ const Composer: FC<ComposerProps> = ({
 						'forecolor backcolor',
 						'bullist numlist outdent indent',
 						'ltr rtl',
+						'link',
 						'insertfile image',
 						'imageSelector'
 					].join(' | '),
@@ -256,8 +257,7 @@ const Composer: FC<ComposerProps> = ({
 		<Container
 			height="100%"
 			crossAlignment="baseline"
-			mainAlignment="flex-start"
-			style={{ overflowY: 'hidden' }}
+			style={{ overflowY: 'hidden', display: 'initial' }}
 		>
 			<FileInput
 				type="file"

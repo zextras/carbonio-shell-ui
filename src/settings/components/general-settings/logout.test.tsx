@@ -11,7 +11,7 @@ import { Logout } from './logout';
 import { waitForRequest } from '../../../mocks/server';
 import * as networkUtils from '../../../network/utils';
 import { useLoginConfigStore } from '../../../store/login/store';
-import { setup } from '../../../test/utils';
+import { setup } from '../../../tests/utils';
 
 describe('Logout', () => {
 	test('should redirect to custom logout url on manual logout', async () => {

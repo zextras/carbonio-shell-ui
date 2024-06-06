@@ -8,8 +8,6 @@ import type React from 'react';
 
 import type { TFunction } from 'i18next';
 import { cloneDeep, filter, findIndex, isArray, isBoolean, reduce, uniq } from 'lodash';
-import type { Moment } from 'moment';
-import moment from 'moment';
 
 import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
 import type { LocaleDescriptor } from '../../constants/locales';
@@ -24,23 +22,40 @@ import type {
 } from '../../types/account';
 import type { AddMod, PrefsMods } from '../../types/network';
 
-export const GEN_TIME_FORMAT = 'YYYYMMDDHHmmss[Z]';
-
-function getGenTimeMoment(date: Date | string | Moment): Moment {
-	return moment.utc(date, GEN_TIME_FORMAT);
+export function dateToGenTime(date: Date): GeneralizedTime {
+	return `${
+		date.getUTCFullYear() +
+		(date.getUTCMonth() + 1).toString().padStart(2, '0') +
+		date.getUTCDate().toString().padStart(2, '0') +
+		date.getUTCHours().toString().padStart(2, '0') +
+		date.getUTCMinutes().toString().padStart(2, '0') +
+		date.getUTCSeconds().toString().padStart(2, '0')
+	}Z` as GeneralizedTime;
 }
 
-export function dateToGenTime(date: Date | Moment): GeneralizedTime {
-	return getGenTimeMoment(date).format(GEN_TIME_FORMAT) as GeneralizedTime;
+export function genTimeToDate(genTime: GeneralizedTime): Date {
+	const date = new Date();
+	date.setUTCFullYear(Number(genTime.substring(0, 4)));
+	date.setUTCMonth(Number(genTime.substring(4, 6)) - 1);
+	date.setUTCDate(Number(genTime.substring(6, 8)));
+	date.setUTCHours(Number(genTime.substring(8, 10)));
+	date.setUTCMinutes(Number(genTime.substring(10, 12)));
+	date.setUTCSeconds(Number(genTime.substring(12, 14)));
+	date.setUTCMilliseconds(0);
+	return date;
 }
 
-export function genTimeToDate(genTime: string): Date {
-	return getGenTimeMoment(genTime).local().toDate();
-}
+export const startOfDay = (date: Date): Date => {
+	const newDate = new Date(date);
+	newDate.setHours(0, 0, 0, 0);
+	return newDate;
+};
 
-export const startOfDay = (date: Date): Date => new Date(new Date(date).setHours(0, 0, 0, 0));
-
-export const endOfDay = (date: Date): Date => new Date(new Date(date).setHours(23, 59, 59, 0));
+export const endOfDay = (date: Date): Date => {
+	const newDate = new Date(date);
+	newDate.setHours(23, 59, 59, 0);
+	return newDate;
+};
 
 export type LocaleDescriptorWithLabels = LocaleDescriptor & {
 	id: string;

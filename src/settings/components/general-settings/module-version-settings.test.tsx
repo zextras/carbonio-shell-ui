@@ -10,7 +10,7 @@ import { produce } from 'immer';
 
 import ModuleVersionSettings from './module-version-settings';
 import { useAppStore } from '../../../store/app';
-import { screen, setup } from '../../../test/utils';
+import { screen, setup } from '../../../tests/utils';
 
 describe('Module Version Settings', () => {
 	it('should render the application version section', () => {

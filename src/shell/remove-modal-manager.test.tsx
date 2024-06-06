@@ -10,7 +10,7 @@ import { useModal } from '@zextras/carbonio-design-system';
 
 import AppViewContainer from './app-view-container';
 import { useAppStore } from '../store/app';
-import { setup } from '../test/utils';
+import { setup } from '../tests/utils';
 
 const WithUseModalHookView = (): null => {
 	const createModal = useModal();

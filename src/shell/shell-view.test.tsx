@@ -14,8 +14,8 @@ import type { Border } from './hooks/useResize';
 import ShellView from './shell-view';
 import { ContextBridge } from '../boot/context-bridge';
 import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
-import { ICONS, TESTID_SELECTORS } from '../test/constants';
-import { mockedApps, setupAppStore } from '../test/test-app-utils';
+import { ICONS, TESTID_SELECTORS } from '../tests/constants';
+import { mockedApps, setupAppStore } from '../tests/test-app-utils';
 import {
 	buildBoardSizeAndPosition,
 	buildMousePosition,
@@ -23,8 +23,8 @@ import {
 	moveBoard,
 	resizeBoard,
 	setupBoardStore
-} from '../test/test-board-utils';
-import { setup } from '../test/utils';
+} from '../tests/test-board-utils';
+import { setup } from '../tests/utils';
 import type { Board } from '../types/boards';
 import type { SizeAndPosition } from '../utils/utils';
 

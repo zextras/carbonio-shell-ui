@@ -47,7 +47,7 @@ module.exports = {
 	overrides: [
 		{
 			// enable eslint-plugin-testing-library rules or preset only for test files
-			files: ['**/test/**/*.[jt]s?(x)', '**/mocks/**/*.[jt]s?(x)', '**/jest-*.ts?(x)'],
+			files: ['**/tests/**/*.[jt]s?(x)', '**/mocks/**/*.[jt]s?(x)', '**/jest-*.ts?(x)'],
 			extends: ['plugin:jest-dom/recommended', 'plugin:testing-library/react'],
 			rules: {
 				'testing-library/no-unnecessary-act': 'warn',

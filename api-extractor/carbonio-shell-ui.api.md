@@ -229,6 +229,7 @@ type AnyFunction = (...args: any[]) => any;
 // @public (undocumented)
 type AppActions = {
     setApps: (apps: Array<Partial<CarbonioModule>>) => void;
+    upsertApp: (app: Pick<CarbonioModule, 'name' | 'display' | 'description'>) => void;
     addRoute: (routeData: AppRouteDescriptor) => string;
     setRouteVisibility: (id: string, visible: boolean) => void;
     removeRoute: (id: string) => void;
@@ -622,13 +623,13 @@ export type Folders = {
 // @public (undocumented)
 type FolderView = 'search folder' | 'tag' | 'conversation' | 'message' | 'contact' | 'document' | 'appointment' | 'virtual conversation' | 'remote folder' | 'wiki' | 'task' | 'chat';
 
-// Warning: (ae-forgotten-export) The symbol "GenTimeObj" needs to be exported by the entry point lib.d.ts
+// Warning: (ae-forgotten-export) The symbol "GeneralizedTimeObj" needs to be exported by the entry point lib.d.ts
 //
-// @public (undocumented)
-export type GeneralizedTime = `${GenTimeObj['year']}${GenTimeObj['month']}${GenTimeObj['date']}${GenTimeObj['hour']}${GenTimeObj['min']}${GenTimeObj['sec']}${GenTimeObj['ms']}${GenTimeObj['timezone']}`;
+// @public
+export type GeneralizedTime = `${GeneralizedTimeObj['year']}${GeneralizedTimeObj['month']}${GeneralizedTimeObj['date']}${GeneralizedTimeObj['hour']}${GeneralizedTimeObj['min']}${GeneralizedTimeObj['sec']}${GeneralizedTimeObj['ms']}${GeneralizedTimeObj['timezone']}`;
 
 // @public (undocumented)
-type GenTimeObj = {
+type GeneralizedTimeObj = {
     year: `${number}` & StringOfLength<4>;
     month: `${number}` & StringOfLength<2>;
     date: `${number}` & StringOfLength<2>;
@@ -1477,6 +1478,9 @@ export const updatePrimaryBadge: (badge: Partial<BadgeInfo_2>, id: string) => vo
 // @public (undocumented)
 export const updateUtilityBadge: (badge: Partial<BadgeInfo_2>, id: string) => void;
 
+// @public
+export const upsertApp: (app: Pick<CarbonioModule, "description" | "name" | "display">) => void;
+
 // @public (undocumented)
 export const useAction: <T>(type: string, id: string, target?: T | undefined) => [Action | undefined, boolean];
 
@@ -1538,7 +1542,7 @@ export const useIntegratedComponent: (id: string) => [React_2.FunctionComponent<
 // @public (undocumented)
 export const useIntegratedFunction: (id: string) => [AnyFunction, boolean];
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export function useIsMobile(): boolean;
 
 // Warning: (ae-forgotten-export) The symbol "LocalStorageOptions" needs to be exported by the entry point lib.d.ts
@@ -1665,24 +1669,24 @@ interface ZimletProp {
 // lib/network/edit-settings.d.ts:9:5 - (ae-forgotten-export) The symbol "GrantRightsResponse" needs to be exported by the entry point lib.d.ts
 // lib/settings/components/settings-header.d.ts:5:5 - (ae-forgotten-export) The symbol "RouteLeavingGuardProps" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:23:5 - (ae-forgotten-export) The symbol "CarbonioModule" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:24:5 - (ae-forgotten-export) The symbol "AppRouteDescriptor" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:29:5 - (ae-forgotten-export) The symbol "BoardView" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:31:5 - (ae-forgotten-export) The symbol "SettingsView" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:33:5 - (ae-forgotten-export) The symbol "SearchView" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:35:5 - (ae-forgotten-export) The symbol "UtilityView" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:37:5 - (ae-forgotten-export) The symbol "PrimaryAccessoryView" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:39:5 - (ae-forgotten-export) The symbol "SecondaryAccessoryView" needs to be exported by the entry point lib.d.ts
+// lib/store/app/store.d.ts:25:5 - (ae-forgotten-export) The symbol "AppRouteDescriptor" needs to be exported by the entry point lib.d.ts
+// lib/store/app/store.d.ts:30:5 - (ae-forgotten-export) The symbol "BoardView" needs to be exported by the entry point lib.d.ts
+// lib/store/app/store.d.ts:32:5 - (ae-forgotten-export) The symbol "SettingsView" needs to be exported by the entry point lib.d.ts
+// lib/store/app/store.d.ts:34:5 - (ae-forgotten-export) The symbol "SearchView" needs to be exported by the entry point lib.d.ts
+// lib/store/app/store.d.ts:36:5 - (ae-forgotten-export) The symbol "UtilityView" needs to be exported by the entry point lib.d.ts
+// lib/store/app/store.d.ts:38:5 - (ae-forgotten-export) The symbol "PrimaryAccessoryView" needs to be exported by the entry point lib.d.ts
+// lib/store/app/store.d.ts:40:5 - (ae-forgotten-export) The symbol "SecondaryAccessoryView" needs to be exported by the entry point lib.d.ts
 // lib/store/context-bridge.d.ts:4:5 - (ae-forgotten-export) The symbol "PackageDependentFunction" needs to be exported by the entry point lib.d.ts
 // lib/store/context-bridge.d.ts:5:5 - (ae-forgotten-export) The symbol "AnyFunction" needs to be exported by the entry point lib.d.ts
 // lib/store/integrations/store.d.ts:26:9 - (ae-forgotten-export) The symbol "Action_2" needs to be exported by the entry point lib.d.ts
 // lib/store/integrations/store.d.ts:32:9 - (ae-forgotten-export) The symbol "Component" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:35:5 - (ae-forgotten-export) The symbol "AccountRights" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:39:5 - (ae-forgotten-export) The symbol "StringOfLength" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:81:5 - (ae-forgotten-export) The symbol "AccountSettingsAttrs" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:83:5 - (ae-forgotten-export) The symbol "ZimletProp" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:127:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:132:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:133:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:84:5 - (ae-forgotten-export) The symbol "AccountSettingsAttrs" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:86:5 - (ae-forgotten-export) The symbol "ZimletProp" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:130:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:135:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:136:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
 // lib/types/apps/index.d.ts:68:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:85:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:104:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts

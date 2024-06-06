@@ -10,7 +10,7 @@ import { produce } from 'immer';
 
 import UserQuota from './user-quota';
 import { useAccountStore } from '../../../store/account';
-import { screen, setup } from '../../../test/utils';
+import { screen, setup } from '../../../tests/utils';
 
 const quotaMax = 100;
 function setupAccountStore(usedQuota = 0): void {

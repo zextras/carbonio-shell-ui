@@ -9,9 +9,9 @@ import type { DropdownItem } from '@zextras/carbonio-design-system';
 import { Container, Row, Text, Icon, Dropdown } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 
-import { useSearchStore } from './search-store';
+import { useSearchModule } from './useSearchModule';
 import { SEARCH_APP_ID } from '../constants';
-import { useCurrentRoute, pushHistory } from '../history/hooks';
+import { pushHistory, useCurrentRoute } from '../history/hooks';
 import { useAppStore } from '../store/app';
 
 const SelectorContainer = styled(Container)<{ open?: boolean }>`
@@ -24,42 +24,46 @@ const SelectorContainer = styled(Container)<{ open?: boolean }>`
 	}
 `;
 
-interface ModuleSelectorProps {
-	app: string | undefined;
-}
-
-const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): React.JSX.Element | null => {
-	const modules = useAppStore((s) => s.views.search);
-	const { module, updateModule } = useSearchStore();
-
-	const fullModule = useMemo(
-		() => modules.find((m) => m.route === module) ?? modules[0],
-		[module, modules]
+export const ModuleSelector = (): React.JSX.Element | null => {
+	const currentRoute = useCurrentRoute();
+	const searchViews = useAppStore((s) => s.views.search);
+	const [module, updateModule] = useSearchModule();
+	const searchView = useMemo(
+		() => searchViews.find((m) => m.route === module),
+		[module, searchViews]
 	);
 
 	const [open, setOpen] = useState(false);
 
 	const dropdownItems = useMemo(
 		(): DropdownItem[] =>
-			modules.map(
+			searchViews.map(
 				({ id, label, icon, route }): DropdownItem => ({
 					id,
 					label,
 					icon,
 					onClick: (): void => {
+						// open the search view and update the module of moduleSelector
+						// order is important
+						pushHistory({ route: SEARCH_APP_ID, path: '' });
 						updateModule(route);
-						pushHistory({ route: SEARCH_APP_ID, path: `/${route}` });
 					}
 				})
 			),
-		[modules, updateModule]
+		[searchViews, updateModule]
 	);
 
 	useEffect(() => {
-		if (app !== SEARCH_APP_ID && (!fullModule || fullModule?.app !== app)) {
-			updateModule((modules.find((m) => m.app === app) ?? modules[0])?.route);
+		// update the search module based on active route
+		// it handles also back navigation that cannot be handled using primary icon clicks
+		if (
+			currentRoute?.route &&
+			module !== currentRoute.route &&
+			searchViews.find((m) => m.route === currentRoute.route)
+		) {
+			updateModule(currentRoute.route);
 		}
-	}, [app, fullModule, modules, updateModule]);
+	}, [searchView, module, searchViews, updateModule, currentRoute?.route]);
 
 	const openDropdown = useCallback(() => {
 		setOpen(true);
@@ -69,7 +73,7 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): React.JSX.Elemen
 		setOpen(false);
 	}, []);
 
-	if (!fullModule) {
+	if (!searchView) {
 		return null;
 	}
 
@@ -88,7 +92,7 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): React.JSX.Elemen
 			>
 				<Row takeAvailableSpace mainAlignment="unset" padding={{ left: 'small' }}>
 					<Text size="small" color={open ? 'primary' : 'text'}>
-						{fullModule?.label}
+						{searchView?.label}
 					</Text>
 				</Row>
 				<Icon
@@ -100,11 +104,4 @@ const ModuleSelectorComponent = ({ app }: ModuleSelectorProps): React.JSX.Elemen
 			</SelectorContainer>
 		</Dropdown>
 	);
-};
-
-const MemoModuleSelector = React.memo(ModuleSelectorComponent);
-
-export const ModuleSelector = (): React.JSX.Element => {
-	const activeRoute = useCurrentRoute();
-	return <MemoModuleSelector app={activeRoute?.app} />;
 };

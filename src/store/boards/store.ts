@@ -5,7 +5,7 @@
  */
 
 import { produce } from 'immer';
-import { forEach, trimStart, uniqueId } from 'lodash';
+import { forEach, uniqueId } from 'lodash';
 import { create } from 'zustand';
 
 import type { Board } from '../../types/boards';
@@ -40,8 +40,7 @@ export const addBoard =
 					...board,
 					app,
 					id,
-					icon: board.icon ?? getApp(app)()?.icon ?? 'CubeOutline',
-					url: trimStart(board.url, '/')
+					icon: board.icon ?? getApp(app)()?.icon ?? 'CubeOutline'
 				} as Board;
 				state.current = id;
 				state.minimized = false;

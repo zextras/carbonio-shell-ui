@@ -71,7 +71,7 @@
 		"@types/webpack": "^5.28.5",
 		"@types/webpack-env": "^1.18.4",
 		"@zextras/carbonio-ui-configs": "^1.0.0",
-		"@zextras/carbonio-ui-sdk": "^1.7.3",
+		"@zextras/carbonio-ui-sdk": "^1.7.4",
 		"autoprefixer": "^10.4.17",
 		"babel-loader": "^9.1.3",
 		"babel-plugin-styled-components": "^2.1.4",
@@ -112,7 +112,6 @@
 		"i18next-http-backend": "^2.5.0",
 		"immer": "^10.0.3",
 		"lodash": "^4.17.21",
-		"moment": "^2.30.1",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-i18next": "^12.3.1",
@@ -129,7 +128,6 @@
 		"@zextras/carbonio-ui-preview": "^1",
 		"core-js": "^3.31.1",
 		"lodash": "^4.17.21",
-		"moment": "^2.30.1",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-i18next": "^12.3.1",
@@ -148,9 +146,6 @@
 			"optional": true
 		},
 		"lodash": {
-			"optional": true
-		},
-		"moment": {
 			"optional": true
 		},
 		"react": {

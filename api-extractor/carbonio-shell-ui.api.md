@@ -1320,10 +1320,14 @@ export interface SoapContext extends Omit<RawSoapContext, 'notify'> {
 // @public (undocumented)
 interface SoapFault {
     // (undocumented)
+    Code: {
+        Value: string;
+    };
+    // (undocumented)
     Detail: {
         Error: {
             Code: string;
-            Detail: string;
+            Trace: string;
         };
     };
     // (undocumented)
@@ -1695,8 +1699,8 @@ interface ZimletProp {
 // lib/types/misc/index.d.ts:138:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
 // lib/types/network/index.d.ts:107:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:11:5 - (ae-forgotten-export) The symbol "NameSpace" needs to be exported by the entry point lib.d.ts
-// lib/types/network/soap.d.ts:33:5 - (ae-forgotten-export) The symbol "SoapFault" needs to be exported by the entry point lib.d.ts
-// lib/types/network/soap.d.ts:62:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
+// lib/types/network/soap.d.ts:36:5 - (ae-forgotten-export) The symbol "SoapFault" needs to be exported by the entry point lib.d.ts
+// lib/types/network/soap.d.ts:65:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
 // lib/types/workers/index.d.ts:12:5 - (ae-forgotten-export) The symbol "SyncMessage" needs to be exported by the entry point lib.d.ts
 
 ```

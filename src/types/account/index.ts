@@ -83,6 +83,10 @@ export interface AccountSettingsPrefs {
 	zimbraPrefMailPollingInterval?: Duration;
 	zimbraPrefMailTrustedSenderList?: Array<string> | string;
 	zimbraPrefDelegatedSendSaveTarget?: (typeof DELEGATED_SEND_SAVE_TARGET)[number];
+	/**
+	 * The timezone preference is going to be removed, because now we rely on the system timezone.
+	 * @deprecated
+	 */
 	zimbraPrefTimeZoneId?: string;
 	[key: string]: string | number | Array<string | number> | undefined;
 }

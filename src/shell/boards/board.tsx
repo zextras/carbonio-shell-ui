@@ -6,12 +6,14 @@
 
 import React, { useMemo } from 'react';
 
+import { Container } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 import styled from 'styled-components';
 
 import AppContextProvider from '../../boot/app/app-context-provider';
 import { useAppStore } from '../../store/app';
 import { BoardProvider, useBoardStore } from '../../store/boards';
+import type { BoardView } from '../../types/apps';
 import type { Board } from '../../types/boards';
 
 const BoardContainer = styled.div<{ show: boolean }>`
@@ -33,21 +35,37 @@ const BoardContainer = styled.div<{ show: boolean }>`
 	}
 `;
 
+const BoardViewComponent = ({
+	view,
+	boardId
+}: {
+	view: BoardView;
+	boardId: string;
+}): React.JSX.Element => (
+	<AppContextProvider pkg={view.app}>
+		<BoardProvider id={boardId}>
+			<view.component />
+		</BoardProvider>
+	</AppContextProvider>
+);
+
 export const AppBoard = ({ board }: { board: Board }): React.JSX.Element => {
 	const current = useBoardStore((s) => s.current);
 	const boardViews = useAppStore((s) => s.views.board);
-	const boardView = useMemo(() => {
-		const view = find(boardViews, (v) => v.id === board.boardViewId);
-		if (view)
-			return (
-				<AppContextProvider key={view.id} pkg={view.app}>
-					<BoardProvider id={board.id}>
-						<view.component />
-					</BoardProvider>
-				</AppContextProvider>
-			);
-		return null;
-	}, [board.boardViewId, board.id, boardViews]);
+	const boardView = useMemo(
+		() => find(boardViews, (v) => v.id === board.boardViewId),
+		[board.boardViewId, boardViews]
+	);
 
-	return <BoardContainer show={current === board.id}>{boardView}</BoardContainer>;
+	return (
+		<BoardContainer show={current === board.id}>
+			{boardView ? (
+				<BoardViewComponent view={boardView} boardId={board.id} />
+			) : (
+				<Container orientation={'row'} mainAlignment={'center'}>
+					<p>Missing Board View</p>
+				</Container>
+			)}
+		</BoardContainer>
+	);
 };

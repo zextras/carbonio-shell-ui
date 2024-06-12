@@ -218,13 +218,14 @@ const Composer: FC<ComposerProps> = ({
 						'forecolor backcolor',
 						'bullist numlist outdent indent',
 						'ltr rtl',
+						'link',
 						'insertfile image',
 						'imageSelector'
 					].join(' | '),
 			quickbars_insert_toolbar: inline ? 'bullist numlist' : '',
 			quickbars_selection_toolbar: inline
-				? 'bold italic underline | forecolor backcolor | removeformat | quicklink'
-				: 'quicklink',
+				? 'bold italic underline | forecolor backcolor | removeformat | link'
+				: 'link',
 			contextmenu: '',
 			toolbar_mode: 'wrap',
 			content_style: `body  {  color: ${defaultStyle?.color}; font-size: ${defaultStyle?.fontSize}; font-family: ${defaultStyle?.font}; }`,

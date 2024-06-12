@@ -224,8 +224,8 @@ const Composer: FC<ComposerProps> = ({
 					].join(' | '),
 			quickbars_insert_toolbar: inline ? 'bullist numlist' : '',
 			quickbars_selection_toolbar: inline
-				? 'bold italic underline | forecolor backcolor | removeformat | quicklink'
-				: 'quicklink',
+				? 'bold italic underline | forecolor backcolor | removeformat | link'
+				: 'link',
 			contextmenu: '',
 			toolbar_mode: 'wrap',
 			content_style: `body  {  color: ${defaultStyle?.color}; font-size: ${defaultStyle?.fontSize}; font-family: ${defaultStyle?.font}; }`,
@@ -257,7 +257,8 @@ const Composer: FC<ComposerProps> = ({
 		<Container
 			height="100%"
 			crossAlignment="baseline"
-			style={{ overflowY: 'hidden', display: 'initial' }}
+			mainAlignment="flex-start"
+			style={{ overflowY: 'hidden' }}
 		>
 			<FileInput
 				type="file"

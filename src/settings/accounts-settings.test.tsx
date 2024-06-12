@@ -8,31 +8,17 @@ import React from 'react';
 import 'jest-styled-components';
 import { faker } from '@faker-js/faker';
 import { act, screen, waitFor, within } from '@testing-library/react';
-import { forEach, head, shuffle, tail } from 'lodash';
+import { head, shuffle, tail } from 'lodash';
 import { http, HttpResponse } from 'msw';
-import { Link, Route, Switch } from 'react-router-dom';
 
-import type { AccountsSettingsBatchRequest } from './accounts-settings';
 import { AccountsSettings } from './accounts-settings';
 import { JSNS } from '../constants';
-import type {
-	GetRightsRequestBody,
-	GetRightsResponseBody
-} from '../mocks/handlers/getRightsRequest';
-import { getRightsRequest } from '../mocks/handlers/getRightsRequest';
 import server, { waitForRequest } from '../mocks/server';
-import { useAccountStore } from '../store/account';
 import { createAccount, createIdentity, setupAccountStore } from '../tests/account-utils';
 import { setup } from '../tests/utils';
 import type { BatchRequest, CreateIdentityResponse } from '../types/network';
 
 describe('Account setting', () => {
-	async function waitForGetRightsRequest(): Promise<void> {
-		// wait for the main UI to render
-		await screen.findByText('Accounts');
-		// then wait for the delegates section to render
-		await screen.findByText('sendAs');
-	}
 	const defaultFirstName = faker.person.firstName();
 	const defaultLastName = faker.person.lastName();
 	const defaultFullName = faker.person.fullName({
@@ -121,8 +107,6 @@ describe('Account setting', () => {
 
 		const { user } = setup(<AccountsSettings />);
 
-		await waitForGetRightsRequest();
-
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await waitFor(() =>
 			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
@@ -201,7 +185,6 @@ describe('Account setting', () => {
 		]
 		`;
 		const { user } = setup(<AccountsSettings />);
-		await waitForGetRightsRequest();
 
 		const renderedItems = screen.getAllByRole('listitem');
 		expect(renderedItems.length).toEqual(2);
@@ -268,7 +251,6 @@ describe('Account setting', () => {
 
 		setup(<AccountsSettings />);
 
-		await waitForGetRightsRequest();
 		const renderedItems = screen.getAllByRole('listitem');
 		expect(renderedItems.length).toEqual(4);
 		expect(head(renderedItems.map((item) => item.textContent))).toMatchInlineSnapshot(
@@ -291,7 +273,6 @@ describe('Account setting', () => {
 		);
 
 		const { user } = setup(<AccountsSettings />);
-		await waitForGetRightsRequest();
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 
 		const renderedItems = screen.getAllByRole('listitem');
@@ -319,7 +300,6 @@ describe('Account setting', () => {
 
 		setup(<AccountsSettings />);
 
-		await waitForGetRightsRequest();
 		expect(screen.getByText(defaultFullName)).toBeVisible();
 		expect(screen.getByText(`(${defaultEmail})`)).toBeVisible();
 		expect(screen.getByText('Primary')).toBeVisible();
@@ -341,7 +321,6 @@ describe('Account setting', () => {
 		);
 
 		const { user } = setup(<AccountsSettings />);
-		await waitForGetRightsRequest();
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		expect(screen.getByText(persona1FullName)).toBeVisible();
 	});
@@ -370,7 +349,6 @@ describe('Account setting', () => {
 		);
 
 		const { user } = setup(<AccountsSettings />);
-		await waitForGetRightsRequest();
 		expect(screen.getByText(persona1FullName)).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
@@ -401,7 +379,6 @@ describe('Account setting', () => {
 		);
 
 		const { user } = setup(<AccountsSettings />);
-		await waitForGetRightsRequest();
 
 		const persona1Row = screen.getByText(persona1FullName);
 		expect(persona1Row).toBeVisible();
@@ -445,7 +422,6 @@ describe('Account setting', () => {
 		);
 
 		const { user } = setup(<AccountsSettings />);
-		await waitForGetRightsRequest();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 
@@ -498,7 +474,6 @@ describe('Account setting', () => {
 			])
 		);
 		const { user } = setup(<AccountsSettings />);
-		await waitForGetRightsRequest();
 
 		const persona1Row = screen.getByText(persona1FullName);
 		expect(persona1Row).toBeVisible();
@@ -535,7 +510,6 @@ describe('Account setting', () => {
 		);
 
 		const { user } = setup(<AccountsSettings />);
-		await waitForGetRightsRequest();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 
@@ -583,7 +557,6 @@ describe('Account setting', () => {
 			])
 		);
 		const { user } = setup(<AccountsSettings />);
-		await waitForGetRightsRequest();
 		expect(screen.getByText(persona1FullName)).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
@@ -614,7 +587,6 @@ describe('Account setting', () => {
 		);
 
 		const { user } = setup(<AccountsSettings />);
-		await waitForGetRightsRequest();
 		const persona1Row = screen.getByText(persona1FullName);
 		expect(persona1Row).toBeVisible();
 		await user.click(persona1Row);
@@ -659,8 +631,6 @@ describe('Account setting', () => {
 		const pendingBatchRequest = waitForRequest('POST', batchRequestUrl);
 
 		const { user } = setup(<AccountsSettings />);
-
-		await waitForGetRightsRequest();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await waitFor(() =>
@@ -750,8 +720,6 @@ describe('Account setting', () => {
 
 		const { user } = setup(<AccountsSettings />);
 
-		await waitForGetRightsRequest();
-
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		expect(screen.getByText(persona1FullName)).toBeVisible();
 
@@ -783,7 +751,6 @@ describe('Account setting', () => {
 		);
 
 		const { user } = setup(<AccountsSettings />);
-		await waitForGetRightsRequest();
 
 		expect(screen.getByText(persona1FullName)).toBeVisible();
 
@@ -817,7 +784,6 @@ describe('Account setting', () => {
 			])
 		);
 		const { user } = setup(<AccountsSettings />);
-		await waitForGetRightsRequest();
 
 		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
 		expect(accountNameInput).toHaveDisplayValue(defaultFullName);
@@ -866,7 +832,6 @@ describe('Account setting', () => {
 		const batchRequestUrl = '/service/soap/BatchRequest';
 		const pendingBatchRequest = waitForRequest('POST', batchRequestUrl);
 		const { user } = setup(<AccountsSettings />);
-		await waitForGetRightsRequest();
 
 		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
 
@@ -917,7 +882,6 @@ describe('Account setting', () => {
 		const batchRequestUrl = '/service/soap/BatchRequest';
 		const pendingBatchRequest = waitForRequest('POST', batchRequestUrl);
 		const { user } = setup(<AccountsSettings />);
-		await waitForGetRightsRequest();
 
 		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
 
@@ -976,7 +940,6 @@ describe('Account setting', () => {
 		const pendingBatchRequest = waitForRequest('POST', batchRequestUrl);
 
 		const { user } = setup(<AccountsSettings />);
-		await waitForGetRightsRequest();
 		const persona1Row = screen.getByText(persona1FullName);
 		expect(persona1Row).toBeVisible();
 		await user.click(persona1Row);
@@ -1015,7 +978,6 @@ describe('Account setting', () => {
 			])
 		);
 		const { user } = setup(<AccountsSettings />);
-		await waitForGetRightsRequest();
 
 		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
 		expect(accountNameInput).toHaveDisplayValue(defaultFullName);
@@ -1056,7 +1018,6 @@ describe('Account setting', () => {
 			])
 		);
 		const { user } = setup(<AccountsSettings />);
-		await waitForGetRightsRequest();
 
 		const emailAddressInput = screen.getByRole('textbox', { name: /E-mail address/i });
 		expect(emailAddressInput).toHaveDisplayValue(defaultEmail);
@@ -1073,242 +1034,5 @@ describe('Account setting', () => {
 		expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
 
 		expect(emailAddressInput).toHaveDisplayValue(defaultEmail);
-	});
-
-	describe('Delegates', () => {
-		const delegatedSendSaveTargetLabelsMap = {
-			owner: 'Save a copy of sent messages to my Sent folder',
-			sender: 'Save a copy of sent messages to delegate’s Sent folder',
-			both: 'Save a copy of sent messages to my Sent folder and delegate’s folder',
-			none: 'Don’t save a copy of sent messages'
-		};
-
-		test.each([
-			['owner', delegatedSendSaveTargetLabelsMap.owner],
-			['sender', delegatedSendSaveTargetLabelsMap.sender],
-			['both', delegatedSendSaveTargetLabelsMap.both],
-			['none', delegatedSendSaveTargetLabelsMap.none]
-		])(
-			'When zimbraPrefDelegatedSendSaveTarget is %s then %s radio is checked',
-			async (zimbraPrefDelegatedSendSaveTarget) => {
-				setupAccountStore(
-					createAccount(defaultEmail, defaultId, [
-						createIdentity(
-							{
-								zimbraPrefIdentityId: defaultId,
-								zimbraPrefIdentityName: defaultFullName,
-								zimbraPrefFromAddress: defaultEmail,
-								zimbraPrefFromDisplay: defaultFirstName
-							},
-							true
-						)
-					]),
-					{ zimbraPrefDelegatedSendSaveTarget }
-				);
-
-				setup(<AccountsSettings />);
-				await waitForGetRightsRequest();
-
-				forEach(delegatedSendSaveTargetLabelsMap, (label, pref) => {
-					if (pref === zimbraPrefDelegatedSendSaveTarget) {
-						expect(screen.getByRole('radio', { name: label })).toBeChecked();
-					} else {
-						expect(screen.getByRole('radio', { name: label })).not.toBeChecked();
-					}
-				});
-			}
-		);
-
-		test('When the value change, the save button and discard button becomes enabled', async () => {
-			setupAccountStore(
-				createAccount(defaultEmail, defaultId, [
-					createIdentity(
-						{
-							zimbraPrefIdentityId: defaultId,
-							zimbraPrefIdentityName: defaultFullName,
-							zimbraPrefFromAddress: defaultEmail,
-							zimbraPrefFromDisplay: defaultFirstName
-						},
-						true
-					)
-				]),
-				{ zimbraPrefDelegatedSendSaveTarget: 'owner' }
-			);
-
-			const { user } = setup(<AccountsSettings />);
-			await waitForGetRightsRequest();
-
-			expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
-			expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
-
-			const senderOptionRow = screen.getByText(
-				'Save a copy of sent messages to delegate’s Sent folder'
-			);
-			await user.click(senderOptionRow);
-
-			expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
-			expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
-		});
-
-		test('When the user change the value and click on save, the network request contains the new value', async () => {
-			setupAccountStore(
-				createAccount(defaultEmail, defaultId, [
-					createIdentity(
-						{
-							zimbraPrefIdentityId: defaultId,
-							zimbraPrefIdentityName: defaultFullName,
-							zimbraPrefFromAddress: defaultEmail,
-							zimbraPrefFromDisplay: defaultFirstName
-						},
-						true
-					)
-				]),
-				{ zimbraPrefDelegatedSendSaveTarget: 'owner' }
-			);
-
-			server.use(
-				http.post('/service/soap/BatchRequest', () =>
-					HttpResponse.json({
-						Body: {
-							BatchResponse: {
-								ModifyPrefsResponse: [{ _jsns: JSNS.account }]
-							}
-						}
-					})
-				)
-			);
-			const pendingBatchRequest = waitForRequest('POST', '/service/soap/BatchRequest');
-
-			const { user } = setup(<AccountsSettings />);
-			await waitForGetRightsRequest();
-
-			expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
-			expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
-
-			const senderOptionRow = screen.getByText(
-				'Save a copy of sent messages to delegate’s Sent folder'
-			);
-			await user.click(senderOptionRow);
-
-			expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
-			expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
-
-			await user.click(screen.getByRole('button', { name: /save/i }));
-
-			const { Body: requestBody } = await pendingBatchRequest.then(
-				(req) =>
-					req.json() as Promise<{
-						Body: { BatchRequest: AccountsSettingsBatchRequest };
-					}>
-			);
-
-			expect(requestBody.BatchRequest.CreateIdentityRequest).toBeUndefined();
-			expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
-			expect(requestBody.BatchRequest.ModifyIdentityRequest).toBeUndefined();
-
-			expect(
-				requestBody.BatchRequest.ModifyPrefsRequest?._attrs.zimbraPrefDelegatedSendSaveTarget
-			).toBe('sender');
-
-			const successSnackbar = await screen.findByText('Edits saved correctly');
-			expect(successSnackbar).toBeVisible();
-		});
-		test('GetRightRequest is called only once when the user navigates inside account settings', async () => {
-			setupAccountStore(
-				createAccount(defaultEmail, defaultId, [
-					createIdentity(
-						{
-							zimbraPrefIdentityId: defaultId,
-							zimbraPrefIdentityName: defaultFullName,
-							zimbraPrefFromAddress: defaultEmail,
-							zimbraPrefFromDisplay: defaultFirstName
-						},
-						true
-					)
-				])
-			);
-
-			const requestFn = jest.fn();
-			server.use(
-				http.post<never, GetRightsRequestBody, GetRightsResponseBody>(
-					'/service/soap/GetRightsRequest',
-					(info) => {
-						requestFn();
-						return getRightsRequest(info);
-					}
-				)
-			);
-
-			const TestComponent = (): JSX.Element => (
-				<>
-					<Switch>
-						<Route path="/other">
-							<div>
-								<span data-testid="text">Other page</span>
-								<Link to="/settings/accounts">Go to Account Settings</Link>
-							</div>
-						</Route>
-						<Route path="/settings/accounts">
-							<AccountsSettings />
-							<Link to="/other">Go to Other page</Link>
-						</Route>
-					</Switch>
-				</>
-			);
-
-			const { user } = setup(<TestComponent />, { initialRouterEntries: [`/settings/accounts`] });
-
-			await waitForGetRightsRequest();
-			expect(requestFn).toHaveBeenCalledTimes(1);
-			expect(screen.queryByTestId('text')).not.toBeInTheDocument();
-			expect(screen.getByText(/Accounts List/i)).toBeVisible();
-			await user.click(screen.getByRole('link', { name: 'Go to Other page' }));
-			expect(screen.queryByTestId('text')).toBeVisible();
-			expect(screen.queryByText('sendAs')).not.toBeInTheDocument();
-			await user.click(screen.getByRole('link', { name: 'Go to Account Settings' }));
-			expect(screen.getByText('sendAs')).toBeVisible();
-			expect(requestFn).toHaveBeenCalledTimes(1);
-		});
-
-		test('When rights state is updated, the delegates list will be updated accordingly', async () => {
-			setupAccountStore(
-				createAccount(defaultEmail, defaultId, [
-					createIdentity(
-						{
-							zimbraPrefIdentityId: defaultId,
-							zimbraPrefIdentityName: defaultFullName,
-							zimbraPrefFromAddress: defaultEmail,
-							zimbraPrefFromDisplay: defaultFirstName
-						},
-						true
-					)
-				])
-			);
-
-			const requestFn = jest.fn();
-			server.use(
-				http.post<never, GetRightsRequestBody, GetRightsResponseBody>(
-					'/service/soap/GetRightsRequest',
-					(info) => {
-						requestFn();
-						return getRightsRequest(info);
-					}
-				)
-			);
-
-			setup(<AccountsSettings />);
-
-			await waitForGetRightsRequest();
-			expect(requestFn).toHaveBeenCalledTimes(1);
-			expect(screen.getByText(/Accounts List/i)).toBeVisible();
-
-			act(() => {
-				useAccountStore.setState((previousState) => ({
-					...previousState,
-					rights: []
-				}));
-			});
-			expect(screen.queryByText('sendAs')).not.toBeInTheDocument();
-		});
 	});
 });

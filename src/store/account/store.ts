@@ -12,7 +12,6 @@ import type { AccountState } from '../../types/account';
 export const useAccountStore = create<AccountState>()(() => ({
 	authenticated: false,
 	account: undefined,
-	rights: undefined,
 	version: '',
 	settings: {
 		prefs: {},

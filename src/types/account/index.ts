@@ -6,7 +6,6 @@
 
 import type { DELEGATED_SEND_SAVE_TARGET } from '../../constants';
 import type { StringOfLength } from '../../utils/typeUtils';
-import type { AccountACEInfo } from '../network/entities';
 
 export interface ZimletProp {
 	name: string;
@@ -17,7 +16,6 @@ export interface ZimletProp {
 export type AccountState = {
 	authenticated: boolean;
 	account?: Account;
-	rights?: Array<AccountACEInfo>;
 	settings: AccountSettings;
 	zimbraVersion?: string;
 	usedQuota: number;

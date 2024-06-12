@@ -270,7 +270,7 @@ type AppDependantFunctions = {
 type AppDependantSetters = {
     setAppContext: ReturnType<AppActions['setAppContext']>;
     addRoute: (data: Partial<AppRouteDescriptor>) => ReturnType<AppActions['addRoute']>;
-    addBoardView: (data: Partial<BoardView>) => ReturnType<AppActions['addBoardView']>;
+    addBoardView: (data: Omit<BoardView, 'app'>) => ReturnType<AppActions['addBoardView']>;
     addSettingsView: (data: Partial<SettingsView>) => ReturnType<AppActions['addSettingsView']>;
     addSearchView: (data: Partial<SearchView>) => ReturnType<AppActions['addSearchView']>;
     addUtilityView: (data: Partial<UtilityView>) => ReturnType<AppActions['addUtilityView']>;
@@ -378,7 +378,7 @@ export type BatchRequest<T extends Exactify<Record<`${string}Request`, unknown>,
 // @public (undocumented)
 export type Board<T = unknown> = {
     id: string;
-    url: string;
+    boardViewId: string;
     app: string;
     icon: string;
     title: string;
@@ -423,12 +423,10 @@ type BoardState = {
 // Warning: (ae-forgotten-export) The symbol "CarbonioView" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
-type BoardView = CarbonioView<BoardViewComponentProps>;
+type BoardView = Omit<CarbonioView<BoardViewComponentProps>, 'route'>;
 
 // @public (undocumented)
-export type BoardViewComponentProps = {
-    windowHistory: History;
-};
+export type BoardViewComponentProps = {};
 
 // @public (undocumented)
 export type BooleanString = 'TRUE' | 'FALSE';
@@ -1691,7 +1689,7 @@ interface ZimletProp {
 // lib/types/account/index.d.ts:131:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:136:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:137:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
-// lib/types/apps/index.d.ts:68:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
+// lib/types/apps/index.d.ts:66:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:85:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:104:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:120:5 - (ae-forgotten-export) The symbol "Meta" needs to be exported by the entry point lib.d.ts

@@ -19,7 +19,6 @@ import { useAppStore } from '../../store/app';
 import type { CarbonioModule } from '../../types/apps';
 import { AppLink } from '../../ui-extras/app-link';
 import { Spinner } from '../../ui-extras/spinner';
-import { Tracker } from '../tracker';
 
 export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
@@ -40,8 +39,7 @@ export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 					...otherSetters,
 					...getAppDependantFunctions(appPkg),
 					...otherFunctions,
-					...CONSTANTS,
-					Tracker
+					...CONSTANTS
 				} satisfies typeof ExportsForApp;
 			}
 

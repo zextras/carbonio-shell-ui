@@ -21,6 +21,7 @@ import { BASENAME, IS_FOCUS_MODE } from '../constants';
 import { NotificationPermissionChecker } from '../notification/NotificationPermissionChecker';
 import ShellView from '../shell/shell-view';
 import { useAppStore } from '../store/app/store';
+import { TrackerProvider } from './posthog';
 
 const FocusModeListener = (): null => {
 	const { route } = useParams<{ route?: string }>();
@@ -39,27 +40,29 @@ export const DefaultViewsRegister = (): null => {
 };
 
 const Bootstrapper: FC = () => (
-	<ThemeProvider>
-		<ShellI18nextProvider>
-			<BrowserRouter basename={BASENAME}>
-				<SnackbarManager>
-					<Loader />
-					{IS_FOCUS_MODE && (
-						<Switch>
-							<Route path={'/:route'}>
-								<FocusModeListener />
-							</Route>
-						</Switch>
-					)}
-					<DefaultViewsRegister />
-					<NotificationPermissionChecker />
-					<ContextBridge />
-					<AppLoaderMounter />
-					<ShellView />
-				</SnackbarManager>
-			</BrowserRouter>
-		</ShellI18nextProvider>
-	</ThemeProvider>
+	<TrackerProvider>
+		<ThemeProvider>
+			<ShellI18nextProvider>
+				<BrowserRouter basename={BASENAME}>
+					<SnackbarManager>
+						<Loader />
+						{IS_FOCUS_MODE && (
+							<Switch>
+								<Route path={'/:route'}>
+									<FocusModeListener />
+								</Route>
+							</Switch>
+						)}
+						<DefaultViewsRegister />
+						<NotificationPermissionChecker />
+						<ContextBridge />
+						<AppLoaderMounter />
+						<ShellView />
+					</SnackbarManager>
+				</BrowserRouter>
+			</ShellI18nextProvider>
+		</ThemeProvider>
+	</TrackerProvider>
 );
 
 export default Bootstrapper;

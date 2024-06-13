@@ -11,6 +11,7 @@ import { map, noop } from 'lodash';
 
 import { useUtilityBarStore } from './store';
 import { useUtilityViews } from './utils';
+import { useTracker } from '../boot/posthog';
 import { CUSTOM_EVENTS } from '../constants';
 import { fetchNoOp } from '../network/fetch';
 import { logout } from '../network/logout';
@@ -53,6 +54,8 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 		window.dispatchEvent(updateViewEvent);
 	}, []);
 
+	const { reset } = useTracker();
+
 	const accountItems = useMemo(
 		(): DropdownItem[] => [
 			{
@@ -89,11 +92,14 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 			{
 				id: 'logout',
 				label: t('label.logout', 'Logout'),
-				onClick: logout,
+				onClick: (): void => {
+					reset();
+					logout();
+				},
 				icon: 'LogOut'
 			}
 		],
-		[account?.displayName, account?.name, t, updateViews]
+		[account?.displayName, account?.name, reset, t, updateViews]
 	);
 
 	const viewItems = useMemo(

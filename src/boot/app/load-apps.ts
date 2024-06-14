@@ -10,12 +10,12 @@ import { filter, map } from 'lodash';
 
 import { loadApp, unloadApps } from './load-app';
 import { injectSharedLibraries } from './shared-libraries';
-import { CarbonioModule } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
 import { SUPPORTED_LOCALES } from '../../constants/locales';
 import { useReporter } from '../../reporting/store';
 import { getUserSetting, useAccountStore } from '../../store/account';
-import { useI18nStore } from '../../store/i18n';
+import { useI18nStore } from '../../store/i18n/store';
+import type { CarbonioModule } from '../../types/apps';
 
 const getDateFnsLocale = (locale: string): Promise<DateFnsLocale> =>
 	import(`date-fns/locale/${locale}/index.js`);
@@ -38,7 +38,7 @@ export function loadApps(
 		(settings?.prefs?.zimbraPrefLocale as string) ??
 		(settings?.attrs?.zimbraLocale as string) ??
 		'en';
-	useI18nStore.getState().actions.addI18n(appsToLoad, locale);
+	useI18nStore.getState().addI18n(appsToLoad, locale);
 	const localeObj =
 		locale in SUPPORTED_LOCALES && SUPPORTED_LOCALES[locale as keyof typeof SUPPORTED_LOCALES];
 	if (localeObj) {

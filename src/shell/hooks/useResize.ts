@@ -3,16 +3,18 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { CSSProperties, useCallback, useEffect, useRef } from 'react';
+import type { CSSProperties } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { find, forEach } from 'lodash';
 
 import { useLocalStorage } from './useLocalStorage';
+import type { SizeAndPosition } from '../../utils/utils';
 import {
 	createExportForTestOnly,
 	setElementSizeAndPosition,
-	setGlobalCursor,
-	SizeAndPosition
+	setGlobalCursor
 } from '../../utils/utils';
 
 /**
@@ -25,7 +27,7 @@ type UseResizableReturnType = React.MouseEventHandler;
 
 type ResizeOptions = {
 	localStorageKey?: string;
-	keepSynchedWithStorage?: boolean;
+	keepSyncedWithStorage?: boolean;
 };
 
 export const BORDERS: Border[] = ['n', 's', 'e', 'w', 'ne', 'se', 'sw', 'nw'];
@@ -40,7 +42,7 @@ export function getCursorFromBorder(border: Border): NonNullable<CSSProperties['
 		],
 		(borders) => borders.includes(border)
 	)?.join('');
-	return (direction && direction.concat('-resize')) || '';
+	return direction?.concat('-resize') ?? '';
 }
 
 function calcNewSizeAndPosition(
@@ -82,9 +84,9 @@ export const useResize = (
 	const [lastSavedSizeAndPosition, setLastSavedSizeAndPosition] = useLocalStorage<
 		Partial<SizeAndPosition>
 	>(
-		options?.localStorageKey || 'use-resize-data',
+		options?.localStorageKey ?? 'use-resize-data',
 		{},
-		{ keepSynchedWithStorage: options?.keepSynchedWithStorage }
+		{ keepSyncedWithStorage: options?.keepSyncedWithStorage }
 	);
 	const lastSizeAndPositionRef = useRef<Partial<SizeAndPosition>>(lastSavedSizeAndPosition);
 

@@ -11,7 +11,6 @@ import * as ZappUI from '@zextras/carbonio-design-system';
 import * as Preview from '@zextras/carbonio-ui-preview';
 import * as Darkreader from 'darkreader';
 import * as Lodash from 'lodash';
-import * as Moment from 'moment';
 import * as ReactDOM from 'react-dom';
 import * as ReactI18n from 'react-i18next';
 import * as ReactRedux from 'react-redux';
@@ -27,7 +26,6 @@ export function injectSharedLibraries(): void {
 			'react-redux': ReactRedux,
 			lodash: Lodash,
 			'react-router-dom': ReactRouterDom,
-			moment: Moment,
 			'styled-components': StyledComponents,
 			'@reduxjs/toolkit': ReduxJSToolkit,
 			'@zextras/carbonio-shell-ui': {},

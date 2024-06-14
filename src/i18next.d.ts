@@ -4,20 +4,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 // import the original type declarations
-import * as i18next from 'i18next';
-
-// import all namespaces (for the default language, only)
-import en from '../translations/en.json';
+import type * as i18next from 'i18next';
 
 declare module 'i18next' {
 	// Extend CustomTypeOptions
 	interface CustomTypeOptions {
 		// custom resources type
 		resources: {
-			[defaultNs: i18next.TypeOptions['defaultNS']]: typeof en;
+			[defaultNs: i18next.TypeOptions['defaultNS']]: Record<string, string>;
 		};
 		returnNull: false;
-		jsonFormat: 'v3';
+		jsonFormat: 'v4';
 		allowObjectInHTMLChildren: true;
 	}
 }

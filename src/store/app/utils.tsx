@@ -4,11 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 import { trim } from 'lodash';
 
-import {
+import type {
 	AppRouteDescriptor,
 	BadgeInfo,
 	BoardView,
@@ -18,7 +19,7 @@ import {
 	SecondaryAccessoryView,
 	SettingsView,
 	UtilityView
-} from '../../../types';
+} from '../../types/apps';
 
 export const normalizeApp = (app: Partial<CarbonioModule>): CarbonioModule => ({
 	commit: app.commit ?? '',

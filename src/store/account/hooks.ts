@@ -9,13 +9,13 @@ import { useMemo } from 'react';
 import { find, get, join } from 'lodash';
 
 import { useAccountStore } from './store';
-import {
+import type {
 	Account,
 	AccountRightName,
 	AccountRights,
 	AccountRightTarget,
 	AccountSettings
-} from '../../../types';
+} from '../../types/account';
 
 export const useAuthenticated = (): boolean => useAccountStore((s) => s.authenticated);
 

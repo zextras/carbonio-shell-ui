@@ -4,16 +4,28 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import i18next, { i18n, InitOptions } from 'i18next';
+import type { i18n, InitOptions } from 'i18next';
+import i18next from 'i18next';
 import Backend from 'i18next-http-backend';
 import { produce } from 'immer';
 import { dropRight, forEach, reduce } from 'lodash';
 import { initReactI18next } from 'react-i18next';
 import { create } from 'zustand';
 
-import type { CarbonioModule, I18nState } from '../../../types';
 import { SHELL_APP_ID } from '../../constants';
+import type { CarbonioModule } from '../../types/apps';
 import { useAccountStore } from '../account';
+
+export type I18nState = {
+	instances: Record<string, i18n>;
+	defaultI18n: i18n;
+	locale: string;
+};
+
+type I18nActions = {
+	setLocale: (locale: string) => void;
+	addI18n: (apps: Array<CarbonioModule>, locale: string) => void;
+};
 
 const addShell = (apps: Array<CarbonioModule>): Array<CarbonioModule> => [
 	...apps,
@@ -43,7 +55,7 @@ const defaultI18n = i18next.createInstance({ lng: defaultLng });
 const defaultI18nInitOptions: InitOptions = {
 	returnEmptyString: true,
 	returnNull: false,
-	compatibilityJSON: 'v3',
+	compatibilityJSON: 'v4',
 	lng: defaultLng,
 	fallbackLng: 'en',
 	debug: false,
@@ -59,59 +71,52 @@ const defaultI18nInitOptions: InitOptions = {
 	}
 };
 
-export const useI18nStore = create<I18nState>()((set) => ({
+export const useI18nStore = create<I18nState & I18nActions>()((set) => ({
 	instances: {},
 	defaultI18n,
 	locale: 'en',
-	setters: {
-		setLocale: (locale: string): void => {
-			set(
-				produce((state: I18nState) => {
-					state.locale = locale;
-					forEach(state.instances, (i18nInst) => i18nInst.changeLanguage(locale));
-				})
-			);
-		}
+	setLocale: (locale: string): void => {
+		set(
+			produce((state: I18nState) => {
+				state.locale = locale;
+				forEach(state.instances, (i18nInst) => i18nInst.changeLanguage(locale));
+			})
+		);
 	},
-	getters: {
-		getLocale: (state: I18nState): string => state.locale
-	},
-	actions: {
-		addI18n: (apps: Array<CarbonioModule>, locale: string): void => {
-			const appsWithShell = addShell(apps);
-			set(
-				produce((state: I18nState) => {
-					state.instances = reduce<CarbonioModule, Record<string, i18n>>(
-						appsWithShell,
-						(acc, app): Record<string, i18n> => {
-							const newI18n = i18next.createInstance();
-							newI18n
-								// load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
-								// learn more: https://github.com/i18next/i18next-http-backend
-								.use(Backend)
-								// init i18next
-								// for all options read: https://www.i18next.com/overview/configuration-options
-								.init({
-									...defaultI18nInitOptions,
-									lng: locale,
-									backend: {
-										loadPath:
-											app.name === SHELL_APP_ID
-												? `${BASE_PATH}/i18n/{{lng}}.json`
-												: `${dropRight(app.js_entrypoint.split('/')).join('/')}/i18n/{{lng}}.json`
-									}
-								});
-							// eslint-disable-next-line no-param-reassign
-							acc[app.name] = newI18n;
-							return acc;
-						},
-						{}
-					);
-					state.defaultI18n.t = state.instances[SHELL_APP_ID].t;
-					state.locale = locale;
-				})
-			);
-		}
+	addI18n: (apps: Array<CarbonioModule>, locale: string): void => {
+		const appsWithShell = addShell(apps);
+		set(
+			produce((state: I18nState) => {
+				state.instances = reduce<CarbonioModule, Record<string, i18n>>(
+					appsWithShell,
+					(acc, app): Record<string, i18n> => {
+						const newI18n = i18next.createInstance();
+						newI18n
+							// load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
+							// learn more: https://github.com/i18next/i18next-http-backend
+							.use(Backend)
+							// init i18next
+							// for all options read: https://www.i18next.com/overview/configuration-options
+							.init({
+								...defaultI18nInitOptions,
+								lng: locale,
+								backend: {
+									loadPath:
+										app.name === SHELL_APP_ID
+											? `${BASE_PATH}/i18n/{{lng}}.json`
+											: `${dropRight(app.js_entrypoint.split('/')).join('/')}/i18n/{{lng}}.json`
+								}
+							});
+						// eslint-disable-next-line no-param-reassign
+						acc[app.name] = newI18n;
+						return acc;
+					},
+					{}
+				);
+				state.defaultI18n.t = state.instances[SHELL_APP_ID].t;
+				state.locale = locale;
+			})
+		);
 	}
 }));
 

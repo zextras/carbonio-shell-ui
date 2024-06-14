@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import type { FC } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import {
 	Button,
@@ -13,16 +14,16 @@ import {
 	type DropdownItem,
 	MultiButton
 } from '@zextras/carbonio-design-system';
-import { Location } from 'history';
+import type { Location } from 'history';
 import { find, groupBy, noop, reduce } from 'lodash';
 import { useLocation } from 'react-router-dom';
 
-import { AppRoute, CarbonioModule } from '../../types';
 import { ACTION_TYPES } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppList } from '../store/app';
-import { getT } from '../store/i18n';
+import { getT } from '../store/i18n/hooks';
 import { useActions } from '../store/integrations/hooks';
+import type { AppRoute, CarbonioModule } from '../types/apps';
 
 interface CreationButtonProps {
 	activeRoute: AppRoute;

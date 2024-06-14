@@ -1,0 +1,29 @@
+{
+  "extends": "@tsconfig/node18/tsconfig.json",
+  "compilerOptions": {
+    "lib": [
+      "DOM",
+      "es2023"
+    ],
+    "jsx": "react",
+    "declaration": true,
+    "sourceMap": true,
+    "declarationMap": false,
+    "outDir": "lib",
+    "types": [
+      "./src/i18next.d.ts",
+      "./src/assets.d.ts",
+      "./src/globals.d.ts",
+      "./src/styled-components.d.ts",
+      "node"
+    ]
+  },
+  "files": [
+    "src/lib.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "lib"
+  ]
+}

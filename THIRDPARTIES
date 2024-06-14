@@ -7,6 +7,7 @@ MIT License (MIT) applies to:
 @commitlint/cli, Copyright (c) 2016 - present Mario Nebl
 @commitlint/config-conventional, Copyright (c) 2016 - present Mario Nebl
 @faker-js/faker, Faker - Copyright (c) 2022-2024, faker.js - Copyright (c) 2020 Marak Squires
+@microsoft/api-extractor, Copyright (c) Microsoft Corporation. All rights reserved.
 @reduxjs/toolkit, Copyright (c) 2018 Mark Erikson
 @sentry/browser, Copyright (c) 2019 Sentry (https://sentry.io) and individual contributors. All rights reserved.
 @svgr/webpack, Copyright 2017 Smooth Code
@@ -14,6 +15,7 @@ MIT License (MIT) applies to:
 @testing-library/react, Copyright (c) 2017 Kent C. Dodds
 @testing-library/user-event, Copyright (c) 2020 Giorgio Polvara
 @tinymce/tinymce-react, Copyright (c) 2022 Ephox Corporation DBA Tiny Technologies, Inc.
+@tsconfig/node18, Copyright (c) Microsoft Corporation.
 @types/jest, Copyright (c) Microsoft Corporation.
 @types/lodash, Copyright (c) Microsoft Corporation.
 @types/node, Copyright (c) Microsoft Corporation.
@@ -26,7 +28,6 @@ MIT License (MIT) applies to:
 @types/webpack, Copyright (c) Microsoft Corporation.
 autoprefixer, Copyright 2013 Andrey Sitnik <andrey@sitnik.ru>
 babel-loader, Copyright (c) 2014-2019 Luís Couto <hello@luiscouto.pt>
-babel-plugin-i18next-extract, Copyright 2019 Gilbert Gilb's <gilbsgilbert@gmail.com>
 babel-plugin-styled-components, Copyright (c) 2016-present Vladimir Danchenkov and Maximilian Stoiber
 copy-webpack-plugin, Copyright JS Foundation and other contributors
 core-js, Copyright (c) 2014-2024 Denis Pushkarev
@@ -47,7 +48,6 @@ jest-styled-components, Copyright (c) 2017 - present Michele Bertoli
 jest, Copyright (c) Meta Platforms, Inc. and affiliates.
 lodash, Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
 mini-css-extract-plugin, Copyright JS Foundation and other contributors
-moment, Copyright (c) JS Foundation and other contributors
 msw, Copyright (c) 2018–present Artem Zakharchenko
 postcss-loader, Copyright JS Foundation and other contributors
 react-dom, Copyright (c) Facebook, Inc. and its affiliates.

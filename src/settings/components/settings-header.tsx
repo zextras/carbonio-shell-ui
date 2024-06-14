@@ -19,8 +19,9 @@ import {
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { getT } from '../../store/i18n';
-import { RouteLeavingGuard, RouteLeavingGuardProps } from '../../ui-extras/nav-guard';
+import { getT } from '../../store/i18n/hooks';
+import type { RouteLeavingGuardProps } from '../../ui-extras/nav-guard';
+import { RouteLeavingGuard } from '../../ui-extras/nav-guard';
 
 const CustomBreadcrumbs = styled(Breadcrumbs)`
 	.breadcrumbCrumb {
@@ -35,7 +36,7 @@ export type SettingsHeaderProps = {
 	isDirty: boolean;
 };
 
-const SettingsHeader = ({
+export const SettingsHeader = ({
 	onSave,
 	onCancel,
 	isDirty,
@@ -127,5 +128,3 @@ const SettingsHeader = ({
 		</>
 	);
 };
-
-export default SettingsHeader;

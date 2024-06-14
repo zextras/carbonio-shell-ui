@@ -3,9 +3,11 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { FC, useCallback, useMemo, useRef } from 'react';
+import type { FC } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 
-import { Editor, IAllProps as EditorProps } from '@tinymce/tinymce-react';
+import type { IAllProps as EditorProps } from '@tinymce/tinymce-react';
+import { Editor } from '@tinymce/tinymce-react';
 import { Container } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 import type { EditorOptions, TinyMCE, Ui } from 'tinymce/tinymce';
@@ -42,7 +44,8 @@ import 'tinymce/plugins/wordcount';
 
 import { SUPPORTED_LOCALES } from '../../constants/locales';
 import { useUserSettings } from '../account';
-import { getT, useI18nStore } from '../i18n';
+import { getT } from '../i18n/hooks';
+import { useI18nStore } from '../i18n/store';
 
 type ComposerProps = EditorProps & {
 	/** The callback invoked when an edit is performed into the editor. `([text, html]) => {}` */
@@ -215,13 +218,14 @@ const Composer: FC<ComposerProps> = ({
 						'forecolor backcolor',
 						'bullist numlist outdent indent',
 						'ltr rtl',
+						'link',
 						'insertfile image',
 						'imageSelector'
 					].join(' | '),
 			quickbars_insert_toolbar: inline ? 'bullist numlist' : '',
 			quickbars_selection_toolbar: inline
-				? 'bold italic underline | forecolor backcolor | removeformat | quicklink'
-				: 'quicklink',
+				? 'bold italic underline | forecolor backcolor | removeformat | link'
+				: 'link',
 			contextmenu: '',
 			toolbar_mode: 'wrap',
 			content_style: `body  {  color: ${defaultStyle?.color}; font-size: ${defaultStyle?.fontSize}; font-family: ${defaultStyle?.font}; }`,
@@ -231,6 +235,7 @@ const Composer: FC<ComposerProps> = ({
 			remove_script_host: false,
 			newline_behavior: 'default',
 			browser_spellcheck: true,
+			convert_unsafe_embeds: true,
 			...customInitOptions
 		}),
 		[

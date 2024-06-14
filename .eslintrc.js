@@ -13,6 +13,9 @@ module.exports = {
 			}
 		}
 	},
+	parserOptions: {
+		project: ['tsconfig.json']
+	},
 	globals: {
 		BASE_PATH: 'readonly',
 		__CARBONIO_DEV__: 'readonly',
@@ -37,12 +40,14 @@ module.exports = {
 		],
 		'sonarjs/cognitive-complexity': 'warn',
 		// TODO: enable when this will be released https://github.com/SonarSource/eslint-plugin-sonarjs/pull/405
-		'sonarjs/no-duplicate-string': 'off'
+		'sonarjs/no-duplicate-string': 'off',
+		'@typescript-eslint/consistent-type-exports': 'error',
+		'@typescript-eslint/consistent-type-imports': 'error'
 	},
 	overrides: [
 		{
 			// enable eslint-plugin-testing-library rules or preset only for test files
-			files: ['**/test/**/*.[jt]s?(x)', '**/mocks/**/*.[jt]s?(x)', '**/jest-*.ts?(x)'],
+			files: ['**/tests/**/*.[jt]s?(x)', '**/mocks/**/*.[jt]s?(x)', '**/jest-*.ts?(x)'],
 			extends: ['plugin:jest-dom/recommended', 'plugin:testing-library/react'],
 			rules: {
 				'testing-library/no-unnecessary-act': 'warn',
@@ -52,7 +57,7 @@ module.exports = {
 			}
 		},
 		{
-			files: ['carbonio.webpack.ts'],
+			files: ['carbonio.webpack.ts', '*.config.ts'],
 			rules: {
 				'import/no-extraneous-dependencies': 'off'
 			}

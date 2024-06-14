@@ -11,12 +11,11 @@ import { reduce, sample, size } from 'lodash';
 import 'jest-styled-components';
 
 import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
-import { Board, BoardView } from '../../../types';
 import { BOARD_MIN_VISIBILITY, LOCAL_STORAGE_BOARD_SIZE } from '../../constants';
 import { useAppStore } from '../../store/app';
 import { reopenBoards, useBoardStore } from '../../store/boards';
-import { ICONS, TESTID_SELECTORS } from '../../test/constants';
-import { mockedApps, setupAppStore } from '../../test/test-app-utils';
+import { ICONS, TESTID_SELECTORS } from '../../tests/constants';
+import { mockedApps, setupAppStore } from '../../tests/test-app-utils';
 import {
 	buildBoardSizeAndPosition,
 	buildMousePosition,
@@ -26,10 +25,12 @@ import {
 	resizeBoard,
 	moveBoard,
 	mockedBoardState
-} from '../../test/test-board-utils';
-import { setup } from '../../test/utils';
-import { SizeAndPosition } from '../../utils/utils';
-import { Border } from '../hooks/useResize';
+} from '../../tests/test-board-utils';
+import { setup } from '../../tests/utils';
+import type { BoardView } from '../../types/apps';
+import type { Board } from '../../types/boards';
+import type { SizeAndPosition } from '../../utils/utils';
+import type { Border } from '../hooks/useResize';
 
 beforeEach(() => {
 	setupAppStore();
@@ -488,7 +489,7 @@ describe('Board container', () => {
 			jest.advanceTimersToNextTimer();
 		});
 		await waitFor(() =>
-			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '')).toEqual({})
+			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) ?? '')).toEqual({})
 		);
 		expect(board).toHaveStyle({
 			height: '70vh',
@@ -692,6 +693,7 @@ describe('Board container', () => {
 			jest.advanceTimersToNextTimer();
 		});
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const boardNewPosition = {
 			top: 0,
@@ -702,7 +704,8 @@ describe('Board container', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 0, clientY: 0 },
-			boardNewPosition
+			boardNewPosition,
+			elementForMove
 		);
 		expect(board).toHaveStyle({
 			height: '70vh',
@@ -719,6 +722,7 @@ describe('Board container', () => {
 			jest.advanceTimersToNextTimer();
 		});
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		let boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		let boardNewPosition = {
 			top: 10,
@@ -729,7 +733,8 @@ describe('Board container', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 10, clientY: 10 },
-			boardNewPosition
+			boardNewPosition,
+			elementForMove
 		);
 		boardInitialSizeAndPos = buildBoardSizeAndPosition({
 			...boardInitialSizeAndPos,
@@ -744,7 +749,8 @@ describe('Board container', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 80, clientY: 50 },
-			boardNewPosition
+			boardNewPosition,
+			elementForMove
 		);
 		expect(board).toHaveStyle({
 			height: '70vh',
@@ -762,6 +768,7 @@ describe('Board container', () => {
 		});
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
 		const deltaY = -50;
@@ -793,7 +800,8 @@ describe('Board container', () => {
 				clientY: boardNewInitialSizeAndPos.clientTop
 			},
 			{ clientX: 0, clientY: 0 },
-			boardNewSizeAndPos
+			boardNewSizeAndPos,
+			elementForMove
 		);
 		expect(board).toHaveStyle({
 			height: `${boardNewSizeAndPos.height}px`,
@@ -811,6 +819,7 @@ describe('Board container', () => {
 		});
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
 		const deltaY = -50;
@@ -844,7 +853,8 @@ describe('Board container', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 0, clientY: 0 },
-			boardNewPos
+			boardNewPos,
+			elementForMove
 		);
 		expect(board).toHaveStyle({
 			height: '70vh',
@@ -869,6 +879,7 @@ describe('Board container', () => {
 			jest.advanceTimersToNextTimer();
 		});
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		const actionElement = getAllByRoleWithIcon('button', { icon })[0];
 		let boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		let boardNewPosition = {
@@ -880,7 +891,8 @@ describe('Board container', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 0, clientY: 0 },
-			boardNewPosition
+			boardNewPosition,
+			elementForMove
 		);
 		boardInitialSizeAndPos = buildBoardSizeAndPosition({
 			...boardInitialSizeAndPos,
@@ -916,7 +928,7 @@ describe('Board container', () => {
 			route: boardObj.url,
 			component: (): React.JSX.Element => <Input label={'Board input'} />
 		};
-		useAppStore.getState().setters.addBoardView(boardView);
+		useAppStore.getState().addBoardView(boardView);
 		const { user } = setup(<BoardContainer />);
 		act(() => {
 			// run updateBoardPosition debounced fn
@@ -986,6 +998,7 @@ describe('Board container', () => {
 			jest.advanceTimersToNextTimer();
 		});
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const boardNewPosition = {
 			top: 0,
@@ -996,14 +1009,15 @@ describe('Board container', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 0, clientY: 0 },
-			boardNewPosition
+			boardNewPosition,
+			elementForMove
 		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
 		act(() => {
 			setupBoardStore();
 		});
 		await waitFor(() =>
-			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '{}')).toEqual({})
+			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) ?? '{}')).toEqual({})
 		);
 		expect(getByRoleWithIcon('button', { icon: ICONS.resetBoardSize })).toBeDisabled();
 	});

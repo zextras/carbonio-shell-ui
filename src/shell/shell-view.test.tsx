@@ -3,19 +3,19 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import React from 'react';
 
 import { act, screen, waitFor } from '@testing-library/react';
 import 'jest-styled-components';
 
 import { BOARD_DEFAULT_POSITION } from './boards/board-container';
-import { Border } from './hooks/useResize';
+import type { Border } from './hooks/useResize';
 import ShellView from './shell-view';
-import { Board } from '../../types';
 import { ContextBridge } from '../boot/context-bridge';
 import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
-import { ICONS, TESTID_SELECTORS } from '../test/constants';
-import { mockedApps, setupAppStore } from '../test/test-app-utils';
+import { ICONS, TESTID_SELECTORS } from '../tests/constants';
+import { mockedApps, setupAppStore } from '../tests/test-app-utils';
 import {
 	buildBoardSizeAndPosition,
 	buildMousePosition,
@@ -23,9 +23,10 @@ import {
 	moveBoard,
 	resizeBoard,
 	setupBoardStore
-} from '../test/test-board-utils';
-import { setup } from '../test/utils';
-import { SizeAndPosition } from '../utils/utils';
+} from '../tests/test-board-utils';
+import { setup } from '../tests/utils';
+import type { Board } from '../types/boards';
+import type { SizeAndPosition } from '../utils/utils';
 
 const Dummy: FC = () => null;
 
@@ -83,6 +84,7 @@ describe('Shell view', () => {
 		});
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		let boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
 		const deltaY = -50;
@@ -111,7 +113,8 @@ describe('Shell view', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 500, clientY: 500 },
-			boardNewSizeAndPos
+			boardNewSizeAndPos,
+			elementForMove
 		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.collapseBoard }));
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.unCollapseBoard }));
@@ -191,6 +194,7 @@ describe('Shell view', () => {
 		});
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		let boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
 		const deltaY = -50;
@@ -214,7 +218,8 @@ describe('Shell view', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 0, clientY: 0 },
-			boardNewSizeAndPos
+			boardNewSizeAndPos,
+			elementForMove
 		);
 		await user.click(getAllByRoleWithIcon('button', { icon: ICONS.close })[0]);
 		// update state to open a new board
@@ -236,6 +241,7 @@ describe('Shell view', () => {
 			jest.advanceTimersToNextTimer();
 		});
 		const board2Element = screen.getByTestId(TESTID_SELECTORS.board);
+		const elementForMove2 = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		boardInitialSizeAndPos = buildBoardSizeAndPosition({
 			...INITIAL_SIZE_AND_POS,
 			width: boardNewSizeAndPos.width,
@@ -247,7 +253,8 @@ describe('Shell view', () => {
 			boardInitialSizeAndPos,
 			{ clientX: boardInitialSizeAndPos.clientLeft, clientY: boardInitialSizeAndPos.clientTop },
 			{ clientX: 80, clientY: 55 },
-			boardNewSizeAndPos
+			boardNewSizeAndPos,
+			elementForMove2
 		);
 		expect(board2Element).toHaveStyle({
 			height: `${boardNewSizeAndPos.height}px`,

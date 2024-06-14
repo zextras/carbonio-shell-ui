@@ -4,23 +4,24 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { CSSProperties, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import type { DropdownItem, IconButtonProps } from '@zextras/carbonio-design-system';
 import {
 	Container,
 	Divider,
 	Dropdown,
-	DropdownItem,
 	Icon,
 	IconButton,
-	IconButtonProps,
 	Padding,
 	Row,
 	Text,
 	Tooltip
 } from '@zextras/carbonio-design-system';
 import { debounce, isEmpty, map, noop, size } from 'lodash';
-import styled, { css, SimpleInterpolation } from 'styled-components';
+import type { SimpleInterpolation } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { AppBoard } from './board';
 import { TabsList } from './board-tab-list';
@@ -45,8 +46,9 @@ import {
 	setCurrentBoard,
 	useBoardStore
 } from '../../store/boards';
-import { getT } from '../../store/i18n';
-import { setElementSizeAndPosition, SizeAndPosition } from '../../utils/utils';
+import { getT } from '../../store/i18n/hooks';
+import type { SizeAndPosition } from '../../utils/utils';
+import { setElementSizeAndPosition } from '../../utils/utils';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useMove } from '../hooks/useMove';
 
@@ -354,7 +356,6 @@ export const BoardContainer = (): React.JSX.Element | null => {
 					ref={boardRef}
 					width={currentBoardSizeAndPosition.width}
 					height={currentBoardSizeAndPosition.height}
-					onMouseDown={(!expanded && moveElementHandler) || undefined}
 				>
 					<ResizableContainer
 						crossAlignment={'unset'}
@@ -362,7 +363,11 @@ export const BoardContainer = (): React.JSX.Element | null => {
 						localStorageKey={LOCAL_STORAGE_BOARD_SIZE}
 						disabled={expanded}
 					>
-						<BoardHeader background={'gray5'}>
+						<BoardHeader
+							data-testid="BoardHeader"
+							background={'gray5'}
+							onMouseDown={(!expanded && moveElementHandler) || undefined}
+						>
 							<Padding all="extrasmall">
 								<Tooltip label={t('board.hide', 'Hide board')} placement="top" disabled={isMoving}>
 									<BackButton icon="BoardCollapseOutline" onClick={clickHandler(minimizeBoards)} />

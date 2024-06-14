@@ -4,42 +4,58 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React from 'react';
+import type React from 'react';
 
 import type { TFunction } from 'i18next';
 import { cloneDeep, filter, findIndex, isArray, isBoolean, reduce, uniq } from 'lodash';
-import moment, { Moment } from 'moment';
 
-import {
+import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
+import type { LocaleDescriptor } from '../../constants/locales';
+import { SUPPORTED_LOCALES } from '../../constants/locales';
+import type {
 	Account,
 	AccountSettings,
-	AddMod,
 	BooleanString,
 	GeneralizedTime,
 	Identity,
-	IdentityAttrs,
-	PrefsMods
-} from '../../../types';
-import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
-import { LocaleDescriptor, SUPPORTED_LOCALES } from '../../constants/locales';
+	IdentityAttrs
+} from '../../types/account';
+import type { AddMod, PrefsMods } from '../../types/network';
 
-export const GEN_TIME_FORMAT = 'YYYYMMDDHHmmss[Z]';
-
-function getGenTimeMoment(date: Date | string | Moment): Moment {
-	return moment.utc(date, GEN_TIME_FORMAT);
+export function dateToGenTime(date: Date): GeneralizedTime {
+	return `${
+		date.getUTCFullYear() +
+		(date.getUTCMonth() + 1).toString().padStart(2, '0') +
+		date.getUTCDate().toString().padStart(2, '0') +
+		date.getUTCHours().toString().padStart(2, '0') +
+		date.getUTCMinutes().toString().padStart(2, '0') +
+		date.getUTCSeconds().toString().padStart(2, '0')
+	}Z` as GeneralizedTime;
 }
 
-export function dateToGenTime(date: Date | Moment): GeneralizedTime {
-	return getGenTimeMoment(date).format(GEN_TIME_FORMAT) as GeneralizedTime;
+export function genTimeToDate(genTime: GeneralizedTime): Date {
+	const date = new Date();
+	date.setUTCFullYear(Number(genTime.substring(0, 4)));
+	date.setUTCMonth(Number(genTime.substring(4, 6)) - 1);
+	date.setUTCDate(Number(genTime.substring(6, 8)));
+	date.setUTCHours(Number(genTime.substring(8, 10)));
+	date.setUTCMinutes(Number(genTime.substring(10, 12)));
+	date.setUTCSeconds(Number(genTime.substring(12, 14)));
+	date.setUTCMilliseconds(0);
+	return date;
 }
 
-export function genTimeToDate(genTime: string): Date {
-	return getGenTimeMoment(genTime).local().toDate();
-}
+export const startOfDay = (date: Date): Date => {
+	const newDate = new Date(date);
+	newDate.setHours(0, 0, 0, 0);
+	return newDate;
+};
 
-export const startOfDay = (date: Date): Date => new Date(new Date(date).setHours(0, 0, 0, 0));
-
-export const endOfDay = (date: Date): Date => new Date(new Date(date).setHours(23, 59, 59, 0));
+export const endOfDay = (date: Date): Date => {
+	const newDate = new Date(date);
+	newDate.setHours(23, 59, 59, 0);
+	return newDate;
+};
 
 export type LocaleDescriptorWithLabels = LocaleDescriptor & {
 	id: string;
@@ -1237,9 +1253,9 @@ export const timeZoneList = (t: TFunction): Array<TimeZoneDescriptor> => [
 
 export const getAutoScalingFontSize = (): number => {
 	if (
-		window.screen.width <= SCALING_LIMIT.WIDTH &&
-		window.screen.height <= SCALING_LIMIT.HEIGHT &&
-		window.devicePixelRatio >= SCALING_LIMIT.DPR
+		window.screen.width <= SCALING_LIMIT.width &&
+		window.screen.height <= SCALING_LIMIT.height &&
+		window.devicePixelRatio >= SCALING_LIMIT.dpr
 	) {
 		const baseFontIndex = SCALING_OPTIONS.findIndex((option) => option.value === BASE_FONT_SIZE);
 		if (baseFontIndex > 0) {

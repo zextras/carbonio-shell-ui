@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v6.0.0...v7.0.0) (2024-06-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove shell ModalManager
+* remove useModal in context-bridge
+* remove useSnackbar in context-bridge
+* remove CreateModalProps type
+* Replace entirely the declarations of the library. See #389 for the list of changes.
+Refs: SHELL-157
+
+### Features
+
+* expose upsertApp api ([b2e454a](https://github.com/zextras/carbonio-shell-ui/commit/b2e454ad5c8a5f1989b1e2f90a6152d321223bc6)), closes [#421](https://github.com/zextras/carbonio-shell-ui/issues/421)
+* use json format v4 for translations ([57bf439](https://github.com/zextras/carbonio-shell-ui/commit/57bf439d415441a125b647fe8616341535a93530)), closes [#403](https://github.com/zextras/carbonio-shell-ui/issues/403)
+
+
+### Bug Fixes
+
+* add link in toolbar and use link instead of quicklink ([48e6dea](https://github.com/zextras/carbonio-shell-ui/commit/48e6deae708380b20293bab39d4e20459c2e5f28)), closes [#432](https://github.com/zextras/carbonio-shell-ui/issues/432)
+* avoid freeze of the ui when board size value is invalid ([cdefb10](https://github.com/zextras/carbonio-shell-ui/commit/cdefb10abbbee4ebf1d9450f0cc22fda7cc3e2c6)), closes [#413](https://github.com/zextras/carbonio-shell-ui/issues/413)
+* cleanup and re-organize npm library ([#389](https://github.com/zextras/carbonio-shell-ui/issues/389)) ([dd59b1e](https://github.com/zextras/carbonio-shell-ui/commit/dd59b1ea749f8cd0221bb7dab618623a0bcacfd8))
+* **composer:** enable convert_unsafe_embeds to fix security issue ([ada79af](https://github.com/zextras/carbonio-shell-ui/commit/ada79af9623b7cd057f5edc8eb3aa186fb335c79)), closes [#396](https://github.com/zextras/carbonio-shell-ui/issues/396)
+* module boards can trigger mousedown events ([289dde9](https://github.com/zextras/carbonio-shell-ui/commit/289dde9ee16c10feb2356ea949e0dc5525305d75)), closes [#402](https://github.com/zextras/carbonio-shell-ui/issues/402)
+* remove incomplete delegates management ([44072bb](https://github.com/zextras/carbonio-shell-ui/commit/44072bb7ae651996d2a00f419a3bc673e79a3931)), closes [#419](https://github.com/zextras/carbonio-shell-ui/issues/419)
+* update module when the module in store is undefined ([7351433](https://github.com/zextras/carbonio-shell-ui/commit/7351433ed836bd16b80de1ed3089cb6bc2ef150a)), closes [#410](https://github.com/zextras/carbonio-shell-ui/issues/410)
+
+
+* remove ModalManager ([c288690](https://github.com/zextras/carbonio-shell-ui/commit/c2886904668c7cb5a36460f06453354101cd137f)), closes [#411](https://github.com/zextras/carbonio-shell-ui/issues/411)
+
 ## [6.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v5.2.0...v6.0.0) (2024-04-10)
 
 

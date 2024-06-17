@@ -53,6 +53,22 @@ export const editSettings = (
 					).join('')}</ModifyPrefsRequest>`
 				: ''
 		}${
+			mods.attrs?.amavisWhitelistSender || mods.attrs?.amavisBlacklistSender
+				? `<ModifyWhiteBlackListRequest xmlns="urn:zimbraAccount">${
+						mods.attrs?.amavisWhitelistSender && isArray(mods.attrs?.amavisWhitelistSender)
+							? `<whiteList>${mods.attrs?.amavisWhitelistSender
+									.map((email) => `<addr>${email}</addr>`)
+									.join('')}</whiteList>`
+							: ''
+					}${
+						mods.attrs?.amavisBlacklistSender && isArray(mods.attrs?.amavisBlacklistSender)
+							? `<whiteList>${mods.attrs?.amavisBlacklistSender
+									.map((email) => `<addr>${email}</addr>`)
+									.join('')}</whiteList>`
+							: ''
+					}</ModifyWhiteBlackListRequest>`
+				: ''
+		}${
 			mods.identity?.modifyList
 				? map(
 						mods.identity.modifyList,

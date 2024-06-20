@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 import { find, get, join } from 'lodash';
 
 import { useAccountStore } from './store';
-import { updateSettings } from './utils';
+import { updateAccount, updateSettings } from './utils';
 import type {
 	Account,
 	AccountRightName,
@@ -21,7 +21,10 @@ import type {
 
 export const useAuthenticated = (): boolean => useAccountStore((s) => s.authenticated);
 
-export const useUserAccount = (): Account => useAccountStore((s) => s.account as Account);
+export const useUserAccount = (): Account => {
+	const account = useAccountStore((s) => s.account as Account);
+	return useMemo(() => ({ ...account, updateAccount }), [account]);
+};
 export const useUserAccounts = (): Array<Account> => {
 	const acct = useAccountStore((s) => s.account);
 	return useMemo(() => (acct ? [acct as Account] : []), [acct]);

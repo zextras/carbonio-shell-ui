@@ -16,12 +16,15 @@ import type {
 	AccountRights,
 	AccountRightTarget,
 	AccountSettings,
+	UpdateAccount,
 	UpdateSettings
 } from '../../types/account';
 
 export const useAuthenticated = (): boolean => useAccountStore((s) => s.authenticated);
 
-export const useUserAccount = (): Account => {
+export const useUserAccount = (): Account & {
+	updateAccount: UpdateAccount;
+} => {
 	const account = useAccountStore((s) => s.account as Account);
 	return useMemo(() => ({ ...account, updateAccount }), [account]);
 };

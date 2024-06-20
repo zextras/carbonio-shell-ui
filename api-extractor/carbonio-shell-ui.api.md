@@ -315,6 +315,9 @@ type AppRouteDescriptor = {
 export type AppViewComponentProps = {};
 
 // @public (undocumented)
+type AttrsMods = Record<string, unknown>;
+
+// @public (undocumented)
 export type AudioNotificationConfig = {
     sound?: string;
 };
@@ -942,6 +945,10 @@ type ModifyPropertiesResponse = Record<string, never>;
 
 // @public (undocumented)
 interface Mods extends Record<string, Record<string, unknown> | undefined> {
+    // Warning: (ae-forgotten-export) The symbol "AttrsMods" needs to be exported by the entry point lib.d.ts
+    //
+    // (undocumented)
+    attrs?: AttrsMods;
     // Warning: (ae-forgotten-export) The symbol "IdentityMods" needs to be exported by the entry point lib.d.ts
     //
     // (undocumented)
@@ -1476,6 +1483,9 @@ export const updateBoardContext: <T = unknown>(id: string, context: T) => void;
 export const updatePrimaryBadge: (badge: Partial<BadgeInfo_2>, id: string) => void;
 
 // @public (undocumented)
+type UpdateSettings = (settingsMods: Partial<Mods>) => void;
+
+// @public (undocumented)
 export const updateUtilityBadge: (badge: Partial<BadgeInfo_2>, id: string) => void;
 
 // @public
@@ -1601,7 +1611,9 @@ export const useUserRights: () => AccountRights;
 export const useUserSetting: <T = void>(...path: Array<string>) => string | T;
 
 // @public (undocumented)
-export const useUserSettings: () => AccountSettings;
+export const useUserSettings: () => AccountSettings & {
+    updateSettings: UpdateSettings;
+};
 
 // @public (undocumented)
 export type UtilityBarComponentProps = {
@@ -1668,6 +1680,7 @@ interface ZimletProp {
 // lib/network/edit-settings.d.ts:8:5 - (ae-forgotten-export) The symbol "RevokeRightsResponse" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:9:5 - (ae-forgotten-export) The symbol "GrantRightsResponse" needs to be exported by the entry point lib.d.ts
 // lib/settings/components/settings-header.d.ts:5:5 - (ae-forgotten-export) The symbol "RouteLeavingGuardProps" needs to be exported by the entry point lib.d.ts
+// lib/store/account/hooks.d.ts:9:5 - (ae-forgotten-export) The symbol "UpdateSettings" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:23:5 - (ae-forgotten-export) The symbol "CarbonioModule" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:25:5 - (ae-forgotten-export) The symbol "AppRouteDescriptor" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:30:5 - (ae-forgotten-export) The symbol "BoardView" needs to be exported by the entry point lib.d.ts
@@ -1680,13 +1693,13 @@ interface ZimletProp {
 // lib/store/context-bridge.d.ts:5:5 - (ae-forgotten-export) The symbol "AnyFunction" needs to be exported by the entry point lib.d.ts
 // lib/store/integrations/store.d.ts:26:9 - (ae-forgotten-export) The symbol "Action_2" needs to be exported by the entry point lib.d.ts
 // lib/store/integrations/store.d.ts:32:9 - (ae-forgotten-export) The symbol "Component" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:33:5 - (ae-forgotten-export) The symbol "AccountRights" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:37:5 - (ae-forgotten-export) The symbol "StringOfLength" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:85:5 - (ae-forgotten-export) The symbol "AccountSettingsAttrs" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:87:5 - (ae-forgotten-export) The symbol "ZimletProp" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:131:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:136:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:137:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:34:5 - (ae-forgotten-export) The symbol "AccountRights" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:38:5 - (ae-forgotten-export) The symbol "StringOfLength" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:87:5 - (ae-forgotten-export) The symbol "AccountSettingsAttrs" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:89:5 - (ae-forgotten-export) The symbol "ZimletProp" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:133:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:138:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:139:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
 // lib/types/apps/index.d.ts:68:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:85:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:104:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts

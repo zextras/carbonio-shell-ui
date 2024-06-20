@@ -3,11 +3,12 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { filter, findIndex, map, reduce } from 'lodash';
+import { filter, find, findIndex, map, reduce } from 'lodash';
 
 import { useAccountStore } from './store';
 import type { AccountsSettingsBatchResponse } from '../../settings/accounts-settings';
 import type {
+	Account,
 	AccountSettingsAttrs,
 	AccountSettingsPrefs,
 	AccountState,
@@ -76,13 +77,13 @@ export const updateSettings: UpdateSettings = (settingsMods) =>
 	}));
 
 function updateIdentities(
-	s: AccountState,
-	mods: Partial<Mods>,
-	r: AccountsSettingsBatchResponse
+	state: AccountState,
+	accountMods: Partial<Mods>,
+	response: AccountsSettingsBatchResponse
 ): Identity[] | undefined {
-	return typeof s.account !== 'undefined'
+	return typeof state.account !== 'undefined'
 		? reduce(
-				mods?.identity?.modifyList,
+				accountMods?.identity?.modifyList,
 				(acc, { id, prefs }) => {
 					const propIndex = findIndex(acc, (itemMods, indexAccount) => acc[indexAccount].id === id);
 					if (propIndex > -1) {
@@ -100,20 +101,29 @@ function updateIdentities(
 				},
 				[
 					...filter(
-						s.account.identities.identity,
-						(item) => !mods?.identity?.deleteList?.includes(item.id)
+						state.account.identities.identity,
+						(item) => !accountMods?.identity?.deleteList?.includes(item.id)
 					).filter((i) => i.name !== 'DEFAULT'),
-					...map(r?.CreateIdentityResponse, (item) => item.identity[0]),
+					...map(response?.CreateIdentityResponse, (item) => item.identity[0]),
 					...filter(
-						s.account.identities.identity,
-						(item) => !mods?.identity?.deleteList?.includes(item.id)
+						state.account.identities.identity,
+						(item) => !accountMods?.identity?.deleteList?.includes(item.id)
 					).filter((i) => i.name === 'DEFAULT')
 				]
 			)
 		: undefined;
 }
 
-export const updateAccount: UpdateAccount = (accountMods) =>
+export const updateAccount: UpdateAccount = (accountMods, response) =>
 	useAccountStore.setState((state) => ({
-		...state
+		...state,
+		account: {
+			...state.account,
+			displayName:
+				find(accountMods?.identity?.modifyList, (item) => item.id === state?.account?.id)?.prefs
+					.zimbraPrefIdentityName || state.account?.displayName,
+			identities: {
+				identity: updateIdentities(state, accountMods, response)
+			}
+		} as Account
 	}));

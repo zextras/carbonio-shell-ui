@@ -133,9 +133,12 @@ export type IdentityMods = {
 
 export type PrefsMods = Record<string, unknown> & AccountSettingsPrefs;
 
+export type AttrsMods = Record<string, unknown>;
+
 export interface Mods extends Record<string, Record<string, unknown> | undefined> {
 	props?: PropsMods;
 	prefs?: PrefsMods;
+	attrs?: AttrsMods;
 	permissions?: PermissionsMods;
 	identity?: IdentityMods;
 }

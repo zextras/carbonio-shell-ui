@@ -6,6 +6,7 @@
 
 import type { DELEGATED_SEND_SAVE_TARGET } from '../../constants';
 import type { StringOfLength } from '../../utils/typeUtils';
+import type { Mods } from '../network';
 
 export interface ZimletProp {
 	name: string;
@@ -95,6 +96,8 @@ export type AccountSettingsAttrs = {
 	zimbraIdentityMaxNumEntries?: number;
 	[key: string]: string | number | Array<string | number> | undefined;
 };
+
+export type UpdateSettings = (settingsMods: Partial<Mods>) => void;
 
 export type AccountSettings = {
 	attrs: AccountSettingsAttrs;

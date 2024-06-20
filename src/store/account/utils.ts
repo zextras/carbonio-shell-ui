@@ -12,6 +12,7 @@ import type {
 	AccountSettingsPrefs,
 	AccountState,
 	Identity,
+	UpdateAccount,
 	UpdateSettings,
 	ZimletProp
 } from '../../types/account';
@@ -111,3 +112,8 @@ function updateIdentities(
 			)
 		: undefined;
 }
+
+export const updateAccount: UpdateAccount = (accountMods) =>
+	useAccountStore.setState((state) => ({
+		...state
+	}));

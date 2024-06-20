@@ -98,6 +98,7 @@ export type AccountSettingsAttrs = {
 };
 
 export type UpdateSettings = (settingsMods: Partial<Mods>) => void;
+export type UpdateAccount = (accountMods: Partial<Mods>) => void;
 
 export type AccountSettings = {
 	attrs: AccountSettingsAttrs;

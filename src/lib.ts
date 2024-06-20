@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-// noinspection JSUnusedGlobalSymbols
-
 /**
  * The library to integrate in the Carbonio environment.
  *
@@ -41,6 +39,9 @@ export declare const addUtilityView: AppSetters['addUtilityView'];
 export declare const addPrimaryAccessoryView: AppSetters['addPrimaryAccessoryView'];
 export declare const addSecondaryAccessoryView: AppSetters['addSecondaryAccessoryView'];
 export declare const registerComponents: AppSetters['registerComponents'];
+/**
+ * @deprecated See documentation of editSettings function in ./network/edit-settings
+ */
 export declare const editSettings: AppSetters['editSettings'];
 export {
 	registerActions,

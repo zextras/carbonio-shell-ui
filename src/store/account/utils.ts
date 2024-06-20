@@ -3,13 +3,15 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { findIndex, reduce } from 'lodash';
+import { filter, findIndex, map, reduce } from 'lodash';
 
 import { useAccountStore } from './store';
+import type { AccountsSettingsBatchResponse } from '../../settings/accounts-settings';
 import type {
 	AccountSettingsAttrs,
 	AccountSettingsPrefs,
 	AccountState,
+	Identity,
 	UpdateSettings,
 	ZimletProp
 } from '../../types/account';
@@ -71,3 +73,41 @@ export const updateSettings: UpdateSettings = (settingsMods) =>
 			props: mergeProps(settingsMods, state)
 		}
 	}));
+
+function updateIdentities(
+	s: AccountState,
+	mods: Partial<Mods>,
+	r: AccountsSettingsBatchResponse
+): Identity[] | undefined {
+	return typeof s.account !== 'undefined'
+		? reduce(
+				mods?.identity?.modifyList,
+				(acc, { id, prefs }) => {
+					const propIndex = findIndex(acc, (itemMods, indexAccount) => acc[indexAccount].id === id);
+					if (propIndex > -1) {
+						// eslint-disable-next-line no-param-reassign
+						acc[propIndex]._attrs = {
+							...acc[propIndex]._attrs,
+							...prefs
+						};
+						if (prefs.zimbraPrefIdentityName && acc[propIndex].name !== 'DEFAULT') {
+							// eslint-disable-next-line no-param-reassign
+							acc[propIndex].name = prefs.zimbraPrefIdentityName;
+						}
+					}
+					return acc;
+				},
+				[
+					...filter(
+						s.account.identities.identity,
+						(item) => !mods?.identity?.deleteList?.includes(item.id)
+					).filter((i) => i.name !== 'DEFAULT'),
+					...map(r?.CreateIdentityResponse, (item) => item.identity[0]),
+					...filter(
+						s.account.identities.identity,
+						(item) => !mods?.identity?.deleteList?.includes(item.id)
+					).filter((i) => i.name === 'DEFAULT')
+				]
+			)
+		: undefined;
+}

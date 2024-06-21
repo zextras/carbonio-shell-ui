@@ -4,11 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { filter, find, findIndex, map, reduce, isArray } from 'lodash';
+import { find, map, isArray } from 'lodash';
 
 import { getXmlSoapFetch } from './fetch';
 import { SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account';
+import { mergePrefs, mergeProps, updateIdentities } from '../store/account/utils';
 import type { Account, AccountState } from '../types/account';
 import type {
 	Mods,
@@ -18,10 +19,11 @@ import type {
 	ModifyIdentityResponse,
 	RevokeRightsResponse,
 	DeleteIdentityResponse,
-	GrantRightsResponse
+	GrantRightsResponse,
+	BatchResponse
 } from '../types/network';
 
-export type EditSettingsBatchResponse = {
+export type EditSettingsBatchResponse = BatchResponse<{
 	ModifyPropertiesResponse?: ModifyPropertiesResponse[];
 	ModifyPrefsResponse?: ModifyPrefsResponse[];
 	ModifyIdentityResponse?: ModifyIdentityResponse[];
@@ -29,7 +31,7 @@ export type EditSettingsBatchResponse = {
 	CreateIdentityResponse?: CreateIdentityResponse[];
 	RevokeRightsResponse?: RevokeRightsResponse[];
 	GrantRightsResponse?: GrantRightsResponse[];
-};
+}>;
 
 export const editSettings = (
 	mods: Partial<Mods>,
@@ -159,36 +161,8 @@ export const editSettings = (
 		useAccountStore.setState((s: AccountState) => ({
 			settings: {
 				...s.settings,
-				prefs: reduce(
-					mods.prefs,
-					(acc, pref, key) => ({
-						...acc,
-						[key]: pref as string
-					}),
-					s.settings.prefs
-				),
-				props: reduce(
-					mods.props,
-					(acc, { app, value }, key) => {
-						const propIndex = findIndex(acc, (p) => p.name === key && p.zimlet === app);
-						if (propIndex >= 0) {
-							// eslint-disable-next-line no-param-reassign
-							acc[propIndex] = {
-								name: key,
-								zimlet: app,
-								_content: value as string
-							};
-						} else {
-							acc.push({
-								name: key,
-								zimlet: app,
-								_content: value as string
-							});
-						}
-						return acc;
-					},
-					s.settings.props
-				)
+				prefs: mergePrefs(mods, s),
+				props: mergeProps(mods, s)
 			},
 			account: {
 				...s.account,
@@ -196,41 +170,7 @@ export const editSettings = (
 					find(mods?.identity?.modifyList, (item) => item.id === s?.account?.id)?.prefs
 						.zimbraPrefIdentityName || s.account?.displayName,
 				identities: {
-					identity:
-						typeof s.account !== 'undefined'
-							? reduce(
-									mods?.identity?.modifyList,
-									(acc, { id, prefs }) => {
-										const propIndex = findIndex(
-											acc,
-											(itemMods, indexAccount) => acc[indexAccount].id === id
-										);
-										if (propIndex > -1) {
-											// eslint-disable-next-line no-param-reassign
-											acc[propIndex]._attrs = {
-												...acc[propIndex]._attrs,
-												...prefs
-											};
-											if (prefs.zimbraPrefIdentityName && acc[propIndex].name !== 'DEFAULT') {
-												// eslint-disable-next-line no-param-reassign
-												acc[propIndex].name = prefs.zimbraPrefIdentityName;
-											}
-										}
-										return acc;
-									},
-									[
-										...filter(
-											s.account.identities.identity,
-											(item) => !mods?.identity?.deleteList?.includes(item.id)
-										).filter((i) => i.name !== 'DEFAULT'),
-										...map(r?.CreateIdentityResponse, (item) => item.identity[0]),
-										...filter(
-											s.account.identities.identity,
-											(item) => !mods?.identity?.deleteList?.includes(item.id)
-										).filter((i) => i.name === 'DEFAULT')
-									]
-								)
-							: undefined
+					identity: updateIdentities(s, mods, r)
 				}
 			} as Account
 		}));

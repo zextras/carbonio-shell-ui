@@ -5,7 +5,7 @@
  */
 
 import type { DELEGATED_SEND_SAVE_TARGET } from '../../constants';
-import type { AccountsSettingsBatchResponse } from '../../settings/accounts-settings';
+import type { EditSettingsBatchResponse } from '../../network/edit-settings';
 import type { StringOfLength } from '../../utils/typeUtils';
 import type { Mods } from '../network';
 
@@ -101,7 +101,7 @@ export type AccountSettingsAttrs = {
 export type UpdateSettings = (settingsMods: Partial<Mods>) => void;
 export type UpdateAccount = (
 	accountMods: Partial<Mods>,
-	response: AccountsSettingsBatchResponse
+	response: Pick<EditSettingsBatchResponse, 'CreateIdentityResponse'>
 ) => void;
 
 export type AccountSettings = {

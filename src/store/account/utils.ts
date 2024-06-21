@@ -5,7 +5,7 @@
  */
 import { filter, findIndex, map, reduce } from 'lodash';
 
-import type { AccountsSettingsBatchResponse } from '../../settings/accounts-settings';
+import type { EditSettingsBatchResponse } from '../../network/edit-settings';
 import type {
 	AccountSettingsAttrs,
 	AccountSettingsPrefs,
@@ -65,7 +65,7 @@ export function mergeAttrs(mods: Partial<Mods>, state: AccountState): AccountSet
 export function updateIdentities(
 	state: AccountState,
 	accountMods: Partial<Mods>,
-	response: AccountsSettingsBatchResponse
+	response: EditSettingsBatchResponse
 ): Identity[] | undefined {
 	return typeof state.account !== 'undefined'
 		? reduce(

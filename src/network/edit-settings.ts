@@ -19,11 +19,10 @@ import type {
 	ModifyIdentityResponse,
 	RevokeRightsResponse,
 	DeleteIdentityResponse,
-	GrantRightsResponse,
-	BatchResponse
+	GrantRightsResponse
 } from '../types/network';
 
-export type EditSettingsBatchResponse = BatchResponse<{
+export type EditSettingsBatchResponse = {
 	ModifyPropertiesResponse?: ModifyPropertiesResponse[];
 	ModifyPrefsResponse?: ModifyPrefsResponse[];
 	ModifyIdentityResponse?: ModifyIdentityResponse[];
@@ -31,7 +30,7 @@ export type EditSettingsBatchResponse = BatchResponse<{
 	CreateIdentityResponse?: CreateIdentityResponse[];
 	RevokeRightsResponse?: RevokeRightsResponse[];
 	GrantRightsResponse?: GrantRightsResponse[];
-}>;
+};
 
 export const editSettings = (
 	mods: Partial<Mods>,

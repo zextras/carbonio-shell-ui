@@ -22,12 +22,10 @@ import type {
 
 export const useAuthenticated = (): boolean => useAccountStore((s) => s.authenticated);
 
-export const useUserAccount = (): Account & {
-	updateAccount: UpdateAccount;
-} => {
-	const account = useAccountStore((s) => s.account as Account);
-	return useMemo(() => ({ ...account, updateAccount }), [account]);
-};
+export const useUserAccount = (): Account => useAccountStore((s) => s.account as Account);
+
+export const useUpdateUserAccount = (): UpdateAccount => updateAccount;
+
 export const useUserAccounts = (): Array<Account> => {
 	const acct = useAccountStore((s) => s.account);
 	return useMemo(() => (acct ? [acct as Account] : []), [acct]);
@@ -44,18 +42,9 @@ export const useUserRight = (right: AccountRightName): Array<AccountRightTarget>
 	);
 };
 
-export const useUserSettings = (): AccountSettings & {
-	updateSettings: UpdateSettings;
-} => {
-	const settings = useAccountStore((state) => state.settings);
-	return useMemo(
-		() => ({
-			...settings,
-			updateSettings
-		}),
-		[settings]
-	);
-};
+export const useUserSettings = (): AccountSettings => useAccountStore((state) => state.settings);
+
+export const useUpdateUserSettings = (): UpdateSettings => updateSettings;
 
 export const useUserSetting = <T = void>(...path: Array<string>): string | T =>
 	useAccountStore((s) => get(s.settings, join(path, '.')));

@@ -153,6 +153,15 @@ export interface AccountSettingsPrefs {
     zimbraPrefTimeZoneId?: string;
 }
 
+// Warning: (ae-forgotten-export) The symbol "BatchResponse" needs to be exported by the entry point lib.d.ts
+//
+// @public (undocumented)
+type AccountsSettingsBatchResponse = BatchResponse<{
+    ModifyIdentityResponse?: ModifyIdentityResponse[];
+    DeleteIdentityResponse?: DeleteIdentityResponse[];
+    CreateIdentityResponse?: CreateIdentityResponse[];
+}>;
+
 // @public (undocumented)
 export type Action = DropdownItem & {
     primary?: boolean;
@@ -377,6 +386,9 @@ export const BASENAME: string;
 //
 // @public (undocumented)
 export type BatchRequest<T extends Exactify<Record<`${string}Request`, unknown>, T> = Record<`${string}Request`, unknown>> = SoapBody<T>;
+
+// @public (undocumented)
+type BatchResponse<T extends Exactify<Record<`${string}Response`, unknown>, T> = Record<`${string}Response`, unknown>> = SoapBody<T>;
 
 // @public (undocumented)
 export type Board<T = unknown> = {
@@ -1473,6 +1485,16 @@ export class Tracker {
     trackPageView(customTitle?: string): void;
 }
 
+// Warning: (ae-forgotten-export) The symbol "AccountsSettingsBatchResponse" needs to be exported by the entry point lib.d.ts
+//
+// @public (undocumented)
+type UpdateAccount = (accountMods: Partial<Mods>, response: AccountsSettingsBatchResponse) => void;
+
+// Warning: (ae-forgotten-export) The symbol "UpdateAccount" needs to be exported by the entry point lib.d.ts
+//
+// @public (undocumented)
+export const updateAccount: UpdateAccount;
+
 // @public (undocumented)
 export const updateBoard: <T = unknown>(id: string, board: Partial<Board<T>>) => void;
 
@@ -1481,6 +1503,14 @@ export const updateBoardContext: <T = unknown>(id: string, context: T) => void;
 
 // @public (undocumented)
 export const updatePrimaryBadge: (badge: Partial<BadgeInfo_2>, id: string) => void;
+
+// @public (undocumented)
+type UpdateSettings = (settingsMods: Partial<Mods>) => void;
+
+// Warning: (ae-forgotten-export) The symbol "UpdateSettings" needs to be exported by the entry point lib.d.ts
+//
+// @public (undocumented)
+export const updateSettings: UpdateSettings;
 
 // @public (undocumented)
 export const updateUtilityBadge: (badge: Partial<BadgeInfo_2>, id: string) => void;
@@ -1669,11 +1699,11 @@ interface ZimletProp {
 // lib/boot/app/app-loader-setters.d.ts:15:5 - (ae-forgotten-export) The symbol "getEditSettingsForApp" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:3:5 - (ae-forgotten-export) The symbol "ModifyPropertiesResponse" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:4:5 - (ae-forgotten-export) The symbol "ModifyPrefsResponse" needs to be exported by the entry point lib.d.ts
-// lib/network/edit-settings.d.ts:5:5 - (ae-forgotten-export) The symbol "ModifyIdentityResponse" needs to be exported by the entry point lib.d.ts
-// lib/network/edit-settings.d.ts:6:5 - (ae-forgotten-export) The symbol "DeleteIdentityResponse" needs to be exported by the entry point lib.d.ts
-// lib/network/edit-settings.d.ts:7:5 - (ae-forgotten-export) The symbol "CreateIdentityResponse" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:8:5 - (ae-forgotten-export) The symbol "RevokeRightsResponse" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:9:5 - (ae-forgotten-export) The symbol "GrantRightsResponse" needs to be exported by the entry point lib.d.ts
+// lib/settings/accounts-settings.d.ts:9:5 - (ae-forgotten-export) The symbol "ModifyIdentityResponse" needs to be exported by the entry point lib.d.ts
+// lib/settings/accounts-settings.d.ts:10:5 - (ae-forgotten-export) The symbol "DeleteIdentityResponse" needs to be exported by the entry point lib.d.ts
+// lib/settings/accounts-settings.d.ts:11:5 - (ae-forgotten-export) The symbol "CreateIdentityResponse" needs to be exported by the entry point lib.d.ts
 // lib/settings/components/settings-header.d.ts:5:5 - (ae-forgotten-export) The symbol "RouteLeavingGuardProps" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:23:5 - (ae-forgotten-export) The symbol "CarbonioModule" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:25:5 - (ae-forgotten-export) The symbol "AppRouteDescriptor" needs to be exported by the entry point lib.d.ts

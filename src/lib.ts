@@ -104,7 +104,9 @@ export {
 	useUserRights,
 	getUserRight,
 	getUserRights,
-	useAuthenticated
+	useAuthenticated,
+	updateSettings,
+	updateAccount
 } from './boot/app/app-loader-functions';
 export { getTags, useTags } from './boot/app/app-loader-functions';
 export { changeTagColor, createTag, deleteTag, renameTag } from './boot/app/app-loader-functions';

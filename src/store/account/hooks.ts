@@ -9,22 +9,17 @@ import { useMemo } from 'react';
 import { find, get, join } from 'lodash';
 
 import { useAccountStore } from './store';
-import { updateAccount, updateSettings } from './utils';
 import type {
 	Account,
 	AccountRightName,
 	AccountRights,
 	AccountRightTarget,
-	AccountSettings,
-	UpdateAccount,
-	UpdateSettings
+	AccountSettings
 } from '../../types/account';
 
 export const useAuthenticated = (): boolean => useAccountStore((s) => s.authenticated);
 
 export const useUserAccount = (): Account => useAccountStore((s) => s.account as Account);
-
-export const useUpdateUserAccount = (): UpdateAccount => updateAccount;
 
 export const useUserAccounts = (): Array<Account> => {
 	const acct = useAccountStore((s) => s.account);
@@ -43,8 +38,6 @@ export const useUserRight = (right: AccountRightName): Array<AccountRightTarget>
 };
 
 export const useUserSettings = (): AccountSettings => useAccountStore((state) => state.settings);
-
-export const useUpdateUserSettings = (): UpdateSettings => updateSettings;
 
 export const useUserSetting = <T = void>(...path: Array<string>): string | T =>
 	useAccountStore((s) => get(s.settings, join(path, '.')));

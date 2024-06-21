@@ -78,16 +78,16 @@ export {
 	getUserSetting,
 	getUserSettings,
 	useUserAccount,
-	useUpdateUserAccount,
 	useUserAccounts,
 	useUserSetting,
 	useUserSettings,
-	useUpdateUserSettings,
 	useUserRight,
 	useUserRights,
 	getUserRight,
 	getUserRights,
-	useAuthenticated
+	useAuthenticated,
+	updateSettings,
+	updateAccount
 } from '../../store/account';
 
 export { getTags, useTags } from '../../store/tags';

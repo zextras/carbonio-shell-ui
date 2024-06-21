@@ -3,23 +3,19 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { filter, find, findIndex, map, reduce } from 'lodash';
+import { filter, findIndex, map, reduce } from 'lodash';
 
-import { useAccountStore } from './store';
 import type { AccountsSettingsBatchResponse } from '../../settings/accounts-settings';
 import type {
-	Account,
 	AccountSettingsAttrs,
 	AccountSettingsPrefs,
 	AccountState,
 	Identity,
-	UpdateAccount,
-	UpdateSettings,
 	ZimletProp
 } from '../../types/account';
 import type { Mods } from '../../types/network';
 
-function mergePrefs(mods: Partial<Mods>, state: AccountState): AccountSettingsPrefs {
+export function mergePrefs(mods: Partial<Mods>, state: AccountState): AccountSettingsPrefs {
 	return reduce(
 		mods.prefs,
 		(acc, pref, key) => ({
@@ -30,7 +26,7 @@ function mergePrefs(mods: Partial<Mods>, state: AccountState): AccountSettingsPr
 	);
 }
 
-function mergeProps(mods: Partial<Mods>, state: AccountState): Array<ZimletProp> {
+export function mergeProps(mods: Partial<Mods>, state: AccountState): Array<ZimletProp> {
 	return reduce(
 		mods.props,
 		(acc, { app, value }, key) => {
@@ -55,7 +51,7 @@ function mergeProps(mods: Partial<Mods>, state: AccountState): Array<ZimletProp>
 	);
 }
 
-function mergeAttrs(mods: Partial<Mods>, state: AccountState): AccountSettingsAttrs {
+export function mergeAttrs(mods: Partial<Mods>, state: AccountState): AccountSettingsAttrs {
 	return reduce(
 		mods.attrs,
 		(acc, attr, key) => ({
@@ -66,17 +62,7 @@ function mergeAttrs(mods: Partial<Mods>, state: AccountState): AccountSettingsAt
 	);
 }
 
-export const updateSettings: UpdateSettings = (settingsMods) =>
-	useAccountStore.setState((state) => ({
-		...state,
-		settings: {
-			attrs: mergeAttrs(settingsMods, state),
-			prefs: mergePrefs(settingsMods, state),
-			props: mergeProps(settingsMods, state)
-		}
-	}));
-
-function updateIdentities(
+export function updateIdentities(
 	state: AccountState,
 	accountMods: Partial<Mods>,
 	response: AccountsSettingsBatchResponse
@@ -113,17 +99,3 @@ function updateIdentities(
 			)
 		: undefined;
 }
-
-export const updateAccount: UpdateAccount = (accountMods, response) =>
-	useAccountStore.setState((state) => ({
-		...state,
-		account: {
-			...state.account,
-			displayName:
-				find(accountMods?.identity?.modifyList, (item) => item.id === state?.account?.id)?.prefs
-					.zimbraPrefIdentityName || state.account?.displayName,
-			identities: {
-				identity: updateIdentities(state, accountMods, response)
-			}
-		} as Account
-	}));

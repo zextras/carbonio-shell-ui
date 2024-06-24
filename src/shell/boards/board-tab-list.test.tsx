@@ -11,9 +11,9 @@ import 'jest-styled-components';
 
 import { TabsList } from './board-tab-list';
 import { useBoardStore } from '../../store/boards';
-import { ICONS, PALETTE } from '../../test/constants';
-import { setupBoardStore } from '../../test/test-board-utils';
-import { setup } from '../../test/utils';
+import { ICONS, PALETTE } from '../../tests/constants';
+import { setupBoardStore } from '../../tests/test-board-utils';
+import { setup } from '../../tests/utils';
 
 describe('Shell boards', () => {
 	test('If I close the first tab that is open, the tab on its right should be seen correctly', async () => {

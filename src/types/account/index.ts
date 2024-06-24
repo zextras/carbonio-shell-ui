@@ -6,7 +6,6 @@
 
 import type { DELEGATED_SEND_SAVE_TARGET } from '../../constants';
 import type { StringOfLength } from '../../utils/typeUtils';
-import type { AccountACEInfo } from '../network/entities';
 
 export interface ZimletProp {
 	name: string;
@@ -17,7 +16,6 @@ export interface ZimletProp {
 export type AccountState = {
 	authenticated: boolean;
 	account?: Account;
-	rights?: Array<AccountACEInfo>;
 	settings: AccountSettings;
 	zimbraVersion?: string;
 	usedQuota: number;
@@ -43,7 +41,7 @@ export type Account = {
 
 export type BooleanString = 'TRUE' | 'FALSE';
 
-type GenTimeObj = {
+type GeneralizedTimeObj = {
 	year: `${number}` & StringOfLength<4>;
 	month: `${number}` & StringOfLength<2>;
 	date: `${number}` & StringOfLength<2>;
@@ -54,8 +52,11 @@ type GenTimeObj = {
 	timezone: 'Z' | '';
 };
 
+/**
+ * A GeneralizedTime is a string representing a date in UTC with the format YYYYMMDDHHmmss[.SSS][Z]
+ */
 export type GeneralizedTime =
-	`${GenTimeObj['year']}${GenTimeObj['month']}${GenTimeObj['date']}${GenTimeObj['hour']}${GenTimeObj['min']}${GenTimeObj['sec']}${GenTimeObj['ms']}${GenTimeObj['timezone']}`;
+	`${GeneralizedTimeObj['year']}${GeneralizedTimeObj['month']}${GeneralizedTimeObj['date']}${GeneralizedTimeObj['hour']}${GeneralizedTimeObj['min']}${GeneralizedTimeObj['sec']}${GeneralizedTimeObj['ms']}${GeneralizedTimeObj['timezone']}`;
 
 export type DurationUnit = 'd' | 'h' | 'm' | 's' | 'ms';
 
@@ -82,6 +83,9 @@ export interface AccountSettingsPrefs {
 	zimbraPrefMailPollingInterval?: Duration;
 	zimbraPrefMailTrustedSenderList?: Array<string> | string;
 	zimbraPrefDelegatedSendSaveTarget?: (typeof DELEGATED_SEND_SAVE_TARGET)[number];
+	/**
+	 * @deprecated the timezone preference is going to be removed, because now we rely on the system timezone.
+	 */
 	zimbraPrefTimeZoneId?: string;
 	[key: string]: string | number | Array<string | number> | undefined;
 }

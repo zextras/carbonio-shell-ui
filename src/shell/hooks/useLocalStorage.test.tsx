@@ -8,7 +8,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { screen, within } from '@testing-library/react';
 
 import { exportForTest, useLocalStorage } from './useLocalStorage';
-import { controlConsoleError, setup } from '../../test/utils';
+import { controlConsoleError, setup } from '../../tests/utils';
 
 describe('use local storage', () => {
 	const TestComponent = <T,>({

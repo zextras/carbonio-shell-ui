@@ -12,12 +12,11 @@ import { ShellUtilityBar } from './bar';
 import { logout as logoutHandler } from '../mocks/handlers/logout';
 import { zxAuthLogout as zxAuthLogoutHandler } from '../mocks/handlers/zx-auth-logout';
 import server, { waitForRequest } from '../mocks/server';
-import * as network from '../network/fetch';
 import * as networkUtils from '../network/utils';
 import { useLoginConfigStore } from '../store/login/store';
-import { mockedAccount, setupAccountStore } from '../test/account-utils';
-import { ICONS } from '../test/constants';
-import { screen, setup } from '../test/utils';
+import { mockedAccount, setupAccountStore } from '../tests/account-utils';
+import { ICONS } from '../tests/constants';
+import { screen, setup } from '../tests/utils';
 
 describe('Shell utility bar', () => {
 	test('should render the utility menu for the account', async () => {
@@ -136,7 +135,6 @@ describe('Shell utility bar', () => {
 	it('should dispatch customEvent when updating the view', async () => {
 		const handlerFn = jest.fn();
 		window.addEventListener('updateView', handlerFn);
-		jest.spyOn(network, 'fetchNoOp').mockImplementation();
 		const { user } = setup(<ShellUtilityBar />);
 		const accountUtilityMenu = screen.getByRoleWithIcon('button', {
 			icon: ICONS.accountUtilityMenu

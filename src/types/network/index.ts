@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { AccountACEInfo, Right } from './entities';
+import type { AccountACEInfo } from './entities';
 import type { SoapBody, SoapContext } from './soap';
 import type { JSNS } from '../../constants';
 import type { Exactify, RequireAtLeastOne, ValueOf } from '../../utils/typeUtils';
@@ -200,12 +200,4 @@ export type BatchResponse<
 	T extends Exactify<Record<`${string}Response`, unknown>, T> = Record<`${string}Response`, unknown>
 > = SoapBody<T>;
 
-export type GetRightsRequest = SoapBody<{
-	ace?: Array<{ right: Right }>;
-}>;
-
 export type NameSpace = ValueOf<typeof JSNS>;
-
-export type GetRightsResponse = {
-	ace?: Array<AccountACEInfo>;
-};

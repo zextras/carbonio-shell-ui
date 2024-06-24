@@ -11,7 +11,7 @@ import { http, HttpResponse } from 'msw';
 import { Loader } from './loader';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
 import server, { waitForResponse } from '../mocks/server';
-import { controlConsoleError, setup } from '../test/utils';
+import { controlConsoleError, setup } from '../tests/utils';
 
 describe('Loader', () => {
 	test('If only getComponents request fails, the LoaderFailureModal appears', async () => {

@@ -9,7 +9,7 @@ import { screen } from '@testing-library/react';
 
 import { useIsCarbonioCE } from './hooks';
 import { type LoginConfigStore, useLoginConfigStore } from './store';
-import { setup } from '../../test/utils';
+import { setup } from '../../tests/utils';
 
 const ISCeComponent = (): React.JSX.Element => {
 	const isCarbonioCE = useIsCarbonioCE();

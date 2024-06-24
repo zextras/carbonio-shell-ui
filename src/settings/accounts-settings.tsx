@@ -7,20 +7,16 @@
 import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react';
 
 import { Container, ModalManager, useSnackbar } from '@zextras/carbonio-design-system';
-import type { TFunction } from 'i18next';
 import { produce } from 'immer';
-import { map, find, isEmpty, reduce, findIndex, filter, size } from 'lodash';
+import { map, find, isEmpty, filter, size } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import AccountsList from './components/account-settings/accounts-list';
-import type { DelegatesProps, DelegateType } from './components/account-settings/delegates';
-import Delegates from './components/account-settings/delegates';
 import PersonaSettings from './components/account-settings/persona-settings';
 import PrimaryAccountSettings from './components/account-settings/primary-account-settings';
 import SettingsSentMessages from './components/account-settings/settings-sent-messages';
 import type { SettingsHeaderProps } from './components/settings-header';
 import { SettingsHeader } from './components/settings-header';
-import type { ResetComponentImperativeHandler } from './components/utils';
 import {
 	calculateNewIdentitiesState,
 	defaultAsFirstOrderIdentities,
@@ -30,7 +26,7 @@ import {
 import { JSNS, SHELL_APP_ID } from '../constants';
 import { getSoapFetch } from '../network/fetch';
 import { useAccountStore, useUserAccount, useUserSettings } from '../store/account';
-import type { AccountSettingsPrefs, AccountState, IdentityAttrs } from '../types/account';
+import type { AccountState, IdentityAttrs } from '../types/account';
 import type {
 	BatchRequest,
 	BatchResponse,
@@ -38,27 +34,20 @@ import type {
 	CreateIdentityResponse,
 	DeleteIdentityRequest,
 	DeleteIdentityResponse,
-	GetRightsRequest,
-	GetRightsResponse,
 	ModifyIdentityRequest,
-	ModifyIdentityResponse,
-	ModifyPrefsRequest,
-	ModifyPrefsResponse
+	ModifyIdentityResponse
 } from '../types/network';
-import type { AccountACEInfo } from '../types/network/entities';
 
 export type AccountsSettingsBatchRequest = BatchRequest<{
 	ModifyIdentityRequest?: Array<ModifyIdentityRequest>;
 	CreateIdentityRequest?: Array<CreateIdentityRequest>;
 	DeleteIdentityRequest?: Array<DeleteIdentityRequest>;
-	ModifyPrefsRequest?: ModifyPrefsRequest;
 }>;
 
 type AccountsSettingsBatchResponse = BatchResponse<{
 	ModifyIdentityResponse?: ModifyIdentityResponse[];
 	DeleteIdentityResponse?: DeleteIdentityResponse[];
 	CreateIdentityResponse?: CreateIdentityResponse[];
-	ModifyPrefsResponse?: ModifyPrefsResponse;
 }>;
 
 function mapToCreateIdentityRequests(
@@ -105,33 +94,6 @@ function mapToModifyIdentityRequests(
 	);
 }
 
-function generateDelegateList(ace: AccountACEInfo[] | undefined, t: TFunction): DelegateType[] {
-	return reduce(
-		ace,
-		(accumulator: Array<DelegateType>, item, idx) => {
-			const index = findIndex(accumulator, { email: item.d });
-			const translatedRight = t('settings.account.delegates.right', {
-				context: item.right.toLowerCase(),
-				defaultValue: item.right
-			});
-			if (index === -1) {
-				accumulator.push({ email: item.d || '', right: translatedRight, id: idx.toString() });
-			} else {
-				accumulator[index] = {
-					email: item.d || '',
-					right: t('settings.account.delegates.multiple_rights', {
-						defaultValue: `{{rights.0]}} and {{rights.1}}`,
-						rights: [translatedRight, accumulator[index].right]
-					}),
-					id: idx.toString()
-				};
-			}
-			return accumulator;
-		},
-		[]
-	);
-}
-
 export const AccountsSettings = (): React.JSX.Element => {
 	const [t] = useTranslation();
 	const createSnackbar = useSnackbar();
@@ -143,29 +105,14 @@ export const AccountsSettings = (): React.JSX.Element => {
 	const deleteArrayRef = useRef<Array<string>>([]);
 	const modifyRecordRef = useRef<Record<string, Partial<IdentityAttrs>>>({});
 
-	const delegatedSendSaveTargetRef = useRef<
-		AccountSettingsPrefs['zimbraPrefDelegatedSendSaveTarget']
-	>(settings.prefs.zimbraPrefDelegatedSendSaveTarget);
-
 	const [isDirty, setIsDirty] = useState(false);
 	const calculateIsDirty = useCallback(() => {
 		setIsDirty(
 			!isEmpty(createRecordRef.current) ||
 				!isEmpty(deleteArrayRef.current) ||
-				!isEmpty(modifyRecordRef.current) ||
-				settings.prefs.zimbraPrefDelegatedSendSaveTarget !== delegatedSendSaveTargetRef.current
+				!isEmpty(modifyRecordRef.current)
 		);
-	}, [settings.prefs.zimbraPrefDelegatedSendSaveTarget]);
-
-	const updateDelegatedSendSaveTarget = useCallback<
-		DelegatesProps['updateDelegatedSendSaveTarget']
-	>(
-		(updatedValue) => {
-			delegatedSendSaveTargetRef.current = updatedValue;
-			calculateIsDirty();
-		},
-		[calculateIsDirty]
-	);
+	}, []);
 
 	const resetLists = useCallback(() => {
 		createRecordRef.current = {};
@@ -282,18 +229,6 @@ export const AccountsSettings = (): React.JSX.Element => {
 			]);
 		}
 
-		let modifyPrefsRequest: ModifyPrefsRequest | undefined;
-
-		if (
-			delegatedSendSaveTargetRef.current &&
-			settings.prefs.zimbraPrefDelegatedSendSaveTarget !== delegatedSendSaveTargetRef.current
-		) {
-			modifyPrefsRequest = {
-				_jsns: JSNS.account,
-				_attrs: { zimbraPrefDelegatedSendSaveTarget: delegatedSendSaveTargetRef.current }
-			};
-		}
-
 		const createIdentityRequests: Array<CreateIdentityRequest> = mapToCreateIdentityRequests(
 			createRecordRef.current
 		);
@@ -312,8 +247,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 			_jsns: JSNS.all,
 			DeleteIdentityRequest: deleteRequests.length > 0 ? deleteRequests : undefined,
 			CreateIdentityRequest: createIdentityRequests.length > 0 ? createIdentityRequests : undefined,
-			ModifyIdentityRequest: modifyIdentityRequests.length > 0 ? modifyIdentityRequests : undefined,
-			ModifyPrefsRequest: modifyPrefsRequest
+			ModifyIdentityRequest: modifyIdentityRequests.length > 0 ? modifyIdentityRequests : undefined
 		})
 			.then((res) => {
 				createSnackbar({
@@ -339,8 +273,6 @@ export const AccountsSettings = (): React.JSX.Element => {
 									(item) => item.zimbraPrefIdentityId === prevState?.account?.id
 								)?.zimbraPrefIdentityName || prevState.account?.displayName;
 						}
-						prevState.settings.prefs.zimbraPrefDelegatedSendSaveTarget =
-							delegatedSendSaveTargetRef.current || '';
 					})
 				);
 				resetLists();
@@ -360,52 +292,18 @@ export const AccountsSettings = (): React.JSX.Element => {
 				throw new Error(typeof error === 'string' ? error : 'edit setting error');
 			});
 		return Promise.allSettled([promise]);
-	}, [
-		maxIdentities,
-		identitiesDefault.length,
-		settings.prefs.zimbraPrefDelegatedSendSaveTarget,
-		createSnackbar,
-		t,
-		resetLists
-	]);
+	}, [maxIdentities, identitiesDefault.length, createSnackbar, t, resetLists]);
 
 	const availableEmailAddresses = useMemo(
 		() => getAvailableEmailAddresses(account, settings),
 		[account, settings]
 	);
 
-	const delegatesSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
-
 	const onCancel = useCallback(() => {
 		resetLists();
 		setIdentities(identitiesDefault);
-		delegatesSettingsSectionRef.current?.reset();
 		setSelectedIdentityId(size(identitiesDefault) - 1);
 	}, [identitiesDefault, resetLists]);
-
-	const [delegates, setDelegates] = useState<DelegateType[]>([]);
-
-	const rights = useAccountStore((state) => state.rights);
-
-	useEffect(() => {
-		if (!rights) {
-			getSoapFetch(SHELL_APP_ID)<GetRightsRequest, GetRightsResponse>('GetRights', {
-				_jsns: JSNS.account,
-				ace: [{ right: 'sendAs' }, { right: 'sendOnBehalfOf' }]
-			}).then((value) => {
-				if (value.ace) {
-					const { ace } = value;
-					setDelegates(generateDelegateList(ace, t));
-				}
-				useAccountStore.setState((state) => ({
-					...state,
-					rights: value.ace ?? []
-				}));
-			});
-		} else {
-			setDelegates(generateDelegateList(rights, t));
-		}
-	}, [t, rights]);
 
 	const personaSettings = useMemo<React.JSX.Element | null>(() => {
 		const identity = identities[selectedIdentityId];
@@ -463,12 +361,6 @@ export const AccountsSettings = (): React.JSX.Element => {
 							updateIdentities={updateIdentities}
 						/>
 						{settingsSentMessages}
-						<Delegates
-							updateDelegatedSendSaveTarget={updateDelegatedSendSaveTarget}
-							delegatedSendSaveTarget={settings.prefs.zimbraPrefDelegatedSendSaveTarget}
-							resetRef={delegatesSettingsSectionRef}
-							delegates={delegates}
-						/>
 					</>
 				) : (
 					<>

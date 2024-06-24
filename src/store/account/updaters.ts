@@ -26,7 +26,7 @@ export const updateAccount: UpdateAccount = (accountMods, response) =>
 			...state.account,
 			displayName:
 				find(accountMods?.identity?.modifyList, (item) => item.id === state?.account?.id)?.prefs
-					.zimbraPrefIdentityName || state.account?.displayName,
+					.zimbraPrefIdentityName ?? state.account?.displayName,
 			identities: {
 				identity: updateIdentities(state, accountMods, response)
 			}

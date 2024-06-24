@@ -67,10 +67,4 @@ describe('updateSettings', () => {
 			})
 		);
 	});
-
-	it.todo('should override the given attr');
-
-	it.todo('should override the given prop');
-
-	it.todo('should override the given pref');
 });

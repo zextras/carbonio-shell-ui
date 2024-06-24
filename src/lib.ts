@@ -215,7 +215,10 @@ export type {
 	SoapBody,
 	SoapHeader
 } from './types/network/soap';
-export type { BatchRequest } from './types/network';
+
+export type { EditSettingsBatchResponse } from './network/edit-settings';
+
+export type { BatchRequest, IdentityMods, Mods, PropsMods, AttrsMods } from './types/network';
 
 export type { Action } from './types/integrations';
 

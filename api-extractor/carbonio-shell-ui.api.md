@@ -527,7 +527,7 @@ export type Duration = `${number}${DurationUnit | ''}`;
 // @public (undocumented)
 type DurationUnit = 'd' | 'h' | 'm' | 's' | 'ms';
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const editSettings: AppDependantSetters['editSettings'];
 
 // @public (undocumented)

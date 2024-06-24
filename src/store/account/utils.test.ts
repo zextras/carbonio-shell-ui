@@ -5,6 +5,7 @@
  */
 import { useAccountStore } from './store';
 import { mergeAttrs, mergePrefs, mergeProps } from './utils';
+import type { Mods } from '../../types/network';
 
 const zimlet = 'carbonio-ui';
 
@@ -97,6 +98,28 @@ describe('utils', () => {
 				})
 			);
 		});
+
+		test('given a prefilled state and a single mod for an existing attr, the new attr value will replace the old one', async () => {
+			useAccountStore.setState((previousState) => ({
+				...previousState,
+				settings: {
+					...previousState.settings,
+					attrs: { oldAttr: 'old' }
+				}
+			}));
+
+			const state = useAccountStore.getState();
+			const mods = {
+				attrs: { oldAttr: 'new' }
+			};
+
+			const updatedAttrs = mergeAttrs(mods, state);
+			expect(updatedAttrs).toEqual(
+				expect.objectContaining({
+					oldAttr: 'new'
+				})
+			);
+		});
 	});
 
 	describe('mergePrefs', () => {
@@ -169,6 +192,28 @@ describe('utils', () => {
 					newPref2: 'dateAsc',
 					oldPref1: 'en',
 					oldPref2: 'message'
+				})
+			);
+		});
+
+		test('given a prefilled state and a single mod for an existing pref, the new pref value will replace the old one', async () => {
+			useAccountStore.setState((previousState) => ({
+				...previousState,
+				settings: {
+					...previousState.settings,
+					prefs: { oldPref: 'old' }
+				}
+			}));
+
+			const state = useAccountStore.getState();
+			const mods = {
+				prefs: { oldPref: 'new' }
+			};
+
+			const updatedPrefs = mergePrefs(mods, state);
+			expect(updatedPrefs).toEqual(
+				expect.objectContaining({
+					oldPref: 'new'
 				})
 			);
 		});
@@ -257,6 +302,34 @@ describe('utils', () => {
 					{ name: 'oldProp2', zimlet, _content: 'false' },
 					{ name: 'newProp1', zimlet, _content: 'TRUE' },
 					{ name: 'newProp2', zimlet, _content: '5' }
+				])
+			);
+		});
+
+		test('given a prefilled state and a single mod for an existing prop, the new prop value will replace the old one', async () => {
+			useAccountStore.setState((previousState) => ({
+				...previousState,
+				settings: {
+					...previousState.settings,
+					props: [{ name: 'oldProp', zimlet, _content: 'true' }]
+				}
+			}));
+
+			const state = useAccountStore.getState();
+			const mods: Mods = {
+				props: {
+					oldProp: { app: zimlet, value: 'false' }
+				}
+			};
+
+			const updatedProps = mergeProps(mods, state);
+			expect(updatedProps).toEqual(
+				expect.arrayContaining([
+					{
+						name: 'oldProp',
+						zimlet,
+						_content: 'false'
+					}
 				])
 			);
 		});

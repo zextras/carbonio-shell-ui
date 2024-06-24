@@ -34,6 +34,7 @@ describe('utils', () => {
 			const updatedPrefs = mergePrefs(mods, state);
 			expect(updatedPrefs).toEqual({ newPref: 'dateAsc' });
 		});
+
 		test('given an empty state and multiple prefs mods, the store will contain the multiple prefs', async () => {
 			const state = useAccountStore.getState();
 			const mods = {
@@ -48,6 +49,7 @@ describe('utils', () => {
 				})
 			);
 		});
+
 		test('given a prefilled state and a single pref mod, the store will contain both', async () => {
 			useAccountStore.setState((previousState) => ({
 				...previousState,
@@ -70,6 +72,7 @@ describe('utils', () => {
 				})
 			);
 		});
+
 		test('given a prefilled state and multiple prefs mods, the store will contain all of them', async () => {
 			useAccountStore.setState((previousState) => ({
 				...previousState,
@@ -95,6 +98,7 @@ describe('utils', () => {
 			);
 		});
 	});
+
 	describe('mergeProps', () => {
 		test('given an empty state and a single prop mod, the store will contain the single prop', async () => {
 			const state = useAccountStore.getState();
@@ -107,6 +111,7 @@ describe('utils', () => {
 			const updatedProps = mergeProps(mods, state);
 			expect(updatedProps).toEqual([{ name: 'newProp', zimlet, _content: 'enabled' }]);
 		});
+
 		test('given an empty state and multiple props mods, the store will contain the multiple props', async () => {
 			const state = useAccountStore.getState();
 			const mods = {
@@ -124,6 +129,7 @@ describe('utils', () => {
 				])
 			);
 		});
+
 		test('given a prefilled state and a single prop mod, the store will contain both', async () => {
 			useAccountStore.setState((previousState) => ({
 				...previousState,
@@ -148,6 +154,7 @@ describe('utils', () => {
 				])
 			);
 		});
+
 		test('given a prefilled state and multiple props mods, the store will contain all of them', async () => {
 			useAccountStore.setState((previousState) => ({
 				...previousState,

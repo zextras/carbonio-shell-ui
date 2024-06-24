@@ -65,7 +65,6 @@ export const getAppDependantSetters = (pkg: CarbonioModule): AppDependantSetters
 		addSecondaryAccessoryView: (data: Partial<SecondaryAccessoryView>) =>
 			appStore.addSecondaryAccessoryView(normalizeSecondaryAccessoryView(data, pkg)),
 		registerComponents: integrations.registerComponents(pkg.name),
-		/** @deprecated */
 		editSettings: getEditSettingsForApp(pkg.name)
 	};
 };

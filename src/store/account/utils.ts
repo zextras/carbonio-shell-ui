@@ -30,22 +30,16 @@ export function mergeProps(mods: Partial<Mods>, state: AccountState): Array<Ziml
 	return reduce(
 		mods.props,
 		(acc, { app, value }, key) => {
+			const newPropValue = {
+				name: key,
+				zimlet: app,
+				_content: value as string
+			};
 			const propIndex = findIndex(acc, (p) => p.name === key && p.zimlet === app);
 			if (propIndex >= 0) {
-				// eslint-disable-next-line no-param-reassign
-				acc[propIndex] = {
-					name: key,
-					zimlet: app,
-					_content: value as string
-				};
-			} else {
-				acc.push({
-					name: key,
-					zimlet: app,
-					_content: value as string
-				});
+				return acc.map((prop, index) => (propIndex === index ? newPropValue : prop));
 			}
-			return acc;
+			return [...acc, newPropValue];
 		},
 		state.settings.props
 	);

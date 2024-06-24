@@ -379,6 +379,9 @@ export const BASENAME: string;
 export type BatchRequest<T extends Exactify<Record<`${string}Request`, unknown>, T> = Record<`${string}Request`, unknown>> = SoapBody<T>;
 
 // @public (undocumented)
+export type BatchResponse<T extends Exactify<Record<`${string}Response`, unknown>, T> = Record<`${string}Response`, unknown>> = SoapBody<T>;
+
+// @public (undocumented)
 export type Board<T = unknown> = {
     id: string;
     url: string;
@@ -1316,7 +1319,7 @@ export interface SoapContext extends Omit<RawSoapContext, 'notify'> {
 }
 
 // @public (undocumented)
-interface SoapFault {
+export interface SoapFault {
     // (undocumented)
     Detail: {
         Error: {
@@ -1709,7 +1712,6 @@ interface ZimletProp {
 // lib/types/misc/index.d.ts:138:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
 // lib/types/network/index.d.ts:107:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:11:5 - (ae-forgotten-export) The symbol "NameSpace" needs to be exported by the entry point lib.d.ts
-// lib/types/network/soap.d.ts:33:5 - (ae-forgotten-export) The symbol "SoapFault" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:62:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
 // lib/types/workers/index.d.ts:12:5 - (ae-forgotten-export) The symbol "SyncMessage" needs to be exported by the entry point lib.d.ts
 

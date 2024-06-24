@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { useAccountStore } from './store';
-import { mergePrefs, mergeProps } from './utils';
+import { mergeAttrs, mergePrefs, mergeProps } from './utils';
 
 const zimlet = 'carbonio-ui';
 
@@ -24,6 +24,81 @@ beforeEach(() => {
 });
 
 describe('utils', () => {
+	describe('mergeAttrs', () => {
+		test('given an empty state and a single attr mod, the store will contain the single attr', async () => {
+			const state = useAccountStore.getState();
+			const mods = {
+				attrs: { newAttr: 'new attr value' }
+			};
+
+			const updatedAttrs = mergeAttrs(mods, state);
+			expect(updatedAttrs).toEqual({ newAttr: 'new attr value' });
+		});
+
+		test('given an empty state and multiple attrs mods, the store will contain the multiple attrs', async () => {
+			const state = useAccountStore.getState();
+			const mods = {
+				attrs: { newAttr1: 'attr1', newAttr2: 'attr2' }
+			};
+
+			const updatedAttrs = mergeAttrs(mods, state);
+			expect(updatedAttrs).toEqual(
+				expect.objectContaining({
+					newAttr1: 'attr1',
+					newAttr2: 'attr2'
+				})
+			);
+		});
+
+		test('given a prefilled state and a single attr mod, the store will contain both', async () => {
+			useAccountStore.setState((previousState) => ({
+				...previousState,
+				settings: {
+					...previousState.settings,
+					attrs: { oldAttr: 'old' }
+				}
+			}));
+
+			const state = useAccountStore.getState();
+			const mods = {
+				attrs: { newAttr: 'new' }
+			};
+
+			const updatedAttrs = mergeAttrs(mods, state);
+			expect(updatedAttrs).toEqual(
+				expect.objectContaining({
+					oldAttr: 'old',
+					newAttr: 'new'
+				})
+			);
+		});
+
+		test('given a prefilled state and multiple attrs mods, the store will contain all of them', async () => {
+			useAccountStore.setState((previousState) => ({
+				...previousState,
+				settings: {
+					...previousState.settings,
+					attrs: { oldAttr1: 'old1', oldAttr2: 'old2' }
+				}
+			}));
+
+			const state = useAccountStore.getState();
+			const mods = {
+				attrs: { newAttr1: 'new1', newAttr2: 'new2' }
+			};
+
+			const updatedAttrs = mergeAttrs(mods, state);
+			expect(updatedAttrs).toEqual(
+				expect.objectContaining({
+					newAttr1: 'new1',
+					newAttr2: 'new2',
+					oldAttr1: 'old1',
+					oldAttr2: 'old2'
+				})
+			);
+		});
+	});
+
 	describe('mergePrefs', () => {
 		test('given an empty state and a single pref mod, the store will contain the single pref', async () => {
 			const state = useAccountStore.getState();

@@ -315,7 +315,7 @@ type AppRouteDescriptor = {
 export type AppViewComponentProps = {};
 
 // @public (undocumented)
-type AttrsMods = Record<string, unknown>;
+export type AttrsMods = Record<string, unknown>;
 
 // @public (undocumented)
 export type AudioNotificationConfig = {
@@ -534,7 +534,7 @@ type DurationUnit = 'd' | 'h' | 'm' | 's' | 'ms';
 export const editSettings: AppDependantSetters['editSettings'];
 
 // @public (undocumented)
-type EditSettingsBatchResponse = {
+export type EditSettingsBatchResponse = {
     ModifyPropertiesResponse?: ModifyPropertiesResponse[];
     ModifyPrefsResponse?: ModifyPrefsResponse[];
     ModifyIdentityResponse?: ModifyIdentityResponse[];
@@ -687,9 +687,6 @@ export const getBridgedFunctions: AppDependantFunctions['getBridgedFunctions'];
 // @public (undocumented)
 export const getCurrentRoute: () => AppRoute | undefined;
 
-// Warning: (ae-forgotten-export) The symbol "Mods" needs to be exported by the entry point lib.d.ts
-// Warning: (ae-forgotten-export) The symbol "EditSettingsBatchResponse" needs to be exported by the entry point lib.d.ts
-//
 // @public (undocumented)
 const getEditSettingsForApp: (app: string) => (mods: Mods) => Promise<EditSettingsBatchResponse & {
     type: 'fulfilled';
@@ -830,7 +827,7 @@ export interface IdentityAttrs {
 }
 
 // @public (undocumented)
-type IdentityMods = {
+export type IdentityMods = {
     modifyList?: Record<string, {
         id: string;
         prefs: Partial<IdentityAttrs>;
@@ -944,13 +941,9 @@ type ModifyPrefsResponse = Record<string, never>;
 type ModifyPropertiesResponse = Record<string, never>;
 
 // @public (undocumented)
-interface Mods extends Record<string, Record<string, unknown> | undefined> {
-    // Warning: (ae-forgotten-export) The symbol "AttrsMods" needs to be exported by the entry point lib.d.ts
-    //
+export interface Mods extends Record<string, Record<string, unknown> | undefined> {
     // (undocumented)
     attrs?: AttrsMods;
-    // Warning: (ae-forgotten-export) The symbol "IdentityMods" needs to be exported by the entry point lib.d.ts
-    //
     // (undocumented)
     identity?: IdentityMods;
     // Warning: (ae-forgotten-export) The symbol "PermissionsMods" needs to be exported by the entry point lib.d.ts
@@ -961,8 +954,6 @@ interface Mods extends Record<string, Record<string, unknown> | undefined> {
     //
     // (undocumented)
     prefs?: PrefsMods;
-    // Warning: (ae-forgotten-export) The symbol "PropsMods" needs to be exported by the entry point lib.d.ts
-    //
     // (undocumented)
     props?: PropsMods;
 }
@@ -1030,7 +1021,7 @@ export type PrimaryBarComponentProps = {
 };
 
 // @public (undocumented)
-type PropsMods = Record<string, {
+export type PropsMods = Record<string, {
     app: string;
     value: unknown;
 }>;

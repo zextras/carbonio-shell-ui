@@ -5,7 +5,7 @@
  */
 export type Board<T = unknown> = {
 	id: string;
-	url: string;
+	boardViewId: string;
 	app: string;
 	icon: string;
 	title: string;

@@ -132,12 +132,11 @@ export const normalizeSecondaryAccessoryView = (
 	component: data?.component ?? FallbackView
 });
 
-export const normalizeBoardView = (data: Partial<BoardView>, app: CarbonioModule): BoardView => {
-	const route = trim(data.route ?? app.name, '/');
-	return {
-		app: app.name,
-		route,
-		id: data?.id ?? route,
-		component: data?.component ?? FallbackView
-	};
-};
+export const normalizeBoardView = (
+	data: Omit<BoardView, 'app'>,
+	app: CarbonioModule
+): BoardView => ({
+	app: app.name,
+	id: data.id,
+	component: data.component
+});

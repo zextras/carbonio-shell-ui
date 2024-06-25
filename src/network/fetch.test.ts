@@ -23,11 +23,14 @@ describe('Fetch', () => {
 					HttpResponse.json({
 						Body: {
 							Fault: {
+								Code: {
+									Value: ''
+								},
 								Reason: { Text: 'Controlled error: auth required' },
 								Detail: {
 									Error: {
 										Code: 'service.AUTH_REQUIRED',
-										Detail: ''
+										Trace: ''
 									}
 								}
 							}
@@ -50,11 +53,14 @@ describe('Fetch', () => {
 					HttpResponse.json({
 						Body: {
 							Fault: {
+								Code: {
+									Value: ''
+								},
 								Reason: { Text: 'Controlled error: auth expired' },
 								Detail: {
 									Error: {
 										Code: 'service.AUTH_EXPIRED',
-										Detail: ''
+										Trace: ''
 									}
 								}
 							}

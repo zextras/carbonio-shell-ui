@@ -117,7 +117,7 @@ const handleResponse = <R extends Record<string, unknown>>(
 		}
 		console.error(
 			new Error(
-				`${(<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Detail}: ${
+				`${(<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Code}: ${
 					(<ErrorSoapResponse>res).Body.Fault.Reason?.Text
 				}`
 			)

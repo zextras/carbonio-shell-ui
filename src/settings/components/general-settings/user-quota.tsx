@@ -39,17 +39,13 @@ const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 	}, [quota]);
 
 	const description = useMemo(() => {
-		switch (true) {
-			case quota < 0:
-				return t('user_quota.unlimited', 'You have unlimited space available');
-			case quota === 100:
-				return t('user_quota.space_full', 'It seems that all available space is full');
-			default:
-				return t('user_quota.limited', {
-					defaultValue: 'You have filled {{quota}}% of the available space',
-					quota
-				});
+		if (quota < 0) {
+			return t('user_quota.unlimited', 'You have unlimited space available');
 		}
+		return t('user_quota.limited', {
+			defaultValue: 'You have filled {{quota}}% of the available space',
+			quota
+		});
 	}, [quota, t]);
 
 	const fillBackground = useMemo(() => {

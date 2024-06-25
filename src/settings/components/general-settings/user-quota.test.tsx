@@ -26,8 +26,9 @@ describe('User Quota', () => {
 		it.each([
 			['even if it is 0', 0],
 			['if it is less than zimbraMailQuota', quotaMax - 1],
-			['if it is higher than zimbraMailQuota', quotaMax + 1]
-		])('should render the % of quota used message %s', (description, quotaUsed) => {
+			['if it is higher than zimbraMailQuota', quotaMax + 1],
+			['if it is equal to zimbraMailQuota', quotaMax]
+		])('should render the % of quota used message', (description, quotaUsed) => {
 			setupAccountStore(quotaUsed);
 			setup(<UserQuota mobileView={false} />);
 			expect(screen.getByText(/user's quota/i)).toBeVisible();
@@ -48,11 +49,5 @@ describe('User Quota', () => {
 				expect(screen.getByText(`You have unlimited space available`)).toBeVisible();
 			}
 		);
-
-		it('should render "It seems that all available space is full" message when the quota used is equal to zimbraMailQuota', () => {
-			setupAccountStore(quotaMax);
-			setup(<UserQuota mobileView={false} />);
-			expect(screen.getByText(`It seems that all available space is full`)).toBeVisible();
-		});
 	});
 });

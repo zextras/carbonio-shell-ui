@@ -9,7 +9,6 @@ import { act, waitFor } from '@testing-library/react';
 
 import { ShellUtilityBar } from './bar';
 import { waitForRequest } from '../mocks/server';
-import * as network from '../network/fetch';
 import * as networkUtils from '../network/utils';
 import { useLoginConfigStore } from '../store/login/store';
 import { mockedAccount, setupAccountStore } from '../tests/account-utils';
@@ -87,7 +86,6 @@ describe('Shell utility bar', () => {
 	it('should dispatch customEvent when updating the view', async () => {
 		const handlerFn = jest.fn();
 		window.addEventListener('updateView', handlerFn);
-		jest.spyOn(network, 'fetchNoOp').mockImplementation();
 		const { user } = setup(<ShellUtilityBar />);
 		const accountUtilityMenu = screen.getByRoleWithIcon('button', {
 			icon: ICONS.accountUtilityMenu

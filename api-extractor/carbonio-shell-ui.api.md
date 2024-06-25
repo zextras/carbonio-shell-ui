@@ -253,7 +253,7 @@ type AppActions = {
 type AppDependantExports = {
     setAppContext: ReturnType<AppActions['setAppContext']>;
     addRoute: (data: Partial<AppRouteDescriptor>) => ReturnType<AppActions['addRoute']>;
-    addBoardView: (data: Partial<BoardView>) => ReturnType<AppActions['addBoardView']>;
+    addBoardView: (data: Omit<BoardView, 'app'>) => ReturnType<AppActions['addBoardView']>;
     addSettingsView: (data: Partial<SettingsView>) => ReturnType<AppActions['addSettingsView']>;
     addSearchView: (data: Partial<SearchView>) => ReturnType<AppActions['addSearchView']>;
     addUtilityView: (data: Partial<UtilityView>) => ReturnType<AppActions['addUtilityView']>;
@@ -373,7 +373,7 @@ export type BatchRequest<T extends Exactify<Record<`${string}Request`, unknown>,
 // @public (undocumented)
 export type Board<T = unknown> = {
     id: string;
-    url: string;
+    boardViewId: string;
     app: string;
     icon: string;
     title: string;
@@ -418,12 +418,10 @@ type BoardState = {
 // Warning: (ae-forgotten-export) The symbol "CarbonioView" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
-type BoardView = CarbonioView<BoardViewComponentProps>;
+type BoardView = Omit<CarbonioView<BoardViewComponentProps>, 'route'>;
 
 // @public (undocumented)
-export type BoardViewComponentProps = {
-    windowHistory: History;
-};
+export type BoardViewComponentProps = {};
 
 // @public (undocumented)
 export type BooleanString = 'TRUE' | 'FALSE';
@@ -522,7 +520,7 @@ export type Duration = `${number}${DurationUnit | ''}`;
 // @public (undocumented)
 type DurationUnit = 'd' | 'h' | 'm' | 's' | 'ms';
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const editSettings: AppDependantExports['editSettings'];
 
 // @public (undocumented)
@@ -1315,10 +1313,14 @@ export interface SoapContext extends Omit<RawSoapContext, 'notify'> {
 // @public (undocumented)
 interface SoapFault {
     // (undocumented)
+    Code: {
+        Value: string;
+    };
+    // (undocumented)
     Detail: {
         Error: {
             Code: string;
-            Detail: string;
+            Trace: string;
         };
     };
     // (undocumented)
@@ -1682,7 +1684,7 @@ interface ZimletProp {
 // lib/types/account/index.d.ts:131:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:136:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:137:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
-// lib/types/apps/index.d.ts:68:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
+// lib/types/apps/index.d.ts:66:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:85:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:104:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:120:5 - (ae-forgotten-export) The symbol "Meta" needs to be exported by the entry point lib.d.ts
@@ -1690,8 +1692,8 @@ interface ZimletProp {
 // lib/types/misc/index.d.ts:138:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
 // lib/types/network/index.d.ts:107:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:11:5 - (ae-forgotten-export) The symbol "NameSpace" needs to be exported by the entry point lib.d.ts
-// lib/types/network/soap.d.ts:33:5 - (ae-forgotten-export) The symbol "SoapFault" needs to be exported by the entry point lib.d.ts
-// lib/types/network/soap.d.ts:62:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
+// lib/types/network/soap.d.ts:36:5 - (ae-forgotten-export) The symbol "SoapFault" needs to be exported by the entry point lib.d.ts
+// lib/types/network/soap.d.ts:65:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
 // lib/types/workers/index.d.ts:12:5 - (ae-forgotten-export) The symbol "SyncMessage" needs to be exported by the entry point lib.d.ts
 
 ```

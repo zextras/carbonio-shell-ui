@@ -41,7 +41,7 @@ beforeEach(() => {
 	const boards: Record<string, Board> = {
 		'board-1': {
 			id: 'board-1',
-			url: '/url',
+			boardViewId: '/url',
 			app: mockedApps[0].name,
 			title: 'title1',
 			icon: 'CubeOutline'
@@ -164,7 +164,7 @@ describe('Shell view', () => {
 		const boards2: Record<string, Board> = {
 			'board-2': {
 				id: 'board-2',
-				url: '/url',
+				boardViewId: '/url',
 				app: mockedApps[0].name,
 				title: 'title2',
 				icon: 'CubeOutline'
@@ -226,7 +226,7 @@ describe('Shell view', () => {
 		const boards2: Record<string, Board> = {
 			'board-2': {
 				id: 'board-2',
-				url: '/url',
+				boardViewId: '/url',
 				app: mockedApps[0].name,
 				title: 'title2',
 				icon: 'CubeOutline'

@@ -49,7 +49,7 @@ export function mergeAttrs(mods: Partial<Mods>, state: AccountState): AccountSet
 		mods.attrs,
 		(acc, attr, key) => ({
 			...acc,
-			[key]: attr as string
+			[key]: attr
 		}),
 		state.settings.attrs
 	);

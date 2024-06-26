@@ -315,7 +315,7 @@ type AppRouteDescriptor = {
 export type AppViewComponentProps = {};
 
 // @public (undocumented)
-type AttrsMods = Record<string, unknown>;
+type AttrsMods = Record<string, unknown> & AccountSettingsAttrs;
 
 // @public (undocumented)
 export type AudioNotificationConfig = {

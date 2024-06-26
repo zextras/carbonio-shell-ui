@@ -5,9 +5,8 @@
  */
 
 import type { DELEGATED_SEND_SAVE_TARGET } from '../../constants';
-import type { EditSettingsBatchResponse } from '../../network/edit-settings';
 import type { StringOfLength } from '../../utils/typeUtils';
-import type { Mods } from '../network';
+import type { IdentityMods, Mods } from '../network';
 
 export interface ZimletProp {
 	name: string;
@@ -99,10 +98,7 @@ export type AccountSettingsAttrs = {
 };
 
 export type UpdateSettings = (settingsMods: Partial<Mods>) => void;
-export type UpdateAccount = (
-	accountMods: Partial<Mods>,
-	response: Pick<EditSettingsBatchResponse, 'CreateIdentityResponse'>
-) => void;
+export type UpdateAccount = (accountMods: IdentityMods, identities: Identity[]) => void;
 
 export type AccountSettings = {
 	attrs: AccountSettingsAttrs;

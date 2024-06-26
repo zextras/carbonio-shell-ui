@@ -3,9 +3,8 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { filter, findIndex, map, reduce } from 'lodash';
+import { filter, findIndex, reduce } from 'lodash';
 
-import type { EditSettingsBatchResponse } from '../../network/edit-settings';
 import type {
 	AccountSettingsAttrs,
 	AccountSettingsPrefs,
@@ -13,7 +12,7 @@ import type {
 	Identity,
 	ZimletProp
 } from '../../types/account';
-import type { Mods } from '../../types/network';
+import type { IdentityMods, Mods } from '../../types/network';
 
 export function mergePrefs(mods: Partial<Mods>, state: AccountState): AccountSettingsPrefs {
 	return reduce(
@@ -58,12 +57,12 @@ export function mergeAttrs(mods: Partial<Mods>, state: AccountState): AccountSet
 
 export function updateIdentities(
 	state: AccountState,
-	accountMods: Partial<Mods>,
-	response: EditSettingsBatchResponse
+	identityMods: IdentityMods,
+	identities: Identity[]
 ): Identity[] | undefined {
 	return typeof state.account !== 'undefined'
 		? reduce(
-				accountMods?.identity?.modifyList,
+				identityMods?.modifyList,
 				(acc, { id, prefs }) => {
 					const propIndex = findIndex(acc, (itemMods, indexAccount) => acc[indexAccount].id === id);
 					if (propIndex > -1) {
@@ -82,12 +81,12 @@ export function updateIdentities(
 				[
 					...filter(
 						state.account.identities.identity,
-						(item) => !accountMods?.identity?.deleteList?.includes(item.id)
+						(item) => !identityMods?.deleteList?.includes(item.id)
 					).filter((i) => i.name !== 'DEFAULT'),
-					...map(response?.CreateIdentityResponse, (item) => item.identity[0]),
+					...identities,
 					...filter(
 						state.account.identities.identity,
-						(item) => !accountMods?.identity?.deleteList?.includes(item.id)
+						(item) => !identityMods?.deleteList?.includes(item.id)
 					).filter((i) => i.name === 'DEFAULT')
 				]
 			)

@@ -19,7 +19,7 @@ export const updateSettings: UpdateSettings = (settingsMods) =>
 		}
 	}));
 
-export const updateAccount: UpdateAccount = (accountMods, response) =>
+export const updateAccount: UpdateAccount = (identityMods, newIdentities) =>
 	useAccountStore.setState((state) =>
 		state.account
 			? {
@@ -27,10 +27,10 @@ export const updateAccount: UpdateAccount = (accountMods, response) =>
 					account: {
 						...state.account,
 						displayName:
-							find(accountMods?.identity?.modifyList, (item) => item.id === state?.account?.id)
-								?.prefs.zimbraPrefIdentityName ?? state.account?.displayName,
+							find(identityMods?.modifyList, (item) => item.id === state?.account?.id)?.prefs
+								.zimbraPrefIdentityName ?? state.account?.displayName,
 						identities: {
-							identity: updateIdentities(state, accountMods, response) ?? []
+							identity: updateIdentities(state, identityMods, newIdentities) ?? []
 						}
 					}
 				}

@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { find, map, isArray } from 'lodash';
+import { find, map, isArray, reduce, findIndex, filter } from 'lodash';
 
 import { getXmlSoapFetch } from './fetch';
 import { SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account';
-import { mergePrefs, mergeProps, updateIdentities } from '../store/account/utils';
+import { mergePrefs, mergeProps } from '../store/account/utils';
 import type { Account, AccountState } from '../types/account';
 import type {
 	Mods,
@@ -181,7 +181,41 @@ export const editSettings = (
 					find(mods?.identity?.modifyList, (item) => item.id === s?.account?.id)?.prefs
 						.zimbraPrefIdentityName || s.account?.displayName,
 				identities: {
-					identity: updateIdentities(s, mods, r)
+					identity:
+						typeof s.account !== 'undefined'
+							? reduce(
+									mods?.identity?.modifyList,
+									(acc, { id, prefs }) => {
+										const propIndex = findIndex(
+											acc,
+											(itemMods, indexAccount) => acc[indexAccount].id === id
+										);
+										if (propIndex > -1) {
+											// eslint-disable-next-line no-param-reassign
+											acc[propIndex]._attrs = {
+												...acc[propIndex]._attrs,
+												...prefs
+											};
+											if (prefs.zimbraPrefIdentityName && acc[propIndex].name !== 'DEFAULT') {
+												// eslint-disable-next-line no-param-reassign
+												acc[propIndex].name = prefs.zimbraPrefIdentityName;
+											}
+										}
+										return acc;
+									},
+									[
+										...filter(
+											s.account.identities.identity,
+											(item) => !mods?.identity?.deleteList?.includes(item.id)
+										).filter((i) => i.name !== 'DEFAULT'),
+										...map(r?.CreateIdentityResponse, (item) => item.identity[0]),
+										...filter(
+											s.account.identities.identity,
+											(item) => !mods?.identity?.deleteList?.includes(item.id)
+										).filter((i) => i.name === 'DEFAULT')
+									]
+								)
+							: undefined
 				}
 			} as Account
 		}));

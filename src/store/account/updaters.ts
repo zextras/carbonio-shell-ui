@@ -7,7 +7,7 @@ import { find } from 'lodash';
 
 import { useAccountStore } from './store';
 import { mergeAttrs, mergePrefs, mergeProps, updateIdentities } from './utils';
-import type { Account, UpdateAccount, UpdateSettings } from '../../types/account';
+import type { UpdateAccount, UpdateSettings } from '../../types/account';
 
 export const updateSettings: UpdateSettings = (settingsMods) =>
 	useAccountStore.setState((state) => ({
@@ -20,15 +20,19 @@ export const updateSettings: UpdateSettings = (settingsMods) =>
 	}));
 
 export const updateAccount: UpdateAccount = (accountMods, response) =>
-	useAccountStore.setState((state) => ({
-		...state,
-		account: {
-			...state.account,
-			displayName:
-				find(accountMods?.identity?.modifyList, (item) => item.id === state?.account?.id)?.prefs
-					.zimbraPrefIdentityName ?? state.account?.displayName,
-			identities: {
-				identity: updateIdentities(state, accountMods, response)
-			}
-		} as Account
-	}));
+	useAccountStore.setState((state) =>
+		state.account
+			? {
+					...state,
+					account: {
+						...state.account,
+						displayName:
+							find(accountMods?.identity?.modifyList, (item) => item.id === state?.account?.id)
+								?.prefs.zimbraPrefIdentityName ?? state.account?.displayName,
+						identities: {
+							identity: updateIdentities(state, accountMods, response) ?? []
+						}
+					}
+				}
+			: state
+	);

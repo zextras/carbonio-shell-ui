@@ -4,12 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { find, map, isArray, reduce, findIndex, filter } from 'lodash';
+import { filter, find, findIndex, map, reduce, isArray } from 'lodash';
 
 import { getXmlSoapFetch } from './fetch';
 import { SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account';
-import { mergePrefs, mergeProps } from '../store/account/utils';
 import type { Account, AccountState } from '../types/account';
 import type {
 	Mods,
@@ -172,8 +171,36 @@ export const editSettings = (
 		useAccountStore.setState((s: AccountState) => ({
 			settings: {
 				...s.settings,
-				prefs: mergePrefs(mods, s),
-				props: mergeProps(mods, s)
+				prefs: reduce(
+					mods.prefs,
+					(acc, pref, key) => ({
+						...acc,
+						[key]: pref as string
+					}),
+					s.settings.prefs
+				),
+				props: reduce(
+					mods.props,
+					(acc, { app, value }, key) => {
+						const propIndex = findIndex(acc, (p) => p.name === key && p.zimlet === app);
+						if (propIndex >= 0) {
+							// eslint-disable-next-line no-param-reassign
+							acc[propIndex] = {
+								name: key,
+								zimlet: app,
+								_content: value as string
+							};
+						} else {
+							acc.push({
+								name: key,
+								zimlet: app,
+								_content: value as string
+							});
+						}
+						return acc;
+					},
+					s.settings.props
+				)
 			},
 			account: {
 				...s.account,

@@ -2,8 +2,7 @@
   "extends": "@zextras/carbonio-ui-configs/rules/typescript.json",
   "compilerOptions": {
     "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "jsx": "react-jsx"
+    "resolveJsonModule": true
   },
   "exclude": [
     "node_modules",

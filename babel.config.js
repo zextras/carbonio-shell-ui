@@ -13,12 +13,7 @@ module.exports = {
 				corejs: 3.31
 			}
 		],
-		[
-			'@babel/preset-react',
-			{
-				runtime: 'automatic'
-			}
-		],
+		'@babel/preset-react',
 		'@babel/preset-typescript'
 	],
 	plugins: ['babel-plugin-styled-components']

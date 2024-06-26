@@ -20,7 +20,7 @@ export function mergePrefs(mods: Partial<Mods>, state: AccountState): AccountSet
 		mods.prefs,
 		(acc, pref, key) => ({
 			...acc,
-			[key]: pref as string
+			[key]: pref
 		}),
 		state.settings.prefs
 	);

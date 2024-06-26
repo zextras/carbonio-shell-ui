@@ -217,16 +217,7 @@ export type {
 	SoapFault
 } from './types/network/soap';
 
-export type { EditSettingsBatchResponse } from './network/edit-settings';
-
-export type {
-	BatchRequest,
-	BatchResponse,
-	IdentityMods,
-	Mods,
-	PropsMods,
-	AttrsMods
-} from './types/network';
+export type { BatchRequest, BatchResponse } from './types/network';
 
 export type { Action } from './types/integrations';
 

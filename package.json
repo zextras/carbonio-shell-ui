@@ -108,7 +108,7 @@
 		"@reduxjs/toolkit": "^1.9.7",
 		"@sentry/browser": "^7.103.0",
 		"@tinymce/tinymce-react": "^4.3.2",
-		"@zextras/carbonio-design-system": "^6.0.1",
+		"@zextras/carbonio-design-system": ">=7.0.0-devel <7.0.0-next",
 		"@zextras/carbonio-ui-preview": "^1.2.5",
 		"darkreader": "^4.9.79",
 		"history": "^5.3.0",
@@ -128,7 +128,7 @@
 	},
 	"peerDependencies": {
 		"@reduxjs/toolkit": "^1 >=1.9",
-		"@zextras/carbonio-design-system": "^6.0.1",
+		"@zextras/carbonio-design-system": ">=7.0.0-devel <7.0.0-next",
 		"@zextras/carbonio-ui-preview": "^1",
 		"core-js": "^3.31.1",
 		"lodash": "^4.17.21",

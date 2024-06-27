@@ -32,7 +32,7 @@ import type {
 export type AppDependantSetters = {
 	setAppContext: ReturnType<StoreAppSetters['setAppContext']>;
 	addRoute: (data: Partial<AppRouteDescriptor>) => ReturnType<StoreAppSetters['addRoute']>;
-	addBoardView: (data: Partial<BoardView>) => ReturnType<StoreAppSetters['addBoardView']>;
+	addBoardView: (data: Omit<BoardView, 'app'>) => ReturnType<StoreAppSetters['addBoardView']>;
 	addSettingsView: (data: Partial<SettingsView>) => ReturnType<StoreAppSetters['addSettingsView']>;
 	addSearchView: (data: Partial<SearchView>) => ReturnType<StoreAppSetters['addSearchView']>;
 	addUtilityView: (data: Partial<UtilityView>) => ReturnType<StoreAppSetters['addUtilityView']>;
@@ -52,7 +52,7 @@ export const getAppDependantSetters = (pkg: CarbonioModule): AppDependantSetters
 	return {
 		setAppContext: appStore.setAppContext(pkg.name),
 		addRoute: (route: Partial<AppRouteDescriptor>) => appStore.addRoute(normalizeRoute(route, pkg)),
-		addBoardView: (data: Partial<BoardView>) =>
+		addBoardView: (data: Omit<BoardView, 'app'>) =>
 			appStore.addBoardView(normalizeBoardView(data, pkg)),
 		addSettingsView: (data: Partial<SettingsView>) =>
 			appStore.addSettingsView(normalizeSettingsView(data, pkg)),

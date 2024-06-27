@@ -34,11 +34,14 @@ export interface SoapFault {
 	Detail: {
 		Error: {
 			Code: string;
-			Detail: string;
+			Trace: string;
 		};
 	};
 	Reason: {
 		Text: string;
+	};
+	Code: {
+		Value: string;
 	};
 }
 

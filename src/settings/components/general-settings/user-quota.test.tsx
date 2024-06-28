@@ -33,7 +33,7 @@ jest.mock('@zextras/carbonio-design-system', () => ({
 
 describe('User Quota', () => {
 	it.each([0, -1])(
-		'should show the string "[used] of unlimited space if zimbraMailQuota is %s',
+		'should show the string "[used] of unlimited space" if zimbraMailQuota is %s',
 		(quota) => {
 			const quotaUsed = faker.number.int();
 			setupAccountStore(quotaUsed, quota);

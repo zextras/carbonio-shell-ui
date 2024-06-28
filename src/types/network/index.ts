@@ -10,7 +10,6 @@ import type { JSNS } from '../../constants';
 import type { Exactify, RequireAtLeastOne, ValueOf } from '../../utils/typeUtils';
 import type {
 	AccountRights,
-	AccountSettingsAttrs,
 	AccountSettingsPrefs,
 	Identity,
 	IdentityAttrs,
@@ -134,12 +133,9 @@ export type IdentityMods = {
 
 export type PrefsMods = Record<string, unknown> & AccountSettingsPrefs;
 
-export type AttrsMods = Record<string, unknown> & AccountSettingsAttrs;
-
 export interface Mods extends Record<string, Record<string, unknown> | undefined> {
 	props?: PropsMods;
 	prefs?: PrefsMods;
-	attrs?: AttrsMods;
 	permissions?: PermissionsMods;
 	identity?: IdentityMods;
 }

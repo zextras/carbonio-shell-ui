@@ -5,7 +5,7 @@
       "DOM",
       "es2023"
     ],
-    "jsx": "react-jsx",
+    "jsx": "react",
     "declaration": true,
     "sourceMap": true,
     "declarationMap": false,

@@ -105,11 +105,11 @@
 	},
 	"dependencies": {
 		"@fontsource/roboto": "^5.0.8",
-		"@reduxjs/toolkit": "^1 >=1.9",
+		"@reduxjs/toolkit": "^1.9.7",
 		"@sentry/browser": "^7.103.0",
 		"@tinymce/tinymce-react": "^4.3.2",
 		"@zextras/carbonio-design-system": "^7.0.0-next-24-12-0.4",
-		"@zextras/carbonio-ui-preview": "file:zextras-carbonio-ui-preview-0.0.0-semantically-released.tgz",
+		"@zextras/carbonio-ui-preview": "^3.0.0-next-24-12-0.1",
 		"darkreader": "^4.9.79",
 		"history": "^5.3.0",
 		"i18next": "^22.5.1",
@@ -129,7 +129,7 @@
 	"peerDependencies": {
 		"@reduxjs/toolkit": "^1 >=1.9",
 		"@zextras/carbonio-design-system": "^7.0.0-next-24-12-0.4",
-		"@zextras/carbonio-ui-preview": "^1",
+		"@zextras/carbonio-ui-preview": "^3.0.0-next-24-12-0.1",
 		"core-js": "^3.31.1",
 		"lodash": "^4.17.21",
 		"react": "^18.3.1",

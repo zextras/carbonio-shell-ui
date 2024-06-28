@@ -8,7 +8,8 @@
 
 import { Action as Action_3 } from '../../lib';
 import { AnyFunction as AnyFunction_2 } from '../../utils/typeUtils';
-import { BadgeInfo as BadgeInfo_2 } from '../../types/apps';
+import { BadgeInfo as BadgeInfo_2 } from '../../lib';
+import { CarbonioModule as CarbonioModule_2 } from '../../types/apps';
 import type { ChipItem } from '@zextras/carbonio-design-system';
 import type { ComponentType } from 'react';
 import type { DefaultTheme } from 'styled-components';
@@ -187,10 +188,10 @@ export const ACTION_TYPES: {
 // @public (undocumented)
 type ActionFactory<T> = (target: T) => Action;
 
-// Warning: (ae-forgotten-export) The symbol "AppDependantFunctions" needs to be exported by the entry point lib.d.ts
+// Warning: (ae-forgotten-export) The symbol "AppDependantExports" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
-export const addBoard: AppDependantFunctions['addBoard'];
+export const addBoard: AppDependantExports['addBoard'];
 
 // Warning: (ae-forgotten-export) The symbol "BoardState" needs to be exported by the entry point lib.d.ts
 //
@@ -200,28 +201,26 @@ const addBoard_2: (app: string) => <T = unknown>(board: Omit<Board<T>, "id" | "a
     icon?: string | undefined;
 }, expanded?: BoardState['expanded']) => Board;
 
-// Warning: (ae-forgotten-export) The symbol "AppDependantSetters" needs to be exported by the entry point lib.d.ts
-//
 // @public (undocumented)
-export const addBoardView: AppDependantSetters['addBoardView'];
+export const addBoardView: AppDependantExports['addBoardView'];
 
 // @public (undocumented)
-export const addPrimaryAccessoryView: AppDependantSetters['addPrimaryAccessoryView'];
+export const addPrimaryAccessoryView: AppDependantExports['addPrimaryAccessoryView'];
 
 // @public (undocumented)
-export const addRoute: AppDependantSetters['addRoute'];
+export const addRoute: AppDependantExports['addRoute'];
 
 // @public (undocumented)
-export const addSearchView: AppDependantSetters['addSearchView'];
+export const addSearchView: AppDependantExports['addSearchView'];
 
 // @public (undocumented)
-export const addSecondaryAccessoryView: AppDependantSetters['addSecondaryAccessoryView'];
+export const addSecondaryAccessoryView: AppDependantExports['addSecondaryAccessoryView'];
 
 // @public (undocumented)
-export const addSettingsView: AppDependantSetters['addSettingsView'];
+export const addSettingsView: AppDependantExports['addSettingsView'];
 
 // @public (undocumented)
-export const addUtilityView: AppDependantSetters['addUtilityView'];
+export const addUtilityView: AppDependantExports['addUtilityView'];
 
 // @public (undocumented)
 type AnyFunction = (...args: any[]) => any;
@@ -251,7 +250,17 @@ type AppActions = {
 };
 
 // @public (undocumented)
-type AppDependantFunctions = {
+type AppDependantExports = {
+    setAppContext: ReturnType<AppActions['setAppContext']>;
+    addRoute: (data: Partial<AppRouteDescriptor>) => ReturnType<AppActions['addRoute']>;
+    addBoardView: (data: Omit<BoardView, 'app'>) => ReturnType<AppActions['addBoardView']>;
+    addSettingsView: (data: Partial<SettingsView>) => ReturnType<AppActions['addSettingsView']>;
+    addSearchView: (data: Partial<SearchView>) => ReturnType<AppActions['addSearchView']>;
+    addUtilityView: (data: Partial<UtilityView>) => ReturnType<AppActions['addUtilityView']>;
+    addPrimaryAccessoryView: (data: Partial<PrimaryAccessoryView>) => ReturnType<AppActions['addPrimaryAccessoryView']>;
+    addSecondaryAccessoryView: (data: Partial<SecondaryAccessoryView>) => ReturnType<AppActions['addSecondaryAccessoryView']>;
+    registerComponents: ReturnType<IntegrationActions['registerComponents']>;
+    editSettings: ReturnType<typeof getEditSettingsForApp>;
     getI18n: ReturnType<typeof getI18n_2>;
     t: ReturnType<typeof getTFunction>;
     soapFetch: ReturnType<typeof getSoapFetch>;
@@ -264,20 +273,6 @@ type AppDependantFunctions = {
     getBridgedFunctions: () => ContextBridgeState['functions'] & {
         [K in keyof ContextBridgeState['packageDependentFunctions']]: ReturnType<ContextBridgeState['packageDependentFunctions'][K]>;
     };
-};
-
-// @public (undocumented)
-type AppDependantSetters = {
-    setAppContext: ReturnType<AppActions['setAppContext']>;
-    addRoute: (data: Partial<AppRouteDescriptor>) => ReturnType<AppActions['addRoute']>;
-    addBoardView: (data: Omit<BoardView, 'app'>) => ReturnType<AppActions['addBoardView']>;
-    addSettingsView: (data: Partial<SettingsView>) => ReturnType<AppActions['addSettingsView']>;
-    addSearchView: (data: Partial<SearchView>) => ReturnType<AppActions['addSearchView']>;
-    addUtilityView: (data: Partial<UtilityView>) => ReturnType<AppActions['addUtilityView']>;
-    addPrimaryAccessoryView: (data: Partial<PrimaryAccessoryView>) => ReturnType<AppActions['addPrimaryAccessoryView']>;
-    addSecondaryAccessoryView: (data: Partial<SecondaryAccessoryView>) => ReturnType<AppActions['addSecondaryAccessoryView']>;
-    registerComponents: ReturnType<IntegrationActions['registerComponents']>;
-    editSettings: ReturnType<typeof getEditSettingsForApp>;
 };
 
 // @public (undocumented)
@@ -526,7 +521,7 @@ export type Duration = `${number}${DurationUnit | ''}`;
 type DurationUnit = 'd' | 'h' | 'm' | 's' | 'ms';
 
 // @public @deprecated (undocumented)
-export const editSettings: AppDependantSetters['editSettings'];
+export const editSettings: AppDependantExports['editSettings'];
 
 // @public (undocumented)
 type EditSettingsBatchResponse = {
@@ -651,13 +646,13 @@ export const getActions: <T>(target: T, type: string) => Array<Action>;
 export const getActionsFactory: (type: string) => <T>(target: T) => Array<Action>;
 
 // @public (undocumented)
-export const getApp: AppDependantFunctions['getApp'];
+export const getApp: AppDependantExports['getApp'];
 
 // @public (undocumented)
 const getApp_2: (appId: string) => () => CarbonioModule | undefined;
 
 // @public (undocumented)
-export const getAppContext: AppDependantFunctions['getAppContext'];
+export const getAppContext: AppDependantExports['getAppContext'];
 
 // @public (undocumented)
 const getAppContext_2: (appId: string) => () => unknown;
@@ -675,7 +670,7 @@ export const getBoardById: <T>(id: string) => Board<T> | undefined;
 export const getBoardContextById: <T>(id: string) => T | undefined;
 
 // @public @deprecated (undocumented)
-export const getBridgedFunctions: AppDependantFunctions['getBridgedFunctions'];
+export const getBridgedFunctions: AppDependantExports['getBridgedFunctions'];
 
 // Warning: (ae-forgotten-export) The symbol "AppRoute" needs to be exported by the entry point lib.d.ts
 //
@@ -697,7 +692,7 @@ export const getFolder: (id: string) => Folder | undefined;
 export const getFolders: () => Folders;
 
 // @public (undocumented)
-export const getI18n: AppDependantFunctions['getI18n'];
+export const getI18n: AppDependantExports['getI18n'];
 
 // @public (undocumented)
 const getI18n_2: (app: string) => () => i18n;
@@ -1094,7 +1089,7 @@ export const registerActions: (...items: {
 }[]) => void;
 
 // @public (undocumented)
-export const registerComponents: AppDependantSetters['registerComponents'];
+export const registerComponents: AppDependantExports['registerComponents'];
 
 // @public (undocumented)
 export const registerFunctions: (...items: {
@@ -1260,7 +1255,7 @@ export type SecondaryBarComponentProps = {
 export const SENTRY_SHELL_DSN = "https://0ce2448c05b94f0182c47ae52c7ff52c@feedback.zextras.tools/6";
 
 // @public (undocumented)
-export const setAppContext: AppDependantSetters['setAppContext'];
+export const setAppContext: AppDependantExports['setAppContext'];
 
 // @public (undocumented)
 export const setCurrentBoard: (id: string) => void;
@@ -1335,7 +1330,7 @@ interface SoapFault {
 }
 
 // @public (undocumented)
-export const soapFetch: AppDependantFunctions['soapFetch'];
+export const soapFetch: AppDependantExports['soapFetch'];
 
 // @public (undocumented)
 export type SoapFolder = BaseFolder & {
@@ -1434,7 +1429,7 @@ type SyncRefreshMessage = SoapRefresh & {
 };
 
 // @public (undocumented)
-export const t: AppDependantFunctions['t'];
+export const t: AppDependantExports['t'];
 
 // @public (undocumented)
 export type Tag = {
@@ -1481,7 +1476,7 @@ export const updatePrimaryBadge: (badge: Partial<BadgeInfo_2>, id: string) => vo
 export const updateUtilityBadge: (badge: Partial<BadgeInfo_2>, id: string) => void;
 
 // @public
-export const upsertApp: (app: Pick<CarbonioModule, "description" | "name" | "display">) => void;
+export const upsertApp: (app: Pick<CarbonioModule_2, "description" | "name" | "display">) => void;
 
 // @public (undocumented)
 export const useAction: <T>(type: string, id: string, target?: T | undefined) => [Action | undefined, boolean];
@@ -1496,10 +1491,10 @@ export const useActions: <T>(target: T, type: string) => Array<Action>;
 export const useActionsFactory: (type: string) => <T>(target: T) => Array<Action>;
 
 // @public (undocumented)
-export const useApp: AppDependantFunctions['useApp'];
+export const useApp: AppDependantExports['useApp'];
 
 // @public (undocumented)
-export const useAppContext: AppDependantFunctions['useAppContext'];
+export const useAppContext: AppDependantExports['useAppContext'];
 
 // @public (undocumented)
 export const useAuthenticated: () => boolean;
@@ -1628,7 +1623,7 @@ type WorkerMessage<T> = {
 };
 
 // @public (undocumented)
-export const xmlSoapFetch: AppDependantFunctions['xmlSoapFetch'];
+export const xmlSoapFetch: AppDependantExports['xmlSoapFetch'];
 
 // @public @deprecated (undocumented)
 export const ZIMBRA_STANDARD_COLORS: {
@@ -1649,19 +1644,19 @@ interface ZimletProp {
 
 // Warnings were encountered during analysis:
 //
-// lib/boot/app/app-loader-functions.d.ts:8:5 - (ae-forgotten-export) The symbol "getI18n_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-loader-functions.d.ts:9:5 - (ae-forgotten-export) The symbol "getTFunction" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-loader-functions.d.ts:10:5 - (ae-forgotten-export) The symbol "getSoapFetch" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-loader-functions.d.ts:11:5 - (ae-forgotten-export) The symbol "getXmlSoapFetch" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-loader-functions.d.ts:12:5 - (ae-forgotten-export) The symbol "getAppContextHook" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-loader-functions.d.ts:13:5 - (ae-forgotten-export) The symbol "getAppContext_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-loader-functions.d.ts:14:5 - (ae-forgotten-export) The symbol "getAppHook" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-loader-functions.d.ts:15:5 - (ae-forgotten-export) The symbol "getApp_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-loader-functions.d.ts:16:5 - (ae-forgotten-export) The symbol "addBoard_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-loader-functions.d.ts:20:5 - (ae-forgotten-export) The symbol "ContextBridgeState" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-loader-setters.d.ts:6:5 - (ae-forgotten-export) The symbol "AppActions" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-loader-setters.d.ts:14:5 - (ae-forgotten-export) The symbol "IntegrationActions" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-loader-setters.d.ts:15:5 - (ae-forgotten-export) The symbol "getEditSettingsForApp" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:11:5 - (ae-forgotten-export) The symbol "AppActions" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:19:5 - (ae-forgotten-export) The symbol "IntegrationActions" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:20:5 - (ae-forgotten-export) The symbol "getEditSettingsForApp" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:21:5 - (ae-forgotten-export) The symbol "getI18n_2" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:22:5 - (ae-forgotten-export) The symbol "getTFunction" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:23:5 - (ae-forgotten-export) The symbol "getSoapFetch" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:24:5 - (ae-forgotten-export) The symbol "getXmlSoapFetch" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:25:5 - (ae-forgotten-export) The symbol "getAppContextHook" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:26:5 - (ae-forgotten-export) The symbol "getAppContext_2" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:27:5 - (ae-forgotten-export) The symbol "getAppHook" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:28:5 - (ae-forgotten-export) The symbol "getApp_2" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:29:5 - (ae-forgotten-export) The symbol "addBoard_2" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:33:5 - (ae-forgotten-export) The symbol "ContextBridgeState" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:3:5 - (ae-forgotten-export) The symbol "ModifyPropertiesResponse" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:4:5 - (ae-forgotten-export) The symbol "ModifyPrefsResponse" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:5:5 - (ae-forgotten-export) The symbol "ModifyIdentityResponse" needs to be exported by the entry point lib.d.ts

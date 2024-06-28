@@ -29,7 +29,7 @@ const config: Config = {
 		'!**/(test|mock)*.ts(x)?', // exclude file which name starts with test or mock
 		'!src/**/types/*', // exclude types
 		'!src/**/*.d.ts', // exclude declarations
-		'!src/test/*', // exclude test folder
+		'!src/tests/*', // exclude test folder
 		'!**/__mocks__/**/*', // exclude manual mocks
 		'!src/workers/*' // FIXME: exclude worker folder which throws error because of the esm syntax
 	],
@@ -74,7 +74,7 @@ const config: Config = {
 	// forceCoverageMatch: [],
 
 	// A path to a module which exports an async function that is triggered once before all test suites
-	// globalSetup: undefined,
+	// globalSetup: '',
 
 	// A path to a module which exports an async function that is triggered once after all test suites
 	// globalTeardown: undefined,
@@ -104,7 +104,6 @@ const config: Config = {
 
 	// A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
 	moduleNameMapper: {
-		'^react-pdf': 'react-pdf/dist/cjs/entry.jest',
 		'\\.(css|less)$': 'identity-obj-proxy'
 	},
 
@@ -168,7 +167,7 @@ const config: Config = {
 	 * @see https://mswjs.io/docs/migrations/1.x-to-2.x#requestresponsetextencoder-is-not-defined-jest
 	 * @see https://github.com/mswjs/msw/issues/1916#issuecomment-1919965699
 	 */
-	testEnvironment: '<rootDir>/src/test/jsdom-extended.ts',
+	testEnvironment: '<rootDir>/src/tests/jsdom-extended.ts',
 
 	// Options that will be passed to the testEnvironment
 	testEnvironmentOptions: {
@@ -209,13 +208,13 @@ const config: Config = {
 		'^.+\\.[t|j]sx?$': ['babel-jest', { configFile: './babel.config.jest.js' }],
 		'\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
 			'./__mocks__/fileTransformer.js'
-	}
+	},
 
 	// An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-	// transformIgnorePatterns: [
-	//   "/node_modules/",
-	//   "\\.pnp\\.[^\\/]+$"
-	// ],
+	transformIgnorePatterns: [
+		`/node_modules/(?!${['@zextras/carbonio-ui-preview'].join('|')})`,
+		'\\.pnp\\.[^\\/]+$'
+	]
 
 	// An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
 	// unmockedModulePathPatterns: undefined,

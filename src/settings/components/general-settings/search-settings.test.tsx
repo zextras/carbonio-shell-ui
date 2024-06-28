@@ -8,8 +8,8 @@ import React from 'react';
 import { act, screen } from '@testing-library/react';
 
 import { SearchSettings } from './search-settings';
-import { ICONS } from '../../../test/constants';
-import { setup } from '../../../test/utils';
+import { ICONS } from '../../../tests/constants';
+import { setup } from '../../../tests/utils';
 import type { AccountSettings, AccountSettingsPrefs } from '../../../types/account';
 import type { AddMod } from '../../../types/network';
 

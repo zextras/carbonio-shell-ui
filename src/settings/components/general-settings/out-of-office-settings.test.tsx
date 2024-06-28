@@ -10,8 +10,8 @@ import { act, screen, within } from '@testing-library/react';
 import { forEach } from 'lodash';
 
 import { OutOfOfficeSettings } from './out-of-office-settings';
-import { ICONS, TESTID_SELECTORS } from '../../../test/constants';
-import { setup } from '../../../test/utils';
+import { ICONS, TESTID_SELECTORS } from '../../../tests/constants';
+import { setup } from '../../../tests/utils';
 import type { AccountSettings, AccountSettingsPrefs } from '../../../types/account';
 import type { AddMod } from '../../../types/network';
 import { dateToGenTime } from '../utils';

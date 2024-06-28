@@ -28,7 +28,6 @@ MIT License (MIT) applies to:
 @types/webpack, Copyright (c) Microsoft Corporation.
 autoprefixer, Copyright 2013 Andrey Sitnik <andrey@sitnik.ru>
 babel-loader, Copyright (c) 2014-2019 Luís Couto <hello@luiscouto.pt>
-babel-plugin-i18next-extract, Copyright 2019 Gilbert Gilb's <gilbsgilbert@gmail.com>
 babel-plugin-styled-components, Copyright (c) 2016-present Vladimir Danchenkov and Maximilian Stoiber
 copy-webpack-plugin, Copyright JS Foundation and other contributors
 core-js, Copyright (c) 2014-2024 Denis Pushkarev
@@ -49,7 +48,6 @@ jest-styled-components, Copyright (c) 2017 - present Michele Bertoli
 jest, Copyright (c) Meta Platforms, Inc. and affiliates.
 lodash, Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
 mini-css-extract-plugin, Copyright JS Foundation and other contributors
-moment, Copyright (c) JS Foundation and other contributors
 msw, Copyright (c) 2018–present Artem Zakharchenko
 postcss-loader, Copyright JS Foundation and other contributors
 react-dom, Copyright (c) Facebook, Inc. and its affiliates.

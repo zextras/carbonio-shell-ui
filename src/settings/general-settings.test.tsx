@@ -14,8 +14,8 @@ import { localeList, timeZoneList } from './components/utils';
 import GeneralSettings from './general-settings';
 import { useAccountStore } from '../store/account';
 import { useI18nStore } from '../store/i18n/store';
-import { TESTID_SELECTORS } from '../test/constants';
-import { setup } from '../test/utils';
+import { TESTID_SELECTORS } from '../tests/constants';
+import { setup } from '../tests/utils';
 
 describe('General setting', () => {
 	const { defaultI18n } = useI18nStore.getState();

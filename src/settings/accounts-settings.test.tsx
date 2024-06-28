@@ -14,8 +14,8 @@ import { http, HttpResponse } from 'msw';
 import { AccountsSettings } from './accounts-settings';
 import { JSNS } from '../constants';
 import server, { waitForRequest } from '../mocks/server';
-import { createAccount, createIdentity, setupAccountStore } from '../test/account-utils';
-import { setup } from '../test/utils';
+import { createAccount, createIdentity, setupAccountStore } from '../tests/account-utils';
+import { setup } from '../tests/utils';
 import type { BatchRequest, CreateIdentityResponse } from '../types/network';
 
 describe('Account setting', () => {

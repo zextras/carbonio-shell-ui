@@ -14,8 +14,8 @@ import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
 import { BOARD_MIN_VISIBILITY, LOCAL_STORAGE_BOARD_SIZE } from '../../constants';
 import { useAppStore } from '../../store/app';
 import { reopenBoards, useBoardStore } from '../../store/boards';
-import { ICONS, TESTID_SELECTORS } from '../../test/constants';
-import { mockedApps, setupAppStore } from '../../test/test-app-utils';
+import { ICONS, TESTID_SELECTORS } from '../../tests/constants';
+import { mockedApps, setupAppStore } from '../../tests/test-app-utils';
 import {
 	buildBoardSizeAndPosition,
 	buildMousePosition,
@@ -25,8 +25,8 @@ import {
 	resizeBoard,
 	moveBoard,
 	mockedBoardState
-} from '../../test/test-board-utils';
-import { setup } from '../../test/utils';
+} from '../../tests/test-board-utils';
+import { setup } from '../../tests/utils';
 import type { BoardView } from '../../types/apps';
 import type { Board } from '../../types/boards';
 import type { SizeAndPosition } from '../../utils/utils';
@@ -50,7 +50,7 @@ describe('Board container', () => {
 				const boardId = `board-${index + 1}`;
 				accumulator[boardId] = {
 					id: boardId,
-					url: '/url',
+					boardViewId: '/url',
 					app: mockedApps[0].name,
 					title: `title${index + 1}`,
 					icon: 'CubeOutline'
@@ -923,9 +923,8 @@ describe('Board container', () => {
 		const boardObj = sample(mockedBoardState) as Board;
 		setupBoardStore(boardObj.id, { [boardObj.id]: boardObj });
 		const boardView: BoardView = {
-			id: boardObj.id,
+			id: boardObj.boardViewId,
 			app: boardObj.app,
-			route: boardObj.url,
 			component: (): React.JSX.Element => <Input label={'Board input'} />
 		};
 		useAppStore.getState().addBoardView(boardView);

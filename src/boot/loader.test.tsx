@@ -12,7 +12,7 @@ import type * as loadAppsModule from './app/load-apps';
 import { Loader } from './loader';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
 import server, { waitForResponse } from '../mocks/server';
-import { controlConsoleError, setup } from '../test/utils';
+import { controlConsoleError, setup } from '../tests/utils';
 
 jest.mock<typeof loadAppsModule>('./app/load-apps');
 

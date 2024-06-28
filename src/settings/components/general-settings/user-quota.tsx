@@ -9,10 +9,10 @@ import React, { useMemo } from 'react';
 
 import { Container, FormSubSection, Quota, Text, Tooltip } from '@zextras/carbonio-design-system';
 
-import { useUserSettings } from '../../../store/account/hooks';
-import { useAccountStore } from '../../../store/account/store';
+import { useAccountStore, useUserSettings } from '../../../store/account';
 import { getT } from '../../../store/i18n/hooks';
 import { quotaSubSection } from '../../general-settings-sub-sections';
+import { humanFileSize } from '../utils';
 
 interface UserQuotaProps {
 	mobileView: boolean;
@@ -23,13 +23,13 @@ const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 
 	const settings = useUserSettings();
 	const used = useAccountStore((s) => s.usedQuota);
+	const limit = Number(settings?.attrs?.zimbraMailQuota);
 	const quota = useMemo(() => {
-		const userQuota = Number(settings?.attrs?.zimbraMailQuota);
-		if (userQuota > 0) {
-			return Math.round((used / userQuota) * 100);
+		if (limit > 0) {
+			return Math.round((used / limit) * 100);
 		}
 		return -1;
-	}, [settings?.attrs?.zimbraMailQuota, used]);
+	}, [limit, used]);
 
 	const filledQuota = useMemo(() => {
 		if (quota === -1 || quota >= 100) {
@@ -40,13 +40,20 @@ const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
 
 	const description = useMemo(() => {
 		if (quota < 0) {
-			return t('user_quota.unlimited', 'You have unlimited space available');
+			return t('user_quota.unlimited', '{{used}} of unlimited space', {
+				replace: {
+					used: humanFileSize(used)
+				}
+			});
 		}
 		return t('user_quota.limited', {
-			defaultValue: 'You have filled {{quota}}% of the available space',
-			quota
+			defaultValue: '{{used}} of {{limit}} used',
+			replace: {
+				used: humanFileSize(used),
+				limit: humanFileSize(limit)
+			}
 		});
-	}, [quota, t]);
+	}, [limit, quota, t, used]);
 
 	const fillBackground = useMemo(() => {
 		switch (true) {

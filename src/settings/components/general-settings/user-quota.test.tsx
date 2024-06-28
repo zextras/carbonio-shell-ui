@@ -6,14 +6,16 @@
 
 import React from 'react';
 
+import { faker } from '@faker-js/faker';
+import type { QuotaProps } from '@zextras/carbonio-design-system';
 import { produce } from 'immer';
 
 import UserQuota from './user-quota';
 import { useAccountStore } from '../../../store/account';
 import { screen, setup } from '../../../tests/utils';
+import { humanFileSize } from '../utils';
 
-const quotaMax = 100;
-function setupAccountStore(usedQuota = 0): void {
+function setupAccountStore(usedQuota: number, quotaMax: number): void {
 	useAccountStore.setState(
 		produce((state) => {
 			state.usedQuota = usedQuota;
@@ -21,33 +23,63 @@ function setupAccountStore(usedQuota = 0): void {
 		})
 	);
 }
-describe('User Quota', () => {
-	describe('Quota description', () => {
-		it.each([
-			['even if it is 0', 0],
-			['if it is less than zimbraMailQuota', quotaMax - 1],
-			['if it is higher than zimbraMailQuota', quotaMax + 1],
-			['if it is equal to zimbraMailQuota', quotaMax]
-		])('should render the % of quota used message', (description, quotaUsed) => {
-			setupAccountStore(quotaUsed);
-			setup(<UserQuota mobileView={false} />);
-			expect(screen.getByText(/user's quota/i)).toBeVisible();
-			expect(
-				screen.getByText(`You have filled ${quotaUsed}% of the available space`)
-			).toBeVisible();
-		});
 
-		it.each([0, -1])(
-			'should render "You have unlimited space available" message when zimbraMailQuota is %s',
-			(quota) => {
-				useAccountStore.setState(
-					produce((state) => {
-						state.settings.attrs.zimbraMailQuota = quota;
-					})
-				);
+const mockQuota = jest.fn().mockReturnValue(<div>mock Quota</div>);
+
+jest.mock('@zextras/carbonio-design-system', () => ({
+	...jest.requireActual('@zextras/carbonio-design-system'),
+	Quota: (props: QuotaProps): unknown => mockQuota(props)
+}));
+
+describe('User Quota', () => {
+	it.each([0, -1])(
+		'should show the string "[used] of unlimited space if zimbraMailQuota is %s',
+		(quota) => {
+			const quotaUsed = faker.number.int();
+			setupAccountStore(quotaUsed, quota);
+			setup(<UserQuota mobileView={false} />);
+			const quotaString = `${humanFileSize(quotaUsed)} of unlimited space`;
+			expect(screen.getByText(quotaString)).toBeVisible();
+		}
+	);
+
+	it('should show the string "[used] of [limit] used”', () => {
+		const quotaUsed = faker.number.int();
+		const quotaMax = 100;
+		setupAccountStore(quotaUsed, quotaMax);
+		setup(<UserQuota mobileView={false} />);
+		const quotaString = `${humanFileSize(quotaUsed)} of ${humanFileSize(quotaMax)} used`;
+		expect(screen.getByText(quotaString)).toBeVisible();
+	});
+
+	describe('Quota component', () => {
+		it.each([
+			['primary', 0, 89],
+			['warning', 90, 94],
+			['error', 95, undefined]
+		])(
+			'should render Quota component with props fillBackground %s when the used quota is >= %s',
+			(fillBackground, minQuotaUsed, maxQuotaUsed) => {
+				const quotaUsed = faker.number.int({ min: minQuotaUsed, max: maxQuotaUsed });
+				const quotaMax = 100;
+				setupAccountStore(quotaUsed, quotaMax);
 				setup(<UserQuota mobileView={false} />);
-				expect(screen.getByText(`You have unlimited space available`)).toBeVisible();
+				expect(mockQuota).toHaveBeenCalledWith({
+					fill: Math.min(100, Math.round((quotaUsed / quotaMax) * 100)),
+					fillBackground
+				});
 			}
 		);
+
+		it('should render Quota component with props fillBackground gray4 when the quota is unlimited', () => {
+			const quotaUsed = faker.number.int();
+			const quotaMax = -1;
+			setupAccountStore(quotaUsed, quotaMax);
+			setup(<UserQuota mobileView={false} />);
+			expect(mockQuota).toHaveBeenCalledWith({
+				fill: 100,
+				fillBackground: 'gray4'
+			});
+		});
 	});
 });

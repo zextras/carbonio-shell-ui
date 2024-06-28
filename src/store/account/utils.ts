@@ -12,11 +12,14 @@ import type {
 	Identity,
 	ZimletProp
 } from '../../types/account';
-import type { IdentityMods, Mods } from '../../types/network';
+import type { IdentityMods, PropsMods } from '../../types/network';
 
-export function mergePrefs(mods: Partial<Mods>, state: AccountState): AccountSettingsPrefs {
+export function mergePrefs(
+	mods: AccountSettingsPrefs | undefined,
+	state: AccountState
+): AccountSettingsPrefs {
 	return reduce(
-		mods.prefs,
+		mods,
 		(acc, pref, key) => ({
 			...acc,
 			[key]: pref
@@ -25,9 +28,9 @@ export function mergePrefs(mods: Partial<Mods>, state: AccountState): AccountSet
 	);
 }
 
-export function mergeProps(mods: Partial<Mods>, state: AccountState): Array<ZimletProp> {
+export function mergeProps(mods: PropsMods | undefined, state: AccountState): Array<ZimletProp> {
 	return reduce(
-		mods.props,
+		mods,
 		(acc, { app, value }, key) => {
 			const newPropValue = {
 				name: key,
@@ -44,9 +47,12 @@ export function mergeProps(mods: Partial<Mods>, state: AccountState): Array<Ziml
 	);
 }
 
-export function mergeAttrs(mods: Partial<Mods>, state: AccountState): AccountSettingsAttrs {
+export function mergeAttrs(
+	mods: AccountSettingsAttrs | undefined,
+	state: AccountState
+): AccountSettingsAttrs {
 	return reduce(
-		mods.attrs,
+		mods,
 		(acc, attr, key) => ({
 			...acc,
 			[key]: attr

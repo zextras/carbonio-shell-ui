@@ -5,7 +5,6 @@
  */
 import { useAccountStore } from './store';
 import { mergeAttrs, mergePrefs, mergeProps } from './utils';
-import type { Mods } from '../../types/network';
 
 const zimlet = 'carbonio-ui';
 
@@ -28,21 +27,17 @@ describe('utils', () => {
 	describe('mergeAttrs', () => {
 		test('given an empty state and a single attr mod, the store will contain the single attr', async () => {
 			const state = useAccountStore.getState();
-			const mods = {
-				attrs: { newAttr: 'new attr value' }
-			};
+			const attrs = { newAttr: 'new attr value' };
 
-			const updatedAttrs = mergeAttrs(mods, state);
+			const updatedAttrs = mergeAttrs(attrs, state);
 			expect(updatedAttrs).toEqual({ newAttr: 'new attr value' });
 		});
 
 		test('given an empty state and multiple attrs mods, the store will contain the multiple attrs', async () => {
 			const state = useAccountStore.getState();
-			const mods = {
-				attrs: { newAttr1: 'attr1', newAttr2: 'attr2' }
-			};
+			const attrs = { newAttr1: 'attr1', newAttr2: 'attr2' };
 
-			const updatedAttrs = mergeAttrs(mods, state);
+			const updatedAttrs = mergeAttrs(attrs, state);
 			expect(updatedAttrs).toEqual(
 				expect.objectContaining({
 					newAttr1: 'attr1',
@@ -61,11 +56,9 @@ describe('utils', () => {
 			}));
 
 			const state = useAccountStore.getState();
-			const mods = {
-				attrs: { newAttr: 'new' }
-			};
+			const attrs = { newAttr: 'new' };
 
-			const updatedAttrs = mergeAttrs(mods, state);
+			const updatedAttrs = mergeAttrs(attrs, state);
 			expect(updatedAttrs).toEqual(
 				expect.objectContaining({
 					oldAttr: 'old',
@@ -84,11 +77,9 @@ describe('utils', () => {
 			}));
 
 			const state = useAccountStore.getState();
-			const mods = {
-				attrs: { newAttr1: 'new1', newAttr2: 'new2' }
-			};
+			const attrs = { newAttr1: 'new1', newAttr2: 'new2' };
 
-			const updatedAttrs = mergeAttrs(mods, state);
+			const updatedAttrs = mergeAttrs(attrs, state);
 			expect(updatedAttrs).toEqual(
 				expect.objectContaining({
 					newAttr1: 'new1',
@@ -109,11 +100,9 @@ describe('utils', () => {
 			}));
 
 			const state = useAccountStore.getState();
-			const mods = {
-				attrs: { oldAttr: 'new' }
-			};
+			const attrs = { oldAttr: 'new' };
 
-			const updatedAttrs = mergeAttrs(mods, state);
+			const updatedAttrs = mergeAttrs(attrs, state);
 			expect(updatedAttrs).toEqual(
 				expect.objectContaining({
 					oldAttr: 'new'
@@ -125,21 +114,22 @@ describe('utils', () => {
 	describe('mergePrefs', () => {
 		test('given an empty state and a single pref mod, the store will contain the single pref', async () => {
 			const state = useAccountStore.getState();
-			const mods = {
-				prefs: { newPref: 'dateAsc' }
+			const prefs = {
+				newPref: 'dateAsc'
 			};
 
-			const updatedPrefs = mergePrefs(mods, state);
+			const updatedPrefs = mergePrefs(prefs, state);
 			expect(updatedPrefs).toEqual({ newPref: 'dateAsc' });
 		});
 
 		test('given an empty state and multiple prefs mods, the store will contain the multiple prefs', async () => {
 			const state = useAccountStore.getState();
-			const mods = {
-				prefs: { newPref1: 'dateAsc', newPref2: 'UTC' }
+			const prefs = {
+				newPref1: 'dateAsc',
+				newPref2: 'UTC'
 			};
 
-			const updatedPrefs = mergePrefs(mods, state);
+			const updatedPrefs = mergePrefs(prefs, state);
 			expect(updatedPrefs).toEqual(
 				expect.objectContaining({
 					newPref1: 'dateAsc',
@@ -158,11 +148,11 @@ describe('utils', () => {
 			}));
 
 			const state = useAccountStore.getState();
-			const mods = {
-				prefs: { newPref: 'dateAsc' }
+			const prefs = {
+				newPref: 'dateAsc'
 			};
 
-			const updatedPrefs = mergePrefs(mods, state);
+			const updatedPrefs = mergePrefs(prefs, state);
 			expect(updatedPrefs).toEqual(
 				expect.objectContaining({
 					oldPref: 'UTC',
@@ -181,11 +171,12 @@ describe('utils', () => {
 			}));
 
 			const state = useAccountStore.getState();
-			const mods = {
-				prefs: { newPref1: 'UTC', newPref2: 'dateAsc' }
+			const prefs = {
+				newPref1: 'UTC',
+				newPref2: 'dateAsc'
 			};
 
-			const updatedPrefs = mergePrefs(mods, state);
+			const updatedPrefs = mergePrefs(prefs, state);
 			expect(updatedPrefs).toEqual(
 				expect.objectContaining({
 					newPref1: 'UTC',
@@ -206,11 +197,11 @@ describe('utils', () => {
 			}));
 
 			const state = useAccountStore.getState();
-			const mods = {
-				prefs: { oldPref: 'new' }
+			const prefs = {
+				oldPref: 'new'
 			};
 
-			const updatedPrefs = mergePrefs(mods, state);
+			const updatedPrefs = mergePrefs(prefs, state);
 			expect(updatedPrefs).toEqual(
 				expect.objectContaining({
 					oldPref: 'new'
@@ -222,26 +213,22 @@ describe('utils', () => {
 	describe('mergeProps', () => {
 		test('given an empty state and a single prop mod, the store will contain the single prop', async () => {
 			const state = useAccountStore.getState();
-			const mods = {
-				props: {
-					newProp: { app: zimlet, value: 'enabled' }
-				}
+			const props = {
+				newProp: { app: zimlet, value: 'enabled' }
 			};
 
-			const updatedProps = mergeProps(mods, state);
+			const updatedProps = mergeProps(props, state);
 			expect(updatedProps).toEqual([{ name: 'newProp', zimlet, _content: 'enabled' }]);
 		});
 
 		test('given an empty state and multiple props mods, the store will contain the multiple props', async () => {
 			const state = useAccountStore.getState();
-			const mods = {
-				props: {
-					newProp1: { app: zimlet, value: 'enabled' },
-					newProp2: { app: zimlet, value: '5' }
-				}
+			const props = {
+				newProp1: { app: zimlet, value: 'enabled' },
+				newProp2: { app: zimlet, value: '5' }
 			};
 
-			const updatedProps = mergeProps(mods, state);
+			const updatedProps = mergeProps(props, state);
 			expect(updatedProps).toEqual(
 				expect.arrayContaining([
 					{ name: 'newProp1', zimlet, _content: 'enabled' },
@@ -263,9 +250,9 @@ describe('utils', () => {
 			}));
 
 			const state = useAccountStore.getState();
-			const mods = { props: { newProp1: { app: zimlet, value: 'TRUE' } } };
+			const props = { newProp1: { app: zimlet, value: 'TRUE' } };
 
-			const updatedProps = mergeProps(mods, state);
+			const updatedProps = mergeProps(props, state);
 			expect(updatedProps).toEqual(
 				expect.arrayContaining([
 					{ name: 'oldProp1', zimlet, _content: 'auto' },
@@ -288,14 +275,12 @@ describe('utils', () => {
 			}));
 
 			const state = useAccountStore.getState();
-			const mods = {
-				props: {
-					newProp1: { app: zimlet, value: 'TRUE' },
-					newProp2: { app: zimlet, value: '5' }
-				}
+			const props = {
+				newProp1: { app: zimlet, value: 'TRUE' },
+				newProp2: { app: zimlet, value: '5' }
 			};
 
-			const updatedPrefs = mergeProps(mods, state);
+			const updatedPrefs = mergeProps(props, state);
 			expect(updatedPrefs).toEqual(
 				expect.arrayContaining([
 					{ name: 'oldProp1', zimlet, _content: 'auto' },
@@ -316,13 +301,11 @@ describe('utils', () => {
 			}));
 
 			const state = useAccountStore.getState();
-			const mods: Mods = {
-				props: {
-					oldProp: { app: zimlet, value: 'false' }
-				}
+			const props = {
+				oldProp: { app: zimlet, value: 'false' }
 			};
 
-			const updatedProps = mergeProps(mods, state);
+			const updatedProps = mergeProps(props, state);
 			expect(updatedProps).toEqual(
 				expect.arrayContaining([
 					{

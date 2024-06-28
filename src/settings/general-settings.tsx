@@ -151,8 +151,8 @@ const GeneralSettings = (): React.JSX.Element => {
 					useAccountStore.setState((s: AccountState) => ({
 						settings: {
 							...s.settings,
-							prefs: mergePrefs(mods, s),
-							props: mergeProps(mods, s)
+							prefs: mergePrefs(mods.prefs, s),
+							props: mergeProps(mods.props, s)
 						}
 					}));
 

@@ -7,15 +7,25 @@ import { find } from 'lodash';
 
 import { useAccountStore } from './store';
 import { mergeAttrs, mergePrefs, mergeProps, updateIdentities } from './utils';
-import type { UpdateAccount, UpdateSettings } from '../../types/account';
+import type { AccountSettingsAttrs, AccountSettingsPrefs, Identity } from '../../types/account';
+import type { IdentityMods } from '../../types/network';
+
+type UpdateSettingsParams = {
+	attrs?: AccountSettingsAttrs;
+	prefs?: AccountSettingsPrefs;
+	props?: Record<string, { app: string; value: unknown }>;
+};
+
+export type UpdateSettings = (settingsMods: UpdateSettingsParams) => void;
+export type UpdateAccount = (accountMods: IdentityMods, identities: Identity[]) => void;
 
 export const updateSettings: UpdateSettings = (settingsMods) =>
 	useAccountStore.setState((state) => ({
 		...state,
 		settings: {
-			attrs: mergeAttrs(settingsMods, state),
-			prefs: mergePrefs(settingsMods, state),
-			props: mergeProps(settingsMods, state)
+			attrs: mergeAttrs(settingsMods.attrs, state),
+			prefs: mergePrefs(settingsMods.prefs, state),
+			props: mergeProps(settingsMods.props, state)
 		}
 	}));
 

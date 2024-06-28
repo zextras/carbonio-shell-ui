@@ -47,7 +47,11 @@ const configFn = (
 	extensions.push('.d.ts');
 	conf.resolve = {
 		...conf.resolve,
-		extensions
+		extensions,
+		alias: {
+			...conf.resolve?.alias,
+			'react/jsx-runtime': 'react/jsx-runtime.js'
+		}
 	};
 	conf.plugins = conf.plugins ?? [];
 	conf.plugins.push(

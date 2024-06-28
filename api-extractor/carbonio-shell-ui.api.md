@@ -310,9 +310,6 @@ type AppRouteDescriptor = {
 export type AppViewComponentProps = {};
 
 // @public (undocumented)
-type AttrsMods = Record<string, unknown> & AccountSettingsAttrs;
-
-// @public (undocumented)
 export type AudioNotificationConfig = {
     sound?: string;
 };
@@ -941,10 +938,6 @@ type ModifyPropertiesResponse = Record<string, never>;
 
 // @public (undocumented)
 interface Mods extends Record<string, Record<string, unknown> | undefined> {
-    // Warning: (ae-forgotten-export) The symbol "AttrsMods" needs to be exported by the entry point lib.d.ts
-    //
-    // (undocumented)
-    attrs?: AttrsMods;
     // Warning: (ae-forgotten-export) The symbol "IdentityMods" needs to be exported by the entry point lib.d.ts
     //
     // (undocumented)

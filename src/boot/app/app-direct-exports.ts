@@ -46,7 +46,9 @@ export {
 	useUserRights,
 	getUserRight,
 	getUserRights,
-	useAuthenticated
+	useAuthenticated,
+	updateSettings,
+	updateAccount
 } from '../../store/account';
 
 export { getTags, useTags } from '../../store/tags';

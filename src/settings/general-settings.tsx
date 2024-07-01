@@ -7,7 +7,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
-import { findIndex, includes, isEmpty, map, reduce, size } from 'lodash';
+import { includes, isEmpty, map, size } from 'lodash';
 
 import AppearanceSettings from './components/general-settings/appearance-settings';
 import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
@@ -25,6 +25,7 @@ import { JSNS, LOCAL_STORAGE_SETTINGS_KEY, SHELL_APP_ID } from '../constants';
 import { getSoapFetch } from '../network/fetch';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 import { useAccountStore, useUserSettings } from '../store/account';
+import { mergePrefs, mergeProps } from '../store/account/utils';
 import { getT } from '../store/i18n/hooks';
 import type { AccountState } from '../types/account';
 import type {
@@ -150,36 +151,8 @@ const GeneralSettings = (): React.JSX.Element => {
 					useAccountStore.setState((s: AccountState) => ({
 						settings: {
 							...s.settings,
-							prefs: reduce(
-								mods.prefs,
-								(acc, pref, key) => ({
-									...acc,
-									[key]: pref as string
-								}),
-								s.settings.prefs
-							),
-							props: reduce(
-								mods.props,
-								(acc, { app, value }, key) => {
-									const propIndex = findIndex(acc, (p) => p.name === key && p.zimlet === app);
-									if (propIndex >= 0) {
-										// eslint-disable-next-line no-param-reassign
-										acc[propIndex] = {
-											name: key,
-											zimlet: app,
-											_content: value as string
-										};
-									} else {
-										acc.push({
-											name: key,
-											zimlet: app,
-											_content: value as string
-										});
-									}
-									return acc;
-								},
-								s.settings.props
-							)
+							prefs: mergePrefs(mods.prefs, s),
+							props: mergeProps(mods.props, s)
 						}
 					}));
 

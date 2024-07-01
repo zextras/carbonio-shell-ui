@@ -113,9 +113,11 @@ export type {
 	SoapNotify,
 	SoapContext,
 	SoapBody,
-	SoapHeader
+	SoapHeader,
+	SoapFault
 } from './types/network/soap';
-export type { BatchRequest } from './types/network';
+
+export type { BatchRequest, BatchResponse } from './types/network';
 
 export type { Action } from './types/integrations';
 

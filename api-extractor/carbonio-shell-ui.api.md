@@ -370,6 +370,9 @@ export const BASENAME: string;
 export type BatchRequest<T extends Exactify<Record<`${string}Request`, unknown>, T> = Record<`${string}Request`, unknown>> = SoapBody<T>;
 
 // @public (undocumented)
+export type BatchResponse<T extends Exactify<Record<`${string}Response`, unknown>, T> = Record<`${string}Response`, unknown>> = SoapBody<T>;
+
+// @public (undocumented)
 export type Board<T = unknown> = {
     id: string;
     boardViewId: string;
@@ -1310,7 +1313,7 @@ export interface SoapContext extends Omit<RawSoapContext, 'notify'> {
 }
 
 // @public (undocumented)
-interface SoapFault {
+export interface SoapFault {
     // (undocumented)
     Code: {
         Value: string;
@@ -1463,6 +1466,14 @@ export class Tracker {
 }
 
 // @public (undocumented)
+type UpdateAccount = (accountMods: IdentityMods, identities: Identity[]) => void;
+
+// Warning: (ae-forgotten-export) The symbol "UpdateAccount" needs to be exported by the entry point lib.d.ts
+//
+// @public (undocumented)
+export const updateAccount: UpdateAccount;
+
+// @public (undocumented)
 export const updateBoard: <T = unknown>(id: string, board: Partial<Board<T>>) => void;
 
 // @public (undocumented)
@@ -1470,6 +1481,26 @@ export const updateBoardContext: <T = unknown>(id: string, context: T) => void;
 
 // @public (undocumented)
 export const updatePrimaryBadge: (badge: Partial<BadgeInfo_2>, id: string) => void;
+
+// Warning: (ae-forgotten-export) The symbol "UpdateSettingsParams" needs to be exported by the entry point lib.d.ts
+//
+// @public (undocumented)
+type UpdateSettings = (settingsMods: UpdateSettingsParams) => void;
+
+// Warning: (ae-forgotten-export) The symbol "UpdateSettings" needs to be exported by the entry point lib.d.ts
+//
+// @public (undocumented)
+export const updateSettings: UpdateSettings;
+
+// @public (undocumented)
+type UpdateSettingsParams = {
+    attrs?: AccountSettingsAttrs;
+    prefs?: AccountSettingsPrefs;
+    props?: Record<string, {
+        app: string;
+        value: unknown;
+    }>;
+};
 
 // @public (undocumented)
 export const updateUtilityBadge: (badge: Partial<BadgeInfo_2>, id: string) => void;
@@ -1691,7 +1722,6 @@ interface ZimletProp {
 // lib/types/misc/index.d.ts:138:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
 // lib/types/network/index.d.ts:107:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:11:5 - (ae-forgotten-export) The symbol "NameSpace" needs to be exported by the entry point lib.d.ts
-// lib/types/network/soap.d.ts:36:5 - (ae-forgotten-export) The symbol "SoapFault" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:65:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
 // lib/types/workers/index.d.ts:12:5 - (ae-forgotten-export) The symbol "SyncMessage" needs to be exported by the entry point lib.d.ts
 

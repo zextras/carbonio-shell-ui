@@ -28,7 +28,7 @@ type UpdateAccountParams = {
 		identitiesMods: IdentityMods;
 		newIdentities: Identity[];
 	};
-	signatures?: Signature;
+	signatures?: Signature[];
 };
 
 export type UpdateAccount = (accountMods: UpdateAccountParams) => void;
@@ -67,7 +67,7 @@ export const updateAccount: UpdateAccount = ({ identities, signatures }) =>
 									}
 								}
 							: {}),
-						...(signatures ? { signature: signatures } : {})
+						...(signatures ? { signatures: { signature: signatures } } : {})
 					}
 				}
 			: state

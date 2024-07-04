@@ -3,12 +3,14 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import { faker } from '@faker-js/faker';
+
 import { useAccountStore } from './store';
-import { updateSettings } from './updaters';
+import { updateAccount, updateSettings } from './updaters';
 import { setupAccountStore } from '../../tests/account-utils';
 
 describe('updateSettings', () => {
-	it('should leave the state settings unchanged if no mods are set', () => {
+	it('should leave the settings state unchanged if no mods are set', () => {
 		setupAccountStore();
 		const prevSettings = useAccountStore.getState().settings;
 		updateSettings({});
@@ -66,5 +68,40 @@ describe('updateSettings', () => {
 				prefs: { existingPref: 'existing pref value', newPref: 'new pref value' }
 			})
 		);
+	});
+});
+// modifyList?: Record<string, {     id: string     prefs: Partial<IdentityAttrs>   }>
+describe('updateAccount', () => {
+	it('should leave the account state unchanged if no mods are set', () => {
+		setupAccountStore();
+		const prevState = useAccountStore.getState().account;
+		updateAccount({});
+		expect(useAccountStore.getState().account).toEqual(prevState);
+	});
+
+	it('should change the displayName of the account if the identity of the primary account is changed', () => {
+		setupAccountStore();
+		const prevState = useAccountStore.getState().account;
+		if (!prevState) {
+			throw new Error('Account not found in the store');
+		}
+
+		const newIdentityName = faker.person.fullName();
+		updateAccount({
+			identities: {
+				identitiesMods: {
+					modifyList: {
+						[prevState.id]: {
+							id: prevState.id,
+							prefs: {
+								zimbraPrefIdentityName: newIdentityName
+							}
+						}
+					}
+				},
+				newIdentities: []
+			}
+		});
+		expect(useAccountStore.getState().account?.displayName).toEqual(newIdentityName);
 	});
 });

@@ -9,8 +9,8 @@ import { memo } from 'react';
 
 import { forOwn } from 'lodash';
 
-import * as appFunctions from './app-loader-functions';
-import * as appSetters from './app-loader-setters';
+import { getAppDependantExports } from './app-dependant-exports';
+import * as appExports from './app-direct-exports';
 import * as CONSTANTS from '../../constants';
 import type * as ExportsForApp from '../../lib';
 import { report } from '../../reporting/functions';
@@ -23,9 +23,6 @@ import { Spinner } from '../../ui-extras/spinner';
 export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
 
-const { getAppDependantSetters, ...otherSetters } = appSetters;
-const { getAppDependantFunctions, ...otherFunctions } = appFunctions;
-
 export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 	return new Promise((resolve, reject) => {
 		try {
@@ -35,10 +32,8 @@ export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 					AppLink,
 					Spinner,
 					SettingsHeader,
-					...getAppDependantSetters(appPkg),
-					...otherSetters,
-					...getAppDependantFunctions(appPkg),
-					...otherFunctions,
+					...getAppDependantExports(appPkg),
+					...appExports,
 					...CONSTANTS
 				} satisfies typeof ExportsForApp;
 			}

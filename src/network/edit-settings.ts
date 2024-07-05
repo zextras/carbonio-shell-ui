@@ -31,6 +31,18 @@ export type EditSettingsBatchResponse = {
 	GrantRightsResponse?: GrantRightsResponse[];
 };
 
+/**
+ * @deprecated Use a specific soap fetch request per module instead.
+ *
+ * The edit settings function is performing a xml request which leads to network errors due to
+ * the content, and it is highly linking shell with modules.
+ * When the data are not related to the account, the management of the settings should be internal
+ * to the module itself. When the data to update are something strictly related to the account, and
+ * are or might be useful to other modules, the network update should be performed by the module itself,
+ * and then be propagated to other modules, to let every module interested in those data to react to the update.
+ *
+ * See SHELL-226, SHELL-222 to see how to propagate the update of settings to all other modules.
+ */
 export const editSettings = (
 	mods: Partial<Mods>,
 	appId: string = SHELL_APP_ID

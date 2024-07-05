@@ -50,7 +50,7 @@ describe('Board container', () => {
 				const boardId = `board-${index + 1}`;
 				accumulator[boardId] = {
 					id: boardId,
-					url: '/url',
+					boardViewId: '/url',
 					app: mockedApps[0].name,
 					title: `title${index + 1}`,
 					icon: 'CubeOutline'
@@ -923,9 +923,8 @@ describe('Board container', () => {
 		const boardObj = sample(mockedBoardState) as Board;
 		setupBoardStore(boardObj.id, { [boardObj.id]: boardObj });
 		const boardView: BoardView = {
-			id: boardObj.id,
+			id: boardObj.boardViewId,
 			app: boardObj.app,
-			route: boardObj.url,
 			component: (): React.JSX.Element => <Input label={'Board input'} />
 		};
 		useAppStore.getState().addBoardView(boardView);

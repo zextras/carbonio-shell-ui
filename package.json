@@ -1,9 +1,12 @@
 {
 	"name": "@zextras/carbonio-shell-ui",
-	"version": "6.0.0",
+	"version": "7.0.1",
 	"description": "The Zextras Carbonio web client",
 	"main": "./lib/lib.js",
 	"types": "./lib/lib.d.ts",
+	"exports": {
+		".": "./lib/lib.js"
+	},
 	"engines": {
 		"node": "v18",
 		"npm": "v10"
@@ -102,12 +105,12 @@
 	},
 	"dependencies": {
 		"@fontsource/roboto": "^5.0.8",
-		"@reduxjs/toolkit": "^1 >=1.9",
+		"@reduxjs/toolkit": "^1.9.7",
 		"@sentry/browser": "^7.103.0",
 		"@testing-library/react-hooks": "^8.0.1",
 		"@tinymce/tinymce-react": "^4.3.2",
-		"@zextras/carbonio-design-system": "^6.0.0",
-		"@zextras/carbonio-ui-preview": "^1",
+		"@zextras/carbonio-design-system": "^6.0.1",
+		"@zextras/carbonio-ui-preview": "^1.2.5",
 		"darkreader": "^4.9.79",
 		"history": "^5.3.0",
 		"i18next": "^22.5.1",
@@ -127,7 +130,7 @@
 	},
 	"peerDependencies": {
 		"@reduxjs/toolkit": "^1 >=1.9",
-		"@zextras/carbonio-design-system": "^6.0.0",
+		"@zextras/carbonio-design-system": "^6.0.1",
 		"@zextras/carbonio-ui-preview": "^1",
 		"core-js": "^3.31.1",
 		"lodash": "^4.17.21",

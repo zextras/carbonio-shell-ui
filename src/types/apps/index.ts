@@ -58,9 +58,7 @@ export type CarbonioAccessoryView<P> = {
 export type PrimaryBarComponentProps = { active: boolean };
 export type SecondaryBarComponentProps = { expanded: boolean };
 export type AppViewComponentProps = {};
-export type BoardViewComponentProps = {
-	windowHistory: History;
-};
+export type BoardViewComponentProps = {};
 export type SettingsViewProps = {};
 export type SearchViewProps = {
 	useQuery: () => [QueryChip[], Function];
@@ -84,7 +82,7 @@ export type SecondaryBarView = CarbonioView<SecondaryBarComponentProps>;
 
 export type AppView = CarbonioView<AppViewComponentProps>;
 
-export type BoardView = CarbonioView<BoardViewComponentProps>;
+export type BoardView = Omit<CarbonioView<BoardViewComponentProps>, 'route'>;
 
 export type UtilityView = CarbonioAccessoryView<UtilityBarComponentProps> & {
 	button: string | ComponentType<UtilityBarComponentProps>;

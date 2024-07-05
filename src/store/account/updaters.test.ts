@@ -4,10 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
+import { times } from 'lodash';
 
 import { useAccountStore } from './store';
 import { updateAccount, updateSettings } from './updaters';
 import { setupAccountStore } from '../../tests/account-utils';
+import type { Identity, Signature } from '../../types/account';
 
 describe('updateSettings', () => {
 	it('should leave the settings state unchanged if no mods are set', () => {
@@ -70,7 +72,7 @@ describe('updateSettings', () => {
 		);
 	});
 });
-// modifyList?: Record<string, {     id: string     prefs: Partial<IdentityAttrs>   }>
+
 describe('updateAccount', () => {
 	it('should leave the account state unchanged if no mods are set', () => {
 		setupAccountStore();
@@ -103,5 +105,113 @@ describe('updateAccount', () => {
 			}
 		});
 		expect(useAccountStore.getState().account?.displayName).toEqual(newIdentityName);
+	});
+
+	it('should update the store with a new identity', () => {
+		setupAccountStore();
+		const prevState = useAccountStore.getState().account;
+		if (!prevState) {
+			throw new Error('Account not found in the store');
+		}
+
+		const newIdentity: Identity = {
+			id: faker.string.uuid(),
+			name: faker.person.fullName(),
+			_attrs: {}
+		};
+
+		updateAccount({
+			identities: {
+				identitiesMods: {},
+				newIdentities: [newIdentity]
+			}
+		});
+
+		expect(useAccountStore.getState().account?.identities.identity).toHaveLength(
+			prevState.identities.identity.length + 1
+		);
+	});
+
+	it('should update the store with the given signatures', () => {
+		setupAccountStore();
+		const prevState = useAccountStore.getState().account;
+		if (!prevState) {
+			throw new Error('Account not found in the store');
+		}
+
+		const signatures: Array<Signature> = times(
+			5,
+			(): Signature => ({
+				id: faker.string.uuid(),
+				name: faker.word.noun(),
+				content: [
+					{
+						type: 'text/html',
+						_content: `<p>${faker.person.fullName()}</p>`
+					}
+				]
+			})
+		);
+
+		updateAccount({
+			signatures
+		});
+
+		expect(useAccountStore.getState().account?.signatures.signature).toEqual(signatures);
+	});
+
+	it('updates in signatures should not change the identities in the store', () => {
+		setupAccountStore();
+		const prevState = useAccountStore.getState().account;
+		if (!prevState) {
+			throw new Error('Account not found in the store');
+		}
+
+		const signatures: Array<Signature> = times(
+			5,
+			(): Signature => ({
+				id: faker.string.uuid(),
+				name: faker.word.noun(),
+				content: [
+					{
+						type: 'text/html',
+						_content: `<p>${faker.person.fullName()}</p>`
+					}
+				]
+			})
+		);
+
+		updateAccount({
+			signatures
+		});
+
+		expect(useAccountStore.getState().account?.identities.identity).toEqual(
+			prevState.identities.identity
+		);
+	});
+
+	it('updates in identities should not change the signatures in the store', () => {
+		setupAccountStore();
+		const prevState = useAccountStore.getState().account;
+		if (!prevState) {
+			throw new Error('Account not found in the store');
+		}
+
+		const newIdentity: Identity = {
+			id: faker.string.uuid(),
+			name: faker.person.fullName(),
+			_attrs: {}
+		};
+
+		updateAccount({
+			identities: {
+				identitiesMods: {},
+				newIdentities: [newIdentity]
+			}
+		});
+
+		expect(useAccountStore.getState().account?.signatures.signature).toEqual(
+			prevState.signatures.signature
+		);
 	});
 });

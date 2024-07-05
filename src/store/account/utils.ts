@@ -64,7 +64,7 @@ export function mergeAttrs(
 export function updateIdentities(
 	state: AccountState,
 	identityMods: IdentityMods,
-	identities: Identity[]
+	newIdentities: Identity[]
 ): Identity[] | undefined {
 	if (!state.account) {
 		return undefined;
@@ -75,7 +75,7 @@ export function updateIdentities(
 			state.account.identities.identity,
 			(item) => !identityMods?.deleteList?.includes(item.id)
 		).filter((i) => i.name !== 'DEFAULT'),
-		...identities,
+		...newIdentities,
 		...filter(
 			state.account.identities.identity,
 			(item) => !identityMods?.deleteList?.includes(item.id)

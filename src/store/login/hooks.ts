@@ -27,7 +27,5 @@ export function useLogo(): string | React.ComponentType {
  * Hook useful to know if is Carbonio CE or not
  */
 export function useIsCarbonioCE(): boolean | undefined {
-	const { isCarbonioCE } = useLoginConfigStore();
-
-	return useMemo(() => isCarbonioCE, [isCarbonioCE]);
+	return useLoginConfigStore((state) => state.isCarbonioCE);
 }

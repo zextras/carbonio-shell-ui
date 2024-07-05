@@ -8,7 +8,8 @@ import React, { useCallback, useMemo } from 'react';
 import type { PostHogConfig } from 'posthog-js';
 import { PostHogProvider, usePostHog } from 'posthog-js/react';
 
-import { useIsCarbonioCE } from '../store/login/hooks';
+import { useAccountStore } from '../store/account';
+import { useLoginConfigStore } from '../store/login/store';
 import { getCurrentLocationHost } from '../utils/utils';
 
 export const TrackerProvider = ({
@@ -38,7 +39,6 @@ interface Tracker {
 
 export const useTracker = (): Tracker => {
 	const postHog = usePostHog();
-	const isCarbonioCE = useIsCarbonioCE();
 
 	const enableTracker = useCallback(
 		(enable: boolean) => {
@@ -47,8 +47,13 @@ export const useTracker = (): Tracker => {
 				!getCurrentLocationHost().includes('localhost')
 			) {
 				if (enable) {
+					const { isCarbonioCE } = useLoginConfigStore.getState();
 					if (isCarbonioCE) {
 						postHog.set_config({ disable_surveys: false });
+					}
+					const { account } = useAccountStore.getState();
+					if (account?.id) {
+						postHog.identify(account.id);
 					}
 					postHog.opt_in_capturing();
 				} else {
@@ -56,7 +61,7 @@ export const useTracker = (): Tracker => {
 				}
 			}
 		},
-		[isCarbonioCE, postHog]
+		[postHog]
 	);
 
 	const reset = useCallback(() => {

@@ -14,7 +14,7 @@ import { useUtilityViews } from './utils';
 import { useTracker } from '../boot/posthog';
 import { CUSTOM_EVENTS } from '../constants';
 import { logout } from '../network/logout';
-import { useUserAccount } from '../store/account';
+import { useAccountStore } from '../store/account';
 import { getT } from '../store/i18n/hooks';
 import type { UtilityView } from '../types/apps';
 
@@ -46,7 +46,7 @@ const UtilityBarItem = ({ view }: UtilityBarItemProps): React.JSX.Element => {
 export const ShellUtilityBar = (): React.JSX.Element => {
 	const views = useUtilityViews();
 	const t = getT();
-	const account = useUserAccount();
+	const account = useAccountStore((s) => s.account);
 
 	const updateViews = useCallback(() => {
 		const updateViewEvent = new CustomEvent(CUSTOM_EVENTS.updateView);

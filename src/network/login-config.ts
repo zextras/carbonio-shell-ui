@@ -11,7 +11,12 @@ import { useLoginConfigStore } from '../store/login/store';
 
 export const loginConfig = (): Promise<void> =>
 	fetch(LOGIN_V3_CONFIG_PATH)
-		.then((response) => response.json())
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			}
+			throw new Error(`${response.status}: ${response.statusText}`);
+		})
 		.then((data: LoginConfigStore) => {
 			useLoginConfigStore.setState({ ...data, isCarbonioCE: false });
 		})

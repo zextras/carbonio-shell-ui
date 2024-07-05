@@ -7,14 +7,19 @@ import React from 'react';
 
 import { act, screen, waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
+import { EventEmitter } from 'node:events';
+import type { PostHog } from 'posthog-js';
+import * as postHogReact from 'posthog-js/react';
 
 import { Loader } from './loader';
 import * as posthog from './posthog';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
 import { getGetInfoRequest } from '../mocks/handlers/getInfoRequest';
 import server, { waitForResponse } from '../mocks/server';
+import { useLoginConfigStore } from '../store/login/store';
 import { controlConsoleError, setup } from '../tests/utils';
 import type { AccountSettingsPrefs } from '../types/account';
+import * as utils from '../utils/utils';
 
 describe('Loader', () => {
 	test('If only getComponents request fails, the LoaderFailureModal appears', async () => {
@@ -84,7 +89,7 @@ describe('Loader', () => {
 	});
 
 	test('If only loginConfig request fails, the LoaderFailureModal does not appear', async () => {
-		server.use(http.get(LOGIN_V3_CONFIG_PATH, () => HttpResponse.json({}, { status: 503 })));
+		server.use(http.get(LOGIN_V3_CONFIG_PATH, () => HttpResponse.json(null, { status: 503 })));
 		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
 		const componentsRes = waitForResponse('get', '/static/iris/components.json');
 		const getInfoRes = waitForResponse('post', '/service/soap/GetInfoRequest');
@@ -97,6 +102,7 @@ describe('Loader', () => {
 		await screen.findByTestId('loader');
 		await componentsRes;
 		await getInfoRes;
+		await waitFor(() => expect(useLoginConfigStore.getState().isCarbonioCE).toEqual(true));
 		expect(screen.queryByText('Something went wrong...')).not.toBeInTheDocument();
 	});
 
@@ -142,6 +148,50 @@ describe('Loader', () => {
 		await componentsRes;
 		await getInfoRes;
 		await waitFor(() => expect(enableTrackerFn).toHaveBeenLastCalledWith(true));
+	});
+
+	it('should invoke the enableTracker function only one time', async () => {
+		jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
+		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
+		const componentsRes = waitForResponse('get', '/static/iris/components.json');
+		const getInfoRes = waitForResponse('post', '/service/soap/GetInfoRequest');
+		const emitter = new EventEmitter();
+		server.use(
+			http.post(
+				'/service/soap/GetInfoRequest',
+				getGetInfoRequest({ prefs: { _attrs: { carbonioPrefSendAnalytics: 'TRUE' } } })
+			),
+			http.get(LOGIN_V3_CONFIG_PATH, async () => {
+				await new Promise((resolve) => {
+					emitter.once('emitLoginResponse', resolve);
+				});
+				return HttpResponse.json({});
+			})
+		);
+
+		const postHog = {
+			opt_in_capturing: jest.fn(),
+			opt_out_capturing: jest.fn(),
+			identify: jest.fn()
+		} satisfies Partial<PostHog>;
+		jest.spyOn(postHogReact, 'usePostHog').mockReturnValue(postHog as unknown as PostHog);
+
+		setup(
+			<span data-testid={'loader'}>
+				<Loader />
+			</span>
+		);
+		await screen.findByTestId('loader');
+		await componentsRes;
+		await getInfoRes;
+		await waitFor(() => expect(postHog.opt_in_capturing).toHaveBeenCalled());
+		emitter.emit('emitLoginResponse');
+		await loginRes;
+		await act(async () => {
+			await jest.advanceTimersToNextTimerAsync();
+		});
+		await waitFor(() => expect(useLoginConfigStore.getState().isCarbonioCE).toEqual(false));
+		expect(postHog.opt_in_capturing).toHaveBeenCalledTimes(1);
 	});
 
 	it.each<AccountSettingsPrefs['carbonioPrefSendAnalytics']>(['FALSE', undefined])(

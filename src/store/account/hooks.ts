@@ -19,11 +19,21 @@ import type {
 
 export const useAuthenticated = (): boolean => useAccountStore((s) => s.authenticated);
 
-export const useUserAccount = (): Account => useAccountStore((s) => s.account as Account);
+/**
+ * Return the authenticated user account. Throws if the user is not authenticated.
+ * Note: this hook should be uses only where the user is for sure logically authenticated
+ */
+export const useUserAccount = (): Account => {
+	const account = useAccountStore((s) => s.account);
+	if (account === undefined) {
+		throw new Error('User is not authenticated');
+	}
+	return account;
+};
 
 export const useUserAccounts = (): Array<Account> => {
 	const acct = useAccountStore((s) => s.account);
-	return useMemo(() => (acct ? [acct as Account] : []), [acct]);
+	return useMemo(() => (acct ? [acct] : []), [acct]);
 };
 
 export const useUserRights = (): AccountRights =>

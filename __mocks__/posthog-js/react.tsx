@@ -8,12 +8,15 @@ import React from 'react';
 
 import type * as PostHogReact from 'posthog-js/react';
 
+const postHog = {
+	opt_in_capturing: (): void => undefined,
+	opt_out_capturing: (): void => undefined,
+	reset: (): void => undefined,
+	identify: (): void => undefined
+} satisfies Partial<ReturnType<(typeof PostHogReact)['usePostHog']>>;
+
 export const usePostHog: (typeof PostHogReact)['usePostHog'] = () =>
-	({
-		opt_in_capturing: (): void => undefined,
-		opt_out_capturing: (): void => undefined,
-		reset: (): void => undefined
-	}) as unknown as ReturnType<(typeof PostHogReact)['usePostHog']>;
+	postHog as unknown as ReturnType<(typeof PostHogReact)['usePostHog']>;
 
 export const PostHogProvider = ({
 	children

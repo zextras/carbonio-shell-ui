@@ -133,3 +133,5 @@ export const {
 	 */
 	upsertApp
 } = useAppStore.getState();
+
+export { useIsCarbonioCE } from '../../store/login/hooks';

@@ -11,6 +11,7 @@ import * as posthogJs from 'posthog-js/react';
 import type * as PostHogReact from 'posthog-js/react';
 
 import { TrackerProvider, useTracker } from './posthog';
+import { useLoginConfigStore } from '../store/login/store';
 import { setup } from '../tests/utils';
 import * as posthog from '../utils/utils';
 
@@ -74,5 +75,31 @@ describe('Posthog', () => {
 			}),
 			expect.anything()
 		);
+	});
+
+	it('should enable surveys when enableTracker is called with true if carbonio is CE', () => {
+		useLoginConfigStore.setState({ isCarbonioCE: true });
+		jest.spyOn(posthog, 'getCurrentLocationHost').mockReturnValue('differentHost');
+		const setConfigFn = jest.fn();
+		jest.spyOn(posthogJs, 'usePostHog').mockReturnValue({
+			opt_in_capturing: jest.fn(),
+			set_config: setConfigFn
+		} as unknown as ReturnType<(typeof PostHogReact)['usePostHog']>);
+		const { result } = renderHook(() => useTracker());
+		result.current.enableTracker(true);
+		expect(setConfigFn).toHaveBeenCalledWith({ disable_surveys: false });
+	});
+
+	it('should leave surveys disabled when enableTracker is called with true and carbonio is not CE', () => {
+		useLoginConfigStore.setState({ isCarbonioCE: false });
+		jest.spyOn(posthog, 'getCurrentLocationHost').mockReturnValue('differentHost');
+		const setConfigFn = jest.fn();
+		jest.spyOn(posthogJs, 'usePostHog').mockReturnValue({
+			opt_in_capturing: jest.fn(),
+			set_config: setConfigFn
+		} as unknown as ReturnType<(typeof PostHogReact)['usePostHog']>);
+		const { result } = renderHook(() => useTracker());
+		result.current.enableTracker(true);
+		expect(setConfigFn).not.toHaveBeenCalled();
 	});
 });

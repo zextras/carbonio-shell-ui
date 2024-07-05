@@ -1607,7 +1607,7 @@ export const useSearchFolders: () => Searches;
 // @public (undocumented)
 export const useTags: (ids?: Array<string> | string) => Tags;
 
-// @public (undocumented)
+// @public
 export const useUserAccount: () => Account;
 
 // @public (undocumented)

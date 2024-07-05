@@ -5,13 +5,16 @@
  */
 import React from 'react';
 
-import { act, screen } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 
 import { Loader } from './loader';
+import * as posthog from './posthog';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
+import { getGetInfoRequest } from '../mocks/handlers/getInfoRequest';
 import server, { waitForResponse } from '../mocks/server';
 import { controlConsoleError, setup } from '../tests/utils';
+import type { AccountSettingsPrefs } from '../types/account';
 
 describe('Loader', () => {
 	test('If only getComponents request fails, the LoaderFailureModal appears', async () => {
@@ -113,4 +116,61 @@ describe('Loader', () => {
 
 		expect(screen.queryByText('Something went wrong...')).not.toBeInTheDocument();
 	});
+
+	it('should enable the tracker if carbonioPrefSendAnalytics is true', async () => {
+		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
+		const componentsRes = waitForResponse('get', '/static/iris/components.json');
+		const getInfoRes = waitForResponse('post', '/service/soap/GetInfoRequest');
+		const enableTrackerFn = jest.fn();
+		const resetFn = jest.fn();
+		server.use(
+			http.post(
+				'/service/soap/GetInfoRequest',
+				getGetInfoRequest({ prefs: { _attrs: { carbonioPrefSendAnalytics: 'TRUE' } } })
+			)
+		);
+		jest
+			.spyOn(posthog, 'useTracker')
+			.mockReturnValue({ enableTracker: enableTrackerFn, reset: resetFn });
+		setup(
+			<span data-testid={'loader'}>
+				<Loader />
+			</span>
+		);
+		await loginRes;
+		await screen.findByTestId('loader');
+		await componentsRes;
+		await getInfoRes;
+		await waitFor(() => expect(enableTrackerFn).toHaveBeenLastCalledWith(true));
+	});
+
+	it.each<AccountSettingsPrefs['carbonioPrefSendAnalytics']>(['FALSE', undefined])(
+		'should enable the tracker if carbonioPrefSendAnalytics is %s',
+		async (carbonioPrefParam) => {
+			const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
+			const componentsRes = waitForResponse('get', '/static/iris/components.json');
+			const getInfoRes = waitForResponse('post', '/service/soap/GetInfoRequest');
+			const enableTrackerFn = jest.fn();
+			const resetFn = jest.fn();
+			server.use(
+				http.post(
+					'/service/soap/GetInfoRequest',
+					getGetInfoRequest({ prefs: { _attrs: { carbonioPrefSendAnalytics: carbonioPrefParam } } })
+				)
+			);
+			jest
+				.spyOn(posthog, 'useTracker')
+				.mockReturnValue({ enableTracker: enableTrackerFn, reset: resetFn });
+			setup(
+				<span data-testid={'loader'}>
+					<Loader />
+				</span>
+			);
+			await loginRes;
+			await screen.findByTestId('loader');
+			await componentsRes;
+			await getInfoRes;
+			await waitFor(() => expect(enableTrackerFn).toHaveBeenLastCalledWith(false));
+		}
+	);
 });

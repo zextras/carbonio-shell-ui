@@ -8,6 +8,8 @@ import React, { useCallback, useMemo } from 'react';
 import type { PostHogConfig } from 'posthog-js';
 import { PostHogProvider, usePostHog } from 'posthog-js/react';
 
+import { getCurrentLocationHost } from '../utils/utils';
+
 export const TrackerProvider = ({
 	children
 }: React.PropsWithChildren<Record<never, never>>): React.JSX.Element => {
@@ -16,7 +18,8 @@ export const TrackerProvider = ({
 			api_host: 'https://stats.zextras.tools',
 			person_profiles: 'identified_only',
 			opt_out_capturing_by_default: true,
-			disable_session_recording: true
+			disable_session_recording: true,
+			disable_surveys: true
 		}),
 		[]
 	);
@@ -38,8 +41,8 @@ export const useTracker = (): Tracker => {
 	const enableTracker = useCallback(
 		(enable: boolean) => {
 			if (
-				!window.location.host.includes('127.0.0.1') &&
-				!window.location.host.includes('localhost')
+				!getCurrentLocationHost().includes('127.0.0.1') &&
+				!getCurrentLocationHost().includes('localhost')
 			) {
 				enable ? postHog.opt_in_capturing() : postHog.opt_out_capturing();
 			}

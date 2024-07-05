@@ -64,3 +64,5 @@ export function createExportForTestOnly<TObj extends Record<string, unknown>>(
 				{} as Record<keyof TObj, undefined>
 			);
 }
+
+export const getCurrentLocationHost = (): string => window.location.host;

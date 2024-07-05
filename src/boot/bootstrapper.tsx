@@ -15,13 +15,13 @@ import AppLoaderMounter from './app/app-loader-mounter';
 import { registerDefaultViews } from './app/default-views';
 import { ContextBridge } from './context-bridge';
 import { Loader } from './loader';
+import { TrackerProvider } from './posthog';
 import ShellI18nextProvider from './shell-i18n-provider';
 import { ThemeProvider } from './theme-provider';
 import { BASENAME, IS_FOCUS_MODE } from '../constants';
 import { NotificationPermissionChecker } from '../notification/NotificationPermissionChecker';
 import ShellView from '../shell/shell-view';
 import { useAppStore } from '../store/app/store';
-import { TrackerProvider } from './posthog';
 
 const FocusModeListener = (): null => {
 	const { route } = useParams<{ route?: string }>();

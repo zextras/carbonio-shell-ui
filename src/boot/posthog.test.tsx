@@ -6,6 +6,7 @@
 
 import React from 'react';
 
+import { waitFor } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import * as posthogJsReact from 'posthog-js/react';
 import type * as PostHogReact from 'posthog-js/react';
@@ -105,7 +106,7 @@ describe('Posthog', () => {
 		expect(setConfigFn).not.toHaveBeenCalled();
 	});
 
-	it('should identify user through its id if authenticated', () => {
+	it('should identify user through its hashed id if authenticated', async () => {
 		useAccountStore.setState({ account: mockedAccount });
 		jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
 		const postHog = {
@@ -117,7 +118,9 @@ describe('Posthog', () => {
 			.mockReturnValue(postHog as unknown as ReturnType<(typeof PostHogReact)['usePostHog']>);
 		const { result } = renderHook(() => useTracker());
 		result.current.enableTracker(true);
-		expect(postHog.identify).toHaveBeenCalled();
+		await waitFor(() =>
+			expect(postHog.identify).toHaveBeenCalledWith('mEAzl8Lcf4UJ+/uFXopfi6SaL55V61IdfIWCruI7O2Q=')
+		);
 	});
 
 	it('should not identify user if no user is authenticated', () => {

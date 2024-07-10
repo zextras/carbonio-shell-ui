@@ -4,4 +4,4 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-it.todo('should provide the traker also for apps');
+it.todo('should provide the tracker also for apps');

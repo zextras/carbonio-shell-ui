@@ -37,6 +37,18 @@ interface Tracker {
 	reset: () => void;
 }
 
+const hashToSHA256 = async (value: string): Promise<ArrayBuffer> => {
+	const encoder = new TextEncoder();
+	const data = encoder.encode(value);
+	return window.crypto.subtle.digest('SHA-256', data);
+};
+
+const arrayBufferToBase64 = (buffer: ArrayBuffer): string => {
+	const bytes = new Uint8Array(buffer);
+	const binary = bytes.reduce((res, byte) => res + String.fromCharCode(byte), '');
+	return window.btoa(binary);
+};
+
 export const useTracker = (): Tracker => {
 	const postHog = usePostHog();
 
@@ -53,7 +65,10 @@ export const useTracker = (): Tracker => {
 					}
 					const { account } = useAccountStore.getState();
 					if (account?.id) {
-						postHog.identify(account.id);
+						hashToSHA256(account.id).then((arrayBuffer) => {
+							const hashUserId = arrayBufferToBase64(arrayBuffer);
+							postHog.identify(hashUserId);
+						});
 					}
 					postHog.opt_in_capturing();
 				} else {

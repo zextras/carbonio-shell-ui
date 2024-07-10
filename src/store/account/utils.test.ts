@@ -349,9 +349,10 @@ describe('utils', () => {
 				_attrs: {},
 				id: faker.string.uuid()
 			};
-			expect(updateIdentities(state, {}, [newIdentity])).toEqual(
-				expect.arrayContaining([...(state.account?.identities.identity ?? []), newIdentity])
-			);
+			expect(updateIdentities(state, {}, [newIdentity])).toEqual([
+				newIdentity,
+				...(state.account?.identities.identity ?? [])
+			]);
 		});
 
 		it('should return the original identities without the one which has to be deleted', () => {
@@ -365,8 +366,8 @@ describe('utils', () => {
 			const mods: IdentityMods = {
 				deleteList: [identityToDeleteId]
 			};
-			expect(updateIdentities(state, mods, [])).toEqual(
-				expect.not.arrayContaining([expect.objectContaining({ id: identityToDeleteId })])
+			expect(updateIdentities(state, mods, [])).not.toContain(
+				expect.objectContaining({ id: identityToDeleteId })
 			);
 		});
 

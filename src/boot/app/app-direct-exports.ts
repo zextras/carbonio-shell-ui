@@ -135,3 +135,5 @@ export const {
 } = useAppStore.getState();
 
 export { useIsCarbonioCE } from '../../store/login/hooks';
+
+export { useTracker } from '../posthog';

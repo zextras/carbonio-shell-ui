@@ -1458,6 +1458,14 @@ type TagActionResponse = SoapBody<{
 export type Tags = Record<string, Tag>;
 
 // @public (undocumented)
+interface Tracker {
+    // (undocumented)
+    enableTracker: (enable: boolean) => void;
+    // (undocumented)
+    reset: () => void;
+}
+
+// @public (undocumented)
 type UpdateAccount = (accountMods: IdentityMods, identities: Identity[]) => void;
 
 // Warning: (ae-forgotten-export) The symbol "UpdateAccount" needs to be exported by the entry point lib.d.ts
@@ -1606,6 +1614,11 @@ export const useSearchFolders: () => Searches;
 
 // @public (undocumented)
 export const useTags: (ids?: Array<string> | string) => Tags;
+
+// Warning: (ae-forgotten-export) The symbol "Tracker" needs to be exported by the entry point lib.d.ts
+//
+// @public (undocumented)
+export const useTracker: () => Tracker;
 
 // @public
 export const useUserAccount: () => Account;

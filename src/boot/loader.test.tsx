@@ -8,8 +8,6 @@ import React from 'react';
 import { act, screen, waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { EventEmitter } from 'node:events';
-import type { PostHog } from 'posthog-js';
-import * as postHogReact from 'posthog-js/react';
 
 import { Loader } from './loader';
 import * as posthog from './posthog';
@@ -17,6 +15,7 @@ import { LOGIN_V3_CONFIG_PATH } from '../constants';
 import { getGetInfoRequest } from '../mocks/handlers/getInfoRequest';
 import server, { waitForResponse } from '../mocks/server';
 import { useLoginConfigStore } from '../store/login/store';
+import { spyOnPosthog } from '../tests/posthog-utils';
 import { controlConsoleError, setup } from '../tests/utils';
 import type { AccountSettingsPrefs } from '../types/account';
 import * as utils from '../utils/utils';
@@ -168,13 +167,7 @@ describe('Loader', () => {
 				return HttpResponse.json({});
 			})
 		);
-
-		const postHog = {
-			opt_in_capturing: jest.fn(),
-			opt_out_capturing: jest.fn(),
-			identify: jest.fn()
-		} satisfies Partial<PostHog>;
-		jest.spyOn(postHogReact, 'usePostHog').mockReturnValue(postHog as unknown as PostHog);
+		const postHog = spyOnPosthog();
 
 		setup(
 			<span data-testid={'loader'}>
@@ -195,7 +188,7 @@ describe('Loader', () => {
 	});
 
 	it.each<AccountSettingsPrefs['carbonioPrefSendAnalytics']>(['FALSE', undefined])(
-		'should enable the tracker if carbonioPrefSendAnalytics is %s',
+		'should not enable the tracker if carbonioPrefSendAnalytics is %s',
 		async (carbonioPrefParam) => {
 			const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
 			const componentsRes = waitForResponse('get', '/static/iris/components.json');

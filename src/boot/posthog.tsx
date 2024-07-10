@@ -3,13 +3,13 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { PostHogConfig } from 'posthog-js';
 import { PostHogProvider, usePostHog } from 'posthog-js/react';
 
 import { useAccountStore } from '../store/account';
-import { useLoginConfigStore } from '../store/login/store';
+import { useIsCarbonioCE } from '../store/login/hooks';
 import { getCurrentLocationHost } from '../utils/utils';
 
 export const TrackerProvider = ({
@@ -51,6 +51,21 @@ const arrayBufferToBase64 = (buffer: ArrayBuffer): string => {
 
 export const useTracker = (): Tracker => {
 	const postHog = usePostHog();
+	const isCarbonioCE = useIsCarbonioCE();
+	const [isOptedIn, setIsOptedIn] = useState(postHog.has_opted_in_capturing());
+
+	useEffect(() => {
+		if (isCarbonioCE !== undefined) {
+			postHog.setPersonProperties({ is_ce: isCarbonioCE });
+		}
+	}, [isCarbonioCE, postHog]);
+
+	useEffect(() => {
+		const newValue = !isCarbonioCE || !isOptedIn;
+		if (postHog.config.disable_surveys !== newValue && isCarbonioCE !== undefined) {
+			postHog.set_config({ disable_surveys: newValue });
+		}
+	}, [isCarbonioCE, isOptedIn, postHog]);
 
 	const enableTracker = useCallback(
 		(enable: boolean) => {
@@ -59,10 +74,6 @@ export const useTracker = (): Tracker => {
 				!getCurrentLocationHost().includes('localhost')
 			) {
 				if (enable) {
-					const { isCarbonioCE } = useLoginConfigStore.getState();
-					if (isCarbonioCE) {
-						postHog.set_config({ disable_surveys: false });
-					}
 					const { account } = useAccountStore.getState();
 					if (account?.id) {
 						hashToSHA256(account.id).then((arrayBuffer) => {
@@ -71,8 +82,10 @@ export const useTracker = (): Tracker => {
 						});
 					}
 					postHog.opt_in_capturing();
+					setIsOptedIn(true);
 				} else {
 					postHog.opt_out_capturing();
+					setIsOptedIn(false);
 				}
 			}
 		},

@@ -6,7 +6,7 @@
 
 import React from 'react';
 
-import { waitFor } from '@testing-library/react';
+import { act, waitFor } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import * as posthogJsReact from 'posthog-js/react';
 import type * as PostHogReact from 'posthog-js/react';
@@ -15,51 +15,46 @@ import { TrackerProvider, useTracker } from './posthog';
 import { useAccountStore } from '../store/account';
 import { useLoginConfigStore } from '../store/login/store';
 import { mockedAccount } from '../tests/account-utils';
+import { spyOnPosthog } from '../tests/posthog-utils';
 import { setup } from '../tests/utils';
 import * as utils from '../utils/utils';
 
+beforeEach(() => {
+	jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
+});
+
 describe('Posthog', () => {
 	it('should opt-in posthog if it not on localhost and enableTracker is called with true value', () => {
-		jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
-		const optInCapturingFn = jest.fn();
-		jest.spyOn(posthogJsReact, 'usePostHog').mockReturnValue({
-			opt_in_capturing: optInCapturingFn
-		} as unknown as ReturnType<(typeof PostHogReact)['usePostHog']>);
+		const posthog = spyOnPosthog();
 		const { result } = renderHook(() => useTracker());
-		result.current.enableTracker(true);
-		expect(optInCapturingFn).toHaveBeenCalled();
+		act(() => {
+			result.current.enableTracker(true);
+		});
+		expect(posthog.opt_in_capturing).toHaveBeenCalled();
 	});
 
 	it.each(['localhost', '127.0.0.1'])('should not opt-in posthog it is on %s', (host) => {
 		jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue(host);
-		const optInCapturingFn = jest.fn();
-		jest.spyOn(posthogJsReact, 'usePostHog').mockReturnValue({
-			opt_in_capturing: optInCapturingFn
-		} as unknown as ReturnType<(typeof PostHogReact)['usePostHog']>);
+		const posthog = spyOnPosthog();
 		const { result } = renderHook(() => useTracker());
 		result.current.enableTracker(true);
-		expect(optInCapturingFn).not.toHaveBeenCalled();
+		expect(posthog.opt_in_capturing).not.toHaveBeenCalled();
 	});
 
 	it('should opt-out posthog if enableTracker is called with false value', () => {
-		jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
-		const optOutCapturingFn = jest.fn();
-		jest.spyOn(posthogJsReact, 'usePostHog').mockReturnValue({
-			opt_out_capturing: optOutCapturingFn
-		} as unknown as ReturnType<(typeof PostHogReact)['usePostHog']>);
+		const posthog = spyOnPosthog();
 		const { result } = renderHook(() => useTracker());
-		result.current.enableTracker(false);
-		expect(optOutCapturingFn).toHaveBeenCalled();
+		act(() => {
+			result.current.enableTracker(false);
+		});
+		expect(posthog.opt_out_capturing).toHaveBeenCalled();
 	});
 
 	it('should reset posthog if reset function is called', () => {
-		const resetFn = jest.fn();
-		jest.spyOn(posthogJsReact, 'usePostHog').mockReturnValue({
-			reset: resetFn
-		} as unknown as ReturnType<(typeof PostHogReact)['usePostHog']>);
+		const posthog = spyOnPosthog();
 		const { result } = renderHook(() => useTracker());
 		result.current.reset();
-		expect(resetFn).toHaveBeenCalled();
+		expect(posthog.reset).toHaveBeenCalled();
 	});
 
 	it('should invoke posthog provider with trackers disabled by default', () => {
@@ -80,61 +75,110 @@ describe('Posthog', () => {
 		);
 	});
 
-	it('should enable surveys when enableTracker is called with true if carbonio is CE', () => {
+	it('should enable surveys if user is opted in and Carbonio is CE', () => {
 		useLoginConfigStore.setState({ isCarbonioCE: true });
-		jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
-		const setConfigFn = jest.fn();
-		jest.spyOn(posthogJsReact, 'usePostHog').mockReturnValue({
-			opt_in_capturing: jest.fn(),
-			set_config: setConfigFn
-		} as unknown as ReturnType<(typeof PostHogReact)['usePostHog']>);
+		const posthog = spyOnPosthog();
+		jest.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
 		const { result } = renderHook(() => useTracker());
 		result.current.enableTracker(true);
-		expect(setConfigFn).toHaveBeenCalledWith({ disable_surveys: false });
+		expect(posthog.set_config).toHaveBeenCalledWith({ disable_surveys: false });
 	});
 
-	it('should leave surveys disabled when enableTracker is called with true and carbonio is not CE', () => {
+	it('should not enable surveys if the user is not opted in and Carbonio is CE', () => {
+		useLoginConfigStore.setState({ isCarbonioCE: true });
+		const posthog = spyOnPosthog();
+		renderHook(() => useTracker());
+		expect(posthog.set_config).not.toHaveBeenCalled();
+	});
+
+	it('should not enable surveys if the user is opted in and it is not Carbonio CE', () => {
 		useLoginConfigStore.setState({ isCarbonioCE: false });
-		jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
-		const setConfigFn = jest.fn();
-		jest.spyOn(posthogJsReact, 'usePostHog').mockReturnValue({
-			opt_in_capturing: jest.fn(),
-			set_config: setConfigFn
-		} as unknown as ReturnType<(typeof PostHogReact)['usePostHog']>);
-		const { result } = renderHook(() => useTracker());
-		result.current.enableTracker(true);
-		expect(setConfigFn).not.toHaveBeenCalled();
+		const posthog = spyOnPosthog();
+		renderHook(() => useTracker());
+		expect(posthog.set_config).not.toHaveBeenCalled();
 	});
 
-	it('should identify user through its hashed id if authenticated', async () => {
-		useAccountStore.setState({ account: mockedAccount });
-		jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
-		const postHog = {
-			identify: jest.fn(),
-			opt_in_capturing: jest.fn()
-		} satisfies Partial<ReturnType<(typeof PostHogReact)['usePostHog']>>;
-		jest
-			.spyOn(posthogJsReact, 'usePostHog')
-			.mockReturnValue(postHog as unknown as ReturnType<(typeof PostHogReact)['usePostHog']>);
+	it('should not call set config again if it is already called with the same values', () => {
+		useLoginConfigStore.setState({ isCarbonioCE: true });
+		const posthog = spyOnPosthog();
+		jest.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
+		renderHook(() => useTracker());
+		expect(posthog.set_config).toHaveBeenCalledWith({ disable_surveys: false });
+		jest.mocked(posthog.config)!.disable_surveys = false;
+		renderHook(() => useTracker());
+		expect(posthog.set_config).toHaveBeenCalledTimes(1);
+	});
+
+	it('should call set config if Carbonio CE changes after the user is opted in', () => {
+		useLoginConfigStore.setState({ isCarbonioCE: false });
+		const posthog = spyOnPosthog();
+		jest.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
+		renderHook(() => useTracker());
+		expect(posthog.set_config).not.toHaveBeenCalled();
+		act(() => {
+			useLoginConfigStore.setState({ isCarbonioCE: true });
+		});
+		expect(posthog.set_config).toHaveBeenCalled();
+	});
+
+	it('should call set config if the user opts in after Carbonio CE changes', () => {
+		useLoginConfigStore.setState({ isCarbonioCE: true });
+		const posthog = spyOnPosthog();
+		jest.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(false);
 		const { result } = renderHook(() => useTracker());
-		result.current.enableTracker(true);
+		expect(posthog.set_config).not.toHaveBeenCalled();
+		jest.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
+		act(() => {
+			result.current.enableTracker(true);
+		});
+		expect(posthog.set_config).toHaveBeenCalled();
+	});
+
+	it('should identify user through its hashed id if it is authenticated', async () => {
+		useAccountStore.setState({ account: mockedAccount });
+		const posthog = spyOnPosthog();
+		const { result } = renderHook(() => useTracker());
+		act(() => {
+			result.current.enableTracker(true);
+		});
 		await waitFor(() =>
-			expect(postHog.identify).toHaveBeenCalledWith('mEAzl8Lcf4UJ+/uFXopfi6SaL55V61IdfIWCruI7O2Q=')
+			expect(posthog.identify).toHaveBeenCalledWith('mEAzl8Lcf4UJ+/uFXopfi6SaL55V61IdfIWCruI7O2Q=')
 		);
 	});
 
 	it('should not identify user if no user is authenticated', () => {
 		useAccountStore.setState({ account: undefined });
-		jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
-		const postHog = {
-			identify: jest.fn(),
-			opt_in_capturing: jest.fn()
-		} satisfies Partial<ReturnType<(typeof PostHogReact)['usePostHog']>>;
-		jest
-			.spyOn(posthogJsReact, 'usePostHog')
-			.mockReturnValue(postHog as unknown as ReturnType<(typeof PostHogReact)['usePostHog']>);
+		const posthog = spyOnPosthog();
 		const { result } = renderHook(() => useTracker());
-		result.current.enableTracker(true);
-		expect(postHog.identify).not.toHaveBeenCalled();
+		act(() => {
+			result.current.enableTracker(true);
+		});
+		expect(posthog.identify).not.toHaveBeenCalled();
+	});
+
+	it('should disable surveys if the user opts out', () => {
+		useLoginConfigStore.setState({ isCarbonioCE: true });
+		const posthog = spyOnPosthog();
+		jest.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
+		jest.mocked(posthog.config)!.disable_surveys = false;
+		const { result } = renderHook(() => useTracker());
+		act(() => {
+			result.current.enableTracker(false);
+		});
+		expect(posthog.set_config).toHaveBeenLastCalledWith({ disable_surveys: true });
+	});
+
+	it.each([true, false])('should set person properties is_ce if is Carbonio CE %s', (isCE) => {
+		useLoginConfigStore.setState({ isCarbonioCE: isCE });
+		const posthog = spyOnPosthog();
+		renderHook(() => useTracker());
+		expect(posthog.setPersonProperties).toHaveBeenCalledWith({ is_ce: isCE });
+	});
+
+	it('should set person properties is_ce if is carbonio CE is undefined', () => {
+		useLoginConfigStore.setState({ isCarbonioCE: undefined });
+		const posthog = spyOnPosthog();
+		renderHook(() => useTracker());
+		expect(posthog.setPersonProperties).not.toHaveBeenCalled();
 	});
 });

@@ -79,8 +79,7 @@ describe('Posthog', () => {
 		useLoginConfigStore.setState({ isCarbonioCE: true });
 		const posthog = spyOnPosthog();
 		jest.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
-		const { result } = renderHook(() => useTracker());
-		result.current.enableTracker(true);
+		renderHook(() => useTracker());
 		expect(posthog.set_config).toHaveBeenCalledWith({ disable_surveys: false });
 	});
 

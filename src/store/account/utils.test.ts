@@ -3,8 +3,14 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import { faker } from '@faker-js/faker';
+import { find } from 'lodash';
+
 import { useAccountStore } from './store';
-import { mergeAttrs, mergePrefs, mergeProps } from './utils';
+import { mergeAttrs, mergePrefs, mergeProps, updateIdentities } from './utils';
+import { setupAccountStore } from '../../tests/account-utils';
+import type { Identity } from '../../types/account';
+import type { IdentityMods } from '../../types/network';
 
 const zimlet = 'carbonio-ui';
 
@@ -315,6 +321,147 @@ describe('utils', () => {
 					}
 				])
 			);
+		});
+	});
+
+	describe('updateIdentities', () => {
+		it('should return undefined if the account field in the state is undefined', () => {
+			setupAccountStore();
+			useAccountStore.setState((state) => ({
+				...state,
+				account: undefined
+			}));
+			const state = useAccountStore.getState();
+
+			expect(updateIdentities(state, {}, [])).toEqual(undefined);
+		});
+
+		it('should return the original identities if no mods are passed', () => {
+			setupAccountStore();
+			const state = useAccountStore.getState();
+			expect(updateIdentities(state, {}, [])).toEqual(state.account?.identities.identity);
+		});
+
+		it('should return the original identities and the new identities', () => {
+			setupAccountStore();
+			const state = useAccountStore.getState();
+			const newIdentity: Identity = {
+				_attrs: {},
+				id: faker.string.uuid()
+			};
+			expect(updateIdentities(state, {}, [newIdentity])).toEqual([
+				newIdentity,
+				...(state.account?.identities.identity ?? [])
+			]);
+		});
+
+		it('should return the original identities without the one which has to be deleted', () => {
+			setupAccountStore();
+			const state = useAccountStore.getState();
+			const identityToDeleteId = state.account?.identities.identity[0].id;
+			if (!identityToDeleteId) {
+				throw new Error('Identity not found');
+			}
+
+			const mods: IdentityMods = {
+				deleteList: [identityToDeleteId]
+			};
+			expect(updateIdentities(state, mods, [])).not.toContain(
+				expect.objectContaining({ id: identityToDeleteId })
+			);
+		});
+
+		it('should return the original identities with updated pref', () => {
+			setupAccountStore();
+			const state = useAccountStore.getState();
+			const identityToUpdateId = state.account?.identities.identity[0].id;
+			if (!identityToUpdateId) {
+				throw new Error('Identity not found');
+			}
+
+			const signatureId = faker.string.uuid();
+
+			const mods: IdentityMods = {
+				modifyList: {
+					[identityToUpdateId]: {
+						id: identityToUpdateId,
+						prefs: {
+							zimbraPrefDefaultSignatureId: signatureId
+						}
+					}
+				}
+			};
+
+			expect(updateIdentities(state, mods, [])?.[0]._attrs.zimbraPrefDefaultSignatureId).toEqual(
+				signatureId
+			);
+		});
+
+		it('should not change the name of the primary identity', () => {
+			setupAccountStore();
+			const state = useAccountStore.getState();
+			const identityToUpdateId = state.account?.identities.identity[0].id;
+			if (!identityToUpdateId) {
+				throw new Error('Identity not found');
+			}
+
+			const identityNewName = faker.person.fullName();
+
+			const mods: IdentityMods = {
+				modifyList: {
+					[identityToUpdateId]: {
+						id: identityToUpdateId,
+						prefs: {
+							zimbraPrefIdentityName: identityNewName
+						}
+					}
+				}
+			};
+
+			expect(updateIdentities(state, mods, [])?.[0].name).toEqual('DEFAULT');
+		});
+
+		it('should change the name of the non-primary identity', () => {
+			setupAccountStore();
+
+			const identityToUpdateId = faker.string.uuid();
+			useAccountStore.setState((state) => ({
+				...state,
+				...(state.account
+					? {
+							account: {
+								...state.account,
+								identities: {
+									identity: [
+										...(state.account?.identities.identity ?? []),
+										{
+											id: identityToUpdateId,
+											_attrs: {},
+											name: faker.person.fullName()
+										}
+									]
+								}
+							}
+						}
+					: {})
+			}));
+			const state = useAccountStore.getState();
+
+			const identityNewName = faker.person.fullName();
+			const mods: IdentityMods = {
+				modifyList: {
+					[identityToUpdateId]: {
+						id: identityToUpdateId,
+						prefs: {
+							zimbraPrefIdentityName: identityNewName
+						}
+					}
+				}
+			};
+
+			const result = updateIdentities(state, mods, []);
+			const updatedIdentity = find(result, (identity) => identity.id === identityToUpdateId);
+			expect(updatedIdentity?.name).toEqual(identityNewName);
 		});
 	});
 });

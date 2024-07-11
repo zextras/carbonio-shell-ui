@@ -26,7 +26,7 @@ export const TrackerProvider = ({
 		[]
 	);
 	return (
-		<PostHogProvider apiKey={'phc_NjMdbTSzxs20hL6rnKY6KpfHtcVFRzeVEik6SmgtJQM'} options={options}>
+		<PostHogProvider apiKey={POSTHOG_API_KEY} options={options}>
 			{children}
 		</PostHogProvider>
 	);

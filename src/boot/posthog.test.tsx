@@ -24,7 +24,7 @@ beforeEach(() => {
 });
 
 describe('Posthog', () => {
-	it('should opt-in posthog if it not on localhost and enableTracker is called with true value', () => {
+	it('should opt-in posthog if host is not localhost and enableTracker is called with true value', () => {
 		const posthog = spyOnPosthog();
 		const { result } = renderHook(() => useTracker());
 		act(() => {
@@ -33,7 +33,7 @@ describe('Posthog', () => {
 		expect(posthog.opt_in_capturing).toHaveBeenCalled();
 	});
 
-	it.each(['localhost', '127.0.0.1'])('should not opt-in posthog it is on %s', (host) => {
+	it.each(['localhost', '127.0.0.1'])('should not opt-in posthog if host is %s', (host) => {
 		jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue(host);
 		const posthog = spyOnPosthog();
 		const { result } = renderHook(() => useTracker());
@@ -175,7 +175,7 @@ describe('Posthog', () => {
 		expect(posthog.setPersonProperties).toHaveBeenCalledWith({ is_ce: isCE });
 	});
 
-	it('should set person properties is_ce if is carbonio CE is undefined', () => {
+	it('should not set person property is_ce if carbonio CE is undefined', () => {
 		useLoginConfigStore.setState({ isCarbonioCE: undefined });
 		const posthog = spyOnPosthog();
 		renderHook(() => useTracker());

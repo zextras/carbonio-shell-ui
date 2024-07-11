@@ -21,7 +21,7 @@ export const useAuthenticated = (): boolean => useAccountStore((s) => s.authenti
 
 /**
  * Return the authenticated user account. Throws if the user is not authenticated.
- * Note: this hook should be uses only where the user is for sure logically authenticated
+ * Note: this hook should be used only where the user is for sure logically authenticated
  */
 export const useUserAccount = (): Account => {
 	const account = useAccountStore((s) => s.account);

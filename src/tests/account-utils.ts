@@ -7,7 +7,14 @@ import { produce } from 'immer';
 
 import { LOGGED_USER } from './constants';
 import { useAccountStore } from '../store/account';
-import type { Account, AccountSettingsPrefs, Identity, IdentityAttrs } from '../types/account';
+import type {
+	Account,
+	AccountSettingsAttrs,
+	AccountSettingsPrefs,
+	Identity,
+	IdentityAttrs,
+	ZimletProp
+} from '../types/account';
 
 export const mockedAccount: Account = {
 	name: LOGGED_USER.name,
@@ -18,15 +25,25 @@ export const mockedAccount: Account = {
 	identities: LOGGED_USER.identities
 };
 
-export function setupAccountStore(
+type SetupAccountStoreSettings = {
+	account?: Account;
+	accountSettingsPrefs?: AccountSettingsPrefs;
+	accountSettingsProps?: Array<ZimletProp>;
+	accountSettingsAttrs?: AccountSettingsAttrs;
+};
+
+export function setupAccountStore({
 	account = mockedAccount,
-	accountSettingsPrefs: AccountSettingsPrefs = {}
-): void {
+	accountSettingsPrefs = {},
+	accountSettingsProps = [],
+	accountSettingsAttrs = { zimbraIdentityMaxNumEntries: 20 }
+}: SetupAccountStoreSettings = {}): void {
 	useAccountStore.setState(
 		produce((state) => {
 			state.account = account;
-			state.settings.attrs.zimbraIdentityMaxNumEntries = 20;
+			state.settings.attrs = accountSettingsAttrs;
 			state.settings.prefs = accountSettingsPrefs;
+			state.settings.props = accountSettingsProps;
 		})
 	);
 }

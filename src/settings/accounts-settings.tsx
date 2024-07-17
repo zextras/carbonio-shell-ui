@@ -44,7 +44,7 @@ export type AccountsSettingsBatchRequest = BatchRequest<{
 	DeleteIdentityRequest?: Array<DeleteIdentityRequest>;
 }>;
 
-type AccountsSettingsBatchResponse = BatchResponse<{
+export type AccountsSettingsBatchResponse = BatchResponse<{
 	ModifyIdentityResponse?: ModifyIdentityResponse[];
 	DeleteIdentityResponse?: DeleteIdentityResponse[];
 	CreateIdentityResponse?: CreateIdentityResponse[];

@@ -16,11 +16,13 @@ export type LoginConfigStore = {
 	carbonioWebUiDarkPrimaryColor?: string;
 	carbonioWebUiLogoutURL?: string;
 	loaded: boolean;
+	isCarbonioCE: boolean | undefined;
 };
 
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage
 export const useLoginConfigStore = create<LoginConfigStore>()(() => ({
 	loaded: false,
+	isCarbonioCE: undefined,
 	// setup defaults for fields which does not depend on dark mode
 	carbonioWebUiTitle: 'Carbonio Client',
 	// default to png because this icon is used also in notification, and svg are not supported there

@@ -101,5 +101,3 @@ jest.mock<typeof import('./workers')>('./workers');
 jest.mock<typeof import('./reporting/functions')>('./reporting/functions');
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 jest.mock<typeof import('./reporting/store')>('./reporting/store');
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-jest.mock<typeof import('./boot/matomo')>('./boot/matomo');

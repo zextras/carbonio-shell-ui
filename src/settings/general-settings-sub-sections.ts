@@ -31,11 +31,16 @@ export const quotaSubSection = (t: TFunction): SettingsSubSection => ({
 	label: t('user_quota.title', "User's quota"),
 	id: 'user_quota'
 });
+
+export const privacySubSection = (t: TFunction): SettingsSubSection => ({
+	label: t('settings.general.privacy', 'Privacy'),
+	id: 'privacy-settings'
+});
+
 export const accountSubSection = (t: TFunction): SettingsSubSection => ({
 	label: t('settings.general.account', 'Account'),
 	id: 'account'
 });
-
 export const settingsSubSections = (t: TFunction): Array<SettingsSubSection> => [
 	appearanceSubSection(t),
 	timezoneAndLanguageSubSection(t),
@@ -43,5 +48,6 @@ export const settingsSubSections = (t: TFunction): Array<SettingsSubSection> => 
 	searchPrefsSubSection(t),
 	versionsSubSection(t),
 	quotaSubSection(t),
+	privacySubSection(t),
 	accountSubSection(t)
 ];

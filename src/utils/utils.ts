@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import type { CSSProperties } from 'react';
-import type React from 'react';
 
 import { reduce } from 'lodash';
 
@@ -21,7 +20,7 @@ export type ElementSize = {
 export type SizeAndPosition = ElementPosition & ElementSize;
 
 export const testFolderIsChecked = ({ string }: { string: string | undefined }): boolean =>
-	/#/.test(string || '');
+	/#/.test(string ?? '');
 
 export function setGlobalCursor(cursor: CSSProperties['cursor']): void {
 	// remove previously set cursor
@@ -46,10 +45,6 @@ export function setElementSizeAndPosition(
 	element.style[key] = value !== undefined ? `${value}px` : '';
 }
 
-export function stopPropagation(event: Event | React.SyntheticEvent): void {
-	event.stopPropagation();
-}
-
 export function createExportForTestOnly<TObj extends Record<string, unknown>>(
 	objToExport: TObj
 ): { [K in keyof TObj]: TObj[K] | undefined } {
@@ -57,10 +52,12 @@ export function createExportForTestOnly<TObj extends Record<string, unknown>>(
 		? objToExport
 		: reduce(
 				objToExport,
-				(accumulator, value, key) => {
+				(accumulator, _value, key) => {
 					accumulator[key as keyof TObj] = undefined;
 					return accumulator;
 				},
 				{} as Record<keyof TObj, undefined>
 			);
 }
+
+export const getCurrentLocationHost = (): string => window.location.host;

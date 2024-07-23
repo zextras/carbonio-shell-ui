@@ -15,6 +15,7 @@ import AppLoaderMounter from './app/app-loader-mounter';
 import { registerDefaultViews } from './app/default-views';
 import { ContextBridge } from './context-bridge';
 import { Loader } from './loader';
+import { TrackerProvider } from './posthog';
 import ShellI18nextProvider from './shell-i18n-provider';
 import { ThemeProvider } from './theme-provider';
 import { BASENAME, IS_FOCUS_MODE } from '../constants';
@@ -39,27 +40,29 @@ export const DefaultViewsRegister = (): null => {
 };
 
 const Bootstrapper: FC = () => (
-	<ThemeProvider>
-		<ShellI18nextProvider>
-			<BrowserRouter basename={BASENAME}>
-				<SnackbarManager>
-					<Loader />
-					{IS_FOCUS_MODE && (
-						<Switch>
-							<Route path={'/:route'}>
-								<FocusModeListener />
-							</Route>
-						</Switch>
-					)}
-					<DefaultViewsRegister />
-					<NotificationPermissionChecker />
-					<ContextBridge />
-					<AppLoaderMounter />
-					<ShellView />
-				</SnackbarManager>
-			</BrowserRouter>
-		</ShellI18nextProvider>
-	</ThemeProvider>
+	<TrackerProvider>
+		<ThemeProvider>
+			<ShellI18nextProvider>
+				<BrowserRouter basename={BASENAME}>
+					<SnackbarManager>
+						<Loader />
+						{IS_FOCUS_MODE && (
+							<Switch>
+								<Route path={'/:route'}>
+									<FocusModeListener />
+								</Route>
+							</Switch>
+						)}
+						<DefaultViewsRegister />
+						<NotificationPermissionChecker />
+						<ContextBridge />
+						<AppLoaderMounter />
+						<ShellView />
+					</SnackbarManager>
+				</BrowserRouter>
+			</ShellI18nextProvider>
+		</ThemeProvider>
+	</TrackerProvider>
 );
 
 export default Bootstrapper;

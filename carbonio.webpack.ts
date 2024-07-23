@@ -6,12 +6,15 @@
 
 import { execSync } from 'child_process';
 import CopyPlugin from 'copy-webpack-plugin';
+import dotenv from 'dotenv';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
 import { ContextReplacementPlugin, DefinePlugin } from 'webpack';
 import type { WebpackConfiguration } from 'webpack-cli';
 
 import { SUPPORTED_LOCALES } from './src/constants/locales';
+
+dotenv.config();
 
 const commitHash = execSync('git rev-parse HEAD').toString().trim();
 
@@ -70,7 +73,8 @@ const configFn = (
 		}),
 		new DefinePlugin({
 			COMMIT_ID: JSON.stringify(commitHash.toString().trim()),
-			BASE_PATH: JSON.stringify(baseStaticPath)
+			BASE_PATH: JSON.stringify(baseStaticPath),
+			POSTHOG_API_KEY: JSON.stringify(process.env.POSTHOG_API_KEY)
 		}),
 		new HtmlWebpackPlugin({
 			inject: true,

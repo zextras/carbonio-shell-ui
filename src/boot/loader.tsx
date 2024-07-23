@@ -11,11 +11,13 @@ import { find } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import { loadApps, unloadAllApps } from './app/load-apps';
+import { useTracker } from './posthog';
 import { IS_FOCUS_MODE } from '../constants';
 import { getComponents } from '../network/get-components';
 import { getInfo } from '../network/get-info';
 import { loginConfig } from '../network/login-config';
 import { goToLogin } from '../network/utils';
+import { useAccountStore } from '../store/account';
 import { useAppStore } from '../store/app';
 
 export function isPromiseRejectedResult<T>(
@@ -64,6 +66,16 @@ export const LoaderFailureModal = ({
 export const Loader = (): React.JSX.Element => {
 	const [open, setOpen] = useState(false);
 	const closeHandler = useCallback(() => setOpen(false), []);
+
+	const carbonioPrefSendAnalytics = useAccountStore(
+		(state) => state.settings.prefs.carbonioPrefSendAnalytics
+	);
+
+	const { enableTracker } = useTracker();
+
+	useEffect(() => {
+		enableTracker(carbonioPrefSendAnalytics === 'TRUE');
+	}, [carbonioPrefSendAnalytics, enableTracker]);
 
 	useEffect(() => {
 		Promise.allSettled([loginConfig(), getComponents(), getInfo()]).then(

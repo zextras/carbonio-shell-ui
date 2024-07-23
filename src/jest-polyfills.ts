@@ -5,6 +5,7 @@
  */
 
 import { noop } from 'lodash';
+import { createHash } from 'node:crypto';
 
 // Define browser objects not available in jest
 // https://jestjs.io/docs/en/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
@@ -48,5 +49,19 @@ Object.defineProperty(window, 'ResizeObserver', {
 			unobserve: noop,
 			disconnect: noop
 		};
+	}
+});
+
+Object.defineProperty(window.crypto, 'subtle', {
+	writable: true,
+	value: {
+		digest(algorithm: AlgorithmIdentifier, data: BufferSource): Promise<ArrayBuffer> {
+			return new Promise((resolve) => {
+				const decoder = new TextDecoder();
+				const dataString = decoder.decode(data);
+				const alg = typeof algorithm === 'string' ? algorithm : algorithm.name;
+				setTimeout(() => resolve(createHash(alg).update(dataString).digest()), 0);
+			});
+		}
 	}
 });

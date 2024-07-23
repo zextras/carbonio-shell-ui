@@ -111,6 +111,8 @@ export interface AccountSettingsPrefs {
     // (undocumented)
     [key: string]: string | number | Array<string | number> | undefined;
     // (undocumented)
+    carbonioPrefSendAnalytics?: BooleanString;
+    // (undocumented)
     zimbraPrefDelegatedSendSaveTarget?: (typeof DELEGATED_SEND_SAVE_TARGET)[number];
     // (undocumented)
     zimbraPrefExternalSendersType?: 'ALL' | 'ALLNOTINAB' | 'INAB' | 'INSD';
@@ -1468,14 +1470,11 @@ type TagActionResponse = SoapBody<{
 export type Tags = Record<string, Tag>;
 
 // @public (undocumented)
-export class Tracker {
-    constructor(siteId: number);
+interface Tracker {
     // (undocumented)
-    static enableTracker(isEnabled: boolean): void;
+    enableTracker: (enable: boolean) => void;
     // (undocumented)
-    trackEvent(category: string, action: string, name?: string, value?: number): void;
-    // (undocumented)
-    trackPageView(customTitle?: string): void;
+    reset: () => void;
 }
 
 // Warning: (ae-forgotten-export) The symbol "UpdateAccountParams" needs to be exported by the entry point lib.d.ts
@@ -1593,6 +1592,9 @@ export const useIntegratedComponent: (id: string) => [React_2.FunctionComponent<
 // @public (undocumented)
 export const useIntegratedFunction: (id: string) => [AnyFunction, boolean];
 
+// @public
+export function useIsCarbonioCE(): boolean | undefined;
+
 // @public @deprecated (undocumented)
 export function useIsMobile(): boolean;
 
@@ -1636,7 +1638,12 @@ export const useSearchFolders: () => Searches;
 // @public (undocumented)
 export const useTags: (ids?: Array<string> | string) => Tags;
 
+// Warning: (ae-forgotten-export) The symbol "Tracker" needs to be exported by the entry point lib.d.ts
+//
 // @public (undocumented)
+export const useTracker: () => Tracker;
+
+// @public
 export const useUserAccount: () => Account;
 
 // @public (undocumented)
@@ -1734,11 +1741,11 @@ interface ZimletProp {
 // lib/types/account/index.d.ts:38:9 - (ae-forgotten-export) The symbol "Signature" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:43:5 - (ae-forgotten-export) The symbol "AccountRights" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:47:5 - (ae-forgotten-export) The symbol "StringOfLength" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:95:5 - (ae-forgotten-export) The symbol "AccountSettingsAttrs" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:97:5 - (ae-forgotten-export) The symbol "ZimletProp" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:141:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:146:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:147:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:96:5 - (ae-forgotten-export) The symbol "AccountSettingsAttrs" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:98:5 - (ae-forgotten-export) The symbol "ZimletProp" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:142:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:147:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:148:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
 // lib/types/apps/index.d.ts:66:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:85:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:104:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts

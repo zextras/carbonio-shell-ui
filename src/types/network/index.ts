@@ -13,6 +13,7 @@ import type {
 	AccountSettingsPrefs,
 	Identity,
 	IdentityAttrs,
+	Signature,
 	ZimletProp
 } from '../account';
 
@@ -51,7 +52,7 @@ export type GetInfoResponse = {
 		_attrs: AccountSettingsPrefs;
 	};
 	signatures: {
-		signature: Array<unknown>;
+		signature: Array<Signature>;
 	};
 	identities: {
 		identity: Array<Identity>;

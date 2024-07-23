@@ -30,11 +30,22 @@ export interface Identity {
 	_attrs: IdentityAttrs;
 }
 
+export type Signature = {
+	name: string;
+	id: string;
+	content?: [
+		{
+			type: 'text/plain' | 'text/html';
+			_content: string;
+		}
+	];
+};
+
 export type Account = {
 	id: string;
 	name: string;
 	displayName: string;
-	signatures: { signature: Array<unknown> };
+	signatures: { signature: Array<Signature> };
 	identities: { identity: Array<Identity> };
 	rights: AccountRights;
 };
@@ -87,6 +98,7 @@ export interface AccountSettingsPrefs {
 	 * @deprecated the timezone preference is going to be removed, because now we rely on the system timezone.
 	 */
 	zimbraPrefTimeZoneId?: string;
+	carbonioPrefSendAnalytics?: BooleanString;
 	[key: string]: string | number | Array<string | number> | undefined;
 }
 

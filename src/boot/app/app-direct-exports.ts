@@ -46,7 +46,9 @@ export {
 	useUserRights,
 	getUserRight,
 	getUserRights,
-	useAuthenticated
+	useAuthenticated,
+	updateSettings,
+	updateAccount
 } from '../../store/account';
 
 export { getTags, useTags } from '../../store/tags';
@@ -132,4 +134,6 @@ export const {
 	upsertApp
 } = useAppStore.getState();
 
-export { Tracker } from '../tracker';
+export { useIsCarbonioCE } from '../../store/login/hooks';
+
+export { useTracker } from '../posthog';

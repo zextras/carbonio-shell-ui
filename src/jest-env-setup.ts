@@ -11,6 +11,8 @@ import failOnConsole from 'jest-fail-on-console';
 import { forEach, noop } from 'lodash';
 
 import server from './mocks/server';
+// this can be removed once migrated to Node 22 (https://github.com/wojtekmaj/react-pdf/wiki/Upgrade-guide-from-version-8.x-to-9.x#dropped-support-for-older-browsers-and-nodejs-versions)
+import 'core-js/proposals/promise-with-resolvers';
 
 dotenv.config();
 

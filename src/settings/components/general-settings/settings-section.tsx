@@ -29,7 +29,7 @@ export const SettingsSection = ({
 		data-testid={id}
 		background={'gray6'}
 	>
-		<Text weight={'bold'} size={'medium'} lineHeight={1.5}>
+		<Text weight={'bold'} size={'large'} lineHeight={1.5}>
 			{label}
 		</Text>
 		{children}

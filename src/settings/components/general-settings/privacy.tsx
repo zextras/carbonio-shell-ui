@@ -66,10 +66,10 @@ export const Privacy = ({
 				value={checkboxValue}
 				label={t('settings.privacy.allowAnalytics.label', 'Allow data analytics')}
 				onClick={toggleCheckboxValue}
-				size={'small'}
+				size={'medium'}
 			/>
-			<Padding left={'1.5rem'}>
-				<Text overflow={'break-word'} size={'small'} lineHeight={1.5} color={'gray1'}>
+			<Padding left={'2rem'}>
+				<Text overflow={'break-word'} size={'medium'} lineHeight={1.5} color={'gray1'}>
 					{t(
 						'settings.privacy.allowAnalytics.description',
 						'Your data is safe. All information we gather is and will stay anonymous. It will be used by our team to understand how can we improve Carbonio.'

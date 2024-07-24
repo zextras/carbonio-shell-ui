@@ -165,21 +165,24 @@ export const Loader = (): React.JSX.Element => {
 
 			const oneMinute = 60 * 1000;
 			expirationTimeouts.push(
-				setTimeout(() => {
-					createSnackbar({
-						severity: 'warning',
-						key: 'one-minute-from-expiration-snackbar',
-						autoHideTimeout: Math.min(oneMinute, sessionLifetime),
-						label: t(
-							'snackbar.expiration.threeMinutes',
-							"Your session will expire in 60 seconds. After that, you'll be redirected to the login page."
-						),
-						actionLabel: t('snackbar.expiration.action', 'Go to login page'),
-						onActionClick: logoutFn,
-						replace: true
-					});
-					expirationTimeouts.push(setTimeout(logoutFn, Math.min(oneMinute, sessionLifetime)));
-				}, sessionLifetime - oneMinute)
+				setTimeout(
+					() => {
+						createSnackbar({
+							severity: 'warning',
+							key: 'one-minute-from-expiration-snackbar',
+							autoHideTimeout: Math.min(oneMinute, sessionLifetime),
+							label: t(
+								'snackbar.expiration.threeMinutes',
+								"Your session will expire in 60 seconds. After that, you'll be redirected to the login page."
+							),
+							actionLabel: t('snackbar.expiration.action', 'Go to login page'),
+							onActionClick: logoutFn,
+							replace: true
+						});
+						expirationTimeouts.push(setTimeout(logoutFn, Math.min(oneMinute, sessionLifetime)));
+					},
+					Math.max(sessionLifetime - oneMinute, 0)
+				)
 			);
 		}
 

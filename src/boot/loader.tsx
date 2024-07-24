@@ -172,7 +172,7 @@ export const Loader = (): React.JSX.Element => {
 							key: 'one-minute-from-expiration-snackbar',
 							autoHideTimeout: Math.min(oneMinute, sessionLifetime),
 							label: t(
-								'snackbar.expiration.threeMinutes',
+								'snackbar.expiration.oneMinute',
 								"Your session will expire in 60 seconds. After that, you'll be redirected to the login page."
 							),
 							actionLabel: t('snackbar.expiration.action', 'Go to login page'),

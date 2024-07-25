@@ -22,7 +22,7 @@ import type { SettingsHeaderProps } from './components/settings-header';
 import { SettingsHeader } from './components/settings-header';
 import type { ResetComponentImperativeHandler } from './components/utils';
 import { appearanceSubSection, privacySubSection } from './general-settings-sub-sections';
-import { LanguageAndTimeZoneSettings } from './language-and-timezone-settings';
+import { LanguageSettings } from './language-settings';
 import { JSNS, LOCAL_STORAGE_SETTINGS_KEY, SHELL_APP_ID } from '../constants';
 import { getSoapFetch } from '../network/fetch';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
@@ -194,7 +194,7 @@ const GeneralSettings = (): React.JSX.Element => {
 
 	const scalingSettingSectionRef = useRef<ResetComponentImperativeHandler>(null);
 	const darkThemeSettingSectionRef = useRef<ResetComponentImperativeHandler>(null);
-	const languageAndTimeZoneSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
+	const languageSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
 	const outOfOfficeSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
 	const searchSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
 	const privacySettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
@@ -205,7 +205,7 @@ const GeneralSettings = (): React.JSX.Element => {
 			scalingSettingSectionRef.current?.reset();
 		}
 		darkThemeSettingSectionRef.current?.reset();
-		languageAndTimeZoneSettingsSectionRef.current?.reset();
+		languageSettingsSectionRef.current?.reset();
 		outOfOfficeSettingsSectionRef.current?.reset();
 		searchSettingsSectionRef.current?.reset();
 		privacySettingsSectionRef.current?.reset();
@@ -242,12 +242,12 @@ const GeneralSettings = (): React.JSX.Element => {
 						removeMod={removeMod}
 					/>
 				</SettingsSection>
-				<LanguageAndTimeZoneSettings
+				<LanguageSettings
 					settings={userSettings}
 					addMod={addMod}
 					open={open}
 					setOpen={setOpen}
-					resetRef={languageAndTimeZoneSettingsSectionRef}
+					resetRef={languageSettingsSectionRef}
 				/>
 
 				<OutOfOfficeSettings

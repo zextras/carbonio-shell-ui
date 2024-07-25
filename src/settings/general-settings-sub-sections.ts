@@ -11,9 +11,9 @@ export const appearanceSubSection = (t: TFunction): SettingsSubSection => ({
 	label: t('settings.general.appearance', 'Appearance'),
 	id: 'appearance'
 });
-export const timezoneAndLanguageSubSection = (t: TFunction): SettingsSubSection => ({
-	label: t('settings.timezone_and_language', 'Time Zone and Language'),
-	id: 'timezone_and_language'
+export const languageSubSection = (t: TFunction): SettingsSubSection => ({
+	label: t('settings.timezone_and_language', 'Language'),
+	id: 'language'
 });
 export const outOfOfficeSubSection = (t: TFunction): SettingsSubSection => ({
 	label: t('settings.out_of_office.headings.settings_label', 'Out of Office Settings'),
@@ -43,7 +43,7 @@ export const accountSubSection = (t: TFunction): SettingsSubSection => ({
 });
 export const settingsSubSections = (t: TFunction): Array<SettingsSubSection> => [
 	appearanceSubSection(t),
-	timezoneAndLanguageSubSection(t),
+	languageSubSection(t),
 	outOfOfficeSubSection(t),
 	searchPrefsSubSection(t),
 	versionsSubSection(t),

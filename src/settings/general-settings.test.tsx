@@ -9,8 +9,8 @@ import 'jest-styled-components';
 import { screen, waitFor, within } from '@testing-library/react';
 import { find } from 'lodash';
 
-import type { LocaleDescriptorWithLabels, TimeZoneDescriptor } from './components/utils';
-import { localeList, timeZoneList } from './components/utils';
+import type { LocaleDescriptorWithLabels } from './components/utils';
+import { localeList } from './components/utils';
 import GeneralSettings from './general-settings';
 import { useAccountStore } from '../store/account';
 import { useI18nStore } from '../store/i18n/store';
@@ -21,35 +21,7 @@ import type { AccountSettingsPrefs } from '../types/account';
 
 describe('General setting', () => {
 	const { defaultI18n } = useI18nStore.getState();
-	const timeZoneArray = timeZoneList(defaultI18n.t);
 	const localeArray = localeList(defaultI18n.t);
-	test('When timezone is changed, discard button become enabled and when clicked the initial value is restored', async () => {
-		const zimbraPrefTimeZoneIdValue = 'UTC';
-
-		useAccountStore.setState((previousState) => ({
-			...previousState,
-			settings: {
-				...previousState.settings,
-				prefs: { zimbraPrefTimeZoneId: zimbraPrefTimeZoneIdValue }
-			}
-		}));
-		const { user } = setup(<GeneralSettings />);
-		const match = find(
-			timeZoneArray,
-			(item) => item.value === zimbraPrefTimeZoneIdValue
-		) as TimeZoneDescriptor;
-		expect(match).toBeDefined();
-		expect(screen.getByText(match.label)).toBeVisible();
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
-		await user.click(screen.getByText(match.label));
-		await user.click(
-			within(screen.getByTestId(TESTID_SELECTORS.dropdown)).getByText(timeZoneArray[0].label)
-		);
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
-		await user.click(screen.getByRole('button', { name: /discard changes/i }));
-		expect(screen.getByText(match.label)).toBeVisible();
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
-	});
 
 	test('When locale is changed, discard button become enabled and when clicked the initial value is restored', async () => {
 		const zimbraPrefLocaleValue = 'en';

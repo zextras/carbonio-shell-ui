@@ -47,11 +47,13 @@ export const parsePollingInterval = (settings: AccountSettings): number => {
  * overridden by the server response/errors
  * @param res
  */
-export const getPollingInterval = (res: RawSoapResponse<{ waitDisallowed?: number }>): number => {
+export const getPollingInterval = (res: RawSoapResponse<{
+	NoOpResponse?: { waitDisallowed? : boolean }
+}>): number => {
 	const { pollingInterval } = useNetworkStore.getState();
 	const { settings } = useAccountStore.getState();
-	const waitDisallowed = res.Body && !('Fault' in res.Body) && res.Body.waitDisallowed;
-	const fault = res.Body && 'Fault' in res.Body && res.Body.Fault;
+	const waitDisallowed = res?.Body && !('Fault' in res?.Body) && res?.Body?.NoOpResponse && res.Body?.NoOpResponse?.waitDisallowed;
+	const fault = res?.Body && 'Fault' in res?.Body && res?.Body?.Fault;
 	if (fault) {
 		return POLLING_RETRY_INTERVAL;
 	}

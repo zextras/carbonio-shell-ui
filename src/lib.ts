@@ -25,7 +25,6 @@ import type { report as reportApp } from './reporting/functions';
 export * from './constants';
 export * from './ui-extras/app-link';
 export * from './ui-extras/spinner';
-export * from './settings/components/settings-header';
 export * from './boot/app/app-direct-exports';
 
 export declare const report: ReturnType<typeof reportApp>;

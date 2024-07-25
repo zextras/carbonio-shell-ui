@@ -12,6 +12,7 @@ import styled from 'styled-components';
 
 import AppViewContainer from './app-view-container';
 import { BoardContainer } from './boards/board-container';
+import { useAccountSettingsListener } from './hooks/useAccountSettingsListener';
 import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellPrimaryBar from './shell-primary-bar';
@@ -19,6 +20,7 @@ import ShellSecondaryBar from './shell-secondary-bar';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
 import { IS_FOCUS_MODE } from '../constants';
 import { useDarkReaderResultValue } from '../dark-mode/use-dark-reader-result-value';
+import { useSettingsViewDeprecationBridge } from '../settings/deprecation-bridge';
 import { ShellUtilityBar } from '../utility-bar/bar';
 import { ShellUtilityPanel } from '../utility-bar/panel';
 
@@ -74,12 +76,17 @@ const ShellComponent = (): React.JSX.Element => (
 	</Background>
 );
 
-const ShellView = (): React.JSX.Element => (
-	<ShellContextProvider>
-		<PreviewManager>
-			<ShellComponent />
-		</PreviewManager>
-	</ShellContextProvider>
-);
+const ShellView = (): React.JSX.Element => {
+	useAccountSettingsListener();
+	useSettingsViewDeprecationBridge();
+
+	return (
+		<ShellContextProvider>
+			<PreviewManager>
+				<ShellComponent />
+			</PreviewManager>
+		</ShellContextProvider>
+	);
+};
 
 export default ShellView;

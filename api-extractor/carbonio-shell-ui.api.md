@@ -20,7 +20,6 @@ import type { EventHint } from '@sentry/browser';
 import type { FC } from 'react';
 import type { i18n } from 'i18next';
 import type { LinkProps } from 'react-router-dom';
-import type { ModalProps } from '@zextras/carbonio-design-system';
 import { default as React_2 } from 'react';
 import type { TFunction } from 'i18next';
 import type { To } from 'history';
@@ -549,6 +548,13 @@ export type ErrorSoapBodyResponse = {
 export type ErrorSoapResponse = {
     Body: ErrorSoapBodyResponse;
     Header: SoapHeader;
+};
+
+// @public (undocumented)
+export const EventBus: {
+    subscribe: (event: string, callback: Subscriber) => UnsubscribeFn;
+    notify: (event: string, data: unknown) => void;
+    getLastEvent: (event: string) => unknown;
 };
 
 // @public (undocumented)
@@ -1166,18 +1172,6 @@ type Right = 'invite' | 'loginAs' | 'sendAs' | 'sendOnBehalfOf' | 'viewFreeBusy'
 export const ROOT_NAME = "USER_ROOT";
 
 // @public (undocumented)
-interface RouteLeavingGuardProps {
-    // (undocumented)
-    children: ModalProps['children'];
-    // (undocumented)
-    dataHasError?: boolean;
-    // (undocumented)
-    onSave: () => Promise<PromiseSettledResult<Awaited<unknown>>[]>;
-    // (undocumented)
-    when?: boolean;
-}
-
-// @public (undocumented)
 export const runSearch: (query: Array<QueryChip>, module: string) => void;
 
 // @public (undocumented)
@@ -1268,17 +1262,6 @@ export const setRouteVisibility: (id: string, visible: boolean) => void;
 
 // @public (undocumented)
 export const SETTINGS_APP_ID = "settings";
-
-// @public (undocumented)
-export const SettingsHeader: ({ onSave, onCancel, isDirty, title }: SettingsHeaderProps) => React_2.JSX.Element;
-
-// @public (undocumented)
-export type SettingsHeaderProps = {
-    title: string;
-    onSave: RouteLeavingGuardProps['onSave'];
-    onCancel: () => void;
-    isDirty: boolean;
-};
 
 // @public (undocumented)
 export type SettingsSubSection = {
@@ -1419,6 +1402,9 @@ type StringOfLength<Min, Max = Min> = string & {
 };
 
 // @public (undocumented)
+type Subscriber = (data: unknown) => void;
+
+// @public (undocumented)
 export interface SuccessSoapResponse<R> {
     // (undocumented)
     Body: Record<string, R>;
@@ -1474,6 +1460,9 @@ interface Tracker {
     // (undocumented)
     reset: () => void;
 }
+
+// @public (undocumented)
+type UnsubscribeFn = () => void;
 
 // Warning: (ae-forgotten-export) The symbol "UpdateAccountParams" needs to be exported by the entry point lib.d.ts
 //
@@ -1716,6 +1705,8 @@ interface ZimletProp {
 // lib/boot/app/app-dependant-exports.d.ts:28:5 - (ae-forgotten-export) The symbol "getApp_2" needs to be exported by the entry point lib.d.ts
 // lib/boot/app/app-dependant-exports.d.ts:29:5 - (ae-forgotten-export) The symbol "addBoard_2" needs to be exported by the entry point lib.d.ts
 // lib/boot/app/app-dependant-exports.d.ts:33:5 - (ae-forgotten-export) The symbol "ContextBridgeState" needs to be exported by the entry point lib.d.ts
+// lib/event-bus/event-bus.d.ts:4:5 - (ae-forgotten-export) The symbol "Subscriber" needs to be exported by the entry point lib.d.ts
+// lib/event-bus/event-bus.d.ts:4:5 - (ae-forgotten-export) The symbol "UnsubscribeFn" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:3:5 - (ae-forgotten-export) The symbol "ModifyPropertiesResponse" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:4:5 - (ae-forgotten-export) The symbol "ModifyPrefsResponse" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:5:5 - (ae-forgotten-export) The symbol "ModifyIdentityResponse" needs to be exported by the entry point lib.d.ts
@@ -1723,7 +1714,6 @@ interface ZimletProp {
 // lib/network/edit-settings.d.ts:7:5 - (ae-forgotten-export) The symbol "CreateIdentityResponse" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:8:5 - (ae-forgotten-export) The symbol "RevokeRightsResponse" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:9:5 - (ae-forgotten-export) The symbol "GrantRightsResponse" needs to be exported by the entry point lib.d.ts
-// lib/settings/components/settings-header.d.ts:5:5 - (ae-forgotten-export) The symbol "RouteLeavingGuardProps" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:23:5 - (ae-forgotten-export) The symbol "CarbonioModule" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:25:5 - (ae-forgotten-export) The symbol "AppRouteDescriptor" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:30:5 - (ae-forgotten-export) The symbol "BoardView" needs to be exported by the entry point lib.d.ts

@@ -137,3 +137,5 @@ export const {
 export { useIsCarbonioCE } from '../../store/login/hooks';
 
 export { useTracker } from '../posthog';
+
+export { EventBus } from '../../event-bus/event-bus';

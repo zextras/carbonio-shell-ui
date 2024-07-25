@@ -3,42 +3,13 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-/* eslint-disable no-param-reassign */
 
 import type { TFunction } from 'i18next';
-import { size } from 'lodash';
 
-import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
+import { SEARCH_APP_ID } from '../../constants';
 import { SearchAppView } from '../../search/search-app-view';
-import { WrappedAccountsSettings } from '../../settings/accounts-settings';
-import GeneralSettings from '../../settings/general-settings';
-import { settingsSubSections } from '../../settings/general-settings-sub-sections';
-import { SettingsAppView } from '../../settings/settings-app-view';
-import { SettingsSidebar } from '../../settings/settings-sidebar';
-import { useAccountStore } from '../../store/account';
 import { useAppStore } from '../../store/app';
-import type { AppRouteDescriptor, SettingsView } from '../../types/apps';
-
-const settingsGeneralView = (t: TFunction): SettingsView => ({
-	id: 'general',
-	route: 'general',
-	app: SHELL_APP_ID,
-	component: GeneralSettings,
-	icon: 'SettingsModOutline',
-	label: t('settings.general.general', 'General Settings'),
-	position: 1,
-	subSections: settingsSubSections(t)
-});
-
-const settingsAccountsView = (t: TFunction): SettingsView => ({
-	id: 'accounts',
-	route: 'accounts',
-	app: SHELL_APP_ID,
-	component: WrappedAccountsSettings,
-	icon: 'PersonOutline',
-	label: t('settings.accounts', 'Accounts'),
-	position: 1
-});
+import type { AppRouteDescriptor } from '../../types/apps';
 
 const searchRouteDescriptor = (t: TFunction): AppRouteDescriptor => ({
 	id: SEARCH_APP_ID,
@@ -54,27 +25,6 @@ const searchRouteDescriptor = (t: TFunction): AppRouteDescriptor => ({
 	primaryBar: 'SearchModOutline'
 });
 
-const settingsRouteDescriptor = (t: TFunction): AppRouteDescriptor => ({
-	id: SETTINGS_APP_ID,
-	app: SETTINGS_APP_ID,
-	route: SETTINGS_APP_ID,
-	appView: SettingsAppView,
-	badge: {
-		show: false
-	},
-	label: t('settings.app', 'Settings'),
-	position: 1100,
-	visible: true,
-	primaryBar: 'SettingsModOutline',
-	secondaryBar: SettingsSidebar
-});
-
 export const registerDefaultViews = (t: TFunction): void => {
-	const { attrs } = useAccountStore.getState().settings;
-	if (size(attrs) > 0 && attrs.zimbraFeatureOptionsEnabled !== 'FALSE') {
-		useAppStore.getState().addRoute(settingsRouteDescriptor(t));
-		useAppStore.getState().addSettingsView(settingsGeneralView(t));
-		useAppStore.getState().addSettingsView(settingsAccountsView(t));
-	}
 	useAppStore.getState().addRoute(searchRouteDescriptor(t));
 };

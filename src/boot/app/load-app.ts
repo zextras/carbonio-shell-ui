@@ -14,7 +14,6 @@ import * as appExports from './app-direct-exports';
 import * as CONSTANTS from '../../constants';
 import type * as ExportsForApp from '../../lib';
 import { report } from '../../reporting/functions';
-import { SettingsHeader } from '../../settings/components/settings-header';
 import { useAppStore } from '../../store/app';
 import type { CarbonioModule } from '../../types/apps';
 import { AppLink } from '../../ui-extras/app-link';
@@ -31,7 +30,6 @@ export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 					report: report(appPkg.name),
 					AppLink,
 					Spinner,
-					SettingsHeader,
 					...getAppDependantExports(appPkg),
 					...appExports,
 					...CONSTANTS

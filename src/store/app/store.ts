@@ -26,7 +26,6 @@ import type {
 	SearchView,
 	SecondaryAccessoryView,
 	SecondaryBarView,
-	SettingsView,
 	UtilityView
 } from '../../types/apps';
 
@@ -42,7 +41,6 @@ export type AppState = {
 		appView: Array<AppView>;
 		board: Array<BoardView>;
 		utilityBar: Array<UtilityView>;
-		settings: Array<SettingsView>;
 		search: Array<SearchView>;
 		primaryBarAccessories: Array<PrimaryAccessoryView>;
 		secondaryBarAccessories: Array<SecondaryAccessoryView>;
@@ -60,8 +58,6 @@ export type AppActions = {
 	updateUtilityBadge: (badge: Partial<BadgeInfo>, id: string) => void;
 	addBoardView: (data: BoardView) => string;
 	removeBoardView: (id: string) => void;
-	addSettingsView: (data: SettingsView) => string;
-	removeSettingsView: (id: string) => void;
 	addSearchView: (data: SearchView) => string;
 	removeSearchView: (id: string) => void;
 	addUtilityView: (data: UtilityView) => string;
@@ -125,7 +121,6 @@ const initialState: AppState = {
 		appView: [],
 		board: [],
 		utilityBar: [],
-		settings: [],
 		search: [],
 		primaryBarAccessories: [],
 		secondaryBarAccessories: []
@@ -259,25 +254,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 		set(
 			produce<AppState>((state) => {
 				removeById(state.views.board, id);
-			})
-		);
-	},
-	addSettingsView: (data): string => {
-		const { focusMode } = get();
-		if (focusMode && data.route !== focusMode) {
-			return FOCUS_MODE_RESPONSE;
-		}
-		set(
-			produce<AppState>((state) => {
-				addAndSort(state.views.settings, data);
-			})
-		);
-		return data.id;
-	},
-	removeSettingsView: (id): void => {
-		set(
-			produce<AppState>((state) => {
-				removeById(state.views.settings, id);
 			})
 		);
 	},

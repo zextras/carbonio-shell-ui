@@ -5,6 +5,7 @@
  */
 import { useEffect } from 'react';
 
+import { useIntegratedFunction } from '../store/integrations/hooks';
 import { useIntegrationsStore } from '../store/integrations/store';
 import type { AnyFunction } from '../utils/typeUtils';
 
@@ -45,33 +46,34 @@ const invokeFn = (fn: AnyFunction, queue: unknown[]): void => {
 };
 
 export const useSettingsViewDeprecationBridge = (): void => {
-	const integrationFunctions = useIntegrationsStore((s) => s.functions);
-	const addSettingsViewFn = integrationFunctions['add-settings-view'];
-	const removeSettingsViewFn = integrationFunctions['remove-settings-view'];
-	const addAppFn = integrationFunctions['add-app'];
-	const removeAppFn = integrationFunctions['remove-app'];
+	const [addSettingsViewFn, isAddSettingsViewFnAvailable] =
+		useIntegratedFunction('add-settings-view');
+	const [removeSettingsViewFn, isRemoveSettingsViewFnAvailable] =
+		useIntegratedFunction('remove-settings-view');
+	const [addAppFn, isAddAppFnAvailable] = useIntegratedFunction('add-app');
+	const [removeAppFn, isRemoveAppFnAvailable] = useIntegratedFunction('remove-app');
 
 	useEffect(() => {
-		if (addSettingsViewFn) {
+		if (isAddSettingsViewFnAvailable) {
 			invokeFn(addSettingsViewFn, settingViewsToAdd);
 		}
-	}, [addSettingsViewFn]);
+	}, [addSettingsViewFn, isAddSettingsViewFnAvailable]);
 
 	useEffect(() => {
-		if (removeSettingsViewFn) {
+		if (isRemoveSettingsViewFnAvailable) {
 			invokeFn(removeSettingsViewFn, settingViewsToRemove);
 		}
-	}, [removeSettingsViewFn]);
+	}, [isRemoveSettingsViewFnAvailable, removeSettingsViewFn]);
 
 	useEffect(() => {
-		if (addAppFn) {
+		if (isAddAppFnAvailable) {
 			invokeFn(addAppFn, appsToAdd);
 		}
-	}, [addAppFn]);
+	}, [addAppFn, isAddAppFnAvailable]);
 
 	useEffect(() => {
-		if (removeAppFn) {
+		if (isRemoveAppFnAvailable) {
 			invokeFn(removeAppFn, appsToRemove);
 		}
-	}, [removeAppFn]);
+	}, [isRemoveAppFnAvailable, removeAppFn]);
 };

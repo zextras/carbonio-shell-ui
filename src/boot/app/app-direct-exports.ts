@@ -115,8 +115,6 @@ export const {
 	setRouteVisibility,
 	removeRoute,
 	removeBoardView,
-	removeSettingsView,
-	removeSearchView,
 	removeUtilityView,
 	removePrimaryAccessoryView,
 	removeSecondaryAccessoryView,
@@ -139,3 +137,11 @@ export { useIsCarbonioCE } from '../../store/login/hooks';
 export { useTracker } from '../posthog';
 
 export { EventBus } from '../../event-bus/event-bus';
+
+export { SUPPORTED_LOCALES, type LocaleDescriptor } from '../../constants/locales';
+
+export { useDarkReaderResultValue } from '../../dark-mode/use-dark-reader-result-value';
+
+export { removeSettingsView } from '../../settings/deprecation-bridge';
+
+export { RouteLeavingGuard, type RouteLeavingGuardProps } from '../../ui-extras/nav-guard';

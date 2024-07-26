@@ -7,6 +7,7 @@ import { reduce } from 'lodash';
 
 import { getEditSettingsForApp } from '../../network/edit-settings';
 import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
+import { addSettingsView } from '../../settings/deprecation-bridge';
 import type { AppActions as StoreAppSetters } from '../../store/app';
 import { getApp, getAppContext, getAppContextHook, getAppHook, useAppStore } from '../../store/app';
 import {
@@ -39,7 +40,7 @@ export type AppDependantExports = {
 	setAppContext: ReturnType<StoreAppSetters['setAppContext']>;
 	addRoute: (data: Partial<AppRouteDescriptor>) => ReturnType<StoreAppSetters['addRoute']>;
 	addBoardView: (data: Omit<BoardView, 'app'>) => ReturnType<StoreAppSetters['addBoardView']>;
-	addSettingsView: (data: Partial<SettingsView>) => ReturnType<StoreAppSetters['addSettingsView']>;
+	addSettingsView: (data: Partial<SettingsView>) => ReturnType<typeof addSettingsView>;
 	addSearchView: (data: Partial<SearchView>) => ReturnType<StoreAppSetters['addSearchView']>;
 	addUtilityView: (data: Partial<UtilityView>) => ReturnType<StoreAppSetters['addUtilityView']>;
 	addPrimaryAccessoryView: (
@@ -78,7 +79,7 @@ export const getAppDependantExports = (pkg: CarbonioModule): AppDependantExports
 		addBoardView: (data: Omit<BoardView, 'app'>) =>
 			appStore.addBoardView(normalizeBoardView(data, pkg)),
 		addSettingsView: (data: Partial<SettingsView>) =>
-			appStore.addSettingsView(normalizeSettingsView(data, pkg)),
+			addSettingsView(normalizeSettingsView(data, pkg)),
 		addSearchView: (data: Partial<SearchView>) =>
 			appStore.addSearchView(normalizeSearchView(data, pkg)),
 		addUtilityView: (data: Partial<UtilityView>) =>

@@ -19,7 +19,7 @@ import { map } from 'lodash';
 
 import { useSearchStore } from './search-store';
 import { useSearchModule } from './useSearchModule';
-import AppContextProvider from '../boot/app/app-context-provider';
+import { AppContextProvider } from '../boot/app/app-context-provider';
 import { RESULT_LABEL_TYPE } from '../constants';
 import { useAppStore } from '../store/app';
 import { getT } from '../store/i18n/hooks';

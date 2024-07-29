@@ -67,7 +67,7 @@ const AccountsList = ({
 }: AccountsListProps): ReactElement => {
 	const [t] = useTranslation();
 
-	const createModal = useModal();
+	const { createModal, closeModal } = useModal();
 
 	const createListRequestIdRef = useRef(0);
 	const addNewPersona = useCallback(() => {
@@ -94,16 +94,20 @@ const AccountsList = ({
 	}, [identities, removeIdentity, selectedIdentityId, setSelectedIdentityId]);
 
 	const onDelete = useCallback((): void => {
-		const closeModal = createModal({
+		const modalId = 'delete-identity';
+		createModal({
+			id: modalId,
 			title: t('label.permanent_delete_title', 'Are you sure to permanently delete this Persona?'),
 			onConfirm: () => {
 				onConfirmDelete();
-				closeModal();
+				closeModal(modalId);
 			},
 			confirmLabel: t('label.delete_permanently', 'Delete permanently'),
 			confirmColor: 'error',
 			showCloseIcon: true,
-			onClose: () => closeModal(),
+			onClose: () => {
+				closeModal(modalId);
+			},
 			children: (
 				<Padding all="small">
 					<Text overflow="break-word">
@@ -115,7 +119,7 @@ const AccountsList = ({
 				</Padding>
 			)
 		});
-	}, [createModal, t, onConfirmDelete]);
+	}, [createModal, t, onConfirmDelete, closeModal]);
 
 	const items = useMemo(
 		() =>

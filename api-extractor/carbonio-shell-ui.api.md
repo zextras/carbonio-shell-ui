@@ -4,8 +4,6 @@
 
 ```ts
 
-/// <reference types="node" />
-
 import { Action as Action_3 } from '../../lib';
 import { AnyFunction as AnyFunction_2 } from '../../utils/typeUtils';
 import { BadgeInfo as BadgeInfo_2 } from '../../lib';
@@ -17,7 +15,6 @@ import type { DropdownItem } from '@zextras/carbonio-design-system';
 import type { DynamicThemeFix } from 'darkreader';
 import type { Event as Event_2 } from '@sentry/browser';
 import type { EventHint } from '@sentry/browser';
-import type { FC } from 'react';
 import type { i18n } from 'i18next';
 import type { LinkProps } from 'react-router-dom';
 import type { ModalProps } from '@zextras/carbonio-design-system';
@@ -196,10 +193,10 @@ export const addBoard: AppDependantExports['addBoard'];
 // Warning: (ae-forgotten-export) The symbol "BoardState" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
-const addBoard_2: (app: string) => <T = unknown>(board: Omit<Board<T>, "id" | "app" | "icon"> & {
-    id?: string | undefined;
-    icon?: string | undefined;
-}, expanded?: BoardState['expanded']) => Board;
+const addBoard_2: (app: string) => <T = unknown>(board: Omit<Board<T>, "app" | "icon" | "id"> & {
+    id?: string;
+    icon?: string;
+}, expanded?: BoardState["expanded"]) => Board;
 
 // @public (undocumented)
 export const addBoardView: AppDependantExports['addBoardView'];
@@ -276,7 +273,7 @@ type AppDependantExports = {
 };
 
 // @public (undocumented)
-export const AppLink: FC<AppLinkProps>;
+export const AppLink: ({ to, route, ...rest }: AppLinkProps) => React_2.JSX.Element;
 
 // @public (undocumented)
 export type AppLinkProps = LinkProps & {
@@ -485,7 +482,7 @@ type CreateIdentityResponse = {
 };
 
 // @public (undocumented)
-export const createTag: (tag: Omit<Tag, 'id'>) => Promise<CreateTagResponse>;
+export const createTag: (tag: Omit<Tag, "id">) => Promise<CreateTagResponse>;
 
 // @public (undocumented)
 export type CreateTagResponse = {
@@ -637,7 +634,7 @@ type GeneralizedTimeObj = {
 };
 
 // @public (undocumented)
-export const getAction: <T>(type: string, id: string, target?: T | undefined) => [Action | undefined, boolean];
+export const getAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];
 
 // @public (undocumented)
 export const getActionFactory: <T>(type: string, id: string) => [ActionFactory<T> | undefined, boolean];
@@ -646,7 +643,7 @@ export const getActionFactory: <T>(type: string, id: string) => [ActionFactory<T
 export const getActions: <T>(target: T, type: string) => Array<Action>;
 
 // @public (undocumented)
-export const getActionsFactory: (type: string) => <T>(target: T) => Array<Action>;
+export const getActionsFactory: (type: string) => (<T>(target: T) => Array<Action>);
 
 // @public (undocumented)
 export const getApp: AppDependantExports['getApp'];
@@ -685,7 +682,7 @@ export const getCurrentRoute: () => AppRoute | undefined;
 //
 // @public (undocumented)
 const getEditSettingsForApp: (app: string) => (mods: Mods) => Promise<EditSettingsBatchResponse & {
-    type: 'fulfilled';
+    type: "fulfilled";
 }>;
 
 // @public (undocumented)
@@ -729,7 +726,7 @@ export const getSearchFolder: (id: string) => SearchFolder | undefined;
 export const getSearchFolders: () => Searches;
 
 // @public (undocumented)
-const getSoapFetch: (app: string) => <Request_1, Response_1 extends Record<string, unknown>>(api: string, body: Request_1, otherAccount?: string, signal?: AbortSignal) => Promise<Response_1>;
+const getSoapFetch: (app: string) => <Request, Response extends Record<string, unknown>>(api: string, body: Request, otherAccount?: string, signal?: AbortSignal) => Promise<Response>;
 
 // @public (undocumented)
 export const getTags: (ids?: Array<string> | string) => Tags;
@@ -756,7 +753,7 @@ export const getUserSetting: <T = void>(...path: Array<string>) => string | T;
 export const getUserSettings: () => AccountSettings;
 
 // @public (undocumented)
-const getXmlSoapFetch: (app: string) => <Request_1, Response_1 extends Record<string, unknown>>(api: string, body: Request_1, otherAccount?: string) => Promise<Response_1>;
+const getXmlSoapFetch: (app: string) => <Request, Response extends Record<string, unknown>>(api: string, body: Request, otherAccount?: string) => Promise<Response>;
 
 // @public (undocumented)
 export const goBackHistory: () => void;
@@ -1085,32 +1082,32 @@ type RawSoapNotify = {
 };
 
 // @public (undocumented)
-export const registerActions: (...items: {
+export const registerActions: (...items: Array<{
     id: string;
     action: (target: unknown) => Action_3;
     type: string;
-}[]) => void;
+}>) => void;
 
 // @public (undocumented)
 export const registerComponents: AppDependantExports['registerComponents'];
 
 // @public (undocumented)
-export const registerFunctions: (...items: {
+export const registerFunctions: (...items: Array<{
     id: string;
     fn: AnyFunction_2;
-}[]) => void;
+}>) => void;
 
 // @public (undocumented)
-export const removeActions: (...ids: string[]) => void;
+export const removeActions: (...ids: Array<string>) => void;
 
 // @public (undocumented)
 export const removeBoardView: (id: string) => void;
 
 // @public (undocumented)
-export const removeComponents: (...ids: string[]) => void;
+export const removeComponents: (...ids: Array<string>) => void;
 
 // @public (undocumented)
-export const removeFunctions: (...ids: string[]) => void;
+export const removeFunctions: (...ids: Array<string>) => void;
 
 // @public (undocumented)
 export const removePrimaryAccessoryView: (id: string) => void;
@@ -1235,7 +1232,7 @@ type SearchView = CarbonioView<SearchViewProps> & {
 // @public (undocumented)
 export type SearchViewProps = {
     useQuery: () => [QueryChip[], Function];
-    ResultsHeader: FC<{
+    ResultsHeader: React_2.ComponentType<{
         label: string;
     }>;
     useDisableSearch: () => [boolean, Function];
@@ -1507,10 +1504,10 @@ type UpdateSettingsParams = {
 export const updateUtilityBadge: (badge: Partial<BadgeInfo_2>, id: string) => void;
 
 // @public
-export const upsertApp: (app: Pick<CarbonioModule_2, "description" | "name" | "display">) => void;
+export const upsertApp: (app: Pick<CarbonioModule_2, "name" | "display" | "description">) => void;
 
 // @public (undocumented)
-export const useAction: <T>(type: string, id: string, target?: T | undefined) => [Action | undefined, boolean];
+export const useAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];
 
 // @public (undocumented)
 export const useActionFactory: <T>(type: string, id: string) => [ActionFactory<T> | undefined, boolean];
@@ -1519,7 +1516,7 @@ export const useActionFactory: <T>(type: string, id: string) => [ActionFactory<T
 export const useActions: <T>(target: T, type: string) => Array<Action>;
 
 // @public (undocumented)
-export const useActionsFactory: (type: string) => <T>(target: T) => Array<Action>;
+export const useActionsFactory: (type: string) => (<T>(target: T) => Array<Action>);
 
 // @public (undocumented)
 export const useApp: AppDependantExports['useApp'];
@@ -1556,7 +1553,7 @@ export const useFolders: () => Folders;
 // @public (undocumented)
 export const useFoldersAccordionByView: (view: FolderView, CustomComponent: ComponentType<{
     folder: Folder;
-}>, itemProps?: ((item: AccordionFolder) => Record<string, unknown>) | undefined) => Array<AccordionFolder>;
+}>, itemProps?: (item: AccordionFolder) => Record<string, unknown>) => Array<AccordionFolder>;
 
 // @public (undocumented)
 export const useFoldersByView: (view: FolderView) => Array<Folder>;
@@ -1582,13 +1579,13 @@ export function useLocalStorage<T>(key: string, initialValue: T, options?: Local
 export const useNotify: () => SoapNotify[];
 
 // @public (undocumented)
-export const usePushHistoryCallback: () => (params: HistoryParams) => void;
+export const usePushHistoryCallback: () => ((params: HistoryParams) => void);
 
 // @public (undocumented)
 export const useRefresh: () => SoapRefresh;
 
 // @public (undocumented)
-export const useReplaceHistoryCallback: () => (params: HistoryParams) => void;
+export const useReplaceHistoryCallback: () => ((params: HistoryParams) => void);
 
 // @public (undocumented)
 type UserFolder = BaseFolder & FolderFields & {
@@ -1646,7 +1643,7 @@ type UtilityView = CarbonioAccessoryView<UtilityBarComponentProps> & {
 };
 
 // @public (undocumented)
-type ValueOf<T extends Record<string, unknown>> = T[keyof T];
+type ValueOf<T> = T[keyof T];
 
 // @public (undocumented)
 type WorkerMessage<T> = {
@@ -1721,7 +1718,7 @@ interface ZimletProp {
 // lib/types/misc/index.d.ts:120:5 - (ae-forgotten-export) The symbol "Meta" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:124:5 - (ae-forgotten-export) The symbol "SoapRetentionPolicy" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:138:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
-// lib/types/network/index.d.ts:107:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
+// lib/types/network/index.d.ts:106:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:11:5 - (ae-forgotten-export) The symbol "NameSpace" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:65:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
 // lib/types/workers/index.d.ts:12:5 - (ae-forgotten-export) The symbol "SyncMessage" needs to be exported by the entry point lib.d.ts

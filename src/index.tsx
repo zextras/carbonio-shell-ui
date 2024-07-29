@@ -8,7 +8,7 @@
 import './index.css';
 import React, { lazy, Suspense } from 'react';
 
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 
 import { LoadingView } from './boot/splash';
 import '@fontsource/roboto/300.css';
@@ -42,9 +42,11 @@ if (module.hot) {
 	module.hot.accept();
 }
 
-ReactDOM.render(
-	<Suspense fallback={<LoadingView />}>
-		<Bootstrapper key="boot" />
-	</Suspense>,
-	document.getElementById('app')
+const root = ReactDOM.createRoot(document.getElementById('app')!);
+root.render(
+	<React.StrictMode>
+		<Suspense fallback={<LoadingView />}>
+			<Bootstrapper key="boot" />
+		</Suspense>
+	</React.StrictMode>
 );

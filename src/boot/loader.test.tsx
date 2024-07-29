@@ -8,10 +8,13 @@ import React from 'react';
 import { act, screen } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 
+import type * as loadAppsModule from './app/load-apps';
 import { Loader } from './loader';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
 import server, { waitForResponse } from '../mocks/server';
 import { controlConsoleError, setup } from '../tests/utils';
+
+jest.mock<typeof loadAppsModule>('./app/load-apps');
 
 describe('Loader', () => {
 	test('If only getComponents request fails, the LoaderFailureModal appears', async () => {
@@ -94,6 +97,9 @@ describe('Loader', () => {
 		await screen.findByTestId('loader');
 		await componentsRes;
 		await getInfoRes;
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
 		expect(screen.queryByText('Something went wrong...')).not.toBeInTheDocument();
 	});
 

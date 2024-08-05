@@ -13,8 +13,7 @@ import {
 	Divider,
 	FormSubSection,
 	Text,
-	Tooltip,
-	useTheme
+	Tooltip
 } from '@zextras/carbonio-design-system';
 import { map } from 'lodash';
 
@@ -27,7 +26,6 @@ import { versionsSubSection } from '../../general-settings-sub-sections';
 const ModuleVersionSettings = (): React.JSX.Element => {
 	const apps = useAppList();
 	const t = getT();
-	const theme = useTheme();
 
 	const copyToClipboard = useCallback<NonNullable<TextProps['onClick']>>((e) => {
 		e.preventDefault();
@@ -43,36 +41,34 @@ const ModuleVersionSettings = (): React.JSX.Element => {
 	const sectionTitle = useMemo(() => versionsSubSection(t), [t]);
 
 	return (
-		<>
-			<FormSubSection
-				label={sectionTitle.label}
-				minWidth="calc(min(100%, 32rem))"
-				width="50%"
-				id={sectionTitle.id}
-			>
-				{map(filteredList, (app: CarbonioModule) => (
-					<Container key={app.name} padding={{ horizontal: 'large', vertical: 'small' }}>
-						<Container orientation="horizontal" mainAlignment="space-between">
-							<Text>{app.display}</Text>
-							<Tooltip placement="top" label={t('label.click_to_copy', 'Click to copy')}>
-								<Text style={{ cursor: 'pointer' }} onClick={copyToClipboard}>
-									Version: {app.version}
-								</Text>
-							</Tooltip>
-						</Container>
-						<Container
-							orientation="horizontal"
-							mainAlignment="space-between"
-							padding={{ top: 'extrasmall', bottom: 'medium' }}
-						>
-							<Text color="secondary">{app.description}</Text>
-							<Badge value="Active" color={'gray6'} backgroundColor={'success'} />
-						</Container>
-						<Divider color="gray2" />
+		<FormSubSection
+			label={sectionTitle.label}
+			minWidth="calc(min(100%, 32rem))"
+			width="50%"
+			id={sectionTitle.id}
+		>
+			{map(filteredList, (app: CarbonioModule) => (
+				<Container key={app.name} padding={{ horizontal: 'large', vertical: 'small' }}>
+					<Container orientation="horizontal" mainAlignment="space-between">
+						<Text>{app.display}</Text>
+						<Tooltip placement="top" label={t('label.click_to_copy', 'Click to copy')}>
+							<Text style={{ cursor: 'pointer' }} onClick={copyToClipboard}>
+								Version: {app.version}
+							</Text>
+						</Tooltip>
 					</Container>
-				))}
-			</FormSubSection>
-		</>
+					<Container
+						orientation="horizontal"
+						mainAlignment="space-between"
+						padding={{ top: 'extrasmall', bottom: 'medium' }}
+					>
+						<Text color="secondary">{app.description}</Text>
+						<Badge value="Active" color={'gray6'} backgroundColor={'success'} />
+					</Container>
+					<Divider color="gray2" />
+				</Container>
+			))}
+		</FormSubSection>
 	);
 };
 

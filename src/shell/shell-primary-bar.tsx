@@ -20,7 +20,9 @@ import { minimizeBoards, reopenBoards, useBoardStore } from '../store/boards';
 import type { PrimaryAccessoryView, PrimaryBarView } from '../types/apps';
 import { checkRoute } from '../utility-bar/utils';
 
-function noop(): void {}
+function noop(): void {
+	return undefined;
+}
 
 const PrimaryBarContainer = styled(Container)`
 	border-right: 0.0625rem solid ${({ theme }): string => theme.palette.gray3.regular};

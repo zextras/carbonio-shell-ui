@@ -13,7 +13,7 @@ import { useAppStore } from '../store/app';
 import { setup } from '../tests/utils';
 
 const WithUseModalHookView = (): null => {
-	const createModal = useModal();
+	const { createModal } = useModal();
 	useEffect(() => {
 		createModal({ id: 'modal-1', title: 'modal test title' });
 	}, [createModal]);

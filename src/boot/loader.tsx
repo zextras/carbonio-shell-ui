@@ -6,7 +6,7 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Modal, Padding, Text } from '@zextras/carbonio-design-system';
+import { Modal, Padding, Text, useSnackbar } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
@@ -16,6 +16,7 @@ import { IS_FOCUS_MODE } from '../constants';
 import { getComponents } from '../network/get-components';
 import { getInfo } from '../network/get-info';
 import { loginConfig } from '../network/login-config';
+import { logout } from '../network/logout';
 import { goToLogin } from '../network/utils';
 import { useAccountStore } from '../store/account';
 import { useAppStore } from '../store/app';
@@ -64,8 +65,19 @@ export const LoaderFailureModal = ({
 };
 
 export const Loader = (): React.JSX.Element => {
+	const [t] = useTranslation();
 	const [open, setOpen] = useState(false);
 	const closeHandler = useCallback(() => setOpen(false), []);
+	const [sessionLifetime, setSessionLifetime] = useState<number>();
+	const createSnackbar = useSnackbar();
+
+	const getSessionInfo = useCallback(
+		() =>
+			getInfo().then((sessionInfo) => {
+				setSessionLifetime(sessionInfo.lifetime);
+			}),
+		[]
+	);
 
 	const carbonioPrefSendAnalytics = useAccountStore(
 		(state) => state.settings.prefs.carbonioPrefSendAnalytics
@@ -78,7 +90,7 @@ export const Loader = (): React.JSX.Element => {
 	}, [carbonioPrefSendAnalytics, enableTracker]);
 
 	useEffect(() => {
-		Promise.allSettled([loginConfig(), getComponents(), getInfo()]).then(
+		Promise.allSettled([loginConfig(), getComponents(), getSessionInfo()]).then(
 			(promiseSettledResultArray) => {
 				const [, getComponentsPromiseSettledResult, getInfoPromiseSettledResult] =
 					promiseSettledResultArray;
@@ -105,6 +117,81 @@ export const Loader = (): React.JSX.Element => {
 		return () => {
 			unloadAllApps();
 		};
-	}, []);
+	}, [getSessionInfo]);
+
+	useEffect(() => {
+		const expirationTimeouts: NodeJS.Timeout[] = [];
+		const logoutFn = (): void => {
+			logout();
+		};
+		if (sessionLifetime !== undefined) {
+			const tenMinutes = 10 * 60 * 1000;
+			if (sessionLifetime >= tenMinutes) {
+				expirationTimeouts.push(
+					setTimeout(() => {
+						createSnackbar({
+							severity: 'info',
+							key: 'ten-minutes-from-expiration-snackbar',
+							autoHideTimeout: 10 * 1000,
+							label: t(
+								'snackbar.expiration.tenMinutes',
+								"Your session will expire in 10 minutes. After that, you'll be redirected to the login page."
+							),
+							actionLabel: t('snackbar.expiration.action', 'Go to login page'),
+							onActionClick: logoutFn
+						});
+					}, sessionLifetime - tenMinutes)
+				);
+			}
+
+			const threeMinutes = 3 * 60 * 1000;
+			if (sessionLifetime >= threeMinutes) {
+				expirationTimeouts.push(
+					setTimeout(() => {
+						createSnackbar({
+							severity: 'info',
+							key: 'three-minutes-from-expiration-snackbar',
+							disableAutoHide: true,
+							label: t(
+								'snackbar.expiration.threeMinutes',
+								"Your session will expire in 3 minutes. After that, you'll be redirected to the login page."
+							),
+							actionLabel: t('snackbar.expiration.action', 'Go to login page'),
+							onActionClick: logoutFn
+						});
+					}, sessionLifetime - threeMinutes)
+				);
+			}
+
+			const oneMinute = 60 * 1000;
+			expirationTimeouts.push(
+				setTimeout(
+					() => {
+						createSnackbar({
+							severity: 'warning',
+							key: 'one-minute-from-expiration-snackbar',
+							autoHideTimeout: Math.min(oneMinute, sessionLifetime),
+							label: t(
+								'snackbar.expiration.oneMinute',
+								"Your session will expire in 60 seconds. After that, you'll be redirected to the login page."
+							),
+							actionLabel: t('snackbar.expiration.action', 'Go to login page'),
+							onActionClick: logoutFn,
+							replace: true
+						});
+						expirationTimeouts.push(setTimeout(logoutFn, Math.min(oneMinute, sessionLifetime)));
+					},
+					Math.max(sessionLifetime - oneMinute, 0)
+				)
+			);
+		}
+
+		return (): void => {
+			expirationTimeouts.forEach((timeout) => {
+				clearTimeout(timeout);
+			});
+		};
+	}, [createSnackbar, sessionLifetime, t]);
+
 	return <LoaderFailureModal open={open} closeHandler={closeHandler} />;
 };

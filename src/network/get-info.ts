@@ -12,11 +12,11 @@ import { useNetworkStore } from '../store/network';
 import { parsePollingInterval } from '../store/network/utils';
 import type { GetInfoResponse, SoapBody } from '../types/network';
 
-export const getInfo = (): Promise<void> =>
+export const getInfo = (): Promise<{ lifetime: number }> =>
 	getSoapFetch(SHELL_APP_ID)<SoapBody<{ rights: string }>, GetInfoResponse>('GetInfo', {
 		_jsns: JSNS.account,
 		rights: 'sendAs,sendAsDistList,viewFreeBusy,sendOnBehalfOf,sendOnBehalfOfDistList'
-	}).then((res: GetInfoResponse): void => {
+	}).then((res: GetInfoResponse) => {
 		if (res) {
 			const { account, settings, version } = normalizeAccount(res);
 			useNetworkStore.setState({
@@ -28,5 +28,8 @@ export const getInfo = (): Promise<void> =>
 				settings,
 				zimbraVersion: version
 			});
+
+			return { lifetime: res.lifetime };
 		}
+		return { lifetime: 0 };
 	});

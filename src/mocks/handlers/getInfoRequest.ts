@@ -36,6 +36,7 @@ export const getGetInfoRequest =
 					signatures: { signature: [] },
 					rights: { targets: [] },
 					zimlets: { zimlet: [] },
+					lifetime: 86400000,
 					...getInfoResponse,
 					prefs: { _attrs: { ...LOGGED_USER.prefs, ...getInfoResponse?.prefs?._attrs } },
 					attrs: { _attrs: { ...LOGGED_USER.attrs, ...getInfoResponse?.attrs?._attrs } },

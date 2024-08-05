@@ -65,6 +65,7 @@ export type GetInfoResponse = {
 	};
 	version: string;
 	rights: AccountRights;
+	lifetime: number;
 };
 
 export type PropsMods = Record<string, { app: string; value: unknown }>;

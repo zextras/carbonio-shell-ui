@@ -66,13 +66,7 @@ const ModuleVersionSettings = (): React.JSX.Element => {
 							padding={{ top: 'extrasmall', bottom: 'medium' }}
 						>
 							<Text color="secondary">{app.description}</Text>
-							<Badge
-								value="Active"
-								style={{
-									backgroundColor: theme.palette.success.regular,
-									color: theme.palette.gray6.regular
-								}}
-							/>
+							<Badge value="Active" color={'gray6'} backgroundColor={'success'} />
 						</Container>
 						<Divider color="gray2" />
 					</Container>

@@ -6,8 +6,8 @@
 
 import React, { useEffect, useMemo, useRef } from 'react';
 
-import { Container, IconButton, Row, Tooltip } from '@zextras/carbonio-design-system';
-import { map, isEmpty, trim, filter, sortBy, noop } from 'lodash';
+import { Button, Container, Row, Tooltip } from '@zextras/carbonio-design-system';
+import { map, isEmpty, trim, filter, sortBy } from 'lodash';
 import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -20,6 +20,8 @@ import { minimizeBoards, reopenBoards, useBoardStore } from '../store/boards';
 import type { PrimaryAccessoryView, PrimaryBarView } from '../types/apps';
 import { checkRoute } from '../utility-bar/utils';
 
+function noop(): void {}
+
 const PrimaryBarContainer = styled(Container)`
 	border-right: 0.0625rem solid ${({ theme }): string => theme.palette.gray3.regular};
 	z-index: ${BOARD_CONTAINER_ZINDEX + 1};
@@ -30,8 +32,8 @@ const ToggleBoardIcon = (): React.JSX.Element | null => {
 
 	return isEmpty(boards) ? null : (
 		<Container width={'3rem'} height={'3rem'}>
-			<IconButton
-				iconColor="primary"
+			<Button
+				labelColor="primary"
 				icon={minimized ? 'BoardOpen' : 'BoardCollapse'}
 				onClick={minimized ? reopenBoards : minimizeBoards}
 				size="large"
@@ -54,13 +56,12 @@ const PrimaryBarElement = ({ view, active, onClick }: PrimaryBarItemProps): Reac
 	<Tooltip label={view.label} placement="right" key={view.id}>
 		<BadgeWrap badge={view.badge}>
 			{typeof view.component === 'string' ? (
-				<IconButton
+				<Button
 					icon={view.component}
 					backgroundColor={active ? 'gray4' : 'gray6'}
-					iconColor={active ? 'primary' : 'text'}
+					labelColor={active ? 'primary' : 'text'}
 					onClick={onClick}
 					size="large"
-					data-isselected={active}
 				/>
 			) : (
 				<view.component active={active} />
@@ -73,10 +74,10 @@ const PrimaryBarAccessoryElement = ({ view }: PrimaryBarAccessoryItemProps): Rea
 	<Tooltip label={view.label} placement="right" key={view.id}>
 		<AppContextProvider key={view.id} pkg={view.app}>
 			{typeof view.component === 'string' ? (
-				<IconButton
+				<Button
 					icon={view.component}
 					backgroundColor="gray6"
-					iconColor="text"
+					labelColor="text"
 					onClick={view.onClick ?? noop}
 					size="large"
 				/>

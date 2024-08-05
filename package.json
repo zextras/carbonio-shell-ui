@@ -107,7 +107,6 @@
 	},
 	"dependencies": {
 		"@fontsource/roboto": "^5.0.8",
-		"@reduxjs/toolkit": "^1.9.7",
 		"@sentry/browser": "^7.103.0",
 		"@tinymce/tinymce-react": "^4.3.2",
 		"@zextras/carbonio-design-system": "^7.0.0",
@@ -122,7 +121,6 @@
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-i18next": "^12.3.1",
-		"react-redux": "^8.1.3",
 		"react-router-dom": "^5.3.4",
 		"styled-components": "^5.3.11",
 		"tinymce": "^6.8.4",
@@ -130,7 +128,6 @@
 		"zustand": "^4.5.1"
 	},
 	"peerDependencies": {
-		"@reduxjs/toolkit": "^1.9.7",
 		"@zextras/carbonio-design-system": "^7.0.0",
 		"@zextras/carbonio-ui-preview": "^2.0.0",
 		"core-js": "^3.31.1",
@@ -138,14 +135,10 @@
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-i18next": "^12.3.1",
-		"react-redux": "^8.1.3",
 		"react-router-dom": "^5.3.4",
 		"styled-components": "^5.3.11"
 	},
 	"peerDependenciesMeta": {
-		"@reduxjs/toolkit": {
-			"optional": true
-		},
 		"@zextras/carbonio-design-system": {
 			"optional": true
 		},
@@ -162,9 +155,6 @@
 			"optional": true
 		},
 		"react-i18next": {
-			"optional": true
-		},
-		"react-redux": {
 			"optional": true
 		},
 		"react-router-dom": {

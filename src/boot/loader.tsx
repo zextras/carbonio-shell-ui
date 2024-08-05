@@ -64,6 +64,39 @@ export const LoaderFailureModal = ({
 	);
 };
 
+const ExpiringSessionDynamicLabel = ({
+	sessionLifetime
+}: {
+	sessionLifetime: number;
+}): React.JSX.Element => {
+	const oneMinute = 60 * 1000;
+	const initialCounter = Math.ceil(Math.min(sessionLifetime, oneMinute) / 1000);
+	const [t] = useTranslation();
+	const [count, setCount] = useState(initialCounter);
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setCount((prevState) => prevState - 1);
+		}, 1000);
+
+		return (): void => {
+			clearInterval(interval);
+		};
+	}, [initialCounter]);
+
+	return (
+		<>
+			{t('snackbar.expiration.oneMinute', {
+				defaultValue_one:
+					"Your session will expire in {{count}} second. After that, you'll be redirected to the login page.",
+				defaultValue_other:
+					"Your session will expire in {{count}} seconds. After that, you'll be redirected to the login page.",
+				count
+			})}
+		</>
+	);
+};
+
 export const Loader = (): React.JSX.Element => {
 	const [t] = useTranslation();
 	const [open, setOpen] = useState(false);
@@ -171,10 +204,7 @@ export const Loader = (): React.JSX.Element => {
 							severity: 'warning',
 							key: 'one-minute-from-expiration-snackbar',
 							autoHideTimeout: Math.min(oneMinute, sessionLifetime),
-							label: t(
-								'snackbar.expiration.oneMinute',
-								"Your session will expire in 60 seconds. After that, you'll be redirected to the login page."
-							),
+							label: <ExpiringSessionDynamicLabel sessionLifetime={sessionLifetime} />,
 							actionLabel: t('snackbar.expiration.action', 'Go to login page'),
 							onActionClick: logoutFn,
 							replace: true

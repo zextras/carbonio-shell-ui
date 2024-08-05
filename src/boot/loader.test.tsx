@@ -335,6 +335,61 @@ describe('Loader', () => {
 			expect(snackbar).not.toBeInTheDocument();
 		});
 
+		it('should decrease the counter label inside the 60 seconds snackbar', async () => {
+			jest.spyOn(logout, 'logout').mockImplementation();
+			const oneMinute = 60 * 1000;
+			server.use(
+				http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: oneMinute + 2 }))
+			);
+			setup(<Loader />);
+			await act(async () => {
+				await jest.advanceTimersByTimeAsync(2);
+			});
+			await screen.findByText(
+				"Your session will expire in 60 seconds. After that, you'll be redirected to the login page."
+			);
+			await act(async () => {
+				await jest.advanceTimersByTimeAsync(1000);
+			});
+			expect(
+				screen.getByText(
+					"Your session will expire in 59 seconds. After that, you'll be redirected to the login page."
+				)
+			).toBeVisible();
+			await act(async () => {
+				await jest.advanceTimersByTimeAsync(1000);
+			});
+			expect(
+				screen.getByText(
+					"Your session will expire in 58 seconds. After that, you'll be redirected to the login page."
+				)
+			).toBeVisible();
+			await act(async () => {
+				await jest.advanceTimersByTimeAsync(30000);
+			});
+			expect(
+				screen.getByText(
+					"Your session will expire in 28 seconds. After that, you'll be redirected to the login page."
+				)
+			).toBeVisible();
+		});
+
+		it('should start the counter of the 60 seconds snackbar from the real remaining seconds', async () => {
+			jest.spyOn(logout, 'logout').mockImplementation();
+			server.use(
+				http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: 30 * 1000 }))
+			);
+			setup(<Loader />);
+			await act(async () => {
+				await jest.advanceTimersByTimeAsync(1);
+			});
+			expect(
+				await screen.findByText(
+					"Your session will expire in 30 seconds. After that, you'll be redirected to the login page."
+				)
+			).toBeVisible();
+		});
+
 		it('should show the go to login page action on the 60 seconds snackbar. Action calls logout', async () => {
 			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
 			const oneMinute = 60 * 1000;
@@ -397,7 +452,7 @@ describe('Loader', () => {
 			});
 			expect(
 				await screen.findByText(
-					"Your session will expire in 60 seconds. After that, you'll be redirected to the login page."
+					/Your session will expire in \d+ seconds\. After that, you'll be redirected to the login page\./
 				)
 			).toBeVisible();
 		});

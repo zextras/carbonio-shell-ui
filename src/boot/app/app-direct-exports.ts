@@ -105,8 +105,6 @@ export { getNotificationManager } from '../../notification/NotificationManager';
 
 export { runSearch } from '../../search/run-search';
 
-export { useIsMobile } from '../../shell/hooks/useIsMobile';
-
 export { useLocalStorage } from '../../shell/hooks/useLocalStorage';
 
 export const {

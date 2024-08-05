@@ -12,7 +12,6 @@ import styled from 'styled-components';
 
 import AppViewContainer from './app-view-container';
 import { BoardContainer } from './boards/board-container';
-import ShellContextProvider from './shell-context-provider';
 import ShellHeader from './shell-header';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
@@ -75,11 +74,9 @@ const ShellComponent = (): React.JSX.Element => (
 );
 
 const ShellView = (): React.JSX.Element => (
-	<ShellContextProvider>
-		<PreviewManager>
-			<ShellComponent />
-		</PreviewManager>
-	</ShellContextProvider>
+	<PreviewManager>
+		<ShellComponent />
+	</PreviewManager>
 );
 
 export default ShellView;

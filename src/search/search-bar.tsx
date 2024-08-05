@@ -198,7 +198,7 @@ export const SearchBar = (): React.JSX.Element => {
 						.filter(
 							(suggestion) =>
 								textContent &&
-								suggestion.label.includes(textContent) &&
+								suggestion.label?.includes(textContent) &&
 								!some(queryChips, (queryChip) => queryChip.value === suggestion.label)
 						)
 						.slice(0, 5)

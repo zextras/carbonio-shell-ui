@@ -10,7 +10,6 @@ import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import { includes, isEmpty, map, size } from 'lodash';
 
 import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
-import { Logout } from './components/general-settings/logout';
 import ModuleVersionSettings from './components/general-settings/module-version-settings';
 import { OutOfOfficeSettings } from './components/general-settings/out-of-office-settings';
 import { Privacy } from './components/general-settings/privacy';
@@ -272,7 +271,6 @@ const GeneralSettings = (): React.JSX.Element => {
 						/>
 					</SettingsSection>
 				)}
-				<Logout />
 			</Container>
 		</>
 	);

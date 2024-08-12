@@ -109,7 +109,6 @@ export { useLocalStorage } from '../../shell/hooks/useLocalStorage';
 
 export const {
 	updatePrimaryBadge,
-	updateUtilityBadge,
 	setRouteVisibility,
 	removeRoute,
 	removeBoardView,

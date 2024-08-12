@@ -35,6 +35,7 @@ export type AppRoute = {
 
 export type BadgeInfo = {
 	show: boolean;
+	icon?: string;
 	count?: number;
 	showCount?: boolean;
 	color?: keyof DefaultTheme['palette'];
@@ -87,7 +88,6 @@ export type BoardView = Omit<CarbonioView<BoardViewComponentProps>, 'route'>;
 export type UtilityView = CarbonioAccessoryView<UtilityBarComponentProps> & {
 	button: string | ComponentType<UtilityBarComponentProps>;
 	component: ComponentType<UtilityBarComponentProps>;
-	badge: BadgeInfo;
 	label: string;
 };
 export type SettingsSubSection = { label: string; id: string };

@@ -64,15 +64,18 @@ export const LoaderFailureModal = ({
 	);
 };
 
+function calcInitialCounter(sessionLifetime: number): number {
+	const oneMinute = 60 * 1000;
+	return Math.ceil(Math.min(sessionLifetime, oneMinute) / 1000);
+}
+
 const ExpiringSessionDynamicLabel = ({
 	sessionLifetime
 }: {
 	sessionLifetime: number;
 }): React.JSX.Element => {
-	const oneMinute = 60 * 1000;
-	const initialCounter = Math.ceil(Math.min(sessionLifetime, oneMinute) / 1000);
 	const [t] = useTranslation();
-	const [count, setCount] = useState(initialCounter);
+	const [count, setCount] = useState(calcInitialCounter(sessionLifetime));
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -82,7 +85,7 @@ const ExpiringSessionDynamicLabel = ({
 		return (): void => {
 			clearInterval(interval);
 		};
-	}, [initialCounter]);
+	}, []);
 
 	return (
 		<>

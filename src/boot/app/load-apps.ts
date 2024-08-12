@@ -44,10 +44,14 @@ export function loadApps(
 	if (localeObj) {
 		const localeDateFnsKey =
 			('dateFnsLocale' in localeObj && localeObj.dateFnsLocale) || localeObj.value;
-		getDateFnsLocale(localeDateFnsKey).then((localeDateFns) => {
-			registerLocale(localeDateFnsKey, localeDateFns);
-			setDefaultLocale(localeDateFnsKey);
-		});
+		getDateFnsLocale(localeDateFnsKey)
+			.then((localeDateFns) => {
+				registerLocale(localeDateFnsKey, localeDateFns);
+				setDefaultLocale(localeDateFnsKey);
+			})
+			.catch(() => {
+				console.log(`Cannot import locale ${locale} for date-fns. Falling back to english`);
+			});
 	}
 	useReporter.getState().setClients(appsToLoad);
 	return Promise.allSettled(map(appsToLoad, (app) => loadApp(app)));

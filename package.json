@@ -109,7 +109,7 @@
 		"@fontsource/roboto": "^5.0.8",
 		"@sentry/browser": "^7.103.0",
 		"@tinymce/tinymce-react": "^4.3.2",
-		"@zextras/carbonio-design-system": "^7.0.0",
+		"@zextras/carbonio-design-system": "^7.1.0-devel.1",
 		"@zextras/carbonio-ui-preview": "^2.0.0",
 		"darkreader": "^4.9.79",
 		"history": "^5.3.0",
@@ -128,7 +128,7 @@
 		"zustand": "^4.5.1"
 	},
 	"peerDependencies": {
-		"@zextras/carbonio-design-system": "^7.0.0",
+		"@zextras/carbonio-design-system": "^7.1.0",
 		"@zextras/carbonio-ui-preview": "^2.0.0",
 		"core-js": "^3.31.1",
 		"lodash": "^4.17.21",
@@ -137,6 +137,11 @@
 		"react-i18next": "^12.3.1",
 		"react-router-dom": "^5.3.4",
 		"styled-components": "^5.3.11"
+	},
+	"overrides": {
+		"@zextras/carbonio-ui-preview": {
+			"@zextras/carbonio-design-system": "^7.1.0-devel.1"
+		}
 	},
 	"peerDependenciesMeta": {
 		"@zextras/carbonio-design-system": {

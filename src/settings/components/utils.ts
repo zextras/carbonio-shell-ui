@@ -225,7 +225,7 @@ export const localeList = (t: TFunction): Array<LocaleDescriptorWithLabels> => [
 		id: 'ky',
 		...SUPPORTED_LOCALES.ky,
 		localName: t('locale.kyrgyz', 'Kyrgyz'),
-		label: t('locale.label_Kyrgyz', {
+		label: t('locale.label_kyrgyz', {
 			value: SUPPORTED_LOCALES.ky.name,
 			defaultValue: 'Kyrgyz - {{value}}'
 		})

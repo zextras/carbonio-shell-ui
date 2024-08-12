@@ -138,11 +138,6 @@
 		"react-router-dom": "^5.3.4",
 		"styled-components": "^5.3.11"
 	},
-	"overrides": {
-		"@zextras/carbonio-ui-preview": {
-			"@zextras/carbonio-design-system": "^7.1.0-devel.1"
-		}
-	},
 	"peerDependenciesMeta": {
 		"@zextras/carbonio-design-system": {
 			"optional": true

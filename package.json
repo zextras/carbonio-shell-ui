@@ -131,6 +131,7 @@
 	},
 	"peerDependencies": {
 		"@reduxjs/toolkit": "^1.9.7",
+		"@zextras/carbonio-design-system": "^7.1.0-devel.1",
 		"@zextras/carbonio-ui-preview": "^2.0.0",
 		"core-js": "^3.31.1",
 		"lodash": "^4.17.21",
@@ -140,6 +141,11 @@
 		"react-redux": "^8.1.3",
 		"react-router-dom": "^5.3.4",
 		"styled-components": "^5.3.11"
+	},
+	"overrides": {
+		"@zextras/carbonio-ui-preview": {
+			"@zextras/carbonio-design-system": "^7.1.0-devel.1"
+		}
 	},
 	"peerDependenciesMeta": {
 		"@reduxjs/toolkit": {

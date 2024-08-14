@@ -218,10 +218,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 						component: routeData.appView
 					});
 				}
-				// TODO remove with SHELL-212
-				if (routeData.app && state.apps[routeData.app] && routeData.focusMode !== true) {
-					state.apps[routeData.app].display = routeData.label;
-				}
 			})
 		);
 		return routeData.id;

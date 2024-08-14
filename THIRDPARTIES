@@ -8,7 +8,6 @@ MIT License (MIT) applies to:
 @commitlint/config-conventional, Copyright (c) 2016 - present Mario Nebl
 @faker-js/faker, Faker - Copyright (c) 2022-2024, faker.js - Copyright (c) 2020 Marak Squires
 @microsoft/api-extractor, Copyright (c) Microsoft Corporation. All rights reserved.
-@reduxjs/toolkit, Copyright (c) 2018 Mark Erikson
 @sentry/browser, Copyright (c) 2019 Sentry (https://sentry.io) and individual contributors. All rights reserved.
 @svgr/webpack, Copyright 2017 Smooth Code
 @testing-library/jest-dom, Copyright (c) 2017 Kent C. Dodds
@@ -52,7 +51,6 @@ msw, Copyright (c) 2018–present Artem Zakharchenko
 postcss-loader, Copyright JS Foundation and other contributors
 react-dom, Copyright (c) Facebook, Inc. and its affiliates.
 react-i18next, Copyright (c) 2023 i18next
-react-redux, Copyright (c) 2015-present Dan Abramov
 react-router-dom, Copyright (c) React Training 2015-2019. Copyright (c) Remix Software 2020-2022
 react, Copyright (c) Facebook, Inc. and its affiliates.
 styled-components, Copyright (c) 2016-present Glen Maddern and Maximilian Stoiber

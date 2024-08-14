@@ -26,6 +26,11 @@ const MiniBadge = styled(Badge)`
 		font-size: 0.625rem;
 		line-height: normal;
 	}
+
+	& > div {
+		font-size: 0.625rem;
+		line-height: normal;
+	}
 `;
 
 const MiniIcon = styled(Icon)`

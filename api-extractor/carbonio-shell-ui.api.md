@@ -1016,6 +1016,7 @@ export type PrimaryAccessoryViewProps = {};
 // @public (undocumented)
 export type PrimaryBarComponentProps = {
     active: boolean;
+    onClick: () => void;
 };
 
 // @public (undocumented)
@@ -1737,7 +1738,7 @@ interface ZimletProp {
 // lib/types/account/index.d.ts:138:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:143:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:144:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
-// lib/types/apps/index.d.ts:67:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
+// lib/types/apps/index.d.ts:68:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:75:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:94:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:110:5 - (ae-forgotten-export) The symbol "Meta" needs to be exported by the entry point lib.d.ts

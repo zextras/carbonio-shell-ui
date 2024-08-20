@@ -56,7 +56,7 @@ export type CarbonioAccessoryView<P> = {
 	position: number;
 	component: ComponentType<P>;
 };
-export type PrimaryBarComponentProps = { active: boolean };
+export type PrimaryBarComponentProps = { active: boolean; onClick: () => void };
 export type SecondaryBarComponentProps = { expanded: boolean };
 export type AppViewComponentProps = {};
 export type BoardViewComponentProps = {};

@@ -56,7 +56,6 @@ export type AppActions = {
 	setRouteVisibility: (id: string, visible: boolean) => void;
 	removeRoute: (id: string) => void;
 	updatePrimaryBadge: (badge: Partial<BadgeInfo>, id: string) => void;
-	updateUtilityBadge: (badge: Partial<BadgeInfo>, id: string) => void;
 	addBoardView: (data: BoardView) => string;
 	removeBoardView: (id: string) => void;
 	addSettingsView: (data: SettingsView) => string;
@@ -360,19 +359,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 				if (idx >= 0) {
 					state.views.primaryBar[idx].badge = {
 						...state.views.primaryBar[idx].badge,
-						...badge
-					};
-				}
-			})
-		);
-	},
-	updateUtilityBadge: (badge, id): void => {
-		set(
-			produce<AppState>((state) => {
-				const idx = findIndex(state.views.utilityBar, (bar) => bar.id === id);
-				if (idx >= 0) {
-					state.views.utilityBar[idx].badge = {
-						...state.views.utilityBar[idx].badge,
 						...badge
 					};
 				}

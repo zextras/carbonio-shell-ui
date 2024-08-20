@@ -538,5 +538,26 @@ describe('Shell primary bar', () => {
 			expect(counterBadge).toBeVisible();
 			expect(counterBadge).toHaveTextContent('');
 		});
+
+		it('should render icon instead of badge when icon is provided in badge info', () => {
+			const primaryBarViews: PrimaryBarView[] = [
+				{
+					id: 'pbv-1',
+					app: 'app1',
+					label: 'App One',
+					route: 'app1',
+					position: 1,
+					badge: { show: true, icon: ICONS.search, showCount: true },
+					visible: true,
+					component: 'People'
+				}
+			];
+			useAppStore.setState((state) => ({
+				views: { ...state.views, primaryBar: primaryBarViews }
+			}));
+			setup(<ShellPrimaryBar />);
+			expect(screen.queryByTestId('badge-counter')).not.toBeInTheDocument();
+			expect(screen.getByTestId(`icon: ${ICONS.search}`)).toBeVisible();
+		});
 	});
 });

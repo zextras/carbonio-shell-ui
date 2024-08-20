@@ -23,10 +23,6 @@ export const searchPrefsSubSection = (t: TFunction): SettingsSubSection => ({
 	label: t('search.app', 'Search'),
 	id: 'search_prefs'
 });
-export const versionsSubSection = (t: TFunction): SettingsSubSection => ({
-	label: t('module.app.version', 'Application versions'),
-	id: 'app_version'
-});
 export const quotaSubSection = (t: TFunction): SettingsSubSection => ({
 	label: t('user_quota.title', "User's quota"),
 	id: 'user_quota'
@@ -46,7 +42,6 @@ export const settingsSubSections = (t: TFunction): Array<SettingsSubSection> => 
 	languageSubSection(t),
 	outOfOfficeSubSection(t),
 	searchPrefsSubSection(t),
-	versionsSubSection(t),
 	quotaSubSection(t),
 	privacySubSection(t),
 	accountSubSection(t)

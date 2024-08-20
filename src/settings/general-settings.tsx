@@ -10,7 +10,6 @@ import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import { includes, isEmpty, map, size } from 'lodash';
 
 import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
-import ModuleVersionSettings from './components/general-settings/module-version-settings';
 import { OutOfOfficeSettings } from './components/general-settings/out-of-office-settings';
 import { Privacy } from './components/general-settings/privacy';
 import { ScalingSettingSection } from './components/general-settings/scaling-setting-section';
@@ -259,7 +258,6 @@ const GeneralSettings = (): React.JSX.Element => {
 					addMod={addMod}
 					resetRef={searchSettingsSectionRef}
 				/>
-				<ModuleVersionSettings />
 				<UserQuota mobileView={false} />
 				{isCarbonioCE && (
 					<SettingsSection {...privacySubSection(t)}>

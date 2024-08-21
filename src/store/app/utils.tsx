@@ -39,6 +39,7 @@ export const normalizeApp = (app: Partial<CarbonioModule>): CarbonioModule => ({
 const FallbackView: FC = () => <p>Missing Component</p>;
 
 export const normalizeBadgeInfo = (badge: Partial<BadgeInfo>): BadgeInfo => ({
+	...badge,
 	show: badge.show ?? false,
 	count: badge.count ?? 0,
 	showCount: badge.showCount ?? false,
@@ -103,7 +104,6 @@ export const normalizeUtilityView = (
 	blacklistRoutes: data?.blacklistRoutes,
 	component: data?.component ?? FallbackView,
 	button: data?.button ?? 'Cube',
-	badge: normalizeBadgeInfo(data?.badge ?? {}),
 	position: data?.position ?? app.priority,
 	label: data?.label ?? app.display
 });
@@ -132,12 +132,11 @@ export const normalizeSecondaryAccessoryView = (
 	component: data?.component ?? FallbackView
 });
 
-export const normalizeBoardView = (data: Partial<BoardView>, app: CarbonioModule): BoardView => {
-	const route = trim(data.route ?? app.name, '/');
-	return {
-		app: app.name,
-		route,
-		id: data?.id ?? route,
-		component: data?.component ?? FallbackView
-	};
-};
+export const normalizeBoardView = (
+	data: Omit<BoardView, 'app'>,
+	app: CarbonioModule
+): BoardView => ({
+	app: app.name,
+	id: data.id,
+	component: data.component
+});

@@ -35,6 +35,7 @@ export type AppRoute = {
 
 export type BadgeInfo = {
 	show: boolean;
+	icon?: string;
 	count?: number;
 	showCount?: boolean;
 	color?: keyof DefaultTheme['palette'];
@@ -55,12 +56,10 @@ export type CarbonioAccessoryView<P> = {
 	position: number;
 	component: ComponentType<P>;
 };
-export type PrimaryBarComponentProps = { active: boolean };
+export type PrimaryBarComponentProps = { active: boolean; onClick: () => void };
 export type SecondaryBarComponentProps = { expanded: boolean };
 export type AppViewComponentProps = {};
-export type BoardViewComponentProps = {
-	windowHistory: History;
-};
+export type BoardViewComponentProps = {};
 export type SettingsViewProps = {};
 export type SearchViewProps = {
 	useQuery: () => [QueryChip[], Function];
@@ -84,12 +83,11 @@ export type SecondaryBarView = CarbonioView<SecondaryBarComponentProps>;
 
 export type AppView = CarbonioView<AppViewComponentProps>;
 
-export type BoardView = CarbonioView<BoardViewComponentProps>;
+export type BoardView = Omit<CarbonioView<BoardViewComponentProps>, 'route'>;
 
 export type UtilityView = CarbonioAccessoryView<UtilityBarComponentProps> & {
 	button: string | ComponentType<UtilityBarComponentProps>;
 	component: ComponentType<UtilityBarComponentProps>;
-	badge: BadgeInfo;
 	label: string;
 };
 export type SettingsSubSection = { label: string; id: string };

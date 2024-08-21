@@ -13,7 +13,7 @@ import { useAppStore } from '../store/app';
 import { setup } from '../tests/utils';
 
 const WithUseModalHookView = (): null => {
-	const createModal = useModal();
+	const { createModal } = useModal();
 	useEffect(() => {
 		createModal({ id: 'modal-1', title: 'modal test title' });
 	}, [createModal]);
@@ -54,7 +54,5 @@ test('Using useModal hook without a ModalManager, log a Modal manager context no
 		});
 	});
 
-	expect(mockedError).toBeCalled();
-
-	expect(mockedError).toBeCalledWith('Modal manager context not initialized');
+	expect(mockedError).toHaveBeenCalledWith('Modal manager context not initialized');
 });

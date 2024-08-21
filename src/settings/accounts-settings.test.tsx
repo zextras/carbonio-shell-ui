@@ -41,8 +41,8 @@ describe('Account setting', () => {
 	const persona3Id = faker.string.uuid();
 
 	test('When saving the order should not change', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: defaultId,
@@ -52,7 +52,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 		const batchRequestUrl = '/service/soap/BatchRequest';
 		server.use(
 			http.post(batchRequestUrl, () =>
@@ -157,8 +157,8 @@ describe('Account setting', () => {
 	});
 
 	test('When discarding the order should be the same of the initial one', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: defaultId,
@@ -176,7 +176,7 @@ describe('Account setting', () => {
 					false
 				)
 			])
-		);
+		});
 
 		const snapShot = `
 		[
@@ -208,8 +208,8 @@ describe('Account setting', () => {
 	});
 
 	test('Check that the default is always the first item', async () => {
-		setupAccountStore(
-			createAccount(
+		setupAccountStore({
+			account: createAccount(
 				defaultEmail,
 				defaultId,
 				shuffle([
@@ -247,7 +247,7 @@ describe('Account setting', () => {
 					)
 				])
 			)
-		);
+		});
 
 		setup(<AccountsSettings />);
 
@@ -259,8 +259,8 @@ describe('Account setting', () => {
 	});
 
 	test('When adding an item it is always placed as last', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: defaultId,
@@ -270,7 +270,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 
 		const { user } = setup(<AccountsSettings />);
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
@@ -285,8 +285,8 @@ describe('Account setting', () => {
 	});
 
 	test('Show primary identity inside the list', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: defaultId,
@@ -296,7 +296,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 
 		setup(<AccountsSettings />);
 
@@ -306,8 +306,8 @@ describe('Account setting', () => {
 	});
 
 	test('Should show the new identity in the list when clicking on add', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: defaultId,
@@ -318,7 +318,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 
 		const { user } = setup(<AccountsSettings />);
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
@@ -326,8 +326,8 @@ describe('Account setting', () => {
 	});
 
 	test('Should increase the number of the persona when there are already identities with the default name', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: persona1Id,
@@ -346,7 +346,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 
 		const { user } = setup(<AccountsSettings />);
 		expect(screen.getByText(persona1FullName)).toBeVisible();
@@ -356,8 +356,8 @@ describe('Account setting', () => {
 	});
 
 	test('When existing persona identityName is updated but not yet saved, the old (but current) identityName should not be used as default one for a new persona', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: persona1Id,
@@ -376,7 +376,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 
 		const { user } = setup(<AccountsSettings />);
 
@@ -407,8 +407,8 @@ describe('Account setting', () => {
 	});
 
 	test('When create a new persona and modify the proposed identityName before saving and than create another persona the proposed identityName should be the same', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: defaultId,
@@ -419,7 +419,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 
 		const { user } = setup(<AccountsSettings />);
 
@@ -452,8 +452,8 @@ describe('Account setting', () => {
 	});
 
 	test('When existing persona is deleted but not yet saved, the old (but current) identityName should not be used as default one for a new persona', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: persona1Id,
@@ -472,7 +472,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 		const { user } = setup(<AccountsSettings />);
 
 		const persona1Row = screen.getByText(persona1FullName);
@@ -495,8 +495,8 @@ describe('Account setting', () => {
 	});
 
 	test('When create a new persona and delete it before saving and than create another persona the proposed identityName should be the same', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: defaultId,
@@ -507,7 +507,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 
 		const { user } = setup(<AccountsSettings />);
 
@@ -535,8 +535,8 @@ describe('Account setting', () => {
 	});
 
 	test('Should not increase the counter if the identities have a name different from the default', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: persona1Id,
@@ -555,7 +555,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 		const { user } = setup(<AccountsSettings />);
 		expect(screen.getByText(persona1FullName)).toBeVisible();
 
@@ -564,8 +564,8 @@ describe('Account setting', () => {
 	});
 
 	test('Should remove the identity from the list on delete action', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: persona1Id,
@@ -584,7 +584,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 
 		const { user } = setup(<AccountsSettings />);
 		const persona1Row = screen.getByText(persona1FullName);
@@ -601,8 +601,8 @@ describe('Account setting', () => {
 	});
 
 	test('Should create only identities which have not been removed from the unsaved changes', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: defaultId,
@@ -613,7 +613,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 
 		const batchRequestUrl = '/service/soap/BatchRequest';
 		server.use(
@@ -704,8 +704,8 @@ describe('Account setting', () => {
 	});
 
 	test('Should remove from the list added identities not saved on discard changes', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: defaultId,
@@ -716,7 +716,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 
 		const { user } = setup(<AccountsSettings />);
 
@@ -728,8 +728,8 @@ describe('Account setting', () => {
 	});
 
 	test('Should add in the list removed identities not saved on discard changes', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: persona1Id,
@@ -748,7 +748,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 
 		const { user } = setup(<AccountsSettings />);
 
@@ -770,8 +770,8 @@ describe('Account setting', () => {
 	});
 
 	test('Should update name of the identity in the list if the user change it from the input(default case)', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: defaultId,
@@ -782,7 +782,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 		const { user } = setup(<AccountsSettings />);
 
 		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
@@ -803,8 +803,8 @@ describe('Account setting', () => {
 	});
 
 	test('When modify an identity, should populate a ModifyIdentityRequest', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: defaultId,
@@ -815,7 +815,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 
 		server.use(
 			http.post('/service/soap/BatchRequest', () =>
@@ -853,8 +853,8 @@ describe('Account setting', () => {
 	});
 
 	test('When modify an identity, the new value must be shown after save', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: defaultId,
@@ -865,7 +865,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 
 		server.use(
 			http.post('/service/soap/BatchRequest', () =>
@@ -902,8 +902,8 @@ describe('Account setting', () => {
 	});
 
 	test('When delete an identity, it must not be present after save', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: persona1Id,
@@ -922,7 +922,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 
 		server.use(
 			http.post('/service/soap/BatchRequest', () =>
@@ -964,8 +964,8 @@ describe('Account setting', () => {
 	});
 
 	test('Should reset the updated identity name on discard changes(default case)', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: defaultId,
@@ -976,7 +976,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 		const { user } = setup(<AccountsSettings />);
 
 		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
@@ -1004,8 +1004,8 @@ describe('Account setting', () => {
 	});
 
 	test('Should not allow updating primary account email', async () => {
-		setupAccountStore(
-			createAccount(defaultEmail, defaultId, [
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
 					{
 						zimbraPrefIdentityId: defaultId,
@@ -1016,7 +1016,7 @@ describe('Account setting', () => {
 					true
 				)
 			])
-		);
+		});
 		const { user } = setup(<AccountsSettings />);
 
 		const emailAddressInput = screen.getByRole('textbox', { name: /E-mail address/i });

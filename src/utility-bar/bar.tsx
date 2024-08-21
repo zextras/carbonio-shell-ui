@@ -11,10 +11,10 @@ import { map, noop } from 'lodash';
 
 import { useUtilityBarStore } from './store';
 import { useUtilityViews } from './utils';
+import { useTracker } from '../boot/posthog';
 import { CUSTOM_EVENTS } from '../constants';
-import { fetchNoOp } from '../network/fetch';
 import { logout } from '../network/logout';
-import { useUserAccount } from '../store/account';
+import { useAccountStore } from '../store/account';
 import { getT } from '../store/i18n/hooks';
 import type { UtilityView } from '../types/apps';
 
@@ -46,12 +46,14 @@ const UtilityBarItem = ({ view }: UtilityBarItemProps): React.JSX.Element => {
 export const ShellUtilityBar = (): React.JSX.Element => {
 	const views = useUtilityViews();
 	const t = getT();
-	const account = useUserAccount();
+	const account = useAccountStore((s) => s.account);
 
 	const updateViews = useCallback(() => {
 		const updateViewEvent = new CustomEvent(CUSTOM_EVENTS.updateView);
 		window.dispatchEvent(updateViewEvent);
 	}, []);
+
+	const { reset } = useTracker();
 
 	const accountItems = useMemo(
 		(): DropdownItem[] => [
@@ -73,10 +75,7 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 			{
 				id: 'update',
 				label: t('label.update_view', 'Update view'),
-				onClick: (): void => {
-					fetchNoOp();
-					updateViews();
-				},
+				onClick: updateViews,
 				icon: 'Refresh'
 			},
 			{
@@ -89,11 +88,14 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 			{
 				id: 'logout',
 				label: t('label.logout', 'Logout'),
-				onClick: logout,
+				onClick: (): void => {
+					reset();
+					logout();
+				},
 				icon: 'LogOut'
 			}
 		],
-		[account?.displayName, account?.name, t, updateViews]
+		[account?.displayName, account?.name, reset, t, updateViews]
 	);
 
 	const viewItems = useMemo(

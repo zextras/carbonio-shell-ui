@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-// noinspection JSUnusedGlobalSymbols
-
 /**
  * The library to integrate in the Carbonio environment.
  *
@@ -20,8 +18,7 @@
  * @packageDocumentation
  */
 
-import type { AppDependantFunctions as AppFunctions } from './boot/app/app-loader-functions';
-import type { AppDependantSetters as AppSetters } from './boot/app/app-loader-setters';
+import type { AppDependantExports } from './boot/app/app-dependant-exports';
 import type { report as reportApp } from './reporting/functions';
 
 // TODO: export only what is useful and not internal constants
@@ -29,133 +26,39 @@ export * from './constants';
 export * from './ui-extras/app-link';
 export * from './ui-extras/spinner';
 export * from './settings/components/settings-header';
+export * from './boot/app/app-direct-exports';
 
 export declare const report: ReturnType<typeof reportApp>;
 
-export declare const setAppContext: AppSetters['setAppContext'];
-export declare const addRoute: AppSetters['addRoute'];
-export declare const addBoardView: AppSetters['addBoardView'];
-export declare const addSettingsView: AppSetters['addSettingsView'];
-export declare const addSearchView: AppSetters['addSearchView'];
-export declare const addUtilityView: AppSetters['addUtilityView'];
-export declare const addPrimaryAccessoryView: AppSetters['addPrimaryAccessoryView'];
-export declare const addSecondaryAccessoryView: AppSetters['addSecondaryAccessoryView'];
-export declare const registerComponents: AppSetters['registerComponents'];
-export declare const editSettings: AppSetters['editSettings'];
-export {
-	registerActions,
-	removeActions,
-	registerFunctions,
-	removeFunctions,
-	removeRoute,
-	removeComponents,
-	removeBoardView,
-	removeSearchView,
-	removeUtilityView,
-	removeSettingsView,
-	removeSecondaryAccessoryView,
-	removePrimaryAccessoryView,
-	setRouteVisibility,
-	updateUtilityBadge,
-	updatePrimaryBadge,
-	upsertApp
-} from './boot/app/app-loader-setters';
+export declare const setAppContext: AppDependantExports['setAppContext'];
+export declare const addRoute: AppDependantExports['addRoute'];
+export declare const addBoardView: AppDependantExports['addBoardView'];
+export declare const addSettingsView: AppDependantExports['addSettingsView'];
+export declare const addSearchView: AppDependantExports['addSearchView'];
+export declare const addUtilityView: AppDependantExports['addUtilityView'];
+export declare const addPrimaryAccessoryView: AppDependantExports['addPrimaryAccessoryView'];
+export declare const addSecondaryAccessoryView: AppDependantExports['addSecondaryAccessoryView'];
+export declare const registerComponents: AppDependantExports['registerComponents'];
+/**
+ * @deprecated See documentation of editSettings function in ./network/edit-settings
+ */
+export declare const editSettings: AppDependantExports['editSettings'];
 
-export declare const getI18n: AppFunctions['getI18n'];
-export declare const t: AppFunctions['t'];
-export declare const soapFetch: AppFunctions['soapFetch'];
-export declare const xmlSoapFetch: AppFunctions['xmlSoapFetch'];
-export declare const useAppContext: AppFunctions['useAppContext'];
-export declare const getAppContext: AppFunctions['getAppContext'];
-export declare const useApp: AppFunctions['useApp'];
-export declare const getApp: AppFunctions['getApp'];
-export declare const addBoard: AppFunctions['addBoard'];
+export declare const getI18n: AppDependantExports['getI18n'];
+export declare const t: AppDependantExports['t'];
+export declare const soapFetch: AppDependantExports['soapFetch'];
+export declare const xmlSoapFetch: AppDependantExports['xmlSoapFetch'];
+export declare const useAppContext: AppDependantExports['useAppContext'];
+export declare const getAppContext: AppDependantExports['getAppContext'];
+export declare const useApp: AppDependantExports['useApp'];
+export declare const getApp: AppDependantExports['getApp'];
+export declare const addBoard: AppDependantExports['addBoard'];
 /**
  * @deprecated Use hooks to access to functions which require context
  */
-export declare const getBridgedFunctions: AppFunctions['getBridgedFunctions'];
+export declare const getBridgedFunctions: AppDependantExports['getBridgedFunctions'];
 
-export {
-	useAction,
-	useActions,
-	useActionsFactory,
-	useActionFactory,
-	useIntegratedComponent,
-	useIntegratedFunction
-} from './boot/app/app-loader-functions';
-export {
-	getAction,
-	getActions,
-	getActionsFactory,
-	getActionFactory,
-	getIntegratedComponent,
-	getIntegratedFunction
-} from './boot/app/app-loader-functions';
-export {
-	getUserAccount,
-	getUserAccounts,
-	getUserSetting,
-	getUserSettings,
-	useUserAccount,
-	useUserAccounts,
-	useUserSetting,
-	useUserSettings,
-	useUserRight,
-	useUserRights,
-	getUserRight,
-	getUserRights,
-	useAuthenticated
-} from './boot/app/app-loader-functions';
-export { getTags, useTags } from './boot/app/app-loader-functions';
-export { changeTagColor, createTag, deleteTag, renameTag } from './boot/app/app-loader-functions';
-export { useNotify, useRefresh } from './boot/app/app-loader-functions';
-export {
-	getFolder,
-	getFolders,
-	useFolder,
-	useFolders,
-	useRoot,
-	getRoot,
-	useRoots,
-	getRoots,
-	useSearchFolder,
-	useSearchFolders,
-	getSearchFolder,
-	getSearchFolders,
-	useFoldersByView,
-	useFoldersAccordionByView,
-	useRootByUser,
-	getRootByUser
-} from './boot/app/app-loader-functions';
-export {
-	closeBoard,
-	updateBoard,
-	updateBoardContext,
-	getBoardById,
-	getBoardContextById,
-	useBoardContextById,
-	useBoardById,
-	useBoard,
-	minimizeBoards,
-	reopenBoards,
-	setCurrentBoard,
-	useBoardHooks
-} from './boot/app/app-loader-functions';
-export {
-	usePushHistoryCallback,
-	useGoBackHistoryCallback,
-	useReplaceHistoryCallback,
-	getCurrentRoute,
-	useCurrentRoute,
-	replaceHistory,
-	goBackHistory,
-	pushHistory
-} from './boot/app/app-loader-functions';
-export { getNotificationManager } from './boot/app/app-loader-functions';
-export { runSearch } from './boot/app/app-loader-functions';
-export { useIsMobile } from './boot/app/app-loader-functions';
-export { useLocalStorage } from './boot/app/app-loader-functions';
-export { Tracker } from './boot/tracker';
+export * from './boot/app/app-direct-exports';
 
 export type {
 	PrimaryBarComponentProps,
@@ -210,9 +113,11 @@ export type {
 	SoapNotify,
 	SoapContext,
 	SoapBody,
-	SoapHeader
+	SoapHeader,
+	SoapFault
 } from './types/network/soap';
-export type { BatchRequest } from './types/network';
+
+export type { BatchRequest, BatchResponse } from './types/network';
 
 export type { Action } from './types/integrations';
 

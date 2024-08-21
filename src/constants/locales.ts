@@ -97,5 +97,9 @@ export const SUPPORTED_LOCALES = {
 	vi: {
 		name: 'Tiếng Việt',
 		value: 'vi'
+	},
+	ky: {
+		name: 'Кыргызча',
+		value: 'ky'
 	}
 } as const satisfies Record<string, LocaleDescriptor>;

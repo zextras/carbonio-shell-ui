@@ -8,7 +8,7 @@ import { forEach } from 'lodash';
 
 import { useNetworkStore } from './store';
 import type { AccountSettings } from '../../types/account';
-import type { RawSoapResponse, SoapContext } from '../../types/network';
+import type { NoOpResponse, RawSoapResponse, SoapContext } from '../../types/network';
 import { folderWorker, tagWorker } from '../../workers';
 import { useAccountStore } from '../account';
 import { useFolderStore } from '../folder';
@@ -45,14 +45,12 @@ export const parsePollingInterval = (settings: AccountSettings): number => {
  * Return the polling interval for the next NoOp request.
  * The interval length depends on the user settings, but it can be
  * overridden by the server response/errors
- * @param res
  */
 export const getPollingInterval = (
 	res: RawSoapResponse<{
-		NoOpResponse?: { waitDisallowed?: boolean };
+		NoOpResponse?: NoOpResponse;
 	}>
 ): number => {
-	const { pollingInterval } = useNetworkStore.getState();
 	const { settings } = useAccountStore.getState();
 	const waitDisallowed =
 		res.Body && !('Fault' in res.Body) && res.Body.NoOpResponse?.waitDisallowed;
@@ -63,10 +61,7 @@ export const getPollingInterval = (
 	if (waitDisallowed) {
 		return POLLING_NOWAIT_INTERVAL;
 	}
-	if (!fault) {
-		return parsePollingInterval(settings);
-	}
-	return pollingInterval;
+	return parsePollingInterval(settings);
 };
 
 export const handleSync = ({ refresh, notify }: SoapContext): Promise<void> =>

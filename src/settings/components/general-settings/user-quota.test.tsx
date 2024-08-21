@@ -38,7 +38,7 @@ describe('User Quota', () => {
 			const quotaUsed = faker.number.int();
 			setupAccountStore(quotaUsed, quota);
 			setup(<UserQuota mobileView={false} />);
-			const quotaString = `${humanFileSize(quotaUsed)} of unlimited space`;
+			const quotaString = `${humanFileSize(quotaUsed, undefined)} of unlimited space`;
 			expect(screen.getByText(quotaString)).toBeVisible();
 		}
 	);
@@ -48,7 +48,7 @@ describe('User Quota', () => {
 		const quotaMax = 100;
 		setupAccountStore(quotaUsed, quotaMax);
 		setup(<UserQuota mobileView={false} />);
-		const quotaString = `${humanFileSize(quotaUsed)} of ${humanFileSize(quotaMax)} used`;
+		const quotaString = `${humanFileSize(quotaUsed, undefined)} of ${humanFileSize(quotaMax, undefined)} used`;
 		expect(screen.getByText(quotaString)).toBeVisible();
 	});
 

@@ -52,12 +52,10 @@ export type AppState = {
 
 export type AppActions = {
 	setApps: (apps: Array<Partial<CarbonioModule>>) => void;
-	upsertApp: (app: Pick<CarbonioModule, 'name' | 'display' | 'description'>) => void;
 	addRoute: (routeData: AppRouteDescriptor) => string;
 	setRouteVisibility: (id: string, visible: boolean) => void;
 	removeRoute: (id: string) => void;
 	updatePrimaryBadge: (badge: Partial<BadgeInfo>, id: string) => void;
-	updateUtilityBadge: (badge: Partial<BadgeInfo>, id: string) => void;
 	addBoardView: (data: BoardView) => string;
 	removeBoardView: (id: string) => void;
 	addSettingsView: (data: SettingsView) => string;
@@ -166,13 +164,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 				appContexts
 			};
 		});
-	},
-	upsertApp: (app): void => {
-		set(
-			produce<AppState>((state) => {
-				state.apps[app.name] = { ...state.apps[app.name], ...app };
-			})
-		);
 	},
 	setAppContext:
 		(app) =>
@@ -368,19 +359,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 				if (idx >= 0) {
 					state.views.primaryBar[idx].badge = {
 						...state.views.primaryBar[idx].badge,
-						...badge
-					};
-				}
-			})
-		);
-	},
-	updateUtilityBadge: (badge, id): void => {
-		set(
-			produce<AppState>((state) => {
-				const idx = findIndex(state.views.utilityBar, (bar) => bar.id === id);
-				if (idx >= 0) {
-					state.views.utilityBar[idx].badge = {
-						...state.views.utilityBar[idx].badge,
 						...badge
 					};
 				}

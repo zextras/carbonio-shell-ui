@@ -66,7 +66,7 @@ const PrimaryBarElement = ({ view, active, onClick }: PrimaryBarItemProps): Reac
 					size="large"
 				/>
 			) : (
-				<view.component active={active} />
+				<view.component active={active} onClick={onClick} />
 			)}
 		</BadgeWrap>
 	</Tooltip>

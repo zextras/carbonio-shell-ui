@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [8.0.1](https://github.com/zextras/carbonio-shell-ui/compare/v8.0.0...v8.0.1) (2024-08-21)
+
+
+### Bug Fixes
+
+* prevent NoOp endless loop if waitDisallowed is true ([6b571d8](https://github.com/zextras/carbonio-shell-ui/commit/6b571d8887b7026c3dd1aa7e201d0476200df473)), closes [#486](https://github.com/zextras/carbonio-shell-ui/issues/486)
+
 ## [8.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v7.0.1...v8.0.0) (2024-08-21)
 
 

@@ -3,8 +3,12 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import type { TFunction } from 'i18next';
+import { useMemo } from 'react';
 
+import type { TFunction } from 'i18next';
+import { useTranslation } from 'react-i18next';
+
+import { useIsCarbonioCE } from '../store/login/hooks';
 import type { SettingsSubSection } from '../types/apps';
 
 export const appearanceSubSection = (t: TFunction): SettingsSubSection => ({
@@ -33,16 +37,23 @@ export const privacySubSection = (t: TFunction): SettingsSubSection => ({
 	id: 'privacy-settings'
 });
 
-export const accountSubSection = (t: TFunction): SettingsSubSection => ({
-	label: t('settings.general.account', 'Account'),
-	id: 'account'
-});
-export const settingsSubSections = (t: TFunction): Array<SettingsSubSection> => [
-	appearanceSubSection(t),
-	languageSubSection(t),
-	outOfOfficeSubSection(t),
-	searchPrefsSubSection(t),
-	quotaSubSection(t),
-	privacySubSection(t),
-	accountSubSection(t)
-];
+export const useSettingsSubSections = (): SettingsSubSection[] => {
+	const [t] = useTranslation();
+	const isCarbonioCE = useIsCarbonioCE();
+
+	return useMemo(() => {
+		const subSections = [
+			appearanceSubSection(t),
+			languageSubSection(t),
+			outOfOfficeSubSection(t),
+			searchPrefsSubSection(t),
+			quotaSubSection(t)
+		];
+
+		if (isCarbonioCE) {
+			subSections.push(privacySubSection(t));
+		}
+
+		return subSections;
+	}, [isCarbonioCE, t]);
+};

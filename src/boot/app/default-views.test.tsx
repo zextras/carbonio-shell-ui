@@ -70,10 +70,6 @@ describe('DefaultViews', () => {
 		expect(Object.keys(useAppStore.getState().routes)).not.toContain(SETTINGS_APP_ID);
 	});
 
-	it('should test', () => {
-		expect([{ a: 'a' }, { a: 'b' }]).toContainEqual({ a: 'a' });
-	});
-
 	it('should register settings general view', () => {
 		useAccountStore.setState(
 			produce((state) => {

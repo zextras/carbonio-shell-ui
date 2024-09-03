@@ -35,7 +35,8 @@ const ToggleBoardIcon = (): React.JSX.Element | null => {
 	return isEmpty(boards) ? null : (
 		<Container width={'3rem'} height={'3rem'}>
 			<Button
-				labelColor="primary"
+				type={'ghost'}
+				color="primary"
 				icon={minimized ? 'BoardOpen' : 'BoardCollapse'}
 				onClick={minimized ? reopenBoards : minimizeBoards}
 				size="large"

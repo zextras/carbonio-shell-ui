@@ -12,7 +12,7 @@ import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
 
 import AppViewContainer from './app-view-container';
 import ShellPrimaryBar from './shell-primary-bar';
-import { DefaultViewsRegister } from '../boot/bootstrapper';
+import { DefaultViewsRegister } from '../boot/app/default-views';
 import { usePushHistoryCallback } from '../history/hooks';
 import { ModuleSelector } from '../search/module-selector';
 import { useAccountStore } from '../store/account';

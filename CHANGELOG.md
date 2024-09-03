@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [8.0.2](https://github.com/zextras/carbonio-shell-ui/compare/v8.0.1...v8.0.2) (2024-08-30)
+
+
+### Bug Fixes
+
+* hide privacy and remove account subsections from settings ([fb94e2e](https://github.com/zextras/carbonio-shell-ui/commit/fb94e2e56de7d2f50f5240e98de9688d0f07f327)), closes [#493](https://github.com/zextras/carbonio-shell-ui/issues/493)
+* restore colors for board icon inside primary bar ([8211628](https://github.com/zextras/carbonio-shell-ui/commit/8211628f03c560f56ccc1790ddd3da606f231b8a)), closes [#494](https://github.com/zextras/carbonio-shell-ui/issues/494)
+
 ### [8.0.1](https://github.com/zextras/carbonio-shell-ui/compare/v8.0.0...v8.0.1) (2024-08-21)
 
 

@@ -13,7 +13,6 @@ import styled, { css } from 'styled-components';
 
 import { closeBoard, setCurrentBoard, useBoardStore } from '../../store/boards';
 import { getT } from '../../store/i18n/hooks';
-import './board-tab.css';
 
 const TabContainer = styled(Row)<RowProps & { $active: boolean }>`
 	container-type: inline-size;

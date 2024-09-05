@@ -20,7 +20,6 @@ import {
 	Tooltip
 } from '@zextras/carbonio-design-system';
 import { debounce, isEmpty, map, noop, size } from 'lodash';
-import type { SimpleInterpolation } from 'styled-components';
 import styled, { css } from 'styled-components';
 
 import { AppBoard } from './board';
@@ -57,7 +56,7 @@ export const BOARD_DEFAULT_POSITION: Pick<CSSProperties, 'top' | 'left' | 'right
 	bottom: '0'
 };
 
-const BoardContainerComp = styled.div<{ expanded: boolean; minimized: boolean }>`
+const BoardContainerComp = styled.div<{ $expanded: boolean; $minimized: boolean }>`
 	position: fixed;
 	width: calc(100vw - ${PRIMARY_BAR_WIDTH});
 	height: calc(100vh - ${HEADER_BAR_HEIGHT});
@@ -66,14 +65,14 @@ const BoardContainerComp = styled.div<{ expanded: boolean; minimized: boolean }>
 	background-color: rgba(0, 0, 0, 0);
 	pointer-events: none;
 	z-index: ${BOARD_CONTAINER_ZINDEX};
-	${({ expanded }): SimpleInterpolation =>
-		expanded &&
+	${({ $expanded }): ReturnType<typeof css> | false =>
+		$expanded &&
 		css`
 			background-color: rgba(0, 0, 0, 0.5);
 			pointer-events: auto;
 		`}
-	${({ minimized }): SimpleInterpolation =>
-		minimized &&
+	${({ $minimized }): ReturnType<typeof css> | false =>
+		$minimized &&
 		css`
 			display: none;
 		`}
@@ -83,12 +82,12 @@ const OverflowContainer = styled(Container)`
 	overflow: auto;
 `;
 
-const Board = styled(Container)<{ expanded: boolean }>`
+const Board = styled(Container)<{ $expanded: boolean }>`
 	z-index: 5;
 	position: absolute;
 	${BOARD_DEFAULT_POSITION};
 
-	${({ width }): SimpleInterpolation =>
+	${({ width }): ReturnType<typeof css> | false =>
 		!width &&
 		css`
 			/* default width and aspect ratio */
@@ -96,7 +95,7 @@ const Board = styled(Container)<{ expanded: boolean }>`
 			width: auto;
 		`}
 
-	${({ height }): SimpleInterpolation =>
+	${({ height }): ReturnType<typeof css> | false =>
 		!height &&
 		css`
 			/* default height */
@@ -116,8 +115,8 @@ const Board = styled(Container)<{ expanded: boolean }>`
 	pointer-events: auto;
 	max-height: 100%;
 	max-width: 100%;
-	${({ expanded }): SimpleInterpolation =>
-		expanded &&
+	${({ $expanded }): ReturnType<typeof css> | false =>
+		$expanded &&
 		css`
 			height: calc(100% - 1.5rem) !important;
 			width: calc(100% - 3rem) !important;
@@ -347,12 +346,12 @@ export const BoardContainer = (): React.JSX.Element | null => {
 
 	return (
 		(!isBoardEmpty && current && (
-			<BoardContainerComp expanded={expanded} minimized={minimized} ref={boardContainerRef}>
+			<BoardContainerComp $expanded={expanded} $minimized={minimized} ref={boardContainerRef}>
 				<Board
 					data-testid="NewItemContainer"
 					background={'gray6'}
 					crossAlignment="unset"
-					expanded={expanded}
+					$expanded={expanded}
 					ref={boardRef}
 					width={currentBoardSizeAndPosition.width}
 					height={currentBoardSizeAndPosition.height}
@@ -444,7 +443,7 @@ export const BoardContainer = (): React.JSX.Element | null => {
 						<Divider style={{ height: '0.125rem' }} />
 						<BoardDetailContainer takeAvailableSpace>
 							{map(boards, (b) => (
-								<AppBoard key={b.id} board={b} />
+								<AppBoard key={b.id} $board={b} />
 							))}
 						</BoardDetailContainer>
 					</ResizableContainer>

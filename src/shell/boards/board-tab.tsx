@@ -9,14 +9,13 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { RowProps } from '@zextras/carbonio-design-system';
 import { Container, Icon, IconButton, Row, Text, Tooltip } from '@zextras/carbonio-design-system';
-import type { SimpleInterpolation } from 'styled-components';
 import styled, { css } from 'styled-components';
 
 import { closeBoard, setCurrentBoard, useBoardStore } from '../../store/boards';
 import { getT } from '../../store/i18n/hooks';
 import './board-tab.css';
 
-const TabContainer = styled(Row)<RowProps & { active: boolean }>`
+const TabContainer = styled(Row)<RowProps & { $active: boolean }>`
 	container-type: inline-size;
 	container-name: tab;
 	max-width: calc(3rem + 15ch);
@@ -26,15 +25,15 @@ const TabContainer = styled(Row)<RowProps & { active: boolean }>`
 	cursor: pointer;
 	height: 1.75rem;
 	user-select: none;
-	background-color: ${({ theme, active }): string =>
-		active ? theme.palette.gray3.regular : theme.palette.gray5.regular};
+	background-color: ${({ theme, $active }): string =>
+		$active ? theme.palette.gray3.regular : theme.palette.gray5.regular};
 	gap: 0.25rem;
 	border-radius: 0.25rem;
 	margin-left: 0.25rem;
 	margin-right: 0.25rem;
 	overflow: hidden;
-	${({ active }): SimpleInterpolation =>
-		active &&
+	${({ $active }): ReturnType<typeof css> | false =>
+		$active &&
 		css`
 			min-width: calc(3rem + 15ch);
 		`}
@@ -48,9 +47,9 @@ const TabIcon = styled(Icon)`
 	min-width: 1.5rem;
 `;
 
-const CustomText = styled(Text)<{ overflowing: boolean }>`
-	${({ overflowing }): SimpleInterpolation =>
-		overflowing &&
+const CustomText = styled(Text)<{ $overflowing: boolean }>`
+	${({ $overflowing }: { $overflowing: boolean }): ReturnType<typeof css> | false =>
+		$overflowing &&
 		css`
 			mask-image: linear-gradient(90deg, #000 60%, transparent);
 		`}
@@ -120,7 +119,7 @@ export const AppBoardTab: FC<{ id: string; icon: string; title: string; firstTab
 				onClick={onClick}
 				data-testid={`board-tab-${id}`}
 				padding={{ horizontal: 'extrasmall' }}
-				active={current === id}
+				$active={current === id}
 			>
 				<TabIcon icon={icon} size="large" />
 				<Tooltip label={title} placement="top" maxWidth="700px" triggerRef={textRef}>
@@ -128,7 +127,7 @@ export const AppBoardTab: FC<{ id: string; icon: string; title: string; firstTab
 						size="medium"
 						weight="regular"
 						color={current === id ? 'text' : 'secondary'}
-						overflowing={textOverflowing}
+						$overflowing={textOverflowing}
 						className="tab-text"
 					>
 						{title}

@@ -5,7 +5,7 @@
  */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import type { PostHogConfig } from 'posthog-js';
+import type { PostHog, PostHogConfig } from 'posthog-js';
 import { PostHogProvider, usePostHog } from 'posthog-js/react';
 
 import { useAccountStore } from '../store/account';
@@ -36,6 +36,7 @@ export const TrackerProvider = ({
 interface Tracker {
 	enableTracker: (enable: boolean) => void;
 	reset: () => void;
+	capture: InstanceType<typeof PostHog>['capture'];
 }
 
 const hashToSHA256 = async (value: string): Promise<ArrayBuffer> => {
@@ -97,5 +98,12 @@ export const useTracker = (): Tracker => {
 		postHog.reset();
 	}, [postHog]);
 
-	return { enableTracker, reset };
+	const capture = useCallback<InstanceType<typeof PostHog>['capture']>(
+		(eventName, properties, options) => {
+			postHog.capture(eventName, properties, options);
+		},
+		[postHog]
+	);
+
+	return { enableTracker, reset, capture };
 };

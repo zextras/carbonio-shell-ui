@@ -8,6 +8,7 @@ import React from 'react';
 
 import { act, waitFor } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
+import type { CaptureOptions } from 'posthog-js';
 import * as posthogJsReact from 'posthog-js/react';
 import type * as PostHogReact from 'posthog-js/react';
 
@@ -55,6 +56,16 @@ describe('Posthog', () => {
 		const { result } = renderHook(() => useTracker());
 		result.current.reset();
 		expect(posthog.reset).toHaveBeenCalled();
+	});
+
+	it('should call capture ', () => {
+		const posthog = spyOnPosthog();
+		const { result } = renderHook(() => useTracker());
+		const eventName = 'event name';
+		const properties = { prop1: 'prop1value', prop2: 'prop2value' };
+		const options: CaptureOptions = { send_instantly: true };
+		result.current.capture(eventName, properties, options);
+		expect(posthog.capture).toHaveBeenCalledWith(eventName, properties, options);
 	});
 
 	it('should invoke posthog provider with trackers disabled by default', () => {

@@ -8,6 +8,7 @@ import type { ComponentType } from 'react';
 
 declare global {
 	const BASE_PATH: string;
+	const POSTHOG_API_KEY: string;
 	interface Window {
 		__ZAPP_SHARED_LIBRARIES__?: {
 			'@zextras/carbonio-shell-ui': {

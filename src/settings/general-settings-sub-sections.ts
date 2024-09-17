@@ -3,17 +3,21 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import type { TFunction } from 'i18next';
+import { useMemo } from 'react';
 
+import type { TFunction } from 'i18next';
+import { useTranslation } from 'react-i18next';
+
+import { useIsCarbonioCE } from '../store/login/hooks';
 import type { SettingsSubSection } from '../types/apps';
 
 export const appearanceSubSection = (t: TFunction): SettingsSubSection => ({
 	label: t('settings.general.appearance', 'Appearance'),
 	id: 'appearance'
 });
-export const timezoneAndLanguageSubSection = (t: TFunction): SettingsSubSection => ({
-	label: t('settings.timezone_and_language', 'Time Zone and Language'),
-	id: 'timezone_and_language'
+export const languageSubSection = (t: TFunction): SettingsSubSection => ({
+	label: t('settings.timezone_and_language', 'Language'),
+	id: 'language'
 });
 export const outOfOfficeSubSection = (t: TFunction): SettingsSubSection => ({
 	label: t('settings.out_of_office.headings.settings_label', 'Out of Office Settings'),
@@ -23,25 +27,33 @@ export const searchPrefsSubSection = (t: TFunction): SettingsSubSection => ({
 	label: t('search.app', 'Search'),
 	id: 'search_prefs'
 });
-export const versionsSubSection = (t: TFunction): SettingsSubSection => ({
-	label: t('module.app.version', 'Application versions'),
-	id: 'app_version'
-});
 export const quotaSubSection = (t: TFunction): SettingsSubSection => ({
 	label: t('user_quota.title', "User's quota"),
 	id: 'user_quota'
 });
-export const accountSubSection = (t: TFunction): SettingsSubSection => ({
-	label: t('settings.general.account', 'Account'),
-	id: 'account'
+
+export const privacySubSection = (t: TFunction): SettingsSubSection => ({
+	label: t('settings.general.privacy', 'Privacy'),
+	id: 'privacy-settings'
 });
 
-export const settingsSubSections = (t: TFunction): Array<SettingsSubSection> => [
-	appearanceSubSection(t),
-	timezoneAndLanguageSubSection(t),
-	outOfOfficeSubSection(t),
-	searchPrefsSubSection(t),
-	versionsSubSection(t),
-	quotaSubSection(t),
-	accountSubSection(t)
-];
+export const useSettingsSubSections = (): SettingsSubSection[] => {
+	const [t] = useTranslation();
+	const isCarbonioCE = useIsCarbonioCE();
+
+	return useMemo(() => {
+		const subSections = [
+			appearanceSubSection(t),
+			languageSubSection(t),
+			outOfOfficeSubSection(t),
+			searchPrefsSubSection(t),
+			quotaSubSection(t)
+		];
+
+		if (isCarbonioCE) {
+			subSections.push(privacySubSection(t));
+		}
+
+		return subSections;
+	}, [isCarbonioCE, t]);
+};

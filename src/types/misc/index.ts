@@ -11,23 +11,10 @@
  */
 import type { ComponentType } from 'react';
 
-import type { Store } from '@reduxjs/toolkit';
 import type { To } from 'history';
 
-import type { CarbonioModule, PanelMode } from '../apps';
+import type { PanelMode } from '../apps';
 import type { Folder } from '../folder';
-
-export type LoadedAppRuntime = AppInjections & {
-	pkg: CarbonioModule;
-};
-
-export type LoadedAppsCache = {
-	[pkgName: string]: LoadedAppRuntime;
-};
-
-export type AppInjections = {
-	store: Store;
-};
 
 export type HistoryParams =
 	| {

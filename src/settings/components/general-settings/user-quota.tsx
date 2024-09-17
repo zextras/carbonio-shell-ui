@@ -41,15 +41,15 @@ const UserQuota = ({ mobileView }: UserQuotaProps): React.JSX.Element => {
 		if (quota < 0) {
 			return t('user_quota.unlimited', '{{used}} of unlimited space', {
 				replace: {
-					used: humanFileSize(used)
+					used: humanFileSize(used, t)
 				}
 			});
 		}
 		return t('user_quota.limited', {
 			defaultValue: '{{used}} of {{limit}} used',
 			replace: {
-				used: humanFileSize(used),
-				limit: humanFileSize(limit)
+				used: humanFileSize(used, t),
+				limit: humanFileSize(limit, t)
 			}
 		});
 	}, [limit, quota, t, used]);

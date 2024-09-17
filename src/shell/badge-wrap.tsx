@@ -5,37 +5,52 @@
  */
 import React from 'react';
 
-import { Container, Badge } from '@zextras/carbonio-design-system';
-import type { DefaultTheme } from 'styled-components';
+import { Container, Badge, Icon } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 
 import type { BadgeInfo } from '../types/apps';
 
-const MiniBadge = styled(Badge)<{ $color?: keyof DefaultTheme['palette'] }>`
+const MiniBadge = styled(Badge)`
 	position: absolute;
 	bottom: 25%;
 	right: 25%;
 	transform: translate(30%, 30%);
-	min-width: 0.75rem;
-	min-height: 0.75rem;
+	min-width: 1rem;
+	min-height: 1rem;
 	pointer-events: none;
 	z-index: 99;
-	font-size: 0.625rem;
-	background: ${({ $color, theme }): string => theme.palette[$color ?? 'primary'].regular};
 	padding: 0.125rem;
-	color: ${({ theme }): string => theme.palette.gray6.regular};
+
+	& > div {
+		font-size: 0.625rem;
+		line-height: normal;
+	}
+`;
+
+const MiniIcon = styled(Icon)`
+	position: absolute;
+	bottom: 25%;
+	right: 25%;
+	transform: translate(30%, 30%);
+	user-select: none;
+	cursor: pointer;
+	pointer-events: none;
+	z-index: 99;
 `;
 
 const BadgeWrap = React.forwardRef<HTMLDivElement, React.PropsWithChildren<{ badge: BadgeInfo }>>(
 	function BadgeWrapFn({ badge, children }, ref): React.JSX.Element {
 		return (
 			<Container width={'3rem'} height={'3rem'} style={{ position: 'relative' }} ref={ref}>
-				{badge.show && (
-					<MiniBadge
-						data-testid={'badge-counter'}
-						value={badge.showCount ? badge.count ?? 0 : ''}
-					/>
-				)}
+				{(badge.show && badge.icon && <MiniIcon icon={badge.icon} color={badge.color} />) ||
+					(badge.show && (
+						<MiniBadge
+							color={'gray6'}
+							backgroundColor={badge.color ?? 'primary'}
+							data-testid={'badge-counter'}
+							value={badge.showCount ? badge.count ?? 0 : ''}
+						/>
+					))}
 				{children}
 			</Container>
 		);

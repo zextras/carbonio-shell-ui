@@ -11,7 +11,9 @@ library(
     ])
 )
 
-zappPipeline(
-  publishOnNpm: true,
-  disableAutoTranslationsSync: true
-)
+withCredentials([string(credentialsId: 'posthog-api-token', variable: 'POSTHOG_API_KEY')]) {
+    zappPipeline(
+      publishOnNpm: true,
+      disableAutoTranslationsSync: true
+    )
+}

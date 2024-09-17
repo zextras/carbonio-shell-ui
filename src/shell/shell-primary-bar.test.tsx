@@ -12,7 +12,7 @@ import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
 
 import AppViewContainer from './app-view-container';
 import ShellPrimaryBar from './shell-primary-bar';
-import { DefaultViewsRegister } from '../boot/bootstrapper';
+import { DefaultViewsRegister } from '../boot/app/default-views';
 import { usePushHistoryCallback } from '../history/hooks';
 import { ModuleSelector } from '../search/module-selector';
 import { useAccountStore } from '../store/account';
@@ -537,6 +537,27 @@ describe('Shell primary bar', () => {
 			const counterBadge = screen.getByTestId('badge-counter');
 			expect(counterBadge).toBeVisible();
 			expect(counterBadge).toHaveTextContent('');
+		});
+
+		it('should render icon instead of badge when icon is provided in badge info', () => {
+			const primaryBarViews: PrimaryBarView[] = [
+				{
+					id: 'pbv-1',
+					app: 'app1',
+					label: 'App One',
+					route: 'app1',
+					position: 1,
+					badge: { show: true, icon: ICONS.search, showCount: true },
+					visible: true,
+					component: 'People'
+				}
+			];
+			useAppStore.setState((state) => ({
+				views: { ...state.views, primaryBar: primaryBarViews }
+			}));
+			setup(<ShellPrimaryBar />);
+			expect(screen.queryByTestId('badge-counter')).not.toBeInTheDocument();
+			expect(screen.getByTestId(`icon: ${ICONS.search}`)).toBeVisible();
 		});
 	});
 });

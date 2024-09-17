@@ -8,34 +8,32 @@ import React, { useCallback, useMemo, useState } from 'react';
 
 import type { SelectItem, SingleSelectionOnChange } from '@zextras/carbonio-design-system';
 import { Container, FormSubSection, Modal, Select, Text } from '@zextras/carbonio-design-system';
-import { find } from 'lodash';
 
 import type { SettingsSectionProps } from './components/utils';
-import { localeList, timeZoneList, upsertPrefOnUnsavedChanges } from './components/utils';
-import { timezoneAndLanguageSubSection } from './general-settings-sub-sections';
+import { localeList, upsertPrefOnUnsavedChanges } from './components/utils';
+import { languageSubSection } from './general-settings-sub-sections';
 import { useReset } from './hooks/use-reset';
 import { getT } from '../store/i18n/hooks';
 import type { AccountSettings } from '../types/account';
 import type { AddMod } from '../types/network';
 
-interface LanguageAndTimeZoneSettingsProps extends SettingsSectionProps {
+interface LanguageSettingsProps extends SettingsSectionProps {
 	settings: AccountSettings;
 	addMod: AddMod;
 	open: boolean;
 	setOpen: (arg: boolean) => void;
 }
 
-export const LanguageAndTimeZoneSettings = ({
+export const LanguageSettings = ({
 	settings,
 	addMod,
 	open,
 	setOpen,
 	resetRef
-}: LanguageAndTimeZoneSettingsProps): React.JSX.Element => {
+}: LanguageSettingsProps): React.JSX.Element => {
 	const t = getT();
 	const locales = useMemo(() => localeList(t), [t]);
-	const timezones = useMemo(() => timeZoneList(t), [t]);
-	const sectionTitle = useMemo(() => timezoneAndLanguageSubSection(t), [t]);
+	const sectionTitle = useMemo(() => languageSubSection(t), [t]);
 
 	const updatePref = useMemo(() => upsertPrefOnUnsavedChanges(addMod), [addMod]);
 
@@ -43,7 +41,7 @@ export const LanguageAndTimeZoneSettings = ({
 
 	// TODO update with SHELL-181
 	const prefLocaleSelectedValue = useMemo<SelectItem>(
-		() => find(locales, (item) => item.value === prefLocale) as SelectItem,
+		() => locales.find((item) => item.value === prefLocale) as SelectItem,
 		[locales, prefLocale]
 	);
 
@@ -57,30 +55,9 @@ export const LanguageAndTimeZoneSettings = ({
 		[updatePref]
 	);
 
-	const [prefTimeZoneId, setPrefTimeZoneId] = useState<string>(
-		settings.prefs.zimbraPrefTimeZoneId ?? ''
-	);
-
-	// TODO update with SHELL-181
-	const prefTimeZoneIdSelectedValue = useMemo<SelectItem>(
-		() => find(timezones, (item) => item.value === prefTimeZoneId) as SelectItem,
-		[timezones, prefTimeZoneId]
-	);
-
-	const onTimeZoneChange = useCallback<SingleSelectionOnChange>(
-		(value) => {
-			if (value) {
-				updatePref('zimbraPrefTimeZoneId', value);
-				setPrefTimeZoneId(value);
-			}
-		},
-		[updatePref]
-	);
-
 	const init = useCallback(() => {
 		setPrefLocale(settings.prefs.zimbraPrefLocale ?? '');
-		setPrefTimeZoneId(settings.prefs.zimbraPrefTimeZoneId ?? '');
-	}, [settings.prefs.zimbraPrefLocale, settings.prefs.zimbraPrefTimeZoneId]);
+	}, [settings.prefs.zimbraPrefLocale]);
 
 	useReset(resetRef, init);
 
@@ -98,16 +75,6 @@ export const LanguageAndTimeZoneSettings = ({
 					label={t('label.language', 'Language')}
 					onChange={onLocaleChange}
 					selection={prefLocaleSelectedValue}
-					showCheckbox={false}
-					dropdownMaxHeight="12.5rem"
-					selectedBackgroundColor="highlight"
-				/>
-				<Select
-					items={timezones}
-					background={'gray5'}
-					label={t('label.time_zone', 'Time Zone')}
-					onChange={onTimeZoneChange}
-					selection={prefTimeZoneIdSelectedValue}
 					showCheckbox={false}
 					dropdownMaxHeight="12.5rem"
 					selectedBackgroundColor="highlight"

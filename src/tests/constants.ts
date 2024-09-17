@@ -151,5 +151,10 @@ export const TESTID_SELECTORS = {
 	resizableBorder(border: Border): string {
 		return `resizable-border-${border}`;
 	},
-	headerModuleSelector: 'HeaderModuleSelector'
+	headerModuleSelector: 'HeaderModuleSelector',
+	privacySettings: 'privacy-settings'
+};
+
+export const TIMERS = {
+	modalShow: 1
 };

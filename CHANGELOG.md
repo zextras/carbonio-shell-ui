@@ -2,6 +2,77 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [8.0.3](https://github.com/zextras/carbonio-shell-ui/compare/v8.0.2...v8.0.3) (2024-09-11)
+
+
+### Bug Fixes
+
+* prevent autocapture from capturing any text from elements ([c5ba18a](https://github.com/zextras/carbonio-shell-ui/commit/c5ba18a534a1271e86d1ccf8b2d5f0c269d3ccd5))
+
+### [8.0.2](https://github.com/zextras/carbonio-shell-ui/compare/v8.0.1...v8.0.2) (2024-08-30)
+
+
+### Bug Fixes
+
+* hide privacy and remove account subsections from settings ([fb94e2e](https://github.com/zextras/carbonio-shell-ui/commit/fb94e2e56de7d2f50f5240e98de9688d0f07f327)), closes [#493](https://github.com/zextras/carbonio-shell-ui/issues/493)
+* restore colors for board icon inside primary bar ([8211628](https://github.com/zextras/carbonio-shell-ui/commit/8211628f03c560f56ccc1790ddd3da606f231b8a)), closes [#494](https://github.com/zextras/carbonio-shell-ui/issues/494)
+
+### [8.0.1](https://github.com/zextras/carbonio-shell-ui/compare/v8.0.0...v8.0.1) (2024-08-21)
+
+
+### Bug Fixes
+
+* prevent NoOp endless loop if waitDisallowed is true ([6b571d8](https://github.com/zextras/carbonio-shell-ui/commit/6b571d8887b7026c3dd1aa7e201d0476200df473)), closes [#486](https://github.com/zextras/carbonio-shell-ui/issues/486)
+
+## [8.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v7.0.1...v8.0.0) (2024-08-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* addRoute function is no more used to update app store display value
+* remove useIsMobile hook
+* **deps:** drop support for @zextras/carbonio-design-system <= 6
+* remove router inside boards
+* change addBoard api
+* change addBoardView api
+* update Board type
+* **types:** Remove Detail.Error.Detail field from SoapFault type
+* remove noOp invocation from update view
+
+### Features
+
+* add setting to manage analytics preference ([2852704](https://github.com/zextras/carbonio-shell-ui/commit/2852704743af334b6fac9cffe2a6fa7cfe59ce67)), closes [#465](https://github.com/zextras/carbonio-shell-ui/issues/465)
+* add support for Kyrgyz language ([8ca2ba5](https://github.com/zextras/carbonio-shell-ui/commit/8ca2ba5f3ad32ed3aceade1601cab3c4139016c0)), closes [#481](https://github.com/zextras/carbonio-shell-ui/issues/481)
+* allow update of account signatures ([fd240f2](https://github.com/zextras/carbonio-shell-ui/commit/fd240f21205f30717e5e44f67fa2090e2822b562)), closes [#462](https://github.com/zextras/carbonio-shell-ui/issues/462)
+* change message for overquota ([8ef4eb8](https://github.com/zextras/carbonio-shell-ui/commit/8ef4eb860781325cd0792d6f931896ea5cd24d93)), closes [#452](https://github.com/zextras/carbonio-shell-ui/issues/452)
+* enable posthog ([1bbf949](https://github.com/zextras/carbonio-shell-ui/commit/1bbf949f556762cd530de3110604517b35899e5c)), closes [#463](https://github.com/zextras/carbonio-shell-ui/issues/463)
+* enhance primary bar component ([9533065](https://github.com/zextras/carbonio-shell-ui/commit/953306500f67d5bad4c5e5b2a72ab7edb11579f6)), closes [#483](https://github.com/zextras/carbonio-shell-ui/issues/483)
+* expose a function to update settings store ([f9d04d8](https://github.com/zextras/carbonio-shell-ui/commit/f9d04d88185feb24a5995b5a1a7ff6f87324bdfe)), closes [#451](https://github.com/zextras/carbonio-shell-ui/issues/451)
+* remove deprecated implementation of addRoute ([a62652d](https://github.com/zextras/carbonio-shell-ui/commit/a62652d4967ef5ed7dd6c6623fb2e4d20cc5d7d8)), closes [#480](https://github.com/zextras/carbonio-shell-ui/issues/480)
+* remove logout in settings ([f06b5e3](https://github.com/zextras/carbonio-shell-ui/commit/f06b5e3ea9465960dd308f5fccdd016d9993aad0)), closes [#477](https://github.com/zextras/carbonio-shell-ui/issues/477)
+* remove noOp invocation from update view ([12f76fd](https://github.com/zextras/carbonio-shell-ui/commit/12f76fdde64075aa9e098871cd5cde9a74acde1a)), closes [#449](https://github.com/zextras/carbonio-shell-ui/issues/449)
+* remove timezone settings ([36d4427](https://github.com/zextras/carbonio-shell-ui/commit/36d4427bb6315c8e2ef345d5403bdae9411de6bf)), closes [#466](https://github.com/zextras/carbonio-shell-ui/issues/466)
+* show dynamic counter in 60 seconds snackbar session expiration ([eb5a297](https://github.com/zextras/carbonio-shell-ui/commit/eb5a2972551cc97c944290be38e9b1956d0cb37d)), closes [#482](https://github.com/zextras/carbonio-shell-ui/issues/482)
+* warn user about incoming expiration of session ([0b4d9ad](https://github.com/zextras/carbonio-shell-ui/commit/0b4d9adf62a61db2cd54781f36f6e83d4dbd7f83)), closes [#464](https://github.com/zextras/carbonio-shell-ui/issues/464)
+
+
+### Bug Fixes
+
+* **lib:** prevent import from sub-paths ([a3989af](https://github.com/zextras/carbonio-shell-ui/commit/a3989af1ac2d0ec73a4d0bbf7c85e4079c585840)), closes [#446](https://github.com/zextras/carbonio-shell-ui/issues/446)
+* remove applications version from setting ([b3ab56b](https://github.com/zextras/carbonio-shell-ui/commit/b3ab56b37e1cf5d44881b46bf9b4eb6194309c64)), closes [#484](https://github.com/zextras/carbonio-shell-ui/issues/484)
+* translate unit measures for size ([375ff7f](https://github.com/zextras/carbonio-shell-ui/commit/375ff7f55435463d65ab352e1ab543e25e5c6a4e)), closes [#485](https://github.com/zextras/carbonio-shell-ui/issues/485)
+* **types:** align SoapFault type to network error response ([367dcb4](https://github.com/zextras/carbonio-shell-ui/commit/367dcb40e64971aaf57d35efb84fee1d117af11f)), closes [#433](https://github.com/zextras/carbonio-shell-ui/issues/433)
+* update Badge usage ([6039cb9](https://github.com/zextras/carbonio-shell-ui/commit/6039cb982c355ac7c455016fa3e56cd7920d4cfe)), closes [#478](https://github.com/zextras/carbonio-shell-ui/issues/478)
+
+
+### build
+
+* **deps:** update @zextras/carbonio-design-system to v7 ([fe82244](https://github.com/zextras/carbonio-shell-ui/commit/fe822445da64263d3095a751eddb77b9827057ac)), closes [#453](https://github.com/zextras/carbonio-shell-ui/issues/453)
+
+
+* remove router inside boards ([1f3d125](https://github.com/zextras/carbonio-shell-ui/commit/1f3d1255503a9502ef8aa25505d91b12b6e835f2)), closes [#434](https://github.com/zextras/carbonio-shell-ui/issues/434)
+* remove useIsMobile hook ([0d8606e](https://github.com/zextras/carbonio-shell-ui/commit/0d8606e681034ce3457246cd5b2a962259aa4d82)), closes [#475](https://github.com/zextras/carbonio-shell-ui/issues/475)
+
 ### [7.0.1](https://github.com/zextras/carbonio-shell-ui/compare/v7.0.0...v7.0.1) (2024-06-14)
 
 ## [7.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v6.0.0...v7.0.0) (2024-06-14)

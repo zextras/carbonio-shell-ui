@@ -212,7 +212,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 			createSnackbar({
 				key: `new`,
 				replace: true,
-				type: 'error',
+				severity: 'error',
 				label: t(
 					'message.snackbar.identities_quota_exceeded',
 					'The identity could not be created because you have exceeded your identity quota'
@@ -253,7 +253,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 				createSnackbar({
 					key: `new`,
 					replace: true,
-					type: 'info',
+					severity: 'info',
 					label: t('message.snackbar.settings_saved', 'Edits saved correctly'),
 					autoHideTimeout: 3000,
 					hideButton: true
@@ -281,7 +281,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 				createSnackbar({
 					key: `new`,
 					replace: true,
-					type: 'error',
+					severity: 'error',
 					label: t('snackbar.error', 'Something went wrong, please try again'),
 					autoHideTimeout: 3000,
 					hideButton: true

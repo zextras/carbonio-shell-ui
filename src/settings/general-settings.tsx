@@ -9,24 +9,25 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import { includes, isEmpty, map, size } from 'lodash';
 
-import AppearanceSettings from './components/general-settings/appearance-settings';
 import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
-import { Logout } from './components/general-settings/logout';
-import ModuleVersionSettings from './components/general-settings/module-version-settings';
 import { OutOfOfficeSettings } from './components/general-settings/out-of-office-settings';
+import { Privacy } from './components/general-settings/privacy';
 import { ScalingSettingSection } from './components/general-settings/scaling-setting-section';
 import { SearchSettings } from './components/general-settings/search-settings';
+import { SettingsSection } from './components/general-settings/settings-section';
 import UserQuota from './components/general-settings/user-quota';
 import type { SettingsHeaderProps } from './components/settings-header';
 import { SettingsHeader } from './components/settings-header';
 import type { ResetComponentImperativeHandler } from './components/utils';
-import { LanguageAndTimeZoneSettings } from './language-and-timezone-settings';
+import { appearanceSubSection, privacySubSection } from './general-settings-sub-sections';
+import { LanguageSettings } from './language-settings';
 import { JSNS, LOCAL_STORAGE_SETTINGS_KEY, SHELL_APP_ID } from '../constants';
 import { getSoapFetch } from '../network/fetch';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 import { useAccountStore, useUserSettings } from '../store/account';
 import { mergePrefs, mergeProps } from '../store/account/utils';
 import { getT } from '../store/i18n/hooks';
+import { useIsCarbonioCE } from '../store/login/hooks';
 import type { AccountState } from '../types/account';
 import type {
 	AddMod,
@@ -53,6 +54,7 @@ const GeneralSettings = (): React.JSX.Element => {
 		{}
 	);
 	const [open, setOpen] = useState(false);
+	const isCarbonioCE = useIsCarbonioCE();
 
 	const addLocalStoreChange = useCallback(
 		(key: keyof ScalingSettings, value: ValueOf<ScalingSettings>) => {
@@ -166,7 +168,7 @@ const GeneralSettings = (): React.JSX.Element => {
 					createSnackbar({
 						key: `new`,
 						replace: true,
-						type: 'info',
+						severity: 'info',
 						label: t('message.snackbar.settings_saved', 'Edits saved correctly'),
 						autoHideTimeout: 3000,
 						hideButton: true
@@ -177,7 +179,7 @@ const GeneralSettings = (): React.JSX.Element => {
 					createSnackbar({
 						key: `new`,
 						replace: true,
-						type: 'error',
+						severity: 'error',
 						label: t('snackbar.error', 'Something went wrong, please try again'),
 						autoHideTimeout: 3000,
 						hideButton: true
@@ -194,9 +196,10 @@ const GeneralSettings = (): React.JSX.Element => {
 
 	const scalingSettingSectionRef = useRef<ResetComponentImperativeHandler>(null);
 	const darkThemeSettingSectionRef = useRef<ResetComponentImperativeHandler>(null);
-	const languageAndTimeZoneSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
+	const languageSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
 	const outOfOfficeSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
 	const searchSettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
+	const privacySettingsSectionRef = useRef<ResetComponentImperativeHandler>(null);
 
 	const onCancel = useCallback(() => {
 		setMods({});
@@ -204,9 +207,10 @@ const GeneralSettings = (): React.JSX.Element => {
 			scalingSettingSectionRef.current?.reset();
 		}
 		darkThemeSettingSectionRef.current?.reset();
-		languageAndTimeZoneSettingsSectionRef.current?.reset();
+		languageSettingsSectionRef.current?.reset();
 		outOfOfficeSettingsSectionRef.current?.reset();
-		searchSettingsSectionRef?.current?.reset();
+		searchSettingsSectionRef.current?.reset();
+		privacySettingsSectionRef.current?.reset();
 	}, [localStorageUnAppliedChanges]);
 
 	const isDirty = useMemo(
@@ -227,7 +231,7 @@ const GeneralSettings = (): React.JSX.Element => {
 				padding={{ all: 'medium' }}
 				style={{ overflow: 'auto' }}
 			>
-				<AppearanceSettings>
+				<SettingsSection {...appearanceSubSection(t)}>
 					<ScalingSettingSection
 						resetRef={scalingSettingSectionRef}
 						scalingSettings={localStorageSettings}
@@ -239,13 +243,13 @@ const GeneralSettings = (): React.JSX.Element => {
 						addMod={addMod}
 						removeMod={removeMod}
 					/>
-				</AppearanceSettings>
-				<LanguageAndTimeZoneSettings
+				</SettingsSection>
+				<LanguageSettings
 					settings={userSettings}
 					addMod={addMod}
 					open={open}
 					setOpen={setOpen}
-					resetRef={languageAndTimeZoneSettingsSectionRef}
+					resetRef={languageSettingsSectionRef}
 				/>
 
 				<OutOfOfficeSettings
@@ -258,9 +262,17 @@ const GeneralSettings = (): React.JSX.Element => {
 					addMod={addMod}
 					resetRef={searchSettingsSectionRef}
 				/>
-				<ModuleVersionSettings />
 				<UserQuota mobileView={false} />
-				<Logout />
+				{isCarbonioCE && (
+					<SettingsSection {...privacySubSection(t)}>
+						<Privacy
+							addMod={addMod}
+							removeMod={removeMod}
+							resetRef={privacySettingsSectionRef}
+							sendAnalyticsPref={userSettings.prefs.carbonioPrefSendAnalytics === 'TRUE'}
+						/>
+					</SettingsSection>
+				)}
 			</Container>
 		</>
 	);

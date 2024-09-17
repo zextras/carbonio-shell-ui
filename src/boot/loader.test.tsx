@@ -128,7 +128,6 @@ describe('Loader', () => {
 		const componentsRes = waitForResponse('get', '/static/iris/components.json');
 		const getInfoRes = waitForResponse('post', '/service/soap/GetInfoRequest');
 		const enableTrackerFn = jest.fn();
-		const resetFn = jest.fn();
 		server.use(
 			http.post(
 				'/service/soap/GetInfoRequest',
@@ -137,7 +136,7 @@ describe('Loader', () => {
 		);
 		jest
 			.spyOn(posthog, 'useTracker')
-			.mockReturnValue({ enableTracker: enableTrackerFn, reset: resetFn });
+			.mockReturnValue({ enableTracker: enableTrackerFn, reset: jest.fn(), capture: jest.fn() });
 		setup(
 			<span data-testid={'loader'}>
 				<Loader />
@@ -195,7 +194,6 @@ describe('Loader', () => {
 			const componentsRes = waitForResponse('get', '/static/iris/components.json');
 			const getInfoRes = waitForResponse('post', '/service/soap/GetInfoRequest');
 			const enableTrackerFn = jest.fn();
-			const resetFn = jest.fn();
 			server.use(
 				http.post(
 					'/service/soap/GetInfoRequest',
@@ -204,7 +202,7 @@ describe('Loader', () => {
 			);
 			jest
 				.spyOn(posthog, 'useTracker')
-				.mockReturnValue({ enableTracker: enableTrackerFn, reset: resetFn });
+				.mockReturnValue({ enableTracker: enableTrackerFn, reset: jest.fn(), capture: jest.fn() });
 			setup(
 				<span data-testid={'loader'}>
 					<Loader />

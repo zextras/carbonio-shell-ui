@@ -20,6 +20,7 @@ import type { FC } from 'react';
 import type { i18n } from 'i18next';
 import type { LinkProps } from 'react-router-dom';
 import type { ModalProps } from '@zextras/carbonio-design-system';
+import type { PostHog } from 'posthog-js';
 import { default as React_2 } from 'react';
 import type { TFunction } from 'i18next';
 import type { To } from 'history';
@@ -1468,6 +1469,8 @@ export type Tags = Record<string, Tag>;
 
 // @public (undocumented)
 interface Tracker {
+    // (undocumented)
+    capture: InstanceType<typeof PostHog>['capture'];
     // (undocumented)
     enableTracker: (enable: boolean) => void;
     // (undocumented)

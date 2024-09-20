@@ -29,7 +29,7 @@ const ScalingSliderContainer = styled(Container)`
 `;
 
 const ExampleContainer = styled(Container)<{ $fontSize: number | undefined }>`
-	font-size: ${({ $fontSize }): string | undefined | number => $fontSize && `${$fontSize}%`};
+	font-size: ${({ $fontSize }): string | undefined | 0 => $fontSize && `${$fontSize}%`};
 `;
 
 const ExampleText = styled(Text)`

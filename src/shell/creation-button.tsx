@@ -24,6 +24,13 @@ import { useAppList } from '../store/app';
 import { getT } from '../store/i18n/hooks';
 import { useActions } from '../store/integrations/hooks';
 import type { AppRoute, CarbonioModule } from '../types/apps';
+import type { Action } from '../types/integrations';
+
+export interface NewAction extends Action, Omit<DropdownItem, 'label' | 'onClick'> {
+	execute: NonNullable<DropdownItem['onClick']>;
+	group?: string;
+	primary?: boolean;
+}
 
 interface CreationButtonProps {
 	activeRoute: AppRoute;
@@ -35,36 +42,48 @@ export const CreationButtonComponent = ({
 	location
 }: CreationButtonProps): React.JSX.Element => {
 	const t = getT();
-	const actions = useActions({ activeRoute, location }, ACTION_TYPES.NEW);
+	const actions = useActions<CreationButtonProps, NewAction>(
+		{ activeRoute, location },
+		ACTION_TYPES.NEW
+	);
+	const actionsDropdownItems = useMemo<
+		(DropdownItem & Required<Pick<DropdownItem, 'onClick'>> & Omit<NewAction, 'execute'>)[]
+	>(() => actions.map(({ execute, ...rest }) => ({ onClick: execute, ...rest })), [actions]);
 	const [open, setOpen] = useState(false);
 	const primaryAction = useMemo(
 		() =>
 			find(
-				actions,
+				actionsDropdownItems,
 				(action) =>
 					(action.group === activeRoute?.id || action.group === activeRoute?.app) &&
 					action.primary === true
 			),
-		[actions, activeRoute?.app, activeRoute?.id]
+		[actionsDropdownItems, activeRoute?.app, activeRoute?.id]
 	);
 	const apps = useAppList();
-	const byApp = useMemo(() => groupBy(actions, 'group'), [actions]);
+	const actionsDropdownItemsByGroup = useMemo(
+		() => groupBy(actionsDropdownItems, (actionsDropdownItem) => actionsDropdownItem.group),
+		[actionsDropdownItems]
+	);
 
 	const secondaryActions = useMemo<DropdownItem[]>(
 		(): DropdownItem[] => [
-			...(byApp[activeRoute?.app ?? ''] ?? []),
+			...(actionsDropdownItemsByGroup[activeRoute?.app ?? ''] ?? []),
 			...reduce<CarbonioModule, DropdownItem[]>(
 				apps,
 				(acc, app, i): DropdownItem[] => {
-					if (app.name !== activeRoute?.app && byApp[app.name]?.length > 0) {
-						acc.push({ type: 'divider', label: '', id: `divider-${i}` }, ...byApp[app.name]);
+					if (app.name !== activeRoute?.app && actionsDropdownItemsByGroup[app.name]?.length > 0) {
+						acc.push(
+							{ type: 'divider', id: `divider-${i}` },
+							...actionsDropdownItemsByGroup[app.name]
+						);
 					}
 					return acc;
 				},
 				[]
 			)
 		],
-		[activeRoute?.app, apps, byApp]
+		[activeRoute?.app, apps, actionsDropdownItemsByGroup]
 	);
 
 	const onClose = useCallback(() => {
@@ -81,7 +100,7 @@ export const CreationButtonComponent = ({
 				size="extralarge"
 				background={'primary'}
 				label={t('new', 'New')}
-				onClick={primaryAction.onClick || primaryAction.click || noop}
+				onClick={primaryAction.onClick}
 				items={secondaryActions}
 				disabledPrimary={!primaryAction || primaryAction?.disabled}
 				disabledSecondary={!secondaryActions?.length}

@@ -5,7 +5,7 @@
  */
 
 import type React from 'react';
-import { useMemo, useCallback } from 'react';
+import { useMemo } from 'react';
 
 import { useIntegrationsStore } from './store';
 import {
@@ -14,7 +14,7 @@ import {
 	buildIntegrationComponent,
 	buildIntegrationFunction
 } from './utils';
-import type { Action, ActionFactory } from '../../types/integrations';
+import type { Action } from '../../types/integrations';
 import type { AnyFunction } from '../../utils/typeUtils';
 
 export const useIntegratedFunction = (id: string): [AnyFunction, boolean] => {
@@ -29,14 +29,12 @@ export const useIntegratedComponent = (
 	return useMemo(() => buildIntegrationComponent(integration), [integration]);
 };
 
-export const useActions = <T,>(target: T, type: string): Array<Action> => {
+export const useActions = <TContext, TAction extends Action = Action>(
+	context: TContext,
+	type: string
+): Array<TAction> => {
 	const factories = useIntegrationsStore((s) => s.actions[type]);
-	return useMemo(() => buildIntegrationActions(factories, target), [factories, target]);
-};
-
-export const useActionsFactory = (type: string): (<T>(target: T) => Array<Action>) => {
-	const factories = useIntegrationsStore((s) => s.actions[type]);
-	return useCallback((target) => buildIntegrationActions(factories, target), [factories]);
+	return useMemo(() => buildIntegrationActions(factories, context), [factories, context]);
 };
 
 export const useAction = <T,>(
@@ -46,12 +44,4 @@ export const useAction = <T,>(
 ): [Action | undefined, boolean] => {
 	const factory = useIntegrationsStore((s) => s.actions[type][id]);
 	return useMemo(() => buildIntegrationAction(factory, target), [factory, target]);
-};
-
-export const useActionFactory = <T,>(
-	type: string,
-	id: string
-): [ActionFactory<T> | undefined, boolean] => {
-	const factory = useIntegrationsStore((s) => s.actions[type][id]);
-	return [factory, !!factory];
 };

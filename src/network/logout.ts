@@ -9,7 +9,9 @@ import { goTo, goToLogin } from './utils';
 import { JSNS } from '../constants';
 import { useLoginConfigStore } from '../store/login/store';
 
-export async function logout(): Promise<void> {
+export async function logout({
+	isManualLogout = false
+}: { isManualLogout?: boolean } = {}): Promise<void> {
 	try {
 		await soapFetch('EndSession', {
 			_jsns: JSNS.account,
@@ -20,6 +22,10 @@ export async function logout(): Promise<void> {
 		console.error(error);
 	} finally {
 		const customLogoutUrl = useLoginConfigStore.getState().carbonioWebUiLogoutURL;
-		customLogoutUrl ? goTo(customLogoutUrl) : goToLogin();
+		if (isManualLogout && customLogoutUrl) {
+			goTo(customLogoutUrl);
+		} else {
+			goToLogin();
+		}
 	}
 }

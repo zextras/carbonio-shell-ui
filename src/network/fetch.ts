@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { find, map, maxBy } from 'lodash';
+import { map, maxBy } from 'lodash';
 
 import { soapFetch } from './fetch-utils';
+import { logout } from './logout';
 import { userAgent } from './user-agent';
-import { goToLogin } from './utils';
 import { IS_FOCUS_MODE, JSNS, SHELL_APP_ID } from '../constants';
 import { report } from '../reporting/functions';
 import { useAccountStore } from '../store/account';
@@ -78,15 +78,15 @@ const handleResponse = <R extends Record<string, unknown>>(
 	clearTimeout(noOpTimeout);
 	if (res.Body.Fault) {
 		if (
-			find(
-				['service.AUTH_REQUIRED', 'service.AUTH_EXPIRED'],
-				(code) => code === (<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Code
+			['service.AUTH_REQUIRED', 'service.AUTH_EXPIRED'].find(
+				(code) => code === (res as ErrorSoapResponse).Body.Fault.Detail?.Error?.Code
 			)
 		) {
 			if (IS_FOCUS_MODE) {
 				useAccountStore.setState({ authenticated: false });
 			} else {
-				goToLogin();
+				logout();
+				throw new Error((res as ErrorSoapResponse).Body.Fault.Detail.Error.Code);
 			}
 		}
 		console.error(

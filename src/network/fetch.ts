@@ -4,10 +4,11 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { find, map, maxBy } from 'lodash';
+import { map, maxBy } from 'lodash';
 
+import { soapFetch } from './fetch-utils';
+import { logout } from './logout';
 import { userAgent } from './user-agent';
-import { goToLogin } from './utils';
 import { IS_FOCUS_MODE, JSNS, SHELL_APP_ID } from '../constants';
 import { report } from '../reporting/functions';
 import { useAccountStore } from '../store/account';
@@ -32,33 +33,6 @@ export const fetchNoOp = (): void => {
 			? { _jsns: JSNS.mail, limitToOneBlocked: 1, wait: 1 }
 			: { _jsns: JSNS.mail }
 	);
-};
-
-const getAccount = (
-	acc?: Account,
-	otherAccount?: string
-): { by: string; _content: string } | undefined => {
-	if (otherAccount) {
-		return {
-			by: 'name',
-			_content: otherAccount
-		};
-	}
-	if (acc) {
-		if (acc.name) {
-			return {
-				by: 'name',
-				_content: acc.name
-			};
-		}
-		if (acc.id) {
-			return {
-				by: 'id',
-				_content: acc.id
-			};
-		}
-	}
-	return undefined;
 };
 
 const getXmlAccount = (acc?: Account, otherAccount?: string): string => {
@@ -104,15 +78,15 @@ const handleResponse = <R extends Record<string, unknown>>(
 	clearTimeout(noOpTimeout);
 	if (res.Body.Fault) {
 		if (
-			find(
-				['service.AUTH_REQUIRED', 'service.AUTH_EXPIRED'],
-				(code) => code === (<ErrorSoapResponse>res).Body.Fault.Detail?.Error?.Code
+			['service.AUTH_REQUIRED', 'service.AUTH_EXPIRED'].find(
+				(code) => code === (res as ErrorSoapResponse).Body.Fault.Detail?.Error?.Code
 			)
 		) {
 			if (IS_FOCUS_MODE) {
 				useAccountStore.setState({ authenticated: false });
 			} else {
-				goToLogin();
+				logout();
+				throw new Error((res as ErrorSoapResponse).Body.Fault.Detail.Error.Code);
 			}
 		}
 		console.error(
@@ -147,6 +121,7 @@ const handleResponse = <R extends Record<string, unknown>>(
 	// @ts-ignore
 	return res?.Body?.Fault ? (res.Body as ErrorSoapBodyResponse) : (res.Body[`${api}Response`] as R);
 };
+
 export const getSoapFetch =
 	(app: string) =>
 	<Request, Response extends Record<string, unknown>>(
@@ -154,44 +129,14 @@ export const getSoapFetch =
 		body: Request,
 		otherAccount?: string,
 		signal?: AbortSignal
-	): Promise<Response> => {
-		const { zimbraVersion, account } = useAccountStore.getState();
-		const { notify, session } = useNetworkStore.getState();
-		return fetch(`/service/soap/${api}Request`, {
-			signal,
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				Body: {
-					[`${api}Request`]: body
-				},
-				Header: {
-					context: {
-						_jsns: JSNS.all,
-						notify: notify?.[0]?.seq
-							? {
-									seq: notify?.[0]?.seq
-								}
-							: undefined,
-						session: session ?? {},
-						account: getAccount(account, otherAccount),
-						userAgent: {
-							name: userAgent,
-							version: zimbraVersion
-						}
-					}
-				}
-			})
-		}) // TODO proper error handling
-			.then((res) => res?.json())
-			.then((res: RawSoapResponse<Response>) => handleResponse(api, res))
+	): Promise<Response> =>
+		soapFetch<Request, Response>(api, body, otherAccount, signal)
+			// TODO proper error handling
+			.then((res) => handleResponse(api, res))
 			.catch((e) => {
 				report(app)(e);
 				throw e;
 			}) as Promise<Response>;
-	};
 
 export const getXmlSoapFetch =
 	(app: string) =>

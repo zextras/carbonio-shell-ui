@@ -3,8 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { waitFor } from '@testing-library/react';
-import { noop } from 'lodash';
 import type { DefaultBodyType, PathParams } from 'msw';
 import { http, HttpResponse } from 'msw';
 
@@ -39,10 +37,13 @@ describe('Fetch', () => {
 			)
 		);
 
-		const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation(noop);
+		const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation();
 
-		await getSoapFetch(SHELL_APP_ID)('Some', {});
-		await waitFor(() => expect(goToLoginFn).toHaveBeenCalled());
+		await expect(getSoapFetch(SHELL_APP_ID)('Some', {})).rejects.toMatchObject({
+			message: 'service.AUTH_REQUIRED'
+		});
+		await jest.advanceTimersToNextTimerAsync();
+		expect(goToLoginFn).toHaveBeenCalled();
 	});
 
 	test('should redirect to login if user session is expired', async () => {
@@ -69,9 +70,12 @@ describe('Fetch', () => {
 			)
 		);
 
-		const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation(noop);
+		const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation();
 
-		await getSoapFetch(SHELL_APP_ID)('Some', {});
-		await waitFor(() => expect(goToLoginFn).toHaveBeenCalled());
+		await expect(getSoapFetch(SHELL_APP_ID)('Some', {})).rejects.toMatchObject({
+			message: 'service.AUTH_EXPIRED'
+		});
+		await jest.advanceTimersToNextTimerAsync();
+		expect(goToLoginFn).toHaveBeenCalled();
 	});
 });

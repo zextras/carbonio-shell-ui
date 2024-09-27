@@ -90,7 +90,7 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 				label: t('label.logout', 'Logout'),
 				onClick: (): void => {
 					reset();
-					logout();
+					logout({ isManualLogout: true });
 				},
 				icon: 'LogOut'
 			}

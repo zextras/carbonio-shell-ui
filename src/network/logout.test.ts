@@ -80,14 +80,14 @@ describe('Logout', () => {
 		expect(goToLoginFn).toHaveBeenCalled();
 	});
 
-	describe('with custom logout url', () => {
+	describe('with custom logout url and isManualLogout true', () => {
 		it('should redirect to login page if EndSession request fails', async () => {
 			useLoginConfigStore.setState({ carbonioWebUiLogoutURL: 'custom logout' });
 			const goToFn = jest.spyOn(utils, 'goTo').mockImplementation();
 			server.use(
 				http.post('/service/soap/EndSessionRequest', () => HttpResponse.json({}, { status: 500 }))
 			);
-			await logout();
+			await logout({ isManualLogout: true });
 			await jest.advanceTimersToNextTimerAsync();
 			expect(goToFn).toHaveBeenCalled();
 		});
@@ -96,7 +96,7 @@ describe('Logout', () => {
 			useLoginConfigStore.setState({ carbonioWebUiLogoutURL: 'custom logout' });
 			const goToFn = jest.spyOn(utils, 'goTo').mockImplementation();
 			server.use(http.get('/logout', () => HttpResponse.json({}, { status: 500 })));
-			await logout();
+			await logout({ isManualLogout: true });
 			await jest.advanceTimersToNextTimerAsync();
 			expect(goToFn).toHaveBeenCalled();
 		});
@@ -106,7 +106,7 @@ describe('Logout', () => {
 			controlConsoleError('Failed to fetch');
 			const goToFn = jest.spyOn(utils, 'goTo').mockImplementation();
 			server.use(http.post('/service/soap/EndSessionRequest', () => HttpResponse.error()));
-			await logout();
+			await logout({ isManualLogout: true });
 			await jest.advanceTimersToNextTimerAsync();
 			expect(goToFn).toHaveBeenCalled();
 		});
@@ -116,7 +116,7 @@ describe('Logout', () => {
 			controlConsoleError('Failed to fetch');
 			const goToFn = jest.spyOn(utils, 'goTo').mockImplementation();
 			server.use(http.get('/logout', () => HttpResponse.error()));
-			await logout();
+			await logout({ isManualLogout: true });
 			await jest.advanceTimersToNextTimerAsync();
 			expect(goToFn).toHaveBeenCalled();
 		});
@@ -148,7 +148,7 @@ describe('Logout', () => {
 					)
 				)
 			);
-			await logout();
+			await logout({ isManualLogout: true });
 			await jest.advanceTimersToNextTimerAsync();
 			expect(goToFn).toHaveBeenCalled();
 		});

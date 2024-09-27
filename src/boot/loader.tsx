@@ -17,7 +17,6 @@ import { getComponents } from '../network/get-components';
 import { getInfo } from '../network/get-info';
 import { loginConfig } from '../network/login-config';
 import { logout } from '../network/logout';
-import { goToLogin } from '../network/utils';
 import { useAccountStore } from '../store/account';
 import { useAppStore } from '../store/app';
 
@@ -40,12 +39,17 @@ export const LoaderFailureModal = ({
 	closeHandler
 }: LoaderFailureModalProps): React.JSX.Element => {
 	const [t] = useTranslation();
-	const onConfirm = useCallback(() => window.location.reload(), []);
+	const onConfirm = useCallback(() => {
+		window.location.reload();
+	}, []);
+	const onSecondaryAction = useCallback(() => {
+		logout();
+	}, []);
 	return (
 		<Modal
 			open={open}
 			showCloseIcon={false}
-			onSecondaryAction={goToLogin}
+			onSecondaryAction={onSecondaryAction}
 			title={t('bootstrap.failure.modal.title', 'Something went wrong...')}
 			confirmLabel={t('bootstrap.failure.modal.confirmButtonLabel', 'refresh')}
 			secondaryActionLabel={t('bootstrap.failure.modal.secondaryButtonLabel', 'login page')}
@@ -144,8 +148,7 @@ export const Loader = (): React.JSX.Element => {
 					if (!IS_FOCUS_MODE) {
 						setOpen(true);
 					}
-				}
-				if (isPromiseFulfilledResult(getComponentsPromiseSettledResult)) {
+				} else {
 					loadApps(Object.values(useAppStore.getState().apps));
 				}
 			}

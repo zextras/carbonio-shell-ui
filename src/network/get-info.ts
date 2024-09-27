@@ -10,26 +10,30 @@ import { useAccountStore } from '../store/account';
 import { normalizeAccount } from '../store/account/normalization';
 import { useNetworkStore } from '../store/network';
 import { parsePollingInterval } from '../store/network/utils';
-import type { GetInfoResponse, SoapBody } from '../types/network';
+import type { ErrorSoapBodyResponse, GetInfoResponse, SoapBody } from '../types/network';
 
-export const getInfo = (): Promise<{ lifetime: number }> =>
-	getSoapFetch(SHELL_APP_ID)<SoapBody<{ rights: string }>, GetInfoResponse>('GetInfo', {
+export async function getInfo(): Promise<{ lifetime: number }> {
+	const response = await getSoapFetch(SHELL_APP_ID)<
+		SoapBody<{ rights: string }>,
+		GetInfoResponse | ErrorSoapBodyResponse
+	>('GetInfo', {
 		_jsns: JSNS.account,
 		rights: 'sendAs,sendAsDistList,viewFreeBusy,sendOnBehalfOf,sendOnBehalfOfDistList'
-	}).then((res: GetInfoResponse) => {
-		if (res) {
-			const { account, settings, version } = normalizeAccount(res);
-			useNetworkStore.setState({
-				pollingInterval: parsePollingInterval(settings)
-			});
-			useAccountStore.setState({
-				authenticated: true,
-				account,
-				settings,
-				zimbraVersion: version
-			});
-
-			return { lifetime: res.lifetime };
-		}
-		return { lifetime: 0 };
 	});
+
+	if ('Fault' in response) {
+		throw new Error(response.Fault.Detail.Error.Code);
+	}
+	const { account, settings, version } = normalizeAccount(response);
+	useNetworkStore.setState({
+		pollingInterval: parsePollingInterval(settings)
+	});
+	useAccountStore.setState({
+		authenticated: true,
+		account,
+		settings,
+		zimbraVersion: version
+	});
+
+	return { lifetime: response.lifetime };
+}

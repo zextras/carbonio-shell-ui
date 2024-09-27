@@ -69,10 +69,10 @@ const normalizeContext = ({ notify: rawNotify, ...context }: RawSoapContext): So
 	return normalizedContext;
 };
 
-const handleResponse = <R extends Record<string, unknown>>(
+const handleResponse = <Response extends Record<string, unknown>>(
 	api: string,
-	res: RawSoapResponse<R>
-): R | ErrorSoapBodyResponse => {
+	res: RawSoapResponse<Response>
+): Response | ErrorSoapBodyResponse => {
 	const { noOpTimeout } = useNetworkStore.getState();
 	const { usedQuota } = useAccountStore.getState();
 	clearTimeout(noOpTimeout);
@@ -117,9 +117,11 @@ const handleResponse = <R extends Record<string, unknown>>(
 		});
 	}
 
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
-	return res?.Body?.Fault ? (res.Body as ErrorSoapBodyResponse) : (res.Body[`${api}Response`] as R);
+	if (res.Body.Fault) {
+		return res.Body;
+	}
+	const responseKey = `${api}Response`;
+	return (res.Body as Record<typeof responseKey, Response>)[responseKey];
 };
 export const getSoapFetch =
 	(app: string) =>

@@ -9,21 +9,23 @@ import { act, waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { EventEmitter } from 'node:events';
 
+import * as loadApps from './app/load-apps';
 import { Loader } from './loader';
 import * as posthog from './posthog';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
 import { getGetInfoRequest } from '../mocks/handlers/getInfoRequest';
 import server, { waitForResponse } from '../mocks/server';
 import * as logout from '../network/logout';
+import * as networkUtils from '../network/utils';
 import { useLoginConfigStore } from '../store/login/store';
 import { spyOnPosthog } from '../tests/posthog-utils';
 import { controlConsoleError, setup, screen } from '../tests/utils';
 import type { AccountSettingsPrefs } from '../types/account';
+import type { ErrorSoapResponse } from '../types/network';
 import * as utils from '../utils/utils';
 
 describe('Loader', () => {
-	test('If only getComponents request fails, the LoaderFailureModal appears', async () => {
-		// using getInfo and loginConfig default handlers
+	it('should show the failure modal if only getComponents request fails with error status', async () => {
 		server.use(
 			http.get<never, never, null>('/static/iris/components.json', () =>
 				HttpResponse.json(null, {
@@ -53,17 +55,51 @@ describe('Loader', () => {
 		expect(title).toBeVisible();
 	});
 
-	test('If only getInfo request fails, the LoaderFailureModal appears', async () => {
-		// TODO remove when SHELL-117 will be implemented
-		controlConsoleError("Cannot read properties of undefined (reading 'Fault')");
-		// using getComponents and loginConfig default handlers
+	it('should show the failure modal if only getComponents request fails with exception', async () => {
+		controlConsoleError('Failed to fetch');
+		server.use(http.get('/static/iris/components.json', () => HttpResponse.error()));
+
+		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
+		const getInfoRes = waitForResponse('post', '/service/soap/GetInfoRequest');
+
+		setup(
+			<span data-testid={'loader'}>
+				<Loader />
+			</span>
+		);
+		await loginRes;
+		await screen.findByTestId('loader');
+		await getInfoRes;
+		const title = await screen.findByText('Something went wrong...');
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
+		expect(title).toBeVisible();
+	});
+
+	it('should show the failure modal if only getInfo request fails with fault', async () => {
 		server.use(
 			http.post('/service/soap/GetInfoRequest', () =>
-				HttpResponse.json(
-					{},
+				HttpResponse.json<ErrorSoapResponse>(
 					{
-						status: 503,
-						statusText: 'Controlled error: fail getInfo request'
+						Body: {
+							Fault: {
+								Code: { Value: 'Controlled error' },
+								Detail: {
+									Error: {
+										Code: 'Controlled error',
+										Trace: ''
+									}
+								},
+								Reason: {
+									Text: 'Controlled error: fail getInfo request'
+								}
+							}
+						},
+						Header: { context: {} }
+					},
+					{
+						status: 503
 					}
 				)
 			)
@@ -88,7 +124,51 @@ describe('Loader', () => {
 		expect(title).toBeVisible();
 	});
 
-	test('If only loginConfig request fails, the LoaderFailureModal does not appear', async () => {
+	it('should show the failure modal if only getInfo request fails with exception', async () => {
+		controlConsoleError('Failed to fetch');
+		server.use(http.post('/service/soap/GetInfoRequest', () => HttpResponse.error()));
+		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
+		const componentsRes = waitForResponse('get', '/static/iris/components.json');
+		setup(
+			<span data-testid={'loader'}>
+				<Loader />
+			</span>
+		);
+		await loginRes;
+		await screen.findByTestId('loader');
+		await componentsRes;
+
+		const title = await screen.findByText('Something went wrong...');
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
+		expect(title).toBeVisible();
+	});
+
+	it('should show the failure modal if only getInfo request fails without body', async () => {
+		controlConsoleError("Cannot read properties of undefined (reading 'Fault')");
+		server.use(
+			http.post('/service/soap/GetInfoRequest', () => HttpResponse.json({}, { status: 500 }))
+		);
+		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
+		const componentsRes = waitForResponse('get', '/static/iris/components.json');
+		setup(
+			<span data-testid={'loader'}>
+				<Loader />
+			</span>
+		);
+		await loginRes;
+		await screen.findByTestId('loader');
+		await componentsRes;
+
+		const title = await screen.findByText('Something went wrong...');
+		act(() => {
+			jest.runOnlyPendingTimers();
+		});
+		expect(title).toBeVisible();
+	});
+
+	it('should not show failure modal if only loginConfig request fails', async () => {
 		server.use(http.get(LOGIN_V3_CONFIG_PATH, () => HttpResponse.json(null, { status: 503 })));
 		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
 		const componentsRes = waitForResponse('get', '/static/iris/components.json');
@@ -106,7 +186,7 @@ describe('Loader', () => {
 		expect(screen.queryByText('Something went wrong...')).not.toBeInTheDocument();
 	});
 
-	test('If Loader requests do not fail, the LoaderFailureModal does not appear', async () => {
+	it('should not show failure modal if no request fail', async () => {
 		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
 		const componentsRes = waitForResponse('get', '/static/iris/components.json');
 		const getInfoRes = waitForResponse('post', '/service/soap/GetInfoRequest');
@@ -122,6 +202,51 @@ describe('Loader', () => {
 
 		expect(screen.queryByText('Something went wrong...')).not.toBeInTheDocument();
 	});
+
+	it.each(['service.AUTH_REQUIRED', 'service.AUTH_EXPIRED'])(
+		'should not load apps if getInfo fails with code %s',
+		async (code) => {
+			controlConsoleError(code);
+			const loadAppsFn = jest.spyOn(loadApps, 'loadApps');
+			jest.spyOn(networkUtils, 'goToLogin').mockImplementation();
+			server.use(
+				http.post('/service/soap/GetInfoRequest', () =>
+					HttpResponse.json<ErrorSoapResponse>(
+						{
+							Body: {
+								Fault: {
+									Code: { Value: code },
+									Detail: {
+										Error: {
+											Code: code,
+											Trace: ''
+										}
+									},
+									Reason: {
+										Text: code
+									}
+								}
+							},
+							Header: { context: {} }
+						},
+						{
+							status: 422
+						}
+					)
+				)
+			);
+			setup(
+				<span data-testid={'loader'}>
+					<Loader />
+				</span>
+			);
+			await screen.findByTestId('loader');
+			await act(async () => {
+				await jest.advanceTimersToNextTimerAsync();
+			});
+			expect(loadAppsFn).not.toHaveBeenCalled();
+		}
+	);
 
 	it('should enable the tracker if carbonioPrefSendAnalytics is true', async () => {
 		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);

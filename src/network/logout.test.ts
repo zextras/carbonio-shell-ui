@@ -13,81 +13,92 @@ import { controlConsoleError } from '../tests/utils';
 import type { ErrorSoapResponse } from '../types/network';
 
 describe('Logout', () => {
-	it('should redirect to login page if EndSession request fails', async () => {
-		const goToLoginFn = jest.spyOn(utils, 'goToLogin').mockImplementation();
-		server.use(
-			http.post('/service/soap/EndSessionRequest', () => HttpResponse.json({}, { status: 500 }))
-		);
-		await logout();
-		await jest.advanceTimersToNextTimerAsync();
-		expect(goToLoginFn).toHaveBeenCalled();
-	});
+	describe.each([
+		[undefined, true],
+		['valued', false],
+		[undefined, false]
+	])('With custom logout url %s and isManualLogout %s', (customUrl, isManualLogout) => {
+		it('should redirect to login page if EndSession request fails', async () => {
+			useLoginConfigStore.setState({ carbonioWebUiLogoutURL: customUrl });
+			const goToLoginFn = jest.spyOn(utils, 'goToLogin').mockImplementation();
+			server.use(
+				http.post('/service/soap/EndSessionRequest', () => HttpResponse.json({}, { status: 500 }))
+			);
+			await logout({ isManualLogout });
+			await jest.advanceTimersToNextTimerAsync();
+			expect(goToLoginFn).toHaveBeenCalled();
+		});
 
-	it('should redirect to login page if /logout request fails', async () => {
-		const goToLoginFn = jest.spyOn(utils, 'goToLogin').mockImplementation();
-		server.use(http.get('/logout', () => HttpResponse.json({}, { status: 500 })));
-		await logout();
-		await jest.advanceTimersToNextTimerAsync();
-		expect(goToLoginFn).toHaveBeenCalled();
-	});
+		it('should redirect to login page if /logout request fails', async () => {
+			useLoginConfigStore.setState({ carbonioWebUiLogoutURL: customUrl });
+			const goToLoginFn = jest.spyOn(utils, 'goToLogin').mockImplementation();
+			server.use(http.get('/logout', () => HttpResponse.json({}, { status: 500 })));
+			await logout({ isManualLogout });
+			await jest.advanceTimersToNextTimerAsync();
+			expect(goToLoginFn).toHaveBeenCalled();
+		});
 
-	it('should redirect to login page if EndSession throws error', async () => {
-		controlConsoleError('Failed to fetch');
-		const goToLoginFn = jest.spyOn(utils, 'goToLogin').mockImplementation();
-		server.use(http.post('/service/soap/EndSessionRequest', () => HttpResponse.error()));
-		await logout();
-		await jest.advanceTimersToNextTimerAsync();
-		expect(goToLoginFn).toHaveBeenCalled();
-	});
+		it('should redirect to login page if EndSession throws error', async () => {
+			useLoginConfigStore.setState({ carbonioWebUiLogoutURL: customUrl });
+			controlConsoleError('Failed to fetch');
+			const goToLoginFn = jest.spyOn(utils, 'goToLogin').mockImplementation();
+			server.use(http.post('/service/soap/EndSessionRequest', () => HttpResponse.error()));
+			await logout({ isManualLogout });
+			await jest.advanceTimersToNextTimerAsync();
+			expect(goToLoginFn).toHaveBeenCalled();
+		});
 
-	it('should redirect to login page if /logout throws error', async () => {
-		controlConsoleError('Failed to fetch');
-		const goToLoginFn = jest.spyOn(utils, 'goToLogin').mockImplementation();
-		server.use(http.get('/logout', () => HttpResponse.error()));
-		await logout();
-		await jest.advanceTimersToNextTimerAsync();
-		expect(goToLoginFn).toHaveBeenCalled();
-	});
+		it('should redirect to login page if /logout throws error', async () => {
+			useLoginConfigStore.setState({ carbonioWebUiLogoutURL: customUrl });
+			controlConsoleError('Failed to fetch');
+			const goToLoginFn = jest.spyOn(utils, 'goToLogin').mockImplementation();
+			server.use(http.get('/logout', () => HttpResponse.error()));
+			await logout({ isManualLogout });
+			await jest.advanceTimersToNextTimerAsync();
+			expect(goToLoginFn).toHaveBeenCalled();
+		});
 
-	it('should redirect to login page if EndSession request succeeded with Fault', async () => {
-		const goToLoginFn = jest.spyOn(utils, 'goToLogin').mockImplementation();
-		server.use(
-			http.post('/service/soap/EndSessionRequest', () =>
-				HttpResponse.json<ErrorSoapResponse>(
-					{
-						Header: { context: {} },
-						Body: {
-							Fault: {
-								Code: { Value: '' },
-								Detail: {
-									Error: {
-										Code: '',
-										Trace: ''
+		it('should redirect to login page if EndSession request succeeded with Fault', async () => {
+			useLoginConfigStore.setState({ carbonioWebUiLogoutURL: customUrl });
+			const goToLoginFn = jest.spyOn(utils, 'goToLogin').mockImplementation();
+			server.use(
+				http.post('/service/soap/EndSessionRequest', () =>
+					HttpResponse.json<ErrorSoapResponse>(
+						{
+							Header: { context: {} },
+							Body: {
+								Fault: {
+									Code: { Value: '' },
+									Detail: {
+										Error: {
+											Code: '',
+											Trace: ''
+										}
+									},
+									Reason: {
+										Text: ''
 									}
-								},
-								Reason: {
-									Text: ''
 								}
 							}
-						}
-					},
-					{ status: 200 }
+						},
+						{ status: 200 }
+					)
 				)
-			)
-		);
-		await logout();
-		await jest.advanceTimersToNextTimerAsync();
-		expect(goToLoginFn).toHaveBeenCalled();
+			);
+			await logout({ isManualLogout });
+			await jest.advanceTimersToNextTimerAsync();
+			expect(goToLoginFn).toHaveBeenCalled();
+		});
 	});
 
-	describe('with custom logout url', () => {
+	describe('with custom logout url and isManualLogout true', () => {
 		it('should redirect to login page if EndSession request fails', async () => {
 			useLoginConfigStore.setState({ carbonioWebUiLogoutURL: 'custom logout' });
 			const goToFn = jest.spyOn(utils, 'goTo').mockImplementation();
 			server.use(
 				http.post('/service/soap/EndSessionRequest', () => HttpResponse.json({}, { status: 500 }))
 			);
-			await logout();
+			await logout({ isManualLogout: true });
 			await jest.advanceTimersToNextTimerAsync();
 			expect(goToFn).toHaveBeenCalled();
 		});
@@ -96,7 +107,7 @@ describe('Logout', () => {
 			useLoginConfigStore.setState({ carbonioWebUiLogoutURL: 'custom logout' });
 			const goToFn = jest.spyOn(utils, 'goTo').mockImplementation();
 			server.use(http.get('/logout', () => HttpResponse.json({}, { status: 500 })));
-			await logout();
+			await logout({ isManualLogout: true });
 			await jest.advanceTimersToNextTimerAsync();
 			expect(goToFn).toHaveBeenCalled();
 		});
@@ -106,7 +117,7 @@ describe('Logout', () => {
 			controlConsoleError('Failed to fetch');
 			const goToFn = jest.spyOn(utils, 'goTo').mockImplementation();
 			server.use(http.post('/service/soap/EndSessionRequest', () => HttpResponse.error()));
-			await logout();
+			await logout({ isManualLogout: true });
 			await jest.advanceTimersToNextTimerAsync();
 			expect(goToFn).toHaveBeenCalled();
 		});
@@ -116,7 +127,7 @@ describe('Logout', () => {
 			controlConsoleError('Failed to fetch');
 			const goToFn = jest.spyOn(utils, 'goTo').mockImplementation();
 			server.use(http.get('/logout', () => HttpResponse.error()));
-			await logout();
+			await logout({ isManualLogout: true });
 			await jest.advanceTimersToNextTimerAsync();
 			expect(goToFn).toHaveBeenCalled();
 		});
@@ -148,7 +159,7 @@ describe('Logout', () => {
 					)
 				)
 			);
-			await logout();
+			await logout({ isManualLogout: true });
 			await jest.advanceTimersToNextTimerAsync();
 			expect(goToFn).toHaveBeenCalled();
 		});

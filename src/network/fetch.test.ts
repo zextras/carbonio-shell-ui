@@ -7,13 +7,14 @@ import type { DefaultBodyType, PathParams } from 'msw';
 import { http, HttpResponse } from 'msw';
 
 import { getSoapFetch } from './fetch';
+import * as logout from './logout';
 import * as networkUtils from './utils';
 import { SHELL_APP_ID } from '../constants';
 import server from '../mocks/server';
 import type { ErrorSoapResponse } from '../types/network';
 
-describe('Fetch', () => {
-	test('should redirect to login if user is not authenticated', async () => {
+describe('getSoapFetch', () => {
+	it('should logout and redirect to login if user is not authenticated', async () => {
 		server.use(
 			http.post<PathParams, DefaultBodyType, Pick<ErrorSoapResponse, 'Body'>>(
 				'/service/soap/SomeRequest',
@@ -38,15 +39,16 @@ describe('Fetch', () => {
 		);
 
 		const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation();
-
+		const logoutFn = jest.spyOn(logout, 'logout');
 		await expect(getSoapFetch(SHELL_APP_ID)('Some', {})).rejects.toMatchObject({
 			message: 'service.AUTH_REQUIRED'
 		});
 		await jest.advanceTimersToNextTimerAsync();
+		expect(logoutFn).toHaveBeenCalled();
 		expect(goToLoginFn).toHaveBeenCalled();
 	});
 
-	test('should redirect to login if user session is expired', async () => {
+	it('should logout and redirect to login if user session is expired', async () => {
 		server.use(
 			http.post<PathParams, DefaultBodyType, Pick<ErrorSoapResponse, 'Body'>>(
 				'/service/soap/SomeRequest',
@@ -71,11 +73,46 @@ describe('Fetch', () => {
 		);
 
 		const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation();
-
+		const logoutFn = jest.spyOn(logout, 'logout');
 		await expect(getSoapFetch(SHELL_APP_ID)('Some', {})).rejects.toMatchObject({
 			message: 'service.AUTH_EXPIRED'
 		});
 		await jest.advanceTimersToNextTimerAsync();
+		expect(logoutFn).toHaveBeenCalled();
+		expect(goToLoginFn).toHaveBeenCalled();
+	});
+
+	it('should logout and redirect to login if ', async () => {
+		server.use(
+			http.post<PathParams, DefaultBodyType, Pick<ErrorSoapResponse, 'Body'>>(
+				'/service/soap/SomeRequest',
+				() =>
+					HttpResponse.json({
+						Body: {
+							Fault: {
+								Code: {
+									Value: ''
+								},
+								Reason: { Text: 'Controlled error: auth expired' },
+								Detail: {
+									Error: {
+										Code: 'service.AUTH_EXPIRED',
+										Trace: ''
+									}
+								}
+							}
+						}
+					})
+			)
+		);
+
+		const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation();
+		const logoutFn = jest.spyOn(logout, 'logout');
+		await expect(getSoapFetch(SHELL_APP_ID)('Some', {})).rejects.toMatchObject({
+			message: 'service.AUTH_EXPIRED'
+		});
+		await jest.advanceTimersToNextTimerAsync();
+		expect(logoutFn).toHaveBeenCalled();
 		expect(goToLoginFn).toHaveBeenCalled();
 	});
 });

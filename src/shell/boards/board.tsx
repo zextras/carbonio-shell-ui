@@ -49,18 +49,18 @@ const BoardViewComponent = ({
 	</AppContextProvider>
 );
 
-export const AppBoard = ({ $board }: { $board: Board }): React.JSX.Element => {
+export const AppBoard = ({ board }: { board: Board }): React.JSX.Element => {
 	const current = useBoardStore((s) => s.current);
 	const boardViews = useAppStore((s) => s.views.board);
 	const boardView = useMemo(
-		() => find(boardViews, (v) => v.id === $board.boardViewId),
-		[$board.boardViewId, boardViews]
+		() => find(boardViews, (v) => v.id === board.boardViewId),
+		[board.boardViewId, boardViews]
 	);
 
 	return (
-		<BoardContainer $show={current === $board.id}>
+		<BoardContainer $show={current === board.id}>
 			{boardView ? (
-				<BoardViewComponent view={boardView} boardId={$board.id} />
+				<BoardViewComponent view={boardView} boardId={board.id} />
 			) : (
 				<Container orientation={'row'} mainAlignment={'center'}>
 					<p>Missing Board View</p>

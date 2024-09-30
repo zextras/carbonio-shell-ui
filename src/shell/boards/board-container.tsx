@@ -443,7 +443,7 @@ export const BoardContainer = (): React.JSX.Element | null => {
 						<Divider style={{ height: '0.125rem' }} />
 						<BoardDetailContainer takeAvailableSpace>
 							{map(boards, (b) => (
-								<AppBoard key={b.id} $board={b} />
+								<AppBoard key={b.id} board={b} />
 							))}
 						</BoardDetailContainer>
 					</ResizableContainer>

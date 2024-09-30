@@ -48,7 +48,7 @@ const TabIcon = styled(Icon)`
 `;
 
 const CustomText = styled(Text)<{ $overflowing: boolean }>`
-	${({ $overflowing }: { $overflowing: boolean }): ReturnType<typeof css> | false =>
+	${({ $overflowing }): ReturnType<typeof css> | false =>
 		$overflowing &&
 		css`
 			mask-image: linear-gradient(90deg, #000 60%, transparent);

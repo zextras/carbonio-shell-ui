@@ -9,6 +9,7 @@
 import { Action as Action_3 } from '../../lib';
 import { AnyFunction as AnyFunction_2 } from '../../utils/typeUtils';
 import { BadgeInfo as BadgeInfo_2 } from '../../lib';
+import type { CaptureOptions } from 'posthog-js';
 import type { ChipItem } from '@zextras/carbonio-design-system';
 import type { ComponentType } from 'react';
 import type { DefaultTheme } from 'styled-components';
@@ -20,6 +21,7 @@ import type { FC } from 'react';
 import type { i18n } from 'i18next';
 import type { LinkProps } from 'react-router-dom';
 import type { ModalProps } from '@zextras/carbonio-design-system';
+import type { Properties } from 'posthog-js';
 import { default as React_2 } from 'react';
 import type { TFunction } from 'i18next';
 import type { To } from 'history';
@@ -1468,6 +1470,8 @@ export type Tags = Record<string, Tag>;
 
 // @public (undocumented)
 interface Tracker {
+    // (undocumented)
+    capture: (event_name: string, properties?: Properties | null | undefined, options?: CaptureOptions | undefined) => void;
     // (undocumented)
     enableTracker: (enable: boolean) => void;
     // (undocumented)

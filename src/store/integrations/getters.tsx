@@ -12,7 +12,7 @@ import {
 	buildIntegrationActions,
 	buildIntegrationComponent
 } from './utils';
-import type { Action, ActionFactory } from '../../types/integrations';
+import type { Action } from '../../types/integrations';
 import type { AnyFunction } from '../../utils/typeUtils';
 
 export const getIntegratedFunction = (id: string): [AnyFunction, boolean] => {
@@ -27,14 +27,12 @@ export const getIntegratedComponent = (
 	return buildIntegrationComponent(integration);
 };
 
-export const getActions = <T,>(target: T, type: string): Array<Action> => {
+export const getActions = <TContext, TAction extends Action = Action>(
+	context: TContext,
+	type: string
+): Array<TAction> => {
 	const factories = useIntegrationsStore.getState().actions[type];
-	return buildIntegrationActions(factories, target);
-};
-
-export const getActionsFactory = (type: string): (<T>(target: T) => Array<Action>) => {
-	const factories = useIntegrationsStore.getState().actions[type];
-	return <T,>(target: T): Array<Action> => buildIntegrationActions(factories, target);
+	return buildIntegrationActions(factories, context);
 };
 
 export const getAction = <T,>(
@@ -44,12 +42,4 @@ export const getAction = <T,>(
 ): [Action | undefined, boolean] => {
 	const factory = useIntegrationsStore.getState().actions[type]?.[id];
 	return buildIntegrationAction(factory, target);
-};
-
-export const getActionFactory = <T,>(
-	type: string,
-	id: string
-): [ActionFactory<T> | undefined, boolean] => {
-	const factory = useIntegrationsStore.getState().actions[type]?.[id];
-	return [factory, !!factory];
 };

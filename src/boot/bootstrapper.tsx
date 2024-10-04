@@ -14,7 +14,7 @@ import { DefaultViewsRegister } from './app/default-views';
 import { ContextBridge } from './context-bridge';
 import { Loader } from './loader';
 import { TrackerProvider } from './posthog';
-import ShellI18nextProvider from './shell-i18n-provider';
+import { ShellI18nextProvider } from './shell-i18n-provider';
 import { ThemeProvider } from './theme-provider';
 import { BASENAME, IS_FOCUS_MODE } from '../constants';
 import { NotificationPermissionChecker } from '../notification/NotificationPermissionChecker';

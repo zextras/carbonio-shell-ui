@@ -6,8 +6,7 @@
 
 import React from 'react';
 
-import { act } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react';
 
 import { useIsCarbonioCE } from './hooks';
 import { type LoginConfigStore, useLoginConfigStore } from './store';

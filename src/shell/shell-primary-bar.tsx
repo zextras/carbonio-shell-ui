@@ -12,7 +12,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import BadgeWrap from './badge-wrap';
-import AppContextProvider from '../boot/app/app-context-provider';
+import { AppContextProvider } from '../boot/app/app-context-provider';
 import { BOARD_CONTAINER_ZINDEX, PRIMARY_BAR_WIDTH, SEARCH_APP_ID } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppStore } from '../store/app';

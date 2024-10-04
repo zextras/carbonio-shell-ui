@@ -18,7 +18,6 @@ import { DropdownItem } from '@zextras/carbonio-design-system';
 import type { DynamicThemeFix } from 'darkreader';
 import type { Event as Event_2 } from '@sentry/browser';
 import type { EventHint } from '@sentry/browser';
-import type { FC } from 'react';
 import type { i18n } from 'i18next';
 import type { LinkProps } from 'react-router-dom';
 import type { ModalProps } from '@zextras/carbonio-design-system';
@@ -274,7 +273,7 @@ type AppDependantExports = {
 };
 
 // @public (undocumented)
-export const AppLink: FC<AppLinkProps>;
+export const AppLink: ({ to, route, ...rest }: AppLinkProps) => React_2.JSX.Element;
 
 // @public (undocumented)
 export type AppLinkProps = LinkProps & {
@@ -1239,7 +1238,7 @@ type SearchView = CarbonioView<SearchViewProps> & {
 // @public (undocumented)
 export type SearchViewProps = {
     useQuery: () => [QueryChip[], Function];
-    ResultsHeader: FC<{
+    ResultsHeader: React_2.ComponentType<{
         label: string;
     }>;
     useDisableSearch: () => [boolean, Function];
@@ -1664,7 +1663,7 @@ type UtilityView = CarbonioAccessoryView<UtilityBarComponentProps> & {
 };
 
 // @public (undocumented)
-type ValueOf<T extends Record<string, unknown>> = T[keyof T];
+type ValueOf<T> = T[keyof T];
 
 // @public (undocumented)
 type WorkerMessage<T> = {

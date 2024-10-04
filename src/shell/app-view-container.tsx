@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { FC } from 'react';
 import React, { useMemo } from 'react';
 
 import { Container } from '@zextras/carbonio-design-system';
@@ -12,11 +11,11 @@ import { map, find } from 'lodash';
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-import AppContextProvider from '../boot/app/app-context-provider';
+import { AppContextProvider } from '../boot/app/app-context-provider';
 import { IS_FOCUS_MODE } from '../constants';
 import { useAppList, useAppStore, useRoutes } from '../store/app';
 
-const _BoardsRouterContainer = styled(Container)`
+const BoardsRouterContainer = styled(Container)`
 	flex-grow: 1;
 	flex-basis: 0;
 	min-width: 0.0625rem;
@@ -24,7 +23,7 @@ const _BoardsRouterContainer = styled(Container)`
 	overflow-y: auto;
 `;
 
-const FirstAppRedirect: FC = () => {
+const FirstAppRedirect = (): React.ReactNode => {
 	const apps = useAppList();
 	const routes = useRoutes();
 	const location = useLocation();
@@ -37,7 +36,7 @@ const FirstAppRedirect: FC = () => {
 	) : null;
 };
 
-const AppViewContainer: FC = () => {
+const AppViewContainer = (): React.JSX.Element => {
 	const appViews = useAppStore((s) => s.views.appView);
 	const routes = useMemo(
 		() => [
@@ -53,12 +52,12 @@ const AppViewContainer: FC = () => {
 	);
 
 	return (
-		<_BoardsRouterContainer>
+		<BoardsRouterContainer>
 			<Container mainAlignment="flex-start">
 				<Switch>{routes}</Switch>
 				<FirstAppRedirect />
 			</Container>
-		</_BoardsRouterContainer>
+		</BoardsRouterContainer>
 	);
 };
 

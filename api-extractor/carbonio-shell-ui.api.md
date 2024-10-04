@@ -6,20 +6,22 @@
 
 /// <reference types="node" />
 
-import { Action as Action_3 } from '../../lib';
+import { Action as Action_2 } from '../../lib';
+import { ActionFactory as ActionFactory_2 } from '../../types/integrations';
 import { AnyFunction as AnyFunction_2 } from '../../utils/typeUtils';
 import { BadgeInfo as BadgeInfo_2 } from '../../lib';
+import type { CaptureOptions } from 'posthog-js';
 import type { ChipItem } from '@zextras/carbonio-design-system';
 import type { ComponentType } from 'react';
 import type { DefaultTheme } from 'styled-components';
-import type { DropdownItem } from '@zextras/carbonio-design-system';
+import { DropdownItem } from '@zextras/carbonio-design-system';
 import type { DynamicThemeFix } from 'darkreader';
 import type { Event as Event_2 } from '@sentry/browser';
 import type { EventHint } from '@sentry/browser';
 import type { i18n } from 'i18next';
 import type { LinkProps } from 'react-router-dom';
 import type { ModalProps } from '@zextras/carbonio-design-system';
-import type { PostHog } from 'posthog-js';
+import type { Properties } from 'posthog-js';
 import { default as React_2 } from 'react';
 import type { TFunction } from 'i18next';
 import type { To } from 'history';
@@ -154,16 +156,14 @@ export interface AccountSettingsPrefs {
 }
 
 // @public (undocumented)
-export type Action = DropdownItem & {
-    primary?: boolean;
-    group?: string;
-    click?: DropdownItem['onClick'];
-};
-
-// Warning: (ae-forgotten-export) The symbol "ActionFactory" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-type Action_2<TTarget = unknown> = ActionFactory<TTarget>;
+export interface Action {
+    // (undocumented)
+    execute(...args: unknown[]): unknown;
+    // (undocumented)
+    icon?: string;
+    // (undocumented)
+    label: string;
+}
 
 // @public (undocumented)
 export const ACTION_TYPES: {
@@ -185,7 +185,7 @@ export const ACTION_TYPES: {
 };
 
 // @public (undocumented)
-type ActionFactory<T> = (target: T) => Action;
+type ActionFactory<TContext, TAction extends Action = Action> = (context: TContext) => TAction;
 
 // Warning: (ae-forgotten-export) The symbol "AppDependantExports" needs to be exported by the entry point lib.d.ts
 //
@@ -638,13 +638,7 @@ type GeneralizedTimeObj = {
 export const getAction: <T>(type: string, id: string, target?: T | undefined) => [Action | undefined, boolean];
 
 // @public (undocumented)
-export const getActionFactory: <T>(type: string, id: string) => [ActionFactory<T> | undefined, boolean];
-
-// @public (undocumented)
-export const getActions: <T>(target: T, type: string) => Array<Action>;
-
-// @public (undocumented)
-export const getActionsFactory: (type: string) => <T>(target: T) => Array<Action>;
+export const getActions: <TContext, TAction extends Action = Action>(context: TContext, type: string) => TAction[];
 
 // @public (undocumented)
 export const getApp: AppDependantExports['getApp'];
@@ -847,9 +841,9 @@ export interface INotificationManager {
 // @public (undocumented)
 type IntegrationActions = {
     removeActions: (...ids: Array<string>) => void;
-    registerActions: (...items: Array<{
+    registerActions: <TAction extends Action = Action>(...items: Array<{
         id: string;
-        action: Action_2;
+        action: ActionFactory<unknown, TAction>;
         type: string;
     }>) => void;
     removeComponents: (...ids: Array<string>) => void;
@@ -958,6 +952,16 @@ interface Mods extends Record<string, Record<string, unknown> | undefined> {
 //
 // @public (undocumented)
 type NameSpace = ValueOf<typeof JSNS>;
+
+// @public (undocumented)
+export interface NewAction extends Action, Omit<DropdownItem, 'label' | 'onClick'> {
+    // (undocumented)
+    execute: NonNullable<DropdownItem['onClick']>;
+    // (undocumented)
+    group?: string;
+    // (undocumented)
+    primary?: boolean;
+}
 
 // @public (undocumented)
 export type NotificationConfig = {
@@ -1084,9 +1088,9 @@ type RawSoapNotify = {
 };
 
 // @public (undocumented)
-export const registerActions: (...items: {
+export const registerActions: <TAction extends Action_2 = Action_2>(...items: {
     id: string;
-    action: (target: unknown) => Action_3;
+    action: ActionFactory_2<unknown, TAction>;
     type: string;
 }[]) => void;
 
@@ -1469,7 +1473,7 @@ export type Tags = Record<string, Tag>;
 // @public (undocumented)
 interface Tracker {
     // (undocumented)
-    capture: InstanceType<typeof PostHog>['capture'];
+    capture: (event_name: string, properties?: Properties | null | undefined, options?: CaptureOptions | undefined) => void;
     // (undocumented)
     enableTracker: (enable: boolean) => void;
     // (undocumented)
@@ -1528,13 +1532,7 @@ type UpdateSettingsParams = {
 export const useAction: <T>(type: string, id: string, target?: T | undefined) => [Action | undefined, boolean];
 
 // @public (undocumented)
-export const useActionFactory: <T>(type: string, id: string) => [ActionFactory<T> | undefined, boolean];
-
-// @public (undocumented)
-export const useActions: <T>(target: T, type: string) => Array<Action>;
-
-// @public (undocumented)
-export const useActionsFactory: (type: string) => <T>(target: T) => Array<Action>;
+export const useActions: <TContext, TAction extends Action = Action>(context: TContext, type: string) => TAction[];
 
 // @public (undocumented)
 export const useApp: AppDependantExports['useApp'];
@@ -1725,8 +1723,8 @@ interface ZimletProp {
 // lib/store/app/store.d.ts:38:5 - (ae-forgotten-export) The symbol "SecondaryAccessoryView" needs to be exported by the entry point lib.d.ts
 // lib/store/context-bridge.d.ts:4:5 - (ae-forgotten-export) The symbol "PackageDependentFunction" needs to be exported by the entry point lib.d.ts
 // lib/store/context-bridge.d.ts:5:5 - (ae-forgotten-export) The symbol "AnyFunction" needs to be exported by the entry point lib.d.ts
-// lib/store/integrations/store.d.ts:26:9 - (ae-forgotten-export) The symbol "Action_2" needs to be exported by the entry point lib.d.ts
-// lib/store/integrations/store.d.ts:32:9 - (ae-forgotten-export) The symbol "Component" needs to be exported by the entry point lib.d.ts
+// lib/store/integrations/store.d.ts:25:9 - (ae-forgotten-export) The symbol "ActionFactory" needs to be exported by the entry point lib.d.ts
+// lib/store/integrations/store.d.ts:31:9 - (ae-forgotten-export) The symbol "Component" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:38:9 - (ae-forgotten-export) The symbol "Signature" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:43:5 - (ae-forgotten-export) The symbol "AccountRights" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:47:5 - (ae-forgotten-export) The symbol "StringOfLength" needs to be exported by the entry point lib.d.ts

@@ -32,14 +32,14 @@ export function buildIntegrationFunction(
 	return integration ? [integration, true] : [(): void => undefined, false];
 }
 
-export function buildIntegrationActions(
+export function buildIntegrationActions<TAction extends Action>(
 	integration: IntegrationsState['actions'][string],
-	target: unknown
-): Array<Action> {
+	context: unknown
+): Array<TAction> {
 	return compact(
-		map(integration, (f) => {
+		map(integration, (actionFactory) => {
 			try {
-				return f(target);
+				return actionFactory(context) as TAction;
 			} catch (e) {
 				// eslint-disable-next-line no-console
 				console.error(e);

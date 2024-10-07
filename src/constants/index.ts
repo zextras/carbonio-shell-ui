@@ -5,29 +5,6 @@
  */
 import type { DynamicThemeFix } from 'darkreader';
 
-/**
- * @deprecated Folders concept is something that does not belong to shell
- */
-export const FOLDERS = {
-	USER_ROOT: '1',
-	INBOX: '2',
-	TRASH: '3',
-	SPAM: '4',
-	SENT: '5',
-	DRAFTS: '6',
-	CONTACTS: '7',
-	TAGS: '8',
-	CONVERSATIONS: '9',
-	CALENDAR: '10',
-	ROOT: '11',
-	NOTEBOOK: '12', // no longer created in new mailboxes since Helix (bug 39647).  old mailboxes may still contain a system folder with id 12
-	AUTO_CONTACTS: '13',
-	IM_LOGS: '14',
-	TASKS: '15',
-	BRIEFCASE: '16',
-	LAST_SYSTEM_FOLDER_POSITION: '16.1'
-} as const;
-
 export const SHELL_APP_ID = 'carbonio-shell-ui';
 export const SETTINGS_APP_ID = 'settings';
 export const SEARCH_APP_ID = 'search';
@@ -59,26 +36,8 @@ export const EMAIL_VALIDATION_REGEX =
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars, max-len, no-control-regex
 	/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
 
-/** @deprecated This user root concept does not belong to the shell, and therefore it will be removed asap */
-export const ROOT_NAME = 'USER_ROOT';
-
 export const DARK_READER_VALUES = ['auto', 'enabled', 'disabled'] as const;
 
-/** @deprecated this const is not used inside shell, and therefore it does not belong to it */
-export const FOLDER_VIEW = {
-	search_folder: 'search folder',
-	tag: 'tag',
-	conversation: 'conversation',
-	message: 'message',
-	contact: 'contact',
-	document: 'document',
-	appointment: 'appointment',
-	virtual_conversation: 'virtual conversation',
-	remote_folder: 'remote folder',
-	wiki: 'wiki',
-	task: 'task',
-	chat: 'chat'
-};
 export const LOCAL_STORAGE_SETTINGS_KEY = 'settings';
 export const LOCAL_STORAGE_LAST_PRIMARY_KEY = 'config';
 export const LOCAL_STORAGE_SEARCH_KEY = 'search_suggestions';

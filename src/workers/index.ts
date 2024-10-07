@@ -7,6 +7,3 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export const tagWorker = new Worker(new URL('./tag', import.meta.url));
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export const folderWorker = new Worker(new URL('./folder', import.meta.url));

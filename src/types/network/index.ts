@@ -80,36 +80,6 @@ export type PermissionsMods = {
 		new: AccountACEInfo;
 	};
 };
-// TODO remove
-/**
- * @deprecated
- */
-export type CreateIdentityProps = {
-	requestId: number;
-	/** name of the identity */
-	zimbraPrefIdentityName: string | undefined;
-	/** personal part of email address put in from header */
-	zimbraPrefFromDisplay: string | undefined;
-	/** email address to put in from header.  Deprecated on data source as of bug 67068. */
-	zimbraPrefFromAddress: string | undefined;
-	/** Type of the email address from header. (sendAs or sendOnBehalfOf)  */
-	zimbraPrefFromAddressType: 'sendAs' | 'sendOnBehalfOf';
-	/** TRUE if we should set a reply-to header */
-	// TODO: update to boolean?
-	zimbraPrefReplyToEnabled: 'TRUE' | 'FALSE' | undefined;
-	/** personal part of email address put in reply-to header */
-	zimbraPrefReplyToDisplay: string | undefined;
-	/** address to put in reply-to header */
-	zimbraPrefReplyToAddress: string | undefined;
-	/** default mail signature for account/identity/dataSource */
-	zimbraPrefDefaultSignatureId: string | undefined;
-	/** forward/reply signature id for account/identity/dataSource */
-	zimbraPrefForwardReplySignatureId: string | undefined;
-	/** TRUE if we should look at zimbraPrefWhenSentToAddresses (deprecatedSince 5.0 in account) */
-	zimbraPrefWhenSentToEnabled: string | undefined;
-	/** TRUE if we should look at zimbraPrefWhenInFolderIds (deprecatedSince 5.0 in account) */
-	zimbraPrefWhenInFoldersEnabled: string | undefined;
-};
 
 export type CreateIdentityResponse = {
 	identity: [Identity];

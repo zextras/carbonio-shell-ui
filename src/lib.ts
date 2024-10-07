@@ -53,10 +53,6 @@ export declare const getAppContext: AppDependantExports['getAppContext'];
 export declare const useApp: AppDependantExports['useApp'];
 export declare const getApp: AppDependantExports['getApp'];
 export declare const addBoard: AppDependantExports['addBoard'];
-/**
- * @deprecated Use hooks to access to functions which require context
- */
-export declare const getBridgedFunctions: AppDependantExports['getBridgedFunctions'];
 
 export * from './boot/app/app-direct-exports';
 
@@ -100,7 +96,6 @@ export type {
 
 export type { QueryItem, QueryChip } from './types/search';
 
-export type { Folder, Folders, LinkFolder } from './types/folder';
 export type { Grant } from './types/misc';
 
 export type {

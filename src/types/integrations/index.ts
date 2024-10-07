@@ -9,8 +9,6 @@ import type { DropdownItem } from '@zextras/carbonio-design-system';
 export type Action = DropdownItem & {
 	primary?: boolean;
 	group?: string;
-	/** @deprecated use onClick instead */
-	click?: DropdownItem['onClick'];
 };
 
 export type ActionFactory<T> = (target: T) => Action;

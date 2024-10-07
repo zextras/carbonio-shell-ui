@@ -90,9 +90,6 @@ type AccountRightTargetEmail = {
     addr: string;
 };
 
-// @public @deprecated (undocumented)
-export const ACCOUNTS_APP_ID = "accounts";
-
 // @public (undocumented)
 export type AccountSettings = {
     attrs: AccountSettingsAttrs;
@@ -159,7 +156,6 @@ export interface AccountSettingsPrefs {
 export type Action = DropdownItem & {
     primary?: boolean;
     group?: string;
-    click?: DropdownItem['onClick'];
 };
 
 // Warning: (ae-forgotten-export) The symbol "ActionFactory" needs to be exported by the entry point lib.d.ts
@@ -169,20 +165,6 @@ type Action_2<TTarget = unknown> = ActionFactory<TTarget>;
 
 // @public (undocumented)
 export const ACTION_TYPES: {
-    readonly CONVERSATION: "conversation";
-    readonly CONVERSATION_lIST: "conversation_list";
-    readonly MESSAGE: "message";
-    readonly MESSAGE_lIST: "message_list";
-    readonly CONTACT: "contact";
-    readonly CONTACT_lIST: "contact_list";
-    readonly INVITE: "invite";
-    readonly INVITE_lIST: "invite_list";
-    readonly APPOINTMENT: "appointment";
-    readonly APPOINTMENT_lIST: "appointment_list";
-    readonly FOLDER: "folder";
-    readonly FOLDER_lIST: "folder_list";
-    readonly CALENDAR: "calendar";
-    readonly CALENDAR_lIST: "calendar_list";
     readonly NEW: "new";
 };
 
@@ -269,9 +251,6 @@ type AppDependantExports = {
     useApp: ReturnType<typeof getAppHook>;
     getApp: ReturnType<typeof getApp_2>;
     addBoard: ReturnType<typeof addBoard_2>;
-    getBridgedFunctions: () => ContextBridgeState['functions'] & {
-        [K in keyof ContextBridgeState['packageDependentFunctions']]: ReturnType<ContextBridgeState['packageDependentFunctions'][K]>;
-    };
 };
 
 // @public (undocumented)
@@ -474,12 +453,6 @@ export const closeBoard: (id: string) => void;
 type Component<TProps extends Record<string, unknown> = Record<string, unknown>> = ComponentType<TProps>;
 
 // @public (undocumented)
-type ContextBridgeState = {
-    packageDependentFunctions: Record<string, PackageDependentFunction>;
-    functions: Record<string, AnyFunction>;
-};
-
-// @public (undocumented)
 type CreateIdentityResponse = {
     identity: [Identity];
 };
@@ -557,9 +530,10 @@ type Exactify<T, X extends T> = T & {
 };
 
 // Warning: (ae-forgotten-export) The symbol "UserFolder" needs to be exported by the entry point lib.d.ts
+// Warning: (ae-forgotten-export) The symbol "LinkFolder" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
-export type Folder = UserFolder | LinkFolder;
+type Folder = UserFolder | LinkFolder;
 
 // @public @deprecated (undocumented)
 export const FOLDER_VIEW: {
@@ -612,7 +586,7 @@ export const FOLDERS: {
 };
 
 // @public (undocumented)
-export type Folders = {
+type Folders = {
     [id: string]: Folder;
 };
 
@@ -672,9 +646,6 @@ export const getBoardById: <T>(id: string) => Board<T> | undefined;
 // @public (undocumented)
 export const getBoardContextById: <T>(id: string) => T | undefined;
 
-// @public @deprecated (undocumented)
-export const getBridgedFunctions: AppDependantExports['getBridgedFunctions'];
-
 // Warning: (ae-forgotten-export) The symbol "AppRoute" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
@@ -691,6 +662,8 @@ const getEditSettingsForApp: (app: string) => (mods: Mods) => Promise<EditSettin
 // @public (undocumented)
 export const getFolder: (id: string) => Folder | undefined;
 
+// Warning: (ae-forgotten-export) The symbol "Folders" needs to be exported by the entry point lib.d.ts
+//
 // @public (undocumented)
 export const getFolders: () => Folders;
 
@@ -703,6 +676,8 @@ const getI18n_2: (app: string) => () => i18n;
 // @public (undocumented)
 export const getIntegratedComponent: (id: string) => [React_2.FunctionComponent<Record<string, unknown>>, boolean];
 
+// Warning: (ae-forgotten-export) The symbol "AnyFunction" needs to be exported by the entry point lib.d.ts
+//
 // @public (undocumented)
 export const getIntegratedFunction: (id: string) => [AnyFunction, boolean];
 
@@ -883,7 +858,7 @@ export const JSNS: {
 // Warning: (ae-forgotten-export) The symbol "LinkFolderFields" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
-export type LinkFolder = BaseFolder & FolderFields & LinkFolderFields & {
+type LinkFolder = BaseFolder & FolderFields & LinkFolderFields & {
     isLink: true;
 };
 
@@ -966,9 +941,6 @@ export type NotificationConfig = {
     showPopup?: boolean;
     playSound?: boolean;
 } & PopupNotificationConfig & AudioNotificationConfig;
-
-// @public (undocumented)
-type PackageDependentFunction = (app: string) => AnyFunction;
 
 // @public (undocumented)
 type PanelMode = 'closed' | 'overlap' | 'open';
@@ -1307,9 +1279,9 @@ type Signature = {
     id: string;
     content?: [
         {
-        type: 'text/plain' | 'text/html';
-        _content: string;
-    }
+            type: 'text/plain' | 'text/html';
+            _content: string;
+        }
     ];
 };
 
@@ -1677,13 +1649,6 @@ type WorkerMessage<T> = {
 // @public (undocumented)
 export const xmlSoapFetch: AppDependantExports['xmlSoapFetch'];
 
-// @public @deprecated (undocumented)
-export const ZIMBRA_STANDARD_COLORS: {
-    zValue: number;
-    hex: string;
-    zLabel: string;
-}[];
-
 // @public (undocumented)
 interface ZimletProp {
     // (undocumented)
@@ -1696,19 +1661,18 @@ interface ZimletProp {
 
 // Warnings were encountered during analysis:
 //
-// lib/boot/app/app-dependant-exports.d.ts:11:5 - (ae-forgotten-export) The symbol "AppActions" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:19:5 - (ae-forgotten-export) The symbol "IntegrationActions" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:20:5 - (ae-forgotten-export) The symbol "getEditSettingsForApp" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:21:5 - (ae-forgotten-export) The symbol "getI18n_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:22:5 - (ae-forgotten-export) The symbol "getTFunction" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:23:5 - (ae-forgotten-export) The symbol "getSoapFetch" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:24:5 - (ae-forgotten-export) The symbol "getXmlSoapFetch" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:25:5 - (ae-forgotten-export) The symbol "getAppContextHook" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:26:5 - (ae-forgotten-export) The symbol "getAppContext_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:27:5 - (ae-forgotten-export) The symbol "getAppHook" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:28:5 - (ae-forgotten-export) The symbol "getApp_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:29:5 - (ae-forgotten-export) The symbol "addBoard_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:33:5 - (ae-forgotten-export) The symbol "ContextBridgeState" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:10:5 - (ae-forgotten-export) The symbol "AppActions" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:18:5 - (ae-forgotten-export) The symbol "IntegrationActions" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:19:5 - (ae-forgotten-export) The symbol "getEditSettingsForApp" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:20:5 - (ae-forgotten-export) The symbol "getI18n_2" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:21:5 - (ae-forgotten-export) The symbol "getTFunction" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:22:5 - (ae-forgotten-export) The symbol "getSoapFetch" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:23:5 - (ae-forgotten-export) The symbol "getXmlSoapFetch" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:24:5 - (ae-forgotten-export) The symbol "getAppContextHook" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:25:5 - (ae-forgotten-export) The symbol "getAppContext_2" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:26:5 - (ae-forgotten-export) The symbol "getAppHook" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:27:5 - (ae-forgotten-export) The symbol "getApp_2" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:28:5 - (ae-forgotten-export) The symbol "addBoard_2" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:3:5 - (ae-forgotten-export) The symbol "ModifyPropertiesResponse" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:4:5 - (ae-forgotten-export) The symbol "ModifyPrefsResponse" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:5:5 - (ae-forgotten-export) The symbol "ModifyIdentityResponse" needs to be exported by the entry point lib.d.ts
@@ -1725,8 +1689,6 @@ interface ZimletProp {
 // lib/store/app/store.d.ts:34:5 - (ae-forgotten-export) The symbol "UtilityView" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:36:5 - (ae-forgotten-export) The symbol "PrimaryAccessoryView" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:38:5 - (ae-forgotten-export) The symbol "SecondaryAccessoryView" needs to be exported by the entry point lib.d.ts
-// lib/store/context-bridge.d.ts:4:5 - (ae-forgotten-export) The symbol "PackageDependentFunction" needs to be exported by the entry point lib.d.ts
-// lib/store/context-bridge.d.ts:5:5 - (ae-forgotten-export) The symbol "AnyFunction" needs to be exported by the entry point lib.d.ts
 // lib/store/integrations/store.d.ts:26:9 - (ae-forgotten-export) The symbol "Action_2" needs to be exported by the entry point lib.d.ts
 // lib/store/integrations/store.d.ts:32:9 - (ae-forgotten-export) The symbol "Component" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:38:9 - (ae-forgotten-export) The symbol "Signature" needs to be exported by the entry point lib.d.ts
@@ -1738,12 +1700,13 @@ interface ZimletProp {
 // lib/types/account/index.d.ts:143:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:144:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
 // lib/types/apps/index.d.ts:68:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:75:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:94:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:110:5 - (ae-forgotten-export) The symbol "Meta" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:114:5 - (ae-forgotten-export) The symbol "SoapRetentionPolicy" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:128:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
-// lib/types/network/index.d.ts:108:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:47:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:66:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:82:5 - (ae-forgotten-export) The symbol "Meta" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:86:5 - (ae-forgotten-export) The symbol "SoapRetentionPolicy" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:100:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:107:5 - (ae-forgotten-export) The symbol "Folder" needs to be exported by the entry point lib.d.ts
+// lib/types/network/index.d.ts:80:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:11:5 - (ae-forgotten-export) The symbol "NameSpace" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:65:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
 // lib/types/workers/index.d.ts:12:5 - (ae-forgotten-export) The symbol "SyncMessage" needs to be exported by the entry point lib.d.ts

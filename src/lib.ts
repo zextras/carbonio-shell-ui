@@ -39,10 +39,6 @@ export declare const addUtilityView: AppDependantExports['addUtilityView'];
 export declare const addPrimaryAccessoryView: AppDependantExports['addPrimaryAccessoryView'];
 export declare const addSecondaryAccessoryView: AppDependantExports['addSecondaryAccessoryView'];
 export declare const registerComponents: AppDependantExports['registerComponents'];
-/**
- * @deprecated See documentation of editSettings function in ./network/edit-settings
- */
-export declare const editSettings: AppDependantExports['editSettings'];
 
 export declare const getI18n: AppDependantExports['getI18n'];
 export declare const t: AppDependantExports['t'];

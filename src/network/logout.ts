@@ -4,22 +4,22 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { getSoapFetch } from './fetch';
+import { soapFetch } from './fetch-utils';
 import { goTo, goToLogin } from './utils';
-import { JSNS, SHELL_APP_ID } from '../constants';
+import { JSNS } from '../constants';
 import { useLoginConfigStore } from '../store/login/store';
 
-export function logout(): Promise<void> {
-	return getSoapFetch(SHELL_APP_ID)('EndSession', {
-		_jsns: JSNS.account,
-		logoff: true
-	})
-		.then(() => fetch('/logout', { redirect: 'manual' }))
-		.then(() => {
-			const customLogoutUrl = useLoginConfigStore.getState().carbonioWebUiLogoutURL;
-			customLogoutUrl ? goTo(customLogoutUrl) : goToLogin();
-		})
-		.catch((error) => {
-			console.error(error);
+export async function logout(): Promise<void> {
+	try {
+		await soapFetch('EndSession', {
+			_jsns: JSNS.account,
+			logoff: true
 		});
+		await fetch('/logout', { redirect: 'manual' });
+	} catch (error) {
+		console.error(error);
+	} finally {
+		const customLogoutUrl = useLoginConfigStore.getState().carbonioWebUiLogoutURL;
+		customLogoutUrl ? goTo(customLogoutUrl) : goToLogin();
+	}
 }

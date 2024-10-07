@@ -12,22 +12,23 @@ import { create } from 'zustand';
 
 import Composer from './composer';
 import { SHELL_APP_ID } from '../../constants';
-import type { ActionFactory } from '../../types/integrations';
+import type { Action, ActionFactory } from '../../types/integrations';
 import type { AnyFunction } from '../../utils/typeUtils';
 
-type Action<TTarget = unknown> = ActionFactory<TTarget>;
 type Component<TProps extends Record<string, unknown> = Record<string, unknown>> =
 	ComponentType<TProps>;
 
 export type IntegrationsState = {
-	actions: { [type: string]: { [id: string]: Action } };
+	actions: { [type: string]: { [id: string]: ActionFactory<unknown> } };
 	components: { [id: string]: { app: string; Item: Component } };
 	functions: { [id: string]: AnyFunction };
 };
 
 export type IntegrationActions = {
 	removeActions: (...ids: Array<string>) => void;
-	registerActions: (...items: Array<{ id: string; action: Action; type: string }>) => void;
+	registerActions: <TAction extends Action = Action>(
+		...items: Array<{ id: string; action: ActionFactory<unknown, TAction>; type: string }>
+	) => void;
 	removeComponents: (...ids: Array<string>) => void;
 	registerComponents: (
 		app: string

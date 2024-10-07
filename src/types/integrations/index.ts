@@ -4,11 +4,12 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { DropdownItem } from '@zextras/carbonio-design-system';
+export interface Action {
+	label: string;
+	icon?: string;
+	execute(...args: unknown[]): unknown;
+}
 
-export type Action = DropdownItem & {
-	primary?: boolean;
-	group?: string;
-};
-
-export type ActionFactory<T> = (target: T) => Action;
+export type ActionFactory<TContext, TAction extends Action = Action> = (
+	context: TContext
+) => TAction;

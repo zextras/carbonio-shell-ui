@@ -27,11 +27,13 @@ const hashToSHA256 = async (value: string): Promise<ArrayBuffer> => {
 	const data = encoder.encode(value);
 	return window.crypto.subtle.digest('SHA-256', data);
 };
+
 const arrayBufferToBase64 = (buffer: ArrayBuffer): string => {
 	const bytes = new Uint8Array(buffer);
 	const binary = bytes.reduce((res, byte) => res + String.fromCharCode(byte), '');
 	return window.btoa(binary);
 };
+
 export const useTracker = (): Tracker => {
 	const postHog = usePostHog();
 	const isCarbonioCE = useIsCarbonioCE();

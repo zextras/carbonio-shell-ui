@@ -23,8 +23,7 @@ export const TrackerProvider = ({
 			disable_surveys: true,
 			capture_pageview: false,
 			capture_pageleave: true,
-			autocapture: false,
-			debug: true
+			autocapture: false
 		}),
 		[]
 	);

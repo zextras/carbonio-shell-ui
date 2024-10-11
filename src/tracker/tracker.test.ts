@@ -3,27 +3,21 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-
-import React from 'react';
-
-import { act, waitFor, renderHook } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import type { CaptureOptions } from 'posthog-js';
-import * as posthogJsReact from 'posthog-js/react';
-import type * as PostHogReact from 'posthog-js/react';
 
-import { TrackerProvider, useTracker } from './posthog';
+import { useTracker } from './tracker';
 import { useAccountStore } from '../store/account';
 import { useLoginConfigStore } from '../store/login/store';
 import { mockedAccount } from '../tests/account-utils';
 import { spyOnPosthog } from '../tests/posthog-utils';
-import { setup } from '../tests/utils';
 import * as utils from '../utils/utils';
 
 beforeEach(() => {
 	jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
 });
 
-describe('Posthog', () => {
+describe('useTracker', () => {
 	it('should opt-in posthog if host is not localhost and enableTracker is called with true value', () => {
 		const posthog = spyOnPosthog();
 		const { result } = renderHook(() => useTracker());
@@ -65,24 +59,6 @@ describe('Posthog', () => {
 		const options: CaptureOptions = { send_instantly: true };
 		result.current.capture(eventName, properties, options);
 		expect(posthog.capture).toHaveBeenCalledWith(eventName, properties, options);
-	});
-
-	it('should invoke posthog provider with trackers disabled by default', () => {
-		const mockProvider = jest.spyOn(posthogJsReact, 'PostHogProvider');
-		setup(<TrackerProvider></TrackerProvider>);
-		type PostHogProviderProps = React.ComponentPropsWithoutRef<
-			(typeof PostHogReact)['PostHogProvider']
-		>;
-		expect(mockProvider).toHaveBeenLastCalledWith(
-			expect.objectContaining<PostHogProviderProps>({
-				options: expect.objectContaining<NonNullable<PostHogProviderProps['options']>>({
-					opt_out_capturing_by_default: true,
-					disable_session_recording: true,
-					disable_surveys: true
-				})
-			}),
-			expect.anything()
-		);
 	});
 
 	it('should enable surveys if user is opted in and Carbonio is CE', () => {

@@ -17,7 +17,8 @@ const postHog = {
 	has_opted_in_capturing: (): boolean => false,
 	setPersonProperties: (): void => undefined,
 	set_config: (): void => undefined,
-	config: {} as PostHogConfig
+	config: {} as PostHogConfig,
+	capture: (): undefined => undefined
 } satisfies Partial<ReturnType<(typeof PostHogReact)['usePostHog']>>;
 
 export const usePostHog: (typeof PostHogReact)['usePostHog'] = () =>

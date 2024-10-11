@@ -11,11 +11,11 @@ import { map, noop } from 'lodash';
 
 import { useUtilityBarStore } from './store';
 import { useUtilityViews } from './utils';
-import { useTracker } from '../boot/posthog';
 import { CUSTOM_EVENTS } from '../constants';
 import { logout } from '../network/logout';
 import { useAccountStore } from '../store/account';
 import { getT } from '../store/i18n/hooks';
+import { useTracker } from '../tracker/tracker';
 import type { UtilityView } from '../types/apps';
 
 export interface UtilityBarItemProps {

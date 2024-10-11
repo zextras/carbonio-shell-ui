@@ -82,6 +82,7 @@ const config: Config = {
 	// A set of global variables that need to be available in all test environments
 	globals: {
 		BASE_PATH: '',
+		POSTHOG_API_HOST: '',
 		POSTHOG_API_KEY: ''
 	},
 

@@ -11,7 +11,6 @@ import { find } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import { loadApps, unloadAllApps } from './app/load-apps';
-import { useTracker } from './posthog';
 import { IS_FOCUS_MODE } from '../constants';
 import { getComponents } from '../network/get-components';
 import { getInfo } from '../network/get-info';
@@ -20,6 +19,7 @@ import { logout } from '../network/logout';
 import { goToLogin } from '../network/utils';
 import { useAccountStore } from '../store/account';
 import { useAppStore } from '../store/app';
+import { useTracker } from '../tracker/tracker';
 
 export function isPromiseRejectedResult<T>(
 	promiseSettledResult: PromiseSettledResult<T>

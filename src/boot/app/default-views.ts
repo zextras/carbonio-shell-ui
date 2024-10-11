@@ -3,7 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-/* eslint-disable no-param-reassign */
 
 import { useEffect, useMemo } from 'react';
 

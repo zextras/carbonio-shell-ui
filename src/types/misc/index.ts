@@ -4,11 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-/*
- * SPDX-FileCopyrightText: 2021 Zextras <https://www.zextras.com>
- *
- * SPDX-License-Identifier: AGPL-3.0-only
- */
 import type { ComponentType } from 'react';
 
 import type { To } from 'history';
@@ -39,35 +34,6 @@ export type AccountProps = {
 	label?: string;
 	personaLabel?: string;
 	identityId?: string;
-};
-
-/** @deprecated */
-export type IdentityProps = {
-	id: string;
-	/**
-	 * Type of the identity
-	 */
-	flgType: 'primary' | 'persona' | 'IMAP' | 'POP';
-	/**
-	 * Localized description of the type of identity
-	 */
-	type: string;
-	/**
-	 * is a number while you are creating a new one
-	 */
-	identityId: string | number;
-	fromAddress?: string;
-	identityName?: string;
-	fromDisplay?: string;
-	recoveryAccount?: string;
-	replyToDisplay?: string;
-	replyToAddress?: string;
-	replyToEnabled?: string;
-	saveToSent?: string;
-	sentMailFolder?: string;
-	whenInFoldersEnabled?: string;
-	whenSentToEnabled?: string;
-	whenSentToAddresses?: string;
 };
 
 // Custom metadata

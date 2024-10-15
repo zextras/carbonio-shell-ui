@@ -38,8 +38,8 @@ beforeEach(() => {
 });
 
 const ENLARGED_BOARD_POSITION = {
-	top: '1.5rem !important',
-	left: '1.5rem !important'
+	top: '1.5rem!important',
+	left: '1.5rem!important'
 };
 
 describe('Board container', () => {
@@ -287,8 +287,8 @@ describe('Board container', () => {
 		setupBoardSizes(board, buildBoardSizeAndPosition());
 		expect(board).toHaveStyleRule('height', '70vh');
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
-		expect(board).toHaveStyleRule('height', 'calc(100% - 1.5rem) !important');
-		expect(board).toHaveStyleRule('width', 'calc(100% - 3rem) !important');
+		expect(board).toHaveStyleRule('height', 'calc(100% - 1.5rem)!important');
+		expect(board).toHaveStyleRule('width', 'calc(100% - 3rem)!important');
 		expect(board).toHaveStyleRule('top', ENLARGED_BOARD_POSITION.top);
 		expect(board).toHaveStyleRule('left', ENLARGED_BOARD_POSITION.left);
 	});
@@ -318,8 +318,8 @@ describe('Board container', () => {
 			boardNewSizeAndPos
 		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
-		expect(board).toHaveStyleRule('height', 'calc(100% - 1.5rem) !important');
-		expect(board).toHaveStyleRule('width', 'calc(100% - 3rem) !important');
+		expect(board).toHaveStyleRule('height', 'calc(100% - 1.5rem)!important');
+		expect(board).toHaveStyleRule('width', 'calc(100% - 3rem)!important');
 		expect(board).toHaveStyleRule('top', ENLARGED_BOARD_POSITION.top);
 		expect(board).toHaveStyleRule('left', ENLARGED_BOARD_POSITION.left);
 	});

@@ -8,7 +8,6 @@ import React, { useMemo, useRef } from 'react';
 
 import type { ContainerProps } from '@zextras/carbonio-design-system';
 import { Container } from '@zextras/carbonio-design-system';
-import type { SimpleInterpolation } from 'styled-components';
 import styled, { css } from 'styled-components';
 
 import type { Border } from '../hooks/useResize';
@@ -59,8 +58,8 @@ const BorderWithResize = styled.div<
 	cursor: ${({ $cursor }): CSSProperties['cursor'] => $cursor};
 	width: ${({ $width }): string => $width};
 	height: ${({ $height }): string => $height};
-	${({ $position }): SimpleInterpolation => $position};
-	${({ $translateTransform }): SimpleInterpolation =>
+	${({ $position }): BorderWithResizeProps['$position'] => $position};
+	${({ $translateTransform }): ReturnType<typeof css> | undefined | string =>
 		($translateTransform?.x || $translateTransform?.y) &&
 		css`
 			transform: translate(${$translateTransform?.x ?? 0}, ${$translateTransform?.y ?? 0});

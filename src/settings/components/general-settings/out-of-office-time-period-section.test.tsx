@@ -140,12 +140,14 @@ describe('out of office time period section', () => {
 				/>
 			</>
 		);
-		const fromDateInput = screen.getByRole('textbox', { name: /start date/i });
+		const fromDateInput = screen.getByRole<HTMLInputElement>('textbox', { name: /start date/i });
 		const firstOfPreviousMonth = new Date(fromDate);
 		firstOfPreviousMonth.setDate(1);
 		firstOfPreviousMonth.setMonth(fromDate.getMonth() - 1);
 		await user.clear(fromDateInput);
-		await user.type(fromDateInput, format(firstOfPreviousMonth, 'P'));
+		await user.type(fromDateInput, format(firstOfPreviousMonth, 'P'), {
+			skipClick: true
+		});
 		await user.click(screen.getByText(/click to blur/i));
 		expect(screen.queryByRole('button', { name: /previous month/i })).not.toBeInTheDocument();
 		expect(fromDateInput).toHaveDisplayValue(format(firstOfPreviousMonth, 'P'));
@@ -191,9 +193,13 @@ describe('out of office time period section', () => {
 		const newTime = subHours(fromDate, 5);
 		newTime.setMinutes(15);
 		await user.clear(fromTimeInput);
-		await user.type(fromTimeInput, format(newTime, 'p'));
+		await user.type(fromTimeInput, format(newTime, 'p'), { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
-		expect(screen.queryByRole('listitem')).not.toBeInTheDocument();
+		await act(async () => {
+			// to let floating finish the update
+			await jest.advanceTimersToNextTimerAsync();
+		});
+		expect(screen.queryByRole('option')).not.toBeInTheDocument();
 		expect(fromTimeInput).toHaveDisplayValue(format(newTime, 'p'));
 	});
 
@@ -244,7 +250,7 @@ describe('out of office time period section', () => {
 		firstOfNextMonth.setDate(1);
 		firstOfNextMonth.setMonth(untilDate.getMonth() + 1);
 		await user.clear(untilDateInput);
-		await user.type(untilDateInput, format(firstOfNextMonth, 'P'));
+		await user.type(untilDateInput, format(firstOfNextMonth, 'P'), { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
 		expect(screen.queryByRole('button', { name: /previous month/i })).not.toBeInTheDocument();
 		expect(untilDateInput).toHaveDisplayValue(format(firstOfNextMonth, 'P'));
@@ -287,10 +293,11 @@ describe('out of office time period section', () => {
 			</>
 		);
 		const untilTimeInput = screen.getByRole('textbox', { name: /end time/i });
-		const newTime = addHours(untilDate, 5);
+		const newTime = new Date(untilDate);
+		newTime.setHours(12);
 		newTime.setMinutes(15);
 		await user.clear(untilTimeInput);
-		await user.type(untilTimeInput, format(newTime, 'p'));
+		await user.type(untilTimeInput, format(newTime, 'p'), { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
 		expect(screen.queryByRole('listitem')).not.toBeInTheDocument();
 		expect(untilTimeInput).toHaveDisplayValue(format(newTime, 'p'));
@@ -321,7 +328,7 @@ describe('out of office time period section', () => {
 		const fromTimeInput = screen.getByRole('textbox', { name: /start time/i });
 		const untilTimeInput = screen.getByRole('textbox', { name: /end time/i });
 		await user.clear(fromDateInput);
-		await user.type(fromDateInput, expectedDate);
+		await user.type(fromDateInput, expectedDate, { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
 		expect(fromDateInput).toHaveDisplayValue(expectedDate);
 		expect(untilDateInput).toHaveDisplayValue(expectedDate);
@@ -354,7 +361,7 @@ describe('out of office time period section', () => {
 		const fromTimeInput = screen.getByRole('textbox', { name: /start time/i });
 		const untilTimeInput = screen.getByRole('textbox', { name: /end time/i });
 		await user.clear(untilDateInput);
-		await user.type(untilDateInput, expectedDate);
+		await user.type(untilDateInput, expectedDate, { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
 		expect(fromDateInput).toHaveDisplayValue(expectedDate);
 		expect(untilDateInput).toHaveDisplayValue(expectedDate);
@@ -445,7 +452,7 @@ describe('out of office time period section', () => {
 				.filter((textbox) => textbox !== inputToChange)
 				.map((textbox) => [textbox, textbox.value]);
 			await user.clear(inputToChange);
-			await user.type(inputToChange, format(newDateTime, 'Pp'));
+			await user.type(inputToChange, format(newDateTime, 'Pp'), { skipClick: true });
 			await user.click(screen.getByText(/click to blur/i));
 			otherInputs.forEach(([textbox, previousValue]) => {
 				expect(textbox).toHaveDisplayValue(previousValue);
@@ -472,7 +479,7 @@ describe('out of office time period section', () => {
 		const newDateTime = faker.date.past();
 		const inputToChange = screen.getByRole('textbox', { name: /start date/i });
 		await user.clear(inputToChange);
-		await user.type(inputToChange, format(newDateTime, 'P'));
+		await user.type(inputToChange, format(newDateTime, 'P'), { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
 		const expectedDateTime = new Date(newDateTime);
 		expectedDateTime.setHours(
@@ -507,7 +514,7 @@ describe('out of office time period section', () => {
 		const newDateTime = new Date();
 		const inputToChange = screen.getByRole('textbox', { name: /start time/i });
 		await user.clear(inputToChange);
-		await user.type(inputToChange, format(newDateTime, 'p'));
+		await user.type(inputToChange, format(newDateTime, 'p'), { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
 		const expectedDateTime = new Date(fromDate);
 		expectedDateTime.setHours(newDateTime.getHours(), newDateTime.getMinutes(), 0, 0);
@@ -538,10 +545,10 @@ describe('out of office time period section', () => {
 		const fromDateInput = screen.getByRole('textbox', { name: /start date/i });
 		const fromTimeInput = screen.getByRole('textbox', { name: /start time/i });
 		await user.clear(fromDateInput);
-		await user.type(fromDateInput, format(newDateTime, 'P'));
+		await user.type(fromDateInput, format(newDateTime, 'P'), { skipClick: true });
 		await user.click(fromTimeInput);
 		await user.clear(fromTimeInput);
-		await user.type(fromTimeInput, format(newDateTime, 'p'));
+		await user.type(fromTimeInput, format(newDateTime, 'p'), { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
 		const expectedDateTime = new Date(newDateTime);
 		expectedDateTime.setSeconds(0, 0);
@@ -571,7 +578,7 @@ describe('out of office time period section', () => {
 		const newDateTime = faker.date.future();
 		const inputToChange = screen.getByRole('textbox', { name: /end date/i });
 		await user.clear(inputToChange);
-		await user.type(inputToChange, format(newDateTime, 'P'));
+		await user.type(inputToChange, format(newDateTime, 'P'), { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
 		const expectedDateTime = new Date(newDateTime);
 		expectedDateTime.setHours(
@@ -606,7 +613,7 @@ describe('out of office time period section', () => {
 		const newDateTime = new Date();
 		const inputToChange = screen.getByRole('textbox', { name: /end time/i });
 		await user.clear(inputToChange);
-		await user.type(inputToChange, format(newDateTime, 'p'));
+		await user.type(inputToChange, format(newDateTime, 'p'), { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
 		const expectedDateTime = new Date(untilDate);
 		expectedDateTime.setHours(newDateTime.getHours(), newDateTime.getMinutes(), 0, 0);
@@ -637,10 +644,10 @@ describe('out of office time period section', () => {
 		const untilDateInput = screen.getByRole('textbox', { name: /end date/i });
 		const untilTimeInput = screen.getByRole('textbox', { name: /end time/i });
 		await user.clear(untilDateInput);
-		await user.type(untilDateInput, format(newDateTime, 'P'));
+		await user.type(untilDateInput, format(newDateTime, 'P'), { skipClick: true });
 		await user.click(untilTimeInput);
 		await user.clear(untilTimeInput);
-		await user.type(untilTimeInput, format(newDateTime, 'p'));
+		await user.type(untilTimeInput, format(newDateTime, 'p'), { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
 		const expectedDateTime = new Date(newDateTime);
 		expectedDateTime.setSeconds(0, 0);

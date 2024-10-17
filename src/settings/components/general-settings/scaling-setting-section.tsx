@@ -15,7 +15,6 @@ import {
 	Tooltip
 } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
-import type { SimpleInterpolation } from 'styled-components';
 import styled from 'styled-components';
 
 import { BASE_FONT_SIZE, SCALING_OPTIONS } from '../../../constants';
@@ -30,7 +29,7 @@ const ScalingSliderContainer = styled(Container)`
 `;
 
 const ExampleContainer = styled(Container)<{ $fontSize: number | undefined }>`
-	font-size: ${({ $fontSize }): SimpleInterpolation => $fontSize && `${$fontSize}%`};
+	font-size: ${({ $fontSize }): string | undefined | 0 => $fontSize && `${$fontSize}%`};
 `;
 
 const ExampleText = styled(Text)`

@@ -16,8 +16,8 @@ import { BoardProvider, useBoardStore } from '../../store/boards';
 import type { BoardView } from '../../types/apps';
 import type { Board } from '../../types/boards';
 
-const BoardContainer = styled.div<{ show: boolean }>`
-	display: ${(props): string => (props.show ? 'block' : 'none')};
+const BoardContainer = styled.div<{ $show: boolean }>`
+	display: ${(props): string => (props.$show ? 'block' : 'none')};
 	height: 100%;
 	width: 100%;
 	overflow-y: auto;
@@ -58,7 +58,7 @@ export const AppBoard = ({ board }: { board: Board }): React.JSX.Element => {
 	);
 
 	return (
-		<BoardContainer show={current === board.id}>
+		<BoardContainer $show={current === board.id}>
 			{boardView ? (
 				<BoardViewComponent view={boardView} boardId={board.id} />
 			) : (

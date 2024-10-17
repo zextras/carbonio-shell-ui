@@ -150,7 +150,7 @@ function ListItemContent({
 	selected,
 	app,
 	boardId
-}: ListItemContentProps): React.JSX.Element {
+}: Readonly<ListItemContentProps>): React.JSX.Element {
 	const t = getT();
 	const onClose = useCallback<IconButtonProps['onClick']>(
 		(ev) => {
@@ -374,10 +374,10 @@ export const BoardContainer = (): React.JSX.Element | null => {
 							</Padding>
 							<TabsList />
 							<Actions padding={{ all: 'extrasmall' }}>
-								{boardContext &&
-									typeof boardContext === 'object' &&
+								{typeof boardContext === 'object' &&
+									boardContext !== null &&
 									'onReturnToApp' in boardContext &&
-									boardContext.onReturnToApp && (
+									boardContext.onReturnToApp !== undefined && (
 										<Padding right="extrasmall">
 											<Tooltip
 												label={t('board.open_app', 'Open in app')}

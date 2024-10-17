@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { FC } from 'react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { RowProps } from '@zextras/carbonio-design-system';
@@ -63,12 +62,14 @@ const VerticalDivider = styled(Container)`
 	background: ${({ theme }): string => theme.palette.gray3.regular};
 `;
 
-export const AppBoardTab: FC<{ id: string; icon: string; title: string; firstTab: boolean }> = ({
-	id,
-	icon,
-	title,
-	firstTab
-}) => {
+interface AppBoardTabProps {
+	id: string;
+	icon: string;
+	title: string;
+	firstTab: boolean;
+}
+
+export const AppBoardTab = ({ id, icon, title, firstTab }: AppBoardTabProps): React.JSX.Element => {
 	const current = useBoardStore((s) => s.current);
 	const t = getT();
 	const onClick = useCallback(

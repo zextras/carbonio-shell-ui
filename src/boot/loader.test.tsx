@@ -9,17 +9,21 @@ import { act, waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { EventEmitter } from 'node:events';
 
+import type * as loadAppsModule from './app/load-apps';
 import { Loader } from './loader';
 import * as posthog from './posthog';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
 import { getGetInfoRequest } from '../mocks/handlers/getInfoRequest';
-import server, { waitForResponse } from '../mocks/server';
+import server from '../mocks/server';
 import * as logout from '../network/logout';
 import { useLoginConfigStore } from '../store/login/store';
+import { TIMERS } from '../tests/constants';
 import { spyOnPosthog } from '../tests/posthog-utils';
 import { controlConsoleError, setup, screen } from '../tests/utils';
 import type { AccountSettingsPrefs } from '../types/account';
 import * as utils from '../utils/utils';
+
+jest.mock<typeof loadAppsModule>('./app/load-apps');
 
 describe('Loader', () => {
 	test('If only getComponents request fails, the LoaderFailureModal appears', async () => {
@@ -32,23 +36,18 @@ describe('Loader', () => {
 				})
 			)
 		);
-
-		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
-		const componentsRes = waitForResponse('get', '/static/iris/components.json');
-		const getInfoRes = waitForResponse('post', '/service/soap/GetInfoRequest');
-
 		setup(
 			<span data-testid={'loader'}>
 				<Loader />
 			</span>
 		);
-		await loginRes;
 		await screen.findByTestId('loader');
-		await componentsRes;
-		await getInfoRes;
+		await act(async () => {
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		const title = await screen.findByText('Something went wrong...');
 		act(() => {
-			jest.runOnlyPendingTimers();
+			jest.advanceTimersByTime(TIMERS.modalShow);
 		});
 		expect(title).toBeVisible();
 	});
@@ -68,65 +67,51 @@ describe('Loader', () => {
 				)
 			)
 		);
-		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
-		const componentsRes = waitForResponse('get', '/static/iris/components.json');
-		const getInfoRes = waitForResponse('post', '/service/soap/GetInfoRequest');
 		setup(
 			<span data-testid={'loader'}>
 				<Loader />
 			</span>
 		);
-		await loginRes;
 		await screen.findByTestId('loader');
-		await componentsRes;
-		await getInfoRes;
-
+		await act(async () => {
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		const title = await screen.findByText('Something went wrong...');
 		act(() => {
-			jest.runOnlyPendingTimers();
+			jest.advanceTimersByTime(TIMERS.modalShow);
 		});
 		expect(title).toBeVisible();
 	});
 
 	test('If only loginConfig request fails, the LoaderFailureModal does not appear', async () => {
 		server.use(http.get(LOGIN_V3_CONFIG_PATH, () => HttpResponse.json(null, { status: 503 })));
-		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
-		const componentsRes = waitForResponse('get', '/static/iris/components.json');
-		const getInfoRes = waitForResponse('post', '/service/soap/GetInfoRequest');
 		setup(
 			<span data-testid={'loader'}>
 				<Loader />
 			</span>
 		);
-		await loginRes;
 		await screen.findByTestId('loader');
-		await componentsRes;
-		await getInfoRes;
+		await act(async () => {
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		await waitFor(() => expect(useLoginConfigStore.getState().isCarbonioCE).toEqual(true));
 		expect(screen.queryByText('Something went wrong...')).not.toBeInTheDocument();
 	});
 
 	test('If Loader requests do not fail, the LoaderFailureModal does not appear', async () => {
-		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
-		const componentsRes = waitForResponse('get', '/static/iris/components.json');
-		const getInfoRes = waitForResponse('post', '/service/soap/GetInfoRequest');
 		setup(
 			<span data-testid={'loader'}>
 				<Loader />
 			</span>
 		);
-		await loginRes;
 		await screen.findByTestId('loader');
-		await componentsRes;
-		await getInfoRes;
-
+		await act(async () => {
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		expect(screen.queryByText('Something went wrong...')).not.toBeInTheDocument();
 	});
 
 	it('should enable the tracker if carbonioPrefSendAnalytics is true', async () => {
-		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
-		const componentsRes = waitForResponse('get', '/static/iris/components.json');
-		const getInfoRes = waitForResponse('post', '/service/soap/GetInfoRequest');
 		const enableTrackerFn = jest.fn();
 		server.use(
 			http.post(
@@ -142,18 +127,15 @@ describe('Loader', () => {
 				<Loader />
 			</span>
 		);
-		await loginRes;
 		await screen.findByTestId('loader');
-		await componentsRes;
-		await getInfoRes;
+		await act(async () => {
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		await waitFor(() => expect(enableTrackerFn).toHaveBeenLastCalledWith(true));
 	});
 
 	it('should invoke the enableTracker function only one time', async () => {
 		jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
-		const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
-		const componentsRes = waitForResponse('get', '/static/iris/components.json');
-		const getInfoRes = waitForResponse('post', '/service/soap/GetInfoRequest');
 		const emitter = new EventEmitter();
 		server.use(
 			http.post(
@@ -175,11 +157,11 @@ describe('Loader', () => {
 			</span>
 		);
 		await screen.findByTestId('loader');
-		await componentsRes;
-		await getInfoRes;
+		await act(async () => {
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		await waitFor(() => expect(postHog.opt_in_capturing).toHaveBeenCalled());
 		emitter.emit('emitLoginResponse');
-		await loginRes;
 		await act(async () => {
 			await jest.advanceTimersToNextTimerAsync();
 		});
@@ -190,9 +172,6 @@ describe('Loader', () => {
 	it.each<AccountSettingsPrefs['carbonioPrefSendAnalytics']>(['FALSE', undefined])(
 		'should not enable the tracker if carbonioPrefSendAnalytics is %s',
 		async (carbonioPrefParam) => {
-			const loginRes = waitForResponse('get', LOGIN_V3_CONFIG_PATH);
-			const componentsRes = waitForResponse('get', '/static/iris/components.json');
-			const getInfoRes = waitForResponse('post', '/service/soap/GetInfoRequest');
 			const enableTrackerFn = jest.fn();
 			server.use(
 				http.post(
@@ -208,10 +187,10 @@ describe('Loader', () => {
 					<Loader />
 				</span>
 			);
-			await loginRes;
 			await screen.findByTestId('loader');
-			await componentsRes;
-			await getInfoRes;
+			await act(async () => {
+				await jest.advanceTimersToNextTimerAsync();
+			});
 			await waitFor(() => expect(enableTrackerFn).toHaveBeenLastCalledWith(false));
 		}
 	);
@@ -225,7 +204,7 @@ describe('Loader', () => {
 			);
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(1);
+				await jest.advanceTimersToNextTimerAsync();
 			});
 			expect(
 				screen.queryByText(
@@ -233,7 +212,7 @@ describe('Loader', () => {
 				)
 			).not.toBeInTheDocument();
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(1);
+				await jest.advanceTimersByTimeAsync(2);
 			});
 			const snackbar = screen.getByText(
 				"Your session will expire in 10 minutes. After that, you'll be redirected to the login page."
@@ -269,7 +248,7 @@ describe('Loader', () => {
 			);
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(1);
+				await jest.advanceTimersToNextTimerAsync();
 			});
 			expect(
 				screen.queryByText(
@@ -277,7 +256,7 @@ describe('Loader', () => {
 				)
 			).not.toBeInTheDocument();
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(1);
+				await jest.advanceTimersByTimeAsync(2);
 			});
 			const snackbar = await screen.findByText(
 				"Your session will expire in 3 minutes. After that, you'll be redirected to the login page."
@@ -313,7 +292,7 @@ describe('Loader', () => {
 			);
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(1);
+				await jest.advanceTimersToNextTimerAsync();
 			});
 			expect(
 				screen.queryByText(
@@ -321,7 +300,7 @@ describe('Loader', () => {
 				)
 			).not.toBeInTheDocument();
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(1);
+				await jest.advanceTimersByTimeAsync(2);
 			});
 			const snackbar = await screen.findByText(
 				"Your session will expire in 60 seconds. After that, you'll be redirected to the login page."

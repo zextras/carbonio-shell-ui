@@ -145,17 +145,16 @@ export const OutOfOfficeTimePeriodSection = ({
 					disabled={disabled}
 					defaultValue={fromDate}
 					onChange={outOfOfficeFromDateOnChange}
-					includeTime={false}
+					showTimeSelect={false}
 					width={'fill'}
 				/>
 				<DateTimePicker
 					label={t('settings.out_of_office.labels.end_date', 'End Date')}
 					dateFormat={'P'}
 					disabled={disabled}
-					timeLabel={''}
 					defaultValue={untilDate}
 					onChange={outOfOfficeUntilDateOnChange}
-					includeTime={false}
+					showTimeSelect={false}
 					width={'fill'}
 				/>
 			</Container>
@@ -170,7 +169,7 @@ export const OutOfOfficeTimePeriodSection = ({
 					label={t('settings.out_of_office.labels.start_time', 'Start Time')}
 					showTimeSelect
 					showTimeSelectOnly
-					timeLabel=""
+					showTimeCaption={false}
 					dateFormat="p"
 					defaultValue={fromDate}
 					onChange={outOfOfficeFromDateOnChange}
@@ -181,7 +180,7 @@ export const OutOfOfficeTimePeriodSection = ({
 					label={t('settings.out_of_office.labels.end_time', 'End Time')}
 					showTimeSelect
 					showTimeSelectOnly
-					timeLabel=""
+					showTimeCaption={false}
 					dateFormat="p"
 					defaultValue={untilDate}
 					onChange={outOfOfficeUntilDateOnChange}

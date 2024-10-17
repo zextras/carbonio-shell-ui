@@ -5,7 +5,6 @@
  */
 
 import { registerLocale, setDefaultLocale } from '@zextras/carbonio-design-system';
-import type { Locale as DateFnsLocale } from 'date-fns';
 import { filter, map } from 'lodash';
 
 import { loadApp, unloadApps } from './load-app';
@@ -16,9 +15,6 @@ import { useReporter } from '../../reporting/store';
 import { getUserSetting, useAccountStore } from '../../store/account';
 import { useI18nStore } from '../../store/i18n/store';
 import type { CarbonioModule } from '../../types/apps';
-
-const getDateFnsLocale = (locale: string): Promise<DateFnsLocale> =>
-	import(`date-fns/locale/${locale}/index.js`);
 
 export function loadApps(
 	apps: Array<CarbonioModule>
@@ -39,18 +35,18 @@ export function loadApps(
 		(settings?.attrs?.zimbraLocale as string) ??
 		'en';
 	useI18nStore.getState().addI18n(appsToLoad, locale);
-	const localeObj =
-		locale in SUPPORTED_LOCALES && SUPPORTED_LOCALES[locale as keyof typeof SUPPORTED_LOCALES];
-	if (localeObj) {
-		const localeDateFnsKey =
-			('dateFnsLocale' in localeObj && localeObj.dateFnsLocale) || localeObj.value;
-		getDateFnsLocale(localeDateFnsKey)
+	const localeObj = SUPPORTED_LOCALES[locale];
+	if (localeObj?.dateFnsLocale) {
+		const localeDateFnsKey = localeObj.dateFnsLocale.key ?? localeObj.value;
+		localeObj.dateFnsLocale
+			.localeImportPath()
 			.then((localeDateFns) => {
 				registerLocale(localeDateFnsKey, localeDateFns);
 				setDefaultLocale(localeDateFnsKey);
 			})
 			.catch(() => {
-				console.log(`Cannot import locale ${locale} for date-fns. Falling back to english`);
+				// eslint-disable-next-line no-console
+				console.warn(`Cannot import locale ${locale} for date-fns. Falling back to english`);
 			});
 	}
 	useReporter.getState().setClients(appsToLoad);

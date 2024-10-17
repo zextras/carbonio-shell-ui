@@ -9,7 +9,7 @@ import CopyPlugin from 'copy-webpack-plugin';
 import dotenv from 'dotenv';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
-import { ContextReplacementPlugin, DefinePlugin } from 'webpack';
+import { DefinePlugin } from 'webpack';
 import type { WebpackConfiguration } from 'webpack-cli';
 
 import { SUPPORTED_LOCALES } from './src/constants/locales';
@@ -22,10 +22,6 @@ const baseStaticPath = `/static/iris/carbonio-shell-ui/${commitHash}/`;
 
 const supportedLocalesList = Object.values(SUPPORTED_LOCALES);
 
-// these have to match with the ones available in date-fns/locale
-const supportedLocalesDateFns = supportedLocalesList.map(
-	(locale) => ('dateFnsLocale' in locale && locale.dateFnsLocale) || locale.value
-);
 const tinymceLocales = supportedLocalesList.map(
 	(locale) => ('tinymceLocale' in locale && locale.tinymceLocale) || locale.value
 );
@@ -83,11 +79,7 @@ const configFn = (
 			template: path.resolve(process.cwd(), 'commit.template'),
 			filename: 'commit',
 			COMMIT_ID: commitHash
-		}),
-		new ContextReplacementPlugin(
-			/^date-fns[/\\]locale$/,
-			new RegExp(`\\.[/\\\\](${supportedLocalesDateFns.join('|')})[/\\\\]index\\.js$`)
-		)
+		})
 	);
 	conf.devServer = {
 		port: options.port,

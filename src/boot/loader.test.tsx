@@ -11,7 +11,6 @@ import { EventEmitter } from 'node:events';
 
 import type * as loadAppsModule from './app/load-apps';
 import { Loader } from './loader';
-import * as posthog from './posthog';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
 import { getGetInfoRequest } from '../mocks/handlers/getInfoRequest';
 import server from '../mocks/server';
@@ -20,6 +19,7 @@ import { useLoginConfigStore } from '../store/login/store';
 import { TIMERS } from '../tests/constants';
 import { spyOnPosthog } from '../tests/posthog-utils';
 import { controlConsoleError, setup, screen } from '../tests/utils';
+import * as tracker from '../tracker/tracker';
 import type { AccountSettingsPrefs } from '../types/account';
 import * as utils from '../utils/utils';
 
@@ -120,7 +120,7 @@ describe('Loader', () => {
 			)
 		);
 		jest
-			.spyOn(posthog, 'useTracker')
+			.spyOn(tracker, 'useTracker')
 			.mockReturnValue({ enableTracker: enableTrackerFn, reset: jest.fn(), capture: jest.fn() });
 		setup(
 			<span data-testid={'loader'}>
@@ -180,7 +180,7 @@ describe('Loader', () => {
 				)
 			);
 			jest
-				.spyOn(posthog, 'useTracker')
+				.spyOn(tracker, 'useTracker')
 				.mockReturnValue({ enableTracker: enableTrackerFn, reset: jest.fn(), capture: jest.fn() });
 			setup(
 				<span data-testid={'loader'}>

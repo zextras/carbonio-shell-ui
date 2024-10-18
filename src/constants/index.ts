@@ -6,23 +6,6 @@
 import type { DynamicThemeFix } from 'darkreader';
 
 /**
- * @deprecated This constant is not used inside shell, and therefore it does not belong to it
- * reference: https://zextras.atlassian.net/wiki/spaces/IRIS/pages/223215854/UI+Guidelines+and+theming
- */
-export const ZIMBRA_STANDARD_COLORS = [
-	{ zValue: 0, hex: '#000000', zLabel: 'black' },
-	{ zValue: 1, hex: '#2b73d2', zLabel: 'blue' },
-	{ zValue: 2, hex: '#29B6F6', zLabel: 'cyan' },
-	{ zValue: 3, hex: '#66BB6A', zLabel: 'green' },
-	{ zValue: 4, hex: '#7e57c2', zLabel: 'purple' },
-	{ zValue: 5, hex: '#ef5350', zLabel: 'red' },
-	{ zValue: 6, hex: '#ffc107', zLabel: 'yellow' },
-	{ zValue: 7, hex: '#edaeab', zLabel: 'pink' },
-	{ zValue: 8, hex: '#828282', zLabel: 'gray' },
-	{ zValue: 9, hex: '#FF7043', zLabel: 'orange' }
-];
-
-/**
  * @deprecated Folders concept is something that does not belong to shell
  */
 export const FOLDERS = {
@@ -47,41 +30,9 @@ export const FOLDERS = {
 
 export const SHELL_APP_ID = 'carbonio-shell-ui';
 export const SETTINGS_APP_ID = 'settings';
-/**
- * @deprecated This constant is not used and will be deleted in next releases
- */
-export const ACCOUNTS_APP_ID = 'accounts';
 export const SEARCH_APP_ID = 'search';
 
 export const ACTION_TYPES = {
-	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
-	CONVERSATION: 'conversation',
-	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
-	CONVERSATION_lIST: 'conversation_list',
-	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
-	MESSAGE: 'message',
-	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
-	MESSAGE_lIST: 'message_list',
-	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
-	CONTACT: 'contact',
-	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
-	CONTACT_lIST: 'contact_list',
-	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
-	INVITE: 'invite',
-	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
-	INVITE_lIST: 'invite_list',
-	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
-	APPOINTMENT: 'appointment',
-	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
-	APPOINTMENT_lIST: 'appointment_list',
-	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
-	FOLDER: 'folder',
-	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
-	FOLDER_lIST: 'folder_list',
-	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
-	CALENDAR: 'calendar',
-	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
-	CALENDAR_lIST: 'calendar_list',
 	NEW: 'new'
 } as const;
 
@@ -113,21 +64,6 @@ export const ROOT_NAME = 'USER_ROOT';
 
 export const DARK_READER_VALUES = ['auto', 'enabled', 'disabled'] as const;
 
-/** @deprecated this const is not used inside shell, and therefore it does not belong to it */
-export const FOLDER_VIEW = {
-	search_folder: 'search folder',
-	tag: 'tag',
-	conversation: 'conversation',
-	message: 'message',
-	contact: 'contact',
-	document: 'document',
-	appointment: 'appointment',
-	virtual_conversation: 'virtual conversation',
-	remote_folder: 'remote folder',
-	wiki: 'wiki',
-	task: 'task',
-	chat: 'chat'
-};
 export const LOCAL_STORAGE_SETTINGS_KEY = 'settings';
 export const LOCAL_STORAGE_LAST_PRIMARY_KEY = 'config';
 export const LOCAL_STORAGE_SEARCH_KEY = 'search_suggestions';

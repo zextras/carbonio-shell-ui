@@ -20,10 +20,10 @@ import type { AppRoute } from '../types/apps';
 import { useUtilityBarStore } from '../utility-bar/store';
 import { checkRoute } from '../utility-bar/utils';
 
-const SidebarContainer = styled(Container)<ContainerProps & { sidebarIsOpen?: boolean }>`
+const SidebarContainer = styled(Container)<ContainerProps & { $sidebarIsOpen?: boolean }>`
 	min-width: 3rem;
 	max-width: 19.625rem;
-	width: ${({ sidebarIsOpen }): number => (sidebarIsOpen ? 19.625 : 3)}rem;
+	width: ${({ $sidebarIsOpen }): number => ($sidebarIsOpen ? 19.625 : 3)}rem;
 	transition: width 300ms;
 	overflow-x: hidden;
 `;
@@ -54,7 +54,7 @@ const ShellSecondaryBarComponent = ({
 		<>
 			<SidebarContainer
 				data-testid="SideSecondaryBarContainer"
-				sidebarIsOpen={isOpen}
+				$sidebarIsOpen={isOpen}
 				role="menu"
 				height="fill"
 				orientation="vertical"

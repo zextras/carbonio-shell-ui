@@ -20,7 +20,7 @@ import {
 } from '@zextras/carbonio-design-system';
 import { auto, disable, enable, setFetchMethod } from 'darkreader';
 import { map, reduce } from 'lodash';
-import type { DefaultTheme, SimpleInterpolation } from 'styled-components';
+import type { DefaultTheme } from 'styled-components';
 import { createGlobalStyle, css } from 'styled-components';
 
 import { useGetPrimaryColor } from './use-get-primary-color';
@@ -106,7 +106,7 @@ const GlobalStyle = createGlobalStyle<GlobalStyledProps>`
   html {
     font-size: ${({ baseFontSize }): string => `${baseFontSize}%`};
   }
-  ${({ theme }): SimpleInterpolation =>
+  ${({ theme }): ReturnType<typeof css> =>
 		map(
 			theme.globalCursors,
 			(cursor) => css`

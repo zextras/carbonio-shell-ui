@@ -70,7 +70,6 @@
 		"@types/react": "^18.3.11",
 		"@types/react-dom": "^18.3.0",
 		"@types/react-router-dom": "^5.3.3",
-		"@types/styled-components": "^5.1.34",
 		"@types/ua-parser-js": "^0.7.39",
 		"@types/webpack": "^5.28.5",
 		"@types/webpack-env": "^1.18.4",
@@ -108,7 +107,7 @@
 		"@fontsource/roboto": "^5.0.8",
 		"@sentry/browser": "^7.103.0",
 		"@tinymce/tinymce-react": "^4.3.2",
-		"@zextras/carbonio-design-system": "^8.0.0",
+		"@zextras/carbonio-design-system": "^9.0.0-devel.1",
 		"@zextras/carbonio-ui-preview": "^3.0.0",
 		"darkreader": "^4.9.79",
 		"history": "^5.3.0",
@@ -121,13 +120,13 @@
 		"react-dom": "^18.3.1",
 		"react-i18next": "^12.3.1",
 		"react-router-dom": "^5.3.4",
-		"styled-components": "^5.3.11",
+		"styled-components": "^6.1.13",
 		"tinymce": "^6.8.4",
 		"ua-parser-js": "^1.0.37",
 		"zustand": "^4.5.1"
 	},
 	"peerDependencies": {
-		"@zextras/carbonio-design-system": "^8.0.0",
+		"@zextras/carbonio-design-system": "^9.0.0-devel.1",
 		"@zextras/carbonio-ui-preview": "^3.0.0",
 		"core-js": "^3.31.1",
 		"lodash": "^4.17.21",
@@ -135,7 +134,7 @@
 		"react-dom": "^18.3.1",
 		"react-i18next": "^12.3.1",
 		"react-router-dom": "^5.3.4",
-		"styled-components": "^5.3.11"
+		"styled-components": "^6.1.13"
 	},
 	"peerDependenciesMeta": {
 		"@zextras/carbonio-design-system": {

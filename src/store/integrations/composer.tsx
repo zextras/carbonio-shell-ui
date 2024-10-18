@@ -77,11 +77,10 @@ const Composer = ({
 	...rest
 }: ComposerProps): React.JSX.Element => {
 	const _onEditorChange = useCallback<NonNullable<EditorProps['onEditorChange']>>(
-		(newContent, editor) => {
-			onEditorChange?.([
-				editor.getContent({ format: 'text' }),
-				editor.getContent({ format: 'html' })
-			]);
+		(newContent) => {
+			const plainText =
+				new DOMParser().parseFromString(newContent, 'text/html').body.textContent ?? '';
+			onEditorChange?.([plainText, newContent]);
 		},
 		[onEditorChange]
 	);

@@ -6,7 +6,7 @@
 import { useNetworkStore } from './store';
 import { getPollingInterval } from './utils';
 import { JSNS } from '../../constants';
-import type { Duration, DurationUnit } from '../../types/account';
+import type { Duration } from '../../types/account';
 import type { NoOpResponse, RawSoapResponse } from '../../types/network';
 import { useAccountStore } from '../account';
 
@@ -73,6 +73,7 @@ describe('Utils', () => {
 			const result = getPollingInterval(noOpResponse);
 			expect(result).toBe(60000);
 		});
+
 		describe('without Fault nor waitDisallowed', () => {
 			it('should return 30000 if zimbraPrefMailPollingInterval is not a valid duration', () => {
 				useNetworkStore.setState({ pollingInterval: 123456789 });
@@ -96,8 +97,7 @@ describe('Utils', () => {
 				expect(result).toBe(30000);
 			});
 
-			// Characterization test: why the 500 absolute number is treated differently from the other absolute numbers?
-			it('should return 500 zimbraPrefMailPollingInterval is "500"', () => {
+			it('should return 500 if zimbraPrefMailPollingInterval is "500" without a duration unit', () => {
 				useNetworkStore.setState({ pollingInterval: 123456789 });
 				useAccountStore.setState((state) => ({
 					...state,
@@ -116,7 +116,7 @@ describe('Utils', () => {
 				expect(result).toBe(500);
 			});
 
-			it('should return the number * 1000 if zimbraPrefMailPollingInterval is set without a duration unit', () => {
+			it('should return the number if zimbraPrefMailPollingInterval is set without a duration unit', () => {
 				useNetworkStore.setState({ pollingInterval: 123456789 });
 				useAccountStore.setState((state) => ({
 					...state,
@@ -135,62 +135,118 @@ describe('Utils', () => {
 					Body: {}
 				} satisfies RawSoapResponse<Record<string, unknown>>;
 				const result = getPollingInterval(response);
+				expect(result).toBe(753);
+			});
+
+			it('should return the number * 60 * 1000 if zimbraPrefMailPollingInterval duration is set with the duration unit m (minutes)', () => {
+				useNetworkStore.setState({ pollingInterval: 123456789 });
+				useAccountStore.setState((state) => ({
+					...state,
+					settings: {
+						...state.settings,
+						prefs: {
+							...state.settings.prefs,
+							zimbraPrefMailPollingInterval: '50m' satisfies Duration
+						}
+					}
+				}));
+				const response = {
+					Header: {
+						context: {}
+					},
+					Body: {}
+				} satisfies RawSoapResponse<Record<string, unknown>>;
+				const result = getPollingInterval(response);
+				expect(result).toBe(50 * 60 * 1000);
+			});
+
+			it('should return the number if zimbraPrefMailPollingInterval is set with the duration unit ms (milliseconds)', () => {
+				useNetworkStore.setState({ pollingInterval: 123456789 });
+				useAccountStore.setState((state) => ({
+					...state,
+					settings: {
+						...state.settings,
+						prefs: {
+							...state.settings.prefs,
+							zimbraPrefMailPollingInterval: '284ms' satisfies Duration
+						}
+					}
+				}));
+				const response = {
+					Header: {
+						context: {}
+					},
+					Body: {}
+				} satisfies RawSoapResponse<Record<string, unknown>>;
+				const result = getPollingInterval(response);
+				expect(result).toBe(284);
+			});
+
+			it('should return the number * 1000 if zimbraPrefMailPollingInterval is set with the duration unit s (seconds)', () => {
+				useNetworkStore.setState({ pollingInterval: 123456789 });
+				useAccountStore.setState((state) => ({
+					...state,
+					settings: {
+						...state.settings,
+						prefs: {
+							...state.settings.prefs,
+							zimbraPrefMailPollingInterval: '753s' satisfies Duration
+						}
+					}
+				}));
+				const response = {
+					Header: {
+						context: {}
+					},
+					Body: {}
+				} satisfies RawSoapResponse<Record<string, unknown>>;
+				const result = getPollingInterval(response);
 				expect(result).toBe(753000);
 			});
 
-			// Characterization test: considering that the returned value is used in a timeout (milliseconds),
-			// the conversion from ms is wrong
-			it.each<DurationUnit>(['m', 'ms'])(
-				'should return the number * 60 * 1000 if zimbraPrefMailPollingInterval duration is set with the duration unit %s',
-				(durationUnit) => {
-					useNetworkStore.setState({ pollingInterval: 123456789 });
-					useAccountStore.setState((state) => ({
-						...state,
-						settings: {
-							...state.settings,
-							prefs: {
-								...state.settings.prefs,
-								zimbraPrefMailPollingInterval: `5${durationUnit}` satisfies Duration
-							}
+			it('should return the number * 60 * 60 * 1000 if zimbraPrefMailPollingInterval is set with the duration unit h (hours)', () => {
+				useNetworkStore.setState({ pollingInterval: 123456789 });
+				useAccountStore.setState((state) => ({
+					...state,
+					settings: {
+						...state.settings,
+						prefs: {
+							...state.settings.prefs,
+							zimbraPrefMailPollingInterval: '2h' satisfies Duration
 						}
-					}));
-					const response = {
-						Header: {
-							context: {}
-						},
-						Body: {}
-					} satisfies RawSoapResponse<Record<string, unknown>>;
-					const result = getPollingInterval(response);
-					expect(result).toBe(5 * 60 * 1000);
-				}
-			);
+					}
+				}));
+				const response = {
+					Header: {
+						context: {}
+					},
+					Body: {}
+				} satisfies RawSoapResponse<Record<string, unknown>>;
+				const result = getPollingInterval(response);
+				expect(result).toBe(2 * 60 * 60 * 1000);
+			});
 
-			// Characterization test: considering that the returned value is used in a timeout (milliseconds), only the
-			// conversion from s is right, while the conversion from h and d are wrong
-			it.each<DurationUnit>(['s', 'h', 'd'])(
-				'should return the number * 1000 if zimbraPrefMailPollingInterval is set with the duration unit %s',
-				(durationUnit) => {
-					useNetworkStore.setState({ pollingInterval: 123456789 });
-					useAccountStore.setState((state) => ({
-						...state,
-						settings: {
-							...state.settings,
-							prefs: {
-								...state.settings.prefs,
-								zimbraPrefMailPollingInterval: `753${durationUnit}` satisfies Duration
-							}
+			it('should return the number * 24 * 60 * 60 * 1000 if zimbraPrefMailPollingInterval is set with the duration unit d (days)', () => {
+				useNetworkStore.setState({ pollingInterval: 123456789 });
+				useAccountStore.setState((state) => ({
+					...state,
+					settings: {
+						...state.settings,
+						prefs: {
+							...state.settings.prefs,
+							zimbraPrefMailPollingInterval: '2d' satisfies Duration
 						}
-					}));
-					const response = {
-						Header: {
-							context: {}
-						},
-						Body: {}
-					} satisfies RawSoapResponse<Record<string, unknown>>;
-					const result = getPollingInterval(response);
-					expect(result).toBe(753000);
-				}
-			);
+					}
+				}));
+				const response = {
+					Header: {
+						context: {}
+					},
+					Body: {}
+				} satisfies RawSoapResponse<Record<string, unknown>>;
+				const result = getPollingInterval(response);
+				expect(result).toBe(2 * 24 * 60 * 60 * 1000);
+			});
 		});
 	});
 });

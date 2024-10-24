@@ -26,19 +26,30 @@ const POLLING_NOWAIT_INTERVAL = 10_000;
  */
 const POLLING_RETRY_INTERVAL = 60_000;
 
+const POLLING_INVALID_DURATION = 30_000;
+
 export const parsePollingInterval = (settings: AccountSettings): number => {
 	const pollingPref = settings.prefs?.zimbraPrefMailPollingInterval ?? '';
-	if (pollingPref === '500') {
-		return 500;
-	}
-	const pollingValue = parseInt(pollingPref, 10);
+	const [value, durationUnit] = pollingPref.split(/([a-z]+)/g);
+	const pollingValue = parseInt(value, 10);
 	if (Number.isNaN(pollingValue)) {
-		return 30000;
+		return POLLING_INVALID_DURATION;
 	}
-	if (pollingPref.includes('m')) {
-		return pollingValue * 60 * 1000;
+	switch (durationUnit) {
+		case undefined:
+		case 'ms':
+			return pollingValue;
+		case 's':
+			return pollingValue * 1000;
+		case 'm':
+			return pollingValue * 60 * 1000;
+		case 'h':
+			return pollingValue * 60 * 60 * 1000;
+		case 'd':
+			return pollingValue * 24 * 60 * 60 * 1000;
+		default:
+			return POLLING_INVALID_DURATION;
 	}
-	return pollingValue * 1000;
 };
 
 /**

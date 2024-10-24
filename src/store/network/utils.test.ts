@@ -6,8 +6,9 @@
 import { useNetworkStore } from './store';
 import { getPollingInterval } from './utils';
 import { JSNS } from '../../constants';
+import type { NoOpResponse } from '../../network/fetch';
 import type { Duration } from '../../types/account';
-import type { NoOpResponse, RawSoapResponse } from '../../types/network';
+import type { RawSoapResponse } from '../../types/network';
 import { useAccountStore } from '../account';
 
 describe('Utils', () => {

@@ -21,13 +21,23 @@ import type {
 	RawSoapContext,
 	RawSoapNotify,
 	RawSoapResponse,
+	SoapBody,
 	SoapContext,
 	SoapNotify
 } from '../types/network';
 
-export const fetchNoOp = (): void => {
+export type NoOpRequest = SoapBody<{
+	limitToOneBlocked?: 0 | 1;
+	wait?: 0 | 1;
+}>;
+
+export type NoOpResponse = SoapBody<{
+	waitDisallowed?: boolean;
+}>;
+
+const fetchNoOp = (): void => {
 	// eslint-disable-next-line @typescript-eslint/no-use-before-define
-	getSoapFetch(SHELL_APP_ID)(
+	getSoapFetch(SHELL_APP_ID)<NoOpRequest, NoOpResponse>(
 		'NoOp',
 		useNetworkStore.getState().pollingInterval === 500
 			? { _jsns: JSNS.mail, limitToOneBlocked: 1, wait: 1 }

@@ -96,7 +96,7 @@ describe('Fetch', () => {
 				)
 			);
 
-			expect(useNetworkStore.getState().noOpTimeout).not.toBeDefined();
+			expect(useNetworkStore.getState().noOpTimeout).toBeUndefined();
 			await getSoapFetch(SHELL_APP_ID)('Some', {});
 			await jest.advanceTimersToNextTimerAsync();
 			expect(useNetworkStore.getState().noOpTimeout).toBeDefined();

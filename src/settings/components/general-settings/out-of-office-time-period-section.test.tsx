@@ -94,6 +94,10 @@ describe('out of office time period section', () => {
 			const initialDisplayValue = dateInput.value;
 			await user.clear(dateInput);
 			await user.click(screen.getByText(/click to blur/i));
+			await act(async () => {
+				// to let floating finish the update
+				await jest.advanceTimersToNextTimerAsync();
+			});
 			expect(dateInput).toHaveDisplayValue(initialDisplayValue);
 		}
 	);
@@ -149,6 +153,10 @@ describe('out of office time period section', () => {
 			skipClick: true
 		});
 		await user.click(screen.getByText(/click to blur/i));
+		await act(async () => {
+			// to let floating finish the update
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		expect(screen.queryByRole('button', { name: /previous month/i })).not.toBeInTheDocument();
 		expect(fromDateInput).toHaveDisplayValue(format(firstOfPreviousMonth, 'P'));
 	});
@@ -252,6 +260,10 @@ describe('out of office time period section', () => {
 		await user.clear(untilDateInput);
 		await user.type(untilDateInput, format(firstOfNextMonth, 'P'), { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
+		await act(async () => {
+			// to let floating finish the update
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		expect(screen.queryByRole('button', { name: /previous month/i })).not.toBeInTheDocument();
 		expect(untilDateInput).toHaveDisplayValue(format(firstOfNextMonth, 'P'));
 	});
@@ -299,6 +311,10 @@ describe('out of office time period section', () => {
 		await user.clear(untilTimeInput);
 		await user.type(untilTimeInput, format(newTime, 'p'), { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
+		await act(async () => {
+			// to let floating finish the update
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		expect(screen.queryByRole('listitem')).not.toBeInTheDocument();
 		expect(untilTimeInput).toHaveDisplayValue(format(newTime, 'p'));
 	});
@@ -330,6 +346,10 @@ describe('out of office time period section', () => {
 		await user.clear(fromDateInput);
 		await user.type(fromDateInput, expectedDate, { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
+		await act(async () => {
+			// to let floating finish the update
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		expect(fromDateInput).toHaveDisplayValue(expectedDate);
 		expect(untilDateInput).toHaveDisplayValue(expectedDate);
 		expect(fromTimeInput).toHaveDisplayValue(expectedTime);
@@ -363,6 +383,10 @@ describe('out of office time period section', () => {
 		await user.clear(untilDateInput);
 		await user.type(untilDateInput, expectedDate, { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
+		await act(async () => {
+			// to let floating finish the update
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		expect(fromDateInput).toHaveDisplayValue(expectedDate);
 		expect(untilDateInput).toHaveDisplayValue(expectedDate);
 		expect(fromTimeInput).toHaveDisplayValue(expectedTime);
@@ -454,6 +478,10 @@ describe('out of office time period section', () => {
 			await user.clear(inputToChange);
 			await user.type(inputToChange, format(newDateTime, 'Pp'), { skipClick: true });
 			await user.click(screen.getByText(/click to blur/i));
+			await act(async () => {
+				// to let floating finish the update
+				await jest.advanceTimersToNextTimerAsync();
+			});
 			otherInputs.forEach(([textbox, previousValue]) => {
 				expect(textbox).toHaveDisplayValue(previousValue);
 			});
@@ -481,6 +509,10 @@ describe('out of office time period section', () => {
 		await user.clear(inputToChange);
 		await user.type(inputToChange, format(newDateTime, 'P'), { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
+		await act(async () => {
+			// to let floating finish the update
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		const expectedDateTime = new Date(newDateTime);
 		expectedDateTime.setHours(
 			fromDate.getHours(),
@@ -516,6 +548,10 @@ describe('out of office time period section', () => {
 		await user.clear(inputToChange);
 		await user.type(inputToChange, format(newDateTime, 'p'), { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
+		await act(async () => {
+			// to let floating finish the update
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		const expectedDateTime = new Date(fromDate);
 		expectedDateTime.setHours(newDateTime.getHours(), newDateTime.getMinutes(), 0, 0);
 		expect(addMod).toHaveBeenCalledWith(
@@ -550,6 +586,10 @@ describe('out of office time period section', () => {
 		await user.clear(fromTimeInput);
 		await user.type(fromTimeInput, format(newDateTime, 'p'), { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
+		await act(async () => {
+			// to let floating finish the update
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		const expectedDateTime = new Date(newDateTime);
 		expectedDateTime.setSeconds(0, 0);
 		expect(addMod).toHaveBeenLastCalledWith(
@@ -580,6 +620,10 @@ describe('out of office time period section', () => {
 		await user.clear(inputToChange);
 		await user.type(inputToChange, format(newDateTime, 'P'), { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
+		await act(async () => {
+			// to let floating finish the update
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		const expectedDateTime = new Date(newDateTime);
 		expectedDateTime.setHours(
 			untilDate.getHours(),
@@ -615,6 +659,10 @@ describe('out of office time period section', () => {
 		await user.clear(inputToChange);
 		await user.type(inputToChange, format(newDateTime, 'p'), { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
+		await act(async () => {
+			// to let floating finish the update
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		const expectedDateTime = new Date(untilDate);
 		expectedDateTime.setHours(newDateTime.getHours(), newDateTime.getMinutes(), 0, 0);
 		expect(addMod).toHaveBeenCalledWith(
@@ -649,6 +697,10 @@ describe('out of office time period section', () => {
 		await user.clear(untilTimeInput);
 		await user.type(untilTimeInput, format(newDateTime, 'p'), { skipClick: true });
 		await user.click(screen.getByText(/click to blur/i));
+		await act(async () => {
+			// to let floating finish the update
+			await jest.advanceTimersToNextTimerAsync();
+		});
 		const expectedDateTime = new Date(newDateTime);
 		expectedDateTime.setSeconds(0, 0);
 		expect(addMod).toHaveBeenLastCalledWith(

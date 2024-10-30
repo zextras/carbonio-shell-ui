@@ -554,6 +554,9 @@ type Exactify<T, X extends T> = T & {
     [K in keyof X]: K extends keyof T ? X[K] : never;
 };
 
+// @public (undocumented)
+export const expandBoards: () => void;
+
 // Warning: (ae-forgotten-export) The symbol "UserFolder" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)

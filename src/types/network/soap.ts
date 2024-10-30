@@ -62,7 +62,13 @@ export type ErrorSoapResponse = {
 export type RawSoapResponse<R extends Record<string, unknown>> =
 	| RawSuccessSoapResponse<R>
 	| RawErrorSoapResponse;
+
 export type SoapResponse<R> = SuccessSoapResponse<R> | ErrorSoapResponse;
+
+export type SoapRequest<R extends Record<string, unknown>> = {
+	Body: Record<string, SoapBody<R>>;
+	Header: SoapHeader;
+};
 
 export interface RawSoapContext {
 	refresh?: SoapRefresh;

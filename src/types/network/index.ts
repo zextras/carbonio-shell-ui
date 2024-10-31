@@ -203,7 +203,3 @@ export type BatchResponse<
 > = SoapBody<T>;
 
 export type NameSpace = ValueOf<typeof JSNS>;
-
-export type NoOpResponse = SoapBody<{
-	waitDisallowed?: boolean;
-}>;

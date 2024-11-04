@@ -3,37 +3,16 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import type { CaptureOptions, PostHogConfig, Properties } from 'posthog-js';
-import { PostHogProvider, usePostHog } from 'posthog-js/react';
+import type { CaptureOptions, Properties } from 'posthog-js';
+import { usePostHog } from 'posthog-js/react';
 
 import { useAccountStore } from '../store/account';
 import { useIsCarbonioCE } from '../store/login/hooks';
 import { getCurrentLocationHost } from '../utils/utils';
 
-export const TrackerProvider = ({
-	children
-}: React.PropsWithChildren<Record<never, never>>): React.JSX.Element => {
-	const options = useMemo(
-		(): Partial<PostHogConfig> => ({
-			api_host: 'https://stats.zextras.tools',
-			person_profiles: 'identified_only',
-			opt_out_capturing_by_default: true,
-			disable_session_recording: true,
-			mask_all_text: true,
-			disable_surveys: true
-		}),
-		[]
-	);
-	return (
-		<PostHogProvider apiKey={POSTHOG_API_KEY} options={options}>
-			{children}
-		</PostHogProvider>
-	);
-};
-
-interface Tracker {
+export interface Tracker {
 	enableTracker: (enable: boolean) => void;
 	reset: () => void;
 	capture: (

@@ -81,6 +81,7 @@ export {
 	useBoardById,
 	useBoard,
 	minimizeBoards,
+	expandBoards,
 	reopenBoards,
 	setCurrentBoard,
 	useBoardHooks
@@ -117,6 +118,5 @@ export const {
 
 export { useIsCarbonioCE } from '../../store/login/hooks';
 
-export { useTracker } from '../posthog';
-
 export type { NewAction } from '../../shell/creation-button';
+export { useTracker } from '../../tracker/tracker';

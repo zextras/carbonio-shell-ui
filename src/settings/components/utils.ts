@@ -497,12 +497,31 @@ export function defaultAsFirstOrderIdentities(identities: Array<Identity>): Arra
 }
 
 /**
+ * Return the requested attribute value as an array if present, or an empty array otherwise.
+ *
+ * @param settings
+ * @param key
+ * @returns
+ */
+function getAttributeIfPresent(settings: AccountSettings, key: string): Array<string> {
+	const attributeValue = settings.attrs[key];
+	if (attributeValue) {
+		if (isArray(attributeValue)) {
+			return [...(attributeValue as string[])];
+		}
+		return [String(attributeValue)];
+	}
+	return [];
+}
+
+/**
  * Compose a unique list of all identities' email addresses
  *
  * The list is composed of:
  * - the email address of the current account
  * - the email addresses of all the shared accounts (taken from the rights infos)
  * - all the aliases
+ * - all the email addresses from zimbraAllowFromAddress
  *
  * @param account
  * @param settings
@@ -533,23 +552,8 @@ export const getAvailableEmailAddresses = (
 		});
 	}
 
-	// Adds all the aliases
-	if (settings.attrs.zimbraMailAlias) {
-		if (isArray(settings.attrs.zimbraMailAlias)) {
-			result.push(...(settings.attrs.zimbraMailAlias as string[]));
-		} else {
-			result.push(String(settings.attrs.zimbraMailAlias));
-		}
-	}
-
-	if (settings.attrs.zimbraAllowFromAddress) {
-		if (isArray(settings.attrs.zimbraAllowFromAddress)) {
-			result.push(...(settings.attrs.zimbraAllowFromAddress as string[]));
-		} else {
-			result.push(String(settings.attrs.zimbraAllowFromAddress));
-		}
-	}
-
+	result.push(...getAttributeIfPresent(settings, 'zimbraMailAlias'));
+	result.push(...getAttributeIfPresent(settings, 'zimbraAllowFromAddress'));
 	return uniq(result);
 };
 

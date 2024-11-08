@@ -121,6 +121,7 @@
 		"react-dom": "^18.3.1",
 		"react-i18next": "^12.3.1",
 		"react-router-dom": "^5.3.4",
+		"react-router-dom-v5-compat": "^6.28.0",
 		"styled-components": "^5.3.11",
 		"tinymce": "^6.8.4",
 		"ua-parser-js": "^1.0.37",

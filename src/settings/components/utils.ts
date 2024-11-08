@@ -542,6 +542,14 @@ export const getAvailableEmailAddresses = (
 		}
 	}
 
+	if (settings.attrs.zimbraAllowFromAddress) {
+		if (isArray(settings.attrs.zimbraAllowFromAddress)) {
+			result.push(...(settings.attrs.zimbraAllowFromAddress as string[]));
+		} else {
+			result.push(String(settings.attrs.zimbraAllowFromAddress));
+		}
+	}
+
 	return uniq(result);
 };
 

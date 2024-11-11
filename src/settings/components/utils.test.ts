@@ -158,4 +158,16 @@ describe('getAttributeIfPresent', () => {
 		getAttributeIfPresent(settings, 'key');
 		expect(spy).toHaveBeenCalledWith(['testValue']);
 	});
+
+	it('wraps non-array, non-string attribute in an array (e.g., number)', () => {
+		const settings: AccountSettings = {
+		  attrs: {
+			key: 123
+		  },
+		  prefs: {},
+		  props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }]
+		};
+		const result = getAttributeIfPresent(settings, 'key');
+		expect(result).toEqual(['123']);
+	  });
 });

@@ -503,7 +503,7 @@ export function defaultAsFirstOrderIdentities(identities: Array<Identity>): Arra
  * @param key
  * @returns
  */
-function getAttributeIfPresent(settings: AccountSettings, key: string): Array<string> {
+export function getAttributeIfPresent(settings: AccountSettings, key: string): Array<string> {
 	const attributeValue = settings.attrs[key];
 	if (attributeValue) {
 		if (isArray(attributeValue)) {

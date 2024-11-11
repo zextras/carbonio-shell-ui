@@ -3,8 +3,9 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { dateToGenTime, genTimeToDate, humanFileSize } from './utils';
-import type { GeneralizedTime } from '../../types/account';
+import { dateToGenTime, genTimeToDate, humanFileSize, getAttributeIfPresent } from './utils';
+import type { GeneralizedTime, AccountSettings } from '../../types/account';
+import * as _ from 'lodash';
 
 describe('dateToGenTime function', () => {
 	it('should return a UTC date with the format YYYYMMDDHHmmss[Z]', () => {
@@ -103,3 +104,43 @@ describe('humanFileSize function', () => {
 		expect(() => humanFileSize(1024 ** 9, undefined)).toThrow('Unsupported inputSize');
 	});
 });
+
+describe('getAttributeIfPresent', () => {
+	it('returns an array when the attribute is an array', () => {
+	  const settings: AccountSettings = {
+		attrs: {
+		  key: ['value1', 'value2'],
+		},
+		prefs: {},
+		props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }],
+	  };
+  
+	  const result = getAttributeIfPresent(settings, 'key');
+	  expect(result).toEqual(['value1', 'value2']);
+	});
+  
+	it('wraps the attribute in an array when it is a single value', () => {
+	  const settings: AccountSettings = {
+		attrs: {
+		  key: 'singleValue',
+		},
+		prefs: {},
+		props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }],
+	  };
+  
+	  const result = getAttributeIfPresent(settings, 'key');
+	  expect(result).toEqual(['singleValue']);
+	});
+  
+	it('returns an empty array when the attribute is undefined', () => {
+	  const settings: AccountSettings = {
+		attrs: {},
+		prefs: {},
+		props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }],
+	  };
+  
+	  const result = getAttributeIfPresent(settings, 'key');
+	  expect(result).toEqual([]);
+	});
+  });
+  

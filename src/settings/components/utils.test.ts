@@ -107,7 +107,7 @@ describe('humanFileSize function', () => {
 });
 
 describe('getAttributeIfPresent', () => {
-	it('returns an array when the attribute is an array', () => {
+	it('should return an array when the attribute is an array', () => {
 		const settings: AccountSettings = {
 			attrs: {
 				key: ['value1', 'value2']
@@ -120,7 +120,7 @@ describe('getAttributeIfPresent', () => {
 		expect(result).toEqual(['value1', 'value2']);
 	});
 
-	it('wraps the attribute in an array when it is a single value', () => {
+	it('should return an array when the attribute is a single value', () => {
 		const settings: AccountSettings = {
 			attrs: {
 				key: 'singleValue'
@@ -133,7 +133,7 @@ describe('getAttributeIfPresent', () => {
 		expect(result).toEqual(['singleValue']);
 	});
 
-	it('returns an empty array when the attribute is undefined', () => {
+	it('should return an empty array when the attribute is undefined', () => {
 		const settings: AccountSettings = {
 			attrs: {},
 			prefs: {},
@@ -144,7 +144,7 @@ describe('getAttributeIfPresent', () => {
 		expect(result).toEqual([]);
 	});
 
-	it('calls _.isArray with the correct argument', () => {
+	it('should call _.isArray with the correct argument', () => {
 		const settings: AccountSettings = {
 			attrs: {
 				key: ['testValue']
@@ -159,7 +159,7 @@ describe('getAttributeIfPresent', () => {
 		expect(spy).toHaveBeenCalledWith(['testValue']);
 	});
 
-	it('wraps non-array, non-string attribute in an array (e.g., number)', () => {
+	it('should wrap non-array, non-string attribute in an array (e.g., number)', () => {
 		const settings: AccountSettings = {
 			attrs: {
 				key: 123

@@ -3,9 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import _ from 'lodash';
-
-import { dateToGenTime, genTimeToDate, humanFileSize, getAttributeIfPresent } from './utils';
+import { dateToGenTime, genTimeToDate, humanFileSize, getAttributeValues } from './utils';
 import type { GeneralizedTime, AccountSettings } from '../../types/account';
 
 describe('dateToGenTime function', () => {
@@ -106,7 +104,7 @@ describe('humanFileSize function', () => {
 	});
 });
 
-describe('getAttributeIfPresent', () => {
+describe('getAttributeValues', () => {
 	it('should return an array when the attribute is an array', () => {
 		const settings: AccountSettings = {
 			attrs: {
@@ -116,8 +114,9 @@ describe('getAttributeIfPresent', () => {
 			props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }]
 		};
 
-		const result = getAttributeIfPresent(settings, 'key');
+		const result = getAttributeValues(settings, 'key');
 		expect(result).toEqual(['value1', 'value2']);
+		expect(Array.isArray(result)).toBe(true);
 	});
 
 	it('should return an array when the attribute is a single value', () => {
@@ -129,8 +128,9 @@ describe('getAttributeIfPresent', () => {
 			props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }]
 		};
 
-		const result = getAttributeIfPresent(settings, 'key');
+		const result = getAttributeValues(settings, 'key');
 		expect(result).toEqual(['singleValue']);
+		expect(Array.isArray(result)).toBe(true);
 	});
 
 	it('should return an empty array when the attribute is undefined', () => {
@@ -140,11 +140,12 @@ describe('getAttributeIfPresent', () => {
 			props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }]
 		};
 
-		const result = getAttributeIfPresent(settings, 'key');
+		const result = getAttributeValues(settings, 'key');
 		expect(result).toEqual([]);
+		expect(Array.isArray(result)).toBe(true);
 	});
 
-	it('should call _.isArray with the correct argument', () => {
+	it('should call Array.isArray with the correct argument', () => {
 		const settings: AccountSettings = {
 			attrs: {
 				key: ['testValue']
@@ -153,13 +154,12 @@ describe('getAttributeIfPresent', () => {
 			props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }]
 		};
 
-		const spy = jest.spyOn(_, 'isArray');
-
-		getAttributeIfPresent(settings, 'key');
-		expect(spy).toHaveBeenCalledWith(['testValue']);
+		const result = getAttributeValues(settings, 'key');
+		expect(result).toEqual(['testValue']);
+		expect(Array.isArray(result)).toBe(true);
 	});
 
-	it('should wrap non-array, non-string attribute in an array (e.g., number)', () => {
+	it('should return array of numbers', () => {
 		const settings: AccountSettings = {
 			attrs: {
 				key: 123
@@ -167,7 +167,9 @@ describe('getAttributeIfPresent', () => {
 			prefs: {},
 			props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }]
 		};
-		const result = getAttributeIfPresent(settings, 'key');
-		expect(result).toEqual(['123']);
+
+		const result = getAttributeValues(settings, 'key');
+		expect(result).toEqual([123]);
+		expect(Array.isArray(result)).toBe(true);
 	});
 });

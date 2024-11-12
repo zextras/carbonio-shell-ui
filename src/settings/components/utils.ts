@@ -7,7 +7,7 @@
 import type React from 'react';
 
 import type { TFunction } from 'i18next';
-import { cloneDeep, filter, findIndex, isArray, isBoolean, reduce, uniq } from 'lodash';
+import { cloneDeep, filter, findIndex, isBoolean, reduce, uniq } from 'lodash';
 
 import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
 import type { LocaleDescriptor } from '../../constants/locales';
@@ -497,21 +497,28 @@ export function defaultAsFirstOrderIdentities(identities: Array<Identity>): Arra
 }
 
 /**
- * Return the requested attribute value as an array if present, or an empty array otherwise.
+ * Return the requested attribute value(s) as an array if present, or an empty array otherwise.
  *
- * @param settings
- * @param key
- * @returns
+ * @param settings - The account settings containing the attributes.
+ * @param key - The key of the attribute in the `attrs` object.
+ * @returns An array containing the attribute value(s) (string | number).
  */
-export function getAttributeIfPresent(settings: AccountSettings, key: string): Array<string> {
+export function getAttributeValues<T extends keyof AccountSettings['attrs']>(
+	settings: AccountSettings,
+	key: T
+): AccountSettings['attrs'][T] extends (string | number)[]
+	? (string | number)[]
+	: (string | number)[] {
 	const attributeValue = settings.attrs[key];
-	if (attributeValue) {
-		if (isArray(attributeValue)) {
-			return [...(attributeValue as string[])];
+	if (attributeValue !== undefined) {
+		if (Array.isArray(attributeValue)) {
+			return attributeValue as AccountSettings['attrs'][T] extends (string | number)[]
+				? (string | number)[]
+				: never;
 		}
-		return [String(attributeValue)];
+		return [attributeValue] as (string | number)[];
 	}
-	return [];
+	return [] as (string | number)[];
 }
 
 /**
@@ -552,8 +559,9 @@ export const getAvailableEmailAddresses = (
 		});
 	}
 
-	result.push(...getAttributeIfPresent(settings, 'zimbraMailAlias'));
-	result.push(...getAttributeIfPresent(settings, 'zimbraAllowFromAddress'));
+	result.push(...getAttributeValues(settings, 'zimbraMailAlias').map(String));
+	result.push(...getAttributeValues(settings, 'zimbraAllowFromAddress').map(String));
+
 	return uniq(result);
 };
 

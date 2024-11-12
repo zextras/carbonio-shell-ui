@@ -110,6 +110,15 @@ export const localeList = (t: TFunction): Array<LocaleDescriptorWithLabels> => [
 		})
 	},
 	{
+		id: 'hu',
+		...SUPPORTED_LOCALES.hu,
+		localName: t('locale.hungarian', 'Hungarian'),
+		label: t('locale.label_hungarian', {
+			value: SUPPORTED_LOCALES.hu.name,
+			defaultValue: 'Hungarian - {{value}}'
+		})
+	},
+	{
 		id: 'it',
 		...SUPPORTED_LOCALES.it,
 		localName: t('locale.italian', 'Italian'),

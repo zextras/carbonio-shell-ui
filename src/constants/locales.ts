@@ -42,6 +42,10 @@ export const SUPPORTED_LOCALES = {
 		name: 'हिंदी',
 		value: 'hi'
 	},
+	hu: {
+		name: 'Magyar',
+		value: 'hu'
+	},
 	it: {
 		name: 'italiano',
 		value: 'it'

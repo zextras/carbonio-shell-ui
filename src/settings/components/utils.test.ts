@@ -108,24 +108,20 @@ describe('asArray', () => {
 	it('should return an array when the value is an array', () => {
 		const result = asArray(['value1', 'value2']);
 		expect(result).toEqual(['value1', 'value2']);
-		expect(Array.isArray(result)).toBe(true);
 	});
 
 	it('should return an array when the value is a single value', () => {
 		const result = asArray('singleValue');
 		expect(result).toEqual(['singleValue']);
-		expect(Array.isArray(result)).toBe(true);
 	});
 
 	it('should return an empty array when the value is undefined', () => {
 		const result = asArray(undefined);
 		expect(result).toEqual([]);
-		expect(Array.isArray(result)).toBe(true);
 	});
 
 	it('should return array of numbers', () => {
 		const result = asArray(123);
 		expect(result).toEqual([123]);
-		expect(Array.isArray(result)).toBe(true);
 	});
 });

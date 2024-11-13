@@ -7,7 +7,7 @@
 import type React from 'react';
 
 import type { TFunction } from 'i18next';
-import { cloneDeep, filter, findIndex, isArray, isBoolean, reduce, uniq } from 'lodash';
+import { cloneDeep, filter, findIndex, isBoolean, reduce, uniq } from 'lodash';
 
 import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
 import type { LocaleDescriptor } from '../../constants/locales';
@@ -497,12 +497,37 @@ export function defaultAsFirstOrderIdentities(identities: Array<Identity>): Arra
 }
 
 /**
+ * Wraps a given value in an array if it is not already an array.
+ *
+ * @template T - The type of the input value.
+ * @param {T | T[] | undefined} value - The value to be transformed. Can be a single value of type `T`,
+ * an array of `T`, or `undefined`.
+ * @returns {T[]} - Returns an array of `T`. If `value` is an array, it is returned as-is. If `value`
+ * is a single item, it is wrapped in an array. If `value` is `undefined`, returns an empty array.
+ *
+ * @example
+ * asArray(5); // returns [5]
+ * asArray([5, 6]); // returns [5, 6]
+ * asArray(undefined); // returns []
+ */
+export function asArray<T>(value: T | T[] | undefined): T[] {
+	if (value !== undefined) {
+		if (Array.isArray(value)) {
+			return value;
+		}
+		return [value];
+	}
+	return [];
+}
+
+/**
  * Compose a unique list of all identities' email addresses
  *
  * The list is composed of:
  * - the email address of the current account
  * - the email addresses of all the shared accounts (taken from the rights infos)
  * - all the aliases
+ * - all the email addresses from zimbraAllowFromAddress
  *
  * @param account
  * @param settings
@@ -533,14 +558,10 @@ export const getAvailableEmailAddresses = (
 		});
 	}
 
-	// Adds all the aliases
-	if (settings.attrs.zimbraMailAlias) {
-		if (isArray(settings.attrs.zimbraMailAlias)) {
-			result.push(...(settings.attrs.zimbraMailAlias as string[]));
-		} else {
-			result.push(String(settings.attrs.zimbraMailAlias));
-		}
-	}
+	result.push(
+		...asArray(settings.attrs.zimbraMailAlias),
+		...asArray(settings.attrs.zimbraAllowFromAddress)
+	);
 
 	return uniq(result);
 };

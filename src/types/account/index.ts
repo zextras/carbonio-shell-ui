@@ -101,6 +101,8 @@ export interface AccountSettingsPrefs {
 export type AccountSettingsAttrs = {
 	zimbraFeatureOptionsEnabled?: BooleanString;
 	zimbraIdentityMaxNumEntries?: number;
+	zimbraMailAlias?: string | Array<string>;
+	zimbraAllowFromAddress?: string | Array<string>;
 	[key: string]: string | number | Array<string | number> | undefined;
 };
 

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { dateToGenTime, genTimeToDate, humanFileSize, asArray } from './utils';
-import type { GeneralizedTime, AccountSettings } from '../../types/account';
+import type { GeneralizedTime } from '../../types/account';
 
 describe('dateToGenTime function', () => {
 	it('should return a UTC date with the format YYYYMMDDHHmmss[Z]', () => {
@@ -105,56 +105,26 @@ describe('humanFileSize function', () => {
 });
 
 describe('asArray', () => {
-	it('should return an array when the attribute is an array', () => {
-		const settings: AccountSettings = {
-			attrs: {
-				key: ['value1', 'value2']
-			},
-			prefs: {},
-			props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }]
-		};
-
-		const result = asArray(settings.attrs.key);
+	it('should return an array when the value is an array', () => {
+		const result = asArray(['value1', 'value2']);
 		expect(result).toEqual(['value1', 'value2']);
 		expect(Array.isArray(result)).toBe(true);
 	});
 
-	it('should return an array when the attribute is a single value', () => {
-		const settings: AccountSettings = {
-			attrs: {
-				key: 'singleValue'
-			},
-			prefs: {},
-			props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }]
-		};
-
-		const result = asArray(settings.attrs.key);
+	it('should return an array when the value is a single value', () => {
+		const result = asArray('singleValue');
 		expect(result).toEqual(['singleValue']);
 		expect(Array.isArray(result)).toBe(true);
 	});
 
-	it('should return an empty array when the attribute is undefined', () => {
-		const settings: AccountSettings = {
-			attrs: {},
-			prefs: {},
-			props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }]
-		};
-
-		const result = asArray(settings.attrs.key);
+	it('should return an empty array when the value is undefined', () => {
+		const result = asArray(undefined);
 		expect(result).toEqual([]);
 		expect(Array.isArray(result)).toBe(true);
 	});
 
 	it('should return array of numbers', () => {
-		const settings: AccountSettings = {
-			attrs: {
-				key: 123
-			},
-			prefs: {},
-			props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }]
-		};
-
-		const result = asArray(settings.attrs.key);
+		const result = asArray(123);
 		expect(result).toEqual([123]);
 		expect(Array.isArray(result)).toBe(true);
 	});

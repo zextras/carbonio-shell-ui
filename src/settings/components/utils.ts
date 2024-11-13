@@ -558,8 +558,10 @@ export const getAvailableEmailAddresses = (
 		});
 	}
 
-	result.push(...asArray(settings.attrs.zimbraMailAlias));
-	result.push(...asArray(settings.attrs.zimbraAllowFromAddress));
+	result.push(
+		...asArray(settings.attrs.zimbraMailAlias),
+		...asArray(settings.attrs.zimbraAllowFromAddress)
+	);
 
 	return uniq(result);
 };

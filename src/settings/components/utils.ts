@@ -497,11 +497,18 @@ export function defaultAsFirstOrderIdentities(identities: Array<Identity>): Arra
 }
 
 /**
- * Return the requested attribute value(s) as an array if present, or an empty array otherwise.
+ * Wraps a given value in an array if it is not already an array.
  *
- * @param settings - The account settings containing the attributes.
- * @param key - The key of the attribute in the `attrs` object.
- * @returns An array containing the attribute value(s) (string | number).
+ * @template T - The type of the input value.
+ * @param {T | T[] | undefined} value - The value to be transformed. Can be a single value of type `T`,
+ * an array of `T`, or `undefined`.
+ * @returns {T[]} - Returns an array of `T`. If `value` is an array, it is returned as-is. If `value`
+ * is a single item, it is wrapped in an array. If `value` is `undefined`, returns an empty array.
+ *
+ * @example
+ * asArray(5); // returns [5]
+ * asArray([5, 6]); // returns [5, 6]
+ * asArray(undefined); // returns []
  */
 export function asArray<T>(value: T | T[] | undefined): T[] {
 	if (value !== undefined) {

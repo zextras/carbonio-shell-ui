@@ -44,7 +44,8 @@ export const SUPPORTED_LOCALES = {
 	},
 	hu: {
 		name: 'Magyar',
-		value: 'hu'
+		value: 'hu',
+		tinymceLocale: 'hu_HU'
 	},
 	it: {
 		name: 'italiano',

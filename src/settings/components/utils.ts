@@ -503,22 +503,14 @@ export function defaultAsFirstOrderIdentities(identities: Array<Identity>): Arra
  * @param key - The key of the attribute in the `attrs` object.
  * @returns An array containing the attribute value(s) (string | number).
  */
-export function getAttributeValues<T extends keyof AccountSettings['attrs']>(
-	settings: AccountSettings,
-	key: T
-): AccountSettings['attrs'][T] extends (string | number)[]
-	? (string | number)[]
-	: (string | number)[] {
-	const attributeValue = settings.attrs[key];
-	if (attributeValue !== undefined) {
-		if (Array.isArray(attributeValue)) {
-			return attributeValue as AccountSettings['attrs'][T] extends (string | number)[]
-				? (string | number)[]
-				: never;
+export function asArray<T>(value: T | T[] | undefined): T[] {
+	if (value !== undefined) {
+		if (Array.isArray(value)) {
+			return value;
 		}
-		return [attributeValue] as (string | number)[];
+		return [value];
 	}
-	return [] as (string | number)[];
+	return [];
 }
 
 /**
@@ -559,8 +551,8 @@ export const getAvailableEmailAddresses = (
 		});
 	}
 
-	result.push(...getAttributeValues(settings, 'zimbraMailAlias').map(String));
-	result.push(...getAttributeValues(settings, 'zimbraAllowFromAddress').map(String));
+	result.push(...asArray(settings.attrs.zimbraMailAlias));
+	result.push(...asArray(settings.attrs.zimbraAllowFromAddress));
 
 	return uniq(result);
 };

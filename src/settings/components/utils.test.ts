@@ -145,20 +145,6 @@ describe('getAttributeValues', () => {
 		expect(Array.isArray(result)).toBe(true);
 	});
 
-	it('should call Array.isArray with the correct argument', () => {
-		const settings: AccountSettings = {
-			attrs: {
-				key: ['testValue']
-			},
-			prefs: {},
-			props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }]
-		};
-
-		const result = getAttributeValues(settings, 'key');
-		expect(result).toEqual(['testValue']);
-		expect(Array.isArray(result)).toBe(true);
-	});
-
 	it('should return array of numbers', () => {
 		const settings: AccountSettings = {
 			attrs: {

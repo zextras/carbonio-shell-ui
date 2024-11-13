@@ -104,9 +104,9 @@ export type AccountSettings = {
 type AccountSettingsAttrs = {
     zimbraFeatureOptionsEnabled?: BooleanString;
     zimbraIdentityMaxNumEntries?: number;
-    [key: string]: string | number | Array<string | number> | undefined;
     zimbraMailAlias?: string | Array<string>;
     zimbraAllowFromAddress?: string | Array<string>;
+    [key: string]: string | number | Array<string | number> | undefined;
 };
 
 // @public (undocumented)

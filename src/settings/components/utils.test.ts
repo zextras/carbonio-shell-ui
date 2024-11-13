@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { dateToGenTime, genTimeToDate, humanFileSize, getAttributeValues } from './utils';
+import { dateToGenTime, genTimeToDate, humanFileSize, asArray } from './utils';
 import type { GeneralizedTime, AccountSettings } from '../../types/account';
 
 describe('dateToGenTime function', () => {
@@ -104,7 +104,7 @@ describe('humanFileSize function', () => {
 	});
 });
 
-describe('getAttributeValues', () => {
+describe('asArray', () => {
 	it('should return an array when the attribute is an array', () => {
 		const settings: AccountSettings = {
 			attrs: {
@@ -114,7 +114,7 @@ describe('getAttributeValues', () => {
 			props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }]
 		};
 
-		const result = getAttributeValues(settings, 'key');
+		const result = asArray(settings.attrs.key);
 		expect(result).toEqual(['value1', 'value2']);
 		expect(Array.isArray(result)).toBe(true);
 	});
@@ -128,7 +128,7 @@ describe('getAttributeValues', () => {
 			props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }]
 		};
 
-		const result = getAttributeValues(settings, 'key');
+		const result = asArray(settings.attrs.key);
 		expect(result).toEqual(['singleValue']);
 		expect(Array.isArray(result)).toBe(true);
 	});
@@ -140,7 +140,7 @@ describe('getAttributeValues', () => {
 			props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }]
 		};
 
-		const result = getAttributeValues(settings, 'key');
+		const result = asArray(settings.attrs.key);
 		expect(result).toEqual([]);
 		expect(Array.isArray(result)).toBe(true);
 	});
@@ -154,7 +154,7 @@ describe('getAttributeValues', () => {
 			props: [{ name: 'zimlet1', zimlet: 'propValue1', _content: 'contentValue1' }]
 		};
 
-		const result = getAttributeValues(settings, 'key');
+		const result = asArray(settings.attrs.key);
 		expect(result).toEqual([123]);
 		expect(Array.isArray(result)).toBe(true);
 	});

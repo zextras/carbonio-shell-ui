@@ -17,7 +17,7 @@ import type { BoardView } from '../../types/apps';
 import type { Board } from '../../types/boards';
 
 const BoardContainer = styled.div<{ $show: boolean }>`
-	display: ${(props): string => (props.$show ? 'block' : 'none')};
+	display: ${({ $show }): string => ($show ? 'block' : 'none')};
 	height: 100%;
 	width: 100%;
 	overflow-y: auto;

@@ -6,7 +6,6 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import type { RowProps } from '@zextras/carbonio-design-system';
 import { Container, Icon, IconButton, Row, Text, Tooltip } from '@zextras/carbonio-design-system';
 import styled, { css } from 'styled-components';
 
@@ -14,7 +13,7 @@ import { closeBoard, setCurrentBoard, useBoardStore } from '../../store/boards';
 import { getT } from '../../store/i18n/hooks';
 import './board-tab.css';
 
-const TabContainer = styled(Row)<RowProps & { $active: boolean }>`
+const TabContainer = styled(Row)<{ $active: boolean }>`
 	container-type: inline-size;
 	container-name: tab;
 	max-width: calc(3rem + 15ch);

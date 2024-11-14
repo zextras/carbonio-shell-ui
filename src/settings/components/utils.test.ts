@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { dateToGenTime, genTimeToDate, humanFileSize } from './utils';
+import { dateToGenTime, genTimeToDate, humanFileSize, asArray } from './utils';
 import type { GeneralizedTime } from '../../types/account';
 
 describe('dateToGenTime function', () => {
@@ -101,5 +101,27 @@ describe('humanFileSize function', () => {
 
 	it('should throw an error if inputSize is equal or greater than 1024 YB', () => {
 		expect(() => humanFileSize(1024 ** 9, undefined)).toThrow('Unsupported inputSize');
+	});
+});
+
+describe('asArray', () => {
+	it('should return an array when the value is an array', () => {
+		const result = asArray(['value1', 'value2']);
+		expect(result).toEqual(['value1', 'value2']);
+	});
+
+	it('should return an array when the value is a single value', () => {
+		const result = asArray('singleValue');
+		expect(result).toEqual(['singleValue']);
+	});
+
+	it('should return an empty array when the value is undefined', () => {
+		const result = asArray(undefined);
+		expect(result).toEqual([]);
+	});
+
+	it('should return array of numbers', () => {
+		const result = asArray(123);
+		expect(result).toEqual([123]);
 	});
 });

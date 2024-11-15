@@ -3,7 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import type { FC } from 'react';
 import React, { useCallback, useMemo, useRef } from 'react';
 
 import type { IAllProps as EditorProps } from '@tinymce/tinymce-react';
@@ -68,7 +67,7 @@ export const FileInput = styled.input`
 	display: none;
 `;
 
-const Composer: FC<ComposerProps> = ({
+const Composer = ({
 	onEditorChange,
 	onFileSelect,
 	inline = false,
@@ -76,7 +75,7 @@ const Composer: FC<ComposerProps> = ({
 	initialValue,
 	customInitOptions,
 	...rest
-}) => {
+}: ComposerProps): React.JSX.Element => {
 	const _onEditorChange = useCallback<NonNullable<EditorProps['onEditorChange']>>(
 		(newContent, editor) => {
 			onEditorChange?.([

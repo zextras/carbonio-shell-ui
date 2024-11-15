@@ -8,7 +8,7 @@ import React from 'react';
 import { compact, map } from 'lodash';
 
 import type { IntegrationsState } from './store';
-import AppContextProvider from '../../boot/app/app-context-provider';
+import { AppContextProvider } from '../../boot/app/app-context-provider';
 import type { Action } from '../../types/integrations';
 import type { AnyFunction } from '../../utils/typeUtils';
 
@@ -32,14 +32,14 @@ export function buildIntegrationFunction(
 	return integration ? [integration, true] : [(): void => undefined, false];
 }
 
-export function buildIntegrationActions(
+export function buildIntegrationActions<TAction extends Action>(
 	integration: IntegrationsState['actions'][string],
-	target: unknown
-): Array<Action> {
+	context: unknown
+): Array<TAction> {
 	return compact(
-		map(integration, (f) => {
+		map(integration, (actionFactory) => {
 			try {
-				return f(target);
+				return actionFactory(context) as TAction;
 			} catch (e) {
 				// eslint-disable-next-line no-console
 				console.error(e);

@@ -4,16 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { FC } from 'react';
 import React, { useCallback } from 'react';
 
 import { Catcher } from '@zextras/carbonio-design-system';
 
-const AppErrorCatcher: FC = ({ children }) => {
-	const onError = useCallback((error) => {
+export const AppErrorCatcher = ({ children }: React.PropsWithChildren): React.JSX.Element => {
+	const onError = useCallback((error: unknown) => {
 		console.error(error);
-		// ({event: 'report-exception',data: { exception: error }});
 	}, []);
 	return <Catcher onError={onError}>{children}</Catcher>;
 };
-export default AppErrorCatcher;

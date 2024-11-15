@@ -20,7 +20,8 @@ describe('Out of office settings', () => {
 	test('render section with defaults', () => {
 		const settings: AccountSettings = { prefs: {}, attrs: {}, props: [] };
 		const addModFn = jest.fn();
-		setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} />);
+		const removeMod = jest.fn();
+		setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />);
 		expect(screen.getByText('Out of Office Settings')).toBeVisible();
 		expect(screen.getByText('Out of Office')).toBeVisible();
 		expect(screen.getByText('Do not send auto-replies')).toBeVisible();
@@ -38,14 +39,18 @@ describe('Out of office settings', () => {
 	test('by default is set to not send auto-replies', () => {
 		const settings: AccountSettings = { prefs: {}, attrs: {}, props: [] };
 		const addModFn = jest.fn();
-		setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} />);
+		const removeMod = jest.fn();
+		setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />);
 		expect(screen.getByText('Do not send auto-replies')).toBeVisible();
 	});
 
 	test('select of send auto-replies option updates the pref outOfOfficeReplyEnabled to TRUE', async () => {
 		const settings: AccountSettings = { prefs: {}, attrs: {}, props: [] };
 		const addModFn = jest.fn();
-		const { user } = setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} />);
+		const removeMod = jest.fn();
+		const { user } = setup(
+			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+		);
 		await user.click(screen.getByText('Do not send auto-replies'));
 		await user.click(screen.getByText('Send auto-replies'));
 		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
@@ -62,7 +67,10 @@ describe('Out of office settings', () => {
 			props: []
 		};
 		const addModFn = jest.fn();
-		const { user } = setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} />);
+		const removeMod = jest.fn();
+		const { user } = setup(
+			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+		);
 		await user.click(screen.getByText('Send auto-replies'));
 		await user.click(screen.getByText('Do not send auto-replies'));
 		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
@@ -82,7 +90,10 @@ describe('Out of office settings', () => {
 			props: []
 		};
 		const addModFn = jest.fn();
-		const { user } = setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} />);
+		const removeMod = jest.fn();
+		const { user } = setup(
+			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+		);
 		await user.click(screen.getByText('Do not send auto-replies'));
 		await user.click(screen.getByText('Send auto-replies'));
 		expect(screen.getByRole('textbox', { name: 'Auto-Reply Message:' })).toBeEnabled();
@@ -108,7 +119,10 @@ describe('Out of office settings', () => {
 			props: []
 		};
 		const addModFn = jest.fn();
-		const { user } = setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} />);
+		const removeMod = jest.fn();
+		const { user } = setup(
+			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+		);
 		await user.click(screen.getByText('Send auto-replies'));
 		await user.click(screen.getByText('Do not send auto-replies'));
 		// TODO The disabled attribute is not available on divs. Re-enable the check once the checkbox will be a proper html element
@@ -128,7 +142,10 @@ describe('Out of office settings', () => {
 			props: []
 		};
 		const addModFn = jest.fn();
-		const { user } = setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} />);
+		const removeMod = jest.fn();
+		const { user } = setup(
+			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+		);
 		await user.click(screen.getByText('Do not send auto-replies'));
 		await user.click(screen.getByText('Send auto-replies'));
 		// TODO The disabled attribute is not available on divs. Re-enable the check once the checkbox will be a proper html element
@@ -176,7 +193,8 @@ describe('Out of office settings', () => {
 			props: []
 		};
 		const addModFn = jest.fn();
-		setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} />);
+		const removeMod = jest.fn();
+		setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />);
 		expect(screen.getByText(expected)).toBeVisible();
 	});
 
@@ -196,7 +214,10 @@ describe('Out of office settings', () => {
 				props: []
 			};
 			const addModFn = jest.fn();
-			const { user } = setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} />);
+			const removeMod = jest.fn();
+			const { user } = setup(
+				<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+			);
 			await user.click(screen.getByText('External Senders'));
 			await user.click(
 				within(screen.getByTestId(TESTID_SELECTORS.dropdown)).getByText(optionLabel)
@@ -221,7 +242,10 @@ describe('Out of office settings', () => {
 				props: []
 			};
 			const addModFn = jest.fn();
-			const { user } = setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} />);
+			const removeMod = jest.fn();
+			const { user } = setup(
+				<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+			);
 			await user.click(screen.getByText('External Senders'));
 			await user.click(
 				within(screen.getByTestId(TESTID_SELECTORS.dropdown)).getByText(optionLabel)
@@ -287,7 +311,10 @@ describe('Out of office settings', () => {
 				props: []
 			};
 			const addModFn = jest.fn();
-			const { user } = setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} />);
+			const removeMod = jest.fn();
+			const { user } = setup(
+				<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+			);
 			await user.click(screen.getByText('External Senders'));
 			await user.click(
 				within(screen.getByTestId(TESTID_SELECTORS.dropdown)).getByText(optionLabel)
@@ -307,7 +334,10 @@ describe('Out of office settings', () => {
 			props: []
 		};
 		const addModFn = jest.fn();
-		const { user } = setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} />);
+		const removeMod = jest.fn();
+		const { user } = setup(
+			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+		);
 		const message = faker.lorem.paragraph();
 		await user.type(screen.getByRole('textbox', { name: 'Auto-Reply Message:' }), message);
 		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
@@ -328,7 +358,10 @@ describe('Out of office settings', () => {
 			props: []
 		};
 		const addModFn = jest.fn();
-		const { user } = setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} />);
+		const removeMod = jest.fn();
+		const { user } = setup(
+			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+		);
 		const message = faker.lorem.paragraph();
 		await user.type(
 			screen.getByRole('textbox', { name: 'Auto-Reply Message for External senders:' }),
@@ -352,7 +385,10 @@ describe('Out of office settings', () => {
 			props: []
 		};
 		const addModFn = jest.fn();
-		const { user } = setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} />);
+		const removeMod = jest.fn();
+		const { user } = setup(
+			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+		);
 		await act(async () => {
 			await user.click(screen.getByText(/Send auto-replies during the following period/i));
 		});
@@ -377,7 +413,10 @@ describe('Out of office settings', () => {
 			props: []
 		};
 		const addModFn = jest.fn();
-		const { user } = setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} />);
+		const removeMod = jest.fn();
+		const { user } = setup(
+			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+		);
 		await act(async () => {
 			await user.click(screen.getByText(/Send auto-replies during the following period/i));
 		});
@@ -404,7 +443,10 @@ describe('Out of office settings', () => {
 			props: []
 		};
 		const addModFn = jest.fn();
-		const { user } = setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} />);
+		const removeMod = jest.fn();
+		const { user } = setup(
+			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+		);
 		await act(async () => {
 			await user.click(screen.getByText(/Send auto-replies during the following period/i));
 		});

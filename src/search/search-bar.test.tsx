@@ -5,7 +5,7 @@
  */
 import React from 'react';
 
-import { act } from '@testing-library/react';
+import { act, waitFor } from '@testing-library/react';
 import { Link } from 'react-router-dom';
 
 import { SearchAppView } from './search-app-view';
@@ -40,18 +40,10 @@ describe('Search bar', () => {
 			const { user } = setup(<SearchBar />);
 			const inputElement = screen.getByRole('textbox', { name: /search in/i });
 			const textContent = 'test';
-			await act(async () => {
-				await user.type(inputElement, textContent);
-			});
-			await act(async () => {
-				await user.keyboard(',');
-			});
-			await act(async () => {
-				await user.type(inputElement, 'test2');
-			});
-			await act(async () => {
-				await user.click(screen.getByRoleWithIcon('button', { icon: ICONS.clearSearch }));
-			});
+			await user.type(inputElement, textContent);
+			await user.keyboard(',');
+			await user.type(inputElement, 'test2');
+			await user.click(screen.getByRoleWithIcon('button', { icon: ICONS.clearSearch }));
 			expect(inputElement).toHaveValue('');
 			expect(inputElement).toHaveFocus();
 			expect(screen.queryByText(textContent)).not.toBeInTheDocument();
@@ -71,11 +63,9 @@ describe('Search bar', () => {
 
 		it('should enable the search button when the user starts typing inside the input element', async () => {
 			const { user } = setup(<SearchBar />);
-			await act(async () => {
-				await user.type(screen.getByRole('textbox', { name: /search in/i }), 'test');
-			});
+			await user.type(screen.getByRole('textbox', { name: /search in/i }), 'test');
 			const searchButton = screen.getByRoleWithIcon('button', { icon: ICONS.search });
-			expect(searchButton).toBeEnabled();
+			await waitFor(() => expect(searchButton).toBeEnabled());
 			jest.advanceTimersToNextTimer();
 			await user.hover(searchButton);
 			act(() => {
@@ -93,12 +83,8 @@ describe('Search bar', () => {
 				const { user } = setup(<SearchBar />);
 				const inputElement = screen.getByRole('textbox', { name: /search in/i });
 				const chip1 = 'test';
-				await act(async () => {
-					await user.type(inputElement, chip1);
-				});
-				await act(async () => {
-					await user.keyboard(key);
-				});
+				await user.type(inputElement, chip1);
+				await user.keyboard(key);
 				expect(screen.getByText(chip1)).toBeVisible();
 				expect(inputElement).toHaveValue('');
 				const searchButton = screen.getByRoleWithIcon('button', { icon: ICONS.search });
@@ -119,18 +105,10 @@ describe('Search bar', () => {
 			const searchButton = screen.getByRoleWithIcon('button', { icon: ICONS.search });
 			const chip1 = 'test';
 			const chip2 = 'test2';
-			await act(async () => {
-				await user.type(inputElement, chip1);
-			});
-			await act(async () => {
-				await user.click(searchButton);
-			});
-			await act(async () => {
-				await user.type(inputElement, 'test2');
-			});
-			await act(async () => {
-				await user.click(searchButton);
-			});
+			await user.type(inputElement, chip1);
+			await user.click(searchButton);
+			await user.type(inputElement, 'test2');
+			await user.click(searchButton);
 			expect(screen.getByText(chip1)).toBeVisible();
 			expect(screen.getByText(chip2)).toBeVisible();
 			expect(inputElement).not.toHaveFocus();
@@ -168,7 +146,7 @@ describe('Search bar', () => {
 				jest.fn()
 			]);
 			const { user } = setup(<SearchBar />, {
-				initialRouterEntries: [`/${SEARCH_APP_ID}/${route}`]
+				initialRouterEntries: [`/${SEARCH_APP_ID}`]
 			});
 			await user.click(screen.getByRole('textbox', { name: `Search in ${app.display}` }));
 			const dropdown = await screen.findByTestId(TESTID_SELECTORS.dropdown);
@@ -206,16 +184,14 @@ describe('Search bar', () => {
 				jest.fn()
 			]);
 			const { user } = setup(<SearchBar />, {
-				initialRouterEntries: [`/${SEARCH_APP_ID}/${route}`]
+				initialRouterEntries: [`/${SEARCH_APP_ID}`]
 			});
-			await act(async () => {
-				await user.type(screen.getByRole('textbox', { name: `Search in ${app.display}` }), 't');
-			});
+			await user.type(screen.getByRole('textbox', { name: `Search in ${app.display}` }), 't');
 			const dropdown = await screen.findByTestId(TESTID_SELECTORS.dropdown);
 			expect(within(dropdown).getByText('test')).toBeVisible();
 			expect(within(dropdown).getByText('test2')).toBeVisible();
 			expect(within(dropdown).queryByText('test3')).not.toBeInTheDocument();
-			expect(within(dropdown).queryByText('release')).not.toBeInTheDocument();
+			await waitFor(() => expect(within(dropdown).queryByText('release')).not.toBeInTheDocument());
 		});
 
 		it('should create chip when the user clicks on the dropdown suggestion', async () => {
@@ -239,15 +215,11 @@ describe('Search bar', () => {
 				jest.fn()
 			]);
 			const { user } = setup(<SearchBar />, {
-				initialRouterEntries: [`/${SEARCH_APP_ID}/${route}`]
+				initialRouterEntries: [`/${SEARCH_APP_ID}`]
 			});
-			await act(async () => {
-				await user.type(screen.getByRole('textbox', { name: `Search in ${app.display}` }), 't');
-			});
+			await user.type(screen.getByRole('textbox', { name: `Search in ${app.display}` }), 't');
 			const dropdown = await screen.findByTestId(TESTID_SELECTORS.dropdown);
-			await act(async () => {
-				await user.click(within(dropdown).getByText('test'));
-			});
+			await user.click(within(dropdown).getByText('test'));
 			expect(dropdown).not.toBeInTheDocument();
 			// chip is created
 			expect(screen.getByText('test')).toBeVisible();
@@ -281,7 +253,7 @@ describe('Search bar', () => {
 			primaryBar: 'SearchModOutline'
 		});
 
-		setup(<SearchBar />, { initialRouterEntries: [`/${SEARCH_APP_ID}/${route}`] });
+		setup(<SearchBar />, { initialRouterEntries: [`/${SEARCH_APP_ID}`] });
 		expect(screen.getByText(app.display)).toBeVisible();
 		expect(screen.getByRole('textbox', { name: `Search in ${app.display}` })).toBeVisible();
 	});

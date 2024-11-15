@@ -10,7 +10,7 @@ import { Container } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 import styled from 'styled-components';
 
-import AppContextProvider from '../../boot/app/app-context-provider';
+import { AppContextProvider } from '../../boot/app/app-context-provider';
 import { useAppStore } from '../../store/app';
 import { BoardProvider, useBoardStore } from '../../store/boards';
 import type { BoardView } from '../../types/apps';

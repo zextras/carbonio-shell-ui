@@ -29,7 +29,7 @@ const Background = styled.div`
 	min-height: 100%;
 	max-height: 100%;
 	width: 100%;
-	min-width: 60rem;
+	min-width: ${IS_FOCUS_MODE ? '100%' : '60rem'};
 	max-width: 100%;
 `;
 

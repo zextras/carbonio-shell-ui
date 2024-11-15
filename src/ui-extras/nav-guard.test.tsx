@@ -133,9 +133,7 @@ describe('RouteLeavingGuard', () => {
 		);
 		await user.click(screen.getByText('Navigate elsewhere'));
 		await waitFor(() => expect(screen.getByText('Modal content')).toBeVisible());
-		await act(async () => {
-			await user.click(screen.getByRole('button', { name: /save and leave/i }));
-		});
+		await user.click(screen.getByRole('button', { name: /save and leave/i }));
 		await waitFor(() => expect(saveFn).toHaveBeenCalled());
 		await waitFor(() => expect(screen.queryByText('Modal content')).not.toBeInTheDocument());
 		await screen.findByText('Other location');
@@ -169,9 +167,7 @@ describe('RouteLeavingGuard', () => {
 			);
 			await user.click(screen.getByText('Navigate elsewhere'));
 			await waitFor(() => expect(screen.getByText('Modal content')).toBeVisible());
-			await act(async () => {
-				await user.click(screen.getByRole('button', { name: /save and leave/i }));
-			});
+			await user.click(screen.getByRole('button', { name: /save and leave/i }));
 			await waitFor(() => expect(screen.queryByText('Modal content')).not.toBeInTheDocument());
 			expect(screen.getByText('Current location')).toBeVisible();
 			expect(saveFn).toHaveBeenCalled();

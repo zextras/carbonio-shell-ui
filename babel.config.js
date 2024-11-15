@@ -3,18 +3,27 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-module.exports = {
-	presets: [
-		[
-			'@babel/preset-env',
-			{
-				modules: false,
-				useBuiltIns: 'usage',
-				corejs: 3.31
-			}
+module.exports = (api) => {
+	let presetEnvOptions;
+	const plugins = ['babel-plugin-styled-components'];
+	if (api.env('test')) {
+		presetEnvOptions = {
+			modules: 'commonjs'
+		};
+		plugins.push('babel-plugin-transform-import-meta');
+	} else {
+		presetEnvOptions = {
+			modules: false,
+			useBuiltIns: 'usage',
+			corejs: 3.31
+		};
+	}
+	return {
+		presets: [
+			['@babel/preset-env', presetEnvOptions],
+			'@babel/preset-react',
+			'@babel/preset-typescript'
 		],
-		'@babel/preset-react',
-		'@babel/preset-typescript'
-	],
-	plugins: ['babel-plugin-styled-components']
+		plugins
+	};
 };

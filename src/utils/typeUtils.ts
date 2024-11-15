@@ -23,7 +23,7 @@ export type Override<
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyFunction = (...args: any[]) => any;
 
-export type ValueOf<T extends Record<string, unknown>> = T[keyof T];
+export type ValueOf<T> = T[keyof T];
 
 export type Exactify<T, X extends T> = T & {
 	[K in keyof X]: K extends keyof T ? X[K] : never;

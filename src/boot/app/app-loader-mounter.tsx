@@ -4,15 +4,17 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { FC } from 'react';
 import React, { useMemo } from 'react';
 
 import { map } from 'lodash';
 
-import AppContextProvider from './app-context-provider';
+import { AppContextProvider } from './app-context-provider';
 import { useAppStore } from '../../store/app';
 
-const Mounter: FC<{ appId: string }> = ({ children, appId }) => (
+const Mounter = ({
+	children,
+	appId
+}: React.PropsWithChildren<{ appId: string }>): React.JSX.Element => (
 	<div key={appId} id={appId}>
 		<AppContextProvider key={appId} pkg={appId}>
 			{children}
@@ -20,7 +22,7 @@ const Mounter: FC<{ appId: string }> = ({ children, appId }) => (
 	</div>
 );
 
-const AppLoaderMounter: FC = () => {
+const AppLoaderMounter = (): React.JSX.Element => {
 	const entryPoints = useAppStore((s) => s.entryPoints);
 	const entries = useMemo(
 		() =>

@@ -3,7 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import type { FC } from 'react';
 import React, { useEffect, useMemo } from 'react';
 
 import { Container, Responsive } from '@zextras/carbonio-design-system';
@@ -12,7 +11,7 @@ import styled from 'styled-components';
 
 import { useUtilityBarStore } from './store';
 import { useUtilityViews } from './utils';
-import AppContextProvider from '../boot/app/app-context-provider';
+import { AppContextProvider } from '../boot/app/app-context-provider';
 
 const Panel = styled(Container)<{ mode: string }>`
 	width: ${({ mode }): number => (mode !== 'closed' ? 16 : 3)}rem;
@@ -32,7 +31,7 @@ const Spacer = styled.div<{ mode: string }>`
 	transition: width 0.2s;
 `;
 
-export const ShellUtilityPanel: FC = () => {
+export const ShellUtilityPanel = (): React.ReactNode => {
 	const { mode, setMode, current, setCurrent } = useUtilityBarStore();
 	const views = useUtilityViews();
 	const currentPanel = useMemo(() => find(views, (view) => view.id === current), [current, views]);

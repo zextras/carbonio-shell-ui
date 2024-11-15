@@ -154,3 +154,7 @@ export const TESTID_SELECTORS = {
 	headerModuleSelector: 'HeaderModuleSelector',
 	privacySettings: 'privacy-settings'
 };
+
+export const TIMERS = {
+	modalShow: 1
+};

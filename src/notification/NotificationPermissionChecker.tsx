@@ -3,10 +3,9 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import type { FC, ReactElement } from 'react';
 import React, { useEffect } from 'react';
 
-export const NotificationPermissionChecker: FC = (): ReactElement => {
+export const NotificationPermissionChecker = (): React.JSX.Element => {
 	useEffect(() => {
 		if (!('Notification' in window)) {
 			// eslint-disable-next-line no-console

@@ -50,11 +50,7 @@ const configFn = (
 	extensions.push('.d.ts');
 	conf.resolve = {
 		...conf.resolve,
-		extensions,
-		alias: {
-			...conf.resolve?.alias,
-			'react/jsx-runtime': 'react/jsx-runtime.js'
-		}
+		extensions
 	};
 	conf.plugins = conf.plugins ?? [];
 	conf.plugins.push(
@@ -74,7 +70,8 @@ const configFn = (
 		new DefinePlugin({
 			COMMIT_ID: JSON.stringify(commitHash.toString().trim()),
 			BASE_PATH: JSON.stringify(baseStaticPath),
-			POSTHOG_API_KEY: JSON.stringify(process.env.POSTHOG_API_KEY)
+			POSTHOG_API_KEY: JSON.stringify(process.env.POSTHOG_API_KEY),
+			POSTHOG_API_HOST: JSON.stringify(process.env.POSTHOG_API_HOST)
 		}),
 		new HtmlWebpackPlugin({
 			inject: true,

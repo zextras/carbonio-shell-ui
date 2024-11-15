@@ -9,6 +9,7 @@ import type { ComponentType } from 'react';
 declare global {
 	const BASE_PATH: string;
 	const POSTHOG_API_KEY: string;
+	const POSTHOG_API_HOST: string;
 	interface Window {
 		__ZAPP_SHARED_LIBRARIES__?: {
 			'@zextras/carbonio-shell-ui': {
@@ -17,5 +18,10 @@ declare global {
 			[externalDepName: string]: unknown;
 		};
 		__ZAPP_HMR_EXPORT__: { [pkgName: string]: (appClass: ComponentType) => void };
+	}
+
+	interface NotificationOptions {
+		// experimental property https://developer.mozilla.org/en-US/docs/Web/API/Notification/vibrate
+		vibrate?: number[];
 	}
 }

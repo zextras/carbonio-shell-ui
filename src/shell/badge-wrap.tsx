@@ -3,8 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import type { FC } from 'react';
-import React, { forwardRef } from 'react';
+import React from 'react';
 
 import { Container, Badge, Icon } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
@@ -39,8 +38,8 @@ const MiniIcon = styled(Icon)`
 	z-index: 99;
 `;
 
-const BadgeWrap: FC<{ badge: BadgeInfo }> = forwardRef<HTMLDivElement, { badge: BadgeInfo }>(
-	function BadgeWrapFn({ badge, children }, ref): JSX.Element {
+const BadgeWrap = React.forwardRef<HTMLDivElement, React.PropsWithChildren<{ badge: BadgeInfo }>>(
+	function BadgeWrapFn({ badge, children }, ref): React.JSX.Element {
 		return (
 			<Container width={'3rem'} height={'3rem'} style={{ position: 'relative' }} ref={ref}>
 				{(badge.show && badge.icon && <MiniIcon icon={badge.icon} color={badge.color} />) ||

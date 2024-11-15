@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { FC } from 'react';
 import React, { useMemo } from 'react';
 
 import { Accordion, IconButton, Tooltip } from '@zextras/carbonio-design-system';
@@ -14,7 +13,9 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { SETTINGS_APP_ID } from '../constants';
 import { useAppStore } from '../store/app';
 
-export const SettingsSidebar: FC<{ expanded: boolean }> = ({ expanded }) => {
+export const SettingsSidebar = ({
+	expanded
+}: React.PropsWithChildren<{ expanded: boolean }>): React.JSX.Element => {
 	const settingsViews = useAppStore((s) => s.views.settings);
 	const history = useHistory();
 	const location = useLocation();

@@ -3,7 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import type { FC } from 'react';
 import React, { createContext, useContext, useMemo } from 'react';
 
 import { closeBoard, setCurrentBoard, updateBoard, useBoardStore } from './store';
@@ -31,7 +30,9 @@ export type BoardHooksContext = {
 // Must be empty if no board is available
 export const boardHooksContext = createContext<BoardHooksContext | undefined>(undefined);
 
-export const BoardProvider: FC<{ id: string }> = ({ children, id }) => {
+type BoardProviderProps = React.PropsWithChildren<{ id: string }>;
+
+export const BoardProvider = ({ children, id }: BoardProviderProps): React.JSX.Element => {
 	const board = useBoardById(id);
 	const callbacks = useMemo<BoardHooksContext>(
 		() => ({

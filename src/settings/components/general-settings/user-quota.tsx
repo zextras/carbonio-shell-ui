@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { FC } from 'react';
 import React, { useMemo } from 'react';
 
 import { Container, FormSubSection, Quota, Text, Tooltip } from '@zextras/carbonio-design-system';
@@ -18,7 +17,7 @@ interface UserQuotaProps {
 	mobileView: boolean;
 }
 
-const UserQuota: FC<UserQuotaProps> = ({ mobileView }) => {
+const UserQuota = ({ mobileView }: UserQuotaProps): React.JSX.Element => {
 	const t = getT();
 
 	const settings = useUserSettings();

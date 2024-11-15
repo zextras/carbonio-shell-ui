@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { FC } from 'react';
 import React, { useCallback, useMemo } from 'react';
 
 import type { ContainerProps } from '@zextras/carbonio-design-system';
@@ -14,7 +13,7 @@ import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Collapser } from './collapser';
-import AppContextProvider from '../boot/app/app-context-provider';
+import { AppContextProvider } from '../boot/app/app-context-provider';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppStore } from '../store/app';
 import type { AppRoute } from '../types/apps';
@@ -29,7 +28,11 @@ const SidebarContainer = styled(Container)<ContainerProps & { sidebarIsOpen?: bo
 	overflow-x: hidden;
 `;
 
-const ShellSecondaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute }) => {
+const ShellSecondaryBarComponent = ({
+	activeRoute
+}: {
+	activeRoute?: AppRoute;
+}): React.ReactNode => {
 	const isOpen = useUtilityBarStore((s) => s.secondaryBarState);
 	const setIsOpen = useUtilityBarStore((s) => s.setSecondaryBarState);
 	const onCollapserClick = useCallback(() => setIsOpen(!isOpen), [isOpen, setIsOpen]);
@@ -88,8 +91,8 @@ const ShellSecondaryBarComponent: FC<{ activeRoute: AppRoute }> = ({ activeRoute
 
 const MemoShellSecondaryBar = React.memo(ShellSecondaryBarComponent);
 
-const ShellSecondaryBar: FC = () => {
-	const activeRoute = useCurrentRoute() as AppRoute;
+const ShellSecondaryBar = (): React.JSX.Element => {
+	const activeRoute = useCurrentRoute();
 	return <MemoShellSecondaryBar activeRoute={activeRoute} />;
 };
 

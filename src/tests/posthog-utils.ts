@@ -20,7 +20,8 @@ export const spyOnPosthog = (): Partial<ReturnType<(typeof PostHogReact)['usePos
 			disable_surveys: true
 		} as PostHogConfig,
 		reset: jest.fn(),
-		setPersonProperties: jest.fn()
+		setPersonProperties: jest.fn(),
+		capture: jest.fn()
 	} satisfies Partial<ReturnType<(typeof PostHogReact)['usePostHog']>>;
 	jest
 		.spyOn(posthogJsReact, 'usePostHog')

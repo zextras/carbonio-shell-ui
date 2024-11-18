@@ -81,6 +81,7 @@ export {
 	useBoardById,
 	useBoard,
 	minimizeBoards,
+	expandBoards,
 	reopenBoards,
 	setCurrentBoard,
 	useBoardHooks

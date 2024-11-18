@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v8.0.3...v9.0.0) (2024-11-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* update React to v18 and drop support for v17
+* remove functions to get action factories
+* modified Action type to support extensibility
+
+### Features
+
+* add Hungarian language ([2ae81aa](https://github.com/zextras/carbonio-shell-ui/commit/2ae81aac6e8ed4b36d99fc3f609b6514bb7658d3)), closes [#543](https://github.com/zextras/carbonio-shell-ui/issues/543)
+* export expandBoards util ([6b26ad6](https://github.com/zextras/carbonio-shell-ui/commit/6b26ad6b90691dcc0578d7e68888a5eef4a80ea0)), closes [#532](https://github.com/zextras/carbonio-shell-ui/issues/532)
+* expose postHog capture function ([20b512d](https://github.com/zextras/carbonio-shell-ui/commit/20b512da481694d220571bfee3699b906caea3e9)), closes [#505](https://github.com/zextras/carbonio-shell-ui/issues/505)
+* improve integration actions ([fc28a50](https://github.com/zextras/carbonio-shell-ui/commit/fc28a502460f5c8f382654c838c001433c4c1e14)), closes [#520](https://github.com/zextras/carbonio-shell-ui/issues/520)
+* **posthog:** disable autocapture and track pageview on location change ([c951174](https://github.com/zextras/carbonio-shell-ui/commit/c951174863f2d49546e11c8e2aacaf142604fa34)), closes [#529](https://github.com/zextras/carbonio-shell-ui/issues/529)
+* remove min-width limit in focus mode ([a11dc1d](https://github.com/zextras/carbonio-shell-ui/commit/a11dc1d31fcb7f775f90545933b59f9c882c2d97)), closes [#512](https://github.com/zextras/carbonio-shell-ui/issues/512)
+* update react to v18 ([2b22cb2](https://github.com/zextras/carbonio-shell-ui/commit/2b22cb2f66ea9c5fa66ed2c97d0b9ee00400e780)), closes [#460](https://github.com/zextras/carbonio-shell-ui/issues/460) [#507](https://github.com/zextras/carbonio-shell-ui/issues/507)
+
+
+### Bug Fixes
+
+* fix parse of polling interval to consider all duration unit ([fb4f209](https://github.com/zextras/carbonio-shell-ui/commit/fb4f20935a9129ef9e93a5e76f7677d1a65bff53)), closes [#531](https://github.com/zextras/carbonio-shell-ui/issues/531)
+* include zimbraAllowFromAddress in sender address list ([4cc9e27](https://github.com/zextras/carbonio-shell-ui/commit/4cc9e2785b09ae1bcf3955aaa8a1ef62813c4b82)), closes [#542](https://github.com/zextras/carbonio-shell-ui/issues/542)
+* redirect to login even if logout requests fail ([1648f77](https://github.com/zextras/carbonio-shell-ui/commit/1648f773bfd2ee4624bbe0fd8d9ca4eed32d38c1)), closes [#513](https://github.com/zextras/carbonio-shell-ui/issues/513)
+* update dirty state related to out of office ([35d9f41](https://github.com/zextras/carbonio-shell-ui/commit/35d9f419f95c92f139a7d6b8609827c9bb964ff9)), closes [#533](https://github.com/zextras/carbonio-shell-ui/issues/533)
+* use react-router-dom-v5-compat for compatibility with react 18 ([6c6bb57](https://github.com/zextras/carbonio-shell-ui/commit/6c6bb57d5feb0edca7860e5c53e45cf8c71f9bda)), closes [#541](https://github.com/zextras/carbonio-shell-ui/issues/541)
+
 ### [8.0.3](https://github.com/zextras/carbonio-shell-ui/compare/v8.0.2...v8.0.3) (2024-09-11)
 
 

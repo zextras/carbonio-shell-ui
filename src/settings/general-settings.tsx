@@ -255,6 +255,7 @@ const GeneralSettings = (): React.JSX.Element => {
 				<OutOfOfficeSettings
 					settings={userSettings}
 					addMod={addMod}
+					removeMod={removeMod}
 					resetRef={outOfOfficeSettingsSectionRef}
 				/>
 				<SearchSettings

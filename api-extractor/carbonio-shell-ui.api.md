@@ -104,6 +104,8 @@ export type AccountSettings = {
 type AccountSettingsAttrs = {
     zimbraFeatureOptionsEnabled?: BooleanString;
     zimbraIdentityMaxNumEntries?: number;
+    zimbraMailAlias?: string | Array<string>;
+    zimbraAllowFromAddress?: string | Array<string>;
     [key: string]: string | number | Array<string | number> | undefined;
 };
 
@@ -553,6 +555,9 @@ export type ErrorSoapResponse = {
 type Exactify<T, X extends T> = T & {
     [K in keyof X]: K extends keyof T ? X[K] : never;
 };
+
+// @public (undocumented)
+export const expandBoards: () => void;
 
 // Warning: (ae-forgotten-export) The symbol "UserFolder" needs to be exported by the entry point lib.d.ts
 //
@@ -1728,11 +1733,11 @@ interface ZimletProp {
 // lib/types/account/index.d.ts:38:9 - (ae-forgotten-export) The symbol "Signature" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:43:5 - (ae-forgotten-export) The symbol "AccountRights" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:47:5 - (ae-forgotten-export) The symbol "StringOfLength" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:92:5 - (ae-forgotten-export) The symbol "AccountSettingsAttrs" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:94:5 - (ae-forgotten-export) The symbol "ZimletProp" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:138:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:143:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:144:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:94:5 - (ae-forgotten-export) The symbol "AccountSettingsAttrs" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:96:5 - (ae-forgotten-export) The symbol "ZimletProp" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:140:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:145:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:146:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
 // lib/types/apps/index.d.ts:68:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:75:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:94:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts
@@ -1741,7 +1746,7 @@ interface ZimletProp {
 // lib/types/misc/index.d.ts:128:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
 // lib/types/network/index.d.ts:108:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:11:5 - (ae-forgotten-export) The symbol "NameSpace" needs to be exported by the entry point lib.d.ts
-// lib/types/network/soap.d.ts:65:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
+// lib/types/network/soap.d.ts:69:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
 // lib/types/workers/index.d.ts:12:5 - (ae-forgotten-export) The symbol "SyncMessage" needs to be exported by the entry point lib.d.ts
 
 ```

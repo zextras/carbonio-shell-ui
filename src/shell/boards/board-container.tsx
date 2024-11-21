@@ -35,7 +35,7 @@ import {
 	LOCAL_STORAGE_BOARD_SIZE,
 	PRIMARY_BAR_WIDTH
 } from '../../constants';
-import { getApp } from '../../store/app';
+import { useAppStore } from '../../store/app';
 import {
 	closeAllBoards,
 	closeBoard,
@@ -194,6 +194,7 @@ function calcPositionToRemainVisible(
 export const BoardContainer = (): React.JSX.Element | null => {
 	const t = getT();
 	const { boards, minimized, expanded, current, orderedBoards } = useBoardStore();
+	const { apps } = useAppStore();
 
 	const boardDropdownItems = useMemo(
 		(): DropdownItem[] =>
@@ -210,13 +211,13 @@ export const BoardContainer = (): React.JSX.Element | null => {
 							label={boards[boardId].title}
 							icon={boards[boardId].icon}
 							selected={boardId === current}
-							app={getApp(boards[boardId].app)()?.display}
+							app={apps[boards[boardId].app].display}
 							boardId={boardId}
 						/>
 					)
 				})
 			),
-		[boards, current, orderedBoards]
+		[apps, boards, current, orderedBoards]
 	);
 
 	const boardRef = useRef<HTMLDivElement>(null);

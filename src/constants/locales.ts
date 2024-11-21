@@ -72,6 +72,11 @@ export const SUPPORTED_LOCALES: Record<string, LocaleDescriptor> = {
 				)
 		}
 	},
+	hu: {
+		name: 'Magyar',
+		value: 'hu',
+		tinymceLocale: 'hu_HU'
+	},
 	it: {
 		name: 'italiano',
 		value: 'it',

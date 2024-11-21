@@ -4,14 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import type { DateTimePickerProps } from '@zextras/carbonio-design-system';
 import { Checkbox, Container, DateTimePicker } from '@zextras/carbonio-design-system';
 
 import { getT } from '../../../store/i18n/hooks';
 import type { GeneralizedTime } from '../../../types/account';
-import type { AddMod } from '../../../types/network';
+import type { AddMod, RemoveMod } from '../../../types/network';
 import { useReset } from '../../hooks/use-reset';
 import type { SettingsSectionProps } from '../utils';
 import {
@@ -24,17 +24,19 @@ import {
 
 interface OutOfOfficeTimePeriodSectionProps extends SettingsSectionProps {
 	addMod: AddMod;
+	removeMod: RemoveMod;
 	disabled: boolean;
 	prefOutOfOfficeFromDate: GeneralizedTime | undefined;
 	prefOutOfOfficeUntilDate: GeneralizedTime | undefined;
 }
 
 function coerceGenTime(genTime: GeneralizedTime | undefined): Date {
-	return genTime ? genTimeToDate(genTime) : new Date();
+	return genTime ? genTimeToDate(genTime) : new Date(new Date().setSeconds(0, 0));
 }
 
 export const OutOfOfficeTimePeriodSection = ({
 	addMod,
+	removeMod,
 	disabled,
 	prefOutOfOfficeFromDate,
 	prefOutOfOfficeUntilDate,
@@ -43,6 +45,8 @@ export const OutOfOfficeTimePeriodSection = ({
 	const t = getT();
 	const [fromDate, setFromDate] = useState<Date>(coerceGenTime(prefOutOfOfficeFromDate));
 	const [untilDate, setUntilDate] = useState<Date>(coerceGenTime(prefOutOfOfficeUntilDate));
+	const fromDateRef = useRef(fromDate);
+	const untilDateRef = useRef(untilDate);
 	const [allDayEnabled, setAllDayEnabled] = useState<boolean>(false);
 	const editTimeIsDisabled = useMemo(() => disabled || allDayEnabled, [disabled, allDayEnabled]);
 
@@ -52,7 +56,9 @@ export const OutOfOfficeTimePeriodSection = ({
 		const fromDatePref = coerceGenTime(prefOutOfOfficeFromDate);
 		const untilDatePref = coerceGenTime(prefOutOfOfficeUntilDate);
 		setFromDate(fromDatePref);
+		fromDateRef.current = fromDatePref;
 		setUntilDate(untilDatePref);
+		untilDateRef.current = untilDatePref;
 		// there is no pref for the all day check. It is considered all day if the start date time is midnight
 		// and the until date time is 23:59:59:00
 		const fromDateAllDay = startOfDay(fromDatePref);
@@ -69,26 +75,42 @@ export const OutOfOfficeTimePeriodSection = ({
 
 	useReset(resetRef, initPrefs);
 
+	useEffect(() => {
+		if (coerceGenTime(prefOutOfOfficeFromDate).getTime() !== fromDate.getTime()) {
+			updatePref('zimbraPrefOutOfOfficeFromDate', dateToGenTime(fromDate));
+		} else {
+			removeMod('prefs', 'zimbraPrefOutOfOfficeFromDate');
+		}
+	}, [fromDate, prefOutOfOfficeFromDate, removeMod, updatePref]);
+
+	useEffect(() => {
+		if (coerceGenTime(prefOutOfOfficeUntilDate).getTime() !== untilDate.getTime()) {
+			updatePref('zimbraPrefOutOfOfficeUntilDate', dateToGenTime(untilDate));
+		} else {
+			removeMod('prefs', 'zimbraPrefOutOfOfficeUntilDate');
+		}
+	}, [prefOutOfOfficeUntilDate, removeMod, untilDate, updatePref]);
+
 	const outOfOfficeFromDateOnChange = useCallback<NonNullable<DateTimePickerProps['onChange']>>(
 		(newFromDate) => {
 			if (newFromDate) {
 				setFromDate((prevState) => {
 					if (newFromDate.getTime() !== prevState.getTime()) {
-						updatePref('zimbraPrefOutOfOfficeFromDate', dateToGenTime(newFromDate));
+						fromDateRef.current = newFromDate;
+						return newFromDate;
 					}
-					return newFromDate;
+					return prevState;
 				});
-				if (newFromDate.getTime() > untilDate.getTime()) {
-					const newUntilDate = new Date(newFromDate);
-					setUntilDate(newUntilDate);
-					updatePref('zimbraPrefOutOfOfficeUntilDate', dateToGenTime(newUntilDate));
-				}
 			} else {
 				// force an update by cloning the date, so that the input is not left empty
-				setFromDate((prevState) => new Date(prevState));
+				setFromDate((prevState) => {
+					const prevStateClone = new Date(prevState);
+					fromDateRef.current = prevStateClone;
+					return prevStateClone;
+				});
 			}
 		},
-		[untilDate, updatePref]
+		[]
 	);
 
 	const outOfOfficeUntilDateOnChange = useCallback<NonNullable<DateTimePickerProps['onChange']>>(
@@ -96,45 +118,57 @@ export const OutOfOfficeTimePeriodSection = ({
 			if (newUntilDate) {
 				setUntilDate((prevState) => {
 					if (newUntilDate.getTime() !== prevState.getTime()) {
-						updatePref('zimbraPrefOutOfOfficeUntilDate', dateToGenTime(newUntilDate));
+						untilDateRef.current = newUntilDate;
+						return newUntilDate;
 					}
-					return newUntilDate;
+					return prevState;
 				});
-				if (newUntilDate.getTime() < fromDate.getTime()) {
-					const newFromDate = new Date(newUntilDate);
-					setFromDate(newFromDate);
-					updatePref('zimbraPrefOutOfOfficeFromDate', dateToGenTime(newFromDate));
-				}
 			} else {
 				// force an update by cloning the date, so that the input is not left empty
-				setUntilDate((prevState) => new Date(prevState));
+				setUntilDate((prevState) => {
+					const prevStateClone = new Date(prevState);
+					untilDateRef.current = prevStateClone;
+					return prevStateClone;
+				});
 			}
 		},
-		[fromDate, updatePref]
+		[]
 	);
+
+	useEffect(() => {
+		if (fromDate.getTime() > untilDateRef.current.getTime()) {
+			const updatedUntil = new Date(fromDate);
+			untilDateRef.current = updatedUntil;
+			setUntilDate(updatedUntil);
+		}
+	}, [fromDate]);
+
+	useEffect(() => {
+		if (untilDate.getTime() < fromDateRef.current.getTime()) {
+			const updatedFrom = new Date(untilDate);
+			fromDateRef.current = updatedFrom;
+			setFromDate(updatedFrom);
+		}
+	}, [untilDate]);
 
 	const toggleAllDay = useCallback(() => {
 		setAllDayEnabled((prevWasEnabled) => {
 			const nowIsEnabled = !prevWasEnabled;
 			if (nowIsEnabled) {
 				setFromDate((prevState) => {
-					const startOfFromDate = startOfDay(prevState);
-					if (startOfFromDate.getTime() !== prevState.getTime()) {
-						updatePref('zimbraPrefOutOfOfficeFromDate', dateToGenTime(startOfFromDate));
-					}
-					return startOfFromDate;
+					const updatedFrom = startOfDay(prevState);
+					fromDateRef.current = updatedFrom;
+					return updatedFrom;
 				});
 				setUntilDate((prevState) => {
-					const endOfUntilDate = endOfDay(prevState);
-					if (endOfUntilDate.getTime() !== prevState.getTime()) {
-						updatePref('zimbraPrefOutOfOfficeUntilDate', dateToGenTime(endOfUntilDate));
-					}
-					return endOfUntilDate;
+					const updatedUntil = endOfDay(prevState);
+					untilDateRef.current = updatedUntil;
+					return updatedUntil;
 				});
 			}
 			return nowIsEnabled;
 		});
-	}, [updatePref]);
+	}, []);
 
 	return (
 		<Container padding={{ vertical: 'small' }} gap={'0.5rem'} crossAlignment={'flex-start'}>
@@ -144,7 +178,7 @@ export const OutOfOfficeTimePeriodSection = ({
 					dateFormat={'P'}
 					disabled={disabled}
 					defaultValue={fromDate}
-					onChange={outOfOfficeFromDateOnChange}
+					onChange={disabled ? undefined : outOfOfficeFromDateOnChange}
 					showTimeSelect={false}
 					width={'fill'}
 				/>
@@ -153,7 +187,7 @@ export const OutOfOfficeTimePeriodSection = ({
 					dateFormat={'P'}
 					disabled={disabled}
 					defaultValue={untilDate}
-					onChange={outOfOfficeUntilDateOnChange}
+					onChange={disabled ? undefined : outOfOfficeUntilDateOnChange}
 					showTimeSelect={false}
 					width={'fill'}
 				/>
@@ -172,7 +206,7 @@ export const OutOfOfficeTimePeriodSection = ({
 					showTimeCaption={false}
 					dateFormat="p"
 					defaultValue={fromDate}
-					onChange={outOfOfficeFromDateOnChange}
+					onChange={disabled ? undefined : outOfOfficeFromDateOnChange}
 					disabled={editTimeIsDisabled}
 					width={'fill'}
 				/>
@@ -183,7 +217,7 @@ export const OutOfOfficeTimePeriodSection = ({
 					showTimeCaption={false}
 					dateFormat="p"
 					defaultValue={untilDate}
-					onChange={outOfOfficeUntilDateOnChange}
+					onChange={disabled ? undefined : outOfOfficeUntilDateOnChange}
 					disabled={editTimeIsDisabled}
 					width={'fill'}
 				/>

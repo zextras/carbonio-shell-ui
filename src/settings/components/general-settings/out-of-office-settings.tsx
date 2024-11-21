@@ -27,7 +27,7 @@ import { find } from 'lodash';
 import { OutOfOfficeTimePeriodSection } from './out-of-office-time-period-section';
 import { getT } from '../../../store/i18n/hooks';
 import type { AccountSettings, AccountSettingsPrefs, BooleanString } from '../../../types/account';
-import type { AddMod } from '../../../types/network';
+import type { AddMod, RemoveMod } from '../../../types/network';
 import { outOfOfficeSubSection } from '../../general-settings-sub-sections';
 import { useReset } from '../../hooks/use-reset';
 import type { ResetComponentImperativeHandler, SettingsSectionProps } from '../utils';
@@ -120,11 +120,13 @@ export const getExternalSendersPrefsData = (
 interface OutOfOfficeViewProps extends SettingsSectionProps {
 	settings: AccountSettings;
 	addMod: AddMod;
+	removeMod: RemoveMod;
 }
 
 export const OutOfOfficeSettings = ({
 	settings,
 	addMod,
+	removeMod,
 	resetRef
 }: OutOfOfficeViewProps): React.JSX.Element => {
 	const t = getT();
@@ -327,7 +329,7 @@ export const OutOfOfficeSettings = ({
 			<Container crossAlignment="baseline" padding={{ all: 'small' }}>
 				<Row
 					padding={{ all: 'small' }}
-					mainAlignment="baseline"
+					mainAlignment="flex-start"
 					crossAlignment="baseline"
 					width="100%"
 				>
@@ -347,6 +349,7 @@ export const OutOfOfficeSettings = ({
 				/>
 				<OutOfOfficeTimePeriodSection
 					addMod={addMod}
+					removeMod={removeMod}
 					disabled={!prefOutOfOfficeReplyEnabled || !sendAutoReplyTimePeriodEnabled}
 					prefOutOfOfficeFromDate={settings.prefs.zimbraPrefOutOfOfficeFromDate}
 					prefOutOfOfficeUntilDate={settings.prefs.zimbraPrefOutOfOfficeUntilDate}

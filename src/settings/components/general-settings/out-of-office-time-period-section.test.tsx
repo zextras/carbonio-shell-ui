@@ -17,9 +17,11 @@ import { dateToGenTime } from '../utils';
 describe('out of office time period section', () => {
 	test('should render the section with default values', () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		setup(
 			<OutOfOfficeTimePeriodSection
 				addMod={addMod}
+				removeMod={removeMod}
 				disabled={false}
 				prefOutOfOfficeFromDate={undefined}
 				prefOutOfOfficeUntilDate={undefined}
@@ -47,11 +49,13 @@ describe('out of office time period section', () => {
 
 	test('should show the date received from pref if valued', () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		setup(
 			<OutOfOfficeTimePeriodSection
 				addMod={addMod}
+				removeMod={removeMod}
 				disabled={false}
 				prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 				prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -75,6 +79,7 @@ describe('out of office time period section', () => {
 		'should set the previous value if the user clears the input of the %s',
 		async (inputName) => {
 			const addMod = jest.fn();
+			const removeMod = jest.fn();
 			const fromDate = faker.date.recent();
 			const untilDate = faker.date.soon();
 			const { user } = setup(
@@ -82,6 +87,7 @@ describe('out of office time period section', () => {
 					<span>Click to blur</span>
 					<OutOfOfficeTimePeriodSection
 						addMod={addMod}
+						removeMod={removeMod}
 						disabled={false}
 						prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 						prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -104,11 +110,13 @@ describe('out of office time period section', () => {
 
 	test('should let the user choose a from date from the picker', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
 			<OutOfOfficeTimePeriodSection
 				addMod={addMod}
+				removeMod={removeMod}
 				disabled={false}
 				prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 				prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -131,6 +139,7 @@ describe('out of office time period section', () => {
 
 	test('should let the user type a from date', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -138,6 +147,7 @@ describe('out of office time period section', () => {
 				<span>Click to blur</span>
 				<OutOfOfficeTimePeriodSection
 					addMod={addMod}
+					removeMod={removeMod}
 					disabled={false}
 					prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 					prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -163,11 +173,13 @@ describe('out of office time period section', () => {
 
 	test('should let the user choose a from time from the picker', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
 			<OutOfOfficeTimePeriodSection
 				addMod={addMod}
+				removeMod={removeMod}
 				disabled={false}
 				prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 				prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -184,6 +196,7 @@ describe('out of office time period section', () => {
 
 	test('should let the user type a from time', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -191,6 +204,7 @@ describe('out of office time period section', () => {
 				<span>Click to blur</span>
 				<OutOfOfficeTimePeriodSection
 					addMod={addMod}
+					removeMod={removeMod}
 					disabled={false}
 					prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 					prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -213,11 +227,13 @@ describe('out of office time period section', () => {
 
 	test('should let the user choose an until date from the picker', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
 			<OutOfOfficeTimePeriodSection
 				addMod={addMod}
+				removeMod={removeMod}
 				disabled={false}
 				prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 				prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -240,6 +256,7 @@ describe('out of office time period section', () => {
 
 	test('should let the user type an until date', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -247,6 +264,7 @@ describe('out of office time period section', () => {
 				<span>Click to blur</span>
 				<OutOfOfficeTimePeriodSection
 					addMod={addMod}
+					removeMod={removeMod}
 					disabled={false}
 					prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 					prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -270,11 +288,13 @@ describe('out of office time period section', () => {
 
 	test('should let the user choose an until time from the picker', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
 			<OutOfOfficeTimePeriodSection
 				addMod={addMod}
+				removeMod={removeMod}
 				disabled={false}
 				prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 				prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -291,6 +311,7 @@ describe('out of office time period section', () => {
 
 	test('should let the user type an until time', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -298,6 +319,7 @@ describe('out of office time period section', () => {
 				<span>Click to blur</span>
 				<OutOfOfficeTimePeriodSection
 					addMod={addMod}
+					removeMod={removeMod}
 					disabled={false}
 					prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 					prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -321,6 +343,7 @@ describe('out of office time period section', () => {
 
 	test('should update until date and time to be equal to from date if user set a from date greater than the current until date', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -328,6 +351,7 @@ describe('out of office time period section', () => {
 				<span>Click to blur</span>
 				<OutOfOfficeTimePeriodSection
 					addMod={addMod}
+					removeMod={removeMod}
 					disabled={false}
 					prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 					prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -358,6 +382,7 @@ describe('out of office time period section', () => {
 
 	test('should update from date and time to be equal to until date if user set an until date lower than the current from date', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -365,6 +390,7 @@ describe('out of office time period section', () => {
 				<span>Click to blur</span>
 				<OutOfOfficeTimePeriodSection
 					addMod={addMod}
+					removeMod={removeMod}
 					disabled={false}
 					prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 					prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -395,6 +421,7 @@ describe('out of office time period section', () => {
 
 	test('should disable and update from and until time to be the start and end of the day if user checks the all day flag', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		fromDate.setHours(9, 9, 9, 9);
 		const untilDate = faker.date.soon();
@@ -402,6 +429,7 @@ describe('out of office time period section', () => {
 		const { user } = setup(
 			<OutOfOfficeTimePeriodSection
 				addMod={addMod}
+				removeMod={removeMod}
 				disabled={false}
 				prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 				prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -422,6 +450,7 @@ describe('out of office time period section', () => {
 
 	test('should enable from and until time inputs if user unchecks the all day flag', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		fromDate.setHours(0, 0, 0, 0);
 		const untilDate = faker.date.soon();
@@ -429,6 +458,7 @@ describe('out of office time period section', () => {
 		const { user } = setup(
 			<OutOfOfficeTimePeriodSection
 				addMod={addMod}
+				removeMod={removeMod}
 				disabled={false}
 				prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 				prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -456,6 +486,7 @@ describe('out of office time period section', () => {
 		'should not update other date and time inputs if %s change',
 		async (inputName, newDateTime) => {
 			const addMod = jest.fn();
+			const removeMod = jest.fn();
 			const fromDate = faker.date.recent();
 			const untilDate = faker.date.soon();
 			const { user } = setup(
@@ -463,6 +494,7 @@ describe('out of office time period section', () => {
 					<span>Click to blur</span>
 					<OutOfOfficeTimePeriodSection
 						addMod={addMod}
+						removeMod={removeMod}
 						disabled={false}
 						prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 						prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -490,6 +522,7 @@ describe('out of office time period section', () => {
 
 	test('should update zimbraPrefOutOfOfficeFromDate when changing the from date', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -497,6 +530,7 @@ describe('out of office time period section', () => {
 				<span>Click to blur</span>
 				<OutOfOfficeTimePeriodSection
 					addMod={addMod}
+					removeMod={removeMod}
 					disabled={false}
 					prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 					prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -529,6 +563,7 @@ describe('out of office time period section', () => {
 
 	test('should update zimbraPrefOutOfOfficeFromDate when changing the from time', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -536,6 +571,7 @@ describe('out of office time period section', () => {
 				<span>Click to blur</span>
 				<OutOfOfficeTimePeriodSection
 					addMod={addMod}
+					removeMod={removeMod}
 					disabled={false}
 					prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 					prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -563,6 +599,7 @@ describe('out of office time period section', () => {
 
 	test('should update zimbraPrefOutOfOfficeFromDate when changing both the from date and time', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -570,6 +607,7 @@ describe('out of office time period section', () => {
 				<span>Click to blur</span>
 				<OutOfOfficeTimePeriodSection
 					addMod={addMod}
+					removeMod={removeMod}
 					disabled={false}
 					prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 					prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -601,6 +639,7 @@ describe('out of office time period section', () => {
 
 	test('should update zimbraPrefOutOfOfficeUntilDate when changing the until date', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -608,6 +647,7 @@ describe('out of office time period section', () => {
 				<span>Click to blur</span>
 				<OutOfOfficeTimePeriodSection
 					addMod={addMod}
+					removeMod={removeMod}
 					disabled={false}
 					prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 					prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -640,6 +680,7 @@ describe('out of office time period section', () => {
 
 	test('should update zimbraPrefOutOfOfficeUntilDate when changing the until time', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -647,6 +688,7 @@ describe('out of office time period section', () => {
 				<span>Click to blur</span>
 				<OutOfOfficeTimePeriodSection
 					addMod={addMod}
+					removeMod={removeMod}
 					disabled={false}
 					prefOutOfOfficeFromDate={dateToGenTime(fromDate)}
 					prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
@@ -674,12 +716,14 @@ describe('out of office time period section', () => {
 
 	test('should update zimbraPrefOutOfOfficeUntilDate when changing both the until date and time', async () => {
 		const addMod = jest.fn();
+		const removeMod = jest.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
 			<>
 				<span>Click to blur</span>
 				<OutOfOfficeTimePeriodSection
+					removeMod={removeMod}
 					addMod={addMod}
 					disabled={false}
 					prefOutOfOfficeFromDate={dateToGenTime(fromDate)}

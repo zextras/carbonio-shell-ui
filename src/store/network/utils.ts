@@ -10,10 +10,9 @@ import { useNetworkStore } from './store';
 import type { NoOpResponse } from '../../network/fetch';
 import type { AccountSettings } from '../../types/account';
 import type { RawSoapResponse, SoapContext } from '../../types/network';
-import { folderWorker, tagWorker } from '../../workers';
+import { folderWorker } from '../../workers';
 import { useAccountStore } from '../account';
 import { useFolderStore } from '../folder';
-import { useTagStore } from '../tags';
 
 /**
  * Polling interval to use if the long polling delay
@@ -80,10 +79,6 @@ export const handleSync = ({ refresh, notify }: SoapContext): Promise<void> =>
 	new Promise((r) => {
 		const { seq } = useNetworkStore.getState();
 		if (refresh) {
-			tagWorker.postMessage({
-				op: 'refresh',
-				tags: refresh.tags
-			});
 			folderWorker.postMessage({
 				op: 'refresh',
 				folder: refresh.folder ?? []
@@ -92,11 +87,6 @@ export const handleSync = ({ refresh, notify }: SoapContext): Promise<void> =>
 		if (notify?.length) {
 			forEach(notify, (item) => {
 				if (item.seq > seq) {
-					tagWorker.postMessage({
-						op: 'notify',
-						notify: item,
-						state: useTagStore.getState().tags
-					});
 					folderWorker.postMessage({
 						op: 'notify',
 						notify: item,

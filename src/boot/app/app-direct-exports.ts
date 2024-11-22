@@ -119,4 +119,5 @@ export const {
 export { useIsCarbonioCE } from '../../store/login/hooks';
 
 export type { NewAction } from '../../shell/creation-button';
+export type { AccountMenuAction } from '../../utility-bar/bar';
 export { useTracker } from '../../tracker/tracker';

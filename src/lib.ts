@@ -24,7 +24,6 @@ import type { report as reportApp } from './reporting/functions';
 // TODO: export only what is useful and not internal constants
 export * from './constants';
 export * from './ui-extras/app-link';
-export * from './ui-extras/spinner';
 export * from './settings/components/settings-header';
 export * from './boot/app/app-direct-exports';
 

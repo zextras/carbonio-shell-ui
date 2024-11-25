@@ -1417,9 +1417,6 @@ type SoapSearchFolder = SoapFolder & SearchFolderFields;
 type SortBy = 'dateDesc' | 'dateAsc' | 'idDesc' | 'idAsc' | 'subjDesc' | 'subjAsc' | 'nameDesc' | 'nameAsc' | 'durDesc' | 'durAsc' | 'none' | 'taskDueAsc' | 'taskDueDesc' | 'taskStatusAsc' | 'taskStatusDesc' | 'taskPercCompletedAsc' | 'taskPercCompletedDesc' | 'rcptAsc' | 'rcptDesc' | 'readAsc' | 'readDesc';
 
 // @public (undocumented)
-export const Spinner: () => React_2.JSX.Element;
-
-// @public (undocumented)
 type StringOfLength<Min, Max = Min> = string & {
     min: Min;
     max: Max;

@@ -18,7 +18,6 @@ import { SettingsHeader } from '../../settings/components/settings-header';
 import { useAppStore } from '../../store/app';
 import type { CarbonioModule } from '../../types/apps';
 import { AppLink } from '../../ui-extras/app-link';
-import { Spinner } from '../../ui-extras/spinner';
 
 export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
@@ -30,7 +29,6 @@ export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 				window.__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-shell-ui'][appPkg.name] = {
 					report: report(appPkg.name),
 					AppLink,
-					Spinner,
 					SettingsHeader,
 					...getAppDependantExports(appPkg),
 					...appExports,

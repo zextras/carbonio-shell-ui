@@ -73,7 +73,7 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 	const accountMenuItems = useMemo(
 		(): DropdownItem[] =>
 			actions
-				.sort((a, b) => a.position - b.position)
+				.toSorted((a, b) => a.position - b.position)
 				.map(({ execute, position: _position, ...action }) => ({
 					onClick: execute,
 					...action

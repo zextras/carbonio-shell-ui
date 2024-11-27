@@ -13,8 +13,8 @@ import { useUtilityBarStore } from './store';
 import { useUtilityViews } from './utils';
 import { AppContextProvider } from '../boot/app/app-context-provider';
 
-const Panel = styled(Container)<{ mode: string }>`
-	width: ${({ mode }): number => (mode !== 'closed' ? 16 : 3)}rem;
+const Panel = styled(Container)<{ $mode: string }>`
+	width: ${({ $mode }): number => ($mode !== 'closed' ? 16 : 3)}rem;
 	border-radius: 0;
 	height: 100%;
 	position: absolute;
@@ -24,9 +24,9 @@ const Panel = styled(Container)<{ mode: string }>`
 	transition: width 0.2s;
 	border-left: 0.0625rem solid ${({ theme }): string => theme.palette.gray2.regular};
 `;
-const Spacer = styled.div<{ mode: string }>`
+const Spacer = styled.div<{ $mode: string }>`
 	position: relative;
-	width: ${({ mode }): number => (mode === 'open' ? 16 : 3)}rem;
+	width: ${({ $mode }): number => ($mode === 'open' ? 16 : 3)}rem;
 	height: 100%;
 	transition: width 0.2s;
 `;
@@ -42,8 +42,8 @@ export const ShellUtilityPanel = (): React.ReactNode => {
 	}, [current, currentPanel, setCurrent, views]);
 	return currentPanel ? (
 		<Responsive mode="desktop">
-			<Spacer mode={mode}>
-				<Panel mode={mode} mainAlignment="flex-start">
+			<Spacer $mode={mode}>
+				<Panel $mode={mode} mainAlignment="flex-start">
 					{currentPanel && (
 						<AppContextProvider pkg={currentPanel?.id}>
 							<currentPanel.component mode={mode} setMode={setMode} />

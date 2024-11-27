@@ -14,7 +14,7 @@ import {
 	MultiButton
 } from '@zextras/carbonio-design-system';
 import type { Location } from 'history';
-import { find, groupBy, noop, reduce } from 'lodash';
+import { find, noop, reduce } from 'lodash';
 import { useLocation } from 'react-router-dom';
 
 import { ACTION_TYPES } from '../constants';
@@ -61,16 +61,26 @@ export const CreationButtonComponent = ({
 	);
 	const apps = useAppList();
 	const actionsDropdownItemsByGroup = useMemo(
-		() => groupBy(actionsDropdownItems, (actionsDropdownItem) => actionsDropdownItem.group),
+		() =>
+			actionsDropdownItems.reduce<{ [group: string]: DropdownItem[] }>(
+				(accumulator, { group = '', primary: _, ...actionDropdownItem }) => {
+					if (!(group in accumulator)) {
+						accumulator[group] = [];
+					}
+					accumulator[group].push(actionDropdownItem);
+					return accumulator;
+				},
+				{}
+			),
 		[actionsDropdownItems]
 	);
 
-	const secondaryActions = useMemo<DropdownItem[]>(
+	const secondaryActions = useMemo(
 		(): DropdownItem[] => [
 			...(actionsDropdownItemsByGroup[activeRoute?.app ?? ''] ?? []),
 			...reduce<CarbonioModule, DropdownItem[]>(
 				apps,
-				(acc, app, i): DropdownItem[] => {
+				(acc, app, i) => {
 					if (app.name !== activeRoute?.app && actionsDropdownItemsByGroup[app.name]?.length > 0) {
 						acc.push(
 							{ type: 'divider', id: `divider-${i}` },

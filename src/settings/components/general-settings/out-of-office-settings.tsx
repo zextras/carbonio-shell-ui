@@ -329,7 +329,7 @@ export const OutOfOfficeSettings = ({
 			<Container crossAlignment="baseline" padding={{ all: 'small' }}>
 				<Row
 					padding={{ all: 'small' }}
-					mainAlignment="baseline"
+					mainAlignment="flex-start"
 					crossAlignment="baseline"
 					width="100%"
 				>

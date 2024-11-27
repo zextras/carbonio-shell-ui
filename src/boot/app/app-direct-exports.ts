@@ -113,7 +113,18 @@ export const {
 	removeSearchView,
 	removeUtilityView,
 	removePrimaryAccessoryView,
-	removeSecondaryAccessoryView
+	removeSecondaryAccessoryView,
+	/**
+	 * Add or update the translatable display label for an app.
+	 * These fields are the ones used in the UI.
+	 * @param app - The app to update based on the name field
+	 * @example
+	 * upsertApp(\{
+	 *     name: 'carbonio-example-ui',
+	 *     display: t('label.app_name', 'Example')
+	 * \});
+	 */
+	upsertApp
 } = useAppStore.getState();
 
 export { useIsCarbonioCE } from '../../store/login/hooks';

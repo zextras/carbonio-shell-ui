@@ -74,8 +74,8 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 		(): DropdownItem[] =>
 			actions
 				.sort((a, b) => a.position - b.position)
-				.map((action) => ({
-					onClick: action.execute,
+				.map(({ execute, position: _position, ...action }) => ({
+					onClick: execute,
 					...action
 				})),
 		[actions]

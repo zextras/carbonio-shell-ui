@@ -10,7 +10,7 @@ export type LocaleDescriptor = {
 	name: string;
 	value: string;
 	// Import of the date-fns translation file
-	dateFnsLocale?: { key?: string; localeImportPath: () => Promise<Locale> };
+	dateFnsLocale: { key?: string; localeImportPath: () => Promise<Locale> } | undefined;
 	/*
 	 * Name of the tinymce translation file if different from the value field.
 	 * See https://www.tiny.cloud/docs/tinymce/6/ui-localization/
@@ -75,7 +75,13 @@ export const SUPPORTED_LOCALES: Record<string, LocaleDescriptor> = {
 	hu: {
 		name: 'Magyar',
 		value: 'hu',
-		tinymceLocale: 'hu_HU'
+		tinymceLocale: 'hu_HU',
+		dateFnsLocale: {
+			localeImportPath: () =>
+				/* webpackMode: "lazy", webpackChunkName: "hu" */ import('date-fns/locale/hu').then(
+					({ hu }) => hu
+				)
+		}
 	},
 	it: {
 		name: 'italiano',
@@ -205,6 +211,7 @@ export const SUPPORTED_LOCALES: Record<string, LocaleDescriptor> = {
 	},
 	ky: {
 		name: 'Кыргызча',
-		value: 'ky'
+		value: 'ky',
+		dateFnsLocale: undefined
 	}
 } as const;

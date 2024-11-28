@@ -15,7 +15,7 @@ import {
 	Padding,
 	Button,
 	Icon,
-	ListV2,
+	List as DSList,
 	ListItem,
 	useModal
 } from '@zextras/carbonio-design-system';
@@ -27,7 +27,7 @@ import styled from 'styled-components';
 import type { Identity, IdentityAttrs } from '../../../types/account';
 import { isPrimary } from '../utils';
 
-const List = styled(ListV2)`
+const List = styled(DSList)`
 	flex-shrink: 0;
 `;
 

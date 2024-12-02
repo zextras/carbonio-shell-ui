@@ -66,6 +66,14 @@ interface AccountACEInfo {
     zid?: string;
 }
 
+// @public
+export interface AccountMenuAction extends Action, Omit<DropdownItem, 'label' | 'onClick'> {
+    // (undocumented)
+    execute: NonNullable<DropdownItem['onClick']>;
+    // (undocumented)
+    position: number;
+}
+
 // @public (undocumented)
 type AccountRightName = 'sendAs' | 'sendAsDistList' | 'viewFreeBusy' | 'sendOnBehalfOf' | 'sendOnBehalfOfDistList';
 
@@ -185,6 +193,7 @@ export const ACTION_TYPES: {
     readonly CALENDAR: "calendar";
     readonly CALENDAR_lIST: "calendar_list";
     readonly NEW: "new";
+    readonly ACCOUNT_MENU: "account_menu";
 };
 
 // @public (undocumented)

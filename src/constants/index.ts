@@ -82,7 +82,8 @@ export const ACTION_TYPES = {
 	CALENDAR: 'calendar',
 	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
 	CALENDAR_lIST: 'calendar_list',
-	NEW: 'new'
+	NEW: 'new',
+	ACCOUNT_MENU: 'account_menu'
 } as const;
 
 export const darkReaderDynamicThemeFixes: DynamicThemeFix = {

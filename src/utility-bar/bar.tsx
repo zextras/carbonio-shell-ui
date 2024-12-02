@@ -11,15 +11,29 @@ import { map, noop } from 'lodash';
 
 import { useUtilityBarStore } from './store';
 import { useUtilityViews } from './utils';
-import { CUSTOM_EVENTS } from '../constants';
+import { ACTION_TYPES, CUSTOM_EVENTS } from '../constants';
 import { logout } from '../network/logout';
 import { useAccountStore } from '../store/account';
 import { getT } from '../store/i18n/hooks';
+import { useActions } from '../store/integrations/hooks';
 import { useTracker } from '../tracker/tracker';
 import type { UtilityView } from '../types/apps';
+import type { Action } from '../types/integrations';
 
 export interface UtilityBarItemProps {
 	view: UtilityView;
+}
+
+/**
+ * Interface representing an account menu action.
+ *
+ * This interface extends the `Action` interface and omits the `label` and `onClick` properties
+ * from the `DropdownItem` interface. It includes an `execute` function and a `position` property.
+ *
+ */
+export interface AccountMenuAction extends Action, Omit<DropdownItem, 'label' | 'onClick'> {
+	execute: NonNullable<DropdownItem['onClick']>;
+	position: number;
 }
 
 const UtilityBarItem = ({ view }: UtilityBarItemProps): React.JSX.Element => {
@@ -55,6 +69,18 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 
 	const { reset } = useTracker();
 
+	const actions = useActions<undefined, AccountMenuAction>(undefined, ACTION_TYPES.ACCOUNT_MENU);
+	const accountMenuItems = useMemo(
+		(): DropdownItem[] =>
+			actions
+				.toSorted((a, b) => a.position - b.position)
+				.map(({ execute, position: _position, ...action }) => ({
+					onClick: execute,
+					...action
+				})),
+		[actions]
+	);
+
 	const accountItems = useMemo(
 		(): DropdownItem[] => [
 			{
@@ -78,6 +104,7 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 				onClick: updateViews,
 				icon: 'Refresh'
 			},
+			...accountMenuItems,
 			{
 				id: 'docs',
 				label: t('label.documentation', 'Documentation'),
@@ -95,7 +122,7 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 				icon: 'LogOut'
 			}
 		],
-		[account?.displayName, account?.name, reset, t, updateViews]
+		[account?.displayName, account?.name, accountMenuItems, reset, t, updateViews]
 	);
 
 	const viewItems = useMemo(

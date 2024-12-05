@@ -33,7 +33,6 @@ export declare const setAppContext: AppDependantExports['setAppContext'];
 export declare const addRoute: AppDependantExports['addRoute'];
 export declare const addBoardView: AppDependantExports['addBoardView'];
 export declare const addSettingsView: AppDependantExports['addSettingsView'];
-export declare const addSearchView: AppDependantExports['addSearchView'];
 export declare const addUtilityView: AppDependantExports['addUtilityView'];
 export declare const addPrimaryAccessoryView: AppDependantExports['addPrimaryAccessoryView'];
 export declare const addSecondaryAccessoryView: AppDependantExports['addSecondaryAccessoryView'];
@@ -66,7 +65,6 @@ export type {
 	BoardViewComponentProps,
 	AppViewComponentProps,
 	SettingsViewProps,
-	SearchViewProps,
 	PrimaryAccessoryViewProps,
 	SecondaryAccessoryViewProps,
 	SettingsSubSection,
@@ -96,8 +94,6 @@ export type {
 	AudioNotificationConfig,
 	PopupNotificationConfig
 } from './notification/NotificationManager';
-
-export type { QueryItem, QueryChip } from './types/search';
 
 export type { Folder, Folders, LinkFolder } from './types/folder';
 export type { Grant } from './types/misc';

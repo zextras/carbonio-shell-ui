@@ -51,7 +51,6 @@ export const SETTINGS_APP_ID = 'settings';
  * @deprecated This constant is not used and will be deleted in next releases
  */
 export const ACCOUNTS_APP_ID = 'accounts';
-export const SEARCH_APP_ID = 'search';
 
 export const ACTION_TYPES = {
 	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
@@ -131,7 +130,6 @@ export const FOLDER_VIEW = {
 };
 export const LOCAL_STORAGE_SETTINGS_KEY = 'settings';
 export const LOCAL_STORAGE_LAST_PRIMARY_KEY = 'config';
-export const LOCAL_STORAGE_SEARCH_KEY = 'search_suggestions';
 export const LOCAL_STORAGE_BOARD_SIZE = 'board_size';
 export const SCALING_OPTIONS = [
 	{ value: 75, label: 'xs' },

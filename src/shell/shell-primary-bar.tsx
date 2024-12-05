@@ -13,7 +13,7 @@ import styled from 'styled-components';
 
 import BadgeWrap from './badge-wrap';
 import { AppContextProvider } from '../boot/app/app-context-provider';
-import { BOARD_CONTAINER_ZINDEX, PRIMARY_BAR_WIDTH, SEARCH_APP_ID } from '../constants';
+import { BOARD_CONTAINER_ZINDEX, PRIMARY_BAR_WIDTH } from '../constants';
 import { useCurrentRoute } from '../history/hooks';
 import { useAppStore } from '../store/app';
 import { minimizeBoards, reopenBoards, useBoardStore } from '../store/boards';
@@ -115,7 +115,8 @@ const ShellPrimaryBar = (): React.JSX.Element | null => {
 	}, [primaryBarViews]);
 
 	useEffect(() => {
-		if (activeRoute && activeRoute.id !== SEARCH_APP_ID) {
+		// TODO: understand why this was here
+		if (activeRoute /* && activeRoute.id !== SEARCH_APP_ID */) {
 			routesRef.current = {
 				...routesRef.current,
 				[activeRoute.id]: `${trim(pathname, '/')}${search}`

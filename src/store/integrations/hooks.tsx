@@ -17,16 +17,20 @@ import {
 import type { Action } from '../../types/integrations';
 import type { AnyFunction } from '../../utils/typeUtils';
 
-export const useIntegratedFunction = (id: string): [AnyFunction, boolean] => {
+export const useIntegratedFunction = <TFunction extends AnyFunction = AnyFunction>(
+	id: string
+): [TFunction, boolean] => {
 	const integration = useIntegrationsStore((s) => s.functions?.[id]);
 	return buildIntegrationFunction(integration);
 };
 
-export const useIntegratedComponent = (
+export const useIntegratedComponent = <
+	TComponent extends React.ComponentType = React.ComponentType<Record<string, unknown>>
+>(
 	id: string
-): [React.FunctionComponent<Record<string, unknown>>, boolean] => {
+): [TComponent, boolean] => {
 	const integration = useIntegrationsStore((s) => s.components?.[id]);
-	return useMemo(() => buildIntegrationComponent(integration), [integration]);
+	return useMemo(() => buildIntegrationComponent<TComponent>(integration), [integration]);
 };
 
 export const useActions = <TContext, TAction extends Action = Action>(

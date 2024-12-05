@@ -5,7 +5,8 @@
 	"main": "./lib/lib.js",
 	"types": "./lib/lib.d.ts",
 	"exports": {
-		".": "./lib/lib.js"
+		".": "./lib/lib.js",
+		"./*": null
 	},
 	"engines": {
 		"node": "v18",
@@ -64,13 +65,14 @@
 		"@tsconfig/node18": "^18.2.4",
 		"@types/jest": "^29.5.12",
 		"@types/lodash": "^4.17.4",
-		"@types/node": "^18.19.54",
+		"@types/node": "^18.19.67",
 		"@types/react": "^18.3.11",
 		"@types/react-dom": "^18.3.0",
 		"@types/react-router-dom": "^5.3.3",
 		"@types/ua-parser-js": "^0.7.39",
 		"@types/webpack": "^5.28.5",
 		"@types/webpack-env": "^1.18.4",
+		"@zextras/carbonio-search-ui": "github:zextras/carbonio-search-ui#SHELL-260-separate-search-module",
 		"@zextras/carbonio-ui-configs": "^1.0.3",
 		"@zextras/carbonio-ui-sdk": "^1.7.10",
 		"autoprefixer": "^10.4.17",
@@ -106,7 +108,7 @@
 		"@sentry/browser": "^7.103.0",
 		"@tinymce/tinymce-react": "^4.3.2",
 		"@zextras/carbonio-design-system": "9.0.0-devel.7",
-		"@zextras/carbonio-ui-preview": "^3.1.0-devel.2",
+		"@zextras/carbonio-ui-preview": "3.1.0-devel.2",
 		"darkreader": "^4.9.79",
 		"date-fns": "^4.1.0",
 		"history": "^5.3.0",

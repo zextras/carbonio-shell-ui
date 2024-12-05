@@ -100,8 +100,6 @@ export {
 
 export { getNotificationManager } from '../../notification/NotificationManager';
 
-export { runSearch } from '../../search/run-search';
-
 export { useLocalStorage } from '../../shell/hooks/useLocalStorage';
 
 export const {
@@ -110,7 +108,6 @@ export const {
 	removeRoute,
 	removeBoardView,
 	removeSettingsView,
-	removeSearchView,
 	removeUtilityView,
 	removePrimaryAccessoryView,
 	removeSecondaryAccessoryView,

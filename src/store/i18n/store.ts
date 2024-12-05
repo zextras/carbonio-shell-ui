@@ -6,7 +6,8 @@
 
 import type { i18n, InitOptions } from 'i18next';
 import i18next from 'i18next';
-import Backend from 'i18next-http-backend';
+import ChainedBackend from 'i18next-chained-backend';
+import HttpBackend from 'i18next-http-backend';
 import { produce } from 'immer';
 import { dropRight, forEach, reduce } from 'lodash';
 import { initReactI18next } from 'react-i18next';
@@ -94,17 +95,26 @@ export const useI18nStore = create<I18nState & I18nActions>()((set) => ({
 						newI18n
 							// load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
 							// learn more: https://github.com/i18next/i18next-http-backend
-							.use(Backend)
+							.use(ChainedBackend)
 							// init i18next
 							// for all options read: https://www.i18next.com/overview/configuration-options
 							.init({
 								...defaultI18nInitOptions,
 								lng: locale,
 								backend: {
-									loadPath:
-										app.name === SHELL_APP_ID
-											? `${BASE_PATH}/i18n/{{lng}}.json`
-											: `${dropRight(app.js_entrypoint.split('/')).join('/')}/i18n/{{lng}}.json`
+									backends: [HttpBackend, HttpBackend],
+									backendOptions: [
+										{
+											loadPath:
+												app.name === SHELL_APP_ID
+													? `${BASE_PATH}/i18n/{{lng}}.json`
+													: `${dropRight(app.js_entrypoint.split('/')).join('/')}/i18n/{{lng}}.json`
+										},
+										{
+											// fallback to shell for every module
+											loadPath: `${BASE_PATH}/i18n/{{lng}}.json`
+										}
+									]
 								}
 							});
 						// eslint-disable-next-line no-param-reassign
@@ -121,7 +131,7 @@ export const useI18nStore = create<I18nState & I18nActions>()((set) => ({
 }));
 
 defaultI18n
-	.use(Backend)
+	.use(HttpBackend)
 	// pass the i18n instance to react-i18next.
 	.use(initReactI18next)
 	// init i18next

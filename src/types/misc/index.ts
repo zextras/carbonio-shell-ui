@@ -9,12 +9,10 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import type { ComponentType } from 'react';
 
 import type { To } from 'history';
 
 import type { PanelMode } from '../apps';
-import type { Folder } from '../folder';
 
 export type HistoryParams =
 	| {
@@ -240,14 +238,6 @@ export type SortBy =
 	| 'rcptDesc'
 	| 'readAsc'
 	| 'readDesc';
-
-export type AccordionFolder = {
-	id: string;
-	label: string;
-	folder: Folder;
-	CustomComponent: ComponentType<{ folder: Folder }>;
-	items: Array<AccordionFolder>;
-};
 
 export type TreeNode<T> = T & {
 	id: string;

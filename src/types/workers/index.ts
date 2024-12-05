@@ -20,5 +20,3 @@ export type SyncMessage = SyncNotifyMessage | SyncRefreshMessage;
 export type WorkerMessage<T> = { data: SyncMessage & T };
 
 export type TagMessage = WorkerMessage<{ state: Tags }>;
-
-export type FolderMessage = WorkerMessage<Record<string, never>>;

@@ -99,7 +99,6 @@ export type {
 
 export type { QueryItem, QueryChip } from './types/search';
 
-export type { Folder, Folders, LinkFolder } from './types/folder';
 export type { Grant } from './types/misc';
 
 export type {
@@ -121,5 +120,3 @@ export type { BatchRequest, BatchResponse } from './types/network';
 export type { Action } from './types/integrations';
 
 export type { HistoryParams } from './types/misc';
-
-export type { FolderMessage } from './types/workers';

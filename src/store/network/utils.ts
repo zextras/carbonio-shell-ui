@@ -10,9 +10,8 @@ import { useNetworkStore } from './store';
 import type { NoOpResponse } from '../../network/fetch';
 import type { AccountSettings } from '../../types/account';
 import type { RawSoapResponse, SoapContext } from '../../types/network';
-import { folderWorker, tagWorker } from '../../workers';
+import { tagWorker } from '../../workers';
 import { useAccountStore } from '../account';
-import { useFolderStore } from '../folder';
 import { useTagStore } from '../tags';
 
 /**
@@ -84,10 +83,6 @@ export const handleSync = ({ refresh, notify }: SoapContext): Promise<void> =>
 				op: 'refresh',
 				tags: refresh.tags
 			});
-			folderWorker.postMessage({
-				op: 'refresh',
-				folder: refresh.folder ?? []
-			});
 		}
 		if (notify?.length) {
 			forEach(notify, (item) => {
@@ -96,11 +91,6 @@ export const handleSync = ({ refresh, notify }: SoapContext): Promise<void> =>
 						op: 'notify',
 						notify: item,
 						state: useTagStore.getState().tags
-					});
-					folderWorker.postMessage({
-						op: 'notify',
-						notify: item,
-						state: useFolderStore.getState().folders
 					});
 				}
 			});

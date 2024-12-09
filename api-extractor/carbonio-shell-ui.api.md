@@ -559,43 +559,6 @@ type Exactify<T, X extends T> = T & {
 // @public (undocumented)
 export const expandBoards: () => void;
 
-// @public @deprecated (undocumented)
-export const FOLDER_VIEW: {
-    search_folder: string;
-    tag: string;
-    conversation: string;
-    message: string;
-    contact: string;
-    document: string;
-    appointment: string;
-    virtual_conversation: string;
-    remote_folder: string;
-    wiki: string;
-    task: string;
-    chat: string;
-};
-
-// @public @deprecated (undocumented)
-export const FOLDERS: {
-    readonly USER_ROOT: "1";
-    readonly INBOX: "2";
-    readonly TRASH: "3";
-    readonly SPAM: "4";
-    readonly SENT: "5";
-    readonly DRAFTS: "6";
-    readonly CONTACTS: "7";
-    readonly TAGS: "8";
-    readonly CONVERSATIONS: "9";
-    readonly CALENDAR: "10";
-    readonly ROOT: "11";
-    readonly NOTEBOOK: "12";
-    readonly AUTO_CONTACTS: "13";
-    readonly IM_LOGS: "14";
-    readonly TASKS: "15";
-    readonly BRIEFCASE: "16";
-    readonly LAST_SYSTEM_FOLDER_POSITION: "16.1";
-};
-
 // @public (undocumented)
 type FolderView = 'search folder' | 'tag' | 'conversation' | 'message' | 'contact' | 'document' | 'appointment' | 'virtual conversation' | 'remote folder' | 'wiki' | 'task' | 'chat';
 
@@ -1113,9 +1076,6 @@ type RevokeRightsResponse = {
 // @public (undocumented)
 type Right = 'invite' | 'loginAs' | 'sendAs' | 'sendOnBehalfOf' | 'viewFreeBusy';
 
-// @public @deprecated (undocumented)
-export const ROOT_NAME = "USER_ROOT";
-
 // @public (undocumented)
 interface RouteLeavingGuardProps {
     // (undocumented)
@@ -1558,13 +1518,6 @@ type ValueOf<T> = T[keyof T];
 
 // @public (undocumented)
 export const xmlSoapFetch: AppDependantExports['xmlSoapFetch'];
-
-// @public @deprecated (undocumented)
-export const ZIMBRA_STANDARD_COLORS: {
-    zValue: number;
-    hex: string;
-    zLabel: string;
-}[];
 
 // @public (undocumented)
 interface ZimletProp {

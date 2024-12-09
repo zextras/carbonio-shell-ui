@@ -238,9 +238,3 @@ export type SortBy =
 	| 'rcptDesc'
 	| 'readAsc'
 	| 'readDesc';
-
-export type TreeNode<T> = T & {
-	id: string;
-	children: TreeNode<T>[];
-	parent?: TreeNode<T>;
-};

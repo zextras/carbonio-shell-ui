@@ -251,6 +251,19 @@ type AppActions = {
     setAppContext: (app: string) => (context: unknown) => void;
 };
 
+// Warning: (ae-forgotten-export) The symbol "AppContextProviderProps" needs to be exported by the entry point lib.d.ts
+//
+// @public
+export const AppContextProvider: ({ pkg, children }: AppContextProviderProps) => React_2.JSX.Element;
+
+// @public (undocumented)
+interface AppContextProviderProps {
+    // (undocumented)
+    children: React_2.ReactNode | React_2.ReactNode[];
+    // (undocumented)
+    pkg: string;
+}
+
 // @public (undocumented)
 type AppDependantExports = {
     setAppContext: ReturnType<AppActions['setAppContext']>;

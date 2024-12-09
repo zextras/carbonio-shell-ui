@@ -115,8 +115,7 @@ const ShellPrimaryBar = (): React.JSX.Element | null => {
 	}, [primaryBarViews]);
 
 	useEffect(() => {
-		// TODO: understand why this was here
-		if (activeRoute /* && activeRoute.id !== SEARCH_APP_ID */) {
+		if (activeRoute) {
 			routesRef.current = {
 				...routesRef.current,
 				[activeRoute.id]: `${trim(pathname, '/')}${search}`

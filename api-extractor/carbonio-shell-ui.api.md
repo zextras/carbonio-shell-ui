@@ -28,17 +28,6 @@ import type { TFunction } from 'i18next';
 import type { To } from 'history';
 
 // @public (undocumented)
-type AccordionFolder = {
-    id: string;
-    label: string;
-    folder: Folder;
-    CustomComponent: ComponentType<{
-        folder: Folder;
-    }>;
-    items: Array<AccordionFolder>;
-};
-
-// @public (undocumented)
 export type Account = {
     id: string;
     name: string;
@@ -570,66 +559,6 @@ type Exactify<T, X extends T> = T & {
 // @public (undocumented)
 export const expandBoards: () => void;
 
-// Warning: (ae-forgotten-export) The symbol "UserFolder" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-export type Folder = UserFolder | LinkFolder;
-
-// @public @deprecated (undocumented)
-export const FOLDER_VIEW: {
-    search_folder: string;
-    tag: string;
-    conversation: string;
-    message: string;
-    contact: string;
-    document: string;
-    appointment: string;
-    virtual_conversation: string;
-    remote_folder: string;
-    wiki: string;
-    task: string;
-    chat: string;
-};
-
-// @public (undocumented)
-type FolderFields = {
-    isLink: boolean;
-    depth: number;
-    parent?: Folder;
-    children: Array<Folder>;
-};
-
-// Warning: (ae-forgotten-export) The symbol "WorkerMessage" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-export type FolderMessage = WorkerMessage<Record<string, never>>;
-
-// @public @deprecated (undocumented)
-export const FOLDERS: {
-    readonly USER_ROOT: "1";
-    readonly INBOX: "2";
-    readonly TRASH: "3";
-    readonly SPAM: "4";
-    readonly SENT: "5";
-    readonly DRAFTS: "6";
-    readonly CONTACTS: "7";
-    readonly TAGS: "8";
-    readonly CONVERSATIONS: "9";
-    readonly CALENDAR: "10";
-    readonly ROOT: "11";
-    readonly NOTEBOOK: "12";
-    readonly AUTO_CONTACTS: "13";
-    readonly IM_LOGS: "14";
-    readonly TASKS: "15";
-    readonly BRIEFCASE: "16";
-    readonly LAST_SYSTEM_FOLDER_POSITION: "16.1";
-};
-
-// @public (undocumented)
-export type Folders = {
-    [id: string]: Folder;
-};
-
 // @public (undocumented)
 type FolderView = 'search folder' | 'tag' | 'conversation' | 'message' | 'contact' | 'document' | 'appointment' | 'virtual conversation' | 'remote folder' | 'wiki' | 'task' | 'chat';
 
@@ -697,12 +626,6 @@ const getEditSettingsForApp: (app: string) => (mods: Mods) => Promise<EditSettin
 }>;
 
 // @public (undocumented)
-export const getFolder: (id: string) => Folder | undefined;
-
-// @public (undocumented)
-export const getFolders: () => Folders;
-
-// @public (undocumented)
 export const getI18n: AppDependantExports['getI18n'];
 
 // @public (undocumented)
@@ -716,25 +639,6 @@ export const getIntegratedFunction: (id: string) => [AnyFunction, boolean];
 
 // @public (undocumented)
 export const getNotificationManager: () => INotificationManager;
-
-// @public (undocumented)
-export const getRoot: (id: string) => Folder | undefined;
-
-// Warning: (ae-forgotten-export) The symbol "SearchFolder" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-export const getRootByUser: (userId: string) => Folder | SearchFolder | Record<string, never>;
-
-// @public (undocumented)
-export const getRoots: () => Folders;
-
-// @public (undocumented)
-export const getSearchFolder: (id: string) => SearchFolder | undefined;
-
-// Warning: (ae-forgotten-export) The symbol "Searches" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-export const getSearchFolders: () => Searches;
 
 // @public (undocumented)
 const getSoapFetch: (app: string) => <Request_1, Response_1 extends Record<string, unknown>>(api: string, body: Request_1, otherAccount?: string, signal?: AbortSignal) => Promise<Response_1>;
@@ -884,15 +788,6 @@ export const JSNS: {
     readonly mail: "urn:zimbraMail";
     readonly all: "urn:zimbra";
     readonly sync: "urn:zimbraSync";
-};
-
-// Warning: (ae-forgotten-export) The symbol "BaseFolder" needs to be exported by the entry point lib.d.ts
-// Warning: (ae-forgotten-export) The symbol "FolderFields" needs to be exported by the entry point lib.d.ts
-// Warning: (ae-forgotten-export) The symbol "LinkFolderFields" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-export type LinkFolder = BaseFolder & FolderFields & LinkFolderFields & {
-    isLink: true;
 };
 
 // @public (undocumented)
@@ -1181,9 +1076,6 @@ type RevokeRightsResponse = {
 // @public (undocumented)
 type Right = 'invite' | 'loginAs' | 'sendAs' | 'sendOnBehalfOf' | 'viewFreeBusy';
 
-// @public @deprecated (undocumented)
-export const ROOT_NAME = "USER_ROOT";
-
 // @public (undocumented)
 interface RouteLeavingGuardProps {
     // (undocumented)
@@ -1226,16 +1118,6 @@ export const SCALING_OPTIONS: readonly [{
 
 // @public (undocumented)
 export const SEARCH_APP_ID = "search";
-
-// @public (undocumented)
-type Searches = {
-    [id: string]: SearchFolder;
-};
-
-// Warning: (ae-forgotten-export) The symbol "SearchFolderFields" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-type SearchFolder = BaseFolder & Pick<FolderFields, 'parent' | 'isLink'> & SearchFolderFields;
 
 // @public (undocumented)
 type SearchFolderFields = {
@@ -1325,9 +1207,9 @@ type Signature = {
     id: string;
     content?: [
         {
-            type: 'text/plain' | 'text/html';
-            _content: string;
-        }
+        type: 'text/plain' | 'text/html';
+        _content: string;
+    }
     ];
 };
 
@@ -1366,6 +1248,8 @@ export interface SoapFault {
 // @public (undocumented)
 export const soapFetch: AppDependantExports['soapFetch'];
 
+// Warning: (ae-forgotten-export) The symbol "BaseFolder" needs to be exported by the entry point lib.d.ts
+//
 // @public (undocumented)
 export type SoapFolder = BaseFolder & {
     folder?: Array<SoapFolder>;
@@ -1379,6 +1263,8 @@ export interface SoapHeader {
     context: SoapContext;
 }
 
+// Warning: (ae-forgotten-export) The symbol "LinkFolderFields" needs to be exported by the entry point lib.d.ts
+//
 // @public (undocumented)
 export type SoapLink = SoapFolder & LinkFolderFields;
 
@@ -1421,6 +1307,8 @@ type SoapRetentionPolicy = Array<{
     }>;
 }>;
 
+// Warning: (ae-forgotten-export) The symbol "SearchFolderFields" needs to be exported by the entry point lib.d.ts
+//
 // @public (undocumented)
 type SoapSearchFolder = SoapFolder & SearchFolderFields;
 
@@ -1441,23 +1329,6 @@ export interface SuccessSoapResponse<R> {
     // (undocumented)
     Header: SoapHeader;
 }
-
-// Warning: (ae-forgotten-export) The symbol "SyncNotifyMessage" needs to be exported by the entry point lib.d.ts
-// Warning: (ae-forgotten-export) The symbol "SyncRefreshMessage" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-type SyncMessage = SyncNotifyMessage | SyncRefreshMessage;
-
-// @public (undocumented)
-type SyncNotifyMessage = {
-    op: 'notify';
-    notify: SoapNotify;
-};
-
-// @public (undocumented)
-type SyncRefreshMessage = SoapRefresh & {
-    op: 'refresh';
-};
 
 // @public (undocumented)
 export const t: AppDependantExports['t'];
@@ -1575,22 +1446,6 @@ export const useBoardHooks: () => BoardHooksContext;
 export const useCurrentRoute: () => AppRoute | undefined;
 
 // @public (undocumented)
-export const useFolder: (id: string) => Folder | undefined;
-
-// @public (undocumented)
-export const useFolders: () => Folders;
-
-// Warning: (ae-forgotten-export) The symbol "AccordionFolder" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-export const useFoldersAccordionByView: (view: FolderView, CustomComponent: ComponentType<{
-    folder: Folder;
-}>, itemProps?: ((item: AccordionFolder) => Record<string, unknown>) | undefined) => Array<AccordionFolder>;
-
-// @public (undocumented)
-export const useFoldersByView: (view: FolderView) => Array<Folder>;
-
-// @public (undocumented)
 export function useGoBackHistoryCallback(): () => void;
 
 // @public (undocumented)
@@ -1618,26 +1473,6 @@ export const useRefresh: () => SoapRefresh;
 
 // @public (undocumented)
 export const useReplaceHistoryCallback: () => (params: HistoryParams) => void;
-
-// @public (undocumented)
-type UserFolder = BaseFolder & FolderFields & {
-    isLink: false;
-};
-
-// @public (undocumented)
-export const useRoot: (id: string) => Folder | undefined;
-
-// @public (undocumented)
-export const useRootByUser: (userId: string) => Folder | SearchFolder | Record<string, never>;
-
-// @public (undocumented)
-export const useRoots: () => Folders;
-
-// @public (undocumented)
-export const useSearchFolder: (id: string) => SearchFolder | undefined;
-
-// @public (undocumented)
-export const useSearchFolders: () => Searches;
 
 // @public (undocumented)
 export const useTags: (ids?: Array<string> | string) => Tags;
@@ -1682,19 +1517,7 @@ type UtilityView = CarbonioAccessoryView<UtilityBarComponentProps> & {
 type ValueOf<T> = T[keyof T];
 
 // @public (undocumented)
-type WorkerMessage<T> = {
-    data: SyncMessage & T;
-};
-
-// @public (undocumented)
 export const xmlSoapFetch: AppDependantExports['xmlSoapFetch'];
-
-// @public @deprecated (undocumented)
-export const ZIMBRA_STANDARD_COLORS: {
-    zValue: number;
-    hex: string;
-    zLabel: string;
-}[];
 
 // @public (undocumented)
 interface ZimletProp {
@@ -1750,14 +1573,13 @@ interface ZimletProp {
 // lib/types/account/index.d.ts:145:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:146:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
 // lib/types/apps/index.d.ts:68:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:75:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:94:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:110:5 - (ae-forgotten-export) The symbol "Meta" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:114:5 - (ae-forgotten-export) The symbol "SoapRetentionPolicy" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:128:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:73:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:92:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:108:5 - (ae-forgotten-export) The symbol "Meta" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:112:5 - (ae-forgotten-export) The symbol "SoapRetentionPolicy" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:126:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
 // lib/types/network/index.d.ts:108:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:11:5 - (ae-forgotten-export) The symbol "NameSpace" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:69:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
-// lib/types/workers/index.d.ts:12:5 - (ae-forgotten-export) The symbol "SyncMessage" needs to be exported by the entry point lib.d.ts
 
 ```

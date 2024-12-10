@@ -24,7 +24,6 @@ import type { report as reportApp } from './reporting/functions';
 // TODO: export only what is useful and not internal constants
 export * from './constants';
 export * from './ui-extras/app-link';
-export * from './ui-extras/spinner';
 export * from './settings/components/settings-header';
 export * from './boot/app/app-direct-exports';
 
@@ -99,7 +98,6 @@ export type {
 
 export type { QueryItem, QueryChip } from './types/search';
 
-export type { Folder, Folders, LinkFolder } from './types/folder';
 export type { Grant } from './types/misc';
 
 export type {
@@ -121,5 +119,3 @@ export type { BatchRequest, BatchResponse } from './types/network';
 export type { Action } from './types/integrations';
 
 export type { HistoryParams } from './types/misc';
-
-export type { FolderMessage } from './types/workers';

@@ -14,13 +14,13 @@ import { SEARCH_APP_ID } from '../constants';
 import { pushHistory, useCurrentRoute } from '../history/hooks';
 import { useAppStore } from '../store/app';
 
-const SelectorContainer = styled(Container)<{ open?: boolean }>`
+const SelectorContainer = styled(Container)`
 	border-right: 0.0625rem solid ${({ theme }): string => theme.palette.gray4.regular};
 	cursor: pointer;
-	background: ${({ theme, open }): string => theme.palette[open ? 'gray5' : 'gray6'].regular};
+	background: ${({ theme }): string => theme.palette.gray6.regular};
 
 	&:hover {
-		background: ${({ theme, open }): string => theme.palette[open ? 'gray5' : 'gray6'].hover};
+		background: ${({ theme }): string => theme.palette.gray6.hover};
 	}
 `;
 

@@ -13,14 +13,12 @@ module.exports = (api) => {
 		plugins.push('babel-plugin-transform-import-meta');
 	} else {
 		presetEnvOptions = {
-			modules: false,
-			useBuiltIns: 'usage',
-			corejs: 3.31
+			modules: false
 		};
 	}
 	return {
 		presets: [
-			['@babel/preset-env', presetEnvOptions],
+			['@babel/preset-env', { useBuiltIns: 'usage', corejs: 3.39, ...presetEnvOptions }],
 			'@babel/preset-react',
 			'@babel/preset-typescript'
 		],

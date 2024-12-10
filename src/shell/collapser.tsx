@@ -24,7 +24,7 @@ const VerticalDivider = styled.div`
 	}
 `;
 
-const Bubble = styled.div<{ open: boolean }>`
+const Bubble = styled.div<{ $open: boolean }>`
 	cursor: pointer;
 	z-index: 2;
 	display: flex;
@@ -40,7 +40,7 @@ const Bubble = styled.div<{ open: boolean }>`
 	transition:
 		background-color 0.2s,
 		transform 0.2s;
-	transform: scaleX(${({ open }): number => (open ? 1 : -1)});
+	transform: scaleX(${({ $open }): number => ($open ? 1 : -1)});
 	&:hover {
 		background-color: ${({ theme }): string => theme.palette.gray2.hover};
 	}
@@ -54,7 +54,7 @@ export const Collapser: FunctionComponent<{ open: boolean; onClick: () => void }
 	onClick
 }) => (
 	<VerticalDivider>
-		<Bubble onClick={onClick} open={open}>
+		<Bubble onClick={onClick} $open={open}>
 			<Icon size="medium" icon="ChevronLeft" />
 		</Bubble>
 	</VerticalDivider>

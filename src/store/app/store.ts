@@ -52,6 +52,7 @@ export type AppState = {
 
 export type AppActions = {
 	setApps: (apps: Array<Partial<CarbonioModule>>) => void;
+	upsertApp: (app: Pick<CarbonioModule, 'name' | 'display'>) => void;
 	addRoute: (routeData: AppRouteDescriptor) => string;
 	setRouteVisibility: (id: string, visible: boolean) => void;
 	removeRoute: (id: string) => void;
@@ -164,6 +165,13 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 				appContexts
 			};
 		});
+	},
+	upsertApp: (app): void => {
+		set(
+			produce<AppState>((state) => {
+				state.apps[app.name] = { ...state.apps[app.name], ...app };
+			})
+		);
 	},
 	setAppContext:
 		(app) =>

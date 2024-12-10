@@ -17,5 +17,3 @@ export type SyncRefreshMessage = SoapRefresh & {
 export type SyncMessage = SyncNotifyMessage | SyncRefreshMessage;
 
 export type WorkerMessage<T> = { data: SyncMessage & T };
-
-export type FolderMessage = WorkerMessage<Record<string, never>>;

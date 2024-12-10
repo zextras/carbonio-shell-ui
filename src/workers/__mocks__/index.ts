@@ -15,14 +15,3 @@ export const tagWorker: Worker = {
 	removeEventListener: noop,
 	dispatchEvent: () => false
 };
-
-export const folderWorker: Worker = {
-	postMessage: noop,
-	onmessage: noop,
-	onmessageerror: noop,
-	onerror: noop,
-	terminate: noop,
-	addEventListener: noop,
-	removeEventListener: noop,
-	dispatchEvent: () => false
-};

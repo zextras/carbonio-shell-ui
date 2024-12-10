@@ -87,8 +87,6 @@ export type {
 export type { Board } from './types/boards';
 export type { BoardHooksContext } from './store/boards/hooks';
 
-export type { Tag, Tags } from './types/tags';
-
 export type {
 	INotificationManager,
 	NotificationConfig,

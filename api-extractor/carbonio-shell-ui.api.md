@@ -462,11 +462,6 @@ type CarbonioView<P> = {
     component: ComponentType<P>;
 };
 
-// Warning: (ae-forgotten-export) The symbol "TagActionResponse" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-export const changeTagColor: (id: string, color: string | number) => Promise<TagActionResponse>;
-
 // @public (undocumented)
 export const closeBoard: (id: string) => void;
 
@@ -482,14 +477,6 @@ type ContextBridgeState = {
 // @public (undocumented)
 type CreateIdentityResponse = {
     identity: [Identity];
-};
-
-// @public (undocumented)
-export const createTag: (tag: Omit<Tag, 'id'>) => Promise<CreateTagResponse>;
-
-// @public (undocumented)
-export type CreateTagResponse = {
-    tag: [Tag];
 };
 
 // @public (undocumented)
@@ -511,9 +498,6 @@ export const DELEGATED_SEND_SAVE_TARGET: string[];
 
 // @public (undocumented)
 type DeleteIdentityResponse = Record<string, never>;
-
-// @public (undocumented)
-export const deleteTag: (id: string) => Promise<TagActionResponse>;
 
 // Warning: (ae-forgotten-export) The symbol "DurationUnit" needs to be exported by the entry point lib.d.ts
 //
@@ -642,9 +626,6 @@ export const getNotificationManager: () => INotificationManager;
 
 // @public (undocumented)
 const getSoapFetch: (app: string) => <Request_1, Response_1 extends Record<string, unknown>>(api: string, body: Request_1, otherAccount?: string, signal?: AbortSignal) => Promise<Response_1>;
-
-// @public (undocumented)
-export const getTags: (ids?: Array<string> | string) => Tags;
 
 // @public (undocumented)
 const getTFunction: (app: string) => TFunction;
@@ -1045,9 +1026,6 @@ export const removeSettingsView: (id: string) => void;
 export const removeUtilityView: (id: string) => void;
 
 // @public (undocumented)
-export const renameTag: (id: string, name: string) => Promise<TagActionResponse>;
-
-// @public (undocumented)
 export const reopenBoards: () => void;
 
 // @public (undocumented)
@@ -1334,7 +1312,7 @@ export interface SuccessSoapResponse<R> {
 export const t: AppDependantExports['t'];
 
 // @public (undocumented)
-export type Tag = {
+type Tag = {
     color?: number;
     id: string;
     name: string;
@@ -1342,17 +1320,6 @@ export type Tag = {
     u?: number;
     n?: number;
 };
-
-// @public (undocumented)
-type TagActionResponse = SoapBody<{
-    action: {
-        op: string;
-        id: string;
-    };
-}>;
-
-// @public (undocumented)
-export type Tags = Record<string, Tag>;
 
 // @public (undocumented)
 interface Tracker {
@@ -1474,9 +1441,6 @@ export const useRefresh: () => SoapRefresh;
 // @public (undocumented)
 export const useReplaceHistoryCallback: () => (params: HistoryParams) => void;
 
-// @public (undocumented)
-export const useTags: (ids?: Array<string> | string) => Tags;
-
 // Warning: (ae-forgotten-export) The symbol "Tracker" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
@@ -1581,5 +1545,6 @@ interface ZimletProp {
 // lib/types/network/index.d.ts:108:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:11:5 - (ae-forgotten-export) The symbol "NameSpace" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:69:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
+// lib/types/network/soap.d.ts:91:9 - (ae-forgotten-export) The symbol "Tag" needs to be exported by the entry point lib.d.ts
 
 ```

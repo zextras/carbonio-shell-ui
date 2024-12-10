@@ -13,5 +13,3 @@ export type Tag = {
 	u?: number;
 	n?: number;
 };
-
-export type Tags = Record<string, Tag>;

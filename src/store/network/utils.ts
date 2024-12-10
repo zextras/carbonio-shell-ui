@@ -4,12 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { forEach } from 'lodash';
-
-import { useNetworkStore } from './store';
 import type { NoOpResponse } from '../../network/fetch';
 import type { AccountSettings } from '../../types/account';
-import type { RawSoapResponse, SoapContext } from '../../types/network';
+import type { RawSoapResponse } from '../../types/network';
 import { useAccountStore } from '../account';
 
 /**
@@ -72,17 +69,3 @@ export const getPollingInterval = (
 	}
 	return parsePollingInterval(settings);
 };
-
-export const handleSync = ({ refresh, notify }: SoapContext): Promise<void> =>
-	new Promise((r) => {
-		const { seq } = useNetworkStore.getState();
-		if (refresh) {
-		}
-		if (notify?.length) {
-			forEach(notify, (item) => {
-				if (item.seq > seq) {
-				}
-			});
-		}
-		r();
-	});

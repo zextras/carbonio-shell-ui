@@ -1,10 +1,7 @@
 {
-  "extends": "@zextras/carbonio-ui-configs/rules/typescript.json",
+  "extends": "@zextras/carbonio-ui-configs/rules/tsconfig.type-check.json",
   "compilerOptions": {
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "moduleResolution": "Bundler",
-    "module": "preserve"
+    "noUncheckedIndexedAccess": false
   },
   "exclude": [
     "node_modules",

@@ -72,7 +72,7 @@
 		"@types/webpack": "^5.28.5",
 		"@types/webpack-env": "^1.18.4",
 		"@zextras/carbonio-search-ui": "github:zextras/carbonio-search-ui#SHELL-260-separate-search-module",
-		"@zextras/carbonio-ui-configs": "^1.0.3",
+		"@zextras/carbonio-ui-configs": "^2.0.0-devel.1",
 		"@zextras/carbonio-ui-sdk": "^1.7.10",
 		"autoprefixer": "^10.4.17",
 		"babel-loader": "^9.2.1",

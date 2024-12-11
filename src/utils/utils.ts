@@ -19,9 +19,6 @@ export type ElementSize = {
 
 export type SizeAndPosition = ElementPosition & ElementSize;
 
-export const testFolderIsChecked = ({ string }: { string: string | undefined }): boolean =>
-	/#/.test(string ?? '');
-
 export function setGlobalCursor(cursor: CSSProperties['cursor']): void {
 	// remove previously set cursor
 	const cursors: string[] = [];

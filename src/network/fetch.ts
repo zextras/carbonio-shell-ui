@@ -13,7 +13,7 @@ import { IS_FOCUS_MODE, JSNS, SHELL_APP_ID } from '../constants';
 import { report } from '../reporting/functions';
 import { useAccountStore } from '../store/account';
 import { useNetworkStore } from '../store/network';
-import { getPollingInterval, handleSync } from '../store/network/utils';
+import { getPollingInterval } from '../store/network/utils';
 import type { Account } from '../types/account';
 import type {
 	ErrorSoapBodyResponse,
@@ -113,7 +113,6 @@ const handleResponse = <R extends Record<string, unknown>>(
 			res.Header.context?.notify?.[0]?.modified?.mbx?.[0]?.s;
 		const _context = normalizeContext(res.Header.context);
 		const seq = maxBy(_context.notify, 'seq')?.seq ?? 0;
-		handleSync(_context);
 		useAccountStore.setState({
 			usedQuota: responseUsedQuota ?? usedQuota
 		});

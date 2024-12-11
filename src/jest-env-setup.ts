@@ -11,6 +11,9 @@ import failOnConsole from 'jest-fail-on-console';
 import { forEach, noop } from 'lodash';
 
 import server from './mocks/server';
+import type * as ReportingFunctions from './reporting/functions';
+import type * as ReportingStore from './reporting/store';
+
 // this can be removed once migrated to Node 22 (https://github.com/wojtekmaj/react-pdf/wiki/Upgrade-guide-from-version-8.x-to-9.x#dropped-support-for-older-browsers-and-nodejs-versions)
 import 'core-js/proposals/promise-with-resolvers';
 
@@ -96,10 +99,5 @@ afterEach(() => {
 });
 
 // https://jestjs.io/docs/manual-mocks#mocking-user-modules
-// disable eslint since these imports are made only to have a direct evidence of the path
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-jest.mock<typeof import('./workers')>('./workers');
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-jest.mock<typeof import('./reporting/functions')>('./reporting/functions');
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-jest.mock<typeof import('./reporting/store')>('./reporting/store');
+jest.mock<typeof ReportingFunctions>('./reporting/functions');
+jest.mock<typeof ReportingStore>('./reporting/store');

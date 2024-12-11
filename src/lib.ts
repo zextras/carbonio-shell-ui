@@ -85,9 +85,6 @@ export type {
 export type { Board } from './types/boards';
 export type { BoardHooksContext } from './store/boards/hooks';
 
-export type { CreateTagResponse } from './network/tags';
-export type { Tag, Tags } from './types/tags';
-
 export type {
 	INotificationManager,
 	NotificationConfig,
@@ -95,7 +92,6 @@ export type {
 	PopupNotificationConfig
 } from './notification/NotificationManager';
 
-export type { Folder, Folders, LinkFolder } from './types/folder';
 export type { Grant } from './types/misc';
 
 export type {
@@ -117,5 +113,3 @@ export type { BatchRequest, BatchResponse } from './types/network';
 export type { Action } from './types/integrations';
 
 export type { HistoryParams } from './types/misc';
-
-export type { FolderMessage } from './types/workers';

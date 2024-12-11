@@ -47,29 +47,7 @@ export {
 	updateAccount
 } from '../../store/account';
 
-export { getTags, useTags } from '../../store/tags';
-export { changeTagColor, createTag, deleteTag, renameTag } from '../../network/tags';
-
 export { useNotify, useRefresh } from '../../store/network';
-
-export {
-	getFolder,
-	getFolders,
-	useFolder,
-	useFolders,
-	useRoot,
-	getRoot,
-	useRoots,
-	getRoots,
-	useSearchFolder,
-	useSearchFolders,
-	getSearchFolder,
-	getSearchFolders,
-	useFoldersByView,
-	useFoldersAccordionByView,
-	useRootByUser,
-	getRootByUser
-} from '../../store/folder';
 
 export {
 	closeBoard,

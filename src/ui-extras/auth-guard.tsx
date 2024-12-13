@@ -8,7 +8,7 @@ import React from 'react';
 
 import { useAuthenticated } from '../store/account';
 
-type AuthGuardProps = {
+export type AuthGuardProps = {
 	children: ReactNode;
 };
 

@@ -112,3 +112,6 @@ export type { AccountMenuAction } from '../../utility-bar/bar';
 export { useTracker } from '../../tracker/tracker';
 
 export { AppContextProvider } from './app-context-provider';
+
+export type { AuthGuardProps } from '../../ui-extras/auth-guard';
+export { AuthGuard } from '../../ui-extras/auth-guard';

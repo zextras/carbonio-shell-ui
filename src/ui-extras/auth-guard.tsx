@@ -12,7 +12,7 @@ export type AuthGuardProps = {
 	children: ReactNode;
 };
 
-export const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
+export const AuthGuard = ({ children }: AuthGuardProps): ReactNode => {
 	const isAuthenticated = useAuthenticated();
 
 	return isAuthenticated ? <>{children}</> : null;

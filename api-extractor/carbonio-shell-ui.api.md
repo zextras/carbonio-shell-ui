@@ -328,7 +328,7 @@ export type AudioNotificationConfig = {
 };
 
 // @public (undocumented)
-export const AuthGuard: React_2.FC<AuthGuardProps>;
+export const AuthGuard: ({ children }: AuthGuardProps) => ReactNode;
 
 // @public (undocumented)
 export type AuthGuardProps = {

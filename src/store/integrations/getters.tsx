@@ -25,7 +25,8 @@ export const getIntegratedFunction = <TFunction extends AnyFunction = AnyFunctio
 };
 
 export const getIntegratedComponent = <
-	TComponent extends React.ComponentType = React.ComponentType<Record<string, unknown>>
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	TComponent extends React.ComponentType<any> = React.ComponentType<Record<string, unknown>>
 >(
 	id: string
 ): [TComponent, boolean] => {

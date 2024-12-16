@@ -620,7 +620,7 @@ export const getI18n: AppDependantExports['getI18n'];
 const getI18n_2: (app: string) => () => i18n;
 
 // @public (undocumented)
-export const getIntegratedComponent: <TComponent extends React_2.ComponentType = React_2.ComponentType<Record<string, unknown>>>(id: string) => [TComponent, boolean];
+export const getIntegratedComponent: <TComponent extends React_2.ComponentType<any> = React_2.ComponentType<Record<string, unknown>>>(id: string) => [TComponent, boolean];
 
 // @public (undocumented)
 export const getIntegratedFunction: <TFunction extends AnyFunction = AnyFunction>(id: string) => [TFunction, boolean];
@@ -1381,7 +1381,7 @@ export const useCurrentRoute: () => AppRoute | undefined;
 export function useGoBackHistoryCallback(): () => void;
 
 // @public (undocumented)
-export const useIntegratedComponent: <TComponent extends React_2.ComponentType = React_2.ComponentType<Record<string, unknown>>>(id: string) => [TComponent, boolean];
+export const useIntegratedComponent: <TComponent extends React_2.ComponentType<any> = React_2.ComponentType<Record<string, unknown>>>(id: string) => [TComponent, boolean];
 
 // @public (undocumented)
 export const useIntegratedFunction: <TFunction extends AnyFunction = AnyFunction>(id: string) => [TFunction, boolean];

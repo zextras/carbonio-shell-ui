@@ -21,6 +21,7 @@ import type { LinkProps } from 'react-router-dom';
 import type { ModalProps } from '@zextras/carbonio-design-system';
 import type { Properties } from 'posthog-js';
 import { default as React_2 } from 'react';
+import type { ReactNode } from 'react';
 import type { TFunction } from 'i18next';
 import type { To } from 'history';
 
@@ -315,6 +316,14 @@ export type AppViewComponentProps = {};
 // @public (undocumented)
 export type AudioNotificationConfig = {
     sound?: string;
+};
+
+// @public (undocumented)
+export const AuthGuard: ({ children }: AuthGuardProps) => ReactNode;
+
+// @public (undocumented)
+export type AuthGuardProps = {
+    children: ReactNode;
 };
 
 // @public (undocumented)

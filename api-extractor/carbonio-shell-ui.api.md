@@ -14,7 +14,6 @@ import type { CaptureOptions } from 'posthog-js';
 import { CarbonioModule as CarbonioModule_2 } from '../../types/apps';
 import type { ChipItem } from '@zextras/carbonio-design-system';
 import type { ComponentType } from 'react';
-import type { DefaultTheme } from 'styled-components';
 import { DropdownItem } from '@zextras/carbonio-design-system';
 import type { DynamicThemeFix } from 'darkreader';
 import type { Event as Event_2 } from '@sentry/browser';
@@ -26,6 +25,7 @@ import type { Properties } from 'posthog-js';
 import { default as React_2 } from 'react';
 import type { ReactNode } from 'react';
 import type { TFunction } from 'i18next';
+import type { Theme } from '@zextras/carbonio-design-system';
 import type { To } from 'history';
 
 // @public (undocumented)
@@ -341,7 +341,7 @@ export type BadgeInfo = {
     icon?: string;
     count?: number;
     showCount?: boolean;
-    color?: keyof DefaultTheme['palette'];
+    color?: keyof Theme['palette'];
 };
 
 // @public (undocumented)

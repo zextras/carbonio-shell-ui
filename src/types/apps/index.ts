@@ -8,7 +8,7 @@
 import type { ComponentType } from 'react';
 import type React from 'react';
 
-import type { DefaultTheme } from 'styled-components';
+import type { Theme } from '@zextras/carbonio-design-system';
 
 import type { QueryChip } from '../search';
 
@@ -38,7 +38,7 @@ export type BadgeInfo = {
 	icon?: string;
 	count?: number;
 	showCount?: boolean;
-	color?: keyof DefaultTheme['palette'];
+	color?: keyof Theme['palette'];
 };
 
 export type CarbonioView<P> = {

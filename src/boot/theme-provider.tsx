@@ -6,7 +6,6 @@
 
 import React, {
 	createContext,
-	type CSSProperties,
 	useCallback,
 	useEffect,
 	useLayoutEffect,
@@ -16,7 +15,6 @@ import React, {
 
 import type {
 	Theme,
-	ThemeColorObj,
 	ThemeProviderProps as UIThemeProviderProps
 } from '@zextras/carbonio-design-system';
 import {
@@ -208,14 +206,3 @@ export const ThemeProvider = ({ children }: ThemeProviderProps): React.JSX.Eleme
 		</UIThemeProvider>
 	);
 };
-
-declare module '@zextras/carbonio-design-system' {
-	export interface Theme {
-		globalCursors: CSSProperties['cursor'][];
-	}
-
-	export interface Palette {
-		shared: ThemeColorObj;
-		linked: ThemeColorObj;
-	}
-}

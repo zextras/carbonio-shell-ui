@@ -5,7 +5,7 @@
  */
 import React from 'react';
 
-import { act, screen, within } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import { Button, Text } from '@zextras/carbonio-design-system';
 import { produce } from 'immer';
 import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
@@ -14,10 +14,9 @@ import AppViewContainer from './app-view-container';
 import ShellPrimaryBar from './shell-primary-bar';
 import { DefaultViewsRegister } from '../boot/app/default-views';
 import { usePushHistoryCallback } from '../history/hooks';
-import { ModuleSelector } from '../search/module-selector';
 import { useAccountStore } from '../store/account';
 import { useAppStore } from '../store/app';
-import { ICONS, TESTID_SELECTORS } from '../tests/constants';
+import { ICONS } from '../tests/constants';
 import { setup } from '../tests/utils';
 import type { AccountState } from '../types/account';
 import type { PrimaryBarView } from '../types/apps';
@@ -25,7 +24,6 @@ import type { PrimaryBarView } from '../types/apps';
 const ShellWrapper = (): React.JSX.Element => (
 	<>
 		<DefaultViewsRegister />
-		<ModuleSelector />
 		<ShellPrimaryBar />
 		<AppViewContainer />
 	</>
@@ -212,224 +210,6 @@ describe('Shell primary bar', () => {
 		expect(screen.queryByText('files view')).not.toBeInTheDocument();
 	});
 
-	test('When I move to the search module from any other component the search header selector and search view are switched based on the module from which I originate', async () => {
-		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
-
-		act(() => {
-			useAppStore.getState().setApps([
-				{
-					commit: '',
-					description: 'Mails module',
-					display: 'Mails',
-					icon: 'MailModOutline',
-					js_entrypoint: '',
-					name: 'carbonio-mails-ui',
-					priority: 1,
-					type: 'carbonio',
-					version: '0.0.1'
-				},
-				{
-					commit: '',
-					description: 'Files module',
-					display: 'Files',
-					icon: 'DriveOutline',
-					js_entrypoint: '',
-					name: 'carbonio-files-ui',
-					priority: 2,
-					type: 'carbonio',
-					version: '0.0.1'
-				}
-			]);
-			useAppStore.getState().addRoute({
-				id: 'mails',
-				route: 'mails',
-				position: 1,
-				visible: true,
-				label: 'Mails',
-				primaryBar: 'MailModOutline',
-				appView: MailsView,
-				badge: { show: false },
-				app: 'carbonio-mails-ui'
-			});
-
-			useAppStore.getState().addRoute({
-				id: 'files',
-				route: 'files',
-				position: 2,
-				visible: true,
-				label: 'Files',
-				primaryBar: 'DriveOutline',
-				appView: FilesView,
-				badge: { show: false },
-				app: 'carbonio-files-ui'
-			});
-
-			useAppStore.getState().addSearchView({
-				route: 'files',
-				component: (): React.JSX.Element => <Text>files search view</Text>,
-				label: 'Files',
-				id: 'files',
-				app: 'carbonio-files-ui',
-				icon: 'DriveOutline',
-				position: 2
-			});
-			useAppStore.getState().addSearchView({
-				route: 'mails',
-				component: (): React.JSX.Element => <Text>mails search view</Text>,
-				label: 'Mails',
-				id: 'mails',
-				app: 'carbonio-mails-ui',
-				icon: 'MailModOutline',
-				position: 1
-			});
-		});
-
-		const mailsIcon = getByRoleWithIcon('button', { icon: 'MailModOutline' });
-		expect(mailsIcon).toBeVisible();
-		expect(mailsIcon).toBeEnabled();
-		const filesIcon = getByRoleWithIcon('button', { icon: 'DriveOutline' });
-		expect(filesIcon).toBeVisible();
-		expect(filesIcon).toBeEnabled();
-		const searchIcon = getByRoleWithIcon('button', { icon: 'SearchModOutline' });
-		expect(searchIcon).toBeVisible();
-		expect(searchIcon).toBeEnabled();
-
-		expect(screen.getByText('default mails view')).toBeVisible();
-		expect(screen.queryByText('files view')).not.toBeInTheDocument();
-
-		await user.click(filesIcon);
-		expect(screen.getByText('files view')).toBeVisible();
-		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
-
-		await user.click(searchIcon);
-
-		expect(screen.getByText('files search view')).toBeVisible();
-		expect(
-			within(screen.getByTestId(TESTID_SELECTORS.headerModuleSelector)).getByText('Files')
-		).toBeVisible();
-
-		expect(screen.queryByText('mails search view')).not.toBeInTheDocument();
-		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
-		expect(screen.queryByText('files view')).not.toBeInTheDocument();
-	});
-
-	test('When I move to the search module from any other component the search header selector and search view are switched based on the module from which I originate, also if is not the first access to search module', async () => {
-		const { getByRoleWithIcon, user } = setup(<ShellWrapper />);
-
-		act(() => {
-			useAppStore.getState().setApps([
-				{
-					commit: '',
-					description: 'Mails module',
-					display: 'Mails',
-					icon: 'MailModOutline',
-					js_entrypoint: '',
-					name: 'carbonio-mails-ui',
-					priority: 1,
-					type: 'carbonio',
-					version: '0.0.1'
-				},
-				{
-					commit: '',
-					description: 'Files module',
-					display: 'Files',
-					icon: 'DriveOutline',
-					js_entrypoint: '',
-					name: 'carbonio-files-ui',
-					priority: 2,
-					type: 'carbonio',
-					version: '0.0.1'
-				}
-			]);
-			useAppStore.getState().addRoute({
-				id: 'mails',
-				route: 'mails',
-				position: 1,
-				visible: true,
-				label: 'Mails',
-				primaryBar: 'MailModOutline',
-				appView: MailsView,
-				badge: { show: false },
-				app: 'carbonio-mails-ui'
-			});
-
-			useAppStore.getState().addRoute({
-				id: 'files',
-				route: 'files',
-				position: 2,
-				visible: true,
-				label: 'Files',
-				primaryBar: 'DriveOutline',
-				appView: FilesView,
-				badge: { show: false },
-				app: 'carbonio-files-ui'
-			});
-
-			useAppStore.getState().addSearchView({
-				route: 'files',
-				component: (): React.JSX.Element => <Text>files search view</Text>,
-				label: 'Files',
-				id: 'files',
-				app: 'carbonio-files-ui',
-				icon: 'DriveOutline',
-				position: 2
-			});
-			useAppStore.getState().addSearchView({
-				route: 'mails',
-				component: (): React.JSX.Element => <Text>mails search view</Text>,
-				label: 'Mails',
-				id: 'mails',
-				app: 'carbonio-mails-ui',
-				icon: 'MailModOutline',
-				position: 1
-			});
-		});
-
-		const mailsIcon = getByRoleWithIcon('button', { icon: 'MailModOutline' });
-		expect(mailsIcon).toBeVisible();
-		expect(mailsIcon).toBeEnabled();
-		const filesIcon = getByRoleWithIcon('button', { icon: 'DriveOutline' });
-		expect(filesIcon).toBeVisible();
-		expect(filesIcon).toBeEnabled();
-		const searchIcon = getByRoleWithIcon('button', { icon: 'SearchModOutline' });
-		expect(searchIcon).toBeVisible();
-		expect(searchIcon).toBeEnabled();
-
-		expect(screen.getByText('default mails view')).toBeVisible();
-		expect(screen.queryByText('files view')).not.toBeInTheDocument();
-
-		await user.click(filesIcon);
-		expect(screen.getByText('files view')).toBeVisible();
-		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
-
-		await user.click(searchIcon);
-
-		expect(screen.getByText('files search view')).toBeVisible();
-		expect(
-			within(screen.getByTestId(TESTID_SELECTORS.headerModuleSelector)).getByText('Files')
-		).toBeVisible();
-
-		expect(screen.queryByText('mails search view')).not.toBeInTheDocument();
-		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
-		expect(screen.queryByText('files view')).not.toBeInTheDocument();
-
-		await user.click(mailsIcon);
-		expect(screen.getByText('default mails view')).toBeVisible();
-		expect(screen.queryByText('files view')).not.toBeInTheDocument();
-		expect(screen.queryByText('files search view')).not.toBeInTheDocument();
-
-		await user.click(searchIcon);
-
-		expect(screen.getByText('mails search view')).toBeVisible();
-		expect(
-			within(screen.getByTestId(TESTID_SELECTORS.headerModuleSelector)).getByText('Mails')
-		).toBeVisible();
-
-		expect(screen.queryByText('files search view')).not.toBeInTheDocument();
-		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
-		expect(screen.queryByText('files view')).not.toBeInTheDocument();
-	});
-
 	test('When zimbraFeatureOptionsEnabled is TRUE the setting icon is visible in primary bar', async () => {
 		useAccountStore.setState(
 			produce((state: AccountState) => {
@@ -547,7 +327,7 @@ describe('Shell primary bar', () => {
 					label: 'App One',
 					route: 'app1',
 					position: 1,
-					badge: { show: true, icon: ICONS.search, showCount: true },
+					badge: { show: true, icon: 'Airplane', showCount: true },
 					visible: true,
 					component: 'People'
 				}
@@ -557,7 +337,7 @@ describe('Shell primary bar', () => {
 			}));
 			setup(<ShellPrimaryBar />);
 			expect(screen.queryByTestId('badge-counter')).not.toBeInTheDocument();
-			expect(screen.getByTestId(`icon: ${ICONS.search}`)).toBeVisible();
+			expect(screen.getByTestId('icon: Airplane')).toBeVisible();
 		});
 	});
 });

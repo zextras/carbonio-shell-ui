@@ -14,7 +14,6 @@ import type {
 	BoardView,
 	CarbonioModule,
 	PrimaryAccessoryView,
-	SearchView,
 	SecondaryAccessoryView,
 	SettingsView,
 	UtilityView
@@ -79,18 +78,6 @@ export const normalizeSettingsView = (
 		icon: data.icon ?? app.icon,
 		position: data.position ?? app.priority ?? 99,
 		subSections: data.subSections ?? []
-	};
-};
-export const normalizeSearchView = (data: Partial<SearchView>, app: CarbonioModule): SearchView => {
-	const route = trim(data.route ?? app.name, '/');
-	return {
-		app: app.name,
-		route,
-		id: data?.id ?? route,
-		component: data?.component ?? FallbackView,
-		label: data.label ?? app.display,
-		icon: data.icon ?? app.icon,
-		position: data.position ?? app.priority ?? 99
 	};
 };
 export const normalizeUtilityView = (

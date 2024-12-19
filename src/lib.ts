@@ -117,3 +117,5 @@ export type { BatchRequest, BatchResponse } from './types/network';
 export type { Action } from './types/integrations';
 
 export type { HistoryParams } from './types/misc';
+
+import './types/theme';

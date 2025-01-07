@@ -125,7 +125,7 @@
 		"styled-components": "^6.1.13",
 		"tinymce": "^6.8.4",
 		"ua-parser-js": "^1.0.37",
-		"zustand": "^4.5.1"
+		"zustand": "^5.0.2"
 	},
 	"peerDependencies": {
 		"@zextras/carbonio-design-system": "9.0.0-devel.13",

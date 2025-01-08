@@ -13,14 +13,16 @@ import React, {
 	useState
 } from 'react';
 
-import type { ThemeProviderProps as UIThemeProviderProps } from '@zextras/carbonio-design-system';
+import type {
+	Theme,
+	ThemeProviderProps as UIThemeProviderProps
+} from '@zextras/carbonio-design-system';
 import {
 	generateColorSet,
 	ThemeProvider as UIThemeProvider
 } from '@zextras/carbonio-design-system';
 import { auto, disable, enable, setFetchMethod } from 'darkreader';
 import { map, reduce } from 'lodash';
-import type { DefaultTheme } from 'styled-components';
 import { createGlobalStyle, css } from 'styled-components';
 
 import { useGetPrimaryColor } from './use-get-primary-color';
@@ -30,7 +32,7 @@ import { getAutoScalingFontSize } from '../settings/components/utils';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 import type { ScalingSettings } from '../types/settings';
 
-export type ThemeExtension = (theme: DefaultTheme) => DefaultTheme;
+export type ThemeExtension = (theme: Theme) => Theme;
 
 setFetchMethod(window.fetch);
 
@@ -48,13 +50,13 @@ export const ThemeCallbacksContext = createContext<ThemeCallbacks>({
 	}
 });
 
-type CustomTheme = Partial<Omit<DefaultTheme, 'palette'>> & {
-	palette?: Partial<DefaultTheme['palette']>;
+type CustomTheme = Partial<Omit<Theme, 'palette'>> & {
+	palette?: Partial<Theme['palette']>;
 };
 
 const paletteExtension =
 	(customTheme: CustomTheme = {}) =>
-	(theme: DefaultTheme): DefaultTheme => ({
+	(theme: Theme): Theme => ({
 		...theme,
 		...customTheme,
 		palette: {
@@ -126,14 +128,12 @@ interface ThemeProviderProps {
 export const ThemeProvider = ({ children }: ThemeProviderProps): React.JSX.Element => {
 	const [localStorageSettings] = useLocalStorage<ScalingSettings>(LOCAL_STORAGE_SETTINGS_KEY, {});
 
-	const [extensions, setExtensions] = useState<Partial<Record<keyof DefaultTheme, ThemeExtension>>>(
-		{}
-	);
+	const [extensions, setExtensions] = useState<Partial<Record<keyof Theme, ThemeExtension>>>({});
 
 	const primaryColor = useGetPrimaryColor();
 
 	useLayoutEffect(() => {
-		const customThemePalette: Partial<DefaultTheme['palette']> = primaryColor
+		const customThemePalette: Partial<Theme['palette']> = primaryColor
 			? { primary: generateColorSet({ regular: primaryColor }) }
 			: {};
 		setExtensions((extension) => ({

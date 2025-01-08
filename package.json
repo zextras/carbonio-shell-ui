@@ -106,7 +106,7 @@
 		"@fontsource/roboto": "^5.0.8",
 		"@sentry/browser": "^7.103.0",
 		"@tinymce/tinymce-react": "^4.3.2",
-		"@zextras/carbonio-design-system": "9.0.0-devel.7",
+		"@zextras/carbonio-design-system": "9.0.0-devel.13",
 		"@zextras/carbonio-ui-preview": "^3.1.0",
 		"darkreader": "^4.9.79",
 		"date-fns": "^4.1.0",
@@ -128,7 +128,7 @@
 		"zustand": "^4.5.1"
 	},
 	"peerDependencies": {
-		"@zextras/carbonio-design-system": "9.0.0-devel.7",
+		"@zextras/carbonio-design-system": "9.0.0-devel.13",
 		"@zextras/carbonio-ui-preview": "^3.1.0",
 		"core-js": "^3.39.0",
 		"lodash": "^4.17.21",

@@ -58,7 +58,10 @@ export function buildIntegrationAction(
 	target: unknown
 ): [Action | undefined, boolean] {
 	try {
-		return [integration?.(target), true];
+		if (!integration) {
+			return [undefined, false];
+		}
+		return [integration(target), true];
 	} catch (e) {
 		return [undefined, false];
 	}

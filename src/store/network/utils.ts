@@ -29,6 +29,8 @@ const POLLING_RETRY_INTERVAL = 60_000;
 
 const POLLING_INVALID_DURATION = 30_000;
 
+const LONG_POLLING_MARKER_VALUE = 500;
+
 export const parsePollingInterval = (settings: AccountSettings): number => {
 	const pollingPref = settings.prefs?.zimbraPrefMailPollingInterval ?? '';
 	const [value, durationUnit] = pollingPref.split(/([a-z]+)/g);
@@ -36,10 +38,17 @@ export const parsePollingInterval = (settings: AccountSettings): number => {
 	if (Number.isNaN(pollingValue)) {
 		return POLLING_INVALID_DURATION;
 	}
+
+	if (
+		pollingValue === LONG_POLLING_MARKER_VALUE &&
+		(durationUnit === undefined || durationUnit === 'ms' || durationUnit === 's')
+	) {
+		return LONG_POLLING_MARKER_VALUE;
+	}
 	switch (durationUnit) {
-		case undefined:
 		case 'ms':
 			return pollingValue;
+		case undefined:
 		case 's':
 			return pollingValue * 1000;
 		case 'm':

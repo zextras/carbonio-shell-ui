@@ -98,26 +98,72 @@ describe('Utils', () => {
 				expect(result).toBe(30000);
 			});
 
-			it('should return 500 if zimbraPrefMailPollingInterval is "500" without a duration unit', () => {
-				useNetworkStore.setState({ pollingInterval: 123456789 });
-				useAccountStore.setState((state) => ({
-					...state,
-					settings: {
-						...state.settings,
-						prefs: { ...state.settings.prefs, zimbraPrefMailPollingInterval: '500' }
-					}
-				}));
-				const response = {
-					Header: {
-						context: {}
-					},
-					Body: {}
-				} satisfies RawSoapResponse<Record<string, unknown>>;
-				const result = getPollingInterval(response);
-				expect(result).toBe(500);
+			describe('long polling cases', () => {
+				it('should return 500 if zimbraPrefMailPollingInterval is "500" without a duration unit', () => {
+					useNetworkStore.setState({ pollingInterval: 123456789 });
+					useAccountStore.setState((state) => ({
+						...state,
+						settings: {
+							...state.settings,
+							prefs: { ...state.settings.prefs, zimbraPrefMailPollingInterval: '500' }
+						}
+					}));
+					const response = {
+						Header: {
+							context: {}
+						},
+						Body: {}
+					} satisfies RawSoapResponse<Record<string, unknown>>;
+					const result = getPollingInterval(response);
+					expect(result).toBe(500);
+				});
+
+				it('should return 500 if zimbraPrefMailPollingInterval is "500ms"', () => {
+					useNetworkStore.setState({ pollingInterval: 123456789 });
+					useAccountStore.setState((state) => ({
+						...state,
+						settings: {
+							...state.settings,
+							prefs: {
+								...state.settings.prefs,
+								zimbraPrefMailPollingInterval: '500ms' satisfies Duration
+							}
+						}
+					}));
+					const response = {
+						Header: {
+							context: {}
+						},
+						Body: {}
+					} satisfies RawSoapResponse<Record<string, unknown>>;
+					const result = getPollingInterval(response);
+					expect(result).toBe(500);
+				});
+
+				it('should return 500 if zimbraPrefMailPollingInterval is "500s"', () => {
+					useNetworkStore.setState({ pollingInterval: 123456789 });
+					useAccountStore.setState((state) => ({
+						...state,
+						settings: {
+							...state.settings,
+							prefs: {
+								...state.settings.prefs,
+								zimbraPrefMailPollingInterval: '500s' satisfies Duration
+							}
+						}
+					}));
+					const response = {
+						Header: {
+							context: {}
+						},
+						Body: {}
+					} satisfies RawSoapResponse<Record<string, unknown>>;
+					const result = getPollingInterval(response);
+					expect(result).toBe(500);
+				});
 			});
 
-			it('should return the number if zimbraPrefMailPollingInterval is set without a duration unit', () => {
+			it('should return the number * 1000 if zimbraPrefMailPollingInterval is set without a duration unit(so are handled as seconds)', () => {
 				useNetworkStore.setState({ pollingInterval: 123456789 });
 				useAccountStore.setState((state) => ({
 					...state,
@@ -136,29 +182,7 @@ describe('Utils', () => {
 					Body: {}
 				} satisfies RawSoapResponse<Record<string, unknown>>;
 				const result = getPollingInterval(response);
-				expect(result).toBe(753);
-			});
-
-			it('should return the number * 60 * 1000 if zimbraPrefMailPollingInterval duration is set with the duration unit m (minutes)', () => {
-				useNetworkStore.setState({ pollingInterval: 123456789 });
-				useAccountStore.setState((state) => ({
-					...state,
-					settings: {
-						...state.settings,
-						prefs: {
-							...state.settings.prefs,
-							zimbraPrefMailPollingInterval: '50m' satisfies Duration
-						}
-					}
-				}));
-				const response = {
-					Header: {
-						context: {}
-					},
-					Body: {}
-				} satisfies RawSoapResponse<Record<string, unknown>>;
-				const result = getPollingInterval(response);
-				expect(result).toBe(50 * 60 * 1000);
+				expect(result).toBe(753_000);
 			});
 
 			it('should return the number if zimbraPrefMailPollingInterval is set with the duration unit ms (milliseconds)', () => {
@@ -203,6 +227,28 @@ describe('Utils', () => {
 				} satisfies RawSoapResponse<Record<string, unknown>>;
 				const result = getPollingInterval(response);
 				expect(result).toBe(753000);
+			});
+
+			it('should return the number * 60 * 1000 if zimbraPrefMailPollingInterval duration is set with the duration unit m (minutes)', () => {
+				useNetworkStore.setState({ pollingInterval: 123456789 });
+				useAccountStore.setState((state) => ({
+					...state,
+					settings: {
+						...state.settings,
+						prefs: {
+							...state.settings.prefs,
+							zimbraPrefMailPollingInterval: '50m' satisfies Duration
+						}
+					}
+				}));
+				const response = {
+					Header: {
+						context: {}
+					},
+					Body: {}
+				} satisfies RawSoapResponse<Record<string, unknown>>;
+				const result = getPollingInterval(response);
+				expect(result).toBe(50 * 60 * 1000);
 			});
 
 			it('should return the number * 60 * 60 * 1000 if zimbraPrefMailPollingInterval is set with the duration unit h (hours)', () => {

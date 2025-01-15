@@ -141,7 +141,7 @@ describe('Fetch', () => {
 			}
 		);
 
-		it.each<Duration>(['500', '500ms'])(
+		it.each<Duration>(['500', '500ms', '500s'])(
 			'should send limitToOneBlocked and wait if zimbraPrefMailPollingInterval is %s',
 			async (pollingPref) => {
 				useAccountStore.setState(
@@ -186,10 +186,10 @@ describe('Fetch', () => {
 			}
 		);
 
-		it('should not send limitToOneBlocked and wait if zimbraPrefMailPollingInterval is not 500ms', async () => {
+		it('should not send limitToOneBlocked and wait if zimbraPrefMailPollingInterval is not either 500, 500ms or 500s', async () => {
 			useAccountStore.setState(
 				produce<AccountState>((state) => {
-					state.settings.prefs.zimbraPrefMailPollingInterval = '500s';
+					state.settings.prefs.zimbraPrefMailPollingInterval = '60s';
 				})
 			);
 

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [9.0.1](https://github.com/zextras/carbonio-shell-ui/compare/v9.0.0...v9.0.1) (2025-01-17)
+
+
+### Bug Fixes
+
+* update parsing of polling interval  ([8386e14](https://github.com/zextras/carbonio-shell-ui/commit/8386e14c8c4a4131f4e039a1a1545fe00c316cab)), closes [#568](https://github.com/zextras/carbonio-shell-ui/issues/568)
+
 ## [9.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v8.0.3...v9.0.0) (2024-11-15)
 
 

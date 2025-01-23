@@ -30,7 +30,8 @@ const PrimaryBarContainer = styled(Container)`
 `;
 
 const ToggleBoardIcon = (): React.JSX.Element | null => {
-	const { minimized, boards } = useBoardStore();
+	const minimized = useBoardStore((s) => s.minimized);
+	const boards = useBoardStore((s) => s.boards);
 
 	return isEmpty(boards) ? null : (
 		<Container width={'3rem'} height={'3rem'}>

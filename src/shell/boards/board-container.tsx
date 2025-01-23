@@ -193,7 +193,7 @@ function calcPositionToRemainVisible(
 export const BoardContainer = (): React.JSX.Element | null => {
 	const t = getT();
 	const { boards, minimized, expanded, current, orderedBoards } = useBoardStore();
-	const { apps } = useAppStore();
+	const apps = useAppStore((s) => s.apps);
 
 	const boardDropdownItems = useMemo(
 		(): DropdownItem[] =>

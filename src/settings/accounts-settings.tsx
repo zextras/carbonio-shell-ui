@@ -23,8 +23,8 @@ import {
 	getAvailableEmailAddresses,
 	isPrimary
 } from './components/utils';
-import { JSNS, SHELL_APP_ID } from '../constants';
-import { getSoapFetch } from '../network/fetch';
+import { JSNS } from '../constants';
+import { soapFetchV2 } from '../network/fetch';
 import { useAccountStore, useUserAccount, useUserSettings } from '../store/account';
 import type { AccountState, IdentityAttrs } from '../types/account';
 import type {
@@ -37,6 +37,7 @@ import type {
 	ModifyIdentityRequest,
 	ModifyIdentityResponse
 } from '../types/network';
+import { isRawErrorSoapResponse } from '../types/network';
 
 export type AccountsSettingsBatchRequest = BatchRequest<{
 	ModifyIdentityRequest?: Array<ModifyIdentityRequest>;
@@ -71,10 +72,10 @@ function mapToCreateIdentityRequests(
 function mapToDeleteIdentityRequests(deleteArray: Array<string>): Array<DeleteIdentityRequest> {
 	return map(
 		deleteArray,
-		(identityId, index): DeleteIdentityRequest => ({
+		(identityId): DeleteIdentityRequest => ({
 			_jsns: JSNS.account,
 			identity: { id: identityId },
-			requestId: index.toString()
+			requestId: `deleteIdentity-${identityId}`
 		})
 	);
 }
@@ -84,14 +85,57 @@ function mapToModifyIdentityRequests(
 ): Array<ModifyIdentityRequest> {
 	return map<typeof modifyRecord, ModifyIdentityRequest>(
 		modifyRecord,
-		(item, index): ModifyIdentityRequest => ({
+		(item, idKey): ModifyIdentityRequest => ({
 			_jsns: JSNS.account,
 			identity: {
-				id: index,
+				id: idKey,
 				_attrs: item
-			}
+			},
+			requestId: `modifyIdentity-${idKey}`
 		})
 	);
+}
+
+function calculateConfirmedDeletedIdentities(
+	deleteIdentityRequests: Array<DeleteIdentityRequest>,
+	deleteIdentityResponse: DeleteIdentityResponse[] | undefined
+): string[] {
+	if (deleteIdentityResponse) {
+		return deleteIdentityResponse.reduce<string[]>((accumulator, response) => {
+			const deleteIdentityRequest = find(
+				deleteIdentityRequests,
+				(item) => item.requestId === response.requestId
+			);
+			if (deleteIdentityRequest) {
+				accumulator.push(deleteIdentityRequest.identity.id as string);
+			}
+			return accumulator;
+		}, []);
+	}
+	return [];
+}
+
+function calculateConfirmedModifiedIdentities(
+	modifyIdentityRequests: Array<ModifyIdentityRequest>,
+	modifyIdentityResponse: ModifyIdentityResponse[] | undefined
+): Record<string, Partial<IdentityAttrs>> {
+	if (modifyIdentityResponse) {
+		return modifyIdentityResponse.reduce<Record<string, Partial<IdentityAttrs>>>(
+			(accumulator, response) => {
+				const modifyIdentityRequest = find(
+					modifyIdentityRequests,
+					(item) => item.requestId === response.requestId
+				);
+				if (modifyIdentityRequest) {
+					accumulator[modifyIdentityRequest.identity.id as string] =
+						modifyIdentityRequest.identity._attrs ?? {};
+				}
+				return accumulator;
+			},
+			{}
+		);
+	}
+	return {};
 }
 
 export const AccountsSettings = (): React.JSX.Element => {
@@ -200,6 +244,10 @@ export const AccountsSettings = (): React.JSX.Element => {
 	);
 
 	useEffect(() => {
+		// useful to avoid the case where the selected identity is missing
+		setSelectedIdentityId((prevState) =>
+			prevState > identitiesDefault.length - 1 ? identitiesDefault.length - 1 : prevState
+		);
 		setIdentities(identitiesDefault);
 		resetLists();
 	}, [identitiesDefault, resetLists]);
@@ -240,41 +288,68 @@ export const AccountsSettings = (): React.JSX.Element => {
 			modifyRecordRef.current
 		);
 
-		const promise = getSoapFetch(SHELL_APP_ID)<
+		const promise = soapFetchV2<
 			AccountsSettingsBatchRequest,
-			AccountsSettingsBatchResponse
+			{ BatchResponse: AccountsSettingsBatchResponse }
 		>('Batch', {
 			_jsns: JSNS.all,
 			DeleteIdentityRequest: deleteRequests.length > 0 ? deleteRequests : undefined,
 			CreateIdentityRequest: createIdentityRequests.length > 0 ? createIdentityRequests : undefined,
 			ModifyIdentityRequest: modifyIdentityRequests.length > 0 ? modifyIdentityRequests : undefined
 		})
-			.then((res) => {
-				createSnackbar({
-					key: `new`,
-					replace: true,
-					severity: 'info',
-					label: t('message.snackbar.settings_saved', 'Edits saved correctly'),
-					autoHideTimeout: 3000,
-					hideButton: true
-				});
-				useAccountStore.setState(
-					produce((prevState: AccountState) => {
-						if (prevState.account) {
-							prevState.account.identities.identity = calculateNewIdentitiesState(
-								prevState.account.identities.identity,
-								deleteArrayRef.current,
-								map(res.CreateIdentityResponse, (item) => item.identity[0]),
-								modifyRecordRef.current
-							);
-							prevState.account.displayName =
-								find(
-									modifyRecordRef.current,
-									(item) => item.zimbraPrefIdentityId === prevState?.account?.id
-								)?.zimbraPrefIdentityName || prevState.account?.displayName;
-						}
-					})
-				);
+			.then((rowSoapResponse) => {
+				if (isRawErrorSoapResponse(rowSoapResponse)) {
+					throw new Error(
+						rowSoapResponse.Body.Fault.Reason.Text || 'Error while saving identities settings'
+					);
+				} else {
+					const accountSettingBatchResponse = rowSoapResponse.Body.BatchResponse;
+					// it means that something went wrong but not necessarily everything went wrong
+					if (accountSettingBatchResponse.Fault) {
+						createSnackbar({
+							key: `new`,
+							replace: true,
+							severity: 'error',
+							label: t('snackbar.error', 'Something went wrong, please try again'),
+							autoHideTimeout: 3000,
+							hideButton: true
+						});
+					} else {
+						createSnackbar({
+							key: `new`,
+							replace: true,
+							severity: 'info',
+							label: t('message.snackbar.settings_saved', 'Edits saved correctly'),
+							autoHideTimeout: 3000,
+							hideButton: true
+						});
+					}
+
+					const confirmedDeletedIdentities = calculateConfirmedDeletedIdentities(
+						deleteRequests,
+						accountSettingBatchResponse.DeleteIdentityResponse
+					);
+
+					const confirmedModifiedIdentities = calculateConfirmedModifiedIdentities(
+						modifyIdentityRequests,
+						accountSettingBatchResponse.ModifyIdentityResponse
+					);
+
+					useAccountStore.setState(
+						produce((prevState: AccountState) => {
+							if (prevState.account) {
+								prevState.account.identities.identity = calculateNewIdentitiesState(
+									prevState.account.identities.identity,
+									confirmedDeletedIdentities,
+									accountSettingBatchResponse.CreateIdentityResponse?.map(
+										(item) => item.identity[0]
+									) ?? [],
+									confirmedModifiedIdentities
+								);
+							}
+						})
+					);
+				}
 				resetLists();
 			})
 			.catch((error: unknown) => {

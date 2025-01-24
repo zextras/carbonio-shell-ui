@@ -79,10 +79,7 @@ const normalizeContext = ({ notify: rawNotify, ...context }: RawSoapContext): So
 	return normalizedContext;
 };
 
-const handleResponse = <R extends Record<string, unknown>>(
-	api: string,
-	res: RawSoapResponse<R>
-): R | ErrorSoapBodyResponse => {
+const handleResponseV2 = <R extends Record<string, unknown>>(res: RawSoapResponse<R>): void => {
 	const { noOpTimeout } = useNetworkStore.getState();
 	const { usedQuota } = useAccountStore.getState();
 	clearTimeout(noOpTimeout);
@@ -125,7 +122,13 @@ const handleResponse = <R extends Record<string, unknown>>(
 			..._context
 		});
 	}
+};
 
+const handleResponse = <R extends Record<string, unknown>>(
+	api: string,
+	res: RawSoapResponse<R>
+): R | ErrorSoapBodyResponse => {
+	handleResponseV2(res);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	return res?.Body?.Fault ? (res.Body as ErrorSoapBodyResponse) : (res.Body[`${api}Response`] as R);
@@ -145,6 +148,18 @@ export const getSoapFetch =
 				report(app)(e);
 				throw e;
 			}) as Promise<Response>;
+
+export const soapFetchV2 = async <Request, Response extends Record<string, unknown>>(
+	api: string,
+	body: Request,
+	otherAccount?: string,
+	signal?: AbortSignal
+): Promise<RawSoapResponse<Response>> => {
+	const rawSoapResponse = await soapFetch<Request, Response>(api, body, otherAccount, signal);
+	// apply side effects
+	handleResponseV2(rawSoapResponse);
+	return rawSoapResponse;
+};
 
 export const getXmlSoapFetch =
 	(app: string) =>
@@ -175,5 +190,3 @@ export const getXmlSoapFetch =
 				throw e;
 			}) as Promise<Response>;
 	};
-
-export const shellSoap = getSoapFetch(SHELL_APP_ID);

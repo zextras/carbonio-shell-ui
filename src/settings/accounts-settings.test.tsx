@@ -621,7 +621,20 @@ describe('Account setting', () => {
 				HttpResponse.json({
 					Body: {
 						BatchResponse: {
-							CreateIdentityResponse: []
+							CreateIdentityResponse: [
+								{
+									identity: [
+										createIdentity(
+											{
+												zimbraPrefIdentityId: persona3Id,
+												zimbraPrefIdentityName: persona3FullName,
+												zimbraPrefFromAddress: defaultEmail
+											},
+											false
+										)
+									]
+								}
+							]
 						}
 					}
 				})
@@ -822,7 +835,7 @@ describe('Account setting', () => {
 				HttpResponse.json({
 					Body: {
 						BatchResponse: {
-							ModifyPrefsResponse: [{ _jsns: JSNS.account }]
+							ModifyIdentityResponse: [{ _jsns: JSNS.account }]
 						}
 					}
 				})
@@ -872,7 +885,9 @@ describe('Account setting', () => {
 				HttpResponse.json({
 					Body: {
 						BatchResponse: {
-							ModifyPrefsResponse: [{ _jsns: JSNS.account }]
+							ModifyIdentityResponse: [
+								{ _jsns: JSNS.account, requestId: `modifyIdentity-${defaultId}` }
+							]
 						}
 					}
 				})
@@ -929,7 +944,9 @@ describe('Account setting', () => {
 				HttpResponse.json({
 					Body: {
 						BatchResponse: {
-							ModifyPrefsResponse: [{ _jsns: JSNS.account }]
+							DeleteIdentityResponse: [
+								{ _jsns: JSNS.account, requestId: `deleteIdentity-${persona1Id}` }
+							]
 						}
 					}
 				})

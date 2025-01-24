@@ -105,7 +105,12 @@ export type {
 	SoapContext,
 	SoapBody,
 	SoapHeader,
-	SoapFault
+	SoapFault,
+	RawSoapResponse,
+	RawSoapHeader,
+	RawSoapContext,
+	RawSuccessSoapResponse,
+	RawErrorSoapResponse
 } from './types/network/soap';
 
 export type { BatchRequest, BatchResponse } from './types/network';

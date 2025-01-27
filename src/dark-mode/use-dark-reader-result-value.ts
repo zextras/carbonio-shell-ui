@@ -38,7 +38,7 @@ export function isDarkReaderPropValues(
 // return the final calculated value between ZappDarkreaderModeZimletProp value and carbonioWebUiDarkMode config
 export function useDarkReaderResultValue(): undefined | DarkReaderPropValues {
 	const settings = useUserSettings();
-	const { carbonioWebUiDarkMode } = useLoginConfigStore();
+	const carbonioWebUiDarkMode = useLoginConfigStore((s) => s.carbonioWebUiDarkMode);
 
 	const settingReceived = useMemo(
 		() => size(settings.prefs) > 0 || size(settings.attrs) > 0 || size(settings.props) > 0,

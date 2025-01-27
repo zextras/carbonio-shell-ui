@@ -36,8 +36,10 @@ export const useUserAccounts = (): Array<Account> => {
 	return useMemo(() => (acct ? [acct] : []), [acct]);
 };
 
+const FALLBACK_ACCOUNT_RIGHTS = { targets: [] };
+
 export const useUserRights = (): AccountRights =>
-	useAccountStore((s) => s.account?.rights ?? { targets: [] });
+	useAccountStore((s) => s.account?.rights ?? FALLBACK_ACCOUNT_RIGHTS);
 
 export const useUserRight = (right: AccountRightName): Array<AccountRightTarget> => {
 	const { targets } = useUserRights();

@@ -6,5 +6,7 @@
 import { useNetworkStore } from './store';
 import type { SoapNotify, SoapRefresh } from '../../types/network';
 
-export const useNotify = (): SoapNotify[] => useNetworkStore((s) => s.notify ?? []);
-export const useRefresh = (): SoapRefresh => useNetworkStore((s) => s.refresh ?? {});
+const FALLBACK_NOTIFY: SoapNotify[] = [];
+const FALLBACK_REFRESH: SoapRefresh = {};
+export const useNotify = (): SoapNotify[] => useNetworkStore((s) => s.notify ?? FALLBACK_NOTIFY);
+export const useRefresh = (): SoapRefresh => useNetworkStore((s) => s.refresh ?? FALLBACK_REFRESH);

@@ -639,7 +639,7 @@ export const getIntegratedFunction: <TFunction extends AnyFunction = AnyFunction
 // @public (undocumented)
 export const getNotificationManager: () => INotificationManager;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 const getSoapFetch: (app: string) => <Request, Response extends Record<string, unknown>>(api: string, body: Request, otherAccount?: string, signal?: AbortSignal) => Promise<Response>;
 
 // @public (undocumented)
@@ -663,7 +663,7 @@ export const getUserSetting: <T = void>(...path: Array<string>) => string | T;
 // @public (undocumented)
 export const getUserSettings: () => AccountSettings;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 const getXmlSoapFetch: (app: string) => <Request, Response extends Record<string, unknown>>(api: string, body: Request, otherAccount?: string) => Promise<Response>;
 
 // @public (undocumented)
@@ -1222,7 +1222,7 @@ export interface SoapFault {
     };
 }
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const soapFetch: AppDependantExports['soapFetch'];
 
 // @public (undocumented)
@@ -1482,7 +1482,7 @@ type UtilityView = CarbonioAccessoryView<UtilityBarComponentProps> & {
 // @public (undocumented)
 type ValueOf<T> = T[keyof T];
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const xmlSoapFetch: AppDependantExports['xmlSoapFetch'];
 
 // @public (undocumented)

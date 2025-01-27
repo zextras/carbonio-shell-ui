@@ -133,6 +133,10 @@ const handleResponse = <R extends Record<string, unknown>>(
 	// @ts-ignore
 	return res?.Body?.Fault ? (res.Body as ErrorSoapBodyResponse) : (res.Body[`${api}Response`] as R);
 };
+
+/**
+ * @deprecated Use soapFetchV2 instead
+ */
 export const getSoapFetch =
 	(app: string) =>
 	<Request, Response extends Record<string, unknown>>(
@@ -161,6 +165,9 @@ export const soapFetchV2 = async <Request, Response extends Record<string, unkno
 	return rawSoapResponse;
 };
 
+/**
+ * @deprecated Use soapFetchV2 instead
+ */
 export const getXmlSoapFetch =
 	(app: string) =>
 	<Request, Response extends Record<string, unknown>>(

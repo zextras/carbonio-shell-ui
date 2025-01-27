@@ -302,54 +302,53 @@ export const AccountsSettings = (): React.JSX.Element => {
 					throw new Error(
 						rowSoapResponse.Body.Fault.Reason.Text || 'Error while saving identities settings'
 					);
-				} else {
-					const accountSettingBatchResponse = rowSoapResponse.Body.BatchResponse;
-					// it means that something went wrong but not necessarily everything went wrong
-					if (accountSettingBatchResponse.Fault) {
-						createSnackbar({
-							key: `new`,
-							replace: true,
-							severity: 'error',
-							label: t('snackbar.error', 'Something went wrong, please try again'),
-							autoHideTimeout: 3000,
-							hideButton: true
-						});
-					} else {
-						createSnackbar({
-							key: `new`,
-							replace: true,
-							severity: 'info',
-							label: t('message.snackbar.settings_saved', 'Edits saved correctly'),
-							autoHideTimeout: 3000,
-							hideButton: true
-						});
-					}
-
-					const confirmedDeletedIdentities = calculateConfirmedDeletedIdentities(
-						deleteRequests,
-						accountSettingBatchResponse.DeleteIdentityResponse
-					);
-
-					const confirmedModifiedIdentities = calculateConfirmedModifiedIdentities(
-						modifyIdentityRequests,
-						accountSettingBatchResponse.ModifyIdentityResponse
-					);
-
-					useAccountStore.setState(
-						produce((prevState: AccountState) => {
-							if (prevState.account) {
-								prevState.account.identities.identity = calculateNewIdentitiesState(
-									prevState.account.identities.identity,
-									confirmedDeletedIdentities,
-									accountSettingBatchResponse.CreateIdentityResponse?.map(
-										(item) => item.identity[0]
-									) ?? [],
-									confirmedModifiedIdentities
-								);
-							}
-						})
-					);
 				}
+				const accountSettingBatchResponse = rowSoapResponse.Body.BatchResponse;
+				// it means that something went wrong but not necessarily everything went wrong
+				if (accountSettingBatchResponse.Fault) {
+					createSnackbar({
+						key: `new`,
+						replace: true,
+						severity: 'error',
+						label: t('snackbar.error', 'Something went wrong, please try again'),
+						autoHideTimeout: 3000,
+						hideButton: true
+					});
+				} else {
+					createSnackbar({
+						key: `new`,
+						replace: true,
+						severity: 'info',
+						label: t('message.snackbar.settings_saved', 'Edits saved correctly'),
+						autoHideTimeout: 3000,
+						hideButton: true
+					});
+				}
+
+				const confirmedDeletedIdentities = calculateConfirmedDeletedIdentities(
+					deleteRequests,
+					accountSettingBatchResponse.DeleteIdentityResponse
+				);
+
+				const confirmedModifiedIdentities = calculateConfirmedModifiedIdentities(
+					modifyIdentityRequests,
+					accountSettingBatchResponse.ModifyIdentityResponse
+				);
+
+				useAccountStore.setState(
+					produce((prevState: AccountState) => {
+						if (prevState.account) {
+							prevState.account.identities.identity = calculateNewIdentitiesState(
+								prevState.account.identities.identity,
+								confirmedDeletedIdentities,
+								accountSettingBatchResponse.CreateIdentityResponse?.map(
+									(item) => item.identity[0]
+								) ?? [],
+								confirmedModifiedIdentities
+							);
+						}
+					})
+				);
 				resetLists();
 			})
 			.catch((error: unknown) => {

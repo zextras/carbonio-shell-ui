@@ -44,7 +44,13 @@ export declare const editSettings: AppDependantExports['editSettings'];
 
 export declare const getI18n: AppDependantExports['getI18n'];
 export declare const t: AppDependantExports['t'];
+/**
+ * @deprecated Use soapFetchV2 instead
+ */
 export declare const soapFetch: AppDependantExports['soapFetch'];
+/**
+ * @deprecated Use soapFetchV2 instead
+ */
 export declare const xmlSoapFetch: AppDependantExports['xmlSoapFetch'];
 export declare const useAppContext: AppDependantExports['useAppContext'];
 export declare const getAppContext: AppDependantExports['getAppContext'];

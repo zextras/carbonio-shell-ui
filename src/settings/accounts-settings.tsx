@@ -297,13 +297,13 @@ export const AccountsSettings = (): React.JSX.Element => {
 			CreateIdentityRequest: createIdentityRequests.length > 0 ? createIdentityRequests : undefined,
 			ModifyIdentityRequest: modifyIdentityRequests.length > 0 ? modifyIdentityRequests : undefined
 		})
-			.then((rowSoapResponse) => {
-				if (isRawErrorSoapResponse(rowSoapResponse)) {
+			.then((rawSoapResponse) => {
+				if (isRawErrorSoapResponse(rawSoapResponse)) {
 					throw new Error(
-						rowSoapResponse.Body.Fault.Reason.Text || 'Error while saving identities settings'
+						rawSoapResponse.Body.Fault.Reason.Text || 'Error while saving identities settings'
 					);
 				}
-				const accountSettingBatchResponse = rowSoapResponse.Body.BatchResponse;
+				const accountSettingBatchResponse = rawSoapResponse.Body.BatchResponse;
 				// it means that something went wrong but not necessarily everything went wrong
 				if (accountSettingBatchResponse.Fault) {
 					createSnackbar({
@@ -335,15 +335,16 @@ export const AccountsSettings = (): React.JSX.Element => {
 					accountSettingBatchResponse.ModifyIdentityResponse
 				);
 
+				const confirmedCreatedIdentities =
+					accountSettingBatchResponse.CreateIdentityResponse?.map((item) => item.identity[0]) ?? [];
+
 				useAccountStore.setState(
 					produce((prevState: AccountState) => {
 						if (prevState.account) {
 							prevState.account.identities.identity = calculateNewIdentitiesState(
 								prevState.account.identities.identity,
 								confirmedDeletedIdentities,
-								accountSettingBatchResponse.CreateIdentityResponse?.map(
-									(item) => item.identity[0]
-								) ?? [],
+								confirmedCreatedIdentities,
 								confirmedModifiedIdentities
 							);
 						}

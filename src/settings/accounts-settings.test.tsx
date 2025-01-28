@@ -494,7 +494,7 @@ describe('Account setting', () => {
 		).toBeVisible();
 	});
 
-	test('When create a new persona and delete it before saving and than create another persona the proposed identityName should be the same', async () => {
+	test('When create a new persona and delete it before saving and then create another persona the proposed identityName should be the same', async () => {
 		setupAccountStore({
 			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
@@ -1198,7 +1198,7 @@ describe('Account setting', () => {
 		expect(successSnackbar).toBeVisible();
 	});
 
-	it('should render an error snackbar when the user tries to delete an identity and the request fails and the previous state is restored', async () => {
+	it('should render an error snackbar and restore the state to the previous one when the user tries to delete an identity and the request fails', async () => {
 		setupAccountStore({
 			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(

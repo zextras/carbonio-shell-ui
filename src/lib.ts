@@ -56,8 +56,6 @@ export declare const addBoard: AppDependantExports['addBoard'];
  */
 export declare const getBridgedFunctions: AppDependantExports['getBridgedFunctions'];
 
-export * from './boot/app/app-direct-exports';
-
 export type {
 	PrimaryBarComponentProps,
 	SecondaryBarComponentProps,

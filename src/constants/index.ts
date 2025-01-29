@@ -7,10 +7,6 @@ import type { DynamicThemeFix } from 'darkreader';
 
 export const SHELL_APP_ID = 'carbonio-shell-ui';
 export const SETTINGS_APP_ID = 'settings';
-/**
- * @deprecated This constant is not used and will be deleted in next releases
- */
-export const ACCOUNTS_APP_ID = 'accounts';
 
 export const ACTION_TYPES = {
 	/** @deprecated this action does not belong to shell, and therefore it will be removed in next releases */
@@ -91,6 +87,9 @@ export const LOGIN_V3_CONFIG_PATH = '/zx/login/v3/config';
 export const DARK_READER_PROP_KEY = 'zappDarkreaderMode';
 export const SENTRY_SHELL_DSN = 'https://0ce2448c05b94f0182c47ae52c7ff52c@feedback.zextras.tools/6';
 
+/**
+ * @deprecated this const does not belong to shell
+ */
 export const RESULT_LABEL_TYPE = {
 	normal: 'normal',
 	warning: 'warning',

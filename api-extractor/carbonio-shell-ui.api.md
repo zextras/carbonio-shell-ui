@@ -381,7 +381,9 @@ export const BASENAME: string;
 export type BatchRequest<T extends Exactify<Record<`${string}Request`, unknown>, T> = Record<`${string}Request`, unknown>> = SoapBody<T>;
 
 // @public (undocumented)
-export type BatchResponse<T extends Exactify<Record<`${string}Response`, unknown>, T> = Record<`${string}Response`, unknown>> = SoapBody<T>;
+export type BatchResponse<T extends Exactify<Record<`${string}Response`, unknown>, T> = Record<`${string}Response`, unknown>> = SoapBody<T> & {
+    Fault?: SoapFault[];
+};
 
 // @public (undocumented)
 export type Board<T = unknown> = {
@@ -634,7 +636,7 @@ export const getIntegratedFunction: <TFunction extends AnyFunction = AnyFunction
 // @public (undocumented)
 export const getNotificationManager: () => INotificationManager;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 const getSoapFetch: (app: string) => <Request, Response extends Record<string, unknown>>(api: string, body: Request, otherAccount?: string, signal?: AbortSignal) => Promise<Response>;
 
 // @public (undocumented)
@@ -658,7 +660,7 @@ export const getUserSetting: <T = void>(...path: Array<string>) => string | T;
 // @public (undocumented)
 export const getUserSettings: () => AccountSettings;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 const getXmlSoapFetch: (app: string) => <Request, Response extends Record<string, unknown>>(api: string, body: Request, otherAccount?: string) => Promise<Response>;
 
 // @public (undocumented)
@@ -930,7 +932,15 @@ type PropsMods = Record<string, {
 export const pushHistory: (params: HistoryParams) => void;
 
 // @public (undocumented)
-interface RawSoapContext {
+export interface RawErrorSoapResponse {
+    // (undocumented)
+    Body: ErrorSoapBodyResponse;
+    // (undocumented)
+    Header: RawSoapHeader;
+}
+
+// @public (undocumented)
+export interface RawSoapContext {
     // (undocumented)
     change?: {
         token: number;
@@ -948,6 +958,12 @@ interface RawSoapContext {
         id: number;
         _content: number;
     };
+}
+
+// @public (undocumented)
+export interface RawSoapHeader {
+    // (undocumented)
+    context: RawSoapContext;
 }
 
 // @public (undocumented)
@@ -974,6 +990,17 @@ type RawSoapNotify = {
         id?: string;
     };
 };
+
+// @public (undocumented)
+export type RawSoapResponse<R extends Record<string, unknown>> = RawSuccessSoapResponse<R> | RawErrorSoapResponse;
+
+// @public (undocumented)
+export interface RawSuccessSoapResponse<R> {
+    // (undocumented)
+    Body: R;
+    // (undocumented)
+    Header: RawSoapHeader;
+}
 
 // @public (undocumented)
 export const registerActions: <TAction extends Action_2 = Action_2>(...items: Array<{
@@ -1167,8 +1194,6 @@ export type SoapBody<TBody = Record<string, unknown>> = TBody & {
     _jsns: NameSpace;
 };
 
-// Warning: (ae-forgotten-export) The symbol "RawSoapContext" needs to be exported by the entry point lib.d.ts
-//
 // @public (undocumented)
 export interface SoapContext extends Omit<RawSoapContext, 'notify'> {
     // (undocumented)
@@ -1194,8 +1219,11 @@ export interface SoapFault {
     };
 }
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const soapFetch: AppDependantExports['soapFetch'];
+
+// @public (undocumented)
+export const soapFetchV2: <Request, Response extends Record<string, unknown>>(api: string, body: Request, otherAccount?: string, signal?: AbortSignal) => Promise<RawSoapResponse<Response>>;
 
 // Warning: (ae-forgotten-export) The symbol "BaseFolder" needs to be exported by the entry point lib.d.ts
 //
@@ -1451,7 +1479,7 @@ type UtilityView = CarbonioAccessoryView<UtilityBarComponentProps> & {
 // @public (undocumented)
 type ValueOf<T> = T[keyof T];
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const xmlSoapFetch: AppDependantExports['xmlSoapFetch'];
 
 // @public (undocumented)
@@ -1514,7 +1542,7 @@ interface ZimletProp {
 // lib/types/misc/index.d.ts:98:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
 // lib/types/network/index.d.ts:79:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:11:5 - (ae-forgotten-export) The symbol "NameSpace" needs to be exported by the entry point lib.d.ts
-// lib/types/network/soap.d.ts:69:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
-// lib/types/network/soap.d.ts:91:9 - (ae-forgotten-export) The symbol "Tag" needs to be exported by the entry point lib.d.ts
+// lib/types/network/soap.d.ts:70:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
+// lib/types/network/soap.d.ts:92:9 - (ae-forgotten-export) The symbol "Tag" needs to be exported by the entry point lib.d.ts
 
 ```

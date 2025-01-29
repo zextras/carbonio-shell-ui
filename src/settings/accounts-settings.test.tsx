@@ -15,7 +15,7 @@ import { AccountsSettings } from './accounts-settings';
 import { JSNS } from '../constants';
 import server, { waitForRequest } from '../mocks/server';
 import { createAccount, createIdentity, setupAccountStore } from '../tests/account-utils';
-import { setup } from '../tests/utils';
+import { controlConsoleError, setup } from '../tests/utils';
 import type { BatchRequest, CreateIdentityResponse } from '../types/network';
 
 describe('Account setting', () => {
@@ -494,7 +494,7 @@ describe('Account setting', () => {
 		).toBeVisible();
 	});
 
-	test('When create a new persona and delete it before saving and than create another persona the proposed identityName should be the same', async () => {
+	test('When create a new persona and delete it before saving and then create another persona the proposed identityName should be the same', async () => {
 		setupAccountStore({
 			account: createAccount(defaultEmail, defaultId, [
 				createIdentity(
@@ -621,7 +621,20 @@ describe('Account setting', () => {
 				HttpResponse.json({
 					Body: {
 						BatchResponse: {
-							CreateIdentityResponse: []
+							CreateIdentityResponse: [
+								{
+									identity: [
+										createIdentity(
+											{
+												zimbraPrefIdentityId: persona3Id,
+												zimbraPrefIdentityName: persona3FullName,
+												zimbraPrefFromAddress: defaultEmail
+											},
+											false
+										)
+									]
+								}
+							]
 						}
 					}
 				})
@@ -822,7 +835,7 @@ describe('Account setting', () => {
 				HttpResponse.json({
 					Body: {
 						BatchResponse: {
-							ModifyPrefsResponse: [{ _jsns: JSNS.account }]
+							ModifyIdentityResponse: [{ _jsns: JSNS.account }]
 						}
 					}
 				})
@@ -872,7 +885,9 @@ describe('Account setting', () => {
 				HttpResponse.json({
 					Body: {
 						BatchResponse: {
-							ModifyPrefsResponse: [{ _jsns: JSNS.account }]
+							ModifyIdentityResponse: [
+								{ _jsns: JSNS.account, requestId: `modifyIdentity-${defaultId}` }
+							]
 						}
 					}
 				})
@@ -929,7 +944,9 @@ describe('Account setting', () => {
 				HttpResponse.json({
 					Body: {
 						BatchResponse: {
-							ModifyPrefsResponse: [{ _jsns: JSNS.account }]
+							DeleteIdentityResponse: [
+								{ _jsns: JSNS.account, requestId: `deleteIdentity-${persona1Id}` }
+							]
 						}
 					}
 				})
@@ -1034,5 +1051,246 @@ describe('Account setting', () => {
 		expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
 
 		expect(emailAddressInput).toHaveDisplayValue(defaultEmail);
+	});
+
+	it('should render the error snackbar when the user tries to create a new identity with the name already existing', async () => {
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				)
+			])
+		});
+
+		const batchRequestUrl = '/service/soap/BatchRequest';
+		server.use(
+			http.post(batchRequestUrl, () =>
+				HttpResponse.json({
+					Body: {
+						BatchResponse: {
+							Fault: [{}]
+						}
+					}
+				})
+			)
+		);
+
+		const { user } = setup(<AccountsSettings />);
+		await user.click(screen.getByRole('button', { name: /add persona/i }));
+		expect(screen.getAllByRole('listitem').length).toEqual(3);
+		const inputElement = screen.getByRole('textbox', { name: /persona name/i });
+		await user.clear(inputElement);
+		await user.type(inputElement, persona1FullName);
+		await user.click(screen.getByRole('button', { name: /save/i }));
+		const snackbar = await screen.findByText(/something went wrong, please try again/i);
+		expect(snackbar).toBeVisible();
+		expect(screen.getAllByRole('listitem').length).toEqual(2);
+	});
+
+	it('should render the error snackbar when the user tries to modify an identity with a name already existing', async () => {
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona2Id,
+						zimbraPrefIdentityName: persona2FullName,
+						zimbraPrefFromAddress: persona2Email
+					},
+					false
+				)
+			])
+		});
+
+		const batchRequestUrl = '/service/soap/BatchRequest';
+		server.use(
+			http.post(batchRequestUrl, () =>
+				HttpResponse.json({
+					Body: {
+						BatchResponse: {
+							Fault: [{}]
+						}
+					}
+				})
+			)
+		);
+
+		const { user } = setup(<AccountsSettings />);
+
+		await user.click(screen.getByText(persona2FullName));
+		const inputElement = screen.getByRole('textbox', { name: /persona name/i });
+		await user.clear(inputElement);
+		await user.type(inputElement, persona1FullName);
+		expect(
+			within(screen.getByTestId(`account-list-item-${persona2Id}`)).getByText(persona1FullName)
+		).toBeVisible();
+		await user.click(screen.getByRole('button', { name: /save/i }));
+		const successSnackbar = await screen.findByText(/something went wrong, please try again/i);
+		expect(successSnackbar).toBeVisible();
+		expect(
+			within(screen.getByTestId(`account-list-item-${persona2Id}`)).getByText(persona2FullName)
+		).toBeVisible();
+	});
+
+	it('should render an error snackbar when the total identities created is more than the zimbraIdentityMaxNumEntries value set', async () => {
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				)
+			]),
+			accountSettingsAttrs: { zimbraIdentityMaxNumEntries: 2 }
+		});
+
+		const { user } = setup(<AccountsSettings />);
+
+		expect(screen.getByText(persona1FullName)).toBeVisible();
+		await user.click(screen.getByRole('button', { name: /add persona/i }));
+		await user.click(screen.getByRole('button', { name: /save/i }));
+
+		const successSnackbar = await screen.findByText(
+			/the identity could not be created because you have exceeded your identity quota/i
+		);
+		expect(successSnackbar).toBeVisible();
+	});
+
+	it('should render an error snackbar and restore the state to the previous one when the user tries to delete an identity and the request fails', async () => {
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				),
+				createIdentity(
+					{
+						zimbraPrefIdentityId: persona1Id,
+						zimbraPrefIdentityName: persona1FullName,
+						zimbraPrefFromAddress: persona1Email
+					},
+					false
+				)
+			])
+		});
+
+		const batchRequestUrl = '/service/soap/BatchRequest';
+		server.use(
+			http.post(batchRequestUrl, () =>
+				HttpResponse.json({
+					Body: {
+						BatchResponse: {
+							Fault: [{}]
+						}
+					}
+				})
+			)
+		);
+		const { user } = setup(<AccountsSettings />);
+
+		await user.click(screen.getByText(persona1FullName));
+		await user.click(screen.getByRole('button', { name: /delete/i }));
+		const confirmButton = screen.getByRole('button', { name: /delete permanently/i });
+		act(() => {
+			// run modal timers
+			jest.runOnlyPendingTimers();
+		});
+		await user.click(confirmButton);
+		expect(screen.getAllByRole('listitem').length).toEqual(1);
+		await user.click(screen.getByRole('button', { name: /save/i }));
+		const snackbar = await screen.findByText(/something went wrong, please try again/i);
+		expect(snackbar).toBeVisible();
+		expect(screen.getAllByRole('listitem').length).toEqual(2);
+	});
+
+	it('should render an error when the response is a RawErrorSoapResponse', async () => {
+		controlConsoleError('ERROR_CODE: REASON_TEXT');
+		setupAccountStore({
+			account: createAccount(defaultEmail, defaultId, [
+				createIdentity(
+					{
+						zimbraPrefIdentityId: defaultId,
+						zimbraPrefIdentityName: defaultFullName,
+						zimbraPrefFromAddress: defaultEmail,
+						zimbraPrefFromDisplay: defaultFirstName
+					},
+					true
+				)
+			])
+		});
+
+		const batchRequestUrl = '/service/soap/BatchRequest';
+		server.use(
+			http.post(batchRequestUrl, () =>
+				HttpResponse.json({
+					Body: {
+						Fault: {
+							Code: { value: '' },
+							Detail: {
+								Error: {
+									Code: 'ERROR_CODE',
+									Trace: ''
+								}
+							},
+							Reason: {
+								Text: 'REASON_TEXT'
+							}
+						}
+					}
+				})
+			)
+		);
+		const { user } = setup(<AccountsSettings />);
+		await user.click(screen.getByRole('button', { name: /add persona/i }));
+		await user.click(screen.getByRole('button', { name: /save/i }));
+		const snackbar = await screen.findByText(/something went wrong, please try again/i);
+		expect(snackbar).toBeVisible();
 	});
 });

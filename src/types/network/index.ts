@@ -5,7 +5,7 @@
  */
 
 import type { AccountACEInfo } from './entities';
-import type { SoapBody, SoapContext } from './soap';
+import type { SoapBody, SoapContext, SoapFault } from './soap';
 import type { JSNS } from '../../constants';
 import type { Exactify, RequireAtLeastOne, ValueOf } from '../../utils/typeUtils';
 import type {
@@ -147,12 +147,14 @@ export type CreateIdentityRequest = SoapBody<{
 		name?: string;
 		_attrs: IdentityAttrs;
 	};
+	requestId?: string;
 }>;
 
 export type ModifyIdentityRequest = SoapBody<{
 	identity: {
 		_attrs?: IdentityAttrs;
 	} & RequireAtLeastOne<Pick<Identity, 'id' | 'name'>>;
+	requestId?: string;
 }>;
 
 export type DeleteIdentityRequest = SoapBody<{
@@ -170,6 +172,6 @@ export type BatchRequest<
 
 export type BatchResponse<
 	T extends Exactify<Record<`${string}Response`, unknown>, T> = Record<`${string}Response`, unknown>
-> = SoapBody<T>;
+> = SoapBody<T> & { Fault?: SoapFault[] };
 
 export type NameSpace = ValueOf<typeof JSNS>;

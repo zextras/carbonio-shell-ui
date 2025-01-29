@@ -86,9 +86,6 @@ type AccountRightTargetEmail = {
     addr: string;
 };
 
-// @public @deprecated (undocumented)
-export const ACCOUNTS_APP_ID = "accounts";
-
 // @public (undocumented)
 export type AccountSettings = {
     attrs: AccountSettingsAttrs;
@@ -1062,7 +1059,7 @@ export const report: ReturnType<typeof report_2>;
 // @public (undocumented)
 const report_2: (appId: string) => (error: Event_2, hint?: EventHint) => string;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const RESULT_LABEL_TYPE: {
     readonly normal: "normal";
     readonly warning: "warning";
@@ -1538,12 +1535,12 @@ interface ZimletProp {
 // lib/types/account/index.d.ts:145:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:146:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
 // lib/types/apps/index.d.ts:60:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:73:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:92:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:108:5 - (ae-forgotten-export) The symbol "Meta" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:112:5 - (ae-forgotten-export) The symbol "SoapRetentionPolicy" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:126:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
-// lib/types/network/index.d.ts:107:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:45:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:64:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:80:5 - (ae-forgotten-export) The symbol "Meta" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:84:5 - (ae-forgotten-export) The symbol "SoapRetentionPolicy" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:98:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
+// lib/types/network/index.d.ts:79:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:11:5 - (ae-forgotten-export) The symbol "NameSpace" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:70:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:92:9 - (ae-forgotten-export) The symbol "Tag" needs to be exported by the entry point lib.d.ts

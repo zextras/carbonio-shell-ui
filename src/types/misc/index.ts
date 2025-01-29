@@ -39,35 +39,6 @@ export type AccountProps = {
 	identityId?: string;
 };
 
-/** @deprecated */
-export type IdentityProps = {
-	id: string;
-	/**
-	 * Type of the identity
-	 */
-	flgType: 'primary' | 'persona' | 'IMAP' | 'POP';
-	/**
-	 * Localized description of the type of identity
-	 */
-	type: string;
-	/**
-	 * is a number while you are creating a new one
-	 */
-	identityId: string | number;
-	fromAddress?: string;
-	identityName?: string;
-	fromDisplay?: string;
-	recoveryAccount?: string;
-	replyToDisplay?: string;
-	replyToAddress?: string;
-	replyToEnabled?: string;
-	saveToSent?: string;
-	sentMailFolder?: string;
-	whenInFoldersEnabled?: string;
-	whenSentToEnabled?: string;
-	whenSentToAddresses?: string;
-};
-
 // Custom metadata
 type Meta<T extends Record<string, unknown>> = {
 	// Section. Normally present. If absent this indicates that CustomMetadata info is present but there are no sections to report on.

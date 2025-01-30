@@ -155,15 +155,6 @@ export const localeList = (t: TFunction): Array<LocaleDescriptorWithLabels> => [
 			defaultValue: 'Polish - {{value}}'
 		})
 	},
-	{
-		id: 'pt_BR',
-		...SUPPORTED_LOCALES.pt_BR,
-		localName: t('locale.portuguese_brazil', 'Portuguese (Brazil)'),
-		label: t('locale.label_portuguese_brazil', {
-			value: SUPPORTED_LOCALES.pt_BR.name,
-			defaultValue: 'Portuguese - {{value}}'
-		})
-	},
 
 	{
 		id: 'ro',

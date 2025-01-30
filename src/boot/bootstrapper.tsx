@@ -7,12 +7,10 @@
 import React, { useEffect } from 'react';
 
 import { SnackbarManager } from '@zextras/carbonio-design-system';
-import { BrowserRouter, Route, Switch, useParams } from 'react-router-dom';
-import { CompatRouter } from 'react-router-dom-v5-compat';
+import { BrowserRouter, Route, Routes, useParams } from 'react-router-dom';
 
 import AppLoaderMounter from './app/app-loader-mounter';
 import { DefaultViewsRegister } from './app/default-views';
-import { ContextBridge } from './context-bridge';
 import { Loader } from './loader';
 import { ShellI18nextProvider } from './shell-i18n-provider';
 import { ThemeProvider } from './theme-provider';
@@ -34,25 +32,22 @@ const Bootstrapper = (): React.JSX.Element => (
 	<ThemeProvider>
 		<ShellI18nextProvider>
 			<BrowserRouter basename={BASENAME}>
-				<CompatRouter>
-					<TrackerProvider>
-						<SnackbarManager>
-							<Loader />
-							{IS_FOCUS_MODE && (
-								<Switch>
-									<Route path={'/:route'}>
-										<FocusModeListener />
-									</Route>
-								</Switch>
-							)}
-							<DefaultViewsRegister />
-							<NotificationPermissionChecker />
-							<ContextBridge />
-							<AppLoaderMounter />
-							<ShellView />
-						</SnackbarManager>
-					</TrackerProvider>
-				</CompatRouter>
+				<TrackerProvider>
+					<SnackbarManager>
+						<Loader />
+						{IS_FOCUS_MODE && (
+							<Routes>
+								<Route path={'/:route'}>
+									<FocusModeListener />
+								</Route>
+							</Routes>
+						)}
+						<DefaultViewsRegister />
+						<NotificationPermissionChecker />
+						<AppLoaderMounter />
+						<ShellView />
+					</SnackbarManager>
+				</TrackerProvider>
 			</BrowserRouter>
 		</ShellI18nextProvider>
 	</ThemeProvider>

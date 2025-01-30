@@ -13,15 +13,12 @@ import {
 	type Crumb,
 	Divider,
 	Padding,
-	Row,
-	Text
+	Row
 } from '@zextras/carbonio-design-system';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { getT } from '../../store/i18n/hooks';
-import type { RouteLeavingGuardProps } from '../../ui-extras/nav-guard';
-import { RouteLeavingGuard } from '../../ui-extras/nav-guard';
 
 const CustomBreadcrumbs = styled(Breadcrumbs)`
 	.breadcrumbCrumb {
@@ -31,7 +28,7 @@ const CustomBreadcrumbs = styled(Breadcrumbs)`
 
 export type SettingsHeaderProps = {
 	title: string;
-	onSave: RouteLeavingGuardProps['onSave'];
+	onSave: () => void;
 	onCancel: () => void;
 	isDirty: boolean;
 };
@@ -43,7 +40,7 @@ export const SettingsHeader = ({
 	title
 }: SettingsHeaderProps): React.JSX.Element => {
 	const t = getT();
-	const history = useHistory();
+	const { search } = useLocation();
 	const params = useParams();
 	const crumbs = useMemo(
 		(): Crumb[] => [
@@ -61,31 +58,17 @@ export const SettingsHeader = ({
 		[t, title]
 	);
 
-	const search: string | undefined = history.location?.search;
-
 	useEffect(() => {
 		if (search) {
 			// TODO: why not using anchor links instead of js?
 			setTimeout(
-				() =>
-					document
-						.querySelector(`#${history.location.search}`.replace('?section=', ''))
-						?.scrollIntoView(),
+				() => document.querySelector(`#${search}`.replace('?section=', ''))?.scrollIntoView(),
 				1
 			);
 		}
-	}, [history, history.location, history.location.search, search, params]);
+	}, [search, params]);
 	return (
 		<>
-			<RouteLeavingGuard when={isDirty} onSave={onSave}>
-				<Text>
-					{t(
-						'label.unsaved_changes_line1',
-						'Are you sure you want to leave this page without saving?'
-					)}
-				</Text>
-				<Text>{t('label.unsaved_changes_line2', 'All your unsaved changes will be lost')}</Text>
-			</RouteLeavingGuard>
 			<Container
 				orientation="vertical"
 				mainAlignment="space-around"

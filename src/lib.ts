@@ -23,7 +23,6 @@ import type { report as reportApp } from './reporting/functions';
 
 // TODO: export only what is useful and not internal constants
 export * from './constants';
-export * from './ui-extras/app-link';
 export * from './settings/components/settings-header';
 export * from './boot/app/app-direct-exports';
 
@@ -57,10 +56,6 @@ export declare const getAppContext: AppDependantExports['getAppContext'];
 export declare const useApp: AppDependantExports['useApp'];
 export declare const getApp: AppDependantExports['getApp'];
 export declare const addBoard: AppDependantExports['addBoard'];
-/**
- * @deprecated Use hooks to access to functions which require context
- */
-export declare const getBridgedFunctions: AppDependantExports['getBridgedFunctions'];
 
 export type {
 	PrimaryBarComponentProps,

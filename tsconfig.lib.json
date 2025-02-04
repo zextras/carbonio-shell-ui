@@ -14,7 +14,6 @@
       "./src/i18next.d.ts",
       "./src/assets.d.ts",
       "./src/globals.d.ts",
-      "./src/styled-components.d.ts",
       "node"
     ]
   },

@@ -8,9 +8,7 @@
 import type { ComponentType } from 'react';
 import type React from 'react';
 
-import type { DefaultTheme } from 'styled-components';
-
-import type { QueryChip } from '../search';
+import type { Theme } from '@zextras/carbonio-design-system';
 
 export type CarbonioModule = {
 	commit: string;
@@ -38,7 +36,7 @@ export type BadgeInfo = {
 	icon?: string;
 	count?: number;
 	showCount?: boolean;
-	color?: keyof DefaultTheme['palette'];
+	color?: keyof Theme['palette'];
 };
 
 export type CarbonioView<P> = {
@@ -61,11 +59,6 @@ export type SecondaryBarComponentProps = { expanded: boolean };
 export type AppViewComponentProps = {};
 export type BoardViewComponentProps = {};
 export type SettingsViewProps = {};
-export type SearchViewProps = {
-	useQuery: () => [QueryChip[], Function];
-	ResultsHeader: React.ComponentType<{ label: string }>;
-	useDisableSearch: () => [boolean, Function];
-};
 export type PrimaryAccessoryViewProps = {};
 export type SecondaryAccessoryViewProps = { expanded: boolean };
 export type PanelMode = 'closed' | 'overlap' | 'open';
@@ -96,12 +89,6 @@ export type SettingsView = CarbonioView<SettingsViewProps> & {
 	label: string;
 	position: number;
 	subSections?: Array<SettingsSubSection>;
-};
-
-export type SearchView = CarbonioView<SearchViewProps> & {
-	icon: string;
-	label: string;
-	position: number;
 };
 
 export type PrimaryAccessoryView = CarbonioAccessoryView<PrimaryAccessoryViewProps> & {

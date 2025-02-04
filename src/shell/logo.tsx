@@ -9,7 +9,7 @@ import { useLogo } from '../store/login/hooks';
 import { useLoginConfigStore } from '../store/login/store';
 
 export const Logo = (props: Record<string, unknown>): React.JSX.Element => {
-	const { loaded } = useLoginConfigStore();
+	const loaded = useLoginConfigStore((s) => s.loaded);
 	const LogoElement = useLogo();
 
 	return loaded ? (

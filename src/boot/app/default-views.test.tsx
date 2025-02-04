@@ -8,7 +8,7 @@ import React from 'react';
 import { produce } from 'immer';
 
 import { DefaultViewsRegister } from './default-views';
-import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
+import { SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
 import { useAccountStore } from '../../store/account';
 import { useAppStore } from '../../store/app';
 import { useLoginConfigStore } from '../../store/login/store';
@@ -17,23 +17,6 @@ import type { AccountSettingsAttrs } from '../../types/account';
 import type { AppRouteDescriptor, SettingsView } from '../../types/apps';
 
 describe('DefaultViews', () => {
-	it('should register search module', () => {
-		setup(<DefaultViewsRegister />);
-		expect(useAppStore.getState().routes).toMatchObject<Record<string, AppRouteDescriptor>>({
-			[SEARCH_APP_ID]: {
-				id: SEARCH_APP_ID,
-				app: SEARCH_APP_ID,
-				route: SEARCH_APP_ID,
-				label: 'Search',
-				position: 1000,
-				visible: true,
-				primaryBar: 'SearchModOutline',
-				badge: { show: false },
-				appView: expect.any(Function)
-			}
-		});
-	});
-
 	it.each<AccountSettingsAttrs['zimbraFeatureOptionsEnabled']>(['TRUE', undefined])(
 		'should register settings module if zimbraFeatureOptionsEnabled is %s',
 		(value) => {

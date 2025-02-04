@@ -8,8 +8,7 @@ import { useEffect, useMemo } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import { SEARCH_APP_ID, SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
-import { SearchAppView } from '../../search/search-app-view';
+import { SETTINGS_APP_ID, SHELL_APP_ID } from '../../constants';
 import { WrappedAccountsSettings } from '../../settings/accounts-settings';
 import GeneralSettings from '../../settings/general-settings';
 import { useSettingsSubSections } from '../../settings/general-settings-sub-sections';
@@ -18,34 +17,6 @@ import { SettingsSidebar } from '../../settings/settings-sidebar';
 import { useAccountStore } from '../../store/account';
 import { useAppStore } from '../../store/app';
 import type { AppRouteDescriptor, SettingsView } from '../../types/apps';
-
-const useSearchModule = (): void => {
-	const [t] = useTranslation();
-
-	const searchRouteDescriptor = useMemo<AppRouteDescriptor>(
-		() => ({
-			id: SEARCH_APP_ID,
-			app: SEARCH_APP_ID,
-			route: SEARCH_APP_ID,
-			appView: SearchAppView,
-			badge: {
-				show: false
-			},
-			label: t('search.app', 'Search'),
-			position: 1000,
-			visible: true,
-			primaryBar: 'SearchModOutline'
-		}),
-		[t]
-	);
-	useEffect(() => {
-		useAppStore.getState().addRoute(searchRouteDescriptor);
-
-		return (): void => {
-			useAppStore.getState().removeRoute(searchRouteDescriptor.id);
-		};
-	}, [searchRouteDescriptor]);
-};
 
 const useSettingsModule = (): void => {
 	const [t] = useTranslation();
@@ -116,8 +87,6 @@ const useSettingsModule = (): void => {
 };
 
 export const DefaultViewsRegister = (): null => {
-	useSearchModule();
 	useSettingsModule();
-
 	return null;
 };

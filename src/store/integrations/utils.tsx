@@ -12,24 +12,28 @@ import { AppContextProvider } from '../../boot/app/app-context-provider';
 import type { Action } from '../../types/integrations';
 import type { AnyFunction } from '../../utils/typeUtils';
 
-export function buildIntegrationComponent(
+export function buildIntegrationComponent<TComponent extends React.ComponentType>(
 	integration: IntegrationsState['components'][string]
-): [React.FunctionComponent<Record<string, unknown>>, boolean] {
+): [TComponent, boolean] {
 	if (integration) {
-		const IntegrationComponent = (props: Record<string, unknown>): React.JSX.Element => (
+		const IntegrationComponent = (
+			props: React.ComponentPropsWithRef<TComponent>
+		): React.JSX.Element => (
 			<AppContextProvider pkg={integration.app}>
 				<integration.Item {...props} />
 			</AppContextProvider>
 		);
-		return [IntegrationComponent, true];
+		return [IntegrationComponent as TComponent, true];
 	}
-	return [(): null => null, false];
+	return [((): null => null) as unknown as TComponent, false];
 }
 
-export function buildIntegrationFunction(
+export function buildIntegrationFunction<TFunction extends AnyFunction>(
 	integration: IntegrationsState['functions'][string]
-): [AnyFunction, boolean] {
-	return integration ? [integration, true] : [(): void => undefined, false];
+): [TFunction, boolean] {
+	return integration
+		? [integration as TFunction, true]
+		: [((): void => undefined) as TFunction, false];
 }
 
 export function buildIntegrationActions<TAction extends Action>(
@@ -54,7 +58,10 @@ export function buildIntegrationAction(
 	target: unknown
 ): [Action | undefined, boolean] {
 	try {
-		return [integration?.(target), true];
+		if (!integration) {
+			return [undefined, false];
+		}
+		return [integration(target), true];
 	} catch (e) {
 		return [undefined, false];
 	}

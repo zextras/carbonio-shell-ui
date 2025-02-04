@@ -63,6 +63,12 @@ export type RawSoapResponse<R extends Record<string, unknown>> =
 	| RawSuccessSoapResponse<R>
 	| RawErrorSoapResponse;
 
+export function isRawErrorSoapResponse(
+	item: RawSoapResponse<Record<string, unknown>>
+): item is RawErrorSoapResponse {
+	return item.Body.Fault !== undefined;
+}
+
 export type SoapResponse<R> = SuccessSoapResponse<R> | ErrorSoapResponse;
 
 export type SoapRequest<R extends Record<string, unknown>> = {

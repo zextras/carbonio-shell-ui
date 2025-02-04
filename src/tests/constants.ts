@@ -138,9 +138,7 @@ export const ICONS = {
 	reduceBoard: 'CollapseOutline',
 	resetBoardSize: 'DiagonalArrowLeftDown',
 	unCollapseBoard: 'BoardOpen',
-	search: 'Search',
-	settings: 'SettingsModOutline',
-	clearSearch: 'BackspaceOutline'
+	settings: 'SettingsModOutline'
 };
 
 export const TESTID_SELECTORS = {

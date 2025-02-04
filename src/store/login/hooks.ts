@@ -11,7 +11,8 @@ import DefaultLogo from '../../../assets/carbonio.svg';
 import { useDarkMode } from '../../dark-mode/use-dark-mode';
 
 export function useLogo(): string | React.ComponentType {
-	const { carbonioWebUiAppLogo, carbonioWebUiDarkAppLogo } = useLoginConfigStore();
+	const carbonioWebUiAppLogo = useLoginConfigStore((s) => s.carbonioWebUiAppLogo);
+	const carbonioWebUiDarkAppLogo = useLoginConfigStore((s) => s.carbonioWebUiDarkAppLogo);
 
 	const { darkModeEnabled } = useDarkMode();
 

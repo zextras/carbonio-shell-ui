@@ -13,7 +13,7 @@ import { IS_FOCUS_MODE, JSNS, SHELL_APP_ID } from '../constants';
 import { report } from '../reporting/functions';
 import { useAccountStore } from '../store/account';
 import { useNetworkStore } from '../store/network';
-import { getPollingInterval, handleSync } from '../store/network/utils';
+import { getPollingInterval } from '../store/network/utils';
 import type { Account } from '../types/account';
 import type {
 	ErrorSoapBodyResponse,
@@ -79,10 +79,7 @@ const normalizeContext = ({ notify: rawNotify, ...context }: RawSoapContext): So
 	return normalizedContext;
 };
 
-const handleResponse = <R extends Record<string, unknown>>(
-	api: string,
-	res: RawSoapResponse<R>
-): R | ErrorSoapBodyResponse => {
+const handleResponseV2 = <R extends Record<string, unknown>>(res: RawSoapResponse<R>): void => {
 	const { noOpTimeout } = useNetworkStore.getState();
 	const { usedQuota } = useAccountStore.getState();
 	clearTimeout(noOpTimeout);
@@ -113,7 +110,6 @@ const handleResponse = <R extends Record<string, unknown>>(
 			res.Header.context?.notify?.[0]?.modified?.mbx?.[0]?.s;
 		const _context = normalizeContext(res.Header.context);
 		const seq = maxBy(_context.notify, 'seq')?.seq ?? 0;
-		handleSync(_context);
 		useAccountStore.setState({
 			usedQuota: responseUsedQuota ?? usedQuota
 		});
@@ -126,11 +122,21 @@ const handleResponse = <R extends Record<string, unknown>>(
 			..._context
 		});
 	}
+};
 
+const handleResponse = <R extends Record<string, unknown>>(
+	api: string,
+	res: RawSoapResponse<R>
+): R | ErrorSoapBodyResponse => {
+	handleResponseV2(res);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	return res?.Body?.Fault ? (res.Body as ErrorSoapBodyResponse) : (res.Body[`${api}Response`] as R);
 };
+
+/**
+ * @deprecated Use soapFetchV2 instead
+ */
 export const getSoapFetch =
 	(app: string) =>
 	<Request, Response extends Record<string, unknown>>(
@@ -147,6 +153,21 @@ export const getSoapFetch =
 				throw e;
 			}) as Promise<Response>;
 
+export const soapFetchV2 = async <Request, Response extends Record<string, unknown>>(
+	api: string,
+	body: Request,
+	otherAccount?: string,
+	signal?: AbortSignal
+): Promise<RawSoapResponse<Response>> => {
+	const rawSoapResponse = await soapFetch<Request, Response>(api, body, otherAccount, signal);
+	// apply side effects
+	handleResponseV2(rawSoapResponse);
+	return rawSoapResponse;
+};
+
+/**
+ * @deprecated Use soapFetchV2 instead
+ */
 export const getXmlSoapFetch =
 	(app: string) =>
 	<Request, Response extends Record<string, unknown>>(
@@ -176,5 +197,3 @@ export const getXmlSoapFetch =
 				throw e;
 			}) as Promise<Response>;
 	};
-
-export const shellSoap = getSoapFetch(SHELL_APP_ID);

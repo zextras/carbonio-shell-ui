@@ -55,7 +55,7 @@ Object.defineProperty(window, 'ResizeObserver', {
 Object.defineProperty(window.crypto, 'subtle', {
 	writable: true,
 	value: {
-		digest(algorithm: AlgorithmIdentifier, data: BufferSource): Promise<ArrayBuffer> {
+		digest(algorithm: AlgorithmIdentifier, data: BufferSource): Promise<Buffer> {
 			return new Promise((resolve) => {
 				const decoder = new TextDecoder();
 				const dataString = decoder.decode(data);

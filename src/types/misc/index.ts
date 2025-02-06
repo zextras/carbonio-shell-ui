@@ -9,12 +9,10 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import type { ComponentType } from 'react';
 
 import type { To } from 'history';
 
 import type { PanelMode } from '../apps';
-import type { Folder } from '../folder';
 
 export type HistoryParams =
 	| {
@@ -39,35 +37,6 @@ export type AccountProps = {
 	label?: string;
 	personaLabel?: string;
 	identityId?: string;
-};
-
-/** @deprecated */
-export type IdentityProps = {
-	id: string;
-	/**
-	 * Type of the identity
-	 */
-	flgType: 'primary' | 'persona' | 'IMAP' | 'POP';
-	/**
-	 * Localized description of the type of identity
-	 */
-	type: string;
-	/**
-	 * is a number while you are creating a new one
-	 */
-	identityId: string | number;
-	fromAddress?: string;
-	identityName?: string;
-	fromDisplay?: string;
-	recoveryAccount?: string;
-	replyToDisplay?: string;
-	replyToAddress?: string;
-	replyToEnabled?: string;
-	saveToSent?: string;
-	sentMailFolder?: string;
-	whenInFoldersEnabled?: string;
-	whenSentToEnabled?: string;
-	whenSentToAddresses?: string;
 };
 
 // Custom metadata
@@ -240,17 +209,3 @@ export type SortBy =
 	| 'rcptDesc'
 	| 'readAsc'
 	| 'readDesc';
-
-export type AccordionFolder = {
-	id: string;
-	label: string;
-	folder: Folder;
-	CustomComponent: ComponentType<{ folder: Folder }>;
-	items: Array<AccordionFolder>;
-};
-
-export type TreeNode<T> = T & {
-	id: string;
-	children: TreeNode<T>[];
-	parent?: TreeNode<T>;
-};

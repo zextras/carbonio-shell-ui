@@ -21,7 +21,8 @@ const CustomRow = styled(Row)`
 `;
 
 export const TabsList = (): React.JSX.Element => {
-	const { boards, orderedBoards } = useBoardStore();
+	const boards = useBoardStore((s) => s.boards);
+	const orderedBoards = useBoardStore((s) => s.orderedBoards);
 	return (
 		<CustomRow wrap="nowrap" height="100%" mainAlignment="flex-start" takeAvailableSpace>
 			{boards &&

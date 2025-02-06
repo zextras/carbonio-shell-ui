@@ -24,7 +24,6 @@ import type { report as reportApp } from './reporting/functions';
 // TODO: export only what is useful and not internal constants
 export * from './constants';
 export * from './ui-extras/app-link';
-export * from './ui-extras/spinner';
 export * from './settings/components/settings-header';
 export * from './boot/app/app-direct-exports';
 
@@ -34,7 +33,6 @@ export declare const setAppContext: AppDependantExports['setAppContext'];
 export declare const addRoute: AppDependantExports['addRoute'];
 export declare const addBoardView: AppDependantExports['addBoardView'];
 export declare const addSettingsView: AppDependantExports['addSettingsView'];
-export declare const addSearchView: AppDependantExports['addSearchView'];
 export declare const addUtilityView: AppDependantExports['addUtilityView'];
 export declare const addPrimaryAccessoryView: AppDependantExports['addPrimaryAccessoryView'];
 export declare const addSecondaryAccessoryView: AppDependantExports['addSecondaryAccessoryView'];
@@ -46,7 +44,13 @@ export declare const editSettings: AppDependantExports['editSettings'];
 
 export declare const getI18n: AppDependantExports['getI18n'];
 export declare const t: AppDependantExports['t'];
+/**
+ * @deprecated Use soapFetchV2 instead
+ */
 export declare const soapFetch: AppDependantExports['soapFetch'];
+/**
+ * @deprecated Use soapFetchV2 instead
+ */
 export declare const xmlSoapFetch: AppDependantExports['xmlSoapFetch'];
 export declare const useAppContext: AppDependantExports['useAppContext'];
 export declare const getAppContext: AppDependantExports['getAppContext'];
@@ -58,8 +62,6 @@ export declare const addBoard: AppDependantExports['addBoard'];
  */
 export declare const getBridgedFunctions: AppDependantExports['getBridgedFunctions'];
 
-export * from './boot/app/app-direct-exports';
-
 export type {
 	PrimaryBarComponentProps,
 	SecondaryBarComponentProps,
@@ -67,7 +69,6 @@ export type {
 	BoardViewComponentProps,
 	AppViewComponentProps,
 	SettingsViewProps,
-	SearchViewProps,
 	PrimaryAccessoryViewProps,
 	SecondaryAccessoryViewProps,
 	SettingsSubSection,
@@ -88,9 +89,6 @@ export type {
 export type { Board } from './types/boards';
 export type { BoardHooksContext } from './store/boards/hooks';
 
-export type { CreateTagResponse } from './network/tags';
-export type { Tag, Tags } from './types/tags';
-
 export type {
 	INotificationManager,
 	NotificationConfig,
@@ -98,9 +96,6 @@ export type {
 	PopupNotificationConfig
 } from './notification/NotificationManager';
 
-export type { QueryItem, QueryChip } from './types/search';
-
-export type { Folder, Folders, LinkFolder } from './types/folder';
 export type { Grant } from './types/misc';
 
 export type {
@@ -114,7 +109,12 @@ export type {
 	SoapContext,
 	SoapBody,
 	SoapHeader,
-	SoapFault
+	SoapFault,
+	RawSoapResponse,
+	RawSoapHeader,
+	RawSoapContext,
+	RawSuccessSoapResponse,
+	RawErrorSoapResponse
 } from './types/network/soap';
 
 export type { BatchRequest, BatchResponse } from './types/network';
@@ -123,4 +123,4 @@ export type { Action } from './types/integrations';
 
 export type { HistoryParams } from './types/misc';
 
-export type { FolderMessage } from './types/workers';
+import './types/theme';

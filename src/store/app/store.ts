@@ -12,8 +12,6 @@ import { create } from 'zustand';
 
 import { normalizeApp } from './utils';
 import { SHELL_APP_ID } from '../../constants';
-import { useSearchStore } from '../../search/search-store';
-import { SEARCH_MODULE_KEY } from '../../search/useSearchModule';
 import type {
 	AppRoute,
 	AppRouteDescriptor,
@@ -23,7 +21,6 @@ import type {
 	CarbonioModule,
 	PrimaryAccessoryView,
 	PrimaryBarView,
-	SearchView,
 	SecondaryAccessoryView,
 	SecondaryBarView,
 	SettingsView,
@@ -43,7 +40,6 @@ export type AppState = {
 		board: Array<BoardView>;
 		utilityBar: Array<UtilityView>;
 		settings: Array<SettingsView>;
-		search: Array<SearchView>;
 		primaryBarAccessories: Array<PrimaryAccessoryView>;
 		secondaryBarAccessories: Array<SecondaryAccessoryView>;
 	};
@@ -52,6 +48,7 @@ export type AppState = {
 
 export type AppActions = {
 	setApps: (apps: Array<Partial<CarbonioModule>>) => void;
+	upsertApp: (app: Pick<CarbonioModule, 'name' | 'display'>) => void;
 	addRoute: (routeData: AppRouteDescriptor) => string;
 	setRouteVisibility: (id: string, visible: boolean) => void;
 	removeRoute: (id: string) => void;
@@ -60,8 +57,6 @@ export type AppActions = {
 	removeBoardView: (id: string) => void;
 	addSettingsView: (data: SettingsView) => string;
 	removeSettingsView: (id: string) => void;
-	addSearchView: (data: SearchView) => string;
-	removeSearchView: (id: string) => void;
 	addUtilityView: (data: UtilityView) => string;
 	removeUtilityView: (id: string) => void;
 	addPrimaryAccessoryView: (data: PrimaryAccessoryView) => string;
@@ -124,7 +119,6 @@ const initialState: AppState = {
 		board: [],
 		utilityBar: [],
 		settings: [],
-		search: [],
 		primaryBarAccessories: [],
 		secondaryBarAccessories: []
 	}
@@ -164,6 +158,13 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 				appContexts
 			};
 		});
+	},
+	upsertApp: (app): void => {
+		set(
+			produce<AppState>((state) => {
+				state.apps[app.name] = { ...state.apps[app.name], ...app };
+			})
+		);
 	},
 	setAppContext:
 		(app) =>
@@ -265,45 +266,6 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 		set(
 			produce<AppState>((state) => {
 				removeById(state.views.settings, id);
-			})
-		);
-	},
-	addSearchView: (data): string => {
-		const {
-			focusMode,
-			views: { search }
-		} = get();
-
-		const lastSearchModule = sessionStorage.getItem(SEARCH_MODULE_KEY) ?? undefined;
-		const currentSearchModule = useSearchStore.getState().module;
-
-		if (currentSearchModule !== lastSearchModule || currentSearchModule === undefined) {
-			const currentModuleSearchView = search.find(
-				(searchView) => searchView.route === currentSearchModule
-			);
-			if (
-				!currentModuleSearchView ||
-				data.position < currentModuleSearchView?.position ||
-				data.route === lastSearchModule
-			) {
-				useSearchStore.getState().updateModule(data.route);
-			}
-		}
-
-		if (focusMode && data.route !== focusMode) {
-			return FOCUS_MODE_RESPONSE;
-		}
-		set(
-			produce<AppState>((state) => {
-				addAndSort(state.views.search, data);
-			})
-		);
-		return data.id;
-	},
-	removeSearchView: (id): void => {
-		set(
-			produce<AppState>((state) => {
-				removeById(state.views.search, id);
 			})
 		);
 	},

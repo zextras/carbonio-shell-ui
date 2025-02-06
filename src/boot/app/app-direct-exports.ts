@@ -47,29 +47,7 @@ export {
 	updateAccount
 } from '../../store/account';
 
-export { getTags, useTags } from '../../store/tags';
-export { changeTagColor, createTag, deleteTag, renameTag } from '../../network/tags';
-
 export { useNotify, useRefresh } from '../../store/network';
-
-export {
-	getFolder,
-	getFolders,
-	useFolder,
-	useFolders,
-	useRoot,
-	getRoot,
-	useRoots,
-	getRoots,
-	useSearchFolder,
-	useSearchFolders,
-	getSearchFolder,
-	getSearchFolders,
-	useFoldersByView,
-	useFoldersAccordionByView,
-	useRootByUser,
-	getRootByUser
-} from '../../store/folder';
 
 export {
 	closeBoard,
@@ -100,8 +78,6 @@ export {
 
 export { getNotificationManager } from '../../notification/NotificationManager';
 
-export { runSearch } from '../../search/run-search';
-
 export { useLocalStorage } from '../../shell/hooks/useLocalStorage';
 
 export const {
@@ -110,13 +86,30 @@ export const {
 	removeRoute,
 	removeBoardView,
 	removeSettingsView,
-	removeSearchView,
 	removeUtilityView,
 	removePrimaryAccessoryView,
-	removeSecondaryAccessoryView
+	removeSecondaryAccessoryView,
+	/**
+	 * Add or update the translatable display label for an app.
+	 * These fields are the ones used in the UI.
+	 * @param app - The app to update based on the name field
+	 * @example
+	 * upsertApp(\{
+	 *     name: 'carbonio-example-ui',
+	 *     display: t('label.app_name', 'Example')
+	 * \});
+	 */
+	upsertApp
 } = useAppStore.getState();
 
 export { useIsCarbonioCE } from '../../store/login/hooks';
 
 export type { NewAction } from '../../shell/creation-button';
+export type { AccountMenuAction } from '../../utility-bar/bar';
 export { useTracker } from '../../tracker/tracker';
+
+export { AppContextProvider } from './app-context-provider';
+
+export type { AuthGuardProps } from '../../ui-extras/auth-guard';
+export { AuthGuard } from '../../ui-extras/auth-guard';
+export { soapFetchV2 } from '../../network/fetch';

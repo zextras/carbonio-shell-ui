@@ -14,6 +14,11 @@ interface AppContextProviderProps {
 	children: React.ReactNode | React.ReactNode[];
 }
 
+/**
+ * Provide all the base providers of an app (e.g. i18n)
+ * @param pkg - The app key of the module
+ * @param children -
+ */
 export const AppContextProvider = ({
 	pkg,
 	children

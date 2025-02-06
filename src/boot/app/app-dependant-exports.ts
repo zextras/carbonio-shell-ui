@@ -13,7 +13,6 @@ import {
 	normalizeBoardView,
 	normalizePrimaryAccessoryView,
 	normalizeRoute,
-	normalizeSearchView,
 	normalizeSecondaryAccessoryView,
 	normalizeSettingsView,
 	normalizeUtilityView
@@ -29,7 +28,6 @@ import type {
 	BoardView,
 	CarbonioModule,
 	PrimaryAccessoryView,
-	SearchView,
 	SecondaryAccessoryView,
 	SettingsView,
 	UtilityView
@@ -40,7 +38,6 @@ export type AppDependantExports = {
 	addRoute: (data: Partial<AppRouteDescriptor>) => ReturnType<StoreAppSetters['addRoute']>;
 	addBoardView: (data: Omit<BoardView, 'app'>) => ReturnType<StoreAppSetters['addBoardView']>;
 	addSettingsView: (data: Partial<SettingsView>) => ReturnType<StoreAppSetters['addSettingsView']>;
-	addSearchView: (data: Partial<SearchView>) => ReturnType<StoreAppSetters['addSearchView']>;
 	addUtilityView: (data: Partial<UtilityView>) => ReturnType<StoreAppSetters['addUtilityView']>;
 	addPrimaryAccessoryView: (
 		data: Partial<PrimaryAccessoryView>
@@ -79,8 +76,6 @@ export const getAppDependantExports = (pkg: CarbonioModule): AppDependantExports
 			appStore.addBoardView(normalizeBoardView(data, pkg)),
 		addSettingsView: (data: Partial<SettingsView>) =>
 			appStore.addSettingsView(normalizeSettingsView(data, pkg)),
-		addSearchView: (data: Partial<SearchView>) =>
-			appStore.addSearchView(normalizeSearchView(data, pkg)),
 		addUtilityView: (data: Partial<UtilityView>) =>
 			appStore.addUtilityView(normalizeUtilityView(data, pkg)),
 		addPrimaryAccessoryView: (data: Partial<PrimaryAccessoryView>) =>

@@ -6,6 +6,7 @@
 import { useEffect, useMemo } from 'react';
 
 import { size } from 'lodash';
+import { useShallow } from 'zustand/react/shallow';
 
 import { LOCAL_STORAGE_LAST_PRIMARY_KEY } from '../constants';
 import { useDarkMode } from '../dark-mode/use-dark-mode';
@@ -16,8 +17,14 @@ export function useGetPrimaryColor(): string | undefined {
 	const [localStorageLastPrimary, setLocalStorageLastPrimary] = useLocalStorage<
 		Partial<Record<'dark' | 'light', string>> | undefined
 	>(LOCAL_STORAGE_LAST_PRIMARY_KEY, undefined);
-	const { carbonioWebUiPrimaryColor, carbonioWebUiDarkPrimaryColor, loaded } =
-		useLoginConfigStore();
+	const { carbonioWebUiPrimaryColor, carbonioWebUiDarkPrimaryColor, loaded } = useLoginConfigStore(
+		useShallow((s) => ({
+			carbonioWebUiPrimaryColor: s.carbonioWebUiPrimaryColor,
+			carbonioWebUiDarkPrimaryColor: s.carbonioWebUiDarkPrimaryColor,
+			loaded: s.loaded
+		}))
+	);
+
 	const { darkModeEnabled, darkReaderStatus } = useDarkMode();
 
 	const primaryColor = useMemo(() => {

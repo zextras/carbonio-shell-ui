@@ -4,16 +4,13 @@
 
 ```ts
 
-/// <reference types="node" />
-
 import { Action as Action_2 } from '../../lib';
 import { ActionFactory as ActionFactory_2 } from '../../types/integrations';
 import { AnyFunction as AnyFunction_2 } from '../../utils/typeUtils';
 import { BadgeInfo as BadgeInfo_2 } from '../../lib';
 import type { CaptureOptions } from 'posthog-js';
-import type { ChipItem } from '@zextras/carbonio-design-system';
+import { CarbonioModule as CarbonioModule_2 } from '../../types/apps';
 import type { ComponentType } from 'react';
-import type { DefaultTheme } from 'styled-components';
 import { DropdownItem } from '@zextras/carbonio-design-system';
 import type { DynamicThemeFix } from 'darkreader';
 import type { Event as Event_2 } from '@sentry/browser';
@@ -23,19 +20,10 @@ import type { LinkProps } from 'react-router-dom';
 import type { ModalProps } from '@zextras/carbonio-design-system';
 import type { Properties } from 'posthog-js';
 import { default as React_2 } from 'react';
+import type { ReactNode } from 'react';
 import type { TFunction } from 'i18next';
+import type { Theme } from '@zextras/carbonio-design-system';
 import type { To } from 'history';
-
-// @public (undocumented)
-type AccordionFolder = {
-    id: string;
-    label: string;
-    folder: Folder;
-    CustomComponent: ComponentType<{
-        folder: Folder;
-    }>;
-    items: Array<AccordionFolder>;
-};
 
 // @public (undocumented)
 export type Account = {
@@ -65,6 +53,14 @@ interface AccountACEInfo {
     zid?: string;
 }
 
+// @public
+export interface AccountMenuAction extends Action, Omit<DropdownItem, 'label' | 'onClick'> {
+    // (undocumented)
+    execute: NonNullable<DropdownItem['onClick']>;
+    // (undocumented)
+    position: number;
+}
+
 // @public (undocumented)
 type AccountRightName = 'sendAs' | 'sendAsDistList' | 'viewFreeBusy' | 'sendOnBehalfOf' | 'sendOnBehalfOfDistList';
 
@@ -89,9 +85,6 @@ type AccountRightTarget = {
 type AccountRightTargetEmail = {
     addr: string;
 };
-
-// @public @deprecated (undocumented)
-export const ACCOUNTS_APP_ID = "accounts";
 
 // @public (undocumented)
 export type AccountSettings = {
@@ -184,6 +177,7 @@ export const ACTION_TYPES: {
     readonly CALENDAR: "calendar";
     readonly CALENDAR_lIST: "calendar_list";
     readonly NEW: "new";
+    readonly ACCOUNT_MENU: "account_menu";
 };
 
 // @public (undocumented)
@@ -197,10 +191,10 @@ export const addBoard: AppDependantExports['addBoard'];
 // Warning: (ae-forgotten-export) The symbol "BoardState" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
-const addBoard_2: (app: string) => <T = unknown>(board: Omit<Board<T>, "id" | "app" | "icon"> & {
-    id?: string | undefined;
-    icon?: string | undefined;
-}, expanded?: BoardState['expanded']) => Board;
+const addBoard_2: (app: string) => <T = unknown>(board: Omit<Board<T>, "app" | "icon" | "id"> & {
+    id?: string;
+    icon?: string;
+}, expanded?: BoardState["expanded"]) => Board;
 
 // @public (undocumented)
 export const addBoardView: AppDependantExports['addBoardView'];
@@ -210,9 +204,6 @@ export const addPrimaryAccessoryView: AppDependantExports['addPrimaryAccessoryVi
 
 // @public (undocumented)
 export const addRoute: AppDependantExports['addRoute'];
-
-// @public (undocumented)
-export const addSearchView: AppDependantExports['addSearchView'];
 
 // @public (undocumented)
 export const addSecondaryAccessoryView: AppDependantExports['addSecondaryAccessoryView'];
@@ -229,6 +220,7 @@ type AnyFunction = (...args: any[]) => any;
 // @public (undocumented)
 type AppActions = {
     setApps: (apps: Array<Partial<CarbonioModule>>) => void;
+    upsertApp: (app: Pick<CarbonioModule, 'name' | 'display'>) => void;
     addRoute: (routeData: AppRouteDescriptor) => string;
     setRouteVisibility: (id: string, visible: boolean) => void;
     removeRoute: (id: string) => void;
@@ -237,8 +229,6 @@ type AppActions = {
     removeBoardView: (id: string) => void;
     addSettingsView: (data: SettingsView) => string;
     removeSettingsView: (id: string) => void;
-    addSearchView: (data: SearchView) => string;
-    removeSearchView: (id: string) => void;
     addUtilityView: (data: UtilityView) => string;
     removeUtilityView: (id: string) => void;
     addPrimaryAccessoryView: (data: PrimaryAccessoryView) => string;
@@ -248,13 +238,25 @@ type AppActions = {
     setAppContext: (app: string) => (context: unknown) => void;
 };
 
+// Warning: (ae-forgotten-export) The symbol "AppContextProviderProps" needs to be exported by the entry point lib.d.ts
+//
+// @public
+export const AppContextProvider: ({ pkg, children }: AppContextProviderProps) => React_2.JSX.Element;
+
+// @public (undocumented)
+interface AppContextProviderProps {
+    // (undocumented)
+    children: React_2.ReactNode | React_2.ReactNode[];
+    // (undocumented)
+    pkg: string;
+}
+
 // @public (undocumented)
 type AppDependantExports = {
     setAppContext: ReturnType<AppActions['setAppContext']>;
     addRoute: (data: Partial<AppRouteDescriptor>) => ReturnType<AppActions['addRoute']>;
     addBoardView: (data: Omit<BoardView, 'app'>) => ReturnType<AppActions['addBoardView']>;
     addSettingsView: (data: Partial<SettingsView>) => ReturnType<AppActions['addSettingsView']>;
-    addSearchView: (data: Partial<SearchView>) => ReturnType<AppActions['addSearchView']>;
     addUtilityView: (data: Partial<UtilityView>) => ReturnType<AppActions['addUtilityView']>;
     addPrimaryAccessoryView: (data: Partial<PrimaryAccessoryView>) => ReturnType<AppActions['addPrimaryAccessoryView']>;
     addSecondaryAccessoryView: (data: Partial<SecondaryAccessoryView>) => ReturnType<AppActions['addSecondaryAccessoryView']>;
@@ -314,12 +316,20 @@ export type AudioNotificationConfig = {
 };
 
 // @public (undocumented)
+export const AuthGuard: ({ children }: AuthGuardProps) => ReactNode;
+
+// @public (undocumented)
+export type AuthGuardProps = {
+    children: ReactNode;
+};
+
+// @public (undocumented)
 export type BadgeInfo = {
     show: boolean;
     icon?: string;
     count?: number;
     showCount?: boolean;
-    color?: keyof DefaultTheme['palette'];
+    color?: keyof Theme['palette'];
 };
 
 // @public (undocumented)
@@ -371,7 +381,9 @@ export const BASENAME: string;
 export type BatchRequest<T extends Exactify<Record<`${string}Request`, unknown>, T> = Record<`${string}Request`, unknown>> = SoapBody<T>;
 
 // @public (undocumented)
-export type BatchResponse<T extends Exactify<Record<`${string}Response`, unknown>, T> = Record<`${string}Response`, unknown>> = SoapBody<T>;
+export type BatchResponse<T extends Exactify<Record<`${string}Response`, unknown>, T> = Record<`${string}Response`, unknown>> = SoapBody<T> & {
+    Fault?: SoapFault[];
+};
 
 // @public (undocumented)
 export type Board<T = unknown> = {
@@ -462,11 +474,6 @@ type CarbonioView<P> = {
     component: ComponentType<P>;
 };
 
-// Warning: (ae-forgotten-export) The symbol "TagActionResponse" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-export const changeTagColor: (id: string, color: string | number) => Promise<TagActionResponse>;
-
 // @public (undocumented)
 export const closeBoard: (id: string) => void;
 
@@ -482,14 +489,6 @@ type ContextBridgeState = {
 // @public (undocumented)
 type CreateIdentityResponse = {
     identity: [Identity];
-};
-
-// @public (undocumented)
-export const createTag: (tag: Omit<Tag, 'id'>) => Promise<CreateTagResponse>;
-
-// @public (undocumented)
-export type CreateTagResponse = {
-    tag: [Tag];
 };
 
 // @public (undocumented)
@@ -511,9 +510,6 @@ export const DELEGATED_SEND_SAVE_TARGET: string[];
 
 // @public (undocumented)
 type DeleteIdentityResponse = Record<string, never>;
-
-// @public (undocumented)
-export const deleteTag: (id: string) => Promise<TagActionResponse>;
 
 // Warning: (ae-forgotten-export) The symbol "DurationUnit" needs to be exported by the entry point lib.d.ts
 //
@@ -559,66 +555,6 @@ type Exactify<T, X extends T> = T & {
 // @public (undocumented)
 export const expandBoards: () => void;
 
-// Warning: (ae-forgotten-export) The symbol "UserFolder" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-export type Folder = UserFolder | LinkFolder;
-
-// @public @deprecated (undocumented)
-export const FOLDER_VIEW: {
-    search_folder: string;
-    tag: string;
-    conversation: string;
-    message: string;
-    contact: string;
-    document: string;
-    appointment: string;
-    virtual_conversation: string;
-    remote_folder: string;
-    wiki: string;
-    task: string;
-    chat: string;
-};
-
-// @public (undocumented)
-type FolderFields = {
-    isLink: boolean;
-    depth: number;
-    parent?: Folder;
-    children: Array<Folder>;
-};
-
-// Warning: (ae-forgotten-export) The symbol "WorkerMessage" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-export type FolderMessage = WorkerMessage<Record<string, never>>;
-
-// @public @deprecated (undocumented)
-export const FOLDERS: {
-    readonly USER_ROOT: "1";
-    readonly INBOX: "2";
-    readonly TRASH: "3";
-    readonly SPAM: "4";
-    readonly SENT: "5";
-    readonly DRAFTS: "6";
-    readonly CONTACTS: "7";
-    readonly TAGS: "8";
-    readonly CONVERSATIONS: "9";
-    readonly CALENDAR: "10";
-    readonly ROOT: "11";
-    readonly NOTEBOOK: "12";
-    readonly AUTO_CONTACTS: "13";
-    readonly IM_LOGS: "14";
-    readonly TASKS: "15";
-    readonly BRIEFCASE: "16";
-    readonly LAST_SYSTEM_FOLDER_POSITION: "16.1";
-};
-
-// @public (undocumented)
-export type Folders = {
-    [id: string]: Folder;
-};
-
 // @public (undocumented)
 type FolderView = 'search folder' | 'tag' | 'conversation' | 'message' | 'contact' | 'document' | 'appointment' | 'virtual conversation' | 'remote folder' | 'wiki' | 'task' | 'chat';
 
@@ -640,10 +576,10 @@ type GeneralizedTimeObj = {
 };
 
 // @public (undocumented)
-export const getAction: <T>(type: string, id: string, target?: T | undefined) => [Action | undefined, boolean];
+export const getAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];
 
 // @public (undocumented)
-export const getActions: <TContext, TAction extends Action = Action>(context: TContext, type: string) => TAction[];
+export const getActions: <TContext, TAction extends Action = Action>(context: TContext, type: string) => Array<TAction>;
 
 // @public (undocumented)
 export const getApp: AppDependantExports['getApp'];
@@ -682,14 +618,8 @@ export const getCurrentRoute: () => AppRoute | undefined;
 //
 // @public (undocumented)
 const getEditSettingsForApp: (app: string) => (mods: Mods) => Promise<EditSettingsBatchResponse & {
-    type: 'fulfilled';
+    type: "fulfilled";
 }>;
-
-// @public (undocumented)
-export const getFolder: (id: string) => Folder | undefined;
-
-// @public (undocumented)
-export const getFolders: () => Folders;
 
 // @public (undocumented)
 export const getI18n: AppDependantExports['getI18n'];
@@ -698,38 +628,16 @@ export const getI18n: AppDependantExports['getI18n'];
 const getI18n_2: (app: string) => () => i18n;
 
 // @public (undocumented)
-export const getIntegratedComponent: (id: string) => [React_2.FunctionComponent<Record<string, unknown>>, boolean];
+export const getIntegratedComponent: <TComponent extends React_2.ComponentType<any> = React_2.ComponentType<Record<string, unknown>>>(id: string) => [TComponent, boolean];
 
 // @public (undocumented)
-export const getIntegratedFunction: (id: string) => [AnyFunction, boolean];
+export const getIntegratedFunction: <TFunction extends AnyFunction = AnyFunction>(id: string) => [TFunction, boolean];
 
 // @public (undocumented)
 export const getNotificationManager: () => INotificationManager;
 
-// @public (undocumented)
-export const getRoot: (id: string) => Folder | undefined;
-
-// Warning: (ae-forgotten-export) The symbol "SearchFolder" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-export const getRootByUser: (userId: string) => Folder | SearchFolder | Record<string, never>;
-
-// @public (undocumented)
-export const getRoots: () => Folders;
-
-// @public (undocumented)
-export const getSearchFolder: (id: string) => SearchFolder | undefined;
-
-// Warning: (ae-forgotten-export) The symbol "Searches" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-export const getSearchFolders: () => Searches;
-
-// @public (undocumented)
-const getSoapFetch: (app: string) => <Request_1, Response_1 extends Record<string, unknown>>(api: string, body: Request_1, otherAccount?: string, signal?: AbortSignal) => Promise<Response_1>;
-
-// @public (undocumented)
-export const getTags: (ids?: Array<string> | string) => Tags;
+// @public @deprecated (undocumented)
+const getSoapFetch: (app: string) => <Request, Response extends Record<string, unknown>>(api: string, body: Request, otherAccount?: string, signal?: AbortSignal) => Promise<Response>;
 
 // @public (undocumented)
 const getTFunction: (app: string) => TFunction;
@@ -752,8 +660,8 @@ export const getUserSetting: <T = void>(...path: Array<string>) => string | T;
 // @public (undocumented)
 export const getUserSettings: () => AccountSettings;
 
-// @public (undocumented)
-const getXmlSoapFetch: (app: string) => <Request_1, Response_1 extends Record<string, unknown>>(api: string, body: Request_1, otherAccount?: string) => Promise<Response_1>;
+// @public @deprecated (undocumented)
+const getXmlSoapFetch: (app: string) => <Request, Response extends Record<string, unknown>>(api: string, body: Request, otherAccount?: string) => Promise<Response>;
 
 // @public (undocumented)
 export const goBackHistory: () => void;
@@ -875,15 +783,6 @@ export const JSNS: {
     readonly sync: "urn:zimbraSync";
 };
 
-// Warning: (ae-forgotten-export) The symbol "BaseFolder" needs to be exported by the entry point lib.d.ts
-// Warning: (ae-forgotten-export) The symbol "FolderFields" needs to be exported by the entry point lib.d.ts
-// Warning: (ae-forgotten-export) The symbol "LinkFolderFields" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-export type LinkFolder = BaseFolder & FolderFields & LinkFolderFields & {
-    isLink: true;
-};
-
 // @public (undocumented)
 type LinkFolderFields = {
     owner?: string;
@@ -900,9 +799,6 @@ export const LOCAL_STORAGE_BOARD_SIZE = "board_size";
 
 // @public (undocumented)
 export const LOCAL_STORAGE_LAST_PRIMARY_KEY = "config";
-
-// @public (undocumented)
-export const LOCAL_STORAGE_SEARCH_KEY = "search_suggestions";
 
 // @public (undocumented)
 export const LOCAL_STORAGE_SETTINGS_KEY = "settings";
@@ -1036,18 +932,15 @@ type PropsMods = Record<string, {
 export const pushHistory: (params: HistoryParams) => void;
 
 // @public (undocumented)
-export type QueryChip = ChipItem & QueryItem;
-
-// @public (undocumented)
-export interface QueryItem {
+export interface RawErrorSoapResponse {
     // (undocumented)
-    app?: string;
+    Body: ErrorSoapBodyResponse;
     // (undocumented)
-    value?: string;
+    Header: RawSoapHeader;
 }
 
 // @public (undocumented)
-interface RawSoapContext {
+export interface RawSoapContext {
     // (undocumented)
     change?: {
         token: number;
@@ -1065,6 +958,12 @@ interface RawSoapContext {
         id: number;
         _content: number;
     };
+}
+
+// @public (undocumented)
+export interface RawSoapHeader {
+    // (undocumented)
+    context: RawSoapContext;
 }
 
 // @public (undocumented)
@@ -1093,41 +992,49 @@ type RawSoapNotify = {
 };
 
 // @public (undocumented)
-export const registerActions: <TAction extends Action_2 = Action_2>(...items: {
+export type RawSoapResponse<R extends Record<string, unknown>> = RawSuccessSoapResponse<R> | RawErrorSoapResponse;
+
+// @public (undocumented)
+export interface RawSuccessSoapResponse<R> {
+    // (undocumented)
+    Body: R;
+    // (undocumented)
+    Header: RawSoapHeader;
+}
+
+// @public (undocumented)
+export const registerActions: <TAction extends Action_2 = Action_2>(...items: Array<{
     id: string;
     action: ActionFactory_2<unknown, TAction>;
     type: string;
-}[]) => void;
+}>) => void;
 
 // @public (undocumented)
 export const registerComponents: AppDependantExports['registerComponents'];
 
 // @public (undocumented)
-export const registerFunctions: (...items: {
+export const registerFunctions: (...items: Array<{
     id: string;
     fn: AnyFunction_2;
-}[]) => void;
+}>) => void;
 
 // @public (undocumented)
-export const removeActions: (...ids: string[]) => void;
+export const removeActions: (...ids: Array<string>) => void;
 
 // @public (undocumented)
 export const removeBoardView: (id: string) => void;
 
 // @public (undocumented)
-export const removeComponents: (...ids: string[]) => void;
+export const removeComponents: (...ids: Array<string>) => void;
 
 // @public (undocumented)
-export const removeFunctions: (...ids: string[]) => void;
+export const removeFunctions: (...ids: Array<string>) => void;
 
 // @public (undocumented)
 export const removePrimaryAccessoryView: (id: string) => void;
 
 // @public (undocumented)
 export const removeRoute: (id: string) => void;
-
-// @public (undocumented)
-export const removeSearchView: (id: string) => void;
 
 // @public (undocumented)
 export const removeSecondaryAccessoryView: (id: string) => void;
@@ -1137,9 +1044,6 @@ export const removeSettingsView: (id: string) => void;
 
 // @public (undocumented)
 export const removeUtilityView: (id: string) => void;
-
-// @public (undocumented)
-export const renameTag: (id: string, name: string) => Promise<TagActionResponse>;
 
 // @public (undocumented)
 export const reopenBoards: () => void;
@@ -1155,7 +1059,7 @@ export const report: ReturnType<typeof report_2>;
 // @public (undocumented)
 const report_2: (appId: string) => (error: Event_2, hint?: EventHint) => string;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const RESULT_LABEL_TYPE: {
     readonly normal: "normal";
     readonly warning: "warning";
@@ -1170,9 +1074,6 @@ type RevokeRightsResponse = {
 // @public (undocumented)
 type Right = 'invite' | 'loginAs' | 'sendAs' | 'sendOnBehalfOf' | 'viewFreeBusy';
 
-// @public @deprecated (undocumented)
-export const ROOT_NAME = "USER_ROOT";
-
 // @public (undocumented)
 interface RouteLeavingGuardProps {
     // (undocumented)
@@ -1184,9 +1085,6 @@ interface RouteLeavingGuardProps {
     // (undocumented)
     when?: boolean;
 }
-
-// @public (undocumented)
-export const runSearch: (query: Array<QueryChip>, module: string) => void;
 
 // @public (undocumented)
 export const SCALING_LIMIT: {
@@ -1214,39 +1112,10 @@ export const SCALING_OPTIONS: readonly [{
 }];
 
 // @public (undocumented)
-export const SEARCH_APP_ID = "search";
-
-// @public (undocumented)
-type Searches = {
-    [id: string]: SearchFolder;
-};
-
-// Warning: (ae-forgotten-export) The symbol "SearchFolderFields" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-type SearchFolder = BaseFolder & Pick<FolderFields, 'parent' | 'isLink'> & SearchFolderFields;
-
-// @public (undocumented)
 type SearchFolderFields = {
     query?: string;
     sortBy?: SortBy;
     types?: string;
-};
-
-// @public (undocumented)
-type SearchView = CarbonioView<SearchViewProps> & {
-    icon: string;
-    label: string;
-    position: number;
-};
-
-// @public (undocumented)
-export type SearchViewProps = {
-    useQuery: () => [QueryChip[], Function];
-    ResultsHeader: React_2.ComponentType<{
-        label: string;
-    }>;
-    useDisableSearch: () => [boolean, Function];
 };
 
 // @public (undocumented)
@@ -1325,8 +1194,6 @@ export type SoapBody<TBody = Record<string, unknown>> = TBody & {
     _jsns: NameSpace;
 };
 
-// Warning: (ae-forgotten-export) The symbol "RawSoapContext" needs to be exported by the entry point lib.d.ts
-//
 // @public (undocumented)
 export interface SoapContext extends Omit<RawSoapContext, 'notify'> {
     // (undocumented)
@@ -1352,9 +1219,14 @@ export interface SoapFault {
     };
 }
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const soapFetch: AppDependantExports['soapFetch'];
 
+// @public (undocumented)
+export const soapFetchV2: <Request, Response extends Record<string, unknown>>(api: string, body: Request, otherAccount?: string, signal?: AbortSignal) => Promise<RawSoapResponse<Response>>;
+
+// Warning: (ae-forgotten-export) The symbol "BaseFolder" needs to be exported by the entry point lib.d.ts
+//
 // @public (undocumented)
 export type SoapFolder = BaseFolder & {
     folder?: Array<SoapFolder>;
@@ -1368,6 +1240,8 @@ export interface SoapHeader {
     context: SoapContext;
 }
 
+// Warning: (ae-forgotten-export) The symbol "LinkFolderFields" needs to be exported by the entry point lib.d.ts
+//
 // @public (undocumented)
 export type SoapLink = SoapFolder & LinkFolderFields;
 
@@ -1410,14 +1284,13 @@ type SoapRetentionPolicy = Array<{
     }>;
 }>;
 
+// Warning: (ae-forgotten-export) The symbol "SearchFolderFields" needs to be exported by the entry point lib.d.ts
+//
 // @public (undocumented)
 type SoapSearchFolder = SoapFolder & SearchFolderFields;
 
 // @public (undocumented)
 type SortBy = 'dateDesc' | 'dateAsc' | 'idDesc' | 'idAsc' | 'subjDesc' | 'subjAsc' | 'nameDesc' | 'nameAsc' | 'durDesc' | 'durAsc' | 'none' | 'taskDueAsc' | 'taskDueDesc' | 'taskStatusAsc' | 'taskStatusDesc' | 'taskPercCompletedAsc' | 'taskPercCompletedDesc' | 'rcptAsc' | 'rcptDesc' | 'readAsc' | 'readDesc';
-
-// @public (undocumented)
-export const Spinner: () => React_2.JSX.Element;
 
 // @public (undocumented)
 type StringOfLength<Min, Max = Min> = string & {
@@ -1434,28 +1307,11 @@ export interface SuccessSoapResponse<R> {
     Header: SoapHeader;
 }
 
-// Warning: (ae-forgotten-export) The symbol "SyncNotifyMessage" needs to be exported by the entry point lib.d.ts
-// Warning: (ae-forgotten-export) The symbol "SyncRefreshMessage" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-type SyncMessage = SyncNotifyMessage | SyncRefreshMessage;
-
-// @public (undocumented)
-type SyncNotifyMessage = {
-    op: 'notify';
-    notify: SoapNotify;
-};
-
-// @public (undocumented)
-type SyncRefreshMessage = SoapRefresh & {
-    op: 'refresh';
-};
-
 // @public (undocumented)
 export const t: AppDependantExports['t'];
 
 // @public (undocumented)
-export type Tag = {
+type Tag = {
     color?: number;
     id: string;
     name: string;
@@ -1463,17 +1319,6 @@ export type Tag = {
     u?: number;
     n?: number;
 };
-
-// @public (undocumented)
-type TagActionResponse = SoapBody<{
-    action: {
-        op: string;
-        id: string;
-    };
-}>;
-
-// @public (undocumented)
-export type Tags = Record<string, Tag>;
 
 // @public (undocumented)
 interface Tracker {
@@ -1533,11 +1378,14 @@ type UpdateSettingsParams = {
     }>;
 };
 
-// @public (undocumented)
-export const useAction: <T>(type: string, id: string, target?: T | undefined) => [Action | undefined, boolean];
+// @public
+export const upsertApp: (app: Pick<CarbonioModule_2, "name" | "display">) => void;
 
 // @public (undocumented)
-export const useActions: <TContext, TAction extends Action = Action>(context: TContext, type: string) => TAction[];
+export const useAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];
+
+// @public (undocumented)
+export const useActions: <TContext, TAction extends Action = Action>(context: TContext, type: string) => Array<TAction>;
 
 // @public (undocumented)
 export const useApp: AppDependantExports['useApp'];
@@ -1564,29 +1412,13 @@ export const useBoardHooks: () => BoardHooksContext;
 export const useCurrentRoute: () => AppRoute | undefined;
 
 // @public (undocumented)
-export const useFolder: (id: string) => Folder | undefined;
-
-// @public (undocumented)
-export const useFolders: () => Folders;
-
-// Warning: (ae-forgotten-export) The symbol "AccordionFolder" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-export const useFoldersAccordionByView: (view: FolderView, CustomComponent: ComponentType<{
-    folder: Folder;
-}>, itemProps?: ((item: AccordionFolder) => Record<string, unknown>) | undefined) => Array<AccordionFolder>;
-
-// @public (undocumented)
-export const useFoldersByView: (view: FolderView) => Array<Folder>;
-
-// @public (undocumented)
 export function useGoBackHistoryCallback(): () => void;
 
 // @public (undocumented)
-export const useIntegratedComponent: (id: string) => [React_2.FunctionComponent<Record<string, unknown>>, boolean];
+export const useIntegratedComponent: <TComponent extends React_2.ComponentType<any> = React_2.ComponentType<Record<string, unknown>>>(id: string) => [TComponent, boolean];
 
 // @public (undocumented)
-export const useIntegratedFunction: (id: string) => [AnyFunction, boolean];
+export const useIntegratedFunction: <TFunction extends AnyFunction = AnyFunction>(id: string) => [TFunction, boolean];
 
 // @public
 export function useIsCarbonioCE(): boolean | undefined;
@@ -1600,36 +1432,13 @@ export function useLocalStorage<T>(key: string, initialValue: T, options?: Local
 export const useNotify: () => SoapNotify[];
 
 // @public (undocumented)
-export const usePushHistoryCallback: () => (params: HistoryParams) => void;
+export const usePushHistoryCallback: () => ((params: HistoryParams) => void);
 
 // @public (undocumented)
 export const useRefresh: () => SoapRefresh;
 
 // @public (undocumented)
-export const useReplaceHistoryCallback: () => (params: HistoryParams) => void;
-
-// @public (undocumented)
-type UserFolder = BaseFolder & FolderFields & {
-    isLink: false;
-};
-
-// @public (undocumented)
-export const useRoot: (id: string) => Folder | undefined;
-
-// @public (undocumented)
-export const useRootByUser: (userId: string) => Folder | SearchFolder | Record<string, never>;
-
-// @public (undocumented)
-export const useRoots: () => Folders;
-
-// @public (undocumented)
-export const useSearchFolder: (id: string) => SearchFolder | undefined;
-
-// @public (undocumented)
-export const useSearchFolders: () => Searches;
-
-// @public (undocumented)
-export const useTags: (ids?: Array<string> | string) => Tags;
+export const useReplaceHistoryCallback: () => ((params: HistoryParams) => void);
 
 // Warning: (ae-forgotten-export) The symbol "Tracker" needs to be exported by the entry point lib.d.ts
 //
@@ -1670,20 +1479,8 @@ type UtilityView = CarbonioAccessoryView<UtilityBarComponentProps> & {
 // @public (undocumented)
 type ValueOf<T> = T[keyof T];
 
-// @public (undocumented)
-type WorkerMessage<T> = {
-    data: SyncMessage & T;
-};
-
-// @public (undocumented)
-export const xmlSoapFetch: AppDependantExports['xmlSoapFetch'];
-
 // @public @deprecated (undocumented)
-export const ZIMBRA_STANDARD_COLORS: {
-    zValue: number;
-    hex: string;
-    zLabel: string;
-}[];
+export const xmlSoapFetch: AppDependantExports['xmlSoapFetch'];
 
 // @public (undocumented)
 interface ZimletProp {
@@ -1698,18 +1495,18 @@ interface ZimletProp {
 // Warnings were encountered during analysis:
 //
 // lib/boot/app/app-dependant-exports.d.ts:11:5 - (ae-forgotten-export) The symbol "AppActions" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:19:5 - (ae-forgotten-export) The symbol "IntegrationActions" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:20:5 - (ae-forgotten-export) The symbol "getEditSettingsForApp" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:21:5 - (ae-forgotten-export) The symbol "getI18n_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:22:5 - (ae-forgotten-export) The symbol "getTFunction" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:23:5 - (ae-forgotten-export) The symbol "getSoapFetch" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:24:5 - (ae-forgotten-export) The symbol "getXmlSoapFetch" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:25:5 - (ae-forgotten-export) The symbol "getAppContextHook" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:26:5 - (ae-forgotten-export) The symbol "getAppContext_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:27:5 - (ae-forgotten-export) The symbol "getAppHook" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:28:5 - (ae-forgotten-export) The symbol "getApp_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:29:5 - (ae-forgotten-export) The symbol "addBoard_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:33:5 - (ae-forgotten-export) The symbol "ContextBridgeState" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:18:5 - (ae-forgotten-export) The symbol "IntegrationActions" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:19:5 - (ae-forgotten-export) The symbol "getEditSettingsForApp" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:20:5 - (ae-forgotten-export) The symbol "getI18n_2" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:21:5 - (ae-forgotten-export) The symbol "getTFunction" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:22:5 - (ae-forgotten-export) The symbol "getSoapFetch" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:23:5 - (ae-forgotten-export) The symbol "getXmlSoapFetch" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:24:5 - (ae-forgotten-export) The symbol "getAppContextHook" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:25:5 - (ae-forgotten-export) The symbol "getAppContext_2" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:26:5 - (ae-forgotten-export) The symbol "getAppHook" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:27:5 - (ae-forgotten-export) The symbol "getApp_2" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:28:5 - (ae-forgotten-export) The symbol "addBoard_2" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:32:5 - (ae-forgotten-export) The symbol "ContextBridgeState" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:3:5 - (ae-forgotten-export) The symbol "ModifyPropertiesResponse" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:4:5 - (ae-forgotten-export) The symbol "ModifyPrefsResponse" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:5:5 - (ae-forgotten-export) The symbol "ModifyIdentityResponse" needs to be exported by the entry point lib.d.ts
@@ -1718,14 +1515,13 @@ interface ZimletProp {
 // lib/network/edit-settings.d.ts:8:5 - (ae-forgotten-export) The symbol "RevokeRightsResponse" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:9:5 - (ae-forgotten-export) The symbol "GrantRightsResponse" needs to be exported by the entry point lib.d.ts
 // lib/settings/components/settings-header.d.ts:5:5 - (ae-forgotten-export) The symbol "RouteLeavingGuardProps" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:23:5 - (ae-forgotten-export) The symbol "CarbonioModule" needs to be exported by the entry point lib.d.ts
+// lib/store/app/store.d.ts:22:5 - (ae-forgotten-export) The symbol "CarbonioModule" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:24:5 - (ae-forgotten-export) The symbol "AppRouteDescriptor" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:28:5 - (ae-forgotten-export) The symbol "BoardView" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:30:5 - (ae-forgotten-export) The symbol "SettingsView" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:32:5 - (ae-forgotten-export) The symbol "SearchView" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:34:5 - (ae-forgotten-export) The symbol "UtilityView" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:36:5 - (ae-forgotten-export) The symbol "PrimaryAccessoryView" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:38:5 - (ae-forgotten-export) The symbol "SecondaryAccessoryView" needs to be exported by the entry point lib.d.ts
+// lib/store/app/store.d.ts:32:5 - (ae-forgotten-export) The symbol "UtilityView" needs to be exported by the entry point lib.d.ts
+// lib/store/app/store.d.ts:34:5 - (ae-forgotten-export) The symbol "PrimaryAccessoryView" needs to be exported by the entry point lib.d.ts
+// lib/store/app/store.d.ts:36:5 - (ae-forgotten-export) The symbol "SecondaryAccessoryView" needs to be exported by the entry point lib.d.ts
 // lib/store/context-bridge.d.ts:4:5 - (ae-forgotten-export) The symbol "PackageDependentFunction" needs to be exported by the entry point lib.d.ts
 // lib/store/context-bridge.d.ts:5:5 - (ae-forgotten-export) The symbol "AnyFunction" needs to be exported by the entry point lib.d.ts
 // lib/store/integrations/store.d.ts:25:9 - (ae-forgotten-export) The symbol "ActionFactory" needs to be exported by the entry point lib.d.ts
@@ -1738,15 +1534,15 @@ interface ZimletProp {
 // lib/types/account/index.d.ts:140:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:145:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:146:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
-// lib/types/apps/index.d.ts:68:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:75:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:94:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:110:5 - (ae-forgotten-export) The symbol "Meta" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:114:5 - (ae-forgotten-export) The symbol "SoapRetentionPolicy" needs to be exported by the entry point lib.d.ts
-// lib/types/misc/index.d.ts:128:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
-// lib/types/network/index.d.ts:108:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
+// lib/types/apps/index.d.ts:60:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:45:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:64:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:80:5 - (ae-forgotten-export) The symbol "Meta" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:84:5 - (ae-forgotten-export) The symbol "SoapRetentionPolicy" needs to be exported by the entry point lib.d.ts
+// lib/types/misc/index.d.ts:98:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
+// lib/types/network/index.d.ts:79:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:11:5 - (ae-forgotten-export) The symbol "NameSpace" needs to be exported by the entry point lib.d.ts
-// lib/types/network/soap.d.ts:69:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
-// lib/types/workers/index.d.ts:12:5 - (ae-forgotten-export) The symbol "SyncMessage" needs to be exported by the entry point lib.d.ts
+// lib/types/network/soap.d.ts:70:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
+// lib/types/network/soap.d.ts:92:9 - (ae-forgotten-export) The symbol "Tag" needs to be exported by the entry point lib.d.ts
 
 ```

@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [10.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v9.0.1...v10.0.0) (2025-02-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove ACCOUNTS_APP_ID
+* remove all exports related to the search. Search functions and components must be used through the integrations exposed by the search module.
+Refs: SHELL-260
+* **tags:** remove tags worker, types and all related code
+Co-authored-by: Giuliano Caregnato <giuliano.caregnato@zextras.com>
+* **folders:** remove mailbox folders-related functions, store and types
+Refs: SHELL-257
+* remove Spinner component
+
+### Features
+
+* create an utility component to render content only for authenticated users ([d3cba01](https://github.com/zextras/carbonio-shell-ui/commit/d3cba01ffd9ba85667d087f7fa6255cbeea328e7))
+* create soapFetchV2 ([f03027f](https://github.com/zextras/carbonio-shell-ui/commit/f03027f27a82da29ec2d6bf120a0384b26c26a72)), closes [#572](https://github.com/zextras/carbonio-shell-ui/issues/572)
+* export AppContext provider to let module use provider of other apps ([7440c7b](https://github.com/zextras/carbonio-shell-ui/commit/7440c7b32ecbf171c951d58998e0b9a590d306ef)), closes [#558](https://github.com/zextras/carbonio-shell-ui/issues/558)
+* export theme augmentation ([c9e3e8b](https://github.com/zextras/carbonio-shell-ui/commit/c9e3e8b3ea4081b4adf5885a9dcde28bab827e51)), closes [#560](https://github.com/zextras/carbonio-shell-ui/issues/560)
+* expose AccountMenuAction to expand account menu entries ([b916559](https://github.com/zextras/carbonio-shell-ui/commit/b9165599613406b709bb3e589cc13688d58cce14)), closes [#549](https://github.com/zextras/carbonio-shell-ui/issues/549)
+* expose upsertApp to add or update display label ([9697917](https://github.com/zextras/carbonio-shell-ui/commit/9697917f3ebdd9ff2969e9536b321fe73ad6b1e2)), closes [#548](https://github.com/zextras/carbonio-shell-ui/issues/548)
+* remove Spinner component ([d9c3790](https://github.com/zextras/carbonio-shell-ui/commit/d9c3790c47f6a73958827992a1d89fed6b98b1fe)), closes [#544](https://github.com/zextras/carbonio-shell-ui/issues/544)
+* separate search module ([da80503](https://github.com/zextras/carbonio-shell-ui/commit/da80503612e43f29d3ffe0e0587e1ac2a9c029a4))
+* **tags:** remove tags worker, types and all related code ([dc2d33e](https://github.com/zextras/carbonio-shell-ui/commit/dc2d33e41a777d08d64f93dbbc3bfbba815935e0)), closes [#557](https://github.com/zextras/carbonio-shell-ui/issues/557)
+* upgrade styled-components to v6  ([2e392ef](https://github.com/zextras/carbonio-shell-ui/commit/2e392ef6366556405467f65e0181f30cc75051dc)), closes [#502](https://github.com/zextras/carbonio-shell-ui/issues/502)
+
+
+### Bug Fixes
+
+* update buildIntegrationAction to return available false when action is undefined ([17717b4](https://github.com/zextras/carbonio-shell-ui/commit/17717b484227197b7a8f5074f3c38bfb24f30daa)), closes [#567](https://github.com/zextras/carbonio-shell-ui/issues/567)
+
+
+* **folders:** remove mailbox folders-related functions, store and types ([5a32188](https://github.com/zextras/carbonio-shell-ui/commit/5a32188c6ec457d10bb2308292c2b08e48e00b9e))
+* remove deprecated const ([6177417](https://github.com/zextras/carbonio-shell-ui/commit/6177417c7f72a0e6ad6719fc723f7831b31c0ed5)), closes [#573](https://github.com/zextras/carbonio-shell-ui/issues/573)
+
 ### [9.0.1](https://github.com/zextras/carbonio-shell-ui/compare/v9.0.0...v9.0.1) (2025-01-17)
 
 

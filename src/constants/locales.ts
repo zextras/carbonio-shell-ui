@@ -125,17 +125,6 @@ export const SUPPORTED_LOCALES: Record<string, LocaleDescriptor> = {
 				)
 		}
 	},
-	pt_BR: {
-		name: 'português (Brasil)',
-		value: 'pt_BR',
-		dateFnsLocale: {
-			key: 'pt-BR',
-			localeImportPath: () =>
-				/* webpackMode: "lazy", webpackChunkName: "pt-BR" */ import('date-fns/locale/pt-BR').then(
-					({ ptBR }) => ptBR
-				)
-		}
-	},
 
 	ro: {
 		name: 'română',

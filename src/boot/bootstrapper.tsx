@@ -37,9 +37,7 @@ const Bootstrapper = (): React.JSX.Element => (
 						<Loader />
 						{IS_FOCUS_MODE && (
 							<Routes>
-								<Route path={'/:route'}>
-									<FocusModeListener />
-								</Route>
+								<Route path={'/:route/*'} element={<FocusModeListener />} />
 							</Routes>
 						)}
 						<DefaultViewsRegister />

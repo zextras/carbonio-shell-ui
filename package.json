@@ -75,7 +75,7 @@
 		"@zextras/carbonio-ui-configs": "^2.0.1",
 		"@zextras/carbonio-ui-sdk": "^1.7.12",
 		"autoprefixer": "^10.4.17",
-		"babel-loader": "^9.2.1",
+		"babel-loader": "^10.0.0",
 		"babel-plugin-styled-components": "^2.1.4",
 		"babel-plugin-transform-import-meta": "^2.3.2",
 		"copy-webpack-plugin": "^12.0.2",

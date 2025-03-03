@@ -129,6 +129,7 @@ const Wrapper = ({
 	children
 }: WrapperProps): React.JSX.Element => (
 	<MemoryRouter
+		future={{ v7_startTransition: false, v7_relativeSplatPath: false }}
 		initialEntries={initialRouterEntries}
 		initialIndex={(initialRouterEntries?.length || 1) - 1}
 	>

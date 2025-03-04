@@ -138,7 +138,8 @@ export const ICONS = {
 	reduceBoard: 'CollapseOutline',
 	resetBoardSize: 'DiagonalArrowLeftDown',
 	unCollapseBoard: 'BoardOpen',
-	settings: 'SettingsModOutline'
+	settings: 'SettingsModOutline',
+	expandAccordion: 'ChevronDown'
 };
 
 export const TESTID_SELECTORS = {

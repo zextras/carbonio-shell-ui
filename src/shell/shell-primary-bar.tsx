@@ -141,7 +141,6 @@ const ShellPrimaryBar = (): React.JSX.Element | null => {
 				view.visible ? (
 					<PrimaryBarElement
 						key={view.id}
-						// TODO check that works
 						onClick={(): void => navigate(`/${routesRef.current[view.id]}`)}
 						view={view}
 						active={activeRoute?.id === view.id}

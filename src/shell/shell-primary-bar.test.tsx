@@ -41,13 +41,16 @@ const MailsView = (): React.JSX.Element => {
 	const navigate = useNavigate();
 	return (
 		<Routes>
-			<Route path={`:view`}>
-				<AboutView />
-			</Route>
-			<Route path={`/`}>
-				<Text>default mails view</Text>
-				<Button label={'navigate to about'} onClick={(): void => navigate('about')} />
-			</Route>
+			<Route path={`:view`} element={<AboutView />} />
+			<Route
+				path={`/`}
+				element={
+					<>
+						<Text>default mails view</Text>
+						<Button label={'navigate to about'} onClick={(): void => navigate('about')} />
+					</>
+				}
+			/>
 		</Routes>
 	);
 };
@@ -58,7 +61,7 @@ const FilesView = (): React.JSX.Element => (
 	</div>
 );
 
-describe.skip('Shell primary bar', () => {
+describe('Shell primary bar', () => {
 	test('Show a component for each primary bar view registered in the store', () => {
 		const primaryBarViews: PrimaryBarView[] = [
 			{

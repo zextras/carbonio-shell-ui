@@ -6,7 +6,7 @@
 
 import React, { useMemo } from 'react';
 
-import { Accordion, IconButton, Tooltip } from '@zextras/carbonio-design-system';
+import { Accordion, Button, Tooltip } from '@zextras/carbonio-design-system';
 import { map } from 'lodash';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -30,7 +30,6 @@ export const SettingsSidebar = ({
 					location.pathname === `/${SETTINGS_APP_ID}/${view.route}` && location.search === '',
 				onClick: (e: KeyboardEvent | React.SyntheticEvent): void => {
 					e.stopPropagation();
-					// TODO check that works
 					navigate(`${view.route}`);
 				},
 				items: map(view.subSections, (item) => ({
@@ -39,7 +38,6 @@ export const SettingsSidebar = ({
 					disableHover: location.search === `?section=${item.id}`,
 					onClick: (e: KeyboardEvent | React.SyntheticEvent): void => {
 						e.stopPropagation();
-						// TODO check that works
 						navigate(`${view.route}?section=${item.id}`, { replace: true });
 					}
 				}))
@@ -50,14 +48,13 @@ export const SettingsSidebar = ({
 		() =>
 			settingsViews.map((v) => (
 				<Tooltip label={v.label} placement="right" key={v.id}>
-					<div>
-						<IconButton
-							icon={v.icon}
-							// TODO check that works
-							onClick={(): void => navigate(`/${v.route}`)}
-							size="large"
-						/>
-					</div>
+					<Button
+						color={'text'}
+						type={'ghost'}
+						icon={v.icon}
+						onClick={(): void => navigate(v.route)}
+						size="large"
+					/>
 				</Tooltip>
 			)),
 		[navigate, settingsViews]

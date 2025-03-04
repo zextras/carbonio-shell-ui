@@ -15,7 +15,7 @@ import {
 	Padding,
 	Row
 } from '@zextras/carbonio-design-system';
-import { useParams, useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { getT } from '../../store/i18n/hooks';
@@ -40,8 +40,9 @@ export const SettingsHeader = ({
 	title
 }: SettingsHeaderProps): React.JSX.Element => {
 	const t = getT();
-	const { search } = useLocation();
-	const params = useParams();
+	const [searchParams] = useSearchParams();
+	const section = useMemo(() => searchParams.get('section'), [searchParams]);
+
 	const crumbs = useMemo(
 		(): Crumb[] => [
 			{
@@ -59,14 +60,10 @@ export const SettingsHeader = ({
 	);
 
 	useEffect(() => {
-		if (search) {
-			// TODO: why not using anchor links instead of js?
-			setTimeout(
-				() => document.querySelector(`#${search}`.replace('?section=', ''))?.scrollIntoView(),
-				1
-			);
+		if (section) {
+			setTimeout(() => document.getElementById(section)?.scrollIntoView(), 1);
 		}
-	}, [search, params]);
+	}, [section]);
 	return (
 		<>
 			<Container

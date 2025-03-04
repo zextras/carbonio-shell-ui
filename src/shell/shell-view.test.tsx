@@ -50,11 +50,7 @@ beforeEach(() => {
 
 describe('Shell view', () => {
 	test('When resizing under mobile breakpoint, board does not disappear', () => {
-		setup(
-			<>
-				<ShellView />
-			</>
-		);
+		setup(<ShellView />);
 
 		expect(screen.getByText('title1')).toBeVisible();
 		act(() => {

@@ -13,12 +13,15 @@ import {
 	type Crumb,
 	Divider,
 	Padding,
-	Row
+	Row,
+	Text
 } from '@zextras/carbonio-design-system';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { getT } from '../../store/i18n/hooks';
+import type { RouteLeavingGuardProps } from '../../ui-extras/nav-guard';
+import { RouteLeavingGuard } from '../../ui-extras/nav-guard';
 
 const CustomBreadcrumbs = styled(Breadcrumbs)`
 	.breadcrumbCrumb {
@@ -28,7 +31,7 @@ const CustomBreadcrumbs = styled(Breadcrumbs)`
 
 export type SettingsHeaderProps = {
 	title: string;
-	onSave: () => void;
+	onSave: RouteLeavingGuardProps['onSave'];
 	onCancel: () => void;
 	isDirty: boolean;
 };
@@ -66,6 +69,15 @@ export const SettingsHeader = ({
 	}, [section]);
 	return (
 		<>
+			<RouteLeavingGuard when={isDirty} onSave={onSave}>
+				<Text>
+					{t(
+						'label.unsaved_changes_line1',
+						'Are you sure you want to leave this page without saving?'
+					)}
+				</Text>
+				<Text>{t('label.unsaved_changes_line2', 'All your unsaved changes will be lost')}</Text>
+			</RouteLeavingGuard>
 			<Container
 				orientation="vertical"
 				mainAlignment="space-around"

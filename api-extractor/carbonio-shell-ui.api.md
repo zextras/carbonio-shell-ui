@@ -16,6 +16,7 @@ import type { DynamicThemeFix } from 'darkreader';
 import type { Event as Event_2 } from '@sentry/browser';
 import type { EventHint } from '@sentry/browser';
 import type { i18n } from 'i18next';
+import type { ModalProps } from '@zextras/carbonio-design-system';
 import type { Properties } from 'posthog-js';
 import { default as React_2 } from 'react';
 import type { ReactNode } from 'react';
@@ -1038,6 +1039,18 @@ type RevokeRightsResponse = {
 type Right = 'invite' | 'loginAs' | 'sendAs' | 'sendOnBehalfOf' | 'viewFreeBusy';
 
 // @public (undocumented)
+interface RouteLeavingGuardProps {
+    // (undocumented)
+    children: ModalProps['children'];
+    // (undocumented)
+    dataHasError?: boolean;
+    // (undocumented)
+    onSave: () => Promise<PromiseSettledResult<Awaited<unknown>>[]>;
+    // (undocumented)
+    when: boolean;
+}
+
+// @public (undocumented)
 export const SCALING_LIMIT: {
     readonly width: 1400;
     readonly height: 900;
@@ -1103,7 +1116,7 @@ export const SettingsHeader: ({ onSave, onCancel, isDirty, title }: SettingsHead
 // @public (undocumented)
 export type SettingsHeaderProps = {
     title: string;
-    onSave: () => void;
+    onSave: RouteLeavingGuardProps['onSave'];
     onCancel: () => void;
     isDirty: boolean;
 };
@@ -1457,6 +1470,7 @@ interface ZimletProp {
 // lib/network/edit-settings.d.ts:7:5 - (ae-forgotten-export) The symbol "CreateIdentityResponse" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:8:5 - (ae-forgotten-export) The symbol "RevokeRightsResponse" needs to be exported by the entry point lib.d.ts
 // lib/network/edit-settings.d.ts:9:5 - (ae-forgotten-export) The symbol "GrantRightsResponse" needs to be exported by the entry point lib.d.ts
+// lib/settings/components/settings-header.d.ts:5:5 - (ae-forgotten-export) The symbol "RouteLeavingGuardProps" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:22:5 - (ae-forgotten-export) The symbol "CarbonioModule" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:24:5 - (ae-forgotten-export) The symbol "AppRouteDescriptor" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:28:5 - (ae-forgotten-export) The symbol "BoardView" needs to be exported by the entry point lib.d.ts

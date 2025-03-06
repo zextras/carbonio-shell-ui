@@ -7,10 +7,9 @@
 import React, { useMemo } from 'react';
 
 import { map } from 'lodash';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { AppContextProvider } from '../boot/app/app-context-provider';
-import { SETTINGS_APP_ID } from '../constants';
 import { useAppStore } from '../store/app';
 
 export const SettingsAppView = (): React.JSX.Element => {
@@ -18,18 +17,22 @@ export const SettingsAppView = (): React.JSX.Element => {
 	const routes = useMemo(
 		() =>
 			map(settingsViews, (view) => (
-				<Route key={view.route} exact path={`/${SETTINGS_APP_ID}/${view.route}`}>
-					<AppContextProvider pkg={view.app}>
-						<view.component />
-					</AppContextProvider>
-				</Route>
+				<Route
+					key={view.route}
+					path={view.route}
+					element={
+						<AppContextProvider pkg={view.app}>
+							<view.component />
+						</AppContextProvider>
+					}
+				/>
 			)),
 		[settingsViews]
 	);
 	return (
-		<Switch>
+		<Routes>
 			{routes}
-			<Redirect from={`/${SETTINGS_APP_ID}`} exact strict to={`/${SETTINGS_APP_ID}/general`} />
-		</Switch>
+			<Route path="/" element={<Navigate to={'general'} />} />
+		</Routes>
 	);
 };

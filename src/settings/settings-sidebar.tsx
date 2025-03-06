@@ -6,9 +6,9 @@
 
 import React, { useMemo } from 'react';
 
-import { Accordion, IconButton, Tooltip } from '@zextras/carbonio-design-system';
+import { Accordion, Button, Tooltip } from '@zextras/carbonio-design-system';
 import { map } from 'lodash';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { SETTINGS_APP_ID } from '../constants';
 import { useAppStore } from '../store/app';
@@ -17,8 +17,8 @@ export const SettingsSidebar = ({
 	expanded
 }: React.PropsWithChildren<{ expanded: boolean }>): React.JSX.Element => {
 	const settingsViews = useAppStore((s) => s.views.settings);
-	const history = useHistory();
 	const location = useLocation();
+	const navigate = useNavigate();
 	const items = useMemo(
 		() =>
 			settingsViews.map((view) => ({
@@ -30,7 +30,7 @@ export const SettingsSidebar = ({
 					location.pathname === `/${SETTINGS_APP_ID}/${view.route}` && location.search === '',
 				onClick: (e: KeyboardEvent | React.SyntheticEvent): void => {
 					e.stopPropagation();
-					history.push(`/${SETTINGS_APP_ID}/${view.route}`);
+					navigate(view.route);
 				},
 				items: map(view.subSections, (item) => ({
 					...item,
@@ -38,26 +38,26 @@ export const SettingsSidebar = ({
 					disableHover: location.search === `?section=${item.id}`,
 					onClick: (e: KeyboardEvent | React.SyntheticEvent): void => {
 						e.stopPropagation();
-						history.replace(`/${SETTINGS_APP_ID}/${view.route}?section=${item.id}`);
+						navigate(`${view.route}?section=${item.id}`, { replace: true });
 					}
 				}))
 			})),
-		[history, location.pathname, location.search, settingsViews]
+		[navigate, location.pathname, location.search, settingsViews]
 	);
 	const collapsedItems = useMemo(
 		() =>
 			settingsViews.map((v) => (
 				<Tooltip label={v.label} placement="right" key={v.id}>
-					<div>
-						<IconButton
-							icon={v.icon}
-							onClick={(): void => history.push(`/${SETTINGS_APP_ID}/${v.route}`)}
-							size="large"
-						/>
-					</div>
+					<Button
+						color={'text'}
+						type={'ghost'}
+						icon={v.icon}
+						onClick={(): void => navigate(v.route)}
+						size="large"
+					/>
 				</Tooltip>
 			)),
-		[history, settingsViews]
+		[navigate, settingsViews]
 	);
 	return expanded ? <Accordion items={items} /> : <>{collapsedItems}</>;
 };

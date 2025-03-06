@@ -4,16 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { useMemo, useCallback } from 'react';
+import { useMemo } from 'react';
 
-import type { To } from 'history';
-import { find, startsWith, replace, trim } from 'lodash';
-import { useLocation, useHistory } from 'react-router-dom';
+import { find, startsWith, trim } from 'lodash';
+import { useLocation } from 'react-router-dom';
 
-import { useRoutes, getRoutes } from '../store/app';
-import { useContextBridge } from '../store/context-bridge';
+import { useRoutes } from '../store/app';
 import type { AppRoute } from '../types/apps';
-import type { HistoryParams } from '../types/misc';
 
 export const useCurrentRoute = (): AppRoute | undefined => {
 	const location = useLocation();
@@ -23,55 +20,3 @@ export const useCurrentRoute = (): AppRoute | undefined => {
 		[location.pathname, routes]
 	);
 };
-export const getCurrentRoute = (): AppRoute | undefined => {
-	const history = useContextBridge.getState().functions.getHistory?.();
-	const routes = getRoutes();
-	return find(routes, (r) => startsWith(trim(history.location.pathname, '/'), r.route));
-};
-
-export const parseParams = (params: HistoryParams): To => {
-	if (typeof params === 'string') {
-		return replace(`/${getCurrentRoute()?.route}/${params}`, '//', '/');
-	}
-	const routeToApply = params.route
-		? find(getRoutes(), (r) => r.id === params.route || r.route === params.route)
-		: getCurrentRoute();
-	return typeof params.path === 'string'
-		? replace(`/${routeToApply?.route}/${params.path}`, '//', '/')
-		: {
-				search: params.path.search,
-				hash: params.path.hash,
-				pathname: replace(`/${routeToApply?.route}/${params.path.pathname}`, '//', '/')
-			};
-};
-
-export const usePushHistoryCallback = (): ((params: HistoryParams) => void) => {
-	const history = useHistory();
-	return useCallback((params: HistoryParams): void => history.push(parseParams(params)), [history]);
-};
-
-export const useReplaceHistoryCallback = (): ((params: HistoryParams) => void) => {
-	const history = useHistory();
-	return useCallback(
-		(params: HistoryParams): void => history.replace(parseParams(params)),
-		[history]
-	);
-};
-
-export function useGoBackHistoryCallback(): () => void {
-	const history = useHistory();
-	return history.goBack;
-}
-
-export const pushHistory = (params: HistoryParams): void => {
-	const history = useContextBridge.getState().functions.getHistory?.();
-	history.push(parseParams(params));
-};
-
-export const replaceHistory = (params: HistoryParams): void => {
-	const history = useContextBridge.getState().functions.getHistory?.();
-	history.replace(parseParams(params));
-};
-
-export const goBackHistory = (): void =>
-	useContextBridge.getState().functions.getHistory?.().goBack();

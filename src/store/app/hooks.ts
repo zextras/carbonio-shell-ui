@@ -32,6 +32,4 @@ export const getAppContextHook =
 export const getAppContext = (appId: string) => (): unknown =>
 	useAppStore.getState().appContexts[appId];
 
-export const getRoutes = (): Record<string, AppRoute> => useAppStore.getState().routes;
-
 export const useRoutes = (): Record<string, AppRoute> => useAppStore((s) => s.routes);

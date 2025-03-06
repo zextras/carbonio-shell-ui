@@ -65,16 +65,7 @@ export {
 	useBoardHooks
 } from '../../store/boards';
 
-export {
-	usePushHistoryCallback,
-	useGoBackHistoryCallback,
-	useReplaceHistoryCallback,
-	getCurrentRoute,
-	useCurrentRoute,
-	replaceHistory,
-	goBackHistory,
-	pushHistory
-} from '../../history/hooks';
+export { useCurrentRoute } from '../../history/hooks';
 
 export { getNotificationManager } from '../../notification/NotificationManager';
 

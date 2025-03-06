@@ -9,9 +9,10 @@ import './index.css';
 import React, { lazy, Suspense } from 'react';
 
 import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { LoadingView } from './boot/splash';
-
+import { BASENAME } from './constants';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -43,11 +44,23 @@ if (module.hot) {
 	module.hot.accept();
 }
 
+const router = createBrowserRouter(
+	[
+		{
+			path: '/*',
+			element: (
+				<Suspense fallback={<LoadingView />}>
+					<Bootstrapper key="boot" />
+				</Suspense>
+			)
+		}
+	],
+	{ basename: BASENAME }
+);
+
 const root = ReactDOM.createRoot(document.getElementById('app')!);
 root.render(
 	<React.StrictMode>
-		<Suspense fallback={<LoadingView />}>
-			<Bootstrapper key="boot" />
-		</Suspense>
+		<RouterProvider router={router} />
 	</React.StrictMode>
 );

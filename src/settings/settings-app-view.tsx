@@ -19,7 +19,7 @@ export const SettingsAppView = (): React.JSX.Element => {
 			map(settingsViews, (view) => (
 				<Route
 					key={view.route}
-					path={`${view.route}`}
+					path={view.route}
 					element={
 						<AppContextProvider pkg={view.app}>
 							<view.component />

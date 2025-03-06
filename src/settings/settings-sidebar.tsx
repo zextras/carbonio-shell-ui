@@ -30,7 +30,7 @@ export const SettingsSidebar = ({
 					location.pathname === `/${SETTINGS_APP_ID}/${view.route}` && location.search === '',
 				onClick: (e: KeyboardEvent | React.SyntheticEvent): void => {
 					e.stopPropagation();
-					navigate(`${view.route}`);
+					navigate(view.route);
 				},
 				items: map(view.subSections, (item) => ({
 					...item,

@@ -11,7 +11,6 @@ import 'jest-styled-components';
 import { BOARD_DEFAULT_POSITION } from './boards/board-container';
 import type { Border } from './hooks/useResize';
 import ShellView from './shell-view';
-import { ContextBridge } from '../boot/context-bridge';
 import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
 import { ICONS, TESTID_SELECTORS } from '../tests/constants';
 import { mockedApps, setupAppStore } from '../tests/test-app-utils';
@@ -51,12 +50,7 @@ beforeEach(() => {
 
 describe('Shell view', () => {
 	test('When resizing under mobile breakpoint, board does not disappear', () => {
-		setup(
-			<>
-				<ContextBridge />
-				<ShellView />
-			</>
-		);
+		setup(<ShellView />);
 
 		expect(screen.getByText('title1')).toBeVisible();
 		act(() => {

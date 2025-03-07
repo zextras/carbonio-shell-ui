@@ -3,8 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { reduce } from 'lodash';
-
 import { getEditSettingsForApp } from '../../network/edit-settings';
 import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
 import type { AppActions as StoreAppSetters } from '../../store/app';
@@ -18,8 +16,6 @@ import {
 	normalizeUtilityView
 } from '../../store/app/utils';
 import { addBoard } from '../../store/boards';
-import type { ContextBridgeState } from '../../store/context-bridge';
-import { useContextBridge } from '../../store/context-bridge';
 import { getI18n, getTFunction } from '../../store/i18n/hooks';
 import type { IntegrationActions } from '../../store/integrations/store';
 import { useIntegrationsStore } from '../../store/integrations/store';
@@ -56,14 +52,6 @@ export type AppDependantExports = {
 	useApp: ReturnType<typeof getAppHook>;
 	getApp: ReturnType<typeof getApp>;
 	addBoard: ReturnType<typeof addBoard>;
-	/**
-	 * @deprecated Use hooks to access to functions which require context
-	 */
-	getBridgedFunctions: () => ContextBridgeState['functions'] & {
-		[K in keyof ContextBridgeState['packageDependentFunctions']]: ReturnType<
-			ContextBridgeState['packageDependentFunctions'][K]
-		>;
-	};
 };
 
 export const getAppDependantExports = (pkg: CarbonioModule): AppDependantExports => {
@@ -92,17 +80,6 @@ export const getAppDependantExports = (pkg: CarbonioModule): AppDependantExports
 		getAppContext: getAppContext(pkg.name),
 		useApp: getAppHook(pkg.name),
 		getApp: getApp(pkg.name),
-		addBoard: addBoard(pkg.name),
-		getBridgedFunctions: (): ReturnType<AppDependantExports['getBridgedFunctions']> => {
-			const { packageDependentFunctions, functions } = useContextBridge.getState();
-			return {
-				...functions,
-				...reduce(
-					packageDependentFunctions,
-					(acc, f, name) => ({ ...acc, [name]: f(pkg.name) }),
-					{}
-				)
-			};
-		}
+		addBoard: addBoard(pkg.name)
 	};
 };

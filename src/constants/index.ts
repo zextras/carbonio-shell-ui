@@ -54,9 +54,9 @@ export const darkReaderDynamicThemeFixes: DynamicThemeFix = {
 	disableStyleSheetsProxy: false
 };
 
-const base = '/carbonio/';
+const base = '/carbonio';
 
-const focusModeBase = `${base}focus-mode`;
+const focusModeBase = `${base}/focus-mode`;
 
 export const IS_FOCUS_MODE = window.location.pathname.startsWith(focusModeBase);
 export const BASENAME = IS_FOCUS_MODE ? focusModeBase : base;

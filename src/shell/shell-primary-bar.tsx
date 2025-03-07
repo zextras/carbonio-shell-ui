@@ -8,7 +8,7 @@ import React, { useEffect, useMemo, useRef } from 'react';
 
 import { Button, Container, Row, Tooltip } from '@zextras/carbonio-design-system';
 import { map, isEmpty, trim, filter, sortBy } from 'lodash';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import BadgeWrap from './badge-wrap';
@@ -101,7 +101,7 @@ const OverlayRow = styled(Row)`
 const ShellPrimaryBar = (): React.JSX.Element | null => {
 	const activeRoute = useCurrentRoute();
 	const primaryBarViews = useAppStore((s) => s.views.primaryBar);
-	const { push } = useHistory();
+	const navigate = useNavigate();
 
 	const { pathname, search } = useLocation();
 	const routesRef = useRef<Record<string, string>>({});
@@ -141,13 +141,13 @@ const ShellPrimaryBar = (): React.JSX.Element | null => {
 				view.visible ? (
 					<PrimaryBarElement
 						key={view.id}
-						onClick={(): void => push(`/${routesRef.current[view.id]}`)}
+						onClick={(): void => navigate(`/${routesRef.current[view.id]}`)}
 						view={view}
 						active={activeRoute?.id === view.id}
 					/>
 				) : null
 			),
-		[activeRoute?.id, push, primaryBarViews]
+		[navigate, activeRoute?.id, primaryBarViews]
 	);
 
 	const accessoryItems = useMemo(

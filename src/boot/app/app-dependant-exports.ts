@@ -7,7 +7,8 @@ import { legacySoapFetch, legacyXmlSoapFetch } from '@zextras/carbonio-mailbox-a
 
 import { getEditSettingsForApp } from '../../network/edit-settings';
 import type { AppActions as StoreAppSetters } from '../../store/app';
-import { getApp, getAppContext, getAppContextHook, getAppook, useAppStore } from '../../store/app';
+import { getAppHook } from '../../store/app';
+import { getApp, getAppContext, getAppContextHook, useAppStore } from '../../store/app';
 import {
 	normalizeBoardView,
 	normalizePrimaryAccessoryView,

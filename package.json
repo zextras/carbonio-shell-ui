@@ -105,6 +105,7 @@
 		"@sentry/browser": "^7.103.0",
 		"@tinymce/tinymce-react": "^4.3.2",
 		"@zextras/carbonio-design-system": "9.0.0",
+		"@zextras/carbonio-mailbox-api-ui": "file:zextras-carbonio-mailbox-api-ui-0.0.0.tgz",
 		"@zextras/carbonio-ui-preview": "^3.1.1",
 		"darkreader": "^4.9.79",
 		"date-fns": "^4.1.0",

@@ -1,0 +1,10 @@
+version = 1
+SPDX-PackageName = "carbonio-mailbox-api-ui"
+SPDX-PackageSupplier = "Zextras <https://www.zextras.com>"
+
+[[annotations]]
+path = [".idea/**", ".vscode/**", ".husky/**", ".nvmrc", "package.json", "package-lock.json", "tsconfig.json", "CHANGELOG.md", "tsconfig.types.json",
+".env.example", ".github/**", "THIRDPARTIES", "README.md", "rollup.config.mjs", ".gitignore", ".prettierrc.js"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2025 Zextras <https://www.zextras.com>"
+SPDX-License-Identifier = "CC0-1.0"

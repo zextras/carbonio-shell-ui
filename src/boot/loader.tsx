@@ -7,13 +7,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { Modal, Padding, Text, useSnackbar } from '@zextras/carbonio-design-system';
+import { GET_INFO_RIGHTS, getInfo } from '@zextras/carbonio-mailbox-api-ui';
 import { find } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import { loadApps, unloadAllApps } from './app/load-apps';
 import { IS_FOCUS_MODE } from '../constants';
 import { getComponents } from '../network/get-components';
-import { getInfo } from '../network/get-info';
 import { loginConfig } from '../network/login-config';
 import { logout } from '../network/logout';
 import { goToLogin } from '../network/utils';
@@ -107,13 +107,19 @@ export const Loader = (): React.JSX.Element => {
 	const [sessionLifetime, setSessionLifetime] = useState<number>();
 	const createSnackbar = useSnackbar();
 
-	const getSessionInfo = useCallback(
-		() =>
-			getInfo().then((sessionInfo) => {
-				setSessionLifetime(sessionInfo.lifetime);
-			}),
-		[]
-	);
+	const getSessionInfo = useCallback(() => {
+		const rights = [
+			GET_INFO_RIGHTS.sendAs,
+			GET_INFO_RIGHTS.sendAsDistList,
+			GET_INFO_RIGHTS.viewFreeBusy,
+			GET_INFO_RIGHTS.sendOnBehalfOf,
+			GET_INFO_RIGHTS.sendOnBehalfOfDistList
+		];
+
+		return getInfo({ rights }).then((sessionInfo) => {
+			setSessionLifetime(sessionInfo.lifetime);
+		});
+	}, []);
 
 	const carbonioPrefSendAnalytics = useAccountStore(
 		(state) => state.settings.prefs.carbonioPrefSendAnalytics

@@ -3,12 +3,12 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+
 import { legacySoapFetch, legacyXmlSoapFetch } from '@zextras/carbonio-mailbox-api-ui';
 
 import { getEditSettingsForApp } from '../../network/edit-settings';
 import type { AppActions as StoreAppSetters } from '../../store/app';
-import { getAppHook } from '../../store/app';
-import { getApp, getAppContext, getAppContextHook, useAppStore } from '../../store/app';
+import { getAppHook, getApp, getAppContext, getAppContextHook, useAppStore } from '../../store/app';
 import {
 	normalizeBoardView,
 	normalizePrimaryAccessoryView,

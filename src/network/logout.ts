@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { soapFetch } from './fetch-utils';
+import { soapFetch } from '@zextras/carbonio-mailbox-api-ui';
+
 import { goTo, goToLogin } from './utils';
 import { JSNS } from '../constants';
 import { useLoginConfigStore } from '../store/login/store';

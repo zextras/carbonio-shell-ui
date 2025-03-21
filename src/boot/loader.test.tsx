@@ -111,7 +111,7 @@ describe('Loader', () => {
 		expect(screen.queryByText('Something went wrong...')).not.toBeInTheDocument();
 	});
 
-	it('should enable the tracker if carbonioPrefSendAnalytics is true', async () => {
+	test('should enable the tracker if carbonioPrefSendAnalytics is true', async () => {
 		const enableTrackerFn = jest.fn();
 		server.use(
 			http.post(
@@ -119,6 +119,9 @@ describe('Loader', () => {
 				getGetInfoRequest({ prefs: { _attrs: { carbonioPrefSendAnalytics: 'TRUE' } } })
 			)
 		);
+		// jest.spyOn('@zextras/carbonio-mailbox-api-ui', 'getInfo').mockResolvedValue({
+		//
+		// });
 		jest
 			.spyOn(tracker, 'useTracker')
 			.mockReturnValue({ enableTracker: enableTrackerFn, reset: jest.fn(), capture: jest.fn() });
@@ -134,7 +137,7 @@ describe('Loader', () => {
 		await waitFor(() => expect(enableTrackerFn).toHaveBeenLastCalledWith(true));
 	});
 
-	it('should invoke the enableTracker function only one time', async () => {
+	test('should invoke the enableTracker function only one time', async () => {
 		jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
 		const emitter = new EventEmitter();
 		server.use(
@@ -169,7 +172,7 @@ describe('Loader', () => {
 		expect(postHog.opt_in_capturing).toHaveBeenCalledTimes(1);
 	});
 
-	it.each<AccountSettingsPrefs['carbonioPrefSendAnalytics']>(['FALSE', undefined])(
+	test.each<AccountSettingsPrefs['carbonioPrefSendAnalytics']>(['FALSE', undefined])(
 		'should not enable the tracker if carbonioPrefSendAnalytics is %s',
 		async (carbonioPrefParam) => {
 			const enableTrackerFn = jest.fn();
@@ -196,7 +199,7 @@ describe('Loader', () => {
 	);
 
 	describe('Session expiration', () => {
-		it('should show a temporary snackbar when the session expires in 10 minutes', async () => {
+		test('should show a temporary snackbar when the session expires in 10 minutes', async () => {
 			const tenMinutes = 10 * 60 * 1000;
 			const tenSeconds = 10 * 1000;
 			server.use(
@@ -224,7 +227,7 @@ describe('Loader', () => {
 			expect(snackbar).not.toBeInTheDocument();
 		});
 
-		it('should show the go to login page action on the 10 minutes snackbar. Action calls logout', async () => {
+		test('should show the go to login page action on the 10 minutes snackbar. Action calls logout', async () => {
 			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
 			const tenMinutes = 10 * 60 * 1000;
 			server.use(
@@ -240,7 +243,7 @@ describe('Loader', () => {
 			expect(logoutFn).toHaveBeenCalled();
 		});
 
-		it('should show a permanent snackbar when the session expires in 3 minutes', async () => {
+		test('should show a permanent snackbar when the session expires in 3 minutes', async () => {
 			const threeMinutes = 3 * 60 * 1000;
 			const tenSeconds = 10 * 1000;
 			server.use(
@@ -268,7 +271,7 @@ describe('Loader', () => {
 			expect(snackbar).toBeVisible();
 		});
 
-		it('should show the go to login page action on the 3 minutes snackbar. Action calls logout', async () => {
+		test('should show the go to login page action on the 3 minutes snackbar. Action calls logout', async () => {
 			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
 			const threeMinutes = 3 * 60 * 1000;
 			server.use(
@@ -284,7 +287,7 @@ describe('Loader', () => {
 			expect(logoutFn).toHaveBeenCalled();
 		});
 
-		it('should show a temporary snackbar when the session expires in 60 seconds', async () => {
+		test('should show a temporary snackbar when the session expires in 60 seconds', async () => {
 			jest.spyOn(logout, 'logout').mockImplementation();
 			const oneMinute = 60 * 1000;
 			server.use(
@@ -312,7 +315,7 @@ describe('Loader', () => {
 			expect(snackbar).not.toBeInTheDocument();
 		});
 
-		it('should decrease the counter label inside the 60 seconds snackbar', async () => {
+		test('should decrease the counter label inside the 60 seconds snackbar', async () => {
 			jest.spyOn(logout, 'logout').mockImplementation();
 			const oneMinute = 60 * 1000;
 			server.use(
@@ -351,7 +354,7 @@ describe('Loader', () => {
 			).toBeVisible();
 		});
 
-		it('should start the counter of the 60 seconds snackbar from the real remaining seconds', async () => {
+		test('should start the counter of the 60 seconds snackbar from the real remaining seconds', async () => {
 			jest.spyOn(logout, 'logout').mockImplementation();
 			server.use(
 				http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: 30 * 1000 }))
@@ -367,7 +370,7 @@ describe('Loader', () => {
 			).toBeVisible();
 		});
 
-		it('should show the go to login page action on the 60 seconds snackbar. Action calls logout', async () => {
+		test('should show the go to login page action on the 60 seconds snackbar. Action calls logout', async () => {
 			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
 			const oneMinute = 60 * 1000;
 			server.use(
@@ -383,7 +386,7 @@ describe('Loader', () => {
 			expect(logoutFn).toHaveBeenCalled();
 		});
 
-		it('should not show 10 minutes snackbar if session expires in less than 10 minutes', async () => {
+		test('should not show 10 minutes snackbar if session expires in less than 10 minutes', async () => {
 			const tenMinutes = 10 * 60 * 1000;
 			server.use(
 				http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: tenMinutes - 1 }))
@@ -399,7 +402,7 @@ describe('Loader', () => {
 			).not.toBeInTheDocument();
 		});
 
-		it('should not show the 3 minutes snackbar if the session expires in less than 3 minutes', async () => {
+		test('should not show the 3 minutes snackbar if the session expires in less than 3 minutes', async () => {
 			const threeMinutes = 3 * 60 * 1000;
 			server.use(
 				http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: threeMinutes - 1 }))
@@ -415,7 +418,7 @@ describe('Loader', () => {
 			).not.toBeInTheDocument();
 		});
 
-		it('should show the 60 seconds snackbar if the session expires in less than 60 seconds', async () => {
+		test('should show the 60 seconds snackbar if the session expires in less than 60 seconds', async () => {
 			const oneMinute = 60 * 1000;
 			server.use(
 				http.post(
@@ -434,7 +437,7 @@ describe('Loader', () => {
 			).toBeVisible();
 		});
 
-		it.each([60, 30])(
+		test.each([60, 30])(
 			'should call logout when 60 seconds snackbar timeout expires (session lifetime is %s seconds)',
 			async (expirationSeconds) => {
 				const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
@@ -456,7 +459,7 @@ describe('Loader', () => {
 			}
 		);
 
-		it('should show 60 seconds snackbar and hide the 3 minutes snackbar', async () => {
+		test('should show 60 seconds snackbar and hide the 3 minutes snackbar', async () => {
 			const threeMinutes = 3 * 60 * 1000;
 			server.use(
 				http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: threeMinutes }))

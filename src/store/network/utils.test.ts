@@ -3,10 +3,11 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import type { NoOpResponse } from '@zextras/carbonio-mailbox-api-ui';
+
 import { useNetworkStore } from './store';
 import { getPollingInterval } from './utils';
 import { JSNS } from '../../constants';
-import type { NoOpResponse } from '../../network/fetch';
 import type { Duration } from '../../types/account';
 import type { RawSoapResponse } from '../../types/network';
 import { useAccountStore } from '../account';

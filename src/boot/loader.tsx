@@ -18,6 +18,7 @@ import { loginConfig } from '../network/login-config';
 import { logout } from '../network/logout';
 import { goToLogin } from '../network/utils';
 import { useAccountStore } from '../store/account';
+import { normalizeAccount } from '../store/account/normalization';
 import { useAppStore } from '../store/app';
 import { useTracker } from '../tracker/tracker';
 
@@ -116,8 +117,14 @@ export const Loader = (): React.JSX.Element => {
 			GET_INFO_RIGHTS.sendOnBehalfOfDistList
 		];
 
-		return getInfo({ rights }).then((sessionInfo) => {
-			setSessionLifetime(sessionInfo.lifetime);
+		return getInfo({ rights }).then((res) => {
+			const { account, settings, version } = normalizeAccount(res);
+			useAccountStore.setState({
+				authenticated: true,
+				account,
+				settings
+			});
+			setSessionLifetime(res.lifetime);
 		});
 	}, []);
 

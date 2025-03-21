@@ -4,7 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { DELEGATED_SEND_SAVE_TARGET } from '../../constants';
+import type {
+	Account as ApiAccount,
+	AccountSettings as ApiAccountSettings,
+	AccountSettingsPrefs as ApiAccountSettingsPrefs,
+	GeneralizedTime as ApiGeneralizedTime
+} from '@zextras/carbonio-mailbox-api-ui';
+
 import type { StringOfLength } from '../../utils/typeUtils';
 
 export interface ZimletProp {
@@ -16,7 +22,7 @@ export interface ZimletProp {
 export type AccountState = {
 	authenticated: boolean;
 	account?: Account;
-	settings: AccountSettings;
+	settings: ApiAccountSettings;
 	zimbraVersion?: string;
 	usedQuota: number;
 };
@@ -41,14 +47,7 @@ export type Signature = {
 	];
 };
 
-export type Account = {
-	id: string;
-	name: string;
-	displayName: string;
-	signatures: { signature: Array<Signature> };
-	identities: { identity: Array<Identity> };
-	rights: AccountRights;
-};
+export type Account = ApiAccount;
 
 export type BooleanString = 'TRUE' | 'FALSE';
 
@@ -66,37 +65,13 @@ type GeneralizedTimeObj = {
 /**
  * A GeneralizedTime is a string representing a date in UTC with the format YYYYMMDDHHmmss[.SSS][Z]
  */
-export type GeneralizedTime =
-	`${GeneralizedTimeObj['year']}${GeneralizedTimeObj['month']}${GeneralizedTimeObj['date']}${GeneralizedTimeObj['hour']}${GeneralizedTimeObj['min']}${GeneralizedTimeObj['sec']}${GeneralizedTimeObj['ms']}${GeneralizedTimeObj['timezone']}`;
+export type GeneralizedTime = ApiGeneralizedTime;
 
 export type DurationUnit = 'd' | 'h' | 'm' | 's' | 'ms';
 
 export type Duration = `${number}${DurationUnit | ''}`;
 
-export interface AccountSettingsPrefs {
-	zimbraPrefOutOfOfficeExternalReply?: string;
-	zimbraPrefOutOfOfficeReply?: string;
-	zimbraPrefOutOfOfficeReplyEnabled?: BooleanString;
-	zimbraPrefOutOfOfficeExternalReplyEnabled?: BooleanString;
-	zimbraPrefExternalSendersType?: 'ALL' | 'ALLNOTINAB' | 'INAB' | 'INSD';
-	zimbraPrefOutOfOfficeSuppressExternalReply?: BooleanString;
-	zimbraPrefOutOfOfficeFreeBusyStatus?: 'BUSY' | 'OUTOFOFFICE';
-	zimbraPrefOutOfOfficeStatusAlertOnLogin?: BooleanString;
-	zimbraPrefIncludeSharedItemsInSearch?: BooleanString;
-	zimbraPrefIncludeSpamInSearch?: BooleanString;
-	zimbraPrefIncludeTrashInSearch?: BooleanString;
-	zimbraPrefOutOfOfficeFromDate?: GeneralizedTime;
-	zimbraPrefOutOfOfficeUntilDate?: GeneralizedTime;
-	zimbraPrefHtmlEditorDefaultFontColor?: string;
-	zimbraPrefHtmlEditorDefaultFontFamily?: string;
-	zimbraPrefHtmlEditorDefaultFontSize?: string;
-	zimbraPrefLocale?: string;
-	zimbraPrefMailPollingInterval?: Duration;
-	zimbraPrefMailTrustedSenderList?: Array<string> | string;
-	zimbraPrefDelegatedSendSaveTarget?: (typeof DELEGATED_SEND_SAVE_TARGET)[number];
-	carbonioPrefSendAnalytics?: BooleanString;
-	[key: string]: string | number | Array<string | number> | undefined;
-}
+export type AccountSettingsPrefs = ApiAccountSettingsPrefs;
 
 export type AccountSettingsAttrs = {
 	zimbraFeatureOptionsEnabled?: BooleanString;
@@ -106,11 +81,7 @@ export type AccountSettingsAttrs = {
 	[key: string]: string | number | Array<string | number> | undefined;
 };
 
-export type AccountSettings = {
-	attrs: AccountSettingsAttrs;
-	prefs: AccountSettingsPrefs;
-	props: Array<ZimletProp>;
-};
+export type AccountSettings = ApiAccountSettings;
 
 export interface IdentityAttrs {
 	/** default mail signature for account/identity/dataSource */

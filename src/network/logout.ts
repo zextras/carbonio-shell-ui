@@ -4,18 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { soapFetch } from '@zextras/carbonio-mailbox-api-ui';
+import { api } from '@zextras/carbonio-mailbox-api-ui';
 
 import { goTo, goToLogin } from './utils';
-import { JSNS } from '../constants';
 import { useLoginConfigStore } from '../store/login/store';
 
 export async function logout(): Promise<void> {
 	try {
-		await soapFetch('EndSession', {
-			_jsns: JSNS.account,
-			logoff: true
-		});
+		await api.endSession({ logoff: true });
 		await fetch('/logout', { redirect: 'manual' });
 	} catch (error) {
 		console.error(error);

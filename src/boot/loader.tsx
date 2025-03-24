@@ -7,7 +7,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { Modal, Padding, Text, useSnackbar } from '@zextras/carbonio-design-system';
-import { ApiEvents, GET_INFO_RIGHTS, getInfo } from '@zextras/carbonio-mailbox-api-ui';
+import { ApiEvents, GET_INFO_RIGHTS, api } from '@zextras/carbonio-mailbox-api-ui';
 import { find } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
@@ -123,7 +123,7 @@ export const Loader = (): React.JSX.Element => {
 			GET_INFO_RIGHTS.sendOnBehalfOfDistList
 		];
 
-		return getInfo({ rights }).then((res) => {
+		return api.getInfo({ rights }).then((res) => {
 			const { account, settings, version } = normalizeAccount(res);
 			useAccountStore.setState({
 				authenticated: true,

@@ -11,8 +11,6 @@ import type {
 	GeneralizedTime as ApiGeneralizedTime
 } from '@zextras/carbonio-mailbox-api-ui';
 
-import type { StringOfLength } from '../../utils/typeUtils';
-
 export interface ZimletProp {
 	name: string;
 	zimlet: string;
@@ -50,17 +48,6 @@ export type Signature = {
 export type Account = ApiAccount;
 
 export type BooleanString = 'TRUE' | 'FALSE';
-
-type GeneralizedTimeObj = {
-	year: `${number}` & StringOfLength<4>;
-	month: `${number}` & StringOfLength<2>;
-	date: `${number}` & StringOfLength<2>;
-	hour: `${number}` & StringOfLength<2>;
-	min: `${number}` & StringOfLength<2>;
-	sec: `${number}` & StringOfLength<2>;
-	ms: (`.${number}` & StringOfLength<4>) | '';
-	timezone: 'Z' | '';
-};
 
 /**
  * A GeneralizedTime is a string representing a date in UTC with the format YYYYMMDDHHmmss[.SSS][Z]

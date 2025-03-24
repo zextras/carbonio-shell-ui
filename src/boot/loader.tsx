@@ -7,7 +7,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { Modal, Padding, Text, useSnackbar } from '@zextras/carbonio-design-system';
-import { GET_INFO_RIGHTS, getInfo } from '@zextras/carbonio-mailbox-api-ui';
+import { ApiEvents, GET_INFO_RIGHTS, getInfo } from '@zextras/carbonio-mailbox-api-ui';
 import { find } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
@@ -108,6 +108,12 @@ export const Loader = (): React.JSX.Element => {
 	const [sessionLifetime, setSessionLifetime] = useState<number>();
 	const createSnackbar = useSnackbar();
 
+	const carbonioPrefSendAnalytics = useAccountStore(
+		(state) => state.settings.prefs.carbonioPrefSendAnalytics
+	);
+
+	const { enableTracker } = useTracker();
+
 	const getSessionInfo = useCallback(() => {
 		const rights = [
 			GET_INFO_RIGHTS.sendAs,
@@ -128,11 +134,21 @@ export const Loader = (): React.JSX.Element => {
 		});
 	}, []);
 
-	const carbonioPrefSendAnalytics = useAccountStore(
-		(state) => state.settings.prefs.carbonioPrefSendAnalytics
-	);
+	const authErrorListener = useCallback(() => {
+		if (IS_FOCUS_MODE) {
+			useAccountStore.setState({ authenticated: false });
+		} else {
+			goToLogin();
+		}
+	}, []);
 
-	const { enableTracker } = useTracker();
+	useEffect(() => {
+		window.addEventListener(ApiEvents.AuthError, authErrorListener);
+
+		return function cleanup() {
+			window.removeEventListener(ApiEvents.AuthError, authErrorListener);
+		};
+	}, [authErrorListener]);
 
 	useEffect(() => {
 		enableTracker(carbonioPrefSendAnalytics === 'TRUE');

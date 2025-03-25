@@ -7,6 +7,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { Modal, Padding, Text, useSnackbar } from '@zextras/carbonio-design-system';
+import type { UserQuotaEvent } from '@zextras/carbonio-mailbox-api-ui';
 import { ApiEvents, GET_INFO_RIGHTS, api } from '@zextras/carbonio-mailbox-api-ui';
 import { find } from 'lodash';
 import { useTranslation } from 'react-i18next';
@@ -142,13 +143,28 @@ export const Loader = (): React.JSX.Element => {
 		}
 	}, []);
 
+	const userQuotaEventLister = useCallback(
+		(e: CustomEventInit<UserQuotaEvent['payload']>): void => {
+			useAccountStore.setState({ usedQuota: e.detail?.quota });
+		},
+		[]
+	);
+
 	useEffect(() => {
 		window.addEventListener(ApiEvents.AuthError, authErrorListener);
 
-		return function cleanup() {
+		return () => {
 			window.removeEventListener(ApiEvents.AuthError, authErrorListener);
 		};
 	}, [authErrorListener]);
+
+	useEffect(() => {
+		window.addEventListener(ApiEvents.UserQuota, userQuotaEventLister);
+
+		return () => {
+			window.removeEventListener(ApiEvents.UserQuota, userQuotaEventLister);
+		};
+	}, [userQuotaEventLister]);
 
 	useEffect(() => {
 		enableTracker(carbonioPrefSendAnalytics === 'TRUE');

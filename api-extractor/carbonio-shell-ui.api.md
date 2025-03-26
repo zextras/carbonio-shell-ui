@@ -161,20 +161,6 @@ export interface Action {
 
 // @public (undocumented)
 export const ACTION_TYPES: {
-    readonly CONVERSATION: "conversation";
-    readonly CONVERSATION_lIST: "conversation_list";
-    readonly MESSAGE: "message";
-    readonly MESSAGE_lIST: "message_list";
-    readonly CONTACT: "contact";
-    readonly CONTACT_lIST: "contact_list";
-    readonly INVITE: "invite";
-    readonly INVITE_lIST: "invite_list";
-    readonly APPOINTMENT: "appointment";
-    readonly APPOINTMENT_lIST: "appointment_list";
-    readonly FOLDER: "folder";
-    readonly FOLDER_lIST: "folder_list";
-    readonly CALENDAR: "calendar";
-    readonly CALENDAR_lIST: "calendar_list";
     readonly NEW: "new";
     readonly ACCOUNT_MENU: "account_menu";
 };
@@ -1022,13 +1008,6 @@ export const report: ReturnType<typeof report_2>;
 
 // @public (undocumented)
 const report_2: (appId: string) => (error: Event_2, hint?: EventHint) => string;
-
-// @public @deprecated (undocumented)
-export const RESULT_LABEL_TYPE: {
-    readonly normal: "normal";
-    readonly warning: "warning";
-    readonly error: "error";
-};
 
 // @public (undocumented)
 type RevokeRightsResponse = {

@@ -7,7 +7,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
-import { legacySoapFetch } from '@zextras/carbonio-mailbox-api-ui';
+import { legacySoapFetch } from '@zextras/carbonio-ui-soap-lib';
 import { includes, isEmpty, map, size } from 'lodash';
 
 import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';

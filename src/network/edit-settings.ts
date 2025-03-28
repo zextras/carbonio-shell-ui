@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { legacyXmlSoapFetch } from '@zextras/carbonio-mailbox-api-ui';
+import { legacyXmlSoapFetch } from '@zextras/carbonio-ui-soap-lib';
 import { filter, find, findIndex, map, reduce, isArray } from 'lodash';
 
 import { SHELL_APP_ID } from '../constants';

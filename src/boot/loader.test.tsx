@@ -119,7 +119,7 @@ describe('Loader', () => {
 				getGetInfoRequest({ prefs: { _attrs: { carbonioPrefSendAnalytics: 'TRUE' } } })
 			)
 		);
-		// jest.spyOn('@zextras/carbonio-mailbox-api-ui', 'getInfo').mockResolvedValue({
+		// jest.spyOn('@zextras/carbonio-ui-soap-lib', 'getInfo').mockResolvedValue({
 		//
 		// });
 		jest

@@ -103,4 +103,4 @@ export { AppContextProvider } from './app-context-provider';
 
 export type { AuthGuardProps } from '../../ui-extras/auth-guard';
 export { AuthGuard } from '../../ui-extras/auth-guard';
-export { soapFetchV2 } from '@zextras/carbonio-mailbox-api-ui';
+export { soapFetchV2 } from '@zextras/carbonio-ui-soap-lib';

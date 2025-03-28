@@ -9,7 +9,7 @@ import type {
 	AccountSettings as ApiAccountSettings,
 	AccountSettingsPrefs as ApiAccountSettingsPrefs,
 	GeneralizedTime as ApiGeneralizedTime
-} from '@zextras/carbonio-mailbox-api-ui';
+} from '@zextras/carbonio-ui-soap-lib';
 
 export interface ZimletProp {
 	name: string;

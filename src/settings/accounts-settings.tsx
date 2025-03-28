@@ -7,7 +7,7 @@
 import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react';
 
 import { Container, ModalManager, useSnackbar } from '@zextras/carbonio-design-system';
-import { soapFetchV2 } from '@zextras/carbonio-mailbox-api-ui';
+import { soapFetchV2 } from '@zextras/carbonio-ui-soap-lib';
 import { produce } from 'immer';
 import { map, find, isEmpty, filter, size } from 'lodash';
 import { useTranslation } from 'react-i18next';

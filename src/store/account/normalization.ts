@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import type { GetInfoResponse, Account, AccountSettings } from '@zextras/carbonio-mailbox-api-ui';
+import type { GetInfoResponse, Account, AccountSettings } from '@zextras/carbonio-ui-soap-lib';
 
 const normalizeSettings = (
 	settings: Pick<GetInfoResponse, 'attrs' | 'prefs' | 'props'>

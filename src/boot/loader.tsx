@@ -7,8 +7,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { Modal, Padding, Text, useSnackbar } from '@zextras/carbonio-design-system';
-import type { UserQuotaEvent } from '@zextras/carbonio-mailbox-api-ui';
-import { ApiEvents, GET_INFO_RIGHTS, api } from '@zextras/carbonio-mailbox-api-ui';
+import type { UserQuotaEvent } from '@zextras/carbonio-ui-soap-lib';
+import { ApiEvents, GET_INFO_RIGHTS, api } from '@zextras/carbonio-ui-soap-lib';
 import { find } from 'lodash';
 import { useTranslation } from 'react-i18next';
 

@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { useAppServerRefresh, useAppServerUpdates } from '@zextras/carbonio-mailbox-api-ui';
+import { useAppServerRefresh, useAppServerUpdates } from '@zextras/carbonio-ui-soap-lib';
 
 import type { SoapNotify, SoapRefresh } from '../../types/network';
 

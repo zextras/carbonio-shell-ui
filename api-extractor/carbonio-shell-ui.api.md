@@ -4,9 +4,9 @@
 
 ```ts
 
-import type { Account as Account_2 } from '@zextras/carbonio-mailbox-api-ui';
-import type { AccountSettings as AccountSettings_2 } from '@zextras/carbonio-mailbox-api-ui';
-import type { AccountSettingsPrefs as AccountSettingsPrefs_2 } from '@zextras/carbonio-mailbox-api-ui';
+import type { Account as Account_2 } from '@zextras/carbonio-ui-soap-lib';
+import type { AccountSettings as AccountSettings_2 } from '@zextras/carbonio-ui-soap-lib';
+import type { AccountSettingsPrefs as AccountSettingsPrefs_2 } from '@zextras/carbonio-ui-soap-lib';
 import { Action as Action_2 } from '../../lib';
 import { ActionFactory as ActionFactory_2 } from '../../types/integrations';
 import { AnyFunction as AnyFunction_2 } from '../../utils/typeUtils';
@@ -18,14 +18,14 @@ import { DropdownItem } from '@zextras/carbonio-design-system';
 import type { DynamicThemeFix } from 'darkreader';
 import type { Event as Event_2 } from '@sentry/browser';
 import type { EventHint } from '@sentry/browser';
-import type { GeneralizedTime as GeneralizedTime_2 } from '@zextras/carbonio-mailbox-api-ui';
+import type { GeneralizedTime as GeneralizedTime_2 } from '@zextras/carbonio-ui-soap-lib';
 import type { i18n } from 'i18next';
-import { legacySoapFetch } from '@zextras/carbonio-mailbox-api-ui';
+import { legacySoapFetch } from '@zextras/carbonio-ui-soap-lib';
 import type { ModalProps } from '@zextras/carbonio-design-system';
 import type { Properties } from 'posthog-js';
 import { default as React_2 } from 'react';
 import type { ReactNode } from 'react';
-import { soapFetchV2 } from '@zextras/carbonio-mailbox-api-ui';
+import { soapFetchV2 } from '@zextras/carbonio-ui-soap-lib';
 import type { TFunction } from 'i18next';
 import type { Theme } from '@zextras/carbonio-design-system';
 import type { To } from 'react-router-dom';

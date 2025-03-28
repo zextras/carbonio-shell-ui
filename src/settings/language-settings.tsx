@@ -7,7 +7,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 
 import type { SelectItem, SingleSelectionOnChange } from '@zextras/carbonio-design-system';
-import { Container, FormSubSection, Modal, Select, Text } from '@zextras/carbonio-design-system';
+import { FormSubSection, FormSection, Modal, Select, Text } from '@zextras/carbonio-design-system';
 
 import type { SettingsSectionProps } from './components/utils';
 import { localeList, upsertPrefOnUnsavedChanges } from './components/utils';
@@ -62,13 +62,8 @@ export const LanguageSettings = ({
 	useReset(resetRef, init);
 
 	return (
-		<FormSubSection
-			label={sectionTitle.label}
-			minWidth="calc(min(100%, 32rem))"
-			width="50%"
-			id={sectionTitle.id}
-		>
-			<Container crossAlignment="baseline" padding={{ all: 'small' }} gap={'0.5rem'}>
+		<FormSection label={sectionTitle.label} id={sectionTitle.id}>
+			<FormSubSection>
 				<Select
 					items={locales}
 					background={'gray5'}
@@ -95,7 +90,7 @@ export const LanguageSettings = ({
 						)}
 					</Text>
 				</Modal>
-			</Container>
-		</FormSubSection>
+			</FormSubSection>
+		</FormSection>
 	);
 };

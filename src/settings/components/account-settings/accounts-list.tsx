@@ -13,11 +13,13 @@ import {
 	Divider,
 	Row,
 	Padding,
-	Button,
 	Icon,
-	List as DSList,
+	List,
 	ListItem,
-	useModal
+	useModal,
+	FormSection,
+	FormSubSection,
+	Button
 } from '@zextras/carbonio-design-system';
 import type { TFunction } from 'i18next';
 import { map } from 'lodash';
@@ -27,8 +29,8 @@ import styled from 'styled-components';
 import type { Identity, IdentityAttrs } from '../../../types/account';
 import { isPrimary } from '../utils';
 
-const List = styled(DSList)`
-	flex-shrink: 0;
+const StyledFormSection = styled(FormSection)`
+	display: block;
 `;
 
 function getNewPersonaNextIdentityName(
@@ -172,41 +174,28 @@ const AccountsList = ({
 
 	return (
 		<>
-			<Container
-				minWidth="calc(min(100%, 32rem))"
-				width="fill"
-				padding={{ all: 'large' }}
-				height="fit"
-				background="gray6"
-				mainAlignment="flex-start"
-			>
-				<Padding horizontal="medium" bottom="large" width="100%">
-					<Text weight="bold">{t('label.accounts_list', 'Accounts list')}</Text>
-				</Padding>
-				<List>{items}</List>
-			</Container>
-			<Row
-				padding={{ horizontal: 'large', bottom: 'large' }}
-				width="fill"
-				mainAlignment="flex-start"
-				background="gray6"
-			>
-				<Padding right="small">
-					<Button
-						label={t('label.add_persona', 'Add persona')}
-						onClick={addNewPersona}
-						color="primary"
-						type="outlined"
-					/>
-				</Padding>
-				<Button
-					label={t('label.delete', 'Delete')}
-					onClick={onDelete}
-					color="error"
-					type="outlined"
-					disabled={isPrimary(identities[selectedIdentityId])}
-				/>
-			</Row>
+			<StyledFormSection label={t('label.accounts_list', 'Accounts list')}>
+				<FormSubSection>
+					<Container crossAlignment={'flex-start'} mainAlignment={'flex-start'} gap={'1rem'}>
+						<List flexShrink={0}>{items}</List>
+						<Row width="fill" mainAlignment="flex-start" background="gray6" gap={'0.5rem'}>
+							<Button
+								label={t('label.add_persona', 'Add persona')}
+								onClick={addNewPersona}
+								color="primary"
+								type="outlined"
+							/>
+							<Button
+								label={t('label.delete', 'Delete')}
+								onClick={onDelete}
+								color="error"
+								type="outlined"
+								disabled={isPrimary(identities[selectedIdentityId])}
+							/>
+						</Row>
+					</Container>
+				</FormSubSection>
+			</StyledFormSection>
 			<Padding bottom="large" />
 		</>
 	);

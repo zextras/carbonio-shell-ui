@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { SliderProps } from '@zextras/carbonio-design-system';
 import {
+	FormSubSection,
 	Button,
 	Checkbox,
 	Container,
@@ -24,7 +25,7 @@ import type { ResetComponentImperativeHandler } from '../utils';
 import { getAutoScalingFontSize } from '../utils';
 
 const ScalingSliderContainer = styled(Container)`
-	box-shadow: 0px 0px 4px rgba(166, 166, 166, 0.5);
+	box-shadow: 0 0 4px rgba(166, 166, 166, 0.5);
 	border-radius: 0.5rem;
 `;
 
@@ -191,7 +192,7 @@ export const ScalingSettingSection = ({
 	);
 
 	return (
-		<Container
+		<FormSubSection
 			orientation={'vertical'}
 			mainAlignment={'flex-start'}
 			crossAlignment={'flex-start'}
@@ -200,7 +201,6 @@ export const ScalingSettingSection = ({
 			width={'fill'}
 		>
 			<Container
-				orientation={'vertical'}
 				gap={'1rem'}
 				height={'fit'}
 				width={'fit'}
@@ -208,7 +208,7 @@ export const ScalingSettingSection = ({
 				crossAlignment={'flex-start'}
 				maxWidth={'100%'}
 			>
-				<Text size="small" overflow={'break-word'}>
+				<Text overflow={'break-word'}>
 					{t(
 						'settings.appearance.labels.choose_size_description',
 						'Choose Type Size and Styles for Carbonio Environment'
@@ -216,7 +216,6 @@ export const ScalingSettingSection = ({
 				</Text>
 				<ScalingSliderContainer
 					orientation="horizontal"
-					width="fill"
 					height="auto"
 					padding={{ vertical: 'small', horizontal: 'large' }}
 					gap={'0.5rem'}
@@ -279,10 +278,8 @@ export const ScalingSettingSection = ({
 				background={'gray5'}
 				padding={'large'}
 				gap={'0.5rem'}
-				orientation={'vertical'}
 				mainAlignment={'flex-start'}
 				crossAlignment={'flex-start'}
-				width={'fill'}
 				$fontSize={exampleFontSize}
 			>
 				<ExampleText weight={'light'} overflow={'break-word'}>
@@ -295,6 +292,6 @@ export const ScalingSettingSection = ({
 					{exampleText}
 				</ExampleText>
 			</ExampleContainer>
-		</Container>
+		</FormSubSection>
 	);
 };

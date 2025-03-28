@@ -6,7 +6,7 @@
 
 import React from 'react';
 
-import { Container, Text } from '@zextras/carbonio-design-system';
+import { FormSection } from '@zextras/carbonio-design-system';
 
 import type { SettingsSubSection } from '../../../types/apps';
 
@@ -17,21 +17,13 @@ export const SettingsSection = ({
 	label,
 	id
 }: SettingsSectionProps): React.JSX.Element => (
-	<Container
+	<FormSection
+		label={label}
 		mainAlignment="flex-start"
 		crossAlignment="flex-start"
-		gap="1rem"
-		padding={'large'}
-		minWidth="calc(min(100%, 32rem))"
-		width="50%"
-		height={'fit'}
 		id={id}
 		data-testid={id}
-		background={'gray6'}
 	>
-		<Text weight={'bold'} size={'large'} lineHeight={1.5}>
-			{label}
-		</Text>
 		{children}
-	</Container>
+	</FormSection>
 );

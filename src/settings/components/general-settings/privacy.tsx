@@ -6,7 +6,13 @@
 
 import React, { useCallback, useImperativeHandle, useMemo, useRef, useState } from 'react';
 
-import { Checkbox, Container, Padding, Text } from '@zextras/carbonio-design-system';
+import {
+	Checkbox,
+	Container,
+	FormSubSection,
+	Padding,
+	Text
+} from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 
 import type { AddMod, RemoveMod } from '../../../types/network';
@@ -56,26 +62,28 @@ export const Privacy = ({
 	}, [removeMod, sendAnalyticsPref, updatePref]);
 
 	return (
-		<Container
-			gap={'0.25rem'}
-			mainAlignment={'flex-start'}
-			crossAlignment={'flex-start'}
-			height={'fit'}
-		>
-			<Checkbox
-				value={checkboxValue}
-				label={t('settings.privacy.allowAnalytics.label', 'Allow data analytics')}
-				onClick={toggleCheckboxValue}
-				size={'medium'}
-			/>
-			<Padding left={'2rem'}>
-				<Text overflow={'break-word'} size={'medium'} lineHeight={1.5} color={'gray1'}>
-					{t(
-						'settings.privacy.allowAnalytics.description',
-						'Your data is safe. All information we gather is and will stay anonymous. It will be used by our team to understand how can we improve Carbonio.'
-					)}
-				</Text>
-			</Padding>
-		</Container>
+		<FormSubSection>
+			<Container
+				gap={'0.25rem'}
+				mainAlignment={'flex-start'}
+				crossAlignment={'flex-start'}
+				height={'fit'}
+			>
+				<Checkbox
+					value={checkboxValue}
+					label={t('settings.privacy.allowAnalytics.label', 'Allow data analytics')}
+					onClick={toggleCheckboxValue}
+					size={'medium'}
+				/>
+				<Padding left={'2rem'}>
+					<Text overflow={'break-word'} size={'medium'} lineHeight={1.5} color={'gray1'}>
+						{t(
+							'settings.privacy.allowAnalytics.description',
+							'Your data is safe. All information we gather is and will stay anonymous. It will be used by our team to understand how can we improve Carbonio.'
+						)}
+					</Text>
+				</Padding>
+			</Container>
+		</FormSubSection>
 	);
 };

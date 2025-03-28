@@ -50,8 +50,6 @@ const PersonaSettings = ({
 	return (
 		<>
 			<Container
-				minWidth="calc(min(100%, 32rem))"
-				width="fill"
 				padding={{ all: 'large' }}
 				height="fit"
 				background={'gray6'}

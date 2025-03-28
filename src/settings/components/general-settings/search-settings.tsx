@@ -6,7 +6,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { Checkbox, Container, FormSubSection } from '@zextras/carbonio-design-system';
+import { Checkbox, Container, FormSection, FormSubSection } from '@zextras/carbonio-design-system';
 
 import { getT } from '../../../store/i18n/hooks';
 import type { AccountSettings } from '../../../types/account';
@@ -81,38 +81,35 @@ export const SearchSettings = ({
 	const sectionTitle = useMemo(() => searchPrefsSubSection(t), [t]);
 
 	return (
-		<FormSubSection
-			label={sectionTitle.label}
-			minWidth="calc(min(100%, 32rem))"
-			width="50%"
-			id={sectionTitle.id}
-		>
-			<Container crossAlignment="baseline" padding={{ all: 'small' }}>
-				<Checkbox
-					label={t(
-						'settings.search_settings.labels.include_search_in_spam_folder',
-						'Include Spam Folder in Searches'
-					)}
-					value={searchInSpamFolder}
-					onClick={onClickSpam}
-				/>
-				<Checkbox
-					label={t(
-						'settings.search_settings.labels.include_search_in_trash_folder',
-						'Include Trash Folder in Searches'
-					)}
-					value={searchInTrashFolder}
-					onClick={onClickTrash}
-				/>
-				<Checkbox
-					label={t(
-						'settings.search_settings.labels.include_search_in_shared_folder',
-						'Include Shared Folder in Searches'
-					)}
-					value={searchInSharedFolder}
-					onClick={onClickShared}
-				/>
-			</Container>
-		</FormSubSection>
+		<FormSection label={sectionTitle.label} id={sectionTitle.id}>
+			<FormSubSection>
+				<Container mainAlignment={'flex-start'} crossAlignment={'flex-start'}>
+					<Checkbox
+						label={t(
+							'settings.search_settings.labels.include_search_in_spam_folder',
+							'Include Spam Folder in Searches'
+						)}
+						value={searchInSpamFolder}
+						onClick={onClickSpam}
+					/>
+					<Checkbox
+						label={t(
+							'settings.search_settings.labels.include_search_in_trash_folder',
+							'Include Trash Folder in Searches'
+						)}
+						value={searchInTrashFolder}
+						onClick={onClickTrash}
+					/>
+					<Checkbox
+						label={t(
+							'settings.search_settings.labels.include_search_in_shared_folder',
+							'Include Shared Folder in Searches'
+						)}
+						value={searchInSharedFolder}
+						onClick={onClickShared}
+					/>
+				</Container>
+			</FormSubSection>
+		</FormSection>
 	);
 };

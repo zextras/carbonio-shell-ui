@@ -412,11 +412,10 @@ export const AccountsSettings = (): React.JSX.Element => {
 				isDirty={isDirty}
 				title={t('label.accounts', 'Accounts')}
 			/>
-			<Container background={'gray5'} padding={{ top: 'large' }} height="fit" />
 			<Container
 				background={'gray5'}
 				mainAlignment="flex-start"
-				padding={{ all: 'large' }}
+				padding={{ all: 'medium' }}
 				style={{ overflow: 'auto' }}
 			>
 				<AccountsList

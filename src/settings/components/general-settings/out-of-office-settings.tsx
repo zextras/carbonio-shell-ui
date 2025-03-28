@@ -12,13 +12,10 @@ import type {
 	TextAreaProps
 } from '@zextras/carbonio-design-system';
 import {
-	Checkbox,
-	Container,
 	FormSubSection,
-	Padding,
-	Row,
+	FormSection,
+	Checkbox,
 	Select,
-	Text,
 	TextArea
 } from '@zextras/carbonio-design-system';
 import { type TFunction } from 'i18next';
@@ -285,13 +282,8 @@ export const OutOfOfficeSettings = ({
 	]);
 
 	return (
-		<FormSubSection
-			label={outOfOfficeSectionTitle.label}
-			minWidth="calc(min(100%, 32rem))"
-			width="50%"
-			id={outOfOfficeSectionTitle.id}
-		>
-			<Container crossAlignment="baseline" padding={{ all: 'small' }} gap={'0.5rem'}>
+		<FormSection label={outOfOfficeSectionTitle.label} id={outOfOfficeSectionTitle.id}>
+			<FormSubSection gap={'0.5rem'}>
 				<Select
 					items={prefOutOfOfficeReplyEnabledSelectItems}
 					label={t('label.out_of_office', 'Out of Office')}
@@ -325,19 +317,8 @@ export const OutOfOfficeSettings = ({
 						onChange={prefOutOfOfficeExternalReplyOnChange}
 					/>
 				)}
-			</Container>
-			<Container crossAlignment="baseline" padding={{ all: 'small' }}>
-				<Row
-					padding={{ all: 'small' }}
-					mainAlignment="flex-start"
-					crossAlignment="baseline"
-					width="100%"
-				>
-					<Text size="large" weight="bold">
-						{t('settings.out_of_office.headings.time_period', 'Time Period')}
-					</Text>
-				</Row>
-				<Padding vertical="small" />
+			</FormSubSection>
+			<FormSubSection label={t('settings.out_of_office.headings.time_period', 'Time Period')}>
 				<Checkbox
 					label={t(
 						'settings.out_of_office.labels.send_auto_reply_period',
@@ -355,7 +336,7 @@ export const OutOfOfficeSettings = ({
 					prefOutOfOfficeUntilDate={settings.prefs.zimbraPrefOutOfOfficeUntilDate}
 					resetRef={outOfOfficeTimePeriodResetRef}
 				/>
-			</Container>
-		</FormSubSection>
+			</FormSubSection>
+		</FormSection>
 	);
 };

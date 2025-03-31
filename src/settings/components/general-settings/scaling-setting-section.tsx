@@ -271,7 +271,6 @@ export const ScalingSettingSection = ({
 						'settings.appearance.labels.choose_size_auto',
 						'Automatically resize the text size depending on the device'
 					)}
-					size={'small'}
 				/>
 			</Container>
 			<ExampleContainer

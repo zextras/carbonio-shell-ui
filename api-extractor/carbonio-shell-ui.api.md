@@ -13,8 +13,6 @@ import { CarbonioModule as CarbonioModule_2 } from '../../types/apps';
 import type { ComponentType } from 'react';
 import { DropdownItem } from '@zextras/carbonio-design-system';
 import type { DynamicThemeFix } from 'darkreader';
-import type { Event as Event_2 } from '@sentry/browser';
-import type { EventHint } from '@sentry/browser';
 import type { i18n } from 'i18next';
 import type { ModalProps } from '@zextras/carbonio-design-system';
 import type { Properties } from 'posthog-js';
@@ -1006,8 +1004,8 @@ export const reopenBoards: () => void;
 // @public (undocumented)
 export const report: ReturnType<typeof report_2>;
 
-// @public (undocumented)
-const report_2: (appId: string) => (error: Event_2, hint?: EventHint) => string;
+// @public @deprecated (undocumented)
+const report_2: (appId: string) => (error: Event, hint?: unknown) => void;
 
 // @public (undocumented)
 type RevokeRightsResponse = {
@@ -1073,9 +1071,6 @@ export type SecondaryAccessoryViewProps = {
 export type SecondaryBarComponentProps = {
     expanded: boolean;
 };
-
-// @public (undocumented)
-export const SENTRY_SHELL_DSN = "https://0ce2448c05b94f0182c47ae52c7ff52c@feedback.zextras.tools/6";
 
 // @public (undocumented)
 export const setAppContext: AppDependantExports['setAppContext'];
@@ -1467,7 +1462,7 @@ interface ZimletProp {
 // lib/types/account/index.d.ts:140:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:145:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:146:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
-// lib/types/apps/index.d.ts:60:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
+// lib/types/apps/index.d.ts:63:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:45:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:64:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:80:5 - (ae-forgotten-export) The symbol "Meta" needs to be exported by the entry point lib.d.ts

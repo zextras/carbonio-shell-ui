@@ -103,7 +103,7 @@
 	"dependencies": {
 		"@fontsource/roboto": "^5.0.8",
 		"@sentry/browser": "^7.103.0",
-		"@tinymce/tinymce-react": "^4.3.2",
+		"@tinymce/tinymce-react": "^6.1.0",
 		"@zextras/carbonio-design-system": "9.0.0",
 		"@zextras/carbonio-ui-preview": "^3.1.1",
 		"darkreader": "^4.9.79",

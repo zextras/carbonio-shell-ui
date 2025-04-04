@@ -26,8 +26,7 @@ export const getComponentsJson: HttpResponseResolver<
 				type: 'shell',
 				attrKey: '',
 				icon: 'CubeOutline',
-				display: 'Shell',
-				sentryDsn: ''
+				display: 'Shell'
 			}
 		]
 	};

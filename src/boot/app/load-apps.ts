@@ -11,7 +11,6 @@ import { loadApp, unloadApps } from './load-app';
 import { injectSharedLibraries } from './shared-libraries';
 import { SHELL_APP_ID } from '../../constants';
 import { SUPPORTED_LOCALES } from '../../constants/locales';
-import { useReporter } from '../../reporting/store';
 import { getUserSetting, useAccountStore } from '../../store/account';
 import { useI18nStore } from '../../store/i18n/store';
 import type { CarbonioModule } from '../../types/apps';
@@ -49,7 +48,6 @@ export function loadApps(
 				console.warn(`Cannot import locale ${locale} for date-fns. Falling back to english`);
 			});
 	}
-	useReporter.getState().setClients(appsToLoad);
 	return Promise.allSettled(map(appsToLoad, (app) => loadApp(app)));
 }
 

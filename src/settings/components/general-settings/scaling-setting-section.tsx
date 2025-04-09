@@ -192,14 +192,7 @@ export const ScalingSettingSection = ({
 	);
 
 	return (
-		<FormSubSection
-			orientation={'vertical'}
-			mainAlignment={'flex-start'}
-			crossAlignment={'flex-start'}
-			gap={'1rem'}
-			height={'fit'}
-			width={'fill'}
-		>
+		<FormSubSection>
 			<Container
 				gap={'1rem'}
 				height={'fit'}

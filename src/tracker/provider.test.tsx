@@ -30,7 +30,8 @@ describe('TrackerProvider', () => {
 					opt_out_capturing_by_default: true,
 					disable_session_recording: true,
 					disable_surveys: true
-				})
+				}),
+				apiKey: POSTHOG_API_KEY
 			}),
 			expect.anything()
 		);

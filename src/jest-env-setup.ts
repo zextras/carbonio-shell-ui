@@ -39,6 +39,20 @@ failOnConsole({
 		/Controlled error/gi.test(errorMessage)
 });
 
+// mock a simplified crypto
+Object.defineProperty(window, 'crypto', {
+	writable: true,
+	value: {
+		get subtle() {
+			throw new Error('subtle mock is not implemented!');
+		},
+		getRandomValues: jest.fn(() => {
+			throw new Error('getRandomValues mock is not implemented!');
+		}),
+		randomUUID: jest.fn(() => Math.random().toString())
+	}
+});
+
 beforeEach(() => {
 	Object.defineProperty(window, 'IntersectionObserver', {
 		writable: true,

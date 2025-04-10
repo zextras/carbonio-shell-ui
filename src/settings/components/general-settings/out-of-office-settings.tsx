@@ -12,6 +12,7 @@ import type {
 	TextAreaProps
 } from '@zextras/carbonio-design-system';
 import {
+	Container,
 	FormSubSection,
 	FormSection,
 	Checkbox,
@@ -283,59 +284,63 @@ export const OutOfOfficeSettings = ({
 
 	return (
 		<FormSection label={outOfOfficeSectionTitle.label} id={outOfOfficeSectionTitle.id}>
-			<FormSubSection gap={'0.5rem'}>
-				<Select
-					items={prefOutOfOfficeReplyEnabledSelectItems}
-					label={t('label.out_of_office', 'Out of Office')}
-					onChange={prefOutOfOfficeReplyEnabledOnChange}
-					selection={prefOutOfOfficeReplyEnabledSelectedValue}
-				/>
-				<TextArea
-					value={prefOutOfOfficeReply}
-					disabled={!prefOutOfOfficeReplyEnabled}
-					label={t('settings.out_of_office.labels.auto_reply_message', 'Auto-Reply Message:')}
-					onChange={prefOutOfOfficeReplyOnChange}
-				/>
-				<Select
-					disabled={!prefOutOfOfficeReplyEnabled}
-					items={externalSendersSelectItems}
-					label={t('settings.out_of_office.labels.external_senders', 'External Senders')}
-					onChange={externalSendersOnChange}
-					selection={externalSendersSelectedItem}
-					dropdownWidth={'auto'}
-					dropdownMaxWidth={'unset'}
-					placement={'bottom-start'}
-				/>
-				{prefOutOfOfficeExternalReplyEnabled && (
-					<TextArea
-						value={prefOutOfOfficeExternalReply}
-						disabled={!prefOutOfOfficeReplyEnabled}
-						label={t(
-							'settings.out_of_office.labels.auto_reply_message_external',
-							'Auto-Reply Message for External senders:'
-						)}
-						onChange={prefOutOfOfficeExternalReplyOnChange}
+			<FormSubSection>
+				<Container gap={'0.5rem'}>
+					<Select
+						items={prefOutOfOfficeReplyEnabledSelectItems}
+						label={t('label.out_of_office', 'Out of Office')}
+						onChange={prefOutOfOfficeReplyEnabledOnChange}
+						selection={prefOutOfOfficeReplyEnabledSelectedValue}
 					/>
-				)}
+					<TextArea
+						value={prefOutOfOfficeReply}
+						disabled={!prefOutOfOfficeReplyEnabled}
+						label={t('settings.out_of_office.labels.auto_reply_message', 'Auto-Reply Message:')}
+						onChange={prefOutOfOfficeReplyOnChange}
+					/>
+					<Select
+						disabled={!prefOutOfOfficeReplyEnabled}
+						items={externalSendersSelectItems}
+						label={t('settings.out_of_office.labels.external_senders', 'External Senders')}
+						onChange={externalSendersOnChange}
+						selection={externalSendersSelectedItem}
+						dropdownWidth={'auto'}
+						dropdownMaxWidth={'unset'}
+						placement={'bottom-start'}
+					/>
+					{prefOutOfOfficeExternalReplyEnabled && (
+						<TextArea
+							value={prefOutOfOfficeExternalReply}
+							disabled={!prefOutOfOfficeReplyEnabled}
+							label={t(
+								'settings.out_of_office.labels.auto_reply_message_external',
+								'Auto-Reply Message for External senders:'
+							)}
+							onChange={prefOutOfOfficeExternalReplyOnChange}
+						/>
+					)}
+				</Container>
 			</FormSubSection>
 			<FormSubSection label={t('settings.out_of_office.headings.time_period', 'Time Period')}>
-				<Checkbox
-					label={t(
-						'settings.out_of_office.labels.send_auto_reply_period',
-						'Send auto-replies during the following period:'
-					)}
-					value={sendAutoReplyTimePeriodEnabled}
-					onClick={toggleSendAutoReplyTimePeriod}
-					disabled={!prefOutOfOfficeReplyEnabled}
-				/>
-				<OutOfOfficeTimePeriodSection
-					addMod={addMod}
-					removeMod={removeMod}
-					disabled={!prefOutOfOfficeReplyEnabled || !sendAutoReplyTimePeriodEnabled}
-					prefOutOfOfficeFromDate={settings.prefs.zimbraPrefOutOfOfficeFromDate}
-					prefOutOfOfficeUntilDate={settings.prefs.zimbraPrefOutOfOfficeUntilDate}
-					resetRef={outOfOfficeTimePeriodResetRef}
-				/>
+				<Container gap={'0.5rem'} mainAlignment={'flex-start'} crossAlignment={'flex-start'}>
+					<Checkbox
+						label={t(
+							'settings.out_of_office.labels.send_auto_reply_period',
+							'Send auto-replies during the following period:'
+						)}
+						value={sendAutoReplyTimePeriodEnabled}
+						onClick={toggleSendAutoReplyTimePeriod}
+						disabled={!prefOutOfOfficeReplyEnabled}
+					/>
+					<OutOfOfficeTimePeriodSection
+						addMod={addMod}
+						removeMod={removeMod}
+						disabled={!prefOutOfOfficeReplyEnabled || !sendAutoReplyTimePeriodEnabled}
+						prefOutOfOfficeFromDate={settings.prefs.zimbraPrefOutOfOfficeFromDate}
+						prefOutOfOfficeUntilDate={settings.prefs.zimbraPrefOutOfOfficeUntilDate}
+						resetRef={outOfOfficeTimePeriodResetRef}
+					/>
+				</Container>
 			</FormSubSection>
 		</FormSection>
 	);

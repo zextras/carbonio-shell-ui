@@ -17,13 +17,7 @@ export const SettingsSection = ({
 	label,
 	id
 }: SettingsSectionProps): React.JSX.Element => (
-	<FormSection
-		label={label}
-		mainAlignment="flex-start"
-		crossAlignment="flex-start"
-		id={id}
-		data-testid={id}
-	>
+	<FormSection label={label} id={id} data-testid={id}>
 		{children}
 	</FormSection>
 );

@@ -83,14 +83,8 @@ const UserQuota = ({ mobileView }: UserQuotaProps): React.JSX.Element => {
 	) : (
 		<FormSection label={sectionTitle.label} id={sectionTitle.id}>
 			<FormSubSection>
-				<Container>
-					<Container
-						orientation="horizontal"
-						mainAlignment="flex-start"
-						padding={{ bottom: 'medium' }}
-					>
-						<Text>{description}</Text>
-					</Container>
+				<Container gap={'0.5rem'} mainAlignment={'flex-start'} crossAlignment={'flex-start'}>
+					<Text>{description}</Text>
 					<Quota fill={filledQuota} fillBackground={fillBackground} />
 				</Container>
 			</FormSubSection>

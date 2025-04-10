@@ -83,7 +83,7 @@ export const SearchSettings = ({
 	return (
 		<FormSection label={sectionTitle.label} id={sectionTitle.id}>
 			<FormSubSection>
-				<Container mainAlignment={'flex-start'} crossAlignment={'flex-start'}>
+				<Container gap={'0.5rem'} mainAlignment={'flex-start'} crossAlignment={'flex-start'}>
 					<Checkbox
 						label={t(
 							'settings.search_settings.labels.include_search_in_spam_folder',

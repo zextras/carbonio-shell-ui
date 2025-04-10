@@ -24,8 +24,7 @@ describe('Get components', () => {
 			priority: -1,
 			display: 'Shell',
 			icon: 'CubeOutline',
-			attrKey: '',
-			sentryDsn: ''
+			attrKey: ''
 		};
 		const carbonioModule: CarbonioModule = {
 			commit: '',
@@ -37,8 +36,7 @@ describe('Get components', () => {
 			priority: 1,
 			display: 'Module',
 			icon: 'People',
-			attrKey: '',
-			sentryDsn: ''
+			attrKey: ''
 		};
 		const apps: CarbonioModule[] = [shellModule, carbonioModule];
 

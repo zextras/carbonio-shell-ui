@@ -10,7 +10,6 @@ import React, { useCallback, useRef, useMemo } from 'react';
 import {
 	Container,
 	Text,
-	Divider,
 	Row,
 	Padding,
 	Icon,
@@ -19,19 +18,15 @@ import {
 	useModal,
 	FormSection,
 	FormSubSection,
-	Button
+	Button,
+	Divider
 } from '@zextras/carbonio-design-system';
 import type { TFunction } from 'i18next';
 import { map } from 'lodash';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
 
 import type { Identity, IdentityAttrs } from '../../../types/account';
 import { isPrimary } from '../utils';
-
-const StyledFormSection = styled(FormSection)`
-	display: block;
-`;
 
 function getNewPersonaNextIdentityName(
 	numberToCheck: number,
@@ -138,22 +133,22 @@ const AccountsList = ({
 								orientation="horizontal"
 								mainAlignment="flex-start"
 								padding={{ all: 'small' }}
+								height={'fit'}
 							>
 								<Row width="fill" mainAlignment="space-between">
-									<Container orientation="horizontal" mainAlignment="flex-start" width="fit">
-										<Padding right="small">
-											<Icon icon="CheckmarkCircle2Outline" size="large" color="primary" />
-										</Padding>
-										<Padding right="small">
-											<Text weight="regular" size="small">
-												{item._attrs?.zimbraPrefIdentityName}
-											</Text>
-										</Padding>
-										<Padding right="small">
-											<Text weight="regular" size="small" color="secondary">
-												({isPrimary(item) ? accountName : item._attrs?.zimbraPrefFromAddress})
-											</Text>
-										</Padding>
+									<Container
+										orientation="horizontal"
+										mainAlignment="flex-start"
+										width="fit"
+										gap={'0.5rem'}
+									>
+										<Icon icon="CheckmarkCircle2Outline" size="large" color="primary" />
+										<Text weight="regular" size="small">
+											{item._attrs?.zimbraPrefIdentityName}
+										</Text>
+										<Text weight="regular" size="small" color="secondary">
+											({isPrimary(item) ? accountName : item._attrs?.zimbraPrefFromAddress})
+										</Text>
 									</Container>
 									<Container width="fit" mainAlignment="flex-end">
 										<Text weight="regular" size="small">
@@ -174,10 +169,12 @@ const AccountsList = ({
 
 	return (
 		<>
-			<StyledFormSection label={t('label.accounts_list', 'Accounts list')}>
+			<FormSection label={t('label.accounts_list', 'Accounts list')}>
 				<FormSubSection>
 					<Container crossAlignment={'flex-start'} mainAlignment={'flex-start'} gap={'1rem'}>
-						<List flexShrink={0}>{items}</List>
+						<List flexShrink={0} height={'fit'}>
+							{items}
+						</List>
 						<Row width="fill" mainAlignment="flex-start" background="gray6" gap={'0.5rem'}>
 							<Button
 								label={t('label.add_persona', 'Add persona')}
@@ -195,7 +192,7 @@ const AccountsList = ({
 						</Row>
 					</Container>
 				</FormSubSection>
-			</StyledFormSection>
+			</FormSection>
 			<Padding bottom="large" />
 		</>
 	);

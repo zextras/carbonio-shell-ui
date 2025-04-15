@@ -12,13 +12,11 @@ import type {
 	TextAreaProps
 } from '@zextras/carbonio-design-system';
 import {
-	Checkbox,
 	Container,
 	FormSubSection,
-	Padding,
-	Row,
+	FormSection,
+	Checkbox,
 	Select,
-	Text,
 	TextArea
 } from '@zextras/carbonio-design-system';
 import { type TFunction } from 'i18next';
@@ -285,77 +283,65 @@ export const OutOfOfficeSettings = ({
 	]);
 
 	return (
-		<FormSubSection
-			label={outOfOfficeSectionTitle.label}
-			minWidth="calc(min(100%, 32rem))"
-			width="50%"
-			id={outOfOfficeSectionTitle.id}
-		>
-			<Container crossAlignment="baseline" padding={{ all: 'small' }} gap={'0.5rem'}>
-				<Select
-					items={prefOutOfOfficeReplyEnabledSelectItems}
-					label={t('label.out_of_office', 'Out of Office')}
-					onChange={prefOutOfOfficeReplyEnabledOnChange}
-					selection={prefOutOfOfficeReplyEnabledSelectedValue}
-				/>
-				<TextArea
-					value={prefOutOfOfficeReply}
-					disabled={!prefOutOfOfficeReplyEnabled}
-					label={t('settings.out_of_office.labels.auto_reply_message', 'Auto-Reply Message:')}
-					onChange={prefOutOfOfficeReplyOnChange}
-				/>
-				<Select
-					disabled={!prefOutOfOfficeReplyEnabled}
-					items={externalSendersSelectItems}
-					label={t('settings.out_of_office.labels.external_senders', 'External Senders')}
-					onChange={externalSendersOnChange}
-					selection={externalSendersSelectedItem}
-					dropdownWidth={'auto'}
-					dropdownMaxWidth={'unset'}
-					placement={'bottom-start'}
-				/>
-				{prefOutOfOfficeExternalReplyEnabled && (
-					<TextArea
-						value={prefOutOfOfficeExternalReply}
-						disabled={!prefOutOfOfficeReplyEnabled}
-						label={t(
-							'settings.out_of_office.labels.auto_reply_message_external',
-							'Auto-Reply Message for External senders:'
-						)}
-						onChange={prefOutOfOfficeExternalReplyOnChange}
+		<FormSection label={outOfOfficeSectionTitle.label} id={outOfOfficeSectionTitle.id}>
+			<FormSubSection>
+				<Container gap={'0.5rem'}>
+					<Select
+						items={prefOutOfOfficeReplyEnabledSelectItems}
+						label={t('label.out_of_office', 'Out of Office')}
+						onChange={prefOutOfOfficeReplyEnabledOnChange}
+						selection={prefOutOfOfficeReplyEnabledSelectedValue}
 					/>
-				)}
-			</Container>
-			<Container crossAlignment="baseline" padding={{ all: 'small' }}>
-				<Row
-					padding={{ all: 'small' }}
-					mainAlignment="flex-start"
-					crossAlignment="baseline"
-					width="100%"
-				>
-					<Text size="large" weight="bold">
-						{t('settings.out_of_office.headings.time_period', 'Time Period')}
-					</Text>
-				</Row>
-				<Padding vertical="small" />
-				<Checkbox
-					label={t(
-						'settings.out_of_office.labels.send_auto_reply_period',
-						'Send auto-replies during the following period:'
+					<TextArea
+						value={prefOutOfOfficeReply}
+						disabled={!prefOutOfOfficeReplyEnabled}
+						label={t('settings.out_of_office.labels.auto_reply_message', 'Auto-Reply Message:')}
+						onChange={prefOutOfOfficeReplyOnChange}
+					/>
+					<Select
+						disabled={!prefOutOfOfficeReplyEnabled}
+						items={externalSendersSelectItems}
+						label={t('settings.out_of_office.labels.external_senders', 'External Senders')}
+						onChange={externalSendersOnChange}
+						selection={externalSendersSelectedItem}
+						dropdownWidth={'auto'}
+						dropdownMaxWidth={'unset'}
+						placement={'bottom-start'}
+					/>
+					{prefOutOfOfficeExternalReplyEnabled && (
+						<TextArea
+							value={prefOutOfOfficeExternalReply}
+							disabled={!prefOutOfOfficeReplyEnabled}
+							label={t(
+								'settings.out_of_office.labels.auto_reply_message_external',
+								'Auto-Reply Message for External senders:'
+							)}
+							onChange={prefOutOfOfficeExternalReplyOnChange}
+						/>
 					)}
-					value={sendAutoReplyTimePeriodEnabled}
-					onClick={toggleSendAutoReplyTimePeriod}
-					disabled={!prefOutOfOfficeReplyEnabled}
-				/>
-				<OutOfOfficeTimePeriodSection
-					addMod={addMod}
-					removeMod={removeMod}
-					disabled={!prefOutOfOfficeReplyEnabled || !sendAutoReplyTimePeriodEnabled}
-					prefOutOfOfficeFromDate={settings.prefs.zimbraPrefOutOfOfficeFromDate}
-					prefOutOfOfficeUntilDate={settings.prefs.zimbraPrefOutOfOfficeUntilDate}
-					resetRef={outOfOfficeTimePeriodResetRef}
-				/>
-			</Container>
-		</FormSubSection>
+				</Container>
+			</FormSubSection>
+			<FormSubSection label={t('settings.out_of_office.headings.time_period', 'Time Period')}>
+				<Container gap={'0.5rem'} mainAlignment={'flex-start'} crossAlignment={'flex-start'}>
+					<Checkbox
+						label={t(
+							'settings.out_of_office.labels.send_auto_reply_period',
+							'Send auto-replies during the following period:'
+						)}
+						value={sendAutoReplyTimePeriodEnabled}
+						onClick={toggleSendAutoReplyTimePeriod}
+						disabled={!prefOutOfOfficeReplyEnabled}
+					/>
+					<OutOfOfficeTimePeriodSection
+						addMod={addMod}
+						removeMod={removeMod}
+						disabled={!prefOutOfOfficeReplyEnabled || !sendAutoReplyTimePeriodEnabled}
+						prefOutOfOfficeFromDate={settings.prefs.zimbraPrefOutOfOfficeFromDate}
+						prefOutOfOfficeUntilDate={settings.prefs.zimbraPrefOutOfOfficeUntilDate}
+						resetRef={outOfOfficeTimePeriodResetRef}
+					/>
+				</Container>
+			</FormSubSection>
+		</FormSection>
 	);
 };

@@ -65,3 +65,8 @@ Object.defineProperty(window.crypto, 'subtle', {
 		}
 	}
 });
+
+Object.defineProperty(window.crypto, 'randomUUID', {
+	writable: true,
+	value: jest.fn(() => Math.random().toString())
+});

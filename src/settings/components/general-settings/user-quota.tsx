@@ -6,7 +6,14 @@
 
 import React, { useMemo } from 'react';
 
-import { Container, FormSubSection, Quota, Text, Tooltip } from '@zextras/carbonio-design-system';
+import {
+	Container,
+	FormSection,
+	FormSubSection,
+	Quota,
+	Text,
+	Tooltip
+} from '@zextras/carbonio-design-system';
 
 import { useAccountStore, useUserSettings } from '../../../store/account';
 import { getT } from '../../../store/i18n/hooks';
@@ -74,23 +81,14 @@ const UserQuota = ({ mobileView }: UserQuotaProps): React.JSX.Element => {
 			</Tooltip>
 		</Container>
 	) : (
-		<FormSubSection
-			label={sectionTitle.label}
-			minWidth="calc(min(100%, 32rem))"
-			width="50%"
-			id={sectionTitle.id}
-		>
-			<Container width="fill" padding={{ vertical: 'medium' }}>
-				<Container
-					orientation="horizontal"
-					mainAlignment="flex-start"
-					padding={{ bottom: 'medium' }}
-				>
+		<FormSection label={sectionTitle.label} id={sectionTitle.id}>
+			<FormSubSection>
+				<Container gap={'0.5rem'} mainAlignment={'flex-start'} crossAlignment={'flex-start'}>
 					<Text>{description}</Text>
+					<Quota fill={filledQuota} fillBackground={fillBackground} />
 				</Container>
-				<Quota fill={filledQuota} fillBackground={fillBackground} />
-			</Container>
-		</FormSubSection>
+			</FormSubSection>
+		</FormSection>
 	);
 };
 

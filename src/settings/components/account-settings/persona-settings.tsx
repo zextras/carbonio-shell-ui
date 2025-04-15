@@ -8,7 +8,15 @@ import type { ReactElement } from 'react';
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 
 import type { InputProps } from '@zextras/carbonio-design-system';
-import { Container, Text, Padding, Input, Row } from '@zextras/carbonio-design-system';
+import {
+	Container,
+	FormSubSection,
+	FormSection,
+	Text,
+	Padding,
+	Input,
+	Row
+} from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 
 import type { IdentityAttrs } from '../../../types/account';
@@ -49,56 +57,34 @@ const PersonaSettings = ({
 
 	return (
 		<>
-			<Container
-				minWidth="calc(min(100%, 32rem))"
-				width="fill"
-				padding={{ all: 'large' }}
-				height="fit"
-				background={'gray6'}
-				mainAlignment="flex-start"
-			>
-				<Padding horizontal="medium" width="100%">
-					<Text weight="bold">{t('label.persona_settings', 'Persona Settings')}</Text>
-				</Padding>
-			</Container>
-			<Row
-				width="fill"
-				padding={{ horizontal: 'large', bottom: 'large' }}
-				height="fit"
-				background={'gray6'}
-				mainAlignment="flex-start"
-			>
-				<Row orientation="vertical" mainAlignment="flex-start" width="fill">
-					<Row orientation="horizontal" width="100%" mainAlignment="flex-start">
-						<Text color="secondary">
-							{t(
-								'label.use_personas_line1',
-								'Use personas to quickly change many settings when sending e-mail messages.'
-							)}
-						</Text>
-					</Row>
-					<Row orientation="horizontal" width="100%" mainAlignment="flex-start">
-						<Text color="secondary">
-							{t(
-								'label.use_personas_line2',
-								'For example, if you sometimes send e-mails in a particular role at work, create a persona for that.'
-							)}
-						</Text>
-					</Row>
-				</Row>
-			</Row>
-			<Row
-				width="fill"
-				padding={{ horizontal: 'large', bottom: 'large' }}
-				height="fit"
-				background={'gray6'}
-				mainAlignment="flex-start"
-			>
-				<Row takeAvailableSpace>
-					<Input label={personaLabel} value={personaValue} onChange={onChange} />
-				</Row>
-			</Row>
-
+			<FormSection label={t('label.persona_settings', 'Persona Settings')}>
+				<FormSubSection>
+					<Container gap={'1rem'}>
+						<Row
+							orientation="vertical"
+							mainAlignment="flex-start"
+							crossAlignment={'flex-start'}
+							width="fill"
+						>
+							<Text color="secondary">
+								{t(
+									'label.use_personas_line1',
+									'Use personas to quickly change many settings when sending e-mail messages.'
+								)}
+							</Text>
+							<Text color="secondary">
+								{t(
+									'label.use_personas_line2',
+									'For example, if you sometimes send e-mails in a particular role at work, create a persona for that.'
+								)}
+							</Text>
+						</Row>
+						<Row takeAvailableSpace width="fill" height="fit">
+							<Input label={personaLabel} value={personaValue} onChange={onChange} />
+						</Row>
+					</Container>
+				</FormSubSection>
+			</FormSection>
 			<Padding bottom="large" />
 		</>
 	);

@@ -7,7 +7,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { SelectItem, SingleSelectionOnChange } from '@zextras/carbonio-design-system';
-import { Select, Text } from '@zextras/carbonio-design-system';
+import { FormSubSection, Select } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 
 import { DARK_READER_PROP_KEY, SHELL_APP_ID } from '../../../constants';
@@ -99,17 +99,14 @@ const DarkThemeSettingSection = ({
 		return null;
 	}
 	return (
-		<>
-			<Text size="medium" weight="bold">
-				{t('settings.general.theme_options', 'Theme Options')}
-			</Text>
+		<FormSubSection label={t('settings.general.theme_options', 'Theme Options')}>
 			<Select
 				items={items}
 				selection={selection}
 				label={t('settings.general.dark_mode', 'Dark Mode')}
 				onChange={onSelectionChange}
 			/>
-		</>
+		</FormSubSection>
 	);
 };
 

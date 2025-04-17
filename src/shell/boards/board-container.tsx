@@ -190,7 +190,11 @@ function calcPositionToRemainVisible(
 	return lastSavedPosition;
 }
 
-export const BoardContainer = (): React.JSX.Element | null => {
+export const BoardContainer = ({
+	minimizeAllowed = true
+}: {
+	minimizeAllowed?: boolean;
+}): React.JSX.Element | null => {
 	const t = getT();
 	const { boards, minimized, expanded, current, orderedBoards } = useBoardStore();
 	const apps = useAppStore((s) => s.apps);
@@ -368,11 +372,20 @@ export const BoardContainer = (): React.JSX.Element | null => {
 							background={'gray5'}
 							onMouseDown={(!expanded && moveElementHandler) || undefined}
 						>
-							<Padding all="extrasmall">
-								<Tooltip label={t('board.hide', 'Hide board')} placement="top" disabled={isMoving}>
-									<BackButton icon="BoardCollapseOutline" onClick={clickHandler(minimizeBoards)} />
-								</Tooltip>
-							</Padding>
+							{minimizeAllowed && (
+								<Padding all="extrasmall">
+									<Tooltip
+										label={t('board.hide', 'Hide board')}
+										placement="top"
+										disabled={isMoving}
+									>
+										<BackButton
+											icon="BoardCollapseOutline"
+											onClick={clickHandler(minimizeBoards)}
+										/>
+									</Tooltip>
+								</Padding>
+							)}
 							<TabsList />
 							<Actions padding={{ all: 'extrasmall' }}>
 								{typeof boardContext === 'object' &&

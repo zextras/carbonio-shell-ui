@@ -119,6 +119,28 @@ describe('Board container', () => {
 		});
 	});
 
+	describe('board container offsets', () => {
+		test('has default values for topOffset and leftOffset ', () => {
+			setup(<BoardContainer />);
+			const boardContainer = screen.getByTestId(TESTID_SELECTORS.boardContainerComp);
+
+			expect(boardContainer).toHaveStyleRule('height', 'calc(100vh - 0rem)');
+			expect(boardContainer).toHaveStyleRule('width', 'calc(100vw - 0rem)');
+			expect(boardContainer).toHaveStyleRule('top', '0rem');
+			expect(boardContainer).toHaveStyleRule('left', '0rem');
+		});
+		test('has customizable values for topOffset and leftOffset ', () => {
+			const leftOffset = '3rem';
+			const topOffset = '2rem';
+			setup(<BoardContainer leftOffset={leftOffset} topOffset={topOffset} />);
+			const boardContainer = screen.getByTestId(TESTID_SELECTORS.boardContainerComp);
+
+			expect(boardContainer).toHaveStyleRule('height', `calc(100vh - ${topOffset})`);
+			expect(boardContainer).toHaveStyleRule('width', `calc(100vw - ${leftOffset})`);
+			expect(boardContainer).toHaveStyleRule('top', topOffset);
+			expect(boardContainer).toHaveStyleRule('left', leftOffset);
+		});
+	});
 	describe('Resize a board', () => {
 		describe('within the resizable area of the document', () => {
 			describe.each([-10, 0, 10])('with offset %d', (offset) => {

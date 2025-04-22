@@ -143,6 +143,7 @@ export const ICONS = {
 };
 
 export const TESTID_SELECTORS = {
+	boardContainerComp: 'BoardContainerComp',
 	board: 'NewItemContainer',
 	boardHeader: 'BoardHeader',
 	checkbox: 'checkbox',

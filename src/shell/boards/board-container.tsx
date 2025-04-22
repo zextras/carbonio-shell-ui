@@ -362,6 +362,7 @@ export const BoardContainer = ({
 				$topOffset={topOffset}
 				$leftOffset={leftOffset}
 				ref={boardContainerRef}
+				data-testid="BoardContainerComp"
 			>
 				<Board
 					data-testid="NewItemContainer"

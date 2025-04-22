@@ -16,7 +16,7 @@ import ShellHeader from './shell-header';
 import ShellPrimaryBar from './shell-primary-bar';
 import ShellSecondaryBar from './shell-secondary-bar';
 import { ThemeCallbacksContext } from '../boot/theme-provider';
-import { IS_FOCUS_MODE } from '../constants';
+import { HEADER_BAR_HEIGHT, IS_FOCUS_MODE, PRIMARY_BAR_WIDTH } from '../constants';
 import { useDarkReaderResultValue } from '../dark-mode/use-dark-reader-result-value';
 import { ShellUtilityBar } from '../utility-bar/bar';
 import { ShellUtilityPanel } from '../utility-bar/panel';
@@ -69,7 +69,10 @@ const ShellComponent = (): React.JSX.Element => (
 			<AppViewContainer />
 			<ShellUtilityPanel />
 		</Row>
-		<BoardContainer />
+		<BoardContainer
+			leftOffset={IS_FOCUS_MODE ? '0rem' : PRIMARY_BAR_WIDTH}
+			topOffset={IS_FOCUS_MODE ? '0rem' : HEADER_BAR_HEIGHT}
+		/>
 	</Background>
 );
 

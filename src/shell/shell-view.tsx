@@ -69,7 +69,7 @@ const ShellComponent = (): React.JSX.Element => (
 			<AppViewContainer />
 			<ShellUtilityPanel />
 		</Row>
-		<BoardContainer />
+		<BoardContainer minimizeAllowed={!IS_FOCUS_MODE} />
 	</Background>
 );
 

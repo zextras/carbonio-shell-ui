@@ -12,6 +12,7 @@ import { BOARD_DEFAULT_POSITION } from './boards/board-container';
 import type { Border } from './hooks/useResize';
 import ShellView from './shell-view';
 import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
+import * as constants from '../constants';
 import { ICONS, TESTID_SELECTORS } from '../tests/constants';
 import { mockedApps, setupAppStore } from '../tests/test-app-utils';
 import {
@@ -33,6 +34,7 @@ jest.mock('../utility-bar/bar', () => ({
 }));
 
 jest.mock('./shell-header', () => Dummy);
+jest.mock('../constants');
 
 beforeEach(() => {
 	setupAppStore();
@@ -255,5 +257,14 @@ describe('Shell view', () => {
 			left: `${boardNewSizeAndPos.left}px`,
 			top: `${boardNewSizeAndPos.top}px`
 		});
+	});
+	test('In focus mode the board container should receive minimizeAllowed to false', async () => {
+		jest.mocked(constants).IS_FOCUS_MODE = true;
+
+		const { queryByRoleWithIcon } = setup(<ShellView />);
+
+		expect(
+			queryByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` })
+		).not.toBeInTheDocument();
 	});
 });

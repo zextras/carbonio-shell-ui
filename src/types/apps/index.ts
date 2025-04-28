@@ -85,6 +85,7 @@ export type UtilityView = CarbonioAccessoryView<UtilityBarComponentProps> & {
 	button: string | ComponentType<UtilityBarComponentProps>;
 	component: ComponentType<UtilityBarComponentProps>;
 	label: string;
+	panelVisible: boolean;
 };
 export type SettingsSubSection = { label: string; id: string };
 export type SettingsView = CarbonioView<SettingsViewProps> & {

@@ -40,7 +40,7 @@ export const ShellUtilityPanel = (): React.ReactNode => {
 			setCurrent(views[0]?.id);
 		}
 	}, [current, currentPanel, setCurrent, views]);
-	return currentPanel ? (
+	return currentPanel && currentPanel.panelVisible ? (
 		<Responsive mode="desktop">
 			<Spacer $mode={mode}>
 				<Panel $mode={mode} mainAlignment="flex-start">

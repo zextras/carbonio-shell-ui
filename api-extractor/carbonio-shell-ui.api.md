@@ -1405,6 +1405,7 @@ type UtilityView = CarbonioAccessoryView<UtilityBarComponentProps> & {
     button: string | ComponentType<UtilityBarComponentProps>;
     component: ComponentType<UtilityBarComponentProps>;
     label: string;
+    panelVisible: boolean;
 };
 
 // @public (undocumented)

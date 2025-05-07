@@ -72,6 +72,7 @@ const ShellComponent = (): React.JSX.Element => (
 		<BoardContainer
 			leftOffset={IS_FOCUS_MODE ? '0rem' : PRIMARY_BAR_WIDTH}
 			topOffset={IS_FOCUS_MODE ? '0rem' : HEADER_BAR_HEIGHT}
+			minimizeAllowed={!IS_FOCUS_MODE}
 		/>
 	</Background>
 );

@@ -91,7 +91,8 @@ export const normalizeUtilityView = (
 	component: data?.component ?? FallbackView,
 	button: data?.button ?? 'Cube',
 	position: data?.position ?? app.priority,
-	label: data?.label ?? app.display
+	label: data?.label ?? app.display,
+	panelVisible: data?.panelVisible ?? true
 });
 export const normalizePrimaryAccessoryView = (
 	data: Partial<PrimaryAccessoryView>,

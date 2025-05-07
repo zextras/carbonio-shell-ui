@@ -285,4 +285,13 @@ describe('Shell view', () => {
 			top: `${boardNewSizeAndPos.top}px`
 		});
 	});
+	test('In focus mode the board container should receive minimizeAllowed to false', async () => {
+		jest.mocked(constants).IS_FOCUS_MODE = true;
+
+		const { queryByRoleWithIcon } = setup(<ShellView />);
+
+		expect(
+			queryByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` })
+		).not.toBeInTheDocument();
+	});
 });

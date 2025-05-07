@@ -197,10 +197,12 @@ function calcPositionToRemainVisible(
 
 export const BoardContainer = ({
 	topOffset = HEADER_BAR_HEIGHT,
-	leftOffset = PRIMARY_BAR_WIDTH
+	leftOffset = PRIMARY_BAR_WIDTH,
+	minimizeAllowed = true
 }: {
 	topOffset?: string;
 	leftOffset?: string;
+	minimizeAllowed?: boolean;
 }): React.JSX.Element | null => {
 	const t = getT();
 	const { boards, minimized, expanded, current, orderedBoards } = useBoardStore();
@@ -386,11 +388,20 @@ export const BoardContainer = ({
 							background={'gray5'}
 							onMouseDown={(!expanded && moveElementHandler) || undefined}
 						>
-							<Padding all="extrasmall">
-								<Tooltip label={t('board.hide', 'Hide board')} placement="top" disabled={isMoving}>
-									<BackButton icon="BoardCollapseOutline" onClick={clickHandler(minimizeBoards)} />
-								</Tooltip>
-							</Padding>
+							{minimizeAllowed && (
+								<Padding all="extrasmall">
+									<Tooltip
+										label={t('board.hide', 'Hide board')}
+										placement="top"
+										disabled={isMoving}
+									>
+										<BackButton
+											icon="BoardCollapseOutline"
+											onClick={clickHandler(minimizeBoards)}
+										/>
+									</Tooltip>
+								</Padding>
+							)}
 							<TabsList />
 							<Actions padding={{ all: 'extrasmall' }}>
 								{typeof boardContext === 'object' &&

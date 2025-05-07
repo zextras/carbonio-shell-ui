@@ -406,6 +406,26 @@ describe('Board container', () => {
 		expect(board).not.toHaveStyleRule('width', 'auto');
 	});
 
+	describe('Minimize a board', () => {
+		test('button is available by default', async () => {
+			const { getByRoleWithIcon } = setup(<BoardContainer />);
+
+			expect(getByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` })).toBeVisible();
+		});
+		test('button is available if minimizeAllowed is true', async () => {
+			const { getByRoleWithIcon } = setup(<BoardContainer minimizeAllowed />);
+
+			expect(getByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` })).toBeVisible();
+		});
+		test('button is not available if minimizeAllowed is false', async () => {
+			const { queryByRoleWithIcon } = setup(<BoardContainer minimizeAllowed={false} />);
+
+			expect(
+				queryByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` })
+			).not.toBeInTheDocument();
+		});
+	});
+
 	test('Collapse and un-collapse of a resized board set board to resized size', async () => {
 		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
 		act(() => {

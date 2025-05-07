@@ -30,7 +30,9 @@ import {
 	BOARD_HEADER_HEIGHT,
 	BOARD_MIN_VISIBILITY,
 	BOARD_TAB_WIDTH,
-	LOCAL_STORAGE_BOARD_SIZE
+	HEADER_BAR_HEIGHT,
+	LOCAL_STORAGE_BOARD_SIZE,
+	PRIMARY_BAR_WIDTH
 } from '../../constants';
 import { useAppStore } from '../../store/app';
 import {
@@ -61,8 +63,8 @@ const BoardContainerComp = styled.div<{
 	$leftOffset: string;
 }>`
 	position: fixed;
-	width: ${({ $leftOffset }): string => ($leftOffset ? `calc(100vw - ${$leftOffset})` : '100vw')};
-	height: ${({ $topOffset }): string => ($topOffset ? `calc(100vh - ${$topOffset})` : '100vh')};
+	width: ${({ $leftOffset }): string => `calc(100vw - ${$leftOffset})`};
+	height: ${({ $topOffset }): string => `calc(100vh - ${$topOffset})`};
 	top: ${({ $topOffset }): string => $topOffset};
 	left: ${({ $leftOffset }): string => $leftOffset};
 	background-color: rgba(0, 0, 0, 0);
@@ -194,8 +196,8 @@ function calcPositionToRemainVisible(
 }
 
 export const BoardContainer = ({
-	topOffset = '0rem',
-	leftOffset = '0rem'
+	topOffset = HEADER_BAR_HEIGHT,
+	leftOffset = PRIMARY_BAR_WIDTH
 }: {
 	topOffset?: string;
 	leftOffset?: string;

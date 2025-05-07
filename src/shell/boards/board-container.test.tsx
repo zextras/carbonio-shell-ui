@@ -11,7 +11,12 @@ import { reduce, sample, size } from 'lodash';
 import 'jest-styled-components';
 
 import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
-import { BOARD_MIN_VISIBILITY, LOCAL_STORAGE_BOARD_SIZE } from '../../constants';
+import {
+	BOARD_MIN_VISIBILITY,
+	HEADER_BAR_HEIGHT,
+	LOCAL_STORAGE_BOARD_SIZE,
+	PRIMARY_BAR_WIDTH
+} from '../../constants';
 import { useAppStore } from '../../store/app';
 import { reopenBoards, useBoardStore } from '../../store/boards';
 import { ICONS, TESTID_SELECTORS } from '../../tests/constants';
@@ -124,10 +129,10 @@ describe('Board container', () => {
 			setup(<BoardContainer />);
 			const boardContainer = screen.getByTestId(TESTID_SELECTORS.boardContainerComp);
 
-			expect(boardContainer).toHaveStyleRule('height', 'calc(100vh - 0rem)');
-			expect(boardContainer).toHaveStyleRule('width', 'calc(100vw - 0rem)');
-			expect(boardContainer).toHaveStyleRule('top', '0rem');
-			expect(boardContainer).toHaveStyleRule('left', '0rem');
+			expect(boardContainer).toHaveStyleRule('height', `calc(100vh - ${HEADER_BAR_HEIGHT})`);
+			expect(boardContainer).toHaveStyleRule('width', `calc(100vw - ${PRIMARY_BAR_WIDTH})`);
+			expect(boardContainer).toHaveStyleRule('top', HEADER_BAR_HEIGHT);
+			expect(boardContainer).toHaveStyleRule('left', PRIMARY_BAR_WIDTH);
 		});
 		test('has customizable values for topOffset and leftOffset ', () => {
 			const leftOffset = '3rem';

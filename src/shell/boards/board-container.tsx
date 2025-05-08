@@ -56,12 +56,17 @@ export const BOARD_DEFAULT_POSITION: Pick<CSSProperties, 'top' | 'left' | 'right
 	bottom: '0'
 };
 
-const BoardContainerComp = styled.div<{ $expanded: boolean; $minimized: boolean }>`
+const BoardContainerComp = styled.div<{
+	$expanded: boolean;
+	$minimized: boolean;
+	$topOffset: string;
+	$leftOffset: string;
+}>`
 	position: fixed;
-	width: calc(100vw - ${PRIMARY_BAR_WIDTH});
-	height: calc(100vh - ${HEADER_BAR_HEIGHT});
-	top: ${HEADER_BAR_HEIGHT};
-	left: ${PRIMARY_BAR_WIDTH};
+	width: ${({ $leftOffset }): string => `calc(100vw - ${$leftOffset})`};
+	height: ${({ $topOffset }): string => `calc(100vh - ${$topOffset})`};
+	top: ${({ $topOffset }): string => $topOffset};
+	left: ${({ $leftOffset }): string => $leftOffset};
 	background-color: rgba(0, 0, 0, 0);
 	pointer-events: none;
 	z-index: ${BOARD_CONTAINER_ZINDEX};
@@ -191,8 +196,12 @@ function calcPositionToRemainVisible(
 }
 
 export const BoardContainer = ({
+	topOffset = HEADER_BAR_HEIGHT,
+	leftOffset = PRIMARY_BAR_WIDTH,
 	minimizeAllowed = true
 }: {
+	topOffset?: string;
+	leftOffset?: string;
 	minimizeAllowed?: boolean;
 }): React.JSX.Element | null => {
 	const t = getT();
@@ -351,7 +360,14 @@ export const BoardContainer = ({
 
 	return (
 		(!isBoardEmpty && current && (
-			<BoardContainerComp $expanded={expanded} $minimized={minimized} ref={boardContainerRef}>
+			<BoardContainerComp
+				$expanded={expanded}
+				$minimized={minimized}
+				$topOffset={topOffset}
+				$leftOffset={leftOffset}
+				ref={boardContainerRef}
+				data-testid="BoardContainerComp"
+			>
 				<Board
 					data-testid="NewItemContainer"
 					background={'gray6'}

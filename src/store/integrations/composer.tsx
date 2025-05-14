@@ -76,6 +76,8 @@ const Composer = ({
 	customInitOptions,
 	...rest
 }: ComposerProps): React.JSX.Element => {
+	const isControlledMode = useMemo(() => !!onEditorChange, [onEditorChange]);
+
 	const _onEditorChange = useCallback<NonNullable<EditorProps['onEditorChange']>>(
 		(newContent, editor) => {
 			onEditorChange?.([
@@ -85,6 +87,7 @@ const Composer = ({
 		},
 		[onEditorChange]
 	);
+
 	const { prefs } = useUserSettings();
 	const defaultStyle = useMemo(
 		() => ({
@@ -271,7 +274,7 @@ const Composer = ({
 				initialValue={initialValue}
 				value={value}
 				init={editorInitConfig}
-				onEditorChange={_onEditorChange}
+				onEditorChange={isControlledMode ? _onEditorChange : undefined}
 				{...rest}
 			/>
 		</Container>

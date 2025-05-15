@@ -56,7 +56,6 @@ export const SCALING_LIMIT = {
 } as const;
 
 export const LOGIN_V3_CONFIG_PATH = '/zx/login/v3/config';
-export const DARK_READER_PROP_KEY = 'zappDarkreaderMode';
 
 export const HEADER_BAR_HEIGHT = '3.75rem';
 export const PRIMARY_BAR_WIDTH = '3.0625rem';

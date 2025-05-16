@@ -8,7 +8,6 @@ MIT License (MIT) applies to:
 @commitlint/config-conventional, Copyright (c) 2016 - present Mario Nebl
 @faker-js/faker, Faker - Copyright (c) 2022-2024, faker.js - Copyright (c) 2020 Marak Squires
 @microsoft/api-extractor, Copyright (c) Microsoft Corporation. All rights reserved.
-@sentry/browser, Copyright (c) 2019 Sentry (https://sentry.io) and individual contributors. All rights reserved.
 @svgr/webpack, Copyright 2017 Smooth Code
 @testing-library/dom, Copyright (c) 2017 Kent C. Dodds
 @testing-library/jest-dom, Copyright (c) 2017 Kent C. Dodds
@@ -26,7 +25,6 @@ MIT License (MIT) applies to:
 @types/webpack-env, Copyright (c) Microsoft Corporation.
 @types/webpack, Copyright (c) Microsoft Corporation.
 autoprefixer, Copyright 2013 Andrey Sitnik <andrey@sitnik.ru>
-babel-loader, Copyright (c) 2014-2019 Luís Couto <hello@luiscouto.pt>
 babel-plugin-styled-components, Copyright (c) 2016-present Vladimir Danchenkov and Maximilian Stoiber
 copy-webpack-plugin, Copyright JS Foundation and other contributors
 core-js, Copyright (c) 2014-2024 Denis Pushkarev

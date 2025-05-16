@@ -11,7 +11,12 @@ import { reduce, sample, size } from 'lodash';
 import 'jest-styled-components';
 
 import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
-import { BOARD_MIN_VISIBILITY, LOCAL_STORAGE_BOARD_SIZE } from '../../constants';
+import {
+	BOARD_MIN_VISIBILITY,
+	HEADER_BAR_HEIGHT,
+	LOCAL_STORAGE_BOARD_SIZE,
+	PRIMARY_BAR_WIDTH
+} from '../../constants';
 import { useAppStore } from '../../store/app';
 import { reopenBoards, useBoardStore } from '../../store/boards';
 import { ICONS, TESTID_SELECTORS } from '../../tests/constants';
@@ -119,6 +124,28 @@ describe('Board container', () => {
 		});
 	});
 
+	describe('board container offsets', () => {
+		test('has default values for topOffset and leftOffset ', () => {
+			setup(<BoardContainer />);
+			const boardContainer = screen.getByTestId(TESTID_SELECTORS.boardContainerComp);
+
+			expect(boardContainer).toHaveStyleRule('height', `calc(100vh - ${HEADER_BAR_HEIGHT})`);
+			expect(boardContainer).toHaveStyleRule('width', `calc(100vw - ${PRIMARY_BAR_WIDTH})`);
+			expect(boardContainer).toHaveStyleRule('top', HEADER_BAR_HEIGHT);
+			expect(boardContainer).toHaveStyleRule('left', PRIMARY_BAR_WIDTH);
+		});
+		test('has customizable values for topOffset and leftOffset ', () => {
+			const leftOffset = '3rem';
+			const topOffset = '2rem';
+			setup(<BoardContainer leftOffset={leftOffset} topOffset={topOffset} />);
+			const boardContainer = screen.getByTestId(TESTID_SELECTORS.boardContainerComp);
+
+			expect(boardContainer).toHaveStyleRule('height', `calc(100vh - ${topOffset})`);
+			expect(boardContainer).toHaveStyleRule('width', `calc(100vw - ${leftOffset})`);
+			expect(boardContainer).toHaveStyleRule('top', topOffset);
+			expect(boardContainer).toHaveStyleRule('left', leftOffset);
+		});
+	});
 	describe('Resize a board', () => {
 		describe('within the resizable area of the document', () => {
 			describe.each([-10, 0, 10])('with offset %d', (offset) => {
@@ -377,6 +404,26 @@ describe('Board container', () => {
 		});
 		expect(board).not.toHaveStyleRule('height', '70vh');
 		expect(board).not.toHaveStyleRule('width', 'auto');
+	});
+
+	describe('Minimize a board', () => {
+		test('button is available by default', async () => {
+			const { getByRoleWithIcon } = setup(<BoardContainer />);
+
+			expect(getByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` })).toBeVisible();
+		});
+		test('button is available if minimizeAllowed is true', async () => {
+			const { getByRoleWithIcon } = setup(<BoardContainer minimizeAllowed />);
+
+			expect(getByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` })).toBeVisible();
+		});
+		test('button is not available if minimizeAllowed is false', async () => {
+			const { queryByRoleWithIcon } = setup(<BoardContainer minimizeAllowed={false} />);
+
+			expect(
+				queryByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` })
+			).not.toBeInTheDocument();
+		});
 	});
 
 	test('Collapse and un-collapse of a resized board set board to resized size', async () => {

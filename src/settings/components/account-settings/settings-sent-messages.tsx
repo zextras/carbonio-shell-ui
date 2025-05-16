@@ -14,15 +14,15 @@ import type {
 	SingleSelectionOnChange
 } from '@zextras/carbonio-design-system';
 import {
-	Checkbox,
 	Container,
+	FormSubSection,
+	FormSection,
+	Checkbox,
 	Dropdown,
 	Icon,
 	Input,
-	Padding,
 	Row,
-	Select,
-	Text
+	Select
 } from '@zextras/carbonio-design-system';
 import { filter, find } from 'lodash';
 import { useTranslation } from 'react-i18next';
@@ -187,100 +187,85 @@ const SettingsSentMessages = ({
 	);
 
 	return (
-		<>
-			<Container
-				minWidth="calc(min(100%, 32rem))"
-				width="fill"
-				padding={{ all: 'large' }}
-				height="fit"
-				background={'gray6'}
-				mainAlignment="flex-start"
-			>
-				<Padding horizontal="medium" width="100%">
-					<Text weight="bold">{title}</Text>
-				</Padding>
-			</Container>
-			<Row
-				width="fill"
-				padding={{ horizontal: 'large', bottom: 'large' }}
-				height="fit"
-				background={'gray6'}
-				mainAlignment="flex-start"
-			>
-				<Row width={'50%'} padding={{ right: 'small' }}>
-					{/* zimbraPrefFromDisplay */}
-					<Input
-						label={fromDisplayLabel}
-						value={fromDisplayValue}
-						onChange={onChangeFromDisplayValue}
-					/>
-				</Row>
-				<Row width="50%">
-					{/* zimbraPrefFromAddress */}
-					<Select
-						label={fromAddressLabel}
-						selection={fromAddress}
-						items={fromAddressArray}
-						showCheckbox={false}
-						background={'gray5'}
-						onChange={onChangeFromAddress}
-					/>
-				</Row>
-			</Row>
-			<Row
-				width="fill"
-				background={'gray6'}
-				mainAlignment="flex-start"
-				padding={{ horizontal: 'large', bottom: 'large' }}
-			>
-				{/* zimbraPrefReplyToEnabled */}
-				<Checkbox
-					label={replyToEnabledLabel}
-					value={replyToEnabledValue}
-					onClick={onClickReplyToEnabled}
-				/>
-			</Row>
-			<Row
-				width="fill"
-				padding={{ horizontal: 'large', bottom: 'large' }}
-				height="fit"
-				background={'gray6'}
-				mainAlignment="flex-start"
-			>
-				<Row width="50%" padding={{ right: 'small' }}>
-					{/* zimbraPrefReplyToDisplay */}
-					<Input
-						label={replyToDisplayLabel}
-						value={replyToDisplay}
-						disabled={!replyToEnabledValue}
-						onChange={onChangePrefReplyToDisplay}
-					/>
-				</Row>
-				<Row width="50%">
-					{/* zimbraPrefReplyToAddress */}
-					<Dropdown
-						items={replyToAddressArray}
-						placement="bottom-start"
-						style={{ flexGrow: '1' }}
-						onClose={(): void => setDropdownOpen(false)}
-						onOpen={(): void => setDropdownOpen(true)}
-						disabled={!replyToEnabledValue}
+		<FormSection label={title}>
+			<FormSubSection>
+				<Container>
+					<Row
+						width="fill"
+						padding={{ bottom: 'large' }}
+						height="fit"
+						background={'gray6'}
+						mainAlignment="flex-start"
 					>
-						<Input
-							label={replyToAddressLabel}
-							value={replyToAddress}
-							onChange={(ev): void => onChangeReplyToAddress(ev.target.value)}
-							hasError={isValidEmail}
-							CustomIcon={(): ReactElement => (
-								<Icon icon={dropdownOpen ? 'ArrowUp' : 'ArrowDown'} />
-							)}
-							disabled={!replyToEnabledValue}
+						<Row width={'50%'} padding={{ right: 'small' }}>
+							{/* zimbraPrefFromDisplay */}
+							<Input
+								label={fromDisplayLabel}
+								value={fromDisplayValue}
+								onChange={onChangeFromDisplayValue}
+							/>
+						</Row>
+						<Row width="50%">
+							{/* zimbraPrefFromAddress */}
+							<Select
+								label={fromAddressLabel}
+								selection={fromAddress}
+								items={fromAddressArray}
+								showCheckbox={false}
+								background={'gray5'}
+								onChange={onChangeFromAddress}
+							/>
+						</Row>
+					</Row>
+					<Row
+						width="fill"
+						background={'gray6'}
+						mainAlignment="flex-start"
+						padding={{ bottom: 'large' }}
+					>
+						{/* zimbraPrefReplyToEnabled */}
+						<Checkbox
+							label={replyToEnabledLabel}
+							value={replyToEnabledValue}
+							onClick={onClickReplyToEnabled}
 						/>
-					</Dropdown>
-				</Row>
-			</Row>
-			<Padding bottom="large" />
-		</>
+					</Row>
+					<Row width="fill" height="fit" background={'gray6'} mainAlignment="flex-start">
+						<Row width="50%" padding={{ right: 'small' }}>
+							{/* zimbraPrefReplyToDisplay */}
+							<Input
+								label={replyToDisplayLabel}
+								value={replyToDisplay}
+								disabled={!replyToEnabledValue}
+								onChange={onChangePrefReplyToDisplay}
+							/>
+						</Row>
+						<Row width="50%">
+							{/* zimbraPrefReplyToAddress */}
+							<Dropdown
+								items={replyToAddressArray}
+								placement="bottom-start"
+								style={{ flexGrow: '1' }}
+								onClose={(): void => setDropdownOpen(false)}
+								onOpen={(): void => setDropdownOpen(true)}
+								disabled={!replyToEnabledValue}
+							>
+								<Input
+									label={replyToAddressLabel}
+									value={replyToAddress}
+									onChange={(ev): void => onChangeReplyToAddress(ev.target.value)}
+									hasError={isValidEmail}
+									CustomIcon={(): ReactElement => (
+										<Icon icon={dropdownOpen ? 'ArrowUp' : 'ArrowDown'} />
+									)}
+									disabled={!replyToEnabledValue}
+								/>
+							</Dropdown>
+						</Row>
+					</Row>
+				</Container>
+			</FormSubSection>
+		</FormSection>
 	);
 };
 

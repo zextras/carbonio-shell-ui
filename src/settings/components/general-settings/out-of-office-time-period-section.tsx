@@ -7,7 +7,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import type { DateTimePickerProps } from '@zextras/carbonio-design-system';
-import { Checkbox, Container, DateTimePicker } from '@zextras/carbonio-design-system';
+import { Container, Checkbox, DateTimePicker } from '@zextras/carbonio-design-system';
 
 import { getT } from '../../../store/i18n/hooks';
 import type { GeneralizedTime } from '../../../types/account';
@@ -171,7 +171,12 @@ export const OutOfOfficeTimePeriodSection = ({
 	}, []);
 
 	return (
-		<Container padding={{ vertical: 'small' }} gap={'0.5rem'} crossAlignment={'flex-start'}>
+		<Container
+			padding={{ vertical: 'small' }}
+			gap={'0.5rem'}
+			crossAlignment={'flex-start'}
+			height={'fit'}
+		>
 			<Container orientation={'horizontal'} gap={'0.5rem'}>
 				<DateTimePicker
 					label={t('settings.out_of_office.labels.start_date', 'Start Date')}

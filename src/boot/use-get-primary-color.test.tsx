@@ -10,7 +10,6 @@ import { act, screen } from '@testing-library/react';
 import { produce } from 'immer';
 
 import { useGetPrimaryColor } from './use-get-primary-color';
-import { DARK_READER_PROP_KEY, SHELL_APP_ID } from '../constants';
 import * as useLocalStorage from '../shell/hooks/useLocalStorage';
 import { useAccountStore } from '../store/account';
 import { useLoginConfigStore } from '../store/login/store';
@@ -39,9 +38,7 @@ describe('Use get primary color', () => {
 
 		useAccountStore.setState(
 			produce((state) => {
-				state.settings.props = [
-					{ name: DARK_READER_PROP_KEY, zimlet: SHELL_APP_ID, _content: 'disabled' }
-				];
+				state.settings.prefs.carbonioPrefDarkMode = 'disabled';
 			})
 		);
 
@@ -67,9 +64,7 @@ describe('Use get primary color', () => {
 
 		useAccountStore.setState(
 			produce((state) => {
-				state.settings.props = [
-					{ name: DARK_READER_PROP_KEY, zimlet: SHELL_APP_ID, _content: 'enabled' }
-				];
+				state.settings.prefs.carbonioPrefDarkMode = 'enabled';
 			})
 		);
 
@@ -93,9 +88,7 @@ describe('Use get primary color', () => {
 
 		useAccountStore.setState(
 			produce((state) => {
-				state.settings.props = [
-					{ name: DARK_READER_PROP_KEY, zimlet: SHELL_APP_ID, _content: 'enabled' }
-				];
+				state.settings.prefs.carbonioPrefDarkMode = 'enabled';
 			})
 		);
 
@@ -119,9 +112,7 @@ describe('Use get primary color', () => {
 
 		useAccountStore.setState(
 			produce((state) => {
-				state.settings.props = [
-					{ name: DARK_READER_PROP_KEY, zimlet: SHELL_APP_ID, _content: 'disabled' }
-				];
+				state.settings.prefs.carbonioPrefDarkMode = 'disabled';
 			})
 		);
 
@@ -152,9 +143,7 @@ describe('Use get primary color', () => {
 
 			useAccountStore.setState(
 				produce((state) => {
-					state.settings.props = [
-						{ name: DARK_READER_PROP_KEY, zimlet: SHELL_APP_ID, _content: 'disabled' }
-					];
+					state.settings.prefs.carbonioPrefDarkMode = 'disabled';
 				})
 			);
 		});
@@ -179,9 +168,7 @@ describe('Use get primary color', () => {
 
 			useAccountStore.setState(
 				produce((state) => {
-					state.settings.props = [
-						{ name: DARK_READER_PROP_KEY, zimlet: SHELL_APP_ID, _content: 'disabled' }
-					];
+					state.settings.prefs.carbonioPrefDarkMode = 'disabled';
 				})
 			);
 		});

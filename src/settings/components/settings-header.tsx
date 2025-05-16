@@ -16,7 +16,7 @@ import {
 	Row,
 	Text
 } from '@zextras/carbonio-design-system';
-import { useHistory, useParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { getT } from '../../store/i18n/hooks';
@@ -43,8 +43,9 @@ export const SettingsHeader = ({
 	title
 }: SettingsHeaderProps): React.JSX.Element => {
 	const t = getT();
-	const history = useHistory();
-	const params = useParams();
+	const [searchParams] = useSearchParams();
+	const section = useMemo(() => searchParams.get('section'), [searchParams]);
+
 	const crumbs = useMemo(
 		(): Crumb[] => [
 			{
@@ -61,20 +62,11 @@ export const SettingsHeader = ({
 		[t, title]
 	);
 
-	const search: string | undefined = history.location?.search;
-
 	useEffect(() => {
-		if (search) {
-			// TODO: why not using anchor links instead of js?
-			setTimeout(
-				() =>
-					document
-						.querySelector(`#${history.location.search}`.replace('?section=', ''))
-						?.scrollIntoView(),
-				1
-			);
+		if (section) {
+			setTimeout(() => document.getElementById(section)?.scrollIntoView(), 1);
 		}
-	}, [history, history.location, history.location.search, search, params]);
+	}, [section]);
 	return (
 		<>
 			<RouteLeavingGuard when={isDirty} onSave={onSave}>

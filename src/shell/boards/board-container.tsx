@@ -56,12 +56,17 @@ export const BOARD_DEFAULT_POSITION: Pick<CSSProperties, 'top' | 'left' | 'right
 	bottom: '0'
 };
 
-const BoardContainerComp = styled.div<{ $expanded: boolean; $minimized: boolean }>`
+const BoardContainerComp = styled.div<{
+	$expanded: boolean;
+	$minimized: boolean;
+	$topOffset: string;
+	$leftOffset: string;
+}>`
 	position: fixed;
-	width: calc(100vw - ${PRIMARY_BAR_WIDTH});
-	height: calc(100vh - ${HEADER_BAR_HEIGHT});
-	top: ${HEADER_BAR_HEIGHT};
-	left: ${PRIMARY_BAR_WIDTH};
+	width: ${({ $leftOffset }): string => `calc(100vw - ${$leftOffset})`};
+	height: ${({ $topOffset }): string => `calc(100vh - ${$topOffset})`};
+	top: ${({ $topOffset }): string => $topOffset};
+	left: ${({ $leftOffset }): string => $leftOffset};
 	background-color: rgba(0, 0, 0, 0);
 	pointer-events: none;
 	z-index: ${BOARD_CONTAINER_ZINDEX};
@@ -190,7 +195,15 @@ function calcPositionToRemainVisible(
 	return lastSavedPosition;
 }
 
-export const BoardContainer = (): React.JSX.Element | null => {
+export const BoardContainer = ({
+	topOffset = HEADER_BAR_HEIGHT,
+	leftOffset = PRIMARY_BAR_WIDTH,
+	minimizeAllowed = true
+}: {
+	topOffset?: string;
+	leftOffset?: string;
+	minimizeAllowed?: boolean;
+}): React.JSX.Element | null => {
 	const t = getT();
 	const { boards, minimized, expanded, current, orderedBoards } = useBoardStore();
 	const apps = useAppStore((s) => s.apps);
@@ -347,7 +360,14 @@ export const BoardContainer = (): React.JSX.Element | null => {
 
 	return (
 		(!isBoardEmpty && current && (
-			<BoardContainerComp $expanded={expanded} $minimized={minimized} ref={boardContainerRef}>
+			<BoardContainerComp
+				$expanded={expanded}
+				$minimized={minimized}
+				$topOffset={topOffset}
+				$leftOffset={leftOffset}
+				ref={boardContainerRef}
+				data-testid="BoardContainerComp"
+			>
 				<Board
 					data-testid="NewItemContainer"
 					background={'gray6'}
@@ -368,11 +388,20 @@ export const BoardContainer = (): React.JSX.Element | null => {
 							background={'gray5'}
 							onMouseDown={(!expanded && moveElementHandler) || undefined}
 						>
-							<Padding all="extrasmall">
-								<Tooltip label={t('board.hide', 'Hide board')} placement="top" disabled={isMoving}>
-									<BackButton icon="BoardCollapseOutline" onClick={clickHandler(minimizeBoards)} />
-								</Tooltip>
-							</Padding>
+							{minimizeAllowed && (
+								<Padding all="extrasmall">
+									<Tooltip
+										label={t('board.hide', 'Hide board')}
+										placement="top"
+										disabled={isMoving}
+									>
+										<BackButton
+											icon="BoardCollapseOutline"
+											onClick={clickHandler(minimizeBoards)}
+										/>
+									</Tooltip>
+								</Padding>
+							)}
 							<TabsList />
 							<Actions padding={{ all: 'extrasmall' }}>
 								{typeof boardContext === 'object' &&

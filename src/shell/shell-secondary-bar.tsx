@@ -8,7 +8,7 @@ import React, { useCallback, useMemo } from 'react';
 
 import { Container } from '@zextras/carbonio-design-system';
 import { filter, findIndex, map, sortBy } from 'lodash';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Collapser } from './collapser';
@@ -65,15 +65,19 @@ const ShellSecondaryBarComponent = ({
 				}}
 			>
 				<Container mainAlignment="flex-start">
-					<Switch>
+					<Routes>
 						{map(secondaryBarViews, (view) => (
-							<Route key={view.id} path={`/${view.route}`}>
-								<AppContextProvider pkg={view.app}>
-									<view.component expanded={isOpen} />
-								</AppContextProvider>
-							</Route>
+							<Route
+								key={view.id}
+								path={`${view.route}/*`}
+								element={
+									<AppContextProvider pkg={view.app}>
+										<view.component expanded={isOpen} />
+									</AppContextProvider>
+								}
+							/>
 						))}
-					</Switch>
+					</Routes>
 				</Container>
 				<Container mainAlignment="flex-end" height="fit">
 					{accessories.map((view) => (

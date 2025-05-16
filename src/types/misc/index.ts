@@ -10,7 +10,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { To } from 'history';
+import type { To } from 'react-router-dom';
 
 import type { PanelMode } from '../apps';
 

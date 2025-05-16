@@ -21,6 +21,9 @@ export type CarbonioModule = {
 	attrKey?: string;
 	icon: string;
 	display: string;
+	/**
+	 * @deprecated it will be removed in the next release
+	 */
 	sentryDsn?: string;
 };
 
@@ -82,6 +85,7 @@ export type UtilityView = CarbonioAccessoryView<UtilityBarComponentProps> & {
 	button: string | ComponentType<UtilityBarComponentProps>;
 	component: ComponentType<UtilityBarComponentProps>;
 	label: string;
+	panelVisible: boolean;
 };
 export type SettingsSubSection = { label: string; id: string };
 export type SettingsView = CarbonioView<SettingsViewProps> & {

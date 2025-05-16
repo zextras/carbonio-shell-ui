@@ -4,19 +4,22 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React, { useState, useMemo, useCallback, useRef } from 'react';
+import React, { useCallback } from 'react';
 
 import type { ModalProps } from '@zextras/carbonio-design-system';
 import { Modal, Button } from '@zextras/carbonio-design-system';
-import type { Location } from 'history';
 import { filter } from 'lodash';
-import { Prompt, useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import type { BlockerFunction, Location } from 'react-router-dom';
+import { useBlocker } from 'react-router-dom';
 
-import { getT } from '../store/i18n/hooks';
+function areLocationsDifferent(loc1: Location, loc2: Location): boolean {
+	return loc1.pathname !== loc2.pathname || loc1.search !== loc2.search || loc1.hash !== loc2.hash;
+}
 
 export interface RouteLeavingGuardProps {
 	children: ModalProps['children'];
-	when?: boolean;
+	when: boolean;
 	onSave: () => Promise<PromiseSettledResult<Awaited<unknown>>[]>;
 	dataHasError?: boolean;
 }
@@ -27,40 +30,19 @@ export const RouteLeavingGuard = ({
 	onSave,
 	dataHasError = false
 }: RouteLeavingGuardProps): React.JSX.Element => {
-	const history = useHistory();
-	const lastLocationInitial = useMemo(() => history.location, [history]);
-	const [modalVisible, setModalVisible] = useState(false);
-	const lastLocationRef = useRef(lastLocationInitial);
-	const confirmedNavigationRef = useRef(false);
-	const t = getT();
+	const [t] = useTranslation();
+
+	const blockerFunction: BlockerFunction = ({ currentLocation, nextLocation }) => {
+		const areDifferent = areLocationsDifferent(currentLocation, nextLocation);
+		return when && areDifferent;
+	};
+
+	// Block navigating elsewhere when data has been entered into the input
+	const blocker = useBlocker(blockerFunction);
+
 	const cancel = useCallback((): void => {
-		setModalVisible(false);
-		confirmedNavigationRef.current = false;
-	}, []);
-
-	const confirmNavigation = useCallback(() => {
-		confirmedNavigationRef.current = true;
-		if (lastLocationRef.current) {
-			// Navigate to the previous blocked location with your navigate function
-			history.push(lastLocationRef.current);
-		}
-	}, [history]);
-
-	const handleBlockedNavigation = useCallback(
-		(nextLocation: Location): boolean => {
-			if (
-				!confirmedNavigationRef.current &&
-				`${nextLocation.pathname}${nextLocation.search || ''}` !==
-					`${history.location.pathname}${history.location.search}`
-			) {
-				setModalVisible(true);
-				lastLocationRef.current = nextLocation;
-				return false;
-			}
-			return true;
-		},
-		[history.location.pathname, history.location.search]
-	);
+		blocker.reset?.();
+	}, [blocker]);
 
 	const onConfirm = useCallback((): void => {
 		onSave()
@@ -73,58 +55,52 @@ export const RouteLeavingGuard = ({
 					console.error(rejected);
 					cancel();
 				} else {
-					setModalVisible(false);
-					confirmNavigation();
+					blocker.proceed?.();
 				}
 			})
 			.catch((reason) => {
 				console.error(reason);
 				cancel();
 			});
-	}, [cancel, confirmNavigation, onSave]);
+	}, [blocker, cancel, onSave]);
 
 	const onSecondaryAction = useCallback((): void => {
-		setModalVisible(false);
-		confirmNavigation();
-	}, [confirmNavigation]);
+		blocker.proceed?.();
+	}, [blocker]);
 
 	return (
-		<>
-			<Prompt when={when} message={handleBlockedNavigation} />
-			{/* Your own alert/dialog/modal component */}
-			<Modal
-				showCloseIcon
-				closeIconTooltip={t('label.close', 'Close')}
-				open={modalVisible}
-				title={
-					dataHasError
-						? t('label.cannot_save_changes', 'Some changes cannot be saved')
-						: t('label.unsaved_changes', 'You have unsaved changes')
-				}
-				onClose={cancel}
-				onConfirm={dataHasError ? onSecondaryAction : onConfirm}
-				confirmLabel={
-					dataHasError
-						? t('label.leave_anyway', 'Leave anyway')
-						: t('label.save_and_leave', 'Save and leave')
-				}
-				onSecondaryAction={dataHasError ? cancel : onSecondaryAction}
-				secondaryActionLabel={
-					dataHasError ? t('label.cancel', 'Cancel') : t('label.leave_anyway', 'Leave anyway')
-				}
-				optionalFooter={
-					!dataHasError ? (
-						<Button
-							color="secondary"
-							type="outlined"
-							label={t('label.cancel', 'Cancel')}
-							onClick={cancel}
-						/>
-					) : undefined
-				}
-			>
-				{children}
-			</Modal>
-		</>
+		<Modal
+			showCloseIcon
+			closeIconTooltip={t('label.close', 'Close')}
+			open={blocker.state === 'blocked'}
+			title={
+				dataHasError
+					? t('label.cannot_save_changes', 'Some changes cannot be saved')
+					: t('label.unsaved_changes', 'You have unsaved changes')
+			}
+			onClose={cancel}
+			onConfirm={dataHasError ? onSecondaryAction : onConfirm}
+			confirmLabel={
+				dataHasError
+					? t('label.leave_anyway', 'Leave anyway')
+					: t('label.save_and_leave', 'Save and leave')
+			}
+			onSecondaryAction={dataHasError ? cancel : onSecondaryAction}
+			secondaryActionLabel={
+				dataHasError ? t('label.cancel', 'Cancel') : t('label.leave_anyway', 'Leave anyway')
+			}
+			optionalFooter={
+				!dataHasError ? (
+					<Button
+						color="secondary"
+						type="outlined"
+						label={t('label.cancel', 'Cancel')}
+						onClick={cancel}
+					/>
+				) : undefined
+			}
+		>
+			{children}
+		</Modal>
 	);
 };

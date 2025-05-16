@@ -13,8 +13,8 @@ import {
 	type DropdownItem,
 	MultiButton
 } from '@zextras/carbonio-design-system';
-import type { Location } from 'history';
 import { find, noop, reduce } from 'lodash';
+import type { Location } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
 import { ACTION_TYPES } from '../constants';

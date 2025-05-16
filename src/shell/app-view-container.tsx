@@ -6,9 +6,9 @@
 
 import React, { useMemo } from 'react';
 
-import { Container } from '@zextras/carbonio-design-system';
+import { Container, Spinner } from '@zextras/carbonio-design-system';
 import { map, find } from 'lodash';
-import { Redirect, Route, Switch, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { AppContextProvider } from '../boot/app/app-context-provider';
@@ -31,9 +31,7 @@ const FirstAppRedirect = (): React.ReactNode => {
 		() => find(routes, (r) => apps[0]?.name === r.app)?.route,
 		[apps, routes]
 	);
-	return mainRoute && location?.pathname === '/' ? (
-		<Redirect exact strict from="/" to={`/${mainRoute}`} />
-	) : null;
+	return mainRoute && location?.pathname === '/' ? <Navigate to={`${mainRoute}`} /> : null;
 };
 
 const AppViewContainer = (): React.JSX.Element => {
@@ -41,11 +39,15 @@ const AppViewContainer = (): React.JSX.Element => {
 	const routes = useMemo(
 		() => [
 			...map(appViews, (view) => (
-				<Route key={view.id} path={`/${view.route}`}>
-					<AppContextProvider key={view.app} pkg={view.app}>
-						<view.component />
-					</AppContextProvider>
-				</Route>
+				<Route
+					key={view.id}
+					path={`${view.route}/*`}
+					element={
+						<AppContextProvider pkg={view.app}>
+							<view.component />
+						</AppContextProvider>
+					}
+				/>
 			))
 		],
 		[appViews]
@@ -54,8 +56,11 @@ const AppViewContainer = (): React.JSX.Element => {
 	return (
 		<BoardsRouterContainer>
 			<Container mainAlignment="flex-start">
-				<Switch>{routes}</Switch>
-				<FirstAppRedirect />
+				<Routes>
+					{routes}
+					<Route path="/*" element={<Spinner color={'gray0'} />} />
+					<Route path="/" element={<FirstAppRedirect />} />
+				</Routes>
 			</Container>
 		</BoardsRouterContainer>
 	);

@@ -8,12 +8,11 @@ import React from 'react';
 import { act, screen } from '@testing-library/react';
 import { Button, Text } from '@zextras/carbonio-design-system';
 import { produce } from 'immer';
-import { Route, Switch, useParams, useRouteMatch } from 'react-router-dom';
+import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 
 import AppViewContainer from './app-view-container';
 import ShellPrimaryBar from './shell-primary-bar';
 import { DefaultViewsRegister } from '../boot/app/default-views';
-import { usePushHistoryCallback } from '../history/hooks';
 import { useAccountStore } from '../store/account';
 import { useAppStore } from '../store/app';
 import { ICONS } from '../tests/constants';
@@ -39,22 +38,20 @@ const AboutView = (): React.JSX.Element | null => {
 };
 
 const MailsView = (): React.JSX.Element => {
-	const { path } = useRouteMatch();
-	const push = usePushHistoryCallback();
-
+	const navigate = useNavigate();
 	return (
-		<Switch>
-			<Route path={`${path}/:view`}>
-				<AboutView />
-			</Route>
-			<Route path={`${path}/`}>
-				<Text>default mails view</Text>
-				<Button
-					label={'navigate to about'}
-					onClick={(): void => push({ route: 'mails', path: 'about' })}
-				/>
-			</Route>
-		</Switch>
+		<Routes>
+			<Route path={`:view`} element={<AboutView />} />
+			<Route
+				path={`/`}
+				element={
+					<>
+						<Text>default mails view</Text>
+						<Button label={'navigate to about'} onClick={(): void => navigate('about')} />
+					</>
+				}
+			/>
+		</Routes>
 	);
 };
 

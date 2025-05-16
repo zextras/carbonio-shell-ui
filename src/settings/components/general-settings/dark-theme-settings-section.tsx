@@ -10,7 +10,6 @@ import type { SelectItem, SingleSelectionOnChange } from '@zextras/carbonio-desi
 import { FormSubSection, Select } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 
-import { DARK_READER_PROP_KEY, SHELL_APP_ID } from '../../../constants';
 import {
 	isDarkReaderPropValues,
 	useDarkReaderResultValue
@@ -72,9 +71,9 @@ const DarkThemeSettingSection = ({
 					setSelectNewValue(value);
 				}
 				if (value !== darkReaderResultValue) {
-					addMod('props', DARK_READER_PROP_KEY, { app: SHELL_APP_ID, value });
+					addMod('prefs', 'carbonioPrefDarkMode', value);
 				} else {
-					removeMod('props', DARK_READER_PROP_KEY);
+					removeMod('prefs', 'carbonioPrefDarkMode');
 				}
 			}
 		},

@@ -5,8 +5,6 @@
  */
 
 import type {
-	Account as ApiAccount,
-	AccountSettings as ApiAccountSettings,
 	AccountSettingsPrefs as ApiAccountSettingsPrefs,
 	GeneralizedTime as ApiGeneralizedTime
 } from '@zextras/carbonio-ui-soap-lib';
@@ -17,10 +15,16 @@ export interface ZimletProp {
 	_content: string;
 }
 
+export type AccountSettings = {
+	attrs: AccountSettingsAttrs;
+	prefs: AccountSettingsPrefs;
+	props: Array<ZimletProp>;
+};
+
 export type AccountState = {
 	authenticated: boolean;
 	account?: Account;
-	settings: ApiAccountSettings;
+	settings: AccountSettings;
 	zimbraVersion?: string;
 	usedQuota: number;
 };
@@ -45,7 +49,14 @@ export type Signature = {
 	];
 };
 
-export type Account = ApiAccount;
+export type Account = {
+	id: string;
+	name: string;
+	displayName: string;
+	signatures: { signature: Array<Signature> };
+	identities: { identity: Array<Identity> };
+	rights: AccountRights;
+};
 
 export type BooleanString = 'TRUE' | 'FALSE';
 
@@ -67,8 +78,6 @@ export type AccountSettingsAttrs = {
 	zimbraAllowFromAddress?: string | Array<string>;
 	[key: string]: string | number | Array<string | number> | undefined;
 };
-
-export type AccountSettings = ApiAccountSettings;
 
 export interface IdentityAttrs {
 	/** default mail signature for account/identity/dataSource */

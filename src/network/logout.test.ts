@@ -13,13 +13,14 @@ import { useLoginConfigStore } from '../store/login/store';
 import { controlConsoleError } from '../tests/utils';
 import type { ErrorSoapResponse } from '../types/network';
 
-const mockEndSession = (response: HttpResponse): jest.SpyInstance<HttpResponse> =>
+const mockEndSession = (response): jest.SpyInstance<HttpResponse> =>
 	jest.spyOn(api, 'endSession').mockResolvedValueOnce(response);
 
 describe('Logout', () => {
 	it('should redirect to login page if EndSession request fails', async () => {
 		const goToLoginFn = jest.spyOn(utils, 'goToLogin').mockImplementation();
-		mockEndSession(HttpResponse.json({}, { status: 500 }));
+		const resp = HttpResponse.json({ error: 'Not Authorized' }, { status: 500 });
+		mockEndSession(resp);
 		await logout();
 		await jest.advanceTimersToNextTimerAsync();
 		expect(goToLoginFn).toHaveBeenCalled();

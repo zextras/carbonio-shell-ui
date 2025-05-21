@@ -3,7 +3,9 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import type { GetInfoResponse, Account, AccountSettings } from '@zextras/carbonio-ui-soap-lib';
+import type { GetInfoResponse } from '@zextras/carbonio-ui-soap-lib';
+
+import type { Account, AccountSettings } from '../../types/account';
 
 const normalizeSettings = (
 	settings: Pick<GetInfoResponse, 'attrs' | 'prefs' | 'props'>

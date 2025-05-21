@@ -105,7 +105,7 @@
 		"@tinymce/tinymce-react": "^4.3.2",
 		"@zextras/carbonio-design-system": "9.0.0",
 		"@zextras/carbonio-ui-preview": "^3.1.1",
-		"@zextras/carbonio-ui-soap-lib": "file:zextras-carbonio-ui-soap-lib-0.0.0-semantically-released.tgz",
+		"@zextras/carbonio-ui-soap-lib": "1.0.2",
 		"darkreader": "^4.9.79",
 		"date-fns": "^4.1.0",
 		"i18next": "^22.5.1",

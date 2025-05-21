@@ -3,10 +3,10 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { useAppServerRefresh, useAppServerUpdates } from '@zextras/carbonio-ui-soap-lib';
+import { useInfoRefresh, useSync } from '@zextras/carbonio-ui-soap-lib';
 
 import type { SoapNotify, SoapRefresh } from '../../types/network';
 
-export const useNotify = (): SoapNotify[] => useAppServerUpdates();
+export const useNotify = (): SoapNotify[] => useSync();
 
-export const useRefresh = (): SoapRefresh => useAppServerRefresh();
+export const useRefresh = (): SoapRefresh => useInfoRefresh();

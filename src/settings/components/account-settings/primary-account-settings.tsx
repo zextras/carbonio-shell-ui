@@ -8,7 +8,7 @@ import type { ReactElement } from 'react';
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
 
 import type { InputProps } from '@zextras/carbonio-design-system';
-import { Container, Text, Padding, Input, Row } from '@zextras/carbonio-design-system';
+import { Padding, FormSubSection, FormSection, Input, Row } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
 
 import type { Account, Identity, IdentityAttrs } from '../../../types/account';
@@ -51,32 +51,18 @@ const PrimaryAccountSettings = ({
 
 	return (
 		<>
-			<Container
-				minWidth="calc(min(100%, 32rem))"
-				width="fill"
-				padding={{ all: 'large' }}
-				height="fit"
-				background="gray6"
-				mainAlignment="flex-start"
-			>
-				<Padding horizontal="medium" width="100%">
-					<Text weight="bold">{t('primary_account.title', 'Primary Account Settings')}</Text>
-				</Padding>
-			</Container>
-			<Row
-				width="fill"
-				padding={{ horizontal: 'large', bottom: 'large' }}
-				height="fit"
-				background="gray6"
-				mainAlignment="flex-start"
-			>
-				<Row width="50%" padding={{ right: 'small' }}>
-					<Input label={emailLabel} value={account.name || ' '} onChange={onChangeDisabled} />
-				</Row>
-				<Row width="50%">
-					<Input label={accountLabel} value={accountNameValue} onChange={onChange} />
-				</Row>
-			</Row>
+			<FormSection label={t('primary_account.title', 'Primary Account Settings')}>
+				<FormSubSection>
+					<Row width="fill" height="fit" background="gray6" mainAlignment="flex-start">
+						<Row width="50%" padding={{ right: 'small' }}>
+							<Input label={emailLabel} value={account.name || ' '} onChange={onChangeDisabled} />
+						</Row>
+						<Row width="50%">
+							<Input label={accountLabel} value={accountNameValue} onChange={onChange} />
+						</Row>
+					</Row>
+				</FormSubSection>
+			</FormSection>
 			<Padding bottom="large" />
 		</>
 	);

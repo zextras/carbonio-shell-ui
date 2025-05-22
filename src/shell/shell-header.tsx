@@ -6,13 +6,7 @@
 
 import React from 'react';
 
-import {
-	Catcher,
-	Container,
-	Padding,
-	Responsive,
-	useScreenMode
-} from '@zextras/carbonio-design-system';
+import { Catcher, Container, Padding } from '@zextras/carbonio-design-system';
 import type { SearchBar as SearchUISearchBar } from '@zextras/carbonio-search-ui';
 import styled from 'styled-components';
 
@@ -37,7 +31,6 @@ interface ShellHeaderProps {
 const ShellHeader = ({ children }: ShellHeaderProps): React.JSX.Element => {
 	const { darkReaderStatus } = useDarkMode();
 
-	const screenMode = useScreenMode();
 	const [SearchBar, isSearchBarAvailable] =
 		useIntegratedComponent<typeof SearchUISearchBar>('search-bar');
 	return (
@@ -51,7 +44,7 @@ const ShellHeader = ({ children }: ShellHeaderProps): React.JSX.Element => {
 			maxHeight={HEADER_BAR_HEIGHT}
 			mainAlignment="space-between"
 			padding={{
-				horizontal: screenMode === 'desktop' ? 'large' : 'extrasmall',
+				horizontal: 'large',
 				vertical: 'small'
 			}}
 		>
@@ -68,10 +61,15 @@ const ShellHeader = ({ children }: ShellHeaderProps): React.JSX.Element => {
 					<Padding horizontal="large">
 						<CreationButton />
 					</Padding>
-					<Responsive mode="desktop">{isSearchBarAvailable && <SearchBar />}</Responsive>
+					{isSearchBarAvailable && <SearchBar />}
 				</Container>
-				<Container orientation="horizontal" width="auto" mainAlignment="flex-end">
-					<Responsive mode="desktop">{children}</Responsive>
+				<Container
+					orientation="horizontal"
+					width="auto"
+					mainAlignment="flex-end"
+					padding={{ left: 'small' }}
+				>
+					{children}
 				</Container>
 			</Catcher>
 		</ShellHeaderContainer>

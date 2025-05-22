@@ -56,7 +56,7 @@ describe('General setting', () => {
 			...previousState,
 			settings: {
 				...previousState.settings,
-				props: [{ name: 'zappDarkreaderMode', zimlet: 'carbonio-shell-ui', _content: 'auto' }]
+				prefs: { carbonioPrefDarkMode: 'auto' }
 			}
 		}));
 		const { user } = setup(<GeneralSettings />);

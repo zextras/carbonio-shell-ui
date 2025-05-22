@@ -2,6 +2,47 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [11.0.1](https://github.com/zextras/carbonio-shell-ui/compare/v11.0.0...v11.0.1) (2025-05-16)
+
+## [11.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v10.0.0...v11.0.0) (2025-05-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* use node 20
+* requires @zextras/carbonio-design-system >= v10.0.0
+* remove RESULT_LABEL_TYPE
+* remove some ACTION_TYPES fields
+* **deps:** update react-router-dom to version 6
+* **deps:** remove usePushHistoryCallback, useGoBackHistoryCallback, useReplaceHistoryCallback, getCurrentRoute, replaceHistory, goBackHistory and pushHistory functions
+* **deps:** remove getBridgedFunctions
+* **deps:** remove AppLink component
+
+### Features
+
+* add panelVisible option to utility view ([92c5a9a](https://github.com/zextras/carbonio-shell-ui/commit/92c5a9ae29da29e49ce0f5b3614e56f1aaaeea7e)), closes [#603](https://github.com/zextras/carbonio-shell-ui/issues/603)
+* hide minimize-board-button when is focus mode ([dd91fe0](https://github.com/zextras/carbonio-shell-ui/commit/dd91fe0e0d28a25216a83c7c97634309f94edf56)), closes [#600](https://github.com/zextras/carbonio-shell-ui/issues/600)
+* make BoardContainer leftOffset and topOffset customizable ([6056b3a](https://github.com/zextras/carbonio-shell-ui/commit/6056b3a7c4715e7f39e0fe58abab2feb51029dd1)), closes [#601](https://github.com/zextras/carbonio-shell-ui/issues/601)
+
+
+### Bug Fixes
+
+* **composer:** enable uncontrolled mode on tinymce ([e49a204](https://github.com/zextras/carbonio-shell-ui/commit/e49a2044e1d21b6b52da9afcaa5a3640deb91cbb)), closes [#610](https://github.com/zextras/carbonio-shell-ui/issues/610)
+* improve context menu prevention logic for specific elements ([#609](https://github.com/zextras/carbonio-shell-ui/issues/609)) ([a6c9c48](https://github.com/zextras/carbonio-shell-ui/commit/a6c9c48206cd9c541dd397eeb9c0a7ebbae4ac05))
+* save dark mode preference in account pref instead of zimlet prop ([20598e3](https://github.com/zextras/carbonio-shell-ui/commit/20598e3f1de7f98f4ce89e787a2933aa771e9e09)), closes [#611](https://github.com/zextras/carbonio-shell-ui/issues/611)
+* show search bar also in small screen view ([459f147](https://github.com/zextras/carbonio-shell-ui/commit/459f147e9e00a2cda9c1a1f6cd1d35ea8b287dab)), closes [#602](https://github.com/zextras/carbonio-shell-ui/issues/602)
+* update carbonio-search-ui ([3b81d1c](https://github.com/zextras/carbonio-shell-ui/commit/3b81d1c41f5666eaeee2b397148243c7188713bf)), closes [#599](https://github.com/zextras/carbonio-shell-ui/issues/599)
+
+
+* remove deprecated const ([3a9b618](https://github.com/zextras/carbonio-shell-ui/commit/3a9b618daae1a7646e59d461a439938972df3425)), closes [#589](https://github.com/zextras/carbonio-shell-ui/issues/589)
+* use FormSection for settings section ([9ed955c](https://github.com/zextras/carbonio-shell-ui/commit/9ed955cbc87d4492d1422f7944df0cf158f33694)), closes [#591](https://github.com/zextras/carbonio-shell-ui/issues/591)
+
+
+### build
+
+* **deps:** update react-router-dom to v6 ([10744f2](https://github.com/zextras/carbonio-shell-ui/commit/10744f21c951245d278cd3554e13391e4fe8dc46)), closes [#583](https://github.com/zextras/carbonio-shell-ui/issues/583)
+* use node 18 ([60b9e99](https://github.com/zextras/carbonio-shell-ui/commit/60b9e998c33479a72829b7c4ab6a6e372514892c)), closes [#590](https://github.com/zextras/carbonio-shell-ui/issues/590)
+
 ## [10.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v9.0.1...v10.0.0) (2025-02-06)
 
 

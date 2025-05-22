@@ -14,7 +14,6 @@ import { LOGIN_V3_CONFIG_PATH } from '../constants';
 
 const handlers: RequestHandler[] = [
 	http.get('/static/iris/components.json', getComponentsJson),
-	http.post('/service/soap/EndSessionRequest', () => HttpResponse.json({})),
 	http.post('/service/soap/NoOpRequest', noOpRequest),
 	http.get(LOGIN_V3_CONFIG_PATH, getLoginConfig),
 	http.get('/i18n/en.json', () => HttpResponse.json({})),

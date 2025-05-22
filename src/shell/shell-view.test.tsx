@@ -11,7 +11,8 @@ import 'jest-styled-components';
 import { BOARD_DEFAULT_POSITION } from './boards/board-container';
 import type { Border } from './hooks/useResize';
 import ShellView from './shell-view';
-import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
+import { HEADER_BAR_HEIGHT, LOCAL_STORAGE_BOARD_SIZE, PRIMARY_BAR_WIDTH } from '../constants';
+import * as constants from '../constants';
 import { ICONS, TESTID_SELECTORS } from '../tests/constants';
 import { mockedApps, setupAppStore } from '../tests/test-app-utils';
 import {
@@ -33,6 +34,7 @@ jest.mock('../utility-bar/bar', () => ({
 }));
 
 jest.mock('./shell-header', () => Dummy);
+jest.mock('../constants');
 
 beforeEach(() => {
 	setupAppStore();
@@ -49,6 +51,33 @@ beforeEach(() => {
 });
 
 describe('Shell view', () => {
+	describe('BoardContainerComp', () => {
+		test('will have 0 offsets in focus mode', () => {
+			jest.mocked(constants).IS_FOCUS_MODE = true;
+
+			setup(<ShellView />);
+
+			const boardContainer = screen.getByTestId(TESTID_SELECTORS.boardContainerComp);
+
+			expect(boardContainer).toHaveStyleRule('height', 'calc(100vh - 0rem)');
+			expect(boardContainer).toHaveStyleRule('width', 'calc(100vw - 0rem)');
+			expect(boardContainer).toHaveStyleRule('top', '0rem');
+			expect(boardContainer).toHaveStyleRule('left', '0rem');
+		});
+		test('will have offsets if not in focus mode', () => {
+			jest.mocked(constants).IS_FOCUS_MODE = false;
+
+			setup(<ShellView />);
+
+			const boardContainer = screen.getByTestId(TESTID_SELECTORS.boardContainerComp);
+
+			expect(boardContainer).toHaveStyleRule('height', `calc(100vh - ${HEADER_BAR_HEIGHT})`);
+			expect(boardContainer).toHaveStyleRule('width', `calc(100vw - ${PRIMARY_BAR_WIDTH})`);
+			expect(boardContainer).toHaveStyleRule('top', HEADER_BAR_HEIGHT);
+			expect(boardContainer).toHaveStyleRule('left', PRIMARY_BAR_WIDTH);
+		});
+	});
+
 	test('When resizing under mobile breakpoint, board does not disappear', () => {
 		setup(<ShellView />);
 
@@ -255,5 +284,14 @@ describe('Shell view', () => {
 			left: `${boardNewSizeAndPos.left}px`,
 			top: `${boardNewSizeAndPos.top}px`
 		});
+	});
+	test('In focus mode the board container should receive minimizeAllowed to false', async () => {
+		jest.mocked(constants).IS_FOCUS_MODE = true;
+
+		const { queryByRoleWithIcon } = setup(<ShellView />);
+
+		expect(
+			queryByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` })
+		).not.toBeInTheDocument();
 	});
 });

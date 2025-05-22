@@ -227,7 +227,7 @@ const GeneralSettings = (): React.JSX.Element => {
 				background={'gray5'}
 				mainAlignment="flex-start"
 				crossAlignment={'flex-start'}
-				gap="0.5rem"
+				gap="1rem"
 				padding={{ all: 'medium' }}
 				style={{ overflow: 'auto' }}
 			>

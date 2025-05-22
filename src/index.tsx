@@ -19,21 +19,21 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 window.addEventListener('contextmenu', (ev) => {
-	if (
-		!(
-			['IMG', 'A'].find(
-				(name) => ev?.target instanceof HTMLElement && ev.target.tagName === name
-			) ||
-			ev.view?.getSelection?.()?.type === 'Range' ||
-			ev
-				.composedPath()
-				.find(
-					(element) =>
-						element instanceof HTMLElement &&
-						element.classList.contains('carbonio-bypass-context-menu')
-				)
-		)
-	) {
+	const path = ev.composedPath?.() || [];
+
+	const isAllowedTarget = path.some(
+		(element) => element instanceof HTMLElement && ['A', 'IMG'].includes(element.tagName)
+	);
+
+	const selection = window.getSelection?.();
+	const isTextSelection = selection?.type === 'Range';
+
+	const hasBypassClass = path.some(
+		(element) =>
+			element instanceof HTMLElement && element.classList.contains('carbonio-bypass-context-menu')
+	);
+
+	if (!(isAllowedTarget || isTextSelection || hasBypassClass)) {
 		ev.preventDefault();
 	}
 });

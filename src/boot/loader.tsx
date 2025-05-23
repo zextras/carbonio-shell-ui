@@ -125,7 +125,7 @@ export const Loader = (): React.JSX.Element => {
 		];
 
 		return api.getInfo({ rights }).then((res) => {
-			const { account, settings, version } = normalizeAccount(res);
+			const { account, settings } = normalizeAccount(res);
 			useAccountStore.setState({
 				authenticated: true,
 				account,

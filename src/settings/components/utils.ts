@@ -229,6 +229,15 @@ export const localeList = (t: TFunction): Array<LocaleDescriptorWithLabels> => [
 			value: SUPPORTED_LOCALES.ky.name,
 			defaultValue: 'Kyrgyz - {{value}}'
 		})
+	},
+	{
+		id: 'bs',
+		...SUPPORTED_LOCALES.bs,
+		localName: t('locale.bosnian', 'Bosnian'),
+		label: t('locale.label_bosnian', {
+			value: SUPPORTED_LOCALES.bs.name,
+			defaultValue: 'Bosnian - {{value}}'
+		})
 	}
 ];
 // TODO: For future languages

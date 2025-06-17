@@ -615,8 +615,6 @@ describe('Account setting', () => {
 			])
 		});
 
-		// jest.spyOn(api, 'NoOpRequest').mockRejectedValue(Promise.resolve());
-
 		const batchRequestUrl = '/service/soap/BatchRequest';
 		server.use(
 			http.post(batchRequestUrl, () =>

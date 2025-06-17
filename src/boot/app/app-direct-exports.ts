@@ -47,8 +47,6 @@ export {
 	updateAccount
 } from '../../store/account';
 
-export { useNotify, useRefresh } from '../../store/network';
-
 export {
 	closeBoard,
 	updateBoard,
@@ -103,4 +101,3 @@ export { AppContextProvider } from './app-context-provider';
 
 export type { AuthGuardProps } from '../../ui-extras/auth-guard';
 export { AuthGuard } from '../../ui-extras/auth-guard';
-export { soapFetchV2 } from '@zextras/carbonio-ui-soap-lib';

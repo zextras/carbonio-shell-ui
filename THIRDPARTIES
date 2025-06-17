@@ -21,7 +21,6 @@ MIT License (MIT) applies to:
 @types/react-dom, Copyright (c) Microsoft Corporation.
 @types/react-router-dom, Copyright (c) Microsoft Corporation.
 @types/react, Copyright (c) Microsoft Corporation.
-@types/ua-parser-js, Copyright (c) Microsoft Corporation.
 @types/webpack-env, Copyright (c) Microsoft Corporation.
 @types/webpack, Copyright (c) Microsoft Corporation.
 autoprefixer, Copyright 2013 Andrey Sitnik <andrey@sitnik.ru>

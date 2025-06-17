@@ -4,10 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type {
-	AccountSettingsPrefs as ApiAccountSettingsPrefs,
-	GeneralizedTime as ApiGeneralizedTime
-} from '@zextras/carbonio-ui-soap-lib';
+import type { GeneralizedTime as ApiGeneralizedTime } from '@zextras/carbonio-ui-soap-lib';
+
+import type { DARK_READER_VALUES, DELEGATED_SEND_SAVE_TARGET } from '../../constants';
 
 export interface ZimletProp {
 	name: string;
@@ -69,8 +68,6 @@ export type DurationUnit = 'd' | 'h' | 'm' | 's' | 'ms';
 
 export type Duration = `${number}${DurationUnit | ''}`;
 
-export type AccountSettingsPrefs = ApiAccountSettingsPrefs;
-
 export type AccountSettingsAttrs = {
 	zimbraFeatureOptionsEnabled?: BooleanString;
 	zimbraIdentityMaxNumEntries?: number;
@@ -78,6 +75,32 @@ export type AccountSettingsAttrs = {
 	zimbraAllowFromAddress?: string | Array<string>;
 	[key: string]: string | number | Array<string | number> | undefined;
 };
+
+export interface AccountSettingsPrefs {
+	zimbraPrefOutOfOfficeExternalReply?: string;
+	zimbraPrefOutOfOfficeReply?: string;
+	zimbraPrefOutOfOfficeReplyEnabled?: BooleanString;
+	zimbraPrefOutOfOfficeExternalReplyEnabled?: BooleanString;
+	zimbraPrefExternalSendersType?: 'ALL' | 'ALLNOTINAB' | 'INAB' | 'INSD';
+	zimbraPrefOutOfOfficeSuppressExternalReply?: BooleanString;
+	zimbraPrefOutOfOfficeFreeBusyStatus?: 'BUSY' | 'OUTOFOFFICE';
+	zimbraPrefOutOfOfficeStatusAlertOnLogin?: BooleanString;
+	zimbraPrefIncludeSharedItemsInSearch?: BooleanString;
+	zimbraPrefIncludeSpamInSearch?: BooleanString;
+	zimbraPrefIncludeTrashInSearch?: BooleanString;
+	zimbraPrefOutOfOfficeFromDate?: GeneralizedTime;
+	zimbraPrefOutOfOfficeUntilDate?: GeneralizedTime;
+	zimbraPrefHtmlEditorDefaultFontColor?: string;
+	zimbraPrefHtmlEditorDefaultFontFamily?: string;
+	zimbraPrefHtmlEditorDefaultFontSize?: string;
+	zimbraPrefLocale?: string;
+	zimbraPrefMailPollingInterval?: Duration;
+	zimbraPrefMailTrustedSenderList?: Array<string> | string;
+	zimbraPrefDelegatedSendSaveTarget?: (typeof DELEGATED_SEND_SAVE_TARGET)[number];
+	carbonioPrefSendAnalytics?: BooleanString;
+	carbonioPrefDarkMode?: (typeof DARK_READER_VALUES)[number];
+	[key: string]: string | number | Array<string | number> | undefined;
+}
 
 export interface IdentityAttrs {
 	/** default mail signature for account/identity/dataSource */

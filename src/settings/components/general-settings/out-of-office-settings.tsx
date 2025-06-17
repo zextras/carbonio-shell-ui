@@ -9,9 +9,11 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type {
 	SelectItem,
 	SingleSelectionOnChange,
+	SwitchProps,
 	TextAreaProps
 } from '@zextras/carbonio-design-system';
 import {
+	Switch,
 	Container,
 	FormSubSection,
 	FormSection,
@@ -23,32 +25,14 @@ import { type TFunction } from 'i18next';
 import { find } from 'lodash';
 
 import { OutOfOfficeTimePeriodSection } from './out-of-office-time-period-section';
+import { SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT } from '../../../constants';
 import { getT } from '../../../store/i18n/hooks';
-import type { AccountSettings, AccountSettingsPrefs, BooleanString } from '../../../types/account';
+import type { AccountSettings } from '../../../types/account';
 import type { AddMod, RemoveMod } from '../../../types/network';
 import { outOfOfficeSubSection } from '../../general-settings-sub-sections';
 import { useReset } from '../../hooks/use-reset';
 import type { ResetComponentImperativeHandler, SettingsSectionProps } from '../utils';
 import { dateToGenTime, upsertPrefOnUnsavedChanges } from '../utils';
-
-type CoercedPrefType<T> = T extends BooleanString | undefined ? boolean | undefined : T;
-
-export const buildItemsPrefOutOfOfficeReplyEnabled = (
-	t: TFunction
-): Array<
-	SelectItem<
-		NonNullable<CoercedPrefType<AccountSettingsPrefs['zimbraPrefOutOfOfficeReplyEnabled']>>
-	>
-> => [
-	{
-		label: t('settings.out_of_office.send_auto_replies', 'Send auto-replies'),
-		value: true
-	},
-	{
-		label: t('settings.out_of_office.do_not_send_auto_replies', 'Do not send auto-replies'),
-		value: false
-	}
-];
 
 type ExternalSenders =
 	| 'SEND_AUTO_REPLY'
@@ -119,13 +103,17 @@ interface OutOfOfficeViewProps extends SettingsSectionProps {
 	settings: AccountSettings;
 	addMod: AddMod;
 	removeMod: RemoveMod;
+	hasError: React.Dispatch<React.SetStateAction<boolean>>;
+	error: boolean;
 }
 
 export const OutOfOfficeSettings = ({
 	settings,
 	addMod,
 	removeMod,
-	resetRef
+	resetRef,
+	hasError,
+	error
 }: OutOfOfficeViewProps): React.JSX.Element => {
 	const t = getT();
 	const outOfOfficeSectionTitle = useMemo(() => outOfOfficeSubSection(t), [t]);
@@ -173,29 +161,13 @@ export const OutOfOfficeSettings = ({
 
 	const updatePref = useMemo(() => upsertPrefOnUnsavedChanges(addMod), [addMod]);
 
-	const prefOutOfOfficeReplyEnabledSelectItems = useMemo(
-		() => buildItemsPrefOutOfOfficeReplyEnabled(t),
-		[t]
-	);
-
-	const prefOutOfOfficeReplyEnabledSelectedValue = useMemo<SelectItem<boolean>>(
-		() =>
-			find(
-				prefOutOfOfficeReplyEnabledSelectItems,
-				(item) => item.value === prefOutOfOfficeReplyEnabled
-			) as SelectItem<boolean>,
-		[prefOutOfOfficeReplyEnabled, prefOutOfOfficeReplyEnabledSelectItems]
-	);
-
-	const prefOutOfOfficeReplyEnabledOnChange = useCallback<
-		SingleSelectionOnChange<
-			NonNullable<CoercedPrefType<AccountSettingsPrefs['zimbraPrefOutOfOfficeReplyEnabled']>>
-		>
-	>(
+	const prefOutOfOfficeReplyEnabledOnClick = useCallback<NonNullable<SwitchProps['onClick']>>(
 		(value): void => {
-			if (value !== null) {
-				updatePref('zimbraPrefOutOfOfficeReplyEnabled', value);
-				setPrefOutOfOfficeReplyEnabled(value);
+			if (value.target !== null) {
+				setPrefOutOfOfficeReplyEnabled((prev) => {
+					updatePref('zimbraPrefOutOfOfficeReplyEnabled', !prev);
+					return !prev;
+				});
 			}
 		},
 		[updatePref]
@@ -282,21 +254,51 @@ export const OutOfOfficeSettings = ({
 		updatePref
 	]);
 
+	const prefOutOfOfficeReplyHasError = useMemo(
+		() => prefOutOfOfficeReply.length > SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT,
+		[prefOutOfOfficeReply.length]
+	);
+	const prefOutOfOfficeExternalReplyHasError = useMemo(
+		() => prefOutOfOfficeExternalReply.length > SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT,
+		[prefOutOfOfficeExternalReply.length]
+	);
+	const errorDescription = useMemo(
+		() =>
+			t(
+				'label.settings.textArea.errorDescription',
+				"You've exceeded the character limit. Please shorten your text."
+			),
+		[t]
+	);
+
+	useEffect(() => {
+		if (prefOutOfOfficeExternalReplyHasError || prefOutOfOfficeReplyHasError) {
+			!error && hasError(true);
+		} else {
+			error && hasError(false);
+		}
+	}, [prefOutOfOfficeExternalReplyHasError, prefOutOfOfficeReplyHasError, hasError, error]);
+
 	return (
 		<FormSection label={outOfOfficeSectionTitle.label} id={outOfOfficeSectionTitle.id}>
 			<FormSubSection>
-				<Container gap={'0.5rem'}>
-					<Select
-						items={prefOutOfOfficeReplyEnabledSelectItems}
+				<Container gap={'0.5rem'} crossAlignment={'flex-start'}>
+					<Switch
+						value={prefOutOfOfficeReplyEnabled}
 						label={t('label.out_of_office', 'Out of Office')}
-						onChange={prefOutOfOfficeReplyEnabledOnChange}
-						selection={prefOutOfOfficeReplyEnabledSelectedValue}
+						onClick={prefOutOfOfficeReplyEnabledOnClick}
 					/>
 					<TextArea
 						value={prefOutOfOfficeReply}
 						disabled={!prefOutOfOfficeReplyEnabled}
 						label={t('settings.out_of_office.labels.auto_reply_message', 'Auto-Reply Message:')}
 						onChange={prefOutOfOfficeReplyOnChange}
+						description={
+							prefOutOfOfficeReplyHasError
+								? `${prefOutOfOfficeReply.length}/${SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT} ${errorDescription}`
+								: `${prefOutOfOfficeReply.length}/${SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT}`
+						}
+						hasError={prefOutOfOfficeReplyHasError}
 					/>
 					<Select
 						disabled={!prefOutOfOfficeReplyEnabled}
@@ -317,11 +319,20 @@ export const OutOfOfficeSettings = ({
 								'Auto-Reply Message for External senders:'
 							)}
 							onChange={prefOutOfOfficeExternalReplyOnChange}
+							description={
+								prefOutOfOfficeExternalReplyHasError
+									? `${prefOutOfOfficeExternalReply.length}/${SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT} ${errorDescription}`
+									: `${prefOutOfOfficeExternalReply.length}/${SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT}`
+							}
+							hasError={prefOutOfOfficeExternalReplyHasError}
 						/>
 					)}
 				</Container>
 			</FormSubSection>
-			<FormSubSection label={t('settings.out_of_office.headings.time_period', 'Time Period')}>
+			<FormSubSection
+				label={t('settings.out_of_office.headings.time_period', 'Time Period')}
+				disabled={!prefOutOfOfficeReplyEnabled}
+			>
 				<Container gap={'0.5rem'} mainAlignment={'flex-start'} crossAlignment={'flex-start'}>
 					<Checkbox
 						label={t(

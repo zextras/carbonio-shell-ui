@@ -131,6 +131,8 @@ export const ICONS = {
 	accountUtilityMenu: 'PersonOutline',
 	checkboxChecked: 'icon: CheckmarkSquare',
 	checkboxUnchecked: 'icon: Square',
+	switchChecked: 'icon: ToggleRight',
+	switchUnchecked: 'icon: ToggleLeftOutline',
 	close: 'Close',
 	closeBoard: 'CloseOutline',
 	collapseBoard: 'BoardCollapse',

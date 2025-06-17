@@ -10,6 +10,7 @@ import { act, screen, within } from '@testing-library/react';
 import { forEach } from 'lodash';
 
 import { OutOfOfficeSettings } from './out-of-office-settings';
+import { SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT } from '../../../constants';
 import { ICONS, TESTID_SELECTORS } from '../../../tests/constants';
 import { setup } from '../../../tests/utils';
 import type { AccountSettings, AccountSettingsPrefs } from '../../../types/account';
@@ -21,10 +22,18 @@ describe('Out of office settings', () => {
 		const settings: AccountSettings = { prefs: {}, attrs: {}, props: [] };
 		const addModFn = jest.fn();
 		const removeMod = jest.fn();
-		setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />);
+		setup(
+			<OutOfOfficeSettings
+				settings={settings}
+				addMod={addModFn}
+				removeMod={removeMod}
+				hasError={jest.fn}
+				error={false}
+			/>
+		);
 		expect(screen.getByText('Out of Office Settings')).toBeVisible();
 		expect(screen.getByText('Out of Office')).toBeVisible();
-		expect(screen.getByText('Do not send auto-replies')).toBeVisible();
+		expect(screen.getByTestId(ICONS.switchUnchecked)).toBeVisible();
 		expect(screen.getByText('External Senders')).toBeVisible();
 		expect(screen.getByRole('textbox', { name: 'Auto-Reply Message:' })).toBeVisible();
 		expect(screen.getByText("Don't send an auto-reply message to external sender")).toBeVisible();
@@ -36,23 +45,72 @@ describe('Out of office settings', () => {
 		expect(screen.getAllByTestId(ICONS.checkboxUnchecked)[1]).toBeVisible();
 	});
 
-	test('by default is set to not send auto-replies', () => {
+	test('by default is unchecked', () => {
 		const settings: AccountSettings = { prefs: {}, attrs: {}, props: [] };
 		const addModFn = jest.fn();
 		const removeMod = jest.fn();
-		setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />);
-		expect(screen.getByText('Do not send auto-replies')).toBeVisible();
+		setup(
+			<OutOfOfficeSettings
+				settings={settings}
+				addMod={addModFn}
+				removeMod={removeMod}
+				hasError={jest.fn}
+				error={false}
+			/>
+		);
+		expect(screen.getByTestId(ICONS.switchUnchecked)).toBeVisible();
 	});
 
-	test('select of send auto-replies option updates the pref outOfOfficeReplyEnabled to TRUE', async () => {
+	test('formSubSection Time Period is disabled when the switch is unchecked', () => {
+		const settings: AccountSettings = { prefs: {}, attrs: {}, props: [] };
+		const addModFn = jest.fn();
+		const removeMod = jest.fn();
+		setup(
+			<OutOfOfficeSettings
+				settings={settings}
+				addMod={addModFn}
+				removeMod={removeMod}
+				hasError={jest.fn}
+				error={false}
+			/>
+		);
+		expect(screen.getByText('Time Period')).toHaveStyle('color : #cccccc');
+	});
+
+	test('formSubSection Time Period is not disabled when the switch is checked', () => {
+		const settings: AccountSettings = {
+			prefs: { zimbraPrefOutOfOfficeReplyEnabled: 'TRUE' },
+			attrs: {},
+			props: []
+		};
+		const addModFn = jest.fn();
+		const removeMod = jest.fn();
+		setup(
+			<OutOfOfficeSettings
+				settings={settings}
+				addMod={addModFn}
+				removeMod={removeMod}
+				hasError={jest.fn}
+				error={false}
+			/>
+		);
+		expect(screen.getByText('Time Period')).toHaveStyle('color : #333333');
+	});
+
+	test('click on the unchecked switch updates the pref outOfOfficeReplyEnabled to TRUE', async () => {
 		const settings: AccountSettings = { prefs: {}, attrs: {}, props: [] };
 		const addModFn = jest.fn();
 		const removeMod = jest.fn();
 		const { user } = setup(
-			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+			<OutOfOfficeSettings
+				settings={settings}
+				addMod={addModFn}
+				removeMod={removeMod}
+				hasError={jest.fn}
+				error={false}
+			/>
 		);
-		await user.click(screen.getByText('Do not send auto-replies'));
-		await user.click(screen.getByText('Send auto-replies'));
+		await user.click(screen.getByTestId(ICONS.switchUnchecked));
 		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
 			'prefs',
 			'zimbraPrefOutOfOfficeReplyEnabled',
@@ -60,7 +118,7 @@ describe('Out of office settings', () => {
 		);
 	});
 
-	test('select of send auto-replies option updates the pref outOfOfficeReplyEnabled to FALSE', async () => {
+	test('click on the checked switch updates the pref outOfOfficeReplyEnabled to FALSE', async () => {
 		const settings: AccountSettings = {
 			prefs: { zimbraPrefOutOfOfficeReplyEnabled: 'TRUE' },
 			attrs: {},
@@ -69,10 +127,15 @@ describe('Out of office settings', () => {
 		const addModFn = jest.fn();
 		const removeMod = jest.fn();
 		const { user } = setup(
-			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+			<OutOfOfficeSettings
+				settings={settings}
+				addMod={addModFn}
+				removeMod={removeMod}
+				hasError={jest.fn}
+				error={false}
+			/>
 		);
-		await user.click(screen.getByText('Send auto-replies'));
-		await user.click(screen.getByText('Do not send auto-replies'));
+		await user.click(screen.getByTestId(ICONS.switchChecked));
 		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
 			'prefs',
 			'zimbraPrefOutOfOfficeReplyEnabled',
@@ -80,7 +143,7 @@ describe('Out of office settings', () => {
 		);
 	});
 
-	test('send auto-replies option enables both inputs for reply message and check for time period', async () => {
+	test('click on the unchecked switch enables both inputs for reply message and check for time period', async () => {
 		const settings: AccountSettings = {
 			prefs: {
 				zimbraPrefExternalSendersType: 'ALL',
@@ -92,10 +155,15 @@ describe('Out of office settings', () => {
 		const addModFn = jest.fn();
 		const removeMod = jest.fn();
 		const { user } = setup(
-			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+			<OutOfOfficeSettings
+				settings={settings}
+				addMod={addModFn}
+				removeMod={removeMod}
+				hasError={jest.fn}
+				error={false}
+			/>
 		);
-		await user.click(screen.getByText('Do not send auto-replies'));
-		await user.click(screen.getByText('Send auto-replies'));
+		await user.click(screen.getByTestId(ICONS.switchUnchecked));
 		expect(screen.getByRole('textbox', { name: 'Auto-Reply Message:' })).toBeEnabled();
 		expect(
 			screen.getByRole('textbox', { name: 'Auto-Reply Message for External senders:' })
@@ -106,7 +174,7 @@ describe('Out of office settings', () => {
 		);
 	});
 
-	test('do not send auto-replies option disables all fields', async () => {
+	test('click on the checked switch disables all fields', async () => {
 		const settings: AccountSettings = {
 			prefs: {
 				zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
@@ -121,10 +189,15 @@ describe('Out of office settings', () => {
 		const addModFn = jest.fn();
 		const removeMod = jest.fn();
 		const { user } = setup(
-			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+			<OutOfOfficeSettings
+				settings={settings}
+				addMod={addModFn}
+				removeMod={removeMod}
+				hasError={jest.fn}
+				error={false}
+			/>
 		);
-		await user.click(screen.getByText('Send auto-replies'));
-		await user.click(screen.getByText('Do not send auto-replies'));
+		await user.click(screen.getByTestId(ICONS.switchChecked));
 		// TODO The disabled attribute is not available on divs. Re-enable the check once the checkbox will be a proper html element
 		// expect(screen.getByText('Send auto-replies during the following period:')).toHaveAttribute(
 		// 	'disabled'
@@ -144,10 +217,15 @@ describe('Out of office settings', () => {
 		const addModFn = jest.fn();
 		const removeMod = jest.fn();
 		const { user } = setup(
-			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+			<OutOfOfficeSettings
+				settings={settings}
+				addMod={addModFn}
+				removeMod={removeMod}
+				hasError={jest.fn}
+				error={false}
+			/>
 		);
-		await user.click(screen.getByText('Do not send auto-replies'));
-		await user.click(screen.getByText('Send auto-replies'));
+		await user.click(screen.getByTestId(ICONS.switchUnchecked));
 		// TODO The disabled attribute is not available on divs. Re-enable the check once the checkbox will be a proper html element
 		// expect(screen.getByText('Send auto-replies during the following period:')).not.toHaveAttribute(
 		// 	'disabled'
@@ -194,7 +272,15 @@ describe('Out of office settings', () => {
 		};
 		const addModFn = jest.fn();
 		const removeMod = jest.fn();
-		setup(<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />);
+		setup(
+			<OutOfOfficeSettings
+				settings={settings}
+				addMod={addModFn}
+				removeMod={removeMod}
+				hasError={jest.fn}
+				error={false}
+			/>
+		);
 		expect(screen.getByText(expected)).toBeVisible();
 	});
 
@@ -216,7 +302,13 @@ describe('Out of office settings', () => {
 			const addModFn = jest.fn();
 			const removeMod = jest.fn();
 			const { user } = setup(
-				<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+				<OutOfOfficeSettings
+					settings={settings}
+					addMod={addModFn}
+					removeMod={removeMod}
+					hasError={jest.fn}
+					error={false}
+				/>
 			);
 			await user.click(screen.getByText('External Senders'));
 			await user.click(
@@ -244,7 +336,13 @@ describe('Out of office settings', () => {
 			const addModFn = jest.fn();
 			const removeMod = jest.fn();
 			const { user } = setup(
-				<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+				<OutOfOfficeSettings
+					settings={settings}
+					addMod={addModFn}
+					removeMod={removeMod}
+					hasError={jest.fn}
+					error={false}
+				/>
 			);
 			await user.click(screen.getByText('External Senders'));
 			await user.click(
@@ -313,7 +411,13 @@ describe('Out of office settings', () => {
 			const addModFn = jest.fn();
 			const removeMod = jest.fn();
 			const { user } = setup(
-				<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+				<OutOfOfficeSettings
+					settings={settings}
+					addMod={addModFn}
+					removeMod={removeMod}
+					hasError={jest.fn}
+					error={false}
+				/>
 			);
 			await user.click(screen.getByText('External Senders'));
 			await user.click(
@@ -336,7 +440,13 @@ describe('Out of office settings', () => {
 		const addModFn = jest.fn();
 		const removeMod = jest.fn();
 		const { user } = setup(
-			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+			<OutOfOfficeSettings
+				settings={settings}
+				addMod={addModFn}
+				removeMod={removeMod}
+				hasError={jest.fn}
+				error={false}
+			/>
 		);
 		const message = faker.lorem.paragraph();
 		await user.type(screen.getByRole('textbox', { name: 'Auto-Reply Message:' }), message);
@@ -360,7 +470,13 @@ describe('Out of office settings', () => {
 		const addModFn = jest.fn();
 		const removeMod = jest.fn();
 		const { user } = setup(
-			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+			<OutOfOfficeSettings
+				settings={settings}
+				addMod={addModFn}
+				removeMod={removeMod}
+				hasError={jest.fn}
+				error={false}
+			/>
 		);
 		const message = faker.lorem.paragraph();
 		await user.type(
@@ -373,6 +489,144 @@ describe('Out of office settings', () => {
 			message
 		);
 	});
+	test.each<string>(['Auto-Reply Message:', 'Auto-Reply Message for External senders:'])(
+		'Textarea should show characters counter',
+		async (textAreaLabel) => {
+			const settings: AccountSettings = {
+				prefs: {
+					zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
+					zimbraPrefExternalSendersType: 'ALL',
+					zimbraPrefOutOfOfficeExternalReplyEnabled: 'TRUE'
+				},
+				attrs: {},
+				props: []
+			};
+			const addModFn = jest.fn();
+			const removeMod = jest.fn();
+			const { user } = setup(
+				<OutOfOfficeSettings
+					settings={settings}
+					addMod={addModFn}
+					removeMod={removeMod}
+					hasError={jest.fn}
+					error={false}
+				/>
+			);
+			const message = faker.lorem.word(5);
+			await act(async () => {
+				screen.getByRole('textbox', { name: textAreaLabel }).focus();
+				await user.paste(message);
+			});
+			expect(
+				screen.getByText(`5/${SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT}`)
+			).toBeVisible();
+		}
+	);
+
+	test.each<string>(['Auto-Reply Message:', 'Auto-Reply Message for External senders:'])(
+		'Textarea should show an error when character limit is reached',
+		async (textAreaLabel) => {
+			const settings: AccountSettings = {
+				prefs: {
+					zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
+					zimbraPrefExternalSendersType: 'ALL',
+					zimbraPrefOutOfOfficeExternalReplyEnabled: 'TRUE'
+				},
+				attrs: {},
+				props: []
+			};
+			const addModFn = jest.fn();
+			const removeMod = jest.fn();
+			const { user } = setup(
+				<OutOfOfficeSettings
+					settings={settings}
+					addMod={addModFn}
+					removeMod={removeMod}
+					hasError={jest.fn}
+					error={false}
+				/>
+			);
+			const message = faker.lorem.paragraph(SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT + 1);
+			await act(async () => {
+				screen.getByRole('textbox', { name: textAreaLabel }).focus();
+				await user.paste(message);
+			});
+			const errorMessage = /You've exceeded the character limit. Please shorten your text./i;
+			expect(screen.getByText(errorMessage)).toBeVisible();
+		}
+	);
+
+	test.each<string>(['Auto-Reply Message:', 'Auto-Reply Message for External senders:'])(
+		'It should set the error when character limit is reached',
+		async (textAreaLabel) => {
+			const settings: AccountSettings = {
+				prefs: {
+					zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
+					zimbraPrefExternalSendersType: 'ALL',
+					zimbraPrefOutOfOfficeExternalReplyEnabled: 'TRUE'
+				},
+				attrs: {},
+				props: []
+			};
+			const addModFn = jest.fn();
+			const removeMod = jest.fn();
+			const setError = jest.fn();
+
+			const { user } = setup(
+				<OutOfOfficeSettings
+					settings={settings}
+					addMod={addModFn}
+					removeMod={removeMod}
+					hasError={setError}
+					error={false}
+				/>
+			);
+			const message = faker.lorem.paragraph(SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT + 1);
+			await act(async () => {
+				screen.getByRole('textbox', { name: textAreaLabel }).focus();
+				await user.paste(message);
+			});
+			expect(setError).toHaveBeenCalledTimes(1);
+			expect(setError).toHaveBeenCalledWith(true);
+		}
+	);
+
+	test.each<string>(['Auto-Reply Message:', 'Auto-Reply Message for External senders:'])(
+		'It should unset the error when character is within the limit',
+		async (textAreaLabel) => {
+			const settings: AccountSettings = {
+				prefs: {
+					zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
+					[textAreaLabel]: faker.lorem.paragraph(
+						SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT + 1
+					),
+					zimbraPrefExternalSendersType: 'ALL',
+					zimbraPrefOutOfOfficeExternalReplyEnabled: 'TRUE'
+				},
+				attrs: {},
+				props: []
+			};
+			const addModFn = jest.fn();
+			const removeMod = jest.fn();
+			const setError = jest.fn();
+
+			const { user } = setup(
+				<OutOfOfficeSettings
+					settings={settings}
+					addMod={addModFn}
+					removeMod={removeMod}
+					hasError={setError}
+					error
+				/>
+			);
+			await act(async () => {
+				screen.getByRole('textbox', { name: textAreaLabel }).focus();
+				await user.keyboard('Delete');
+			});
+			expect(setError).toHaveBeenCalledTimes(1);
+			expect(setError).toHaveBeenCalledWith(false);
+		}
+	);
 
 	test('should set zimbraPrefOutOfOfficeFromDate and zimbraPrefOutOfOfficeUntilDate to empty value when user unchecks time period setting', async () => {
 		const settings: AccountSettings = {
@@ -387,7 +641,13 @@ describe('Out of office settings', () => {
 		const addModFn = jest.fn();
 		const removeMod = jest.fn();
 		const { user } = setup(
-			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+			<OutOfOfficeSettings
+				settings={settings}
+				addMod={addModFn}
+				removeMod={removeMod}
+				hasError={jest.fn}
+				error={false}
+			/>
 		);
 		await act(async () => {
 			await user.click(screen.getByText(/Send auto-replies during the following period/i));
@@ -415,7 +675,13 @@ describe('Out of office settings', () => {
 		const addModFn = jest.fn();
 		const removeMod = jest.fn();
 		const { user } = setup(
-			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+			<OutOfOfficeSettings
+				settings={settings}
+				addMod={addModFn}
+				removeMod={removeMod}
+				hasError={jest.fn}
+				error={false}
+			/>
 		);
 		await act(async () => {
 			await user.click(screen.getByText(/Send auto-replies during the following period/i));
@@ -445,7 +711,13 @@ describe('Out of office settings', () => {
 		const addModFn = jest.fn();
 		const removeMod = jest.fn();
 		const { user } = setup(
-			<OutOfOfficeSettings settings={settings} addMod={addModFn} removeMod={removeMod} />
+			<OutOfOfficeSettings
+				settings={settings}
+				addMod={addModFn}
+				removeMod={removeMod}
+				hasError={jest.fn}
+				error={false}
+			/>
 		);
 		await act(async () => {
 			await user.click(screen.getByText(/Send auto-replies during the following period/i));

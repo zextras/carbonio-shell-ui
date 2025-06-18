@@ -161,16 +161,21 @@ export const OutOfOfficeSettings = ({
 
 	const updatePref = useMemo(() => upsertPrefOnUnsavedChanges(addMod), [addMod]);
 
-	const prefOutOfOfficeReplyEnabledOnClick = useCallback<NonNullable<SwitchProps['onClick']>>(
+	const prefOutOfOfficeReplyEnabledOnClick = useCallback<
+		NonNullable<SwitchProps['onClick']>
+	>((): void => {
+		setPrefOutOfOfficeReplyEnabled((prev) => !prev);
+	}, []);
+
+	const prefOutOfOfficeReplyEnabledOnChange = useCallback<NonNullable<SwitchProps['onChange']>>(
 		(value): void => {
-			if (value.target !== null) {
-				setPrefOutOfOfficeReplyEnabled((prev) => {
-					updatePref('zimbraPrefOutOfOfficeReplyEnabled', !prev);
-					return !prev;
-				});
+			if (value === (settings.prefs.zimbraPrefOutOfOfficeReplyEnabled === 'TRUE')) {
+				removeMod('prefs', 'zimbraPrefOutOfOfficeReplyEnabled');
+			} else {
+				updatePref('zimbraPrefOutOfOfficeReplyEnabled', value);
 			}
 		},
-		[updatePref]
+		[removeMod, settings.prefs.zimbraPrefOutOfOfficeReplyEnabled, updatePref]
 	);
 
 	const externalSendersSelectItems = useMemo(
@@ -181,28 +186,70 @@ export const OutOfOfficeSettings = ({
 	const externalSendersHandler = useCallback(
 		(value: ExternalSenders) => {
 			if (value === 'SEND_AUTO_REPLY') {
-				updatePref('zimbraPrefExternalSendersType', 'INSD');
-				updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', false);
-				updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', false);
+				if (
+					settings.prefs.zimbraPrefOutOfOfficeSuppressExternalReply === 'FALSE' &&
+					settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled === 'FALSE'
+				) {
+					removeMod('prefs', 'zimbraPrefExternalSendersType');
+					removeMod('prefs', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
+					removeMod('prefs', 'zimbraPrefOutOfOfficeSuppressExternalReply');
+				} else {
+					updatePref('zimbraPrefExternalSendersType', 'INSD');
+					updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', false);
+					updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', false);
+				}
 				setPrefOutOfOfficeExternalReplyEnabled(false);
 			} else if (value === 'SHOW_EXTERNAL_INPUT') {
-				updatePref('zimbraPrefExternalSendersType', 'ALL');
-				updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', true);
-				updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', false);
+				if (
+					settings.prefs.zimbraPrefExternalSendersType === 'ALL' &&
+					settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled === 'TRUE'
+				) {
+					removeMod('prefs', 'zimbraPrefExternalSendersType');
+					removeMod('prefs', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
+					removeMod('prefs', 'zimbraPrefOutOfOfficeSuppressExternalReply');
+				} else {
+					updatePref('zimbraPrefExternalSendersType', 'ALL');
+					updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', true);
+					updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', false);
+				}
 				setPrefOutOfOfficeExternalReplyEnabled(true);
 			} else if (value === 'SEND_NOT_IN_ORG') {
-				updatePref('zimbraPrefExternalSendersType', 'ALLNOTINAB');
-				updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', true);
-				updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', false);
+				if (
+					settings.prefs.zimbraPrefExternalSendersType === 'ALLNOTINAB' &&
+					settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled === 'TRUE'
+				) {
+					removeMod('prefs', 'zimbraPrefExternalSendersType');
+					removeMod('prefs', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
+					removeMod('prefs', 'zimbraPrefOutOfOfficeSuppressExternalReply');
+				} else {
+					updatePref('zimbraPrefExternalSendersType', 'ALLNOTINAB');
+					updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', true);
+					updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', false);
+				}
 				setPrefOutOfOfficeExternalReplyEnabled(true);
 			} else if (value === 'SUPPRESS_EXTERNAL') {
-				updatePref('zimbraPrefExternalSendersType', 'INAB');
-				updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', false);
-				updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', true);
+				if (
+					settings.prefs.zimbraPrefExternalSendersType === 'INAB' &&
+					settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled === 'FALSE'
+				) {
+					removeMod('prefs', 'zimbraPrefExternalSendersType');
+					removeMod('prefs', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
+					removeMod('prefs', 'zimbraPrefOutOfOfficeSuppressExternalReply');
+				} else {
+					updatePref('zimbraPrefExternalSendersType', 'INAB');
+					updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', false);
+					updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', true);
+				}
 				setPrefOutOfOfficeExternalReplyEnabled(false);
 			}
 		},
-		[updatePref]
+		[
+			removeMod,
+			settings.prefs.zimbraPrefExternalSendersType,
+			settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled,
+			settings.prefs.zimbraPrefOutOfOfficeSuppressExternalReply,
+			updatePref
+		]
 	);
 
 	const externalSendersOnChange = useCallback<SingleSelectionOnChange<ExternalSenders>>(
@@ -219,36 +266,66 @@ export const OutOfOfficeSettings = ({
 	const prefOutOfOfficeReplyOnChange = useCallback<NonNullable<TextAreaProps['onChange']>>(
 		(ev) => {
 			setPrefOutOfOfficeReply(ev.target.value);
-			updatePref('zimbraPrefOutOfOfficeReply', ev.target.value);
+			if (ev.target.value === settings.prefs.zimbraPrefOutOfOfficeReply) {
+				removeMod('prefs', 'zimbraPrefOutOfOfficeReply');
+			} else {
+				updatePref('zimbraPrefOutOfOfficeReply', ev.target.value);
+			}
 		},
-		[updatePref]
+		[removeMod, settings.prefs.zimbraPrefOutOfOfficeReply, updatePref]
 	);
 
 	const prefOutOfOfficeExternalReplyOnChange = useCallback<NonNullable<TextAreaProps['onChange']>>(
 		(ev) => {
 			setPrefOutOfOfficeExternalReply(ev.target.value);
-			updatePref('zimbraPrefOutOfOfficeExternalReply', ev.target.value);
+			if (ev.target.value === settings.prefs.zimbraPrefOutOfOfficeExternalReply) {
+				removeMod('prefs', 'zimbraPrefOutOfOfficeExternalReply');
+			} else {
+				updatePref('zimbraPrefOutOfOfficeExternalReply', ev.target.value);
+			}
 		},
-		[updatePref]
+		[removeMod, settings.prefs.zimbraPrefOutOfOfficeExternalReply, updatePref]
 	);
 
 	const toggleSendAutoReplyTimePeriod = useCallback(() => {
 		setSendAutoReplyTimePeriodEnabled((prevState) => {
 			const nextState = !prevState;
 			if (!nextState) {
-				updatePref('zimbraPrefOutOfOfficeFromDate', undefined);
-				updatePref('zimbraPrefOutOfOfficeUntilDate', undefined);
+				if (
+					!!settings.prefs.zimbraPrefOutOfOfficeFromDate &&
+					!!settings.prefs.zimbraPrefOutOfOfficeUntilDate
+				) {
+					updatePref('zimbraPrefOutOfOfficeFromDate', undefined);
+					updatePref('zimbraPrefOutOfOfficeUntilDate', undefined);
+				} else {
+					removeMod('prefs', 'zimbraPrefOutOfOfficeFromDate');
+					removeMod('prefs', 'zimbraPrefOutOfOfficeUntilDate');
+				}
 			} else {
+				if (
+					!!settings.prefs.zimbraPrefOutOfOfficeFromDate &&
+					!!settings.prefs.zimbraPrefOutOfOfficeUntilDate
+				) {
+					removeMod('prefs', 'zimbraPrefOutOfOfficeFromDate');
+					removeMod('prefs', 'zimbraPrefOutOfOfficeUntilDate');
+				}
 				if (!settings.prefs.zimbraPrefOutOfOfficeFromDate) {
-					updatePref('zimbraPrefOutOfOfficeFromDate', dateToGenTime(new Date()));
+					updatePref(
+						'zimbraPrefOutOfOfficeFromDate',
+						dateToGenTime(new Date(new Date().setSeconds(0, 0)))
+					);
 				}
 				if (!settings.prefs.zimbraPrefOutOfOfficeUntilDate) {
-					updatePref('zimbraPrefOutOfOfficeUntilDate', dateToGenTime(new Date()));
+					updatePref(
+						'zimbraPrefOutOfOfficeUntilDate',
+						dateToGenTime(new Date(new Date().setSeconds(0, 0)))
+					);
 				}
 			}
 			return nextState;
 		});
 	}, [
+		removeMod,
 		settings.prefs.zimbraPrefOutOfOfficeFromDate,
 		settings.prefs.zimbraPrefOutOfOfficeUntilDate,
 		updatePref
@@ -280,13 +357,18 @@ export const OutOfOfficeSettings = ({
 	}, [prefOutOfOfficeExternalReplyHasError, prefOutOfOfficeReplyHasError, hasError, error]);
 
 	return (
-		<FormSection label={outOfOfficeSectionTitle.label} id={outOfOfficeSectionTitle.id}>
+		<FormSection
+			label={outOfOfficeSectionTitle.label}
+			id={outOfOfficeSectionTitle.id}
+			data-testid={'out_of_office'}
+		>
 			<FormSubSection>
 				<Container gap={'0.5rem'} crossAlignment={'flex-start'}>
 					<Switch
 						value={prefOutOfOfficeReplyEnabled}
-						label={t('label.out_of_office', 'Out of Office')}
+						label={t('label.send_auto_reply', 'Send auto-reply')}
 						onClick={prefOutOfOfficeReplyEnabledOnClick}
+						onChange={prefOutOfOfficeReplyEnabledOnChange}
 					/>
 					<TextArea
 						value={prefOutOfOfficeReply}

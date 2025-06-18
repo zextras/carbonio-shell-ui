@@ -32,7 +32,7 @@ describe('Out of office settings', () => {
 			/>
 		);
 		expect(screen.getByText('Out of Office Settings')).toBeVisible();
-		expect(screen.getByText('Out of Office')).toBeVisible();
+		expect(screen.getByText('Send auto-reply')).toBeVisible();
 		expect(screen.getByTestId(ICONS.switchUnchecked)).toBeVisible();
 		expect(screen.getByText('External Senders')).toBeVisible();
 		expect(screen.getByRole('textbox', { name: 'Auto-Reply Message:' })).toBeVisible();
@@ -686,7 +686,7 @@ describe('Out of office settings', () => {
 		await act(async () => {
 			await user.click(screen.getByText(/Send auto-replies during the following period/i));
 		});
-		const now = dateToGenTime(new Date());
+		const now = dateToGenTime(new Date(new Date().setSeconds(0, 0)));
 		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
 			'prefs',
 			'zimbraPrefOutOfOfficeFromDate',
@@ -722,7 +722,7 @@ describe('Out of office settings', () => {
 		await act(async () => {
 			await user.click(screen.getByText(/Send auto-replies during the following period/i));
 		});
-		const now = dateToGenTime(new Date());
+		const now = dateToGenTime(new Date(new Date().setSeconds(0, 0)));
 		expect(addModFn).toHaveBeenCalledTimes(1);
 		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
 			'prefs',

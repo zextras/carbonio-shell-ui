@@ -154,7 +154,8 @@ export const TESTID_SELECTORS = {
 		return `resizable-border-${border}`;
 	},
 	headerModuleSelector: 'HeaderModuleSelector',
-	privacySettings: 'privacy-settings'
+	privacySettings: 'privacy-settings',
+	outOfOfficeSettings: 'out_of_office'
 };
 
 export const TIMERS = {

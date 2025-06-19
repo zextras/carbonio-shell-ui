@@ -202,5 +202,15 @@ export const SUPPORTED_LOCALES: Record<string, LocaleDescriptor> = {
 		name: 'Кыргызча',
 		value: 'ky',
 		dateFnsLocale: undefined
+	},
+	bs: {
+		name: 'Bosanski',
+		value: 'bs',
+		dateFnsLocale: {
+			localeImportPath: () =>
+				/* webpackMode: "lazy", webpackChunkName: "bs" */ import('date-fns/locale/bs').then(
+					({ bs }) => bs
+				)
+		}
 	}
 } as const;

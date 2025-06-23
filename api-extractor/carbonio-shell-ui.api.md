@@ -13,7 +13,7 @@ import { CarbonioModule as CarbonioModule_2 } from '../../types/apps';
 import type { ComponentType } from 'react';
 import { DropdownItem } from '@zextras/carbonio-design-system';
 import type { DynamicThemeFix } from 'darkreader';
-import type { GeneralizedTime as GeneralizedTime_2 } from '@zextras/carbonio-ui-soap-lib';
+import type { GeneralizedTime } from '@zextras/carbonio-ui-soap-lib';
 import type { i18n } from 'i18next';
 import type { ModalProps } from '@zextras/carbonio-design-system';
 import type { Properties } from 'posthog-js';
@@ -24,7 +24,7 @@ import type { Theme } from '@zextras/carbonio-design-system';
 import type { To } from 'react-router-dom';
 
 // @public (undocumented)
-type Account = {
+export type Account = {
     id: string;
     name: string;
     displayName: string;
@@ -85,7 +85,7 @@ type AccountRightTargetEmail = {
 };
 
 // @public (undocumented)
-type AccountSettings = {
+export type AccountSettings = {
     attrs: AccountSettingsAttrs;
     prefs: AccountSettingsPrefs;
     props: Array<ZimletProp>;
@@ -101,7 +101,7 @@ type AccountSettingsAttrs = {
 };
 
 // @public (undocumented)
-interface AccountSettingsPrefs {
+export interface AccountSettingsPrefs {
     // (undocumented)
     [key: string]: string | number | Array<string | number> | undefined;
     // (undocumented)
@@ -126,8 +126,6 @@ interface AccountSettingsPrefs {
     zimbraPrefIncludeTrashInSearch?: BooleanString;
     // (undocumented)
     zimbraPrefLocale?: string;
-    // Warning: (ae-forgotten-export) The symbol "Duration" needs to be exported by the entry point lib.d.ts
-    //
     // (undocumented)
     zimbraPrefMailPollingInterval?: Duration;
     // (undocumented)
@@ -138,8 +136,6 @@ interface AccountSettingsPrefs {
     zimbraPrefOutOfOfficeExternalReplyEnabled?: BooleanString;
     // (undocumented)
     zimbraPrefOutOfOfficeFreeBusyStatus?: 'BUSY' | 'OUTOFOFFICE';
-    // Warning: (ae-forgotten-export) The symbol "GeneralizedTime" needs to be exported by the entry point lib.d.ts
-    //
     // (undocumented)
     zimbraPrefOutOfOfficeFromDate?: GeneralizedTime;
     // (undocumented)
@@ -416,7 +412,7 @@ type BoardView = Omit<CarbonioView<BoardViewComponentProps>, 'route'>;
 export type BoardViewComponentProps = {};
 
 // @public (undocumented)
-type BooleanString = 'TRUE' | 'FALSE';
+export type BooleanString = 'TRUE' | 'FALSE';
 
 // @public (undocumented)
 type CarbonioAccessoryView<P> = {
@@ -482,7 +478,7 @@ type DeleteIdentityResponse = Record<string, never>;
 // Warning: (ae-forgotten-export) The symbol "DurationUnit" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
-type Duration = `${number}${DurationUnit | ''}`;
+export type Duration = `${number}${DurationUnit | ''}`;
 
 // @public (undocumented)
 type DurationUnit = 'd' | 'h' | 'm' | 's' | 'ms';
@@ -525,9 +521,6 @@ export const expandBoards: () => void;
 
 // @public (undocumented)
 type FolderView = 'search folder' | 'tag' | 'conversation' | 'message' | 'contact' | 'document' | 'appointment' | 'virtual conversation' | 'remote folder' | 'wiki' | 'task' | 'chat';
-
-// @public
-type GeneralizedTime = GeneralizedTime_2;
 
 // @public (undocumented)
 export const getAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];
@@ -587,8 +580,6 @@ export const getNotificationManager: () => INotificationManager;
 // @public (undocumented)
 const getTFunction: (app: string) => TFunction;
 
-// Warning: (ae-forgotten-export) The symbol "Account" needs to be exported by the entry point lib.d.ts
-//
 // @public (undocumented)
 export const getUserAccount: () => Account | undefined;
 
@@ -604,8 +595,6 @@ export const getUserRights: () => AccountRights;
 // @public (undocumented)
 export const getUserSetting: <T = void>(...path: Array<string>) => string | T;
 
-// Warning: (ae-forgotten-export) The symbol "AccountSettings" needs to be exported by the entry point lib.d.ts
-//
 // @public (undocumented)
 export const getUserSettings: () => AccountSettings;
 
@@ -638,15 +627,14 @@ export type HistoryParams = {
 } | string;
 
 // @public (undocumented)
-interface Identity {
-    // Warning: (ae-forgotten-export) The symbol "IdentityAttrs" needs to be exported by the entry point lib.d.ts
+export interface Identity {
     _attrs: IdentityAttrs;
     id: string;
     name?: string;
 }
 
 // @public (undocumented)
-interface IdentityAttrs {
+export interface IdentityAttrs {
     zimbraPrefDefaultSignatureId?: string;
     // (undocumented)
     zimbraPrefForwardReplyFormat?: `'text' | 'html' | 'same'`;
@@ -1419,15 +1407,12 @@ interface ZimletProp {
 // lib/store/integrations/store.d.ts:25:9 - (ae-forgotten-export) The symbol "ActionFactory" needs to be exported by the entry point lib.d.ts
 // lib/store/integrations/store.d.ts:31:9 - (ae-forgotten-export) The symbol "Component" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:9:5 - (ae-forgotten-export) The symbol "AccountSettingsAttrs" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:10:5 - (ae-forgotten-export) The symbol "AccountSettingsPrefs" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:11:5 - (ae-forgotten-export) The symbol "ZimletProp" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:43:9 - (ae-forgotten-export) The symbol "Signature" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:46:9 - (ae-forgotten-export) The symbol "Identity" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:48:5 - (ae-forgotten-export) The symbol "AccountRights" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:58:5 - (ae-forgotten-export) The symbol "BooleanString" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:131:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:136:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:137:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:127:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:132:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:133:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
 // lib/types/apps/index.d.ts:63:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:45:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:64:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts

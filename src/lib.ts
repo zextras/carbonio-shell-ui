@@ -62,6 +62,16 @@ export type {
 	BadgeInfo
 } from './types/apps';
 
+export type {
+	BooleanString,
+	Duration,
+	Account,
+	AccountSettings,
+	AccountSettingsPrefs,
+	Identity,
+	IdentityAttrs
+} from './types/account';
+
 export type { Board } from './types/boards';
 export type { BoardHooksContext } from './store/boards/hooks';
 

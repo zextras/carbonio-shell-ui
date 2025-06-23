@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { GeneralizedTime as ApiGeneralizedTime } from '@zextras/carbonio-ui-soap-lib';
+import type { GeneralizedTime } from '@zextras/carbonio-ui-soap-lib';
 
 import type { DARK_READER_VALUES, DELEGATED_SEND_SAVE_TARGET } from '../../constants';
 
@@ -58,11 +58,6 @@ export type Account = {
 };
 
 export type BooleanString = 'TRUE' | 'FALSE';
-
-/**
- * A GeneralizedTime is a string representing a date in UTC with the format YYYYMMDDHHmmss[.SSS][Z]
- */
-export type GeneralizedTime = ApiGeneralizedTime;
 
 export type DurationUnit = 'd' | 'h' | 'm' | 's' | 'ms';
 

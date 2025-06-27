@@ -42,7 +42,7 @@ export const SettingsHeader = ({
 	onCancel,
 	isDirty,
 	title,
-	hasError = false
+	hasError
 }: SettingsHeaderProps): React.JSX.Element => {
 	const t = getT();
 	const [searchParams] = useSearchParams();

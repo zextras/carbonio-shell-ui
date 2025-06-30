@@ -4,9 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { GeneralizedTime } from '@zextras/carbonio-ui-soap-lib';
-
-import type { DARK_READER_VALUES, DELEGATED_SEND_SAVE_TARGET } from '../../constants';
+import type { AccountSettingsPrefs as ApiAccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
 
 export interface ZimletProp {
 	name: string;
@@ -71,31 +69,10 @@ export type AccountSettingsAttrs = {
 	[key: string]: string | number | Array<string | number> | undefined;
 };
 
-export interface AccountSettingsPrefs {
-	zimbraPrefOutOfOfficeExternalReply?: string;
-	zimbraPrefOutOfOfficeReply?: string;
-	zimbraPrefOutOfOfficeReplyEnabled?: BooleanString;
-	zimbraPrefOutOfOfficeExternalReplyEnabled?: BooleanString;
-	zimbraPrefExternalSendersType?: 'ALL' | 'ALLNOTINAB' | 'INAB' | 'INSD';
-	zimbraPrefOutOfOfficeSuppressExternalReply?: BooleanString;
-	zimbraPrefOutOfOfficeFreeBusyStatus?: 'BUSY' | 'OUTOFOFFICE';
-	zimbraPrefOutOfOfficeStatusAlertOnLogin?: BooleanString;
-	zimbraPrefIncludeSharedItemsInSearch?: BooleanString;
-	zimbraPrefIncludeSpamInSearch?: BooleanString;
-	zimbraPrefIncludeTrashInSearch?: BooleanString;
-	zimbraPrefOutOfOfficeFromDate?: GeneralizedTime;
-	zimbraPrefOutOfOfficeUntilDate?: GeneralizedTime;
-	zimbraPrefHtmlEditorDefaultFontColor?: string;
-	zimbraPrefHtmlEditorDefaultFontFamily?: string;
-	zimbraPrefHtmlEditorDefaultFontSize?: string;
-	zimbraPrefLocale?: string;
-	zimbraPrefMailPollingInterval?: Duration;
-	zimbraPrefMailTrustedSenderList?: Array<string> | string;
-	zimbraPrefDelegatedSendSaveTarget?: (typeof DELEGATED_SEND_SAVE_TARGET)[number];
-	carbonioPrefSendAnalytics?: BooleanString;
-	carbonioPrefDarkMode?: (typeof DARK_READER_VALUES)[number];
-	[key: string]: string | number | Array<string | number> | undefined;
-}
+/**
+ * @deprecated Use `AccountSettingsPrefs` from `@zextras/carbonio-ui-soap-lib` instead.
+ */
+export interface AccountSettingsPrefs extends ApiAccountSettingsPrefs {}
 
 export interface IdentityAttrs {
 	/** default mail signature for account/identity/dataSource */

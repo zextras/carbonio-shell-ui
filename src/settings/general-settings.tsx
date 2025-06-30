@@ -7,6 +7,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
+import { legacySoapFetch } from '@zextras/carbonio-ui-soap-lib';
 import { includes, isEmpty, map, size } from 'lodash';
 
 import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
@@ -21,8 +22,7 @@ import { SettingsHeader } from './components/settings-header';
 import type { ResetComponentImperativeHandler } from './components/utils';
 import { appearanceSubSection, privacySubSection } from './general-settings-sub-sections';
 import { LanguageSettings } from './language-settings';
-import { JSNS, LOCAL_STORAGE_SETTINGS_KEY, SHELL_APP_ID } from '../constants';
-import { getSoapFetch } from '../network/fetch';
+import { JSNS, LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 import { useAccountStore, useUserSettings } from '../store/account';
 import { mergePrefs, mergeProps } from '../store/account/utils';
@@ -146,7 +146,7 @@ const GeneralSettings = (): React.JSX.Element => {
 				modifyPrefsRequest = { _jsns: JSNS.account, _attrs: attrs };
 			}
 
-			const promise = getSoapFetch(SHELL_APP_ID)<
+			const promise = legacySoapFetch<
 				BatchRequest,
 				{
 					ModifyPropertiesResponse?: ModifyPropertiesResponse;

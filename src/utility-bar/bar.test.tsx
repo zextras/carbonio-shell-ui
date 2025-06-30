@@ -6,6 +6,7 @@
 import React from 'react';
 
 import { act, waitFor } from '@testing-library/react';
+import { api } from '@zextras/carbonio-ui-soap-lib';
 
 import type { AccountMenuAction } from './bar';
 import { ShellUtilityBar } from './bar';
@@ -178,6 +179,12 @@ describe('Shell utility bar', () => {
 	});
 
 	it('should redirect to custom logout url when user clicks on logout', async () => {
+		jest.spyOn(api, 'endSession').mockReturnValueOnce(
+			Promise.resolve({
+				Header: { context: {} },
+				Body: {}
+			})
+		);
 		const customLogout = 'custom.logout.url';
 		const goToFn = jest.spyOn(networkUtils, 'goTo').mockImplementation();
 		const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation();
@@ -197,6 +204,12 @@ describe('Shell utility bar', () => {
 	});
 
 	test('should redirect to login if no custom logout url is set when user clicks on logout', async () => {
+		jest.spyOn(api, 'endSession').mockReturnValueOnce(
+			Promise.resolve({
+				Header: { context: {} },
+				Body: {}
+			})
+		);
 		const goToFn = jest.spyOn(networkUtils, 'goTo').mockImplementation();
 		const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation();
 		useLoginConfigStore.setState((s) => ({ ...s, carbonioWebUiLogoutURL: '' }));

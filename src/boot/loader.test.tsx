@@ -6,17 +6,20 @@
 import React from 'react';
 
 import { act, waitFor } from '@testing-library/react';
+import { api, ApiEvents } from '@zextras/carbonio-ui-soap-lib';
+import { noop } from 'lodash';
 import { http, HttpResponse } from 'msw';
 import { EventEmitter } from 'node:events';
 
+import SpyInstance = jest.SpyInstance;
 import type * as loadAppsModule from './app/load-apps';
 import { Loader } from './loader';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
-import { getGetInfoRequest } from '../mocks/handlers/getInfoRequest';
 import server from '../mocks/server';
 import * as logout from '../network/logout';
+import * as networkUtils from '../network/utils';
 import { useLoginConfigStore } from '../store/login/store';
-import { TIMERS } from '../tests/constants';
+import { LOGGED_USER, TIMERS } from '../tests/constants';
 import { spyOnPosthog } from '../tests/posthog-utils';
 import { controlConsoleError, setup, screen } from '../tests/utils';
 import * as tracker from '../tracker/tracker';
@@ -25,9 +28,34 @@ import * as utils from '../utils/utils';
 
 jest.mock<typeof loadAppsModule>('./app/load-apps');
 
+const getGetInfoResult = (
+	customInfo?: Partial<Awaited<ReturnType<typeof api.getInfo>>>
+): Awaited<ReturnType<typeof api.getInfo>> => ({
+	id: LOGGED_USER.id,
+	name: LOGGED_USER.name,
+	version: '',
+	identities: LOGGED_USER.identities,
+	signatures: { signature: [] },
+	rights: { targets: [] },
+	zimlets: { zimlet: [] },
+	lifetime: 86400000,
+	...customInfo,
+	prefs: { _attrs: { ...LOGGED_USER.prefs, ...customInfo?.prefs?._attrs } },
+	attrs: { _attrs: { ...LOGGED_USER.attrs, ...customInfo?.attrs?._attrs } },
+	props: {
+		prop: { ...LOGGED_USER.props, ...customInfo?.props?.prop }
+	}
+});
+
+const mockGetInfo = (
+	customInfo?: Partial<Awaited<ReturnType<typeof api.getInfo>>>
+): SpyInstance<ReturnType<typeof api.getInfo>> =>
+	jest.spyOn(api, 'getInfo').mockReturnValue(Promise.resolve(getGetInfoResult(customInfo)));
+
 describe('Loader', () => {
 	test('If only getComponents request fails, the LoaderFailureModal appears', async () => {
-		// using getInfo and loginConfig default handlers
+		// using loginConfig default handlers
+		mockGetInfo();
 		server.use(
 			http.get<never, never, null>('/static/iris/components.json', () =>
 				HttpResponse.json(null, {
@@ -54,19 +82,11 @@ describe('Loader', () => {
 
 	test('If only getInfo request fails, the LoaderFailureModal appears', async () => {
 		// TODO remove when SHELL-117 will be implemented
-		controlConsoleError("Cannot read properties of undefined (reading 'Fault')");
-		// using getComponents and loginConfig default handlers
-		server.use(
-			http.post('/service/soap/GetInfoRequest', () =>
-				HttpResponse.json(
-					{},
-					{
-						status: 503,
-						statusText: 'Controlled error: fail getInfo request'
-					}
-				)
-			)
-		);
+		controlConsoleError("Cannot use 'in' operator to search for 'Fault' in undefined");
+		jest.spyOn(api, 'getInfo').mockRejectedValue({
+			status: 503,
+			statusText: 'Controlled error: fail getInfo request'
+		});
 		setup(
 			<span data-testid={'loader'}>
 				<Loader />
@@ -84,6 +104,7 @@ describe('Loader', () => {
 	});
 
 	test('If only loginConfig request fails, the LoaderFailureModal does not appear', async () => {
+		mockGetInfo();
 		server.use(http.get(LOGIN_V3_CONFIG_PATH, () => HttpResponse.json(null, { status: 503 })));
 		setup(
 			<span data-testid={'loader'}>
@@ -99,6 +120,7 @@ describe('Loader', () => {
 	});
 
 	test('If Loader requests do not fail, the LoaderFailureModal does not appear', async () => {
+		mockGetInfo();
 		setup(
 			<span data-testid={'loader'}>
 				<Loader />
@@ -111,14 +133,10 @@ describe('Loader', () => {
 		expect(screen.queryByText('Something went wrong...')).not.toBeInTheDocument();
 	});
 
-	it('should enable the tracker if carbonioPrefSendAnalytics is true', async () => {
+	test('should enable the tracker if carbonioPrefSendAnalytics is true', async () => {
 		const enableTrackerFn = jest.fn();
-		server.use(
-			http.post(
-				'/service/soap/GetInfoRequest',
-				getGetInfoRequest({ prefs: { _attrs: { carbonioPrefSendAnalytics: 'TRUE' } } })
-			)
-		);
+		mockGetInfo({ prefs: { _attrs: { carbonioPrefSendAnalytics: 'TRUE' } } });
+
 		jest
 			.spyOn(tracker, 'useTracker')
 			.mockReturnValue({ enableTracker: enableTrackerFn, reset: jest.fn(), capture: jest.fn() });
@@ -134,14 +152,11 @@ describe('Loader', () => {
 		await waitFor(() => expect(enableTrackerFn).toHaveBeenLastCalledWith(true));
 	});
 
-	it('should invoke the enableTracker function only one time', async () => {
+	test('should invoke the enableTracker function only one time', async () => {
 		jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
 		const emitter = new EventEmitter();
+		mockGetInfo({ prefs: { _attrs: { carbonioPrefSendAnalytics: 'TRUE' } } });
 		server.use(
-			http.post(
-				'/service/soap/GetInfoRequest',
-				getGetInfoRequest({ prefs: { _attrs: { carbonioPrefSendAnalytics: 'TRUE' } } })
-			),
 			http.get(LOGIN_V3_CONFIG_PATH, async () => {
 				await new Promise((resolve) => {
 					emitter.once('emitLoginResponse', resolve);
@@ -169,16 +184,11 @@ describe('Loader', () => {
 		expect(postHog.opt_in_capturing).toHaveBeenCalledTimes(1);
 	});
 
-	it.each<AccountSettingsPrefs['carbonioPrefSendAnalytics']>(['FALSE', undefined])(
+	test.each<AccountSettingsPrefs['carbonioPrefSendAnalytics']>(['FALSE', undefined])(
 		'should not enable the tracker if carbonioPrefSendAnalytics is %s',
 		async (carbonioPrefParam) => {
+			mockGetInfo({ prefs: { _attrs: { carbonioPrefSendAnalytics: carbonioPrefParam } } });
 			const enableTrackerFn = jest.fn();
-			server.use(
-				http.post(
-					'/service/soap/GetInfoRequest',
-					getGetInfoRequest({ prefs: { _attrs: { carbonioPrefSendAnalytics: carbonioPrefParam } } })
-				)
-			);
 			jest
 				.spyOn(tracker, 'useTracker')
 				.mockReturnValue({ enableTracker: enableTrackerFn, reset: jest.fn(), capture: jest.fn() });
@@ -196,12 +206,20 @@ describe('Loader', () => {
 	);
 
 	describe('Session expiration', () => {
-		it('should show a temporary snackbar when the session expires in 10 minutes', async () => {
+		test('should redirect to login if user session is expired', async () => {
+			const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation(noop);
+			mockGetInfo();
+
+			setup(<Loader />);
+			window.dispatchEvent(new CustomEvent(ApiEvents.AuthError));
+
+			await waitFor(() => expect(goToLoginFn).toHaveBeenCalled());
+		});
+
+		test('should show a temporary snackbar when the session expires in 10 minutes', async () => {
 			const tenMinutes = 10 * 60 * 1000;
 			const tenSeconds = 10 * 1000;
-			server.use(
-				http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: tenMinutes + 2 }))
-			);
+			mockGetInfo({ lifetime: tenMinutes + 2 });
 			setup(<Loader />);
 			await act(async () => {
 				await jest.advanceTimersToNextTimerAsync();
@@ -224,12 +242,10 @@ describe('Loader', () => {
 			expect(snackbar).not.toBeInTheDocument();
 		});
 
-		it('should show the go to login page action on the 10 minutes snackbar. Action calls logout', async () => {
+		test('should show the go to login page action on the 10 minutes snackbar. Action calls logout', async () => {
 			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
 			const tenMinutes = 10 * 60 * 1000;
-			server.use(
-				http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: tenMinutes }))
-			);
+			mockGetInfo({ lifetime: tenMinutes });
 			const { user } = setup(<Loader />);
 			await act(async () => {
 				await jest.advanceTimersToNextTimerAsync();
@@ -240,12 +256,10 @@ describe('Loader', () => {
 			expect(logoutFn).toHaveBeenCalled();
 		});
 
-		it('should show a permanent snackbar when the session expires in 3 minutes', async () => {
+		test('should show a permanent snackbar when the session expires in 3 minutes', async () => {
 			const threeMinutes = 3 * 60 * 1000;
 			const tenSeconds = 10 * 1000;
-			server.use(
-				http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: threeMinutes + 2 }))
-			);
+			mockGetInfo({ lifetime: threeMinutes + 2 });
 			setup(<Loader />);
 			await act(async () => {
 				await jest.advanceTimersToNextTimerAsync();
@@ -268,12 +282,10 @@ describe('Loader', () => {
 			expect(snackbar).toBeVisible();
 		});
 
-		it('should show the go to login page action on the 3 minutes snackbar. Action calls logout', async () => {
+		test('should show the go to login page action on the 3 minutes snackbar. Action calls logout', async () => {
 			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
 			const threeMinutes = 3 * 60 * 1000;
-			server.use(
-				http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: threeMinutes }))
-			);
+			mockGetInfo({ lifetime: threeMinutes });
 			const { user } = setup(<Loader />);
 			await act(async () => {
 				await jest.advanceTimersToNextTimerAsync();
@@ -284,12 +296,10 @@ describe('Loader', () => {
 			expect(logoutFn).toHaveBeenCalled();
 		});
 
-		it('should show a temporary snackbar when the session expires in 60 seconds', async () => {
+		test('should show a temporary snackbar when the session expires in 60 seconds', async () => {
 			jest.spyOn(logout, 'logout').mockImplementation();
 			const oneMinute = 60 * 1000;
-			server.use(
-				http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: oneMinute + 2 }))
-			);
+			mockGetInfo({ lifetime: oneMinute + 2 });
 			setup(<Loader />);
 			await act(async () => {
 				await jest.advanceTimersToNextTimerAsync();
@@ -312,12 +322,10 @@ describe('Loader', () => {
 			expect(snackbar).not.toBeInTheDocument();
 		});
 
-		it('should decrease the counter label inside the 60 seconds snackbar', async () => {
+		test('should decrease the counter label inside the 60 seconds snackbar', async () => {
 			jest.spyOn(logout, 'logout').mockImplementation();
 			const oneMinute = 60 * 1000;
-			server.use(
-				http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: oneMinute + 2 }))
-			);
+			mockGetInfo({ lifetime: oneMinute + 2 });
 			setup(<Loader />);
 			await act(async () => {
 				await jest.advanceTimersByTimeAsync(2);
@@ -351,11 +359,9 @@ describe('Loader', () => {
 			).toBeVisible();
 		});
 
-		it('should start the counter of the 60 seconds snackbar from the real remaining seconds', async () => {
+		test('should start the counter of the 60 seconds snackbar from the real remaining seconds', async () => {
 			jest.spyOn(logout, 'logout').mockImplementation();
-			server.use(
-				http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: 30 * 1000 }))
-			);
+			mockGetInfo({ lifetime: 30 * 1000 });
 			setup(<Loader />);
 			await act(async () => {
 				await jest.advanceTimersByTimeAsync(1);
@@ -367,12 +373,10 @@ describe('Loader', () => {
 			).toBeVisible();
 		});
 
-		it('should show the go to login page action on the 60 seconds snackbar. Action calls logout', async () => {
+		test('should show the go to login page action on the 60 seconds snackbar. Action calls logout', async () => {
 			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
 			const oneMinute = 60 * 1000;
-			server.use(
-				http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: oneMinute }))
-			);
+			mockGetInfo({ lifetime: oneMinute });
 			const { user } = setup(<Loader />);
 			await act(async () => {
 				await jest.advanceTimersToNextTimerAsync();
@@ -383,11 +387,9 @@ describe('Loader', () => {
 			expect(logoutFn).toHaveBeenCalled();
 		});
 
-		it('should not show 10 minutes snackbar if session expires in less than 10 minutes', async () => {
+		test('should not show 10 minutes snackbar if session expires in less than 10 minutes', async () => {
 			const tenMinutes = 10 * 60 * 1000;
-			server.use(
-				http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: tenMinutes - 1 }))
-			);
+			mockGetInfo({ lifetime: tenMinutes - 1 });
 			setup(<Loader />);
 			await act(async () => {
 				await jest.advanceTimersToNextTimerAsync();
@@ -399,11 +401,9 @@ describe('Loader', () => {
 			).not.toBeInTheDocument();
 		});
 
-		it('should not show the 3 minutes snackbar if the session expires in less than 3 minutes', async () => {
+		test('should not show the 3 minutes snackbar if the session expires in less than 3 minutes', async () => {
 			const threeMinutes = 3 * 60 * 1000;
-			server.use(
-				http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: threeMinutes - 1 }))
-			);
+			mockGetInfo({ lifetime: threeMinutes - 1 });
 			setup(<Loader />);
 			await act(async () => {
 				await jest.advanceTimersToNextTimerAsync();
@@ -415,14 +415,9 @@ describe('Loader', () => {
 			).not.toBeInTheDocument();
 		});
 
-		it('should show the 60 seconds snackbar if the session expires in less than 60 seconds', async () => {
+		test('should show the 60 seconds snackbar if the session expires in less than 60 seconds', async () => {
 			const oneMinute = 60 * 1000;
-			server.use(
-				http.post(
-					'/service/soap/GetInfoRequest',
-					getGetInfoRequest({ lifetime: oneMinute - 10000 })
-				)
-			);
+			mockGetInfo({ lifetime: oneMinute - 10000 });
 			setup(<Loader />);
 			await act(async () => {
 				await jest.advanceTimersToNextTimerAsync();
@@ -434,14 +429,12 @@ describe('Loader', () => {
 			).toBeVisible();
 		});
 
-		it.each([60, 30])(
+		test.each([60, 30])(
 			'should call logout when 60 seconds snackbar timeout expires (session lifetime is %s seconds)',
 			async (expirationSeconds) => {
 				const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
 				const expiration = expirationSeconds * 1000;
-				server.use(
-					http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: expiration }))
-				);
+				mockGetInfo({ lifetime: expiration });
 				setup(<Loader />);
 				await act(async () => {
 					await jest.advanceTimersToNextTimerAsync();
@@ -456,11 +449,9 @@ describe('Loader', () => {
 			}
 		);
 
-		it('should show 60 seconds snackbar and hide the 3 minutes snackbar', async () => {
+		test('should show 60 seconds snackbar and hide the 3 minutes snackbar', async () => {
 			const threeMinutes = 3 * 60 * 1000;
-			server.use(
-				http.post('/service/soap/GetInfoRequest', getGetInfoRequest({ lifetime: threeMinutes }))
-			);
+			mockGetInfo({ lifetime: threeMinutes });
 			setup(<Loader />);
 			await act(async () => {
 				await jest.advanceTimersToNextTimerAsync();

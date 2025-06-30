@@ -4,6 +4,7 @@
 
 ```ts
 
+import type { AccountSettingsPrefs as AccountSettingsPrefs_2 } from '@zextras/carbonio-ui-soap-lib';
 import { Action as Action_2 } from '../../lib';
 import { ActionFactory as ActionFactory_2 } from '../../types/integrations';
 import { AnyFunction as AnyFunction_2 } from '../../utils/typeUtils';
@@ -14,6 +15,7 @@ import type { ComponentType } from 'react';
 import { DropdownItem } from '@zextras/carbonio-design-system';
 import type { DynamicThemeFix } from 'darkreader';
 import type { i18n } from 'i18next';
+import { legacySoapFetch } from '@zextras/carbonio-ui-soap-lib';
 import type { ModalProps } from '@zextras/carbonio-design-system';
 import type { Properties } from 'posthog-js';
 import { default as React_2 } from 'react';
@@ -99,54 +101,8 @@ type AccountSettingsAttrs = {
     [key: string]: string | number | Array<string | number> | undefined;
 };
 
-// @public (undocumented)
-export interface AccountSettingsPrefs {
-    // (undocumented)
-    [key: string]: string | number | Array<string | number> | undefined;
-    // (undocumented)
-    carbonioPrefDarkMode?: (typeof DARK_READER_VALUES)[number];
-    // (undocumented)
-    carbonioPrefSendAnalytics?: BooleanString;
-    // (undocumented)
-    zimbraPrefDelegatedSendSaveTarget?: (typeof DELEGATED_SEND_SAVE_TARGET)[number];
-    // (undocumented)
-    zimbraPrefExternalSendersType?: 'ALL' | 'ALLNOTINAB' | 'INAB' | 'INSD';
-    // (undocumented)
-    zimbraPrefHtmlEditorDefaultFontColor?: string;
-    // (undocumented)
-    zimbraPrefHtmlEditorDefaultFontFamily?: string;
-    // (undocumented)
-    zimbraPrefHtmlEditorDefaultFontSize?: string;
-    // (undocumented)
-    zimbraPrefIncludeSharedItemsInSearch?: BooleanString;
-    // (undocumented)
-    zimbraPrefIncludeSpamInSearch?: BooleanString;
-    // (undocumented)
-    zimbraPrefIncludeTrashInSearch?: BooleanString;
-    // (undocumented)
-    zimbraPrefLocale?: string;
-    // (undocumented)
-    zimbraPrefMailPollingInterval?: Duration;
-    // (undocumented)
-    zimbraPrefMailTrustedSenderList?: Array<string> | string;
-    // (undocumented)
-    zimbraPrefOutOfOfficeExternalReply?: string;
-    // (undocumented)
-    zimbraPrefOutOfOfficeExternalReplyEnabled?: BooleanString;
-    // (undocumented)
-    zimbraPrefOutOfOfficeFreeBusyStatus?: 'BUSY' | 'OUTOFOFFICE';
-    // (undocumented)
-    zimbraPrefOutOfOfficeFromDate?: GeneralizedTime;
-    // (undocumented)
-    zimbraPrefOutOfOfficeReply?: string;
-    // (undocumented)
-    zimbraPrefOutOfOfficeReplyEnabled?: BooleanString;
-    // (undocumented)
-    zimbraPrefOutOfOfficeStatusAlertOnLogin?: BooleanString;
-    // (undocumented)
-    zimbraPrefOutOfOfficeSuppressExternalReply?: BooleanString;
-    // (undocumented)
-    zimbraPrefOutOfOfficeUntilDate?: GeneralizedTime;
+// @public @deprecated (undocumented)
+export interface AccountSettingsPrefs extends AccountSettingsPrefs_2 {
 }
 
 // @public (undocumented)
@@ -249,8 +205,8 @@ type AppDependantExports = {
     editSettings: ReturnType<typeof getEditSettingsForApp>;
     getI18n: ReturnType<typeof getI18n_2>;
     t: ReturnType<typeof getTFunction>;
-    soapFetch: ReturnType<typeof getSoapFetch>;
-    xmlSoapFetch: ReturnType<typeof getXmlSoapFetch>;
+    soapFetch: typeof legacySoapFetch;
+    xmlSoapFetch: typeof legacySoapFetch;
     useAppContext: ReturnType<typeof getAppContextHook>;
     getAppContext: ReturnType<typeof getAppContext_2>;
     useApp: ReturnType<typeof getAppHook>;
@@ -523,23 +479,6 @@ export const expandBoards: () => void;
 // @public (undocumented)
 type FolderView = 'search folder' | 'tag' | 'conversation' | 'message' | 'contact' | 'document' | 'appointment' | 'virtual conversation' | 'remote folder' | 'wiki' | 'task' | 'chat';
 
-// Warning: (ae-forgotten-export) The symbol "GeneralizedTimeObj" needs to be exported by the entry point lib.d.ts
-//
-// @public
-export type GeneralizedTime = `${GeneralizedTimeObj['year']}${GeneralizedTimeObj['month']}${GeneralizedTimeObj['date']}${GeneralizedTimeObj['hour']}${GeneralizedTimeObj['min']}${GeneralizedTimeObj['sec']}${GeneralizedTimeObj['ms']}${GeneralizedTimeObj['timezone']}`;
-
-// @public (undocumented)
-type GeneralizedTimeObj = {
-    year: `${number}` & StringOfLength<4>;
-    month: `${number}` & StringOfLength<2>;
-    date: `${number}` & StringOfLength<2>;
-    hour: `${number}` & StringOfLength<2>;
-    min: `${number}` & StringOfLength<2>;
-    sec: `${number}` & StringOfLength<2>;
-    ms: (`.${number}` & StringOfLength<4>) | '';
-    timezone: 'Z' | '';
-};
-
 // @public (undocumented)
 export const getAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];
 
@@ -595,9 +534,6 @@ export const getIntegratedFunction: <TFunction extends AnyFunction = AnyFunction
 // @public (undocumented)
 export const getNotificationManager: () => INotificationManager;
 
-// @public @deprecated (undocumented)
-const getSoapFetch: (app: string) => <Request, Response extends Record<string, unknown>>(api: string, body: Request, otherAccount?: string, signal?: AbortSignal) => Promise<Response>;
-
 // @public (undocumented)
 const getTFunction: (app: string) => TFunction;
 
@@ -618,9 +554,6 @@ export const getUserSetting: <T = void>(...path: Array<string>) => string | T;
 
 // @public (undocumented)
 export const getUserSettings: () => AccountSettings;
-
-// @public @deprecated (undocumented)
-const getXmlSoapFetch: (app: string) => <Request, Response extends Record<string, unknown>>(api: string, body: Request, otherAccount?: string) => Promise<Response>;
 
 // @public (undocumented)
 export type Grant = {
@@ -1159,9 +1092,6 @@ export interface SoapFault {
 // @public @deprecated (undocumented)
 export const soapFetch: AppDependantExports['soapFetch'];
 
-// @public (undocumented)
-export const soapFetchV2: <Request, Response extends Record<string, unknown>>(api: string, body: Request, otherAccount?: string, signal?: AbortSignal) => Promise<RawSoapResponse<Response>>;
-
 // Warning: (ae-forgotten-export) The symbol "BaseFolder" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
@@ -1228,13 +1158,6 @@ type SoapSearchFolder = SoapFolder & SearchFolderFields;
 
 // @public (undocumented)
 type SortBy = 'dateDesc' | 'dateAsc' | 'idDesc' | 'idAsc' | 'subjDesc' | 'subjAsc' | 'nameDesc' | 'nameAsc' | 'durDesc' | 'durAsc' | 'none' | 'taskDueAsc' | 'taskDueDesc' | 'taskStatusAsc' | 'taskStatusDesc' | 'taskPercCompletedAsc' | 'taskPercCompletedDesc' | 'rcptAsc' | 'rcptDesc' | 'readAsc' | 'readDesc';
-
-// @public (undocumented)
-type StringOfLength<Min, Max = Min> = string & {
-    min: Min;
-    max: Max;
-    readonly StringOfLength: unique symbol;
-};
 
 // @public (undocumented)
 export interface SuccessSoapResponse<R> {
@@ -1364,10 +1287,10 @@ export function useIsCarbonioCE(): boolean | undefined;
 // @public (undocumented)
 export function useLocalStorage<T>(key: string, initialValue: T, options?: LocalStorageOptions): [T, React_2.Dispatch<React_2.SetStateAction<T>>];
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const useNotify: () => SoapNotify[];
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const useRefresh: () => SoapRefresh;
 
 // Warning: (ae-forgotten-export) The symbol "Tracker" needs to be exported by the entry point lib.d.ts
@@ -1430,8 +1353,6 @@ interface ZimletProp {
 // lib/boot/app/app-dependant-exports.d.ts:18:5 - (ae-forgotten-export) The symbol "getEditSettingsForApp" needs to be exported by the entry point lib.d.ts
 // lib/boot/app/app-dependant-exports.d.ts:19:5 - (ae-forgotten-export) The symbol "getI18n_2" needs to be exported by the entry point lib.d.ts
 // lib/boot/app/app-dependant-exports.d.ts:20:5 - (ae-forgotten-export) The symbol "getTFunction" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:21:5 - (ae-forgotten-export) The symbol "getSoapFetch" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:22:5 - (ae-forgotten-export) The symbol "getXmlSoapFetch" needs to be exported by the entry point lib.d.ts
 // lib/boot/app/app-dependant-exports.d.ts:23:5 - (ae-forgotten-export) The symbol "getAppContextHook" needs to be exported by the entry point lib.d.ts
 // lib/boot/app/app-dependant-exports.d.ts:24:5 - (ae-forgotten-export) The symbol "getAppContext_2" needs to be exported by the entry point lib.d.ts
 // lib/boot/app/app-dependant-exports.d.ts:25:5 - (ae-forgotten-export) The symbol "getAppHook" needs to be exported by the entry point lib.d.ts
@@ -1454,14 +1375,13 @@ interface ZimletProp {
 // lib/store/app/store.d.ts:36:5 - (ae-forgotten-export) The symbol "SecondaryAccessoryView" needs to be exported by the entry point lib.d.ts
 // lib/store/integrations/store.d.ts:25:9 - (ae-forgotten-export) The symbol "ActionFactory" needs to be exported by the entry point lib.d.ts
 // lib/store/integrations/store.d.ts:31:9 - (ae-forgotten-export) The symbol "Component" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:38:9 - (ae-forgotten-export) The symbol "Signature" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:43:5 - (ae-forgotten-export) The symbol "AccountRights" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:47:5 - (ae-forgotten-export) The symbol "StringOfLength" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:95:5 - (ae-forgotten-export) The symbol "AccountSettingsAttrs" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:97:5 - (ae-forgotten-export) The symbol "ZimletProp" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:141:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:146:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
-// lib/types/account/index.d.ts:147:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:8:5 - (ae-forgotten-export) The symbol "AccountSettingsAttrs" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:10:5 - (ae-forgotten-export) The symbol "ZimletProp" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:42:9 - (ae-forgotten-export) The symbol "Signature" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:47:5 - (ae-forgotten-export) The symbol "AccountRights" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:106:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:111:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
+// lib/types/account/index.d.ts:112:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
 // lib/types/apps/index.d.ts:63:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:45:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:64:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts

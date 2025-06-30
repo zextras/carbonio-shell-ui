@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { legacyXmlSoapFetch } from '@zextras/carbonio-ui-soap-lib';
 import { filter, find, findIndex, map, reduce, isArray } from 'lodash';
 
-import { getXmlSoapFetch } from './fetch';
 import { SHELL_APP_ID } from '../constants';
 import { useAccountStore } from '../store/account';
 import type { Account, AccountState } from '../types/account';
@@ -47,7 +47,7 @@ export const editSettings = (
 	mods: Partial<Mods>,
 	appId: string = SHELL_APP_ID
 ): Promise<EditSettingsBatchResponse> =>
-	getXmlSoapFetch(SHELL_APP_ID)<string, EditSettingsBatchResponse>(
+	legacyXmlSoapFetch<string, EditSettingsBatchResponse>(
 		'Batch',
 		`<BatchRequest xmlns="urn:zimbra" onerror="stop">${
 			mods.props

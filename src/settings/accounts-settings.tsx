@@ -7,6 +7,7 @@
 import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react';
 
 import { Container, ModalManager, useSnackbar } from '@zextras/carbonio-design-system';
+import { soapFetchV2 } from '@zextras/carbonio-ui-soap-lib';
 import { produce } from 'immer';
 import { map, find, isEmpty, filter, size } from 'lodash';
 import { useTranslation } from 'react-i18next';
@@ -24,7 +25,6 @@ import {
 	isPrimary
 } from './components/utils';
 import { JSNS } from '../constants';
-import { soapFetchV2 } from '../network/fetch';
 import { useAccountStore, useUserAccount, useUserSettings } from '../store/account';
 import type { AccountState, IdentityAttrs } from '../types/account';
 import type {

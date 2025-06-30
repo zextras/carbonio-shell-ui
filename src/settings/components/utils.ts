@@ -6,6 +6,7 @@
 
 import type React from 'react';
 
+import type { GeneralizedTime } from '@zextras/carbonio-ui-soap-lib';
 import type { TFunction } from 'i18next';
 import { cloneDeep, filter, findIndex, isBoolean, reduce, uniq } from 'lodash';
 
@@ -16,7 +17,6 @@ import type {
 	Account,
 	AccountSettings,
 	BooleanString,
-	GeneralizedTime,
 	Identity,
 	IdentityAttrs
 } from '../../types/account';
@@ -228,6 +228,15 @@ export const localeList = (t: TFunction): Array<LocaleDescriptorWithLabels> => [
 		label: t('locale.label_kyrgyz', {
 			value: SUPPORTED_LOCALES.ky.name,
 			defaultValue: 'Kyrgyz - {{value}}'
+		})
+	},
+	{
+		id: 'bs',
+		...SUPPORTED_LOCALES.bs,
+		localName: t('locale.bosnian', 'Bosnian'),
+		label: t('locale.label_bosnian', {
+			value: SUPPORTED_LOCALES.bs.name,
+			defaultValue: 'Bosnian - {{value}}'
 		})
 	}
 ];

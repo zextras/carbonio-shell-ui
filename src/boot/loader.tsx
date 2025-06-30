@@ -7,17 +7,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { Modal, Padding, Text, useSnackbar } from '@zextras/carbonio-design-system';
+import type { UserQuotaChangeEvent } from '@zextras/carbonio-ui-soap-lib';
+import { ApiEvents, GET_INFO_RIGHTS, api } from '@zextras/carbonio-ui-soap-lib';
 import { find } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import { loadApps, unloadAllApps } from './app/load-apps';
 import { IS_FOCUS_MODE } from '../constants';
 import { getComponents } from '../network/get-components';
-import { getInfo } from '../network/get-info';
 import { loginConfig } from '../network/login-config';
 import { logout } from '../network/logout';
 import { goToLogin } from '../network/utils';
 import { useAccountStore } from '../store/account';
+import { normalizeAccount } from '../store/account/normalization';
 import { useAppStore } from '../store/app';
 import { useTracker } from '../tracker/tracker';
 
@@ -107,19 +109,62 @@ export const Loader = (): React.JSX.Element => {
 	const [sessionLifetime, setSessionLifetime] = useState<number>();
 	const createSnackbar = useSnackbar();
 
-	const getSessionInfo = useCallback(
-		() =>
-			getInfo().then((sessionInfo) => {
-				setSessionLifetime(sessionInfo.lifetime);
-			}),
-		[]
-	);
-
 	const carbonioPrefSendAnalytics = useAccountStore(
 		(state) => state.settings.prefs.carbonioPrefSendAnalytics
 	);
 
 	const { enableTracker } = useTracker();
+
+	const getSessionInfo = useCallback(() => {
+		const rights = [
+			GET_INFO_RIGHTS.sendAs,
+			GET_INFO_RIGHTS.sendAsDistList,
+			GET_INFO_RIGHTS.viewFreeBusy,
+			GET_INFO_RIGHTS.sendOnBehalfOf,
+			GET_INFO_RIGHTS.sendOnBehalfOfDistList
+		];
+
+		return api.getInfo({ rights }).then((res) => {
+			const { account, settings } = normalizeAccount(res);
+			useAccountStore.setState({
+				authenticated: true,
+				account,
+				settings
+			});
+			setSessionLifetime(res.lifetime);
+		});
+	}, []);
+
+	const authErrorListener = useCallback(() => {
+		if (IS_FOCUS_MODE) {
+			useAccountStore.setState({ authenticated: false });
+		} else {
+			goToLogin();
+		}
+	}, []);
+
+	const userQuotaEventLister = useCallback(
+		(e: CustomEventInit<UserQuotaChangeEvent['payload']>): void => {
+			useAccountStore.setState({ usedQuota: e.detail?.quota });
+		},
+		[]
+	);
+
+	useEffect(() => {
+		window.addEventListener(ApiEvents.AuthError, authErrorListener);
+
+		return () => {
+			window.removeEventListener(ApiEvents.AuthError, authErrorListener);
+		};
+	}, [authErrorListener]);
+
+	useEffect(() => {
+		window.addEventListener(ApiEvents.UserQuotaChange, userQuotaEventLister);
+
+		return () => {
+			window.removeEventListener(ApiEvents.UserQuotaChange, userQuotaEventLister);
+		};
+	}, [userQuotaEventLister]);
 
 	useEffect(() => {
 		enableTracker(carbonioPrefSendAnalytics === 'TRUE');

@@ -10,9 +10,10 @@ import type { SelectItem, SingleSelectionOnChange } from '@zextras/carbonio-desi
 import { FormSubSection, FormSection, Modal, Select, Text } from '@zextras/carbonio-design-system';
 
 import type { SettingsSectionProps } from './components/utils';
-import { localeList, upsertPrefOnUnsavedChanges } from './components/utils';
+import { upsertPrefOnUnsavedChanges } from './components/utils';
 import { languageSubSection } from './general-settings-sub-sections';
 import { useReset } from './hooks/use-reset';
+import { localeList } from '../constants/locales';
 import { getT } from '../store/i18n/hooks';
 import type { AccountSettings } from '../types/account';
 import type { AddMod } from '../types/network';

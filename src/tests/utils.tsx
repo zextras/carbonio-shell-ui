@@ -6,6 +6,7 @@
 
 import React, { type ReactElement, useMemo } from 'react';
 
+import { matchers } from '@emotion/jest';
 import {
 	type ByRoleMatcher,
 	type ByRoleOptions,
@@ -37,6 +38,12 @@ type ByRoleWithIconOptions = ByRoleOptions & {
 };
 
 type ExtendedQueries = typeof queries & typeof customQueries;
+
+/**
+ * Custom query helpers provided by Emotion Jest Plugin
+ */
+expect.extend(matchers);
+
 /**
  * Matcher function to search an icon button through the icon data-testid
  */

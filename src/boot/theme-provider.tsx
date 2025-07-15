@@ -13,6 +13,7 @@ import React, {
 	useState
 } from 'react';
 
+import { Global, css, useTheme } from '@emotion/react';
 import type {
 	Theme,
 	ThemeProviderProps as UIThemeProviderProps
@@ -23,7 +24,6 @@ import {
 } from '@zextras/carbonio-design-system';
 import { auto, disable, enable, setFetchMethod } from 'darkreader';
 import { map, reduce } from 'lodash';
-import { createGlobalStyle, css } from 'styled-components';
 
 import { useGetPrimaryColor } from './use-get-primary-color';
 import { darkReaderDynamicThemeFixes, LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
@@ -104,22 +104,21 @@ interface GlobalStyledProps {
 	baseFontSize: number;
 }
 
-const GlobalStyle = createGlobalStyle<GlobalStyledProps>`
-  html {
-    font-size: ${({ baseFontSize }): string => `${baseFontSize}%`};
-  }
-  ${({ theme }): ReturnType<typeof css> =>
-		map(
-			theme.globalCursors,
-			(cursor) => css`
-				.global-cursor-${cursor} * {
-					cursor: ${cursor} !important;
-				}
-			`
-		)}
-  .no-active-background:active {
-	  background-color: inherit;
-  }
+const getGlobalStyles = (baseFontSize: number, theme: Theme): ReturnType<typeof css> => css`
+	html {
+		font-size: ${baseFontSize}%;
+	}
+	${map(
+		theme.globalCursors,
+		(cursor) => css`
+			.global-cursor-${cursor} * {
+				cursor: ${cursor} !important;
+			}
+		`
+	)}
+	.no-active-background:active {
+		background-color: inherit;
+	}
 `;
 
 interface ThemeProviderProps {
@@ -197,10 +196,12 @@ export const ThemeProvider = ({ children }: ThemeProviderProps): React.JSX.Eleme
 		[addExtension]
 	);
 
+	const theme = useTheme() as Theme;
+
 	return (
 		<UIThemeProvider extension={aggregatedExtensions}>
 			<ThemeCallbacksContext.Provider value={themeCallbacksContextValue}>
-				<GlobalStyle baseFontSize={baseFontSize} />
+				<Global styles={getGlobalStyles(baseFontSize, theme)} />
 				{children}
 			</ThemeCallbacksContext.Provider>
 		</UIThemeProvider>

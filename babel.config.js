@@ -5,7 +5,7 @@
  */
 module.exports = (api) => {
 	let presetEnvOptions;
-	const plugins = ['babel-plugin-styled-components'];
+	const plugins = [];
 	if (api.env('test')) {
 		presetEnvOptions = {
 			modules: 'commonjs'

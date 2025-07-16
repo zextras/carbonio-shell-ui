@@ -60,6 +60,11 @@ const configFn = (
 					from: `plugins/help/js/i18n/**/(${tinymceLocales.join('|')}).js`,
 					to: '',
 					context: 'node_modules/tinymce/'
+				},
+				{
+					from: 'plugins/emoticons',
+					to: 'plugins/emoticons',
+					context: 'node_modules/tinymce/'
 				}
 			]
 		}),

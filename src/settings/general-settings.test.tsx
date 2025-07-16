@@ -5,7 +5,6 @@
  */
 import React from 'react';
 
-import 'jest-styled-components';
 import { screen, waitFor, within } from '@testing-library/react';
 import { find } from 'lodash';
 

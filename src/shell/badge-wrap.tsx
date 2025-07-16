@@ -5,8 +5,8 @@
  */
 import React from 'react';
 
+import styled from '@emotion/styled';
 import { Container, Badge, Icon } from '@zextras/carbonio-design-system';
-import styled from 'styled-components';
 
 import type { BadgeInfo } from '../types/apps';
 

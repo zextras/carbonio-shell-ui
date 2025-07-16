@@ -6,8 +6,8 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import styled, { css } from '@emotion/styled';
 import { Container, Icon, IconButton, Row, Text, Tooltip } from '@zextras/carbonio-design-system';
-import styled, { css } from 'styled-components';
 
 import { closeBoard, setCurrentBoard, useBoardStore } from '../../store/boards';
 import { getT } from '../../store/i18n/hooks';

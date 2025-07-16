@@ -6,9 +6,9 @@
 import type { CSSProperties } from 'react';
 import React, { useMemo, useRef } from 'react';
 
+import styled, { css } from '@emotion/styled';
 import type { ContainerProps } from '@zextras/carbonio-design-system';
 import { Container } from '@zextras/carbonio-design-system';
-import styled, { css } from 'styled-components';
 
 import type { Border } from '../hooks/useResize';
 import { BORDERS, getCursorFromBorder, useResize } from '../hooks/useResize';

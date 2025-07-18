@@ -7,7 +7,8 @@
 import type { CSSProperties } from 'react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import styled, { css } from '@emotion/styled';
+import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 import type { DropdownItem, IconButtonProps } from '@zextras/carbonio-design-system';
 import {
 	Container,

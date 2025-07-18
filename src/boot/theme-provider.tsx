@@ -13,14 +13,15 @@ import React, {
 	useState
 } from 'react';
 
-import { Global, css, useTheme } from '@emotion/react';
+import { Global, css } from '@emotion/react';
 import type {
 	Theme,
 	ThemeProviderProps as UIThemeProviderProps
 } from '@zextras/carbonio-design-system';
 import {
 	generateColorSet,
-	ThemeProvider as UIThemeProvider
+	ThemeProvider as UIThemeProvider,
+	useTheme
 } from '@zextras/carbonio-design-system';
 import { auto, disable, enable, setFetchMethod } from 'darkreader';
 import { map, reduce } from 'lodash';
@@ -121,12 +122,28 @@ const getGlobalStyles = (baseFontSize: number, theme: Theme): ReturnType<typeof 
 	}
 `;
 
+const GlobalStyles = (): React.JSX.Element => {
+	const [localStorageSettings] = useLocalStorage<ScalingSettings>(LOCAL_STORAGE_SETTINGS_KEY, {});
+	const theme = useTheme();
+
+	const baseFontSize = useMemo<GlobalStyledProps['baseFontSize']>(() => {
+		const savedScalingValueSetting = localStorageSettings['settings.appearance_setting.scaling'];
+		if (savedScalingValueSetting !== undefined) {
+			return savedScalingValueSetting;
+		}
+		return getAutoScalingFontSize();
+	}, [localStorageSettings]);
+
+	const styles = useMemo(() => getGlobalStyles(baseFontSize, theme), [baseFontSize, theme]);
+
+	return <Global styles={styles} />;
+};
+
 interface ThemeProviderProps {
 	children?: React.ReactNode | React.ReactNode[];
 }
-export const ThemeProvider = ({ children }: ThemeProviderProps): React.JSX.Element => {
-	const [localStorageSettings] = useLocalStorage<ScalingSettings>(LOCAL_STORAGE_SETTINGS_KEY, {});
 
+export const ThemeProvider = ({ children }: ThemeProviderProps): React.JSX.Element => {
 	const [extensions, setExtensions] = useState<Partial<Record<keyof Theme, ThemeExtension>>>({});
 
 	const primaryColor = useGetPrimaryColor();
@@ -183,25 +200,15 @@ export const ThemeProvider = ({ children }: ThemeProviderProps): React.JSX.Eleme
 		setExtensions((ext) => ({ ...ext, [id]: newExtension }));
 	}, []);
 
-	const baseFontSize = useMemo<GlobalStyledProps['baseFontSize']>(() => {
-		const savedScalingValueSetting = localStorageSettings['settings.appearance_setting.scaling'];
-		if (savedScalingValueSetting !== undefined) {
-			return savedScalingValueSetting;
-		}
-		return getAutoScalingFontSize();
-	}, [localStorageSettings]);
-
 	const themeCallbacksContextValue = useMemo<ThemeCallbacks>(
 		() => ({ addExtension, setDarkReaderState }),
 		[addExtension]
 	);
 
-	const theme = useTheme() as Theme;
-
 	return (
 		<UIThemeProvider extension={aggregatedExtensions}>
 			<ThemeCallbacksContext.Provider value={themeCallbacksContextValue}>
-				<Global styles={getGlobalStyles(baseFontSize, theme)} />
+				<GlobalStyles />
 				{children}
 			</ThemeCallbacksContext.Provider>
 		</UIThemeProvider>

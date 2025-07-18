@@ -6,8 +6,8 @@
 import type { CSSProperties } from 'react';
 import React, { useMemo, useRef } from 'react';
 
-import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 import type { ContainerProps } from '@zextras/carbonio-design-system';
 import { Container } from '@zextras/carbonio-design-system';
 

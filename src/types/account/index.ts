@@ -14,7 +14,7 @@ export interface ZimletProp {
 
 export type AccountSettings = {
 	attrs: AccountSettingsAttrs;
-	prefs: AccountSettingsPrefs;
+	prefs: ApiAccountSettingsPrefs;
 	props: Array<ZimletProp>;
 };
 

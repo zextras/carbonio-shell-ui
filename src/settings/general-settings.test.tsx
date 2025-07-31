@@ -11,10 +11,11 @@ import { screen, waitFor, within } from '@testing-library/react';
 import { find } from 'lodash';
 
 import { buildItemsExternalSenders } from './components/general-settings/out-of-office-settings';
-import type { LocaleDescriptorWithLabels } from './components/utils';
-import { dateToGenTime, localeList } from './components/utils';
+import { dateToGenTime } from './components/utils';
 import GeneralSettings from './general-settings';
 import { SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT } from '../constants';
+import type { LocaleDescriptorWithLabels } from '../constants/locales';
+import { localeList } from '../constants/locales';
 import { useAccountStore } from '../store/account';
 import { useI18nStore } from '../store/i18n/store';
 import { useLoginConfigStore } from '../store/login/store';

@@ -88,7 +88,7 @@ type AccountRightTargetEmail = {
 // @public (undocumented)
 export type AccountSettings = {
     attrs: AccountSettingsAttrs;
-    prefs: AccountSettingsPrefs;
+    prefs: AccountSettingsPrefs_2;
     props: Array<ZimletProp>;
 };
 
@@ -1235,7 +1235,7 @@ export const updateSettings: UpdateSettings;
 // @public (undocumented)
 type UpdateSettingsParams = {
     attrs?: AccountSettingsAttrs;
-    prefs?: AccountSettingsPrefs;
+    prefs?: AccountSettingsPrefs_2;
     props?: Record<string, {
         app: string;
         value: unknown;

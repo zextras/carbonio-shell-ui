@@ -546,7 +546,7 @@ describe('Out of office settings', () => {
 					outOfOfficeError={false}
 				/>
 			);
-			const message = faker.lorem.paragraph(SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT + 1);
+			const message = faker.string.sample(SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT + 1);
 			await act(async () => {
 				screen.getByRole('textbox', { name: textAreaLabel }).focus();
 				await user.paste(message);
@@ -581,7 +581,7 @@ describe('Out of office settings', () => {
 					outOfOfficeError={false}
 				/>
 			);
-			const message = faker.lorem.paragraph(SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT + 1);
+			const message = faker.string.sample(SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT + 1);
 			await act(async () => {
 				screen.getByRole('textbox', { name: textAreaLabel }).focus();
 				await user.paste(message);
@@ -597,9 +597,7 @@ describe('Out of office settings', () => {
 			const settings: AccountSettings = {
 				prefs: {
 					zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
-					[textAreaLabel]: faker.lorem.paragraph(
-						SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT + 1
-					),
+					[textAreaLabel]: faker.string.sample(SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT + 1),
 					zimbraPrefExternalSendersType: 'ALL',
 					zimbraPrefOutOfOfficeExternalReplyEnabled: 'TRUE'
 				},

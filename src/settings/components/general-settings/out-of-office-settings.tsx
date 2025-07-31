@@ -25,7 +25,7 @@ import { type TFunction } from 'i18next';
 import { find } from 'lodash';
 
 import { OutOfOfficeTimePeriodSection } from './out-of-office-time-period-section';
-import { SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT } from '../../../constants';
+import { SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT } from '../../../constants/internal-constants';
 import { getT } from '../../../store/i18n/hooks';
 import type { AccountSettings } from '../../../types/account';
 import type { AddMod, RemoveMod } from '../../../types/network';
@@ -103,8 +103,8 @@ interface OutOfOfficeViewProps extends SettingsSectionProps {
 	settings: AccountSettings;
 	addMod: AddMod;
 	removeMod: RemoveMod;
-	hasError: React.Dispatch<React.SetStateAction<boolean>>;
-	error: boolean;
+	setOutOfOfficeError: React.Dispatch<React.SetStateAction<boolean>>;
+	outOfOfficeError: boolean;
 }
 
 export const OutOfOfficeSettings = ({
@@ -112,8 +112,8 @@ export const OutOfOfficeSettings = ({
 	addMod,
 	removeMod,
 	resetRef,
-	hasError,
-	error
+	setOutOfOfficeError,
+	outOfOfficeError
 }: OutOfOfficeViewProps): React.JSX.Element => {
 	const t = getT();
 	const outOfOfficeSectionTitle = useMemo(() => outOfOfficeSubSection(t), [t]);
@@ -350,11 +350,16 @@ export const OutOfOfficeSettings = ({
 
 	useEffect(() => {
 		if (prefOutOfOfficeExternalReplyHasError || prefOutOfOfficeReplyHasError) {
-			!error && hasError(true);
+			!outOfOfficeError && setOutOfOfficeError(true);
 		} else {
-			error && hasError(false);
+			outOfOfficeError && setOutOfOfficeError(false);
 		}
-	}, [prefOutOfOfficeExternalReplyHasError, prefOutOfOfficeReplyHasError, hasError, error]);
+	}, [
+		prefOutOfOfficeExternalReplyHasError,
+		prefOutOfOfficeReplyHasError,
+		setOutOfOfficeError,
+		outOfOfficeError
+	]);
 
 	return (
 		<FormSection

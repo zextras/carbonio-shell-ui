@@ -13,7 +13,7 @@ import { find } from 'lodash';
 import { buildItemsExternalSenders } from './components/general-settings/out-of-office-settings';
 import { dateToGenTime } from './components/utils';
 import GeneralSettings from './general-settings';
-import { SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT } from '../constants';
+import { SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT } from '../constants/internal-constants';
 import type { LocaleDescriptorWithLabels } from '../constants/locales';
 import { localeList } from '../constants/locales';
 import { useAccountStore } from '../store/account';

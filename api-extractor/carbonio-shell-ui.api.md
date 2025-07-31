@@ -1017,9 +1017,6 @@ export const setRouteVisibility: (id: string, visible: boolean) => void;
 export const SETTINGS_APP_ID = "settings";
 
 // @public (undocumented)
-export const SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT = 8192;
-
-// @public (undocumented)
 export const SettingsHeader: ({ onSave, onCancel, isDirty, title, hasError }: SettingsHeaderProps) => React_2.JSX.Element;
 
 // @public (undocumented)

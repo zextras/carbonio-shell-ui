@@ -10,7 +10,7 @@ import { act, screen, within } from '@testing-library/react';
 import { forEach } from 'lodash';
 
 import { OutOfOfficeSettings } from './out-of-office-settings';
-import { SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT } from '../../../constants';
+import { SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT } from '../../../constants/internal-constants';
 import { ICONS, TESTID_SELECTORS } from '../../../tests/constants';
 import { setup } from '../../../tests/utils';
 import type { AccountSettings, AccountSettingsPrefs } from '../../../types/account';
@@ -27,8 +27,8 @@ describe('Out of office settings', () => {
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				hasError={jest.fn}
-				error={false}
+				setOutOfOfficeError={jest.fn}
+				outOfOfficeError={false}
 			/>
 		);
 		expect(screen.getByText('Out of Office Settings')).toBeVisible();
@@ -54,8 +54,8 @@ describe('Out of office settings', () => {
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				hasError={jest.fn}
-				error={false}
+				setOutOfOfficeError={jest.fn}
+				outOfOfficeError={false}
 			/>
 		);
 		expect(screen.getByTestId(ICONS.switchUnchecked)).toBeVisible();
@@ -70,8 +70,8 @@ describe('Out of office settings', () => {
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				hasError={jest.fn}
-				error={false}
+				setOutOfOfficeError={jest.fn}
+				outOfOfficeError={false}
 			/>
 		);
 		expect(screen.getByText('Time Period')).toHaveStyle('color : #cccccc');
@@ -90,8 +90,8 @@ describe('Out of office settings', () => {
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				hasError={jest.fn}
-				error={false}
+				setOutOfOfficeError={jest.fn}
+				outOfOfficeError={false}
 			/>
 		);
 		expect(screen.getByText('Time Period')).toHaveStyle('color : #333333');
@@ -106,8 +106,8 @@ describe('Out of office settings', () => {
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				hasError={jest.fn}
-				error={false}
+				setOutOfOfficeError={jest.fn}
+				outOfOfficeError={false}
 			/>
 		);
 		await user.click(screen.getByTestId(ICONS.switchUnchecked));
@@ -131,8 +131,8 @@ describe('Out of office settings', () => {
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				hasError={jest.fn}
-				error={false}
+				setOutOfOfficeError={jest.fn}
+				outOfOfficeError={false}
 			/>
 		);
 		await user.click(screen.getByTestId(ICONS.switchChecked));
@@ -159,8 +159,8 @@ describe('Out of office settings', () => {
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				hasError={jest.fn}
-				error={false}
+				setOutOfOfficeError={jest.fn}
+				outOfOfficeError={false}
 			/>
 		);
 		await user.click(screen.getByTestId(ICONS.switchUnchecked));
@@ -193,8 +193,8 @@ describe('Out of office settings', () => {
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				hasError={jest.fn}
-				error={false}
+				setOutOfOfficeError={jest.fn}
+				outOfOfficeError={false}
 			/>
 		);
 		await user.click(screen.getByTestId(ICONS.switchChecked));
@@ -221,8 +221,8 @@ describe('Out of office settings', () => {
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				hasError={jest.fn}
-				error={false}
+				setOutOfOfficeError={jest.fn}
+				outOfOfficeError={false}
 			/>
 		);
 		await user.click(screen.getByTestId(ICONS.switchUnchecked));
@@ -277,8 +277,8 @@ describe('Out of office settings', () => {
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				hasError={jest.fn}
-				error={false}
+				setOutOfOfficeError={jest.fn}
+				outOfOfficeError={false}
 			/>
 		);
 		expect(screen.getByText(expected)).toBeVisible();
@@ -306,8 +306,8 @@ describe('Out of office settings', () => {
 					settings={settings}
 					addMod={addModFn}
 					removeMod={removeMod}
-					hasError={jest.fn}
-					error={false}
+					setOutOfOfficeError={jest.fn}
+					outOfOfficeError={false}
 				/>
 			);
 			await user.click(screen.getByText('External Senders'));
@@ -340,8 +340,8 @@ describe('Out of office settings', () => {
 					settings={settings}
 					addMod={addModFn}
 					removeMod={removeMod}
-					hasError={jest.fn}
-					error={false}
+					setOutOfOfficeError={jest.fn}
+					outOfOfficeError={false}
 				/>
 			);
 			await user.click(screen.getByText('External Senders'));
@@ -415,8 +415,8 @@ describe('Out of office settings', () => {
 					settings={settings}
 					addMod={addModFn}
 					removeMod={removeMod}
-					hasError={jest.fn}
-					error={false}
+					setOutOfOfficeError={jest.fn}
+					outOfOfficeError={false}
 				/>
 			);
 			await user.click(screen.getByText('External Senders'));
@@ -444,8 +444,8 @@ describe('Out of office settings', () => {
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				hasError={jest.fn}
-				error={false}
+				setOutOfOfficeError={jest.fn}
+				outOfOfficeError={false}
 			/>
 		);
 		const message = faker.lorem.paragraph();
@@ -474,8 +474,8 @@ describe('Out of office settings', () => {
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				hasError={jest.fn}
-				error={false}
+				setOutOfOfficeError={jest.fn}
+				outOfOfficeError={false}
 			/>
 		);
 		const message = faker.lorem.paragraph();
@@ -508,8 +508,8 @@ describe('Out of office settings', () => {
 					settings={settings}
 					addMod={addModFn}
 					removeMod={removeMod}
-					hasError={jest.fn}
-					error={false}
+					setOutOfOfficeError={jest.fn}
+					outOfOfficeError={false}
 				/>
 			);
 			const message = faker.lorem.word(5);
@@ -542,8 +542,8 @@ describe('Out of office settings', () => {
 					settings={settings}
 					addMod={addModFn}
 					removeMod={removeMod}
-					hasError={jest.fn}
-					error={false}
+					setOutOfOfficeError={jest.fn}
+					outOfOfficeError={false}
 				/>
 			);
 			const message = faker.lorem.paragraph(SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT + 1);
@@ -577,8 +577,8 @@ describe('Out of office settings', () => {
 					settings={settings}
 					addMod={addModFn}
 					removeMod={removeMod}
-					hasError={setError}
-					error={false}
+					setOutOfOfficeError={setError}
+					outOfOfficeError={false}
 				/>
 			);
 			const message = faker.lorem.paragraph(SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT + 1);
@@ -615,8 +615,8 @@ describe('Out of office settings', () => {
 					settings={settings}
 					addMod={addModFn}
 					removeMod={removeMod}
-					hasError={setError}
-					error
+					setOutOfOfficeError={setError}
+					outOfOfficeError
 				/>
 			);
 			await act(async () => {
@@ -645,8 +645,8 @@ describe('Out of office settings', () => {
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				hasError={jest.fn}
-				error={false}
+				setOutOfOfficeError={jest.fn}
+				outOfOfficeError={false}
 			/>
 		);
 		await act(async () => {
@@ -679,8 +679,8 @@ describe('Out of office settings', () => {
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				hasError={jest.fn}
-				error={false}
+				setOutOfOfficeError={jest.fn}
+				outOfOfficeError={false}
 			/>
 		);
 		await act(async () => {
@@ -715,8 +715,8 @@ describe('Out of office settings', () => {
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				hasError={jest.fn}
-				error={false}
+				setOutOfOfficeError={jest.fn}
+				outOfOfficeError={false}
 			/>
 		);
 		await act(async () => {

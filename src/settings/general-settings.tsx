@@ -45,6 +45,7 @@ import type { ValueOf } from '../utils/typeUtils';
 const GeneralSettings = (): React.JSX.Element => {
 	const [mods, setMods] = useState<Mods>({});
 	const [outOfOfficeError, setOutOfOfficeError] = useState<boolean>(false);
+	const hasError = useMemo(() => outOfOfficeError, [outOfOfficeError]);
 	const t = getT();
 	const userSettings = useUserSettings();
 	const [localStorageUnAppliedChanges, setLocalStorageUnAppliedChanges] = useState<ScalingSettings>(
@@ -102,8 +103,6 @@ const GeneralSettings = (): React.JSX.Element => {
 			return prevState;
 		});
 	}, []);
-
-	const hasError = useMemo(() => outOfOfficeError, [outOfOfficeError]);
 
 	const createSnackbar = useSnackbar();
 
@@ -267,8 +266,8 @@ const GeneralSettings = (): React.JSX.Element => {
 					addMod={addMod}
 					removeMod={removeMod}
 					resetRef={outOfOfficeSettingsSectionRef}
-					hasError={setOutOfOfficeError}
-					error={outOfOfficeError}
+					setOutOfOfficeError={setOutOfOfficeError}
+					outOfOfficeError={outOfOfficeError}
 				/>
 				<SearchSettings
 					settings={userSettings}

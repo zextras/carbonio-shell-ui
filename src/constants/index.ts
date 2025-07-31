@@ -55,8 +55,6 @@ export const SCALING_LIMIT = {
 	dpr: 2 // device pixel ratio
 } as const;
 
-export const SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT = 8192;
-
 export const LOGIN_V3_CONFIG_PATH = '/zx/login/v3/config';
 
 export const HEADER_BAR_HEIGHT = '3.75rem';

@@ -35,8 +35,8 @@ describe('General setting', () => {
 				...previousState.settings,
 				prefs: {
 					zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
-					zimbraPrefOutOfOfficeReply: faker.lorem.paragraph(
-						SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT
+					zimbraPrefOutOfOfficeReply: faker.string.sample(
+						SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT + 1
 					),
 					zimbraPrefLocale: zimbraPrefLocaleValue
 				}

@@ -73,31 +73,44 @@ export const buildItemsExternalSenders = (
 	}
 });
 
-export const getExternalSendersPrefsData = (
-	settings: AccountSettings,
-	t: TFunction
-): SelectItem<ExternalSenders> => {
-	const itemsExternalSenders = buildItemsExternalSenders(t);
+const getExternalSenderFromSettings = (settings: AccountSettings): ExternalSenders => {
 	if (
 		settings.prefs.zimbraPrefOutOfOfficeSuppressExternalReply === 'FALSE' &&
 		settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled === 'FALSE'
 	) {
-		return itemsExternalSenders.SEND_AUTO_REPLY;
+		return 'SEND_AUTO_REPLY';
 	}
 	if (
 		settings.prefs.zimbraPrefExternalSendersType === 'ALL' &&
 		settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled === 'TRUE'
 	) {
-		return itemsExternalSenders.SHOW_EXTERNAL_INPUT;
+		return 'SHOW_EXTERNAL_INPUT';
 	}
 	if (
 		settings.prefs.zimbraPrefExternalSendersType === 'ALLNOTINAB' &&
 		settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled === 'TRUE'
 	) {
-		return itemsExternalSenders.SEND_NOT_IN_ORG;
+		return 'SEND_NOT_IN_ORG';
 	}
-	return itemsExternalSenders.SUPPRESS_EXTERNAL;
+	if (
+		settings.prefs.zimbraPrefExternalSendersType === 'INAB' &&
+		settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled === 'FALSE'
+	) {
+		return 'SUPPRESS_EXTERNAL';
+	}
+	return 'SUPPRESS_EXTERNAL';
 };
+
+export const getExternalSendersPrefsData = (
+	settings: AccountSettings,
+	t: TFunction
+): SelectItem<ExternalSenders> =>
+	buildItemsExternalSenders(t)[getExternalSenderFromSettings(settings)];
+
+const isTheSameSettingExternalSenderValue = (
+	value: ExternalSenders,
+	settings: AccountSettings
+): boolean => value === getExternalSenderFromSettings(settings);
 
 interface OutOfOfficeViewProps extends SettingsSectionProps {
 	settings: AccountSettings;
@@ -186,10 +199,7 @@ export const OutOfOfficeSettings = ({
 	const externalSendersHandler = useCallback(
 		(value: ExternalSenders) => {
 			if (value === 'SEND_AUTO_REPLY') {
-				if (
-					settings.prefs.zimbraPrefOutOfOfficeSuppressExternalReply === 'FALSE' &&
-					settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled === 'FALSE'
-				) {
+				if (isTheSameSettingExternalSenderValue(value, settings)) {
 					removeMod('prefs', 'zimbraPrefExternalSendersType');
 					removeMod('prefs', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
 					removeMod('prefs', 'zimbraPrefOutOfOfficeSuppressExternalReply');
@@ -200,10 +210,7 @@ export const OutOfOfficeSettings = ({
 				}
 				setPrefOutOfOfficeExternalReplyEnabled(false);
 			} else if (value === 'SHOW_EXTERNAL_INPUT') {
-				if (
-					settings.prefs.zimbraPrefExternalSendersType === 'ALL' &&
-					settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled === 'TRUE'
-				) {
+				if (isTheSameSettingExternalSenderValue(value, settings)) {
 					removeMod('prefs', 'zimbraPrefExternalSendersType');
 					removeMod('prefs', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
 					removeMod('prefs', 'zimbraPrefOutOfOfficeSuppressExternalReply');
@@ -214,10 +221,7 @@ export const OutOfOfficeSettings = ({
 				}
 				setPrefOutOfOfficeExternalReplyEnabled(true);
 			} else if (value === 'SEND_NOT_IN_ORG') {
-				if (
-					settings.prefs.zimbraPrefExternalSendersType === 'ALLNOTINAB' &&
-					settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled === 'TRUE'
-				) {
+				if (isTheSameSettingExternalSenderValue(value, settings)) {
 					removeMod('prefs', 'zimbraPrefExternalSendersType');
 					removeMod('prefs', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
 					removeMod('prefs', 'zimbraPrefOutOfOfficeSuppressExternalReply');
@@ -228,10 +232,7 @@ export const OutOfOfficeSettings = ({
 				}
 				setPrefOutOfOfficeExternalReplyEnabled(true);
 			} else if (value === 'SUPPRESS_EXTERNAL') {
-				if (
-					settings.prefs.zimbraPrefExternalSendersType === 'INAB' &&
-					settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled === 'FALSE'
-				) {
+				if (isTheSameSettingExternalSenderValue(value, settings)) {
 					removeMod('prefs', 'zimbraPrefExternalSendersType');
 					removeMod('prefs', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
 					removeMod('prefs', 'zimbraPrefOutOfOfficeSuppressExternalReply');
@@ -243,13 +244,7 @@ export const OutOfOfficeSettings = ({
 				setPrefOutOfOfficeExternalReplyEnabled(false);
 			}
 		},
-		[
-			removeMod,
-			settings.prefs.zimbraPrefExternalSendersType,
-			settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled,
-			settings.prefs.zimbraPrefOutOfOfficeSuppressExternalReply,
-			updatePref
-		]
+		[removeMod, settings, updatePref]
 	);
 
 	const externalSendersOnChange = useCallback<SingleSelectionOnChange<ExternalSenders>>(

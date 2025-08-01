@@ -198,51 +198,30 @@ export const OutOfOfficeSettings = ({
 
 	const externalSendersHandler = useCallback(
 		(value: ExternalSenders) => {
-			if (value === 'SEND_AUTO_REPLY') {
-				if (isTheSameSettingExternalSenderValue(value, settings)) {
-					removeMod('prefs', 'zimbraPrefExternalSendersType');
-					removeMod('prefs', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
-					removeMod('prefs', 'zimbraPrefOutOfOfficeSuppressExternalReply');
-				} else {
-					updatePref('zimbraPrefExternalSendersType', 'INSD');
-					updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', false);
-					updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', false);
-				}
-				setPrefOutOfOfficeExternalReplyEnabled(false);
+			if (isTheSameSettingExternalSenderValue(value, settings)) {
+				removeMod('prefs', 'zimbraPrefExternalSendersType');
+				removeMod('prefs', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
+				removeMod('prefs', 'zimbraPrefOutOfOfficeSuppressExternalReply');
+			} else if (value === 'SEND_AUTO_REPLY') {
+				updatePref('zimbraPrefExternalSendersType', 'INSD');
+				updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', false);
+				updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', false);
 			} else if (value === 'SHOW_EXTERNAL_INPUT') {
-				if (isTheSameSettingExternalSenderValue(value, settings)) {
-					removeMod('prefs', 'zimbraPrefExternalSendersType');
-					removeMod('prefs', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
-					removeMod('prefs', 'zimbraPrefOutOfOfficeSuppressExternalReply');
-				} else {
-					updatePref('zimbraPrefExternalSendersType', 'ALL');
-					updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', true);
-					updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', false);
-				}
-				setPrefOutOfOfficeExternalReplyEnabled(true);
+				updatePref('zimbraPrefExternalSendersType', 'ALL');
+				updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', true);
+				updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', false);
 			} else if (value === 'SEND_NOT_IN_ORG') {
-				if (isTheSameSettingExternalSenderValue(value, settings)) {
-					removeMod('prefs', 'zimbraPrefExternalSendersType');
-					removeMod('prefs', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
-					removeMod('prefs', 'zimbraPrefOutOfOfficeSuppressExternalReply');
-				} else {
-					updatePref('zimbraPrefExternalSendersType', 'ALLNOTINAB');
-					updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', true);
-					updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', false);
-				}
-				setPrefOutOfOfficeExternalReplyEnabled(true);
+				updatePref('zimbraPrefExternalSendersType', 'ALLNOTINAB');
+				updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', true);
+				updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', false);
 			} else if (value === 'SUPPRESS_EXTERNAL') {
-				if (isTheSameSettingExternalSenderValue(value, settings)) {
-					removeMod('prefs', 'zimbraPrefExternalSendersType');
-					removeMod('prefs', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
-					removeMod('prefs', 'zimbraPrefOutOfOfficeSuppressExternalReply');
-				} else {
-					updatePref('zimbraPrefExternalSendersType', 'INAB');
-					updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', false);
-					updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', true);
-				}
-				setPrefOutOfOfficeExternalReplyEnabled(false);
+				updatePref('zimbraPrefExternalSendersType', 'INAB');
+				updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', false);
+				updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', true);
 			}
+			setPrefOutOfOfficeExternalReplyEnabled(
+				['SHOW_EXTERNAL_INPUT', 'SEND_NOT_IN_ORG'].includes(value)
+			);
 		},
 		[removeMod, settings, updatePref]
 	);

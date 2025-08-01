@@ -131,6 +131,8 @@ export const ICONS = {
 	accountUtilityMenu: 'PersonOutline',
 	checkboxChecked: 'icon: CheckmarkSquare',
 	checkboxUnchecked: 'icon: Square',
+	switchChecked: 'icon: ToggleRight',
+	switchUnchecked: 'icon: ToggleLeftOutline',
 	close: 'Close',
 	closeBoard: 'CloseOutline',
 	collapseBoard: 'BoardCollapse',
@@ -152,7 +154,8 @@ export const TESTID_SELECTORS = {
 		return `resizable-border-${border}`;
 	},
 	headerModuleSelector: 'HeaderModuleSelector',
-	privacySettings: 'privacy-settings'
+	privacySettings: 'privacy-settings',
+	outOfOfficeSettings: 'out_of_office'
 };
 
 export const TIMERS = {

@@ -63,7 +63,7 @@ export type AppActions = {
 	removePrimaryAccessoryView: (id: string) => void;
 	addSecondaryAccessoryView: (data: SecondaryAccessoryView) => string;
 	removeSecondaryAccessoryView: (id: string) => void;
-	setAppContext: <T = unknown>(app: string) => (context: T) => void;
+	setAppContext: (app: string) => <T = unknown>(context: T) => void;
 };
 
 const FOCUS_MODE_RESPONSE = 'focus-mode';

@@ -176,7 +176,7 @@ type AppActions = {
     removePrimaryAccessoryView: (id: string) => void;
     addSecondaryAccessoryView: (data: SecondaryAccessoryView) => string;
     removeSecondaryAccessoryView: (id: string) => void;
-    setAppContext: (app: string) => (context: unknown) => void;
+    setAppContext: (app: string) => <T = unknown>(context: T) => void;
 };
 
 // Warning: (ae-forgotten-export) The symbol "AppContextProviderProps" needs to be exported by the entry point lib.d.ts

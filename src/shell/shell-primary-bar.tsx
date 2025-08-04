@@ -57,7 +57,7 @@ type PrimaryBarAccessoryItemProps = {
 };
 
 const PrimaryBarElement = ({ view, active, onClick }: PrimaryBarItemProps): React.JSX.Element => (
-	<BadgeWrap badge={view.badge} label={view.label} id={view.id}>
+	<BadgeWrap badge={view.badge} label={view.label}>
 		{typeof view.component === 'string' ? (
 			<Button
 				icon={view.component}

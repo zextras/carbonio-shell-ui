@@ -8,7 +8,7 @@ import React from 'react';
 import { Container, Badge, Icon, Tooltip } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 
-import type { BadgeInfo, PrimaryBarView } from '../types/apps';
+import type { BadgeInfo } from '../types/apps';
 
 const MiniBadge = styled(Badge)`
 	position: absolute;
@@ -41,14 +41,12 @@ const MiniIcon = styled(Icon)`
 const BadgeWrap = ({
 	badge,
 	label,
-	id,
 	children
 }: React.PropsWithChildren<{
 	badge: BadgeInfo;
-	label: PrimaryBarView['label'];
-	id: PrimaryBarView['id'];
+	label: string;
 }>): React.JSX.Element => (
-	<Tooltip label={label} placement="right" key={id}>
+	<Tooltip label={label} placement="right">
 		<Container width={'3rem'} height={'3rem'} style={{ position: 'relative' }}>
 			{(badge.show && badge.icon && <MiniIcon icon={badge.icon} color={badge.color} />) ||
 				(badge.show && (

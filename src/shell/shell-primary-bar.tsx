@@ -57,21 +57,19 @@ type PrimaryBarAccessoryItemProps = {
 };
 
 const PrimaryBarElement = ({ view, active, onClick }: PrimaryBarItemProps): React.JSX.Element => (
-	<Tooltip label={view.label} placement="right" key={view.id}>
-		<BadgeWrap badge={view.badge}>
-			{typeof view.component === 'string' ? (
-				<Button
-					icon={view.component}
-					backgroundColor={active ? 'gray4' : 'gray6'}
-					labelColor={active ? 'primary' : 'text'}
-					onClick={onClick}
-					size="large"
-				/>
-			) : (
-				<view.component active={active} onClick={onClick} />
-			)}
-		</BadgeWrap>
-	</Tooltip>
+	<BadgeWrap badge={view.badge} label={view.label} id={view.id}>
+		{typeof view.component === 'string' ? (
+			<Button
+				icon={view.component}
+				backgroundColor={active ? 'gray4' : 'gray6'}
+				labelColor={active ? 'primary' : 'text'}
+				onClick={onClick}
+				size="large"
+			/>
+		) : (
+			<view.component active={active} onClick={onClick} />
+		)}
+	</BadgeWrap>
 );
 
 const PrimaryBarAccessoryElement = ({ view }: PrimaryBarAccessoryItemProps): React.JSX.Element => (

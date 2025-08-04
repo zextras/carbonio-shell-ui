@@ -5,10 +5,10 @@
  */
 import React from 'react';
 
-import { Container, Badge, Icon } from '@zextras/carbonio-design-system';
+import { Container, Badge, Icon, Tooltip } from '@zextras/carbonio-design-system';
 import styled from 'styled-components';
 
-import type { BadgeInfo } from '../types/apps';
+import type { BadgeInfo, PrimaryBarView } from '../types/apps';
 
 const MiniBadge = styled(Badge)`
 	position: absolute;
@@ -38,23 +38,30 @@ const MiniIcon = styled(Icon)`
 	z-index: 99;
 `;
 
-const BadgeWrap = React.forwardRef<HTMLDivElement, React.PropsWithChildren<{ badge: BadgeInfo }>>(
-	function BadgeWrapFn({ badge, children }, ref): React.JSX.Element {
-		return (
-			<Container width={'3rem'} height={'3rem'} style={{ position: 'relative' }} ref={ref}>
-				{(badge.show && badge.icon && <MiniIcon icon={badge.icon} color={badge.color} />) ||
-					(badge.show && (
-						<MiniBadge
-							color={'gray6'}
-							backgroundColor={badge.color ?? 'primary'}
-							data-testid={'badge-counter'}
-							value={badge.showCount ? badge.count ?? 0 : ''}
-						/>
-					))}
-				{children}
-			</Container>
-		);
-	}
+const BadgeWrap = ({
+	badge,
+	label,
+	id,
+	children
+}: React.PropsWithChildren<{
+	badge: BadgeInfo;
+	label: PrimaryBarView['label'];
+	id: PrimaryBarView['id'];
+}>): React.JSX.Element => (
+	<Tooltip label={label} placement="right" key={id}>
+		<Container width={'3rem'} height={'3rem'} style={{ position: 'relative' }}>
+			{(badge.show && badge.icon && <MiniIcon icon={badge.icon} color={badge.color} />) ||
+				(badge.show && (
+					<MiniBadge
+						color={'gray6'}
+						backgroundColor={badge.color ?? 'primary'}
+						data-testid={'badge-counter'}
+						value={badge.showCount ? badge.count ?? 0 : ''}
+					/>
+				))}
+			{children}
+		</Container>
+	</Tooltip>
 );
 
 export default BadgeWrap;

@@ -5,10 +5,14 @@
  */
 import React from 'react';
 
+import { faker } from '@faker-js/faker';
 import { screen, waitFor, within } from '@testing-library/react';
 import { find } from 'lodash';
 
+import { buildItemsExternalSenders } from './components/general-settings/out-of-office-settings';
+import { dateToGenTime } from './components/utils';
 import GeneralSettings from './general-settings';
+import { SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT } from '../constants/internal-constants';
 import type { LocaleDescriptorWithLabels } from '../constants/locales';
 import { localeList } from '../constants/locales';
 import { useAccountStore } from '../store/account';
@@ -21,6 +25,34 @@ import type { AccountSettingsPrefs } from '../types/account';
 describe('General setting', () => {
 	const { defaultI18n } = useI18nStore.getState();
 	const localeArray = localeList(defaultI18n.t);
+
+	test('When there are changes and an error, the discard button is enabled but save button is disabled', async () => {
+		const zimbraPrefLocaleValue = 'en';
+		useAccountStore.setState((previousState) => ({
+			...previousState,
+			settings: {
+				...previousState.settings,
+				prefs: {
+					zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
+					zimbraPrefOutOfOfficeReply: faker.string.sample(
+						SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT + 1
+					),
+					zimbraPrefLocale: zimbraPrefLocaleValue
+				}
+			}
+		}));
+		const { user } = setup(<GeneralSettings />);
+		const match = find(
+			localeArray,
+			(item) => item.value === zimbraPrefLocaleValue
+		) as LocaleDescriptorWithLabels;
+		await user.click(screen.getByText(match.label));
+		await user.click(
+			within(screen.getByTestId(TESTID_SELECTORS.dropdown)).getByText(localeArray[0].label)
+		);
+		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+		expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
+	});
 
 	test('When locale is changed, discard button become enabled and when clicked the initial value is restored', async () => {
 		const zimbraPrefLocaleValue = 'en';
@@ -47,6 +79,142 @@ describe('General setting', () => {
 		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
 		expect(screen.getByText(match.label)).toBeVisible();
+		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+	});
+
+	test('When send auto reply is changed, discard button become enabled and when clicked the initial value is restored', async () => {
+		useAccountStore.setState((previousState) => ({
+			...previousState,
+			settings: {
+				...previousState.settings,
+				prefs: { zimbraPrefOutOfOfficeReplyEnabled: 'TRUE' }
+			}
+		}));
+		const { user } = setup(<GeneralSettings />);
+
+		await user.click(screen.getByTestId(ICONS.switchChecked));
+
+		expect(screen.getByTestId(ICONS.switchUnchecked)).toBeVisible();
+		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+
+		await user.click(screen.getByRole('button', { name: /discard changes/i }));
+
+		expect(screen.getByTestId(ICONS.switchChecked)).toBeVisible();
+		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+	});
+
+	test('When external sender is changed, discard button become enabled and when clicked the initial value is restored', async () => {
+		const externalSenderArray = Object.values(buildItemsExternalSenders(defaultI18n.t));
+
+		useAccountStore.setState((previousState) => ({
+			...previousState,
+			settings: {
+				...previousState.settings,
+				prefs: {
+					zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
+					zimbraPrefExternalSendersType: 'INSD',
+					zimbraPrefOutOfOfficeExternalReplyEnabled: 'FALSE',
+					zimbraPrefOutOfOfficeSuppressExternalReply: 'FALSE'
+				}
+			}
+		}));
+		const { user } = setup(<GeneralSettings />);
+		const match = externalSenderArray[0];
+		expect(match).toBeDefined();
+		expect(screen.getByText(match.label)).toBeVisible();
+		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+		await user.click(screen.getByText(match.label));
+		await user.click(
+			within(screen.getByTestId(TESTID_SELECTORS.dropdown)).getByText(externalSenderArray[1].label)
+		);
+		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+		await user.click(screen.getByRole('button', { name: /discard changes/i }));
+		expect(screen.getByText(match.label)).toBeVisible();
+		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+	});
+
+	test('When auto-replies in time period is changed, discard button become enabled and when clicked the initial value is restored', async () => {
+		const date = dateToGenTime(new Date(new Date().setSeconds(0, 0)));
+		useAccountStore.setState((previousState) => ({
+			...previousState,
+			settings: {
+				...previousState.settings,
+				prefs: {
+					zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
+					zimbraPrefOutOfOfficeFromDate: date,
+					zimbraPrefOutOfOfficeUntilDate: date
+				}
+			}
+		}));
+		const { user } = setup(<GeneralSettings />);
+		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+		await user.click(
+			within(screen.getByTestId(TESTID_SELECTORS.outOfOfficeSettings)).getByTestId(
+				ICONS.checkboxChecked
+			)
+		);
+
+		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+		await user.click(screen.getByRole('button', { name: /discard changes/i }));
+		expect(
+			within(screen.getByTestId(TESTID_SELECTORS.outOfOfficeSettings)).getByTestId(
+				ICONS.checkboxChecked
+			)
+		).toBeVisible();
+		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+	});
+
+	test('When auto reply textarea value is changed, discard button become enabled and when clicked the initial value is restored', async () => {
+		const initialValue = faker.lorem.paragraph();
+		const userInput = faker.lorem.paragraphs();
+
+		useAccountStore.setState((previousState) => ({
+			...previousState,
+			settings: {
+				...previousState.settings,
+				prefs: {
+					zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
+					zimbraPrefOutOfOfficeReply: initialValue
+				}
+			}
+		}));
+		const { user } = setup(<GeneralSettings />);
+		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+		await user.type(screen.getByRole('textbox', { name: 'Auto-Reply Message:' }), userInput);
+
+		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+		await user.click(screen.getByRole('button', { name: /discard changes/i }));
+		expect(screen.getByRole('textbox', { name: 'Auto-Reply Message:' })).toHaveValue(initialValue);
+		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+	});
+
+	test('When external sender textarea value is changed, discard button become enabled and when clicked the initial value is restored', async () => {
+		const initialValue = faker.lorem.paragraph();
+		const userInput = faker.lorem.paragraphs();
+
+		useAccountStore.setState((previousState) => ({
+			...previousState,
+			settings: {
+				...previousState.settings,
+				prefs: {
+					zimbraPrefOutOfOfficeReplyEnabled: 'TRUE',
+					zimbraPrefOutOfOfficeExternalReplyEnabled: 'TRUE',
+					zimbraPrefOutOfOfficeExternalReply: initialValue
+				}
+			}
+		}));
+		const { user } = setup(<GeneralSettings />);
+		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+		await user.type(
+			screen.getByRole('textbox', { name: 'Auto-Reply Message for External senders:' }),
+			userInput
+		);
+
+		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+		await user.click(screen.getByRole('button', { name: /discard changes/i }));
+		expect(
+			screen.getByRole('textbox', { name: 'Auto-Reply Message for External senders:' })
+		).toHaveValue(initialValue);
 		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
 	});
 

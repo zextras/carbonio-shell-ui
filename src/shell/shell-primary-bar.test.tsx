@@ -5,7 +5,7 @@
  */
 import React from 'react';
 
-import { act, screen } from '@testing-library/react';
+import { act } from '@testing-library/react';
 import { Button, Text } from '@zextras/carbonio-design-system';
 import { produce } from 'immer';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
@@ -16,7 +16,7 @@ import { DefaultViewsRegister } from '../boot/app/default-views';
 import { useAccountStore } from '../store/account';
 import { useAppStore } from '../store/app';
 import { ICONS } from '../tests/constants';
-import { setup } from '../tests/utils';
+import { screen, setup } from '../tests/utils';
 import type { AccountState } from '../types/account';
 import type { PrimaryBarView } from '../types/apps';
 
@@ -335,6 +335,37 @@ describe('Shell primary bar', () => {
 			setup(<ShellPrimaryBar />);
 			expect(screen.queryByTestId('badge-counter')).not.toBeInTheDocument();
 			expect(screen.getByTestId('icon: Airplane')).toBeVisible();
+		});
+		it('shows a tooltip when the user hover a badge', async () => {
+			const view: PrimaryBarView = {
+				id: 'pbv-1',
+				app: 'app1',
+				label: 'App One',
+				route: 'app1',
+				position: 1,
+				badge: { show: true, icon: 'Airplane', showCount: true },
+				visible: true,
+				component: ICONS.accountUtilityMenu
+			};
+			const primaryBarViews: PrimaryBarView[] = [view];
+
+			useAppStore.setState((state) => ({
+				views: { ...state.views, primaryBar: primaryBarViews }
+			}));
+
+			const { user } = setup(<ShellPrimaryBar />);
+
+			await user.hover(
+				screen.getByRoleWithIcon('button', {
+					icon: ICONS.accountUtilityMenu
+				})
+			);
+
+			act(() => {
+				jest.advanceTimersByTime(2000);
+			});
+
+			expect(screen.getByText(view.label)).toBeVisible();
 		});
 	});
 });

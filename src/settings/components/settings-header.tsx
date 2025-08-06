@@ -34,13 +34,15 @@ export type SettingsHeaderProps = {
 	onSave: RouteLeavingGuardProps['onSave'];
 	onCancel: () => void;
 	isDirty: boolean;
+	hasError?: boolean;
 };
 
 export const SettingsHeader = ({
 	onSave,
 	onCancel,
 	isDirty,
-	title
+	title,
+	hasError = false
 }: SettingsHeaderProps): React.JSX.Element => {
 	const t = getT();
 	const [searchParams] = useSearchParams();
@@ -61,6 +63,7 @@ export const SettingsHeader = ({
 		],
 		[t, title]
 	);
+	const isSaveDisabled = useMemo(() => !isDirty || hasError, [hasError, isDirty]);
 
 	useEffect(() => {
 		if (section) {
@@ -111,7 +114,7 @@ export const SettingsHeader = ({
 							label={t('label.save', 'Save')}
 							color="primary"
 							onClick={onSave}
-							disabled={!isDirty}
+							disabled={isSaveDisabled}
 						/>
 					</Row>
 				</Row>

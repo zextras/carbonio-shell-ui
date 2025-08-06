@@ -176,7 +176,7 @@ type AppActions = {
     removePrimaryAccessoryView: (id: string) => void;
     addSecondaryAccessoryView: (data: SecondaryAccessoryView) => string;
     removeSecondaryAccessoryView: (id: string) => void;
-    setAppContext: (app: string) => (context: unknown) => void;
+    setAppContext: (app: string) => <T = unknown>(context: T) => void;
 };
 
 // Warning: (ae-forgotten-export) The symbol "AppContextProviderProps" needs to be exported by the entry point lib.d.ts
@@ -1017,7 +1017,7 @@ export const setRouteVisibility: (id: string, visible: boolean) => void;
 export const SETTINGS_APP_ID = "settings";
 
 // @public (undocumented)
-export const SettingsHeader: ({ onSave, onCancel, isDirty, title }: SettingsHeaderProps) => React_2.JSX.Element;
+export const SettingsHeader: ({ onSave, onCancel, isDirty, title, hasError }: SettingsHeaderProps) => React_2.JSX.Element;
 
 // @public (undocumented)
 export type SettingsHeaderProps = {
@@ -1025,6 +1025,7 @@ export type SettingsHeaderProps = {
     onSave: RouteLeavingGuardProps['onSave'];
     onCancel: () => void;
     isDirty: boolean;
+    hasError?: boolean;
 };
 
 // @public (undocumented)

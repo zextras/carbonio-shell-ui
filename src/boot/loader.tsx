@@ -201,13 +201,33 @@ export const Loader = (): React.JSX.Element => {
 	}, [getSessionInfo]);
 
 	useEffect(() => {
+		if (sessionLifetime === undefined) {
+			return undefined;
+		}
+
 		const expirationTimeouts: NodeJS.Timeout[] = [];
 		const logoutFn = (): void => {
 			logout();
 		};
-		if (sessionLifetime !== undefined) {
+
+		// Track session state for sleep/wake detection
+		let sessionStartTime = Date.now();
+		let lastHiddenTime = 0;
+		let totalSleepTime = 0;
+
+		const setupTimeouts = (remainingLifetime: number): void => {
+			// Clear existing timeouts
+			expirationTimeouts.forEach(clearTimeout);
+			expirationTimeouts.length = 0;
+
+			if (remainingLifetime <= 0) {
+				// Session has already expired, logout immediately
+				logoutFn();
+				return;
+			}
+
 			const tenMinutes = 10 * 60 * 1000;
-			if (sessionLifetime >= tenMinutes) {
+			if (remainingLifetime >= tenMinutes) {
 				expirationTimeouts.push(
 					setTimeout(() => {
 						createSnackbar({
@@ -221,12 +241,12 @@ export const Loader = (): React.JSX.Element => {
 							actionLabel: t('snackbar.expiration.action', 'Go to login page'),
 							onActionClick: logoutFn
 						});
-					}, sessionLifetime - tenMinutes)
+					}, remainingLifetime - tenMinutes)
 				);
 			}
 
 			const threeMinutes = 3 * 60 * 1000;
-			if (sessionLifetime >= threeMinutes) {
+			if (remainingLifetime >= threeMinutes) {
 				expirationTimeouts.push(
 					setTimeout(() => {
 						createSnackbar({
@@ -240,7 +260,7 @@ export const Loader = (): React.JSX.Element => {
 							actionLabel: t('snackbar.expiration.action', 'Go to login page'),
 							onActionClick: logoutFn
 						});
-					}, sessionLifetime - threeMinutes)
+					}, remainingLifetime - threeMinutes)
 				);
 			}
 
@@ -251,23 +271,56 @@ export const Loader = (): React.JSX.Element => {
 						createSnackbar({
 							severity: 'warning',
 							key: 'one-minute-from-expiration-snackbar',
-							autoHideTimeout: Math.min(oneMinute, sessionLifetime),
-							label: <ExpiringSessionDynamicLabel sessionLifetime={sessionLifetime} />,
+							autoHideTimeout: Math.min(oneMinute, remainingLifetime),
+							label: <ExpiringSessionDynamicLabel sessionLifetime={remainingLifetime} />,
 							actionLabel: t('snackbar.expiration.action', 'Go to login page'),
 							onActionClick: logoutFn,
 							replace: true
 						});
-						expirationTimeouts.push(setTimeout(logoutFn, Math.min(oneMinute, sessionLifetime)));
+						expirationTimeouts.push(setTimeout(logoutFn, Math.min(oneMinute, remainingLifetime)));
 					},
-					Math.max(sessionLifetime - oneMinute, 0)
+					Math.max(remainingLifetime - oneMinute, 0)
 				)
 			);
-		}
+		};
 
-		return (): void => {
+		const handleVisibilityChange = (): void => {
+			const now = Date.now();
+
+			if (document.hidden) {
+				// Page became hidden, record the time
+				lastHiddenTime = now;
+			} else if (lastHiddenTime > 0) {
+				// Page became visible again, check for time gap
+				const hiddenDuration = now - lastHiddenTime;
+				const SLEEP_DETECTION_THRESHOLD = 60 * 1000; // 1 minute threshold
+
+				if (hiddenDuration > SLEEP_DETECTION_THRESHOLD) {
+					// Significant time gap detected, add to total sleep time
+					totalSleepTime += hiddenDuration;
+					
+					// Calculate remaining session time accounting for sleep
+					const activeTime = now - sessionStartTime - totalSleepTime;
+					const remainingLifetime = sessionLifetime - activeTime;
+
+					// Recalculate and reset timeouts with actual remaining time
+					setupTimeouts(remainingLifetime);
+				}
+				lastHiddenTime = 0;
+			}
+		};
+
+		// Set up initial timeouts
+		setupTimeouts(sessionLifetime);
+
+		// Add visibility change listener
+		document.addEventListener('visibilitychange', handleVisibilityChange);
+
+		return () => {
 			expirationTimeouts.forEach((timeout) => {
 				clearTimeout(timeout);
 			});
+			document.removeEventListener('visibilitychange', handleVisibilityChange);
 		};
 	}, [createSnackbar, sessionLifetime, t]);
 

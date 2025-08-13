@@ -473,5 +473,28 @@ describe('Loader', () => {
 				)
 			).not.toBeInTheDocument();
 		});
+
+		test('should add visibility change event listener', async () => {
+			const addEventListenerSpy = jest.spyOn(document, 'addEventListener');
+			const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
+			
+			mockGetInfo({ lifetime: 10 * 60 * 1000 });
+			const { unmount } = setup(<Loader />);
+			
+			await act(async () => {
+				await jest.advanceTimersToNextTimerAsync();
+			});
+
+			// Should have added the visibility change listener
+			expect(addEventListenerSpy).toHaveBeenCalledWith('visibilitychange', expect.any(Function));
+
+			unmount();
+
+			// Should have removed the visibility change listener on cleanup
+			expect(removeEventListenerSpy).toHaveBeenCalledWith('visibilitychange', expect.any(Function));
+
+			addEventListenerSpy.mockRestore();
+			removeEventListenerSpy.mockRestore();
+		});
 	});
 });

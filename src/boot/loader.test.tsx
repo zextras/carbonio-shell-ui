@@ -477,10 +477,10 @@ describe('Loader', () => {
 		test('should add visibility change event listener', async () => {
 			const addEventListenerSpy = jest.spyOn(document, 'addEventListener');
 			const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
-			
+
 			mockGetInfo({ lifetime: 10 * 60 * 1000 });
 			const { unmount } = setup(<Loader />);
-			
+
 			await act(async () => {
 				await jest.advanceTimersToNextTimerAsync();
 			});

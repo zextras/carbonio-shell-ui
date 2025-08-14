@@ -213,7 +213,6 @@ export const Loader = (): React.JSX.Element => {
 		// Track session state for sleep/wake detection
 		const sessionStartTime = Date.now();
 		let lastHiddenTime = 0;
-		let totalSleepTime = 0;
 
 		const setupTimeouts = (remainingLifetime: number): void => {
 			// Clear existing timeouts
@@ -296,14 +295,10 @@ export const Loader = (): React.JSX.Element => {
 				const SLEEP_DETECTION_THRESHOLD = 60 * 1000; // 1 minute threshold
 
 				if (hiddenDuration > SLEEP_DETECTION_THRESHOLD) {
-					// Significant time gap detected, add to total sleep time
-					totalSleepTime += hiddenDuration;
+					// Calculate remaining session time
+					const totalElapsedTime = now - sessionStartTime;
+					const remainingLifetime = sessionLifetime - totalElapsedTime;
 
-					// Calculate remaining session time accounting for sleep
-					const activeTime = now - sessionStartTime - totalSleepTime;
-					const remainingLifetime = sessionLifetime - activeTime;
-
-					// Recalculate and reset timeouts with actual remaining time
 					setupTimeouts(remainingLifetime);
 				}
 				lastHiddenTime = 0;

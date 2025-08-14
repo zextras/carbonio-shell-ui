@@ -290,17 +290,11 @@ export const Loader = (): React.JSX.Element => {
 				// Page became hidden, record the time
 				lastHiddenTime = now;
 			} else if (lastHiddenTime > 0) {
-				// Page became visible again, check for time gap
-				const hiddenDuration = now - lastHiddenTime;
-				const SLEEP_DETECTION_THRESHOLD = 60 * 1000; // 1 minute threshold
+				// Calculate remaining session time
+				const totalElapsedTime = now - sessionStartTime;
+				const remainingLifetime = sessionLifetime - totalElapsedTime;
 
-				if (hiddenDuration > SLEEP_DETECTION_THRESHOLD) {
-					// Calculate remaining session time
-					const totalElapsedTime = now - sessionStartTime;
-					const remainingLifetime = sessionLifetime - totalElapsedTime;
-
-					setupTimeouts(remainingLifetime);
-				}
+				setupTimeouts(remainingLifetime);
 				lastHiddenTime = 0;
 			}
 		};

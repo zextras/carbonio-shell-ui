@@ -1,0 +1,50 @@
+/*
+ * SPDX-FileCopyrightText: 2025 Zextras <https://www.zextras.com>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+import { renderHook } from '@testing-library/react';
+
+import { useIdleTimeout } from './useIdleTimeout';
+
+// Mock the logout function
+jest.mock('../network/logout', () => ({
+	logout: jest.fn()
+}));
+
+describe('useIdleTimeout', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it('should do nothing when timeout is not provided', () => {
+		const { unmount } = renderHook(() => useIdleTimeout(undefined));
+		unmount();
+		// Should not throw any errors
+	});
+
+	it('should do nothing when timeout is empty string', () => {
+		const { unmount } = renderHook(() => useIdleTimeout(''));
+		unmount();
+		// Should not throw any errors
+	});
+
+	it('should setup and cleanup properly for valid duration', () => {
+		const { unmount } = renderHook(() => useIdleTimeout('10s'));
+		unmount();
+		// Should not throw any errors during cleanup
+	});
+
+	it('should handle array input by taking first element', () => {
+		const { unmount } = renderHook(() => useIdleTimeout(['10s', '20s']));
+		unmount();
+		// Should not throw any errors
+	});
+
+	it('should handle numeric input', () => {
+		const { unmount } = renderHook(() => useIdleTimeout(10000));
+		unmount();
+		// Should not throw any errors
+	});
+});

@@ -9,6 +9,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { debounce } from 'lodash';
 
 import { logout } from '../network/logout';
+import type { Duration } from '../types/account';
 import { parseDuration } from '../utils/parseDuration';
 
 /**
@@ -17,7 +18,7 @@ import { parseDuration } from '../utils/parseDuration';
  * @param zimbraMailIdleSessionTimeout - Duration string from account settings
  */
 export const useIdleTimeout = (
-	zimbraMailIdleSessionTimeout: string | number | Array<string | number> | undefined
+	zimbraMailIdleSessionTimeout: Duration | number | undefined
 ): void => {
 	const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 	const lastActivityRef = useRef<number>(Date.now());

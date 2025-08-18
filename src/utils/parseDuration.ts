@@ -14,24 +14,13 @@ import type { Duration, DurationUnit } from '../types/account';
  * @param duration - Duration string like '10m', '3600s', '2h', '600000', '2d'
  * @returns Duration in milliseconds, or null if invalid
  */
-export function parseDuration(
-	duration: Duration | string | number | Array<string | number> | undefined
-): number | null {
+export function parseDuration(duration: Duration | number | undefined): number | null {
 	if (!duration) {
 		return null;
 	}
 
-	// Handle array case - take first element
-	let durationValue = duration;
-	if (Array.isArray(duration)) {
-		if (duration.length === 0) {
-			return null;
-		}
-		[durationValue] = duration;
-	}
-
 	// Convert to string to handle Duration type and number type
-	const durationStr = String(durationValue).trim();
+	const durationStr = String(duration).trim();
 
 	if (!durationStr) {
 		return null;

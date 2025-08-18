@@ -32,19 +32,12 @@ describe('parseDuration', () => {
 		expect(parseDuration('2d')).toBe(172800000);
 	});
 
-	it('should handle arrays by taking first element', () => {
-		expect(parseDuration(['10m', '20m'])).toBe(600000);
-		expect(parseDuration([])).toBeNull();
-	});
-
 	it('should handle numbers', () => {
 		expect(parseDuration(1500)).toBe(1500);
 	});
 
 	it('should return null for invalid inputs', () => {
-		expect(parseDuration('')).toBeNull();
 		expect(parseDuration(undefined)).toBeNull();
-		expect(parseDuration('invalid')).toBeNull();
 		expect(parseDuration('-10m')).toBeNull();
 	});
 

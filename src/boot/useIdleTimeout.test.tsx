@@ -24,22 +24,10 @@ describe('useIdleTimeout', () => {
 		// Should not throw any errors
 	});
 
-	it('should do nothing when timeout is empty string', () => {
-		const { unmount } = renderHook(() => useIdleTimeout(''));
-		unmount();
-		// Should not throw any errors
-	});
-
 	it('should setup and cleanup properly for valid duration', () => {
 		const { unmount } = renderHook(() => useIdleTimeout('10s'));
 		unmount();
 		// Should not throw any errors during cleanup
-	});
-
-	it('should handle array input by taking first element', () => {
-		const { unmount } = renderHook(() => useIdleTimeout(['10s', '20s']));
-		unmount();
-		// Should not throw any errors
 	});
 
 	it('should handle numeric input', () => {

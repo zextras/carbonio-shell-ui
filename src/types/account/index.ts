@@ -66,6 +66,7 @@ export type AccountSettingsAttrs = {
 	zimbraIdentityMaxNumEntries?: number;
 	zimbraMailAlias?: string | Array<string>;
 	zimbraAllowFromAddress?: string | Array<string>;
+	zimbraMailIdleSessionTimeout?: Duration;
 	[key: string]: string | number | Array<string | number> | undefined;
 };
 

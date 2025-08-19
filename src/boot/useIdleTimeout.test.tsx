@@ -62,7 +62,7 @@ describe('useIdleTimeout', () => {
 
 		const { unmount } = renderHook(() => useIdleTimeout('10s'));
 
-		expect(mockSetTimeout).toHaveBeenCalledWith(logout, 10000);
+		expect(mockSetTimeout).toHaveBeenCalledWith(expect.any(Function), 10000);
 		expect(addEventListenerSpy).toHaveBeenCalledWith('mouseup', expect.any(Function));
 		expect(addEventListenerSpy).toHaveBeenCalledWith('mousewheel', expect.any(Function));
 		expect(docAddEventListenerSpy).toHaveBeenCalledWith('visibilitychange', expect.any(Function));
@@ -164,7 +164,7 @@ describe('useIdleTimeout', () => {
 			document.dispatchEvent(new Event('visibilitychange'));
 
 			// Should set timeout with remaining 5 seconds
-			expect(mockSetTimeout).toHaveBeenLastCalledWith(logout, 5000);
+			expect(mockSetTimeout).toHaveBeenLastCalledWith(expect.any(Function), 5000);
 		});
 
 		it('should handle visibility change when no timeout is set', () => {

@@ -20,20 +20,26 @@ import { parseDuration } from '../utils/parseDuration';
 export const useIdleTimeout = (zimbraMailIdleSessionTimeout?: Duration): void => {
 	const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 	const lastActivityRef = useRef<number>(Date.now());
+	const isMounted = useRef(true);
 
-	// Parse the timeout duration
 	const timeoutMs = parseDuration(zimbraMailIdleSessionTimeout);
+
+	const safeLogout = useCallback(() => {
+		if (isMounted.current) {
+			logout();
+		}
+	}, []);
 
 	// Reset the idle timeout
 	const resetTimeout = useCallback(() => {
 		if (timeoutRef.current) {
 			clearTimeout(timeoutRef.current);
+			timeoutRef.current = null;
 		}
-
 		if (timeoutMs && timeoutMs > 0) {
-			timeoutRef.current = setTimeout(logout, timeoutMs);
+			timeoutRef.current = setTimeout(safeLogout, timeoutMs);
 		}
-	}, [timeoutMs]);
+	}, [timeoutMs, safeLogout]);
 
 	// Handle user activity with debounce
 	const handleActivity = useMemo(
@@ -50,8 +56,7 @@ export const useIdleTimeout = (zimbraMailIdleSessionTimeout?: Duration): void =>
 		const now = Date.now();
 
 		if (document.hidden) {
-			// Page became hidden, we don't need to do anything special
-			// lastActivityRef.current already tracks the last activity
+			// No-op
 		} else if (timeoutMs && timeoutMs > 0) {
 			// Page became visible again, check if we should logout or reset timeout
 			const timeSinceLastActivity = now - lastActivityRef.current;
@@ -59,18 +64,20 @@ export const useIdleTimeout = (zimbraMailIdleSessionTimeout?: Duration): void =>
 
 			if (remainingTime <= 0) {
 				// Should have timed out while hidden, logout immediately
-				logout();
+				safeLogout();
 			} else {
 				// Reset timeout with remaining time
 				if (timeoutRef.current) {
 					clearTimeout(timeoutRef.current);
+					timeoutRef.current = null;
 				}
-				timeoutRef.current = setTimeout(logout, remainingTime);
+				timeoutRef.current = setTimeout(safeLogout, remainingTime);
 			}
 		}
-	}, [timeoutMs]);
+	}, [timeoutMs, safeLogout]);
 
 	useEffect(() => {
+		isMounted.current = true;
 		// If no timeout setting or invalid, do nothing
 		if (!timeoutMs || timeoutMs <= 0) {
 			return undefined;
@@ -88,8 +95,11 @@ export const useIdleTimeout = (zimbraMailIdleSessionTimeout?: Duration): void =>
 
 		return () => {
 			// Cleanup
+
+			isMounted.current = false;
 			if (timeoutRef.current) {
 				clearTimeout(timeoutRef.current);
+				timeoutRef.current = null;
 			}
 			window.removeEventListener('mouseup', handleActivity);
 			window.removeEventListener('mousewheel', handleActivity);

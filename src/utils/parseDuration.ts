@@ -9,7 +9,7 @@ import type { Duration, DurationUnit } from '../types/account';
 /**
  * Parse a Duration string to milliseconds
  * Supports units: d (days), h (hours), m (minutes), s (seconds), ms (milliseconds)
- * If no unit is provided, defaults to milliseconds
+ * If no unit is provided, defaults to seconds
  *
  * @param duration - Duration string like '10m', '3600s', '2h', '600000', '2d'
  * @returns Duration in milliseconds, or null if invalid
@@ -33,9 +33,14 @@ export function parseDuration(duration?: Duration): number | null {
 		return null;
 	}
 
-	// Default to milliseconds if no unit provided
+	// Return 0 for zero values (disables idle timeout)
+	if (number === 0) {
+		return null;
+	}
+
+	// Default to seconds if no unit provided
 	if (!unit) {
-		return Math.floor(number);
+		return Math.floor(number * 1000);
 	}
 
 	// Convert based on unit

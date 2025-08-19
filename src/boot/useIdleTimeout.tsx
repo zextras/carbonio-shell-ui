@@ -65,9 +65,7 @@ export const useIdleTimeout = (zimbraMailIdleSessionTimeout?: Duration): void =>
 				if (timeoutRef.current) {
 					clearTimeout(timeoutRef.current);
 				}
-				timeoutRef.current = setTimeout(() => {
-					logout();
-				}, remainingTime);
+				timeoutRef.current = setTimeout(logout, remainingTime);
 			}
 		}
 	}, [timeoutMs]);

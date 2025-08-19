@@ -8,11 +8,11 @@ import { parseDuration } from './parseDuration';
 
 describe('parseDuration', () => {
 	it('should parse milliseconds correctly', () => {
-		expect(parseDuration('1000')).toBe(1000);
 		expect(parseDuration('500ms')).toBe(500);
 	});
 
 	it('should parse seconds correctly', () => {
+		expect(parseDuration('1000')).toBe(1000000);
 		expect(parseDuration('30s')).toBe(30000);
 		expect(parseDuration('3600s')).toBe(3600000);
 	});

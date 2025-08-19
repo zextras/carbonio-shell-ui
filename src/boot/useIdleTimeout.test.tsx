@@ -29,10 +29,4 @@ describe('useIdleTimeout', () => {
 		unmount();
 		// Should not throw any errors during cleanup
 	});
-
-	it('should handle numeric input', () => {
-		const { unmount } = renderHook(() => useIdleTimeout(10000));
-		unmount();
-		// Should not throw any errors
-	});
 });

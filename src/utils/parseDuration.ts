@@ -14,7 +14,7 @@ import type { Duration, DurationUnit } from '../types/account';
  * @param duration - Duration string like '10m', '3600s', '2h', '600000', '2d'
  * @returns Duration in milliseconds, or null if invalid
  */
-export function parseDuration(duration: Duration | string | undefined): number | null {
+export function parseDuration(duration?: Duration): number | null {
 	if (!duration) {
 		return null;
 	}

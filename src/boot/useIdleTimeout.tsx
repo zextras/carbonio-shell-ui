@@ -17,9 +17,7 @@ import { parseDuration } from '../utils/parseDuration';
  *
  * @param zimbraMailIdleSessionTimeout - Duration string from account settings
  */
-export const useIdleTimeout = (
-	zimbraMailIdleSessionTimeout: Duration | number | undefined
-): void => {
+export const useIdleTimeout = (zimbraMailIdleSessionTimeout?: Duration): void => {
 	const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 	const lastActivityRef = useRef<number>(Date.now());
 
@@ -33,9 +31,7 @@ export const useIdleTimeout = (
 		}
 
 		if (timeoutMs && timeoutMs > 0) {
-			timeoutRef.current = setTimeout(() => {
-				logout();
-			}, timeoutMs);
+			timeoutRef.current = setTimeout(logout, timeoutMs);
 		}
 	}, [timeoutMs]);
 

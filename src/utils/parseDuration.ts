@@ -20,7 +20,7 @@ export function parseDuration(duration?: Duration): number | null {
 	}
 
 	// Extract number and unit using regex
-	const match = duration.match(/^(\d+(?:\.\d+)?)([dhms]*)$/);
+	const match = duration.match(/^(\d+)(ms|[dhms])?$/);
 
 	if (!match) {
 		return null;
@@ -28,10 +28,6 @@ export function parseDuration(duration?: Duration): number | null {
 
 	const [, numberStr, unit] = match;
 	const number = parseFloat(numberStr);
-
-	if (Number.isNaN(number) || number < 0) {
-		return null;
-	}
 
 	// Return 0 for zero values (disables idle timeout)
 	if (number === 0) {

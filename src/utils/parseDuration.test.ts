@@ -37,8 +37,27 @@ describe('parseDuration', () => {
 		expect(parseDuration('-10m')).toBeNull();
 	});
 
-	it('should handle decimal numbers', () => {
-		expect(parseDuration('1.5h')).toBe(5400000);
-		expect(parseDuration('2.5m')).toBe(150000);
+	it('should return null for decimal numbers', () => {
+		expect(parseDuration('1.5h')).toBe(null);
+		expect(parseDuration('2.5m')).toBe(null);
+	});
+
+	it('should return null for zero values (disables idle timeout)', () => {
+		expect(parseDuration('0')).toBeNull();
+		expect(parseDuration('0s')).toBeNull();
+		expect(parseDuration('0m')).toBeNull();
+		expect(parseDuration('0h')).toBeNull();
+		expect(parseDuration('0d')).toBeNull();
+		expect(parseDuration('0ms')).toBeNull();
+	});
+
+	it('should return null for invalid format', () => {
+		expect(parseDuration(' 10m')).toBeNull();
+	});
+
+	it('should return null for negative numbers', () => {
+		expect(parseDuration('-1s')).toBeNull();
+		expect(parseDuration('-10')).toBeNull();
+		expect(parseDuration('-5m')).toBeNull();
 	});
 });

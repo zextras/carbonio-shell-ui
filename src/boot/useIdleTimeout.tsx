@@ -41,7 +41,7 @@ export const useIdleTimeout = (zimbraMailIdleSessionTimeout?: Duration): void =>
 			debounce(() => {
 				lastActivityRef.current = Date.now();
 				resetTimeout();
-			}, 200),
+			}, 1000),
 		[resetTimeout]
 	);
 

@@ -13,7 +13,7 @@ import { find } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import { loadApps, unloadAllApps } from './app/load-apps';
-import { useIdleTimeout } from './useIdleTimeout';
+import { IdleTimeoutModal, useIdleTimeout } from './useIdleTimeout';
 import { useSessionTimeout } from './useSessionTimeout';
 import { IS_FOCUS_MODE } from '../constants';
 import { getComponents } from '../network/get-components';
@@ -168,7 +168,12 @@ export const Loader = (): React.JSX.Element => {
 	}, [getSessionInfo]);
 
 	useSessionTimeout(sessionLifetime);
-	useIdleTimeout(zimbraMailIdleSessionTimeout);
+	const isWarningVisible = useIdleTimeout(zimbraMailIdleSessionTimeout);
 
-	return <LoaderFailureModal open={open} closeHandler={closeHandler} />;
+	return (
+		<>
+			<LoaderFailureModal open={open} closeHandler={closeHandler} />
+			{zimbraMailIdleSessionTimeout && <IdleTimeoutModal isOpen={isWarningVisible} />}
+		</>
+	);
 };

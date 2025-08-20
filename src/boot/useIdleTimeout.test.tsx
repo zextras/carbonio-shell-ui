@@ -167,12 +167,16 @@ describe('useIdleTimeout', () => {
 			// Page becomes hidden after 2 seconds
 			mockDateNow.mockReturnValue(startTime + 2000);
 			Object.defineProperty(document, 'hidden', { value: true, configurable: true });
-			document.dispatchEvent(new Event('visibilitychange'));
+			act(() => {
+				document.dispatchEvent(new Event('visibilitychange'));
+			});
 
 			// Page becomes visible after 3 more seconds (5 seconds total)
 			mockDateNow.mockReturnValue(startTime + 5000);
 			Object.defineProperty(document, 'hidden', { value: false, configurable: true });
-			document.dispatchEvent(new Event('visibilitychange'));
+			act(() => {
+				document.dispatchEvent(new Event('visibilitychange'));
+			});
 
 			// Should set timeout with remaining 5 seconds
 			expect(mockSetTimeout).toHaveBeenLastCalledWith(expect.any(Function), 5000);

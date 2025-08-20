@@ -4,25 +4,33 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { Modal, Padding, Text } from '@zextras/carbonio-design-system';
 import { debounce } from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 import { logout } from '../network/logout';
 import type { Duration } from '../types/account';
 import { parseDuration } from '../utils/parseDuration';
 
+const WARNING_TIME_MS = 60 * 1000;
+
 /**
  * Hook to handle user inactivity timeout based on zimbraMailIdleSessionTimeout
  *
- * @param zimbraMailIdleSessionTimeout - Duration string from account settings
+ * @param timeout - Duration string from account settings
+ * @returns boolean indicating if the timeout warning is visible
  */
-export const useIdleTimeout = (zimbraMailIdleSessionTimeout?: Duration): void => {
+export const useIdleTimeout = (timeout?: Duration): boolean => {
+	const [isWarningVisible, setIsWarningVisible] = useState(false);
+	const warningTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
 	const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 	const lastActivityRef = useRef<number>(Date.now());
 	const isMounted = useRef(true);
 
-	const timeoutMs = parseDuration(zimbraMailIdleSessionTimeout);
+	const timeoutMs = parseDuration(timeout);
 
 	const safeLogout = useCallback(() => {
 		if (isMounted.current) {
@@ -30,28 +38,44 @@ export const useIdleTimeout = (zimbraMailIdleSessionTimeout?: Duration): void =>
 		}
 	}, []);
 
-	// Reset the idle timeout
-	const resetTimeout = useCallback(() => {
+	const clearAllTimers = useCallback(() => {
 		if (timeoutRef.current) {
 			clearTimeout(timeoutRef.current);
 			timeoutRef.current = null;
 		}
+		if (warningTimeoutRef.current) {
+			clearTimeout(warningTimeoutRef.current);
+			warningTimeoutRef.current = null;
+		}
+	}, []);
+
+	const showWarning = useCallback(() => {
+		setIsWarningVisible(true);
+	}, []);
+
+	// Reset the idle timeout
+	const resetTimeout = useCallback(() => {
+		lastActivityRef.current = Date.now();
+
+		clearAllTimers();
+		setIsWarningVisible(false);
+
 		if (timeoutMs && timeoutMs > 0) {
 			timeoutRef.current = setTimeout(safeLogout, timeoutMs);
+
+			const warningTimeoutDuration = Math.max(0, timeoutMs - WARNING_TIME_MS);
+
+			if (warningTimeoutDuration > 0) {
+				warningTimeoutRef.current = setTimeout(showWarning, warningTimeoutDuration);
+			} else {
+				showWarning();
+			}
 		}
-	}, [timeoutMs, safeLogout]);
+	}, [clearAllTimers, timeoutMs, safeLogout, showWarning]);
 
 	// Handle user activity with debounce
-	const handleActivity = useMemo(
-		() =>
-			debounce(
-				() => {
-					lastActivityRef.current = Date.now();
-					resetTimeout();
-				},
-				1000,
-				{ leading: true }
-			),
+	const debounceReset = useMemo(
+		() => debounce(resetTimeout, 1000, { leading: true }),
 		[resetTimeout]
 	);
 
@@ -71,14 +95,16 @@ export const useIdleTimeout = (zimbraMailIdleSessionTimeout?: Duration): void =>
 				safeLogout();
 			} else {
 				// Reset timeout with remaining time
-				if (timeoutRef.current) {
-					clearTimeout(timeoutRef.current);
-					timeoutRef.current = null;
-				}
+				clearAllTimers();
 				timeoutRef.current = setTimeout(safeLogout, remainingTime);
+				if (remainingTime <= WARNING_TIME_MS) {
+					showWarning();
+				} else {
+					warningTimeoutRef.current = setTimeout(showWarning, remainingTime - WARNING_TIME_MS);
+				}
 			}
 		}
-	}, [timeoutMs, safeLogout]);
+	}, [timeoutMs, safeLogout, clearAllTimers, showWarning]);
 
 	useEffect(() => {
 		isMounted.current = true;
@@ -91,28 +117,60 @@ export const useIdleTimeout = (zimbraMailIdleSessionTimeout?: Duration): void =>
 		resetTimeout();
 
 		// Add event listeners for user activity
-		document.addEventListener('mouseup', handleActivity);
-		document.addEventListener('wheel', handleActivity);
-		document.addEventListener('keydown', handleActivity);
+		document.addEventListener('mouseup', debounceReset);
+		document.addEventListener('wheel', debounceReset);
+		document.addEventListener('keydown', debounceReset);
 
 		// Add visibility change listener for sleep/wake detection
 		document.addEventListener('visibilitychange', handleVisibilityChange);
 
 		return () => {
 			// Cleanup
-
 			isMounted.current = false;
-			if (timeoutRef.current) {
-				clearTimeout(timeoutRef.current);
-				timeoutRef.current = null;
-			}
-			document.removeEventListener('mouseup', handleActivity);
-			document.removeEventListener('wheel', handleActivity);
-			document.removeEventListener('keydown', handleActivity);
+			clearAllTimers();
+			document.removeEventListener('mouseup', debounceReset);
+			document.removeEventListener('wheel', debounceReset);
+			document.removeEventListener('keydown', debounceReset);
 			document.removeEventListener('visibilitychange', handleVisibilityChange);
 
 			// Cancel any pending debounced calls
-			handleActivity.cancel();
+			debounceReset.cancel();
 		};
-	}, [timeoutMs, resetTimeout, handleActivity, handleVisibilityChange]);
+	}, [timeoutMs, resetTimeout, debounceReset, handleVisibilityChange, clearAllTimers]);
+
+	return isWarningVisible;
+};
+
+interface IdleTimeoutModalProps {
+	isOpen: boolean;
+}
+
+export const IdleTimeoutModal = ({ isOpen }: IdleTimeoutModalProps): React.JSX.Element => {
+	const [t] = useTranslation();
+
+	const modalText = useMemo(
+		() =>
+			t(
+				'idleTimeout.modal.content',
+				`You've been inactive for a while. You'll be logged out soon for security reasons. Press any key or click anywhere to stay logged in.`
+			),
+		[t]
+	);
+
+	const modalTitle = useMemo(() => t('idleTimeout.modal.title', 'Inactivity warning'), [t]);
+
+	const modalConfirmLabel = useMemo(
+		() => t('idleTimeout.modal.confirmLabel', 'Stay logged in'),
+		[t]
+	);
+
+	return (
+		<Modal open={isOpen} title={modalTitle} confirmLabel={modalConfirmLabel}>
+			<Padding vertical="small">
+				<Text color="text" overflow="break-word">
+					{modalText}
+				</Text>
+			</Padding>
+		</Modal>
+	);
 };

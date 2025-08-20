@@ -44,10 +44,14 @@ export const useIdleTimeout = (zimbraMailIdleSessionTimeout?: Duration): void =>
 	// Handle user activity with debounce
 	const handleActivity = useMemo(
 		() =>
-			debounce(() => {
-				lastActivityRef.current = Date.now();
-				resetTimeout();
-			}, 1000),
+			debounce(
+				() => {
+					lastActivityRef.current = Date.now();
+					resetTimeout();
+				},
+				1000,
+				{ leading: true }
+			),
 		[resetTimeout]
 	);
 
@@ -87,8 +91,9 @@ export const useIdleTimeout = (zimbraMailIdleSessionTimeout?: Duration): void =>
 		resetTimeout();
 
 		// Add event listeners for user activity
-		window.addEventListener('mouseup', handleActivity);
-		window.addEventListener('mousewheel', handleActivity);
+		document.addEventListener('mouseup', handleActivity);
+		document.addEventListener('wheel', handleActivity);
+		document.addEventListener('keydown', handleActivity);
 
 		// Add visibility change listener for sleep/wake detection
 		document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -101,8 +106,9 @@ export const useIdleTimeout = (zimbraMailIdleSessionTimeout?: Duration): void =>
 				clearTimeout(timeoutRef.current);
 				timeoutRef.current = null;
 			}
-			window.removeEventListener('mouseup', handleActivity);
-			window.removeEventListener('mousewheel', handleActivity);
+			document.removeEventListener('mouseup', handleActivity);
+			document.removeEventListener('wheel', handleActivity);
+			document.removeEventListener('keydown', handleActivity);
 			document.removeEventListener('visibilitychange', handleVisibilityChange);
 
 			// Cancel any pending debounced calls

@@ -55,27 +55,24 @@ describe('useIdleTimeout', () => {
 	});
 
 	it('should setup and cleanup properly for valid duration', () => {
-		const addEventListenerSpy = jest.spyOn(window, 'addEventListener');
-		const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
-		const docAddEventListenerSpy = jest.spyOn(document, 'addEventListener');
-		const docRemoveEventListenerSpy = jest.spyOn(document, 'removeEventListener');
+		const addEventListenerSpy = jest.spyOn(document, 'addEventListener');
+		const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
 
 		const { unmount } = renderHook(() => useIdleTimeout('10s'));
 
 		expect(mockSetTimeout).toHaveBeenCalledWith(expect.any(Function), 10000);
 		expect(addEventListenerSpy).toHaveBeenCalledWith('mouseup', expect.any(Function));
-		expect(addEventListenerSpy).toHaveBeenCalledWith('mousewheel', expect.any(Function));
-		expect(docAddEventListenerSpy).toHaveBeenCalledWith('visibilitychange', expect.any(Function));
+		expect(addEventListenerSpy).toHaveBeenCalledWith('wheel', expect.any(Function));
+		expect(addEventListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
+		expect(addEventListenerSpy).toHaveBeenCalledWith('visibilitychange', expect.any(Function));
 
 		unmount();
 
 		expect(mockClearTimeout).toHaveBeenCalled();
 		expect(removeEventListenerSpy).toHaveBeenCalledWith('mouseup', expect.any(Function));
-		expect(removeEventListenerSpy).toHaveBeenCalledWith('mousewheel', expect.any(Function));
-		expect(docRemoveEventListenerSpy).toHaveBeenCalledWith(
-			'visibilitychange',
-			expect.any(Function)
-		);
+		expect(removeEventListenerSpy).toHaveBeenCalledWith('wheel', expect.any(Function));
+		expect(removeEventListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
+		expect(removeEventListenerSpy).toHaveBeenCalledWith('visibilitychange', expect.any(Function));
 	});
 
 	it('should logout when timeout expires', () => {
@@ -93,7 +90,7 @@ describe('useIdleTimeout', () => {
 
 		// Simulate mouse activity
 		act(() => {
-			window.dispatchEvent(new Event('mouseup'));
+			document.dispatchEvent(new Event('mouseup'));
 		});
 
 		expect(mockClearTimeout).toHaveBeenCalled();
@@ -102,12 +99,26 @@ describe('useIdleTimeout', () => {
 		unmount();
 	});
 
-	it('should reset timeout on mousewheel activity', () => {
+	it('should reset timeout on wheel activity', () => {
 		const { unmount } = renderHook(() => useIdleTimeout('10s'));
 
-		// Simulate mousewheel activity
+		// Simulate wheel activity
 		act(() => {
-			window.dispatchEvent(new Event('mousewheel'));
+			document.dispatchEvent(new Event('wheel'));
+		});
+
+		expect(mockClearTimeout).toHaveBeenCalled();
+		expect(mockSetTimeout).toHaveBeenCalledTimes(2); // Initial + reset
+
+		unmount();
+	});
+
+	it('should reset timeout on keydown activity', () => {
+		const { unmount } = renderHook(() => useIdleTimeout('10s'));
+
+		// Simulate keydown activity
+		act(() => {
+			document.dispatchEvent(new Event('keydown'));
 		});
 
 		expect(mockClearTimeout).toHaveBeenCalled();

@@ -6,18 +6,21 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Modal, Padding, Text, useSnackbar } from '@zextras/carbonio-design-system';
+import { Modal, Padding, Text } from '@zextras/carbonio-design-system';
+import type { UserQuotaChangeEvent } from '@zextras/carbonio-ui-soap-lib';
+import { ApiEvents, GET_INFO_RIGHTS, api } from '@zextras/carbonio-ui-soap-lib';
 import { find } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import { loadApps, unloadAllApps } from './app/load-apps';
+import { IdleTimeoutModal, useIdleTimeout } from './useIdleTimeout';
+import { useSessionTimeout } from './useSessionTimeout';
 import { IS_FOCUS_MODE } from '../constants';
 import { getComponents } from '../network/get-components';
-import { getInfo } from '../network/get-info';
 import { loginConfig } from '../network/login-config';
-import { logout } from '../network/logout';
 import { goToLogin } from '../network/utils';
 import { useAccountStore } from '../store/account';
+import { normalizeAccount } from '../store/account/normalization';
 import { useAppStore } from '../store/app';
 import { useTracker } from '../tracker/tracker';
 
@@ -64,62 +67,71 @@ export const LoaderFailureModal = ({
 	);
 };
 
-function calcInitialCounter(sessionLifetime: number): number {
-	const oneMinute = 60 * 1000;
-	return Math.ceil(Math.min(sessionLifetime, oneMinute) / 1000);
-}
-
-const ExpiringSessionDynamicLabel = ({
-	sessionLifetime
-}: {
-	sessionLifetime: number;
-}): React.JSX.Element => {
-	const [t] = useTranslation();
-	const [count, setCount] = useState(calcInitialCounter(sessionLifetime));
-
-	useEffect(() => {
-		const interval = setInterval(() => {
-			setCount((prevState) => prevState - 1);
-		}, 1000);
-
-		return (): void => {
-			clearInterval(interval);
-		};
-	}, []);
-
-	return (
-		<>
-			{t('snackbar.expiration.oneMinute', {
-				defaultValue_one:
-					"Your session will expire in {{count}} second. After that, you'll be redirected to the login page.",
-				defaultValue_other:
-					"Your session will expire in {{count}} seconds. After that, you'll be redirected to the login page.",
-				count
-			})}
-		</>
-	);
-};
-
 export const Loader = (): React.JSX.Element => {
-	const [t] = useTranslation();
 	const [open, setOpen] = useState(false);
 	const closeHandler = useCallback(() => setOpen(false), []);
 	const [sessionLifetime, setSessionLifetime] = useState<number>();
-	const createSnackbar = useSnackbar();
-
-	const getSessionInfo = useCallback(
-		() =>
-			getInfo().then((sessionInfo) => {
-				setSessionLifetime(sessionInfo.lifetime);
-			}),
-		[]
-	);
 
 	const carbonioPrefSendAnalytics = useAccountStore(
 		(state) => state.settings.prefs.carbonioPrefSendAnalytics
 	);
 
+	const zimbraMailIdleSessionTimeout = useAccountStore(
+		(state) => state.settings.attrs.zimbraMailIdleSessionTimeout
+	);
+
 	const { enableTracker } = useTracker();
+
+	const getSessionInfo = useCallback(() => {
+		const rights = [
+			GET_INFO_RIGHTS.sendAs,
+			GET_INFO_RIGHTS.sendAsDistList,
+			GET_INFO_RIGHTS.viewFreeBusy,
+			GET_INFO_RIGHTS.sendOnBehalfOf,
+			GET_INFO_RIGHTS.sendOnBehalfOfDistList
+		];
+
+		return api.getInfo({ rights }).then((res) => {
+			const { account, settings } = normalizeAccount(res);
+			useAccountStore.setState({
+				authenticated: true,
+				account,
+				settings
+			});
+			setSessionLifetime(res.lifetime);
+		});
+	}, []);
+
+	const authErrorListener = useCallback(() => {
+		if (IS_FOCUS_MODE) {
+			useAccountStore.setState({ authenticated: false });
+		} else {
+			goToLogin();
+		}
+	}, []);
+
+	const userQuotaEventLister = useCallback(
+		(e: CustomEventInit<UserQuotaChangeEvent['payload']>): void => {
+			useAccountStore.setState({ usedQuota: e.detail?.quota });
+		},
+		[]
+	);
+
+	useEffect(() => {
+		window.addEventListener(ApiEvents.AuthError, authErrorListener);
+
+		return () => {
+			window.removeEventListener(ApiEvents.AuthError, authErrorListener);
+		};
+	}, [authErrorListener]);
+
+	useEffect(() => {
+		window.addEventListener(ApiEvents.UserQuotaChange, userQuotaEventLister);
+
+		return () => {
+			window.removeEventListener(ApiEvents.UserQuotaChange, userQuotaEventLister);
+		};
+	}, [userQuotaEventLister]);
 
 	useEffect(() => {
 		enableTracker(carbonioPrefSendAnalytics === 'TRUE');
@@ -155,76 +167,13 @@ export const Loader = (): React.JSX.Element => {
 		};
 	}, [getSessionInfo]);
 
-	useEffect(() => {
-		const expirationTimeouts: NodeJS.Timeout[] = [];
-		const logoutFn = (): void => {
-			logout();
-		};
-		if (sessionLifetime !== undefined) {
-			const tenMinutes = 10 * 60 * 1000;
-			if (sessionLifetime >= tenMinutes) {
-				expirationTimeouts.push(
-					setTimeout(() => {
-						createSnackbar({
-							severity: 'info',
-							key: 'ten-minutes-from-expiration-snackbar',
-							autoHideTimeout: 10 * 1000,
-							label: t(
-								'snackbar.expiration.tenMinutes',
-								"Your session will expire in 10 minutes. After that, you'll be redirected to the login page."
-							),
-							actionLabel: t('snackbar.expiration.action', 'Go to login page'),
-							onActionClick: logoutFn
-						});
-					}, sessionLifetime - tenMinutes)
-				);
-			}
+	useSessionTimeout(sessionLifetime);
+	const { isWarningVisible, reset } = useIdleTimeout(zimbraMailIdleSessionTimeout);
 
-			const threeMinutes = 3 * 60 * 1000;
-			if (sessionLifetime >= threeMinutes) {
-				expirationTimeouts.push(
-					setTimeout(() => {
-						createSnackbar({
-							severity: 'info',
-							key: 'three-minutes-from-expiration-snackbar',
-							disableAutoHide: true,
-							label: t(
-								'snackbar.expiration.threeMinutes',
-								"Your session will expire in 3 minutes. After that, you'll be redirected to the login page."
-							),
-							actionLabel: t('snackbar.expiration.action', 'Go to login page'),
-							onActionClick: logoutFn
-						});
-					}, sessionLifetime - threeMinutes)
-				);
-			}
-
-			const oneMinute = 60 * 1000;
-			expirationTimeouts.push(
-				setTimeout(
-					() => {
-						createSnackbar({
-							severity: 'warning',
-							key: 'one-minute-from-expiration-snackbar',
-							autoHideTimeout: Math.min(oneMinute, sessionLifetime),
-							label: <ExpiringSessionDynamicLabel sessionLifetime={sessionLifetime} />,
-							actionLabel: t('snackbar.expiration.action', 'Go to login page'),
-							onActionClick: logoutFn,
-							replace: true
-						});
-						expirationTimeouts.push(setTimeout(logoutFn, Math.min(oneMinute, sessionLifetime)));
-					},
-					Math.max(sessionLifetime - oneMinute, 0)
-				)
-			);
-		}
-
-		return (): void => {
-			expirationTimeouts.forEach((timeout) => {
-				clearTimeout(timeout);
-			});
-		};
-	}, [createSnackbar, sessionLifetime, t]);
-
-	return <LoaderFailureModal open={open} closeHandler={closeHandler} />;
+	return (
+		<>
+			<LoaderFailureModal open={open} closeHandler={closeHandler} />
+			{zimbraMailIdleSessionTimeout && <IdleTimeoutModal isOpen={isWarningVisible} reset={reset} />}
+		</>
+	);
 };

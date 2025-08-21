@@ -71,8 +71,8 @@
 		"@types/webpack": "^5.28.5",
 		"@types/webpack-env": "^1.18.8",
 		"@zextras/carbonio-search-ui": "github:zextras/carbonio-search-ui#devel",
-		"@zextras/carbonio-ui-configs": "^2.0.1",
-		"@zextras/carbonio-ui-sdk": "^1.7.12",
+		"@zextras/carbonio-ui-configs": "^2.1.0",
+		"@zextras/carbonio-ui-sdk": "^2.1.0",
 		"autoprefixer": "^10.4.17",
 		"babel-plugin-styled-components": "^2.1.4",
 		"babel-plugin-transform-import-meta": "^2.3.2",
@@ -97,14 +97,14 @@
 		"typescript": "^5.3.3",
 		"webpack": "^5.98.0",
 		"webpack-cli": "^6.0.1",
-		"webpack-dev-server": "^4.15.2",
 		"webpack-merge": "^6.0.1"
 	},
 	"dependencies": {
 		"@fontsource/roboto": "^5.0.8",
 		"@tinymce/tinymce-react": "^4.3.2",
-		"@zextras/carbonio-design-system": "^10.1.1",
-		"@zextras/carbonio-ui-preview": "^3.2.1",
+		"@zextras/carbonio-design-system": "^10.3.0",
+		"@zextras/carbonio-ui-preview": "^3.2.0",
+		"@zextras/carbonio-ui-soap-lib": "1.0.3",
 		"darkreader": "^4.9.79",
 		"date-fns": "^4.1.0",
 		"i18next": "^22.5.1",
@@ -119,7 +119,6 @@
 		"react-router-dom": "^6.30.0",
 		"styled-components": "^6.1.13",
 		"tinymce": "^6.8.4",
-		"ua-parser-js": "^1.0.37",
 		"zustand": "^5.0.3"
 	},
 	"peerDependencies": {

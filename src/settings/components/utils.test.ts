@@ -3,8 +3,9 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import type { GeneralizedTime } from '@zextras/carbonio-ui-soap-lib';
+
 import { dateToGenTime, genTimeToDate, humanFileSize, asArray } from './utils';
-import type { GeneralizedTime } from '../../types/account';
 
 describe('dateToGenTime function', () => {
 	it('should return a UTC date with the format YYYYMMDDHHmmss[Z]', () => {

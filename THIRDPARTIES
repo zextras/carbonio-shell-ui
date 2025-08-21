@@ -21,7 +21,6 @@ MIT License (MIT) applies to:
 @types/react-dom, Copyright (c) Microsoft Corporation.
 @types/react-router-dom, Copyright (c) Microsoft Corporation.
 @types/react, Copyright (c) Microsoft Corporation.
-@types/ua-parser-js, Copyright (c) Microsoft Corporation.
 @types/webpack-env, Copyright (c) Microsoft Corporation.
 @types/webpack, Copyright (c) Microsoft Corporation.
 autoprefixer, Copyright 2013 Andrey Sitnik <andrey@sitnik.ru>
@@ -59,7 +58,6 @@ tinymce, Copyright (c) 2022 Ephox Corporation DBA Tiny Technologies, Inc.
 ts-node, Copyright (c) 2014 Blake Embrey (hello@blakeembrey.com)
 ua-parser-js, Copyright (c) 2012-2023 Faisal Salman <<f@faisalman.com>>
 webpack-cli, Copyright JS Foundation and other contributors
-webpack-dev-server, Copyright JS Foundation and other contributors
 webpack-merge, Copyright (c) 2015 Juho Vepsalainen
 webpack, Copyright JS Foundation and other contributors
 zustand, Copyright (c) 2019 Paul Henschel

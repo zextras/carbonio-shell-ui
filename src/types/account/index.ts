@@ -4,14 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { DARK_READER_VALUES, DELEGATED_SEND_SAVE_TARGET } from '../../constants';
-import type { StringOfLength } from '../../utils/typeUtils';
+import type { AccountSettingsPrefs as ApiAccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
 
 export interface ZimletProp {
 	name: string;
 	zimlet: string;
 	_content: string;
 }
+
+export type AccountSettings = {
+	attrs: AccountSettingsAttrs;
+	prefs: ApiAccountSettingsPrefs;
+	props: Array<ZimletProp>;
+};
 
 export type AccountState = {
 	authenticated: boolean;
@@ -52,66 +57,23 @@ export type Account = {
 
 export type BooleanString = 'TRUE' | 'FALSE';
 
-type GeneralizedTimeObj = {
-	year: `${number}` & StringOfLength<4>;
-	month: `${number}` & StringOfLength<2>;
-	date: `${number}` & StringOfLength<2>;
-	hour: `${number}` & StringOfLength<2>;
-	min: `${number}` & StringOfLength<2>;
-	sec: `${number}` & StringOfLength<2>;
-	ms: (`.${number}` & StringOfLength<4>) | '';
-	timezone: 'Z' | '';
-};
-
-/**
- * A GeneralizedTime is a string representing a date in UTC with the format YYYYMMDDHHmmss[.SSS][Z]
- */
-export type GeneralizedTime =
-	`${GeneralizedTimeObj['year']}${GeneralizedTimeObj['month']}${GeneralizedTimeObj['date']}${GeneralizedTimeObj['hour']}${GeneralizedTimeObj['min']}${GeneralizedTimeObj['sec']}${GeneralizedTimeObj['ms']}${GeneralizedTimeObj['timezone']}`;
-
 export type DurationUnit = 'd' | 'h' | 'm' | 's' | 'ms';
 
 export type Duration = `${number}${DurationUnit | ''}`;
-
-export interface AccountSettingsPrefs {
-	zimbraPrefOutOfOfficeExternalReply?: string;
-	zimbraPrefOutOfOfficeReply?: string;
-	zimbraPrefOutOfOfficeReplyEnabled?: BooleanString;
-	zimbraPrefOutOfOfficeExternalReplyEnabled?: BooleanString;
-	zimbraPrefExternalSendersType?: 'ALL' | 'ALLNOTINAB' | 'INAB' | 'INSD';
-	zimbraPrefOutOfOfficeSuppressExternalReply?: BooleanString;
-	zimbraPrefOutOfOfficeFreeBusyStatus?: 'BUSY' | 'OUTOFOFFICE';
-	zimbraPrefOutOfOfficeStatusAlertOnLogin?: BooleanString;
-	zimbraPrefIncludeSharedItemsInSearch?: BooleanString;
-	zimbraPrefIncludeSpamInSearch?: BooleanString;
-	zimbraPrefIncludeTrashInSearch?: BooleanString;
-	zimbraPrefOutOfOfficeFromDate?: GeneralizedTime;
-	zimbraPrefOutOfOfficeUntilDate?: GeneralizedTime;
-	zimbraPrefHtmlEditorDefaultFontColor?: string;
-	zimbraPrefHtmlEditorDefaultFontFamily?: string;
-	zimbraPrefHtmlEditorDefaultFontSize?: string;
-	zimbraPrefLocale?: string;
-	zimbraPrefMailPollingInterval?: Duration;
-	zimbraPrefMailTrustedSenderList?: Array<string> | string;
-	zimbraPrefDelegatedSendSaveTarget?: (typeof DELEGATED_SEND_SAVE_TARGET)[number];
-	carbonioPrefSendAnalytics?: BooleanString;
-	carbonioPrefDarkMode?: (typeof DARK_READER_VALUES)[number];
-	[key: string]: string | number | Array<string | number> | undefined;
-}
 
 export type AccountSettingsAttrs = {
 	zimbraFeatureOptionsEnabled?: BooleanString;
 	zimbraIdentityMaxNumEntries?: number;
 	zimbraMailAlias?: string | Array<string>;
 	zimbraAllowFromAddress?: string | Array<string>;
+	zimbraMailIdleSessionTimeout?: Duration;
 	[key: string]: string | number | Array<string | number> | undefined;
 };
 
-export type AccountSettings = {
-	attrs: AccountSettingsAttrs;
-	prefs: AccountSettingsPrefs;
-	props: Array<ZimletProp>;
-};
+/**
+ * @deprecated Use `AccountSettingsPrefs` from `@zextras/carbonio-ui-soap-lib` instead.
+ */
+export interface AccountSettingsPrefs extends ApiAccountSettingsPrefs {}
 
 export interface IdentityAttrs {
 	/** default mail signature for account/identity/dataSource */

@@ -3,10 +3,12 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+
+import { legacySoapFetch, legacyXmlSoapFetch } from '@zextras/carbonio-ui-soap-lib';
+
 import { getEditSettingsForApp } from '../../network/edit-settings';
-import { getSoapFetch, getXmlSoapFetch } from '../../network/fetch';
 import type { AppActions as StoreAppSetters } from '../../store/app';
-import { getApp, getAppContext, getAppContextHook, getAppHook, useAppStore } from '../../store/app';
+import { getAppHook, getApp, getAppContext, getAppContextHook, useAppStore } from '../../store/app';
 import {
 	normalizeBoardView,
 	normalizePrimaryAccessoryView,
@@ -45,8 +47,8 @@ export type AppDependantExports = {
 	editSettings: ReturnType<typeof getEditSettingsForApp>;
 	getI18n: ReturnType<typeof getI18n>;
 	t: ReturnType<typeof getTFunction>;
-	soapFetch: ReturnType<typeof getSoapFetch>;
-	xmlSoapFetch: ReturnType<typeof getXmlSoapFetch>;
+	soapFetch: typeof legacySoapFetch;
+	xmlSoapFetch: typeof legacySoapFetch;
 	useAppContext: ReturnType<typeof getAppContextHook>;
 	getAppContext: ReturnType<typeof getAppContext>;
 	useApp: ReturnType<typeof getAppHook>;
@@ -74,8 +76,8 @@ export const getAppDependantExports = (pkg: CarbonioModule): AppDependantExports
 		editSettings: getEditSettingsForApp(pkg.name),
 		getI18n: getI18n(pkg.name),
 		t: getTFunction(pkg.name),
-		soapFetch: getSoapFetch(pkg.name),
-		xmlSoapFetch: getXmlSoapFetch(pkg.name),
+		soapFetch: legacySoapFetch,
+		xmlSoapFetch: legacyXmlSoapFetch,
 		useAppContext: getAppContextHook(pkg.name),
 		getAppContext: getAppContext(pkg.name),
 		useApp: getAppHook(pkg.name),

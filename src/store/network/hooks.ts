@@ -3,10 +3,16 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import { useNetworkStore } from './store';
+import { useInfoRefresh, useSync } from '@zextras/carbonio-ui-soap-lib';
+
 import type { SoapNotify, SoapRefresh } from '../../types/network';
 
-const FALLBACK_NOTIFY: SoapNotify[] = [];
-const FALLBACK_REFRESH: SoapRefresh = {};
-export const useNotify = (): SoapNotify[] => useNetworkStore((s) => s.notify ?? FALLBACK_NOTIFY);
-export const useRefresh = (): SoapRefresh => useNetworkStore((s) => s.refresh ?? FALLBACK_REFRESH);
+/**
+ * @deprecated Use `useSync` from `@zextras/carbonio-ui-soap-lib` directly instead.
+ */
+export const useNotify = (): SoapNotify[] => useSync();
+
+/**
+ * @deprecated Use `useInfoRefresh` from `@zextras/carbonio-ui-soap-lib` directly instead.
+ */
+export const useRefresh = (): SoapRefresh => useInfoRefresh();

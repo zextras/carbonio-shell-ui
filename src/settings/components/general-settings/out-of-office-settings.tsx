@@ -9,9 +9,11 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type {
 	SelectItem,
 	SingleSelectionOnChange,
+	SwitchProps,
 	TextAreaProps
 } from '@zextras/carbonio-design-system';
 import {
+	Switch,
 	Container,
 	FormSubSection,
 	FormSection,
@@ -23,32 +25,14 @@ import { type TFunction } from 'i18next';
 import { find } from 'lodash';
 
 import { OutOfOfficeTimePeriodSection } from './out-of-office-time-period-section';
+import { SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT } from '../../../constants/internal-constants';
 import { getT } from '../../../store/i18n/hooks';
-import type { AccountSettings, AccountSettingsPrefs, BooleanString } from '../../../types/account';
+import type { AccountSettings } from '../../../types/account';
 import type { AddMod, RemoveMod } from '../../../types/network';
 import { outOfOfficeSubSection } from '../../general-settings-sub-sections';
 import { useReset } from '../../hooks/use-reset';
 import type { ResetComponentImperativeHandler, SettingsSectionProps } from '../utils';
 import { dateToGenTime, upsertPrefOnUnsavedChanges } from '../utils';
-
-type CoercedPrefType<T> = T extends BooleanString | undefined ? boolean | undefined : T;
-
-export const buildItemsPrefOutOfOfficeReplyEnabled = (
-	t: TFunction
-): Array<
-	SelectItem<
-		NonNullable<CoercedPrefType<AccountSettingsPrefs['zimbraPrefOutOfOfficeReplyEnabled']>>
-	>
-> => [
-	{
-		label: t('settings.out_of_office.send_auto_replies', 'Send auto-replies'),
-		value: true
-	},
-	{
-		label: t('settings.out_of_office.do_not_send_auto_replies', 'Do not send auto-replies'),
-		value: false
-	}
-];
 
 type ExternalSenders =
 	| 'SEND_AUTO_REPLY'
@@ -89,43 +73,60 @@ export const buildItemsExternalSenders = (
 	}
 });
 
-export const getExternalSendersPrefsData = (
-	settings: AccountSettings,
-	t: TFunction
-): SelectItem<ExternalSenders> => {
-	const itemsExternalSenders = buildItemsExternalSenders(t);
+const getExternalSenderFromSettings = (settings: AccountSettings): ExternalSenders => {
 	if (
 		settings.prefs.zimbraPrefOutOfOfficeSuppressExternalReply === 'FALSE' &&
 		settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled === 'FALSE'
 	) {
-		return itemsExternalSenders.SEND_AUTO_REPLY;
+		return 'SEND_AUTO_REPLY';
 	}
 	if (
 		settings.prefs.zimbraPrefExternalSendersType === 'ALL' &&
 		settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled === 'TRUE'
 	) {
-		return itemsExternalSenders.SHOW_EXTERNAL_INPUT;
+		return 'SHOW_EXTERNAL_INPUT';
 	}
 	if (
 		settings.prefs.zimbraPrefExternalSendersType === 'ALLNOTINAB' &&
 		settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled === 'TRUE'
 	) {
-		return itemsExternalSenders.SEND_NOT_IN_ORG;
+		return 'SEND_NOT_IN_ORG';
 	}
-	return itemsExternalSenders.SUPPRESS_EXTERNAL;
+	if (
+		settings.prefs.zimbraPrefExternalSendersType === 'INAB' &&
+		settings.prefs.zimbraPrefOutOfOfficeExternalReplyEnabled === 'FALSE'
+	) {
+		return 'SUPPRESS_EXTERNAL';
+	}
+	return 'SUPPRESS_EXTERNAL';
 };
+
+export const getExternalSendersPrefsData = (
+	settings: AccountSettings,
+	t: TFunction
+): SelectItem<ExternalSenders> =>
+	buildItemsExternalSenders(t)[getExternalSenderFromSettings(settings)];
+
+const isTheSameSettingExternalSenderValue = (
+	value: ExternalSenders,
+	settings: AccountSettings
+): boolean => value === getExternalSenderFromSettings(settings);
 
 interface OutOfOfficeViewProps extends SettingsSectionProps {
 	settings: AccountSettings;
 	addMod: AddMod;
 	removeMod: RemoveMod;
+	setOutOfOfficeError: React.Dispatch<React.SetStateAction<boolean>>;
+	outOfOfficeError: boolean;
 }
 
 export const OutOfOfficeSettings = ({
 	settings,
 	addMod,
 	removeMod,
-	resetRef
+	resetRef,
+	setOutOfOfficeError,
+	outOfOfficeError
 }: OutOfOfficeViewProps): React.JSX.Element => {
 	const t = getT();
 	const outOfOfficeSectionTitle = useMemo(() => outOfOfficeSubSection(t), [t]);
@@ -173,32 +174,21 @@ export const OutOfOfficeSettings = ({
 
 	const updatePref = useMemo(() => upsertPrefOnUnsavedChanges(addMod), [addMod]);
 
-	const prefOutOfOfficeReplyEnabledSelectItems = useMemo(
-		() => buildItemsPrefOutOfOfficeReplyEnabled(t),
-		[t]
-	);
+	const prefOutOfOfficeReplyEnabledOnClick = useCallback<
+		NonNullable<SwitchProps['onClick']>
+	>((): void => {
+		setPrefOutOfOfficeReplyEnabled((prev) => !prev);
+	}, []);
 
-	const prefOutOfOfficeReplyEnabledSelectedValue = useMemo<SelectItem<boolean>>(
-		() =>
-			find(
-				prefOutOfOfficeReplyEnabledSelectItems,
-				(item) => item.value === prefOutOfOfficeReplyEnabled
-			) as SelectItem<boolean>,
-		[prefOutOfOfficeReplyEnabled, prefOutOfOfficeReplyEnabledSelectItems]
-	);
-
-	const prefOutOfOfficeReplyEnabledOnChange = useCallback<
-		SingleSelectionOnChange<
-			NonNullable<CoercedPrefType<AccountSettingsPrefs['zimbraPrefOutOfOfficeReplyEnabled']>>
-		>
-	>(
+	const prefOutOfOfficeReplyEnabledOnChange = useCallback<NonNullable<SwitchProps['onChange']>>(
 		(value): void => {
-			if (value !== null) {
+			if (value === (settings.prefs.zimbraPrefOutOfOfficeReplyEnabled === 'TRUE')) {
+				removeMod('prefs', 'zimbraPrefOutOfOfficeReplyEnabled');
+			} else {
 				updatePref('zimbraPrefOutOfOfficeReplyEnabled', value);
-				setPrefOutOfOfficeReplyEnabled(value);
 			}
 		},
-		[updatePref]
+		[removeMod, settings.prefs.zimbraPrefOutOfOfficeReplyEnabled, updatePref]
 	);
 
 	const externalSendersSelectItems = useMemo(
@@ -208,29 +198,32 @@ export const OutOfOfficeSettings = ({
 
 	const externalSendersHandler = useCallback(
 		(value: ExternalSenders) => {
-			if (value === 'SEND_AUTO_REPLY') {
+			if (isTheSameSettingExternalSenderValue(value, settings)) {
+				removeMod('prefs', 'zimbraPrefExternalSendersType');
+				removeMod('prefs', 'zimbraPrefOutOfOfficeExternalReplyEnabled');
+				removeMod('prefs', 'zimbraPrefOutOfOfficeSuppressExternalReply');
+			} else if (value === 'SEND_AUTO_REPLY') {
 				updatePref('zimbraPrefExternalSendersType', 'INSD');
 				updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', false);
 				updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', false);
-				setPrefOutOfOfficeExternalReplyEnabled(false);
 			} else if (value === 'SHOW_EXTERNAL_INPUT') {
 				updatePref('zimbraPrefExternalSendersType', 'ALL');
 				updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', true);
 				updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', false);
-				setPrefOutOfOfficeExternalReplyEnabled(true);
 			} else if (value === 'SEND_NOT_IN_ORG') {
 				updatePref('zimbraPrefExternalSendersType', 'ALLNOTINAB');
 				updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', true);
 				updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', false);
-				setPrefOutOfOfficeExternalReplyEnabled(true);
 			} else if (value === 'SUPPRESS_EXTERNAL') {
 				updatePref('zimbraPrefExternalSendersType', 'INAB');
 				updatePref('zimbraPrefOutOfOfficeExternalReplyEnabled', false);
 				updatePref('zimbraPrefOutOfOfficeSuppressExternalReply', true);
-				setPrefOutOfOfficeExternalReplyEnabled(false);
 			}
+			setPrefOutOfOfficeExternalReplyEnabled(
+				['SHOW_EXTERNAL_INPUT', 'SEND_NOT_IN_ORG'].includes(value)
+			);
 		},
-		[updatePref]
+		[removeMod, settings, updatePref]
 	);
 
 	const externalSendersOnChange = useCallback<SingleSelectionOnChange<ExternalSenders>>(
@@ -247,56 +240,126 @@ export const OutOfOfficeSettings = ({
 	const prefOutOfOfficeReplyOnChange = useCallback<NonNullable<TextAreaProps['onChange']>>(
 		(ev) => {
 			setPrefOutOfOfficeReply(ev.target.value);
-			updatePref('zimbraPrefOutOfOfficeReply', ev.target.value);
+			if (ev.target.value === settings.prefs.zimbraPrefOutOfOfficeReply) {
+				removeMod('prefs', 'zimbraPrefOutOfOfficeReply');
+			} else {
+				updatePref('zimbraPrefOutOfOfficeReply', ev.target.value);
+			}
 		},
-		[updatePref]
+		[removeMod, settings.prefs.zimbraPrefOutOfOfficeReply, updatePref]
 	);
 
 	const prefOutOfOfficeExternalReplyOnChange = useCallback<NonNullable<TextAreaProps['onChange']>>(
 		(ev) => {
 			setPrefOutOfOfficeExternalReply(ev.target.value);
-			updatePref('zimbraPrefOutOfOfficeExternalReply', ev.target.value);
+			if (ev.target.value === settings.prefs.zimbraPrefOutOfOfficeExternalReply) {
+				removeMod('prefs', 'zimbraPrefOutOfOfficeExternalReply');
+			} else {
+				updatePref('zimbraPrefOutOfOfficeExternalReply', ev.target.value);
+			}
 		},
-		[updatePref]
+		[removeMod, settings.prefs.zimbraPrefOutOfOfficeExternalReply, updatePref]
 	);
 
 	const toggleSendAutoReplyTimePeriod = useCallback(() => {
 		setSendAutoReplyTimePeriodEnabled((prevState) => {
 			const nextState = !prevState;
 			if (!nextState) {
-				updatePref('zimbraPrefOutOfOfficeFromDate', undefined);
-				updatePref('zimbraPrefOutOfOfficeUntilDate', undefined);
+				if (
+					!!settings.prefs.zimbraPrefOutOfOfficeFromDate &&
+					!!settings.prefs.zimbraPrefOutOfOfficeUntilDate
+				) {
+					updatePref('zimbraPrefOutOfOfficeFromDate', undefined);
+					updatePref('zimbraPrefOutOfOfficeUntilDate', undefined);
+				} else {
+					removeMod('prefs', 'zimbraPrefOutOfOfficeFromDate');
+					removeMod('prefs', 'zimbraPrefOutOfOfficeUntilDate');
+				}
 			} else {
+				if (
+					!!settings.prefs.zimbraPrefOutOfOfficeFromDate &&
+					!!settings.prefs.zimbraPrefOutOfOfficeUntilDate
+				) {
+					removeMod('prefs', 'zimbraPrefOutOfOfficeFromDate');
+					removeMod('prefs', 'zimbraPrefOutOfOfficeUntilDate');
+				}
 				if (!settings.prefs.zimbraPrefOutOfOfficeFromDate) {
-					updatePref('zimbraPrefOutOfOfficeFromDate', dateToGenTime(new Date()));
+					updatePref(
+						'zimbraPrefOutOfOfficeFromDate',
+						dateToGenTime(new Date(new Date().setSeconds(0, 0)))
+					);
 				}
 				if (!settings.prefs.zimbraPrefOutOfOfficeUntilDate) {
-					updatePref('zimbraPrefOutOfOfficeUntilDate', dateToGenTime(new Date()));
+					updatePref(
+						'zimbraPrefOutOfOfficeUntilDate',
+						dateToGenTime(new Date(new Date().setSeconds(0, 0)))
+					);
 				}
 			}
 			return nextState;
 		});
 	}, [
+		removeMod,
 		settings.prefs.zimbraPrefOutOfOfficeFromDate,
 		settings.prefs.zimbraPrefOutOfOfficeUntilDate,
 		updatePref
 	]);
 
+	const prefOutOfOfficeReplyHasError = useMemo(
+		() => prefOutOfOfficeReply.length > SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT,
+		[prefOutOfOfficeReply.length]
+	);
+	const prefOutOfOfficeExternalReplyHasError = useMemo(
+		() => prefOutOfOfficeExternalReply.length > SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT,
+		[prefOutOfOfficeExternalReply.length]
+	);
+	const errorDescription = useMemo(
+		() =>
+			t(
+				'label.settings.textArea.errorDescription',
+				"You've exceeded the character limit. Please shorten your text."
+			),
+		[t]
+	);
+
+	useEffect(() => {
+		if (prefOutOfOfficeExternalReplyHasError || prefOutOfOfficeReplyHasError) {
+			!outOfOfficeError && setOutOfOfficeError(true);
+		} else {
+			outOfOfficeError && setOutOfOfficeError(false);
+		}
+	}, [
+		prefOutOfOfficeExternalReplyHasError,
+		prefOutOfOfficeReplyHasError,
+		setOutOfOfficeError,
+		outOfOfficeError
+	]);
+
 	return (
-		<FormSection label={outOfOfficeSectionTitle.label} id={outOfOfficeSectionTitle.id}>
+		<FormSection
+			label={outOfOfficeSectionTitle.label}
+			id={outOfOfficeSectionTitle.id}
+			data-testid={'out_of_office'}
+		>
 			<FormSubSection>
-				<Container gap={'0.5rem'}>
-					<Select
-						items={prefOutOfOfficeReplyEnabledSelectItems}
-						label={t('label.out_of_office', 'Out of Office')}
+				<Container gap={'0.5rem'} crossAlignment={'flex-start'}>
+					<Switch
+						value={prefOutOfOfficeReplyEnabled}
+						label={t('label.send_auto_reply', 'Send auto-reply')}
+						onClick={prefOutOfOfficeReplyEnabledOnClick}
 						onChange={prefOutOfOfficeReplyEnabledOnChange}
-						selection={prefOutOfOfficeReplyEnabledSelectedValue}
 					/>
 					<TextArea
 						value={prefOutOfOfficeReply}
 						disabled={!prefOutOfOfficeReplyEnabled}
 						label={t('settings.out_of_office.labels.auto_reply_message', 'Auto-Reply Message:')}
 						onChange={prefOutOfOfficeReplyOnChange}
+						description={
+							prefOutOfOfficeReplyHasError
+								? `${prefOutOfOfficeReply.length}/${SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT} ${errorDescription}`
+								: `${prefOutOfOfficeReply.length}/${SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT}`
+						}
+						hasError={prefOutOfOfficeReplyHasError}
 					/>
 					<Select
 						disabled={!prefOutOfOfficeReplyEnabled}
@@ -317,11 +380,20 @@ export const OutOfOfficeSettings = ({
 								'Auto-Reply Message for External senders:'
 							)}
 							onChange={prefOutOfOfficeExternalReplyOnChange}
+							description={
+								prefOutOfOfficeExternalReplyHasError
+									? `${prefOutOfOfficeExternalReply.length}/${SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT} ${errorDescription}`
+									: `${prefOutOfOfficeExternalReply.length}/${SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT}`
+							}
+							hasError={prefOutOfOfficeExternalReplyHasError}
 						/>
 					)}
 				</Container>
 			</FormSubSection>
-			<FormSubSection label={t('settings.out_of_office.headings.time_period', 'Time Period')}>
+			<FormSubSection
+				label={t('settings.out_of_office.headings.time_period', 'Time Period')}
+				disabled={!prefOutOfOfficeReplyEnabled}
+			>
 				<Container gap={'0.5rem'} mainAlignment={'flex-start'} crossAlignment={'flex-start'}>
 					<Checkbox
 						label={t(

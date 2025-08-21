@@ -19,3 +19,4 @@ carbonio.webpack.js
 src/constants/locales.js
 /temp
 *.tgz
+*.DS_Store

@@ -5,6 +5,7 @@
  */
 
 import type { Locale } from 'date-fns';
+import type { TFunction } from 'i18next';
 
 export type LocaleDescriptor = {
 	name: string;
@@ -212,5 +213,208 @@ export const SUPPORTED_LOCALES: Record<string, LocaleDescriptor> = {
 					({ bs }) => bs
 				)
 		}
+	},
+	sl: {
+		name: 'Slovenščina',
+		value: 'sl',
+		tinymceLocale: 'sl_SI',
+		dateFnsLocale: {
+			localeImportPath: () =>
+				/* webpackMode: "lazy", webpackChunkName: "sl" */ import('date-fns/locale/sl').then(
+					({ sl }) => sl
+				)
+		}
 	}
 } as const;
+
+export type LocaleDescriptorWithLabels = LocaleDescriptor & {
+	id: string;
+	label: string;
+	localName: string;
+};
+export const localeList = (t: TFunction): Array<LocaleDescriptorWithLabels> => [
+	{
+		id: 'zh_CN',
+		...SUPPORTED_LOCALES.zh_CN,
+		localName: t('locale.chinese_china', 'Chinese (China)'),
+		label: t('locale.label_chinese', {
+			value: SUPPORTED_LOCALES.zh_CN.name,
+			defaultValue: 'Chinese (China) - {{value}}'
+		})
+	},
+	{
+		id: 'nl',
+		...SUPPORTED_LOCALES.nl,
+		localName: t('locale.dutch', 'Dutch'),
+		label: t('locale.label_dutch', {
+			value: SUPPORTED_LOCALES.nl.name,
+			defaultValue: 'Dutch - {{value}}'
+		})
+	},
+	{
+		id: 'en',
+		...SUPPORTED_LOCALES.en,
+		localName: t('locale.English', 'English'),
+		label: t('locale.label_english', {
+			value: SUPPORTED_LOCALES.en.name,
+			defaultValue: 'English - {{value}}'
+		})
+	},
+	{
+		id: 'de',
+		...SUPPORTED_LOCALES.de,
+		localName: t('locale.german', 'German'),
+		label: t('locale.label_german', {
+			value: SUPPORTED_LOCALES.de.name,
+			defaultValue: 'German - {{value}}'
+		})
+	},
+	{
+		id: 'hi',
+		...SUPPORTED_LOCALES.hi,
+		localName: t('locale.hindi', 'Hindi'),
+		label: t('locale.label_hindi', {
+			value: SUPPORTED_LOCALES.hi.name,
+			defaultValue: 'Hindi - {{value}}'
+		})
+	},
+	{
+		id: 'hu',
+		...SUPPORTED_LOCALES.hu,
+		localName: t('locale.hungarian', 'Hungarian'),
+		label: t('locale.label_hungarian', {
+			value: SUPPORTED_LOCALES.hu.name,
+			defaultValue: 'Hungarian - {{value}}'
+		})
+	},
+	{
+		id: 'it',
+		...SUPPORTED_LOCALES.it,
+		localName: t('locale.italian', 'Italian'),
+		label: t('locale.label_italian', {
+			value: SUPPORTED_LOCALES.it.name,
+			defaultValue: 'Italian - {{value}}'
+		})
+	},
+	{
+		id: 'ja',
+		...SUPPORTED_LOCALES.ja,
+		localName: t('locale.japanese', 'Japanese'),
+		label: t('locale.label_japanese', {
+			value: SUPPORTED_LOCALES.ja.name,
+			defaultValue: 'Japanese - {{value}}'
+		})
+	},
+
+	{
+		id: 'pt',
+		...SUPPORTED_LOCALES.pt,
+		localName: t('locale.portuguese', 'Portuguese'),
+		label: t('locale.label_portuguese', {
+			value: SUPPORTED_LOCALES.pt.name,
+			defaultValue: 'Portuguese - {{value}}'
+		})
+	},
+	{
+		id: 'pl',
+		...SUPPORTED_LOCALES.pl,
+		localName: t('locale.polish', 'Polish'),
+		label: t('locale.label_polish', {
+			value: SUPPORTED_LOCALES.pl.name,
+			defaultValue: 'Polish - {{value}}'
+		})
+	},
+
+	{
+		id: 'ro',
+		...SUPPORTED_LOCALES.ro,
+		localName: t('locale.romanian', 'Romanian'),
+		label: t('locale.label_romanian', {
+			value: SUPPORTED_LOCALES.ro.name,
+			defaultValue: 'Romanian - {{value}}'
+		})
+	},
+	{
+		id: 'ru',
+		...SUPPORTED_LOCALES.ru,
+		localName: t('locale.russian', 'Russian'),
+		label: t('locale.label_russian', {
+			value: SUPPORTED_LOCALES.ru.name,
+			defaultValue: 'Russian - {{value}}'
+		})
+	},
+
+	{
+		id: 'es',
+		...SUPPORTED_LOCALES.es,
+		localName: t('locale.spanish', 'Spanish'),
+		label: t('locale.label_spanish', {
+			value: SUPPORTED_LOCALES.es.name,
+			defaultValue: 'Spanish - {{value}}'
+		})
+	},
+
+	{
+		id: 'th',
+		...SUPPORTED_LOCALES.th,
+		localName: t('locale.thai', 'Thai'),
+		label: t('locale.label_thai', {
+			value: SUPPORTED_LOCALES.th.name,
+			defaultValue: 'Thai - {{value}}'
+		})
+	},
+	{
+		id: 'tr',
+		...SUPPORTED_LOCALES.tr,
+		localName: t('locale.turkish', 'Turkish'),
+		label: t('locale.label_turkish', {
+			value: SUPPORTED_LOCALES.tr.name,
+			defaultValue: 'Turkish - {{value}}'
+		})
+	},
+	{
+		id: 'fr',
+		...SUPPORTED_LOCALES.fr,
+		localName: t('locale.french', 'French'),
+		label: t('locale.label_french', {
+			value: SUPPORTED_LOCALES.fr.name,
+			defaultValue: 'French - {{value}}'
+		})
+	},
+	{
+		id: 'vi',
+		...SUPPORTED_LOCALES.vi,
+		localName: t('locale.vietnamese', 'Vietnamese'),
+		label: t('locale.label_vietnamese', {
+			value: SUPPORTED_LOCALES.vi.name,
+			defaultValue: 'Vietnamese - {{value}}'
+		})
+	},
+	{
+		id: 'ky',
+		...SUPPORTED_LOCALES.ky,
+		localName: t('locale.kyrgyz', 'Kyrgyz'),
+		label: t('locale.label_kyrgyz', {
+			value: SUPPORTED_LOCALES.ky.name,
+			defaultValue: 'Kyrgyz - {{value}}'
+		})
+	},
+	{
+		id: 'bs',
+		...SUPPORTED_LOCALES.bs,
+		localName: t('locale.bosnian', 'Bosnian'),
+		label: t('locale.label_bosnian', {
+			value: SUPPORTED_LOCALES.bs.name,
+			defaultValue: 'Bosnian - {{value}}'
+		})
+	},
+	{
+		id: 'sl',
+		...SUPPORTED_LOCALES.sl,
+		localName: t('locale.slovenian', 'Slovenian'),
+		label: t('locale.label_slovenian', {
+			value: SUPPORTED_LOCALES.sl.name,
+			defaultValue: 'Slovenian - {{value}}'
+		})
+	}
+];

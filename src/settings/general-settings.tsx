@@ -7,6 +7,7 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
+import { legacySoapFetch } from '@zextras/carbonio-ui-soap-lib';
 import { includes, isEmpty, map, size } from 'lodash';
 
 import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
@@ -21,8 +22,7 @@ import { SettingsHeader } from './components/settings-header';
 import type { ResetComponentImperativeHandler } from './components/utils';
 import { appearanceSubSection, privacySubSection } from './general-settings-sub-sections';
 import { LanguageSettings } from './language-settings';
-import { JSNS, LOCAL_STORAGE_SETTINGS_KEY, SHELL_APP_ID } from '../constants';
-import { getSoapFetch } from '../network/fetch';
+import { JSNS, LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
 import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 import { useAccountStore, useUserSettings } from '../store/account';
 import { mergePrefs, mergeProps } from '../store/account/utils';
@@ -44,6 +44,8 @@ import type { ValueOf } from '../utils/typeUtils';
 
 const GeneralSettings = (): React.JSX.Element => {
 	const [mods, setMods] = useState<Mods>({});
+	const [outOfOfficeError, setOutOfOfficeError] = useState<boolean>(false);
+	const hasError = useMemo(() => outOfOfficeError, [outOfOfficeError]);
 	const t = getT();
 	const userSettings = useUserSettings();
 	const [localStorageUnAppliedChanges, setLocalStorageUnAppliedChanges] = useState<ScalingSettings>(
@@ -101,6 +103,7 @@ const GeneralSettings = (): React.JSX.Element => {
 			return prevState;
 		});
 	}, []);
+
 	const createSnackbar = useSnackbar();
 
 	const onSave = useCallback<SettingsHeaderProps['onSave']>(() => {
@@ -142,7 +145,7 @@ const GeneralSettings = (): React.JSX.Element => {
 				modifyPrefsRequest = { _jsns: JSNS.account, _attrs: attrs };
 			}
 
-			const promise = getSoapFetch(SHELL_APP_ID)<
+			const promise = legacySoapFetch<
 				BatchRequest,
 				{
 					ModifyPropertiesResponse?: ModifyPropertiesResponse;
@@ -222,7 +225,13 @@ const GeneralSettings = (): React.JSX.Element => {
 
 	return (
 		<>
-			<SettingsHeader title={title} onCancel={onCancel} onSave={onSave} isDirty={isDirty} />
+			<SettingsHeader
+				title={title}
+				onCancel={onCancel}
+				onSave={onSave}
+				isDirty={isDirty}
+				hasError={hasError}
+			/>
 			<Container
 				background={'gray5'}
 				mainAlignment="flex-start"
@@ -257,6 +266,8 @@ const GeneralSettings = (): React.JSX.Element => {
 					addMod={addMod}
 					removeMod={removeMod}
 					resetRef={outOfOfficeSettingsSectionRef}
+					setOutOfOfficeError={setOutOfOfficeError}
+					outOfOfficeError={outOfOfficeError}
 				/>
 				<SearchSettings
 					settings={userSettings}

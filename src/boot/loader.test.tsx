@@ -6,6 +6,7 @@
 import React from 'react';
 
 import { act, waitFor } from '@testing-library/react';
+import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
 import { api, ApiEvents } from '@zextras/carbonio-ui-soap-lib';
 import { noop } from 'lodash';
 import { http, HttpResponse } from 'msw';
@@ -21,9 +22,8 @@ import * as networkUtils from '../network/utils';
 import { useLoginConfigStore } from '../store/login/store';
 import { LOGGED_USER, TIMERS } from '../tests/constants';
 import { spyOnPosthog } from '../tests/posthog-utils';
-import { controlConsoleError, setup, screen } from '../tests/utils';
+import { setup, screen } from '../tests/utils';
 import * as tracker from '../tracker/tracker';
-import type { AccountSettingsPrefs } from '../types/account';
 import * as utils from '../utils/utils';
 
 jest.mock<typeof loadAppsModule>('./app/load-apps');
@@ -81,8 +81,6 @@ describe('Loader', () => {
 	});
 
 	test('If only getInfo request fails, the LoaderFailureModal appears', async () => {
-		// TODO remove when SHELL-117 will be implemented
-		controlConsoleError("Cannot use 'in' operator to search for 'Fault' in undefined");
 		jest.spyOn(api, 'getInfo').mockRejectedValue({
 			status: 503,
 			statusText: 'Controlled error: fail getInfo request'
@@ -495,6 +493,232 @@ describe('Loader', () => {
 
 			addEventListenerSpy.mockRestore();
 			removeEventListenerSpy.mockRestore();
+		});
+	});
+
+	describe('Idle timeout modal', () => {
+		test('should show idle timeout modal when zimbraMailIdleSessionTimeout is set and warning time is reached', async () => {
+			mockGetInfo({
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				attrs: { _attrs: { zimbraMailIdleSessionTimeout: '120s' } }
+			});
+
+			setup(<Loader />);
+			await act(async () => {
+				await jest.advanceTimersToNextTimerAsync();
+			});
+
+			// Advance to exactly the warning time (60 seconds before timeout = 60s)
+			await act(async () => {
+				await jest.advanceTimersByTimeAsync(60 * 1000);
+			});
+
+			// Wait for the modal to appear
+			await waitFor(() => {
+				expect(screen.getByText('Inactivity warning')).toBeVisible();
+			});
+
+			expect(
+				screen.getByText(
+					`You've been inactive for a while. You'll be logged out soon for security reasons. Press any key or click anywhere to stay logged in.`
+				)
+			).toBeVisible();
+		});
+
+		test('should show "Stay logged in" and "Logout" buttons in idle timeout modal', async () => {
+			mockGetInfo({
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				attrs: { _attrs: { zimbraMailIdleSessionTimeout: '120s' } }
+			});
+
+			setup(<Loader />);
+			await act(async () => {
+				await jest.advanceTimersToNextTimerAsync();
+			});
+
+			await act(async () => {
+				await jest.advanceTimersByTimeAsync(60 * 1000);
+			});
+
+			// Wait for the modal to appear
+			await waitFor(() => {
+				expect(screen.getByText('Inactivity warning')).toBeVisible();
+			});
+
+			expect(await screen.findByRole('button', { name: /stay logged in/i })).toBeVisible();
+			expect(screen.getByRole('button', { name: /logout/i })).toBeVisible();
+		});
+
+		test('should reset idle timeout when clicking "Stay logged in" button', async () => {
+			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
+			mockGetInfo({
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				attrs: { _attrs: { zimbraMailIdleSessionTimeout: '120s' } }
+			});
+
+			const { user } = setup(<Loader />);
+			await act(async () => {
+				await jest.advanceTimersToNextTimerAsync();
+			});
+
+			// Show warning modal
+			await act(async () => {
+				await jest.advanceTimersByTimeAsync(60 * 1000);
+			});
+
+			const stayLoggedInButton = await screen.findByRole('button', { name: /stay logged in/i });
+			await user.click(stayLoggedInButton);
+
+			// Modal should disappear
+			expect(screen.queryByText('Inactivity warning')).not.toBeInTheDocument();
+
+			// Should not logout after original timeout time
+			await act(async () => {
+				await jest.advanceTimersByTimeAsync(60 * 1000);
+			});
+
+			expect(logoutFn).not.toHaveBeenCalled();
+		});
+
+		test('should call logout when clicking "Logout" button in idle timeout modal', async () => {
+			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
+			mockGetInfo({
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				attrs: { _attrs: { zimbraMailIdleSessionTimeout: '120s' } }
+			});
+
+			const { user } = setup(<Loader />);
+			await act(async () => {
+				await jest.advanceTimersToNextTimerAsync();
+			});
+
+			await act(async () => {
+				await jest.advanceTimersByTimeAsync(60 * 1000);
+			});
+
+			const logoutButton = await screen.findByRole('button', { name: /logout/i });
+			await user.click(logoutButton);
+
+			expect(logoutFn).toHaveBeenCalled();
+		});
+
+		test('should automatically logout when idle timeout expires without user interaction', async () => {
+			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
+			mockGetInfo({
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				attrs: { _attrs: { zimbraMailIdleSessionTimeout: '120s' } }
+			});
+
+			setup(<Loader />);
+			await act(async () => {
+				await jest.advanceTimersToNextTimerAsync();
+			});
+
+			// Let the full timeout expire
+			await act(async () => {
+				await jest.advanceTimersByTimeAsync(120 * 1000);
+			});
+
+			expect(logoutFn).toHaveBeenCalled();
+		});
+
+		test('should not show idle timeout modal when zimbraMailIdleSessionTimeout is not set', async () => {
+			mockGetInfo(); // No zimbraMailIdleSessionTimeout
+
+			setup(<Loader />);
+			await act(async () => {
+				await jest.advanceTimersToNextTimerAsync();
+			});
+
+			// Advance time significantly
+			await act(async () => {
+				await jest.advanceTimersByTimeAsync(300 * 1000);
+			});
+
+			expect(screen.queryByText('Inactivity warning')).not.toBeInTheDocument();
+		});
+
+		test('should not show idle timeout modal when zimbraMailIdleSessionTimeout is 0', async () => {
+			mockGetInfo({
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				attrs: { _attrs: { zimbraMailIdleSessionTimeout: '0s' } }
+			});
+
+			setup(<Loader />);
+			await act(async () => {
+				await jest.advanceTimersToNextTimerAsync();
+			});
+
+			await act(async () => {
+				await jest.advanceTimersByTimeAsync(300 * 1000);
+			});
+
+			expect(screen.queryByText('Inactivity warning')).not.toBeInTheDocument();
+		});
+
+		test('should show idle timeout modal immediately if timeout is less than warning time', async () => {
+			mockGetInfo({
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				attrs: { _attrs: { zimbraMailIdleSessionTimeout: '30s' } }
+			});
+
+			setup(<Loader />);
+			await act(async () => {
+				await jest.advanceTimersToNextTimerAsync();
+			});
+
+			// Wait for the modal to appear
+			// Modal should appear immediately since 30s < 60s warning time
+			await waitFor(() => {
+				expect(screen.getByText('Inactivity warning')).toBeVisible();
+			});
+		});
+
+		test('should reset idle timeout on user activity and hide modal', async () => {
+			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
+			mockGetInfo({
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				attrs: { _attrs: { zimbraMailIdleSessionTimeout: '120s' } }
+			});
+
+			setup(<Loader />);
+			await act(async () => {
+				await jest.advanceTimersToNextTimerAsync();
+			});
+
+			// Show warning modal
+			await act(async () => {
+				await jest.advanceTimersByTimeAsync(60 * 1000);
+			});
+
+			await waitFor(() => {
+				expect(screen.getByText('Inactivity warning')).toBeVisible();
+			});
+
+			// Simulate user activity (mouse click)
+			act(() => {
+				document.dispatchEvent(new Event('keydown'));
+			});
+
+			// Modal should disappear
+			await waitFor(() => {
+				expect(screen.queryByText('Inactivity warning')).not.toBeInTheDocument();
+			});
+
+			// Should not logout after original timeout time
+			await act(async () => {
+				await jest.advanceTimersByTimeAsync(60 * 1000);
+			});
+
+			expect(logoutFn).not.toHaveBeenCalled();
 		});
 	});
 });

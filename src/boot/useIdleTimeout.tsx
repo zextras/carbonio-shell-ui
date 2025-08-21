@@ -22,7 +22,9 @@ const WARNING_TIME_MS = 60 * 1000;
  * @param timeout - Duration string from account settings
  * @returns boolean indicating if the timeout warning is visible
  */
-export const useIdleTimeout = (timeout?: Duration): boolean => {
+export const useIdleTimeout = (
+	timeout?: Duration
+): { isWarningVisible: boolean; reset: () => void } => {
 	const [isWarningVisible, setIsWarningVisible] = useState(false);
 	const warningTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -54,30 +56,34 @@ export const useIdleTimeout = (timeout?: Duration): boolean => {
 	}, []);
 
 	// Reset the idle timeout
-	const resetTimeout = useCallback(() => {
-		lastActivityRef.current = Date.now();
+	const resetTimeout = useCallback(
+		(showWarningIfTimeoutExpired: boolean = false) => {
+			lastActivityRef.current = Date.now();
 
-		clearAllTimers();
-		setIsWarningVisible(false);
+			clearAllTimers();
+			setIsWarningVisible(false);
 
-		if (timeoutMs && timeoutMs > 0) {
-			timeoutRef.current = setTimeout(safeLogout, timeoutMs);
+			if (timeoutMs && timeoutMs > 0) {
+				timeoutRef.current = setTimeout(safeLogout, timeoutMs);
 
-			const warningTimeoutDuration = Math.max(0, timeoutMs - WARNING_TIME_MS);
+				const warningTimeoutDuration = Math.max(0, timeoutMs - WARNING_TIME_MS);
 
-			if (warningTimeoutDuration > 0) {
-				warningTimeoutRef.current = setTimeout(showWarning, warningTimeoutDuration);
-			} else {
-				showWarning();
+				if (warningTimeoutDuration > 0) {
+					warningTimeoutRef.current = setTimeout(showWarning, warningTimeoutDuration);
+				} else if (showWarningIfTimeoutExpired) {
+					showWarning();
+				}
 			}
-		}
-	}, [clearAllTimers, timeoutMs, safeLogout, showWarning]);
+		},
+		[clearAllTimers, timeoutMs, safeLogout, showWarning]
+	);
+
+	const reset = useCallback(() => {
+		resetTimeout(false);
+	}, [resetTimeout]);
 
 	// Handle user activity with debounce
-	const debounceReset = useMemo(
-		() => debounce(resetTimeout, 1000, { leading: true }),
-		[resetTimeout]
-	);
+	const debounceReset = useMemo(() => debounce(reset, 1000, { leading: true }), [reset]);
 
 	// Handle visibility change for sleep/wake detection
 	const handleVisibilityChange = useCallback(() => {
@@ -114,10 +120,9 @@ export const useIdleTimeout = (timeout?: Duration): boolean => {
 		}
 
 		// Set initial timeout
-		resetTimeout();
+		resetTimeout(true);
 
 		// Add event listeners for user activity
-		document.addEventListener('mouseup', debounceReset);
 		document.addEventListener('wheel', debounceReset);
 		document.addEventListener('keydown', debounceReset);
 
@@ -128,7 +133,6 @@ export const useIdleTimeout = (timeout?: Duration): boolean => {
 			// Cleanup
 			isMounted.current = false;
 			clearAllTimers();
-			document.removeEventListener('mouseup', debounceReset);
 			document.removeEventListener('wheel', debounceReset);
 			document.removeEventListener('keydown', debounceReset);
 			document.removeEventListener('visibilitychange', handleVisibilityChange);
@@ -138,14 +142,27 @@ export const useIdleTimeout = (timeout?: Duration): boolean => {
 		};
 	}, [timeoutMs, resetTimeout, debounceReset, handleVisibilityChange, clearAllTimers]);
 
-	return isWarningVisible;
+	useEffect(() => {
+		if (!timeoutMs || timeoutMs <= 0 || isWarningVisible) {
+			return undefined;
+		}
+
+		document.addEventListener('mouseup', debounceReset);
+
+		return () => {
+			document.removeEventListener('mouseup', debounceReset);
+		};
+	}, [timeoutMs, isWarningVisible, debounceReset]);
+
+	return { isWarningVisible, reset };
 };
 
 interface IdleTimeoutModalProps {
 	isOpen: boolean;
+	reset: () => void;
 }
 
-export const IdleTimeoutModal = ({ isOpen }: IdleTimeoutModalProps): React.JSX.Element => {
+export const IdleTimeoutModal = ({ isOpen, reset }: IdleTimeoutModalProps): React.JSX.Element => {
 	const [t] = useTranslation();
 
 	const modalText = useMemo(
@@ -164,8 +181,19 @@ export const IdleTimeoutModal = ({ isOpen }: IdleTimeoutModalProps): React.JSX.E
 		[t]
 	);
 
+	const secondaryActionLabel = useMemo(() => t('label.logout', 'Logout'), [t]);
+
 	return (
-		<Modal open={isOpen} title={modalTitle} confirmLabel={modalConfirmLabel}>
+		<Modal
+			open={isOpen}
+			title={modalTitle}
+			confirmLabel={modalConfirmLabel}
+			showCloseIcon={false}
+			onSecondaryAction={logout}
+			secondaryActionLabel={secondaryActionLabel}
+			onConfirm={reset}
+			onClose={reset}
+		>
 			<Padding vertical="small">
 				<Text color="text" overflow="break-word">
 					{modalText}

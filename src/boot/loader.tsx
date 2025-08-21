@@ -168,12 +168,12 @@ export const Loader = (): React.JSX.Element => {
 	}, [getSessionInfo]);
 
 	useSessionTimeout(sessionLifetime);
-	const isWarningVisible = useIdleTimeout(zimbraMailIdleSessionTimeout);
+	const { isWarningVisible, reset } = useIdleTimeout(zimbraMailIdleSessionTimeout);
 
 	return (
 		<>
 			<LoaderFailureModal open={open} closeHandler={closeHandler} />
-			{zimbraMailIdleSessionTimeout && <IdleTimeoutModal isOpen={isWarningVisible} />}
+			{zimbraMailIdleSessionTimeout && <IdleTimeoutModal isOpen={isWarningVisible} reset={reset} />}
 		</>
 	);
 };

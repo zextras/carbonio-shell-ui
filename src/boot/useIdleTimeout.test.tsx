@@ -86,7 +86,7 @@ describe('useIdleTimeout', () => {
 	});
 
 	it('should reset timeout on user activity', () => {
-		const { unmount } = renderHook(() => useIdleTimeout('10s'));
+		const { unmount } = renderHook(() => useIdleTimeout('70s'));
 
 		// Simulate mouse activity
 		act(() => {
@@ -94,7 +94,7 @@ describe('useIdleTimeout', () => {
 		});
 
 		expect(mockClearTimeout).toHaveBeenCalled();
-		expect(mockSetTimeout).toHaveBeenCalledTimes(2); // Initial + reset
+		expect(mockSetTimeout).toHaveBeenCalledTimes(4); // Initial + reset
 
 		unmount();
 	});

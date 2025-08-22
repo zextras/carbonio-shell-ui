@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [11.0.4](https://github.com/zextras/carbonio-shell-ui/compare/v11.0.3...v11.0.4) (2025-08-22)
+
+
+### Bug Fixes
+
+* update pipeline ([435d3c6](https://github.com/zextras/carbonio-shell-ui/commit/435d3c688ecc47007f2887ddf25b3442e2885fde))
+
 ### 11.0.3 (2025-08-21)
 
 ### 11.0.2 (2025-06-11)

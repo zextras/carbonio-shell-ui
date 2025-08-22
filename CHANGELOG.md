@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v11.0.4...v12.0.0) (2025-08-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove types GeneralizedTime, GeneralizedTimeObj, StringOfLength
+* remove soapFetchV2
+
+### Features
+
+* force BC ([04c8f0c](https://github.com/zextras/carbonio-shell-ui/commit/04c8f0cacaeb05c98b7a7edcedf2c64d6960e224))
+
 ### [11.0.4](https://github.com/zextras/carbonio-shell-ui/compare/v11.0.3...v11.0.4) (2025-08-22)
 
 

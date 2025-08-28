@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import type { AccountSettingsPrefs as ApiAccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
+import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
 import { find } from 'lodash';
 
 import { useAccountStore } from './store';
@@ -13,7 +13,7 @@ import type { IdentityMods } from '../../types/network';
 
 type UpdateSettingsParams = {
 	attrs?: AccountSettingsAttrs;
-	prefs?: ApiAccountSettingsPrefs;
+	prefs?: AccountSettingsPrefs;
 	props?: Record<string, { app: string; value: unknown }>;
 };
 

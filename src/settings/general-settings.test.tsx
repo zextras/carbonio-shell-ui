@@ -8,6 +8,7 @@ import React from 'react';
 import 'jest-styled-components';
 import { faker } from '@faker-js/faker';
 import { screen, waitFor, within } from '@testing-library/react';
+import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
 import { find } from 'lodash';
 
 import { buildItemsExternalSenders } from './components/general-settings/out-of-office-settings';
@@ -21,7 +22,6 @@ import { useI18nStore } from '../store/i18n/store';
 import { useLoginConfigStore } from '../store/login/store';
 import { ICONS, TESTID_SELECTORS } from '../tests/constants';
 import { setup } from '../tests/utils';
-import type { AccountSettingsPrefs } from '../types/account';
 
 describe('General setting', () => {
 	const { defaultI18n } = useI18nStore.getState();

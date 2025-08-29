@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import type { AccountSettingsPrefs as ApiAccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
+import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
 
 export interface ZimletProp {
 	name: string;
@@ -14,7 +14,7 @@ export interface ZimletProp {
 
 export type AccountSettings = {
 	attrs: AccountSettingsAttrs;
-	prefs: ApiAccountSettingsPrefs;
+	prefs: AccountSettingsPrefs;
 	props: Array<ZimletProp>;
 };
 
@@ -66,13 +66,9 @@ export type AccountSettingsAttrs = {
 	zimbraIdentityMaxNumEntries?: number;
 	zimbraMailAlias?: string | Array<string>;
 	zimbraAllowFromAddress?: string | Array<string>;
+	zimbraMailIdleSessionTimeout?: Duration;
 	[key: string]: string | number | Array<string | number> | undefined;
 };
-
-/**
- * @deprecated Use `AccountSettingsPrefs` from `@zextras/carbonio-ui-soap-lib` instead.
- */
-export interface AccountSettingsPrefs extends ApiAccountSettingsPrefs {}
 
 export interface IdentityAttrs {
 	/** default mail signature for account/identity/dataSource */

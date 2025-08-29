@@ -54,7 +54,7 @@ const BadgeWrap = ({
 						color={'gray6'}
 						backgroundColor={badge.color ?? 'primary'}
 						data-testid={'badge-counter'}
-						value={badge.showCount ? badge.count ?? 0 : ''}
+						value={badge.showCount ? (badge.count ?? 0) : ''}
 					/>
 				))}
 			{children}

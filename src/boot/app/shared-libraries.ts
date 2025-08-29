@@ -15,7 +15,6 @@ import * as Lodash from 'lodash';
 import * as ReactDOM from 'react-dom';
 import * as ReactI18n from 'react-i18next';
 import * as ReactRouterDom from 'react-router-dom';
-import * as StyledComponents from 'styled-components';
 
 export function injectSharedLibraries(): void {
 	if (!window.__ZAPP_SHARED_LIBRARIES__) {
@@ -25,7 +24,6 @@ export function injectSharedLibraries(): void {
 			'react-i18next': ReactI18n,
 			lodash: Lodash,
 			'react-router-dom': ReactRouterDom,
-			'styled-components': StyledComponents,
 			'@emotion/react': EmotionReact,
 			'@emotion/styled': EmotionStyled,
 			'@zextras/carbonio-shell-ui': {},

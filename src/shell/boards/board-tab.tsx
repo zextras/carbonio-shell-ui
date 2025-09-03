@@ -107,6 +107,7 @@ export const AppBoardTab = ({ id, icon, title, firstTab }: AppBoardTabProps): Re
 
 		return (): void => {
 			resizeObserverRef.current?.disconnect();
+			resizeObserverRef.current = undefined;
 		};
 	}, [textRef]);
 

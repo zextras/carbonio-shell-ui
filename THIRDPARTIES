@@ -6,6 +6,10 @@ MIT License (MIT) applies to:
 @babel/preset-typescript, Copyright (c) 2014-present Sebastian McKenzie and other contributors
 @commitlint/cli, Copyright (c) 2016 - present Mario Nebl
 @commitlint/config-conventional, Copyright (c) 2016 - present Mario Nebl
+@emotion/babel-plugin, Copyright (c) Emotion team and other contributors
+@emotion/jest, Copyright (c) Emotion team and other contributors
+@emotion/react, Copyright (c) Emotion team and other contributors
+@emotion/styled, Copyright (c) Emotion team and other contributors
 @faker-js/faker, Faker - Copyright (c) 2022-2024
 @microsoft/api-extractor, Copyright (c) Microsoft Corporation. All rights reserved.
 @svgr/webpack, Copyright 2017 Smooth Code

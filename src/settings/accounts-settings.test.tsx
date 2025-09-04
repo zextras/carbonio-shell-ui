@@ -5,7 +5,6 @@
  */
 import React from 'react';
 
-import 'jest-styled-components';
 import { faker } from '@faker-js/faker';
 import { act, screen, waitFor, within } from '@testing-library/react';
 import { head, shuffle, tail } from 'lodash';

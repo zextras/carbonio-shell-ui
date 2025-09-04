@@ -5,6 +5,7 @@
  */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
+import styled from '@emotion/styled';
 import type { SliderProps } from '@zextras/carbonio-design-system';
 import {
 	FormSubSection,
@@ -16,7 +17,6 @@ import {
 	Tooltip
 } from '@zextras/carbonio-design-system';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
 
 import { BASE_FONT_SIZE, SCALING_OPTIONS } from '../../../constants';
 import type { ScalingSettings } from '../../../types/settings';

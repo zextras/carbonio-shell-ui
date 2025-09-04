@@ -6,10 +6,10 @@
 
 import React, { useMemo } from 'react';
 
+import styled from '@emotion/styled';
 import { Container, Spinner } from '@zextras/carbonio-design-system';
 import { map, find } from 'lodash';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
 
 import { AppContextProvider } from '../boot/app/app-context-provider';
 import { IS_FOCUS_MODE } from '../constants';

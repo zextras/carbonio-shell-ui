@@ -6,8 +6,9 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 import { Container, Icon, IconButton, Row, Text, Tooltip } from '@zextras/carbonio-design-system';
-import styled, { css } from 'styled-components';
 
 import { closeBoard, setCurrentBoard, useBoardStore } from '../../store/boards';
 import { getT } from '../../store/i18n/hooks';
@@ -106,6 +107,7 @@ export const AppBoardTab = ({ id, icon, title, firstTab }: AppBoardTabProps): Re
 
 		return (): void => {
 			resizeObserverRef.current?.disconnect();
+			resizeObserverRef.current = undefined;
 		};
 	}, [textRef]);
 

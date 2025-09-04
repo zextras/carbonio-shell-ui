@@ -6,10 +6,10 @@
 
 import React, { useEffect, useMemo, useRef } from 'react';
 
+import styled from '@emotion/styled';
 import { Button, Container, Row, Tooltip } from '@zextras/carbonio-design-system';
 import { map, isEmpty, trim, filter, sortBy } from 'lodash';
 import { useLocation, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 
 import BadgeWrap from './badge-wrap';
 import { AppContextProvider } from '../boot/app/app-context-provider';

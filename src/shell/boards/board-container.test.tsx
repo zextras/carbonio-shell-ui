@@ -8,7 +8,6 @@ import React from 'react';
 import { act, screen, waitFor, within } from '@testing-library/react';
 import { Input } from '@zextras/carbonio-design-system';
 import { reduce, sample, size } from 'lodash';
-import 'jest-styled-components';
 
 import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
 import {

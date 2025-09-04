@@ -6,9 +6,9 @@
 
 import React, { useContext, useEffect } from 'react';
 
+import styled from '@emotion/styled';
 import { Container, Row } from '@zextras/carbonio-design-system';
 import { PreviewManager } from '@zextras/carbonio-ui-preview';
-import styled from 'styled-components';
 
 import AppViewContainer from './app-view-container';
 import { BoardContainer } from './boards/board-container';

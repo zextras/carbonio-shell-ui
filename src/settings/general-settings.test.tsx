@@ -5,7 +5,6 @@
  */
 import React from 'react';
 
-import 'jest-styled-components';
 import { faker } from '@faker-js/faker';
 import { screen, waitFor, within } from '@testing-library/react';
 import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';

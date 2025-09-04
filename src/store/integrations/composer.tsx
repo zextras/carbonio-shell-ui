@@ -5,10 +5,10 @@
  */
 import React, { useCallback, useMemo, useRef } from 'react';
 
+import styled from '@emotion/styled';
 import type { IAllProps as EditorProps } from '@tinymce/tinymce-react';
 import { Editor } from '@tinymce/tinymce-react';
 import { Container } from '@zextras/carbonio-design-system';
-import styled from 'styled-components';
 import type { EditorOptions, TinyMCE, Ui } from 'tinymce/tinymce';
 // TinyMCE so the global var exists
 import tinymce from 'tinymce/tinymce';

@@ -7,7 +7,6 @@
 import React from 'react';
 
 import { screen, within } from '@testing-library/react';
-import 'jest-styled-components';
 
 import { TabsList } from './board-tab-list';
 import { useBoardStore } from '../../store/boards';

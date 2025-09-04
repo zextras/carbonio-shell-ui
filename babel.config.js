@@ -5,7 +5,7 @@
  */
 module.exports = (api) => {
 	let presetEnvOptions;
-	const plugins = ['babel-plugin-styled-components'];
+	const plugins = ['@emotion/babel-plugin'];
 	if (api.env('test')) {
 		presetEnvOptions = {
 			modules: 'commonjs'

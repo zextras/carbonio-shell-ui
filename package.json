@@ -26,7 +26,7 @@
 		"build:dev": "npm run build:pkg -- --dev --pkgRel $(date +%s) && npm run build:lib",
 		"prebuild:pkg": "rm -rf dist pkg; tsc --project tsconfig.build.json",
 		"build:pkg": "sdk build",
-		"postbuild:pkg": "rm carbonio.webpack.js src/constants/locales.js",
+		"postbuild:pkg": "rm carbonio.webpack.js src/constants/default-locales.js",
 		"prebuild:lib": "rm -rf lib",
 		"build:lib": "tsc -p tsconfig.lib.json && npx api-extractor run --verbose",
 		"build:lib:local": "tsc -p tsconfig.lib.json && npx api-extractor run --verbose --local",

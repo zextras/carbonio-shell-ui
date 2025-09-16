@@ -12,7 +12,7 @@ import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { LoadingView } from './boot/splash';
-import { BASENAME } from './constants';
+import { BASENAME, LOCAL_STORAGE_ENABLE_STRICT_MODE } from './constants';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -59,8 +59,12 @@ const router = createBrowserRouter(
 );
 
 const root = ReactDOM.createRoot(document.getElementById('app')!);
-root.render(
-	<React.StrictMode>
-		<RouterProvider router={router} />
-	</React.StrictMode>
-);
+if (window.localStorage.getItem(LOCAL_STORAGE_ENABLE_STRICT_MODE) === 'true') {
+	root.render(
+		<React.StrictMode>
+			<RouterProvider router={router} />
+		</React.StrictMode>
+	);
+} else {
+	root.render(<RouterProvider router={router} />);
+}

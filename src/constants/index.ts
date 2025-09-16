@@ -41,6 +41,7 @@ export const DARK_READER_VALUES = ['auto', 'enabled', 'disabled'] as const;
 export const LOCAL_STORAGE_SETTINGS_KEY = 'settings';
 export const LOCAL_STORAGE_LAST_PRIMARY_KEY = 'config';
 export const LOCAL_STORAGE_BOARD_SIZE = 'board_size';
+export const LOCAL_STORAGE_ENABLE_STRICT_MODE = 'enable_strict_mode';
 export const SCALING_OPTIONS = [
 	{ value: 75, label: 'xs' },
 	{ value: 87.5, label: 's' },

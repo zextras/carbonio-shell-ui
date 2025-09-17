@@ -60,12 +60,18 @@ const router = createBrowserRouter(
 );
 
 const root = ReactDOM.createRoot(document.getElementById('app')!);
-if (window.localStorage.getItem(LOCAL_STORAGE_ENABLE_STRICT_MODE) === 'true') {
-	root.render(
-		<React.StrictMode>
-			<RouterProvider router={router} />
-		</React.StrictMode>
-	);
-} else {
-	root.render(<RouterProvider router={router} />);
+let enableStrictMode = false;
+try {
+	enableStrictMode = window.localStorage.getItem(LOCAL_STORAGE_ENABLE_STRICT_MODE) === 'true';
+} catch (e) {
+	// localStorage is unavailable; default to strict mode off
 }
+
+const app = enableStrictMode ? (
+	<React.StrictMode>
+		<RouterProvider router={router} />
+	</React.StrictMode>
+) : (
+	<RouterProvider router={router} />
+);
+root.render(app);

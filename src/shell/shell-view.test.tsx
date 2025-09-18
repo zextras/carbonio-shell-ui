@@ -6,7 +6,6 @@
 import React from 'react';
 
 import { act, screen, waitFor } from '@testing-library/react';
-import 'jest-styled-components';
 
 import { BOARD_DEFAULT_POSITION } from './boards/board-container';
 import type { Border } from './hooks/useResize';

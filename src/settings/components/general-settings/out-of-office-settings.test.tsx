@@ -7,13 +7,14 @@ import React from 'react';
 
 import { faker } from '@faker-js/faker';
 import { act, screen, within } from '@testing-library/react';
+import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
 import { forEach } from 'lodash';
 
 import { OutOfOfficeSettings } from './out-of-office-settings';
 import { SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT } from '../../../constants/internal-constants';
 import { ICONS, TESTID_SELECTORS } from '../../../tests/constants';
 import { setup } from '../../../tests/utils';
-import type { AccountSettings, AccountSettingsPrefs } from '../../../types/account';
+import type { AccountSettings } from '../../../types/account';
 import type { AddMod } from '../../../types/network';
 import { dateToGenTime } from '../utils';
 

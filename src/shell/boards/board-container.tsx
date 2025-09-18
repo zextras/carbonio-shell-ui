@@ -7,6 +7,8 @@
 import type { CSSProperties } from 'react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 import type { DropdownItem, IconButtonProps } from '@zextras/carbonio-design-system';
 import {
 	Container,
@@ -20,7 +22,6 @@ import {
 	Tooltip
 } from '@zextras/carbonio-design-system';
 import { debounce, isEmpty, map, noop, size } from 'lodash';
-import styled, { css } from 'styled-components';
 
 import { AppBoard } from './board';
 import { TabsList } from './board-tab-list';

@@ -12,7 +12,7 @@ type LocaleValue = {
 	labelDefaultValue: string;
 };
 
-export const DEFAULT_LOCALES: Record<string, LocaleValue> = {
+export const STATIC_LOCALES: Record<string, LocaleValue> = {
 	zh_CN: {
 		name: '中文 (中国)',
 		value: 'zh_CN',
@@ -153,4 +153,9 @@ export const DEFAULT_LOCALES: Record<string, LocaleValue> = {
 		labelKey: 'locale.label_slovenian',
 		labelDefaultValue: 'Slovenian - {{value}}'
 	}
+};
+
+export const DEFAULT_LOCALES: Record<string, LocaleValue> = {
+	...STATIC_LOCALES,
+	...(process.env.LOCALES ? JSON.parse(process.env.LOCALES) : {})
 };

@@ -145,26 +145,6 @@ export const DATE_FNS_LOCALE: Record<
 	}
 } as const;
 
-const mapCacheToSupportedLocales = (
-	cache: typeof DEFAULT_LOCALES
-): Record<string, LocaleDescriptor> =>
-	Object.values(cache).reduce(
-		(previousValue, currentValue) => {
-			// eslint-disable-next-line no-param-reassign
-			previousValue[currentValue.value] = {
-				value: currentValue.value,
-				name: currentValue.name,
-				tinymceLocale: currentValue.tinymceLocale,
-				dateFnsLocale: DATE_FNS_LOCALE[currentValue.value]
-			};
-			return previousValue;
-		},
-		{} as Record<string, LocaleDescriptor>
-	);
-
-export const SUPPORTED_LOCALES: Record<string, LocaleDescriptor> =
-	mapCacheToSupportedLocales(DEFAULT_LOCALES);
-
 export type LocaleDescriptorWithLabels = {
 	label: string;
 	value: string;

@@ -170,6 +170,7 @@ export type LocaleDescriptorWithLabels = {
 	value: string;
 };
 
+// used in language settings
 export const localeList = (t: TFunction): Array<LocaleDescriptorWithLabels> =>
 	Object.values(DEFAULT_LOCALES).map((locale) => ({
 		value: locale.value,

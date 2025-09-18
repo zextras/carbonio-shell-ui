@@ -25,7 +25,7 @@ const supportedLocalesList = Object.values(DEFAULT_LOCALES);
 const tinymceLocales = supportedLocalesList.map(
 	(locale) => ('tinymceLocale' in locale && locale.tinymceLocale) || locale.value
 );
-
+console.log('Tinymce Locales:', tinymceLocales);
 const configFn = (
 	initialConf: WebpackConfiguration,
 	pkg: string,

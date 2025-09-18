@@ -107,8 +107,7 @@ const Composer = ({
 	const t = getT();
 	const { locale } = useI18nStore.getState();
 	const language = useMemo(() => {
-		const localeObj =
-			locale in DEFAULT_LOCALES && DEFAULT_LOCALES[locale as keyof typeof DEFAULT_LOCALES];
+		const localeObj = locale in DEFAULT_LOCALES && DEFAULT_LOCALES[locale];
 		return (
 			(localeObj &&
 				(('tinymceLocale' in localeObj && localeObj?.tinymceLocale) || localeObj?.value)) ||

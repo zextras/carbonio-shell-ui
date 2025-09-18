@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import dynamicLocales from './dynamic-locales.json';
 
 type LocaleValue = {
 	value: string;
@@ -157,5 +158,5 @@ export const STATIC_LOCALES: Record<string, LocaleValue> = {
 
 export const DEFAULT_LOCALES: Record<string, LocaleValue> = {
 	...STATIC_LOCALES,
-	...(process.env.LOCALES ? JSON.parse(process.env.LOCALES) : {})
+	...dynamicLocales
 };

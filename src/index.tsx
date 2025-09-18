@@ -65,6 +65,7 @@ try {
 	enableStrictMode = window.localStorage.getItem(LOCAL_STORAGE_ENABLE_STRICT_MODE) === 'true';
 } catch (e) {
 	// localStorage is unavailable; default to strict mode off
+	console.warn('localStorage is unavailable; defaulting to strict mode off');
 }
 
 const app = enableStrictMode ? (

@@ -10,7 +10,7 @@ import { filter, map } from 'lodash';
 import { loadApp, unloadApps } from './load-app';
 import { injectSharedLibraries } from './shared-libraries';
 import { SHELL_APP_ID } from '../../constants';
-import { SUPPORTED_LOCALES } from '../../constants/locales';
+import { DATE_FNS_LOCALE } from '../../constants/locales';
 import { getUserSetting, useAccountStore } from '../../store/account';
 import { useI18nStore } from '../../store/i18n/store';
 import type { CarbonioModule } from '../../types/apps';
@@ -34,10 +34,10 @@ export function loadApps(
 		(settings?.attrs?.zimbraLocale as string) ??
 		'en';
 	useI18nStore.getState().addI18n(appsToLoad, locale);
-	const localeObj = SUPPORTED_LOCALES[locale];
-	if (localeObj?.dateFnsLocale) {
-		const localeDateFnsKey = localeObj.dateFnsLocale.key ?? localeObj.value;
-		localeObj.dateFnsLocale
+	const localeObj = DATE_FNS_LOCALE[locale];
+	if (localeObj) {
+		const localeDateFnsKey = localeObj.key ?? locale;
+		localeObj
 			.localeImportPath()
 			.then((localeDateFns) => {
 				registerLocale(localeDateFnsKey, localeDateFns);

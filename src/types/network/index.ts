@@ -118,15 +118,6 @@ export type AddMod = <
 
 export type RemoveMod = (type: keyof Mods, key: keyof NonNullable<Mods[typeof type]>) => void;
 
-export type Locale = {
-	id: string;
-	localName: string;
-	name: string;
-};
-export type AvailableLocalesResponse = {
-	locale: Array<Locale>;
-};
-
 export type NetworkState = SoapContext & {
 	noOpTimeout?: NodeJS.Timeout;
 	pollingInterval: number;

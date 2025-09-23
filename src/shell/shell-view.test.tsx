@@ -4,27 +4,18 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
-import { vi } from 'vitest';
 
 import { act, screen, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 
 import { BOARD_DEFAULT_POSITION } from './boards/board-container';
-import { vi } from 'vitest';
 import type { Border } from './hooks/useResize';
-import { vi } from 'vitest';
 import ShellView from './shell-view';
-import { vi } from 'vitest';
 import { HEADER_BAR_HEIGHT, LOCAL_STORAGE_BOARD_SIZE, PRIMARY_BAR_WIDTH } from '../constants';
-import { vi } from 'vitest';
 import * as constants from '../constants';
-import { vi } from 'vitest';
 import { ICONS, TESTID_SELECTORS } from '../tests/constants';
-import { vi } from 'vitest';
 import { mockedApps, setupAppStore } from '../tests/test-app-utils';
-import { vi } from 'vitest';
 import {
-import { vi } from 'vitest';
 	buildBoardSizeAndPosition,
 	buildMousePosition,
 	INITIAL_SIZE_AND_POS,

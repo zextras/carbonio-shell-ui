@@ -5,7 +5,6 @@
  */
 import type { PostHogConfig } from 'posthog-js';
 import type * as PostHogReact from 'posthog-js/react';
-import * as posthogJsReact from 'posthog-js/react';
 import { vi } from 'vitest';
 
 export const spyOnPosthog = (): Partial<ReturnType<(typeof PostHogReact)['usePostHog']>> => {
@@ -24,8 +23,11 @@ export const spyOnPosthog = (): Partial<ReturnType<(typeof PostHogReact)['usePos
 		setPersonProperties: vi.fn(),
 		capture: vi.fn()
 	} satisfies Partial<ReturnType<(typeof PostHogReact)['usePostHog']>>;
-	vi
-		.spyOn(posthogJsReact, 'usePostHog')
-		.mockReturnValue(postHog as unknown as ReturnType<(typeof PostHogReact)['usePostHog']>);
+	
+	// Mock the entire module instead of spying on exports
+	vi.doMock('posthog-js/react', () => ({
+		usePostHog: () => postHog
+	}));
+	
 	return postHog;
 };

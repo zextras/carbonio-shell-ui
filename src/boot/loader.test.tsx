@@ -4,29 +4,18 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
-import { vi } from 'vitest';
 
 import { act, waitFor } from '@testing-library/react';
-import { vi } from 'vitest';
 import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
-import { vi } from 'vitest';
 import { api, ApiEvents } from '@zextras/carbonio-ui-soap-lib';
-import { vi } from 'vitest';
 import { noop } from 'lodash';
-import { vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
-import { vi } from 'vitest';
 import { EventEmitter } from 'node:events';
 import { vi } from 'vitest';
 
-import SpyInstance = vi.SpyInstance;
-import { vi } from 'vitest';
 import type * as loadAppsModule from './app/load-apps';
-import { vi } from 'vitest';
 import { Loader } from './loader';
-import { vi } from 'vitest';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
-import { vi } from 'vitest';
 import server from '../mocks/server';
 import { vi } from 'vitest';
 import * as logout from '../network/logout';

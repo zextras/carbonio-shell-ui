@@ -11,12 +11,14 @@ import { vi } from 'vitest';
 // Import the environment setup
 import './vitest-env-setup';
 
-// Mock CSS modules
-vi.mock('*.css', () => ({}));
-vi.mock('*.module.css', () => ({}));
-vi.mock('*.less', () => ({}));
-vi.mock('*.scss', () => ({}));
-vi.mock('*.sass', () => ({}));
+// Mock problematic external packages entirely
+vi.mock('@zextras/carbonio-ui-preview', () => ({
+	default: {},
+	// Mock any common exports from this package
+	ImagePreview: () => null,
+	DocumentPreview: () => null,
+	PreviewManager: () => null,
+}));
 
 // Define browser objects not available in vitest
 // https://vitest.dev/guide/environment.html#jsdom-environment

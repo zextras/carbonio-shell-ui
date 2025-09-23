@@ -6,6 +6,13 @@
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
+	// Configure CSS handling
+	css: {
+		modules: {
+			generateScopedName: '[local]'
+		}
+	},
+	
 	test: {
 		// Test environment
 		environment: 'jsdom',
@@ -40,8 +47,8 @@ export default defineConfig({
 		testTimeout: 10000,
 		
 		// Test patterns
-		include: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
-		exclude: ['/node_modules/', 'constants/test.ts'],
+		include: ['src/**/*.{test,spec}.{js,ts,tsx}'],
+		exclude: ['node_modules/**', 'constants/test.ts'],
 		
 		// Mock configuration
 		restoreMocks: true,
@@ -55,5 +62,13 @@ export default defineConfig({
 		BASE_PATH: '""',
 		POSTHOG_API_HOST: '""',
 		POSTHOG_API_KEY: '""'
+	},
+	
+	// Resolve configuration
+	resolve: {
+		alias: {
+			// Handle static file imports like images, fonts, etc.
+			'\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': 'data:text/javascript,export default ""'
+		}
 	}
 });

@@ -3,7 +3,8 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "declaration": false
+    "declaration": false,
+    "resolveJsonModule": true
   },
   "include": ["carbonio.webpack.ts"],
   "ts-node": {

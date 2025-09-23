@@ -13,7 +13,7 @@ const config: Config = {
 	// bail: 0,
 
 	// The directory where Jest should store its cached dependency information
-	// cacheDirectory: "/tmp/jest_rs",
+	cacheDirectory: '<rootDir>/.jest-cache',
 
 	// Automatically clear mock calls, instances, contexts and results before every test
 	// clearMocks: true,
@@ -184,7 +184,8 @@ const config: Config = {
 		 * @see https://mswjs.io/docs/migrations/1.x-to-2.x#cannot-find-module-mswnode-jsdom
 		 * @see https://github.com/mswjs/msw/issues/1786#issuecomment-1782559851
 		 */
-		customExportConditions: ['']
+		customExportConditions: [''],
+		globalsCleanup: 'off'
 	},
 
 	// Adds a location field to test results

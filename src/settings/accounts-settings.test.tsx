@@ -7,26 +7,16 @@ import React from 'react';
 import { vi } from 'vitest';
 
 import { faker } from '@faker-js/faker';
-import { vi } from 'vitest';
 import { act, screen, waitFor, within } from '@testing-library/react';
-import { vi } from 'vitest';
 import { head, shuffle, tail } from 'lodash';
-import { vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
-import { vi } from 'vitest';
 
 import { AccountsSettings } from './accounts-settings';
-import { vi } from 'vitest';
 import { JSNS } from '../constants';
-import { vi } from 'vitest';
 import server, { waitForRequest } from '../mocks/server';
-import { vi } from 'vitest';
 import { createAccount, createIdentity, setupAccountStore } from '../tests/account-utils';
-import { vi } from 'vitest';
 import { controlConsoleError, setup } from '../tests/utils';
-import { vi } from 'vitest';
 import type { BatchRequest, CreateIdentityResponse } from '../types/network';
-import { vi } from 'vitest';
 
 describe('Account setting', () => {
 	const defaultFirstName = faker.person.firstName();

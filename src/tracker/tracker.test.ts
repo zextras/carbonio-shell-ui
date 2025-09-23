@@ -6,20 +6,13 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 import type { CaptureOptions } from 'posthog-js';
-import { vi } from 'vitest';
 
 import { useTracker } from './tracker';
-import { vi } from 'vitest';
 import { useAccountStore } from '../store/account';
-import { vi } from 'vitest';
 import { useLoginConfigStore } from '../store/login/store';
-import { vi } from 'vitest';
 import { mockedAccount } from '../tests/account-utils';
-import { vi } from 'vitest';
 import { spyOnPosthog } from '../tests/posthog-utils';
-import { vi } from 'vitest';
 import * as utils from '../utils/utils';
-import { vi } from 'vitest';
 
 beforeEach(() => {
 	vi.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');

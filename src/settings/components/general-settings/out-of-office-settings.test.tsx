@@ -7,28 +7,17 @@ import React from 'react';
 import { vi } from 'vitest';
 
 import { faker } from '@faker-js/faker';
-import { vi } from 'vitest';
 import { act, screen, within } from '@testing-library/react';
-import { vi } from 'vitest';
 import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
-import { vi } from 'vitest';
 import { forEach } from 'lodash';
-import { vi } from 'vitest';
 
 import { OutOfOfficeSettings } from './out-of-office-settings';
-import { vi } from 'vitest';
 import { SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT } from '../../../constants/internal-constants';
-import { vi } from 'vitest';
 import { ICONS, TESTID_SELECTORS } from '../../../tests/constants';
-import { vi } from 'vitest';
 import { setup } from '../../../tests/utils';
-import { vi } from 'vitest';
 import type { AccountSettings } from '../../../types/account';
-import { vi } from 'vitest';
 import type { AddMod } from '../../../types/network';
-import { vi } from 'vitest';
 import { dateToGenTime } from '../utils';
-import { vi } from 'vitest';
 
 describe('Out of office settings', () => {
 	test('render section with defaults', () => {

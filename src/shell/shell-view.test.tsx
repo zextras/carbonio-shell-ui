@@ -24,11 +24,8 @@ import {
 	setupBoardStore
 } from '../tests/test-board-utils';
 import { setup } from '../tests/utils';
-import { vi } from 'vitest';
 import type { Board } from '../types/boards';
-import { vi } from 'vitest';
 import type { SizeAndPosition } from '../utils/utils';
-import { vi } from 'vitest';
 
 const Dummy = (): null => null;
 

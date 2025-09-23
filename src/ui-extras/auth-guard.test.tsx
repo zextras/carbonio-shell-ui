@@ -7,11 +7,8 @@ import React from 'react';
 import { vi } from 'vitest';
 
 import { AuthGuard } from './auth-guard';
-import { vi } from 'vitest';
 import * as accountStoreHooks from '../store/account/hooks';
-import { vi } from 'vitest';
 import { setup, screen } from '../tests/utils';
-import { vi } from 'vitest';
 
 describe('AuthGuard', () => {
 	it('should render the child component when the user is authenticated', () => {

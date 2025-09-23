@@ -7,20 +7,13 @@ import React from 'react';
 import { vi } from 'vitest';
 
 import { faker } from '@faker-js/faker';
-import { vi } from 'vitest';
 import { act, screen } from '@testing-library/react';
-import { vi } from 'vitest';
 import { format, addDays, subDays, startOfDay, endOfDay, addHours, subHours } from 'date-fns';
-import { vi } from 'vitest';
 
 import { OutOfOfficeTimePeriodSection } from './out-of-office-time-period-section';
-import { vi } from 'vitest';
 import { ICONS } from '../../../tests/constants';
-import { vi } from 'vitest';
 import { setup } from '../../../tests/utils';
-import { vi } from 'vitest';
 import { dateToGenTime } from '../utils';
-import { vi } from 'vitest';
 
 describe('out of office time period section', () => {
 	test('should render the section with default values', () => {

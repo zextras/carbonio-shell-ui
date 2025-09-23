@@ -7,20 +7,13 @@ import React from 'react';
 import { vi } from 'vitest';
 
 import { act, screen } from '@testing-library/react';
-import { vi } from 'vitest';
 import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
-import { vi } from 'vitest';
 
 import { SearchSettings } from './search-settings';
-import { vi } from 'vitest';
 import { ICONS } from '../../../tests/constants';
-import { vi } from 'vitest';
 import { setup } from '../../../tests/utils';
-import { vi } from 'vitest';
 import type { AccountSettings } from '../../../types/account';
-import { vi } from 'vitest';
 import type { AddMod } from '../../../types/network';
-import { vi } from 'vitest';
 
 describe('Search settings', () => {
 	test('should render with default values', () => {

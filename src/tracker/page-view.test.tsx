@@ -7,16 +7,11 @@ import React from 'react';
 import { vi } from 'vitest';
 
 import { Link } from 'react-router-dom';
-import { vi } from 'vitest';
 
 import { TrackerPageView } from './page-view';
-import { vi } from 'vitest';
 import * as useTracker from './tracker';
-import { vi } from 'vitest';
 import type { Tracker } from './tracker';
-import { vi } from 'vitest';
 import { screen, setup } from '../tests/utils';
-import { vi } from 'vitest';
 
 describe('TrackerPageView', () => {
 	it('should capture pageview event when pathname change', async () => {

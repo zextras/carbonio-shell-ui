@@ -8,24 +8,15 @@ import React from 'react';
 import { vi } from 'vitest';
 
 import { screen } from '@testing-library/react';
-import { vi } from 'vitest';
 import { useNavigate } from 'react-router-dom';
-import { vi } from 'vitest';
 
 import GeneralSettings from './general-settings';
-import { vi } from 'vitest';
 import { SettingsSidebar } from './settings-sidebar';
-import { vi } from 'vitest';
 import { SHELL_APP_ID } from '../constants';
-import { vi } from 'vitest';
 import { useAppStore } from '../store/app';
-import { vi } from 'vitest';
 import { ICONS } from '../tests/constants';
-import { vi } from 'vitest';
 import { setup } from '../tests/utils';
-import { vi } from 'vitest';
 import type { SettingsView } from '../types/apps';
-import { vi } from 'vitest';
 
 vi.mock('react-router-dom', () => ({
 	...vi.requireActual('react-router-dom'),

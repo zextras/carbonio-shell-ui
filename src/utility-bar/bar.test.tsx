@@ -7,30 +7,18 @@ import React from 'react';
 import { vi } from 'vitest';
 
 import { act, waitFor } from '@testing-library/react';
-import { vi } from 'vitest';
 import { api } from '@zextras/carbonio-ui-soap-lib';
-import { vi } from 'vitest';
 
 import type { AccountMenuAction } from './bar';
-import { vi } from 'vitest';
 import { ShellUtilityBar } from './bar';
-import { vi } from 'vitest';
 import { ACTION_TYPES } from '../constants';
-import { vi } from 'vitest';
 import { waitForRequest } from '../mocks/server';
-import { vi } from 'vitest';
 import * as networkUtils from '../network/utils';
-import { vi } from 'vitest';
 import { useIntegrationsStore } from '../store/integrations/store';
-import { vi } from 'vitest';
 import { useLoginConfigStore } from '../store/login/store';
-import { vi } from 'vitest';
 import { mockedAccount, setupAccountStore } from '../tests/account-utils';
-import { vi } from 'vitest';
 import { ICONS } from '../tests/constants';
-import { vi } from 'vitest';
 import { screen, setup } from '../tests/utils';
-import { vi } from 'vitest';
 
 describe('Shell utility bar', () => {
 	it('should render the utility menu for the account', async () => {

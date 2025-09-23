@@ -7,13 +7,9 @@ import React from 'react';
 import { vi } from 'vitest';
 
 import { Privacy } from './privacy';
-import { vi } from 'vitest';
 import { ICONS } from '../../../tests/constants';
-import { vi } from 'vitest';
 import { screen, setup } from '../../../tests/utils';
-import { vi } from 'vitest';
 import type { AddMod } from '../../../types/network';
-import { vi } from 'vitest';
 
 describe('Privacy', () => {
 	it.each([

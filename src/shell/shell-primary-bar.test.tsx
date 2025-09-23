@@ -7,32 +7,19 @@ import React from 'react';
 import { vi } from 'vitest';
 
 import { act } from '@testing-library/react';
-import { vi } from 'vitest';
 import { Button, Text } from '@zextras/carbonio-design-system';
-import { vi } from 'vitest';
 import { produce } from 'immer';
-import { vi } from 'vitest';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
-import { vi } from 'vitest';
 
 import AppViewContainer from './app-view-container';
-import { vi } from 'vitest';
 import ShellPrimaryBar from './shell-primary-bar';
-import { vi } from 'vitest';
 import { DefaultViewsRegister } from '../boot/app/default-views';
-import { vi } from 'vitest';
 import { useAccountStore } from '../store/account';
-import { vi } from 'vitest';
 import { useAppStore } from '../store/app';
-import { vi } from 'vitest';
 import { ICONS } from '../tests/constants';
-import { vi } from 'vitest';
 import { screen, setup } from '../tests/utils';
-import { vi } from 'vitest';
 import type { AccountState } from '../types/account';
-import { vi } from 'vitest';
 import type { PrimaryBarView } from '../types/apps';
-import { vi } from 'vitest';
 
 const ShellWrapper = (): React.JSX.Element => (
 	<>

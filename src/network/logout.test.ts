@@ -6,18 +6,12 @@
 import { api } from '@zextras/carbonio-ui-soap-lib';
 import { vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
-import { vi } from 'vitest';
 
 import { logout } from './logout';
-import { vi } from 'vitest';
 import * as utils from './utils';
-import { vi } from 'vitest';
 import server from '../mocks/server';
-import { vi } from 'vitest';
 import { useLoginConfigStore } from '../store/login/store';
-import { vi } from 'vitest';
 import { controlConsoleError } from '../tests/utils';
-import { vi } from 'vitest';
 
 beforeEach(() => {
 	vi.spyOn(api, 'endSession').mockReturnValueOnce(

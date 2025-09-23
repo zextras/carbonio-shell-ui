@@ -8,20 +8,13 @@ import React from 'react';
 import { vi } from 'vitest';
 
 import { act, screen } from '@testing-library/react';
-import { vi } from 'vitest';
 import { produce } from 'immer';
-import { vi } from 'vitest';
 
 import { useGetPrimaryColor } from './use-get-primary-color';
-import { vi } from 'vitest';
 import * as useLocalStorage from '../shell/hooks/useLocalStorage';
-import { vi } from 'vitest';
 import { useAccountStore } from '../store/account';
-import { vi } from 'vitest';
 import { useLoginConfigStore } from '../store/login/store';
-import { vi } from 'vitest';
 import { setup } from '../tests/utils';
-import { vi } from 'vitest';
 
 const PrimaryColorComponent = (): React.JSX.Element => {
 	const primary = useGetPrimaryColor();

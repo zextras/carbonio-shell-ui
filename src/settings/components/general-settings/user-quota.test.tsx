@@ -8,20 +8,13 @@ import React from 'react';
 import { vi } from 'vitest';
 
 import { faker } from '@faker-js/faker';
-import { vi } from 'vitest';
 import type { QuotaProps } from '@zextras/carbonio-design-system';
-import { vi } from 'vitest';
 import { produce } from 'immer';
-import { vi } from 'vitest';
 
 import UserQuota from './user-quota';
-import { vi } from 'vitest';
 import { useAccountStore } from '../../../store/account';
-import { vi } from 'vitest';
 import { screen, setup } from '../../../tests/utils';
-import { vi } from 'vitest';
 import { humanFileSize } from '../utils';
-import { vi } from 'vitest';
 
 function setupAccountStore(usedQuota: number, quotaMax: number): void {
 	useAccountStore.setState(

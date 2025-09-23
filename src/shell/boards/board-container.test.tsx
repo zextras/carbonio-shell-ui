@@ -7,31 +7,21 @@ import React from 'react';
 import { vi } from 'vitest';
 
 import { act, screen, waitFor, within } from '@testing-library/react';
-import { vi } from 'vitest';
 import { Input } from '@zextras/carbonio-design-system';
-import { vi } from 'vitest';
 import { reduce, sample, size } from 'lodash';
-import { vi } from 'vitest';
 
 import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
-import { vi } from 'vitest';
 import {
-import { vi } from 'vitest';
 	BOARD_MIN_VISIBILITY,
 	HEADER_BAR_HEIGHT,
 	LOCAL_STORAGE_BOARD_SIZE,
 	PRIMARY_BAR_WIDTH
 } from '../../constants';
 import { useAppStore } from '../../store/app';
-import { vi } from 'vitest';
 import { reopenBoards, useBoardStore } from '../../store/boards';
-import { vi } from 'vitest';
 import { ICONS, TESTID_SELECTORS } from '../../tests/constants';
-import { vi } from 'vitest';
 import { mockedApps, setupAppStore } from '../../tests/test-app-utils';
-import { vi } from 'vitest';
 import {
-import { vi } from 'vitest';
 	buildBoardSizeAndPosition,
 	buildMousePosition,
 	INITIAL_SIZE_AND_POS,
@@ -42,15 +32,10 @@ import { vi } from 'vitest';
 	mockedBoardState
 } from '../../tests/test-board-utils';
 import { setup } from '../../tests/utils';
-import { vi } from 'vitest';
 import type { BoardView } from '../../types/apps';
-import { vi } from 'vitest';
 import type { Board } from '../../types/boards';
-import { vi } from 'vitest';
 import type { SizeAndPosition } from '../../utils/utils';
-import { vi } from 'vitest';
 import type { Border } from '../hooks/useResize';
-import { vi } from 'vitest';
 
 beforeEach(() => {
 	setupAppStore();

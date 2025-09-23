@@ -17,23 +17,14 @@ import type * as loadAppsModule from './app/load-apps';
 import { Loader } from './loader';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
 import server from '../mocks/server';
-import { vi } from 'vitest';
 import * as logout from '../network/logout';
-import { vi } from 'vitest';
 import * as networkUtils from '../network/utils';
-import { vi } from 'vitest';
 import { useLoginConfigStore } from '../store/login/store';
-import { vi } from 'vitest';
 import { LOGGED_USER, TIMERS } from '../tests/constants';
-import { vi } from 'vitest';
 import { spyOnPosthog } from '../tests/posthog-utils';
-import { vi } from 'vitest';
 import { setup, screen } from '../tests/utils';
-import { vi } from 'vitest';
 import * as tracker from '../tracker/tracker';
-import { vi } from 'vitest';
 import * as utils from '../utils/utils';
-import { vi } from 'vitest';
 
 vi.mock<typeof loadAppsModule>('./app/load-apps');
 

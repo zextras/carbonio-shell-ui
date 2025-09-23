@@ -7,7 +7,6 @@ import { renderHook } from '@testing-library/react';
 import { vi } from 'vitest';
 
 import { useSessionTimeout } from './useSessionTimeout';
-import { vi } from 'vitest';
 
 vi.mock('../network/logout');
 vi.mock('@zextras/carbonio-design-system', () => ({

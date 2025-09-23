@@ -4,14 +4,18 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
+import { vi } from 'vitest';
 
 import { AuthGuard } from './auth-guard';
+import { vi } from 'vitest';
 import * as accountStoreHooks from '../store/account/hooks';
+import { vi } from 'vitest';
 import { setup, screen } from '../tests/utils';
+import { vi } from 'vitest';
 
 describe('AuthGuard', () => {
 	it('should render the child component when the user is authenticated', () => {
-		const useAuthenticated = jest.spyOn(accountStoreHooks, 'useAuthenticated');
+		const useAuthenticated = vi.spyOn(accountStoreHooks, 'useAuthenticated');
 		useAuthenticated.mockReturnValue(true);
 
 		setup(
@@ -24,7 +28,7 @@ describe('AuthGuard', () => {
 	});
 
 	it('should not render the child component when the user is authenticated', () => {
-		const useAuthenticated = jest.spyOn(accountStoreHooks, 'useAuthenticated');
+		const useAuthenticated = vi.spyOn(accountStoreHooks, 'useAuthenticated');
 		useAuthenticated.mockReturnValue(false);
 
 		setup(

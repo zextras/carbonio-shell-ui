@@ -4,11 +4,16 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
+import { vi } from 'vitest';
 
 import { Privacy } from './privacy';
+import { vi } from 'vitest';
 import { ICONS } from '../../../tests/constants';
+import { vi } from 'vitest';
 import { screen, setup } from '../../../tests/utils';
+import { vi } from 'vitest';
 import type { AddMod } from '../../../types/network';
+import { vi } from 'vitest';
 
 describe('Privacy', () => {
 	it.each([
@@ -17,7 +22,7 @@ describe('Privacy', () => {
 	])(
 		'should render the checkbox to allow analytics (initial value %s)',
 		async (initialValue, checkbox) => {
-			setup(<Privacy addMod={jest.fn()} sendAnalyticsPref={initialValue} removeMod={jest.fn()} />);
+			setup(<Privacy addMod={vi.fn()} sendAnalyticsPref={initialValue} removeMod={vi.fn()} />);
 			expect(screen.getByText('Allow data analytics')).toBeVisible();
 			expect(
 				screen.getByText(
@@ -29,8 +34,8 @@ describe('Privacy', () => {
 	);
 
 	it('should add the value of the carbonioPrefSendAnalytics when different, remove it when equal to the initial one', async () => {
-		const addModFn = jest.fn();
-		const removeModFn = jest.fn();
+		const addModFn = vi.fn();
+		const removeModFn = vi.fn();
 		const { user } = setup(
 			<Privacy addMod={addModFn} sendAnalyticsPref={false} removeMod={removeModFn} />
 		);

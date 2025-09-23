@@ -5,15 +5,23 @@
  */
 
 import React from 'react';
+import { vi } from 'vitest';
 
 import { act, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import { produce } from 'immer';
+import { vi } from 'vitest';
 
 import { useGetPrimaryColor } from './use-get-primary-color';
+import { vi } from 'vitest';
 import * as useLocalStorage from '../shell/hooks/useLocalStorage';
+import { vi } from 'vitest';
 import { useAccountStore } from '../store/account';
+import { vi } from 'vitest';
 import { useLoginConfigStore } from '../store/login/store';
+import { vi } from 'vitest';
 import { setup } from '../tests/utils';
+import { vi } from 'vitest';
 
 const PrimaryColorComponent = (): React.JSX.Element => {
 	const primary = useGetPrimaryColor();
@@ -23,9 +31,9 @@ const PrimaryColorComponent = (): React.JSX.Element => {
 describe('Use get primary color', () => {
 	it('should return the carbonioWebUiPrimaryColor config when available and dark mode is disabled', async () => {
 		const localStorageColor = '#aabbaa';
-		const mockUseLocalStorage = jest.spyOn(useLocalStorage, 'useLocalStorage');
+		const mockUseLocalStorage = vi.spyOn(useLocalStorage, 'useLocalStorage');
 
-		mockUseLocalStorage.mockReturnValue([{ light: localStorageColor }, jest.fn()]);
+		mockUseLocalStorage.mockReturnValue([{ light: localStorageColor }, vi.fn()]);
 
 		const carbonioWebUiPrimaryColorConfig = '#bbbbbb';
 		const carbonioWebUiDarkPrimaryColorConfig = '#cccccc';
@@ -49,9 +57,9 @@ describe('Use get primary color', () => {
 
 	it('should return the carbonioWebUiDarkPrimaryColor config when available and dark mode is enabled', async () => {
 		const localStorageColor = '#aabbaa';
-		const mockUseLocalStorage = jest.spyOn(useLocalStorage, 'useLocalStorage');
+		const mockUseLocalStorage = vi.spyOn(useLocalStorage, 'useLocalStorage');
 
-		mockUseLocalStorage.mockReturnValue([{ light: localStorageColor }, jest.fn()]);
+		mockUseLocalStorage.mockReturnValue([{ light: localStorageColor }, vi.fn()]);
 
 		const carbonioWebUiPrimaryColorConfig = '#bbbbbb';
 		const carbonioWebUiDarkPrimaryColorConfig = '#cccccc';
@@ -75,9 +83,9 @@ describe('Use get primary color', () => {
 
 	it('should return the carbonioWebUiPrimaryColor config when available and carbonioWebUiDarkPrimaryColor is not available and dark mode is enabled', async () => {
 		const localStorageColor = '#aabbaa';
-		const mockUseLocalStorage = jest.spyOn(useLocalStorage, 'useLocalStorage');
+		const mockUseLocalStorage = vi.spyOn(useLocalStorage, 'useLocalStorage');
 
-		mockUseLocalStorage.mockReturnValue([{ light: localStorageColor }, jest.fn()]);
+		mockUseLocalStorage.mockReturnValue([{ light: localStorageColor }, vi.fn()]);
 
 		const carbonioWebUiPrimaryColorConfig = '#bbbbbb';
 		useLoginConfigStore.setState((s) => ({
@@ -99,9 +107,9 @@ describe('Use get primary color', () => {
 
 	it('should return the carbonioWebUiDarkPrimaryColor config when available and carbonioWebUiPrimaryColor is not available and dark mode is disabled', async () => {
 		const localStorageColor = '#aabbaa';
-		const mockUseLocalStorage = jest.spyOn(useLocalStorage, 'useLocalStorage');
+		const mockUseLocalStorage = vi.spyOn(useLocalStorage, 'useLocalStorage');
 
-		mockUseLocalStorage.mockReturnValue([{ light: localStorageColor }, jest.fn()]);
+		mockUseLocalStorage.mockReturnValue([{ light: localStorageColor }, vi.fn()]);
 
 		const carbonioWebUiDarkPrimaryColorConfig = '#cccccc';
 		useLoginConfigStore.setState((s) => ({
@@ -123,9 +131,9 @@ describe('Use get primary color', () => {
 
 	it('should use localStore color as fallback until config color is received', async () => {
 		const localStorageColor = '#aabbaa';
-		const mockUseLocalStorage = jest.spyOn(useLocalStorage, 'useLocalStorage');
+		const mockUseLocalStorage = vi.spyOn(useLocalStorage, 'useLocalStorage');
 
-		mockUseLocalStorage.mockReturnValue([{ light: localStorageColor }, jest.fn()]);
+		mockUseLocalStorage.mockReturnValue([{ light: localStorageColor }, vi.fn()]);
 
 		setup(<PrimaryColorComponent />);
 
@@ -152,9 +160,9 @@ describe('Use get primary color', () => {
 
 	it('should use localStore color as fallback until configs are received and return undefined if carbonioWebUiPrimaryColor is not received', async () => {
 		const localStorageColor = '#aabbaa';
-		const mockUseLocalStorage = jest.spyOn(useLocalStorage, 'useLocalStorage');
+		const mockUseLocalStorage = vi.spyOn(useLocalStorage, 'useLocalStorage');
 
-		mockUseLocalStorage.mockReturnValue([{ light: localStorageColor }, jest.fn()]);
+		mockUseLocalStorage.mockReturnValue([{ light: localStorageColor }, vi.fn()]);
 
 		setup(<PrimaryColorComponent />);
 

@@ -4,17 +4,25 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { act, renderHook, waitFor } from '@testing-library/react';
+import { vi } from 'vitest';
 import type { CaptureOptions } from 'posthog-js';
+import { vi } from 'vitest';
 
 import { useTracker } from './tracker';
+import { vi } from 'vitest';
 import { useAccountStore } from '../store/account';
+import { vi } from 'vitest';
 import { useLoginConfigStore } from '../store/login/store';
+import { vi } from 'vitest';
 import { mockedAccount } from '../tests/account-utils';
+import { vi } from 'vitest';
 import { spyOnPosthog } from '../tests/posthog-utils';
+import { vi } from 'vitest';
 import * as utils from '../utils/utils';
+import { vi } from 'vitest';
 
 beforeEach(() => {
-	jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
+	vi.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
 });
 
 describe('useTracker', () => {
@@ -28,7 +36,7 @@ describe('useTracker', () => {
 	});
 
 	it.each(['localhost', '127.0.0.1'])('should not opt-in posthog if host is %s', (host) => {
-		jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue(host);
+		vi.spyOn(utils, 'getCurrentLocationHost').mockReturnValue(host);
 		const posthog = spyOnPosthog();
 		const { result } = renderHook(() => useTracker());
 		result.current.enableTracker(true);
@@ -64,7 +72,7 @@ describe('useTracker', () => {
 	it('should enable surveys if user is opted in and Carbonio is CE', () => {
 		useLoginConfigStore.setState({ isCarbonioCE: true });
 		const posthog = spyOnPosthog();
-		jest.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
+		vi.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
 		renderHook(() => useTracker());
 		expect(posthog.set_config).toHaveBeenCalledWith({ disable_surveys: false });
 	});
@@ -86,10 +94,10 @@ describe('useTracker', () => {
 	it('should not call set config again if it is already called with the same values', () => {
 		useLoginConfigStore.setState({ isCarbonioCE: true });
 		const posthog = spyOnPosthog();
-		jest.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
+		vi.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
 		renderHook(() => useTracker());
 		expect(posthog.set_config).toHaveBeenCalledWith({ disable_surveys: false });
-		jest.mocked(posthog.config)!.disable_surveys = false;
+		vi.mocked(posthog.config)!.disable_surveys = false;
 		renderHook(() => useTracker());
 		expect(posthog.set_config).toHaveBeenCalledTimes(1);
 	});
@@ -97,7 +105,7 @@ describe('useTracker', () => {
 	it('should call set config if Carbonio CE changes after the user is opted in', () => {
 		useLoginConfigStore.setState({ isCarbonioCE: false });
 		const posthog = spyOnPosthog();
-		jest.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
+		vi.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
 		renderHook(() => useTracker());
 		expect(posthog.set_config).not.toHaveBeenCalled();
 		act(() => {
@@ -109,10 +117,10 @@ describe('useTracker', () => {
 	it('should call set config if the user opts in after Carbonio CE changes', () => {
 		useLoginConfigStore.setState({ isCarbonioCE: true });
 		const posthog = spyOnPosthog();
-		jest.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(false);
+		vi.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(false);
 		const { result } = renderHook(() => useTracker());
 		expect(posthog.set_config).not.toHaveBeenCalled();
-		jest.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
+		vi.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
 		act(() => {
 			result.current.enableTracker(true);
 		});
@@ -144,8 +152,8 @@ describe('useTracker', () => {
 	it('should disable surveys if the user opts out', () => {
 		useLoginConfigStore.setState({ isCarbonioCE: true });
 		const posthog = spyOnPosthog();
-		jest.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
-		jest.mocked(posthog.config)!.disable_surveys = false;
+		vi.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
+		vi.mocked(posthog.config)!.disable_surveys = false;
 		const { result } = renderHook(() => useTracker());
 		act(() => {
 			result.current.enableTracker(false);

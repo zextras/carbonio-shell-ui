@@ -26,6 +26,7 @@ import i18next, { type i18n } from 'i18next';
 import { filter } from 'lodash';
 import { I18nextProvider } from 'react-i18next';
 import { MemoryRouter } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import { ThemeProvider } from '../boot/theme-provider';
 
@@ -194,7 +195,7 @@ export const setup = (
 	ui: ReactElement,
 	options?: SetupOptions
 ): { user: UserEvent } & ReturnType<typeof customRender> => ({
-	user: setupUserEvent({ advanceTimers: jest.advanceTimersByTime, ...options?.setupOptions }),
+	user: setupUserEvent({ advanceTimers: vi.advanceTimersByTime, ...options?.setupOptions }),
 	...customRender(ui, {
 		initialRouterEntries: options?.initialRouterEntries,
 		withoutModalManager: options?.withoutModalManager,
@@ -206,7 +207,7 @@ export function controlConsoleError(expectedMessage: string): void {
 	// eslint-disable-next-line no-console
 	const actualConsoleError = console.error;
 	// eslint-disable-next-line no-console
-	console.error = jest.fn<ReturnType<typeof console.error>, Parameters<typeof console.error>>(
+	console.error = vi.fn<ReturnType<typeof console.error>, Parameters<typeof console.error>>(
 		(error, ...restParameter) => {
 			if (
 				(typeof error === 'string' && error === expectedMessage) ||

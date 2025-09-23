@@ -4,18 +4,29 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
+import { vi } from 'vitest';
 
 import { faker } from '@faker-js/faker';
+import { vi } from 'vitest';
 import { act, screen, waitFor, within } from '@testing-library/react';
+import { vi } from 'vitest';
 import { head, shuffle, tail } from 'lodash';
+import { vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
+import { vi } from 'vitest';
 
 import { AccountsSettings } from './accounts-settings';
+import { vi } from 'vitest';
 import { JSNS } from '../constants';
+import { vi } from 'vitest';
 import server, { waitForRequest } from '../mocks/server';
+import { vi } from 'vitest';
 import { createAccount, createIdentity, setupAccountStore } from '../tests/account-utils';
+import { vi } from 'vitest';
 import { controlConsoleError, setup } from '../tests/utils';
+import { vi } from 'vitest';
 import type { BatchRequest, CreateIdentityResponse } from '../types/network';
+import { vi } from 'vitest';
 
 describe('Account setting', () => {
 	const defaultFirstName = faker.person.firstName();
@@ -194,7 +205,7 @@ describe('Account setting', () => {
 		const confirmButton = screen.getByRole('button', { name: /delete permanently/i });
 		act(() => {
 			// run modal timers
-			jest.runOnlyPendingTimers();
+			vi.runOnlyPendingTimers();
 		});
 		await user.click(confirmButton);
 
@@ -482,7 +493,7 @@ describe('Account setting', () => {
 		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
 		act(() => {
 			// run modal timers
-			jest.runOnlyPendingTimers();
+			vi.runOnlyPendingTimers();
 		});
 		await user.click(confirmButton);
 		expect(persona1Row).not.toBeInTheDocument();
@@ -520,7 +531,7 @@ describe('Account setting', () => {
 		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
 		act(() => {
 			// run modal timers
-			jest.runOnlyPendingTimers();
+			vi.runOnlyPendingTimers();
 		});
 		await user.click(confirmButton);
 		expect(persona1Row).not.toBeInTheDocument();
@@ -593,7 +604,7 @@ describe('Account setting', () => {
 		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
 		act(() => {
 			// run modal timers
-			jest.runOnlyPendingTimers();
+			vi.runOnlyPendingTimers();
 		});
 		await user.click(confirmButton);
 		expect(persona1Row).not.toBeInTheDocument();
@@ -679,7 +690,7 @@ describe('Account setting', () => {
 		let confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
 		act(() => {
 			// run modal timers
-			jest.runOnlyPendingTimers();
+			vi.runOnlyPendingTimers();
 		});
 		await user.click(confirmButton);
 		await screen.findByText(/primary account settings/i);
@@ -695,7 +706,7 @@ describe('Account setting', () => {
 		confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
 		act(() => {
 			// run modal timers
-			jest.runOnlyPendingTimers();
+			vi.runOnlyPendingTimers();
 		});
 		await user.click(confirmButton);
 		await screen.findByText(/primary account settings/i);
@@ -771,7 +782,7 @@ describe('Account setting', () => {
 		const confirmButton = screen.getByRole('button', { name: /delete permanently/i });
 		act(() => {
 			// run modal timers
-			jest.runOnlyPendingTimers();
+			vi.runOnlyPendingTimers();
 		});
 		await user.click(confirmButton);
 		expect(screen.queryByText(persona1FullName)).not.toBeInTheDocument();
@@ -907,7 +918,7 @@ describe('Account setting', () => {
 
 		await pendingBatchRequest;
 		await act(async () => {
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		const successSnackbar = await screen.findByText('Edits saved correctly');
 		expect(successSnackbar).toBeVisible();
@@ -963,7 +974,7 @@ describe('Account setting', () => {
 		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
 		act(() => {
 			// run modal timers
-			jest.runOnlyPendingTimers();
+			vi.runOnlyPendingTimers();
 		});
 		await user.click(confirmButton);
 
@@ -971,7 +982,7 @@ describe('Account setting', () => {
 
 		await pendingBatchRequest;
 		await act(async () => {
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		const successSnackbar = await screen.findByText('Edits saved correctly');
 		expect(successSnackbar).toBeVisible();
@@ -1239,7 +1250,7 @@ describe('Account setting', () => {
 		const confirmButton = screen.getByRole('button', { name: /delete permanently/i });
 		act(() => {
 			// run modal timers
-			jest.runOnlyPendingTimers();
+			vi.runOnlyPendingTimers();
 		});
 		await user.click(confirmButton);
 		expect(screen.getAllByRole('listitem').length).toEqual(1);

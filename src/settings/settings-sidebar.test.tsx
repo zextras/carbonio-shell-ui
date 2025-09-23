@@ -5,21 +5,31 @@
  */
 
 import React from 'react';
+import { vi } from 'vitest';
 
 import { screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import { useNavigate } from 'react-router-dom';
+import { vi } from 'vitest';
 
 import GeneralSettings from './general-settings';
+import { vi } from 'vitest';
 import { SettingsSidebar } from './settings-sidebar';
+import { vi } from 'vitest';
 import { SHELL_APP_ID } from '../constants';
+import { vi } from 'vitest';
 import { useAppStore } from '../store/app';
+import { vi } from 'vitest';
 import { ICONS } from '../tests/constants';
+import { vi } from 'vitest';
 import { setup } from '../tests/utils';
+import { vi } from 'vitest';
 import type { SettingsView } from '../types/apps';
+import { vi } from 'vitest';
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
-	useNavigate: jest.fn()
+vi.mock('react-router-dom', () => ({
+	...vi.requireActual('react-router-dom'),
+	useNavigate: vi.fn()
 }));
 
 describe('Setting sidebar', () => {
@@ -81,8 +91,8 @@ describe('Setting sidebar', () => {
 		expect(screen.getByText('Section 2')).toBeVisible();
 	});
 	it('should call navigate when accordion is clicked', async () => {
-		const navigate = jest.fn();
-		(useNavigate as jest.Mock).mockReturnValue(navigate);
+		const navigate = vi.fn();
+		(useNavigate as vi.Mock).mockReturnValue(navigate);
 		const settingsGeneralView: SettingsView = {
 			id: 'general',
 			route: 'general',
@@ -99,8 +109,8 @@ describe('Setting sidebar', () => {
 		expect(navigate).toHaveBeenCalledWith('general');
 	});
 	it('should call navigate when sub section is clicked', async () => {
-		const navigate = jest.fn();
-		(useNavigate as jest.Mock).mockReturnValue(navigate);
+		const navigate = vi.fn();
+		(useNavigate as vi.Mock).mockReturnValue(navigate);
 		const settingsGeneralView: SettingsView = {
 			id: 'general',
 			route: 'general',
@@ -126,8 +136,8 @@ describe('Setting sidebar', () => {
 		expect(navigate).toHaveBeenCalledWith('general?section=section1', { replace: true });
 	});
 	it('should call navigate when collapsed item is clicked', async () => {
-		const navigate = jest.fn();
-		(useNavigate as jest.Mock).mockReturnValue(navigate);
+		const navigate = vi.fn();
+		(useNavigate as vi.Mock).mockReturnValue(navigate);
 		const settingsGeneralView: SettingsView = {
 			id: 'general',
 			route: 'general',

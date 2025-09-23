@@ -5,6 +5,7 @@
  */
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import { first, keys } from 'lodash';
+import { vi } from 'vitest';
 
 import { TESTID_SELECTORS } from './constants';
 import { mockedApps } from './test-app-utils';
@@ -129,7 +130,7 @@ export async function resizeBoard(
 	);
 	act(() => {
 		// run updateBoardPosition debounced fn
-		jest.advanceTimersToNextTimer();
+		vi.advanceTimersToNextTimer();
 	});
 }
 
@@ -146,7 +147,7 @@ export async function moveBoard(
 	fireEvent.mouseDown(elementForMove, mouseInitialPosition);
 	act(() => {
 		// run move timer
-		jest.runOnlyPendingTimers();
+		vi.runOnlyPendingTimers();
 	});
 	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseMove(document.body, mouseNewPosition);
@@ -161,6 +162,6 @@ export async function moveBoard(
 	);
 	act(() => {
 		// run updateBoardPosition debounced fn
-		jest.advanceTimersToNextTimer();
+		vi.advanceTimersToNextTimer();
 	});
 }

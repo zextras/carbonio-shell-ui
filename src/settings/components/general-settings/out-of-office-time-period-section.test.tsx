@@ -4,20 +4,28 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
+import { vi } from 'vitest';
 
 import { faker } from '@faker-js/faker';
+import { vi } from 'vitest';
 import { act, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import { format, addDays, subDays, startOfDay, endOfDay, addHours, subHours } from 'date-fns';
+import { vi } from 'vitest';
 
 import { OutOfOfficeTimePeriodSection } from './out-of-office-time-period-section';
+import { vi } from 'vitest';
 import { ICONS } from '../../../tests/constants';
+import { vi } from 'vitest';
 import { setup } from '../../../tests/utils';
+import { vi } from 'vitest';
 import { dateToGenTime } from '../utils';
+import { vi } from 'vitest';
 
 describe('out of office time period section', () => {
 	test('should render the section with default values', () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		setup(
 			<OutOfOfficeTimePeriodSection
 				addMod={addMod}
@@ -48,8 +56,8 @@ describe('out of office time period section', () => {
 	});
 
 	test('should show the date received from pref if valued', () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		setup(
@@ -78,8 +86,8 @@ describe('out of office time period section', () => {
 	test.each(['start date', 'end date', 'start time', 'end time'])(
 		'should set the previous value if the user clears the input of the %s',
 		async (inputName) => {
-			const addMod = jest.fn();
-			const removeMod = jest.fn();
+			const addMod = vi.fn();
+			const removeMod = vi.fn();
 			const fromDate = faker.date.recent();
 			const untilDate = faker.date.soon();
 			const { user } = setup(
@@ -102,15 +110,15 @@ describe('out of office time period section', () => {
 			await user.click(screen.getByText(/click to blur/i));
 			await act(async () => {
 				// to let floating finish the update
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 			expect(dateInput).toHaveDisplayValue(initialDisplayValue);
 		}
 	);
 
 	test('should let the user choose a from date from the picker', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -138,8 +146,8 @@ describe('out of office time period section', () => {
 	});
 
 	test('should let the user type a from date', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -165,15 +173,15 @@ describe('out of office time period section', () => {
 		await user.click(screen.getByText(/click to blur/i));
 		await act(async () => {
 			// to let floating finish the update
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		expect(screen.queryByRole('button', { name: /previous month/i })).not.toBeInTheDocument();
 		expect(fromDateInput).toHaveDisplayValue(format(firstOfPreviousMonth, 'P'));
 	});
 
 	test('should let the user choose a from time from the picker', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -195,8 +203,8 @@ describe('out of office time period section', () => {
 	});
 
 	test('should let the user type a from time', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -219,15 +227,15 @@ describe('out of office time period section', () => {
 		await user.click(screen.getByText(/click to blur/i));
 		await act(async () => {
 			// to let floating finish the update
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		expect(screen.queryByRole('option')).not.toBeInTheDocument();
 		expect(fromTimeInput).toHaveDisplayValue(format(newTime, 'p'));
 	});
 
 	test('should let the user choose an until date from the picker', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -255,8 +263,8 @@ describe('out of office time period section', () => {
 	});
 
 	test('should let the user type an until date', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -280,15 +288,15 @@ describe('out of office time period section', () => {
 		await user.click(screen.getByText(/click to blur/i));
 		await act(async () => {
 			// to let floating finish the update
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		expect(screen.queryByRole('button', { name: /previous month/i })).not.toBeInTheDocument();
 		expect(untilDateInput).toHaveDisplayValue(format(firstOfNextMonth, 'P'));
 	});
 
 	test('should let the user choose an until time from the picker', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -310,8 +318,8 @@ describe('out of office time period section', () => {
 	});
 
 	test('should let the user type an until time', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -335,15 +343,15 @@ describe('out of office time period section', () => {
 		await user.click(screen.getByText(/click to blur/i));
 		await act(async () => {
 			// to let floating finish the update
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		expect(screen.queryByRole('listitem')).not.toBeInTheDocument();
 		expect(untilTimeInput).toHaveDisplayValue(format(newTime, 'p'));
 	});
 
 	test('should update until date and time to be equal to from date if user set a from date greater than the current until date', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -372,7 +380,7 @@ describe('out of office time period section', () => {
 		await user.click(screen.getByText(/click to blur/i));
 		await act(async () => {
 			// to let floating finish the update
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		expect(fromDateInput).toHaveDisplayValue(expectedDate);
 		expect(untilDateInput).toHaveDisplayValue(expectedDate);
@@ -381,8 +389,8 @@ describe('out of office time period section', () => {
 	});
 
 	test('should update from date and time to be equal to until date if user set an until date lower than the current from date', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -411,7 +419,7 @@ describe('out of office time period section', () => {
 		await user.click(screen.getByText(/click to blur/i));
 		await act(async () => {
 			// to let floating finish the update
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		expect(fromDateInput).toHaveDisplayValue(expectedDate);
 		expect(untilDateInput).toHaveDisplayValue(expectedDate);
@@ -420,8 +428,8 @@ describe('out of office time period section', () => {
 	});
 
 	test('should disable and update from and until time to be the start and end of the day if user checks the all day flag', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		fromDate.setHours(9, 9, 9, 9);
 		const untilDate = faker.date.soon();
@@ -449,8 +457,8 @@ describe('out of office time period section', () => {
 	});
 
 	test('should enable from and until time inputs if user unchecks the all day flag', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		fromDate.setHours(0, 0, 0, 0);
 		const untilDate = faker.date.soon();
@@ -485,8 +493,8 @@ describe('out of office time period section', () => {
 	])(
 		'should not update other date and time inputs if %s change',
 		async (inputName, newDateTime) => {
-			const addMod = jest.fn();
-			const removeMod = jest.fn();
+			const addMod = vi.fn();
+			const removeMod = vi.fn();
 			const fromDate = faker.date.recent();
 			const untilDate = faker.date.soon();
 			const { user } = setup(
@@ -512,7 +520,7 @@ describe('out of office time period section', () => {
 			await user.click(screen.getByText(/click to blur/i));
 			await act(async () => {
 				// to let floating finish the update
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 			otherInputs.forEach(([textbox, previousValue]) => {
 				expect(textbox).toHaveDisplayValue(previousValue);
@@ -521,8 +529,8 @@ describe('out of office time period section', () => {
 	);
 
 	test('should update zimbraPrefOutOfOfficeFromDate when changing the from date', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -545,7 +553,7 @@ describe('out of office time period section', () => {
 		await user.click(screen.getByText(/click to blur/i));
 		await act(async () => {
 			// to let floating finish the update
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		const expectedDateTime = new Date(newDateTime);
 		expectedDateTime.setHours(
@@ -562,8 +570,8 @@ describe('out of office time period section', () => {
 	});
 
 	test('should update zimbraPrefOutOfOfficeFromDate when changing the from time', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -586,7 +594,7 @@ describe('out of office time period section', () => {
 		await user.click(screen.getByText(/click to blur/i));
 		await act(async () => {
 			// to let floating finish the update
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		const expectedDateTime = new Date(fromDate);
 		expectedDateTime.setHours(newDateTime.getHours(), newDateTime.getMinutes(), 0, 0);
@@ -598,8 +606,8 @@ describe('out of office time period section', () => {
 	});
 
 	test('should update zimbraPrefOutOfOfficeFromDate when changing both the from date and time', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -626,7 +634,7 @@ describe('out of office time period section', () => {
 		await user.click(screen.getByText(/click to blur/i));
 		await act(async () => {
 			// to let floating finish the update
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		const expectedDateTime = new Date(newDateTime);
 		expectedDateTime.setSeconds(0, 0);
@@ -638,8 +646,8 @@ describe('out of office time period section', () => {
 	});
 
 	test('should update zimbraPrefOutOfOfficeUntilDate when changing the until date', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -662,7 +670,7 @@ describe('out of office time period section', () => {
 		await user.click(screen.getByText(/click to blur/i));
 		await act(async () => {
 			// to let floating finish the update
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		const expectedDateTime = new Date(newDateTime);
 		expectedDateTime.setHours(
@@ -679,8 +687,8 @@ describe('out of office time period section', () => {
 	});
 
 	test('should update zimbraPrefOutOfOfficeUntilDate when changing the until time', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -703,7 +711,7 @@ describe('out of office time period section', () => {
 		await user.click(screen.getByText(/click to blur/i));
 		await act(async () => {
 			// to let floating finish the update
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		const expectedDateTime = new Date(untilDate);
 		expectedDateTime.setHours(newDateTime.getHours(), newDateTime.getMinutes(), 0, 0);
@@ -715,8 +723,8 @@ describe('out of office time period section', () => {
 	});
 
 	test('should update zimbraPrefOutOfOfficeUntilDate when changing both the until date and time', async () => {
-		const addMod = jest.fn();
-		const removeMod = jest.fn();
+		const addMod = vi.fn();
+		const removeMod = vi.fn();
 		const fromDate = faker.date.recent();
 		const untilDate = faker.date.soon();
 		const { user } = setup(
@@ -743,7 +751,7 @@ describe('out of office time period section', () => {
 		await user.click(screen.getByText(/click to blur/i));
 		await act(async () => {
 			// to let floating finish the update
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		const expectedDateTime = new Date(newDateTime);
 		expectedDateTime.setSeconds(0, 0);

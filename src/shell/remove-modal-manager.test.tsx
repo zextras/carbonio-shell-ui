@@ -4,13 +4,19 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React, { useEffect } from 'react';
+import { vi } from 'vitest';
 
 import { act } from '@testing-library/react';
+import { vi } from 'vitest';
 import { useModal } from '@zextras/carbonio-design-system';
+import { vi } from 'vitest';
 
 import AppViewContainer from './app-view-container';
+import { vi } from 'vitest';
 import { useAppStore } from '../store/app';
+import { vi } from 'vitest';
 import { setup } from '../tests/utils';
+import { vi } from 'vitest';
 
 const WithUseModalHookView = (): null => {
 	const { createModal } = useModal();
@@ -22,7 +28,7 @@ const WithUseModalHookView = (): null => {
 };
 
 test('Using useModal hook without a ModalManager, log a Modal manager context not initialized console error', async () => {
-	const mockedError = jest.fn();
+	const mockedError = vi.fn();
 	console.error = mockedError;
 
 	setup(<AppViewContainer />, { withoutModalManager: true });

@@ -5,15 +5,23 @@
  */
 
 import React from 'react';
+import { vi } from 'vitest';
 
 import { faker } from '@faker-js/faker';
+import { vi } from 'vitest';
 import type { QuotaProps } from '@zextras/carbonio-design-system';
+import { vi } from 'vitest';
 import { produce } from 'immer';
+import { vi } from 'vitest';
 
 import UserQuota from './user-quota';
+import { vi } from 'vitest';
 import { useAccountStore } from '../../../store/account';
+import { vi } from 'vitest';
 import { screen, setup } from '../../../tests/utils';
+import { vi } from 'vitest';
 import { humanFileSize } from '../utils';
+import { vi } from 'vitest';
 
 function setupAccountStore(usedQuota: number, quotaMax: number): void {
 	useAccountStore.setState(
@@ -24,10 +32,10 @@ function setupAccountStore(usedQuota: number, quotaMax: number): void {
 	);
 }
 
-const mockQuota = jest.fn().mockReturnValue(<div>mock Quota</div>);
+const mockQuota = vi.fn().mockReturnValue(<div>mock Quota</div>);
 
-jest.mock('@zextras/carbonio-design-system', () => ({
-	...jest.requireActual('@zextras/carbonio-design-system'),
+vi.mock('@zextras/carbonio-design-system', () => ({
+	...vi.requireActual('@zextras/carbonio-design-system'),
 	Quota: (props: QuotaProps): unknown => mockQuota(props)
 }));
 

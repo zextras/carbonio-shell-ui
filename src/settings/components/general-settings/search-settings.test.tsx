@@ -4,15 +4,23 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import React from 'react';
+import { vi } from 'vitest';
 
 import { act, screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
+import { vi } from 'vitest';
 
 import { SearchSettings } from './search-settings';
+import { vi } from 'vitest';
 import { ICONS } from '../../../tests/constants';
+import { vi } from 'vitest';
 import { setup } from '../../../tests/utils';
+import { vi } from 'vitest';
 import type { AccountSettings } from '../../../types/account';
+import { vi } from 'vitest';
 import type { AddMod } from '../../../types/network';
+import { vi } from 'vitest';
 
 describe('Search settings', () => {
 	test('should render with default values', () => {
@@ -21,7 +29,7 @@ describe('Search settings', () => {
 			props: [],
 			attrs: {}
 		};
-		const addModFn = jest.fn();
+		const addModFn = vi.fn();
 		setup(<SearchSettings settings={settings} addMod={addModFn} />);
 		expect(screen.getByText('Search')).toBeVisible();
 		expect(screen.getByText(/include spam folder in searches/i)).toBeVisible();
@@ -52,7 +60,7 @@ describe('Search settings', () => {
 			props: [],
 			attrs: {}
 		};
-		const addModFn = jest.fn();
+		const addModFn = vi.fn();
 		setup(<SearchSettings settings={settings} addMod={addModFn} />);
 		expect(screen.getByText(/include spam folder in searches/i)).toBeVisible();
 		expect(screen.getByText(/include trash folder in searches/i)).toBeVisible();
@@ -70,7 +78,7 @@ describe('Search settings', () => {
 			props: [],
 			attrs: {}
 		};
-		const addModFn = jest.fn();
+		const addModFn = vi.fn();
 		const { user } = setup(<SearchSettings settings={settings} addMod={addModFn} />);
 		await act(async () => {
 			await user.click(screen.getByText(RegExp(`include ${folderType} folder in searches`, 'i')));

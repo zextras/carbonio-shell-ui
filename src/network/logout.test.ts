@@ -4,16 +4,23 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { api } from '@zextras/carbonio-ui-soap-lib';
+import { vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
+import { vi } from 'vitest';
 
 import { logout } from './logout';
+import { vi } from 'vitest';
 import * as utils from './utils';
+import { vi } from 'vitest';
 import server from '../mocks/server';
+import { vi } from 'vitest';
 import { useLoginConfigStore } from '../store/login/store';
+import { vi } from 'vitest';
 import { controlConsoleError } from '../tests/utils';
+import { vi } from 'vitest';
 
 beforeEach(() => {
-	jest.spyOn(api, 'endSession').mockReturnValueOnce(
+	vi.spyOn(api, 'endSession').mockReturnValueOnce(
 		Promise.resolve({
 			Header: { context: {} },
 			Body: {}
@@ -23,83 +30,83 @@ beforeEach(() => {
 
 describe('Logout', () => {
 	it('should redirect to login page if EndSession request fails', async () => {
-		const goToLoginFn = jest.spyOn(utils, 'goToLogin').mockImplementation();
+		const goToLoginFn = vi.spyOn(utils, 'goToLogin').mockImplementation();
 		await logout();
-		await jest.advanceTimersToNextTimerAsync();
+		await vi.advanceTimersToNextTimerAsync();
 		expect(goToLoginFn).toHaveBeenCalled();
 	});
 
 	it('should redirect to login page if /logout request fails', async () => {
-		const goToLoginFn = jest.spyOn(utils, 'goToLogin').mockImplementation();
+		const goToLoginFn = vi.spyOn(utils, 'goToLogin').mockImplementation();
 		await logout();
-		await jest.advanceTimersToNextTimerAsync();
+		await vi.advanceTimersToNextTimerAsync();
 		expect(goToLoginFn).toHaveBeenCalled();
 	});
 
 	it('should redirect to login page if EndSession throws error', async () => {
 		controlConsoleError('Failed to fetch');
-		const goToLoginFn = jest.spyOn(utils, 'goToLogin').mockImplementation();
+		const goToLoginFn = vi.spyOn(utils, 'goToLogin').mockImplementation();
 		server.use(http.post('/service/soap/EndSessionRequest', () => HttpResponse.error()));
 		await logout();
-		await jest.advanceTimersToNextTimerAsync();
+		await vi.advanceTimersToNextTimerAsync();
 		expect(goToLoginFn).toHaveBeenCalled();
 	});
 
 	it('should redirect to login page if /logout throws error', async () => {
 		controlConsoleError('Failed to fetch');
-		const goToLoginFn = jest.spyOn(utils, 'goToLogin').mockImplementation();
+		const goToLoginFn = vi.spyOn(utils, 'goToLogin').mockImplementation();
 		await logout();
-		await jest.advanceTimersToNextTimerAsync();
+		await vi.advanceTimersToNextTimerAsync();
 		expect(goToLoginFn).toHaveBeenCalled();
 	});
 
 	it('should redirect to login page if EndSession request succeeded with Fault', async () => {
-		const goToLoginFn = jest.spyOn(utils, 'goToLogin').mockImplementation();
+		const goToLoginFn = vi.spyOn(utils, 'goToLogin').mockImplementation();
 		await logout();
-		await jest.advanceTimersToNextTimerAsync();
+		await vi.advanceTimersToNextTimerAsync();
 		expect(goToLoginFn).toHaveBeenCalled();
 	});
 
 	describe('with custom logout url', () => {
 		it('should redirect to login page if EndSession request fails', async () => {
 			useLoginConfigStore.setState({ carbonioWebUiLogoutURL: 'custom logout' });
-			const goToFn = jest.spyOn(utils, 'goTo').mockImplementation();
+			const goToFn = vi.spyOn(utils, 'goTo').mockImplementation();
 			await logout();
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 			expect(goToFn).toHaveBeenCalled();
 		});
 
 		it('should redirect to login page if /logout request fails', async () => {
 			useLoginConfigStore.setState({ carbonioWebUiLogoutURL: 'custom logout' });
-			const goToFn = jest.spyOn(utils, 'goTo').mockImplementation();
+			const goToFn = vi.spyOn(utils, 'goTo').mockImplementation();
 			await logout();
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 			expect(goToFn).toHaveBeenCalled();
 		});
 
 		it('should redirect to login page if EndSession throws error', async () => {
 			useLoginConfigStore.setState({ carbonioWebUiLogoutURL: 'custom logout' });
 			controlConsoleError('Failed to fetch');
-			const goToFn = jest.spyOn(utils, 'goTo').mockImplementation();
+			const goToFn = vi.spyOn(utils, 'goTo').mockImplementation();
 			await logout();
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 			expect(goToFn).toHaveBeenCalled();
 		});
 
 		it('should redirect to login page if /logout throws error', async () => {
 			useLoginConfigStore.setState({ carbonioWebUiLogoutURL: 'custom logout' });
 			controlConsoleError('Failed to fetch');
-			const goToFn = jest.spyOn(utils, 'goTo').mockImplementation();
+			const goToFn = vi.spyOn(utils, 'goTo').mockImplementation();
 			await logout();
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 			expect(goToFn).toHaveBeenCalled();
 		});
 
 		it('should redirect to login page if EndSession request succeeded with Fault', async () => {
 			useLoginConfigStore.setState({ carbonioWebUiLogoutURL: 'custom logout' });
-			const goToFn = jest.spyOn(utils, 'goTo').mockImplementation();
+			const goToFn = vi.spyOn(utils, 'goTo').mockImplementation();
 			await logout();
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 			expect(goToFn).toHaveBeenCalled();
 		});
 	});

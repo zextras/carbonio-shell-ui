@@ -216,7 +216,7 @@ const config: Config = {
 	transformIgnorePatterns: [
 		`/node_modules/(?!(${['@zextras/carbonio-ui-preview', 'pdfjs-dist'].join('|')}))`,
 		'\\.pnp\\.[^\\/]+$'
-	]
+	],
 
 	// An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
 	// unmockedModulePathPatterns: undefined,
@@ -229,6 +229,8 @@ const config: Config = {
 
 	// Whether to use watchman for file crawling
 	// watchman: true,
+
+	waitForUnhandledRejections: false
 };
 
 export default config;

@@ -26,7 +26,7 @@
 		"build:dev": "npm run build:pkg -- --dev --pkgRel $(date +%s) && npm run build:lib",
 		"prebuild:pkg": "rm -rf dist pkg; tsc --project tsconfig.build.json",
 		"build:pkg": "sdk build",
-		"postbuild:pkg": "rm carbonio.webpack.js src/constants/locales.js",
+		"postbuild:pkg": "rm carbonio.webpack.js src/constants/default-locales.js",
 		"prebuild:lib": "rm -rf lib",
 		"build:lib": "tsc -p tsconfig.lib.json && npx api-extractor run --verbose",
 		"build:lib:local": "tsc -p tsconfig.lib.json && npx api-extractor run --verbose --local",
@@ -52,8 +52,8 @@
 		"@babel/preset-env": "^7.26.9",
 		"@babel/preset-react": "^7.26.3",
 		"@babel/preset-typescript": "^7.27.0",
-		"@commitlint/cli": "^19.8.0",
-		"@commitlint/config-conventional": "^19.8.0",
+		"@commitlint/cli": "^19.8.1",
+		"@commitlint/config-conventional": "^19.8.1",
 		"@emotion/babel-plugin": "^11.13.5",
 		"@emotion/jest": "^11.13.0",
 		"@faker-js/faker": "^8.4.1",
@@ -79,7 +79,7 @@
 		"copy-webpack-plugin": "^13.0.0",
 		"core-js": "^3.39.0",
 		"css-loader": "^6.10.0",
-		"dotenv": "^16.4.7",
+		"dotenv": "^17.2.2",
 		"eslint-plugin-notice": "^0.9.10",
 		"html-webpack-plugin": "^5.6.0",
 		"husky": "^9.0.11",
@@ -103,7 +103,7 @@
 		"@emotion/styled": "^11.14.1",
 		"@fontsource/roboto": "^5.0.8",
 		"@tinymce/tinymce-react": "^4.3.2",
-		"@zextras/carbonio-design-system": "11.0.0-devel.1",
+		"@zextras/carbonio-design-system": "11.0.0-devel.3",
 		"@zextras/carbonio-ui-preview": "3.3.0-devel.1",
 		"@zextras/carbonio-ui-soap-lib": "1.0.3",
 		"darkreader": "^4.9.79",
@@ -122,6 +122,8 @@
 		"zustand": "^5.0.3"
 	},
 	"peerDependencies": {
+		"@emotion/react": "^11.14.0",
+		"@emotion/styled": "^11.14.1",
 		"@zextras/carbonio-design-system": "^11.0.0-devel.1",
 		"@zextras/carbonio-ui-preview": "^3.3.0-devel.1",
 		"core-js": "^3.39.0",
@@ -129,9 +131,7 @@
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"react-i18next": "^12.3.1",
-		"react-router-dom": "^6.30.0",
-		"@emotion/react": "^11.14.0",
-		"@emotion/styled": "^11.14.1"
+		"react-router-dom": "^6.30.0"
 	},
 	"peerDependenciesMeta": {
 		"@zextras/carbonio-design-system": {

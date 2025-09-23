@@ -16,7 +16,7 @@ import type * as ReportingFunctions from './reporting/functions';
 // this can be removed once migrated to Node 22 (https://github.com/wojtekmaj/react-pdf/wiki/Upgrade-guide-from-version-8.x-to-9.x#dropped-support-for-older-browsers-and-nodejs-versions)
 import 'core-js/proposals/promise-with-resolvers';
 
-dotenv.config();
+dotenv.config({ quiet: true });
 
 const map: Record<
 	Parameters<typeof window.addEventListener>[0],

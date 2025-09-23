@@ -14,7 +14,7 @@ import type { WebpackConfiguration } from 'webpack-cli';
 
 import { DEFAULT_LOCALES } from './src/constants/default-locales';
 
-dotenv.config({ quiet: true });
+dotenv.config();
 
 const commitHash = execSync('git rev-parse HEAD').toString().trim();
 

@@ -13,7 +13,7 @@ const config: Config = {
 	// bail: 0,
 
 	// The directory where Jest should store its cached dependency information
-	cacheDirectory: '<rootDir>/.jest-cache',
+	// cacheDirectory: "/tmp/jest_rs",
 
 	// Automatically clear mock calls, instances, contexts and results before every test
 	// clearMocks: true,
@@ -185,7 +185,7 @@ const config: Config = {
 		 * @see https://github.com/mswjs/msw/issues/1786#issuecomment-1782559851
 		 */
 		customExportConditions: [''],
-		globalsCleanup: 'off'
+		globalsCleanup: 'on'
 	},
 
 	// Adds a location field to test results

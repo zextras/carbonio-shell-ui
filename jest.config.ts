@@ -184,7 +184,8 @@ const config: Config = {
 		 * @see https://mswjs.io/docs/migrations/1.x-to-2.x#cannot-find-module-mswnode-jsdom
 		 * @see https://github.com/mswjs/msw/issues/1786#issuecomment-1782559851
 		 */
-		customExportConditions: ['']
+		customExportConditions: [''],
+		globalsCleanup: 'on'
 	},
 
 	// Adds a location field to test results
@@ -216,7 +217,7 @@ const config: Config = {
 	transformIgnorePatterns: [
 		`/node_modules/(?!(${['@zextras/carbonio-ui-preview', 'pdfjs-dist'].join('|')}))`,
 		'\\.pnp\\.[^\\/]+$'
-	]
+	],
 
 	// An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
 	// unmockedModulePathPatterns: undefined,
@@ -229,6 +230,8 @@ const config: Config = {
 
 	// Whether to use watchman for file crawling
 	// watchman: true,
+
+	waitForUnhandledRejections: false
 };
 
 export default config;

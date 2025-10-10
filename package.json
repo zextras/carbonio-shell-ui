@@ -73,7 +73,7 @@
 		"@types/webpack-env": "^1.18.8",
 		"@zextras/carbonio-search-ui": "github:zextras/carbonio-search-ui#devel",
 		"@zextras/carbonio-ui-configs": "^2.1.0",
-		"@zextras/carbonio-ui-sdk": "^2.1.0",
+		"@zextras/carbonio-ui-sdk": "^2.2.0-devel.4",
 		"autoprefixer": "^10.4.17",
 		"babel-plugin-transform-import-meta": "^2.3.2",
 		"copy-webpack-plugin": "^13.0.1",

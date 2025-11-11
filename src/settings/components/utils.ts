@@ -156,9 +156,9 @@ export const getAvailableEmailAddresses = (
 	// Adds the email addresses of all the shared accounts
 	if (account.rights?.targets) {
 		account.rights?.targets.forEach((target) => {
-			if (target.target && (target.right === 'sendAs' || target.right === 'sendOnBehalfOf')) {
+			if (target.target && (target.right === 'sendAs' || target.right === 'sendOnBehalfOf' || target.right === 'sendAsDistList' || target.right === 'sendOnBehalfOfDistList')) {
 				target.target.forEach((user) => {
-					if (user.type === 'account' && user.email) {
+					if ((user.type === 'account' || user.type === 'dl' ) && user.email) {
 						user.email.forEach((email) => {
 							result.push(email.addr);
 						});

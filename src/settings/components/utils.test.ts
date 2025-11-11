@@ -3,9 +3,18 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import { faker } from '@faker-js/faker';
 import type { GeneralizedTime } from '@zextras/carbonio-ui-soap-lib';
 
-import { dateToGenTime, genTimeToDate, humanFileSize, asArray } from './utils';
+import {
+	dateToGenTime,
+	genTimeToDate,
+	humanFileSize,
+	asArray,
+	getAvailableEmailAddresses
+} from './utils';
+import type { Account, AccountSettings } from '../../lib';
+import { createAccount, createIdentity } from '../../tests/account-utils';
 
 describe('dateToGenTime function', () => {
 	it('should return a UTC date with the format YYYYMMDDHHmmss[Z]', () => {
@@ -124,5 +133,122 @@ describe('asArray', () => {
 	it('should return array of numbers', () => {
 		const result = asArray(123);
 		expect(result).toEqual([123]);
+	});
+});
+
+describe('getAvailableEmailAddresses', () => {
+	const defaultId = faker.string.uuid();
+
+	const baseAccount: Account = createAccount('default@email.com', defaultId, [
+		createIdentity(
+			{
+				zimbraPrefIdentityId: defaultId,
+				zimbraPrefIdentityName: 'defaultFullName',
+				zimbraPrefFromAddress: 'default@email.com'
+			},
+			true
+		)
+	]);
+
+	const baseSettings: AccountSettings = { prefs: {}, attrs: {}, props: [] };
+
+	it('should return the primary account email by default', () => {
+		const result = getAvailableEmailAddresses(baseAccount, baseSettings);
+		expect(result).toEqual(['default@email.com']);
+	});
+
+	it('should include shared emails when rights and types match', () => {
+		const d = faker.string.alpha();
+		const id = faker.string.alpha();
+		const name = faker.string.alpha();
+		const account: Account = {
+			...baseAccount,
+			rights: {
+				targets: [
+					{
+						right: 'sendAs',
+						target: [
+							{ type: 'account', email: [{ addr: 'shared1@domain.com' }], d, id, name },
+							{ type: 'dl', email: [{ addr: 'dl1@domain.com' }], d, id, name }
+						]
+					},
+					{
+						right: 'sendOnBehalfOfDistList',
+						target: [{ type: 'account', email: [{ addr: 'shared2@domain.com' }], d, id, name }]
+					}
+				]
+			}
+		};
+
+		const result = getAvailableEmailAddresses(account, baseSettings);
+		expect(result).toContain('shared1@domain.com');
+		expect(result).toContain('dl1@domain.com');
+		expect(result).toContain('shared2@domain.com');
+	});
+
+	it('should ignore shared emails if the right is not authorized', () => {
+		const d = faker.string.alpha();
+		const id = faker.string.alpha();
+		const name = faker.string.alpha();
+
+		const account: Account = {
+			...baseAccount,
+			rights: {
+				targets: [
+					{
+						right: 'viewFreeBusy',
+						target: [{ type: 'account', email: [{ addr: 'ignored@domain.com' }], d, id, name }]
+					}
+				]
+			}
+		};
+
+		const result = getAvailableEmailAddresses(account, baseSettings);
+		expect(result).not.toContain('ignored@domain.com');
+	});
+
+	it('should include aliases and allow-from addresses from settings', () => {
+		const settings = {
+			...baseSettings,
+			attrs: {
+				zimbraMailAlias: 'alias@domain.com',
+				zimbraAllowFromAddress: ['allowed@domain.com', 'extra@domain.com']
+			}
+		};
+
+		const result = getAvailableEmailAddresses(baseAccount, settings);
+		expect(result).toContain('alias@domain.com');
+		expect(result).toContain('allowed@domain.com');
+		expect(result).toContain('extra@domain.com');
+	});
+
+	it('should return a unique list (remove duplicates)', () => {
+		const d = faker.string.alpha();
+		const id = faker.string.alpha();
+		const name = faker.string.alpha();
+		const account: Account = {
+			...baseAccount,
+			rights: {
+				targets: [
+					{
+						right: 'sendAs',
+						target: [{ type: 'account', email: [{ addr: 'default@email.com' }], d, id, name }]
+					}
+				]
+			}
+		};
+
+		const settings = {
+			...baseSettings,
+			attrs: {
+				zimbraMailAlias: ['default@email.com'],
+				zimbraAllowFromAddress: []
+			}
+		};
+
+		const result = getAvailableEmailAddresses(account, settings);
+
+		expect(result).toEqual(['default@email.com']);
+		expect(result).toHaveLength(1);
 	});
 });

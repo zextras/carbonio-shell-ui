@@ -6,6 +6,7 @@
 
 import React, { useEffect, useMemo } from 'react';
 
+import styled from '@emotion/styled';
 import {
 	Breadcrumbs,
 	Button,
@@ -17,7 +18,6 @@ import {
 	Text
 } from '@zextras/carbonio-design-system';
 import { useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
 
 import { getT } from '../../store/i18n/hooks';
 import type { RouteLeavingGuardProps } from '../../ui-extras/nav-guard';

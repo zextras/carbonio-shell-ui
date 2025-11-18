@@ -6,34 +6,36 @@ MIT License (MIT) applies to:
 @babel/preset-typescript, Copyright (c) 2014-present Sebastian McKenzie and other contributors
 @commitlint/cli, Copyright (c) 2016 - present Mario Nebl
 @commitlint/config-conventional, Copyright (c) 2016 - present Mario Nebl
-@faker-js/faker, Faker - Copyright (c) 2022-2024, faker.js - Copyright (c) 2020 Marak Squires
+@emotion/babel-plugin, Copyright (c) Emotion team and other contributors
+@emotion/jest, Copyright (c) Emotion team and other contributors
+@emotion/react, Copyright (c) Emotion team and other contributors
+@emotion/styled, Copyright (c) Emotion team and other contributors
+@faker-js/faker, Faker - Copyright (c) 2022-2024
 @microsoft/api-extractor, Copyright (c) Microsoft Corporation. All rights reserved.
 @svgr/webpack, Copyright 2017 Smooth Code
 @testing-library/dom, Copyright (c) 2017 Kent C. Dodds
 @testing-library/jest-dom, Copyright (c) 2017 Kent C. Dodds
-@testing-library/react, Copyright (c) 2017 Kent C. Dodds
+@testing-library/react, Copyright (c) 2017-Present Kent C. Dodds
 @testing-library/user-event, Copyright (c) 2020 Giorgio Polvara
 @tinymce/tinymce-react, Copyright (c) 2022 Ephox Corporation DBA Tiny Technologies, Inc.
-@tsconfig/node18, Copyright (c) Microsoft Corporation.
+@tsconfig/node20, Copyright (c) Microsoft Corporation.
 @types/jest, Copyright (c) Microsoft Corporation.
 @types/lodash, Copyright (c) Microsoft Corporation.
 @types/node, Copyright (c) Microsoft Corporation.
 @types/react-dom, Copyright (c) Microsoft Corporation.
-@types/react-router-dom, Copyright (c) Microsoft Corporation.
 @types/react, Copyright (c) Microsoft Corporation.
 @types/webpack-env, Copyright (c) Microsoft Corporation.
 @types/webpack, Copyright (c) Microsoft Corporation.
 autoprefixer, Copyright 2013 Andrey Sitnik <andrey@sitnik.ru>
-babel-plugin-styled-components, Copyright (c) 2016-present Vladimir Danchenkov and Maximilian Stoiber
 copy-webpack-plugin, Copyright JS Foundation and other contributors
-core-js, Copyright (c) 2014-2024 Denis Pushkarev
+core-js, Copyright (c) 2014-2025 Denis Pushkarev
 css-loader, Copyright JS Foundation and other contributors
-darkreader, Copyright (c) 2024 Dark Reader Ltd.
+darkreader, Copyright (c) 2025 Dark Reader Ltd.
 date-fns, Copyright (c) 2021 Sasha Koss and Lesha Koss https://kossnocorp.mit-license.org
 eslint-plugin-notice, Copyright (c) 2017 Nick Deis
-history, Copyright (c) React Training 2016-2020. Copyright (c) Remix Software 2020-2021
 html-webpack-plugin, Copyright JS Foundation and other contributors
 husky, Copyright (c) 2021 typicode
+i18next-chained-backend, Copyright (c) 2023 i18next
 i18next-http-backend, Copyright (c) 2023 i18next
 i18next, Copyright (c) 2022 i18next
 identity-obj-proxy, Copyright (c) 2015 Keyan Zhang
@@ -41,7 +43,6 @@ immer, Copyright (c) 2017 Michel Weststrate
 is-ci, Copyright (c) 2016-2021 Thomas Watson Steen
 jest-environment-jsdom, Copyright (c) Meta Platforms, Inc. and affiliates.
 jest-fail-on-console, Copyright (c) 2022 Valentin Hervieu
-jest-styled-components, Copyright (c) 2017 - present Michele Bertoli
 jest, Copyright (c) Meta Platforms, Inc. and affiliates.
 lodash, Copyright OpenJS Foundation and other contributors <https://openjsf.org/>
 mini-css-extract-plugin, Copyright JS Foundation and other contributors
@@ -50,15 +51,11 @@ postcss-loader, Copyright JS Foundation and other contributors
 posthog-js, Copyright 2020 Posthog / Hiberly, Inc.*
 react-dom, Copyright (c) Facebook, Inc. and its affiliates.
 react-i18next, Copyright (c) 2023 i18next
-react-router-dom-v5-compat, Copyright (c) React Training LLC 2015-2019. Copyright (c) Remix Software Inc. 2020-2021. Copyright (c) Shopify Inc. 2022-2023
-react-router-dom, Copyright (c) React Training 2015-2019. Copyright (c) Remix Software 2020-2022
+react-router-dom, Copyright (c) React Training LLC 2015-2019. Copyright (c) Remix Software Inc. 2020-2021. Copyright (c) Shopify Inc. 2022-2023
 react, Copyright (c) Facebook, Inc. and its affiliates.
-styled-components, Copyright (c) 2016-present Glen Maddern and Maximilian Stoiber
 tinymce, Copyright (c) 2022 Ephox Corporation DBA Tiny Technologies, Inc.
 ts-node, Copyright (c) 2014 Blake Embrey (hello@blakeembrey.com)
-ua-parser-js, Copyright (c) 2012-2023 Faisal Salman <<f@faisalman.com>>
 webpack-cli, Copyright JS Foundation and other contributors
-webpack-merge, Copyright (c) 2015 Juho Vepsalainen
 webpack, Copyright JS Foundation and other contributors
 zustand, Copyright (c) 2019 Paul Henschel
 
@@ -66,11 +63,20 @@ MIT License
 
 Copyright (c) <year> <copyright holders>
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+following conditions:
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all copies or substantial
+portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO
+EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 
@@ -161,9 +167,12 @@ limitations under the License.
 GNU Affero General Public License v3.0 only (AGPL-3.0-only) applies to:
 
 @zextras/carbonio-design-system, Copyright (C) 2022 Zextras <https://www.zextras.com>
-@zextras/carbonio-ui-configs, Copyright (C) 2022 Zextras <https://www.zextras.com>
-@zextras/carbonio-ui-preview, Copyright (C) 2022 Zextras <https://www.zextras.com>
-@zextras/carbonio-ui-sdk, Copyright (C) 2022 Zextras <https://www.zextras.com>
+@zextras/carbonio-search-ui, 2022 Zextras <https://www.zextras.com>
+@zextras/carbonio-shell-ui, 2022 Zextras <https://www.zextras.com>
+@zextras/carbonio-ui-configs, 2022 Zextras <https://www.zextras.com>
+@zextras/carbonio-ui-preview, 2022 Zextras <https://www.zextras.com>
+@zextras/carbonio-ui-sdk, 2022 Zextras <https://www.zextras.com>
+@zextras/carbonio-ui-soap-lib, 
 
 GNU AFFERO GENERAL PUBLIC LICENSE
 Version 3, 19 November 2007

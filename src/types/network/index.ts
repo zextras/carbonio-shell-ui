@@ -4,18 +4,13 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
+
 import type { AccountACEInfo } from './entities';
 import type { SoapBody, SoapContext, SoapFault } from './soap';
 import type { JSNS } from '../../constants';
 import type { Exactify, RequireAtLeastOne, ValueOf } from '../../utils/typeUtils';
-import type {
-	AccountRights,
-	AccountSettingsPrefs,
-	Identity,
-	IdentityAttrs,
-	Signature,
-	ZimletProp
-} from '../account';
+import type { AccountRights, Identity, IdentityAttrs, Signature, ZimletProp } from '../account';
 
 export * from './soap';
 
@@ -122,15 +117,6 @@ export type AddMod = <
 ) => void;
 
 export type RemoveMod = (type: keyof Mods, key: keyof NonNullable<Mods[typeof type]>) => void;
-
-export type Locale = {
-	id: string;
-	localName: string;
-	name: string;
-};
-export type AvailableLocalesResponse = {
-	locale: Array<Locale>;
-};
 
 export type NetworkState = SoapContext & {
 	noOpTimeout?: NodeJS.Timeout;

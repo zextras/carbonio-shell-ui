@@ -6,11 +6,12 @@
 import React from 'react';
 
 import { act, screen } from '@testing-library/react';
+import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
 
 import { SearchSettings } from './search-settings';
 import { ICONS } from '../../../tests/constants';
 import { setup } from '../../../tests/utils';
-import type { AccountSettings, AccountSettingsPrefs } from '../../../types/account';
+import type { AccountSettings } from '../../../types/account';
 import type { AddMod } from '../../../types/network';
 
 describe('Search settings', () => {

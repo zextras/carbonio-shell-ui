@@ -5,10 +5,10 @@
  */
 import React, { useCallback, useMemo, useRef } from 'react';
 
+import styled from '@emotion/styled';
 import type { IAllProps as EditorProps } from '@tinymce/tinymce-react';
 import { Editor } from '@tinymce/tinymce-react';
 import { Container } from '@zextras/carbonio-design-system';
-import styled from 'styled-components';
 import type { EditorOptions, TinyMCE, Ui } from 'tinymce/tinymce';
 // TinyMCE so the global var exists
 import tinymce from 'tinymce/tinymce';
@@ -41,7 +41,7 @@ import 'tinymce/plugins/table';
 import 'tinymce/plugins/visualblocks';
 import 'tinymce/plugins/wordcount';
 
-import { SUPPORTED_LOCALES } from '../../constants/locales';
+import { DEFAULT_LOCALES } from '../../constants/default-locales';
 import { useUserSettings } from '../account';
 import { getT } from '../i18n/hooks';
 import { useI18nStore } from '../i18n/store';
@@ -107,8 +107,7 @@ const Composer = ({
 	const t = getT();
 	const { locale } = useI18nStore.getState();
 	const language = useMemo(() => {
-		const localeObj =
-			locale in SUPPORTED_LOCALES && SUPPORTED_LOCALES[locale as keyof typeof SUPPORTED_LOCALES];
+		const localeObj = locale in DEFAULT_LOCALES && DEFAULT_LOCALES[locale];
 		return (
 			(localeObj &&
 				(('tinymceLocale' in localeObj && localeObj?.tinymceLocale) || localeObj?.value)) ||

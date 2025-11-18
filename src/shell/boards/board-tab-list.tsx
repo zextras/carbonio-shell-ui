@@ -6,9 +6,9 @@
 
 import React from 'react';
 
+import styled from '@emotion/styled';
 import { Row } from '@zextras/carbonio-design-system';
 import { isEmpty, map } from 'lodash';
-import styled from 'styled-components';
 
 import { AppBoardTab } from './board-tab';
 import { useBoardStore } from '../../store/boards';

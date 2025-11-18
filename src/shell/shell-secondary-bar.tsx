@@ -6,10 +6,10 @@
 
 import React, { useCallback, useMemo } from 'react';
 
+import styled from '@emotion/styled';
 import { Container } from '@zextras/carbonio-design-system';
 import { filter, findIndex, map, sortBy } from 'lodash';
 import { Route, Routes } from 'react-router-dom';
-import styled from 'styled-components';
 
 import { Collapser } from './collapser';
 import { AppContextProvider } from '../boot/app/app-context-provider';

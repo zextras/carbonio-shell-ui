@@ -5,9 +5,9 @@
  */
 import React, { useEffect, useMemo } from 'react';
 
+import styled from '@emotion/styled';
 import { Container, Responsive } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
-import styled from 'styled-components';
 
 import { useUtilityBarStore } from './store';
 import { useUtilityViews } from './utils';

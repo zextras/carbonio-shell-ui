@@ -3,6 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
 import { produce } from 'immer';
 
 import { LOGGED_USER } from './constants';
@@ -10,7 +11,6 @@ import { useAccountStore } from '../store/account';
 import type {
 	Account,
 	AccountSettingsAttrs,
-	AccountSettingsPrefs,
 	Identity,
 	IdentityAttrs,
 	ZimletProp

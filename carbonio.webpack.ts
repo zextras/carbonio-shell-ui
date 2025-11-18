@@ -12,7 +12,7 @@ import path from 'path';
 import { DefinePlugin } from 'webpack';
 import type { WebpackConfiguration } from 'webpack-cli';
 
-import { SUPPORTED_LOCALES } from './src/constants/locales';
+import { DEFAULT_LOCALES } from './src/constants/default-locales';
 
 dotenv.config();
 
@@ -20,12 +20,12 @@ const commitHash = execSync('git rev-parse HEAD').toString().trim();
 
 const baseStaticPath = `/static/iris/carbonio-shell-ui/${commitHash}/`;
 
-const supportedLocalesList = Object.values(SUPPORTED_LOCALES);
+const supportedLocalesList = Object.values(DEFAULT_LOCALES);
 
 const tinymceLocales = supportedLocalesList.map(
 	(locale) => ('tinymceLocale' in locale && locale.tinymceLocale) || locale.value
 );
-
+console.log('Tinymce Locales:', tinymceLocales);
 const configFn = (
 	initialConf: WebpackConfiguration,
 	pkg: string,

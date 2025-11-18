@@ -26,7 +26,7 @@
 		"build:dev": "npm run build:pkg -- --dev --pkgRel $(date +%s) && npm run build:lib",
 		"prebuild:pkg": "rm -rf dist pkg; tsc --project tsconfig.build.json",
 		"build:pkg": "sdk build",
-		"postbuild:pkg": "rm carbonio.webpack.js src/constants/locales.js",
+		"postbuild:pkg": "rm carbonio.webpack.js src/constants/default-locales.js",
 		"prebuild:lib": "rm -rf lib",
 		"build:lib": "tsc -p tsconfig.lib.json && npx api-extractor run --verbose",
 		"build:lib:local": "tsc -p tsconfig.lib.json && npx api-extractor run --verbose --local",
@@ -52,8 +52,10 @@
 		"@babel/preset-env": "^7.26.9",
 		"@babel/preset-react": "^7.26.3",
 		"@babel/preset-typescript": "^7.27.0",
-		"@commitlint/cli": "^19.8.0",
-		"@commitlint/config-conventional": "^19.8.0",
+		"@commitlint/cli": "^20.1.0",
+		"@commitlint/config-conventional": "^20.0.0",
+		"@emotion/babel-plugin": "^11.13.5",
+		"@emotion/jest": "^11.13.0",
 		"@faker-js/faker": "^8.4.1",
 		"@microsoft/api-extractor": "^7.42.3",
 		"@svgr/webpack": "^8.1.0",
@@ -62,48 +64,51 @@
 		"@testing-library/react": "^16.2.0",
 		"@testing-library/user-event": "^14.6.1",
 		"@tsconfig/node20": "^20.1.5",
-		"@types/jest": "^29.5.12",
+		"@types/jest": "^30.0.0",
 		"@types/lodash": "^4.17.4",
 		"@types/node": "^20.17.27",
 		"@types/react": "^18.3.11",
 		"@types/react-dom": "^18.3.0",
-		"@types/ua-parser-js": "^0.7.39",
 		"@types/webpack": "^5.28.5",
 		"@types/webpack-env": "^1.18.8",
 		"@zextras/carbonio-search-ui": "github:zextras/carbonio-search-ui#devel",
 		"@zextras/carbonio-ui-configs": "^2.1.0",
-		"@zextras/carbonio-ui-sdk": "^2.1.0",
+		"@zextras/carbonio-ui-sdk": "^2.2.0",
 		"autoprefixer": "^10.4.17",
-		"babel-plugin-styled-components": "^2.1.4",
 		"babel-plugin-transform-import-meta": "^2.3.2",
-		"copy-webpack-plugin": "^13.0.0",
+		"copy-webpack-plugin": "^13.0.1",
 		"core-js": "^3.39.0",
 		"css-loader": "^6.10.0",
-		"dotenv": "^16.4.7",
+		"dotenv": "^17.2.2",
 		"eslint-plugin-notice": "^0.9.10",
-		"html-webpack-plugin": "^5.6.0",
+		"html-webpack-plugin": "^5.6.4",
 		"husky": "^9.0.11",
 		"identity-obj-proxy": "^3.0.0",
 		"is-ci": "^3.0.1",
-		"jest": "^29.7.0",
-		"jest-environment-jsdom": "^29.7.0",
+		"jest": "^30.1.3",
+		"jest-environment-jsdom": "^30.1.2",
 		"jest-fail-on-console": "^3.1.2",
 		"jest-junit": "^16.0.0",
-		"jest-styled-components": "^7.2.0",
-		"mini-css-extract-plugin": "^2.8.1",
+		"mini-css-extract-plugin": "^2.9.4",
 		"msw": "^2.4.8",
 		"postcss-loader": "^8.1.1",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.3.3",
-		"webpack": "^5.98.0",
-		"webpack-cli": "^6.0.1",
-		"webpack-merge": "^6.0.1"
+		"webpack": "^5.102.0",
+		"webpack-cli": "^6.0.1"
+	},
+	"overrides": {
+		"@emotion/jest": {
+			"@types/jest": "$@types/jest"
+		}
 	},
 	"dependencies": {
+		"@emotion/react": "^11.14.0",
+		"@emotion/styled": "^11.14.1",
 		"@fontsource/roboto": "^5.0.8",
 		"@tinymce/tinymce-react": "^4.3.2",
-		"@zextras/carbonio-design-system": "^10.3.0",
-		"@zextras/carbonio-ui-preview": "^3.2.0",
+		"@zextras/carbonio-design-system": "11.0.1",
+		"@zextras/carbonio-ui-preview": "4.0.0",
 		"@zextras/carbonio-ui-soap-lib": "1.0.3",
 		"darkreader": "^4.9.79",
 		"date-fns": "^4.1.0",
@@ -117,20 +122,20 @@
 		"react-dom": "^18.3.1",
 		"react-i18next": "^12.3.1",
 		"react-router-dom": "^6.30.0",
-		"styled-components": "^6.1.13",
 		"tinymce": "^6.8.4",
 		"zustand": "^5.0.3"
 	},
 	"peerDependencies": {
-		"@zextras/carbonio-design-system": "^10.0.0",
-		"@zextras/carbonio-ui-preview": "^3.2.0",
+		"@emotion/react": "^11.14.0",
+		"@emotion/styled": "^11.14.1",
+		"@zextras/carbonio-design-system": "^11.0.0",
+		"@zextras/carbonio-ui-preview": "^4.0.0",
 		"core-js": "^3.39.0",
 		"lodash": "^4.17.21",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"react-i18next": "^12.3.1",
-		"react-router-dom": "^6.30.0",
-		"styled-components": "^6.1.13"
+		"react-router-dom": "^6.30.0"
 	},
 	"peerDependenciesMeta": {
 		"@zextras/carbonio-design-system": {
@@ -154,7 +159,10 @@
 		"react-router-dom": {
 			"optional": true
 		},
-		"styled-components": {
+		"@emotion/react": {
+			"optional": true
+		},
+		"@emotion/styled": {
 			"optional": true
 		}
 	},

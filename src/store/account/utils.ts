@@ -3,15 +3,10 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
+import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
 import { filter, find, findIndex, reduce } from 'lodash';
 
-import type {
-	AccountSettingsAttrs,
-	AccountSettingsPrefs,
-	AccountState,
-	Identity,
-	ZimletProp
-} from '../../types/account';
+import type { AccountSettingsAttrs, AccountState, Identity, ZimletProp } from '../../types/account';
 import type { IdentityMods, PropsMods } from '../../types/network';
 
 export function mergePrefs(

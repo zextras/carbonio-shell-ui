@@ -1,9 +1,9 @@
-// SPDX-FileCopyrightText: 2021 Zextras <https://www.zextras.com>
+// SPDX-FileCopyrightText: 2025 Zextras <https://www.zextras.com>
 //
 // SPDX-License-Identifier: AGPL-3.0-only
 
 library(
-    identifier: 'zapp-jenkins-lib@github-pipeline-v4',
+    identifier: 'zapp-jenkins-lib@1.0.3',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         remote: 'git@github.com:zextras/jenkins-zapp-lib.git',

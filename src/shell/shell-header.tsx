@@ -6,9 +6,9 @@
 
 import React from 'react';
 
+import styled from '@emotion/styled';
 import { Catcher, Container, Padding } from '@zextras/carbonio-design-system';
 import type { SearchBar as SearchUISearchBar } from '@zextras/carbonio-search-ui';
-import styled from 'styled-components';
 
 import { CreationButton } from './creation-button';
 import { Logo } from './logo';

@@ -9,8 +9,8 @@ COPY dist /tmp/dist
 
 # Extract COMMIT_ID and set up directories
 RUN COMMIT_ID=$(jq -r .commit /tmp/dist/component.json) \
-    && mkdir -p "${SHELL_PATH}/current" \
-    && mv /tmp/dist/index.html "${SHELL_PATH}/current/index.html" \
+    && mkdir -p "${WEB_PATH}/current" \
+    && mv /tmp/dist/index.html "${WEB_PATH}/current/index.html" \
     && mkdir -p "${WEB_PATH}/${COMMIT_ID}" \
     && mv /tmp/dist/* "${WEB_PATH}/${COMMIT_ID}/"
 

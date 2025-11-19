@@ -99,3 +99,8 @@ afterEach(() => {
 
 // https://jestjs.io/docs/manual-mocks#mocking-user-modules
 jest.mock<typeof ReportingFunctions>('./reporting/functions');
+
+jest.mock('@zextras/carbonio-ui-preview', () => ({
+	__esModule: true,
+	PreviewManager: ({ children }: React.PropsWithChildren): React.ReactNode => children
+}));

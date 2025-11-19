@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [13.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v12.0.0...v13.0.0) (2025-11-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate from styled components to emotion
+* remove AccountSettingsPrefs type
+* remove soapFetch, xmlSoapFetch, useNotify and useRefresh
+
+### Features
+
+* allow to enable or disable StrictMode ([0c9bf13](https://github.com/zextras/carbonio-shell-ui/commit/0c9bf1323ec2ab9cb14c693efbc7618beedd1485)), closes [#647](https://github.com/zextras/carbonio-shell-ui/issues/647)
+
+
+* migrate from styled components to emotion ([bb4ea9a](https://github.com/zextras/carbonio-shell-ui/commit/bb4ea9a2a99fbdf56c388a09b1150d25f11cd1ae)), closes [#630](https://github.com/zextras/carbonio-shell-ui/issues/630)
+* remove soap related deprecation ([beb1ca0](https://github.com/zextras/carbonio-shell-ui/commit/beb1ca0607b376b6a76bb93b22768c4843e3dc04)), closes [#643](https://github.com/zextras/carbonio-shell-ui/issues/643)
+
 ## [12.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v11.0.4...v12.0.0) (2025-08-22)
 
 

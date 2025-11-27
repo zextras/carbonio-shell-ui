@@ -30,8 +30,7 @@ export const normalizeApp = (app: Partial<CarbonioModule>): CarbonioModule => ({
 	type: app.type ?? 'carbonio',
 	attrKey: app.attrKey,
 	icon: app.icon ?? 'Cube',
-	display: app.display ?? 'Module',
-	sentryDsn: app.sentryDsn
+	display: app.display ?? 'Module'
 });
 
 const FallbackView = (): React.JSX.Element => <p>Missing Component</p>;

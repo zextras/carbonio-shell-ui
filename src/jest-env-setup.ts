@@ -11,7 +11,6 @@ import failOnConsole from 'jest-fail-on-console';
 import { forEach, noop } from 'lodash';
 
 import server from './mocks/server';
-import type * as ReportingFunctions from './reporting/functions';
 
 // this can be removed once migrated to Node 22 (https://github.com/wojtekmaj/react-pdf/wiki/Upgrade-guide-from-version-8.x-to-9.x#dropped-support-for-older-browsers-and-nodejs-versions)
 import 'core-js/proposals/promise-with-resolvers';
@@ -96,9 +95,6 @@ afterEach(() => {
 		window.removeEventListener(event, listener);
 	});
 });
-
-// https://jestjs.io/docs/manual-mocks#mocking-user-modules
-jest.mock<typeof ReportingFunctions>('./reporting/functions');
 
 jest.mock('@zextras/carbonio-ui-preview', () => ({
 	__esModule: true,

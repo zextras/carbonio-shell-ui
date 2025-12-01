@@ -21,10 +21,6 @@ export type CarbonioModule = {
 	attrKey?: string;
 	icon: string;
 	display: string;
-	/**
-	 * @deprecated it will be removed in the next release
-	 */
-	sentryDsn?: string;
 };
 
 export type AppRoute = {

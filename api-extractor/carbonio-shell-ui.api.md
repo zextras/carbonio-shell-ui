@@ -6,22 +6,27 @@
 
 import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
 import { Action as Action_2 } from '../../lib';
-import { ActionFactory as ActionFactory_2 } from '../../types/integrations';
+import { ActionFactory } from '../../types/integrations';
 import { AnyFunction as AnyFunction_2 } from '../../utils/typeUtils';
 import { BadgeInfo as BadgeInfo_2 } from '../../lib';
 import type { CaptureOptions } from 'posthog-js';
-import { CarbonioModule as CarbonioModule_2 } from '../../types/apps';
+import { CarbonioModule } from './types/apps';
+import { CarbonioModule as CarbonioModule_3 } from '../../types/apps';
+import { ComponentClass } from 'react';
 import type { ComponentType } from 'react';
 import { DropdownItem } from '@zextras/carbonio-design-system';
 import type { DynamicThemeFix } from 'darkreader';
-import type { i18n } from 'i18next';
+import { FunctionComponent } from 'react';
+import { i18n } from 'i18next';
 import type { ModalProps } from '@zextras/carbonio-design-system';
 import type { Properties } from 'posthog-js';
 import { default as React_2 } from 'react';
 import type { ReactNode } from 'react';
-import type { TFunction } from 'i18next';
+import { StoreApi } from 'zustand';
+import { TFunction } from 'i18next';
 import type { Theme } from '@zextras/carbonio-design-system';
 import type { To } from 'react-router-dom';
+import { UseBoundStore } from 'zustand';
 
 // @public (undocumented)
 export type Account = {
@@ -103,47 +108,43 @@ export const ACTION_TYPES: {
     readonly ACCOUNT_MENU: "account_menu";
 };
 
-// @public (undocumented)
-type ActionFactory<TContext, TAction extends Action = Action> = (context: TContext) => TAction;
-
-// Warning: (ae-forgotten-export) The symbol "AppDependantExports" needs to be exported by the entry point lib.d.ts
+// Warning: (ae-forgotten-export) The symbol "BoardView" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
-export const addBoard: AppDependantExports['addBoard'];
+export const addBoardView: (data: Omit<BoardView, "app">) => string;
 
-// Warning: (ae-forgotten-export) The symbol "BoardState" needs to be exported by the entry point lib.d.ts
+// Warning: (ae-forgotten-export) The symbol "PrimaryAccessoryView" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
-const addBoard_2: (app: string) => <T = unknown>(board: Omit<Board<T>, "app" | "icon" | "id"> & {
-    id?: string;
-    icon?: string;
-}, expanded?: BoardState["expanded"]) => Board;
+export const addPrimaryAccessoryView: (data: Partial<PrimaryAccessoryView>) => string;
 
+// Warning: (ae-forgotten-export) The symbol "AppRouteDescriptor" needs to be exported by the entry point lib.d.ts
+//
 // @public (undocumented)
-export const addBoardView: AppDependantExports['addBoardView'];
+export const addRoute: (route: Partial<AppRouteDescriptor>) => string;
 
+// Warning: (ae-forgotten-export) The symbol "SecondaryAccessoryView" needs to be exported by the entry point lib.d.ts
+//
 // @public (undocumented)
-export const addPrimaryAccessoryView: AppDependantExports['addPrimaryAccessoryView'];
+export const addSecondaryAccessoryView: (data: Partial<SecondaryAccessoryView>) => string;
 
+// Warning: (ae-forgotten-export) The symbol "SettingsView" needs to be exported by the entry point lib.d.ts
+//
 // @public (undocumented)
-export const addRoute: AppDependantExports['addRoute'];
+export const addSettingsView: (data: Partial<SettingsView>) => string;
 
+// Warning: (ae-forgotten-export) The symbol "UtilityView" needs to be exported by the entry point lib.d.ts
+//
 // @public (undocumented)
-export const addSecondaryAccessoryView: AppDependantExports['addSecondaryAccessoryView'];
-
-// @public (undocumented)
-export const addSettingsView: AppDependantExports['addSettingsView'];
-
-// @public (undocumented)
-export const addUtilityView: AppDependantExports['addUtilityView'];
+export const addUtilityView: (data: Partial<UtilityView>) => string;
 
 // @public (undocumented)
 type AnyFunction = (...args: any[]) => any;
 
 // @public (undocumented)
 type AppActions = {
-    setApps: (apps: Array<Partial<CarbonioModule>>) => void;
-    upsertApp: (app: Pick<CarbonioModule, 'name' | 'display'>) => void;
+    setApps: (apps: Array<Partial<CarbonioModule_2>>) => void;
+    upsertApp: (app: Pick<CarbonioModule_2, 'name' | 'display'>) => void;
     addRoute: (routeData: AppRouteDescriptor) => string;
     setRouteVisibility: (id: string, visible: boolean) => void;
     removeRoute: (id: string) => void;
@@ -175,25 +176,6 @@ interface AppContextProviderProps {
 }
 
 // @public (undocumented)
-type AppDependantExports = {
-    setAppContext: ReturnType<AppActions['setAppContext']>;
-    addRoute: (data: Partial<AppRouteDescriptor>) => ReturnType<AppActions['addRoute']>;
-    addBoardView: (data: Omit<BoardView, 'app'>) => ReturnType<AppActions['addBoardView']>;
-    addSettingsView: (data: Partial<SettingsView>) => ReturnType<AppActions['addSettingsView']>;
-    addUtilityView: (data: Partial<UtilityView>) => ReturnType<AppActions['addUtilityView']>;
-    addPrimaryAccessoryView: (data: Partial<PrimaryAccessoryView>) => ReturnType<AppActions['addPrimaryAccessoryView']>;
-    addSecondaryAccessoryView: (data: Partial<SecondaryAccessoryView>) => ReturnType<AppActions['addSecondaryAccessoryView']>;
-    registerComponents: ReturnType<IntegrationActions['registerComponents']>;
-    getI18n: ReturnType<typeof getI18n_2>;
-    t: ReturnType<typeof getTFunction>;
-    useAppContext: ReturnType<typeof getAppContextHook>;
-    getAppContext: ReturnType<typeof getAppContext_2>;
-    useApp: ReturnType<typeof getAppHook>;
-    getApp: ReturnType<typeof getApp_2>;
-    addBoard: ReturnType<typeof addBoard_2>;
-};
-
-// @public (undocumented)
 type AppRoute = {
     id: string;
     route: string;
@@ -215,6 +197,31 @@ type AppRouteDescriptor = {
     appView: ComponentType<AppViewComponentProps>;
     focusMode?: boolean;
 };
+
+// @public (undocumented)
+type AppState = {
+    focusMode: false | string;
+    apps: Record<string, CarbonioModule_2>;
+    appContexts: Record<string, unknown>;
+    entryPoints: Record<string, ComponentType>;
+    routes: Record<string, AppRoute>;
+    views: {
+        primaryBar: Array<PrimaryBarView>;
+        secondaryBar: Array<SecondaryBarView>;
+        appView: Array<AppView>;
+        board: Array<BoardView>;
+        utilityBar: Array<UtilityView>;
+        settings: Array<SettingsView>;
+        primaryBarAccessories: Array<PrimaryAccessoryView>;
+        secondaryBarAccessories: Array<SecondaryAccessoryView>;
+    };
+    shell: CarbonioModule_2;
+};
+
+// Warning: (ae-forgotten-export) The symbol "CarbonioView" needs to be exported by the entry point lib.d.ts
+//
+// @public (undocumented)
+type AppView = CarbonioView<AppViewComponentProps>;
 
 // @public (undocumented)
 export type AppViewComponentProps = {};
@@ -331,17 +338,6 @@ export type BoardHooksContext = {
 };
 
 // @public (undocumented)
-type BoardState = {
-    orderedBoards: Array<string>;
-    boards: Record<string, Board>;
-    expanded: boolean;
-    minimized: boolean;
-    current?: string;
-};
-
-// Warning: (ae-forgotten-export) The symbol "CarbonioView" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
 type BoardView = Omit<CarbonioView<BoardViewComponentProps>, 'route'>;
 
 // @public (undocumented)
@@ -361,7 +357,7 @@ type CarbonioAccessoryView<P> = {
 };
 
 // @public (undocumented)
-type CarbonioModule = {
+type CarbonioModule_2 = {
     commit: string;
     description: string;
     js_entrypoint: string;
@@ -385,9 +381,6 @@ type CarbonioView<P> = {
 
 // @public (undocumented)
 export const closeBoard: (id: string) => void;
-
-// @public (undocumented)
-type Component<TProps extends Record<string, unknown> = Record<string, unknown>> = ComponentType<TProps>;
 
 // @public (undocumented)
 export const CUSTOM_EVENTS: {
@@ -443,22 +436,7 @@ export const getAction: <T>(type: string, id: string, target?: T) => [Action | u
 export const getActions: <TContext, TAction extends Action = Action>(context: TContext, type: string) => Array<TAction>;
 
 // @public (undocumented)
-export const getApp: AppDependantExports['getApp'];
-
-// @public (undocumented)
-const getApp_2: (appId: string) => () => CarbonioModule | undefined;
-
-// @public (undocumented)
-export const getAppContext: AppDependantExports['getAppContext'];
-
-// @public (undocumented)
-const getAppContext_2: (appId: string) => () => unknown;
-
-// @public (undocumented)
-const getAppContextHook: (appId: string) => <T>() => T;
-
-// @public (undocumented)
-const getAppHook: (appId: string) => () => CarbonioModule;
+export const getAppContext: () => unknown;
 
 // @public (undocumented)
 export const getBoardById: <T>(id: string) => Board<T> | undefined;
@@ -467,10 +445,7 @@ export const getBoardById: <T>(id: string) => Board<T> | undefined;
 export const getBoardContextById: <T>(id: string) => T | undefined;
 
 // @public (undocumented)
-export const getI18n: AppDependantExports['getI18n'];
-
-// @public (undocumented)
-const getI18n_2: (app: string) => () => i18n;
+export const getI18n: () => i18n;
 
 // @public (undocumented)
 export const getIntegratedComponent: <TComponent extends React_2.ComponentType<any> = React_2.ComponentType<Record<string, unknown>>>(id: string) => [TComponent, boolean];
@@ -482,9 +457,6 @@ export const getIntegratedFunction: <TFunction extends AnyFunction = AnyFunction
 
 // @public (undocumented)
 export const getNotificationManager: () => INotificationManager;
-
-// @public (undocumented)
-const getTFunction: (app: string) => TFunction;
 
 // @public (undocumented)
 export const getUserAccount: () => Account | undefined;
@@ -580,26 +552,6 @@ export interface INotificationManager {
     // (undocumented)
     showPopup: (config: PopupNotificationConfig) => void;
 }
-
-// @public (undocumented)
-type IntegrationActions = {
-    removeActions: (...ids: Array<string>) => void;
-    registerActions: <TAction extends Action = Action>(...items: Array<{
-        id: string;
-        action: ActionFactory<unknown, TAction>;
-        type: string;
-    }>) => void;
-    removeComponents: (...ids: Array<string>) => void;
-    registerComponents: (app: string) => <TProps extends Record<string, unknown>>(...items: Array<{
-        id: string;
-        component: Component<TProps>;
-    }>) => void;
-    removeFunctions: (...ids: Array<string>) => void;
-    registerFunctions: (...items: Array<{
-        id: string;
-        fn: AnyFunction;
-    }>) => void;
-};
 
 // @public (undocumented)
 export const IS_FOCUS_MODE: boolean;
@@ -706,6 +658,15 @@ export type PrimaryBarComponentProps = {
 };
 
 // @public (undocumented)
+type PrimaryBarView = Omit<CarbonioView<PrimaryBarComponentProps>, 'component'> & {
+    component: string | ComponentType<PrimaryBarComponentProps>;
+    badge: BadgeInfo;
+    position: number;
+    visible: boolean;
+    label: string;
+};
+
+// @public (undocumented)
 export interface RawErrorSoapResponse {
     // (undocumented)
     Body: ErrorSoapBodyResponse;
@@ -779,12 +740,15 @@ export interface RawSuccessSoapResponse<R> {
 // @public (undocumented)
 export const registerActions: <TAction extends Action_2 = Action_2>(...items: Array<{
     id: string;
-    action: ActionFactory_2<unknown, TAction>;
+    action: ActionFactory<unknown, TAction>;
     type: string;
 }>) => void;
 
 // @public (undocumented)
-export const registerComponents: AppDependantExports['registerComponents'];
+export const registerComponents: <TProps extends Record<string, unknown>>(...items: Array<{
+    id: string;
+    component: ComponentClass<TProps, any> | FunctionComponent<TProps>;
+}>) => void;
 
 // @public (undocumented)
 export const registerFunctions: (...items: Array<{
@@ -888,7 +852,10 @@ export type SecondaryBarComponentProps = {
 };
 
 // @public (undocumented)
-export const setAppContext: AppDependantExports['setAppContext'];
+type SecondaryBarView = CarbonioView<SecondaryBarComponentProps>;
+
+// @public (undocumented)
+export const setAppContext: <T = unknown>(context: T) => void;
 
 // @public (undocumented)
 export const setCurrentBoard: (id: string) => void;
@@ -1049,7 +1016,7 @@ export interface SuccessSoapResponse<R> {
 }
 
 // @public (undocumented)
-export const t: AppDependantExports['t'];
+export const t: TFunction<"translation", undefined, "translation">;
 
 // @public (undocumented)
 type Tag = {
@@ -1120,7 +1087,7 @@ type UpdateSettingsParams = {
 };
 
 // @public
-export const upsertApp: (app: Pick<CarbonioModule_2, "name" | "display">) => void;
+export const upsertApp: (app: Pick<CarbonioModule_3, "name" | "display">) => void;
 
 // @public (undocumented)
 export const useAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];
@@ -1129,10 +1096,16 @@ export const useAction: <T>(type: string, id: string, target?: T) => [Action | u
 export const useActions: <TContext, TAction extends Action = Action>(context: TContext, type: string) => Array<TAction>;
 
 // @public (undocumented)
-export const useApp: AppDependantExports['useApp'];
+export const useApp: () => CarbonioModule;
 
 // @public (undocumented)
-export const useAppContext: AppDependantExports['useAppContext'];
+export const useAppContext: <T>() => T;
+
+// Warning: (ae-forgotten-export) The symbol "AppState" needs to be exported by the entry point lib.d.ts
+// Warning: (ae-forgotten-export) The symbol "AppActions" needs to be exported by the entry point lib.d.ts
+//
+// @public (undocumented)
+export const useAppStore: UseBoundStore<StoreApi<AppState & AppActions>>;
 
 // @public (undocumented)
 export const useAuthenticated: () => boolean;
@@ -1149,8 +1122,6 @@ export const useBoardContextById: <T>(id: string) => T | undefined;
 // @public
 export const useBoardHooks: () => BoardHooksContext;
 
-// Warning: (ae-forgotten-export) The symbol "AppRoute" needs to be exported by the entry point lib.d.ts
-//
 // @public (undocumented)
 export const useCurrentRoute: () => AppRoute | undefined;
 
@@ -1220,26 +1191,13 @@ interface ZimletProp {
 
 // Warnings were encountered during analysis:
 //
-// lib/boot/app/app-dependant-exports.d.ts:8:5 - (ae-forgotten-export) The symbol "AppActions" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:15:5 - (ae-forgotten-export) The symbol "IntegrationActions" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:16:5 - (ae-forgotten-export) The symbol "getI18n_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:17:5 - (ae-forgotten-export) The symbol "getTFunction" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:18:5 - (ae-forgotten-export) The symbol "getAppContextHook" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:19:5 - (ae-forgotten-export) The symbol "getAppContext_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:20:5 - (ae-forgotten-export) The symbol "getAppHook" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:21:5 - (ae-forgotten-export) The symbol "getApp_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:22:5 - (ae-forgotten-export) The symbol "addBoard_2" needs to be exported by the entry point lib.d.ts
 // lib/settings/components/settings-header.d.ts:5:5 - (ae-forgotten-export) The symbol "RouteLeavingGuardProps" needs to be exported by the entry point lib.d.ts
 // lib/store/account/updaters.d.ts:15:9 - (ae-forgotten-export) The symbol "IdentityMods" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:22:5 - (ae-forgotten-export) The symbol "CarbonioModule" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:24:5 - (ae-forgotten-export) The symbol "AppRouteDescriptor" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:28:5 - (ae-forgotten-export) The symbol "BoardView" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:30:5 - (ae-forgotten-export) The symbol "SettingsView" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:32:5 - (ae-forgotten-export) The symbol "UtilityView" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:34:5 - (ae-forgotten-export) The symbol "PrimaryAccessoryView" needs to be exported by the entry point lib.d.ts
-// lib/store/app/store.d.ts:36:5 - (ae-forgotten-export) The symbol "SecondaryAccessoryView" needs to be exported by the entry point lib.d.ts
-// lib/store/integrations/store.d.ts:25:9 - (ae-forgotten-export) The symbol "ActionFactory" needs to be exported by the entry point lib.d.ts
-// lib/store/integrations/store.d.ts:31:9 - (ae-forgotten-export) The symbol "Component" needs to be exported by the entry point lib.d.ts
+// lib/store/app/store.d.ts:8:5 - (ae-forgotten-export) The symbol "AppRoute" needs to be exported by the entry point lib.d.ts
+// lib/store/app/store.d.ts:10:9 - (ae-forgotten-export) The symbol "PrimaryBarView" needs to be exported by the entry point lib.d.ts
+// lib/store/app/store.d.ts:11:9 - (ae-forgotten-export) The symbol "SecondaryBarView" needs to be exported by the entry point lib.d.ts
+// lib/store/app/store.d.ts:12:9 - (ae-forgotten-export) The symbol "AppView" needs to be exported by the entry point lib.d.ts
+// lib/store/app/store.d.ts:22:5 - (ae-forgotten-export) The symbol "CarbonioModule_2" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:8:5 - (ae-forgotten-export) The symbol "AccountSettingsAttrs" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:10:5 - (ae-forgotten-export) The symbol "ZimletProp" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:42:9 - (ae-forgotten-export) The symbol "Signature" needs to be exported by the entry point lib.d.ts

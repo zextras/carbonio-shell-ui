@@ -26,7 +26,7 @@
 		"build:dev": "npm run build:pkg -- --dev --pkgRel $(date +%s) && npm run build:lib",
 		"prebuild:pkg": "rm -rf dist pkg; tsc --project tsconfig.build.json",
 		"build:pkg": "sdk build",
-		"postbuild:pkg": "rm carbonio.webpack.js src/constants/default-locales.js",
+		"postbuild:pkg": "rm carbonio.webpack.js",
 		"prebuild:lib": "rm -rf lib",
 		"build:lib": "tsc -p tsconfig.lib.json && npx api-extractor run --verbose",
 		"build:lib:local": "tsc -p tsconfig.lib.json && npx api-extractor run --verbose --local",
@@ -106,7 +106,6 @@
 		"@emotion/react": "^11.14.0",
 		"@emotion/styled": "^11.14.1",
 		"@fontsource/roboto": "^5.0.8",
-		"@tinymce/tinymce-react": "^4.3.2",
 		"@zextras/carbonio-design-system": "11.0.1",
 		"@zextras/carbonio-ui-preview": "4.0.0",
 		"@zextras/carbonio-ui-soap-lib": "1.0.3",
@@ -122,7 +121,6 @@
 		"react-dom": "^18.3.1",
 		"react-i18next": "^12.3.1",
 		"react-router-dom": "^6.30.0",
-		"tinymce": "^6.8.4",
 		"zustand": "^5.0.3"
 	},
 	"peerDependencies": {

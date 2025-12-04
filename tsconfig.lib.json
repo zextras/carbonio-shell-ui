@@ -19,7 +19,8 @@
     ]
   },
   "files": [
-    "src/lib.ts"
+    "src/lib.ts",
+    "src/testing.ts",
   ],
   "exclude": [
     "node_modules",

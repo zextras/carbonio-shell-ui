@@ -4,9 +4,22 @@
 	"description": "The Zextras Carbonio web client",
 	"main": "./lib/lib.js",
 	"types": "./lib/lib.d.ts",
+	"typesVersions": {
+		"*": {
+			"testing": ["./lib/testing.d.ts"]
+		}
+	},
 	"exports": {
-		".": "./lib/lib.js",
-		"./*": null
+		".": {
+			"import": "./lib/lib.js",
+			"require": "./lib/lib.js",
+			"types": "./lib/lib.d.ts"
+		},
+		"./testing": {
+			"import": "./lib/testing.js",
+			"require": "./lib/testing.js",
+			"types": "./lib/testing.d.ts"
+		}
 	},
 	"engines": {
 		"node": "v20",

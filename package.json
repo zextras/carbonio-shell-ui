@@ -111,15 +111,15 @@
 		"@zextras/carbonio-ui-soap-lib": "1.0.3",
 		"darkreader": "^4.9.79",
 		"date-fns": "^4.1.0",
-		"i18next": "^22.5.1",
+		"i18next": "^25.7.1",
 		"i18next-chained-backend": "^4.6.2",
-		"i18next-http-backend": "^2.5.0",
+		"i18next-http-backend": "^3.0.2",
 		"immer": "^10.0.3",
 		"lodash": "^4.17.21",
 		"posthog-js": "^1.234.4",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
-		"react-i18next": "^12.3.1",
+		"react-i18next": "^16.3.5",
 		"react-router-dom": "^6.30.0",
 		"zustand": "^5.0.3"
 	},
@@ -132,7 +132,7 @@
 		"lodash": "^4.17.21",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
-		"react-i18next": "^12.3.1",
+		"react-i18next": "^16.3.5",
 		"react-router-dom": "^6.30.0"
 	},
 	"peerDependenciesMeta": {

@@ -10,8 +10,6 @@ import { produce } from 'immer';
 import { forEach, includes, omit } from 'lodash';
 import { create } from 'zustand';
 
-import Composer from './composer';
-import { SHELL_APP_ID } from '../../constants';
 import type { Action, ActionFactory } from '../../types/integrations';
 import type { AnyFunction } from '../../utils/typeUtils';
 
@@ -41,12 +39,7 @@ export type IntegrationActions = {
 
 const initialState: IntegrationsState = {
 	actions: {},
-	components: {
-		composer: {
-			Item: Composer,
-			app: SHELL_APP_ID
-		}
-	},
+	components: {},
 	functions: {}
 };
 // extra currying as suggested in https://github.com/pmndrs/zustand/blob/main/docs/guides/typescript.md#basic-usage

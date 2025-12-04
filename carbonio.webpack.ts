@@ -12,20 +12,12 @@ import path from 'path';
 import { DefinePlugin } from 'webpack';
 import type { WebpackConfiguration } from 'webpack-cli';
 
-import { DEFAULT_LOCALES } from './src/constants/default-locales';
-
 dotenv.config();
 
 const commitHash = execSync('git rev-parse HEAD').toString().trim();
 
 const baseStaticPath = `/static/iris/carbonio-shell-ui/${commitHash}/`;
 
-const supportedLocalesList = Object.values(DEFAULT_LOCALES);
-
-const tinymceLocales = supportedLocalesList.map(
-	(locale) => ('tinymceLocale' in locale && locale.tinymceLocale) || locale.value
-);
-console.log('Tinymce Locales:', tinymceLocales);
 const configFn = (
 	initialConf: WebpackConfiguration,
 	pkg: string,
@@ -55,16 +47,6 @@ const configFn = (
 				{
 					from: 'assets/',
 					to: ''
-				},
-				{
-					from: `plugins/help/js/i18n/**/(${tinymceLocales.join('|')}).js`,
-					to: '',
-					context: 'node_modules/tinymce/'
-				},
-				{
-					from: 'plugins/emoticons',
-					to: 'plugins/emoticons',
-					context: 'node_modules/tinymce/'
 				}
 			]
 		}),

@@ -9,19 +9,6 @@ import type { TFunction } from 'i18next';
 
 import { DEFAULT_LOCALES } from './default-locales';
 
-export type LocaleDescriptor = {
-	name: string;
-	value: string;
-	// Import of the date-fns translation file
-	dateFnsLocale: { key?: string; localeImportPath: () => Promise<Locale> } | undefined;
-	/*
-	 * Name of the tinymce translation file if different from the value field.
-	 * See https://www.tiny.cloud/docs/tinymce/6/ui-localization/
-	 * and https://www.tiny.cloud/get-tiny/language-packages/
-	 */
-	tinymceLocale?: string;
-};
-
 export const DATE_FNS_LOCALE: Record<
 	string,
 	{ key?: string; localeImportPath: () => Promise<Locale> } | undefined

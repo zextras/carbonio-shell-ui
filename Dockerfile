@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM backplane/jq:latest AS builder
+FROM --platform=$BUILDPLATFORM backplane/jq:latest@sha256:aa00858476e259336dc224ff7e1e43706e2e26ed52a975d5f34f66c82ba9455d AS builder
 
 # Define path variables
 ENV IRIS_BASE_PATH="/opt/zextras/web/iris" \
@@ -15,7 +15,7 @@ RUN COMMIT_ID=$(jq -r .commit /tmp/dist/component.json) \
     && mv /tmp/dist/* "${WEB_PATH}/${COMMIT_ID}/"
 
 # Final stage - built for all target platforms
-FROM backplane/jq:latest
+FROM backplane/jq:latest@sha256:aa00858476e259336dc224ff7e1e43706e2e26ed52a975d5f34f66c82ba9455d
 
 # Re-define path variable for final stage
 ENV IRIS_BASE_PATH="/opt/zextras/web/iris"

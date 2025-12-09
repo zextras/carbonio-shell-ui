@@ -14,7 +14,7 @@ import GeneralSettings from '../../settings/general-settings';
 import { useSettingsSubSections } from '../../settings/general-settings-sub-sections';
 import { SettingsAppView } from '../../settings/settings-app-view';
 import { SettingsSidebar } from '../../settings/settings-sidebar';
-import { useAccountStore } from '../../store/account';
+import { getUserSettings, useAccountStore } from '../../store/account';
 import { useAppStore } from '../../store/app';
 import type { AppRouteDescriptor, SettingsView } from '../../types/apps';
 
@@ -50,6 +50,8 @@ const useSettingsModule = (): void => {
 		[t]
 	);
 
+	const { zimbraFeatureOptionsEnabled } = getUserSettings().attrs;
+
 	const settingsRouteDescriptor = useMemo<AppRouteDescriptor>(
 		() => ({
 			id: SETTINGS_APP_ID,
@@ -73,7 +75,10 @@ const useSettingsModule = (): void => {
 			Object.keys(settingsAttrs).length > 0 &&
 			settingsAttrs.zimbraFeatureOptionsEnabled !== 'FALSE'
 		) {
-			useAppStore.getState().addRoute(settingsRouteDescriptor);
+			if (zimbraFeatureOptionsEnabled === 'TRUE') {
+				useAppStore.getState().addRoute(settingsRouteDescriptor);
+			}
+
 			useAppStore.getState().addSettingsView(settingsGeneralView);
 			useAppStore.getState().addSettingsView(settingsAccountView);
 		}
@@ -83,7 +88,14 @@ const useSettingsModule = (): void => {
 			useAppStore.getState().removeSettingsView(settingsGeneralView.id);
 			useAppStore.getState().removeSettingsView(settingsAccountView.id);
 		};
-	}, [settingsAccountView, settingsAttrs, settingsGeneralView, settingsRouteDescriptor, t]);
+	}, [
+		settingsAccountView,
+		settingsAttrs,
+		settingsGeneralView,
+		settingsRouteDescriptor,
+		t,
+		zimbraFeatureOptionsEnabled
+	]);
 };
 
 export const DefaultViewsRegister = (): null => {

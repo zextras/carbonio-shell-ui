@@ -7,14 +7,15 @@
 import React, { useCallback, useMemo, useState } from 'react';
 
 import type { SelectItem, SingleSelectionOnChange } from '@zextras/carbonio-design-system';
-import { FormSubSection, FormSection, Modal, Select, Text } from '@zextras/carbonio-design-system';
+import { FormSubSection, FormSection, Modal, Text } from '@zextras/carbonio-design-system';
+import { useTranslation } from 'react-i18next';
 
+import { SelectWithError } from './components/select-with-error';
 import type { SettingsSectionProps } from './components/utils';
 import { upsertPrefOnUnsavedChanges } from './components/utils';
 import { languageSubSection } from './general-settings-sub-sections';
 import { useReset } from './hooks/use-reset';
 import { localeList } from '../constants/locales';
-import { getT } from '../store/i18n/hooks';
 import type { AccountSettings } from '../types/account';
 import type { AddMod } from '../types/network';
 
@@ -32,7 +33,7 @@ export const LanguageSettings = ({
 	setOpen,
 	resetRef
 }: LanguageSettingsProps): React.JSX.Element => {
-	const t = getT();
+	const [t] = useTranslation();
 	const locales = useMemo(() => localeList(t), [t]);
 	const sectionTitle = useMemo(() => languageSubSection(t), [t]);
 
@@ -40,11 +41,19 @@ export const LanguageSettings = ({
 
 	const [prefLocale, setPrefLocale] = useState<string>(settings.prefs.zimbraPrefLocale ?? '');
 
-	// TODO update with SHELL-181
-	const prefLocaleSelectedValue = useMemo<SelectItem>(
-		() => locales.find((item) => item.value === prefLocale) as SelectItem,
-		[locales, prefLocale]
-	);
+	const prefLocaleSelectedValue = useMemo<SelectItem>(() => {
+		const foundLocale = locales.find((item) => item.value === prefLocale);
+
+		if (!foundLocale) {
+			return {
+				label: t('label.invalid_option', 'Invalid Option'),
+				value: prefLocale ?? 'invalid',
+				customComponent: <Text color="error">{t('label.invalid_option', 'Invalid Option')}</Text>
+			};
+		}
+
+		return foundLocale;
+	}, [locales, prefLocale, t]);
 
 	const onLocaleChange = useCallback<SingleSelectionOnChange>(
 		(value) => {
@@ -62,18 +71,25 @@ export const LanguageSettings = ({
 
 	useReset(resetRef, init);
 
+	const isInvalidLocale = useMemo(
+		() => !locales.some((item) => item.value === prefLocale),
+		[locales, prefLocale]
+	);
+
 	return (
 		<FormSection label={sectionTitle.label} id={sectionTitle.id}>
 			<FormSubSection>
-				<Select
+				<SelectWithError
 					items={locales}
-					background={'gray5'}
-					label={t('label.language', 'Language')}
+					selectLabel={t('label.language', 'Language')}
 					onChange={onLocaleChange}
 					selection={prefLocaleSelectedValue}
-					showCheckbox={false}
-					dropdownMaxHeight="12.5rem"
-					selectedBackgroundColor="highlight"
+					hasError={isInvalidLocale}
+					// todo: add key
+					errorMessage={t(
+						'',
+						'The current value is not recognized. The interface has defaulted to English. Please select a valid option.'
+					)}
 				/>
 				<Modal
 					title={t('label.reload', 'Reload')}

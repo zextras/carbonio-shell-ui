@@ -85,9 +85,8 @@ export const LanguageSettings = ({
 					onChange={onLocaleChange}
 					selection={prefLocaleSelectedValue}
 					hasError={isInvalidLocale}
-					// todo: add key
 					errorMessage={t(
-						'',
+						'settings.general.language_error',
 						'The current value is not recognized. The interface has defaulted to English. Please select a valid option.'
 					)}
 				/>

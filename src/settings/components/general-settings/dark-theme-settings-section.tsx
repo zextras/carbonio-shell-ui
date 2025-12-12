@@ -122,9 +122,8 @@ const DarkThemeSettingSection = ({
 				selection={selection}
 				onChange={onSelectionChange}
 				hasError={isInvalidOption}
-				// todo: add key
 				errorMessage={t(
-					'',
+					'settings.general.dark_mode_error',
 					'The current value is not recognized. The interface has defaulted to System theme. Please select a valid option to change the theme.'
 				)}
 			/>

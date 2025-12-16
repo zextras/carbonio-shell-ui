@@ -7,7 +7,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { SelectItem, SingleSelectionOnChange } from '@zextras/carbonio-design-system';
-import { Text, FormSubSection } from '@zextras/carbonio-design-system';
+import { FormSubSection } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
@@ -26,11 +26,13 @@ type DarkReaderSelectItem = Array<SelectItem & { value: DarkReaderPropValues }>;
 interface DarkThemeSettingSectionProps extends SettingsSectionProps {
 	addMod: AddMod;
 	removeMod: RemoveMod;
+	invalidOption: SelectItem;
 }
 
 const DarkThemeSettingSection = ({
 	addMod,
 	removeMod,
+	invalidOption,
 	resetRef
 }: DarkThemeSettingSectionProps): React.JSX.Element | null => {
 	const [t] = useTranslation();
@@ -55,15 +57,6 @@ const DarkThemeSettingSection = ({
 				value: 'disabled'
 			}
 		],
-		[t]
-	);
-
-	const invalidOption = useMemo(
-		() => ({
-			label: t('label.invalid_option', 'Invalid Option'),
-			value: 'invalid',
-			customComponent: <Text color="error">{t('label.invalid_option', 'Invalid Option')}</Text>
-		}),
 		[t]
 	);
 

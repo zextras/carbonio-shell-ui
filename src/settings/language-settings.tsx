@@ -24,6 +24,7 @@ interface LanguageSettingsProps extends SettingsSectionProps {
 	addMod: AddMod;
 	open: boolean;
 	setOpen: (arg: boolean) => void;
+	invalidOption: SelectItem;
 }
 
 export const LanguageSettings = ({
@@ -31,6 +32,7 @@ export const LanguageSettings = ({
 	addMod,
 	open,
 	setOpen,
+	invalidOption,
 	resetRef
 }: LanguageSettingsProps): React.JSX.Element => {
 	const [t] = useTranslation();
@@ -45,15 +47,11 @@ export const LanguageSettings = ({
 		const foundLocale = locales.find((item) => item.value === prefLocale);
 
 		if (!foundLocale) {
-			return {
-				label: t('label.invalid_option', 'Invalid Option'),
-				value: prefLocale ?? 'invalid',
-				customComponent: <Text color="error">{t('label.invalid_option', 'Invalid Option')}</Text>
-			};
+			return invalidOption;
 		}
 
 		return foundLocale;
-	}, [locales, prefLocale, t]);
+	}, [invalidOption, locales, prefLocale]);
 
 	const onLocaleChange = useCallback<SingleSelectionOnChange>(
 		(value) => {

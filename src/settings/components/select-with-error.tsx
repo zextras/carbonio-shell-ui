@@ -62,68 +62,69 @@ const ContainerEl = styled(Container)<{ $focus: boolean }>`
 		`};
 `;
 
-const CustomLabelFactory = ({
-	selected,
-	label,
-	open,
-	focus,
-	background,
-	disabled,
-	hasError
-}: LabelFactoryProps & { hasError?: boolean }): React.JSX.Element => {
-	const selectedLabels = useMemo(
-		() => selected.reduce<string[]>((arr, obj) => [...arr, obj.label], []).join(', '),
-		[selected]
-	);
+function createLabelFactory(hasError?: boolean) {
+	return function LabelFactoryWithError({
+		selected,
+		label,
+		open,
+		focus,
+		background,
+		disabled
+	}: LabelFactoryProps): React.JSX.Element {
+		const selectedLabels = useMemo(
+			() => selected.reduce<string[]>((arr, obj) => [...arr, obj.label], []).join(', '),
+			[selected]
+		);
 
-	const color = useMemo(() => {
-		if (hasError) {
-			return 'error';
-		}
-		if (disabled) {
-			return 'gray2';
-		}
-		if (open || focus) {
-			return 'primary';
-		}
-		return 'secondary';
-	}, [disabled, focus, open, hasError]);
+		const color = useMemo(() => {
+			if (hasError) {
+				return 'error';
+			}
+			if (disabled) {
+				return 'gray2';
+			}
+			if (open || focus) {
+				return 'primary';
+			}
+			return 'secondary';
+		}, [disabled, focus, open]);
 
-	return (
-		<>
-			<ContainerEl
-				orientation="horizontal"
-				width="fill"
-				crossAlignment="flex-end"
-				mainAlignment="space-between"
-				borderRadius="half"
-				padding={{
-					horizontal: 'large',
-					vertical: 'small'
-				}}
-				background={background}
-				$focus={focus}
-			>
-				<Row takeAvailableSpace mainAlignment="unset">
-					<Padding top="medium" width="100%">
-						<CustomText size="medium" color={disabled ? 'secondary' : 'text'}>
-							{selectedLabels}
-						</CustomText>
-					</Padding>
-					<Label
-						$selected={selected.length > 0}
-						size={selected.length > 0 ? 'small' : 'medium'}
-						color={color}
-					>
-						{label}
-					</Label>
-				</Row>
-				<CustomIcon size="medium" icon={open ? 'ArrowUp' : 'ArrowDown'} color={color} />
-			</ContainerEl>
-			<Divider color={color} />
-		</>
-	);
-};
+		return (
+			<>
+				<ContainerEl
+					orientation="horizontal"
+					width="fill"
+					crossAlignment="flex-end"
+					mainAlignment="space-between"
+					borderRadius="half"
+					padding={{
+						horizontal: 'large',
+						vertical: 'small'
+					}}
+					background={background}
+					$focus={focus}
+				>
+					<Row takeAvailableSpace mainAlignment="unset">
+						<Padding top="medium" width="100%">
+							<CustomText size="medium" color={disabled ? 'secondary' : 'text'}>
+								{selectedLabels}
+							</CustomText>
+						</Padding>
+						<Label
+							$selected={selected.length > 0}
+							size={selected.length > 0 ? 'small' : 'medium'}
+							color={color}
+						>
+							{label}
+						</Label>
+					</Row>
+					<CustomIcon size="medium" icon={open ? 'ArrowUp' : 'ArrowDown'} color={color} />
+				</ContainerEl>
+				<Divider color={color} />
+			</>
+		);
+	};
+}
 
 export const SelectWithError = ({
 	items,
@@ -134,9 +135,7 @@ export const SelectWithError = ({
 	errorMessage,
 	...rest
 }: SelectWithErrorProps): React.JSX.Element => {
-	const LabelFactory = (props: LabelFactoryProps): React.JSX.Element => (
-		<CustomLabelFactory {...props} hasError={hasError} />
-	);
+	const LabelFactory = useMemo(() => createLabelFactory(hasError), [hasError]);
 
 	return (
 		<Container gap={'0.5rem'} crossAlignment={'flex-start'} height={'fit'} {...rest}>

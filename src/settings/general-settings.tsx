@@ -6,7 +6,7 @@
 
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 
-import { Container, Text, useSnackbar } from '@zextras/carbonio-design-system';
+import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import { legacySoapFetch } from '@zextras/carbonio-ui-soap-lib';
 import { includes, isEmpty, map, size } from 'lodash';
 
@@ -226,8 +226,7 @@ const GeneralSettings = (): React.JSX.Element => {
 	const invalidOption = useMemo(
 		() => ({
 			label: t('label.invalid_option', 'Invalid Option'),
-			value: 'invalid',
-			customComponent: <Text color="error">{t('label.invalid_option', 'Invalid Option')}</Text>
+			value: 'invalid'
 		}),
 		[t]
 	);

@@ -40,7 +40,6 @@
 	},
 	"files": [
 		"lib/",
-        "assets/",
 		"THIRDPARTIES"
 	],
 	"keywords": [

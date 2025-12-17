@@ -9,7 +9,7 @@
 		"./*": null
 	},
 	"engines": {
-		"node": "v20",
+		"node": "v22",
 		"npm": "v10"
 	},
 	"scripts": {

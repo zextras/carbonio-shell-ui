@@ -89,6 +89,16 @@ function createLabelFactory(hasError?: boolean) {
 			return 'secondary';
 		}, [disabled, focus, open]);
 
+		const dividerColor = useMemo(() => {
+			if (hasError) {
+				return 'error';
+			}
+			if (open || focus) {
+				return 'primary';
+			}
+			return 'gray3';
+		}, [focus, open]);
+
 		return (
 			<>
 				<ContainerEl
@@ -120,7 +130,7 @@ function createLabelFactory(hasError?: boolean) {
 					</Row>
 					<CustomIcon size="medium" icon={open ? 'ArrowUp' : 'ArrowDown'} color={color} />
 				</ContainerEl>
-				<Divider color={color} />
+				<Divider color={dividerColor} />
 			</>
 		);
 	};

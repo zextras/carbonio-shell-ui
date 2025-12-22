@@ -63,7 +63,7 @@
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/react": "^16.2.0",
 		"@testing-library/user-event": "^14.6.1",
-		"@tsconfig/node20": "^20.1.5",
+		"@tsconfig/node22": "^22.0.0",
 		"@types/jest": "^30.0.0",
 		"@types/lodash": "^4.17.4",
 		"@types/node": "^20.17.27",

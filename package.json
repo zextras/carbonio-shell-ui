@@ -6,7 +6,9 @@
 	"types": "./lib/lib.d.ts",
 	"typesVersions": {
 		"*": {
-			"testing": ["./lib/testing.d.ts"]
+			"testing": [
+				"./lib/testing.d.ts"
+			]
 		}
 	},
 	"exports": {
@@ -19,7 +21,8 @@
 			"import": "./lib/testing.js",
 			"require": "./lib/testing.js",
 			"types": "./lib/testing.d.ts"
-		}
+		},
+		"./*": null
 	},
 	"engines": {
 		"node": "v20",

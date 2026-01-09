@@ -5,12 +5,7 @@
 ```ts
 
 import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
-import { Action as Action_2 } from '../../lib';
-import { ActionFactory as ActionFactory_2 } from '../../types/integrations';
-import { AnyFunction as AnyFunction_2 } from '../../utils/typeUtils';
-import { BadgeInfo as BadgeInfo_2 } from '../../lib';
 import type { CaptureOptions } from 'posthog-js';
-import { CarbonioModule as CarbonioModule_2 } from '../../types/apps';
 import type { ComponentType } from 'react';
 import { DropdownItem } from '@zextras/carbonio-design-system';
 import type { DynamicThemeFix } from 'darkreader';
@@ -776,9 +771,9 @@ export interface RawSuccessSoapResponse<R> {
 }
 
 // @public (undocumented)
-export const registerActions: <TAction extends Action_2 = Action_2>(...items: Array<{
+export const registerActions: <TAction extends Action = Action>(...items: Array<{
     id: string;
-    action: ActionFactory_2<unknown, TAction>;
+    action: ActionFactory<unknown, TAction>;
     type: string;
 }>) => void;
 
@@ -788,7 +783,7 @@ export const registerComponents: AppDependantExports['registerComponents'];
 // @public (undocumented)
 export const registerFunctions: (...items: Array<{
     id: string;
-    fn: AnyFunction_2;
+    fn: AnyFunction;
 }>) => void;
 
 // @public (undocumented)
@@ -1088,7 +1083,7 @@ export const updateBoard: <T = unknown>(id: string, board: Partial<Board<T>>) =>
 export const updateBoardContext: <T = unknown>(id: string, context: T) => void;
 
 // @public (undocumented)
-export const updatePrimaryBadge: (badge: Partial<BadgeInfo_2>, id: string) => void;
+export const updatePrimaryBadge: (badge: Partial<BadgeInfo>, id: string) => void;
 
 // Warning: (ae-forgotten-export) The symbol "UpdateSettingsParams" needs to be exported by the entry point lib.d.ts
 //
@@ -1111,7 +1106,7 @@ type UpdateSettingsParams = {
 };
 
 // @public
-export const upsertApp: (app: Pick<CarbonioModule_2, "name" | "display">) => void;
+export const upsertApp: (app: Pick<CarbonioModule, "name" | "display">) => void;
 
 // @public (undocumented)
 export const useAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];

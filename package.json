@@ -4,8 +4,24 @@
 	"description": "The Zextras Carbonio web client",
 	"main": "./lib/lib.js",
 	"types": "./lib/lib.d.ts",
+	"typesVersions": {
+		"*": {
+			"testing": [
+				"./lib/testing.d.ts"
+			]
+		}
+	},
 	"exports": {
-		".": "./lib/lib.js",
+		".": {
+			"import": "./lib/lib.js",
+			"require": "./lib/lib.js",
+			"types": "./lib/lib.d.ts"
+		},
+		"./testing": {
+			"import": "./lib/testing.js",
+			"require": "./lib/testing.js",
+			"types": "./lib/testing.d.ts"
+		},
 		"./*": null
 	},
 	"engines": {
@@ -40,6 +56,7 @@
 	},
 	"files": [
 		"lib/",
+		"assets/",
 		"THIRDPARTIES"
 	],
 	"keywords": [
@@ -57,16 +74,16 @@
 		"@emotion/babel-plugin": "^11.13.5",
 		"@emotion/jest": "^11.13.0",
 		"@faker-js/faker": "^8.4.1",
-		"@microsoft/api-extractor": "^7.42.3",
+		"@microsoft/api-extractor": "^7.55.2",
 		"@svgr/webpack": "^8.1.0",
 		"@testing-library/dom": "^10.4.0",
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/react": "^16.2.0",
 		"@testing-library/user-event": "^14.6.1",
-		"@tsconfig/node20": "^20.1.5",
+		"@tsconfig/node22": "^22.0.5",
 		"@types/jest": "^30.0.0",
 		"@types/lodash": "^4.17.4",
-		"@types/node": "^20.17.27",
+		"@types/node": "^22.19.3",
 		"@types/react": "^18.3.11",
 		"@types/react-dom": "^18.3.0",
 		"@types/webpack": "^5.28.5",
@@ -92,6 +109,7 @@
 		"mini-css-extract-plugin": "^2.9.4",
 		"msw": "^2.4.8",
 		"postcss-loader": "^8.1.1",
+		"sonarqube-scanner": "^4.3.4",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.3.3",
 		"webpack": "^5.102.0",

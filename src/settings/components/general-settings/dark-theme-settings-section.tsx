@@ -7,17 +7,18 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { SelectItem, SingleSelectionOnChange } from '@zextras/carbonio-design-system';
-import { FormSubSection, Select } from '@zextras/carbonio-design-system';
+import { FormSubSection } from '@zextras/carbonio-design-system';
 import { find } from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 import {
 	isDarkReaderPropValues,
 	useDarkReaderResultValue
 } from '../../../dark-mode/use-dark-reader-result-value';
 import type { DarkReaderPropValues } from '../../../dark-mode/utils';
-import { getT } from '../../../store/i18n/hooks';
 import type { AddMod, RemoveMod } from '../../../types/network';
 import { useReset } from '../../hooks/use-reset';
+import { SelectWithError } from '../select-with-error';
 import type { SettingsSectionProps } from '../utils';
 
 type DarkReaderSelectItem = Array<SelectItem & { value: DarkReaderPropValues }>;
@@ -25,17 +26,22 @@ type DarkReaderSelectItem = Array<SelectItem & { value: DarkReaderPropValues }>;
 interface DarkThemeSettingSectionProps extends SettingsSectionProps {
 	addMod: AddMod;
 	removeMod: RemoveMod;
+	invalidOption: SelectItem;
 }
 
 const DarkThemeSettingSection = ({
 	addMod,
 	removeMod,
+	invalidOption,
 	resetRef
 }: DarkThemeSettingSectionProps): React.JSX.Element | null => {
+	const [t] = useTranslation();
 	const darkReaderResultValue = useDarkReaderResultValue();
-	const [selection, setSelection] = useState<SelectItem>();
+	const [selection, setSelection] = useState<SelectItem>({
+		label: t('settings.general.theme_auto', 'Auto'),
+		value: 'auto'
+	});
 
-	const t = getT();
 	const items = useMemo(
 		(): DarkReaderSelectItem => [
 			{
@@ -83,27 +89,36 @@ const DarkThemeSettingSection = ({
 	useEffect(() => {
 		if (darkReaderResultValue) {
 			setSelectNewValue(darkReaderResultValue);
+		} else {
+			setSelection(invalidOption);
 		}
-	}, [darkReaderResultValue, items, setSelectNewValue]);
+	}, [darkReaderResultValue, invalidOption, items, setSelectNewValue]);
 
 	const init = useCallback(() => {
 		if (darkReaderResultValue) {
 			setSelectNewValue(darkReaderResultValue);
+		} else {
+			setSelection(invalidOption);
 		}
-	}, [darkReaderResultValue, setSelectNewValue]);
+	}, [darkReaderResultValue, invalidOption, setSelectNewValue]);
 
 	useReset(resetRef, init);
 
-	if (!selection) {
-		return null;
-	}
+	const isInvalidOption = useMemo(() => selection === invalidOption, [invalidOption, selection]);
+
 	return (
 		<FormSubSection label={t('settings.general.theme_options', 'Theme Options')}>
-			<Select
+			<SelectWithError
+				data-testid={'select-dark-theme'}
 				items={items}
+				selectLabel={t('settings.general.dark_mode', 'Dark Mode')}
 				selection={selection}
-				label={t('settings.general.dark_mode', 'Dark Mode')}
 				onChange={onSelectionChange}
+				hasError={isInvalidOption}
+				errorMessage={t(
+					'settings.general.dark_mode_error',
+					'The current value is not recognized. The interface has defaulted to System theme. Please select a valid option to change the theme.'
+				)}
 			/>
 		</FormSubSection>
 	);

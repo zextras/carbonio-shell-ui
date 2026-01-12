@@ -223,6 +223,14 @@ const GeneralSettings = (): React.JSX.Element => {
 
 	const title = useMemo(() => t('settings.general.general', 'General Settings'), [t]);
 
+	const invalidOption = useMemo(
+		() => ({
+			label: t('label.invalid_option', 'Invalid Option'),
+			value: 'invalid'
+		}),
+		[t]
+	);
+
 	return (
 		<>
 			<SettingsHeader
@@ -251,6 +259,7 @@ const GeneralSettings = (): React.JSX.Element => {
 						resetRef={darkThemeSettingSectionRef}
 						addMod={addMod}
 						removeMod={removeMod}
+						invalidOption={invalidOption}
 					/>
 				</SettingsSection>
 				<LanguageSettings
@@ -259,6 +268,7 @@ const GeneralSettings = (): React.JSX.Element => {
 					open={open}
 					setOpen={setOpen}
 					resetRef={languageSettingsSectionRef}
+					invalidOption={invalidOption}
 				/>
 
 				<OutOfOfficeSettings

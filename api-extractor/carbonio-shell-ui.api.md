@@ -279,6 +279,11 @@ type BaseFolder = {
 // @public (undocumented)
 export const BASENAME: string;
 
+// @public (undocumented)
+type BaseSettingsHeaderProps = {
+    title: string;
+};
+
 // Warning: (ae-forgotten-export) The symbol "Exactify" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
@@ -886,11 +891,28 @@ export const setRouteVisibility: (id: string, visible: boolean) => void;
 export const SETTINGS_APP_ID = "settings";
 
 // @public (undocumented)
-export const SettingsHeader: ({ onSave, onCancel, isDirty, title, hasError }: SettingsHeaderProps) => React_2.JSX.Element;
+export const SettingsHeader: ({ onSave, onCancel, isDirty, title, hasError, hideSavingOptions }: SettingsHeaderProps) => React_2.JSX.Element;
+
+// Warning: (ae-forgotten-export) The symbol "SettingsHeaderPropsWithSaving" needs to be exported by the entry point lib.d.ts
+// Warning: (ae-forgotten-export) The symbol "SettingsHeaderPropsWithoutSaving" needs to be exported by the entry point lib.d.ts
+//
+// @public (undocumented)
+export type SettingsHeaderProps = SettingsHeaderPropsWithSaving | SettingsHeaderPropsWithoutSaving;
+
+// Warning: (ae-forgotten-export) The symbol "BaseSettingsHeaderProps" needs to be exported by the entry point lib.d.ts
+//
+// @public (undocumented)
+type SettingsHeaderPropsWithoutSaving = BaseSettingsHeaderProps & {
+    hideSavingOptions: true;
+    onSave?: never;
+    onCancel?: never;
+    isDirty?: never;
+    hasError?: never;
+};
 
 // @public (undocumented)
-export type SettingsHeaderProps = {
-    title: string;
+type SettingsHeaderPropsWithSaving = BaseSettingsHeaderProps & {
+    hideSavingOptions?: false;
     onSave: RouteLeavingGuardProps['onSave'];
     onCancel: () => void;
     isDirty: boolean;
@@ -1215,7 +1237,7 @@ interface ZimletProp {
 // lib/boot/app/app-dependant-exports.d.ts:20:5 - (ae-forgotten-export) The symbol "getAppHook" needs to be exported by the entry point lib.d.ts
 // lib/boot/app/app-dependant-exports.d.ts:21:5 - (ae-forgotten-export) The symbol "getApp_2" needs to be exported by the entry point lib.d.ts
 // lib/boot/app/app-dependant-exports.d.ts:22:5 - (ae-forgotten-export) The symbol "addBoard_2" needs to be exported by the entry point lib.d.ts
-// lib/settings/components/settings-header.d.ts:5:5 - (ae-forgotten-export) The symbol "RouteLeavingGuardProps" needs to be exported by the entry point lib.d.ts
+// lib/settings/components/settings-header.d.ts:8:5 - (ae-forgotten-export) The symbol "RouteLeavingGuardProps" needs to be exported by the entry point lib.d.ts
 // lib/store/account/updaters.d.ts:15:9 - (ae-forgotten-export) The symbol "IdentityMods" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:22:5 - (ae-forgotten-export) The symbol "CarbonioModule" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:24:5 - (ae-forgotten-export) The symbol "AppRouteDescriptor" needs to be exported by the entry point lib.d.ts

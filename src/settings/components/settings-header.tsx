@@ -29,20 +29,35 @@ const CustomBreadcrumbs = styled(Breadcrumbs)`
 	}
 `;
 
-export type SettingsHeaderProps = {
+type BaseSettingsHeaderProps = {
 	title: string;
+};
+
+type SettingsHeaderPropsWithSaving = BaseSettingsHeaderProps & {
+	hideSavingOptions?: false;
 	onSave: RouteLeavingGuardProps['onSave'];
 	onCancel: () => void;
 	isDirty: boolean;
 	hasError?: boolean;
 };
 
+type SettingsHeaderPropsWithoutSaving = BaseSettingsHeaderProps & {
+	hideSavingOptions: true;
+	onSave?: never;
+	onCancel?: never;
+	isDirty?: never;
+	hasError?: never;
+};
+
+export type SettingsHeaderProps = SettingsHeaderPropsWithSaving | SettingsHeaderPropsWithoutSaving;
+
 export const SettingsHeader = ({
 	onSave,
 	onCancel,
 	isDirty,
 	title,
-	hasError = false
+	hasError = false,
+	hideSavingOptions = false
 }: SettingsHeaderProps): React.JSX.Element => {
 	const t = getT();
 	const [searchParams] = useSearchParams();
@@ -72,51 +87,56 @@ export const SettingsHeader = ({
 	}, [section]);
 	return (
 		<>
-			<RouteLeavingGuard when={isDirty} onSave={onSave}>
-				<Text>
-					{t(
-						'label.unsaved_changes_line1',
-						'Are you sure you want to leave this page without saving?'
-					)}
-				</Text>
-				<Text>{t('label.unsaved_changes_line2', 'All your unsaved changes will be lost')}</Text>
-			</RouteLeavingGuard>
+			{!hideSavingOptions && isDirty && onSave && (
+				<RouteLeavingGuard when={isDirty} onSave={onSave}>
+					<Text>
+						{t(
+							'label.unsaved_changes_line1',
+							'Are you sure you want to leave this page without saving?'
+						)}
+					</Text>
+					<Text>{t('label.unsaved_changes_line2', 'All your unsaved changes will be lost')}</Text>
+				</RouteLeavingGuard>
+			)}
 			<Container
 				orientation="vertical"
 				mainAlignment="space-around"
 				background={'gray5'}
 				height="fit"
+				data-testid="settings-header"
 			>
-				<Row orientation="horizontal" width="100%">
+				<Row orientation="horizontal" width="100%" minHeight={'3.2rem'}>
 					<Row
 						padding={{ all: 'small' }}
 						mainAlignment="flex-start"
-						width="50%"
+						flexGrow={1}
 						crossAlignment="flex-start"
 					>
 						<CustomBreadcrumbs crumbs={crumbs} />
 					</Row>
-					<Row
-						padding={{ all: 'small' }}
-						width="50%"
-						mainAlignment="flex-end"
-						crossAlignment="flex-end"
-					>
-						<Padding right="small">
+					{!hideSavingOptions && (
+						<Row
+							padding={{ all: 'small' }}
+							flexGrow={1}
+							mainAlignment="flex-end"
+							crossAlignment="flex-end"
+						>
+							<Padding right="small">
+								<Button
+									label={t('label.discard_changes', 'DISCARD CHANGES')}
+									onClick={onCancel!}
+									color="secondary"
+									disabled={!isDirty}
+								/>
+							</Padding>
 							<Button
-								label={t('label.discard_changes', 'DISCARD CHANGES')}
-								onClick={onCancel}
-								color="secondary"
-								disabled={!isDirty}
+								label={t('label.save', 'Save')}
+								color="primary"
+								onClick={onSave!}
+								disabled={isSaveDisabled}
 							/>
-						</Padding>
-						<Button
-							label={t('label.save', 'Save')}
-							color="primary"
-							onClick={onSave}
-							disabled={isSaveDisabled}
-						/>
-					</Row>
+						</Row>
+					)}
 				</Row>
 			</Container>
 			<Divider />

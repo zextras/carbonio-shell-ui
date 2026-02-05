@@ -68,6 +68,13 @@ const ShellHeader = ({ children }: ShellHeaderProps): React.JSX.Element => {
 							<SearchBar />
 						</Catcher>
 					)}
+				</Container>
+				<Container
+					orientation="horizontal"
+					width="auto"
+					mainAlignment="flex-end"
+					padding={{ left: 'small' }}
+				>
 					{isTotalQuotaUsageAvailable && (
 						<Container
 							data-testid="TotalQuotaUsageContainer"
@@ -81,13 +88,6 @@ const ShellHeader = ({ children }: ShellHeaderProps): React.JSX.Element => {
 							</Catcher>
 						</Container>
 					)}
-				</Container>
-				<Container
-					orientation="horizontal"
-					width="auto"
-					mainAlignment="flex-end"
-					padding={{ left: 'small' }}
-				>
 					{children}
 				</Container>
 			</Catcher>

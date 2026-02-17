@@ -96,7 +96,7 @@
 		"copy-webpack-plugin": "^13.0.1",
 		"core-js": "^3.39.0",
 		"css-loader": "^6.10.0",
-		"dotenv": "^17.2.2",
+		"dotenv": "^17.3.1",
 		"eslint-plugin-notice": "^0.9.10",
 		"html-webpack-plugin": "^5.6.4",
 		"husky": "^9.0.11",

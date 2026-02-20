@@ -19,14 +19,11 @@
  */
 
 import type { AppDependantExports } from './boot/app/app-dependant-exports';
-import type { report as reportApp } from './reporting/functions';
 
 // TODO: export only what is useful and not internal constants
 export * from './constants';
 export * from './settings/components/settings-header';
 export * from './boot/app/app-direct-exports';
-
-export declare const report: ReturnType<typeof reportApp>;
 
 export declare const setAppContext: AppDependantExports['setAppContext'];
 export declare const addRoute: AppDependantExports['addRoute'];
@@ -36,10 +33,6 @@ export declare const addUtilityView: AppDependantExports['addUtilityView'];
 export declare const addPrimaryAccessoryView: AppDependantExports['addPrimaryAccessoryView'];
 export declare const addSecondaryAccessoryView: AppDependantExports['addSecondaryAccessoryView'];
 export declare const registerComponents: AppDependantExports['registerComponents'];
-/**
- * @deprecated See documentation of editSettings function in ./network/edit-settings
- */
-export declare const editSettings: AppDependantExports['editSettings'];
 
 export declare const getI18n: AppDependantExports['getI18n'];
 export declare const t: AppDependantExports['t'];

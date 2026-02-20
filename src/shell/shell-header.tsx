@@ -33,6 +33,8 @@ const ShellHeader = ({ children }: ShellHeaderProps): React.JSX.Element => {
 
 	const [SearchBar, isSearchBarAvailable] =
 		useIntegratedComponent<typeof SearchUISearchBar>('search-bar');
+
+	const [TotalQuotaUsage, isTotalQuotaUsageAvailable] = useIntegratedComponent('total-quota-usage');
 	return (
 		<ShellHeaderContainer
 			data-testid="MainHeaderContainer"
@@ -61,7 +63,11 @@ const ShellHeader = ({ children }: ShellHeaderProps): React.JSX.Element => {
 					<Padding horizontal="large">
 						<CreationButton />
 					</Padding>
-					{isSearchBarAvailable && <SearchBar />}
+					{isSearchBarAvailable && (
+						<Catcher>
+							<SearchBar />
+						</Catcher>
+					)}
 				</Container>
 				<Container
 					orientation="horizontal"
@@ -69,6 +75,19 @@ const ShellHeader = ({ children }: ShellHeaderProps): React.JSX.Element => {
 					mainAlignment="flex-end"
 					padding={{ left: 'small' }}
 				>
+					{isTotalQuotaUsageAvailable && (
+						<Container
+							data-testid="TotalQuotaUsageContainer"
+							maxWidth="13.8125rem"
+							height={'3.125rem'}
+							borderColor={{ left: 'gray2' }}
+							padding={{ horizontal: 'large', vertical: 'small' }}
+						>
+							<Catcher>
+								<TotalQuotaUsage />
+							</Catcher>
+						</Container>
+					)}
 					{children}
 				</Container>
 			</Catcher>

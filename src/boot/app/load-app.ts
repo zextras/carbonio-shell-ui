@@ -13,7 +13,6 @@ import { getAppDependantExports } from './app-dependant-exports';
 import * as appExports from './app-direct-exports';
 import * as CONSTANTS from '../../constants';
 import type * as ExportsForApp from '../../lib';
-import { report } from '../../reporting/functions';
 import { SettingsHeader } from '../../settings/components/settings-header';
 import { useAppStore } from '../../store/app';
 import type { CarbonioModule } from '../../types/apps';
@@ -26,7 +25,6 @@ export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 		try {
 			if (window.__ZAPP_SHARED_LIBRARIES__?.['@zextras/carbonio-shell-ui']) {
 				window.__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-shell-ui'][appPkg.name] = {
-					report: report(appPkg.name),
 					SettingsHeader,
 					...getAppDependantExports(appPkg),
 					...appExports,

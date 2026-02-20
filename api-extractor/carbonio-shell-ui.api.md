@@ -5,12 +5,7 @@
 ```ts
 
 import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
-import { Action as Action_2 } from '../../lib';
-import { ActionFactory as ActionFactory_2 } from '../../types/integrations';
-import { AnyFunction as AnyFunction_2 } from '../../utils/typeUtils';
-import { BadgeInfo as BadgeInfo_2 } from '../../lib';
 import type { CaptureOptions } from 'posthog-js';
-import { CarbonioModule as CarbonioModule_2 } from '../../types/apps';
 import type { ComponentType } from 'react';
 import { DropdownItem } from '@zextras/carbonio-design-system';
 import type { DynamicThemeFix } from 'darkreader';
@@ -36,20 +31,6 @@ export type Account = {
     };
     rights: AccountRights;
 };
-
-// @public
-interface AccountACEInfo {
-    chkgt?: boolean;
-    d?: string;
-    deny?: boolean;
-    // Warning: (ae-forgotten-export) The symbol "GranteeType" needs to be exported by the entry point lib.d.ts
-    gt: GranteeType;
-    key?: string;
-    pw?: string;
-    // Warning: (ae-forgotten-export) The symbol "Right" needs to be exported by the entry point lib.d.ts
-    right: Right;
-    zid?: string;
-}
 
 // @public
 export interface AccountMenuAction extends Action, Omit<DropdownItem, 'label' | 'onClick'> {
@@ -198,7 +179,6 @@ type AppDependantExports = {
     addPrimaryAccessoryView: (data: Partial<PrimaryAccessoryView>) => ReturnType<AppActions['addPrimaryAccessoryView']>;
     addSecondaryAccessoryView: (data: Partial<SecondaryAccessoryView>) => ReturnType<AppActions['addSecondaryAccessoryView']>;
     registerComponents: ReturnType<IntegrationActions['registerComponents']>;
-    editSettings: ReturnType<typeof getEditSettingsForApp>;
     getI18n: ReturnType<typeof getI18n_2>;
     t: ReturnType<typeof getTFunction>;
     useAppContext: ReturnType<typeof getAppContextHook>;
@@ -299,6 +279,11 @@ type BaseFolder = {
 // @public (undocumented)
 export const BASENAME: string;
 
+// @public (undocumented)
+type BaseSettingsHeaderProps = {
+    title: string;
+};
+
 // Warning: (ae-forgotten-export) The symbol "Exactify" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
@@ -387,7 +372,6 @@ type CarbonioModule = {
     attrKey?: string;
     icon: string;
     display: string;
-    sentryDsn?: string;
 };
 
 // @public (undocumented)
@@ -405,11 +389,6 @@ export const closeBoard: (id: string) => void;
 type Component<TProps extends Record<string, unknown> = Record<string, unknown>> = ComponentType<TProps>;
 
 // @public (undocumented)
-type CreateIdentityResponse = {
-    identity: [Identity];
-};
-
-// @public (undocumented)
 export const CUSTOM_EVENTS: {
     readonly updateView: "updateView";
 };
@@ -423,9 +402,6 @@ export const darkReaderDynamicThemeFixes: DynamicThemeFix;
 // @public (undocumented)
 export const DELEGATED_SEND_SAVE_TARGET: string[];
 
-// @public (undocumented)
-type DeleteIdentityResponse = Record<string, never>;
-
 // Warning: (ae-forgotten-export) The symbol "DurationUnit" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
@@ -433,20 +409,6 @@ export type Duration = `${number}${DurationUnit | ''}`;
 
 // @public (undocumented)
 type DurationUnit = 'd' | 'h' | 'm' | 's' | 'ms';
-
-// @public @deprecated (undocumented)
-export const editSettings: AppDependantExports['editSettings'];
-
-// @public (undocumented)
-type EditSettingsBatchResponse = {
-    ModifyPropertiesResponse?: ModifyPropertiesResponse[];
-    ModifyPrefsResponse?: ModifyPrefsResponse[];
-    ModifyIdentityResponse?: ModifyIdentityResponse[];
-    DeleteIdentityResponse?: DeleteIdentityResponse[];
-    CreateIdentityResponse?: CreateIdentityResponse[];
-    RevokeRightsResponse?: RevokeRightsResponse[];
-    GrantRightsResponse?: GrantRightsResponse[];
-};
 
 // @public (undocumented)
 export const EMAIL_VALIDATION_REGEX: RegExp;
@@ -503,14 +465,6 @@ export const getBoardById: <T>(id: string) => Board<T> | undefined;
 // @public (undocumented)
 export const getBoardContextById: <T>(id: string) => T | undefined;
 
-// Warning: (ae-forgotten-export) The symbol "Mods" needs to be exported by the entry point lib.d.ts
-// Warning: (ae-forgotten-export) The symbol "EditSettingsBatchResponse" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-const getEditSettingsForApp: (app: string) => (mods: Mods) => Promise<EditSettingsBatchResponse & {
-    type: "fulfilled";
-}>;
-
 // @public (undocumented)
 export const getI18n: AppDependantExports['getI18n'];
 
@@ -558,14 +512,6 @@ export type Grant = {
     d?: string;
     pw?: string;
     key?: string;
-};
-
-// @public (undocumented)
-type GranteeType = 'usr' | 'grp' | 'egp' | 'all' | 'dom' | 'edom' | 'gst' | 'key' | 'pub' | 'email';
-
-// @public (undocumented)
-type GrantRightsResponse = {
-    ace?: AccountACEInfo[];
 };
 
 // @public (undocumented)
@@ -703,35 +649,6 @@ type Meta<T extends Record<string, unknown>> = {
 // @public (undocumented)
 export const minimizeBoards: () => void;
 
-// @public (undocumented)
-type ModifyIdentityResponse = Record<string, never>;
-
-// @public (undocumented)
-type ModifyPrefsResponse = Record<string, never>;
-
-// @public (undocumented)
-type ModifyPropertiesResponse = Record<string, never>;
-
-// @public (undocumented)
-interface Mods extends Record<string, Record<string, unknown> | undefined> {
-    // Warning: (ae-forgotten-export) The symbol "IdentityMods" needs to be exported by the entry point lib.d.ts
-    //
-    // (undocumented)
-    identity?: IdentityMods;
-    // Warning: (ae-forgotten-export) The symbol "PermissionsMods" needs to be exported by the entry point lib.d.ts
-    //
-    // (undocumented)
-    permissions?: PermissionsMods;
-    // Warning: (ae-forgotten-export) The symbol "PrefsMods" needs to be exported by the entry point lib.d.ts
-    //
-    // (undocumented)
-    prefs?: PrefsMods;
-    // Warning: (ae-forgotten-export) The symbol "PropsMods" needs to be exported by the entry point lib.d.ts
-    //
-    // (undocumented)
-    props?: PropsMods;
-}
-
 // Warning: (ae-forgotten-export) The symbol "ValueOf" needs to be exported by the entry point lib.d.ts
 //
 // @public (undocumented)
@@ -757,18 +674,6 @@ export type NotificationConfig = {
 type PanelMode = 'closed' | 'overlap' | 'open';
 
 // @public (undocumented)
-type PermissionsMods = {
-    freeBusy: {
-        current: AccountACEInfo[];
-        new: AccountACEInfo;
-    };
-    inviteRight: {
-        current: AccountACEInfo[];
-        new: AccountACEInfo;
-    };
-};
-
-// @public (undocumented)
 export type PopupNotificationConfig = {
     title?: string;
     message?: string;
@@ -777,9 +682,6 @@ export type PopupNotificationConfig = {
     tag?: string;
     onClick?: (event: Event) => void;
 };
-
-// @public (undocumented)
-type PrefsMods = Record<string, unknown> & AccountSettingsPrefs;
 
 // @public (undocumented)
 export const PRIMARY_BAR_WIDTH = "3.0625rem";
@@ -801,12 +703,6 @@ export type PrimaryBarComponentProps = {
     active: boolean;
     onClick: () => void;
 };
-
-// @public (undocumented)
-type PropsMods = Record<string, {
-    app: string;
-    value: unknown;
-}>;
 
 // @public (undocumented)
 export interface RawErrorSoapResponse {
@@ -880,9 +776,9 @@ export interface RawSuccessSoapResponse<R> {
 }
 
 // @public (undocumented)
-export const registerActions: <TAction extends Action_2 = Action_2>(...items: Array<{
+export const registerActions: <TAction extends Action = Action>(...items: Array<{
     id: string;
-    action: ActionFactory_2<unknown, TAction>;
+    action: ActionFactory<unknown, TAction>;
     type: string;
 }>) => void;
 
@@ -892,7 +788,7 @@ export const registerComponents: AppDependantExports['registerComponents'];
 // @public (undocumented)
 export const registerFunctions: (...items: Array<{
     id: string;
-    fn: AnyFunction_2;
+    fn: AnyFunction;
 }>) => void;
 
 // @public (undocumented)
@@ -924,22 +820,6 @@ export const removeUtilityView: (id: string) => void;
 
 // @public (undocumented)
 export const reopenBoards: () => void;
-
-// Warning: (ae-forgotten-export) The symbol "report_2" needs to be exported by the entry point lib.d.ts
-//
-// @public (undocumented)
-export const report: ReturnType<typeof report_2>;
-
-// @public @deprecated (undocumented)
-const report_2: (appId: string) => (error: Event, hint?: unknown) => void;
-
-// @public (undocumented)
-type RevokeRightsResponse = {
-    ace?: AccountACEInfo[];
-};
-
-// @public (undocumented)
-type Right = 'invite' | 'loginAs' | 'sendAs' | 'sendOnBehalfOf' | 'viewFreeBusy';
 
 // @public (undocumented)
 interface RouteLeavingGuardProps {
@@ -1011,11 +891,28 @@ export const setRouteVisibility: (id: string, visible: boolean) => void;
 export const SETTINGS_APP_ID = "settings";
 
 // @public (undocumented)
-export const SettingsHeader: ({ onSave, onCancel, isDirty, title, hasError }: SettingsHeaderProps) => React_2.JSX.Element;
+export const SettingsHeader: ({ onSave, onCancel, isDirty, title, hasError, hideSavingOptions }: SettingsHeaderProps) => React_2.JSX.Element;
+
+// Warning: (ae-forgotten-export) The symbol "SettingsHeaderPropsWithSaving" needs to be exported by the entry point lib.d.ts
+// Warning: (ae-forgotten-export) The symbol "SettingsHeaderPropsWithoutSaving" needs to be exported by the entry point lib.d.ts
+//
+// @public (undocumented)
+export type SettingsHeaderProps = SettingsHeaderPropsWithSaving | SettingsHeaderPropsWithoutSaving;
+
+// Warning: (ae-forgotten-export) The symbol "BaseSettingsHeaderProps" needs to be exported by the entry point lib.d.ts
+//
+// @public (undocumented)
+type SettingsHeaderPropsWithoutSaving = BaseSettingsHeaderProps & {
+    hideSavingOptions: true;
+    onSave?: never;
+    onCancel?: never;
+    isDirty?: never;
+    hasError?: never;
+};
 
 // @public (undocumented)
-export type SettingsHeaderProps = {
-    title: string;
+type SettingsHeaderPropsWithSaving = BaseSettingsHeaderProps & {
+    hideSavingOptions?: false;
     onSave: RouteLeavingGuardProps['onSave'];
     onCancel: () => void;
     isDirty: boolean;
@@ -1208,7 +1105,7 @@ export const updateBoard: <T = unknown>(id: string, board: Partial<Board<T>>) =>
 export const updateBoardContext: <T = unknown>(id: string, context: T) => void;
 
 // @public (undocumented)
-export const updatePrimaryBadge: (badge: Partial<BadgeInfo_2>, id: string) => void;
+export const updatePrimaryBadge: (badge: Partial<BadgeInfo>, id: string) => void;
 
 // Warning: (ae-forgotten-export) The symbol "UpdateSettingsParams" needs to be exported by the entry point lib.d.ts
 //
@@ -1231,7 +1128,7 @@ type UpdateSettingsParams = {
 };
 
 // @public
-export const upsertApp: (app: Pick<CarbonioModule_2, "name" | "display">) => void;
+export const upsertApp: (app: Pick<CarbonioModule, "name" | "display">) => void;
 
 // @public (undocumented)
 export const useAction: <T>(type: string, id: string, target?: T) => [Action | undefined, boolean];
@@ -1331,24 +1228,17 @@ interface ZimletProp {
 
 // Warnings were encountered during analysis:
 //
-// lib/boot/app/app-dependant-exports.d.ts:9:5 - (ae-forgotten-export) The symbol "AppActions" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:16:5 - (ae-forgotten-export) The symbol "IntegrationActions" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:17:5 - (ae-forgotten-export) The symbol "getEditSettingsForApp" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:18:5 - (ae-forgotten-export) The symbol "getI18n_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:19:5 - (ae-forgotten-export) The symbol "getTFunction" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:20:5 - (ae-forgotten-export) The symbol "getAppContextHook" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:21:5 - (ae-forgotten-export) The symbol "getAppContext_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:22:5 - (ae-forgotten-export) The symbol "getAppHook" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:23:5 - (ae-forgotten-export) The symbol "getApp_2" needs to be exported by the entry point lib.d.ts
-// lib/boot/app/app-dependant-exports.d.ts:24:5 - (ae-forgotten-export) The symbol "addBoard_2" needs to be exported by the entry point lib.d.ts
-// lib/network/edit-settings.d.ts:3:5 - (ae-forgotten-export) The symbol "ModifyPropertiesResponse" needs to be exported by the entry point lib.d.ts
-// lib/network/edit-settings.d.ts:4:5 - (ae-forgotten-export) The symbol "ModifyPrefsResponse" needs to be exported by the entry point lib.d.ts
-// lib/network/edit-settings.d.ts:5:5 - (ae-forgotten-export) The symbol "ModifyIdentityResponse" needs to be exported by the entry point lib.d.ts
-// lib/network/edit-settings.d.ts:6:5 - (ae-forgotten-export) The symbol "DeleteIdentityResponse" needs to be exported by the entry point lib.d.ts
-// lib/network/edit-settings.d.ts:7:5 - (ae-forgotten-export) The symbol "CreateIdentityResponse" needs to be exported by the entry point lib.d.ts
-// lib/network/edit-settings.d.ts:8:5 - (ae-forgotten-export) The symbol "RevokeRightsResponse" needs to be exported by the entry point lib.d.ts
-// lib/network/edit-settings.d.ts:9:5 - (ae-forgotten-export) The symbol "GrantRightsResponse" needs to be exported by the entry point lib.d.ts
-// lib/settings/components/settings-header.d.ts:5:5 - (ae-forgotten-export) The symbol "RouteLeavingGuardProps" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:8:5 - (ae-forgotten-export) The symbol "AppActions" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:15:5 - (ae-forgotten-export) The symbol "IntegrationActions" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:16:5 - (ae-forgotten-export) The symbol "getI18n_2" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:17:5 - (ae-forgotten-export) The symbol "getTFunction" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:18:5 - (ae-forgotten-export) The symbol "getAppContextHook" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:19:5 - (ae-forgotten-export) The symbol "getAppContext_2" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:20:5 - (ae-forgotten-export) The symbol "getAppHook" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:21:5 - (ae-forgotten-export) The symbol "getApp_2" needs to be exported by the entry point lib.d.ts
+// lib/boot/app/app-dependant-exports.d.ts:22:5 - (ae-forgotten-export) The symbol "addBoard_2" needs to be exported by the entry point lib.d.ts
+// lib/settings/components/settings-header.d.ts:8:5 - (ae-forgotten-export) The symbol "RouteLeavingGuardProps" needs to be exported by the entry point lib.d.ts
+// lib/store/account/updaters.d.ts:15:9 - (ae-forgotten-export) The symbol "IdentityMods" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:22:5 - (ae-forgotten-export) The symbol "CarbonioModule" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:24:5 - (ae-forgotten-export) The symbol "AppRouteDescriptor" needs to be exported by the entry point lib.d.ts
 // lib/store/app/store.d.ts:28:5 - (ae-forgotten-export) The symbol "BoardView" needs to be exported by the entry point lib.d.ts
@@ -1365,13 +1255,12 @@ interface ZimletProp {
 // lib/types/account/index.d.ts:102:5 - (ae-forgotten-export) The symbol "AccountRightTargetEmail" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:107:9 - (ae-forgotten-export) The symbol "AccountRightName" needs to be exported by the entry point lib.d.ts
 // lib/types/account/index.d.ts:108:9 - (ae-forgotten-export) The symbol "AccountRightTarget" needs to be exported by the entry point lib.d.ts
-// lib/types/apps/index.d.ts:63:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
+// lib/types/apps/index.d.ts:59:5 - (ae-forgotten-export) The symbol "PanelMode" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:45:9 - (ae-forgotten-export) The symbol "SoapPolicy" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:64:5 - (ae-forgotten-export) The symbol "FolderView" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:80:5 - (ae-forgotten-export) The symbol "Meta" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:84:5 - (ae-forgotten-export) The symbol "SoapRetentionPolicy" needs to be exported by the entry point lib.d.ts
 // lib/types/misc/index.d.ts:98:5 - (ae-forgotten-export) The symbol "SortBy" needs to be exported by the entry point lib.d.ts
-// lib/types/network/index.d.ts:80:5 - (ae-forgotten-export) The symbol "AccountACEInfo" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:11:5 - (ae-forgotten-export) The symbol "NameSpace" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:70:5 - (ae-forgotten-export) The symbol "SoapSearchFolder" needs to be exported by the entry point lib.d.ts
 // lib/types/network/soap.d.ts:92:9 - (ae-forgotten-export) The symbol "Tag" needs to be exported by the entry point lib.d.ts

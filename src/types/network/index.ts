@@ -6,75 +6,14 @@
 
 import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
 
-import type { AccountACEInfo } from './entities';
-import type { SoapBody, SoapContext, SoapFault } from './soap';
+import type { SoapBody, SoapFault } from './soap';
 import type { JSNS } from '../../constants';
 import type { Exactify, RequireAtLeastOne, ValueOf } from '../../utils/typeUtils';
-import type { AccountRights, Identity, IdentityAttrs, Signature, ZimletProp } from '../account';
+import type { Identity, IdentityAttrs } from '../account';
 
 export * from './soap';
 
-export type ZimletPkgDescription = {
-	zimlet: Array<{
-		name: string;
-		label: string;
-		description: string;
-		version: string;
-		/* Property related to Zextras */ zapp?: 'true';
-		/* Property related to Zextras */ 'zapp-main'?: string;
-		/* Property related to Zextras */ 'zapp-version'?: string;
-		/* Property related to Zextras */ 'zapp-handlers'?: string;
-		/* Property related to Zextras */ 'zapp-style'?: string;
-		/* Property related to Zextras */ 'zapp-theme'?: string;
-		/* Property related to Zextras */ 'zapp-serviceworker-extension'?: string;
-	}>;
-	zimletContext: Array<{
-		baseUrl: string;
-		presence: 'enabled';
-		priority: number;
-	}>;
-};
-
-export type GetInfoResponse = {
-	name: string;
-	id: string;
-	attrs: {
-		_attrs: {
-			displayName: string;
-		};
-	};
-	prefs: {
-		_attrs: AccountSettingsPrefs;
-	};
-	signatures: {
-		signature: Array<Signature>;
-	};
-	identities: {
-		identity: Array<Identity>;
-	};
-	zimlets: {
-		zimlet: Array<ZimletPkgDescription>;
-	};
-	props: {
-		prop: Array<ZimletProp>;
-	};
-	version: string;
-	rights: AccountRights;
-	lifetime: number;
-};
-
 export type PropsMods = Record<string, { app: string; value: unknown }>;
-
-export type PermissionsMods = {
-	freeBusy: {
-		current: AccountACEInfo[];
-		new: AccountACEInfo;
-	};
-	inviteRight: {
-		current: AccountACEInfo[];
-		new: AccountACEInfo;
-	};
-};
 
 export type CreateIdentityResponse = {
 	identity: [Identity];
@@ -83,14 +22,6 @@ export type ModifyIdentityResponse = Record<string, never>;
 export type DeleteIdentityResponse = Record<string, never>;
 export type ModifyPropertiesResponse = Record<string, never>;
 export type ModifyPrefsResponse = Record<string, never>;
-
-export type RevokeRightsResponse = {
-	ace?: AccountACEInfo[];
-};
-
-export type GrantRightsResponse = {
-	ace?: AccountACEInfo[];
-};
 
 export type IdentityMods = {
 	modifyList?: Record<string, { id: string; prefs: Partial<IdentityAttrs> }>;
@@ -103,7 +34,6 @@ export type PrefsMods = Record<string, unknown> & AccountSettingsPrefs;
 export interface Mods extends Record<string, Record<string, unknown> | undefined> {
 	props?: PropsMods;
 	prefs?: PrefsMods;
-	permissions?: PermissionsMods;
 	identity?: IdentityMods;
 }
 
@@ -117,12 +47,6 @@ export type AddMod = <
 ) => void;
 
 export type RemoveMod = (type: keyof Mods, key: keyof NonNullable<Mods[typeof type]>) => void;
-
-export type NetworkState = SoapContext & {
-	noOpTimeout?: NodeJS.Timeout;
-	pollingInterval: number;
-	seq: number;
-};
 
 export type ModifyPrefsRequest = SoapBody<{
 	_attrs: AccountSettingsPrefs;

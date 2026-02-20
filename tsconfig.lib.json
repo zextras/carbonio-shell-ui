@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/node20/tsconfig.json",
+  "extends": "@tsconfig/node22/tsconfig.json",
   "compilerOptions": {
     "resolveJsonModule": true,
     "lib": [
@@ -19,7 +19,8 @@
     ]
   },
   "files": [
-    "src/lib.ts"
+    "src/lib.ts",
+    "src/testing.ts",
   ],
   "exclude": [
     "node_modules",

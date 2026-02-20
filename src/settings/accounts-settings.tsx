@@ -16,7 +16,6 @@ import AccountsList from './components/account-settings/accounts-list';
 import PersonaSettings from './components/account-settings/persona-settings';
 import PrimaryAccountSettings from './components/account-settings/primary-account-settings';
 import SettingsSentMessages from './components/account-settings/settings-sent-messages';
-import type { SettingsHeaderProps } from './components/settings-header';
 import { SettingsHeader } from './components/settings-header';
 import {
 	calculateNewIdentitiesState,
@@ -252,7 +251,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 		resetLists();
 	}, [identitiesDefault, resetLists]);
 
-	const onSave = useCallback<SettingsHeaderProps['onSave']>(() => {
+	const onSave = useCallback(() => {
 		if (
 			identitiesDefault.length + size(createRecordRef.current) - deleteArrayRef.current.length >
 			maxIdentities

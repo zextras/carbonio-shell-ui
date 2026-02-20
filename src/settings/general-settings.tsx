@@ -17,7 +17,6 @@ import { ScalingSettingSection } from './components/general-settings/scaling-set
 import { SearchSettings } from './components/general-settings/search-settings';
 import { SettingsSection } from './components/general-settings/settings-section';
 import UserQuota from './components/general-settings/user-quota';
-import type { SettingsHeaderProps } from './components/settings-header';
 import { SettingsHeader } from './components/settings-header';
 import type { ResetComponentImperativeHandler } from './components/utils';
 import { appearanceSubSection, privacySubSection } from './general-settings-sub-sections';
@@ -106,7 +105,7 @@ const GeneralSettings = (): React.JSX.Element => {
 
 	const createSnackbar = useSnackbar();
 
-	const onSave = useCallback<SettingsHeaderProps['onSave']>(() => {
+	const onSave = useCallback(() => {
 		setLocalStorageUnAppliedChanges((unAppliedPrevState) => {
 			if (size(unAppliedPrevState) > 0) {
 				setLocalStorageSettings((localStorageSettingsPrevState) => ({
@@ -223,6 +222,14 @@ const GeneralSettings = (): React.JSX.Element => {
 
 	const title = useMemo(() => t('settings.general.general', 'General Settings'), [t]);
 
+	const invalidOption = useMemo(
+		() => ({
+			label: t('label.invalid_option', 'Invalid Option'),
+			value: 'invalid'
+		}),
+		[t]
+	);
+
 	return (
 		<>
 			<SettingsHeader
@@ -251,6 +258,7 @@ const GeneralSettings = (): React.JSX.Element => {
 						resetRef={darkThemeSettingSectionRef}
 						addMod={addMod}
 						removeMod={removeMod}
+						invalidOption={invalidOption}
 					/>
 				</SettingsSection>
 				<LanguageSettings
@@ -259,6 +267,7 @@ const GeneralSettings = (): React.JSX.Element => {
 					open={open}
 					setOpen={setOpen}
 					resetRef={languageSettingsSectionRef}
+					invalidOption={invalidOption}
 				/>
 
 				<OutOfOfficeSettings

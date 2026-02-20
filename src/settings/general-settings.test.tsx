@@ -237,6 +237,48 @@ describe('General setting', () => {
 		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
 	});
 
+	describe('Theme Options', () => {
+		it('should render an error if the value is undefined', () => {
+			useAccountStore.setState((previousState) => ({
+				settings: {
+					...previousState.settings,
+					prefs: {}
+				}
+			}));
+			setup(<GeneralSettings />);
+
+			expect(screen.getByText(/dark mode/i)).toBeVisible();
+			const selectSection = screen.getByTestId('select-dark-theme');
+			expect(within(selectSection).getByText(/invalid option/i)).toBeVisible();
+			expect(
+				within(selectSection).getByText(
+					'The current value is not recognized. The interface has defaulted to System theme. Please select a valid option to change the theme.'
+				)
+			).toBeVisible();
+		});
+	});
+
+	describe('Language settings', () => {
+		it('should render an error if the value set is invalid', () => {
+			const zimbraPrefLocaleValue = 'wrongLocale';
+			useAccountStore.setState((previousState) => ({
+				...previousState,
+				settings: {
+					...previousState.settings,
+					prefs: { zimbraPrefLocale: zimbraPrefLocaleValue }
+				}
+			}));
+
+			setup(<GeneralSettings />);
+			expect(screen.getByText(/invalid option/i)).toBeVisible();
+			expect(
+				screen.getByText(
+					'The current value is not recognized. The interface has defaulted to English. Please select a valid option.'
+				)
+			).toBeVisible();
+		});
+	});
+
 	describe('Privacy settings', () => {
 		it('should be visible if Carbonio is CE', async () => {
 			useLoginConfigStore.setState({ isCarbonioCE: true });

@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v13.0.0...v14.0.0) (2026-02-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove TinyMCE and Composer implementation from shell
+* remove deprecated reporting functionality and clean up related types
+* remove deprecated edit settings functionality and clean up related types
+
+### Features
+
+* add error if an invalid value is set on language and dark mode settings ([2fa58d1](https://github.com/zextras/carbonio-shell-ui/commit/2fa58d11c3a6e0c74c62d70495f9e158fbb13de8)), closes [#711](https://github.com/zextras/carbonio-shell-ui/issues/711)
+* display the total quota usage on the header ([#720](https://github.com/zextras/carbonio-shell-ui/issues/720)) ([155161c](https://github.com/zextras/carbonio-shell-ui/commit/155161caaf08bf09c2cd89782794de755eee5721))
+* enhance SettingsHeader to conditionally hide saving options ([34f434e](https://github.com/zextras/carbonio-shell-ui/commit/34f434e390afa81ffc237bf67a464fb7f2d22a90)), closes [#722](https://github.com/zextras/carbonio-shell-ui/issues/722)
+
+
+### Bug Fixes
+
+* include index.html in docker build ([#684](https://github.com/zextras/carbonio-shell-ui/issues/684)) ([f954a76](https://github.com/zextras/carbonio-shell-ui/commit/f954a76900a3b0f897bca38d106c6c32ff406fac))
+
+
+* remove deprecated edit settings functionality and clean up related types ([4142673](https://github.com/zextras/carbonio-shell-ui/commit/4142673badc05e5722914f085cec1c18fa3a4af8)), closes [#696](https://github.com/zextras/carbonio-shell-ui/issues/696)
+* remove deprecated reporting functionality and clean up related types ([84fd650](https://github.com/zextras/carbonio-shell-ui/commit/84fd6501d160a342f57651aac0fe10e8dc2d7d8b)), closes [#697](https://github.com/zextras/carbonio-shell-ui/issues/697)
+* remove TinyMCE and Composer implementation from shell ([b221fdd](https://github.com/zextras/carbonio-shell-ui/commit/b221fdde892b5c510c32ff1682e99ef5b9acf019)), closes [#703](https://github.com/zextras/carbonio-shell-ui/issues/703)
+
 ## [13.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v12.0.0...v13.0.0) (2025-11-18)
 
 

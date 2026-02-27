@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [14.0.1](https://github.com/zextras/carbonio-shell-ui/compare/v14.0.0...v14.0.1) (2026-02-27)
+
+
+### Bug Fixes
+
+* update jenkins-lib-ui version to 1.0.9 ([018b0ca](https://github.com/zextras/carbonio-shell-ui/commit/018b0ca174fb0c6c48311165410cbff1ea542cf8))
+
 ## [14.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v13.0.0...v14.0.0) (2026-02-20)
 
 

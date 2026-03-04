@@ -78,7 +78,6 @@ const ShellHeader = ({ children }: ShellHeaderProps): React.JSX.Element => {
 					{isTotalQuotaUsageAvailable && (
 						<Container
 							data-testid="TotalQuotaUsageContainer"
-							maxWidth="13.8125rem"
 							height={'3.125rem'}
 							borderColor={{ left: 'gray2' }}
 							padding={{ horizontal: 'large', vertical: 'small' }}

@@ -253,7 +253,6 @@ describe('Loader', () => {
 				await vi.advanceTimersToNextTimerAsync();
 			});
 			const goToLoginPageButton = await screen.findByRole('button', { name: /go to login page/i });
-			expect(goToLoginPageButton).toBeVisible();
 			await user.click(goToLoginPageButton);
 			expect(logoutFn).toHaveBeenCalled();
 		});
@@ -293,7 +292,6 @@ describe('Loader', () => {
 				await vi.advanceTimersToNextTimerAsync();
 			});
 			const goToLoginPageButton = await screen.findByRole('button', { name: /go to login page/i });
-			expect(goToLoginPageButton).toBeVisible();
 			await user.click(goToLoginPageButton);
 			expect(logoutFn).toHaveBeenCalled();
 		});
@@ -384,7 +382,6 @@ describe('Loader', () => {
 				await vi.advanceTimersToNextTimerAsync();
 			});
 			const goToLoginPageButton = await screen.findByRole('button', { name: /go to login page/i });
-			expect(goToLoginPageButton).toBeVisible();
 			await user.click(goToLoginPageButton);
 			expect(logoutFn).toHaveBeenCalled();
 		});

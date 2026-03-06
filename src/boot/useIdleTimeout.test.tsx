@@ -5,35 +5,36 @@
  */
 
 import { act, renderHook } from '@testing-library/react';
+import type { MockInstance } from 'vitest';
 
 import { useIdleTimeout } from './useIdleTimeout';
 import { logout } from '../network/logout';
 
 // Mock the logout function
-jest.mock('../network/logout', () => ({
-	logout: jest.fn()
+vi.mock('../network/logout', () => ({
+	logout: vi.fn()
 }));
 
 // Mock lodash debounce
-jest.mock('lodash', () => ({
-	debounce: jest.fn((fn) => {
+vi.mock('lodash', () => ({
+	debounce: vi.fn((fn) => {
 		const debouncedFn = fn;
-		debouncedFn.cancel = jest.fn();
+		debouncedFn.cancel = vi.fn();
 		return debouncedFn;
 	})
 }));
 
 describe('useIdleTimeout', () => {
-	let mockDateNow: jest.SpyInstance;
-	let mockSetTimeout: jest.SpyInstance;
-	let mockClearTimeout: jest.SpyInstance;
+	let mockDateNow: MockInstance;
+	let mockSetTimeout: MockInstance;
+	let mockClearTimeout: MockInstance;
 
 	beforeEach(() => {
-		jest.clearAllMocks();
-		jest.clearAllTimers();
-		mockDateNow = jest.spyOn(Date, 'now');
-		mockSetTimeout = jest.spyOn(global, 'setTimeout');
-		mockClearTimeout = jest.spyOn(global, 'clearTimeout');
+		vi.clearAllMocks();
+		vi.clearAllTimers();
+		mockDateNow = vi.spyOn(Date, 'now');
+		mockSetTimeout = vi.spyOn(global, 'setTimeout');
+		mockClearTimeout = vi.spyOn(global, 'clearTimeout');
 	});
 
 	afterEach(() => {
@@ -55,8 +56,8 @@ describe('useIdleTimeout', () => {
 	});
 
 	it('should setup and cleanup properly for valid duration', () => {
-		const addEventListenerSpy = jest.spyOn(document, 'addEventListener');
-		const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
+		const addEventListenerSpy = vi.spyOn(document, 'addEventListener');
+		const removeEventListenerSpy = vi.spyOn(document, 'removeEventListener');
 
 		const { unmount } = renderHook(() => useIdleTimeout('10s'));
 
@@ -79,7 +80,7 @@ describe('useIdleTimeout', () => {
 		renderHook(() => useIdleTimeout('5s'));
 
 		act(() => {
-			jest.advanceTimersByTime(5000);
+			vi.advanceTimersByTime(5000);
 		});
 
 		expect(logout).toHaveBeenCalled();

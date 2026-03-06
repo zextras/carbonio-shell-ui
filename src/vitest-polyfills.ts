@@ -7,14 +7,6 @@
 import { noop } from 'lodash';
 import { createHash } from 'node:crypto';
 
-// Define browser objects not available in jest
-// https://jestjs.io/docs/en/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
-
-// If it's necessary to use a jest mock,
-// place the definition in the beforeEach,
-// because the restoreMock config restore all mocks to the initial value
-// (undefined if the object is not present at all)
-
 window.matchMedia = function matchMedia(query: string): MediaQueryList {
 	return {
 		matches: false,
@@ -56,17 +48,10 @@ Object.defineProperty(window.crypto, 'subtle', {
 	writable: true,
 	value: {
 		digest(algorithm: AlgorithmIdentifier, data: BufferSource): Promise<Buffer> {
-			return new Promise((resolve) => {
-				const decoder = new TextDecoder();
-				const dataString = decoder.decode(data);
-				const alg = typeof algorithm === 'string' ? algorithm : algorithm.name;
-				setTimeout(() => resolve(createHash(alg).update(dataString).digest()), 0);
-			});
+			const decoder = new TextDecoder();
+			const dataString = decoder.decode(data);
+			const alg = typeof algorithm === 'string' ? algorithm : algorithm.name;
+			return Promise.resolve(createHash(alg).update(dataString).digest());
 		}
 	}
-});
-
-Object.defineProperty(window.crypto, 'randomUUID', {
-	writable: true,
-	value: jest.fn(() => Math.random().toString())
 });

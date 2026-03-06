@@ -6,7 +6,7 @@
 import { act } from '@testing-library/react';
 import type * as Zustand from 'zustand';
 
-const { create: actualCreate } = jest.requireActual<typeof Zustand>('zustand');
+const { create: actualCreate } = await vi.importActual<typeof Zustand>('zustand');
 
 // a variable to hold reset functions for all stores declared in the app
 const storeResetFns = new Set<() => void>();

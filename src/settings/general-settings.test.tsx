@@ -180,11 +180,13 @@ describe('General setting', () => {
 		}));
 		const { user } = setup(<GeneralSettings />);
 		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
-		await user.type(screen.getByRole('textbox', { name: 'Auto-Reply Message:' }), userInput);
+		const textbox = screen.getByRole('textbox', { name: 'Auto-Reply Message:' });
+		await user.clear(textbox);
+		await user.paste(userInput);
 
 		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
-		expect(screen.getByRole('textbox', { name: 'Auto-Reply Message:' })).toHaveValue(initialValue);
+		expect(textbox).toHaveValue(initialValue);
 		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
 	});
 
@@ -205,16 +207,15 @@ describe('General setting', () => {
 		}));
 		const { user } = setup(<GeneralSettings />);
 		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
-		await user.type(
-			screen.getByRole('textbox', { name: 'Auto-Reply Message for External senders:' }),
-			userInput
-		);
+		const textbox = screen.getByRole('textbox', {
+			name: 'Auto-Reply Message for External senders:'
+		});
+		await user.clear(textbox);
+		await user.paste(userInput);
 
 		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
-		expect(
-			screen.getByRole('textbox', { name: 'Auto-Reply Message for External senders:' })
-		).toHaveValue(initialValue);
+		expect(textbox).toHaveValue(initialValue);
 		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
 	});
 

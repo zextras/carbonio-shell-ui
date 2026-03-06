@@ -94,14 +94,14 @@ export function setupBoardSizes(
 	// eslint-disable-next-line testing-library/no-node-access
 	const boardContainer = board.parentElement;
 	if (boardContainer) {
-		jest.spyOn(boardContainer, 'clientWidth', 'get').mockImplementation(() => window.innerWidth);
-		jest.spyOn(boardContainer, 'clientHeight', 'get').mockImplementation(() => window.innerHeight);
+		vi.spyOn(boardContainer, 'clientWidth', 'get').mockImplementation(() => window.innerWidth);
+		vi.spyOn(boardContainer, 'clientHeight', 'get').mockImplementation(() => window.innerHeight);
 	}
-	jest.spyOn(board, 'offsetWidth', 'get').mockReturnValue(initialSizeAndPos.width);
-	jest.spyOn(board, 'offsetHeight', 'get').mockReturnValue(initialSizeAndPos.height);
-	jest.spyOn(board, 'offsetTop', 'get').mockReturnValue(initialSizeAndPos.top);
-	jest.spyOn(board, 'offsetLeft', 'get').mockReturnValue(initialSizeAndPos.left);
-	jest.spyOn(board, 'getBoundingClientRect').mockReturnValue({
+	vi.spyOn(board, 'offsetWidth', 'get').mockReturnValue(initialSizeAndPos.width);
+	vi.spyOn(board, 'offsetHeight', 'get').mockReturnValue(initialSizeAndPos.height);
+	vi.spyOn(board, 'offsetTop', 'get').mockReturnValue(initialSizeAndPos.top);
+	vi.spyOn(board, 'offsetLeft', 'get').mockReturnValue(initialSizeAndPos.left);
+	vi.spyOn(board, 'getBoundingClientRect').mockReturnValue({
 		top: initialSizeAndPos.clientTop,
 		left: initialSizeAndPos.clientLeft
 	} as DOMRect);
@@ -129,7 +129,7 @@ export async function resizeBoard(
 	);
 	act(() => {
 		// run updateBoardPosition debounced fn
-		jest.advanceTimersToNextTimer();
+		vi.advanceTimersToNextTimer();
 	});
 }
 
@@ -146,7 +146,7 @@ export async function moveBoard(
 	fireEvent.mouseDown(elementForMove, mouseInitialPosition);
 	act(() => {
 		// run move timer
-		jest.runOnlyPendingTimers();
+		vi.runOnlyPendingTimers();
 	});
 	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseMove(document.body, mouseNewPosition);
@@ -161,6 +161,6 @@ export async function moveBoard(
 	);
 	act(() => {
 		// run updateBoardPosition debounced fn
-		jest.advanceTimersToNextTimer();
+		vi.advanceTimersToNextTimer();
 	});
 }

@@ -11,7 +11,7 @@ import { setup, screen } from '../tests/utils';
 
 describe('AuthGuard', () => {
 	it('should render the child component when the user is authenticated', () => {
-		const useAuthenticated = jest.spyOn(accountStoreHooks, 'useAuthenticated');
+		const useAuthenticated = vi.spyOn(accountStoreHooks, 'useAuthenticated');
 		useAuthenticated.mockReturnValue(true);
 
 		setup(
@@ -24,7 +24,7 @@ describe('AuthGuard', () => {
 	});
 
 	it('should not render the child component when the user is authenticated', () => {
-		const useAuthenticated = jest.spyOn(accountStoreHooks, 'useAuthenticated');
+		const useAuthenticated = vi.spyOn(accountStoreHooks, 'useAuthenticated');
 		useAuthenticated.mockReturnValue(false);
 
 		setup(

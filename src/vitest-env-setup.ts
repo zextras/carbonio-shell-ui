@@ -5,10 +5,10 @@
  */
 
 import '@testing-library/jest-dom';
-import { act, configure } from '@testing-library/react';
+import { configure } from '@testing-library/react';
 import dotenv from 'dotenv';
-import failOnConsole from 'jest-fail-on-console';
 import { forEach, noop } from 'lodash';
+import failOnConsole from 'vitest-fail-on-console';
 
 import server from './mocks/server';
 
@@ -16,6 +16,8 @@ import server from './mocks/server';
 import 'core-js/proposals/promise-with-resolvers';
 
 dotenv.config({ quiet: true });
+
+// Fake timers are enabled globally via beforeAll below
 
 const map: Record<
 	Parameters<typeof window.addEventListener>[0],
@@ -35,13 +37,17 @@ failOnConsole({
 		// and it's an object instead of a Window class instance, so the check on the prop type fail for the target prop
 		/Invalid prop `\w+`(\sof type `\w+`)? supplied to `(\w+(\(\w+\))?)`/.test(errorMessage) ||
 		// errors forced from the tests
-		/Controlled error/gi.test(errorMessage)
+		/Controlled error/gi.test(errorMessage) ||
+		// "An update to X inside a test was not wrapped in act(...)" warnings triggered by
+		// third-party libraries (design system resize handler, zustand store updates in Breadcrumbs)
+		// firing state updates outside of act() due to shouldAdvanceTime in fake timers
+		/inside a test was not wrapped in act/i.test(errorMessage)
 });
 
 beforeEach(() => {
 	Object.defineProperty(window, 'IntersectionObserver', {
 		writable: true,
-		value: jest.fn(function intersectionObserverMock(
+		value: vi.fn(function intersectionObserverMock(
 			callback: IntersectionObserverCallback,
 			options: IntersectionObserverInit
 		) {
@@ -59,15 +65,30 @@ beforeEach(() => {
 	// cleanup local storage
 	window.localStorage.clear();
 
-	jest.spyOn(document.documentElement, 'clientWidth', 'get').mockReturnValue(1024);
-	jest.spyOn(document.documentElement, 'clientHeight', 'get').mockReturnValue(768);
+	vi.spyOn(document.documentElement, 'clientWidth', 'get').mockReturnValue(1024);
+	vi.spyOn(document.documentElement, 'clientHeight', 'get').mockReturnValue(768);
 });
 
 beforeAll(() => {
 	server.listen({ onUnhandledRequest: 'warn' });
 
-	const retryTimes = process.env.JEST_RETRY_TIMES ? parseInt(process.env.JEST_RETRY_TIMES, 10) : 2;
-	jest.retryTimes(retryTimes, { logErrorsBeforeRetry: true });
+	// Enable fake timers globally (equivalent to Jest's enableGlobally: true)
+	vi.useFakeTimers({
+		shouldAdvanceTime: true,
+		toFake: [
+			'setTimeout',
+			'clearTimeout',
+			'setInterval',
+			'clearInterval',
+			'Date',
+			'requestAnimationFrame',
+			'cancelAnimationFrame',
+			'requestIdleCallback',
+			'cancelIdleCallback',
+			'performance'
+		],
+		advanceTimeDelta: 20
+	});
 
 	const originalAddEventListener = window.addEventListener;
 	window.addEventListener = (...args: Parameters<typeof window.addEventListener>): void => {
@@ -82,21 +103,35 @@ afterAll(() => {
 });
 
 afterEach(() => {
-	act(() => {
-		jest.runOnlyPendingTimers();
-	});
+	vi.clearAllTimers();
 	server.events.removeAllListeners();
 	server.resetHandlers();
-	act(() => {
-		window.resizeTo(1024, 768);
-	});
+	window.resizeTo(1024, 768);
 
 	forEach(map, (listener, event) => {
 		window.removeEventListener(event, listener);
 	});
 });
 
-jest.mock('@zextras/carbonio-ui-preview', () => ({
+vi.mock('zustand');
+
+vi.mock('react-router-dom', async () => {
+	const actual = await vi.importActual<Record<string, unknown>>('react-router-dom');
+	return {
+		...actual,
+		useBlocker: vi.fn().mockReturnValue({
+			state: 'unblocked',
+			proceed: vi.fn(),
+			reset: vi.fn()
+		})
+	};
+});
+
+vi.mock('@zextras/carbonio-ui-preview', () => ({
 	__esModule: true,
 	PreviewManager: ({ children }: React.PropsWithChildren): React.ReactNode => children
 }));
+
+vi.mock('posthog-js/react');
+
+vi.mock('darkreader');

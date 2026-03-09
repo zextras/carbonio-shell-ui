@@ -8,6 +8,7 @@ import React from 'react';
 
 import { screen } from '@testing-library/react';
 import { useNavigate } from 'react-router-dom';
+import type { Mock } from 'vitest';
 
 import GeneralSettings from './general-settings';
 import { SettingsSidebar } from './settings-sidebar';
@@ -17,9 +18,9 @@ import { ICONS } from '../tests/constants';
 import { setup } from '../tests/utils';
 import type { SettingsView } from '../types/apps';
 
-jest.mock('react-router-dom', () => ({
-	...jest.requireActual('react-router-dom'),
-	useNavigate: jest.fn()
+vi.mock('react-router-dom', async () => ({
+	...(await vi.importActual('react-router-dom')),
+	useNavigate: vi.fn()
 }));
 
 describe('Setting sidebar', () => {
@@ -81,8 +82,8 @@ describe('Setting sidebar', () => {
 		expect(screen.getByText('Section 2')).toBeVisible();
 	});
 	it('should call navigate when accordion is clicked', async () => {
-		const navigate = jest.fn();
-		(useNavigate as jest.Mock).mockReturnValue(navigate);
+		const navigate = vi.fn();
+		(useNavigate as Mock).mockReturnValue(navigate);
 		const settingsGeneralView: SettingsView = {
 			id: 'general',
 			route: 'general',
@@ -99,8 +100,8 @@ describe('Setting sidebar', () => {
 		expect(navigate).toHaveBeenCalledWith('general');
 	});
 	it('should call navigate when sub section is clicked', async () => {
-		const navigate = jest.fn();
-		(useNavigate as jest.Mock).mockReturnValue(navigate);
+		const navigate = vi.fn();
+		(useNavigate as Mock).mockReturnValue(navigate);
 		const settingsGeneralView: SettingsView = {
 			id: 'general',
 			route: 'general',
@@ -126,8 +127,8 @@ describe('Setting sidebar', () => {
 		expect(navigate).toHaveBeenCalledWith('general?section=section1', { replace: true });
 	});
 	it('should call navigate when collapsed item is clicked', async () => {
-		const navigate = jest.fn();
-		(useNavigate as jest.Mock).mockReturnValue(navigate);
+		const navigate = vi.fn();
+		(useNavigate as Mock).mockReturnValue(navigate);
 		const settingsGeneralView: SettingsView = {
 			id: 'general',
 			route: 'general',

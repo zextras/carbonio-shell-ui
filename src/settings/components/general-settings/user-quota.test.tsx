@@ -24,10 +24,10 @@ function setupAccountStore(usedQuota: number, quotaMax: number): void {
 	);
 }
 
-const mockQuota = jest.fn().mockReturnValue(<div>mock Quota</div>);
+const mockQuota = vi.fn().mockReturnValue(<div>mock Quota</div>);
 
-jest.mock('@zextras/carbonio-design-system', () => ({
-	...jest.requireActual('@zextras/carbonio-design-system'),
+vi.mock('@zextras/carbonio-design-system', async () => ({
+	...(await vi.importActual('@zextras/carbonio-design-system')),
 	Quota: (props: QuotaProps): unknown => mockQuota(props)
 }));
 

@@ -194,7 +194,10 @@ export const setup = (
 	ui: ReactElement,
 	options?: SetupOptions
 ): { user: UserEvent } & ReturnType<typeof customRender> => ({
-	user: setupUserEvent({ advanceTimers: jest.advanceTimersByTime, ...options?.setupOptions }),
+	user: setupUserEvent({
+		delay: null,
+		...options?.setupOptions
+	}),
 	...customRender(ui, {
 		initialRouterEntries: options?.initialRouterEntries,
 		withoutModalManager: options?.withoutModalManager,
@@ -206,17 +209,15 @@ export function controlConsoleError(expectedMessage: string): void {
 	// eslint-disable-next-line no-console
 	const actualConsoleError = console.error;
 	// eslint-disable-next-line no-console
-	console.error = jest.fn<ReturnType<typeof console.error>, Parameters<typeof console.error>>(
-		(error, ...restParameter) => {
-			if (
-				(typeof error === 'string' && error === expectedMessage) ||
-				(error instanceof Error && error.message === expectedMessage)
-			) {
-				// eslint-disable-next-line no-console
-				console.error('Controlled error', error, ...restParameter);
-			} else {
-				actualConsoleError(error, ...restParameter);
-			}
+	console.error = vi.fn((error: unknown, ...restParameter: unknown[]) => {
+		if (
+			(typeof error === 'string' && error === expectedMessage) ||
+			(error instanceof Error && error.message === expectedMessage)
+		) {
+			// eslint-disable-next-line no-console
+			console.error('Controlled error', error, ...restParameter);
+		} else {
+			actualConsoleError(error, ...restParameter);
 		}
-	);
+	});
 }

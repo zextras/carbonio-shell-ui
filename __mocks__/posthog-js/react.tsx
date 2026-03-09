@@ -10,22 +10,31 @@ import type { PostHogConfig } from 'posthog-js';
 import type * as PostHogReact from 'posthog-js/react';
 
 const postHog = {
-	opt_in_capturing: (): void => undefined,
-	opt_out_capturing: (): void => undefined,
-	reset: (): void => undefined,
-	identify: (): void => undefined,
-	has_opted_in_capturing: (): boolean => false,
-	setPersonProperties: (): void => undefined,
-	set_config: (): void => undefined,
-	config: {} as PostHogConfig,
-	capture: (): undefined => undefined
+	opt_in_capturing: vi.fn(),
+	opt_out_capturing: vi.fn(),
+	reset: vi.fn(),
+	identify: vi.fn(),
+	has_opted_in_capturing: vi.fn().mockReturnValue(false),
+	setPersonProperties: vi.fn(),
+	set_config: vi.fn(),
+	config: {
+		opt_out_capturing_by_default: true,
+		disable_session_recording: true,
+		disable_surveys: true
+	} as PostHogConfig,
+	capture: vi.fn()
 } satisfies Partial<ReturnType<(typeof PostHogReact)['usePostHog']>>;
 
-export const usePostHog: (typeof PostHogReact)['usePostHog'] = () =>
-	postHog as unknown as ReturnType<(typeof PostHogReact)['usePostHog']>;
+export const usePostHog: (typeof PostHogReact)['usePostHog'] = vi
+	.fn()
+	.mockReturnValue(postHog as unknown as ReturnType<(typeof PostHogReact)['usePostHog']>);
 
-export const PostHogProvider = ({
-	children
-}: React.ComponentPropsWithoutRef<(typeof PostHogReact)['PostHogProvider']>): React.JSX.Element => (
-	<>{children}</>
-);
+export const PostHogProvider = vi
+	.fn()
+	.mockImplementation(
+		({
+			children
+		}: React.ComponentPropsWithoutRef<
+			(typeof PostHogReact)['PostHogProvider']
+		>): React.JSX.Element => <>{children}</>
+	);

@@ -362,7 +362,7 @@ describe('Shell primary bar', () => {
 			);
 
 			act(() => {
-				jest.advanceTimersByTime(2000);
+				vi.advanceTimersByTime(2000);
 			});
 
 			expect(screen.getByText(view.label)).toBeVisible();

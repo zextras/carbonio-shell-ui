@@ -38,7 +38,7 @@ describe('ShellHeader', () => {
 				components: {
 					'total-quota-usage': {
 						app: 'test-app',
-						Item: jest.fn()
+						Item: vi.fn()
 					}
 				}
 			}),

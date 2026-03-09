@@ -21,14 +21,14 @@ import { dateToGenTime } from '../utils';
 describe('Out of office settings', () => {
 	test('render section with defaults', () => {
 		const settings: AccountSettings = { prefs: {}, attrs: {}, props: [] };
-		const addModFn = jest.fn();
-		const removeMod = jest.fn();
+		const addModFn = vi.fn();
+		const removeMod = vi.fn();
 		setup(
 			<OutOfOfficeSettings
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				setOutOfOfficeError={jest.fn}
+				setOutOfOfficeError={vi.fn()}
 				outOfOfficeError={false}
 			/>
 		);
@@ -48,14 +48,14 @@ describe('Out of office settings', () => {
 
 	test('by default is unchecked', () => {
 		const settings: AccountSettings = { prefs: {}, attrs: {}, props: [] };
-		const addModFn = jest.fn();
-		const removeMod = jest.fn();
+		const addModFn = vi.fn();
+		const removeMod = vi.fn();
 		setup(
 			<OutOfOfficeSettings
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				setOutOfOfficeError={jest.fn}
+				setOutOfOfficeError={vi.fn()}
 				outOfOfficeError={false}
 			/>
 		);
@@ -64,14 +64,14 @@ describe('Out of office settings', () => {
 
 	test('formSubSection Time Period is disabled when the switch is unchecked', () => {
 		const settings: AccountSettings = { prefs: {}, attrs: {}, props: [] };
-		const addModFn = jest.fn();
-		const removeMod = jest.fn();
+		const addModFn = vi.fn();
+		const removeMod = vi.fn();
 		setup(
 			<OutOfOfficeSettings
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				setOutOfOfficeError={jest.fn}
+				setOutOfOfficeError={vi.fn()}
 				outOfOfficeError={false}
 			/>
 		);
@@ -84,14 +84,14 @@ describe('Out of office settings', () => {
 			attrs: {},
 			props: []
 		};
-		const addModFn = jest.fn();
-		const removeMod = jest.fn();
+		const addModFn = vi.fn();
+		const removeMod = vi.fn();
 		setup(
 			<OutOfOfficeSettings
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				setOutOfOfficeError={jest.fn}
+				setOutOfOfficeError={vi.fn()}
 				outOfOfficeError={false}
 			/>
 		);
@@ -100,14 +100,14 @@ describe('Out of office settings', () => {
 
 	test('click on the unchecked switch updates the pref outOfOfficeReplyEnabled to TRUE', async () => {
 		const settings: AccountSettings = { prefs: {}, attrs: {}, props: [] };
-		const addModFn = jest.fn();
-		const removeMod = jest.fn();
+		const addModFn = vi.fn();
+		const removeMod = vi.fn();
 		const { user } = setup(
 			<OutOfOfficeSettings
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				setOutOfOfficeError={jest.fn}
+				setOutOfOfficeError={vi.fn()}
 				outOfOfficeError={false}
 			/>
 		);
@@ -125,14 +125,14 @@ describe('Out of office settings', () => {
 			attrs: {},
 			props: []
 		};
-		const addModFn = jest.fn();
-		const removeMod = jest.fn();
+		const addModFn = vi.fn();
+		const removeMod = vi.fn();
 		const { user } = setup(
 			<OutOfOfficeSettings
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				setOutOfOfficeError={jest.fn}
+				setOutOfOfficeError={vi.fn()}
 				outOfOfficeError={false}
 			/>
 		);
@@ -153,14 +153,14 @@ describe('Out of office settings', () => {
 			attrs: {},
 			props: []
 		};
-		const addModFn = jest.fn();
-		const removeMod = jest.fn();
+		const addModFn = vi.fn();
+		const removeMod = vi.fn();
 		const { user } = setup(
 			<OutOfOfficeSettings
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				setOutOfOfficeError={jest.fn}
+				setOutOfOfficeError={vi.fn()}
 				outOfOfficeError={false}
 			/>
 		);
@@ -187,14 +187,14 @@ describe('Out of office settings', () => {
 			attrs: {},
 			props: []
 		};
-		const addModFn = jest.fn();
-		const removeMod = jest.fn();
+		const addModFn = vi.fn();
+		const removeMod = vi.fn();
 		const { user } = setup(
 			<OutOfOfficeSettings
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				setOutOfOfficeError={jest.fn}
+				setOutOfOfficeError={vi.fn()}
 				outOfOfficeError={false}
 			/>
 		);
@@ -215,14 +215,14 @@ describe('Out of office settings', () => {
 			attrs: {},
 			props: []
 		};
-		const addModFn = jest.fn();
-		const removeMod = jest.fn();
+		const addModFn = vi.fn();
+		const removeMod = vi.fn();
 		const { user } = setup(
 			<OutOfOfficeSettings
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				setOutOfOfficeError={jest.fn}
+				setOutOfOfficeError={vi.fn()}
 				outOfOfficeError={false}
 			/>
 		);
@@ -271,14 +271,14 @@ describe('Out of office settings', () => {
 			attrs: {},
 			props: []
 		};
-		const addModFn = jest.fn();
-		const removeMod = jest.fn();
+		const addModFn = vi.fn();
+		const removeMod = vi.fn();
 		setup(
 			<OutOfOfficeSettings
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				setOutOfOfficeError={jest.fn}
+				setOutOfOfficeError={vi.fn()}
 				outOfOfficeError={false}
 			/>
 		);
@@ -300,14 +300,14 @@ describe('Out of office settings', () => {
 				attrs: {},
 				props: []
 			};
-			const addModFn = jest.fn();
-			const removeMod = jest.fn();
+			const addModFn = vi.fn();
+			const removeMod = vi.fn();
 			const { user } = setup(
 				<OutOfOfficeSettings
 					settings={settings}
 					addMod={addModFn}
 					removeMod={removeMod}
-					setOutOfOfficeError={jest.fn}
+					setOutOfOfficeError={vi.fn()}
 					outOfOfficeError={false}
 				/>
 			);
@@ -334,14 +334,14 @@ describe('Out of office settings', () => {
 				attrs: {},
 				props: []
 			};
-			const addModFn = jest.fn();
-			const removeMod = jest.fn();
+			const addModFn = vi.fn();
+			const removeMod = vi.fn();
 			const { user } = setup(
 				<OutOfOfficeSettings
 					settings={settings}
 					addMod={addModFn}
 					removeMod={removeMod}
-					setOutOfOfficeError={jest.fn}
+					setOutOfOfficeError={vi.fn()}
 					outOfOfficeError={false}
 				/>
 			);
@@ -409,14 +409,14 @@ describe('Out of office settings', () => {
 				attrs: {},
 				props: []
 			};
-			const addModFn = jest.fn();
-			const removeMod = jest.fn();
+			const addModFn = vi.fn();
+			const removeMod = vi.fn();
 			const { user } = setup(
 				<OutOfOfficeSettings
 					settings={settings}
 					addMod={addModFn}
 					removeMod={removeMod}
-					setOutOfOfficeError={jest.fn}
+					setOutOfOfficeError={vi.fn()}
 					outOfOfficeError={false}
 				/>
 			);
@@ -438,18 +438,18 @@ describe('Out of office settings', () => {
 			attrs: {},
 			props: []
 		};
-		const addModFn = jest.fn();
-		const removeMod = jest.fn();
+		const addModFn = vi.fn();
+		const removeMod = vi.fn();
 		const { user } = setup(
 			<OutOfOfficeSettings
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				setOutOfOfficeError={jest.fn}
+				setOutOfOfficeError={vi.fn()}
 				outOfOfficeError={false}
 			/>
 		);
-		const message = faker.lorem.paragraph();
+		const message = faker.lorem.words(3);
 		await user.type(screen.getByRole('textbox', { name: 'Auto-Reply Message:' }), message);
 		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
 			'prefs',
@@ -468,18 +468,18 @@ describe('Out of office settings', () => {
 			attrs: {},
 			props: []
 		};
-		const addModFn = jest.fn();
-		const removeMod = jest.fn();
+		const addModFn = vi.fn();
+		const removeMod = vi.fn();
 		const { user } = setup(
 			<OutOfOfficeSettings
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				setOutOfOfficeError={jest.fn}
+				setOutOfOfficeError={vi.fn()}
 				outOfOfficeError={false}
 			/>
 		);
-		const message = faker.lorem.paragraph();
+		const message = faker.lorem.words(3);
 		await user.type(
 			screen.getByRole('textbox', { name: 'Auto-Reply Message for External senders:' }),
 			message
@@ -502,14 +502,14 @@ describe('Out of office settings', () => {
 				attrs: {},
 				props: []
 			};
-			const addModFn = jest.fn();
-			const removeMod = jest.fn();
+			const addModFn = vi.fn();
+			const removeMod = vi.fn();
 			const { user } = setup(
 				<OutOfOfficeSettings
 					settings={settings}
 					addMod={addModFn}
 					removeMod={removeMod}
-					setOutOfOfficeError={jest.fn}
+					setOutOfOfficeError={vi.fn()}
 					outOfOfficeError={false}
 				/>
 			);
@@ -536,14 +536,14 @@ describe('Out of office settings', () => {
 				attrs: {},
 				props: []
 			};
-			const addModFn = jest.fn();
-			const removeMod = jest.fn();
+			const addModFn = vi.fn();
+			const removeMod = vi.fn();
 			const { user } = setup(
 				<OutOfOfficeSettings
 					settings={settings}
 					addMod={addModFn}
 					removeMod={removeMod}
-					setOutOfOfficeError={jest.fn}
+					setOutOfOfficeError={vi.fn()}
 					outOfOfficeError={false}
 				/>
 			);
@@ -569,9 +569,9 @@ describe('Out of office settings', () => {
 				attrs: {},
 				props: []
 			};
-			const addModFn = jest.fn();
-			const removeMod = jest.fn();
-			const setError = jest.fn();
+			const addModFn = vi.fn();
+			const removeMod = vi.fn();
+			const setError = vi.fn();
 
 			const { user } = setup(
 				<OutOfOfficeSettings
@@ -605,9 +605,9 @@ describe('Out of office settings', () => {
 				attrs: {},
 				props: []
 			};
-			const addModFn = jest.fn();
-			const removeMod = jest.fn();
-			const setError = jest.fn();
+			const addModFn = vi.fn();
+			const removeMod = vi.fn();
+			const setError = vi.fn();
 
 			const { user } = setup(
 				<OutOfOfficeSettings
@@ -637,14 +637,14 @@ describe('Out of office settings', () => {
 			attrs: {},
 			props: []
 		};
-		const addModFn = jest.fn();
-		const removeMod = jest.fn();
+		const addModFn = vi.fn();
+		const removeMod = vi.fn();
 		const { user } = setup(
 			<OutOfOfficeSettings
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				setOutOfOfficeError={jest.fn}
+				setOutOfOfficeError={vi.fn()}
 				outOfOfficeError={false}
 			/>
 		);
@@ -671,14 +671,14 @@ describe('Out of office settings', () => {
 			attrs: {},
 			props: []
 		};
-		const addModFn = jest.fn();
-		const removeMod = jest.fn();
+		const addModFn = vi.fn();
+		const removeMod = vi.fn();
 		const { user } = setup(
 			<OutOfOfficeSettings
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				setOutOfOfficeError={jest.fn}
+				setOutOfOfficeError={vi.fn()}
 				outOfOfficeError={false}
 			/>
 		);
@@ -707,14 +707,14 @@ describe('Out of office settings', () => {
 			attrs: {},
 			props: []
 		};
-		const addModFn = jest.fn();
-		const removeMod = jest.fn();
+		const addModFn = vi.fn();
+		const removeMod = vi.fn();
 		const { user } = setup(
 			<OutOfOfficeSettings
 				settings={settings}
 				addMod={addModFn}
 				removeMod={removeMod}
-				setOutOfOfficeError={jest.fn}
+				setOutOfOfficeError={vi.fn()}
 				outOfOfficeError={false}
 			/>
 		);

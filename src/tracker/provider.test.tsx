@@ -6,7 +6,7 @@
 
 import React from 'react';
 
-import * as posthogJsReact from 'posthog-js/react';
+import { PostHogProvider } from 'posthog-js/react';
 import type * as PostHogReact from 'posthog-js/react';
 
 import { TrackerProvider } from './provider';
@@ -14,12 +14,12 @@ import { setup } from '../tests/utils';
 import * as utils from '../utils/utils';
 
 beforeEach(() => {
-	jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
+	vi.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
 });
 
 describe('TrackerProvider', () => {
 	it('should invoke tracker provider with trackers disabled by default', () => {
-		const mockProvider = jest.spyOn(posthogJsReact, 'PostHogProvider');
+		const mockProvider = vi.mocked(PostHogProvider);
 		setup(<TrackerProvider />);
 		type PostHogProviderProps = React.ComponentPropsWithoutRef<
 			(typeof PostHogReact)['PostHogProvider']

@@ -26,14 +26,16 @@ import { setup } from '../tests/utils';
 import type { Board } from '../types/boards';
 import type { SizeAndPosition } from '../utils/utils';
 
-const Dummy = (): null => null;
+const { Dummy } = vi.hoisted(() => ({
+	Dummy: (): null => null
+}));
 
-jest.mock('../utility-bar/bar', () => ({
+vi.mock('../utility-bar/bar', () => ({
 	ShellUtilityBar: Dummy
 }));
 
-jest.mock('./shell-header', () => Dummy);
-jest.mock('../constants');
+vi.mock('./shell-header', () => ({ default: Dummy }));
+vi.mock('../constants');
 
 beforeEach(() => {
 	setupAppStore();
@@ -52,7 +54,7 @@ beforeEach(() => {
 describe('Shell view', () => {
 	describe('BoardContainerComp', () => {
 		test('will have 0 offsets in focus mode', () => {
-			jest.mocked(constants).IS_FOCUS_MODE = true;
+			vi.mocked(constants).IS_FOCUS_MODE = true;
 
 			setup(<ShellView />);
 
@@ -64,7 +66,7 @@ describe('Shell view', () => {
 			expect(boardContainer).toHaveStyleRule('left', '0rem');
 		});
 		test('will have offsets if not in focus mode', () => {
-			jest.mocked(constants).IS_FOCUS_MODE = false;
+			vi.mocked(constants).IS_FOCUS_MODE = false;
 
 			setup(<ShellView />);
 
@@ -101,7 +103,7 @@ describe('Shell view', () => {
 		const { getByRoleWithIcon, user } = setup(<ShellView />);
 		act(() => {
 			// run updateBoardPosition debounced fn
-			jest.advanceTimersToNextTimer();
+			vi.advanceTimersToNextTimer();
 		});
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
@@ -151,7 +153,7 @@ describe('Shell view', () => {
 		const { getByRoleWithIcon, user } = setup(<ShellView />);
 		act(() => {
 			// run updateBoardPosition debounced fn
-			jest.advanceTimersToNextTimer();
+			vi.advanceTimersToNextTimer();
 		});
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
@@ -173,7 +175,7 @@ describe('Shell view', () => {
 		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
 		act(() => {
-			jest.advanceTimersToNextTimer();
+			vi.advanceTimersToNextTimer();
 		});
 		await waitFor(() =>
 			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '')).toEqual({
@@ -197,7 +199,7 @@ describe('Shell view', () => {
 		await screen.findByText('title2');
 		act(() => {
 			// run updateBoardPosition debounced fn
-			jest.advanceTimersToNextTimer();
+			vi.advanceTimersToNextTimer();
 		});
 		const board2Element = screen.getByTestId(TESTID_SELECTORS.board);
 		expect(board2Element).toHaveStyle({
@@ -211,7 +213,7 @@ describe('Shell view', () => {
 		const { getAllByRoleWithIcon, user } = setup(<ShellView />);
 		act(() => {
 			// run updateBoardPosition debounced fn
-			jest.advanceTimersToNextTimer();
+			vi.advanceTimersToNextTimer();
 		});
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
@@ -259,7 +261,7 @@ describe('Shell view', () => {
 		await screen.findByText('title2');
 		act(() => {
 			// run updateBoardPosition debounced fn
-			jest.advanceTimersToNextTimer();
+			vi.advanceTimersToNextTimer();
 		});
 		const board2Element = screen.getByTestId(TESTID_SELECTORS.board);
 		const elementForMove2 = screen.getByTestId(TESTID_SELECTORS.boardHeader);
@@ -285,7 +287,7 @@ describe('Shell view', () => {
 		});
 	});
 	test('In focus mode the board container should receive minimizeAllowed to false', async () => {
-		jest.mocked(constants).IS_FOCUS_MODE = true;
+		vi.mocked(constants).IS_FOCUS_MODE = true;
 
 		const { queryByRoleWithIcon } = setup(<ShellView />);
 

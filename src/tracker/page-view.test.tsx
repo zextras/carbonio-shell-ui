@@ -15,11 +15,11 @@ import { screen, setup } from '../tests/utils';
 describe('TrackerPageView', () => {
 	it('should capture pageview event when pathname change', async () => {
 		const tracker: Tracker = {
-			capture: jest.fn(),
-			enableTracker: jest.fn(),
-			reset: jest.fn()
+			capture: vi.fn(),
+			enableTracker: vi.fn(),
+			reset: vi.fn()
 		};
-		jest.spyOn(useTracker, 'useTracker').mockReturnValue(tracker);
+		vi.spyOn(useTracker, 'useTracker').mockReturnValue(tracker);
 		const { user } = setup(
 			<>
 				<TrackerPageView />
@@ -35,11 +35,11 @@ describe('TrackerPageView', () => {
 
 	it('should capture pageview event when search params change', async () => {
 		const tracker: Tracker = {
-			capture: jest.fn(),
-			enableTracker: jest.fn(),
-			reset: jest.fn()
+			capture: vi.fn(),
+			enableTracker: vi.fn(),
+			reset: vi.fn()
 		};
-		jest.spyOn(useTracker, 'useTracker').mockReturnValue(tracker);
+		vi.spyOn(useTracker, 'useTracker').mockReturnValue(tracker);
 		const { user } = setup(
 			<>
 				<TrackerPageView />

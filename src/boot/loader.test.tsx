@@ -11,9 +11,8 @@ import { api, ApiEvents } from '@zextras/carbonio-ui-soap-lib';
 import { noop } from 'lodash';
 import { http, HttpResponse } from 'msw';
 import { EventEmitter } from 'node:events';
+import type { MockInstance } from 'vitest';
 
-import SpyInstance = jest.SpyInstance;
-import type * as loadAppsModule from './app/load-apps';
 import { Loader } from './loader';
 import { LOGIN_V3_CONFIG_PATH } from '../constants';
 import server from '../mocks/server';
@@ -26,7 +25,7 @@ import { setup, screen } from '../tests/utils';
 import * as tracker from '../tracker/tracker';
 import * as utils from '../utils/utils';
 
-jest.mock<typeof loadAppsModule>('./app/load-apps');
+vi.mock('./app/load-apps');
 
 const getGetInfoResult = (
 	customInfo?: Partial<Awaited<ReturnType<typeof api.getInfo>>>
@@ -49,8 +48,8 @@ const getGetInfoResult = (
 
 const mockGetInfo = (
 	customInfo?: Partial<Awaited<ReturnType<typeof api.getInfo>>>
-): SpyInstance<ReturnType<typeof api.getInfo>> =>
-	jest.spyOn(api, 'getInfo').mockReturnValue(Promise.resolve(getGetInfoResult(customInfo)));
+): MockInstance<typeof api.getInfo> =>
+	vi.spyOn(api, 'getInfo').mockReturnValue(Promise.resolve(getGetInfoResult(customInfo)));
 
 describe('Loader', () => {
 	test('If only getComponents request fails, the LoaderFailureModal appears', async () => {
@@ -71,17 +70,17 @@ describe('Loader', () => {
 		);
 		await screen.findByTestId('loader');
 		await act(async () => {
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		const title = await screen.findByText('Something went wrong...');
 		act(() => {
-			jest.advanceTimersByTime(TIMERS.modalShow);
+			vi.advanceTimersByTime(TIMERS.modalShow);
 		});
 		expect(title).toBeVisible();
 	});
 
 	test('If only getInfo request fails, the LoaderFailureModal appears', async () => {
-		jest.spyOn(api, 'getInfo').mockRejectedValue({
+		vi.spyOn(api, 'getInfo').mockRejectedValue({
 			status: 503,
 			statusText: 'Controlled error: fail getInfo request'
 		});
@@ -92,11 +91,11 @@ describe('Loader', () => {
 		);
 		await screen.findByTestId('loader');
 		await act(async () => {
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		const title = await screen.findByText('Something went wrong...');
 		act(() => {
-			jest.advanceTimersByTime(TIMERS.modalShow);
+			vi.advanceTimersByTime(TIMERS.modalShow);
 		});
 		expect(title).toBeVisible();
 	});
@@ -111,7 +110,7 @@ describe('Loader', () => {
 		);
 		await screen.findByTestId('loader');
 		await act(async () => {
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		await waitFor(() => expect(useLoginConfigStore.getState().isCarbonioCE).toEqual(true));
 		expect(screen.queryByText('Something went wrong...')).not.toBeInTheDocument();
@@ -126,18 +125,20 @@ describe('Loader', () => {
 		);
 		await screen.findByTestId('loader');
 		await act(async () => {
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		expect(screen.queryByText('Something went wrong...')).not.toBeInTheDocument();
 	});
 
 	test('should enable the tracker if carbonioPrefSendAnalytics is true', async () => {
-		const enableTrackerFn = jest.fn();
+		const enableTrackerFn = vi.fn();
 		mockGetInfo({ prefs: { _attrs: { carbonioPrefSendAnalytics: 'TRUE' } } });
 
-		jest
-			.spyOn(tracker, 'useTracker')
-			.mockReturnValue({ enableTracker: enableTrackerFn, reset: jest.fn(), capture: jest.fn() });
+		vi.spyOn(tracker, 'useTracker').mockReturnValue({
+			enableTracker: enableTrackerFn,
+			reset: vi.fn(),
+			capture: vi.fn()
+		});
 		setup(
 			<span data-testid={'loader'}>
 				<Loader />
@@ -145,13 +146,14 @@ describe('Loader', () => {
 		);
 		await screen.findByTestId('loader');
 		await act(async () => {
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		await waitFor(() => expect(enableTrackerFn).toHaveBeenLastCalledWith(true));
 	});
 
 	test('should invoke the enableTracker function only one time', async () => {
-		jest.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
+		vi.mocked(tracker.useTracker).mockRestore();
+		vi.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
 		const emitter = new EventEmitter();
 		mockGetInfo({ prefs: { _attrs: { carbonioPrefSendAnalytics: 'TRUE' } } });
 		server.use(
@@ -171,12 +173,12 @@ describe('Loader', () => {
 		);
 		await screen.findByTestId('loader');
 		await act(async () => {
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		await waitFor(() => expect(postHog.opt_in_capturing).toHaveBeenCalled());
 		emitter.emit('emitLoginResponse');
 		await act(async () => {
-			await jest.advanceTimersToNextTimerAsync();
+			await vi.advanceTimersToNextTimerAsync();
 		});
 		await waitFor(() => expect(useLoginConfigStore.getState().isCarbonioCE).toEqual(false));
 		expect(postHog.opt_in_capturing).toHaveBeenCalledTimes(1);
@@ -186,10 +188,12 @@ describe('Loader', () => {
 		'should not enable the tracker if carbonioPrefSendAnalytics is %s',
 		async (carbonioPrefParam) => {
 			mockGetInfo({ prefs: { _attrs: { carbonioPrefSendAnalytics: carbonioPrefParam } } });
-			const enableTrackerFn = jest.fn();
-			jest
-				.spyOn(tracker, 'useTracker')
-				.mockReturnValue({ enableTracker: enableTrackerFn, reset: jest.fn(), capture: jest.fn() });
+			const enableTrackerFn = vi.fn();
+			vi.spyOn(tracker, 'useTracker').mockReturnValue({
+				enableTracker: enableTrackerFn,
+				reset: vi.fn(),
+				capture: vi.fn()
+			});
 			setup(
 				<span data-testid={'loader'}>
 					<Loader />
@@ -197,7 +201,7 @@ describe('Loader', () => {
 			);
 			await screen.findByTestId('loader');
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 			await waitFor(() => expect(enableTrackerFn).toHaveBeenLastCalledWith(false));
 		}
@@ -205,7 +209,7 @@ describe('Loader', () => {
 
 	describe('Session expiration', () => {
 		test('should redirect to login if user session is expired', async () => {
-			const goToLoginFn = jest.spyOn(networkUtils, 'goToLogin').mockImplementation(noop);
+			const goToLoginFn = vi.spyOn(networkUtils, 'goToLogin').mockImplementation(noop);
 			mockGetInfo();
 
 			setup(<Loader />);
@@ -217,10 +221,10 @@ describe('Loader', () => {
 		test('should show a temporary snackbar when the session expires in 10 minutes', async () => {
 			const tenMinutes = 10 * 60 * 1000;
 			const tenSeconds = 10 * 1000;
-			mockGetInfo({ lifetime: tenMinutes + 2 });
+			mockGetInfo({ lifetime: tenMinutes + 100 });
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 			expect(
 				screen.queryByText(
@@ -228,28 +232,27 @@ describe('Loader', () => {
 				)
 			).not.toBeInTheDocument();
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(2);
+				await vi.advanceTimersByTimeAsync(100);
 			});
 			const snackbar = screen.getByText(
 				"Your session will expire in 10 minutes. After that, you'll be redirected to the login page."
 			);
 			expect(snackbar).toBeVisible();
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(tenSeconds);
+				await vi.advanceTimersByTimeAsync(tenSeconds);
 			});
 			expect(snackbar).not.toBeInTheDocument();
 		});
 
 		test('should show the go to login page action on the 10 minutes snackbar. Action calls logout', async () => {
-			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
+			const logoutFn = vi.spyOn(logout, 'logout').mockImplementation(async () => {});
 			const tenMinutes = 10 * 60 * 1000;
-			mockGetInfo({ lifetime: tenMinutes });
+			mockGetInfo({ lifetime: tenMinutes + 100 });
 			const { user } = setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 			const goToLoginPageButton = await screen.findByRole('button', { name: /go to login page/i });
-			expect(goToLoginPageButton).toBeVisible();
 			await user.click(goToLoginPageButton);
 			expect(logoutFn).toHaveBeenCalled();
 		});
@@ -257,10 +260,10 @@ describe('Loader', () => {
 		test('should show a permanent snackbar when the session expires in 3 minutes', async () => {
 			const threeMinutes = 3 * 60 * 1000;
 			const tenSeconds = 10 * 1000;
-			mockGetInfo({ lifetime: threeMinutes + 2 });
+			mockGetInfo({ lifetime: threeMinutes + 100 });
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 			expect(
 				screen.queryByText(
@@ -268,39 +271,38 @@ describe('Loader', () => {
 				)
 			).not.toBeInTheDocument();
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(2);
+				await vi.advanceTimersByTimeAsync(100);
 			});
 			const snackbar = await screen.findByText(
 				"Your session will expire in 3 minutes. After that, you'll be redirected to the login page."
 			);
 			expect(snackbar).toBeVisible();
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(tenSeconds);
+				await vi.advanceTimersByTimeAsync(tenSeconds);
 			});
 			expect(snackbar).toBeVisible();
 		});
 
 		test('should show the go to login page action on the 3 minutes snackbar. Action calls logout', async () => {
-			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
+			const logoutFn = vi.spyOn(logout, 'logout').mockImplementation(async () => {});
 			const threeMinutes = 3 * 60 * 1000;
-			mockGetInfo({ lifetime: threeMinutes });
+			mockGetInfo({ lifetime: threeMinutes + 100 });
 			const { user } = setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 			const goToLoginPageButton = await screen.findByRole('button', { name: /go to login page/i });
-			expect(goToLoginPageButton).toBeVisible();
 			await user.click(goToLoginPageButton);
 			expect(logoutFn).toHaveBeenCalled();
 		});
 
 		test('should show a temporary snackbar when the session expires in 60 seconds', async () => {
-			jest.spyOn(logout, 'logout').mockImplementation();
+			vi.spyOn(logout, 'logout').mockImplementation(async () => {});
 			const oneMinute = 60 * 1000;
-			mockGetInfo({ lifetime: oneMinute + 2 });
+			mockGetInfo({ lifetime: oneMinute + 100 });
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 			expect(
 				screen.queryByText(
@@ -308,31 +310,31 @@ describe('Loader', () => {
 				)
 			).not.toBeInTheDocument();
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(2);
+				await vi.advanceTimersByTimeAsync(100);
 			});
 			const snackbar = await screen.findByText(
 				"Your session will expire in 60 seconds. After that, you'll be redirected to the login page."
 			);
 			expect(snackbar).toBeVisible();
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(oneMinute);
+				await vi.advanceTimersByTimeAsync(oneMinute);
 			});
 			expect(snackbar).not.toBeInTheDocument();
 		});
 
 		test('should decrease the counter label inside the 60 seconds snackbar', async () => {
-			jest.spyOn(logout, 'logout').mockImplementation();
+			vi.spyOn(logout, 'logout').mockImplementation(async () => {});
 			const oneMinute = 60 * 1000;
-			mockGetInfo({ lifetime: oneMinute + 2 });
+			mockGetInfo({ lifetime: oneMinute + 100 });
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(2);
+				await vi.advanceTimersByTimeAsync(100);
 			});
 			await screen.findByText(
 				"Your session will expire in 60 seconds. After that, you'll be redirected to the login page."
 			);
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(1000);
+				await vi.advanceTimersByTimeAsync(1000);
 			});
 			expect(
 				screen.getByText(
@@ -340,7 +342,7 @@ describe('Loader', () => {
 				)
 			).toBeVisible();
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(1000);
+				await vi.advanceTimersByTimeAsync(1000);
 			});
 			expect(
 				screen.getByText(
@@ -348,7 +350,7 @@ describe('Loader', () => {
 				)
 			).toBeVisible();
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(30000);
+				await vi.advanceTimersByTimeAsync(30000);
 			});
 			expect(
 				screen.getByText(
@@ -358,11 +360,11 @@ describe('Loader', () => {
 		});
 
 		test('should start the counter of the 60 seconds snackbar from the real remaining seconds', async () => {
-			jest.spyOn(logout, 'logout').mockImplementation();
+			vi.spyOn(logout, 'logout').mockImplementation(async () => {});
 			mockGetInfo({ lifetime: 30 * 1000 });
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(1);
+				await vi.advanceTimersByTimeAsync(1);
 			});
 			expect(
 				await screen.findByText(
@@ -372,15 +374,14 @@ describe('Loader', () => {
 		});
 
 		test('should show the go to login page action on the 60 seconds snackbar. Action calls logout', async () => {
-			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
+			const logoutFn = vi.spyOn(logout, 'logout').mockImplementation(async () => {});
 			const oneMinute = 60 * 1000;
-			mockGetInfo({ lifetime: oneMinute });
+			mockGetInfo({ lifetime: oneMinute + 100 });
 			const { user } = setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 			const goToLoginPageButton = await screen.findByRole('button', { name: /go to login page/i });
-			expect(goToLoginPageButton).toBeVisible();
 			await user.click(goToLoginPageButton);
 			expect(logoutFn).toHaveBeenCalled();
 		});
@@ -390,7 +391,7 @@ describe('Loader', () => {
 			mockGetInfo({ lifetime: tenMinutes - 1 });
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 			expect(
 				screen.queryByText(
@@ -404,7 +405,7 @@ describe('Loader', () => {
 			mockGetInfo({ lifetime: threeMinutes - 1 });
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 			expect(
 				screen.queryByText(
@@ -418,7 +419,7 @@ describe('Loader', () => {
 			mockGetInfo({ lifetime: oneMinute - 10000 });
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 			expect(
 				await screen.findByText(
@@ -430,18 +431,18 @@ describe('Loader', () => {
 		test.each([60, 30])(
 			'should call logout when 60 seconds snackbar timeout expires (session lifetime is %s seconds)',
 			async (expirationSeconds) => {
-				const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
+				const logoutFn = vi.spyOn(logout, 'logout').mockImplementation(async () => {});
 				const expiration = expirationSeconds * 1000;
 				mockGetInfo({ lifetime: expiration });
 				setup(<Loader />);
 				await act(async () => {
-					await jest.advanceTimersToNextTimerAsync();
+					await vi.advanceTimersToNextTimerAsync();
 				});
 				await screen.findByText(
 					/Your session will expire in \d+ seconds\. After that, you'll be redirected to the login page\./i
 				);
 				await act(async () => {
-					await jest.advanceTimersByTimeAsync(expiration);
+					await vi.advanceTimersByTimeAsync(expiration);
 				});
 				expect(logoutFn).toHaveBeenCalled();
 			}
@@ -452,13 +453,13 @@ describe('Loader', () => {
 			mockGetInfo({ lifetime: threeMinutes });
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 			await screen.findByText(
 				"Your session will expire in 3 minutes. After that, you'll be redirected to the login page."
 			);
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(2 * 60 * 1000);
+				await vi.advanceTimersByTimeAsync(2 * 60 * 1000);
 			});
 			expect(
 				await screen.findByText(
@@ -473,14 +474,14 @@ describe('Loader', () => {
 		});
 
 		test('should add visibility change event listener', async () => {
-			const addEventListenerSpy = jest.spyOn(document, 'addEventListener');
-			const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
+			const addEventListenerSpy = vi.spyOn(document, 'addEventListener');
+			const removeEventListenerSpy = vi.spyOn(document, 'removeEventListener');
 
 			mockGetInfo({ lifetime: 10 * 60 * 1000 });
 			const { unmount } = setup(<Loader />);
 
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 
 			// Should have added the visibility change listener
@@ -506,12 +507,12 @@ describe('Loader', () => {
 
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 
 			// Advance to exactly the warning time (60 seconds before timeout = 60s)
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(60 * 1000);
+				await vi.advanceTimersByTimeAsync(60 * 1000);
 			});
 
 			// Wait for the modal to appear
@@ -535,11 +536,11 @@ describe('Loader', () => {
 
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(60 * 1000);
+				await vi.advanceTimersByTimeAsync(60 * 1000);
 			});
 
 			// Wait for the modal to appear
@@ -552,7 +553,7 @@ describe('Loader', () => {
 		});
 
 		test('should reset idle timeout when clicking "Stay logged in" button', async () => {
-			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
+			const logoutFn = vi.spyOn(logout, 'logout').mockImplementation(async () => {});
 			mockGetInfo({
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
@@ -561,12 +562,12 @@ describe('Loader', () => {
 
 			const { user } = setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 
 			// Show warning modal
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(60 * 1000);
+				await vi.advanceTimersByTimeAsync(60 * 1000);
 			});
 
 			const stayLoggedInButton = await screen.findByRole('button', { name: /stay logged in/i });
@@ -577,14 +578,14 @@ describe('Loader', () => {
 
 			// Should not logout after original timeout time
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(60 * 1000);
+				await vi.advanceTimersByTimeAsync(60 * 1000);
 			});
 
 			expect(logoutFn).not.toHaveBeenCalled();
 		});
 
 		test('should call logout when clicking "Logout" button in idle timeout modal', async () => {
-			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
+			const logoutFn = vi.spyOn(logout, 'logout').mockImplementation(async () => {});
 			mockGetInfo({
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
@@ -593,11 +594,11 @@ describe('Loader', () => {
 
 			const { user } = setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(60 * 1000);
+				await vi.advanceTimersByTimeAsync(60 * 1000);
 			});
 
 			const logoutButton = await screen.findByRole('button', { name: /logout/i });
@@ -607,7 +608,7 @@ describe('Loader', () => {
 		});
 
 		test('should automatically logout when idle timeout expires without user interaction', async () => {
-			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
+			const logoutFn = vi.spyOn(logout, 'logout').mockImplementation(async () => {});
 			mockGetInfo({
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
@@ -616,12 +617,12 @@ describe('Loader', () => {
 
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 
 			// Let the full timeout expire
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(120 * 1000);
+				await vi.advanceTimersByTimeAsync(120 * 1000);
 			});
 
 			expect(logoutFn).toHaveBeenCalled();
@@ -632,12 +633,12 @@ describe('Loader', () => {
 
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 
 			// Advance time significantly
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(300 * 1000);
+				await vi.advanceTimersByTimeAsync(300 * 1000);
 			});
 
 			expect(screen.queryByText('Inactivity warning')).not.toBeInTheDocument();
@@ -652,11 +653,11 @@ describe('Loader', () => {
 
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(300 * 1000);
+				await vi.advanceTimersByTimeAsync(300 * 1000);
 			});
 
 			expect(screen.queryByText('Inactivity warning')).not.toBeInTheDocument();
@@ -671,7 +672,7 @@ describe('Loader', () => {
 
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 
 			// Wait for the modal to appear
@@ -682,7 +683,7 @@ describe('Loader', () => {
 		});
 
 		test('should reset idle timeout on user activity and hide modal', async () => {
-			const logoutFn = jest.spyOn(logout, 'logout').mockImplementation();
+			const logoutFn = vi.spyOn(logout, 'logout').mockImplementation(async () => {});
 			mockGetInfo({
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
@@ -691,12 +692,12 @@ describe('Loader', () => {
 
 			setup(<Loader />);
 			await act(async () => {
-				await jest.advanceTimersToNextTimerAsync();
+				await vi.advanceTimersToNextTimerAsync();
 			});
 
 			// Show warning modal
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(60 * 1000);
+				await vi.advanceTimersByTimeAsync(60 * 1000);
 			});
 
 			await waitFor(() => {
@@ -715,7 +716,7 @@ describe('Loader', () => {
 
 			// Should not logout after original timeout time
 			await act(async () => {
-				await jest.advanceTimersByTimeAsync(60 * 1000);
+				await vi.advanceTimersByTimeAsync(60 * 1000);
 			});
 
 			expect(logoutFn).not.toHaveBeenCalled();

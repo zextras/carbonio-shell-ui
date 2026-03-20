@@ -7,7 +7,7 @@
 import type React from 'react';
 
 import type { GeneralizedTime } from '@zextras/carbonio-ui-soap-lib';
-import type { TFunction } from 'i18next';
+import { type TFunction } from 'i18next';
 import { cloneDeep, filter, findIndex, isBoolean, reduce, uniq } from 'lodash';
 
 import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
@@ -164,7 +164,10 @@ export const getAvailableEmailAddresses = (
 					target.right === 'sendOnBehalfOfDistList')
 			) {
 				target.target.forEach((user) => {
-					if ((user.type === 'account' || user.type === 'dl') && user.email) {
+					if (
+						(user.type === 'account' || user.type === 'dl' || user.type === 'group') &&
+						user.email
+					) {
 						user.email.forEach((email) => {
 							result.push(email.addr);
 						});

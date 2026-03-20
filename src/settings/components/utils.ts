@@ -7,7 +7,7 @@
 import type React from 'react';
 
 import type { GeneralizedTime } from '@zextras/carbonio-ui-soap-lib';
-import { type TFunction } from 'i18next';
+import type { TFunction } from 'i18next';
 import { cloneDeep, filter, findIndex, isBoolean, reduce, uniq } from 'lodash';
 
 import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';

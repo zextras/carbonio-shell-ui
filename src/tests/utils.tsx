@@ -42,7 +42,7 @@ type ExtendedQueries = typeof queries & typeof customQueries;
 /**
  * Custom query helpers provided by Emotion Jest Plugin
  */
-expect.extend(matchers);
+expect.extend({ toHaveStyleRule: matchers.toHaveStyleRule });
 
 /**
  * Matcher function to search an icon button through the icon data-testid

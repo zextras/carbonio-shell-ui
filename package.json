@@ -73,7 +73,7 @@
 		"@commitlint/config-conventional": "^20.0.0",
 		"@emotion/babel-plugin": "^11.13.5",
 		"@emotion/jest": "^11.13.0",
-		"@faker-js/faker": "^8.4.1",
+		"@faker-js/faker": "^9.9.0",
 		"@microsoft/api-extractor": "^7.55.2",
 		"@svgr/webpack": "^8.1.0",
 		"@testing-library/dom": "^10.4.0",
@@ -98,7 +98,7 @@
 		"dotenv": "^17.3.1",
 		"eslint-plugin-notice": "^0.9.10",
 		"html-webpack-plugin": "^5.6.6",
-		"husky": "^9.0.11",
+		"husky": "^9.1.7",
 		"identity-obj-proxy": "^3.0.0",
 		"is-ci": "^3.0.1",
 		"jsdom": "^29.0.1",
@@ -131,7 +131,7 @@
 		"react-dom": "^18.3.1",
 		"react-i18next": "^12.3.1",
 		"react-router-dom": "^6.30.0",
-		"zustand": "^5.0.3"
+		"zustand": "^5.0.12"
 	},
 	"peerDependencies": {
 		"@emotion/react": "^11.14.0",

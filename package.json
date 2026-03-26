@@ -91,7 +91,7 @@
 		"@zextras/carbonio-search-ui": "github:zextras/carbonio-search-ui#devel",
 		"@zextras/carbonio-ui-configs": "^2.1.0",
 		"@zextras/carbonio-ui-sdk": "2.2.1",
-		"autoprefixer": "^10.4.17",
+		"autoprefixer": "^10.4.27",
 		"copy-webpack-plugin": "^13.0.1",
 		"core-js": "^3.39.0",
 		"css-loader": "^6.10.0",

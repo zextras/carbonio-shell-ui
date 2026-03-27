@@ -159,7 +159,7 @@ type AppActions = {
 // Warning: (ae-forgotten-export) The symbol "AppContextProviderProps" needs to be exported by the entry point lib.d.ts
 //
 // @public
-export const AppContextProvider: ({ pkg, children }: AppContextProviderProps) => React_2.JSX.Element;
+export const AppContextProvider: (input: AppContextProviderProps) => React_2.JSX.Element;
 
 // @public (undocumented)
 interface AppContextProviderProps {
@@ -220,7 +220,7 @@ export type AudioNotificationConfig = {
 };
 
 // @public (undocumented)
-export const AuthGuard: ({ children }: AuthGuardProps) => ReactNode;
+export const AuthGuard: (input: AuthGuardProps) => ReactNode;
 
 // @public (undocumented)
 export type AuthGuardProps = {
@@ -891,7 +891,7 @@ export const setRouteVisibility: (id: string, visible: boolean) => void;
 export const SETTINGS_APP_ID = "settings";
 
 // @public (undocumented)
-export const SettingsHeader: ({ onSave, onCancel, isDirty, title, hasError, hideSavingOptions }: SettingsHeaderProps) => React_2.JSX.Element;
+export const SettingsHeader: (input: SettingsHeaderProps) => React_2.JSX.Element;
 
 // Warning: (ae-forgotten-export) The symbol "SettingsHeaderPropsWithSaving" needs to be exported by the entry point lib.d.ts
 // Warning: (ae-forgotten-export) The symbol "SettingsHeaderPropsWithoutSaving" needs to be exported by the entry point lib.d.ts

@@ -12,6 +12,7 @@ import { produce } from 'immer';
 import { map, find, isEmpty, filter, size } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
+import { JSNS } from '../constants';
 import AccountsList from './components/account-settings/accounts-list';
 import PersonaSettings from './components/account-settings/persona-settings';
 import PrimaryAccountSettings from './components/account-settings/primary-account-settings';
@@ -23,7 +24,6 @@ import {
 	getAvailableEmailAddresses,
 	isPrimary
 } from './components/utils';
-import { JSNS } from '../constants';
 import { useAccountStore, useUserAccount, useUserSettings } from '../store/account';
 import type { AccountState, IdentityAttrs } from '../types/account';
 import type {

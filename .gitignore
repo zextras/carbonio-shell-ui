@@ -20,3 +20,4 @@ src/constants/locales.js
 /temp
 *.tgz
 *.DS_Store
+/.claude/

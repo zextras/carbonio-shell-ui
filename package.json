@@ -90,7 +90,7 @@
 		"@vitest/coverage-istanbul": "^3.2.3",
 		"@zextras/carbonio-search-ui": "github:zextras/carbonio-search-ui#devel",
 		"@zextras/carbonio-ui-configs": "^2.1.0",
-		"@zextras/carbonio-ui-sdk": "2.2.1",
+		"@zextras/carbonio-ui-sdk": "2.2.2",
 		"autoprefixer": "^10.4.27",
 		"copy-webpack-plugin": "^13.0.1",
 		"core-js": "^3.39.0",

@@ -91,7 +91,7 @@ export const {
 	upsertApp
 } = useAppStore.getState();
 
-export { useIsCarbonioCE } from '../../store/login/hooks';
+export { useIsCarbonioCE, useFeatureFlag } from '../../store/login/hooks';
 
 export type { NewAction } from '../../shell/creation-button';
 export type { AccountMenuAction } from '../../utility-bar/bar';

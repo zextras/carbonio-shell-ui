@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 import type { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
 
-import { useIsCarbonioCE } from '../store/login/hooks';
+import { useFeatureFlag, useIsCarbonioCE } from '../store/login/hooks';
 import type { SettingsSubSection } from '../types/apps';
 
 export const appearanceSubSection = (t: TFunction): SettingsSubSection => ({
@@ -40,20 +40,24 @@ export const privacySubSection = (t: TFunction): SettingsSubSection => ({
 export const useSettingsSubSections = (): SettingsSubSection[] => {
 	const [t] = useTranslation();
 	const isCarbonioCE = useIsCarbonioCE();
+	const totalQuotaEnabled = useFeatureFlag('totalQuota');
 
 	return useMemo(() => {
 		const subSections = [
 			appearanceSubSection(t),
 			languageSubSection(t),
 			outOfOfficeSubSection(t),
-			searchPrefsSubSection(t),
-			quotaSubSection(t)
+			searchPrefsSubSection(t)
 		];
+
+		if (!totalQuotaEnabled) {
+			subSections.push(quotaSubSection(t));
+		}
 
 		if (isCarbonioCE) {
 			subSections.push(privacySubSection(t));
 		}
 
 		return subSections;
-	}, [isCarbonioCE, t]);
+	}, [isCarbonioCE, t, totalQuotaEnabled]);
 };

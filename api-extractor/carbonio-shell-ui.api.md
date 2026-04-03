@@ -433,6 +433,11 @@ type Exactify<T, X extends T> = T & {
 export const expandBoards: () => void;
 
 // @public (undocumented)
+export type FeatureFlags = {
+    totalQuota?: boolean;
+};
+
+// @public (undocumented)
 type FolderView = 'search folder' | 'tag' | 'conversation' | 'message' | 'contact' | 'document' | 'appointment' | 'virtual conversation' | 'remote folder' | 'wiki' | 'task' | 'chat';
 
 // @public (undocumented)
@@ -1161,6 +1166,9 @@ export const useBoardHooks: () => BoardHooksContext;
 //
 // @public (undocumented)
 export const useCurrentRoute: () => AppRoute | undefined;
+
+// @public
+export function useFeatureFlag<K extends keyof FeatureFlags>(key: K): boolean | undefined;
 
 // @public (undocumented)
 export const useIntegratedComponent: <TComponent extends React_2.ComponentType<any> = React_2.ComponentType<Record<string, unknown>>>(id: string) => [TComponent, boolean];

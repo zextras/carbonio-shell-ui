@@ -164,7 +164,10 @@ export const getAvailableEmailAddresses = (
 					target.right === 'sendOnBehalfOfDistList')
 			) {
 				target.target.forEach((user) => {
-					if ((user.type === 'account' || user.type === 'dl') && user.email) {
+					if (
+						(user.type === 'account' || user.type === 'dl' || user.type === 'group') &&
+						user.email
+					) {
 						user.email.forEach((email) => {
 							result.push(email.addr);
 						});

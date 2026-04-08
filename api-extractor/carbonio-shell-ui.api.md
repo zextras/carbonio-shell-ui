@@ -159,7 +159,7 @@ type AppActions = {
 // Warning: (ae-forgotten-export) The symbol "AppContextProviderProps" needs to be exported by the entry point lib.d.ts
 //
 // @public
-export const AppContextProvider: ({ pkg, children }: AppContextProviderProps) => React_2.JSX.Element;
+export const AppContextProvider: (input: AppContextProviderProps) => React_2.JSX.Element;
 
 // @public (undocumented)
 interface AppContextProviderProps {
@@ -220,7 +220,7 @@ export type AudioNotificationConfig = {
 };
 
 // @public (undocumented)
-export const AuthGuard: ({ children }: AuthGuardProps) => ReactNode;
+export const AuthGuard: (input: AuthGuardProps) => ReactNode;
 
 // @public (undocumented)
 export type AuthGuardProps = {
@@ -431,6 +431,11 @@ type Exactify<T, X extends T> = T & {
 
 // @public (undocumented)
 export const expandBoards: () => void;
+
+// @public (undocumented)
+export type FeatureFlags = {
+    totalQuota?: boolean;
+};
 
 // @public (undocumented)
 type FolderView = 'search folder' | 'tag' | 'conversation' | 'message' | 'contact' | 'document' | 'appointment' | 'virtual conversation' | 'remote folder' | 'wiki' | 'task' | 'chat';
@@ -891,7 +896,7 @@ export const setRouteVisibility: (id: string, visible: boolean) => void;
 export const SETTINGS_APP_ID = "settings";
 
 // @public (undocumented)
-export const SettingsHeader: ({ onSave, onCancel, isDirty, title, hasError, hideSavingOptions }: SettingsHeaderProps) => React_2.JSX.Element;
+export const SettingsHeader: (input: SettingsHeaderProps) => React_2.JSX.Element;
 
 // Warning: (ae-forgotten-export) The symbol "SettingsHeaderPropsWithSaving" needs to be exported by the entry point lib.d.ts
 // Warning: (ae-forgotten-export) The symbol "SettingsHeaderPropsWithoutSaving" needs to be exported by the entry point lib.d.ts
@@ -1161,6 +1166,9 @@ export const useBoardHooks: () => BoardHooksContext;
 //
 // @public (undocumented)
 export const useCurrentRoute: () => AppRoute | undefined;
+
+// @public
+export function useFeatureFlag<K extends keyof FeatureFlags>(key: K): boolean | undefined;
 
 // @public (undocumented)
 export const useIntegratedComponent: <TComponent extends React_2.ComponentType<any> = React_2.ComponentType<Record<string, unknown>>>(id: string) => [TComponent, boolean];

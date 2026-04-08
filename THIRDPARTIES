@@ -47,7 +47,6 @@ lodash, Copyright OpenJS Foundation and other contributors <https://openjsf.org/
 mini-css-extract-plugin, Copyright JS Foundation and other contributors
 msw, Copyright (c) 2018–present Artem Zakharchenko
 postcss-loader, Copyright JS Foundation and other contributors
-posthog-js, Copyright 2020 Posthog / Hiberly, Inc.*
 react-dom, Copyright (c) Facebook, Inc. and its affiliates.
 react-i18next, Copyright (c) 2023 i18next
 react-router-dom, Copyright (c) React Training LLC 2015-2019. Copyright (c) Remix Software Inc. 2020-2021. Copyright (c) Shopify Inc. 2022-2023
@@ -83,6 +82,7 @@ Apache License 2.0 (Apache-2.0) applies to:
 
 @fontsource/roboto, Copyright 2011 Google Inc. All Rights Reserved.
 jest-junit, Copyright 2019 Jason Palmer
+posthog-js, Copyright 2020 Posthog / Hiberly, Inc.
 typescript, Copyright (c) Microsoft Corporation
 
 Apache License

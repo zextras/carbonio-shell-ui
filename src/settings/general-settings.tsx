@@ -26,7 +26,7 @@ import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 import { useAccountStore, useUserSettings } from '../store/account';
 import { mergePrefs, mergeProps } from '../store/account/utils';
 import { getT } from '../store/i18n/hooks';
-import { useIsCarbonioCE } from '../store/login/hooks';
+import { useFeatureFlag, useIsCarbonioCE } from '../store/login/hooks';
 import type { AccountState } from '../types/account';
 import type {
 	AddMod,
@@ -56,6 +56,7 @@ const GeneralSettings = (): React.JSX.Element => {
 	);
 	const [open, setOpen] = useState(false);
 	const isCarbonioCE = useIsCarbonioCE();
+	const totalQuotaEnabled = useFeatureFlag('totalQuota');
 
 	const addLocalStoreChange = useCallback(
 		(key: keyof ScalingSettings, value: ValueOf<ScalingSettings>) => {
@@ -283,7 +284,7 @@ const GeneralSettings = (): React.JSX.Element => {
 					addMod={addMod}
 					resetRef={searchSettingsSectionRef}
 				/>
-				<UserQuota mobileView={false} />
+				{!totalQuotaEnabled && <UserQuota mobileView={false} />}
 				{isCarbonioCE && (
 					<SettingsSection {...privacySubSection(t)}>
 						<Privacy

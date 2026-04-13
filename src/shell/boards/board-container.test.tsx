@@ -916,7 +916,8 @@ describe('Board container', () => {
 		['reset board', ICONS.resetBoardSize],
 		['enlarge board', ICONS.enlargeBoard]
 	])('Action %s is not fired if a move is performed on it', async (actionName, icon) => {
-		const boardItem = Object.values(mockedBoardState)[Math.floor(Math.random() * Object.values(mockedBoardState).length)] as Board;
+		const mockedBoardValues = Object.values(mockedBoardState);
+		const boardItem = mockedBoardValues[Math.floor(Math.random() * mockedBoardValues.length)] as Board;
 		setupBoardStore(boardItem.id, { [boardItem.id]: boardItem });
 		const { getAllByRoleWithIcon } = setup(<BoardContainer />);
 		act(() => {
@@ -965,7 +966,8 @@ describe('Board container', () => {
 	});
 
 	test('Double click inside a focused input select the text', async () => {
-		const boardObj = Object.values(mockedBoardState)[Math.floor(Math.random() * Object.values(mockedBoardState).length)] as Board;
+		const mockedBoardValues2 = Object.values(mockedBoardState);
+		const boardObj = mockedBoardValues2[Math.floor(Math.random() * mockedBoardValues2.length)] as Board;
 		setupBoardStore(boardObj.id, { [boardObj.id]: boardObj });
 		const boardView: BoardView = {
 			id: boardObj.boardViewId,

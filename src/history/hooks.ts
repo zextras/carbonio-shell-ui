@@ -18,7 +18,7 @@ export const useCurrentRoute = (): AppRoute | undefined => {
 	return useMemo(
 		() =>
 			Object.values(routes).find(({ route }) =>
-				location.pathname.replace(/^\/+|\/+$/g, '').startsWith(route)
+				location.pathname.replace(/^\/+/, '').replace(/\/+$/, '').startsWith(route)
 			),
 		[location.pathname, routes]
 	);

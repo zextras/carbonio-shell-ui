@@ -45,7 +45,7 @@ export const normalizeRoute = (
 	data: Partial<AppRouteDescriptor>,
 	app: CarbonioModule
 ): AppRouteDescriptor => {
-	const route = (data.route ?? app.name).replace(/^\/+|\/+$/g, '');
+	const route = (data.route ?? app.name).replace(/^\/+/, '').replace(/\/+$/, '');
 	return {
 		app: app.name,
 		route,
@@ -65,7 +65,7 @@ export const normalizeSettingsView = (
 	data: Partial<SettingsView>,
 	app: CarbonioModule
 ): SettingsView => {
-	const route = (data.route ?? app.name).replace(/^\/+|\/+$/g, '');
+	const route = (data.route ?? app.name).replace(/^\/+/, '').replace(/\/+$/, '');
 	return {
 		app: app.name,
 		route,

@@ -117,7 +117,7 @@ const ShellPrimaryBar = (): React.JSX.Element | null => {
 		if (activeRoute) {
 			routesRef.current = {
 				...routesRef.current,
-				[activeRoute.id]: `${pathname.replace(/^\/+|\/+$/g, '')}${search}`
+				[activeRoute.id]: `${pathname.replace(/^\/+/, '').replace(/\/+$/, '')}${search}`
 			};
 		}
 	}, [activeRoute, pathname, search]);

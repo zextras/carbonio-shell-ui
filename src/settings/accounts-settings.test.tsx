@@ -211,7 +211,7 @@ describe('Account setting', () => {
 			account: createAccount(
 				defaultEmail,
 				defaultId,
-				[...([
+				[
 					createIdentity(
 						{
 							zimbraPrefIdentityId: persona3Id,
@@ -244,7 +244,7 @@ describe('Account setting', () => {
 						},
 						true
 					)
-				]).sort(() => Math.random() - 0.5)]
+				].sort(() => Math.random() - 0.5)
 			)
 		});
 

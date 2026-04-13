@@ -29,7 +29,7 @@
 		"npm": "v10"
 	},
 	"scripts": {
-		"test:ci": "vitest run --reporter=default --reporter=junit --coverage --pool=forks --poolOptions.forks.maxForks=50%",
+		"test:ci": "vitest run --reporter=default --reporter=junit --coverage --pool=forks --maxWorkers=50%",
 		"test:dev": "vitest run --no-coverage --reporter=default --retry=0",
 		"test": "is-ci && npm run test:ci || npm run test:dev",
 		"test:watch": "vitest --changed",
@@ -88,7 +88,7 @@
 		"@types/react-dom": "^18.3.0",
 		"@types/webpack": "^5.28.5",
 		"@types/webpack-env": "^1.18.8",
-		"@vitest/coverage-istanbul": "^3.2.3",
+		"@vitest/coverage-istanbul": "^4.1.4",
 		"@zextras/carbonio-search-ui": "github:zextras/carbonio-search-ui#devel",
 		"@zextras/carbonio-ui-configs": "^2.1.0",
 		"@zextras/carbonio-ui-sdk": "2.2.2",
@@ -108,7 +108,7 @@
 		"postcss-loader": "^8.1.1",
 		"sonarqube-scanner": "^4.3.5",
 		"typescript": "^5.3.3",
-		"vitest": "^3.2.3",
+		"vitest": "^4.1.4",
 		"vitest-fail-on-console": "^0.10.1",
 		"webpack": "^5.104.1",
 		"webpack-cli": "^6.0.1"
@@ -118,7 +118,7 @@
 		"@emotion/styled": "^11.14.1",
 		"@fontsource/roboto": "^5.0.8",
 		"@zextras/carbonio-design-system": "12.0.2",
-		"@zextras/carbonio-ui-preview": "4.0.1",
+		"@zextras/carbonio-ui-preview": "4.0.2",
 		"@zextras/carbonio-ui-soap-lib": "1.0.4",
 		"darkreader": "^4.9.79",
 		"date-fns": "^4.1.0",

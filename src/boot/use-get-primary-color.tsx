@@ -5,7 +5,7 @@
  */
 import { useEffect, useMemo } from 'react';
 
-import { size } from 'lodash';
+
 import { useShallow } from 'zustand/react/shallow';
 
 import { LOCAL_STORAGE_LAST_PRIMARY_KEY } from '../constants';
@@ -37,7 +37,7 @@ export function useGetPrimaryColor(): string | undefined {
 			}
 			return carbonioWebUiPrimaryColor || carbonioWebUiDarkPrimaryColor;
 		}
-		if (localStorageLastPrimary && size(localStorageLastPrimary) > 0 && !loaded) {
+		if (localStorageLastPrimary && Object.keys(localStorageLastPrimary).length > 0 && !loaded) {
 			return (
 				(darkModeEnabled && (localStorageLastPrimary.dark || localStorageLastPrimary.light)) ||
 				localStorageLastPrimary.light ||

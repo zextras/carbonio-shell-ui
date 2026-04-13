@@ -8,7 +8,6 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 
 import { Container, useSnackbar } from '@zextras/carbonio-design-system';
 import { legacySoapFetch } from '@zextras/carbonio-ui-soap-lib';
-import { includes, isEmpty, map, size } from 'lodash';
 
 import DarkThemeSettingSection from './components/general-settings/dark-theme-settings-section';
 import { OutOfOfficeSettings } from './components/general-settings/out-of-office-settings';
@@ -95,7 +94,7 @@ const GeneralSettings = (): React.JSX.Element => {
 				if (nextType && nextType[key] !== undefined) {
 					delete nextType[key];
 				}
-				if (size(nextState[type]) === 0) {
+				if (Object.keys(nextState[type] ?? {}).length === 0) {
 					delete nextState[type];
 				}
 				return nextState;
@@ -108,7 +107,7 @@ const GeneralSettings = (): React.JSX.Element => {
 
 	const onSave = useCallback(() => {
 		setLocalStorageUnAppliedChanges((unAppliedPrevState) => {
-			if (size(unAppliedPrevState) > 0) {
+			if (Object.keys(unAppliedPrevState).length > 0) {
 				setLocalStorageSettings((localStorageSettingsPrevState) => ({
 					...localStorageSettingsPrevState,
 					...unAppliedPrevState
@@ -117,12 +116,11 @@ const GeneralSettings = (): React.JSX.Element => {
 			}
 			return unAppliedPrevState;
 		});
-		if (size(mods) > 0) {
+		if (Object.keys(mods).length > 0) {
 			let modifyPropertiesRequest: ModifyPropertiesRequest | undefined;
 			if (mods.props) {
-				const mappedProperties = map(
-					mods.props,
-					(prop, key): ModifyPropertiesRequest['prop'][0] => ({
+				const mappedProperties = Object.entries(mods.props).map(
+					([key, prop]): ModifyPropertiesRequest['prop'][0] => ({
 						name: key,
 						zimlet: prop.app,
 						_content: prop.value
@@ -165,7 +163,7 @@ const GeneralSettings = (): React.JSX.Element => {
 						}
 					}));
 
-					if (mods.prefs && includes(Object.keys(mods.prefs), 'zimbraPrefLocale')) {
+					if (mods.prefs && Object.keys(mods.prefs).includes('zimbraPrefLocale')) {
 						setOpen(true);
 					}
 					createSnackbar({
@@ -206,7 +204,7 @@ const GeneralSettings = (): React.JSX.Element => {
 
 	const onCancel = useCallback(() => {
 		setMods({});
-		if (size(localStorageUnAppliedChanges) > 0) {
+		if (Object.keys(localStorageUnAppliedChanges).length > 0) {
 			scalingSettingSectionRef.current?.reset();
 		}
 		darkThemeSettingSectionRef.current?.reset();
@@ -217,7 +215,7 @@ const GeneralSettings = (): React.JSX.Element => {
 	}, [localStorageUnAppliedChanges]);
 
 	const isDirty = useMemo(
-		() => !isEmpty(mods) || !isEmpty(localStorageUnAppliedChanges),
+		() => Object.keys(mods).length > 0 || Object.keys(localStorageUnAppliedChanges).length > 0,
 		[mods, localStorageUnAppliedChanges]
 	);
 

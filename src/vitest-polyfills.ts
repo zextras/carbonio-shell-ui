@@ -4,8 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { noop } from 'lodash';
 import { createHash } from 'node:crypto';
+
+const noop = (): void => undefined;
 
 window.matchMedia = function matchMedia(query: string): MediaQueryList {
 	return {

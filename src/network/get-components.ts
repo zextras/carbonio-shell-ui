@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { filter } from 'lodash';
 
 import { useAppStore } from '../store/app';
 import type { CarbonioModule } from '../types/apps';
@@ -20,5 +19,5 @@ export const getComponents = (): Promise<void> =>
 		.then(({ components }: { components: Array<CarbonioModule> }) => {
 			useAppStore
 				.getState()
-				.setApps(filter(components, ({ type }) => type === 'shell' || type === 'carbonio'));
+				.setApps(components.filter(({ type }) => type === 'shell' || type === 'carbonio'));
 		});

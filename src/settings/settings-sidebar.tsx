@@ -7,7 +7,7 @@
 import React, { useMemo } from 'react';
 
 import { Accordion, Button, Tooltip } from '@zextras/carbonio-design-system';
-import { map } from 'lodash';
+
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { SETTINGS_APP_ID } from '../constants';
@@ -32,7 +32,7 @@ export const SettingsSidebar = ({
 					e.stopPropagation();
 					navigate(view.route);
 				},
-				items: map(view.subSections, (item) => ({
+				items: (view.subSections ?? []).map((item) => ({
 					...item,
 					active: location.search === `?section=${item.id}`,
 					disableHover: location.search === `?section=${item.id}`,

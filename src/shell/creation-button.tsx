@@ -13,7 +13,7 @@ import {
 	type DropdownItem,
 	MultiButton
 } from '@zextras/carbonio-design-system';
-import { find, noop, reduce } from 'lodash';
+
 import type { Location } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
@@ -22,8 +22,10 @@ import { useCurrentRoute } from '../history/hooks';
 import { useAppList } from '../store/app';
 import { getT } from '../store/i18n/hooks';
 import { useActions } from '../store/integrations/hooks';
-import type { AppRoute, CarbonioModule } from '../types/apps';
+import type { AppRoute } from '../types/apps';
 import type { Action } from '../types/integrations';
+
+const noop = (): void => undefined;
 
 export interface NewAction extends Action, Omit<DropdownItem, 'label' | 'onClick'> {
 	execute: NonNullable<DropdownItem['onClick']>;
@@ -51,8 +53,7 @@ export const CreationButtonComponent = ({
 	const [open, setOpen] = useState(false);
 	const primaryAction = useMemo(
 		() =>
-			find(
-				actionsDropdownItems,
+			actionsDropdownItems.find(
 				(action) =>
 					(action.group === activeRoute?.id || action.group === activeRoute?.app) &&
 					action.primary === true
@@ -78,8 +79,7 @@ export const CreationButtonComponent = ({
 	const secondaryActions = useMemo(
 		(): DropdownItem[] => [
 			...(actionsDropdownItemsByGroup[activeRoute?.app ?? ''] ?? []),
-			...reduce<CarbonioModule, DropdownItem[]>(
-				apps,
+			...apps.reduce<DropdownItem[]>(
 				(acc, app, i) => {
 					if (app.name !== activeRoute?.app && actionsDropdownItemsByGroup[app.name]?.length > 0) {
 						acc.push(

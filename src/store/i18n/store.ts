@@ -9,7 +9,6 @@ import i18next from 'i18next';
 import ChainedBackend from 'i18next-chained-backend';
 import HttpBackend from 'i18next-http-backend';
 import { produce } from 'immer';
-import { dropRight, forEach, reduce } from 'lodash';
 import { initReactI18next } from 'react-i18next';
 import { create } from 'zustand';
 
@@ -80,7 +79,7 @@ export const useI18nStore = create<I18nState & I18nActions>()((set) => ({
 		set(
 			produce((state: I18nState) => {
 				state.locale = locale;
-				forEach(state.instances, (i18nInst) => i18nInst.changeLanguage(locale));
+			Object.values(state.instances).forEach((i18nInst) => i18nInst.changeLanguage(locale));
 			})
 		);
 	},
@@ -88,8 +87,7 @@ export const useI18nStore = create<I18nState & I18nActions>()((set) => ({
 		const appsWithShell = addShell(apps);
 		set(
 			produce((state: I18nState) => {
-				state.instances = reduce<CarbonioModule, Record<string, i18n>>(
-					appsWithShell,
+				state.instances = appsWithShell.reduce<Record<string, i18n>>(
 					(acc, app): Record<string, i18n> => {
 						const newI18n = i18next.createInstance();
 						newI18n
@@ -108,7 +106,7 @@ export const useI18nStore = create<I18nState & I18nActions>()((set) => ({
 											loadPath:
 												app.name === SHELL_APP_ID
 													? `${BASE_PATH}/i18n/{{lng}}.json`
-													: `${dropRight(app.js_entrypoint.split('/')).join('/')}/i18n/{{lng}}.json`
+													: `${app.js_entrypoint.split('/').slice(0, -1).join('/')}/i18n/{{lng}}.json`
 										},
 										{
 											// fallback to shell for every module

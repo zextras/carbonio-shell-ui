@@ -6,7 +6,6 @@
 
 import React, { useMemo } from 'react';
 
-import { map } from 'lodash';
 
 import { AppContextProvider } from './app-context-provider';
 import { useAppStore } from '../../store/app';
@@ -26,7 +25,7 @@ const AppLoaderMounter = (): React.JSX.Element => {
 	const entryPoints = useAppStore((s) => s.entryPoints);
 	const entries = useMemo(
 		() =>
-			map(entryPoints, (Comp, appId) => (
+			Object.entries(entryPoints).map(([appId, Comp]) => (
 				<Mounter key={appId} appId={appId}>
 					<Comp />
 				</Mounter>

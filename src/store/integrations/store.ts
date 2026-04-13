@@ -7,7 +7,7 @@
 import type { ComponentType } from 'react';
 
 import { produce } from 'immer';
-import { forEach, includes, omit } from 'lodash';
+import { omit } from 'lodash';
 import { create } from 'zustand';
 
 import type { Action, ActionFactory } from '../../types/integrations';
@@ -48,7 +48,7 @@ export const useIntegrationsStore = create<IntegrationsState & IntegrationAction
 	registerActions: (...items): void =>
 		set(
 			produce<IntegrationsState>((state) => {
-				forEach(items, ({ id, action, type }) => {
+				items.forEach(({ id, action, type }) => {
 					if (!state.actions[type]) state.actions[type] = {};
 					state.actions[type][id] = action;
 				});
@@ -59,7 +59,7 @@ export const useIntegrationsStore = create<IntegrationsState & IntegrationAction
 		(...items): void =>
 			set(
 				produce<IntegrationsState>((state) => {
-					forEach(items, ({ id, component }) => {
+					items.forEach(({ id, component }) => {
 						state.components[id] = { app, Item: component as Component };
 					});
 				})
@@ -67,7 +67,7 @@ export const useIntegrationsStore = create<IntegrationsState & IntegrationAction
 	registerFunctions: (...items): void =>
 		set(
 			produce<IntegrationsState>((state) => {
-				forEach(items, ({ id, fn }) => {
+				items.forEach(({ id, fn }) => {
 					state.functions[id] = fn;
 				});
 			})
@@ -75,9 +75,9 @@ export const useIntegrationsStore = create<IntegrationsState & IntegrationAction
 	removeActions: (...ids): void =>
 		set(
 			produce<IntegrationsState>((state) => {
-				forEach(state.actions, (actionTypeMap, type) => {
-					forEach(actionTypeMap, (actionFactory, actionFactoryId) => {
-						if (includes(ids, actionFactoryId)) {
+				Object.entries(state.actions).forEach(([type, actionTypeMap]) => {
+					Object.keys(actionTypeMap).forEach((actionFactoryId) => {
+						if (ids.includes(actionFactoryId)) {
 							delete state.actions[type][actionFactoryId];
 						}
 					});

@@ -8,7 +8,7 @@ import React from 'react';
 import { faker } from '@faker-js/faker';
 import { act, screen, within } from '@testing-library/react';
 import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
-import { forEach } from 'lodash';
+
 
 import { OutOfOfficeSettings } from './out-of-office-settings';
 import { SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT } from '../../../constants/internal-constants';
@@ -424,7 +424,7 @@ describe('Out of office settings', () => {
 			await user.click(
 				within(screen.getByTestId(TESTID_SELECTORS.dropdown)).getByText(optionLabel)
 			);
-			forEach(updatedPrefs, (value, key) =>
+			Object.entries(updatedPrefs).forEach(([key, value]) =>
 				expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>('prefs', key, value)
 			);
 		}

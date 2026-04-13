@@ -22,7 +22,7 @@ import {
 	TextArea
 } from '@zextras/carbonio-design-system';
 import { type TFunction } from 'i18next';
-import { find } from 'lodash';
+
 
 import { OutOfOfficeTimePeriodSection } from './out-of-office-time-period-section';
 import { SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT } from '../../../constants/internal-constants';
@@ -230,7 +230,7 @@ export const OutOfOfficeSettings = ({
 		(value) => {
 			if (value !== null) {
 				externalSendersHandler(value);
-				const newSelectItem = find(externalSendersSelectItems, (item) => item.value === value);
+				const newSelectItem = externalSendersSelectItems.find((item) => item.value === value);
 				newSelectItem && setExternalSendersSelectedItem(newSelectItem);
 			}
 		},

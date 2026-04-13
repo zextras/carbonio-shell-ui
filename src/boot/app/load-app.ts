@@ -7,7 +7,6 @@
 import type { ComponentType } from 'react';
 import { memo } from 'react';
 
-import { forOwn } from 'lodash';
 
 import { getAppDependantExports } from './app-dependant-exports';
 import * as appExports from './app-direct-exports';
@@ -65,7 +64,7 @@ export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 
 export function unloadApps(): Promise<void> {
 	return new Promise((resolve) => {
-		forOwn(_scripts, (script) => {
+		Object.values(_scripts).forEach((script) => {
 			if (script.parentNode) {
 				script.parentNode.removeChild(script);
 			}

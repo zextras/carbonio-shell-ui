@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
-import { filter, find, findIndex, reduce } from 'lodash';
 
 import type { AccountSettingsAttrs, AccountState, Identity, ZimletProp } from '../../types/account';
 import type { IdentityMods, PropsMods } from '../../types/network';
@@ -13,9 +12,8 @@ export function mergePrefs(
 	mods: AccountSettingsPrefs | undefined,
 	state: AccountState
 ): AccountSettingsPrefs {
-	return reduce(
-		mods,
-		(acc, pref, key) => ({
+	return Object.entries(mods ?? {}).reduce<AccountSettingsPrefs>(
+		(acc, [key, pref]) => ({
 			...acc,
 			[key]: pref
 		}),
@@ -24,15 +22,14 @@ export function mergePrefs(
 }
 
 export function mergeProps(mods: PropsMods | undefined, state: AccountState): Array<ZimletProp> {
-	return reduce(
-		mods,
-		(acc, { app, value }, key) => {
+	return Object.entries(mods ?? {}).reduce<Array<ZimletProp>>(
+		(acc, [key, { app, value }]) => {
 			const newPropValue = {
 				name: key,
 				zimlet: app,
 				_content: value as string
 			};
-			const propIndex = findIndex(acc, (p) => p.name === key && p.zimlet === app);
+			const propIndex = acc.findIndex((p) => p.name === key && p.zimlet === app);
 			if (propIndex >= 0) {
 				return acc.map((prop, index) => (propIndex === index ? newPropValue : prop));
 			}
@@ -46,9 +43,8 @@ export function mergeAttrs(
 	mods: AccountSettingsAttrs | undefined,
 	state: AccountState
 ): AccountSettingsAttrs {
-	return reduce(
-		mods,
-		(acc, attr, key) => ({
+	return Object.entries(mods ?? {}).reduce<AccountSettingsAttrs>(
+		(acc, [key, attr]) => ({
 			...acc,
 			[key]: attr
 		}),
@@ -66,15 +62,13 @@ export function updateIdentities(
 	}
 
 	const sortedAndFilteredIdentities = [
-		...filter(
-			state.account.identities.identity,
-			(item) => !identityMods?.deleteList?.includes(item.id)
-		).filter((i) => i.name !== 'DEFAULT'),
+		...state.account.identities.identity
+			.filter((item) => !identityMods?.deleteList?.includes(item.id))
+			.filter((i) => i.name !== 'DEFAULT'),
 		...newIdentities,
-		...filter(
-			state.account.identities.identity,
-			(item) => !identityMods?.deleteList?.includes(item.id)
-		).filter((i) => i.name === 'DEFAULT')
+		...state.account.identities.identity
+			.filter((item) => !identityMods?.deleteList?.includes(item.id))
+			.filter((i) => i.name === 'DEFAULT')
 	];
 
 	if (!identityMods?.modifyList) {
@@ -82,7 +76,9 @@ export function updateIdentities(
 	}
 
 	return sortedAndFilteredIdentities.map((identity) => {
-		const identityMod = find(identityMods.modifyList, (mod) => mod.id === identity.id);
+		const identityMod = identityMods.modifyList
+			? Object.values(identityMods.modifyList).find((mod) => mod.id === identity.id)
+			: undefined;
 		if (!identityMod) {
 			return identity;
 		}

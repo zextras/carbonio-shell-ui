@@ -23,7 +23,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import i18next, { type i18n } from 'i18next';
-import { filter } from 'lodash';
+
 import { I18nextProvider } from 'react-i18next';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -52,9 +52,8 @@ const queryAllByRoleWithIcon: GetAllBy<[ByRoleMatcher, ByRoleWithIconOptions]> =
 	role,
 	{ icon, ...options }
 ) =>
-	filter(
-		// eslint-disable-next-line testing-library/prefer-screen-queries
-		rtlScreen.queryAllByRole('button', options),
+	// eslint-disable-next-line testing-library/prefer-screen-queries
+	rtlScreen.queryAllByRole('button', options).filter(
 		(element) => rtlWithin(element).queryByTestId(`icon: ${icon}`) !== null
 	);
 const getByRoleWithIconMultipleError = (

@@ -6,7 +6,7 @@
 
 import { useMemo } from 'react';
 
-import { find, get, join } from 'lodash';
+import { get } from 'lodash';
 
 import { useAccountStore } from './store';
 import type {
@@ -44,7 +44,7 @@ export const useUserRights = (): AccountRights =>
 export const useUserRight = (right: AccountRightName): Array<AccountRightTarget> => {
 	const { targets } = useUserRights();
 	return useMemo(
-		() => find(targets, ['right', right])?.target ?? ([] as Array<AccountRightTarget>),
+		() => targets.find((t) => t.right === right)?.target ?? ([] as Array<AccountRightTarget>),
 		[right, targets]
 	);
 };
@@ -52,7 +52,7 @@ export const useUserRight = (right: AccountRightName): Array<AccountRightTarget>
 export const useUserSettings = (): AccountSettings => useAccountStore((state) => state.settings);
 
 export const useUserSetting = <T = void>(...path: Array<string>): string | T =>
-	useAccountStore((s) => get(s.settings, join(path, '.')));
+	useAccountStore((s) => get(s.settings, path.join('.')));
 
 export const getUserAccount = (): Account | undefined => useAccountStore.getState().account;
 export const getUserAccounts = (): Array<Account> => {
@@ -65,10 +65,10 @@ export const getUserAccounts = (): Array<Account> => {
 };
 export const getUserSettings = (): AccountSettings => useAccountStore.getState().settings;
 export const getUserSetting = <T = void>(...path: Array<string>): string | T =>
-	get(useAccountStore.getState().settings, join(path, '.'));
+	get(useAccountStore.getState().settings, path.join('.'));
 
 export const getUserRights = (): AccountRights =>
 	useAccountStore.getState().account?.rights ?? { targets: [] };
 
 export const getUserRight = (right: AccountRightName): Array<AccountRightTarget> =>
-	find(getUserRights().targets, ['right', right])?.target ?? ([] as Array<AccountRightTarget>);
+	getUserRights().targets.find((t) => t.right === right)?.target ?? ([] as Array<AccountRightTarget>);

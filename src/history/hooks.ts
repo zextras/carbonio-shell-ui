@@ -6,7 +6,7 @@
 
 import { useMemo } from 'react';
 
-import { find, startsWith, trim } from 'lodash';
+
 import { useLocation } from 'react-router-dom';
 
 import { useRoutes } from '../store/app';
@@ -16,7 +16,10 @@ export const useCurrentRoute = (): AppRoute | undefined => {
 	const location = useLocation();
 	const routes = useRoutes();
 	return useMemo(
-		() => find(routes, ({ route }) => startsWith(trim(location.pathname, '/'), route)),
+		() =>
+			Object.values(routes).find(({ route }) =>
+				location.pathname.replace(/^\/+|\/+$/g, '').startsWith(route)
+			),
 		[location.pathname, routes]
 	);
 };

@@ -8,7 +8,7 @@ import React from 'react';
 import { faker } from '@faker-js/faker';
 import { screen, waitFor, within } from '@testing-library/react';
 import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
-import { find } from 'lodash';
+
 
 import { buildItemsExternalSenders } from './components/general-settings/out-of-office-settings';
 import { dateToGenTime } from './components/utils';
@@ -42,10 +42,7 @@ describe('General setting', () => {
 			}
 		}));
 		const { user } = setup(<GeneralSettings />);
-		const match = find(
-			localeArray,
-			(item) => item.value === zimbraPrefLocaleValue
-		) as LocaleDescriptorWithLabels;
+		const match = localeArray.find((item) => item.value === zimbraPrefLocaleValue) as LocaleDescriptorWithLabels;
 		await user.click(screen.getByText(match.label));
 		await user.click(
 			within(screen.getByTestId(TESTID_SELECTORS.dropdown)).getByText(localeArray[0].label)
@@ -65,10 +62,7 @@ describe('General setting', () => {
 			}
 		}));
 		const { user } = setup(<GeneralSettings />);
-		const match = find(
-			localeArray,
-			(item) => item.value === zimbraPrefLocaleValue
-		) as LocaleDescriptorWithLabels;
+		const match = localeArray.find((item) => item.value === zimbraPrefLocaleValue) as LocaleDescriptorWithLabels;
 		expect(match).toBeDefined();
 		expect(screen.getByText(match.label)).toBeVisible();
 		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();

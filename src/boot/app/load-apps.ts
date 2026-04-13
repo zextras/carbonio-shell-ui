@@ -5,7 +5,6 @@
  */
 
 import { registerLocale, setDefaultLocale } from '@zextras/carbonio-design-system';
-import { filter, map } from 'lodash';
 
 import { loadApp, unloadApps } from './load-app';
 import { injectSharedLibraries } from './shared-libraries';
@@ -19,7 +18,7 @@ export function loadApps(
 	apps: Array<CarbonioModule>
 ): Promise<PromiseSettledResult<CarbonioModule>[]> {
 	injectSharedLibraries();
-	const appsToLoad = filter(apps, (app) => {
+	const appsToLoad = apps.filter((app) => {
 		if (app.name === SHELL_APP_ID) return false;
 		return !(app.attrKey && getUserSetting('attrs', app.attrKey) === 'FALSE');
 	});
@@ -48,7 +47,7 @@ export function loadApps(
 				console.warn(`Cannot import locale ${locale} for date-fns. Falling back to english`);
 			});
 	}
-	return Promise.allSettled(map(appsToLoad, (app) => loadApp(app)));
+	return Promise.allSettled(appsToLoad.map((app) => loadApp(app)));
 }
 
 export function unloadAllApps(): Promise<void> {

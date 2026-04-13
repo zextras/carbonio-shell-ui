@@ -7,7 +7,6 @@ import React, { useEffect, useMemo } from 'react';
 
 import styled from '@emotion/styled';
 import { Container, Responsive } from '@zextras/carbonio-design-system';
-import { find } from 'lodash';
 
 import { useUtilityBarStore } from './store';
 import { useUtilityViews } from './utils';
@@ -34,7 +33,7 @@ const Spacer = styled.div<{ $mode: string }>`
 export const ShellUtilityPanel = (): React.ReactNode => {
 	const { mode, setMode, current, setCurrent } = useUtilityBarStore();
 	const views = useUtilityViews();
-	const currentPanel = useMemo(() => find(views, (view) => view.id === current), [current, views]);
+	const currentPanel = useMemo(() => views.find((view) => view.id === current), [current, views]);
 	useEffect(() => {
 		if (!(current && currentPanel)) {
 			setCurrent(views[0]?.id);

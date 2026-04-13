@@ -8,7 +8,7 @@ import React, { useEffect, useMemo, useRef } from 'react';
 
 import styled from '@emotion/styled';
 import { Button, Container, Row, Tooltip } from '@zextras/carbonio-design-system';
-import { map, isEmpty, trim, filter, sortBy } from 'lodash';
+import { isEmpty, sortBy } from 'lodash';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import BadgeWrap from './badge-wrap';
@@ -117,7 +117,7 @@ const ShellPrimaryBar = (): React.JSX.Element | null => {
 		if (activeRoute) {
 			routesRef.current = {
 				...routesRef.current,
-				[activeRoute.id]: `${trim(pathname, '/')}${search}`
+				[activeRoute.id]: `${pathname.replace(/^\/+|\/+$/g, '')}${search}`
 			};
 		}
 	}, [activeRoute, pathname, search]);
@@ -127,7 +127,7 @@ const ShellPrimaryBar = (): React.JSX.Element | null => {
 	const accessoryViews = useMemo(
 		() =>
 			sortBy(
-				filter(primaryBarAccessoryViews, (v) => checkRoute(v, activeRoute)),
+				primaryBarAccessoryViews.filter((v) => checkRoute(v, activeRoute)),
 				'position'
 			),
 		[activeRoute, primaryBarAccessoryViews]
@@ -135,7 +135,7 @@ const ShellPrimaryBar = (): React.JSX.Element | null => {
 
 	const primaryBarItems = useMemo(
 		() =>
-			map(primaryBarViews, (view) =>
+			primaryBarViews.map((view) =>
 				view.visible ? (
 					<PrimaryBarElement
 						key={view.id}

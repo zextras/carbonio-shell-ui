@@ -8,7 +8,7 @@ import React, { useMemo } from 'react';
 
 import styled from '@emotion/styled';
 import { Container, Spinner } from '@zextras/carbonio-design-system';
-import { map, find } from 'lodash';
+
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 import { AppContextProvider } from '../boot/app/app-context-provider';
@@ -28,7 +28,7 @@ const FirstAppRedirect = (): React.ReactNode => {
 	const routes = useRoutes();
 	const location = useLocation();
 	const mainRoute = useMemo(
-		() => find(routes, (r) => apps[0]?.name === r.app)?.route,
+		() => Object.values(routes).find((r) => apps[0]?.name === r.app)?.route,
 		[apps, routes]
 	);
 	return mainRoute && location?.pathname === '/' ? <Navigate to={`${mainRoute}`} /> : null;
@@ -38,7 +38,7 @@ const AppViewContainer = (): React.JSX.Element => {
 	const appViews = useAppStore((s) => s.views.appView);
 	const routes = useMemo(
 		() => [
-			...map(appViews, (view) => (
+			...appViews.map((view) => (
 				<Route
 					key={view.id}
 					path={`${view.route}/*`}

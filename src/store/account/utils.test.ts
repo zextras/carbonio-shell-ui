@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
-import { find } from 'lodash';
+
 
 import { useAccountStore } from './store';
 import { mergeAttrs, mergePrefs, mergeProps, updateIdentities } from './utils';
@@ -460,7 +460,7 @@ describe('utils', () => {
 			};
 
 			const result = updateIdentities(state, mods, []);
-			const updatedIdentity = find(result, (identity) => identity.id === identityToUpdateId);
+			const updatedIdentity = result.find((identity) => identity.id === identityToUpdateId);
 			expect(updatedIdentity?.name).toEqual(identityNewName);
 		});
 	});

@@ -7,7 +7,7 @@
 import type { ComponentType } from 'react';
 
 import { produce } from 'immer';
-import { findIndex, merge, reduce, some } from 'lodash';
+import { merge } from 'lodash';
 import { create } from 'zustand';
 
 import { normalizeApp } from './utils';
@@ -73,7 +73,7 @@ function addIfNotPresent<T extends { id: unknown }>(
 	itemToAdd: T,
 	onAdd?: (items: T[], item: T) => void
 ): void {
-	if (!some(items, (item) => item.id === itemToAdd.id)) {
+	if (!items.some((item) => item.id === itemToAdd.id)) {
 		items.push(itemToAdd);
 		onAdd?.(items, itemToAdd);
 	}
@@ -88,7 +88,7 @@ function addAndSort<T extends { id: unknown; position: number }>(items: T[], ite
 }
 
 function removeById<T extends { id: unknown }>(items: T[], id: unknown): void {
-	const index = findIndex(items, (item) => item.id === id);
+	const index = items.findIndex((item) => item.id === id);
 	if (index !== -1) {
 		items.splice(index, 1);
 	}
@@ -129,15 +129,11 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 	...initialState,
 	setApps: (apps): void => {
 		set(() => {
-			const { moduleApps, shellApp, appContexts } = reduce<
-				Partial<CarbonioModule>,
-				{
-					moduleApps: AppState['apps'];
-					shellApp: AppState['shell'];
-					appContexts: AppState['appContexts'];
-				}
-			>(
-				apps,
+			const { moduleApps, shellApp, appContexts } = apps.reduce<{
+				moduleApps: AppState['apps'];
+				shellApp: AppState['shell'];
+				appContexts: AppState['appContexts'];
+			}>(
 				(accumulator, app) => {
 					if (app.name) {
 						const normalizedApp = normalizeApp(app);
@@ -218,7 +214,7 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 	setRouteVisibility: (id, visible): void => {
 		set(
 			produce<AppState>((state) => {
-				const idx = findIndex(state.views.primaryBar, (view) => view.id === id);
+				const idx = state.views.primaryBar.findIndex((view) => view.id === id);
 				if (idx >= 0) {
 					state.views.primaryBar[idx].visible = visible;
 				}
@@ -317,7 +313,7 @@ export const useAppStore = create<AppState & AppActions>()((set, get) => ({
 	updatePrimaryBadge: (badge, id): void => {
 		set(
 			produce<AppState>((state) => {
-				const idx = findIndex(state.views.primaryBar, (bar) => bar.id === id);
+				const idx = state.views.primaryBar.findIndex((bar) => bar.id === id);
 				if (idx >= 0) {
 					state.views.primaryBar[idx].badge = {
 						...state.views.primaryBar[idx].badge,

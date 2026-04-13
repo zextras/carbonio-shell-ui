@@ -6,7 +6,6 @@
 import type React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { forEach } from 'lodash';
 
 import { useLocalStorage } from './useLocalStorage';
 import type { ElementPosition, SizeAndPosition } from '../../utils/utils';
@@ -72,7 +71,7 @@ export const useMove = (
 				if (left >= 0) {
 					positionToApply.left = left;
 				}
-				forEach(positionToApply, (value, key) => {
+				Object.entries(positionToApply).forEach(([key, value]) => {
 					setElementSizeAndPosition(elementToMove, key as keyof ElementPosition, value);
 				});
 				lastPositionRef.current = positionToApply;

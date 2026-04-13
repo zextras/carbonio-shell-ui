@@ -7,7 +7,7 @@ import React from 'react';
 
 import { act, screen, waitFor, within } from '@testing-library/react';
 import { Input } from '@zextras/carbonio-design-system';
-import { reduce, sample, size } from 'lodash';
+
 
 import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
 import {
@@ -48,9 +48,8 @@ const ENLARGED_BOARD_POSITION = {
 
 describe('Board container', () => {
 	describe('Tabs', () => {
-		const boards = reduce<unknown, Record<string, Board>>(
-			Array<never>(10),
-			(accumulator, value, index) => {
+		const boards = Array.from({ length: 10 }).reduce<Record<string, Board>>(
+			(accumulator, _value, index) => {
 				const boardId = `board-${index + 1}`;
 				accumulator[boardId] = {
 					id: boardId,
@@ -119,7 +118,7 @@ describe('Board container', () => {
 			await user.click(firstCloseIcon);
 			expect(screen.getAllByText(/from mails/i)).toHaveLength(9);
 			expect(useBoardStore.getState().orderedBoards).toHaveLength(9);
-			expect(size(useBoardStore.getState().boards)).toBe(9);
+			expect(Object.keys(useBoardStore.getState().boards).length).toBe(9);
 		});
 	});
 
@@ -917,7 +916,7 @@ describe('Board container', () => {
 		['reset board', ICONS.resetBoardSize],
 		['enlarge board', ICONS.enlargeBoard]
 	])('Action %s is not fired if a move is performed on it', async (actionName, icon) => {
-		const boardItem = sample(mockedBoardState) as Board;
+		const boardItem = Object.values(mockedBoardState)[Math.floor(Math.random() * Object.values(mockedBoardState).length)] as Board;
 		setupBoardStore(boardItem.id, { [boardItem.id]: boardItem });
 		const { getAllByRoleWithIcon } = setup(<BoardContainer />);
 		act(() => {
@@ -966,7 +965,7 @@ describe('Board container', () => {
 	});
 
 	test('Double click inside a focused input select the text', async () => {
-		const boardObj = sample(mockedBoardState) as Board;
+		const boardObj = Object.values(mockedBoardState)[Math.floor(Math.random() * Object.values(mockedBoardState).length)] as Board;
 		setupBoardStore(boardObj.id, { [boardObj.id]: boardObj });
 		const boardView: BoardView = {
 			id: boardObj.boardViewId,

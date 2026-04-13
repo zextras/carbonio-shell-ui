@@ -8,7 +8,7 @@ import type React from 'react';
 
 import type { GeneralizedTime } from '@zextras/carbonio-ui-soap-lib';
 import type { TFunction } from 'i18next';
-import { cloneDeep, filter, findIndex, isBoolean, reduce, uniq } from 'lodash';
+import { cloneDeep } from 'lodash';
 
 import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
 import type {
@@ -82,7 +82,7 @@ export function upsertPrefOnUnsavedChanges(
 	return (prefKey, prefValue) => {
 		if (prefValue === undefined) {
 			addModifiedValueCallback('prefs', prefKey, '');
-		} else if (isBoolean(prefValue)) {
+		} else if (typeof prefValue === 'boolean') {
 			addModifiedValueCallback('prefs', prefKey, (prefValue && 'TRUE') || 'FALSE');
 		} else {
 			addModifiedValueCallback('prefs', prefKey, prefValue as PrefsMods[typeof prefKey]);
@@ -182,7 +182,7 @@ export const getAvailableEmailAddresses = (
 		...asArray(settings.attrs.zimbraAllowFromAddress)
 	);
 
-	return uniq(result);
+	return [...new Set(result)];
 };
 
 export function calculateNewIdentitiesState(
@@ -191,15 +191,13 @@ export function calculateNewIdentitiesState(
 	addedIdentities: Array<Identity>,
 	modifiedIdentitiesAttrs: Record<string, Partial<IdentityAttrs>>
 ): Array<Identity> {
-	const filteredIdentities = filter(
-		currentIdentities,
+	const filteredIdentities = currentIdentities.filter(
 		(item) => !deletedIdentities.includes(item.id)
 	);
 
-	const filteredAndModified = reduce(
-		modifiedIdentitiesAttrs,
-		(accumulator, attrs, id) => {
-			const propIndex = findIndex(accumulator, (identity) => identity.id === id);
+	const filteredAndModified = Object.entries(modifiedIdentitiesAttrs).reduce(
+		(accumulator, [id, attrs]) => {
+			const propIndex = accumulator.findIndex((identity) => identity.id === id);
 			if (propIndex > -1) {
 				accumulator[propIndex]._attrs = {
 					...accumulator[propIndex]._attrs,

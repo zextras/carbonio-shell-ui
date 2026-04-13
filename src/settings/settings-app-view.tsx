@@ -6,7 +6,7 @@
 
 import React, { useMemo } from 'react';
 
-import { map } from 'lodash';
+
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { AppContextProvider } from '../boot/app/app-context-provider';
@@ -16,7 +16,7 @@ export const SettingsAppView = (): React.JSX.Element => {
 	const settingsViews = useAppStore((s) => s.views.settings);
 	const routes = useMemo(
 		() =>
-			map(settingsViews, (view) => (
+			settingsViews.map((view) => (
 				<Route
 					key={view.route}
 					path={view.route}

@@ -7,8 +7,9 @@
 import '@testing-library/jest-dom';
 import { configure } from '@testing-library/react';
 import dotenv from 'dotenv';
-import { forEach, noop } from 'lodash';
 import failOnConsole from 'vitest-fail-on-console';
+
+const noop = (): void => undefined;
 
 import server from './mocks/server';
 
@@ -108,7 +109,7 @@ afterEach(() => {
 	server.resetHandlers();
 	window.resizeTo(1024, 768);
 
-	forEach(map, (listener, event) => {
+	Object.entries(map).forEach(([event, listener]) => {
 		window.removeEventListener(event, listener);
 	});
 });

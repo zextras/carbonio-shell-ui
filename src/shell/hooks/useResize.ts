@@ -7,7 +7,6 @@ import type { CSSProperties } from 'react';
 import type React from 'react';
 import { useCallback, useEffect, useRef } from 'react';
 
-import { find, forEach } from 'lodash';
 
 import { useLocalStorage } from './useLocalStorage';
 import type { SizeAndPosition } from '../../utils/utils';
@@ -33,15 +32,14 @@ type ResizeOptions = {
 export const BORDERS: Border[] = ['n', 's', 'e', 'w', 'ne', 'se', 'sw', 'nw'];
 
 export function getCursorFromBorder(border: Border): NonNullable<CSSProperties['cursor']> {
-	const direction = find(
-		[
+	const direction = [
 			['n', 's'],
 			['e', 'w'],
 			['ne', 'sw'],
 			['nw', 'se']
-		],
-		(borders) => borders.includes(border)
-	)?.join('');
+		].find(
+			(borders) => borders.includes(border)
+		)?.join('');
 	return direction?.concat('-resize') ?? '';
 }
 
@@ -110,7 +108,7 @@ export const useResize = (
 					sizeAndPositionToApply.width = width;
 					sizeAndPositionToApply.left = left;
 				}
-				forEach(sizeAndPositionToApply, (value, key) => {
+				Object.entries(sizeAndPositionToApply).forEach(([key, value]) => {
 					setElementSizeAndPosition(elementToResize, key as keyof SizeAndPosition, value);
 				});
 				// reset bottom in favor of top

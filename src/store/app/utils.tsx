@@ -6,8 +6,6 @@
 
 import React from 'react';
 
-import { trim } from 'lodash';
-
 import type {
 	AppRouteDescriptor,
 	BadgeInfo,
@@ -47,7 +45,7 @@ export const normalizeRoute = (
 	data: Partial<AppRouteDescriptor>,
 	app: CarbonioModule
 ): AppRouteDescriptor => {
-	const route = trim(data.route ?? app.name, '/');
+	const route = (data.route ?? app.name).replace(/^\/+|\/+$/g, '');
 	return {
 		app: app.name,
 		route,
@@ -67,7 +65,7 @@ export const normalizeSettingsView = (
 	data: Partial<SettingsView>,
 	app: CarbonioModule
 ): SettingsView => {
-	const route = trim(data.route ?? app.name, '/');
+	const route = (data.route ?? app.name).replace(/^\/+|\/+$/g, '');
 	return {
 		app: app.name,
 		route,

@@ -8,7 +8,7 @@ import React, { useCallback, useMemo } from 'react';
 
 import styled from '@emotion/styled';
 import { Container } from '@zextras/carbonio-design-system';
-import { filter, findIndex, map, sortBy } from 'lodash';
+import { sortBy } from 'lodash';
 import { Route, Routes } from 'react-router-dom';
 
 import { Collapser } from './collapser';
@@ -40,13 +40,13 @@ const ShellSecondaryBarComponent = ({
 	const accessories = useMemo(
 		() =>
 			sortBy(
-				filter(secondaryBarAccessoryViews, (v) => checkRoute(v, activeRoute)),
+				secondaryBarAccessoryViews.filter((v) => checkRoute(v, activeRoute)),
 				'position'
 			),
 		[activeRoute, secondaryBarAccessoryViews]
 	);
 	const disabled = useMemo(
-		() => findIndex(secondaryBarViews, (view) => view.id === activeRoute?.id) < 0,
+		() => secondaryBarViews.findIndex((view) => view.id === activeRoute?.id) < 0,
 		[activeRoute?.id, secondaryBarViews]
 	);
 	return disabled ? null : (
@@ -66,7 +66,7 @@ const ShellSecondaryBarComponent = ({
 			>
 				<Container mainAlignment="flex-start">
 					<Routes>
-						{map(secondaryBarViews, (view) => (
+						{secondaryBarViews.map((view) => (
 							<Route
 								key={view.id}
 								path={`${view.route}/*`}

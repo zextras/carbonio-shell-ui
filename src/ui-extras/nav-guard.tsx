@@ -8,7 +8,7 @@ import React, { useCallback } from 'react';
 
 import type { ModalProps } from '@zextras/carbonio-design-system';
 import { Modal, Button } from '@zextras/carbonio-design-system';
-import { filter } from 'lodash';
+
 import { useTranslation } from 'react-i18next';
 import type { BlockerFunction, Location } from 'react-router-dom';
 import { useBlocker } from 'react-router-dom';
@@ -47,8 +47,7 @@ export const RouteLeavingGuard = ({
 	const onConfirm = useCallback((): void => {
 		onSave()
 			.then((results) => {
-				const rejected = filter(
-					results,
+				const rejected = results.filter(
 					(result): result is PromiseRejectedResult => result.status === 'rejected'
 				);
 				if (rejected.length > 0) {

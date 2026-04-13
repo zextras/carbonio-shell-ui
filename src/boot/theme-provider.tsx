@@ -24,7 +24,6 @@ import {
 	useTheme
 } from '@zextras/carbonio-design-system';
 import { auto, disable, enable, setFetchMethod } from 'darkreader';
-import { map, reduce } from 'lodash';
 
 import { useGetPrimaryColor } from './use-get-primary-color';
 import { darkReaderDynamicThemeFixes, LOCAL_STORAGE_SETTINGS_KEY } from '../constants';
@@ -109,8 +108,7 @@ const getGlobalStyles = (baseFontSize: number, theme: Theme): ReturnType<typeof 
 	html {
 		font-size: ${baseFontSize}%;
 	}
-	${map(
-		theme.globalCursors,
+	${(theme.globalCursors ?? []).map(
 		(cursor) => css`
 			.global-cursor-${cursor} * {
 				cursor: ${cursor} !important;
@@ -183,8 +181,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps): React.JSX.Eleme
 
 	const aggregatedExtensions = useCallback<NonNullable<UIThemeProviderProps['extension']>>(
 		(theme) =>
-			reduce(
-				extensions,
+			Object.values(extensions).reduce(
 				(themeAccumulator, themeExtensionFn) => {
 					if (themeExtensionFn) {
 						return themeExtensionFn(themeAccumulator);

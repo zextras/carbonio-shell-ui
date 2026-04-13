@@ -8,7 +8,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { SelectItem, SingleSelectionOnChange } from '@zextras/carbonio-design-system';
 import { FormSubSection } from '@zextras/carbonio-design-system';
-import { find } from 'lodash';
+
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -62,7 +62,7 @@ const DarkThemeSettingSection = ({
 
 	const setSelectNewValue = useCallback(
 		(value: DarkReaderPropValues) => {
-			const item = find(items, { value });
+			const item = items.find((i) => i.value === value);
 			if (item) {
 				setSelection(item);
 			}

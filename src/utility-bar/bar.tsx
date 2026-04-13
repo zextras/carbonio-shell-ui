@@ -7,7 +7,7 @@ import React, { useCallback, useMemo } from 'react';
 
 import type { DropdownItem } from '@zextras/carbonio-design-system';
 import { Container, Dropdown, IconButton, Tooltip } from '@zextras/carbonio-design-system';
-import { map, noop } from 'lodash';
+const noop = (): void => undefined;
 
 import { useUtilityBarStore } from './store';
 import { useUtilityViews } from './utils';
@@ -126,7 +126,7 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 	);
 
 	const viewItems = useMemo(
-		() => map(views, (view) => <UtilityBarItem view={view} key={view.id} />),
+		() => views.map((view) => <UtilityBarItem view={view} key={view.id} />),
 		[views]
 	);
 

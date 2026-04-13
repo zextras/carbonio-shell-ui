@@ -24,7 +24,7 @@ import {
 	Row,
 	Select
 } from '@zextras/carbonio-design-system';
-import { filter, find } from 'lodash';
+
 import { useTranslation } from 'react-i18next';
 
 import { EMAIL_VALIDATION_REGEX } from '../../../constants';
@@ -71,7 +71,7 @@ const SettingsSentMessages = ({
 	);
 	const [fromAddress, setFromAddress] = useState(
 		() =>
-			find(fromAddressArray, (item) => item.value === identityAttrs.zimbraPrefFromAddress) ??
+			fromAddressArray.find((item) => item.value === identityAttrs.zimbraPrefFromAddress) ??
 			blankItem
 	);
 
@@ -83,7 +83,7 @@ const SettingsSentMessages = ({
 	}, [identityAttrs.zimbraPrefFromDisplay]);
 	useEffect(() => {
 		setFromAddress(
-			find(fromAddressArray, (item) => item.value === identityAttrs.zimbraPrefFromAddress) ??
+			fromAddressArray.find((item) => item.value === identityAttrs.zimbraPrefFromAddress) ??
 				blankItem
 		);
 	}, [fromAddressArray, identityAttrs.zimbraPrefFromAddress]);
@@ -127,7 +127,7 @@ const SettingsSentMessages = ({
 			if (fromAddress?.value === newAddress) {
 				return;
 			}
-			setFromAddress(filter(fromAddressArray, (item) => item.value === newAddress)[0]);
+			setFromAddress(fromAddressArray.find((item) => item.value === newAddress) ?? blankItem);
 			if (identityAttrs.zimbraPrefIdentityId) {
 				updateIdentities(identityAttrs.zimbraPrefIdentityId, 'zimbraPrefFromAddress', newAddress);
 			}

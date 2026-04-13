@@ -5,7 +5,6 @@
  */
 import React from 'react';
 
-import { compact, map } from 'lodash';
 
 import type { IntegrationsState } from './store';
 import { AppContextProvider } from '../../boot/app/app-context-provider';
@@ -40,17 +39,15 @@ export function buildIntegrationActions<TAction extends Action>(
 	integration: IntegrationsState['actions'][string],
 	context: unknown
 ): Array<TAction> {
-	return compact(
-		map(integration, (actionFactory) => {
-			try {
-				return actionFactory(context) as TAction;
-			} catch (e) {
-				// eslint-disable-next-line no-console
-				console.error(e);
-				return undefined;
-			}
-		})
-	);
+	return Object.values(integration ?? {}).map((actionFactory) => {
+		try {
+			return actionFactory(context) as TAction;
+		} catch (e) {
+			// eslint-disable-next-line no-console
+			console.error(e);
+			return undefined;
+		}
+	}).filter((v): v is TAction => v !== undefined);
 }
 
 export function buildIntegrationAction(

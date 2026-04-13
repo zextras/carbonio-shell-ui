@@ -9,7 +9,6 @@ import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react'
 import { Container, ModalManager, useSnackbar } from '@zextras/carbonio-design-system';
 import { soapFetchV2 } from '@zextras/carbonio-ui-soap-lib';
 import { produce } from 'immer';
-import { map, find, isEmpty, filter, size } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 import { JSNS } from '../constants';
@@ -53,8 +52,7 @@ export type AccountsSettingsBatchResponse = BatchResponse<{
 function mapToCreateIdentityRequests(
 	createRecord: Record<string, IdentityAttrs>
 ): Array<CreateIdentityRequest> {
-	return map(
-		createRecord,
+	return Object.values(createRecord).map(
 		(item): CreateIdentityRequest => ({
 			_jsns: JSNS.account,
 			identity: {
@@ -69,8 +67,7 @@ function mapToCreateIdentityRequests(
 }
 
 function mapToDeleteIdentityRequests(deleteArray: Array<string>): Array<DeleteIdentityRequest> {
-	return map(
-		deleteArray,
+	return deleteArray.map(
 		(identityId): DeleteIdentityRequest => ({
 			_jsns: JSNS.account,
 			identity: { id: identityId },
@@ -82,9 +79,8 @@ function mapToDeleteIdentityRequests(deleteArray: Array<string>): Array<DeleteId
 function mapToModifyIdentityRequests(
 	modifyRecord: Record<string, Partial<IdentityAttrs>>
 ): Array<ModifyIdentityRequest> {
-	return map<typeof modifyRecord, ModifyIdentityRequest>(
-		modifyRecord,
-		(item, idKey): ModifyIdentityRequest => ({
+	return Object.entries(modifyRecord).map(
+		([idKey, item]): ModifyIdentityRequest => ({
 			_jsns: JSNS.account,
 			identity: {
 				id: idKey,
@@ -101,8 +97,7 @@ function calculateConfirmedDeletedIdentities(
 ): string[] {
 	if (deleteIdentityResponse) {
 		return deleteIdentityResponse.reduce<string[]>((accumulator, response) => {
-			const deleteIdentityRequest = find(
-				deleteIdentityRequests,
+			const deleteIdentityRequest = deleteIdentityRequests.find(
 				(item) => item.requestId === response.requestId
 			);
 			if (deleteIdentityRequest) {
@@ -121,8 +116,7 @@ function calculateConfirmedModifiedIdentities(
 	if (modifyIdentityResponse) {
 		return modifyIdentityResponse.reduce<Record<string, Partial<IdentityAttrs>>>(
 			(accumulator, response) => {
-				const modifyIdentityRequest = find(
-					modifyIdentityRequests,
+				const modifyIdentityRequest = modifyIdentityRequests.find(
 					(item) => item.requestId === response.requestId
 				);
 				if (modifyIdentityRequest) {
@@ -151,9 +145,9 @@ export const AccountsSettings = (): React.JSX.Element => {
 	const [isDirty, setIsDirty] = useState(false);
 	const calculateIsDirty = useCallback(() => {
 		setIsDirty(
-			!isEmpty(createRecordRef.current) ||
-				!isEmpty(deleteArrayRef.current) ||
-				!isEmpty(modifyRecordRef.current)
+			Object.keys(createRecordRef.current).length > 0 ||
+				deleteArrayRef.current.length > 0 ||
+				Object.keys(modifyRecordRef.current).length > 0
 		);
 	}, []);
 
@@ -197,12 +191,12 @@ export const AccountsSettings = (): React.JSX.Element => {
 			if (createRecordRef.current[id]) {
 				createRecordRef.current[id][key] = value;
 			} else if (modifyRecordRef.current[id]) {
-				const actualIdentity = find(identitiesDefault, (item) => item.id === id);
+				const actualIdentity = identitiesDefault.find((item) => item.id === id);
 				modifyRecordRef.current[id][key] = value;
 				if (actualIdentity && actualIdentity._attrs[key] === value) {
 					delete modifyRecordRef.current[id][key];
 				}
-				if (size(modifyRecordRef.current[id]) === 0) {
+				if (Object.keys(modifyRecordRef.current[id]).length === 0) {
 					delete modifyRecordRef.current[id];
 				}
 			} else {
@@ -212,7 +206,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 			}
 			calculateIsDirty();
 			setIdentities((prevState) =>
-				map(prevState, (item) =>
+				prevState.map((item) =>
 					item.id === id
 						? {
 								...item,
@@ -237,7 +231,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 				delete modifyRecordRef.current[identityId];
 			}
 			calculateIsDirty();
-			setIdentities((prevState) => filter(prevState, (identity) => identity.id !== identityId));
+			setIdentities((prevState) => prevState.filter((identity) => identity.id !== identityId));
 		},
 		[calculateIsDirty]
 	);
@@ -253,7 +247,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 
 	const onSave = useCallback(() => {
 		if (
-			identitiesDefault.length + size(createRecordRef.current) - deleteArrayRef.current.length >
+			identitiesDefault.length + Object.keys(createRecordRef.current).length - deleteArrayRef.current.length >
 			maxIdentities
 		) {
 			createSnackbar({
@@ -376,7 +370,7 @@ export const AccountsSettings = (): React.JSX.Element => {
 	const onCancel = useCallback(() => {
 		resetLists();
 		setIdentities(identitiesDefault);
-		setSelectedIdentityId(size(identitiesDefault) - 1);
+		setSelectedIdentityId(identitiesDefault.length - 1);
 	}, [identitiesDefault, resetLists]);
 
 	const personaSettings = useMemo<React.JSX.Element | null>(() => {

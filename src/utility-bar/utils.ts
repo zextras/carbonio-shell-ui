@@ -6,7 +6,7 @@
 
 import { useMemo } from 'react';
 
-import { filter, intersection, omit } from 'lodash';
+import { intersection, omit } from 'lodash';
 
 import { useCurrentRoute } from '../history/hooks';
 import { useAppStore } from '../store/app';
@@ -34,7 +34,7 @@ export const useUtilityViews = (): Array<UtilityView> => {
 
 	const activeRoute = useCurrentRoute();
 	return useMemo(
-		() => filter(utilityViews, (v) => checkRoute(v, activeRoute)),
+		() => utilityViews.filter((v) => checkRoute(v, activeRoute)),
 		[activeRoute, utilityViews]
 	);
 };

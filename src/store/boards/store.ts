@@ -5,7 +5,7 @@
  */
 
 import { produce } from 'immer';
-import { forEach, uniqueId } from 'lodash';
+import { uniqueId } from 'lodash';
 import { create } from 'zustand';
 
 import type { Board } from '../../types/boards';
@@ -68,7 +68,7 @@ export const closeBoard = (id: string): void => {
 export const closeAllBoards = (): void => {
 	useBoardStore.setState(
 		produce((state: BoardState) => {
-			forEach(state.boards, (b) => {
+			Object.values(state.boards).forEach((b) => {
 				b?.onClose?.(b);
 				delete state.boards[b.id];
 			});

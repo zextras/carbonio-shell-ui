@@ -7,7 +7,7 @@ import React from 'react';
 
 import { faker } from '@faker-js/faker';
 import { act, screen, waitFor, within } from '@testing-library/react';
-import { head, shuffle, tail } from 'lodash';
+
 import { http, HttpResponse } from 'msw';
 
 import { AccountsSettings } from './accounts-settings';
@@ -211,7 +211,7 @@ describe('Account setting', () => {
 			account: createAccount(
 				defaultEmail,
 				defaultId,
-				shuffle([
+				[...([
 					createIdentity(
 						{
 							zimbraPrefIdentityId: persona3Id,
@@ -244,7 +244,7 @@ describe('Account setting', () => {
 						},
 						true
 					)
-				])
+				]).sort(() => Math.random() - 0.5)]
 			)
 		});
 
@@ -252,7 +252,7 @@ describe('Account setting', () => {
 
 		const renderedItems = screen.getAllByRole('listitem');
 		expect(renderedItems.length).toEqual(4);
-		expect(head(renderedItems.map((item) => item.textContent))).toMatchInlineSnapshot(
+		expect(renderedItems.map((item) => item.textContent)[0]).toMatchInlineSnapshot(
 			`"defaultFullName(default@email.com)Primary"`
 		);
 	});
@@ -276,7 +276,7 @@ describe('Account setting', () => {
 
 		const renderedItems = screen.getAllByRole('listitem');
 		expect(renderedItems.length).toEqual(2);
-		expect(tail(renderedItems.map((item) => item.textContent))).toMatchInlineSnapshot(`
+		expect(renderedItems.map((item) => item.textContent).slice(1)).toMatchInlineSnapshot(`
 		[
 		  "New Persona 1(default@email.com)Persona",
 		]

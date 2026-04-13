@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
-import { times } from 'lodash';
+
 
 import { useAccountStore } from './store';
 import { updateAccount, updateSettings } from './updaters';
@@ -139,9 +139,7 @@ describe('updateAccount', () => {
 			throw new Error('Account not found in the store');
 		}
 
-		const signatures: Array<Signature> = times(
-			5,
-			(): Signature => ({
+		const signatures: Array<Signature> = Array.from({ length: 5 }, (): Signature => ({
 				id: faker.string.uuid(),
 				name: faker.word.noun(),
 				content: [
@@ -150,8 +148,7 @@ describe('updateAccount', () => {
 						_content: `<p>${faker.person.fullName()}</p>`
 					}
 				]
-			})
-		);
+			}));
 
 		updateAccount({
 			signatures
@@ -167,9 +164,7 @@ describe('updateAccount', () => {
 			throw new Error('Account not found in the store');
 		}
 
-		const signatures: Array<Signature> = times(
-			5,
-			(): Signature => ({
+		const signatures: Array<Signature> = Array.from({ length: 5 }, (): Signature => ({
 				id: faker.string.uuid(),
 				name: faker.word.noun(),
 				content: [
@@ -178,8 +173,7 @@ describe('updateAccount', () => {
 						_content: `<p>${faker.person.fullName()}</p>`
 					}
 				]
-			})
-		);
+			}));
 
 		updateAccount({
 			signatures

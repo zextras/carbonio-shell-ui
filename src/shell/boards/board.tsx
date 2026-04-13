@@ -8,7 +8,6 @@ import React, { useMemo } from 'react';
 
 import styled from '@emotion/styled';
 import { Container } from '@zextras/carbonio-design-system';
-import { find } from 'lodash';
 
 import { AppContextProvider } from '../../boot/app/app-context-provider';
 import { useAppStore } from '../../store/app';
@@ -53,7 +52,7 @@ export const AppBoard = ({ board }: { board: Board }): React.JSX.Element => {
 	const current = useBoardStore((s) => s.current);
 	const boardViews = useAppStore((s) => s.views.board);
 	const boardView = useMemo(
-		() => find(boardViews, (v) => v.id === board.boardViewId),
+		() => boardViews.find((v) => v.id === board.boardViewId),
 		[board.boardViewId, boardViews]
 	);
 

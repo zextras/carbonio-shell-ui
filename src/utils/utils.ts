@@ -5,7 +5,6 @@
  */
 import type { CSSProperties } from 'react';
 
-import { reduce } from 'lodash';
 
 export type ElementPosition = {
 	top: number;
@@ -47,9 +46,8 @@ export function createExportForTestOnly<TObj extends Record<string, unknown>>(
 ): { [K in keyof TObj]: TObj[K] | undefined } {
 	return process.env.NODE_ENV === 'test'
 		? objToExport
-		: reduce(
-				objToExport,
-				(accumulator, _value, key) => {
+		: Object.entries(objToExport).reduce(
+				(accumulator, [key]) => {
 					accumulator[key as keyof TObj] = undefined;
 					return accumulator;
 				},

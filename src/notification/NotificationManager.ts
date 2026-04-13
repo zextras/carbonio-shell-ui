@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { debounce, noop } from 'lodash';
+import { debounce } from 'lodash';
 
 import defaultAudio from '../../assets/notification.mp3';
 import { getFavicon } from '../store/login/getters';
@@ -108,7 +108,7 @@ class NotificationManager implements INotificationManager {
 			);
 		}
 		const result = this.functions.get(sound);
-		return result ?? noop;
+		return result ?? ((): void => undefined);
 	};
 
 	/**

@@ -22,7 +22,7 @@ import {
 	Divider
 } from '@zextras/carbonio-design-system';
 import type { TFunction } from 'i18next';
-import { map } from 'lodash';
+
 import { useTranslation } from 'react-i18next';
 
 import type { Identity, IdentityAttrs } from '../../../types/account';
@@ -68,8 +68,7 @@ const AccountsList = ({
 
 	const createListRequestIdRef = useRef(0);
 	const addNewPersona = useCallback(() => {
-		const unavailableIdentityNames = map<Identity, string>(
-			[...identitiesDefault, ...identities],
+		const unavailableIdentityNames = [...identitiesDefault, ...identities].map<string>(
 			(item) => item._attrs?.zimbraPrefIdentityName ?? ''
 		);
 		const newPersonaName = getNewPersonaNextIdentityName(1, unavailableIdentityNames, t);
@@ -120,7 +119,7 @@ const AccountsList = ({
 
 	const items = useMemo(
 		() =>
-			map(identities, (item, index) => (
+			identities.map((item, index) => (
 				<ListItem key={item.id} active={selectedIdentityId === index}>
 					{(): React.JSX.Element => (
 						<>

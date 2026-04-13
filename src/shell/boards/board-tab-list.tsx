@@ -8,7 +8,6 @@ import React from 'react';
 
 import styled from '@emotion/styled';
 import { Row } from '@zextras/carbonio-design-system';
-import { isEmpty, map } from 'lodash';
 
 import { AppBoardTab } from './board-tab';
 import { useBoardStore } from '../../store/boards';
@@ -26,8 +25,8 @@ export const TabsList = (): React.JSX.Element => {
 	return (
 		<CustomRow wrap="nowrap" height="100%" mainAlignment="flex-start" takeAvailableSpace>
 			{boards &&
-				!isEmpty(orderedBoards) &&
-				map(orderedBoards, (boardId, idx) => (
+				orderedBoards.length > 0 &&
+				orderedBoards.map((boardId, idx) => (
 					<AppBoardTab
 						key={boardId}
 						id={boardId}

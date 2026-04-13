@@ -21,7 +21,7 @@ import {
 	Text,
 	Tooltip
 } from '@zextras/carbonio-design-system';
-import { debounce, isEmpty, map, noop, size } from 'lodash';
+import { debounce, isEmpty } from 'lodash';
 
 import { AppBoard } from './board';
 import { TabsList } from './board-tab-list';
@@ -142,6 +142,8 @@ const BoardDetailContainer = styled(Row)`
 const BackButton = styled(IconButton)``;
 const Actions = styled(Row)``;
 
+const noop = (): void => undefined;
+
 interface ListItemContentProps {
 	icon?: string;
 	label: string;
@@ -211,8 +213,7 @@ export const BoardContainer = ({
 
 	const boardDropdownItems = useMemo(
 		(): DropdownItem[] =>
-			map(
-				orderedBoards,
+			orderedBoards.map(
 				(boardId): DropdownItem => ({
 					id: boardId,
 					label: boards[boardId].title,
@@ -247,7 +248,7 @@ export const BoardContainer = ({
 	});
 
 	const isDefaultSizeAndPosition = useMemo(
-		() => size(currentBoardSizeAndPosition) === 0,
+		() => Object.keys(currentBoardSizeAndPosition).length === 0,
 		[currentBoardSizeAndPosition]
 	);
 	const isBoardEmpty = useMemo(() => isEmpty(boards), [boards]);
@@ -331,7 +332,7 @@ export const BoardContainer = ({
 		lastSavedBoardSizeAndPositionRef.current = { ...lastSavedBoardSizeAndPosition };
 		// if there is a board open, then update the size and position based on the window
 		if (boardRef.current) {
-			if (size(lastSavedBoardSizeAndPosition) > 0) {
+			if (Object.keys(lastSavedBoardSizeAndPosition).length > 0) {
 				updateBoardPosition();
 			} else {
 				setCurrentBoardSizeAndPosition({});
@@ -473,7 +474,7 @@ export const BoardContainer = ({
 						</BoardHeader>
 						<Divider style={{ height: '0.125rem' }} />
 						<BoardDetailContainer takeAvailableSpace>
-							{map(boards, (b) => (
+							{Object.values(boards).map((b) => (
 								<AppBoard key={b.id} board={b} />
 							))}
 						</BoardDetailContainer>

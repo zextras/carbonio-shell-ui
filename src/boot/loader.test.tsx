@@ -8,7 +8,7 @@ import React from 'react';
 import { act, waitFor } from '@testing-library/react';
 import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
 import { api, ApiEvents } from '@zextras/carbonio-ui-soap-lib';
-import { noop } from 'lodash';
+
 import { http, HttpResponse } from 'msw';
 import { EventEmitter } from 'node:events';
 import type { MockInstance } from 'vitest';
@@ -209,7 +209,7 @@ describe('Loader', () => {
 
 	describe('Session expiration', () => {
 		test('should redirect to login if user session is expired', async () => {
-			const goToLoginFn = vi.spyOn(networkUtils, 'goToLogin').mockImplementation(noop);
+			const goToLoginFn = vi.spyOn(networkUtils, 'goToLogin').mockImplementation((): void => undefined);
 			mockGetInfo();
 
 			setup(<Loader />);

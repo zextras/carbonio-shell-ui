@@ -9,7 +9,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Modal, Padding, Text } from '@zextras/carbonio-design-system';
 import type { UserQuotaChangeEvent } from '@zextras/carbonio-ui-soap-lib';
 import { ApiEvents, GET_INFO_RIGHTS, api } from '@zextras/carbonio-ui-soap-lib';
-import { find } from 'lodash';
+
 import { useTranslation } from 'react-i18next';
 
 import { loadApps, unloadAllApps } from './app/load-apps';
@@ -143,8 +143,7 @@ export const Loader = (): React.JSX.Element => {
 				const [, getComponentsPromiseSettledResult, getInfoPromiseSettledResult] =
 					promiseSettledResultArray;
 
-				const promiseRejectedResult = find(
-					[getComponentsPromiseSettledResult, getInfoPromiseSettledResult],
+				const promiseRejectedResult = [getComponentsPromiseSettledResult, getInfoPromiseSettledResult].find(
 					isPromiseRejectedResult
 				);
 				if (promiseRejectedResult) {

@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
-import { find } from 'lodash';
+
 
 import { useAccountStore } from './store';
 import { mergeAttrs, mergePrefs, mergeProps, updateIdentities } from './utils';
@@ -49,10 +49,11 @@ export const updateAccount: UpdateAccount = ({ identities, signatures }) =>
 						...(identities
 							? {
 									displayName:
-										find(
-											identities?.identitiesMods?.modifyList,
-											(item) => item.id === state?.account?.id
-										)?.prefs.zimbraPrefIdentityName ?? state.account?.displayName,
+										(identities?.identitiesMods?.modifyList
+											? Object.values(identities.identitiesMods.modifyList).find(
+													(item) => item.id === state?.account?.id
+												)
+											: undefined)?.prefs.zimbraPrefIdentityName ?? state.account?.displayName,
 									identities: {
 										identity:
 											updateIdentities(

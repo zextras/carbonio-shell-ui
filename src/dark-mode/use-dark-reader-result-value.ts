@@ -6,7 +6,6 @@
 
 import { useMemo } from 'react';
 
-import { size } from 'lodash';
 
 import type { DarkReaderPropValues } from './utils';
 import { DARK_READER_VALUES } from '../constants';
@@ -28,7 +27,10 @@ export function useDarkReaderResultValue(): undefined | DarkReaderPropValues {
 	const carbonioWebUiDarkMode = useLoginConfigStore((s) => s.carbonioWebUiDarkMode);
 
 	const settingReceived = useMemo(
-		() => size(settings.prefs) > 0 || size(settings.attrs) > 0 || size(settings.props) > 0,
+		() =>
+			Object.keys(settings.prefs).length > 0 ||
+			Object.keys(settings.attrs).length > 0 ||
+			settings.props.length > 0,
 		[settings]
 	);
 

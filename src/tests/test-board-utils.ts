@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
-import { first, keys } from 'lodash';
+
 
 import { TESTID_SELECTORS } from './constants';
 import { mockedApps } from './test-app-utils';
@@ -48,7 +48,7 @@ export function setupBoardStore(current?: string, boardState?: Record<string, Bo
 	useBoardStore.setState(() => ({
 		boards,
 		orderedBoards: Object.keys(boards),
-		current: current ?? first(keys(boards))
+		current: current ?? Object.keys(boards)[0]
 	}));
 }
 

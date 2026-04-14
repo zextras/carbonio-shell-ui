@@ -22,7 +22,7 @@ import type { CarbonioModule } from '../../types/apps';
 export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
 
-export const WrappedSettingsHeader = ({ ...props }: SettingsHeaderProps): React.JSX.Element => (
+const WrappedSettingsHeader = ({ ...props }: SettingsHeaderProps): React.JSX.Element => (
 	<AppContextProvider pkg={SHELL_APP_ID}>
 		<SettingsHeader {...props} />
 	</AppContextProvider>
@@ -33,7 +33,7 @@ export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {
 		try {
 			if (window.__ZAPP_SHARED_LIBRARIES__?.['@zextras/carbonio-shell-ui']) {
 				window.__ZAPP_SHARED_LIBRARIES__['@zextras/carbonio-shell-ui'][appPkg.name] = {
-					SettingsHeader,
+					SettingsHeader: WrappedSettingsHeader,
 					...getAppDependantExports(appPkg),
 					...appExports,
 					...CONSTANTS

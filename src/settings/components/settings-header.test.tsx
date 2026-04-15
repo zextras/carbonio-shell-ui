@@ -9,6 +9,7 @@ import { act } from '@testing-library/react';
 import { useBlocker } from 'react-router-dom';
 
 import { SettingsHeader } from './settings-header';
+import { TIMERS } from '../../tests/constants';
 import { screen, setup } from '../../tests/utils';
 
 describe('SettingsHeader', () => {
@@ -84,6 +85,10 @@ describe('SettingsHeader', () => {
 				/>
 			)
 		);
+
+		act(() => {
+			vitest.advanceTimersByTime(TIMERS.modalShow);
+		});
 
 		expect(
 			screen.getByText('Are you sure you want to leave this page without saving?')

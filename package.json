@@ -125,7 +125,7 @@
 		"i18next": "^22.5.1",
 		"i18next-chained-backend": "^4.6.2",
 		"i18next-http-backend": "^2.5.0",
-		"immer": "^10.0.3",
+		"immer": "10.2.0",
 		"lodash": "4.18.1",
 		"posthog-js": "^1.360.0",
 		"react": "^18.3.1",

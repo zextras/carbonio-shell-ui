@@ -29,7 +29,7 @@
 		"npm": "v10"
 	},
 	"scripts": {
-		"test:ci": "vitest run --reporter=default --reporter=junit --coverage --pool=forks --maxWorkers=50%",
+		"test:ci": "vitest run --reporter=default --reporter=junit --coverage --maxWorkers=50%",
 		"test:dev": "vitest run --no-coverage --reporter=default --retry=0",
 		"test": "is-ci && npm run test:ci || npm run test:dev",
 		"test:watch": "vitest --changed",

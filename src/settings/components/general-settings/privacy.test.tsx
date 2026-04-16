@@ -3,8 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React from 'react';
-
 import { Privacy } from './privacy';
 import { ICONS } from '../../../tests/constants';
 import { screen, setup } from '../../../tests/utils';

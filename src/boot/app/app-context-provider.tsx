@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React from 'react';
-
 import { AppErrorCatcher } from './app-error-catcher';
 import { ModuleI18nextProvider } from '../module-i18next-provider';
 

@@ -3,8 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React from 'react';
-
 import { Link } from 'react-router-dom';
 
 import { TrackerPageView } from './page-view';

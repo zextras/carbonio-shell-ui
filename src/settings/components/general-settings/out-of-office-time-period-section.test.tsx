@@ -3,8 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React from 'react';
-
 import { faker } from '@faker-js/faker';
 import { act, screen } from '@testing-library/react';
 import { format, addDays, subDays, startOfDay, endOfDay, addHours, subHours } from 'date-fns';

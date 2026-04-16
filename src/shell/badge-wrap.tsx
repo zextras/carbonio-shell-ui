@@ -3,8 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React from 'react';
-
 import styled from '@emotion/styled';
 import { Container, Badge, Icon, Tooltip } from '@zextras/carbonio-design-system';
 

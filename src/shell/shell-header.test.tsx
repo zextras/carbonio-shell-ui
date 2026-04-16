@@ -3,8 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React from 'react';
-
 import ShellHeader from './shell-header';
 import { useIntegrationsStore } from '../store/integrations/store';
 import { setup, screen } from '../tests/utils';

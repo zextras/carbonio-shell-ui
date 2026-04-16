@@ -3,8 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React from 'react';
-
 import { AuthGuard } from './auth-guard';
 import * as accountStoreHooks from '../store/account/hooks';
 import { setup, screen } from '../tests/utils';

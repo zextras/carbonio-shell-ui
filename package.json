@@ -106,7 +106,7 @@
 		"mini-css-extract-plugin": "^2.9.4",
 		"msw": "^2.4.8",
 		"postcss-loader": "^8.1.1",
-		"sonarqube-scanner": "^4.3.5",
+		"sonarqube-scanner": "4.3.6",
 		"typescript": "^5.3.3",
 		"vitest": "^4.1.4",
 		"vitest-fail-on-console": "^0.10.1",

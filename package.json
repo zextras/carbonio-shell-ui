@@ -119,7 +119,7 @@
 		"@fontsource/roboto": "^5.0.8",
 		"@zextras/carbonio-design-system": "12.0.2",
 		"@zextras/carbonio-ui-preview": "4.0.2",
-		"@zextras/carbonio-ui-soap-lib": "1.0.4",
+		"@zextras/carbonio-ui-soap-lib": "1.1.0",
 		"darkreader": "4.9.120",
 		"date-fns": "^4.1.0",
 		"i18next": "^22.5.1",

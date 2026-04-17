@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React from 'react';
-
 import { I18nextProvider } from 'react-i18next';
 
 import { SHELL_APP_ID } from '../constants';

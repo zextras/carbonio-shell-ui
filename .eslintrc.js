@@ -38,6 +38,7 @@ module.exports = {
 				ignorePropertyModificationsFor: ['accumulator', 'state', 'event', 'prevState']
 			}
 		],
+		'react/react-in-jsx-scope': 'off',
 		'sonarjs/cognitive-complexity': 'warn',
 		// TODO: enable when this will be released https://github.com/SonarSource/eslint-plugin-sonarjs/pull/405
 		'sonarjs/no-duplicate-string': 'off',

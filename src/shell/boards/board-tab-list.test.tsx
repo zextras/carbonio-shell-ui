@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React from 'react';
-
 import { screen, within } from '@testing-library/react';
 
 import { TabsList } from './board-tab-list';

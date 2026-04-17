@@ -3,8 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React from 'react';
-
 import { act, screen, waitFor } from '@testing-library/react';
 
 import { BOARD_DEFAULT_POSITION } from './boards/board-container';

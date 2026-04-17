@@ -159,12 +159,12 @@ type AppActions = {
 // Warning: (ae-forgotten-export) The symbol "AppContextProviderProps" needs to be exported by the entry point lib.d.ts
 //
 // @public
-export const AppContextProvider: (input: AppContextProviderProps) => React_2.JSX.Element;
+export const AppContextProvider: (input: AppContextProviderProps) => React.JSX.Element;
 
 // @public (undocumented)
 interface AppContextProviderProps {
     // (undocumented)
-    children: React_2.ReactNode | React_2.ReactNode[];
+    children: React.ReactNode | React.ReactNode[];
     // (undocumented)
     pkg: string;
 }

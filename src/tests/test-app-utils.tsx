@@ -3,8 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React from 'react';
-
 import { faker } from '@faker-js/faker';
 
 import { useAppStore } from '../store/app';

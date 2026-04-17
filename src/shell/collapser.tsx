@@ -5,7 +5,6 @@
  */
 
 import type { FunctionComponent } from 'react';
-import React from 'react';
 
 import styled from '@emotion/styled';
 import { Icon } from '@zextras/carbonio-design-system';

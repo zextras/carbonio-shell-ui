@@ -10,22 +10,21 @@ import { forOwn } from 'lodash';
 
 import { getAppDependantExports } from './app-dependant-exports';
 import * as appExports from './app-direct-exports';
-import { AppContextProvider } from './app-direct-exports';
 import * as CONSTANTS from '../../constants';
-import { SHELL_APP_ID } from '../../constants';
 import type * as ExportsForApp from '../../lib';
 import type { SettingsHeaderProps } from '../../settings/components/settings-header';
 import { SettingsHeader } from '../../settings/components/settings-header';
 import { useAppStore } from '../../store/app';
 import type { CarbonioModule } from '../../types/apps';
+import { ShellI18nextProvider } from '../shell-i18n-provider';
 
 export const _scripts: { [pkgName: string]: HTMLScriptElement } = {};
 let _scriptId = 0;
 
 const WrappedSettingsHeader = ({ ...props }: SettingsHeaderProps): React.JSX.Element => (
-	<AppContextProvider pkg={SHELL_APP_ID}>
+	<ShellI18nextProvider>
 		<SettingsHeader {...props} />
-	</AppContextProvider>
+	</ShellI18nextProvider>
 );
 
 export function loadApp(appPkg: CarbonioModule): Promise<CarbonioModule> {

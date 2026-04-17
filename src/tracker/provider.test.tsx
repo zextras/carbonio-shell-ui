@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import React from 'react';
-
 import { PostHogProvider } from 'posthog-js/react';
 import type * as PostHogReact from 'posthog-js/react';
 

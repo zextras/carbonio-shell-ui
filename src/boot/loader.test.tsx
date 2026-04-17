@@ -3,8 +3,6 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import React from 'react';
-
 import { act, waitFor } from '@testing-library/react';
 import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
 import { api, ApiEvents } from '@zextras/carbonio-ui-soap-lib';

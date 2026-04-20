@@ -24,36 +24,37 @@
 		},
 		"./*": null
 	},
+	"packageManager": "pnpm@10.32.1",
 	"engines": {
 		"node": "v22",
-		"npm": "v10"
+		"pnpm": ">=10"
 	},
 	"scripts": {
 		"test:ci": "vitest run --reporter=default --reporter=junit --coverage --maxWorkers=50%",
 		"test:dev": "vitest run --no-coverage --reporter=default --retry=0",
-		"test": "is-ci && npm run test:ci || npm run test:dev",
+		"test": "is-ci && pnpm run test:ci || pnpm run test:dev",
 		"test:watch": "vitest --changed",
 		"prepare": "is-ci || husky",
-		"prepack": "npm run build:lib",
+		"prepack": "pnpm run build:lib",
 		"type-check": "tsc --noEmit",
-		"type-check:watch": "npm run type-check -- --watch",
+		"type-check:watch": "pnpm run type-check --watch",
 		"lint": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to node_modules/@zextras/carbonio-ui-configs src",
-		"build": "npm run build:pkg && npm run build:lib",
-		"build:dev": "npm run build:pkg -- --dev --pkgRel $(date +%s) && npm run build:lib",
+		"build": "pnpm run build:pkg && pnpm run build:lib",
+		"build:dev": "pnpm run build:pkg --dev --pkgRel $(date +%s) && pnpm run build:lib",
 		"prebuild:pkg": "rm -rf dist pkg; tsc --project tsconfig.build.json",
 		"build:pkg": "sdk build",
 		"postbuild:pkg": "rm carbonio.webpack.js",
 		"prebuild:lib": "rm -rf lib",
-		"build:lib": "tsc -p tsconfig.lib.json && npx api-extractor run --verbose",
-		"build:lib:local": "tsc -p tsconfig.lib.json && npx api-extractor run --verbose --local",
-		"deploy": "npm run build:pkg && sdk deploy",
-		"deploy:dev": "npm run build:pkg -- -d && sdk deploy",
+		"build:lib": "tsc -p tsconfig.lib.json && pnpm exec api-extractor run --verbose",
+		"build:lib:local": "tsc -p tsconfig.lib.json && pnpm exec api-extractor run --verbose --local",
+		"deploy": "pnpm run build:pkg && sdk deploy",
+		"deploy:dev": "pnpm run build:pkg -d && sdk deploy",
 		"deploy:local": "sdk deploy --container ${CONTAINER:-carbonio-advanced-carbonio-composed-ui-1}",
-		"prestart": "npm run prebuild:pkg",
+		"prestart": "pnpm run prebuild:pkg",
 		"start": "sdk watch -h ${HOST:-localhost}",
-		"poststart": "npm run postbuild:pkg",
-		"packTo": "npm pack --pack-destination $PKG_PATH && cd $PKG_PATH && npm i zextras-carbonio-shell-ui-$npm_package_version.tgz",
-		"deploy-on-module": "npm pack && rm -rf $PKG_PATH/node_modules/@zextras/carbonio-shell-ui/* && tar -xf zextras-carbonio-shell-ui-$npm_package_version.tgz -C $PKG_PATH/node_modules/@zextras/carbonio-shell-ui/ --strip-components 1"
+		"poststart": "pnpm run postbuild:pkg",
+		"packTo": "pnpm pack --pack-destination $PKG_PATH && cd $PKG_PATH && pnpm add ./zextras-carbonio-shell-ui-$npm_package_version.tgz",
+		"deploy-on-module": "pnpm pack && rm -rf $PKG_PATH/node_modules/@zextras/carbonio-shell-ui/* && tar -xf zextras-carbonio-shell-ui-$npm_package_version.tgz -C $PKG_PATH/node_modules/@zextras/carbonio-shell-ui/ --strip-components 1"
 	},
 	"files": [
 		"lib/",
@@ -72,6 +73,7 @@
 		"@babel/preset-typescript": "7.28.5",
 		"@commitlint/cli": "20.5.0",
 		"@commitlint/config-conventional": "20.5.0",
+		"@commitlint/types": "20.5.0",
 		"@emotion/babel-plugin": "11.13.5",
 		"@emotion/jest": "11.14.2",
 		"@faker-js/faker": "9.9.0",
@@ -114,25 +116,36 @@
 		"webpack-cli": "6.0.1"
 	},
 	"dependencies": {
-		"@emotion/react": "^11.14.0",
-		"@emotion/styled": "^11.14.1",
+		"@emotion/react": "11.14.0",
+		"@emotion/styled": "11.14.1",
 		"@fontsource/roboto": "5.2.10",
 		"@zextras/carbonio-design-system": "12.0.2",
 		"@zextras/carbonio-ui-preview": "4.0.2",
 		"@zextras/carbonio-ui-soap-lib": "1.1.0",
 		"darkreader": "4.9.120",
-		"date-fns": "^4.1.0",
-		"i18next": "^22.5.1",
+		"date-fns": "4.1.0",
+		"i18next": "22.5.1",
 		"i18next-chained-backend": "4.6.3",
 		"i18next-http-backend": "2.7.3",
 		"immer": "10.2.0",
 		"lodash": "4.18.1",
 		"posthog-js": "1.369.2",
-		"react": "^18.3.1",
-		"react-dom": "^18.3.1",
-		"react-i18next": "^12.3.1",
+		"react": "18.3.1",
+		"react-dom": "18.3.1",
+		"react-i18next": "12.3.1",
 		"react-router-dom": "6.30.3",
-		"zustand": "^5.0.12"
+		"zustand": "5.0.12"
+	},
+	"pnpm": {
+		"overrides": {
+			"vite": "7.3.1"
+		},
+		"onlyBuiltDependencies": [
+			"core-js",
+			"msw",
+			"protobufjs",
+			"unrs-resolver"
+		]
 	},
 	"peerDependencies": {
 		"@emotion/react": "^11.14.0",

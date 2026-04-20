@@ -69,7 +69,6 @@ const configFn = (
 			COMMIT_ID: commitHash
 		})
 	);
-	// @ts-expect-error -- devServer is added by webpack-dev-server and read by carbonio-ui-sdk; not declared in webpack-cli/webpack Configuration type
 	conf.devServer = {
 		port: options.port,
 		historyApiFallback: {

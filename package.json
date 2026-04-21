@@ -99,6 +99,7 @@
 		"core-js": "3.49.0",
 		"css-loader": "6.11.0",
 		"dotenv": "17.4.2",
+		"eslint": "8.57.1",
 		"eslint-plugin-notice": "0.9.10",
 		"html-webpack-plugin": "5.6.6",
 		"husky": "9.1.7",
@@ -142,6 +143,7 @@
 			"vite": "7.3.1"
 		},
 		"onlyBuiltDependencies": [
+			"@zextras/carbonio-search-ui",
 			"core-js",
 			"esbuild",
 			"msw",

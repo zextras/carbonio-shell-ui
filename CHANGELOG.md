@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [14.0.2](https://github.com/zextras/carbonio-shell-ui/compare/v14.0.1...v14.0.2) (2026-04-21)
+
+
+### Bug Fixes
+
+* settings modal translation context ([8cf6404](https://github.com/zextras/carbonio-shell-ui/commit/8cf6404efb5feaaead082e735fc828580ec90372))
+* use correct language for settings save confirmation modal ([d523f92](https://github.com/zextras/carbonio-shell-ui/commit/d523f9231eb1725903a223071040bb1aabc563ee))
+
 ### [14.0.1](https://github.com/zextras/carbonio-shell-ui/compare/v14.0.0...v14.0.1) (2026-02-27)
 
 

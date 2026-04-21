@@ -17,9 +17,9 @@ import {
 	Row,
 	Text
 } from '@zextras/carbonio-design-system';
+import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 
-import { getT } from '../../store/i18n/hooks';
 import type { RouteLeavingGuardProps } from '../../ui-extras/nav-guard';
 import { RouteLeavingGuard } from '../../ui-extras/nav-guard';
 
@@ -59,7 +59,7 @@ export const SettingsHeader = ({
 	hasError = false,
 	hideSavingOptions = false
 }: SettingsHeaderProps): React.JSX.Element => {
-	const t = getT();
+	const [t] = useTranslation();
 	const [searchParams] = useSearchParams();
 	const section = useMemo(() => searchParams.get('section'), [searchParams]);
 

@@ -29,13 +29,13 @@ The main Carbonio Web Client interface
 
 ```
 nvm use
-npm install
+pnpm install
 ```
 
 <h4>Watch Mode</h4>
 
 ```
-npm run start -- -h <host>
+pnpm run start -- -h <host>
 ```
 
 The host parameter is required to proxy requests and content from an existing Carbonio installation.
@@ -45,7 +45,7 @@ The host parameter is required to proxy requests and content from an existing Ca
 To deploy to a host:
 
 ```
-npm run deploy -- -h <host>
+pnpm run deploy -- -h <host>
 ```
 
 The host parameter is required to proxy requests and content from an existing Carbonio installation.
@@ -53,7 +53,7 @@ The host parameter is required to proxy requests and content from an existing Ca
 <h4>Build</h4>
 
 ```
-npm run build
+pnpm run build
 ```
 
 <h2>License</h2>

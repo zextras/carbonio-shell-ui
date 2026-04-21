@@ -1,12 +1,8 @@
 {
-  "extends": "@zextras/carbonio-ui-configs/rules/tsconfig.type-check.json",
-  "compilerOptions": {
-    "noUncheckedIndexedAccess": false,
-    "types": ["vitest/globals", "webpack-env"]
-  },
-  "exclude": [
-    "node_modules",
-    "dist",
-    "lib"
-  ]
+	"extends": "@zextras/carbonio-ui-configs/rules/tsconfig.type-check.json",
+	"compilerOptions": {
+		"noUncheckedIndexedAccess": false,
+		"types": ["vitest/globals", "webpack-env", "webpack-dev-server"]
+	},
+	"exclude": ["node_modules", "dist", "lib"]
 }

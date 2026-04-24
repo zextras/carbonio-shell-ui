@@ -1,3 +1,9 @@
+## [14.1.1](https://github.com/zextras/carbonio-shell-ui/compare/v14.1.0...v14.1.1) (2026-04-24)
+
+### Other changes
+
+* add @semantic-release/changelog plugin to update CHANGELOG.md ([ce2142e](https://github.com/zextras/carbonio-shell-ui/commit/ce2142e3a4432d1ff5a575f4403d45db51fd84fb))
+
 # Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.

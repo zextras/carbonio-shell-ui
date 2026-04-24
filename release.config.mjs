@@ -15,6 +15,8 @@ export default {
 			{
 				preset: 'conventionalcommits',
 				releaseRules: [
+					// breaking changes must be first, otherwise a type rule (e.g. refactor→patch) would match first and suppress the major bump
+					{ breaking: true, release: 'major' },
 					// enable release also for refactor and build commits
 					{ type: 'refactor', release: 'patch' },
 					{ type: 'build', release: 'patch' },
@@ -65,10 +67,11 @@ export default {
 			}
 		],
 		'@semantic-release/npm',
+		['@semantic-release/changelog', { changelogFile: 'CHANGELOG.md' }],
 		[
 			'@semantic-release/git',
 			{
-				assets: ['package.json'],
+				assets: ['package.json', 'CHANGELOG.md'],
 				message: 'chore(release): ${nextRelease.version} [skip ci]'
 			}
 		],

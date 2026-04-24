@@ -15,6 +15,8 @@ export default {
 			{
 				preset: 'conventionalcommits',
 				releaseRules: [
+					// breaking changes must be first, otherwise a type rule (e.g. refactor→patch) would match first and suppress the major bump
+					{ breaking: true, release: 'major' },
 					// enable release also for refactor and build commits
 					{ type: 'refactor', release: 'patch' },
 					{ type: 'build', release: 'patch' },

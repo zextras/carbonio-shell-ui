@@ -87,7 +87,7 @@ export const SettingsHeader = ({
 	}, [section]);
 	return (
 		<>
-			{!hideSavingOptions && isDirty && onSave && (
+			{!hideSavingOptions && onSave && (
 				<RouteLeavingGuard when={isDirty} onSave={onSave}>
 					<Text>
 						{t(

@@ -43,6 +43,7 @@ export {
 	getUserRight,
 	getUserRights,
 	useAuthenticated,
+	useChangePasswordURL,
 	updateSettings,
 	updateAccount
 } from '../../store/account';

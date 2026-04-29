@@ -24,11 +24,13 @@ export const normalizeAccount = ({
 	signatures,
 	props,
 	version,
-	rights
+	rights,
+	changePasswordURL
 }: GetInfoResponse): {
 	account: Account;
 	settings: AccountSettings;
 	version: string;
+	changePasswordURL?: string;
 } => {
 	const settings = normalizeSettings({ attrs, prefs, props });
 	return {
@@ -41,6 +43,7 @@ export const normalizeAccount = ({
 			rights
 		},
 		settings,
-		version
+		version,
+		changePasswordURL
 	};
 };

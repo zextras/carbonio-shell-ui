@@ -1,3 +1,9 @@
+## [14.2.0](https://github.com/zextras/carbonio-shell-ui/compare/v14.1.2...v14.2.0) (2026-04-29)
+
+### Features
+
+* add change password URL handling and update dependencies ([#791](https://github.com/zextras/carbonio-shell-ui/issues/791)) ([12ec682](https://github.com/zextras/carbonio-shell-ui/commit/12ec682b46bdbb120f7e6dca66af6b38f32a9169))
+
 ## [14.1.2](https://github.com/zextras/carbonio-shell-ui/compare/v14.1.1...v14.1.2) (2026-04-27)
 
 ### Other changes

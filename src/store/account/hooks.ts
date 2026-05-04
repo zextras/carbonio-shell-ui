@@ -18,6 +18,8 @@ import type {
 } from '../../types/account';
 
 export const useAuthenticated = (): boolean => useAccountStore((s) => s.authenticated);
+export const useChangePasswordURL = (): string | undefined =>
+	useAccountStore((s) => s.changePasswordURL);
 
 /**
  * Return the authenticated user account. Throws if the user is not authenticated.

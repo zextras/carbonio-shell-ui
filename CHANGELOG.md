@@ -1,3 +1,9 @@
+## [14.2.1](https://github.com/zextras/carbonio-shell-ui/compare/v14.2.0...v14.2.1) (2026-05-04)
+
+### Bug Fixes
+
+* prevent RouteLeavingGuard unmount during save and leave action ([96a6d02](https://github.com/zextras/carbonio-shell-ui/commit/96a6d029a647d1a095e8d15d7242a943435d14f4)), closes [#790](https://github.com/zextras/carbonio-shell-ui/issues/790)
+
 ## [14.2.0](https://github.com/zextras/carbonio-shell-ui/compare/v14.1.2...v14.2.0) (2026-04-29)
 
 ### Features

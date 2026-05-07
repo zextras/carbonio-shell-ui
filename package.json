@@ -98,7 +98,6 @@
 		"@types/webpack": "5.28.5",
 		"@types/webpack-env": "1.18.8",
 		"@vitest/coverage-istanbul": "4.1.4",
-		"@zextras/carbonio-search-ui": "github:zextras/carbonio-search-ui#devel",
 		"@zextras/carbonio-ui-configs": "2.1.0",
 		"@zextras/carbonio-ui-sdk": "2.2.6",
 		"autoprefixer": "10.5.0",
@@ -151,7 +150,6 @@
 			"vite": "7.3.2"
 		},
 		"onlyBuiltDependencies": [
-			"@zextras/carbonio-search-ui",
 			"core-js",
 			"esbuild",
 			"msw",

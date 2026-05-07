@@ -6,7 +6,6 @@
 
 import styled from '@emotion/styled';
 import { Catcher, Container, Padding } from '@zextras/carbonio-design-system';
-import type { SearchBar as SearchUISearchBar } from '@zextras/carbonio-search-ui';
 
 import { CreationButton } from './creation-button';
 import { Logo } from './logo';
@@ -29,8 +28,7 @@ interface ShellHeaderProps {
 const ShellHeader = ({ children }: ShellHeaderProps): React.JSX.Element => {
 	const { darkReaderStatus } = useDarkMode();
 
-	const [SearchBar, isSearchBarAvailable] =
-		useIntegratedComponent<typeof SearchUISearchBar>('search-bar');
+	const [SearchBar, isSearchBarAvailable] = useIntegratedComponent('search-bar');
 
 	const [TotalQuotaUsage, isTotalQuotaUsageAvailable] = useIntegratedComponent('total-quota-usage');
 	return (

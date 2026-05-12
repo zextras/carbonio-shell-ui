@@ -1,3 +1,9 @@
+## [14.2.3](https://github.com/zextras/carbonio-shell-ui/compare/v14.2.2...v14.2.3) (2026-05-12)
+
+### Other changes
+
+* **release:** update jenkins-lib-ui to 1.0.13 ([4aabc5e](https://github.com/zextras/carbonio-shell-ui/commit/4aabc5efca5d258576f09f8a0400f9a3e295053a))
+
 ## [14.2.2](https://github.com/zextras/carbonio-shell-ui/compare/v14.2.1...v14.2.2) (2026-05-05)
 
 ### Bug Fixes

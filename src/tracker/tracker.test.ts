@@ -8,7 +8,6 @@ import type { CaptureOptions } from 'posthog-js';
 
 import { useTracker } from './tracker';
 import { useAccountStore } from '../store/account';
-import { useLoginConfigStore } from '../store/login/store';
 import { mockedAccount } from '../tests/account-utils';
 import { spyOnPosthog } from '../tests/posthog-utils';
 import * as utils from '../utils/utils';
@@ -61,65 +60,7 @@ describe('useTracker', () => {
 		expect(posthog.capture).toHaveBeenCalledWith(eventName, properties, options);
 	});
 
-	it('should enable surveys if user is opted in and Carbonio is CE', () => {
-		useLoginConfigStore.setState({ isCarbonioCE: true });
-		const posthog = spyOnPosthog();
-		vi.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
-		renderHook(() => useTracker());
-		expect(posthog.set_config).toHaveBeenCalledWith({ disable_surveys: false });
-	});
-
-	it('should not enable surveys if the user is not opted in and Carbonio is CE', () => {
-		useLoginConfigStore.setState({ isCarbonioCE: true });
-		const posthog = spyOnPosthog();
-		renderHook(() => useTracker());
-		expect(posthog.set_config).not.toHaveBeenCalled();
-	});
-
-	it('should not enable surveys if the user is opted in and it is not Carbonio CE', () => {
-		useLoginConfigStore.setState({ isCarbonioCE: false });
-		const posthog = spyOnPosthog();
-		renderHook(() => useTracker());
-		expect(posthog.set_config).not.toHaveBeenCalled();
-	});
-
-	it('should not call set config again if it is already called with the same values', () => {
-		useLoginConfigStore.setState({ isCarbonioCE: true });
-		const posthog = spyOnPosthog();
-		vi.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
-		renderHook(() => useTracker());
-		expect(posthog.set_config).toHaveBeenCalledWith({ disable_surveys: false });
-		vi.mocked(posthog.config)!.disable_surveys = false;
-		renderHook(() => useTracker());
-		expect(posthog.set_config).toHaveBeenCalledTimes(1);
-	});
-
-	it('should call set config if Carbonio CE changes after the user is opted in', () => {
-		useLoginConfigStore.setState({ isCarbonioCE: false });
-		const posthog = spyOnPosthog();
-		vi.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
-		renderHook(() => useTracker());
-		expect(posthog.set_config).not.toHaveBeenCalled();
-		act(() => {
-			useLoginConfigStore.setState({ isCarbonioCE: true });
-		});
-		expect(posthog.set_config).toHaveBeenCalled();
-	});
-
-	it('should call set config if the user opts in after Carbonio CE changes', () => {
-		useLoginConfigStore.setState({ isCarbonioCE: true });
-		const posthog = spyOnPosthog();
-		vi.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(false);
-		const { result } = renderHook(() => useTracker());
-		expect(posthog.set_config).not.toHaveBeenCalled();
-		vi.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
-		act(() => {
-			result.current.enableTracker(true);
-		});
-		expect(posthog.set_config).toHaveBeenCalled();
-	});
-
-	it('should identify user through its hashed id if it is authenticated', async () => {
+	it('should identify user through its hashed id when enabling the tracker for an authenticated account', async () => {
 		useAccountStore.setState({ account: mockedAccount });
 		const posthog = spyOnPosthog();
 		const { result } = renderHook(() => useTracker());
@@ -138,31 +79,5 @@ describe('useTracker', () => {
 			result.current.enableTracker(true);
 		});
 		expect(posthog.identify).not.toHaveBeenCalled();
-	});
-
-	it('should disable surveys if the user opts out', () => {
-		useLoginConfigStore.setState({ isCarbonioCE: true });
-		const posthog = spyOnPosthog();
-		vi.mocked(posthog.has_opted_in_capturing)?.mockReturnValue(true);
-		vi.mocked(posthog.config)!.disable_surveys = false;
-		const { result } = renderHook(() => useTracker());
-		act(() => {
-			result.current.enableTracker(false);
-		});
-		expect(posthog.set_config).toHaveBeenLastCalledWith({ disable_surveys: true });
-	});
-
-	it.each([true, false])('should set person properties is_ce if is Carbonio CE %s', (isCE) => {
-		useLoginConfigStore.setState({ isCarbonioCE: isCE });
-		const posthog = spyOnPosthog();
-		renderHook(() => useTracker());
-		expect(posthog.setPersonProperties).toHaveBeenCalledWith({ is_ce: isCE });
-	});
-
-	it('should not set person property is_ce if carbonio CE is undefined', () => {
-		useLoginConfigStore.setState({ isCarbonioCE: undefined });
-		const posthog = spyOnPosthog();
-		renderHook(() => useTracker());
-		expect(posthog.setPersonProperties).not.toHaveBeenCalled();
 	});
 });

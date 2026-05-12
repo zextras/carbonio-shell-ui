@@ -6,11 +6,11 @@
 
 import { type RequestHandler, http, HttpResponse } from 'msw';
 
-import { LOGIN_V3_CONFIG_PATH } from '../constants';
 import { getComponentsJson } from './handlers/components';
 import { getLoginConfig } from './handlers/login-config';
 import { logout } from './handlers/logout';
 import { noOpRequest } from './handlers/noOpRequest';
+import { LOGIN_V3_CONFIG_PATH } from '../constants';
 
 const handlers: RequestHandler[] = [
 	http.get('/static/iris/components.json', getComponentsJson),

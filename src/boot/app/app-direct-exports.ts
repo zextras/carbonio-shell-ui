@@ -44,6 +44,7 @@ export {
 	getUserRights,
 	useAuthenticated,
 	useChangePasswordURL,
+	useZimbraPasswordLocked,
 	updateSettings,
 	updateAccount
 } from '../../store/account';

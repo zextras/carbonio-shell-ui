@@ -5,7 +5,7 @@
  */
 import type { GetInfoResponse } from '@zextras/carbonio-ui-soap-lib';
 
-import type { Account, AccountSettings } from '../../types/account';
+import type { Account, AccountSettings, BooleanString } from '../../types/account';
 
 const normalizeSettings = (
 	settings: Pick<GetInfoResponse, 'attrs' | 'prefs' | 'props'>
@@ -25,12 +25,14 @@ export const normalizeAccount = ({
 	props,
 	version,
 	rights,
-	changePasswordURL
-}: GetInfoResponse): {
+	changePasswordURL,
+	zimbraPasswordLocked
+}: GetInfoResponse & { zimbraPasswordLocked?: BooleanString }): {
 	account: Account;
 	settings: AccountSettings;
 	version: string;
 	changePasswordURL?: string;
+	zimbraPasswordLocked?: BooleanString;
 } => {
 	const settings = normalizeSettings({ attrs, prefs, props });
 	return {
@@ -44,6 +46,7 @@ export const normalizeAccount = ({
 		},
 		settings,
 		version,
-		changePasswordURL
+		changePasswordURL,
+		zimbraPasswordLocked
 	};
 };

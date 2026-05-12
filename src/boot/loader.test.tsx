@@ -16,6 +16,7 @@ import { LOGIN_V3_CONFIG_PATH } from '../constants';
 import server from '../mocks/server';
 import * as logout from '../network/logout';
 import * as networkUtils from '../network/utils';
+import { useAccountStore } from '../store/account';
 import { useLoginConfigStore } from '../store/login/store';
 import { LOGGED_USER, TIMERS } from '../tests/constants';
 import { spyOnPosthog } from '../tests/posthog-utils';
@@ -492,6 +493,30 @@ describe('Loader', () => {
 
 			addEventListenerSpy.mockRestore();
 			removeEventListenerSpy.mockRestore();
+		});
+	});
+
+	describe('zimbraPasswordLocked', () => {
+		test.each<'TRUE' | 'FALSE'>(['TRUE', 'FALSE'])(
+			'should store zimbraPasswordLocked=%s in the account store after getInfo resolves',
+			async (value) => {
+				mockGetInfo({ zimbraPasswordLocked: value } as Parameters<typeof mockGetInfo>[0]);
+				setup(<Loader />);
+				await act(async () => {
+					await vi.advanceTimersToNextTimerAsync();
+				});
+				await waitFor(() => expect(useAccountStore.getState().zimbraPasswordLocked).toBe(value));
+			}
+		);
+
+		test('should have zimbraPasswordLocked undefined in the account store when absent from getInfo response', async () => {
+			mockGetInfo();
+			setup(<Loader />);
+			await act(async () => {
+				await vi.advanceTimersToNextTimerAsync();
+			});
+			await waitFor(() => expect(useAccountStore.getState().authenticated).toBe(true));
+			expect(useAccountStore.getState().zimbraPasswordLocked).toBeUndefined();
 		});
 	});
 

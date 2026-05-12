@@ -50,7 +50,7 @@ export const useSettingsSubSections = (): SettingsSubSection[] => {
 			searchPrefsSubSection(t)
 		];
 
-		if (!totalQuotaEnabled) {
+		if (!totalQuotaEnabled && !isCarbonioCE) {
 			subSections.push(quotaSubSection(t));
 		}
 

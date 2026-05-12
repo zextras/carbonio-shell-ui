@@ -395,4 +395,24 @@ describe('General setting', () => {
 			);
 		});
 	});
+
+	describe('User quota section', () => {
+		it('should be visible if Carbonio is not CE and totalQuota feature flag is not enabled', () => {
+			useLoginConfigStore.setState({ isCarbonioCE: false, featureFlags: { totalQuota: false } });
+			setup(<GeneralSettings />);
+			expect(screen.getByText("User's quota")).toBeVisible();
+		});
+
+		it('should not be visible if Carbonio is CE', () => {
+			useLoginConfigStore.setState({ isCarbonioCE: true, featureFlags: { totalQuota: false } });
+			setup(<GeneralSettings />);
+			expect(screen.queryByText("User's quota")).not.toBeInTheDocument();
+		});
+
+		it('should not be visible if totalQuota feature flag is enabled', () => {
+			useLoginConfigStore.setState({ isCarbonioCE: false, featureFlags: { totalQuota: true } });
+			setup(<GeneralSettings />);
+			expect(screen.queryByText("User's quota")).not.toBeInTheDocument();
+		});
+	});
 });

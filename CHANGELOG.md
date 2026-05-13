@@ -1,3 +1,9 @@
+## [14.2.4](https://github.com/zextras/carbonio-shell-ui/compare/v14.2.3...v14.2.4) (2026-05-13)
+
+### Bug Fixes
+
+* **settings:** hide User's quota section in Community Edition ([91a7086](https://github.com/zextras/carbonio-shell-ui/commit/91a70868d8676dae7277d1982b52eac9d0028142)), closes [#801](https://github.com/zextras/carbonio-shell-ui/issues/801)
+
 ## [14.2.3](https://github.com/zextras/carbonio-shell-ui/compare/v14.2.2...v14.2.3) (2026-05-12)
 
 ### Other changes

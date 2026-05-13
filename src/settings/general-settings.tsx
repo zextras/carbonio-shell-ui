@@ -284,7 +284,7 @@ const GeneralSettings = (): React.JSX.Element => {
 					addMod={addMod}
 					resetRef={searchSettingsSectionRef}
 				/>
-				{!totalQuotaEnabled && <UserQuota mobileView={false} />}
+				{!totalQuotaEnabled && !isCarbonioCE && <UserQuota mobileView={false} />}
 				{isCarbonioCE && (
 					<SettingsSection {...privacySubSection(t)}>
 						<Privacy

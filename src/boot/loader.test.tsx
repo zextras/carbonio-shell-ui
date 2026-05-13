@@ -4,11 +4,9 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { act, waitFor } from '@testing-library/react';
-import type { AccountSettingsPrefs } from '@zextras/carbonio-ui-soap-lib';
 import { api, ApiEvents } from '@zextras/carbonio-ui-soap-lib';
 import { noop } from 'lodash';
 import { http, HttpResponse } from 'msw';
-import { EventEmitter } from 'node:events';
 import type { MockInstance } from 'vitest';
 
 import { Loader } from './loader';
@@ -19,10 +17,7 @@ import * as networkUtils from '../network/utils';
 import { useAccountStore } from '../store/account';
 import { useLoginConfigStore } from '../store/login/store';
 import { LOGGED_USER, TIMERS } from '../tests/constants';
-import { spyOnPosthog } from '../tests/posthog-utils';
 import { setup, screen } from '../tests/utils';
-import * as tracker from '../tracker/tracker';
-import * as utils from '../utils/utils';
 
 vi.mock('./app/load-apps');
 
@@ -128,83 +123,6 @@ describe('Loader', () => {
 		});
 		expect(screen.queryByText('Something went wrong...')).not.toBeInTheDocument();
 	});
-
-	test('should enable the tracker if carbonioPrefSendAnalytics is true', async () => {
-		const enableTrackerFn = vi.fn();
-		mockGetInfo({ prefs: { _attrs: { carbonioPrefSendAnalytics: 'TRUE' } } });
-
-		vi.spyOn(tracker, 'useTracker').mockReturnValue({
-			enableTracker: enableTrackerFn,
-			reset: vi.fn(),
-			capture: vi.fn()
-		});
-		setup(
-			<span data-testid={'loader'}>
-				<Loader />
-			</span>
-		);
-		await screen.findByTestId('loader');
-		await act(async () => {
-			await vi.advanceTimersToNextTimerAsync();
-		});
-		await waitFor(() => expect(enableTrackerFn).toHaveBeenLastCalledWith(true));
-	});
-
-	test('should invoke the enableTracker function only one time', async () => {
-		vi.mocked(tracker.useTracker).mockRestore();
-		vi.spyOn(utils, 'getCurrentLocationHost').mockReturnValue('differentHost');
-		const emitter = new EventEmitter();
-		mockGetInfo({ prefs: { _attrs: { carbonioPrefSendAnalytics: 'TRUE' } } });
-		server.use(
-			http.get(LOGIN_V3_CONFIG_PATH, async () => {
-				await new Promise((resolve) => {
-					emitter.once('emitLoginResponse', resolve);
-				});
-				return HttpResponse.json({});
-			})
-		);
-		const postHog = spyOnPosthog();
-
-		setup(
-			<span data-testid={'loader'}>
-				<Loader />
-			</span>
-		);
-		await screen.findByTestId('loader');
-		await act(async () => {
-			await vi.advanceTimersToNextTimerAsync();
-		});
-		await waitFor(() => expect(postHog.opt_in_capturing).toHaveBeenCalled());
-		emitter.emit('emitLoginResponse');
-		await act(async () => {
-			await vi.advanceTimersToNextTimerAsync();
-		});
-		await waitFor(() => expect(useLoginConfigStore.getState().isCarbonioCE).toEqual(false));
-		expect(postHog.opt_in_capturing).toHaveBeenCalledTimes(1);
-	});
-
-	test.each<AccountSettingsPrefs['carbonioPrefSendAnalytics']>(['FALSE', undefined])(
-		'should not enable the tracker if carbonioPrefSendAnalytics is %s',
-		async (carbonioPrefParam) => {
-			mockGetInfo({ prefs: { _attrs: { carbonioPrefSendAnalytics: carbonioPrefParam } } });
-			const enableTrackerFn = vi.fn();
-			vi.spyOn(tracker, 'useTracker').mockReturnValue({
-				enableTracker: enableTrackerFn,
-				reset: vi.fn(),
-				capture: vi.fn()
-			});
-			setup(
-				<span data-testid={'loader'}>
-					<Loader />
-				</span>
-			);
-			await screen.findByTestId('loader');
-			await act(async () => {
-				await vi.advanceTimersToNextTimerAsync();
-			});
-			await waitFor(() => expect(enableTrackerFn).toHaveBeenLastCalledWith(false));
-		}
-	);
 
 	describe('Session expiration', () => {
 		test('should redirect to login if user session is expired', async () => {

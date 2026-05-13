@@ -7,9 +7,8 @@ import type { GetInfoResponse } from '@zextras/carbonio-ui-soap-lib';
 
 import { normalizeAccount } from './normalization';
 import { LOGGED_USER } from '../../tests/constants';
-import type { BooleanString } from '../../types/account';
 
-const baseGetInfoResponse: GetInfoResponse & { zimbraPasswordLocked?: BooleanString } = {
+const baseGetInfoResponse: GetInfoResponse = {
 	id: LOGGED_USER.id,
 	name: LOGGED_USER.name,
 	version: '1.0.0',

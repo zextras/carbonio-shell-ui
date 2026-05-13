@@ -27,8 +27,8 @@ importers:
         specifier: 5.0.0
         version: 5.0.0(@types/react@18.3.28)(@zextras/carbonio-design-system@12.0.2(@emotion/react@11.14.0(@types/react@18.3.28)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.3.28)(react@18.3.1))(@types/react@18.3.28)(react@18.3.1))(date-fns@4.1.0)(lodash@4.18.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@zextras/carbonio-ui-soap-lib':
-        specifier: 1.2.0
-        version: 1.2.0
+        specifier: 1.3.0
+        version: 1.3.0
       darkreader:
         specifier: 4.9.120
         version: 4.9.120
@@ -2707,8 +2707,8 @@ packages:
     engines: {node: v22, pnpm: '>=9'}
     hasBin: true
 
-  '@zextras/carbonio-ui-soap-lib@1.2.0':
-    resolution: {integrity: sha512-Z8pBHJFUuYWYq/t9Mbnbc0MB5I8dMcQMPnwnA77Tc+/Rt7bvBZik8oiEVb6GlS7fUxOY1Vyye2PCeEv55U/HNw==}
+  '@zextras/carbonio-ui-soap-lib@1.3.0':
+    resolution: {integrity: sha512-8Gu1Xrcihc4gppuWPcThRyLXysMKSz1bwfhb8rx/IDErxyvNbYPRnO061Z2nzUhGv9N30CgS3FEnX79F7lJBqg==}
 
   accepts@1.3.8:
     resolution: {integrity: sha512-PYAthTa2m2VKxuvSD3DPC/Gy+U+sOA1LAuT8mkmRuvw+NACSaeXEQ+NHcVF7rONl6qcaxV3Uuemwawk+7+SJLw==}
@@ -10113,7 +10113,7 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  '@zextras/carbonio-ui-soap-lib@1.2.0':
+  '@zextras/carbonio-ui-soap-lib@1.3.0':
     dependencies:
       '@types/ua-parser-js': 0.7.39
       ua-parser-js: 1.0.41

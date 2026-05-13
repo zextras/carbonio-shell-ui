@@ -27,7 +27,7 @@ export const normalizeAccount = ({
 	rights,
 	changePasswordURL,
 	zimbraPasswordLocked
-}: GetInfoResponse & { zimbraPasswordLocked?: BooleanString }): {
+}: GetInfoResponse): {
 	account: Account;
 	settings: AccountSettings;
 	version: string;

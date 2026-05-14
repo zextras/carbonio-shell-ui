@@ -21,3 +21,4 @@ src/constants/locales.js
 *.tgz
 *.DS_Store
 /.claude/
+/.worktrees/

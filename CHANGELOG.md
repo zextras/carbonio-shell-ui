@@ -1,3 +1,9 @@
+## [14.3.1](https://github.com/zextras/carbonio-shell-ui/compare/v14.3.0...v14.3.1) (2026-05-14)
+
+### Bug Fixes
+
+* **ci:** migrate Jenkinsfile to jenkins-lib-common ([#803](https://github.com/zextras/carbonio-shell-ui/issues/803)) ([c5b92e5](https://github.com/zextras/carbonio-shell-ui/commit/c5b92e56c67124bf0ae26ef729930883fc9de1e5))
+
 ## [14.3.0](https://github.com/zextras/carbonio-shell-ui/compare/v14.2.5...v14.3.0) (2026-05-14)
 
 ### Features

@@ -1,3 +1,9 @@
+## [14.2.5](https://github.com/zextras/carbonio-shell-ui/compare/v14.2.4...v14.2.5) (2026-05-13)
+
+### Other changes
+
+* **tracker:** remove tracker logic from Loader and consolidate in TrackerProvider ([d217952](https://github.com/zextras/carbonio-shell-ui/commit/d217952fb211c7feaf4f757331e823f4453d118f)), closes [#800](https://github.com/zextras/carbonio-shell-ui/issues/800)
+
 ## [14.2.4](https://github.com/zextras/carbonio-shell-ui/compare/v14.2.3...v14.2.4) (2026-05-13)
 
 ### Bug Fixes

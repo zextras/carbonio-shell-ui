@@ -1,3 +1,13 @@
+## [15.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v14.3.1...v15.0.0) (2026-05-18)
+
+### ⚠ BREAKING CHANGES
+
+* **account:** remove useZimbraPasswordLocked
+
+### revert
+
+* **account:** expose zimbraPasswordLocked from account store ([9f5fb6c](https://github.com/zextras/carbonio-shell-ui/commit/9f5fb6c8df01199e5f1f9706d57247ea36cf8e8d)), closes [#804](https://github.com/zextras/carbonio-shell-ui/issues/804)
+
 ## [14.3.1](https://github.com/zextras/carbonio-shell-ui/compare/v14.3.0...v14.3.1) (2026-05-14)
 
 ### Bug Fixes

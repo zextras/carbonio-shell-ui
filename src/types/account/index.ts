@@ -25,7 +25,6 @@ export type AccountState = {
 	zimbraVersion?: string;
 	usedQuota: number;
 	changePasswordURL?: string;
-	zimbraPasswordLocked?: BooleanString;
 };
 
 export interface Identity {

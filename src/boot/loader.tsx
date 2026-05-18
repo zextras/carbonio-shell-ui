@@ -85,11 +85,10 @@ export const Loader = (): React.JSX.Element => {
 		];
 
 		return api.getInfo({ rights }).then((res) => {
-			const { account, settings, changePasswordURL, zimbraPasswordLocked } = normalizeAccount(res);
+			const { account, settings, changePasswordURL } = normalizeAccount(res);
 			useAccountStore.setState({
 				authenticated: true,
 				changePasswordURL,
-				zimbraPasswordLocked,
 				account,
 				settings
 			});

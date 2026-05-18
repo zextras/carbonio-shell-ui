@@ -14,15 +14,12 @@ import type {
 	AccountRightName,
 	AccountRights,
 	AccountRightTarget,
-	AccountSettings,
-	BooleanString
+	AccountSettings
 } from '../../types/account';
 
 export const useAuthenticated = (): boolean => useAccountStore((s) => s.authenticated);
 export const useChangePasswordURL = (): string | undefined =>
 	useAccountStore((s) => s.changePasswordURL);
-export const useZimbraPasswordLocked = (): BooleanString | undefined =>
-	useAccountStore((s) => s.zimbraPasswordLocked);
 
 /**
  * Return the authenticated user account. Throws if the user is not authenticated.

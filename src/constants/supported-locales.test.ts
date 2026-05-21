@@ -4,12 +4,15 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+import { http, HttpResponse } from 'msw';
+
 import { localeList } from './locales';
 import {
 	FALLBACK_SUPPORTED_LOCALES,
 	loadSupportedLocales,
 	parseSupportedLocalesManifest
 } from './supported-locales';
+import server from '../mocks/server';
 import { useI18nStore } from '../store/i18n/store';
 
 describe('supported locales', () => {
@@ -36,13 +39,15 @@ describe('supported locales', () => {
 	});
 
 	test('loads supported locales from the runtime manifest', async () => {
-		vi.mocked(fetch).mockResolvedValueOnce(Response.json(['id', 'unknown', 'en']));
+		server.use(
+			http.get('/i18n/supported-locales.json', () => HttpResponse.json(['id', 'unknown', 'en']))
+		);
 
 		await expect(loadSupportedLocales()).resolves.toEqual(['id', 'en']);
 	});
 
 	test('falls back to english when the runtime manifest is not available', async () => {
-		vi.mocked(fetch).mockRejectedValueOnce(new Error('Network error'));
+		server.use(http.get('/i18n/supported-locales.json', () => HttpResponse.error()));
 
 		await expect(loadSupportedLocales()).resolves.toEqual(FALLBACK_SUPPORTED_LOCALES);
 	});

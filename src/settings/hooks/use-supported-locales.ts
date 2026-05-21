@@ -6,10 +6,15 @@
 
 import { useEffect, useState } from 'react';
 
-import { FALLBACK_SUPPORTED_LOCALES, loadSupportedLocales } from '../../constants/supported-locales';
+import {
+	FALLBACK_SUPPORTED_LOCALES,
+	loadSupportedLocales
+} from '../../constants/supported-locales';
 
 export const useSupportedLocales = (): Array<string> => {
-	const [supportedLocales, setSupportedLocales] = useState<Array<string>>(FALLBACK_SUPPORTED_LOCALES);
+	const [supportedLocales, setSupportedLocales] = useState<Array<string>>(
+		FALLBACK_SUPPORTED_LOCALES
+	);
 
 	useEffect(() => {
 		let isMounted = true;

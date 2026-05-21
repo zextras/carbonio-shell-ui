@@ -118,6 +118,12 @@ export const DATE_FNS_LOCALE: Record<
 			)
 	},
 	ky: undefined,
+	id: {
+		localeImportPath: () =>
+			/* webpackMode: "lazy", webpackChunkName: "id" */ import('date-fns/locale/id').then(
+				({ id }) => id
+			)
+	},
 	bs: {
 		localeImportPath: () =>
 			/* webpackMode: "lazy", webpackChunkName: "bs" */ import('date-fns/locale/bs').then(

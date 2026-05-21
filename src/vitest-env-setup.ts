@@ -10,6 +10,7 @@ import dotenv from 'dotenv';
 import { forEach, noop } from 'lodash';
 import failOnConsole from 'vitest-fail-on-console';
 
+import { DEFAULT_LOCALES } from './constants/default-locales';
 import server from './mocks/server';
 
 dotenv.config({ quiet: true });
@@ -42,6 +43,18 @@ failOnConsole({
 });
 
 beforeEach(() => {
+	vi.stubGlobal('BASE_PATH', '');
+	vi.stubGlobal(
+		'fetch',
+		vi.fn((input: RequestInfo | URL) => {
+			if (input.toString().endsWith('/i18n/supported-locales.json')) {
+				return Promise.resolve(Response.json(Object.keys(DEFAULT_LOCALES)));
+			}
+
+			return Promise.reject(new Error(`Unhandled fetch request: ${input.toString()}`));
+		})
+	);
+
 	Object.defineProperty(window, 'IntersectionObserver', {
 		writable: true,
 		value: vi.fn(function intersectionObserverMock(

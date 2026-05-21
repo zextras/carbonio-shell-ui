@@ -45,6 +45,12 @@ export const DATE_FNS_LOCALE: Record<
 				({ hi }) => hi
 			)
 	},
+	id: {
+		localeImportPath: () =>
+			/* webpackMode: "lazy", webpackChunkName: "id" */ import('date-fns/locale/id').then(
+				({ id }) => id
+			)
+	},
 	hu: {
 		localeImportPath: () =>
 			/* webpackMode: "lazy", webpackChunkName: "hu" */ import('date-fns/locale/hu').then(
@@ -137,9 +143,42 @@ export type LocaleDescriptorWithLabels = {
 	value: string;
 };
 
+const localeCollator = new Intl.Collator(undefined, { sensitivity: 'base' });
+
+export const sortLocaleList = (
+	locales: Array<LocaleDescriptorWithLabels>
+): Array<LocaleDescriptorWithLabels> =>
+	locales
+		.map((locale, index) => ({ locale, index }))
+		.sort((left, right) => {
+			const labelCompare = localeCollator.compare(left.locale.label, right.locale.label);
+
+			if (labelCompare !== 0) {
+				return labelCompare;
+			}
+
+			return left.index - right.index;
+		})
+		.map(({ locale }) => locale);
+
 // used in language settings
-export const localeList = (t: TFunction): Array<LocaleDescriptorWithLabels> =>
-	Object.values(DEFAULT_LOCALES).map((locale) => ({
-		value: locale.value,
-		label: t(locale.labelKey, { value: locale.name, defaultValue: locale.labelDefaultValue })
-	}));
+export const localeList = (
+	t: TFunction,
+	supportedLocaleCodes = Object.keys(DEFAULT_LOCALES)
+): Array<LocaleDescriptorWithLabels> =>
+	sortLocaleList(
+		supportedLocaleCodes.flatMap((localeCode) => {
+			const locale = DEFAULT_LOCALES[localeCode];
+
+			if (!locale) {
+				return [];
+			}
+
+			return [
+				{
+					value: locale.value,
+					label: t(locale.labelKey, { value: locale.name, defaultValue: locale.labelDefaultValue })
+				}
+			];
+		})
+	);

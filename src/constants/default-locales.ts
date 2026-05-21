@@ -3,9 +3,7 @@
  *
  * SPDX-License-Identifier: AGPL-3.0-only
  */
-import dynamicLocales from './dynamic-locales.json';
-
-type LocaleValue = {
+export type LocaleValue = {
 	value: string;
 	name: string;
 	labelKey: string;
@@ -42,6 +40,12 @@ export const STATIC_LOCALES: Record<string, LocaleValue> = {
 		value: 'hi',
 		labelKey: 'locale.label_hindi',
 		labelDefaultValue: 'Hindi - {{value}}'
+	},
+	id: {
+		name: 'Bahasa Indonesia',
+		value: 'id',
+		labelKey: 'locale.label_indonesian',
+		labelDefaultValue: 'Indonesian - {{value}}'
 	},
 	hu: {
 		name: 'Magyar',
@@ -136,6 +140,5 @@ export const STATIC_LOCALES: Record<string, LocaleValue> = {
 };
 
 export const DEFAULT_LOCALES: Record<string, LocaleValue> = {
-	...STATIC_LOCALES,
-	...dynamicLocales
+	...STATIC_LOCALES
 };

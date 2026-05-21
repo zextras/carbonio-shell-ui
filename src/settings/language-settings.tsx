@@ -15,6 +15,7 @@ import type { SettingsSectionProps } from './components/utils';
 import { upsertPrefOnUnsavedChanges } from './components/utils';
 import { languageSubSection } from './general-settings-sub-sections';
 import { useReset } from './hooks/use-reset';
+import { useSupportedLocales } from './hooks/use-supported-locales';
 import { localeList } from '../constants/locales';
 import type { AccountSettings } from '../types/account';
 import type { AddMod } from '../types/network';
@@ -36,7 +37,8 @@ export const LanguageSettings = ({
 	resetRef
 }: LanguageSettingsProps): React.JSX.Element => {
 	const [t] = useTranslation();
-	const locales = useMemo(() => localeList(t), [t]);
+	const supportedLocales = useSupportedLocales();
+	const locales = useMemo(() => localeList(t, supportedLocales), [supportedLocales, t]);
 	const sectionTitle = useMemo(() => languageSubSection(t), [t]);
 
 	const updatePref = useMemo(() => upsertPrefOnUnsavedChanges(addMod), [addMod]);

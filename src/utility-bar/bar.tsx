@@ -61,6 +61,16 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 	const views = useUtilityViews();
 	const t = getT();
 	const account = useAccountStore((s) => s.account);
+	const accountSettings = useAccountStore((s) => s.settings);
+	const link = accountSettings?.attrs?.zimbraWebClientSupportedHelps || '';
+
+	let docLinkDisabled = true;
+
+	if (link && link !== '' && typeof link === 'string') {
+		docLinkDisabled = false;
+	} else {
+		docLinkDisabled = true;
+	}
 
 	const updateViews = useCallback(() => {
 		const updateViewEvent = new CustomEvent(CUSTOM_EVENTS.updateView);
@@ -80,6 +90,15 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 				})),
 		[actions]
 	);
+
+	// create onlick func to window target external link click
+	const externalLinkClick = useCallback((): void => {
+	    if (link && link !== '' && typeof link === 'string') {
+			window.open(link, '_blank', 'noopener,noreferrer');
+		} else {
+			noop();
+		}
+	}, [link]);
 
 	const accountItems = useMemo(
 		(): DropdownItem[] => [
@@ -108,8 +127,8 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 			{
 				id: 'docs',
 				label: t('label.documentation', 'Documentation'),
-				onClick: noop,
-				disabled: true,
+				onClick: () => externalLinkClick(),
+				disabled: docLinkDisabled,
 				icon: 'InfoOutline'
 			},
 			{
@@ -122,7 +141,7 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 				icon: 'LogOut'
 			}
 		],
-		[account?.displayName, account?.name, accountMenuItems, reset, t, updateViews]
+		[account?.displayName, account?.name, accountMenuItems, reset, t, updateViews, docLinkDisabled]
 	);
 
 	const viewItems = useMemo(

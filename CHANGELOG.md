@@ -1,3 +1,9 @@
+## [15.1.0](https://github.com/zextras/carbonio-shell-ui/compare/v15.0.0...v15.1.0) (2026-05-22)
+
+### Features
+
+* **i18n:** remove Chinese and add Indonesian ([c3e022c](https://github.com/zextras/carbonio-shell-ui/commit/c3e022c76cb1d606e6df3bc280a9bf8bf1fe7b54))
+
 ## [15.0.0](https://github.com/zextras/carbonio-shell-ui/compare/v14.3.1...v15.0.0) (2026-05-18)
 
 ### ⚠ BREAKING CHANGES

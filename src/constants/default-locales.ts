@@ -13,12 +13,6 @@ type LocaleValue = {
 };
 
 export const STATIC_LOCALES: Record<string, LocaleValue> = {
-	zh_CN: {
-		name: '中文 (中国)',
-		value: 'zh_CN',
-		labelKey: 'locale.label_chinese',
-		labelDefaultValue: 'Chinese (China) - {{value}}'
-	},
 	nl: {
 		name: 'Nederlands',
 		value: 'nl',
@@ -120,6 +114,12 @@ export const STATIC_LOCALES: Record<string, LocaleValue> = {
 		value: 'ky',
 		labelKey: 'locale.label_kyrgyz',
 		labelDefaultValue: 'Kyrgyz - {{value}}'
+	},
+	id: {
+		name: 'Bahasa Indonesia',
+		value: 'id',
+		labelKey: 'locale.label_indonesian',
+		labelDefaultValue: 'Indonesian - {{value}}'
 	},
 	bs: {
 		name: 'Bosanski',

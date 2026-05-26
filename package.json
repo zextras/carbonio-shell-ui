@@ -32,7 +32,7 @@
 	"scripts": {
 		"bump-version": "semantic-release",
 		"test:ci": "vitest run --reporter=default --reporter=junit --coverage --maxWorkers=50%",
-		"test:dev": "vitest run --no-coverage --reporter=default --retry=0",
+		"test:dev": "vitest run --no-coverage --reporter=default",
 		"test": "is-ci && pnpm run test:ci || pnpm run test:dev",
 		"test:watch": "vitest --changed",
 		"prepare": "is-ci || husky",

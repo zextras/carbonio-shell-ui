@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
-import { act, screen, waitFor, within } from '@testing-library/react';
-import { head, shuffle, tail } from 'lodash';
+import { screen, waitFor, within } from '@testing-library/react';
+import { shuffle } from 'lodash';
 import { http, HttpResponse } from 'msw';
 
 import { AccountsSettings } from './accounts-settings';
@@ -14,6 +14,13 @@ import server, { waitForRequest } from '../mocks/server';
 import { createAccount, createIdentity, setupAccountStore } from '../tests/account-utils';
 import { controlConsoleError, setup } from '../tests/utils';
 import type { BatchRequest, CreateIdentityResponse } from '../types/network';
+
+// Returns the order of the rendered account list using each item's data-testid
+// (`account-list-item-${zimbraPrefIdentityId}`), so assertions are decoupled
+// from the rendered copy and DOM structure.
+function getAccountListOrder(): Array<string> {
+	return screen.getAllByRole('listitem').map((item) => item.getAttribute('data-testid') ?? '');
+}
 
 describe('Account setting', () => {
 	const defaultFirstName = faker.person.firstName();
@@ -125,17 +132,13 @@ describe('Account setting', () => {
 			)
 		);
 
-		const snapShot = `
-		[
-		  "defaultFullName(default@email.com)Primary",
-		  "New Persona 1(default@email.com)Persona",
-		  "New Persona 2(default@email.com)Persona",
-		  "New Persona 3(default@email.com)Persona",
-		]
-	`;
-		expect(screen.getAllByRole('listitem').map((item) => item.textContent)).toMatchInlineSnapshot(
-			snapShot
-		);
+		// Before save: new personas hold synthetic incremental ids ('0', '1', '2').
+		expect(getAccountListOrder()).toEqual([
+			`account-list-item-${defaultId}`,
+			'account-list-item-0',
+			'account-list-item-1',
+			'account-list-item-2'
+		]);
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
@@ -148,9 +151,13 @@ describe('Account setting', () => {
 
 		const successSnackbar = await screen.findByText('Edits saved correctly');
 		expect(successSnackbar).toBeVisible();
-		expect(screen.getAllByRole('listitem').map((item) => item.textContent)).toMatchInlineSnapshot(
-			snapShot
-		);
+		// After save the server-returned ids replace the synthetic ones, preserving order.
+		expect(getAccountListOrder()).toEqual([
+			`account-list-item-${defaultId}`,
+			`account-list-item-${persona1Id}`,
+			`account-list-item-${persona2Id}`,
+			`account-list-item-${persona3Id}`
+		]);
 	});
 
 	test('When discarding the order should be the same of the initial one', async () => {
@@ -175,33 +182,19 @@ describe('Account setting', () => {
 			])
 		});
 
-		const snapShot = `
-		[
-		  "defaultFullName(default@email.com)Primary",
-		  "New Persona 1(persona1@email.com)Persona",
-		]
-		`;
+		const expectedOrder = [`account-list-item-${defaultId}`, `account-list-item-${persona1Id}`];
 		const { user } = setup(<AccountsSettings />);
 
-		const renderedItems = screen.getAllByRole('listitem');
-		expect(renderedItems.length).toEqual(2);
-		expect(renderedItems.map((item) => item.textContent)).toMatchInlineSnapshot(snapShot);
+		expect(getAccountListOrder()).toEqual(expectedOrder);
 
 		await user.click(screen.getByText(persona1FullName));
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		const confirmButton = screen.getByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
 
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
 
 		expect(screen.getByText(persona1FullName)).toBeVisible();
-		expect(screen.getAllByRole('listitem').map((item) => item.textContent)).toMatchInlineSnapshot(
-			snapShot
-		);
+		expect(getAccountListOrder()).toEqual(expectedOrder);
 	});
 
 	test('Check that the default is always the first item', async () => {
@@ -248,11 +241,12 @@ describe('Account setting', () => {
 
 		setup(<AccountsSettings />);
 
-		const renderedItems = screen.getAllByRole('listitem');
-		expect(renderedItems.length).toEqual(4);
-		expect(head(renderedItems.map((item) => item.textContent))).toMatchInlineSnapshot(
-			`"defaultFullName(default@email.com)Primary"`
-		);
+		const order = getAccountListOrder();
+		expect(order).toHaveLength(4);
+		expect(order[0]).toBe(`account-list-item-${defaultId}`);
+		expect(
+			within(screen.getByTestId(`account-list-item-${defaultId}`)).getByText(/primary/i)
+		).toBeVisible();
 	});
 
 	test('When adding an item it is always placed as last', async () => {
@@ -272,13 +266,12 @@ describe('Account setting', () => {
 		const { user } = setup(<AccountsSettings />);
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 
-		const renderedItems = screen.getAllByRole('listitem');
-		expect(renderedItems.length).toEqual(2);
-		expect(tail(renderedItems.map((item) => item.textContent))).toMatchInlineSnapshot(`
-		[
-		  "New Persona 1(default@email.com)Persona",
-		]
-	`);
+		const order = getAccountListOrder();
+		expect(order).toHaveLength(2);
+		expect(order[order.length - 1]).toBe('account-list-item-0');
+		expect(
+			within(screen.getByTestId('account-list-item-0')).getByText(persona1FullName)
+		).toBeVisible();
 	});
 
 	test('Show primary identity inside the list', async () => {
@@ -390,7 +383,7 @@ describe('Account setting', () => {
 
 		const newName = 'Updated Name';
 		await user.clear(accountNameInput);
-		await user.type(accountNameInput, newName);
+		await user.paste(newName);
 
 		expect(accountNameInput).toHaveDisplayValue(newName);
 		expect(
@@ -435,7 +428,7 @@ describe('Account setting', () => {
 
 		const newName = 'Updated Name';
 		await user.clear(accountNameInput);
-		await user.type(accountNameInput, newName);
+		await user.paste(newName);
 
 		expect(accountNameInput).toHaveDisplayValue(newName);
 		expect(within(screen.getByTestId(`account-list-item-0`)).getByText(newName)).toBeVisible();
@@ -477,12 +470,7 @@ describe('Account setting', () => {
 		await user.click(persona1Row);
 
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
 		expect(persona1Row).not.toBeInTheDocument();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
@@ -515,12 +503,7 @@ describe('Account setting', () => {
 		await user.click(persona1Row);
 
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
 		expect(persona1Row).not.toBeInTheDocument();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
@@ -588,12 +571,7 @@ describe('Account setting', () => {
 		expect(persona1Row).toBeVisible();
 		await user.click(persona1Row);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
 		expect(persona1Row).not.toBeInTheDocument();
 	});
 
@@ -674,12 +652,7 @@ describe('Account setting', () => {
 			)
 		);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		let confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
 		await screen.findByText(/primary account settings/i);
 		expect(screen.queryByText(persona1FullName)).not.toBeInTheDocument();
 
@@ -690,12 +663,7 @@ describe('Account setting', () => {
 			)
 		);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
 		await screen.findByText(/primary account settings/i);
 		expect(screen.queryByText(persona2FullName)).not.toBeInTheDocument();
 
@@ -766,12 +734,7 @@ describe('Account setting', () => {
 
 		await user.click(screen.getByText(persona1FullName));
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		const confirmButton = screen.getByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
 		expect(screen.queryByText(persona1FullName)).not.toBeInTheDocument();
 
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
@@ -804,7 +767,7 @@ describe('Account setting', () => {
 
 		const newName = 'Updated Name';
 		await user.clear(accountNameInput);
-		await user.type(accountNameInput, newName);
+		await user.paste(newName);
 
 		expect(accountNameInput).toHaveDisplayValue(newName);
 		expect(
@@ -847,7 +810,7 @@ describe('Account setting', () => {
 
 		const newName = 'Updated Name';
 		await user.clear(accountNameInput);
-		await user.type(accountNameInput, newName);
+		await user.paste(newName);
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
@@ -899,14 +862,11 @@ describe('Account setting', () => {
 
 		const newName = 'Updated Name';
 		await user.clear(accountNameInput);
-		await user.type(accountNameInput, newName);
+		await user.paste(newName);
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
 		await pendingBatchRequest;
-		await act(async () => {
-			await vi.advanceTimersToNextTimerAsync();
-		});
 		const successSnackbar = await screen.findByText('Edits saved correctly');
 		expect(successSnackbar).toBeVisible();
 
@@ -958,19 +918,11 @@ describe('Account setting', () => {
 		expect(persona1Row).toBeVisible();
 		await user.click(persona1Row);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
 		await pendingBatchRequest;
-		await act(async () => {
-			await vi.advanceTimersToNextTimerAsync();
-		});
 		const successSnackbar = await screen.findByText('Edits saved correctly');
 		expect(successSnackbar).toBeVisible();
 
@@ -1002,7 +954,7 @@ describe('Account setting', () => {
 
 		const newName = 'Updated Name';
 		await user.clear(accountNameInput);
-		await user.type(accountNameInput, newName);
+		await user.paste(newName);
 
 		expect(accountNameInput).toHaveDisplayValue(newName);
 		expect(
@@ -1042,7 +994,7 @@ describe('Account setting', () => {
 		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
 		expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
 
-		await user.type(emailAddressInput, newMail);
+		await user.paste(newMail);
 
 		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
 		expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
@@ -1091,7 +1043,7 @@ describe('Account setting', () => {
 		expect(screen.getAllByRole('listitem').length).toEqual(3);
 		const inputElement = screen.getByRole('textbox', { name: /persona name/i });
 		await user.clear(inputElement);
-		await user.type(inputElement, persona1FullName);
+		await user.paste(persona1FullName);
 		await user.click(screen.getByRole('button', { name: /save/i }));
 		const snackbar = await screen.findByText(/something went wrong, please try again/i);
 		expect(snackbar).toBeVisible();
@@ -1147,7 +1099,7 @@ describe('Account setting', () => {
 		await user.click(screen.getByText(persona2FullName));
 		const inputElement = screen.getByRole('textbox', { name: /persona name/i });
 		await user.clear(inputElement);
-		await user.type(inputElement, persona1FullName);
+		await user.paste(persona1FullName);
 		expect(
 			within(screen.getByTestId(`account-list-item-${persona2Id}`)).getByText(persona1FullName)
 		).toBeVisible();
@@ -1234,12 +1186,7 @@ describe('Account setting', () => {
 
 		await user.click(screen.getByText(persona1FullName));
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		const confirmButton = screen.getByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
 		expect(screen.getAllByRole('listitem').length).toEqual(1);
 		await user.click(screen.getByRole('button', { name: /save/i }));
 		const snackbar = await screen.findByText(/something went wrong, please try again/i);

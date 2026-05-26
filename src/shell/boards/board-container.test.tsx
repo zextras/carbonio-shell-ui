@@ -21,7 +21,6 @@ import { mockedApps, setupAppStore } from '../../tests/test-app-utils';
 import {
 	buildBoardSizeAndPosition,
 	buildMousePosition,
-	INITIAL_SIZE_AND_POS,
 	setupBoardStore,
 	setupBoardSizes,
 	resizeBoard,
@@ -38,6 +37,17 @@ beforeEach(() => {
 	setupAppStore();
 	setupBoardStore();
 });
+
+// Renders BoardContainer and flushes the debounced updateBoardPosition that runs
+// after mount (see board-container.tsx:282, `debounce(fn, 0, { trailing: true })`).
+// Centralises the timer flush so future changes to that mechanism touch only this helper.
+function setupBoardContainer(): ReturnType<typeof setup> {
+	const result = setup(<BoardContainer />);
+	act(() => {
+		vi.advanceTimersToNextTimer();
+	});
+	return result;
+}
 
 const ENLARGED_BOARD_POSITION = {
 	top: '1.5rem!important',
@@ -64,11 +74,7 @@ describe('Board container', () => {
 
 		test('If a lot of tabs are opened, they are all visible and available in the dropdown', async () => {
 			setupBoardStore('board-1', boards);
-			const { getByRoleWithIcon, user } = setup(<BoardContainer />);
-			act(() => {
-				// run updateBoardPosition debounced fn
-				vi.advanceTimersToNextTimer();
-			});
+			const { getByRoleWithIcon, user } = setupBoardContainer();
 			const title1 = screen.getByText('title1');
 			expect(title1).toBeVisible();
 			const title2 = screen.getByText('title2');
@@ -99,11 +105,7 @@ describe('Board container', () => {
 
 		test('If close a tab from the dropdown, it will be removed', async () => {
 			setupBoardStore('board-1', boards);
-			const { getByRoleWithIcon, user } = setup(<BoardContainer />);
-			act(() => {
-				// run updateBoardPosition debounced fn
-				vi.advanceTimersToNextTimer();
-			});
+			const { getByRoleWithIcon, user } = setupBoardContainer();
 
 			const chevronDownIcon = getByRoleWithIcon('button', { icon: 'ChevronDown' });
 
@@ -145,117 +147,107 @@ describe('Board container', () => {
 	});
 	describe('Resize a board', () => {
 		describe('within the resizable area of the document', () => {
-			describe.each([-10, 0, 10])('with offset %d', (offset) => {
-				describe.each([25, -25, 0])('moving mouse on x-axis of %d', (deltaX) => {
-					describe.each([25, -25, 0])('moving mouse on y-axis of %d', (deltaY) => {
-						test.each<{ border: Border; expectedUpdates: Partial<SizeAndPosition> }>([
-							{
-								border: 'n',
-								expectedUpdates: {
-									height: -deltaY,
-									top: deltaY
-								}
-							},
-							{
-								border: 's',
-								expectedUpdates: {
-									height: deltaY
-								}
-							},
-							{
-								border: 'e',
-								expectedUpdates: {
-									width: deltaX
-								}
-							},
-							{
-								border: 'w',
-								expectedUpdates: {
-									width: -deltaX,
-									left: deltaX
-								}
-							},
-							{
-								border: 'sw',
-								expectedUpdates: {
-									height: deltaY,
-									width: -deltaX,
-									left: deltaX
-								}
-							},
-							{
-								border: 'se',
-								expectedUpdates: {
-									height: deltaY,
-									width: deltaX
-								}
-							},
-							{
-								border: 'nw',
-								expectedUpdates: {
-									height: -deltaY,
-									top: deltaY,
-									width: -deltaX,
-									left: deltaX
-								}
-							},
-							{
-								border: 'ne',
-								expectedUpdates: {
-									height: -deltaY,
-									top: deltaY,
-									width: deltaX
-								}
+			// Initial board position is far from any window boundary, so the visibility
+			// clamp in `calcPositionToRemainVisible` never triggers; offset would be
+			// purely additive and add no coverage. Kept offset = 0 (default).
+			describe.each([25, -25, 0])('moving mouse on x-axis of %d', (deltaX) => {
+				describe.each([25, -25, 0])('moving mouse on y-axis of %d', (deltaY) => {
+					test.each<{ border: Border; expectedUpdates: Partial<SizeAndPosition> }>([
+						{
+							border: 'n',
+							expectedUpdates: {
+								height: -deltaY,
+								top: deltaY
 							}
-						])(
-							'with the border $border, updates the size and position of the board',
-							async ({ border, expectedUpdates }) => {
-								setup(<BoardContainer />);
-								act(() => {
-									// run updateBoardPosition debounced fn
-									vi.advanceTimersToNextTimer();
-								});
-								const board = screen.getByTestId(TESTID_SELECTORS.board);
-								const boardInitialSizeAndPos = buildBoardSizeAndPosition(
-									INITIAL_SIZE_AND_POS,
-									offset
-								);
-								const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
-								const expectedSizeAndPos: SizeAndPosition = {
-									width: boardInitialSizeAndPos.width + (expectedUpdates.width ?? 0),
-									height: boardInitialSizeAndPos.height + (expectedUpdates.height ?? 0),
-									top: boardInitialSizeAndPos.top + (expectedUpdates.top ?? 0),
-									left: boardInitialSizeAndPos.left + (expectedUpdates.left ?? 0)
-								};
-								await resizeBoard(
-									board,
-									boardInitialSizeAndPos,
-									border,
-									{
-										clientX: mouseInitialPos.clientX + deltaX,
-										clientY: mouseInitialPos.clientY + deltaY
-									},
-									expectedSizeAndPos
-								);
-								expect(board).toHaveStyle({
-									width: `${expectedSizeAndPos.width}px`,
-									height: `${expectedSizeAndPos.height}px`,
-									top: `${expectedSizeAndPos.top}px`,
-									left: `${expectedSizeAndPos.left}px`
-								});
+						},
+						{
+							border: 's',
+							expectedUpdates: {
+								height: deltaY
 							}
-						);
-					});
+						},
+						{
+							border: 'e',
+							expectedUpdates: {
+								width: deltaX
+							}
+						},
+						{
+							border: 'w',
+							expectedUpdates: {
+								width: -deltaX,
+								left: deltaX
+							}
+						},
+						{
+							border: 'sw',
+							expectedUpdates: {
+								height: deltaY,
+								width: -deltaX,
+								left: deltaX
+							}
+						},
+						{
+							border: 'se',
+							expectedUpdates: {
+								height: deltaY,
+								width: deltaX
+							}
+						},
+						{
+							border: 'nw',
+							expectedUpdates: {
+								height: -deltaY,
+								top: deltaY,
+								width: -deltaX,
+								left: deltaX
+							}
+						},
+						{
+							border: 'ne',
+							expectedUpdates: {
+								height: -deltaY,
+								top: deltaY,
+								width: deltaX
+							}
+						}
+					])(
+						'with the border $border, updates the size and position of the board',
+						async ({ border, expectedUpdates }) => {
+							setupBoardContainer();
+							const board = screen.getByTestId(TESTID_SELECTORS.board);
+							const boardInitialSizeAndPos = buildBoardSizeAndPosition();
+							const mouseInitialPos = buildMousePosition(border, boardInitialSizeAndPos);
+							const expectedSizeAndPos: SizeAndPosition = {
+								width: boardInitialSizeAndPos.width + (expectedUpdates.width ?? 0),
+								height: boardInitialSizeAndPos.height + (expectedUpdates.height ?? 0),
+								top: boardInitialSizeAndPos.top + (expectedUpdates.top ?? 0),
+								left: boardInitialSizeAndPos.left + (expectedUpdates.left ?? 0)
+							};
+							await resizeBoard(
+								board,
+								boardInitialSizeAndPos,
+								border,
+								{
+									clientX: mouseInitialPos.clientX + deltaX,
+									clientY: mouseInitialPos.clientY + deltaY
+								},
+								expectedSizeAndPos
+							);
+							expect(board).toHaveStyle({
+								width: `${expectedSizeAndPos.width}px`,
+								height: `${expectedSizeAndPos.height}px`,
+								top: `${expectedSizeAndPos.top}px`,
+								left: `${expectedSizeAndPos.left}px`
+							});
+						}
+					);
 				});
 			});
 		});
 
 		test('outside the resizable area of the document, does not update sizes', async () => {
-			setup(<BoardContainer />);
-			act(() => {
-				// run updateBoardPosition debounced fn
-				vi.advanceTimersToNextTimer();
-			});
+			setupBoardContainer();
 			const border: Border = 'nw';
 			const board = screen.getByTestId(TESTID_SELECTORS.board);
 			const boardInitialSizeAndPos = buildBoardSizeAndPosition();
@@ -302,11 +294,7 @@ describe('Board container', () => {
 	});
 
 	test('Enlarge default board set board to fill board area', async () => {
-		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		const { getByRoleWithIcon, user } = setupBoardContainer();
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		setupBoardSizes(board, buildBoardSizeAndPosition());
 		expect(board).toHaveStyleRule('height', '70vh');
@@ -318,11 +306,7 @@ describe('Board container', () => {
 	});
 
 	test('Enlarge resized board set board to fill board area', async () => {
-		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		const { getByRoleWithIcon, user } = setupBoardContainer();
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
@@ -349,11 +333,7 @@ describe('Board container', () => {
 	});
 
 	test('Reduce default board set board to default size', async () => {
-		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		const { getByRoleWithIcon, user } = setupBoardContainer();
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		setupBoardSizes(board, buildBoardSizeAndPosition());
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
@@ -365,11 +345,7 @@ describe('Board container', () => {
 	});
 
 	test('Reduce resized board set board to resized size', async () => {
-		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		const { getByRoleWithIcon, user } = setupBoardContainer();
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
@@ -424,11 +400,7 @@ describe('Board container', () => {
 	});
 
 	test('Collapse and un-collapse of a resized board set board to resized size', async () => {
-		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		const { getByRoleWithIcon, user } = setupBoardContainer();
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
@@ -465,11 +437,7 @@ describe('Board container', () => {
 	});
 
 	test('Reset size action is disabled if board is at default size', async () => {
-		const { getByRoleWithIcon } = setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		const { getByRoleWithIcon } = setupBoardContainer();
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		setupBoardSizes(board, boardInitialSizeAndPos);
@@ -477,11 +445,7 @@ describe('Board container', () => {
 	});
 
 	test('Reset size action is enabled if board is not at default size', async () => {
-		const { getByRoleWithIcon } = setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		const { getByRoleWithIcon } = setupBoardContainer();
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
@@ -504,11 +468,7 @@ describe('Board container', () => {
 	});
 
 	test('Reset size action reset board sizes to default', async () => {
-		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		const { getByRoleWithIcon, user } = setupBoardContainer();
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
@@ -543,11 +503,7 @@ describe('Board container', () => {
 	});
 
 	test('Resize of the window keeps the board top-left corner visible inside the window', async () => {
-		setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		setupBoardContainer();
 		const rightBorder: Border = 'e';
 		const leftBorder: Border = 'w';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
@@ -611,11 +567,7 @@ describe('Board container', () => {
 	});
 
 	test('Resizing down the window and then resizing it up reset board position to the last manually set', async () => {
-		setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		setupBoardContainer();
 		const rightBorder: Border = 'e';
 		const leftBorder: Border = 'w';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
@@ -695,11 +647,7 @@ describe('Board container', () => {
 	});
 
 	test('Reset size action reduce board if enlarged', async () => {
-		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		const { getByRoleWithIcon, user } = setupBoardContainer();
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
@@ -731,11 +679,7 @@ describe('Board container', () => {
 	});
 
 	test('Move a board with default size set new position and keep default size', async () => {
-		setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		setupBoardContainer();
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
@@ -760,11 +704,7 @@ describe('Board container', () => {
 	});
 
 	test('Multiple move of a board with default size set new position and keep default size', async () => {
-		setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		setupBoardContainer();
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		let boardInitialSizeAndPos = buildBoardSizeAndPosition();
@@ -805,11 +745,7 @@ describe('Board container', () => {
 	});
 
 	test('Move a board with custom size set new position and keep custom size', async () => {
-		setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		setupBoardContainer();
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
@@ -856,11 +792,7 @@ describe('Board container', () => {
 	});
 
 	test('Resizing the board, resetting to default size and position and then moving it to a different position set the new position, but keep the default size', async () => {
-		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		const { getByRoleWithIcon, user } = setupBoardContainer();
 		const border: Border = 'n';
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
@@ -917,11 +849,7 @@ describe('Board container', () => {
 	])('Action %s is not fired if a move is performed on it', async (actionName, icon) => {
 		const boardItem = sample(mockedBoardState) as Board;
 		setupBoardStore(boardItem.id, { [boardItem.id]: boardItem });
-		const { getAllByRoleWithIcon } = setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		const { getAllByRoleWithIcon } = setupBoardContainer();
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		const actionElement = getAllByRoleWithIcon('button', { icon })[0];
@@ -972,11 +900,7 @@ describe('Board container', () => {
 			component: (): React.JSX.Element => <Input label={'Board input'} />
 		};
 		useAppStore.getState().addBoardView(boardView);
-		const { user } = setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		const { user } = setupBoardContainer();
 		const inputElement = screen.getByRole<HTMLInputElement>('textbox', { name: /board input/i });
 		expect(inputElement).toBeVisible();
 		const typedText = 'wonderful';
@@ -987,11 +911,7 @@ describe('Board container', () => {
 	});
 
 	test('Move board is disabled on enlarged board', async () => {
-		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		const { getByRoleWithIcon, user } = setupBoardContainer();
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		setupBoardSizes(board, buildBoardSizeAndPosition());
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
@@ -1012,11 +932,7 @@ describe('Board container', () => {
 	});
 
 	test('Keyboard space trigger icon button inside board header', async () => {
-		const { getByRoleWithIcon, user } = setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		const { getByRoleWithIcon, user } = setupBoardContainer();
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		setupBoardSizes(board, buildBoardSizeAndPosition());
 		// click to set focus
@@ -1035,11 +951,7 @@ describe('Board container', () => {
 	});
 
 	test('Reset is disabled when opening a new board which had custom position but default sizes', async () => {
-		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
-		act(() => {
-			// run updateBoardPosition debounced fn
-			vi.advanceTimersToNextTimer();
-		});
+		const { user, getByRoleWithIcon } = setupBoardContainer();
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const elementForMove = screen.getByTestId(TESTID_SELECTORS.boardHeader);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();

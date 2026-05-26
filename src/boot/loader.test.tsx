@@ -17,12 +17,17 @@ import * as networkUtils from '../network/utils';
 import { useLoginConfigStore } from '../store/login/store';
 import { LOGGED_USER, TIMERS } from '../tests/constants';
 import { setup, screen } from '../tests/utils';
+import type { AccountSettingsAttrs } from '../types/account';
 
 vi.mock('./app/load-apps');
 
-const getGetInfoResult = (
-	customInfo?: Partial<Awaited<ReturnType<typeof api.getInfo>>>
-): Awaited<ReturnType<typeof api.getInfo>> => ({
+type GetInfoResponseShape = Awaited<ReturnType<typeof api.getInfo>>;
+
+type GetInfoResponseOverride = Omit<Partial<GetInfoResponseShape>, 'attrs'> & {
+	attrs?: { _attrs?: Partial<AccountSettingsAttrs> };
+};
+
+const getGetInfoResult = (customInfo?: GetInfoResponseOverride): GetInfoResponseShape => ({
 	id: LOGGED_USER.id,
 	name: LOGGED_USER.name,
 	version: '',
@@ -33,15 +38,18 @@ const getGetInfoResult = (
 	lifetime: 86400000,
 	...customInfo,
 	prefs: { _attrs: { ...LOGGED_USER.prefs, ...customInfo?.prefs?._attrs } },
-	attrs: { _attrs: { ...LOGGED_USER.attrs, ...customInfo?.attrs?._attrs } },
+	attrs: {
+		_attrs: {
+			...LOGGED_USER.attrs,
+			...customInfo?.attrs?._attrs
+		} as GetInfoResponseShape['attrs']['_attrs']
+	},
 	props: {
 		prop: { ...LOGGED_USER.props, ...customInfo?.props?.prop }
 	}
 });
 
-const mockGetInfo = (
-	customInfo?: Partial<Awaited<ReturnType<typeof api.getInfo>>>
-): MockInstance<typeof api.getInfo> =>
+const mockGetInfo = (customInfo?: GetInfoResponseOverride): MockInstance<typeof api.getInfo> =>
 	vi.spyOn(api, 'getInfo').mockReturnValue(Promise.resolve(getGetInfoResult(customInfo)));
 
 describe('Loader', () => {
@@ -416,8 +424,6 @@ describe('Loader', () => {
 	describe('Idle timeout modal', () => {
 		test('should show idle timeout modal when zimbraMailIdleSessionTimeout is set and warning time is reached', async () => {
 			mockGetInfo({
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
 				attrs: { _attrs: { zimbraMailIdleSessionTimeout: '120s' } }
 			});
 
@@ -445,8 +451,6 @@ describe('Loader', () => {
 
 		test('should show "Stay logged in" and "Logout" buttons in idle timeout modal', async () => {
 			mockGetInfo({
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
 				attrs: { _attrs: { zimbraMailIdleSessionTimeout: '120s' } }
 			});
 
@@ -471,8 +475,6 @@ describe('Loader', () => {
 		test('should reset idle timeout when clicking "Stay logged in" button', async () => {
 			const logoutFn = vi.spyOn(logout, 'logout').mockImplementation(async () => {});
 			mockGetInfo({
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
 				attrs: { _attrs: { zimbraMailIdleSessionTimeout: '120s' } }
 			});
 
@@ -503,8 +505,6 @@ describe('Loader', () => {
 		test('should call logout when clicking "Logout" button in idle timeout modal', async () => {
 			const logoutFn = vi.spyOn(logout, 'logout').mockImplementation(async () => {});
 			mockGetInfo({
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
 				attrs: { _attrs: { zimbraMailIdleSessionTimeout: '120s' } }
 			});
 
@@ -526,8 +526,6 @@ describe('Loader', () => {
 		test('should automatically logout when idle timeout expires without user interaction', async () => {
 			const logoutFn = vi.spyOn(logout, 'logout').mockImplementation(async () => {});
 			mockGetInfo({
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
 				attrs: { _attrs: { zimbraMailIdleSessionTimeout: '120s' } }
 			});
 
@@ -562,8 +560,6 @@ describe('Loader', () => {
 
 		test('should not show idle timeout modal when zimbraMailIdleSessionTimeout is 0', async () => {
 			mockGetInfo({
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
 				attrs: { _attrs: { zimbraMailIdleSessionTimeout: '0s' } }
 			});
 
@@ -581,8 +577,6 @@ describe('Loader', () => {
 
 		test('should show idle timeout modal immediately if timeout is less than warning time', async () => {
 			mockGetInfo({
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
 				attrs: { _attrs: { zimbraMailIdleSessionTimeout: '30s' } }
 			});
 
@@ -601,8 +595,6 @@ describe('Loader', () => {
 		test('should reset idle timeout on user activity and hide modal', async () => {
 			const logoutFn = vi.spyOn(logout, 'logout').mockImplementation(async () => {});
 			mockGetInfo({
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				// @ts-ignore
 				attrs: { _attrs: { zimbraMailIdleSessionTimeout: '120s' } }
 			});
 

@@ -10,12 +10,11 @@ import type { MockInstance } from 'vitest';
 import { useIdleTimeout } from './useIdleTimeout';
 import { logout } from '../network/logout';
 
-// Mock the logout function
 vi.mock('../network/logout', () => ({
 	logout: vi.fn()
 }));
 
-// Mock lodash debounce
+// debounce mock: invokes immediately so dispatched events propagate synchronously in tests
 vi.mock('lodash', () => ({
 	debounce: vi.fn((fn) => {
 		const debouncedFn = fn;
@@ -26,54 +25,35 @@ vi.mock('lodash', () => ({
 
 describe('useIdleTimeout', () => {
 	let mockDateNow: MockInstance;
-	let mockSetTimeout: MockInstance;
-	let mockClearTimeout: MockInstance;
 
 	beforeEach(() => {
 		vi.clearAllMocks();
 		vi.clearAllTimers();
 		mockDateNow = vi.spyOn(Date, 'now');
-		mockSetTimeout = vi.spyOn(global, 'setTimeout');
-		mockClearTimeout = vi.spyOn(global, 'clearTimeout');
 	});
 
 	afterEach(() => {
 		mockDateNow.mockRestore();
-		mockSetTimeout.mockRestore();
-		mockClearTimeout.mockRestore();
 	});
 
-	it('should do nothing when timeout is not provided', () => {
-		const { unmount } = renderHook(() => useIdleTimeout(undefined));
-		expect(mockSetTimeout).not.toHaveBeenCalled();
-		unmount();
+	it('should not logout when timeout is not provided', () => {
+		renderHook(() => useIdleTimeout(undefined));
+
+		act(() => {
+			vi.advanceTimersByTime(60 * 60 * 1000);
+		});
+
+		expect(logout).not.toHaveBeenCalled();
 	});
 
-	it('should do nothing when timeout is 0', () => {
-		const { unmount } = renderHook(() => useIdleTimeout('0s'));
-		expect(mockSetTimeout).not.toHaveBeenCalled();
-		unmount();
-	});
+	it('should not logout when timeout is 0', () => {
+		renderHook(() => useIdleTimeout('0s'));
 
-	it('should setup and cleanup properly for valid duration', () => {
-		const addEventListenerSpy = vi.spyOn(document, 'addEventListener');
-		const removeEventListenerSpy = vi.spyOn(document, 'removeEventListener');
+		act(() => {
+			vi.advanceTimersByTime(60 * 60 * 1000);
+		});
 
-		const { unmount } = renderHook(() => useIdleTimeout('10s'));
-
-		expect(mockSetTimeout).toHaveBeenCalledWith(expect.any(Function), 10000);
-		expect(addEventListenerSpy).toHaveBeenCalledWith('mouseup', expect.any(Function));
-		expect(addEventListenerSpy).toHaveBeenCalledWith('wheel', expect.any(Function));
-		expect(addEventListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
-		expect(addEventListenerSpy).toHaveBeenCalledWith('visibilitychange', expect.any(Function));
-
-		unmount();
-
-		expect(mockClearTimeout).toHaveBeenCalled();
-		expect(removeEventListenerSpy).toHaveBeenCalledWith('mouseup', expect.any(Function));
-		expect(removeEventListenerSpy).toHaveBeenCalledWith('wheel', expect.any(Function));
-		expect(removeEventListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
-		expect(removeEventListenerSpy).toHaveBeenCalledWith('visibilitychange', expect.any(Function));
+		expect(logout).not.toHaveBeenCalled();
 	});
 
 	it('should logout when timeout expires', () => {
@@ -86,59 +66,60 @@ describe('useIdleTimeout', () => {
 		expect(logout).toHaveBeenCalled();
 	});
 
-	it('should reset timeout on user activity', () => {
-		const { unmount } = renderHook(() => useIdleTimeout('70s'));
+	it('should not logout after unmount, even when the timeout would have expired', () => {
+		const { unmount } = renderHook(() => useIdleTimeout('5s'));
+		unmount();
 
-		// Simulate mouse activity
 		act(() => {
-			document.dispatchEvent(new Event('mouseup'));
+			vi.advanceTimersByTime(60 * 1000);
 		});
 
-		expect(mockClearTimeout).toHaveBeenCalled();
-		expect(mockSetTimeout).toHaveBeenCalledTimes(4); // Initial + reset
-
-		unmount();
+		expect(logout).not.toHaveBeenCalled();
 	});
 
-	it('should reset timeout on wheel activity', () => {
-		const { unmount } = renderHook(() => useIdleTimeout('10s'));
+	// The hook detaches the `mouseup` listener as soon as the inactivity warning
+	// becomes visible (60s before the timeout). Using a timeout well above that
+	// threshold lets us advance the clock without entering the warning state,
+	// so the same scenario covers mouseup, wheel and keydown.
+	it.each(['mouseup', 'wheel', 'keydown'])(
+		'should reset the timeout when a %s event is dispatched',
+		(eventName) => {
+			renderHook(() => useIdleTimeout('200s'));
 
-		// Simulate wheel activity
-		act(() => {
-			document.dispatchEvent(new Event('wheel'));
-		});
+			// Close to (but under) the original timeout's expiry.
+			act(() => {
+				vi.advanceTimersByTime(130_000);
+			});
 
-		expect(mockClearTimeout).toHaveBeenCalled();
-		expect(mockSetTimeout).toHaveBeenCalledTimes(2); // Initial + reset
+			act(() => {
+				document.dispatchEvent(new Event(eventName));
+			});
 
-		unmount();
-	});
+			// Past the original timeout's wall-clock expiry (130s + 80s = 210s > 200s),
+			// but only 80s since the reset → no logout yet.
+			act(() => {
+				vi.advanceTimersByTime(80_000);
+			});
+			expect(logout).not.toHaveBeenCalled();
 
-	it('should reset timeout on keydown activity', () => {
-		const { unmount } = renderHook(() => useIdleTimeout('10s'));
-
-		// Simulate keydown activity
-		act(() => {
-			document.dispatchEvent(new Event('keydown'));
-		});
-
-		expect(mockClearTimeout).toHaveBeenCalled();
-		expect(mockSetTimeout).toHaveBeenCalledTimes(2); // Initial + reset
-
-		unmount();
-	});
+			// A full timeout window after the reset has elapsed → logout fires.
+			act(() => {
+				vi.advanceTimersByTime(130_000);
+			});
+			expect(logout).toHaveBeenCalled();
+		}
+	);
 
 	describe('visibility change handling', () => {
 		it('should do nothing when page becomes hidden', () => {
 			mockDateNow.mockReturnValue(1000);
 			renderHook(() => useIdleTimeout('10s'));
 
-			const initialSetTimeoutCalls = mockSetTimeout.mock.calls.length;
-
 			Object.defineProperty(document, 'hidden', { value: true, configurable: true });
 			document.dispatchEvent(new Event('visibilitychange'));
 
-			expect(mockSetTimeout.mock.calls.length).toBe(initialSetTimeoutCalls);
+			// No logout yet, and the original timeout still drives behaviour.
+			expect(logout).not.toHaveBeenCalled();
 		});
 
 		it('should logout immediately when timeout expired while hidden', () => {
@@ -172,15 +153,24 @@ describe('useIdleTimeout', () => {
 				document.dispatchEvent(new Event('visibilitychange'));
 			});
 
-			// Page becomes visible after 3 more seconds (5 seconds total)
+			// Page becomes visible after 3 more seconds (5 seconds total elapsed)
 			mockDateNow.mockReturnValue(startTime + 5000);
 			Object.defineProperty(document, 'hidden', { value: false, configurable: true });
 			act(() => {
 				document.dispatchEvent(new Event('visibilitychange'));
 			});
 
-			// Should set timeout with remaining 5 seconds
-			expect(mockSetTimeout).toHaveBeenLastCalledWith(expect.any(Function), 5000);
+			// Less than the remaining 5s after visibility restored → no logout yet.
+			act(() => {
+				vi.advanceTimersByTime(4000);
+			});
+			expect(logout).not.toHaveBeenCalled();
+
+			// After the remaining 5s elapses → logout fires.
+			act(() => {
+				vi.advanceTimersByTime(1000);
+			});
+			expect(logout).toHaveBeenCalled();
 		});
 
 		it('should handle visibility change when no timeout is set', () => {

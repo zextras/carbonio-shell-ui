@@ -20,6 +20,13 @@ import { useLoginConfigStore } from '../store/login/store';
 import { ICONS, TESTID_SELECTORS } from '../tests/constants';
 import { setup } from '../tests/utils';
 
+// Default values for i18n keys rendered by out-of-office-settings.tsx — kept here
+// as a single source of truth so a copy change requires updating one place.
+const LABELS = {
+	autoReplyMessage: 'Auto-Reply Message:',
+	autoReplyMessageExternal: 'Auto-Reply Message for External senders:'
+} as const;
+
 describe('General setting', () => {
 	const { defaultI18n } = useI18nStore.getState();
 	const localeArray = localeList(defaultI18n.t);
@@ -178,7 +185,7 @@ describe('General setting', () => {
 		}));
 		const { user } = setup(<GeneralSettings />);
 		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
-		const textbox = screen.getByRole('textbox', { name: 'Auto-Reply Message:' });
+		const textbox = screen.getByRole('textbox', { name: LABELS.autoReplyMessage });
 		await user.clear(textbox);
 		await user.paste(userInput);
 
@@ -206,7 +213,7 @@ describe('General setting', () => {
 		const { user } = setup(<GeneralSettings />);
 		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
 		const textbox = screen.getByRole('textbox', {
-			name: 'Auto-Reply Message for External senders:'
+			name: LABELS.autoReplyMessageExternal
 		});
 		await user.clear(textbox);
 		await user.paste(userInput);

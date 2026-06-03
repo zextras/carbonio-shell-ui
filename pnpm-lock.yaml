@@ -42,8 +42,8 @@ importers:
         specifier: 4.6.3
         version: 4.6.3
       i18next-http-backend:
-        specifier: 3.0.5
-        version: 3.0.5
+        specifier: 3.0.6
+        version: 3.0.6
       immer:
         specifier: 10.2.0
         version: 10.2.0
@@ -4512,8 +4512,8 @@ packages:
   i18next-chained-backend@4.6.3:
     resolution: {integrity: sha512-Yg4hAKg/98zRAMQs87vJSNevTzaPPrYF3Eb7Kpx+UEaaXLd3p69g7dulAL+hpmZQHeMQ/5gFqHVtdwva53mB0Q==}
 
-  i18next-http-backend@3.0.5:
-    resolution: {integrity: sha512-QaWHnsxieEDcqKe+vo/RFqpiIFRi/KBqlOSPcUlvinBaISCeiTRCbtrazHAjtHtsLC66oDsROAH8frWkQzfMMQ==}
+  i18next-http-backend@3.0.6:
+    resolution: {integrity: sha512-mBOqy8993jtqAoj6XaI1XeC/8/9v6EPS+681ziegrPvTB0DoaCY7PpTS0SpY56qLMoS4OI1TZEM2Zf59zNh05w==}
 
   i18next@22.5.1:
     resolution: {integrity: sha512-8TGPgM3pAD+VRsMtUMNknRz3kzqwp/gPALrWMsDnmC1mKqJwpWyooQRLMcbTwq8z8YwSmuj+ZYvc+xCuEpkssA==}
@@ -12125,7 +12125,7 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.29.7
 
-  i18next-http-backend@3.0.5:
+  i18next-http-backend@3.0.6:
     dependencies:
       cross-fetch: 4.1.0
     transitivePeerDependencies:

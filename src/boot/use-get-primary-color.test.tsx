@@ -42,7 +42,10 @@ describe('Use get primary color', () => {
 
 		setup(<PrimaryColorComponent />);
 
-		expect(await screen.findByText(`color: ${carbonioWebUiPrimaryColorConfig}`)).toBeVisible();
+		expect(
+			await screen.findByText(`color: ${carbonioWebUiPrimaryColorConfig}`),
+			'the light primary color config should be used when dark mode is disabled'
+		).toBeVisible();
 	});
 
 	it('should return the carbonioWebUiDarkPrimaryColor config when available and dark mode is enabled', async () => {
@@ -68,7 +71,10 @@ describe('Use get primary color', () => {
 
 		setup(<PrimaryColorComponent />);
 
-		expect(await screen.findByText(`color: ${carbonioWebUiDarkPrimaryColorConfig}`)).toBeVisible();
+		expect(
+			await screen.findByText(`color: ${carbonioWebUiDarkPrimaryColorConfig}`),
+			'the dark primary color config should be used when dark mode is enabled'
+		).toBeVisible();
 	});
 
 	it('should return the carbonioWebUiPrimaryColor config when available and carbonioWebUiDarkPrimaryColor is not available and dark mode is enabled', async () => {
@@ -92,7 +98,10 @@ describe('Use get primary color', () => {
 
 		setup(<PrimaryColorComponent />);
 
-		expect(await screen.findByText(`color: ${carbonioWebUiPrimaryColorConfig}`)).toBeVisible();
+		expect(
+			await screen.findByText(`color: ${carbonioWebUiPrimaryColorConfig}`),
+			'the light primary color config should be used as fallback when no dark color is configured and dark mode is enabled'
+		).toBeVisible();
 	});
 
 	it('should return the carbonioWebUiDarkPrimaryColor config when available and carbonioWebUiPrimaryColor is not available and dark mode is disabled', async () => {
@@ -116,7 +125,10 @@ describe('Use get primary color', () => {
 
 		setup(<PrimaryColorComponent />);
 
-		expect(await screen.findByText(`color: ${carbonioWebUiDarkPrimaryColorConfig}`)).toBeVisible();
+		expect(
+			await screen.findByText(`color: ${carbonioWebUiDarkPrimaryColorConfig}`),
+			'the dark primary color config should be used as fallback when no light color is configured and dark mode is disabled'
+		).toBeVisible();
 	});
 
 	it('should use localStore color as fallback until config color is received', async () => {
@@ -127,7 +139,10 @@ describe('Use get primary color', () => {
 
 		setup(<PrimaryColorComponent />);
 
-		expect(await screen.findByText(`color: ${localStorageColor}`)).toBeVisible();
+		expect(
+			await screen.findByText(`color: ${localStorageColor}`),
+			'the localStorage color should be shown as fallback before the config color is received'
+		).toBeVisible();
 
 		const carbonioWebUiPrimaryColorConfig = '#bbbbbb';
 		const carbonioWebUiDarkPrimaryColorConfig = '#cccccc';
@@ -145,7 +160,10 @@ describe('Use get primary color', () => {
 				})
 			);
 		});
-		expect(await screen.findByText(`color: ${carbonioWebUiPrimaryColorConfig}`)).toBeVisible();
+		expect(
+			await screen.findByText(`color: ${carbonioWebUiPrimaryColorConfig}`),
+			'the config primary color should replace the localStorage fallback once received'
+		).toBeVisible();
 	});
 
 	it('should use localStore color as fallback until configs are received and return undefined if carbonioWebUiPrimaryColor is not received', async () => {
@@ -156,7 +174,10 @@ describe('Use get primary color', () => {
 
 		setup(<PrimaryColorComponent />);
 
-		expect(await screen.findByText(`color: ${localStorageColor}`)).toBeVisible();
+		expect(
+			await screen.findByText(`color: ${localStorageColor}`),
+			'the localStorage color should be shown as fallback before the configs are received'
+		).toBeVisible();
 
 		act(() => {
 			useLoginConfigStore.setState((s) => ({
@@ -170,6 +191,9 @@ describe('Use get primary color', () => {
 				})
 			);
 		});
-		expect(await screen.findByText(`color: undefined`)).toBeVisible();
+		expect(
+			await screen.findByText(`color: undefined`),
+			'the primary color should be undefined when no primary color config is received'
+		).toBeVisible();
 	});
 });

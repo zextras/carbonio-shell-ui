@@ -36,7 +36,10 @@ describe('utils', () => {
 			const attrs = { newAttr: 'new attr value' };
 
 			const updatedAttrs = mergeAttrs(attrs, state);
-			expect(updatedAttrs).toEqual({ newAttr: 'new attr value' });
+			expect(
+				updatedAttrs,
+				'merged attrs should contain the single new attr when starting from an empty state'
+			).toEqual({ newAttr: 'new attr value' });
 		});
 
 		test('given an empty state and multiple attrs mods, the store will contain the multiple attrs', async () => {
@@ -44,7 +47,10 @@ describe('utils', () => {
 			const attrs = { newAttr1: 'attr1', newAttr2: 'attr2' };
 
 			const updatedAttrs = mergeAttrs(attrs, state);
-			expect(updatedAttrs).toEqual(
+			expect(
+				updatedAttrs,
+				'merged attrs should contain all the new attrs when starting from an empty state'
+			).toEqual(
 				expect.objectContaining({
 					newAttr1: 'attr1',
 					newAttr2: 'attr2'
@@ -65,7 +71,10 @@ describe('utils', () => {
 			const attrs = { newAttr: 'new' };
 
 			const updatedAttrs = mergeAttrs(attrs, state);
-			expect(updatedAttrs).toEqual(
+			expect(
+				updatedAttrs,
+				'merged attrs should contain both the existing and the new attr'
+			).toEqual(
 				expect.objectContaining({
 					oldAttr: 'old',
 					newAttr: 'new'
@@ -86,7 +95,10 @@ describe('utils', () => {
 			const attrs = { newAttr1: 'new1', newAttr2: 'new2' };
 
 			const updatedAttrs = mergeAttrs(attrs, state);
-			expect(updatedAttrs).toEqual(
+			expect(
+				updatedAttrs,
+				'merged attrs should contain all the existing and the new attrs'
+			).toEqual(
 				expect.objectContaining({
 					newAttr1: 'new1',
 					newAttr2: 'new2',
@@ -109,7 +121,10 @@ describe('utils', () => {
 			const attrs = { oldAttr: 'new' };
 
 			const updatedAttrs = mergeAttrs(attrs, state);
-			expect(updatedAttrs).toEqual(
+			expect(
+				updatedAttrs,
+				'merged attrs should replace the existing attr value with the new one'
+			).toEqual(
 				expect.objectContaining({
 					oldAttr: 'new'
 				})
@@ -125,7 +140,10 @@ describe('utils', () => {
 			};
 
 			const updatedPrefs = mergePrefs(prefs, state);
-			expect(updatedPrefs).toEqual({ newPref: 'dateAsc' });
+			expect(
+				updatedPrefs,
+				'merged prefs should contain the single new pref when starting from an empty state'
+			).toEqual({ newPref: 'dateAsc' });
 		});
 
 		test('given an empty state and multiple prefs mods, the store will contain the multiple prefs', async () => {
@@ -136,7 +154,10 @@ describe('utils', () => {
 			};
 
 			const updatedPrefs = mergePrefs(prefs, state);
-			expect(updatedPrefs).toEqual(
+			expect(
+				updatedPrefs,
+				'merged prefs should contain all the new prefs when starting from an empty state'
+			).toEqual(
 				expect.objectContaining({
 					newPref1: 'dateAsc',
 					newPref2: 'UTC'
@@ -159,7 +180,10 @@ describe('utils', () => {
 			};
 
 			const updatedPrefs = mergePrefs(prefs, state);
-			expect(updatedPrefs).toEqual(
+			expect(
+				updatedPrefs,
+				'merged prefs should contain both the existing and the new pref'
+			).toEqual(
 				expect.objectContaining({
 					oldPref: 'UTC',
 					newPref: 'dateAsc'
@@ -183,7 +207,10 @@ describe('utils', () => {
 			};
 
 			const updatedPrefs = mergePrefs(prefs, state);
-			expect(updatedPrefs).toEqual(
+			expect(
+				updatedPrefs,
+				'merged prefs should contain all the existing and the new prefs'
+			).toEqual(
 				expect.objectContaining({
 					newPref1: 'UTC',
 					newPref2: 'dateAsc',
@@ -208,7 +235,10 @@ describe('utils', () => {
 			};
 
 			const updatedPrefs = mergePrefs(prefs, state);
-			expect(updatedPrefs).toEqual(
+			expect(
+				updatedPrefs,
+				'merged prefs should replace the existing pref value with the new one'
+			).toEqual(
 				expect.objectContaining({
 					oldPref: 'new'
 				})
@@ -224,7 +254,10 @@ describe('utils', () => {
 			};
 
 			const updatedProps = mergeProps(props, state);
-			expect(updatedProps).toEqual([{ name: 'newProp', zimlet, _content: 'enabled' }]);
+			expect(
+				updatedProps,
+				'merged props should contain the single new prop when starting from an empty state'
+			).toEqual([{ name: 'newProp', zimlet, _content: 'enabled' }]);
 		});
 
 		test('given an empty state and multiple props mods, the store will contain the multiple props', async () => {
@@ -235,7 +268,10 @@ describe('utils', () => {
 			};
 
 			const updatedProps = mergeProps(props, state);
-			expect(updatedProps).toEqual(
+			expect(
+				updatedProps,
+				'merged props should contain all the new props when starting from an empty state'
+			).toEqual(
 				expect.arrayContaining([
 					{ name: 'newProp1', zimlet, _content: 'enabled' },
 					{ name: 'newProp2', zimlet, _content: '5' }
@@ -259,7 +295,10 @@ describe('utils', () => {
 			const props = { newProp1: { app: zimlet, value: 'TRUE' } };
 
 			const updatedProps = mergeProps(props, state);
-			expect(updatedProps).toEqual(
+			expect(
+				updatedProps,
+				'merged props should contain both the existing props and the new one'
+			).toEqual(
 				expect.arrayContaining([
 					{ name: 'oldProp1', zimlet, _content: 'auto' },
 					{ name: 'oldProp2', zimlet, _content: 'false' },
@@ -287,7 +326,10 @@ describe('utils', () => {
 			};
 
 			const updatedPrefs = mergeProps(props, state);
-			expect(updatedPrefs).toEqual(
+			expect(
+				updatedPrefs,
+				'merged props should contain all the existing props and the new ones'
+			).toEqual(
 				expect.arrayContaining([
 					{ name: 'oldProp1', zimlet, _content: 'auto' },
 					{ name: 'oldProp2', zimlet, _content: 'false' },
@@ -312,7 +354,10 @@ describe('utils', () => {
 			};
 
 			const updatedProps = mergeProps(props, state);
-			expect(updatedProps).toEqual(
+			expect(
+				updatedProps,
+				'merged props should replace the existing prop value with the new one'
+			).toEqual(
 				expect.arrayContaining([
 					{
 						name: 'oldProp',
@@ -333,13 +378,19 @@ describe('utils', () => {
 			}));
 			const state = useAccountStore.getState();
 
-			expect(updateIdentities(state, {}, [])).toEqual(undefined);
+			expect(
+				updateIdentities(state, {}, []),
+				'updateIdentities should return undefined when the account in the state is undefined'
+			).toEqual(undefined);
 		});
 
 		it('should return the original identities if no mods are passed', () => {
 			setupAccountStore();
 			const state = useAccountStore.getState();
-			expect(updateIdentities(state, {}, [])).toEqual(state.account?.identities.identity);
+			expect(
+				updateIdentities(state, {}, []),
+				'updateIdentities should return the original identities when no mods are passed'
+			).toEqual(state.account?.identities.identity);
 		});
 
 		it('should return the original identities and the new identities', () => {
@@ -349,10 +400,10 @@ describe('utils', () => {
 				_attrs: {},
 				id: faker.string.uuid()
 			};
-			expect(updateIdentities(state, {}, [newIdentity])).toEqual([
-				newIdentity,
-				...(state.account?.identities.identity ?? [])
-			]);
+			expect(
+				updateIdentities(state, {}, [newIdentity]),
+				'updateIdentities should prepend the new identity to the original ones'
+			).toEqual([newIdentity, ...(state.account?.identities.identity ?? [])]);
 		});
 
 		it('should return the original identities without the one which has to be deleted', () => {
@@ -366,9 +417,10 @@ describe('utils', () => {
 			const mods: IdentityMods = {
 				deleteList: [identityToDeleteId]
 			};
-			expect(updateIdentities(state, mods, [])).not.toContain(
-				expect.objectContaining({ id: identityToDeleteId })
-			);
+			expect(
+				updateIdentities(state, mods, []),
+				'updateIdentities should remove the identity listed in the deleteList'
+			).not.toContain(expect.objectContaining({ id: identityToDeleteId }));
 		});
 
 		it('should return the original identities with updated pref', () => {
@@ -392,9 +444,10 @@ describe('utils', () => {
 				}
 			};
 
-			expect(updateIdentities(state, mods, [])?.[0]._attrs.zimbraPrefDefaultSignatureId).toEqual(
-				signatureId
-			);
+			expect(
+				updateIdentities(state, mods, [])?.[0]._attrs.zimbraPrefDefaultSignatureId,
+				'updateIdentities should apply the modified default signature id to the identity'
+			).toEqual(signatureId);
 		});
 
 		it('should not change the name of the primary identity', () => {
@@ -418,7 +471,10 @@ describe('utils', () => {
 				}
 			};
 
-			expect(updateIdentities(state, mods, [])?.[0].name).toEqual('DEFAULT');
+			expect(
+				updateIdentities(state, mods, [])?.[0].name,
+				'updateIdentities should keep the primary identity name as DEFAULT despite the rename mod'
+			).toEqual('DEFAULT');
 		});
 
 		it('should change the name of the non-primary identity', () => {
@@ -461,7 +517,10 @@ describe('utils', () => {
 
 			const result = updateIdentities(state, mods, []);
 			const updatedIdentity = find(result, (identity) => identity.id === identityToUpdateId);
-			expect(updatedIdentity?.name).toEqual(identityNewName);
+			expect(
+				updatedIdentity?.name,
+				'updateIdentities should apply the new name to a non-primary identity'
+			).toEqual(identityNewName);
 		});
 	});
 });

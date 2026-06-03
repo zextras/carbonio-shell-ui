@@ -43,7 +43,10 @@ describe('useIdleTimeout', () => {
 			vi.advanceTimersByTime(60 * 60 * 1000);
 		});
 
-		expect(logout).not.toHaveBeenCalled();
+		expect(
+			logout,
+			'logout should not be called when no timeout is provided'
+		).not.toHaveBeenCalled();
 	});
 
 	it('should not logout when timeout is 0', () => {
@@ -53,7 +56,7 @@ describe('useIdleTimeout', () => {
 			vi.advanceTimersByTime(60 * 60 * 1000);
 		});
 
-		expect(logout).not.toHaveBeenCalled();
+		expect(logout, 'logout should not be called when the timeout is 0').not.toHaveBeenCalled();
 	});
 
 	it('should logout when timeout expires', () => {
@@ -63,7 +66,7 @@ describe('useIdleTimeout', () => {
 			vi.advanceTimersByTime(5000);
 		});
 
-		expect(logout).toHaveBeenCalled();
+		expect(logout, 'logout should be called once the idle timeout expires').toHaveBeenCalled();
 	});
 
 	it('should not logout after unmount, even when the timeout would have expired', () => {
@@ -74,7 +77,10 @@ describe('useIdleTimeout', () => {
 			vi.advanceTimersByTime(60 * 1000);
 		});
 
-		expect(logout).not.toHaveBeenCalled();
+		expect(
+			logout,
+			'logout should not be called after the hook is unmounted'
+		).not.toHaveBeenCalled();
 	});
 
 	// The hook detaches the `mouseup` listener as soon as the inactivity warning
@@ -100,13 +106,19 @@ describe('useIdleTimeout', () => {
 			act(() => {
 				vi.advanceTimersByTime(80_000);
 			});
-			expect(logout).not.toHaveBeenCalled();
+			expect(
+				logout,
+				'logout should not be called before a full timeout window elapses since the reset'
+			).not.toHaveBeenCalled();
 
 			// A full timeout window after the reset has elapsed → logout fires.
 			act(() => {
 				vi.advanceTimersByTime(130_000);
 			});
-			expect(logout).toHaveBeenCalled();
+			expect(
+				logout,
+				'logout should be called once a full timeout window elapses after the reset'
+			).toHaveBeenCalled();
 		}
 	);
 
@@ -119,7 +131,10 @@ describe('useIdleTimeout', () => {
 			document.dispatchEvent(new Event('visibilitychange'));
 
 			// No logout yet, and the original timeout still drives behaviour.
-			expect(logout).not.toHaveBeenCalled();
+			expect(
+				logout,
+				'logout should not be called when the page becomes hidden'
+			).not.toHaveBeenCalled();
 		});
 
 		it('should logout immediately when timeout expired while hidden', () => {
@@ -137,7 +152,10 @@ describe('useIdleTimeout', () => {
 			Object.defineProperty(document, 'hidden', { value: false, configurable: true });
 			document.dispatchEvent(new Event('visibilitychange'));
 
-			expect(logout).toHaveBeenCalled();
+			expect(
+				logout,
+				'logout should be called immediately when the page becomes visible after the timeout expired while hidden'
+			).toHaveBeenCalled();
 		});
 
 		it('should reset timeout with remaining time when page becomes visible', () => {
@@ -164,13 +182,19 @@ describe('useIdleTimeout', () => {
 			act(() => {
 				vi.advanceTimersByTime(4000);
 			});
-			expect(logout).not.toHaveBeenCalled();
+			expect(
+				logout,
+				'logout should not be called before the remaining time elapses after the page becomes visible'
+			).not.toHaveBeenCalled();
 
 			// After the remaining 5s elapses → logout fires.
 			act(() => {
 				vi.advanceTimersByTime(1000);
 			});
-			expect(logout).toHaveBeenCalled();
+			expect(
+				logout,
+				'logout should be called once the remaining time elapses after the page becomes visible'
+			).toHaveBeenCalled();
 		});
 
 		it('should handle visibility change when no timeout is set', () => {
@@ -180,7 +204,10 @@ describe('useIdleTimeout', () => {
 			document.dispatchEvent(new Event('visibilitychange'));
 
 			// Should not cause any errors
-			expect(logout).not.toHaveBeenCalled();
+			expect(
+				logout,
+				'logout should not be called on visibility change when no timeout is set'
+			).not.toHaveBeenCalled();
 		});
 	});
 });

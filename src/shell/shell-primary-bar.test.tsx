@@ -87,10 +87,22 @@ describe('Shell primary bar', () => {
 			views: { ...state.views, primaryBar: primaryBarViews }
 		}));
 		const { getByRoleWithIcon } = setup(<ShellPrimaryBar />);
-		expect(getByRoleWithIcon('button', { icon: 'People' })).toBeVisible();
-		expect(getByRoleWithIcon('button', { icon: 'People' })).toBeEnabled();
-		expect(getByRoleWithIcon('button', { icon: 'Activity' })).toBeVisible();
-		expect(getByRoleWithIcon('button', { icon: 'Activity' })).toBeEnabled();
+		expect(
+			getByRoleWithIcon('button', { icon: 'People' }),
+			'the button for the first registered primary bar view should be visible'
+		).toBeVisible();
+		expect(
+			getByRoleWithIcon('button', { icon: 'People' }),
+			'the button for the first registered primary bar view should be enabled'
+		).toBeEnabled();
+		expect(
+			getByRoleWithIcon('button', { icon: 'Activity' }),
+			'the button for the second registered primary bar view should be visible'
+		).toBeVisible();
+		expect(
+			getByRoleWithIcon('button', { icon: 'Activity' }),
+			'the button for the second registered primary bar view should be enabled'
+		).toBeEnabled();
 	});
 
 	test('Primary bar view set as not visible are not shown', () => {
@@ -120,9 +132,18 @@ describe('Shell primary bar', () => {
 			views: { ...state.views, primaryBar: primaryBarViews }
 		}));
 		const { getByRoleWithIcon, queryByRoleWithIcon } = setup(<ShellPrimaryBar />);
-		expect(getByRoleWithIcon('button', { icon: 'People' })).toBeVisible();
-		expect(getByRoleWithIcon('button', { icon: 'People' })).toBeEnabled();
-		expect(queryByRoleWithIcon('button', { icon: 'Activity' })).not.toBeInTheDocument();
+		expect(
+			getByRoleWithIcon('button', { icon: 'People' }),
+			'the button for the visible primary bar view should be visible'
+		).toBeVisible();
+		expect(
+			getByRoleWithIcon('button', { icon: 'People' }),
+			'the button for the visible primary bar view should be enabled'
+		).toBeEnabled();
+		expect(
+			queryByRoleWithIcon('button', { icon: 'Activity' }),
+			'the button for the non-visible primary bar view should not be rendered'
+		).not.toBeInTheDocument();
 	});
 
 	test('When return to a visited module, the last visited view is preserved', async () => {
@@ -179,30 +200,66 @@ describe('Shell primary bar', () => {
 		});
 
 		const mailsIcon = getByRoleWithIcon('button', { icon: 'MailModOutline' });
-		expect(mailsIcon).toBeVisible();
-		expect(mailsIcon).toBeEnabled();
+		expect(mailsIcon, 'the Mails module primary bar button should be visible').toBeVisible();
+		expect(mailsIcon, 'the Mails module primary bar button should be enabled').toBeEnabled();
 		const filesIcon = getByRoleWithIcon('button', { icon: 'DriveOutline' });
-		expect(filesIcon).toBeVisible();
-		expect(filesIcon).toBeEnabled();
+		expect(filesIcon, 'the Files module primary bar button should be visible').toBeVisible();
+		expect(filesIcon, 'the Files module primary bar button should be enabled').toBeEnabled();
 
-		expect(screen.getByText('default mails view')).toBeVisible();
-		expect(screen.queryByText('about')).not.toBeInTheDocument();
-		expect(screen.queryByText('files view')).not.toBeInTheDocument();
+		expect(
+			screen.getByText('default mails view'),
+			'the default Mails view should be shown initially'
+		).toBeVisible();
+		expect(
+			screen.queryByText('about'),
+			'the Mails about view should not be shown initially'
+		).not.toBeInTheDocument();
+		expect(
+			screen.queryByText('files view'),
+			'the Files view should not be shown initially'
+		).not.toBeInTheDocument();
 
 		await user.click(screen.getByRole('button', { name: 'navigate to about' }));
-		expect(screen.getByText('about')).toBeVisible();
-		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
-		expect(screen.queryByText('files view')).not.toBeInTheDocument();
+		expect(
+			screen.getByText('about'),
+			'the Mails about view should be shown after navigating to it'
+		).toBeVisible();
+		expect(
+			screen.queryByText('default mails view'),
+			'the default Mails view should no longer be shown after navigating to about'
+		).not.toBeInTheDocument();
+		expect(
+			screen.queryByText('files view'),
+			'the Files view should not be shown while on the Mails about view'
+		).not.toBeInTheDocument();
 
 		await user.click(filesIcon);
-		expect(screen.getByText('files view')).toBeVisible();
-		expect(screen.queryByText('about')).not.toBeInTheDocument();
-		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
+		expect(
+			screen.getByText('files view'),
+			'the Files view should be shown after switching to the Files module'
+		).toBeVisible();
+		expect(
+			screen.queryByText('about'),
+			'the Mails about view should not be shown while on the Files module'
+		).not.toBeInTheDocument();
+		expect(
+			screen.queryByText('default mails view'),
+			'the default Mails view should not be shown while on the Files module'
+		).not.toBeInTheDocument();
 
 		await user.click(mailsIcon);
-		expect(screen.getByText('about')).toBeVisible();
-		expect(screen.queryByText('default mails view')).not.toBeInTheDocument();
-		expect(screen.queryByText('files view')).not.toBeInTheDocument();
+		expect(
+			screen.getByText('about'),
+			'returning to the Mails module should preserve the last visited about view'
+		).toBeVisible();
+		expect(
+			screen.queryByText('default mails view'),
+			'the default Mails view should not be restored when returning to the Mails module'
+		).not.toBeInTheDocument();
+		expect(
+			screen.queryByText('files view'),
+			'the Files view should not be shown after returning to the Mails module'
+		).not.toBeInTheDocument();
 	});
 
 	test('When zimbraFeatureOptionsEnabled is TRUE the setting icon is visible in primary bar', async () => {
@@ -214,8 +271,14 @@ describe('Shell primary bar', () => {
 		const { getByRoleWithIcon } = setup(<ShellWrapper />);
 
 		const searchIcon = getByRoleWithIcon('button', { icon: ICONS.settings });
-		expect(searchIcon).toBeVisible();
-		expect(searchIcon).toBeEnabled();
+		expect(
+			searchIcon,
+			'the settings icon should be visible when zimbraFeatureOptionsEnabled is TRUE'
+		).toBeVisible();
+		expect(
+			searchIcon,
+			'the settings icon should be enabled when zimbraFeatureOptionsEnabled is TRUE'
+		).toBeEnabled();
 	});
 
 	test('When zimbraFeatureOptionsEnabled is FALSE the setting icon is missing in primary bar', async () => {
@@ -226,7 +289,10 @@ describe('Shell primary bar', () => {
 		);
 		const { queryByRoleWithIcon } = setup(<ShellWrapper />);
 
-		expect(queryByRoleWithIcon('button', { icon: ICONS.settings })).not.toBeInTheDocument();
+		expect(
+			queryByRoleWithIcon('button', { icon: ICONS.settings }),
+			'the settings icon should not be rendered when zimbraFeatureOptionsEnabled is FALSE'
+		).not.toBeInTheDocument();
 	});
 
 	describe('Primary Badge', () => {
@@ -247,8 +313,14 @@ describe('Shell primary bar', () => {
 				views: { ...state.views, primaryBar: primaryBarViews }
 			}));
 			setup(<ShellPrimaryBar />);
-			expect(screen.getByTestId('badge-counter')).toBeVisible();
-			expect(screen.getByText(2)).toBeVisible();
+			expect(
+				screen.getByTestId('badge-counter'),
+				'the counter badge should be visible when show and showCount are true'
+			).toBeVisible();
+			expect(
+				screen.getByText(2),
+				'the counter badge should display the provided count'
+			).toBeVisible();
 		});
 
 		test('should render the counter badge to 0 if count is not set', () => {
@@ -268,8 +340,14 @@ describe('Shell primary bar', () => {
 				views: { ...state.views, primaryBar: primaryBarViews }
 			}));
 			setup(<ShellPrimaryBar />);
-			expect(screen.getByTestId('badge-counter')).toBeVisible();
-			expect(screen.getByText(0)).toBeVisible();
+			expect(
+				screen.getByTestId('badge-counter'),
+				'the counter badge should be visible when showCount is true even without a count'
+			).toBeVisible();
+			expect(
+				screen.getByText(0),
+				'the counter badge should default to 0 when no count is set'
+			).toBeVisible();
 		});
 
 		test('should not render the counter badge if show is false', () => {
@@ -289,7 +367,10 @@ describe('Shell primary bar', () => {
 				views: { ...state.views, primaryBar: primaryBarViews }
 			}));
 			setup(<ShellPrimaryBar />);
-			expect(screen.queryByTestId('badge-counter')).not.toBeInTheDocument();
+			expect(
+				screen.queryByTestId('badge-counter'),
+				'the counter badge should not be rendered when show is false'
+			).not.toBeInTheDocument();
 		});
 
 		test('should render an empty badge if show is true and showCount is false', () => {
@@ -310,8 +391,14 @@ describe('Shell primary bar', () => {
 			}));
 			setup(<ShellPrimaryBar />);
 			const counterBadge = screen.getByTestId('badge-counter');
-			expect(counterBadge).toBeVisible();
-			expect(counterBadge).toHaveTextContent('');
+			expect(
+				counterBadge,
+				'an empty badge should be visible when show is true and showCount is false'
+			).toBeVisible();
+			expect(
+				counterBadge,
+				'the badge should have no text content when showCount is false'
+			).toHaveTextContent('');
 		});
 
 		it('should render icon instead of badge when icon is provided in badge info', () => {
@@ -331,8 +418,14 @@ describe('Shell primary bar', () => {
 				views: { ...state.views, primaryBar: primaryBarViews }
 			}));
 			setup(<ShellPrimaryBar />);
-			expect(screen.queryByTestId('badge-counter')).not.toBeInTheDocument();
-			expect(screen.getByTestId('icon: Airplane')).toBeVisible();
+			expect(
+				screen.queryByTestId('badge-counter'),
+				'the counter badge should not be rendered when a badge icon is provided'
+			).not.toBeInTheDocument();
+			expect(
+				screen.getByTestId('icon: Airplane'),
+				'the provided badge icon should be visible instead of the counter badge'
+			).toBeVisible();
 		});
 		it('shows a tooltip when the user hover a badge', async () => {
 			const view: PrimaryBarView = {
@@ -363,7 +456,10 @@ describe('Shell primary bar', () => {
 				vi.advanceTimersByTime(2000);
 			});
 
-			expect(screen.getByText(view.label)).toBeVisible();
+			expect(
+				screen.getByText(view.label),
+				'the tooltip with the view label should be visible after hovering the badge'
+			).toBeVisible();
 		});
 	});
 });

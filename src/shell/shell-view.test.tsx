@@ -58,10 +58,22 @@ describe('Shell view', () => {
 
 			const boardContainer = screen.getByTestId(TESTID_SELECTORS.boardContainerComp);
 
-			expect(boardContainer).toHaveStyleRule('height', 'calc(100vh - 0rem)');
-			expect(boardContainer).toHaveStyleRule('width', 'calc(100vw - 0rem)');
-			expect(boardContainer).toHaveStyleRule('top', '0rem');
-			expect(boardContainer).toHaveStyleRule('left', '0rem');
+			expect(
+				boardContainer,
+				'the board container height should have no header offset in focus mode'
+			).toHaveStyleRule('height', 'calc(100vh - 0rem)');
+			expect(
+				boardContainer,
+				'the board container width should have no primary bar offset in focus mode'
+			).toHaveStyleRule('width', 'calc(100vw - 0rem)');
+			expect(
+				boardContainer,
+				'the board container top should have no offset in focus mode'
+			).toHaveStyleRule('top', '0rem');
+			expect(
+				boardContainer,
+				'the board container left should have no offset in focus mode'
+			).toHaveStyleRule('left', '0rem');
 		});
 		test('will have offsets if not in focus mode', () => {
 			vi.mocked(constants).IS_FOCUS_MODE = false;
@@ -70,31 +82,58 @@ describe('Shell view', () => {
 
 			const boardContainer = screen.getByTestId(TESTID_SELECTORS.boardContainerComp);
 
-			expect(boardContainer).toHaveStyleRule('height', `calc(100vh - ${HEADER_BAR_HEIGHT})`);
-			expect(boardContainer).toHaveStyleRule('width', `calc(100vw - ${PRIMARY_BAR_WIDTH})`);
-			expect(boardContainer).toHaveStyleRule('top', HEADER_BAR_HEIGHT);
-			expect(boardContainer).toHaveStyleRule('left', PRIMARY_BAR_WIDTH);
+			expect(
+				boardContainer,
+				'the board container height should account for the header bar height when not in focus mode'
+			).toHaveStyleRule('height', `calc(100vh - ${HEADER_BAR_HEIGHT})`);
+			expect(
+				boardContainer,
+				'the board container width should account for the primary bar width when not in focus mode'
+			).toHaveStyleRule('width', `calc(100vw - ${PRIMARY_BAR_WIDTH})`);
+			expect(
+				boardContainer,
+				'the board container top should be offset by the header bar height when not in focus mode'
+			).toHaveStyleRule('top', HEADER_BAR_HEIGHT);
+			expect(
+				boardContainer,
+				'the board container left should be offset by the primary bar width when not in focus mode'
+			).toHaveStyleRule('left', PRIMARY_BAR_WIDTH);
 		});
 	});
 
 	test('When resizing under mobile breakpoint, board does not disappear', () => {
 		setup(<ShellView />);
 
-		expect(screen.getByText('title1')).toBeVisible();
+		expect(screen.getByText('title1'), 'the board should be visible before resizing').toBeVisible();
 		act(() => {
 			window.resizeTo(500, 300);
 		});
-		expect(screen.getByText('title1')).toBeVisible();
+		expect(
+			screen.getByText('title1'),
+			'the board should still be visible after resizing under the mobile breakpoint'
+		).toBeVisible();
 	});
 
 	test('Collapse board toggler toggle visibility of the board', async () => {
 		const { getByRoleWithIcon, user } = setup(<ShellView />);
-		expect(screen.getByText('title1')).toBeVisible();
+		expect(
+			screen.getByText('title1'),
+			'the board should be visible before collapsing'
+		).toBeVisible();
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.collapseBoard }));
-		expect(screen.getByText('title1')).toBeInTheDocument();
-		expect(screen.queryByText('title1')).not.toBeVisible();
+		expect(
+			screen.getByText('title1'),
+			'the collapsed board should remain in the document'
+		).toBeInTheDocument();
+		expect(
+			screen.queryByText('title1'),
+			'the collapsed board should not be visible'
+		).not.toBeVisible();
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.unCollapseBoard }));
-		expect(screen.getByText('title1')).toBeVisible();
+		expect(
+			screen.getByText('title1'),
+			'the board should be visible again after un-collapsing'
+		).toBeVisible();
 	});
 
 	test('Board keeps custom size and position when re-opened after being collapsed', async () => {
@@ -139,7 +178,10 @@ describe('Shell view', () => {
 		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.collapseBoard }));
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.unCollapseBoard }));
-		expect(board).toHaveStyle({
+		expect(
+			board,
+			'the board should keep its custom size and position after being collapsed and re-opened'
+		).toHaveStyle({
 			height: `${boardNewSizeAndPos.height}px`,
 			width: `${boardNewSizeAndPos.width}px`,
 			top: `${boardNewSizeAndPos.top}px`,
@@ -176,7 +218,10 @@ describe('Shell view', () => {
 			vi.advanceTimersToNextTimer();
 		});
 		await waitFor(() =>
-			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '')).toEqual({
+			expect(
+				JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || ''),
+				'the resized board size should be persisted to local storage'
+			).toEqual({
 				height: boardNewSizeAndPos.height,
 				width: boardNewSizeAndPos.width
 			})
@@ -200,7 +245,10 @@ describe('Shell view', () => {
 			vi.advanceTimersToNextTimer();
 		});
 		const board2Element = screen.getByTestId(TESTID_SELECTORS.board);
-		expect(board2Element).toHaveStyle({
+		expect(
+			board2Element,
+			'a board re-opened after being closed should keep the resized size but reset to the default position'
+		).toHaveStyle({
 			...BOARD_DEFAULT_POSITION,
 			height: `${boardNewSizeAndPos.height}px`,
 			width: `${boardNewSizeAndPos.width}px`
@@ -277,7 +325,10 @@ describe('Shell view', () => {
 			boardNewSizeAndPos,
 			elementForMove2
 		);
-		expect(board2Element).toHaveStyle({
+		expect(
+			board2Element,
+			'the moved board should take the new position while keeping its custom size'
+		).toHaveStyle({
 			height: `${boardNewSizeAndPos.height}px`,
 			width: `${boardNewSizeAndPos.width}px`,
 			left: `${boardNewSizeAndPos.left}px`,
@@ -290,7 +341,8 @@ describe('Shell view', () => {
 		const { queryByRoleWithIcon } = setup(<ShellView />);
 
 		expect(
-			queryByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` })
+			queryByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` }),
+			'the minimize/collapse board button should not be present in focus mode'
 		).not.toBeInTheDocument();
 	});
 });

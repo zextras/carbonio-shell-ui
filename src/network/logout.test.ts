@@ -26,14 +26,20 @@ describe('Logout', () => {
 		const goToLoginFn = vi.spyOn(utils, 'goToLogin').mockImplementation(() => {});
 		await logout();
 		await vi.advanceTimersToNextTimerAsync();
-		expect(goToLoginFn).toHaveBeenCalled();
+		expect(
+			goToLoginFn,
+			'should redirect to the login page when the EndSession request fails'
+		).toHaveBeenCalled();
 	});
 
 	it('should redirect to login page if /logout request fails', async () => {
 		const goToLoginFn = vi.spyOn(utils, 'goToLogin').mockImplementation(() => {});
 		await logout();
 		await vi.advanceTimersToNextTimerAsync();
-		expect(goToLoginFn).toHaveBeenCalled();
+		expect(
+			goToLoginFn,
+			'should redirect to the login page when the /logout request fails'
+		).toHaveBeenCalled();
 	});
 
 	it('should redirect to login page if EndSession throws error', async () => {
@@ -42,7 +48,10 @@ describe('Logout', () => {
 		server.use(http.post('/service/soap/EndSessionRequest', () => HttpResponse.error()));
 		await logout();
 		await vi.advanceTimersToNextTimerAsync();
-		expect(goToLoginFn).toHaveBeenCalled();
+		expect(
+			goToLoginFn,
+			'should redirect to the login page when the EndSession request throws an error'
+		).toHaveBeenCalled();
 	});
 
 	it('should redirect to login page if /logout throws error', async () => {
@@ -50,14 +59,20 @@ describe('Logout', () => {
 		const goToLoginFn = vi.spyOn(utils, 'goToLogin').mockImplementation(() => {});
 		await logout();
 		await vi.advanceTimersToNextTimerAsync();
-		expect(goToLoginFn).toHaveBeenCalled();
+		expect(
+			goToLoginFn,
+			'should redirect to the login page when the /logout request throws an error'
+		).toHaveBeenCalled();
 	});
 
 	it('should redirect to login page if EndSession request succeeded with Fault', async () => {
 		const goToLoginFn = vi.spyOn(utils, 'goToLogin').mockImplementation(() => {});
 		await logout();
 		await vi.advanceTimersToNextTimerAsync();
-		expect(goToLoginFn).toHaveBeenCalled();
+		expect(
+			goToLoginFn,
+			'should redirect to the login page when the EndSession request succeeds with a Fault'
+		).toHaveBeenCalled();
 	});
 
 	describe('with custom logout url', () => {
@@ -66,7 +81,10 @@ describe('Logout', () => {
 			const goToFn = vi.spyOn(utils, 'goTo').mockImplementation(() => {});
 			await logout();
 			await vi.advanceTimersToNextTimerAsync();
-			expect(goToFn).toHaveBeenCalled();
+			expect(
+				goToFn,
+				'should redirect to the custom logout url when the EndSession request fails'
+			).toHaveBeenCalled();
 		});
 
 		it('should redirect to login page if /logout request fails', async () => {
@@ -74,7 +92,10 @@ describe('Logout', () => {
 			const goToFn = vi.spyOn(utils, 'goTo').mockImplementation(() => {});
 			await logout();
 			await vi.advanceTimersToNextTimerAsync();
-			expect(goToFn).toHaveBeenCalled();
+			expect(
+				goToFn,
+				'should redirect to the custom logout url when the /logout request fails'
+			).toHaveBeenCalled();
 		});
 
 		it('should redirect to login page if EndSession throws error', async () => {
@@ -83,7 +104,10 @@ describe('Logout', () => {
 			const goToFn = vi.spyOn(utils, 'goTo').mockImplementation(() => {});
 			await logout();
 			await vi.advanceTimersToNextTimerAsync();
-			expect(goToFn).toHaveBeenCalled();
+			expect(
+				goToFn,
+				'should redirect to the custom logout url when the EndSession request throws an error'
+			).toHaveBeenCalled();
 		});
 
 		it('should redirect to login page if /logout throws error', async () => {
@@ -92,7 +116,10 @@ describe('Logout', () => {
 			const goToFn = vi.spyOn(utils, 'goTo').mockImplementation(() => {});
 			await logout();
 			await vi.advanceTimersToNextTimerAsync();
-			expect(goToFn).toHaveBeenCalled();
+			expect(
+				goToFn,
+				'should redirect to the custom logout url when the /logout request throws an error'
+			).toHaveBeenCalled();
 		});
 
 		it('should redirect to login page if EndSession request succeeded with Fault', async () => {
@@ -100,7 +127,10 @@ describe('Logout', () => {
 			const goToFn = vi.spyOn(utils, 'goTo').mockImplementation(() => {});
 			await logout();
 			await vi.advanceTimersToNextTimerAsync();
-			expect(goToFn).toHaveBeenCalled();
+			expect(
+				goToFn,
+				'should redirect to the custom logout url when the EndSession request succeeds with a Fault'
+			).toHaveBeenCalled();
 		});
 	});
 });

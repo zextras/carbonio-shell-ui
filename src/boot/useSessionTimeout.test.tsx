@@ -59,8 +59,14 @@ describe('useSessionTimeout - handleVisibilityChange', () => {
 		Object.defineProperty(document, 'hidden', { value: false, configurable: true });
 		document.dispatchEvent(new Event('visibilitychange'));
 
-		expect(mockSetTimeout.mock.calls.length).toBeGreaterThan(initialTimeoutCalls);
-		expect(mockClearTimeout).toHaveBeenCalled();
+		expect(
+			mockSetTimeout.mock.calls.length,
+			'new timeouts should be scheduled when the page becomes visible again after being hidden'
+		).toBeGreaterThan(initialTimeoutCalls);
+		expect(
+			mockClearTimeout,
+			'the previous timeouts should be cleared when recalculating on visibility change'
+		).toHaveBeenCalled();
 	});
 
 	test('should not recalculate if page was never hidden', () => {
@@ -73,6 +79,9 @@ describe('useSessionTimeout - handleVisibilityChange', () => {
 		Object.defineProperty(document, 'hidden', { value: false, configurable: true });
 		document.dispatchEvent(new Event('visibilitychange'));
 
-		expect(mockSetTimeout.mock.calls.length).toBe(initialTimeoutCalls);
+		expect(
+			mockSetTimeout.mock.calls.length,
+			'no new timeouts should be scheduled on visibility change if the page was never hidden'
+		).toBe(initialTimeoutCalls);
 	});
 });

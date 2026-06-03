@@ -13,7 +13,10 @@ import { screen, setup } from '../../tests/utils';
 describe('useIsCarbonioCE hook', () => {
 	it('should return undefined when store value is not set', () => {
 		const { result } = renderHook(() => useIsCarbonioCE());
-		expect(result.current).toBe(undefined);
+		expect(
+			result.current,
+			'useIsCarbonioCE should return undefined when the store value is not set'
+		).toBe(undefined);
 	});
 
 	it('should return true when store value is true', () => {
@@ -22,7 +25,9 @@ describe('useIsCarbonioCE hook', () => {
 			isCarbonioCE: true
 		}));
 		const { result } = renderHook(() => useIsCarbonioCE());
-		expect(result.current).toBe(true);
+		expect(result.current, 'useIsCarbonioCE should return true when the store value is true').toBe(
+			true
+		);
 	});
 
 	it('should return false when store value is false', () => {
@@ -31,7 +36,10 @@ describe('useIsCarbonioCE hook', () => {
 			isCarbonioCE: false
 		}));
 		const { result } = renderHook(() => useIsCarbonioCE());
-		expect(result.current).toBe(false);
+		expect(
+			result.current,
+			'useIsCarbonioCE should return false when the store value is false'
+		).toBe(false);
 	});
 
 	it('should return the updated value if the store value change', () => {
@@ -41,14 +49,23 @@ describe('useIsCarbonioCE hook', () => {
 		};
 
 		setup(<TestComponent />);
-		expect(screen.getByText('isCarbonioCE: undefined')).toBeVisible();
+		expect(
+			screen.getByText('isCarbonioCE: undefined'),
+			'component should initially render the undefined store value'
+		).toBeVisible();
 		act(() => {
 			useLoginConfigStore.setState({ isCarbonioCE: false });
 		});
-		expect(screen.getByText('isCarbonioCE: false')).toBeVisible();
+		expect(
+			screen.getByText('isCarbonioCE: false'),
+			'component should re-render with false when the store value changes to false'
+		).toBeVisible();
 		act(() => {
 			useLoginConfigStore.setState({ isCarbonioCE: true });
 		});
-		expect(screen.getByText('isCarbonioCE: true')).toBeVisible();
+		expect(
+			screen.getByText('isCarbonioCE: true'),
+			'component should re-render with true when the store value changes to true'
+		).toBeVisible();
 	});
 });

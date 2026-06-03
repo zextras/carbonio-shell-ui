@@ -59,15 +59,28 @@ describe('use local storage', () => {
 		const updatesLocalStorage = [initial];
 		const updatesLocalStorageStore = [undefined, initial];
 		setup(<TestComponent initialValue={initial} updatedValue={updated} />);
-		expect(screen.getByText(`LocalStorageValue: ${JSON.stringify(initial)}`)).toBeVisible();
 		expect(
-			screen.getByText(`LocalStorageValueUpdates: ${JSON.stringify(updatesLocalStorage)}`)
+			screen.getByText(`LocalStorageValue: ${JSON.stringify(initial)}`),
+			'hook should expose the initial value'
 		).toBeVisible();
-		expect(screen.getByText(`LocalStorageStoreValue: ${JSON.stringify(initial)}`)).toBeVisible();
 		expect(
-			screen.getByText(`LocalStorageStoreValueUpdates: ${JSON.stringify(updatesLocalStorageStore)}`)
+			screen.getByText(`LocalStorageValueUpdates: ${JSON.stringify(updatesLocalStorage)}`),
+			'hook value should have been updated only once with the initial value'
 		).toBeVisible();
-		expect(screen.queryByText(RegExp(updated, 'i'))).not.toBeInTheDocument();
+		expect(
+			screen.getByText(`LocalStorageStoreValue: ${JSON.stringify(initial)}`),
+			'store should expose the initial value'
+		).toBeVisible();
+		expect(
+			screen.getByText(
+				`LocalStorageStoreValueUpdates: ${JSON.stringify(updatesLocalStorageStore)}`
+			),
+			'store should go from undefined to the initial value'
+		).toBeVisible();
+		expect(
+			screen.queryByText(RegExp(updated, 'i')),
+			'updated value should not be shown before any update'
+		).not.toBeInTheDocument();
 	});
 
 	test('should set the new value in the store when set is called with the new value', async () => {
@@ -77,13 +90,23 @@ describe('use local storage', () => {
 		const updatesLocalStorageStore = [undefined, initial, updated];
 		const { user } = setup(<TestComponent initialValue={initial} updatedValue={updated} />);
 		await user.click(screen.getByRole('button'));
-		expect(screen.getByText(`LocalStorageValue: ${JSON.stringify(updated)}`)).toBeVisible();
 		expect(
-			screen.getByText(`LocalStorageValueUpdates: ${JSON.stringify(updatesLocalStorage)}`)
+			screen.getByText(`LocalStorageValue: ${JSON.stringify(updated)}`),
+			'hook should expose the updated value after setting a new value'
 		).toBeVisible();
-		expect(screen.getByText(`LocalStorageStoreValue: ${JSON.stringify(updated)}`)).toBeVisible();
 		expect(
-			screen.getByText(`LocalStorageStoreValueUpdates: ${JSON.stringify(updatesLocalStorageStore)}`)
+			screen.getByText(`LocalStorageValueUpdates: ${JSON.stringify(updatesLocalStorage)}`),
+			'hook value should track the initial then the updated value'
+		).toBeVisible();
+		expect(
+			screen.getByText(`LocalStorageStoreValue: ${JSON.stringify(updated)}`),
+			'store should expose the updated value after setting a new value'
+		).toBeVisible();
+		expect(
+			screen.getByText(
+				`LocalStorageStoreValueUpdates: ${JSON.stringify(updatesLocalStorageStore)}`
+			),
+			'store should track undefined, then the initial and the updated value'
 		).toBeVisible();
 	});
 
@@ -95,13 +118,23 @@ describe('use local storage', () => {
 		const updateFn = (): string => updated;
 		const { user } = setup(<TestComponent initialValue={initial} updatedValue={updateFn} />);
 		await user.click(screen.getByRole('button'));
-		expect(screen.getByText(`LocalStorageValue: ${JSON.stringify(updated)}`)).toBeVisible();
 		expect(
-			screen.getByText(`LocalStorageValueUpdates: ${JSON.stringify(updatesLocalStorage)}`)
+			screen.getByText(`LocalStorageValue: ${JSON.stringify(updated)}`),
+			'hook should expose the updated value when set with a callback'
 		).toBeVisible();
-		expect(screen.getByText(`LocalStorageStoreValue: ${JSON.stringify(updated)}`)).toBeVisible();
 		expect(
-			screen.getByText(`LocalStorageStoreValueUpdates: ${JSON.stringify(updatesLocalStorageStore)}`)
+			screen.getByText(`LocalStorageValueUpdates: ${JSON.stringify(updatesLocalStorage)}`),
+			'hook value should track the initial then the updated value'
+		).toBeVisible();
+		expect(
+			screen.getByText(`LocalStorageStoreValue: ${JSON.stringify(updated)}`),
+			'store should expose the updated value when set with a callback'
+		).toBeVisible();
+		expect(
+			screen.getByText(
+				`LocalStorageStoreValueUpdates: ${JSON.stringify(updatesLocalStorageStore)}`
+			),
+			'store should track undefined, then the initial and the updated value'
 		).toBeVisible();
 	});
 
@@ -125,39 +158,59 @@ describe('use local storage', () => {
 		);
 		const withinBlock1 = within(screen.getByTestId('block-1'));
 		const withinBlock2 = within(screen.getByTestId('block-2'));
-		expect(withinBlock1.getByText(`LocalStorageValue: ${JSON.stringify(initial1)}`)).toBeVisible();
 		expect(
-			withinBlock1.getByText(`LocalStorageStoreValue: ${JSON.stringify(initial1)}`)
+			withinBlock1.getByText(`LocalStorageValue: ${JSON.stringify(initial1)}`),
+			'block-1 hook should initially expose its own initial value'
 		).toBeVisible();
-		expect(withinBlock2.getByText(`LocalStorageValue: ${JSON.stringify(initial1)}`)).toBeVisible();
 		expect(
-			withinBlock2.getByText(`LocalStorageStoreValue: ${JSON.stringify(initial1)}`)
+			withinBlock1.getByText(`LocalStorageStoreValue: ${JSON.stringify(initial1)}`),
+			'block-1 store should initially expose the shared initial value'
+		).toBeVisible();
+		expect(
+			withinBlock2.getByText(`LocalStorageValue: ${JSON.stringify(initial1)}`),
+			"block-2 hook should adopt block-1's value because they share the same key"
+		).toBeVisible();
+		expect(
+			withinBlock2.getByText(`LocalStorageStoreValue: ${JSON.stringify(initial1)}`),
+			'block-2 store should expose the shared initial value'
 		).toBeVisible();
 
 		await user.click(withinBlock2.getByRole('button'));
-		expect(withinBlock1.getByText(`LocalStorageValue: ${JSON.stringify(updated2)}`)).toBeVisible();
 		expect(
-			withinBlock1.getByText(`LocalStorageValueUpdates: ${JSON.stringify(updatesLocalStorage1)}`)
+			withinBlock1.getByText(`LocalStorageValue: ${JSON.stringify(updated2)}`),
+			"block-1 hook should receive block-2's updated value through the shared store"
 		).toBeVisible();
 		expect(
-			withinBlock1.getByText(`LocalStorageStoreValue: ${JSON.stringify(updated2)}`)
+			withinBlock1.getByText(`LocalStorageValueUpdates: ${JSON.stringify(updatesLocalStorage1)}`),
+			'block-1 hook value should track the initial then the propagated update'
+		).toBeVisible();
+		expect(
+			withinBlock1.getByText(`LocalStorageStoreValue: ${JSON.stringify(updated2)}`),
+			'block-1 store should expose the propagated updated value'
 		).toBeVisible();
 		expect(
 			withinBlock1.getByText(
 				`LocalStorageStoreValueUpdates: ${JSON.stringify(updatesLocalStorageStore)}`
-			)
-		).toBeVisible();
-		expect(withinBlock2.getByText(`LocalStorageValue: ${JSON.stringify(updated2)}`)).toBeVisible();
-		expect(
-			withinBlock2.getByText(`LocalStorageValueUpdates: ${JSON.stringify(updatesLocalStorage2)}`)
+			),
+			'block-1 store should track undefined, the initial and the propagated update'
 		).toBeVisible();
 		expect(
-			withinBlock2.getByText(`LocalStorageStoreValue: ${JSON.stringify(updated2)}`)
+			withinBlock2.getByText(`LocalStorageValue: ${JSON.stringify(updated2)}`),
+			'block-2 hook should expose its own updated value'
+		).toBeVisible();
+		expect(
+			withinBlock2.getByText(`LocalStorageValueUpdates: ${JSON.stringify(updatesLocalStorage2)}`),
+			'block-2 hook value should track its initial, the shared initial and the update'
+		).toBeVisible();
+		expect(
+			withinBlock2.getByText(`LocalStorageStoreValue: ${JSON.stringify(updated2)}`),
+			'block-2 store should expose the updated value'
 		).toBeVisible();
 		expect(
 			withinBlock2.getByText(
 				`LocalStorageStoreValueUpdates: ${JSON.stringify(updatesLocalStorageStore)}`
-			)
+			),
+			'block-2 store should track undefined, the initial and the update'
 		).toBeVisible();
 	});
 
@@ -171,13 +224,23 @@ describe('use local storage', () => {
 		setup(
 			<TestComponent initialValue={initial} updatedValue={'updated'} localStorageKey={lsKey} />
 		);
-		expect(screen.getByText(`LocalStorageValue: ${JSON.stringify(initial)}`)).toBeVisible();
 		expect(
-			screen.getByText(`LocalStorageValueUpdates: ${JSON.stringify(updatesLocalStorage)}`)
+			screen.getByText(`LocalStorageValue: ${JSON.stringify(initial)}`),
+			'hook should fall back to the initial value when stored value is not valid JSON'
 		).toBeVisible();
-		expect(screen.getByText(`LocalStorageStoreValue: ${JSON.stringify(initial)}`)).toBeVisible();
 		expect(
-			screen.getByText(`LocalStorageStoreValueUpdates: ${JSON.stringify(updatesLocalStorageStore)}`)
+			screen.getByText(`LocalStorageValueUpdates: ${JSON.stringify(updatesLocalStorage)}`),
+			'hook value should only contain the fallback initial value'
+		).toBeVisible();
+		expect(
+			screen.getByText(`LocalStorageStoreValue: ${JSON.stringify(initial)}`),
+			'store should fall back to the initial value when stored value is not valid JSON'
+		).toBeVisible();
+		expect(
+			screen.getByText(
+				`LocalStorageStoreValueUpdates: ${JSON.stringify(updatesLocalStorageStore)}`
+			),
+			'store should go from undefined to the fallback initial value'
 		).toBeVisible();
 	});
 });

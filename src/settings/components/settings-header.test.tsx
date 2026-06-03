@@ -15,38 +15,74 @@ import { screen, setup } from '../../tests/utils';
 describe('SettingsHeader', () => {
 	it('should render breadcrumbs with Settings and the given title', () => {
 		setup(<SettingsHeader title="General" onSave={vi.fn()} onCancel={vi.fn()} isDirty={false} />);
-		expect(screen.getByText('Settings')).toBeVisible();
-		expect(screen.getByText('General')).toBeVisible();
+		expect(
+			screen.getByText('Settings'),
+			'the "Settings" breadcrumb should be visible'
+		).toBeVisible();
+		expect(
+			screen.getByText('General'),
+			'the breadcrumb with the given title "General" should be visible'
+		).toBeVisible();
 	});
 
 	it('should render save and discard buttons when hideSavingOptions is false', () => {
 		setup(<SettingsHeader title="General" onSave={vi.fn()} onCancel={vi.fn()} isDirty={false} />);
-		expect(screen.getByRole('button', { name: 'Save' })).toBeVisible();
-		expect(screen.getByRole('button', { name: 'DISCARD CHANGES' })).toBeVisible();
+		expect(
+			screen.getByRole('button', { name: 'Save' }),
+			'the Save button should be visible when hideSavingOptions is false'
+		).toBeVisible();
+		expect(
+			screen.getByRole('button', { name: 'DISCARD CHANGES' }),
+			'the DISCARD CHANGES button should be visible when hideSavingOptions is false'
+		).toBeVisible();
 	});
 
 	it('should not render save and discard buttons when hideSavingOptions is true', () => {
 		setup(<SettingsHeader title="General" hideSavingOptions />);
-		expect(screen.queryByRole('button', { name: 'Save' })).not.toBeInTheDocument();
-		expect(screen.queryByRole('button', { name: 'DISCARD CHANGES' })).not.toBeInTheDocument();
+		expect(
+			screen.queryByRole('button', { name: 'Save' }),
+			'the Save button should not be rendered when hideSavingOptions is true'
+		).not.toBeInTheDocument();
+		expect(
+			screen.queryByRole('button', { name: 'DISCARD CHANGES' }),
+			'the DISCARD CHANGES button should not be rendered when hideSavingOptions is true'
+		).not.toBeInTheDocument();
 	});
 
 	it('should disable save and discard buttons when isDirty is false', () => {
 		setup(<SettingsHeader title="General" onSave={vi.fn()} onCancel={vi.fn()} isDirty={false} />);
-		expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled();
-		expect(screen.getByRole('button', { name: 'DISCARD CHANGES' })).toBeDisabled();
+		expect(
+			screen.getByRole('button', { name: 'Save' }),
+			'the Save button should be disabled when isDirty is false'
+		).toBeDisabled();
+		expect(
+			screen.getByRole('button', { name: 'DISCARD CHANGES' }),
+			'the DISCARD CHANGES button should be disabled when isDirty is false'
+		).toBeDisabled();
 	});
 
 	it('should enable save and discard buttons when isDirty is true', () => {
 		setup(<SettingsHeader title="General" onSave={vi.fn()} onCancel={vi.fn()} isDirty />);
-		expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled();
-		expect(screen.getByRole('button', { name: 'DISCARD CHANGES' })).toBeEnabled();
+		expect(
+			screen.getByRole('button', { name: 'Save' }),
+			'the Save button should be enabled when isDirty is true'
+		).toBeEnabled();
+		expect(
+			screen.getByRole('button', { name: 'DISCARD CHANGES' }),
+			'the DISCARD CHANGES button should be enabled when isDirty is true'
+		).toBeEnabled();
 	});
 
 	it('should disable save button when isDirty is true but hasError is true', () => {
 		setup(<SettingsHeader title="General" onSave={vi.fn()} onCancel={vi.fn()} isDirty hasError />);
-		expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled();
-		expect(screen.getByRole('button', { name: 'DISCARD CHANGES' })).toBeEnabled();
+		expect(
+			screen.getByRole('button', { name: 'Save' }),
+			'the Save button should be disabled when hasError is true even though isDirty is true'
+		).toBeDisabled();
+		expect(
+			screen.getByRole('button', { name: 'DISCARD CHANGES' }),
+			'the DISCARD CHANGES button should remain enabled when hasError is true'
+		).toBeEnabled();
 	});
 
 	it('should call onSave when save button is clicked', async () => {
@@ -55,7 +91,10 @@ describe('SettingsHeader', () => {
 			<SettingsHeader title="General" onSave={onSave} onCancel={vi.fn()} isDirty />
 		);
 		await user.click(screen.getByRole('button', { name: 'Save' }));
-		expect(onSave).toHaveBeenCalledTimes(1);
+		expect(
+			onSave,
+			'onSave should be called once when the Save button is clicked'
+		).toHaveBeenCalledTimes(1);
 	});
 
 	it('should call onCancel when discard button is clicked', async () => {
@@ -64,7 +103,10 @@ describe('SettingsHeader', () => {
 			<SettingsHeader title="General" onSave={vi.fn()} onCancel={onCancel} isDirty />
 		);
 		await user.click(screen.getByRole('button', { name: 'DISCARD CHANGES' }));
-		expect(onCancel).toHaveBeenCalledTimes(1);
+		expect(
+			onCancel,
+			'onCancel should be called once when the DISCARD CHANGES button is clicked'
+		).toHaveBeenCalledTimes(1);
 	});
 
 	it('should render unsaved changes text in the modal when the route blocker is active', async () => {
@@ -91,9 +133,13 @@ describe('SettingsHeader', () => {
 		});
 
 		expect(
-			screen.getByText('Are you sure you want to leave this page without saving?')
+			screen.getByText('Are you sure you want to leave this page without saving?'),
+			'the unsaved changes confirmation question should be visible when the route blocker is active'
 		).toBeVisible();
-		expect(screen.getByText('All your unsaved changes will be lost')).toBeVisible();
+		expect(
+			screen.getByText('All your unsaved changes will be lost'),
+			'the unsaved changes warning text should be visible when the route blocker is active'
+		).toBeVisible();
 	});
 
 	it('should scroll to section when section search param is set', () => {
@@ -108,7 +154,10 @@ describe('SettingsHeader', () => {
 		});
 
 		vi.advanceTimersByTime(10);
-		expect(scrollIntoViewMock).toHaveBeenCalled();
+		expect(
+			scrollIntoViewMock,
+			'scrollIntoView should be called on the target section when the section search param is set'
+		).toHaveBeenCalled();
 
 		document.body.removeChild(element);
 	});

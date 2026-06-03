@@ -22,7 +22,10 @@ describe('SettingsAppView', () => {
 		};
 		useAppStore.getState().addSettingsView(settingsGeneralView);
 		setup(<SettingsAppView />);
-		expect(screen.getByText('General Settings View')).toBeVisible();
+		expect(
+			screen.getByText('General Settings View'),
+			'the default settings view should be rendered when no route is specified'
+		).toBeVisible();
 	});
 	it('should render the current route view', () => {
 		const anotherSettingsView: SettingsView = {
@@ -36,6 +39,9 @@ describe('SettingsAppView', () => {
 		};
 		useAppStore.getState().addSettingsView(anotherSettingsView);
 		setup(<SettingsAppView />, { initialRouterEntries: ['/another'] });
-		expect(screen.getByText('Another Settings View')).toBeVisible();
+		expect(
+			screen.getByText('Another Settings View'),
+			'the settings view matching the current route should be rendered'
+		).toBeVisible();
 	});
 });

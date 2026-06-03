@@ -26,7 +26,10 @@ describe('ShellSecondaryBar', () => {
 			app: 'carbonio-test-ui'
 		});
 		setup(<ShellSecondaryBar />, { initialRouterEntries: ['/test'] });
-		expect(screen.getByText('test component')).toBeVisible();
+		expect(
+			screen.getByText('test component'),
+			'the secondary bar component should be visible when on the matching route'
+		).toBeVisible();
 	});
 	it('should not render the secondary bar component on wrong route', () => {
 		useAppStore.getState().addRoute({
@@ -42,6 +45,9 @@ describe('ShellSecondaryBar', () => {
 			app: 'carbonio-test-ui'
 		});
 		setup(<ShellSecondaryBar />, { initialRouterEntries: ['/wrong'] });
-		expect(screen.queryByText('test component')).not.toBeInTheDocument();
+		expect(
+			screen.queryByText('test component'),
+			'the secondary bar component should not be rendered when on a non-matching route'
+		).not.toBeInTheDocument();
 	});
 });

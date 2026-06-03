@@ -30,18 +30,51 @@ describe('Out of office settings', () => {
 				outOfOfficeError={false}
 			/>
 		);
-		expect(screen.getByText('Out of Office Settings')).toBeVisible();
-		expect(screen.getByText('Send auto-reply')).toBeVisible();
-		expect(screen.getByTestId(ICONS.switchUnchecked)).toBeVisible();
-		expect(screen.getByText('External Senders')).toBeVisible();
-		expect(screen.getByRole('textbox', { name: 'Auto-Reply Message:' })).toBeVisible();
-		expect(screen.getByText("Don't send an auto-reply message to external sender")).toBeVisible();
-		expect(screen.getByText('Time Period')).toBeVisible();
-		expect(screen.getByText('Send auto-replies during the following period:')).toBeVisible();
-		expect(screen.getByText('All Day:')).toBeVisible();
-		expect(screen.getAllByTestId(ICONS.checkboxUnchecked)).toHaveLength(2);
-		expect(screen.getAllByTestId(ICONS.checkboxUnchecked)[0]).toBeVisible();
-		expect(screen.getAllByTestId(ICONS.checkboxUnchecked)[1]).toBeVisible();
+		expect(
+			screen.getByText('Out of Office Settings'),
+			'the section title should be visible'
+		).toBeVisible();
+		expect(
+			screen.getByText('Send auto-reply'),
+			'the send auto-reply label should be visible'
+		).toBeVisible();
+		expect(
+			screen.getByTestId(ICONS.switchUnchecked),
+			'the auto-reply switch should be unchecked by default'
+		).toBeVisible();
+		expect(
+			screen.getByText('External Senders'),
+			'the External Senders selector should be visible'
+		).toBeVisible();
+		expect(
+			screen.getByRole('textbox', { name: 'Auto-Reply Message:' }),
+			'the auto-reply message textbox should be visible'
+		).toBeVisible();
+		expect(
+			screen.getByText("Don't send an auto-reply message to external sender"),
+			'the default external senders option should be visible'
+		).toBeVisible();
+		expect(
+			screen.getByText('Time Period'),
+			'the Time Period sub-section should be visible'
+		).toBeVisible();
+		expect(
+			screen.getByText('Send auto-replies during the following period:'),
+			'the time period checkbox label should be visible'
+		).toBeVisible();
+		expect(screen.getByText('All Day:'), 'the All Day label should be visible').toBeVisible();
+		expect(
+			screen.getAllByTestId(ICONS.checkboxUnchecked),
+			'both the time period and all day checkboxes should be unchecked by default'
+		).toHaveLength(2);
+		expect(
+			screen.getAllByTestId(ICONS.checkboxUnchecked)[0],
+			'the first unchecked checkbox should be visible'
+		).toBeVisible();
+		expect(
+			screen.getAllByTestId(ICONS.checkboxUnchecked)[1],
+			'the second unchecked checkbox should be visible'
+		).toBeVisible();
 	});
 
 	test('by default is unchecked', () => {
@@ -57,7 +90,10 @@ describe('Out of office settings', () => {
 				outOfOfficeError={false}
 			/>
 		);
-		expect(screen.getByTestId(ICONS.switchUnchecked)).toBeVisible();
+		expect(
+			screen.getByTestId(ICONS.switchUnchecked),
+			'the auto-reply switch should be unchecked by default'
+		).toBeVisible();
 	});
 
 	test('formSubSection Time Period is disabled when the switch is unchecked', () => {
@@ -73,7 +109,10 @@ describe('Out of office settings', () => {
 				outOfOfficeError={false}
 			/>
 		);
-		expect(screen.getByText('Time Period')).toHaveStyle('color : #cccccc');
+		expect(
+			screen.getByText('Time Period'),
+			'the Time Period sub-section should be styled as disabled when the switch is unchecked'
+		).toHaveStyle('color : #cccccc');
 	});
 
 	test('formSubSection Time Period is not disabled when the switch is checked', () => {
@@ -93,7 +132,10 @@ describe('Out of office settings', () => {
 				outOfOfficeError={false}
 			/>
 		);
-		expect(screen.getByText('Time Period')).toHaveStyle('color : #333333');
+		expect(
+			screen.getByText('Time Period'),
+			'the Time Period sub-section should be styled as enabled when the switch is checked'
+		).toHaveStyle('color : #333333');
 	});
 
 	test('click on the unchecked switch updates the pref outOfOfficeReplyEnabled to TRUE', async () => {
@@ -110,7 +152,10 @@ describe('Out of office settings', () => {
 			/>
 		);
 		await user.click(screen.getByTestId(ICONS.switchUnchecked));
-		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
+		expect(
+			addModFn,
+			'clicking the unchecked switch should set zimbraPrefOutOfOfficeReplyEnabled to TRUE'
+		).toHaveBeenCalledWith<Parameters<AddMod>>(
 			'prefs',
 			'zimbraPrefOutOfOfficeReplyEnabled',
 			'TRUE'
@@ -135,7 +180,10 @@ describe('Out of office settings', () => {
 			/>
 		);
 		await user.click(screen.getByTestId(ICONS.switchChecked));
-		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
+		expect(
+			addModFn,
+			'clicking the checked switch should set zimbraPrefOutOfOfficeReplyEnabled to FALSE'
+		).toHaveBeenCalledWith<Parameters<AddMod>>(
 			'prefs',
 			'zimbraPrefOutOfOfficeReplyEnabled',
 			'FALSE'
@@ -163,14 +211,19 @@ describe('Out of office settings', () => {
 			/>
 		);
 		await user.click(screen.getByTestId(ICONS.switchUnchecked));
-		expect(screen.getByRole('textbox', { name: 'Auto-Reply Message:' })).toBeEnabled();
 		expect(
-			screen.getByRole('textbox', { name: 'Auto-Reply Message for External senders:' })
+			screen.getByRole('textbox', { name: 'Auto-Reply Message:' }),
+			'the auto-reply message textbox should become enabled after enabling auto-reply'
+		).toBeEnabled();
+		expect(
+			screen.getByRole('textbox', { name: 'Auto-Reply Message for External senders:' }),
+			'the external auto-reply message textbox should become enabled after enabling auto-reply'
 		).toBeEnabled();
 
-		expect(screen.getByText('Send auto-replies during the following period:')).not.toHaveAttribute(
-			'disabled'
-		);
+		expect(
+			screen.getByText('Send auto-replies during the following period:'),
+			'the time period checkbox should not be disabled after enabling auto-reply'
+		).not.toHaveAttribute('disabled');
 	});
 
 	test('click on the checked switch disables all fields', async () => {
@@ -203,8 +256,10 @@ describe('Out of office settings', () => {
 		// );
 		// expect(screen.getByText('All Day:')).toHaveAttribute('disabled');
 		const inputFields = screen.getAllByRole('textbox');
-		expect(inputFields).toHaveLength(6);
-		inputFields.forEach((field) => expect(field).toBeDisabled());
+		expect(inputFields, 'all six text fields should be present').toHaveLength(6);
+		inputFields.forEach((field) =>
+			expect(field, 'every field should be disabled after turning auto-reply off').toBeDisabled()
+		);
 	});
 
 	test('all day check and datetime inputs do not become enabled if user select "send auto-replies", but the time period check is not checked', async () => {
@@ -231,8 +286,13 @@ describe('Out of office settings', () => {
 		// );
 		// expect(screen.getByText('All Day:')).toHaveAttribute('disabled');
 		const dateTimeInputs = screen.getAllByRole('textbox', { name: /(start|end) (date|time)/i });
-		expect(dateTimeInputs).toHaveLength(4);
-		dateTimeInputs.forEach((input) => expect(input).toBeDisabled());
+		expect(dateTimeInputs, 'all four date and time inputs should be present').toHaveLength(4);
+		dateTimeInputs.forEach((input) =>
+			expect(
+				input,
+				'date and time inputs should stay disabled while the time period check is unchecked'
+			).toBeDisabled()
+		);
 	});
 
 	test.each<[string, AccountSettingsPrefs]>([
@@ -280,7 +340,10 @@ describe('Out of office settings', () => {
 				outOfOfficeError={false}
 			/>
 		);
-		expect(screen.getByText(expected)).toBeVisible();
+		expect(
+			screen.getByText(expected),
+			`the external reply option "${expected}" should be selected for the given prefs`
+		).toBeVisible();
 	});
 
 	test.each([
@@ -314,7 +377,8 @@ describe('Out of office settings', () => {
 				within(screen.getByTestId(TESTID_SELECTORS.dropdown)).getByText(optionLabel)
 			);
 			expect(
-				screen.queryByRole('textbox', { name: /auto-reply message for external senders/i })
+				screen.queryByRole('textbox', { name: /auto-reply message for external senders/i }),
+				`the external senders message input should be hidden when the option is "${optionLabel}"`
 			).not.toBeInTheDocument();
 		}
 	);
@@ -348,7 +412,8 @@ describe('Out of office settings', () => {
 				within(screen.getByTestId(TESTID_SELECTORS.dropdown)).getByText(optionLabel)
 			);
 			expect(
-				screen.getByRole('textbox', { name: /auto-reply message for external senders/i })
+				screen.getByRole('textbox', { name: /auto-reply message for external senders/i }),
+				`the external senders message input should be visible when the option is "${optionLabel}"`
 			).toBeVisible();
 		}
 	);
@@ -423,7 +488,10 @@ describe('Out of office settings', () => {
 				within(screen.getByTestId(TESTID_SELECTORS.dropdown)).getByText(optionLabel)
 			);
 			forEach(updatedPrefs, (value, key) =>
-				expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>('prefs', key, value)
+				expect(
+					addModFn,
+					`selecting "${optionLabel}" should set pref ${key} to ${value}`
+				).toHaveBeenCalledWith<Parameters<AddMod>>('prefs', key, value)
 			);
 		}
 	);
@@ -449,11 +517,10 @@ describe('Out of office settings', () => {
 		);
 		const message = faker.lorem.words(3);
 		await user.type(screen.getByRole('textbox', { name: 'Auto-Reply Message:' }), message);
-		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
-			'prefs',
-			'zimbraPrefOutOfOfficeReply',
-			message
-		);
+		expect(
+			addModFn,
+			'typing the reply message should update zimbraPrefOutOfOfficeReply with the typed text'
+		).toHaveBeenCalledWith<Parameters<AddMod>>('prefs', 'zimbraPrefOutOfOfficeReply', message);
 	});
 
 	test('should update zimbraPrefOutOfOfficeExternalReply when external reply message change', async () => {
@@ -482,7 +549,10 @@ describe('Out of office settings', () => {
 			screen.getByRole('textbox', { name: 'Auto-Reply Message for External senders:' }),
 			message
 		);
-		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
+		expect(
+			addModFn,
+			'typing the external reply message should update zimbraPrefOutOfOfficeExternalReply with the typed text'
+		).toHaveBeenCalledWith<Parameters<AddMod>>(
 			'prefs',
 			'zimbraPrefOutOfOfficeExternalReply',
 			message
@@ -517,7 +587,8 @@ describe('Out of office settings', () => {
 				await user.paste(message);
 			});
 			expect(
-				screen.getByText(`5/${SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT}`)
+				screen.getByText(`5/${SETTINGS_OUT_OF_OFFICE_TEXT_AREA_MAX_CHAR_LIMIT}`),
+				'the character counter should reflect the 5 pasted characters'
 			).toBeVisible();
 		}
 	);
@@ -551,7 +622,10 @@ describe('Out of office settings', () => {
 				await user.paste(message);
 			});
 			const errorMessage = /You've exceeded the character limit. Please shorten your text./i;
-			expect(screen.getByText(errorMessage)).toBeVisible();
+			expect(
+				screen.getByText(errorMessage),
+				'the character limit error message should be visible when the limit is exceeded'
+			).toBeVisible();
 		}
 	);
 
@@ -585,8 +659,14 @@ describe('Out of office settings', () => {
 				screen.getByRole('textbox', { name: textAreaLabel }).focus();
 				await user.paste(message);
 			});
-			expect(setError).toHaveBeenCalledTimes(1);
-			expect(setError).toHaveBeenCalledWith(true);
+			expect(
+				setError,
+				'the error setter should be called once when the limit is exceeded'
+			).toHaveBeenCalledTimes(1);
+			expect(
+				setError,
+				'the error should be set to true when the limit is exceeded'
+			).toHaveBeenCalledWith(true);
 		}
 	);
 
@@ -620,8 +700,14 @@ describe('Out of office settings', () => {
 				screen.getByRole('textbox', { name: textAreaLabel }).focus();
 				await user.keyboard('Delete');
 			});
-			expect(setError).toHaveBeenCalledTimes(1);
-			expect(setError).toHaveBeenCalledWith(false);
+			expect(
+				setError,
+				'the error setter should be called once when text returns within the limit'
+			).toHaveBeenCalledTimes(1);
+			expect(
+				setError,
+				'the error should be unset to false when within the limit'
+			).toHaveBeenCalledWith(false);
 		}
 	);
 
@@ -649,16 +735,14 @@ describe('Out of office settings', () => {
 		await act(async () => {
 			await user.click(screen.getByText(/Send auto-replies during the following period/i));
 		});
-		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
-			'prefs',
-			'zimbraPrefOutOfOfficeFromDate',
-			''
-		);
-		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
-			'prefs',
-			'zimbraPrefOutOfOfficeUntilDate',
-			''
-		);
+		expect(
+			addModFn,
+			'unchecking the time period should clear zimbraPrefOutOfOfficeFromDate'
+		).toHaveBeenCalledWith<Parameters<AddMod>>('prefs', 'zimbraPrefOutOfOfficeFromDate', '');
+		expect(
+			addModFn,
+			'unchecking the time period should clear zimbraPrefOutOfOfficeUntilDate'
+		).toHaveBeenCalledWith<Parameters<AddMod>>('prefs', 'zimbraPrefOutOfOfficeUntilDate', '');
 	});
 
 	test('should set zimbraPrefOutOfOfficeFromDate and zimbraPrefOutOfOfficeUntilDate if not already valued when user unchecks time period setting', async () => {
@@ -684,16 +768,14 @@ describe('Out of office settings', () => {
 			await user.click(screen.getByText(/Send auto-replies during the following period/i));
 		});
 		const now = dateToGenTime(new Date(new Date().setSeconds(0, 0)));
-		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
-			'prefs',
-			'zimbraPrefOutOfOfficeFromDate',
-			now
-		);
-		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
-			'prefs',
-			'zimbraPrefOutOfOfficeUntilDate',
-			now
-		);
+		expect(
+			addModFn,
+			'checking the time period should initialize zimbraPrefOutOfOfficeFromDate to now'
+		).toHaveBeenCalledWith<Parameters<AddMod>>('prefs', 'zimbraPrefOutOfOfficeFromDate', now);
+		expect(
+			addModFn,
+			'checking the time period should initialize zimbraPrefOutOfOfficeUntilDate to now'
+		).toHaveBeenCalledWith<Parameters<AddMod>>('prefs', 'zimbraPrefOutOfOfficeUntilDate', now);
 	});
 
 	test('should not set zimbraPrefOutOfOfficeFromDate and zimbraPrefOutOfOfficeUntilDate if already valued when user unchecks time period setting', async () => {
@@ -720,11 +802,13 @@ describe('Out of office settings', () => {
 			await user.click(screen.getByText(/Send auto-replies during the following period/i));
 		});
 		const now = dateToGenTime(new Date(new Date().setSeconds(0, 0)));
-		expect(addModFn).toHaveBeenCalledTimes(1);
-		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
-			'prefs',
-			'zimbraPrefOutOfOfficeUntilDate',
-			now
-		);
+		expect(
+			addModFn,
+			'only the missing until date should be set, so addMod is called once'
+		).toHaveBeenCalledTimes(1);
+		expect(
+			addModFn,
+			'only the not-already-valued zimbraPrefOutOfOfficeUntilDate should be initialized to now'
+		).toHaveBeenCalledWith<Parameters<AddMod>>('prefs', 'zimbraPrefOutOfOfficeUntilDate', now);
 	});
 });

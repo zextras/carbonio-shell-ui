@@ -25,24 +25,31 @@ describe('out of office time period section', () => {
 				prefOutOfOfficeUntilDate={undefined}
 			/>
 		);
-		expect(screen.getByText(/all day/i)).toBeVisible();
-		expect(screen.getByTestId(ICONS.checkboxUnchecked)).toBeVisible();
-		expect(screen.getByText(/start date/i)).toBeVisible();
-		expect(screen.getByText(/end date/i)).toBeVisible();
-		expect(screen.getByText(/start time/i)).toBeVisible();
-		expect(screen.getByText(/end time/i)).toBeVisible();
-		expect(screen.getByRole('textbox', { name: /start date/i })).toHaveDisplayValue(
-			format(Date.now(), 'P')
-		);
-		expect(screen.getByRole('textbox', { name: /end date/i })).toHaveDisplayValue(
-			format(Date.now(), 'P')
-		);
-		expect(screen.getByRole('textbox', { name: /start time/i })).toHaveDisplayValue(
-			format(Date.now(), 'p')
-		);
-		expect(screen.getByRole('textbox', { name: /end time/i })).toHaveDisplayValue(
-			format(Date.now(), 'p')
-		);
+		expect(screen.getByText(/all day/i), 'the All Day label should be visible').toBeVisible();
+		expect(
+			screen.getByTestId(ICONS.checkboxUnchecked),
+			'the All Day checkbox should be unchecked by default'
+		).toBeVisible();
+		expect(screen.getByText(/start date/i), 'the start date label should be visible').toBeVisible();
+		expect(screen.getByText(/end date/i), 'the end date label should be visible').toBeVisible();
+		expect(screen.getByText(/start time/i), 'the start time label should be visible').toBeVisible();
+		expect(screen.getByText(/end time/i), 'the end time label should be visible').toBeVisible();
+		expect(
+			screen.getByRole('textbox', { name: /start date/i }),
+			'the start date should default to today when no pref is provided'
+		).toHaveDisplayValue(format(Date.now(), 'P'));
+		expect(
+			screen.getByRole('textbox', { name: /end date/i }),
+			'the end date should default to today when no pref is provided'
+		).toHaveDisplayValue(format(Date.now(), 'P'));
+		expect(
+			screen.getByRole('textbox', { name: /start time/i }),
+			'the start time should default to now when no pref is provided'
+		).toHaveDisplayValue(format(Date.now(), 'p'));
+		expect(
+			screen.getByRole('textbox', { name: /end time/i }),
+			'the end time should default to now when no pref is provided'
+		).toHaveDisplayValue(format(Date.now(), 'p'));
 	});
 
 	test('should show the date received from pref if valued', () => {
@@ -59,18 +66,22 @@ describe('out of office time period section', () => {
 				prefOutOfOfficeUntilDate={dateToGenTime(untilDate)}
 			/>
 		);
-		expect(screen.getByRole('textbox', { name: /start date/i })).toHaveDisplayValue(
-			format(fromDate, 'P')
-		);
-		expect(screen.getByRole('textbox', { name: /end date/i })).toHaveDisplayValue(
-			format(untilDate, 'P')
-		);
-		expect(screen.getByRole('textbox', { name: /start time/i })).toHaveDisplayValue(
-			format(fromDate, 'p')
-		);
-		expect(screen.getByRole('textbox', { name: /end time/i })).toHaveDisplayValue(
-			format(untilDate, 'p')
-		);
+		expect(
+			screen.getByRole('textbox', { name: /start date/i }),
+			'the start date should display the from date pref value'
+		).toHaveDisplayValue(format(fromDate, 'P'));
+		expect(
+			screen.getByRole('textbox', { name: /end date/i }),
+			'the end date should display the until date pref value'
+		).toHaveDisplayValue(format(untilDate, 'P'));
+		expect(
+			screen.getByRole('textbox', { name: /start time/i }),
+			'the start time should display the from date pref value'
+		).toHaveDisplayValue(format(fromDate, 'p'));
+		expect(
+			screen.getByRole('textbox', { name: /end time/i }),
+			'the end time should display the until date pref value'
+		).toHaveDisplayValue(format(untilDate, 'p'));
 	});
 
 	test.each(['start date', 'end date', 'start time', 'end time'])(
@@ -102,7 +113,10 @@ describe('out of office time period section', () => {
 				// to let floating finish the update
 				await vi.advanceTimersToNextTimerAsync();
 			});
-			expect(dateInput).toHaveDisplayValue(initialDisplayValue);
+			expect(
+				dateInput,
+				`clearing the ${inputName} input should restore its previous value on blur`
+			).toHaveDisplayValue(initialDisplayValue);
 		}
 	);
 
@@ -131,8 +145,14 @@ describe('out of office time period section', () => {
 				name: RegExp(`choose ${format(firstOfPreviousMonth, 'PPPP')}`, 'i')
 			})
 		);
-		expect(screen.queryByRole('button', { name: /previous month/i })).not.toBeInTheDocument();
-		expect(fromDateInput).toHaveDisplayValue(format(firstOfPreviousMonth, 'P'));
+		expect(
+			screen.queryByRole('button', { name: /previous month/i }),
+			'the date picker should close after choosing a date'
+		).not.toBeInTheDocument();
+		expect(
+			fromDateInput,
+			'the start date should show the chosen first day of the previous month'
+		).toHaveDisplayValue(format(firstOfPreviousMonth, 'P'));
 	});
 
 	test('should let the user type a from date', async () => {
@@ -165,8 +185,14 @@ describe('out of office time period section', () => {
 			// to let floating finish the update
 			await vi.advanceTimersToNextTimerAsync();
 		});
-		expect(screen.queryByRole('button', { name: /previous month/i })).not.toBeInTheDocument();
-		expect(fromDateInput).toHaveDisplayValue(format(firstOfPreviousMonth, 'P'));
+		expect(
+			screen.queryByRole('button', { name: /previous month/i }),
+			'the date picker should not be open after typing the date'
+		).not.toBeInTheDocument();
+		expect(
+			fromDateInput,
+			'the start date should show the typed first day of the previous month'
+		).toHaveDisplayValue(format(firstOfPreviousMonth, 'P'));
 	});
 
 	test('should let the user choose a from time from the picker', async () => {
@@ -188,8 +214,13 @@ describe('out of office time period section', () => {
 		newTime.setMinutes(15);
 		await user.click(fromTimeInput);
 		await user.click(screen.getByText(format(newTime, 'p')));
-		expect(screen.queryByRole('listitem')).not.toBeInTheDocument();
-		expect(fromTimeInput).toHaveDisplayValue(format(newTime, 'p'));
+		expect(
+			screen.queryByRole('listitem'),
+			'the time picker dropdown should close after choosing a time'
+		).not.toBeInTheDocument();
+		expect(fromTimeInput, 'the start time should show the chosen time').toHaveDisplayValue(
+			format(newTime, 'p')
+		);
 	});
 
 	test('should let the user type a from time', async () => {
@@ -219,8 +250,13 @@ describe('out of office time period section', () => {
 			// to let floating finish the update
 			await vi.advanceTimersToNextTimerAsync();
 		});
-		expect(screen.queryByRole('option')).not.toBeInTheDocument();
-		expect(fromTimeInput).toHaveDisplayValue(format(newTime, 'p'));
+		expect(
+			screen.queryByRole('option'),
+			'the time picker should not be open after typing the time'
+		).not.toBeInTheDocument();
+		expect(fromTimeInput, 'the start time should show the typed time').toHaveDisplayValue(
+			format(newTime, 'p')
+		);
 	});
 
 	test('should let the user choose an until date from the picker', async () => {
@@ -248,8 +284,14 @@ describe('out of office time period section', () => {
 				name: RegExp(`choose ${format(firstOfNextMonth, 'PPPP')}`, 'i')
 			})
 		);
-		expect(screen.queryByRole('button', { name: /previous month/i })).not.toBeInTheDocument();
-		expect(untilDateInput).toHaveDisplayValue(format(firstOfNextMonth, 'P'));
+		expect(
+			screen.queryByRole('button', { name: /previous month/i }),
+			'the date picker should close after choosing the until date'
+		).not.toBeInTheDocument();
+		expect(
+			untilDateInput,
+			'the end date should show the chosen first day of the next month'
+		).toHaveDisplayValue(format(firstOfNextMonth, 'P'));
 	});
 
 	test('should let the user type an until date', async () => {
@@ -280,8 +322,14 @@ describe('out of office time period section', () => {
 			// to let floating finish the update
 			await vi.advanceTimersToNextTimerAsync();
 		});
-		expect(screen.queryByRole('button', { name: /previous month/i })).not.toBeInTheDocument();
-		expect(untilDateInput).toHaveDisplayValue(format(firstOfNextMonth, 'P'));
+		expect(
+			screen.queryByRole('button', { name: /previous month/i }),
+			'the date picker should not be open after typing the until date'
+		).not.toBeInTheDocument();
+		expect(
+			untilDateInput,
+			'the end date should show the typed first day of the next month'
+		).toHaveDisplayValue(format(firstOfNextMonth, 'P'));
 	});
 
 	test('should let the user choose an until time from the picker', async () => {
@@ -303,8 +351,13 @@ describe('out of office time period section', () => {
 		newTime.setMinutes(15);
 		await user.click(utilTimeInput);
 		await user.click(screen.getByText(format(newTime, 'p')));
-		expect(screen.queryByRole('listitem')).not.toBeInTheDocument();
-		expect(utilTimeInput).toHaveDisplayValue(format(newTime, 'p'));
+		expect(
+			screen.queryByRole('listitem'),
+			'the time picker dropdown should close after choosing the until time'
+		).not.toBeInTheDocument();
+		expect(utilTimeInput, 'the end time should show the chosen time').toHaveDisplayValue(
+			format(newTime, 'p')
+		);
 	});
 
 	test('should let the user type an until time', async () => {
@@ -335,8 +388,13 @@ describe('out of office time period section', () => {
 			// to let floating finish the update
 			await vi.advanceTimersToNextTimerAsync();
 		});
-		expect(screen.queryByRole('listitem')).not.toBeInTheDocument();
-		expect(untilTimeInput).toHaveDisplayValue(format(newTime, 'p'));
+		expect(
+			screen.queryByRole('listitem'),
+			'the time picker dropdown should not be open after typing the until time'
+		).not.toBeInTheDocument();
+		expect(untilTimeInput, 'the end time should show the typed time').toHaveDisplayValue(
+			format(newTime, 'p')
+		);
 	});
 
 	test('should update until date and time to be equal to from date if user set a from date greater than the current until date', async () => {
@@ -372,10 +430,20 @@ describe('out of office time period section', () => {
 			// to let floating finish the update
 			await vi.advanceTimersToNextTimerAsync();
 		});
-		expect(fromDateInput).toHaveDisplayValue(expectedDate);
-		expect(untilDateInput).toHaveDisplayValue(expectedDate);
-		expect(fromTimeInput).toHaveDisplayValue(expectedTime);
-		expect(untilTimeInput).toHaveDisplayValue(expectedTime);
+		expect(fromDateInput, 'the start date should hold the newly typed date').toHaveDisplayValue(
+			expectedDate
+		);
+		expect(
+			untilDateInput,
+			'the end date should be clamped to the from date when from is after until'
+		).toHaveDisplayValue(expectedDate);
+		expect(fromTimeInput, 'the start time should stay equal to the from time').toHaveDisplayValue(
+			expectedTime
+		);
+		expect(
+			untilTimeInput,
+			'the end time should be clamped to the from time when from is after until'
+		).toHaveDisplayValue(expectedTime);
 	});
 
 	test('should update from date and time to be equal to until date if user set an until date lower than the current from date', async () => {
@@ -411,10 +479,20 @@ describe('out of office time period section', () => {
 			// to let floating finish the update
 			await vi.advanceTimersToNextTimerAsync();
 		});
-		expect(fromDateInput).toHaveDisplayValue(expectedDate);
-		expect(untilDateInput).toHaveDisplayValue(expectedDate);
-		expect(fromTimeInput).toHaveDisplayValue(expectedTime);
-		expect(untilTimeInput).toHaveDisplayValue(expectedTime);
+		expect(
+			fromDateInput,
+			'the start date should be clamped to the until date when until is before from'
+		).toHaveDisplayValue(expectedDate);
+		expect(untilDateInput, 'the end date should hold the newly typed date').toHaveDisplayValue(
+			expectedDate
+		);
+		expect(
+			fromTimeInput,
+			'the start time should be clamped to the until time when until is before from'
+		).toHaveDisplayValue(expectedTime);
+		expect(untilTimeInput, 'the end time should stay equal to the until time').toHaveDisplayValue(
+			expectedTime
+		);
 	});
 
 	test('should disable and update from and until time to be the start and end of the day if user checks the all day flag', async () => {
@@ -440,10 +518,22 @@ describe('out of office time period section', () => {
 			await user.click(screen.getByText(/all day/i));
 		});
 		await screen.findByTestId(ICONS.checkboxChecked);
-		expect(fromTimeInput).toBeDisabled();
-		expect(untilTimeInput).toBeDisabled();
-		expect(fromTimeInput).toHaveDisplayValue(format(startOfDay(fromDate), 'p'));
-		expect(untilTimeInput).toHaveDisplayValue(format(endOfDay(untilDate), 'p'));
+		expect(
+			fromTimeInput,
+			'the start time should be disabled when All Day is checked'
+		).toBeDisabled();
+		expect(
+			untilTimeInput,
+			'the end time should be disabled when All Day is checked'
+		).toBeDisabled();
+		expect(
+			fromTimeInput,
+			'the start time should be set to the start of the day when All Day is checked'
+		).toHaveDisplayValue(format(startOfDay(fromDate), 'p'));
+		expect(
+			untilTimeInput,
+			'the end time should be set to the end of the day when All Day is checked'
+		).toHaveDisplayValue(format(endOfDay(untilDate), 'p'));
 	});
 
 	test('should enable from and until time inputs if user unchecks the all day flag', async () => {
@@ -465,14 +555,26 @@ describe('out of office time period section', () => {
 
 		const fromTimeInput = screen.getByRole('textbox', { name: /start time/i });
 		const untilTimeInput = screen.getByRole('textbox', { name: /end time/i });
-		expect(fromTimeInput).toBeDisabled();
-		expect(untilTimeInput).toBeDisabled();
+		expect(
+			fromTimeInput,
+			'the start time should start disabled because All Day is initially checked'
+		).toBeDisabled();
+		expect(
+			untilTimeInput,
+			'the end time should start disabled because All Day is initially checked'
+		).toBeDisabled();
 		await act(async () => {
 			await user.click(screen.getByText(/all day/i));
 		});
 		await screen.findByTestId(ICONS.checkboxUnchecked);
-		expect(fromTimeInput).toBeEnabled();
-		expect(untilTimeInput).toBeEnabled();
+		expect(
+			fromTimeInput,
+			'the start time should become enabled after unchecking All Day'
+		).toBeEnabled();
+		expect(
+			untilTimeInput,
+			'the end time should become enabled after unchecking All Day'
+		).toBeEnabled();
 	});
 
 	test.each<[string, Date]>([
@@ -513,7 +615,10 @@ describe('out of office time period section', () => {
 				await vi.advanceTimersToNextTimerAsync();
 			});
 			otherInputs.forEach(([textbox, previousValue]) => {
-				expect(textbox).toHaveDisplayValue(previousValue);
+				expect(
+					textbox,
+					`changing the ${inputName} input should not alter the other inputs`
+				).toHaveDisplayValue(previousValue);
 			});
 		}
 	);
@@ -552,7 +657,10 @@ describe('out of office time period section', () => {
 			fromDate.getSeconds(),
 			fromDate.getMilliseconds()
 		);
-		expect(addMod).toHaveBeenCalledWith(
+		expect(
+			addMod,
+			'changing the from date should update zimbraPrefOutOfOfficeFromDate keeping the original time'
+		).toHaveBeenCalledWith(
 			'prefs',
 			'zimbraPrefOutOfOfficeFromDate',
 			dateToGenTime(expectedDateTime)
@@ -588,7 +696,10 @@ describe('out of office time period section', () => {
 		});
 		const expectedDateTime = new Date(fromDate);
 		expectedDateTime.setHours(newDateTime.getHours(), newDateTime.getMinutes(), 0, 0);
-		expect(addMod).toHaveBeenCalledWith(
+		expect(
+			addMod,
+			'changing the from time should update zimbraPrefOutOfOfficeFromDate keeping the original date'
+		).toHaveBeenCalledWith(
 			'prefs',
 			'zimbraPrefOutOfOfficeFromDate',
 			dateToGenTime(expectedDateTime)
@@ -628,7 +739,10 @@ describe('out of office time period section', () => {
 		});
 		const expectedDateTime = new Date(newDateTime);
 		expectedDateTime.setSeconds(0, 0);
-		expect(addMod).toHaveBeenLastCalledWith(
+		expect(
+			addMod,
+			'changing both the from date and time should update zimbraPrefOutOfOfficeFromDate with both values'
+		).toHaveBeenLastCalledWith(
 			'prefs',
 			'zimbraPrefOutOfOfficeFromDate',
 			dateToGenTime(expectedDateTime)
@@ -669,7 +783,10 @@ describe('out of office time period section', () => {
 			untilDate.getSeconds(),
 			untilDate.getMilliseconds()
 		);
-		expect(addMod).toHaveBeenCalledWith(
+		expect(
+			addMod,
+			'changing the until date should update zimbraPrefOutOfOfficeUntilDate keeping the original time'
+		).toHaveBeenCalledWith(
 			'prefs',
 			'zimbraPrefOutOfOfficeUntilDate',
 			dateToGenTime(expectedDateTime)
@@ -705,7 +822,10 @@ describe('out of office time period section', () => {
 		});
 		const expectedDateTime = new Date(untilDate);
 		expectedDateTime.setHours(newDateTime.getHours(), newDateTime.getMinutes(), 0, 0);
-		expect(addMod).toHaveBeenCalledWith(
+		expect(
+			addMod,
+			'changing the until time should update zimbraPrefOutOfOfficeUntilDate keeping the original date'
+		).toHaveBeenCalledWith(
 			'prefs',
 			'zimbraPrefOutOfOfficeUntilDate',
 			dateToGenTime(expectedDateTime)
@@ -745,7 +865,10 @@ describe('out of office time period section', () => {
 		});
 		const expectedDateTime = new Date(newDateTime);
 		expectedDateTime.setSeconds(0, 0);
-		expect(addMod).toHaveBeenLastCalledWith(
+		expect(
+			addMod,
+			'changing both the until date and time should update zimbraPrefOutOfOfficeUntilDate with both values'
+		).toHaveBeenLastCalledWith(
 			'prefs',
 			'zimbraPrefOutOfOfficeUntilDate',
 			dateToGenTime(expectedDateTime)

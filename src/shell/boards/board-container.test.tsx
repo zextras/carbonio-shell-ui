@@ -76,31 +76,34 @@ describe('Board container', () => {
 			setupBoardStore('board-1', boards);
 			const { getByRoleWithIcon, user } = setupBoardContainer();
 			const title1 = screen.getByText('title1');
-			expect(title1).toBeVisible();
+			expect(title1, 'tab title1 should be visible').toBeVisible();
 			const title2 = screen.getByText('title2');
-			expect(title2).toBeVisible();
+			expect(title2, 'tab title2 should be visible').toBeVisible();
 			const title3 = screen.getByText('title3');
-			expect(title3).toBeVisible();
+			expect(title3, 'tab title3 should be visible').toBeVisible();
 			const title4 = screen.getByText('title4');
-			expect(title4).toBeVisible();
+			expect(title4, 'tab title4 should be visible').toBeVisible();
 			const title5 = screen.getByText('title5');
-			expect(title5).toBeVisible();
+			expect(title5, 'tab title5 should be visible').toBeVisible();
 			const title6 = screen.getByText('title6');
-			expect(title6).toBeVisible();
+			expect(title6, 'tab title6 should be visible').toBeVisible();
 			const title7 = screen.getByText('title7');
-			expect(title7).toBeVisible();
+			expect(title7, 'tab title7 should be visible').toBeVisible();
 			const title8 = screen.getByText('title8');
-			expect(title8).toBeVisible();
+			expect(title8, 'tab title8 should be visible').toBeVisible();
 			const title9 = screen.getByText('title9');
-			expect(title9).toBeVisible();
+			expect(title9, 'tab title9 should be visible').toBeVisible();
 			const title10 = screen.getByText('title10');
-			expect(title10).toBeVisible();
+			expect(title10, 'tab title10 should be visible').toBeVisible();
 
 			const chevronDownIcon = getByRoleWithIcon('button', { icon: 'ChevronDown' });
-			expect(chevronDownIcon).toBeVisible();
+			expect(chevronDownIcon, 'the tabs overflow dropdown trigger should be visible').toBeVisible();
 
 			await user.click(chevronDownIcon);
-			expect(screen.getAllByText(/from mails/i)).toHaveLength(10);
+			expect(
+				screen.getAllByText(/from mails/i),
+				'all 10 boards should be listed in the dropdown'
+			).toHaveLength(10);
 		});
 
 		test('If close a tab from the dropdown, it will be removed', async () => {
@@ -111,15 +114,27 @@ describe('Board container', () => {
 
 			await user.click(chevronDownIcon);
 
-			expect(screen.getAllByText(/from mails/i)).toHaveLength(10);
+			expect(
+				screen.getAllByText(/from mails/i),
+				'all 10 boards should be listed in the dropdown before closing any'
+			).toHaveLength(10);
 
 			const firstCloseIcon = within(screen.getByTestId('dropdown-popper-list')).getAllByTestId(
 				'icon: CloseOutline'
 			)[0];
 			await user.click(firstCloseIcon);
-			expect(screen.getAllByText(/from mails/i)).toHaveLength(9);
-			expect(useBoardStore.getState().orderedBoards).toHaveLength(9);
-			expect(size(useBoardStore.getState().boards)).toBe(9);
+			expect(
+				screen.getAllByText(/from mails/i),
+				'the dropdown should list 9 boards after closing one'
+			).toHaveLength(9);
+			expect(
+				useBoardStore.getState().orderedBoards,
+				'orderedBoards should contain 9 boards after closing one'
+			).toHaveLength(9);
+			expect(
+				size(useBoardStore.getState().boards),
+				'boards map should contain 9 boards after closing one'
+			).toBe(9);
 		});
 	});
 
@@ -128,10 +143,22 @@ describe('Board container', () => {
 			setup(<BoardContainer />);
 			const boardContainer = screen.getByTestId(TESTID_SELECTORS.boardContainerComp);
 
-			expect(boardContainer).toHaveStyleRule('height', `calc(100vh - ${HEADER_BAR_HEIGHT})`);
-			expect(boardContainer).toHaveStyleRule('width', `calc(100vw - ${PRIMARY_BAR_WIDTH})`);
-			expect(boardContainer).toHaveStyleRule('top', HEADER_BAR_HEIGHT);
-			expect(boardContainer).toHaveStyleRule('left', PRIMARY_BAR_WIDTH);
+			expect(
+				boardContainer,
+				'container height should default to viewport height minus the header bar'
+			).toHaveStyleRule('height', `calc(100vh - ${HEADER_BAR_HEIGHT})`);
+			expect(
+				boardContainer,
+				'container width should default to viewport width minus the primary bar'
+			).toHaveStyleRule('width', `calc(100vw - ${PRIMARY_BAR_WIDTH})`);
+			expect(
+				boardContainer,
+				'container top should default to the header bar height'
+			).toHaveStyleRule('top', HEADER_BAR_HEIGHT);
+			expect(
+				boardContainer,
+				'container left should default to the primary bar width'
+			).toHaveStyleRule('left', PRIMARY_BAR_WIDTH);
 		});
 		test('has customizable values for topOffset and leftOffset ', () => {
 			const leftOffset = '3rem';
@@ -139,10 +166,22 @@ describe('Board container', () => {
 			setup(<BoardContainer leftOffset={leftOffset} topOffset={topOffset} />);
 			const boardContainer = screen.getByTestId(TESTID_SELECTORS.boardContainerComp);
 
-			expect(boardContainer).toHaveStyleRule('height', `calc(100vh - ${topOffset})`);
-			expect(boardContainer).toHaveStyleRule('width', `calc(100vw - ${leftOffset})`);
-			expect(boardContainer).toHaveStyleRule('top', topOffset);
-			expect(boardContainer).toHaveStyleRule('left', leftOffset);
+			expect(boardContainer, 'container height should use the custom top offset').toHaveStyleRule(
+				'height',
+				`calc(100vh - ${topOffset})`
+			);
+			expect(boardContainer, 'container width should use the custom left offset').toHaveStyleRule(
+				'width',
+				`calc(100vw - ${leftOffset})`
+			);
+			expect(boardContainer, 'container top should equal the custom top offset').toHaveStyleRule(
+				'top',
+				topOffset
+			);
+			expect(boardContainer, 'container left should equal the custom left offset').toHaveStyleRule(
+				'left',
+				leftOffset
+			);
 		});
 	});
 	describe('Resize a board', () => {
@@ -234,7 +273,10 @@ describe('Board container', () => {
 								},
 								expectedSizeAndPos
 							);
-							expect(board).toHaveStyle({
+							expect(
+								board,
+								'board size and position should match the expected values after resizing the border'
+							).toHaveStyle({
 								width: `${expectedSizeAndPos.width}px`,
 								height: `${expectedSizeAndPos.height}px`,
 								top: `${expectedSizeAndPos.top}px`,
@@ -266,7 +308,10 @@ describe('Board container', () => {
 				clientY: mouseInitialPos.clientY + deltaY
 			};
 			await resizeBoard(board, boardInitialSizeAndPos, border, mouseNewPos, boardNewSizeAndPos);
-			expect(board).toHaveStyle({
+			expect(
+				board,
+				'board should accept the last resize that keeps it inside the resizable area'
+			).toHaveStyle({
 				height: `${boardNewSizeAndPos.height}px`,
 				width: `${boardNewSizeAndPos.width}px`,
 				top: `${boardNewSizeAndPos.top}px`,
@@ -284,7 +329,10 @@ describe('Board container', () => {
 				boardNewSizeAndPos
 			);
 			// board keeps last sizes
-			expect(board).toHaveStyle({
+			expect(
+				board,
+				'board should keep its last accepted size when the resize moves outside the allowed area'
+			).toHaveStyle({
 				height: `${boardNewSizeAndPos.height}px`,
 				width: `${boardNewSizeAndPos.width}px`,
 				top: `${boardNewSizeAndPos.top}px`,
@@ -297,12 +345,27 @@ describe('Board container', () => {
 		const { getByRoleWithIcon, user } = setupBoardContainer();
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		setupBoardSizes(board, buildBoardSizeAndPosition());
-		expect(board).toHaveStyleRule('height', '70vh');
+		expect(board, 'board should start at the default 70vh height').toHaveStyleRule(
+			'height',
+			'70vh'
+		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
-		expect(board).toHaveStyleRule('height', 'calc(100% - 1.5rem)!important');
-		expect(board).toHaveStyleRule('width', 'calc(100% - 3rem)!important');
-		expect(board).toHaveStyleRule('top', ENLARGED_BOARD_POSITION.top);
-		expect(board).toHaveStyleRule('left', ENLARGED_BOARD_POSITION.left);
+		expect(board, 'enlarged board height should fill the board area').toHaveStyleRule(
+			'height',
+			'calc(100% - 1.5rem)!important'
+		);
+		expect(board, 'enlarged board width should fill the board area').toHaveStyleRule(
+			'width',
+			'calc(100% - 3rem)!important'
+		);
+		expect(board, 'enlarged board should be positioned at the area top').toHaveStyleRule(
+			'top',
+			ENLARGED_BOARD_POSITION.top
+		);
+		expect(board, 'enlarged board should be positioned at the area left').toHaveStyleRule(
+			'left',
+			ENLARGED_BOARD_POSITION.left
+		);
 	});
 
 	test('Enlarge resized board set board to fill board area', async () => {
@@ -326,10 +389,22 @@ describe('Board container', () => {
 			boardNewSizeAndPos
 		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
-		expect(board).toHaveStyleRule('height', 'calc(100% - 1.5rem)!important');
-		expect(board).toHaveStyleRule('width', 'calc(100% - 3rem)!important');
-		expect(board).toHaveStyleRule('top', ENLARGED_BOARD_POSITION.top);
-		expect(board).toHaveStyleRule('left', ENLARGED_BOARD_POSITION.left);
+		expect(board, 'enlarged resized board height should fill the board area').toHaveStyleRule(
+			'height',
+			'calc(100% - 1.5rem)!important'
+		);
+		expect(board, 'enlarged resized board width should fill the board area').toHaveStyleRule(
+			'width',
+			'calc(100% - 3rem)!important'
+		);
+		expect(board, 'enlarged resized board should be positioned at the area top').toHaveStyleRule(
+			'top',
+			ENLARGED_BOARD_POSITION.top
+		);
+		expect(board, 'enlarged resized board should be positioned at the area left').toHaveStyleRule(
+			'left',
+			ENLARGED_BOARD_POSITION.left
+		);
 	});
 
 	test('Reduce default board set board to default size', async () => {
@@ -338,10 +413,19 @@ describe('Board container', () => {
 		setupBoardSizes(board, buildBoardSizeAndPosition());
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.reduceBoard }));
-		expect(board).toHaveStyleRule('height', '70vh');
-		expect(board).toHaveStyleRule('width', 'auto');
-		expect(board).toHaveStyleRule('bottom', '0');
-		expect(board).toHaveStyleRule('left', '1.5rem');
+		expect(board, 'reduced board should return to the default 70vh height').toHaveStyleRule(
+			'height',
+			'70vh'
+		);
+		expect(board, 'reduced board should return to the default auto width').toHaveStyleRule(
+			'width',
+			'auto'
+		);
+		expect(board, 'reduced board should be anchored to the bottom').toHaveStyleRule('bottom', '0');
+		expect(board, 'reduced board should return to the default left position').toHaveStyleRule(
+			'left',
+			'1.5rem'
+		);
 	});
 
 	test('Reduce resized board set board to resized size', async () => {
@@ -369,32 +453,48 @@ describe('Board container', () => {
 		act(() => {
 			vi.advanceTimersToNextTimer();
 		});
-		expect(board).toHaveStyle({
+		expect(
+			board,
+			'reduced board should restore the previously resized size and position'
+		).toHaveStyle({
 			height: `${boardNewSizeAndPos.height}px`,
 			width: `${boardNewSizeAndPos.width}px`,
 			top: `${boardNewSizeAndPos.top}px`,
 			left: `${boardNewSizeAndPos.left}px`
 		});
-		expect(board).not.toHaveStyleRule('height', '70vh');
-		expect(board).not.toHaveStyleRule('width', 'auto');
+		expect(board, 'reduced board should not fall back to the default height').not.toHaveStyleRule(
+			'height',
+			'70vh'
+		);
+		expect(board, 'reduced board should not fall back to the default width').not.toHaveStyleRule(
+			'width',
+			'auto'
+		);
 	});
 
 	describe('Minimize a board', () => {
 		test('button is available by default', async () => {
 			const { getByRoleWithIcon } = setup(<BoardContainer />);
 
-			expect(getByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` })).toBeVisible();
+			expect(
+				getByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` }),
+				'collapse button should be visible by default'
+			).toBeVisible();
 		});
 		test('button is available if minimizeAllowed is true', async () => {
 			const { getByRoleWithIcon } = setup(<BoardContainer minimizeAllowed />);
 
-			expect(getByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` })).toBeVisible();
+			expect(
+				getByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` }),
+				'collapse button should be visible when minimizeAllowed is true'
+			).toBeVisible();
 		});
 		test('button is not available if minimizeAllowed is false', async () => {
 			const { queryByRoleWithIcon } = setup(<BoardContainer minimizeAllowed={false} />);
 
 			expect(
-				queryByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` })
+				queryByRoleWithIcon('button', { icon: `${ICONS.collapseBoard}Outline` }),
+				'collapse button should not be rendered when minimizeAllowed is false'
 			).not.toBeInTheDocument();
 		});
 	});
@@ -426,14 +526,23 @@ describe('Board container', () => {
 		act(() => {
 			vi.advanceTimersToNextTimer();
 		});
-		expect(board).toHaveStyle({
+		expect(
+			board,
+			'un-collapsed board should restore the previously resized size and position'
+		).toHaveStyle({
 			height: `${boardNewSizeAndPos.height}px`,
 			width: `${boardNewSizeAndPos.width}px`,
 			top: `${boardNewSizeAndPos.top}px`,
 			left: `${boardNewSizeAndPos.left}px`
 		});
-		expect(board).not.toHaveStyleRule('height', '70vh');
-		expect(board).not.toHaveStyleRule('width', 'auto');
+		expect(
+			board,
+			'un-collapsed board should not fall back to the default height'
+		).not.toHaveStyleRule('height', '70vh');
+		expect(
+			board,
+			'un-collapsed board should not fall back to the default width'
+		).not.toHaveStyleRule('width', 'auto');
 	});
 
 	test('Reset size action is disabled if board is at default size', async () => {
@@ -441,7 +550,10 @@ describe('Board container', () => {
 		const board = screen.getByTestId(TESTID_SELECTORS.board);
 		const boardInitialSizeAndPos = buildBoardSizeAndPosition();
 		setupBoardSizes(board, boardInitialSizeAndPos);
-		expect(getByRoleWithIcon('button', { icon: ICONS.resetBoardSize })).toBeDisabled();
+		expect(
+			getByRoleWithIcon('button', { icon: ICONS.resetBoardSize }),
+			'reset size action should be disabled when the board is at the default size'
+		).toBeDisabled();
 	});
 
 	test('Reset size action is enabled if board is not at default size', async () => {
@@ -464,7 +576,10 @@ describe('Board container', () => {
 			{ clientX: 0, clientY: mouseInitialPos.clientY + deltaY },
 			boardNewSizeAndPos
 		);
-		expect(getByRoleWithIcon('button', { icon: ICONS.resetBoardSize })).toBeEnabled();
+		expect(
+			getByRoleWithIcon('button', { icon: ICONS.resetBoardSize }),
+			'reset size action should be enabled when the board is not at the default size'
+		).toBeEnabled();
 	});
 
 	test('Reset size action reset board sizes to default', async () => {
@@ -493,9 +608,12 @@ describe('Board container', () => {
 			vi.advanceTimersToNextTimer();
 		});
 		await waitFor(() =>
-			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) ?? '')).toEqual({})
+			expect(
+				JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) ?? ''),
+				'resetting the size should clear the persisted board size in local storage'
+			).toEqual({})
 		);
-		expect(board).toHaveStyle({
+		expect(board, 'reset board should return to the default size and position').toHaveStyle({
 			height: '70vh',
 			width: 'auto',
 			...BOARD_DEFAULT_POSITION
@@ -558,7 +676,10 @@ describe('Board container', () => {
 			window.resizeTo(newWindowSize.width, newWindowSize.height);
 			vi.advanceTimersToNextTimer();
 		});
-		expect(board).toHaveStyle({
+		expect(
+			board,
+			'shrinking the window should clamp the board so its top-left corner stays visible'
+		).toHaveStyle({
 			height: `${boardNewSizeAndPos.height}px`,
 			width: `${boardNewSizeAndPos.width}px`,
 			top: `${newWindowSize.height - BOARD_MIN_VISIBILITY.top}px`,
@@ -627,7 +748,10 @@ describe('Board container', () => {
 		});
 
 		await waitFor(() =>
-			expect(board).toHaveStyle({
+			expect(
+				board,
+				'shrinking the window should clamp the board to keep its top-left corner visible'
+			).toHaveStyle({
 				top: `${newWindowSize.height - BOARD_MIN_VISIBILITY.top}px`,
 				left: `${newWindowSize.width - BOARD_MIN_VISIBILITY.left}px`
 			})
@@ -638,7 +762,10 @@ describe('Board container', () => {
 			vi.advanceTimersToNextTimer();
 		});
 
-		expect(board).toHaveStyle({
+		expect(
+			board,
+			'enlarging the window back should restore the last manually set size and position'
+		).toHaveStyle({
 			height: `${boardNewSizeAndPos.height}px`,
 			width: `${boardNewSizeAndPos.width}px`,
 			top: `${boardNewSizeAndPos.top}px`,
@@ -669,9 +796,15 @@ describe('Board container', () => {
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.enlargeBoard }));
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.resetBoardSize }));
 		await waitFor(() =>
-			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '{}')).toEqual({})
+			expect(
+				JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '{}'),
+				'resetting an enlarged board should clear the persisted board size in local storage'
+			).toEqual({})
 		);
-		expect(board).toHaveStyle({
+		expect(
+			board,
+			'resetting an enlarged board should return it to the default size and position'
+		).toHaveStyle({
 			height: '70vh',
 			width: 'auto',
 			...BOARD_DEFAULT_POSITION
@@ -695,7 +828,10 @@ describe('Board container', () => {
 			boardNewPosition,
 			elementForMove
 		);
-		expect(board).toHaveStyle({
+		expect(
+			board,
+			'moving a default-size board should update its position and keep the default size'
+		).toHaveStyle({
 			height: '70vh',
 			width: 'auto',
 			left: 0,
@@ -736,7 +872,10 @@ describe('Board container', () => {
 			boardNewPosition,
 			elementForMove
 		);
-		expect(board).toHaveStyle({
+		expect(
+			board,
+			'moving a default-size board twice should keep the latest position and the default size'
+		).toHaveStyle({
 			height: '70vh',
 			width: 'auto',
 			left: `${boardNewPosition.left}px`,
@@ -783,7 +922,10 @@ describe('Board container', () => {
 			boardNewSizeAndPos,
 			elementForMove
 		);
-		expect(board).toHaveStyle({
+		expect(
+			board,
+			'moving a custom-size board should update its position and keep the custom size'
+		).toHaveStyle({
 			height: `${boardNewSizeAndPos.height}px`,
 			width: `${boardNewSizeAndPos.width}px`,
 			left: `${boardNewSizeAndPos.left}px`,
@@ -818,7 +960,10 @@ describe('Board container', () => {
 			vi.advanceTimersToNextTimer();
 		});
 		await waitFor(() =>
-			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || '')).toEqual({})
+			expect(
+				JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) || ''),
+				'resetting the size should clear the persisted board size in local storage'
+			).toEqual({})
 		);
 		const boardNewPos = {
 			top: 0,
@@ -832,7 +977,10 @@ describe('Board container', () => {
 			boardNewPos,
 			elementForMove
 		);
-		expect(board).toHaveStyle({
+		expect(
+			board,
+			'moving after a reset should set the new position while keeping the default size'
+		).toHaveStyle({
 			height: '70vh',
 			width: 'auto',
 			left: 0,
@@ -882,8 +1030,14 @@ describe('Board container', () => {
 			boardNewPosition,
 			actionElement
 		);
-		expect(board).toBeVisible();
-		expect(board).toHaveStyle({
+		expect(
+			board,
+			`board should still be visible after a move on the ${actionName} action`
+		).toBeVisible();
+		expect(
+			board,
+			`${actionName} action should not fire when a move is performed on it, so the board keeps the moved position`
+		).toHaveStyle({
 			height: '70vh',
 			width: 'auto',
 			left: `${boardNewPosition.left}px`,
@@ -902,12 +1056,18 @@ describe('Board container', () => {
 		useAppStore.getState().addBoardView(boardView);
 		const { user } = setupBoardContainer();
 		const inputElement = screen.getByRole<HTMLInputElement>('textbox', { name: /board input/i });
-		expect(inputElement).toBeVisible();
+		expect(inputElement, 'the board input should be visible').toBeVisible();
 		const typedText = 'wonderful';
 		await user.type(inputElement, typedText);
 		await user.dblClick(screen.getByDisplayValue(typedText));
-		expect(inputElement.selectionStart).toBe(0);
-		expect(inputElement.selectionEnd).toBe(typedText.length);
+		expect(
+			inputElement.selectionStart,
+			'double click should select the text from the start of the input'
+		).toBe(0);
+		expect(
+			inputElement.selectionEnd,
+			'double click should select the text up to the end of the typed value'
+		).toBe(typedText.length);
 	});
 
 	test('Move board is disabled on enlarged board', async () => {
@@ -924,7 +1084,10 @@ describe('Board container', () => {
 			{}
 		);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.reduceBoard }));
-		expect(board).toHaveStyle({
+		expect(
+			board,
+			'move should be ignored on an enlarged board, so reducing it returns to the default size and position'
+		).toHaveStyle({
 			height: '70vh',
 			width: 'auto',
 			...BOARD_DEFAULT_POSITION
@@ -942,7 +1105,10 @@ describe('Board container', () => {
 			await user.keyboard('[Space]');
 		});
 		await waitFor(() =>
-			expect(board).toHaveStyle({
+			expect(
+				board,
+				'pressing Space on the focused enlarge button should reduce the board to the default size and position'
+			).toHaveStyle({
 				height: '70vh',
 				width: 'auto',
 				...BOARD_DEFAULT_POSITION
@@ -972,8 +1138,14 @@ describe('Board container', () => {
 			setupBoardStore();
 		});
 		await waitFor(() =>
-			expect(JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) ?? '{}')).toEqual({})
+			expect(
+				JSON.parse(window.localStorage.getItem(LOCAL_STORAGE_BOARD_SIZE) ?? '{}'),
+				'no board size should be persisted for a board that only had a custom position'
+			).toEqual({})
 		);
-		expect(getByRoleWithIcon('button', { icon: ICONS.resetBoardSize })).toBeDisabled();
+		expect(
+			getByRoleWithIcon('button', { icon: ICONS.resetBoardSize }),
+			'reset size action should be disabled for a new board with default sizes'
+		).toBeDisabled();
 	});
 });

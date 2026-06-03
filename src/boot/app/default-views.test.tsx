@@ -24,7 +24,10 @@ describe('DefaultViews', () => {
 				})
 			);
 			setup(<DefaultViewsRegister />);
-			expect(useAppStore.getState().routes).toMatchObject<Record<string, AppRouteDescriptor>>({
+			expect(
+				useAppStore.getState().routes,
+				`settings route should be registered when zimbraFeatureOptionsEnabled is ${value}`
+			).toMatchObject<Record<string, AppRouteDescriptor>>({
 				[SETTINGS_APP_ID]: {
 					id: SETTINGS_APP_ID,
 					app: SETTINGS_APP_ID,
@@ -48,7 +51,10 @@ describe('DefaultViews', () => {
 			})
 		);
 		setup(<DefaultViewsRegister />);
-		expect(Object.keys(useAppStore.getState().routes)).not.toContain(SETTINGS_APP_ID);
+		expect(
+			Object.keys(useAppStore.getState().routes),
+			'settings route should not be registered when zimbraFeatureOptionsEnabled is FALSE'
+		).not.toContain(SETTINGS_APP_ID);
 	});
 
 	it('should register settings general view', () => {
@@ -58,7 +64,10 @@ describe('DefaultViews', () => {
 			})
 		);
 		setup(<DefaultViewsRegister />);
-		expect(useAppStore.getState().views.settings).toContainEqual<SettingsView>({
+		expect(
+			useAppStore.getState().views.settings,
+			'the general settings view should be registered'
+		).toContainEqual<SettingsView>({
 			id: 'general',
 			route: 'general',
 			app: SHELL_APP_ID,
@@ -85,7 +94,10 @@ describe('DefaultViews', () => {
 		useLoginConfigStore.setState({ isCarbonioCE: true });
 
 		setup(<DefaultViewsRegister />);
-		expect(useAppStore.getState().views.settings).toContainEqual(
+		expect(
+			useAppStore.getState().views.settings,
+			'the privacy subsection should be registered and the user quota subsection should be absent on Carbonio CE'
+		).toContainEqual(
 			expect.objectContaining<Pick<SettingsView, 'id' | 'subSections'>>({
 				id: 'general',
 				subSections: [
@@ -108,7 +120,10 @@ describe('DefaultViews', () => {
 		useLoginConfigStore.setState({ isCarbonioCE: false });
 
 		setup(<DefaultViewsRegister />);
-		expect(useAppStore.getState().views.settings).toContainEqual(
+		expect(
+			useAppStore.getState().views.settings,
+			'the user quota subsection should be registered and the privacy subsection should be absent when not Carbonio CE'
+		).toContainEqual(
 			expect.objectContaining<Pick<SettingsView, 'id' | 'subSections'>>({
 				id: 'general',
 				subSections: [
@@ -129,7 +144,10 @@ describe('DefaultViews', () => {
 			})
 		);
 		setup(<DefaultViewsRegister />);
-		expect(useAppStore.getState().views.settings).toContainEqual<SettingsView>({
+		expect(
+			useAppStore.getState().views.settings,
+			'the accounts settings view should be registered'
+		).toContainEqual<SettingsView>({
 			id: 'accounts',
 			route: 'accounts',
 			app: SHELL_APP_ID,

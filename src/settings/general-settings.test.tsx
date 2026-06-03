@@ -55,8 +55,14 @@ describe('General setting', () => {
 		await user.click(
 			within(screen.getByTestId(TESTID_SELECTORS.dropdown)).getByText(localeArray[0].label)
 		);
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
-		expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be enabled when there are changes'
+		).toBeEnabled();
+		expect(
+			screen.getByRole('button', { name: /save/i }),
+			'the save button should be disabled when there is a validation error'
+		).toBeDisabled();
 	});
 
 	test('When locale is changed, discard button become enabled and when clicked the initial value is restored', async () => {
@@ -74,17 +80,32 @@ describe('General setting', () => {
 			localeArray,
 			(item) => item.value === zimbraPrefLocaleValue
 		) as LocaleDescriptorWithLabels;
-		expect(match).toBeDefined();
-		expect(screen.getByText(match.label)).toBeVisible();
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+		expect(match, 'the locale matching the initial value should be found').toBeDefined();
+		expect(
+			screen.getByText(match.label),
+			'the initial locale label should be visible'
+		).toBeVisible();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be disabled before any change'
+		).toBeDisabled();
 		await user.click(screen.getByText(match.label));
 		await user.click(
 			within(screen.getByTestId(TESTID_SELECTORS.dropdown)).getByText(localeArray[0].label)
 		);
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be enabled after changing the locale'
+		).toBeEnabled();
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
-		expect(screen.getByText(match.label)).toBeVisible();
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+		expect(
+			screen.getByText(match.label),
+			'the initial locale label should be restored after discarding'
+		).toBeVisible();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be disabled again after discarding'
+		).toBeDisabled();
 	});
 
 	test('When send auto reply is changed, discard button become enabled and when clicked the initial value is restored', async () => {
@@ -99,13 +120,25 @@ describe('General setting', () => {
 
 		await user.click(screen.getByTestId(ICONS.switchChecked));
 
-		expect(screen.getByTestId(ICONS.switchUnchecked)).toBeVisible();
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+		expect(
+			screen.getByTestId(ICONS.switchUnchecked),
+			'the send auto reply switch should become unchecked after toggling'
+		).toBeVisible();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be enabled after toggling the send auto reply switch'
+		).toBeEnabled();
 
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
 
-		expect(screen.getByTestId(ICONS.switchChecked)).toBeVisible();
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+		expect(
+			screen.getByTestId(ICONS.switchChecked),
+			'the send auto reply switch should be restored to checked after discarding'
+		).toBeVisible();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be disabled again after discarding'
+		).toBeDisabled();
 	});
 
 	test('When external sender is changed, discard button become enabled and when clicked the initial value is restored', async () => {
@@ -125,17 +158,32 @@ describe('General setting', () => {
 		}));
 		const { user } = setup(<GeneralSettings />);
 		const match = externalSenderArray[0];
-		expect(match).toBeDefined();
-		expect(screen.getByText(match.label)).toBeVisible();
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+		expect(match, 'the initial external sender option should be defined').toBeDefined();
+		expect(
+			screen.getByText(match.label),
+			'the initial external sender label should be visible'
+		).toBeVisible();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be disabled before changing the external sender'
+		).toBeDisabled();
 		await user.click(screen.getByText(match.label));
 		await user.click(
 			within(screen.getByTestId(TESTID_SELECTORS.dropdown)).getByText(externalSenderArray[1].label)
 		);
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be enabled after changing the external sender'
+		).toBeEnabled();
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
-		expect(screen.getByText(match.label)).toBeVisible();
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+		expect(
+			screen.getByText(match.label),
+			'the initial external sender label should be restored after discarding'
+		).toBeVisible();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be disabled again after discarding'
+		).toBeDisabled();
 	});
 
 	test('When auto-replies in time period is changed, discard button become enabled and when clicked the initial value is restored', async () => {
@@ -152,21 +200,31 @@ describe('General setting', () => {
 			}
 		}));
 		const { user } = setup(<GeneralSettings />);
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be disabled before changing the auto-replies time period'
+		).toBeDisabled();
 		await user.click(
 			within(screen.getByTestId(TESTID_SELECTORS.outOfOfficeSettings)).getByTestId(
 				ICONS.checkboxChecked
 			)
 		);
 
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be enabled after changing the auto-replies time period'
+		).toBeEnabled();
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
 		expect(
 			within(screen.getByTestId(TESTID_SELECTORS.outOfOfficeSettings)).getByTestId(
 				ICONS.checkboxChecked
-			)
+			),
+			'the time period checkbox should be restored to checked after discarding'
 		).toBeVisible();
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be disabled again after discarding'
+		).toBeDisabled();
 	});
 
 	test('When auto reply textarea value is changed, discard button become enabled and when clicked the initial value is restored', async () => {
@@ -184,15 +242,27 @@ describe('General setting', () => {
 			}
 		}));
 		const { user } = setup(<GeneralSettings />);
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be disabled before editing the auto reply textarea'
+		).toBeDisabled();
 		const textbox = screen.getByRole('textbox', { name: LABELS.autoReplyMessage });
 		await user.clear(textbox);
 		await user.paste(userInput);
 
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be enabled after editing the auto reply textarea'
+		).toBeEnabled();
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
-		expect(textbox).toHaveValue(initialValue);
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+		expect(
+			textbox,
+			'the auto reply textarea should be restored to its initial value after discarding'
+		).toHaveValue(initialValue);
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be disabled again after discarding'
+		).toBeDisabled();
 	});
 
 	test('When external sender textarea value is changed, discard button become enabled and when clicked the initial value is restored', async () => {
@@ -211,17 +281,29 @@ describe('General setting', () => {
 			}
 		}));
 		const { user } = setup(<GeneralSettings />);
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be disabled before editing the external sender textarea'
+		).toBeDisabled();
 		const textbox = screen.getByRole('textbox', {
 			name: LABELS.autoReplyMessageExternal
 		});
 		await user.clear(textbox);
 		await user.paste(userInput);
 
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be enabled after editing the external sender textarea'
+		).toBeEnabled();
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
-		expect(textbox).toHaveValue(initialValue);
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+		expect(
+			textbox,
+			'the external sender textarea should be restored to its initial value after discarding'
+		).toHaveValue(initialValue);
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be disabled again after discarding'
+		).toBeDisabled();
 	});
 
 	test('When dark mode is changed, discard button become enabled and when clicked the initial value is restored', async () => {
@@ -233,14 +315,29 @@ describe('General setting', () => {
 			}
 		}));
 		const { user } = setup(<GeneralSettings />);
-		expect(screen.getByText('Auto')).toBeVisible();
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+		expect(
+			screen.getByText('Auto'),
+			'the initial "Auto" dark mode value should be visible'
+		).toBeVisible();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be disabled before changing the dark mode'
+		).toBeDisabled();
 		await user.click(screen.getByText('Auto'));
 		await user.click(within(screen.getByTestId(TESTID_SELECTORS.dropdown)).getByText(/disabled/i));
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be enabled after changing the dark mode'
+		).toBeEnabled();
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
-		expect(screen.getByText('Auto')).toBeVisible();
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
+		expect(
+			screen.getByText('Auto'),
+			'the initial "Auto" dark mode value should be restored after discarding'
+		).toBeVisible();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should be disabled again after discarding'
+		).toBeDisabled();
 	});
 
 	describe('Theme Options', () => {
@@ -253,13 +350,20 @@ describe('General setting', () => {
 			}));
 			setup(<GeneralSettings />);
 
-			expect(screen.getByText(/dark mode/i)).toBeVisible();
+			expect(
+				screen.getByText(/dark mode/i),
+				'the dark mode section should be visible'
+			).toBeVisible();
 			const selectSection = screen.getByTestId('select-dark-theme');
-			expect(within(selectSection).getByText(/invalid option/i)).toBeVisible();
+			expect(
+				within(selectSection).getByText(/invalid option/i),
+				'an "invalid option" error should be shown when the dark mode value is undefined'
+			).toBeVisible();
 			expect(
 				within(selectSection).getByText(
 					'The current value is not recognized. The interface has defaulted to System theme. Please select a valid option to change the theme.'
-				)
+				),
+				'the dark mode invalid value description should be shown'
 			).toBeVisible();
 		});
 	});
@@ -276,11 +380,15 @@ describe('General setting', () => {
 			}));
 
 			setup(<GeneralSettings />);
-			expect(screen.getByText(/invalid option/i)).toBeVisible();
+			expect(
+				screen.getByText(/invalid option/i),
+				'an "invalid option" error should be shown when the locale value is invalid'
+			).toBeVisible();
 			expect(
 				screen.getByText(
 					'The current value is not recognized. The interface has defaulted to English. Please select a valid option.'
-				)
+				),
+				'the locale invalid value description should be shown'
 			).toBeVisible();
 		});
 	});
@@ -289,13 +397,19 @@ describe('General setting', () => {
 		it('should be visible if Carbonio is CE', async () => {
 			useLoginConfigStore.setState({ isCarbonioCE: true });
 			setup(<GeneralSettings />);
-			expect(screen.getByText('Privacy')).toBeVisible();
+			expect(
+				screen.getByText('Privacy'),
+				'the Privacy section should be visible when Carbonio is CE'
+			).toBeVisible();
 		});
 
 		it('should not be visible if Carbonio is not CE', () => {
 			useLoginConfigStore.setState({ isCarbonioCE: false });
 			setup(<GeneralSettings />);
-			expect(screen.queryByText('Privacy')).not.toBeInTheDocument();
+			expect(
+				screen.queryByText('Privacy'),
+				'the Privacy section should not be rendered when Carbonio is not CE'
+			).not.toBeInTheDocument();
 		});
 
 		it('should be checked by default if carbonioPrefSendAnalytics is TRUE', () => {
@@ -312,7 +426,8 @@ describe('General setting', () => {
 			expect(
 				within(screen.getByTestId(TESTID_SELECTORS.privacySettings)).getByTestId(
 					ICONS.checkboxChecked
-				)
+				),
+				'the analytics checkbox should be checked by default when carbonioPrefSendAnalytics is TRUE'
 			).toBeVisible();
 		});
 
@@ -332,7 +447,8 @@ describe('General setting', () => {
 				expect(
 					within(screen.getByTestId(TESTID_SELECTORS.privacySettings)).getByTestId(
 						ICONS.checkboxUnchecked
-					)
+					),
+					'the analytics checkbox should be unchecked by default when carbonioPrefSendAnalytics is not TRUE'
 				).toBeVisible();
 			}
 		);
@@ -351,8 +467,14 @@ describe('General setting', () => {
 
 				const { user } = setup(<GeneralSettings />);
 				await user.click(screen.getByText('Allow data analytics'));
-				expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
-				expect(screen.getByRole('button', { name: /save/i })).toBeEnabled();
+				expect(
+					screen.getByRole('button', { name: /discard changes/i }),
+					'the discard button should be enabled when the analytics value differs from the initial one'
+				).toBeEnabled();
+				expect(
+					screen.getByRole('button', { name: /save/i }),
+					'the save button should be enabled when the analytics value differs from the initial one'
+				).toBeEnabled();
 			}
 		);
 
@@ -370,10 +492,19 @@ describe('General setting', () => {
 
 				const { user } = setup(<GeneralSettings />);
 				await user.click(screen.getByText('Allow data analytics'));
-				expect(screen.getByRole('button', { name: /discard changes/i })).toBeEnabled();
+				expect(
+					screen.getByRole('button', { name: /discard changes/i }),
+					'the discard button should be enabled after the first toggle'
+				).toBeEnabled();
 				await user.click(screen.getByText('Allow data analytics'));
-				expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
-				expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
+				expect(
+					screen.getByRole('button', { name: /discard changes/i }),
+					'the discard button should be disabled once the analytics value is back to the initial one'
+				).toBeDisabled();
+				expect(
+					screen.getByRole('button', { name: /save/i }),
+					'the save button should be disabled once the analytics value is back to the initial one'
+				).toBeDisabled();
 			}
 		);
 
@@ -397,7 +528,8 @@ describe('General setting', () => {
 				expect(
 					within(screen.getByTestId(TESTID_SELECTORS.privacySettings)).getByTestId(
 						ICONS.checkboxChecked
-					)
+					),
+					'the analytics checkbox should be reset to its initial checked state after discarding'
 				).toBeVisible()
 			);
 		});
@@ -407,19 +539,28 @@ describe('General setting', () => {
 		it('should be visible if Carbonio is not CE and totalQuota feature flag is not enabled', () => {
 			useLoginConfigStore.setState({ isCarbonioCE: false, featureFlags: { totalQuota: false } });
 			setup(<GeneralSettings />);
-			expect(screen.getByText("User's quota")).toBeVisible();
+			expect(
+				screen.getByText("User's quota"),
+				"the User's quota section should be visible when Carbonio is not CE and the totalQuota flag is disabled"
+			).toBeVisible();
 		});
 
 		it('should not be visible if Carbonio is CE', () => {
 			useLoginConfigStore.setState({ isCarbonioCE: true, featureFlags: { totalQuota: false } });
 			setup(<GeneralSettings />);
-			expect(screen.queryByText("User's quota")).not.toBeInTheDocument();
+			expect(
+				screen.queryByText("User's quota"),
+				"the User's quota section should not be rendered when Carbonio is CE"
+			).not.toBeInTheDocument();
 		});
 
 		it('should not be visible if totalQuota feature flag is enabled', () => {
 			useLoginConfigStore.setState({ isCarbonioCE: false, featureFlags: { totalQuota: true } });
 			setup(<GeneralSettings />);
-			expect(screen.queryByText("User's quota")).not.toBeInTheDocument();
+			expect(
+				screen.queryByText("User's quota"),
+				"the User's quota section should not be rendered when the totalQuota feature flag is enabled"
+			).not.toBeInTheDocument();
 		});
 	});
 });

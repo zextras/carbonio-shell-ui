@@ -23,7 +23,10 @@ describe('useTracker', () => {
 		act(() => {
 			result.current.enableTracker(true);
 		});
-		expect(posthog.opt_in_capturing).toHaveBeenCalled();
+		expect(
+			posthog.opt_in_capturing,
+			'enableTracker(true) should opt in PostHog when host is not localhost'
+		).toHaveBeenCalled();
 	});
 
 	it.each(['localhost', '127.0.0.1'])('should not opt-in posthog if host is %s', (host) => {
@@ -31,7 +34,10 @@ describe('useTracker', () => {
 		const posthog = spyOnPosthog();
 		const { result } = renderHook(() => useTracker());
 		result.current.enableTracker(true);
-		expect(posthog.opt_in_capturing).not.toHaveBeenCalled();
+		expect(
+			posthog.opt_in_capturing,
+			`enableTracker(true) should not opt in PostHog when host is ${host}`
+		).not.toHaveBeenCalled();
 	});
 
 	it('should opt-out posthog if enableTracker is called with false value', () => {
@@ -40,14 +46,17 @@ describe('useTracker', () => {
 		act(() => {
 			result.current.enableTracker(false);
 		});
-		expect(posthog.opt_out_capturing).toHaveBeenCalled();
+		expect(
+			posthog.opt_out_capturing,
+			'enableTracker(false) should opt out PostHog'
+		).toHaveBeenCalled();
 	});
 
 	it('should reset posthog if reset function is called', () => {
 		const posthog = spyOnPosthog();
 		const { result } = renderHook(() => useTracker());
 		result.current.reset();
-		expect(posthog.reset).toHaveBeenCalled();
+		expect(posthog.reset, 'reset() should reset PostHog').toHaveBeenCalled();
 	});
 
 	it('should call capture ', () => {
@@ -57,7 +66,10 @@ describe('useTracker', () => {
 		const properties = { prop1: 'prop1value', prop2: 'prop2value' };
 		const options: CaptureOptions = { send_instantly: true };
 		result.current.capture(eventName, properties, options);
-		expect(posthog.capture).toHaveBeenCalledWith(eventName, properties, options);
+		expect(
+			posthog.capture,
+			'capture() should forward the event name, properties and options to PostHog'
+		).toHaveBeenCalledWith(eventName, properties, options);
 	});
 
 	it('should identify user through its hashed id when enabling the tracker for an authenticated account', async () => {
@@ -68,7 +80,10 @@ describe('useTracker', () => {
 			result.current.enableTracker(true);
 		});
 		await vi.advanceTimersByTimeAsync(0);
-		expect(posthog.identify).toHaveBeenCalledWith('mEAzl8Lcf4UJ+/uFXopfi6SaL55V61IdfIWCruI7O2Q=');
+		expect(
+			posthog.identify,
+			'enableTracker should identify the authenticated user via their hashed id'
+		).toHaveBeenCalledWith('mEAzl8Lcf4UJ+/uFXopfi6SaL55V61IdfIWCruI7O2Q=');
 	});
 
 	it('should not identify user if no user is authenticated', () => {
@@ -78,6 +93,9 @@ describe('useTracker', () => {
 		act(() => {
 			result.current.enableTracker(true);
 		});
-		expect(posthog.identify).not.toHaveBeenCalled();
+		expect(
+			posthog.identify,
+			'enableTracker should not identify the user when no account is authenticated'
+		).not.toHaveBeenCalled();
 	});
 });

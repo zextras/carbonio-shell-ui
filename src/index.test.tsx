@@ -43,7 +43,10 @@ describe('index.tsx - Context Menu Behavior', () => {
 
 		target.dispatchEvent(event);
 
-		expect(preventDefaultSpy).toHaveBeenCalled();
+		expect(
+			preventDefaultSpy,
+			'the context menu should be blocked for regular elements'
+		).toHaveBeenCalled();
 	});
 
 	it('should allow context menu for A tags', () => {
@@ -58,7 +61,10 @@ describe('index.tsx - Context Menu Behavior', () => {
 
 		link.dispatchEvent(event);
 
-		expect(preventDefaultSpy).not.toHaveBeenCalled();
+		expect(
+			preventDefaultSpy,
+			'the context menu should be allowed for A tags'
+		).not.toHaveBeenCalled();
 	});
 
 	it('should allow context menu for IMG tags', () => {
@@ -73,7 +79,10 @@ describe('index.tsx - Context Menu Behavior', () => {
 
 		img.dispatchEvent(event);
 
-		expect(preventDefaultSpy).not.toHaveBeenCalled();
+		expect(
+			preventDefaultSpy,
+			'the context menu should be allowed for IMG tags'
+		).not.toHaveBeenCalled();
 	});
 
 	it('should allow context menu for bypass-class elements', () => {
@@ -89,7 +98,10 @@ describe('index.tsx - Context Menu Behavior', () => {
 
 		div.dispatchEvent(event);
 
-		expect(preventDefaultSpy).not.toHaveBeenCalled();
+		expect(
+			preventDefaultSpy,
+			'the context menu should be allowed for elements with the bypass class'
+		).not.toHaveBeenCalled();
 	});
 
 	it('should allow context menu for text selections', () => {
@@ -116,7 +128,10 @@ describe('index.tsx - Context Menu Behavior', () => {
 
 		textNode.dispatchEvent(event);
 
-		expect(preventDefaultSpy).not.toHaveBeenCalled();
+		expect(
+			preventDefaultSpy,
+			'the context menu should be allowed when there is a text selection'
+		).not.toHaveBeenCalled();
 
 		document.body.childNodes.forEach((n) => n.nodeType === Node.TEXT_NODE && n.remove());
 	});

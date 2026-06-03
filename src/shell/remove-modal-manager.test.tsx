@@ -54,5 +54,8 @@ test('Using useModal hook without a ModalManager, log a Modal manager context no
 		});
 	});
 
-	expect(mockedError).toHaveBeenCalledWith('Modal manager context not initialized');
+	expect(
+		mockedError,
+		'console.error should report the missing modal manager context'
+	).toHaveBeenCalledWith('Modal manager context not initialized');
 });

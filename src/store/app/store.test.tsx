@@ -15,7 +15,10 @@ describe('store', () => {
 				result.current.upsertApp({ name: 'newApp', display: 'New App' });
 			});
 
-			expect(result.current.apps.newApp).toEqual({ name: 'newApp', display: 'New App' });
+			expect(
+				result.current.apps.newApp,
+				'upsertApp should add the new app to the store when it does not exist'
+			).toEqual({ name: 'newApp', display: 'New App' });
 		});
 
 		it('should update an existing app if it exists', () => {
@@ -24,11 +27,17 @@ describe('store', () => {
 				result.current.upsertApp({ name: 'app', display: 'App' });
 				result.current.upsertApp({ name: 'app', display: 'Updated App' });
 			});
-			expect(result.current.apps.app).not.toEqual({
+			expect(
+				result.current.apps.app,
+				'upsertApp should no longer hold the original app values after an update'
+			).not.toEqual({
 				name: 'app',
 				display: 'App'
 			});
-			expect(result.current.apps.app).toEqual({
+			expect(
+				result.current.apps.app,
+				'upsertApp should overwrite the existing app with the updated values'
+			).toEqual({
 				name: 'app',
 				display: 'Updated App'
 			});

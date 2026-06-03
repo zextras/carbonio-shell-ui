@@ -140,7 +140,10 @@ describe('Use resize', () => {
 								top: initial.top + (expectedUpdates?.top ?? 0),
 								left: initial.left + (expectedUpdates?.left ?? 0)
 							};
-							expect(result).toEqual<SizeAndPosition>(expected);
+							expect(
+								result,
+								'computed size and position should match the expected updates for the dragged border'
+							).toEqual<SizeAndPosition>(expected);
 						}
 					);
 				});

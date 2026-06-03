@@ -15,7 +15,7 @@ describe('ShellHeader', () => {
 			</ShellHeader>
 		);
 		const headerElement = screen.getByTestId('MainHeaderContainer');
-		expect(headerElement).toBeInTheDocument();
+		expect(headerElement, 'the ShellHeader main container should be rendered').toBeInTheDocument();
 	});
 
 	it('should render children correctly', () => {
@@ -25,8 +25,13 @@ describe('ShellHeader', () => {
 			</ShellHeader>
 		);
 		const childElement = screen.getByTestId('ChildElement');
-		expect(childElement).toBeInTheDocument();
-		expect(childElement).toHaveTextContent('Child Content');
+		expect(
+			childElement,
+			'the child element passed to ShellHeader should be rendered'
+		).toBeInTheDocument();
+		expect(childElement, 'the child element should display its provided content').toHaveTextContent(
+			'Child Content'
+		);
 	});
 
 	it('should render the total quota component if available', () => {
@@ -45,12 +50,18 @@ describe('ShellHeader', () => {
 
 		setup(<ShellHeader>{null}</ShellHeader>);
 
-		expect(screen.getByTestId('TotalQuotaUsageContainer')).toBeVisible();
+		expect(
+			screen.getByTestId('TotalQuotaUsageContainer'),
+			'the total quota usage component should be visible when registered in the store'
+		).toBeVisible();
 	});
 
 	it('should not render the total quota component if not available', () => {
 		setup(<ShellHeader>{null}</ShellHeader>);
 
-		expect(screen.queryByTestId('TotalQuotaUsageContainer')).not.toBeInTheDocument();
+		expect(
+			screen.queryByTestId('TotalQuotaUsageContainer'),
+			'the total quota usage component should not be rendered when not registered in the store'
+		).not.toBeInTheDocument();
 	});
 });

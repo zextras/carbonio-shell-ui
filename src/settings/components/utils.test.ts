@@ -21,7 +21,10 @@ describe('dateToGenTime function', () => {
 		const date = new Date(2024, 4, 20, 15, 22, 45, 0);
 		const offset = date.getTimezoneOffset();
 		const dateUTC = new Date(date.getTime() - offset * 60 * 1000);
-		expect(dateToGenTime(dateUTC)).toBe('20240520152245Z');
+		expect(
+			dateToGenTime(dateUTC),
+			'dateToGenTime should format the UTC date as YYYYMMDDHHmmss[Z]'
+		).toBe('20240520152245Z');
 	});
 });
 
@@ -31,7 +34,10 @@ describe('genTimeToDate function', () => {
 		const date = new Date(2024, 4, 20, 15, 22, 45, 0);
 		const offset = date.getTimezoneOffset();
 		const dateUTC = new Date(date.getTime() - offset * 60 * 1000);
-		expect(genTimeToDate(dateStr)).toEqual(dateUTC);
+		expect(
+			genTimeToDate(dateStr),
+			'genTimeToDate should parse a YYYYMMDDHHmmss[Z] string into the matching UTC date'
+		).toEqual(dateUTC);
 	});
 
 	it('should return a date starting from a valid string with format YYYYMMDDHHmmss.SSS[Z]', () => {
@@ -39,19 +45,22 @@ describe('genTimeToDate function', () => {
 		const date = new Date(2024, 4, 20, 15, 22, 45, 0);
 		const offset = date.getTimezoneOffset();
 		const dateUTC = new Date(date.getTime() - offset * 60 * 1000);
-		expect(genTimeToDate(dateStr)).toEqual(dateUTC);
+		expect(
+			genTimeToDate(dateStr),
+			'genTimeToDate should parse a YYYYMMDDHHmmss.SSS[Z] string into the matching UTC date'
+		).toEqual(dateUTC);
 	});
 });
 
 describe('humanFileSize function', () => {
 	it('should return 0 B if input is 0', () => {
 		const result = humanFileSize(0, undefined);
-		expect(result).toBe('0 B');
+		expect(result, 'humanFileSize(0) should return "0 B"').toBe('0 B');
 	});
 
 	it('should return 8.00 PB if input is max safe integer', () => {
 		const result = humanFileSize(Number.MAX_SAFE_INTEGER, undefined);
-		expect(result).toBe('8.00 PB');
+		expect(result, 'humanFileSize(MAX_SAFE_INTEGER) should return "8.00 PB"').toBe('8.00 PB');
 	});
 
 	it.each([
@@ -66,7 +75,9 @@ describe('humanFileSize function', () => {
 		['YB', 8]
 	])('should return %s unit if input pow is %s', (unit, pow) => {
 		const result = humanFileSize(1024 ** pow, undefined);
-		expect(result).toBe(`1.00 ${unit}`);
+		expect(result, `humanFileSize(1024 ** ${pow}) should return "1.00 ${unit}"`).toBe(
+			`1.00 ${unit}`
+		);
 	});
 
 	it.each([
@@ -82,12 +93,18 @@ describe('humanFileSize function', () => {
 		'should return %s unit measure if input is one unit lower than the next unit measure',
 		(unit, pow) => {
 			const result = humanFileSize(1024 ** pow - 1024 ** (pow - 1), undefined);
-			expect(result).toBe(`1023.00 ${unit}`);
+			expect(
+				result,
+				`humanFileSize one unit below the next measure should return "1023.00 ${unit}"`
+			).toBe(`1023.00 ${unit}`);
 		}
 	);
 
 	it('should change unit from KB to B when removing 1 B from 1024 B', () => {
-		expect(humanFileSize(1024 - 1, undefined)).toBe('1023.00 B');
+		expect(
+			humanFileSize(1024 - 1, undefined),
+			'humanFileSize(1023) should stay in B and return "1023.00 B"'
+		).toBe('1023.00 B');
 	});
 
 	it.each([
@@ -96,7 +113,9 @@ describe('humanFileSize function', () => {
 		['GB', 4]
 	])('should return 1024.00 %s if input is 1024 ** %s - 1', (unit, pow) => {
 		const result = humanFileSize(1024 ** pow - 1, undefined);
-		expect(result).toBe(`1024.00 ${unit}`);
+		expect(result, `humanFileSize(1024 ** ${pow} - 1) should return "1024.00 ${unit}"`).toBe(
+			`1024.00 ${unit}`
+		);
 	});
 
 	it.each([
@@ -106,33 +125,41 @@ describe('humanFileSize function', () => {
 		['YB', 8]
 	])('should return %s unit if input pow is %s - 1B', (unit, pow) => {
 		const result = humanFileSize(1024 ** pow - 1, undefined);
-		expect(result).toBe(`1.00 ${unit}`);
+		expect(result, `humanFileSize(1024 ** ${pow} - 1) should return "1.00 ${unit}"`).toBe(
+			`1.00 ${unit}`
+		);
 	});
 
 	it('should throw an error if inputSize is equal or greater than 1024 YB', () => {
-		expect(() => humanFileSize(1024 ** 9, undefined)).toThrow('Unsupported inputSize');
+		expect(
+			() => humanFileSize(1024 ** 9, undefined),
+			'humanFileSize should throw "Unsupported inputSize" for sizes >= 1024 YB'
+		).toThrow('Unsupported inputSize');
 	});
 });
 
 describe('asArray', () => {
 	it('should return an array when the value is an array', () => {
 		const result = asArray(['value1', 'value2']);
-		expect(result).toEqual(['value1', 'value2']);
+		expect(result, 'asArray should return the array unchanged when given an array').toEqual([
+			'value1',
+			'value2'
+		]);
 	});
 
 	it('should return an array when the value is a single value', () => {
 		const result = asArray('singleValue');
-		expect(result).toEqual(['singleValue']);
+		expect(result, 'asArray should wrap a single value in an array').toEqual(['singleValue']);
 	});
 
 	it('should return an empty array when the value is undefined', () => {
 		const result = asArray(undefined);
-		expect(result).toEqual([]);
+		expect(result, 'asArray should return an empty array when given undefined').toEqual([]);
 	});
 
 	it('should return array of numbers', () => {
 		const result = asArray(123);
-		expect(result).toEqual([123]);
+		expect(result, 'asArray should wrap a single number in an array').toEqual([123]);
 	});
 });
 
@@ -154,7 +181,10 @@ describe('getAvailableEmailAddresses', () => {
 
 	it('should return the primary account email by default', () => {
 		const result = getAvailableEmailAddresses(baseAccount, baseSettings);
-		expect(result).toEqual(['default@email.com']);
+		expect(
+			result,
+			'getAvailableEmailAddresses should return only the primary account email by default'
+		).toEqual(['default@email.com']);
 	});
 
 	it('should include shared emails when rights and types match', () => {
@@ -181,9 +211,16 @@ describe('getAvailableEmailAddresses', () => {
 		};
 
 		const result = getAvailableEmailAddresses(account, baseSettings);
-		expect(result).toContain('shared1@domain.com');
-		expect(result).toContain('dl1@domain.com');
-		expect(result).toContain('shared2@domain.com');
+		expect(
+			result,
+			'the sendAs account email should be included when rights and types match'
+		).toContain('shared1@domain.com');
+		expect(result, 'the sendAs distribution list email should be included').toContain(
+			'dl1@domain.com'
+		);
+		expect(result, 'the sendOnBehalfOfDistList account email should be included').toContain(
+			'shared2@domain.com'
+		);
 	});
 
 	it('should ignore shared emails if the right is not authorized', () => {
@@ -204,7 +241,10 @@ describe('getAvailableEmailAddresses', () => {
 		};
 
 		const result = getAvailableEmailAddresses(account, baseSettings);
-		expect(result).not.toContain('ignored@domain.com');
+		expect(
+			result,
+			'emails from a non-authorized right (viewFreeBusy) should be excluded'
+		).not.toContain('ignored@domain.com');
 	});
 
 	it('should include aliases and allow-from addresses from settings', () => {
@@ -217,9 +257,13 @@ describe('getAvailableEmailAddresses', () => {
 		};
 
 		const result = getAvailableEmailAddresses(baseAccount, settings);
-		expect(result).toContain('alias@domain.com');
-		expect(result).toContain('allowed@domain.com');
-		expect(result).toContain('extra@domain.com');
+		expect(result, 'the zimbraMailAlias address should be included').toContain('alias@domain.com');
+		expect(result, 'the first zimbraAllowFromAddress should be included').toContain(
+			'allowed@domain.com'
+		);
+		expect(result, 'the second zimbraAllowFromAddress should be included').toContain(
+			'extra@domain.com'
+		);
 	});
 
 	it('should return a unique list (remove duplicates)', () => {
@@ -248,7 +292,9 @@ describe('getAvailableEmailAddresses', () => {
 
 		const result = getAvailableEmailAddresses(account, settings);
 
-		expect(result).toEqual(['default@email.com']);
-		expect(result).toHaveLength(1);
+		expect(result, 'duplicate email addresses should be removed from the result').toEqual([
+			'default@email.com'
+		]);
+		expect(result, 'the deduplicated result should contain exactly one address').toHaveLength(1);
 	});
 });

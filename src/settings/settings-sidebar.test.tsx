@@ -34,8 +34,14 @@ describe('Setting sidebar', () => {
 		};
 		useAppStore.getState().addSettingsView(settingsGeneralView);
 		setup(<SettingsSidebar expanded />);
-		expect(screen.getByText('General Settings')).toBeVisible();
-		expect(screen.getByTestId(`icon: ${ICONS.settings}`)).toBeVisible();
+		expect(
+			screen.getByText('General Settings'),
+			'the view label should be visible when the sidebar is expanded'
+		).toBeVisible();
+		expect(
+			screen.getByTestId(`icon: ${ICONS.settings}`),
+			'the view icon should be visible when the sidebar is expanded'
+		).toBeVisible();
 	});
 	it('should render only icon when expanded is false', () => {
 		const settingsGeneralView: SettingsView = {
@@ -49,8 +55,14 @@ describe('Setting sidebar', () => {
 		};
 		useAppStore.getState().addSettingsView(settingsGeneralView);
 		setup(<SettingsSidebar expanded={false} />);
-		expect(screen.queryByText('General Settings')).not.toBeInTheDocument();
-		expect(screen.getByTestId(`icon: ${ICONS.settings}`)).toBeVisible();
+		expect(
+			screen.queryByText('General Settings'),
+			'the view label should not be rendered when the sidebar is collapsed'
+		).not.toBeInTheDocument();
+		expect(
+			screen.getByTestId(`icon: ${ICONS.settings}`),
+			'the view icon should still be visible when the sidebar is collapsed'
+		).toBeVisible();
 	});
 	it('should render sub sections', async () => {
 		const settingsGeneralView: SettingsView = {
@@ -76,8 +88,14 @@ describe('Setting sidebar', () => {
 		const { user } = setup(<SettingsSidebar expanded />);
 		const icon = screen.getByTestId(`icon: ${ICONS.expandAccordion}`);
 		await user.click(icon);
-		expect(screen.getByText('Section 1')).toBeVisible();
-		expect(screen.getByText('Section 2')).toBeVisible();
+		expect(
+			screen.getByText('Section 1'),
+			'the first sub section should be visible after expanding the accordion'
+		).toBeVisible();
+		expect(
+			screen.getByText('Section 2'),
+			'the second sub section should be visible after expanding the accordion'
+		).toBeVisible();
 	});
 	it('should call navigate when accordion is clicked', async () => {
 		const navigate = vi.fn();
@@ -95,7 +113,10 @@ describe('Setting sidebar', () => {
 		const { user } = setup(<SettingsSidebar expanded />);
 		const accordionItem = screen.getByText('General Settings');
 		await user.click(accordionItem);
-		expect(navigate).toHaveBeenCalledWith('general');
+		expect(
+			navigate,
+			'clicking the accordion item should navigate to the view route'
+		).toHaveBeenCalledWith('general');
 	});
 	it('should call navigate when sub section is clicked', async () => {
 		const navigate = vi.fn();
@@ -122,7 +143,10 @@ describe('Setting sidebar', () => {
 		const subSection = screen.getByText('Section 1');
 		subSection.style.pointerEvents = 'auto';
 		await user.click(subSection);
-		expect(navigate).toHaveBeenCalledWith('general?section=section1', { replace: true });
+		expect(
+			navigate,
+			'clicking a sub section should navigate to the view route with the section query param'
+		).toHaveBeenCalledWith('general?section=section1', { replace: true });
 	});
 	it('should call navigate when collapsed item is clicked', async () => {
 		const navigate = vi.fn();
@@ -140,6 +164,9 @@ describe('Setting sidebar', () => {
 		const { user } = setup(<SettingsSidebar expanded={false} />);
 		const icon = screen.getByTestId(`icon: ${ICONS.settings}`);
 		await user.click(icon);
-		expect(navigate).toHaveBeenCalledWith('general');
+		expect(
+			navigate,
+			'clicking the collapsed item icon should navigate to the view route'
+		).toHaveBeenCalledWith('general');
 	});
 });

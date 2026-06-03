@@ -48,7 +48,13 @@ describe('Get components', () => {
 			)
 		);
 		await getComponents();
-		expect(useAppStore.getState().apps[carbonioModule.name]).toEqual(carbonioModule);
-		expect(useAppStore.getState().shell).toEqual(shellModule);
+		expect(
+			useAppStore.getState().apps[carbonioModule.name],
+			'the carbonio module should be stored in the app store apps after getComponents'
+		).toEqual(carbonioModule);
+		expect(
+			useAppStore.getState().shell,
+			'the shell module should be stored as the shell in the app store after getComponents'
+		).toEqual(shellModule);
 	});
 });

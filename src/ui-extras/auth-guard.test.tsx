@@ -18,7 +18,10 @@ describe('AuthGuard', () => {
 			</AuthGuard>
 		);
 
-		expect(screen.getByText('Authenticated')).toBeInTheDocument();
+		expect(
+			screen.getByText('Authenticated'),
+			'the child component should be rendered when the user is authenticated'
+		).toBeInTheDocument();
 	});
 
 	it('should not render the child component when the user is authenticated', () => {
@@ -31,6 +34,9 @@ describe('AuthGuard', () => {
 			</AuthGuard>
 		);
 
-		expect(screen.queryByText('Authenticated')).not.toBeInTheDocument();
+		expect(
+			screen.queryByText('Authenticated'),
+			'the child component should not be rendered when the user is not authenticated'
+		).not.toBeInTheDocument();
 	});
 });

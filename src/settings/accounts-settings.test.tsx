@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 import { faker } from '@faker-js/faker';
-import { act, screen, waitFor, within } from '@testing-library/react';
-import { head, shuffle, tail } from 'lodash';
+import { screen, waitFor, within } from '@testing-library/react';
+import { shuffle } from 'lodash';
 import { http, HttpResponse } from 'msw';
 
 import { AccountsSettings } from './accounts-settings';
@@ -14,6 +14,13 @@ import server, { waitForRequest } from '../mocks/server';
 import { createAccount, createIdentity, setupAccountStore } from '../tests/account-utils';
 import { controlConsoleError, setup } from '../tests/utils';
 import type { BatchRequest, CreateIdentityResponse } from '../types/network';
+
+// Returns the order of the rendered account list using each item's data-testid
+// (`account-list-item-${zimbraPrefIdentityId}`), so assertions are decoupled
+// from the rendered copy and DOM structure.
+function getAccountListOrder(): Array<string> {
+	return screen.getAllByRole('listitem').map((item) => item.getAttribute('data-testid') ?? '');
+}
 
 describe('Account setting', () => {
 	const defaultFirstName = faker.person.firstName();
@@ -106,51 +113,69 @@ describe('Account setting', () => {
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await waitFor(() =>
-			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
-				persona1FullName
-			)
+			expect(
+				screen.getByRole('textbox', { name: /persona name/i }),
+				'the first added persona should get the default name'
+			).toHaveDisplayValue(persona1FullName)
 		);
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await waitFor(() =>
-			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
-				persona2FullName
-			)
+			expect(
+				screen.getByRole('textbox', { name: /persona name/i }),
+				'the second added persona should get the next default name'
+			).toHaveDisplayValue(persona2FullName)
 		);
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await waitFor(() =>
-			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
-				persona3FullName
-			)
+			expect(
+				screen.getByRole('textbox', { name: /persona name/i }),
+				'the third added persona should get the next default name'
+			).toHaveDisplayValue(persona3FullName)
 		);
 
-		const snapShot = `
-		[
-		  "defaultFullName(default@email.com)Primary",
-		  "New Persona 1(default@email.com)Persona",
-		  "New Persona 2(default@email.com)Persona",
-		  "New Persona 3(default@email.com)Persona",
-		]
-	`;
-		expect(screen.getAllByRole('listitem').map((item) => item.textContent)).toMatchInlineSnapshot(
-			snapShot
-		);
+		// Before save: new personas hold synthetic incremental ids ('0', '1', '2').
+		expect(
+			getAccountListOrder(),
+			'before save the new personas should keep their synthetic incremental ids in order'
+		).toEqual([
+			`account-list-item-${defaultId}`,
+			'account-list-item-0',
+			'account-list-item-1',
+			'account-list-item-2'
+		]);
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
 		const { Body: requestBody } = await pendingBatchRequest.then(
 			(req) => req.json() as Promise<{ Body: { BatchRequest: BatchRequest } }>
 		);
-		expect(requestBody.BatchRequest.CreateIdentityRequest).toHaveLength(3);
-		expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
-		expect(requestBody.BatchRequest.ModifyIdentityRequest).toBeUndefined();
+		expect(
+			requestBody.BatchRequest.CreateIdentityRequest,
+			'the batch request should create the three new personas'
+		).toHaveLength(3);
+		expect(
+			requestBody.BatchRequest.DeleteIdentityRequest,
+			'the batch request should not delete any identity'
+		).toBeUndefined();
+		expect(
+			requestBody.BatchRequest.ModifyIdentityRequest,
+			'the batch request should not modify any identity'
+		).toBeUndefined();
 
 		const successSnackbar = await screen.findByText('Edits saved correctly');
-		expect(successSnackbar).toBeVisible();
-		expect(screen.getAllByRole('listitem').map((item) => item.textContent)).toMatchInlineSnapshot(
-			snapShot
-		);
+		expect(successSnackbar, 'the success snackbar should be shown after saving').toBeVisible();
+		// After save the server-returned ids replace the synthetic ones, preserving order.
+		expect(
+			getAccountListOrder(),
+			'after save the server-returned ids should replace the synthetic ones preserving order'
+		).toEqual([
+			`account-list-item-${defaultId}`,
+			`account-list-item-${persona1Id}`,
+			`account-list-item-${persona2Id}`,
+			`account-list-item-${persona3Id}`
+		]);
 	});
 
 	test('When discarding the order should be the same of the initial one', async () => {
@@ -175,33 +200,27 @@ describe('Account setting', () => {
 			])
 		});
 
-		const snapShot = `
-		[
-		  "defaultFullName(default@email.com)Primary",
-		  "New Persona 1(persona1@email.com)Persona",
-		]
-		`;
+		const expectedOrder = [`account-list-item-${defaultId}`, `account-list-item-${persona1Id}`];
 		const { user } = setup(<AccountsSettings />);
 
-		const renderedItems = screen.getAllByRole('listitem');
-		expect(renderedItems.length).toEqual(2);
-		expect(renderedItems.map((item) => item.textContent)).toMatchInlineSnapshot(snapShot);
+		expect(getAccountListOrder(), 'the initial list order should match the expected one').toEqual(
+			expectedOrder
+		);
 
 		await user.click(screen.getByText(persona1FullName));
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		const confirmButton = screen.getByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
 
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
 
-		expect(screen.getByText(persona1FullName)).toBeVisible();
-		expect(screen.getAllByRole('listitem').map((item) => item.textContent)).toMatchInlineSnapshot(
-			snapShot
-		);
+		expect(
+			screen.getByText(persona1FullName),
+			'the deleted persona should reappear after discarding changes'
+		).toBeVisible();
+		expect(
+			getAccountListOrder(),
+			'discarding changes should restore the initial list order'
+		).toEqual(expectedOrder);
 	});
 
 	test('Check that the default is always the first item', async () => {
@@ -248,11 +267,15 @@ describe('Account setting', () => {
 
 		setup(<AccountsSettings />);
 
-		const renderedItems = screen.getAllByRole('listitem');
-		expect(renderedItems.length).toEqual(4);
-		expect(head(renderedItems.map((item) => item.textContent))).toMatchInlineSnapshot(
-			`"defaultFullName(default@email.com)Primary"`
+		const order = getAccountListOrder();
+		expect(order, 'the list should contain all four identities').toHaveLength(4);
+		expect(order[0], 'the default identity should always be the first item').toBe(
+			`account-list-item-${defaultId}`
 		);
+		expect(
+			within(screen.getByTestId(`account-list-item-${defaultId}`)).getByText(/primary/i),
+			'the default identity should be marked as primary'
+		).toBeVisible();
 	});
 
 	test('When adding an item it is always placed as last', async () => {
@@ -272,13 +295,17 @@ describe('Account setting', () => {
 		const { user } = setup(<AccountsSettings />);
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 
-		const renderedItems = screen.getAllByRole('listitem');
-		expect(renderedItems.length).toEqual(2);
-		expect(tail(renderedItems.map((item) => item.textContent))).toMatchInlineSnapshot(`
-		[
-		  "New Persona 1(default@email.com)Persona",
-		]
-	`);
+		const order = getAccountListOrder();
+		expect(order, 'the list should contain the default and the newly added persona').toHaveLength(
+			2
+		);
+		expect(order[order.length - 1], 'the added persona should be placed as the last item').toBe(
+			'account-list-item-0'
+		);
+		expect(
+			within(screen.getByTestId('account-list-item-0')).getByText(persona1FullName),
+			'the added persona should show the default name'
+		).toBeVisible();
 	});
 
 	test('Show primary identity inside the list', async () => {
@@ -297,9 +324,18 @@ describe('Account setting', () => {
 
 		setup(<AccountsSettings />);
 
-		expect(screen.getByText(defaultFullName)).toBeVisible();
-		expect(screen.getByText(`(${defaultEmail})`)).toBeVisible();
-		expect(screen.getByText('Primary')).toBeVisible();
+		expect(
+			screen.getByText(defaultFullName),
+			'the primary identity name should be visible in the list'
+		).toBeVisible();
+		expect(
+			screen.getByText(`(${defaultEmail})`),
+			'the primary identity email should be visible in the list'
+		).toBeVisible();
+		expect(
+			screen.getByText('Primary'),
+			'the primary identity badge should be visible'
+		).toBeVisible();
 	});
 
 	test('Should show the new identity in the list when clicking on add', async () => {
@@ -319,7 +355,10 @@ describe('Account setting', () => {
 
 		const { user } = setup(<AccountsSettings />);
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		expect(screen.getByText(persona1FullName)).toBeVisible();
+		expect(
+			screen.getByText(persona1FullName),
+			'the new persona should appear in the list after clicking add'
+		).toBeVisible();
 	});
 
 	test('Should increase the number of the persona when there are already identities with the default name', async () => {
@@ -346,10 +385,16 @@ describe('Account setting', () => {
 		});
 
 		const { user } = setup(<AccountsSettings />);
-		expect(screen.getByText(persona1FullName)).toBeVisible();
+		expect(
+			screen.getByText(persona1FullName),
+			'the existing persona with the default name should be visible'
+		).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		expect(screen.getByText(persona2FullName)).toBeVisible();
+		expect(
+			screen.getByText(persona2FullName),
+			'the new persona name counter should be incremented past the existing default name'
+		).toBeVisible();
 	});
 
 	test('When existing persona identityName is updated but not yet saved, the old (but current) identityName should not be used as default one for a new persona', async () => {
@@ -378,28 +423,36 @@ describe('Account setting', () => {
 		const { user } = setup(<AccountsSettings />);
 
 		const persona1Row = screen.getByText(persona1FullName);
-		expect(persona1Row).toBeVisible();
+		expect(persona1Row, 'the existing persona row should be visible').toBeVisible();
 		await user.click(persona1Row);
 
 		const accountNameInput = screen.getByRole('textbox', { name: /persona name/i });
-		expect(accountNameInput).toHaveDisplayValue(persona1FullName);
+		expect(
+			accountNameInput,
+			'the name input should show the selected persona name'
+		).toHaveDisplayValue(persona1FullName);
 
 		expect(
-			within(screen.getByTestId(`account-list-item-${persona1Id}`)).getByText(persona1FullName)
+			within(screen.getByTestId(`account-list-item-${persona1Id}`)).getByText(persona1FullName),
+			'the list item should still show the original persona name'
 		).toBeVisible();
 
 		const newName = 'Updated Name';
 		await user.clear(accountNameInput);
-		await user.type(accountNameInput, newName);
+		await user.paste(newName);
 
-		expect(accountNameInput).toHaveDisplayValue(newName);
+		expect(accountNameInput, 'the name input should reflect the typed new name').toHaveDisplayValue(
+			newName
+		);
 		expect(
-			within(screen.getByTestId(`account-list-item-${persona1Id}`)).getByText(newName)
+			within(screen.getByTestId(`account-list-item-${persona1Id}`)).getByText(newName),
+			'the list item should update to the new name even before saving'
 		).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		expect(
-			within(screen.getByTestId(`account-list-item-0`)).getByText(persona2FullName)
+			within(screen.getByTestId(`account-list-item-0`)).getByText(persona2FullName),
+			'the new persona should use the next default name, not the unsaved old name'
 		).toBeVisible();
 	});
 
@@ -423,29 +476,45 @@ describe('Account setting', () => {
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 
 		const persona1Row = screen.getByText(persona1FullName);
-		expect(persona1Row).toBeVisible();
+		expect(persona1Row, 'the newly created persona row should be visible').toBeVisible();
 		await user.click(persona1Row);
 
 		const accountNameInput = screen.getByRole('textbox', { name: /persona name/i });
-		expect(accountNameInput).toHaveDisplayValue(persona1FullName);
+		expect(
+			accountNameInput,
+			'the name input should show the proposed persona name'
+		).toHaveDisplayValue(persona1FullName);
 
 		expect(
-			within(screen.getByTestId(`account-list-item-0`)).getByText(persona1FullName)
+			within(screen.getByTestId(`account-list-item-0`)).getByText(persona1FullName),
+			'the list item should show the proposed persona name'
 		).toBeVisible();
 
 		const newName = 'Updated Name';
 		await user.clear(accountNameInput);
-		await user.type(accountNameInput, newName);
+		await user.paste(newName);
 
-		expect(accountNameInput).toHaveDisplayValue(newName);
-		expect(within(screen.getByTestId(`account-list-item-0`)).getByText(newName)).toBeVisible();
+		expect(accountNameInput, 'the name input should reflect the typed new name').toHaveDisplayValue(
+			newName
+		);
+		expect(
+			within(screen.getByTestId(`account-list-item-0`)).getByText(newName),
+			'the list item should update to the new name even before saving'
+		).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		expect(screen.getByText(persona1FullName)).toBeVisible();
 		expect(
-			within(screen.getByTestId(`account-list-item-1`)).getByText(persona1FullName)
+			screen.getByText(persona1FullName),
+			'the next new persona should keep the same default proposed name'
 		).toBeVisible();
-		expect(screen.queryByText(persona2FullName)).not.toBeInTheDocument();
+		expect(
+			within(screen.getByTestId(`account-list-item-1`)).getByText(persona1FullName),
+			'the second new persona should reuse the default proposed name'
+		).toBeVisible();
+		expect(
+			screen.queryByText(persona2FullName),
+			'the counter should not increment because the renamed persona no longer uses the default name'
+		).not.toBeInTheDocument();
 	});
 
 	test('When existing persona is deleted but not yet saved, the old (but current) identityName should not be used as default one for a new persona', async () => {
@@ -473,21 +542,17 @@ describe('Account setting', () => {
 		const { user } = setup(<AccountsSettings />);
 
 		const persona1Row = screen.getByText(persona1FullName);
-		expect(persona1Row).toBeVisible();
+		expect(persona1Row, 'the existing persona row should be visible').toBeVisible();
 		await user.click(persona1Row);
 
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
-		expect(persona1Row).not.toBeInTheDocument();
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
+		expect(persona1Row, 'the persona row should be removed after deletion').not.toBeInTheDocument();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		expect(
-			within(screen.getByTestId(`account-list-item-0`)).getByText(persona2FullName)
+			within(screen.getByTestId(`account-list-item-0`)).getByText(persona2FullName),
+			'the new persona should use the incremented default name, ignoring the deleted unsaved persona name'
 		).toBeVisible();
 	});
 
@@ -511,24 +576,26 @@ describe('Account setting', () => {
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 
 		const persona1Row = screen.getByText(persona1FullName);
-		expect(persona1Row).toBeVisible();
+		expect(persona1Row, 'the newly created persona row should be visible').toBeVisible();
 		await user.click(persona1Row);
 
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
-		expect(persona1Row).not.toBeInTheDocument();
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
+		expect(persona1Row, 'the persona row should be removed after deletion').not.toBeInTheDocument();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		expect(screen.getByText(persona1FullName)).toBeVisible();
 		expect(
-			within(screen.getByTestId(`account-list-item-1`)).getByText(persona1FullName)
+			screen.getByText(persona1FullName),
+			'the next new persona should reuse the same default proposed name after the deletion'
 		).toBeVisible();
-		expect(screen.queryByText(persona2FullName)).not.toBeInTheDocument();
+		expect(
+			within(screen.getByTestId(`account-list-item-1`)).getByText(persona1FullName),
+			'the second new persona should use the default proposed name'
+		).toBeVisible();
+		expect(
+			screen.queryByText(persona2FullName),
+			'the counter should not increment because the deleted persona freed the default name'
+		).not.toBeInTheDocument();
 	});
 
 	test('Should not increase the counter if the identities have a name different from the default', async () => {
@@ -554,10 +621,16 @@ describe('Account setting', () => {
 			])
 		});
 		const { user } = setup(<AccountsSettings />);
-		expect(screen.getByText(persona1FullName)).toBeVisible();
+		expect(
+			screen.getByText(persona1FullName),
+			'the existing custom-named persona should be visible'
+		).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		expect(screen.getByText(persona1FullName)).toBeVisible();
+		expect(
+			screen.getByText(persona1FullName),
+			'the counter should stay at 1 because no identity uses the default name'
+		).toBeVisible();
 	});
 
 	test('Should remove the identity from the list on delete action', async () => {
@@ -585,16 +658,14 @@ describe('Account setting', () => {
 
 		const { user } = setup(<AccountsSettings />);
 		const persona1Row = screen.getByText(persona1FullName);
-		expect(persona1Row).toBeVisible();
+		expect(persona1Row, 'the persona row should be visible before deletion').toBeVisible();
 		await user.click(persona1Row);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
-		expect(persona1Row).not.toBeInTheDocument();
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
+		expect(
+			persona1Row,
+			'the persona row should be removed from the list after the delete action'
+		).not.toBeInTheDocument();
 	});
 
 	test('Should create only identities which have not been removed from the unsaved changes', async () => {
@@ -644,60 +715,70 @@ describe('Account setting', () => {
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await waitFor(() =>
-			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
-				persona1FullName
-			)
+			expect(
+				screen.getByRole('textbox', { name: /persona name/i }),
+				'the first added persona should get the default name'
+			).toHaveDisplayValue(persona1FullName)
 		);
 
-		expect(screen.getByText(persona1FullName)).toBeVisible();
-
-		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		await waitFor(() =>
-			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
-				persona2FullName
-			)
-		);
-		expect(screen.getByText(persona2FullName)).toBeVisible();
+		expect(
+			screen.getByText(persona1FullName),
+			'the first added persona should be visible'
+		).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await waitFor(() =>
-			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
-				persona3FullName
-			)
+			expect(
+				screen.getByRole('textbox', { name: /persona name/i }),
+				'the second added persona should get the next default name'
+			).toHaveDisplayValue(persona2FullName)
 		);
-		expect(screen.getByText(persona3FullName)).toBeVisible();
+		expect(
+			screen.getByText(persona2FullName),
+			'the second added persona should be visible'
+		).toBeVisible();
+
+		await user.click(screen.getByRole('button', { name: /add persona/i }));
+		await waitFor(() =>
+			expect(
+				screen.getByRole('textbox', { name: /persona name/i }),
+				'the third added persona should get the next default name'
+			).toHaveDisplayValue(persona3FullName)
+		);
+		expect(
+			screen.getByText(persona3FullName),
+			'the third added persona should be visible'
+		).toBeVisible();
 
 		await user.click(screen.getByText(persona1FullName));
 		await waitFor(() =>
-			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
-				persona1FullName
-			)
+			expect(
+				screen.getByRole('textbox', { name: /persona name/i }),
+				'selecting the first persona should load its name in the input'
+			).toHaveDisplayValue(persona1FullName)
 		);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		let confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
 		await screen.findByText(/primary account settings/i);
-		expect(screen.queryByText(persona1FullName)).not.toBeInTheDocument();
+		expect(
+			screen.queryByText(persona1FullName),
+			'the first persona should be removed from the unsaved list'
+		).not.toBeInTheDocument();
 
 		await user.click(screen.getByText(persona2FullName));
 		await waitFor(() =>
-			expect(screen.getByRole('textbox', { name: /persona name/i })).toHaveDisplayValue(
-				persona2FullName
-			)
+			expect(
+				screen.getByRole('textbox', { name: /persona name/i }),
+				'selecting the second persona should load its name in the input'
+			).toHaveDisplayValue(persona2FullName)
 		);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
 		await screen.findByText(/primary account settings/i);
-		expect(screen.queryByText(persona2FullName)).not.toBeInTheDocument();
+		expect(
+			screen.queryByText(persona2FullName),
+			'the second persona should be removed from the unsaved list'
+		).not.toBeInTheDocument();
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
@@ -705,12 +786,21 @@ describe('Account setting', () => {
 			(req) => req.json() as Promise<{ Body: { BatchRequest: BatchRequest } }>
 		);
 
-		expect(requestBody.BatchRequest.CreateIdentityRequest).toHaveLength(1);
-		expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
-		expect(requestBody.BatchRequest.ModifyIdentityRequest).toBeUndefined();
+		expect(
+			requestBody.BatchRequest.CreateIdentityRequest,
+			'only the one persona not removed before saving should be created'
+		).toHaveLength(1);
+		expect(
+			requestBody.BatchRequest.DeleteIdentityRequest,
+			'no delete request should be sent for personas that were never saved'
+		).toBeUndefined();
+		expect(
+			requestBody.BatchRequest.ModifyIdentityRequest,
+			'no modify request should be sent'
+		).toBeUndefined();
 
 		const successSnackbar = await screen.findByText('Edits saved correctly');
-		expect(successSnackbar).toBeVisible();
+		expect(successSnackbar, 'the success snackbar should be shown after saving').toBeVisible();
 	});
 
 	test('Should remove from the list added identities not saved on discard changes', async () => {
@@ -731,10 +821,13 @@ describe('Account setting', () => {
 		const { user } = setup(<AccountsSettings />);
 
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		expect(screen.getByText(persona1FullName)).toBeVisible();
+		expect(screen.getByText(persona1FullName), 'the added persona should be visible').toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
-		expect(screen.queryByText(persona1FullName)).not.toBeInTheDocument();
+		expect(
+			screen.queryByText(persona1FullName),
+			'discarding changes should remove the unsaved added persona'
+		).not.toBeInTheDocument();
 	});
 
 	test('Should add in the list removed identities not saved on discard changes', async () => {
@@ -762,21 +855,25 @@ describe('Account setting', () => {
 
 		const { user } = setup(<AccountsSettings />);
 
-		expect(screen.getByText(persona1FullName)).toBeVisible();
+		expect(
+			screen.getByText(persona1FullName),
+			'the existing persona should be visible initially'
+		).toBeVisible();
 
 		await user.click(screen.getByText(persona1FullName));
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		const confirmButton = screen.getByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
-		expect(screen.queryByText(persona1FullName)).not.toBeInTheDocument();
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
+		expect(
+			screen.queryByText(persona1FullName),
+			'the persona should be removed from the unsaved list after deletion'
+		).not.toBeInTheDocument();
 
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
 
-		expect(screen.getByText(persona1FullName)).toBeVisible();
+		expect(
+			screen.getByText(persona1FullName),
+			'discarding changes should restore the unsaved deleted persona'
+		).toBeVisible();
 	});
 
 	test('Should update name of the identity in the list if the user change it from the input(default case)', async () => {
@@ -796,19 +893,27 @@ describe('Account setting', () => {
 		const { user } = setup(<AccountsSettings />);
 
 		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
-		expect(accountNameInput).toHaveDisplayValue(defaultFullName);
+		expect(
+			accountNameInput,
+			'the account name input should show the default identity name'
+		).toHaveDisplayValue(defaultFullName);
 
 		expect(
-			within(screen.getByTestId(`account-list-item-${defaultId}`)).getByText(defaultFullName)
+			within(screen.getByTestId(`account-list-item-${defaultId}`)).getByText(defaultFullName),
+			'the list item should initially show the default identity name'
 		).toBeVisible();
 
 		const newName = 'Updated Name';
 		await user.clear(accountNameInput);
-		await user.type(accountNameInput, newName);
+		await user.paste(newName);
 
-		expect(accountNameInput).toHaveDisplayValue(newName);
 		expect(
-			within(screen.getByTestId(`account-list-item-${defaultId}`)).getByText(newName)
+			accountNameInput,
+			'the account name input should reflect the typed new name'
+		).toHaveDisplayValue(newName);
+		expect(
+			within(screen.getByTestId(`account-list-item-${defaultId}`)).getByText(newName),
+			'the list item should update to the new name as the user types'
 		).toBeVisible();
 	});
 
@@ -847,19 +952,28 @@ describe('Account setting', () => {
 
 		const newName = 'Updated Name';
 		await user.clear(accountNameInput);
-		await user.type(accountNameInput, newName);
+		await user.paste(newName);
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
 		const { Body: requestBody } = await pendingBatchRequest.then(
 			(req) => req.json() as Promise<{ Body: { BatchRequest: BatchRequest } }>
 		);
-		expect(requestBody.BatchRequest.CreateIdentityRequest).toBeUndefined();
-		expect(requestBody.BatchRequest.DeleteIdentityRequest).toBeUndefined();
-		expect(requestBody.BatchRequest.ModifyIdentityRequest).toHaveLength(1);
+		expect(
+			requestBody.BatchRequest.CreateIdentityRequest,
+			'modifying an identity should not create any identity'
+		).toBeUndefined();
+		expect(
+			requestBody.BatchRequest.DeleteIdentityRequest,
+			'modifying an identity should not delete any identity'
+		).toBeUndefined();
+		expect(
+			requestBody.BatchRequest.ModifyIdentityRequest,
+			'modifying an identity should populate a single ModifyIdentityRequest'
+		).toHaveLength(1);
 
 		const successSnackbar = await screen.findByText('Edits saved correctly');
-		expect(successSnackbar).toBeVisible();
+		expect(successSnackbar, 'the success snackbar should be shown after saving').toBeVisible();
 	});
 
 	test('When modify an identity, the new value must be shown after save', async () => {
@@ -899,18 +1013,18 @@ describe('Account setting', () => {
 
 		const newName = 'Updated Name';
 		await user.clear(accountNameInput);
-		await user.type(accountNameInput, newName);
+		await user.paste(newName);
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
 		await pendingBatchRequest;
-		await act(async () => {
-			await vi.advanceTimersToNextTimerAsync();
-		});
 		const successSnackbar = await screen.findByText('Edits saved correctly');
-		expect(successSnackbar).toBeVisible();
+		expect(successSnackbar, 'the success snackbar should be shown after saving').toBeVisible();
 
-		expect(accountNameInput).toHaveDisplayValue(newName);
+		expect(
+			accountNameInput,
+			'the account name input should keep showing the new value after saving'
+		).toHaveDisplayValue(newName);
 	});
 
 	test('When delete an identity, it must not be present after save', async () => {
@@ -955,26 +1069,21 @@ describe('Account setting', () => {
 
 		const { user } = setup(<AccountsSettings />);
 		const persona1Row = screen.getByText(persona1FullName);
-		expect(persona1Row).toBeVisible();
+		expect(persona1Row, 'the persona row should be visible before deletion').toBeVisible();
 		await user.click(persona1Row);
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		const confirmButton = await screen.findByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
 
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
 		await pendingBatchRequest;
-		await act(async () => {
-			await vi.advanceTimersToNextTimerAsync();
-		});
 		const successSnackbar = await screen.findByText('Edits saved correctly');
-		expect(successSnackbar).toBeVisible();
+		expect(successSnackbar, 'the success snackbar should be shown after saving').toBeVisible();
 
-		expect(screen.queryByText(persona1FullName)).not.toBeInTheDocument();
+		expect(
+			screen.queryByText(persona1FullName),
+			'the deleted persona should no longer be present after saving'
+		).not.toBeInTheDocument();
 	});
 
 	test('Should reset the updated identity name on discard changes(default case)', async () => {
@@ -994,27 +1103,39 @@ describe('Account setting', () => {
 		const { user } = setup(<AccountsSettings />);
 
 		const accountNameInput = screen.getByRole('textbox', { name: /account name/i });
-		expect(accountNameInput).toHaveDisplayValue(defaultFullName);
+		expect(
+			accountNameInput,
+			'the account name input should show the default identity name'
+		).toHaveDisplayValue(defaultFullName);
 
 		expect(
-			within(screen.getByTestId(`account-list-item-${defaultId}`)).getByText(defaultFullName)
+			within(screen.getByTestId(`account-list-item-${defaultId}`)).getByText(defaultFullName),
+			'the list item should initially show the default identity name'
 		).toBeVisible();
 
 		const newName = 'Updated Name';
 		await user.clear(accountNameInput);
-		await user.type(accountNameInput, newName);
+		await user.paste(newName);
 
-		expect(accountNameInput).toHaveDisplayValue(newName);
 		expect(
-			within(screen.getByTestId(`account-list-item-${defaultId}`)).getByText(newName)
+			accountNameInput,
+			'the account name input should reflect the typed new name'
+		).toHaveDisplayValue(newName);
+		expect(
+			within(screen.getByTestId(`account-list-item-${defaultId}`)).getByText(newName),
+			'the list item should update to the new name before discarding'
 		).toBeVisible();
 
 		await user.click(screen.getByRole('button', { name: /discard changes/i }));
 
 		expect(
-			within(screen.getByTestId(`account-list-item-${defaultId}`)).getByText(defaultFullName)
+			within(screen.getByTestId(`account-list-item-${defaultId}`)).getByText(defaultFullName),
+			'discarding changes should restore the original name in the list item'
 		).toBeVisible();
-		expect(accountNameInput).toHaveDisplayValue(defaultFullName);
+		expect(
+			accountNameInput,
+			'discarding changes should restore the original name in the input'
+		).toHaveDisplayValue(defaultFullName);
 	});
 
 	test('Should not allow updating primary account email', async () => {
@@ -1034,20 +1155,38 @@ describe('Account setting', () => {
 		const { user } = setup(<AccountsSettings />);
 
 		const emailAddressInput = screen.getByRole('textbox', { name: /E-mail address/i });
-		expect(emailAddressInput).toHaveDisplayValue(defaultEmail);
+		expect(
+			emailAddressInput,
+			'the email input should show the primary account email'
+		).toHaveDisplayValue(defaultEmail);
 
 		const newMail = 'acb';
 		await user.clear(emailAddressInput);
 
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
-		expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should stay disabled after clearing the read-only email'
+		).toBeDisabled();
+		expect(
+			screen.getByRole('button', { name: /save/i }),
+			'the save button should stay disabled after clearing the read-only email'
+		).toBeDisabled();
 
-		await user.type(emailAddressInput, newMail);
+		await user.paste(newMail);
 
-		expect(screen.getByRole('button', { name: /discard changes/i })).toBeDisabled();
-		expect(screen.getByRole('button', { name: /save/i })).toBeDisabled();
+		expect(
+			screen.getByRole('button', { name: /discard changes/i }),
+			'the discard button should stay disabled after typing in the read-only email'
+		).toBeDisabled();
+		expect(
+			screen.getByRole('button', { name: /save/i }),
+			'the save button should stay disabled after typing in the read-only email'
+		).toBeDisabled();
 
-		expect(emailAddressInput).toHaveDisplayValue(defaultEmail);
+		expect(
+			emailAddressInput,
+			'the primary account email should remain unchanged'
+		).toHaveDisplayValue(defaultEmail);
 	});
 
 	it('should render the error snackbar when the user tries to create a new identity with the name already existing', async () => {
@@ -1088,14 +1227,20 @@ describe('Account setting', () => {
 
 		const { user } = setup(<AccountsSettings />);
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
-		expect(screen.getAllByRole('listitem').length).toEqual(3);
+		expect(
+			screen.getAllByRole('listitem').length,
+			'the list should contain three items after adding a persona'
+		).toEqual(3);
 		const inputElement = screen.getByRole('textbox', { name: /persona name/i });
 		await user.clear(inputElement);
-		await user.type(inputElement, persona1FullName);
+		await user.paste(persona1FullName);
 		await user.click(screen.getByRole('button', { name: /save/i }));
 		const snackbar = await screen.findByText(/something went wrong, please try again/i);
-		expect(snackbar).toBeVisible();
-		expect(screen.getAllByRole('listitem').length).toEqual(2);
+		expect(snackbar, 'an error snackbar should appear when the create request fails').toBeVisible();
+		expect(
+			screen.getAllByRole('listitem').length,
+			'the list should be restored to two items after the failed creation'
+		).toEqual(2);
 	});
 
 	it('should render the error snackbar when the user tries to modify an identity with a name already existing', async () => {
@@ -1147,15 +1292,20 @@ describe('Account setting', () => {
 		await user.click(screen.getByText(persona2FullName));
 		const inputElement = screen.getByRole('textbox', { name: /persona name/i });
 		await user.clear(inputElement);
-		await user.type(inputElement, persona1FullName);
+		await user.paste(persona1FullName);
 		expect(
-			within(screen.getByTestId(`account-list-item-${persona2Id}`)).getByText(persona1FullName)
+			within(screen.getByTestId(`account-list-item-${persona2Id}`)).getByText(persona1FullName),
+			'the list item should show the conflicting new name before saving'
 		).toBeVisible();
 		await user.click(screen.getByRole('button', { name: /save/i }));
 		const successSnackbar = await screen.findByText(/something went wrong, please try again/i);
-		expect(successSnackbar).toBeVisible();
 		expect(
-			within(screen.getByTestId(`account-list-item-${persona2Id}`)).getByText(persona2FullName)
+			successSnackbar,
+			'an error snackbar should appear when the modify request fails'
+		).toBeVisible();
+		expect(
+			within(screen.getByTestId(`account-list-item-${persona2Id}`)).getByText(persona2FullName),
+			'the persona name should be restored to its original value after the failed modification'
 		).toBeVisible();
 	});
 
@@ -1185,14 +1335,20 @@ describe('Account setting', () => {
 
 		const { user } = setup(<AccountsSettings />);
 
-		expect(screen.getByText(persona1FullName)).toBeVisible();
+		expect(
+			screen.getByText(persona1FullName),
+			'the existing persona should be visible'
+		).toBeVisible();
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await user.click(screen.getByRole('button', { name: /save/i }));
 
 		const successSnackbar = await screen.findByText(
 			/the identity could not be created because you have exceeded your identity quota/i
 		);
-		expect(successSnackbar).toBeVisible();
+		expect(
+			successSnackbar,
+			'an identity quota error snackbar should appear when exceeding zimbraIdentityMaxNumEntries'
+		).toBeVisible();
 	});
 
 	it('should render an error snackbar and restore the state to the previous one when the user tries to delete an identity and the request fails', async () => {
@@ -1234,17 +1390,18 @@ describe('Account setting', () => {
 
 		await user.click(screen.getByText(persona1FullName));
 		await user.click(screen.getByRole('button', { name: /delete/i }));
-		const confirmButton = screen.getByRole('button', { name: /delete permanently/i });
-		act(() => {
-			// run modal timers
-			vi.runOnlyPendingTimers();
-		});
-		await user.click(confirmButton);
-		expect(screen.getAllByRole('listitem').length).toEqual(1);
+		await user.click(await screen.findByRole('button', { name: /delete permanently/i }));
+		expect(
+			screen.getAllByRole('listitem').length,
+			'the list should show one item after the local deletion'
+		).toEqual(1);
 		await user.click(screen.getByRole('button', { name: /save/i }));
 		const snackbar = await screen.findByText(/something went wrong, please try again/i);
-		expect(snackbar).toBeVisible();
-		expect(screen.getAllByRole('listitem').length).toEqual(2);
+		expect(snackbar, 'an error snackbar should appear when the delete request fails').toBeVisible();
+		expect(
+			screen.getAllByRole('listitem').length,
+			'the deleted identity should be restored to the list after the failed delete'
+		).toEqual(2);
 	});
 
 	it('should render an error when the response is a RawErrorSoapResponse', async () => {
@@ -1288,6 +1445,9 @@ describe('Account setting', () => {
 		await user.click(screen.getByRole('button', { name: /add persona/i }));
 		await user.click(screen.getByRole('button', { name: /save/i }));
 		const snackbar = await screen.findByText(/something went wrong, please try again/i);
-		expect(snackbar).toBeVisible();
+		expect(
+			snackbar,
+			'an error snackbar should appear when the response is a RawErrorSoapResponse'
+		).toBeVisible();
 	});
 });

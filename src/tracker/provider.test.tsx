@@ -44,7 +44,10 @@ describe('TrackerProvider', () => {
 		type PostHogProviderProps = React.ComponentPropsWithoutRef<
 			(typeof PostHogReact)['PostHogProvider']
 		>;
-		expect(mockProvider).toHaveBeenLastCalledWith(
+		expect(
+			mockProvider,
+			'PostHogProvider should mount with the privacy-preserving config and the api key when analytics is enabled'
+		).toHaveBeenLastCalledWith(
 			expect.objectContaining<PostHogProviderProps>({
 				options: expect.objectContaining<NonNullable<PostHogProviderProps['options']>>({
 					opt_out_capturing_by_default: true,
@@ -55,7 +58,10 @@ describe('TrackerProvider', () => {
 			}),
 			expect.anything()
 		);
-		expect(screen.getByTestId('child')).toBeVisible();
+		expect(
+			screen.getByTestId('child'),
+			'children should be rendered when analytics is enabled'
+		).toBeVisible();
 	});
 
 	it.each<AccountSettingsPrefs['carbonioPrefSendAnalytics']>(['FALSE', undefined])(
@@ -68,8 +74,14 @@ describe('TrackerProvider', () => {
 					<div data-testid={'child'} />
 				</TrackerProvider>
 			);
-			expect(mockProvider).not.toHaveBeenCalled();
-			expect(screen.getByTestId('child')).toBeVisible();
+			expect(
+				mockProvider,
+				`PostHogProvider should not mount when carbonioPrefSendAnalytics is ${value}`
+			).not.toHaveBeenCalled();
+			expect(
+				screen.getByTestId('child'),
+				'children should still be rendered even when analytics is disabled'
+			).toBeVisible();
 		}
 	);
 
@@ -89,7 +101,10 @@ describe('TrackerProvider', () => {
 		};
 		options.loaded?.(posthog as unknown as PostHog);
 		await vi.advanceTimersByTimeAsync(0);
-		expect(posthog.identify).toHaveBeenCalledWith('mEAzl8Lcf4UJ+/uFXopfi6SaL55V61IdfIWCruI7O2Q=');
+		expect(
+			posthog.identify,
+			'loaded callback should identify the user via their hashed id'
+		).toHaveBeenCalledWith('mEAzl8Lcf4UJ+/uFXopfi6SaL55V61IdfIWCruI7O2Q=');
 	});
 
 	it('should opt-in PostHog via the loaded callback (overrides any persisted opt-out state)', () => {
@@ -106,7 +121,10 @@ describe('TrackerProvider', () => {
 			loaded?: (ph: PostHog) => void;
 		};
 		options.loaded?.(posthog as unknown as PostHog);
-		expect(posthog.opt_in_capturing).toHaveBeenCalled();
+		expect(
+			posthog.opt_in_capturing,
+			'loaded callback should opt-in PostHog, overriding any persisted opt-out state'
+		).toHaveBeenCalled();
 	});
 
 	it.each(['localhost', '127.0.0.1'])(
@@ -127,8 +145,14 @@ describe('TrackerProvider', () => {
 				loaded?: (ph: PostHog) => void;
 			};
 			options.loaded?.(posthog as unknown as PostHog);
-			expect(posthog.identify).not.toHaveBeenCalled();
-			expect(posthog.opt_in_capturing).not.toHaveBeenCalled();
+			expect(
+				posthog.identify,
+				`loaded callback should not identify the user when host is ${host}`
+			).not.toHaveBeenCalled();
+			expect(
+				posthog.opt_in_capturing,
+				`loaded callback should not opt-in PostHog when host is ${host}`
+			).not.toHaveBeenCalled();
 		}
 	);
 });
@@ -146,7 +170,10 @@ describe('TrackerSetup', () => {
 					<div data-testid={'child'} />
 				</TrackerProvider>
 			);
-			expect(posthog.setPersonProperties).toHaveBeenCalledWith({ is_ce: isCE });
+			expect(
+				posthog.setPersonProperties,
+				`is_ce person property should be set to ${isCE} when CE state is known`
+			).toHaveBeenCalledWith({ is_ce: isCE });
 		}
 	);
 
@@ -160,7 +187,10 @@ describe('TrackerSetup', () => {
 				<div data-testid={'child'} />
 			</TrackerProvider>
 		);
-		expect(posthog.setPersonProperties).not.toHaveBeenCalled();
+		expect(
+			posthog.setPersonProperties,
+			'is_ce person property should not be set when CE state is undefined'
+		).not.toHaveBeenCalled();
 	});
 
 	it('should NOT set is_ce nor configure surveys via mount effect if posthog is not yet loaded', () => {
@@ -173,8 +203,14 @@ describe('TrackerSetup', () => {
 				<div data-testid={'child'} />
 			</TrackerProvider>
 		);
-		expect(posthog.setPersonProperties).not.toHaveBeenCalled();
-		expect(posthog.set_config).not.toHaveBeenCalled();
+		expect(
+			posthog.setPersonProperties,
+			'setPersonProperties should not be called via mount effect when posthog is not yet loaded'
+		).not.toHaveBeenCalled();
+		expect(
+			posthog.set_config,
+			'set_config should not be called via mount effect when posthog is not yet loaded'
+		).not.toHaveBeenCalled();
 	});
 
 	it('should enable surveys when Carbonio is CE', () => {
@@ -187,7 +223,10 @@ describe('TrackerSetup', () => {
 				<div data-testid={'child'} />
 			</TrackerProvider>
 		);
-		expect(posthog.set_config).toHaveBeenCalledWith({ disable_surveys: false });
+		expect(
+			posthog.set_config,
+			'surveys should be enabled (disable_surveys false) when Carbonio is CE'
+		).toHaveBeenCalledWith({ disable_surveys: false });
 	});
 
 	it('should not call set_config when Carbonio is not CE (config already disables surveys)', () => {
@@ -201,7 +240,10 @@ describe('TrackerSetup', () => {
 				<div data-testid={'child'} />
 			</TrackerProvider>
 		);
-		expect(posthog.set_config).not.toHaveBeenCalled();
+		expect(
+			posthog.set_config,
+			'set_config should not be called when Carbonio is not CE and surveys are already disabled'
+		).not.toHaveBeenCalled();
 	});
 
 	it('should re-apply config when CE state changes', () => {
@@ -215,11 +257,17 @@ describe('TrackerSetup', () => {
 				<div data-testid={'child'} />
 			</TrackerProvider>
 		);
-		expect(posthog.set_config).not.toHaveBeenCalled();
+		expect(
+			posthog.set_config,
+			'set_config should not be called initially when surveys are already disabled and CE is false'
+		).not.toHaveBeenCalled();
 		act(() => {
 			useLoginConfigStore.setState({ isCarbonioCE: true });
 		});
-		expect(posthog.set_config).toHaveBeenCalledWith({ disable_surveys: false });
+		expect(
+			posthog.set_config,
+			'set_config should re-apply to enable surveys when CE state changes to true'
+		).toHaveBeenCalledWith({ disable_surveys: false });
 	});
 
 	it('should NOT run setup effects when carbonioPrefSendAnalytics is FALSE', () => {
@@ -232,8 +280,14 @@ describe('TrackerSetup', () => {
 				<div data-testid={'child'} />
 			</TrackerProvider>
 		);
-		expect(posthog.setPersonProperties).not.toHaveBeenCalled();
-		expect(posthog.set_config).not.toHaveBeenCalled();
+		expect(
+			posthog.setPersonProperties,
+			'setPersonProperties should not run when carbonioPrefSendAnalytics is FALSE'
+		).not.toHaveBeenCalled();
+		expect(
+			posthog.set_config,
+			'set_config should not run when carbonioPrefSendAnalytics is FALSE'
+		).not.toHaveBeenCalled();
 	});
 
 	it.each([true, false])(
@@ -253,8 +307,14 @@ describe('TrackerSetup', () => {
 				loaded?: (ph: PostHog) => void;
 			};
 			options.loaded?.(posthog as unknown as PostHog);
-			expect(posthog.setPersonProperties).toHaveBeenCalledWith({ is_ce: isCE });
-			expect(posthog.set_config).toHaveBeenCalledWith({ disable_surveys: !isCE });
+			expect(
+				posthog.setPersonProperties,
+				`loaded callback should set is_ce person property to ${isCE}`
+			).toHaveBeenCalledWith({ is_ce: isCE });
+			expect(
+				posthog.set_config,
+				`loaded callback should configure surveys with disable_surveys ${!isCE}`
+			).toHaveBeenCalledWith({ disable_surveys: !isCE });
 		}
 	);
 
@@ -273,8 +333,14 @@ describe('TrackerSetup', () => {
 			loaded?: (ph: PostHog) => void;
 		};
 		options.loaded?.(posthog as unknown as PostHog);
-		expect(posthog.setPersonProperties).not.toHaveBeenCalled();
-		expect(posthog.set_config).not.toHaveBeenCalled();
+		expect(
+			posthog.setPersonProperties,
+			'loaded callback should not set is_ce person property when CE state is undefined'
+		).not.toHaveBeenCalled();
+		expect(
+			posthog.set_config,
+			'loaded callback should not configure surveys when CE state is undefined'
+		).not.toHaveBeenCalled();
 	});
 
 	it('should opt-out PostHog when carbonioPrefSendAnalytics changes from TRUE to FALSE', () => {
@@ -285,11 +351,17 @@ describe('TrackerSetup', () => {
 				<div data-testid={'child'} />
 			</TrackerProvider>
 		);
-		expect(posthog.opt_out_capturing).not.toHaveBeenCalled();
+		expect(
+			posthog.opt_out_capturing,
+			'PostHog should not be opted out while analytics is still enabled'
+		).not.toHaveBeenCalled();
 		act(() => {
 			setSendAnalytics('FALSE');
 		});
-		expect(posthog.opt_out_capturing).toHaveBeenCalled();
+		expect(
+			posthog.opt_out_capturing,
+			'PostHog should opt out when carbonioPrefSendAnalytics changes from TRUE to FALSE'
+		).toHaveBeenCalled();
 	});
 
 	it('should NOT explicitly opt-in PostHog on first mount (relies on opt_out_capturing_by_default and loaded callback)', () => {
@@ -301,7 +373,10 @@ describe('TrackerSetup', () => {
 				<div data-testid={'child'} />
 			</TrackerProvider>
 		);
-		expect(posthog.opt_in_capturing).not.toHaveBeenCalled();
+		expect(
+			posthog.opt_in_capturing,
+			'PostHog should not be explicitly opted in on first mount when the singleton is not yet loaded'
+		).not.toHaveBeenCalled();
 	});
 
 	it('should explicitly opt-in PostHog when singleton is already loaded (toggle FALSE → TRUE in session)', () => {
@@ -313,7 +388,10 @@ describe('TrackerSetup', () => {
 				<div data-testid={'child'} />
 			</TrackerProvider>
 		);
-		expect(posthog.opt_in_capturing).toHaveBeenCalled();
+		expect(
+			posthog.opt_in_capturing,
+			'PostHog should be explicitly opted in on mount when the singleton is already loaded'
+		).toHaveBeenCalled();
 	});
 
 	it.each(['localhost', '127.0.0.1'])(
@@ -328,7 +406,10 @@ describe('TrackerSetup', () => {
 					<div data-testid={'child'} />
 				</TrackerProvider>
 			);
-			expect(posthog.opt_in_capturing).not.toHaveBeenCalled();
+			expect(
+				posthog.opt_in_capturing,
+				`PostHog should not opt in via mount effect when host is ${host}, even if the singleton is loaded`
+			).not.toHaveBeenCalled();
 		}
 	);
 });

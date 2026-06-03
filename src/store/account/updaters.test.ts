@@ -16,7 +16,10 @@ describe('updateSettings', () => {
 		setupAccountStore();
 		const prevSettings = useAccountStore.getState().settings;
 		updateSettings({});
-		expect(useAccountStore.getState().settings).toEqual(prevSettings);
+		expect(
+			useAccountStore.getState().settings,
+			'settings should remain unchanged when updateSettings is called with no mods'
+		).toEqual(prevSettings);
 	});
 
 	it('should merge the given attr and leave the existing unchanged', () => {
@@ -26,7 +29,10 @@ describe('updateSettings', () => {
 			}
 		});
 		updateSettings({ attrs: { newAttr: 'new attr value' } });
-		expect(useAccountStore.getState().settings).toEqual(
+		expect(
+			useAccountStore.getState().settings,
+			'settings attrs should merge the new attr while keeping the existing one'
+		).toEqual(
 			expect.objectContaining({
 				attrs: { existingAttr: 'existing attr value', newAttr: 'new attr value' }
 			})
@@ -48,7 +54,10 @@ describe('updateSettings', () => {
 				newProp: { app: 'new zimlet', value: 'enabled' }
 			}
 		});
-		expect(useAccountStore.getState().settings).toEqual(
+		expect(
+			useAccountStore.getState().settings,
+			'settings props should contain both the existing prop and the newly added one'
+		).toEqual(
 			expect.objectContaining({
 				props: expect.arrayContaining([
 					expect.objectContaining({ name: 'existing prop name' }),
@@ -65,7 +74,10 @@ describe('updateSettings', () => {
 			}
 		});
 		updateSettings({ prefs: { newPref: 'new pref value' } });
-		expect(useAccountStore.getState().settings).toEqual(
+		expect(
+			useAccountStore.getState().settings,
+			'settings prefs should merge the new pref while keeping the existing one'
+		).toEqual(
 			expect.objectContaining({
 				prefs: { existingPref: 'existing pref value', newPref: 'new pref value' }
 			})
@@ -78,7 +90,10 @@ describe('updateAccount', () => {
 		setupAccountStore();
 		const prevState = useAccountStore.getState().account;
 		updateAccount({});
-		expect(useAccountStore.getState().account).toEqual(prevState);
+		expect(
+			useAccountStore.getState().account,
+			'account should remain unchanged when updateAccount is called with no mods'
+		).toEqual(prevState);
 	});
 
 	it('should change the displayName of the account if the identity of the primary account is changed', () => {
@@ -104,7 +119,10 @@ describe('updateAccount', () => {
 				newIdentities: []
 			}
 		});
-		expect(useAccountStore.getState().account?.displayName).toEqual(newIdentityName);
+		expect(
+			useAccountStore.getState().account?.displayName,
+			'account displayName should reflect the modified primary identity name'
+		).toEqual(newIdentityName);
 	});
 
 	it('should update the store with a new identity', () => {
@@ -127,9 +145,10 @@ describe('updateAccount', () => {
 			}
 		});
 
-		expect(useAccountStore.getState().account?.identities.identity).toHaveLength(
-			prevState.identities.identity.length + 1
-		);
+		expect(
+			useAccountStore.getState().account?.identities.identity,
+			'account identities should grow by one after adding a new identity'
+		).toHaveLength(prevState.identities.identity.length + 1);
 	});
 
 	it('should update the store with the given signatures', () => {
@@ -157,7 +176,10 @@ describe('updateAccount', () => {
 			signatures
 		});
 
-		expect(useAccountStore.getState().account?.signatures.signature).toEqual(signatures);
+		expect(
+			useAccountStore.getState().account?.signatures.signature,
+			'account signatures should equal the signatures passed to updateAccount'
+		).toEqual(signatures);
 	});
 
 	it('updates in signatures should not change the identities in the store', () => {
@@ -185,9 +207,10 @@ describe('updateAccount', () => {
 			signatures
 		});
 
-		expect(useAccountStore.getState().account?.identities.identity).toEqual(
-			prevState.identities.identity
-		);
+		expect(
+			useAccountStore.getState().account?.identities.identity,
+			'account identities should be untouched when only signatures are updated'
+		).toEqual(prevState.identities.identity);
 	});
 
 	it('updates in identities should not change the signatures in the store', () => {
@@ -210,8 +233,9 @@ describe('updateAccount', () => {
 			}
 		});
 
-		expect(useAccountStore.getState().account?.signatures.signature).toEqual(
-			prevState.signatures.signature
-		);
+		expect(
+			useAccountStore.getState().account?.signatures.signature,
+			'account signatures should be untouched when only identities are updated'
+		).toEqual(prevState.signatures.signature);
 	});
 });

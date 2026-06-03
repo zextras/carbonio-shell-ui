@@ -37,7 +37,10 @@ describe('User Quota', () => {
 			setupAccountStore(quotaUsed, quota);
 			setup(<UserQuota mobileView={false} />);
 			const quotaString = `${humanFileSize(quotaUsed, undefined)} of unlimited space`;
-			expect(screen.getByText(quotaString)).toBeVisible();
+			expect(
+				screen.getByText(quotaString),
+				'the "of unlimited space" quota string should be visible when the mail quota is unlimited'
+			).toBeVisible();
 		}
 	);
 
@@ -47,7 +50,10 @@ describe('User Quota', () => {
 		setupAccountStore(quotaUsed, quotaMax);
 		setup(<UserQuota mobileView={false} />);
 		const quotaString = `${humanFileSize(quotaUsed, undefined)} of ${humanFileSize(quotaMax, undefined)} used`;
-		expect(screen.getByText(quotaString)).toBeVisible();
+		expect(
+			screen.getByText(quotaString),
+			'the "[used] of [limit] used" quota string should be visible when the mail quota is limited'
+		).toBeVisible();
 	});
 
 	describe('Quota component', () => {
@@ -62,7 +68,10 @@ describe('User Quota', () => {
 				const quotaMax = 100;
 				setupAccountStore(quotaUsed, quotaMax);
 				setup(<UserQuota mobileView={false} />);
-				expect(mockQuota).toHaveBeenCalledWith({
+				expect(
+					mockQuota,
+					`Quota should be rendered with the computed fill percentage and fillBackground "${fillBackground}"`
+				).toHaveBeenCalledWith({
 					fill: Math.min(100, Math.round((quotaUsed / quotaMax) * 100)),
 					fillBackground
 				});
@@ -74,7 +83,10 @@ describe('User Quota', () => {
 			const quotaMax = -1;
 			setupAccountStore(quotaUsed, quotaMax);
 			setup(<UserQuota mobileView={false} />);
-			expect(mockQuota).toHaveBeenCalledWith({
+			expect(
+				mockQuota,
+				'Quota should be rendered full (fill 100) with fillBackground "gray4" when the quota is unlimited'
+			).toHaveBeenCalledWith({
 				fill: 100,
 				fillBackground: 'gray4'
 			});

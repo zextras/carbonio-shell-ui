@@ -16,13 +16,20 @@ describe('Privacy', () => {
 		'should render the checkbox to allow analytics (initial value %s)',
 		async (initialValue, checkbox) => {
 			setup(<Privacy addMod={vi.fn()} sendAnalyticsPref={initialValue} removeMod={vi.fn()} />);
-			expect(screen.getByText('Allow data analytics')).toBeVisible();
+			expect(
+				screen.getByText('Allow data analytics'),
+				'the analytics setting title should be visible'
+			).toBeVisible();
 			expect(
 				screen.getByText(
 					'Your data is safe. All information we gather is and will stay anonymous. It will be used by our team to understand how can we improve Carbonio.'
-				)
+				),
+				'the analytics privacy description should be visible'
 			).toBeVisible();
-			expect(screen.getByTestId(checkbox)).toBeVisible();
+			expect(
+				screen.getByTestId(checkbox),
+				`the checkbox should reflect the initial pref value (${initialValue})`
+			).toBeVisible();
 		}
 	);
 
@@ -33,14 +40,21 @@ describe('Privacy', () => {
 			<Privacy addMod={addModFn} sendAnalyticsPref={false} removeMod={removeModFn} />
 		);
 		await user.click(screen.getByTestId(ICONS.checkboxUnchecked));
-		expect(addModFn).toHaveBeenCalledWith<Parameters<AddMod>>(
-			'prefs',
-			'carbonioPrefSendAnalytics',
-			'TRUE'
-		);
-		expect(removeModFn).not.toHaveBeenCalled();
+		expect(addModFn, 'checking the box should add the analytics pref as TRUE').toHaveBeenCalledWith<
+			Parameters<AddMod>
+		>('prefs', 'carbonioPrefSendAnalytics', 'TRUE');
+		expect(
+			removeModFn,
+			'removeMod should not be called while the value differs from the initial one'
+		).not.toHaveBeenCalled();
 		await user.click(screen.getByTestId(ICONS.checkboxChecked));
-		expect(addModFn).toHaveBeenCalledTimes(1);
-		expect(removeModFn).toHaveBeenCalled();
+		expect(
+			addModFn,
+			'addMod should not be called again when reverting to the initial value'
+		).toHaveBeenCalledTimes(1);
+		expect(
+			removeModFn,
+			'removeMod should be called when the value returns to the initial one'
+		).toHaveBeenCalled();
 	});
 });

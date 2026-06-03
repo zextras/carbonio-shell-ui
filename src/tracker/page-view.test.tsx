@@ -26,7 +26,10 @@ describe('TrackerPageView', () => {
 			{ initialRouterEntries: ['/initial-path'] }
 		);
 		await user.click(screen.getByRole('link'));
-		expect(tracker.capture).toHaveBeenLastCalledWith('$pageview', {
+		expect(
+			tracker.capture,
+			'tracker should capture a $pageview event with the new pathname when the path changes'
+		).toHaveBeenLastCalledWith('$pageview', {
 			$current_url: `${window.origin}/different-path`
 		});
 	});
@@ -46,7 +49,10 @@ describe('TrackerPageView', () => {
 			{ initialRouterEntries: ['/initial-path?param=1'] }
 		);
 		await user.click(screen.getByRole('link'));
-		expect(tracker.capture).toHaveBeenLastCalledWith('$pageview', {
+		expect(
+			tracker.capture,
+			'tracker should capture a $pageview event with the new search params when they change'
+		).toHaveBeenLastCalledWith('$pageview', {
 			$current_url: `${window.origin}/initial-path?param=2`
 		});
 	});

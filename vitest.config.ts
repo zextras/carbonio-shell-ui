@@ -48,7 +48,7 @@ export default defineConfig({
 		include: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
 		exclude: ['node_modules', 'constants/test.ts'],
 		clearMocks: true,
-		retry: 2,
+		retry: 0,
 		testTimeout: 60000,
 		pool: 'forks'
 	},

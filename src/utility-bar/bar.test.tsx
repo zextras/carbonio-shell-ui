@@ -25,10 +25,16 @@ describe('Shell utility bar', () => {
 		const accountUtilityMenu = screen.getByRoleWithIcon('button', {
 			icon: ICONS.accountUtilityMenu
 		});
-		expect(accountUtilityMenu).toBeVisible();
+		expect(accountUtilityMenu, 'the account utility menu button should be visible').toBeVisible();
 		await user.click(accountUtilityMenu);
-		expect(screen.getByText(mockedAccount.displayName)).toBeVisible();
-		expect(screen.getByText(mockedAccount.name)).toBeVisible();
+		expect(
+			screen.getByText(mockedAccount.displayName),
+			'the account display name should be shown in the open utility menu'
+		).toBeVisible();
+		expect(
+			screen.getByText(mockedAccount.name),
+			'the account name should be shown in the open utility menu'
+		).toBeVisible();
 	});
 
 	it.each(['Update view', 'Documentation', 'Logout'])(
@@ -41,7 +47,10 @@ describe('Shell utility bar', () => {
 					icon: ICONS.accountUtilityMenu
 				})
 			);
-			expect(screen.getByText(item)).toBeVisible();
+			expect(
+				screen.getByText(item),
+				`the "${item}" entry should be visible inside the account utility menu`
+			).toBeVisible();
 		}
 	);
 
@@ -66,8 +75,14 @@ describe('Shell utility bar', () => {
 				icon: ICONS.accountUtilityMenu
 			})
 		);
-		expect(screen.getByText(action.label)).toBeVisible();
-		expect(screen.getByTestId('icon: CloudUploadOutline')).toBeVisible();
+		expect(
+			screen.getByText(action.label),
+			'the registered account menu action label should be visible'
+		).toBeVisible();
+		expect(
+			screen.getByTestId('icon: CloudUploadOutline'),
+			'the registered account menu action icon should be visible'
+		).toBeVisible();
 	});
 
 	it('should execute the action when clicking on it', async () => {
@@ -92,7 +107,10 @@ describe('Shell utility bar', () => {
 			})
 		);
 		await user.click(screen.getByText(action.label));
-		expect(action.execute).toHaveBeenCalled();
+		expect(
+			action.execute,
+			'the action execute callback should be called when its menu item is clicked'
+		).toHaveBeenCalled();
 	});
 
 	it('should not call disabled account menu action', async () => {
@@ -117,7 +135,10 @@ describe('Shell utility bar', () => {
 			})
 		);
 		await user.click(screen.getByText(action.label));
-		expect(action.execute).not.toHaveBeenCalled();
+		expect(
+			action.execute,
+			'a disabled action execute callback should not be called when its menu item is clicked'
+		).not.toHaveBeenCalled();
 	});
 
 	it('should show account menu action items in the correct order', async () => {
@@ -171,9 +192,18 @@ describe('Shell utility bar', () => {
 		);
 		const items = screen.getAllByTestId('dropdown-item');
 		// The first 3 items are the account name, email and the update view action
-		expect(items[3]).toHaveTextContent(action1.label);
-		expect(items[4]).toHaveTextContent(action2.label);
-		expect(items[5]).toHaveTextContent(action3.label);
+		expect(
+			items[3],
+			'the action with position 1 should be rendered first among the registered actions'
+		).toHaveTextContent(action1.label);
+		expect(
+			items[4],
+			'the action with position 2 should be rendered second among the registered actions'
+		).toHaveTextContent(action2.label);
+		expect(
+			items[5],
+			'the action with position 3 should be rendered third among the registered actions'
+		).toHaveTextContent(action3.label);
 	});
 
 	it('should redirect to custom logout url when user clicks on logout', async () => {
@@ -195,10 +225,21 @@ describe('Shell utility bar', () => {
 		act(() => {
 			vi.runOnlyPendingTimers();
 		});
-		await waitFor(() => expect(goToFn).toHaveBeenCalled());
-		expect(goToFn).toHaveBeenCalledTimes(1);
-		expect(goToFn).toHaveBeenCalledWith(customLogout);
-		expect(goToLoginFn).not.toHaveBeenCalled();
+		await waitFor(() =>
+			expect(
+				goToFn,
+				'goTo should be called to redirect to the custom logout url'
+			).toHaveBeenCalled()
+		);
+		expect(goToFn, 'goTo should be called exactly once').toHaveBeenCalledTimes(1);
+		expect(
+			goToFn,
+			'goTo should be called with the configured custom logout url'
+		).toHaveBeenCalledWith(customLogout);
+		expect(
+			goToLoginFn,
+			'goToLogin should not be called when a custom logout url is configured'
+		).not.toHaveBeenCalled();
 	});
 
 	test('should redirect to login if no custom logout url is set when user clicks on logout', async () => {
@@ -219,9 +260,17 @@ describe('Shell utility bar', () => {
 		act(() => {
 			vi.runOnlyPendingTimers();
 		});
-		await waitFor(() => expect(goToLoginFn).toHaveBeenCalled());
-		expect(goToLoginFn).toHaveBeenCalledTimes(1);
-		expect(goToFn).not.toHaveBeenCalled();
+		await waitFor(() =>
+			expect(
+				goToLoginFn,
+				'goToLogin should be called to redirect to the login page when no custom logout url is set'
+			).toHaveBeenCalled()
+		);
+		expect(goToLoginFn, 'goToLogin should be called exactly once').toHaveBeenCalledTimes(1);
+		expect(
+			goToFn,
+			'goTo should not be called when no custom logout url is configured'
+		).not.toHaveBeenCalled();
 	});
 
 	it('should dispatch customEvent when updating the view', async () => {
@@ -233,6 +282,9 @@ describe('Shell utility bar', () => {
 		});
 		await user.click(accountUtilityMenu);
 		await user.click(screen.getByText(/update view/i));
-		expect(handlerFn).toHaveBeenCalled();
+		expect(
+			handlerFn,
+			'the "updateView" custom event handler should be called when clicking the update view entry'
+		).toHaveBeenCalled();
 	});
 });

@@ -129,6 +129,8 @@ vi.mock('@zextras/carbonio-ui-preview', () => ({
 	PreviewManager: ({ children }: React.PropsWithChildren): React.ReactNode => children
 }));
 
+vi.mock('posthog-js');
+
 vi.mock('posthog-js/react');
 
 vi.mock('darkreader');

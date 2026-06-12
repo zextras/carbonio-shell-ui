@@ -18,7 +18,7 @@ beforeEach(() => {
 
 describe('useTracker', () => {
 	it('should opt-in posthog if host is not localhost and enableTracker is called with true value', () => {
-		const posthog = spyOnPosthog();
+		const posthog = spyOnPosthog({ loaded: true });
 		const { result } = renderHook(() => useTracker());
 		act(() => {
 			result.current.enableTracker(true);
@@ -31,7 +31,7 @@ describe('useTracker', () => {
 
 	it.each(['localhost', '127.0.0.1'])('should not opt-in posthog if host is %s', (host) => {
 		vi.spyOn(utils, 'getCurrentLocationHost').mockReturnValue(host);
-		const posthog = spyOnPosthog();
+		const posthog = spyOnPosthog({ loaded: true });
 		const { result } = renderHook(() => useTracker());
 		result.current.enableTracker(true);
 		expect(
@@ -41,7 +41,7 @@ describe('useTracker', () => {
 	});
 
 	it('should opt-out posthog if enableTracker is called with false value', () => {
-		const posthog = spyOnPosthog();
+		const posthog = spyOnPosthog({ loaded: true });
 		const { result } = renderHook(() => useTracker());
 		act(() => {
 			result.current.enableTracker(false);
@@ -53,14 +53,14 @@ describe('useTracker', () => {
 	});
 
 	it('should reset posthog if reset function is called', () => {
-		const posthog = spyOnPosthog();
+		const posthog = spyOnPosthog({ loaded: true });
 		const { result } = renderHook(() => useTracker());
 		result.current.reset();
 		expect(posthog.reset, 'reset() should reset PostHog').toHaveBeenCalled();
 	});
 
 	it('should call capture ', () => {
-		const posthog = spyOnPosthog();
+		const posthog = spyOnPosthog({ loaded: true });
 		const { result } = renderHook(() => useTracker());
 		const eventName = 'event name';
 		const properties = { prop1: 'prop1value', prop2: 'prop2value' };
@@ -74,7 +74,7 @@ describe('useTracker', () => {
 
 	it('should identify user through its hashed id when enabling the tracker for an authenticated account', async () => {
 		useAccountStore.setState({ account: mockedAccount });
-		const posthog = spyOnPosthog();
+		const posthog = spyOnPosthog({ loaded: true });
 		const { result } = renderHook(() => useTracker());
 		act(() => {
 			result.current.enableTracker(true);
@@ -88,7 +88,7 @@ describe('useTracker', () => {
 
 	it('should not identify user if no user is authenticated', () => {
 		useAccountStore.setState({ account: undefined });
-		const posthog = spyOnPosthog();
+		const posthog = spyOnPosthog({ loaded: true });
 		const { result } = renderHook(() => useTracker());
 		act(() => {
 			result.current.enableTracker(true);
@@ -96,6 +96,34 @@ describe('useTracker', () => {
 		expect(
 			posthog.identify,
 			'enableTracker should not identify the user when no account is authenticated'
+		).not.toHaveBeenCalled();
+	});
+
+	it('should be a silent no-op when posthog is not initialized (deferred init without consent)', () => {
+		const posthog = spyOnPosthog();
+		// __loaded is undefined on the stub → simulates the singleton before posthog.init
+		const { result } = renderHook(() => useTracker());
+		act(() => {
+			result.current.enableTracker(true);
+			result.current.enableTracker(false);
+			result.current.capture('event');
+			result.current.reset();
+		});
+		expect(
+			posthog.opt_in_capturing,
+			'enableTracker(true) should not opt in before posthog is initialized'
+		).not.toHaveBeenCalled();
+		expect(
+			posthog.opt_out_capturing,
+			'enableTracker(false) should not opt out before posthog is initialized'
+		).not.toHaveBeenCalled();
+		expect(
+			posthog.capture,
+			'capture() should not forward events before posthog is initialized'
+		).not.toHaveBeenCalled();
+		expect(
+			posthog.reset,
+			'reset() should not reset before posthog is initialized'
 		).not.toHaveBeenCalled();
 	});
 });

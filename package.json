@@ -78,7 +78,7 @@
 		"@emotion/babel-plugin": "11.13.5",
 		"@emotion/jest": "11.14.2",
 		"@faker-js/faker": "10.4.0",
-		"@microsoft/api-extractor": "7.58.7",
+		"@microsoft/api-extractor": "7.58.8",
 		"@semantic-release/changelog": "6.0.3",
 		"@semantic-release/commit-analyzer": "13.0.1",
 		"@semantic-release/git": "10.0.1",

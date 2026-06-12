@@ -1,3 +1,9 @@
+## [15.1.1](https://github.com/zextras/carbonio-shell-ui/compare/v15.1.0...v15.1.1) (2026-06-12)
+
+### Bug Fixes
+
+* **tracker:** keep PostHogProvider mounted and defer posthog init ([#832](https://github.com/zextras/carbonio-shell-ui/issues/832)) ([f11a59b](https://github.com/zextras/carbonio-shell-ui/commit/f11a59bb99d87301ad02d7f20a105320946b8c7a))
+
 ## [15.1.0](https://github.com/zextras/carbonio-shell-ui/compare/v15.0.0...v15.1.0) (2026-05-22)
 
 ### Features

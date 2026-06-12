@@ -56,7 +56,9 @@ export const useTracker = (): Tracker => {
 
 	const enableTracker = useCallback(
 		(enable: boolean) => {
-			if (isLocalHost()) {
+			// posthog is initialized only after the user opts into analytics:
+			// before that every call must be a silent no-op
+			if (!postHog.__loaded || isLocalHost()) {
 				return;
 			}
 			if (enable) {
@@ -70,11 +72,17 @@ export const useTracker = (): Tracker => {
 	);
 
 	const reset = useCallback(() => {
+		if (!postHog.__loaded) {
+			return;
+		}
 		postHog.reset();
 	}, [postHog]);
 
 	const capture = useCallback<Tracker['capture']>(
 		(eventName, properties, options) => {
+			if (!postHog.__loaded) {
+				return;
+			}
 			postHog.capture(eventName, properties, options);
 		},
 		[postHog]

@@ -7,8 +7,11 @@ import type { PostHogConfig } from 'posthog-js';
 import type * as PostHogReact from 'posthog-js/react';
 import { usePostHog } from 'posthog-js/react';
 
-export const spyOnPosthog = (): Partial<ReturnType<(typeof PostHogReact)['usePostHog']>> => {
+export const spyOnPosthog = ({ loaded = false }: { loaded?: boolean } = {}): Partial<
+	ReturnType<(typeof PostHogReact)['usePostHog']>
+> => {
 	const postHog = {
+		__loaded: loaded,
 		identify: vi.fn(),
 		opt_in_capturing: vi.fn(),
 		opt_out_capturing: vi.fn(),

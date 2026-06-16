@@ -93,7 +93,7 @@
 		"@tsconfig/node22": "22.0.5",
 		"@types/lodash": "4.17.24",
 		"@types/node": "22.19.19",
-		"@types/react": "18.3.30",
+		"@types/react": "18.3.31",
 		"@types/react-dom": "18.3.7",
 		"@types/webpack": "5.28.5",
 		"@types/webpack-env": "1.18.8",

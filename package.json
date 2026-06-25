@@ -100,7 +100,7 @@
 		"@vitest/coverage-istanbul": "4.1.9",
 		"@zextras/carbonio-ui-configs": "2.1.0",
 		"@zextras/carbonio-ui-sdk": "2.3.6",
-		"autoprefixer": "10.5.0",
+		"autoprefixer": "10.5.2",
 		"copy-webpack-plugin": "13.0.1",
 		"core-js": "3.49.0",
 		"css-loader": "6.11.0",

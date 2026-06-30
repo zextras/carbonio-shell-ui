@@ -142,7 +142,7 @@
 		"react": "18.3.1",
 		"react-dom": "18.3.1",
 		"react-i18next": "12.3.1",
-		"react-router-dom": "6.30.4",
+		"react-router-dom": "7.18.1",
 		"zustand": "5.0.14"
 	},
 	"pnpm": {
@@ -167,7 +167,7 @@
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"react-i18next": "^12.3.1",
-		"react-router-dom": "^6.30.0"
+		"react-router-dom": "^7.18.1"
 	},
 	"peerDependenciesMeta": {
 		"@zextras/carbonio-design-system": {

@@ -45,8 +45,8 @@ importers:
         specifier: 3.0.6
         version: 3.0.6
       immer:
-        specifier: 10.2.0
-        version: 10.2.0
+        specifier: 11.1.9
+        version: 11.1.9
       lodash:
         specifier: 4.18.1
         version: 4.18.1
@@ -67,7 +67,7 @@ importers:
         version: 6.30.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       zustand:
         specifier: 5.0.14
-        version: 5.0.14(@types/react@18.3.31)(immer@10.2.0)(react@18.3.1)
+        version: 5.0.14(@types/react@18.3.31)(immer@11.1.9)(react@18.3.1)
     devDependencies:
       '@babel/core':
         specifier: 7.29.7
@@ -4313,6 +4313,7 @@ packages:
   git-raw-commits@5.0.1:
     resolution: {integrity: sha512-Y+csSm2GD/PCSh6Isd/WiMjNAydu0VBiG9J7EdQsNA5P9uXvLayqjmTsNlK5Gs9IhblFZqOU0yid5Il5JPoLiQ==}
     engines: {node: '>=18'}
+    deprecated: Deprecated and no longer maintained. Use @conventional-changelog/git-client instead.
     hasBin: true
 
   glob-parent@5.1.2:
@@ -4582,8 +4583,8 @@ packages:
     engines: {node: '>=0.10.0'}
     hasBin: true
 
-  immer@10.2.0:
-    resolution: {integrity: sha512-d/+XTN3zfODyjr89gM3mPq1WNX2B8pYsu7eORitdwyA2sBubnTl3laYlBk4sXY5FUa5qTZGBDPJICVbvqzjlbw==}
+  immer@11.1.9:
+    resolution: {integrity: sha512-sc/z0Cyti70bZa0ZU4sWfAElfovFb9Ni8tArJZLuklYWxegPiK3pDOql1Rq5H0FIRAW9LSQRG6OX4KqBldbhBA==}
 
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
@@ -12302,7 +12303,7 @@ snapshots:
   image-size@0.5.5:
     optional: true
 
-  immer@10.2.0: {}
+  immer@11.1.9: {}
 
   import-fresh@3.3.1:
     dependencies:
@@ -15137,8 +15138,8 @@ snapshots:
 
   yoctocolors@2.1.2: {}
 
-  zustand@5.0.14(@types/react@18.3.31)(immer@10.2.0)(react@18.3.1):
+  zustand@5.0.14(@types/react@18.3.31)(immer@11.1.9)(react@18.3.1):
     optionalDependencies:
       '@types/react': 18.3.31
-      immer: 10.2.0
+      immer: 11.1.9
       react: 18.3.1

@@ -24,10 +24,10 @@
 		},
 		"./*": null
 	},
-	"packageManager": "pnpm@10.32.1",
+	"packageManager": "pnpm@10.34.5",
 	"engines": {
 		"node": "v22",
-		"pnpm": ">=10"
+		"pnpm": ">=10.34.5"
 	},
 	"scripts": {
 		"bump-version": "semantic-release",

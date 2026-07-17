@@ -9,7 +9,7 @@ import CopyPlugin from 'copy-webpack-plugin';
 import dotenv from 'dotenv';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
-import { DefinePlugin } from 'webpack';
+import type { Compiler } from 'webpack';
 import type { WebpackConfiguration } from 'webpack-cli';
 
 dotenv.config();
@@ -50,12 +50,19 @@ const configFn = (
 				}
 			]
 		}),
-		new DefinePlugin({
-			COMMIT_ID: JSON.stringify(commitHash.toString().trim()),
-			BASE_PATH: JSON.stringify(baseStaticPath),
-			POSTHOG_API_KEY: JSON.stringify(process.env.POSTHOG_API_KEY),
-			POSTHOG_API_HOST: JSON.stringify(process.env.POSTHOG_API_HOST)
-		}),
+		{
+			// DefinePlugin must come from the webpack instance that runs the build
+			// (the sdk's), not from this project's copy: mixing instances breaks
+			// the `instanceof Compilation` check enforced since webpack 5.108
+			apply(compiler: Compiler): void {
+				new compiler.webpack.DefinePlugin({
+					COMMIT_ID: JSON.stringify(commitHash.toString().trim()),
+					BASE_PATH: JSON.stringify(baseStaticPath),
+					POSTHOG_API_KEY: JSON.stringify(process.env.POSTHOG_API_KEY),
+					POSTHOG_API_HOST: JSON.stringify(process.env.POSTHOG_API_HOST)
+				}).apply(compiler);
+			}
+		},
 		new HtmlWebpackPlugin({
 			inject: true,
 			template: path.resolve(process.cwd(), 'src', 'index.template.html'),

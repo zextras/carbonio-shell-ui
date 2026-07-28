@@ -15,13 +15,19 @@ import { getUserSetting, useAccountStore } from '../../store/account';
 import { useI18nStore } from '../../store/i18n/store';
 import type { CarbonioModule } from '../../types/apps';
 
+export function isAppEnabled(app: CarbonioModule): boolean {
+	// without an attrKey there is no back-end attribute to read: the module stays visible
+	if (!app.attrKey) return true;
+	return String(getUserSetting('attrs', app.attrKey)).toUpperCase() === 'TRUE';
+}
+
 export function loadApps(
 	apps: Array<CarbonioModule>
 ): Promise<PromiseSettledResult<CarbonioModule>[]> {
 	injectSharedLibraries();
 	const appsToLoad = filter(apps, (app) => {
 		if (app.name === SHELL_APP_ID) return false;
-		return !(app.attrKey && getUserSetting('attrs', app.attrKey) === 'FALSE');
+		return isAppEnabled(app);
 	});
 	// eslint-disable-next-line no-console
 	console.log(

@@ -1,3 +1,9 @@
+## [15.1.2](https://github.com/zextras/carbonio-shell-ui/compare/v15.1.1...v15.1.2) (2026-07-29)
+
+### Bug Fixes
+
+* hide modules whose feature attribute is not enabled ([#872](https://github.com/zextras/carbonio-shell-ui/issues/872)) ([8f0ec77](https://github.com/zextras/carbonio-shell-ui/commit/8f0ec77fd41c2214dea35d3953c2b7677e51d8bc))
+
 ## [15.1.1](https://github.com/zextras/carbonio-shell-ui/compare/v15.1.0...v15.1.1) (2026-06-12)
 
 ### Bug Fixes

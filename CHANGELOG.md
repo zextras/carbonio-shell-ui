@@ -1,3 +1,9 @@
+## [15.1.3](https://github.com/zextras/carbonio-shell-ui/compare/v15.1.2...v15.1.3) (2026-07-30)
+
+### Other changes
+
+* remove legacy user quota management ([#873](https://github.com/zextras/carbonio-shell-ui/issues/873)) ([db10533](https://github.com/zextras/carbonio-shell-ui/commit/db1053346d96631cf5f65d393da0a8c670ea5f00))
+
 ## [15.1.2](https://github.com/zextras/carbonio-shell-ui/compare/v15.1.1...v15.1.2) (2026-07-29)
 
 ### Bug Fixes

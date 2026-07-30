@@ -7,7 +7,6 @@
 import type React from 'react';
 
 import type { GeneralizedTime } from '@zextras/carbonio-ui-soap-lib';
-import type { TFunction } from 'i18next';
 import { cloneDeep, filter, findIndex, isBoolean, reduce, uniq } from 'lodash';
 
 import { BASE_FONT_SIZE, SCALING_LIMIT, SCALING_OPTIONS } from '../../constants';
@@ -217,23 +216,3 @@ export function calculateNewIdentitiesState(
 	filteredAndModified.splice(-1, 0, ...addedIdentities);
 	return filteredAndModified;
 }
-
-/**
- * Format a size in byte as human-readable
- */
-export const humanFileSize = (inputSize: number, t: TFunction | undefined): string => {
-	const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-	if (inputSize === 0) {
-		const unit = units[0];
-		const translatedUnit = t ? t('size.unitMeasure', { context: unit, defaultValue: unit }) : unit;
-		return `0 ${translatedUnit}`;
-	}
-	const i = Math.floor(Math.log(inputSize) / Math.log(1024));
-	if (i >= units.length) {
-		throw new Error('Unsupported inputSize');
-	}
-	const unit = units[i];
-	const unitTranslated = t ? t('size.unitMeasure', { context: unit, defaultValue: unit }) : unit;
-	const size = (inputSize / 1024 ** i).toFixed(2).toString();
-	return `${size} ${unitTranslated}`;
-};

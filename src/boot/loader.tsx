@@ -7,7 +7,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { Modal, Padding, Text } from '@zextras/carbonio-design-system';
-import type { UserQuotaChangeEvent } from '@zextras/carbonio-ui-soap-lib';
 import { ApiEvents, GET_INFO_RIGHTS, api } from '@zextras/carbonio-ui-soap-lib';
 import { find } from 'lodash';
 import { useTranslation } from 'react-i18next';
@@ -104,13 +103,6 @@ export const Loader = (): React.JSX.Element => {
 		}
 	}, []);
 
-	const userQuotaEventLister = useCallback(
-		(e: CustomEventInit<UserQuotaChangeEvent['payload']>): void => {
-			useAccountStore.setState({ usedQuota: e.detail?.quota });
-		},
-		[]
-	);
-
 	useEffect(() => {
 		window.addEventListener(ApiEvents.AuthError, authErrorListener);
 
@@ -118,14 +110,6 @@ export const Loader = (): React.JSX.Element => {
 			window.removeEventListener(ApiEvents.AuthError, authErrorListener);
 		};
 	}, [authErrorListener]);
-
-	useEffect(() => {
-		window.addEventListener(ApiEvents.UserQuotaChange, userQuotaEventLister);
-
-		return () => {
-			window.removeEventListener(ApiEvents.UserQuotaChange, userQuotaEventLister);
-		};
-	}, [userQuotaEventLister]);
 
 	useEffect(() => {
 		Promise.allSettled([loginConfig(), getComponents(), getSessionInfo()]).then(

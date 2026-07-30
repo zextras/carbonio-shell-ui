@@ -79,13 +79,12 @@ describe('DefaultViews', () => {
 				{ label: 'Appearance', id: 'appearance' },
 				{ label: 'Language', id: 'language' },
 				{ label: 'Out of Office Settings', id: 'out_of_office' },
-				{ label: 'Search', id: 'search_prefs' },
-				{ label: "User's quota", id: 'user_quota' }
+				{ label: 'Search', id: 'search_prefs' }
 			]
 		});
 	});
 
-	it('should register privacy settings subsection and not the user quota subsection if it is carbonio CE ', () => {
+	it('should register privacy settings subsection if it is carbonio CE ', () => {
 		useAccountStore.setState(
 			produce((state) => {
 				state.settings.attrs.zimbraFeatureOptionsEnabled = 'TRUE';
@@ -96,7 +95,7 @@ describe('DefaultViews', () => {
 		setup(<DefaultViewsRegister />);
 		expect(
 			useAppStore.getState().views.settings,
-			'the privacy subsection should be registered and the user quota subsection should be absent on Carbonio CE'
+			'the privacy subsection should be registered on Carbonio CE'
 		).toContainEqual(
 			expect.objectContaining<Pick<SettingsView, 'id' | 'subSections'>>({
 				id: 'general',
@@ -122,7 +121,7 @@ describe('DefaultViews', () => {
 		setup(<DefaultViewsRegister />);
 		expect(
 			useAppStore.getState().views.settings,
-			'the user quota subsection should be registered and the privacy subsection should be absent when not Carbonio CE'
+			'the privacy subsection should be absent when not Carbonio CE'
 		).toContainEqual(
 			expect.objectContaining<Pick<SettingsView, 'id' | 'subSections'>>({
 				id: 'general',
@@ -130,8 +129,7 @@ describe('DefaultViews', () => {
 					{ label: 'Appearance', id: 'appearance' },
 					{ label: 'Language', id: 'language' },
 					{ label: 'Out of Office Settings', id: 'out_of_office' },
-					{ label: 'Search', id: 'search_prefs' },
-					{ label: "User's quota", id: 'user_quota' }
+					{ label: 'Search', id: 'search_prefs' }
 				]
 			})
 		);

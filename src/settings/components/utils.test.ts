@@ -6,13 +6,7 @@
 import { faker } from '@faker-js/faker';
 import type { GeneralizedTime } from '@zextras/carbonio-ui-soap-lib';
 
-import {
-	dateToGenTime,
-	genTimeToDate,
-	humanFileSize,
-	asArray,
-	getAvailableEmailAddresses
-} from './utils';
+import { dateToGenTime, genTimeToDate, asArray, getAvailableEmailAddresses } from './utils';
 import type { Account, AccountSettings } from '../../lib';
 import { createAccount, createIdentity } from '../../tests/account-utils';
 
@@ -49,92 +43,6 @@ describe('genTimeToDate function', () => {
 			genTimeToDate(dateStr),
 			'genTimeToDate should parse a YYYYMMDDHHmmss.SSS[Z] string into the matching UTC date'
 		).toEqual(dateUTC);
-	});
-});
-
-describe('humanFileSize function', () => {
-	it('should return 0 B if input is 0', () => {
-		const result = humanFileSize(0, undefined);
-		expect(result, 'humanFileSize(0) should return "0 B"').toBe('0 B');
-	});
-
-	it('should return 8.00 PB if input is max safe integer', () => {
-		const result = humanFileSize(Number.MAX_SAFE_INTEGER, undefined);
-		expect(result, 'humanFileSize(MAX_SAFE_INTEGER) should return "8.00 PB"').toBe('8.00 PB');
-	});
-
-	it.each([
-		['B', 0],
-		['KB', 1],
-		['MB', 2],
-		['GB', 3],
-		['TB', 4],
-		['PB', 5],
-		['EB', 6],
-		['ZB', 7],
-		['YB', 8]
-	])('should return %s unit if input pow is %s', (unit, pow) => {
-		const result = humanFileSize(1024 ** pow, undefined);
-		expect(result, `humanFileSize(1024 ** ${pow}) should return "1.00 ${unit}"`).toBe(
-			`1.00 ${unit}`
-		);
-	});
-
-	it.each([
-		['B', 1],
-		['KB', 2],
-		['MB', 3],
-		['GB', 4],
-		['TB', 5],
-		['PB', 6],
-		['EB', 7],
-		['ZB', 8]
-	])(
-		'should return %s unit measure if input is one unit lower than the next unit measure',
-		(unit, pow) => {
-			const result = humanFileSize(1024 ** pow - 1024 ** (pow - 1), undefined);
-			expect(
-				result,
-				`humanFileSize one unit below the next measure should return "1023.00 ${unit}"`
-			).toBe(`1023.00 ${unit}`);
-		}
-	);
-
-	it('should change unit from KB to B when removing 1 B from 1024 B', () => {
-		expect(
-			humanFileSize(1024 - 1, undefined),
-			'humanFileSize(1023) should stay in B and return "1023.00 B"'
-		).toBe('1023.00 B');
-	});
-
-	it.each([
-		['KB', 2],
-		['MB', 3],
-		['GB', 4]
-	])('should return 1024.00 %s if input is 1024 ** %s - 1', (unit, pow) => {
-		const result = humanFileSize(1024 ** pow - 1, undefined);
-		expect(result, `humanFileSize(1024 ** ${pow} - 1) should return "1024.00 ${unit}"`).toBe(
-			`1024.00 ${unit}`
-		);
-	});
-
-	it.each([
-		['PB', 5],
-		['EB', 6],
-		['ZB', 7],
-		['YB', 8]
-	])('should return %s unit if input pow is %s - 1B', (unit, pow) => {
-		const result = humanFileSize(1024 ** pow - 1, undefined);
-		expect(result, `humanFileSize(1024 ** ${pow} - 1) should return "1.00 ${unit}"`).toBe(
-			`1.00 ${unit}`
-		);
-	});
-
-	it('should throw an error if inputSize is equal or greater than 1024 YB', () => {
-		expect(
-			() => humanFileSize(1024 ** 9, undefined),
-			'humanFileSize should throw "Unsupported inputSize" for sizes >= 1024 YB'
-		).toThrow('Unsupported inputSize');
 	});
 });
 

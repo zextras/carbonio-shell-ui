@@ -23,7 +23,6 @@ export type AccountState = {
 	account?: Account;
 	settings: AccountSettings;
 	zimbraVersion?: string;
-	usedQuota: number;
 	changePasswordURL?: string;
 };
 

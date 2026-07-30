@@ -18,6 +18,5 @@ export const useAccountStore = create<AccountState>()(() => ({
 		attrs: {},
 		props: []
 	},
-	usedQuota: 0,
 	lastNotificationTime: Date.now()
 }));

@@ -16,7 +16,6 @@ import { Privacy } from './components/general-settings/privacy';
 import { ScalingSettingSection } from './components/general-settings/scaling-setting-section';
 import { SearchSettings } from './components/general-settings/search-settings';
 import { SettingsSection } from './components/general-settings/settings-section';
-import UserQuota from './components/general-settings/user-quota';
 import { SettingsHeader } from './components/settings-header';
 import type { ResetComponentImperativeHandler } from './components/utils';
 import { appearanceSubSection, privacySubSection } from './general-settings-sub-sections';
@@ -26,7 +25,7 @@ import { useLocalStorage } from '../shell/hooks/useLocalStorage';
 import { useAccountStore, useUserSettings } from '../store/account';
 import { mergePrefs, mergeProps } from '../store/account/utils';
 import { getT } from '../store/i18n/hooks';
-import { useFeatureFlag, useIsCarbonioCE } from '../store/login/hooks';
+import { useIsCarbonioCE } from '../store/login/hooks';
 import type { AccountState } from '../types/account';
 import type {
 	AddMod,
@@ -56,7 +55,6 @@ const GeneralSettings = (): React.JSX.Element => {
 	);
 	const [open, setOpen] = useState(false);
 	const isCarbonioCE = useIsCarbonioCE();
-	const totalQuotaEnabled = useFeatureFlag('totalQuota');
 
 	const addLocalStoreChange = useCallback(
 		(key: keyof ScalingSettings, value: ValueOf<ScalingSettings>) => {
@@ -284,7 +282,6 @@ const GeneralSettings = (): React.JSX.Element => {
 					addMod={addMod}
 					resetRef={searchSettingsSectionRef}
 				/>
-				{!totalQuotaEnabled && !isCarbonioCE && <UserQuota mobileView={false} />}
 				{isCarbonioCE && (
 					<SettingsSection {...privacySubSection(t)}>
 						<Privacy

@@ -1,3 +1,9 @@
+## [15.1.4](https://github.com/zextras/carbonio-shell-ui/compare/v15.1.3...v15.1.4) (2026-08-13)
+
+### Bug Fixes
+
+* **ci:** cap vitest forks to 2 to prevent k8s CPU saturation ([#875](https://github.com/zextras/carbonio-shell-ui/issues/875)) ([7fa8bc0](https://github.com/zextras/carbonio-shell-ui/commit/7fa8bc0532c248bb45be8450d26ad752cace09a9))
+
 ## [15.1.3](https://github.com/zextras/carbonio-shell-ui/compare/v15.1.2...v15.1.3) (2026-07-30)
 
 ### Other changes

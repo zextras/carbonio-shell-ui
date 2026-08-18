@@ -17,6 +17,14 @@ import { SHELL_APP_ID } from '../../constants';
 import type { CarbonioModule } from '../../types/apps';
 import { useAccountStore } from '../account';
 
+/**
+ * Convert a locale code (e.g. "zh_CN") to a BCP 47 language tag
+ * (e.g. "zh-CN") suitable for the HTML `lang` attribute.
+ */
+function toBcp47(locale: string): string {
+	return locale.replace('_', '-');
+}
+
 export type I18nState = {
 	instances: Record<string, i18n>;
 	defaultI18n: i18n;
@@ -77,6 +85,7 @@ export const useI18nStore = create<I18nState & I18nActions>()((set) => ({
 	defaultI18n,
 	locale: 'en',
 	setLocale: (locale: string): void => {
+		document.documentElement.lang = toBcp47(locale);
 		set(
 			produce((state: I18nState) => {
 				state.locale = locale;
@@ -127,6 +136,7 @@ export const useI18nStore = create<I18nState & I18nActions>()((set) => ({
 				state.locale = locale;
 			})
 		);
+		document.documentElement.lang = toBcp47(locale);
 	}
 }));
 

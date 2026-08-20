@@ -18,6 +18,9 @@ import type { CarbonioModule } from '../../types/apps';
 export function isAppEnabled(app: CarbonioModule): boolean {
 	// without an attrKey there is no back-end attribute to read: the module stays visible
 	if (!app.attrKey) return true;
+	// without an account no GetInfo populated the settings (guest on a focus-mode route):
+	// a per-user feature attribute is not applicable, so it cannot be used to hide the module
+	if (!useAccountStore.getState().account) return true;
 	return String(getUserSetting('attrs', app.attrKey)).toUpperCase() === 'TRUE';
 }
 

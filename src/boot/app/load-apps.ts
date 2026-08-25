@@ -9,7 +9,7 @@ import { filter, map } from 'lodash';
 
 import { loadApp, unloadApps } from './load-app';
 import { injectSharedLibraries } from './shared-libraries';
-import { SHELL_APP_ID } from '../../constants';
+import { IS_FOCUS_MODE, SHELL_APP_ID } from '../../constants';
 import { DATE_FNS_LOCALE } from '../../constants/locales';
 import { getUserSetting, useAccountStore } from '../../store/account';
 import { useI18nStore } from '../../store/i18n/store';
@@ -18,6 +18,8 @@ import type { CarbonioModule } from '../../types/apps';
 export function isAppEnabled(app: CarbonioModule): boolean {
 	// without an attrKey there is no back-end attribute to read: the module stays visible
 	if (!app.attrKey) return true;
+	// in focus mode a guest has no account, so no GetInfo populated the settings
+	if (IS_FOCUS_MODE && !useAccountStore.getState().account) return true;
 	return String(getUserSetting('attrs', app.attrKey)).toUpperCase() === 'TRUE';
 }
 

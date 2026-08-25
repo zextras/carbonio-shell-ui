@@ -5,12 +5,20 @@
  */
 
 import { isAppEnabled } from './load-apps';
+import * as constants from '../../constants';
+import { useAccountStore } from '../../store/account';
 import { normalizeApp } from '../../store/app/utils';
 import { setupAccountStore } from '../../tests/account-utils';
+
+vi.mock('../../constants');
 
 const ATTR_KEY = 'carbonioFeatureTasksEnabled';
 
 describe('isAppEnabled', () => {
+	beforeEach(() => {
+		vi.mocked(constants).IS_FOCUS_MODE = false;
+	});
+
 	it.each([undefined, ''])('should enable a module whose attrKey is %j', (attrKey) => {
 		setupAccountStore({ accountSettingsAttrs: {} });
 		expect(
@@ -48,6 +56,25 @@ describe('isAppEnabled', () => {
 		expect(
 			isAppEnabled(normalizeApp({ name: 'carbonio-tasks-ui', attrKey: ATTR_KEY })),
 			`a module should not be enabled when ${ATTR_KEY} is not returned at all`
+		).toBe(false);
+	});
+
+	it('should enable a module whose attribute is missing when there is no account in focus mode', () => {
+		vi.mocked(constants).IS_FOCUS_MODE = true;
+		setupAccountStore({ accountSettingsAttrs: {} });
+		useAccountStore.setState({ account: undefined });
+		expect(
+			isAppEnabled(normalizeApp({ name: 'carbonio-tasks-ui', attrKey: ATTR_KEY })),
+			`a guest module should be enabled when there is no account to read ${ATTR_KEY} from`
+		).toBe(true);
+	});
+
+	it('should not enable a module whose attribute is missing when there is no account outside focus mode', () => {
+		setupAccountStore({ accountSettingsAttrs: {} });
+		useAccountStore.setState({ account: undefined });
+		expect(
+			isAppEnabled(normalizeApp({ name: 'carbonio-tasks-ui', attrKey: ATTR_KEY })),
+			`a module should stay gated outside focus mode, where an unusable session leads to login`
 		).toBe(false);
 	});
 });

@@ -22,7 +22,7 @@ import { useAccountStore } from '../account';
  * (e.g. "zh-CN") suitable for the HTML `lang` attribute.
  */
 function toBcp47(locale: string): string {
-	return locale.replace('_', '-');
+	return locale.replace(/_/g, '-');
 }
 
 export type I18nState = {

@@ -1,5 +1,8 @@
 FROM --platform=$BUILDPLATFORM docker.io/backplane/jq:latest AS builder
 
+# The base image defaults to the unprivileged "nobody" user, which cannot write under /opt
+USER root
+
 # Define path variables
 ENV IRIS_BASE_PATH="/opt/zextras/web/iris" \
     WEB_PATH="/opt/zextras/web/iris/carbonio-shell-ui"
@@ -16,6 +19,9 @@ RUN COMMIT_ID=$(jq -r .commit /tmp/dist/component.json) \
 
 # Final stage - built for all target platforms
 FROM docker.io/backplane/jq:latest
+
+# The entrypoint writes components.json under /opt, so it needs root too
+USER root
 
 # Re-define path variable for final stage
 ENV IRIS_BASE_PATH="/opt/zextras/web/iris"

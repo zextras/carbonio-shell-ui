@@ -107,7 +107,7 @@
 		"dotenv": "17.4.2",
 		"eslint": "8.57.1",
 		"eslint-plugin-notice": "0.9.10",
-		"html-webpack-plugin": "5.6.7",
+		"html-webpack-plugin": "5.6.8",
 		"husky": "9.1.7",
 		"identity-obj-proxy": "3.0.0",
 		"is-ci": "3.0.1",

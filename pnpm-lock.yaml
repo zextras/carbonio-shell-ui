@@ -187,8 +187,8 @@ importers:
         specifier: 0.9.10
         version: 0.9.10(eslint@8.57.1)
       html-webpack-plugin:
-        specifier: 5.6.7
-        version: 5.6.7(webpack@5.108.4)
+        specifier: 5.6.8
+        version: 5.6.8(webpack@5.108.4)
       husky:
         specifier: 9.1.7
         version: 9.1.7
@@ -4392,6 +4392,18 @@ packages:
     engines: {node: '>=10.13.0'}
     peerDependencies:
       '@rspack/core': 0.x || 1.x
+      webpack: ^5.20.0
+    peerDependenciesMeta:
+      '@rspack/core':
+        optional: true
+      webpack:
+        optional: true
+
+  html-webpack-plugin@5.6.8:
+    resolution: {integrity: sha512-MZmKQcTnhEh1SPSyMiEytIeDZDUoBZVorNHivQGXMASHf/BSGGOrKa2xQ5bGx3TCe1n109ecCt+cpww7wwWhKA==}
+    engines: {node: '>=10.13.0'}
+    peerDependencies:
+      '@rspack/core': 0.x || 1.x || 2.x
       webpack: ^5.20.0
     peerDependenciesMeta:
       '@rspack/core':
@@ -11999,7 +12011,7 @@ snapshots:
     optionalDependencies:
       webpack: 5.108.3(postcss@8.5.10)(webpack-cli@6.0.1)
 
-  html-webpack-plugin@5.6.7(webpack@5.108.4):
+  html-webpack-plugin@5.6.8(webpack@5.108.4):
     dependencies:
       '@types/html-minifier-terser': 6.1.0
       html-minifier-terser: 6.1.0

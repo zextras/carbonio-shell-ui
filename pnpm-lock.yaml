@@ -169,8 +169,8 @@ importers:
         specifier: 10.5.4
         version: 10.5.4(postcss@8.5.15)
       copy-webpack-plugin:
-        specifier: 13.0.1
-        version: 13.0.1(webpack@5.108.4)
+        specifier: 14.0.0
+        version: 14.0.0(webpack@5.108.4)
       core-js:
         specifier: 3.49.0
         version: 3.49.0
@@ -3322,6 +3322,12 @@ packages:
     peerDependencies:
       webpack: ^5.1.0
 
+  copy-webpack-plugin@14.0.0:
+    resolution: {integrity: sha512-3JLW90aBGeaTLpM7mYQKpnVdgsUZRExY55giiZgLuX/xTQRUs1dOCwbBnWnvY6Q6rfZoXMNwzOQJCSZPppfqXA==}
+    engines: {node: '>= 20.9.0'}
+    peerDependencies:
+      webpack: ^5.1.0
+
   core-js-compat@3.49.0:
     resolution: {integrity: sha512-VQXt1jr9cBz03b331DFDCCP90b3fanciLkgiOoy8SBHy06gNf+vQ1A3WFLqG7I8TipYIKeYK9wxd0tUrvHcOZA==}
 
@@ -6152,6 +6158,10 @@ packages:
 
   serialize-javascript@6.0.2:
     resolution: {integrity: sha512-Saa1xPByTTq2gdeFZYLLo+RFE35NHZkAbqZeWNd3BpzppeVisAqpDjcp8dyf6uIvEqJRd46jemmyA4iFIeVk8g==}
+
+  serialize-javascript@7.1.1:
+    resolution: {integrity: sha512-k3CMsaIvvdSwm8oLB4MXSl0wH2/cwlH7xGcnRd2DaeRmBkbzYmyT8j0tsX60DwD1eRwHTpNpH8ljKu9oUT1MeQ==}
+    engines: {node: '>=20.0.0'}
 
   serve-index@1.9.2:
     resolution: {integrity: sha512-KDj11HScOaLmrPxl70KYNW1PksP4Nb/CLL2yvC+Qd2kHMPEEpfc4Re2e4FOay+bC/+XQl/7zAcWON3JVo5v3KQ==}
@@ -10672,12 +10682,12 @@ snapshots:
       tinyglobby: 0.2.17
       webpack: 5.108.3(postcss@8.5.10)(webpack-cli@6.0.1)
 
-  copy-webpack-plugin@13.0.1(webpack@5.108.4):
+  copy-webpack-plugin@14.0.0(webpack@5.108.4):
     dependencies:
       glob-parent: 6.0.2
       normalize-path: 3.0.0
       schema-utils: 4.3.3
-      serialize-javascript: 6.0.2
+      serialize-javascript: 7.1.1
       tinyglobby: 0.2.17
       webpack: 5.108.4(postcss@8.5.15)(webpack-cli@6.0.1)
 
@@ -13706,6 +13716,8 @@ snapshots:
   serialize-javascript@6.0.2:
     dependencies:
       randombytes: 2.1.0
+
+  serialize-javascript@7.1.1: {}
 
   serve-index@1.9.2:
     dependencies:

@@ -1,3 +1,15 @@
+## [15.2.0](https://github.com/zextras/carbonio-shell-ui/compare/v15.1.4...v15.2.0) (2026-09-03)
+
+### Features
+
+* update HTML lang attribute dynamically based on selected locale ([5fc3f6a](https://github.com/zextras/carbonio-shell-ui/commit/5fc3f6abf0ceb40feae46dc9635c20347c22f2b8)), closes [#876](https://github.com/zextras/carbonio-shell-ui/issues/876)
+
+### Bug Fixes
+
+* **ci:** run Docker build stages as root ([c0547bd](https://github.com/zextras/carbonio-shell-ui/commit/c0547bd88da632f99c780e03848fb63e59659508))
+* **deps:** bump @zextras/carbonio-design-system from 12.0.4 to 12.1.0 ([#891](https://github.com/zextras/carbonio-shell-ui/issues/891)) ([9c7f248](https://github.com/zextras/carbonio-shell-ui/commit/9c7f24820b082648af5604fb79637b1723591168))
+* let guests load feature-gated modules on focus-mode routes ([#877](https://github.com/zextras/carbonio-shell-ui/issues/877)) ([e705cd1](https://github.com/zextras/carbonio-shell-ui/commit/e705cd11e461190ca147411f9d08268b03938353))
+
 ## [15.1.4](https://github.com/zextras/carbonio-shell-ui/compare/v15.1.3...v15.1.4) (2026-08-13)
 
 ### Bug Fixes

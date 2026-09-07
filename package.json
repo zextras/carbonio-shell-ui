@@ -106,7 +106,7 @@
 		"css-loader": "6.11.0",
 		"dotenv": "17.4.2",
 		"eslint": "8.57.1",
-		"eslint-plugin-notice": "0.9.10",
+		"eslint-plugin-notice": "1.0.0",
 		"html-webpack-plugin": "5.6.8",
 		"husky": "9.1.7",
 		"identity-obj-proxy": "3.0.0",

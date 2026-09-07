@@ -45,8 +45,8 @@ importers:
         specifier: 3.0.6
         version: 3.0.6
       immer:
-        specifier: 10.2.0
-        version: 10.2.0
+        specifier: 11.1.18
+        version: 11.1.18
       lodash:
         specifier: 4.18.1
         version: 4.18.1
@@ -67,7 +67,7 @@ importers:
         version: 6.30.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       zustand:
         specifier: 5.0.15
-        version: 5.0.15(@types/react@18.3.31)(immer@10.2.0)(react@18.3.1)
+        version: 5.0.15(@types/react@18.3.31)(immer@11.1.18)(react@18.3.1)
     devDependencies:
       '@babel/core':
         specifier: 7.29.7
@@ -4541,8 +4541,8 @@ packages:
     engines: {node: '>=0.10.0'}
     hasBin: true
 
-  immer@10.2.0:
-    resolution: {integrity: sha512-d/+XTN3zfODyjr89gM3mPq1WNX2B8pYsu7eORitdwyA2sBubnTl3laYlBk4sXY5FUa5qTZGBDPJICVbvqzjlbw==}
+  immer@11.1.18:
+    resolution: {integrity: sha512-EQyQtLiYW029lyoczMl/Hh4Xu7cDecSc58JRYpHyL4tIAu3eqd1yJzQX04d2BZHDkzFFvm6qJEJWOtfDSWAXbQ==}
 
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
@@ -12248,7 +12248,7 @@ snapshots:
   image-size@0.5.5:
     optional: true
 
-  immer@10.2.0: {}
+  immer@11.1.18: {}
 
   import-fresh@3.3.1:
     dependencies:
@@ -15062,8 +15062,8 @@ snapshots:
 
   yoctocolors@2.1.2: {}
 
-  zustand@5.0.15(@types/react@18.3.31)(immer@10.2.0)(react@18.3.1):
+  zustand@5.0.15(@types/react@18.3.31)(immer@11.1.18)(react@18.3.1):
     optionalDependencies:
       '@types/react': 18.3.31
-      immer: 10.2.0
+      immer: 11.1.18
       react: 18.3.1

@@ -1,8 +1,9 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "github>zextras/infra-renovate-config",
-    "github>zextras/infra-renovate-config:docker",
-    "github>zextras/infra-renovate-config:javascript"
-  ]
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": [
+		"github>zextras/infra-renovate-config",
+		"github>zextras/infra-renovate-config:docker",
+		"github>zextras/infra-renovate-config:javascript"
+	],
+	"rebaseWhen": "behind-base-branch"
 }

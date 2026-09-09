@@ -1,3 +1,10 @@
+## [15.2.1](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.0...v15.2.1) (2026-09-09)
+
+### Bug Fixes
+
+* **deps:** pin conventional-changelog-conventionalcommits to 9.3.1 ([#898](https://github.com/zextras/carbonio-shell-ui/issues/898)) ([58f1293](https://github.com/zextras/carbonio-shell-ui/commit/58f129386a726a055d8fe99dfc155c496a071e8d))
+* **deps:** update dependency react-router-dom to v6.30.6 [security] ([#896](https://github.com/zextras/carbonio-shell-ui/issues/896)) ([413c7ac](https://github.com/zextras/carbonio-shell-ui/commit/413c7aca8f8f40d528e0ed0b65b6eba49e71372d))
+
 ## [15.2.0](https://github.com/zextras/carbonio-shell-ui/compare/v15.1.4...v15.2.0) (2026-09-03)
 
 ### Features

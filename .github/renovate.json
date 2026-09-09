@@ -5,5 +5,22 @@
 		"github>zextras/infra-renovate-config:docker",
 		"github>zextras/infra-renovate-config:javascript"
 	],
-	"rebaseWhen": "behind-base-branch"
+	"rebaseWhen": "behind-base-branch",
+	"packageRules": [
+		{
+			"description": "Runtime minor/patch updates are bundled weekly by the update-deps skill: keep them listed in the Dependency Dashboard and open a PR only on demand",
+			"matchManagers": ["npm"],
+			"matchDepTypes": ["dependencies"],
+			"matchUpdateTypes": ["minor", "patch"],
+			"dependencyDashboardApproval": true
+		},
+		{
+			"description": "One weekly auto-merged devDependencies bundle instead of one PR (and one patch release) per package",
+			"matchManagers": ["npm"],
+			"matchDepTypes": ["devDependencies"],
+			"matchUpdateTypes": ["minor", "patch"],
+			"groupName": "devDependencies (weekly)",
+			"schedule": ["before 6am on monday"]
+		}
+	]
 }

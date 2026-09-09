@@ -62,12 +62,40 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 	const t = getT();
 	const account = useAccountStore((s) => s.account);
 	const accountSettings = useAccountStore((s) => s.settings);
-	const link = accountSettings?.attrs?.zimbraWebClientSupportedHelps || '';
-
+	// extDocs is an object that contains json e.g. { "Documentation" : "https://manuale.zextrascloud.it/" }'
+	const extDocs = accountSettings?.attrs?.zimbraWebClientSupportedHelps || [];
+	let documentationLink = '';
 	let docLinkDisabled = true;
+	const extraDopdownItems: DropdownItem[] = [];
 
-	if (link && link !== '' && typeof link === 'string') {
-		docLinkDisabled = false;
+	if (extDocs && extDocs !== '' && typeof extDocs === 'object' && Object.keys(extDocs).length > 0) {
+		// extract every object then parse the json to get the link
+		for (const key in extDocs) {
+			const obj = extDocs[key];
+			if (obj && obj !== '' && typeof obj === 'string') {
+				const jsonToObject = JSON.parse(obj);
+				if (jsonToObject && jsonToObject !== '' && 'Documentation' in jsonToObject) {
+					documentationLink = jsonToObject['Documentation'];
+					docLinkDisabled = false;
+				} else if (jsonToObject && jsonToObject !== '') {
+					// save a new dropdown item with the key and the link
+					// get key and value from jsonToObject and create a new dropdown item with the key as label and value as link
+					for (const key in jsonToObject) {
+						const value = jsonToObject[key];
+						if (value && value !== '' && typeof value === 'string') {
+							extraDopdownItems.push({
+								id: key.toLowerCase().replace(/\s/g, '-'),
+								label: key,
+								onClick: () => {
+									window.open(value, '_blank', 'noopener,noreferrer');
+								},
+								icon: 'InfoOutline'
+							});
+						}
+					}
+				}
+			}
+		}
 	} else {
 		docLinkDisabled = true;
 	}
@@ -93,12 +121,12 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 
 	// create onlick func to window target external link click
 	const externalLinkClick = useCallback((): void => {
-	    if (link && link !== '' && typeof link === 'string') {
-			window.open(link, '_blank', 'noopener,noreferrer');
+	    if (documentationLink && documentationLink !== '' && typeof documentationLink === 'string') {
+			window.open(documentationLink, '_blank', 'noopener,noreferrer');
 		} else {
 			noop();
 		}
-	}, [link]);
+	}, [documentationLink]);
 
 	const accountItems = useMemo(
 		(): DropdownItem[] => [
@@ -131,6 +159,7 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 				disabled: docLinkDisabled,
 				icon: 'InfoOutline'
 			},
+			...extraDopdownItems,
 			{
 				id: 'logout',
 				label: t('label.logout', 'Logout'),
@@ -141,7 +170,7 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 				icon: 'LogOut'
 			}
 		],
-		[account?.displayName, account?.name, accountMenuItems, reset, t, updateViews, docLinkDisabled]
+		[account?.displayName, account?.name, accountMenuItems, reset, t, updateViews, docLinkDisabled, extraDopdownItems]
 	);
 
 	const viewItems = useMemo(

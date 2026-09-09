@@ -1,3 +1,9 @@
+## [15.2.2](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.1...v15.2.2) (2026-09-09)
+
+### Other changes
+
+* bump a patch on dependency chore commits ([#899](https://github.com/zextras/carbonio-shell-ui/issues/899)) ([e013adf](https://github.com/zextras/carbonio-shell-ui/commit/e013adf88b1356f231ba61e366f4e5e091a813e9))
+
 ## [15.2.1](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.0...v15.2.1) (2026-09-09)
 
 ### Bug Fixes

@@ -1,3 +1,9 @@
+## [15.2.8](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.7...v15.2.8) (2026-09-10)
+
+### Other changes
+
+* **deps:** update sonarqube-scanner to 4.4.0 ([#908](https://github.com/zextras/carbonio-shell-ui/issues/908)) ([8acdc46](https://github.com/zextras/carbonio-shell-ui/commit/8acdc462ad61a0f97c7d02befc712627924b9939))
+
 ## [15.2.7](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.6...v15.2.7) (2026-09-10)
 
 ### Other changes

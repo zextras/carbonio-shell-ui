@@ -1,3 +1,9 @@
+## [15.2.5](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.4...v15.2.5) (2026-09-10)
+
+### Other changes
+
+* **deps:** update dependency vitest to v4.1.11 [security] ([#905](https://github.com/zextras/carbonio-shell-ui/issues/905)) ([238654c](https://github.com/zextras/carbonio-shell-ui/commit/238654c2c0cf1e7a257c5325593b6de377017690))
+
 ## [15.2.4](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.3...v15.2.4) (2026-09-10)
 
 ### Other changes

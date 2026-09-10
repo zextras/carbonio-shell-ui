@@ -1,3 +1,9 @@
+## [15.2.6](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.5...v15.2.6) (2026-09-10)
+
+### Other changes
+
+* **deps:** remove unused @types/webpack ([#904](https://github.com/zextras/carbonio-shell-ui/issues/904)) ([0861612](https://github.com/zextras/carbonio-shell-ui/commit/086161220f1124c76f12cb462ffbda6468889c98))
+
 ## [15.2.5](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.4...v15.2.5) (2026-09-10)
 
 ### Other changes

@@ -1,3 +1,9 @@
+## [15.2.4](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.3...v15.2.4) (2026-09-10)
+
+### Other changes
+
+* **deps:** remove unused webpack-cli ([#903](https://github.com/zextras/carbonio-shell-ui/issues/903)) ([77185b5](https://github.com/zextras/carbonio-shell-ui/commit/77185b5aa9a6bf7f1238611f73675b09f124b03c))
+
 ## [15.2.3](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.2...v15.2.3) (2026-09-09)
 
 ### Other changes

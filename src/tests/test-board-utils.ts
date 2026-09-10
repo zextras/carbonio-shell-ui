@@ -9,10 +9,38 @@ import { first, keys } from 'lodash';
 import { TESTID_SELECTORS } from './constants';
 import { mockedApps } from './test-app-utils';
 import { LOCAL_STORAGE_BOARD_SIZE } from '../constants';
+import { BOARD_DEFAULT_POSITION } from '../shell/boards/board-container';
 import type { Border } from '../shell/hooks/useResize';
 import { useBoardStore } from '../store/boards';
 import type { Board } from '../types/boards';
 import type { SizeAndPosition } from '../utils/utils';
+
+/*
+ * From jsdom 30 on, getComputedStyle resolves relative lengths the way browsers
+ * always have: `vh` against the viewport height, `rem` against the 16px root font
+ * size. Expectations that read computed styles (`toHaveStyle`) therefore have to be
+ * written in pixels; the ones reading emotion's rules (`toHaveStyleRule`) keep using
+ * the units the source declares.
+ */
+function remToPx(rem: number): string {
+	return `${rem * 16}px`;
+}
+
+function vhToPx(vh: number): string {
+	return `${(window.innerHeight * vh) / 100}px`;
+}
+
+/** The board default size (`height: 70vh; width: auto`) as getComputedStyle reports it. */
+export const BOARD_DEFAULT_COMPUTED_SIZE = {
+	height: vhToPx(70),
+	width: 'auto'
+};
+
+/** BOARD_DEFAULT_POSITION as getComputedStyle reports it. */
+export const BOARD_DEFAULT_COMPUTED_POSITION = {
+	...BOARD_DEFAULT_POSITION,
+	left: remToPx(1.5)
+};
 
 export type InitialSizeAndPosition = SizeAndPosition & {
 	clientLeft: number;

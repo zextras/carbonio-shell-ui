@@ -115,7 +115,7 @@
 		"msw": "2.15.0",
 		"postcss-loader": "8.2.1",
 		"semantic-release": "25.0.9",
-		"sonarqube-scanner": "4.3.8",
+		"sonarqube-scanner": "4.4.0",
 		"typescript": "5.9.3",
 		"vitest": "4.1.11",
 		"vitest-fail-on-console": "0.10.1",

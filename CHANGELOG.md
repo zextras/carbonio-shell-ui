@@ -1,3 +1,9 @@
+## [15.2.7](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.6...v15.2.7) (2026-09-10)
+
+### Other changes
+
+* **deps:** update jsdom to 30.0.1 ([#906](https://github.com/zextras/carbonio-shell-ui/issues/906)) ([289e8a8](https://github.com/zextras/carbonio-shell-ui/commit/289e8a8d8591f375cdb71e752fea7543f79b7a97))
+
 ## [15.2.6](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.5...v15.2.6) (2026-09-10)
 
 ### Other changes

@@ -1,3 +1,21 @@
+## [15.2.5](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.4...v15.2.5) (2026-09-10)
+
+### Other changes
+
+* **deps:** update dependency vitest to v4.1.11 [security] ([#905](https://github.com/zextras/carbonio-shell-ui/issues/905)) ([238654c](https://github.com/zextras/carbonio-shell-ui/commit/238654c2c0cf1e7a257c5325593b6de377017690))
+
+## [15.2.4](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.3...v15.2.4) (2026-09-10)
+
+### Other changes
+
+* **deps:** remove unused webpack-cli ([#903](https://github.com/zextras/carbonio-shell-ui/issues/903)) ([77185b5](https://github.com/zextras/carbonio-shell-ui/commit/77185b5aa9a6bf7f1238611f73675b09f124b03c))
+
+## [15.2.3](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.2...v15.2.3) (2026-09-09)
+
+### Other changes
+
+* **deps:** weekly update dependencies (2026-09-09) ([#902](https://github.com/zextras/carbonio-shell-ui/issues/902)) ([78fae6d](https://github.com/zextras/carbonio-shell-ui/commit/78fae6d2508882a8bfeefee37485940610b91968))
+
 ## [15.2.2](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.1...v15.2.2) (2026-09-09)
 
 ### Other changes

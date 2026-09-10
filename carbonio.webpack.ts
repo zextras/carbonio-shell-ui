@@ -4,13 +4,14 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
+/// <reference types="webpack-dev-server" />
+
 import { execSync } from 'child_process';
 import CopyPlugin from 'copy-webpack-plugin';
 import dotenv from 'dotenv';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
-import type { Compiler } from 'webpack';
-import type { WebpackConfiguration } from 'webpack-cli';
+import type { Compiler, Configuration } from 'webpack';
 
 dotenv.config();
 
@@ -19,12 +20,12 @@ const commitHash = execSync('git rev-parse HEAD').toString().trim();
 const baseStaticPath = `/static/iris/carbonio-shell-ui/${commitHash}/`;
 
 const configFn = (
-	initialConf: WebpackConfiguration,
+	initialConf: Configuration,
 	pkg: string,
 	options: { host: string; port: number },
 	mode: 'development' | 'production'
-): WebpackConfiguration => {
-	const conf: WebpackConfiguration = { ...initialConf };
+): Configuration => {
+	const conf: Configuration = { ...initialConf };
 	const server = `https://${options.host}`;
 	const root = 'carbonio';
 	conf.entry = {
@@ -112,7 +113,7 @@ const configFn = (
 		]
 	};
 	conf.externals = {};
-	const rules: NonNullable<WebpackConfiguration['module']>['rules'] = conf.module?.rules ?? [];
+	const rules: NonNullable<Configuration['module']>['rules'] = conf.module?.rules ?? [];
 	rules.push({
 		test: /\.(woff(2)?|ttf|eot)$/,
 		type: 'asset/resource',

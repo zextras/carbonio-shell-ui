@@ -110,7 +110,7 @@
 		"husky": "9.1.7",
 		"identity-obj-proxy": "3.0.0",
 		"is-ci": "4.1.0",
-		"jsdom": "29.1.1",
+		"jsdom": "30.0.1",
 		"mini-css-extract-plugin": "2.10.2",
 		"msw": "2.15.0",
 		"postcss-loader": "8.2.1",

@@ -5,7 +5,6 @@
  */
 import { act, screen, waitFor } from '@testing-library/react';
 
-import { BOARD_DEFAULT_POSITION } from './boards/board-container';
 import type { Border } from './hooks/useResize';
 import ShellView from './shell-view';
 import { HEADER_BAR_HEIGHT, LOCAL_STORAGE_BOARD_SIZE, PRIMARY_BAR_WIDTH } from '../constants';
@@ -13,6 +12,7 @@ import * as constants from '../constants';
 import { ICONS, TESTID_SELECTORS } from '../tests/constants';
 import { mockedApps, setupAppStore } from '../tests/test-app-utils';
 import {
+	BOARD_DEFAULT_COMPUTED_POSITION,
 	buildBoardSizeAndPosition,
 	buildMousePosition,
 	INITIAL_SIZE_AND_POS,
@@ -249,7 +249,7 @@ describe('Shell view', () => {
 			board2Element,
 			'a board re-opened after being closed should keep the resized size but reset to the default position'
 		).toHaveStyle({
-			...BOARD_DEFAULT_POSITION,
+			...BOARD_DEFAULT_COMPUTED_POSITION,
 			height: `${boardNewSizeAndPos.height}px`,
 			width: `${boardNewSizeAndPos.width}px`
 		});

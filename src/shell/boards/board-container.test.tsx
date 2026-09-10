@@ -7,7 +7,7 @@ import { act, screen, waitFor, within } from '@testing-library/react';
 import { Input } from '@zextras/carbonio-design-system';
 import { reduce, sample, size } from 'lodash';
 
-import { BOARD_DEFAULT_POSITION, BoardContainer } from './board-container';
+import { BoardContainer } from './board-container';
 import {
 	BOARD_MIN_VISIBILITY,
 	HEADER_BAR_HEIGHT,
@@ -19,6 +19,8 @@ import { reopenBoards, useBoardStore } from '../../store/boards';
 import { ICONS, TESTID_SELECTORS } from '../../tests/constants';
 import { mockedApps, setupAppStore } from '../../tests/test-app-utils';
 import {
+	BOARD_DEFAULT_COMPUTED_POSITION,
+	BOARD_DEFAULT_COMPUTED_SIZE,
 	buildBoardSizeAndPosition,
 	buildMousePosition,
 	setupBoardStore,
@@ -614,9 +616,8 @@ describe('Board container', () => {
 			).toEqual({})
 		);
 		expect(board, 'reset board should return to the default size and position').toHaveStyle({
-			height: '70vh',
-			width: 'auto',
-			...BOARD_DEFAULT_POSITION
+			...BOARD_DEFAULT_COMPUTED_SIZE,
+			...BOARD_DEFAULT_COMPUTED_POSITION
 		});
 	});
 
@@ -805,9 +806,8 @@ describe('Board container', () => {
 			board,
 			'resetting an enlarged board should return it to the default size and position'
 		).toHaveStyle({
-			height: '70vh',
-			width: 'auto',
-			...BOARD_DEFAULT_POSITION
+			...BOARD_DEFAULT_COMPUTED_SIZE,
+			...BOARD_DEFAULT_COMPUTED_POSITION
 		});
 	});
 
@@ -832,8 +832,7 @@ describe('Board container', () => {
 			board,
 			'moving a default-size board should update its position and keep the default size'
 		).toHaveStyle({
-			height: '70vh',
-			width: 'auto',
+			...BOARD_DEFAULT_COMPUTED_SIZE,
 			left: 0,
 			top: 0
 		});
@@ -876,8 +875,7 @@ describe('Board container', () => {
 			board,
 			'moving a default-size board twice should keep the latest position and the default size'
 		).toHaveStyle({
-			height: '70vh',
-			width: 'auto',
+			...BOARD_DEFAULT_COMPUTED_SIZE,
 			left: `${boardNewPosition.left}px`,
 			top: `${boardNewPosition.top}px`
 		});
@@ -981,8 +979,7 @@ describe('Board container', () => {
 			board,
 			'moving after a reset should set the new position while keeping the default size'
 		).toHaveStyle({
-			height: '70vh',
-			width: 'auto',
+			...BOARD_DEFAULT_COMPUTED_SIZE,
 			left: 0,
 			top: 0
 		});
@@ -1038,8 +1035,7 @@ describe('Board container', () => {
 			board,
 			`${actionName} action should not fire when a move is performed on it, so the board keeps the moved position`
 		).toHaveStyle({
-			height: '70vh',
-			width: 'auto',
+			...BOARD_DEFAULT_COMPUTED_SIZE,
 			left: `${boardNewPosition.left}px`,
 			top: `${boardNewPosition.top}px`
 		});
@@ -1088,9 +1084,8 @@ describe('Board container', () => {
 			board,
 			'move should be ignored on an enlarged board, so reducing it returns to the default size and position'
 		).toHaveStyle({
-			height: '70vh',
-			width: 'auto',
-			...BOARD_DEFAULT_POSITION
+			...BOARD_DEFAULT_COMPUTED_SIZE,
+			...BOARD_DEFAULT_COMPUTED_POSITION
 		});
 	});
 
@@ -1109,9 +1104,8 @@ describe('Board container', () => {
 				board,
 				'pressing Space on the focused enlarge button should reduce the board to the default size and position'
 			).toHaveStyle({
-				height: '70vh',
-				width: 'auto',
-				...BOARD_DEFAULT_POSITION
+				...BOARD_DEFAULT_COMPUTED_SIZE,
+				...BOARD_DEFAULT_COMPUTED_POSITION
 			})
 		);
 	});

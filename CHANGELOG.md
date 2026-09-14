@@ -1,3 +1,9 @@
+## [15.3.0](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.12...v15.3.0) (2026-09-14)
+
+### Features
+
+* **i18n:** add support for greek language ([#914](https://github.com/zextras/carbonio-shell-ui/issues/914)) ([3675230](https://github.com/zextras/carbonio-shell-ui/commit/367523065fb9506fe1754c4092ecf6aadbb31360))
+
 ## [15.2.12](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.11...v15.2.12) (2026-09-14)
 
 ### Other changes

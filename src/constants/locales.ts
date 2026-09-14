@@ -135,6 +135,12 @@ export const DATE_FNS_LOCALE: Record<
 			/* webpackMode: "lazy", webpackChunkName: "sl" */ import('date-fns/locale/sl').then(
 				({ sl }) => sl
 			)
+	},
+	el: {
+		localeImportPath: () =>
+			/* webpackMode: "lazy", webpackChunkName: "el" */ import('date-fns/locale/el').then(
+				({ el }) => el
+			)
 	}
 } as const;
 

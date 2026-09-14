@@ -132,6 +132,12 @@ export const STATIC_LOCALES: Record<string, LocaleValue> = {
 		value: 'sl',
 		labelKey: 'locale.label_slovenian',
 		labelDefaultValue: 'Slovenian - {{value}}'
+	},
+	el: {
+		name: 'Ελληνικά',
+		value: 'el',
+		labelKey: 'locale.label_greek',
+		labelDefaultValue: 'Greek - {{value}}'
 	}
 };
 

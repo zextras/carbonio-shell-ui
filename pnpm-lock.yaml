@@ -158,8 +158,8 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(vitest@4.1.11)
       '@zextras/carbonio-ui-configs':
-        specifier: 2.1.0
-        version: 2.1.0(@testing-library/dom@10.4.2)(@types/eslint@9.6.1)(typescript@5.9.3)
+        specifier: 2.1.1
+        version: 2.1.1(@testing-library/dom@10.4.2)(@types/eslint@9.6.1)(typescript@5.9.3)
       '@zextras/carbonio-ui-sdk':
         specifier: 2.3.12
         version: 2.3.12(tslib@2.8.1)(typescript@5.9.3)
@@ -2598,8 +2598,8 @@ packages:
       react: ^18.3.1
       react-dom: ^18.3.1
 
-  '@zextras/carbonio-ui-configs@2.1.0':
-    resolution: {integrity: sha512-eBHiSyLyGpWUJIfGHVBRVV0cY98oaQCNrTcjA4Jjh711t+LxdQd4sNYSwnsGBKAeVo21SNKH54jHj3SQSFBvPQ==}
+  '@zextras/carbonio-ui-configs@2.1.1':
+    resolution: {integrity: sha512-c8Fda9TMqtFT/Jia27SqvhcRJaAVg5ya6ZTJlgpaFdtMvtq7hssidWh/0UFgFVMmWl/Zkmjac78WQqR87N79ew==}
     peerDependencies:
       typescript: ^5.4
 
@@ -3813,12 +3813,12 @@ packages:
       '@typescript-eslint/parser':
         optional: true
 
-  eslint-plugin-jest-dom@5.5.0:
-    resolution: {integrity: sha512-CRlXfchTr7EgC3tDI7MGHY6QjdJU5Vv2RPaeeGtkXUHnKZf04kgzMPIJUXt4qKCvYWVVIEo9ut9Oq1vgXAykEA==}
+  eslint-plugin-jest-dom@5.10.1:
+    resolution: {integrity: sha512-IIJdzbACbhJUJyMAqpA9E9gxp1Gv29TeQ3DtL+pepwP8Oq2WiqjOB2HbnEIs23h0ewdKIZRDI56yLro2eUO+DA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0, npm: '>=6', yarn: '>=1'}
     peerDependencies:
       '@testing-library/dom': ^8.0.0 || ^9.0.0 || ^10.0.0
-      eslint: ^6.8.0 || ^7.0.0 || ^8.0.0 || ^9.0.0
+      eslint: ^6.8.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
     peerDependenciesMeta:
       '@testing-library/dom':
         optional: true
@@ -9836,7 +9836,7 @@ snapshots:
       react-datepicker: 7.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-dom: 18.3.1(react@18.3.1)
 
-  '@zextras/carbonio-ui-configs@2.1.0(@testing-library/dom@10.4.2)(@types/eslint@9.6.1)(typescript@5.9.3)':
+  '@zextras/carbonio-ui-configs@2.1.1(@testing-library/dom@10.4.2)(@types/eslint@9.6.1)(typescript@5.9.3)':
     dependencies:
       '@typescript-eslint/eslint-plugin': 6.21.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1)(typescript@5.9.3)
       '@typescript-eslint/parser': 6.21.0(eslint@8.57.1)(typescript@5.9.3)
@@ -9846,7 +9846,7 @@ snapshots:
       eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@8.57.1)
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@8.57.1)
       eslint-plugin-jest: 27.9.0(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@6.21.0(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1)(typescript@5.9.3))(eslint@8.57.1)(typescript@5.9.3)
-      eslint-plugin-jest-dom: 5.5.0(@testing-library/dom@10.4.2)(eslint@8.57.1)
+      eslint-plugin-jest-dom: 5.10.1(@testing-library/dom@10.4.2)(eslint@8.57.1)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.1)
       eslint-plugin-prettier: 5.5.6(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@8.57.1))(eslint@8.57.1)(prettier@3.8.4)
       eslint-plugin-react: 7.37.5(eslint@8.57.1)
@@ -11253,9 +11253,8 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-jest-dom@5.5.0(@testing-library/dom@10.4.2)(eslint@8.57.1):
+  eslint-plugin-jest-dom@5.10.1(@testing-library/dom@10.4.2)(eslint@8.57.1):
     dependencies:
-      '@babel/runtime': 7.29.7
       eslint: 8.57.1
       requireindex: 1.2.0
     optionalDependencies:

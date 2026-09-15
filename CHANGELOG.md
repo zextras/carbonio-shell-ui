@@ -1,3 +1,9 @@
+## [15.3.1](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.0...v15.3.1) (2026-09-15)
+
+### Other changes
+
+* **deps:** update @zextras/carbonio-ui-configs to 2.1.1 ([#916](https://github.com/zextras/carbonio-shell-ui/issues/916)) ([4543da1](https://github.com/zextras/carbonio-shell-ui/commit/4543da173a4f23431518cc829cb79a1c0146901d)), closes [#915](https://github.com/zextras/carbonio-shell-ui/issues/915)
+
 ## [15.3.0](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.12...v15.3.0) (2026-09-14)
 
 ### Features

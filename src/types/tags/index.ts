@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 /*
  * SPDX-FileCopyrightText: 2022 Zextras <https://www.zextras.com>
  *

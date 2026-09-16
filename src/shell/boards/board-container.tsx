@@ -349,11 +349,12 @@ export const BoardContainer = ({
 	const clickHandler = useCallback<
 		(onClickFn: IconButtonProps['onClick']) => IconButtonProps['onClick']
 	>(
-		(clickFn) => (event) => {
-			if (event.type !== 'click' || !event.defaultPrevented) {
-				clickFn(event);
-			}
-		},
+		(clickFn) =>
+			(event): void => {
+				if (event.type !== 'click' || !event.defaultPrevented) {
+					clickFn(event);
+				}
+			},
 		[]
 	);
 

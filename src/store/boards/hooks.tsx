@@ -38,11 +38,11 @@ export const BoardProvider = ({ children, id }: BoardProviderProps): React.JSX.E
 		() => ({
 			// at this point the id should be only one of the available boards,
 			// that's way the cast without further checks
-			getBoardContext: <T,>() => getBoardContextById(id) as T,
-			getBoard: <T,>() => getBoardById(id) as Board<T>,
-			closeBoard: () => closeBoard(id),
-			updateBoard: (b) => updateBoard(id, b),
-			setCurrentBoard: () => setCurrentBoard(id)
+			getBoardContext: <T,>(): T => getBoardContextById(id) as T,
+			getBoard: <T,>(): Board<T> => getBoardById(id) as Board<T>,
+			closeBoard: (): void => closeBoard(id),
+			updateBoard: (b): void => updateBoard(id, b),
+			setCurrentBoard: (): void => setCurrentBoard(id)
 		}),
 		[id]
 	);

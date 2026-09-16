@@ -155,7 +155,7 @@ export const useSessionTimeout = (sessionLifetime: number | undefined): void => 
 		// Add visibility change listener
 		document.addEventListener('visibilitychange', handleVisibilityChange);
 
-		return () => {
+		return (): void => {
 			expirationTimeouts.forEach((timeout) => {
 				clearTimeout(timeout);
 			});

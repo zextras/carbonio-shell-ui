@@ -61,7 +61,7 @@ const TrackerSetup = (): null => {
 			return undefined;
 		}
 		applyConsentState(postHog, sendAnalytics);
-		return () => {
+		return (): void => {
 			postHog.opt_out_capturing();
 		};
 	}, [postHog, sendAnalytics]);

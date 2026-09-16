@@ -129,7 +129,7 @@ export const useIdleTimeout = (
 		// Add visibility change listener for sleep/wake detection
 		document.addEventListener('visibilitychange', handleVisibilityChange);
 
-		return () => {
+		return (): void => {
 			// Cleanup
 			isMounted.current = false;
 			clearAllTimers();
@@ -149,7 +149,7 @@ export const useIdleTimeout = (
 
 		document.addEventListener('mouseup', debounceReset);
 
-		return () => {
+		return (): void => {
 			document.removeEventListener('mouseup', debounceReset);
 		};
 	}, [timeoutMs, isWarningVisible, debounceReset]);

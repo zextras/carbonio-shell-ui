@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 /*
  * SPDX-FileCopyrightText: 2021 Zextras <https://www.zextras.com>
  *
@@ -55,10 +54,10 @@ export type CarbonioAccessoryView<P> = {
 };
 export type PrimaryBarComponentProps = { active: boolean; onClick: () => void };
 export type SecondaryBarComponentProps = { expanded: boolean };
-export type AppViewComponentProps = {};
-export type BoardViewComponentProps = {};
-export type SettingsViewProps = {};
-export type PrimaryAccessoryViewProps = {};
+export type AppViewComponentProps = object;
+export type BoardViewComponentProps = object;
+export type SettingsViewProps = object;
+export type PrimaryAccessoryViewProps = object;
 export type SecondaryAccessoryViewProps = { expanded: boolean };
 export type PanelMode = 'closed' | 'overlap' | 'open';
 

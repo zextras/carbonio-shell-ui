@@ -1,3 +1,9 @@
+## [15.3.3](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.2...v15.3.3) (2026-09-16)
+
+### Bug Fixes
+
+* add the return types required by [@typescript-eslint](https://github.com/typescript-eslint) v8 ([#917](https://github.com/zextras/carbonio-shell-ui/issues/917)) ([9ac8a8c](https://github.com/zextras/carbonio-shell-ui/commit/9ac8a8cf59ce4fdb8059f1b5e72c8dd7bab3675e)), closes [zextras/carbonio-ui-configs#160](https://github.com/zextras/carbonio-ui-configs/issues/160)
+
 ## [15.3.2](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.1...v15.3.2) (2026-09-16)
 
 ### Other changes

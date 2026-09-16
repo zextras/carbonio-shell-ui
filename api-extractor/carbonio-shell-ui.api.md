@@ -212,7 +212,7 @@ type AppRouteDescriptor = {
 };
 
 // @public (undocumented)
-export type AppViewComponentProps = object;
+export type AppViewComponentProps = NonNullable<unknown>;
 
 // @public (undocumented)
 export type AudioNotificationConfig = {
@@ -345,7 +345,7 @@ type BoardState = {
 type BoardView = Omit<CarbonioView<BoardViewComponentProps>, 'route'>;
 
 // @public (undocumented)
-export type BoardViewComponentProps = object;
+export type BoardViewComponentProps = NonNullable<unknown>;
 
 // @public (undocumented)
 export type BooleanString = 'TRUE' | 'FALSE';
@@ -701,7 +701,7 @@ type PrimaryAccessoryView = CarbonioAccessoryView<PrimaryAccessoryViewProps> & {
 };
 
 // @public (undocumented)
-export type PrimaryAccessoryViewProps = object;
+export type PrimaryAccessoryViewProps = NonNullable<unknown>;
 
 // @public (undocumented)
 export type PrimaryBarComponentProps = {
@@ -939,7 +939,7 @@ type SettingsView = CarbonioView<SettingsViewProps> & {
 };
 
 // @public (undocumented)
-export type SettingsViewProps = object;
+export type SettingsViewProps = NonNullable<unknown>;
 
 // @public (undocumented)
 export const SHELL_APP_ID = "carbonio-shell-ui";

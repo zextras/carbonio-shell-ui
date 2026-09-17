@@ -1,3 +1,9 @@
+## [15.3.5](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.4...v15.3.5) (2026-09-17)
+
+### Bug Fixes
+
+* replace the empty object types flagged by [@typescript-eslint](https://github.com/typescript-eslint) v8 ([#918](https://github.com/zextras/carbonio-shell-ui/issues/918)) ([8335213](https://github.com/zextras/carbonio-shell-ui/commit/833521334f13dc6e0de3c4e5d29bedab0edfa82b)), closes [zextras/carbonio-ui-configs#160](https://github.com/zextras/carbonio-ui-configs/issues/160)
+
 ## [15.3.4](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.3...v15.3.4) (2026-09-16)
 
 ### Other changes

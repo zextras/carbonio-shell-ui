@@ -21,6 +21,19 @@
 			"matchUpdateTypes": ["minor", "patch"],
 			"groupName": "devDependencies (weekly)",
 			"schedule": ["before 6am on monday"]
+		},
+		{
+			"description": "Widen peer ranges instead of bumping them: the shared javascript preset forces rangeStrategy 'bump' globally, which narrows the range modules are built against (^6.30.0 -> ^6.30.6) without gaining anything. Widening stays silent for in-range releases and opens a PR only when a new major has to be allowed",
+			"matchManagers": ["npm"],
+			"matchDepTypes": ["peerDependencies"],
+			"rangeStrategy": "widen"
+		},
+		{
+			"description": "pnpm overrides are deliberate pins: keep minor/patch on the Dependency Dashboard like the runtime dependencies above, so only majors open a PR",
+			"matchManagers": ["npm"],
+			"matchDepTypes": ["pnpm.overrides"],
+			"matchUpdateTypes": ["minor", "patch"],
+			"dependencyDashboardApproval": true
 		}
 	]
 }

@@ -129,7 +129,7 @@ importers:
         version: 10.4.2
       '@testing-library/jest-dom':
         specifier: 7.0.1
-        version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.0)
+        version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.1)
       '@testing-library/react':
         specifier: 16.3.3
         version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -155,8 +155,8 @@ importers:
         specifier: 1.18.8
         version: 1.18.8
       '@vitest/coverage-istanbul':
-        specifier: 5.0.0
-        version: 5.0.0(vitest@5.0.0)
+        specifier: 5.0.1
+        version: 5.0.1(vitest@5.0.1)
       '@zextras/carbonio-ui-configs':
         specifier: 2.1.1
         version: 2.1.1(@testing-library/dom@10.4.2)(typescript@5.9.3)
@@ -218,11 +218,11 @@ importers:
         specifier: 5.9.3
         version: 5.9.3
       vitest:
-        specifier: 5.0.0
-        version: 5.0.0(@types/node@22.20.4)(@vitest/coverage-istanbul@5.0.0)(jsdom@30.1.0(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@22.20.4)(typescript@5.9.3))(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2))
+        specifier: 5.0.1
+        version: 5.0.1(@types/node@22.20.4)(@vitest/coverage-istanbul@5.0.1)(jsdom@30.1.0(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@22.20.4)(typescript@5.9.3))(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2))
       vitest-fail-on-console:
         specifier: 0.10.1
-        version: 0.10.1(@vitest/utils@4.1.11)(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2))(vitest@5.0.0)
+        version: 0.10.1(@vitest/utils@4.1.11)(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2))(vitest@5.0.1)
       webpack:
         specifier: 5.111.1
         version: 5.111.1(postcss@8.5.28)
@@ -2594,10 +2594,10 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@vitest/coverage-istanbul@5.0.0':
-    resolution: {integrity: sha512-L0Rh+O61F2FV3+Xc3iGqeW5Tp0fs41VXy0hth84UCcMZGqlTjM1n5PUDqdaJD2xmQ/jZY3SJ9k7A2IKpKZRT8A==}
+  '@vitest/coverage-istanbul@5.0.1':
+    resolution: {integrity: sha512-JROeZ7Yy4xOMXQALW6CHT3O165LlUCB55F0aQ1LBRuFOCPCnSM1vDx8YxZTs8uPIBW9lcEftfNfOvIj4IJ1i9g==}
     peerDependencies:
-      vitest: 5.0.0
+      vitest: 5.0.1
 
   '@vitest/istanbul-lib-coverage@1.0.1':
     resolution: {integrity: sha512-k3DJZ8LhMBK9NS4SclF1ASD3OgXEWDorbIcPTRDK0/Zae6fRvu+fJRxtFdLfHsa9Y24beCdPnoNZ4LviTNstfA==}
@@ -2615,8 +2615,8 @@ packages:
     resolution: {integrity: sha512-3/9S3YuBDg2X2+gM40jUTfwV66w8LrDUF/YPdqVElDwh/541cKSb8A7Eqd0N/Fza1FXeMp6XGzilLDEMOhk6Eg==}
     engines: {node: '>=22'}
 
-  '@vitest/mocker@5.0.0':
-    resolution: {integrity: sha512-66PGTMIiVJP3t4a5yxU9qPtf7MdTBs8jmToMvy+HVflB3Yy13WJZTtPePdvU+wjRV02SKK5doLbSA6o9pwOmiA==}
+  '@vitest/mocker@5.0.1':
+    resolution: {integrity: sha512-6K1DoBNAPGvuOcSsGA4D6x+5zEEff/KmOOP3uetT2TrGpVfI+HRHRnJJfKi5ib/g1vx8IYHQD8s0pbJz8WQI7Q==}
     peerDependencies:
       msw: ^2.4.9
       vite: 7.3.2
@@ -2629,8 +2629,8 @@ packages:
   '@vitest/pretty-format@4.1.11':
     resolution: {integrity: sha512-yiZzPbGTS9Sr/JpFl8zHrcIkAofNbFV6k21vIgQN/cY/oxZeXhJv5sc/MBJ5jFKWmWs+oJHw0UXLZjmf931+Vw==}
 
-  '@vitest/spy@5.0.0':
-    resolution: {integrity: sha512-uy+luWBAPw9XfthoHi5AkfHUnuPYEESjl0p/r+meoBnU8bxg5GDQ3Ey8MjcJ6sqahkL4PFyrvfMJJBw7LbU06g==}
+  '@vitest/spy@5.0.1':
+    resolution: {integrity: sha512-rbto/mF/SGERxEgYOek7Xm6B9b+y+mVoo+f4b2LymYO8zM1b7uB5nHuhVMTP2hxdzgxvGiZYGxGIaMvL5y180Q==}
 
   '@vitest/utils@4.1.11':
     resolution: {integrity: sha512-zTCVGpyFsGWBhllOyKlTw/vnr6D9qxsfSDyfbyZmTyjHw5N/VuvzHpHoQjm2ZJzn4RJgx5w4r7V0er69CmLgPQ==}
@@ -6818,20 +6818,20 @@ packages:
       vite: 7.3.2
       vitest: '>=0.26.2'
 
-  vitest@5.0.0:
-    resolution: {integrity: sha512-gpsMNoRhMjMktVxPtstOH4/PJuPyovVaMDr4oDilXaGH1EcqM2OE96SoHT2VIQ6fTGtTjqmHDrEu2X9RQiXf8Q==}
+  vitest@5.0.1:
+    resolution: {integrity: sha512-iA95lQbKEkvrtTkdAgnWbXfbipWiiWe/hDl2P5tMi6WFwD76G0NxXAGp/M9EOcYupeGJRr6wppMc7CoA41TQjg==}
     engines: {node: ^22.12.0 || ^24.0.0 || >=26.0.0}
     hasBin: true
     peerDependencies:
       '@edge-runtime/vm': '*'
       '@opentelemetry/api': ^1.9.0
       '@types/node': ^22.0.0 || >=24.0.0
-      '@vitest/browser-playwright': 5.0.0
-      '@vitest/browser-preview': 5.0.0
+      '@vitest/browser-playwright': 5.0.1
+      '@vitest/browser-preview': 5.0.1
       '@vitest/browser-webdriverio': ^5.0.0-beta.5 || >=5.0.0
-      '@vitest/coverage-istanbul': 5.0.0
-      '@vitest/coverage-v8': 5.0.0
-      '@vitest/ui': 5.0.0
+      '@vitest/coverage-istanbul': 5.0.1
+      '@vitest/coverage-v8': 5.0.1
+      '@vitest/ui': 5.0.1
       happy-dom: '*'
       jsdom: '*'
       vite: 7.3.2
@@ -9371,7 +9371,7 @@ snapshots:
       picocolors: 1.1.1
       pretty-format: 27.5.1
 
-  '@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.0)':
+  '@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.1)':
     dependencies:
       '@adobe/css-tools': 4.5.0
       '@testing-library/dom': 10.4.2
@@ -9381,7 +9381,7 @@ snapshots:
       picocolors: 1.1.1
       redent: 3.0.0
     optionalDependencies:
-      vitest: 5.0.0(@types/node@22.20.4)(@vitest/coverage-istanbul@5.0.0)(jsdom@30.1.0(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@22.20.4)(typescript@5.9.3))(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2))
+      vitest: 5.0.1(@types/node@22.20.4)(@vitest/coverage-istanbul@5.0.1)(jsdom@30.1.0(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@22.20.4)(typescript@5.9.3))(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2))
 
   '@testing-library/react@16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@18.3.7(@types/react@18.3.31))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -9788,7 +9788,7 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.12.2':
     optional: true
 
-  '@vitest/coverage-istanbul@5.0.0(vitest@5.0.0)':
+  '@vitest/coverage-istanbul@5.0.1(vitest@5.0.1)':
     dependencies:
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.31
@@ -9799,7 +9799,7 @@ snapshots:
       magicast: 0.5.5
       obug: 2.2.1
       tinyrainbow: 3.1.1
-      vitest: 5.0.0(@types/node@22.20.4)(@vitest/coverage-istanbul@5.0.0)(jsdom@30.1.0(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@22.20.4)(typescript@5.9.3))(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2))
+      vitest: 5.0.1(@types/node@22.20.4)(@vitest/coverage-istanbul@5.0.1)(jsdom@30.1.0(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@22.20.4)(typescript@5.9.3))(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2))
 
   '@vitest/istanbul-lib-coverage@1.0.1': {}
 
@@ -9821,10 +9821,10 @@ snapshots:
       '@vitest/istanbul-lib-coverage': 1.0.1
       obug: 2.2.1
 
-  '@vitest/mocker@5.0.0(msw@2.15.0(@types/node@22.20.4)(typescript@5.9.3))(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2))':
+  '@vitest/mocker@5.0.1(msw@2.15.0(@types/node@22.20.4)(typescript@5.9.3))(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2))':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
-      '@vitest/spy': 5.0.0
+      '@vitest/spy': 5.0.1
       estree-walker: 3.0.3
       magic-string: 1.4.1
     optionalDependencies:
@@ -9835,7 +9835,7 @@ snapshots:
     dependencies:
       tinyrainbow: 3.1.1
 
-  '@vitest/spy@5.0.0': {}
+  '@vitest/spy@5.0.1': {}
 
   '@vitest/utils@4.1.11':
     dependencies:
@@ -14389,17 +14389,17 @@ snapshots:
       less: 4.6.7
       terser: 5.51.2
 
-  vitest-fail-on-console@0.10.1(@vitest/utils@4.1.11)(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2))(vitest@5.0.0):
+  vitest-fail-on-console@0.10.1(@vitest/utils@4.1.11)(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2))(vitest@5.0.1):
     dependencies:
       '@vitest/utils': 4.1.11
       chalk: 5.6.2
       vite: 7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2)
-      vitest: 5.0.0(@types/node@22.20.4)(@vitest/coverage-istanbul@5.0.0)(jsdom@30.1.0(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@22.20.4)(typescript@5.9.3))(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2))
+      vitest: 5.0.1(@types/node@22.20.4)(@vitest/coverage-istanbul@5.0.1)(jsdom@30.1.0(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@22.20.4)(typescript@5.9.3))(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2))
 
-  vitest@5.0.0(@types/node@22.20.4)(@vitest/coverage-istanbul@5.0.0)(jsdom@30.1.0(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@22.20.4)(typescript@5.9.3))(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2)):
+  vitest@5.0.1(@types/node@22.20.4)(@vitest/coverage-istanbul@5.0.1)(jsdom@30.1.0(@noble/hashes@1.8.0))(msw@2.15.0(@types/node@22.20.4)(typescript@5.9.3))(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2)):
     dependencies:
       '@types/chai': 5.2.3
-      '@vitest/mocker': 5.0.0(msw@2.15.0(@types/node@22.20.4)(typescript@5.9.3))(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2))
+      '@vitest/mocker': 5.0.1(msw@2.15.0(@types/node@22.20.4)(typescript@5.9.3))(vite@7.3.2(@types/node@22.20.4)(jiti@2.7.0)(less@4.6.7)(terser@5.51.2))
       chai: 6.2.2
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
@@ -14414,7 +14414,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 22.20.4
-      '@vitest/coverage-istanbul': 5.0.0(vitest@5.0.0)
+      '@vitest/coverage-istanbul': 5.0.1(vitest@5.0.1)
       jsdom: 30.1.0(@noble/hashes@1.8.0)
     transitivePeerDependencies:
       - msw

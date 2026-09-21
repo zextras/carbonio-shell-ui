@@ -106,7 +106,7 @@ export const Loader = (): React.JSX.Element => {
 	useEffect(() => {
 		window.addEventListener(ApiEvents.AuthError, authErrorListener);
 
-		return () => {
+		return (): void => {
 			window.removeEventListener(ApiEvents.AuthError, authErrorListener);
 		};
 	}, [authErrorListener]);
@@ -136,7 +136,7 @@ export const Loader = (): React.JSX.Element => {
 				}
 			}
 		);
-		return () => {
+		return (): void => {
 			unloadAllApps();
 		};
 	}, [getSessionInfo]);

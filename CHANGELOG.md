@@ -1,3 +1,81 @@
+## [15.3.7](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.6...v15.3.7) (2026-09-21)
+
+### Other changes
+
+* **deps:** update devdependencies (weekly) ([#927](https://github.com/zextras/carbonio-shell-ui/issues/927)) ([5376546](https://github.com/zextras/carbonio-shell-ui/commit/5376546fce758fe1a0fc87f01e2817f50eb26f0c))
+
+## [15.3.6](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.5...v15.3.6) (2026-09-21)
+
+### Other changes
+
+* **deps:** lock file maintenance ([#928](https://github.com/zextras/carbonio-shell-ui/issues/928)) ([3d48055](https://github.com/zextras/carbonio-shell-ui/commit/3d480552b892684e007936c2ce429dc7c0f4be65))
+
+## [15.3.5](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.4...v15.3.5) (2026-09-17)
+
+### Bug Fixes
+
+* replace the empty object types flagged by [@typescript-eslint](https://github.com/typescript-eslint) v8 ([#918](https://github.com/zextras/carbonio-shell-ui/issues/918)) ([8335213](https://github.com/zextras/carbonio-shell-ui/commit/833521334f13dc6e0de3c4e5d29bedab0edfa82b)), closes [zextras/carbonio-ui-configs#160](https://github.com/zextras/carbonio-ui-configs/issues/160)
+
+## [15.3.4](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.3...v15.3.4) (2026-09-16)
+
+### Other changes
+
+* **deps:** update dependency zextras/jenkins-lib-common to v4.10.11 ([#919](https://github.com/zextras/carbonio-shell-ui/issues/919)) ([ef1565f](https://github.com/zextras/carbonio-shell-ui/commit/ef1565f9d0f4b0586455079e163d6362da235164))
+
+## [15.3.3](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.2...v15.3.3) (2026-09-16)
+
+### Bug Fixes
+
+* add the return types required by [@typescript-eslint](https://github.com/typescript-eslint) v8 ([#917](https://github.com/zextras/carbonio-shell-ui/issues/917)) ([9ac8a8c](https://github.com/zextras/carbonio-shell-ui/commit/9ac8a8cf59ce4fdb8059f1b5e72c8dd7bab3675e)), closes [zextras/carbonio-ui-configs#160](https://github.com/zextras/carbonio-ui-configs/issues/160)
+
+## [15.3.2](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.1...v15.3.2) (2026-09-16)
+
+### Other changes
+
+* **deps:** lock file maintenance ([#915](https://github.com/zextras/carbonio-shell-ui/issues/915)) ([753131d](https://github.com/zextras/carbonio-shell-ui/commit/753131d6b1bcfd7021493a4bf700fb7498b68401))
+
+## [15.3.1](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.0...v15.3.1) (2026-09-15)
+
+### Other changes
+
+* **deps:** update @zextras/carbonio-ui-configs to 2.1.1 ([#916](https://github.com/zextras/carbonio-shell-ui/issues/916)) ([4543da1](https://github.com/zextras/carbonio-shell-ui/commit/4543da173a4f23431518cc829cb79a1c0146901d)), closes [#915](https://github.com/zextras/carbonio-shell-ui/issues/915)
+
+## [15.3.0](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.12...v15.3.0) (2026-09-14)
+
+### Features
+
+* **i18n:** add support for greek language ([#914](https://github.com/zextras/carbonio-shell-ui/issues/914)) ([3675230](https://github.com/zextras/carbonio-shell-ui/commit/367523065fb9506fe1754c4092ecf6aadbb31360))
+
+## [15.2.12](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.11...v15.2.12) (2026-09-14)
+
+### Other changes
+
+* **deps:** weekly update dependencies (2026-09-14) ([#913](https://github.com/zextras/carbonio-shell-ui/issues/913)) ([8e52ebf](https://github.com/zextras/carbonio-shell-ui/commit/8e52ebfa8ef70851023852b1dbc1e8e9af86e279))
+
+## [15.2.11](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.10...v15.2.11) (2026-09-14)
+
+### Other changes
+
+* **deps:** update sonarqube-scanner to 5.0.0 ([#912](https://github.com/zextras/carbonio-shell-ui/issues/912)) ([84a42f5](https://github.com/zextras/carbonio-shell-ui/commit/84a42f502acbc1613c786cfbd85a4234a38750e8))
+
+## [15.2.10](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.9...v15.2.10) (2026-09-14)
+
+### Other changes
+
+* **deps:** update devdependencies (weekly) ([#910](https://github.com/zextras/carbonio-shell-ui/issues/910)) ([fb21ad7](https://github.com/zextras/carbonio-shell-ui/commit/fb21ad7b909c31e5ea55d4d2c7ed626b74199586))
+
+## [15.2.9](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.8...v15.2.9) (2026-09-11)
+
+### Other changes
+
+* **deps:** update dependency zextras/jenkins-lib-common to v4.10.10 ([#909](https://github.com/zextras/carbonio-shell-ui/issues/909)) ([80feaf7](https://github.com/zextras/carbonio-shell-ui/commit/80feaf7b96330162cb0933383613225beac337bf))
+
+## [15.2.8](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.7...v15.2.8) (2026-09-10)
+
+### Other changes
+
+* **deps:** update sonarqube-scanner to 4.4.0 ([#908](https://github.com/zextras/carbonio-shell-ui/issues/908)) ([8acdc46](https://github.com/zextras/carbonio-shell-ui/commit/8acdc462ad61a0f97c7d02befc712627924b9939))
+
 ## [15.2.7](https://github.com/zextras/carbonio-shell-ui/compare/v15.2.6...v15.2.7) (2026-09-10)
 
 ### Other changes

@@ -96,7 +96,7 @@
 		"@types/react": "18.3.31",
 		"@types/react-dom": "18.3.7",
 		"@types/webpack-env": "1.18.8",
-		"@vitest/coverage-istanbul": "4.1.11",
+		"@vitest/coverage-istanbul": "5.0.1",
 		"@zextras/carbonio-ui-configs": "2.1.1",
 		"@zextras/carbonio-ui-sdk": "2.3.13",
 		"autoprefixer": "10.6.1",
@@ -117,7 +117,7 @@
 		"semantic-release": "25.0.9",
 		"sonarqube-scanner": "5.0.0",
 		"typescript": "5.9.3",
-		"vitest": "4.1.11",
+		"vitest": "5.0.1",
 		"vitest-fail-on-console": "0.10.1",
 		"webpack": "5.111.1",
 		"webpack-dev-server": "5.2.6"

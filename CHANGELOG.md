@@ -1,3 +1,9 @@
+## [15.3.10](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.9...v15.3.10) (2026-09-29)
+
+### Other changes
+
+* **deps:** lock file maintenance ([#934](https://github.com/zextras/carbonio-shell-ui/issues/934)) ([a1dcce1](https://github.com/zextras/carbonio-shell-ui/commit/a1dcce1ced23582fc5e6277dc10172223812742d))
+
 ## [15.3.9](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.8...v15.3.9) (2026-09-25)
 
 ### Other changes

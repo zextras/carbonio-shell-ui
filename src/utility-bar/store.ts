@@ -12,8 +12,8 @@ export const useUtilityBarStore = create<UtilityBarStore>()((set) => ({
 	mode: 'closed',
 	current: undefined,
 	secondaryBarState: true,
-	setMode: (mode): void =>
-		set((s) => ({ mode, secondaryBarState: mode === 'open' ? false : s.secondaryBarState })),
+	// the secondary bar is collapsed only while the utility panel is open
+	setMode: (mode): void => set({ mode, secondaryBarState: mode !== 'open' }),
 	setCurrent: (current): void => set({ current }),
 	setSecondaryBarState: (secondaryBarState: boolean): void => set({ secondaryBarState })
 }));

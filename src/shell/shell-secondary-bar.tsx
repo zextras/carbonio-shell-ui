@@ -45,14 +45,6 @@ function getRootFontSize(): number {
 	return fontSize.endsWith('px') && value > 0 ? value : FALLBACK_ROOT_FONT_SIZE;
 }
 
-/**
- * Return the width (in px) the secondary bar takes while dragging, for the given pointer width (in px)
- */
-function clampSecondaryBarWidth(width: number): number {
-	const rootFontSize = getRootFontSize();
-	return snapSecondaryBarWidth(width / rootFontSize) * rootFontSize;
-}
-
 const ShellSecondaryBarComponent = ({
 	activeRoute
 }: {
@@ -78,16 +70,26 @@ const ShellSecondaryBarComponent = ({
 
 	const sidebarRef = useRef<HTMLDivElement>(null);
 	const [savedWidth, saveWidth] = useSecondaryBarWidth();
+	// value of 1rem in px, read once when the drag starts and reused on every mouse move,
+	// since reading the computed style forces a style recalculation
+	const rootFontSizeRef = useRef(FALLBACK_ROOT_FONT_SIZE);
 	// collapsed state of the width under the pointer, used while dragging to switch the UI as soon as
 	// the collapse threshold is crossed. Being a boolean, it causes a render only when the threshold is crossed
 	const [isCollapsedWhileResizing, setIsCollapsedWhileResizing] = useState(false);
+	// return the width (in px) the secondary bar takes while dragging, for the given pointer width (in px)
+	const clampWidth = useCallback((width: number) => {
+		const rootFontSize = rootFontSizeRef.current;
+		return snapSecondaryBarWidth(width / rootFontSize) * rootFontSize;
+	}, []);
 	const onResize = useCallback((width: number) => {
 		// the clamped width is either the icons-only width or at least the min width, so the threshold splits them
-		setIsCollapsedWhileResizing(width / getRootFontSize() < SECONDARY_BAR_WIDTH.collapseThreshold);
+		setIsCollapsedWhileResizing(
+			width < SECONDARY_BAR_WIDTH.collapseThreshold * rootFontSizeRef.current
+		);
 	}, []);
 	const onResizeEnd = useCallback(
 		(width: number) => {
-			saveWidth(width / getRootFontSize());
+			saveWidth(width / rootFontSizeRef.current);
 			// a drag made by the user wins over the temporary collapse
 			setIsNotForcedCollapsed(true);
 		},
@@ -95,10 +97,18 @@ const ShellSecondaryBarComponent = ({
 	);
 	const { onResizeStart, isResizing } = useHorizontalResize({
 		elementRef: sidebarRef,
-		clampWidth: clampSecondaryBarWidth,
+		clampWidth,
 		onResize,
 		onResizeEnd
 	});
+	const handleResizeStart = useCallback<React.MouseEventHandler>(
+		(event) => {
+			// the root font size can change between drags (e.g. scaling setting), so refresh it on each drag
+			rootFontSizeRef.current = getRootFontSize();
+			onResizeStart(event);
+		},
+		[onResizeStart]
+	);
 
 	const width = isNotForcedCollapsed ? savedWidth : SECONDARY_BAR_WIDTH.collapsed;
 	const expanded = isResizing ? !isCollapsedWhileResizing : !isSecondaryBarCollapsed(width);
@@ -141,7 +151,7 @@ const ShellSecondaryBarComponent = ({
 					))}
 				</Container>
 			</SidebarContainer>
-			<SecondaryBarDivider onResizeStart={onResizeStart} isResizing={isResizing} />
+			<SecondaryBarDivider onResizeStart={handleResizeStart} isResizing={isResizing} />
 		</>
 	);
 };

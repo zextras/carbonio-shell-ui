@@ -11,9 +11,10 @@ import type { UtilityBarStore } from '../types/misc';
 export const useUtilityBarStore = create<UtilityBarStore>()((set) => ({
 	mode: 'closed',
 	current: undefined,
-	secondaryBarState: true,
+	isSecondaryBarForcedCollapsed: false,
 	// the secondary bar is collapsed only while the utility panel is open
-	setMode: (mode): void => set({ mode, secondaryBarState: mode !== 'open' }),
+	setMode: (mode): void => set({ mode, isSecondaryBarForcedCollapsed: mode === 'open' }),
 	setCurrent: (current): void => set({ current }),
-	setSecondaryBarState: (secondaryBarState: boolean): void => set({ secondaryBarState })
+	setIsSecondaryBarForcedCollapsed: (isSecondaryBarForcedCollapsed: boolean): void =>
+		set({ isSecondaryBarForcedCollapsed })
 }));

@@ -50,9 +50,9 @@ const ShellSecondaryBarComponent = ({
 }: {
 	activeRoute?: AppRoute;
 }): React.ReactNode => {
-	// false while the utility panel is open: the bar is temporarily collapsed, without changing the saved width
-	const isNotForcedCollapsed = useUtilityBarStore((s) => s.secondaryBarState);
-	const setIsNotForcedCollapsed = useUtilityBarStore((s) => s.setSecondaryBarState);
+	// true while the utility panel is open: the bar is temporarily collapsed, without changing the saved width
+	const isForcedCollapsed = useUtilityBarStore((s) => s.isSecondaryBarForcedCollapsed);
+	const setIsForcedCollapsed = useUtilityBarStore((s) => s.setIsSecondaryBarForcedCollapsed);
 	const secondaryBarViews = useAppStore((s) => s.views.secondaryBar);
 	const secondaryBarAccessoryViews = useAppStore((s) => s.views.secondaryBarAccessories);
 	const accessories = useMemo(
@@ -91,9 +91,9 @@ const ShellSecondaryBarComponent = ({
 		(width: number) => {
 			saveWidth(width / rootFontSizeRef.current);
 			// a drag made by the user wins over the temporary collapse
-			setIsNotForcedCollapsed(true);
+			setIsForcedCollapsed(false);
 		},
-		[saveWidth, setIsNotForcedCollapsed]
+		[saveWidth, setIsForcedCollapsed]
 	);
 	const { onResizeStart, isResizing } = useHorizontalResize({
 		elementRef: sidebarRef,
@@ -110,7 +110,7 @@ const ShellSecondaryBarComponent = ({
 		[onResizeStart]
 	);
 
-	const width = isNotForcedCollapsed ? savedWidth : SECONDARY_BAR_WIDTH.collapsed;
+	const width = isForcedCollapsed ? SECONDARY_BAR_WIDTH.collapsed : savedWidth;
 	const expanded = isResizing ? !isCollapsedWhileResizing : !isSecondaryBarCollapsed(width);
 
 	return disabled ? null : (

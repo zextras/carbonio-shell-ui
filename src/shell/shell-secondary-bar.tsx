@@ -41,7 +41,7 @@ const FALLBACK_ROOT_FONT_SIZE = 16;
  */
 function getRootFontSize(): number {
 	const { fontSize } = getComputedStyle(document.documentElement);
-	const value = parseFloat(fontSize);
+	const value = Number.parseFloat(fontSize);
 	return fontSize.endsWith('px') && value > 0 ? value : FALLBACK_ROOT_FONT_SIZE;
 }
 

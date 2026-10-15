@@ -23,7 +23,8 @@ const TestComponent = ({ expanded }: SecondaryBarComponentProps): React.JSX.Elem
 );
 const AppViewComponent = (): React.JSX.Element => <div>app view component</div>;
 
-const ROOT_FONT_SIZE = 16;
+document.documentElement.style.fontSize = '16px';
+const ROOT_FONT_SIZE = Number.parseFloat(getComputedStyle(document.documentElement).fontSize);
 const DEFAULT_WIDTH_PX = SECONDARY_BAR_WIDTH.default * ROOT_FONT_SIZE;
 const COLLAPSED_WIDTH_PX = SECONDARY_BAR_WIDTH.collapsed * ROOT_FONT_SIZE;
 

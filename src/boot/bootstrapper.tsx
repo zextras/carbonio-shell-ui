@@ -6,7 +6,7 @@
 
 import React, { useEffect } from 'react';
 
-import { SnackbarManager } from '@zextras/carbonio-design-system';
+import { ModalManager, SnackbarManager } from '@zextras/carbonio-design-system';
 import { Route, Routes, useParams } from 'react-router-dom';
 
 import AppLoaderMounter from './app/app-loader-mounter';
@@ -33,16 +33,18 @@ const Bootstrapper = (): React.JSX.Element => (
 		<ShellI18nextProvider>
 			<TrackerProvider>
 				<SnackbarManager>
-					<Loader />
-					{IS_FOCUS_MODE && (
-						<Routes>
-							<Route path={'/:route/*'} element={<FocusModeListener />} />
-						</Routes>
-					)}
-					<DefaultViewsRegister />
-					<NotificationPermissionChecker />
-					<AppLoaderMounter />
-					<ShellView />
+					<ModalManager>
+						<Loader />
+						{IS_FOCUS_MODE && (
+							<Routes>
+								<Route path={'/:route/*'} element={<FocusModeListener />} />
+							</Routes>
+						)}
+						<DefaultViewsRegister />
+						<NotificationPermissionChecker />
+						<AppLoaderMounter />
+						<ShellView />
+					</ModalManager>
 				</SnackbarManager>
 			</TrackerProvider>
 		</ShellI18nextProvider>

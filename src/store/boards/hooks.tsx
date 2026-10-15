@@ -5,8 +5,14 @@
  */
 import React, { createContext, useContext, useMemo } from 'react';
 
-import { closeBoard, setCurrentBoard, updateBoard, useBoardStore } from './store';
-import type { Board } from '../../types/boards';
+import {
+	closeBoard,
+	setBoardContentStatus,
+	setCurrentBoard,
+	updateBoard,
+	useBoardStore
+} from './store';
+import type { Board, BoardContentStatus } from '../../types/boards';
 
 export const useBoardById = <T,>(id: string): Board<T> | undefined =>
 	useBoardStore((s) => s.boards[id]) as Board<T> | undefined;
@@ -23,6 +29,7 @@ export type BoardHooksContext = {
 	closeBoard: () => void;
 	updateBoard: (b: Partial<Board>) => void;
 	setCurrentBoard: () => void;
+	setContentStatus: (contentStatus: BoardContentStatus) => void;
 	getBoardContext: <T>() => T;
 	getBoard: <T>() => Board<T>;
 };
@@ -42,7 +49,8 @@ export const BoardProvider = ({ children, id }: BoardProviderProps): React.JSX.E
 			getBoard: <T,>(): Board<T> => getBoardById(id) as Board<T>,
 			closeBoard: (): void => closeBoard(id),
 			updateBoard: (b): void => updateBoard(id, b),
-			setCurrentBoard: (): void => setCurrentBoard(id)
+			setCurrentBoard: (): void => setCurrentBoard(id),
+			setContentStatus: (contentStatus): void => setBoardContentStatus(id, contentStatus)
 		}),
 		[id]
 	);

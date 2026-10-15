@@ -51,6 +51,7 @@ export {
 export {
 	closeBoard,
 	updateBoard,
+	setBoardContentStatus,
 	updateBoardContext,
 	getBoardById,
 	getBoardContextById,

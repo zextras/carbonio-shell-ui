@@ -5,13 +5,13 @@
  */
 
 @container tab (width < calc(3rem + 3ch)) {
-    .tab-close-icon-button {
-        display: none !important;
-    }
+	.tab-close-icon-button {
+		display: none !important;
+	}
 }
 
 @container tab (width < calc(2rem)) {
-    .tab-text {
-        display: none !important;
-    }
+	.tab-text {
+		display: none !important;
+	}
 }

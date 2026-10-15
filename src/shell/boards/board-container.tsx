@@ -26,6 +26,7 @@ import { debounce, isEmpty, map, noop, size } from 'lodash';
 import { AppBoard } from './board';
 import { TabsList } from './board-tab-list';
 import { ResizableContainer } from './resizable-container';
+import { useBoardCloseGuard, useBoardsBeforeUnload } from './use-board-close-guard';
 import {
 	BOARD_CONTAINER_ZINDEX,
 	BOARD_HEADER_HEIGHT,
@@ -37,8 +38,6 @@ import {
 } from '../../constants';
 import { useAppStore } from '../../store/app';
 import {
-	closeAllBoards,
-	closeBoard,
 	expandBoards,
 	minimizeBoards,
 	onGoToPanel,
@@ -46,6 +45,7 @@ import {
 	setCurrentBoard,
 	useBoardStore
 } from '../../store/boards';
+import { getBoardIcon, hasPendingChanges } from '../../store/boards/utils';
 import { getT } from '../../store/i18n/hooks';
 import type { SizeAndPosition } from '../../utils/utils';
 import { setElementSizeAndPosition } from '../../utils/utils';
@@ -148,6 +148,7 @@ interface ListItemContentProps {
 	selected?: boolean;
 	app?: string;
 	boardId: string;
+	pendingChanges?: boolean;
 }
 
 function ListItemContent({
@@ -155,15 +156,17 @@ function ListItemContent({
 	label,
 	selected,
 	app,
-	boardId
+	boardId,
+	pendingChanges
 }: Readonly<ListItemContentProps>): React.JSX.Element {
 	const t = getT();
+	const { requestCloseBoard } = useBoardCloseGuard();
 	const onClose = useCallback<IconButtonProps['onClick']>(
 		(ev) => {
 			ev.stopPropagation();
-			closeBoard(boardId);
+			requestCloseBoard(boardId);
 		},
-		[boardId]
+		[boardId, requestCloseBoard]
 	);
 	return (
 		<Container orientation="horizontal" mainAlignment="flex-start" gap={'0.5rem'}>
@@ -177,6 +180,9 @@ function ListItemContent({
 						t('board.from_app', 'From {{app}}', {
 							app
 						})}
+					{app &&
+						pendingChanges &&
+						` ${t('board.unsaved_changes.dropdown_item', '- unsaved changes')}`}
 				</Text>
 			</OverflowContainer>
 			<IconButton icon={'CloseOutline'} size={'large'} onClick={onClose} />
@@ -206,6 +212,8 @@ export const BoardContainer = ({
 	minimizeAllowed?: boolean;
 }): React.JSX.Element | null => {
 	const t = getT();
+	const { requestCloseAllBoards } = useBoardCloseGuard();
+	useBoardsBeforeUnload();
 	const { boards, minimized, expanded, current, orderedBoards } = useBoardStore();
 	const apps = useAppStore((s) => s.apps);
 
@@ -216,13 +224,14 @@ export const BoardContainer = ({
 				(boardId): DropdownItem => ({
 					id: boardId,
 					label: boards[boardId].title,
-					icon: boards[boardId].icon,
+					icon: getBoardIcon(boards[boardId]),
 					onClick: () => setCurrentBoard(boardId),
 					selected: boardId === current,
 					customComponent: (
 						<ListItemContent
 							label={boards[boardId].title}
-							icon={boards[boardId].icon}
+							icon={getBoardIcon(boards[boardId])}
+							pendingChanges={hasPendingChanges(boards[boardId])}
 							selected={boardId === current}
 							app={apps[boards[boardId].app].display}
 							boardId={boardId}
@@ -468,7 +477,7 @@ export const BoardContainer = ({
 									placement="top"
 									disabled={isMoving}
 								>
-									<IconButton icon="CloseOutline" onClick={clickHandler(closeAllBoards)} />
+									<IconButton icon="CloseOutline" onClick={clickHandler(requestCloseAllBoards)} />
 								</Tooltip>
 							</Actions>
 						</BoardHeader>

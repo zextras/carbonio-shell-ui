@@ -64,7 +64,6 @@ export const SecondaryBarDivider: FunctionComponent<SecondaryBarDividerProps> = 
 	isResizing
 }) => (
 	<Divider
-		data-testid="SecondaryBarResizeHandle"
 		role="separator"
 		aria-orientation="vertical"
 		$active={isResizing}

@@ -65,7 +65,7 @@ function expectSidebarWidth(widthInRem: number): void {
 function dragDividerTo(targetX: number, initialWidth = DEFAULT_WIDTH_PX): void {
 	const sidebar = screen.getByTestId('SideSecondaryBarContainer');
 	vi.spyOn(sidebar, 'getBoundingClientRect').mockReturnValue({ width: initialWidth } as DOMRect);
-	const divider = screen.getByTestId('SecondaryBarResizeHandle');
+	const divider = screen.getByRole('separator');
 	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseDown(divider, { button: 0, clientX: initialWidth });
 	// eslint-disable-next-line testing-library/prefer-user-event
@@ -96,7 +96,7 @@ describe('ShellSecondaryBar', () => {
 		it('should render the divider and start expanded at the default width', () => {
 			addTestRoute();
 			setup(<ShellSecondaryBar />, { initialRouterEntries: ['/test'] });
-			expect(screen.getByTestId('SecondaryBarResizeHandle')).toBeVisible();
+			expect(screen.getByRole('separator')).toBeVisible();
 			expectSidebarWidth(SECONDARY_BAR_WIDTH.default);
 			expect(screen.getByText('expanded')).toBeVisible();
 			expect(getSavedWidth()).toBeNull();
@@ -164,7 +164,7 @@ describe('ShellSecondaryBar', () => {
 			vi.spyOn(sidebar, 'getBoundingClientRect').mockReturnValue({
 				width: DEFAULT_WIDTH_PX
 			} as DOMRect);
-			const divider = screen.getByTestId('SecondaryBarResizeHandle');
+			const divider = screen.getByRole('separator');
 			// eslint-disable-next-line testing-library/prefer-user-event
 			fireEvent.mouseDown(divider, { button: 0, clientX: DEFAULT_WIDTH_PX });
 			expect(screen.getByText('expanded')).toBeVisible();
@@ -191,7 +191,7 @@ describe('ShellSecondaryBar', () => {
 			vi.spyOn(sidebar, 'getBoundingClientRect').mockReturnValue({
 				width: COLLAPSED_WIDTH_PX
 			} as DOMRect);
-			const divider = screen.getByTestId('SecondaryBarResizeHandle');
+			const divider = screen.getByRole('separator');
 			// eslint-disable-next-line testing-library/prefer-user-event
 			fireEvent.mouseDown(divider, { button: 0, clientX: COLLAPSED_WIDTH_PX });
 			expect(screen.getByText('collapsed')).toBeVisible();

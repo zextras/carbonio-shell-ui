@@ -1,3 +1,9 @@
+## [15.3.20](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.19...v15.3.20) (2026-10-21)
+
+### Other changes
+
+* **deps:** update dependency zextras/jenkins-lib-common to v5 ([#946](https://github.com/zextras/carbonio-shell-ui/issues/946)) ([fbb6e5d](https://github.com/zextras/carbonio-shell-ui/commit/fbb6e5d6d1707c83ddf223cc25db05d55ac3cc73))
+
 ## [15.3.19](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.18...v15.3.19) (2026-10-21)
 
 ### Other changes

@@ -1,3 +1,9 @@
+## [15.3.21](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.20...v15.3.21) (2026-10-22)
+
+### Bug Fixes
+
+* call /logout with POST ([#952](https://github.com/zextras/carbonio-shell-ui/issues/952)) ([dee123b](https://github.com/zextras/carbonio-shell-ui/commit/dee123bda51959f45d8ca2434d708fb4db2a4be8))
+
 ## [15.3.20](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.19...v15.3.20) (2026-10-21)
 
 ### Other changes

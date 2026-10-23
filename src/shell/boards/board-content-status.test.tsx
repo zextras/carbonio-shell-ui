@@ -163,6 +163,39 @@ describe('Board content status', () => {
 		expect(await screen.findByRole('button', { name: 'Close and discard' })).not.toHaveFocus();
 	});
 
+	test('keep editing on the close all modal shows the first board with unsaved changes', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		await user.click(await screen.findByRole('button', { name: /keep editing/i }));
+		expect(useBoardStore.getState().current).toBe('board-2');
+		expect(useBoardStore.getState().orderedBoards).toHaveLength(3);
+	});
+
+	test('dismissing the close all modal with esc shows the first board with unsaved changes', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		await screen.findByRole('button', { name: /keep editing/i });
+		await user.keyboard('{Escape}');
+		expect(useBoardStore.getState().current).toBe('board-2');
+	});
+
+	test('the close all modal lists the boards in the order of the tabs', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2', 'board-3'));
+		// the newest board is the leftmost tab
+		act(() => useBoardStore.setState({ orderedBoards: ['board-3', 'board-2', 'board-1'] }));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		const items = await screen.findAllByTestId(/^unsaved-item-/);
+		expect(items.map((item) => item.dataset.testid)).toEqual([
+			'unsaved-item-board-3',
+			'unsaved-item-board-2'
+		]);
+		await user.click(screen.getByRole('button', { name: /keep editing/i }));
+		expect(useBoardStore.getState().current).toBe('board-3');
+	});
+
 	test('the beforeunload handler is registered only while a board is dirty', () => {
 		const addSpy = vi.spyOn(window, 'addEventListener');
 		const removeSpy = vi.spyOn(window, 'removeEventListener');

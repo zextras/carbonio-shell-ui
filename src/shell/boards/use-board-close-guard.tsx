@@ -12,7 +12,7 @@ import { filter, map } from 'lodash';
 
 import { onBeforeShellExit } from '../../network/before-shell-exit';
 import { useAppStore } from '../../store/app';
-import { closeAllBoards, closeBoard, useBoardStore } from '../../store/boards';
+import { closeAllBoards, closeBoard, setCurrentBoard, useBoardStore } from '../../store/boards';
 import { getBoardIcon, hasPendingChanges } from '../../store/boards/utils';
 import { getT } from '../../store/i18n/hooks';
 import type { Board } from '../../types/boards';
@@ -31,8 +31,9 @@ const LIST_MAX_HEIGHT = '11rem';
 const UNSAVED_CHANGES_MODAL_ID = 'board-unsaved-changes';
 
 const getBoardsWithPendingChanges = (ids?: string[]): Board[] => {
-	const { boards } = useBoardStore.getState();
-	const candidates = ids ? ids.map((id) => boards[id]) : Object.values(boards);
+	const { boards, orderedBoards } = useBoardStore.getState();
+	// follow the order of the tabs, so that the first item is the leftmost tab
+	const candidates = map(ids ?? orderedBoards, (id) => boards[id]);
 	return filter(candidates, (board) => hasPendingChanges(board));
 };
 
@@ -48,7 +49,12 @@ export const useBoardCloseGuard = (): BoardCloseGuard => {
 	const { createModal, closeModal } = useModal();
 
 	const openConfirmationModal = useCallback(
-		(title: string, children: React.JSX.Element, onConfirm: () => void) => {
+		(
+			title: string,
+			children: React.JSX.Element,
+			onConfirm: () => void,
+			onKeepEditing?: () => void
+		) => {
 			createModal({
 				id: UNSAVED_CHANGES_MODAL_ID,
 				title,
@@ -63,7 +69,10 @@ export const useBoardCloseGuard = (): BoardCloseGuard => {
 					onConfirm();
 					closeModal(UNSAVED_CHANGES_MODAL_ID);
 				},
-				onClose: () => closeModal(UNSAVED_CHANGES_MODAL_ID),
+				onClose: () => {
+					closeModal(UNSAVED_CHANGES_MODAL_ID);
+					onKeepEditing?.();
+				},
 				children
 			});
 		},
@@ -90,7 +99,7 @@ export const useBoardCloseGuard = (): BoardCloseGuard => {
 	);
 
 	const askBoardCloseConfirmation = useCallback(
-		(boardsWithPendingChanges: Board[], onConfirm: () => void) => {
+		(boardsWithPendingChanges: Board[], onConfirm: () => void, onKeepEditing: () => void) => {
 			const { apps } = useAppStore.getState();
 			openConfirmationModal(
 				t('board.unsaved_changes.close_board_title', 'Close the board?'),
@@ -134,7 +143,8 @@ export const useBoardCloseGuard = (): BoardCloseGuard => {
 						))}
 					</ScrollableList>
 				</Container>,
-				onConfirm
+				onConfirm,
+				onKeepEditing
 			);
 		},
 		[openConfirmationModal, t]
@@ -155,7 +165,13 @@ export const useBoardCloseGuard = (): BoardCloseGuard => {
 	const requestCloseAllBoards = useCallback(() => {
 		const boardsWithPendingChanges = getBoardsWithPendingChanges();
 		if (boardsWithPendingChanges.length > 0) {
-			askBoardCloseConfirmation(boardsWithPendingChanges, closeAllBoards);
+			const [firstBoardWithPendingChanges] = boardsWithPendingChanges;
+			askBoardCloseConfirmation(boardsWithPendingChanges, closeAllBoards, () => {
+				// show the user where the unsaved changes are
+				if (useBoardStore.getState().boards[firstBoardWithPendingChanges.id]) {
+					setCurrentBoard(firstBoardWithPendingChanges.id);
+				}
+			});
 		} else {
 			closeAllBoards();
 		}

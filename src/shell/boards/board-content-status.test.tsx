@@ -7,6 +7,7 @@
 import { act, screen, within } from '@testing-library/react';
 
 import { BoardContainer } from './board-container';
+import { notifyBeforeShellExit } from '../../network/before-shell-exit';
 import { setBoardContentStatus, useBoardStore } from '../../store/boards';
 import { ICONS } from '../../tests/constants';
 import { mockedApps, setupAppStore } from '../../tests/test-app-utils';
@@ -155,6 +156,13 @@ describe('Board content status', () => {
 		expect(await screen.findByTestId('unsaved-item-board-2')).toBeVisible();
 	});
 
+	test('the initial focus of the confirmation modal is not on the destructive action', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		expect(await screen.findByRole('button', { name: 'Close and discard' })).not.toHaveFocus();
+	});
+
 	test('the beforeunload handler is registered only while a board is dirty', () => {
 		const addSpy = vi.spyOn(window, 'addEventListener');
 		const removeSpy = vi.spyOn(window, 'removeEventListener');
@@ -169,6 +177,16 @@ describe('Board content status', () => {
 		expect(event.defaultPrevented).toBe(true);
 		act(() => setBoardContentStatus('board-1', 'pristine'));
 		expect(removeSpy.mock.calls.filter(isBeforeUnload)).toHaveLength(1);
+	});
+
+	test('the beforeunload handler is removed when the shell is about to exit', () => {
+		setupBoardStore('board-1');
+		setup(<BoardContainer />);
+		act(() => setBoardContentStatus('board-1', 'dirty'));
+		act(() => notifyBeforeShellExit());
+		const event = new Event('beforeunload', { cancelable: true });
+		window.dispatchEvent(event);
+		expect(event.defaultPrevented).toBe(false);
 	});
 
 	test('the saving status keeps the dirty icon and the unsaved changes tooltip', async () => {

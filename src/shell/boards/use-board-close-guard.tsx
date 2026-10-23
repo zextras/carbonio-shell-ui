@@ -10,6 +10,7 @@ import styled from '@emotion/styled';
 import { Container, Icon, Padding, Row, Text, useModal } from '@zextras/carbonio-design-system';
 import { filter, map } from 'lodash';
 
+import { onBeforeShellExit } from '../../network/before-shell-exit';
 import { useAppStore } from '../../store/app';
 import { closeAllBoards, closeBoard, useBoardStore } from '../../store/boards';
 import { getBoardIcon, hasPendingChanges } from '../../store/boards/utils';
@@ -55,6 +56,8 @@ export const useBoardCloseGuard = (): BoardCloseGuard => {
 				confirmColor: 'error',
 				dismissLabel: t('board.unsaved_changes.keep_editing', 'Keep editing'),
 				showCloseIcon: true,
+				// the confirm button is focused by default: keep the focus on the modal to avoid discarding by mistake
+				focusModalContent: true,
 				maxHeight: MODAL_MAX_HEIGHT,
 				onConfirm: () => {
 					onConfirm();
@@ -181,7 +184,12 @@ export const useBoardsBeforeUnload = (): void => {
 			event.returnValue = '';
 		};
 		window.addEventListener('beforeunload', handler);
+		// the shell leaves the page on its own (logout, session expired): don't prompt the user
+		const unsubscribe = onBeforeShellExit(() => {
+			window.removeEventListener('beforeunload', handler);
+		});
 		return (): void => {
+			unsubscribe();
 			window.removeEventListener('beforeunload', handler);
 		};
 	}, [anyPendingChanges]);

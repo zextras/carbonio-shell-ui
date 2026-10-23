@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-import { act, screen, within } from '@testing-library/react';
+import { act, screen, waitFor, within } from '@testing-library/react';
 
 import { BoardContainer } from './board-container';
 import { notifyBeforeShellExit } from '../../network/before-shell-exit';
@@ -194,6 +194,42 @@ describe('Board content status', () => {
 		]);
 		await user.click(screen.getByRole('button', { name: /keep editing/i }));
 		expect(useBoardStore.getState().current).toBe('board-3');
+	});
+
+	test('the close all modal list follows the boards which have unsaved changes', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		expect(await screen.findByText(/This item has unsaved changes/)).toBeVisible();
+		act(() => setBoardContentStatus('board-3', 'dirty'));
+		expect(await screen.findByTestId('unsaved-item-board-3')).toBeVisible();
+		expect(screen.getByText(/These 2 items have unsaved changes/)).toBeVisible();
+		act(() => setBoardContentStatus('board-2', 'saved'));
+		expect(screen.queryByTestId('unsaved-item-board-2')).not.toBeInTheDocument();
+		expect(screen.getByText(/This item has unsaved changes/)).toBeVisible();
+	});
+
+	test('confirming the close all modal closes the boards which got unsaved changes meanwhile', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		await screen.findByRole('button', { name: /keep editing/i });
+		act(() => setBoardContentStatus('board-3', 'dirty'));
+		expect(await screen.findByTestId('unsaved-item-board-3')).toBeVisible();
+		await user.click(screen.getByRole('button', { name: /close and discard/i }));
+		expect(useBoardStore.getState().orderedBoards).toHaveLength(0);
+	});
+
+	test('the close all modal is dismissed when no board has unsaved changes anymore', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		await screen.findByRole('button', { name: /keep editing/i });
+		act(() => setBoardContentStatus('board-2', 'pristine'));
+		await waitFor(() =>
+			expect(screen.queryByRole('button', { name: /close and discard/i })).not.toBeInTheDocument()
+		);
+		expect(useBoardStore.getState().orderedBoards).toHaveLength(3);
 	});
 
 	test('the beforeunload handler is registered only while a board is dirty', () => {

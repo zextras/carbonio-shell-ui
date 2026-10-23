@@ -108,7 +108,7 @@ export function useLocalStorage<T>(
  */
 export function setLocalStorageItem<T>(key: string, value: React.SetStateAction<T>): void {
 	useLocalStorageStore.getState().setValue(key, value);
-	window.dispatchEvent(new Event('storage'));
+	globalThis.dispatchEvent(new Event('storage'));
 }
 
 export const exportForTest = createExportForTestOnly({ useLocalStorageStore });

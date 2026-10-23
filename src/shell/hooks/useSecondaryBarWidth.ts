@@ -7,11 +7,12 @@ import { useCallback, useMemo } from 'react';
 
 import { round } from 'lodash';
 
-import { useLocalStorage } from './useLocalStorage';
+import { setLocalStorageItem, useLocalStorage } from './useLocalStorage';
 import {
 	LOCAL_STORAGE_SECONDARY_BAR_WIDTH,
 	SECONDARY_BAR_WIDTH
 } from '../../constants/internal-constants';
+import { useUtilityBarStore } from '../../utility-bar/store';
 
 /**
  * Return the width (in rem) the secondary bar takes for the requested width:
@@ -67,3 +68,13 @@ export const useSecondaryBarWidth = (): [
 
 	return [width, saveWidth];
 };
+
+/**
+ * Open the secondary bar and persist its width.
+ * If widthInRem is omitted, it defaults to the default width of the secondary bar (20 rem).
+ */
+export function openSecondaryBar(widthInRem: number = SECONDARY_BAR_WIDTH.default): void {
+	const clampedWidth = round(normalizeSecondaryBarWidth(widthInRem), 3);
+	setLocalStorageItem(LOCAL_STORAGE_SECONDARY_BAR_WIDTH, clampedWidth);
+	useUtilityBarStore.getState().setIsSecondaryBarForcedCollapsed(false);
+}

@@ -103,4 +103,12 @@ export function useLocalStorage<T>(
 	return [storedValue, setValueForKey];
 }
 
+/**
+ * Update a value in the local storage store and notify listeners.
+ */
+export function setLocalStorageItem<T>(key: string, value: React.SetStateAction<T>): void {
+	useLocalStorageStore.getState().setValue(key, value);
+	window.dispatchEvent(new Event('storage'));
+}
+
 export const exportForTest = createExportForTestOnly({ useLocalStorageStore });

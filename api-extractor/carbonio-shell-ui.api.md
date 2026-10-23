@@ -675,6 +675,9 @@ export type NotificationConfig = {
     playSound?: boolean;
 } & PopupNotificationConfig & AudioNotificationConfig;
 
+// @public
+export function openSecondaryBar(widthInRem?: number): void;
+
 // @public (undocumented)
 type PanelMode = 'closed' | 'overlap' | 'open';
 

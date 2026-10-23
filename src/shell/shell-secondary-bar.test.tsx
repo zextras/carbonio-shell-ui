@@ -5,6 +5,7 @@
  */
 import { act, fireEvent } from '@testing-library/react';
 
+import { openSecondaryBar } from './hooks/useSecondaryBarWidth';
 import ShellSecondaryBar from './shell-secondary-bar';
 import {
 	LOCAL_STORAGE_SECONDARY_BAR_WIDTH,
@@ -249,6 +250,58 @@ describe('ShellSecondaryBar', () => {
 			});
 			expectSidebarWidth(25);
 			expect(getSavedWidth()).toBe(25);
+		});
+	});
+
+	describe('Control API', () => {
+		it('should open a collapsed secondary bar with default width (20 rem) when openSecondaryBar is called without arguments', () => {
+			setSavedWidth(SECONDARY_BAR_WIDTH.collapsed);
+			addTestRoute();
+			setup(<ShellSecondaryBar />, { initialRouterEntries: ['/test'] });
+			expectSidebarWidth(SECONDARY_BAR_WIDTH.collapsed);
+			expect(screen.getByText('collapsed')).toBeVisible();
+
+			act(() => {
+				openSecondaryBar();
+			});
+
+			expectSidebarWidth(SECONDARY_BAR_WIDTH.default);
+			expect(screen.getByText('expanded')).toBeVisible();
+			expect(getSavedWidth()).toBe(SECONDARY_BAR_WIDTH.default);
+		});
+
+		it('should open a collapsed secondary bar with custom width when specified', () => {
+			setSavedWidth(SECONDARY_BAR_WIDTH.collapsed);
+			addTestRoute();
+			setup(<ShellSecondaryBar />, { initialRouterEntries: ['/test'] });
+
+			act(() => {
+				openSecondaryBar(26);
+			});
+
+			expectSidebarWidth(26);
+			expect(screen.getByText('expanded')).toBeVisible();
+			expect(getSavedWidth()).toBe(26);
+		});
+
+		it('should reset isSecondaryBarForcedCollapsed when openSecondaryBar is called', () => {
+			setSavedWidth(25);
+			addTestRoute();
+			setup(<ShellSecondaryBar />, { initialRouterEntries: ['/test'] });
+
+			act(() => {
+				useUtilityBarStore.getState().setMode('open');
+			});
+			expectSidebarWidth(SECONDARY_BAR_WIDTH.collapsed);
+			expect(useUtilityBarStore.getState().isSecondaryBarForcedCollapsed).toBe(true);
+
+			act(() => {
+				openSecondaryBar();
+			});
+
+			expect(useUtilityBarStore.getState().isSecondaryBarForcedCollapsed).toBe(false);
+			expectSidebarWidth(SECONDARY_BAR_WIDTH.default);
+			expect(screen.getByText('expanded')).toBeVisible();
 		});
 	});
 });

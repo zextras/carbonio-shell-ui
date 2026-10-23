@@ -9,6 +9,7 @@ import { act, screen, waitFor, within } from '@testing-library/react';
 import { BoardContainer } from './board-container';
 import { notifyBeforeShellExit } from '../../network/before-shell-exit';
 import { setBoardContentStatus, useBoardStore } from '../../store/boards';
+import { useI18nStore } from '../../store/i18n/store';
 import { ICONS } from '../../tests/constants';
 import { mockedApps, setupAppStore } from '../../tests/test-app-utils';
 import { mockedBoardState, setupBoardStore } from '../../tests/test-board-utils';
@@ -231,6 +232,23 @@ describe('Board content status', () => {
 		);
 		expect(useBoardStore.getState().orderedBoards).toHaveLength(3);
 	});
+
+	test.each(['pl', 'ru', 'ro', 'sl', 'bs'])(
+		'the close all modal message is never the raw key with %s locale',
+		async (locale) => {
+			const { defaultI18n } = useI18nStore.getState();
+			await act(async () => {
+				await defaultI18n.changeLanguage(locale);
+			});
+			setupBoardStore('board-1', withDirtyStatus('board-2', 'board-3'));
+			const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+			await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+			expect(await screen.findByText(/These 2 items have unsaved changes/)).toBeVisible();
+			await act(async () => {
+				await defaultI18n.changeLanguage('en');
+			});
+		}
+	);
 
 	test('the beforeunload handler is registered only while a board is dirty', () => {
 		const addSpy = vi.spyOn(window, 'addEventListener');

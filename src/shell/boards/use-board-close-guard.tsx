@@ -70,6 +70,9 @@ const UnsavedBoardsContent = ({ onEmpty }: { onEmpty: () => void }): React.JSX.E
 		<Container crossAlignment="flex-start" gap="1rem" padding={{ vertical: 'small' }}>
 			<Text overflow="break-word">
 				{t('board.unsaved_changes.close_board_message', {
+					// plain default for the plural categories other than one/other (e.g. few, many, two)
+					defaultValue:
+						'These {{count}} items have unsaved changes. If you close the board now, the changes will be lost.',
 					defaultValue_one:
 						'This item has unsaved changes. If you close the board now, the changes will be lost.',
 					defaultValue_other:

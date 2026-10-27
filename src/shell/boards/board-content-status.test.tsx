@@ -260,8 +260,10 @@ describe('Board content status', () => {
 		act(() => setBoardContentStatus('board-1', 'dirty'));
 		expect(addSpy.mock.calls.filter(isBeforeUnload)).toHaveLength(1);
 		const event = new Event('beforeunload', { cancelable: true });
+		// defaultPrevented is not reliable here: on a generic event, setting returnValue to '' cancels it too
+		const preventDefault = vi.spyOn(event, 'preventDefault');
 		window.dispatchEvent(event);
-		expect(event.defaultPrevented).toBe(true);
+		expect(preventDefault).toHaveBeenCalled();
 		act(() => setBoardContentStatus('board-1', 'pristine'));
 		expect(removeSpy.mock.calls.filter(isBeforeUnload)).toHaveLength(1);
 	});
@@ -303,8 +305,10 @@ describe('Board content status', () => {
 		act(() => setBoardContentStatus('board-1', 'saving'));
 		expect(removeSpy.mock.calls.filter(isBeforeUnload)).toHaveLength(0);
 		const event = new Event('beforeunload', { cancelable: true });
+		// defaultPrevented is not reliable here: on a generic event, setting returnValue to '' cancels it too
+		const preventDefault = vi.spyOn(event, 'preventDefault');
 		window.dispatchEvent(event);
-		expect(event.defaultPrevented).toBe(true);
+		expect(preventDefault).toHaveBeenCalled();
 		act(() => setBoardContentStatus('board-1', 'saved'));
 		expect(removeSpy.mock.calls.filter(isBeforeUnload)).toHaveLength(1);
 	});

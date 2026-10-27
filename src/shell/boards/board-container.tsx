@@ -26,7 +26,11 @@ import { debounce, isEmpty, map, noop, size } from 'lodash';
 import { AppBoard } from './board';
 import { TabsList } from './board-tab-list';
 import { ResizableContainer } from './resizable-container';
-import { useBoardCloseGuard, useBoardsBeforeUnload } from './use-board-close-guard';
+import {
+	BoardCloseConfirmation,
+	useBoardCloseGuard,
+	useBoardsBeforeUnload
+} from './use-board-close-guard';
 import {
 	BOARD_CONTAINER_ZINDEX,
 	BOARD_HEADER_HEIGHT,
@@ -163,10 +167,17 @@ function ListItemContent({
 	const { requestCloseBoard } = useBoardCloseGuard();
 	const onClose = useCallback<IconButtonProps['onClick']>(
 		(ev) => {
-			ev.stopPropagation();
+			if (pendingChanges) {
+				// A confirmation modal is about to open: let the dropdown close itself.
+				// The default prevented skips the onClick of the item, so the board is not selected.
+				ev.preventDefault();
+			} else {
+				// Don't select the board and keep the menu open, to close more boards
+				ev.stopPropagation();
+			}
 			requestCloseBoard(boardId);
 		},
-		[boardId, requestCloseBoard]
+		[boardId, pendingChanges, requestCloseBoard]
 	);
 	return (
 		<Container orientation="horizontal" mainAlignment="flex-start" gap={'0.5rem'}>
@@ -486,6 +497,7 @@ export const BoardContainer = ({
 						</BoardDetailContainer>
 					</ResizableContainer>
 				</Board>
+				<BoardCloseConfirmation />
 			</BoardContainerComp>
 		)) ||
 		null

@@ -250,6 +250,62 @@ describe('Board content status', () => {
 		}
 	);
 
+	test('closing a board with unsaved changes from the dropdown closes the menu and focuses the modal', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: 'ChevronDown' }));
+		const list = await screen.findByTestId('dropdown-popper-list');
+		await user.click(within(list).getAllByTestId('icon: CloseOutline')[1]);
+		expect(await screen.findByText('Close title2?')).toBeVisible();
+		expect(screen.queryByTestId('dropdown-popper-list')).not.toBeInTheDocument();
+		// the board is not selected by the click on its close button
+		expect(useBoardStore.getState().current).toBe('board-1');
+		await user.click(screen.getByText(/has unsaved changes/));
+		await user.keyboard('{Escape}');
+		await waitFor(() => expect(screen.queryByText('Close title2?')).not.toBeInTheDocument());
+		expect(useBoardStore.getState().orderedBoards).toHaveLength(3);
+	});
+
+	test('closing a clean board from the dropdown keeps the menu open', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: 'ChevronDown' }));
+		const list = await screen.findByTestId('dropdown-popper-list');
+		await user.click(within(list).getAllByTestId('icon: CloseOutline')[0]);
+		expect(useBoardStore.getState().boards).not.toHaveProperty('board-1');
+		expect(screen.getByTestId('dropdown-popper-list')).toBeVisible();
+	});
+
+	test.each([
+		[
+			'a board',
+			(): HTMLElement => within(screen.getByTestId('board-tab-board-2')).getByTestId('icon: Close')
+		],
+		['all the boards', (): HTMLElement => screen.getByTestId(`icon: ${ICONS.closeBoard}`)]
+	])(
+		'the confirmation modal is closed even if the onClose of %s throws',
+		async (_, getCloseButton) => {
+			vi.spyOn(console, 'error').mockImplementation(() => undefined);
+			// the error thrown by the onClose reaches the window: mark it as handled
+			const handleWindowError = (event: ErrorEvent): void => event.preventDefault();
+			window.addEventListener('error', handleWindowError);
+			const failingBoard = {
+				...withDirtyStatus('board-2')['board-2'],
+				onClose: (): void => {
+					throw new Error('onClose failure');
+				}
+			};
+			setupBoardStore('board-1', { ...withDirtyStatus('board-2'), 'board-2': failingBoard });
+			const { user } = setup(<BoardContainer />);
+			await user.click(getCloseButton());
+			await user.click(await screen.findByRole('button', { name: /close and discard/i }));
+			await waitFor(() =>
+				expect(screen.queryByRole('button', { name: /close and discard/i })).not.toBeInTheDocument()
+			);
+			window.removeEventListener('error', handleWindowError);
+		}
+	);
+
 	test('the beforeunload handler is registered only while a board is dirty', () => {
 		const addSpy = vi.spyOn(window, 'addEventListener');
 		const removeSpy = vi.spyOn(window, 'removeEventListener');

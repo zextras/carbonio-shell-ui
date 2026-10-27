@@ -1,3 +1,39 @@
+## [15.3.24](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.23...v15.3.24) (2026-10-27)
+
+### Other changes
+
+* **deps:** update devdependencies (weekly) ([#954](https://github.com/zextras/carbonio-shell-ui/issues/954)) ([dc6f7d3](https://github.com/zextras/carbonio-shell-ui/commit/dc6f7d3a2b96e724ce78adb30ff6e74851b9c446))
+
+## [15.3.23](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.22...v15.3.23) (2026-10-27)
+
+### Other changes
+
+* **deps:** lock file maintenance ([#955](https://github.com/zextras/carbonio-shell-ui/issues/955)) ([0c72b07](https://github.com/zextras/carbonio-shell-ui/commit/0c72b07802cf03662e09dd1afca2514d8dec28ce))
+
+## [15.3.22](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.21...v15.3.22) (2026-10-23)
+
+### Other changes
+
+* **deps:** update dependency zextras/jenkins-lib-common to v5.1.0 ([#953](https://github.com/zextras/carbonio-shell-ui/issues/953)) ([0d7db80](https://github.com/zextras/carbonio-shell-ui/commit/0d7db807418e461cad2d1a37093f05184c4a4804))
+
+## [15.3.21](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.20...v15.3.21) (2026-10-22)
+
+### Bug Fixes
+
+* call /logout with POST ([#952](https://github.com/zextras/carbonio-shell-ui/issues/952)) ([dee123b](https://github.com/zextras/carbonio-shell-ui/commit/dee123bda51959f45d8ca2434d708fb4db2a4be8))
+
+## [15.3.20](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.19...v15.3.20) (2026-10-21)
+
+### Other changes
+
+* **deps:** update dependency zextras/jenkins-lib-common to v5 ([#946](https://github.com/zextras/carbonio-shell-ui/issues/946)) ([fbb6e5d](https://github.com/zextras/carbonio-shell-ui/commit/fbb6e5d6d1707c83ddf223cc25db05d55ac3cc73))
+
+## [15.3.19](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.18...v15.3.19) (2026-10-21)
+
+### Other changes
+
+* **deps:** update devdependencies (weekly) ([#944](https://github.com/zextras/carbonio-shell-ui/issues/944)) ([a9c4b4c](https://github.com/zextras/carbonio-shell-ui/commit/a9c4b4c3b9c1556a62357a611ca87ee1c5ffa36c))
+
 ## [15.3.18](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.17...v15.3.18) (2026-10-20)
 
 ### Other changes

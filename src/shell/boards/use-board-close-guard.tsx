@@ -18,18 +18,24 @@ import { getBoardIcon, hasPendingChanges } from '../../store/boards/utils';
 import { getT } from '../../store/i18n/hooks';
 import type { Board } from '../../types/boards';
 
-const ScrollableList = styled(Container)`
-	overflow-y: auto;
-`;
-
 // The modal never exceeds the viewport height minus this margin
-const MODAL_MAX_HEIGHT = 'calc(100vh - 80px)';
-// Approximate height taken by the modal content other than the list (title, text, buttons, paddings)
-const MODAL_FIXED_CONTENT_HEIGHT = '16rem';
+const MODAL_VIEWPORT_MARGIN = '5rem';
+const MODAL_MAX_HEIGHT = `calc(100vh - ${MODAL_VIEWPORT_MARGIN})`;
 const LIST_MIN_HEIGHT = '5rem';
 const LIST_MAX_HEIGHT = '11rem';
+// The modal is about 27.7rem high with the list at its max height: below this viewport height
+// it doesn't fit, so its body scrolls and the list must not scroll on its own
+const LIST_SCROLL_MIN_VIEWPORT_HEIGHT = '37.5rem';
 
-const UNSAVED_CHANGES_MODAL_ID = 'board-unsaved-changes';
+const ScrollableList = styled(Container)`
+	overflow-y: auto;
+	max-height: ${LIST_MAX_HEIGHT};
+
+	@media (max-height: ${LIST_SCROLL_MIN_VIEWPORT_HEIGHT}) {
+		max-height: none;
+		overflow-y: visible;
+	}
+`;
 
 const getBoardsWithPendingChanges = (ids?: string[]): Board[] => {
 	const { boards, orderedBoards } = useBoardStore.getState();
@@ -87,7 +93,6 @@ const UnsavedBoardsContent = ({ onEmpty }: { onEmpty: () => void }): React.JSX.E
 				gap="0.5rem"
 				height="auto"
 				minHeight={LIST_MIN_HEIGHT}
-				maxHeight={`clamp(${LIST_MIN_HEIGHT}, calc(100vh - 80px - ${MODAL_FIXED_CONTENT_HEIGHT}), ${LIST_MAX_HEIGHT})`}
 				tabIndex={0}
 				role="list"
 				aria-label={t('board.unsaved_changes.items_list_label', 'Items with unsaved changes')}

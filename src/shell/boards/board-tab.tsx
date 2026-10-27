@@ -100,7 +100,7 @@ export const AppBoardTab = ({
 	);
 
 	const tooltipLabel = hasPendingChanges
-		? `${title} ${t('board.unsaved_changes.tab_tooltip', '(unsaved changes)')}`
+		? t('board.unsaved_changes.tab_tooltip', '{{title}} (unsaved changes)', { title })
 		: title;
 
 	const textRef = useRef<HTMLDivElement>(null);

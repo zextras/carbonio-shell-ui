@@ -177,12 +177,9 @@ function ListItemContent({
 				</Text>
 				<Text size={'small'} weight={selected ? 'bold' : 'regular'} color={'secondary'}>
 					{app &&
-						t('board.from_app', 'From {{app}}', {
-							app
-						})}
-					{app &&
-						pendingChanges &&
-						` ${t('board.unsaved_changes.dropdown_item', '- unsaved changes')}`}
+						(pendingChanges
+							? t('board.unsaved_changes.dropdown_item', 'From {{app}} - unsaved changes', { app })
+							: t('board.from_app', 'From {{app}}', { app }))}
 				</Text>
 			</OverflowContainer>
 			<IconButton icon={'CloseOutline'} size={'large'} onClick={onClose} />

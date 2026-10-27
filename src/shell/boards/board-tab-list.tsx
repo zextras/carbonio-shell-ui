@@ -10,6 +10,7 @@ import { isEmpty, map } from 'lodash';
 
 import { AppBoardTab } from './board-tab';
 import { useBoardStore } from '../../store/boards';
+import { getBoardIcon, hasPendingChanges } from '../../store/boards/utils';
 
 const CustomRow = styled(Row)`
 	overflow-x: auto;
@@ -30,7 +31,8 @@ export const TabsList = (): React.JSX.Element => {
 						key={boardId}
 						id={boardId}
 						title={boards[boardId].title}
-						icon={boards[boardId].icon}
+						icon={getBoardIcon(boards[boardId])}
+						hasPendingChanges={hasPendingChanges(boards[boardId])}
 						firstTab={idx === 0}
 					/>
 				))}

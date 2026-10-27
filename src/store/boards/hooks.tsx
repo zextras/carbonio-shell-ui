@@ -5,8 +5,14 @@
  */
 import React, { createContext, useContext, useMemo } from 'react';
 
-import { closeBoard, setCurrentBoard, updateBoard, useBoardStore } from './store';
-import type { Board } from '../../types/boards';
+import {
+	closeBoard,
+	setBoardContentStatus,
+	setCurrentBoard,
+	updateBoard,
+	useBoardStore
+} from './store';
+import type { Board, BoardContentStatus } from '../../types/boards';
 
 export const useBoardById = <T,>(id: string): Board<T> | undefined =>
 	useBoardStore((s) => s.boards[id]) as Board<T> | undefined;
@@ -23,6 +29,11 @@ export type BoardHooksContext = {
 	closeBoard: () => void;
 	updateBoard: (b: Partial<Board>) => void;
 	setCurrentBoard: () => void;
+	/**
+	 * Set the content status of the board, so that the shell can warn the user before losing unsaved changes.
+	 * It is optional because shells which don't provide it still exist: call it with `setContentStatus?.()`.
+	 */
+	setContentStatus?: (contentStatus: BoardContentStatus) => void;
 	getBoardContext: <T>() => T;
 	getBoard: <T>() => Board<T>;
 };
@@ -42,7 +53,8 @@ export const BoardProvider = ({ children, id }: BoardProviderProps): React.JSX.E
 			getBoard: <T,>(): Board<T> => getBoardById(id) as Board<T>,
 			closeBoard: (): void => closeBoard(id),
 			updateBoard: (b): void => updateBoard(id, b),
-			setCurrentBoard: (): void => setCurrentBoard(id)
+			setCurrentBoard: (): void => setCurrentBoard(id),
+			setContentStatus: (contentStatus): void => setBoardContentStatus(id, contentStatus)
 		}),
 		[id]
 	);

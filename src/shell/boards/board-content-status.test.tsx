@@ -1,0 +1,371 @@
+/*
+ * SPDX-FileCopyrightText: 2025 Zextras <https://www.zextras.com>
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+import { act, screen, waitFor, within } from '@testing-library/react';
+
+import { BoardContainer } from './board-container';
+import { notifyBeforeShellExit } from '../../network/before-shell-exit';
+import { setBoardContentStatus, useBoardStore } from '../../store/boards';
+import { useI18nStore } from '../../store/i18n/store';
+import { ICONS } from '../../tests/constants';
+import { mockedApps, setupAppStore } from '../../tests/test-app-utils';
+import { mockedBoardState, setupBoardStore } from '../../tests/test-board-utils';
+import { setup } from '../../tests/utils';
+import type { Board } from '../../types/boards';
+
+const withDirtyStatus = (...ids: string[]): Record<string, Board> => ({
+	...mockedBoardState,
+	...Object.fromEntries(
+		ids.map((id) => [
+			id,
+			{ ...mockedBoardState[id], contentStatus: 'dirty' as const, dirtyIcon: 'Edit2Outline' }
+		])
+	)
+});
+
+beforeEach(() => {
+	setupAppStore();
+});
+
+describe('Board content status', () => {
+	test('a dirty board shows the dirty icon and the unsaved changes tooltip', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user } = setup(<BoardContainer />);
+		const tab = screen.getByTestId('board-tab-board-2');
+		expect(within(tab).getByTestId('icon: Edit2Outline')).toBeVisible();
+		await user.hover(screen.getByText('title2'));
+		expect(await screen.findByText('title2 (unsaved changes)')).toBeVisible();
+		expect(
+			within(screen.getByTestId('board-tab-board-1')).queryByTestId('icon: Edit2Outline')
+		).not.toBeInTheDocument();
+	});
+
+	test('the icon is restored when the board is no longer dirty', () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		setup(<BoardContainer />);
+		act(() => setBoardContentStatus('board-2', 'pristine'));
+		const tab = screen.getByTestId('board-tab-board-2');
+		expect(within(tab).queryByTestId('icon: Edit2Outline')).not.toBeInTheDocument();
+		expect(within(tab).getByTestId('icon: CubeOutline')).toBeVisible();
+	});
+
+	test('the dropdown item of a dirty board shows the unsaved changes string', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: 'ChevronDown' }));
+		const list = await screen.findByTestId('dropdown-popper-list');
+		expect(within(list).getByText(`From ${mockedApps[0].display} - unsaved changes`)).toBeVisible();
+		expect(within(list).getAllByText(`From ${mockedApps[0].display}`)).toHaveLength(2);
+	});
+
+	test('a board which is saving is still considered to have pending changes', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user } = setup(<BoardContainer />);
+		act(() => setBoardContentStatus('board-2', 'saving'));
+		expect(
+			within(screen.getByTestId('board-tab-board-2')).getByTestId('icon: Edit2Outline')
+		).toBeVisible();
+		await user.click(within(screen.getByTestId('board-tab-board-2')).getByTestId('icon: Close'));
+		expect(await screen.findByText('Close title2?')).toBeVisible();
+	});
+
+	test('closing a clean board is immediate', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user } = setup(<BoardContainer />);
+		await user.click(within(screen.getByTestId('board-tab-board-1')).getByTestId('icon: Close'));
+		expect(useBoardStore.getState().boards).not.toHaveProperty('board-1');
+	});
+
+	test('closing a dirty tab asks for confirmation, keep editing leaves the board open', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user } = setup(<BoardContainer />);
+		await user.click(within(screen.getByTestId('board-tab-board-2')).getByTestId('icon: Close'));
+		expect(await screen.findByText('Close title2?')).toBeVisible();
+		expect(
+			screen.getByText('title2 has unsaved changes. If you close it now, the changes will be lost.')
+		).toBeVisible();
+		await user.click(screen.getByRole('button', { name: /keep editing/i }));
+		expect(useBoardStore.getState().orderedBoards).toHaveLength(3);
+	});
+
+	test('closing a dirty tab and confirming closes it', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user } = setup(<BoardContainer />);
+		await user.click(within(screen.getByTestId('board-tab-board-2')).getByTestId('icon: Close'));
+		await user.click(await screen.findByRole('button', { name: /close and discard/i }));
+		expect(useBoardStore.getState().boards).not.toHaveProperty('board-2');
+		expect(useBoardStore.getState().orderedBoards).toHaveLength(2);
+	});
+
+	test('closing the container with a dirty board shows the board modal listing the dirty boards, keep editing leaves all boards open', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		expect(await screen.findByText('Close the board?')).toBeVisible();
+		expect(
+			screen.getByText(
+				'This item has unsaved changes. If you close the board now, the changes will be lost.'
+			)
+		).toBeVisible();
+		const item = screen.getByTestId('unsaved-item-board-2');
+		expect(within(item).getByText('title2')).toBeVisible();
+		expect(within(item).getByText(`From ${mockedApps[0].display}`)).toBeVisible();
+		expect(screen.queryByTestId('unsaved-item-board-1')).not.toBeInTheDocument();
+		await user.click(screen.getByRole('button', { name: /keep editing/i }));
+		expect(useBoardStore.getState().orderedBoards).toHaveLength(3);
+	});
+
+	test('closing the container with several dirty boards lists all of them and discarding closes all', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-1', 'board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		expect(await screen.findByText('Close the board?')).toBeVisible();
+		expect(
+			screen.getByText(
+				'These 2 items have unsaved changes. If you close the board now, the changes will be lost.'
+			)
+		).toBeVisible();
+		expect(screen.getByTestId('unsaved-item-board-1')).toBeVisible();
+		expect(screen.getByTestId('unsaved-item-board-2')).toBeVisible();
+		expect(screen.queryByTestId('unsaved-item-board-3')).not.toBeInTheDocument();
+		await user.click(screen.getByRole('button', { name: /close and discard/i }));
+		expect(useBoardStore.getState().orderedBoards).toHaveLength(0);
+	});
+
+	test('the board modal lists the items in a focusable and scrollable list with an accessible name', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-1', 'board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		const list = await screen.findByRole('list', { name: 'Items with unsaved changes' });
+		expect(list).toHaveAttribute('tabindex', '0');
+		expect(list).toHaveStyle({ 'overflow-y': 'auto', 'min-height': '80px' });
+		expect(within(list).getAllByRole('listitem')).toHaveLength(2);
+		await user.tab();
+		await user.tab();
+		await user.click(screen.getByRole('button', { name: /keep editing/i }));
+		expect(useBoardStore.getState().orderedBoards).toHaveLength(3);
+	});
+
+	test('the board modal lists boards which are saving', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		act(() => setBoardContentStatus('board-2', 'saving'));
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		expect(await screen.findByTestId('unsaved-item-board-2')).toBeVisible();
+	});
+
+	test('the initial focus of the confirmation modal is not on the destructive action', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		expect(await screen.findByRole('button', { name: 'Close and discard' })).not.toHaveFocus();
+	});
+
+	test('keep editing on the close all modal shows the first board with unsaved changes', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		await user.click(await screen.findByRole('button', { name: /keep editing/i }));
+		expect(useBoardStore.getState().current).toBe('board-2');
+		expect(useBoardStore.getState().orderedBoards).toHaveLength(3);
+	});
+
+	test('dismissing the close all modal with esc shows the first board with unsaved changes', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		await screen.findByRole('button', { name: /keep editing/i });
+		await user.keyboard('{Escape}');
+		expect(useBoardStore.getState().current).toBe('board-2');
+	});
+
+	test('the close all modal lists the boards in the order of the tabs', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2', 'board-3'));
+		// the newest board is the leftmost tab
+		act(() => useBoardStore.setState({ orderedBoards: ['board-3', 'board-2', 'board-1'] }));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		const items = await screen.findAllByTestId(/^unsaved-item-/);
+		expect(items.map((item) => item.dataset.testid)).toEqual([
+			'unsaved-item-board-3',
+			'unsaved-item-board-2'
+		]);
+		await user.click(screen.getByRole('button', { name: /keep editing/i }));
+		expect(useBoardStore.getState().current).toBe('board-3');
+	});
+
+	test('the close all modal list follows the boards which have unsaved changes', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		expect(await screen.findByText(/This item has unsaved changes/)).toBeVisible();
+		act(() => setBoardContentStatus('board-3', 'dirty'));
+		expect(await screen.findByTestId('unsaved-item-board-3')).toBeVisible();
+		expect(screen.getByText(/These 2 items have unsaved changes/)).toBeVisible();
+		act(() => setBoardContentStatus('board-2', 'saved'));
+		expect(screen.queryByTestId('unsaved-item-board-2')).not.toBeInTheDocument();
+		expect(screen.getByText(/This item has unsaved changes/)).toBeVisible();
+	});
+
+	test('confirming the close all modal closes the boards which got unsaved changes meanwhile', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		await screen.findByRole('button', { name: /keep editing/i });
+		act(() => setBoardContentStatus('board-3', 'dirty'));
+		expect(await screen.findByTestId('unsaved-item-board-3')).toBeVisible();
+		await user.click(screen.getByRole('button', { name: /close and discard/i }));
+		expect(useBoardStore.getState().orderedBoards).toHaveLength(0);
+	});
+
+	test('the close all modal is dismissed when no board has unsaved changes anymore', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		await screen.findByRole('button', { name: /keep editing/i });
+		act(() => setBoardContentStatus('board-2', 'pristine'));
+		await waitFor(() =>
+			expect(screen.queryByRole('button', { name: /close and discard/i })).not.toBeInTheDocument()
+		);
+		expect(useBoardStore.getState().orderedBoards).toHaveLength(3);
+	});
+
+	test.each(['pl', 'ru', 'ro', 'sl', 'bs'])(
+		'the close all modal message is never the raw key with %s locale',
+		async (locale) => {
+			const { defaultI18n } = useI18nStore.getState();
+			await act(async () => {
+				await defaultI18n.changeLanguage(locale);
+			});
+			setupBoardStore('board-1', withDirtyStatus('board-2', 'board-3'));
+			const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+			await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+			expect(await screen.findByText(/These 2 items have unsaved changes/)).toBeVisible();
+			await act(async () => {
+				await defaultI18n.changeLanguage('en');
+			});
+		}
+	);
+
+	test('closing a board with unsaved changes from the dropdown closes the menu and focuses the modal', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: 'ChevronDown' }));
+		const list = await screen.findByTestId('dropdown-popper-list');
+		await user.click(within(list).getAllByTestId('icon: CloseOutline')[1]);
+		expect(await screen.findByText('Close title2?')).toBeVisible();
+		expect(screen.queryByTestId('dropdown-popper-list')).not.toBeInTheDocument();
+		// the board is not selected by the click on its close button
+		expect(useBoardStore.getState().current).toBe('board-1');
+		await user.click(screen.getByText(/has unsaved changes/));
+		await user.keyboard('{Escape}');
+		await waitFor(() => expect(screen.queryByText('Close title2?')).not.toBeInTheDocument());
+		expect(useBoardStore.getState().orderedBoards).toHaveLength(3);
+	});
+
+	test('closing a clean board from the dropdown keeps the menu open', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: 'ChevronDown' }));
+		const list = await screen.findByTestId('dropdown-popper-list');
+		await user.click(within(list).getAllByTestId('icon: CloseOutline')[0]);
+		expect(useBoardStore.getState().boards).not.toHaveProperty('board-1');
+		expect(screen.getByTestId('dropdown-popper-list')).toBeVisible();
+	});
+
+	test.each([
+		[
+			'a board',
+			(): HTMLElement => within(screen.getByTestId('board-tab-board-2')).getByTestId('icon: Close')
+		],
+		['all the boards', (): HTMLElement => screen.getByTestId(`icon: ${ICONS.closeBoard}`)]
+	])(
+		'the confirmation modal is closed even if the onClose of %s throws',
+		async (_, getCloseButton) => {
+			vi.spyOn(console, 'error').mockImplementation(() => undefined);
+			// the error thrown by the onClose reaches the window: mark it as handled
+			const handleWindowError = (event: ErrorEvent): void => event.preventDefault();
+			window.addEventListener('error', handleWindowError);
+			const failingBoard = {
+				...withDirtyStatus('board-2')['board-2'],
+				onClose: (): void => {
+					throw new Error('onClose failure');
+				}
+			};
+			setupBoardStore('board-1', { ...withDirtyStatus('board-2'), 'board-2': failingBoard });
+			const { user } = setup(<BoardContainer />);
+			await user.click(getCloseButton());
+			await user.click(await screen.findByRole('button', { name: /close and discard/i }));
+			await waitFor(() =>
+				expect(screen.queryByRole('button', { name: /close and discard/i })).not.toBeInTheDocument()
+			);
+			window.removeEventListener('error', handleWindowError);
+		}
+	);
+
+	test('the beforeunload handler is registered only while a board is dirty', () => {
+		const addSpy = vi.spyOn(window, 'addEventListener');
+		const removeSpy = vi.spyOn(window, 'removeEventListener');
+		const isBeforeUnload = (call: unknown[]): boolean => call[0] === 'beforeunload';
+		setupBoardStore('board-1');
+		setup(<BoardContainer />);
+		expect(addSpy.mock.calls.filter(isBeforeUnload)).toHaveLength(0);
+		act(() => setBoardContentStatus('board-1', 'dirty'));
+		expect(addSpy.mock.calls.filter(isBeforeUnload)).toHaveLength(1);
+		const event = new Event('beforeunload', { cancelable: true });
+		// defaultPrevented is not reliable here: on a generic event, setting returnValue to '' cancels it too
+		const preventDefault = vi.spyOn(event, 'preventDefault');
+		window.dispatchEvent(event);
+		expect(preventDefault).toHaveBeenCalled();
+		act(() => setBoardContentStatus('board-1', 'pristine'));
+		expect(removeSpy.mock.calls.filter(isBeforeUnload)).toHaveLength(1);
+	});
+
+	test('the beforeunload handler is removed when the shell is about to exit', () => {
+		setupBoardStore('board-1');
+		setup(<BoardContainer />);
+		act(() => setBoardContentStatus('board-1', 'dirty'));
+		act(() => notifyBeforeShellExit());
+		const event = new Event('beforeunload', { cancelable: true });
+		window.dispatchEvent(event);
+		expect(event.defaultPrevented).toBe(false);
+	});
+
+	test('the saving status keeps the dirty icon and the unsaved changes tooltip', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		const { user } = setup(<BoardContainer />);
+		act(() => setBoardContentStatus('board-2', 'saving'));
+		await user.hover(screen.getByText('title2'));
+		expect(await screen.findByText('title2 (unsaved changes)')).toBeVisible();
+	});
+
+	test('the saved status restores the icon after saving', () => {
+		setupBoardStore('board-1', withDirtyStatus('board-2'));
+		setup(<BoardContainer />);
+		act(() => setBoardContentStatus('board-2', 'saving'));
+		act(() => setBoardContentStatus('board-2', 'saved'));
+		expect(
+			within(screen.getByTestId('board-tab-board-2')).getByTestId('icon: CubeOutline')
+		).toBeVisible();
+	});
+
+	test('the beforeunload handler stays registered while saving and is removed once saved', () => {
+		const removeSpy = vi.spyOn(window, 'removeEventListener');
+		const isBeforeUnload = (call: unknown[]): boolean => call[0] === 'beforeunload';
+		setupBoardStore('board-1');
+		setup(<BoardContainer />);
+		act(() => setBoardContentStatus('board-1', 'dirty'));
+		act(() => setBoardContentStatus('board-1', 'saving'));
+		expect(removeSpy.mock.calls.filter(isBeforeUnload)).toHaveLength(0);
+		const event = new Event('beforeunload', { cancelable: true });
+		// defaultPrevented is not reliable here: on a generic event, setting returnValue to '' cancels it too
+		const preventDefault = vi.spyOn(event, 'preventDefault');
+		window.dispatchEvent(event);
+		expect(preventDefault).toHaveBeenCalled();
+		act(() => setBoardContentStatus('board-1', 'saved'));
+		expect(removeSpy.mock.calls.filter(isBeforeUnload)).toHaveLength(1);
+	});
+});

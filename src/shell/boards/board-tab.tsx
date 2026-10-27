@@ -10,7 +10,8 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Container, Icon, IconButton, Row, Text, Tooltip } from '@zextras/carbonio-design-system';
 
-import { closeBoard, setCurrentBoard, useBoardStore } from '../../store/boards';
+import { useBoardCloseGuard } from './use-board-close-guard';
+import { setCurrentBoard, useBoardStore } from '../../store/boards';
 import { getT } from '../../store/i18n/hooks';
 import './board-tab.css';
 
@@ -66,12 +67,20 @@ interface AppBoardTabProps {
 	id: string;
 	icon: string;
 	title: string;
+	hasPendingChanges?: boolean;
 	firstTab: boolean;
 }
 
-export const AppBoardTab = ({ id, icon, title, firstTab }: AppBoardTabProps): React.JSX.Element => {
+export const AppBoardTab = ({
+	id,
+	icon,
+	title,
+	hasPendingChanges,
+	firstTab
+}: AppBoardTabProps): React.JSX.Element => {
 	const current = useBoardStore((s) => s.current);
 	const t = getT();
+	const { requestCloseBoard } = useBoardCloseGuard();
 	const onClick = useCallback(
 		(event: React.SyntheticEvent<HTMLDivElement>) => {
 			if (!event.defaultPrevented) {
@@ -84,11 +93,15 @@ export const AppBoardTab = ({ id, icon, title, firstTab }: AppBoardTabProps): Re
 		(ev: React.SyntheticEvent | Event) => {
 			if (!ev.defaultPrevented) {
 				ev.stopPropagation();
-				closeBoard(id);
+				requestCloseBoard(id);
 			}
 		},
-		[id]
+		[id, requestCloseBoard]
 	);
+
+	const tooltipLabel = hasPendingChanges
+		? t('board.unsaved_changes.tab_tooltip', '{{title}} (unsaved changes)', { title })
+		: title;
 
 	const textRef = useRef<HTMLDivElement>(null);
 	const [textOverflowing, setTextOverflowing] = useState(false);
@@ -124,7 +137,7 @@ export const AppBoardTab = ({ id, icon, title, firstTab }: AppBoardTabProps): Re
 				$active={current === id}
 			>
 				<TabIcon icon={icon} size="large" />
-				<Tooltip label={title} placement="top" maxWidth="700px" triggerRef={textRef}>
+				<Tooltip label={tooltipLabel} placement="top" maxWidth="700px" triggerRef={textRef}>
 					<CustomText
 						size="medium"
 						weight="regular"

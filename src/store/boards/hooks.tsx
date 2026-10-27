@@ -29,7 +29,11 @@ export type BoardHooksContext = {
 	closeBoard: () => void;
 	updateBoard: (b: Partial<Board>) => void;
 	setCurrentBoard: () => void;
-	setContentStatus: (contentStatus: BoardContentStatus) => void;
+	/**
+	 * Set the content status of the board, so that the shell can warn the user before losing unsaved changes.
+	 * It is optional because shells which don't provide it still exist: call it with `setContentStatus?.()`.
+	 */
+	setContentStatus?: (contentStatus: BoardContentStatus) => void;
 	getBoardContext: <T>() => T;
 	getBoard: <T>() => Board<T>;
 };

@@ -331,7 +331,7 @@ export type BoardHooksContext = {
     closeBoard: () => void;
     updateBoard: (b: Partial<Board>) => void;
     setCurrentBoard: () => void;
-    setContentStatus: (contentStatus: BoardContentStatus) => void;
+    setContentStatus?: (contentStatus: BoardContentStatus) => void;
     getBoardContext: <T>() => T;
     getBoard: <T>() => Board<T>;
 };

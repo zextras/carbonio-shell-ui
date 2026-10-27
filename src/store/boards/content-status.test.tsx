@@ -46,7 +46,7 @@ describe('useBoardHooks setContentStatus', () => {
 			<BoardProvider id="board-2">{children}</BoardProvider>
 		);
 		const { result } = renderHook(() => useBoardHooks(), { wrapper });
-		act(() => result.current.setContentStatus('saving'));
+		act(() => result.current.setContentStatus?.('saving'));
 		expect(useBoardStore.getState().boards['board-2'].contentStatus).toBe('saving');
 		expect(result.current.getBoard().contentStatus).toBe('saving');
 		expect(useBoardStore.getState().boards['board-1'].contentStatus).toBeUndefined();

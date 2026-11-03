@@ -70,7 +70,7 @@ function dragDividerTo(targetX: number, initialWidth = DEFAULT_WIDTH_PX): void {
 	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseDown(divider, { button: 0, clientX: initialWidth });
 	// eslint-disable-next-line testing-library/prefer-user-event
-	fireEvent.mouseMove(document.body, { clientX: targetX });
+	fireEvent.mouseMove(document.body, { clientX: targetX, buttons: 1 });
 	// eslint-disable-next-line testing-library/prefer-user-event
 	fireEvent.mouseUp(document.body);
 }
@@ -171,12 +171,13 @@ describe('ShellSecondaryBar', () => {
 			expect(screen.getByText('expanded')).toBeVisible();
 			// eslint-disable-next-line testing-library/prefer-user-event
 			fireEvent.mouseMove(document.body, {
-				clientX: SECONDARY_BAR_WIDTH.collapseThreshold * ROOT_FONT_SIZE - 1
+				clientX: SECONDARY_BAR_WIDTH.collapseThreshold * ROOT_FONT_SIZE - 1,
+				buttons: 1
 			});
 			expect(screen.getByText('collapsed')).toBeVisible();
 			expect(getSavedWidth()).toBeNull();
 			// eslint-disable-next-line testing-library/prefer-user-event
-			fireEvent.mouseMove(document.body, { clientX: DEFAULT_WIDTH_PX });
+			fireEvent.mouseMove(document.body, { clientX: DEFAULT_WIDTH_PX, buttons: 1 });
 			expect(screen.getByText('expanded')).toBeVisible();
 			// eslint-disable-next-line testing-library/prefer-user-event
 			fireEvent.mouseUp(document.body);
@@ -197,7 +198,7 @@ describe('ShellSecondaryBar', () => {
 			fireEvent.mouseDown(divider, { button: 0, clientX: COLLAPSED_WIDTH_PX });
 			expect(screen.getByText('collapsed')).toBeVisible();
 			// eslint-disable-next-line testing-library/prefer-user-event
-			fireEvent.mouseMove(document.body, { clientX: 300 });
+			fireEvent.mouseMove(document.body, { clientX: 300, buttons: 1 });
 			expect(screen.getByText('expanded')).toBeVisible();
 			expect(getSavedWidth()).toBe(SECONDARY_BAR_WIDTH.collapsed);
 			// eslint-disable-next-line testing-library/prefer-user-event
@@ -251,6 +252,32 @@ describe('ShellSecondaryBar', () => {
 			expectSidebarWidth(25);
 			expect(getSavedWidth()).toBe(25);
 		});
+
+		it('should end the drag when the mouse moves without the primary button pressed (mouseup lost, e.g. over an iframe)', () => {
+			addTestRoute();
+			setup(<ShellSecondaryBar />, { initialRouterEntries: ['/test'] });
+			const sidebar = screen.getByTestId('SideSecondaryBarContainer');
+			vi.spyOn(sidebar, 'getBoundingClientRect').mockReturnValue({
+				width: DEFAULT_WIDTH_PX
+			} as DOMRect);
+			const divider = screen.getByRole('separator');
+			// eslint-disable-next-line testing-library/prefer-user-event
+			fireEvent.mouseDown(divider, { button: 0, clientX: DEFAULT_WIDTH_PX });
+			// eslint-disable-next-line testing-library/prefer-user-event
+			fireEvent.mouseMove(document.body, { clientX: 400, buttons: 1 });
+			// the button is released where the shell does not receive the mouseup, then the mouse moves back
+			// eslint-disable-next-line testing-library/prefer-user-event
+			fireEvent.mouseMove(document.body, { clientX: 450, buttons: 0 });
+			expect(getSavedWidth()).toBe(400 / ROOT_FONT_SIZE);
+			expectSidebarWidth(400 / ROOT_FONT_SIZE);
+			// further moves do not resize the bar anymore
+			// eslint-disable-next-line testing-library/prefer-user-event
+			fireEvent.mouseMove(document.body, { clientX: 300, buttons: 0 });
+			expect(sidebar.getAttribute('style') ?? '').not.toContain('width');
+			// eslint-disable-next-line testing-library/prefer-user-event
+			fireEvent.mouseUp(document.body);
+			expect(getSavedWidth()).toBe(400 / ROOT_FONT_SIZE);
+		});
 	});
 
 	describe('Control API', () => {
@@ -300,8 +327,47 @@ describe('ShellSecondaryBar', () => {
 			});
 
 			expect(useUtilityBarStore.getState().isSecondaryBarForcedCollapsed).toBe(false);
+			expectSidebarWidth(25);
+			expect(screen.getByText('expanded')).toBeVisible();
+		});
+
+		it('should keep the saved width when openSecondaryBar is called without arguments on an open bar', () => {
+			setSavedWidth(25);
+			addTestRoute();
+			setup(<ShellSecondaryBar />, { initialRouterEntries: ['/test'] });
+
+			act(() => {
+				openSecondaryBar();
+			});
+
+			expectSidebarWidth(25);
+			expect(getSavedWidth()).toBe(25);
+		});
+
+		it('should open the bar at the default width when openSecondaryBar is called with a width under the collapse threshold', () => {
+			setSavedWidth(SECONDARY_BAR_WIDTH.collapsed);
+			addTestRoute();
+			setup(<ShellSecondaryBar />, { initialRouterEntries: ['/test'] });
+
+			act(() => {
+				openSecondaryBar(SECONDARY_BAR_WIDTH.collapseThreshold - 2);
+			});
+
 			expectSidebarWidth(SECONDARY_BAR_WIDTH.default);
 			expect(screen.getByText('expanded')).toBeVisible();
+			expect(getSavedWidth()).toBe(SECONDARY_BAR_WIDTH.default);
+		});
+
+		it('should keep the width between min and max when openSecondaryBar is called with a width over the max', () => {
+			addTestRoute();
+			setup(<ShellSecondaryBar />, { initialRouterEntries: ['/test'] });
+
+			act(() => {
+				openSecondaryBar(40);
+			});
+
+			expectSidebarWidth(SECONDARY_BAR_WIDTH.max);
+			expect(getSavedWidth()).toBe(SECONDARY_BAR_WIDTH.max);
 		});
 	});
 });

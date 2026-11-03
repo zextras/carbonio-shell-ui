@@ -65,6 +65,14 @@ export const useHorizontalResize = ({
 			let lastWidth = startWidth;
 
 			const onMouseMove = (moveEvent: MouseEvent): void => {
+				// the primary button has been released where the shell could not receive the mouseup
+				// (e.g. over an iframe or outside the window): end the drag with the last width.
+				// buttons is a bitmask where the primary button is the lowest bit, so it is pressed when odd
+				if (moveEvent.buttons % 2 === 0) {
+					// eslint-disable-next-line @typescript-eslint/no-use-before-define
+					onMouseUp();
+					return;
+				}
 				lastWidth = callbacksRef.current.clampWidth(startWidth + moveEvent.clientX - startX);
 				element.style.width = `${lastWidth}px`;
 				callbacksRef.current.onResize?.(lastWidth);

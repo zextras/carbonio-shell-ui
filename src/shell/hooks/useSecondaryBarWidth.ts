@@ -71,10 +71,13 @@ export const useSecondaryBarWidth = (): [
 
 /**
  * Open the secondary bar and persist its width.
- * If widthInRem is omitted, it defaults to the default width of the secondary bar (20 rem).
+ * If widthInRem is omitted, the bar reopens at its saved width, or at the default width (20 rem) when it is collapsed.
+ * A width that would collapse the bar (under the collapse threshold) opens it at the default width.
  */
-export function openSecondaryBar(widthInRem: number = SECONDARY_BAR_WIDTH.default): void {
-	const clampedWidth = round(normalizeSecondaryBarWidth(widthInRem), 3);
-	setLocalStorageItem(LOCAL_STORAGE_SECONDARY_BAR_WIDTH, clampedWidth);
+export function openSecondaryBar(widthInRem?: number): void {
+	setLocalStorageItem<unknown>(LOCAL_STORAGE_SECONDARY_BAR_WIDTH, (savedWidth: unknown) => {
+		const width = normalizeSecondaryBarWidth(widthInRem ?? savedWidth);
+		return round(isSecondaryBarCollapsed(width) ? SECONDARY_BAR_WIDTH.default : width, 3);
+	});
 	useUtilityBarStore.getState().setIsSecondaryBarForcedCollapsed(false);
 }

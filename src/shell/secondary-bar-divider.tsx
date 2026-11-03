@@ -21,14 +21,15 @@ const Divider = styled.div<{ $active: boolean }>`
 	background-color: ${({ theme }): string => theme.palette.gray2.regular};
 	cursor: ew-resize;
 
-	/* invisible area, wider than the divider, to make it easier to grab */
+	/* invisible area, wider than the divider, to make it easier to grab.
+	 * It extends only on the right side, so that it does not cover the secondary bar scrollbar */
 	&::before {
 		content: '';
 		position: absolute;
 		top: 0;
 		bottom: 0;
-		left: -0.25rem;
-		width: 0.5rem;
+		left: 0;
+		width: 0.375rem;
 		z-index: 1;
 	}
 

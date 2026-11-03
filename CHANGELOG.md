@@ -1,3 +1,15 @@
+## [15.3.25](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.24...v15.3.25) (2026-11-03)
+
+### Bug Fixes
+
+* **deps:** update dependency @zextras/carbonio-ui-soap-lib to v1.3.3 ([#960](https://github.com/zextras/carbonio-shell-ui/issues/960)) ([2a82e62](https://github.com/zextras/carbonio-shell-ui/commit/2a82e623e5ffac8cf20d73872695cd264967158e))
+
+### Other changes
+
+* **deps:** lock file maintenance ([#958](https://github.com/zextras/carbonio-shell-ui/issues/958)) ([418fe98](https://github.com/zextras/carbonio-shell-ui/commit/418fe981db643b476e5e4d1cd036dbdb2567a680))
+* **deps:** update dependency @microsoft/api-extractor to v7.60.1 ([#957](https://github.com/zextras/carbonio-shell-ui/issues/957)) ([8f90d46](https://github.com/zextras/carbonio-shell-ui/commit/8f90d46e5a23319abf24582270520841c8d25068))
+* **deps:** update dependency zextras/jenkins-lib-common to v5.3.1 ([#959](https://github.com/zextras/carbonio-shell-ui/issues/959)) ([ca78ef6](https://github.com/zextras/carbonio-shell-ui/commit/ca78ef6e834146608cb2883431171c522e2dc9a2))
+
 ## [15.3.24](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.23...v15.3.24) (2026-10-27)
 
 ### Other changes

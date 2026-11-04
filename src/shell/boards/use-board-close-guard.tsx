@@ -205,6 +205,11 @@ const BoardTabCloseContent = ({
 export const BoardCloseConfirmation = (): React.JSX.Element | null => {
 	const t = getT();
 	const request = useCloseRequestStore((s) => s.request);
+
+	// the container is unmounted with the modal when the last board is closed by a module:
+	// the request must not survive, or it would reopen the modal with the next board
+	useEffect(() => dismissConfirmation, []);
+
 	const boardTitle = useBoardStore((s) =>
 		request?.type === 'board' ? s.boards[request.id]?.title : undefined
 	);

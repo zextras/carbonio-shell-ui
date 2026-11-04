@@ -8,7 +8,7 @@ import { act, screen, waitFor, within } from '@testing-library/react';
 
 import { BoardContainer } from './board-container';
 import { notifyBeforeShellExit } from '../../network/before-shell-exit';
-import { setBoardContentStatus, useBoardStore } from '../../store/boards';
+import { closeAllBoards, setBoardContentStatus, useBoardStore } from '../../store/boards';
 import { useI18nStore } from '../../store/i18n/store';
 import { ICONS } from '../../tests/constants';
 import { mockedApps, setupAppStore } from '../../tests/test-app-utils';
@@ -231,6 +231,20 @@ describe('Board content status', () => {
 			expect(screen.queryByRole('button', { name: /close and discard/i })).not.toBeInTheDocument()
 		);
 		expect(useBoardStore.getState().orderedBoards).toHaveLength(3);
+	});
+
+	test('the close request does not outlive the container when a module closes the last board', async () => {
+		setupBoardStore('board-1', withDirtyStatus('board-1'));
+		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+		await screen.findByRole('button', { name: /keep editing/i });
+		// the module closes the last board on its own: the container is unmounted with the modal
+		act(() => closeAllBoards());
+		await waitFor(() => expect(screen.queryByTestId('BoardContainerComp')).not.toBeInTheDocument());
+		// a board which is already dirty is opened later: the old request must not show the modal
+		act(() => setupBoardStore('board-1', withDirtyStatus('board-1')));
+		await screen.findByTestId('BoardContainerComp');
+		expect(screen.queryByRole('button', { name: /close and discard/i })).not.toBeInTheDocument();
 	});
 
 	test.each(['pl', 'ru', 'ro', 'sl', 'bs'])(

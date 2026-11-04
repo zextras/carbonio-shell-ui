@@ -218,7 +218,7 @@ describe('Shell utility bar', () => {
 		const goToLoginFn = vi.spyOn(networkUtils, 'goToLogin').mockImplementation(() => {});
 		useLoginConfigStore.setState((s) => ({ ...s, carbonioWebUiLogoutURL: customLogout }));
 		const { user } = setup(<ShellUtilityBar />);
-		const logout = waitForRequest('get', '/logout');
+		const logout = waitForRequest('post', '/logout');
 		await user.click(screen.getByRoleWithIcon('button', { icon: ICONS.accountUtilityMenu }));
 		await user.click(screen.getByText(/logout/i));
 		await logout;
@@ -253,7 +253,7 @@ describe('Shell utility bar', () => {
 		const goToLoginFn = vi.spyOn(networkUtils, 'goToLogin').mockImplementation(() => {});
 		useLoginConfigStore.setState((s) => ({ ...s, carbonioWebUiLogoutURL: '' }));
 		const { user } = setup(<ShellUtilityBar />);
-		const logout = waitForRequest('get', '/logout');
+		const logout = waitForRequest('post', '/logout');
 		await user.click(screen.getByRoleWithIcon('button', { icon: ICONS.accountUtilityMenu }));
 		await user.click(screen.getByText(/logout/i));
 		await logout;

@@ -17,7 +17,7 @@ const handlers: RequestHandler[] = [
 	http.post('/service/soap/NoOpRequest', noOpRequest),
 	http.get(LOGIN_V3_CONFIG_PATH, getLoginConfig),
 	http.get('/i18n/en.json', () => HttpResponse.json({})),
-	http.get('/logout', logout)
+	http.post('/logout', logout)
 ];
 
 export default handlers;

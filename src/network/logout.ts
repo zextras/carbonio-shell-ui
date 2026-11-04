@@ -12,7 +12,7 @@ import { useLoginConfigStore } from '../store/login/store';
 export async function logout(): Promise<void> {
 	try {
 		await api.endSession({ logoff: true });
-		await fetch('/logout', { redirect: 'manual' });
+		await fetch('/logout', { method: 'POST', redirect: 'manual' });
 	} catch (error) {
 		console.error(error);
 	} finally {

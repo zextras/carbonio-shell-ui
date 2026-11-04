@@ -8,7 +8,7 @@ import { produce } from 'immer';
 import { forEach, uniqueId } from 'lodash';
 import { create } from 'zustand';
 
-import type { Board } from '../../types/boards';
+import type { Board, BoardContentStatus } from '../../types/boards';
 import { getApp } from '../app';
 
 export type BoardState = {
@@ -124,6 +124,15 @@ export const updateBoard = <T = unknown>(id: string, board: Partial<Board<T>>): 
 					...state.boards[id],
 					...board
 				} as Board;
+		})
+	);
+};
+export const setBoardContentStatus = (id: string, contentStatus: BoardContentStatus): void => {
+	useBoardStore.setState(
+		produce((state: BoardState) => {
+			if (state.boards[id]) {
+				state.boards[id].contentStatus = contentStatus;
+			}
 		})
 	);
 };

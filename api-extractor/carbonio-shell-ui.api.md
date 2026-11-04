@@ -300,6 +300,8 @@ export type Board<T = unknown> = {
     boardViewId: string;
     app: string;
     icon: string;
+    dirtyIcon?: string;
+    contentStatus?: BoardContentStatus;
     title: string;
     context?: T;
     onClose?: (board: Board<T>) => void;
@@ -321,11 +323,15 @@ export const BOARD_MIN_VISIBILITY: {
 // @public (undocumented)
 export const BOARD_TAB_WIDTH = "calc(3rem + 15ch)";
 
+// @public
+export type BoardContentStatus = 'dirty' | 'saving' | 'saved' | 'pristine';
+
 // @public (undocumented)
 export type BoardHooksContext = {
     closeBoard: () => void;
     updateBoard: (b: Partial<Board>) => void;
     setCurrentBoard: () => void;
+    setContentStatus?: (contentStatus: BoardContentStatus) => void;
     getBoardContext: <T>() => T;
     getBoard: <T>() => Board<T>;
 };
@@ -885,6 +891,9 @@ export type SecondaryBarComponentProps = {
 
 // @public (undocumented)
 export const setAppContext: AppDependantExports['setAppContext'];
+
+// @public (undocumented)
+export const setBoardContentStatus: (id: string, contentStatus: BoardContentStatus) => void;
 
 // @public (undocumented)
 export const setCurrentBoard: (id: string) => void;

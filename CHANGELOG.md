@@ -1,3 +1,9 @@
+## [15.4.0](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.25...v15.4.0) (2026-11-04)
+
+### Features
+
+* **boards:** provide visual cue about unsaved boards and ask the user for confirmation on close ([3fcb1f9](https://github.com/zextras/carbonio-shell-ui/commit/3fcb1f9f06a398a0d1482d4973110ed9aa472993))
+
 ## [15.3.25](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.24...v15.3.25) (2026-11-03)
 
 ### Bug Fixes

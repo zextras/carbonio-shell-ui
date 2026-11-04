@@ -64,7 +64,7 @@ export type {
 	IdentityAttrs
 } from './types/account';
 
-export type { Board } from './types/boards';
+export type { Board, BoardContentStatus } from './types/boards';
 export type { BoardHooksContext } from './store/boards/hooks';
 
 export type {

@@ -71,6 +71,8 @@ export { getNotificationManager } from '../../notification/NotificationManager';
 
 export { useLocalStorage } from '../../shell/hooks/useLocalStorage';
 
+export { openSecondaryBar } from '../../shell/hooks/useSecondaryBarWidth';
+
 export const {
 	updatePrimaryBadge,
 	setRouteVisibility,

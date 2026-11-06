@@ -25,8 +25,9 @@ export type UtilityBarStore = {
 	setMode: (mode: PanelMode) => void;
 	current?: string;
 	setCurrent: (current: string) => void;
-	secondaryBarState: boolean;
-	setSecondaryBarState: (state: boolean) => void;
+	/** Whether the secondary bar is temporarily collapsed, without changing its saved width */
+	isSecondaryBarForcedCollapsed: boolean;
+	setIsSecondaryBarForcedCollapsed: (isForcedCollapsed: boolean) => void;
 };
 
 export type AccountProps = {

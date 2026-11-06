@@ -43,6 +43,99 @@ describe('Setting sidebar', () => {
 			'the view icon should be visible when the sidebar is expanded'
 		).toBeVisible();
 	});
+	it('should highlight selected view item with blue background when expanded', () => {
+		const settingsGeneralView: SettingsView = {
+			id: 'general',
+			route: 'general',
+			app: SHELL_APP_ID,
+			component: GeneralSettings,
+			icon: 'SettingsModOutline',
+			label: 'General Settings',
+			position: 1
+		};
+		useAppStore.getState().addSettingsView(settingsGeneralView);
+		const { container } = setup(<SettingsSidebar expanded />, {
+			initialRouterEntries: ['/settings/general']
+		});
+		// eslint-disable-next-line testing-library/no-node-access
+		const itemEl = container.querySelector('[data-testid="accordion-item"] > div') as HTMLElement;
+		expect(
+			window.getComputedStyle(itemEl).backgroundColor,
+			'the selected view item should have highlight blue background'
+		).toBe('rgb(213, 227, 246)');
+	});
+	it('should highlight selected subsection item with blue background when expanded', async () => {
+		const settingsGeneralView: SettingsView = {
+			id: 'general',
+			route: 'general',
+			app: SHELL_APP_ID,
+			component: GeneralSettings,
+			icon: 'SettingsModOutline',
+			label: 'General Settings',
+			position: 1,
+			subSections: [
+				{
+					id: 'section1',
+					label: 'Section 1'
+				}
+			]
+		};
+		useAppStore.getState().addSettingsView(settingsGeneralView);
+		const { user } = setup(<SettingsSidebar expanded />, {
+			initialRouterEntries: ['/settings/general?section=section1']
+		});
+		const icon = screen.getByTestId(`icon: ${ICONS.expandAccordion}`);
+		await user.click(icon);
+		const subSectionText = screen.getByText('Section 1');
+		// eslint-disable-next-line testing-library/no-node-access
+		const subSectionItemEl = subSectionText.closest(
+			'[data-testid="accordion-item"] > div'
+		) as HTMLElement;
+		expect(
+			window.getComputedStyle(subSectionItemEl).backgroundColor,
+			'the selected subsection item should have highlight blue background'
+		).toBe('rgb(213, 227, 246)');
+	});
+	it('should highlight selected item with blue background when collapsed', () => {
+		const settingsGeneralView: SettingsView = {
+			id: 'general',
+			route: 'general',
+			app: SHELL_APP_ID,
+			component: GeneralSettings,
+			icon: 'SettingsModOutline',
+			label: 'General Settings',
+			position: 1
+		};
+		useAppStore.getState().addSettingsView(settingsGeneralView);
+		setup(<SettingsSidebar expanded={false} />, {
+			initialRouterEntries: ['/settings/general']
+		});
+		const button = screen.getByRole('button');
+		expect(
+			window.getComputedStyle(button).backgroundColor,
+			'the selected collapsed button should have highlight blue background'
+		).toBe('rgb(213, 227, 246)');
+	});
+	it('should not highlight unselected item when collapsed', () => {
+		const settingsGeneralView: SettingsView = {
+			id: 'general',
+			route: 'general',
+			app: SHELL_APP_ID,
+			component: GeneralSettings,
+			icon: 'SettingsModOutline',
+			label: 'General Settings',
+			position: 1
+		};
+		useAppStore.getState().addSettingsView(settingsGeneralView);
+		setup(<SettingsSidebar expanded={false} />, {
+			initialRouterEntries: ['/settings/accounts']
+		});
+		const button = screen.getByRole('button');
+		expect(
+			window.getComputedStyle(button).backgroundColor,
+			'the unselected collapsed button should have transparent background'
+		).toBe('rgba(0, 0, 0, 0)');
+	});
 	it('should render only icon when expanded is false', () => {
 		const settingsGeneralView: SettingsView = {
 			id: 'general',

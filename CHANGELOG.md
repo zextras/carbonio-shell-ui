@@ -1,3 +1,9 @@
+## [15.5.0](https://github.com/zextras/carbonio-shell-ui/compare/v15.4.0...v15.5.0) (2026-11-06)
+
+### Features
+
+* make the secondary bar resizable and remove its collapse button ([1319a99](https://github.com/zextras/carbonio-shell-ui/commit/1319a99b5d8fe94816b5df6b7b3106f7095ed8d9)), closes [#940](https://github.com/zextras/carbonio-shell-ui/issues/940)
+
 ## [15.4.0](https://github.com/zextras/carbonio-shell-ui/compare/v15.3.25...v15.4.0) (2026-11-04)
 
 ### Features

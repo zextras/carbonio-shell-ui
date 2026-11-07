@@ -32,11 +32,6 @@ spec:
     - {name: event-type, value: "{{ event_type }}"}
     - {name: pull-request-number, value: "{{ pull_request_number }}"}
     - {name: git-auth-secret, value: "{{ git_auth_secret }}"}
-    # POSTHOG_API_KEY for the build (Jenkins posthog-api-token)
-    - {name: env-secret, value: ui-env}
-    - {name: sonar-token-secret, value: sonarqube-token}
-    - {name: bot-token-secret, value: semantic-release-bot-token}
-    - {name: npm-token-secret, value: npm-token}
     - {name: image-registry-override, value: registry.dev.zextras.com/ci/tekton/test}
     - {name: dry-run, value: "true"}
   taskRunTemplate:

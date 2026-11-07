@@ -1,0 +1,53 @@
+# Tekton evaluation of the tekton-catalog `ui` pipeline (replaces uiPipeline).
+# Lives only on the ci/tekton-eval draft PR, which is not merged: Jenkins stays
+# the CI of record. Dry-run: no Sonar upload, no release, no package upload;
+# images go to registry.dev.zextras.com/ci/tekton/test/.
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: carbonio-shell-ui
+  labels:
+    # Konflux UI: shows the run under this Application and Component.
+    appstudio.openshift.io/application: carbonio-ui
+    appstudio.openshift.io/component: carbonio-shell-ui
+    pipelines.appstudio.openshift.io/type: build
+  annotations:
+    pipelinesascode.tekton.dev/on-cel-expression: |
+      event == "pull_request" && target_branch == "main"
+    pipelinesascode.tekton.dev/max-keep-runs: "5"
+    pipelinesascode.tekton.dev/pipeline: "https://github.com/zextras/tekton-catalog/blob/v1.0.0/pipelines/ui.yaml"
+spec:
+  timeouts:
+    pipeline: 1h
+  pipelineRef:
+    name: ui
+  params:
+    - {name: repo-url, value: "{{ repo_url }}"}
+    - {name: revision, value: "{{ revision }}"}
+    - {name: source-branch, value: "{{ source_branch }}"}
+    - {name: target-branch, value: "{{ target_branch }}"}
+    - {name: event-type, value: "{{ event_type }}"}
+    - {name: pull-request-number, value: "{{ pull_request_number }}"}
+    - {name: git-auth-secret, value: "{{ git_auth_secret }}"}
+    # POSTHOG_API_KEY for the build (Jenkins posthog-api-token)
+    - {name: env-secret, value: ui-env}
+    - {name: sonar-token-secret, value: sonarqube-token}
+    - {name: bot-token-secret, value: semantic-release-bot-token}
+    - {name: npm-token-secret, value: npm-token}
+    - {name: image-registry-override, value: registry.dev.zextras.com/ci/tekton/test}
+    - {name: dry-run, value: "true"}
+  taskRunTemplate:
+    podTemplate:
+      nodeSelector:
+        node-role.kubernetes.io/worker: "true"
+  workspaces:
+    - name: source
+      volumeClaimTemplate:
+        spec:
+          accessModes: [ReadWriteOnce]
+          resources:
+            requests:
+              storage: 5Gi
+    - name: basic-auth
+      secret:
+        secretName: "{{ git_auth_secret }}"

@@ -1,6 +1,6 @@
 {
 	"name": "@zextras/carbonio-shell-ui",
-	"version": "15.5.0",
+	"version": "15.5.1",
 	"description": "The Zextras Carbonio web client",
 	"main": "./lib/lib.js",
 	"types": "./lib/lib.d.ts",
@@ -161,6 +161,7 @@
 		"@emotion/styled": "^11.14.1",
 		"@zextras/carbonio-design-system": "^12.3.0",
 		"@zextras/carbonio-ui-preview": "^5.0.0",
+		"@zextras/carbonio-ui-soap-lib": "^1.0.4",
 		"core-js": "^3.39.0",
 		"lodash": "^4.17.23",
 		"react": "^18.3.1",

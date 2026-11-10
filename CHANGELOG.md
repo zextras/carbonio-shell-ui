@@ -1,3 +1,9 @@
+## [15.5.1](https://github.com/zextras/carbonio-shell-ui/compare/v15.5.0...v15.5.1) (2026-11-09)
+
+### Bug Fixes
+
+* declare carbonio-ui-soap-lib as a peer dependency ([#962](https://github.com/zextras/carbonio-shell-ui/issues/962)) ([f1e3b6e](https://github.com/zextras/carbonio-shell-ui/commit/f1e3b6ed5b8295cb6387b9e84b0d838dba67ecf2)), closes [pnpm/pnpm#8912](https://github.com/pnpm/pnpm/issues/8912)
+
 ## [15.5.0](https://github.com/zextras/carbonio-shell-ui/compare/v15.4.0...v15.5.0) (2026-11-06)
 
 ### Features

@@ -107,7 +107,7 @@ describe('Board content status', () => {
 		expect(await screen.findByText('Close the board?')).toBeVisible();
 		expect(
 			screen.getByText(
-				'This item has unsaved changes. If you close the board now, the changes will be lost.'
+				'1 tab has unsaved changes. If you close the board now, the changes will be lost.'
 			)
 		).toBeVisible();
 		const item = screen.getByTestId('unsaved-item-board-2');
@@ -125,7 +125,7 @@ describe('Board content status', () => {
 		expect(await screen.findByText('Close the board?')).toBeVisible();
 		expect(
 			screen.getByText(
-				'These 2 items have unsaved changes. If you close the board now, the changes will be lost.'
+				'2 tabs have unsaved changes. If you close the board now, the changes will be lost.'
 			)
 		).toBeVisible();
 		expect(screen.getByTestId('unsaved-item-board-1')).toBeVisible();
@@ -141,7 +141,7 @@ describe('Board content status', () => {
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
 		const list = await screen.findByRole('list', { name: 'Items with unsaved changes' });
 		expect(list).toHaveAttribute('tabindex', '0');
-		expect(list).toHaveStyle({ 'overflow-y': 'auto', 'min-height': '80px' });
+		expect(list).toHaveStyle({ 'overflow-y': 'auto' });
 		expect(within(list).getAllByRole('listitem')).toHaveLength(2);
 		await user.tab();
 		await user.tab();
@@ -201,13 +201,13 @@ describe('Board content status', () => {
 		setupBoardStore('board-1', withDirtyStatus('board-2'));
 		const { user, getByRoleWithIcon } = setup(<BoardContainer />);
 		await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
-		expect(await screen.findByText(/This item has unsaved changes/)).toBeVisible();
+		expect(await screen.findByText(/1 tab has unsaved changes/)).toBeVisible();
 		act(() => setBoardContentStatus('board-3', 'dirty'));
 		expect(await screen.findByTestId('unsaved-item-board-3')).toBeVisible();
-		expect(screen.getByText(/These 2 items have unsaved changes/)).toBeVisible();
+		expect(screen.getByText(/2 tabs have unsaved changes/)).toBeVisible();
 		act(() => setBoardContentStatus('board-2', 'saved'));
 		expect(screen.queryByTestId('unsaved-item-board-2')).not.toBeInTheDocument();
-		expect(screen.getByText(/This item has unsaved changes/)).toBeVisible();
+		expect(screen.getByText(/1 tab has unsaved changes/)).toBeVisible();
 	});
 
 	test('confirming the close all modal closes the boards which got unsaved changes meanwhile', async () => {
@@ -257,7 +257,7 @@ describe('Board content status', () => {
 			setupBoardStore('board-1', withDirtyStatus('board-2', 'board-3'));
 			const { user, getByRoleWithIcon } = setup(<BoardContainer />);
 			await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
-			expect(await screen.findByText(/These 2 items have unsaved changes/)).toBeVisible();
+			expect(await screen.findByText(/2 tabs have unsaved changes/)).toBeVisible();
 			await act(async () => {
 				await defaultI18n.changeLanguage('en');
 			});

@@ -1,3 +1,9 @@
+## [15.5.3](https://github.com/zextras/carbonio-shell-ui/compare/v15.5.2...v15.5.3) (2026-11-11)
+
+### Other changes
+
+* **deps:** update devdependencies (weekly) ([#964](https://github.com/zextras/carbonio-shell-ui/issues/964)) ([717c44c](https://github.com/zextras/carbonio-shell-ui/commit/717c44cbd4c86e4b2a2127f3f94fc03dfc18ad69))
+
 ## [15.5.2](https://github.com/zextras/carbonio-shell-ui/compare/v15.5.1...v15.5.2) (2026-11-10)
 
 ### Other changes

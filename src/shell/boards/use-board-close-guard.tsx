@@ -7,15 +7,7 @@
 import React, { useCallback, useEffect } from 'react';
 
 import styled from '@emotion/styled';
-import {
-	Button,
-	Container,
-	Icon,
-	Modal,
-	Padding,
-	Row,
-	Text
-} from '@zextras/carbonio-design-system';
+import { Container, Icon, Modal, Padding, Row, Text } from '@zextras/carbonio-design-system';
 import { filter, map } from 'lodash';
 import { create } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
@@ -84,17 +76,16 @@ const UnsavedBoardsContent = ({ onEmpty }: { onEmpty: () => void }): React.JSX.E
 	return (
 		<Container crossAlignment="flex-start" gap="1rem" padding={{ vertical: 'small' }}>
 			<Text overflow="break-word">
-				{count === 1
-					? t(
-							'board.unsaved_changes.close_board_message_single',
-							'{{count}} tab has unsaved changes. If you close the board now, the changes will be lost.',
-							{ count }
-						)
-					: t(
-							'board.unsaved_changes.close_board_message_multiple',
-							'{{count}} tabs have unsaved changes. If you close the board now, the changes will be lost.',
-							{ count }
-						)}
+				{t('board.unsaved_changes.close_board_message', {
+					// plain default for the plural categories other than one/other (e.g. few, many, two)
+					defaultValue:
+						'{{count}} tabs have unsaved changes. If you close the board now, the changes will be lost.',
+					defaultValue_one:
+						'{{count}} tab has unsaved changes. If you close the board now, the changes will be lost.',
+					defaultValue_other:
+						'{{count}} tabs have unsaved changes. If you close the board now, the changes will be lost.',
+					count
+				})}
 			</Text>
 			<ScrollableList
 				orientation="vertical"
@@ -255,26 +246,11 @@ export const BoardCloseConfirmation = (): React.JSX.Element | null => {
 					? t('board.unsaved_changes.close_tab_title', 'Close {{title}}?', { title: boardTitle })
 					: t('board.unsaved_changes.close_board_title', 'Close the board?')
 			}
-			customFooter={
-				<Container
-					orientation="horizontal"
-					mainAlignment="flex-end"
-					gap="1rem"
-					padding={{ top: 'large' }}
-				>
-					<Button
-						type="outlined"
-						color="primary"
-						label={t('board.unsaved_changes.keep_editing', 'Keep editing')}
-						onClick={keepEditing}
-					/>
-					<Button
-						color="error"
-						label={t('board.unsaved_changes.close_and_discard', 'Close and discard')}
-						onClick={discard}
-					/>
-				</Container>
-			}
+			confirmLabel={t('board.unsaved_changes.close_and_discard', 'Close and discard')}
+			confirmColor="error"
+			onConfirm={discard}
+			secondaryActionLabel={t('board.unsaved_changes.keep_editing', 'Keep editing')}
+			onSecondaryAction={keepEditing}
 			showCloseIcon
 			// the confirm button is focused by default: keep the focus on the modal to avoid discarding by mistake
 			focusModalContent

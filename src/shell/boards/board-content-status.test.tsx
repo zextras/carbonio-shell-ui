@@ -264,6 +264,50 @@ describe('Board content status', () => {
 		}
 	);
 
+	test.each([
+		[1, /1 tab has unsaved changes/],
+		[2, /2 tabs have unsaved changes/]
+	])(
+		'the close all modal message with %s dirty tabs matches the count with en_US locale',
+		async (count, message) => {
+			const { defaultI18n } = useI18nStore.getState();
+			// the plural keys are added to the en bundle (as they are in en.json on release):
+			// en_US has no plural rules and falls back to en, which resolves the plural form
+			defaultI18n.addResourceBundle(
+				'en',
+				'translation',
+				{
+					board: {
+						unsaved_changes: {
+							close_board_message_one:
+								'{{count}} tab has unsaved changes. If you close the board now, the changes will be lost.',
+							close_board_message_other:
+								'{{count}} tabs have unsaved changes. If you close the board now, the changes will be lost.'
+						}
+					}
+				},
+				true,
+				true
+			);
+			try {
+				await act(async () => {
+					await defaultI18n.changeLanguage('en_US');
+				});
+				const dirty =
+					count === 1 ? withDirtyStatus('board-2') : withDirtyStatus('board-2', 'board-3');
+				setupBoardStore('board-1', dirty);
+				const { user, getByRoleWithIcon } = setup(<BoardContainer />);
+				await user.click(getByRoleWithIcon('button', { icon: ICONS.closeBoard }));
+				expect(await screen.findByText(message)).toBeVisible();
+			} finally {
+				await act(async () => {
+					await defaultI18n.changeLanguage('en');
+				});
+				defaultI18n.removeResourceBundle('en', 'translation');
+			}
+		}
+	);
+
 	test('closing a board with unsaved changes from the dropdown closes the menu and focuses the modal', async () => {
 		setupBoardStore('board-1', withDirtyStatus('board-2'));
 		const { user, getByRoleWithIcon } = setup(<BoardContainer />);

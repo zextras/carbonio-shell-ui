@@ -1,3 +1,9 @@
+## [15.5.4](https://github.com/zextras/carbonio-shell-ui/compare/v15.5.3...v15.5.4) (2026-11-16)
+
+### Bug Fixes
+
+* **boards:** polish the close board confirmation modal ([#961](https://github.com/zextras/carbonio-shell-ui/issues/961)) ([2107c5d](https://github.com/zextras/carbonio-shell-ui/commit/2107c5d48b9b18ab3be38bd815542f5beec36aa7))
+
 ## [15.5.3](https://github.com/zextras/carbonio-shell-ui/compare/v15.5.2...v15.5.3) (2026-11-11)
 
 ### Other changes

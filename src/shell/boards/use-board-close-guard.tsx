@@ -22,7 +22,6 @@ import type { Board } from '../../types/boards';
 // The modal never exceeds the viewport height minus this margin
 const MODAL_VIEWPORT_MARGIN = '5rem';
 const MODAL_MAX_HEIGHT = `calc(100vh - ${MODAL_VIEWPORT_MARGIN})`;
-const LIST_MIN_HEIGHT = '5rem';
 const LIST_MAX_HEIGHT = '11rem';
 // The modal is about 27.7rem high with the list at its max height: below this viewport height
 // it doesn't fit, so its body scrolls and the list must not scroll on its own
@@ -61,7 +60,8 @@ const UnsavedBoardsContent = ({ onEmpty }: { onEmpty: () => void }): React.JSX.E
 			)
 		)
 	);
-	const isEmpty = boardsWithPendingChanges.length === 0;
+	const count = boardsWithPendingChanges.length;
+	const isEmpty = count === 0;
 
 	useEffect(() => {
 		if (isEmpty) {
@@ -79,12 +79,12 @@ const UnsavedBoardsContent = ({ onEmpty }: { onEmpty: () => void }): React.JSX.E
 				{t('board.unsaved_changes.close_board_message', {
 					// plain default for the plural categories other than one/other (e.g. few, many, two)
 					defaultValue:
-						'These {{count}} items have unsaved changes. If you close the board now, the changes will be lost.',
+						'{{count}} tabs have unsaved changes. If you close the board now, the changes will be lost.',
 					defaultValue_one:
-						'This item has unsaved changes. If you close the board now, the changes will be lost.',
+						'{{count}} tab has unsaved changes. If you close the board now, the changes will be lost.',
 					defaultValue_other:
-						'These {{count}} items have unsaved changes. If you close the board now, the changes will be lost.',
-					count: boardsWithPendingChanges.length
+						'{{count}} tabs have unsaved changes. If you close the board now, the changes will be lost.',
+					count
 				})}
 			</Text>
 			<ScrollableList
@@ -93,7 +93,6 @@ const UnsavedBoardsContent = ({ onEmpty }: { onEmpty: () => void }): React.JSX.E
 				crossAlignment="flex-start"
 				gap="0.5rem"
 				height="auto"
-				minHeight={LIST_MIN_HEIGHT}
 				tabIndex={0}
 				role="list"
 				aria-label={t('board.unsaved_changes.items_list_label', 'Items with unsaved changes')}
@@ -249,12 +248,13 @@ export const BoardCloseConfirmation = (): React.JSX.Element | null => {
 			}
 			confirmLabel={t('board.unsaved_changes.close_and_discard', 'Close and discard')}
 			confirmColor="error"
-			dismissLabel={t('board.unsaved_changes.keep_editing', 'Keep editing')}
+			onConfirm={discard}
+			secondaryActionLabel={t('board.unsaved_changes.keep_editing', 'Keep editing')}
+			onSecondaryAction={keepEditing}
 			showCloseIcon
 			// the confirm button is focused by default: keep the focus on the modal to avoid discarding by mistake
 			focusModalContent
 			maxHeight={MODAL_MAX_HEIGHT}
-			onConfirm={discard}
 			onClose={keepEditing}
 		>
 			{request.type === 'board' ? (

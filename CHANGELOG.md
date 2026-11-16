@@ -1,3 +1,9 @@
+## [15.5.5](https://github.com/zextras/carbonio-shell-ui/compare/v15.5.4...v15.5.5) (2026-11-16)
+
+### Bug Fixes
+
+* **deps:** update @zextras/carbonio-design-system to 12.3.1 ([7f089e3](https://github.com/zextras/carbonio-shell-ui/commit/7f089e34f345acff36cc996caff30a18e6e9a4a9))
+
 ## [15.5.4](https://github.com/zextras/carbonio-shell-ui/compare/v15.5.3...v15.5.4) (2026-11-16)
 
 ### Bug Fixes

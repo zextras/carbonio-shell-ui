@@ -73,7 +73,13 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 		for (const key in extDocs) {
 			const obj = extDocs[key];
 			if (obj && obj !== '' && typeof obj === 'string') {
-				const jsonToObject = JSON.parse(obj);
+				let jsonToObject: Record<string, string> | null = null;
+				try {
+					jsonToObject = JSON.parse(obj);
+				} catch (error) {
+					console.error(`Invalid zimbraWebClientSupportedHelps entry "${obj}":`, error);
+					continue;
+				}
 				if (jsonToObject && jsonToObject !== '' && 'Documentation' in jsonToObject) {
 					documentationLink = jsonToObject['Documentation'];
 					docLinkDisabled = false;

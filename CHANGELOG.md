@@ -1,3 +1,9 @@
+## [15.5.8](https://github.com/zextras/carbonio-shell-ui/compare/v15.5.7...v15.5.8) (2026-11-17)
+
+### Other changes
+
+* **deps:** update dependency vite to v7.3.7 [security] ([#950](https://github.com/zextras/carbonio-shell-ui/issues/950)) ([c03a585](https://github.com/zextras/carbonio-shell-ui/commit/c03a5859e7d52f095107e85875affd280835277e))
+
 ## [15.5.7](https://github.com/zextras/carbonio-shell-ui/compare/v15.5.6...v15.5.7) (2026-11-17)
 
 ### Other changes

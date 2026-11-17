@@ -73,17 +73,20 @@ export const ShellUtilityBar = (): React.JSX.Element => {
 		for (const key in extDocs) {
 			const obj = extDocs[key];
 			if (obj && obj !== '' && typeof obj === 'string') {
-				let jsonToObject: Record<string, string> | null = null;
+				let jsonToObject: Record<string, string>;
 				try {
 					jsonToObject = JSON.parse(obj);
 				} catch (error) {
 					console.error(`Invalid zimbraWebClientSupportedHelps entry "${obj}":`, error);
 					continue;
 				}
-				if (jsonToObject && jsonToObject !== '' && 'Documentation' in jsonToObject) {
+				if (!jsonToObject || typeof jsonToObject !== 'object') {
+					continue;
+				}
+				if ('Documentation' in jsonToObject) {
 					documentationLink = jsonToObject['Documentation'];
 					docLinkDisabled = false;
-				} else if (jsonToObject && jsonToObject !== '') {
+				} else {
 					// save a new dropdown item with the key and the link
 					// get key and value from jsonToObject and create a new dropdown item with the key as label and value as link
 					for (const key in jsonToObject) {

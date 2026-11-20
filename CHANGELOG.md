@@ -1,3 +1,9 @@
+## [15.5.9](https://github.com/zextras/carbonio-shell-ui/compare/v15.5.8...v15.5.9) (2026-11-20)
+
+### Bug Fixes
+
+* remove romanian support ([#969](https://github.com/zextras/carbonio-shell-ui/issues/969)) ([50263f9](https://github.com/zextras/carbonio-shell-ui/commit/50263f9610a256f7e3ea7e149fbbc56f86db8289))
+
 ## [15.5.8](https://github.com/zextras/carbonio-shell-ui/compare/v15.5.7...v15.5.8) (2026-11-17)
 
 ### Other changes

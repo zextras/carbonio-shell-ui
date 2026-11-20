@@ -247,7 +247,7 @@ describe('Board content status', () => {
 		expect(screen.queryByRole('button', { name: /close and discard/i })).not.toBeInTheDocument();
 	});
 
-	test.each(['pl', 'ru', 'ro', 'sl', 'bs'])(
+	test.each(['pl', 'ru', 'sl', 'bs'])(
 		'the close all modal message is never the raw key with %s locale',
 		async (locale) => {
 			const { defaultI18n } = useI18nStore.getState();

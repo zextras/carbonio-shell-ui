@@ -67,12 +67,6 @@ export const STATIC_LOCALES: Record<string, LocaleValue> = {
 		labelKey: 'locale.label_polish',
 		labelDefaultValue: 'Polish - {{value}}'
 	},
-	ro: {
-		name: 'română',
-		value: 'ro',
-		labelKey: 'locale.label_romanian',
-		labelDefaultValue: 'Romanian - {{value}}'
-	},
 	ru: {
 		name: 'русский',
 		value: 'ru',

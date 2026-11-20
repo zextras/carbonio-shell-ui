@@ -75,12 +75,6 @@ export const DATE_FNS_LOCALE: Record<
 				({ pl }) => pl
 			)
 	},
-	ro: {
-		localeImportPath: () =>
-			/* webpackMode: "lazy", webpackChunkName: "ro" */ import('date-fns/locale/ro').then(
-				({ ro }) => ro
-			)
-	},
 	ru: {
 		localeImportPath: () =>
 			/* webpackMode: "lazy", webpackChunkName: "ru" */ import('date-fns/locale/ru').then(

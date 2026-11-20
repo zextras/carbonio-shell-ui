@@ -14,6 +14,8 @@ import { initReactI18next } from 'react-i18next';
 import { create } from 'zustand';
 
 import { SHELL_APP_ID } from '../../constants';
+import { DEFAULT_LOCALES } from '../../constants/default-locales';
+import type { AccountSettings } from '../../types/account';
 import type { CarbonioModule } from '../../types/apps';
 import { useAccountStore } from '../account';
 
@@ -52,12 +54,25 @@ const addShell = (apps: Array<CarbonioModule>): Array<CarbonioModule> => [
 	}
 ];
 
-const { settings } = useAccountStore.getState();
+/**
+ * Resolve the account locale to a code the UI ships translations for.
+ * The server falls back to the JVM default locale in Java format (e.g. "en_US")
+ * when no locale is configured, while translation files use the codes of
+ * DEFAULT_LOCALES (e.g. "en"): reduce such codes to their language part.
+ */
+export function getAccountLocale(settings: AccountSettings | undefined): string {
+	const locale =
+		(settings?.prefs?.zimbraPrefLocale as string | undefined) ??
+		(settings?.attrs?.zimbraLocale as string | undefined) ??
+		'en';
+	if (Object.hasOwn(DEFAULT_LOCALES, locale)) {
+		return locale;
+	}
+	const language = locale.split(/[-_]/)[0];
+	return Object.hasOwn(DEFAULT_LOCALES, language) ? language : locale;
+}
 
-const defaultLng =
-	(settings?.prefs?.zimbraPrefLocale as string) ??
-	(settings?.attrs?.zimbraLocale as string) ??
-	'en';
+const defaultLng = getAccountLocale(useAccountStore.getState().settings);
 
 const defaultI18n = i18next.createInstance({ lng: defaultLng });
 

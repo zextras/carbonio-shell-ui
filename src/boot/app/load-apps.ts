@@ -12,7 +12,7 @@ import { injectSharedLibraries } from './shared-libraries';
 import { IS_FOCUS_MODE, SHELL_APP_ID } from '../../constants';
 import { DATE_FNS_LOCALE } from '../../constants/locales';
 import { getUserSetting, useAccountStore } from '../../store/account';
-import { useI18nStore } from '../../store/i18n/store';
+import { getAccountLocale, useI18nStore } from '../../store/i18n/store';
 import type { CarbonioModule } from '../../types/apps';
 
 export function isAppEnabled(app: CarbonioModule): boolean {
@@ -36,11 +36,7 @@ export function loadApps(
 		'%cLOADING APPS',
 		'color: white; background: #2b73d2;padding: 4px 8px 2px 4px; font-family: sans-serif; border-radius: 12px; width: 100%'
 	);
-	const { settings } = useAccountStore.getState();
-	const locale =
-		(settings?.prefs?.zimbraPrefLocale as string) ??
-		(settings?.attrs?.zimbraLocale as string) ??
-		'en';
+	const locale = getAccountLocale(useAccountStore.getState().settings);
 	useI18nStore.getState().addI18n(appsToLoad, locale);
 	const localeObj = DATE_FNS_LOCALE[locale];
 	if (localeObj) {

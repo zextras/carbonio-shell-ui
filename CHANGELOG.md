@@ -1,3 +1,9 @@
+## [15.5.13](https://github.com/zextras/carbonio-shell-ui/compare/v15.5.12...v15.5.13) (2026-11-24)
+
+### Bug Fixes
+
+* **deps:** update dependency i18next-http-backend to v4 [security] ([#938](https://github.com/zextras/carbonio-shell-ui/issues/938)) ([0b5f388](https://github.com/zextras/carbonio-shell-ui/commit/0b5f3886d6954ea4ac46b6281fe0ca9a60f0f1d8))
+
 ## [15.5.12](https://github.com/zextras/carbonio-shell-ui/compare/v15.5.11...v15.5.12) (2026-11-24)
 
 ### Other changes

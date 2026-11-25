@@ -227,26 +227,23 @@ export const BoardContainer = ({
 
 	const boardDropdownItems = useMemo(
 		(): DropdownItem[] =>
-			map(
-				orderedBoards,
-				(boardId): DropdownItem => ({
-					id: boardId,
-					label: boards[boardId].title,
-					icon: getBoardIcon(boards[boardId]),
-					onClick: () => setCurrentBoard(boardId),
-					selected: boardId === current,
-					customComponent: (
-						<ListItemContent
-							label={boards[boardId].title}
-							icon={getBoardIcon(boards[boardId])}
-							pendingChanges={hasPendingChanges(boards[boardId])}
-							selected={boardId === current}
-							app={apps[boards[boardId].app].display}
-							boardId={boardId}
-						/>
-					)
-				})
-			),
+			map(orderedBoards, (boardId): DropdownItem => ({
+				id: boardId,
+				label: boards[boardId].title,
+				icon: getBoardIcon(boards[boardId]),
+				onClick: () => setCurrentBoard(boardId),
+				selected: boardId === current,
+				customComponent: (
+					<ListItemContent
+						label={boards[boardId].title}
+						icon={getBoardIcon(boards[boardId])}
+						pendingChanges={hasPendingChanges(boards[boardId])}
+						selected={boardId === current}
+						app={apps[boards[boardId].app].display}
+						boardId={boardId}
+					/>
+				)
+			})),
 		[apps, boards, current, orderedBoards]
 	);
 

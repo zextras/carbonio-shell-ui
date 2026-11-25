@@ -53,30 +53,24 @@ export type AccountsSettingsBatchResponse = BatchResponse<{
 function mapToCreateIdentityRequests(
 	createRecord: Record<string, IdentityAttrs>
 ): Array<CreateIdentityRequest> {
-	return map(
-		createRecord,
-		(item): CreateIdentityRequest => ({
-			_jsns: JSNS.account,
-			identity: {
-				name: item.zimbraPrefIdentityName,
-				_attrs: {
-					...item,
-					zimbraPrefFromAddressType: item.zimbraPrefFromAddressType || 'sendAs'
-				}
+	return map(createRecord, (item): CreateIdentityRequest => ({
+		_jsns: JSNS.account,
+		identity: {
+			name: item.zimbraPrefIdentityName,
+			_attrs: {
+				...item,
+				zimbraPrefFromAddressType: item.zimbraPrefFromAddressType || 'sendAs'
 			}
-		})
-	);
+		}
+	}));
 }
 
 function mapToDeleteIdentityRequests(deleteArray: Array<string>): Array<DeleteIdentityRequest> {
-	return map(
-		deleteArray,
-		(identityId): DeleteIdentityRequest => ({
-			_jsns: JSNS.account,
-			identity: { id: identityId },
-			requestId: `deleteIdentity-${identityId}`
-		})
-	);
+	return map(deleteArray, (identityId): DeleteIdentityRequest => ({
+		_jsns: JSNS.account,
+		identity: { id: identityId },
+		requestId: `deleteIdentity-${identityId}`
+	}));
 }
 
 function mapToModifyIdentityRequests(

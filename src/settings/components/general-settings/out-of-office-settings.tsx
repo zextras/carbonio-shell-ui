@@ -35,10 +35,7 @@ import type { ResetComponentImperativeHandler, SettingsSectionProps } from '../u
 import { dateToGenTime, upsertPrefOnUnsavedChanges } from '../utils';
 
 type ExternalSenders =
-	| 'SEND_AUTO_REPLY'
-	| 'SHOW_EXTERNAL_INPUT'
-	| 'SEND_NOT_IN_ORG'
-	| 'SUPPRESS_EXTERNAL';
+	'SEND_AUTO_REPLY' | 'SHOW_EXTERNAL_INPUT' | 'SEND_NOT_IN_ORG' | 'SUPPRESS_EXTERNAL';
 
 export const buildItemsExternalSenders = (
 	t: TFunction

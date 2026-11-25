@@ -3,37 +3,7 @@
 	"extends": [
 		"github>zextras/infra-renovate-config",
 		"github>zextras/infra-renovate-config:docker",
-		"github>zextras/infra-renovate-config:javascript"
-	],
-	"rebaseWhen": "behind-base-branch",
-	"packageRules": [
-		{
-			"description": "Runtime minor/patch updates are bundled weekly by the update-deps skill: keep them listed in the Dependency Dashboard and open a PR only on demand",
-			"matchManagers": ["npm"],
-			"matchDepTypes": ["dependencies"],
-			"matchUpdateTypes": ["minor", "patch"],
-			"dependencyDashboardApproval": true
-		},
-		{
-			"description": "One weekly auto-merged devDependencies bundle instead of one PR (and one patch release) per package",
-			"matchManagers": ["npm"],
-			"matchDepTypes": ["devDependencies"],
-			"matchUpdateTypes": ["minor", "patch"],
-			"groupName": "devDependencies (weekly)",
-			"schedule": ["before 6am on monday"]
-		},
-		{
-			"description": "Widen peer ranges instead of bumping them: the shared javascript preset forces rangeStrategy 'bump' globally, which narrows the range modules are built against (^6.30.0 -> ^6.30.6) without gaining anything. Widening stays silent for in-range releases and opens a PR only when a new major has to be allowed",
-			"matchManagers": ["npm"],
-			"matchDepTypes": ["peerDependencies"],
-			"rangeStrategy": "widen"
-		},
-		{
-			"description": "pnpm overrides are deliberate pins: keep minor/patch on the Dependency Dashboard like the runtime dependencies above, so only majors open a PR",
-			"matchManagers": ["npm"],
-			"matchDepTypes": ["pnpm.overrides"],
-			"matchUpdateTypes": ["minor", "patch"],
-			"dependencyDashboardApproval": true
-		}
+		"github>zextras/infra-renovate-config:javascript",
+		"github>zextras/carbonio-ui-configs//rules/renovate"
 	]
 }

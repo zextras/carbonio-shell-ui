@@ -66,7 +66,7 @@ function mapToCreateIdentityRequests(
 }
 
 function mapToDeleteIdentityRequests(deleteArray: Array<string>): Array<DeleteIdentityRequest> {
-	return map(deleteArray, (identityId): DeleteIdentityRequest => ({
+	return deleteArray.map((identityId): DeleteIdentityRequest => ({
 		_jsns: JSNS.account,
 		identity: { id: identityId },
 		requestId: `deleteIdentity-${identityId}`

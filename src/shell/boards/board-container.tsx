@@ -227,7 +227,7 @@ export const BoardContainer = ({
 
 	const boardDropdownItems = useMemo(
 		(): DropdownItem[] =>
-			map(orderedBoards, (boardId): DropdownItem => ({
+			orderedBoards.map((boardId): DropdownItem => ({
 				id: boardId,
 				label: boards[boardId].title,
 				icon: getBoardIcon(boards[boardId]),

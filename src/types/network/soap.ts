@@ -60,8 +60,7 @@ export type ErrorSoapResponse = {
 };
 
 export type RawSoapResponse<R extends Record<string, unknown>> =
-	| RawSuccessSoapResponse<R>
-	| RawErrorSoapResponse;
+	RawSuccessSoapResponse<R> | RawErrorSoapResponse;
 
 export function isRawErrorSoapResponse(
 	item: RawSoapResponse<Record<string, unknown>>

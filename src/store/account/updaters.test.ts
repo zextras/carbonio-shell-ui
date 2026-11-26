@@ -158,19 +158,16 @@ describe('updateAccount', () => {
 			throw new Error('Account not found in the store');
 		}
 
-		const signatures: Array<Signature> = times(
-			5,
-			(): Signature => ({
-				id: faker.string.uuid(),
-				name: faker.word.noun(),
-				content: [
-					{
-						type: 'text/html',
-						_content: `<p>${faker.person.fullName()}</p>`
-					}
-				]
-			})
-		);
+		const signatures: Array<Signature> = times(5, (): Signature => ({
+			id: faker.string.uuid(),
+			name: faker.word.noun(),
+			content: [
+				{
+					type: 'text/html',
+					_content: `<p>${faker.person.fullName()}</p>`
+				}
+			]
+		}));
 
 		updateAccount({
 			signatures
@@ -189,19 +186,16 @@ describe('updateAccount', () => {
 			throw new Error('Account not found in the store');
 		}
 
-		const signatures: Array<Signature> = times(
-			5,
-			(): Signature => ({
-				id: faker.string.uuid(),
-				name: faker.word.noun(),
-				content: [
-					{
-						type: 'text/html',
-						_content: `<p>${faker.person.fullName()}</p>`
-					}
-				]
-			})
-		);
+		const signatures: Array<Signature> = times(5, (): Signature => ({
+			id: faker.string.uuid(),
+			name: faker.word.noun(),
+			content: [
+				{
+					type: 'text/html',
+					_content: `<p>${faker.person.fullName()}</p>`
+				}
+			]
+		}));
 
 		updateAccount({
 			signatures

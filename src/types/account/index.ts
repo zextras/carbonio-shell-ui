@@ -118,11 +118,7 @@ export type AccountRightTarget = {
 };
 
 export type AccountRightName =
-	| 'sendAs'
-	| 'sendAsDistList'
-	| 'viewFreeBusy'
-	| 'sendOnBehalfOf'
-	| 'sendOnBehalfOfDistList';
+	'sendAs' | 'sendAsDistList' | 'viewFreeBusy' | 'sendOnBehalfOf' | 'sendOnBehalfOfDistList';
 export type AccountRights = {
 	targets: Array<{
 		right: AccountRightName;

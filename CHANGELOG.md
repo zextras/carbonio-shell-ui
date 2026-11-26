@@ -1,3 +1,9 @@
+## [15.5.16](https://github.com/zextras/carbonio-shell-ui/compare/v15.5.15...v15.5.16) (2026-11-26)
+
+### Bug Fixes
+
+* **i18n:** reduce server locale to a supported language code ([#970](https://github.com/zextras/carbonio-shell-ui/issues/970)) ([23fa6ad](https://github.com/zextras/carbonio-shell-ui/commit/23fa6ad2dac6428558ce853d5d1fda1b52465ba0))
+
 ## [15.5.15](https://github.com/zextras/carbonio-shell-ui/compare/v15.5.14...v15.5.15) (2026-11-26)
 
 ### Other changes

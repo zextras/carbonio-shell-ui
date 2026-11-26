@@ -1,3 +1,9 @@
+## [15.5.15](https://github.com/zextras/carbonio-shell-ui/compare/v15.5.14...v15.5.15) (2026-11-26)
+
+### Other changes
+
+* **deps-dev:** migrate to @zextras/carbonio-ui-configs 3.x ([#980](https://github.com/zextras/carbonio-shell-ui/issues/980)) ([0278acd](https://github.com/zextras/carbonio-shell-ui/commit/0278acdc6fe53cc55a0a13ca1c704072b2e07a1e))
+
 ## [15.5.14](https://github.com/zextras/carbonio-shell-ui/compare/v15.5.13...v15.5.14) (2026-11-26)
 
 ### Other changes
